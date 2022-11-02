@@ -13,7 +13,7 @@ exports[`<ItemsLegend/> empty box 1`] = `
           <span
             className="cell-legend-icon cell-legend-icon-border"
             style={
-              Object {
+              {
                 "backgroundColor": "FFFFFF",
               }
             }
@@ -45,7 +45,7 @@ exports[`<ItemsLegend/> multiple sample types and checked out status, no selecti
           <span
             className="cell-legend-icon"
             style={
-              Object {
+              {
                 "backgroundColor": "FFFFFF",
               }
             }
@@ -53,7 +53,7 @@ exports[`<ItemsLegend/> multiple sample types and checked out status, no selecti
             <i
               className="color-icon__circle cell-legend-circle"
               style={
-                Object {
+                {
                   "backgroundColor": "#fe9200",
                 }
               }
@@ -75,7 +75,7 @@ exports[`<ItemsLegend/> multiple sample types and checked out status, no selecti
           <span
             className="cell-legend-icon"
             style={
-              Object {
+              {
                 "backgroundColor": "FFFFFF",
               }
             }
@@ -83,7 +83,7 @@ exports[`<ItemsLegend/> multiple sample types and checked out status, no selecti
             <i
               className="color-icon__circle cell-legend-circle"
               style={
-                Object {
+                {
                   "backgroundColor": "#009ce0",
                 }
               }
@@ -105,7 +105,7 @@ exports[`<ItemsLegend/> multiple sample types and checked out status, no selecti
           <span
             className="cell-legend-icon"
             style={
-              Object {
+              {
                 "backgroundColor": "FFFFFF",
               }
             }
@@ -113,7 +113,7 @@ exports[`<ItemsLegend/> multiple sample types and checked out status, no selecti
             <i
               className="color-icon__circle cell-legend-circle"
               style={
-                Object {
+                {
                   "backgroundColor": "#2980b9",
                 }
               }
@@ -135,7 +135,7 @@ exports[`<ItemsLegend/> multiple sample types and checked out status, no selecti
           <span
             className="cell-legend-icon cell-legend-icon-border"
             style={
-              Object {
+              {
                 "backgroundColor": "#F5D4D3",
               }
             }
@@ -156,7 +156,7 @@ exports[`<ItemsLegend/> multiple sample types and checked out status, no selecti
           <span
             className="cell-legend-icon cell-legend-icon-border"
             style={
-              Object {
+              {
                 "backgroundColor": "FFFFFF",
               }
             }
@@ -188,7 +188,7 @@ exports[`<ItemsLegend/> multiple sample types with same color label 1`] = `
           <span
             className="cell-legend-icon"
             style={
-              Object {
+              {
                 "backgroundColor": "FFFFFF",
               }
             }
@@ -196,7 +196,7 @@ exports[`<ItemsLegend/> multiple sample types with same color label 1`] = `
             <i
               className="color-icon__circle cell-legend-circle"
               style={
-                Object {
+                {
                   "backgroundColor": "#fe9200",
                 }
               }
@@ -218,7 +218,7 @@ exports[`<ItemsLegend/> multiple sample types with same color label 1`] = `
           <span
             className="cell-legend-icon"
             style={
-              Object {
+              {
                 "backgroundColor": "FFFFFF",
               }
             }
@@ -226,7 +226,7 @@ exports[`<ItemsLegend/> multiple sample types with same color label 1`] = `
             <i
               className="color-icon__circle cell-legend-circle"
               style={
-                Object {
+                {
                   "backgroundColor": "#009ce0",
                 }
               }
@@ -248,7 +248,7 @@ exports[`<ItemsLegend/> multiple sample types with same color label 1`] = `
           <span
             className="cell-legend-icon"
             style={
-              Object {
+              {
                 "backgroundColor": "FFFFFF",
               }
             }
@@ -256,7 +256,7 @@ exports[`<ItemsLegend/> multiple sample types with same color label 1`] = `
             <i
               className="color-icon__circle cell-legend-circle"
               style={
-                Object {
+                {
                   "backgroundColor": "#2980b9",
                 }
               }
@@ -278,7 +278,7 @@ exports[`<ItemsLegend/> multiple sample types with same color label 1`] = `
           <span
             className="cell-legend-icon cell-legend-icon-border"
             style={
-              Object {
+              {
                 "backgroundColor": "#F5D4D3",
               }
             }
@@ -299,7 +299,7 @@ exports[`<ItemsLegend/> multiple sample types with same color label 1`] = `
           <span
             className="cell-legend-icon cell-legend-icon-border"
             style={
-              Object {
+              {
                 "backgroundColor": "FFFFFF",
               }
             }
@@ -331,7 +331,7 @@ exports[`<ItemsLegend/> with selection 1`] = `
           <span
             className="cell-legend-icon"
             style={
-              Object {
+              {
                 "backgroundColor": "FFFFFF",
               }
             }
@@ -339,7 +339,7 @@ exports[`<ItemsLegend/> with selection 1`] = `
             <i
               className="color-icon__circle cell-legend-circle"
               style={
-                Object {
+                {
                   "backgroundColor": "#fe9200",
                 }
               }
@@ -361,7 +361,7 @@ exports[`<ItemsLegend/> with selection 1`] = `
           <span
             className="cell-legend-icon"
             style={
-              Object {
+              {
                 "backgroundColor": "FFFFFF",
               }
             }
@@ -369,7 +369,7 @@ exports[`<ItemsLegend/> with selection 1`] = `
             <i
               className="color-icon__circle cell-legend-circle"
               style={
-                Object {
+                {
                   "backgroundColor": "#009ce0",
                 }
               }
@@ -391,7 +391,7 @@ exports[`<ItemsLegend/> with selection 1`] = `
           <span
             className="cell-legend-icon cell-legend-icon-border"
             style={
-              Object {
+              {
                 "backgroundColor": "#EDF3FF",
               }
             }
@@ -399,7 +399,7 @@ exports[`<ItemsLegend/> with selection 1`] = `
             <i
               className="color-icon__circle cell-legend-circle"
               style={
-                Object {
+                {
                   "backgroundColor": "#fe9200",
                 }
               }
@@ -421,7 +421,7 @@ exports[`<ItemsLegend/> with selection 1`] = `
           <span
             className="cell-legend-icon cell-legend-icon-border"
             style={
-              Object {
+              {
                 "backgroundColor": "#EDF3FF",
               }
             }
@@ -429,7 +429,7 @@ exports[`<ItemsLegend/> with selection 1`] = `
             <i
               className="color-icon__circle cell-legend-circle"
               style={
-                Object {
+                {
                   "backgroundColor": "#009ce0",
                 }
               }
@@ -451,7 +451,7 @@ exports[`<ItemsLegend/> with selection 1`] = `
           <span
             className="cell-legend-icon cell-legend-icon-border"
             style={
-              Object {
+              {
                 "backgroundColor": "#EDF3FF",
               }
             }
@@ -459,7 +459,7 @@ exports[`<ItemsLegend/> with selection 1`] = `
             <i
               className="color-icon__circle cell-legend-circle"
               style={
-                Object {
+                {
                   "backgroundColor": "#2980b9",
                 }
               }
@@ -481,7 +481,7 @@ exports[`<ItemsLegend/> with selection 1`] = `
           <span
             className="cell-legend-icon cell-legend-icon-border"
             style={
-              Object {
+              {
                 "backgroundColor": "#EDF3FF",
               }
             }
@@ -502,7 +502,7 @@ exports[`<ItemsLegend/> with selection 1`] = `
           <span
             className="cell-legend-icon cell-legend-icon-border"
             style={
-              Object {
+              {
                 "backgroundColor": "#F5D4D3",
               }
             }
@@ -523,7 +523,7 @@ exports[`<ItemsLegend/> with selection 1`] = `
           <span
             className="cell-legend-icon cell-legend-icon-border"
             style={
-              Object {
+              {
                 "backgroundColor": "FFFFFF",
               }
             }

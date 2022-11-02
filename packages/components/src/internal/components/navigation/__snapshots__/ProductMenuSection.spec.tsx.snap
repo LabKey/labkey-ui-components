@@ -154,23 +154,23 @@ exports[`ProductMenuSection render one column with overflow link 1`] = `
       "label": "Assays",
       "url": undefined,
       "items": Immutable.List [
-        Object {
+        {
           "id": 11,
           "label": "Assay 1",
         },
-        Object {
+        {
           "id": 12,
           "label": "Assay 2",
         },
-        Object {
+        {
           "id": 13,
           "label": "Assay 3",
         },
-        Object {
+        {
           "id": 14,
           "label": "Assay 4",
         },
-        Object {
+        {
           "id": 15,
           "label": "Assay 5",
         },

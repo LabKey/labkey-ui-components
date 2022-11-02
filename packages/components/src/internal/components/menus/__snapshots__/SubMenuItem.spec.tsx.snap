@@ -275,11 +275,11 @@ exports[`<SubMenuItem /> onMouseOver 1`] = `
     onMouseOut={[Function]}
     onMouseOver={
       [MockFunction] {
-        "calls": Array [
-          Array [],
+        "calls": [
+          [],
         ],
-        "results": Array [
-          Object {
+        "results": [
+          {
             "type": "return",
             "value": undefined,
           },

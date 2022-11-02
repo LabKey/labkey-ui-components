@@ -159,7 +159,7 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "10px",
         }
       }
@@ -172,7 +172,7 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "10px",
         }
       }
@@ -316,7 +316,7 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
       disabled={false}
       onClick={[Function]}
       style={
-        Object {
+        {
           "marginLeft": "10px",
         }
       }

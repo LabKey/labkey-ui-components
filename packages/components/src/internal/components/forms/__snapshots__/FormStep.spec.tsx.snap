@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<FormStep/> currentStep 1`] = `
-Array [
+[
   <div
     className="row"
   >
@@ -11,7 +11,7 @@ Array [
       <ul
         className="list-group clearfix"
         style={
-          Object {
+          {
             "listStyle": "none",
           }
         }
@@ -52,7 +52,7 @@ Array [
 `;
 
 exports[`<FormStep/> default props 1`] = `
-Array [
+[
   <div
     className="row"
   >
@@ -62,7 +62,7 @@ Array [
       <ul
         className="list-group clearfix"
         style={
-          Object {
+          {
             "listStyle": "none",
           }
         }

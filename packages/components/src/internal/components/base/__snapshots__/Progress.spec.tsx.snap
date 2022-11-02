@@ -28,7 +28,7 @@ exports[`<Progress /> render toggled, not modal 1`] = `
         className="progress-bar active progress-bar-striped"
         role="progressbar"
         style={
-          Object {
+          {
             "width": "80%",
           }
         }

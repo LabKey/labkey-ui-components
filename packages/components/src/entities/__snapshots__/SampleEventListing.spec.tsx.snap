@@ -58,7 +58,7 @@ exports[`<SampleEventListing/> Filter by event type and date 1`] = `
             <Tip
               caption="Export"
               trigger={
-                Array [
+                [
                   "focus",
                   "hover",
                 ]
@@ -226,7 +226,9 @@ exports[`<SampleEventListing/> Filter by event type and date 1`] = `
                 isClearable={true}
                 monthsShown={1}
                 name="startDate"
+                nextMonthAriaLabel="Next Month"
                 nextMonthButtonLabel="Next Month"
+                nextYearAriaLabel="Next Year"
                 nextYearButtonLabel="Next Year"
                 onBlur={[Function]}
                 onCalendarClose={[Function]}
@@ -242,11 +244,14 @@ exports[`<SampleEventListing/> Filter by event type and date 1`] = `
                 onYearChange={[Function]}
                 placeholderText="From"
                 preventOpenOnFocus={false}
+                previousMonthAriaLabel="Previous Month"
                 previousMonthButtonLabel="Previous Month"
+                previousYearAriaLabel="Previous Year"
                 previousYearButtonLabel="Previous Year"
                 readOnly={false}
                 renderDayContents={[Function]}
                 selected={2020-04-09T00:00:00.000Z}
+                selectsDisabledDaysInRange={false}
                 selectsStart={true}
                 shouldCloseOnSelect={true}
                 showFourColumnMonthYearPicker={false}
@@ -305,7 +310,9 @@ exports[`<SampleEventListing/> Filter by event type and date 1`] = `
                     minDate={2020-04-09T00:00:00.000Z}
                     monthsShown={1}
                     name="endDate"
+                    nextMonthAriaLabel="Next Month"
                     nextMonthButtonLabel="Next Month"
+                    nextYearAriaLabel="Next Year"
                     nextYearButtonLabel="Next Year"
                     onBlur={[Function]}
                     onCalendarClose={[Function]}
@@ -321,10 +328,13 @@ exports[`<SampleEventListing/> Filter by event type and date 1`] = `
                     onYearChange={[Function]}
                     placeholderText="To"
                     preventOpenOnFocus={false}
+                    previousMonthAriaLabel="Previous Month"
                     previousMonthButtonLabel="Previous Month"
+                    previousYearAriaLabel="Previous Year"
                     previousYearButtonLabel="Previous Year"
                     readOnly={false}
                     renderDayContents={[Function]}
+                    selectsDisabledDaysInRange={false}
                     selectsEnd={true}
                     shouldCloseOnSelect={true}
                     showFourColumnMonthYearPicker={false}
@@ -400,7 +410,7 @@ exports[`<SampleEventListing/> Filter by event type and date 1`] = `
       >
         <TimelineView
           events={
-            Array [
+            [
               Immutable.Record {
                 "rowId": 546,
                 "eventType": "workflow",
@@ -660,7 +670,7 @@ exports[`<SampleEventListing/> Sort by latest 1`] = `
             <Tip
               caption="Export"
               trigger={
-                Array [
+                [
                   "focus",
                   "hover",
                 ]
@@ -706,7 +716,7 @@ exports[`<SampleEventListing/> Sort by latest 1`] = `
       >
         <TimelineView
           events={
-            Array [
+            [
               Immutable.Record {
                 "rowId": 550,
                 "eventType": "workflow",
@@ -3207,7 +3217,7 @@ exports[`<SampleEventListing/> With selected job that is completed and with filt
             <Tip
               caption="Export"
               trigger={
-                Array [
+                [
                   "focus",
                   "hover",
                 ]
@@ -3375,7 +3385,9 @@ exports[`<SampleEventListing/> With selected job that is completed and with filt
                 isClearable={true}
                 monthsShown={1}
                 name="startDate"
+                nextMonthAriaLabel="Next Month"
                 nextMonthButtonLabel="Next Month"
+                nextYearAriaLabel="Next Year"
                 nextYearButtonLabel="Next Year"
                 onBlur={[Function]}
                 onCalendarClose={[Function]}
@@ -3391,11 +3403,14 @@ exports[`<SampleEventListing/> With selected job that is completed and with filt
                 onYearChange={[Function]}
                 placeholderText="From"
                 preventOpenOnFocus={false}
+                previousMonthAriaLabel="Previous Month"
                 previousMonthButtonLabel="Previous Month"
+                previousYearAriaLabel="Previous Year"
                 previousYearButtonLabel="Previous Year"
                 readOnly={false}
                 renderDayContents={[Function]}
                 selected={2020-04-08T00:00:00.000Z}
+                selectsDisabledDaysInRange={false}
                 selectsStart={true}
                 shouldCloseOnSelect={true}
                 showFourColumnMonthYearPicker={false}
@@ -3454,7 +3469,9 @@ exports[`<SampleEventListing/> With selected job that is completed and with filt
                     minDate={2020-04-08T00:00:00.000Z}
                     monthsShown={1}
                     name="endDate"
+                    nextMonthAriaLabel="Next Month"
                     nextMonthButtonLabel="Next Month"
+                    nextYearAriaLabel="Next Year"
                     nextYearButtonLabel="Next Year"
                     onBlur={[Function]}
                     onCalendarClose={[Function]}
@@ -3470,10 +3487,13 @@ exports[`<SampleEventListing/> With selected job that is completed and with filt
                     onYearChange={[Function]}
                     placeholderText="To"
                     preventOpenOnFocus={false}
+                    previousMonthAriaLabel="Previous Month"
                     previousMonthButtonLabel="Previous Month"
+                    previousYearAriaLabel="Previous Year"
                     previousYearButtonLabel="Previous Year"
                     readOnly={false}
                     renderDayContents={[Function]}
+                    selectsDisabledDaysInRange={false}
                     selectsEnd={true}
                     shouldCloseOnSelect={true}
                     showFourColumnMonthYearPicker={false}
@@ -3549,7 +3569,7 @@ exports[`<SampleEventListing/> With selected job that is completed and with filt
       >
         <TimelineView
           events={
-            Array [
+            [
               Immutable.Record {
                 "rowId": 1548,
                 "eventType": "assays",
@@ -3856,8 +3876,8 @@ exports[`<SampleEventListing/> With selected job that is completed and with filt
           }
           onEventSelection={[MockFunction]}
           selectedEntityConnectionInfo={
-            Array [
-              Object {
+            [
+              {
                 "firstEvent": Immutable.Record {
                   "rowId": 544,
                   "eventType": "workflow",

@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ReactNode } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { withFormsy } from 'formsy-react';
 import DatePicker from 'react-datepicker';
-
-import { Utils } from '@labkey/api';
 
 import { FieldLabel } from '../FieldLabel';
 import { getColDateFormat, getJsonDateTimeFormatString, isDateTimeCol, parseDate } from '../../../util/Date';
@@ -85,7 +83,9 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
         // Issue 45140: formsy values will hold on to the initial formatted value until onChange.
         // We instead need to make sure that the unformatted Date value is passed to setValue if there is an init value.
         const initDate = this.getInitDate(props);
-        if (props.formsy && Utils.isFunction(props.setValue)) props.setValue(initDate);
+        if (props.formsy) {
+            props.setValue?.(initDate);
+        }
 
         this.state = {
             isDisabled: props.initiallyDisabled,
@@ -94,19 +94,13 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
     }
 
     toggleDisabled = (): void => {
-        const { selectedDate } = this.state;
-
         this.setState(
-            state => {
-                return {
-                    isDisabled: !state.isDisabled,
-                    selectedDate: state.isDisabled ? selectedDate : this.getInitDate(this.props),
-                };
-            },
+            state => ({
+                isDisabled: !state.isDisabled,
+                selectedDate: state.isDisabled ? state.selectedDate : this.getInitDate(this.props),
+            }),
             () => {
-                if (this.props.onToggleDisable) {
-                    this.props.onToggleDisable(this.state.isDisabled);
-                }
+                this.props.onToggleDisable?.(this.state.isDisabled);
             }
         );
     };
@@ -119,17 +113,14 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
     }
 
     onChange = (date: Date): void => {
-        this.setState(() => {
-            return {
-                selectedDate: date,
-            };
-        });
+        this.setState({ selectedDate: date });
 
-        if (this.props.onChange && Utils.isFunction(this.props.onChange)) this.props.onChange(date);
+        this.props.onChange?.(date);
 
         // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
-        const _date = getJsonDateTimeFormatString(date);
-        if (this.props.formsy && Utils.isFunction(this.props.setValue)) this.props.setValue(_date);
+        if (this.props.formsy) {
+            this.props.setValue?.(getJsonDateTimeFormatString(date));
+        }
     };
 
     getDateFormat(): string {
@@ -176,7 +167,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
                 selected={selectedDate}
                 onChange={this.onChange}
                 showTimeSelect={this.shouldShowTime()}
-                placeholderText={placeholderText ? placeholderText : `Select ${queryColumn.caption.toLowerCase()}`}
+                placeholderText={placeholderText ?? `Select ${queryColumn.caption.toLowerCase()}`}
                 dateFormat={this.getDateFormat()}
                 autoFocus={autoFocus}
                 onKeyDown={onKeyDown}
@@ -223,24 +214,15 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
  */
 const DatePickerInputFormsy = withFormsy(DatePickerInputImpl);
 
-export class DatePickerInput extends React.Component<DatePickerInputProps, any> {
-    static defaultProps = {
-        formsy: true,
-    };
-
-    constructor(props: DatePickerInputProps) {
-        super(props);
+export const DatePickerInput: FC<DatePickerInputProps> = props => {
+    if (props.formsy) {
+        return <DatePickerInputFormsy name={props.name ?? props.queryColumn.name} {...props} />;
     }
+    return <DatePickerInputImpl {...props} />;
+};
 
-    render() {
-        if (this.props.formsy) {
-            return (
-                <DatePickerInputFormsy
-                    name={this.props.name ? this.props.name : this.props.queryColumn.name}
-                    {...this.props}
-                />
-            );
-        }
-        return <DatePickerInputImpl {...this.props} />;
-    }
-}
+DatePickerInput.defaultProps = {
+    formsy: true,
+};
+
+DatePickerInput.displayName = 'DatePickerInput';

@@ -45,7 +45,7 @@ exports[`PreviewGrid render PreviewGrid with data 1`] = `
             onDragStart={[Function]}
             onDrop={[Function]}
             style={
-              Object {
+              {
                 "minWidth": undefined,
               }
             }
@@ -65,7 +65,7 @@ null"
             onDragStart={[Function]}
             onDrop={[Function]}
             style={
-              Object {
+              {
                 "minWidth": undefined,
               }
             }
@@ -83,7 +83,7 @@ null"
             onDragStart={[Function]}
             onDrop={[Function]}
             style={
-              Object {
+              {
                 "minWidth": undefined,
               }
             }
@@ -100,7 +100,7 @@ null"
             onDragStart={[Function]}
             onDrop={[Function]}
             style={
-              Object {
+              {
                 "minWidth": undefined,
               }
             }
@@ -116,7 +116,7 @@ null"
         >
           <td
             style={
-              Object {
+              {
                 "textAlign": "left",
               }
             }
@@ -129,14 +129,14 @@ null"
           </td>
           <td
             style={
-              Object {
+              {
                 "textAlign": "left",
               }
             }
           />
           <td
             style={
-              Object {
+              {
                 "textAlign": "left",
               }
             }
@@ -149,7 +149,7 @@ null"
           </td>
           <td
             style={
-              Object {
+              {
                 "textAlign": "right",
               }
             }
@@ -162,7 +162,7 @@ null"
         >
           <td
             style={
-              Object {
+              {
                 "textAlign": "left",
               }
             }
@@ -175,14 +175,14 @@ null"
           </td>
           <td
             style={
-              Object {
+              {
                 "textAlign": "left",
               }
             }
           />
           <td
             style={
-              Object {
+              {
                 "textAlign": "left",
               }
             }
@@ -195,7 +195,7 @@ null"
           </td>
           <td
             style={
-              Object {
+              {
                 "textAlign": "right",
               }
             }
@@ -208,7 +208,7 @@ null"
         >
           <td
             style={
-              Object {
+              {
                 "textAlign": "left",
               }
             }
@@ -221,14 +221,14 @@ null"
           </td>
           <td
             style={
-              Object {
+              {
                 "textAlign": "left",
               }
             }
           />
           <td
             style={
-              Object {
+              {
                 "textAlign": "left",
               }
             }
@@ -241,7 +241,7 @@ null"
           </td>
           <td
             style={
-              Object {
+              {
                 "textAlign": "right",
               }
             }
@@ -283,7 +283,7 @@ exports[`PreviewGrid render PreviewGrid with different numCols and numRows 1`] =
             onDragStart={[Function]}
             onDrop={[Function]}
             style={
-              Object {
+              {
                 "minWidth": undefined,
               }
             }
@@ -303,7 +303,7 @@ null"
             onDragStart={[Function]}
             onDrop={[Function]}
             style={
-              Object {
+              {
                 "minWidth": undefined,
               }
             }
@@ -319,7 +319,7 @@ null"
         >
           <td
             style={
-              Object {
+              {
                 "textAlign": "left",
               }
             }
@@ -332,7 +332,7 @@ null"
           </td>
           <td
             style={
-              Object {
+              {
                 "textAlign": "left",
               }
             }
@@ -343,7 +343,7 @@ null"
         >
           <td
             style={
-              Object {
+              {
                 "textAlign": "left",
               }
             }
@@ -356,7 +356,7 @@ null"
           </td>
           <td
             style={
-              Object {
+              {
                 "textAlign": "left",
               }
             }

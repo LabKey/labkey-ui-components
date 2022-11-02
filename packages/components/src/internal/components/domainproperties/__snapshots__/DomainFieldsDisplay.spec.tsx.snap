@@ -36,7 +36,7 @@ exports[`DomainFieldsDisplay with empty domain design 1`] = `
               onDragStart={[Function]}
               onDrop={[Function]}
               style={
-                Object {
+                {
                   "minWidth": undefined,
                 }
               }
@@ -53,7 +53,7 @@ exports[`DomainFieldsDisplay with empty domain design 1`] = `
               onDragStart={[Function]}
               onDrop={[Function]}
               style={
-                Object {
+                {
                   "minWidth": undefined,
                 }
               }
@@ -70,7 +70,7 @@ exports[`DomainFieldsDisplay with empty domain design 1`] = `
               onDragStart={[Function]}
               onDrop={[Function]}
               style={
-                Object {
+                {
                   "minWidth": undefined,
                 }
               }
@@ -87,7 +87,7 @@ exports[`DomainFieldsDisplay with empty domain design 1`] = `
               onDragStart={[Function]}
               onDrop={[Function]}
               style={
-                Object {
+                {
                   "minWidth": undefined,
                 }
               }
@@ -104,7 +104,7 @@ exports[`DomainFieldsDisplay with empty domain design 1`] = `
               onDragStart={[Function]}
               onDrop={[Function]}
               style={
-                Object {
+                {
                   "minWidth": undefined,
                 }
               }
@@ -121,7 +121,7 @@ exports[`DomainFieldsDisplay with empty domain design 1`] = `
               onDragStart={[Function]}
               onDrop={[Function]}
               style={
-                Object {
+                {
                   "minWidth": undefined,
                 }
               }
@@ -185,7 +185,7 @@ exports[`DomainFieldsDisplay with title 1`] = `
               onDragStart={[Function]}
               onDrop={[Function]}
               style={
-                Object {
+                {
                   "minWidth": undefined,
                 }
               }
@@ -202,7 +202,7 @@ exports[`DomainFieldsDisplay with title 1`] = `
               onDragStart={[Function]}
               onDrop={[Function]}
               style={
-                Object {
+                {
                   "minWidth": undefined,
                 }
               }
@@ -219,7 +219,7 @@ exports[`DomainFieldsDisplay with title 1`] = `
               onDragStart={[Function]}
               onDrop={[Function]}
               style={
-                Object {
+                {
                   "minWidth": undefined,
                 }
               }
@@ -236,7 +236,7 @@ exports[`DomainFieldsDisplay with title 1`] = `
               onDragStart={[Function]}
               onDrop={[Function]}
               style={
-                Object {
+                {
                   "minWidth": undefined,
                 }
               }
@@ -253,7 +253,7 @@ exports[`DomainFieldsDisplay with title 1`] = `
               onDragStart={[Function]}
               onDrop={[Function]}
               style={
-                Object {
+                {
                   "minWidth": undefined,
                 }
               }
@@ -270,7 +270,7 @@ exports[`DomainFieldsDisplay with title 1`] = `
               onDragStart={[Function]}
               onDrop={[Function]}
               style={
-                Object {
+                {
                   "minWidth": undefined,
                 }
               }
@@ -334,7 +334,7 @@ exports[`DomainFieldsDisplay without title 1`] = `
               onDragStart={[Function]}
               onDrop={[Function]}
               style={
-                Object {
+                {
                   "minWidth": undefined,
                 }
               }
@@ -351,7 +351,7 @@ exports[`DomainFieldsDisplay without title 1`] = `
               onDragStart={[Function]}
               onDrop={[Function]}
               style={
-                Object {
+                {
                   "minWidth": undefined,
                 }
               }
@@ -368,7 +368,7 @@ exports[`DomainFieldsDisplay without title 1`] = `
               onDragStart={[Function]}
               onDrop={[Function]}
               style={
-                Object {
+                {
                   "minWidth": undefined,
                 }
               }
@@ -385,7 +385,7 @@ exports[`DomainFieldsDisplay without title 1`] = `
               onDragStart={[Function]}
               onDrop={[Function]}
               style={
-                Object {
+                {
                   "minWidth": undefined,
                 }
               }
@@ -402,7 +402,7 @@ exports[`DomainFieldsDisplay without title 1`] = `
               onDragStart={[Function]}
               onDrop={[Function]}
               style={
-                Object {
+                {
                   "minWidth": undefined,
                 }
               }
@@ -419,7 +419,7 @@ exports[`DomainFieldsDisplay without title 1`] = `
               onDragStart={[Function]}
               onDrop={[Function]}
               style={
-                Object {
+                {
                   "minWidth": undefined,
                 }
               }

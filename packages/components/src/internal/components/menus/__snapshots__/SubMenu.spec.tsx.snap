@@ -24,7 +24,7 @@ exports[`<SubMenu /> several options, one chosen without extractCurrentMenuChoic
 `;
 
 exports[`<SubMenu /> two options, one chosen 1`] = `
-Array [
+[
   <li
     className=""
     role="presentation"
@@ -57,7 +57,7 @@ Array [
 `;
 
 exports[`<SubMenu /> two options, one chosen but inlineItemsCount 0 1`] = `
-Array [
+[
   <li
     className=""
     role="presentation"

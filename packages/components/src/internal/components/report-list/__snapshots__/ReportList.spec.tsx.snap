@@ -90,7 +90,7 @@ exports[`<ReportList /> Render with data 1`] = `
           >
             <a
               onClick={[Function]}
-              style={Object {}}
+              style={{}}
             >
               Injection Volume Comparison 2
             </a>
@@ -126,7 +126,7 @@ exports[`<ReportList /> Render with data 1`] = `
           >
             <a
               onClick={[Function]}
-              style={Object {}}
+              style={{}}
             >
               Avg Mass vs pl
             </a>
@@ -162,7 +162,7 @@ exports[`<ReportList /> Render with data 1`] = `
           >
             <a
               onClick={[Function]}
-              style={Object {}}
+              style={{}}
             >
               Arg Box Plot
             </a>
@@ -198,7 +198,7 @@ exports[`<ReportList /> Render with data 1`] = `
           >
             <a
               onClick={[Function]}
-              style={Object {}}
+              style={{}}
             >
               Bar plot of Mean Cys for Runs
             </a>
@@ -234,7 +234,7 @@ exports[`<ReportList /> Render with data 1`] = `
           >
             <a
               onClick={[Function]}
-              style={Object {}}
+              style={{}}
             >
               Pie chart example
             </a>
@@ -270,7 +270,7 @@ exports[`<ReportList /> Render with data 1`] = `
           >
             <a
               onClick={[Function]}
-              style={Object {}}
+              style={{}}
             >
               Sum of Molecular Weight by Chemical Formula
             </a>
@@ -306,7 +306,7 @@ exports[`<ReportList /> Render with data 1`] = `
           >
             <a
               onClick={[Function]}
-              style={Object {}}
+              style={{}}
             >
               Line plot: Pro by Sample Date
             </a>
@@ -342,7 +342,7 @@ exports[`<ReportList /> Render with data 1`] = `
           >
             <a
               onClick={[Function]}
-              style={Object {}}
+              style={{}}
             >
               MAb Box Plot
             </a>
@@ -378,7 +378,7 @@ exports[`<ReportList /> Render with data 1`] = `
           >
             <a
               onClick={[Function]}
-              style={Object {}}
+              style={{}}
             >
               Distribution by Lot
             </a>
@@ -414,7 +414,7 @@ exports[`<ReportList /> Render with data 1`] = `
           >
             <a
               onClick={[Function]}
-              style={Object {}}
+              style={{}}
             >
               Scatter: Arg vs Ala (filtered)
             </a>
@@ -450,7 +450,7 @@ exports[`<ReportList /> Render with data 1`] = `
           >
             <a
               onClick={[Function]}
-              style={Object {}}
+              style={{}}
             >
               Scatter: Arg vs Ala
             </a>
@@ -486,7 +486,7 @@ exports[`<ReportList /> Render with data 1`] = `
           >
             <a
               onClick={[Function]}
-              style={Object {}}
+              style={{}}
             >
               Injection Volume Comparison
             </a>
@@ -522,7 +522,7 @@ exports[`<ReportList /> Render with data 1`] = `
           >
             <a
               onClick={[Function]}
-              style={Object {}}
+              style={{}}
             >
               Private Chart
             </a>
@@ -558,7 +558,7 @@ exports[`<ReportList /> Render with data 1`] = `
           >
             <a
               onClick={[Function]}
-              style={Object {}}
+              style={{}}
             >
               Test Custom View
             </a>
@@ -594,7 +594,7 @@ exports[`<ReportList /> Render with data 1`] = `
           >
             <a
               onClick={[Function]}
-              style={Object {}}
+              style={{}}
             >
               Test Custom View
             </a>
@@ -630,7 +630,7 @@ exports[`<ReportList /> Render with data 1`] = `
           >
             <a
               onClick={[Function]}
-              style={Object {}}
+              style={{}}
             >
               Name only
             </a>
@@ -666,7 +666,7 @@ exports[`<ReportList /> Render with data 1`] = `
           >
             <a
               onClick={[Function]}
-              style={Object {}}
+              style={{}}
             >
               Private view
             </a>
@@ -702,7 +702,7 @@ exports[`<ReportList /> Render with data 1`] = `
           >
             <a
               onClick={[Function]}
-              style={Object {}}
+              style={{}}
             >
               Scientific Name only
             </a>
@@ -738,7 +738,7 @@ exports[`<ReportList /> Render with data 1`] = `
           >
             <a
               onClick={[Function]}
-              style={Object {}}
+              style={{}}
             >
               Name only
             </a>
@@ -774,7 +774,7 @@ exports[`<ReportList /> Render with data 1`] = `
           >
             <a
               onClick={[Function]}
-              style={Object {}}
+              style={{}}
             >
               SampleID only
             </a>
@@ -810,7 +810,7 @@ exports[`<ReportList /> Render with data 1`] = `
           >
             <a
               onClick={[Function]}
-              style={Object {}}
+              style={{}}
             >
               Test Custom View
             </a>
@@ -869,7 +869,7 @@ exports[`<ReportListItem /> ReportListItem renders 1`] = `
       <a
         href="/q/assay.General.SEC/Data"
         onClick={[Function]}
-        style={Object {}}
+        style={{}}
       >
         Injection Volume Comparison 2
       </a>

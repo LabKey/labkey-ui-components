@@ -4,7 +4,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Updates for Sample Type consistency of Sample detail pages
-  * ...
+  * Refactor sample pages from LKB and LKSM and move shared pages to components packages
+  * Create context in SampleDetailPage base components to be consumed in other smaple detail pages
 
 ### version 2.242.3
 *Released*: 31 October 2022

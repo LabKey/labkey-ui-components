@@ -18,7 +18,6 @@ import {
 } from './utils';
 import { SampleTypeBasePage } from './SampleTypeBasePage';
 import { SampleActionsButton } from './SampleActionsButton';
-import { SampleAliquotsGridPanel } from './SampleAliquotsGridPanel';
 import { SampleAliquotsSummary } from './SampleAliquotsSummary';
 import { SamplesAddButton } from './SamplesAddButton';
 import { SampleAssayDetail } from './SampleAssayDetail';
@@ -106,7 +105,6 @@ export {
     SampleActionsButton,
     SampleAliquotDetailHeader,
     SampleAliquotViewSelector,
-    SampleAliquotsGridPanel, // TODO remove this after LKB is updated
     SampleAliquotsSummary,
     SamplesAddButton,
     SampleAliquotsPage,

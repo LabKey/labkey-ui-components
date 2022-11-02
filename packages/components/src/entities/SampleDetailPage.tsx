@@ -144,7 +144,7 @@ const SampleDetailPageBody: FC<Props> = memo(props => {
         } as SampleDetailContext;
     }, [sampleContainer, sampleModel, sampleType_, location, user, onDetailUpdate]);
 
-    if (!sampleModel || sampleModel.isLoading || !containerUserLoaded) {
+    if (!sampleModel || sampleModel.isLoading || (sampleModel.getRow() && !containerUserLoaded)) {
         if (sampleModel?.queryInfoError || sampleModel?.rowsError || containerUserError) {
             return <NotFound />;
         }

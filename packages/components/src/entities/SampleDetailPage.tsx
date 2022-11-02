@@ -63,6 +63,7 @@ export const SampleDetailContextConsumer = Context.Consumer;
 
 interface OwnProps {
     entityDataType?: EntityDataType;
+    iconSrc?: string;
     location?: any;
     menu: ProductMenuModel;
     navigate: (url: string | AppURL, replace?: boolean) => void;
@@ -95,6 +96,7 @@ const SampleDetailPageBody: FC<Props> = memo(props => {
         entityDataType,
         noun,
         sampleType,
+        iconSrc,
     } = props;
     const [actionChangeCount, setActionChangeCount] = useState<number>(0);
     const sampleModel = queryModels[modelId];
@@ -158,6 +160,7 @@ const SampleDetailPageBody: FC<Props> = memo(props => {
         <Page title={context.sampleName + ' - ' + title} hasHeader>
             <SampleHeader
                 assayProviderType={assayProviderType}
+                iconSrc={iconSrc}
                 navigate={navigate}
                 sampleModel={sampleModel}
                 onUpdate={onDetailUpdate}

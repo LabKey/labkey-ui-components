@@ -11,6 +11,7 @@ import { useSampleTypeAppContext } from './SampleTypeAppContext';
 
 interface Props {
     location?: any;
+    iconSrc?: string;
     menu: ProductMenuModel;
     navigate: (url: string | AppURL, replace?: boolean) => void;
     params?: any;

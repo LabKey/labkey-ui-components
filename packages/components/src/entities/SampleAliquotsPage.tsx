@@ -13,6 +13,7 @@ import { useSampleTypeAppContext } from './SampleTypeAppContext';
 
 interface Props {
     entityDataType?: EntityDataType;
+    iconSrc?: string;
     location?: any;
     menu: ProductMenuModel;
     navigate: (url: string | AppURL, replace?: boolean) => void;

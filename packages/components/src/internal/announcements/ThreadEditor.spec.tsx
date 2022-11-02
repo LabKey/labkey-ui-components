@@ -5,7 +5,7 @@ import { waitForLifecycle } from '../testHelpers';
 
 import { applyList, applyTemplate, handleBulletedListEnter, olMapper, ThreadEditor, ulMapper } from './ThreadEditor';
 import { createTestAPIWrapper } from './test/utils';
-import { COMMENTER, NOUN_PLURAL, NOUN_SINGULAR, RESPONSE, THREAD } from './test/fixtures';
+import { NOUN_PLURAL, NOUN_SINGULAR, RESPONSE, THREAD } from './test/fixtures';
 
 const COMMENT_TEXTAREA = '.thread-editor textarea.form-control';
 const SUBMIT_BUTTON = '.thread-editor__create-btn';

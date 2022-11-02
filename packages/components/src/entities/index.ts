@@ -14,6 +14,7 @@ import {
     getSampleDeleteMessage,
     getSampleTypeTemplateUrl,
     createEntityParentKey,
+    getJobCreationHref,
 } from './utils';
 import { SampleTypeBasePage } from './SampleTypeBasePage';
 import { SampleActionsButton } from './SampleActionsButton';
@@ -70,6 +71,7 @@ export {
     downloadSampleTypeTemplate,
     filterMediaSampleTypes,
     filterSampleRowsForOperation,
+    getJobCreationHref,
     getOriginalParentsFromLineage,
     getSampleSetMenuItem,
     getSampleDeleteMessage,

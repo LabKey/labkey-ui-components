@@ -13,7 +13,7 @@ import { getSampleStatus, getSampleStatusType, isSampleOperationPermitted } from
 import { caseInsensitive } from '../internal/util/utils';
 import { SampleStatusTag } from '../internal/components/samples/SampleStatusTag';
 import { SCHEMAS } from '../internal/schemas';
-import { createEntityParentKey, getSampleAuditBehaviorType, getSampleDeleteMessage } from './utils';
+import { createEntityParentKey, getJobCreationHref, getSampleAuditBehaviorType, getSampleDeleteMessage } from './utils';
 import { PageDetailHeader } from '../internal/components/forms/PageDetailHeader';
 import { ColorIcon } from '../internal/components/base/ColorIcon';
 import { getTitleDisplay } from '../internal/components/pipeline/utils';
@@ -28,7 +28,7 @@ import { EntityDeleteModal } from './EntityDeleteModal';
 import { SampleTypeDataType } from '../internal/components/entities/constants';
 import {
     LabelPrintingProviderProps,
-    withLabelPrintingContext
+    withLabelPrintingContext,
 } from '../internal/components/labels/LabelPrintingContextProvider';
 import { useServerContext } from '../internal/components/base/ServerContext';
 import { PrintLabelsModal } from '../internal/components/labels/PrintLabelsModal';
@@ -49,7 +49,6 @@ interface HeaderProps {
     showDescription?: boolean;
     hasActiveJob?: boolean;
     iconSrc?: string;
-    jobCreationHref?: string;
     navigate: (url: string | AppURL) => void;
     sampleContainer?: Container;
     user?: User;
@@ -77,7 +76,6 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
         sampleModel,
         showDescription,
         isCrossFolder,
-        jobCreationHref,
         title,
         subtitle,
         StorageMenu,
@@ -161,7 +159,6 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
         () => isSampleOperationPermitted(sampleStatus.statusType, SampleOperation.AddToWorkflow),
         [sampleStatus]
     );
-
 
     const headerTitle = useMemo(() => {
         if (title) return title;
@@ -257,7 +254,10 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                                     </RequiresPermission>
                                 )}
                                 <RequiresPermission user={user} perms={PermissionTypes.ManageSampleWorkflows}>
-                                    <DisableableMenuItem href={jobCreationHref} operationPermitted={canAddToWorkflow}>
+                                    <DisableableMenuItem
+                                        href={getJobCreationHref(sampleModel, undefined, true)}
+                                        operationPermitted={canAddToWorkflow}
+                                    >
                                         Create Workflow Job
                                     </DisableableMenuItem>
                                 </RequiresPermission>

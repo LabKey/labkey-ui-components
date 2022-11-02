@@ -29,7 +29,7 @@ import { useSampleTypeAppContext } from './SampleTypeAppContext';
 import { EntityDataType } from '../internal/components/entities/models';
 
 // These are additional columns required for details
-const requiredColumns = ParentEntityRequiredColumns.concat(
+const REQUIRED_COLUMNS = ParentEntityRequiredColumns.concat(
     'AliquotVolume',
     'AliquotCount',
     'Folder',
@@ -38,7 +38,7 @@ const requiredColumns = ParentEntityRequiredColumns.concat(
     'StorageStatus',
     'Units',
     ...SAMPLE_STATUS_REQUIRED_COLUMNS
-).toList();
+).toArray();
 
 interface SampleDetailContext {
     isAliquot: boolean;
@@ -67,6 +67,8 @@ interface OwnProps {
     navigate: (url: string | AppURL, replace?: boolean) => void;
     noun?: string;
     params?: any;
+    requiredColumns?: string[];
+    sampleType?: string;
     showOverview?: boolean;
     title: string;
 }
@@ -91,10 +93,11 @@ const SampleDetailPageBody: FC<Props> = memo(props => {
         navigate,
         entityDataType,
         noun,
+        sampleType,
     } = props;
     const [actionChangeCount, setActionChangeCount] = useState<number>(0);
-    const { sampleType } = params;
     const sampleModel = queryModels[modelId];
+    const sampleType_ = sampleType ?? params.sampleType;
 
     const containerUser = useContainerUser(sampleModel.getRowValue('Folder'));
     const containerUserError = containerUser.error;
@@ -134,12 +137,12 @@ const SampleDetailPageBody: FC<Props> = memo(props => {
             sampleLsid,
             sampleModel,
             sampleName,
-            sampleType,
+            sampleType: sampleType_,
             sampleStatus,
             rootLsid,
             user,
         } as SampleDetailContext;
-    }, [sampleContainer, sampleModel, sampleType, location, user, onDetailUpdate]);
+    }, [sampleContainer, sampleModel, sampleType_, location, user, onDetailUpdate]);
 
     if (!sampleModel || sampleModel.isLoading || !containerUserLoaded) {
         if (sampleModel?.queryInfoError || sampleModel?.rowsError || containerUserError) {
@@ -158,7 +161,7 @@ const SampleDetailPageBody: FC<Props> = memo(props => {
                 sampleModel={sampleModel}
                 onUpdate={onDetailUpdate}
                 showDescription={!showOverview}
-                hasActiveJob={hasActivePipelineJob(menu, SAMPLES_KEY, sampleType)}
+                hasActiveJob={hasActivePipelineJob(menu, SAMPLES_KEY, sampleType_)}
                 sampleContainer={sampleContainer}
                 entityDataType={entityDataType}
                 user={user}
@@ -190,19 +193,21 @@ const SampleDetailPageBody: FC<Props> = memo(props => {
 const SampleDetailPageWithModels = withQueryModels<OwnProps & BodyProps>(SampleDetailPageBody);
 
 export const SampleDetailPage: FC<OwnProps> = props => {
-    const { sampleType, id } = props.params;
-    const schemaQuery = useMemo(() => SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType), [sampleType]);
+    const { params, requiredColumns, sampleType } = props;
+    const { id } = params;
+    const sampleType_ = sampleType ?? params.sampleType;
+    const schemaQuery = useMemo(() => SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType_), [sampleType_]);
     const modelId = useMemo(() => createGridModelId('sample-detail', schemaQuery, id), [id, schemaQuery]);
 
     const queryConfigs: QueryConfigMap = useMemo(
         () => ({
             [modelId]: {
                 keyValue: id,
-                requiredColumns: requiredColumns.toArray(),
+                requiredColumns: requiredColumns ?? REQUIRED_COLUMNS,
                 schemaQuery,
             },
         }),
-        [id, modelId, schemaQuery]
+        [id, modelId, schemaQuery, requiredColumns]
     );
 
     return (

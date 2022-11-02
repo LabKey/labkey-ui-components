@@ -7,16 +7,23 @@ import { AppURL } from '../internal/url/AppURL';
 import { SOURCES_KEY } from '../internal/app/constants';
 import { VisGraphNode } from '../internal/components/lineage/models';
 import { InsufficientPermissionsAlert } from '../internal/components/permissions/InsufficientPermissionsAlert';
-
 import { hasAllPermissions } from '../internal/components/base/models/User';
+import { EntityDataType } from '../internal/components/entities/models';
 
 import { SampleLineageGraph } from './SampleLineageGraph';
 import { SampleDetailContextConsumer, SampleDetailPage } from './SampleDetailPage';
 import { useSampleTypeAppContext } from './SampleTypeAppContext';
 
 interface PageProps {
+    entityDataType?: EntityDataType;
+    location?: any;
     menu: ProductMenuModel;
     navigate: (url: string | AppURL, replace?: boolean) => void;
+    noun?: string;
+    params?: any;
+    requiredColumns?: string[];
+    sampleType?: string;
+    title?: string;
 }
 
 interface Props extends PageProps {
@@ -69,10 +76,12 @@ class SampleLineagePanel extends PureComponent<Props> {
 }
 
 export const SampleLineagePage: FC<PageProps> = memo(props => {
+    const { title, ...rest } = props;
+    const title_ = title ?? 'Sample Lineage';
     const { linagePagePermissions } = useSampleTypeAppContext();
 
     return (
-        <SampleDetailPage {...props} title="Sample Lineage">
+        <SampleDetailPage {...rest} title={title_}>
             <SampleDetailContextConsumer>
                 {({ sampleName, sampleLsid, user }) => {
                     // can't render lineage if the user can't see all entities in the lineage
@@ -80,7 +89,7 @@ export const SampleLineagePage: FC<PageProps> = memo(props => {
                         return <InsufficientPermissionsAlert />;
                     }
 
-                    return <SampleLineagePanel {...props} sampleLsid={sampleLsid} sampleID={sampleName} />;
+                    return <SampleLineagePanel {...rest} sampleLsid={sampleLsid} sampleID={sampleName} />;
                 }}
             </SampleDetailContextConsumer>
         </SampleDetailPage>

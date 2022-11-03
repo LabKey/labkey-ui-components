@@ -13,10 +13,11 @@ interface Props {
     description?: ReactNode;
     menu: ProductMenuModel;
     leftColumns?: number;
+    includeTemplateButton?: boolean
 }
 
 export const AssayHeader: FC<Props> = props => {
-    const { children, title, subTitle, description, menu, leftColumns = 9 } = props;
+    const { children, title, subTitle, description, menu, leftColumns = 9, includeTemplateButton = true } = props;
     const { assayDefinition } = useContext(AssayContext);
 
     const isJobActive = assayDefinition ? hasActivePipelineJob(menu, ASSAYS_KEY, assayDefinition.name) : false;
@@ -40,7 +41,7 @@ export const AssayHeader: FC<Props> = props => {
                 description={descriptionDisplay}
                 leftColumns={leftColumns} // On run details pages allow for more room for the name of the run
             >
-                <TemplateDownloadButton templateUrl={assayDefinition?.templateLink} className="button-right-spacing" />
+                {includeTemplateButton && <TemplateDownloadButton templateUrl={assayDefinition?.templateLink} className="button-right-spacing" />}
                 {children}
             </PageDetailHeader>
             <Notifications />

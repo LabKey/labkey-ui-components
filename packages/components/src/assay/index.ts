@@ -13,7 +13,6 @@ import {
     AssayDesignHeaderButtons,
     AssayRunDetailHeaderButtons,
     AssayImportDataButton,
-    AssayExportDesignButton,
     UpdateQCStatesButton,
 } from './AssayButtons';
 import { AssayHeader } from './AssayHeader';
@@ -37,7 +36,6 @@ export {
     AssayRunDeleteModal,
     AssaySubNavMenu,
     AssayTypeSummary,
-    AssayExportDesignButton,
     onAssayRunChange,
     onAssayDesignChange,
     UpdateQCStatesButton,

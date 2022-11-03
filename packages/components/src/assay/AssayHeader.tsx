@@ -16,7 +16,7 @@ interface Props {
 }
 
 export const AssayHeader: FC<Props> = props => {
-    const { children, title, subTitle, description, menu, leftColumns } = props;
+    const { children, title, subTitle, description, menu, leftColumns = 9 } = props;
     const { assayDefinition } = useContext(AssayContext);
 
     const isJobActive = assayDefinition ? hasActivePipelineJob(menu, ASSAYS_KEY, assayDefinition.name) : false;

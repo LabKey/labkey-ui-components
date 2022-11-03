@@ -43,7 +43,7 @@ interface State {
 }
 
 export const AssayContext = createContext<AssayContextModel>(undefined);
-const AssayContextProvider = AssayContext.Provider;
+export const AssayContextProvider = AssayContext.Provider;
 export const AssayContextConsumer = AssayContext.Consumer;
 
 const DefaultAssayLoader: AssayLoader = {

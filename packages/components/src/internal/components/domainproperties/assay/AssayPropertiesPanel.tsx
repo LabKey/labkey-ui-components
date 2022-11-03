@@ -38,12 +38,13 @@ import { BOOLEAN_FIELDS, FORM_ID_PREFIX, PROPERTIES_HEADER_ID } from './constant
 
 interface AssayPropertiesFormProps {
     appPropertiesOnly?: boolean;
+    hideStudyProperties?: boolean;
     model: AssayProtocolModel;
     onChange: (model: AssayProtocolModel) => void;
 }
 
 const AssayPropertiesForm: FC<AssayPropertiesFormProps> = memo(props => {
-    const { appPropertiesOnly, children, model, onChange } = props;
+    const { appPropertiesOnly, children, hideStudyProperties, model, onChange } = props;
     const { moduleContext } = useServerContext();
 
     const onValueChange = useCallback(
@@ -170,7 +171,7 @@ const AssayPropertiesForm: FC<AssayPropertiesFormProps> = memo(props => {
                 </Col>
             )}
 
-            {!appPropertiesOnly && hasModule('study', moduleContext) && (
+            {!appPropertiesOnly && !hideStudyProperties && hasModule('study', moduleContext) && (
                 <Col xs={12} lg={6}>
                     <div className="domain-field-padding-bottom">
                         <SectionHeading title="Link to Study Settings" />
@@ -193,7 +194,7 @@ interface OwnProps extends AssayPropertiesFormProps {
 type Props = OwnProps & BasePropertiesPanelProps;
 
 const AssayPropertiesPanelImpl: FC<Props & InjectedDomainPropertiesPanelCollapseProps> = memo(props => {
-    const { appPropertiesOnly, asPanel, children, helpTopic, model, onChange } = props;
+    const { appPropertiesOnly, asPanel, children, helpTopic, hideStudyProperties, model, onChange } = props;
     const [isValid, setIsValid] = useState<boolean>(true);
 
     const updateValidStatus = useCallback(
@@ -210,7 +211,7 @@ const AssayPropertiesPanelImpl: FC<Props & InjectedDomainPropertiesPanelCollapse
     );
 
     const form = (
-        <AssayPropertiesForm appPropertiesOnly={appPropertiesOnly} model={model} onChange={updateValidStatus}>
+        <AssayPropertiesForm appPropertiesOnly={appPropertiesOnly} hideStudyProperties={hideStudyProperties} model={model} onChange={updateValidStatus}>
             {children}
         </AssayPropertiesForm>
     );
@@ -235,6 +236,7 @@ const AssayPropertiesPanelImpl: FC<Props & InjectedDomainPropertiesPanelCollapse
 
 AssayPropertiesPanelImpl.defaultProps = {
     appPropertiesOnly: false,
+    hideStudyProperties: false,
     asPanel: true,
     helpTopic: DEFINE_ASSAY_SCHEMA_TOPIC,
 };

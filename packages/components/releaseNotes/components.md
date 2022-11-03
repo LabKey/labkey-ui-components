@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Move assay buttons into AssaysButtons file
   * Move AssayHeader component here from LKSM
   * in `isPropertyTypeAllowed`, respect the `show` properties even if `appPropetiesOnly` is false
+  * Add optional property for hiding study properties in assay designer
 
 ### version 2.243.0
 *Released*: 2 November 2022

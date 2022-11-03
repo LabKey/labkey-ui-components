@@ -1,5 +1,4 @@
-import React, { FC, memo, ReactNode, ReactText, useCallback, useEffect, useState, useMemo } from 'react';
-import { Query } from '@labkey/api';
+import React, { FC, memo, ReactNode, useCallback, useEffect, useState, useMemo } from 'react';
 
 import {
     DISCARD_CONSUMED_CHECKBOX_FIELD,
@@ -9,109 +8,60 @@ import {
 
 import { Alert } from '../../base/Alert';
 import { QueryColumn } from '../../../../public/QueryColumn';
-import { QuerySelect } from '../QuerySelect';
+import { QuerySelect, QuerySelectChange, QuerySelectOwnProps } from '../QuerySelect';
 import { SampleStateType } from '../../samples/constants';
 import { userCanEditStorageData } from '../../../app/utils';
 import { useServerContext } from '../../base/ServerContext';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper';
-import { customStyles, customTheme } from '../../editable/LookupCell';
 
-interface SampleStatusInputProps {
-    allowDisable?: boolean;
+import { InputRendererProps } from './types';
+
+interface SampleStatusInputProps extends Omit<QuerySelectOwnProps, 'schemaQuery' | 'valueColumn'> {
     api?: ComponentsAPIWrapper;
     col: QueryColumn;
-    containerFilter?: Query.ContainerFilter;
-    containerPath?: string;
-    data: any;
-    formsy?: boolean;
-    initiallyDisabled?: boolean;
-    inputClass?: string;
-    isDetailInput?: boolean;
-    isGridInput?: boolean;
-    key: ReactText;
     onAdditionalFormDataChange?: (name: string, value: any) => any;
-    onQSChange?: (name: string, value: string | any[], items: any) => void;
-    onToggleDisable?: (disabled: boolean) => void;
     renderLabelField?: (col: QueryColumn) => ReactNode;
-    showAsteriskSymbol?: boolean;
-    value?: string | Array<Record<string, any>>; // for jest test
 }
 
-// Move somewhere more central?
-// Styles to match form-control in bulk form
-export const customBulkStyles = {
-    control: provided => ({
-        ...provided,
-        color: '#555555',
-        border: '1px solid #ccc',
-        borderRadius: '4px'
-    }),
-    singleValue: provided => ({
-        ...provided,
-        color: '#555555'
-    }),
-};
-
 export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
-    const {
-        api,
-        showAsteriskSymbol,
-        allowDisable,
-        col,
-        containerFilter,
-        containerPath,
-        key,
-        initiallyDisabled,
-        onToggleDisable,
-        value,
-        onQSChange,
-        renderLabelField,
-        onAdditionalFormDataChange,
-        inputClass,
-        formsy,
-        isGridInput,
-        isDetailInput
-    } = props;
+    const { api, col, onAdditionalFormDataChange, renderLabelField, ...selectInputProps } = props;
+    const { allowDisable, onQSChange, value } = selectInputProps;
     const { user } = useServerContext();
-    const [consumedStatuses, setConsumedStatuses] = useState<number[]>(undefined);
-    const [error, setError] = useState<string>(undefined);
+    const [consumedStatuses, setConsumedStatuses] = useState<number[]>();
+    const [error, setError] = useState<string>();
     const [showDiscardPanel, setShowDiscardPanel] = useState<boolean>(false);
     const [shouldDiscard, setShouldDiscard] = useState<boolean>(true);
 
-    const loadConsumedStatuses = async (): Promise<void> => {
-        try {
-            const statuses = await api.samples.getSampleStatuses();
-            const consumedStatusIds = [];
-            statuses.forEach(status => {
-                if (status.stateType === SampleStateType.Consumed) consumedStatusIds.push(status.rowId);
-            });
-            setConsumedStatuses(consumedStatusIds);
-        } catch (error) {
-            console.error(error.exception);
-            setError(
-                'Error loading sample statuses. If you want to discard ' +
-                    (allowDisable /* bulk update */ ? 'any samples' : 'the sample') +
-                    ' being updated to a Consumed status, you will have to do that separately.'
-            );
-        }
-    };
-
     useEffect(() => {
-        loadConsumedStatuses();
+        (async () => {
+            try {
+                const statuses = await api.samples.getSampleStatuses();
+                const consumedStatusIds = [];
+                statuses.forEach(status => {
+                    if (status.stateType === SampleStateType.Consumed) consumedStatusIds.push(status.rowId);
+                });
+                setConsumedStatuses(consumedStatusIds);
+            } catch (e) {
+                setError(
+                    'Error loading sample statuses. If you want to discard ' +
+                        (allowDisable /* bulk update */ ? 'any samples' : 'the sample') +
+                        ' being updated to a Consumed status, you will have to do that separately.'
+                );
+            }
+        })();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const onChange = useCallback(
-        (name: string, newValue: any, items: any) => {
-            onQSChange?.(name, newValue, items);
+    const onChange: QuerySelectChange = useCallback(
+        (name, newValue, selectedOptions, props_, selectedItems) => {
+            onQSChange?.(name, newValue, selectedOptions, props_, selectedItems);
             if (userCanEditStorageData(user)) {
-                const isConsumed = consumedStatuses.indexOf(newValue) > -1 && value !== newValue;
+                const isConsumed = consumedStatuses.indexOf(newValue as number) > -1 && value !== newValue;
                 const isInStorage = onAdditionalFormDataChange?.(
                     DISCARD_CONSUMED_CHECKBOX_FIELD,
                     shouldDiscard && isConsumed
                 );
-                const showPanel = isInStorage && isConsumed;
-                setShowDiscardPanel(showPanel);
+                setShowDiscardPanel(isInStorage && isConsumed);
             }
         },
         [consumedStatuses, onAdditionalFormDataChange, onQSChange, shouldDiscard, user, value]
@@ -119,8 +69,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
 
     const onCommentChange = useCallback(
         event => {
-            const updatedComment = event.target.value;
-            onAdditionalFormDataChange?.(DISCARD_CONSUMED_COMMENT_FIELD, updatedComment);
+            onAdditionalFormDataChange?.(DISCARD_CONSUMED_COMMENT_FIELD, event.target.value);
         },
         [onAdditionalFormDataChange]
     );
@@ -157,43 +106,30 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
     }, [shouldDiscard, onCommentChange, toggleShouldDiscard, allowDisable]);
 
     return (
-        <React.Fragment key={key}>
+        <>
             {renderLabelField?.(col)}
             <QuerySelect
-                addLabelAsterisk={showAsteriskSymbol}
-                allowDisable={allowDisable}
-                key={col.fieldKey + key}
-                containerFilter={col.lookup.containerFilter ?? containerFilter}
-                containerPath={col.lookup.containerPath ?? containerPath}
+                containerFilter={col.lookup.containerFilter}
+                containerPath={col.lookup.containerPath}
                 description={col.description}
                 displayColumn={col.lookup.displayColumn}
-                formsy={isGridInput ? false : formsy}
                 helpTipRenderer={col.helpTipRenderer}
-                initiallyDisabled={initiallyDisabled}
                 joinValues={col.isJunctionLookup()}
-                label={isGridInput ? undefined : col.caption}
+                label={col.caption}
                 loadOnFocus
                 maxRows={10}
                 multiple={col.isJunctionLookup()}
                 name={col.fieldKey}
-                onQSChange={onChange}
-                onToggleDisable={onToggleDisable}
-                placeholder={isGridInput ? undefined : 'Select or type to search...'}
                 required={col.required}
-                schemaQuery={col.lookup.schemaQuery}
-                showLabel
-                value={value}
-                valueColumn={col.lookup.keyColumn}
-                inputClass={isGridInput ? 'select-input-cell' : inputClass}
-                containerClass={isGridInput ? 'select-input-cell-container' : undefined}
-                menuPosition={isGridInput ? 'fixed' : undefined}
-                customStyles={isGridInput ? customStyles : isDetailInput ? undefined : customBulkStyles}
-                customTheme={isGridInput ? customTheme : undefined}
                 showLoading={false}
+                {...selectInputProps}
+                onQSChange={onChange}
+                schemaQuery={col.lookup.schemaQuery}
+                valueColumn={col.lookup.keyColumn}
             />
             {error && <Alert>{error}</Alert>}
             {showDiscardPanel && <>{discardPanel}</>}
-        </React.Fragment>
+        </>
     );
 });
 
@@ -201,3 +137,39 @@ SampleStatusInput.defaultProps = {
     api: getDefaultAPIWrapper(),
     formsy: true,
 };
+
+export const SampleStatusInputRenderer: FC<InputRendererProps> = memo(props => {
+    const {
+        allowFieldDisable,
+        col,
+        containerFilter,
+        containerPath,
+        formsy,
+        initiallyDisabled,
+        onAdditionalFormDataChange,
+        onSelectChange,
+        onToggleDisable,
+        renderLabelField,
+        selectInputProps,
+        showAsteriskSymbol,
+        value,
+    } = props;
+
+    return (
+        <SampleStatusInput
+            {...selectInputProps}
+            addLabelAsterisk={showAsteriskSymbol}
+            allowDisable={allowFieldDisable}
+            col={col}
+            containerFilter={containerFilter}
+            containerPath={containerPath}
+            formsy={formsy}
+            initiallyDisabled={initiallyDisabled}
+            onAdditionalFormDataChange={onAdditionalFormDataChange}
+            onQSChange={onSelectChange}
+            onToggleDisable={onToggleDisable}
+            renderLabelField={renderLabelField}
+            value={value}
+        />
+    );
+});

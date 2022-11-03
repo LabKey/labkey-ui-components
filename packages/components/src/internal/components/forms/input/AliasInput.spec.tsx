@@ -4,7 +4,7 @@ import { fromJS } from 'immutable';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
 
-import { AliasInput } from './AliasInput';
+import { AliasSelectInput } from './AliasInput';
 import { SelectInput } from './SelectInput';
 
 describe('AliasInput', () => {
@@ -19,7 +19,7 @@ describe('AliasInput', () => {
         const data = { [fieldKey.toLowerCase()]: [undefined, '', 'a', { displayValue: 'b' }, { foo: 'c' }, null] };
 
         // No data
-        const wrapper = shallow(<AliasInput col={aliasColumn} />);
+        const wrapper = shallow(<AliasSelectInput col={aliasColumn} />);
         expect(wrapper.find(SelectInput).prop('value')).toEqual(undefined);
 
         // Object data
@@ -32,7 +32,7 @@ describe('AliasInput', () => {
     });
 
     test('resolveFormValue', () => {
-        const wrapper = shallow(<AliasInput col={aliasColumn} />);
+        const wrapper = shallow(<AliasSelectInput col={aliasColumn} />);
         const resolveFormValue = wrapper.find(SelectInput).prop('resolveFormValue');
 
         expect(resolveFormValue(undefined)).toEqual([]);

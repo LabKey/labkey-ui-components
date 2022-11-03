@@ -1,15 +1,17 @@
 import React, { FC, memo, useEffect, useState } from 'react';
+import { List, Map } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { selectRowsDeprecated } from '../../../query/api';
-import { LoadingSpinner } from '../../base/LoadingSpinner';
-import { Alert } from '../../base/Alert';
+import { selectRows } from '../../../query/selectRows';
 
-import { customStyles, customTheme, LookupCell } from '../../editable/LookupCell';
+import { encodePart, SchemaQuery } from '../../../../public/SchemaQuery';
+import { ViewInfo } from '../../../ViewInfo';
+import { caseInsensitive } from '../../../util/utils';
 
-import { SelectInput } from './SelectInput';
+import { InputRendererProps } from './types';
+
 import { DisableableInputProps } from './DisableableInput';
-import {customBulkStyles} from "./SampleStatusInput";
+import { SelectInput, SelectInputProps } from './SelectInput';
 
 export interface InputOption {
     label: string;
@@ -17,24 +19,22 @@ export interface InputOption {
 }
 
 async function loadInputOptions(assayId: number): Promise<InputOption[]> {
-    const { key, models } = await selectRowsDeprecated({
-        schemaName: 'samplemanagement',
-        queryName: 'Tasks',
-        columns: 'RowId,Name,AssayTypes,Run/Name',
+    const result = await selectRows({
+        columns: 'RowId, Name, AssayTypes, Run/Name',
         filterArray: [
             Filter.create('AssayTypes', undefined, Filter.Types.NONBLANK),
             Filter.create('Status/Value', 'In Progress'),
         ],
         maxRows: -1,
+        schemaQuery: SchemaQuery.create('samplemanagement', 'Tasks', ViewInfo.DETAIL_NAME),
     });
-    const rows = Object.values(models[key]);
-    const taskOptions = [];
+    const taskOptions: InputOption[] = [];
 
-    rows.forEach(row => {
-        const taskId = row['RowId'].value;
-        const jobName = row['Run/Name'].value;
-        const taskName = row['Name'].value;
-        const assays = row['AssayTypes'].value.split(',').map(Number);
+    result.rows.forEach(row => {
+        const taskId = caseInsensitive(row, 'RowId').value;
+        const jobName = caseInsensitive(row, 'Run/Name').value;
+        const taskName = caseInsensitive(row, 'Name').value;
+        const assays = caseInsensitive(row, 'AssayTypes').value.split(',').map(Number);
         const hasAssay = assays.find(id => assayId === id);
 
         if (hasAssay) {
@@ -45,82 +45,100 @@ async function loadInputOptions(assayId: number): Promise<InputOption[]> {
     return taskOptions;
 }
 
-interface WorkflowTaskInputProps extends DisableableInputProps {
+interface WorkflowTaskInputProps
+    extends DisableableInputProps,
+        Omit<SelectInputProps, 'isLoading' | 'loadOptions' | 'options'> {
     assayId: number;
-    isDetailInput: boolean;
-    isGridInput: boolean;
-    name: string;
-    onChange?: (name: string, value: string | any[], items: any) => void;
 }
 
 // Note: this component is specific to Workflow, and ideally would live in the Workflow package, however we do not
-// currently have a way for our Apps to override the InputRenderers used by resolveRenderer (see renderers.tsx).
+// currently have a way for our Apps to override the InputRenderers (see InputRenderer.tsx).
 export const AssayTaskInput: FC<WorkflowTaskInputProps> = memo(props => {
-    const {
-        assayId,
-        isDetailInput,
-        allowDisable,
-        initiallyDisabled,
-        onToggleDisable,
-        name,
-        value,
-        onChange,
-        isGridInput,
-    } = props;
+    const { assayId, ...selectInputProps } = props;
     const [loading, setLoading] = useState<boolean>(true);
-    const [taskOptions, setTaskOptions] = useState<InputOption[]>(undefined);
-    const [error, setError] = useState<string>(undefined);
-    const load = async (): Promise<void> => {
-        if (assayId === undefined) {
-            // If the components rendering the QueryFormInputs or EditableDetailPanel don't properly inject the assayId
-            // into the form data (via ASSAY_INDEX key defined above) then this will happen.
-            setError('Assay ID not set, cannot load workflow tasks');
-            setLoading(false);
-            return;
-        }
+    const [taskOptions, setTaskOptions] = useState<InputOption[]>();
+    const [error, setError] = useState<string>();
 
-        try {
-            const options = await loadInputOptions(assayId);
-            setTaskOptions(options);
-        } catch (error) {
-            console.error(error.exception);
-            setError('Error loading workflow tasks');
-        } finally {
-            setLoading(false);
-        }
-    };
     useEffect(() => {
-        load();
+        (async () => {
+            if (assayId === undefined) {
+                // If the components rendering the QueryFormInputs or EditableDetailPanel don't properly inject the assayId
+                // into the form data (via ASSAY_INDEX key defined above) then this will happen.
+                setError('Assay ID not set, cannot load workflow tasks');
+                setLoading(false);
+                return;
+            }
+
+            try {
+                const options = await loadInputOptions(assayId);
+                setTaskOptions(options);
+            } catch (e) {
+                console.error(e.exception);
+                setError('Error loading workflow tasks');
+            } finally {
+                setLoading(false);
+            }
+        })();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <div className="workflow-task-input">
-            {loading && <LoadingSpinner msg="Loading tasks" />}
+        <SelectInput
+            {...selectInputProps}
+            disabled={error ? true : props.disabled}
+            isLoading={loading}
+            options={taskOptions}
+            placeholder={error ? `Error: ${error}` : props.placeholder}
+            value={loading ? undefined : selectInputProps.value}
+        />
+    );
+});
 
-            {!loading && error && <Alert>{error}</Alert>}
+AssayTaskInput.defaultProps = {
+    clearable: true,
+    description: 'The workflow task associated with this Run',
+    label: 'Workflow Task',
+};
 
-            {!loading && !error && (
-                <SelectInput
-                    formsy={!isGridInput}
-                    clearable
-                    description={isDetailInput ? undefined : 'The workflow task associated with this Run'}
-                    disabled={taskOptions === undefined}
-                    inputClass={isDetailInput ? 'col-sm-12' : isGridInput ? 'select-input-cell' : undefined}
-                    containerClass={isGridInput ? 'select-input-cell-container' : undefined}
-                    isLoading={loading}
-                    label={isDetailInput || isGridInput ? undefined : 'Workflow Task'}
-                    name={name}
-                    options={taskOptions}
-                    value={value}
-                    allowDisable={allowDisable}
-                    initiallyDisabled={initiallyDisabled}
-                    onToggleDisable={onToggleDisable}
-                    onChange={onChange}
-                    menuPosition={isGridInput ? 'fixed' : undefined}
-                    customStyles={isGridInput ? customStyles : isDetailInput ? undefined : customBulkStyles}
-                    customTheme={isGridInput ? customTheme : undefined}
-                />
-            )}
-        </div>
+AssayTaskInput.displayName = 'AssayTaskInput';
+
+const ASSAY_ID_INDEX = 'Protocol/RowId';
+
+function resolveAssayId(data: any): any {
+    // Used in multiple contexts so need to check various data formats
+    let assayId = Map.isMap(data) ? data.get(ASSAY_ID_INDEX) : data[ASSAY_ID_INDEX];
+    if (!assayId) {
+        assayId = Map.isMap(data) ? data.get(encodePart(ASSAY_ID_INDEX)) : data[encodePart(ASSAY_ID_INDEX)];
+    }
+    if (List.isList(assayId)) {
+        assayId = assayId.get(0);
+    }
+    return assayId?.get?.('value') ?? assayId?.value ?? assayId;
+}
+
+export const AssayTaskInputRenderer: FC<InputRendererProps> = memo(props => {
+    const {
+        allowFieldDisable,
+        col,
+        data,
+        formsy,
+        initiallyDisabled,
+        onSelectChange,
+        onToggleDisable,
+        selectInputProps,
+        value,
+    } = props;
+
+    return (
+        <AssayTaskInput
+            {...selectInputProps}
+            allowDisable={allowFieldDisable}
+            assayId={resolveAssayId(data)}
+            formsy={formsy}
+            initiallyDisabled={initiallyDisabled}
+            name={col.name}
+            onChange={onSelectChange}
+            onToggleDisable={onToggleDisable}
+            value={value}
+        />
     );
 });

@@ -19,45 +19,45 @@ import { QuerySelect } from '../QuerySelect';
 
 import { SampleStatusInput } from './SampleStatusInput';
 
-const COLUMN_STATUS = new QueryColumn({
-    fieldKey: 'samplestate',
-    name: 'samplestate',
-    fieldKeyArray: ['samplestate'],
-    shownInUpdateView: true,
-    userEditable: true,
-    lookup: { containerPath: '/Look', keyColumn: 'RowId', displayColumn: '"Label"', query: '"SampleStatus"' },
-});
-
-const INIT_EMPTY = fromJS({
-    displayValue: undefined,
-    value: undefined,
-});
-
-const INIT_CONSUMED = fromJS({
-    displayValue: 'Consumed',
-    value: 200,
-});
-
-const DEFAULT_PROPS = {
-    api: getTestAPIWrapper(jest.fn, {
-        samples: getSamplesTestAPIWrapper(jest.fn, {
-            getSampleStatuses: () =>
-                Promise.resolve([
-                    new SampleState({ rowId: 100, label: 'Available', stateType: SampleStateType.Available }),
-                    new SampleState({ rowId: 200, label: 'Consumed', stateType: SampleStateType.Consumed }),
-                    new SampleState({ rowId: 300, label: 'UsedUp', stateType: SampleStateType.Consumed }),
-                ]),
-        }),
-    }),
-    col: COLUMN_STATUS,
-    data: INIT_EMPTY,
-    key: 'status-key',
-    onAdditionalFormDataChange: () => {
-        return true;
-    },
-};
-
 describe('SampleStatusInput', () => {
+    const COLUMN_STATUS = new QueryColumn({
+        fieldKey: 'samplestate',
+        name: 'samplestate',
+        fieldKeyArray: ['samplestate'],
+        shownInUpdateView: true,
+        userEditable: true,
+        lookup: { containerPath: '/Look', keyColumn: 'RowId', displayColumn: '"Label"', query: '"SampleStatus"' },
+    });
+
+    const INIT_EMPTY = fromJS({
+        displayValue: undefined,
+        value: undefined,
+    });
+
+    const INIT_CONSUMED = fromJS({
+        displayValue: 'Consumed',
+        value: 200,
+    });
+
+    const DEFAULT_PROPS = {
+        api: getTestAPIWrapper(jest.fn, {
+            samples: getSamplesTestAPIWrapper(jest.fn, {
+                getSampleStatuses: () =>
+                    Promise.resolve([
+                        new SampleState({ rowId: 100, label: 'Available', stateType: SampleStateType.Available }),
+                        new SampleState({ rowId: 200, label: 'Consumed', stateType: SampleStateType.Consumed }),
+                        new SampleState({ rowId: 300, label: 'UsedUp', stateType: SampleStateType.Consumed }),
+                    ]),
+            }),
+        }),
+        col: COLUMN_STATUS,
+        data: INIT_EMPTY,
+        key: 'status-key',
+        onAdditionalFormDataChange: () => {
+            return true;
+        },
+    };
+
     test('initial value is blank', async () => {
         const component = mountWithServerContext(<SampleStatusInput {...DEFAULT_PROPS} formsy={false} />, {
             user: TEST_USER_STORAGE_EDITOR,
@@ -70,7 +70,7 @@ describe('SampleStatusInput', () => {
 
     test('initial value is Consumed', async () => {
         const component = mountWithServerContext(
-            <SampleStatusInput {...DEFAULT_PROPS} formsy={false} data={INIT_CONSUMED} />,
+            <SampleStatusInput {...DEFAULT_PROPS} formsy={false} value={INIT_CONSUMED} />,
             { user: TEST_USER_STORAGE_EDITOR }
         );
         await waitForLifecycle(component);
@@ -85,7 +85,7 @@ describe('SampleStatusInput', () => {
 
         await waitForLifecycle(wrapper); // retrieve statuses
         act(() => {
-            wrapper.find(QuerySelect).prop('onQSChange')('name', 200, [], undefined);
+            wrapper.find(QuerySelect).prop('onQSChange')('name', 200, [], undefined, undefined);
         });
         await waitForLifecycle(wrapper); // update after select
         const discardPanel = wrapper.find(DiscardConsumedSamplesPanel);
@@ -98,7 +98,7 @@ describe('SampleStatusInput', () => {
 
         await waitForLifecycle(wrapper);
         act(() => {
-            wrapper.find(QuerySelect).prop('onQSChange')('name', 200, [], undefined);
+            wrapper.find(QuerySelect).prop('onQSChange')('name', 200, [], undefined, undefined);
         });
         await waitForLifecycle(wrapper);
         const discardPanel = wrapper.find(DiscardConsumedSamplesPanel);
@@ -113,7 +113,7 @@ describe('SampleStatusInput', () => {
 
         await waitForLifecycle(wrapper);
         act(() => {
-            wrapper.find(QuerySelect).prop('onQSChange')('name', 200, [], undefined);
+            wrapper.find(QuerySelect).prop('onQSChange')('name', 200, [], undefined, undefined);
         });
         await waitForLifecycle(wrapper);
         const discardPanel = wrapper.find(DiscardConsumedSamplesPanel);
@@ -128,7 +128,7 @@ describe('SampleStatusInput', () => {
 
         await waitForLifecycle(wrapper);
         act(() => {
-            wrapper.find(QuerySelect).prop('onQSChange')('name', 100, [], undefined);
+            wrapper.find(QuerySelect).prop('onQSChange')('name', 100, [], undefined, undefined);
         });
         await waitForLifecycle(wrapper);
         const discardPanel = wrapper.find(DiscardConsumedSamplesPanel);

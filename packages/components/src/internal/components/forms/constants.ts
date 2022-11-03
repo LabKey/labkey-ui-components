@@ -16,3 +16,12 @@
 export const DETAIL_TABLE_CLASSES = 'table table-responsive table-condensed detail-component--table__fixed';
 
 export const DELIMITER = ',';
+
+// Interface for components that support the withFormsy() component wrapper.
+export interface WithFormsyProps {
+    getErrorMessage?: Function;
+    getValue?: Function;
+    setValue?: Function;
+    showRequired?: Function;
+    validations?: any;
+}

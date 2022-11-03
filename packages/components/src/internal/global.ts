@@ -23,14 +23,14 @@ let _queryMetadata = Map<string, any>();
 
 // Don't touch this directly, if you need access to it use getQueryColumnRenderers, if you need to set the value use
 // setQueryColumnRenderers
-let _queryColumnRenderers = Map<string, any>();
+let _queryColumnRenderers = {};
 
 /**
  * Initialize the global state object for this package.
  * @param metadata Optional Map to set the query metadata for this application
  * @param columnRenderers Optional Map to set the column renderers for this application
  */
-export function initQueryGridState(metadata?: Map<string, any>, columnRenderers?: Map<string, any>): void {
+export function initQueryGridState(metadata?: Map<string, any>, columnRenderers?: Record<string, any>): void {
     initBrowserHistoryState();
 
     if (metadata) {
@@ -58,16 +58,16 @@ export function setQueryMetadata(metadata: Map<string, any>): void {
 }
 
 /**
- * Get the query grid column renderers map from the global state.
+ * Get the query grid column renderers from the global state.
  */
-export function getQueryColumnRenderers(): Map<string, any> {
+export function getQueryColumnRenderers(): Record<string, any> {
     return _queryColumnRenderers;
 }
 
 /**
  * Sets the valid column renderers for this application in the global state.
- * @param columnRenderers Map of query grid column renderers to be bound to the queryInfo columns
+ * @param columnRenderers Query grid column renderers to be bound to the queryInfo columns
  */
-export function setQueryColumnRenderers(columnRenderers: Map<string, any>): void {
+export function setQueryColumnRenderers(columnRenderers: Record<string, any>): void {
     _queryColumnRenderers = columnRenderers;
 }

@@ -13,29 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { FC, memo } from 'react';
 import { Map } from 'immutable';
-import { DefaultRenderer } from './DefaultRenderer';
 
-interface AncestorRendererProps {
-    data: Map<any, any>;
-}
+import { DefaultRenderer } from './DefaultRenderer';
 
 export const ANCESTOR_LOOKUP_CONCEPT_URI = 'http://www.labkey.org/types#ancestorLookup';
 
-export class AncestorRenderer extends React.Component<AncestorRendererProps, any> {
-    render() {
-        const { data } = this.props;
+interface Props {
+    data: Map<any, any>;
+}
 
-        if (data && data.size > 0) {
-            const { value, displayValue } = data.toJS();
-            if (value < 0) {
-                const titleText = "There are " + (-value) + " ancestors of this type."
-                return <span className="text-muted" title={titleText}>{displayValue}</span>
-            }
-            return <DefaultRenderer data={data}/>;
+export const AncestorRenderer: FC<Props> = memo(({ data }) => {
+    if (Map.isMap(data) && data.size > 0) {
+        const { displayValue, value } = data.toJS();
+        if (value < 0) {
+            return (
+                <span className="text-muted" title={`There are ${-value} ancestors of this type.`}>
+                    {displayValue}
+                </span>
+            );
         }
 
-        return null;
+        return <DefaultRenderer data={data} />;
     }
-}
+
+    return null;
+});

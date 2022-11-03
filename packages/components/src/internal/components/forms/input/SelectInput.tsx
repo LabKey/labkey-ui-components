@@ -28,6 +28,12 @@ import { QueryColumn } from '../../../../public/QueryColumn';
 import { generateId } from '../../../util/utils';
 
 const _customStyles = {
+    control: (styles, props) => {
+        if (props.isDisabled) {
+            return { ...styles, backgroundColor: '#EEE', borderColor: '#CCC' };
+        }
+        return styles;
+    },
     // ReactSelect v1 had a zIndex value of "1000" where as ReactSelect v4.3.1 has a value of "2"
     // which results in layout conflicts in our apps. This reverts to the v1 value.
     menu: provided => ({ ...provided, zIndex: 1000 }),
@@ -48,6 +54,12 @@ const _customStyles = {
                 color: 'white',
             },
         };
+    },
+    placeholder: (styles, props) => {
+        if (props.isDisabled) {
+            return { ...styles, color: '#8E8E8E' };
+        }
+        return styles;
     },
 };
 

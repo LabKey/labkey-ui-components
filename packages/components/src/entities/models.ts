@@ -8,6 +8,7 @@ export interface AssaySampleColumnProp {
     lookupFieldKey: string;
 }
 
+// Note: this should stay in sync with the freezermanager/src/components/SampleStorageLocation.tsx props
 interface SampleStorageLocationComponentProps {
     actionChangeCount?: number;
     currentProductId?: string;
@@ -19,6 +20,7 @@ interface SampleStorageLocationComponentProps {
 
 export type SampleStorageLocation = ComponentType<SampleStorageLocationComponentProps>;
 
+// Note: this should stay in sync with the freezermanager/src/components/SampleStorageMenu.tsx props
 interface SampleStorageMenuComponentProps {
     onUpdate?: (skipChangeCount?: boolean) => void;
     sampleModel: QueryModel;
@@ -26,6 +28,7 @@ interface SampleStorageMenuComponentProps {
 
 export type SampleStorageMenu = ComponentType<SampleStorageMenuComponentProps>;
 
+// Note: this should stay in sync with the eln/src/ReferencingNotebooks.tsx props
 interface ReferencingNotebooksComponentProps {
     label: string;
     queryName: string;

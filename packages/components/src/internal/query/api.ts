@@ -41,7 +41,7 @@ export function invalidateQueryDetailsCache(schemaQuery: SchemaQuery, containerP
     const key = getQueryDetailsCacheKey(schemaQuery, containerPath, fk);
     invalidateQueryDetailsCacheKey(key);
 
-    // also call invalidate for teh query key without the containerPath
+    // also call invalidate for the query key without the containerPath
     if (containerPath) {
         const keyNoContainerPath = getQueryDetailsCacheKey(schemaQuery, undefined, fk);
         invalidateQueryDetailsCacheKey(keyNoContainerPath);

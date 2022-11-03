@@ -128,7 +128,7 @@ const SampleDetailPageBody: FC<Props> = memo(props => {
         const isAliquot = sampleModel.getRowValue(IS_ALIQUOT_COL);
         const rootLsid = sampleModel.getRowValue('RootMaterialLSID');
         const sampleStatus = getSampleStatus(row);
-        const isMedia = sampleModel?.queryInfo?.isMedia;
+        const isMedia = sampleModel.queryInfo?.isMedia;
 
         return {
             isAliquot,

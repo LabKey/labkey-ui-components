@@ -79,14 +79,14 @@ class SampleLineagePanel extends PureComponent<Props> {
 export const SampleLineagePage: FC<PageProps> = memo(props => {
     const { title, ...rest } = props;
     const title_ = title ?? 'Sample Lineage';
-    const { linagePagePermissions } = useSampleTypeAppContext();
+    const { lineagePagePermissions } = useSampleTypeAppContext();
 
     return (
         <SampleDetailPage {...rest} title={title_}>
             <SampleDetailContextConsumer>
                 {({ sampleName, sampleLsid, user }) => {
                     // can't render lineage if the user can't see all entities in the lineage
-                    if (!hasAllPermissions(user, linagePagePermissions)) {
+                    if (!hasAllPermissions(user, lineagePagePermissions)) {
                         return <InsufficientPermissionsAlert />;
                     }
 

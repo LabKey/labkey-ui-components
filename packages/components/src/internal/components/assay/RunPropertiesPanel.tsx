@@ -24,7 +24,6 @@ import { LabelOverlay } from '../forms/LabelOverlay';
 import { QueryFormInputs } from '../forms/QueryFormInputs';
 
 import { AssayPropertiesPanelProps } from './models';
-import { Query } from '@labkey/api';
 import { getContainerFilterForLookups } from '../../query/api';
 
 export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {

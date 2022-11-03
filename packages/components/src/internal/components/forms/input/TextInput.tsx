@@ -33,11 +33,11 @@ export interface TextInputProps extends DisableableInputProps {
     placeholder?: string;
     queryColumn: QueryColumn;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
+    rowClassName?: any[] | string;
+    showLabel?: boolean;
     startFocused?: boolean;
     validatePristine?: boolean;
     value?: string;
-    rowClassName?: any[] | string;
-    showLabel?: boolean;
 }
 
 interface TextInputState extends DisableableInputState {

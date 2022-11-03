@@ -3,8 +3,9 @@ import React, { FC, memo, useEffect } from 'react';
 import { Input } from 'formsy-react-components';
 import { addValidationRule, validationRules } from 'formsy-react';
 
-import { InputRendererProps } from './types';
 import { LabelOverlay } from '../LabelOverlay';
+
+import { InputRendererProps } from './types';
 
 export const AppendUnitsInput: FC<InputRendererProps> = memo(props => {
     const { col, formsy, initiallyDisabled, value } = props;

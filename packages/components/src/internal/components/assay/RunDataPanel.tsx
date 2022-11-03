@@ -35,10 +35,11 @@ import { FileAttachmentForm } from '../../../public/files/FileAttachmentForm';
 import { handleTabKeyOnTextArea } from '../forms/actions';
 import { Alert } from '../base/Alert';
 
+import { getContainerFilterForLookups } from '../../query/api';
+
 import { getRunPropertiesFileName } from './actions';
 import { AssayWizardModel } from './AssayWizardModel';
 import { getServerFilePreview } from './utils';
-import { getContainerFilterForLookups } from '../../query/api';
 
 const TABS = ['Upload Files', 'Copy-and-Paste Data', 'Enter Data Into Grid'];
 const PREVIEW_ROW_COUNT = 3;
@@ -65,9 +66,9 @@ interface Props {
     queryModel: QueryModel;
     runPropertiesRow?: Record<string, any>;
     setIsDirty?: (isDirty: boolean) => void;
-    wizardModel: AssayWizardModel;
-    title: string;
     showTabs?: boolean;
+    title: string;
+    wizardModel: AssayWizardModel;
 }
 
 interface PreviousRunData {

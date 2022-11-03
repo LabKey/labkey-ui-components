@@ -1,4 +1,5 @@
 import React, { FC, memo, useEffect, useState } from 'react';
+
 import { useAppContext } from '../../AppContext';
 
 import { DetailDisplaySharedProps } from '../forms/detail/DetailDisplay';

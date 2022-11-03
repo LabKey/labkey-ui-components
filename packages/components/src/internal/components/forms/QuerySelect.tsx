@@ -23,8 +23,7 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { SelectInputOption, SelectInput, SelectInputProps } from './input/SelectInput';
 import { resolveDetailFieldValue } from './utils';
-import { initSelect } from './model';
-import { QuerySelectModel } from './model';
+import { initSelect, QuerySelectModel } from './model';
 import { DELIMITER } from './constants';
 
 function getValue(model: QuerySelectModel, props: QuerySelectOwnProps): any {
@@ -104,6 +103,16 @@ const PreviewOption: FC<any> = props => {
     return null;
 };
 
+// This "extends" the SelectInputChange type by adding additional parameters. This should always extend the
+// signature of SelectInputChange so onChange event handling can be coalesced.
+export type QuerySelectChange = (
+    name: string,
+    value: any,
+    selectedOptions: SelectInputOption | SelectInputOption[],
+    props: Partial<SelectInputProps>,
+    selectedItems: Map<string, any>
+) => void;
+
 /**
  * This is a subset of SelectInputProps that are passed through to the SelectInput. Mainly, this set should
  * represent all props of SelectInput that are not overridden by QuerySelect for it's own
@@ -133,7 +142,7 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
     loadOnFocus?: boolean;
     maxRows?: number;
     onInitValue?: (value: any, selectedValues: List<any>) => void;
-    onQSChange?: (name: string, value: string | number | any[], items: any, selectedItems: Map<string, any>) => void;
+    onQSChange?: QuerySelectChange;
     preLoad?: boolean;
     previewOptions?: boolean;
     queryFilters?: List<Filter.IFilter>;
@@ -231,11 +240,16 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
         });
     };
 
-    onChange = (name: string, value: any, selectedOptions): void => {
+    onChange = (
+        name: string,
+        value: any,
+        selectedOptions: SelectInputOption | SelectInputOption[],
+        props: Partial<SelectInputProps>
+    ): void => {
         this.setState(
             state => ({ model: state.model.setSelection(value) }),
             () => {
-                this.props.onQSChange?.(name, value, selectedOptions, this.state.model.selectedItems);
+                this.props.onQSChange?.(name, value, selectedOptions, props, this.state.model.selectedItems);
             }
         );
     };

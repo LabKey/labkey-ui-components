@@ -33,11 +33,11 @@ export interface TextInputProps extends DisableableInputProps {
     placeholder?: string;
     queryColumn: QueryColumn;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
+    rowClassName?: any[] | string;
+    showLabel?: boolean;
     startFocused?: boolean;
     validatePristine?: boolean;
     value?: string;
-    rowClassName?: any[] | string;
-    showLabel?: boolean;
 }
 
 interface TextInputState extends DisableableInputState {
@@ -69,7 +69,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
         };
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         const { queryColumn, startFocused } = this.props;
         const { didFocus } = this.state;
 
@@ -80,7 +80,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
         }
     }
 
-    shouldComponentUpdate(nextProps: TextInputProps, nextState: TextInputState) {
+    shouldComponentUpdate(nextProps: TextInputProps, nextState: TextInputState): boolean {
         return this.state.didFocus === nextState.didFocus;
     }
 
@@ -107,12 +107,12 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
         );
     }
 
-    onChange = (name, value) => {
-        const { onChange } = this.props;
+    onChange = (name: string, value: any): void => {
+        if (this.props.allowDisable) {
+            this.setState({ inputValue: value });
+        }
 
-        if (this.props.allowDisable) this.setState({ inputValue: value });
-
-        if (onChange) onChange(value);
+        this.props.onChange?.(value);
     };
 
     render() {
@@ -157,9 +157,9 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
                 id={queryColumn.fieldKey}
                 label={this.renderLabel()}
                 labelClassName={labelClassName}
-                name={name ? name : queryColumn.fieldKey}
+                name={name ?? queryColumn.fieldKey}
                 onChange={this.onChange}
-                placeholder={placeholder || `Enter ${queryColumn.caption.toLowerCase()}`}
+                placeholder={placeholder ?? `Enter ${queryColumn.caption.toLowerCase()}`}
                 required={queryColumn.required}
                 rowClassName={rowClassName}
                 step={step}

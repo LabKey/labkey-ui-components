@@ -21,18 +21,16 @@ import { FieldLabel } from '../FieldLabel';
 import { getColDateFormat, getJsonDateTimeFormatString, isDateTimeCol, parseDate } from '../../../util/Date';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
+import { WithFormsyProps } from '../constants';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
-export interface DatePickerInputProps extends DisableableInputProps {
+export interface DatePickerInputProps extends DisableableInputProps, WithFormsyProps {
     addLabelAsterisk?: boolean;
     autoFocus?: boolean;
     dateFormat?: string;
     disabled?: boolean;
     formsy?: boolean;
-    getErrorMessage?: Function; // from formsy-react
-    // from formsy-react
-    getValue?: Function;
     hideTime?: boolean;
     initValueFormatted?: boolean;
     inputClassName?: string;
@@ -42,17 +40,14 @@ export interface DatePickerInputProps extends DisableableInputProps {
     label?: any;
     labelClassName?: string;
     name?: string;
+    onChange?: (newDate?: Date) => void;
     onKeyDown?: (event: React.KeyboardEvent<HTMLElement>) => void;
     placeholderText?: string;
     queryColumn: QueryColumn;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
-    setValue?: Function; // from formsy-react
     showLabel?: boolean;
-    showRequired?: Function; // from formsy-react
     value?: any;
     wrapperClassName?: string;
-    onChange?: (newDate?: Date) => void;
-    validations?: any; // from formsy-react
 }
 
 interface DatePickerInputState extends DisableableInputState {

@@ -241,7 +241,6 @@ import {
 } from './internal/renderers/ImportAliasRenderer';
 import { BulkUpdateForm } from './internal/components/forms/BulkUpdateForm';
 import { LabelOverlay } from './internal/components/forms/LabelOverlay';
-import { resolveRenderer } from './internal/components/forms/renderers';
 import {
     getQueryFormLabelFieldName,
     isQueryFormLabelField,
@@ -910,7 +909,6 @@ export {
     SampleTypeImportAliasRenderer,
     SourceTypeImportAliasRenderer,
     resolveDetailRenderer,
-    resolveRenderer,
     // form related items
     BulkUpdateForm,
     QueryFormInputs,
@@ -1476,10 +1474,14 @@ export type {
     IParentOption,
     EntityChoice,
 } from './internal/components/entities/models';
-export type { SelectInputOption, SelectInputProps } from './internal/components/forms/input/SelectInput';
+export type {
+    SelectInputChange,
+    SelectInputOption,
+    SelectInputProps,
+} from './internal/components/forms/input/SelectInput';
 export type { InjectedPermissionsPage } from './internal/components/permissions/withPermissionsPage';
 export type { ISelectInitData } from './internal/components/forms/model';
-export type { QuerySelectOwnProps } from './internal/components/forms/QuerySelect';
+export type { QuerySelectChange, QuerySelectOwnProps } from './internal/components/forms/QuerySelect';
 export type {
     SampleCreationTypeModel,
     SampleStatus,

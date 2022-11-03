@@ -23,46 +23,11 @@ import { LOOKUP_DEFAULT_SIZE, MODIFICATION_TYPES, SELECTION_TYPES } from '../../
 import { TextChoiceInput } from '../forms/input/TextChoiceInput';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { QuerySelect } from '../forms/QuerySelect';
+import { SelectInputChange } from '../forms/input/SelectInput';
 import { ViewInfo } from '../../ViewInfo';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-export const customStyles = {
-    control: provided => ({
-        ...provided,
-        minHeight: 24,
-        borderRadius: 0,
-    }),
-    valueContainer: provided => ({
-        ...provided,
-        minHeight: 24,
-        padding: '0 4px',
-    }),
-    input: provided => ({
-        ...provided,
-        margin: '0px',
-    }),
-    indicatorsContainer: provided => ({
-        ...provided,
-        minHeight: 24,
-        padding: '0 4px',
-    }),
-};
-
-export const customTheme = theme => ({
-    ...theme,
-    colors: {
-        ...theme.colors,
-        danger: '#D9534F',
-        primary: '#2980B9',
-        primary75: '#009BF9',
-        primary50: '#F2F9FC',
-        primary25: 'rgba(41, 128, 185, 0.1)',
-    },
-    spacing: {
-        ...theme.spacing,
-        baseUnit: 2,
-    },
-});
+import { gridCellSelectInputProps, onCellSelectChange } from './utils';
 
 export interface LookupCellProps {
     col: QueryColumn;
@@ -82,22 +47,9 @@ export class LookupCell extends PureComponent<LookupCellProps> {
         return this.props.col.isJunctionLookup();
     };
 
-    onInputChange = (fieldName: string, formValue: string | any[], items: any): void => {
+    onSelectChange: SelectInputChange = (fieldName, formValue, selectedOptions, props_): void => {
         const { colIdx, modifyCell, rowIdx, select } = this.props;
-        if (this.isMultiValue()) {
-            if (items.length === 0) {
-                modifyCell(colIdx, rowIdx, undefined, MODIFICATION_TYPES.REMOVE_ALL);
-            } else {
-                const valueDescriptors = items.map(item => ({ raw: item.value, display: item.label }));
-                modifyCell(colIdx, rowIdx, valueDescriptors, MODIFICATION_TYPES.REPLACE);
-            }
-        } else {
-            modifyCell(colIdx, rowIdx, [{ raw: items?.value, display: items?.label }], MODIFICATION_TYPES.REPLACE);
-        }
-
-        if (!this.isMultiValue()) {
-            select(colIdx, rowIdx);
-        }
+        onCellSelectChange({ modifyCell, selectCell: select }, colIdx, rowIdx, selectedOptions, props_.multiple);
     };
 
     render(): ReactNode {
@@ -111,18 +63,12 @@ export class LookupCell extends PureComponent<LookupCellProps> {
         if (col.validValues) {
             return (
                 <TextChoiceInput
+                    {...gridCellSelectInputProps}
                     autoFocus
-                    queryColumn={col}
                     disabled={disabled}
-                    containerClass="select-input-cell-container"
-                    customTheme={customTheme}
-                    customStyles={customStyles}
-                    menuPosition="fixed" // note that there is an open issue related to scrolling when the menu is open: https://github.com/JedWatson/react-select/issues/4088
+                    onChange={this.onSelectChange}
                     openMenuOnFocus
-                    inputClass="select-input-cell"
-                    placeholder=""
-                    onChange={this.onInputChange}
-                    showLabel={false}
+                    queryColumn={col}
                     value={rawValues[0]}
                 />
             );
@@ -132,19 +78,24 @@ export class LookupCell extends PureComponent<LookupCellProps> {
         const isMultiple = this.isMultiValue();
         let queryFilters: List<Filter.IFilter> = List();
         if (filteredLookupValues) {
-            queryFilters = queryFilters.push(Filter.create(lookup.displayColumn, filteredLookupValues.toArray(), Filter.Types.IN));
+            queryFilters = queryFilters.push(
+                Filter.create(lookup.displayColumn, filteredLookupValues.toArray(), Filter.Types.IN)
+            );
         }
 
         if (filteredLookupKeys) {
-            queryFilters = queryFilters.push(Filter.create(lookup.keyColumn, filteredLookupKeys.toArray(), Filter.Types.IN));
+            queryFilters = queryFilters.push(
+                Filter.create(lookup.keyColumn, filteredLookupKeys.toArray(), Filter.Types.IN)
+            );
         }
 
         if (lookup.hasQueryFilters()) {
-            queryFilters = queryFilters.push(...lookup.getQueryFilters())
+            queryFilters = queryFilters.push(...lookup.getQueryFilters());
         }
 
         return (
             <QuerySelect
+                {...gridCellSelectInputProps}
                 autoFocus
                 containerFilter={lookup.containerFilter ?? containerFilter}
                 disabled={disabled}
@@ -159,16 +110,9 @@ export class LookupCell extends PureComponent<LookupCellProps> {
                 key={col.lookupKey}
                 maxRows={LOOKUP_DEFAULT_SIZE}
                 containerPath={lookup.containerPath}
-                containerClass="select-input-cell-container"
-                customTheme={customTheme}
-                customStyles={customStyles}
-                menuPosition="fixed" // note that there is an open issue related to scrolling when the menu is open: https://github.com/JedWatson/react-select/issues/4088
                 openMenuOnFocus={!isMultiple} // If set to true for the multi-select case, it's not possible to tab out of the cell.
-                inputClass="select-input-cell"
-                placeholder=""
-                onQSChange={this.onInputChange}
+                onQSChange={this.onSelectChange}
                 preLoad
-                showLabel={false}
                 value={isMultiple ? rawValues : rawValues[0]}
             />
         );

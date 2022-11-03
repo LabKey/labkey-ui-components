@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ReactNode } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { List } from 'immutable';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
@@ -27,19 +27,14 @@ import { getQueryColumnRenderers } from '../../global';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 
-import { resolveRenderer } from '../forms/renderers';
+import { resolveInputRenderer } from '../forms/input/InputRenderFactory';
 
-import { LookupCell, LookupCellProps } from './LookupCell';
-import { DateInputCell, DateInputCellProps } from './DateInputCell';
+import { SelectInputChange } from '../forms/input/SelectInput';
 
-export interface CellActions {
-    clearSelection: () => void;
-    fillDown: () => void;
-    focusCell: (colIdx: number, rowIdx: number, clearValue?: boolean) => void;
-    inDrag: () => boolean; // Not really an action, but useful to be part of this interface
-    modifyCell: (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES) => void;
-    selectCell: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => void;
-}
+import { CellActions } from './constants';
+import { gridCellSelectInputProps, onCellSelectChange } from './utils';
+import { LookupCell } from './LookupCell';
+import { DateInputCell } from './DateInputCell';
 
 interface Props {
     cellActions: CellActions;
@@ -137,7 +132,6 @@ export class Cell extends React.PureComponent<Props, State> {
 
     handleBlur = (evt: any): void => {
         clearTimeout(this.changeTO);
-        const { colIdx, rowIdx, cellActions } = this.props;
         this.replaceCurrentCellValue(evt.target.value, evt.target.value);
     };
 
@@ -166,7 +160,7 @@ export class Cell extends React.PureComponent<Props, State> {
         cellActions.focusCell(colIdx, rowIdx);
     };
 
-    handleKeys = (event: React.KeyboardEvent<HTMLElement>) => {
+    handleKeys = (event: React.KeyboardEvent<HTMLElement>): void => {
         const { cellActions, colIdx, focused, rowIdx, selected } = this.props;
         const { focusCell, modifyCell, selectCell, fillDown } = cellActions;
 
@@ -264,35 +258,9 @@ export class Cell extends React.PureComponent<Props, State> {
         }
     };
 
-    getRenderer = (): ReactNode => {
-        const { cellActions, col, colIdx, rowIdx, values, row } = this.props;
-
-        const renderer = resolveRenderer(col);
-
-        if (renderer) {
-            const onQSChange = (name: string, value: string | any[], items: any) => {
-                this.replaceCurrentCellValue(items?.label, items?.value);
-            };
-
-            return renderer(
-                col,
-                col.name,
-                row,
-                values?.get(0)?.raw,
-                false,
-                false,
-                false,
-                null,
-                onQSChange,
-                null,
-                false,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                true
-            );
-        }
+    onSelectChange: SelectInputChange = (name, value, selectedOptions, props_): void => {
+        const { cellActions, colIdx, rowIdx } = this.props;
+        onCellSelectChange(cellActions, colIdx, rowIdx, selectedOptions, props_.multiple);
     };
 
     render() {
@@ -305,12 +273,12 @@ export class Cell extends React.PureComponent<Props, State> {
             lastSelection,
             message,
             placeholder,
+            row,
             rowIdx,
             selected,
             selection,
             values,
             filteredLookupValues,
-            row,
         } = this.props;
 
         const { filteredLookupKeys } = this.state;
@@ -387,41 +355,51 @@ export class Cell extends React.PureComponent<Props, State> {
             );
         }
 
-        if (col.inputRenderer) {
-            return this.getRenderer();
+        const ColumnInputRenderer = resolveInputRenderer(col, true);
+        if (ColumnInputRenderer) {
+            return (
+                <ColumnInputRenderer
+                    col={col}
+                    data={row}
+                    formsy={false}
+                    onSelectChange={this.onSelectChange}
+                    selectInputProps={gridCellSelectInputProps}
+                    value={values?.get(0)?.raw}
+                />
+            );
         }
 
         if (showLookup) {
-            const lookupProps: LookupCellProps = {
-                col,
-                colIdx,
-                containerFilter,
-                disabled: this.isReadOnly(),
-                modifyCell: cellActions.modifyCell,
-                rowIdx,
-                select: cellActions.selectCell,
-                values,
-                filteredLookupValues,
-                filteredLookupKeys,
-            };
-
-            return <LookupCell {...lookupProps} />;
+            return (
+                <LookupCell
+                    col={col}
+                    colIdx={colIdx}
+                    containerFilter={containerFilter}
+                    disabled={this.isReadOnly()}
+                    filteredLookupKeys={filteredLookupKeys}
+                    filteredLookupValues={filteredLookupValues}
+                    modifyCell={cellActions.modifyCell}
+                    rowIdx={rowIdx}
+                    select={cellActions.selectCell}
+                    values={values}
+                />
+            );
         }
 
         if (isDateField) {
             const rawDateValue = values.size === 0 ? '' : values.first().raw !== undefined ? values.first().raw : '';
-            const dateProps: DateInputCellProps = {
-                col,
-                colIdx,
-                rowIdx,
-                disabled: this.isReadOnly(),
-                modifyCell: cellActions.modifyCell,
-                select: cellActions.selectCell,
-                defaultValue: rawDateValue,
-                onKeyDown: this.handleKeys,
-            };
-
-            return <DateInputCell {...dateProps} />;
+            return (
+                <DateInputCell
+                    col={col}
+                    colIdx={colIdx}
+                    defaultValue={rawDateValue}
+                    disabled={this.isReadOnly()}
+                    modifyCell={cellActions.modifyCell}
+                    onKeyDown={this.handleKeys}
+                    select={cellActions.selectCell}
+                    rowIdx={rowIdx}
+                />
+            );
         }
 
         // Some cells have custom displays such as multi value comma separated values like alias so
@@ -429,7 +407,7 @@ export class Cell extends React.PureComponent<Props, State> {
         let renderer;
         let defaultValue;
         if (col.columnRenderer) {
-            renderer = getQueryColumnRenderers().get(col.columnRenderer.toLowerCase());
+            renderer = getQueryColumnRenderers()[col.columnRenderer.toLowerCase()];
         }
 
         if (renderer?.getEditableValue) {
@@ -440,19 +418,19 @@ export class Cell extends React.PureComponent<Props, State> {
             defaultValue = values.size === 0 ? '' : values.first().display !== undefined ? values.first().display : '';
         }
 
-        const inputProps = {
-            autoFocus: true,
-            defaultValue,
-            disabled: this.isReadOnly(),
-            className: 'cellular-input',
-            onBlur: this.handleBlur,
-            onChange: this.handleChange,
-            onKeyDown: this.handleKeys,
-            placeholder,
-            tabIndex: -1,
-            type: 'text',
-        };
-
-        return <input {...inputProps} />;
+        return (
+            <input
+                autoFocus
+                className="cellular-input"
+                defaultValue={defaultValue}
+                disabled={this.isReadOnly()}
+                onBlur={this.handleBlur}
+                onChange={this.handleChange}
+                onKeyDown={this.handleKeys}
+                placeholder={placeholder}
+                tabIndex={-1}
+                type="text"
+            />
+        );
     }
 }

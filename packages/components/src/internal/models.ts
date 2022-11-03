@@ -276,7 +276,7 @@ export class EditorModel
                 // so first check renderer for how to retrieve raw data
                 let renderer;
                 if (col.columnRenderer) {
-                    renderer = getQueryColumnRenderers().get(col.columnRenderer.toLowerCase());
+                    renderer = getQueryColumnRenderers()[col.columnRenderer.toLowerCase()];
                 }
 
                 if (renderer?.getEditableRawValue) {

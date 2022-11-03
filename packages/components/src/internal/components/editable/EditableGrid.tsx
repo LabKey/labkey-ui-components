@@ -17,7 +17,7 @@ import classNames from 'classnames';
 import React, { ChangeEvent, MouseEvent, PureComponent, ReactNode, SyntheticEvent } from 'react';
 import { Button, Nav, NavItem, OverlayTrigger, Popover, Tab, TabContainer } from 'react-bootstrap';
 import { List, Map, OrderedMap, Set } from 'immutable';
-import { Filter, Query } from '@labkey/api';
+import { Query } from '@labkey/api';
 
 import {
     addRows,
@@ -60,8 +60,8 @@ import { cancelEvent } from '../../events';
 import { Grid } from '../base/Grid';
 import { Alert } from '../base/Alert';
 
-import { EDITABLE_GRID_CONTAINER_CLS } from './constants';
-import { Cell, CellActions } from './Cell';
+import { CellActions, EDITABLE_GRID_CONTAINER_CLS } from './constants';
+import { Cell } from './Cell';
 import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 
 function isCellEmpty(values: List<ValueDescriptor>): boolean {

@@ -69,10 +69,9 @@ export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
                     {isWorkflowEnabled() && (
                         <AssayTaskInput
                             assayId={model.assayDef.id}
-                            isDetailInput={false}
+                            formsy
                             name="workflowtask"
                             value={model.workflowTask}
-                            isGridInput={false}
                         />
                     )}
                     {model.runColumns.size !== 0 && (

@@ -23,11 +23,17 @@ import { getServerContext, Utils } from '@labkey/api';
 
 import { FieldLabel } from '../FieldLabel';
 
-import { DELIMITER } from '../constants';
+import { DELIMITER, WithFormsyProps } from '../constants';
 import { QueryColumn } from '../../../../public/QueryColumn';
 import { generateId } from '../../../util/utils';
 
 const _customStyles = {
+    control: (styles, props) => {
+        if (props.isDisabled) {
+            return { ...styles, backgroundColor: '#EEE', borderColor: '#CCC' };
+        }
+        return styles;
+    },
     // ReactSelect v1 had a zIndex value of "1000" where as ReactSelect v4.3.1 has a value of "2"
     // which results in layout conflicts in our apps. This reverts to the v1 value.
     menu: provided => ({ ...provided, zIndex: 1000 }),
@@ -48,6 +54,12 @@ const _customStyles = {
                 color: 'white',
             },
         };
+    },
+    placeholder: (styles, props) => {
+        if (props.isDisabled) {
+            return { ...styles, color: '#8E8E8E' };
+        }
+        return styles;
     },
 };
 
@@ -89,12 +101,18 @@ const CustomOption = props => {
 };
 
 // Molded from @types/react-select/src/filter.d.ts
-export interface SelectInputOption {
-    [key: string]: any;
+export interface SelectInputOption extends Record<string, any> {
     data?: any;
     label?: string;
     value?: any;
 }
+
+export type SelectInputChange = (
+    name: string,
+    value: any,
+    selectedOptions: SelectInputOption | SelectInputOption[],
+    props: Partial<SelectInputProps>
+) => void;
 
 // Copied from @types/react-select/src/Select.d.ts
 export type FilterOption = ((option: SelectInputOption, rawInput: string) => boolean) | null;
@@ -133,7 +151,7 @@ export function initOptions(props: SelectInputProps): SelectInputOption | Select
     return options;
 }
 
-export interface SelectInputProps {
+export interface SelectInputProps extends WithFormsyProps {
     addLabelAsterisk?: boolean;
     allowCreate?: boolean;
     allowDisable?: boolean;
@@ -162,12 +180,15 @@ export interface SelectInputProps {
     joinValues?: boolean;
     label?: ReactNode;
     labelClass?: string;
+    labelKey?: string;
+    loadOptions?: (input: string) => Promise<SelectInputOption[]>;
     menuPosition?: string;
     multiple?: boolean;
     name?: string;
     noResultsText?: string;
     onBlur?: (event: FocusEvent<HTMLElement>) => void;
-    onChange?: Function; // this is getting confused with formsy on change, need to separate
+    // TODO: this is getting confused with formsy on change, need to separate
+    onChange?: SelectInputChange;
     onFocus?: (event: FocusEvent<HTMLElement>, selectRef) => void;
     onToggleDisable?: (disabled: boolean) => void;
     openMenuOnFocus?: boolean;
@@ -184,16 +205,6 @@ export interface SelectInputProps {
     value?: any;
     valueKey?: string;
     valueRenderer?: any;
-
-    labelKey?: string;
-    loadOptions?: (input: string) => Promise<SelectInputOption[]>;
-
-    // from formsy-react
-    getErrorMessage?: Function;
-    getValue?: Function;
-    setValue?: Function;
-    showRequired?: Function;
-    validations?: any;
 }
 
 interface State {
@@ -307,7 +318,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
 
         const formValue = this._setOptionsAndValue(selectedOptions);
 
-        onChange?.(name, formValue, selectedOptions, this.refs.reactSelect);
+        onChange?.(name, formValue, selectedOptions, this.props);
     };
 
     handleFocus = (event): void => {

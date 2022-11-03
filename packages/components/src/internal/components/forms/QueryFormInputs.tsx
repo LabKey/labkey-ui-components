@@ -16,7 +16,7 @@
 import React, { ReactNode } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 import { Input } from 'formsy-react-components';
-import { Filter, Query, Utils } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { insertColumnFilter, QueryColumn } from '../../../public/QueryColumn';
 
@@ -24,8 +24,9 @@ import { QueryInfo } from '../../../public/QueryInfo';
 
 import { caseInsensitive } from '../../util/utils';
 
-import { resolveRenderer } from './renderers';
+import { resolveInputRenderer } from './input/InputRenderFactory';
 import { QuerySelect } from './QuerySelect';
+import { SelectInputChange } from './input/SelectInput';
 import { TextInput } from './input/TextInput';
 import { CheckboxInput } from './input/CheckboxInput';
 import { TextAreaInput } from './input/TextAreaInput';
@@ -52,7 +53,7 @@ export interface QueryFormInputsProps {
     lookups?: Map<string, number>;
     onAdditionalFormDataChange?: (name: string, value: any) => void;
     onFieldsEnabledChange?: (numEnabled: number) => void;
-    onQSChange?: (name: string, value: string | any[], items: any) => void;
+    onSelectChange?: SelectInputChange;
     queryColumns?: OrderedMap<string, QueryColumn>;
     queryFilters?: Record<string, List<Filter.IFilter>>;
     queryInfo?: QueryInfo;
@@ -106,14 +107,11 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             }, {});
     }
 
-    onQSChange = (name: string, value: string | any[], items: any): void => {
-        const { includeLabelField, onQSChange } = this.props;
+    onSelectChange: SelectInputChange = (name, value, selectedOptions, props): void => {
+        const { includeLabelField } = this.props;
 
         if (includeLabelField) {
-            let allItems: any[] = items;
-            if (!Utils.isArray(allItems)) {
-                allItems = [allItems];
-            }
+            const allItems = Array.isArray(selectedOptions) ? selectedOptions : [selectedOptions];
 
             this.setState((prevState: State) => ({
                 labels: {
@@ -127,7 +125,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             }));
         }
 
-        onQSChange?.(name, value, items);
+        this.props.onSelectChange?.(name, value, selectedOptions, props);
     };
 
     onToggleDisable = (disabled: boolean): void => {
@@ -205,26 +203,24 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         value = false;
                     }
 
-                    if (col.inputRenderer) {
-                        const renderer = resolveRenderer(col);
-                        if (renderer) {
-                            return renderer(
-                                col,
-                                i,
-                                fieldValues,
-                                value,
-                                false,
-                                allowFieldDisable,
-                                shouldDisableField,
-                                this.onToggleDisable,
-                                this.onQSChange,
-                                this.renderLabelField,
-                                showAsteriskSymbol,
-                                onAdditionalFormDataChange
-                            );
-                        }
-
-                        throw new Error(`"${col.inputRenderer}" is not a valid inputRenderer.`);
+                    const ColumnInputRenderer = resolveInputRenderer(col);
+                    if (ColumnInputRenderer) {
+                        return (
+                            <ColumnInputRenderer
+                                allowFieldDisable={allowFieldDisable}
+                                col={col}
+                                data={fieldValues}
+                                formsy
+                                initiallyDisabled={shouldDisableField}
+                                key={i}
+                                onAdditionalFormDataChange={onAdditionalFormDataChange}
+                                onSelectChange={this.onSelectChange}
+                                onToggleDisable={this.onToggleDisable}
+                                renderLabelField={this.renderLabelField}
+                                showAsteriskSymbol={showAsteriskSymbol}
+                                value={value}
+                            />
+                        );
                     }
 
                     if (col.isPublicLookup()) {
@@ -257,7 +253,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         maxRows={10}
                                         multiple={multiple}
                                         name={col.fieldKey}
-                                        onQSChange={this.onQSChange}
+                                        onQSChange={this.onSelectChange}
                                         onToggleDisable={this.onToggleDisable}
                                         placeholder="Select or type to search..."
                                         previewOptions={col.previewOptions === true || showQuerySelectPreviewOptions}
@@ -277,16 +273,17 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     if (col.validValues) {
                         return (
                             <TextChoiceInput
-                                key={i}
-                                formsy
-                                queryColumn={col}
-                                value={value}
                                 addLabelAsterisk={showAsteriskSymbol}
                                 allowDisable={allowFieldDisable}
+                                formsy
                                 initiallyDisabled={shouldDisableField}
+                                key={i}
+                                onChange={this.onSelectChange}
                                 onToggleDisable={this.onToggleDisable}
-                                renderFieldLabel={renderFieldLabel}
                                 placeholder="Select or type to search..."
+                                queryColumn={col}
+                                renderFieldLabel={renderFieldLabel}
+                                value={value}
                             />
                         );
                     }

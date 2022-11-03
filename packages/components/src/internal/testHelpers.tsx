@@ -36,7 +36,7 @@ export function initMockServerContext(context: Partial<LabKey>): void {
 /**
  * Initializes the server context and QueryGrid state which is needed in order to run most tests.
  */
-export const initUnitTests = (metadata?: Map<string, any>, columnRenderers?: Map<string, any>): void => {
+export const initUnitTests = (metadata?: Map<string, any>, columnRenderers?: Record<string, any>): void => {
     initMockServerContext({
         container: {
             id: 'testContainerEntityId',

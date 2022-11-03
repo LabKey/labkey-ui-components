@@ -15,31 +15,25 @@
  */
 import React, { FC, ReactNode } from 'react';
 import { withFormsy } from 'formsy-react';
-import { Utils } from '@labkey/api';
 
 import { FieldLabel } from '../FieldLabel';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
 
+import { WithFormsyProps } from '../constants';
+
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
-interface CheckboxInputProps extends DisableableInputProps {
+interface CheckboxInputProps extends DisableableInputProps, WithFormsyProps {
+    addLabelAsterisk?: boolean;
     formsy?: boolean;
     label?: any;
     name?: string;
     queryColumn: QueryColumn;
+    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     rowClassName?: any[] | string;
     showLabel?: boolean;
     value?: any;
-    addLabelAsterisk?: boolean;
-    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
-
-    // from formsy-react
-    getErrorMessage?: Function;
-    getValue?: Function;
-    setValue?: Function;
-    showRequired?: Function;
-    validations?: any;
 }
 
 interface CheckboxInputState extends DisableableInputState {
@@ -60,25 +54,20 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
 
     onChange = e => {
         const checked = e.target.checked;
-        this.setState(() => {
-            return {
-                checked,
-            };
-        });
-        if (this.props.formsy && Utils.isFunction(this.props.setValue)) this.props.setValue(checked);
+        this.setState({ checked });
+        if (this.props.formsy) {
+            this.props.setValue?.(checked);
+        }
     };
 
-    toggleDisabled = () => {
+    toggleDisabled = (): void => {
         const { value } = this.props;
-        const { checked } = this.state;
 
         this.setState(
-            state => {
-                return {
-                    isDisabled: !state.isDisabled,
-                    checked: state.isDisabled ? checked : value === true || value === 'true',
-                };
-            },
+            state => ({
+                isDisabled: !state.isDisabled,
+                checked: state.isDisabled ? state.checked : value === true || value === 'true',
+            }),
             () => {
                 this.props.onToggleDisable?.(this.state.isDisabled);
             }

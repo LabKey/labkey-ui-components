@@ -9,6 +9,16 @@ Components, models, actions, and utility functions for LabKey applications and p
   * in `isPropertyTypeAllowed`, respect the `show` properties even if `appPropetiesOnly` is false
   * Add optional property for hiding study properties in assay designer
 
+### version 2.244.0
+*Released*: 3 November 2022
+* Refactor `resolveInputRenderer` and enhance typings with `InputRendererFactory`.
+* Update usages of `resolveRenderer` to resolve a component which can be rendered inline.
+* Introduce defined types for `SelectInputChange` and `QuerySelectChange`.
+* Coalesce handling of single and multi-value lookup cell change events into `onCellSelectChange`.
+* Extract constant props for `SelectInput`s rendered to editable grid cells.
+* Update `AliasInput` and `AssayTaskInput` to extend `SelectInputProps` and extract props specific to the component.
+* Update the `onChange` prop signature for `SelectInput` to provide the components props rather than a reference to the underlying `ReactSelect` instance.
+
 ### version 2.243.0
 *Released*: 2 November 2022
 * Move configuration of `ts-jest` to the `transformers` section as the `globals` pattern is now deprecated.

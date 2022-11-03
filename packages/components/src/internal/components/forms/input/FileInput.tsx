@@ -18,6 +18,7 @@ import classNames from 'classnames';
 import { Map } from 'immutable';
 import { withFormsy } from 'formsy-react';
 
+import { WithFormsyProps } from '../constants';
 import { FieldLabel } from '../FieldLabel';
 import { cancelEvent } from '../../../events';
 
@@ -26,7 +27,7 @@ import { FileColumnRenderer } from '../../../renderers/FileColumnRenderer';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
-interface Props extends DisableableInputProps {
+interface Props extends DisableableInputProps, WithFormsyProps {
     addLabelAsterisk?: boolean;
     changeDebounceInterval?: number;
     elementWrapperClassName?: string;
@@ -38,13 +39,6 @@ interface Props extends DisableableInputProps {
     queryColumn?: QueryColumn;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     showLabel?: boolean;
-
-    // from formsy-react
-    getErrorMessage?: Function;
-    getValue?: Function;
-    setValue?: Function;
-    showRequired?: Function;
-    validations?: any;
 }
 
 interface State extends DisableableInputState {

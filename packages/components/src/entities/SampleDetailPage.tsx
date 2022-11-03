@@ -81,7 +81,8 @@ interface BodyProps {
 
 type Props = OwnProps & BodyProps & InjectedQueryModels;
 
-const SampleDetailPageBody: FC<Props> = memo(props => {
+// exported for jest testing
+export const SampleDetailPageBody: FC<Props> = memo(props => {
     const {
         location,
         modelId,

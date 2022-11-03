@@ -1,23 +1,24 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, useContext } from 'react';
 import { ProductMenuModel } from '../internal/components/navigation/model';
 import { getTitleDisplay, hasActivePipelineJob } from '../internal/components/pipeline/utils';
 import { PageDetailHeader } from '../internal/components/forms/PageDetailHeader';
 import { TemplateDownloadButton } from '../public/files/TemplateDownloadButton';
 import { ASSAYS_KEY } from '../internal/app/constants';
-import { AssayDesignHeaderButtons, AssayHeaderButtonProps, AssayRunDetailHeaderButtons } from './AssayButtons';
 import { Notifications } from '../internal/components/notifications/Notifications';
+import { AssayContext } from '../internal/components/assay/withAssayModels';
 
-
-interface Props extends AssayHeaderButtonProps {
+interface Props {
     title?: ReactNode;
     subTitle?: ReactNode;
     staticTitle?: ReactNode;
     description?: ReactNode;
     menu: ProductMenuModel;
+    leftColumns?: number;
 }
 
 export const AssayHeader: FC<Props> = props => {
-    const { assayDefinition, assayProtocol, staticTitle, title, subTitle, description, menu, runId, ...buttonProps } = props;
+    const { children, staticTitle, title, subTitle, description, menu, leftColumns } = props;
+    const { assayDefinition } = useContext(AssayContext);
 
     const isJobActive = assayDefinition ? hasActivePipelineJob(menu, ASSAYS_KEY, assayDefinition.name) : false;
     let titleDisplay = staticTitle ?? title;
@@ -38,24 +39,10 @@ export const AssayHeader: FC<Props> = props => {
                 title={titleDisplay}
                 subTitle={subTitle}
                 description={descriptionDisplay}
-                leftColumns={runId ? 8 : 9} // On run details pages allow for more room for the name of the run
+                leftColumns={leftColumns} // On run details pages allow for more room for the name of the run
             >
                 <TemplateDownloadButton templateUrl={assayDefinition?.templateLink} className="button-right-spacing" />
-                {runId != null && (
-                    <AssayRunDetailHeaderButtons
-                        assayDefinition={assayDefinition}
-                        assayProtocol={assayProtocol}
-                        runId={runId}
-                        {...buttonProps}
-                    />
-                )}
-                {runId == null && assayDefinition && (
-                    <AssayDesignHeaderButtons
-                        assayDefinition={assayDefinition}
-                        assayProtocol={assayProtocol}
-                        {...buttonProps}
-                    />
-                )}
+                {children}
             </PageDetailHeader>
             <Notifications />
         </>

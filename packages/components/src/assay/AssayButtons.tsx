@@ -1,10 +1,10 @@
 import { RequiresPermission } from '../internal/components/base/Permissions';
 import { PermissionTypes } from '@labkey/api';
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { MenuItem } from 'react-bootstrap';
+import React, { FC, memo, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { Button, MenuItem } from 'react-bootstrap';
 import classNames from 'classnames';
 import { AppURL, buildURL } from '../internal/url/AppURL';
-import { AssayContextConsumer } from '../internal/components/assay/withAssayModels';
+import { AssayContext, AssayContextConsumer } from '../internal/components/assay/withAssayModels';
 import { isAssayDesignExportEnabled, isELNEnabled } from '../internal/app/utils';
 import { getOperationConfirmationData } from '../internal/components/entities/actions';
 import { AssayRunDataType } from '../internal/components/entities/constants';
@@ -16,8 +16,6 @@ import { AssayReimportRunButton } from './AssayReimportRunButton';
 import { DisableableMenuItem } from '../internal/components/samples/DisableableMenuItem';
 import { getAssayRunDeleteMessage } from './utils';
 import { AssayRunDeleteModal } from './AssayRunDeleteModal';
-import { AssayDefinitionModel } from '../internal/AssayDefinitionModel';
-import { AssayProtocolModel } from '../internal/components/domainproperties/assay/models';
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { clearAssayDefinitionCache } from '../internal/components/assay/actions';
 import { ASSAY_AUDIT_QUERY } from '../internal/components/auditlog/constants';
@@ -51,7 +49,7 @@ const AssayMenuButton: FC<AssayMenuButtonProps> = props => {
 };
 
 export const AssayExportDesignButton: FC<InMenuProps> = props => (
-    <RequiresPermission perms={PermissionTypes.Read}>
+    <RequiresPermission perms={PermissionTypes.ReadAssay}>
         <AssayContextConsumer>
             {({ assayDefinition }) => (
                 <AssayMenuButton
@@ -73,19 +71,59 @@ export const AssayExportDesignButton: FC<InMenuProps> = props => (
     </RequiresPermission>
 );
 
-export interface AssayHeaderButtonProps {
-    allowReimport?: boolean;
-    allowDelete?: boolean;
-    assayDefinition?: AssayDefinitionModel;
-    assayProtocol?: AssayProtocolModel;
-    navigate: (url: string | AppURL, replace?: boolean) => void;
-    menuInit: (invalidate?: boolean) => void;
-    runId?: string;
-    model?: QueryModel;
+interface AssayDeleteBatchButtonProps extends InMenuProps {
+    batchId: string;
 }
 
-export const AssayRunDetailHeaderButtons: FC<AssayHeaderButtonProps> = memo(props => {
-    const {assayDefinition, assayProtocol, navigate, model, runId, allowReimport, allowDelete} = props;
+export const AssayDeleteBatchButton: FC<AssayDeleteBatchButtonProps> = props => (
+    <RequiresPermission perms={[PermissionTypes.Delete]}>
+        <AssayContextConsumer>
+            {({ assayDefinition, assayProtocol }) => {
+                const { asMenuItem, batchId } = props;
+
+                if (batchId !== undefined) {
+                    const provider = assayDefinition.type;
+                    const protocol = assayProtocol.name;
+
+                    const url = buildURL(
+                        'experiment',
+                        'deleteSelectedExperiments',
+                        {
+                            singleObjectRowId: batchId,
+                        },
+                        {
+                            cancelUrl: AppURL.create('assays', provider, protocol, 'batches', batchId),
+                            returnUrl: false,
+                            successUrl: AppURL.create('assays', provider, protocol, 'batches'),
+                        }
+                    );
+
+                    return (
+                        <AssayMenuButton asMenuItem={asMenuItem} bsStyle="danger" url={url}>
+                            Delete Batch
+                        </AssayMenuButton>
+                    );
+                }
+
+                return null;
+            }}
+        </AssayContextConsumer>
+    </RequiresPermission>
+);
+
+
+
+interface AssayRunDetailHeaderButtonProps {
+    allowReimport?: boolean;
+    allowDelete?: boolean;
+    navigate: (url: string | AppURL, replace?: boolean) => void;
+    model: QueryModel;
+    runId: string;
+}
+
+export const AssayRunDetailHeaderButtons: FC<AssayRunDetailHeaderButtonProps> = memo(props => {
+    const { navigate, model, runId, allowReimport, allowDelete} = props;
+    const { assayDefinition, assayProtocol, } = useContext(AssayContext);
     const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false);
     const [canDelete, setCanDelete] = useState<boolean>(false);
     const [confirmationDataError, setConfirmationDataError] = useState<boolean>(false);
@@ -96,6 +134,7 @@ export const AssayRunDetailHeaderButtons: FC<AssayHeaderButtonProps> = memo(prop
 
     useEffect((): void => {
         if (isELNEnabled()) {
+            // we prevent deletion of assay runs that are referenced in ELNs.
             (async () => {
                 try {
                     const confirmationData = await getOperationConfirmationData(undefined, AssayRunDataType, [runId]);
@@ -129,7 +168,7 @@ export const AssayRunDetailHeaderButtons: FC<AssayHeaderButtonProps> = memo(prop
         <>
             <CreatedModified row={runData}/>
             {(allowReimport || allowDelete) && (
-                <ManageDropdownButton id="assay-run-details" pullRight={true} collapsed={true}>
+                <ManageDropdownButton id="assay-run-details" pullRight collapsed>
                     {allowReimport &&
                         <AssayReimportRunButton runId={runId} replacedByRunId={runData?.ReplacedByRun?.value}/>
                     }
@@ -156,8 +195,62 @@ export const AssayRunDetailHeaderButtons: FC<AssayHeaderButtonProps> = memo(prop
     );
 });
 
-export const AssayDesignHeaderButtons: FC<AssayHeaderButtonProps> = props => {
-    const {assayDefinition, assayProtocol, navigate, menuInit} = props;
+
+const IMPORT_DATA_LABEL = 'Import Data';
+
+export const AssayImportDataButton: FC = () => (
+    <RequiresPermission perms={PermissionTypes.Insert}>
+        <AssayContextConsumer>
+            {({ assayDefinition }) => {
+                if (!assayDefinition) {
+                    return null;
+                }
+
+                let importUrl = assayDefinition.getImportUrl();
+
+                if (assayDefinition.importAction !== 'uploadWizard') {
+                    importUrl += '&returnUrl=' + (window.location.pathname + assayDefinition.getRunsUrl().toHref());
+                }
+
+                return (
+                    <Button bsStyle="success" href={importUrl}>
+                        {IMPORT_DATA_LABEL}
+                    </Button>
+                );
+            }}
+        </AssayContextConsumer>
+    </RequiresPermission>
+);
+
+interface AssayBatchHeaderButtonsProps {
+    batchId: string;
+    model: QueryModel;
+}
+
+export const AssayBatchHeaderButtons: FC<AssayBatchHeaderButtonsProps> = props => {
+    const { batchId, model } = props;
+
+    return (
+        <>
+            <CreatedModified row={model.getRow()} />
+            <RequiresPermission perms={PermissionTypes.Delete}>
+                <ManageDropdownButton id="assaybatchdetails" pullRight collapsed>
+                    <AssayDeleteBatchButton asMenuItem batchId={batchId} />
+                </ManageDropdownButton>
+            </RequiresPermission>
+        </>
+    )
+}
+
+
+interface AssayDesignHeaderButtonProps {
+    navigate: (url: string | AppURL, replace?: boolean) => void;
+    menuInit: (invalidate?: boolean) => void;
+}
+
+export const AssayDesignHeaderButtons: FC<AssayDesignHeaderButtonProps> = props => {
+    const { assayDefinition, assayProtocol } = useContext(AssayContext);
+    const {navigate, menuInit} = props;
     const [showConfirmDeleteAssayDesign, setShowConfirmDeleteAssayDesign] = useState<boolean>(false);
 
     const resetState = useCallback(() => {
@@ -183,10 +276,17 @@ export const AssayDesignHeaderButtons: FC<AssayHeaderButtonProps> = props => {
         }
     }, [menuInit, navigate]);
 
+    if (!assayDefinition || !assayProtocol)
+        return null;
+
     return (
         <>
             <RequiresPermission permissionCheck="any"
-                                perms={[PermissionTypes.Read, PermissionTypes.DesignAssay, PermissionTypes.CanSeeAuditLog]}>
+                                perms={[
+                                    PermissionTypes.ReadAssay,
+                                    PermissionTypes.DesignAssay,
+                                    PermissionTypes.CanSeeAuditLog
+                                ]}>
                 <ManageDropdownButton id={'assayheader'} pullRight collapsed>
                     <RequiresPermission perms={PermissionTypes.DesignAssay}>
                         <MenuItem
@@ -235,4 +335,39 @@ export const AssayDesignHeaderButtons: FC<AssayHeaderButtonProps> = props => {
             )}
         </>
     );
+};
+
+
+interface UpdateQCStatesButtonProps extends InMenuProps {
+    disabled: boolean;
+    onClick: () => void;
+}
+
+export const UpdateQCStatesButton: FC<UpdateQCStatesButtonProps> = ({ asMenuItem, onClick, disabled }) => {
+    let button: ReactNode;
+    // Here we check if we should actually hook onClick because Bootstrap MenuItems are anchor tags so they
+    // do not prevent click handlers from being executed even if we set them to disabled.
+    const onClickHandler = useMemo(() => (disabled ? undefined : onClick), [disabled, onClick]);
+
+    if (asMenuItem) {
+        button = (
+            <DisableableMenuItem
+                className="assay-qc-btn"
+                onClick={onClickHandler}
+                operationPermitted={!disabled}
+                disabledMessage="Select one or more assay runs."
+                placement="right"
+            >
+                Update QC States
+            </DisableableMenuItem>
+        );
+    } else {
+        button = (
+            <Button className="assay-qc-btn" bsStyle="primary" onClick={onClickHandler} disabled={disabled}>
+                Update QC States
+            </Button>
+        );
+    }
+
+    return <RequiresPermission perms={PermissionTypes.QCAnalyst}>{button}</RequiresPermission>;
 };

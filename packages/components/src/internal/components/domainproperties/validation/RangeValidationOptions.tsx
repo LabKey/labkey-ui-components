@@ -1,10 +1,6 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { Button, Col, FormControl, Row } from 'react-bootstrap';
 
-import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import { createFormInputId, createFormInputName, getNameFromId } from '../utils';
 import {
     DOMAIN_VALIDATOR_DESCRIPTION,
@@ -168,7 +164,7 @@ export class RangeValidationOptions extends PureComponent<RangeValidationOptions
                                 : 'Missing condition'
                         }`}
                         <div className="domain-validator-collapse-icon" onClick={this.expandValidator}>
-                            <FontAwesomeIcon icon={faPencilAlt} />
+                            <span className="fa fa-pencil-alt" />
                         </div>
                     </div>
                 )}

@@ -1,10 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Button, Checkbox, Col, FormControl, Row } from 'react-bootstrap';
 
-import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import { createFormInputId, createFormInputName, getNameFromId } from '../utils';
 import {
     DOMAIN_VALIDATOR_DESCRIPTION,
@@ -189,7 +185,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                                 ': ' +
                                 (validator.expression ? validator.expression : 'Missing expression')}
                             <div className="domain-validator-collapse-icon" onClick={this.expandValidator}>
-                                <FontAwesomeIcon icon={faPencilAlt} />
+                                <span className="fa fa-pencil-alt" />
                             </div>
                         </div>
                     </div>

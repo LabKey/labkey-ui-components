@@ -1,14 +1,12 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMinusSquare, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames';
 
 interface Props {
     cls?: string;
-    expanded: boolean;
-    highlighted?: boolean;
-    expandedTitle: string;
     collapsedTitle: string;
+    expanded: boolean;
+    expandedTitle: string;
+    highlighted?: boolean;
     id: string;
     onClick: (event) => void;
 }
@@ -16,13 +14,11 @@ interface Props {
 export class FieldExpansionToggle extends React.Component<Props, any> {
     render() {
         const { expanded, expandedTitle, collapsedTitle, cls, highlighted, id, onClick } = this.props;
-        const className =
-            highlighted !== undefined
-                ? classNames({
-                      'field-highlighted': highlighted && !expanded,
-                      'field-not-highlighted': !highlighted,
-                  })
-                : undefined;
+        const className = classNames('fa fa-lg', {
+            'field-highlighted': highlighted && !expanded,
+            'fa-minus-square': expanded,
+            'fa-plus-square': !expanded,
+        });
 
         return (
             <div
@@ -31,7 +27,7 @@ export class FieldExpansionToggle extends React.Component<Props, any> {
                 id={id}
                 onClick={onClick}
             >
-                <FontAwesomeIcon size="lg" className={className} icon={expanded ? faMinusSquare : faPlusSquare} />
+                <span className={className} />
             </div>
         );
     }

@@ -1161,7 +1161,7 @@ export class DomainField
         return concept?.getDisplayLabel() ?? this.principalConceptCode;
     }
 
-    getDetailsTextArray(index: number, fieldDetailsInfo?: { [key: string]: string }): any[] {
+    getDetailsArray(index: number, fieldDetailsInfo?: { [key: string]: string }): ReactNode[] {
         const details = [];
         let period = '';
 
@@ -1210,15 +1210,12 @@ export class DomainField
                 if (validValuesStr) {
                     details.push(validValuesStr);
                 } else if (this.textChoiceValidator?.shouldShowWarning) {
-                    details.push(
-                        <DomainRowWarning
-                            index={index}
-                            extraInfo={FIELD_EMPTY_TEXT_CHOICE_WARNING_INFO}
-                            msg={FIELD_EMPTY_TEXT_CHOICE_WARNING_MSG}
-                            name={this.name}
-                            severity={SEVERITY_LEVEL_WARN}
-                        />
-                    );
+                    const fieldError = new DomainFieldError({
+                        extraInfo: FIELD_EMPTY_TEXT_CHOICE_WARNING_INFO,
+                        message: FIELD_EMPTY_TEXT_CHOICE_WARNING_MSG,
+                        severity: SEVERITY_LEVEL_WARN,
+                    });
+                    details.push(<DomainRowWarning fieldError={fieldError} />);
                 }
             }
             period = '. ';
@@ -1239,7 +1236,7 @@ export class DomainField
             period = '. ';
         }
 
-        if (this.lockType == DOMAIN_FIELD_FULLY_LOCKED) {
+        if (this.lockType === DOMAIN_FIELD_FULLY_LOCKED) {
             details.push(period + 'Locked');
             period = '. ';
         }

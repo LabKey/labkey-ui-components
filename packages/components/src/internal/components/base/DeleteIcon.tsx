@@ -1,26 +1,14 @@
-import React from 'react';
-import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { FC, memo } from 'react';
 
 interface Props {
-    id?: string;
     iconCls?: string;
+    id?: string;
     onDelete: (event) => void;
     title?: string;
 }
 
-export class DeleteIcon extends React.Component<Props, any> {
-    static defaultProperties = {
-        iconCls: 'field-delete',
-        title: 'Delete this item',
-    };
-
-    render() {
-        const { id, title, onDelete, iconCls } = this.props;
-        return (
-            <span id={id} title={title} className="field-icon" onClick={onDelete}>
-                <FontAwesomeIcon className={iconCls} icon={faTimesCircle} />
-            </span>
-        );
-    }
-}
+export const DeleteIcon: FC<Props> = memo(({ id, title = 'Delete this item', onDelete, iconCls = 'field-delete' }) => (
+    <span id={id} title={title} className="field-icon" onClick={onDelete}>
+        <span className={`fa fa-times-circle ${iconCls}`} />
+    </span>
+));

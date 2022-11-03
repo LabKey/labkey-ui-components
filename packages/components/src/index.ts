@@ -220,7 +220,6 @@ import { LineageEditableGridLoaderFromSelection } from './internal/components/ed
 
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
 
-import { CollapsiblePanel } from './internal/components/CollapsiblePanel';
 import { ErrorBoundary } from './internal/components/error/ErrorBoundary';
 import { AliasRenderer } from './internal/renderers/AliasRenderer';
 import { ANCESTOR_LOOKUP_CONCEPT_URI, AncestorRenderer } from './internal/renderers/AncestorRenderer';
@@ -1277,7 +1276,6 @@ export {
     SVGIcon,
     // general components
     Alert,
-    CollapsiblePanel,
     ExpandableContainer,
     Progress,
     LabelHelpTip,

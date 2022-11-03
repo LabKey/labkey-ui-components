@@ -250,14 +250,13 @@ export function resolveDetailEditRenderer(
     onAdditionalFormDataChange?: (name: string, value: any) => any
 ): Renderer {
     return (data, row) => {
-        const editable = col.isEditable();
-
         // If the column cannot be edited, return as soon as possible
         // Render the value with the defaultRenderer and a class that grays it out
-        if (!editable) {
+        if (!col.isEditable()) {
             return detailNonEditableRenderer(col, data);
         }
 
+        const showLabel = !options?.hideLabel ?? false;
         let value = resolveDetailFieldValue(data, col.isLookup());
 
         const ColumnInputRenderer = resolveInputRenderer(col);
@@ -272,7 +271,7 @@ export function resolveDetailEditRenderer(
                     inputClass="col-sm-12"
                     key={col.name}
                     onAdditionalFormDataChange={onAdditionalFormDataChange}
-                    selectInputProps={{ customStyles: undefined, showLabel: false }}
+                    selectInputProps={{ inputClass: 'col-sm-12', showLabel }}
                     value={value}
                 />
             );
@@ -282,7 +281,7 @@ export function resolveDetailEditRenderer(
             // undefined 'displayAsLookup' just respects the lookup.
             // Must be explicitly false to prevent drop-down.
             if (col.displayAsLookup !== false) {
-                // 29232: When displaying a lookup, always use the value
+                // Issue 29232: When displaying a lookup, always use the value
                 const multiple = col.isJunctionLookup();
                 const joinValues = multiple && !col.isDataInput();
 
@@ -306,7 +305,7 @@ export function resolveDetailEditRenderer(
                         previewOptions={col.previewOptions}
                         required={col.required}
                         schemaQuery={col.lookup.schemaQuery}
-                        showLabel={!options?.hideLabel}
+                        showLabel={showLabel}
                         value={resolveDetailFieldValue(data, true)}
                         valueColumn={col.lookup.keyColumn}
                     />
@@ -324,7 +323,7 @@ export function resolveDetailEditRenderer(
                     autoFocus={options?.autoFocus}
                     onBlur={options?.onBlur}
                     placeholder={options?.placeholder ?? 'Select or type to search...'}
-                    showLabel={!options?.hideLabel}
+                    showLabel={showLabel}
                 />
             );
         }
@@ -338,7 +337,7 @@ export function resolveDetailEditRenderer(
                     name={col.name}
                     required={col.required}
                     rows={4}
-                    validatePristine={true}
+                    validatePristine
                     value={value}
                 />
             );
@@ -359,7 +358,7 @@ export function resolveDetailEditRenderer(
                         // Issue 43299: Ignore "required" property for boolean columns as this will
                         // cause any false value (i.e. unchecked) to prevent submission.
                         // required={col.required}
-                        validatePristine={true}
+                        validatePristine
                         value={value && value.toString().toLowerCase() === 'true'}
                     />
                 );
@@ -392,7 +391,7 @@ export function resolveDetailEditRenderer(
                         changeDebounceInterval={0}
                         type="text"
                         name={col.name}
-                        validatePristine={true}
+                        validatePristine
                         validations={validations}
                         validationError={validationError}
                         value={value}

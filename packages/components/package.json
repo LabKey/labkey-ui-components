@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.243.2-assayDisplayConsistency.8",
+  "version": "2.243.2-assayDisplayConsistency.9",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

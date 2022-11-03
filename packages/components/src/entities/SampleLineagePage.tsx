@@ -33,7 +33,8 @@ interface Props extends PageProps {
     sampleLsid: string;
 }
 
-class SampleLineagePanel extends PureComponent<Props> {
+// exported for jest testing
+export class SampleLineagePanel extends PureComponent<Props> {
     onLineageNodeDblClick = (node: VisGraphNode) => {
         if (node?.lineageNode?.links?.lineage) {
             this.props.navigate(node.lineageNode.links.lineage);

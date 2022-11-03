@@ -21,7 +21,7 @@ export interface AssayLoader {
     loadProtocol: (protocolId: number, containerPath?: string) => Promise<AssayProtocolModel>;
 }
 
-interface AssayContext {
+interface AssayContextModel {
     assayDefinition: AssayDefinitionModel;
     assayProtocol: AssayProtocolModel;
 }
@@ -32,19 +32,19 @@ export interface WithAssayModelProps {
     assayName?: string;
 }
 
-export interface InjectedAssayModel extends AssayContext {
+export interface InjectedAssayModel extends AssayContextModel {
     assayModel: AssayStateModel;
     reloadAssays: () => void;
 }
 
 interface State {
-    context: AssayContext;
+    context: AssayContextModel;
     model: AssayStateModel;
 }
 
-const Context = createContext<AssayContext>(undefined);
-const AssayContextProvider = Context.Provider;
-export const AssayContextConsumer = Context.Consumer;
+export const AssayContext = createContext<AssayContextModel>(undefined);
+const AssayContextProvider = AssayContext.Provider;
+export const AssayContextConsumer = AssayContext.Consumer;
 
 const DefaultAssayLoader: AssayLoader = {
     clearDefinitionsCache: clearAssayDefinitionCache,

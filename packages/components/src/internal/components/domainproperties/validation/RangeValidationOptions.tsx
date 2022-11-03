@@ -15,6 +15,7 @@ import { PropDescType } from '../PropDescType';
 import { LabelHelpTip } from '../../base/LabelHelpTip';
 
 import { Filters } from './Filters';
+import { ValidatorModal } from './ValidatorModal';
 
 interface RangeValidationOptionsProps {
     dataType: PropDescType;
@@ -37,7 +38,7 @@ export class RangeValidationOptions extends PureComponent<RangeValidationOptions
         return Filters.isValid(validator.get('expression')) && !!validator.get('name');
     };
 
-    renderRowTextbox(label: string, name: string, value: string) {
+    renderRowTextbox = (label: string, name: string, value: string): ReactNode => {
         const { validatorIndex, domainIndex } = this.props;
 
         return (
@@ -60,7 +61,7 @@ export class RangeValidationOptions extends PureComponent<RangeValidationOptions
                 </Col>
             </Row>
         );
-    }
+    };
 
     onDelete = (): void => {
         const { onDelete, validatorIndex } = this.props;
@@ -85,7 +86,7 @@ export class RangeValidationOptions extends PureComponent<RangeValidationOptions
 
     expandValidator = (): void => {
         const { onExpand, validatorIndex } = this.props;
-        onExpand?.(validatorIndex);
+        onExpand(validatorIndex);
     };
 
     firstFilterTooltip = (): ReactNode => {
@@ -105,7 +106,7 @@ export class RangeValidationOptions extends PureComponent<RangeValidationOptions
         );
     };
 
-    render() {
+    render(): ReactNode {
         const { validatorIndex, expanded, dataType, validator, mvEnabled, domainIndex } = this.props;
 
         return (
@@ -164,7 +165,7 @@ export class RangeValidationOptions extends PureComponent<RangeValidationOptions
                                 : 'Missing condition'
                         }`}
                         <div className="domain-validator-collapse-icon" onClick={this.expandValidator}>
-                            <span className="fa fa-pencil-alt" />
+                            <span className="fa fa-pencil" />
                         </div>
                     </div>
                 )}
@@ -172,3 +173,5 @@ export class RangeValidationOptions extends PureComponent<RangeValidationOptions
         );
     }
 }
+
+export const RangeValidationOptionsModal = ValidatorModal(RangeValidationOptions);

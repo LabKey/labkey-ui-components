@@ -473,8 +473,7 @@ import { DataClassModel } from './internal/components/domainproperties/dataclass
 import { deleteDataClass, fetchDataClass } from './internal/components/domainproperties/dataclasses/actions';
 import { DesignerDetailPanel } from './internal/components/domainproperties/DesignerDetailPanel';
 import { DomainFieldLabel } from './internal/components/domainproperties/DomainFieldLabel';
-import { ValidatorModal } from './internal/components/domainproperties/validation/ValidatorModal';
-import { RangeValidationOptions } from './internal/components/domainproperties/validation/RangeValidationOptions';
+import { RangeValidationOptionsModal } from './internal/components/domainproperties/validation/RangeValidationOptions';
 
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 import {
@@ -1151,8 +1150,7 @@ export {
     DomainField,
     DesignerDetailPanel,
     DomainFieldLabel,
-    ValidatorModal,
-    RangeValidationOptions,
+    RangeValidationOptionsModal,
     PropertyValidator,
     DOMAIN_RANGE_VALIDATOR,
     DomainDetails,

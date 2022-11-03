@@ -16,14 +16,16 @@ import { PropDescType } from '../PropDescType';
 import { JavaDocsLink } from '../../../util/helpLinks';
 import { LabelHelpTip } from '../../base/LabelHelpTip';
 
+import { ValidatorModal } from './ValidatorModal';
+
 interface RegexValidationOptionsProps {
     dataType: PropDescType;
     domainIndex: number;
     expanded: boolean;
     index: number;
-    onChange: (validator: PropertyValidator, index: number) => any;
-    onDelete: (index: number) => any;
-    onExpand: (index: number) => any;
+    onChange: (validator: PropertyValidator, index: number) => void;
+    onDelete: (index: number) => void;
+    onExpand: (index: number) => void;
     validator: any;
     validatorIndex: number;
 }
@@ -36,14 +38,14 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
         return !!validator.get('expression') && !!validator.get('name');
     };
 
-    renderRowTextbox(
+    renderRowTextbox = (
         label: string,
         name: string,
         value: string,
         tooltipTitle?: string,
         tooltipBody?: ReactNode,
         required?: boolean
-    ): ReactNode {
+    ): ReactNode => {
         const { validatorIndex, domainIndex } = this.props;
 
         return (
@@ -73,7 +75,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                 </Col>
             </Row>
         );
-    }
+    };
 
     onDelete = (): void => {
         const { onDelete, validatorIndex } = this.props;
@@ -99,10 +101,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
 
     expandValidator = (): void => {
         const { onExpand, validatorIndex } = this.props;
-
-        if (onExpand) {
-            onExpand(validatorIndex);
-        }
+        onExpand(validatorIndex);
     };
 
     render(): ReactNode {
@@ -185,7 +184,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                                 ': ' +
                                 (validator.expression ? validator.expression : 'Missing expression')}
                             <div className="domain-validator-collapse-icon" onClick={this.expandValidator}>
-                                <span className="fa fa-pencil-alt" />
+                                <span className="fa fa-pencil" />
                             </div>
                         </div>
                     </div>
@@ -194,3 +193,5 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
         );
     }
 }
+
+export const RegexValidationOptionsModal = ValidatorModal(RegexValidationOptions);

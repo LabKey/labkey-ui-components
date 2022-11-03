@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { ReactNode } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { Button, Checkbox, Col, FormControl, Row } from 'react-bootstrap';
 import { CompactPicker } from 'react-color';
 
@@ -20,6 +20,7 @@ import { PropDescType } from '../PropDescType';
 import { LabelHelpTip } from '../../base/LabelHelpTip';
 
 import { Filters } from './Filters';
+import { ValidatorModal } from './ValidatorModal';
 
 interface ConditionalFormatOptionsProps {
     dataType: PropDescType;
@@ -39,10 +40,7 @@ interface ConditionalFormatState {
     showTextColor: boolean;
 }
 
-export class ConditionalFormatOptions extends React.PureComponent<
-    ConditionalFormatOptionsProps,
-    ConditionalFormatState
-> {
+export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOptionsProps, ConditionalFormatState> {
     constructor(props) {
         super(props);
 
@@ -79,7 +77,7 @@ export class ConditionalFormatOptions extends React.PureComponent<
         onChange(validator.set(name, value), validatorIndex);
     };
 
-    onFilterChange = (expression: string) => {
+    onFilterChange = (expression: string): void => {
         const { validator, validatorIndex, onChange } = this.props;
 
         onChange(validator.set('formatFilter', expression), validatorIndex);
@@ -87,10 +85,7 @@ export class ConditionalFormatOptions extends React.PureComponent<
 
     expandValidator = (): void => {
         const { onExpand, validatorIndex } = this.props;
-
-        if (onExpand) {
-            onExpand(validatorIndex);
-        }
+        onExpand(validatorIndex);
     };
 
     firstFilterTooltip = (): ReactNode => {
@@ -281,7 +276,7 @@ export class ConditionalFormatOptions extends React.PureComponent<
                             ? Filters.describeExpression(validator.formatFilter, DOMAIN_CONDITIONAL_FORMAT_PREFIX)
                             : 'Missing condition'}
                         <div className="domain-validator-collapse-icon" onClick={this.expandValidator}>
-                            <span className="fa fa-pencil-alt" />
+                            <span className="fa fa-pencil" />
                         </div>
                     </div>
                 )}
@@ -289,3 +284,5 @@ export class ConditionalFormatOptions extends React.PureComponent<
         );
     }
 }
+
+export const ConditionalFormatOptionsModal = ValidatorModal(ConditionalFormatOptions);

@@ -8,6 +8,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Remove CollapsiblePanel component
 * Convert some components to FC
 * Refactor DomainRowWarning
+* Remove ValidatorModal from exports
+* Refactor usages of ValidatorModal
+* Add RangeValidationOptionsModal to exports
 
 ### version 2.246.2
 *Released*: 9 November 2022

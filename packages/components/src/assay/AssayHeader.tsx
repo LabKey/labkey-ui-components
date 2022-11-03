@@ -10,18 +10,17 @@ import { AssayContext } from '../internal/components/assay/withAssayModels';
 interface Props {
     title?: ReactNode;
     subTitle?: ReactNode;
-    staticTitle?: ReactNode;
     description?: ReactNode;
     menu: ProductMenuModel;
     leftColumns?: number;
 }
 
 export const AssayHeader: FC<Props> = props => {
-    const { children, staticTitle, title, subTitle, description, menu, leftColumns } = props;
+    const { children, title, subTitle, description, menu, leftColumns } = props;
     const { assayDefinition } = useContext(AssayContext);
 
     const isJobActive = assayDefinition ? hasActivePipelineJob(menu, ASSAYS_KEY, assayDefinition.name) : false;
-    let titleDisplay = staticTitle ?? title;
+    let titleDisplay = title;
 
     if (!title && assayDefinition) {
         titleDisplay = getTitleDisplay(assayDefinition.name, isJobActive);

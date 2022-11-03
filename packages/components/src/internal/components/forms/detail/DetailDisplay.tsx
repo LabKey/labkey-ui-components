@@ -32,6 +32,7 @@ import { AppendUnits } from '../../../renderers/AppendUnits';
 import { LabelColorRenderer } from '../../../renderers/LabelColorRenderer';
 import { FileColumnRenderer } from '../../../renderers/FileColumnRenderer';
 import { SampleTypeImportAliasRenderer, SourceTypeImportAliasRenderer } from '../../../renderers/ImportAliasRenderer';
+import { SelectInputChange } from '../input/SelectInput';
 
 export type Renderer = (data: any, row?: any) => ReactNode;
 
@@ -46,6 +47,7 @@ export interface EditRendererOptions extends RenderOptions {
     autoFocus?: boolean;
     hideLabel?: boolean;
     onBlur?: () => void;
+    onSelectChange?: SelectInputChange;
     placeholder?: string;
 }
 
@@ -271,6 +273,7 @@ export function resolveDetailEditRenderer(
                     inputClass="col-sm-12"
                     key={col.name}
                     onAdditionalFormDataChange={onAdditionalFormDataChange}
+                    onSelectChange={options?.onSelectChange}
                     selectInputProps={{ inputClass: 'col-sm-12', showLabel }}
                     value={value}
                 />
@@ -301,6 +304,7 @@ export function resolveDetailEditRenderer(
                         name={col.name}
                         autoFocus={options?.autoFocus}
                         onBlur={options?.onBlur}
+                        onQSChange={options?.onSelectChange}
                         placeholder={options?.placeholder ?? 'Select or type to search...'}
                         previewOptions={col.previewOptions}
                         required={col.required}
@@ -322,6 +326,7 @@ export function resolveDetailEditRenderer(
                     value={value}
                     autoFocus={options?.autoFocus}
                     onBlur={options?.onBlur}
+                    onChange={options?.onSelectChange}
                     placeholder={options?.placeholder ?? 'Select or type to search...'}
                     showLabel={showLabel}
                 />

@@ -11,16 +11,16 @@ interface Props extends Omit<SelectInputProps, 'options'> {
 
 export class TextChoiceInput extends DisableableInput<Props, DisableableInputState> {
     render(): ReactNode {
-        const { queryColumn, ...inputProps } = this.props;
-        const inputOptions = queryColumn.validValues?.map(val => ({ label: val, value: val })) ?? [];
+        const { queryColumn, ...selectInputProps } = this.props;
+        const options = queryColumn.validValues?.map(val => ({ label: val, value: val })) ?? [];
 
         return (
             <SelectInput
                 label={queryColumn.caption}
                 name={queryColumn.fieldKey}
                 required={queryColumn.required}
-                {...inputProps}
-                options={inputOptions}
+                {...selectInputProps}
+                options={options}
             />
         );
     }

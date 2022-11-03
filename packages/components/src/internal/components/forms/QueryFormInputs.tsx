@@ -25,8 +25,8 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { caseInsensitive } from '../../util/utils';
 
 import { resolveInputRenderer } from './input/InputRenderFactory';
-import { QuerySelect, QuerySelectChange } from './QuerySelect';
-import { SelectInputChange, SelectInputOption } from './input/SelectInput';
+import { QuerySelect } from './QuerySelect';
+import { SelectInputChange } from './input/SelectInput';
 import { TextInput } from './input/TextInput';
 import { CheckboxInput } from './input/CheckboxInput';
 import { TextAreaInput } from './input/TextAreaInput';
@@ -54,7 +54,6 @@ export interface QueryFormInputsProps {
     onAdditionalFormDataChange?: (name: string, value: any) => void;
     onFieldsEnabledChange?: (numEnabled: number) => void;
     onSelectChange?: SelectInputChange;
-    onQSChange?: QuerySelectChange;
     queryColumns?: OrderedMap<string, QueryColumn>;
     queryFilters?: Record<string, List<Filter.IFilter>>;
     queryInfo?: QueryInfo;
@@ -108,7 +107,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             }, {});
     }
 
-    updateLabels = (name: string, selectedOptions: SelectInputOption | SelectInputOption[]): void => {
+    onSelectChange: SelectInputChange = (name, value, selectedOptions, props): void => {
         const { includeLabelField } = this.props;
 
         if (includeLabelField) {
@@ -125,15 +124,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                 },
             }));
         }
-    };
 
-    onQSChange: QuerySelectChange = (name, value, selectedOptions, props, selectedItems): void => {
-        this.updateLabels(name, selectedOptions);
-        this.props.onQSChange?.(name, value, selectedOptions, props, selectedItems);
-    };
-
-    onSelectChange: SelectInputChange = (name, value, selectedOptions, props): void => {
-        this.updateLabels(name, selectedOptions);
         this.props.onSelectChange?.(name, value, selectedOptions, props);
     };
 
@@ -262,7 +253,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         maxRows={10}
                                         multiple={multiple}
                                         name={col.fieldKey}
-                                        onQSChange={this.onQSChange}
+                                        onQSChange={this.onSelectChange}
                                         onToggleDisable={this.onToggleDisable}
                                         placeholder="Select or type to search..."
                                         previewOptions={col.previewOptions === true || showQuerySelectPreviewOptions}
@@ -282,16 +273,17 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     if (col.validValues) {
                         return (
                             <TextChoiceInput
-                                key={i}
-                                formsy
-                                queryColumn={col}
-                                value={value}
                                 addLabelAsterisk={showAsteriskSymbol}
                                 allowDisable={allowFieldDisable}
+                                formsy
                                 initiallyDisabled={shouldDisableField}
+                                key={i}
+                                onChange={this.onSelectChange}
                                 onToggleDisable={this.onToggleDisable}
-                                renderFieldLabel={renderFieldLabel}
                                 placeholder="Select or type to search..."
+                                queryColumn={col}
+                                renderFieldLabel={renderFieldLabel}
+                                value={value}
                             />
                         );
                     }

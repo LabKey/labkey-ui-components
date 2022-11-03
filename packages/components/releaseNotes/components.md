@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Fix Issue 45944: Decode $ in MenuItem keys
 
+### version 2.242.5
+*Released*: 2 November 2022
+* Generate audit log URL using updated pattern from #965
+* Add explicit typings to constant `AuditQuery` instances.
+
 ### version 2.242.4
 *Released*: 2 November 2022
 * EditInlineField: remove showToggle prop, always render edit icon at end of content

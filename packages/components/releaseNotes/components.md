@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+## version 2.242.6
+*Released*: 3 Nov 2022
+* Fix Issue 45944: Decode $ in MenuItem keys
+
 ### version 2.242.5
 *Released*: 2 November 2022
 * Generate audit log URL using updated pattern from #965

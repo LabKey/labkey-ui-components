@@ -501,11 +501,13 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                       placeholder="Select a Data Type ..."
                                       styles={
                                         {
+                                          "control": [Function],
                                           "menu": [Function],
                                           "menuPortal": [Function],
                                           "multiValue": [Function],
                                           "multiValueLabel": [Function],
                                           "multiValueRemove": [Function],
+                                          "placeholder": [Function],
                                         }
                                       }
                                       theme={[Function]}
@@ -565,11 +567,13 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                         screenReaderStatus={[Function]}
                                         styles={
                                           {
+                                            "control": [Function],
                                             "menu": [Function],
                                             "menuPortal": [Function],
                                             "multiValue": [Function],
                                             "multiValueLabel": [Function],
                                             "multiValueRemove": [Function],
+                                            "placeholder": [Function],
                                           }
                                         }
                                         tabIndex="0"
@@ -650,11 +654,13 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                               "promptTextCreator": undefined,
                                               "screenReaderStatus": [Function],
                                               "styles": {
+                                                "control": [Function],
                                                 "menu": [Function],
                                                 "menuPortal": [Function],
                                                 "multiValue": [Function],
                                                 "multiValueLabel": [Function],
                                                 "multiValueRemove": [Function],
+                                                "placeholder": [Function],
                                               },
                                               "tabIndex": "0",
                                               "tabSelectsValue": true,
@@ -1040,11 +1046,13 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                     "promptTextCreator": undefined,
                                                     "screenReaderStatus": [Function],
                                                     "styles": {
+                                                      "control": [Function],
                                                       "menu": [Function],
                                                       "menuPortal": [Function],
                                                       "multiValue": [Function],
                                                       "multiValueLabel": [Function],
                                                       "multiValueRemove": [Function],
+                                                      "placeholder": [Function],
                                                     },
                                                     "tabIndex": "0",
                                                     "tabSelectsValue": true,
@@ -1442,11 +1450,13 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                     "promptTextCreator": undefined,
                                                     "screenReaderStatus": [Function],
                                                     "styles": {
+                                                      "control": [Function],
                                                       "menu": [Function],
                                                       "menuPortal": [Function],
                                                       "multiValue": [Function],
                                                       "multiValueLabel": [Function],
                                                       "multiValueRemove": [Function],
+                                                      "placeholder": [Function],
                                                     },
                                                     "tabIndex": "0",
                                                     "tabSelectsValue": true,
@@ -1843,11 +1853,13 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                           "promptTextCreator": undefined,
                                                           "screenReaderStatus": [Function],
                                                           "styles": {
+                                                            "control": [Function],
                                                             "menu": [Function],
                                                             "menuPortal": [Function],
                                                             "multiValue": [Function],
                                                             "multiValueLabel": [Function],
                                                             "multiValueRemove": [Function],
+                                                            "placeholder": [Function],
                                                           },
                                                           "tabIndex": "0",
                                                           "tabSelectsValue": true,
@@ -2231,11 +2243,13 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                 "promptTextCreator": undefined,
                                                                 "screenReaderStatus": [Function],
                                                                 "styles": {
+                                                                  "control": [Function],
                                                                   "menu": [Function],
                                                                   "menuPortal": [Function],
                                                                   "multiValue": [Function],
                                                                   "multiValueLabel": [Function],
                                                                   "multiValueRemove": [Function],
+                                                                  "placeholder": [Function],
                                                                 },
                                                                 "tabIndex": "0",
                                                                 "tabSelectsValue": true,
@@ -2630,11 +2644,13 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                 "promptTextCreator": undefined,
                                                                 "screenReaderStatus": [Function],
                                                                 "styles": {
+                                                                  "control": [Function],
                                                                   "menu": [Function],
                                                                   "menuPortal": [Function],
                                                                   "multiValue": [Function],
                                                                   "multiValueLabel": [Function],
                                                                   "multiValueRemove": [Function],
+                                                                  "placeholder": [Function],
                                                                 },
                                                                 "tabIndex": "0",
                                                                 "tabSelectsValue": true,
@@ -2753,11 +2769,13 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                   "promptTextCreator": undefined,
                                                                   "screenReaderStatus": [Function],
                                                                   "styles": {
+                                                                    "control": [Function],
                                                                     "menu": [Function],
                                                                     "menuPortal": [Function],
                                                                     "multiValue": [Function],
                                                                     "multiValueLabel": [Function],
                                                                     "multiValueRemove": [Function],
+                                                                    "placeholder": [Function],
                                                                   },
                                                                   "tabIndex": "0",
                                                                   "tabSelectsValue": true,
@@ -3231,11 +3249,13 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                           "promptTextCreator": undefined,
                                                           "screenReaderStatus": [Function],
                                                           "styles": {
+                                                            "control": [Function],
                                                             "menu": [Function],
                                                             "menuPortal": [Function],
                                                             "multiValue": [Function],
                                                             "multiValueLabel": [Function],
                                                             "multiValueRemove": [Function],
+                                                            "placeholder": [Function],
                                                           },
                                                           "tabIndex": "0",
                                                           "tabSelectsValue": true,
@@ -3614,11 +3634,13 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                 "promptTextCreator": undefined,
                                                                 "screenReaderStatus": [Function],
                                                                 "styles": {
+                                                                  "control": [Function],
                                                                   "menu": [Function],
                                                                   "menuPortal": [Function],
                                                                   "multiValue": [Function],
                                                                   "multiValueLabel": [Function],
                                                                   "multiValueRemove": [Function],
+                                                                  "placeholder": [Function],
                                                                 },
                                                                 "tabIndex": "0",
                                                                 "tabSelectsValue": true,
@@ -4008,11 +4030,13 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                 "promptTextCreator": undefined,
                                                                 "screenReaderStatus": [Function],
                                                                 "styles": {
+                                                                  "control": [Function],
                                                                   "menu": [Function],
                                                                   "menuPortal": [Function],
                                                                   "multiValue": [Function],
                                                                   "multiValueLabel": [Function],
                                                                   "multiValueRemove": [Function],
+                                                                  "placeholder": [Function],
                                                                 },
                                                                 "tabIndex": "0",
                                                                 "tabSelectsValue": true,

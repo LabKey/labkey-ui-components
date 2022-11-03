@@ -1273,7 +1273,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                         className="css-1f43avz-a11yText-A11yText"
                       />
                       <div
-                        className="select-input__control select-input__control--is-disabled css-1fhf3k1-control"
+                        className="select-input__control select-input__control--is-disabled css-1e0cv1x-control"
                         onMouseDown={[Function]}
                         onTouchEnd={[Function]}
                       >
@@ -1281,7 +1281,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                           className="select-input__value-container css-g1d714-ValueContainer"
                         >
                           <div
-                            className="select-input__placeholder css-1wa3eu0-placeholder"
+                            className="select-input__placeholder css-eaf7xa-placeholder"
                           >
                             Select...
                           </div>

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-## version 2.TBD
-*Released*: TBD
+## version 2.242.6
+*Released*: 3 Nov 2022
 * Fix Issue 45944: Decode $ in MenuItem keys
 
 ### version 2.242.5

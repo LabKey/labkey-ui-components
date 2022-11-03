@@ -129,6 +129,4 @@ describe('MenuItemModel', () => {
         verifyModelKey("key $S", 'key /');
         verifyModelKey("key $D", 'key $');
     });
-
-
 });

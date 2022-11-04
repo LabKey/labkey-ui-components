@@ -17,7 +17,6 @@ import { SCHEMAS } from '../internal/schemas';
 
 import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from '../public/QueryModel/withQueryModels';
 
-import { JobsButton, SampleStorageButton } from '../internal/components/samples/models';
 import { getSampleAliquotsQueryConfig } from '../internal/components/samples/actions';
 import { getOmittedSampleTypeColumns } from '../internal/components/samples/utils';
 import { isAssayEnabled } from '../internal/app/utils';
@@ -26,12 +25,11 @@ import { AssayResultsForSamplesButton } from './AssayResultsForSamplesButton';
 
 import { SamplesAssayButton } from './SamplesAssayButton';
 import { EntityDeleteModal } from './EntityDeleteModal';
+import { useSampleTypeAppContext } from './SampleTypeAppContext';
 
 const SUB_MENU_WIDTH = 1350;
 
 interface AliquotGridButtonsProps {
-    JobsButtonComponent?: JobsButton;
-    StorageButtonComponent?: SampleStorageButton;
     afterAction: () => void;
     assayProviderType?: string;
     lineageUpdateAllowed: boolean;
@@ -40,16 +38,8 @@ interface AliquotGridButtonsProps {
 }
 
 const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> = props => {
-    const {
-        afterAction,
-        lineageUpdateAllowed,
-        model,
-        onDelete,
-        StorageButtonComponent,
-        JobsButtonComponent,
-        user,
-        assayProviderType,
-    } = props;
+    const { afterAction, lineageUpdateAllowed, model, onDelete, user, assayProviderType } = props;
+    const { JobsButtonComponent, SampleStorageButtonComponent } = useSampleTypeAppContext();
     const metricFeatureArea = 'sampleAliquots';
 
     const moreItems = [];
@@ -67,10 +57,10 @@ const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> 
             perm: PermissionTypes.ManageSampleWorkflows,
         });
     }
-    if (StorageButtonComponent) {
+    if (SampleStorageButtonComponent) {
         moreItems.push({
             button: (
-                <StorageButtonComponent
+                <SampleStorageButtonComponent
                     afterStorageUpdate={afterAction}
                     queryModel={model}
                     user={user}
@@ -121,10 +111,8 @@ const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> 
 
 interface Props {
     assayProviderType?: string;
-    jobsButton?: JobsButton;
     lineageUpdateAllowed: boolean;
     onSampleChangeInvalidate: (schemaQuery: SchemaQuery) => void;
-    storageButton?: SampleStorageButton;
     user: User;
 }
 
@@ -165,7 +153,7 @@ export class SampleAliquotsGridPanelImpl extends PureComponent<Props & InjectedQ
     }
 
     render(): ReactNode {
-        const { actions, storageButton, jobsButton, ...buttonProps } = this.props;
+        const { actions, ...buttonProps } = this.props;
         const queryModel = this.getQueryModel();
 
         return (
@@ -177,8 +165,6 @@ export class SampleAliquotsGridPanelImpl extends PureComponent<Props & InjectedQ
                         ...buttonProps,
                         afterAction: this.afterAction,
                         onDelete: this.onDelete,
-                        StorageButtonComponent: storageButton,
-                        JobsButtonComponent: jobsButton,
                     }}
                     model={queryModel}
                 />

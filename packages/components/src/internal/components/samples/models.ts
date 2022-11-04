@@ -127,6 +127,7 @@ export interface SampleStatus {
     statusType: SampleStateType;
 }
 
+// Note: this should stay in sync with the freezermanager/src/components/StorageButton.tsx props
 interface SampleStorageButtonComponentProps {
     afterStorageUpdate?: () => void;
     isPicklist?: boolean;
@@ -138,6 +139,7 @@ interface SampleStorageButtonComponentProps {
 
 export type SampleStorageButton = ComponentType<SampleStorageButtonComponentProps>;
 
+// Note: this should stay in sync with the workflow/src/Components/JobsButton.tsx props
 interface JobsButtonsComponentProps {
     metricFeatureArea?: string;
     model: QueryModel;
@@ -145,6 +147,22 @@ interface JobsButtonsComponentProps {
 }
 
 export type JobsButton = ComponentType<JobsButtonsComponentProps>;
+
+// Note: this should stay in sync with the workflow/src/Components/WorkflowGrid.tsx props
+interface WorkflowGridComponentProps {
+    containerPath?: string;
+    gridPrefix?: string;
+    sampleAliquotType?: ALIQUOT_FILTER_MODE;
+    sampleId?: number;
+    sampleLSID?: string;
+    showAliquotViewSelector?: boolean;
+    showStartButton?: boolean;
+    showTemplateTabs?: boolean;
+    user: User;
+    visibleTabs?: string[];
+}
+
+export type WorkflowGrid = ComponentType<WorkflowGridComponentProps>;
 
 export class SampleState {
     [immerable] = true;

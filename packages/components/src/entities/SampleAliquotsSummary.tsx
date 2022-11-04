@@ -15,9 +15,11 @@ import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 import { InjectedQueryModels, withQueryModels } from '../public/QueryModel/withQueryModels';
 
 import { ALIQUOT_FILTER_MODE } from '../internal/components/samples/constants';
-import { SampleAliquotAssaysCount } from './SampleAliquotAssaysCount';
+
 import { SampleAliquotsStats } from '../internal/components/samples/models';
 import { getSampleAliquotsQueryConfig, getSampleAliquotsStats } from '../internal/components/samples/actions';
+
+import { SampleAliquotAssaysCount } from './SampleAliquotAssaysCount';
 
 interface OwnProps {
     aliquotJobsQueryConfig: QueryConfig;
@@ -100,7 +102,7 @@ export class SampleAliquotsSummaryWithModels extends PureComponent<Props & Sampl
     }
 
     render() {
-        const { aliquotsModel, jobsModel, hideAssayData, aliquotJobsQueryConfig } = this.props;
+        const { aliquotsModel, jobsModel, hideAssayData } = this.props;
 
         if (
             !aliquotsModel ||
@@ -119,15 +121,11 @@ export class SampleAliquotsSummaryWithModels extends PureComponent<Props & Sampl
             <Panel>
                 <Panel.Heading>Aliquots</Panel.Heading>
                 <Panel.Body>
-                    {!stats && (
-                        <span className="sample-aliquots-stats-empty">This sample has no aliquots.</span>
-                    )}
+                    {!stats && <span className="sample-aliquots-stats-empty">This sample has no aliquots.</span>}
                     {!!stats && (
-                    <table className="table table-responsive table-condensed detail-component--table__fixed sample-aliquots-stats-table">
-                        <tbody>
-                            {this.renderStats(stats, hideAssayData)}
-                        </tbody>
-                    </table>
+                        <table className="table table-responsive table-condensed detail-component--table__fixed sample-aliquots-stats-table">
+                            <tbody>{this.renderStats(stats, hideAssayData)}</tbody>
+                        </table>
                     )}
                 </Panel.Body>
             </Panel>
@@ -148,9 +146,8 @@ class SampleAliquotsSummaryImpl extends PureComponent<Props> {
 
     initModel(): void {
         const { actions, aliquotJobsQueryConfig } = this.props;
-
         actions.addModel(this.getAliquotQueryConfig(), true);
-        actions.addModel(aliquotJobsQueryConfig, true);
+        if (aliquotJobsQueryConfig) actions.addModel(aliquotJobsQueryConfig, true);
     }
 
     getAliquotQueryConfig(): QueryConfig {

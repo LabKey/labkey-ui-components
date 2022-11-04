@@ -1,6 +1,7 @@
 import React, { ComponentType, FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { MenuItem } from 'react-bootstrap';
 import { Container, PermissionTypes, User } from '@labkey/api';
+
 import { EntityDataType } from '../internal/components/entities/models';
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { useNotificationsContext } from '../internal/components/notifications/NotificationsContext';
@@ -8,12 +9,12 @@ import { getSampleOperationConfirmationData } from '../internal/components/entit
 import { SampleOperation } from '../internal/components/samples/constants';
 import { AppURL } from '../internal/url/AppURL';
 import { AUDIT_KEY, MEDIA_KEY, SAMPLES_KEY } from '../internal/app/constants';
-import { onSampleChange } from './actions';
+
 import { getSampleStatus, getSampleStatusType, isSampleOperationPermitted } from '../internal/components/samples/utils';
 import { caseInsensitive } from '../internal/util/utils';
 import { SampleStatusTag } from '../internal/components/samples/SampleStatusTag';
 import { SCHEMAS } from '../internal/schemas';
-import { createEntityParentKey, getSampleAuditBehaviorType, getSampleDeleteMessage } from './utils';
+
 import { PageDetailHeader } from '../internal/components/forms/PageDetailHeader';
 import { ColorIcon } from '../internal/components/base/ColorIcon';
 import { getTitleDisplay } from '../internal/components/pipeline/utils';
@@ -24,39 +25,43 @@ import { AddToPicklistMenuItem } from '../internal/components/picklist/AddToPick
 import { PicklistCreationMenuItem } from '../internal/components/picklist/PicklistCreationMenuItem';
 import { DisableableMenuItem } from '../internal/components/samples/DisableableMenuItem';
 import { SAMPLE_TIMELINE_AUDIT_QUERY } from '../internal/components/auditlog/constants';
-import { EntityDeleteModal } from './EntityDeleteModal';
+
 import { SampleTypeDataType } from '../internal/components/entities/constants';
 import {
     LabelPrintingProviderProps,
-    withLabelPrintingContext
+    withLabelPrintingContext,
 } from '../internal/components/labels/LabelPrintingContextProvider';
 import { useServerContext } from '../internal/components/base/ServerContext';
 import { PrintLabelsModal } from '../internal/components/labels/PrintLabelsModal';
-import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
-import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
+
 import { invalidateLineageResults } from '../internal/components/lineage/actions';
 
+import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
+import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
+import { EntityDeleteModal } from './EntityDeleteModal';
+import { createEntityParentKey, getJobCreationHref, getSampleAuditBehaviorType, getSampleDeleteMessage } from './utils';
+import { onSampleChange } from './actions';
+
 interface StorageMenuProps {
-    sampleModel: QueryModel;
     onUpdate?: (skipChangeCount?: boolean) => any;
+    sampleModel: QueryModel;
 }
 
 interface HeaderProps {
+    StorageMenu?: ComponentType<StorageMenuProps>;
     assayProviderType?: string;
     entityDataType?: EntityDataType;
-    onUpdate: () => void;
-    sampleModel: QueryModel;
-    showDescription?: boolean;
     hasActiveJob?: boolean;
     iconSrc?: string;
-    jobCreationHref?: string;
-    navigate: (url: string | AppURL) => void;
-    sampleContainer?: Container;
-    user?: User;
-    title?: string;
-    subtitle?: ReactNode;
     isCrossFolder?: boolean;
-    StorageMenu?: ComponentType<StorageMenuProps>
+    navigate: (url: string | AppURL) => void;
+    onUpdate: () => void;
+    sampleContainer?: Container;
+    sampleModel: QueryModel;
+    showDescription?: boolean;
+    subtitle?: ReactNode;
+    title?: string;
+    user?: User;
 }
 
 export type Props = HeaderProps & LabelPrintingProviderProps;
@@ -77,7 +82,6 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
         sampleModel,
         showDescription,
         isCrossFolder,
-        jobCreationHref,
         title,
         subtitle,
         StorageMenu,
@@ -92,7 +96,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
     const sampleIds = useMemo(() => [sampleId], [sampleId]);
     const { user } = useServerContext();
 
-    const isMedia  = queryInfo?.isMedia;
+    const isMedia = queryInfo?.isMedia;
 
     useEffect((): void => {
         (async () => {
@@ -101,7 +105,11 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                     user.hasDeletePermission() &&
                     isSampleOperationPermitted(getSampleStatusType(sampleModel.getRow()), SampleOperation.Delete)
                 ) {
-                    const confirmationData = await getSampleOperationConfirmationData(SampleOperation.Delete, undefined, sampleIds);
+                    const confirmationData = await getSampleOperationConfirmationData(
+                        SampleOperation.Delete,
+                        undefined,
+                        sampleIds
+                    );
                     setCanDelete(confirmationData.allowed.length === 1);
                 }
             } catch (e) {
@@ -114,13 +122,18 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
 
     const onAfterDelete = useCallback((): void => {
         invalidateLineageResults();
-        navigate(AppURL.create(isMedia ? MEDIA_KEY :SAMPLES_KEY, sampleModel.queryName));
+        navigate(AppURL.create(isMedia ? MEDIA_KEY : SAMPLES_KEY, sampleModel.queryName));
     }, [navigate, isMedia, sampleModel]);
 
-    const onAfterPrint = useCallback((numSamples: number, numLabels: number): void => {
-        setShowPrintDialog(false);
-        createNotification(`Successfully printed ${numLabels} ${numLabels > 1 ? 'labels' : 'label'} for this sample.`);
-    }, [createNotification]);
+    const onAfterPrint = useCallback(
+        (numSamples: number, numLabels: number): void => {
+            setShowPrintDialog(false);
+            createNotification(
+                `Successfully printed ${numLabels} ${numLabels > 1 ? 'labels' : 'label'} for this sample.`
+            );
+        },
+        [createNotification]
+    );
 
     const onBeforeDelete = useCallback((): void => {
         onSampleChange();
@@ -130,16 +143,19 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
         setShowConfirmDelete(true);
     }, []);
 
-    const onHideModals = useCallback((hasError?: boolean): void => {
-        setShowConfirmDelete(false);
-        setShowPrintDialog(false);
+    const onHideModals = useCallback(
+        (hasError?: boolean): void => {
+            setShowConfirmDelete(false);
+            setShowPrintDialog(false);
 
-        // If the dialog had an error when canceling, then use
-        // the onUpdate so that the page updates/refreshes accordingly.
-        if (hasError) {
-            onUpdate();
-        }
-    }, [onUpdate]);
+            // If the dialog had an error when canceling, then use
+            // the onUpdate so that the page updates/refreshes accordingly.
+            if (hasError) {
+                onUpdate();
+            }
+        },
+        [onUpdate]
+    );
 
     const onPrintLabel = useCallback((): void => {
         setShowPrintDialog(true);
@@ -161,7 +177,6 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
         () => isSampleOperationPermitted(sampleStatus.statusType, SampleOperation.AddToWorkflow),
         [sampleStatus]
     );
-
 
     const headerTitle = useMemo(() => {
         if (title) return title;
@@ -206,90 +221,95 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                 leftColumns={9}
             >
                 <CreatedModified row={row} />
-                <RequiresPermission user={user} permissionCheck="any" perms={[
-                    PermissionTypes.Insert,
-                    PermissionTypes.Update,
-                    PermissionTypes.Delete,
-                    PermissionTypes.ManagePicklists,
-                    PermissionTypes.CanSeeAuditLog,
-                    PermissionTypes.EditStorageData
-                ]}>
-                        <span className="sample-status-header-button">
-                            <ManageDropdownButton id="sampledetail" pullRight collapsed>
-                                {!isCrossFolder && (
-                                    <RequiresPermission user={user} perms={PermissionTypes.Insert}>
-                                        {isMedia && <MenuItem href={insertURL}>Create {entityDataType?.nounPlural ?? queryInfo.name}</MenuItem>}
-                                        {!isMedia && (
-                                            <CreateSamplesSubMenu
-                                                disabled={!canCreateSamples}
-                                                selectedQueryInfo={sampleModel.queryInfo}
-                                                parentType={SAMPLES_KEY}
-                                                parentKey={parent}
-                                                navigate={navigate}
-                                            />
-                                        )}
-                                    </RequiresPermission>
-                                )}
+                <RequiresPermission
+                    user={user}
+                    permissionCheck="any"
+                    perms={[
+                        PermissionTypes.Insert,
+                        PermissionTypes.Update,
+                        PermissionTypes.Delete,
+                        PermissionTypes.ManagePicklists,
+                        PermissionTypes.CanSeeAuditLog,
+                        PermissionTypes.EditStorageData,
+                    ]}
+                >
+                    <span className="sample-status-header-button">
+                        <ManageDropdownButton id="sampledetail" pullRight collapsed>
+                            {!isCrossFolder && (
+                                <RequiresPermission user={user} perms={PermissionTypes.Insert}>
+                                    {isMedia && (
+                                        <MenuItem href={insertURL}>
+                                            Create {entityDataType?.nounPlural ?? queryInfo.name}
+                                        </MenuItem>
+                                    )}
+                                    {!isMedia && (
+                                        <CreateSamplesSubMenu
+                                            disabled={!canCreateSamples}
+                                            selectedQueryInfo={sampleModel.queryInfo}
+                                            parentType={SAMPLES_KEY}
+                                            parentKey={parent}
+                                            navigate={navigate}
+                                        />
+                                    )}
+                                </RequiresPermission>
+                            )}
 
-                                {!isMedia && (
-                                    <RequiresPermission user={user} perms={PermissionTypes.Insert}>
-                                        <AssayImportSubMenuItem
-                                            queryModel={sampleModel}
-                                            providerType={assayProviderType}
-                                            requireSelection={false}
-                                            disabled={!canUploadAssayData}
-                                        />
-                                    </RequiresPermission>
-                                )}
+                            {!isMedia && (
+                                <RequiresPermission user={user} perms={PermissionTypes.Insert}>
+                                    <AssayImportSubMenuItem
+                                        queryModel={sampleModel}
+                                        providerType={assayProviderType}
+                                        requireSelection={false}
+                                        disabled={!canUploadAssayData}
+                                    />
+                                </RequiresPermission>
+                            )}
 
-                                {!isMedia && (
-                                    <RequiresPermission user={user} perms={PermissionTypes.ManagePicklists}>
-                                        <AddToPicklistMenuItem
-                                            queryModel={sampleModel}
-                                            sampleIds={sampleIds}
-                                            user={user}
-                                        />
-                                        <PicklistCreationMenuItem
-                                            sampleIds={sampleIds}
-                                            key="picklist"
-                                            user={user}
-                                        />
-                                    </RequiresPermission>
-                                )}
-                                <RequiresPermission user={user} perms={PermissionTypes.ManageSampleWorkflows}>
-                                    <DisableableMenuItem href={jobCreationHref} operationPermitted={canAddToWorkflow}>
-                                        Create Workflow Job
+                            {!isMedia && (
+                                <RequiresPermission user={user} perms={PermissionTypes.ManagePicklists}>
+                                    <AddToPicklistMenuItem queryModel={sampleModel} sampleIds={sampleIds} user={user} />
+                                    <PicklistCreationMenuItem sampleIds={sampleIds} key="picklist" user={user} />
+                                </RequiresPermission>
+                            )}
+                            <RequiresPermission user={user} perms={PermissionTypes.ManageSampleWorkflows}>
+                                <DisableableMenuItem
+                                    href={getJobCreationHref(sampleModel, undefined, true)}
+                                    operationPermitted={canAddToWorkflow}
+                                >
+                                    Create Workflow Job
+                                </DisableableMenuItem>
+                            </RequiresPermission>
+
+                            {!isMedia && !!StorageMenu && <StorageMenu onUpdate={onUpdate} sampleModel={sampleModel} />}
+
+                            {canPrintLabels && <MenuItem onClick={onPrintLabel}>Print Labels</MenuItem>}
+
+                            {!isMedia && (
+                                <RequiresPermission user={user} perms={PermissionTypes.Delete}>
+                                    <DisableableMenuItem
+                                        disabledMessage={getSampleDeleteMessage(canDelete, error)}
+                                        onClick={onDeleteSample}
+                                        operationPermitted={canDelete}
+                                    >
+                                        Delete {entityDataType?.nounSingular ?? 'Sample'}
                                     </DisableableMenuItem>
                                 </RequiresPermission>
+                            )}
 
-                                {!isMedia && !!StorageMenu && <StorageMenu onUpdate={onUpdate} sampleModel={sampleModel} />}
-
-                                {canPrintLabels && <MenuItem onClick={onPrintLabel}>Print Labels</MenuItem>}
-
-                                {!isMedia && (
-                                    <RequiresPermission user={user} perms={PermissionTypes.Delete}>
-                                        <DisableableMenuItem
-                                            disabledMessage={getSampleDeleteMessage(canDelete, error)}
-                                            onClick={onDeleteSample}
-                                            operationPermitted={canDelete}
-                                        >
-                                            Delete {entityDataType?.nounSingular ?? 'Sample'}
-                                        </DisableableMenuItem>
-                                    </RequiresPermission>
-                                )}
-
-                                <RequiresPermission perms={PermissionTypes.CanSeeAuditLog}>
-                                    <MenuItem href={AppURL.create(AUDIT_KEY)
+                            <RequiresPermission perms={PermissionTypes.CanSeeAuditLog}>
+                                <MenuItem
+                                    href={AppURL.create(AUDIT_KEY)
                                         .addParams({
                                             eventType: SAMPLE_TIMELINE_AUDIT_QUERY.value,
-                                            'query.sampleid~eq': sampleId
-                                        }).toHref()}>
-                                        View Audit History
-                                    </MenuItem>
-                                </RequiresPermission>
-
-                            </ManageDropdownButton>
-                        </span>
+                                            'query.sampleid~eq': sampleId,
+                                        })
+                                        .toHref()}
+                                >
+                                    View Audit History
+                                </MenuItem>
+                            </RequiresPermission>
+                        </ManageDropdownButton>
+                    </span>
                 </RequiresPermission>
             </PageDetailHeader>
             {showConfirmDelete && (

@@ -48,6 +48,7 @@ import {
     getUpdatedLineageRowsForBulkEdit,
     getImportItemsForAssayDefinitions,
     getSamplesAssayGridQueryConfigs,
+    getJobCreationHref,
 } from './utils';
 
 describe('getCrossFolderSelectionMsg', () => {
@@ -993,5 +994,62 @@ describe('getSamplesAssayGridQueryConfigs', () => {
         expect(configs['prefix:assayruncount:suffix'].baseFilters[0].getURLParameterValue()).toBe('1');
         expect(configs['unfiltered:5051:suffix'].baseFilters[0].getURLParameterValue()).toBe('1;2');
         expect(configs['unfiltered:assayruncount:suffix'].baseFilters).toBeUndefined();
+    });
+});
+
+describe('getJobCreationHref', () => {
+    const schemaQuery = SchemaQuery.create('s', 'q');
+    const queryInfo = new QueryInfo({ pkCols: List(['pk']), schemaQuery });
+    const modelId = 'id';
+    const queryModel = makeTestQueryModel(schemaQuery, queryInfo, undefined, undefined, undefined, modelId);
+
+    test('singleSelect', () => {
+        expect(getJobCreationHref(queryModel)).toContain('selectionKey=id');
+        const queryModelWithKeyValue = queryModel.mutate({ keyValue: 'key' });
+        expect(getJobCreationHref(queryModelWithKeyValue)).toContain('selectionKey=appkey%7Cs%2Fq%7Ckey');
+    });
+    test('filters', () => {
+        expect(getJobCreationHref(queryModel, undefined, true)).toBe('#/workflow/new?selectionKey=id');
+
+        const queryModelWithFilters = queryModel.mutate({ filterArray: [Filter.create('TEST COL', 'TEST VALUE')] });
+        expect(getJobCreationHref(queryModelWithFilters, undefined, true)).toBe(
+            '#/workflow/new?selectionKey=id&query.TEST%20COL~eq=TEST%20VALUE'
+        );
+    });
+    test('with filters but ignoreFilter', () => {
+        expect(getJobCreationHref(queryModel, undefined, true)).toBe('#/workflow/new?selectionKey=id');
+
+        const queryModelWithFilters = queryModel.mutate({ filterArray: [Filter.create('TEST COL', 'TEST VALUE')] });
+        expect(
+            getJobCreationHref(queryModelWithFilters, undefined, true, undefined, false, null, null, null, true)
+        ).toBe('#/workflow/new?selectionKey=id');
+    });
+    test('templateId', () => {
+        expect(getJobCreationHref(queryModel).indexOf('templateId')).toBe(-1);
+        expect(getJobCreationHref(queryModel, 1)).toContain('templateId=1');
+        expect(getJobCreationHref(queryModel, '1')).toContain('templateId=1');
+    });
+    test('samplesIncluded', () => {
+        expect(getJobCreationHref(queryModel)).toBe('#/workflow/new?selectionKey=id&sampleTab=2');
+        expect(getJobCreationHref(queryModel, undefined, true)).toBe('#/workflow/new?selectionKey=id');
+    });
+    test('picklistName', () => {
+        expect(getJobCreationHref(queryModel).indexOf('picklistName')).toBe(-1);
+        expect(getJobCreationHref(queryModel, undefined, false, 'name')).toContain('picklistName=name');
+    });
+    test('isAssay', () => {
+        expect(getJobCreationHref(queryModel).indexOf('isAssay')).toBe(-1);
+        expect(getJobCreationHref(queryModel, undefined, true, undefined, true)).toBe('#/workflow/new?selectionKey=id');
+        expect(getJobCreationHref(queryModel, undefined, true, undefined, false, 'sampleFieldKey')).toBe(
+            '#/workflow/new?selectionKey=id'
+        );
+        expect(getJobCreationHref(queryModel, undefined, true, undefined, true, 'sampleFieldKey')).toBe(
+            '#/workflow/new?selectionKey=id&assayProtocol=s&isAssay=true&sampleFieldKey=sampleFieldKey'
+        );
+    });
+    test('with product id', () => {
+        expect(getJobCreationHref(queryModel, undefined, true, undefined, false, null, 'from', 'to')).toBe(
+            '/labkey/to/app.view#/workflow/new?selectionKey=id'
+        );
     });
 });

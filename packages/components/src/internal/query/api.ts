@@ -40,6 +40,12 @@ function getQueryDetailsCacheKey(schemaQuery: SchemaQuery, containerPath?: strin
 export function invalidateQueryDetailsCache(schemaQuery: SchemaQuery, containerPath?: string, fk?: string): void {
     const key = getQueryDetailsCacheKey(schemaQuery, containerPath, fk);
     invalidateQueryDetailsCacheKey(key);
+
+    // also call invalidate for the query key without the containerPath
+    if (containerPath) {
+        const keyNoContainerPath = getQueryDetailsCacheKey(schemaQuery, undefined, fk);
+        invalidateQueryDetailsCacheKey(keyNoContainerPath);
+    }
 }
 
 /** @deprecated Use invalidateQueryDetailsCache() instead */

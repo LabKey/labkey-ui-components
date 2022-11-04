@@ -108,15 +108,11 @@ export const loadSampleTypes = (includeMedia: boolean): Promise<QueryInfo[]> =>
         filterMediaSampleTypes(includeMedia)
     );
 
-export function onSampleChange() {
-    onSampleTypeChange();
-}
-
-export function onSampleTypeChange() {
+export function onSampleChange(): void {
     invalidateLineageResults();
 }
 
-export function onSampleTypeDesignChange(schemaQuery: SchemaQuery) {
-    invalidateQueryDetailsCache(schemaQuery);
+export function onSampleTypeChange(schemaQuery: SchemaQuery, containerPath: string): void {
+    invalidateQueryDetailsCache(schemaQuery, containerPath);
     invalidateLineageResults();
 }

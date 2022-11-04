@@ -4,11 +4,12 @@ import { ActionURL, AuditBehaviorTypes, Filter, Utils, getServerContext } from '
 
 import {
     getOperationNotPermittedMessage,
+    getURLParamsForSampleSelectionKey,
     isSampleOperationPermitted,
     SamplesEditButtonSections,
 } from '../internal/components/samples/utils';
 import { MenuItemModel, ProductMenuModel } from '../internal/components/navigation/model';
-import { SAMPLES_KEY } from '../internal/app/constants';
+import { SAMPLES_KEY, WORKFLOW_KEY } from '../internal/app/constants';
 import { AppURL, createProductUrlFromParts } from '../internal/url/AppURL';
 import { SchemaQuery } from '../public/SchemaQuery';
 import { SCHEMAS } from '../internal/schemas';
@@ -282,7 +283,7 @@ export const ASSAY_RUNS_GRID_ID = 'assayruncount';
 export async function getSamplesAssayGridQueryConfigs(
     api: SamplesAPIWrapper,
     assayModel: AssayStateModel,
-    sampleId: string, // leave undefined/null for the multiple sample selection case
+    sampleId: string | number, // leave undefined/null for the multiple sample selection case
     sampleRows: Array<Record<string, any>>,
     gridSuffix: string,
     gridPrefix: string,
@@ -488,4 +489,24 @@ export function getImportItemsForAssayDefinitions(
 
 export function getSampleAuditBehaviorType() {
     return AuditBehaviorTypes.DETAILED;
+}
+
+export function getJobCreationHref(
+    model: QueryModel,
+    templateId?: string | number,
+    samplesIncluded?: boolean,
+    picklistName?: string,
+    isAssay?: boolean,
+    sampleFieldKey?: string,
+    currentProductId?: string,
+    targetProductId?: string,
+    ignoreFilter?: boolean
+): string {
+    const params = getURLParamsForSampleSelectionKey(model, picklistName, isAssay, sampleFieldKey, ignoreFilter);
+
+    if (templateId) params['templateId'] = templateId;
+    if (!samplesIncluded) params['sampleTab'] = 2; // i.e. JOB_SAMPLE_SEARCH_TAB_ID
+
+    const actionUrl = createProductUrlFromParts(targetProductId, currentProductId, params, WORKFLOW_KEY, 'new');
+    return actionUrl instanceof AppURL ? actionUrl.toHref() : actionUrl;
 }

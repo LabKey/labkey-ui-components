@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.246.0
+*Released*: 4 November 2022
+* Updates for Sample Type consistency of Sample detail pages
+  * Refactor sample pages from LKB and LKSM and move shared pages to components packages
+  * Create context in SampleDetailPage base components to be consumed in other smaple detail pages
+
 ### version 2.245.0
 *Released*: 4 November 2022
 * Refactor for more assay component and page reuse

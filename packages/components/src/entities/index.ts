@@ -4,7 +4,6 @@ import {
     loadSampleTypes,
     onSampleChange,
     onSampleTypeChange,
-    onSampleTypeDesignChange,
 } from './actions';
 import {
     getSampleWizardURL,
@@ -15,10 +14,10 @@ import {
     getSampleDeleteMessage,
     getSampleTypeTemplateUrl,
     createEntityParentKey,
+    getJobCreationHref,
 } from './utils';
 import { SampleTypeBasePage } from './SampleTypeBasePage';
 import { SampleActionsButton } from './SampleActionsButton';
-import { SampleAliquotsGridPanel } from './SampleAliquotsGridPanel';
 import { SampleAliquotsSummary } from './SampleAliquotsSummary';
 import { SamplesAddButton } from './SamplesAddButton';
 import { SampleAssayDetail } from './SampleAssayDetail';
@@ -59,12 +58,19 @@ import { useSampleTypeAppContext } from './SampleTypeAppContext';
 import { SampleTypeDesignPage } from './SampleTypeDesignPage';
 import { AssayResultsForSamplesButton, AssayResultsForSamplesMenuItem } from './AssayResultsForSamplesButton';
 import { AssayResultsForSamplesPage, AssayResultsForSamplesSubNav } from './AssayResultsForSamplesPage';
+import { SampleOverviewPanel } from './SampleOverviewPanel';
+import { SampleDetailContextConsumer, SampleDetailPage } from './SampleDetailPage';
+import { SampleAssaysPage } from './SampleAssaysPage';
+import { SampleLineagePage } from './SampleLineagePage';
+import { SampleAliquotsPage } from './SampleAliquotsPage';
+import { SampleJobsPage } from './SampleJobsPage';
 
 export {
     createEntityParentKey,
     downloadSampleTypeTemplate,
     filterMediaSampleTypes,
     filterSampleRowsForOperation,
+    getJobCreationHref,
     getOriginalParentsFromLineage,
     getSampleSetMenuItem,
     getSampleDeleteMessage,
@@ -75,7 +81,6 @@ export {
     loadSampleTypes,
     onSampleChange,
     onSampleTypeChange,
-    onSampleTypeDesignChange,
     useSampleTypeAppContext,
     AssayImportSubMenuItem,
     AssayResultsForSamplesPage,
@@ -100,16 +105,22 @@ export {
     SampleActionsButton,
     SampleAliquotDetailHeader,
     SampleAliquotViewSelector,
-    SampleAliquotsGridPanel,
     SampleAliquotsSummary,
     SamplesAddButton,
+    SampleAliquotsPage,
     SampleAssayDetail,
+    SampleAssaysPage,
     SampleCreationTypeModal,
     SampleDetailEditing,
+    SampleDetailPage,
+    SampleDetailContextConsumer,
     SampleFinderSection,
     SampleHeader,
     SampleIndexNav,
+    SampleJobsPage,
     SampleLineageGraph,
+    SampleLineagePage,
+    SampleOverviewPanel,
     SamplesResolver,
     SampleSetDeleteModal,
     SampleTimelinePageBase,
@@ -129,5 +140,6 @@ export {
 //  the typescript compiler option "isolatedModules", which do not export types from modules, so types must be exported
 //  separately.
 //  https://github.com/babel/babel-loader/issues/603
+export type { SampleDetailPageProps } from './SampleDetailPage';
 export type { SamplesEditableGridProps } from './SamplesEditableGrid';
 export type { SampleTypeAppContext, WithSampleTypeAppContext, AppContextWithSampleType } from './SampleTypeAppContext';

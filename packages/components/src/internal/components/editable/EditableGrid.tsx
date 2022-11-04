@@ -895,7 +895,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
             if (dragHandleInitSelection && editorModel.hasMultipleSelection()) {
                 const selColFieldKey = this.generateColumns()
-                    .get(parseCellKey(dragHandleInitSelection[0]).colIdx + 1)
+                    .get(parseCellKey(dragHandleInitSelection[0]).colIdx + 2) // 0 = __selection__, 1 = __editing__
                     ?.raw.fieldKey?.toLowerCase();
 
                 const changes = dragFillEvent(
@@ -919,7 +919,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         if (editorModel.hasMultipleSelection() && !editorModel.hasMultipleColumnSelection()) {
             const initSelection = editorModel.sortedSelectionKeys.slice(0, 1);
             const selColFieldKey = this.generateColumns()
-                .get(parseCellKey(initSelection[0]).colIdx + 1)
+                .get(parseCellKey(initSelection[0]).colIdx + 2) // 0 = __selection__, 1 = __editing__
                 ?.raw.fieldKey?.toLowerCase();
 
             const changes = dragFillEvent(

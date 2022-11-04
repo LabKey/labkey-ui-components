@@ -2,24 +2,26 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 
 import { HelpLink, getHelpLink, HELP_LINK_REFERRER, JavaDocsLink } from './helpLinks';
+import { mount } from 'enzyme';
 
 const HELP_LINK_BASE_URL = 'https://www.labkey.org/Documentation/wiki-page.view?';
 
 describe('HelpLink', () => {
     test('default props', () => {
-        const component = <HelpLink topic="TEST_TOPIC">default props text</HelpLink>;
-        const tree = renderer.create(component);
-        expect(tree).toMatchSnapshot();
+        const wrapper = mount(<HelpLink topic="TEST_TOPIC">default props text</HelpLink>);
+        expect(wrapper.find("a").prop("href")).toBe(HELP_LINK_BASE_URL + 'referrer=inPage&name=TEST_TOPIC');
     });
 
     test('custom props', () => {
-        const component = (
+        const wrapper = mount(
             <HelpLink topic="TEST_TOPIC" className="test-class-name" referrer={HELP_LINK_REFERRER.ERROR_PAGE}>
                 custom props
             </HelpLink>
         );
-        const tree = renderer.create(component);
-        expect(tree).toMatchSnapshot();
+        const link = wrapper.find('a');
+        expect(link.prop("href")).toBe(HELP_LINK_BASE_URL + 'referrer=errorPage&name=TEST_TOPIC');
+        expect(link.prop("className")).toBe('test-class-name');
+        expect(wrapper.text()).toBe("custom props");
     });
 });
 

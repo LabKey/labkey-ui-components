@@ -67,7 +67,7 @@ exports[`SampleTypeDesigner custom properties 1`] = `
               >
                 <a
                   className="domain-field-float-right"
-                  href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleType&referrer=inPage"
+                  href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=createSampleType"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -478,7 +478,7 @@ exports[`SampleTypeDesigner default properties 1`] = `
               >
                 <a
                   className="domain-field-float-right"
-                  href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleType&referrer=inPage"
+                  href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=createSampleType"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1261,7 +1261,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         "namePreviews": undefined,
       }
     }
-    nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns&referrer=inPage"
+    nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=sampleIDs#patterns"
     nameExpressionPlaceholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
     onCancel={[MockFunction]}
     onComplete={[MockFunction]}
@@ -1548,7 +1548,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "exception": undefined,
           }
         }
-        nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns&referrer=inPage"
+        nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=sampleIDs#patterns"
         nameExpressionPlaceholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
         namePreviewsLoading={false}
         onAddParentAlias={[Function]}
@@ -1715,7 +1715,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               "exception": undefined,
             }
           }
-          nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns&referrer=inPage"
+          nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=sampleIDs#patterns"
           nameExpressionPlaceholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
           namePreviewsLoading={false}
           nounPlural="Sample Types"
@@ -1888,7 +1888,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "exception": undefined,
               }
             }
-            nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns&referrer=inPage"
+            nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=sampleIDs#patterns"
             nameExpressionPlaceholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
             namePreviewsLoading={false}
             nounPlural="Sample Types"
@@ -2105,7 +2105,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                   >
                                                     <a
                                                       className="domain-field-float-right"
-                                                      href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleType&referrer=inPage"
+                                                      href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=createSampleType"
                                                       rel="noopener noreferrer"
                                                       target="_blank"
                                                     >
@@ -2266,7 +2266,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                       "exception": undefined,
                                     }
                                   }
-                                  nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns&referrer=inPage"
+                                  nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=sampleIDs#patterns"
                                   nameExpressionPlaceholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
                                   namePreviewsLoading={false}
                                   nameReadOnly={true}
@@ -2506,7 +2506,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                       </p>
                                                       <p>
                                                         <a
-                                                          href="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns&referrer=inPage"
+                                                          href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=sampleIDs#patterns"
                                                           rel="noopener noreferrer"
                                                           target="_blank"
                                                         >
@@ -2945,36 +2945,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           {
             "derivationDataScopeConfig": {
               "dataTypeFilter": [Function],
-              "helpLinkNode": <div>
-                <p>
-                  <b>
-                    Editable for samples only:
-                  </b>
-                   Field is editable for samples but not for aliquots. An aliquot will inherit the field value from its parent sample.
-                </p>
-                <p>
-                  <b>
-                    Editable for aliquots only:
-                  </b>
-                   Field is viewable and editable for aliquots but not for samples.
-                </p>
-                <p>
-                  <b>
-                    Separately editable for samples and aliquots:
-                  </b>
-                   Field is editable for samples and aliquots independently.
-                </p>
-                <br />
-                <p>
-                  Learn more about 
-                  <HelpLink
-                    topic="aliquots"
-                  >
-                    Sample Aliquots
-                  </HelpLink>
-                  .
-                </p>
-              </div>,
+              "helpLinkNode": <Memo
+                helpTopic="createSampleType#ali"
+              />,
               "labelAll": "Separately editable for samples and aliquots",
               "labelChild": "Editable for aliquots only",
               "labelParent": "Editable for samples only (default)",
@@ -3133,36 +3106,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               {
                 "derivationDataScopeConfig": {
                   "dataTypeFilter": [Function],
-                  "helpLinkNode": <div>
-                    <p>
-                      <b>
-                        Editable for samples only:
-                      </b>
-                       Field is editable for samples but not for aliquots. An aliquot will inherit the field value from its parent sample.
-                    </p>
-                    <p>
-                      <b>
-                        Editable for aliquots only:
-                      </b>
-                       Field is viewable and editable for aliquots but not for samples.
-                    </p>
-                    <p>
-                      <b>
-                        Separately editable for samples and aliquots:
-                      </b>
-                       Field is editable for samples and aliquots independently.
-                    </p>
-                    <br />
-                    <p>
-                      Learn more about 
-                      <HelpLink
-                        topic="aliquots"
-                      >
-                        Sample Aliquots
-                      </HelpLink>
-                      .
-                    </p>
-                  </div>,
+                  "helpLinkNode": <Memo
+                    helpTopic="createSampleType#ali"
+                  />,
                   "labelAll": "Separately editable for samples and aliquots",
                   "labelChild": "Editable for aliquots only",
                   "labelParent": "Editable for samples only (default)",
@@ -4019,36 +3965,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                       {
                                                         "derivationDataScopeConfig": {
                                                           "dataTypeFilter": [Function],
-                                                          "helpLinkNode": <div>
-                                                            <p>
-                                                              <b>
-                                                                Editable for samples only:
-                                                              </b>
-                                                               Field is editable for samples but not for aliquots. An aliquot will inherit the field value from its parent sample.
-                                                            </p>
-                                                            <p>
-                                                              <b>
-                                                                Editable for aliquots only:
-                                                              </b>
-                                                               Field is viewable and editable for aliquots but not for samples.
-                                                            </p>
-                                                            <p>
-                                                              <b>
-                                                                Separately editable for samples and aliquots:
-                                                              </b>
-                                                               Field is editable for samples and aliquots independently.
-                                                            </p>
-                                                            <br />
-                                                            <p>
-                                                              Learn more about 
-                                                              <HelpLink
-                                                                topic="aliquots"
-                                                              >
-                                                                Sample Aliquots
-                                                              </HelpLink>
-                                                              .
-                                                            </p>
-                                                          </div>,
+                                                          "helpLinkNode": <Memo
+                                                            helpTopic="createSampleType#ali"
+                                                          />,
                                                           "labelAll": "Separately editable for samples and aliquots",
                                                           "labelChild": "Editable for aliquots only",
                                                           "labelParent": "Editable for samples only (default)",
@@ -4247,36 +4166,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                       {
                                                                         "derivationDataScopeConfig": {
                                                                           "dataTypeFilter": [Function],
-                                                                          "helpLinkNode": <div>
-                                                                            <p>
-                                                                              <b>
-                                                                                Editable for samples only:
-                                                                              </b>
-                                                                               Field is editable for samples but not for aliquots. An aliquot will inherit the field value from its parent sample.
-                                                                            </p>
-                                                                            <p>
-                                                                              <b>
-                                                                                Editable for aliquots only:
-                                                                              </b>
-                                                                               Field is viewable and editable for aliquots but not for samples.
-                                                                            </p>
-                                                                            <p>
-                                                                              <b>
-                                                                                Separately editable for samples and aliquots:
-                                                                              </b>
-                                                                               Field is editable for samples and aliquots independently.
-                                                                            </p>
-                                                                            <br />
-                                                                            <p>
-                                                                              Learn more about 
-                                                                              <HelpLink
-                                                                                topic="aliquots"
-                                                                              >
-                                                                                Sample Aliquots
-                                                                              </HelpLink>
-                                                                              .
-                                                                            </p>
-                                                                          </div>,
+                                                                          "helpLinkNode": <Memo
+                                                                            helpTopic="createSampleType#ali"
+                                                                          />,
                                                                           "labelAll": "Separately editable for samples and aliquots",
                                                                           "labelChild": "Editable for aliquots only",
                                                                           "labelParent": "Editable for samples only (default)",
@@ -4933,36 +4825,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                         {
                                                                           "derivationDataScopeConfig": {
                                                                             "dataTypeFilter": [Function],
-                                                                            "helpLinkNode": <div>
-                                                                              <p>
-                                                                                <b>
-                                                                                  Editable for samples only:
-                                                                                </b>
-                                                                                 Field is editable for samples but not for aliquots. An aliquot will inherit the field value from its parent sample.
-                                                                              </p>
-                                                                              <p>
-                                                                                <b>
-                                                                                  Editable for aliquots only:
-                                                                                </b>
-                                                                                 Field is viewable and editable for aliquots but not for samples.
-                                                                              </p>
-                                                                              <p>
-                                                                                <b>
-                                                                                  Separately editable for samples and aliquots:
-                                                                                </b>
-                                                                                 Field is editable for samples and aliquots independently.
-                                                                              </p>
-                                                                              <br />
-                                                                              <p>
-                                                                                Learn more about 
-                                                                                <HelpLink
-                                                                                  topic="aliquots"
-                                                                                >
-                                                                                  Sample Aliquots
-                                                                                </HelpLink>
-                                                                                .
-                                                                              </p>
-                                                                            </div>,
+                                                                            "helpLinkNode": <Memo
+                                                                              helpTopic="createSampleType#ali"
+                                                                            />,
                                                                             "labelAll": "Separately editable for samples and aliquots",
                                                                             "labelChild": "Editable for aliquots only",
                                                                             "labelParent": "Editable for samples only (default)",
@@ -5606,36 +5471,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                   {
                                                                                     "derivationDataScopeConfig": {
                                                                                       "dataTypeFilter": [Function],
-                                                                                      "helpLinkNode": <div>
-                                                                                        <p>
-                                                                                          <b>
-                                                                                            Editable for samples only:
-                                                                                          </b>
-                                                                                           Field is editable for samples but not for aliquots. An aliquot will inherit the field value from its parent sample.
-                                                                                        </p>
-                                                                                        <p>
-                                                                                          <b>
-                                                                                            Editable for aliquots only:
-                                                                                          </b>
-                                                                                           Field is viewable and editable for aliquots but not for samples.
-                                                                                        </p>
-                                                                                        <p>
-                                                                                          <b>
-                                                                                            Separately editable for samples and aliquots:
-                                                                                          </b>
-                                                                                           Field is editable for samples and aliquots independently.
-                                                                                        </p>
-                                                                                        <br />
-                                                                                        <p>
-                                                                                          Learn more about 
-                                                                                          <HelpLink
-                                                                                            topic="aliquots"
-                                                                                          >
-                                                                                            Sample Aliquots
-                                                                                          </HelpLink>
-                                                                                          .
-                                                                                        </p>
-                                                                                      </div>,
+                                                                                      "helpLinkNode": <Memo
+                                                                                        helpTopic="createSampleType#ali"
+                                                                                      />,
                                                                                       "labelAll": "Separately editable for samples and aliquots",
                                                                                       "labelChild": "Editable for aliquots only",
                                                                                       "labelParent": "Editable for samples only (default)",
@@ -6139,36 +5977,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                   {
                                                                                     "derivationDataScopeConfig": {
                                                                                       "dataTypeFilter": [Function],
-                                                                                      "helpLinkNode": <div>
-                                                                                        <p>
-                                                                                          <b>
-                                                                                            Editable for samples only:
-                                                                                          </b>
-                                                                                           Field is editable for samples but not for aliquots. An aliquot will inherit the field value from its parent sample.
-                                                                                        </p>
-                                                                                        <p>
-                                                                                          <b>
-                                                                                            Editable for aliquots only:
-                                                                                          </b>
-                                                                                           Field is viewable and editable for aliquots but not for samples.
-                                                                                        </p>
-                                                                                        <p>
-                                                                                          <b>
-                                                                                            Separately editable for samples and aliquots:
-                                                                                          </b>
-                                                                                           Field is editable for samples and aliquots independently.
-                                                                                        </p>
-                                                                                        <br />
-                                                                                        <p>
-                                                                                          Learn more about 
-                                                                                          <HelpLink
-                                                                                            topic="aliquots"
-                                                                                          >
-                                                                                            Sample Aliquots
-                                                                                          </HelpLink>
-                                                                                          .
-                                                                                        </p>
-                                                                                      </div>,
+                                                                                      "helpLinkNode": <Memo
+                                                                                        helpTopic="createSampleType#ali"
+                                                                                      />,
                                                                                       "labelAll": "Separately editable for samples and aliquots",
                                                                                       "labelChild": "Editable for aliquots only",
                                                                                       "labelParent": "Editable for samples only (default)",

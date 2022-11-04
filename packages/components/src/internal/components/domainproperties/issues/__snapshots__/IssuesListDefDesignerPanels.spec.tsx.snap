@@ -58,7 +58,7 @@ exports[`IssuesListDefDesignerPanel new Issue List Definition 1`] = `
               >
                 <a
                   className="domain-field-float-right"
-                  href="https://www.labkey.org/Documentation/wiki-page.view?name=adminIssues&referrer=inPage"
+                  href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=adminIssues"
                   rel="noopener noreferrer"
                   target="_blank"
                 >

@@ -78,7 +78,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
             >
               <a
                 className="domain-field-float-right"
-                href="https://www.labkey.org/Documentation/wiki-page.view?name=createDataset&referrer=inPage"
+                href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=createDataset"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -798,7 +798,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
             >
               <a
                 className="domain-field-float-right"
-                href="https://www.labkey.org/Documentation/wiki-page.view?name=createDataset&referrer=inPage"
+                href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=createDataset"
                 rel="noopener noreferrer"
                 target="_blank"
               >

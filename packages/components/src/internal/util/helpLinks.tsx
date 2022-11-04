@@ -38,7 +38,9 @@ export const URL_ENCODING_TOPIC = 'urlEncoding';
 export const SEARCH_SYNTAX_TOPIC = 'luceneSearch';
 export const DATA_IMPORT_TOPIC = 'dataImport';
 
-export const SAMPLE_ALIQUOT_TOPIC = 'aliquots';
+export const SAMPLE_ALIQUOT_FIELDS_TOPIC = 'createSampleType#ali';
+
+export const LKS_SAMPLE_ALIQUOT_FIELDS_TOPIC = 'generateSamples#fields';
 
 export const UNIQUE_IDS_TOPIC = 'uniqueStorageIds';
 
@@ -54,7 +56,8 @@ export enum HELP_LINK_REFERRER {
 }
 
 export function getHelpLink(topic: string, referrer = HELP_LINK_REFERRER.IN_PAGE): string {
-    return getServerContext().helpLinkPrefix + topic + '&referrer=' + referrer;
+    // putting referrer= at the end causes links that go to anchors in the page not to work.
+    return getServerContext().helpLinkPrefix.replace("name=", "referrer=" + referrer + "&name=" + topic);
 }
 
 interface HelpLinkProps {

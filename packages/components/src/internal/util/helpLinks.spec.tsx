@@ -25,12 +25,12 @@ describe('HelpLink', () => {
 
 describe('getHelpLink', () => {
     test('default props', () => {
-        expect(getHelpLink('TEST_TOPIC')).toBe(HELP_LINK_BASE_URL + 'name=TEST_TOPIC&referrer=inPage');
+        expect(getHelpLink('TEST_TOPIC')).toBe(HELP_LINK_BASE_URL + 'referrer=inPage&name=TEST_TOPIC');
     });
 
     test('with referrer', () => {
         expect(getHelpLink('TEST_TOPIC', HELP_LINK_REFERRER.ERROR_PAGE)).toBe(
-            HELP_LINK_BASE_URL + 'name=TEST_TOPIC&referrer=errorPage'
+            HELP_LINK_BASE_URL + 'referrer=errorPage&name=TEST_TOPIC'
         );
     });
 });

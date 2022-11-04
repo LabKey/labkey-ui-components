@@ -4,12 +4,13 @@ import { QueryConfig, QueryModel } from '../public/QueryModel/QueryModel';
 import { Actions } from '../public/QueryModel/withQueryModels';
 import { User } from '../internal/components/base/models/User';
 import { Container } from '../internal/components/base/models/Container';
-import { LoadingPage } from '../internal/components/base/LoadingPage';
 
 import { getSampleStatusType, isSampleOperationPermitted } from '../internal/components/samples/utils';
 import { ALIQUOT_FILTER_MODE, SampleOperation } from '../internal/components/samples/constants';
 import { isELNEnabled } from '../internal/app/utils';
 import { getContainerFilterForLookups } from '../internal/query/api';
+
+import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 
 import { SampleAliquotsSummary } from './SampleAliquotsSummary';
 import { SampleDetailEditing } from './SampleDetailEditing';
@@ -27,7 +28,6 @@ interface Props {
     onDetailUpdate: (skipChangeCount?: boolean) => void;
     sampleContainer: Container;
     sampleModel: QueryModel;
-    title: string;
     user: User;
 }
 
@@ -35,7 +35,6 @@ export const SampleOverviewPanel: FC<Props> = memo(props => {
     const {
         canUpdate,
         sampleContainer,
-        title,
         onDetailUpdate,
         sampleModel,
         actionChangeCount,
@@ -73,25 +72,27 @@ export const SampleOverviewPanel: FC<Props> = memo(props => {
     const onUpdate = useCallback(() => onDetailUpdate(true), [onDetailUpdate]);
 
     if (!sampleModel || sampleModel.isLoading) {
-        return <LoadingPage title={title} />;
+        return <LoadingSpinner />;
     }
 
     return (
         <>
             {!isMedia && (
                 <div className="row">
-                    <div className="col-xs-12 col-md-4">
-                        <SampleStorageLocationComponent
-                            updateAllowed={isSampleOperationPermitted(
-                                sampleStatusType,
-                                SampleOperation.UpdateStorageMetadata
-                            )}
-                            user={user}
-                            sampleId={sampleId}
-                            onUpdate={onUpdate} // SampleStorageLocation consumes but does not trigger actionChangeCount
-                            actionChangeCount={actionChangeCount}
-                        />
-                    </div>
+                    {SampleStorageLocationComponent && (
+                        <div className="col-xs-12 col-md-4">
+                            <SampleStorageLocationComponent
+                                updateAllowed={isSampleOperationPermitted(
+                                    sampleStatusType,
+                                    SampleOperation.UpdateStorageMetadata
+                                )}
+                                user={user}
+                                sampleId={sampleId}
+                                onUpdate={onUpdate} // SampleStorageLocation consumes but does not trigger actionChangeCount
+                                actionChangeCount={actionChangeCount}
+                            />
+                        </div>
+                    )}
                     {!isAliquot && (
                         <div className="col-xs-12 col-md-4">
                             <SampleAliquotsSummary
@@ -104,7 +105,7 @@ export const SampleOverviewPanel: FC<Props> = memo(props => {
                             />
                         </div>
                     )}
-                    {isELNEnabled() && (
+                    {isELNEnabled() && ReferencingNotebooksComponent && (
                         <div className="col-xs-12 col-md-4">
                             <ReferencingNotebooksComponent
                                 label={sampleName}
@@ -132,7 +133,7 @@ export const SampleOverviewPanel: FC<Props> = memo(props => {
                         sampleSet={sampleType}
                     />
                 </div>
-                {isMedia && (
+                {isMedia && ReferencingNotebooksComponent && (
                     <div className="col-md-5">
                         <ReferencingNotebooksComponent
                             label={sampleName}

@@ -100,7 +100,7 @@ export class SampleAliquotsSummaryWithModels extends PureComponent<Props & Sampl
     }
 
     render() {
-        const { aliquotsModel, jobsModel, hideAssayData, aliquotJobsQueryConfig } = this.props;
+        const { aliquotsModel, jobsModel, hideAssayData } = this.props;
 
         if (
             !aliquotsModel ||
@@ -148,9 +148,8 @@ class SampleAliquotsSummaryImpl extends PureComponent<Props> {
 
     initModel(): void {
         const { actions, aliquotJobsQueryConfig } = this.props;
-
         actions.addModel(this.getAliquotQueryConfig(), true);
-        actions.addModel(aliquotJobsQueryConfig, true);
+        if (aliquotJobsQueryConfig) actions.addModel(aliquotJobsQueryConfig, true);
     }
 
     getAliquotQueryConfig(): QueryConfig {

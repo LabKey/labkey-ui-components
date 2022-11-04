@@ -177,7 +177,6 @@ export const SampleDetailPageBody: FC<Props> = memo(props => {
             <SampleDetailContextProvider value={context}>
                 {showOverview && (
                     <SampleOverviewPanel
-                        title={title}
                         onDetailUpdate={onDetailUpdate}
                         actionChangeCount={actionChangeCount}
                         canUpdate={user.hasUpdatePermission()}

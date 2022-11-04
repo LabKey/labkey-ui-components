@@ -289,3 +289,22 @@ export const TEST_USER_STORAGE_EDITOR = new User({
         PermissionTypes.ManagePicklists,
     ]),
 });
+
+export const TEST_USER_QC_ANALYST = new User({
+    canDelete: false,
+    canDeleteOwn: false,
+    canInsert: false,
+    canUpdate: false,
+    canUpdateOwn: false,
+    isAdmin: false,
+    isAnalyst: false,
+    isDeveloper: false,
+    isGuest: false,
+    isRootAdmin: false,
+    isSignedIn: false,
+    isSystemAdmin: false,
+    isTrusted: false,
+    permissionsList: List<string>([
+        PermissionTypes.QCAnalyst,
+    ]),
+});

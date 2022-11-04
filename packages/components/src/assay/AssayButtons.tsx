@@ -2,7 +2,6 @@ import { RequiresPermission } from '../internal/components/base/Permissions';
 import { PermissionTypes } from '@labkey/api';
 import React, { FC, memo, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Button, MenuItem } from 'react-bootstrap';
-import classNames from 'classnames';
 import { AppURL, buildURL } from '../internal/url/AppURL';
 import { AssayContext, AssayContextConsumer } from '../internal/components/assay/withAssayModels';
 import { isAssayDesignExportEnabled, isELNEnabled } from '../internal/app/utils';
@@ -21,40 +20,13 @@ import { clearAssayDefinitionCache } from '../internal/components/assay/actions'
 import { ASSAY_AUDIT_QUERY } from '../internal/components/auditlog/constants';
 import { AssayDesignDeleteModal } from './AssayDesignDeleteModal';
 
-interface InMenuProps {
-    asMenuItem?: boolean;
-}
 
-interface AssayMenuButtonProps extends InMenuProps {
-    bsStyle?: string;
-    url: string;
-}
-
-const AssayMenuButton: FC<AssayMenuButtonProps> = props => {
-    if (props.asMenuItem) {
-        return <MenuItem href={props.url}>{props.children}</MenuItem>;
-    }
-
-    return (
-        <a
-            href={props.url}
-            className={classNames('btn', {
-                'btn-default': !props.bsStyle,
-                [`btn-${props.bsStyle}`]: props.bsStyle,
-            })}
-        >
-            <span>{props.children}</span>
-        </a>
-    );
-};
-
-export const AssayExportDesignButton: FC<InMenuProps> = props => (
+export const AssayExportDesignButton: FC<any> = () => (
     <RequiresPermission perms={PermissionTypes.ReadAssay}>
         <AssayContextConsumer>
             {({ assayDefinition }) => (
-                <AssayMenuButton
-                    asMenuItem={props.asMenuItem}
-                    url={buildURL(
+                <MenuItem
+                    href={buildURL(
                         'experiment',
                         'exportProtocols',
                         {
@@ -65,13 +37,13 @@ export const AssayExportDesignButton: FC<InMenuProps> = props => (
                     )}
                 >
                     Export Assay Design
-                </AssayMenuButton>
+                </MenuItem>
             )}
         </AssayContextConsumer>
     </RequiresPermission>
 );
 
-interface AssayDeleteBatchButtonProps extends InMenuProps {
+interface AssayDeleteBatchButtonProps {
     batchId: string;
 }
 
@@ -79,7 +51,7 @@ export const AssayDeleteBatchButton: FC<AssayDeleteBatchButtonProps> = props => 
     <RequiresPermission perms={[PermissionTypes.Delete]}>
         <AssayContextConsumer>
             {({ assayDefinition, assayProtocol }) => {
-                const { asMenuItem, batchId } = props;
+                const { batchId } = props;
 
                 if (batchId !== undefined) {
                     const provider = assayDefinition.type;
@@ -99,9 +71,7 @@ export const AssayDeleteBatchButton: FC<AssayDeleteBatchButtonProps> = props => 
                     );
 
                     return (
-                        <AssayMenuButton asMenuItem={asMenuItem} bsStyle="danger" url={url}>
-                            Delete Batch
-                        </AssayMenuButton>
+                        <MenuItem href={url}>Delete Batch</MenuItem>
                     );
                 }
 
@@ -195,9 +165,6 @@ export const AssayRunDetailHeaderButtons: FC<AssayRunDetailHeaderButtonProps> = 
     );
 });
 
-
-const IMPORT_DATA_LABEL = 'Import Data';
-
 export const AssayImportDataButton: FC = () => (
     <RequiresPermission perms={PermissionTypes.Insert}>
         <AssayContextConsumer>
@@ -214,7 +181,7 @@ export const AssayImportDataButton: FC = () => (
 
                 return (
                     <Button bsStyle="success" href={importUrl}>
-                        {IMPORT_DATA_LABEL}
+                        Import Data
                     </Button>
                 );
             }}
@@ -235,7 +202,7 @@ export const AssayBatchHeaderButtons: FC<AssayBatchHeaderButtonsProps> = props =
             <CreatedModified row={model.getRow()} />
             <RequiresPermission perms={PermissionTypes.Delete}>
                 <ManageDropdownButton id="assaybatchdetails" pullRight collapsed>
-                    <AssayDeleteBatchButton asMenuItem batchId={batchId} />
+                    <AssayDeleteBatchButton batchId={batchId} />
                 </ManageDropdownButton>
             </RequiresPermission>
         </>
@@ -311,7 +278,7 @@ export const AssayDesignHeaderButtons: FC<AssayDesignHeaderButtonProps> = props 
                             Copy Assay Design
                         </MenuItem>
                     </RequiresPermission>
-                    {isAssayDesignExportEnabled() && <AssayExportDesignButton asMenuItem/>}
+                    {isAssayDesignExportEnabled() && <AssayExportDesignButton />}
                     <RequiresPermission perms={PermissionTypes.DesignAssay}>
                         <MenuItem onClick={onDeleteAssayDesign}>Delete Assay Design</MenuItem>
                     </RequiresPermission>
@@ -338,9 +305,10 @@ export const AssayDesignHeaderButtons: FC<AssayDesignHeaderButtonProps> = props 
 };
 
 
-interface UpdateQCStatesButtonProps extends InMenuProps {
+interface UpdateQCStatesButtonProps {
     disabled: boolean;
     onClick: () => void;
+    asMenuItem?: boolean;
 }
 
 export const UpdateQCStatesButton: FC<UpdateQCStatesButtonProps> = ({ asMenuItem, onClick, disabled }) => {

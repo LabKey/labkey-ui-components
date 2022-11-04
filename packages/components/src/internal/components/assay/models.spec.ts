@@ -15,7 +15,7 @@
  */
 import { TEST_ASSAY_STATE_MODEL } from '../../../test/data/constants';
 
-import { GENERAL_ASSAY_PROVIDER_NAME } from './actions';
+import { GENERAL_ASSAY_PROVIDER_NAME } from './constants';
 
 describe('AssayStateModel', () => {
     test('getById', () => {

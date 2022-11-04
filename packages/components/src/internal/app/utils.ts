@@ -235,6 +235,11 @@ export function isAssayRequestsEnabled(moduleContext?: ModuleContext): boolean {
     );
 }
 
+// Don't enable assay design export unless there is an import capability (which we don't have for LKSM products)
+export function isAssayDesignExportEnabled(moduleContext?: ModuleContext): boolean {
+    return hasPremiumModule(moduleContext);
+}
+
 export function isELNEnabled(moduleContext?: ModuleContext): boolean {
     return hasModule('LabBook', moduleContext) && isFeatureEnabled(ProductFeature.ELN, moduleContext);
 }

@@ -8,12 +8,26 @@ import { AssayRunDeleteModal } from './AssayRunDeleteModal';
 import { AssaySubNavMenu } from './AssaySubNavMenu';
 import { AssayTypeSummary } from './AssayTypeSummary';
 import { getAssayImportNotificationMsg, getAssayRunDeleteMessage } from './utils';
+import {
+    AssayBatchHeaderButtons,
+    AssayDesignHeaderButtons,
+    AssayRunDetailHeaderButtons,
+    AssayImportDataButton,
+    UpdateQCStatesButton,
+} from './AssayButtons';
+import { AssayHeader } from './AssayHeader';
+import { onAssayRunChange, onAssayDesignChange } from './actions';
 
 export {
     assayPage,
     getAssayImportNotificationMsg,
     getAssayRunDeleteMessage,
     AssayDesignDeleteModal,
+    AssayDesignHeaderButtons,
+    AssayRunDetailHeaderButtons,
+    AssayBatchHeaderButtons,
+    AssayHeader,
+    AssayImportDataButton,
     AssayReimportRunButton,
     AssayResolver,
     AssayRunResolver,
@@ -22,4 +36,7 @@ export {
     AssayRunDeleteModal,
     AssaySubNavMenu,
     AssayTypeSummary,
+    onAssayRunChange,
+    onAssayDesignChange,
+    UpdateQCStatesButton,
 };

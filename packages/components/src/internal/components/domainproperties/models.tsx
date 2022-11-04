@@ -1348,11 +1348,9 @@ export function resolveAvailableTypes(
     // field has not been saved -- display all property types allowed by app
     // Issue 40795: need to check wrappedColumnName for alias field in query metadata editor and resolve the datatype fields
     if (field.isNew() && field.wrappedColumnName == undefined) {
-        return appPropertiesOnly
-            ? (availableTypes.filter(type =>
-                  isPropertyTypeAllowed(type, showFilePropertyType, showStudyPropertyTypes)
-              ) as List<PropDescType>)
-            : availableTypes;
+        return availableTypes.filter(type =>
+            isPropertyTypeAllowed(appPropertiesOnly, type, showFilePropertyType, showStudyPropertyTypes)
+        ) as List<PropDescType>;
     }
 
     // compare against original types as the field's values are volatile
@@ -1384,11 +1382,7 @@ export function resolveAvailableTypes(
 
             if (!acceptablePropertyType(type, rangeURI)) return false;
 
-            if (appPropertiesOnly) {
-                return isPropertyTypeAllowed(type, showFilePropertyType, showStudyPropertyTypes);
-            }
-
-            return true;
+            return isPropertyTypeAllowed(appPropertiesOnly, type, showFilePropertyType, showStudyPropertyTypes);
         })
         .toList();
 
@@ -1401,6 +1395,7 @@ export function resolveAvailableTypes(
 }
 
 export function isPropertyTypeAllowed(
+    appPropertiesOnly: boolean,
     type: PropDescType,
     showFilePropertyType: boolean,
     showStudyPropertyTypes: boolean
@@ -1408,6 +1403,8 @@ export function isPropertyTypeAllowed(
     if (type === FILE_TYPE) return showFilePropertyType;
 
     if (STUDY_PROPERTY_TYPES.includes(type)) return showStudyPropertyTypes;
+
+    if (!appPropertiesOnly) return true;
 
     // We are excluding the field types below for the App for non-premium
     return hasPremiumModule() || ![LOOKUP_TYPE, FLAG_TYPE, ONTOLOGY_LOOKUP_TYPE].includes(type);

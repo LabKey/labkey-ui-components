@@ -211,7 +211,12 @@ const AssayPropertiesPanelImpl: FC<Props & InjectedDomainPropertiesPanelCollapse
     );
 
     const form = (
-        <AssayPropertiesForm appPropertiesOnly={appPropertiesOnly} hideStudyProperties={hideStudyProperties} model={model} onChange={updateValidStatus}>
+        <AssayPropertiesForm
+            appPropertiesOnly={appPropertiesOnly}
+            hideStudyProperties={hideStudyProperties}
+            model={model}
+            onChange={updateValidStatus}
+        >
             {children}
         </AssayPropertiesForm>
     );

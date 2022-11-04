@@ -216,9 +216,7 @@ import {
     EditableGridPanelForUpdateWithLineage,
     UpdateGridTab,
 } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
-import {
-    LineageEditableGridLoaderFromSelection
-} from './internal/components/editable/LineageEditableGridLoaderFromSelection';
+import { LineageEditableGridLoaderFromSelection } from './internal/components/editable/LineageEditableGridLoaderFromSelection';
 
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
 
@@ -338,12 +336,7 @@ import {
 import { AssayDesignEmptyAlert } from './internal/components/assay/AssayDesignEmptyAlert';
 import { AssayPicker, AssayPickerTabs } from './internal/components/assay/AssayPicker';
 import { AssayStateModel, AssayUploadResultModel } from './internal/components/assay/models';
-import {
-    allowReimportAssayRun,
-    clearAssayDefinitionCache,
-    fetchAllAssays,
-
-} from './internal/components/assay/actions';
+import { allowReimportAssayRun, clearAssayDefinitionCache, fetchAllAssays } from './internal/components/assay/actions';
 import { BaseBarChart } from './internal/components/chart/BaseBarChart';
 import {
     createHorizontalBarLegendData,
@@ -416,9 +409,7 @@ import {
 } from './internal/components/entities/constants';
 import { getUniqueIdColumnMetadata } from './internal/components/entities/utils';
 import { EntityInsertPanel } from './internal/components/entities/EntityInsertPanel';
-import {
-    EntityCrossProjectSelectionConfirmModal
-} from './internal/components/entities/EntityCrossProjectSelectionConfirmModal';
+import { EntityCrossProjectSelectionConfirmModal } from './internal/components/entities/EntityCrossProjectSelectionConfirmModal';
 import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
 
 import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';

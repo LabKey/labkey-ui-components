@@ -23,8 +23,9 @@ import { isWorkflowEnabled } from '../../app/utils';
 import { LabelOverlay } from '../forms/LabelOverlay';
 import { QueryFormInputs } from '../forms/QueryFormInputs';
 
-import { AssayPropertiesPanelProps } from './models';
 import { getContainerFilterForLookups } from '../../query/api';
+
+import { AssayPropertiesPanelProps } from './models';
 
 export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
     const { model, onChange, title = 'Run Details', showQuerySelectPreviewOptions } = props;

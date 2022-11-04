@@ -8,12 +8,14 @@ import { QueryInfo } from '../public/QueryInfo';
 import { mountWithServerContext } from '../internal/testHelpers';
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../internal/userFixtures';
 import { SCHEMAS } from '../internal/schemas';
-import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
 
 import { TEST_ASSAY_STATE_MODEL } from '../test/data/constants';
 
-import { SamplesAssayButtonImpl } from './SamplesAssayButton';
 import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/constants';
+
+import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
+
+import { SamplesAssayButtonImpl } from './SamplesAssayButton';
 
 describe('SamplesAssayButton', () => {
     const DEFAULT_PROPS = {

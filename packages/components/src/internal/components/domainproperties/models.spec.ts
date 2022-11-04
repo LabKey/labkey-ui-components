@@ -453,7 +453,6 @@ describe('PropDescType', () => {
         expect(isPropertyTypeAllowed(false, VISIT_ID_TYPE, true, false)).toBeFalsy();
         expect(isPropertyTypeAllowed(false, FILE_TYPE, false, false)).toBeFalsy();
         expect(isPropertyTypeAllowed(false, FLAG_TYPE, true, false)).toBeTruthy();
-
     });
 
     test('isPropertyTypeAllowed with premium', () => {

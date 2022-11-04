@@ -15,6 +15,7 @@
  */
 import { List, Map } from 'immutable';
 import { Ajax, Assay, AssayDOM, Utils } from '@labkey/api';
+
 import { User } from '../base/models/User';
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 import { buildURL } from '../../url/AppURL';

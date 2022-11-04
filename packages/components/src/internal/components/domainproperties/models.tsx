@@ -1349,7 +1349,7 @@ export function resolveAvailableTypes(
     // Issue 40795: need to check wrappedColumnName for alias field in query metadata editor and resolve the datatype fields
     if (field.isNew() && field.wrappedColumnName == undefined) {
         return availableTypes.filter(type =>
-              isPropertyTypeAllowed(appPropertiesOnly, type, showFilePropertyType, showStudyPropertyTypes)
+            isPropertyTypeAllowed(appPropertiesOnly, type, showFilePropertyType, showStudyPropertyTypes)
         ) as List<PropDescType>;
     }
 
@@ -1382,7 +1382,6 @@ export function resolveAvailableTypes(
 
             if (!acceptablePropertyType(type, rangeURI)) return false;
 
-
             return isPropertyTypeAllowed(appPropertiesOnly, type, showFilePropertyType, showStudyPropertyTypes);
         })
         .toList();
@@ -1398,8 +1397,9 @@ export function resolveAvailableTypes(
 export function isPropertyTypeAllowed(
     appPropertiesOnly: boolean,
     type: PropDescType,
-    showFilePropertyType: boolean
-    , showStudyPropertyTypes: boolean): boolean {
+    showFilePropertyType: boolean,
+    showStudyPropertyTypes: boolean
+): boolean {
     if (type === FILE_TYPE) return showFilePropertyType;
 
     if (STUDY_PROPERTY_TYPES.includes(type)) return showStudyPropertyTypes;

@@ -8,8 +8,9 @@ import { imageURL } from '../url/ActionURL';
 
 import { SAMPLE_MANAGER_SEARCH_PLACEHOLDER, SEARCH_PLACEHOLDER } from '../components/navigation/constants';
 
-import { AppProperties } from './models';
 import { GENERAL_ASSAY_PROVIDER_NAME } from '../components/assay/constants';
+
+import { AppProperties } from './models';
 
 // These ids should match what is used by the MenuProviders in the Java code so we can avoid toLowerCase comparisons.
 export const LKS_PRODUCT_ID = 'LabKeyServer';

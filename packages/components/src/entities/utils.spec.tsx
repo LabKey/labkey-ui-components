@@ -33,6 +33,8 @@ import { ASSAY_DEFINITION_MODEL, TEST_ASSAY_STATE_MODEL } from '../test/data/con
 import { getTestAPIWrapper } from '../internal/APIWrapper';
 import { getSamplesTestAPIWrapper } from '../internal/components/samples/APIWrapper';
 
+import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/constants';
+
 import {
     getSampleWizardURL,
     filterMediaSampleTypes,
@@ -47,7 +49,6 @@ import {
     getImportItemsForAssayDefinitions,
     getSamplesAssayGridQueryConfigs,
 } from './utils';
-import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/constants';
 
 describe('getCrossFolderSelectionMsg', () => {
     test('without cross folder selection', () => {

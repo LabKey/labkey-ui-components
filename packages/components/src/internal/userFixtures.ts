@@ -304,7 +304,5 @@ export const TEST_USER_QC_ANALYST = new User({
     isSignedIn: false,
     isSystemAdmin: false,
     isTrusted: false,
-    permissionsList: List<string>([
-        PermissionTypes.QCAnalyst,
-    ]),
+    permissionsList: List<string>([PermissionTypes.QCAnalyst]),
 });

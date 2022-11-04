@@ -9,8 +9,9 @@ import { SubMenuItem } from '../internal/components/menus/SubMenuItem';
 import { makeTestQueryModel } from '../public/QueryModel/testUtils';
 import { SchemaQuery } from '../public/SchemaQuery';
 
-import { AssayImportSubMenuItemImpl } from './AssayImportSubMenuItem';
 import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/constants';
+
+import { AssayImportSubMenuItemImpl } from './AssayImportSubMenuItem';
 
 const DEFAULT_PROPS = {
     assayModel: TEST_ASSAY_STATE_MODEL,

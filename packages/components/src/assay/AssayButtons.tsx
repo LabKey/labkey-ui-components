@@ -1,25 +1,29 @@
-import { RequiresPermission } from '../internal/components/base/Permissions';
 import { PermissionTypes } from '@labkey/api';
 import React, { FC, memo, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Button, MenuItem } from 'react-bootstrap';
+
+import { RequiresPermission } from '../internal/components/base/Permissions';
 import { AppURL, buildURL } from '../internal/url/AppURL';
 import { AssayContext, AssayContextConsumer } from '../internal/components/assay/withAssayModels';
 import { isAssayDesignExportEnabled, isELNEnabled } from '../internal/app/utils';
 import { getOperationConfirmationData } from '../internal/components/entities/actions';
 import { AssayRunDataType } from '../internal/components/entities/constants';
-import { onAssayDesignChange, onAssayRunChange } from './actions';
+
 import { ASSAY_DESIGN_KEY, ASSAYS_KEY, AUDIT_KEY } from '../internal/app/constants';
 import { CreatedModified } from '../internal/components/base/CreatedModified';
 import { ManageDropdownButton } from '../internal/components/buttons/ManageDropdownButton';
-import { AssayReimportRunButton } from './AssayReimportRunButton';
+
 import { DisableableMenuItem } from '../internal/components/samples/DisableableMenuItem';
-import { getAssayRunDeleteMessage } from './utils';
-import { AssayRunDeleteModal } from './AssayRunDeleteModal';
+
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { clearAssayDefinitionCache } from '../internal/components/assay/actions';
 import { ASSAY_AUDIT_QUERY } from '../internal/components/auditlog/constants';
-import { AssayDesignDeleteModal } from './AssayDesignDeleteModal';
 
+import { AssayRunDeleteModal } from './AssayRunDeleteModal';
+import { getAssayRunDeleteMessage } from './utils';
+import { AssayReimportRunButton } from './AssayReimportRunButton';
+import { onAssayDesignChange, onAssayRunChange } from './actions';
+import { AssayDesignDeleteModal } from './AssayDesignDeleteModal';
 
 export const AssayExportDesignButton: FC<any> = () => (
     <RequiresPermission perms={PermissionTypes.ReadAssay}>
@@ -70,9 +74,7 @@ export const AssayDeleteBatchButton: FC<AssayDeleteBatchButtonProps> = props => 
                         }
                     );
 
-                    return (
-                        <MenuItem href={url}>Delete Batch</MenuItem>
-                    );
+                    return <MenuItem href={url}>Delete Batch</MenuItem>;
                 }
 
                 return null;
@@ -81,19 +83,17 @@ export const AssayDeleteBatchButton: FC<AssayDeleteBatchButtonProps> = props => 
     </RequiresPermission>
 );
 
-
-
 interface AssayRunDetailHeaderButtonProps {
-    allowReimport?: boolean;
     allowDelete?: boolean;
-    navigate: (url: string | AppURL, replace?: boolean) => void;
+    allowReimport?: boolean;
     model: QueryModel;
+    navigate: (url: string | AppURL, replace?: boolean) => void;
     runId: string;
 }
 
 export const AssayRunDetailHeaderButtons: FC<AssayRunDetailHeaderButtonProps> = memo(props => {
-    const { navigate, model, runId, allowReimport, allowDelete} = props;
-    const { assayDefinition, assayProtocol, } = useContext(AssayContext);
+    const { navigate, model, runId, allowReimport, allowDelete } = props;
+    const { assayDefinition, assayProtocol } = useContext(AssayContext);
     const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false);
     const [canDelete, setCanDelete] = useState<boolean>(false);
     const [confirmationDataError, setConfirmationDataError] = useState<boolean>(false);
@@ -109,8 +109,7 @@ export const AssayRunDetailHeaderButtons: FC<AssayRunDetailHeaderButtonProps> = 
                 try {
                     const confirmationData = await getOperationConfirmationData(undefined, AssayRunDataType, [runId]);
                     setCanDelete(confirmationData.allowed.length === 1);
-                }
-                catch (e) {
+                } catch (e) {
                     console.error('There was a problem retrieving the delete confirmation data.', e);
                     setCanDelete(false);
                     setConfirmationDataError(true);
@@ -136,13 +135,13 @@ export const AssayRunDetailHeaderButtons: FC<AssayRunDetailHeaderButtonProps> = 
 
     return (
         <>
-            <CreatedModified row={runData}/>
+            <CreatedModified row={runData} />
             {(allowReimport || allowDelete) && (
                 <ManageDropdownButton id="assay-run-details" pullRight collapsed>
-                    {allowReimport &&
-                        <AssayReimportRunButton runId={runId} replacedByRunId={runData?.ReplacedByRun?.value}/>
-                    }
-                    {allowDelete &&
+                    {allowReimport && (
+                        <AssayReimportRunButton runId={runId} replacedByRunId={runData?.ReplacedByRun?.value} />
+                    )}
+                    {allowDelete && (
                         <DisableableMenuItem
                             operationPermitted={canDelete}
                             onClick={onDeleteRun}
@@ -150,7 +149,7 @@ export const AssayRunDetailHeaderButtons: FC<AssayRunDetailHeaderButtonProps> = 
                         >
                             Delete Run
                         </DisableableMenuItem>
-                    }
+                    )}
                 </ManageDropdownButton>
             )}
             {showConfirmDelete && (
@@ -206,18 +205,17 @@ export const AssayBatchHeaderButtons: FC<AssayBatchHeaderButtonsProps> = props =
                 </ManageDropdownButton>
             </RequiresPermission>
         </>
-    )
-}
-
+    );
+};
 
 interface AssayDesignHeaderButtonProps {
-    navigate: (url: string | AppURL, replace?: boolean) => void;
     menuInit: (invalidate?: boolean) => void;
+    navigate: (url: string | AppURL, replace?: boolean) => void;
 }
 
 export const AssayDesignHeaderButtons: FC<AssayDesignHeaderButtonProps> = props => {
     const { assayDefinition, assayProtocol } = useContext(AssayContext);
-    const {navigate, menuInit} = props;
+    const { navigate, menuInit } = props;
     const [showConfirmDeleteAssayDesign, setShowConfirmDeleteAssayDesign] = useState<boolean>(false);
 
     const resetState = useCallback(() => {
@@ -232,36 +230,32 @@ export const AssayDesignHeaderButtons: FC<AssayDesignHeaderButtonProps> = props 
         onAssayDesignChange(assayDefinition.protocolSchemaName);
     }, [assayDefinition?.protocolSchemaName]);
 
-    const afterAssayDesignDelete = useCallback((success: boolean) => {
-        if (success) {
-            menuInit();
-            clearAssayDefinitionCache();
-            navigate(AppURL.create(ASSAYS_KEY));
-        } else {
-            // delay to make sure grid invalidate form beforeAssayDesignDelete is finished
-            window.setTimeout(resetState, 100);
-        }
-    }, [menuInit, navigate]);
+    const afterAssayDesignDelete = useCallback(
+        (success: boolean) => {
+            if (success) {
+                menuInit();
+                clearAssayDefinitionCache();
+                navigate(AppURL.create(ASSAYS_KEY));
+            } else {
+                // delay to make sure grid invalidate form beforeAssayDesignDelete is finished
+                window.setTimeout(resetState, 100);
+            }
+        },
+        [menuInit, navigate]
+    );
 
-    if (!assayDefinition || !assayProtocol)
-        return null;
+    if (!assayDefinition || !assayProtocol) return null;
 
     return (
         <>
-            <RequiresPermission permissionCheck="any"
-                                perms={[
-                                    PermissionTypes.ReadAssay,
-                                    PermissionTypes.DesignAssay,
-                                    PermissionTypes.CanSeeAuditLog
-                                ]}>
-                <ManageDropdownButton id={'assayheader'} pullRight collapsed>
+            <RequiresPermission
+                permissionCheck="any"
+                perms={[PermissionTypes.ReadAssay, PermissionTypes.DesignAssay, PermissionTypes.CanSeeAuditLog]}
+            >
+                <ManageDropdownButton id="assayheader" pullRight collapsed>
                     <RequiresPermission perms={PermissionTypes.DesignAssay}>
                         <MenuItem
-                            href={AppURL.create(
-                                ASSAY_DESIGN_KEY,
-                                assayDefinition.type,
-                                assayDefinition.name
-                            ).toHref()}
+                            href={AppURL.create(ASSAY_DESIGN_KEY, assayDefinition.type, assayDefinition.name).toHref()}
                         >
                             Edit Assay Design
                         </MenuItem>
@@ -283,10 +277,14 @@ export const AssayDesignHeaderButtons: FC<AssayDesignHeaderButtonProps> = props 
                         <MenuItem onClick={onDeleteAssayDesign}>Delete Assay Design</MenuItem>
                     </RequiresPermission>
                     <RequiresPermission perms={PermissionTypes.CanSeeAuditLog}>
-                        <MenuItem href={AppURL.create(AUDIT_KEY).addParams({
-                            eventType: ASSAY_AUDIT_QUERY.value,
-                            'query.q': assayDefinition.name
-                        }).toHref()}>
+                        <MenuItem
+                            href={AppURL.create(AUDIT_KEY)
+                                .addParams({
+                                    eventType: ASSAY_AUDIT_QUERY.value,
+                                    'query.q': assayDefinition.name,
+                                })
+                                .toHref()}
+                        >
                             View Audit History
                         </MenuItem>
                     </RequiresPermission>
@@ -304,11 +302,10 @@ export const AssayDesignHeaderButtons: FC<AssayDesignHeaderButtonProps> = props 
     );
 };
 
-
 interface UpdateQCStatesButtonProps {
+    asMenuItem?: boolean;
     disabled: boolean;
     onClick: () => void;
-    asMenuItem?: boolean;
 }
 
 export const UpdateQCStatesButton: FC<UpdateQCStatesButtonProps> = ({ asMenuItem, onClick, disabled }) => {

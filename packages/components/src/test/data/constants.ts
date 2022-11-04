@@ -29,8 +29,9 @@ import { Container } from '../../internal/components/base/models/Container';
 import { SchemaQuery } from '../../public/SchemaQuery';
 import { EntityDataType } from '../../internal/components/entities/models';
 
-import assayWizardJSON from './assayWizardModel.json';
 import { GENERAL_ASSAY_PROVIDER_NAME } from '../../internal/components/assay/constants';
+
+import assayWizardJSON from './assayWizardModel.json';
 
 export const ASSAY_DEFINITION_MODEL = AssayDefinitionModel.create(assayWizardJSON.assayDef);
 export const ASSAY_WIZARD_MODEL = new AssayWizardModel({

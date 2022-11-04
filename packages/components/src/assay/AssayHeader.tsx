@@ -1,4 +1,5 @@
 import React, { FC, ReactNode, useContext } from 'react';
+
 import { ProductMenuModel } from '../internal/components/navigation/model';
 import { getTitleDisplay, hasActivePipelineJob } from '../internal/components/pipeline/utils';
 import { PageDetailHeader } from '../internal/components/forms/PageDetailHeader';
@@ -8,12 +9,12 @@ import { Notifications } from '../internal/components/notifications/Notification
 import { AssayContext } from '../internal/components/assay/withAssayModels';
 
 interface Props {
-    title?: ReactNode;
-    subTitle?: ReactNode;
     description?: ReactNode;
-    menu: ProductMenuModel;
+    includeTemplateButton?: boolean;
     leftColumns?: number;
-    includeTemplateButton?: boolean
+    menu: ProductMenuModel;
+    subTitle?: ReactNode;
+    title?: ReactNode;
 }
 
 export const AssayHeader: FC<Props> = props => {
@@ -41,10 +42,15 @@ export const AssayHeader: FC<Props> = props => {
                 description={descriptionDisplay}
                 leftColumns={leftColumns} // On run details pages allow for more room for the name of the run
             >
-                {includeTemplateButton && <TemplateDownloadButton templateUrl={assayDefinition?.templateLink} className="button-right-spacing" />}
+                {includeTemplateButton && (
+                    <TemplateDownloadButton
+                        templateUrl={assayDefinition?.templateLink}
+                        className="button-right-spacing"
+                    />
+                )}
                 {children}
             </PageDetailHeader>
             <Notifications />
         </>
     );
-}
+};

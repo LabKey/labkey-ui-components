@@ -1,6 +1,7 @@
+import { getServerContext } from '@labkey/api';
+
 import { invalidateLineageResults } from '../internal/components/lineage/actions';
 import { clearSelected } from '../internal/actions';
-import { getServerContext } from '@labkey/api';
 import { invalidateQueryDetailsCache } from '../internal/query/api';
 import { SchemaQuery } from '../public/SchemaQuery';
 

@@ -112,12 +112,15 @@ describe('MenuItemModel', () => {
 
     test('$ in key escaped correctly', () => {
         //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_string_as_the_replacement
-        verifyModelKey("key $$", "key $$");
-        verifyModelKey("key $&", "key $&");
-        verifyModelKey("key $`", "key $`");
-        verifyModelKey("key $'", "key $'");
-        verifyModelKey("key $200", "key $200");
-        verifyModelKey("key $widget", "key $widget");
+        verifyModelKey("key $D$D", "key $$");
+        verifyModelKey("key $D$A", "key $&");
+        verifyModelKey("key $D`", "key $`");
+        verifyModelKey("key $D'", "key $'");
+        verifyModelKey("key $D200", "key $200");
+        verifyModelKey("key $Dwidget", "key $widget");
+        verifyModelKey("key $D$D$D$D", "key $$$$");
+        verifyModelKey("key $D$DD", "key $$D");
+        verifyModelKey("key $Dwidget$D$D$D$A$D`$D'$D200", "key $widget$$$&$`$'$200");
     });
 
     test('key decoded correctly', () => {

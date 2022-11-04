@@ -56,8 +56,11 @@ export enum HELP_LINK_REFERRER {
 }
 
 export function getHelpLink(topic: string, referrer = HELP_LINK_REFERRER.IN_PAGE): string {
-    // putting referrer= at the end causes links that go to anchors in the page not to work.
-    return getServerContext().helpLinkPrefix.replace("name=", "referrer=" + referrer + "&name=" + topic);
+    let prefix = getServerContext().helpLinkPrefix;
+    if (prefix)
+        // putting referrer= at the end causes links that go to anchors in the page not to work.
+        return prefix.replace("name=", "referrer=" + referrer + "&name=" + topic);
+    return undefined;
 }
 
 interface HelpLinkProps {

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.242.7
+*Released*: 4 November 2022
 * Issue 46648: Add missing dependencies in SampleFinderSection for assay loading state
 
 ### version 2.242.6

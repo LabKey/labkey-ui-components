@@ -15,7 +15,7 @@ import { LabelHelpTip } from '../../base/LabelHelpTip';
 import { LabelOverlay } from '../LabelOverlay';
 
 import { QuerySelect } from '../QuerySelect';
-import { resolveRenderer } from '../renderers';
+import { resolveInputRenderer } from '../input/InputRenderFactory';
 import { resolveDetailFieldValue } from '../utils';
 
 import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceRenderer';
@@ -32,6 +32,7 @@ import { AppendUnits } from '../../../renderers/AppendUnits';
 import { LabelColorRenderer } from '../../../renderers/LabelColorRenderer';
 import { FileColumnRenderer } from '../../../renderers/FileColumnRenderer';
 import { SampleTypeImportAliasRenderer, SourceTypeImportAliasRenderer } from '../../../renderers/ImportAliasRenderer';
+import { SelectInputChange } from '../input/SelectInput';
 
 export type Renderer = (data: any, row?: any) => ReactNode;
 
@@ -46,6 +47,7 @@ export interface EditRendererOptions extends RenderOptions {
     autoFocus?: boolean;
     hideLabel?: boolean;
     onBlur?: () => void;
+    onSelectChange?: SelectInputChange;
     placeholder?: string;
 }
 
@@ -250,47 +252,39 @@ export function resolveDetailEditRenderer(
     onAdditionalFormDataChange?: (name: string, value: any) => any
 ): Renderer {
     return (data, row) => {
-        const editable = col.isEditable();
-
         // If the column cannot be edited, return as soon as possible
         // Render the value with the defaultRenderer and a class that grays it out
-        if (!editable) {
+        if (!col.isEditable()) {
             return detailNonEditableRenderer(col, data);
         }
 
+        const showLabel = !options?.hideLabel ?? false;
         let value = resolveDetailFieldValue(data, col.isLookup());
 
-        if (col.inputRenderer) {
-            const renderer = resolveRenderer(col);
-
-            if (renderer) {
-                return renderer(
-                    col,
-                    col.name,
-                    row,
-                    value,
-                    true,
-                    false,
-                    false,
-                    null,
-                    null,
-                    null,
-                    false,
-                    onAdditionalFormDataChange,
-                    'col-sm-12',
-                    options?.containerPath,
-                    options?.containerFilter
-                );
-            }
-
-            throw new Error(`"${col.inputRenderer}" is not a valid inputRenderer.`);
+        const ColumnInputRenderer = resolveInputRenderer(col);
+        if (ColumnInputRenderer) {
+            return (
+                <ColumnInputRenderer
+                    col={col}
+                    containerFilter={options?.containerFilter}
+                    containerPath={options?.containerPath}
+                    data={row}
+                    formsy
+                    inputClass="col-sm-12"
+                    key={col.name}
+                    onAdditionalFormDataChange={onAdditionalFormDataChange}
+                    onSelectChange={options?.onSelectChange}
+                    selectInputProps={{ inputClass: 'col-sm-12', showLabel }}
+                    value={value}
+                />
+            );
         }
 
         if (col.isPublicLookup()) {
             // undefined 'displayAsLookup' just respects the lookup.
             // Must be explicitly false to prevent drop-down.
             if (col.displayAsLookup !== false) {
-                // 29232: When displaying a lookup, always use the value
+                // Issue 29232: When displaying a lookup, always use the value
                 const multiple = col.isJunctionLookup();
                 const joinValues = multiple && !col.isDataInput();
 
@@ -310,11 +304,12 @@ export function resolveDetailEditRenderer(
                         name={col.name}
                         autoFocus={options?.autoFocus}
                         onBlur={options?.onBlur}
+                        onQSChange={options?.onSelectChange}
                         placeholder={options?.placeholder ?? 'Select or type to search...'}
                         previewOptions={col.previewOptions}
                         required={col.required}
                         schemaQuery={col.lookup.schemaQuery}
-                        showLabel={!options?.hideLabel}
+                        showLabel={showLabel}
                         value={resolveDetailFieldValue(data, true)}
                         valueColumn={col.lookup.keyColumn}
                     />
@@ -331,8 +326,9 @@ export function resolveDetailEditRenderer(
                     value={value}
                     autoFocus={options?.autoFocus}
                     onBlur={options?.onBlur}
+                    onChange={options?.onSelectChange}
                     placeholder={options?.placeholder ?? 'Select or type to search...'}
-                    showLabel={!options?.hideLabel}
+                    showLabel={showLabel}
                 />
             );
         }
@@ -346,7 +342,7 @@ export function resolveDetailEditRenderer(
                     name={col.name}
                     required={col.required}
                     rows={4}
-                    validatePristine={true}
+                    validatePristine
                     value={value}
                 />
             );
@@ -367,7 +363,7 @@ export function resolveDetailEditRenderer(
                         // Issue 43299: Ignore "required" property for boolean columns as this will
                         // cause any false value (i.e. unchecked) to prevent submission.
                         // required={col.required}
-                        validatePristine={true}
+                        validatePristine
                         value={value && value.toString().toLowerCase() === 'true'}
                     />
                 );
@@ -400,7 +396,7 @@ export function resolveDetailEditRenderer(
                         changeDebounceInterval={0}
                         type="text"
                         name={col.name}
-                        validatePristine={true}
+                        validatePristine
                         validations={validations}
                         validationError={validationError}
                         value={value}

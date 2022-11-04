@@ -11,7 +11,11 @@ import { LoadingState } from '../../../public/LoadingState';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { getUpdatedDataFromGrid } from '../../util/utils';
 
-import { EXPORT_TYPES } from '../../constants';
+import { EXPORT_TYPES, MODIFICATION_TYPES } from '../../constants';
+
+import { SelectInputOption, SelectInputProps } from '../forms/input/SelectInput';
+
+import { CellActions } from './constants';
 
 /**
  * @deprecated Use initEditableGridModel() or initEditableGridModels() instead.
@@ -346,4 +350,76 @@ export const getEditorTableData = (
         editorData = editorData.set(rowId, draftRow);
     });
     return [headings, editorData];
+};
+
+export function onCellSelectChange(
+    cellActions: Partial<CellActions>,
+    colIdx: number,
+    rowIdx: number,
+    selectedOptions: SelectInputOption | SelectInputOption[],
+    multiple: boolean
+): void {
+    const { modifyCell, selectCell } = cellActions;
+
+    if (multiple) {
+        if (selectedOptions.length === 0) {
+            modifyCell(colIdx, rowIdx, undefined, MODIFICATION_TYPES.REMOVE_ALL);
+        } else {
+            const valueDescriptors = selectedOptions.map(item => ({ raw: item.value, display: item.label }));
+            modifyCell(colIdx, rowIdx, valueDescriptors, MODIFICATION_TYPES.REPLACE);
+        }
+    } else {
+        const selectedOption = selectedOptions as SelectInputOption;
+        modifyCell(
+            colIdx,
+            rowIdx,
+            [{ raw: selectedOption?.value, display: selectedOption?.label }],
+            MODIFICATION_TYPES.REPLACE
+        );
+        selectCell(colIdx, rowIdx);
+    }
+}
+
+export const gridCellSelectInputProps: Partial<SelectInputProps> = {
+    containerClass: 'select-input-cell-container',
+    customStyles: {
+        control: provided => ({
+            ...provided,
+            minHeight: 24,
+            borderRadius: 0,
+        }),
+        valueContainer: provided => ({
+            ...provided,
+            minHeight: 24,
+            padding: '0 4px',
+        }),
+        input: provided => ({
+            ...provided,
+            margin: '0px',
+        }),
+        indicatorsContainer: provided => ({
+            ...provided,
+            minHeight: 24,
+            padding: '0 4px',
+        }),
+    },
+    customTheme: theme => ({
+        ...theme,
+        colors: {
+            ...theme.colors,
+            danger: '#D9534F',
+            primary: '#2980B9',
+            primary75: '#009BF9',
+            primary50: '#F2F9FC',
+            primary25: 'rgba(41, 128, 185, 0.1)',
+        },
+        spacing: {
+            ...theme.spacing,
+            baseUnit: 2,
+        },
+    }),
+    inputClass: 'select-input-cell',
+    menuPosition: 'fixed', // note that there is an open issue related to scrolling when the menu is open: https://github.com/JedWatson/react-select/issues/4088
+    placeholder: '',
+    showLabel: false,
 };

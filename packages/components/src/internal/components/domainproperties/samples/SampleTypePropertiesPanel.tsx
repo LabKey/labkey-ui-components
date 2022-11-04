@@ -48,13 +48,14 @@ import { IDomainField } from '../models';
 import { generateId } from '../../../util/utils';
 import { AddEntityButton } from '../../buttons/AddEntityButton';
 import { ColorPickerInput } from '../../forms/input/ColorPickerInput';
-import { SelectInput } from '../../forms/input/SelectInput';
+import { SelectInput, SelectInputOption } from '../../forms/input/SelectInput';
 
 import { UniqueIdBanner } from './UniqueIdBanner';
 import { AliquotNamePatternProps, IParentAlias, MetricUnitProps, SampleTypeModel } from './models';
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 const ALIQUOT_HELP_LINK = getHelpLink('aliquotIDs');
+// eslint-disable-next-line no-template-curly-in-string
 const ALIQUOT_NAME_PLACEHOLDER = 'Enter a naming pattern for aliquots (e.g., ${${AliquotedFrom}-:withCounter})';
 
 // Splitting these out to clarify where they end-up
@@ -70,20 +71,20 @@ interface OwnProps {
     metricUnitProps?: MetricUnitProps;
     model: SampleTypeModel;
     nameExpressionGenIdProps?: NameExpressionGenIdProps;
-    onRemoveParentAlias: (id: string) => void;
+    namePreviews?: string[];
     namePreviewsLoading?: boolean;
-    useSeparateDataClassesAliasMenu?: boolean;
+    onAddParentAlias: (id: string, newAlias: IParentAlias) => void;
+    onAddUniqueIdField: (fieldConfig: Partial<IDomainField>) => void;
+    onNameFieldHover?: () => any;
+    onParentAliasChange: (id: string, field: string, newValue: any) => void;
+    onRemoveParentAlias: (id: string) => void;
+    parentOptions: IParentOption[];
     sampleAliasCaption?: string;
     sampleTypeCaption?: string;
-    parentOptions: IParentOption[];
-    onParentAliasChange: (id: string, field: string, newValue: any) => void;
-    updateModel: (newModel: SampleTypeModel) => void;
     showLinkToStudy?: boolean;
-    onAddUniqueIdField: (fieldConfig: Partial<IDomainField>) => void;
-    namePreviews?: string[];
-    onNameFieldHover?: () => any;
     updateDupeParentAliases?: (id: string) => void;
-    onAddParentAlias: (id: string, newAlias: IParentAlias) => void;
+    updateModel: (newModel: SampleTypeModel) => void;
+    useSeparateDataClassesAliasMenu?: boolean;
 }
 
 // Splitting these out to clarify where they end-up
@@ -127,6 +128,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
         nounSingular: SAMPLE_SET_DISPLAY_TEXT,
         nounPlural: SAMPLE_SET_DISPLAY_TEXT + 's',
         nameExpressionInfoUrl: getHelpLink('sampleIDs'),
+        // eslint-disable-next-line no-template-curly-in-string
         nameExpressionPlaceholder: 'Enter a naming pattern (e.g., S-${now:date}-${dailySampleCount})',
         appPropertiesOnly: false,
         showLinkToStudy: true,
@@ -594,7 +596,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                                             options={metricUnitOptions}
                                             required={metricUnitRequired}
                                             clearable={!metricUnitRequired}
-                                            onChange={(name, formValue, option) => {
+                                            onChange={(name, formValue, option: SelectInputOption) => {
                                                 this.onFieldChange(
                                                     name,
                                                     formValue === undefined && option ? option.id : formValue

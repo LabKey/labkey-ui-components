@@ -18,6 +18,8 @@ import { Button, Popover } from 'react-bootstrap';
 import Formsy, { withFormsy } from 'formsy-react';
 import { List, Record } from 'immutable';
 
+import { WithFormsyProps } from '../constants';
+
 export function cleanProps<P>(props: P, ...propsToRemove: string[]): P {
     if (props) {
         propsToRemove.forEach(k => delete props[k]);
@@ -107,35 +109,28 @@ export class FieldEditForm extends React.Component<Props, any> {
     }
 }
 
-interface FieldEditInputProps {
-    caption?: string;
+interface FieldEditInputProps extends WithFormsyProps {
     autoFocus?: boolean;
+    caption?: string;
     fieldCaption?: string;
+    hideOverlayFn?: () => void;
     inputPlaceholder?: string;
     inputType?: any;
-    step?: number;
     minValue?: number;
     name: string;
     showButtons?: boolean;
+    step?: number;
     value?: string;
-
-    hideOverlayFn?: () => void;
-
-    // from formsy-react
-    getErrorMessage?: Function;
-    getValue?: Function;
-    setValue?: Function;
-    showRequired?: Function;
 }
 
-class FieldEditInputImpl extends React.Component<FieldEditInputProps, any> {
+class FieldEditInputImpl extends React.Component<FieldEditInputProps> {
     static defaultProps = {
         inputPlaceholder: '...',
     };
 
-    handleChange(e) {
+    handleChange = (e): void => {
         this.props.setValue(e.target.value);
-    }
+    };
 
     resolveFormElement() {
         const { autoFocus, inputPlaceholder, inputType, value, step, minValue } = this.props;
@@ -144,7 +139,7 @@ class FieldEditInputImpl extends React.Component<FieldEditInputProps, any> {
             autoFocus,
             className: 'form-control',
             defaultValue: value,
-            onChange: this.handleChange.bind(this),
+            onChange: this.handleChange,
             placeholder: inputPlaceholder,
             type: inputType,
         };

@@ -13,32 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { List } from 'immutable';
 
 import { ValueDescriptor } from '../models';
 
-const DETAIL_ALIAS_WORD_LENGTH = 5,
-    GRID_ALIAS_WORD_LENGTH = 3;
+const DETAIL_ALIAS_WORD_LENGTH = 5;
+const GRID_ALIAS_WORD_LENGTH = 3;
 
-interface AliasRendererProps {
+interface Props {
     data: List<any>;
     view?: string;
 }
 
-interface AliasRendererState {
+interface State {
     showMore?: boolean;
 }
 
-export class AliasRenderer extends React.Component<AliasRendererProps, AliasRendererState> {
-    constructor(props?: AliasRendererProps) {
-        super(props);
-
-        this.state = {
-            showMore: false,
-        };
-    }
-
+export class AliasRenderer extends React.Component<Props, State> {
     static getEditableRawValue = (values: List<ValueDescriptor>): string[] => {
         return values.reduce((arr, vd) => {
             if (vd.display !== undefined && vd.display !== null) {
@@ -59,45 +51,32 @@ export class AliasRenderer extends React.Component<AliasRendererProps, AliasRend
         }, '');
     };
 
-    handleClick = (): void => {
-        const { showMore } = this.state;
+    state: Readonly<State> = { showMore: false };
 
-        this.setState({
-            showMore: !showMore,
-        });
+    handleClick = (): void => {
+        this.setState(state => ({ showMore: !state.showMore }));
     };
 
-    render() {
+    render(): ReactNode {
         const { data, view } = this.props;
         const { showMore } = this.state;
 
-        if (data && data.size > 0) {
+        if (data?.size > 0) {
             const truncationLength = view === 'detail' ? DETAIL_ALIAS_WORD_LENGTH : GRID_ALIAS_WORD_LENGTH;
             const extraCount = data.size - truncationLength;
-
             const aliases = data.map(alias => alias.get('displayValue'));
 
-            const aliasDisplay = aliases
-                .filter((alias, i) => {
-                    return i < truncationLength || showMore;
-                })
-                .join(', ');
-
-            let trailingLink;
-            if (extraCount > 0) {
-                trailingLink = (
-                    <span>
-                        {!showMore ? `... and ${extraCount} more ` : ' '}
-                        <span className="alias-renderer--more-link" onClick={this.handleClick}>
-                            {!showMore ? '(see all)' : '(see less)'}
-                        </span>
-                    </span>
-                );
-            }
             return (
                 <div className="alias-renderer" title={aliases.join(', ')}>
-                    {aliasDisplay}
-                    {trailingLink}
+                    {aliases.filter((alias, i) => i < truncationLength || showMore).join(', ')}
+                    {extraCount > 0 && (
+                        <span>
+                            {!showMore ? `... and ${extraCount} more ` : ' '}
+                            <span className="alias-renderer--more-link" onClick={this.handleClick}>
+                                {!showMore ? '(see all)' : '(see less)'}
+                            </span>
+                        </span>
+                    )}
                 </div>
             );
         }

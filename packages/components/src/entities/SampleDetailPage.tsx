@@ -1,8 +1,13 @@
 import React, { FC, memo, useCallback, useMemo, useState, createContext } from 'react';
+import { WithRouterProps } from 'react-router';
 
 import { User } from '../internal/components/base/models/User';
 import { SchemaQuery } from '../public/SchemaQuery';
-import { IS_ALIQUOT_COL, SAMPLE_STATUS_REQUIRED_COLUMNS } from '../internal/components/samples/constants';
+import {
+    ALIQUOT_FILTER_MODE,
+    IS_ALIQUOT_COL,
+    SAMPLE_STATUS_REQUIRED_COLUMNS,
+} from '../internal/components/samples/constants';
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../public/QueryModel/withQueryModels';
 import { SampleStatus } from '../internal/components/samples/models';
 import { QueryModel } from '../public/QueryModel/QueryModel';
@@ -44,9 +49,9 @@ const REQUIRED_COLUMNS = ParentEntityRequiredColumns.concat(
 interface SampleDetailContext {
     isAliquot: boolean;
     isMedia: boolean;
-    location: any;
     onUpdate: (skipChangeCount?: boolean) => void;
     rootLsid: string;
+    sampleAliquotType: ALIQUOT_FILTER_MODE;
     sampleContainer: Container;
     sampleId: number;
     sampleLsid: string;
@@ -64,25 +69,26 @@ export const SampleDetailContextConsumer = Context.Consumer;
 interface OwnProps {
     entityDataType?: EntityDataType;
     iconSrc?: string;
-    location?: any;
     menu: ProductMenuModel;
     navigate: (url: string | AppURL, replace?: boolean) => void;
     noun?: string;
-    params?: any;
     requiredColumns?: string[];
     sampleType?: string;
     showOverview?: boolean;
-    title: string;
+    title?: string;
 }
+
+export interface SampleDetailPageProps extends OwnProps, WithRouterProps {}
 
 interface BodyProps {
     modelId: string;
 }
 
-type Props = OwnProps & BodyProps & InjectedQueryModels;
+// exported for jest testing
+export type SampleDetailPageBodyProps = SampleDetailPageProps & BodyProps & InjectedQueryModels;
 
 // exported for jest testing
-export const SampleDetailPageBody: FC<Props> = memo(props => {
+export const SampleDetailPageBody: FC<SampleDetailPageBodyProps> = memo(props => {
     const {
         location,
         modelId,
@@ -101,54 +107,47 @@ export const SampleDetailPageBody: FC<Props> = memo(props => {
     } = props;
     const [actionChangeCount, setActionChangeCount] = useState<number>(0);
     const sampleModel = queryModels[modelId];
-    const sampleType_ = sampleType ?? params.sampleType;
+    const sampleType_ = sampleType ?? params?.sampleType;
 
     const containerUser = useContainerUser(sampleModel.getRowValue('Folder'));
     const containerUserError = containerUser.error;
     const sampleContainer = containerUser.container;
-    const containerUserLoaded = containerUser.isLoaded;
     const user = containerUser.user;
     const { container } = useServerContext();
     const { SampleStorageMenuComponent, SampleStorageLocationComponent, assayProviderType } = useSampleTypeAppContext();
 
     const onDetailUpdate = useCallback(
         (skipChangeCount?: boolean): void => {
-            if (!skipChangeCount) setActionChangeCount(actionChangeCount + 1);
+            if (!skipChangeCount) {
+                setActionChangeCount(activeChangeCount_ => activeChangeCount_ + 1);
+            }
 
             actions.loadModel(sampleModel.id);
             invalidateLineageResults();
         },
-        [actionChangeCount, actions, sampleModel.id]
+        [actions, sampleModel.id]
     );
 
-    const context = useMemo(() => {
-        const row = sampleModel.getRow();
-        const sampleId = sampleModel.getRowValue('RowId');
-        const sampleName = sampleModel.getRowValue('Name');
-        const sampleLsid = sampleModel.getRowValue('LSID');
-        const isAliquot = sampleModel.getRowValue(IS_ALIQUOT_COL);
-        const rootLsid = sampleModel.getRowValue('RootMaterialLSID');
-        const sampleStatus = getSampleStatus(row);
-        const isMedia = sampleModel.queryInfo?.isMedia;
-
-        return {
-            isAliquot,
-            isMedia,
-            location,
+    const context = useMemo(
+        (): SampleDetailContext => ({
+            isAliquot: sampleModel.getRowValue(IS_ALIQUOT_COL),
+            isMedia: sampleModel.queryInfo?.isMedia,
             onUpdate: onDetailUpdate,
+            sampleAliquotType: location?.query?.sampleAliquotType,
             sampleContainer,
-            sampleId,
-            sampleLsid,
+            sampleId: sampleModel.getRowValue('RowId'),
+            sampleLsid: sampleModel.getRowValue('LSID'),
             sampleModel,
-            sampleName,
+            sampleName: sampleModel.getRowValue('Name'),
+            sampleStatus: getSampleStatus(sampleModel.getRow()),
             sampleType: sampleType_,
-            sampleStatus,
-            rootLsid,
+            rootLsid: sampleModel.getRowValue('RootMaterialLSID'),
             user,
-        } as SampleDetailContext;
-    }, [sampleContainer, sampleModel, sampleType_, location, user, onDetailUpdate]);
+        }),
+        [sampleContainer, sampleModel, sampleType_, location, user, onDetailUpdate]
+    );
 
-    if (!sampleModel || sampleModel.isLoading || (sampleModel.getRow() && !containerUserLoaded)) {
+    if (!sampleModel || sampleModel.isLoading || (sampleModel.getRow() && !containerUser.isLoaded)) {
         if (sampleModel?.queryInfoError || sampleModel?.rowsError || containerUserError) {
             return <NotFound />;
         }
@@ -194,9 +193,9 @@ export const SampleDetailPageBody: FC<Props> = memo(props => {
     );
 });
 
-const SampleDetailPageWithModels = withQueryModels<OwnProps & BodyProps>(SampleDetailPageBody);
+const SampleDetailPageWithModels = withQueryModels<SampleDetailPageProps & BodyProps>(SampleDetailPageBody);
 
-export const SampleDetailPage: FC<OwnProps> = props => {
+export const SampleDetailPage: FC<SampleDetailPageProps> = props => {
     const { params, requiredColumns, sampleType } = props;
     const { id } = params;
     const sampleType_ = sampleType ?? params.sampleType;
@@ -215,6 +214,6 @@ export const SampleDetailPage: FC<OwnProps> = props => {
     );
 
     return (
-        <SampleDetailPageWithModels autoLoad key={modelId} modelId={modelId} queryConfigs={queryConfigs} {...props} />
+        <SampleDetailPageWithModels {...props} autoLoad key={modelId} modelId={modelId} queryConfigs={queryConfigs} />
     );
 };

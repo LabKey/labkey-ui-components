@@ -2,32 +2,17 @@ import React, { FC, memo, PureComponent } from 'react';
 import { Map } from 'immutable';
 
 import { LINEAGE_DIRECTIONS, LineageGroupingOptions } from '../internal/components/lineage/types';
-import { ProductMenuModel } from '../internal/components/navigation/model';
 import { AppURL } from '../internal/url/AppURL';
 import { SOURCES_KEY } from '../internal/app/constants';
 import { VisGraphNode } from '../internal/components/lineage/models';
 import { InsufficientPermissionsAlert } from '../internal/components/permissions/InsufficientPermissionsAlert';
 import { hasAllPermissions } from '../internal/components/base/models/User';
-import { EntityDataType } from '../internal/components/entities/models';
 
 import { SampleLineageGraph } from './SampleLineageGraph';
-import { SampleDetailContextConsumer, SampleDetailPage } from './SampleDetailPage';
+import { SampleDetailContextConsumer, SampleDetailPage, SampleDetailPageProps } from './SampleDetailPage';
 import { useSampleTypeAppContext } from './SampleTypeAppContext';
 
-interface PageProps {
-    entityDataType?: EntityDataType;
-    iconSrc?: string;
-    location?: any;
-    menu: ProductMenuModel;
-    navigate: (url: string | AppURL, replace?: boolean) => void;
-    noun?: string;
-    params?: any;
-    requiredColumns?: string[];
-    sampleType?: string;
-    title?: string;
-}
-
-interface Props extends PageProps {
+interface Props extends SampleDetailPageProps {
     groupingOptions?: LineageGroupingOptions;
     sampleID: string;
     sampleLsid: string;
@@ -35,13 +20,13 @@ interface Props extends PageProps {
 
 // exported for jest testing
 export class SampleLineagePanel extends PureComponent<Props> {
-    onLineageNodeDblClick = (node: VisGraphNode) => {
+    onLineageNodeDblClick = (node: VisGraphNode): void => {
         if (node?.lineageNode?.links?.lineage) {
             this.props.navigate(node.lineageNode.links.lineage);
         }
     };
 
-    goToLineageGrid = () => {
+    goToLineageGrid = (): void => {
         const { sampleLsid, groupingOptions } = this.props;
         this.props.navigate(
             AppURL.create('lineage').addParams({ seeds: sampleLsid, distance: groupingOptions?.childDepth })
@@ -77,13 +62,11 @@ export class SampleLineagePanel extends PureComponent<Props> {
     }
 }
 
-export const SampleLineagePage: FC<PageProps> = memo(props => {
-    const { title, ...rest } = props;
-    const title_ = title ?? 'Sample Lineage';
+export const SampleLineagePage: FC<SampleDetailPageProps> = memo(props => {
     const { lineagePagePermissions } = useSampleTypeAppContext();
 
     return (
-        <SampleDetailPage {...rest} title={title_}>
+        <SampleDetailPage title="Sample Lineage" {...props}>
             <SampleDetailContextConsumer>
                 {({ sampleName, sampleLsid, user }) => {
                     // can't render lineage if the user can't see all entities in the lineage
@@ -91,7 +74,7 @@ export const SampleLineagePage: FC<PageProps> = memo(props => {
                         return <InsufficientPermissionsAlert />;
                     }
 
-                    return <SampleLineagePanel {...rest} sampleLsid={sampleLsid} sampleID={sampleName} />;
+                    return <SampleLineagePanel {...props} sampleLsid={sampleLsid} sampleID={sampleName} />;
                 }}
             </SampleDetailContextConsumer>
         </SampleDetailPage>

@@ -1,37 +1,23 @@
 import React, { FC, memo } from 'react';
 
-import { ProductMenuModel } from '../internal/components/navigation/model';
-import { AppURL } from '../internal/url/AppURL';
 import { getSampleStatusType, isSampleOperationPermitted } from '../internal/components/samples/utils';
 import { SampleOperation } from '../internal/components/samples/constants';
-import { EntityDataType } from '../internal/components/entities/models';
 
 import { onSampleChange } from './actions';
 import { SampleAliquotsGridPanel } from './SampleAliquotsGridPanel';
-import { SampleDetailContextConsumer, SampleDetailPage } from './SampleDetailPage';
+import { SampleDetailContextConsumer, SampleDetailPage, SampleDetailPageProps } from './SampleDetailPage';
 import { useSampleTypeAppContext } from './SampleTypeAppContext';
 
-interface Props {
-    entityDataType?: EntityDataType;
-    iconSrc?: string;
-    location?: any;
-    menu: ProductMenuModel;
-    navigate: (url: string | AppURL, replace?: boolean) => void;
-    noun?: string;
+interface Props extends SampleDetailPageProps {
     omittedColumns?: string[];
-    params?: any;
-    requiredColumns?: string[];
-    sampleType?: string;
-    title?: string;
 }
 
 export const SampleAliquotsPage: FC<Props> = memo(props => {
-    const { omittedColumns, title, ...rest } = props;
-    const title_ = title ?? 'Aliquots';
+    const { omittedColumns, ...sampleDetailPageProps } = props;
     const { assayProviderType } = useSampleTypeAppContext();
 
     return (
-        <SampleDetailPage {...rest} title={title_}>
+        <SampleDetailPage title="Aliquots" {...sampleDetailPageProps}>
             <SampleDetailContextConsumer>
                 {({ sampleId, sampleModel, rootLsid, sampleLsid, user }) => {
                     return (

@@ -9,6 +9,7 @@ import { SchemaQuery } from '../public/SchemaQuery';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../internal/testHelpers';
 import { TEST_USER_EDITOR } from '../internal/userFixtures';
+import { createMockWithRouterProps } from '../internal/mockUtils';
 
 import { Page } from '../internal/components/base/Page';
 import { NotFound } from '../internal/components/base/NotFound';
@@ -26,7 +27,7 @@ import { InsufficientPermissionsAlert } from '../internal/components/permissions
 
 import { Container } from '../internal/components/base/models/Container';
 
-import { SampleDetailPage, SampleDetailPageBody } from './SampleDetailPage';
+import { SampleDetailPage, SampleDetailPageBody, SampleDetailPageBodyProps } from './SampleDetailPage';
 import { SampleTypeAppContext } from './SampleTypeAppContext';
 import { SampleHeader } from './SampleHeader';
 import { SampleOverviewPanel } from './SampleOverviewPanel';
@@ -52,17 +53,19 @@ const QUERY_MODEL = makeTestQueryModel(
     },
     [1],
     1,
-    'test-model-id'
+    'sample-detail|samples/blood|1'
 ).mutate({ queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADED });
-const DEFAULT_PROPS = {
-    actions: makeTestActions(),
-    queryModels: { 'test-model-id': QUERY_MODEL },
-    menu: new ProductMenuModel(),
-    modelId: 'test-model-id',
-    navigate: jest.fn(),
-    params: { sampleType: 'blood' },
-    title: 'Test title',
-};
+function getDefaultProps(): SampleDetailPageBodyProps {
+    return {
+        ...createMockWithRouterProps(jest.fn),
+        actions: makeTestActions(),
+        queryModels: { 'sample-detail|samples/blood|1': QUERY_MODEL },
+        menu: new ProductMenuModel(),
+        modelId: 'sample-detail|samples/blood|1',
+        navigate: jest.fn(),
+        params: { sampleType: 'blood', id: 1 },
+    };
+}
 const DEFAULT_CONTEXT = { user: TEST_USER_EDITOR, container: TEST_PROJECT_CONTAINER };
 const SAMPLE_TYPE_APP_CONTEXT = {
     SampleStorageMenuComponent: null,
@@ -107,13 +110,13 @@ describe('SampleDetailPage', () => {
 
     test('default props', async () => {
         const wrapper = mountWithAppServerContext(
-            <SampleDetailPageBody {...DEFAULT_PROPS} />,
+            <SampleDetailPageBody {...getDefaultProps()} />,
             { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT },
             DEFAULT_CONTEXT
         );
         await waitForLifecycle(wrapper);
         validate(wrapper);
-        expect(wrapper.find(Page).prop('title')).toBe('S1 - Test title');
+        expect(wrapper.find(Page).prop('title')).toBe('S1 - undefined');
         expect(wrapper.find(SampleHeader).prop('showDescription')).toBe(true);
         expect(wrapper.find(SampleHeader).prop('isCrossFolder')).toBe(false);
         expect(wrapper.find(SampleHeader).prop('StorageMenu')).toBe(null);
@@ -123,7 +126,7 @@ describe('SampleDetailPage', () => {
 
     test('isCrossFolder', async () => {
         const wrapper = mountWithAppServerContext(
-            <SampleDetailPageBody {...DEFAULT_PROPS} />,
+            <SampleDetailPageBody {...getDefaultProps()} />,
             { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT },
             { user: TEST_USER_EDITOR, container: TEST_FOLDER_CONTAINER }
         );
@@ -138,7 +141,7 @@ describe('SampleDetailPage', () => {
             { queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADED }
         );
         const wrapper = mountWithAppServerContext(
-            <SampleDetailPageBody {...DEFAULT_PROPS} queryModels={{ 'test-model-id': queryModel }} />,
+            <SampleDetailPageBody {...getDefaultProps()} queryModels={{ 'sample-detail|samples/blood|1': queryModel }} />,
             { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT },
             DEFAULT_CONTEXT
         );
@@ -150,7 +153,7 @@ describe('SampleDetailPage', () => {
     test('isMedia', async () => {
         const queryModel = QUERY_MODEL.mutate({ queryInfo: new QueryInfo({ isMedia: true, name: 'MediaName' }) });
         const wrapper = mountWithAppServerContext(
-            <SampleDetailPageBody {...DEFAULT_PROPS} queryModels={{ 'test-model-id': queryModel }} />,
+            <SampleDetailPageBody {...getDefaultProps()} queryModels={{ 'sample-detail|samples/blood|1': queryModel }} />,
             { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT },
             DEFAULT_CONTEXT
         );
@@ -162,7 +165,7 @@ describe('SampleDetailPage', () => {
 
     test('render children', async () => {
         const wrapper = mountWithAppServerContext(
-            <SampleDetailPageBody {...DEFAULT_PROPS}>
+            <SampleDetailPageBody {...getDefaultProps()}>
                 <div id="render-child-id">testing</div>
             </SampleDetailPageBody>,
             { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT },
@@ -178,13 +181,13 @@ describe('SampleDetailPage', () => {
 describe('SampleAliquotsPage', () => {
     test('default props', async () => {
         const wrapper = mountWithAppServerContext(
-            <SampleAliquotsPage {...DEFAULT_PROPS} />,
+            <SampleAliquotsPage {...getDefaultProps()} />,
             { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT },
             DEFAULT_CONTEXT
         );
         await waitForLifecycle(wrapper);
         expect(wrapper.find(SampleDetailPage)).toHaveLength(1);
-        expect(wrapper.find(SampleDetailPage).prop('title')).toBe('Test title');
+        expect(wrapper.find(SampleDetailPage).prop('title')).toBe('Aliquots');
         expect(wrapper.find(SampleAliquotsGridPanel)).toHaveLength(1);
         const props = wrapper.find(SampleAliquotsGridPanel).props();
         expect(props.sampleId).toBe(1);
@@ -193,15 +196,15 @@ describe('SampleAliquotsPage', () => {
         wrapper.unmount();
     });
 
-    test('default title', async () => {
+    test('title', async () => {
         const wrapper = mountWithAppServerContext(
-            <SampleAliquotsPage {...DEFAULT_PROPS} title={undefined} />,
+            <SampleAliquotsPage {...getDefaultProps()} title="Test title" />,
             { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT },
             DEFAULT_CONTEXT
         );
         await waitForLifecycle(wrapper);
         expect(wrapper.find(SampleDetailPage)).toHaveLength(1);
-        expect(wrapper.find(SampleDetailPage).prop('title')).toBe('Aliquots');
+        expect(wrapper.find(SampleDetailPage).prop('title')).toBe('Test title');
         wrapper.unmount();
     });
 });
@@ -209,13 +212,13 @@ describe('SampleAliquotsPage', () => {
 describe('SampleAssaysPage', () => {
     test('default props', async () => {
         const wrapper = mountWithAppServerContext(
-            <SampleAssaysPage {...DEFAULT_PROPS} />,
+            <SampleAssaysPage {...getDefaultProps()} />,
             { api: API_APP_CONTEXT_READASSAY, sampleType: SAMPLE_TYPE_APP_CONTEXT },
             DEFAULT_CONTEXT
         );
         await waitForLifecycle(wrapper);
         expect(wrapper.find(SampleDetailPage)).toHaveLength(1);
-        expect(wrapper.find(SampleDetailPage).prop('title')).toBe('Test title');
+        expect(wrapper.find(SampleDetailPage).prop('title')).toBe('Sample Assay Results');
         expect(wrapper.find(InsufficientPermissionsAlert)).toHaveLength(0);
         expect(wrapper.find(SampleAssayDetail)).toHaveLength(1);
         const props = wrapper.find(SampleAssayDetail).props();
@@ -225,21 +228,21 @@ describe('SampleAssaysPage', () => {
         wrapper.unmount();
     });
 
-    test('default title', async () => {
+    test('title', async () => {
         const wrapper = mountWithAppServerContext(
-            <SampleAssaysPage {...DEFAULT_PROPS} title={undefined} />,
+            <SampleAssaysPage {...getDefaultProps()} title="Test title" />,
             { api: API_APP_CONTEXT_READASSAY, sampleType: SAMPLE_TYPE_APP_CONTEXT },
             DEFAULT_CONTEXT
         );
         await waitForLifecycle(wrapper);
         expect(wrapper.find(SampleDetailPage)).toHaveLength(1);
-        expect(wrapper.find(SampleDetailPage).prop('title')).toBe('Sample Assay Results');
+        expect(wrapper.find(SampleDetailPage).prop('title')).toBe('Test title');
         wrapper.unmount();
     });
 
     test('insufficient permissions', async () => {
         const wrapper = mountWithAppServerContext(
-            <SampleAssaysPage {...DEFAULT_PROPS} />,
+            <SampleAssaysPage {...getDefaultProps()} />,
             { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT },
             DEFAULT_CONTEXT
         );
@@ -254,13 +257,13 @@ describe('SampleAssaysPage', () => {
 describe('SampleLineagePage', () => {
     test('default props', async () => {
         const wrapper = mountWithAppServerContext(
-            <SampleLineagePage {...DEFAULT_PROPS} />,
+            <SampleLineagePage {...getDefaultProps()} />,
             { api: API_APP_CONTEXT_DESIGNDATACLASS, sampleType: SAMPLE_TYPE_APP_CONTEXT },
             DEFAULT_CONTEXT
         );
         await waitForLifecycle(wrapper);
         expect(wrapper.find(SampleDetailPage)).toHaveLength(1);
-        expect(wrapper.find(SampleDetailPage).prop('title')).toBe('Test title');
+        expect(wrapper.find(SampleDetailPage).prop('title')).toBe('Sample Lineage');
         expect(wrapper.find(InsufficientPermissionsAlert)).toHaveLength(0);
         expect(wrapper.find(SampleLineagePanel)).toHaveLength(1);
         const props = wrapper.find(SampleLineagePanel).props();
@@ -269,21 +272,21 @@ describe('SampleLineagePage', () => {
         wrapper.unmount();
     });
 
-    test('default title', async () => {
+    test('title', async () => {
         const wrapper = mountWithAppServerContext(
-            <SampleLineagePage {...DEFAULT_PROPS} title={undefined} />,
+            <SampleLineagePage {...getDefaultProps()} title="Test title" />,
             { api: API_APP_CONTEXT_DESIGNDATACLASS, sampleType: SAMPLE_TYPE_APP_CONTEXT },
             DEFAULT_CONTEXT
         );
         await waitForLifecycle(wrapper);
         expect(wrapper.find(SampleDetailPage)).toHaveLength(1);
-        expect(wrapper.find(SampleDetailPage).prop('title')).toBe('Sample Lineage');
+        expect(wrapper.find(SampleDetailPage).prop('title')).toBe('Test title');
         wrapper.unmount();
     });
 
     test('insufficient permissions', async () => {
         const wrapper = mountWithAppServerContext(
-            <SampleLineagePage {...DEFAULT_PROPS} />,
+            <SampleLineagePage {...getDefaultProps()} />,
             { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT },
             DEFAULT_CONTEXT
         );

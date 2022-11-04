@@ -59,16 +59,24 @@ export const SampleOverviewPanel: FC<Props> = memo(props => {
     const sampleType = sampleModel.schemaQuery.queryName;
     const isAliquot = aliquotedFrom != null;
     const { isMedia } = sampleModel.queryInfo;
-    const jobConfigs = getWorkflowGridQueryConfigs(
-        ['all'], // i.e. ALL_JOBS_QUEUE_KEY
-        'sample-aliquot-jobs',
-        null,
-        null,
-        null,
-        sampleLsid,
-        null,
-        ALIQUOT_FILTER_MODE.aliquots
-    );
+    const aliquotJobsQueryConfig = useMemo((): QueryConfig => {
+        if (!isAliquot) {
+            const queryConfigMap = getWorkflowGridQueryConfigs(
+                ['all'], // i.e. ALL_JOBS_QUEUE_KEY
+                'sample-aliquot-jobs',
+                null,
+                null,
+                null,
+                sampleLsid,
+                null,
+                ALIQUOT_FILTER_MODE.aliquots
+            );
+            return Object.values(queryConfigMap)[0];
+        }
+
+        return undefined;
+    }, [getWorkflowGridQueryConfigs, isAliquot, sampleLsid]);
+
     const onUpdate = useCallback(() => onDetailUpdate(true), [onDetailUpdate]);
 
     if (!sampleModel || sampleModel.isLoading) {
@@ -101,7 +109,7 @@ export const SampleOverviewPanel: FC<Props> = memo(props => {
                                 sampleLsid={sampleLsid}
                                 sampleRow={row}
                                 sampleSchemaQuery={sampleModel.queryInfo.schemaQuery}
-                                aliquotJobsQueryConfig={Object.values(jobConfigs)[0] as QueryConfig}
+                                aliquotJobsQueryConfig={aliquotJobsQueryConfig}
                             />
                         </div>
                     )}
@@ -133,7 +141,7 @@ export const SampleOverviewPanel: FC<Props> = memo(props => {
                         sampleSet={sampleType}
                     />
                 </div>
-                {isMedia && ReferencingNotebooksComponent && (
+                {isMedia && isELNEnabled() && ReferencingNotebooksComponent && (
                     <div className="col-md-5">
                         <ReferencingNotebooksComponent
                             label={sampleName}

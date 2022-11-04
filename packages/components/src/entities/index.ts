@@ -140,5 +140,6 @@ export {
 //  the typescript compiler option "isolatedModules", which do not export types from modules, so types must be exported
 //  separately.
 //  https://github.com/babel/babel-loader/issues/603
+export type { SampleDetailPageProps } from './SampleDetailPage';
 export type { SamplesEditableGridProps } from './SamplesEditableGrid';
 export type { SampleTypeAppContext, WithSampleTypeAppContext, AppContextWithSampleType } from './SampleTypeAppContext';

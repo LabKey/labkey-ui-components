@@ -90,8 +90,8 @@ export class MenuItemModel extends Record({
                     .filter(val => val !== '')
                     .map(QueryKey.decodePart);
 
-                const decodedPart = subParts.join('/').replace('$','$$$$'); // Need to escape any '$' in the replacement string https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_string_as_the_replacement
-                const decodedKey = rawData.key.replace(parts[0], decodedPart);
+                const decoded = subParts.join('/');
+                const decodedKey = rawData.key.replace(parts[0], () => decoded); //use the functional version to skip any additional pattern substitutions https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_string_as_the_replacement
 
                 let params;
                 if (parts.length > 1 && parts[1]) {

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.245.0
+*Released*: 4 November 2022
 * Refactor for more assay component and page reuse
   * Move assay buttons into AssaysButtons file
   * Move AssayHeader component here from LKSM

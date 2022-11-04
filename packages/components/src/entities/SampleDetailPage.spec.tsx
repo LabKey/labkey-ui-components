@@ -141,7 +141,10 @@ describe('SampleDetailPage', () => {
             { queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADED }
         );
         const wrapper = mountWithAppServerContext(
-            <SampleDetailPageBody {...getDefaultProps()} queryModels={{ 'sample-detail|samples/blood|1': queryModel }} />,
+            <SampleDetailPageBody
+                {...getDefaultProps()}
+                queryModels={{ 'sample-detail|samples/blood|1': queryModel }}
+            />,
             { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT },
             DEFAULT_CONTEXT
         );
@@ -153,7 +156,10 @@ describe('SampleDetailPage', () => {
     test('isMedia', async () => {
         const queryModel = QUERY_MODEL.mutate({ queryInfo: new QueryInfo({ isMedia: true, name: 'MediaName' }) });
         const wrapper = mountWithAppServerContext(
-            <SampleDetailPageBody {...getDefaultProps()} queryModels={{ 'sample-detail|samples/blood|1': queryModel }} />,
+            <SampleDetailPageBody
+                {...getDefaultProps()}
+                queryModels={{ 'sample-detail|samples/blood|1': queryModel }}
+            />,
             { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT },
             DEFAULT_CONTEXT
         );

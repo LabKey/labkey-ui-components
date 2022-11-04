@@ -502,13 +502,7 @@ export function getJobCreationHref(
     targetProductId?: string,
     ignoreFilter?: boolean
 ): string {
-    const params = getURLParamsForSampleSelectionKey(
-        model,
-        picklistName,
-        isAssay,
-        sampleFieldKey,
-        ignoreFilter
-    );
+    const params = getURLParamsForSampleSelectionKey(model, picklistName, isAssay, sampleFieldKey, ignoreFilter);
 
     if (templateId) params['templateId'] = templateId;
     if (!samplesIncluded) params['sampleTab'] = 2; // i.e. JOB_SAMPLE_SEARCH_TAB_ID

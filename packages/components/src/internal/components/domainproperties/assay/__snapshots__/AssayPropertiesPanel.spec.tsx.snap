@@ -133,6 +133,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
     collapsed={false}
     controlledCollapse={false}
     helpTopic="defineAssaySchema"
+    hideStudyProperties={false}
     model={
       Immutable.Record {
         "allowBackgroundUpload": false,
@@ -255,6 +256,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
   >
     <AssayPropertiesForm
       appPropertiesOnly={true}
+      hideStudyProperties={false}
       model={
         Immutable.Record {
           "allowBackgroundUpload": false,
@@ -1374,6 +1376,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
     collapsed={false}
     controlledCollapse={false}
     helpTopic="defineAssaySchema"
+    hideStudyProperties={false}
     model={
       Immutable.Record {
         "allowBackgroundUpload": false,
@@ -1501,6 +1504,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
       controlledCollapse={false}
       headerId="assay-properties-hdr"
       helpTopic="defineAssaySchema"
+      hideStudyProperties={false}
       isValid={true}
       model={
         Immutable.Record {
@@ -1722,6 +1726,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                   </HelpTopicURL>
                   <AssayPropertiesForm
                     appPropertiesOnly={false}
+                    hideStudyProperties={false}
                     model={
                       Immutable.Record {
                         "allowBackgroundUpload": false,
@@ -2872,6 +2877,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
     collapsed={false}
     controlledCollapse={false}
     helpTopic="defineAssaySchema"
+    hideStudyProperties={false}
     model={
       Immutable.Record {
         "allowBackgroundUpload": false,
@@ -2999,6 +3005,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
       controlledCollapse={false}
       headerId="assay-properties-hdr"
       helpTopic="defineAssaySchema"
+      hideStudyProperties={false}
       isValid={true}
       model={
         Immutable.Record {
@@ -3220,6 +3227,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                   </HelpTopicURL>
                   <AssayPropertiesForm
                     appPropertiesOnly={false}
+                    hideStudyProperties={false}
                     model={
                       Immutable.Record {
                         "allowBackgroundUpload": false,
@@ -4291,6 +4299,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
     collapsed={false}
     controlledCollapse={false}
     helpTopic="defineAssaySchema"
+    hideStudyProperties={false}
     model={
       Immutable.Record {
         "allowBackgroundUpload": false,
@@ -4339,6 +4348,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
       controlledCollapse={false}
       headerId="assay-properties-hdr"
       helpTopic="defineAssaySchema"
+      hideStudyProperties={false}
       isValid={true}
       model={
         Immutable.Record {
@@ -4481,6 +4491,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                   </HelpTopicURL>
                   <AssayPropertiesForm
                     appPropertiesOnly={false}
+                    hideStudyProperties={false}
                     model={
                       Immutable.Record {
                         "allowBackgroundUpload": false,
@@ -5317,6 +5328,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
     collapsed={false}
     controlledCollapse={false}
     helpTopic={null}
+    hideStudyProperties={false}
     model={
       Immutable.Record {
         "allowBackgroundUpload": false,
@@ -5444,6 +5456,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
       controlledCollapse={false}
       headerId="assay-properties-hdr"
       helpTopic={null}
+      hideStudyProperties={false}
       isValid={true}
       model={
         Immutable.Record {
@@ -5628,6 +5641,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                 >
                   <AssayPropertiesForm
                     appPropertiesOnly={true}
+                    hideStudyProperties={false}
                     model={
                       Immutable.Record {
                         "allowBackgroundUpload": false,

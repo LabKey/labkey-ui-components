@@ -124,7 +124,7 @@ import { DEFAULT_FILE } from './internal/components/files/models';
 import { FilesListing } from './internal/components/files/FilesListing';
 import { FilesListingForm } from './internal/components/files/FilesListingForm';
 import { FileAttachmentEntry } from './internal/components/files/FileAttachmentEntry';
-import { getWebDavFiles, uploadWebDavFile, createWebDavDirectory, WebDavFile } from './public/files/WebDav';
+import { createWebDavDirectory, getWebDavFiles, uploadWebDavFile, WebDavFile } from './public/files/WebDav';
 import { FileTree } from './internal/components/files/FileTree';
 import { Notifications } from './internal/components/notifications/Notifications';
 import { getPipelineActivityData, markAllNotificationsAsRead } from './internal/components/notifications/actions';
@@ -182,11 +182,11 @@ import {
     InsertRowsResponse,
     invalidateQueryDetailsCache,
     invalidateQueryDetailsCacheKey,
+    loadQueries,
+    loadQueriesFromTable,
     selectDistinctRows,
     selectRowsDeprecated,
     updateRows,
-    loadQueries,
-    loadQueriesFromTable,
 } from './internal/query/api';
 import { registerFilterType } from './internal/query/filter';
 import { selectRows } from './internal/query/selectRows';
@@ -307,8 +307,8 @@ import {
     getFieldLookupFromSelection,
     getSampleSet,
     getSampleTypeDetails,
-    getSelectionLineageData,
     getSelectedSampleIdsFromSelectionKey,
+    getSelectionLineageData,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 
@@ -336,13 +336,7 @@ import {
 import { AssayDesignEmptyAlert } from './internal/components/assay/AssayDesignEmptyAlert';
 import { AssayPicker, AssayPickerTabs } from './internal/components/assay/AssayPicker';
 import { AssayStateModel, AssayUploadResultModel } from './internal/components/assay/models';
-import {
-    allowReimportAssayRun,
-    clearAssayDefinitionCache,
-    fetchAllAssays,
-    GENERAL_ASSAY_PROVIDER_NAME,
-    RUN_PROPERTIES_REQUIRED_COLUMNS,
-} from './internal/components/assay/actions';
+import { allowReimportAssayRun, clearAssayDefinitionCache, fetchAllAssays } from './internal/components/assay/actions';
 import { BaseBarChart } from './internal/components/chart/BaseBarChart';
 import {
     createHorizontalBarLegendData,
@@ -525,10 +519,10 @@ import { DisableableMenuItem } from './internal/components/samples/DisableableMe
 import { SampleStatusTag } from './internal/components/samples/SampleStatusTag';
 import { ManageSampleStatusesPanel } from './internal/components/samples/ManageSampleStatusesPanel';
 import {
+    ALIQUOT_FILTER_MODE,
     DEFAULT_SAMPLE_FIELD_CONFIG,
     FIND_BY_IDS_QUERY_PARAM,
     IS_ALIQUOT_COL,
-    SAMPLES_WITH_TYPES_FILTER,
     SAMPLE_DATA_EXPORT_CONFIG,
     SAMPLE_EXPORT_CONFIG,
     SAMPLE_INSERT_EXTRA_COLUMNS,
@@ -538,8 +532,8 @@ import {
     SAMPLE_STATUS_REQUIRED_COLUMNS,
     SAMPLE_STORAGE_COLUMNS,
     SampleOperation,
+    SAMPLES_WITH_TYPES_FILTER,
     SampleStateType,
-    ALIQUOT_FILTER_MODE,
 } from './internal/components/samples/constants';
 import { createMockWithRouteLeave, createMockWithRouterProps } from './internal/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
@@ -605,9 +599,9 @@ import {
     userCanManagePicklists,
     userCanManageSampleWorkflow,
     userCanReadAssays,
+    userCanReadDataClasses,
     userCanReadMedia,
     userCanReadNotebooks,
-    userCanReadDataClasses,
     userCanReadRegistry,
     userCanReadSources,
 } from './internal/app/utils';
@@ -655,6 +649,7 @@ import {
     NEW_SAMPLE_TYPE_HREF,
     NEW_SAMPLES_HREF,
     NEW_SOURCE_TYPE_HREF,
+    NEW_STANDARD_ASSAY_DESIGN_HREF,
     NOTIFICATION_TIMEOUT,
     PICKLIST_HOME_HREF,
     PICKLIST_KEY,
@@ -693,6 +688,7 @@ import {
     TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
     TEST_LKSM_STARTER_MODULE_CONTEXT,
 } from './internal/productFixtures';
+import { GENERAL_ASSAY_PROVIDER_NAME, RUN_PROPERTIES_REQUIRED_COLUMNS } from './internal/components/assay/constants';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -781,6 +777,7 @@ const App = {
     NEW_SOURCE_TYPE_HREF,
     NEW_SAMPLE_TYPE_HREF,
     NEW_ASSAY_DESIGN_HREF,
+    NEW_STANDARD_ASSAY_DESIGN_HREF,
     FIND_SAMPLES_BY_FILTER_HREF,
     FIND_SAMPLES_BY_ID_HREF,
     PICKLIST_HOME_HREF,

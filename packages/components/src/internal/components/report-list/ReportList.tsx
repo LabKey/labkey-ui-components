@@ -111,7 +111,7 @@ class UnsupportedReportBody extends PureComponent<ReportConsumer> {
 
                     <div className="unsupported-alert__view-link">
                         <a href={this.props.report.runUrl} className="btn btn-warning">
-                            View in LabKey
+                            View in LabKey Server
                         </a>
                     </div>
                 </div>

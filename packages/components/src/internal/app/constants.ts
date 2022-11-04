@@ -8,6 +8,8 @@ import { imageURL } from '../url/ActionURL';
 
 import { SAMPLE_MANAGER_SEARCH_PLACEHOLDER, SEARCH_PLACEHOLDER } from '../components/navigation/constants';
 
+import { GENERAL_ASSAY_PROVIDER_NAME } from '../components/assay/constants';
+
 import { AppProperties } from './models';
 
 // These ids should match what is used by the MenuProviders in the Java code so we can avoid toLowerCase comparisons.
@@ -55,6 +57,7 @@ export const FIND_SAMPLES_BY_FILTER_HREF = AppURL.create(SEARCH_KEY, FIND_SAMPLE
 export const NEW_SAMPLES_HREF = AppURL.create(SAMPLES_KEY, 'new');
 export const NEW_SOURCE_TYPE_HREF = AppURL.create(SOURCE_TYPE_KEY, 'new');
 export const NEW_SAMPLE_TYPE_HREF = AppURL.create(SAMPLE_TYPE_KEY, 'new');
+export const NEW_STANDARD_ASSAY_DESIGN_HREF = AppURL.create(ASSAY_DESIGN_KEY, GENERAL_ASSAY_PROVIDER_NAME);
 export const NEW_ASSAY_DESIGN_HREF = AppURL.create(ASSAY_DESIGN_KEY, 'new');
 export const WORKFLOW_HOME_HREF = AppURL.create(WORKFLOW_KEY)
     .addParam('mine.sort', 'DueDate')

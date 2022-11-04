@@ -74,9 +74,9 @@ import {
     flattenQueryModelRow,
     getRunPropertiesFileName,
     importAssayRun,
-    RUN_PROPERTIES_REQUIRED_COLUMNS,
     uploadAssayRunFiles,
 } from './actions';
+import { RUN_PROPERTIES_REQUIRED_COLUMNS } from './constants';
 
 const BASE_FILE_TYPES = ['.csv', '.tsv', '.txt', '.xlsx', '.xls'];
 const BATCH_PROPERTIES_GRID_ID = 'assay-batch-details';

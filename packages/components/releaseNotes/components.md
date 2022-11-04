@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.245.0
+*Released*: 4 November 2022
+* Refactor for more assay component and page reuse
+  * Move assay buttons into AssaysButtons file
+  * Move AssayHeader component here from LKSM
+  * in `isPropertyTypeAllowed`, respect the `show` properties even if `appPropetiesOnly` is false
+  * Add optional property for hiding study properties in assay designer
+
 ### version 2.244.0
 *Released*: 3 November 2022
 * Refactor `resolveInputRenderer` and enhance typings with `InputRendererFactory`.

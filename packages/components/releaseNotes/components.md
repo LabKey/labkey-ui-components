@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issues 46591 and 46651: Fix displays and links for freezer names that have slashes in them
+
 ### version 2.242.8
 *Released*: 4 Nov 2022
 * Better Fix for Issue 45944: Use functional substitution when decoding key for MenuItem keys.

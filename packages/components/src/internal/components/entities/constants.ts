@@ -107,7 +107,7 @@ export const DataClassDataType: EntityDataType = {
     descriptionPlural: 'parent types',
     uniqueFieldKey: 'Name',
     dependencyText: 'derived data or sample dependencies',
-    deleteHelpLinkTopic: 'dataClass', // no topic specific to deleting data classes yet, so we refer to data classes in general
+    deleteHelpLinkTopic: 'dataClass#prevent',
     inputColumnName: 'Inputs/Data/First',
     ancestorColumnName: 'Ancestors/OtherData',
     inputTypeValueField: 'rowId',

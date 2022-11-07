@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { FC, memo, ReactNode } from 'react';
 import { fromJS, List, Map, OrderedMap } from 'immutable';
 import { Domain } from '@labkey/api';
 
@@ -14,7 +14,7 @@ import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesi
 
 import { PropDescType, UNIQUE_ID_TYPE } from '../PropDescType';
 
-import { hasModule, isCommunityDistribution } from '../../../app/utils';
+import { biologicsIsPrimaryApp, hasModule, isCommunityDistribution } from '../../../app/utils';
 
 import { NameExpressionValidationModal } from '../validation/NameExpressionValidationModal';
 
@@ -24,7 +24,12 @@ import { GENID_SYNTAX_STRING } from '../NameExpressionGenIdBanner';
 
 import { IParentOption } from '../../entities/models';
 import { SCHEMAS } from '../../../schemas';
-import { getHelpLink, HelpLink, SAMPLE_ALIQUOT_TOPIC } from '../../../util/helpLinks';
+import {
+    getHelpLink,
+    HelpLink,
+    LKS_SAMPLE_ALIQUOT_FIELDS_TOPIC,
+    SAMPLE_ALIQUOT_FIELDS_TOPIC
+} from '../../../util/helpLinks';
 import { initQueryGridState } from '../../../global';
 import { resolveErrorMessage } from '../../../util/messaging';
 import { ISelectRowsResult } from '../../../query/api';
@@ -49,29 +54,31 @@ const DOMAIN_PANEL_INDEX = 1;
 export const SAMPLE_SET_IMPORT_PREFIX = 'materialInputs/';
 export const DATA_CLASS_IMPORT_PREFIX = 'dataInputs/';
 const DATA_CLASS_SCHEMA_KEY = 'exp/dataclasses';
-const SAMPLE_SET_NAME_EXPRESSION_TOPIC = 'sampleIDs#patterns';
-const SAMPLE_SET_NAME_EXPRESSION_PLACEHOLDER = 'Enter a naming pattern (e.g., S-${now:date}-${dailySampleCount})';
-const SAMPLE_SET_HELP_TOPIC = 'createSampleType';
+const SAMPLE_TYPE_NAME_EXPRESSION_TOPIC = 'sampleIDs#patterns';
+const SAMPLE_TYPE_NAME_EXPRESSION_PLACEHOLDER = 'Enter a naming pattern (e.g., S-${now:date}-${dailySampleCount})';
+const SAMPLE_TYPE_HELP_TOPIC = 'createSampleType';
 
-const ALIQUOT_OPTIONS_HELP = (
-    <div>
-        <p>
-            <b>Editable for samples only:</b> Field is editable for samples but not for aliquots. An aliquot will
-            inherit the field value from its parent sample.
-        </p>
-        <p>
-            <b>Editable for aliquots only:</b> Field is viewable and editable for aliquots but not for samples.
-        </p>
-        <p>
-            <b>Separately editable for samples and aliquots:</b> Field is editable for samples and aliquots
-            independently.
-        </p>
-        <br />
-        <p>
-            Learn more about <HelpLink topic={SAMPLE_ALIQUOT_TOPIC}>Sample Aliquots</HelpLink>.
-        </p>
-    </div>
-);
+const AliquotOptionsHelp: FC<{helpTopic: string}> = memo(({helpTopic}) => {
+    return (
+        <div>
+            <p>
+                <b>Editable for samples only:</b> Field is editable for samples but not for aliquots. An aliquot will
+                inherit the field value from its parent sample.
+            </p>
+            <p>
+                <b>Editable for aliquots only:</b> Field is viewable and editable for aliquots but not for samples.
+            </p>
+            <p>
+                <b>Separately editable for samples and aliquots:</b> Field is editable for samples and aliquots
+                independently.
+            </p>
+            <br />
+            <p>
+                Learn more about <HelpLink topic={helpTopic}>Sample Aliquots</HelpLink>.
+            </p>
+        </div>
+    )
+});
 
 interface Props {
     aliquotNamePatternProps?: AliquotNamePatternProps;
@@ -128,9 +135,9 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         defaultSampleFieldConfig: DEFAULT_SAMPLE_FIELD_CONFIG,
         includeDataClasses: false,
         useSeparateDataClassesAliasMenu: false,
-        nameExpressionInfoUrl: getHelpLink(SAMPLE_SET_NAME_EXPRESSION_TOPIC),
-        nameExpressionPlaceholder: SAMPLE_SET_NAME_EXPRESSION_PLACEHOLDER,
-        helpTopic: SAMPLE_SET_HELP_TOPIC,
+        nameExpressionInfoUrl: getHelpLink(SAMPLE_TYPE_NAME_EXPRESSION_TOPIC),
+        nameExpressionPlaceholder: SAMPLE_TYPE_NAME_EXPRESSION_PLACEHOLDER,
+        helpTopic: SAMPLE_TYPE_HELP_TOPIC,
         showParentLabelPrefix: true,
         useTheme: false,
         showLinkToStudy: false,
@@ -799,7 +806,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                             labelAll: 'Separately editable for samples and aliquots',
                             labelChild: 'Editable for aliquots only',
                             labelParent: 'Editable for samples only (default)',
-                            helpLinkNode: ALIQUOT_OPTIONS_HELP,
+                            helpLinkNode: <AliquotOptionsHelp helpTopic={biologicsIsPrimaryApp() ? LKS_SAMPLE_ALIQUOT_FIELDS_TOPIC: SAMPLE_ALIQUOT_FIELDS_TOPIC}/>,
                             scopeChangeWarning:
                                 "Updating a 'Samples Only' field to be 'Samples and Aliquots' will blank out the field values for all aliquots. This action cannot be undone. ",
                         },

@@ -117,7 +117,7 @@ describe('DomainForm', () => {
         // Help link
         const helpLink = form.find({
             className: 'domain-field-float-right',
-            href: 'https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor&referrer=inPage',
+            href: 'https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=fieldEditor',
         });
         expect(helpLink.length).toEqual(1);
 

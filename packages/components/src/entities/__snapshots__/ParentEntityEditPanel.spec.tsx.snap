@@ -18,7 +18,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
     [
       {
         "ancestorColumnName": "Ancestors/OtherData",
-        "deleteHelpLinkTopic": "dataClass",
+        "deleteHelpLinkTopic": "dataClass#prevent",
         "dependencyText": "derived data or sample dependencies",
         "descriptionPlural": "parent types",
         "descriptionSingular": "parent type",
@@ -126,7 +126,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                   parentDataType={
                     {
                       "ancestorColumnName": "Ancestors/OtherData",
-                      "deleteHelpLinkTopic": "dataClass",
+                      "deleteHelpLinkTopic": "dataClass#prevent",
                       "dependencyText": "derived data or sample dependencies",
                       "descriptionPlural": "parent types",
                       "descriptionSingular": "parent type",
@@ -171,7 +171,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                     parentDataType={
                       {
                         "ancestorColumnName": "Ancestors/OtherData",
-                        "deleteHelpLinkTopic": "dataClass",
+                        "deleteHelpLinkTopic": "dataClass#prevent",
                         "dependencyText": "derived data or sample dependencies",
                         "descriptionPlural": "parent types",
                         "descriptionSingular": "parent type",
@@ -230,7 +230,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                       parentDataType={
                         {
                           "ancestorColumnName": "Ancestors/OtherData",
-                          "deleteHelpLinkTopic": "dataClass",
+                          "deleteHelpLinkTopic": "dataClass#prevent",
                           "dependencyText": "derived data or sample dependencies",
                           "descriptionPlural": "parent types",
                           "descriptionSingular": "parent type",
@@ -303,7 +303,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                         parentDataType={
                           {
                             "ancestorColumnName": "Ancestors/OtherData",
-                            "deleteHelpLinkTopic": "dataClass",
+                            "deleteHelpLinkTopic": "dataClass#prevent",
                             "dependencyText": "derived data or sample dependencies",
                             "descriptionPlural": "parent types",
                             "descriptionSingular": "parent type",
@@ -4813,7 +4813,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
     [
       {
         "ancestorColumnName": "Ancestors/OtherData",
-        "deleteHelpLinkTopic": "dataClass",
+        "deleteHelpLinkTopic": "dataClass#prevent",
         "dependencyText": "derived data or sample dependencies",
         "descriptionPlural": "parent types",
         "descriptionSingular": "parent type",
@@ -4931,7 +4931,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                   parentDataType={
                     {
                       "ancestorColumnName": "Ancestors/OtherData",
-                      "deleteHelpLinkTopic": "dataClass",
+                      "deleteHelpLinkTopic": "dataClass#prevent",
                       "dependencyText": "derived data or sample dependencies",
                       "descriptionPlural": "parent types",
                       "descriptionSingular": "parent type",
@@ -4976,7 +4976,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                     parentDataType={
                       {
                         "ancestorColumnName": "Ancestors/OtherData",
-                        "deleteHelpLinkTopic": "dataClass",
+                        "deleteHelpLinkTopic": "dataClass#prevent",
                         "dependencyText": "derived data or sample dependencies",
                         "descriptionPlural": "parent types",
                         "descriptionSingular": "parent type",
@@ -5035,7 +5035,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                       parentDataType={
                         {
                           "ancestorColumnName": "Ancestors/OtherData",
-                          "deleteHelpLinkTopic": "dataClass",
+                          "deleteHelpLinkTopic": "dataClass#prevent",
                           "dependencyText": "derived data or sample dependencies",
                           "descriptionPlural": "parent types",
                           "descriptionSingular": "parent type",
@@ -5108,7 +5108,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                         parentDataType={
                           {
                             "ancestorColumnName": "Ancestors/OtherData",
-                            "deleteHelpLinkTopic": "dataClass",
+                            "deleteHelpLinkTopic": "dataClass#prevent",
                             "dependencyText": "derived data or sample dependencies",
                             "descriptionPlural": "parent types",
                             "descriptionSingular": "parent type",
@@ -5213,7 +5213,7 @@ exports[`ParentEntityEditPanel loading state 1`] = `
     [
       {
         "ancestorColumnName": "Ancestors/OtherData",
-        "deleteHelpLinkTopic": "dataClass",
+        "deleteHelpLinkTopic": "dataClass#prevent",
         "dependencyText": "derived data or sample dependencies",
         "descriptionPlural": "parent types",
         "descriptionSingular": "parent type",

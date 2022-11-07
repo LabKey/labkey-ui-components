@@ -1,26 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`HelpLink custom props 1`] = `
-<a
-  className="test-class-name"
-  href="https://www.labkey.org/Documentation/wiki-page.view?name=TEST_TOPIC&referrer=errorPage"
-  rel="noopener noreferrer"
-  target="_blank"
->
-  custom props
-</a>
-`;
-
-exports[`HelpLink default props 1`] = `
-<a
-  href="https://www.labkey.org/Documentation/wiki-page.view?name=TEST_TOPIC&referrer=inPage"
-  rel="noopener noreferrer"
-  target="_blank"
->
-  default props text
-</a>
-`;
-
 exports[`JavaDocsLink default props 1`] = `
 <a
   href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/test/SomeClass.html"

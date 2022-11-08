@@ -89,8 +89,8 @@ export const IDNameSettings: FC = memo(() => {
                             type="text"
                         />
                         <span className="help-block">
-                        Example: {prefix}Blood-${'{'}GenId{'}'}
-                    </span>
+                            Example: {prefix}Blood-${'{'}GenId{'}'}
+                        </span>
                     </Col>
                 </FormGroup>
             )}

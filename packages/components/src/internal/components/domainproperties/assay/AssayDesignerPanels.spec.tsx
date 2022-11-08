@@ -14,6 +14,7 @@ import { ProductFeature } from '../../../app/constants';
 import { AssayProtocolModel } from './models';
 import { DescriptionInput, NameInput } from './AssayPropertiesInput';
 import { AssayDesignerPanels, AssayDesignerPanelsProps } from './AssayDesignerPanels';
+import DomainForm from '../DomainForm';
 
 const SERVER_CONTEXT = {
     moduleContext: { api: { moduleNames: ['assay', 'study'] }, core: { productFeatures: [ProductFeature.AssayQC] } },
@@ -138,6 +139,26 @@ describe('AssayDesignerPanels', () => {
         await waitForLifecycle(wrapper);
         expect(wrapper).toMatchSnapshot();
         wrapper.unmount();
+    });
+
+    test('hideFilePropertyType with initModel', async () => {
+        let props = {...getDefaultProps(), domainFormDisplayOptions: {
+                hideStudyPropertyTypes: true,
+                hideFilePropertyType: true,
+            }};
+        const wrapper = mountWithServerContext(
+            <AssayDesignerPanels {...props} initModel={EXISTING_MODEL} appPropertiesOnly />
+        );
+        await waitForLifecycle(wrapper);
+        const forms = wrapper.find(DomainForm);
+        expect(forms).toHaveLength(2);
+        expect(forms.at(1).prop("domainFormDisplayOptions")).toStrictEqual({
+            "hideStudyPropertyTypes": true,
+            "hideFilePropertyType": true,
+            "domainKindDisplayName": "assay design",
+            "hideInferFromFile": true,
+            "textChoiceLockedForDomain": true
+        });
     });
 
     test('new assay wizard', async () => {

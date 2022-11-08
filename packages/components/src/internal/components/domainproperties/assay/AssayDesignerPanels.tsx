@@ -13,6 +13,7 @@ import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS } from '../constants';
 import { saveAssayDesign } from './actions';
 import { AssayProtocolModel } from './models';
 import { AssayPropertiesPanel } from './AssayPropertiesPanel';
+import { GENERAL_ASSAY_PROVIDER_NAME } from '../../assay/constants';
 
 export interface AssayDesignerPanelsProps {
     appDomainHeaders?: Map<string, HeaderRenderer>;
@@ -221,14 +222,14 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                     useTheme={useTheme}
                 />
                 {protocolModel.domains.map((domain, i) => {
-                    // optionally hide the Batch Fields domain from the UI (for sample management use case)
+                    // optionally hide the Batch Fields domain from the UI
                     if (this.shouldSkipBatchDomain(domain)) {
                         return;
                     }
 
                     // allow empty domain to be inferred from a file for Data Fields in General assay
                     const hideInferFromFile =
-                        protocolModel.providerName !== 'General' || !domain.isNameSuffixMatch('Data');
+                        protocolModel.providerName !== GENERAL_ASSAY_PROVIDER_NAME || !domain.isNameSuffixMatch('Data');
                     // The File property type should be hidden for Data domains if the display options indicate this.
                     // We will always allow file property types for the Batch and Run domains.
                     const hideFilePropertyType = domainFormDisplayOptions.hideFilePropertyType && !domain.isNameSuffixMatch('Batch') && !domain.isNameSuffixMatch('Run');

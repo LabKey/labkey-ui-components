@@ -95,13 +95,15 @@ export const getSamplesImportSuccessMessage = (
     transactionAuditId: number,
     sampleListingGridId: string,
     filename: string,
-    actions: Actions
+    actions: Actions,
+    nounPlural = 'samples'
 ): ReactNode => {
     const fromFile = filename ? ' from ' + filename : '';
 
     return (
         <>
-            Background import of samples{fromFile} completed. To work with the imported samples,&nbsp;
+            Background import of {nounPlural}
+            {fromFile} completed. To work with the imported samples,&nbsp;
             <a
                 onClick={() =>
                     selectGridIdsFromTransactionId(
@@ -127,10 +129,12 @@ export const getSamplesCreatedSuccessMessage = (
     showAddToStorage: boolean,
     sampleListingGridId: string,
     navigate: (url: string | AppURL) => void,
-    actions: Actions
+    actions: Actions,
+    nounSingular = 'item',
+    nounPlural = 'items'
 ): ReactNode => {
     const count = createdSampleCount > 0 ? createdSampleCount : importedSampleCount;
-    const noun = count == 1 ? ' sample' : ' samples';
+    const noun = count == 1 ? ' ' + nounSingular : ' ' + nounPlural;
     const itThem = count == 1 ? 'it' : 'them';
     const action = createdSampleCount > 0 ? 'created' : 'imported';
 
@@ -241,7 +245,9 @@ const SampleListingPageBody: FC<Props> = props => {
                             canAddToStorage,
                             SAMPLES_LISTING_GRID_ID,
                             navigate,
-                            actions
+                            actions,
+                            'sample',
+                            'samples'
                         ),
                     },
                     true

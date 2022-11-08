@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD November 2022
-* Updates for Sample Type consistency of Sample type listing page
+* Updates for Sample Type consistency of Samples listing page
   * Refactor SampleListingPage.tsx from LKSM and LKB to share
   * Add misc components and props to SampleTypeAppContext
   * move selectGridIdsFromTransactionId from LKSM app

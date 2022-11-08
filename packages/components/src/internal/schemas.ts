@@ -16,6 +16,7 @@
 import { List } from 'immutable';
 
 import { SchemaQuery } from '../public/SchemaQuery';
+
 import { ViewInfo } from './ViewInfo';
 
 // Created By / Modified By

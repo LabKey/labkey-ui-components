@@ -22,6 +22,8 @@ import { resolveKey, SchemaQuery } from '../public/SchemaQuery';
 
 import { QueryInfo } from '../public/QueryInfo';
 
+import { Actions } from '../public/QueryModel/withQueryModels';
+
 import { getContainerFilter, invalidateQueryDetailsCache, selectRowsDeprecated } from './query/api';
 import { Location } from './util/URL';
 import {
@@ -62,7 +64,6 @@ import { buildURL } from './url/AppURL';
 
 import { ViewInfo } from './ViewInfo';
 import { decimalDifference, genCellKey, getSortedCellKeys, parseCellKey } from './utils';
-import {Actions} from "../public/QueryModel/withQueryModels";
 
 const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;

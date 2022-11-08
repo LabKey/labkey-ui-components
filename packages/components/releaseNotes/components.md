@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Refactor SampleListingPage.tsx from LKSM and LKB to share
   * Add misc components and props to SampleTypeAppContext
   * move selectGridIdsFromTransactionId from LKSM app
+  * add sort for app type listing grids by name asc
 
 ### version 2.246.1
 *Released*: 7 November 2022

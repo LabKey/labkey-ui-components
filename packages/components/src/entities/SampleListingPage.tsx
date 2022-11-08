@@ -231,7 +231,6 @@ const SampleListingPageBody: FC<Props> = props => {
         if (transactionAuditId) {
             if (createdSampleCount || importedSampleCount) {
                 const canAddToStorage = userCanEditStorageData(user);
-
                 createNotification(
                     {
                         message: getSamplesCreatedSuccessMessage(
@@ -249,7 +248,6 @@ const SampleListingPageBody: FC<Props> = props => {
                 );
             } else {
                 const filename = props.location?.query?.importFile;
-
                 createNotification(
                     {
                         message: getSamplesImportSuccessMessage(

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.242.9
+*Released*: 7 November 2022
 * Issues 46591 and 46651: Fix displays and links for freezer names that have slashes in them
 
 ### version 2.242.8

@@ -229,7 +229,9 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                     // allow empty domain to be inferred from a file for Data Fields in General assay
                     const hideInferFromFile =
                         protocolModel.providerName !== 'General' || !domain.isNameSuffixMatch('Data');
-                    const hideFilePropertyType = !domain.isNameSuffixMatch('Batch') && !domain.isNameSuffixMatch('Run');
+                    // The File property type should be hidden for Data domains if the display options indicate this.
+                    // We will always allow file property types for the Batch and Run domains.
+                    const hideFilePropertyType = domainFormDisplayOptions.hideFilePropertyType && !domain.isNameSuffixMatch('Batch') && !domain.isNameSuffixMatch('Run');
                     const appDomainHeaderRenderer = this.getAppDomainHeaderRenderer(domain);
                     const textChoiceLockedForDomain = !(
                         (domain.isNameSuffixMatch('Run') && protocolModel.editableRuns) ||

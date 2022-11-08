@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Assay Design page consistency
+  * hideFilePropertyType for the Data domain only for LKSM
+
 ### version 2.246.1
 *Released*: 7 November 2022
 * Update various help links

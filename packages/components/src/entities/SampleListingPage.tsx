@@ -2,7 +2,7 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { ReactNode, FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { MenuItem } from 'react-bootstrap';
 import { fromJS, List } from 'immutable';
 import { WithRouterProps } from 'react-router';
@@ -73,14 +73,15 @@ function selectSamplesAndAddToStorage(
     targetSampleSetName: string,
     sampleCount: number,
     transactionAuditId: number,
+    sampleListingGridId: string,
     navigate: (url: string | AppURL) => any,
     actions: Actions
 ): void {
     let sampleSetURL = AppURL.create(SAMPLES_KEY, targetSampleSetName);
     const schemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, targetSampleSetName);
-    selectGridIdsFromTransactionId(SAMPLES_LISTING_GRID_ID, schemaQuery, transactionAuditId, SAMPLES_KEY, actions).then(
+    selectGridIdsFromTransactionId(sampleListingGridId, schemaQuery, transactionAuditId, SAMPLES_KEY, actions).then(
         selected => {
-            const modelId = createGridModelId(SAMPLES_LISTING_GRID_ID, schemaQuery);
+            const modelId = createGridModelId(sampleListingGridId, schemaQuery);
             setSnapshotSelections(modelId, selected).then(() => {
                 sampleSetURL = sampleSetURL.addParam('addToStorageCount', sampleCount); // show AddSamplesToStorageModal
                 navigate(sampleSetURL);
@@ -88,6 +89,94 @@ function selectSamplesAndAddToStorage(
         }
     );
 }
+
+export const getSamplesImportSuccessMessage = (
+    sampleType: string,
+    transactionAuditId: number,
+    sampleListingGridId: string,
+    filename: string,
+    actions: Actions
+): ReactNode => {
+    const fromFile = filename ? ' from ' + filename : '';
+
+    return (
+        <>
+            Background import of samples{fromFile} completed. To work with the imported samples,&nbsp;
+            <a
+                onClick={() =>
+                    selectGridIdsFromTransactionId(
+                        sampleListingGridId,
+                        SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType),
+                        transactionAuditId,
+                        SAMPLES_KEY,
+                        actions
+                    )
+                }
+            >
+                select them in the grid.
+            </a>
+        </>
+    );
+};
+
+export const getSamplesCreatedSuccessMessage = (
+    sampleType: string,
+    transactionAuditId: number,
+    createdSampleCount: number,
+    importedSampleCount: number,
+    showAddToStorage: boolean,
+    sampleListingGridId: string,
+    navigate: (url: string | AppURL) => void,
+    actions: Actions
+): ReactNode => {
+    const count = createdSampleCount > 0 ? createdSampleCount : importedSampleCount;
+    const noun = count == 1 ? ' sample' : ' samples';
+    const itThem = count == 1 ? 'it' : 'them';
+    const action = createdSampleCount > 0 ? 'created' : 'imported';
+
+    return (
+        <>
+            Successfully {action} {count} {noun}.&nbsp;
+            {showAddToStorage && (
+                <>
+                    <a
+                        onClick={() =>
+                            selectSamplesAndAddToStorage(
+                                sampleType,
+                                count,
+                                transactionAuditId,
+                                sampleListingGridId,
+                                navigate,
+                                actions
+                            )
+                        }
+                    >
+                        Add {itThem} to storage
+                    </a>
+                    &nbsp;now or
+                </>
+            )}
+            {transactionAuditId && (
+                <>
+                    <a
+                        onClick={() =>
+                            selectGridIdsFromTransactionId(
+                                sampleListingGridId,
+                                SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType),
+                                transactionAuditId,
+                                SAMPLES_KEY,
+                                actions
+                            )
+                        }
+                    >
+                        &nbsp;{showAddToStorage ? 'select' : 'Select'} {itThem} in the grid&nbsp;
+                    </a>
+                </>
+            )}
+            to work with {itThem}.
+        </>
+    );
+};
 
 interface OwnProps {
     menu: ProductMenuModel;
@@ -141,80 +230,34 @@ const SampleListingPageBody: FC<Props> = props => {
 
         if (transactionAuditId) {
             if (createdSampleCount || importedSampleCount) {
-                const count = createdSampleCount > 0 ? createdSampleCount : importedSampleCount;
-                const noun = count == 1 ? ' sample' : ' samples';
-                const itThem = count == 1 ? 'it' : 'them';
-                const action = createdSampleCount > 0 ? 'created' : 'imported';
                 const canAddToStorage = userCanEditStorageData(user);
+
                 createNotification(
                     {
-                        message: (
-                            <>
-                                Successfully {action} {count} {noun}.&nbsp;
-                                {canAddToStorage && (
-                                    <>
-                                        <a
-                                            onClick={() =>
-                                                selectSamplesAndAddToStorage(
-                                                    sampleSet,
-                                                    count,
-                                                    transactionAuditId,
-                                                    navigate,
-                                                    actions
-                                                )
-                                            }
-                                        >
-                                            Add {itThem} to storage
-                                        </a>
-                                        &nbsp;now or
-                                    </>
-                                )}
-                                {transactionAuditId && (
-                                    <>
-                                        <a
-                                            onClick={() =>
-                                                selectGridIdsFromTransactionId(
-                                                    SAMPLES_LISTING_GRID_ID,
-                                                    SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet),
-                                                    transactionAuditId,
-                                                    SAMPLES_KEY,
-                                                    actions
-                                                )
-                                            }
-                                        >
-                                            &nbsp;{canAddToStorage ? 'select' : 'Select'} {itThem} in the grid&nbsp;
-                                        </a>
-                                    </>
-                                )}
-                                to work with {itThem}.
-                            </>
+                        message: getSamplesCreatedSuccessMessage(
+                            sampleSet,
+                            transactionAuditId,
+                            createdSampleCount,
+                            importedSampleCount,
+                            canAddToStorage,
+                            SAMPLES_LISTING_GRID_ID,
+                            navigate,
+                            actions
                         ),
                     },
                     true
                 );
             } else {
                 const filename = props.location?.query?.importFile;
-                const fromFile = filename ? ' from ' + filename : '';
+
                 createNotification(
                     {
-                        message: (
-                            <>
-                                Background import of samples{fromFile} completed. To work with the imported
-                                samples,&nbsp;
-                                <a
-                                    onClick={() =>
-                                        selectGridIdsFromTransactionId(
-                                            SAMPLES_LISTING_GRID_ID,
-                                            SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet),
-                                            transactionAuditId,
-                                            SAMPLES_KEY,
-                                            actions
-                                        )
-                                    }
-                                >
-                                    select them in the grid.
-                                </a>
-                            </>
+                        message: getSamplesImportSuccessMessage(
+                            sampleSet,
+                            transactionAuditId,
+                            SAMPLES_LISTING_GRID_ID,
+                            filename,
+                            actions
                         ),
                     },
                     true
@@ -229,7 +272,10 @@ const SampleListingPageBody: FC<Props> = props => {
     }, [isLoaded]);
 
     useEffect(() => {
-        if (props.location?.query?.addToStorageCount > 0) setShowAddToStorage(true);
+        if (props.location?.query?.addToStorageCount > 0) {
+            setShowAddToStorage(true);
+            replaceParameter(getLocation(), 'addToStorageCount', undefined);
+        }
     }, [props.location?.query?.addToStorageCount]);
 
     useEffect(() => {
@@ -262,10 +308,12 @@ const SampleListingPageBody: FC<Props> = props => {
     }, []);
 
     const afterSampleActionComplete = useCallback((): void => {
+        dismissNotifications();
         onSampleChange();
         actions.loadModel(sampleListModelId);
         SAMPLE_ACTION_UPDATE_COUNTER++;
-    }, [actions, sampleListModelId]);
+        setShowAddToStorage(false);
+    }, [actions, dismissNotifications, sampleListModelId]);
 
     const beforeDeleteSampleSet = useCallback(() => {
         // call onSampleTypeChange so that the QueryDetails get invalidated
@@ -316,12 +364,6 @@ const SampleListingPageBody: FC<Props> = props => {
         setShowAddToStorage(false);
         dismissNotifications();
     }, [dismissNotifications]);
-
-    const onSuccessAddSamplesToStorage = useCallback(() => {
-        setShowAddToStorage(false);
-        dismissNotifications();
-        actions.loadModel(sampleListModelId, true);
-    }, [actions, dismissNotifications, sampleListModelId]);
 
     const onPrintLabel = useCallback(() => {
         setShowPrintDialog(true);
@@ -459,7 +501,7 @@ const SampleListingPageBody: FC<Props> = props => {
                 {showAddToStorage && (
                     <AddSamplesToStorageModalComponent
                         onCancel={onCancelShowAddToStorage}
-                        onSuccess={onSuccessAddSamplesToStorage}
+                        onSuccess={afterSampleActionComplete}
                         totalCount={props.location?.query?.addToStorageCount}
                         inStorageSamplesCount={0}
                         samplesSelectionKey={listModel.id}

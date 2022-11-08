@@ -38,6 +38,7 @@ import {
     CellMessage,
     CellMessages,
     CellValues,
+    createGridModelId,
     EditorModel,
     EditorModelProps,
     IGridResponse,
@@ -61,6 +62,7 @@ import { buildURL } from './url/AppURL';
 
 import { ViewInfo } from './ViewInfo';
 import { decimalDifference, genCellKey, getSortedCellKeys, parseCellKey } from './utils';
+import {Actions} from "../public/QueryModel/withQueryModels";
 
 const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;
@@ -87,6 +89,58 @@ export function selectAll(
                 reject,
                 `Problem in selecting all items in the grid ${key} ${schemaName} ${queryName}`
             ),
+        });
+    });
+}
+
+export function selectGridIdsFromTransactionId(
+    gridIdPrefix: string,
+    schemaQuery: SchemaQuery,
+    transactionAuditId: number,
+    dataType: string,
+    actions: Actions
+): Promise<any> {
+    if (!transactionAuditId) {
+        return;
+    }
+    const failureMsg = 'There was a problem retrieving the ' + dataType + ' from the last action.';
+    const modelId = createGridModelId(gridIdPrefix, schemaQuery);
+
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL('audit', 'getTransactionRowIds.api'),
+            method: 'GET',
+            params: { transactionAuditId, dataType },
+            success: Utils.getCallbackWrapper(response => {
+                if (response.success) {
+                    const selected = response.rowIds;
+                    setSelected(
+                        modelId,
+                        true,
+                        selected,
+                        undefined,
+                        true,
+                        schemaQuery.getSchema(),
+                        schemaQuery.getQuery()
+                    )
+                        .then(response => {
+                            actions.replaceSelections(modelId, selected);
+                            actions.loadModel(modelId, true);
+                            resolve(selected);
+                        })
+                        .catch(reason => {
+                            console.error(reason);
+                            reject(reason);
+                        });
+                } else {
+                    console.error(failureMsg + ' (transactionAuditId = ' + transactionAuditId + ')', response);
+                    reject(failureMsg);
+                }
+            }),
+            failure: Utils.getCallbackWrapper(error => {
+                console.error(failureMsg + ' (transactionAuditId = ' + transactionAuditId + ')', error);
+                reject(failureMsg);
+            }),
         });
     });
 }

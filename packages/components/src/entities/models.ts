@@ -1,7 +1,9 @@
 import { ComponentType } from 'react';
 
 import { User } from '../internal/components/base/models/User';
+import { SampleGridButtonProps } from '../internal/components/samples/models';
 import { QueryModel } from '../public/QueryModel/QueryModel';
+import {RequiresModelAndActions} from "../public/QueryModel/withQueryModels";
 
 export interface AssaySampleColumnProp {
     fieldKey: string;
@@ -37,3 +39,5 @@ interface ReferencingNotebooksComponentProps {
 }
 
 export type ReferencingNotebooks = ComponentType<ReferencingNotebooksComponentProps>;
+
+export type SampleGridButton = ComponentType<SampleGridButtonProps & RequiresModelAndActions>;

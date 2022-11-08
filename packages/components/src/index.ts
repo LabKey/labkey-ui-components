@@ -167,6 +167,7 @@ import {
     replaceSelected,
     setSelected,
     setSnapshotSelections,
+    selectGridIdsFromTransactionId,
 } from './internal/actions';
 import { cancelEvent } from './internal/events';
 import { initQueryGridState } from './internal/global';
@@ -833,6 +834,7 @@ export {
     replaceSelected,
     setSelected,
     setSnapshotSelections,
+    selectGridIdsFromTransactionId,
     // query related items
     InsertRowsResponse,
     InsertFormats,

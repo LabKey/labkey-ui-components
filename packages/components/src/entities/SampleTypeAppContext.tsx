@@ -7,14 +7,17 @@ import { SchemaQuery } from '../public/SchemaQuery';
 import { ALIQUOT_FILTER_MODE } from '../internal/components/samples/constants';
 import { QueryConfigMap } from '../public/QueryModel/withQueryModels';
 
-import { JobsButton, SampleStorageButton, WorkflowGrid } from '../internal/components/samples/models';
+import {AddSamplesToStorageModal, JobsButton, SampleStorageButton, WorkflowGrid } from '../internal/components/samples/models';
 import { DetailRenderer } from '../internal/components/forms/detail/DetailDisplay';
 
-import { ReferencingNotebooks, SampleStorageMenu, SampleStorageLocation } from './models';
+import {ReferencingNotebooks, SampleStorageMenu, SampleStorageLocation, SampleGridButton} from './models';
+import { SamplesEditableGridProps } from './SamplesEditableGrid';
 
 export interface SampleTypeAppContext {
+    AddSamplesToStorageModalComponent: AddSamplesToStorageModal;
     JobsButtonComponent: JobsButton;
     ReferencingNotebooksComponent: ReferencingNotebooks;
+    SampleGridButtonComponent: SampleGridButton;
     SampleStorageButtonComponent: SampleStorageButton;
     SampleStorageLocationComponent: SampleStorageLocation;
     SampleStorageMenuComponent: SampleStorageMenu;
@@ -24,7 +27,9 @@ export interface SampleTypeAppContext {
     dataClassParentageLabel?: string;
     dataClassTypeCaption?: string;
     detailRenderer?: DetailRenderer;
+    downloadTemplateExcludeColumns?: string[];
     getMetricUnitOptions: () => any[];
+    getSamplesEditableGridProps: (user: User) => Partial<SamplesEditableGridProps>;
     getWorkflowGridQueryConfigs?: (
         visibleTabs: string[],
         gridPrefix: string,
@@ -40,6 +45,7 @@ export interface SampleTypeAppContext {
     isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean;
     lineagePagePermissions: string[];
     readOnlyQueryNames?: string[];
+    samplesGridRequiredColumns: string[];
     showParentLabelPrefix: boolean;
     showStudyProperties: boolean;
     useSeparateDataClassesAliasMenu: boolean;

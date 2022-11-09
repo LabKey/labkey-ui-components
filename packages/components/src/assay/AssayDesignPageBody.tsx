@@ -13,7 +13,7 @@ import { clearAssayDefinitionCache } from '../internal/components/assay/actions'
 import { onAssayDesignChange } from './actions';
 import { AppURL } from '../internal/url/AppURL';
 import { ASSAYS_KEY } from '../internal/app/constants';
-import { sampleManagerIsPrimaryApp } from '../internal/app/utils';
+import { hasPremiumModule, sampleManagerIsPrimaryApp } from '../internal/app/utils';
 import { InsufficientPermissionsPage } from '../internal/components/permissions/InsufficientPermissionsPage';
 import { LoadingPage } from '../internal/components/base/LoadingPage';
 import { Page } from '../internal/components/base/Page';
@@ -146,7 +146,7 @@ export const AssayDesignPageBody: FC<Props> = memo(props => {
     }, [assayDefinition, protocol, reloadAssays, menuInit, createNotification, navigate]);
 
     const subtitle = protocol?.protocolId ? 'Edit Assay Design' : 'Create a New Assay Design';
-    const isLKSM = sampleManagerIsPrimaryApp(); // TODO needs refinement
+    const hideAdvancedProperties = sampleManagerIsPrimaryApp() && !hasPremiumModule();
 
     // Assay design page title is protocol or provider name
     let title = 'Assay Design';
@@ -185,7 +185,7 @@ export const AssayDesignPageBody: FC<Props> = memo(props => {
             )}
             {!protocol.exception && !hasError && (
                 <AssayDesignerPanels
-                    appPropertiesOnly={isLKSM}
+                    appPropertiesOnly={hideAdvancedProperties}
                     appDomainHeaders={requireSampleField ? Map({'Data': renderSampleRequiredPanelHeader}): undefined}
                     appIsValidMsg={requireSampleField ? protocolHasSample : undefined}
                     hideEmptyBatchDomain={hideEmptyBatches}
@@ -194,9 +194,9 @@ export const AssayDesignPageBody: FC<Props> = memo(props => {
                     onCancel={onCancel}
                     onComplete={onComplete}
                     domainFormDisplayOptions={{
-                        hideConditionalFormatting: isLKSM,
+                        hideConditionalFormatting: hideAdvancedProperties,
                         hideStudyPropertyTypes: true,
-                        hideFilePropertyType: isLKSM,
+                        hideFilePropertyType: hideAdvancedProperties,
                     }}
                     saveBtnText={saveButtonText}
                     useTheme={false}

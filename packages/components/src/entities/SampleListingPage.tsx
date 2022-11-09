@@ -18,7 +18,7 @@ import { AppURL } from '../internal/url/AppURL';
 import { AUDIT_KEY, SAMPLES_KEY, SAMPLE_TYPE_KEY } from '../internal/app/constants';
 import { SCHEMAS } from '../internal/schemas';
 import { selectGridIdsFromTransactionId, setSnapshotSelections } from '../internal/actions';
-import { createGridModelId } from '../internal/models';
+import { createGridModelId, CommonPageProps } from '../internal/models';
 import { InjectedRouteLeaveProps, withRouteLeave } from '../internal/util/RouteLeave';
 import { useLabelPrintingContext } from '../internal/components/labels/LabelPrintingContextProvider';
 import { useNotificationsContext } from '../internal/components/notifications/NotificationsContext';
@@ -36,7 +36,6 @@ import { hasActivePipelineJob } from '../internal/components/pipeline/utils';
 import { DesignerDetailPanel } from '../internal/components/domainproperties/DesignerDetailPanel';
 import { SAMPLE_DATA_EXPORT_CONFIG, SAMPLE_STATUS_REQUIRED_COLUMNS } from '../internal/components/samples/constants';
 import { PrintLabelsModal } from '../internal/components/labels/PrintLabelsModal';
-import { ProductMenuModel } from '../internal/components/navigation/model';
 
 import { SampleTypeInsightsPanel } from './SampleTypeInsightsPanel';
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
@@ -182,17 +181,11 @@ export const getSamplesCreatedSuccessMessage = (
     );
 };
 
-interface OwnProps {
-    menu: ProductMenuModel;
-    menuInit: (invalidate?: boolean) => void;
-    navigate: (url: string | AppURL, replace?: boolean) => void;
-}
-
 interface BodyProps {
     sampleListModelId: string;
 }
 
-type Props = OwnProps & BodyProps & InjectedQueryModels & WithRouterProps & InjectedRouteLeaveProps;
+type Props = CommonPageProps & BodyProps & InjectedQueryModels & WithRouterProps & InjectedRouteLeaveProps;
 
 const SampleListingPageBody: FC<Props> = props => {
     const { menuInit, navigate, queryModels, actions, sampleListModelId, menu, setIsDirty, getIsDirty } = props;
@@ -519,7 +512,7 @@ const SampleListingPageBody: FC<Props> = props => {
 
 const SampleListingPageWithQueryModels = withRouteLeave(withQueryModels(SampleListingPageBody));
 
-export const SampleListingPage: FC<OwnProps & WithRouterProps> = props => {
+export const SampleListingPage: FC<CommonPageProps & WithRouterProps> = props => {
     const { params, location } = props;
     const { sampleType } = params;
     const listSchemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType);

@@ -5,6 +5,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Assay Design page consistency
   * hideFilePropertyType for the Data domain only for LKSM
+  * Move AssayDesignPage from LKSM and LKB here
+  * Move SampleRequiredDomainHeader from LKSM to here
 
 ### version 2.246.2
 *Released*: 9 November 2022

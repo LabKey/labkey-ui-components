@@ -29,6 +29,8 @@ import { DEFAULT_SAMPLE_FIELD_CONFIG } from '../internal/components/samples/cons
 import { protocolHasSample, renderSampleRequiredPanelHeader } from './SampleRequiredDomainHeader';
 import { AssayHeader } from './AssayHeader';
 import { onAssayDesignChange } from './actions';
+import { useAssayAppContext } from './AssayAppContext';
+import { assayPage } from './AssayPageHOC';
 
 const ASSAY_DESIGNER_HEADER = 'Connect your experimental results to samples for rich data connections.';
 
@@ -56,7 +58,7 @@ interface OwnProps {
 
 type Props = OwnProps & InjectedAssayModel & WithRouterProps & InjectedRouteLeaveProps;
 
-export const AssayDesignPageBody: FC<Props> = memo(props => {
+const AssayDesignPageBody: FC<Props> = memo(props => {
     const {
         assayDefinition,
         assayProtocol,
@@ -67,8 +69,6 @@ export const AssayDesignPageBody: FC<Props> = memo(props => {
         menu,
         menuInit,
         navigate,
-        requireSampleField,
-        showProviderName,
         params,
     } = props;
     const [hasError, setHasError] = useState(false);
@@ -76,6 +76,7 @@ export const AssayDesignPageBody: FC<Props> = memo(props => {
     const { user } = useServerContext();
     const [_, setIsDirty] = useRouteLeave(router, routes);
     const { createNotification } = useNotificationsContext();
+    const { requireSampleField, showProviderName } = useAssayAppContext();
 
     useEffect(() => {
         async function getProtocol(protocolId, providerName, copy) {
@@ -214,3 +215,5 @@ export const AssayDesignPageBody: FC<Props> = memo(props => {
         </Page>
     );
 });
+
+export const AssayDesignPage = assayPage(AssayDesignPageBody);

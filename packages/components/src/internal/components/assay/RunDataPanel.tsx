@@ -21,7 +21,7 @@ import { Button } from 'react-bootstrap';
 
 import { AssayUploadTabs } from '../../constants';
 import { InferDomainResponse } from '../../../public/InferDomainResponse';
-import { EditorModel, EditorModelProps } from '../../models';
+import { EditorModel, EditorModelProps } from '../editable/models';
 
 import { DATA_IMPORT_TOPIC, helpLinkNode } from '../../util/helpLinks';
 import { EditableGridPanel } from '../editable/EditableGridPanel';

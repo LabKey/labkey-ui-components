@@ -16,7 +16,7 @@
 import { List, Map } from 'immutable';
 
 import { getSelectedData } from '../../actions';
-import { EditorMode, EditorModel, IEditableGridLoader, IGridResponse } from '../../models';
+import { EditorMode, EditorModel, IEditableGridLoader, IGridResponse } from './models';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { QueryColumn } from '../../../public/QueryColumn';

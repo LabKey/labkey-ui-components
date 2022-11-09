@@ -9,7 +9,7 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../internal/APIWrapp
 
 import { UpdateGridTab } from '../internal/components/editable/EditableGridPanelForUpdateWithLineage';
 
-import { EditorMode, EditorModel, IEditableGridLoader, IGridResponse } from '../internal/models';
+import { EditorMode, EditorModel, IEditableGridLoader, IGridResponse } from '../internal/components/editable/models';
 
 import { isFreezerManagementEnabled } from '../internal/app/utils';
 

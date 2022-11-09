@@ -18,7 +18,7 @@ import { List } from 'immutable';
 
 import { Filter, Query } from '@labkey/api';
 
-import { ValueDescriptor } from '../../models';
+import { ValueDescriptor } from './models';
 import { LOOKUP_DEFAULT_SIZE, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
 import { TextChoiceInput } from '../forms/input/TextChoiceInput';
 import { QueryColumn } from '../../../public/QueryColumn';

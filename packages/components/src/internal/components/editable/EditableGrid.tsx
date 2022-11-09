@@ -45,7 +45,7 @@ import {
 } from '../../constants';
 import { blurActiveElement, capitalizeFirstChar, caseInsensitive, not } from '../../util/utils';
 
-import { CellMessage, EditorModel, EditorModelProps, ValueDescriptor } from '../../models';
+import { CellMessage, EditorModel, EditorModelProps, ValueDescriptor } from './models';
 
 import { BulkAddUpdateForm } from '../forms/BulkAddUpdateForm';
 

@@ -6,7 +6,7 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { TextChoiceInput } from '../forms/input/TextChoiceInput';
 import { QuerySelect } from '../forms/QuerySelect';
 
-import { ValueDescriptor } from '../../models';
+import { ValueDescriptor } from './models';
 
 import { LookupCell } from './LookupCell';
 

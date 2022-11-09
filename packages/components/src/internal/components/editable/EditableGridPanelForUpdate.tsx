@@ -8,7 +8,7 @@ import { getUniqueIdColumnMetadata } from '../entities/utils';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import { EditorModel, EditorModelProps, IEditableGridLoader } from '../../models';
+import { EditorModel, EditorModelProps, IEditableGridLoader } from './models';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { Alert } from '../base/Alert';

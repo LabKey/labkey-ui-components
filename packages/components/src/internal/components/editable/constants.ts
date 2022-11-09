@@ -1,4 +1,4 @@
-import { ValueDescriptor } from '../../models';
+import { ValueDescriptor } from './models';
 import { MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
 
 export const EDITABLE_GRID_CONTAINER_CLS = 'editable-grid__container';

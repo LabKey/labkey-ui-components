@@ -20,7 +20,7 @@ import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Query } from '@labkey/api';
 
 import { cancelEvent, isCopy, isFillDown, isPaste, isSelectAll } from '../../events';
-import { CellMessage, ValueDescriptor } from '../../models';
+import { CellMessage, ValueDescriptor } from './models';
 import { CELL_SELECTION_HANDLE_CLASSNAME, KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
 
 import { getQueryColumnRenderers } from '../../global';

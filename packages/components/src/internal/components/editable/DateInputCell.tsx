@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback } from 'react';
 
 import { QueryColumn } from '../../../public/QueryColumn';
-import { ValueDescriptor } from '../../models';
+import { ValueDescriptor } from './models';
 import { MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
 import { DatePickerInput } from '../forms/input/DatePickerInput';
 import { formatDate, formatDateTime, isDateTimeCol } from '../../util/Date';

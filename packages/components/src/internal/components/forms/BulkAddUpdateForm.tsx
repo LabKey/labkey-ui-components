@@ -2,7 +2,7 @@ import React, { FC, useMemo } from 'react';
 import { List, Map } from 'immutable';
 
 import { capitalizeFirstChar, getCommonDataValues } from '../../util/utils';
-import { EditorModel } from '../../models';
+import { EditorModel } from '../editable/models';
 
 import { Alert } from '../base/Alert';
 

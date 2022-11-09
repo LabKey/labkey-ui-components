@@ -3,7 +3,7 @@ import { fromJS, List, Map, OrderedMap } from 'immutable';
 import classNames from 'classnames';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { EditorModel, EditorModelProps } from '../../models';
+import { EditorModel, EditorModelProps } from './models';
 
 import { getUniqueIdColumnMetadata } from '../entities/utils';
 

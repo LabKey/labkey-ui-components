@@ -15,7 +15,7 @@ import { QueryColumn } from '../../../public/QueryColumn';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
-import { EditorModel, EditorModelProps, IEditableGridLoader } from '../../models';
+import { EditorModel, EditorModelProps, IEditableGridLoader } from './models';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { WizardNavButtons } from '../buttons/WizardNavButtons';

@@ -3,7 +3,7 @@ import { Utils, UtilsDOM } from '@labkey/api';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { QueryColumn } from '../../../public/QueryColumn';
-import { EditorMode, EditorModel, EditorModelProps, IEditableGridLoader, ValueDescriptor } from '../../models';
+import { EditorMode, EditorModel, EditorModelProps, IEditableGridLoader, ValueDescriptor } from './models';
 import { getLookupValueDescriptors } from '../../actions';
 import { genCellKey } from '../../utils';
 

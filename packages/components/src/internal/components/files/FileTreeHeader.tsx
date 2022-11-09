@@ -1,9 +1,7 @@
-import React, { FC, memo, useEffect, useState, } from 'react';
+import React, { FC } from 'react';
 
 import { Checkbox } from 'react-bootstrap';
 import classNames from 'classnames';
-import { faFileAlt, faFolder, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
@@ -14,17 +12,21 @@ interface FileNodeIconProps {
 }
 
 // exported for jest testing
-//Not using Pure/memo as node property is mutable
+// Not using Pure/memo as node property is mutable
 export const FileNodeIcon: FC<FileNodeIconProps> = props => {
     const { isDirectory, useFileIconCls, node } = props;
-    const icon = isDirectory ? (node.toggled ? faFolderOpen : faFolder) : faFileAlt;
+    const iconClass = classNames('filetree-folder-icon', 'fa', {
+        'fa-folder-open': isDirectory && node.toggled,
+        'fa-folder': isDirectory && !node.toggled,
+        'fa-file-alt': !isDirectory,
+    });
 
     return (
         <>
             {!isDirectory && useFileIconCls && node.data && node.data.iconFontCls ? (
                 <i className={node.data.iconFontCls + ' filetree-folder-icon'} />
             ) : (
-                <FontAwesomeIcon icon={icon} className="filetree-folder-icon" />
+                <span className={iconClass} />
             )}
         </>
     );

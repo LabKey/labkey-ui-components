@@ -1,9 +1,5 @@
 import React from 'react';
 
-import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import { convertRowDataIntoPreviewData } from '../files/actions';
 import { ToggleWithInputField } from '../forms/input/ToggleWithInputField';
 import { FilePreviewGrid } from '../files/FilePreviewGrid';
@@ -66,7 +62,7 @@ export class ImportDataFilePreview extends React.PureComponent<Props, State> {
                         <>
                             <DeleteIcon title={null} iconCls="domain-field-delete-icon" onDelete={this.onToggleClick} />
                             <span className="domain__import-data__file-icon">
-                                <FontAwesomeIcon icon={faFileAlt} size="lg" />
+                                <span className="fa fa-lg fa-file-alt" />
                             </span>
 
                             <span className="domain__import-data__file-title"> {file.name} </span>

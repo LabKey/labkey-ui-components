@@ -4,7 +4,7 @@ export interface InjectedDomainPropertiesPanelCollapseProps {
     controlledCollapse: boolean;
     collapsible?: boolean;
     collapsed: boolean;
-    togglePanel: (evt: any, collapsed?: boolean) => void;
+    togglePanel: (collapsed?: boolean) => void;
 }
 
 export interface MakeDomainPropertiesPanelCollapseProps {

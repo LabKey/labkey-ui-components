@@ -2,8 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 
 import { HorizontalBarLegendData } from './utils';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLock } from '@fortawesome/free-solid-svg-icons';
 
 const CELL_EMPTY_COLOR = 'FFFFFF';
 
@@ -35,7 +33,7 @@ export class ItemsLegend extends React.PureComponent<Props> {
             } else if (legend.locked) {
                 icon = (
                     <span className={'cell-lock'}>
-                        <FontAwesomeIcon icon={faLock} />
+                        <span className="fa fa-lock" />
                     </span>
                 )
             }

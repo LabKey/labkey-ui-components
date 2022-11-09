@@ -4,7 +4,6 @@
  */
 import React, { ReactNode } from 'react';
 import { Map } from 'immutable';
-import { Query } from '@labkey/api';
 
 import {
     isAssayEnabled,
@@ -17,22 +16,17 @@ import {
 import { ASSAYS_KEY, BOXES_KEY, SAMPLES_KEY, USER_KEY, WORKFLOW_KEY } from '../../app/constants';
 import { naturalSortByProperty } from '../../../public/sort';
 import { AppURL } from '../../url/AppURL';
+
 import {
+    AuditQuery,
     ASSAY_AUDIT_QUERY,
     COMMON_AUDIT_QUERIES,
     NOTEBOOK_AUDIT_QUERY,
     NOTEBOOK_REVIEW_AUDIT_QUERY,
     PROJECT_AUDIT_QUERY,
     SOURCE_AUDIT_QUERY,
-    WORKFLOW_AUDIT_QUERY
+    WORKFLOW_AUDIT_QUERY,
 } from './constants';
-
-export type AuditQuery = {
-    containerFilter?: Query.ContainerFilter;
-    hasDetail?: boolean;
-    label: string;
-    value: string;
-};
 
 export function getAuditQueries(): AuditQuery[] {
     const queries = [...COMMON_AUDIT_QUERIES];

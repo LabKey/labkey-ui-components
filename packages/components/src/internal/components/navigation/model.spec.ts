@@ -95,4 +95,41 @@ describe('MenuItemModel', () => {
 
         expect(model.url).toBe('/labkey/product2/app.view#/menuItem');
     });
+
+    //Check that $ in item keys are correctly escaped. see Issue #45944
+    function verifyModelKey(rawKey: string, expectedKey: string) {
+        const model = MenuItemModel.create(
+            {
+                productId: 'product2',
+                key: rawKey,
+                url: '#/menuItem',
+            },
+            'sectionKey',
+            'product1'
+        );
+        expect(model.key).toBe(expectedKey);
+    }
+
+    test('$ in key escaped correctly', () => {
+        //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_string_as_the_replacement
+        verifyModelKey("key $D$D", "key $$");
+        verifyModelKey("key $D$A", "key $&");
+        verifyModelKey("key $D`", "key $`");
+        verifyModelKey("key $D'", "key $'");
+        verifyModelKey("key $D200", "key $200");
+        verifyModelKey("key $Dwidget", "key $widget");
+        verifyModelKey("key $D$D$D$D", "key $$$$");
+        verifyModelKey("key $D$DD", "key $$D");
+        verifyModelKey("key $Dwidget$D$D$D$A$D`$D'$D200", "key $widget$$$&$`$'$200");
+    });
+
+    test('key decoded correctly', () => {
+        // keys come from server encoded using api-js QueryKey ensure that any special characters are decoded as expected
+        verifyModelKey("key $C", 'key ,');
+        verifyModelKey("key $T", 'key ~');
+        verifyModelKey("key $B", 'key }');
+        verifyModelKey("key $A", 'key &');
+        verifyModelKey("key $S", 'key /');
+        verifyModelKey("key $D", 'key $');
+    });
 });

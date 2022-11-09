@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Add misc components and props to SampleTypeAppContext
   * move selectGridIdsFromTransactionId from LKSM app
   * add sort for app type listing grids by name asc
+  * domain-field-row styling fix to only apply the border-top: none within the domain-form
 
 ### version 2.246.2
 *Released*: 9 November 2022

@@ -305,12 +305,15 @@ const SampleListingPageBody: FC<Props> = props => {
     }, []);
 
     const afterSampleActionComplete = useCallback((): void => {
-        dismissNotifications();
+        if (showAddToStorage) {
+            dismissNotifications();
+            setShowAddToStorage(false);
+        }
+
         onSampleChange();
         actions.loadModel(sampleListModelId);
         SAMPLE_ACTION_UPDATE_COUNTER++;
-        setShowAddToStorage(false);
-    }, [actions, dismissNotifications, sampleListModelId]);
+    }, [actions, dismissNotifications, sampleListModelId, showAddToStorage]);
 
     const beforeDeleteSampleType = useCallback(() => {
         // call onSampleTypeChange so that the QueryDetails get invalidated

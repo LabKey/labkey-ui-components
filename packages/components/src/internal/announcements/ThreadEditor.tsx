@@ -260,7 +260,6 @@ export interface ThreadEditorProps {
     onUpdate?: (updatedThread: AnnouncementModel) => void;
     parent?: string;
     thread?: AnnouncementModel;
-    user: User;
 }
 
 export const ThreadEditor: FC<ThreadEditorProps> = props => {
@@ -275,7 +274,6 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
         onUpdate,
         parent,
         thread,
-        user,
     } = props;
     const bodyInputRef = useRef<HTMLTextAreaElement>(null);
     const [error, setError] = useState<string>(undefined);
@@ -464,54 +462,48 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
 
     return (
         <div className="thread-editor">
-            <div>
-                <UserAvatar avatar={user.avatar} displayName={user.displayName} id={user.id} />
-            </div>
+            <ThreadEditorToolbar inputRef={bodyInputRef} setBody={setBody} setView={setView} view={view} />
 
-            <div className="thread-editor__body">
-                <ThreadEditorToolbar inputRef={bodyInputRef} setBody={setBody} setView={setView} view={view} />
+            {view === EditorView.edit && (
+                <div className={classNames('form-group', { 'has-error': hasError })}>
+                    <textarea
+                        autoFocus
+                        className="thread-editor__input form-control"
+                        name="body"
+                        onChange={onBodyChange}
+                        onKeyDown={onKeyDown}
+                        placeholder="Type your comment"
+                        ref={bodyInputRef}
+                        value={model.body}
+                    />
 
-                {view === EditorView.edit && (
-                    <div className={classNames('form-group', { 'has-error': hasError })}>
-                        <textarea
-                            autoFocus
-                            className="thread-editor__input form-control"
-                            name="body"
-                            onChange={onBodyChange}
-                            onKeyDown={onKeyDown}
-                            placeholder="Type your comment"
-                            ref={bodyInputRef}
-                            value={model.body}
-                        />
+                    {hasError && <span className="help-block">{error}</span>}
+                </div>
+            )}
 
-                        {hasError && <span className="help-block">{error}</span>}
-                    </div>
-                )}
+            {view === EditorView.preview && (
+                <Preview containerPath={containerPath} content={model.body} renderContent={api.renderContent} />
+            )}
 
-                {view === EditorView.preview && (
-                    <Preview containerPath={containerPath} content={model.body} renderContent={api.renderContent} />
-                )}
+            <ThreadAttachments attachments={attachments} error={attachmentError} onRemove={openRemoveModal} />
 
-                <ThreadAttachments attachments={attachments} error={attachmentError} onRemove={openRemoveModal} />
+            <button
+                type="button"
+                className="btn btn-default thread-editor__create-btn"
+                disabled={submitDisabled}
+                onClick={onSubmit}
+            >
+                {isCreate ? `Add ${nounSingular}` : 'Save Changes'}
+            </button>
 
-                <button
-                    type="button"
-                    className="btn btn-default thread-editor__create-btn"
-                    disabled={submitDisabled}
-                    onClick={onSubmit}
-                >
-                    {isCreate ? `Add ${nounSingular}` : 'Save Changes'}
-                </button>
+            <label className="thread-editor__attachment-input btn btn-default">
+                <span className="fa fa-paperclip" />
+                <input multiple onChange={onFileInputChange} type="file" />
+            </label>
 
-                <label className="thread-editor__attachment-input btn btn-default">
-                    <span className="fa fa-paperclip" />
-                    <input multiple onChange={onFileInputChange} type="file" />
-                </label>
-
-                <span className="clickable-text thread-editor__cancel-btn" onClick={onCancel}>
-                    Cancel
-                </span>
-            </div>
+            <span className="clickable-text thread-editor__cancel-btn" onClick={onCancel}>
+                Cancel
+            </span>
 
             {attachmentToRemove !== undefined && (
                 <RemoveAttachmentModal

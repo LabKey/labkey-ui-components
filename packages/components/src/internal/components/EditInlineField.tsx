@@ -22,7 +22,6 @@ interface Props {
     name: string;
     onChange?: (name: string, newValue: any) => void;
     placeholder?: string;
-    showToggle?: boolean;
     tooltip?: string; // only shown when component has a label and is allowEdit
     type: string;
     useJsonDateFormat?: boolean;
@@ -43,7 +42,6 @@ export const EditInlineField: FC<Props> = memo(props => {
         value,
         column,
         useJsonDateFormat,
-        showToggle = true,
         tooltip,
     } = props;
     const { container } = useServerContext();
@@ -230,14 +228,8 @@ export const EditInlineField: FC<Props> = memo(props => {
                         onKeyDown={toggleKeyDown}
                         tabIndex={1}
                     >
-                        {/* Edit pencil sits to the right of label for textarea with value below */}
-                        {showToggle && isTextArea && allowEdit && (
-                            <div>
-                                <span className="fa fa-pencil" />
-                            </div>
-                        )}
                         {displayValue}
-                        {showToggle && !isTextArea && allowEdit && <i className="fa fa-pencil" />}
+                        {allowEdit && <i className="fa fa-pencil" />}
                     </span>
                 </>
             )}

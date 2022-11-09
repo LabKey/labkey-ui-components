@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { List } from 'immutable';
 
@@ -35,7 +35,7 @@ import { DerivationDataScopeFieldOptions } from './DerivationDataScopeFieldOptio
 import { TextChoiceOptions } from './TextChoiceOptions';
 import { FileAttachmentOptions } from './FileAttachmentOptions';
 
-interface IDomainRowExpandedOptionsProps {
+interface Props {
     appPropertiesOnly?: boolean;
     domainContainerPath?: string;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
@@ -51,8 +51,8 @@ interface IDomainRowExpandedOptionsProps {
     successBsStyle?: string;
 }
 
-export class DomainRowExpandedOptions extends React.Component<IDomainRowExpandedOptionsProps> {
-    typeDependentOptions = () => {
+export class DomainRowExpandedOptions extends React.Component<Props> {
+    typeDependentOptions = (): ReactNode => {
         const {
             field,
             index,

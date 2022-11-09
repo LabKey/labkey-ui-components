@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Panel } from 'react-bootstrap';
 
 import { Alert } from '../base/Alert';
@@ -6,8 +6,12 @@ import { Alert } from '../base/Alert';
 import { DomainPanelStatus } from './models';
 import { getDomainAlertClasses, getDomainPanelClass, updateDomainPanelClassList } from './actions';
 import { CollapsiblePanelHeader } from './CollapsiblePanelHeader';
-import { PROPERTIES_PANEL_ERROR_MSG, PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG } from './constants';
+import { PROPERTIES_PANEL_ERROR_MSG } from './constants';
 import { InjectedDomainPropertiesPanelCollapseProps } from './DomainPropertiesPanelCollapse';
+
+// This is needed to suppress JS warning about providing an expanded prop without onToggle
+// eslint-disable-next-line no-empty-function,@typescript-eslint/no-empty-function
+const noop = (): void => {};
 
 export interface BasePropertiesPanelProps {
     panelStatus: DomainPanelStatus;
@@ -21,42 +25,39 @@ interface OwnProps {
     isValid: boolean;
     title: string;
     titlePrefix?: string;
-    updateValidStatus: (model?: any) => any;
+    updateValidStatus: (model?: any) => void;
 }
 
 type Props = OwnProps & BasePropertiesPanelProps & InjectedDomainPropertiesPanelCollapseProps;
 
-export class BasePropertiesPanel extends React.PureComponent<Props, any> {
+export class BasePropertiesPanel extends React.PureComponent<Props> {
     static defaultProps = {
         title: 'Properties',
         validate: false,
         useTheme: false,
     };
 
-    UNSAFE_componentWillReceiveProps(nextProps: Readonly<Props>): void {
-        const { validate, updateValidStatus } = this.props;
-
-        if (nextProps.validate && validate !== nextProps.validate) {
-            updateValidStatus();
-        }
-    }
-
     componentDidMount(): void {
         updateDomainPanelClassList(this.props.useTheme, undefined, this.props.headerId);
     }
 
     componentDidUpdate(prevProps: Props): void {
+        const { validate, updateValidStatus } = this.props;
         updateDomainPanelClassList(prevProps.useTheme, undefined, this.props.headerId);
+
+        if (validate && prevProps.validate !== validate) {
+            updateValidStatus();
+        }
     }
 
-    toggleLocalPanel = (evt: any): void => {
+    toggleLocalPanel = (): void => {
         const { togglePanel, collapsed, updateValidStatus } = this.props;
 
         updateValidStatus();
-        togglePanel(evt, !collapsed);
+        togglePanel(!collapsed);
     };
 
-    render() {
+    render(): ReactNode {
         const {
             collapsed,
             collapsible,
@@ -73,11 +74,7 @@ export class BasePropertiesPanel extends React.PureComponent<Props, any> {
 
         return (
             <>
-                <Panel
-                    className={getDomainPanelClass(collapsed, true, useTheme)}
-                    expanded={!collapsed}
-                    onToggle={function () {}} // this is added to suppress JS warning about providing an expanded prop without onToggle
-                >
+                <Panel className={getDomainPanelClass(collapsed, true, useTheme)} expanded={!collapsed} onToggle={noop}>
                     <CollapsiblePanelHeader
                         id={headerId}
                         title={title}

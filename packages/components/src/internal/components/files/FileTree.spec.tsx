@@ -3,8 +3,6 @@ import { Checkbox } from 'react-bootstrap';
 import { mount, ReactWrapper, shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
 import { Treebeard, animations } from 'react-treebeard';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFolder, faFileAlt, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
@@ -93,39 +91,35 @@ describe('FileNodeIcon', () => {
     test('default props', () => {
         const wrapper = mount(<FileNodeIcon {...DEFAULT_PROPS} />);
         expect(wrapper.find('i')).toHaveLength(0);
-        expect(wrapper.find(FontAwesomeIcon)).toHaveLength(1);
-        expect(wrapper.find(FontAwesomeIcon).prop('icon')).toBe(faFileAlt);
+        expect(wrapper.find('.fa-file-alt')).toHaveLength(1);
         wrapper.unmount();
     });
 
     test('isDirectory', () => {
         const wrapper = mount(<FileNodeIcon {...DEFAULT_PROPS} isDirectory={true} />);
         expect(wrapper.find('i')).toHaveLength(0);
-        expect(wrapper.find(FontAwesomeIcon)).toHaveLength(1);
-        expect(wrapper.find(FontAwesomeIcon).prop('icon')).toBe(faFolder);
+        expect(wrapper.find('.fa-folder')).toHaveLength(1);
         wrapper.unmount();
     });
 
     test('isDirectory toggled', () => {
         const wrapper = mount(<FileNodeIcon {...DEFAULT_PROPS} isDirectory node={{ toggled: true }} />);
         expect(wrapper.find('i')).toHaveLength(0);
-        expect(wrapper.find(FontAwesomeIcon)).toHaveLength(1);
-        expect(wrapper.find(FontAwesomeIcon).prop('icon')).toBe(faFolderOpen);
+        expect(wrapper.find('.fa-folder-open')).toHaveLength(1);
         wrapper.unmount();
     });
 
     test('useFileIconCls and iconFontCls', () => {
         let wrapper = mount(<FileNodeIcon {...DEFAULT_PROPS} useFileIconCls />);
         expect(wrapper.find('i')).toHaveLength(0);
-        expect(wrapper.find(FontAwesomeIcon)).toHaveLength(1);
-        expect(wrapper.find(FontAwesomeIcon).prop('className')).toBe('filetree-folder-icon');
+        expect(wrapper.find('.fa.filetree-folder-icon')).toHaveLength(1);
         wrapper.unmount();
 
         wrapper = mount(
             <FileNodeIcon {...DEFAULT_PROPS} useFileIconCls node={{ data: { iconFontCls: 'test-cls' } }} />
         );
         expect(wrapper.find('i')).toHaveLength(1);
-        expect(wrapper.find(FontAwesomeIcon)).toHaveLength(0);
+        expect(wrapper.find('.fa')).toHaveLength(0);
         expect(wrapper.find('i').prop('className')).toBe('test-cls filetree-folder-icon');
         wrapper.unmount();
     });

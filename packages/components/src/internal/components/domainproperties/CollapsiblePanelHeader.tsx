@@ -1,8 +1,6 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 import { Panel } from 'react-bootstrap';
-import { faCheckCircle, faExclamationCircle, faMinusSquare, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
@@ -20,24 +18,12 @@ interface Props {
     title: string;
     titlePrefix?: string;
     todoIconHelpMsg?: string;
-    togglePanel: (evt: any, collapsed?: boolean) => any;
+    togglePanel: () => void;
     useTheme: boolean;
 }
 
-export class CollapsiblePanelHeader extends React.PureComponent<Props, any> {
-    getPanelHeaderClass(): string {
-        const { collapsed, collapsible, controlledCollapse, useTheme } = this.props;
-
-        return classNames('domain-panel-header', {
-            'domain-heading-collapsible': collapsible || controlledCollapse,
-            'domain-panel-header-expanded': !collapsed,
-            'domain-panel-header-collapsed': collapsed,
-            'labkey-page-nav': !collapsed && useTheme,
-            'domain-panel-header-no-theme': !collapsed && !useTheme,
-        });
-    }
-
-    getHeaderIconHelpMsg(): string {
+export class CollapsiblePanelHeader extends React.PureComponent<Props> {
+    getHeaderIconHelpMsg = (): string => {
         const { isValid, panelStatus, iconHelpMsg, todoIconHelpMsg } = this.props;
 
         if (!isValid) {
@@ -49,44 +35,25 @@ export class CollapsiblePanelHeader extends React.PureComponent<Props, any> {
         }
 
         return undefined;
-    }
+    };
 
-    getHeaderIconComponent = () => {
+    getHeaderIconComponent = (): ReactNode => {
+        const { collapsed, isValid, panelStatus } = this.props;
+        const validComplete = isValid && panelStatus === 'COMPLETE';
+        const wrapperClassName = classNames('domain-panel-status-icon', {
+            'domain-panel-status-icon-green': collapsed && validComplete,
+            'domain-panel-status-icon-blue': collapsed && !validComplete,
+        });
+        const iconClassName = !isValid || panelStatus === 'TODO' ? 'fa fa-exclamation-circle' : 'fa fa-check-circle';
+
         return (
-            <span className={this.getHeaderIconClass()}>
-                <FontAwesomeIcon icon={this.getHeaderIcon()} />
+            <span className={wrapperClassName}>
+                <span className={iconClassName} />
             </span>
         );
     };
 
-    getHeaderIconClass() {
-        const { collapsed, isValid, panelStatus } = this.props;
-        const validComplete = isValid && panelStatus === 'COMPLETE';
-
-        return classNames('domain-panel-status-icon', {
-            'domain-panel-status-icon-green': collapsed && validComplete,
-            'domain-panel-status-icon-blue': collapsed && !validComplete,
-        });
-    }
-
-    getHeaderIcon() {
-        const { isValid, panelStatus } = this.props;
-        return !isValid || panelStatus === 'TODO' ? faExclamationCircle : faCheckCircle;
-    }
-
-    renderExpandCollapseIcon() {
-        const { collapsed } = this.props;
-        const icon = collapsed ? faPlusSquare : faMinusSquare;
-        const className = collapsed ? 'domain-form-expand-btn' : 'domain-form-collapse-btn';
-
-        return (
-            <span className="pull-right">
-                <FontAwesomeIcon size="lg" icon={icon} className={className} />
-            </span>
-        );
-    }
-
-    getTitlePrefix(): string {
+    getTitlePrefix = (): string => {
         let prefix = this.props.titlePrefix;
 
         // ellipsis after certain length
@@ -95,14 +62,38 @@ export class CollapsiblePanelHeader extends React.PureComponent<Props, any> {
         }
 
         return prefix ? prefix + ' - ' : '';
-    }
+    };
 
-    renderHeader() {
-        const { children, panelStatus, controlledCollapse, collapsible, title, headerDetails } = this.props;
+    render() {
+        const {
+            children,
+            collapsed,
+            collapsible,
+            controlledCollapse,
+            headerDetails,
+            id,
+            panelStatus,
+            title,
+            togglePanel,
+            useTheme,
+        } = this.props;
         const iconHelpMsg = panelStatus && panelStatus !== 'NONE' ? this.getHeaderIconHelpMsg() : undefined;
+        const collapsedIconClass = classNames('fa', 'fa-lg', {
+            'fa-plus-square': collapsed,
+            'fa-minus-square': !collapsed,
+            'domain-form-expand-btn': collapsed,
+            'domain-form-collapse-btn': !collapsed,
+        });
+        const panelHeaderClass = classNames('domain-panel-header', {
+            'domain-heading-collapsible': collapsible || controlledCollapse,
+            'domain-panel-header-expanded': !collapsed,
+            'domain-panel-header-collapsed': collapsed,
+            'labkey-page-nav': !collapsed && useTheme,
+            'domain-panel-header-no-theme': !collapsed && !useTheme,
+        });
 
         return (
-            <>
+            <Panel.Heading id={id} onClick={togglePanel} className={panelHeaderClass}>
                 {/* Header help icon*/}
                 {iconHelpMsg && (
                     <LabelHelpTip iconComponent={this.getHeaderIconComponent()} placement="top" title={title}>
@@ -115,15 +106,15 @@ export class CollapsiblePanelHeader extends React.PureComponent<Props, any> {
                 <span className="domain-panel-title">{this.getTitlePrefix() + title}</span>
 
                 {/* Expand/Collapse Icon*/}
-                {(controlledCollapse || collapsible) && this.renderExpandCollapseIcon()}
+                {(controlledCollapse || collapsible) && (
+                    <span className="pull-right">
+                        <span className={collapsedIconClass} />
+                    </span>
+                )}
 
                 {/* Help tip*/}
                 {children && (
-                    <LabelHelpTip
-                        customStyle={{ verticalAlign: 'top', marginLeft: '5px' }}
-                        placement="top"
-                        title={title}
-                    >
+                    <LabelHelpTip placement="top" title={title}>
                         {children}
                     </LabelHelpTip>
                 )}
@@ -132,16 +123,6 @@ export class CollapsiblePanelHeader extends React.PureComponent<Props, any> {
                 {controlledCollapse && headerDetails && (
                     <span className="domain-panel-header-fields-defined">{headerDetails}</span>
                 )}
-            </>
-        );
-    }
-
-    render() {
-        const { id, togglePanel } = this.props;
-
-        return (
-            <Panel.Heading id={id} onClick={togglePanel} className={this.getPanelHeaderClass()}>
-                {this.renderHeader()}
             </Panel.Heading>
         );
     }

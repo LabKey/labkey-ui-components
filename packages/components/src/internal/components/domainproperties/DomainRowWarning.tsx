@@ -1,34 +1,26 @@
 import React, { FC, memo } from 'react';
 
-import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import { LabelHelpTip } from '../base/LabelHelpTip';
+import { DomainFieldError } from './models';
 
 interface Props {
-    extraInfo?: string;
-    index: number;
-    msg: string;
-    name: string;
-    severity: string;
+    fieldError: DomainFieldError;
 }
 
-export const DomainRowWarning: FC<Props> = memo(props => {
-    const { extraInfo, severity, name, index, msg } = props;
+export const DomainRowWarning: FC<Props> = memo(({ fieldError }) => {
+    const { extraInfo, message, severity } = fieldError;
+    const msg = severity + ': ' + message;
+    const icon = <span className="fa fa-exclamation-circle domain-warning-icon" />;
 
     return (
-        <>
+        <span className="domain-row-warning">
             {extraInfo && (
-                <LabelHelpTip
-                    iconComponent={<FontAwesomeIcon icon={faExclamationCircle} className="domain-warning-icon" />}
-                    title={severity}
-                >
+                <LabelHelpTip iconComponent={icon} title={severity}>
                     {extraInfo}
                 </LabelHelpTip>
             )}
             {extraInfo && <span>&nbsp;</span>}
-            <b key={name + '_' + index}>{msg}</b>
-        </>
+            {msg}
+        </span>
     );
 });

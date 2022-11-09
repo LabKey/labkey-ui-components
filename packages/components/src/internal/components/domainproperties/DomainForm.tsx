@@ -302,14 +302,14 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         );
     };
 
-    togglePanel = (evt: any, collapsed?: boolean): void => {
+    togglePanel = (): void => {
         const { onToggle, collapsible, controlledCollapse } = this.props;
 
         if (collapsible || controlledCollapse) {
             if (onToggle) {
-                onToggle(collapsed !== undefined ? collapsed : !this.state.collapsed, this.toggleLocalPanel);
+                onToggle(!this.state.collapsed, this.toggleLocalPanel);
             } else {
-                this.toggleLocalPanel(collapsed);
+                this.toggleLocalPanel();
             }
         }
     };

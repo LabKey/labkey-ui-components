@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.246.2",
+  "version": "2.247.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [
@@ -55,11 +55,6 @@
   },
   "homepage": "https://github.com/LabKey/labkey-ui-components#readme",
   "dependencies": {
-    "@fortawesome/fontawesome-free": "~5.15.4",
-    "@fortawesome/fontawesome-svg-core": "~1.2.36",
-    "@fortawesome/free-regular-svg-icons": "~5.15.4",
-    "@fortawesome/free-solid-svg-icons": "~5.15.4",
-    "@fortawesome/react-fontawesome": "~0.1.15",
     "@labkey/api": "~1.16.1",
     "bootstrap": "~3.4.1",
     "classnames": "~2.3.2",

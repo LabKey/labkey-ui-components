@@ -81,29 +81,22 @@ export class MenuItemModel extends Record({
             const dataProductId = rawData.productId ? rawData.productId.toLowerCase() : undefined;
 
             if (rawData.key && sectionKey !== 'user') {
-                const parts = rawData.key.split('?');
-
-                // for assay name that contains slash, full raw key (protocol/assayname: general/a/b) is encoded using QueryKey.encodePart as general/a$Sb on server side
-                // use QueryKey.decodePart to decode the assay name so url can be correctly called by encodeURIComponent and key be used to display decoded assay name
-                const subParts = parts[0]
+                // for assay names and freezer names that contain slashes, full raw key (protocol/assayname: general/a/b) is encoded using QueryKey.encodePart as general/a$Sb on server side
+                // use QueryKey.decodePart to decode the name so url can be correctly called by encodeURIComponent and key be used to display decoded assay name
+                const subParts = rawData.key
                     .split('/')
                     .filter(val => val !== '')
                     .map(QueryKey.decodePart);
 
-                const decodedPart = subParts.join('/');
-                const decodedKey = rawData.key.replace(parts[0], decodedPart);
-
-                let params;
-                if (parts.length > 1 && parts[1]) {
-                    params = ActionURL.getParameters(rawData.key);
-                }
+                const decoded = subParts.join('/');
+                const decodedKey = rawData.key.replace(rawData.key, () => decoded); //use the functional version to skip any additional pattern substitutions https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_string_as_the_replacement
 
                 return new MenuItemModel(
                     Object.assign({}, rawData, {
                         url: createProductUrlFromParts(
                             dataProductId,
                             currentProductId,
-                            params,
+                            undefined,
                             sectionKey,
                             ...subParts
                         ),

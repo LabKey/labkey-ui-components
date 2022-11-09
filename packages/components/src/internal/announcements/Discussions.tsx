@@ -115,7 +115,6 @@ export const Discussions: FC<Props> = memo(props => {
                     nounSingular={nounSingular}
                     onCancel={onCancel}
                     onCreate={onCreate}
-                    user={user}
                 />
             )}
         </div>

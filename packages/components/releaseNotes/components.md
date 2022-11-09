@@ -7,6 +7,17 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Add App.hasProductProjects util
   * Hide FolderMenu when no projects are created
 
+### version 2.47.0
+*Released*: 9 November 2022
+* Remove fortawesome dependencies
+    * Replaced all usages of FontAwesomeIcon with spans that use the appropriate classes
+* Remove CollapsiblePanel component
+* Convert some components to FC
+* Refactor DomainRowWarning
+* Remove ValidatorModal from exports
+* Refactor usages of ValidatorModal
+* Add RangeValidationOptionsModal to exports
+
 ### version 2.246.2
 *Released*: 9 November 2022
 * Merge release22.11-SNAPSHOT to develop:

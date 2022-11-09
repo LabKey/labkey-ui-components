@@ -1,8 +1,6 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 import { Button, FormControl, FormGroup, Modal, Radio } from 'react-bootstrap';
-import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
@@ -276,13 +274,13 @@ interface CollapsibleFieldsProps {
 }
 
 class CollapsibleFields extends React.PureComponent<CollapsibleFieldsProps> {
-    expand = () => {
+    expand = (): void => {
         const { expanded, expandFields, identifier } = this.props;
         const set = expanded ? '' : identifier;
         expandFields(set);
     };
 
-    onClick = () => {
+    onClick = (): void => {
         const { identifier, checked, onCheckboxChange, collapseFields, expanded } = this.props;
         onCheckboxChange(identifier, checked);
         if (expanded && !checked) {
@@ -294,9 +292,9 @@ class CollapsibleFields extends React.PureComponent<CollapsibleFieldsProps> {
         }
     };
 
-    render() {
+    render(): ReactNode {
         const { expanded, fields, title, checked } = this.props;
-        const icon = expanded ? faAngleDown : faAngleRight;
+        const icon = classNames('fa', 'fa-lg', { 'fa-angle-down': expanded, 'fa-angle-right': !expanded });
         const classes = classNames('list__advanced-settings-model__collapsible-field list__properties__no-highlight', {
             'list__properties__checkbox-unchecked': !checked,
         });
@@ -304,12 +302,12 @@ class CollapsibleFields extends React.PureComponent<CollapsibleFieldsProps> {
         return (
             <div>
                 <span onClick={this.expand} className={classes}>
-                    <FontAwesomeIcon icon={icon} size="lg" />
+                    <span className={icon} />
                 </span>
                 <span className="list__advanced-settings-modal__index-checkbox">
-                    <CheckBox checked={checked} onClick={() => this.onClick()} />
+                    <CheckBox checked={checked} onClick={this.onClick} />
                     <span className="list__advanced-settings-modal__index-text">
-                        <span className="list__clickable" onClick={() => this.onClick()}>
+                        <span className="list__clickable" onClick={this.onClick}>
                             {title}
                         </span>
                         {expanded && fields}
@@ -367,7 +365,7 @@ export class SearchIndexing extends React.PureComponent<SearchIndexingProps, Sea
         return (
             <div>
                 <CollapsibleFields
-                    expanded={expanded == 'entireListIndex'}
+                    expanded={expanded === 'entireListIndex'}
                     fields={
                         <SingleDocumentIndexFields
                             onRadioChange={onRadioChange}
@@ -384,7 +382,7 @@ export class SearchIndexing extends React.PureComponent<SearchIndexingProps, Sea
                 />
 
                 <CollapsibleFields
-                    expanded={expanded == 'eachItemIndex'}
+                    expanded={expanded === 'eachItemIndex'}
                     fields={
                         <SeparateDocumentIndexFields
                             onRadioChange={onRadioChange}

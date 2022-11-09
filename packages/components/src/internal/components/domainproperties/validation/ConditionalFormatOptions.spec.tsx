@@ -76,7 +76,6 @@ describe('ConditionalFormatOptions', () => {
             width: '100px',
         });
 
-        expect(format).toMatchSnapshot();
         format.unmount();
     });
 
@@ -100,9 +99,7 @@ describe('ConditionalFormatOptions', () => {
         const format = mount(<ConditionalFormatOptions {...props} />);
 
         const collapsed = format.find({ id: 'domain-condition-format-' + validatorIndex });
-        expect(collapsed.children().children().text()).toEqual('Is Not Blank and Is Greater Than 5');
-
-        expect(format).toMatchSnapshot();
+        expect(collapsed.children().text()).toEqual('Is Not Blank and Is Greater Than 5');
         format.unmount();
     });
 });

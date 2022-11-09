@@ -76,17 +76,14 @@ class RadioGroupInputImpl extends PureComponent<Props, State> {
                         <div key={option.value}>
                             <input
                                 checked={selected && !option.disabled}
-                                className=""
                                 type="radio"
                                 name={name}
                                 value={option.value}
                                 onChange={this.onValueChange}
                                 disabled={option.disabled}
-                            />{' '}
+                            />
                             {option.label}
-                            {option.description && (
-                                <LabelHelpTip key={option.value + '_help'}>{option.description}</LabelHelpTip>
-                            )}
+                            {option.description && <LabelHelpTip>{option.description}</LabelHelpTip>}
                         </div>
                     );
                 });

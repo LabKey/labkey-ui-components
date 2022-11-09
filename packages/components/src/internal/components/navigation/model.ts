@@ -89,7 +89,7 @@ export class MenuItemModel extends Record({
                     .map(QueryKey.decodePart);
 
                 const decoded = subParts.join('/');
-                const decodedKey = rawData.key.replace(rawData.key, () => decoded); //use the functional version to skip any additional pattern substitutions https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_string_as_the_replacement
+                const decodedKey = rawData.key.replace(rawData.key, () => decoded); // use the functional version to skip any additional pattern substitutions https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_string_as_the_replacement
 
                 return new MenuItemModel(
                     Object.assign({}, rawData, {

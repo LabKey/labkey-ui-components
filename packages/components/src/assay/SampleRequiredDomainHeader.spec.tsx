@@ -1,8 +1,10 @@
 import React from 'react'
 import { List } from "immutable";
 import renderer from 'react-test-renderer'
-import {RANGE_URIS, DomainDesign, SAMPLE_TYPE, SAMPLE_TYPE_CONCEPT_URI} from "@labkey/components";
 import {SampleRequiredDomainHeader} from "./SampleRequiredDomainHeader";
+import { DomainDesign } from '../internal/components/domainproperties/models';
+import { RANGE_URIS, SAMPLE_TYPE_CONCEPT_URI } from '../internal/components/domainproperties/constants';
+import { SAMPLE_TYPE } from '../internal/components/domainproperties/PropDescType';
 
 describe('SampleRequiredDomainHeader', () => {
     const BASE_DOMAIN = DomainDesign.create({

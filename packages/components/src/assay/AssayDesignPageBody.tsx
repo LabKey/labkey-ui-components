@@ -27,6 +27,20 @@ import { DEFAULT_SAMPLE_FIELD_CONFIG } from '../internal/components/samples/cons
 
 const ASSAY_DESIGNER_HEADER = 'Connect your experimental results to samples for rich data connections.';
 
+// Need to do an exclusion list to allow unknown file-based assays to have batch fields
+const REMOVE_BATCH_DOMAIN_ASSAYS = [
+    "General",
+    "ELISA",
+    "ELISpot",
+    "Noblis Simple",
+    "NAb",
+    "Viability",
+    "TZM-bl Neutralization (NAb)",
+    "TZM-bl Neutralization (NAb), High-throughput (Cross Plate Dilution)",
+    "TZM-bl Neutralization (NAb), High-throughput (Single Plate Dilution)"
+];
+
+
 interface OwnProps {
     requireSampleField?: boolean;
     showProviderName?: boolean;
@@ -42,6 +56,7 @@ export const AssayDesignPageBody: FC<Props> = memo(props => {
     const {
         assayDefinition,
         assayProtocol,
+        reloadAssays,
         router,
         routes,
         goBack,
@@ -71,12 +86,13 @@ export const AssayDesignPageBody: FC<Props> = memo(props => {
                         let newDomain = dom;
 
                         // Clear all pre-populated fields for general assay
-                        if (protocol.providerName === GENERAL_ASSAY_PROVIDER_NAME) {
+                        if ((protocol.providerName === GENERAL_ASSAY_PROVIDER_NAME) ||
+                            (REMOVE_BATCH_DOMAIN_ASSAYS.indexOf(protocol.providerName) !== -1 && dom.name.indexOf('Batch') !== -1)) {
                             newDomain = newDomain.set('fields', List()) as DomainDesign
                         }
 
                         // special case for the Results Domain to default in a sample field when using "manually define fields"
-                        if (newDomain.isNameSuffixMatch('Data'))
+                        if (requireSampleField && newDomain.isNameSuffixMatch('Data'))
                             newDomain = newDomain.set('newDesignFields', List<Partial<IDomainField>>([DEFAULT_SAMPLE_FIELD_CONFIG])) as DomainDesign;
 
                         newDomains = newDomains.push(newDomain) as List<DomainDesign>;
@@ -111,12 +127,12 @@ export const AssayDesignPageBody: FC<Props> = memo(props => {
     }, [setIsDirty, goBack]);
 
     const onComplete = useCallback((model: AssayProtocolModel) => {
-        // set dirty state to false, so we don't check on navigation
-        setIsDirty(false);
-
         const action = protocol?.name ? 'updated' : 'created';
         const type = protocol?.name ?? 'assay design';
 
+        // set dirty state to false, so we don't check on navigation
+        setIsDirty(false);
+        reloadAssays();
         menuInit();
         clearAssayDefinitionCache();
         onAssayDesignChange(assayDefinition?.protocolSchemaName); // Issue 39097
@@ -127,7 +143,7 @@ export const AssayDesignPageBody: FC<Props> = memo(props => {
                 AppURL.create(ASSAYS_KEY, model.providerName, model.name)
                 : AppURL.create(ASSAYS_KEY)
         ));
-    }, [assayDefinition, menuInit, createNotification, navigate]);
+    }, [assayDefinition, protocol, reloadAssays, menuInit, createNotification, navigate]);
 
     const subtitle = protocol?.protocolId ? 'Edit Assay Design' : 'Create a New Assay Design';
     const isLKSM = sampleManagerIsPrimaryApp(); // TODO needs refinement
@@ -147,6 +163,10 @@ export const AssayDesignPageBody: FC<Props> = memo(props => {
         title += ' Assay'
     }
     const saveButtonText = protocol?.protocolId ? `Finish Updating ${title}` : `Finish Creating ${title}`;
+
+    // Show empty batches in non-excluded assay providers
+    const hideEmptyBatches = protocol && (REMOVE_BATCH_DOMAIN_ASSAYS.indexOf(protocol.providerName) !== -1);
+
 
     if (!user.hasDesignAssaysPermission()) {
         return <InsufficientPermissionsPage title={subtitle} />;
@@ -168,7 +188,7 @@ export const AssayDesignPageBody: FC<Props> = memo(props => {
                     appPropertiesOnly={isLKSM}
                     appDomainHeaders={requireSampleField ? Map({'Data': renderSampleRequiredPanelHeader}): undefined}
                     appIsValidMsg={requireSampleField ? protocolHasSample : undefined}
-                    hideEmptyBatchDomain={true}
+                    hideEmptyBatchDomain={hideEmptyBatches}
                     initModel={protocol}
                     onChange={onChange}
                     onCancel={onCancel}
@@ -185,5 +205,3 @@ export const AssayDesignPageBody: FC<Props> = memo(props => {
         </Page>
     );
 });
-
-// export const AssayDesignPage = assayPage(AssayDesignPageImpl);

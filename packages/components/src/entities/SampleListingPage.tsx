@@ -70,21 +70,21 @@ const hasPermissions = (
 };
 
 function selectSamplesAndAddToStorage(
-    targetSampleSetName: string,
+    targetSampleTypeName: string,
     sampleCount: number,
     transactionAuditId: number,
     sampleListingGridId: string,
     navigate: (url: string | AppURL) => any,
     actions: Actions
 ): void {
-    let sampleSetURL = AppURL.create(SAMPLES_KEY, targetSampleSetName);
-    const schemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, targetSampleSetName);
+    let sampleTypeURL = AppURL.create(SAMPLES_KEY, targetSampleTypeName);
+    const schemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, targetSampleTypeName);
     selectGridIdsFromTransactionId(sampleListingGridId, schemaQuery, transactionAuditId, SAMPLES_KEY, actions).then(
         selected => {
             const modelId = createGridModelId(sampleListingGridId, schemaQuery);
             setSnapshotSelections(modelId, selected).then(() => {
-                sampleSetURL = sampleSetURL.addParam('addToStorageCount', sampleCount); // show AddSamplesToStorageModal
-                navigate(sampleSetURL);
+                sampleTypeURL = sampleTypeURL.addParam('addToStorageCount', sampleCount); // show AddSamplesToStorageModal
+                navigate(sampleTypeURL);
             });
         }
     );
@@ -208,7 +208,7 @@ const SampleListingPageBody: FC<Props> = props => {
     } = useSampleTypeAppContext();
     const [showPrintDialog, setShowPrintDialog] = useState(false);
     const [showAddToStorage, setShowAddToStorage] = useState(false);
-    const [showConfirmDeleteSampleSet, setShowConfirmDeleteSampleSet] = useState(false);
+    const [showConfirmDeleteSampleType, setShowConfirmDeleteSampleType] = useState(false);
     const [sharedContainerPermissions, setSharedContainerPermissions] = useState<List<string>>();
     const containerFilter = useMemo(() => getContainerFilterForLookups(), []);
 
@@ -230,7 +230,7 @@ const SampleListingPageBody: FC<Props> = props => {
         if (!isLoaded) return;
 
         const { transactionAuditId, createdSampleCount, importedSampleCount } = props.location?.query;
-        const sampleSet = listModel.schemaQuery.getQuery();
+        const sampleType = listModel.schemaQuery.getQuery();
 
         if (transactionAuditId) {
             if (createdSampleCount || importedSampleCount) {
@@ -238,7 +238,7 @@ const SampleListingPageBody: FC<Props> = props => {
                 createNotification(
                     {
                         message: getSamplesCreatedSuccessMessage(
-                            sampleSet,
+                            sampleType,
                             transactionAuditId,
                             createdSampleCount,
                             importedSampleCount,
@@ -257,7 +257,7 @@ const SampleListingPageBody: FC<Props> = props => {
                 createNotification(
                     {
                         message: getSamplesImportSuccessMessage(
-                            sampleSet,
+                            sampleType,
                             transactionAuditId,
                             SAMPLES_LISTING_GRID_ID,
                             filename,
@@ -303,12 +303,12 @@ const SampleListingPageBody: FC<Props> = props => {
         else return false;
     }, [detailsModel]);
 
-    const onDeleteSampleSet = useCallback((): void => {
-        setShowConfirmDeleteSampleSet(true);
+    const onDeleteSampleType = useCallback((): void => {
+        setShowConfirmDeleteSampleType(true);
     }, []);
 
-    const onClearDeleteSampleSet = useCallback((): void => {
-        setShowConfirmDeleteSampleSet(false);
+    const onClearDeleteSampleType = useCallback((): void => {
+        setShowConfirmDeleteSampleType(false);
     }, []);
 
     const afterSampleActionComplete = useCallback((): void => {
@@ -319,22 +319,22 @@ const SampleListingPageBody: FC<Props> = props => {
         setShowAddToStorage(false);
     }, [actions, dismissNotifications, sampleListModelId]);
 
-    const beforeDeleteSampleSet = useCallback(() => {
+    const beforeDeleteSampleType = useCallback(() => {
         // call onSampleTypeChange so that the QueryDetails get invalidated
         onSampleTypeChange(listModel.schemaQuery, listModel.queryInfo?.domainContainerPath);
     }, [listModel.queryInfo?.domainContainerPath, listModel.schemaQuery]);
 
-    const onDeleteSampleSetComplete = useCallback(
+    const onDeleteSampleTypeComplete = useCallback(
         (success: boolean) => {
             if (success) {
                 menuInit();
                 navigate(AppURL.create(SAMPLES_KEY), true);
             } else {
-                // delay to make sure grid invalidate form beforeDeleteSampleSet is finished
-                window.setTimeout(() => onClearDeleteSampleSet(), 100);
+                // delay to make sure grid invalidate form beforeDeleteSampleType is finished
+                window.setTimeout(() => onClearDeleteSampleType(), 100);
             }
         },
-        [menuInit, navigate, onClearDeleteSampleSet]
+        [menuInit, navigate, onClearDeleteSampleType]
     );
 
     const canDesignDomain = useMemo(() => {
@@ -411,7 +411,7 @@ const SampleListingPageBody: FC<Props> = props => {
                         <MenuItem href={AppURL.create(SAMPLE_TYPE_KEY, sampleType).toHref()}>
                             Edit Sample Type Design
                         </MenuItem>
-                        <MenuItem onClick={onDeleteSampleSet}>Delete Sample Type</MenuItem>
+                        <MenuItem onClick={onDeleteSampleType}>Delete Sample Type</MenuItem>
                     </>
                 )}
                 {canPrintLabels && <MenuItem onClick={onPrintLabel}>Print Labels</MenuItem>}
@@ -479,13 +479,13 @@ const SampleListingPageBody: FC<Props> = props => {
                     user={user}
                     withTitle={false}
                 />
-                {showConfirmDeleteSampleSet && (
+                {showConfirmDeleteSampleType && (
                     <SampleSetDeleteModal
-                        afterDelete={onDeleteSampleSetComplete}
-                        beforeDelete={beforeDeleteSampleSet}
+                        afterDelete={onDeleteSampleTypeComplete}
+                        beforeDelete={beforeDeleteSampleType}
                         containerPath={listModel.queryInfo?.domainContainerPath}
                         numSamples={listModel.rowCount}
-                        onCancel={onClearDeleteSampleSet}
+                        onCancel={onClearDeleteSampleType}
                         rowId={detailsModel.getRowValue('RowId')}
                     />
                 )}

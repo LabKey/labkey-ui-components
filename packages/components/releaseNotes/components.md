@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 2.47.0
-*Released*: ?? November 2022
+*Released*: 9 November 2022
 * Remove fortawesome dependencies
     * Replaced all usages of FontAwesomeIcon with spans that use the appropriate classes
 * Remove CollapsiblePanel component

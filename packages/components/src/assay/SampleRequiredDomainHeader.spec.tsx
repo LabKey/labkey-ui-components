@@ -5,6 +5,9 @@ import {SampleRequiredDomainHeader} from "./SampleRequiredDomainHeader";
 import { DomainDesign } from '../internal/components/domainproperties/models';
 import { RANGE_URIS, SAMPLE_TYPE_CONCEPT_URI } from '../internal/components/domainproperties/constants';
 import { SAMPLE_TYPE } from '../internal/components/domainproperties/PropDescType';
+import { mount } from 'enzyme';
+import { Alert } from '../internal/components/base/Alert';
+import { FormControl } from 'react-bootstrap';
 
 describe('SampleRequiredDomainHeader', () => {
     const BASE_DOMAIN = DomainDesign.create({
@@ -42,12 +45,13 @@ describe('SampleRequiredDomainHeader', () => {
 
     test('Defaults', () => {
 
-        const tree = renderer.create(
+        const wrapper = mount(
             <SampleRequiredDomainHeader domain={BASE_DOMAIN} modelDomains={DOMAINS} domainIndex={0}/>
         );
 
         //Show header, domain has fields and none are Samples
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(wrapper.find(Alert)).toHaveLength(1);
+        expect(wrapper.find(FormControl)).toHaveLength(1);
     });
 
     test('0 Fields', () => {

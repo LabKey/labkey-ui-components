@@ -30,6 +30,18 @@
     display: inline-block;
 }
 
+.domain-form * {
+    scroll-margin: 78px;
+}
+
+.app-body .domain-form * {
+    scroll-margin: 134px;
+}
+
+.app-body.with-sub-nav .domain-form * {
+    scroll-margin: 231px;
+}
+
 .domain-form__file-preview__text {
   font-weight: bold;
   margin-bottom: 10px;

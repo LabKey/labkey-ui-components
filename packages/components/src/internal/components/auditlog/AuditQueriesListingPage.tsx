@@ -7,6 +7,8 @@ import { fromJS, List, Map } from 'immutable';
 import { Col, Row } from 'react-bootstrap';
 import { Query } from '@labkey/api';
 
+import { WithRouterProps } from 'react-router';
+
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { GridPanel } from '../../../public/QueryModel/GridPanel';
 
@@ -21,12 +23,11 @@ import { SelectInput } from '../forms/input/SelectInput';
 
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
-import { AuditQuery, getAuditQueries } from './utils';
+import { getAuditQueries } from './utils';
 import { getAuditDetail } from './actions';
 import { AuditDetailsModel } from './models';
 import { AuditDetails } from './AuditDetails';
-import { WithRouterProps } from 'react-router';
-import { AUDIT_EVENT_TYPE_PARAM, SAMPLE_TIMELINE_AUDIT_QUERY } from './constants';
+import { AuditQuery, AUDIT_EVENT_TYPE_PARAM, SAMPLE_TIMELINE_AUDIT_QUERY } from './constants';
 
 interface OwnProps {
     params: any;
@@ -70,13 +71,14 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
     onSelectionChange = (_: any, selected: string): void => {
         const location = getLocation();
         const paramUpdates = location.query.map((value: string, key: string) => {
-            if (key.startsWith("query"))
+            if (key.startsWith('query')) {
                 return undefined; // get rid of filtering parameters that are likely not applicable to this new audit log
-            else if (key === AUDIT_EVENT_TYPE_PARAM)
+            } else if (key === AUDIT_EVENT_TYPE_PARAM) {
                 return selected;
-            else
+            } else {
                 return value;
-        } );
+            }
+        });
         replaceParameters(location, paramUpdates);
         this.setState(() => ({ selected, selectedRowId: undefined }));
     };

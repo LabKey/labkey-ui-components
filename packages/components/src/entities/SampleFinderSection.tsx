@@ -182,7 +182,7 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
                 setUnsavedSessionViewName(finderSessionData.filterTimestamp);
             }
         }
-    }, [assayModel.definitions]);
+    }, [assayModel.definitionsLoadingState, assayModel.definitions, parentEntityDataTypes, clearSessionView]);
 
     const updateFilters = useCallback(
         (changeCounter: number, filterProps: FilterProps[], updateSession: boolean, isViewDirty: boolean) => {

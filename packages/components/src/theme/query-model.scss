@@ -75,6 +75,12 @@
     }
 }
 
+// This is actually the default value for Bootstrap, but we have to set it again here because we override the default
+// value in the LKS themes.
+.input-group.grid-panel__input-group {
+    display: table;
+}
+
 .grid-panel__button {
     height: 34px;
 }

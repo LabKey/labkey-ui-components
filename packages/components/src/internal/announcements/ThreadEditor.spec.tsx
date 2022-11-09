@@ -5,9 +5,9 @@ import { waitForLifecycle } from '../testHelpers';
 
 import { applyList, applyTemplate, handleBulletedListEnter, olMapper, ThreadEditor, ulMapper } from './ThreadEditor';
 import { createTestAPIWrapper } from './test/utils';
-import { COMMENTER, NOUN_PLURAL, NOUN_SINGULAR, RESPONSE, THREAD } from './test/fixtures';
+import { NOUN_PLURAL, NOUN_SINGULAR, RESPONSE, THREAD } from './test/fixtures';
 
-const COMMENT_TEXTAREA = '.thread-editor__body textarea.form-control';
+const COMMENT_TEXTAREA = '.thread-editor textarea.form-control';
 const SUBMIT_BUTTON = '.thread-editor__create-btn';
 const TOOLBAR_BUTTON = '.editor-toolbar__button';
 
@@ -36,12 +36,8 @@ describe('ThreadEditor', () => {
                 nounPlural={NOUN_PLURAL}
                 nounSingular={NOUN_SINGULAR}
                 onCreate={onCreate}
-                user={COMMENTER}
             />
         );
-
-        // displays user avatar
-        expect(wrapper.find('.user-avatar').props().title).toEqual(COMMENTER.displayName);
 
         expect(wrapper.find(COMMENT_TEXTAREA).exists()).toEqual(true);
         wrapper.find(COMMENT_TEXTAREA).simulate('change', { target: { name: 'body', value: expectedBody } });
@@ -81,7 +77,6 @@ describe('ThreadEditor', () => {
                 nounSingular={NOUN_SINGULAR}
                 onUpdate={onUpdate}
                 thread={RESPONSE}
-                user={COMMENTER}
             />
         );
 
@@ -112,7 +107,6 @@ describe('ThreadEditor', () => {
                 containerPath={expectedContainerPath}
                 nounPlural={NOUN_PLURAL}
                 nounSingular={NOUN_SINGULAR}
-                user={COMMENTER}
             />
         );
 
@@ -137,7 +131,6 @@ describe('ThreadEditor', () => {
                 api={createTestAPIWrapper({ renderContent })}
                 nounPlural={NOUN_PLURAL}
                 nounSingular={NOUN_SINGULAR}
-                user={COMMENTER}
             />
         );
 
@@ -158,7 +151,6 @@ describe('ThreadEditor', () => {
                 api={createTestAPIWrapper()}
                 nounPlural={NOUN_PLURAL}
                 nounSingular={NOUN_SINGULAR}
-                user={COMMENTER}
             />
         );
 

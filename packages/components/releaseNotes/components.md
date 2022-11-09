@@ -7,6 +7,11 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Add App.hasProductProjects util
   * Hide FolderMenu when no projects are created
 
+### version 2.246.2
+*Released*: 9 November 2022
+* Merge release22.11-SNAPSHOT to develop:
+  * includes changes from 2.242.4, 2.242.5, 2.242.6, 2.242.7, 2.242.8, 2.242.9
+
 ### version 2.246.1
 *Released*: 7 November 2022
 * Update various help links
@@ -41,6 +46,34 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Move configuration of `ts-jest` to the `transformers` section as the `globals` pattern is now deprecated.
 * Remove `use-immer` dependency in `@labkey/components` and refactor its sole usage `AssayPicker`.
 * Move `jest`, `@types/enzyme`, and `@types/jest` to be `devDependencies` for `@labkey/components`.
+
+### version 2.242.9
+*Released*: 7 November 2022
+* Issues 46591 and 46651: Fix displays and links for freezer names that have slashes in them
+
+### version 2.242.8
+*Released*: 4 Nov 2022
+* Better Fix for Issue 45944: Use functional substitution when decoding key for MenuItem keys.
+
+### version 2.242.7
+*Released*: 4 November 2022
+* Issue 46648: Add missing dependencies in SampleFinderSection for assay loading state
+
+### version 2.242.6
+*Released*: 3 Nov 2022
+* Fix Issue 45944: Decode $ in MenuItem keys
+
+### version 2.242.5
+*Released*: 2 November 2022
+* Generate audit log URL using updated pattern from #965
+* Add explicit typings to constant `AuditQuery` instances.
+
+### version 2.242.4
+*Released*: 2 November 2022
+* EditInlineField: remove showToggle prop, always render edit icon at end of content
+* ThreadEditor: Don't render user icon
+* Fix Issue 46604
+* Add scroll-margin to Domain Editor to assist with test failures
 
 ### version 2.242.3
 *Released*: 31 October 2022

@@ -51,11 +51,13 @@ const SAMPLES_LISTING_GRID_ID = 'samples-listing';
 const SUB_MENU_WIDTH = 1610;
 let SAMPLE_ACTION_UPDATE_COUNTER = 0;
 
-const getIsSharedModel = (model: QueryModel): boolean => {
+// exported for jest testing
+export const getIsSharedModel = (model: QueryModel): boolean => {
     return SHARED_CONTAINER_PATH === model.getRowValue('Folder/Path');
 };
 
-const hasPermissions = (
+// exported for jest testing
+export const hasPermissions = (
     user: User,
     perms: string[],
     isSharedContainer?: boolean,
@@ -185,9 +187,14 @@ interface BodyProps {
     sampleListModelId: string;
 }
 
-type Props = CommonPageProps & BodyProps & InjectedQueryModels & WithRouterProps & InjectedRouteLeaveProps;
+export type SampleListingPageBodyProps = CommonPageProps &
+    BodyProps &
+    InjectedQueryModels &
+    WithRouterProps &
+    InjectedRouteLeaveProps;
 
-const SampleListingPageBody: FC<Props> = props => {
+// exported for jest testing
+export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
     const { menuInit, navigate, queryModels, actions, sampleListModelId, menu, setIsDirty, getIsDirty } = props;
     const { sampleType } = props.params;
     const { canPrintLabels, labelTemplate, printServiceUrl } = useLabelPrintingContext();

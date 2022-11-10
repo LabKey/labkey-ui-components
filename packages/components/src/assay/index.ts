@@ -1,3 +1,4 @@
+import { AssayDesignPage } from './AssayDesignPage';
 import { AssayDesignDeleteModal } from './AssayDesignDeleteModal';
 import { assayPage } from './AssayPageHOC';
 import { AssayReimportRunButton } from './AssayReimportRunButton';
@@ -22,6 +23,7 @@ export {
     assayPage,
     getAssayImportNotificationMsg,
     getAssayRunDeleteMessage,
+    AssayDesignPage,
     AssayDesignDeleteModal,
     AssayDesignHeaderButtons,
     AssayRunDetailHeaderButtons,
@@ -40,3 +42,5 @@ export {
     onAssayDesignChange,
     UpdateQCStatesButton,
 };
+
+export type { AssayAppContext, WithAssayAppContext, AppContextWithAssay } from './AssayAppContext';

@@ -141,7 +141,7 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
     const [showSaveViewDialog, setShowSaveViewDialog] = useState<boolean>(false);
     const [showManageViewsDialog, setShowManageViewsDialog] = useState<boolean>(false);
     const [unsavedSessionViewName, setUnsavedSessionViewName] = useState<string>(undefined);
-    const [assaySampleIdCols, setAssaySampleIdCols] = useState<{ [key: string]: AssaySampleColumnProp }>();
+    const [assaySampleIdCols, setAssaySampleIdCols] = useState<{ [key: string]: AssaySampleColumnProp }>(undefined);
 
     const { api } = useAppContext();
     const { createNotification } = useNotificationsContext();
@@ -151,6 +151,7 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
         if (isLoading(assayModel.definitionsLoadingState)) return;
 
         const assaySampleCols = getAssayDefinitionsWithResultSampleLookup(assayModel, 'general');
+        setAssaySampleIdCols(assaySampleCols);
         getAllEntityTypeOptions(parentEntityDataTypes)
             .then(entityOptions => {
                 Object.keys(entityOptions).forEach(key => {
@@ -162,7 +163,6 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
                         _enabledEntityTypes.push(key);
                     }
                 });
-                setAssaySampleIdCols(assaySampleCols);
                 setEnabledEntityTypes(_enabledEntityTypes);
             })
             .catch(error => {
@@ -177,7 +177,7 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
 
         const finderSessionDataStr = sessionStorage.getItem(getSampleFinderLocalStorageKey());
         if (finderSessionDataStr) {
-            const finderSessionData = searchFiltersFromJson(finderSessionDataStr);
+            const finderSessionData = searchFiltersFromJson(finderSessionDataStr, assaySampleCols);
             if (finderSessionData?.filters?.length > 0 && finderSessionData?.filterTimestamp) {
                 setUnsavedSessionViewName(finderSessionData.filterTimestamp);
             }
@@ -319,7 +319,7 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
             }
             if (!cardJson) return;
 
-            const finderSessionData = searchFiltersFromJson(cardJson);
+            const finderSessionData = searchFiltersFromJson(cardJson, assaySampleIdCols);
             const newFilters = finderSessionData.filters;
             if (!newFilters) return;
 
@@ -327,7 +327,7 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
             setShowSaveViewDialog(false);
             setCurrentView(view);
         },
-        [createNotification, filterChangeCounter, updateFilters]
+        [createNotification, filterChangeCounter, updateFilters, assaySampleIdCols]
     );
 
     const onSaveComplete = useCallback((view: FinderReport) => {
@@ -375,6 +375,9 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
     }, []);
 
     useEffect(() => {
+        if (!assaySampleIdCols)
+            return;
+
         (async () => {
             try {
                 // if the page is first loading (i.e. no currentView) and the URL has a view name, try to load it
@@ -392,7 +395,7 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
                 // do nothing
             }
         })();
-    }, [api.samples, currentView, loadSearch, location?.query?.view]);
+    }, [api.samples, currentView, loadSearch, location?.query?.view, assaySampleIdCols]);
 
     if (!enabledEntityTypes) return <LoadingSpinner />;
 

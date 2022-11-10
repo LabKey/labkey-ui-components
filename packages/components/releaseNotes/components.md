@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD November 2022
+### version 2.48.0
+*Released*: 10 November 2022
 * Updates for Sample Type consistency of Samples listing page
   * Refactor SampleListingPage.tsx from LKSM and LKB to share
   * Add misc components and props to SampleTypeAppContext

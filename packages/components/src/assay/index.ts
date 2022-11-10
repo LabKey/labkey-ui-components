@@ -1,3 +1,4 @@
+import { AssayBatchOverviewPage } from './AssayBatchOverviewPage';
 import { AssayDesignPage } from './AssayDesignPage';
 import { AssayDesignDeleteModal } from './AssayDesignDeleteModal';
 import { AssayOverviewPage } from './AssayOverviewPage';
@@ -24,6 +25,7 @@ export {
     assayPage,
     getAssayImportNotificationMsg,
     getAssayRunDeleteMessage,
+    AssayBatchOverviewPage,
     AssayDesignPage,
     AssayDesignDeleteModal,
     AssayDesignHeaderButtons,

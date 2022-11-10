@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode, RefObject } from 'react';
 import { Button, Checkbox, Col, Collapse, FormControl, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 import { Draggable } from 'react-beautiful-dnd';
@@ -114,6 +114,8 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
         domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     };
 
+    ref: RefObject<HTMLDivElement>;
+
     constructor(props) {
         super(props);
 
@@ -125,12 +127,12 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
             isDragDisabled: props.isDragDisabled,
         };
 
-        this[`${props.index}_ref`] = React.createRef();
+        this.ref = React.createRef();
     }
 
     // Used in DomainPropertiesGrid
     scrollIntoView = (): void => {
-        this[`${this.props.index}_ref`].current.scrollIntoView({ behavior: 'smooth' });
+        this.ref.current.scrollIntoView({ behavior: 'smooth' });
     };
 
     UNSAFE_componentWillReceiveProps(nextProps: DomainRowProps): void {
@@ -140,43 +142,25 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
         }
     }
 
-    /**
-     *  Details section of property row
-     */
-    getDetailsText = (): React.ReactNode => {
-        const { field, index, fieldError, fieldDetailsInfo } = this.props;
-        const details = field.getDetailsTextArray(index, fieldDetailsInfo);
+    getDetails = (): ReactNode => {
+        const { field, fieldDetailsInfo, fieldError, index, expanded, domainIndex } = this.props;
+        const { closing } = this.state;
+        const details = field.getDetailsArray(index, fieldDetailsInfo);
 
         if (fieldError) {
             details.push(details.length > 0 ? '. ' : '');
-            const msg = fieldError.severity + ': ' + fieldError.message;
-            details.push(
-                <DomainRowWarning
-                    index={index}
-                    extraInfo={fieldError.extraInfo}
-                    msg={msg}
-                    name={field.name}
-                    severity={fieldError.severity}
-                />
-            );
+            details.push(<DomainRowWarning fieldError={fieldError} />);
         }
-
-        return details;
-    };
-
-    getDetails() {
-        const { index, expanded, domainIndex } = this.props;
-        const { closing } = this.state;
 
         return (
             <div
                 id={createFormInputId(DOMAIN_FIELD_DETAILS, domainIndex, index)}
                 className={expanded || closing ? 'domain-field-details-expanded' : 'domain-field-details'}
             >
-                {this.getDetailsText()}
+                {details}
             </div>
         );
-    }
+    };
 
     getFieldBorderClass = (fieldError: DomainFieldError, selected: boolean): string => {
         if (!fieldError) {
@@ -195,7 +179,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
         selected: boolean,
         fieldError: DomainFieldError
     ): string => {
-        const classes = List<string>().asMutable();
+        const classes = [];
         classes.push('domain-field-row');
 
         if (selected) {
@@ -352,7 +336,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
         this.setState({ showingModal });
     };
 
-    disableNameInput(field: DomainField): boolean {
+    disableNameInput = (field: DomainField): boolean => {
         const lockNameForPK = !field.isNew() && isPrimaryKeyFieldLocked(field.lockType);
 
         return (
@@ -361,13 +345,13 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
             lockNameForPK ||
             field.lockExistingField // existingField defaults to false. used for query metadata editor
         );
-    }
+    };
 
-    renderBaseFields() {
+    renderBaseFields = (): ReactNode => {
         const { index, field, availableTypes, appPropertiesOnly, domainIndex, domainFormDisplayOptions } = this.props;
 
         return (
-            <div id={createFormInputId(DOMAIN_FIELD_ROW, domainIndex, index)} ref={this[`${this.props.index}_ref`]}>
+            <div id={createFormInputId(DOMAIN_FIELD_ROW, domainIndex, index)} ref={this.ref}>
                 <Col xs={6}>
                     <FormControl
                         // autoFocus={field.isNew()}  // TODO: This is not working great with drag and drop, need to investigate
@@ -428,9 +412,9 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                 </Col>
             </div>
         );
-    }
+    };
 
-    renderButtons() {
+    renderButtons = (): ReactNode => {
         const { expanded, index, field, appPropertiesOnly, domainIndex } = this.props;
         const { closing } = this.state;
 
@@ -457,7 +441,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                 )}
             </div>
         );
-    }
+    };
 
     render() {
         const { closing, isDragDisabled, showAdv, showingModal, dataTypeChangeToConfirm } = this.state;

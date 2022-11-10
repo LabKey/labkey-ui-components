@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { List } from 'immutable';
 import { Button, Modal } from 'react-bootstrap';
 
@@ -16,10 +16,11 @@ import { AddEntityButton } from '../../buttons/AddEntityButton';
 export interface ValidatorModalProps {
     addName: string;
     dataType: PropDescType;
+    // TODO: looks like every component passed to ValidatorModal doesn't use index so it can probably be removed.
     index: number;
     mvEnabled: boolean;
-    onApply: (validators: List<PropertyValidator | ConditionalFormat>, type: string) => any;
-    onHide: () => any;
+    onApply: (validators: List<PropertyValidator | ConditionalFormat>, type: string) => void;
+    onHide: () => void;
     show: boolean;
     successBsStyle?: string;
     title: string;
@@ -28,7 +29,6 @@ export interface ValidatorModalProps {
 }
 
 interface ValidatorModalState {
-    collapsing: boolean;
     expanded: number;
     hidden?: boolean;
     validators: List<PropertyValidator | ConditionalFormat>;
@@ -41,7 +41,6 @@ export function ValidatorModal(WrappedComponent: any) {
 
             this.state = {
                 expanded: 0,
-                collapsing: false,
                 validators: this.initValidators(props.validators),
             };
         }
@@ -54,7 +53,7 @@ export function ValidatorModal(WrappedComponent: any) {
             return validators;
         };
 
-        handleApply = () => {
+        handleApply = (): void => {
             const { onApply, onHide, type } = this.props;
             const { validators } = this.state;
 
@@ -75,13 +74,13 @@ export function ValidatorModal(WrappedComponent: any) {
             onHide();
         };
 
-        onChange = (validator: PropertyValidator | ConditionalFormat, index: number) => {
+        onChange = (validator: PropertyValidator | ConditionalFormat, index: number): void => {
             this.setState(() => ({
                 validators: this.state.validators.set(index, validator),
             }));
         };
 
-        isValid = (validators: List<PropertyValidator | ConditionalFormat>) => {
+        isValid = (validators: List<PropertyValidator | ConditionalFormat>): boolean => {
             if (!validators || validators.size < 1) return true;
 
             return !validators.find(val => WrappedComponent.isValid(val) === false);
@@ -106,32 +105,24 @@ export function ValidatorModal(WrappedComponent: any) {
             return updatedValidators;
         };
 
-        onAdd = () => {
+        onAdd = (): void => {
             const { validators } = this.state;
 
             this.setState(() => ({ validators: this.addEmpty(validators), expanded: validators.size }));
         };
 
-        onDelete = (index: number) => {
+        onDelete = (index: number): void => {
             const { validators } = this.state;
 
             const updatedValidators = validators.delete(index);
             this.setState(() => ({ validators: updatedValidators, expanded: updatedValidators.size - 1 }));
         };
 
-        onCollapsing = () => {
-            this.setState(() => ({ collapsing: true }));
-        };
-
-        onCollapsed = () => {
-            this.setState(() => ({ collapsing: false }));
-        };
-
-        onExpand = (expanded: number) => {
+        onExpand = (expanded: number): void => {
             this.setState(() => ({ expanded }));
         };
 
-        render() {
+        render(): ReactNode {
             const { show, title, onHide, addName, index, dataType, mvEnabled, successBsStyle } = this.props;
             const { expanded, validators } = this.state;
 
@@ -145,7 +136,6 @@ export function ValidatorModal(WrappedComponent: any) {
                             {validators.map((validator, i) => (
                                 <div key={i}>
                                     <WrappedComponent
-                                        key={i}
                                         validatorIndex={i}
                                         validator={validator}
                                         index={index}

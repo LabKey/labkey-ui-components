@@ -1,7 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGripVertical } from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
     highlighted: boolean;
@@ -10,14 +8,15 @@ interface Props {
 export class DragDropHandle extends React.Component<Props, any> {
     render() {
         const { highlighted } = this.props;
-        const className =
-            highlighted !== undefined
-                ? classNames({
-                      'field-highlighted': highlighted,
-                      'field-not-highlighted': !highlighted,
-                  })
-                : undefined;
+        const className = classNames('drag-drop-handle', {
+            'field-highlighted': highlighted,
+        });
 
-        return <FontAwesomeIcon className={className} icon={faGripVertical} />;
+        return (
+            <div className={className}>
+                <span className="fa fa-ellipsis-v" />
+                <span className="fa fa-ellipsis-v" />
+            </div>
+        );
     }
 }

@@ -31,6 +31,7 @@ import { AssayHeader } from './AssayHeader';
 import { onAssayDesignChange } from './actions';
 import { useAssayAppContext } from './AssayAppContext';
 import { assayPage } from './AssayPageHOC';
+import { CommonPageProps } from '../internal/models';
 
 const ASSAY_DESIGNER_HEADER = 'Connect your experimental results to samples for rich data connections.';
 
@@ -48,15 +49,11 @@ const REMOVE_BATCH_DOMAIN_ASSAYS = [
 ];
 
 interface OwnProps {
-    goBack: (n?: number) => void;
-    menu: ProductMenuModel;
-    menuInit: (invalidate?: boolean) => void;
-    navigate: (url: string | AppURL, replace?: boolean) => void;
     requireSampleField?: boolean;
     showProviderName?: boolean;
 }
 
-type Props = OwnProps & InjectedAssayModel & WithRouterProps & InjectedRouteLeaveProps;
+type Props = CommonPageProps & OwnProps & InjectedAssayModel & WithRouterProps & InjectedRouteLeaveProps;
 
 const AssayDesignPageBody: FC<Props> = memo(props => {
     const {

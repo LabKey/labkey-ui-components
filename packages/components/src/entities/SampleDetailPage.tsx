@@ -24,9 +24,7 @@ import { getSampleStatus } from '../internal/components/samples/utils';
 import { hasActivePipelineJob } from '../internal/components/pipeline/utils';
 import { Notifications } from '../internal/components/notifications/Notifications';
 import { SCHEMAS } from '../internal/schemas';
-import { createGridModelId } from '../internal/models';
-import { ProductMenuModel } from '../internal/components/navigation/model';
-import { AppURL } from '../internal/url/AppURL';
+import { createGridModelId, CommonPageProps } from '../internal/models';
 
 import { EntityDataType } from '../internal/components/entities/models';
 
@@ -69,8 +67,6 @@ export const SampleDetailContextConsumer = Context.Consumer;
 interface OwnProps {
     entityDataType?: EntityDataType;
     iconSrc?: string;
-    menu: ProductMenuModel;
-    navigate: (url: string | AppURL, replace?: boolean) => void;
     noun?: string;
     requiredColumns?: string[];
     sampleType?: string;
@@ -78,7 +74,7 @@ interface OwnProps {
     title?: string;
 }
 
-export interface SampleDetailPageProps extends OwnProps, WithRouterProps {}
+export interface SampleDetailPageProps extends OwnProps, CommonPageProps, WithRouterProps {}
 
 interface BodyProps {
     modelId: string;

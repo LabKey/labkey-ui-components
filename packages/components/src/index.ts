@@ -157,7 +157,7 @@ import { Cards } from './internal/components/base/Cards';
 import { Setting } from './internal/components/base/Setting';
 import { ValueList } from './internal/components/base/ValueList';
 
-import { createGridModelId, EditorModel } from './internal/models';
+import { EditorModel } from './internal/components/editable/models';
 import {
     clearSelected,
     getSelected,
@@ -167,8 +167,10 @@ import {
     replaceSelected,
     setSelected,
     setSnapshotSelections,
+    selectGridIdsFromTransactionId,
 } from './internal/actions';
 import { cancelEvent } from './internal/events';
+import { createGridModelId } from './internal/models';
 import { initQueryGridState } from './internal/global';
 import {
     deleteRows,
@@ -831,6 +833,7 @@ export {
     replaceSelected,
     setSelected,
     setSnapshotSelections,
+    selectGridIdsFromTransactionId,
     // query related items
     InsertRowsResponse,
     InsertFormats,
@@ -1446,7 +1449,7 @@ export type { NotificationItemProps } from './internal/components/notifications/
 export type { NotificationsContextProps } from './internal/components/notifications/NotificationsContext';
 export type { VisGraphNode } from './internal/components/lineage/models';
 export type { ITab } from './internal/components/navigation/types';
-export type { EditorModelProps, IGridLoader, IGridResponse } from './internal/models';
+export type { EditorModelProps, IGridLoader, IGridResponse } from './internal/components/editable/models';
 export type { IDataViewInfo } from './internal/DataViewInfo';
 export type { HeatMapCell } from './internal/components/heatmap/HeatMap';
 export type { InjectedAssayModel, WithAssayModelProps } from './internal/components/assay/withAssayModels';

@@ -12,6 +12,7 @@ import { hasAnyPermissions } from '../internal/components/base/models/User';
 import { useServerContext } from '../internal/components/base/ServerContext';
 
 import { InjectedQueryModels, withQueryModels } from '../public/QueryModel/withQueryModels';
+import { QuerySort } from '../public/QuerySort';
 
 const ACTIVE_GRID_ID = 'active';
 const ALL_GRID_ID = 'all';
@@ -74,6 +75,7 @@ export const AssayTypeStatusGrid: FC<OwnProps> = memo(props => {
                 schemaQuery: SCHEMAS.ASSAY_TABLES.ASSAY_LIST,
                 omittedColumns: [...omittedColumns, 'Status'],
                 requiredColumns,
+                sorts: [new QuerySort({ fieldKey: 'Name' })],
             },
             [ALL_GRID_ID]: {
                 ...ASSAY_LIST_QUERY_CONFIG,
@@ -83,6 +85,7 @@ export const AssayTypeStatusGrid: FC<OwnProps> = memo(props => {
                 schemaQuery: SCHEMAS.ASSAY_TABLES.ASSAY_LIST,
                 omittedColumns,
                 requiredColumns,
+                sorts: [new QuerySort({ fieldKey: 'Name' })],
             },
         };
     }, [assayTypes, excludedAssayProviders]);

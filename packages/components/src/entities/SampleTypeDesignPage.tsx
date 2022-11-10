@@ -24,9 +24,9 @@ import { InsufficientPermissionsPage } from '../internal/components/permissions/
 import { Alert } from '../internal/components/base/Alert';
 import { getActionErrorMessage } from '../internal/util/messaging';
 import { SampleTypeDesigner } from '../internal/components/domainproperties/samples/SampleTypeDesigner';
-import { ProductMenuModel } from '../internal/components/navigation/model';
 
 import { useAppContext } from '../internal/AppContext';
+import { CommonPageProps } from '../internal/models';
 
 import { SampleTypeBasePage } from './SampleTypeBasePage';
 import { useSampleTypeAppContext } from './SampleTypeAppContext';
@@ -61,13 +61,7 @@ function createDefaultSampleType(
     );
 }
 
-interface OwnProps {
-    menu: ProductMenuModel;
-    menuInit: (invalidate?: boolean) => void;
-    navigate: (url: string | AppURL, replace?: boolean) => void;
-}
-
-type Props = OwnProps & WithRouterProps;
+type Props = CommonPageProps & WithRouterProps;
 
 export const SampleTypeDesignPage: FC<Props> = memo(props => {
     const { params, menu, menuInit, navigate, router, routes } = props;

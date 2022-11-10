@@ -26,7 +26,7 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { SCHEMAS } from '../../schemas';
 import { SampleCreationType } from '../samples/models';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { EditorModel } from '../../models';
+import { EditorModel } from '../editable/models';
 import { insertRows, InsertRowsResponse } from '../../query/api';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { ViewInfo } from '../../ViewInfo';

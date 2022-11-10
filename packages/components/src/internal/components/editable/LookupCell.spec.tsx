@@ -6,7 +6,7 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { TextChoiceInput } from '../forms/input/TextChoiceInput';
 import { QuerySelect } from '../forms/QuerySelect';
 
-import { ValueDescriptor } from '../../models';
+import { ValueDescriptor } from './models';
 
 import { LookupCell } from './LookupCell';
 
@@ -43,13 +43,19 @@ describe('LookupCell', () => {
     });
 
     test('QuerySelect all samples lookup', () => {
-        const wrapper = mount(<LookupCell {...DEFAULT_PROPS} col={QueryColumn.create({
-            lookup: {
-                schemaName: 'exp',
-                queryName: 'materials',
-                displayColumn: 'display',
-                keyColumn: 'key',
-            }})} />);
+        const wrapper = mount(
+            <LookupCell
+                {...DEFAULT_PROPS}
+                col={QueryColumn.create({
+                    lookup: {
+                        schemaName: 'exp',
+                        queryName: 'materials',
+                        displayColumn: 'display',
+                        keyColumn: 'key',
+                    },
+                })}
+            />
+        );
         validate(wrapper);
         expect(wrapper.find(QuerySelect).prop('value')).toBe('a');
         expect(wrapper.find(QuerySelect).prop('disabled')).toBeFalsy();

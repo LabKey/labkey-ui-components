@@ -8,7 +8,16 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Move AssayDesignPage from LKSM and LKB here
   * Move SampleRequiredDomainHeader from LKSM to here
 
-### version 2.47.0
+### version 2.248.0
+*Released*: 10 November 2022
+* Updates for Sample Type consistency of Samples listing page
+  * Refactor SampleListingPage.tsx from LKSM and LKB to share
+  * Add misc components and props to SampleTypeAppContext
+  * move selectGridIdsFromTransactionId from LKSM app
+  * add sort for app type listing grids by name asc
+  * domain-field-row styling fix to only apply the border-top: none within the domain-form
+
+### version 2.247.0
 *Released*: 9 November 2022
 * Remove fortawesome dependencies
     * Replaced all usages of FontAwesomeIcon with spans that use the appropriate classes

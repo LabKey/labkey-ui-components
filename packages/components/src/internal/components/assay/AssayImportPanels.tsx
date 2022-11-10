@@ -22,7 +22,7 @@ import { Location } from '../../util/URL';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { AssayUploadTabs } from '../../constants';
-import { EditorModel, EditorModelProps } from '../../models';
+import { EditorModel, EditorModelProps } from '../editable/models';
 
 import {
     BACKGROUND_IMPORT_MIN_FILE_SIZE,

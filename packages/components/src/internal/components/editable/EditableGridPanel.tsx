@@ -3,7 +3,6 @@ import { fromJS, List, Map, OrderedMap } from 'immutable';
 import classNames from 'classnames';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { EditorModel, EditorModelProps } from '../../models';
 
 import { getUniqueIdColumnMetadata } from '../entities/utils';
 
@@ -13,12 +12,15 @@ import { EXPORT_TYPES } from '../../constants';
 
 import { ExportOption } from '../../../public/QueryModel/ExportMenu';
 
+import { EditorModel, EditorModelProps } from './models';
+
 import { EditableGrid, SharedEditableGridPanelProps } from './EditableGrid';
 
 import { exportEditedData, getEditorTableData } from './utils';
 
 interface Props extends SharedEditableGridPanelProps {
     editorModel: EditorModel | EditorModel[];
+    getIsDirty?: () => boolean;
     model: QueryModel | QueryModel[];
     onChange: (
         editorModelChanges: Partial<EditorModelProps>,
@@ -26,7 +28,6 @@ interface Props extends SharedEditableGridPanelProps {
         data?: Map<string, Map<string, any>>,
         index?: number
     ) => void;
-    getIsDirty?: () => boolean;
     setIsDirty?: (isDirty: boolean) => void;
 }
 

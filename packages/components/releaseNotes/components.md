@@ -5,7 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Assay display pages consistency
   * Add AssayGridPanel component, a combination of AssayRowsGridPanel from LKSM, AssayRuns and AssayResults from lKB
-  * Add AssayOverviewPage, AssayBatchOverviewPage
+  * Add AssayOverviewPage, AssayBatchOverviewPage, AssayBatchListingPage,
   * Update AssayAppContext and SampleTypeAppContext
 
 ### version 2.249.0

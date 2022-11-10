@@ -1,5 +1,6 @@
 import { AssayDesignPage } from './AssayDesignPage';
 import { AssayDesignDeleteModal } from './AssayDesignDeleteModal';
+import { AssayOverviewPage } from './AssayOverviewPage';
 import { assayPage } from './AssayPageHOC';
 import { AssayReimportRunButton } from './AssayReimportRunButton';
 import { AssayResolver, AssayRunResolver } from './AssayResolver';
@@ -26,6 +27,7 @@ export {
     AssayDesignPage,
     AssayDesignDeleteModal,
     AssayDesignHeaderButtons,
+    AssayOverviewPage,
     AssayRunDetailHeaderButtons,
     AssayBatchHeaderButtons,
     AssayHeader,

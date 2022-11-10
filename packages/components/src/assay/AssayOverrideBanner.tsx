@@ -7,6 +7,7 @@ import { Button } from 'react-bootstrap';
 import { AssayDefinitionModel, AssayLink } from '../internal/AssayDefinitionModel';
 import { getLocation } from '../internal/util/URL';
 import { Alert } from '../internal/components/base/Alert';
+import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/constants';
 
 interface Props {
     assay: AssayDefinitionModel
@@ -40,7 +41,7 @@ export class AssayOverrideBanner extends React.Component<Props, any> {
     render() {
         const { assay, link } = this.props;
 
-        if (assay && assay.type.toLowerCase() !== 'general') {
+        if (assay && assay.type.toLowerCase() !== GENERAL_ASSAY_PROVIDER_NAME.toLowerCase()) {
             return (
                 <Alert bsStyle="warning" className="test-loc-assay-override">
                     <i className="fa fa-exclamation-circle" style={{paddingRight: '10px'}}/>

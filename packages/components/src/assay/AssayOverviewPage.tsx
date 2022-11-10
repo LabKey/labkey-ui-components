@@ -37,9 +37,9 @@ interface CommonPageProps {
     navigate: (url: string | AppURL, replace?: boolean) => void;
 }
 
-type AssayDetailsProps = CommonPageProps & InjectedAssayModel & InjectedQueryModels;
+type AssayOverviewProps = CommonPageProps & InjectedAssayModel & InjectedQueryModels;
 
-const AssayDetailsPageBody: FC<AssayDetailsProps> = props => {
+const AssayOverviewPageBody: FC<AssayOverviewProps> = props => {
     const { assayDefinition, assayProtocol, actions, navigate, menu, menuInit, queryModels } = props;
     const { model } = queryModels;
     const { name, type, description } = assayDefinition;
@@ -89,9 +89,9 @@ const AssayDetailsPageBody: FC<AssayDetailsProps> = props => {
     );
 };
 
-const AssayDetailsPageWithModels = withQueryModels<InjectedAssayModel>(AssayDetailsPageBody);
+const AssayOverviewPageWithModels = withQueryModels<InjectedAssayModel>(AssayOverviewPageBody);
 
-const AssayDetailsPageImpl: FC<InjectedAssayModel> = props => {
+const AssayOverviewPageImpl: FC<InjectedAssayModel> = props => {
     const { assayDefinition } = props;
 
     const queryConfigs: QueryConfigMap = {
@@ -103,7 +103,7 @@ const AssayDetailsPageImpl: FC<InjectedAssayModel> = props => {
         },
     };
 
-    return <AssayDetailsPageWithModels autoLoad key={assayDefinition.name} queryConfigs={queryConfigs} {...props} />;
+    return <AssayOverviewPageWithModels autoLoad key={assayDefinition.name} queryConfigs={queryConfigs} {...props} />;
 };
 
-export const AssayDetailsPage = assayPage(AssayDetailsPageImpl);
+export const AssayOverviewPage = assayPage(AssayOverviewPageImpl);

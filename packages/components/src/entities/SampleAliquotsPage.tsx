@@ -6,7 +6,7 @@ import { SampleOperation } from '../internal/components/samples/constants';
 import { onSampleChange } from './actions';
 import { SampleAliquotsGridPanel } from './SampleAliquotsGridPanel';
 import { SampleDetailContextConsumer, SampleDetailPage, SampleDetailPageProps } from './SampleDetailPage';
-import { useSampleTypeAppContext } from './SampleTypeAppContext';
+import { useAssayAppContext } from '../assay/AssayAppContext';
 
 interface Props extends SampleDetailPageProps {
     omittedColumns?: string[];
@@ -14,7 +14,7 @@ interface Props extends SampleDetailPageProps {
 
 export const SampleAliquotsPage: FC<Props> = memo(props => {
     const { omittedColumns, ...sampleDetailPageProps } = props;
-    const { assayProviderType } = useSampleTypeAppContext();
+    const { assayProviderType } = useAssayAppContext();
 
     return (
         <SampleDetailPage title="Aliquots" {...sampleDetailPageProps}>

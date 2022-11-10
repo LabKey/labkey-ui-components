@@ -1,8 +1,14 @@
 import { ExtendableAppContext, useAppContext } from '../internal/AppContext';
+import { DetailRenderer } from '../internal/components/forms/detail/DetailDisplay';
+import { JobsMenuOptions } from '../internal/components/samples/models';
 
 export interface AssayAppContext {
+    assayProviderType?: string;
+    detailRenderer?: DetailRenderer;
+    qcEnabled?: boolean;
     requireSampleField: boolean;
     showProviderName: boolean;
+    JobsMenuOptionsComponent: JobsMenuOptions;
 }
 
 // If your App extends AppContext to add attributes other than Assay use this e.g.:

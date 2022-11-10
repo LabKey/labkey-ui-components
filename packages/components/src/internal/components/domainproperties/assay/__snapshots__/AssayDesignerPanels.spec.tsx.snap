@@ -1725,7 +1725,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         domainFormDisplayOptions={
           {
             "domainKindDisplayName": "assay design",
-            "hideFilePropertyType": false,
+            "hideFilePropertyType": undefined,
             "hideInferFromFile": true,
             "hideStudyPropertyTypes": true,
             "textChoiceLockedForDomain": true,
@@ -1859,7 +1859,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             domainFormDisplayOptions={
               {
                 "domainKindDisplayName": "assay design",
-                "hideFilePropertyType": false,
+                "hideFilePropertyType": undefined,
                 "hideInferFromFile": true,
                 "hideStudyPropertyTypes": true,
                 "textChoiceLockedForDomain": true,
@@ -2346,7 +2346,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         domainFormDisplayOptions={
           {
             "domainKindDisplayName": "assay design",
-            "hideFilePropertyType": false,
+            "hideFilePropertyType": undefined,
             "hideInferFromFile": true,
             "hideStudyPropertyTypes": true,
             "textChoiceLockedForDomain": true,
@@ -2480,7 +2480,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             domainFormDisplayOptions={
               {
                 "domainKindDisplayName": "assay design",
-                "hideFilePropertyType": false,
+                "hideFilePropertyType": undefined,
                 "hideInferFromFile": true,
                 "hideStudyPropertyTypes": true,
                 "textChoiceLockedForDomain": true,
@@ -2967,7 +2967,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         domainFormDisplayOptions={
           {
             "domainKindDisplayName": "assay design",
-            "hideFilePropertyType": true,
+            "hideFilePropertyType": undefined,
             "hideInferFromFile": false,
             "hideStudyPropertyTypes": true,
             "textChoiceLockedForDomain": true,
@@ -3101,7 +3101,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             domainFormDisplayOptions={
               {
                 "domainKindDisplayName": "assay design",
-                "hideFilePropertyType": true,
+                "hideFilePropertyType": undefined,
                 "hideInferFromFile": false,
                 "hideStudyPropertyTypes": true,
                 "textChoiceLockedForDomain": true,
@@ -8177,7 +8177,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
         domainFormDisplayOptions={
           {
             "domainKindDisplayName": "assay design",
-            "hideFilePropertyType": false,
+            "hideFilePropertyType": undefined,
             "hideInferFromFile": true,
             "hideStudyPropertyTypes": true,
             "textChoiceLockedForDomain": true,
@@ -8551,7 +8551,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             domainFormDisplayOptions={
               {
                 "domainKindDisplayName": "assay design",
-                "hideFilePropertyType": false,
+                "hideFilePropertyType": undefined,
                 "hideInferFromFile": true,
                 "hideStudyPropertyTypes": true,
                 "textChoiceLockedForDomain": true,
@@ -9509,7 +9509,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
         domainFormDisplayOptions={
           {
             "domainKindDisplayName": "assay design",
-            "hideFilePropertyType": true,
+            "hideFilePropertyType": undefined,
             "hideInferFromFile": true,
             "hideStudyPropertyTypes": true,
             "textChoiceLockedForDomain": true,
@@ -10148,7 +10148,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             domainFormDisplayOptions={
               {
                 "domainKindDisplayName": "assay design",
-                "hideFilePropertyType": true,
+                "hideFilePropertyType": undefined,
                 "hideInferFromFile": true,
                 "hideStudyPropertyTypes": true,
                 "textChoiceLockedForDomain": true,
@@ -11156,7 +11156,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                     domainFormDisplayOptions={
                                                       {
                                                         "domainKindDisplayName": "assay design",
-                                                        "hideFilePropertyType": true,
+                                                        "hideFilePropertyType": undefined,
                                                         "hideInferFromFile": true,
                                                         "hideStudyPropertyTypes": true,
                                                         "textChoiceLockedForDomain": true,
@@ -11346,7 +11346,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                     domainFormDisplayOptions={
                                                                       {
                                                                         "domainKindDisplayName": "assay design",
-                                                                        "hideFilePropertyType": true,
+                                                                        "hideFilePropertyType": undefined,
                                                                         "hideInferFromFile": true,
                                                                         "hideStudyPropertyTypes": true,
                                                                         "textChoiceLockedForDomain": true,
@@ -11836,7 +11836,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                       domainFormDisplayOptions={
                                                                         {
                                                                           "domainKindDisplayName": "assay design",
-                                                                          "hideFilePropertyType": true,
+                                                                          "hideFilePropertyType": undefined,
                                                                           "hideInferFromFile": true,
                                                                           "hideStudyPropertyTypes": true,
                                                                           "textChoiceLockedForDomain": true,
@@ -12220,7 +12220,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                 domainFormDisplayOptions={
                                                                                   {
                                                                                     "domainKindDisplayName": "assay design",
-                                                                                    "hideFilePropertyType": true,
+                                                                                    "hideFilePropertyType": undefined,
                                                                                     "hideInferFromFile": true,
                                                                                     "hideStudyPropertyTypes": true,
                                                                                     "textChoiceLockedForDomain": true,
@@ -12599,7 +12599,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                 domainFormDisplayOptions={
                                                                                   {
                                                                                     "domainKindDisplayName": "assay design",
-                                                                                    "hideFilePropertyType": true,
+                                                                                    "hideFilePropertyType": undefined,
                                                                                     "hideInferFromFile": true,
                                                                                     "hideStudyPropertyTypes": true,
                                                                                     "textChoiceLockedForDomain": true,
@@ -13046,7 +13046,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                     domainFormDisplayOptions={
                                                       {
                                                         "domainKindDisplayName": "assay design",
-                                                        "hideFilePropertyType": true,
+                                                        "hideFilePropertyType": undefined,
                                                         "hideInferFromFile": true,
                                                         "hideStudyPropertyTypes": true,
                                                         "textChoiceLockedForDomain": true,
@@ -13236,7 +13236,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                     domainFormDisplayOptions={
                                                                       {
                                                                         "domainKindDisplayName": "assay design",
-                                                                        "hideFilePropertyType": true,
+                                                                        "hideFilePropertyType": undefined,
                                                                         "hideInferFromFile": true,
                                                                         "hideStudyPropertyTypes": true,
                                                                         "textChoiceLockedForDomain": true,
@@ -13726,7 +13726,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                       domainFormDisplayOptions={
                                                                         {
                                                                           "domainKindDisplayName": "assay design",
-                                                                          "hideFilePropertyType": true,
+                                                                          "hideFilePropertyType": undefined,
                                                                           "hideInferFromFile": true,
                                                                           "hideStudyPropertyTypes": true,
                                                                           "textChoiceLockedForDomain": true,
@@ -14087,7 +14087,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                 domainFormDisplayOptions={
                                                                                   {
                                                                                     "domainKindDisplayName": "assay design",
-                                                                                    "hideFilePropertyType": true,
+                                                                                    "hideFilePropertyType": undefined,
                                                                                     "hideInferFromFile": true,
                                                                                     "hideStudyPropertyTypes": true,
                                                                                     "textChoiceLockedForDomain": true,
@@ -14466,7 +14466,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                 domainFormDisplayOptions={
                                                                                   {
                                                                                     "domainKindDisplayName": "assay design",
-                                                                                    "hideFilePropertyType": true,
+                                                                                    "hideFilePropertyType": undefined,
                                                                                     "hideInferFromFile": true,
                                                                                     "hideStudyPropertyTypes": true,
                                                                                     "textChoiceLockedForDomain": true,
@@ -14913,7 +14913,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                     domainFormDisplayOptions={
                                                       {
                                                         "domainKindDisplayName": "assay design",
-                                                        "hideFilePropertyType": true,
+                                                        "hideFilePropertyType": undefined,
                                                         "hideInferFromFile": true,
                                                         "hideStudyPropertyTypes": true,
                                                         "textChoiceLockedForDomain": true,
@@ -15103,7 +15103,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                     domainFormDisplayOptions={
                                                                       {
                                                                         "domainKindDisplayName": "assay design",
-                                                                        "hideFilePropertyType": true,
+                                                                        "hideFilePropertyType": undefined,
                                                                         "hideInferFromFile": true,
                                                                         "hideStudyPropertyTypes": true,
                                                                         "textChoiceLockedForDomain": true,
@@ -15593,7 +15593,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                       domainFormDisplayOptions={
                                                                         {
                                                                           "domainKindDisplayName": "assay design",
-                                                                          "hideFilePropertyType": true,
+                                                                          "hideFilePropertyType": undefined,
                                                                           "hideInferFromFile": true,
                                                                           "hideStudyPropertyTypes": true,
                                                                           "textChoiceLockedForDomain": true,
@@ -15908,7 +15908,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                 domainFormDisplayOptions={
                                                                                   {
                                                                                     "domainKindDisplayName": "assay design",
-                                                                                    "hideFilePropertyType": true,
+                                                                                    "hideFilePropertyType": undefined,
                                                                                     "hideInferFromFile": true,
                                                                                     "hideStudyPropertyTypes": true,
                                                                                     "textChoiceLockedForDomain": true,
@@ -16287,7 +16287,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                 domainFormDisplayOptions={
                                                                                   {
                                                                                     "domainKindDisplayName": "assay design",
-                                                                                    "hideFilePropertyType": true,
+                                                                                    "hideFilePropertyType": undefined,
                                                                                     "hideInferFromFile": true,
                                                                                     "hideStudyPropertyTypes": true,
                                                                                     "textChoiceLockedForDomain": true,
@@ -18471,7 +18471,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         domainFormDisplayOptions={
           {
             "domainKindDisplayName": "assay design",
-            "hideFilePropertyType": false,
+            "hideFilePropertyType": undefined,
             "hideInferFromFile": true,
             "hideStudyPropertyTypes": true,
             "textChoiceLockedForDomain": true,
@@ -18605,7 +18605,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             domainFormDisplayOptions={
               {
                 "domainKindDisplayName": "assay design",
-                "hideFilePropertyType": false,
+                "hideFilePropertyType": undefined,
                 "hideInferFromFile": true,
                 "hideStudyPropertyTypes": true,
                 "textChoiceLockedForDomain": true,
@@ -19091,7 +19091,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         domainFormDisplayOptions={
           {
             "domainKindDisplayName": "assay design",
-            "hideFilePropertyType": false,
+            "hideFilePropertyType": undefined,
             "hideInferFromFile": true,
             "hideStudyPropertyTypes": true,
             "textChoiceLockedForDomain": true,
@@ -19225,7 +19225,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             domainFormDisplayOptions={
               {
                 "domainKindDisplayName": "assay design",
-                "hideFilePropertyType": false,
+                "hideFilePropertyType": undefined,
                 "hideInferFromFile": true,
                 "hideStudyPropertyTypes": true,
                 "textChoiceLockedForDomain": true,
@@ -19711,7 +19711,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         domainFormDisplayOptions={
           {
             "domainKindDisplayName": "assay design",
-            "hideFilePropertyType": true,
+            "hideFilePropertyType": undefined,
             "hideInferFromFile": false,
             "hideStudyPropertyTypes": true,
             "textChoiceLockedForDomain": true,
@@ -19845,7 +19845,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             domainFormDisplayOptions={
               {
                 "domainKindDisplayName": "assay design",
-                "hideFilePropertyType": true,
+                "hideFilePropertyType": undefined,
                 "hideInferFromFile": false,
                 "hideStudyPropertyTypes": true,
                 "textChoiceLockedForDomain": true,
@@ -22096,7 +22096,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
         domainFormDisplayOptions={
           {
             "domainKindDisplayName": "assay design",
-            "hideFilePropertyType": false,
+            "hideFilePropertyType": undefined,
             "hideInferFromFile": true,
             "hideStudyPropertyTypes": true,
             "textChoiceLockedForDomain": true,
@@ -22230,7 +22230,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             domainFormDisplayOptions={
               {
                 "domainKindDisplayName": "assay design",
-                "hideFilePropertyType": false,
+                "hideFilePropertyType": undefined,
                 "hideInferFromFile": true,
                 "hideStudyPropertyTypes": true,
                 "textChoiceLockedForDomain": true,
@@ -22716,7 +22716,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
         domainFormDisplayOptions={
           {
             "domainKindDisplayName": "assay design",
-            "hideFilePropertyType": true,
+            "hideFilePropertyType": undefined,
             "hideInferFromFile": false,
             "hideStudyPropertyTypes": true,
             "textChoiceLockedForDomain": true,
@@ -22850,7 +22850,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             domainFormDisplayOptions={
               {
                 "domainKindDisplayName": "assay design",
-                "hideFilePropertyType": true,
+                "hideFilePropertyType": undefined,
                 "hideInferFromFile": false,
                 "hideStudyPropertyTypes": true,
                 "textChoiceLockedForDomain": true,
@@ -28660,7 +28660,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
         domainFormDisplayOptions={
           {
             "domainKindDisplayName": "assay design",
-            "hideFilePropertyType": true,
+            "hideFilePropertyType": undefined,
             "hideInferFromFile": true,
             "hideStudyPropertyTypes": true,
             "textChoiceLockedForDomain": true,
@@ -29299,7 +29299,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
             domainFormDisplayOptions={
               {
                 "domainKindDisplayName": "assay design",
-                "hideFilePropertyType": true,
+                "hideFilePropertyType": undefined,
                 "hideInferFromFile": true,
                 "hideStudyPropertyTypes": true,
                 "textChoiceLockedForDomain": true,
@@ -30307,7 +30307,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                     domainFormDisplayOptions={
                                                       {
                                                         "domainKindDisplayName": "assay design",
-                                                        "hideFilePropertyType": true,
+                                                        "hideFilePropertyType": undefined,
                                                         "hideInferFromFile": true,
                                                         "hideStudyPropertyTypes": true,
                                                         "textChoiceLockedForDomain": true,
@@ -30497,7 +30497,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                     domainFormDisplayOptions={
                                                                       {
                                                                         "domainKindDisplayName": "assay design",
-                                                                        "hideFilePropertyType": true,
+                                                                        "hideFilePropertyType": undefined,
                                                                         "hideInferFromFile": true,
                                                                         "hideStudyPropertyTypes": true,
                                                                         "textChoiceLockedForDomain": true,
@@ -30999,7 +30999,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                       domainFormDisplayOptions={
                                                                         {
                                                                           "domainKindDisplayName": "assay design",
-                                                                          "hideFilePropertyType": true,
+                                                                          "hideFilePropertyType": undefined,
                                                                           "hideInferFromFile": true,
                                                                           "hideStudyPropertyTypes": true,
                                                                           "textChoiceLockedForDomain": true,
@@ -31383,7 +31383,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                 domainFormDisplayOptions={
                                                                                   {
                                                                                     "domainKindDisplayName": "assay design",
-                                                                                    "hideFilePropertyType": true,
+                                                                                    "hideFilePropertyType": undefined,
                                                                                     "hideInferFromFile": true,
                                                                                     "hideStudyPropertyTypes": true,
                                                                                     "textChoiceLockedForDomain": true,
@@ -31762,7 +31762,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                 domainFormDisplayOptions={
                                                                                   {
                                                                                     "domainKindDisplayName": "assay design",
-                                                                                    "hideFilePropertyType": true,
+                                                                                    "hideFilePropertyType": undefined,
                                                                                     "hideInferFromFile": true,
                                                                                     "hideStudyPropertyTypes": true,
                                                                                     "textChoiceLockedForDomain": true,
@@ -32209,7 +32209,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                     domainFormDisplayOptions={
                                                       {
                                                         "domainKindDisplayName": "assay design",
-                                                        "hideFilePropertyType": true,
+                                                        "hideFilePropertyType": undefined,
                                                         "hideInferFromFile": true,
                                                         "hideStudyPropertyTypes": true,
                                                         "textChoiceLockedForDomain": true,
@@ -32399,7 +32399,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                     domainFormDisplayOptions={
                                                                       {
                                                                         "domainKindDisplayName": "assay design",
-                                                                        "hideFilePropertyType": true,
+                                                                        "hideFilePropertyType": undefined,
                                                                         "hideInferFromFile": true,
                                                                         "hideStudyPropertyTypes": true,
                                                                         "textChoiceLockedForDomain": true,
@@ -32901,7 +32901,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                       domainFormDisplayOptions={
                                                                         {
                                                                           "domainKindDisplayName": "assay design",
-                                                                          "hideFilePropertyType": true,
+                                                                          "hideFilePropertyType": undefined,
                                                                           "hideInferFromFile": true,
                                                                           "hideStudyPropertyTypes": true,
                                                                           "textChoiceLockedForDomain": true,
@@ -33262,7 +33262,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                 domainFormDisplayOptions={
                                                                                   {
                                                                                     "domainKindDisplayName": "assay design",
-                                                                                    "hideFilePropertyType": true,
+                                                                                    "hideFilePropertyType": undefined,
                                                                                     "hideInferFromFile": true,
                                                                                     "hideStudyPropertyTypes": true,
                                                                                     "textChoiceLockedForDomain": true,
@@ -33641,7 +33641,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                 domainFormDisplayOptions={
                                                                                   {
                                                                                     "domainKindDisplayName": "assay design",
-                                                                                    "hideFilePropertyType": true,
+                                                                                    "hideFilePropertyType": undefined,
                                                                                     "hideInferFromFile": true,
                                                                                     "hideStudyPropertyTypes": true,
                                                                                     "textChoiceLockedForDomain": true,
@@ -34088,7 +34088,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                     domainFormDisplayOptions={
                                                       {
                                                         "domainKindDisplayName": "assay design",
-                                                        "hideFilePropertyType": true,
+                                                        "hideFilePropertyType": undefined,
                                                         "hideInferFromFile": true,
                                                         "hideStudyPropertyTypes": true,
                                                         "textChoiceLockedForDomain": true,
@@ -34278,7 +34278,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                     domainFormDisplayOptions={
                                                                       {
                                                                         "domainKindDisplayName": "assay design",
-                                                                        "hideFilePropertyType": true,
+                                                                        "hideFilePropertyType": undefined,
                                                                         "hideInferFromFile": true,
                                                                         "hideStudyPropertyTypes": true,
                                                                         "textChoiceLockedForDomain": true,
@@ -34780,7 +34780,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                       domainFormDisplayOptions={
                                                                         {
                                                                           "domainKindDisplayName": "assay design",
-                                                                          "hideFilePropertyType": true,
+                                                                          "hideFilePropertyType": undefined,
                                                                           "hideInferFromFile": true,
                                                                           "hideStudyPropertyTypes": true,
                                                                           "textChoiceLockedForDomain": true,
@@ -35095,7 +35095,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                 domainFormDisplayOptions={
                                                                                   {
                                                                                     "domainKindDisplayName": "assay design",
-                                                                                    "hideFilePropertyType": true,
+                                                                                    "hideFilePropertyType": undefined,
                                                                                     "hideInferFromFile": true,
                                                                                     "hideStudyPropertyTypes": true,
                                                                                     "textChoiceLockedForDomain": true,
@@ -35474,7 +35474,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                 domainFormDisplayOptions={
                                                                                   {
                                                                                     "domainKindDisplayName": "assay design",
-                                                                                    "hideFilePropertyType": true,
+                                                                                    "hideFilePropertyType": undefined,
                                                                                     "hideInferFromFile": true,
                                                                                     "hideStudyPropertyTypes": true,
                                                                                     "textChoiceLockedForDomain": true,
@@ -40952,7 +40952,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
         domainFormDisplayOptions={
           {
             "domainKindDisplayName": "assay design",
-            "hideFilePropertyType": false,
+            "hideFilePropertyType": undefined,
             "hideInferFromFile": true,
             "hideStudyPropertyTypes": true,
             "textChoiceLockedForDomain": true,
@@ -41326,7 +41326,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
             domainFormDisplayOptions={
               {
                 "domainKindDisplayName": "assay design",
-                "hideFilePropertyType": false,
+                "hideFilePropertyType": undefined,
                 "hideInferFromFile": true,
                 "hideStudyPropertyTypes": true,
                 "textChoiceLockedForDomain": true,
@@ -42283,7 +42283,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
         domainFormDisplayOptions={
           {
             "domainKindDisplayName": "assay design",
-            "hideFilePropertyType": true,
+            "hideFilePropertyType": undefined,
             "hideInferFromFile": true,
             "hideStudyPropertyTypes": true,
             "textChoiceLockedForDomain": true,
@@ -42922,7 +42922,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
             domainFormDisplayOptions={
               {
                 "domainKindDisplayName": "assay design",
-                "hideFilePropertyType": true,
+                "hideFilePropertyType": undefined,
                 "hideInferFromFile": true,
                 "hideStudyPropertyTypes": true,
                 "textChoiceLockedForDomain": true,
@@ -43930,7 +43930,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                     domainFormDisplayOptions={
                                                       {
                                                         "domainKindDisplayName": "assay design",
-                                                        "hideFilePropertyType": true,
+                                                        "hideFilePropertyType": undefined,
                                                         "hideInferFromFile": true,
                                                         "hideStudyPropertyTypes": true,
                                                         "textChoiceLockedForDomain": true,
@@ -44120,7 +44120,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                     domainFormDisplayOptions={
                                                                       {
                                                                         "domainKindDisplayName": "assay design",
-                                                                        "hideFilePropertyType": true,
+                                                                        "hideFilePropertyType": undefined,
                                                                         "hideInferFromFile": true,
                                                                         "hideStudyPropertyTypes": true,
                                                                         "textChoiceLockedForDomain": true,
@@ -44622,7 +44622,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                       domainFormDisplayOptions={
                                                                         {
                                                                           "domainKindDisplayName": "assay design",
-                                                                          "hideFilePropertyType": true,
+                                                                          "hideFilePropertyType": undefined,
                                                                           "hideInferFromFile": true,
                                                                           "hideStudyPropertyTypes": true,
                                                                           "textChoiceLockedForDomain": true,
@@ -45006,7 +45006,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                 domainFormDisplayOptions={
                                                                                   {
                                                                                     "domainKindDisplayName": "assay design",
-                                                                                    "hideFilePropertyType": true,
+                                                                                    "hideFilePropertyType": undefined,
                                                                                     "hideInferFromFile": true,
                                                                                     "hideStudyPropertyTypes": true,
                                                                                     "textChoiceLockedForDomain": true,
@@ -45385,7 +45385,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                 domainFormDisplayOptions={
                                                                                   {
                                                                                     "domainKindDisplayName": "assay design",
-                                                                                    "hideFilePropertyType": true,
+                                                                                    "hideFilePropertyType": undefined,
                                                                                     "hideInferFromFile": true,
                                                                                     "hideStudyPropertyTypes": true,
                                                                                     "textChoiceLockedForDomain": true,
@@ -45832,7 +45832,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                     domainFormDisplayOptions={
                                                       {
                                                         "domainKindDisplayName": "assay design",
-                                                        "hideFilePropertyType": true,
+                                                        "hideFilePropertyType": undefined,
                                                         "hideInferFromFile": true,
                                                         "hideStudyPropertyTypes": true,
                                                         "textChoiceLockedForDomain": true,
@@ -46022,7 +46022,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                     domainFormDisplayOptions={
                                                                       {
                                                                         "domainKindDisplayName": "assay design",
-                                                                        "hideFilePropertyType": true,
+                                                                        "hideFilePropertyType": undefined,
                                                                         "hideInferFromFile": true,
                                                                         "hideStudyPropertyTypes": true,
                                                                         "textChoiceLockedForDomain": true,
@@ -46524,7 +46524,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                       domainFormDisplayOptions={
                                                                         {
                                                                           "domainKindDisplayName": "assay design",
-                                                                          "hideFilePropertyType": true,
+                                                                          "hideFilePropertyType": undefined,
                                                                           "hideInferFromFile": true,
                                                                           "hideStudyPropertyTypes": true,
                                                                           "textChoiceLockedForDomain": true,
@@ -46885,7 +46885,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                 domainFormDisplayOptions={
                                                                                   {
                                                                                     "domainKindDisplayName": "assay design",
-                                                                                    "hideFilePropertyType": true,
+                                                                                    "hideFilePropertyType": undefined,
                                                                                     "hideInferFromFile": true,
                                                                                     "hideStudyPropertyTypes": true,
                                                                                     "textChoiceLockedForDomain": true,
@@ -47264,7 +47264,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                 domainFormDisplayOptions={
                                                                                   {
                                                                                     "domainKindDisplayName": "assay design",
-                                                                                    "hideFilePropertyType": true,
+                                                                                    "hideFilePropertyType": undefined,
                                                                                     "hideInferFromFile": true,
                                                                                     "hideStudyPropertyTypes": true,
                                                                                     "textChoiceLockedForDomain": true,
@@ -47711,7 +47711,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                     domainFormDisplayOptions={
                                                       {
                                                         "domainKindDisplayName": "assay design",
-                                                        "hideFilePropertyType": true,
+                                                        "hideFilePropertyType": undefined,
                                                         "hideInferFromFile": true,
                                                         "hideStudyPropertyTypes": true,
                                                         "textChoiceLockedForDomain": true,
@@ -47901,7 +47901,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                     domainFormDisplayOptions={
                                                                       {
                                                                         "domainKindDisplayName": "assay design",
-                                                                        "hideFilePropertyType": true,
+                                                                        "hideFilePropertyType": undefined,
                                                                         "hideInferFromFile": true,
                                                                         "hideStudyPropertyTypes": true,
                                                                         "textChoiceLockedForDomain": true,
@@ -48403,7 +48403,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                       domainFormDisplayOptions={
                                                                         {
                                                                           "domainKindDisplayName": "assay design",
-                                                                          "hideFilePropertyType": true,
+                                                                          "hideFilePropertyType": undefined,
                                                                           "hideInferFromFile": true,
                                                                           "hideStudyPropertyTypes": true,
                                                                           "textChoiceLockedForDomain": true,
@@ -48718,7 +48718,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                 domainFormDisplayOptions={
                                                                                   {
                                                                                     "domainKindDisplayName": "assay design",
-                                                                                    "hideFilePropertyType": true,
+                                                                                    "hideFilePropertyType": undefined,
                                                                                     "hideInferFromFile": true,
                                                                                     "hideStudyPropertyTypes": true,
                                                                                     "textChoiceLockedForDomain": true,
@@ -49097,7 +49097,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                 domainFormDisplayOptions={
                                                                                   {
                                                                                     "domainKindDisplayName": "assay design",
-                                                                                    "hideFilePropertyType": true,
+                                                                                    "hideFilePropertyType": undefined,
                                                                                     "hideInferFromFile": true,
                                                                                     "hideStudyPropertyTypes": true,
                                                                                     "textChoiceLockedForDomain": true,

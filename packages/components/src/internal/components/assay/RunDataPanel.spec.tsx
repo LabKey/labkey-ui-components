@@ -3,7 +3,7 @@ import renderer from 'react-test-renderer';
 
 import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
 import { AssayUploadTabs } from '../../constants';
-import { EditorModel } from '../../models';
+import { EditorModel } from '../editable/models';
 
 import { mountWithServerContext } from '../../testHelpers';
 import { TEST_USER_EDITOR } from '../../userFixtures';

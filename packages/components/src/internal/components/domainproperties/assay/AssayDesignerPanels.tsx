@@ -10,6 +10,8 @@ import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesi
 
 import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS } from '../constants';
 
+import { GENERAL_ASSAY_PROVIDER_NAME } from '../../assay/constants';
+
 import { saveAssayDesign } from './actions';
 import { AssayProtocolModel } from './models';
 import { AssayPropertiesPanel } from './AssayPropertiesPanel';
@@ -221,15 +223,20 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                     useTheme={useTheme}
                 />
                 {protocolModel.domains.map((domain, i) => {
-                    // optionally hide the Batch Fields domain from the UI (for sample management use case)
+                    // optionally hide the Batch Fields domain from the UI
                     if (this.shouldSkipBatchDomain(domain)) {
                         return;
                     }
 
                     // allow empty domain to be inferred from a file for Data Fields in General assay
                     const hideInferFromFile =
-                        protocolModel.providerName !== 'General' || !domain.isNameSuffixMatch('Data');
-                    const hideFilePropertyType = !domain.isNameSuffixMatch('Batch') && !domain.isNameSuffixMatch('Run');
+                        protocolModel.providerName !== GENERAL_ASSAY_PROVIDER_NAME || !domain.isNameSuffixMatch('Data');
+                    // The File property type should be hidden for Data domains if the display options indicate this.
+                    // We will always allow file property types for the Batch and Run domains.
+                    const hideFilePropertyType =
+                        domainFormDisplayOptions.hideFilePropertyType &&
+                        !domain.isNameSuffixMatch('Batch') &&
+                        !domain.isNameSuffixMatch('Run');
                     const appDomainHeaderRenderer = this.getAppDomainHeaderRenderer(domain);
                     const textChoiceLockedForDomain = !(
                         (domain.isNameSuffixMatch('Run') && protocolModel.editableRuns) ||

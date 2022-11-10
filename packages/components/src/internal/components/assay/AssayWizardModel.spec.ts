@@ -22,7 +22,7 @@ import { AssayUploadTabs } from '../../constants';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { LoadingState } from '../../../public/LoadingState';
-import { EditorModel } from '../../models';
+import { EditorModel } from '../editable/models';
 
 import { AssayWizardModel, parseDataTextToRunRows } from './AssayWizardModel';
 

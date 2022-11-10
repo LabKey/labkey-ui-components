@@ -44,7 +44,7 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { applyEditableGridChangesToModels, initEditableGridModel } from '../editable/utils';
 
-import { EditorMode, EditorModel, EditorModelProps, IEditableGridLoader, IGridResponse } from '../../models';
+import { EditorMode, EditorModel, EditorModelProps, IEditableGridLoader, IGridResponse } from '../editable/models';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { SampleCreationType, SampleCreationTypeModel } from '../samples/models';
 import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from '../forms/FormStep';

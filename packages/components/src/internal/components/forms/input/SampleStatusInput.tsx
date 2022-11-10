@@ -56,7 +56,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
         (name, newValue, selectedOptions, props_, selectedItems) => {
             onQSChange?.(name, newValue, selectedOptions, props_, selectedItems);
             if (userCanEditStorageData(user)) {
-                const isConsumed = consumedStatuses.indexOf(newValue as number) > -1 && value !== newValue;
+                const isConsumed = consumedStatuses?.indexOf(newValue as number) > -1 && value !== newValue;
                 const isInStorage = onAdditionalFormDataChange?.(
                     DISCARD_CONSUMED_CHECKBOX_FIELD,
                     shouldDiscard && isConsumed

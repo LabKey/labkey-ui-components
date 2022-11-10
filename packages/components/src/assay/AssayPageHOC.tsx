@@ -17,7 +17,7 @@ import {
 
 /**
  * Returns a higher-order component wrapped with [[withAssayModelsFromLocation]] that provides common
- * "page"-level handling for edge cases (e.g. loading, protocol not found, errors during loading, etc).
+ * "page"-level handling for edge cases (e.g. loading, protocol not found, errors during loading, etc.).
  * @param ComponentToWrap: The component definition (e.g. class, function) to wrap.
  * This will have [[InjectedAssayModel]] props injected into it.
  * @param defaultProps: Provide alternative "defaultProps" for this wrapped component.

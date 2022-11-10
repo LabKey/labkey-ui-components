@@ -9,7 +9,7 @@ import { AssayDefinitionModel, AssayDomainTypes } from '../../AssayDefinitionMod
 import { FileAttachmentFormModel } from '../files/models';
 import { AppURL } from '../../url/AppURL';
 import { QueryInfo } from '../../../public/QueryInfo';
-import { EditorModel } from '../../models';
+import { EditorModel } from '../editable/models';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 // exported for jest testing

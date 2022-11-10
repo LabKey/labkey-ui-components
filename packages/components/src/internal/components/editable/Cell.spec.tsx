@@ -18,11 +18,11 @@ import { mount, ReactWrapper } from 'enzyme';
 
 import { List } from 'immutable';
 
-import { ValueDescriptor } from '../../models';
-
 import { CELL_SELECTION_HANDLE_CLASSNAME } from '../../constants';
 
 import { QueryColumn } from '../../../public/QueryColumn';
+
+import { ValueDescriptor } from './models';
 
 import { Cell } from './Cell';
 import { LookupCell } from './LookupCell';

@@ -17,6 +17,8 @@ import { List } from 'immutable';
 
 import { SchemaQuery } from '../public/SchemaQuery';
 
+import { ViewInfo } from './ViewInfo';
+
 // Created By / Modified By
 export const CBMB = List<string>(['Created', 'CreatedBy', 'Modified', 'ModifiedBy']);
 
@@ -40,6 +42,7 @@ export const EXP_TABLES = {
     PROTOCOLS: SchemaQuery.create(EXP_SCHEMA, 'Protocols'),
     SCHEMA: EXP_SCHEMA,
     SAMPLE_SETS: SchemaQuery.create(EXP_SCHEMA, 'SampleSets'),
+    SAMPLE_SETS_DETAILS: SchemaQuery.create(EXP_SCHEMA, 'SampleSets', ViewInfo.DETAIL_NAME),
     SAMPLE_SET_HEAT_MAP: SchemaQuery.create(EXP_SCHEMA, 'SampleSetHeatMap'),
     SAMPLE_STATUS: SchemaQuery.create(EXP_SCHEMA, 'SampleStatus'),
 };

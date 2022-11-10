@@ -16,7 +16,7 @@
 import React, { ReactNode } from 'react';
 import { List } from 'immutable';
 
-import { ValueDescriptor } from '../models';
+import { ValueDescriptor } from '../components/editable/models';
 
 const DETAIL_ALIAS_WORD_LENGTH = 5;
 const GRID_ALIAS_WORD_LENGTH = 3;

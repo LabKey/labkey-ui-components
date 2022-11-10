@@ -42,6 +42,10 @@
     scroll-margin: 231px;
 }
 
+.domain-form .domain-field-row:first-child {
+    border-top: none;
+}
+
 .domain-form__file-preview__text {
   font-weight: bold;
   margin-bottom: 10px;
@@ -440,10 +444,6 @@
 
 .domain-adv-checkbox {
   cursor: default
-}
-
-.domain-field-row:first-child {
-    border-top: none;
 }
 
 .domain-floating-hdr {

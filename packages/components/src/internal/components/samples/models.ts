@@ -127,6 +127,18 @@ export interface SampleStatus {
     statusType: SampleStateType;
 }
 
+// Note: this should stay in sync with the freezermanager/src/components/AddSamplesToStorageModal.tsx props
+interface AddSamplesToStorageModalComponentProps {
+    inStorageSamplesCount: number;
+    onCancel: () => any;
+    onSuccess?: () => any;
+    samplesSelectionKey?: string;
+    totalCount: number;
+    user: User;
+}
+
+export type AddSamplesToStorageModal = ComponentType<AddSamplesToStorageModalComponentProps>;
+
 // Note: this should stay in sync with the freezermanager/src/components/StorageButton.tsx props
 interface SampleStorageButtonComponentProps {
     afterStorageUpdate?: () => void;

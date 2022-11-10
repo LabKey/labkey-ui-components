@@ -90,7 +90,7 @@ const AssayDesignPageBody: FC<Props> = memo(props => {
                     protocol.domains.forEach(dom => {
                         let newDomain = dom;
 
-                        // Clear all pre-populated fields for general assay
+                        // Clear all pre-populated fields for general assay and for batch domains on non-file-based assays
                         if (
                             protocol.providerName === GENERAL_ASSAY_PROVIDER_NAME ||
                             (REMOVE_BATCH_DOMAIN_ASSAYS.indexOf(protocol.providerName) !== -1 &&

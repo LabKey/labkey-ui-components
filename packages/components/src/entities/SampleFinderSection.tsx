@@ -375,8 +375,7 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
     }, []);
 
     useEffect(() => {
-        if (!assaySampleIdCols)
-            return;
+        if (!assaySampleIdCols) return;
 
         (async () => {
             try {

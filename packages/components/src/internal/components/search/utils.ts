@@ -35,10 +35,12 @@ import { getContainerFilter } from '../../query/api';
 
 import { AssayResultDataType } from '../entities/constants';
 
+import { AssaySampleColumnProp } from '../../../entities/models';
+
+import { caseInsensitive } from '../../util/utils';
+
 import { SearchScope, SAMPLE_FINDER_SESSION_PREFIX } from './constants';
 import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSessionStorageProps } from './models';
-import { AssaySampleColumnProp } from "../../../entities/models";
-import { caseInsensitive } from "../../util/utils";
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
 export const FIND_SAMPLE_BY_ID_METRIC_AREA = 'findSamplesById';
@@ -185,7 +187,8 @@ export function getAssayFilter(card: FilterProps, cf?: Query.ContainerFilter): F
     const { schemaQuery, filterArray, selectColumnFieldKey, targetColumnFieldKey } = card;
     const { schemaName, queryName } = schemaQuery;
 
-    if (!filterArray || filterArray.length === 0) { // when finding from assay grid without filters
+    if (!filterArray || filterArray.length === 0) {
+        // when finding from assay grid without filters
         return Filter.create(
             selectColumnFieldKey,
             getLabKeySql(targetColumnFieldKey, schemaName, queryName),
@@ -482,7 +485,10 @@ export function searchFiltersToJson(
     });
 }
 
-export function getSearchFiltersFromObjs(filterPropsObj: any[], assaySampleCols?: { [key: string]: AssaySampleColumnProp }): FilterProps[] {
+export function getSearchFiltersFromObjs(
+    filterPropsObj: any[],
+    assaySampleCols?: { [key: string]: AssaySampleColumnProp }
+): FilterProps[] {
     const filters: FilterProps[] = [];
     filterPropsObj.forEach(filterPropObj => {
         const filterArray = [];
@@ -527,7 +533,10 @@ export function getSearchFiltersFromObjs(filterPropsObj: any[], assaySampleCols?
     return filters;
 }
 
-export function searchFiltersFromJson(filterPropsStr: string, assaySampleCols?: { [key: string]: AssaySampleColumnProp }): SearchSessionStorageProps {
+export function searchFiltersFromJson(
+    filterPropsStr: string,
+    assaySampleCols?: { [key: string]: AssaySampleColumnProp }
+): SearchSessionStorageProps {
     const obj = JSON.parse(filterPropsStr);
     const filterPropsObj: any[] = obj['filters'];
     const filterChangeCounter: number = obj['filterChangeCounter'];

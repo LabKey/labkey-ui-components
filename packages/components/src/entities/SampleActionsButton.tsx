@@ -23,7 +23,7 @@ import { PicklistCreationMenuItem } from '../internal/components/picklist/Pickli
 import { AddToPicklistMenuItem } from '../internal/components/picklist/AddToPicklistMenuItem';
 
 import { AssayResultsForSamplesMenuItem } from './AssayResultsForSamplesButton';
-import { FindDerivativesMenuItem } from "./FindDerivativesButton";
+import { FindDerivativesMenuItem } from './FindDerivativesButton';
 
 interface Props {
     disabled?: boolean;

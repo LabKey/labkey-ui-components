@@ -20,7 +20,7 @@ import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Query } from '@labkey/api';
 
 import { cancelEvent, isCopy, isFillDown, isPaste, isSelectAll } from '../../events';
-import { CellMessage, ValueDescriptor } from './models';
+
 import { CELL_SELECTION_HANDLE_CLASSNAME, KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
 
 import { getQueryColumnRenderers } from '../../global';
@@ -30,6 +30,8 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { resolveInputRenderer } from '../forms/input/InputRenderFactory';
 
 import { SelectInputChange } from '../forms/input/SelectInput';
+
+import { CellMessage, ValueDescriptor } from './models';
 
 import { CellActions } from './constants';
 import { gridCellSelectInputProps, onCellSelectChange } from './utils';

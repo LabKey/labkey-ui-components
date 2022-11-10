@@ -2,8 +2,10 @@ import { List, OrderedMap } from 'immutable';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { LoadingState } from '../../../public/LoadingState';
-import { EditorModel } from './models';
+
 import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
+
+import { EditorModel } from './models';
 
 import { getEditorTableData } from './utils';
 

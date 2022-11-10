@@ -3,7 +3,7 @@ import { Utils, UtilsDOM } from '@labkey/api';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { QueryColumn } from '../../../public/QueryColumn';
-import { EditorMode, EditorModel, EditorModelProps, IEditableGridLoader, ValueDescriptor } from './models';
+
 import { getLookupValueDescriptors } from '../../actions';
 import { genCellKey } from '../../utils';
 
@@ -14,6 +14,8 @@ import { getUpdatedDataFromGrid } from '../../util/utils';
 import { EXPORT_TYPES, MODIFICATION_TYPES } from '../../constants';
 
 import { SelectInputOption, SelectInputProps } from '../forms/input/SelectInput';
+
+import { EditorMode, EditorModel, EditorModelProps, IEditableGridLoader, ValueDescriptor } from './models';
 
 import { CellActions } from './constants';
 

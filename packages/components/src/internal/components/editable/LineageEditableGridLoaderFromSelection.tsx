@@ -4,6 +4,7 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { DisplayObject, EntityChoice, EntityParentType } from '../entities/models';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
+
 import { EditorMode, EditorModel, IEditableGridLoader, IGridResponse } from './models';
 
 // exported for unit testing

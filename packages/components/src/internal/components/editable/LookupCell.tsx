@@ -18,7 +18,6 @@ import { List } from 'immutable';
 
 import { Filter, Query } from '@labkey/api';
 
-import { ValueDescriptor } from './models';
 import { LOOKUP_DEFAULT_SIZE, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
 import { TextChoiceInput } from '../forms/input/TextChoiceInput';
 import { QueryColumn } from '../../../public/QueryColumn';
@@ -26,6 +25,8 @@ import { QuerySelect } from '../forms/QuerySelect';
 import { SelectInputChange } from '../forms/input/SelectInput';
 import { ViewInfo } from '../../ViewInfo';
 import { SchemaQuery } from '../../../public/SchemaQuery';
+
+import { ValueDescriptor } from './models';
 
 import { gridCellSelectInputProps, onCellSelectChange } from './utils';
 

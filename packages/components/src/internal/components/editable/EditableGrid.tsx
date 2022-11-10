@@ -45,8 +45,6 @@ import {
 } from '../../constants';
 import { blurActiveElement, capitalizeFirstChar, caseInsensitive, not } from '../../util/utils';
 
-import { CellMessage, EditorModel, EditorModelProps, ValueDescriptor } from './models';
-
 import { BulkAddUpdateForm } from '../forms/BulkAddUpdateForm';
 
 import { EditableGridExportMenu, ExportOption } from '../../../public/QueryModel/ExportMenu';
@@ -59,6 +57,8 @@ import { Key } from '../../../public/useEnterEscape';
 import { cancelEvent } from '../../events';
 import { Grid } from '../base/Grid';
 import { Alert } from '../base/Alert';
+
+import { CellMessage, EditorModel, EditorModelProps, ValueDescriptor } from './models';
 
 import { CellActions, EDITABLE_GRID_CONTAINER_CLS } from './constants';
 import { Cell } from './Cell';

@@ -43,13 +43,19 @@ describe('LookupCell', () => {
     });
 
     test('QuerySelect all samples lookup', () => {
-        const wrapper = mount(<LookupCell {...DEFAULT_PROPS} col={QueryColumn.create({
-            lookup: {
-                schemaName: 'exp',
-                queryName: 'materials',
-                displayColumn: 'display',
-                keyColumn: 'key',
-            }})} />);
+        const wrapper = mount(
+            <LookupCell
+                {...DEFAULT_PROPS}
+                col={QueryColumn.create({
+                    lookup: {
+                        schemaName: 'exp',
+                        queryName: 'materials',
+                        displayColumn: 'display',
+                        keyColumn: 'key',
+                    },
+                })}
+            />
+        );
         validate(wrapper);
         expect(wrapper.find(QuerySelect).prop('value')).toBe('a');
         expect(wrapper.find(QuerySelect).prop('disabled')).toBeFalsy();

@@ -8,11 +8,13 @@ import { getUniqueIdColumnMetadata } from '../entities/utils';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import { EditorModel, EditorModelProps, IEditableGridLoader } from '../../models';
+
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { Alert } from '../base/Alert';
 import { WizardNavButtons } from '../buttons/WizardNavButtons';
+
+import { EditorModel, EditorModelProps, IEditableGridLoader } from './models';
 
 import { EditableGridPanel } from './EditableGridPanel';
 import { applyEditableGridChangesToModels, getUpdatedDataFromEditableGrid, initEditableGridModels } from './utils';

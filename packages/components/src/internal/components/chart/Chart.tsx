@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 import React, { ReactNode } from 'react';
-import { Filter } from '@labkey/api';
+import { List, Record } from 'immutable';
+import { Filter, Query } from '@labkey/api';
 
-import { VisualizationConfigModel } from '../../models';
 import { DataViewInfo } from '../../DataViewInfo';
-import { getVisualizationConfig } from '../../actions';
 import { LABKEY_VIS } from '../../constants';
 import { debounce, generateId } from '../../util/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
@@ -121,4 +120,86 @@ export class Chart extends React.Component<Props, State> {
             </div>
         );
     }
+}
+
+function getVisualizationConfig(reportId: string): Promise<VisualizationConfigModel> {
+    return new Promise((resolve, reject) => {
+        Query.Visualization.get({
+            reportId,
+            name: undefined,
+            schemaName: undefined,
+            queryName: undefined,
+            success: response => {
+                resolve(VisualizationConfigModel.create(response.visualizationConfig));
+            },
+            failure: reject,
+        });
+    });
+}
+
+class VisualizationConfigModel extends Record({
+    queryConfig: undefined,
+    chartConfig: undefined,
+}) {
+    declare queryConfig: QueryConfigModel;
+    declare chartConfig: ChartConfigModel;
+
+    static create(raw: any): VisualizationConfigModel {
+        return new VisualizationConfigModel(
+            Object.assign({}, raw, {
+                chartConfig: new ChartConfigModel(raw.chartConfig),
+                queryConfig: new QueryConfigModel(raw.queryConfig),
+            })
+        );
+    }
+}
+
+class ChartConfigModel extends Record({
+    geomOptions: undefined,
+    height: undefined,
+    labels: undefined,
+    measures: undefined,
+    pointType: undefined,
+    renderType: undefined,
+    scales: undefined,
+    width: undefined,
+}) {
+    declare geomOptions: any;
+    declare height: number;
+    declare labels: any;
+    declare measures: any;
+    declare pointType: string;
+    declare renderType: string;
+    declare scales: any;
+    declare width: number;
+}
+
+class QueryConfigModel extends Record({
+    columns: undefined,
+    containerPath: undefined,
+    // dataRegionName: undefined,
+    filterArray: undefined,
+    maxRows: undefined,
+    method: undefined,
+    parameters: undefined,
+    // queryLabel: undefined,
+    queryName: undefined,
+    requiredVersion: undefined,
+    schemaName: undefined,
+    // sort: undefined,
+    viewName: undefined,
+}) {
+    declare columns: List<string>;
+    declare containerPath: string;
+    // declare dataRegionName: string;
+    declare filterArray: List<any>;
+    declare maxRows: number;
+    declare method: string;
+    declare parameters: any;
+    // declare queryLabel: string;
+    declare queryName: string;
+    declare requiredVersion: string;
+    declare schemaName: string;
+    // declare sort: string;
+    declare viewName: string;
 }

@@ -1,21 +1,22 @@
 import React, { FC, ReactNode, useContext } from 'react';
 
-import { ProductMenuModel } from '../internal/components/navigation/model';
 import { getTitleDisplay, hasActivePipelineJob } from '../internal/components/pipeline/utils';
 import { PageDetailHeader } from '../internal/components/forms/PageDetailHeader';
 import { TemplateDownloadButton } from '../public/files/TemplateDownloadButton';
 import { ASSAYS_KEY } from '../internal/app/constants';
 import { Notifications } from '../internal/components/notifications/Notifications';
 import { AssayContext } from '../internal/components/assay/withAssayModels';
+import { CommonPageProps } from '../internal/models';
 
-interface Props {
+interface OwnProps {
     description?: ReactNode;
     includeTemplateButton?: boolean;
     leftColumns?: number;
-    menu: ProductMenuModel;
     subTitle?: ReactNode;
     title?: ReactNode;
 }
+
+type Props = OwnProps & CommonPageProps;
 
 export const AssayHeader: FC<Props> = props => {
     const { children, title, subTitle, description, menu, leftColumns = 9, includeTemplateButton = true } = props;

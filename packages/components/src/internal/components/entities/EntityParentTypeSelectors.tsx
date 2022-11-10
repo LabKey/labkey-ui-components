@@ -12,7 +12,7 @@ import { addColumns, changeColumn, removeColumn, EditorModelUpdates } from '../.
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
-import { EditorModel } from '../../models';
+import { EditorModel } from '../editable/models';
 
 import { EntityDataType, EntityParentType, getParentEntities, getParentOptions, IParentOption } from './models';
 import { getEntityDescription } from './utils';

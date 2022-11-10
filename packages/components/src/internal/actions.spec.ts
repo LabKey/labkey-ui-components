@@ -24,7 +24,7 @@ import { makeTestQueryModel } from '../public/QueryModel/testUtils';
 import { QueryInfo } from '../public/QueryInfo';
 import { QueryColumn } from '../public/QueryColumn';
 
-import { CellMessage, CellValues, EditorModel, ValueDescriptor } from './models';
+import { CellMessage, CellValues, EditorModel, ValueDescriptor } from './components/editable/models';
 import {
     addColumns,
     changeColumn,

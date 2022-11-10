@@ -7,6 +7,7 @@ import { SCHEMAS } from '../internal/schemas';
 import { AppURL } from '../internal/url/AppURL';
 import { hasAnyPermissions, User } from '../internal/components/base/models/User';
 import { GridPanelWithModel } from '../public/QueryModel/GridPanel';
+import { QuerySort } from '../public/QuerySort';
 
 import { SampleSetHeatMap } from './SampleSetHeatMap';
 import { SampleSetCards } from './SampleSetCards';
@@ -51,6 +52,7 @@ export const SampleTypeSummary: FC<Props> = memo(props => {
                 : undefined,
             requiredColumns,
             omittedColumns,
+            sorts: [new QuerySort({ fieldKey: 'Name' })],
         };
     }, [excludedSampleSets, canUpdate]);
 

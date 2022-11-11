@@ -1,14 +1,15 @@
 import React, { FC, memo } from 'react';
-
 import { PermissionTypes } from '@labkey/api';
 
+import { SchemaQuery } from '../public/SchemaQuery';
+import { QueryModel } from '../public/QueryModel/QueryModel';
 import { RequiresPermission } from '../internal/components/base/Permissions';
 import { ResponsiveMenuButton } from '../internal/components/buttons/ResponsiveMenuButton';
-import { QueryModel } from '../public/QueryModel/QueryModel';
 import { AppURL } from '../internal/url/AppURL';
-import { SchemaQuery } from '../public/SchemaQuery';
-
 import { SampleCreationType } from '../internal/components/samples/models';
+import { MAX_EDITABLE_GRID_ROWS } from '../internal/constants';
+import { DisableableButton } from '../internal/components/buttons/DisableableButton';
+
 import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
 
 interface Props {
@@ -28,29 +29,44 @@ export const SamplesDeriveButtonBase: FC<Props> = memo(props => {
             <CreateSamplesSubMenu
                 {...props}
                 id="aliquot-samples-menu-item"
-                subMenuText="Aliquot Selected"
-                selectedType={SampleCreationType.Aliquots}
                 parentQueryModel={model}
                 selectedQueryInfo={model.queryInfo}
+                selectedType={SampleCreationType.Aliquots}
+                subMenuText="Aliquot Selected"
             />
             <CreateSamplesSubMenu
                 {...props}
                 id="derive-samples-menu-item"
                 menuText="Derive from Selected"
-                selectedType={SampleCreationType.Derivatives}
                 parentQueryModel={model}
-                inlineItemsCount={0}
+                selectedType={SampleCreationType.Derivatives}
             />
             <CreateSamplesSubMenu
                 {...props}
                 id="pool-samples-menu-item"
-                subMenuText="Pool Selected"
-                selectedType={SampleCreationType.PooledSamples}
                 parentQueryModel={model}
                 selectedQueryInfo={model.queryInfo}
+                selectedType={SampleCreationType.PooledSamples}
+                subMenuText="Pool Selected"
             />
         </>
     );
+
+    const selectedCount = model?.selections?.size ?? -1;
+    if (!asSubMenu && selectedCount > MAX_EDITABLE_GRID_ROWS) {
+        return (
+            <RequiresPermission permissionCheck="any" perms={PermissionTypes.Insert}>
+                <DisableableButton
+                    bsStyle="default"
+                    className="responsive-menu"
+                    disabledMsg={'At most ' + MAX_EDITABLE_GRID_ROWS + ' samples can be selected.'}
+                    onClick={undefined}
+                >
+                    Derive
+                </DisableableButton>
+            </RequiresPermission>
+        );
+    }
 
     return (
         <RequiresPermission permissionCheck="any" perms={PermissionTypes.Insert}>

@@ -24,10 +24,12 @@ interface Props {
     allowPooledSamples?: boolean;
     currentProductId?: string;
     disabled?: boolean;
+    getWizardUrl?: (targetSampleType?: string, parent?: string) => AppURL; // for media
     id?: string;
     inlineItemsCount?: number;
     isSelectingSamples?: (schemaQuery: SchemaQuery) => boolean;
     loadSampleTypes?: (includeMedia: boolean) => Promise<QueryInfo[]>;
+    mediaOptions?: string[];
     menuCurrentChoice?: string;
     menuText?: string;
     navigate: (url: string | AppURL) => void;
@@ -39,8 +41,6 @@ interface Props {
     selectedType?: SampleCreationType;
     subMenuText?: string;
     targetProductId?: string;
-    getWizardUrl?: (targetSampleType?: string, parent?: string) => AppURL; // for media
-    mediaOptions?: string[];
 }
 
 export const MAX_PARENTS_PER_SAMPLE = 20;

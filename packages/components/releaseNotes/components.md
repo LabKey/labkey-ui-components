@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Updates for Sample Type consistency of Samples create/import page
   * Refactor SampleImportPage.tsx from LKB and SampleInsertPage.tsx from LKSM as SampleCreatePage.tsx
   * Add misc props to SampleTypeAppContext for SampleCreatePage.tsx
+  * Issue 46693: Disable Sample Grid Derive menu options with >1000 selected
 
 ### version 2.249.0
 *Released*: 10 November 2022

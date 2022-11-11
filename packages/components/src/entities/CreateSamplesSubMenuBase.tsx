@@ -1,21 +1,15 @@
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 import { List } from 'immutable';
 
-import { MenuOption, SubMenu } from '../internal/components/menus/SubMenu';
-import { AppURL } from '../internal/url/AppURL';
 import { SchemaQuery } from '../public/SchemaQuery';
 import { QueryModel } from '../public/QueryModel/QueryModel';
-
+import { MenuOption, SubMenu } from '../internal/components/menus/SubMenu';
+import { AppURL } from '../internal/url/AppURL';
 import { SAMPLES_KEY, SOURCES_KEY } from '../internal/app/constants';
-
 import { SCHEMAS } from '../internal/schemas';
-
 import { getCrossFolderSelectionResult } from '../internal/components/entities/actions';
-
 import { EntityCrossProjectSelectionConfirmModal } from '../internal/components/entities/EntityCrossProjectSelectionConfirmModal';
-
 import { isSamplesSchema } from '../internal/components/samples/utils';
-
 import {
     ALIQUOT_CREATION,
     CHILD_SAMPLE_CREATION,
@@ -24,6 +18,7 @@ import {
     SampleCreationType,
     SampleCreationTypeModel,
 } from '../internal/components/samples/models';
+import { MAX_EDITABLE_GRID_ROWS } from '../internal/constants';
 
 import { SampleCreationTypeModal } from './SampleCreationTypeModal';
 
@@ -101,7 +96,11 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
     } else if (selectedType === SampleCreationType.PooledSamples && selectedQuantity > maxParentPerSample) {
         disabledMsg = `At most ${maxParentPerSample} ${
             isSamplesSchema(schemaQuery) ? 'samples' : 'items'
-        } can be selected for pooling`;
+        } can be selected for pooling.`;
+    } else if (selectedQuantity > MAX_EDITABLE_GRID_ROWS) {
+        disabledMsg = `At most ${MAX_EDITABLE_GRID_ROWS} ${
+            isSamplesSchema(schemaQuery) ? 'samples' : 'items'
+        } can be selected.`;
     }
 
     const useOnClick = parentKey !== undefined || (parentQueryModel && selectedQuantity > 0 && selectingSampleParents);

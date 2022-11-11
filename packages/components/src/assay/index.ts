@@ -7,6 +7,7 @@ import { assayPage } from './AssayPageHOC';
 import { AssayReimportRunButton } from './AssayReimportRunButton';
 import { AssayResolver, AssayRunResolver } from './AssayResolver';
 import { AssayResultDeleteModal } from './AssayResultDeleteModal';
+import { AssayResultListingPage } from './AssayResultListingPage';
 import { AssayResultTemplateDownloadRenderer } from './AssayResultTemplateDownloadRenderer';
 import { AssayRunDeleteModal } from './AssayRunDeleteModal';
 import { AssayRunListingPage } from './AssayRunListingPage';
@@ -33,6 +34,7 @@ export {
     AssayDesignDeleteModal,
     AssayDesignHeaderButtons,
     AssayOverviewPage,
+    AssayResultListingPage,
     AssayRunDetailHeaderButtons,
     AssayRunListingPage,
     AssayBatchHeaderButtons,

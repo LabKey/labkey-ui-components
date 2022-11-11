@@ -14,7 +14,7 @@ import { CreateSamplesSubMenuBase } from './CreateSamplesSubMenuBase';
 import { DisableableMenuItem } from '../internal/components/samples/DisableableMenuItem';
 import { getSampleWizardURL } from './utils';
 import { QueryInfo } from '../public/QueryInfo';
-import { isMediaEnabled } from '../internal/app/utils';
+import { isMediaEnabled, sampleManagerIsPrimaryApp } from '../internal/app/utils';
 import { getServerContext } from '@labkey/api';
 import { naturalSortByProperty } from '../public/sort';
 import { loadSampleTypes } from './actions';
@@ -116,6 +116,18 @@ export const CreateSamplesSubMenu: FC<Props> = memo(props => {
     if (disabled) {
         return <DisableableMenuItem operationPermitted={false}>{menuText}</DisableableMenuItem>;
     }
+    let selectionNoun = undefined;
+    let selectionNounPlural = undefined;
+    if (!isSamples) {
+        if (sampleManagerIsPrimaryApp()) {
+            selectionNoun = 'source';
+            selectionNounPlural = 'sources';
+        }
+        else {
+            selectionNoun = 'data';
+            selectionNounPlural = 'data';
+        }
+    }
 
     return (
         <CreateSamplesSubMenuBase
@@ -129,8 +141,8 @@ export const CreateSamplesSubMenu: FC<Props> = memo(props => {
             inlineItemsCount={0}
             currentProductId={currentProductId}
             targetProductId={targetProductId}
-            selectionNoun={isSamples ? undefined : 'data'}
-            selectionNounPlural={isSamples ? undefined : 'data'}
+            selectionNoun={selectionNoun}
+            selectionNounPlural={selectionNounPlural}
         />
     );
 });

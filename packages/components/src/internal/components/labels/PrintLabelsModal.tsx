@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Button, Modal } from 'react-bootstrap';
+import { List } from 'immutable';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { HelpLink } from '../../util/helpLinks';
@@ -10,19 +11,21 @@ import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { BarTenderResponse } from './models';
 import { BAR_TENDER_TOPIC, LABEL_NOT_FOUND_ERROR } from './constants';
 
-interface Props {
+export interface PrintModalProps {
     afterPrint?: (numSamples: number, numLabels: number) => void;
     api?: ComponentsAPIWrapper;
     labelTemplate: string;
     onCancel?: (any) => void;
+    model?: QueryModel; // must provide either a model or schemaName/queryName
     printServiceUrl: string;
-    queryName: string;
+    queryName?: string;
     sampleIds: string[];
-    schemaName: string;
+    schemaName?: string;
     show: boolean;
     showSelection: boolean;
 }
@@ -38,14 +41,14 @@ interface State {
 const PRINT_ERROR_MESSAGE =
     'There was a problem printing the labels for the selected samples. Verify the label template chosen is still valid and the connection to BarTender has been configured properly.';
 
-export class PrintLabelsModalImpl extends PureComponent<Props & InjectedQueryModels, State> {
+export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & InjectedQueryModels, State> {
     static defaultProps = {
         api: getDefaultAPIWrapper(),
     };
 
     _modelId = 'sampleModel';
 
-    constructor(props: Props & InjectedQueryModels) {
+    constructor(props: PrintModalProps & InjectedQueryModels) {
         super(props);
 
         // because of a timing issue with the clearSelections on componentWillUnmount, use distinct model ids for single sample vs grid selection case
@@ -63,10 +66,13 @@ export class PrintLabelsModalImpl extends PureComponent<Props & InjectedQueryMod
     }
 
     componentDidMount() {
+        const { model, schemaName, queryName } = this.props;
+
         this.props.actions.addModel(
             {
                 id: this._modelId,
-                schemaQuery: SchemaQuery.create(this.props.schemaName, this.props.queryName),
+                schemaQuery: model?.schemaQuery ?? SchemaQuery.create(schemaName, queryName),
+                baseFilters: model?.filters,
             },
             true,
             true
@@ -171,7 +177,7 @@ export class PrintLabelsModalImpl extends PureComponent<Props & InjectedQueryMod
     }
 
     renderForm() {
-        const { schemaName, queryName, showSelection } = this.props;
+        const { showSelection } = this.props;
         const { numCopies, labelTemplate } = this.state;
         const sampleCount = this.getSampleCount();
         const model = this.getModel();
@@ -221,7 +227,8 @@ export class PrintLabelsModalImpl extends PureComponent<Props & InjectedQueryMod
                                 placeholder="Select or type to search..."
                                 previewOptions={true}
                                 required={false}
-                                schemaQuery={SchemaQuery.create(schemaName, queryName)}
+                                schemaQuery={model.schemaQuery}
+                                queryFilters={List(model.filters)}
                                 displayColumn={displayColumn}
                                 valueColumn={valueColumn}
                                 value={this.props.sampleIds.join(',')}
@@ -297,4 +304,4 @@ export class PrintLabelsModalImpl extends PureComponent<Props & InjectedQueryMod
     }
 }
 
-export const PrintLabelsModal = withQueryModels<Props>(PrintLabelsModalImpl);
+export const PrintLabelsModal = withQueryModels<PrintModalProps>(PrintLabelsModalImpl);

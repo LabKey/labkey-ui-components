@@ -309,6 +309,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     };
 
     const isMedia = activeModel?.queryInfo?.isMedia;
+    const isAllTab = (tabs.length > 1 || tabbedGridPanelProps?.alwaysShowTabs) && activeTabId === tabs[0];
 
     return (
         <>
@@ -342,8 +343,10 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     ButtonsComponent={gridButtons}
                     buttonsComponentProps={_gridButtonProps}
                     ButtonsComponentRight={SampleTabbedGridButtonsRight}
-                    supportedExportTypes={showLabelOption && canPrintLabels ? EXPORT_TYPES_WITH_LABEL : undefined}
-                    onExport={showLabelOption && canPrintLabels ? onLabelExport : undefined}
+                    // supportedExportTypes={showLabelOption && canPrintLabels ? EXPORT_TYPES_WITH_LABEL : undefined}
+                    // onExport={showLabelOption && canPrintLabels ? onLabelExport : undefined}
+                    supportedExportTypes={showLabelOption && canPrintLabels && !isAllTab ? EXPORT_TYPES_WITH_LABEL : undefined}
+                    onExport={showLabelOption && canPrintLabels && !isAllTab ? onLabelExport : undefined}
                     showRowCountOnTabs
                 />
             )}
@@ -372,8 +375,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     labelTemplate={labelTemplate}
                     printServiceUrl={printServiceUrl}
                     onCancel={onCancelPrint}
-                    queryName={activeModel?.queryName}
-                    schemaName={activeModel?.schemaName}
+                    model={printDialogModel} // TODO change more usages to this
                     sampleIds={[...printDialogModel.selections]}
                     show={true}
                     showSelection={true}

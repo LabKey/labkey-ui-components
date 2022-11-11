@@ -1,6 +1,7 @@
 import { SCHEMAS } from '../../schemas';
 
 export const GENERAL_ASSAY_PROVIDER_NAME = 'General';
+// TODO make this an array
 export const RUN_PROPERTIES_REQUIRED_COLUMNS = SCHEMAS.CBMB.concat(
     'Name',
     'RowId',

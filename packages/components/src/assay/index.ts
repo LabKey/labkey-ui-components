@@ -11,7 +11,7 @@ import { AssayResultListingPage } from './AssayResultListingPage';
 import { AssayResultTemplateDownloadRenderer } from './AssayResultTemplateDownloadRenderer';
 import { AssayRunDeleteModal } from './AssayRunDeleteModal';
 import { AssayRunListingPage } from './AssayRunListingPage';
-import { AssaySubNavMenu } from './AssaySubNavMenu';
+import { AssaySubNav } from './AssaysSubNav';
 import { AssayTypeSummary } from './AssayTypeSummary';
 import { getAssayImportNotificationMsg, getAssayRunDeleteMessage } from './utils';
 import {
@@ -46,7 +46,7 @@ export {
     AssayResultDeleteModal,
     AssayResultTemplateDownloadRenderer,
     AssayRunDeleteModal,
-    AssaySubNavMenu,
+    AssaySubNav,
     AssayTypeSummary,
     onAssayRunChange,
     onAssayDesignChange,

@@ -27,6 +27,7 @@ import { useLabelPrintingContext } from '../internal/components/labels/LabelPrin
 import { SamplesEditableGrid, SamplesEditableGridProps } from './SamplesEditableGrid';
 import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
 import { GridAliquotViewSelector } from './GridAliquotViewSelector';
+import { isAllSamplesSchema } from '../internal/components/samples/utils';
 
 const EXPORT_TYPES_WITH_LABEL = Set.of(EXPORT_TYPES.CSV, EXPORT_TYPES.EXCEL, EXPORT_TYPES.TSV, EXPORT_TYPES.LABEL);
 
@@ -309,7 +310,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     };
 
     const isMedia = activeModel?.queryInfo?.isMedia;
-    const isAllTab = (tabs.length > 1 || tabbedGridPanelProps?.alwaysShowTabs) && activeTabId === tabs[0];
+    const showPrintOption = !isAllSamplesSchema(activeModel?.schemaQuery) && showLabelOption && canPrintLabels;
 
     return (
         <>
@@ -343,10 +344,8 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     ButtonsComponent={gridButtons}
                     buttonsComponentProps={_gridButtonProps}
                     ButtonsComponentRight={SampleTabbedGridButtonsRight}
-                    // supportedExportTypes={showLabelOption && canPrintLabels ? EXPORT_TYPES_WITH_LABEL : undefined}
-                    // onExport={showLabelOption && canPrintLabels ? onLabelExport : undefined}
-                    supportedExportTypes={showLabelOption && canPrintLabels && !isAllTab ? EXPORT_TYPES_WITH_LABEL : undefined}
-                    onExport={showLabelOption && canPrintLabels && !isAllTab ? onLabelExport : undefined}
+                    supportedExportTypes={showPrintOption ? EXPORT_TYPES_WITH_LABEL : undefined}
+                    onExport={showPrintOption ? onLabelExport : undefined}
                     showRowCountOnTabs
                 />
             )}
@@ -375,7 +374,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     labelTemplate={labelTemplate}
                     printServiceUrl={printServiceUrl}
                     onCancel={onCancelPrint}
-                    model={printDialogModel} // TODO change more usages to this
+                    model={printDialogModel}
                     sampleIds={[...printDialogModel.selections]}
                     show={true}
                     showSelection={true}

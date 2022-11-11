@@ -331,8 +331,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                     showSelection={false}
                     onCancel={onHideModals}
                     afterPrint={onAfterPrint}
-                    schemaName={sampleModel.schemaName}
-                    queryName={sampleModel.queryName}
+                    model={sampleModel}
                     sampleIds={sampleIds}
                     labelTemplate={labelTemplate}
                     printServiceUrl={printServiceUrl}

@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD November 2022
+* Updates for Sample Type consistency of Samples create/import page
+  * Refactor SampleImportPage.tsx from LKB and SampleInsertPage.tsx from LKSM as SampleCreatePage.tsx
+  * Add misc props to SampleTypeAppContext for SampleCreatePage.tsx
+
 ### version 2.249.0
 *Released*: 10 November 2022
 * Assay Design page consistency

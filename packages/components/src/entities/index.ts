@@ -68,9 +68,12 @@ import {
     SampleListingPage,
     getSamplesImportSuccessMessage,
     getSamplesCreatedSuccessMessage,
+    SAMPLES_LISTING_GRID_ID,
 } from './SampleListingPage';
+import { SampleCreatePage } from './SampleCreatePage';
 
 export {
+    SAMPLES_LISTING_GRID_ID,
     createEntityParentKey,
     downloadSampleTypeTemplate,
     filterMediaSampleTypes,
@@ -117,6 +120,7 @@ export {
     SampleAliquotsPage,
     SampleAssayDetail,
     SampleAssaysPage,
+    SampleCreatePage,
     SampleCreationTypeModal,
     SampleDetailEditing,
     SampleDetailPage,

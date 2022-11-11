@@ -177,7 +177,6 @@ export const AssayGridBodyImpl: FC<AssayGridPanelProps & InjectedQueryModels> = 
     const { createNotification, dismissNotifications} = useNotificationsContext();
     const { user } = useServerContext();
 
-
     const hideConfirm = useCallback(() => {
         setShowConfirmDelete(false);
     }, []);
@@ -237,7 +236,7 @@ export const AssayGridBodyImpl: FC<AssayGridPanelProps & InjectedQueryModels> = 
 
         if (editingStateChanged && Utils.isFunction(onEditToggle))
             onEditToggle(!isEditing);
-    }, []);
+    }, [isEditing, hasValidMaxSelection, onEditToggle]);
 
     const onBulkUpdateError = useCallback((message: string) => {
         createNotification(message);
@@ -284,58 +283,6 @@ export const AssayGridBodyImpl: FC<AssayGridPanelProps & InjectedQueryModels> = 
         }
     }, [nounSingular, queryName, nounPlural]);
 
-    const renderDeleteModal = () => {
-        if (!showConfirmDelete) {
-            return null;
-        } else if (queryName.toLowerCase() === "runs") {
-            return (
-                <AssayRunDeleteModal
-                    selectionKey={modelId}
-                    afterDelete={afterDelete}
-                    afterDeleteFailure={hideConfirm}
-                    onCancel={hideConfirm}
-                />
-            );
-        } else if (queryName.toLowerCase() === "data") {
-            return (
-                <AssayResultDeleteModal
-                    afterDelete={afterDelete}
-                    afterDeleteFailure={hideConfirm}
-                    maxToDelete={ASSAY_RESULT_DELETE_MAX_ROWS}
-                    onCancel={hideConfirm}
-                    schemaQuery={assayModel.queryInfo.schemaQuery}
-                    selectedIds={Array.from(assayModel.selections)}
-                />
-            );
-        }
-    }
-
-    const renderBulkUpdateModal = () => {
-
-        if (!showBulkUpdate) {
-            return null;
-        }
-
-        return (
-            <BulkUpdateForm
-                canSubmitForEdit={hasValidMaxSelection}
-                itemLabel={assayDefinition.name}
-                onCancel={resetState}
-                onComplete={onBulkUpdateComplete}
-                onError={onBulkUpdateError}
-                onSubmitForEdit={editSelectionInGrid}
-                pluralNoun={(nounPlural || queryName).toLowerCase()}
-                queryInfo={assayModel.queryInfo}
-                requiredColumns={requiredColumns}
-                selectedIds={assayModel.selections}
-                viewName={assayModel.viewName}
-                singularNoun={(nounSingular || queryName).toLowerCase()}
-                sortString={assayModel.sortString}
-                updateRows={onUpdateRows}
-            />
-        )
-    }
-
     const buttonsComponentProps: AssayGridButtonsComponentProps = {
         actions,
         canDelete,
@@ -375,8 +322,42 @@ export const AssayGridBodyImpl: FC<AssayGridPanelProps & InjectedQueryModels> = 
                     title={header}
                 />
             }
-            {renderDeleteModal()}
-            {renderBulkUpdateModal()}
+            {showConfirmDelete && queryName.toLowerCase() === "runs" && (
+                <AssayRunDeleteModal
+                    selectionKey={modelId}
+                    afterDelete={afterDelete}
+                    afterDeleteFailure={hideConfirm}
+                    onCancel={hideConfirm}
+                />
+            )}
+            {showConfirmDelete && queryName.toLowerCase() === "data" && (
+                <AssayResultDeleteModal
+                    afterDelete={afterDelete}
+                    afterDeleteFailure={hideConfirm}
+                    maxToDelete={ASSAY_RESULT_DELETE_MAX_ROWS}
+                    onCancel={hideConfirm}
+                    schemaQuery={assayModel.queryInfo.schemaQuery}
+                    selectedIds={Array.from(assayModel.selections)}
+                />
+            )}
+            {showBulkUpdate && (
+                <BulkUpdateForm
+                    canSubmitForEdit={hasValidMaxSelection}
+                    itemLabel={assayDefinition.name}
+                    onCancel={resetState}
+                    onComplete={onBulkUpdateComplete}
+                    onError={onBulkUpdateError}
+                    onSubmitForEdit={editSelectionInGrid}
+                    pluralNoun={(nounPlural || queryName).toLowerCase()}
+                    queryInfo={assayModel.queryInfo}
+                    requiredColumns={requiredColumns}
+                    selectedIds={assayModel.selections}
+                    viewName={assayModel.viewName}
+                    singularNoun={(nounSingular || queryName).toLowerCase()}
+                    sortString={assayModel.sortString}
+                    updateRows={onUpdateRows}
+                />
+            )}
         </>
     )
 });

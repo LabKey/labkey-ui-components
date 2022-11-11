@@ -14,19 +14,20 @@ import {
     AssayLink,
     DetailPanel,
     GENERAL_ASSAY_PROVIDER_NAME,
-    Hooks,
+    Hooks, InjectedRouteLeaveProps,
     LoadingPage,
     Page,
     ProductMenuModel,
     QueryColumn,
     QueryModel,
-    SCHEMAS
+    SCHEMAS, useRouteLeave, withRouteLeave
 } from '../index';
 import { AssayHeader } from './AssayHeader';
 import { AssayDesignHeaderButtons } from './AssayButtons';
 import { assayPage } from './AssayPageHOC';
 import { AssayOverrideBanner } from './AssayOverrideBanner';
 import { AssayGridPanel } from './AssayGridPanel';
+import { WithRouterProps } from 'react-router';
 
 const REQUIRED_COLUMN_NAMES = ['Description', 'Created', 'CreatedBy', 'Status'];
 
@@ -37,10 +38,20 @@ interface CommonPageProps {
     navigate: (url: string | AppURL, replace?: boolean) => void;
 }
 
-type AssayOverviewProps = CommonPageProps & InjectedAssayModel & InjectedQueryModels;
+type AssayOverviewProps = CommonPageProps & InjectedAssayModel & InjectedQueryModels & InjectedRouteLeaveProps;
 
 const AssayOverviewPageBody: FC<AssayOverviewProps> = props => {
-    const { assayDefinition, assayProtocol, actions, navigate, menu, menuInit, queryModels } = props;
+    const {
+        assayDefinition,
+        assayProtocol,
+        actions,
+        navigate,
+        menu,
+        menuInit,
+        queryModels,
+        setIsDirty,
+        getIsDirty
+    } = props;
     const { model } = queryModels;
     const { name, type, description } = assayDefinition;
     const protocolContext = Hooks.useContainerUser(assayProtocol.domains.first()?.container);
@@ -80,9 +91,12 @@ const AssayOverviewPageBody: FC<AssayOverviewProps> = props => {
             <AssayGridPanel
                 assayDefinition={assayDefinition}
                 canDelete={true}
+                canUpdate={assayProtocol.editableRuns}
                 queryName="Runs"
                 header="Runs"
                 nounPlural="Runs"
+                setIsDirty={setIsDirty}
+                getIsDirty={getIsDirty}
             />
 
         </Page>
@@ -91,7 +105,7 @@ const AssayOverviewPageBody: FC<AssayOverviewProps> = props => {
 
 const AssayOverviewPageWithModels = withQueryModels<InjectedAssayModel>(AssayOverviewPageBody);
 
-const AssayOverviewPageImpl: FC<InjectedAssayModel> = props => {
+const AssayOverviewPageImpl: FC<InjectedAssayModel & InjectedRouteLeaveProps> = props => {
     const { assayDefinition } = props;
 
     const queryConfigs: QueryConfigMap = {
@@ -106,4 +120,4 @@ const AssayOverviewPageImpl: FC<InjectedAssayModel> = props => {
     return <AssayOverviewPageWithModels autoLoad key={assayDefinition.name} queryConfigs={queryConfigs} {...props} />;
 };
 
-export const AssayOverviewPage = assayPage(AssayOverviewPageImpl);
+export const AssayOverviewPage = withRouteLeave(assayPage(AssayOverviewPageImpl));

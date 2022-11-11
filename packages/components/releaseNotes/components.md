@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Adding Label printing to export menu for more sample tabbed grids
+  * Hiding Label option on the 'All Samples' tab as it doesn't currently fit our grid methodology
+
 ### version 2.249.0
 *Released*: 10 November 2022
 * Assay Design page consistency

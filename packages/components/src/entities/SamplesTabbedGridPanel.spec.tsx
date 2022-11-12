@@ -12,6 +12,7 @@ import { SchemaQuery } from '../public/SchemaQuery';
 import { QueryInfo } from '../public/QueryInfo';
 import { makeTestActions, makeTestQueryModel } from '../public/QueryModel/testUtils';
 import { TabbedGridPanel } from '../public/QueryModel/TabbedGridPanel';
+import * as sampleUtils from '../internal/components/samples/utils';
 
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
@@ -238,9 +239,11 @@ describe('SamplesTabbedGridPanel', () => {
     });
 
 
-    // Expected: Printing allowed on no tabs (Single model)
-    test('showLabelOption true, user.isGuest false, Single model', () => {
-        const wrapper = mountWithAppServerContext(<SamplesTabbedGridPanel {...SINGLE_TAB_PROPS} showLabelOption={true} />, {}, { user: TEST_USER_READER}, {}, {}, { printServiceUrl:"jest", labelTemplate:"jest"});
+    // Expected: Printing is allowed on pages with no tabs (e.g., Single model)
+    test('showLabelOption true, user.isGuest false, Single model, isAllSamplesSchema false', () => {
+        jest.spyOn(sampleUtils, 'isAllSamplesSchema').mockReturnValue(false);
+
+        const wrapper = mountWithAppServerContext(<SamplesTabbedGridPanel {...SINGLE_TAB_PROPS} tabbedGridPanelProps={{alwaysShowTabs: true}} showLabelOption={true} />, {}, { user: TEST_USER_READER}, {}, {}, { printServiceUrl:"jest", labelTemplate:"jest"});
         expect(wrapper.find(SamplesEditableGrid)).toHaveLength(0);
         expect(wrapper.find(TabbedGridPanel)).toHaveLength(1);
         expect(wrapper.find(TabbedGridPanel).prop('supportedExportTypes')).toBeDefined();
@@ -248,8 +251,10 @@ describe('SamplesTabbedGridPanel', () => {
         wrapper.unmount();
     });
 
-    // Expected: Printing not allowed on single tab with Tabs always shown
-    test('showLabelOption true, user.isGuest false, Single model, alwaysShowTabs', () => {
+    // Expected: Printing not allowed on single tab with
+    test('showLabelOption true, user.isGuest false, Single model, isAllSamplesSchema', () => {
+        jest.spyOn(sampleUtils, 'isAllSamplesSchema').mockReturnValue(true);
+
         const wrapper = mountWithAppServerContext(<SamplesTabbedGridPanel {...SINGLE_TAB_PROPS} tabbedGridPanelProps={{alwaysShowTabs: true}} showLabelOption={true} />, {}, { user: TEST_USER_READER}, {}, {}, { printServiceUrl:"jest", labelTemplate:"jest"});
         expect(wrapper.find(SamplesEditableGrid)).toHaveLength(0);
         expect(wrapper.find(TabbedGridPanel)).toHaveLength(1);
@@ -261,6 +266,8 @@ describe('SamplesTabbedGridPanel', () => {
 
     // Expected: Printing not allowed on 'All' tab
     test('showLabelOption true, user.isGuest false', () => {
+        jest.spyOn(sampleUtils, 'isAllSamplesSchema').mockReturnValue(true);
+
         const wrapper = mountWithAppServerContext(<SamplesTabbedGridPanel {...DEFAULT_PROPS} showLabelOption={true} />, {}, { user: TEST_USER_READER}, {}, {}, { printServiceUrl:"jest", labelTemplate:"jest"});
         validate(wrapper);
         expect(wrapper.find(TabbedGridPanel).prop('supportedExportTypes')).toBeUndefined();

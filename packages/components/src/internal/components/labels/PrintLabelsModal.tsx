@@ -5,7 +5,6 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { HelpLink } from '../../util/helpLinks';
 import { QuerySelect } from '../forms/QuerySelect';
-import { SchemaQuery } from '../../../public/SchemaQuery';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
@@ -23,9 +22,7 @@ export interface PrintModalProps {
     onCancel?: (any) => void;
     model?: QueryModel; // must provide either a model or schemaName/queryName
     printServiceUrl: string;
-    queryName?: string;
     sampleIds: string[];
-    schemaName?: string;
     show: boolean;
     showSelection: boolean;
 }
@@ -66,12 +63,12 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
     }
 
     componentDidMount() {
-        const { model, schemaName, queryName } = this.props;
+        const { model } = this.props;
 
         this.props.actions.addModel(
             {
                 id: this._modelId,
-                schemaQuery: model?.schemaQuery ?? SchemaQuery.create(schemaName, queryName),
+                schemaQuery: model?.schemaQuery,
                 baseFilters: model?.filters,
             },
             true,

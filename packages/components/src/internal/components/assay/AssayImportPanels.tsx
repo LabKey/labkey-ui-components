@@ -769,11 +769,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                         onClick={this.onSaveClick.bind(this, false)}
                         disabled={disabledSave}
                     >
-                        {showSaveAgainBtn
-                            ? model.isSubmitting
-                                ? 'Saving...'
-                                : 'Save and Finish'
-                            : model.isSubmitting
+                        {model.isSubmitting
                             ? 'Importing...'
                             : isReimport
                             ? 'Re-Import'

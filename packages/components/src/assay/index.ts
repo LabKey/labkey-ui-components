@@ -15,6 +15,7 @@ import { AssayRunDetailsPage } from './AssayRunDetailsPage';
 import { AssayRunListingPage } from './AssayRunListingPage';
 import { AssaySubNav } from './AssaysSubNav';
 import { AssayTypeSummary } from './AssayTypeSummary';
+import { AssayUploadPage} from './AssayUploadPage';
 import { getAssayImportNotificationMsg, getAssayRunDeleteMessage } from './utils';
 import {
     AssayBatchHeaderButtons,
@@ -52,6 +53,7 @@ export {
     AssayRunDeleteModal,
     AssaySubNav,
     AssayTypeSummary,
+    AssayUploadPage,
     onAssayRunChange,
     onAssayDesignChange,
     UpdateQCStatesButton,

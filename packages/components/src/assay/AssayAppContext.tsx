@@ -11,6 +11,7 @@ export interface AssayAppContext {
     JobsMenuOptionsComponent: JobsMenuOptions;
     assayTypes?: string[];
     excludedAssayProviders?: string[];
+    jobNotificationProvider: string; // pipeline job not workflow job
 }
 
 // If your App extends AppContext to add attributes other than Assay use this e.g.:

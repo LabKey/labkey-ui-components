@@ -185,12 +185,9 @@ export function getExpDescendantOfFilter(
 
 export function getAssayFilter(card: FilterProps, cf?: Query.ContainerFilter): Filter.IFilter {
     const { schemaQuery, filterArray, selectColumnFieldKey, targetColumnFieldKey } = card;
-    if (!selectColumnFieldKey)
-        return null;
-
     const { schemaName, queryName } = schemaQuery;
 
-    if (!filterArray || filterArray.length === 0) {
+    if (selectColumnFieldKey && (!filterArray || filterArray.length === 0)) {
         // when finding from assay grid without filters
         return Filter.create(
             selectColumnFieldKey,
@@ -199,11 +196,14 @@ export function getAssayFilter(card: FilterProps, cf?: Query.ContainerFilter): F
         );
     }
 
-    const noAssayDataFilter = filterArray.find(
+    const noAssayDataFilter = filterArray?.find(
         fieldFilter => fieldFilter.filter.getFilterType().getURLSuffix() === COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix()
     )?.filter;
 
     if (noAssayDataFilter) return noAssayDataFilter;
+
+    if (!selectColumnFieldKey)
+        return null;
 
     const whereConditions = getLabKeySqlWhere(filterArray, true);
     if (!whereConditions) return null;

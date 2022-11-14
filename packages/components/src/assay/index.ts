@@ -2,6 +2,7 @@ import { AssayBatchListingPage } from './AssayBatchListingPage';
 import { AssayBatchOverviewPage } from './AssayBatchOverviewPage';
 import { AssayDesignPage } from './AssayDesignPage';
 import { AssayDesignDeleteModal } from './AssayDesignDeleteModal';
+import { AssayListingPage } from './AssayListingPage';
 import { AssayOverviewPage } from './AssayOverviewPage';
 import { assayPage } from './AssayPageHOC';
 import { AssayReimportRunButton } from './AssayReimportRunButton';
@@ -34,6 +35,7 @@ export {
     AssayDesignPage,
     AssayDesignDeleteModal,
     AssayDesignHeaderButtons,
+    AssayListingPage,
     AssayOverviewPage,
     AssayResultListingPage,
     AssayRunDetailHeaderButtons,

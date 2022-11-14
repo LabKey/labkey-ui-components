@@ -9,6 +9,8 @@ export interface AssayAppContext {
     requireSampleField: boolean;
     showProviderName: boolean;
     JobsMenuOptionsComponent: JobsMenuOptions;
+    assayTypes?: string[];
+    excludedAssayProviders?: string[];
 }
 
 // If your App extends AppContext to add attributes other than Assay use this e.g.:

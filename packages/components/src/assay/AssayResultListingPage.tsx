@@ -28,8 +28,8 @@ const AssayResultListingPageImpl: FC<CommonPageProps & InjectedAssayModel & Inje
                 setIsDirty={setIsDirty}
                 getIsDirty={getIsDirty}
                 queryName="Data"
-                nounSingular="Result"
-                nounPlural="Results"
+                nounSingular="result"
+                nounPlural="results"
             />
         </Page>
     );

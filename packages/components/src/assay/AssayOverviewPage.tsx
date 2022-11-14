@@ -10,33 +10,27 @@ import { InjectedAssayModel } from '../internal/components/assay/withAssayModels
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../public/QueryModel/withQueryModels';
 import {
     Alert,
-    AppURL,
     AssayLink,
     DetailPanel,
     GENERAL_ASSAY_PROVIDER_NAME,
-    Hooks, InjectedRouteLeaveProps,
+    Hooks,
+    InjectedRouteLeaveProps,
     LoadingPage,
     Page,
-    ProductMenuModel,
     QueryColumn,
     QueryModel,
-    SCHEMAS, useRouteLeave, withRouteLeave
+    SCHEMAS,
+    withRouteLeave
 } from '../index';
 import { AssayHeader } from './AssayHeader';
 import { AssayDesignHeaderButtons } from './AssayButtons';
 import { assayPage } from './AssayPageHOC';
 import { AssayOverrideBanner } from './AssayOverrideBanner';
 import { AssayGridPanel } from './AssayGridPanel';
-import { WithRouterProps } from 'react-router';
+import { CommonPageProps } from '../internal/models';
 
 const REQUIRED_COLUMN_NAMES = ['Description', 'Created', 'CreatedBy', 'Status'];
 
-interface CommonPageProps {
-    goBack: (n?: number) => void;
-    menu: ProductMenuModel;
-    menuInit: (invalidate?: boolean) => void;
-    navigate: (url: string | AppURL, replace?: boolean) => void;
-}
 
 type AssayOverviewProps = CommonPageProps & InjectedAssayModel & InjectedQueryModels & InjectedRouteLeaveProps;
 

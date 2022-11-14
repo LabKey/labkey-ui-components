@@ -17,7 +17,7 @@ import { SCHEMAS } from '../internal/schemas';
 import { AssayOverrideBanner } from './AssayOverrideBanner';
 import { AssayLink } from '../internal/AssayDefinitionModel';
 
-type Props = CommonPageProps & WithRouterProps & InjectedAssayModel & InjectedQueryModels;
+type Props = CommonPageProps & InjectedAssayModel & InjectedQueryModels;
 
 const AssayBatchOverviewPageBody: FC<Props> = memo(props => {
     const { actions, assayDefinition, queryModels, menu } = props;
@@ -66,7 +66,7 @@ const AssayBatchOverviewPageBody: FC<Props> = memo(props => {
     );
 });
 
-const AssayBatchOverviewPageWithModels = withQueryModels<WithRouterProps & InjectedAssayModel>(AssayBatchOverviewPageBody);
+const AssayBatchOverviewPageWithModels = withQueryModels<InjectedAssayModel>(AssayBatchOverviewPageBody);
 
 const AssayBatchOverviewPageImpl: FC<WithRouterProps & InjectedAssayModel> = props => {
     const { assayDefinition } = props;

@@ -53,7 +53,7 @@ interface OwnProps {
     showProviderName?: boolean;
 }
 
-type Props = CommonPageProps & OwnProps & InjectedAssayModel & WithRouterProps & InjectedRouteLeaveProps;
+type Props = CommonPageProps & OwnProps & InjectedAssayModel & WithRouterProps;
 
 const AssayDesignPageBody: FC<Props> = memo(props => {
     const {

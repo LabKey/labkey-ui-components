@@ -1,7 +1,7 @@
 import React, { FC, memo, useMemo } from 'react';
 import { InjectedAssayModel } from '../internal/components/assay/withAssayModels';
 import { CommonPageProps } from '../internal/models';
-import { InjectedRouteLeaveProps } from '../internal/util/RouteLeave';
+import { InjectedRouteLeaveProps, withRouteLeave } from '../internal/util/RouteLeave';
 import {
     NotificationsContextProps,
     useNotificationsContext
@@ -144,4 +144,4 @@ const AssayUploadPageImpl: FC<Props> = memo(props =>  {
     );
 });
 
-export const AssayUploadPage = assayPage(AssayUploadPageImpl);
+export const AssayUploadPage = withRouteLeave(assayPage(AssayUploadPageImpl));

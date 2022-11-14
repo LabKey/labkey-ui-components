@@ -191,7 +191,7 @@ export function getAssayFilter(card: FilterProps, cf?: Query.ContainerFilter): F
         // when finding from assay grid without filters
         return Filter.create(
             selectColumnFieldKey,
-            getLabKeySql(targetColumnFieldKey, schemaName, queryName),
+            getLabKeySql(targetColumnFieldKey, schemaName, queryName, null, cf),
             COLUMN_IN_FILTER_TYPE
         );
     }

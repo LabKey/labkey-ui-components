@@ -5,7 +5,7 @@ import { JobsMenuOptions } from '../internal/components/samples/models';
 export interface AssayAppContext {
     assayProviderType?: string;
     detailRenderer?: DetailRenderer;
-    qcEnabled?: boolean;
+    qcEnabledForApp?: boolean;
     requireSampleField: boolean;
     showProviderName: boolean;
     JobsMenuOptionsComponent: JobsMenuOptions;

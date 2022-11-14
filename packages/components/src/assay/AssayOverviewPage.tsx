@@ -90,6 +90,7 @@ const AssayOverviewPageBody: FC<AssayOverviewProps> = props => {
 
             <AssayGridPanel
                 assayDefinition={assayDefinition}
+                protocol={assayProtocol}
                 canDelete={true}
                 canUpdate={assayProtocol.editableRuns}
                 queryName="Runs"

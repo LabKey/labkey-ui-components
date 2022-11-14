@@ -22,8 +22,11 @@ import { ASSAY_AUDIT_QUERY } from '../internal/components/auditlog/constants';
 import { AssayRunDeleteModal } from './AssayRunDeleteModal';
 import { getAssayRunDeleteMessage } from './utils';
 import { AssayReimportRunButton } from './AssayReimportRunButton';
-import { onAssayDesignChange, onAssayRunChange } from './actions';
+import { onAssayDesignChange, onAssayRunChange, updateQCState } from './actions';
 import { AssayDesignDeleteModal } from './AssayDesignDeleteModal';
+import { AssayQCModal, AssayQCState } from './AssayQCModal';
+import { List, Map } from 'immutable';
+import { RequiresModelAndActions } from '../public/QueryModel/withQueryModels';
 
 export const AssayExportDesignButton: FC<any> = () => (
     <RequiresPermission perms={PermissionTypes.ReadAssay}>
@@ -302,17 +305,94 @@ export const AssayDesignHeaderButtons: FC<AssayDesignHeaderButtonProps> = props 
     );
 };
 
-interface UpdateQCStatesButtonProps {
+interface UpdateQCStatesButtonProps extends RequiresModelAndActions {
+    assayContainer: string;
     asMenuItem?: boolean;
     disabled: boolean;
-    onClick: () => void;
+    requireCommentOnQCStateChange: boolean;
+    run?: Map<string, any>;
 }
 
-export const UpdateQCStatesButton: FC<UpdateQCStatesButtonProps> = ({ asMenuItem, onClick, disabled }) => {
-    let button: ReactNode;
+export const UpdateQCStatesButton: FC<UpdateQCStatesButtonProps> = props => {
+    const {assayContainer, requireCommentOnQCStateChange, run, asMenuItem, disabled, model, actions} = props;
+
+    const [showQCModal, setShowQCModal] = useState<boolean>(false);
+    const [runs, setRuns] = useState<string[]>(null);
+    const [visibleRuns, setVisibleRuns] = useState<List<Map<string, any>>>(null);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string>(null);
+    const modelId = model.id;
+
+    useEffect(() => {
+        if (run) {
+            setRuns([run.getIn(['RowId', 'value'])]);
+            setVisibleRuns(List<Map<string, any>>([run]))
+        } else {
+            if (model.isLoading) return;
+
+            if (model?.selections?.size > 0) {
+                const _visibleRuns = [...model.selections].reduce((result, value) => {
+                    const row = model.gridData.find(el => el.RowId.value == value);
+
+                    // Conversion to record for handling in Grid in AssayQCForm
+                    const rowRecord = {};
+                    for (const [rowKey, rowValue] of Object.entries(row)) {
+                        if (rowValue) {
+                            rowRecord[rowKey] = rowValue.displayValue ?? rowValue.value;
+                        }
+                    }
+
+                    // runsDataModel.data only has the rows currently visible on the grid, so not all of the selectedIds
+                    // will be in it.
+                    if (row) {
+                        return result.push(Map<string, any>(rowRecord));
+                    }
+
+                    return result;
+                }, List<Map<string, any>>());
+
+                setRuns([...model.selections]);
+                setVisibleRuns(_visibleRuns);
+            }
+        }
+    }, [model.isLoading, model.selections, model.orderedRows, run]); // gridData relies on orderedRow
+
+    const openQCModal = useCallback(() => {
+        setShowQCModal(true);
+    }, []);
+
     // Here we check if we should actually hook onClick because Bootstrap MenuItems are anchor tags so they
     // do not prevent click handlers from being executed even if we set them to disabled.
-    const onClickHandler = useMemo(() => (disabled ? undefined : onClick), [disabled, onClick]);
+    const onClickHandler = useMemo(() => (disabled ? undefined : openQCModal), [disabled]);
+
+    const closeQCModal = useCallback(() => {
+        setShowQCModal(false);
+        setRuns(null);
+        setVisibleRuns(null);
+        setLoading(false);
+        setError(null);
+    }, []);
+
+    const updateQCStateValues = useCallback(
+        async (formValues: AssayQCState) => {
+            setLoading(true);
+
+            try {
+                await updateQCState({ ...formValues, runs });
+                setLoading(false);
+                closeQCModal();
+                actions.clearSelections(modelId);
+                actions.loadModel(modelId);
+            } catch (error) {
+                setError(error);
+                setLoading(false);
+            }
+        },
+        [actions, runs]
+    );
+
+    let button: ReactNode;
+    const buttonText = useMemo(() => (runs?.length == 1 ? "Update QC State" : "Update QC States"), [runs]);
 
     if (asMenuItem) {
         button = (
@@ -323,16 +403,32 @@ export const UpdateQCStatesButton: FC<UpdateQCStatesButtonProps> = ({ asMenuItem
                 disabledMessage="Select one or more assay runs."
                 placement="right"
             >
-                Update QC States
+                {buttonText}
             </DisableableMenuItem>
         );
     } else {
         button = (
             <Button className="assay-qc-btn" bsStyle="primary" onClick={onClickHandler} disabled={disabled}>
-                Update QC States
+                {buttonText}
             </Button>
         );
     }
 
-    return <RequiresPermission perms={PermissionTypes.QCAnalyst}>{button}</RequiresPermission>;
+    return (
+        <>
+            <RequiresPermission perms={PermissionTypes.QCAnalyst}>{button}</RequiresPermission>
+            {showQCModal && (
+                <AssayQCModal
+                    assayContainer={assayContainer}
+                    cancel={closeQCModal}
+                    error={error}
+                    loading={loading}
+                    runs={runs}
+                    save={updateQCStateValues}
+                    visibleRuns={visibleRuns}
+                    requireComment={requireCommentOnQCStateChange}
+                />
+            )}
+        </>
+    );
 };

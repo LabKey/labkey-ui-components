@@ -35,6 +35,7 @@ const AssayRunListingPageImpl: FC<CommonPageProps & InjectedAssayModel & Injecte
                 setIsDirty={setIsDirty}
                 getIsDirty={getIsDirty}
                 assayDefinition={assayDefinition}
+                protocol={assayProtocol}
                 canDelete={true}
                 canUpdate={assayProtocol.editableRuns}
                 queryName="Runs"

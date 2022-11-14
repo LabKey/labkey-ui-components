@@ -10,6 +10,7 @@ import { AssayResultDeleteModal } from './AssayResultDeleteModal';
 import { AssayResultListingPage } from './AssayResultListingPage';
 import { AssayResultTemplateDownloadRenderer } from './AssayResultTemplateDownloadRenderer';
 import { AssayRunDeleteModal } from './AssayRunDeleteModal';
+import { AssayRunDetailsPage } from './AssayRunDetailsPage';
 import { AssayRunListingPage } from './AssayRunListingPage';
 import { AssaySubNav } from './AssaysSubNav';
 import { AssayTypeSummary } from './AssayTypeSummary';
@@ -42,6 +43,7 @@ export {
     AssayImportDataButton,
     AssayReimportRunButton,
     AssayResolver,
+    AssayRunDetailsPage,
     AssayRunResolver,
     AssayResultDeleteModal,
     AssayResultTemplateDownloadRenderer,

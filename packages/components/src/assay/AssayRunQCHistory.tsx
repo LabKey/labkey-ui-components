@@ -1,0 +1,84 @@
+import React, { ReactNode } from 'react';
+import { Map } from 'immutable';
+import { SchemaQuery } from '../public/SchemaQuery';
+import { InjectedQueryModels, withQueryModels } from '../public/QueryModel/withQueryModels';
+import { Filter } from '@labkey/api';
+import { UpdateQCStatesButton } from './AssayButtons';
+import { GridPanel } from '../public/QueryModel/GridPanel';
+import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
+
+const QC_HISTORY_SQ = SchemaQuery.create('auditLog', 'ExperimentAuditEvent');
+const QC_MODEL_ID = 'QC';
+
+interface State {
+    error?: string;
+    loading: boolean;
+    qcModalOpen: boolean;
+}
+
+interface Props {
+    assayContainer: string;
+    onQCStateUpdate?: () => void;
+    run: Map<string, any>;
+    requireCommentOnQCStateChange: boolean;
+}
+
+class AssayRunQCHistoryImpl extends React.Component<Props & InjectedQueryModels, State> {
+    state: Readonly<State> = { error: undefined, loading: false, qcModalOpen: false };
+
+    componentDidMount(): void {
+        const { actions, run } = this.props;
+
+        actions.addModel(
+            {
+                id: QC_MODEL_ID,
+                schemaQuery: QC_HISTORY_SQ,
+                baseFilters: [
+                    Filter.create('RunLsid', run.getIn(['LSID', 'value'])),
+                    Filter.create('QCState', undefined, Filter.Types.NONBLANK),
+                ],
+            },
+            true
+        );
+    }
+
+    render(): ReactNode {
+        const { actions, assayContainer, queryModels, run, requireCommentOnQCStateChange } = this.props;
+        const model = queryModels[QC_MODEL_ID];
+        const ButtonsComponent = () => (
+            <UpdateQCStatesButton
+                model={model}
+                run={run}
+                actions={actions}
+                assayContainer={assayContainer}
+                disabled={false}
+                requireCommentOnQCStateChange={requireCommentOnQCStateChange}
+            />
+        );
+
+        return (
+            <div className="qc-history">
+                {model !== undefined && (
+                    <GridPanel
+                        actions={actions}
+                        ButtonsComponent={ButtonsComponent}
+                        model={model}
+                        showChartMenu={false}
+                        showExport={false}
+                        showViewMenu={false}
+                        allowFiltering={false}
+                        allowViewCustomization={false}
+                        showFiltersButton={false}
+                        showSearchInput={false}
+                        allowSelections={false}
+                        title="QC History"
+                    />
+                )}
+
+                {model === undefined && <LoadingSpinner />}
+            </div>
+        );
+    }
+}
+
+export const AssayRunQCHistory = withQueryModels<Props>(AssayRunQCHistoryImpl);

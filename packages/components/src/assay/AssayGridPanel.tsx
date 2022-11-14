@@ -1,17 +1,17 @@
 import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from '../public/QueryModel/withQueryModels';
-import { hasAnyPermissions, User } from '../internal/components/base/models/User';
+import { hasAllPermissions, hasAnyPermissions } from '../internal/components/base/models/User';
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 import { Filter, PermissionTypes, Utils } from '@labkey/api';
 import { SCHEMAS } from '../internal/schemas';
 import { DisableableButton } from '../internal/components/buttons/DisableableButton';
-import { AssayImportDataButton } from './AssayButtons';
+import { AssayImportDataButton, UpdateQCStatesButton } from './AssayButtons';
 import { ManageDropdownButton } from '../internal/components/buttons/ManageDropdownButton';
 import { RequiresPermission } from '../internal/components/base/Permissions';
 import { SelectionMenuItem } from '../internal/components/menus/SelectionMenuItem';
 import { MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE } from '../internal/constants';
 import { MenuItem } from 'react-bootstrap';
 import { SampleActionsButton } from '../entities';
-import { isWorkflowEnabled } from '../internal/app/utils';
+import { isAssayQCEnabled, isWorkflowEnabled } from '../internal/app/utils';
 import { AssayDefinitionModel, AssayDomainTypes } from '../internal/AssayDefinitionModel';
 import { List, Map, OrderedMap } from 'immutable';
 import { QueryModel } from '../public/QueryModel/QueryModel';
@@ -27,16 +27,18 @@ import { EditableGridPanelForUpdate } from '../internal/components/editable/Edit
 import { EditableGridLoaderFromSelection } from '../internal/components/editable/EditableGridLoaderFromSelection';
 import { GridPanel } from '../public/QueryModel/GridPanel';
 import { useAssayAppContext } from './AssayAppContext';
+import { AssayProtocolModel } from '../internal/components/domainproperties/assay/models';
 
 
 const ASSAY_RESULT_DELETE_MAX_ROWS = 10000;
 
 interface AssayGridButtonsComponentProps extends RequiresModelAndActions {
-    user: User;
+    assayDefinition: AssayDefinitionModel,
     canDelete: boolean;
     canUpdate: boolean;
     nounPlural: string;
     onDelete: () => void;
+    protocol: AssayProtocolModel;
     queryName: string;
     showBulkUpdate: () => void;
     showImport: boolean;
@@ -46,28 +48,39 @@ interface AssayGridButtonsComponentProps extends RequiresModelAndActions {
 // exported for jest testing
 export const AssayGridButtons: FC<AssayGridButtonsComponentProps> = memo(props => {
     const {
+        actions,
+        assayDefinition,
         canDelete,
         canUpdate,
         model,
         nounPlural,
         onDelete,
+        protocol,
         queryName,
         showBulkUpdate,
         showImport,
         toggleEditWithGridUpdate,
-        user,
     } = props;
     const noun = nounPlural || queryName;
+    const { moduleContext, user } = useServerContext();
+
     const showImportBtn = showImport && user.hasInsertPermission();
     const showDeleteBtn = canDelete && user.hasDeletePermission();
     const showEditBtn = canUpdate && user.hasUpdatePermission();
     const showManageBtn = showDeleteBtn && showEditBtn;
-    const { JobsMenuOptionsComponent } = useAssayAppContext();
+
+    const { qcEnabledForApp, JobsMenuOptionsComponent } = useAssayAppContext();
 
     const hasSamplePerms = hasAnyPermissions(user, [PermissionTypes.ManageSampleWorkflows, PermissionTypes.ManagePicklists]);
     const showSampleBtn = hasSamplePerms
         && queryName?.localeCompare(SCHEMAS.ASSAY_TABLES.RESULTS_QUERYNAME, 'en-US', {sensitivity:'base'}) === 0
         && model?.displayColumns?.some(c => c.isSampleLookup());
+    const showQCButton = (
+        qcEnabledForApp
+        && protocol?.qcEnabled
+        && isAssayQCEnabled(moduleContext)
+        && hasAllPermissions(user, [PermissionTypes.QCAnalyst])
+    );
 
     if (!showImportBtn && !showDeleteBtn && !showEditBtn && !showSampleBtn) {
         return null;
@@ -90,6 +103,19 @@ export const AssayGridButtons: FC<AssayGridButtonsComponentProps> = memo(props =
             </div>
             {showManageBtn && (
                 <ManageDropdownButton id="assay-rows-grid" title="Edit" className="responsive-menu">
+                    {showQCButton && (
+                        <RequiresPermission perms={PermissionTypes.QCAnalyst}>
+                            <UpdateQCStatesButton
+                                model={model}
+                                actions={actions}
+                                assayContainer={protocol.container}
+                                disabled={!model.hasSelections}
+                                asMenuItem
+                                requireCommentOnQCStateChange={assayDefinition.requireCommentOnQCStateChange}
+                            />
+                            {(showEditBtn || showDeleteBtn) && <MenuItem divider />}
+                        </RequiresPermission>
+                    )}
                     <RequiresPermission perms={PermissionTypes.Update}>
                         <SelectionMenuItem
                             id={'assay-item-update-menu-item'}
@@ -135,18 +161,19 @@ export const AssayGridButtons: FC<AssayGridButtonsComponentProps> = memo(props =
 
 interface AssayGridPanelProps  {
     assayDefinition: AssayDefinitionModel
-    queryName: string,
+    protocol?: AssayProtocolModel
+    queryName: string
     showImport?: boolean
     canDelete?: boolean
     canUpdate?: boolean
-    header?: string,
-    nounSingular?: string,
-    nounPlural?: string,
+    header?: string
+    nounSingular?: string
+    nounPlural?: string
     filters?: Filter.IFilter[],
-    onEditToggle?: (isEditing: boolean) => any,
-    getIsDirty?: () => boolean;
-    setIsDirty?: (isDirty: boolean) => void;
-    requiredColumns?: string[];
+    onEditToggle?: (isEditing: boolean) => any
+    getIsDirty?: () => boolean
+    setIsDirty?: (isDirty: boolean) => void
+    requiredColumns?: string[]
 }
 
 export const AssayGridBodyImpl: FC<AssayGridPanelProps & InjectedQueryModels> = memo(props => {
@@ -164,8 +191,10 @@ export const AssayGridBodyImpl: FC<AssayGridPanelProps & InjectedQueryModels> = 
         queryModels,
         nounSingular,
         nounPlural,
+        protocol,
         queryName,
     } = props;
+
     const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [showBulkUpdate, setShowBulkUpdate] = useState<boolean>(false);
@@ -175,7 +204,6 @@ export const AssayGridBodyImpl: FC<AssayGridPanelProps & InjectedQueryModels> = 
     const assayModel = useMemo<QueryModel>(() => Object.values(queryModels)[0], [queryModels]);
     const modelId = useMemo(() => assayModel.id, [assayModel]);
     const { createNotification, dismissNotifications} = useNotificationsContext();
-    const { user } = useServerContext();
 
     const hideConfirm = useCallback(() => {
         setShowConfirmDelete(false);
@@ -285,6 +313,7 @@ export const AssayGridBodyImpl: FC<AssayGridPanelProps & InjectedQueryModels> = 
 
     const buttonsComponentProps: AssayGridButtonsComponentProps = {
         actions,
+        assayDefinition,
         canDelete,
         canUpdate,
         nounPlural,
@@ -294,7 +323,7 @@ export const AssayGridBodyImpl: FC<AssayGridPanelProps & InjectedQueryModels> = 
         showBulkUpdate: onShowBulkUpdate,
         showImport,
         toggleEditWithGridUpdate,
-        user,
+        protocol,
     };
 
     return (
@@ -343,6 +372,7 @@ export const AssayGridBodyImpl: FC<AssayGridPanelProps & InjectedQueryModels> = 
             {showBulkUpdate && (
                 <BulkUpdateForm
                     canSubmitForEdit={hasValidMaxSelection}
+                    containerFilter={getContainerFilterForLookups()}
                     itemLabel={assayDefinition.name}
                     onCancel={resetState}
                     onComplete={onBulkUpdateComplete}

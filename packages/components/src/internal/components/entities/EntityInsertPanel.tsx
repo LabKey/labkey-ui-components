@@ -69,6 +69,9 @@ import { FileAttachmentForm } from '../../../public/files/FileAttachmentForm';
 import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { useServerContext } from '../base/ServerContext';
 import { getLocation, Location } from '../../util/URL';
+import { SCHEMAS } from '../../schemas';
+import { isSamplesSchema } from '../samples/utils';
+import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { ENTITY_CREATION_METRIC, SampleTypeDataType } from './constants';
 import {
@@ -79,7 +82,7 @@ import {
     EditorModelUpdatesWithParents,
 } from './EntityParentTypeSelectors';
 import { EntityInsertGridRequiredFieldAlert } from './EntityInsertGridRequiredFieldAlert';
-import { getUniqueIdColumnMetadata } from './utils';
+import { getBulkCreationTypeOptions, getUniqueIdColumnMetadata } from './utils';
 import { getEntityTypeData, handleEntityFileImport } from './actions';
 import {
     EntityDataType,
@@ -127,7 +130,6 @@ interface OwnProps {
     canEditEntityTypeDetails?: boolean;
     combineParentTypes?: boolean; // Puts all parent types in one parent button. Name on the button will be the first parent type listed
     containerFilter?: Query.ContainerFilter;
-    creationTypeOptions?: SampleCreationTypeModel[];
     disableMerge?: boolean;
     entityDataType: EntityDataType;
     errorNounPlural?: string; // Used if you want a different noun in error messages than on the other components
@@ -967,8 +969,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     renderCreateFromGrid = (): ReactNode => {
         const { insertModel, creationType, dataModel, editorModel } = this.state;
-        const { containerFilter, creationTypeOptions, maxEntities, nounPlural, onBulkAdd, getIsDirty, setIsDirty } =
-            this.props;
+        const { containerFilter, maxEntities, nounPlural, onBulkAdd, getIsDirty, setIsDirty } = this.props;
         const columnMetadata = this.getColumnMetadata();
         const isLoaded = (dataModel && !dataModel?.isLoading) ?? false;
 
@@ -979,12 +980,11 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const gridNounPluralCap = isAliquotCreation ? capitalizeFirstChar(ALIQUOT_NOUN_PLURAL) : this.capNounPlural;
         const gridNounPlural = isAliquotCreation ? ALIQUOT_NOUN_PLURAL : nounPlural;
 
-        let bulkCreationTypeOptions = creationTypeOptions;
-        const selectedType = creationTypeOptions?.find(type => type.type === creationType);
-        if (selectedType)
-            bulkCreationTypeOptions = bulkCreationTypeOptions.filter(
-                option => option.typeGroup === selectedType.typeGroup
-            );
+        // Issue 45483: allowed creation types in bulk insert modal to be based on if sample parent types exist and based on the creation type for the page
+        const numSampleParentTypes = insertModel.entityParents
+            ?.get(SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName)
+            ?.filter(parentType => isSamplesSchema(SchemaQuery.create(parentType.schema, parentType.query))).size;
+        const bulkCreationTypeOptions = getBulkCreationTypeOptions(numSampleParentTypes > 0, creationType);
 
         return (
             <>

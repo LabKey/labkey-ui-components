@@ -10,6 +10,13 @@ import { EditableColumnMetadata } from '../editable/EditableGrid';
 import { SCHEMAS } from '../../schemas';
 
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
+import {
+    ALIQUOT_CREATION,
+    CHILD_SAMPLE_CREATION,
+    DERIVATIVE_CREATION,
+    POOLED_SAMPLE_CREATION,
+    SampleCreationTypeModel,
+} from '../samples/models';
 
 export function getInitialParentChoices(
     parentTypeOptions: List<IEntityTypeOption>,
@@ -88,3 +95,26 @@ export function isSampleEntity(dataType: EntityDataType) {
 export function isDataClassEntity(dataType: EntityDataType) {
     return dataType.instanceSchemaName === SCHEMAS.DATA_CLASSES.SCHEMA;
 }
+
+export const getBulkCreationTypeOptions = (hasParentSamples: boolean, creationType: string): SampleCreationTypeModel[] => {
+    // Issue 45483: ALIQUOT_CREATION only makes sense if creationType is Aliquots given the different shape of the editable grid columns
+    if (creationType === ALIQUOT_CREATION.type) {
+        return [{ ...ALIQUOT_CREATION, selected: creationType === ALIQUOT_CREATION.type }];
+    }
+
+    if (!hasParentSamples) {
+        return [{ ...CHILD_SAMPLE_CREATION, selected: true }];
+    }
+
+    const types = [
+        { ...DERIVATIVE_CREATION, selected: creationType === DERIVATIVE_CREATION.type },
+        { ...POOLED_SAMPLE_CREATION, selected: creationType === POOLED_SAMPLE_CREATION.type },
+    ];
+
+    const selectedType = types.find(type => type.selected);
+    if (!selectedType) {
+        types[0] = { ...types[0], selected: true };
+    }
+
+    return types;
+};

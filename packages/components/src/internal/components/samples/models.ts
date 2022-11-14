@@ -18,11 +18,6 @@ export enum SampleCreationType {
     PooledSamples = 'Pooled Samples',
 }
 
-export enum SampleCreationTypeGroup {
-    samples,
-    aliquots,
-}
-
 export interface SampleCreationTypeModel {
     description?: string;
     disabled?: boolean;
@@ -33,7 +28,6 @@ export interface SampleCreationTypeModel {
     quantityLabel?: string;
     selected?: boolean;
     type: SampleCreationType;
-    typeGroup: SampleCreationTypeGroup;
 }
 
 export const CHILD_SAMPLE_CREATION: SampleCreationTypeModel = {
@@ -42,7 +36,6 @@ export const CHILD_SAMPLE_CREATION: SampleCreationTypeModel = {
     minParentsPerSample: 1,
     iconSrc: 'derivatives',
     quantityLabel: 'New Samples per Parent',
-    typeGroup: SampleCreationTypeGroup.samples,
 };
 
 export const DERIVATIVE_CREATION: SampleCreationTypeModel = {
@@ -52,7 +45,6 @@ export const DERIVATIVE_CREATION: SampleCreationTypeModel = {
     minParentsPerSample: 1,
     iconSrc: 'derivatives',
     quantityLabel: 'Derivatives per Parent',
-    typeGroup: SampleCreationTypeGroup.samples,
 };
 
 export const POOLED_SAMPLE_CREATION: SampleCreationTypeModel = {
@@ -61,7 +53,6 @@ export const POOLED_SAMPLE_CREATION: SampleCreationTypeModel = {
     minParentsPerSample: 2,
     iconSrc: 'pooled',
     quantityLabel: 'New Samples per Parent Group',
-    typeGroup: SampleCreationTypeGroup.samples,
 };
 
 export const ALIQUOT_CREATION: SampleCreationTypeModel = {
@@ -70,7 +61,6 @@ export const ALIQUOT_CREATION: SampleCreationTypeModel = {
     minParentsPerSample: 1,
     iconSrc: 'aliquots',
     quantityLabel: 'Aliquots per Parent',
-    typeGroup: SampleCreationTypeGroup.aliquots,
 };
 
 export interface SamplesSelectionProviderProps {

@@ -508,13 +508,7 @@ import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPag
 import { PipelineSubNav } from './internal/components/pipeline/PipelineSubNav';
 import { PipelineStatusDetailPage } from './internal/components/pipeline/PipelineStatusDetailPage';
 import { getTitleDisplay, hasActivePipelineJob } from './internal/components/pipeline/utils';
-import {
-    ALIQUOT_CREATION,
-    CHILD_SAMPLE_CREATION,
-    DERIVATIVE_CREATION,
-    POOLED_SAMPLE_CREATION,
-    SampleCreationType,
-} from './internal/components/samples/models';
+import { SampleCreationType } from './internal/components/samples/models';
 import { DisableableMenuItem } from './internal/components/samples/DisableableMenuItem';
 import { SampleStatusTag } from './internal/components/samples/SampleStatusTag';
 import { ManageSampleStatusesPanel } from './internal/components/samples/ManageSampleStatusesPanel';
@@ -1015,10 +1009,6 @@ export {
     SampleTypeEmptyAlert,
     SampleCreationType,
     SamplesEditButtonSections,
-    CHILD_SAMPLE_CREATION,
-    DERIVATIVE_CREATION,
-    POOLED_SAMPLE_CREATION,
-    ALIQUOT_CREATION,
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
     getOmittedSampleTypeColumns,
     getOperationNotPermittedMessage,

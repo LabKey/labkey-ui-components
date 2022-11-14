@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Add misc props to SampleTypeAppContext for SampleCreatePage.tsx
   * Issue 46693: Disable Sample Grid Derive menu options with >1000 selected
   * Issue 46163: Changing Aliquot sample type does not change the filter of the AliquotFrom column
+  * Issue 45483: allowed creation types in bulk insert modal to be based on if sample parent types exist and based on the creation type for the page
 
 ### version 2.249.0
 *Released*: 10 November 2022

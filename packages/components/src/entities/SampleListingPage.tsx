@@ -47,7 +47,7 @@ import { onSampleChange, onSampleTypeChange } from './actions';
 import { getSampleAuditBehaviorType, getSampleTypeTemplateUrl } from './utils';
 
 const DETAIL_GRID_ID = 'samples-details';
-export const SAMPLES_LISTING_GRID_ID = 'samples-listing';
+const SAMPLES_LISTING_GRID_ID = 'samples-listing';
 const SUB_MENU_WIDTH = 1610;
 let SAMPLE_ACTION_UPDATE_COUNTER = 0;
 

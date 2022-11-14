@@ -52,6 +52,7 @@ export const SampleActionsButton: FC<Props> = memo(props => {
         model,
         entityDataType: sampleFinderProps?.entityDataType,
         metricFeatureArea,
+        baseFilter: sampleFinderProps?.baseFilters,
     };
 
     return (

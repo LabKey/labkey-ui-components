@@ -185,6 +185,9 @@ export function getExpDescendantOfFilter(
 
 export function getAssayFilter(card: FilterProps, cf?: Query.ContainerFilter): Filter.IFilter {
     const { schemaQuery, filterArray, selectColumnFieldKey, targetColumnFieldKey } = card;
+    if (!selectColumnFieldKey)
+        return null;
+
     const { schemaName, queryName } = schemaQuery;
 
     if (!filterArray || filterArray.length === 0) {

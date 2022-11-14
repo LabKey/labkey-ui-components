@@ -1,6 +1,7 @@
 import { AssayBatchListingPage } from './AssayBatchListingPage';
 import { AssayBatchOverviewPage } from './AssayBatchOverviewPage';
 import { AssayDesignPage } from './AssayDesignPage';
+import { AssayDesignSelectPage, excludedAssayProviders } from './AssayDesignSelectPage';
 import { AssayDesignDeleteModal } from './AssayDesignDeleteModal';
 import { AssayListingPage } from './AssayListingPage';
 import { AssayOverviewPage } from './AssayOverviewPage';
@@ -29,11 +30,13 @@ import { onAssayRunChange, onAssayDesignChange } from './actions';
 
 export {
     assayPage,
+    excludedAssayProviders,
     getAssayImportNotificationMsg,
     getAssayRunDeleteMessage,
     AssayBatchListingPage,
     AssayBatchOverviewPage,
     AssayDesignPage,
+    AssayDesignSelectPage,
     AssayDesignDeleteModal,
     AssayDesignHeaderButtons,
     AssayListingPage,

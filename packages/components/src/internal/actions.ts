@@ -335,10 +335,11 @@ function getFilteredQueryParams(
     schemaName: string,
     queryName: string,
     filterList: List<Filter.IFilter>,
-    queryParameters?: Record<string, any>
+    queryParameters?: Record<string, any>,
+    containerPath?: string,
 ): Record<string, any> {
     if (schemaName && queryName && filterList && !filterList.isEmpty()) {
-        return getQueryParams(key, schemaName, queryName, filterList, queryParameters);
+        return getQueryParams(key, schemaName, queryName, filterList, queryParameters, containerPath);
     } else {
         return {
             key,
@@ -351,7 +352,8 @@ function getQueryParams(
     schemaName: string,
     queryName: string,
     filterList: List<Filter.IFilter>,
-    queryParameters?: Record<string, any>
+    queryParameters?: Record<string, any>,
+    containerPath?: string,
 ): Record<string, any> {
     const filters = filterList.reduce((prev, next) => {
         return Object.assign(prev, { [next.getURLParameterName()]: next.getURLParameterValue() });
@@ -362,6 +364,12 @@ function getQueryParams(
         queryName,
         'query.selectionKey': key,
     };
+
+    const containerFilter = queryParameters?.containerFilter ?? getContainerFilter(containerPath);
+    if (containerFilter) {
+        params['query.containerFilterName'] = containerFilter;
+    }
+
     if (queryParameters) {
         for (const propName in queryParameters) {
             if (queryParameters.hasOwnProperty(propName)) {
@@ -398,7 +406,7 @@ export function getSelected(
                 container: containerPath,
             }),
             method: 'POST',
-            jsonData: getFilteredQueryParams(key, schemaName, queryName, filterList, queryParameters),
+            jsonData: getFilteredQueryParams(key, schemaName, queryName, filterList, queryParameters, containerPath),
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
@@ -425,7 +433,7 @@ export function clearSelected(
                 container: containerPath,
             }),
             method: 'POST',
-            jsonData: getFilteredQueryParams(key, schemaName, queryName, filterList, queryParameters),
+            jsonData: getFilteredQueryParams(key, schemaName, queryName, filterList, queryParameters, containerPath),
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),

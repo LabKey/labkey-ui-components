@@ -197,12 +197,12 @@ export const removeEntityParentType = (
 };
 
 export const addEntityParentType = (
-    queryName: string,
+    parentType: string,
     entityParents: Map<string, List<EntityParentType>>
 ): Map<string, List<EntityParentType>> => {
-    const nextIndex = entityParents.get(queryName).size + 1;
-    const updatedParents = entityParents.get(queryName).push(EntityParentType.create({ index: nextIndex }));
-    return entityParents.set(queryName, updatedParents);
+    const nextIndex = entityParents.get(parentType).size + 1;
+    const updatedParents = entityParents.get(parentType).push(EntityParentType.create({ index: nextIndex }));
+    return entityParents.set(parentType, updatedParents);
 };
 
 interface AddEntityButtonProps {

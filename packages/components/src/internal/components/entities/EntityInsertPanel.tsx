@@ -68,7 +68,7 @@ import { LabelHelpTip } from '../base/LabelHelpTip';
 import { FileAttachmentForm } from '../../../public/files/FileAttachmentForm';
 import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { useServerContext } from '../base/ServerContext';
-import { Location } from '../../util/URL';
+import { getLocation, Location } from '../../util/URL';
 
 import { ENTITY_CREATION_METRIC, SampleTypeDataType } from './constants';
 import {
@@ -143,6 +143,7 @@ interface OwnProps {
     // loadNameExpressionOptions is a prop for testing purposes only, see default implementation below
     loadNameExpressionOptions?: (containerPath?: string) => Promise<GetNameExpressionOptionsResponse>;
     maxEntities?: number;
+    navigate?: (url: string | AppURL, replace?: boolean) => void;
     nounPlural: string;
     nounSingular: string;
     onBackgroundJobStart?: (entityTypeName, filename, jobId) => void;
@@ -351,7 +352,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 insertModel,
                 entityDataType,
                 parentSchemaQueries,
-                entityDataType.typeListingSchemaQuery.queryName,
+                selected,
                 allowParents,
                 isItemSamples
             );
@@ -482,18 +483,28 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     changeTargetEntityType = (fieldName: string, formValue: any, selectedOption: IEntityTypeOption): void => {
+        const { setIsDirty, navigate } = this.props;
         const { insertModel, creationType } = this.state;
+
+        // if creating aliquots and we change the targetEntityType, update params to get the component to re-render
+        if (creationType === SampleCreationType.Aliquots && navigate) {
+            setIsDirty?.(false);
+            const { hash } = getLocation();
+            navigate(
+                new AppURL({ _baseUrl: hash.substring(1) })
+                    .addParam('target', formValue)
+                    .addParam('creationType', SampleCreationType.Aliquots)
+            );
+            return;
+        }
 
         let updatedModel = insertModel.merge({
             targetEntityType: new EntityTypeOption(selectedOption),
             isError: false,
             errors: undefined,
         }) as EntityIdCreationModel;
-        if (creationType === SampleCreationType.Aliquots) {
-            updatedModel = updatedModel.merge({
-                entityCount: 0,
-            }) as EntityIdCreationModel;
-        } else if (!selectedOption) {
+
+        if (!selectedOption) {
             updatedModel = updatedModel.merge({
                 entityParents: insertModel.getClearedEntityParents(),
             }) as EntityIdCreationModel;
@@ -1447,7 +1458,15 @@ export const EntityInsertPanel: FC<{ location?: Location } & OwnProps> = memo(pr
             return {};
         }
 
-        const { creationType, numPerParent, parent, selectionKey, tab, target, selectionKeyType } = location.query;
+        const {
+            creationType = SampleCreationType.Independents,
+            numPerParent,
+            parent,
+            selectionKey,
+            tab,
+            target,
+            selectionKeyType,
+        } = location.query;
         const isItemSamples = selectionKeyType === SAMPLE_INVENTORY_ITEM_SELECTION_KEY;
         return {
             creationType,
@@ -1460,7 +1479,13 @@ export const EntityInsertPanel: FC<{ location?: Location } & OwnProps> = memo(pr
         };
     }, [location, entityInsertPanelProps.selectedTab]);
 
-    return <EntityInsertPanelFormSteps {...entityInsertPanelProps} {...fromLocationProps} user={user} />;
+    // Issue 46163: changing aliquot target entity type should reload the EntityInsertPanel component to re-init accordingly
+    const key = useMemo(
+        () => fromLocationProps.target + '-' + fromLocationProps.creationType,
+        [fromLocationProps.creationType, fromLocationProps.target]
+    );
+
+    return <EntityInsertPanelFormSteps {...entityInsertPanelProps} {...fromLocationProps} key={key} user={user} />;
 });
 
 EntityInsertPanel.displayName = 'EntityInsertPanel';

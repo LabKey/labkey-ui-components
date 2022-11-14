@@ -237,6 +237,7 @@ export const SampleCreatePage: FC<SampleCreatePageProps> = memo(props => {
                 loadNameExpressionOptions={loadNameExpressionOptions}
                 location={location}
                 maxEntities={MAX_EDITABLE_GRID_ROWS}
+                navigate={navigate}
                 nounPlural="samples"
                 nounSingular="sample"
                 onBackgroundJobStart={onBackgroundJobStart}

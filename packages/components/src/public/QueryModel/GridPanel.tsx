@@ -295,7 +295,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
 
     const currentView = view ?? model.currentView;
     let displayTitle = title;
-    if (viewName && !currentView?.hidden) {
+    if (viewName && !currentView?.hidden && !currentView?.isSystemView) {
         const label = currentView?.label ?? viewName;
         displayTitle = displayTitle ? displayTitle + ' - ' + label : label;
     }

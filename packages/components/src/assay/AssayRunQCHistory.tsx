@@ -14,11 +14,6 @@ import { UpdateQCStatesButton } from './AssayButtons';
 const QC_HISTORY_SQ = SchemaQuery.create('auditLog', 'ExperimentAuditEvent');
 const QC_MODEL_ID = 'QC';
 
-interface State {
-    error?: string;
-    loading: boolean;
-    qcModalOpen: boolean;
-}
 
 interface Props {
     assayContainer: string;
@@ -27,8 +22,7 @@ interface Props {
     run: Map<string, any>;
 }
 
-class AssayRunQCHistoryImpl extends React.Component<Props & InjectedQueryModels, State> {
-    state: Readonly<State> = { error: undefined, loading: false, qcModalOpen: false };
+class AssayRunQCHistoryImpl extends React.Component<Props & InjectedQueryModels, any> {
 
     componentDidMount(): void {
         const { actions, run } = this.props;

@@ -251,7 +251,7 @@ describe('SamplesTabbedGridPanel', () => {
         wrapper.unmount();
     });
 
-    // Expected: Printing not allowed on single tab with
+    // Expected: Printing not allowed on single tab with alwaysShowTabs set
     test('showLabelOption true, user.isGuest false, Single model, isAllSamplesSchema', () => {
         jest.spyOn(sampleUtils, 'isAllSamplesSchema').mockReturnValue(true);
 

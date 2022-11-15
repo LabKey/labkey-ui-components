@@ -39,7 +39,7 @@ const assayProtocol = AssayProtocolModel.create({
     providerName: 'GPAT',
 });
 
-describe('AssayRowsGridButtons', () => {
+describe('AssayGridButtons', () => {
     const DEFAULT_PROPS = {
         model: makeTestQueryModel(SchemaQuery.create('schema', 'query')),
         actions: makeTestActions(),
@@ -59,6 +59,7 @@ describe('AssayRowsGridButtons', () => {
     const ASSAY_APP_CONTEXT = {
         requireSampleField: true,
         showProviderName: false,
+        jobNotificationProvider: "test",
         JobsMenuOptionsComponent: () => <div className="jobs-menu-test"> <MenuItem className="add-to-job">Add to Job</MenuItem> <MenuItem className="start-a-job">Start a New Job</MenuItem> </div>,
     } as AssayAppContext;
 

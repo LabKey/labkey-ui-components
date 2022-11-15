@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.249.2-assayDisplayPages.17",
+  "version": "2.249.2-assayDisplayPages.18",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

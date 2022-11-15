@@ -28,6 +28,7 @@ import { AssayGridPanel } from './AssayGridPanel';
 import { AssayOverrideBanner } from './AssayOverrideBanner';
 
 import { assayPage } from './AssayPageHOC';
+import { NotFound } from '../internal/components/base/NotFound';
 
 type Props = CommonPageProps & InjectedAssayModel & InjectedQueryModels;
 
@@ -41,13 +42,17 @@ const AssayBatchOverviewPageBody: FC<Props> = memo(props => {
     }
 
     const row = model.getRow();
-    const batchId = caseInsensitive(row, 'RowId').value;
-    const batchName = caseInsensitive(row, 'Name').value;
+    const batchId = caseInsensitive(row, 'RowId')?.value;
+    const batchName = caseInsensitive(row, 'Name')?.value;
     const runsFilter = [
         Filter.create('batch/rowId', batchId),
         // allow for the possibility of viewing runs that have been replaced
         Filter.create('Replaced', undefined, Filter.Types.NONBLANK),
     ];
+
+    if (!batchId) {
+        return <NotFound />
+    }
 
     return (
         <Page title={batchName + ' - ' + subTitle} hasHeader notFound={!row}>

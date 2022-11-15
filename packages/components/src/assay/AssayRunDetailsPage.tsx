@@ -95,7 +95,7 @@ const AssayRunDetailsPageBodyImpl: FC<Props & InjectedQueryModels & Notification
         setEditingRunDetails(editing);
     }, []);
 
-    if (model.isLoading || !runContext.isLoaded) {
+    if (model.isLoading || (model.hasRows && !runContext.isLoaded)) {
         return <LoadingPage title={subTitle} />;
     }
 
@@ -105,8 +105,8 @@ const AssayRunDetailsPageBodyImpl: FC<Props & InjectedQueryModels & Notification
 
     const row = model.getRow();
     const runName = model.getRowValue('Name');
-    const canReimport = allowReimportAssayRun(serverContext.user, runContext.container.id, serverContext.container.id);
-    const hasDeletePermission = runContext.user.hasDeletePermission();
+    const canReimport = allowReimportAssayRun(serverContext.user, runContext.container?.id, serverContext.container.id);
+    const hasDeletePermission = runContext.user?.hasDeletePermission();
 
     return (
         <Page title={(runName ? runName + ' - ' : '') + subTitle} hasHeader>

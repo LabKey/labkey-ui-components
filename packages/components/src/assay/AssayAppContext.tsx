@@ -1,9 +1,11 @@
 import { ExtendableAppContext, useAppContext } from '../internal/AppContext';
 import { DetailRenderer } from '../internal/components/forms/detail/DetailDisplay';
 import { JobsMenuOptions } from '../internal/components/samples/models';
+import { ReferencingNotebooks } from '../entities/models';
 
 export interface AssayAppContext {
     JobsMenuOptionsComponent: JobsMenuOptions;
+    ReferencingNotebooksComponent: ReferencingNotebooks;
     assayProviderType?: string;
     assayTypes?: string[];
     detailRenderer?: DetailRenderer;

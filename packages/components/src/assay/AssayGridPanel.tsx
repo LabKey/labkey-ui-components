@@ -9,7 +9,6 @@ import { ManageDropdownButton } from '../internal/components/buttons/ManageDropd
 import { RequiresPermission } from '../internal/components/base/Permissions';
 import { SelectionMenuItem } from '../internal/components/menus/SelectionMenuItem';
 import { MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE } from '../internal/constants';
-import { SampleActionsButton } from '../entities';
 import { isAssayQCEnabled, isWorkflowEnabled } from '../internal/app/utils';
 import { AssayDefinitionModel, AssayDomainTypes } from '../internal/AssayDefinitionModel';
 
@@ -36,6 +35,7 @@ import { useAssayAppContext } from './AssayAppContext';
 import { AssayResultDeleteModal } from './AssayResultDeleteModal';
 import { AssayRunDeleteModal } from './AssayRunDeleteModal';
 import { onAssayRunChange } from './actions';
+import { SampleActionsButton } from './SampleActionsButton';
 
 const ASSAY_RESULT_DELETE_MAX_ROWS = 10000;
 
@@ -238,6 +238,7 @@ export const AssayGridBodyImpl: FC<AssayGridPanelProps & InjectedQueryModels> = 
         hideConfirm();
         onAssayRunChange(assayDefinition.protocolSchemaName);
         actions.loadModel(modelId);
+        actions.clearSelections(modelId);
     }, [hideConfirm, assayDefinition, actions, modelId]);
 
     const onDelete = useCallback(() => {

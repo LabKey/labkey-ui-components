@@ -22,7 +22,7 @@ import { QueryModel } from '../public/QueryModel/QueryModel';
 import { PicklistCreationMenuItem } from '../internal/components/picklist/PicklistCreationMenuItem';
 import { AddToPicklistMenuItem } from '../internal/components/picklist/AddToPicklistMenuItem';
 
-import { AssayResultsForSamplesMenuItem } from './AssayResultsForSamplesButton';
+import { AssayResultsForSamplesMenuItem } from '../internal/components/entities/AssayResultsForSamplesButton';
 
 interface Props {
     disabled?: boolean;

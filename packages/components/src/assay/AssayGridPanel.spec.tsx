@@ -8,7 +8,6 @@ import { QueryColumn, QueryLookup } from '../public/QueryColumn';
 import { SAMPLE_TYPE_CONCEPT_URI } from '../internal/components/domainproperties/constants';
 import { fromJS } from 'immutable';
 import { mountWithAppServerContext } from '../internal/testHelpers';
-import { SampleActionsButton } from '../entities';
 import { ManageDropdownButton } from '../internal/components/buttons/ManageDropdownButton';
 import { DisableableButton } from '../internal/components/buttons/DisableableButton';
 import { TEST_USER_AUTHOR, TEST_USER_EDITOR, TEST_USER_READER } from '../internal/userFixtures';
@@ -26,6 +25,7 @@ import { AssayGridButtons } from './AssayGridPanel';
 import { AssayImportDataButton } from './AssayButtons';
 
 import { AssayAppContext } from './AssayAppContext';
+import { SampleActionsButton } from './SampleActionsButton';
 
 const standardAssayDefinition = AssayDefinitionModel.create({
     id: 1,
@@ -65,6 +65,7 @@ describe('AssayGridButtons', () => {
         requireSampleField: true,
         showProviderName: false,
         jobNotificationProvider: 'test',
+        ReferencingNotebooksComponent: () => (<div>Test</div>),
         JobsMenuOptionsComponent: () => (
             <div className="jobs-menu-test">
                 {' '}

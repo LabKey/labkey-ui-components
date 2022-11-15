@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { makeTestQueryModel } from '../public/QueryModel/testUtils';
-import { SchemaQuery } from '../public/SchemaQuery';
-import { mountWithAppServerContext } from '../internal/testHelpers';
-import { QueryInfo } from '../public/QueryInfo';
+import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { mountWithAppServerContext } from '../../testHelpers';
+import { QueryInfo } from '../../../public/QueryInfo';
 
-import { SelectionMenuItem } from '../internal/components/menus/SelectionMenuItem';
-import { TEST_USER_READER, TEST_USER_STORAGE_EDITOR } from '../internal/userFixtures';
+import { SelectionMenuItem } from '../menus/SelectionMenuItem';
+import { TEST_USER_READER, TEST_USER_STORAGE_EDITOR } from '../../userFixtures';
 
 import { AssayResultsForSamplesMenuItem } from './AssayResultsForSamplesButton';
 

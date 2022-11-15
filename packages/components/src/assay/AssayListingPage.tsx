@@ -36,7 +36,7 @@ export const AssayListingPage: FC<Props & CommonPageProps> = memo(props => {
 
     return (
         <Page title={pageTitle}>
-            <Section caption={ASSAY_CAPTION} context={buttons} title="Assays">
+            <Section caption={ASSAY_CAPTION} context={buttons} title={pageTitle}>
                 {hasItems && (
                     <AssayTypeSummary
                         assayTypes={assayTypes}

@@ -9,21 +9,6 @@ import { InjectedAssayModel } from '../internal/components/assay/withAssayModels
 
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../public/QueryModel/withQueryModels';
 
-import {
-    Alert,
-    AssayLink,
-    DetailPanel,
-    GENERAL_ASSAY_PROVIDER_NAME,
-    Hooks,
-    InjectedRouteLeaveProps,
-    LoadingPage,
-    Page,
-    QueryColumn,
-    QueryModel,
-    SCHEMAS,
-    withRouteLeave,
-} from '../index';
-
 import { CommonPageProps } from '../internal/models';
 
 import { useAssayAppContext } from './AssayAppContext';
@@ -33,6 +18,17 @@ import { AssayDesignHeaderButtons } from './AssayButtons';
 import { assayPage } from './AssayPageHOC';
 import { AssayOverrideBanner } from './AssayOverrideBanner';
 import { AssayGridPanel } from './AssayGridPanel';
+import { InjectedRouteLeaveProps, withRouteLeave } from '../internal/util/RouteLeave';
+import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/constants';
+import { QueryModel } from '../public/QueryModel/QueryModel';
+import { QueryColumn } from '../public/QueryColumn';
+import { LoadingPage } from '../internal/components/base/LoadingPage';
+import { Page } from '../internal/components/base/Page';
+import { AssayLink } from '../internal/AssayDefinitionModel';
+import { DetailPanel } from '../public/QueryModel/DetailPanel';
+import { SCHEMAS } from '../internal/schemas';
+import { Alert } from '../internal/components/base/Alert';
+import { useContainerUser } from '../internal/components/container/actions';
 
 const REQUIRED_COLUMN_NAMES = ['Description', 'Created', 'CreatedBy', 'Status'];
 
@@ -43,11 +39,11 @@ const AssayOverviewPageBody: FC<AssayOverviewProps> = props => {
         props;
     const { model } = queryModels;
     const { name, type, description } = assayDefinition;
-    const protocolContext = Hooks.useContainerUser(assayProtocol.domains.first()?.container);
+    const protocolContext = useContainerUser(assayProtocol.domains.first()?.container);
     const { showProviderName, detailRenderer } = useAssayAppContext();
     const subtitle = showProviderName
         ? (type === GENERAL_ASSAY_PROVIDER_NAME ? 'Standard' : type) + ' Assay Overview'
-        : undefined;
+        : 'Assay Overview';
 
     const getDetailsColumns = (model: QueryModel): QueryColumn[] => {
         return REQUIRED_COLUMN_NAMES.map(name => model.getColumn(name));

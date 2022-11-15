@@ -9,6 +9,12 @@ Components, models, actions, and utility functions for LabKey applications and p
     AssayListingPage, AssayRunListingPage, AssayQCModal, AssaysSubNav, AssayUploadPage, AssayDesignSelect
   * Update AssayAppContext and SampleTypeAppContext
 
+### version 2.249.1
+*Released*: 15 November 2022
+  * Add FindDerivativesMenuItem to SampleActionsButton
+  * Fix containerFilter for finding samples by assays queries
+  * Updated getSearchFiltersFromObjs util to set required assay card properties when coming from assay grids
+
 ### version 2.249.0
 *Released*: 10 November 2022
 * Assay Design page consistency

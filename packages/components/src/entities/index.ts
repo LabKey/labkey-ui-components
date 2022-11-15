@@ -35,7 +35,7 @@ import { SampleTypeInsightsPanel } from './SampleTypeInsightsPanel';
 import { FindSamplesByIdHeaderPanel } from './FindSamplesByIdHeaderPanel';
 import { FindSamplesByIdsPageBase } from './FindSamplesByIdsPageBase';
 import { SampleFinderSection } from './SampleFinderSection';
-import { FindDerivativesButton, FindDerivativesMenuItem } from './FindDerivativesButton';
+import { FindDerivativesButton, FindDerivativesMenuItem } from '../internal/components/entities/FindDerivativesButton';
 import { GridAliquotViewSelector } from './GridAliquotViewSelector';
 import { SampleAliquotViewSelector } from './SampleAliquotViewSelector';
 import { SampleTimelinePageBase } from './SampleTimelinePageBase';

@@ -74,7 +74,6 @@ export const AssayGridButtons: FC<AssayGridButtonsComponentProps> = memo(props =
     const showImportBtn = showImport && user.hasInsertPermission();
     const showDeleteBtn = canDelete && user.hasDeletePermission();
     const showEditBtn = canUpdate && user.hasUpdatePermission();
-    const showManageBtn = showDeleteBtn && showEditBtn;
 
     const { qcEnabledForApp, JobsMenuOptionsComponent } = useAssayAppContext();
 
@@ -91,8 +90,13 @@ export const AssayGridButtons: FC<AssayGridButtonsComponentProps> = memo(props =
         protocol?.qcEnabled &&
         isAssayQCEnabled(moduleContext) &&
         hasAllPermissions(user, [PermissionTypes.QCAnalyst]);
+    let manageItemCount = 0;
+    if (showDeleteBtn) manageItemCount++;
+    if (showEditBtn) manageItemCount++;
+    if (showQCButton) manageItemCount++;
+    const showManageBtn = manageItemCount > 1;
 
-    if (!showImportBtn && !showDeleteBtn && !showEditBtn && !showSampleBtn) {
+    if (!showImportBtn && manageItemCount == 0 && !showSampleBtn) {
         return null;
     }
 
@@ -111,6 +115,15 @@ export const AssayGridButtons: FC<AssayGridButtonsComponentProps> = memo(props =
                         <span className="fa fa-trash" />
                         <span>&nbsp;Delete</span>
                     </DisableableButton>
+                )}
+                {!showManageBtn && showQCButton && (
+                    <UpdateQCStatesButton
+                        model={model}
+                        actions={actions}
+                        assayContainer={protocol.container}
+                        disabled={!model.hasSelections}
+                        requireCommentOnQCStateChange={assayDefinition.requireCommentOnQCStateChange}
+                    />
                 )}
             </div>
             {showManageBtn && (

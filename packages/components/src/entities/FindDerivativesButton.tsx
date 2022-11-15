@@ -35,7 +35,7 @@ export const getFieldFilter = (model: QueryModel, filter: Filter.IFilter): Field
         fieldKey: colName,
         fieldCaption: column?.caption ?? colName,
         filter,
-        jsonType: column.isLookup() ? column.displayFieldJsonType : column?.jsonType ?? 'string',
+        jsonType: column?.isLookup() ? column.displayFieldJsonType : column?.jsonType ?? 'string',
     } as FieldFilter;
 };
 

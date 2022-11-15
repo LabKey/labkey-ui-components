@@ -14,7 +14,7 @@ import {
     TEST_USER_READER,
 } from '../internal/userFixtures';
 import { AssayProtocolModel } from '../internal/components/domainproperties/assay/models';
-import { makeTestQueryModel } from '../public/QueryModel/testUtils';
+import { makeTestActions, makeTestQueryModel } from '../public/QueryModel/testUtils';
 import { SchemaQuery } from '../public/SchemaQuery';
 import { QueryInfo } from '../public/QueryInfo';
 import { CreatedModified } from '../internal/components/base/CreatedModified';
@@ -33,6 +33,7 @@ import {
     AssayRunDetailHeaderButtons,
     UpdateQCStatesButton,
 } from './AssayButtons';
+import { fromJS } from 'immutable';
 
 const standardAssayDefinition = AssayDefinitionModel.create({
     id: 1,
@@ -329,8 +330,15 @@ describe('AssayDesignHeaderButtons', () => {
 });
 
 describe('UpdateQCStatesButton', () => {
+    const testModel = makeTestQueryModel(SchemaQuery.create("test", "query"));
+    const actions = makeTestActions();
     test('not analyst', () => {
-        const wrapper = mountWithServerContext(<UpdateQCStatesButton disabled={false} onClick={jest.fn()} />, {
+        const wrapper = mountWithServerContext(
+            <UpdateQCStatesButton
+                assayContainer={"test"}
+                model={testModel}
+                actions={actions}
+            />, {
             user: TEST_USER_READER,
         });
         expect(wrapper.find(Button)).toHaveLength(0);
@@ -339,7 +347,12 @@ describe('UpdateQCStatesButton', () => {
 
     test('as menu item', () => {
         const wrapper = mountWithServerContext(
-            <UpdateQCStatesButton disabled={false} onClick={jest.fn()} asMenuItem />,
+            <UpdateQCStatesButton
+                assayContainer={"test"}
+                model={testModel}
+                actions={actions}
+                asMenuItem={true}
+            />,
             {
                 user: TEST_USER_QC_ANALYST,
             }
@@ -349,12 +362,60 @@ describe('UpdateQCStatesButton', () => {
         expect(wrapper.find(DisableableMenuItem).text()).toBe('Update QC States');
     });
 
+    test('disabled, as menu item', () => {
+        const wrapper = mountWithServerContext(
+            <UpdateQCStatesButton
+                assayContainer={"test"}
+                model={testModel}
+                actions={actions}
+                asMenuItem
+                disabled
+            />, {
+                user: TEST_USER_QC_ANALYST,
+            });
+        expect(wrapper.find(DisableableMenuItem).prop("operationPermitted")).toBe(false);
+    });
+
+    test("with single run", () => {
+        const wrapper = mountWithServerContext(
+            <UpdateQCStatesButton
+                assayContainer={"test"}
+                model={testModel}
+                actions={actions}
+                run={fromJS({"RowId": {"value": "1"}})}
+                asMenuItem
+                disabled
+            />, {
+                user: TEST_USER_QC_ANALYST,
+            });
+        expect(wrapper.find(DisableableMenuItem).text()).toBe("Update QC State");
+    });
+
     test('not as menu item', () => {
-        const wrapper = mountWithServerContext(<UpdateQCStatesButton disabled={false} onClick={jest.fn()} />, {
+        const wrapper = mountWithServerContext(
+            <UpdateQCStatesButton
+                assayContainer={"test"}
+                model={testModel}
+                actions={actions}
+            />, {
             user: TEST_USER_QC_ANALYST,
         });
         expect(wrapper.find(Button)).toHaveLength(1);
         expect(wrapper.find(Button).text()).toBe('Update QC States');
         expect(wrapper.find(DisableableMenuItem)).toHaveLength(0);
+    });
+
+    test('disabled, not as menu item', () => {
+        const wrapper = mountWithServerContext(
+            <UpdateQCStatesButton
+                assayContainer={"test"}
+                model={testModel}
+                actions={actions}
+                disabled={true}
+            />, {
+                user: TEST_USER_QC_ANALYST,
+            });
+        expect(wrapper.find(Button)).toHaveLength(1);
+        expect(wrapper.find(Button).prop("disabled")).toBe(true);
     });
 });

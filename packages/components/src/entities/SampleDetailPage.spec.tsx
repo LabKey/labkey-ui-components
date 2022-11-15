@@ -37,6 +37,9 @@ import { SampleAssaysPage } from './SampleAssaysPage';
 import { SampleAssayDetail } from './SampleAssayDetail';
 
 import { SampleLineagePage, SampleLineagePanel } from './SampleLineagePage';
+import { MenuItem } from 'react-bootstrap';
+import { AssayAppContext } from '../assay';
+import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/constants';
 
 const QUERY_MODEL = makeTestQueryModel(
     SchemaQuery.create('schema', 'query'),
@@ -67,6 +70,13 @@ function getDefaultProps(): SampleDetailPageBodyProps {
     };
 }
 const DEFAULT_CONTEXT = { user: TEST_USER_EDITOR, container: TEST_PROJECT_CONTAINER };
+const ASSAY_APP_CONTEXT = {
+    requireSampleField: true,
+    showProviderName: false,
+    assayProviderType: GENERAL_ASSAY_PROVIDER_NAME,
+    jobNotificationProvider: "test",
+    JobsMenuOptionsComponent: () => <div className="jobs-menu-test"> <MenuItem className="add-to-job">Add to Job</MenuItem> <MenuItem className="start-a-job">Start a New Job</MenuItem> </div>,
+} as AssayAppContext;
 const SAMPLE_TYPE_APP_CONTEXT = {
     SampleStorageMenuComponent: null,
     lineagePagePermissions: [PermissionTypes.DesignDataClass],
@@ -188,7 +198,7 @@ describe('SampleAliquotsPage', () => {
     test('default props', async () => {
         const wrapper = mountWithAppServerContext(
             <SampleAliquotsPage {...getDefaultProps()} />,
-            { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT },
+            { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT, assay: ASSAY_APP_CONTEXT},
             DEFAULT_CONTEXT
         );
         await waitForLifecycle(wrapper);
@@ -205,7 +215,7 @@ describe('SampleAliquotsPage', () => {
     test('title', async () => {
         const wrapper = mountWithAppServerContext(
             <SampleAliquotsPage {...getDefaultProps()} title="Test title" />,
-            { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT },
+            { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT, assay: ASSAY_APP_CONTEXT },
             DEFAULT_CONTEXT
         );
         await waitForLifecycle(wrapper);

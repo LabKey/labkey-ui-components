@@ -495,7 +495,7 @@ export function getSearchFiltersFromObjs(
     const filters: FilterProps[] = [];
     filterPropsObj.forEach(filterPropObj => {
         const filterArray = [];
-        filterPropObj['filterArray']?.forEach(field => {
+        filterPropObj.filterArray?.forEach(field => {
             filterArray.push({
                 fieldKey: field.fieldKey,
                 fieldCaption: field.fieldCaption,
@@ -503,29 +503,29 @@ export function getSearchFiltersFromObjs(
                 jsonType: field.jsonType,
             });
         });
-        filterPropObj['filterArray'] = filterArray;
+        filterPropObj.filterArray = filterArray;
 
-        if (filterPropObj['entityDataType']?.['filterArray']) {
+        if (filterPropObj.entityDataType?.filterArray) {
             const filterArray = [];
-            filterPropObj['entityDataType']?.['filterArray']?.forEach(filter => {
+            filterPropObj.entityDataType?.filterArray?.forEach(filter => {
                 filterArray.push(filterFromJson(filter));
             });
 
-            filterPropObj['entityDataType']['filterArray'] = filterArray;
+            filterPropObj.entityDataType.filterArray = filterArray;
         }
 
-        if (filterPropObj['entityDataType']?.['descriptionSingular'] === AssayResultDataType.descriptionSingular) {
-            filterPropObj['entityDataType']['getInstanceSchemaQuery'] = AssayResultDataType.getInstanceSchemaQuery;
-            filterPropObj['entityDataType']['getInstanceDataType'] = AssayResultDataType.getInstanceDataType;
+        if (filterPropObj.entityDataType?.descriptionSingular === AssayResultDataType.descriptionSingular) {
+            filterPropObj.entityDataType.getInstanceSchemaQuery = AssayResultDataType.getInstanceSchemaQuery;
+            filterPropObj.entityDataType.getInstanceDataType = AssayResultDataType.getInstanceDataType;
 
             // when Finding from assays grid, the json lacks certain properties
-            if (!filterPropObj['selectColumnFieldKey'] && assaySampleCols) {
-                const assayDesign = AssayResultDataType.getInstanceDataType(filterPropObj['schemaQuery']);
+            if (!filterPropObj.selectColumnFieldKey && assaySampleCols) {
+                const assayDesign = AssayResultDataType.getInstanceDataType(filterPropObj.schemaQuery);
                 const assayCol = caseInsensitive(assaySampleCols, assayDesign);
                 if (assayCol) {
-                    filterPropObj['selectColumnFieldKey'] = assayCol.lookupFieldKey;
-                    filterPropObj['targetColumnFieldKey'] = assayCol.fieldKey;
-                    filterPropObj['dataTypeDisplayName'] = assayDesign;
+                    filterPropObj.selectColumnFieldKey = assayCol.lookupFieldKey;
+                    filterPropObj.targetColumnFieldKey = assayCol.fieldKey;
+                    filterPropObj.dataTypeDisplayName = assayDesign;
                 }
             }
         }
@@ -541,9 +541,9 @@ export function searchFiltersFromJson(
     assaySampleCols?: { [key: string]: AssaySampleColumnProp }
 ): SearchSessionStorageProps {
     const obj = JSON.parse(filterPropsStr);
-    const filterPropsObj: any[] = obj['filters'];
-    const filterChangeCounter: number = obj['filterChangeCounter'];
-    const filterTimestamp: string = obj['filterTimestamp'];
+    const filterPropsObj: any[] = obj.filters;
+    const filterChangeCounter: number = obj.filterChangeCounter;
+    const filterTimestamp: string = obj.filterTimestamp;
 
     return {
         filters: getSearchFiltersFromObjs(filterPropsObj, assaySampleCols),

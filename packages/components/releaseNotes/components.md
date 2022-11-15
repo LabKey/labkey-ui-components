@@ -11,6 +11,18 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Issue 45483: allowed creation types in bulk insert modal to be based on if sample parent types exist and based on the creation type for the page
   * LKB fix to allow parent type change when creating media with initial parent that is a DataClass
 
+### version 2.250.0
+*Released*: 15 November 2022
+* Projects in Sample Manager
+  * Add App.hasProductProjects util
+  * Hide FolderMenu when no projects are created
+
+### version 2.249.1
+*Released*: 15 November 2022
+  * Add FindDerivativesMenuItem to SampleActionsButton
+  * Fix containerFilter for finding samples by assays queries
+  * Updated getSearchFiltersFromObjs util to set required assay card properties when coming from assay grids
+
 ### version 2.249.0
 *Released*: 10 November 2022
 * Assay Design page consistency

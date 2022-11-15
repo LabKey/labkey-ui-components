@@ -20,12 +20,7 @@ export class AssayOverrideBanner extends React.Component<Props, any> {
         override: AssayLink.BEGIN,
     };
 
-    onClick = e => {
-        // We really should be generating a real link with an href in this component, but due to the design of the
-        // QueryGridPanel this component is not updated when filters change, so we never re-render the href when a user
-        // adds or removes a filter. The only way to get the most up to date query string is to compute on click.
-        e.stopPropagation();
-        e.preventDefault();
+    render() {
         const { assay, link } = this.props;
         let href = assay.links.get(link);
         const { query } = getLocation();
@@ -36,12 +31,6 @@ export class AssayOverrideBanner extends React.Component<Props, any> {
             href = `${href}&${queryString}`;
         }
 
-        window.location.href = href;
-    };
-
-    render() {
-        const { assay, link } = this.props;
-
         if (assay && assay.type.toLowerCase() !== GENERAL_ASSAY_PROVIDER_NAME.toLowerCase()) {
             return (
                 <Alert bsStyle="warning" className="test-loc-assay-override">
@@ -50,7 +39,7 @@ export class AssayOverrideBanner extends React.Component<Props, any> {
                     LabKey Server.
                     {assay.links.get(link) !== undefined && (
                         <div className="pull-right">
-                            <Button bsStyle="warning" bsSize="xs" onClick={this.onClick}>
+                            <Button bsStyle="warning" bsSize="xs" href={href}>
                                 View in LabKey Server
                             </Button>
                         </div>

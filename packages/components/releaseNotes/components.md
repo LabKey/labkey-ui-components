@@ -6,6 +6,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Adding Label printing to export menu for more sample tabbed grids
   * Hiding Label option on the 'All Samples' tab as it doesn't currently fit our grid methodology
 
+### version 2.250.0
+*Released*: 15 November 2022
+* Projects in Sample Manager
+  * Add App.hasProductProjects util
+  * Hide FolderMenu when no projects are created
+
 ### version 2.249.1
 *Released*: 15 November 2022
   * Add FindDerivativesMenuItem to SampleActionsButton

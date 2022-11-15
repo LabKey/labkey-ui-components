@@ -308,8 +308,8 @@ export const AssayDesignHeaderButtons: FC<AssayDesignHeaderButtonProps> = props 
 interface UpdateQCStatesButtonProps extends RequiresModelAndActions {
     assayContainer: string;
     asMenuItem?: boolean;
-    disabled: boolean;
-    requireCommentOnQCStateChange: boolean;
+    disabled?: boolean;
+    requireCommentOnQCStateChange?: boolean;
     run?: Map<string, any>;
 }
 

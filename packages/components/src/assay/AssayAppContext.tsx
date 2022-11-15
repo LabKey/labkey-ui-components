@@ -6,8 +6,8 @@ export interface AssayAppContext {
     assayProviderType?: string;
     detailRenderer?: DetailRenderer;
     qcEnabledForApp?: boolean;
-    requireSampleField: boolean;
-    showProviderName: boolean;
+    requireSampleField?: boolean;
+    showProviderName?: boolean;
     JobsMenuOptionsComponent: JobsMenuOptions;
     assayTypes?: string[];
     excludedAssayProviders?: string[];

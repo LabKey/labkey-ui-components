@@ -336,7 +336,7 @@ function getFilteredQueryParams(
     queryName: string,
     filterList: List<Filter.IFilter>,
     queryParameters?: Record<string, any>,
-    containerPath?: string,
+    containerPath?: string
 ): Record<string, any> {
     if (schemaName && queryName && filterList && !filterList.isEmpty()) {
         return getQueryParams(key, schemaName, queryName, filterList, queryParameters, containerPath);
@@ -353,7 +353,7 @@ function getQueryParams(
     queryName: string,
     filterList: List<Filter.IFilter>,
     queryParameters?: Record<string, any>,
-    containerPath?: string,
+    containerPath?: string
 ): Record<string, any> {
     const filters = filterList.reduce((prev, next) => {
         return Object.assign(prev, { [next.getURLParameterName()]: next.getURLParameterValue() });

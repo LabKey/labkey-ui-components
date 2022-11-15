@@ -7,13 +7,14 @@ import { SchemaQuery } from '../public/SchemaQuery';
 
 import { makeTestQueryModel } from '../public/QueryModel/testUtils';
 
-import { SampleCreationTypeModal } from './SampleCreationTypeModal';
-import { CreateSamplesSubMenu, MAX_PARENTS_PER_SAMPLE } from './CreateSamplesSubMenu';
-import { CreateSamplesSubMenuBase } from './CreateSamplesSubMenuBase';
 import { SampleCreationType } from '../internal/components/samples/models';
 import { SCHEMAS } from '../internal/schemas';
 import { QueryInfo } from '../public/QueryInfo';
 import { mountWithAppServerContext, waitForLifecycle } from '../internal/testHelpers';
+
+import { CreateSamplesSubMenuBase } from './CreateSamplesSubMenuBase';
+import { CreateSamplesSubMenu, MAX_PARENTS_PER_SAMPLE } from './CreateSamplesSubMenu';
+import { SampleCreationTypeModal } from './SampleCreationTypeModal';
 
 const sampleOptions = [
     {
@@ -88,8 +89,6 @@ describe('CreateSamplesSubMenuBase', () => {
     });
 });
 
-
-
 describe('CreateSamplesSubMenu', () => {
     function validate(
         wrapper: ReactWrapper,
@@ -123,7 +122,9 @@ describe('CreateSamplesSubMenu', () => {
 
     test('without sampleQueryInfos', async () => {
         const loadSampleTypesEmpty = jest.fn(async () => []);
-        const wrapper = mountWithAppServerContext(<CreateSamplesSubMenu {...DEFAULT_PROPS} loadSampleTypes={loadSampleTypesEmpty} />);
+        const wrapper = mountWithAppServerContext(
+            <CreateSamplesSubMenu {...DEFAULT_PROPS} loadSampleTypes={loadSampleTypesEmpty} />
+        );
         await waitForLifecycle(wrapper);
         validate(wrapper, 1);
         wrapper.unmount();
@@ -140,13 +141,17 @@ describe('CreateSamplesSubMenu', () => {
     });
 
     test('current sample type', async () => {
-        const wrapper = mountWithAppServerContext(<CreateSamplesSubMenu
-            {...DEFAULT_PROPS}
-            selectedQueryInfo={new QueryInfo({
-                schemaName: 'samples',
-                schemaQuery: SchemaQuery.create('samples', 'Other'),
-            })}
-        />);
+        const wrapper = mountWithAppServerContext(
+            <CreateSamplesSubMenu
+                {...DEFAULT_PROPS}
+                selectedQueryInfo={
+                    new QueryInfo({
+                        schemaName: 'samples',
+                        schemaQuery: SchemaQuery.create('samples', 'Other'),
+                    })
+                }
+            />
+        );
         await waitForLifecycle(wrapper);
         validate(wrapper, 2, 'Create Samples', 'Other');
         expect(wrapper.find(SubMenu).prop('currentMenuChoice')).toBe('Other');
@@ -216,7 +221,13 @@ describe('CreateSamplesSubMenu', () => {
             selections.add('' + i);
         }
         const model = makeTestQueryModel(SchemaQuery.create('samples', 'Test')).mutate({ selections });
-        const wrapper = mountWithAppServerContext(<CreateSamplesSubMenu {...DEFAULT_PROPS} parentQueryModel={model} selectedType={SampleCreationType.PooledSamples}/>);
+        const wrapper = mountWithAppServerContext(
+            <CreateSamplesSubMenu
+                {...DEFAULT_PROPS}
+                parentQueryModel={model}
+                selectedType={SampleCreationType.PooledSamples}
+            />
+        );
         await waitForLifecycle(wrapper);
         const options = validate(wrapper, 2);
         expect(options.get(0).disabled).toBe(true);
@@ -227,7 +238,9 @@ describe('CreateSamplesSubMenu', () => {
     });
 
     test('subMenuText', () => {
-        const wrapper = mountWithAppServerContext(<CreateSamplesSubMenu {...DEFAULT_PROPS} subMenuText="subMenuText" />);
+        const wrapper = mountWithAppServerContext(
+            <CreateSamplesSubMenu {...DEFAULT_PROPS} subMenuText="subMenuText" />
+        );
         const options = validate(wrapper, 1, null);
         expect(options.get(0).name).toBe('subMenuText');
         expect(options.get(0).disabled).toBe(false);

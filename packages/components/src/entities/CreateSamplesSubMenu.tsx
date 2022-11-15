@@ -19,6 +19,7 @@ import { getServerContext } from '@labkey/api';
 import { naturalSortByProperty } from '../public/sort';
 import { loadSampleTypes } from './actions';
 import { isSamplesSchema } from '../internal/components/samples/utils';
+import { useServerContext } from "../internal/components/base/ServerContext";
 
 interface Props {
     allowPooledSamples?: boolean;
@@ -116,10 +117,12 @@ export const CreateSamplesSubMenu: FC<Props> = memo(props => {
     if (disabled) {
         return <DisableableMenuItem operationPermitted={false}>{menuText}</DisableableMenuItem>;
     }
+
+    const { moduleContext } = useServerContext();
     let selectionNoun = undefined;
     let selectionNounPlural = undefined;
     if (!isSamples) {
-        if (sampleManagerIsPrimaryApp()) {
+        if (sampleManagerIsPrimaryApp(moduleContext)) {
             selectionNoun = 'source';
             selectionNounPlural = 'sources';
         }

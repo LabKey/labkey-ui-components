@@ -2,14 +2,9 @@ import React from 'react';
 import { List } from 'immutable';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { SAMPLES_KEY } from '../internal/app/constants';
-
-import { TEST_USER_APP_ADMIN } from '../internal/userFixtures';
-
 import { MenuOption, SubMenu } from '../internal/components/menus/SubMenu';
 import { SchemaQuery } from '../public/SchemaQuery';
 
-import { MenuSectionModel, ProductMenuModel } from '../internal/components/navigation/model';
 import { makeTestQueryModel } from '../public/QueryModel/testUtils';
 
 import { SampleCreationTypeModal } from './SampleCreationTypeModal';
@@ -18,7 +13,7 @@ import { CreateSamplesSubMenuBase } from './CreateSamplesSubMenuBase';
 import { SampleCreationType } from '../internal/components/samples/models';
 import { SCHEMAS } from '../internal/schemas';
 import { QueryInfo } from '../public/QueryInfo';
-import { waitForLifecycle } from '../internal/testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../internal/testHelpers';
 
 const sampleOptions = [
     {
@@ -115,7 +110,7 @@ describe('CreateSamplesSubMenu', () => {
     }
 
     test('default props', async () => {
-        const wrapper = mount(<CreateSamplesSubMenu {...DEFAULT_PROPS} />);
+        const wrapper = mountWithAppServerContext(<CreateSamplesSubMenu {...DEFAULT_PROPS} />);
         await waitForLifecycle(wrapper);
         const options = validate(wrapper, 2);
         expect(options.get(0).name).toBe('A');
@@ -128,14 +123,14 @@ describe('CreateSamplesSubMenu', () => {
 
     test('without sampleQueryInfos', async () => {
         const loadSampleTypesEmpty = jest.fn(async () => []);
-        const wrapper = mount(<CreateSamplesSubMenu {...DEFAULT_PROPS} loadSampleTypes={loadSampleTypesEmpty} />);
+        const wrapper = mountWithAppServerContext(<CreateSamplesSubMenu {...DEFAULT_PROPS} loadSampleTypes={loadSampleTypesEmpty} />);
         await waitForLifecycle(wrapper);
         validate(wrapper, 1);
         wrapper.unmount();
     });
 
     test('menuText', async () => {
-        const wrapper = mount(<CreateSamplesSubMenu {...DEFAULT_PROPS} />);
+        const wrapper = mountWithAppServerContext(<CreateSamplesSubMenu {...DEFAULT_PROPS} />);
         await waitForLifecycle(wrapper);
         validate(wrapper, 2);
         expect(wrapper.find(SubMenu).prop('text')).toBe('Create Samples');
@@ -145,7 +140,7 @@ describe('CreateSamplesSubMenu', () => {
     });
 
     test('current sample type', async () => {
-        const wrapper = mount(<CreateSamplesSubMenu
+        const wrapper = mountWithAppServerContext(<CreateSamplesSubMenu
             {...DEFAULT_PROPS}
             selectedQueryInfo={new QueryInfo({
                 schemaName: 'samples',
@@ -159,7 +154,7 @@ describe('CreateSamplesSubMenu', () => {
     });
 
     test('item sorting by queryLabel', async () => {
-        const wrapper = mount(<CreateSamplesSubMenu {...DEFAULT_PROPS} />);
+        const wrapper = mountWithAppServerContext(<CreateSamplesSubMenu {...DEFAULT_PROPS} />);
         await waitForLifecycle(wrapper);
         const options = validate(wrapper, 2);
         expect(options.get(0).name).toBe('A');
@@ -168,7 +163,7 @@ describe('CreateSamplesSubMenu', () => {
     });
 
     test('useOnClick for parentKey', async () => {
-        const wrapper = mount(<CreateSamplesSubMenu {...DEFAULT_PROPS} parentKey="123" />);
+        const wrapper = mountWithAppServerContext(<CreateSamplesSubMenu {...DEFAULT_PROPS} parentKey="123" />);
         await waitForLifecycle(wrapper);
         const options = validate(wrapper, 2);
         expect(options.get(0).href).toBe(undefined);
@@ -178,7 +173,7 @@ describe('CreateSamplesSubMenu', () => {
 
     test('useOnClick for parentQueryModel with selection', async () => {
         const model = makeTestQueryModel(SchemaQuery.create('samples', 'Test')).mutate({ selections: new Set('1') });
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <CreateSamplesSubMenu {...DEFAULT_PROPS} parentQueryModel={model} isSelectingSamples={() => true} />
         );
         await waitForLifecycle(wrapper);
@@ -190,7 +185,7 @@ describe('CreateSamplesSubMenu', () => {
 
     test('useOnClick, media without selections', async () => {
         const model = makeTestQueryModel(SCHEMAS.SAMPLE_SETS.SAMPLES).mutate({ selections: new Set() });
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <CreateSamplesSubMenu
                 {...DEFAULT_PROPS}
                 selectedQueryInfo={new QueryInfo({ schemaName: 'samples', isMedia: true })}
@@ -207,7 +202,7 @@ describe('CreateSamplesSubMenu', () => {
 
     test('use href for parentQueryModel with non sample or source schema', async () => {
         const model = makeTestQueryModel(SchemaQuery.create('other', 'Test')).mutate({ selections: new Set('1') });
-        const wrapper = mount(<CreateSamplesSubMenu {...DEFAULT_PROPS} parentQueryModel={model} />);
+        const wrapper = mountWithAppServerContext(<CreateSamplesSubMenu {...DEFAULT_PROPS} parentQueryModel={model} />);
         await waitForLifecycle(wrapper);
         const options = validate(wrapper, 2);
         expect(options.get(0).href).toBe('#/samples/new?target=a&selectionKey=model');
@@ -221,7 +216,7 @@ describe('CreateSamplesSubMenu', () => {
             selections.add('' + i);
         }
         const model = makeTestQueryModel(SchemaQuery.create('samples', 'Test')).mutate({ selections });
-        const wrapper = mount(<CreateSamplesSubMenu {...DEFAULT_PROPS} parentQueryModel={model} selectedType={SampleCreationType.PooledSamples}/>);
+        const wrapper = mountWithAppServerContext(<CreateSamplesSubMenu {...DEFAULT_PROPS} parentQueryModel={model} selectedType={SampleCreationType.PooledSamples}/>);
         await waitForLifecycle(wrapper);
         const options = validate(wrapper, 2);
         expect(options.get(0).disabled).toBe(true);
@@ -232,7 +227,7 @@ describe('CreateSamplesSubMenu', () => {
     });
 
     test('subMenuText', () => {
-        const wrapper = mount(<CreateSamplesSubMenu {...DEFAULT_PROPS} subMenuText="subMenuText" />);
+        const wrapper = mountWithAppServerContext(<CreateSamplesSubMenu {...DEFAULT_PROPS} subMenuText="subMenuText" />);
         const options = validate(wrapper, 1, null);
         expect(options.get(0).name).toBe('subMenuText');
         expect(options.get(0).disabled).toBe(false);

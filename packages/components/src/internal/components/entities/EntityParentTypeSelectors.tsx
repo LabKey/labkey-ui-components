@@ -255,7 +255,7 @@ export const EntityParentTypeSelectors: FC<Props> = memo(props => {
     const { parentDataTypes, parentOptionsMap, entityParentsMap, combineParentTypes, onAdd, onChange, onRemove } =
         props;
 
-    // If combining parent types, just grabbing first parent type for the name
+    // If combining parent types, use the first parent type for the queryName
     const dataTypes = useMemo(
         () => (combineParentTypes ? List.of(parentDataTypes.get(0)) : parentDataTypes),
         [combineParentTypes, parentDataTypes]

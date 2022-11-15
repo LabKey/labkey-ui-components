@@ -297,6 +297,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             selectedTarget,
             originalParents,
             selectedParents,
+            combineParentTypes,
         } = this.props;
 
         const { creationType } = this.state;
@@ -356,7 +357,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 parentSchemaQueries,
                 selected,
                 allowParents,
-                isItemSamples
+                isItemSamples,
+                combineParentTypes
             );
 
             if (selectedParents) partialModel['entityParents'] = selectedParents;

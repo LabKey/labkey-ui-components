@@ -103,7 +103,7 @@ export const getBulkCreationTypeOptions = (hasParentSamples: boolean, creationTy
     }
 
     if (!hasParentSamples) {
-        return [{ ...CHILD_SAMPLE_CREATION, selected: true }];
+        return [{ ...CHILD_SAMPLE_CREATION, quantityLabel: 'New Samples', selected: true }];
     }
 
     const types = [

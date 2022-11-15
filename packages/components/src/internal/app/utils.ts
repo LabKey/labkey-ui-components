@@ -165,6 +165,10 @@ export function isProductProjectsEnabled(moduleContext?: ModuleContext): boolean
     return resolveModuleContext(moduleContext)?.query?.isProductProjectsEnabled === true;
 }
 
+export function hasProductProjects(moduleContext?: ModuleContext): boolean {
+    return resolveModuleContext(moduleContext)?.query?.hasProductProjects === true;
+}
+
 export function isSampleManagerEnabled(moduleContext?: ModuleContext): boolean {
     return resolveModuleContext(moduleContext)?.samplemanagement !== undefined;
 }

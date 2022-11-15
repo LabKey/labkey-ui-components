@@ -63,13 +63,17 @@
     border-radius: 5px;
 }
 
-.list__advanced-settings-model__collapsible-field {
-    display: inline-block;
-    width: 15px;
+.list__advanced-settings-modal__collapsible-field {
+    .fa {
+        width: 16px;
+    }
+    .form-group {
+        display: inline-block;
+    }
 }
 
-.list__advanced-settings-model__index-checkbox {
-    margin-left: 22px;
+.list__advanced-settings-modal__index-checkbox {
+    margin-left: 16px;
 }
 
 .list__advanced-settings-modal__custom-template-text-field {

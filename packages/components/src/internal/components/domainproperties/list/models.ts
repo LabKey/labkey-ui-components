@@ -18,22 +18,29 @@ import { Record } from 'immutable';
 import { DomainDesign, DomainField } from '../models';
 import { DOMAIN_FIELD_PRIMARY_KEY_LOCKED } from '../constants';
 
-import { INT_LIST, PICKLIST, VAR_LIST } from './constants';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../../picklist/constants';
 
-export interface AdvancedSettingsForm {
-    titleColumn?: string;
-    discussionSetting?: number;
-    fileAttachmentIndex?: boolean;
-    entireListIndex?: boolean;
-    entireListTitleTemplate?: string;
-    entireListIndexSetting?: number;
-    entireListBodySetting?: number;
-    eachItemIndex?: boolean;
-    eachItemTitleTemplate?: string;
-    eachItemBodySetting?: number;
-    entireListBodyTemplate?: string;
-    eachItemBodyTemplate?: string;
+import { INT_LIST, PICKLIST, VAR_LIST } from './constants';
+
+export interface EachItemSettings {
+    eachItemBodySetting: number;
+    eachItemBodyTemplate: string;
+    eachItemTitleTemplate: string;
+}
+
+export interface EntireListSettings {
+    entireListBodySetting: number;
+    entireListBodyTemplate: string;
+    entireListIndexSetting: number;
+    entireListTitleTemplate: string;
+}
+
+export interface AdvancedSettingsForm extends EachItemSettings, EntireListSettings {
+    discussionSetting: number;
+    eachItemIndex: boolean;
+    entireListIndex: boolean;
+    fileAttachmentIndex: boolean;
+    titleColumn: string;
 }
 
 export class ListModel extends Record({

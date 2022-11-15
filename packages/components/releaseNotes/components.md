@@ -1,6 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.252.0
+*Released*: ?? November 2022
+* Refactor ListDesignerPanels and related components
+  * No longer use custom checkbox component
+  * Convert most components to FC
+  * Add types to props, improve other types
+  * Use children instead of custom prop to pass components
+  * Don't use inline defined anonymous functions for handlers
+
 ### version 2.251.0
 *Released*: 16 November 2022
 * Assay display pages consistency

@@ -45,6 +45,7 @@ export function withBaseDomainDesigner<Props>(
             };
         }
 
+        // TODO: having a child component pass a callback to a parent is a big red flag
         onTogglePanel = (index: number, collapsed: boolean, callback: () => any): void => {
             const { visitedPanels, currentPanelIndex } = this.state;
             const updatedVisitedPanels = getUpdatedVisitedPanelsList(visitedPanels, index);

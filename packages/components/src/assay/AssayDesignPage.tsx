@@ -26,12 +26,13 @@ import { ProductMenuModel } from '../internal/components/navigation/model';
 
 import { DEFAULT_SAMPLE_FIELD_CONFIG } from '../internal/components/samples/constants';
 
+import { CommonPageProps } from '../internal/models';
+
 import { protocolHasSample, renderSampleRequiredPanelHeader } from './SampleRequiredDomainHeader';
 import { AssayHeader } from './AssayHeader';
 import { onAssayDesignChange } from './actions';
 import { useAssayAppContext } from './AssayAppContext';
 import { assayPage } from './AssayPageHOC';
-import { CommonPageProps } from '../internal/models';
 
 const ASSAY_DESIGNER_HEADER = 'Connect your experimental results to samples for rich data connections.';
 
@@ -56,18 +57,8 @@ interface OwnProps {
 type Props = CommonPageProps & OwnProps & InjectedAssayModel & WithRouterProps & InjectedRouteLeaveProps;
 
 const AssayDesignPageBody: FC<Props> = memo(props => {
-    const {
-        assayDefinition,
-        assayProtocol,
-        reloadAssays,
-        router,
-        routes,
-        goBack,
-        menu,
-        menuInit,
-        navigate,
-        params,
-    } = props;
+    const { assayDefinition, assayProtocol, reloadAssays, router, routes, goBack, menu, menuInit, navigate, params } =
+        props;
     const [hasError, setHasError] = useState(false);
     const [protocol, setProtocol] = useState<AssayProtocolModel>(undefined);
     const { user } = useServerContext();

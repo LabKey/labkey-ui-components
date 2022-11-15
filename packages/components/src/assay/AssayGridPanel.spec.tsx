@@ -89,7 +89,7 @@ describe('AssayGridButtons', () => {
         if (allowDelete) menuItemCount += 2;
         if (showSamples) menuItemCount += 3;
         if (showJobs) menuItemCount += 3;
-        if (showReports) menuItemCount += 2;
+        if (showReports) menuItemCount += 3;
 
         expect(wrapper.find(AssayImportDataButton)).toHaveLength(0);
         expect(wrapper.find(DisableableButton)).toHaveLength(allowDelete && !allowEdit ? 1 : 0);

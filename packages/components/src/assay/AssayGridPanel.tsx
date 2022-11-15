@@ -36,6 +36,7 @@ import { AssayResultDeleteModal } from './AssayResultDeleteModal';
 import { AssayRunDeleteModal } from './AssayRunDeleteModal';
 import { onAssayRunChange } from './actions';
 import { SampleActionsButton } from './SampleActionsButton';
+import { AssayResultDataType } from '../internal/components/entities/constants';
 
 const ASSAY_RESULT_DELETE_MAX_ROWS = 10000;
 
@@ -85,6 +86,17 @@ export const AssayGridButtons: FC<AssayGridButtonsComponentProps> = memo(props =
         hasSamplePerms &&
         queryName?.localeCompare(SCHEMAS.ASSAY_TABLES.RESULTS_QUERYNAME, 'en-US', { sensitivity: 'base' }) === 0 &&
         model?.displayColumns?.some(c => c.isSampleLookup());
+    let sampleFinderProps = undefined;
+    if (showSampleBtn) {
+        const hasResultsSamplesCol = model?.displayColumns?.some(c => c.isSampleLookup() && c.fieldKeyArray.length === 1);
+        if (hasResultsSamplesCol) {
+            sampleFinderProps = {
+                entityDataType: AssayResultDataType,
+                baseFilters: model?.baseFilters
+            };
+        }
+    }
+
     const showQCButton =
         qcEnabledForApp &&
         protocol?.qcEnabled &&
@@ -171,7 +183,7 @@ export const AssayGridButtons: FC<AssayGridButtonsComponentProps> = memo(props =
                 </ManageDropdownButton>
             )}
             {showSampleBtn && (
-                <SampleActionsButton model={model} user={user} metricFeatureArea="assayResultsSampleButton">
+                <SampleActionsButton model={model} user={user} metricFeatureArea="assayResultsSampleButton" sampleFinderProps={sampleFinderProps}>
                     {isWorkflowEnabled() && (
                         <>
                             <MenuItem header>Jobs</MenuItem>

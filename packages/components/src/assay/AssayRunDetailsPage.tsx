@@ -79,7 +79,7 @@ const AssayRunDetailsPageBodyImpl: FC<Props & InjectedQueryModels & Notification
     const { ReferencingNotebooksComponent } = useSampleTypeAppContext();
 
     const onQCStateUpdate = useCallback(() => {
-        actions.loadModel('model');
+        actions.loadModel(model.id);
     }, [actions]);
 
     const onRunDetailUpdate = useCallback(() => {

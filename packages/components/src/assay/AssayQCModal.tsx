@@ -48,10 +48,10 @@ export class AssayQCModal extends PureComponent<Props, AssayQCState> {
         super(props);
         let state;
 
-        if (props.runs.length === 1) {
+        if (props.runs?.length === 1) {
             // Grab the QCFlags value out of the first and only visible run. If the user has only one selected run it
             // is pretty likely it's also the only visible run.
-            state = props.visibleRuns.getIn(['0', 'QCFlags', 'value']);
+            state = props.visibleRuns?.getIn(['0', 'QCFlags', 'value']);
         }
 
         this.state = {

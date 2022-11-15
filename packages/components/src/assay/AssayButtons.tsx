@@ -312,11 +312,12 @@ interface UpdateQCStatesButtonProps extends RequiresModelAndActions {
     assayContainer: string;
     disabled?: boolean;
     requireCommentOnQCStateChange?: boolean;
+    onQCStateUpdate?: () => void;
     run?: Map<string, any>;
 }
 
 export const UpdateQCStatesButton: FC<UpdateQCStatesButtonProps> = props => {
-    const { assayContainer, requireCommentOnQCStateChange, run, asMenuItem, disabled, model, actions } = props;
+    const { assayContainer, requireCommentOnQCStateChange, onQCStateUpdate, run, asMenuItem, disabled, model, actions } = props;
 
     const [showQCModal, setShowQCModal] = useState<boolean>(false);
     const [runs, setRuns] = useState<string[]>(null);
@@ -385,6 +386,7 @@ export const UpdateQCStatesButton: FC<UpdateQCStatesButtonProps> = props => {
                 closeQCModal();
                 actions.clearSelections(modelId);
                 actions.loadModel(modelId);
+                onQCStateUpdate?.();
             } catch (error) {
                 setError(error);
                 setLoading(false);

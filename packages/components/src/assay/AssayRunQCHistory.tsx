@@ -47,7 +47,7 @@ class AssayRunQCHistoryImpl extends React.Component<Props & InjectedQueryModels,
     }
 
     render(): ReactNode {
-        const { actions, assayContainer, queryModels, run, requireCommentOnQCStateChange } = this.props;
+        const { actions, assayContainer, queryModels, onQCStateUpdate, run, requireCommentOnQCStateChange } = this.props;
         const model = queryModels[QC_MODEL_ID];
         const ButtonsComponent = () => (
             <UpdateQCStatesButton
@@ -57,6 +57,7 @@ class AssayRunQCHistoryImpl extends React.Component<Props & InjectedQueryModels,
                 assayContainer={assayContainer}
                 disabled={false}
                 requireCommentOnQCStateChange={requireCommentOnQCStateChange}
+                onQCStateUpdate={onQCStateUpdate}
             />
         );
 

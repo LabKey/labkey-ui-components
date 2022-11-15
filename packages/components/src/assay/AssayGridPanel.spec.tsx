@@ -1,25 +1,31 @@
 import React from 'react';
-import { makeTestActions, makeTestQueryModel } from '../public/QueryModel/testUtils';
-import { SchemaQuery } from '../public/SchemaQuery';
-import { SCHEMAS } from '../internal/schemas';
+
 import { ReactWrapper } from 'enzyme';
-import { TEST_USER_AUTHOR, TEST_USER_EDITOR, TEST_USER_READER } from '../internal/userFixtures';
-import { AssayImportDataButton } from './AssayButtons';
-import { DisableableButton } from '../internal/components/buttons/DisableableButton';
-import { ManageDropdownButton } from '../internal/components/buttons/ManageDropdownButton';
+
 import { MenuItem } from 'react-bootstrap';
-import { SampleActionsButton } from '../entities';
-import { mountWithAppServerContext } from '../internal/testHelpers';
-import { AssayGridButtons } from './AssayGridPanel';
+
 import { QueryColumn, QueryLookup } from '../public/QueryColumn';
 import { SAMPLE_TYPE_CONCEPT_URI } from '../internal/components/domainproperties/constants';
 import { fromJS } from 'immutable';
+import { mountWithAppServerContext } from '../internal/testHelpers';
+import { SampleActionsButton } from '../entities';
+import { ManageDropdownButton } from '../internal/components/buttons/ManageDropdownButton';
+import { DisableableButton } from '../internal/components/buttons/DisableableButton';
+import { TEST_USER_AUTHOR, TEST_USER_EDITOR, TEST_USER_READER } from '../internal/userFixtures';
+import { SCHEMAS } from '../internal/schemas';
+import { SchemaQuery } from '../public/SchemaQuery';
+import { makeTestActions, makeTestQueryModel } from '../public/QueryModel/testUtils';
 import { ViewInfo } from '../internal/ViewInfo';
 import { QueryInfo } from '../public/QueryInfo';
-import { AssayAppContext } from './AssayAppContext';
+
 import { AssayDefinitionModel } from '../internal/AssayDefinitionModel';
 import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/constants';
 import { AssayProtocolModel } from '../internal/components/domainproperties/assay/models';
+import { AssayGridButtons } from './AssayGridPanel';
+
+import { AssayImportDataButton } from './AssayButtons';
+
+import { AssayAppContext } from './AssayAppContext';
 
 const standardAssayDefinition = AssayDefinitionModel.create({
     id: 1,
@@ -31,7 +37,6 @@ const standardAssayDefinition = AssayDefinitionModel.create({
         import: '/labkey/Sample%20Management%202/assay-uploadWizard.view?rowId=1',
     },
 });
-
 
 const assayProtocol = AssayProtocolModel.create({
     protocolId: 1,
@@ -59,8 +64,14 @@ describe('AssayGridButtons', () => {
     const ASSAY_APP_CONTEXT = {
         requireSampleField: true,
         showProviderName: false,
-        jobNotificationProvider: "test",
-        JobsMenuOptionsComponent: () => <div className="jobs-menu-test"> <MenuItem className="add-to-job">Add to Job</MenuItem> <MenuItem className="start-a-job">Start a New Job</MenuItem> </div>,
+        jobNotificationProvider: 'test',
+        JobsMenuOptionsComponent: () => (
+            <div className="jobs-menu-test">
+                {' '}
+                <MenuItem className="add-to-job">Add to Job</MenuItem>{' '}
+                <MenuItem className="start-a-job">Start a New Job</MenuItem>{' '}
+            </div>
+        ),
     } as AssayAppContext;
 
     function validate(
@@ -88,31 +99,37 @@ describe('AssayGridButtons', () => {
 
     test('default props', () => {
         const wrapper = mountWithAppServerContext(
-            <AssayGridButtons {...DEFAULT_PROPS} />, {
-                assay: ASSAY_APP_CONTEXT
-            }, {
-            user: TEST_USER_EDITOR,
-        });
+            <AssayGridButtons {...DEFAULT_PROPS} />,
+            {
+                assay: ASSAY_APP_CONTEXT,
+            },
+            {
+                user: TEST_USER_EDITOR,
+            }
+        );
         validate(wrapper);
         wrapper.unmount();
     });
 
     test('can delete and update', () => {
-        const wrapper = mountWithAppServerContext(<AssayGridButtons {...DEFAULT_PROPS} canDelete canUpdate />,
+        const wrapper = mountWithAppServerContext(
+            <AssayGridButtons {...DEFAULT_PROPS} canDelete canUpdate />,
             {
-            assay: ASSAY_APP_CONTEXT
-        }, {
-            user: TEST_USER_EDITOR,
-        });
+                assay: ASSAY_APP_CONTEXT,
+            },
+            {
+                user: TEST_USER_EDITOR,
+            }
+        );
         validate(wrapper, true, true, true);
         wrapper.unmount();
     });
 
     test('reader', () => {
         const wrapper = mountWithAppServerContext(
-            <AssayGridButtons {...DEFAULT_PROPS} canDelete canUpdate/>,
+            <AssayGridButtons {...DEFAULT_PROPS} canDelete canUpdate />,
             {
-                assay: ASSAY_APP_CONTEXT
+                assay: ASSAY_APP_CONTEXT,
             },
             { user: TEST_USER_READER }
         );
@@ -122,9 +139,9 @@ describe('AssayGridButtons', () => {
 
     test('author', () => {
         const wrapper = mountWithAppServerContext(
-            <AssayGridButtons {...DEFAULT_PROPS} canDelete canUpdate  />,
+            <AssayGridButtons {...DEFAULT_PROPS} canDelete canUpdate />,
             {
-                assay: ASSAY_APP_CONTEXT
+                assay: ASSAY_APP_CONTEXT,
             },
             { user: TEST_USER_AUTHOR }
         );
@@ -147,7 +164,7 @@ describe('AssayGridButtons', () => {
         fieldKeyPath: 'sampleId',
         title: 'sampleId',
         selectable: true,
-        lookup: QueryLookup.create({ conceptURI: SAMPLE_TYPE_CONCEPT_URI, schemaName: 'samples', queryName: 'test"'})
+        lookup: QueryLookup.create({ conceptURI: SAMPLE_TYPE_CONCEPT_URI, schemaName: 'samples', queryName: 'test"' }),
     });
     const columns = fromJS({
         textcol: TEXT_COL,
@@ -158,11 +175,11 @@ describe('AssayGridButtons', () => {
         columns: [TEXT_COL, SAMPLE_COL],
     });
 
-    test("showSamplesButton with jobs", () => {
+    test('showSamplesButton with jobs', () => {
         LABKEY.moduleContext = {
             samplemanagement: {},
             api: { moduleNames: ['samplemanagement'] },
-            core: {productFeatures: ['Workflow', 'ELN', 'Assay'],}
+            core: { productFeatures: ['Workflow', 'ELN', 'Assay'] },
         };
         const schemaQuery = SchemaQuery.create('schema', SCHEMAS.ASSAY_TABLES.RESULTS_QUERYNAME);
         const queryInfo = QueryInfo.create({
@@ -172,9 +189,10 @@ describe('AssayGridButtons', () => {
             columns,
         });
         const model = makeTestQueryModel(schemaQuery, queryInfo);
-        const wrapper = mountWithAppServerContext(<AssayGridButtons {...{...DEFAULT_PROPS, model}} canDelete canUpdate/>,
+        const wrapper = mountWithAppServerContext(
+            <AssayGridButtons {...{ ...DEFAULT_PROPS, model }} canDelete canUpdate />,
             {
-                assay: ASSAY_APP_CONTEXT
+                assay: ASSAY_APP_CONTEXT,
             },
             {
                 user: TEST_USER_EDITOR,
@@ -184,11 +202,11 @@ describe('AssayGridButtons', () => {
         validate(wrapper, true, true, true, true, true, true);
     });
 
-    test("showSamplesButton without jobs", () => {
+    test('showSamplesButton without jobs', () => {
         LABKEY.moduleContext = {
             samplemanagement: {},
             api: { moduleNames: ['samplemanagement'] },
-            core: {productFeatures: ['Assay'],}
+            core: { productFeatures: ['Assay'] },
         };
 
         const schemaQuery = SchemaQuery.create('schema', SCHEMAS.ASSAY_TABLES.RESULTS_QUERYNAME);
@@ -199,12 +217,15 @@ describe('AssayGridButtons', () => {
             columns,
         });
         const model = makeTestQueryModel(schemaQuery, queryInfo);
-        const wrapper = mountWithAppServerContext(<AssayGridButtons {...{...DEFAULT_PROPS, model}} canDelete canUpdate/>, {
-            assay: ASSAY_APP_CONTEXT
-        },
+        const wrapper = mountWithAppServerContext(
+            <AssayGridButtons {...{ ...DEFAULT_PROPS, model }} canDelete canUpdate />,
             {
-            user: TEST_USER_EDITOR,
-        });
+                assay: ASSAY_APP_CONTEXT,
+            },
+            {
+                user: TEST_USER_EDITOR,
+            }
+        );
         validate(wrapper, true, true, true, true, false, true);
     });
 });

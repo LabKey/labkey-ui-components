@@ -1,13 +1,18 @@
 import React, { FC } from 'react';
+
 import { InjectedAssayModel } from '../internal/components/assay/withAssayModels';
 import { InjectedRouteLeaveProps, withRouteLeave } from '../internal/util/RouteLeave';
 import { Page } from '../internal/components/base/Page';
+
+import { AssayLink } from '../internal/AssayDefinitionModel';
+
+import { CommonPageProps } from '../internal/models';
+
 import { AssayHeader } from './AssayHeader';
 import { AssayDesignHeaderButtons } from './AssayButtons';
 import { AssayGridPanel } from './AssayGridPanel';
 import { AssayOverrideBanner } from './AssayOverrideBanner';
-import { AssayLink } from '../internal/AssayDefinitionModel';
-import { CommonPageProps } from '../internal/models';
+
 import { assayPage } from './AssayPageHOC';
 
 const AssayResultListingPageImpl: FC<CommonPageProps & InjectedAssayModel & InjectedRouteLeaveProps> = props => {
@@ -33,6 +38,6 @@ const AssayResultListingPageImpl: FC<CommonPageProps & InjectedAssayModel & Inje
             />
         </Page>
     );
-}
+};
 
 export const AssayResultListingPage = withRouteLeave(assayPage(AssayResultListingPageImpl));

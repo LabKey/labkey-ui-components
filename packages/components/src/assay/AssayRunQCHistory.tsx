@@ -1,11 +1,15 @@
 import React, { ReactNode } from 'react';
 import { Map } from 'immutable';
+
+import { Filter } from '@labkey/api';
+
 import { SchemaQuery } from '../public/SchemaQuery';
 import { InjectedQueryModels, withQueryModels } from '../public/QueryModel/withQueryModels';
-import { Filter } from '@labkey/api';
-import { UpdateQCStatesButton } from './AssayButtons';
+
 import { GridPanel } from '../public/QueryModel/GridPanel';
 import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
+
+import { UpdateQCStatesButton } from './AssayButtons';
 
 const QC_HISTORY_SQ = SchemaQuery.create('auditLog', 'ExperimentAuditEvent');
 const QC_MODEL_ID = 'QC';
@@ -19,8 +23,8 @@ interface State {
 interface Props {
     assayContainer: string;
     onQCStateUpdate?: () => void;
-    run: Map<string, any>;
     requireCommentOnQCStateChange: boolean;
+    run: Map<string, any>;
 }
 
 class AssayRunQCHistoryImpl extends React.Component<Props & InjectedQueryModels, State> {

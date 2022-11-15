@@ -3,6 +3,8 @@ import { ReactWrapper } from 'enzyme';
 
 import { PermissionTypes } from '@labkey/api';
 
+import { MenuItem } from 'react-bootstrap';
+
 import { ProductMenuModel } from '../internal/components/navigation/model';
 import { makeTestActions, makeTestQueryModel } from '../public/QueryModel/testUtils';
 import { SchemaQuery } from '../public/SchemaQuery';
@@ -27,6 +29,10 @@ import { InsufficientPermissionsAlert } from '../internal/components/permissions
 
 import { Container } from '../internal/components/base/models/Container';
 
+import { AssayAppContext } from '../assay';
+
+import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/constants';
+
 import { SampleDetailPage, SampleDetailPageBody, SampleDetailPageBodyProps } from './SampleDetailPage';
 import { SampleTypeAppContext } from './SampleTypeAppContext';
 import { SampleHeader } from './SampleHeader';
@@ -37,9 +43,6 @@ import { SampleAssaysPage } from './SampleAssaysPage';
 import { SampleAssayDetail } from './SampleAssayDetail';
 
 import { SampleLineagePage, SampleLineagePanel } from './SampleLineagePage';
-import { MenuItem } from 'react-bootstrap';
-import { AssayAppContext } from '../assay';
-import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/constants';
 
 const QUERY_MODEL = makeTestQueryModel(
     SchemaQuery.create('schema', 'query'),
@@ -74,8 +77,13 @@ const ASSAY_APP_CONTEXT = {
     requireSampleField: true,
     showProviderName: false,
     assayProviderType: GENERAL_ASSAY_PROVIDER_NAME,
-    jobNotificationProvider: "test",
-    JobsMenuOptionsComponent: () => <div className="jobs-menu-test"> <MenuItem className="add-to-job">Add to Job</MenuItem> <MenuItem className="start-a-job">Start a New Job</MenuItem> </div>,
+    jobNotificationProvider: 'test',
+    JobsMenuOptionsComponent: () => (
+        <div className="jobs-menu-test">
+            <MenuItem className="add-to-job">Add to Job</MenuItem>
+            <MenuItem className="start-a-job">Start a New Job</MenuItem>
+        </div>
+    ),
 } as AssayAppContext;
 const SAMPLE_TYPE_APP_CONTEXT = {
     SampleStorageMenuComponent: null,
@@ -198,7 +206,7 @@ describe('SampleAliquotsPage', () => {
     test('default props', async () => {
         const wrapper = mountWithAppServerContext(
             <SampleAliquotsPage {...getDefaultProps()} />,
-            { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT, assay: ASSAY_APP_CONTEXT},
+            { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT, assay: ASSAY_APP_CONTEXT },
             DEFAULT_CONTEXT
         );
         await waitForLifecycle(wrapper);

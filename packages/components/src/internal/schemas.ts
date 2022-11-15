@@ -26,7 +26,7 @@ export const CBMB = List<string>(['Created', 'CreatedBy', 'Modified', 'ModifiedB
 const ASSAY_SCHEMA = 'assay';
 export const ASSAY_TABLES = {
     ASSAY_LIST: SchemaQuery.create(ASSAY_SCHEMA, 'AssayList'),
-    ASSAY_DETAILS_SQ: SchemaQuery.create(ASSAY_SCHEMA,"AssayList", ViewInfo.DETAIL_NAME),
+    ASSAY_DETAILS_SQ: SchemaQuery.create(ASSAY_SCHEMA, 'AssayList', ViewInfo.DETAIL_NAME),
     SCHEMA: ASSAY_SCHEMA,
     RESULTS_QUERYNAME: 'Data',
 };

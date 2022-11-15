@@ -27,7 +27,7 @@ export function updateQCState(data) {
             jsonData: data,
             url: ActionURL.buildURL('assay', 'updateQCState.api'),
             method: 'POST',
-            success: (request) => {
+            success: request => {
                 const response = JSON.parse(request.responseText);
 
                 if (response.success) {
@@ -38,10 +38,10 @@ export function updateQCState(data) {
                 // What does an error actually look like? Could we extract a better error message from the response?
                 reject(UNEXPECTED_QC_ERROR);
             },
-            failure: (response) => {
+            failure: response => {
                 const resp = JSON.parse(response.responseText);
                 reject(resp?.exception ?? UNEXPECTED_QC_ERROR);
-            }
+            },
         });
     });
 }

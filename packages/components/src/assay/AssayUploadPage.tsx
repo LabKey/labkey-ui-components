@@ -1,43 +1,42 @@
 import React, { FC, memo, useMemo } from 'react';
+
+import { WithRouterProps } from 'react-router';
+
+import { Utils } from '@labkey/api';
+
 import { InjectedAssayModel } from '../internal/components/assay/withAssayModels';
 import { CommonPageProps } from '../internal/models';
 import { InjectedRouteLeaveProps, withRouteLeave } from '../internal/util/RouteLeave';
-import {
-    NotificationsContextProps,
-    useNotificationsContext
-} from '../internal/components/notifications/NotificationsContext';
-import { WithRouterProps } from 'react-router';
+import { useNotificationsContext, } from '../internal/components/notifications/NotificationsContext';
 import { useServerContext } from '../internal/components/base/ServerContext';
-import { Utils } from '@labkey/api';
+
 import { AssayUploadResultModel } from '../internal/components/assay/models';
+
+import { AppURL } from '../internal/url/AppURL';
+
+import { ASSAYS_KEY } from '../internal/app/constants';
+
+import { InsufficientPermissionsPage } from '../internal/components/permissions/InsufficientPermissionsPage';
+
+import { Page } from '../internal/components/base/Page';
+
+import { AssayImportPanels } from '../internal/components/assay/AssayImportPanels';
+
 import { onAssayRunChange } from './actions';
 import { getAssayImportNotificationMsg } from './utils';
-import { AppURL } from '../internal/url/AppURL';
-import { ASSAYS_KEY } from '../internal/app/constants';
-import { InsufficientPermissionsPage } from '../internal/components/permissions/InsufficientPermissionsPage';
-import { Page } from '../internal/components/base/Page';
+
 import { AssayHeader } from './AssayHeader';
-import { AssayImportPanels } from '../internal/components/assay/AssayImportPanels';
+
 import { useAssayAppContext } from './AssayAppContext';
 import { assayPage } from './AssayPageHOC';
 
 type Props = CommonPageProps & InjectedAssayModel & InjectedRouteLeaveProps & WithRouterProps;
 
-const AssayUploadPageImpl: FC<Props> = memo(props =>  {
-    const {
-        assayDefinition,
-        assayProtocol,
-        location,
-        menu,
-        getIsDirty,
-        setIsDirty,
-        goBack,
-        navigate
-    } = props;
+const AssayUploadPageImpl: FC<Props> = memo(props => {
+    const { assayDefinition, assayProtocol, location, menu, getIsDirty, setIsDirty, goBack, navigate } = props;
     const { user } = useServerContext();
     const { jobNotificationProvider } = useAssayAppContext();
     const { createNotification } = useNotificationsContext();
-
 
     // only show the "Save and Import Another Run" option if this assay has batch props
     const batchDomain = useMemo(() => {
@@ -50,9 +49,8 @@ const AssayUploadPageImpl: FC<Props> = memo(props =>  {
 
     const runId = useMemo(() => {
         const id = location?.query?.runId;
-        if (!id)
-            return undefined;
-        else if (Utils.isArray(id))  {
+        if (!id) return undefined;
+        else if (Utils.isArray(id)) {
             return id[0];
         }
 
@@ -67,20 +65,22 @@ const AssayUploadPageImpl: FC<Props> = memo(props =>  {
         return isReimport ? 'Assay Re-Import' : 'Assay Import';
     }, [isReimport]);
 
-
     const onSave = (response: AssayUploadResultModel, isBackgroundJob?: boolean) => {
         onAssayRunChange(assayDefinition.protocolSchemaName);
 
-        createNotification({
-            message: getAssayImportNotificationMsg(
-                response,
-                isBackgroundJob,
-                isReimport,
-                assayDefinition,
-                location?.query?.workflowJobId,
-                location?.query?.workflowTaskId
-            ),
-        }, true);
+        createNotification(
+            {
+                message: getAssayImportNotificationMsg(
+                    response,
+                    isBackgroundJob,
+                    isReimport,
+                    assayDefinition,
+                    location?.query?.workflowJobId,
+                    location?.query?.workflowTaskId
+                ),
+            },
+            true
+        );
     };
 
     const onComplete = (response: AssayUploadResultModel, isBackgroundJob?: boolean) => {
@@ -88,28 +88,25 @@ const AssayUploadPageImpl: FC<Props> = memo(props =>  {
 
         let redirectUrl: AppURL;
         if (!isBackgroundJob) {
-            redirectUrl = AppURL.create(
-                ASSAYS_KEY,
-                assayDefinition.type,
-                assayDefinition.name,
-                'runs',
-                response.runId
-            );
+            redirectUrl = AppURL.create(ASSAYS_KEY, assayDefinition.type, assayDefinition.name, 'runs', response.runId);
         } else {
             redirectUrl = AppURL.create(ASSAYS_KEY, assayDefinition.type, assayDefinition.name);
         }
         navigate(redirectUrl);
 
-        createNotification({
-            message: getAssayImportNotificationMsg(
-                response,
-                isBackgroundJob,
-                isReimport,
-                null,
-                location?.query?.workflowJobId,
-                location?.query?.workflowTaskId
-            ),
-        }, true);
+        createNotification(
+            {
+                message: getAssayImportNotificationMsg(
+                    response,
+                    isBackgroundJob,
+                    isReimport,
+                    null,
+                    location?.query?.workflowJobId,
+                    location?.query?.workflowTaskId
+                ),
+            },
+            true
+        );
     };
 
     const onCancel = () => {
@@ -124,7 +121,12 @@ const AssayUploadPageImpl: FC<Props> = memo(props =>  {
     // Intentionally not showing buttons in header, for consistency with other upload pages
     return (
         <Page title={assayDefinition.name + ' - ' + subTitle} hasHeader>
-            <AssayHeader menu={menu} subTitle={subTitle} description={assayDefinition.description} includeTemplateButton={false} />
+            <AssayHeader
+                menu={menu}
+                subTitle={subTitle}
+                description={assayDefinition.description}
+                includeTemplateButton={false}
+            />
             <AssayImportPanels
                 assayDefinition={assayDefinition}
                 runId={runId}

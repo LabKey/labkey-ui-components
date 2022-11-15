@@ -1,8 +1,11 @@
 import React, { FC, memo, useCallback } from 'react';
-import { InjectedAssayModel, withAssayModelsFromLocation } from '../internal/components/assay/withAssayModels';
+
 import { WithRouterProps } from 'react-router';
+
+import { InjectedAssayModel, withAssayModelsFromLocation } from '../internal/components/assay/withAssayModels';
 import { AppURL } from '../internal/url/AppURL';
 import { ASSAYS_KEY } from '../internal/app/constants';
+
 import { AssaySubNavMenu } from './AssaySubNavMenu';
 
 type Props = InjectedAssayModel & WithRouterProps;

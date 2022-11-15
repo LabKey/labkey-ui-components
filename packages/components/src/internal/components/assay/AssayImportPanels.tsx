@@ -769,11 +769,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                         onClick={this.onSaveClick.bind(this, false)}
                         disabled={disabledSave}
                     >
-                        {model.isSubmitting
-                            ? 'Importing...'
-                            : isReimport
-                            ? 'Re-Import'
-                            : 'Import'}
+                        {model.isSubmitting ? 'Importing...' : isReimport ? 'Re-Import' : 'Import'}
                     </Button>
                 </WizardNavButtons>
                 <Progress

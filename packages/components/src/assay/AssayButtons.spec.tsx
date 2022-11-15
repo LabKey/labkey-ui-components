@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Button, MenuItem } from 'react-bootstrap';
 
+import { fromJS } from 'immutable';
+
 import { AssayContextProvider } from '../internal/components/assay/withAssayModels';
 
 import { mountWithServerContext } from '../internal/testHelpers';
@@ -33,7 +35,6 @@ import {
     AssayRunDetailHeaderButtons,
     UpdateQCStatesButton,
 } from './AssayButtons';
-import { fromJS } from 'immutable';
 
 const standardAssayDefinition = AssayDefinitionModel.create({
     id: 1,
@@ -330,29 +331,22 @@ describe('AssayDesignHeaderButtons', () => {
 });
 
 describe('UpdateQCStatesButton', () => {
-    const testModel = makeTestQueryModel(SchemaQuery.create("test", "query"));
+    const testModel = makeTestQueryModel(SchemaQuery.create('test', 'query'));
     const actions = makeTestActions();
     test('not analyst', () => {
         const wrapper = mountWithServerContext(
-            <UpdateQCStatesButton
-                assayContainer={"test"}
-                model={testModel}
-                actions={actions}
-            />, {
-            user: TEST_USER_READER,
-        });
+            <UpdateQCStatesButton assayContainer="test" model={testModel} actions={actions} />,
+            {
+                user: TEST_USER_READER,
+            }
+        );
         expect(wrapper.find(Button)).toHaveLength(0);
         expect(wrapper.find(DisableableMenuItem)).toHaveLength(0);
     });
 
     test('as menu item', () => {
         const wrapper = mountWithServerContext(
-            <UpdateQCStatesButton
-                assayContainer={"test"}
-                model={testModel}
-                actions={actions}
-                asMenuItem={true}
-            />,
+            <UpdateQCStatesButton assayContainer="test" model={testModel} actions={actions} asMenuItem={true} />,
             {
                 user: TEST_USER_QC_ANALYST,
             }
@@ -364,42 +358,38 @@ describe('UpdateQCStatesButton', () => {
 
     test('disabled, as menu item', () => {
         const wrapper = mountWithServerContext(
-            <UpdateQCStatesButton
-                assayContainer={"test"}
-                model={testModel}
-                actions={actions}
-                asMenuItem
-                disabled
-            />, {
+            <UpdateQCStatesButton assayContainer="test" model={testModel} actions={actions} asMenuItem disabled />,
+            {
                 user: TEST_USER_QC_ANALYST,
-            });
-        expect(wrapper.find(DisableableMenuItem).prop("operationPermitted")).toBe(false);
+            }
+        );
+        expect(wrapper.find(DisableableMenuItem).prop('operationPermitted')).toBe(false);
     });
 
-    test("with single run", () => {
+    test('with single run', () => {
         const wrapper = mountWithServerContext(
             <UpdateQCStatesButton
-                assayContainer={"test"}
+                assayContainer="test"
                 model={testModel}
                 actions={actions}
-                run={fromJS({"RowId": {"value": "1"}})}
+                run={fromJS({ RowId: { value: '1' } })}
                 asMenuItem
                 disabled
-            />, {
+            />,
+            {
                 user: TEST_USER_QC_ANALYST,
-            });
-        expect(wrapper.find(DisableableMenuItem).text()).toBe("Update QC State");
+            }
+        );
+        expect(wrapper.find(DisableableMenuItem).text()).toBe('Update QC State');
     });
 
     test('not as menu item', () => {
         const wrapper = mountWithServerContext(
-            <UpdateQCStatesButton
-                assayContainer={"test"}
-                model={testModel}
-                actions={actions}
-            />, {
-            user: TEST_USER_QC_ANALYST,
-        });
+            <UpdateQCStatesButton assayContainer="test" model={testModel} actions={actions} />,
+            {
+                user: TEST_USER_QC_ANALYST,
+            }
+        );
         expect(wrapper.find(Button)).toHaveLength(1);
         expect(wrapper.find(Button).text()).toBe('Update QC States');
         expect(wrapper.find(DisableableMenuItem)).toHaveLength(0);
@@ -407,15 +397,12 @@ describe('UpdateQCStatesButton', () => {
 
     test('disabled, not as menu item', () => {
         const wrapper = mountWithServerContext(
-            <UpdateQCStatesButton
-                assayContainer={"test"}
-                model={testModel}
-                actions={actions}
-                disabled={true}
-            />, {
+            <UpdateQCStatesButton assayContainer="test" model={testModel} actions={actions} disabled={true} />,
+            {
                 user: TEST_USER_QC_ANALYST,
-            });
+            }
+        );
         expect(wrapper.find(Button)).toHaveLength(1);
-        expect(wrapper.find(Button).prop("disabled")).toBe(true);
+        expect(wrapper.find(Button).prop('disabled')).toBe(true);
     });
 });

@@ -5,9 +5,10 @@
 import React, { FC } from 'react';
 import { Filter } from '@labkey/api';
 
-import { useAssayAppContext } from './AssayAppContext';
 import { InjectedAssayModel } from '../internal/components/assay/withAssayModels';
+
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../public/QueryModel/withQueryModels';
+
 import {
     Alert,
     AssayLink,
@@ -20,40 +21,36 @@ import {
     QueryColumn,
     QueryModel,
     SCHEMAS,
-    withRouteLeave
+    withRouteLeave,
 } from '../index';
+
+import { CommonPageProps } from '../internal/models';
+
+import { useAssayAppContext } from './AssayAppContext';
+
 import { AssayHeader } from './AssayHeader';
 import { AssayDesignHeaderButtons } from './AssayButtons';
 import { assayPage } from './AssayPageHOC';
 import { AssayOverrideBanner } from './AssayOverrideBanner';
 import { AssayGridPanel } from './AssayGridPanel';
-import { CommonPageProps } from '../internal/models';
 
 const REQUIRED_COLUMN_NAMES = ['Description', 'Created', 'CreatedBy', 'Status'];
-
 
 type AssayOverviewProps = CommonPageProps & InjectedAssayModel & InjectedQueryModels & InjectedRouteLeaveProps;
 
 const AssayOverviewPageBody: FC<AssayOverviewProps> = props => {
-    const {
-        assayDefinition,
-        assayProtocol,
-        actions,
-        navigate,
-        menu,
-        menuInit,
-        queryModels,
-        setIsDirty,
-        getIsDirty
-    } = props;
+    const { assayDefinition, assayProtocol, actions, navigate, menu, menuInit, queryModels, setIsDirty, getIsDirty } =
+        props;
     const { model } = queryModels;
     const { name, type, description } = assayDefinition;
     const protocolContext = Hooks.useContainerUser(assayProtocol.domains.first()?.container);
     const { showProviderName, detailRenderer } = useAssayAppContext();
-    const subtitle = showProviderName ? (type === GENERAL_ASSAY_PROVIDER_NAME ? "Standard" : type) + " Assay Overview" : undefined;
+    const subtitle = showProviderName
+        ? (type === GENERAL_ASSAY_PROVIDER_NAME ? 'Standard' : type) + ' Assay Overview'
+        : undefined;
 
     const getDetailsColumns = (model: QueryModel): QueryColumn[] => {
-        return REQUIRED_COLUMN_NAMES.map((name) => model.getColumn(name));
+        return REQUIRED_COLUMN_NAMES.map(name => model.getColumn(name));
     };
 
     if (model.isLoading || !protocolContext.isLoaded) {
@@ -62,12 +59,8 @@ const AssayOverviewPageBody: FC<AssayOverviewProps> = props => {
 
     return (
         <Page hasHeader title={`${name} - Assay Overview`}>
-            <AssayHeader
-                menu={menu}
-                subTitle={subtitle}
-                description={description}
-            >
-                <AssayDesignHeaderButtons menuInit={menuInit} navigate={navigate}/>
+            <AssayHeader menu={menu} subTitle={subtitle} description={description}>
+                <AssayDesignHeaderButtons menuInit={menuInit} navigate={navigate} />
             </AssayHeader>
 
             <Alert>{protocolContext.error}</Alert>
@@ -93,7 +86,6 @@ const AssayOverviewPageBody: FC<AssayOverviewProps> = props => {
                 setIsDirty={setIsDirty}
                 getIsDirty={getIsDirty}
             />
-
         </Page>
     );
 };

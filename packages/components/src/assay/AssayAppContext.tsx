@@ -3,15 +3,15 @@ import { DetailRenderer } from '../internal/components/forms/detail/DetailDispla
 import { JobsMenuOptions } from '../internal/components/samples/models';
 
 export interface AssayAppContext {
+    JobsMenuOptionsComponent: JobsMenuOptions;
     assayProviderType?: string;
+    assayTypes?: string[];
     detailRenderer?: DetailRenderer;
+    excludedAssayProviders?: string[];
+    jobNotificationProvider: string; // pipeline job not workflow job
     qcEnabledForApp?: boolean;
     requireSampleField?: boolean;
     showProviderName?: boolean;
-    JobsMenuOptionsComponent: JobsMenuOptions;
-    assayTypes?: string[];
-    excludedAssayProviders?: string[];
-    jobNotificationProvider: string; // pipeline job not workflow job
 }
 
 // If your App extends AppContext to add attributes other than Assay use this e.g.:

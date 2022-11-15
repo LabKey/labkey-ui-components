@@ -2,6 +2,8 @@ import { PermissionTypes } from '@labkey/api';
 import React, { FC, memo, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Button, MenuItem } from 'react-bootstrap';
 
+import { List, Map } from 'immutable';
+
 import { RequiresPermission } from '../internal/components/base/Permissions';
 import { AppURL, buildURL } from '../internal/url/AppURL';
 import { AssayContext, AssayContextConsumer } from '../internal/components/assay/withAssayModels';
@@ -19,14 +21,14 @@ import { QueryModel } from '../public/QueryModel/QueryModel';
 import { clearAssayDefinitionCache } from '../internal/components/assay/actions';
 import { ASSAY_AUDIT_QUERY } from '../internal/components/auditlog/constants';
 
+import { RequiresModelAndActions } from '../public/QueryModel/withQueryModels';
+
 import { AssayRunDeleteModal } from './AssayRunDeleteModal';
 import { getAssayRunDeleteMessage } from './utils';
 import { AssayReimportRunButton } from './AssayReimportRunButton';
 import { onAssayDesignChange, onAssayRunChange, updateQCState } from './actions';
 import { AssayDesignDeleteModal } from './AssayDesignDeleteModal';
 import { AssayQCModal, AssayQCState } from './AssayQCModal';
-import { List, Map } from 'immutable';
-import { RequiresModelAndActions } from '../public/QueryModel/withQueryModels';
 
 export const AssayExportDesignButton: FC<any> = () => (
     <RequiresPermission perms={PermissionTypes.ReadAssay}>
@@ -306,15 +308,15 @@ export const AssayDesignHeaderButtons: FC<AssayDesignHeaderButtonProps> = props 
 };
 
 interface UpdateQCStatesButtonProps extends RequiresModelAndActions {
-    assayContainer: string;
     asMenuItem?: boolean;
+    assayContainer: string;
     disabled?: boolean;
     requireCommentOnQCStateChange?: boolean;
     run?: Map<string, any>;
 }
 
 export const UpdateQCStatesButton: FC<UpdateQCStatesButtonProps> = props => {
-    const {assayContainer, requireCommentOnQCStateChange, run, asMenuItem, disabled, model, actions} = props;
+    const { assayContainer, requireCommentOnQCStateChange, run, asMenuItem, disabled, model, actions } = props;
 
     const [showQCModal, setShowQCModal] = useState<boolean>(false);
     const [runs, setRuns] = useState<string[]>(null);
@@ -326,7 +328,7 @@ export const UpdateQCStatesButton: FC<UpdateQCStatesButtonProps> = props => {
     useEffect(() => {
         if (run) {
             setRuns([run.getIn(['RowId', 'value'])]);
-            setVisibleRuns(List<Map<string, any>>([run]))
+            setVisibleRuns(List<Map<string, any>>([run]));
         } else {
             if (model.isLoading) return;
 
@@ -392,7 +394,7 @@ export const UpdateQCStatesButton: FC<UpdateQCStatesButtonProps> = props => {
     );
 
     let button: ReactNode;
-    const buttonText = useMemo(() => (runs?.length == 1 ? "Update QC State" : "Update QC States"), [runs]);
+    const buttonText = useMemo(() => (runs?.length == 1 ? 'Update QC State' : 'Update QC States'), [runs]);
 
     if (asMenuItem) {
         button = (

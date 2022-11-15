@@ -4,22 +4,23 @@
  */
 import React from 'react';
 import { Button } from 'react-bootstrap';
+
 import { AssayDefinitionModel, AssayLink } from '../internal/AssayDefinitionModel';
 import { getLocation } from '../internal/util/URL';
 import { Alert } from '../internal/components/base/Alert';
 import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/constants';
 
 interface Props {
-    assay: AssayDefinitionModel
-    link: AssayLink
+    assay: AssayDefinitionModel;
+    link: AssayLink;
 }
 
 export class AssayOverrideBanner extends React.Component<Props, any> {
     static defaultProps = {
-        override: AssayLink.BEGIN
+        override: AssayLink.BEGIN,
     };
 
-    onClick = (e) => {
+    onClick = e => {
         // We really should be generating a real link with an href in this component, but due to the design of the
         // QueryGridPanel this component is not updated when filters change, so we never re-render the href when a user
         // adds or removes a filter. The only way to get the most up to date query string is to compute on click.
@@ -44,12 +45,14 @@ export class AssayOverrideBanner extends React.Component<Props, any> {
         if (assay && assay.type.toLowerCase() !== GENERAL_ASSAY_PROVIDER_NAME.toLowerCase()) {
             return (
                 <Alert bsStyle="warning" className="test-loc-assay-override">
-                    <i className="fa fa-exclamation-circle" style={{paddingRight: '10px'}}/>
+                    <i className="fa fa-exclamation-circle" style={{ paddingRight: '10px' }} />
                     This assay has custom views that provide more specific insights. It is recommended you view this in
                     LabKey Server.
                     {assay.links.get(link) !== undefined && (
                         <div className="pull-right">
-                            <Button bsStyle="warning" bsSize="xs" onClick={this.onClick}>View in LabKey Server</Button>
+                            <Button bsStyle="warning" bsSize="xs" onClick={this.onClick}>
+                                View in LabKey Server
+                            </Button>
                         </div>
                     )}
                 </Alert>

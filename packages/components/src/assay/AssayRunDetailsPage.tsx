@@ -1,23 +1,26 @@
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
+
+import { WithRouterProps } from 'react-router';
+
+import { Filter } from '@labkey/api';
+
+import { fromJS } from 'immutable';
+
 import { InjectedAssayModel } from '../internal/components/assay/withAssayModels';
 import { InjectedRouteLeaveProps, withRouteLeave } from '../internal/util/RouteLeave';
-import { WithRouterProps } from 'react-router';
 import { InjectedQueryModels, withQueryModels } from '../public/QueryModel/withQueryModels';
 import {
     NotificationsContextProps,
-    withNotificationsContext
+    withNotificationsContext,
 } from '../internal/components/notifications/NotificationsContext';
 
 import { isAssayQCEnabled, isELNEnabled, isWorkflowEnabled } from '../internal/app/utils';
-import { Filter } from '@labkey/api';
-import { AssayHeader } from './AssayHeader';
-import { AssayRunDetailHeaderButtons } from './AssayButtons';
-import { useAssayAppContext } from './AssayAppContext';
-import { AssayGridPanel } from './AssayGridPanel';
-import { assayPage } from './AssayPageHOC';
+
 import { CommonPageProps } from '../internal/models';
+
 import { useSampleTypeAppContext } from '../entities';
-import { AssayOverrideBanner } from './AssayOverrideBanner';
+
+
 import { allowReimportAssayRun } from '../internal/components/assay/actions';
 import { LoadingPage } from '../internal/components/base/LoadingPage';
 import { NotFound } from '../internal/components/base/NotFound';
@@ -30,8 +33,15 @@ import { runDetailsColumnsForQueryModel } from '../public/QueryModel/utils';
 import { RUN_PROPERTIES_REQUIRED_COLUMNS } from '../internal/components/assay/constants';
 import { SchemaQuery } from '../public/SchemaQuery';
 import { Hooks } from '../index';
+import { AssayOverrideBanner } from './AssayOverrideBanner';
+
+import { assayPage } from './AssayPageHOC';
+import { AssayGridPanel } from './AssayGridPanel';
+import { useAssayAppContext } from './AssayAppContext';
+import { AssayRunDetailHeaderButtons } from './AssayButtons';
+import { AssayHeader } from './AssayHeader';
+
 import { AssayRunQCHistory } from './AssayRunQCHistory';
-import { fromJS } from 'immutable';
 
 type Props = CommonPageProps & InjectedAssayModel & WithRouterProps & InjectedRouteLeaveProps;
 
@@ -46,7 +56,7 @@ const AssayRunDetailsPageBodyImpl: FC<Props & InjectedQueryModels & Notification
         setIsDirty,
         getIsDirty,
         menu,
-        navigate
+        navigate,
     } = props;
     const { runId } = params;
     const model = useMemo(() => Object.values(queryModels)[0], [queryModels]);
@@ -97,7 +107,6 @@ const AssayRunDetailsPageBodyImpl: FC<Props & InjectedQueryModels & Notification
     const runName = model.getRowValue('Name');
     const canReimport = allowReimportAssayRun(serverContext.user, runContext.container.id, serverContext.container.id);
     const hasDeletePermission = runContext.user.hasDeletePermission();
-
 
     return (
         <Page title={(runName ? runName + ' - ' : '') + subTitle} hasHeader>
@@ -197,7 +206,10 @@ const AssayRunDetailsPageImpl: FC<Props & InjectedQueryModels> = memo(props => {
             [id]: {
                 baseFilters: [Filter.create('Replaced', undefined, Filter.Types.NONBLANK)],
                 keyValue: runId,
-                requiredColumns: qcEnabledForApp && isAssayQCEnabled() ? RUN_PROPERTIES_REQUIRED_COLUMNS.concat(['LSID', 'QCFlags']).toArray() : RUN_PROPERTIES_REQUIRED_COLUMNS.toArray(),
+                requiredColumns:
+                    qcEnabledForApp && isAssayQCEnabled()
+                        ? RUN_PROPERTIES_REQUIRED_COLUMNS.concat(['LSID', 'QCFlags']).toArray()
+                        : RUN_PROPERTIES_REQUIRED_COLUMNS.toArray(),
                 schemaQuery: SchemaQuery.create(assayDefinition.protocolSchemaName, 'Runs'),
                 omittedColumns: isWorkflowEnabled() ? undefined : ['WorkflowTask'],
             },

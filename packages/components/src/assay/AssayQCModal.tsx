@@ -1,8 +1,12 @@
 import React, { PureComponent } from 'react';
-import { SchemaQuery } from '../public/SchemaQuery';
+
 import { List, Map } from 'immutable';
-import { cancelEvent } from '../internal/events';
+
 import { FormControl, Modal } from 'react-bootstrap';
+
+import { SchemaQuery } from '../public/SchemaQuery';
+import { cancelEvent } from '../internal/events';
+
 import { Grid } from '../internal/components/base/Grid';
 import { QuerySelect } from '../internal/components/forms/QuerySelect';
 import { Alert } from '../internal/components/base/Alert';
@@ -11,21 +15,21 @@ import { WizardNavButtons } from '../internal/components/buttons/WizardNavButton
 const QC_STATE_SCHEMA_QUERY = SchemaQuery.create('core', 'qcstate');
 
 export interface AssayQCState extends Record<string, any> {
-    state: string;
     comment: string;
+    state: string;
 }
 
 interface Props {
     assayContainer: string;
+    cancel: () => void;
+    error?: string;
+    loading: boolean;
+    requireComment?: boolean;
     // runs are the complete list of selected run ids, comes from QueryGridModel.selectedIds.
     runs: string[];
+    save: (formState: AssayQCState) => void;
     // visibleRuns are the runs that are currently visible on the grid, comes from QueryGridModel.data
     visibleRuns: List<Map<string, any>>;
-    cancel: () => void;
-    save: (formState: AssayQCState) => void;
-    loading: boolean;
-    error?: string;
-    requireComment?: boolean;
 }
 
 export class AssayQCModal extends PureComponent<Props, AssayQCState> {

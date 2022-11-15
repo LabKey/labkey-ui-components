@@ -3,10 +3,11 @@ import React, { FC, memo } from 'react';
 import { getSampleStatusType, isSampleOperationPermitted } from '../internal/components/samples/utils';
 import { SampleOperation } from '../internal/components/samples/constants';
 
+import { useAssayAppContext } from '../assay/AssayAppContext';
+
 import { onSampleChange } from './actions';
 import { SampleAliquotsGridPanel } from './SampleAliquotsGridPanel';
 import { SampleDetailContextConsumer, SampleDetailPage, SampleDetailPageProps } from './SampleDetailPage';
-import { useAssayAppContext } from '../assay/AssayAppContext';
 
 interface Props extends SampleDetailPageProps {
     omittedColumns?: string[];

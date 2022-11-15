@@ -35,6 +35,10 @@ import { getContainerFilter } from '../../query/api';
 
 import { AssayResultDataType } from '../entities/constants';
 
+import { AssaySampleColumnProp } from '../../../entities/models';
+
+import { caseInsensitive } from '../../util/utils';
+
 import { SearchScope, SAMPLE_FINDER_SESSION_PREFIX } from './constants';
 import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSessionStorageProps } from './models';
 
@@ -138,17 +142,20 @@ export function getLabKeySqlWhere(fieldFilters: FieldFilter[], skipWhere?: boole
  * @param schemaName
  * @param queryName
  * @param fieldFilters
+ * @param cf
  * @return labkey sql
  */
 export function getLabKeySql(
     selectColumn: string,
     schemaName: string,
     queryName: string,
-    fieldFilters?: FieldFilter[]
+    fieldFilters?: FieldFilter[],
+    cf?: Query.ContainerFilter
 ): string {
     const from = getLegalIdentifier(schemaName) + '.' + getLegalIdentifier(queryName);
+    const cfClause = cf ? `[ContainerFilter='${cf}']` : '';
     const where = fieldFilters ? ' ' + getLabKeySqlWhere(fieldFilters) : '';
-    return 'SELECT ' + getLegalIdentifier(selectColumn) + ' FROM ' + from + where;
+    return 'SELECT ' + getLegalIdentifier(selectColumn) + ' FROM ' + from + cfClause + where;
 }
 
 export function getExpDescendantOfSelectClause(
@@ -178,24 +185,32 @@ export function getExpDescendantOfFilter(
 
 export function getAssayFilter(card: FilterProps, cf?: Query.ContainerFilter): Filter.IFilter {
     const { schemaQuery, filterArray, selectColumnFieldKey, targetColumnFieldKey } = card;
-    if (!filterArray || filterArray.length === 0) return undefined;
+    const { schemaName, queryName } = schemaQuery;
 
-    const noAssayDataFilter = filterArray.find(
+    if (selectColumnFieldKey && (!filterArray || filterArray.length === 0)) {
+        // when finding from assay grid without filters
+        return Filter.create(
+            selectColumnFieldKey,
+            getLabKeySql(targetColumnFieldKey, schemaName, queryName, null, cf),
+            COLUMN_IN_FILTER_TYPE
+        );
+    }
+
+    const noAssayDataFilter = filterArray?.find(
         fieldFilter => fieldFilter.filter.getFilterType().getURLSuffix() === COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix()
     )?.filter;
 
     if (noAssayDataFilter) return noAssayDataFilter;
 
+    if (!selectColumnFieldKey)
+        return null;
+
     const whereConditions = getLabKeySqlWhere(filterArray, true);
     if (!whereConditions) return null;
 
-    const { schemaName, queryName } = schemaQuery;
-
-    // const cfClause = cf ? `[ContainerFilter='${cf}']` : ''; //TODO add container filter
-
     return Filter.create(
         selectColumnFieldKey,
-        getLabKeySql(targetColumnFieldKey, schemaName, queryName, filterArray),
+        getLabKeySql(targetColumnFieldKey, schemaName, queryName, filterArray, cf),
         COLUMN_IN_FILTER_TYPE
     );
 }
@@ -473,11 +488,14 @@ export function searchFiltersToJson(
     });
 }
 
-export function getSearchFiltersFromObjs(filterPropsObj: any[]): FilterProps[] {
+export function getSearchFiltersFromObjs(
+    filterPropsObj: any[],
+    assaySampleCols?: { [key: string]: AssaySampleColumnProp }
+): FilterProps[] {
     const filters: FilterProps[] = [];
     filterPropsObj.forEach(filterPropObj => {
         const filterArray = [];
-        filterPropObj['filterArray']?.forEach(field => {
+        filterPropObj.filterArray?.forEach(field => {
             filterArray.push({
                 fieldKey: field.fieldKey,
                 fieldCaption: field.fieldCaption,
@@ -485,20 +503,31 @@ export function getSearchFiltersFromObjs(filterPropsObj: any[]): FilterProps[] {
                 jsonType: field.jsonType,
             });
         });
-        filterPropObj['filterArray'] = filterArray;
+        filterPropObj.filterArray = filterArray;
 
-        if (filterPropObj['entityDataType']?.['filterArray']) {
+        if (filterPropObj.entityDataType?.filterArray) {
             const filterArray = [];
-            filterPropObj['entityDataType']?.['filterArray']?.forEach(filter => {
+            filterPropObj.entityDataType?.filterArray?.forEach(filter => {
                 filterArray.push(filterFromJson(filter));
             });
 
-            filterPropObj['entityDataType']['filterArray'] = filterArray;
+            filterPropObj.entityDataType.filterArray = filterArray;
         }
 
-        if (filterPropObj['entityDataType']?.['descriptionSingular'] === AssayResultDataType.descriptionSingular) {
-            filterPropObj['entityDataType']['getInstanceSchemaQuery'] = AssayResultDataType.getInstanceSchemaQuery;
-            filterPropObj['entityDataType']['getInstanceDataType'] = AssayResultDataType.getInstanceDataType;
+        if (filterPropObj.entityDataType?.descriptionSingular === AssayResultDataType.descriptionSingular) {
+            filterPropObj.entityDataType.getInstanceSchemaQuery = AssayResultDataType.getInstanceSchemaQuery;
+            filterPropObj.entityDataType.getInstanceDataType = AssayResultDataType.getInstanceDataType;
+
+            // when Finding from assays grid, the json lacks certain properties
+            if (!filterPropObj.selectColumnFieldKey && assaySampleCols) {
+                const assayDesign = AssayResultDataType.getInstanceDataType(filterPropObj.schemaQuery);
+                const assayCol = caseInsensitive(assaySampleCols, assayDesign);
+                if (assayCol) {
+                    filterPropObj.selectColumnFieldKey = assayCol.lookupFieldKey;
+                    filterPropObj.targetColumnFieldKey = assayCol.fieldKey;
+                    filterPropObj.dataTypeDisplayName = assayDesign;
+                }
+            }
         }
 
         filters.push(filterPropObj as FilterProps);
@@ -507,14 +536,17 @@ export function getSearchFiltersFromObjs(filterPropsObj: any[]): FilterProps[] {
     return filters;
 }
 
-export function searchFiltersFromJson(filterPropsStr: string): SearchSessionStorageProps {
+export function searchFiltersFromJson(
+    filterPropsStr: string,
+    assaySampleCols?: { [key: string]: AssaySampleColumnProp }
+): SearchSessionStorageProps {
     const obj = JSON.parse(filterPropsStr);
-    const filterPropsObj: any[] = obj['filters'];
-    const filterChangeCounter: number = obj['filterChangeCounter'];
-    const filterTimestamp: string = obj['filterTimestamp'];
+    const filterPropsObj: any[] = obj.filters;
+    const filterChangeCounter: number = obj.filterChangeCounter;
+    const filterTimestamp: string = obj.filterTimestamp;
 
     return {
-        filters: getSearchFiltersFromObjs(filterPropsObj),
+        filters: getSearchFiltersFromObjs(filterPropsObj, assaySampleCols),
         filterChangeCounter,
         filterTimestamp,
     };
@@ -860,11 +892,10 @@ export function getDataTypeFiltersWithNotInQueryUpdate(
     const lcActiveQuery = dataType.toLowerCase();
     const dataTypeFiltersUpdated = { ...dataTypeFilters };
 
-    // TODO add cf
     if (noDataInTypeChecked) {
         const noDataFilter = Filter.create(
             selectQueryFilterKey,
-            getLabKeySql(targetQueryFilterKey, schemaQuery.schemaName, schemaQuery.queryName),
+            getLabKeySql(targetQueryFilterKey, schemaQuery.schemaName, schemaQuery.queryName, null, cf),
             COLUMN_NOT_IN_FILTER_TYPE
         );
 

@@ -58,7 +58,6 @@ export class QueryInfoQuantity extends PureComponent<Props, State> {
         let text = this.props.countText;
 
         const options = [];
-
         if (creationTypeOptions) {
             creationTypeOptions.forEach(option => {
                 const selected = selectedCreationType === option.type;
@@ -76,7 +75,15 @@ export class QueryInfoQuantity extends PureComponent<Props, State> {
         return (
             <>
                 {options.length > 0 && (
-                    <RadioGroupInput name="creationType" options={options} formsy onValueChange={this.onOptionChange} />
+                    <div className="creation-type-radioinput">
+                        <RadioGroupInput
+                            name="creationType"
+                            options={options}
+                            formsy
+                            onValueChange={this.onOptionChange}
+                            showDescriptions
+                        />
+                    </div>
                 )}
                 {(options.length > 0 || includeCountField) && (
                     <Input

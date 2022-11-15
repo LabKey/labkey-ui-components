@@ -3,6 +3,7 @@ import { withFormsy } from 'formsy-react';
 
 import { LabelHelpTip } from '../../base/LabelHelpTip';
 import { WithFormsyProps } from '../constants';
+import classNames from "classnames";
 
 // export for jest test usage
 export interface RadioGroupOption {
@@ -18,6 +19,7 @@ interface Props extends WithFormsyProps {
     name: string;
     onValueChange?: (value) => void;
     options: RadioGroupOption[];
+    showDescriptions?: boolean;
 }
 
 interface State {
@@ -50,7 +52,7 @@ class RadioGroupInputImpl extends PureComponent<Props, State> {
     };
 
     render(): ReactNode {
-        const { options, name } = this.props;
+        const { options, name, showDescriptions } = this.props;
         const { selectedValue } = this.state;
         const inputs = [];
 
@@ -75,6 +77,7 @@ class RadioGroupInputImpl extends PureComponent<Props, State> {
                     inputs.push(
                         <div key={option.value}>
                             <input
+                                className="radioinput-input"
                                 checked={selected && !option.disabled}
                                 type="radio"
                                 name={name}
@@ -82,8 +85,13 @@ class RadioGroupInputImpl extends PureComponent<Props, State> {
                                 onChange={this.onValueChange}
                                 disabled={option.disabled}
                             />
-                            {option.label}
-                            {option.description && <LabelHelpTip>{option.description}</LabelHelpTip>}
+                            <span className={classNames('radioinput-label', { selected })}>{option.label}</span>
+                            {showDescriptions && option.description && (
+                                <span className="radioinput-description"> - {option.description}</span>
+                            )}
+                            {!showDescriptions && option.description && (
+                                <LabelHelpTip>{option.description}</LabelHelpTip>
+                            )}
                         </div>
                     );
                 });

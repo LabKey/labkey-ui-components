@@ -505,67 +505,54 @@ class AssayImportPanelsBody extends Component<Props, State> {
             data = beforeFinish(data);
         }
 
-        if (
-            model.isCopyTab(currentStep) &&
-            maxRows &&
-            ((Array.isArray(data.dataRows) && data.dataRows.length > maxRows) ||
-                (data.dataRows && data.dataRows.size > maxRows))
-        ) {
-            this.setModelState(
-                false,
-                'You have exceeded the maximum number of rows allowed (' +
-                    maxRows +
-                    ').  Please divide your data into smaller groups and try again.'
-            );
-        } else {
-            this.setModelState(true, undefined);
-            dismissNotifications();
-            const errorPrefix = 'There was a problem importing the assay results.';
-            uploadAssayRunFiles(data)
-                .then(processedData => {
-                    const backgroundUpload = assayProtocol?.backgroundUpload;
-                    let forceAsync = false;
-                    if (!backgroundUpload && assayProtocol?.allowBackgroundUpload) {
-                        const asyncFileSize =
-                            location?.query?.useAsync === 'true' ? 1 : BACKGROUND_IMPORT_MIN_FILE_SIZE;
-                        const asyncRowSize = location?.query?.useAsync === 'true' ? 1 : BACKGROUND_IMPORT_MIN_ROW_SIZE;
-                        if (
-                            (processedData.maxFileSize && processedData.maxFileSize >= asyncFileSize) ||
-                            (processedData.maxRowCount && processedData.maxRowCount >= asyncRowSize)
-                        )
-                            forceAsync = true;
-                    }
+        this.setModelState(true, undefined);
+        dismissNotifications();
+        const errorPrefix = 'There was a problem importing the assay results.';
+        uploadAssayRunFiles(data)
+            .then(processedData => {
+                const backgroundUpload = assayProtocol?.backgroundUpload;
+                let forceAsync = false;
+                if (!backgroundUpload && assayProtocol?.allowBackgroundUpload) {
+                    const asyncFileSize =
+                        location?.query?.useAsync === 'true' ? 1 : BACKGROUND_IMPORT_MIN_FILE_SIZE;
+                    const asyncRowSize = location?.query?.useAsync === 'true' ? 1 : BACKGROUND_IMPORT_MIN_ROW_SIZE;
+                    if (
+                        (processedData.maxFileSize && processedData.maxFileSize >= asyncFileSize) ||
+                        (processedData.maxRowCount && processedData.maxRowCount >= asyncRowSize)
+                    )
+                        forceAsync = true;
+                }
 
-                    const jobDescription = this.getBackgroundJobDescription(data);
-                    importAssayRun({ ...processedData, forceAsync, jobDescription, jobNotificationProvider })
-                        .then((response: AssayUploadResultModel) => {
-                            this.props.setIsDirty?.(false);
-                            if (importAgain && onSave) {
-                                this.onSuccessContinue(response, backgroundUpload || forceAsync);
-                            } else {
-                                this.onSuccessComplete(response, backgroundUpload || forceAsync);
-                            }
-                        })
-                        .catch(reason => {
-                            console.error('Problem importing assay run', reason);
-                            const message = resolveErrorMessage(reason);
-                            this.onFailure(
-                                message
-                                    ? errorPrefix + ' ' + message
-                                    : getActionErrorMessage(errorPrefix, 'referenced samples or assay design', false)
-                            );
-                        });
-                })
-                .catch(reason => {
-                    console.error('Problem uploading assay run files', reason);
-                    const message = resolveErrorMessage(reason);
-                    this.onFailure(
-                        message
-                            ? errorPrefix + ' ' + message
-                            : getActionErrorMessage(errorPrefix, 'referenced samples or assay design', false)
-                    );
-                });
-        }
+                const jobDescription = this.getBackgroundJobDescription(data);
+                importAssayRun({ ...processedData, forceAsync, jobDescription, jobNotificationProvider })
+                    .then((response: AssayUploadResultModel) => {
+                        this.props.setIsDirty?.(false);
+                        if (importAgain && onSave) {
+                            this.onSuccessContinue(response, backgroundUpload || forceAsync);
+                        } else {
+                            this.onSuccessComplete(response, backgroundUpload || forceAsync);
+                        }
+                    })
+                    .catch(reason => {
+                        console.error('Problem importing assay run', reason);
+                        const message = resolveErrorMessage(reason);
+                        this.onFailure(
+                            message
+                                ? errorPrefix + ' ' + message
+                                : getActionErrorMessage(errorPrefix, 'referenced samples or assay design', false)
+                        );
+                    });
+            })
+            .catch(reason => {
+                console.error('Problem uploading assay run files', reason);
+                const message = resolveErrorMessage(reason);
+                this.onFailure(
+                    message
+                        ? errorPrefix + ' ' + message
+                        : getActionErrorMessage(errorPrefix, 'referenced samples or assay design', false)
+                );
+            });
+
     };
 
     onSuccessContinue = async (response: AssayUploadResultModel, isAsync?: boolean): Promise<void> => {
@@ -742,7 +729,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     currentStep={currentStep}
                     editorModel={editorModel}
                     fileSizeLimits={fileSizeLimits}
-                    maxEditableGridRowMsg={`A max of ${maxRows} rows are allowed. Please use the 'Upload Files' or 'Copy-and-Paste Data' tab if you need to import more than ${maxRows} rows.`}
+                    maxEditableGridRowMsg={`A max of ${maxRows} rows are allowed. Please use the 'Import Data from File' tab if you need to import more than ${maxRows} rows.`}
                     maxRows={maxRows}
                     onFileChange={this.handleFileChange}
                     onFileRemoval={this.handleFileRemove}

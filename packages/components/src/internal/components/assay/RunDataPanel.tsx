@@ -41,7 +41,7 @@ import { getRunPropertiesFileName } from './actions';
 import { AssayWizardModel } from './AssayWizardModel';
 import { getServerFilePreview } from './utils';
 
-const TABS = ['Upload Files', 'Copy-and-Paste Data', 'Enter Data Into Grid'];
+const TABS = ['Import Data from File', 'Enter Data into Grid'];
 const PREVIEW_ROW_COUNT = 3;
 
 interface Props {
@@ -229,10 +229,6 @@ export class RunDataPanel extends PureComponent<Props, State> {
         const isLoading = !wizardModel.isInit || queryModel.isLoading;
         const isLoadingPreview = previousRunData && !previousRunData.isLoaded;
 
-        let cutPastePlaceholder = 'Paste in a tab-separated set of values (including column headers).';
-        if (maxRows) {
-            cutPastePlaceholder += '  Maximum number of data rows allowed is ' + maxRows + '.';
-        }
         return (
             <div className="panel panel-default">
                 <div className="panel-heading">{title}</div>
@@ -279,25 +275,6 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                                 }
                                             />
                                         )}
-                                    </FormStep>
-                                    <FormStep stepIndex={AssayUploadTabs.Copy}>
-                                        {/* TODO: Seems to be a highly unnecessary usage of Formsy */}
-                                        <Formsy>
-                                            <Textarea
-                                                changeDebounceInterval={0}
-                                                cols={-1}
-                                                elementWrapperClassName={[{ 'col-sm-9': false }, 'col-sm-12']}
-                                                label=""
-                                                labelClassName={[{ 'col-sm-3': false }, 'hidden']}
-                                                name="rundata"
-                                                onChange={this.onTextChange}
-                                                onKeyDown={handleTabKeyOnTextArea}
-                                                placeholder={cutPastePlaceholder}
-                                                rows={10}
-                                                value={wizardModel.dataText}
-                                            />
-                                            <Button onClick={this.clearText}>Clear</Button>
-                                        </Formsy>
                                     </FormStep>
                                     <FormStep stepIndex={AssayUploadTabs.Grid} trackActive={false}>
                                         <EditableGridPanel

@@ -32,8 +32,8 @@ export const LOOKUP_DEFAULT_SIZE = 25;
 
 export enum AssayUploadTabs {
     Files = 1,
-    Copy = 2,
-    Grid = 3,
+    Copy = 3,
+    Grid = 2,
 }
 
 export enum EXPORT_TYPES {

@@ -3,6 +3,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
+* Remove Copy-And-Paste tab from Assay Upload page
+
+### version TBD
+*Released*: TBD
 * Assay display pages consistency
   * Add AssayGridPanel component, a combination of AssayRowsGridPanel from LKSM, AssayRuns and AssayResults from lKB
   * Add AssayOverviewPage, AssayBatchOverviewPage, AssayBatchListingPage, AssayRunListingPage, AssayResultListingPage,

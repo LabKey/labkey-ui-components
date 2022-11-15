@@ -15,7 +15,7 @@ import { EXPORT_TYPES, MODIFICATION_TYPES } from '../../constants';
 
 import { SelectInputOption, SelectInputProps } from '../forms/input/SelectInput';
 
-import { EditorMode, EditorModel, EditorModelProps, IEditableGridLoader, ValueDescriptor } from './models';
+import { EditorMode, EditorModel, EditorModelProps, ValueDescriptor } from './models';
 
 import { CellActions } from './constants';
 
@@ -100,14 +100,13 @@ export const initEditableGridModel = async (
     dataModel: QueryModel,
     editorModel: EditorModel,
     queryModel: QueryModel,
-    loader: IEditableGridLoader,
     includeColumns?: Array<Partial<QueryColumn>>
 ): Promise<{ dataModel: QueryModel; editorModel: EditorModel }> => {
-    const response = await loader.fetch(queryModel);
+    const response = await editorModel.loader.fetch(queryModel);
     const gridData: Partial<QueryModel> = {
         rows: response.data.toJS(),
         orderedRows: response.dataIds.toArray(),
-        queryInfo: loader.queryInfo,
+        queryInfo: editorModel.loader.queryInfo,
     };
 
     const extraColumns: QueryColumn[] = [];
@@ -118,15 +117,7 @@ export const initEditableGridModel = async (
         }
     });
 
-    let columns: List<QueryColumn>;
-    const forUpdate = loader.mode === EditorMode.Update;
-
-    if (loader.columns) {
-        columns = editorModel.getColumns(gridData.queryInfo, forUpdate, undefined, loader.columns, loader.columns);
-    } else {
-        columns = editorModel.getColumns(gridData.queryInfo, forUpdate);
-    }
-
+    const columns = editorModel.getColumnsFromLoader();
     const editorModelData = await loadEditorModelData(gridData, columns, extraColumns);
 
     return {
@@ -148,7 +139,6 @@ export const initEditableGridModels = async (
     dataModels: QueryModel[],
     editorModels: EditorModel[],
     queryModel: QueryModel,
-    loaders: IEditableGridLoader[],
     includeColumns?: Array<Partial<QueryColumn>>
 ): Promise<EditableGridModels> => {
     const updatedDataModels = [];
@@ -156,7 +146,7 @@ export const initEditableGridModels = async (
 
     const results = await Promise.all(
         dataModels.map((dataModel, i) =>
-            initEditableGridModel(dataModels[i], editorModels[i], queryModel, loaders[i], includeColumns)
+            initEditableGridModel(dataModels[i], editorModels[i], queryModel, includeColumns)
         )
     );
 
@@ -214,30 +204,22 @@ export const getUpdatedDataFromEditableGrid = (
     if (!editorModel) {
         console.error('Grid does not expose an editor. Ensure the grid is properly initialized for editing.');
         return null;
-    } else {
-        // Issue 37842: if we have data for the selection, this was the data that came from the display grid and was used
-        // to populate the queryInfoForm.  If we don't have this data, we came directly to the editable grid
-        // using values from the display grid to initialize the editable grid model, so we use that.
-        const initData = selectionData ?? fromJS(model.rows);
-        const editorData = editorModel
-            .getRawDataFromGridData(
-                fromJS(model.rows),
-                fromJS(model.orderedRows),
-                model.queryInfo,
-                true,
-                true,
-                readOnlyColumns
-            )
-            .toArray();
-        const updatedRows = getUpdatedDataFromGrid(initData, editorData, idField, model.queryInfo);
-
-        return {
-            schemaQuery: model.queryInfo.schemaQuery,
-            updatedRows,
-            originalRows: model.rows,
-            tabIndex: tabIndex ?? 0,
-        };
     }
+
+    // Issue 37842: if we have data for the selection, this was the data that came from the display grid and was used
+    // to populate the queryInfoForm. If we don't have this data, we came directly to the editable grid
+    // using values from the display grid to initialize the editable grid model, so we use that.
+    const initData = selectionData ?? fromJS(model.rows);
+    const editorData = editorModel
+        .getRawDataFromModel(model, true, editorModel.loader.mode === EditorMode.Update, readOnlyColumns)
+        .toArray();
+
+    return {
+        originalRows: model.rows,
+        schemaQuery: model.queryInfo.schemaQuery,
+        tabIndex: tabIndex ?? 0,
+        updatedRows: getUpdatedDataFromGrid(initData, editorData, idField, model.queryInfo),
+    };
 };
 
 const getTableExportConfig = (
@@ -253,7 +235,7 @@ const getTableExportConfig = (
             schema: activeModel.schemaName,
             query: activeModel.queryName,
         },
-        auditMessage: 'Exported editable grid to file: ', // Filename will be appeneded
+        auditMessage: 'Exported editable grid to file: ', // Filename will be appended
     } as UtilsDOM.ConvertToTableOptions;
 
     switch (exportType) {
@@ -307,17 +289,7 @@ export const getEditorTableData = (
     forExport?: boolean
 ): [Map<string, string>, Map<string, Map<string, any>>] => {
     const tabData = editorModel
-        .getRawDataFromGridData(
-            fromJS(queryModel.rows),
-            fromJS(queryModel.orderedRows),
-            queryModel.queryInfo,
-            true,
-            forUpdate,
-            readOnlyColumns,
-            extraColumns,
-            colFilter,
-            forExport
-        )
+        .getRawDataFromModel(queryModel, true, forUpdate, readOnlyColumns, extraColumns, colFilter, forExport)
         .toArray();
 
     const columns = editorModel.getColumns(
@@ -330,11 +302,9 @@ export const getEditorTableData = (
     );
     columns.forEach(col => (headings = headings.set(col.fieldKey, col.isLookup() ? col.fieldKey : col.caption)));
 
-    if (extraColumns) {
-        extraColumns.forEach(col => {
-            headings = headings.set(col.fieldKey, col.caption ?? col.fieldKey);
-        });
-    }
+    extraColumns?.forEach(col => {
+        headings = headings.set(col.fieldKey, col.caption ?? col.fieldKey);
+    });
 
     tabData.forEach((row, idx) => {
         const rowId = row.get('RowId') ?? idx;
@@ -343,11 +313,9 @@ export const getEditorTableData = (
             draftRow = draftRow.set(col.fieldKey, row.get(col.fieldKey));
         });
 
-        if (extraColumns) {
-            extraColumns.forEach(col => {
-                if (row.has(col.fieldKey)) draftRow = draftRow.set(col.fieldKey, row.get(col.fieldKey));
-            });
-        }
+        extraColumns?.forEach(col => {
+            if (row.has(col.fieldKey)) draftRow = draftRow.set(col.fieldKey, row.get(col.fieldKey));
+        });
 
         editorData = editorData.set(rowId, draftRow);
     });

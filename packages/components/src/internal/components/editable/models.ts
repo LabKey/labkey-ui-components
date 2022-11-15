@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, Iterable, List, Map, Record, Set } from 'immutable';
+import { fromJS, Iterable, List, Map, Record as ImmutableRecord, Set } from 'immutable';
 
 import { encodePart } from '../../../public/SchemaQuery';
 
@@ -55,7 +55,7 @@ export interface EditorModelProps {
     selectionCells: Set<string>;
 }
 
-export function getPkData(queryInfo: QueryInfo, row: Map<string, any>) {
+export function getPkData(queryInfo: QueryInfo, row: Map<string, any>): Record<string, any> {
     const data = {};
     queryInfo.getPkCols().forEach(pkCol => {
         let pkVal = row.getIn([pkCol.fieldKey]);
@@ -81,16 +81,17 @@ export enum EditorMode {
 }
 
 export class EditorModel
-    extends Record({
+    extends ImmutableRecord({
         cellMessages: Map<string, CellMessage>(),
         cellValues: Map<string, List<ValueDescriptor>>(),
         colCount: 0,
         deletedIds: Set<any>(),
-        id: undefined,
-        isPasting: false,
         focusColIdx: -1,
         focusRowIdx: -1,
         focusValue: undefined,
+        id: undefined,
+        isPasting: false,
+        loader: undefined,
         numPastedRows: 0,
         rowCount: 0,
         selectedColIdx: -1,
@@ -103,11 +104,12 @@ export class EditorModel
     declare cellValues: CellValues;
     declare colCount: number;
     declare deletedIds: Set<any>;
-    declare id: string;
-    declare isPasting: boolean;
     declare focusColIdx: number;
     declare focusRowIdx: number;
     declare focusValue: List<ValueDescriptor>;
+    declare id: string;
+    declare isPasting: boolean;
+    declare loader: IEditableGridLoader;
     declare numPastedRows: number;
     declare rowCount: number;
     declare selectedColIdx: number;
@@ -119,7 +121,7 @@ export class EditorModel
         startRow: number,
         predicate: (value: List<ValueDescriptor>, colIdx: number, rowIdx: number) => boolean,
         advance: (colIdx: number, rowIdx: number) => { colIdx: number; rowIdx: number }
-    ) {
+    ): { colIdx: number; rowIdx: number; value: List<ValueDescriptor> } {
         let colIdx = startCol,
             rowIdx = startRow;
 
@@ -166,6 +168,34 @@ export class EditorModel
         return columns.filter(col => !col.isFileInput);
     }
 
+    getColumnsFromLoader(readOnlyColumns?: List<string>, colFilter?: (col: QueryColumn) => boolean): List<QueryColumn> {
+        const { columns, mode, queryInfo } = this.loader;
+        return this.getColumns(queryInfo, mode === EditorMode.Update, readOnlyColumns, columns, columns, colFilter);
+    }
+
+    getRawDataFromModel(
+        queryModel: QueryModel,
+        displayValues?: boolean,
+        forUpdate?: boolean,
+        readOnlyColumns?: List<string>,
+        extraColumns?: Array<Partial<QueryColumn>>,
+        colFilter?: (col: QueryColumn) => boolean,
+        forExport?: boolean
+    ): List<Map<string, any>> {
+        return this.getRawDataFromGridData(
+            fromJS(queryModel.rows),
+            fromJS(queryModel.orderedRows),
+            queryModel.queryInfo,
+            displayValues,
+            forUpdate,
+            readOnlyColumns,
+            extraColumns,
+            colFilter,
+            forExport
+        );
+    }
+
+    /** @deprecated Use getRawDataFromModel() instead. */
     getRawDataFromGridData(
         data: Map<any, Map<string, any>>,
         dataKeys: List<any>,
@@ -178,18 +208,24 @@ export class EditorModel
         forExport?: boolean
     ): List<Map<string, any>> {
         let rawData = List<Map<string, any>>();
-        const columns = this.getColumns(queryInfo, forUpdate, readOnlyColumns, undefined, undefined, colFilter);
-        const additionalColumns = [];
-        if (extraColumns) {
-            extraColumns.forEach(col => {
-                const column = queryInfo.getColumn(col.fieldKey);
-                if (column) additionalColumns.push(column);
-            });
+        let columns: List<QueryColumn>;
+
+        if (this.loader) {
+            columns = this.getColumnsFromLoader(readOnlyColumns, colFilter);
+        } else {
+            columns = this.getColumns(queryInfo, forUpdate, readOnlyColumns, undefined, undefined, colFilter);
         }
+
+        extraColumns?.forEach(col => {
+            const column = queryInfo.getColumn(col.fieldKey);
+            if (column) {
+                columns = columns.push(column);
+            }
+        });
 
         for (let rn = 0; rn < dataKeys.size; rn++) {
             let row = Map<string, any>();
-            columns.push(...additionalColumns).forEach((col, cn) => {
+            columns.forEach((col, cn) => {
                 const values = this.getValue(cn, rn);
 
                 // Some column types have special handling of raw data, such as multi value columns like alias,

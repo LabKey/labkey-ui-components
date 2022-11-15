@@ -1,4 +1,4 @@
-import { fromJS, List, Map, OrderedMap, Record } from 'immutable';
+import { List, Map, OrderedMap, Record } from 'immutable';
 import { AssayDOM } from '@labkey/api';
 
 import { AssayUploadTabs } from '../../constants';
@@ -204,7 +204,7 @@ export class AssayWizardModel
         } else if (this.isGridTab(currentStep)) {
             // need to get the EditorModel for the data to use in the import
             assayData.dataRows = editorModel
-                .getRawDataFromGridData(fromJS(queryModel.rows), fromJS(queryModel.orderedRows), queryModel.queryInfo)
+                .getRawDataFromModel(queryModel)
                 .valueSeq()
                 .map(row => row.filter(v => v !== undefined && v !== null && ('' + v).trim() !== ''))
                 .toList()

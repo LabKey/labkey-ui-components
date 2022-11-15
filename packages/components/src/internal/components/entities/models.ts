@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { AuditBehaviorTypes, Filter, Query, Utils } from '@labkey/api';
-import { fromJS, List, Map, OrderedMap, Record } from 'immutable';
+import { List, Map, OrderedMap, Record } from 'immutable';
 
 import { immerable } from 'immer';
 
@@ -341,11 +341,9 @@ export class EntityIdCreationModel extends Record({
     getSaveValues(): IDerivePayload {
         const { dataInputs, materialInputs } = this.getEntityInputs();
 
-        const materialDefault = {};
-
         return {
             dataInputs,
-            materialDefault,
+            materialDefault: {},
             materialInputs,
             targetType: this.targetEntityType.lsid,
         };
@@ -363,34 +361,22 @@ export class EntityIdCreationModel extends Record({
         colFilter?: (col: QueryColumn) => boolean
     ): Promise<InsertRowsResponse> {
         const rows = editorModel
-            .getRawDataFromGridData(
-                fromJS(dataModel.rows),
-                fromJS(dataModel.orderedRows),
-                dataModel.queryInfo,
-                false,
-                false,
-                undefined,
-                undefined,
-                colFilter
-            )
+            .getRawDataFromModel(dataModel, false, false, undefined, undefined, colFilter)
             .valueSeq()
-            .reduce((rows, row) => {
+            .reduce((rows_, row) => {
                 let map = row.toMap();
-                if (extraColumnsToInclude && extraColumnsToInclude.length > 0) {
-                    extraColumnsToInclude.forEach(col => {
-                        map = map.set(col.name, undefined);
-                    });
-                }
-                rows = rows.push(map);
-                return rows;
+                extraColumnsToInclude?.forEach(col => {
+                    map = map.set(col.name, undefined);
+                });
+                rows_ = rows_.push(map);
+                return rows_;
             }, List<Map<string, any>>());
 
-        // TODO: InsertRows responses are fragile and depend heavily on shape of data uploaded
         return insertRows({
-            fillEmptyFields: true,
-            schemaQuery: this.getSchemaQuery(),
-            rows,
             auditBehavior: this.auditBehavior,
+            fillEmptyFields: true,
+            rows,
+            schemaQuery: this.getSchemaQuery(),
         });
     }
 

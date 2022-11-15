@@ -101,7 +101,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
         const editorModels = [];
         loaders.forEach(loader => {
             dataModels.push(new QueryModel({ id: loader.id, schemaQuery: queryModel.schemaQuery }));
-            editorModels.push(new EditorModel({ id: loader.id }));
+            editorModels.push(new EditorModel({ id: loader.id, loader }));
         });
 
         setIsSubmitting(false);
@@ -117,30 +117,20 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
     }, [loaders, parentDataTypes, queryModel.schemaQuery]);
 
     useEffect(() => {
-        const initEditorModel = async (): Promise<{
-            dataModels: QueryModel[];
-            editorModels: EditorModel[];
-        }> => {
-            return await initEditableGridModels(
-                editableGridModels.dataModels,
-                editableGridModels.editorModels,
-                queryModel,
-                loaders,
-                extraExportColumns
-            );
-        };
-
         if (loaders && editableGridModels?.dataModels?.find(dataModel => dataModel.isLoading)) {
-            initEditorModel()
-                .then(models => {
-                    setEditableGridModels(models);
-                })
-                .catch(error => {
-                    createNotification({
-                        message: error,
-                        alertClass: 'danger',
-                    });
-                });
+            (async () => {
+                try {
+                    const { dataModels, editorModels } = await initEditableGridModels(
+                        editableGridModels.dataModels,
+                        editableGridModels.editorModels,
+                        queryModel,
+                        extraExportColumns
+                    );
+                    setEditableGridModels({ dataModels, editorModels });
+                } catch (e) {
+                    createNotification({ alertClass: 'danger', message: e });
+                }
+            })();
         }
     }, [loaders, queryModel, editableGridModels, extraExportColumns, createNotification]);
 
@@ -349,7 +339,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
             <WizardNavButtons
                 cancel={onCancel}
                 nextStep={onSubmit}
-                finish={true}
+                finish
                 isFinishing={isSubmitting}
                 isFinishingText="Updating..."
                 isFinishedText="Finished Updating"

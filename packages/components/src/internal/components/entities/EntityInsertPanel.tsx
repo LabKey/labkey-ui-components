@@ -406,9 +406,11 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                             const queryModel = new QueryModel({ id: ENTITY_GRID_ID, schemaQuery }).mutate({
                                 queryInfo: this.getGridQueryInfo(),
                             });
-                            const editorModel = new EditorModel({ id: ENTITY_GRID_ID });
-                            const loader = new EntityGridLoader(insertModel, queryModel.queryInfo);
-                            const results = await initEditableGridModel(queryModel, editorModel, queryModel, loader);
+                            const editorModel = new EditorModel({
+                                id: ENTITY_GRID_ID,
+                                loader: new EntityGridLoader(insertModel, queryModel.queryInfo),
+                            });
+                            const results = await initEditableGridModel(queryModel, editorModel, queryModel);
 
                             this.setState({
                                 dataModel: results.dataModel,

@@ -54,7 +54,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
         this.state = {
             isSubmitting: false,
             dataModels: [new QueryModel({ id, schemaQuery: props.queryModel.schemaQuery })],
-            editorModels: [new EditorModel({ id })],
+            editorModels: [new EditorModel({ id, loader: props.loader })],
             error: undefined,
         };
     }
@@ -64,12 +64,10 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
     }
 
     initEditorModel = async (): Promise<void> => {
-        const { queryModel, loader } = this.props;
         const { dataModels, editorModels } = await initEditableGridModels(
             this.state.dataModels,
             this.state.editorModels,
-            queryModel,
-            [loader]
+            this.props.queryModel
         );
         this.setState({ dataModels, editorModels });
     };

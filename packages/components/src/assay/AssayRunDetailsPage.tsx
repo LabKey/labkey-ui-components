@@ -18,9 +18,6 @@ import { isAssayQCEnabled, isELNEnabled, isWorkflowEnabled } from '../internal/a
 
 import { CommonPageProps } from '../internal/models';
 
-import { useSampleTypeAppContext } from '../entities';
-
-
 import { allowReimportAssayRun } from '../internal/components/assay/actions';
 import { LoadingPage } from '../internal/components/base/LoadingPage';
 import { NotFound } from '../internal/components/base/NotFound';
@@ -32,7 +29,6 @@ import { getContainerFilterForLookups } from '../internal/query/api';
 import { runDetailsColumnsForQueryModel } from '../public/QueryModel/utils';
 import { RUN_PROPERTIES_REQUIRED_COLUMNS } from '../internal/components/assay/constants';
 import { SchemaQuery } from '../public/SchemaQuery';
-import { Hooks } from '../index';
 import { AssayOverrideBanner } from './AssayOverrideBanner';
 
 import { assayPage } from './AssayPageHOC';
@@ -42,6 +38,8 @@ import { AssayRunDetailHeaderButtons } from './AssayButtons';
 import { AssayHeader } from './AssayHeader';
 
 import { AssayRunQCHistory } from './AssayRunQCHistory';
+import { useContainerUser } from '../internal/components/container/actions';
+import { useServerContext } from '../internal/components/base/ServerContext';
 
 type Props = CommonPageProps & InjectedAssayModel & WithRouterProps & InjectedRouteLeaveProps;
 
@@ -61,9 +59,9 @@ const AssayRunDetailsPageBodyImpl: FC<Props & InjectedQueryModels & Notification
     const { runId } = params;
     const model = useMemo(() => Object.values(queryModels)[0], [queryModels]);
 
-    const serverContext = Hooks.useServerContext();
+    const serverContext = useServerContext();
     const { moduleContext } = serverContext;
-    const runContext = Hooks.useContainerUser(model.getRowValue('Folder'));
+    const runContext = useContainerUser(model.getRowValue('Folder'));
 
     const [editingRunDetails, setEditingRunDetails] = useState<boolean>(false);
     const [editingResults, setEditingResults] = useState<boolean>(false);
@@ -75,8 +73,7 @@ const AssayRunDetailsPageBodyImpl: FC<Props & InjectedQueryModels & Notification
         Filter.create('Run/Replaced', undefined, Filter.Types.NONBLANK),
     ];
 
-    const { detailRenderer, qcEnabledForApp } = useAssayAppContext();
-    const { ReferencingNotebooksComponent } = useSampleTypeAppContext();
+    const { detailRenderer, qcEnabledForApp, ReferencingNotebooksComponent } = useAssayAppContext();
 
     const onQCStateUpdate = useCallback(() => {
         actions.loadModel(model.id);

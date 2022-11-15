@@ -3,7 +3,7 @@ import React, { FC, memo, useCallback, useEffect, useReducer, useState } from 'r
 import { PermissionTypes } from '@labkey/api';
 import { Button, Checkbox, Col, ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
 
-import { sampleManagerIsPrimaryApp } from '../../app/utils';
+import { biologicsIsPrimaryApp, sampleManagerIsPrimaryApp } from '../../app/utils';
 
 import { invalidateFullQueryDetailsCache } from '../../query/api';
 
@@ -71,27 +71,29 @@ export const IDNameSettings: FC = memo(() => {
                 </Col>
             </FormGroup>
 
-            <FormGroup controlId="id-name-prop-prefix">
-                <Col componentClass={ControlLabel} xs={12} sm={2} className="text-left">
-                    ID/Name Prefix
-                    <LabelHelpTip title="ID/Name Prefix">
-                        <PrefixDescription />
-                    </LabelHelpTip>
-                </Col>
+            {biologicsIsPrimaryApp() && (
+                <FormGroup controlId="id-name-prop-prefix">
+                    <Col componentClass={ControlLabel} xs={12} sm={2} className="text-left">
+                        ID/Name Prefix
+                        <LabelHelpTip title="ID/Name Prefix">
+                            <PrefixDescription />
+                        </LabelHelpTip>
+                    </Col>
 
-                <Col sm={10} md={5}>
-                    <FormControl
-                        autoComplete="off"
-                        name="prefix"
-                        onChange={onPrefixChange}
-                        placeholder="Enter Prefix"
-                        type="text"
-                    />
-                    <span className="help-block">
-                        Example: {prefix}Blood-${'{'}GenId{'}'}
-                    </span>
-                </Col>
-            </FormGroup>
+                    <Col sm={10} md={5}>
+                        <FormControl
+                            autoComplete="off"
+                            name="prefix"
+                            onChange={onPrefixChange}
+                            placeholder="Enter Prefix"
+                            type="text"
+                        />
+                        <span className="help-block">
+                            Example: {prefix}Blood-${'{'}GenId{'}'}
+                        </span>
+                    </Col>
+                </FormGroup>
+            )}
         </div>
     );
 });

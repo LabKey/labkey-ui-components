@@ -83,6 +83,8 @@ export const FolderMenu: FC<Props> = memo(({ appProperties }) => {
         blurActiveElement();
     }, []);
 
+    if (isLoaded && !hasError && items.length === 1) return null;
+
     return (
         <Dropdown className="nav-folder-menu" id="folder-menu" onToggle={toggleMenu} open={open}>
             <Dropdown.Toggle className="nav-folder-menu__button" title={container.title}>

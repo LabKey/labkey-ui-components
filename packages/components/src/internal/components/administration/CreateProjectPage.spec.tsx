@@ -14,6 +14,10 @@ import { AppURL } from '../../url/AppURL';
 
 import { CreateProjectContainer, CreateProjectContainerProps, CreateProjectPage } from './CreateProjectPage';
 
+beforeAll(() => {
+    LABKEY.moduleContext.biologics = { productId: ['Biologics'] };
+});
+
 describe('CreateProjectPage', () => {
     function getDefaultProps(overrides?: Partial<FolderAPIWrapper>): CreateProjectContainerProps {
         return {

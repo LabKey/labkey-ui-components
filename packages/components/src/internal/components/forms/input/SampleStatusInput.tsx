@@ -26,6 +26,7 @@ interface SampleStatusInputProps extends Omit<QuerySelectOwnProps, 'schemaQuery'
 
 export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
     const { api, col, onAdditionalFormDataChange, renderLabelField, ...selectInputProps } = props;
+    delete selectInputProps['containerFilter']; // use col.lookup.containerFilter instead
     const { allowDisable, onQSChange, value } = selectInputProps;
     const { user } = useServerContext();
     const [consumedStatuses, setConsumedStatuses] = useState<number[]>();

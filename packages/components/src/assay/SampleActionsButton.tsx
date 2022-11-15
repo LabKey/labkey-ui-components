@@ -22,17 +22,19 @@ import { QueryModel } from '../public/QueryModel/QueryModel';
 import { PicklistCreationMenuItem } from '../internal/components/picklist/PicklistCreationMenuItem';
 import { AddToPicklistMenuItem } from '../internal/components/picklist/AddToPicklistMenuItem';
 
-import { AssayResultsForSamplesMenuItem } from './AssayResultsForSamplesButton';
+import { AssayResultsForSamplesMenuItem } from '../internal/components/entities/AssayResultsForSamplesButton';
+import { FindDerivativesMenuItem } from '../entities';
 
 interface Props {
     disabled?: boolean;
     metricFeatureArea?: string;
     model: QueryModel;
+    sampleFinderProps?: Record<string, any>;
     user: User;
 }
 
 export const SampleActionsButton: FC<Props> = memo(props => {
-    const { children, disabled, user, model, metricFeatureArea } = props;
+    const { children, disabled, user, model, metricFeatureArea, sampleFinderProps } = props;
     const sampleFieldKey = useMemo(() => model?.allColumns?.find(c => c.isSampleLookup())?.fieldKey, [model]);
     const id = 'sample-actions-menu';
     const hasPerms = hasAnyPermissions(user, [
@@ -45,6 +47,13 @@ export const SampleActionsButton: FC<Props> = memo(props => {
     if (!(!!children || hasPerms)) {
         return null;
     }
+
+    const findDerivativesProps = {
+        model,
+        entityDataType: sampleFinderProps?.entityDataType,
+        metricFeatureArea,
+        baseFilter: sampleFinderProps?.baseFilters,
+    };
 
     return (
         <DropdownButton
@@ -78,6 +87,7 @@ export const SampleActionsButton: FC<Props> = memo(props => {
                 <>
                     <hr className="divider" />
                     <MenuItem header>Reports</MenuItem>
+                    {sampleFinderProps && <FindDerivativesMenuItem {...findDerivativesProps} />}
                     <AssayResultsForSamplesMenuItem
                         model={model}
                         user={user}

@@ -3,8 +3,6 @@ import { ReactWrapper } from 'enzyme';
 
 import { PermissionTypes } from '@labkey/api';
 
-import { MenuItem } from 'react-bootstrap';
-
 import { ProductMenuModel } from '../internal/components/navigation/model';
 import { makeTestActions, makeTestQueryModel } from '../public/QueryModel/testUtils';
 import { SchemaQuery } from '../public/SchemaQuery';
@@ -28,8 +26,6 @@ import { Notifications } from '../internal/components/notifications/Notification
 import { InsufficientPermissionsAlert } from '../internal/components/permissions/InsufficientPermissionsAlert';
 
 import { Container } from '../internal/components/base/models/Container';
-
-import { AssayAppContext } from '../assay';
 
 import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/constants';
 
@@ -69,24 +65,14 @@ function getDefaultProps(): SampleDetailPageBodyProps {
         menu: new ProductMenuModel(),
         modelId: 'sample-detail|samples/blood|1',
         navigate: jest.fn(),
-        params: { sampleType: 'blood', id: 1 },
+        params: { sampleType: 'blood', id: "1" },
     };
 }
 const DEFAULT_CONTEXT = { user: TEST_USER_EDITOR, container: TEST_PROJECT_CONTAINER };
-const ASSAY_APP_CONTEXT = {
-    requireSampleField: true,
-    showProviderName: false,
-    assayProviderType: GENERAL_ASSAY_PROVIDER_NAME,
-    jobNotificationProvider: 'test',
-    JobsMenuOptionsComponent: () => (
-        <div className="jobs-menu-test">
-            <MenuItem className="add-to-job">Add to Job</MenuItem>
-            <MenuItem className="start-a-job">Start a New Job</MenuItem>
-        </div>
-    ),
-} as AssayAppContext;
+
 const SAMPLE_TYPE_APP_CONTEXT = {
     SampleStorageMenuComponent: null,
+    assayProviderType: GENERAL_ASSAY_PROVIDER_NAME,
     lineagePagePermissions: [PermissionTypes.DesignDataClass],
 } as SampleTypeAppContext;
 const API_APP_CONTEXT = getTestAPIWrapper(jest.fn, {
@@ -206,7 +192,7 @@ describe('SampleAliquotsPage', () => {
     test('default props', async () => {
         const wrapper = mountWithAppServerContext(
             <SampleAliquotsPage {...getDefaultProps()} />,
-            { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT, assay: ASSAY_APP_CONTEXT },
+            { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT,  },
             DEFAULT_CONTEXT
         );
         await waitForLifecycle(wrapper);
@@ -223,7 +209,7 @@ describe('SampleAliquotsPage', () => {
     test('title', async () => {
         const wrapper = mountWithAppServerContext(
             <SampleAliquotsPage {...getDefaultProps()} title="Test title" />,
-            { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT, assay: ASSAY_APP_CONTEXT },
+            { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT },
             DEFAULT_CONTEXT
         );
         await waitForLifecycle(wrapper);

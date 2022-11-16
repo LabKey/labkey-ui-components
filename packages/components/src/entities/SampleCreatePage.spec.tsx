@@ -112,18 +112,4 @@ describe('SampleCreatePage', () => {
         expect(wrapper.find(EntityInsertPanel).prop('asyncSize')).toBe(1);
         wrapper.unmount();
     });
-
-    // TODO refactor this for MediaCreatePage.tsx
-    // test('isMedia', async () => {
-    //     const wrapper = mountWithAppServerContext(
-    //         <SampleCreatePage {...DEFAULT_PROPS} routes={[{path: '/'}, { path: 'media' }, {path: 'rawmaterials'}, {path: 'new'}]} location={{ pathname: '/media/RawMaterials/new', search: '?target=RawMaterials', query: {target: 'RawMaterials', creationType: 'Aliquots'}}} />,
-    //         { sampleType: SAMPLE_TYPE_APP_CONTEXT },
-    //         { user: App.TEST_USER_APP_ADMIN }
-    //     );
-    //     await waitForLifecycle(wrapper);
-    //     validate(wrapper, true, 'Create New Media', 'RawMaterials');
-    //     expect(wrapper.find(EntityInsertPanel).prop('canEditEntityTypeDetails')).toBeFalsy();
-    //     expect(wrapper.find(EntityInsertPanel).prop('getFileTemplateUrl').name).toBe('getMediaFileTemplateUrl');
-    //     wrapper.unmount();
-    // });
 });

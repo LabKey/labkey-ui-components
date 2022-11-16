@@ -208,7 +208,7 @@ describe('SampleTypeDesignPage', () => {
             {
                 sampleType: {
                     ...SAMPLE_TYPE_APP_CONTEXT,
-                    readOnlyQueryNames: ['blood'],
+                    readOnlyQueryNames: ['Blood'],
                 },
                 api: API,
             },

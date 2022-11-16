@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Remove Copy-And-Paste tab from Assay Upload page
+* Conditionalize display of some workflow- and assay-related actions
 
 ### version TBD
 *Released*: TBD

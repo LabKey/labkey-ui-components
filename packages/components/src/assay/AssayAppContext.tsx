@@ -1,8 +1,19 @@
 import { ExtendableAppContext, useAppContext } from '../internal/AppContext';
+import { DetailRenderer } from '../internal/components/forms/detail/DetailDisplay';
+import { JobsMenuOptions } from '../internal/components/samples/models';
+import { ReferencingNotebooks } from '../internal/app/models';
 
 export interface AssayAppContext {
-    requireSampleField: boolean;
-    showProviderName: boolean;
+    JobsMenuOptionsComponent: JobsMenuOptions;
+    ReferencingNotebooksComponent: ReferencingNotebooks;
+    assayProviderType?: string;
+    assayTypes?: string[];
+    detailRenderer?: DetailRenderer;
+    excludedAssayProviders?: string[];
+    jobNotificationProvider: string; // pipeline job not workflow job
+    qcEnabledForApp?: boolean;
+    requireSampleField?: boolean;
+    showProviderName?: boolean;
 }
 
 // If your App extends AppContext to add attributes other than Assay use this e.g.:

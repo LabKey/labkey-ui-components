@@ -27,6 +27,8 @@ import { InsufficientPermissionsAlert } from '../internal/components/permissions
 
 import { Container } from '../internal/components/base/models/Container';
 
+import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/constants';
+
 import { SampleDetailPage, SampleDetailPageBody, SampleDetailPageBodyProps } from './SampleDetailPage';
 import { SampleTypeAppContext } from './SampleTypeAppContext';
 import { SampleHeader } from './SampleHeader';
@@ -63,12 +65,14 @@ function getDefaultProps(): SampleDetailPageBodyProps {
         menu: new ProductMenuModel(),
         modelId: 'sample-detail|samples/blood|1',
         navigate: jest.fn(),
-        params: { sampleType: 'blood', id: 1 },
+        params: { sampleType: 'blood', id: "1" },
     };
 }
 const DEFAULT_CONTEXT = { user: TEST_USER_EDITOR, container: TEST_PROJECT_CONTAINER };
+
 const SAMPLE_TYPE_APP_CONTEXT = {
     SampleStorageMenuComponent: null,
+    assayProviderType: GENERAL_ASSAY_PROVIDER_NAME,
     lineagePagePermissions: [PermissionTypes.DesignDataClass],
 } as SampleTypeAppContext;
 const API_APP_CONTEXT = getTestAPIWrapper(jest.fn, {
@@ -188,7 +192,7 @@ describe('SampleAliquotsPage', () => {
     test('default props', async () => {
         const wrapper = mountWithAppServerContext(
             <SampleAliquotsPage {...getDefaultProps()} />,
-            { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT },
+            { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT,  },
             DEFAULT_CONTEXT
         );
         await waitForLifecycle(wrapper);

@@ -11,6 +11,14 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Issue 45483: allowed creation types in bulk insert modal to be based on if sample parent types exist and based on the creation type for the page
   * LKB fix to allow parent type change when creating media with initial parent that is a DataClass
 
+### version 2.251.0
+*Released*: 16 November 2022
+* Assay display pages consistency
+  * Add AssayGridPanel component, a combination of AssayRowsGridPanel from LKSM, AssayRuns and AssayResults from lKB
+  * Add AssayOverviewPage, AssayBatchOverviewPage, AssayBatchListingPage, AssayRunListingPage, AssayResultListingPage,
+    AssayListingPage, AssayRunListingPage, AssayQCModal, AssaysSubNav, AssayUploadPage, AssayDesignSelect
+  * Update AssayAppContext and SampleTypeAppContext
+
 ### version 2.250.0
 *Released*: 15 November 2022
 * Projects in Sample Manager

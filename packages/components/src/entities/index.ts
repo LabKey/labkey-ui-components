@@ -17,7 +17,6 @@ import {
     getJobCreationHref,
 } from './utils';
 import { SampleTypeBasePage } from './SampleTypeBasePage';
-import { SampleActionsButton } from './SampleActionsButton';
 import { SampleAliquotsSummary } from './SampleAliquotsSummary';
 import { SamplesAddButton } from './SamplesAddButton';
 import { SampleAssayDetail } from './SampleAssayDetail';
@@ -36,7 +35,7 @@ import { SampleTypeInsightsPanel } from './SampleTypeInsightsPanel';
 import { FindSamplesByIdHeaderPanel } from './FindSamplesByIdHeaderPanel';
 import { FindSamplesByIdsPageBase } from './FindSamplesByIdsPageBase';
 import { SampleFinderSection } from './SampleFinderSection';
-import { FindDerivativesButton, FindDerivativesMenuItem } from './FindDerivativesButton';
+import { FindDerivativesButton, FindDerivativesMenuItem } from '../internal/components/entities/FindDerivativesButton';
 import { GridAliquotViewSelector } from './GridAliquotViewSelector';
 import { SampleAliquotViewSelector } from './SampleAliquotViewSelector';
 import { SampleTimelinePageBase } from './SampleTimelinePageBase';
@@ -56,7 +55,7 @@ import { SamplesResolver } from './SamplesResolver';
 import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
 import { useSampleTypeAppContext } from './SampleTypeAppContext';
 import { SampleTypeDesignPage } from './SampleTypeDesignPage';
-import { AssayResultsForSamplesButton, AssayResultsForSamplesMenuItem } from './AssayResultsForSamplesButton';
+import { AssayResultsForSamplesButton, AssayResultsForSamplesMenuItem } from '../internal/components/entities/AssayResultsForSamplesButton';
 import { AssayResultsForSamplesPage, AssayResultsForSamplesSubNav } from './AssayResultsForSamplesPage';
 import { SampleOverviewPanel } from './SampleOverviewPanel';
 import { SampleDetailContextConsumer, SampleDetailPage } from './SampleDetailPage';
@@ -110,7 +109,6 @@ export {
     PicklistOverview,
     PicklistSubNav,
     RemoveFromPicklistButton,
-    SampleActionsButton,
     SampleAliquotDetailHeader,
     SampleAliquotViewSelector,
     SampleAliquotsSummary,

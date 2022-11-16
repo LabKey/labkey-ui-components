@@ -21,7 +21,7 @@ export const AssayResultDeleteModal: FC<Props> = props => {
     const { createNotification } = useNotificationsContext();
     const [showProgress, setShowProgress] = useState<boolean>(false);
     const numToDelete = selectedIds.length;
-    const noun = useMemo<string>(() => (numToDelete ? ' assay result' : ' assay results'), [numToDelete]);
+    const noun = useMemo<string>(() => (numToDelete === 1 ? ' assay result' : ' assay results'), [numToDelete]);
 
     const onConfirm = async (): Promise<void> => {
         setShowProgress(true);
@@ -65,7 +65,7 @@ export const AssayResultDeleteModal: FC<Props> = props => {
                     title={`Permanently delete ${numToDelete}${noun}?`}
                 >
                     <span>
-                        The {numToDelete > 1 ? numToDelete : ''} selected {noun} will be permanently deleted.
+                        The {numToDelete > 1 ? numToDelete : ''} selected{noun} will be permanently deleted.
                         <p className="top-spacing">
                             <strong>Deletion cannot be undone.</strong> Do you want to proceed?
                         </p>

@@ -17,8 +17,9 @@ import {
 } from '../internal/components/samples/models';
 import { DetailRenderer } from '../internal/components/forms/detail/DetailDisplay';
 
-import { ReferencingNotebooks, SampleStorageMenu, SampleStorageLocation, SampleGridButton } from './models';
+import { SampleGridButton, SampleStorageLocation, SampleStorageMenu } from './models';
 import { SamplesEditableGridProps } from './SamplesEditableGrid';
+import { ReferencingNotebooks } from '../internal/app/models';
 
 export interface SampleTypeAppContext {
     AddSamplesToStorageModalComponent: AddSamplesToStorageModal;

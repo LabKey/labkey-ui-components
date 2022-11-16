@@ -41,7 +41,7 @@ import { getRunPropertiesFileName } from './actions';
 import { AssayWizardModel } from './AssayWizardModel';
 import { getServerFilePreview } from './utils';
 
-const TABS = ['Import Data from File', 'Enter Data into Grid'];
+const TABS = ['Enter Data into Grid', 'Import Data from File'];
 const PREVIEW_ROW_COUNT = 3;
 
 interface Props {
@@ -241,6 +241,37 @@ export class RunDataPanel extends PureComponent<Props, State> {
 
                             <div className="row">
                                 <div className="col-sm-12">
+
+                                    <FormStep stepIndex={AssayUploadTabs.Grid}>
+                                        <EditableGridPanel
+                                            addControlProps={{
+                                                placement: 'top',
+                                                nounPlural: 'rows',
+                                                nounSingular: 'row',
+                                                invalidCountMsg: maxEditableGridRowMsg,
+                                            }}
+                                            allowBulkAdd={allowBulkInsert}
+                                            allowBulkRemove={allowBulkRemove}
+                                            allowBulkUpdate={allowBulkUpdate}
+                                            bordered
+                                            bulkAddText="Bulk Insert"
+                                            bulkAddProps={{
+                                                title: 'Bulk Insert Assay Rows',
+                                                header: 'Add a batch of assay data rows that will share the properties set below.',
+                                            }}
+                                            containerFilter={getContainerFilterForLookups()}
+                                            disabled={currentStep !== AssayUploadTabs.Grid}
+                                            editorModel={editorModel}
+                                            emptyGridMsg="Start by adding the quantity of assay data rows you want to create."
+                                            isSubmitting={wizardModel.isSubmitting}
+                                            maxRows={this.props.maxRows}
+                                            model={queryModel}
+                                            onChange={this.props.onGridChange}
+                                            striped
+                                            getIsDirty={getIsDirty}
+                                            setIsDirty={setIsDirty}
+                                        />
+                                    </FormStep>
                                     <FormStep stepIndex={AssayUploadTabs.Files}>
                                         {isLoadingPreview ? (
                                             <LoadingSpinner />
@@ -275,36 +306,6 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                                 }
                                             />
                                         )}
-                                    </FormStep>
-                                    <FormStep stepIndex={AssayUploadTabs.Grid} trackActive={false}>
-                                        <EditableGridPanel
-                                            addControlProps={{
-                                                placement: 'top',
-                                                nounPlural: 'rows',
-                                                nounSingular: 'row',
-                                                invalidCountMsg: maxEditableGridRowMsg,
-                                            }}
-                                            allowBulkAdd={allowBulkInsert}
-                                            allowBulkRemove={allowBulkRemove}
-                                            allowBulkUpdate={allowBulkUpdate}
-                                            bordered
-                                            bulkAddText="Bulk Insert"
-                                            bulkAddProps={{
-                                                title: 'Bulk Insert Assay Rows',
-                                                header: 'Add a batch of assay data rows that will share the properties set below.',
-                                            }}
-                                            containerFilter={getContainerFilterForLookups()}
-                                            disabled={currentStep !== AssayUploadTabs.Grid}
-                                            editorModel={editorModel}
-                                            emptyGridMsg="Start by adding the quantity of assay data rows you want to create."
-                                            isSubmitting={wizardModel.isSubmitting}
-                                            maxRows={this.props.maxRows}
-                                            model={queryModel}
-                                            onChange={this.props.onGridChange}
-                                            striped
-                                            getIsDirty={getIsDirty}
-                                            setIsDirty={setIsDirty}
-                                        />
                                     </FormStep>
                                 </div>
                             </div>

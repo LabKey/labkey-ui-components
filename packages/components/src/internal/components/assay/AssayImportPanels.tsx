@@ -491,7 +491,6 @@ class AssayImportPanelsBody extends Component<Props, State> {
         const {
             currentStep,
             onSave,
-            maxRows,
             beforeFinish,
             jobNotificationProvider,
             assayProtocol,
@@ -820,6 +819,6 @@ const AssayImportPanelsBodyImpl: FC<OwnProps & WithFormStepsProps> = props => {
 
 export const AssayImportPanels = withFormSteps(AssayImportPanelsBodyImpl, {
     currentStep: AssayUploadTabs.Files,
-    furthestStep: AssayUploadTabs.Grid,
+    furthestStep: AssayUploadTabs.Files,
     hasDependentSteps: false,
 });

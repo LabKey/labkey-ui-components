@@ -31,9 +31,8 @@ export const MAX_EDITABLE_GRID_ROWS = 1000;
 export const LOOKUP_DEFAULT_SIZE = 25;
 
 export enum AssayUploadTabs {
-    Files = 1,
-    Copy = 3,
-    Grid = 2,
+    Grid = 1,
+    Files = 2,
 }
 
 export enum EXPORT_TYPES {

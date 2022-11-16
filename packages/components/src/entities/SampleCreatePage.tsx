@@ -10,7 +10,7 @@ import { useNotificationsContext } from '../internal/components/notifications/No
 import { AppURL } from '../internal/url/AppURL';
 import { SAMPLES_KEY } from '../internal/app/constants';
 import { hasModule } from '../internal/app/utils';
-import { getContainerFilterForLookups, invalidateQueryDetailsCacheKey } from '../internal/query/api';
+import { getContainerFilterForLookups, invalidateQueryDetailsCache } from '../internal/query/api';
 import { SchemaQuery } from '../public/SchemaQuery';
 import { SCHEMAS } from '../internal/schemas';
 import { DataClassDataType, SampleTypeDataType } from '../internal/components/entities/constants';
@@ -77,9 +77,7 @@ export const SampleCreatePage: FC<SampleCreatePageProps> = memo(props => {
                 // so we need to reload the queryInfo for the sample type.
                 // N.B.  We could call getDomainDetails for the sample type and see if there is an options.autoLinkTargetContainerId and
                 // clear the cache only then, but the minor optimization doesn't seem worth it.
-                invalidateQueryDetailsCacheKey(
-                    SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, targetSampleTypeName).getKey()
-                );
+                invalidateQueryDetailsCache(SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, targetSampleTypeName));
             }
             onSampleChange();
 

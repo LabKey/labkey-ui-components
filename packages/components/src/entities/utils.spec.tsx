@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { List } from 'immutable';
+import { Map, List } from 'immutable';
 import { Filter } from '@labkey/api';
 
 import { SamplesEditButtonSections } from '../internal/components/samples/utils';
@@ -19,7 +19,7 @@ import { EntityChoice } from '../internal/components/entities/models';
 
 import { makeQueryInfo } from '../internal/testHelpers';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
-import { SampleTypeDataType } from '../internal/components/entities/constants';
+import { DataClassDataType, SampleTypeDataType } from '../internal/components/entities/constants';
 
 import { AssayStateModel } from '../internal/components/assay/models';
 import { LoadingState } from '../public/LoadingState';
@@ -49,6 +49,7 @@ import {
     getImportItemsForAssayDefinitions,
     getSamplesAssayGridQueryConfigs,
     getJobCreationHref,
+    processSampleBulkAdd,
 } from './utils';
 
 describe('getCrossFolderSelectionMsg', () => {
@@ -1051,5 +1052,159 @@ describe('getJobCreationHref', () => {
         expect(getJobCreationHref(queryModel, undefined, true, undefined, false, null, 'from', 'to')).toBe(
             '/labkey/to/app.view#/workflow/new?selectionKey=id'
         );
+    });
+});
+
+describe('processSampleBulkAdd', () => {
+    test('no parents', () => {
+        const data = Map.of(
+            'numItems',
+            2,
+            'creationType',
+            'Derivatives',
+            SampleTypeDataType.insertColumnNamePrefix,
+            []
+        );
+        const result = processSampleBulkAdd(data, false);
+        expect(result.validationMsg).toBe(undefined);
+        expect(result.pivotKey).toBe(undefined);
+        expect(result.pivotValues).toStrictEqual([]);
+        expect(result.totalItems).toBe(2);
+    });
+
+    test('one parent', () => {
+        const data = Map.of('numItems', 2, 'creationType', 'Derivatives', SampleTypeDataType.insertColumnNamePrefix, [
+            's1',
+        ]);
+        const result = processSampleBulkAdd(data, false);
+        expect(result.validationMsg).toBe(undefined);
+        expect(result.pivotKey).toBe(undefined);
+        expect(result.pivotValues).toStrictEqual([]);
+        expect(result.totalItems).toBe(2);
+    });
+
+    test('derivatives, sampleParent', () => {
+        const data = Map.of('numItems', 2, 'creationType', 'Derivatives', SampleTypeDataType.insertColumnNamePrefix, [
+            's1,s2',
+        ]);
+        const result = processSampleBulkAdd(data, false);
+        expect(result.validationMsg).toBe(undefined);
+        expect(result.pivotKey).toBe('MaterialInputs/');
+        expect(result.pivotValues).toStrictEqual(['s1', 's2']);
+        expect(result.totalItems).toBe(4);
+    });
+
+    test('derivatives, dataClassParent', () => {
+        const data = Map.of('numItems', 2, 'creationType', 'Derivatives', DataClassDataType.insertColumnNamePrefix, [
+            'd1,d2',
+        ]);
+        const result = processSampleBulkAdd(data, false);
+        expect(result.validationMsg).toBe(undefined);
+        expect(result.pivotKey).toBe('DataInputs/');
+        expect(result.pivotValues).toStrictEqual(['d1', 'd2']);
+        expect(result.totalItems).toBe(4);
+    });
+
+    test('derivatives, multiple parent types', () => {
+        const data = Map.of(
+            'numItems',
+            2,
+            'creationType',
+            'Derivatives',
+            SampleTypeDataType.insertColumnNamePrefix,
+            ['s1,s2'],
+            DataClassDataType.insertColumnNamePrefix,
+            ['d1,d2']
+        );
+        const result = processSampleBulkAdd(data, false);
+        expect(result.validationMsg).toBe(
+            'Only one source or parent with more than one value is allowed when creating non-pooled samples in bulk.'
+        );
+        expect(result.pivotKey).toBe(undefined);
+        expect(result.pivotValues).toBe(undefined);
+        expect(result.totalItems).toBe(undefined);
+    });
+
+    test('derivatives, multiple parent types, combineParentTypes', () => {
+        const data = Map.of(
+            'numItems',
+            2,
+            'creationType',
+            'Derivatives',
+            SampleTypeDataType.insertColumnNamePrefix,
+            ['s1,s2'],
+            DataClassDataType.insertColumnNamePrefix,
+            ['d1,d2']
+        );
+        const result = processSampleBulkAdd(data, true);
+        expect(result.validationMsg).toBe(
+            'Only one parent type with more than one value is allowed when creating non-pooled samples in bulk.'
+        );
+        expect(result.pivotKey).toBe(undefined);
+        expect(result.pivotValues).toBe(undefined);
+        expect(result.totalItems).toBe(undefined);
+    });
+
+    test('pooled samples, sampleParent', () => {
+        const data = Map.of(
+            'numItems',
+            2,
+            'creationType',
+            'Pooled Samples',
+            SampleTypeDataType.insertColumnNamePrefix,
+            ['s1,s2']
+        );
+        const result = processSampleBulkAdd(data, false);
+        expect(result.validationMsg).toBe(undefined);
+        expect(result.pivotKey).toBe(undefined);
+        expect(result.pivotValues).toStrictEqual([]);
+        expect(result.totalItems).toBe(2);
+    });
+
+    test('pooled samples, dataClassParent', () => {
+        const data = Map.of('numItems', 2, 'creationType', 'Pooled Samples', DataClassDataType.insertColumnNamePrefix, [
+            'd1,d2',
+        ]);
+        const result = processSampleBulkAdd(data, false);
+        expect(result.validationMsg).toBe(undefined);
+        expect(result.pivotKey).toBe('DataInputs/');
+        expect(result.pivotValues).toStrictEqual(['d1', 'd2']);
+        expect(result.totalItems).toBe(4);
+    });
+
+    test('pooled samples, multiple parent types', () => {
+        const data = Map.of(
+            'numItems',
+            2,
+            'creationType',
+            'Pooled Samples',
+            SampleTypeDataType.insertColumnNamePrefix,
+            ['s1,s2'],
+            DataClassDataType.insertColumnNamePrefix,
+            ['d1,d2']
+        );
+        const result = processSampleBulkAdd(data, false);
+        expect(result.validationMsg).toBe(undefined);
+        expect(result.pivotKey).toBe('DataInputs/');
+        expect(result.pivotValues).toStrictEqual(['d1', 'd2']);
+        expect(result.totalItems).toBe(4);
+    });
+
+    test('pooled samples, multiple parent types, combineParentTypes', () => {
+        const data = Map.of(
+            'numItems',
+            2,
+            'creationType',
+            'Pooled Samples',
+            SampleTypeDataType.insertColumnNamePrefix,
+            ['s1,s2'],
+            DataClassDataType.insertColumnNamePrefix,
+            ['d1,d2']
+        );
+        const result = processSampleBulkAdd(data, true);
+        expect(result.validationMsg).toBe(undefined);
+        expect(result.pivotKey).toBe('DataInputs/');
+        expect(result.pivotValues).toStrictEqual(['d1', 'd2']);
+        expect(result.totalItems).toBe(4);
     });
 });

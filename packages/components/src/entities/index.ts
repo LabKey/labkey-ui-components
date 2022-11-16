@@ -15,6 +15,7 @@ import {
     getSampleTypeTemplateUrl,
     createEntityParentKey,
     getJobCreationHref,
+    processSampleBulkAdd,
 } from './utils';
 import { SampleTypeBasePage } from './SampleTypeBasePage';
 import { SampleAliquotsSummary } from './SampleAliquotsSummary';
@@ -88,6 +89,7 @@ export {
     loadSampleTypes,
     onSampleChange,
     onSampleTypeChange,
+    processSampleBulkAdd,
     useSampleTypeAppContext,
     AssayImportSubMenuItem,
     AssayResultsForSamplesPage,

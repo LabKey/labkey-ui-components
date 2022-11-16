@@ -30,7 +30,7 @@ import { MAX_EDITABLE_GRID_ROWS } from '../internal/constants';
 
 import { SampleTypeBasePage } from './SampleTypeBasePage';
 import { onSampleChange } from './actions';
-import { getSampleAuditBehaviorType, getSampleTypeTemplateUrl } from './utils';
+import { getSampleAuditBehaviorType, getSampleTypeTemplateUrl, processSampleBulkAdd } from './utils';
 import { useSampleTypeAppContext } from './SampleTypeAppContext';
 
 const TITLE = 'Sample Type';
@@ -121,44 +121,7 @@ export const SampleCreatePage: FC<SampleCreatePageProps> = memo(props => {
 
     const onBulkAdd = useCallback(
         (data: OrderedMap<string, any>): BulkAddData => {
-            const numItems = data.get('numItems');
-            let totalItems = 0;
-            const creationType_ = data.get('creationType');
-            const poolingSampleParents = creationType_ && creationType_ === SampleCreationType.PooledSamples;
-
-            let validationMsg;
-            let pivotKey;
-            let pivotValues = [];
-            let haveMultiParent = false;
-
-            data.keySeq().forEach(key => {
-                const isSampleParent = key.indexOf(SampleTypeDataType.insertColumnNamePrefix) === 0;
-                const isDataClassParent = key.indexOf(DataClassDataType.insertColumnNamePrefix) === 0;
-                if (isSampleParent || isDataClassParent) {
-                    if (data.get(key)) {
-                        const parents = data.get(key);
-                        if (parents.length > 0) {
-                            const values = typeof parents[0] === 'string' ? parseCsvString(parents[0], ',') : parents;
-                            if (values.length > 1) {
-                                if (haveMultiParent) {
-                                    validationMsg = combineParentTypes
-                                        ? 'Only one parent type with more than one value is allowed when creating non-pooled samples in bulk.'
-                                        : 'Only one source or parent with more than one value is allowed when creating non-pooled samples in bulk.';
-                                } else if ((isSampleParent && !poolingSampleParents) || isDataClassParent) {
-                                    pivotValues = values;
-                                    pivotKey = key;
-                                    haveMultiParent = true;
-                                    totalItems = numItems * values.length;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-
-            if (validationMsg) return { validationMsg };
-            if (totalItems === 0) totalItems = numItems;
-            return { pivotKey, pivotValues, totalItems };
+            return processSampleBulkAdd(data, combineParentTypes);
         },
         [combineParentTypes]
     );

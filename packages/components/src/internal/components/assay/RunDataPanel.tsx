@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 import React, { PureComponent, ReactNode } from 'react';
-import Formsy from 'formsy-react';
-import { Textarea } from 'formsy-react-components';
 import { List, Map } from 'immutable';
-import { Button } from 'react-bootstrap';
 
 import { AssayUploadTabs } from '../../constants';
 import { InferDomainResponse } from '../../../public/InferDomainResponse';
 import { EditorModel, EditorModelProps } from '../editable/models';
 
-import { DATA_IMPORT_TOPIC, helpLinkNode } from '../../util/helpLinks';
+import { DATA_IMPORT_TOPIC, HelpLink } from '../../util/helpLinks';
 import { EditableGridPanel } from '../editable/EditableGridPanel';
 
 import { FileSizeLimitProps } from '../../../public/files/models';
@@ -32,7 +29,6 @@ import { getActionErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { FormStep, FormTabs } from '../forms/FormStep';
 import { FileAttachmentForm } from '../../../public/files/FileAttachmentForm';
-import { handleTabKeyOnTextArea } from '../forms/actions';
 import { Alert } from '../base/Alert';
 
 import { getContainerFilterForLookups } from '../../query/api';
@@ -241,7 +237,6 @@ export class RunDataPanel extends PureComponent<Props, State> {
 
                             <div className="row">
                                 <div className="col-sm-12">
-
                                     <FormStep stepIndex={AssayUploadTabs.Grid}>
                                         <EditableGridPanel
                                             addControlProps={{
@@ -277,6 +272,7 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                             <LoadingSpinner />
                                         ) : (
                                             <FileAttachmentForm
+                                                key={wizardModel.lastRunId} // required for rerender in the "save and import another" case
                                                 allowDirectories={false}
                                                 allowMultiple={false}
                                                 showLabel={false}
@@ -300,7 +296,7 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                                     <>
                                                         We recommend dividing your data into smaller files that meet
                                                         this limit. See our{' '}
-                                                        {helpLinkNode(DATA_IMPORT_TOPIC, 'help document')} for best
+                                                        <HelpLink topic={DATA_IMPORT_TOPIC}>help document</HelpLink> for best
                                                         practices on data import.
                                                     </>
                                                 }

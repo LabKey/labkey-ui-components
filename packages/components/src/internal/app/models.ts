@@ -7,6 +7,7 @@ import { ActionURL, getServerContext } from '@labkey/api';
 
 import { Container } from '../components/base/models/Container';
 import { User } from '../components/base/models/User';
+import { ComponentType } from 'react';
 
 const user = new User({
     ...getServerContext().user,
@@ -52,3 +53,13 @@ export interface AppProperties {
     productId: string;
     searchPlaceholder?: string;
 }
+
+// Note: this should stay in sync with the eln/src/ReferencingNotebooks.tsx props
+interface ReferencingNotebooksComponentProps {
+    label: string;
+    queryName: string;
+    schemaName: string;
+    value: number;
+}
+
+export type ReferencingNotebooks = ComponentType<ReferencingNotebooksComponentProps>;

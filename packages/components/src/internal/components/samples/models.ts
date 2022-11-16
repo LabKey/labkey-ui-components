@@ -153,12 +153,16 @@ export type SampleStorageButton = ComponentType<SampleStorageButtonComponentProp
 
 // Note: this should stay in sync with the workflow/src/Components/JobsButton.tsx props
 interface JobsButtonsComponentProps {
+    isAssay?: boolean;
     metricFeatureArea?: string;
     model: QueryModel;
     user: User;
 }
 
 export type JobsButton = ComponentType<JobsButtonsComponentProps>;
+
+// Note: this is meant to correspond to the JobsMenuOptions component in workflow/src/Components/JobsButon.tsx
+export type JobsMenuOptions = ComponentType<JobsButtonsComponentProps>;
 
 // Note: this should stay in sync with the workflow/src/Components/WorkflowGrid.tsx props
 interface WorkflowGridComponentProps {

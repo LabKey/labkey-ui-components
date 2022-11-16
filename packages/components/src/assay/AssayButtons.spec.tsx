@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Button, MenuItem } from 'react-bootstrap';
 
+import { fromJS } from 'immutable';
+
 import { AssayContextProvider } from '../internal/components/assay/withAssayModels';
 
 import { mountWithServerContext } from '../internal/testHelpers';
@@ -14,7 +16,7 @@ import {
     TEST_USER_READER,
 } from '../internal/userFixtures';
 import { AssayProtocolModel } from '../internal/components/domainproperties/assay/models';
-import { makeTestQueryModel } from '../public/QueryModel/testUtils';
+import { makeTestActions, makeTestQueryModel } from '../public/QueryModel/testUtils';
 import { SchemaQuery } from '../public/SchemaQuery';
 import { QueryInfo } from '../public/QueryInfo';
 import { CreatedModified } from '../internal/components/base/CreatedModified';
@@ -329,17 +331,22 @@ describe('AssayDesignHeaderButtons', () => {
 });
 
 describe('UpdateQCStatesButton', () => {
+    const testModel = makeTestQueryModel(SchemaQuery.create('test', 'query'));
+    const actions = makeTestActions();
     test('not analyst', () => {
-        const wrapper = mountWithServerContext(<UpdateQCStatesButton disabled={false} onClick={jest.fn()} />, {
-            user: TEST_USER_READER,
-        });
+        const wrapper = mountWithServerContext(
+            <UpdateQCStatesButton assayContainer="test" model={testModel} actions={actions} />,
+            {
+                user: TEST_USER_READER,
+            }
+        );
         expect(wrapper.find(Button)).toHaveLength(0);
         expect(wrapper.find(DisableableMenuItem)).toHaveLength(0);
     });
 
     test('as menu item', () => {
         const wrapper = mountWithServerContext(
-            <UpdateQCStatesButton disabled={false} onClick={jest.fn()} asMenuItem />,
+            <UpdateQCStatesButton assayContainer="test" model={testModel} actions={actions} asMenuItem={true} />,
             {
                 user: TEST_USER_QC_ANALYST,
             }
@@ -349,12 +356,53 @@ describe('UpdateQCStatesButton', () => {
         expect(wrapper.find(DisableableMenuItem).text()).toBe('Update QC States');
     });
 
+    test('disabled, as menu item', () => {
+        const wrapper = mountWithServerContext(
+            <UpdateQCStatesButton assayContainer="test" model={testModel} actions={actions} asMenuItem disabled />,
+            {
+                user: TEST_USER_QC_ANALYST,
+            }
+        );
+        expect(wrapper.find(DisableableMenuItem).prop('operationPermitted')).toBe(false);
+    });
+
+    test('with single run', () => {
+        const wrapper = mountWithServerContext(
+            <UpdateQCStatesButton
+                assayContainer="test"
+                model={testModel}
+                actions={actions}
+                run={fromJS({ RowId: { value: '1' } })}
+                asMenuItem
+                disabled
+            />,
+            {
+                user: TEST_USER_QC_ANALYST,
+            }
+        );
+        expect(wrapper.find(DisableableMenuItem).text()).toBe('Update QC State');
+    });
+
     test('not as menu item', () => {
-        const wrapper = mountWithServerContext(<UpdateQCStatesButton disabled={false} onClick={jest.fn()} />, {
-            user: TEST_USER_QC_ANALYST,
-        });
+        const wrapper = mountWithServerContext(
+            <UpdateQCStatesButton assayContainer="test" model={testModel} actions={actions} />,
+            {
+                user: TEST_USER_QC_ANALYST,
+            }
+        );
         expect(wrapper.find(Button)).toHaveLength(1);
         expect(wrapper.find(Button).text()).toBe('Update QC States');
         expect(wrapper.find(DisableableMenuItem)).toHaveLength(0);
+    });
+
+    test('disabled, not as menu item', () => {
+        const wrapper = mountWithServerContext(
+            <UpdateQCStatesButton assayContainer="test" model={testModel} actions={actions} disabled={true} />,
+            {
+                user: TEST_USER_QC_ANALYST,
+            }
+        );
+        expect(wrapper.find(Button)).toHaveLength(1);
+        expect(wrapper.find(Button).prop('disabled')).toBe(true);
     });
 });

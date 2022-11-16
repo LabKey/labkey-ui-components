@@ -17,6 +17,8 @@ import React, { createContext, PropsWithChildren, ReactElement, useContext, useM
 
 import { SampleTypeAppContext } from '../entities';
 
+import { AssayAppContext } from '../assay';
+
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from './APIWrapper';
 
 export interface NavigationSettings {
@@ -25,6 +27,7 @@ export interface NavigationSettings {
 
 export interface AppContext {
     api?: ComponentsAPIWrapper;
+    assay?: AssayAppContext;
     navigation?: NavigationSettings;
     sampleType?: SampleTypeAppContext;
 }

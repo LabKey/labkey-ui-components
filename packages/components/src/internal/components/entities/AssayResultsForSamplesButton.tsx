@@ -1,15 +1,15 @@
 import React, { FC, memo, useCallback, useMemo } from 'react';
 
-import { QueryModel } from '../public/QueryModel/QueryModel';
-import { ResponsiveMenuButton } from '../internal/components/buttons/ResponsiveMenuButton';
-import { SelectionMenuItem } from '../internal/components/menus/SelectionMenuItem';
-import { SampleTypeDataType } from '../internal/components/entities/constants';
-import { getURLParamsForSampleSelectionKey } from '../internal/components/samples/utils';
-import { AppURL, createProductUrlFromParts } from '../internal/url/AppURL';
-import { ASSAYS_KEY } from '../internal/app/constants';
-import { incrementClientSideMetricCount } from '../internal/actions';
-import { userCanReadAssays } from '../internal/app/utils';
-import { User } from '../internal/components/base/models/User';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { ResponsiveMenuButton } from '../buttons/ResponsiveMenuButton';
+import { SelectionMenuItem } from '../menus/SelectionMenuItem';
+import { SampleTypeDataType } from './constants';
+import { getURLParamsForSampleSelectionKey } from '../samples/utils';
+import { AppURL, createProductUrlFromParts } from '../../url/AppURL';
+import { ASSAYS_KEY } from '../../app/constants';
+import { incrementClientSideMetricCount } from '../../actions';
+import { userCanReadAssays } from '../../app/utils';
+import { User } from '../base/models/User';
 
 function getAssayResultsHref(
     model: QueryModel,

@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.251.0
+*Released*: 16 November 2022
+* Assay display pages consistency
+  * Add AssayGridPanel component, a combination of AssayRowsGridPanel from LKSM, AssayRuns and AssayResults from lKB
+  * Add AssayOverviewPage, AssayBatchOverviewPage, AssayBatchListingPage, AssayRunListingPage, AssayResultListingPage,
+    AssayListingPage, AssayRunListingPage, AssayQCModal, AssaysSubNav, AssayUploadPage, AssayDesignSelect
+  * Update AssayAppContext and SampleTypeAppContext
+
 ### version 2.250.0
 *Released*: 15 November 2022
 * Projects in Sample Manager

@@ -17,7 +17,6 @@ function getDefaultProps(): SampleCreatePageProps {
     return {
         ...createMockWithRouterProps(jest.fn),
         getIsDirty: jest.fn(),
-        loadNameExpressionOptions: jest.fn(async () => ({ prefix: '', allowUserSpecifiedNames: true })),
         menu: new ProductMenuModel(),
         setIsDirty: jest.fn(),
     };

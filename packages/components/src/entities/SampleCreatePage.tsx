@@ -36,15 +36,10 @@ import { useSampleTypeAppContext } from './SampleTypeAppContext';
 const TITLE = 'Sample Type';
 const SUBTITLE = 'Create New Samples';
 
-interface OwnProps {
-    // loadNameExpressionOptions is a prop for testing purposes only
-    loadNameExpressionOptions?: () => Promise<{ allowUserSpecifiedNames: boolean; prefix: string }>;
-}
-
-export interface SampleCreatePageProps extends OwnProps, CommonPageProps, WithRouterProps, InjectedRouteLeaveProps {}
+export interface SampleCreatePageProps extends CommonPageProps, WithRouterProps, InjectedRouteLeaveProps {}
 
 export const SampleCreatePage: FC<SampleCreatePageProps> = memo(props => {
-    const { loadNameExpressionOptions, location, navigate, router, routes, goBack } = props;
+    const { location, navigate, router, routes, goBack } = props;
     const { useAsync } = location?.query;
     const { user } = useServerContext();
     const { createNotification } = useNotificationsContext();
@@ -194,7 +189,6 @@ export const SampleCreatePage: FC<SampleCreatePageProps> = memo(props => {
                 getFileTemplateUrl={getFileTemplateUrl}
                 getIsDirty={getIsDirty}
                 importHelpLinkNode={<HelpLink topic={importHelpLinkTopic}>Import Sample Types</HelpLink>}
-                loadNameExpressionOptions={loadNameExpressionOptions}
                 location={location}
                 maxEntities={MAX_EDITABLE_GRID_ROWS}
                 navigate={navigate}

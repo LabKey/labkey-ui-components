@@ -46,7 +46,7 @@ import { applyEditableGridChangesToModels, initEditableGridModel } from '../edit
 
 import { EditorMode, EditorModel, EditorModelProps, IEditableGridLoader, IGridResponse } from '../editable/models';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { SampleCreationType, SampleCreationTypeModel } from '../samples/models';
+import { SampleCreationType } from '../samples/models';
 import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from '../forms/FormStep';
 import { User } from '../base/models/User';
 import { QueryInfo } from '../../../public/QueryInfo';
@@ -142,8 +142,6 @@ interface OwnProps {
     hideParentEntityButtons?: boolean; // Used if you have an initial parent but don't want to enable ability to change it
     importHelpLinkNode: ReactNode;
     importOnly?: boolean;
-    // loadNameExpressionOptions is a prop for testing purposes only, see default implementation below
-    loadNameExpressionOptions?: (containerPath?: string) => Promise<GetNameExpressionOptionsResponse>;
     maxEntities?: number;
     navigate?: (url: string | AppURL, replace?: boolean) => void;
     nounPlural: string;
@@ -206,7 +204,6 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     static defaultProps = {
         numPerParent: 1,
         tab: EntityInsertPanelTabs.First,
-        loadNameExpressionOptions,
         api: getDefaultAPIWrapper(),
     };
 
@@ -309,7 +306,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
         if (isSampleManagerEnabled()) {
             try {
-                const nameIdSettings = await this.props.loadNameExpressionOptions();
+                const nameIdSettings = await loadNameExpressionOptions();
                 this.setState({ allowUserSpecifiedNames: nameIdSettings.allowUserSpecifiedNames });
             } catch (error) {
                 this.setState({

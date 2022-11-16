@@ -286,7 +286,6 @@ import { FIND_SAMPLE_BY_ID_METRIC_AREA, getSearchScopeFromContainerFilter } from
 import { ActiveUserLimit } from './internal/components/settings/ActiveUserLimit';
 import { NameIdSettings } from './internal/components/settings/NameIdSettings';
 import { ProjectSettings } from './internal/components/settings/ProjectSettings';
-import { loadNameExpressionOptions } from './internal/components/settings/actions';
 import { AdministrationSubNav } from './internal/components/administration/AdministrationSubNav';
 import { UserManagementPage } from './internal/components/administration/UserManagement';
 import { CreateProjectPage } from './internal/components/administration/CreateProjectPage';
@@ -1037,7 +1036,6 @@ export {
     // settings
     ActiveUserLimit,
     NameIdSettings,
-    loadNameExpressionOptions,
     ProjectSettings,
     // administration
     AdministrationSubNav,

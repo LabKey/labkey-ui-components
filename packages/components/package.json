@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.251.0-fb-sampleCreatePageConsistency.1",
+  "version": "2.252.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

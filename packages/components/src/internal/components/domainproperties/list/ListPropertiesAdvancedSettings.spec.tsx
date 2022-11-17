@@ -3,6 +3,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import { List } from 'immutable';
+import { wrapper } from 'react-bootstrap/lib/utils/deprecationWarning';
 
 import renderer from 'react-test-renderer';
 
@@ -83,25 +84,36 @@ describe('AdvancedSettings', () => {
     });
 
     test("either search indexing options 'index entire list' or 'index each item' may be open, but not both", () => {
-        const searchIndexing = mount(
+        const wrapper = mount(
             <SearchIndexing
                 onRadioChange={jest.fn()}
                 onInputChange={jest.fn()}
                 onCheckboxChange={jest.fn()}
-                entireListIndexSettings=""
-                eachItemIndexSettings=""
+                eachItemIndex={false}
+                entireListIndexSettings={{
+                    entireListBodySetting: undefined,
+                    entireListBodyTemplate: undefined,
+                    entireListIndexSetting: undefined,
+                    entireListTitleTemplate: undefined,
+                }}
+                entireListIndex={false}
+                eachItemIndexSettings={{
+                    eachItemBodySetting: undefined,
+                    eachItemBodyTemplate: undefined,
+                    eachItemTitleTemplate: undefined,
+                }}
                 fileAttachmentIndex={false}
             />
         );
 
-        searchIndexing.setState({ expanded: 'entireListIndex' });
-        expect(searchIndexing.find(SingleDocumentIndexFields)).toHaveLength(1);
-        expect(searchIndexing.find(SeparateDocumentIndexFields)).toHaveLength(0);
+        wrapper.find('.fa-angle-right').at(0).simulate('click');
+        expect(wrapper.find(SingleDocumentIndexFields)).toHaveLength(1);
+        expect(wrapper.find(SeparateDocumentIndexFields)).toHaveLength(0);
 
-        searchIndexing.setState({ expanded: 'eachItemIndex' });
-        expect(searchIndexing.find(SingleDocumentIndexFields)).toHaveLength(0);
-        expect(searchIndexing.find(SeparateDocumentIndexFields)).toHaveLength(1);
-        searchIndexing.unmount();
+        wrapper.find('.fa-angle-right').at(0).simulate('click');
+        expect(wrapper.find(SingleDocumentIndexFields)).toHaveLength(0);
+        expect(wrapper.find(SeparateDocumentIndexFields)).toHaveLength(1);
+        wrapper.unmount();
     });
 
     test("setting 'index using custom template' generates a text input field", () => {

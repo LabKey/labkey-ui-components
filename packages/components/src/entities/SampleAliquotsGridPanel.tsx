@@ -20,7 +20,7 @@ import { getSampleAliquotsQueryConfig } from '../internal/components/samples/act
 import { getOmittedSampleTypeColumns } from '../internal/components/samples/utils';
 import { isAssayEnabled } from '../internal/app/utils';
 
-import { AssayResultsForSamplesButton } from './AssayResultsForSamplesButton';
+import { AssayResultsForSamplesButton } from '../internal/components/entities/AssayResultsForSamplesButton';
 
 import { SamplesAssayButton } from './SamplesAssayButton';
 import { EntityDeleteModal } from './EntityDeleteModal';

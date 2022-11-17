@@ -30,14 +30,4 @@ interface SampleStorageMenuComponentProps {
 
 export type SampleStorageMenu = ComponentType<SampleStorageMenuComponentProps>;
 
-// Note: this should stay in sync with the eln/src/ReferencingNotebooks.tsx props
-interface ReferencingNotebooksComponentProps {
-    label: string;
-    queryName: string;
-    schemaName: string;
-    value: number;
-}
-
-export type ReferencingNotebooks = ComponentType<ReferencingNotebooksComponentProps>;
-
 export type SampleGridButton = ComponentType<SampleGridButtonProps & RequiresModelAndActions>;

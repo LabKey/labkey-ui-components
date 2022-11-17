@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 2.252.0
-*Released*: ?? November 2022
+*Released*: 17 November 2022
 * Refactor ListDesignerPanels and related components
   * No longer use custom checkbox component
   * Convert most components to FC

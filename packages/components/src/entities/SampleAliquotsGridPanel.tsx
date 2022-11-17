@@ -129,10 +129,6 @@ export const SampleAliquotsGridPanelImpl: FC<Props & InjectedQueryModels> = memo
 
     const queryModel = queryModels[MODEL_ID];
 
-    const hasSelection = useMemo((): boolean => {
-        return queryModel.hasSelections;
-    }, [queryModel]);
-
     const resetState = useCallback((): void => {
         setConfirmDelete(false);
         setShowPrintDialog(false);
@@ -147,10 +143,10 @@ export const SampleAliquotsGridPanelImpl: FC<Props & InjectedQueryModels> = memo
     }, [actions, queryModel]);
 
     const onDelete = useCallback((): void => {
-        if (hasSelection) {
+        if (queryModel?.hasSelections) {
             setConfirmDelete(true);
         }
-    }, []);
+    }, [queryModel]);
 
     const onPrintLabel = useCallback(() => setShowPrintDialog(true),[]);
 
@@ -212,7 +208,7 @@ export const SampleAliquotsGridPanelImpl: FC<Props & InjectedQueryModels> = memo
 
 const SampleAliquotsGridPanelWithModel = withQueryModels<Props>(SampleAliquotsGridPanelImpl);
 
-interface SampleAliquotsGridPanelProps extends Props {
+interface SampleAliquotsGridPanelProps extends Omit<Props, 'queryModelId'> {
     omittedColumns?: string[];
     rootLsid?: string;
     sampleId: string | number;
@@ -224,11 +220,7 @@ interface SampleAliquotsGridPanelProps extends Props {
 const MODEL_ID = 'aliquot-model';
 
 export const SampleAliquotsGridPanel: FC<SampleAliquotsGridPanelProps> = props => {
-    const { sampleId, sampleLsid, schemaQuery, rootLsid, user, omittedColumns } = props;
-    const id = createGridModelId(
-        'sample-aliquots-' + sampleId,
-        SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, schemaQuery.getQuery())
-    );
+    const { sampleLsid, schemaQuery, rootLsid, user, omittedColumns } = props;
     const omitted = omittedColumns
         ? [...getOmittedSampleTypeColumns(user), ...omittedColumns]
         : getOmittedSampleTypeColumns(user);

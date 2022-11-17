@@ -1,8 +1,9 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
-import { SampleCreationTypeOption } from './SampleCreationTypeOption';
 import { DERIVATIVE_CREATION, SampleCreationType } from '../internal/components/samples/models';
+
+import { SampleCreationTypeOption } from './SampleCreationTypeOption';
 
 describe('<SampleCreationTypeOption/>', () => {
     test('Show icon with iconUrl', () => {

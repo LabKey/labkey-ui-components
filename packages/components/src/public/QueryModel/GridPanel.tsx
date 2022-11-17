@@ -613,7 +613,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             newSorts.push(newQuerySort);
         }
 
-        actions.setSorts(model.id, newSorts)
+        actions.setSorts(model.id, newSorts);
     };
 
     onSearch = (value: string): void => {
@@ -634,7 +634,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             newFilters = newFilters.concat(Filter.create('*', value, Filter.Types.Q));
         }
 
-        actions.setFilters(model.id, newFilters, allowSelections)
+        actions.setFilters(model.id, newFilters, allowSelections);
     };
 
     onRevertView = (): void => {

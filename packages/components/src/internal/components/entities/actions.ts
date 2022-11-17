@@ -510,7 +510,14 @@ export function getEntityTypeData(
         const promises: Array<Promise<any>> = [
             getEntityTypeOptions(entityDataType),
             // get all the parent schemaQuery data
-            getChosenParentData(model, parentSchemaQueries, allowParents, isItemSamples, targetQueryName, combineParentTypes),
+            getChosenParentData(
+                model,
+                parentSchemaQueries,
+                allowParents,
+                isItemSamples,
+                targetQueryName,
+                combineParentTypes
+            ),
             ...parentSchemaQueries.map(edt => getEntityTypeOptions(edt)).toArray(),
         ];
 
@@ -644,7 +651,7 @@ export function getCrossFolderSelectionResult(
                 dataRegionSelectionKey,
                 rowIds,
                 dataType,
-                picklistName
+                picklistName,
             },
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {

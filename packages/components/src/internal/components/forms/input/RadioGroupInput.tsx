@@ -1,9 +1,10 @@
 import React, { ChangeEvent, FC, PureComponent, ReactNode } from 'react';
 import { withFormsy } from 'formsy-react';
 
+import classNames from 'classnames';
+
 import { LabelHelpTip } from '../../base/LabelHelpTip';
 import { WithFormsyProps } from '../constants';
-import classNames from "classnames";
 
 // export for jest test usage
 export interface RadioGroupOption {

@@ -8,10 +8,10 @@ import { SampleCreationType, SampleCreationTypeModel } from '../samples/models';
 import { RadioGroupInput } from './input/RadioGroupInput';
 
 interface Props {
+    countText: string;
     creationTypeOptions: SampleCreationTypeModel[];
     includeCountField: boolean;
     maxCount: number;
-    countText: string;
     onCountChange?: (count: number) => void;
 }
 

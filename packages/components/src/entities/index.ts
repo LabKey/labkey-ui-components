@@ -1,3 +1,10 @@
+import { FindDerivativesButton, FindDerivativesMenuItem } from '../internal/components/entities/FindDerivativesButton';
+
+import {
+    AssayResultsForSamplesButton,
+    AssayResultsForSamplesMenuItem,
+} from '../internal/components/entities/AssayResultsForSamplesButton';
+
 import {
     getSampleTypes,
     getOriginalParentsFromLineage,
@@ -36,7 +43,6 @@ import { SampleTypeInsightsPanel } from './SampleTypeInsightsPanel';
 import { FindSamplesByIdHeaderPanel } from './FindSamplesByIdHeaderPanel';
 import { FindSamplesByIdsPageBase } from './FindSamplesByIdsPageBase';
 import { SampleFinderSection } from './SampleFinderSection';
-import { FindDerivativesButton, FindDerivativesMenuItem } from '../internal/components/entities/FindDerivativesButton';
 import { GridAliquotViewSelector } from './GridAliquotViewSelector';
 import { SampleAliquotViewSelector } from './SampleAliquotViewSelector';
 import { SampleTimelinePageBase } from './SampleTimelinePageBase';
@@ -56,7 +62,7 @@ import { SamplesResolver } from './SamplesResolver';
 import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
 import { useSampleTypeAppContext } from './SampleTypeAppContext';
 import { SampleTypeDesignPage } from './SampleTypeDesignPage';
-import { AssayResultsForSamplesButton, AssayResultsForSamplesMenuItem } from '../internal/components/entities/AssayResultsForSamplesButton';
+
 import { AssayResultsForSamplesPage, AssayResultsForSamplesSubNav } from './AssayResultsForSamplesPage';
 import { SampleOverviewPanel } from './SampleOverviewPanel';
 import { SampleDetailContextConsumer, SampleDetailPage } from './SampleDetailPage';

@@ -9,9 +9,10 @@ import { mountWithServerContext } from '../internal/testHelpers';
 import { SubMenuItem } from '../internal/components/menus/SubMenuItem';
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../internal/userFixtures';
 
+import { DisableableButton } from '../internal/components/buttons/DisableableButton';
+
 import { SamplesDeriveButtonBase } from './SamplesDeriveButtonBase';
 import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
-import { DisableableButton } from '../internal/components/buttons/DisableableButton';
 
 describe('SamplesDeriveButtonBase', () => {
     const DEFAULT_PROPS = {

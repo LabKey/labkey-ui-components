@@ -1,9 +1,10 @@
 import { List } from 'immutable';
 
+import { SampleCreationType } from '../samples/models';
+
 import { IEntityTypeOption } from './models';
 import { getBulkCreationTypeOptions, getEntityDescription, getEntityNoun, getInitialParentChoices } from './utils';
 import { DataClassDataType, SampleTypeDataType } from './constants';
-import { SampleCreationType } from "../samples/models";
 
 describe('getInitialParentChoices', () => {
     const parentTypeOptions = List<IEntityTypeOption>([

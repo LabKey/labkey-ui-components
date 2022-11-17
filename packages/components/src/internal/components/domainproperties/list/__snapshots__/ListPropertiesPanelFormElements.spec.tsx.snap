@@ -15,68 +15,50 @@ exports[`AllowableActions existing list, existing properties 1`] = `
     <div
       className="list__properties__checkbox-row"
     >
-      <span
-        className="list__properties__no-highlight"
-        onClick={[Function]}
+      <div
+        className="form-group"
       >
-        <span
-          className="fa fa-lg fa-check-square"
-          style={
-            {
-              "color": "#0073BB",
-            }
-          }
-        />
-      </span>
-      <span
-        className="list__properties__checkbox-text"
-      >
-        Delete
-      </span>
+        <label>
+          <input
+            checked={true}
+            onChange={[Function]}
+            type="checkbox"
+          />
+          Delete
+        </label>
+      </div>
     </div>
     <div
       className="list__properties__checkbox-row"
     >
-      <span
-        className="list__properties__no-highlight"
-        onClick={[Function]}
+      <div
+        className="form-group"
       >
-        <span
-          className="fa fa-lg fa-check-square"
-          style={
-            {
-              "color": "#0073BB",
-            }
-          }
-        />
-      </span>
-      <span
-        className="list__properties__checkbox-text"
-      >
-        Upload
-      </span>
+        <label>
+          <input
+            checked={true}
+            onChange={[Function]}
+            type="checkbox"
+          />
+          Upload
+        </label>
+      </div>
     </div>
     <div
       className="list__properties__checkbox-row"
     >
-      <span
-        className="list__properties__no-highlight"
-        onClick={[Function]}
+      <div
+        className="form-group"
       >
-        <span
-          className="fa fa-lg fa-check-square"
-          style={
-            {
-              "color": "#0073BB",
-            }
-          }
-        />
-      </span>
-      <span
-        className="list__properties__checkbox-text"
-      >
-        Export & Print
-      </span>
+        <label>
+          <input
+            checked={true}
+            onChange={[Function]}
+            type="checkbox"
+          />
+          Export & Print
+        </label>
+      </div>
     </div>
   </div>
 </div>
@@ -97,68 +79,50 @@ exports[`AllowableActions new list, default properties 1`] = `
     <div
       className="list__properties__checkbox-row"
     >
-      <span
-        className="list__properties__no-highlight"
-        onClick={[Function]}
+      <div
+        className="form-group"
       >
-        <span
-          className="fa fa-lg fa-check-square"
-          style={
-            {
-              "color": "#0073BB",
-            }
-          }
-        />
-      </span>
-      <span
-        className="list__properties__checkbox-text"
-      >
-        Delete
-      </span>
+        <label>
+          <input
+            checked={true}
+            onChange={[Function]}
+            type="checkbox"
+          />
+          Delete
+        </label>
+      </div>
     </div>
     <div
       className="list__properties__checkbox-row"
     >
-      <span
-        className="list__properties__no-highlight"
-        onClick={[Function]}
+      <div
+        className="form-group"
       >
-        <span
-          className="fa fa-lg fa-check-square"
-          style={
-            {
-              "color": "#0073BB",
-            }
-          }
-        />
-      </span>
-      <span
-        className="list__properties__checkbox-text"
-      >
-        Upload
-      </span>
+        <label>
+          <input
+            checked={true}
+            onChange={[Function]}
+            type="checkbox"
+          />
+          Upload
+        </label>
+      </div>
     </div>
     <div
       className="list__properties__checkbox-row"
     >
-      <span
-        className="list__properties__no-highlight"
-        onClick={[Function]}
+      <div
+        className="form-group"
       >
-        <span
-          className="fa fa-lg fa-check-square"
-          style={
-            {
-              "color": "#0073BB",
-            }
-          }
-        />
-      </span>
-      <span
-        className="list__properties__checkbox-text"
-      >
-        Export & Print
-      </span>
+        <label>
+          <input
+            checked={true}
+            onChange={[Function]}
+            type="checkbox"
+          />
+          Export & Print
+        </label>
+      </div>
     </div>
   </div>
 </div>

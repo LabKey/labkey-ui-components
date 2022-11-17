@@ -46,7 +46,7 @@ import { applyEditableGridChangesToModels, initEditableGridModel } from '../edit
 
 import { EditorMode, EditorModel, EditorModelProps, IEditableGridLoader, IGridResponse } from '../editable/models';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { SampleCreationType, SampleCreationTypeModel } from '../samples/models';
+import { SampleCreationType } from '../samples/models';
 import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from '../forms/FormStep';
 import { User } from '../base/models/User';
 import { QueryInfo } from '../../../public/QueryInfo';
@@ -68,7 +68,10 @@ import { LabelHelpTip } from '../base/LabelHelpTip';
 import { FileAttachmentForm } from '../../../public/files/FileAttachmentForm';
 import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { useServerContext } from '../base/ServerContext';
-import { Location } from '../../util/URL';
+import { getLocation, Location } from '../../util/URL';
+import { SCHEMAS } from '../../schemas';
+import { isSamplesSchema } from '../samples/utils';
+import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { ENTITY_CREATION_METRIC, SampleTypeDataType } from './constants';
 import {
@@ -79,7 +82,7 @@ import {
     EditorModelUpdatesWithParents,
 } from './EntityParentTypeSelectors';
 import { EntityInsertGridRequiredFieldAlert } from './EntityInsertGridRequiredFieldAlert';
-import { getUniqueIdColumnMetadata } from './utils';
+import { getBulkCreationTypeOptions, getUniqueIdColumnMetadata } from './utils';
 import { getEntityTypeData, handleEntityFileImport } from './actions';
 import {
     EntityDataType,
@@ -127,7 +130,6 @@ interface OwnProps {
     canEditEntityTypeDetails?: boolean;
     combineParentTypes?: boolean; // Puts all parent types in one parent button. Name on the button will be the first parent type listed
     containerFilter?: Query.ContainerFilter;
-    creationTypeOptions?: SampleCreationTypeModel[];
     disableMerge?: boolean;
     entityDataType: EntityDataType;
     errorNounPlural?: string; // Used if you want a different noun in error messages than on the other components
@@ -140,9 +142,8 @@ interface OwnProps {
     hideParentEntityButtons?: boolean; // Used if you have an initial parent but don't want to enable ability to change it
     importHelpLinkNode: ReactNode;
     importOnly?: boolean;
-    // loadNameExpressionOptions is a prop for testing purposes only, see default implementation below
-    loadNameExpressionOptions?: (containerPath?: string) => Promise<GetNameExpressionOptionsResponse>;
     maxEntities?: number;
+    navigate?: (url: string | AppURL, replace?: boolean) => void;
     nounPlural: string;
     nounSingular: string;
     onBackgroundJobStart?: (entityTypeName, filename, jobId) => void;
@@ -203,7 +204,6 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     static defaultProps = {
         numPerParent: 1,
         tab: EntityInsertPanelTabs.First,
-        loadNameExpressionOptions,
         api: getDefaultAPIWrapper(),
     };
 
@@ -294,6 +294,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             selectedTarget,
             originalParents,
             selectedParents,
+            combineParentTypes,
         } = this.props;
 
         const { creationType } = this.state;
@@ -305,7 +306,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
         if (isSampleManagerEnabled()) {
             try {
-                const nameIdSettings = await this.props.loadNameExpressionOptions();
+                const nameIdSettings = await loadNameExpressionOptions();
                 this.setState({ allowUserSpecifiedNames: nameIdSettings.allowUserSpecifiedNames });
             } catch (error) {
                 this.setState({
@@ -351,9 +352,10 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 insertModel,
                 entityDataType,
                 parentSchemaQueries,
-                entityDataType.typeListingSchemaQuery.queryName,
+                selected,
                 allowParents,
-                isItemSamples
+                isItemSamples,
+                combineParentTypes
             );
 
             if (selectedParents) partialModel['entityParents'] = selectedParents;
@@ -482,18 +484,28 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     changeTargetEntityType = (fieldName: string, formValue: any, selectedOption: IEntityTypeOption): void => {
+        const { setIsDirty, navigate } = this.props;
         const { insertModel, creationType } = this.state;
+
+        // if creating aliquots and we change the targetEntityType, update params to get the component to re-render
+        if (creationType === SampleCreationType.Aliquots && navigate) {
+            setIsDirty?.(false);
+            const { hash } = getLocation();
+            navigate(
+                new AppURL({ _baseUrl: hash.substring(1) })
+                    .addParam('target', formValue)
+                    .addParam('creationType', SampleCreationType.Aliquots)
+            );
+            return;
+        }
 
         let updatedModel = insertModel.merge({
             targetEntityType: new EntityTypeOption(selectedOption),
             isError: false,
             errors: undefined,
         }) as EntityIdCreationModel;
-        if (creationType === SampleCreationType.Aliquots) {
-            updatedModel = updatedModel.merge({
-                entityCount: 0,
-            }) as EntityIdCreationModel;
-        } else if (!selectedOption) {
+
+        if (!selectedOption) {
             updatedModel = updatedModel.merge({
                 entityParents: insertModel.getClearedEntityParents(),
             }) as EntityIdCreationModel;
@@ -956,8 +968,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     renderCreateFromGrid = (): ReactNode => {
         const { insertModel, creationType, dataModel, editorModel } = this.state;
-        const { containerFilter, creationTypeOptions, maxEntities, nounPlural, onBulkAdd, getIsDirty, setIsDirty } =
-            this.props;
+        const { containerFilter, maxEntities, nounPlural, onBulkAdd, getIsDirty, setIsDirty } = this.props;
         const columnMetadata = this.getColumnMetadata();
         const isLoaded = (dataModel && !dataModel?.isLoading) ?? false;
 
@@ -968,12 +979,11 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const gridNounPluralCap = isAliquotCreation ? capitalizeFirstChar(ALIQUOT_NOUN_PLURAL) : this.capNounPlural;
         const gridNounPlural = isAliquotCreation ? ALIQUOT_NOUN_PLURAL : nounPlural;
 
-        let bulkCreationTypeOptions = creationTypeOptions;
-        const selectedType = creationTypeOptions?.find(type => type.type === creationType);
-        if (selectedType)
-            bulkCreationTypeOptions = bulkCreationTypeOptions.filter(
-                option => option.typeGroup === selectedType.typeGroup
-            );
+        // Issue 45483: allowed creation types in bulk insert modal to be based on if sample parent types exist and based on the creation type for the page
+        const numSampleParentTypes = insertModel.entityParents
+            ?.get(SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName)
+            ?.filter(parentType => isSamplesSchema(SchemaQuery.create(parentType.schema, parentType.query))).size;
+        const bulkCreationTypeOptions = getBulkCreationTypeOptions(numSampleParentTypes > 0, creationType);
 
         return (
             <>
@@ -1447,7 +1457,15 @@ export const EntityInsertPanel: FC<{ location?: Location } & OwnProps> = memo(pr
             return {};
         }
 
-        const { creationType, numPerParent, parent, selectionKey, tab, target, selectionKeyType } = location.query;
+        const {
+            creationType = SampleCreationType.Independents,
+            numPerParent,
+            parent,
+            selectionKey,
+            tab,
+            target,
+            selectionKeyType,
+        } = location.query;
         const isItemSamples = selectionKeyType === SAMPLE_INVENTORY_ITEM_SELECTION_KEY;
         return {
             creationType,
@@ -1460,7 +1478,13 @@ export const EntityInsertPanel: FC<{ location?: Location } & OwnProps> = memo(pr
         };
     }, [location, entityInsertPanelProps.selectedTab]);
 
-    return <EntityInsertPanelFormSteps {...entityInsertPanelProps} {...fromLocationProps} user={user} />;
+    // Issue 46163: changing aliquot target entity type should reload the EntityInsertPanel component to re-init accordingly
+    const key = useMemo(
+        () => fromLocationProps.target + '-' + fromLocationProps.creationType,
+        [fromLocationProps.creationType, fromLocationProps.target]
+    );
+
+    return <EntityInsertPanelFormSteps {...entityInsertPanelProps} {...fromLocationProps} key={key} user={user} />;
 });
 
 EntityInsertPanel.displayName = 'EntityInsertPanel';

@@ -197,12 +197,12 @@ export const removeEntityParentType = (
 };
 
 export const addEntityParentType = (
-    queryName: string,
+    parentType: string,
     entityParents: Map<string, List<EntityParentType>>
 ): Map<string, List<EntityParentType>> => {
-    const nextIndex = entityParents.get(queryName).size + 1;
-    const updatedParents = entityParents.get(queryName).push(EntityParentType.create({ index: nextIndex }));
-    return entityParents.set(queryName, updatedParents);
+    const nextIndex = entityParents.get(parentType).size + 1;
+    const updatedParents = entityParents.get(parentType).push(EntityParentType.create({ index: nextIndex }));
+    return entityParents.set(parentType, updatedParents);
 };
 
 interface AddEntityButtonProps {
@@ -255,7 +255,7 @@ export const EntityParentTypeSelectors: FC<Props> = memo(props => {
     const { parentDataTypes, parentOptionsMap, entityParentsMap, combineParentTypes, onAdd, onChange, onRemove } =
         props;
 
-    // If combining parent types, just grabbing first parent type for the name
+    // If combining parent types, use the first parent type for the queryName
     const dataTypes = useMemo(
         () => (combineParentTypes ? List.of(parentDataTypes.get(0)) : parentDataTypes),
         [combineParentTypes, parentDataTypes]

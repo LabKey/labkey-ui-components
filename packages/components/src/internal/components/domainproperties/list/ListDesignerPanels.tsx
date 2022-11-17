@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { List } from 'immutable';
 import { Domain } from '@labkey/api';
 
@@ -23,13 +23,13 @@ import { SetKeyFieldNamePanel } from './SetKeyFieldNamePanel';
 
 interface Props {
     initModel?: ListModel;
-    onChange?: (model: ListModel) => void;
     onCancel: () => void;
+    onChange: (model: ListModel) => void;
     onComplete: (model: ListModel) => void;
-    useTheme?: boolean;
-    successBsStyle?: string;
     saveBtnText?: string;
+    successBsStyle?: string;
     testMode?: boolean;
+    useTheme?: boolean;
 }
 
 interface State {
@@ -53,21 +53,16 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
         };
     }
 
-    onPropertiesChange = (model: ListModel) => {
+    onPropertiesChange = (model: ListModel): void => {
         const { onChange } = this.props;
 
         this.setState(
             () => ({ model }),
-            () => {
-                if (onChange) {
-                    onChange(model);
-                }
-            }
+            () => onChange(model)
         );
     };
 
     onDomainChange = (domain: DomainDesign, dirty: boolean, rowIndexChanges?: DomainFieldIndexChange[]) => {
-        const { onChange } = this.props;
         const { model } = this.state;
 
         // Issue 40262: If we have a titleColumn selected and the name changes (not the row index), update the titleColumn
@@ -83,8 +78,8 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
             }),
             () => {
                 // Issue 39918: use the dirty property that DomainForm onChange passes
-                if (onChange && dirty) {
-                    onChange(this.state.model);
+                if (dirty) {
+                    this.props.onChange(this.state.model);
                 }
 
                 this.setKeyTypeForModel();
@@ -110,7 +105,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
                 });
             },
             success: () => {
-                this.setState(state => ({
+                this.setState(() => ({
                     model: model.set('exception', undefined) as ListModel,
                     savedModel: undefined,
                     importError: undefined,
@@ -135,7 +130,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
                 name: savedModel.name,
             }),
         })
-            .then(response => {
+            .then(() => {
                 setSubmitting(false, () => {
                     this.props.onComplete(savedModel);
                 });
@@ -230,8 +225,16 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
             });
     };
 
-    headerRenderer = (config: IAppDomainHeader) => {
+    headerRenderer = (config: IAppDomainHeader): ReactNode => {
         return <SetKeyFieldNamePanel model={this.state.model} onModelChange={this.onPropertiesChange} {...config} />;
+    };
+
+    toggleListPropertiesPanel = (collapsed, callback): void => {
+        this.props.onTogglePanel(0, collapsed, callback);
+    };
+
+    toggleDomainForm = (collapsed, callback): void => {
+        this.props.onTogglePanel(1, collapsed, callback);
     };
 
     render() {
@@ -244,7 +247,6 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
             firstState,
             validatePanel,
             submitting,
-            onTogglePanel,
             saveBtnText,
             testMode,
         } = this.props;
@@ -274,9 +276,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
                             : 'COMPLETE'
                     }
                     validate={validatePanel === 0}
-                    onToggle={(collapsed, callback) => {
-                        onTogglePanel(0, collapsed, callback);
-                    }}
+                    onToggle={this.toggleListPropertiesPanel}
                     useTheme={useTheme}
                     successBsStyle={successBsStyle}
                 />
@@ -298,9 +298,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
                             ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState)
                             : 'COMPLETE'
                     }
-                    onToggle={(collapsed, callback) => {
-                        onTogglePanel(1, collapsed, callback);
-                    }}
+                    onToggle={this.toggleDomainForm}
                     useTheme={useTheme}
                     successBsStyle={successBsStyle}
                     appDomainHeaderRenderer={model.isNew() && model.domain.fields.size > 0 && this.headerRenderer}

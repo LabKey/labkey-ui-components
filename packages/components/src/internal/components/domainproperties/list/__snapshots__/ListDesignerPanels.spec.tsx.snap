@@ -13484,7 +13484,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                           "category": undefined,
                                         }
                                       }
-                                      onCheckBoxChange={[Function]}
+                                      onChange={[Function]}
                                     >
                                       <Col
                                         bsClass="col"
@@ -14815,7 +14815,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                 "category": undefined,
                                               }
                                             }
-                                            onCheckBoxChange={[Function]}
+                                            onChange={[Function]}
                                           >
                                             <div
                                               className="list__properties__allowable-actions"
@@ -14823,103 +14823,70 @@ exports[`ListDesignerPanel existing list 1`] = `
                                               <CheckBoxRow
                                                 checked={true}
                                                 name="allowDelete"
-                                                onCheckBoxChange={[Function]}
+                                                onChange={[Function]}
                                                 text="Delete"
                                               >
                                                 <div
                                                   className="list__properties__checkbox-row"
                                                 >
-                                                  <Memo()
-                                                    checked={true}
-                                                    onClick={[Function]}
+                                                  <div
+                                                    className="form-group"
                                                   >
-                                                    <span
-                                                      className="list__properties__no-highlight"
-                                                      onClick={[Function]}
-                                                    >
-                                                      <span
-                                                        className="fa fa-lg fa-check-square"
-                                                        style={
-                                                          {
-                                                            "color": "#0073BB",
-                                                          }
-                                                        }
+                                                    <label>
+                                                      <input
+                                                        checked={true}
+                                                        onChange={[Function]}
+                                                        type="checkbox"
                                                       />
-                                                    </span>
-                                                  </Memo()>
-                                                  <span
-                                                    className="list__properties__checkbox-text"
-                                                  >
-                                                    Delete
-                                                  </span>
+                                                      Delete
+                                                    </label>
+                                                  </div>
                                                 </div>
                                               </CheckBoxRow>
                                               <CheckBoxRow
                                                 checked={true}
                                                 name="allowUpload"
-                                                onCheckBoxChange={[Function]}
+                                                onChange={[Function]}
                                                 text="Upload"
                                               >
                                                 <div
                                                   className="list__properties__checkbox-row"
                                                 >
-                                                  <Memo()
-                                                    checked={true}
-                                                    onClick={[Function]}
+                                                  <div
+                                                    className="form-group"
                                                   >
-                                                    <span
-                                                      className="list__properties__no-highlight"
-                                                      onClick={[Function]}
-                                                    >
-                                                      <span
-                                                        className="fa fa-lg fa-check-square"
-                                                        style={
-                                                          {
-                                                            "color": "#0073BB",
-                                                          }
-                                                        }
+                                                    <label>
+                                                      <input
+                                                        checked={true}
+                                                        onChange={[Function]}
+                                                        type="checkbox"
                                                       />
-                                                    </span>
-                                                  </Memo()>
-                                                  <span
-                                                    className="list__properties__checkbox-text"
-                                                  >
-                                                    Upload
-                                                  </span>
+                                                      Upload
+                                                    </label>
+                                                  </div>
                                                 </div>
                                               </CheckBoxRow>
                                               <CheckBoxRow
                                                 checked={true}
                                                 name="allowExport"
-                                                onCheckBoxChange={[Function]}
+                                                onChange={[Function]}
                                                 text="Export & Print"
                                               >
                                                 <div
                                                   className="list__properties__checkbox-row"
                                                 >
-                                                  <Memo()
-                                                    checked={true}
-                                                    onClick={[Function]}
+                                                  <div
+                                                    className="form-group"
                                                   >
-                                                    <span
-                                                      className="list__properties__no-highlight"
-                                                      onClick={[Function]}
-                                                    >
-                                                      <span
-                                                        className="fa fa-lg fa-check-square"
-                                                        style={
-                                                          {
-                                                            "color": "#0073BB",
-                                                          }
-                                                        }
+                                                    <label>
+                                                      <input
+                                                        checked={true}
+                                                        onChange={[Function]}
+                                                        type="checkbox"
                                                       />
-                                                    </span>
-                                                  </Memo()>
-                                                  <span
-                                                    className="list__properties__checkbox-text"
-                                                  >
-                                                    Export & Print
-                                                  </span>
+                                                      Export & Print
+                                                    </label>
+                                                  </div>
                                                 </div>
                                               </CheckBoxRow>
                                             </div>
@@ -45910,68 +45877,50 @@ exports[`ListDesignerPanel new list 1`] = `
               <div
                 className="list__properties__checkbox-row"
               >
-                <span
-                  className="list__properties__no-highlight"
-                  onClick={[Function]}
+                <div
+                  className="form-group"
                 >
-                  <span
-                    className="fa fa-lg fa-check-square"
-                    style={
-                      {
-                        "color": "#0073BB",
-                      }
-                    }
-                  />
-                </span>
-                <span
-                  className="list__properties__checkbox-text"
-                >
-                  Delete
-                </span>
+                  <label>
+                    <input
+                      checked={true}
+                      onChange={[Function]}
+                      type="checkbox"
+                    />
+                    Delete
+                  </label>
+                </div>
               </div>
               <div
                 className="list__properties__checkbox-row"
               >
-                <span
-                  className="list__properties__no-highlight"
-                  onClick={[Function]}
+                <div
+                  className="form-group"
                 >
-                  <span
-                    className="fa fa-lg fa-check-square"
-                    style={
-                      {
-                        "color": "#0073BB",
-                      }
-                    }
-                  />
-                </span>
-                <span
-                  className="list__properties__checkbox-text"
-                >
-                  Upload
-                </span>
+                  <label>
+                    <input
+                      checked={true}
+                      onChange={[Function]}
+                      type="checkbox"
+                    />
+                    Upload
+                  </label>
+                </div>
               </div>
               <div
                 className="list__properties__checkbox-row"
               >
-                <span
-                  className="list__properties__no-highlight"
-                  onClick={[Function]}
+                <div
+                  className="form-group"
                 >
-                  <span
-                    className="fa fa-lg fa-check-square"
-                    style={
-                      {
-                        "color": "#0073BB",
-                      }
-                    }
-                  />
-                </span>
-                <span
-                  className="list__properties__checkbox-text"
-                >
-                  Export & Print
-                </span>
+                  <label>
+                    <input
+                      checked={true}
+                      onChange={[Function]}
+                      type="checkbox"
+                    />
+                    Export & Print
+                  </label>
+                </div>
               </div>
             </div>
           </div>

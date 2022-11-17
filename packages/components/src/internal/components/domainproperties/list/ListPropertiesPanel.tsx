@@ -59,28 +59,24 @@ export class ListPropertiesPanelImpl extends React.PureComponent<
         );
     };
 
-    onChange = (identifier, value): void => {
+    onChange = (name, value): void => {
         const { model } = this.props;
 
         // Name must be set on Domain as well
         let newDomain = model.domain;
-        if (identifier == 'name') {
+        if (name === 'name') {
             newDomain = model.domain.merge({ name: value }) as DomainDesign;
         }
 
         const newModel = model.merge({
-            [identifier]: value,
+            [name]: value,
             domain: newDomain,
         }) as ListModel;
 
         this.updateValidStatus(newModel);
     };
 
-    onCheckBoxChange = (name, checked): void => {
-        this.onChange(name, !checked);
-    };
-
-    onInputChange = e => {
+    onInputChange = (e): void => {
         const id = e.target.id;
         let value = e.target.value;
 
@@ -118,7 +114,7 @@ export class ListPropertiesPanelImpl extends React.PureComponent<
                 </Row>
                 <Form>
                     <BasicPropertiesFields model={model} onInputChange={this.onInputChange} />
-                    <AllowableActions model={model} onCheckBoxChange={this.onCheckBoxChange} />
+                    <AllowableActions model={model} onChange={this.onChange} />
                     <AdvancedSettings
                         title="Advanced Settings"
                         model={model}

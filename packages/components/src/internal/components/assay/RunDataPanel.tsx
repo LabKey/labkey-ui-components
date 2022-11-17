@@ -213,7 +213,6 @@ export class RunDataPanel extends PureComponent<Props, State> {
             currentStep,
             editorModel,
             maxEditableGridRowMsg,
-            maxRows,
             queryModel,
             title,
             showTabs,

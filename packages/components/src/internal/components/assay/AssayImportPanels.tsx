@@ -697,7 +697,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         }
 
         const showSaveAgainBtn = !isReimport && onSave !== undefined;
-        const disabledSave = model.isSubmitting || !model.hasData(currentStep);
+        const disabledSave = model.isSubmitting || !model.hasData(currentStep, editorModel);
         const runProps = runPropsModel.getRow();
 
         return (

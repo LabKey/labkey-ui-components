@@ -140,7 +140,7 @@ export class AssayWizardModel
         return generateNameWithTimestamp(this.assayDef.name);
     }
 
-    hasData(currentStep: number): boolean {
+    hasData(currentStep: number, editorModel?: EditorModel): boolean {
         if (this.isFilesTab(currentStep)) {
             if (!this.attachedFiles.isEmpty()) {
                 return true;
@@ -149,10 +149,7 @@ export class AssayWizardModel
                 return true;
             }
         } else if (this.isGridTab(currentStep)) {
-            // TODO add a dirty flag to the editorModel
-            // const editorModel = getEditorModel(gridModel.getId());
-            // return editorModel.hasData();
-            return true;
+            return editorModel.hasData();
         }
         return false;
     }

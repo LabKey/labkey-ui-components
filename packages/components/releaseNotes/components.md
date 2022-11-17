@@ -5,6 +5,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Remove Copy-And-Paste tab from Assay Upload page
 * Conditionalize display of some workflow- and assay-related actions
+* Update AssayImportPanel to check for data in the grid before enabling import
+* Update EditorModel.hasRawValue to account for null and undefined
 
 ### version 2.251.0
 *Released*: 16 November 2022

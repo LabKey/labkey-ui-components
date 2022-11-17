@@ -25,6 +25,8 @@ beforeEach(() => {
     LABKEY.moduleContext = { ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT };
 });
 
+const MODEL_ID = 'aliquot-model';
+
 describe('SampleAliquotsGridPanel', () => {
     const SCHEMA_QUERY = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'SampleTypeName');
     const DEFAULT_CONTEXT = { user: TEST_USER_EDITOR };
@@ -34,7 +36,7 @@ describe('SampleAliquotsGridPanel', () => {
         actions: makeTestActions(jest.fn),
         onSampleChangeInvalidate: jest.fn(),
         queryModels: {
-            model: makeTestQueryModel(SCHEMA_QUERY, new QueryInfo(), {}, [], 0, 'model'),
+            [MODEL_ID]: makeTestQueryModel(SCHEMA_QUERY, new QueryInfo(), {}, [], 0, MODEL_ID),
         },
         sampleLsid: 'lsidValue',
         schemaQuery: SCHEMA_QUERY,
@@ -106,10 +108,10 @@ describe('SampleAliquotsGridPanel', () => {
 
     test('loading', () => {
         const props = DEFAULT_PROPS;
-        const model = props.queryModels.model.mutate({ queryInfoLoadingState: LoadingState.LOADING });
+        const model = props.queryModels[MODEL_ID].mutate({ queryInfoLoadingState: LoadingState.LOADING });
 
         const wrapper = mountWithAppServerContext(
-            <SampleAliquotsGridPanelImpl {...props} queryModels={{ model }} lineageUpdateAllowed={true} />,
+            <SampleAliquotsGridPanelImpl {...props} queryModels={{ [MODEL_ID]:model }} lineageUpdateAllowed={true} />,
             { sampleType: SAMPLE_TYPE_APP_CONTEXT },
             DEFAULT_CONTEXT
         );

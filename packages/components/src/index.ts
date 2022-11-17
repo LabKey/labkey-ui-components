@@ -286,7 +286,6 @@ import { FIND_SAMPLE_BY_ID_METRIC_AREA, getSearchScopeFromContainerFilter } from
 import { ActiveUserLimit } from './internal/components/settings/ActiveUserLimit';
 import { NameIdSettings } from './internal/components/settings/NameIdSettings';
 import { ProjectSettings } from './internal/components/settings/ProjectSettings';
-import { loadNameExpressionOptions } from './internal/components/settings/actions';
 import { AdministrationSubNav } from './internal/components/administration/AdministrationSubNav';
 import { UserManagementPage } from './internal/components/administration/UserManagement';
 import { CreateProjectPage } from './internal/components/administration/CreateProjectPage';
@@ -508,13 +507,7 @@ import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPag
 import { PipelineSubNav } from './internal/components/pipeline/PipelineSubNav';
 import { PipelineStatusDetailPage } from './internal/components/pipeline/PipelineStatusDetailPage';
 import { getTitleDisplay, hasActivePipelineJob } from './internal/components/pipeline/utils';
-import {
-    ALIQUOT_CREATION,
-    CHILD_SAMPLE_CREATION,
-    DERIVATIVE_CREATION,
-    POOLED_SAMPLE_CREATION,
-    SampleCreationType,
-} from './internal/components/samples/models';
+import { SampleCreationType } from './internal/components/samples/models';
 import { DisableableMenuItem } from './internal/components/samples/DisableableMenuItem';
 import { SampleStatusTag } from './internal/components/samples/SampleStatusTag';
 import { ManageSampleStatusesPanel } from './internal/components/samples/ManageSampleStatusesPanel';
@@ -1017,10 +1010,6 @@ export {
     SampleTypeEmptyAlert,
     SampleCreationType,
     SamplesEditButtonSections,
-    CHILD_SAMPLE_CREATION,
-    DERIVATIVE_CREATION,
-    POOLED_SAMPLE_CREATION,
-    ALIQUOT_CREATION,
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
     getOmittedSampleTypeColumns,
     getOperationNotPermittedMessage,
@@ -1047,7 +1036,6 @@ export {
     // settings
     ActiveUserLimit,
     NameIdSettings,
-    loadNameExpressionOptions,
     ProjectSettings,
     // administration
     AdministrationSubNav,

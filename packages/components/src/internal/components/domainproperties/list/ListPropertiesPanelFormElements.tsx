@@ -1,5 +1,4 @@
-import classNames from 'classnames';
-import React, { FC, memo, useCallback } from 'react';
+import React, { ChangeEvent, FC, memo, useCallback } from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 
 import { SectionHeading } from '../SectionHeading';
@@ -65,33 +64,28 @@ export const BasicPropertiesFields: FC<BasicPropertiesInputsProps> = memo(({ mod
     </Col>
 ));
 
-interface CheckBoxProps {
-    checked: boolean;
-    onClick: () => void;
-}
-
-export const CheckBox: FC<CheckBoxProps> = memo(({ checked, onClick }) => (
-    <span className="list__properties__no-highlight" onClick={onClick}>
-        <span
-            className={classNames('fa', 'fa-lg', { 'fa-check-square': checked, 'fa-square': !checked })}
-            style={{ color: checked ? '#0073BB' : '#ADADAD' }}
-        />
-    </span>
-));
-
 interface CheckBoxRowProps {
     checked: boolean;
     name: string;
-    onCheckBoxChange: (name, checked) => void;
+    onChange: (name: string, checked: boolean) => void;
     text: string;
 }
 
-export const CheckBoxRow: FC<CheckBoxRowProps> = memo(({ checked, onCheckBoxChange, name, text }) => {
-    const onClick = useCallback(() => onCheckBoxChange(name, checked), [checked, name, onCheckBoxChange]);
+export const CheckBoxRow: FC<CheckBoxRowProps> = memo(({ checked, onChange, name, text }) => {
+    const onChange_ = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange(name, event.target.checked);
+        },
+        [name, onChange]
+    );
     return (
         <div className="list__properties__checkbox-row">
-            <CheckBox checked={checked} onClick={onClick} />
-            <span className="list__properties__checkbox-text">{text}</span>
+            <div className="form-group">
+                <label>
+                    <input checked={checked} onChange={onChange_} type="checkbox" />
+                    {text}
+                </label>
+            </div>
         </div>
     );
 });
@@ -99,29 +93,24 @@ CheckBoxRow.displayName = 'CheckBoxRow';
 
 interface AllowableActionContainerProps {
     model: ListModel;
-    onCheckBoxChange: (name, checked) => void;
+    onChange: (name: string, checked: boolean) => void;
 }
-const AllowableActionContainer: FC<AllowableActionContainerProps> = memo(({ model, onCheckBoxChange }) => (
+const AllowableActionContainer: FC<AllowableActionContainerProps> = memo(({ model, onChange }) => (
     <div className="list__properties__allowable-actions">
-        <CheckBoxRow text="Delete" checked={model.allowDelete} onCheckBoxChange={onCheckBoxChange} name="allowDelete" />
-        <CheckBoxRow text="Upload" checked={model.allowUpload} onCheckBoxChange={onCheckBoxChange} name="allowUpload" />
-        <CheckBoxRow
-            text="Export & Print"
-            checked={model.allowExport}
-            onCheckBoxChange={onCheckBoxChange}
-            name="allowExport"
-        />
+        <CheckBoxRow text="Delete" checked={model.allowDelete} onChange={onChange} name="allowDelete" />
+        <CheckBoxRow text="Upload" checked={model.allowUpload} onChange={onChange} name="allowUpload" />
+        <CheckBoxRow text="Export & Print" checked={model.allowExport} onChange={onChange} name="allowExport" />
     </div>
 ));
 
 interface AllowableActionsProps {
     model: ListModel;
-    onCheckBoxChange: (name: string, checked: boolean) => void;
+    onChange: (name: string, checked: boolean) => void;
 }
-export const AllowableActions: FC<AllowableActionsProps> = memo(({ model, onCheckBoxChange }) => (
+export const AllowableActions: FC<AllowableActionsProps> = memo(({ model, onChange }) => (
     <Col xs={12} md={3}>
         <SectionHeading title="Allow these Actions" />
-        <AllowableActionContainer model={model} onCheckBoxChange={onCheckBoxChange} />
+        <AllowableActionContainer model={model} onChange={onChange} />
     </Col>
 ));
 AllowableActions.displayName = 'AllowableActions';

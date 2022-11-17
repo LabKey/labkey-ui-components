@@ -1,12 +1,17 @@
 import React, { ComponentType, FC, memo, useCallback, useMemo, useState } from 'react';
-import { Set, List, Map, OrderedMap } from 'immutable';
+import { List, Map, OrderedMap } from 'immutable';
 import { AuditBehaviorTypes, Filter, Query } from '@labkey/api';
 
 import { TabbedGridPanel, TabbedGridPanelProps } from '../public/QueryModel/TabbedGridPanel';
 
 import { userCanEditStorageData } from '../internal/app/utils';
 
-import { EXPORT_TYPES, MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE } from '../internal/constants';
+import {
+    EXPORT_TYPES,
+    EXPORT_TYPES_WITH_LABEL,
+    MAX_EDITABLE_GRID_ROWS,
+    NO_UPDATES_MESSAGE
+} from '../internal/constants';
 import { InjectedQueryModels, RequiresModelAndActions } from '../public/QueryModel/withQueryModels';
 import { User } from '../internal/components/base/models/User';
 import { useNotificationsContext } from '../internal/components/notifications/NotificationsContext';
@@ -29,7 +34,6 @@ import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
 import { GridAliquotViewSelector } from './GridAliquotViewSelector';
 import { isAllSamplesSchema } from '../internal/components/samples/utils';
 
-const EXPORT_TYPES_WITH_LABEL = Set.of(EXPORT_TYPES.CSV, EXPORT_TYPES.EXCEL, EXPORT_TYPES.TSV, EXPORT_TYPES.LABEL);
 
 interface Props extends InjectedQueryModels {
     afterSampleActionComplete?: (hasDelete?: boolean) => void;

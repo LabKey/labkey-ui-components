@@ -1,4 +1,4 @@
-import React, { FC, PureComponent, ReactNode } from 'react';
+import React, { FC, memo, PureComponent, ReactNode, useCallback, useMemo, useState } from 'react';
 import { PermissionTypes } from '@labkey/api';
 
 import { User } from '../internal/components/base/models/User';
@@ -8,7 +8,6 @@ import { RequiresPermission } from '../internal/components/base/Permissions';
 import { DisableableButton } from '../internal/components/buttons/DisableableButton';
 import { ResponsiveMenuButtonGroup } from '../internal/components/buttons/ResponsiveMenuButtonGroup';
 import { SchemaQuery } from '../public/SchemaQuery';
-import { QueryModel } from '../public/QueryModel/QueryModel';
 import { GridPanel } from '../public/QueryModel/GridPanel';
 
 import { SampleTypeDataType } from '../internal/components/entities/constants';
@@ -26,6 +25,10 @@ import { AssayResultsForSamplesButton } from './AssayResultsForSamplesButton';
 import { SamplesAssayButton } from './SamplesAssayButton';
 import { EntityDeleteModal } from './EntityDeleteModal';
 import { useSampleTypeAppContext } from './SampleTypeAppContext';
+import { EXPORT_TYPES, EXPORT_TYPES_WITH_LABEL } from '../internal/constants';
+import { useLabelPrintingContext } from '../internal/components/labels/LabelPrintingContextProvider';
+import { PrintLabelsModal } from '../internal/components/labels/PrintLabelsModal';
+import { useNotificationsContext } from '../internal/components/notifications/NotificationsContext';
 
 const SUB_MENU_WIDTH = 1350;
 
@@ -114,75 +117,98 @@ interface Props {
     lineageUpdateAllowed: boolean;
     onSampleChangeInvalidate: (schemaQuery: SchemaQuery) => void;
     user: User;
+    showLabelOption?: boolean
 }
 
-interface State {
-    showConfirmDelete: boolean;
-}
+export const SampleAliquotsGridPanelImpl: FC<Props & InjectedQueryModels> = memo(props => {
+    const { actions, queryModels, showLabelOption = true, ...buttonProps } = props;
+    const [showConfirmDelete, setConfirmDelete] = useState<boolean>(false);
+    const [showPrintDialog, setShowPrintDialog] = useState<boolean>(false);
+    const { createNotification } = useNotificationsContext();
+    const { canPrintLabels, printServiceUrl, labelTemplate } = useLabelPrintingContext();
 
-export class SampleAliquotsGridPanelImpl extends PureComponent<Props & InjectedQueryModels, State> {
-    state: Readonly<State> = { showConfirmDelete: false };
+    const queryModel = queryModels[MODEL_ID];
 
-    getQueryModel = (): QueryModel => {
-        return Object.values(this.props.queryModels)[0];
-    };
+    const hasSelection = useMemo((): boolean => {
+        return queryModel.hasSelections;
+    }, [queryModel]);
 
-    afterAction = (): void => {
-        const { actions, onSampleChangeInvalidate } = this.props;
-        const model = this.getQueryModel();
+    const resetState = useCallback((): void => {
+        setConfirmDelete(false);
+        setShowPrintDialog(false);
+    },[]);
 
-        this.resetState();
-        onSampleChangeInvalidate(model.schemaQuery);
-        actions.loadModel(model.id, true);
-    };
+    const afterAction = useCallback((): void => {
+        const { onSampleChangeInvalidate } = props;
 
-    onDelete = (): void => {
-        if (this.hasSelection()) {
-            this.setState({ showConfirmDelete: true });
+        resetState();
+        onSampleChangeInvalidate(queryModel.schemaQuery);
+        actions.loadModel(queryModel.id, true);
+    }, [actions, queryModel]);
+
+    const onDelete = useCallback((): void => {
+        if (hasSelection) {
+            setConfirmDelete(true);
         }
-    };
+    }, []);
 
-    resetState = (): void => {
-        if (this.hasSelection()) {
-            this.setState({ showConfirmDelete: false });
-        }
-    };
+    const onPrintLabel = useCallback(() => setShowPrintDialog(true),[]);
 
-    hasSelection(): boolean {
-        return this.getQueryModel().hasSelections;
-    }
-
-    render(): ReactNode {
-        const { actions, ...buttonProps } = this.props;
-        const queryModel = this.getQueryModel();
-
-        return (
-            <>
-                <GridPanel
-                    actions={actions}
-                    ButtonsComponent={AliquotGridButtons}
-                    buttonsComponentProps={{
-                        ...buttonProps,
-                        afterAction: this.afterAction,
-                        onDelete: this.onDelete,
-                    }}
-                    model={queryModel}
-                />
-
-                {this.state.showConfirmDelete && (
-                    <EntityDeleteModal
-                        afterDelete={this.afterAction}
-                        entityDataType={SampleTypeDataType}
-                        onCancel={this.resetState}
-                        queryModel={queryModel}
-                        useSelected
-                        verb="deleted and removed from storage"
-                    />
-                )}
-            </>
+    const afterPrint = useCallback((numSamples: number, numLabels: number):void => {
+        setShowPrintDialog(false);
+        createNotification(
+            `Successfully printed ${numLabels * numSamples} labels.`
         );
-    }
-}
+    }, [createNotification]);
+
+    const exportOption = {
+        [EXPORT_TYPES.LABEL]: onPrintLabel
+    };
+
+    const showPrintOption = showLabelOption && canPrintLabels;
+
+    return (
+        <>
+            <GridPanel
+                actions={actions}
+                ButtonsComponent={AliquotGridButtons}
+                buttonsComponentProps={{
+                    ...buttonProps,
+                    afterAction: afterAction,
+                    onDelete: onDelete,
+                }}
+                model={queryModel}
+                supportedExportTypes={showPrintOption ? EXPORT_TYPES_WITH_LABEL : undefined}
+                onExport={exportOption}
+            />
+
+            {showConfirmDelete && (
+                <EntityDeleteModal
+                    afterDelete={afterAction}
+                    entityDataType={SampleTypeDataType}
+                    onCancel={resetState}
+                    queryModel={queryModel}
+                    useSelected
+                    verb="deleted and removed from storage"
+                />
+            )}
+
+            {showPrintDialog && canPrintLabels && (
+                <PrintLabelsModal
+                    afterPrint={afterPrint}
+                    labelTemplate={labelTemplate}
+                    printServiceUrl={printServiceUrl}
+
+                    model={queryModel}
+                    onCancel={resetState}
+                    sampleIds={[...queryModel.selections]}
+                    show={true}
+                    showSelection={true}
+                />
+            )}
+        </>
+    );
+});
 
 const SampleAliquotsGridPanelWithModel = withQueryModels<Props>(SampleAliquotsGridPanelImpl);
 
@@ -193,6 +219,9 @@ interface SampleAliquotsGridPanelProps extends Props {
     sampleLsid: string; // if sample is an aliquot, use the aliquot's root to find subaliquots
     schemaQuery: SchemaQuery;
 }
+
+// We are only looking at single model here
+const MODEL_ID = 'aliquot-model';
 
 export const SampleAliquotsGridPanel: FC<SampleAliquotsGridPanelProps> = props => {
     const { sampleId, sampleLsid, schemaQuery, rootLsid, user, omittedColumns } = props;
@@ -205,7 +234,7 @@ export const SampleAliquotsGridPanel: FC<SampleAliquotsGridPanelProps> = props =
         : getOmittedSampleTypeColumns(user);
 
     const queryConfigs = {
-        [id]: getSampleAliquotsQueryConfig(schemaQuery.getQuery(), sampleLsid, true, rootLsid, omitted),
+        [MODEL_ID]: getSampleAliquotsQueryConfig(schemaQuery.getQuery(), sampleLsid, true, rootLsid, omitted),
     };
 
     return <SampleAliquotsGridPanelWithModel {...props} queryConfigs={queryConfigs} />;

@@ -47,6 +47,7 @@ interface Props extends InjectedQueryModels {
     gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     // use if you have multiple tabs but want to start on something other than the first one
     initialTabId?: string;
+    isAllSamplesTab?: (QuerySchema) => boolean;
     // if a usage wants to just show a single GridPanel, they should provide a modelId prop
     modelId?: string;
     onSampleTabSelect?: (modelId: string) => void;
@@ -83,6 +84,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         tabbedGridPanelProps,
         withTitle,
         showLabelOption,
+        isAllSamplesTab = isAllSamplesSchema,
     } = props;
     const { dismissNotifications, createNotification } = useNotificationsContext();
 
@@ -314,7 +316,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     };
 
     const isMedia = activeModel?.queryInfo?.isMedia;
-    const showPrintOption = !isAllSamplesSchema(activeModel?.schemaQuery) && showLabelOption && canPrintLabels;
+    const showPrintOption = !isAllSamplesTab(activeModel?.schemaQuery) && showLabelOption && canPrintLabels;
 
     return (
         <>

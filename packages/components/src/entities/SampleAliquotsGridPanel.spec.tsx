@@ -120,17 +120,6 @@ describe('SampleAliquotsGridPanel', () => {
         wrapper.unmount();
     });
 
-    test('show confirm delete', () => {
-        const wrapper = mountWithAppServerContext(
-            <SampleAliquotsGridPanelImpl {...DEFAULT_PROPS} lineageUpdateAllowed={true} />,
-            { sampleType: SAMPLE_TYPE_APP_CONTEXT },
-            DEFAULT_CONTEXT
-        );
-        wrapper.setState({ showConfirmDelete: true });
-        expect(wrapper.find(EntityDeleteModal).exists()).toEqual(true);
-        wrapper.unmount();
-    });
-
     test('lineage update not allowed', () => {
         const wrapper = mountWithAppServerContext(
             <SampleAliquotsGridPanelImpl {...DEFAULT_PROPS} lineageUpdateAllowed={false} />,

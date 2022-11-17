@@ -40,6 +40,7 @@ import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
 import { PicklistGridButtons } from './PicklistGridButtons';
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 import { SamplesEditableGridProps } from './SamplesEditableGrid';
+import { Utils } from '@labkey/api';
 
 const PICKLIST_ITEMS_ID_PREFIX = 'picklist-items-';
 const PICKLIST_PER_SAMPLE_TYPE_ID_PREFIX = 'picklist-per-sample-type-';
@@ -67,6 +68,10 @@ const PICKLIST_EXPORT_CONFIG = {
     'exportAlias.SampleID/AliquotedFromLSID': ALIQUOTED_FROM_COL,
     'exportAlias.AliquotedFromLSID': ALIQUOTED_FROM_COL,
     includeColumn: ['SampleID/AliquotedFromLSID', 'AliquotedFromLSID'],
+};
+
+const isListSchema = (schemaQuery: SchemaQuery): boolean => {
+    return Utils.caseInsensitiveEquals(schemaQuery?.schemaName, 'lists');
 };
 
 // exported for jest testing
@@ -229,6 +234,7 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
                                 exportFilename: picklist.name + '_Samples',
                             }}
                             showLabelOption
+                            isAllSamplesTab={isListSchema}
                         />
                     </div>
                 </div>

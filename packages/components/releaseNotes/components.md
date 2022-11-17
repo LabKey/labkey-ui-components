@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD November 2022
+* Issue 46724: Unable to set PHI level for newly added field
+
 ### version 2.252.0
 *Released*: 17 November 2022
 * Refactor ListDesignerPanels and related components

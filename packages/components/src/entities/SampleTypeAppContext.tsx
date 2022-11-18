@@ -59,6 +59,7 @@ export interface SampleTypeAppContext {
     parentDataTypes: List<EntityDataType>;
     readOnlyQueryNames?: string[];
     samplesGridRequiredColumns: string[];
+    sampleTypeListingCaption: string;
     showParentLabelPrefix: boolean;
     showStudyProperties: boolean;
     useSeparateDataClassesAliasMenu: boolean;

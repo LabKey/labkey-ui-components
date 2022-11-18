@@ -9,8 +9,10 @@ import { hasAnyPermissions, User } from '../internal/components/base/models/User
 import { GridPanelWithModel } from '../public/QueryModel/GridPanel';
 import { QuerySort } from '../public/QuerySort';
 
-import { SampleSetHeatMap } from './SampleSetHeatMap';
-import { SampleSetCards } from './SampleSetCards';
+import { SampleTypeHeatMap } from './SampleTypeHeatMap';
+import { SampleTypeCards } from './SampleTypeCards';
+import { useServerContext } from '../internal/components/base/ServerContext';
+import { NON_MEDIA_SAMPLE_TYPES_FILTER } from '../internal/components/samples/constants';
 
 const SAMPLE_TYPE_VIEWS = [SelectView.Cards, SelectView.Grid, SelectView.Heatmap];
 
@@ -26,14 +28,13 @@ const SAMPLE_QUERY_CONFIG = {
 };
 
 interface Props {
-    excludedSampleSets?: string[];
     navigate: (url: string | AppURL) => any;
-    user: User;
 }
 
 export const SampleTypeSummary: FC<Props> = memo(props => {
-    const { navigate, user, excludedSampleSets } = props;
+    const { navigate } = props;
     const [selectedView, setSelectedView] = useState(SelectView.Grid);
+    const { user } = useServerContext();
 
     const canUpdate = hasAnyPermissions(user, [PermissionTypes.Insert, PermissionTypes.Update]);
     const queryConfig = useMemo(() => {
@@ -47,14 +48,12 @@ export const SampleTypeSummary: FC<Props> = memo(props => {
 
         return {
             ...SAMPLE_QUERY_CONFIG,
-            baseFilters: excludedSampleSets
-                ? [Filter.create('Name', excludedSampleSets, Filter.Types.NOT_IN)]
-                : undefined,
+            baseFilters: [NON_MEDIA_SAMPLE_TYPES_FILTER],
             requiredColumns,
             omittedColumns,
             sorts: [new QuerySort({ fieldKey: 'Name' })],
         };
-    }, [excludedSampleSets, canUpdate]);
+    }, [canUpdate]);
 
     return (
         <>
@@ -64,8 +63,8 @@ export const SampleTypeSummary: FC<Props> = memo(props => {
                 onViewSelect={setSelectedView}
                 views={SAMPLE_TYPE_VIEWS}
             />
-            {selectedView === SelectView.Heatmap && <SampleSetHeatMap navigate={navigate} user={user} />}
-            {selectedView === SelectView.Cards && <SampleSetCards excludedSampleSets={excludedSampleSets} />}
+            {selectedView === SelectView.Heatmap && <SampleTypeHeatMap navigate={navigate} user={user} />}
+            {selectedView === SelectView.Cards && <SampleTypeCards  />}
             {selectedView === SelectView.Grid && (
                 <GridPanelWithModel
                     allowViewCustomization={false}

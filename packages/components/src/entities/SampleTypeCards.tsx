@@ -13,61 +13,62 @@ import { SCHEMAS } from '../internal/schemas';
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../public/QueryModel/withQueryModels';
 
 import { SampleTypeEmptyAlert } from '../internal/components/samples/SampleEmptyAlert';
+import { NON_MEDIA_SAMPLE_TYPES_FILTER } from '../internal/components/samples/constants';
 
-const getSampleSetCount = (row: Record<string, any>): number => {
+const getSampleTypeCount = (row: Record<string, any>): number => {
     return caseInsensitive(row, 'SampleCount').value;
 };
 
-const getSampleSetDescription = (row: Record<string, any>): string => {
+const getSampleTypeDescription = (row: Record<string, any>): string => {
     return caseInsensitive(row, 'Description').value;
 };
 
-const getSampleSetName = (row: Record<string, any>): string => {
+const getSampleTypeName = (row: Record<string, any>): string => {
     return caseInsensitive(row, 'Name').value;
 };
 
 const rowSort = (row1: Record<string, any>, row2: Record<string, any>): number => {
-    return naturalSort(getSampleSetName(row1), getSampleSetName(row2));
+    return naturalSort(getSampleTypeName(row1), getSampleTypeName(row2));
 };
 
-const getSampleSetCard = (row: Record<string, any>): ICardProps => {
-    const sampleCount = getSampleSetCount(row);
+const getSampleTypeCard = (row: Record<string, any>): ICardProps => {
+    const sampleCount = getSampleTypeCount(row);
     const noSamples = sampleCount === 0;
 
     return {
-        caption: noSamples ? getSampleSetDescription(row) : 'Sample count: ' + sampleCount,
+        caption: noSamples ? getSampleTypeDescription(row) : 'Sample count: ' + sampleCount,
         disabled: noSamples,
         href: caseInsensitive(row, 'Name').url,
         iconSrc: noSamples ? 'sample_set_gray' : 'sample_set',
-        title: getSampleSetName(row),
+        title: getSampleTypeName(row),
     };
 };
 
-const getNonEmptySampleSetCards = (data: Array<{ [key: string]: any }>): ICardProps[] => {
+const getNonEmptySampleTypeCards = (data: Array<{ [key: string]: any }>): ICardProps[] => {
     return data
-        .filter(row => getSampleSetCount(row) > 0)
+        .filter(row => getSampleTypeCount(row) > 0)
         .sort(rowSort)
-        .map(getSampleSetCard);
+        .map(getSampleTypeCard);
 };
 
-const getEmptySampleSetCards = (data: Array<{ [key: string]: any }>): ICardProps[] => {
+const getEmptySampleTypeCards = (data: Array<{ [key: string]: any }>): ICardProps[] => {
     return data
-        .filter(row => getSampleSetCount(row) === 0)
+        .filter(row => getSampleTypeCount(row) === 0)
         .sort(rowSort)
-        .map(getSampleSetCard);
+        .map(getSampleTypeCard);
 };
 
 interface Props {
     modelId: string;
 }
 
-const SampleSetCardsImpl: FC<Props & InjectedQueryModels> = memo(({ modelId, queryModels }) => {
+const SampleTypeCardsImpl: FC<Props & InjectedQueryModels> = memo(({ modelId, queryModels }) => {
     const model = queryModels[modelId];
 
     const { emptyCards, nonEmptyCards } = useMemo(
         () => ({
-            emptyCards: model.isLoading ? undefined : getEmptySampleSetCards(model.gridData),
-            nonEmptyCards: model.isLoading ? undefined : getNonEmptySampleSetCards(model.gridData),
+            emptyCards: model.isLoading ? undefined : getEmptySampleTypeCards(model.gridData),
+            nonEmptyCards: model.isLoading ? undefined : getNonEmptySampleTypeCards(model.gridData),
         }),
         [model.isLoading]
     );
@@ -92,26 +93,18 @@ const SampleSetCardsImpl: FC<Props & InjectedQueryModels> = memo(({ modelId, que
     );
 });
 
-const SampleSetCardsWithQueryModels = withQueryModels<Props>(SampleSetCardsImpl);
+const SampleTypeCardsWithQueryModels = withQueryModels<Props>(SampleTypeCardsImpl);
 
-interface SampleSetCardsProps {
-    excludedSampleSets?: string[];
-}
 
-export const SampleSetCards: FC<SampleSetCardsProps> = memo(({ excludedSampleSets }) => {
-    const modelId = 'samplesets-cards';
-    const queryConfigs = useMemo<QueryConfigMap>(
-        () => ({
-            [modelId]: {
-                schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
-                baseFilters: excludedSampleSets
-                    ? [Filter.create('Name', excludedSampleSets, Filter.Types.NOT_IN)]
-                    : undefined,
-                containerFilter: Query.containerFilter.currentPlusProjectAndShared,
-            },
-        }),
-        [excludedSampleSets, modelId]
-    );
+export const SampleTypeCards: FC<any> = memo(() => {
+    const modelId = 'sample-type-cards';
+    const queryConfigs = {
+        [modelId]: {
+            schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
+            baseFilters: [NON_MEDIA_SAMPLE_TYPES_FILTER],
+            containerFilter: Query.containerFilter.currentPlusProjectAndShared,
+        },
+    };
 
-    return <SampleSetCardsWithQueryModels autoLoad modelId={modelId} queryConfigs={queryConfigs} />;
+    return <SampleTypeCardsWithQueryModels autoLoad modelId={modelId} queryConfigs={queryConfigs} />;
 });

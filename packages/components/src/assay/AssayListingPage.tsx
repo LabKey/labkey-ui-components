@@ -47,7 +47,7 @@ export const AssayListingPage: FC<CommonPageProps> = memo(props => {
                         navigate={navigate}
                     />
                 )}
-                {!hasItems && <AssayDesignEmptyAlert user={user} />}
+                {!hasItems && <AssayDesignEmptyAlert />}
             </Section>
         </Page>
     );

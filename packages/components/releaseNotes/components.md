@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Update label on `ManageDropdownButton` to contain the word "Manage"
 * Remove need for mega-create button on `AssayListingPage`
+* Rename `SampleTypePage` to `SampleTypeListingPage` and incorporate empty state behavior from LKSM
+* Update `EmptyAlertWithPermission` to get user from server context
+* Rename `SampleSetHeatMap` to `SampleTypeHeatMap` and explicilty filter out media sample types
+* Rename `SampleSetCards` to `SampleTypeCards` and explicitly filter out media sample types
+* Update PicklisCreationMenuItem to also work as a non-menu item
 
 ### version 2.254.1
 *Released*: 18 November 2022

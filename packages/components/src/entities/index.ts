@@ -56,7 +56,7 @@ import { PicklistOverview } from './PicklistOverview';
 import { PicklistSubNav } from './PicklistSubnav';
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 import { SampleTypeTemplateDownloadRenderer, downloadSampleTypeTemplate } from './SampleTypeTemplateDownloadRenderer';
-import { SampleTypePage } from './SampleTypePage';
+import { SampleTypeListingPage } from './SampleTypeListingPage';
 import { SampleIndexNav, SampleTypeIndexNav } from './SampleNav';
 import { SamplesResolver } from './SamplesResolver';
 import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
@@ -141,7 +141,7 @@ export {
     SampleSetDeleteModal,
     SampleTimelinePageBase,
     SampleTypeIndexNav,
-    SampleTypePage,
+    SampleTypeListingPage,
     SampleTypeBasePage,
     SampleTypeDesignPage,
     SampleTypeInsightsPanel,

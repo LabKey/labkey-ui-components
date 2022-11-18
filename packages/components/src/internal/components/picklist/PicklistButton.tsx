@@ -38,7 +38,7 @@ export const PicklistButton: FC<Props> = memo(props => {
                 queryModel={model}
                 selectedQuantity={model?.selections?.size}
                 key="picklist"
-                user={user}
+                asMenuItem
                 metricFeatureArea={metricFeatureArea}
                 currentProductId={currentProductId}
                 picklistProductId={picklistProductId}

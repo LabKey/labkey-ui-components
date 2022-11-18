@@ -75,7 +75,7 @@ export const SampleActionsButton: FC<Props> = memo(props => {
                         metricFeatureArea={metricFeatureArea}
                     />
                     <PicklistCreationMenuItem
-                        user={user}
+                        asMenuItem
                         selectionKey={sampleFieldKey ? undefined : model.id}
                         queryModel={model}
                         sampleFieldKey={sampleFieldKey}

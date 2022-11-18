@@ -523,7 +523,10 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         </SettingsContainer>
 
                         <SettingsContainer title="Discussion Threads" tipBody={DISCUSSION_LINKS_TIP}>
-                            <DiscussionInputs onRadioChange={this.onRadioChange} discussionSetting={discussionSetting} />
+                            <DiscussionInputs
+                                onRadioChange={this.onRadioChange}
+                                discussionSetting={discussionSetting}
+                            />
                         </SettingsContainer>
 
                         <SettingsContainer title="Search Indexing Options" tipBody={SEARCH_INDEXING_TIP}>

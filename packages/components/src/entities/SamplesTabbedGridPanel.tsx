@@ -10,7 +10,7 @@ import {
     EXPORT_TYPES,
     EXPORT_TYPES_WITH_LABEL,
     MAX_EDITABLE_GRID_ROWS,
-    NO_UPDATES_MESSAGE
+    NO_UPDATES_MESSAGE,
 } from '../internal/constants';
 import { InjectedQueryModels, RequiresModelAndActions } from '../public/QueryModel/withQueryModels';
 import { User } from '../internal/components/base/models/User';
@@ -29,11 +29,11 @@ import { PrintLabelsModal } from '../internal/components/labels/PrintLabelsModal
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { useLabelPrintingContext } from '../internal/components/labels/LabelPrintingContextProvider';
 
+import { isAllSamplesSchema } from '../internal/components/samples/utils';
+
 import { SamplesEditableGrid, SamplesEditableGridProps } from './SamplesEditableGrid';
 import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
 import { GridAliquotViewSelector } from './GridAliquotViewSelector';
-import { isAllSamplesSchema } from '../internal/components/samples/utils';
-
 
 interface Props extends InjectedQueryModels {
     afterSampleActionComplete?: (hasDelete?: boolean) => void;

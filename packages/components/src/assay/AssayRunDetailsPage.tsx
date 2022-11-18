@@ -29,6 +29,11 @@ import { getContainerFilterForLookups } from '../internal/query/api';
 import { runDetailsColumnsForQueryModel } from '../public/QueryModel/utils';
 import { RUN_PROPERTIES_REQUIRED_COLUMNS } from '../internal/components/assay/constants';
 import { SchemaQuery } from '../public/SchemaQuery';
+
+import { useContainerUser } from '../internal/components/container/actions';
+
+import { useServerContext } from '../internal/components/base/ServerContext';
+
 import { AssayOverrideBanner } from './AssayOverrideBanner';
 
 import { assayPage } from './AssayPageHOC';
@@ -38,8 +43,6 @@ import { AssayRunDetailHeaderButtons } from './AssayButtons';
 import { AssayHeader } from './AssayHeader';
 
 import { AssayRunQCHistory } from './AssayRunQCHistory';
-import { useContainerUser } from '../internal/components/container/actions';
-import { useServerContext } from '../internal/components/base/ServerContext';
 
 type Props = CommonPageProps & InjectedAssayModel & WithRouterProps & InjectedRouteLeaveProps;
 

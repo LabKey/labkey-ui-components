@@ -1,6 +1,6 @@
 import React, { ComponentType, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Checkbox, MenuItem } from 'react-bootstrap';
-import { AuditBehaviorTypes, Filter } from '@labkey/api';
+import { AuditBehaviorTypes, Filter, Utils } from '@labkey/api';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../internal/APIWrapper';
 
@@ -40,7 +40,6 @@ import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
 import { PicklistGridButtons } from './PicklistGridButtons';
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 import { SamplesEditableGridProps } from './SamplesEditableGrid';
-import { Utils } from '@labkey/api';
 
 const PICKLIST_ITEMS_ID_PREFIX = 'picklist-items-';
 const PICKLIST_PER_SAMPLE_TYPE_ID_PREFIX = 'picklist-per-sample-type-';

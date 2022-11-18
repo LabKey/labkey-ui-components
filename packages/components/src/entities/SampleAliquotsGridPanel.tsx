@@ -30,7 +30,6 @@ import { EntityDeleteModal } from './EntityDeleteModal';
 import { SamplesAssayButton } from './SamplesAssayButton';
 
 // We are only looking at single model here
-const MODEL_ID = 'aliquot-model';
 const SUB_MENU_WIDTH = 1350;
 
 interface AliquotGridButtonsProps {
@@ -128,7 +127,7 @@ export const SampleAliquotsGridPanelImpl: FC<Props & InjectedQueryModels> = memo
     const { createNotification } = useNotificationsContext();
     const { canPrintLabels, printServiceUrl, labelTemplate } = useLabelPrintingContext();
 
-    const queryModel = queryModels[MODEL_ID];
+    const queryModel = queryModels.model;
 
     const resetState = useCallback((): void => {
         setConfirmDelete(false);
@@ -144,7 +143,7 @@ export const SampleAliquotsGridPanelImpl: FC<Props & InjectedQueryModels> = memo
     }, [actions, props, queryModel.id, queryModel.schemaQuery, resetState]);
 
     const onDelete = useCallback((): void => {
-        if (queryModel?.hasSelections) {
+        if (queryModel.hasSelections) {
             setConfirmDelete(true);
         }
     }, [queryModel]);
@@ -224,7 +223,7 @@ export const SampleAliquotsGridPanel: FC<SampleAliquotsGridPanelProps> = props =
         : getOmittedSampleTypeColumns(user);
 
     const queryConfigs = {
-        [MODEL_ID]: getSampleAliquotsQueryConfig(schemaQuery.getQuery(), sampleLsid, true, rootLsid, omitted),
+        model: getSampleAliquotsQueryConfig(schemaQuery.getQuery(), sampleLsid, true, rootLsid, omitted),
     };
 
     return <SampleAliquotsGridPanelWithModel {...props} queryConfigs={queryConfigs} />;

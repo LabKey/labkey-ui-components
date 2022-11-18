@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { List } from 'immutable';
+
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { HelpLink } from '../../util/helpLinks';
@@ -19,8 +20,8 @@ export interface PrintModalProps {
     afterPrint?: (numSamples: number, numLabels: number) => void;
     api?: ComponentsAPIWrapper;
     labelTemplate: string;
+    model: QueryModel;
     onCancel?: (any) => void;
-    model?: QueryModel; // must provide either a model or schemaName/queryName
     printServiceUrl: string;
     sampleIds: string[];
     show: boolean;

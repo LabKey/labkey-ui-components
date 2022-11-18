@@ -21,6 +21,8 @@ import { SCHEMAS } from '../internal/schemas';
 
 import { AssayLink } from '../internal/AssayDefinitionModel';
 
+import { NotFound } from '../internal/components/base/NotFound';
+
 import { AssayHeader } from './AssayHeader';
 import { AssayBatchHeaderButtons } from './AssayButtons';
 import { AssayGridPanel } from './AssayGridPanel';
@@ -28,7 +30,6 @@ import { AssayGridPanel } from './AssayGridPanel';
 import { AssayOverrideBanner } from './AssayOverrideBanner';
 
 import { assayPage } from './AssayPageHOC';
-import { NotFound } from '../internal/components/base/NotFound';
 
 type Props = CommonPageProps & InjectedAssayModel & InjectedQueryModels;
 
@@ -51,7 +52,7 @@ const AssayBatchOverviewPageBody: FC<Props> = memo(props => {
     ];
 
     if (!batchId) {
-        return <NotFound />
+        return <NotFound />;
     }
 
     return (

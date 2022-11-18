@@ -213,15 +213,20 @@ function initDisplayColumn(queryInfo: QueryInfo, column?: string): string {
 }
 
 function getQueryColumnNames(model: QuerySelectModel): string[] {
-    const { displayColumn, queryInfo, schemaQuery, valueColumn } = model;
+    const { displayColumn, includeViewColumns, queryInfo, schemaQuery, valueColumn } = model;
 
     // Include PKs plus useful-to-search-over columns and append the grid view's column list
-    const requiredColumns = queryInfo.pkCols.concat([displayColumn, valueColumn, 'Name', 'Description', 'Alias']);
-    return queryInfo
-        .getDisplayColumns(schemaQuery.viewName)
-        .map(c => c.fieldKey)
-        .concat(requiredColumns)
-        .toArray();
+    const requiredColumns = queryInfo.pkCols.concat([displayColumn, valueColumn]);
+
+    if (includeViewColumns) {
+        return queryInfo
+            .getDisplayColumns(schemaQuery.viewName)
+            .map(c => c.fieldKey)
+            .concat(requiredColumns)
+            .toArray();
+    }
+
+    return requiredColumns.toArray();
 }
 
 export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel> {
@@ -239,6 +244,8 @@ export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel
                     let model = new QuerySelectModel({
                         ...props,
                         displayColumn,
+                        // Issue 46430: Only include necessary columns when not previewing options
+                        includeViewColumns: props.previewOptions === true,
                         isInit: true,
                         queryInfo,
                         valueColumn,
@@ -340,6 +347,7 @@ export interface QuerySelectModelProps {
     containerPath?: string;
     delimiter: string;
     displayColumn: string;
+    includeViewColumns: boolean;
     isInit: boolean;
     maxRows: number;
     multiple: boolean;
@@ -361,6 +369,7 @@ export class QuerySelectModel
         containerPath: undefined,
         displayColumn: undefined,
         delimiter: DELIMITER,
+        includeViewColumns: false,
         isInit: false,
         maxRows: 20,
         multiple: false,
@@ -381,6 +390,7 @@ export class QuerySelectModel
     declare containerPath: string;
     declare displayColumn: string;
     declare delimiter: string;
+    declare includeViewColumns: boolean;
     declare isInit: boolean;
     declare maxRows: number;
     declare multiple: boolean;

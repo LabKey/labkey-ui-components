@@ -39,7 +39,7 @@ export const SamplesAssayButtonImpl: FC<Props & InjectedAssayModel> = memo(props
             queryModel={model?.hasSelections ? model : undefined}
             providerType={providerType}
             picklistName={picklistName}
-            requireSelection={false}
+            requireSelection
             text={asSubMenu ? 'Import Assay Data' : null} // using null will render the submenu items inline in this button
             currentProductId={currentProductId}
             targetProductId={targetProductId}

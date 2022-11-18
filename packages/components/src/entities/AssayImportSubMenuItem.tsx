@@ -3,7 +3,7 @@ import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
 
 import { MAX_EDITABLE_GRID_ROWS } from '../internal/constants';
 
-import { SubMenuItem, SubMenuItemProps } from '../internal/components/menus/SubMenuItem';
+import { SubMenuItemProps } from '../internal/components/menus/SubMenuItem';
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { DisableableMenuItem } from '../internal/components/samples/DisableableMenuItem';
 
@@ -102,6 +102,23 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
         }, List());
     }, [assayModel, isLoaded, providerType, queryModel, currentProductId, targetProductId, ignoreFilter]);
 
+
+
+    const overlayMessage = useMemo(() => {
+        if (!requireSelection)
+            return '';
+
+        const selectedCount = queryModel?.selections?.size;
+        if (!selectedCount) {
+            return 'Select one or more ' + nounPlural + '.'
+        } else if (selectedCount > MAX_EDITABLE_GRID_ROWS) {
+            return 'At most ' + MAX_EDITABLE_GRID_ROWS + ' ' + nounPlural + ' can be selected.'
+        } else {
+            return '';
+        }
+    }, [requireSelection, queryModel?.selections, nounPlural])
+
+
     if (disabled) {
         return <DisableableMenuItem operationPermitted={false}>{text}</DisableableMenuItem>;
     }
@@ -118,14 +135,7 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
         return null;
     }
 
-    const selectedCount = queryModel?.selections?.size ?? -1;
 
-    const overlayMessage =
-        requireSelection && selectedCount === 0
-            ? 'Select one or more ' + nounPlural + '.'
-            : selectedCount > MAX_EDITABLE_GRID_ROWS
-            ? 'At most ' + MAX_EDITABLE_GRID_ROWS + ' ' + nounPlural + ' can be selected.'
-            : '';
     const menuProps = Object.assign({}, props, {
         disabled: overlayMessage.length > 0,
         options: items,

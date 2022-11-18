@@ -337,7 +337,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         const { measure, dimension, mvEnabled, recommendedVariable, PHI, excludeFromShifting, phiLevels } = this.state;
         const currentValueExists = phiLevels?.find(level => level.value === PHI) !== undefined;
         const disablePhiSelect =
-            domainFormDisplayOptions.phiLevelDisabled || field.disablePhiLevel || !currentValueExists;
+            domainFormDisplayOptions.phiLevelDisabled ||
+            field.disablePhiLevel ||
+            (PHI !== undefined && !currentValueExists);
 
         return (
             <>

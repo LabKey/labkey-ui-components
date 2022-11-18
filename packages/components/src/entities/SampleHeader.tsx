@@ -41,6 +41,7 @@ import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
 import { EntityDeleteModal } from './EntityDeleteModal';
 import { createEntityParentKey, getJobCreationHref, getSampleAuditBehaviorType, getSampleDeleteMessage } from './utils';
 import { onSampleChange } from './actions';
+import { isAssayEnabled, isWorkflowEnabled } from '../internal/app/utils';
 
 interface StorageMenuProps {
     onUpdate?: (skipChangeCount?: boolean) => any;
@@ -254,7 +255,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                                 </RequiresPermission>
                             )}
 
-                            {!isMedia && (
+                            {!isMedia && isAssayEnabled() && (
                                 <RequiresPermission user={user} perms={PermissionTypes.Insert}>
                                     <AssayImportSubMenuItem
                                         queryModel={sampleModel}
@@ -271,14 +272,16 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                                     <PicklistCreationMenuItem sampleIds={sampleIds} key="picklist" user={user} />
                                 </RequiresPermission>
                             )}
-                            <RequiresPermission user={user} perms={PermissionTypes.ManageSampleWorkflows}>
-                                <DisableableMenuItem
-                                    href={getJobCreationHref(sampleModel, undefined, true)}
-                                    operationPermitted={canAddToWorkflow}
-                                >
-                                    Create Workflow Job
-                                </DisableableMenuItem>
-                            </RequiresPermission>
+                            {isWorkflowEnabled() &&
+                                <RequiresPermission user={user} perms={PermissionTypes.ManageSampleWorkflows}>
+                                    <DisableableMenuItem
+                                        href={getJobCreationHref(sampleModel, undefined, true)}
+                                        operationPermitted={canAddToWorkflow}
+                                    >
+                                        Create Workflow Job
+                                    </DisableableMenuItem>
+                                </RequiresPermission>
+                            }
 
                             {!isMedia && !!StorageMenu && <StorageMenu onUpdate={onUpdate} sampleModel={sampleModel} />}
 

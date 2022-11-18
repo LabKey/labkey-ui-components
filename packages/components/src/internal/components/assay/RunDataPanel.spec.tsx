@@ -8,11 +8,12 @@ import { EditorModel } from '../editable/models';
 import { mountWithServerContext } from '../../testHelpers';
 import { TEST_USER_EDITOR } from '../../userFixtures';
 
-import { FormTabs, withFormSteps, WithFormStepsProps } from '../forms/FormStep';
+import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from '../forms/FormStep';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { LoadingState } from '../../../public/LoadingState';
 
 import { RunDataPanel } from './RunDataPanel';
+import { EditableGridPanel } from '../editable/EditableGridPanel';
 
 const MODEL_ID_NOT_LOADED = 'not loaded';
 const MODEL_ID_LOADED = 'loaded';
@@ -58,7 +59,7 @@ class RunDataPanelWrapperImpl extends React.Component<Props, any> {
 
 const RunDataPanelWrapper = withFormSteps(RunDataPanelWrapperImpl, {
     currentStep: AssayUploadTabs.Files,
-    furthestStep: AssayUploadTabs.Grid,
+    furthestStep: AssayUploadTabs.Files,
     hasDependentSteps: false,
 });
 
@@ -88,15 +89,15 @@ describe('<RunDataPanel/>', () => {
 
     test('default props', () => {
         const component = mountWithServerContext(<RunDataPanelWrapper />, { user: TEST_USER_EDITOR });
-
-        expect(component).toMatchSnapshot();
+        expect(component.find(FormTabs).exists()).toBe(true);
+        expect(component.find(FormStep)).toHaveLength(2);
     });
 
     test('custom display props', () => {
-        const component = mountWithServerContext(<RunDataPanelWrapper allowBulkRemove={true} fullWidth={true} />, {
+        const component = mountWithServerContext(<RunDataPanelWrapper allowBulkRemove={true} />, {
             user: TEST_USER_EDITOR,
         });
-        expect(component).toMatchSnapshot();
+        expect(component.find(EditableGridPanel).prop("allowBulkRemove")).toBe(true);
     });
 
     test('showsTabs', () => {

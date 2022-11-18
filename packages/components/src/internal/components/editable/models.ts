@@ -449,7 +449,7 @@ export class EditorModel
     }
 
     hasRawValue(descriptor: ValueDescriptor) {
-        return descriptor && descriptor.raw !== undefined && descriptor.raw.toString().trim() !== '';
+        return descriptor && descriptor.raw != null && descriptor.raw.toString().trim() !== '';
     }
 
     hasData(): boolean {

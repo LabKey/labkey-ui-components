@@ -16,7 +16,7 @@ import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from '.
 
 import { getSampleAliquotsQueryConfig } from '../internal/components/samples/actions';
 import { getOmittedSampleTypeColumns } from '../internal/components/samples/utils';
-import { isAssayEnabled } from '../internal/app/utils';
+import { isAssayEnabled, isWorkflowEnabled } from '../internal/app/utils';
 
 import { AssayResultsForSamplesButton } from '../internal/components/entities/AssayResultsForSamplesButton';
 
@@ -55,7 +55,7 @@ const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> 
         button: <PicklistButton model={model} user={user} metricFeatureArea={metricFeatureArea} />,
         perm: PermissionTypes.ManagePicklists,
     });
-    if (JobsButtonComponent) {
+    if (JobsButtonComponent && isWorkflowEnabled()) {
         moreItems.push({
             button: <JobsButtonComponent model={model} user={user} metricFeatureArea={metricFeatureArea} />,
             perm: PermissionTypes.ManageSampleWorkflows,

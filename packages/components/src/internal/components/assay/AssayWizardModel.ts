@@ -115,10 +115,6 @@ export class AssayWizardModel
         return currentStep === AssayUploadTabs.Files;
     }
 
-    isCopyTab(currentStep: AssayUploadTabs): boolean {
-        return currentStep === AssayUploadTabs.Copy;
-    }
-
     isGridTab(currentStep: AssayUploadTabs): boolean {
         return currentStep === AssayUploadTabs.Grid;
     }
@@ -144,7 +140,7 @@ export class AssayWizardModel
         return generateNameWithTimestamp(this.assayDef.name);
     }
 
-    hasData(currentStep: number): boolean {
+    hasData(currentStep: number, editorModel?: EditorModel): boolean {
         if (this.isFilesTab(currentStep)) {
             if (!this.attachedFiles.isEmpty()) {
                 return true;
@@ -152,13 +148,8 @@ export class AssayWizardModel
             if (this.runId && this.usePreviousRunFile) {
                 return true;
             }
-        } else if (this.isCopyTab(currentStep)) {
-            return this.dataText !== undefined;
         } else if (this.isGridTab(currentStep)) {
-            // TODO add a dirty flag to the editorModel
-            // const editorModel = getEditorModel(gridModel.getId());
-            // return editorModel.hasData();
-            return true;
+            return editorModel.hasData();
         }
         return false;
     }
@@ -210,8 +201,6 @@ export class AssayWizardModel
                     assayData.runFilePath = url.substring(filesIndex + 7);
                 }
             }
-        } else if (this.isCopyTab(currentStep)) {
-            assayData.dataRows = parseDataTextToRunRows(dataText);
         } else if (this.isGridTab(currentStep)) {
             // need to get the EditorModel for the data to use in the import
             assayData.dataRows = editorModel

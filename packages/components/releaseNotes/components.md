@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.255.0
+*Released*: 18 November 2022
+* Adding Label printing to export menu for more sample tabbed grids
+  * Hiding Label option on the 'All Samples' tab as it doesn't currently fit our grid methodology
+* Added labels to Sample's Aliquots grid as well
+
 ### version 2.254.1
 *Released*: 18 November 2022
 * Issue 46724: Unable to set PHI level for newly added field

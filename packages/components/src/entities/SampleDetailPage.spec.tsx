@@ -65,7 +65,7 @@ function getDefaultProps(): SampleDetailPageBodyProps {
         menu: new ProductMenuModel(),
         modelId: 'sample-detail|samples/blood|1',
         navigate: jest.fn(),
-        params: { sampleType: 'blood', id: "1" },
+        params: { sampleType: 'blood', id: '1' },
     };
 }
 const DEFAULT_CONTEXT = { user: TEST_USER_EDITOR, container: TEST_PROJECT_CONTAINER };
@@ -192,7 +192,7 @@ describe('SampleAliquotsPage', () => {
     test('default props', async () => {
         const wrapper = mountWithAppServerContext(
             <SampleAliquotsPage {...getDefaultProps()} />,
-            { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT,  },
+            { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT },
             DEFAULT_CONTEXT
         );
         await waitForLifecycle(wrapper);

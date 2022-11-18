@@ -36,12 +36,13 @@ import { PrintLabelsModal } from '../internal/components/labels/PrintLabelsModal
 
 import { invalidateLineageResults } from '../internal/components/lineage/actions';
 
+import { isAssayEnabled, isWorkflowEnabled } from '../internal/app/utils';
+
 import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
 import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
 import { EntityDeleteModal } from './EntityDeleteModal';
 import { createEntityParentKey, getJobCreationHref, getSampleAuditBehaviorType, getSampleDeleteMessage } from './utils';
 import { onSampleChange } from './actions';
-import { isAssayEnabled, isWorkflowEnabled } from '../internal/app/utils';
 
 interface StorageMenuProps {
     onUpdate?: (skipChangeCount?: boolean) => any;
@@ -272,7 +273,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                                     <PicklistCreationMenuItem sampleIds={sampleIds} key="picklist" user={user} />
                                 </RequiresPermission>
                             )}
-                            {isWorkflowEnabled() &&
+                            {isWorkflowEnabled() && (
                                 <RequiresPermission user={user} perms={PermissionTypes.ManageSampleWorkflows}>
                                     <DisableableMenuItem
                                         href={getJobCreationHref(sampleModel, undefined, true)}
@@ -281,7 +282,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                                         Create Workflow Job
                                     </DisableableMenuItem>
                                 </RequiresPermission>
-                            }
+                            )}
 
                             {!isMedia && !!StorageMenu && <StorageMenu onUpdate={onUpdate} sampleModel={sampleModel} />}
 
@@ -334,8 +335,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                     showSelection={false}
                     onCancel={onHideModals}
                     afterPrint={onAfterPrint}
-                    schemaName={sampleModel.schemaName}
-                    queryName={sampleModel.queryName}
+                    model={sampleModel}
                     sampleIds={sampleIds}
                     labelTemplate={labelTemplate}
                     printServiceUrl={printServiceUrl}

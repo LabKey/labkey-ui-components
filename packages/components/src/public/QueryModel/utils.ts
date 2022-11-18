@@ -108,15 +108,23 @@ export function getQueryModelExportParams(
     type: EXPORT_TYPES,
     advancedOptions?: Record<string, any>
 ): Record<string, any> {
-    const { containerFilter, containerPath, exportColumnString, filters, hasSelections, id, schemaQuery, sortString } =
-        model;
+    const {
+        containerFilter,
+        containerPath,
+        exportColumnString,
+        filters,
+        hasSelections,
+        schemaQuery,
+        sortString,
+        selectionKey,
+    } = model;
     const exportOptions: ExportOptions = {
         filters: List(filters),
         columns: exportColumnString,
         containerFilter,
         containerPath,
         sorts: sortString,
-        selectionKey: id,
+        selectionKey,
         showRows: hasSelections ? 'SELECTED' : 'ALL',
     };
     return getExportParams(type, schemaQuery, exportOptions, advancedOptions);

@@ -1,6 +1,6 @@
 import React, { ComponentType, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Checkbox, MenuItem } from 'react-bootstrap';
-import { AuditBehaviorTypes, Filter } from '@labkey/api';
+import { AuditBehaviorTypes, Filter, Utils } from '@labkey/api';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../internal/APIWrapper';
 
@@ -67,6 +67,10 @@ const PICKLIST_EXPORT_CONFIG = {
     'exportAlias.SampleID/AliquotedFromLSID': ALIQUOTED_FROM_COL,
     'exportAlias.AliquotedFromLSID': ALIQUOTED_FROM_COL,
     includeColumn: ['SampleID/AliquotedFromLSID', 'AliquotedFromLSID'],
+};
+
+const isListSchema = (schemaQuery: SchemaQuery): boolean => {
+    return Utils.caseInsensitiveEquals(schemaQuery?.schemaName, 'lists');
 };
 
 // exported for jest testing
@@ -228,6 +232,8 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
                                 alwaysShowTabs: true,
                                 exportFilename: picklist.name + '_Samples',
                             }}
+                            showLabelOption
+                            isAllSamplesTab={isListSchema}
                         />
                     </div>
                 </div>

@@ -4,9 +4,10 @@ import { ReactWrapper } from 'enzyme';
 
 import { MenuItem } from 'react-bootstrap';
 
+import { fromJS } from 'immutable';
+
 import { QueryColumn, QueryLookup } from '../public/QueryColumn';
 import { SAMPLE_TYPE_CONCEPT_URI } from '../internal/components/domainproperties/constants';
-import { fromJS } from 'immutable';
 import { mountWithAppServerContext } from '../internal/testHelpers';
 import { ManageDropdownButton } from '../internal/components/buttons/ManageDropdownButton';
 import { DisableableButton } from '../internal/components/buttons/DisableableButton';
@@ -20,6 +21,7 @@ import { QueryInfo } from '../public/QueryInfo';
 import { AssayDefinitionModel } from '../internal/AssayDefinitionModel';
 import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/constants';
 import { AssayProtocolModel } from '../internal/components/domainproperties/assay/models';
+
 import { AssayGridButtons } from './AssayGridPanel';
 
 import { AssayImportDataButton } from './AssayButtons';
@@ -65,7 +67,7 @@ describe('AssayGridButtons', () => {
         requireSampleField: true,
         showProviderName: false,
         jobNotificationProvider: 'test',
-        ReferencingNotebooksComponent: () => (<div>Test</div>),
+        ReferencingNotebooksComponent: () => <div>Test</div>,
         JobsMenuOptionsComponent: () => (
             <div className="jobs-menu-test">
                 {' '}

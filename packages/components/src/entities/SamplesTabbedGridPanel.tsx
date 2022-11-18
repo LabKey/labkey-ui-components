@@ -1,12 +1,17 @@
 import React, { ComponentType, FC, memo, useCallback, useMemo, useState } from 'react';
-import { Set, List, Map, OrderedMap } from 'immutable';
+import { List, Map, OrderedMap } from 'immutable';
 import { AuditBehaviorTypes, Filter, Query } from '@labkey/api';
 
 import { TabbedGridPanel, TabbedGridPanelProps } from '../public/QueryModel/TabbedGridPanel';
 
 import { userCanEditStorageData } from '../internal/app/utils';
 
-import { EXPORT_TYPES, MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE } from '../internal/constants';
+import {
+    EXPORT_TYPES,
+    EXPORT_TYPES_WITH_LABEL,
+    MAX_EDITABLE_GRID_ROWS,
+    NO_UPDATES_MESSAGE,
+} from '../internal/constants';
 import { InjectedQueryModels, RequiresModelAndActions } from '../public/QueryModel/withQueryModels';
 import { User } from '../internal/components/base/models/User';
 import { useNotificationsContext } from '../internal/components/notifications/NotificationsContext';
@@ -24,11 +29,11 @@ import { PrintLabelsModal } from '../internal/components/labels/PrintLabelsModal
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { useLabelPrintingContext } from '../internal/components/labels/LabelPrintingContextProvider';
 
+import { isAllSamplesSchema } from '../internal/components/samples/utils';
+
 import { SamplesEditableGrid, SamplesEditableGridProps } from './SamplesEditableGrid';
 import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
 import { GridAliquotViewSelector } from './GridAliquotViewSelector';
-
-const EXPORT_TYPES_WITH_LABEL = Set.of(EXPORT_TYPES.CSV, EXPORT_TYPES.EXCEL, EXPORT_TYPES.TSV, EXPORT_TYPES.LABEL);
 
 interface Props extends InjectedQueryModels {
     afterSampleActionComplete?: (hasDelete?: boolean) => void;
@@ -42,6 +47,7 @@ interface Props extends InjectedQueryModels {
     gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     // use if you have multiple tabs but want to start on something other than the first one
     initialTabId?: string;
+    isAllSamplesTab?: (QuerySchema) => boolean;
     // if a usage wants to just show a single GridPanel, they should provide a modelId prop
     modelId?: string;
     onSampleTabSelect?: (modelId: string) => void;
@@ -78,6 +84,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         tabbedGridPanelProps,
         withTitle,
         showLabelOption,
+        isAllSamplesTab = isAllSamplesSchema,
     } = props;
     const { dismissNotifications, createNotification } = useNotificationsContext();
 
@@ -309,6 +316,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     };
 
     const isMedia = activeModel?.queryInfo?.isMedia;
+    const showPrintOption = !isAllSamplesTab(activeModel?.schemaQuery) && showLabelOption && canPrintLabels;
 
     return (
         <>
@@ -342,8 +350,8 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     ButtonsComponent={gridButtons}
                     buttonsComponentProps={_gridButtonProps}
                     ButtonsComponentRight={SampleTabbedGridButtonsRight}
-                    supportedExportTypes={showLabelOption && canPrintLabels ? EXPORT_TYPES_WITH_LABEL : undefined}
-                    onExport={showLabelOption && canPrintLabels ? onLabelExport : undefined}
+                    supportedExportTypes={showPrintOption ? EXPORT_TYPES_WITH_LABEL : undefined}
+                    onExport={showPrintOption ? onLabelExport : undefined}
                     showRowCountOnTabs
                 />
             )}
@@ -372,8 +380,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     labelTemplate={labelTemplate}
                     printServiceUrl={printServiceUrl}
                     onCancel={onCancelPrint}
-                    queryName={activeModel?.queryName}
-                    schemaName={activeModel?.schemaName}
+                    model={printDialogModel}
                     sampleIds={[...printDialogModel.selections]}
                     show={true}
                     showSelection={true}

@@ -327,17 +327,20 @@ export class SampleEventListing extends React.Component<Props, State> {
                     <Checkbox checked={includeSampleEvent} onChange={this.onEventTypeChange} name="includeSampleEvent">
                         Sample Events
                     </Checkbox>
-                    {isAssayEnabled() &&
-                        <Checkbox checked={includeAssayEvent} onChange={this.onEventTypeChange}
-                                  name="includeAssayEvent">
+                    {isAssayEnabled() && (
+                        <Checkbox
+                            checked={includeAssayEvent}
+                            onChange={this.onEventTypeChange}
+                            name="includeAssayEvent"
+                        >
                             Assay Events
                         </Checkbox>
-                    }
-                    {isWorkflowEnabled() &&
+                    )}
+                    {isWorkflowEnabled() && (
                         <Checkbox checked={includeJobEvent} onChange={this.onEventTypeChange} name="includeJobEvent">
                             Job Events
                         </Checkbox>
-                    }
+                    )}
                     <Checkbox
                         checked={includeStorageEvent}
                         onChange={this.onEventTypeChange}

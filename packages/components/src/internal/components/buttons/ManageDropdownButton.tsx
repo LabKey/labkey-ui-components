@@ -41,7 +41,7 @@ export class ManageDropdownButton extends React.Component<Props, any> {
         if (collapsed) {
             buttonLabel = (
                 <span>
-                    <i className="fa fa-bars" />
+                    <i className="fa fa-bars" /> Manage
                 </span>
             );
             noCaret = true;

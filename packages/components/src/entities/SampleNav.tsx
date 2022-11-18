@@ -13,13 +13,7 @@ import { getQueryDetails } from '../internal/query/api';
 import { AppURL } from '../internal/url/AppURL';
 import { SAMPLES_KEY } from '../internal/app/constants';
 import { naturalSortByProperty } from '../public/sort';
-import {
-    isAssayEnabled,
-    isMediaEnabled,
-    isWorkflowEnabled,
-    userCanReadAssays,
-    userCanReadDataClasses,
-} from '../internal/app/utils';
+import { isAssayEnabled, isWorkflowEnabled, userCanReadAssays, userCanReadDataClasses } from '../internal/app/utils';
 
 import { SubNav } from '../internal/components/navigation/SubNav';
 
@@ -28,7 +22,7 @@ import { loadSampleTypes } from './actions';
 export const SampleIndexNav: FC<WithRouterProps> = memo(({ params }) => {
     const { id, sampleType } = params;
     const [noun, setNoun] = useState<ITab>();
-    const { user } = useServerContext();
+    const { moduleContext, user } = useServerContext();
 
     useEffect(() => {
         (async () => {
@@ -40,24 +34,22 @@ export const SampleIndexNav: FC<WithRouterProps> = memo(({ params }) => {
         })();
     }, [sampleType]);
 
-    const tabText = ['Overview'];
-    if (userCanReadDataClasses(user)) tabText.push('Lineage');
-    tabText.push('Aliquots');
-    if (userCanReadAssays(user) && isAssayEnabled()) tabText.push('Assays');
-    if (isWorkflowEnabled()) tabText.push('Jobs');
-    tabText.push('Timeline');
+    const tabs: List<ITab> = useMemo(() => {
+        const tabText = ['Overview'];
+        if (userCanReadDataClasses(user)) tabText.push('Lineage');
+        tabText.push('Aliquots');
+        if (userCanReadAssays(user) && isAssayEnabled(moduleContext)) tabText.push('Assays');
+        if (isWorkflowEnabled(moduleContext)) tabText.push('Jobs');
+        tabText.push('Timeline');
 
-    const tabs = useMemo(
-        () =>
-            tabText.reduce((tabs, text) => {
-                const parts = [SAMPLES_KEY, sampleType, id];
-                if (text !== 'Overview') {
-                    parts.push(text.toLowerCase());
-                }
-                return tabs.push({ text, url: AppURL.create(...parts) });
-            }, List<ITab>()),
-        [id, sampleType]
-    );
+        return tabText.reduce((tabs_, text) => {
+            const parts = [SAMPLES_KEY, sampleType, id];
+            if (text !== 'Overview') {
+                parts.push(text.toLowerCase());
+            }
+            return tabs_.push({ text, url: AppURL.create(...parts) });
+        }, List<ITab>());
+    }, [id, moduleContext, sampleType, user]);
 
     return <SubNav noun={noun} tabs={tabs} />;
 });

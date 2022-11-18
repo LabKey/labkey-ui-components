@@ -41,11 +41,11 @@ export interface RenderOptions {
     containerFilter?: Query.ContainerFilter;
     /** A container path that will be applied to all query-based inputs on this form */
     containerPath?: string;
+    hideLabel?: boolean;
 }
 
 export interface EditRendererOptions extends RenderOptions {
     autoFocus?: boolean;
-    hideLabel?: boolean;
     onBlur?: () => void;
     onSelectChange?: SelectInputChange;
     placeholder?: string;
@@ -66,7 +66,14 @@ export function defaultTitleRenderer(col: QueryColumn): React.ReactNode {
         return <span className="field__un-editable">{col.caption}</span>;
     }
 
-    return <LabelOverlay column={col} />;
+    return (
+        <LabelOverlay
+            column={col}
+            required={
+                col.required || col.nameExpression !== undefined /* Issue 43561: Support name expression fields */
+            }
+        />
+    );
 }
 
 export const _defaultRenderer = (col: QueryColumn): Renderer => {
@@ -167,11 +174,14 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
     if (data.size === 0) {
         body = <div>No data available.</div>;
     } else {
+        const options = { containerFilter, containerPath } as RenderOptions;
+        if (editingMode) options.hideLabel = true;
+
         const fields = processFields(
             displayColumns,
             detailRenderer,
             titleRenderer,
-            { containerFilter, containerPath },
+            options,
             fileInputRenderer,
             onAdditionalFormDataChange
         );
@@ -360,6 +370,7 @@ export function resolveDetailEditRenderer(
                 return (
                     <Checkbox
                         name={col.name}
+                        labelClassName={showLabel ? undefined : 'hide-label'}
                         // Issue 43299: Ignore "required" property for boolean columns as this will
                         // cause any false value (i.e. unchecked) to prevent submission.
                         // required={col.required}
@@ -407,6 +418,7 @@ export function resolveDetailEditRenderer(
                         // required if the nameExpression is not defined to force the form to require a value.
                         required={col.required || col.nameExpression !== undefined}
                         elementWrapperClassName={[{ 'col-sm-9': false }, 'col-sm-12']}
+                        labelClassName={showLabel ? undefined : 'hide-label'}
                     />
                 );
         }

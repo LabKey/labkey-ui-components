@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD November 2022
+* Detail panel editMode fix for show/hide labels
+  * defaultTitleRenderer to pass required prop to LabelOverlay
+  * DeailDisplay processFields should always set hideLabel to true in editingMode
+  * use new hide-label class for Input and Checkbox formsy-react-components
+  * LabelOverlay rendering of asterisk for required prop to match in formsy case
+
 ### version 2.254.1
 *Released*: 18 November 2022
 * Issue 46724: Unable to set PHI level for newly added field

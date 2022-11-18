@@ -144,6 +144,10 @@
   color: $brand-warning;
 }
 
+.detail__editing .hide-label {
+  display: none;
+}
+
 .detail__header--container {
   padding-left: 0 !important;
 }

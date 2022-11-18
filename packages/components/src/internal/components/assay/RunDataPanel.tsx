@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 import React, { PureComponent, ReactNode } from 'react';
-import Formsy from 'formsy-react';
-import { Textarea } from 'formsy-react-components';
 import { List, Map } from 'immutable';
-import { Button } from 'react-bootstrap';
 
 import { AssayUploadTabs } from '../../constants';
 import { InferDomainResponse } from '../../../public/InferDomainResponse';
 import { EditorModel, EditorModelProps } from '../editable/models';
 
-import { DATA_IMPORT_TOPIC, helpLinkNode } from '../../util/helpLinks';
+import { DATA_IMPORT_TOPIC, HelpLink } from '../../util/helpLinks';
 import { EditableGridPanel } from '../editable/EditableGridPanel';
 
 import { FileSizeLimitProps } from '../../../public/files/models';
@@ -32,7 +29,6 @@ import { getActionErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { FormStep, FormTabs } from '../forms/FormStep';
 import { FileAttachmentForm } from '../../../public/files/FileAttachmentForm';
-import { handleTabKeyOnTextArea } from '../forms/actions';
 import { Alert } from '../base/Alert';
 
 import { getContainerFilterForLookups } from '../../query/api';
@@ -41,7 +37,7 @@ import { getRunPropertiesFileName } from './actions';
 import { AssayWizardModel } from './AssayWizardModel';
 import { getServerFilePreview } from './utils';
 
-const TABS = ['Upload Files', 'Copy-and-Paste Data', 'Enter Data Into Grid'];
+const TABS = ['Enter Data into Grid', 'Import Data from File'];
 const PREVIEW_ROW_COUNT = 3;
 
 interface Props {
@@ -217,7 +213,6 @@ export class RunDataPanel extends PureComponent<Props, State> {
             currentStep,
             editorModel,
             maxEditableGridRowMsg,
-            maxRows,
             queryModel,
             title,
             showTabs,
@@ -229,10 +224,6 @@ export class RunDataPanel extends PureComponent<Props, State> {
         const isLoading = !wizardModel.isInit || queryModel.isLoading;
         const isLoadingPreview = previousRunData && !previousRunData.isLoaded;
 
-        let cutPastePlaceholder = 'Paste in a tab-separated set of values (including column headers).';
-        if (maxRows) {
-            cutPastePlaceholder += '  Maximum number of data rows allowed is ' + maxRows + '.';
-        }
         return (
             <div className="panel panel-default">
                 <div className="panel-heading">{title}</div>
@@ -245,61 +236,7 @@ export class RunDataPanel extends PureComponent<Props, State> {
 
                             <div className="row">
                                 <div className="col-sm-12">
-                                    <FormStep stepIndex={AssayUploadTabs.Files}>
-                                        {isLoadingPreview ? (
-                                            <LoadingSpinner />
-                                        ) : (
-                                            <FileAttachmentForm
-                                                allowDirectories={false}
-                                                allowMultiple={false}
-                                                showLabel={false}
-                                                initialFileNames={
-                                                    previousRunData && previousRunData.fileName
-                                                        ? [previousRunData.fileName]
-                                                        : []
-                                                }
-                                                onFileChange={this.onFileChange}
-                                                onFileRemoval={this.onFileRemove}
-                                                templateUrl={wizardModel.assayDef.templateLink}
-                                                previewGridProps={
-                                                    acceptedPreviewFileFormats && {
-                                                        previewCount: PREVIEW_ROW_COUNT,
-                                                        acceptedFormats: acceptedPreviewFileFormats,
-                                                        initialData: previousRunData ? previousRunData.data : undefined,
-                                                    }
-                                                }
-                                                sizeLimits={this.props.fileSizeLimits}
-                                                sizeLimitsHelpText={
-                                                    <>
-                                                        We recommend dividing your data into smaller files that meet
-                                                        this limit. See our{' '}
-                                                        {helpLinkNode(DATA_IMPORT_TOPIC, 'help document')} for best
-                                                        practices on data import.
-                                                    </>
-                                                }
-                                            />
-                                        )}
-                                    </FormStep>
-                                    <FormStep stepIndex={AssayUploadTabs.Copy}>
-                                        {/* TODO: Seems to be a highly unnecessary usage of Formsy */}
-                                        <Formsy>
-                                            <Textarea
-                                                changeDebounceInterval={0}
-                                                cols={-1}
-                                                elementWrapperClassName={[{ 'col-sm-9': false }, 'col-sm-12']}
-                                                label=""
-                                                labelClassName={[{ 'col-sm-3': false }, 'hidden']}
-                                                name="rundata"
-                                                onChange={this.onTextChange}
-                                                onKeyDown={handleTabKeyOnTextArea}
-                                                placeholder={cutPastePlaceholder}
-                                                rows={10}
-                                                value={wizardModel.dataText}
-                                            />
-                                            <Button onClick={this.clearText}>Clear</Button>
-                                        </Formsy>
-                                    </FormStep>
-                                    <FormStep stepIndex={AssayUploadTabs.Grid} trackActive={false}>
+                                    <FormStep stepIndex={AssayUploadTabs.Grid}>
                                         <EditableGridPanel
                                             addControlProps={{
                                                 placement: 'top',
@@ -328,6 +265,42 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                             getIsDirty={getIsDirty}
                                             setIsDirty={setIsDirty}
                                         />
+                                    </FormStep>
+                                    <FormStep stepIndex={AssayUploadTabs.Files}>
+                                        {isLoadingPreview ? (
+                                            <LoadingSpinner />
+                                        ) : (
+                                            <FileAttachmentForm
+                                                key={wizardModel.lastRunId} // required for rerender in the "save and import another" case
+                                                allowDirectories={false}
+                                                allowMultiple={false}
+                                                showLabel={false}
+                                                initialFileNames={
+                                                    previousRunData && previousRunData.fileName
+                                                        ? [previousRunData.fileName]
+                                                        : []
+                                                }
+                                                onFileChange={this.onFileChange}
+                                                onFileRemoval={this.onFileRemove}
+                                                templateUrl={wizardModel.assayDef.templateLink}
+                                                previewGridProps={
+                                                    acceptedPreviewFileFormats && {
+                                                        previewCount: PREVIEW_ROW_COUNT,
+                                                        acceptedFormats: acceptedPreviewFileFormats,
+                                                        initialData: previousRunData ? previousRunData.data : undefined,
+                                                    }
+                                                }
+                                                sizeLimits={this.props.fileSizeLimits}
+                                                sizeLimitsHelpText={
+                                                    <>
+                                                        We recommend dividing your data into smaller files that meet
+                                                        this limit. See our{' '}
+                                                        <HelpLink topic={DATA_IMPORT_TOPIC}>help document</HelpLink> for best
+                                                        practices on data import.
+                                                    </>
+                                                }
+                                            />
+                                        )}
                                     </FormStep>
                                 </div>
                             </div>

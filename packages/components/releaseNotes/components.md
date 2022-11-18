@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.254.0
+*Released*: 17 November 2022
+* Remove Copy-And-Paste tab from Assay Upload page
+* Conditionalize display of some workflow- and assay-related actions
+* Update AssayImportPanel to check for data in the grid before enabling import
+* Update EditorModel.hasRawValue to account for null and undefined
+
 ### version 2.253.0
 *Released*: 17 November 2022
 * Updates for Sample Type consistency of Samples create/import page

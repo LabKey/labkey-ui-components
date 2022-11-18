@@ -7,6 +7,7 @@ import { TimelineEventModel } from '../internal/components/auditlog/models';
 import DUMMY_TIMELINE from '../test/data/SampleTimeline.json';
 
 import { SampleEventListing } from './SampleEventListing';
+import { TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT } from '../internal/productFixtures';
 
 beforeAll(() => {
     LABKEY.container = {
@@ -76,6 +77,9 @@ describe('<SampleEventListing/>', () => {
     });
 
     test('Filter by event type and date', () => {
+        LABKEY.moduleContext = {
+            ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
+        };
         const comp = shallow(
             <SampleEventListing
                 sampleId={86873}
@@ -154,6 +158,9 @@ describe('<SampleEventListing/>', () => {
     });
 
     test('With selected job that is completed', () => {
+        LABKEY.moduleContext = {
+            ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
+        };
         const tree = renderer.create(
             <SampleEventListing
                 sampleId={86873}

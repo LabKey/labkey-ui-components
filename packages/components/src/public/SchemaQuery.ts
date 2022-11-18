@@ -104,8 +104,8 @@ export class SchemaQuery extends Record({
         return false;
     }
 
-    getKey(): string {
-        return resolveKey(this.schemaName, this.queryName, this.viewName);
+    getKey(includeViewName = true): string {
+        return resolveKey(this.schemaName, this.queryName, includeViewName ? this.viewName : undefined);
     }
 
     static parseSelectionKey(selectionKey: string): IParsedSelectionKey {

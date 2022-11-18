@@ -34,7 +34,7 @@ export function invalidateFullQueryDetailsCache(): void {
 }
 
 function getQueryDetailsCacheKey(schemaQuery: SchemaQuery, containerPath?: string, fk?: string): string {
-    return '' + schemaQuery.getKey() + (fk ? '|' + fk : '') + (containerPath ? '|' + containerPath : '');
+    return '' + schemaQuery.getKey(false) + (fk ? '|' + fk : '') + (containerPath ? '|' + containerPath : '');
 }
 
 export function invalidateQueryDetailsCache(schemaQuery: SchemaQuery, containerPath?: string, fk?: string): void {

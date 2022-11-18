@@ -21,12 +21,18 @@ describe('<PrintLabelsModal/>', () => {
         actions = makeTestActions();
         queryModels = {
             'sampleModel': makeTestQueryModel(SchemaQuery.create(TEST_SCHEMA, TEST_QUERY), QueryInfo.create({}))
-                queryInfoLoadingState: LoadingState.LOADED,
-                rowsLoadingState: LoadingState.LOADED,
-            }),
+                .mutate({
+                    queryInfoLoadingState: LoadingState.LOADED,
+                    rowsLoadingState: LoadingState.LOADED,
+                }
+            ),
             'singleSampleModel': makeTestQueryModel(SchemaQuery.create(TEST_SCHEMA, TEST_QUERY), QueryInfo.create({}))
-            ).mutate({ queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADED }),
-        };
+                .mutate({
+                    queryInfoLoadingState: LoadingState.LOADED,
+                    rowsLoadingState: LoadingState.LOADED
+                }
+            ),
+        }
     });
 
     test('no selections', () => {

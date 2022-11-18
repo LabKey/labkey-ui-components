@@ -1,7 +1,6 @@
 import React, { FC, memo, ReactNode, useMemo } from 'react';
 import { List, OrderedMap } from 'immutable';
 import { Panel } from 'react-bootstrap';
-import { Checkbox, Input, Textarea } from 'formsy-react-components';
 import { Query } from '@labkey/api';
 
 import { DETAIL_TABLE_CLASSES } from '../constants';
@@ -33,6 +32,9 @@ import { LabelColorRenderer } from '../../../renderers/LabelColorRenderer';
 import { FileColumnRenderer } from '../../../renderers/FileColumnRenderer';
 import { SampleTypeImportAliasRenderer, SourceTypeImportAliasRenderer } from '../../../renderers/ImportAliasRenderer';
 import { SelectInputChange } from '../input/SelectInput';
+import { TextAreaInput } from '../input/TextAreaInput';
+import { TextInput } from '../input/TextInput';
+import { CheckboxInput } from '../input/CheckboxInput';
 
 export type Renderer = (data: any, row?: any) => ReactNode;
 
@@ -345,13 +347,12 @@ export function resolveDetailEditRenderer(
 
         if (col.inputType === 'textarea') {
             return (
-                <Textarea
-                    changeDebounceInterval={0}
+                <TextAreaInput
                     cols={4}
                     elementWrapperClassName={[{ 'col-sm-9': false }, 'col-sm-12']}
-                    name={col.name}
-                    required={col.required}
+                    queryColumn={col}
                     rows={4}
+                    showLabel={showLabel}
                     validatePristine
                     value={value}
                 />
@@ -368,57 +369,49 @@ export function resolveDetailEditRenderer(
                 value = resolveDetailFieldValue(data, false, true);
 
                 return (
-                    <Checkbox
-                        name={col.name}
-                        labelClassName={showLabel ? undefined : 'hide-label'}
-                        // Issue 43299: Ignore "required" property for boolean columns as this will
-                        // cause any false value (i.e. unchecked) to prevent submission.
-                        // required={col.required}
-                        validatePristine
+                    <CheckboxInput
+                        queryColumn={col}
+                        showLabel={showLabel}
                         value={value && value.toString().toLowerCase() === 'true'}
+                        wrapperClassName="col-sm-12"
                     />
                 );
             case 'date':
                 if (!value || typeof value === 'string') {
                     return (
                         <DatePickerInput
-                            showLabel={false}
-                            wrapperClassName="col-sm-12"
-                            name={col.name}
                             queryColumn={col}
+                            showLabel={showLabel}
                             value={value}
+                            wrapperClassName="col-sm-12"
                         />
                     );
                 }
             default:
-                let validations, validationError;
+                let validationError;
 
                 if (col.jsonType === 'int' || col.jsonType === 'float') {
                     const unformat = getUnFormattedNumber(value);
                     if (unformat !== undefined && unformat !== null) {
                         value = unformat.toString();
                     }
-                    validations = col.jsonType === 'int' ? 'isInt' : 'isFloat';
                     validationError = 'Expected type: ' + col.jsonType;
                 }
 
                 return (
-                    <Input
-                        changeDebounceInterval={0}
-                        type="text"
-                        name={col.name}
-                        validatePristine
-                        validations={validations}
-                        validationError={validationError}
-                        value={value}
+                    <TextInput
+                        elementWrapperClassName={[{ 'col-sm-9': false }, 'col-sm-12']}
+                        queryColumn={col}
                         // Issue 43561: Support name expression fields
                         // NK: If a name expression is applied, then the server does not mark the field as required as
                         // it will be generated. This is OK for the insert scenario, however, for update a value is
                         // still required as the name expression won't be run upon update. Here we mark the input as
                         // required if the nameExpression is not defined to force the form to require a value.
                         required={col.required || col.nameExpression !== undefined}
-                        elementWrapperClassName={[{ 'col-sm-9': false }, 'col-sm-12']}
-                        labelClassName={showLabel ? undefined : 'hide-label'}
+                        showLabel={showLabel}
+                        validatePristine
+                        validationError={validationError}
+                        value={value}
                     />
                 );
         }

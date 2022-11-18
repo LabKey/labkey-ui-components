@@ -51,7 +51,6 @@ export class FieldLabel extends Component<FieldLabelProps> {
             showLabel,
             showToggle,
             isDisabled,
-            style,
             toggleProps,
             withLabelOverlay,
             toggleClassName,

@@ -24,7 +24,6 @@ import { DisableableInput, DisableableInputProps, DisableableInputState } from '
 
 export interface TextInputProps extends DisableableInputProps {
     addLabelAsterisk?: boolean;
-    changeDebounceInterval?: number;
     elementWrapperClassName?: any[] | string;
     label?: any;
     labelClassName?: any[] | string;
@@ -33,11 +32,13 @@ export interface TextInputProps extends DisableableInputProps {
     placeholder?: string;
     queryColumn: QueryColumn;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
+    required?: boolean;
     rowClassName?: any[] | string;
     showLabel?: boolean;
     startFocused?: boolean;
     validatePristine?: boolean;
-    value?: string;
+    validationError?: string;
+    value?: any;
 }
 
 interface TextInputState extends DisableableInputState {
@@ -48,7 +49,6 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
     static defaultProps = {
         ...DisableableInput.defaultProps,
         ...{
-            changeDebounceInterval: 0,
             elementWrapperClassName: 'col-md-9 col-xs-12',
             labelClassName: 'control-label text-left col-xs-12',
             showLabel: true,
@@ -117,14 +117,16 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
 
     render() {
         const {
-            changeDebounceInterval,
             elementWrapperClassName,
             labelClassName,
             name,
             placeholder,
             queryColumn,
+            required,
             rowClassName,
+            showLabel,
             validatePristine,
+            validationError,
         } = this.props;
 
         let type = 'text',
@@ -151,20 +153,22 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
         return (
             <Input
                 disabled={this.state.isDisabled}
-                changeDebounceInterval={changeDebounceInterval}
+                changeDebounceInterval={0}
                 elementWrapperClassName={elementWrapperClassName}
                 help={help}
                 id={queryColumn.fieldKey}
-                label={this.renderLabel()}
+                label={showLabel ? this.renderLabel() : null}
                 labelClassName={labelClassName}
+                layout={showLabel ? undefined : 'elementOnly'}
                 name={name ?? queryColumn.fieldKey}
                 onChange={this.onChange}
                 placeholder={placeholder ?? `Enter ${queryColumn.caption.toLowerCase()}`}
-                required={queryColumn.required}
+                required={required ?? queryColumn.required}
                 rowClassName={rowClassName}
                 step={step}
                 type={type}
                 validatePristine={validatePristine}
+                validationError={validationError}
                 validations={validations}
                 value={this.getInputValue()}
                 componentRef={node => (this.textInput = node)}

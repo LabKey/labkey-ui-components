@@ -5,8 +5,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD November 2022
 * Detail panel editMode fix for show/hide labels
   * defaultTitleRenderer to pass required prop to LabelOverlay
-  * DeailDisplay processFields should always set hideLabel to true in editingMode
-  * use new hide-label class for Input and Checkbox formsy-react-components
+  * DetailDisplay processFields should always set hideLabel to true in editingMode
+  * DetailDisplay update resolveDetailEditRenderer to use wrapped input components instead of formsy-react-components directly
   * LabelOverlay rendering of asterisk for required prop to match in formsy case
 
 ### version 2.254.1

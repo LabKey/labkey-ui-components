@@ -213,20 +213,19 @@ function initDisplayColumn(queryInfo: QueryInfo, column?: string): string {
 }
 
 function getQueryColumnNames(model: QuerySelectModel): string[] {
-    const { displayColumn, includeViewColumns, queryInfo, schemaQuery, valueColumn } = model;
+    const { displayColumn, includeViewColumns, queryInfo, requiredColumns, schemaQuery, valueColumn } = model;
 
-    // Include PKs plus useful-to-search-over columns and append the grid view's column list
-    const requiredColumns = queryInfo.pkCols.concat([displayColumn, valueColumn]);
+    const queryColumns = queryInfo.pkCols.concat([displayColumn, valueColumn].concat(requiredColumns));
 
     if (includeViewColumns) {
         return queryInfo
             .getDisplayColumns(schemaQuery.viewName)
             .map(c => c.fieldKey)
-            .concat(requiredColumns)
+            .concat(queryColumns)
             .toArray();
     }
 
-    return requiredColumns.toArray();
+    return queryColumns.toArray();
 }
 
 export async function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel> {
@@ -347,6 +346,7 @@ export class QuerySelectModel
         queryFilters: undefined,
         queryInfo: undefined,
         rawSelectedValue: undefined,
+        requiredColumns: [],
         schemaQuery: undefined,
         searchResults: Map<string, Map<string, any>>(),
         selectedQuery: '',
@@ -368,6 +368,7 @@ export class QuerySelectModel
     declare queryFilters: List<Filter.IFilter>;
     declare queryInfo: QueryInfo;
     declare rawSelectedValue: any;
+    declare requiredColumns: string[];
     declare schemaQuery: SchemaQuery;
     declare searchResults: Map<string, Map<string, any>>;
     declare selectedQuery: string;

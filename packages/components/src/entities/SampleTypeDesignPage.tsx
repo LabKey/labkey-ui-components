@@ -127,7 +127,7 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
                     showStudyProperties
                 ) as DomainDetails;
 
-                if (readOnlyQueryNames?.indexOf(queryName.toLowerCase()) > -1) {
+                if (readOnlyQueryNames?.map(q => q.toLowerCase()).indexOf(queryName.toLowerCase()) > -1) {
                     updatedSampleType = updatedSampleType.set('nameReadOnly', true) as DomainDetails;
                 }
 

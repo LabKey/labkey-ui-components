@@ -10,7 +10,7 @@ import { Alert } from '../internal/components/base/Alert';
 import { exportTimelineGrid } from '../internal/components/samples/actions';
 import { TimelineEventModel, TimelineGroupedEventInfo } from '../internal/components/auditlog/models';
 import { ExpandableFilterToggle } from '../internal/components/base/ExpandableFilterToggle';
-import { getDateFormat } from '../internal/app/utils';
+import { getDateFormat, isAssayEnabled, isWorkflowEnabled } from '../internal/app/utils';
 import { ASSAYS_KEY, SAMPLES_KEY, WORKFLOW_KEY } from '../internal/app/constants';
 import { filterDate } from '../internal/util/Date';
 import { TimelineView } from '../internal/components/auditlog/TimelineView';
@@ -327,12 +327,17 @@ export class SampleEventListing extends React.Component<Props, State> {
                     <Checkbox checked={includeSampleEvent} onChange={this.onEventTypeChange} name="includeSampleEvent">
                         Sample Events
                     </Checkbox>
-                    <Checkbox checked={includeAssayEvent} onChange={this.onEventTypeChange} name="includeAssayEvent">
-                        Assay Events
-                    </Checkbox>
-                    <Checkbox checked={includeJobEvent} onChange={this.onEventTypeChange} name="includeJobEvent">
-                        Job Events
-                    </Checkbox>
+                    {isAssayEnabled() &&
+                        <Checkbox checked={includeAssayEvent} onChange={this.onEventTypeChange}
+                                  name="includeAssayEvent">
+                            Assay Events
+                        </Checkbox>
+                    }
+                    {isWorkflowEnabled() &&
+                        <Checkbox checked={includeJobEvent} onChange={this.onEventTypeChange} name="includeJobEvent">
+                            Job Events
+                        </Checkbox>
+                    }
                     <Checkbox
                         checked={includeStorageEvent}
                         onChange={this.onEventTypeChange}

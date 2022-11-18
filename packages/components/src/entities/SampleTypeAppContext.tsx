@@ -1,10 +1,12 @@
 import { Filter } from '@labkey/api';
+import { List } from 'immutable';
 
 import { ExtendableAppContext, useAppContext } from '../internal/AppContext';
 import { DomainDetails } from '../internal/components/domainproperties/models';
 import { User } from '../internal/components/base/models/User';
-import { SchemaQuery } from '../public/SchemaQuery';
 import { ALIQUOT_FILTER_MODE } from '../internal/components/samples/constants';
+import { EntityDataType } from '../internal/components/entities/models';
+import { SchemaQuery } from '../public/SchemaQuery';
 import { QueryConfigMap } from '../public/QueryModel/withQueryModels';
 
 import {
@@ -15,9 +17,10 @@ import {
 } from '../internal/components/samples/models';
 import { DetailRenderer } from '../internal/components/forms/detail/DetailDisplay';
 
+import { ReferencingNotebooks } from '../internal/app/models';
+
 import { SampleGridButton, SampleStorageLocation, SampleStorageMenu } from './models';
 import { SamplesEditableGridProps } from './SamplesEditableGrid';
-import { ReferencingNotebooks } from '../internal/app/models';
 
 export interface SampleTypeAppContext {
     AddSamplesToStorageModalComponent: AddSamplesToStorageModal;
@@ -29,6 +32,8 @@ export interface SampleTypeAppContext {
     SampleStorageMenuComponent: SampleStorageMenu;
     WorkflowGridComponent: WorkflowGrid;
     assayProviderType?: string;
+    combineParentTypes?: boolean;
+    controllerName: string;
     dataClassAliasCaption?: string;
     dataClassParentageLabel?: string;
     dataClassTypeCaption?: string;
@@ -48,8 +53,10 @@ export interface SampleTypeAppContext {
         containerPath?: string
     ) => QueryConfigMap;
     hideConditionalFormatting: boolean;
+    importHelpLinkTopic: string;
     isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean;
     lineagePagePermissions: string[];
+    parentDataTypes: List<EntityDataType>;
     readOnlyQueryNames?: string[];
     samplesGridRequiredColumns: string[];
     showParentLabelPrefix: boolean;

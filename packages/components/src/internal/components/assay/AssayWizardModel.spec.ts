@@ -47,19 +47,16 @@ describe('AssayWizardModel', () => {
 
         // if runName is not set and no file selected, use the generateNameWithTimestamp function
         expect(model.getRunName(AssayUploadTabs.Files).indexOf(model.assayDef.name) === 0).toBeTruthy();
-        expect(model.getRunName(AssayUploadTabs.Copy).indexOf(model.assayDef.name) === 0).toBeTruthy();
         expect(model.getRunName(AssayUploadTabs.Grid).indexOf(model.assayDef.name) === 0).toBeTruthy();
 
         // if runName is not set but we have a file selected, the value should be undefined (which means the server will set it)
         model = model.set('attachedFiles', fromJS({ file1: new File([], 'file1') })) as AssayWizardModel;
         expect(model.getRunName(AssayUploadTabs.Files)).toBe(undefined);
-        expect(model.getRunName(AssayUploadTabs.Copy).indexOf(model.assayDef.name) === 0).toBeTruthy();
         expect(model.getRunName(AssayUploadTabs.Grid).indexOf(model.assayDef.name) === 0).toBeTruthy();
 
         // if runName is set, use that
         model = model.set('runName', 'testing') as AssayWizardModel;
         expect(model.getRunName(AssayUploadTabs.Files)).toBe('testing');
-        expect(model.getRunName(AssayUploadTabs.Copy)).toBe('testing');
         expect(model.getRunName(AssayUploadTabs.Grid)).toBe('testing');
     });
 
@@ -71,18 +68,6 @@ describe('AssayWizardModel', () => {
         expect(data.name.indexOf(model.assayDef.name) === 0).toBeTruthy();
         expect(Utils.isArray(data.files) && data.files.length === 0).toBeTruthy();
         expect(data.dataRows === undefined).toBeTruthy();
-    });
-
-    test('prepareFormData Copy tab', () => {
-        const model = ASSAY_WIZARD_MODEL.set('dataText', DATA_TEXT) as AssayWizardModel;
-        const data = model.prepareFormData(AssayUploadTabs.Copy, editorModel, queryModel);
-
-        expect(data.assayId).toBe(model.assayDef.id);
-        expect(data.name.indexOf(model.assayDef.name) === 0).toBeTruthy();
-        expect(data.files === undefined).toBeTruthy();
-        expect(Utils.isArray(data.dataRows) && data.dataRows.length === 1).toBeTruthy();
-        expect(data.dataRows[0]['test1']).toBe('1');
-        expect(data.dataRows[0]['test2']).toBe('2');
     });
 
     test('prepareFormData Grid tab', () => {

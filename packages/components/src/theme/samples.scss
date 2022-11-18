@@ -38,6 +38,19 @@
     }
 }
 
+.creation-type-radioinput {
+    padding-bottom: 16px;
+    color: $gray;
+
+    .radioinput-input {
+        margin: 6px 6px 6px 0;
+    }
+
+    .radioinput-label.selected {
+        color: $gray-base;
+    }
+}
+
 .creation-per-parent-select {
     display: inline-block;
     max-width: 100%;

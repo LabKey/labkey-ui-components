@@ -35,6 +35,9 @@ import { getSampleAssayQueryConfigs } from '../internal/components/samples/actio
 import { AssayStateModel } from '../internal/components/assay/models';
 import { SamplesAPIWrapper } from '../internal/components/samples/APIWrapper';
 import { QueryConfigMap } from '../public/QueryModel/withQueryModels';
+import { BulkAddData } from '../internal/components/editable/EditableGrid';
+import { SampleCreationType } from '../internal/components/samples/models';
+import { DataClassDataType, SampleTypeDataType } from '../internal/components/entities/constants';
 
 export function getCrossFolderSelectionMsg(
     crossFolderSelectionCount: number,
@@ -510,3 +513,44 @@ export function getJobCreationHref(
     const actionUrl = createProductUrlFromParts(targetProductId, currentProductId, params, WORKFLOW_KEY, 'new');
     return actionUrl instanceof AppURL ? actionUrl.toHref() : actionUrl;
 }
+
+export const processSampleBulkAdd = (data: OrderedMap<string, any>, combineParentTypes: boolean): BulkAddData => {
+    const numItems = data.get('numItems');
+    let totalItems = 0;
+    const creationType_ = data.get('creationType');
+    const poolingSampleParents = creationType_ && creationType_ === SampleCreationType.PooledSamples;
+
+    let validationMsg;
+    let pivotKey;
+    let pivotValues = [];
+    let haveMultiParent = false;
+
+    data.keySeq().forEach(key => {
+        const isSampleParent = key.indexOf(SampleTypeDataType.insertColumnNamePrefix) === 0;
+        const isDataClassParent = key.indexOf(DataClassDataType.insertColumnNamePrefix) === 0;
+        if (isSampleParent || isDataClassParent) {
+            if (data.get(key)) {
+                const parents = data.get(key);
+                if (parents.length > 0) {
+                    const values = typeof parents[0] === 'string' ? parseCsvString(parents[0], ',') : parents;
+                    if (values.length > 1) {
+                        if (haveMultiParent) {
+                            validationMsg = combineParentTypes
+                                ? 'Only one parent type with more than one value is allowed when creating non-pooled samples in bulk.'
+                                : 'Only one source or parent with more than one value is allowed when creating non-pooled samples in bulk.';
+                        } else if ((isSampleParent && !poolingSampleParents) || isDataClassParent) {
+                            pivotValues = values;
+                            pivotKey = key;
+                            haveMultiParent = true;
+                            totalItems = numItems * values.length;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    if (validationMsg) return { validationMsg };
+    if (totalItems === 0) totalItems = numItems;
+    return { pivotKey, pivotValues, totalItems };
+};

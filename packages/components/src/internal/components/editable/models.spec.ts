@@ -917,6 +917,7 @@ describe('EditorModel', () => {
             expect(model.hasRawValue(undefined)).toBeFalsy();
             expect(model.hasRawValue({} as ValueDescriptor)).toBeFalsy();
             expect(model.hasRawValue({ raw: undefined } as ValueDescriptor)).toBeFalsy();
+            expect(model.hasRawValue({ raw: null } as ValueDescriptor)).toBeFalsy();
             expect(model.hasRawValue({ raw: '' } as ValueDescriptor)).toBeFalsy();
             expect(model.hasRawValue({ raw: ' ' } as ValueDescriptor)).toBeFalsy();
             expect(model.hasRawValue({ raw: ' test' } as ValueDescriptor)).toBeTruthy();

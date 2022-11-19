@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.256.0
+*Released*: 18 November 2022
+* Introduce `includeViewColumns` bit on `QuerySelectModel` and set based on `previewOptions` prop of `QuerySelect` during initialization.
+* Add `requiredColumns` prop to `QuerySelect` to allow for usages to explicitly request that certain columns be included in the underlying query.
+* Exclude `viewName` on the `SchemaQuery` from the key on the `QueryInfo` cache.
+* Convert `QuerySelect.initSelect` action to an async implementation.
+* Fix memoization dependencies in `SampleIndexNav`.
+
 ### version 2.255.0
 *Released*: 18 November 2022
 * Adding Label printing to export menu for more sample tabbed grids

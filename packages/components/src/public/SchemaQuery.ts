@@ -37,12 +37,11 @@ export function resolveKey(schema: string, query: string, viewName?: string): st
        Though it won't hurt to double encode as long as resolveKey, resolveKeyFromJson and getSchemaQuery have the same assumption on the need to encode/decode
     */
     const parts = [encodePart(schema), encodePart(query)];
-    if (viewName)
-        parts.push(encodePart(viewName));
+    if (viewName) parts.push(encodePart(viewName));
     return parts.join('/').toLowerCase();
 }
 
-export function resolveKeyFromJson(json: { schemaName: string[]; queryName: string, viewName?: string }): string {
+export function resolveKeyFromJson(json: { queryName: string; schemaName: string[]; viewName?: string }): string {
     // if schema parts contain '.', replace with $P, to distinguish from '.' used to separate schema parts
     // similarly, encode '/' in schema parts, to distinguish from '/' used to separate schema and query parts
     // schemaName ['assay', 'general', 'a.b/c'] will be will processed to 'assay.general.a$pb$sc'

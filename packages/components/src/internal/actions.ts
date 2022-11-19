@@ -1334,21 +1334,10 @@ export function changeColumn(
         return newCellValues;
     }, Map<string, List<ValueDescriptor>>());
 
-    const editorUpdates = {
-        focusColIdx: -1,
-        focusRowIdx: -1,
-        selectedColIdx: -1,
-        selectedRowIdx: -1,
-        selectionCells: Set<string>(),
-        cellMessages: newCellMessages,
-        cellValues: newCellValues,
-    };
-
     const currentCol = queryInfo.getColumn(existingFieldKey);
 
     // remove existing column and set new column in data
-    let data = originalData;
-    data = data
+    const data = originalData
         .map(rowData => {
             rowData = rowData.remove(currentCol.fieldKey);
             return rowData.set(newQueryColumn.fieldKey, undefined);
@@ -1365,7 +1354,15 @@ export function changeColumn(
     });
 
     return {
-        editorModelChanges: editorUpdates,
+        editorModelChanges: {
+            focusColIdx: -1,
+            focusRowIdx: -1,
+            selectedColIdx: -1,
+            selectedRowIdx: -1,
+            selectionCells: Set<string>(),
+            cellMessages: newCellMessages,
+            cellValues: newCellValues,
+        },
         data,
         queryInfo: queryInfo.merge({ columns }) as QueryInfo,
     };
@@ -1407,31 +1404,29 @@ export function removeColumn(
         return newCellValues;
     }, Map<string, List<ValueDescriptor>>());
 
-    const editorUpdates = {
-        colCount: editorModel.colCount - 1,
-        focusColIdx: -1,
-        focusRowIdx: -1,
-        selectedColIdx: -1,
-        selectedRowIdx: -1,
-        selectionCells: Set<string>(),
-        cellMessages: newCellMessages,
-        cellValues: newCellValues,
-    };
-
     // remove column from all rows in model data
-    let data = originalData;
-    data = data
-        .map(rowData => {
-            return rowData.remove(fieldKey);
-        })
-        .toMap();
+    const data = originalData.map(rowData => rowData.remove(fieldKey)).toMap();
 
-    const columns = queryInfo.columns.remove(fieldKey.toLowerCase());
+    let columns = editorModel.columns;
+    const removeIdx = editorModel.columns.findIndex(colFieldKey => Utils.caseInsensitiveEquals(colFieldKey, fieldKey));
+    if (removeIdx > -1) {
+        columns = columns.remove(removeIdx);
+    }
 
     return {
-        editorModelChanges: editorUpdates,
+        editorModelChanges: {
+            columns,
+            colCount: editorModel.colCount - 1,
+            focusColIdx: -1,
+            focusRowIdx: -1,
+            selectedColIdx: -1,
+            selectedRowIdx: -1,
+            selectionCells: Set<string>(),
+            cellMessages: newCellMessages,
+            cellValues: newCellValues,
+        },
         data,
-        queryInfo: queryInfo.merge({ columns }) as QueryInfo,
+        queryInfo: queryInfo.merge({ columns: queryInfo.columns.remove(fieldKey.toLowerCase()) }) as QueryInfo,
     };
 }
 
@@ -1471,27 +1466,27 @@ export function addColumns(
     let newCellMessages = editorModel.cellMessages;
     let newCellValues = editorModel.cellValues;
 
-    newCellMessages = newCellMessages.reduce((newCellMessages, message, cellKey) => {
+    newCellMessages = newCellMessages.reduce((cellMessages, message, cellKey) => {
         const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
         if (oldColIdx >= editorColIndex) {
-            return newCellMessages.set([oldColIdx + queryColumns.size, oldRowIdx].join('-'), message);
+            return cellMessages.set([oldColIdx + queryColumns.size, oldRowIdx].join('-'), message);
         } else if (oldColIdx < editorColIndex) {
-            return newCellMessages.set(cellKey, message);
+            return cellMessages.set(cellKey, message);
         }
 
-        return newCellMessages;
+        return cellMessages;
     }, Map<string, CellMessage>());
 
-    newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
+    newCellValues = newCellValues.reduce((cellValues, value, cellKey) => {
         const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
 
         if (oldColIdx >= editorColIndex) {
-            return newCellValues.set([oldColIdx + queryColumns.size, oldRowIdx].join('-'), value);
+            return cellValues.set([oldColIdx + queryColumns.size, oldRowIdx].join('-'), value);
         } else if (oldColIdx < editorColIndex) {
-            return newCellValues.set(cellKey, value);
+            return cellValues.set(cellKey, value);
         }
 
-        return newCellValues;
+        return cellValues;
     }, Map<string, List<ValueDescriptor>>());
     for (let rowIdx = 0; rowIdx < editorModel.rowCount; rowIdx++) {
         for (let c = 0; c < queryColumns.size; c++) {
@@ -1499,19 +1494,7 @@ export function addColumns(
         }
     }
 
-    const editorUpdates = {
-        colCount: editorModel.colCount + queryColumns.size,
-        focusColIdx: -1,
-        focusRowIdx: -1,
-        selectedColIdx: -1,
-        selectedRowIdx: -1,
-        selectionCells: Set<string>(),
-        cellMessages: newCellMessages,
-        cellValues: newCellValues,
-    };
-
-    let data = originalData;
-    data = data
+    const data = originalData
         .map(rowData => {
             queryColumns.forEach(column => {
                 rowData = rowData.set(column.fieldKey, undefined);
@@ -1523,7 +1506,17 @@ export function addColumns(
     const columns = queryInfo.insertColumns(queryColIndex, queryColumns);
 
     return {
-        editorModelChanges: editorUpdates,
+        editorModelChanges: {
+            columns: editorModel.columns.concat(queryColumns.valueSeq().map(col => col.fieldKey)).toList(),
+            colCount: editorModel.colCount + queryColumns.size,
+            focusColIdx: -1,
+            focusRowIdx: -1,
+            selectedColIdx: -1,
+            selectedRowIdx: -1,
+            selectionCells: Set<string>(),
+            cellMessages: newCellMessages,
+            cellValues: newCellValues,
+        },
         data,
         queryInfo: queryInfo.merge({ columns }) as QueryInfo,
     };

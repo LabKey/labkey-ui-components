@@ -44,6 +44,7 @@ export type CellValues = Map<string, List<ValueDescriptor>>;
 export interface EditorModelProps {
     cellMessages: CellMessages;
     cellValues: CellValues;
+    columns: List<string>;
     colCount: number;
     focusColIdx: number;
     focusRowIdx: number;
@@ -84,6 +85,7 @@ export class EditorModel
     extends ImmutableRecord({
         cellMessages: Map<string, CellMessage>(),
         cellValues: Map<string, List<ValueDescriptor>>(),
+        columns: List<string>(),
         colCount: 0,
         deletedIds: Set<any>(),
         focusColIdx: -1,
@@ -102,6 +104,7 @@ export class EditorModel
 {
     declare cellMessages: CellMessages;
     declare cellValues: CellValues;
+    declare columns: List<string>;
     declare colCount: number;
     declare deletedIds: Set<any>;
     declare focusColIdx: number;
@@ -168,11 +171,6 @@ export class EditorModel
         return columns.filter(col => !col.isFileInput);
     }
 
-    getColumnsFromLoader(readOnlyColumns?: List<string>, colFilter?: (col: QueryColumn) => boolean): List<QueryColumn> {
-        const { columns, mode, queryInfo } = this.loader;
-        return this.getColumns(queryInfo, mode === EditorMode.Update, readOnlyColumns, columns, columns, colFilter);
-    }
-
     getRawDataFromModel(
         queryModel: QueryModel,
         displayValues?: boolean,
@@ -208,13 +206,17 @@ export class EditorModel
         forExport?: boolean
     ): List<Map<string, any>> {
         let rawData = List<Map<string, any>>();
-        let columns: List<QueryColumn>;
-
-        if (this.loader) {
-            columns = this.getColumnsFromLoader(readOnlyColumns, colFilter);
-        } else {
-            columns = this.getColumns(queryInfo, forUpdate, readOnlyColumns, undefined, undefined, colFilter);
-        }
+        let columns = this.columns
+            .map(fieldKey => {
+                const col = queryInfo.getColumn(fieldKey);
+                if (!col) {
+                    console.warn(
+                        `Unable to resolve a column with fieldKey "${fieldKey}". Columns: [${this.columns.join(', ')}]`
+                    );
+                }
+                return col;
+            })
+            .toList();
 
         extraColumns?.forEach(col => {
             const column = queryInfo.getColumn(col.fieldKey);
@@ -226,6 +228,7 @@ export class EditorModel
         for (let rn = 0; rn < dataKeys.size; rn++) {
             let row = Map<string, any>();
             columns.forEach((col, cn) => {
+                if (!col) return;
                 const values = this.getValue(cn, rn);
 
                 // Some column types have special handling of raw data, such as multi value columns like alias,

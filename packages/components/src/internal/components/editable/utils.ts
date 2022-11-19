@@ -90,6 +90,7 @@ export const loadEditorModelData = async (
 
     return {
         cellValues,
+        columns: columns.map(col => col.fieldKey).toList(),
         colCount: columns.size,
         deletedIds: Set<any>(),
         rowCount: orderedRows.length,
@@ -102,11 +103,12 @@ export const initEditableGridModel = async (
     queryModel: QueryModel,
     includeColumns?: Array<Partial<QueryColumn>>
 ): Promise<{ dataModel: QueryModel; editorModel: EditorModel }> => {
-    const response = await editorModel.loader.fetch(queryModel);
+    const { loader } = editorModel;
+    const response = await loader.fetch(queryModel);
     const gridData: Partial<QueryModel> = {
         rows: response.data.toJS(),
         orderedRows: response.dataIds.toArray(),
-        queryInfo: editorModel.loader.queryInfo,
+        queryInfo: loader.queryInfo,
     };
 
     const extraColumns: QueryColumn[] = [];
@@ -117,7 +119,14 @@ export const initEditableGridModel = async (
         }
     });
 
-    const columns = editorModel.getColumnsFromLoader();
+    let columns: List<QueryColumn>;
+    const forUpdate = loader.mode === EditorMode.Update;
+    if (loader.columns) {
+        columns = editorModel.getColumns(gridData.queryInfo, forUpdate, undefined, loader.columns, loader.columns);
+    } else {
+        columns = editorModel.getColumns(gridData.queryInfo, forUpdate);
+    }
+
     const editorModelData = await loadEditorModelData(gridData, columns, extraColumns);
 
     return {

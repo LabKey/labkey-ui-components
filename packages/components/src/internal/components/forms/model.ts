@@ -213,125 +213,102 @@ function initDisplayColumn(queryInfo: QueryInfo, column?: string): string {
 }
 
 function getQueryColumnNames(model: QuerySelectModel): string[] {
-    const { displayColumn, queryInfo, schemaQuery, valueColumn } = model;
+    const { displayColumn, includeViewColumns, queryInfo, requiredColumns, schemaQuery, valueColumn } = model;
 
-    // Include PKs plus useful-to-search-over columns and append the grid view's column list
-    const requiredColumns = queryInfo.pkCols.concat([displayColumn, valueColumn, 'Name', 'Description', 'Alias']);
-    return queryInfo
-        .getDisplayColumns(schemaQuery.viewName)
-        .map(c => c.fieldKey)
-        .concat(requiredColumns)
-        .toArray();
+    const queryColumns = queryInfo.pkCols.concat([displayColumn, valueColumn].concat(requiredColumns));
+
+    if (includeViewColumns) {
+        return queryInfo
+            .getDisplayColumns(schemaQuery.viewName)
+            .map(c => c.fieldKey)
+            .concat(queryColumns)
+            .toArray();
+    }
+
+    return queryColumns.toArray();
 }
 
-export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel> {
-    return new Promise((resolve, reject) => {
-        const { containerFilter, containerPath, schemaQuery } = props;
+export async function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel> {
+    const { containerFilter, containerPath, schemaQuery } = props;
+    const { queryName, schemaName, viewName } = schemaQuery;
 
-        if (schemaQuery) {
-            const { queryName, schemaName, viewName } = schemaQuery;
+    const queryInfo = await getQueryDetails({ schemaName, queryName, containerPath });
 
-            getQueryDetails({ schemaName, queryName, containerPath })
-                .then(queryInfo => {
-                    const valueColumn = initValueColumn(queryInfo, props.valueColumn);
-                    const displayColumn = initDisplayColumn(queryInfo, props.displayColumn);
+    const valueColumn = initValueColumn(queryInfo, props.valueColumn);
+    const displayColumn = initDisplayColumn(queryInfo, props.displayColumn);
 
-                    let model = new QuerySelectModel({
-                        ...props,
-                        displayColumn,
-                        isInit: true,
-                        queryInfo,
-                        valueColumn,
-                    });
-
-                    if (props.value !== undefined && props.value !== null) {
-                        let filter: Filter.IFilter;
-
-                        if (props.multiple) {
-                            if (Array.isArray(props.value)) {
-                                filter = Filter.create(valueColumn, props.value, Filter.Types.IN);
-                            } else if (typeof props.value === 'string') {
-                                // Allow for setting multiValue value.
-                                // This requires updating the filter and the string
-                                filter = Filter.create(
-                                    valueColumn,
-                                    parseCsvString(props.value, props.delimiter, true),
-                                    Filter.Types.IN
-                                );
-                            }
-                        }
-
-                        if (!filter) {
-                            filter = Filter.create(valueColumn, props.value);
-                        }
-
-                        selectRowsDeprecated({
-                            columns: getQueryColumnNames(model),
-                            containerFilter,
-                            containerPath,
-                            schemaName,
-                            queryName,
-                            viewName,
-                            filterArray: [filter],
-                        }).then(data => {
-                            const selectedItems = fromJS(
-                                quoteValueColumnWithDelimiters(data, props.valueColumn, props.delimiter).models[
-                                    data.key
-                                ]
-                            );
-
-                            model = model.merge({
-                                rawSelectedValue: props.value,
-                                selectedItems,
-                            }) as QuerySelectModel;
-
-                            if (selectedItems.size) {
-                                model = model.merge({
-                                    allResults: model.allResults.merge(selectedItems),
-                                    selectedQuery: parseSelectedQuery(model, selectedItems),
-                                }) as QuerySelectModel;
-                            }
-
-                            if (props.fireQSChangeOnInit && Utils.isFunction(props.onQSChange)) {
-                                let selectOptions: SelectInputOption | SelectInputOption[] = formatResults(
-                                    model,
-                                    model.selectedItems
-                                );
-
-                                // mimic ReactSelect in that it will return a single option if multiple is not true
-                                if (props.multiple === false) {
-                                    selectOptions = selectOptions[0];
-                                }
-
-                                props.onQSChange(
-                                    props.name,
-                                    model.rawSelectedValue,
-                                    selectOptions,
-                                    props,
-                                    model.selectedItems
-                                );
-                            }
-
-                            // fire listener if given an initial value and a listener function
-                            if (model.rawSelectedValue) {
-                                props.onInitValue?.(model.rawSelectedValue, model.selectedItems.toList());
-                            }
-
-                            resolve(model);
-                        });
-                    } else {
-                        resolve(model);
-                    }
-                })
-                .catch(err => {
-                    // TODO: Need better handling of errors
-                    console.warn(err);
-                    reject(err);
-                });
-        } else {
-            resolve(undefined);
-        }
+    let model = new QuerySelectModel({
+        ...props,
+        displayColumn,
+        // Issue 46430: Only include necessary columns when not previewing options
+        includeViewColumns: props.previewOptions === true,
+        isInit: true,
+        queryInfo,
+        valueColumn,
     });
+
+    if (props.value !== undefined && props.value !== null) {
+        let filter: Filter.IFilter;
+
+        if (props.multiple) {
+            if (Array.isArray(props.value)) {
+                filter = Filter.create(valueColumn, props.value, Filter.Types.IN);
+            } else if (typeof props.value === 'string') {
+                // Allow for setting multiValue value.
+                // This requires updating the filter and the string
+                filter = Filter.create(
+                    valueColumn,
+                    parseCsvString(props.value, props.delimiter, true),
+                    Filter.Types.IN
+                );
+            }
+        }
+
+        if (!filter) {
+            filter = Filter.create(valueColumn, props.value);
+        }
+
+        const data = await selectRowsDeprecated({
+            columns: getQueryColumnNames(model),
+            containerFilter,
+            containerPath,
+            filterArray: [filter],
+            queryName,
+            schemaName,
+            viewName,
+        });
+
+        const selectedItems = fromJS(
+            quoteValueColumnWithDelimiters(data, props.valueColumn, props.delimiter).models[data.key]
+        );
+
+        model = model.merge({ rawSelectedValue: props.value, selectedItems }) as QuerySelectModel;
+
+        if (selectedItems.size) {
+            model = model.merge({
+                allResults: model.allResults.merge(selectedItems),
+                selectedQuery: parseSelectedQuery(model, selectedItems),
+            }) as QuerySelectModel;
+        }
+
+        if (props.fireQSChangeOnInit && Utils.isFunction(props.onQSChange)) {
+            let selectOptions: SelectInputOption | SelectInputOption[] = formatResults(model, model.selectedItems);
+
+            // mimic ReactSelect in that it will return a single option if multiple is not true
+            if (props.multiple === false) {
+                selectOptions = selectOptions[0];
+            }
+
+            props.onQSChange(props.name, model.rawSelectedValue, selectOptions, props, model.selectedItems);
+        }
+
+        // fire listener if given an initial value and a listener function
+        if (model.rawSelectedValue) {
+            props.onInitValue?.(model.rawSelectedValue, model.selectedItems.toList());
+        }
+    }
+
+    return model;
 }
 
 export interface QuerySelectModelProps {
@@ -340,6 +317,7 @@ export interface QuerySelectModelProps {
     containerPath?: string;
     delimiter: string;
     displayColumn: string;
+    includeViewColumns: boolean;
     isInit: boolean;
     maxRows: number;
     multiple: boolean;
@@ -361,12 +339,14 @@ export class QuerySelectModel
         containerPath: undefined,
         displayColumn: undefined,
         delimiter: DELIMITER,
+        includeViewColumns: false,
         isInit: false,
         maxRows: 20,
         multiple: false,
         queryFilters: undefined,
         queryInfo: undefined,
         rawSelectedValue: undefined,
+        requiredColumns: [],
         schemaQuery: undefined,
         searchResults: Map<string, Map<string, any>>(),
         selectedQuery: '',
@@ -381,12 +361,14 @@ export class QuerySelectModel
     declare containerPath: string;
     declare displayColumn: string;
     declare delimiter: string;
+    declare includeViewColumns: boolean;
     declare isInit: boolean;
     declare maxRows: number;
     declare multiple: boolean;
     declare queryFilters: List<Filter.IFilter>;
     declare queryInfo: QueryInfo;
     declare rawSelectedValue: any;
+    declare requiredColumns: string[];
     declare schemaQuery: SchemaQuery;
     declare searchResults: Map<string, Map<string, any>>;
     declare selectedQuery: string;

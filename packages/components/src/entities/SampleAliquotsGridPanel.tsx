@@ -48,7 +48,7 @@ const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> 
         perm: PermissionTypes.Insert,
     });
     moreItems.push({
-        button: <PicklistButton model={model} user={user} metricFeatureArea={metricFeatureArea} />,
+        button: <PicklistButton model={model} metricFeatureArea={metricFeatureArea} />,
         perm: PermissionTypes.ManagePicklists,
     });
     if (JobsButtonComponent && isWorkflowEnabled()) {

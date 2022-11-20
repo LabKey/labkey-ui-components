@@ -1,8 +1,6 @@
 import React, { FC, memo } from 'react';
 import { PermissionTypes } from '@labkey/api';
 
-import { User } from '../base/models/User';
-
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { RequiresPermission } from '../base/Permissions';
@@ -16,27 +14,28 @@ interface Props {
     asSubMenu?: boolean;
     currentProductId?: string;
     metricFeatureArea?: string;
+    sampleIds?: string[];
     model: QueryModel;
     picklistProductId?: string;
-    user: User;
 }
 
 export const PicklistButton: FC<Props> = memo(props => {
-    const { model, user, metricFeatureArea, asSubMenu, currentProductId, picklistProductId } = props;
+    const { model, metricFeatureArea, asSubMenu, currentProductId, picklistProductId, sampleIds } = props;
 
     const items = (
         <>
             <AddToPicklistMenuItem
                 queryModel={model}
-                user={user}
+                sampleIds={sampleIds}
                 metricFeatureArea={metricFeatureArea}
                 currentProductId={currentProductId}
                 picklistProductId={picklistProductId}
             />
             <PicklistCreationMenuItem
-                selectionKey={model?.selectionKey}
-                queryModel={model}
-                selectedQuantity={model?.selections?.size}
+                selectionKey={sampleIds ? undefined : model?.selectionKey}
+                queryModel={sampleIds ? undefined : model}
+                selectedQuantity={sampleIds ? undefined : model?.selections?.size}
+                sampleIds={sampleIds}
                 key="picklist"
                 asMenuItem
                 metricFeatureArea={metricFeatureArea}

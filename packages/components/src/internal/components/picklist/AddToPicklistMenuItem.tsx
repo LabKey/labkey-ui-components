@@ -1,6 +1,4 @@
 import React, { FC, memo, useCallback, useState } from 'react';
-
-import { User } from '../base/models/User';
 import { userCanManagePicklists } from '../../app/utils';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { SelectionMenuItem } from '../menus/SelectionMenuItem';
@@ -11,12 +9,12 @@ import { DisableableMenuItem } from '../samples/DisableableMenuItem';
 
 import { PicklistEditModal } from './PicklistEditModal';
 import { ChoosePicklistModal } from './ChoosePicklistModal';
+import { useServerContext } from '../base/ServerContext';
 
 interface Props {
     queryModel?: QueryModel;
     sampleIds?: string[];
     itemText?: string;
-    user: User;
     currentProductId?: string;
     picklistProductId?: string;
     metricFeatureArea?: string;
@@ -29,7 +27,6 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
         sampleIds,
         selectionMenuId,
         itemText,
-        user,
         queryModel,
         currentProductId,
         picklistProductId,
@@ -38,6 +35,7 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
     } = props;
     const [showChoosePicklist, setShowChoosePicklist] = useState<boolean>(false);
     const [showCreatePicklist, setShowCreatePicklist] = useState<boolean>(false);
+    const { user } = useServerContext();
 
     const closeAddToPicklist = useCallback((closeToCreate?: boolean) => {
         setShowChoosePicklist(false);

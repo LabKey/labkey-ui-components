@@ -36,7 +36,7 @@ import { fetchDomainDetails, getDomainNamePreviews } from '../domainproperties/a
 
 import { SAMPLE_INVENTORY_ITEM_SELECTION_KEY, SAMPLE_STATE_COLUMN_NAME } from '../samples/constants';
 
-import { GetNameExpressionOptionsResponse, loadNameExpressionOptions } from '../settings/actions';
+import { loadNameExpressionOptions } from '../settings/actions';
 
 import { SampleStatusLegend } from '../samples/SampleStatusLegend';
 

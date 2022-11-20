@@ -14,7 +14,7 @@ import { SubMenuItem } from '../menus/SubMenuItem';
 import { ResponsiveMenuButton } from './ResponsiveMenuButton';
 
 describe('ResponsiveMenuButton', () => {
-    const items = <PicklistButton model={makeTestQueryModel(SchemaQuery.create('s', 'q'))} user={TEST_USER_READER} />;
+    const items = <PicklistButton model={makeTestQueryModel(SchemaQuery.create('s', 'q'))} />;
     const DEFAULT_PROPS = {
         id: 'test-id',
         items,

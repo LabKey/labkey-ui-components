@@ -18,7 +18,7 @@ describe('PicklistButton', () => {
         const queryModel = makeTestQueryModel(SchemaQuery.create('test', 'query'));
         const featureArea = 'featureArea';
         const wrapper = mountWithServerContext(
-            <PicklistButton model={queryModel} user={TEST_USER_EDITOR} metricFeatureArea={featureArea} />,
+            <PicklistButton model={queryModel} metricFeatureArea={featureArea} />,
             { user: TEST_USER_EDITOR }
         );
         expect(wrapper.find(DropdownButton)).toHaveLength(1);
@@ -37,7 +37,7 @@ describe('PicklistButton', () => {
         const queryModel = makeTestQueryModel(SchemaQuery.create('test', 'query'));
         const featureArea = 'featureArea';
         const wrapper = mountWithServerContext(
-            <PicklistButton model={queryModel} user={TEST_USER_EDITOR} metricFeatureArea={featureArea} asSubMenu />,
+            <PicklistButton model={queryModel} metricFeatureArea={featureArea} asSubMenu />,
             { user: TEST_USER_EDITOR }
         );
         expect(wrapper.find(DropdownButton)).toHaveLength(0);

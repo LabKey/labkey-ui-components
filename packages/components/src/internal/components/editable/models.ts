@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, Iterable, List, Map, Record as ImmutableRecord, Set } from 'immutable';
+import { fromJS, Iterable, List, Map, OrderedMap, Record as ImmutableRecord, Set } from 'immutable';
 
 import { encodePart } from '../../../public/SchemaQuery';
 
@@ -177,7 +177,6 @@ export class EditorModel
         forUpdate?: boolean,
         readOnlyColumns?: List<string>,
         extraColumns?: Array<Partial<QueryColumn>>,
-        colFilter?: (col: QueryColumn) => boolean,
         forExport?: boolean
     ): List<Map<string, any>> {
         return this.getRawDataFromGridData(
@@ -188,7 +187,6 @@ export class EditorModel
             forUpdate,
             readOnlyColumns,
             extraColumns,
-            colFilter,
             forExport
         );
     }
@@ -202,32 +200,26 @@ export class EditorModel
         forUpdate = false,
         readOnlyColumns?: List<string>,
         extraColumns?: Array<Partial<QueryColumn>>,
-        colFilter?: (col: QueryColumn) => boolean,
         forExport?: boolean
     ): List<Map<string, any>> {
         let rawData = List<Map<string, any>>();
-        let columns = this.columns
-            .map(fieldKey => {
-                const col = queryInfo.getColumn(fieldKey);
-                if (!col) {
-                    console.warn(
-                        `Unable to resolve a column with fieldKey "${fieldKey}". Columns: [${this.columns.join(', ')}]`
-                    );
-                }
-                return col;
-            })
-            .toList();
+        let columnMap = this.columns.reduce((map, fieldKey) => {
+            const col = queryInfo.getColumn(fieldKey);
+            // Log a warning but still retain the key in the map for column order
+            if (!col) console.warn(`Unable to resolve column "${fieldKey}". Cannot retrieve raw data.`);
+            return map.set(fieldKey, col);
+        }, OrderedMap<string, QueryColumn>());
 
         extraColumns?.forEach(col => {
             const column = queryInfo.getColumn(col.fieldKey);
-            if (column) {
-                columns = columns.push(column);
+            if (column && !columnMap.has(column.fieldKey)) {
+                columnMap = columnMap.set(col.fieldKey, column);
             }
         });
 
         for (let rn = 0; rn < dataKeys.size; rn++) {
             let row = Map<string, any>();
-            columns.forEach((col, cn) => {
+            columnMap.valueSeq().forEach((col, cn) => {
                 if (!col) return;
                 const values = this.getValue(cn, rn);
 

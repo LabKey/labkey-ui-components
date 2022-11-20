@@ -81,24 +81,12 @@ const QUERY_INFO = QueryInfo.fromJSON({
 });
 
 describe('EditorModel', () => {
+    const queryInfo = QueryInfo.fromJSON(sampleSet2QueryInfo);
+
     describe('data validation', () => {
         test('no data', () => {
-            const emptyEditorGridData = {
-                cellMessages: Map<string, CellMessage>(),
-                cellValues: Map<string, List<ValueDescriptor>>(),
-                colCount: 5,
-                id: 'insert-samples|samples/sample set 2',
-                isPasting: false,
-                focusColIdx: -1,
-                focusRowIdx: -1,
-                numPastedRows: 0,
-                rowCount: 0,
-                selectedColIdx: -1,
-                selectedRowIdx: -1,
-                selectionCells: [],
-            };
-            const editorModel = new EditorModel(emptyEditorGridData);
-            const emptyDataModel = makeTestQueryModel(schemaQ, QueryInfo.fromJSON(sampleSet2QueryInfo), {}, [], 0);
+            const editorModel = new EditorModel({ id: 'insert-samples|samples/sample set 2' });
+            const emptyDataModel = makeTestQueryModel(schemaQ, queryInfo, {}, [], 0);
             const { uniqueKeyViolations, missingRequired } = editorModel.validateData(emptyDataModel, 'Name');
             expect(uniqueKeyViolations.isEmpty()).toBe(true);
             expect(missingRequired.isEmpty()).toBe(true);
@@ -107,7 +95,7 @@ describe('EditorModel', () => {
         });
 
         test('valid data', () => {
-            const editableGridData = {
+            const editorModel = new EditorModel({
                 cellMessages: Map<string, CellMessage>({
                     '1-0': 'description 1 message',
                 }),
@@ -159,11 +147,10 @@ describe('EditorModel', () => {
                 selectedColIdx: 1,
                 selectedRowIdx: 1,
                 selectionCells: [],
-            };
-            const editorModel = new EditorModel(editableGridData);
+            });
             const dataModel = makeTestQueryModel(
                 schemaQ,
-                QueryInfo.fromJSON(sampleSet2QueryInfo),
+                queryInfo,
                 {
                     '1': {
                         RequiredData: 'Grid Requirement 1',
@@ -182,7 +169,7 @@ describe('EditorModel', () => {
         });
 
         test('missing required data', () => {
-            const editableGridData = {
+            const editorModel = new EditorModel({
                 cellMessages: Map<string, CellMessage>({
                     '1-0': 'description 1 message',
                 }),
@@ -234,11 +221,10 @@ describe('EditorModel', () => {
                 selectedColIdx: 1,
                 selectedRowIdx: 1,
                 selectionCells: [],
-            };
-            const editorModel = new EditorModel(editableGridData);
+            });
             const dataModel = makeTestQueryModel(
                 schemaQ,
-                QueryInfo.fromJSON(sampleSet2QueryInfo),
+                queryInfo,
                 {
                     '1': {
                         Description: 'grid S-1 Description',
@@ -266,7 +252,7 @@ describe('EditorModel', () => {
         });
 
         test('unique key violations', () => {
-            const editableGridData = {
+            const editorModel = new EditorModel({
                 cellMessages: Map<string, CellMessage>({
                     '1-0': 'description 1 message',
                 }),
@@ -366,11 +352,10 @@ describe('EditorModel', () => {
                 selectedColIdx: 1,
                 selectedRowIdx: 1,
                 selectionCells: [],
-            };
-            const editorModel = new EditorModel(editableGridData);
+            });
             const dataModel = makeTestQueryModel(
                 schemaQ,
-                QueryInfo.fromJSON(sampleSet2QueryInfo),
+                queryInfo,
                 {
                     '1': {},
                     '2': {},
@@ -407,7 +392,7 @@ describe('EditorModel', () => {
         });
 
         test('missing required and unique key violations', () => {
-            const editableGridData = {
+            const editorModel = new EditorModel({
                 cellMessages: Map<string, CellMessage>({
                     '1-0': 'description 1 message',
                 }),
@@ -473,11 +458,10 @@ describe('EditorModel', () => {
                 selectedColIdx: 1,
                 selectedRowIdx: 1,
                 selectionCells: [],
-            };
-            const editorModel = new EditorModel(editableGridData);
+            });
             const dataModel = makeTestQueryModel(
                 schemaQ,
-                QueryInfo.fromJSON(sampleSet2QueryInfo),
+                queryInfo,
                 {
                     '1': {},
                     '2': {},

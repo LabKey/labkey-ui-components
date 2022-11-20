@@ -357,11 +357,10 @@ export class EntityIdCreationModel extends Record({
     postEntityGrid(
         dataModel: QueryModel,
         editorModel: EditorModel,
-        extraColumnsToInclude?: QueryColumn[],
-        colFilter?: (col: QueryColumn) => boolean
+        extraColumnsToInclude?: QueryColumn[]
     ): Promise<InsertRowsResponse> {
         const rows = editorModel
-            .getRawDataFromModel(dataModel, false, false, undefined, undefined, colFilter)
+            .getRawDataFromModel(dataModel, false, false)
             .valueSeq()
             .reduce((rows_, row) => {
                 let map = row.toMap();

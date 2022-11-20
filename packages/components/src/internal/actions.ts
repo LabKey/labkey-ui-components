@@ -1311,11 +1311,8 @@ export function changeColumn(
     // nothing to do if there is no such column
     if (colIndex === -1) return {};
 
-    let newCellMessages = editorModel.cellMessages;
-    let newCellValues = editorModel.cellValues;
-
     // get rid of existing messages and values at the designated index.
-    newCellMessages = newCellMessages.reduce((cellMessages, message, cellKey) => {
+    const newCellMessages = editorModel.cellMessages.reduce((cellMessages, message, cellKey) => {
         const [oldColIdx] = cellKey.split('-').map(v => parseInt(v, 10));
         if (oldColIdx !== colIndex) {
             return cellMessages.set(cellKey, message);
@@ -1324,7 +1321,7 @@ export function changeColumn(
         return cellMessages;
     }, Map<string, CellMessage>());
 
-    newCellValues = newCellValues.reduce((cellValues, value, cellKey) => {
+    const newCellValues = editorModel.cellValues.reduce((cellValues, value, cellKey) => {
         const [oldColIdx] = cellKey.split('-').map(v => parseInt(v, 10));
 
         if (oldColIdx !== colIndex) {
@@ -1385,10 +1382,7 @@ export function removeColumn(
     // nothing to do if there is no such column
     if (deleteIndex === -1) return {};
 
-    let newCellMessages = editorModel.cellMessages;
-    let newCellValues = editorModel.cellValues;
-
-    newCellMessages = newCellMessages.reduce((cellMessages, message, cellKey) => {
+    const newCellMessages = editorModel.cellMessages.reduce((cellMessages, message, cellKey) => {
         const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
         if (oldColIdx > deleteIndex) {
             return cellMessages.set([oldColIdx - 1, oldRowIdx].join('-'), message);
@@ -1399,7 +1393,7 @@ export function removeColumn(
         return cellMessages;
     }, Map<string, CellMessage>());
 
-    newCellValues = newCellValues.reduce((cellValues, value, cellKey) => {
+    const newCellValues = editorModel.cellValues.reduce((cellValues, value, cellKey) => {
         const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
 
         if (oldColIdx > deleteIndex) {
@@ -1470,10 +1464,7 @@ export function addColumns(
 
     if (editorColIndex < 0 || editorColIndex > queryInfo.columns.size) return {};
 
-    let newCellMessages = editorModel.cellMessages;
-    let newCellValues = editorModel.cellValues;
-
-    newCellMessages = newCellMessages.reduce((cellMessages, message, cellKey) => {
+    const newCellMessages = editorModel.cellMessages.reduce((cellMessages, message, cellKey) => {
         const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
         if (oldColIdx >= editorColIndex) {
             return cellMessages.set([oldColIdx + queryColumns.size, oldRowIdx].join('-'), message);
@@ -1484,7 +1475,7 @@ export function addColumns(
         return cellMessages;
     }, Map<string, CellMessage>());
 
-    newCellValues = newCellValues.reduce((cellValues, value, cellKey) => {
+    let newCellValues = editorModel.cellValues.reduce((cellValues, value, cellKey) => {
         const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
 
         if (oldColIdx >= editorColIndex) {
@@ -1495,6 +1486,7 @@ export function addColumns(
 
         return cellValues;
     }, Map<string, List<ValueDescriptor>>());
+
     for (let rowIdx = 0; rowIdx < editorModel.rowCount; rowIdx++) {
         for (let c = 0; c < queryColumns.size; c++) {
             newCellValues = newCellValues.set(genCellKey(editorColIndex + c, rowIdx), List<ValueDescriptor>());

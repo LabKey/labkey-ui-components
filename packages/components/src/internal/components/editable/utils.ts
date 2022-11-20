@@ -31,7 +31,11 @@ export const loadEditorModelData = async (
 ): Promise<Partial<EditorModel>> => {
     const { orderedRows, rows, queryInfo } = queryModelData;
     let columns = editorColumns ?? queryInfo.getInsertColumns();
-    if (extraColumns?.length > 0) columns = columns.push(...extraColumns);
+    extraColumns?.forEach(extraCol => {
+        if (!columns.find(col => col.fieldKey === extraCol.fieldKey)) {
+            columns = columns.push(extraCol);
+        }
+    });
     const lookupValueDescriptors = await getLookupValueDescriptors(
         columns.toArray(),
         fromJS(rows),
@@ -298,7 +302,7 @@ export const getEditorTableData = (
     forExport?: boolean
 ): [Map<string, string>, Map<string, Map<string, any>>] => {
     const tabData = editorModel
-        .getRawDataFromModel(queryModel, true, forUpdate, readOnlyColumns, extraColumns, colFilter, forExport)
+        .getRawDataFromModel(queryModel, true, forUpdate, readOnlyColumns, extraColumns, forExport)
         .toArray();
 
     const columns = editorModel.getColumns(

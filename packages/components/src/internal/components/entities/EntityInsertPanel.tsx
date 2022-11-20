@@ -768,8 +768,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const { api, entityDataType, nounPlural } = this.props;
 
         if (!editorModel) {
-            this.setState(() => ({
-                dataModel: dataModel.mutate({
+            this.setState(state => ({
+                dataModel: state.dataModel.mutate({
                     rowsError: 'Grid does not expose an editor. Ensure the grid is properly initialized for editing.',
                 }),
             }));
@@ -779,8 +779,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const errors = editorModel.getValidationErrors(dataModel, entityDataType.uniqueFieldKey);
         if (errors.length > 0) {
             this.setSubmitting(false);
-            this.setState(() => ({
-                dataModel: dataModel.mutate({ rowsError: errors.join('  ') }),
+            this.setState(state => ({
+                dataModel: state.dataModel.mutate({ rowsError: errors.join('  ') }),
             }));
             return;
         }
@@ -788,15 +788,12 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         this.setSubmitting(true);
 
         let extraColumnsToInclude: QueryColumn[];
-        if (creationType === SampleCreationType.Aliquots) extraColumnsToInclude = this.getAliquotCreationExtraColumns(); // include required sample property fields in post
+        if (creationType === SampleCreationType.Aliquots) {
+            extraColumnsToInclude = this.getAliquotCreationExtraColumns(); // include required sample property fields in post
+        }
 
         try {
-            const response = await insertModel.postEntityGrid(
-                dataModel,
-                editorModel,
-                extraColumnsToInclude,
-                this.isIncludedColumn
-            );
+            const response = await insertModel.postEntityGrid(dataModel, editorModel, extraColumnsToInclude);
 
             this.setSubmitting(false);
 
@@ -811,16 +808,16 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                     response.transactionAuditId
                 );
             } else {
-                this.setState(() => ({
-                    dataModel: dataModel.mutate({
+                this.setState(state => ({
+                    dataModel: state.dataModel.mutate({
                         rowsError: 'Insert response has unexpected format. No "rows" available.',
                     }),
                 }));
             }
         } catch (error) {
             this.setSubmitting(false);
-            this.setState(() => ({
-                dataModel: dataModel.mutate({ rowsError: resolveErrorMessage(error.error, this.props.nounPlural) }),
+            this.setState(state => ({
+                dataModel: state.dataModel.mutate({ rowsError: resolveErrorMessage(error.error, nounPlural) }),
             }));
         }
     };
@@ -891,11 +888,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         return null;
     };
 
-    onTabChange = (tab): void => {
-        if (this.props.onTabChange) {
-            this.props.onTabChange(tab);
-        }
-
+    onTabChange = (tab: number): void => {
+        this.props.onTabChange?.(tab);
         this.setState({ error: undefined });
     };
 

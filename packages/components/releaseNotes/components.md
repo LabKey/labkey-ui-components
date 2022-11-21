@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD November 2022
+* Updates for Admin page consistency
+  * AdminSettingsPage refactor and port from LKB and LKSM
+  * Add new AdminAppContext
+
 ### version 2.256.0
 *Released*: 18 November 2022
 * Introduce `includeViewColumns` bit on `QuerySelectModel` and set based on `previewOptions` prop of `QuerySelect` during initialization.

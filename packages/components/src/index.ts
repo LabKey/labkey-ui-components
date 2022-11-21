@@ -682,6 +682,7 @@ import {
     TEST_LKSM_STARTER_MODULE_CONTEXT,
 } from './internal/productFixtures';
 import { GENERAL_ASSAY_PROVIDER_NAME, RUN_PROPERTIES_REQUIRED_COLUMNS } from './internal/components/assay/constants';
+import { AdminSettingsPage } from './internal/components/administration/AdminSettingsPage';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -1045,6 +1046,7 @@ export {
     SECURITY_ROLE_DESCRIPTIONS,
     HOSTED_APPLICATION_SECURITY_ROLES,
     showPremiumFeatures,
+    AdminSettingsPage,
     // assay
     AssayUploadResultModel,
     AssayDesignEmptyAlert,
@@ -1485,7 +1487,8 @@ export type { UsersLoader } from './internal/components/forms/actions';
 export type { LineageGroupingOptions } from './internal/components/lineage/types';
 export type { AnnouncementModel, ThreadActions } from './internal/announcements/model';
 export type { AnnouncementsAPIWrapper } from './internal/announcements/APIWrapper';
-export type { AppContext, ExtendableAppContext } from './internal/AppContext';
+export type { AdminAppContext, AppContext, ExtendableAppContext } from './internal/AppContext';
+export type { WithAdminAppContext } from './internal/components/administration/useAdminAppContext';
 export type { ThreadBlockProps } from './internal/announcements/ThreadBlock';
 export type { ThreadEditorProps } from './internal/announcements/ThreadEditor';
 export type { ContainerUser, UseContainerUser } from './internal/components/container/actions';

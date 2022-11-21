@@ -64,3 +64,5 @@ interface ReferencingNotebooksComponentProps {
 }
 
 export type ReferencingNotebooks = ComponentType<ReferencingNotebooksComponentProps>;
+
+export type NotebookProjectSettings = ComponentType;

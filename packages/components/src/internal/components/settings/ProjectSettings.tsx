@@ -70,7 +70,7 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(({ onChange, onSuc
     }
 
     return (
-        <div className="project-settings panel">
+        <div className="project-settings panel panel-default">
             <div className="panel-body">
                 <h4 className="settings-panel-title">Project Settings</h4>
 

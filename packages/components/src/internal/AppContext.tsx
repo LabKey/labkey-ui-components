@@ -20,12 +20,18 @@ import { SampleTypeAppContext } from '../entities';
 import { AssayAppContext } from '../assay';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from './APIWrapper';
+import { NotebookProjectSettings } from './app/models';
 
 export interface NavigationSettings {
     showCurrentContainer: boolean;
 }
 
+export interface AdminAppContext {
+    NotebookProjectSettingsComponent: NotebookProjectSettings;
+}
+
 export interface AppContext {
+    admin?: AdminAppContext;
     api?: ComponentsAPIWrapper;
     assay?: AssayAppContext;
     navigation?: NavigationSettings;

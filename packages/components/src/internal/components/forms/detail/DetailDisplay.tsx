@@ -287,6 +287,7 @@ export function resolveDetailEditRenderer(
                     onAdditionalFormDataChange={onAdditionalFormDataChange}
                     onSelectChange={options?.onSelectChange}
                     selectInputProps={{ inputClass: 'col-sm-12', showLabel }}
+                    showLabel={showLabel}
                     value={value}
                 />
             );

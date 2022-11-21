@@ -1,7 +1,7 @@
 import { List, fromJS, Map } from 'immutable';
 import React from 'react';
 import Formsy from 'formsy-react';
-import { mount, ReactWrapper } from 'enzyme';
+import { mount, ReactWrapper, shallow } from 'enzyme';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
 
@@ -159,8 +159,8 @@ describe('DetailDisplay', () => {
 describe('defaultTitleRenderer', () => {
     test('editable', () => {
         const col = new QueryColumn({ caption: 'test', readOnly: false, userEditable: true, shownInUpdateView: true });
-        const result = mount(<div>{defaultTitleRenderer(col)}</div>);
-        expect(result.find('.field__un-editable')).toHaveLength(0);
+        const result = shallow(<div>{defaultTitleRenderer(col)}</div>);
+        expect(result.find('span')).toHaveLength(0);
         expect(result.find(LabelOverlay)).toHaveLength(1);
         expect(result.find(LabelOverlay).prop('column')).toBe(col);
         result.unmount();
@@ -168,9 +168,9 @@ describe('defaultTitleRenderer', () => {
 
     test('not editable', () => {
         const col = new QueryColumn({ caption: 'test', readOnly: false, userEditable: true, shownInUpdateView: false });
-        const result = mount(<div>{defaultTitleRenderer(col)}</div>);
-        expect(result.find('.field__un-editable')).toHaveLength(1);
-        expect(result.find('.field__un-editable').text()).toBe('test');
+        const result = shallow(<div>{defaultTitleRenderer(col)}</div>);
+        expect(result.find('span')).toHaveLength(1);
+        expect(result.find('span').text()).toBe('test');
         expect(result.find(LabelOverlay)).toHaveLength(0);
         result.unmount();
     });

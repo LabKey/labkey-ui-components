@@ -24,6 +24,7 @@ import { DisableableInput, DisableableInputProps, DisableableInputState } from '
 
 export interface TextInputProps extends DisableableInputProps {
     addLabelAsterisk?: boolean;
+    addonAfter?: ReactNode;
     elementWrapperClassName?: any[] | string;
     label?: any;
     labelClassName?: any[] | string;
@@ -38,6 +39,7 @@ export interface TextInputProps extends DisableableInputProps {
     startFocused?: boolean;
     validatePristine?: boolean;
     validationError?: string;
+    validations?: string;
     value?: any;
 }
 
@@ -117,6 +119,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
 
     render() {
         const {
+            addonAfter,
             elementWrapperClassName,
             labelClassName,
             name,
@@ -128,12 +131,12 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
             validatePristine,
             validationError,
         } = this.props;
+        let { validations } = this.props;
 
-        let type = 'text',
-            step,
-            validations;
+        let type = 'text';
+        let step: string;
 
-        if (queryColumn) {
+        if (queryColumn && !validations) {
             if (queryColumn.jsonType === 'int') {
                 step = '1';
                 type = 'number';
@@ -152,6 +155,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
 
         return (
             <Input
+                addonAfter={addonAfter}
                 disabled={this.state.isDisabled}
                 changeDebounceInterval={0}
                 elementWrapperClassName={elementWrapperClassName}

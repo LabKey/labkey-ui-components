@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Updates for Admin page consistency
   * AdminSettingsPage refactor and port from LKB and LKSM
   * Add new AdminAppContext
+  * Rename GroupManagement to GroupManagementPage
 
 ### version 2.256.0
 *Released*: 18 November 2022

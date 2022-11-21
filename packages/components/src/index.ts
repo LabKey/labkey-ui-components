@@ -290,7 +290,7 @@ import { UserManagementPage } from './internal/components/administration/UserMan
 import { CreateProjectPage } from './internal/components/administration/CreateProjectPage';
 import { ProjectManagementPage } from './internal/components/administration/ProjectManagementPage';
 import { BasePermissions } from './internal/components/administration/BasePermissions';
-import { GroupManagement } from './internal/components/administration/GroupManagement';
+import { GroupManagementPage } from './internal/components/administration/GroupManagementPage';
 import { showPremiumFeatures } from './internal/components/administration/utils';
 import {
     APPLICATION_SECURITY_ROLES,
@@ -1042,7 +1042,7 @@ export {
     CreateProjectPage,
     ProjectManagementPage,
     BasePermissions,
-    GroupManagement,
+    GroupManagementPage,
     SECURITY_ROLE_DESCRIPTIONS,
     HOSTED_APPLICATION_SECURITY_ROLES,
     showPremiumFeatures,

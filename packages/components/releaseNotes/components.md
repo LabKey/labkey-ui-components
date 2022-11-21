@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * DetailDisplay processFields should always set hideLabel to true in editingMode
   * DetailDisplay update resolveDetailEditRenderer to use wrapped input components instead of formsy-react-components directly
   * LabelOverlay rendering of asterisk for required prop to match in formsy case
+  * AppendUnitsInput: utilize TextInput, pass through showLabel prop
 
 ### version 2.256.0
 *Released*: 18 November 2022

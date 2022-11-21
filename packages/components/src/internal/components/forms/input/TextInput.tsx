@@ -157,9 +157,8 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
                 elementWrapperClassName={elementWrapperClassName}
                 help={help}
                 id={queryColumn.fieldKey}
-                label={showLabel ? this.renderLabel() : null}
-                labelClassName={labelClassName}
-                layout={showLabel ? undefined : 'elementOnly'}
+                label={this.renderLabel()}
+                labelClassName={showLabel ? labelClassName : 'hide-label'}
                 name={name ?? queryColumn.fieldKey}
                 onChange={this.onChange}
                 placeholder={placeholder ?? `Enter ${queryColumn.caption.toLowerCase()}`}

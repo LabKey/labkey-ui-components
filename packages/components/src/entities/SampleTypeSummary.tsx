@@ -1,6 +1,6 @@
 import React, { FC, memo, useMemo, useState } from 'react';
 
-import { Filter, PermissionTypes, Query } from '@labkey/api';
+import { PermissionTypes, Query } from '@labkey/api';
 
 import { SelectView, SelectViewInput } from '../internal/components/base/SelectViewInput';
 import { SCHEMAS } from '../internal/schemas';
@@ -9,10 +9,10 @@ import { hasAnyPermissions, User } from '../internal/components/base/models/User
 import { GridPanelWithModel } from '../public/QueryModel/GridPanel';
 import { QuerySort } from '../public/QuerySort';
 
+import { NON_MEDIA_SAMPLE_TYPES_FILTER } from '../internal/components/samples/constants';
+
 import { SampleTypeHeatMap } from './SampleTypeHeatMap';
 import { SampleTypeCards } from './SampleTypeCards';
-import { useServerContext } from '../internal/components/base/ServerContext';
-import { NON_MEDIA_SAMPLE_TYPES_FILTER } from '../internal/components/samples/constants';
 
 const SAMPLE_TYPE_VIEWS = [SelectView.Cards, SelectView.Grid, SelectView.Heatmap];
 
@@ -64,7 +64,7 @@ export const SampleTypeSummary: FC<Props> = memo(props => {
                 views={SAMPLE_TYPE_VIEWS}
             />
             {selectedView === SelectView.Heatmap && <SampleTypeHeatMap navigate={navigate} user={user} />}
-            {selectedView === SelectView.Cards && <SampleTypeCards  />}
+            {selectedView === SelectView.Cards && <SampleTypeCards />}
             {selectedView === SelectView.Grid && (
                 <GridPanelWithModel
                     allowViewCustomization={false}

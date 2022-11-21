@@ -1,11 +1,12 @@
 import React from 'react';
 import { Button, MenuItem } from 'react-bootstrap';
 
+import { mount } from 'enzyme';
+
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
 
 import { PicklistCreationMenuItem } from './PicklistCreationMenuItem';
 import { PicklistEditModal } from './PicklistEditModal';
-import { mount } from 'enzyme';
 
 beforeAll(() => {
     LABKEY.moduleContext.inventory = { productId: ['FreezerManager'] };
@@ -68,5 +69,4 @@ describe('PicklistCreationMenuItem', () => {
         expect(wrapper.find('MenuItem')).toHaveLength(0);
         wrapper.unmount();
     });
-
 });

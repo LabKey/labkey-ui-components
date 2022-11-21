@@ -1,4 +1,5 @@
 import React, { FC, memo, useCallback, useState } from 'react';
+
 import { userCanManagePicklists } from '../../app/utils';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { SelectionMenuItem } from '../menus/SelectionMenuItem';
@@ -7,20 +8,21 @@ import { getSampleStatusType, isSampleOperationPermitted } from '../samples/util
 import { SampleOperation } from '../samples/constants';
 import { DisableableMenuItem } from '../samples/DisableableMenuItem';
 
-import { PicklistEditModal } from './PicklistEditModal';
-import { ChoosePicklistModal } from './ChoosePicklistModal';
 import { User } from '../base/models/User';
 
+import { PicklistEditModal } from './PicklistEditModal';
+import { ChoosePicklistModal } from './ChoosePicklistModal';
+
 interface Props {
-    queryModel?: QueryModel;
-    sampleIds?: string[];
-    itemText?: string;
-    user: User;
     currentProductId?: string;
-    picklistProductId?: string;
+    itemText?: string;
     metricFeatureArea?: string;
+    picklistProductId?: string;
+    queryModel?: QueryModel;
     sampleFieldKey?: string;
+    sampleIds?: string[];
     selectionMenuId?: string;
+    user: User;
 }
 
 export const AddToPicklistMenuItem: FC<Props> = memo(props => {

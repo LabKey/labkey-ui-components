@@ -7,17 +7,18 @@ import { RequiresPermission } from '../base/Permissions';
 
 import { ResponsiveMenuButton } from '../buttons/ResponsiveMenuButton';
 
+import { User } from '../base/models/User';
+
 import { PicklistCreationMenuItem } from './PicklistCreationMenuItem';
 import { AddToPicklistMenuItem } from './AddToPicklistMenuItem';
-import { User } from '../base/models/User';
 
 interface Props {
     asSubMenu?: boolean;
     currentProductId?: string;
     metricFeatureArea?: string;
-    sampleIds?: string[];
     model: QueryModel;
     picklistProductId?: string;
+    sampleIds?: string[];
     user: User;
 }
 

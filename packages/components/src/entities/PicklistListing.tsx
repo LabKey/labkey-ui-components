@@ -17,13 +17,14 @@ import { QuerySort } from '../public/QuerySort';
 import { SCHEMAS } from '../internal/schemas';
 import { Page } from '../internal/components/base/Page';
 
-import { InjectedQueryModels, RequiresModelAndActions, withQueryModels, } from '../public/QueryModel/withQueryModels';
+import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from '../public/QueryModel/withQueryModels';
 
-import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
 import { Picklist } from '../internal/components/picklist/models';
 import { deletePicklists, getPicklistListingContainerFilter } from '../internal/components/picklist/actions';
 import { PUBLIC_PICKLIST_CATEGORY } from '../internal/components/picklist/constants';
 import { PicklistCreationMenuItem } from '../internal/components/picklist/PicklistCreationMenuItem';
+
+import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
 
 const MY_PICKLISTS_GRID_ID = 'my-picklists';
 const TEAM_PICKLISTS_GRID_ID = 'team-picklists';
@@ -119,10 +120,14 @@ const PicklistGridImpl: FC<PicklistGridProps & InjectedQueryModels> = memo(props
             title="Picklists"
             caption={PICKLISTS_CAPTION}
             context={
-                userCanManagePicklists(user) ?
-                    <PicklistCreationMenuItem user={user} asMenuItem={false} itemText={"Create Picklist"} onCreatePicklist={() => actions.loadAllModels()}/>
-                    : undefined
-
+                userCanManagePicklists(user) ? (
+                    <PicklistCreationMenuItem
+                        user={user}
+                        asMenuItem={false}
+                        itemText="Create Picklist"
+                        onCreatePicklist={() => actions.loadAllModels()}
+                    />
+                ) : undefined
             }
         >
             <TabbedGridPanel

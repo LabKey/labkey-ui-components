@@ -15,9 +15,10 @@
  */
 import React from 'react';
 
-import { ManageDropdownButton } from './ManageDropdownButton';
 import { shallow } from 'enzyme';
 import { DropdownButton } from 'react-bootstrap';
+
+import { ManageDropdownButton } from './ManageDropdownButton';
 
 describe('<ManageDropdownButton/>', () => {
     test('default props', () => {
@@ -25,8 +26,8 @@ describe('<ManageDropdownButton/>', () => {
 
         const wrapper = shallow(component);
         const dropdown = wrapper.find(DropdownButton);
-        expect(dropdown.prop("noCaret")).toBe(false)
-        expect(dropdown.prop("title")).toBe("Manage");
+        expect(dropdown.prop('noCaret')).toBe(false);
+        expect(dropdown.prop('title')).toBe('Manage');
     });
 
     test('custom props', () => {
@@ -34,8 +35,12 @@ describe('<ManageDropdownButton/>', () => {
 
         const wrapper = shallow(component);
         const dropdown = wrapper.find(DropdownButton);
-        expect(dropdown.prop("noCaret")).toBe(true)
-        expect(dropdown.prop("pullRight")).toBe(true);
-        expect(dropdown.prop("title")).toStrictEqual(<span><i className="fa fa-bars" /> Manage</span>);
+        expect(dropdown.prop('noCaret')).toBe(true);
+        expect(dropdown.prop('pullRight')).toBe(true);
+        expect(dropdown.prop('title')).toStrictEqual(
+            <span>
+                <i className="fa fa-bars" /> Manage
+            </span>
+        );
     });
 });

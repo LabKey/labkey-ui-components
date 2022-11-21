@@ -1,15 +1,16 @@
+import { Filter } from '@labkey/api';
+
 import { IDomainField } from '../domainproperties/models';
 
 import { SAMPLE_TYPE } from '../domainproperties/PropDescType';
 
 import { FindField } from './models';
-import { Filter } from '@labkey/api';
 
 export enum ALIQUOT_FILTER_MODE {
-    all = 'all',
-    samples = 'samples',
     aliquots = 'aliquots',
-    none = 'none', // when using grid filter with 'is blank'
+    all = 'all',
+    none = 'none',
+    samples = 'samples', // when using grid filter with 'is blank'
 }
 
 export const SAMPLE_INVENTORY_ITEM_SELECTION_KEY = 'inventoryItems';
@@ -205,5 +206,5 @@ export const SAMPLE_DATA_EXPORT_CONFIG = {
 };
 
 // Issue 46037: Some plate-based assays (e.g., NAB) create samples with a bogus 'Material' sample type, which should get excluded everywhere in the application
-export const SAMPLES_WITH_TYPES_FILTER = Filter.create('SampleSet', 'Material',  Filter.Types.NEQ);
+export const SAMPLES_WITH_TYPES_FILTER = Filter.create('SampleSet', 'Material', Filter.Types.NEQ);
 export const NON_MEDIA_SAMPLE_TYPES_FILTER = Filter.create('Category', 'media', Filter.Types.NEQ_OR_NULL);

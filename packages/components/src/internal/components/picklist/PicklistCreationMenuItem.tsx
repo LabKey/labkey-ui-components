@@ -5,12 +5,13 @@ import { userCanManagePicklists } from '../../app/utils';
 
 import { SelectionMenuItem } from '../menus/SelectionMenuItem';
 
-import { PicklistEditModal, PicklistEditModalProps } from './PicklistEditModal';
 import { User } from '../base/models/User';
 
+import { PicklistEditModal, PicklistEditModalProps } from './PicklistEditModal';
+
 interface Props extends Omit<PicklistEditModalProps, 'onCancel' | 'onFinish' | 'showNotification'> {
-    itemText?: string;
     asMenuItem?: boolean;
+    itemText?: string;
     onCreatePicklist?: () => void;
     user: User;
 }
@@ -48,7 +49,11 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
                 />
             )}
             {!queryModel && asMenuItem && <MenuItem onClick={onClick}>{itemText}</MenuItem>}
-            {!queryModel && !asMenuItem && <Button bsStyle="success" onClick={onClick}>{itemText}</Button>}
+            {!queryModel && !asMenuItem && (
+                <Button bsStyle="success" onClick={onClick}>
+                    {itemText}
+                </Button>
+            )}
             {showModal && (
                 <PicklistEditModal
                     queryModel={queryModel}

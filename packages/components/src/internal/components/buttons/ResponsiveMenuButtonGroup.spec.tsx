@@ -18,7 +18,7 @@ describe('ResponsiveMenuButtonGroup', () => {
     const DEFAULT_PROPS = {
         items: [
             { button: <PicklistButton model={model} user={TEST_USER_READER} />, perm: PermissionTypes.ManagePicklists },
-            { button: <PicklistButton model={model}  user={TEST_USER_READER} />, perm: PermissionTypes.ManagePicklists },
+            { button: <PicklistButton model={model} user={TEST_USER_READER} />, perm: PermissionTypes.ManagePicklists },
         ],
     };
 

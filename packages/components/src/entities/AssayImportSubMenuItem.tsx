@@ -1,6 +1,8 @@
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
 
+import { List } from 'immutable';
+
 import { MAX_EDITABLE_GRID_ROWS } from '../internal/constants';
 
 import { SubMenuItemProps } from '../internal/components/menus/SubMenuItem';
@@ -8,14 +10,13 @@ import { QueryModel } from '../public/QueryModel/QueryModel';
 import { DisableableMenuItem } from '../internal/components/samples/DisableableMenuItem';
 
 import { InjectedAssayModel, withAssayModels } from '../internal/components/assay/withAssayModels';
-import { getImportItemsForAssayDefinitions } from './utils';
+
 import { getCrossFolderSelectionResult } from '../internal/components/entities/actions';
 import { MenuOption, SubMenu } from '../internal/components/menus/SubMenu';
-import { List } from 'immutable';
 import { isProjectContainer } from '../internal/app/utils';
-import {
-    EntityCrossProjectSelectionConfirmModal
-} from '../internal/components/entities/EntityCrossProjectSelectionConfirmModal';
+import { EntityCrossProjectSelectionConfirmModal } from '../internal/components/entities/EntityCrossProjectSelectionConfirmModal';
+
+import { getImportItemsForAssayDefinitions } from './utils';
 
 interface Props extends SubMenuItemProps {
     currentProductId?: string;
@@ -48,7 +49,6 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
     } = props;
     const [crossFolderSelectionResult, setCrossFolderSelectionResult] = useState(undefined);
 
-
     const onImportDataMenuSelectOnClick = useCallback(
         async (href: string) => {
             // check cross folder selection
@@ -57,7 +57,6 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
                 const result = await getCrossFolderSelectionResult(queryModel.id, 'sample', undefined, picklistName);
 
                 if (result.crossFolderSelectionCount > 0) {
-
                     setCrossFolderSelectionResult({
                         ...result,
                         title: 'Cannot Import Assay Data',
@@ -68,15 +67,12 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
 
             window.location.href = href;
         },
-        [
-            queryModel,
-        ]
+        [queryModel]
     );
 
     const dismissCrossFolderError = useCallback(() => {
         setCrossFolderSelectionResult(undefined);
     }, []);
-
 
     const items: List<MenuOption> = useMemo(() => {
         if (!isLoaded) {
@@ -92,7 +88,7 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
             targetProductId,
             ignoreFilter
         ).reduce((subItems, href, assay) => {
-            subItems = subItems.push( {
+            subItems = subItems.push({
                 href: isProjectContainer() ? undefined : href,
                 onClick: disabled || !isProjectContainer() ? undefined : () => onImportDataMenuSelectOnClick(href),
                 name: assay.name,
@@ -102,22 +98,18 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
         }, List());
     }, [assayModel, isLoaded, providerType, queryModel, currentProductId, targetProductId, ignoreFilter]);
 
-
-
     const overlayMessage = useMemo(() => {
-        if (!requireSelection)
-            return '';
+        if (!requireSelection) return '';
 
         const selectedCount = queryModel?.selections?.size;
         if (!selectedCount) {
-            return 'Select one or more ' + nounPlural + '.'
+            return 'Select one or more ' + nounPlural + '.';
         } else if (selectedCount > MAX_EDITABLE_GRID_ROWS) {
-            return 'At most ' + MAX_EDITABLE_GRID_ROWS + ' ' + nounPlural + ' can be selected.'
+            return 'At most ' + MAX_EDITABLE_GRID_ROWS + ' ' + nounPlural + ' can be selected.';
         } else {
             return '';
         }
-    }, [requireSelection, queryModel?.selections, nounPlural])
-
+    }, [requireSelection, queryModel?.selections, nounPlural]);
 
     if (disabled) {
         return <DisableableMenuItem operationPermitted={false}>{text}</DisableableMenuItem>;
@@ -134,7 +126,6 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
     if (items.size === 0) {
         return null;
     }
-
 
     const menuProps = Object.assign({}, props, {
         disabled: overlayMessage.length > 0,
@@ -163,8 +154,8 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
                     currentFolderSelectionCount={crossFolderSelectionResult.currentFolderSelectionCount}
                     onDismiss={dismissCrossFolderError}
                     title={crossFolderSelectionResult.title}
-                    noun={'sample'}
-                    nounPlural={'samples'}
+                    noun="sample"
+                    nounPlural="samples"
                 />
             )}
         </>

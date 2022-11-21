@@ -3,15 +3,16 @@ import { List, Map, OrderedMap } from 'immutable';
 
 import { AuditBehaviorTypes, Query } from '@labkey/api';
 
-import { EntityChoice, EntityDataType, IEntityTypeOption } from '../internal/components/entities/models';
+import { EntityChoice, IEntityTypeOption } from '../internal/components/entities/models';
 
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../internal/APIWrapper';
+import { getDefaultAPIWrapper } from '../internal/APIWrapper';
 
 import { UpdateGridTab } from '../internal/components/editable/EditableGridPanelForUpdateWithLineage';
 
 import { EditorMode, EditorModel, IEditableGridLoader, IGridResponse } from '../internal/components/editable/models';
 
 import { isFreezerManagementEnabled } from '../internal/app/utils';
+import { SamplesEditableGridProps } from '../internal/sampleModels';
 
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { SchemaQuery } from '../public/SchemaQuery';
@@ -44,29 +45,6 @@ import { DiscardConsumedSamplesModal } from './DiscardConsumedSamplesModal';
 import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
 
 import { getOriginalParentsFromLineage } from './actions';
-
-export interface SamplesEditableGridProps {
-    api?: ComponentsAPIWrapper;
-    combineParentTypes?: boolean;
-    displayQueryModel: QueryModel;
-    editableGridUpdateData?: OrderedMap<string, any>;
-    getConvertedStorageUpdateData?: (
-        storageRows: any[],
-        sampleItems: {},
-        sampleTypeUnit: string,
-        noStorageSamples: any[],
-        selection: List<any>
-    ) => any;
-    getIsDirty?: () => boolean;
-    invalidateSampleQueries?: (schemaQuery: SchemaQuery) => void;
-    onGridEditCancel: () => void;
-    onGridEditComplete: () => void;
-    parentDataTypes: List<EntityDataType>;
-    samplesGridOmittedColumns?: List<string>;
-    samplesGridRequiredColumns?: string[];
-    selectionData: Map<string, any>;
-    setIsDirty?: (isDirty: boolean) => void;
-}
 
 type Props = SamplesEditableGridProps &
     SamplesSelectionProviderProps &

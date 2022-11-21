@@ -60,12 +60,10 @@ import {
 } from '../internal/components/search/utils';
 
 import { FieldFilter, FilterProps, FinderReport } from '../internal/components/search/models';
-
 import { SAMPLE_FINDER_SESSION_PREFIX } from '../internal/components/search/constants';
-
 import { AssayStateModel } from '../internal/components/assay/models';
-
 import { AssayDomainTypes } from '../internal/AssayDefinitionModel';
+import { AssaySampleColumnProp, SamplesEditableGridProps } from '../internal/sampleModels';
 
 import { getSampleFinderLocalStorageKey } from './utils';
 import { EntityFieldFilterModal } from './EntityFieldFilterModal';
@@ -74,9 +72,7 @@ import { SampleFinderSavedViewsMenu } from './SampleFinderSavedViewsMenu';
 import { SampleFinderSaveViewModal } from './SampleFinderSaveViewModal';
 import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
 
-import { SamplesEditableGridProps } from './SamplesEditableGrid';
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
-import { AssaySampleColumnProp } from './models';
 
 interface SampleFinderSamplesGridProps {
     columnDisplayNames?: { [key: string]: string };

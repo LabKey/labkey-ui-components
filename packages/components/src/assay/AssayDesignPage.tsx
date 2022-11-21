@@ -3,7 +3,7 @@ import { List, Map } from 'immutable';
 import { WithRouterProps } from 'react-router';
 
 import { InjectedAssayModel } from '../internal/components/assay/withAssayModels';
-import { InjectedRouteLeaveProps, useRouteLeave } from '../internal/util/RouteLeave';
+import { useRouteLeave } from '../internal/util/RouteLeave';
 import { useNotificationsContext } from '../internal/components/notifications/NotificationsContext';
 import { AssayProtocolModel } from '../internal/components/domainproperties/assay/models';
 import { useServerContext } from '../internal/components/base/ServerContext';
@@ -22,7 +22,6 @@ import { Page } from '../internal/components/base/Page';
 import { Alert } from '../internal/components/base/Alert';
 import { getActionErrorMessage } from '../internal/util/messaging';
 import { AssayDesignerPanels } from '../internal/components/domainproperties/assay/AssayDesignerPanels';
-import { ProductMenuModel } from '../internal/components/navigation/model';
 
 import { DEFAULT_SAMPLE_FIELD_CONFIG } from '../internal/components/samples/constants';
 
@@ -31,7 +30,7 @@ import { CommonPageProps } from '../internal/models';
 import { protocolHasSample, renderSampleRequiredPanelHeader } from './SampleRequiredDomainHeader';
 import { AssayHeader } from './AssayHeader';
 import { onAssayDesignChange } from './actions';
-import { useAssayAppContext } from './AssayAppContext';
+import { useAssayAppContext } from './useAssayAppContext';
 import { assayPage } from './AssayPageHOC';
 
 const ASSAY_DESIGNER_HEADER = 'Connect your experimental results to samples for rich data connections.';
@@ -107,7 +106,7 @@ const AssayDesignPageBody: FC<Props> = memo(props => {
         }
 
         if (params?.copy && assayProtocol?.protocolId) {
-            getProtocol(assayProtocol.protocolId, assayProtocol.name, true);
+            getProtocol(assayProtocol.protocolId, undefined, true);
         } else if (!assayProtocol && params?.provider) {
             getProtocol(undefined, params.provider, false);
         } else if (assayProtocol) {

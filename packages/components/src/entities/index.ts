@@ -60,7 +60,7 @@ import { SampleTypeListingPage } from './SampleTypeListingPage';
 import { SampleIndexNav, SampleTypeIndexNav } from './SampleNav';
 import { SamplesResolver } from './SamplesResolver';
 import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
-import { useSampleTypeAppContext } from './SampleTypeAppContext';
+import { useSampleTypeAppContext } from './useSampleTypeAppContext';
 import { SampleTypeDesignPage } from './SampleTypeDesignPage';
 
 import { AssayResultsForSamplesPage, AssayResultsForSamplesSubNav } from './AssayResultsForSamplesPage';
@@ -157,5 +157,4 @@ export {
 //  separately.
 //  https://github.com/babel/babel-loader/issues/603
 export type { SampleDetailPageProps } from './SampleDetailPage';
-export type { SamplesEditableGridProps } from './SamplesEditableGrid';
-export type { SampleTypeAppContext, WithSampleTypeAppContext, AppContextWithSampleType } from './SampleTypeAppContext';
+export type { WithSampleTypeAppContext, AppContextWithSampleType } from './useSampleTypeAppContext';

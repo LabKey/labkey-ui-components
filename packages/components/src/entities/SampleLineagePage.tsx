@@ -10,7 +10,7 @@ import { hasAllPermissions } from '../internal/components/base/models/User';
 
 import { SampleLineageGraph } from './SampleLineageGraph';
 import { SampleDetailContextConsumer, SampleDetailPage, SampleDetailPageProps } from './SampleDetailPage';
-import { useSampleTypeAppContext } from './SampleTypeAppContext';
+import { useSampleTypeAppContext } from './useSampleTypeAppContext';
 
 interface Props extends SampleDetailPageProps {
     groupingOptions?: LineageGroupingOptions;

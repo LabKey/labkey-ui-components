@@ -42,7 +42,7 @@ import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 import { SampleSetDeleteModal } from './SampleSetDeleteModal';
 import { SampleTypeBasePage } from './SampleTypeBasePage';
 import { downloadSampleTypeTemplate } from './SampleTypeTemplateDownloadRenderer';
-import { useSampleTypeAppContext } from './SampleTypeAppContext';
+import { useSampleTypeAppContext } from './useSampleTypeAppContext';
 import { onSampleChange, onSampleTypeChange } from './actions';
 import { getSampleAuditBehaviorType, getSampleTypeTemplateUrl } from './utils';
 

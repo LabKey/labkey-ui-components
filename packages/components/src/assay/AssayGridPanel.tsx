@@ -33,7 +33,7 @@ import { AssayProtocolModel } from '../internal/components/domainproperties/assa
 import { AssayResultDataType } from '../internal/components/entities/constants';
 
 import { AssayImportDataButton, UpdateQCStatesButton } from './AssayButtons';
-import { useAssayAppContext } from './AssayAppContext';
+import { useAssayAppContext } from './useAssayAppContext';
 import { AssayResultDeleteModal } from './AssayResultDeleteModal';
 import { AssayRunDeleteModal } from './AssayRunDeleteModal';
 import { onAssayRunChange } from './actions';

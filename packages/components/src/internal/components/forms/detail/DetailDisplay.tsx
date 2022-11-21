@@ -65,7 +65,7 @@ export type TitleRenderer = (column: QueryColumn) => ReactNode;
 export function defaultTitleRenderer(col: QueryColumn): React.ReactNode {
     // If the column cannot be edited, return the label as is
     if (!col.isEditable()) {
-        return <span className="field__un-editable">{col.caption}</span>;
+        return <span>{col.caption}</span>;
     }
 
     return (

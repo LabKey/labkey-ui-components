@@ -12,8 +12,9 @@ import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from '../forms/
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { LoadingState } from '../../../public/LoadingState';
 
-import { RunDataPanel } from './RunDataPanel';
 import { EditableGridPanel } from '../editable/EditableGridPanel';
+
+import { RunDataPanel } from './RunDataPanel';
 
 const MODEL_ID_NOT_LOADED = 'not loaded';
 const MODEL_ID_LOADED = 'loaded';
@@ -97,7 +98,7 @@ describe('<RunDataPanel/>', () => {
         const component = mountWithServerContext(<RunDataPanelWrapper allowBulkRemove={true} />, {
             user: TEST_USER_EDITOR,
         });
-        expect(component.find(EditableGridPanel).prop("allowBulkRemove")).toBe(true);
+        expect(component.find(EditableGridPanel).prop('allowBulkRemove')).toBe(true);
     });
 
     test('showsTabs', () => {

@@ -512,8 +512,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 const backgroundUpload = assayProtocol?.backgroundUpload;
                 let forceAsync = false;
                 if (!backgroundUpload && assayProtocol?.allowBackgroundUpload) {
-                    const asyncFileSize =
-                        location?.query?.useAsync === 'true' ? 1 : BACKGROUND_IMPORT_MIN_FILE_SIZE;
+                    const asyncFileSize = location?.query?.useAsync === 'true' ? 1 : BACKGROUND_IMPORT_MIN_FILE_SIZE;
                     const asyncRowSize = location?.query?.useAsync === 'true' ? 1 : BACKGROUND_IMPORT_MIN_ROW_SIZE;
                     if (
                         (processedData.maxFileSize && processedData.maxFileSize >= asyncFileSize) ||
@@ -551,7 +550,6 @@ class AssayImportPanelsBody extends Component<Props, State> {
                         : getActionErrorMessage(errorPrefix, 'referenced samples or assay design', false)
                 );
             });
-
     };
 
     onSuccessContinue = async (response: AssayUploadResultModel, isAsync?: boolean): Promise<void> => {

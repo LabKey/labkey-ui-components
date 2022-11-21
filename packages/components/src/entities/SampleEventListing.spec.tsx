@@ -6,8 +6,9 @@ import { TimelineEventModel } from '../internal/components/auditlog/models';
 
 import DUMMY_TIMELINE from '../test/data/SampleTimeline.json';
 
-import { SampleEventListing } from './SampleEventListing';
 import { TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT } from '../internal/productFixtures';
+
+import { SampleEventListing } from './SampleEventListing';
 
 beforeAll(() => {
     LABKEY.container = {

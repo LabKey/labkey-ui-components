@@ -7,7 +7,7 @@ import { Utils } from '@labkey/api';
 import { InjectedAssayModel } from '../internal/components/assay/withAssayModels';
 import { CommonPageProps } from '../internal/models';
 import { InjectedRouteLeaveProps, withRouteLeave } from '../internal/util/RouteLeave';
-import { useNotificationsContext, } from '../internal/components/notifications/NotificationsContext';
+import { useNotificationsContext } from '../internal/components/notifications/NotificationsContext';
 import { useServerContext } from '../internal/components/base/ServerContext';
 
 import { AssayUploadResultModel } from '../internal/components/assay/models';

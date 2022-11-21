@@ -311,13 +311,22 @@ interface UpdateQCStatesButtonProps extends RequiresModelAndActions {
     asMenuItem?: boolean;
     assayContainer: string;
     disabled?: boolean;
-    requireCommentOnQCStateChange?: boolean;
     onQCStateUpdate?: () => void;
+    requireCommentOnQCStateChange?: boolean;
     run?: Map<string, any>;
 }
 
 export const UpdateQCStatesButton: FC<UpdateQCStatesButtonProps> = props => {
-    const { assayContainer, requireCommentOnQCStateChange, onQCStateUpdate, run, asMenuItem, disabled, model, actions } = props;
+    const {
+        assayContainer,
+        requireCommentOnQCStateChange,
+        onQCStateUpdate,
+        run,
+        asMenuItem,
+        disabled,
+        model,
+        actions,
+    } = props;
 
     const [showQCModal, setShowQCModal] = useState<boolean>(false);
     const [runs, setRuns] = useState<string[]>(null);

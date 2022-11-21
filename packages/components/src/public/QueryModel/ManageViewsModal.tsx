@@ -163,7 +163,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                 {!views && !errorMessage && <LoadingSpinner />}
                 {views &&
                     views.map((view, ind) => {
-                        const { isDefault, shared } = view;
+                        const { isDefault, isVisible, shared } = view;
                         const unsavedView = view.session;
                         const isRenaming = !!selectedView;
                         let canEdit = !isDefault && !isRenaming && !unsavedView && !deleting;
@@ -177,6 +177,9 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                 </span>
                             );
                         }
+
+                        // other than the default view, don't show hidden or other system views
+                        if (!isDefault && !isVisible) return null;
 
                         return (
                             <>

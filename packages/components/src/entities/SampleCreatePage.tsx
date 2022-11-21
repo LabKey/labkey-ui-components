@@ -3,7 +3,6 @@ import { WithRouterProps } from 'react-router';
 import { OrderedMap } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { SampleCreationType } from '../internal/components/samples/models';
 import { InjectedRouteLeaveProps, useRouteLeave } from '../internal/util/RouteLeave';
 import { useServerContext } from '../internal/components/base/ServerContext';
 import { useNotificationsContext } from '../internal/components/notifications/NotificationsContext';
@@ -13,10 +12,9 @@ import { hasModule } from '../internal/app/utils';
 import { getContainerFilterForLookups, invalidateQueryDetailsCache } from '../internal/query/api';
 import { SchemaQuery } from '../public/SchemaQuery';
 import { SCHEMAS } from '../internal/schemas';
-import { DataClassDataType, SampleTypeDataType } from '../internal/components/entities/constants';
+import { SampleTypeDataType } from '../internal/components/entities/constants';
 import { QueryInfo } from '../public/QueryInfo';
 import { BulkAddData } from '../internal/components/editable/EditableGrid';
-import { parseCsvString } from '../internal/util/utils';
 import { InsufficientPermissionsPage } from '../internal/components/permissions/InsufficientPermissionsPage';
 import { EntityInsertPanel } from '../internal/components/entities/EntityInsertPanel';
 import { SAMPLE_INSERT_EXTRA_COLUMNS } from '../internal/components/samples/constants';
@@ -31,7 +29,7 @@ import { MAX_EDITABLE_GRID_ROWS } from '../internal/constants';
 import { SampleTypeBasePage } from './SampleTypeBasePage';
 import { onSampleChange } from './actions';
 import { getSampleAuditBehaviorType, getSampleTypeTemplateUrl, processSampleBulkAdd } from './utils';
-import { useSampleTypeAppContext } from './SampleTypeAppContext';
+import { useSampleTypeAppContext } from './useSampleTypeAppContext';
 
 const TITLE = 'Sample Type';
 const SUBTITLE = 'Create New Samples';

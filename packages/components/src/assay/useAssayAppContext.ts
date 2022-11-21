@@ -1,8 +1,6 @@
 // If your App extends AppContext to add attributes other than Assay use this e.g.:
 // type MyAppContext = ExtendableAppContext<WithMyAppContext & WithAssayAppContext>;
-import { ExtendableAppContext, useAppContext } from '../internal/AppContext';
-
-import { AssayAppContext } from './AssayAppContext';
+import { AssayAppContext, ExtendableAppContext, useAppContext } from '../internal/AppContext';
 
 export interface WithAssayAppContext {
     assay: AssayAppContext;

@@ -41,6 +41,7 @@ interface OwnProps {
     panelTitle: string;
     rolesMap: Map<string, string>;
     showDetailsPanel: boolean;
+    titleCls?: string;
 }
 
 // exported for testing
@@ -61,6 +62,7 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
         roles,
         rolesMap,
         setIsDirty,
+        titleCls,
     } = props;
     const [error, setError] = useState<string>();
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
@@ -156,6 +158,7 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
                     onSuccess={onSuccess}
                     policy={policy}
                     title={panelTitle}
+                    titleCls={titleCls}
                 />
             )}
             {children}

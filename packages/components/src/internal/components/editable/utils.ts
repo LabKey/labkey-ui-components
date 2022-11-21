@@ -15,7 +15,7 @@ import { EXPORT_TYPES, MODIFICATION_TYPES } from '../../constants';
 
 import { SelectInputOption, SelectInputProps } from '../forms/input/SelectInput';
 
-import { EditorMode, EditorModel, EditorModelProps, ValueDescriptor } from './models';
+import { EditorMode, EditorModel, EditorModelProps, IEditableGridLoader, ValueDescriptor } from './models';
 
 import { CellActions } from './constants';
 
@@ -98,9 +98,9 @@ export const loadEditorModelData = async (
 export const initEditableGridModel = async (
     dataModel: QueryModel,
     editorModel: EditorModel,
+    loader: IEditableGridLoader,
     queryModel: QueryModel
 ): Promise<{ dataModel: QueryModel; editorModel: EditorModel }> => {
-    const { loader } = editorModel;
     const response = await loader.fetch(queryModel);
     const gridData: Partial<QueryModel> = {
         rows: response.data.toJS(),
@@ -136,13 +136,14 @@ export interface EditableGridModels {
 export const initEditableGridModels = async (
     dataModels: QueryModel[],
     editorModels: EditorModel[],
+    loaders: IEditableGridLoader[],
     queryModel: QueryModel
 ): Promise<EditableGridModels> => {
     const updatedDataModels = [];
     const updatedEditorModels = [];
 
     const results = await Promise.all(
-        dataModels.map((dataModel, i) => initEditableGridModel(dataModels[i], editorModels[i], queryModel))
+        dataModels.map((dataModel, i) => initEditableGridModel(dataModels[i], editorModels[i], loaders[i], queryModel))
     );
 
     results.forEach(result => {
@@ -205,9 +206,7 @@ export const getUpdatedDataFromEditableGrid = (
     // to populate the queryInfoForm. If we don't have this data, we came directly to the editable grid
     // using values from the display grid to initialize the editable grid model, so we use that.
     const initData = selectionData ?? fromJS(model.rows);
-    const editorData = editorModel
-        .getRawDataFromModel(model, true, editorModel.loader.mode === EditorMode.Update, readOnlyColumns)
-        .toArray();
+    const editorData = editorModel.getRawDataFromModel(model, true, true, readOnlyColumns).toArray();
 
     return {
         originalRows: model.rows,

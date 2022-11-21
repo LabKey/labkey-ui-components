@@ -101,7 +101,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
         const editorModels = [];
         loaders.forEach(loader => {
             dataModels.push(new QueryModel({ id: loader.id, schemaQuery: queryModel.schemaQuery }));
-            editorModels.push(new EditorModel({ id: loader.id, loader }));
+            editorModels.push(new EditorModel({ id: loader.id }));
         });
 
         setIsSubmitting(false);
@@ -123,6 +123,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
                     const { dataModels, editorModels } = await initEditableGridModels(
                         editableGridModels.dataModels,
                         editableGridModels.editorModels,
+                        loaders,
                         queryModel
                     );
                     setEditableGridModels({ dataModels, editorModels });

@@ -39,6 +39,7 @@ interface State {
     editorModels: EditorModel[];
     error: string;
     isSubmitting: boolean;
+    loaders: IEditableGridLoader[];
 }
 
 export class EditableGridPanelForUpdate extends React.Component<Props, State> {
@@ -54,8 +55,9 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
         this.state = {
             isSubmitting: false,
             dataModels: [new QueryModel({ id, schemaQuery: props.queryModel.schemaQuery })],
-            editorModels: [new EditorModel({ id, loader: props.loader })],
+            editorModels: [new EditorModel({ id })],
             error: undefined,
+            loaders: [props.loader],
         };
     }
 
@@ -67,6 +69,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
         const { dataModels, editorModels } = await initEditableGridModels(
             this.state.dataModels,
             this.state.editorModels,
+            this.state.loaders,
             this.props.queryModel
         );
         this.setState({ dataModels, editorModels });

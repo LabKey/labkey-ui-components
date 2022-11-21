@@ -60,13 +60,13 @@ describe('Editable Grids Utils', () => {
 
         test('defaults to insert columns', async () => {
             const loader = new MockEditableGridLoader(queryInfo);
-            const editorModel = new EditorModel({ loader });
+            const editorModel = new EditorModel({});
             const expectedInsertColumns = queryInfo
                 .getInsertColumns()
                 .map(col => col.fieldKey)
                 .toArray();
 
-            const models = await initEditableGridModel(dataModel, editorModel, dataModel);
+            const models = await initEditableGridModel(dataModel, editorModel, loader, dataModel);
             expect(models.dataModel.queryInfoLoadingState).toEqual(LoadingState.LOADED);
             expect(models.dataModel.rowsLoadingState).toEqual(LoadingState.LOADED);
             expect(models.editorModel.cellValues.size).toEqual(0);
@@ -76,13 +76,13 @@ describe('Editable Grids Utils', () => {
 
         test('respects loader mode for columns', async () => {
             const loader = new MockEditableGridLoader(queryInfo, { mode: EditorMode.Update });
-            const editorModel = new EditorModel({ loader });
+            const editorModel = new EditorModel({});
             const expectedUpdateColumns = queryInfo
                 .getUpdateColumns()
                 .map(col => col.fieldKey)
                 .toArray();
 
-            const models = await initEditableGridModel(dataModel, editorModel, dataModel);
+            const models = await initEditableGridModel(dataModel, editorModel, loader, dataModel);
             expect(models.editorModel.columns.toArray()).toEqual(expectedUpdateColumns);
             expect(models.editorModel.colCount).toEqual(expectedUpdateColumns.length);
         });
@@ -90,9 +90,9 @@ describe('Editable Grids Utils', () => {
         test('respects loader supplied columns', async () => {
             const columns = List([queryInfo.getColumn('SampleID'), queryInfo.getColumn('Date')]);
             const loader = new MockEditableGridLoader(queryInfo, { columns });
-            const editorModel = new EditorModel({ loader });
+            const editorModel = new EditorModel({});
 
-            const models = await initEditableGridModel(dataModel, editorModel, dataModel);
+            const models = await initEditableGridModel(dataModel, editorModel, loader, dataModel);
             expect(models.editorModel.columns.toArray()).toEqual(columns.map(col => col.fieldKey).toArray());
         });
     });

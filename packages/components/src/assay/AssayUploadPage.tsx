@@ -1,4 +1,4 @@
-import React, { FC, memo, useMemo } from 'react';
+import React, { FC, memo, useCallback, useMemo } from 'react';
 
 import { WithRouterProps } from 'react-router';
 
@@ -27,7 +27,7 @@ import { getAssayImportNotificationMsg } from './utils';
 
 import { AssayHeader } from './AssayHeader';
 
-import { useAssayAppContext } from './AssayAppContext';
+import { useAssayAppContext } from './useAssayAppContext';
 import { assayPage } from './AssayPageHOC';
 
 type Props = CommonPageProps & InjectedAssayModel & InjectedRouteLeaveProps & WithRouterProps;
@@ -37,15 +37,10 @@ const AssayUploadPageImpl: FC<Props> = memo(props => {
     const { user } = useServerContext();
     const { jobNotificationProvider } = useAssayAppContext();
     const { createNotification } = useNotificationsContext();
+    const { name, protocolSchemaName, type } = assayDefinition;
 
     // only show the "Save and Import Another Run" option if this assay has batch props
-    const batchDomain = useMemo(() => {
-        return assayProtocol?.getDomainByNameSuffix('Batch');
-    }, [assayProtocol]);
-
-    const showSave = useMemo(() => {
-        return batchDomain?.fields.size > 0;
-    }, [batchDomain]);
+    const showSave = assayProtocol.hasBatchFields;
 
     const runId = useMemo(() => {
         const id = location?.query?.runId;
@@ -65,8 +60,8 @@ const AssayUploadPageImpl: FC<Props> = memo(props => {
         return isReimport ? 'Assay Re-Import' : 'Assay Import';
     }, [isReimport]);
 
-    const onSave = (response: AssayUploadResultModel, isBackgroundJob?: boolean) => {
-        onAssayRunChange(assayDefinition.protocolSchemaName);
+    const onSave = (response: AssayUploadResultModel, isBackgroundJob?: boolean): void => {
+        onAssayRunChange(protocolSchemaName);
 
         createNotification(
             {
@@ -83,36 +78,48 @@ const AssayUploadPageImpl: FC<Props> = memo(props => {
         );
     };
 
-    const onComplete = (response: AssayUploadResultModel, isBackgroundJob?: boolean) => {
-        onAssayRunChange(assayDefinition.protocolSchemaName);
+    const onComplete = useCallback(
+        (response: AssayUploadResultModel, isBackgroundJob?: boolean) => {
+            onAssayRunChange(protocolSchemaName);
 
-        let redirectUrl: AppURL;
-        if (!isBackgroundJob) {
-            redirectUrl = AppURL.create(ASSAYS_KEY, assayDefinition.type, assayDefinition.name, 'runs', response.runId);
-        } else {
-            redirectUrl = AppURL.create(ASSAYS_KEY, assayDefinition.type, assayDefinition.name);
-        }
-        navigate(redirectUrl);
+            let redirectUrl: AppURL;
+            if (!isBackgroundJob) {
+                redirectUrl = AppURL.create(ASSAYS_KEY, type, name, 'runs', response.runId);
+            } else {
+                redirectUrl = AppURL.create(ASSAYS_KEY, type, name);
+            }
+            navigate(redirectUrl);
 
-        createNotification(
-            {
-                message: getAssayImportNotificationMsg(
-                    response,
-                    isBackgroundJob,
-                    isReimport,
-                    null,
-                    location?.query?.workflowJobId,
-                    location?.query?.workflowTaskId
-                ),
-            },
-            true
-        );
-    };
+            createNotification(
+                {
+                    message: getAssayImportNotificationMsg(
+                        response,
+                        isBackgroundJob,
+                        isReimport,
+                        null,
+                        location?.query?.workflowJobId,
+                        location?.query?.workflowTaskId
+                    ),
+                },
+                true
+            );
+        },
+        [
+            name,
+            protocolSchemaName,
+            type,
+            createNotification,
+            isReimport,
+            location?.query?.workflowJobId,
+            location?.query?.workflowTaskId,
+            navigate,
+        ]
+    );
 
-    const onCancel = () => {
+    const onCancel = useCallback(() => {
         setIsDirty(false);
         goBack();
-    };
+    }, [goBack, setIsDirty]);
 
     if (!user.hasInsertPermission()) {
         return <InsufficientPermissionsPage title={subTitle} />;

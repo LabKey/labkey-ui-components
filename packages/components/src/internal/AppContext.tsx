@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import { Filter } from '@labkey/api';
+import { List } from 'immutable';
 import React, { createContext, PropsWithChildren, ReactElement, useContext, useMemo } from 'react';
 
 import { QueryConfigMap } from '../public/QueryModel/withQueryModels';
@@ -24,6 +25,7 @@ import { NotebookNotificationSettings, NotebookProjectSettings, WorkflowNotifica
 import { ReferencingNotebooks } from './app/models';
 import { User } from './components/base/models/User';
 import { DomainDetails } from './components/domainproperties/models';
+import { EntityDataType } from './components/entities/models';
 import { DetailRenderer } from './components/forms/detail/DetailDisplay';
 import { ALIQUOT_FILTER_MODE } from './components/samples/constants';
 import {
@@ -52,6 +54,8 @@ export interface SampleTypeAppContext {
     SampleStorageMenuComponent: SampleStorageMenu;
     WorkflowGridComponent: WorkflowGrid;
     assayProviderType?: string;
+    combineParentTypes?: boolean;
+    controllerName: string;
     dataClassAliasCaption?: string;
     dataClassParentageLabel?: string;
     dataClassTypeCaption?: string;
@@ -71,8 +75,10 @@ export interface SampleTypeAppContext {
         containerPath?: string
     ) => QueryConfigMap;
     hideConditionalFormatting: boolean;
+    importHelpLinkTopic: string;
     isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean;
     lineagePagePermissions: string[];
+    parentDataTypes: List<EntityDataType>;
     readOnlyQueryNames?: string[];
     samplesGridRequiredColumns: string[];
     showParentLabelPrefix: boolean;

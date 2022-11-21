@@ -1,9 +1,9 @@
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
-import { Filter, PermissionTypes, Utils } from '@labkey/api';
+import { Filter, PermissionTypes } from '@labkey/api';
 
 import { MenuItem } from 'react-bootstrap';
 
-import { List, Map, OrderedMap } from 'immutable';
+import { Map, OrderedMap } from 'immutable';
 
 import { ManageDropdownButton } from '../internal/components/buttons/ManageDropdownButton';
 import { RequiresPermission } from '../internal/components/base/Permissions';
@@ -243,8 +243,8 @@ export const AssayGridBodyImpl: FC<AssayGridPanelProps & InjectedQueryModels> = 
     const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [showBulkUpdate, setShowBulkUpdate] = useState<boolean>(false);
-    const [bulkFormUpdates, setBulkFormUpdates] = useState<OrderedMap<string, any>>(undefined);
-    const [selectionData, setSelectionData] = useState<Map<string, any>>(undefined);
+    const [bulkFormUpdates, setBulkFormUpdates] = useState<OrderedMap<string, any>>();
+    const [selectionData, setSelectionData] = useState<Map<string, any>>();
 
     const assayModel = useMemo<QueryModel>(() => Object.values(queryModels)[0], [queryModels]);
     const modelId = useMemo(() => assayModel.id, [assayModel]);
@@ -278,7 +278,7 @@ export const AssayGridBodyImpl: FC<AssayGridPanelProps & InjectedQueryModels> = 
         }
     }, [assayModel.hasSelections, dismissNotifications]);
 
-    const resetState = useCallback(() => {
+    const resetState = useCallback((): void => {
         setShowConfirmDelete(false);
         setIsEditing(false);
         setShowBulkUpdate(false);
@@ -288,12 +288,8 @@ export const AssayGridBodyImpl: FC<AssayGridPanelProps & InjectedQueryModels> = 
     }, [setIsDirty]);
 
     const editSelectionInGrid = useCallback(
-        (
-            bulkFormUpdates: OrderedMap<string, any>,
-            dataForSelection: Map<string, any>,
-            dataIdsForSelection: List<any>
-        ): Promise<any> => {
-            setBulkFormUpdates(bulkFormUpdates);
+        (bulkFormUpdates_: OrderedMap<string, any>, dataForSelection: Map<string, any>): Promise<any> => {
+            setBulkFormUpdates(bulkFormUpdates_);
             return Promise.resolve(dataForSelection);
         },
         []
@@ -311,8 +307,8 @@ export const AssayGridBodyImpl: FC<AssayGridPanelProps & InjectedQueryModels> = 
             editingStateChanged = true;
         }
 
-        if (editingStateChanged && Utils.isFunction(onEditToggle)) onEditToggle(!isEditing);
-    }, [isEditing, hasValidMaxSelection, onEditToggle]);
+        if (editingStateChanged) onEditToggle?.(!isEditing);
+    }, [isEditing, hasValidMaxSelection, onEditToggle, resetState, dismissNotifications]);
 
     const onBulkUpdateError = useCallback(
         (message: string) => {
@@ -329,8 +325,7 @@ export const AssayGridBodyImpl: FC<AssayGridPanelProps & InjectedQueryModels> = 
             setShowBulkUpdate(false);
             setIsEditing(submitForEdit);
             setSelectionData(submitForEdit ? data : undefined);
-
-            if (Utils.isFunction(onEditToggle)) onEditToggle(submitForEdit);
+            onEditToggle?.(submitForEdit);
         },
         [actions, modelId, onEditToggle]
     );
@@ -338,11 +333,8 @@ export const AssayGridBodyImpl: FC<AssayGridPanelProps & InjectedQueryModels> = 
     const onGridEditComplete = useCallback(() => {
         resetState();
         actions.loadModel(modelId, true);
-
-        if (Utils.isFunction(onEditToggle)) {
-            onEditToggle(false);
-        }
-    }, [actions, modelId, onEditToggle]);
+        onEditToggle?.(false);
+    }, [actions, modelId, onEditToggle, resetState]);
 
     const onUpdateRows = useCallback(
         (schemaQuery: SchemaQuery, rows: any[]): Promise<void> => {
@@ -363,7 +355,7 @@ export const AssayGridBodyImpl: FC<AssayGridPanelProps & InjectedQueryModels> = 
                 // note: don't catch here as we want the EditableGridPanelForUpdate to display errors
             }
         },
-        [nounSingular, queryName, nounPlural]
+        [createNotification, nounSingular, queryName, nounPlural]
     );
 
     const buttonsComponentProps: AssayGridButtonsComponentProps = {

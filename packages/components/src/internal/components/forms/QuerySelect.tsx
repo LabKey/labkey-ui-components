@@ -146,6 +146,7 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
     preLoad?: boolean;
     previewOptions?: boolean;
     queryFilters?: List<Filter.IFilter>;
+    requiredColumns?: string[];
     schemaQuery: SchemaQuery;
     showLoading?: boolean;
     valueColumn?: string;

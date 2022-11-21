@@ -9,6 +9,20 @@ Components, models, actions, and utility functions for LabKey applications and p
   * DetailDisplay update resolveDetailEditRenderer to use wrapped input components instead of formsy-react-components directly
   * LabelOverlay rendering of asterisk for required prop to match in formsy case
 
+### version 2.256.0
+*Released*: 18 November 2022
+* Introduce `includeViewColumns` bit on `QuerySelectModel` and set based on `previewOptions` prop of `QuerySelect` during initialization.
+* Add `requiredColumns` prop to `QuerySelect` to allow for usages to explicitly request that certain columns be included in the underlying query.
+* Exclude `viewName` on the `SchemaQuery` from the key on the `QueryInfo` cache.
+* Convert `QuerySelect.initSelect` action to an async implementation.
+* Fix memoization dependencies in `SampleIndexNav`.
+
+### version 2.255.0
+*Released*: 18 November 2022
+* Adding Label printing to export menu for more sample tabbed grids
+  * Hiding Label option on the 'All Samples' tab as it doesn't currently fit our grid methodology
+* Added labels to Sample's Aliquots grid as well
+
 ### version 2.254.1
 *Released*: 18 November 2022
 * Issue 46724: Unable to set PHI level for newly added field

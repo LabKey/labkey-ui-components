@@ -16,8 +16,6 @@ import { ManageDropdownButton } from '../internal/components/buttons/ManageDropd
 
 import { TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT, TEST_LKSM_STARTER_MODULE_CONTEXT } from '../internal/productFixtures';
 
-import { EntityDeleteModal } from './EntityDeleteModal';
-
 import { SampleAliquotsGridPanelImpl } from './SampleAliquotsGridPanel';
 import { SampleTypeAppContext } from './SampleTypeAppContext';
 
@@ -115,17 +113,6 @@ describe('SampleAliquotsGridPanel', () => {
         );
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
-        wrapper.unmount();
-    });
-
-    test('show confirm delete', () => {
-        const wrapper = mountWithAppServerContext(
-            <SampleAliquotsGridPanelImpl {...DEFAULT_PROPS} lineageUpdateAllowed={true} />,
-            { sampleType: SAMPLE_TYPE_APP_CONTEXT },
-            DEFAULT_CONTEXT
-        );
-        wrapper.setState({ showConfirmDelete: true });
-        expect(wrapper.find(EntityDeleteModal).exists()).toEqual(true);
         wrapper.unmount();
     });
 

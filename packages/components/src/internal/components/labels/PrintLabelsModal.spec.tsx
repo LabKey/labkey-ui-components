@@ -7,8 +7,9 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 import { LoadingState } from '../../../public/LoadingState';
 import { SelectInput } from '../forms/input/SelectInput';
 import { Alert } from '../base/Alert';
-import { PrintLabelsModalImpl } from './PrintLabelsModal';
+
 import { QueryInfo } from '../../../public/QueryInfo';
+import { PrintLabelsModalImpl } from './PrintLabelsModal';
 
 describe('<PrintLabelsModal/>', () => {
     let actions;
@@ -19,10 +20,18 @@ describe('<PrintLabelsModal/>', () => {
     beforeAll(() => {
         actions = makeTestActions();
         queryModels = {
-            "sampleModel": makeTestQueryModel(SchemaQuery.create(TEST_SCHEMA, TEST_QUERY), {} as QueryInfo)
-                .mutate({queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADED}),
-            "singleSampleModel": makeTestQueryModel(SchemaQuery.create(TEST_SCHEMA, TEST_QUERY), {} as QueryInfo)
-                .mutate({queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADED})
+            'sampleModel': makeTestQueryModel(SchemaQuery.create(TEST_SCHEMA, TEST_QUERY), QueryInfo.create({}))
+                .mutate({
+                    queryInfoLoadingState: LoadingState.LOADED,
+                    rowsLoadingState: LoadingState.LOADED,
+                }
+            ),
+            'singleSampleModel': makeTestQueryModel(SchemaQuery.create(TEST_SCHEMA, TEST_QUERY), QueryInfo.create({}))
+                .mutate({
+                    queryInfoLoadingState: LoadingState.LOADED,
+                    rowsLoadingState: LoadingState.LOADED
+                }
+            ),
         }
     });
 
@@ -66,7 +75,9 @@ describe('<PrintLabelsModal/>', () => {
 
         expect(wrapper.find(ModalTitle).text()).toBe('Print Labels for 1 Sample with BarTender');
         expect(wrapper.find(SelectInput)).toHaveLength(1);
-        expect(wrapper.find('div.modal-body').text()).toContain("Confirm you've selected the samples you want and the proper label template.");
+        expect(wrapper.find('div.modal-body').text()).toContain(
+            "Confirm you've selected the samples you want and the proper label template."
+        );
         expect(wrapper.find(Button).prop('disabled')).toBe(false);
 
         wrapper.unmount();
@@ -89,7 +100,9 @@ describe('<PrintLabelsModal/>', () => {
 
         expect(wrapper.find(ModalTitle).text()).toBe('Print Labels for 1 Sample with BarTender');
         expect(wrapper.find(SelectInput)).toHaveLength(0);
-        expect(wrapper.find('div.modal-body').text()).toContain('Choose the number of copies of the label for this sample');
+        expect(wrapper.find('div.modal-body').text()).toContain(
+            'Choose the number of copies of the label for this sample'
+        );
         expect(wrapper.find(Button).prop('disabled')).toBe(false);
 
         wrapper.unmount();
@@ -112,7 +125,9 @@ describe('<PrintLabelsModal/>', () => {
 
         expect(wrapper.find(ModalTitle).text()).toBe('Print Labels for 3 Samples with BarTender');
         expect(wrapper.find(SelectInput)).toHaveLength(1);
-        expect(wrapper.find('div.modal-body').text()).toContain("Confirm you've selected the samples you want and the proper label template.");
+        expect(wrapper.find('div.modal-body').text()).toContain(
+            "Confirm you've selected the samples you want and the proper label template."
+        );
         expect(wrapper.find(Button).prop('disabled')).toBe(false);
     });
 

@@ -14,7 +14,6 @@ import { UpdateQCStatesButton } from './AssayButtons';
 const QC_HISTORY_SQ = SchemaQuery.create('auditLog', 'ExperimentAuditEvent');
 const QC_MODEL_ID = 'QC';
 
-
 interface Props {
     assayContainer: string;
     onQCStateUpdate?: () => void;
@@ -23,7 +22,6 @@ interface Props {
 }
 
 class AssayRunQCHistoryImpl extends React.Component<Props & InjectedQueryModels, any> {
-
     componentDidMount(): void {
         const { actions, run } = this.props;
 
@@ -41,7 +39,8 @@ class AssayRunQCHistoryImpl extends React.Component<Props & InjectedQueryModels,
     }
 
     render(): ReactNode {
-        const { actions, assayContainer, queryModels, onQCStateUpdate, run, requireCommentOnQCStateChange } = this.props;
+        const { actions, assayContainer, queryModels, onQCStateUpdate, run, requireCommentOnQCStateChange } =
+            this.props;
         const model = queryModels[QC_MODEL_ID];
         const ButtonsComponent = () => (
             <UpdateQCStatesButton

@@ -34,23 +34,18 @@ export function invalidateFullQueryDetailsCache(): void {
 }
 
 function getQueryDetailsCacheKey(schemaQuery: SchemaQuery, containerPath?: string, fk?: string): string {
-    return '' + schemaQuery.getKey() + (fk ? '|' + fk : '') + (containerPath ? '|' + containerPath : '');
+    return '' + schemaQuery.getKey(false) + (fk ? '|' + fk : '') + (containerPath ? '|' + containerPath : '');
 }
 
 export function invalidateQueryDetailsCache(schemaQuery: SchemaQuery, containerPath?: string, fk?: string): void {
     const key = getQueryDetailsCacheKey(schemaQuery, containerPath, fk);
-    invalidateQueryDetailsCacheKey(key);
+    delete queryDetailsCache[key];
 
     // also call invalidate for the query key without the containerPath
     if (containerPath) {
         const keyNoContainerPath = getQueryDetailsCacheKey(schemaQuery, undefined, fk);
-        invalidateQueryDetailsCacheKey(keyNoContainerPath);
+        delete queryDetailsCache[keyNoContainerPath];
     }
-}
-
-/** @deprecated Use invalidateQueryDetailsCache() instead */
-export function invalidateQueryDetailsCacheKey(key: string): void {
-    delete queryDetailsCache[key];
 }
 
 export interface GetQueryDetailsOptions {

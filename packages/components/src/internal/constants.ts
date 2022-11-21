@@ -44,6 +44,13 @@ export enum EXPORT_TYPES {
     LABEL,
 }
 
+export const EXPORT_TYPES_WITH_LABEL = Set.of(
+    EXPORT_TYPES.CSV,
+    EXPORT_TYPES.EXCEL,
+    EXPORT_TYPES.TSV,
+    EXPORT_TYPES.LABEL
+);
+
 export enum MODIFICATION_TYPES {
     ADD,
     REPLACE,

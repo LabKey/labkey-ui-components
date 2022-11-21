@@ -497,10 +497,9 @@ export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
                         afterPrint={afterPrint}
                         onCancel={onCancelPrint}
                         labelTemplate={labelTemplate}
+                        model={listModel}
                         printServiceUrl={printServiceUrl}
-                        queryName={sampleType}
                         sampleIds={[...listModel.selections]}
-                        schemaName={SCHEMAS.SAMPLE_SETS.SCHEMA}
                         show={showPrintDialog}
                         showSelection
                     />

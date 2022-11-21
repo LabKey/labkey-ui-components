@@ -1,9 +1,10 @@
 import React from 'react';
+import { act } from 'react-dom/test-utils';
 import { fromJS } from 'immutable';
 import { ReactWrapper } from 'enzyme';
 import { AuditBehaviorTypes } from '@labkey/api';
 
-import { mountWithAppServerContext } from '../internal/testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../internal/testHelpers';
 
 import { TEST_USER_READER, TEST_USER_STORAGE_DESIGNER } from '../internal/userFixtures';
 
@@ -19,11 +20,26 @@ import { SamplesEditableGrid } from './SamplesEditableGrid';
 const SQ = SchemaQuery.create('schema', 'query');
 const QI = QueryInfo.create({ title: 'Test title' });
 
+const QM1 = makeTestQueryModel(SQ, QI);
+const QM2 = makeTestQueryModel(SQ, QI);
+
 const DEFAULT_PROPS = {
     user: TEST_USER_READER,
     queryModels: {
-        tab1: makeTestQueryModel(SQ, QI),
-        tab2: makeTestQueryModel(SQ, QI),
+        tab1: QM1,
+        tab2: QM2,
+    },
+    actions: makeTestActions(),
+    samplesEditableGridProps: {},
+    gridButtons: undefined,
+    getSampleAuditBehaviorType: () => AuditBehaviorTypes.DETAILED,
+    isAllSamplesTab: () => false,
+};
+
+const SINGLE_TAB_PROPS = {
+    user: TEST_USER_READER,
+    queryModels: {
+        tab1: QM1,
     },
     actions: makeTestActions(),
     samplesEditableGridProps: {},
@@ -112,7 +128,7 @@ describe('SamplesTabbedGridPanel', () => {
         wrapper.unmount();
     });
 
-    test('call toggleEditWithGridUpdate with activeModel selections', () => {
+    test('call toggleEditWithGridUpdate with activeModel selections', async () => {
         const wrapper = mountWithAppServerContext(
             <SamplesTabbedGridPanel
                 {...DEFAULT_PROPS}
@@ -123,9 +139,13 @@ describe('SamplesTabbedGridPanel', () => {
             />
         );
         validate(wrapper);
-        const buttonProps = wrapper.find(TabbedGridPanel).prop('buttonsComponentProps');
-        buttonProps['toggleEditWithGridUpdate']();
-        wrapper.setProps({ actions: makeTestActions() }); // force re-render
+        act(() => {
+            const buttonProps = wrapper.find(TabbedGridPanel).prop('buttonsComponentProps');
+            buttonProps['toggleEditWithGridUpdate']();
+            wrapper.setProps({ actions: makeTestActions() }); // force re-render
+        });
+        await waitForLifecycle(wrapper);
+
         validate(wrapper, true);
         wrapper.unmount();
     });
@@ -148,7 +168,7 @@ describe('SamplesTabbedGridPanel', () => {
         wrapper.unmount();
     });
 
-    test('call showBulkUpdate with activeModel selections', () => {
+    test('call showBulkUpdate with activeModel selections', async () => {
         const wrapper = mountWithAppServerContext(
             <SamplesTabbedGridPanel
                 {...DEFAULT_PROPS}
@@ -159,16 +179,21 @@ describe('SamplesTabbedGridPanel', () => {
             />
         );
         validate(wrapper);
-        const buttonProps = wrapper.find(TabbedGridPanel).prop('buttonsComponentProps');
-        buttonProps['showBulkUpdate']();
-        wrapper.setProps({ actions: makeTestActions() }); // force re-render
+
+        act(() => {
+            const buttonProps = wrapper.find(TabbedGridPanel).prop('buttonsComponentProps');
+            buttonProps['showBulkUpdate']();
+            wrapper.setProps({ actions: makeTestActions() }); // force re-render
+        });
+        await waitForLifecycle(wrapper);
+
         validate(wrapper, false, 'tab1', true);
         expect(wrapper.find(SamplesBulkUpdateForm).prop('sampleSet')).toBe('query');
         expect(wrapper.find(SamplesBulkUpdateForm).prop('sampleSetLabel')).toBe('Test title');
         wrapper.unmount();
     });
 
-    test('onBulkUpdateComplete set selectionData', () => {
+    test('onBulkUpdateComplete set selectionData', async () => {
         const wrapper = mountWithAppServerContext(
             <SamplesTabbedGridPanel
                 {...DEFAULT_PROPS}
@@ -179,31 +204,112 @@ describe('SamplesTabbedGridPanel', () => {
             />
         );
         validate(wrapper);
+
         const buttonProps = wrapper.find(TabbedGridPanel).prop('buttonsComponentProps');
-        buttonProps['showBulkUpdate']();
-        wrapper.setProps({ actions: makeTestActions() }); // force re-render
+        act(() => {
+            buttonProps['showBulkUpdate']();
+            wrapper.setProps({ actions: makeTestActions() }); // force re-render
+        });
+        await waitForLifecycle(wrapper);
         validate(wrapper, false, 'tab1', true);
 
         // call onBulkUpdateComplete with submitForEdit false, which does not puts the component in edit grid mode
-        wrapper.find(SamplesBulkUpdateForm).invoke('onBulkUpdateComplete')(fromJS({ a: 1 }), false);
-        wrapper.setProps({ actions: makeTestActions() }); // force re-render
+        act(() => {
+            wrapper.find(SamplesBulkUpdateForm).invoke('onBulkUpdateComplete')(fromJS({ a: 1 }), false);
+            wrapper.setProps({ actions: makeTestActions() }); // force re-render
+        });
+        await waitForLifecycle(wrapper);
         validate(wrapper);
 
         // open back up the bulk edit modal
-        buttonProps['showBulkUpdate']();
-        wrapper.setProps({ actions: makeTestActions() }); // force re-render
+        act(() => {
+            buttonProps['showBulkUpdate']();
+            wrapper.setProps({ actions: makeTestActions() }); // force re-render
+        });
+        await waitForLifecycle(wrapper);
 
         // call onBulkUpdateComplete with submitForEdit true, which puts the component in edit grid mode
-        wrapper.find(SamplesBulkUpdateForm).invoke('onBulkUpdateComplete')(fromJS({ a: 1 }), true);
-        wrapper.setProps({ actions: makeTestActions() }); // force re-render
+        act(() => {
+            wrapper.find(SamplesBulkUpdateForm).invoke('onBulkUpdateComplete')(fromJS({ a: 1 }), true);
+            wrapper.setProps({ actions: makeTestActions() }); // force re-render
+        });
+        await waitForLifecycle(wrapper);
         validate(wrapper, true);
         wrapper.unmount();
     });
 
-    // Expected: Printing allowed
-    test('showLabelOption true, user.isGuest false', () => {
-        const wrapper = mountWithAppServerContext(<SamplesTabbedGridPanel {...DEFAULT_PROPS} showLabelOption={true} />, {}, { user: TEST_USER_READER}, {}, {}, { printServiceUrl:"jest", labelTemplate:"jest"});
+    // Expected: Printing is allowed on pages with no tabs (e.g., Single model)
+    test('showLabelOption true, user.isGuest false, Single model, isAllSamplesSchema false', () => {
+        const wrapper = mountWithAppServerContext(
+            <SamplesTabbedGridPanel
+                {...SINGLE_TAB_PROPS}
+                tabbedGridPanelProps={{ alwaysShowTabs: true }}
+                showLabelOption={true}
+            />,
+            {},
+            { user: TEST_USER_READER },
+            {},
+            {},
+            { printServiceUrl: 'jest', labelTemplate: 'jest' }
+        );
+        expect(wrapper.find(SamplesEditableGrid)).toHaveLength(0);
+        expect(wrapper.find(TabbedGridPanel)).toHaveLength(1);
+        expect(wrapper.find(TabbedGridPanel).prop('supportedExportTypes')).toBeDefined();
+        expect(wrapper.find(TabbedGridPanel).prop('onExport')).toBeDefined();
+        wrapper.unmount();
+    });
+
+    // Expected: Printing not allowed on single tab with alwaysShowTabs set
+    test('showLabelOption true, user.isGuest false, Single model, isAllSamplesSchema', () => {
+        const isAllSamples = (): boolean => true;
+        const wrapper = mountWithAppServerContext(
+            <SamplesTabbedGridPanel
+                {...SINGLE_TAB_PROPS}
+                tabbedGridPanelProps={{ alwaysShowTabs: true }}
+                showLabelOption={true}
+                isAllSamplesTab={isAllSamples}
+            />,
+            {},
+            { user: TEST_USER_READER },
+            {},
+            {},
+            { printServiceUrl: 'jest', labelTemplate: 'jest' }
+        );
+        expect(wrapper.find(SamplesEditableGrid)).toHaveLength(0);
+        expect(wrapper.find(TabbedGridPanel)).toHaveLength(1);
+        expect(wrapper.find(TabbedGridPanel).prop('supportedExportTypes')).toBeUndefined();
+        expect(wrapper.find(TabbedGridPanel).prop('onExport')).toBeUndefined();
+        wrapper.unmount();
+    });
+
+    // Expected: Printing not allowed on 'All' tab
+    test('showLabelOption true, user.isGuest false, isAllSamples = true', () => {
+        const isAllSamples = (): boolean => true;
+        const wrapper = mountWithAppServerContext(
+            <SamplesTabbedGridPanel {...DEFAULT_PROPS} showLabelOption={true} isAllSamplesTab={isAllSamples} />,
+            {},
+            { user: TEST_USER_READER },
+            {},
+            {},
+            { printServiceUrl: 'jest', labelTemplate: 'jest' }
+        );
         validate(wrapper);
+        expect(wrapper.find(TabbedGridPanel).prop('supportedExportTypes')).toBeUndefined();
+        expect(wrapper.find(TabbedGridPanel).prop('onExport')).toBeUndefined();
+        wrapper.unmount();
+    });
+
+    // Expected: Printing allowed on secondary tab
+    test('showLabelOption true, user.isGuest false, isAllSamples = false', () => {
+        const wrapper = mountWithAppServerContext(
+            <SamplesTabbedGridPanel {...DEFAULT_PROPS} showLabelOption={true} initialTabId={QM1.id} />,
+            {},
+            { user: TEST_USER_READER },
+            {},
+            {},
+            { printServiceUrl: 'jest', labelTemplate: 'jest' }
+        );
+        validate(wrapper, false, 'model');
         expect(wrapper.find(TabbedGridPanel).prop('supportedExportTypes')).toBeDefined();
         expect(wrapper.find(TabbedGridPanel).prop('onExport')).toBeDefined();
         wrapper.unmount();
@@ -211,7 +317,14 @@ describe('SamplesTabbedGridPanel', () => {
 
     // Expected: Printing not allowed -- flag set to false
     test('showLabelOption false, user.isGuest false', () => {
-        const wrapper = mountWithAppServerContext(<SamplesTabbedGridPanel {...DEFAULT_PROPS} showLabelOption={false} />, {}, { user: TEST_USER_READER}, {}, {}, { printServiceUrl:"jest", labelTemplate:"jest"});
+        const wrapper = mountWithAppServerContext(
+            <SamplesTabbedGridPanel {...DEFAULT_PROPS} showLabelOption={false} />,
+            {},
+            { user: TEST_USER_READER },
+            {},
+            {},
+            { printServiceUrl: 'jest', labelTemplate: 'jest' }
+        );
         validate(wrapper);
         expect(wrapper.find(TabbedGridPanel).prop('supportedExportTypes')).toBeUndefined();
         expect(wrapper.find(TabbedGridPanel).prop('onExport')).toBeUndefined();
@@ -220,7 +333,13 @@ describe('SamplesTabbedGridPanel', () => {
 
     // Expected: Printing not allowed -- flag set to false and user is guest
     test('showLabelOption false, user.isGuest true', () => {
-        const wrapper = mountWithAppServerContext(<SamplesTabbedGridPanel {...DEFAULT_PROPS} showLabelOption={false} />, {}, { user: TEST_USER_STORAGE_DESIGNER}, {}, {});
+        const wrapper = mountWithAppServerContext(
+            <SamplesTabbedGridPanel {...DEFAULT_PROPS} showLabelOption={false} />,
+            {},
+            { user: TEST_USER_STORAGE_DESIGNER },
+            {},
+            {}
+        );
         validate(wrapper);
         expect(wrapper.find(TabbedGridPanel).prop('supportedExportTypes')).toBeUndefined();
         expect(wrapper.find(TabbedGridPanel).prop('onExport')).toBeUndefined();
@@ -229,7 +348,13 @@ describe('SamplesTabbedGridPanel', () => {
 
     // Expected: Printing not allowed -- user is guest
     test('showLabelOption true, user.isGuest true', () => {
-        const wrapper = mountWithAppServerContext(<SamplesTabbedGridPanel {...DEFAULT_PROPS} showLabelOption={true} />, {}, { user: TEST_USER_STORAGE_DESIGNER}, {}, {} );
+        const wrapper = mountWithAppServerContext(
+            <SamplesTabbedGridPanel {...DEFAULT_PROPS} showLabelOption={true} />,
+            {},
+            { user: TEST_USER_STORAGE_DESIGNER },
+            {},
+            {}
+        );
         validate(wrapper);
         expect(wrapper.find(TabbedGridPanel).prop('supportedExportTypes')).toBeUndefined();
         expect(wrapper.find(TabbedGridPanel).prop('onExport')).toBeUndefined();

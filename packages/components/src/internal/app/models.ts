@@ -5,9 +5,10 @@
 import { List, Record } from 'immutable';
 import { ActionURL, getServerContext } from '@labkey/api';
 
+import { ComponentType } from 'react';
+
 import { Container } from '../components/base/models/Container';
 import { User } from '../components/base/models/User';
-import { ComponentType } from 'react';
 
 const user = new User({
     ...getServerContext().user,

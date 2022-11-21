@@ -6,18 +6,18 @@ import { userCanManagePicklists } from '../../app/utils';
 import { SelectionMenuItem } from '../menus/SelectionMenuItem';
 
 import { PicklistEditModal, PicklistEditModalProps } from './PicklistEditModal';
-import { useServerContext } from '../base/ServerContext';
+import { User } from '../base/models/User';
 
 interface Props extends Omit<PicklistEditModalProps, 'onCancel' | 'onFinish' | 'showNotification'> {
     itemText?: string;
     asMenuItem?: boolean;
     onCreatePicklist?: () => void;
+    user: User;
 }
 
 export const PicklistCreationMenuItem: FC<Props> = props => {
-    const { asMenuItem, itemText, onCreatePicklist, queryModel, sampleIds, ...editModalProps } = props;
+    const { asMenuItem, itemText, user, onCreatePicklist, queryModel, sampleIds, ...editModalProps } = props;
     const [showModal, setShowModal] = useState<boolean>(false);
-    const { user } = useServerContext();
 
     const onFinish = useCallback(() => {
         setShowModal(false);

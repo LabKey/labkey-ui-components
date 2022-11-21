@@ -174,13 +174,13 @@ export class BarChartViewer extends PureComponent<Props, State> {
             body = <LoadingSpinner />;
         } else if (!hasSectionItems) {
             if (selectedGroup.key === SAMPLES_KEY) {
-                body = <SampleTypeEmptyAlert />;
+                body = <SampleTypeEmptyAlert user={user} />;
             } else if (selectedGroup.key === ASSAYS_KEY) {
-                body = <AssayDesignEmptyAlert />;
+                body = <AssayDesignEmptyAlert user={user} />;
             }
         } else if (!hasData) {
             if (selectedGroup.key === SAMPLES_KEY) {
-                body = <SampleEmptyAlert />;
+                body = <SampleEmptyAlert user={user} />;
             } else if (selectedGroup.key === ASSAYS_KEY) {
                 body = <Alert bsStyle="warning">No assay runs have been imported.</Alert>;
             }

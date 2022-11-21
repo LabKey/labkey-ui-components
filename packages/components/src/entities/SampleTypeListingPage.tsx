@@ -55,7 +55,7 @@ export const SampleTypeListingPage: FC<CommonPageProps> = memo(props => {
                 }
             >
                 {hasSampleTypes && (
-                    <SampleTypeSummary navigate={navigate}  />
+                    <SampleTypeSummary user={user} navigate={navigate}  />
                 )}
                 {!hasSampleTypes && <SampleTypeEmptyAlert />}
             </Section>

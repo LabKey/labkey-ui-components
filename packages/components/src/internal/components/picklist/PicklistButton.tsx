@@ -9,6 +9,7 @@ import { ResponsiveMenuButton } from '../buttons/ResponsiveMenuButton';
 
 import { PicklistCreationMenuItem } from './PicklistCreationMenuItem';
 import { AddToPicklistMenuItem } from './AddToPicklistMenuItem';
+import { User } from '../base/models/User';
 
 interface Props {
     asSubMenu?: boolean;
@@ -17,15 +18,17 @@ interface Props {
     sampleIds?: string[];
     model: QueryModel;
     picklistProductId?: string;
+    user: User;
 }
 
 export const PicklistButton: FC<Props> = memo(props => {
-    const { model, metricFeatureArea, asSubMenu, currentProductId, picklistProductId, sampleIds } = props;
+    const { model, user, metricFeatureArea, asSubMenu, currentProductId, picklistProductId, sampleIds } = props;
 
     const items = (
         <>
             <AddToPicklistMenuItem
                 queryModel={model}
+                user={user}
                 sampleIds={sampleIds}
                 metricFeatureArea={metricFeatureArea}
                 currentProductId={currentProductId}
@@ -37,6 +40,7 @@ export const PicklistButton: FC<Props> = memo(props => {
                 selectedQuantity={sampleIds ? undefined : model?.selections?.size}
                 sampleIds={sampleIds}
                 key="picklist"
+                user={user}
                 asMenuItem
                 metricFeatureArea={metricFeatureArea}
                 currentProductId={currentProductId}

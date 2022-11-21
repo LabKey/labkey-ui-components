@@ -69,11 +69,13 @@ export const SampleActionsButton: FC<Props> = memo(props => {
                     <hr className="divider" />
                     <MenuItem header>Picklists</MenuItem>
                     <AddToPicklistMenuItem
+                        user={user}
                         queryModel={model}
                         sampleFieldKey={sampleFieldKey}
                         metricFeatureArea={metricFeatureArea}
                     />
                     <PicklistCreationMenuItem
+                        user={user}
                         asMenuItem
                         selectionKey={sampleFieldKey ? undefined : model.id}
                         queryModel={model}

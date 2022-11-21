@@ -24,17 +24,18 @@ import { Picklist } from '../internal/components/picklist/models';
 import { deletePicklists, getPicklistListingContainerFilter } from '../internal/components/picklist/actions';
 import { PUBLIC_PICKLIST_CATEGORY } from '../internal/components/picklist/constants';
 import { PicklistCreationMenuItem } from '../internal/components/picklist/PicklistCreationMenuItem';
-import { useServerContext } from '../internal/components/base/ServerContext';
 
 const MY_PICKLISTS_GRID_ID = 'my-picklists';
 const TEAM_PICKLISTS_GRID_ID = 'team-picklists';
 
 interface OwnProps {
     initTab?: string;
+    user: User;
 }
 
 interface PicklistGridProps {
     activeTab?: string;
+    user: User;
 }
 
 const PICKLISTS_CAPTION = 'Manage sample groups for storage and export';
@@ -66,9 +67,8 @@ const PicklistGridButtons: FC<ButtonProps & RequiresModelAndActions> = memo(prop
 });
 
 const PicklistGridImpl: FC<PicklistGridProps & InjectedQueryModels> = memo(props => {
-    const { actions, queryModels, activeTab } = props;
+    const { actions, queryModels, user, activeTab } = props;
     const { createNotification } = useNotificationsContext();
-    const { user } = useServerContext();
 
     const tabOrder = useMemo(() => {
         return Object.keys(queryModels);
@@ -120,7 +120,7 @@ const PicklistGridImpl: FC<PicklistGridProps & InjectedQueryModels> = memo(props
             caption={PICKLISTS_CAPTION}
             context={
                 userCanManagePicklists(user) ?
-                    <PicklistCreationMenuItem asMenuItem={false} itemText={"Create Picklist"} onCreatePicklist={() => actions.loadAllModels()}/>
+                    <PicklistCreationMenuItem user={user} asMenuItem={false} itemText={"Create Picklist"} onCreatePicklist={() => actions.loadAllModels()}/>
                     : undefined
 
             }
@@ -158,8 +158,7 @@ const PicklistGridImpl: FC<PicklistGridProps & InjectedQueryModels> = memo(props
 const PicklistGridWithModels = withQueryModels<PicklistGridProps>(PicklistGridImpl);
 
 export const PicklistListing: FC<OwnProps> = memo(props => {
-    const { initTab } = props;
-    const { user } = useServerContext();
+    const { initTab, user } = props;
 
     const queryConfigs = {};
     if (userCanManagePicklists(user)) {

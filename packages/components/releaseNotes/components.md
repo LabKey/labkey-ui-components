@@ -6,8 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Update label on `ManageDropdownButton` to contain the word "Manage"
 * Remove need for mega-create button on `AssayListingPage`
 * Rename `SampleTypePage` to `SampleTypeListingPage` and incorporate empty state behavior from LKSM
-* Update `EmptyAlertWithPermission` to get user from server context
-* Rename `SampleSetHeatMap` to `SampleTypeHeatMap` and explicilty filter out media sample types
+* Rename `SampleSetHeatMap` to `SampleTypeHeatMap` and explicitly filter out media sample types
 * Rename `SampleSetCards` to `SampleTypeCards` and explicitly filter out media sample types
 * Update `PicklistCreationMenuItem` to also work as a non-menu item
 * Fix problem in `AssayImportSubMenuItem` not respecting the `requireSelection` property

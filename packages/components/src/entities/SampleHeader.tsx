@@ -269,8 +269,8 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
 
                             {!isMedia && (
                                 <RequiresPermission user={user} perms={PermissionTypes.ManagePicklists}>
-                                    <AddToPicklistMenuItem queryModel={sampleModel} sampleIds={sampleIds} />
-                                    <PicklistCreationMenuItem sampleIds={sampleIds} key="picklist" asMenuItem />
+                                    <AddToPicklistMenuItem user={user} queryModel={sampleModel} sampleIds={sampleIds} />
+                                    <PicklistCreationMenuItem user={user} sampleIds={sampleIds} key="picklist" asMenuItem />
                                 </RequiresPermission>
                             )}
                             {isWorkflowEnabled() && (

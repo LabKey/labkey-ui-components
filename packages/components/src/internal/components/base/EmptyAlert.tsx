@@ -4,8 +4,7 @@ import classNames from 'classnames';
 import { AppURL } from '../../url/AppURL';
 
 import { Alert } from './Alert';
-import { hasAllPermissions } from './models/User';
-import { useServerContext } from './ServerContext';
+import { hasAllPermissions, User } from './models/User';
 
 interface EmptyAlertProps {
     actionURL?: AppURL;
@@ -32,11 +31,11 @@ EmptyAlert.displayName = 'EmptyAlert';
 
 interface WithPermissionsProps extends EmptyAlertProps {
     permission: string;
+    user?: User;
 }
 
 export const EmptyAlertWithPermissions: FC<WithPermissionsProps> = memo(props => {
-    const { allowAction, permission, ...baseProps } = props;
-    const { user } = useServerContext();
+    const { allowAction, permission, user, ...baseProps } = props;
     const _allowAction = useMemo(() => {
         return allowAction !== false && !!user && hasAllPermissions(user, [permission]);
     }, [allowAction, permission, user]);

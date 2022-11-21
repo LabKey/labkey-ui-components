@@ -29,12 +29,12 @@ const SAMPLE_QUERY_CONFIG = {
 
 interface Props {
     navigate: (url: string | AppURL) => any;
+    user: User;
 }
 
 export const SampleTypeSummary: FC<Props> = memo(props => {
-    const { navigate } = props;
+    const { navigate, user } = props;
     const [selectedView, setSelectedView] = useState(SelectView.Grid);
-    const { user } = useServerContext();
 
     const canUpdate = hasAnyPermissions(user, [PermissionTypes.Insert, PermissionTypes.Update]);
     const queryConfig = useMemo(() => {

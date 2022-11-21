@@ -95,19 +95,5 @@ describe('Editable Grids Utils', () => {
             const models = await initEditableGridModel(dataModel, editorModel, dataModel);
             expect(models.editorModel.columns.toArray()).toEqual(columns.map(col => col.fieldKey).toArray());
         });
-
-        test('includes extra columns', async () => {
-            const columns = List([queryInfo.getColumn('Date')]);
-            const loader = new MockEditableGridLoader(queryInfo, { columns });
-            const editorModel = new EditorModel({ loader });
-            const extraColumns: Array<Partial<QueryColumn>> = [
-                { fieldKey: 'SampleID' },
-                { fieldKey: 'DoesNotExist' },
-                { fieldKey: 'Date' }, // duplicates are removed
-            ];
-
-            const models = await initEditableGridModel(dataModel, editorModel, dataModel, extraColumns);
-            expect(models.editorModel.columns.toArray()).toEqual(['Date', 'SampleID']);
-        });
     });
 });

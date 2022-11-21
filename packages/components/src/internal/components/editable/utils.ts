@@ -26,16 +26,10 @@ import { CellActions } from './constants';
  */
 export const loadEditorModelData = async (
     queryModelData: Partial<QueryModel>,
-    editorColumns?: List<QueryColumn>,
-    extraColumns?: QueryColumn[]
+    editorColumns?: List<QueryColumn>
 ): Promise<Partial<EditorModel>> => {
     const { orderedRows, rows, queryInfo } = queryModelData;
-    let columns = editorColumns ?? queryInfo.getInsertColumns();
-    extraColumns?.forEach(extraCol => {
-        if (!columns.find(col => col.fieldKey === extraCol.fieldKey)) {
-            columns = columns.push(extraCol);
-        }
-    });
+    const columns = editorColumns ?? queryInfo.getInsertColumns();
     const lookupValueDescriptors = await getLookupValueDescriptors(
         columns.toArray(),
         fromJS(rows),
@@ -104,8 +98,7 @@ export const loadEditorModelData = async (
 export const initEditableGridModel = async (
     dataModel: QueryModel,
     editorModel: EditorModel,
-    queryModel: QueryModel,
-    includeColumns?: Array<Partial<QueryColumn>>
+    queryModel: QueryModel
 ): Promise<{ dataModel: QueryModel; editorModel: EditorModel }> => {
     const { loader } = editorModel;
     const response = await loader.fetch(queryModel);
@@ -115,14 +108,6 @@ export const initEditableGridModel = async (
         queryInfo: loader.queryInfo,
     };
 
-    const extraColumns: QueryColumn[] = [];
-    includeColumns?.forEach(col => {
-        const column = queryModel.getColumn(col.fieldKey);
-        if (column) {
-            extraColumns.push(column);
-        }
-    });
-
     let columns: List<QueryColumn>;
     const forUpdate = loader.mode === EditorMode.Update;
     if (loader.columns) {
@@ -131,7 +116,7 @@ export const initEditableGridModel = async (
         columns = editorModel.getColumns(gridData.queryInfo, forUpdate);
     }
 
-    const editorModelData = await loadEditorModelData(gridData, columns, extraColumns);
+    const editorModelData = await loadEditorModelData(gridData, columns);
 
     return {
         dataModel: dataModel.mutate({
@@ -151,16 +136,13 @@ export interface EditableGridModels {
 export const initEditableGridModels = async (
     dataModels: QueryModel[],
     editorModels: EditorModel[],
-    queryModel: QueryModel,
-    includeColumns?: Array<Partial<QueryColumn>>
+    queryModel: QueryModel
 ): Promise<EditableGridModels> => {
     const updatedDataModels = [];
     const updatedEditorModels = [];
 
     const results = await Promise.all(
-        dataModels.map((dataModel, i) =>
-            initEditableGridModel(dataModels[i], editorModels[i], queryModel, includeColumns)
-        )
+        dataModels.map((dataModel, i) => initEditableGridModel(dataModels[i], editorModels[i], queryModel))
     );
 
     results.forEach(result => {

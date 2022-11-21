@@ -123,8 +123,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
                     const { dataModels, editorModels } = await initEditableGridModels(
                         editableGridModels.dataModels,
                         editableGridModels.editorModels,
-                        queryModel,
-                        extraExportColumns
+                        queryModel
                     );
                     setEditableGridModels({ dataModels, editorModels });
                 } catch (e) {
@@ -132,7 +131,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
                 }
             })();
         }
-    }, [loaders, queryModel, editableGridModels, extraExportColumns, createNotification]);
+    }, [loaders, queryModel, editableGridModels, createNotification]);
 
     const onGridChange = useCallback(
         (

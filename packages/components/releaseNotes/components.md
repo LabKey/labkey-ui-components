@@ -10,7 +10,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Rename `SampleSetCards` to `SampleTypeCards` and explicitly filter out media sample types
 * Update `PicklistCreationMenuItem` to also work as a non-menu item
 * Fix problem in `AssayImportSubMenuItem` not respecting the `requireSelection` property
-* Change Picklist buttons to get user from serverContext instead of via prop
 
 ### version 2.256.0
 *Released*: 18 November 2022

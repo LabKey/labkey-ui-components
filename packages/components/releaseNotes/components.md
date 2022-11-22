@@ -8,6 +8,15 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Add new AdminAppContext
   * Rename GroupManagement to GroupManagementPage
 
+### version 2.257.0
+*Released*: 22 November 2022
+* Detail panel editMode fix for show/hide labels
+  * defaultTitleRenderer to pass required prop to LabelOverlay
+  * DetailDisplay processFields should always set hideLabel to true in editingMode
+  * DetailDisplay update resolveDetailEditRenderer to use wrapped input components instead of formsy-react-components directly
+  * LabelOverlay rendering of asterisk for required prop to match in formsy case
+  * AppendUnitsInput: utilize TextInput, pass through showLabel prop
+
 ### version 2.256.0
 *Released*: 18 November 2022
 * Introduce `includeViewColumns` bit on `QuerySelectModel` and set based on `previewOptions` prop of `QuerySelect` during initialization.

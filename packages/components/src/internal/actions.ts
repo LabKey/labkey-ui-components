@@ -1226,7 +1226,7 @@ function validatePaste(
     ) {
         paste.success = false;
         paste.message = 'Unable to paste. Paste is not supported against multiple selections.';
-    } else if (coordinates.colMax >= model.colCount) {
+    } else if (coordinates.colMax >= model.columns.size) {
         paste.success = false;
         paste.message = 'Unable to paste. Cannot paste columns beyond the columns found in the grid.';
     } else if (coordinates.rowMax - coordinates.rowMin > maxRowPaste) {
@@ -1417,7 +1417,6 @@ export function removeColumn(
     return {
         editorModelChanges: {
             columns,
-            colCount: editorModel.colCount - 1,
             focusColIdx: -1,
             focusRowIdx: -1,
             selectedColIdx: -1,
@@ -1515,7 +1514,6 @@ export function addColumns(
     return {
         editorModelChanges: {
             columns,
-            colCount: editorModel.colCount + queryColumns.size,
             focusColIdx: -1,
             focusRowIdx: -1,
             selectedColIdx: -1,

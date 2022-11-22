@@ -439,7 +439,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     applySelection = (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES): Partial<EditorModel> => {
         const { editorModel } = this.props;
-        const { colCount, rowCount } = editorModel;
+        const { rowCount } = editorModel;
         let selectionCells = Set<string>();
         const hasSelection = editorModel.hasSelection();
         let selectedColIdx = colIdx;
@@ -447,7 +447,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         switch (selection) {
             case SELECTION_TYPES.ALL:
-                for (let c = 0; c < colCount; c++) {
+                for (let c = 0; c < editorModel.columns.size; c++) {
                     for (let r = 0; r < rowCount; r++) {
                         selectionCells = selectionCells.add(genCellKey(c, r));
                     }
@@ -460,7 +460,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 if (hasSelection) {
                     const upperLeft = [Math.min(selectedColIdx, colIdx), Math.min(selectedRowIdx, rowIdx)];
                     const bottomRight = [Math.max(selectedColIdx, colIdx), Math.max(selectedRowIdx, rowIdx)];
-                    const maxColumn = Math.min(bottomRight[0], colCount - 1);
+                    const maxColumn = Math.min(bottomRight[0], editorModel.columns.size - 1);
                     const maxRow = Math.min(bottomRight[1], rowCount - 1);
 
                     for (let c = upperLeft[0]; c <= maxColumn; c++) {
@@ -488,9 +488,9 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     selectCell = (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean): void => {
         const { editorModel, onChange } = this.props;
-        const { cellValues, colCount, focusValue, rowCount } = editorModel;
+        const { cellValues, focusValue, rowCount } = editorModel;
 
-        if (colIdx < 0 || rowIdx < 0 || colIdx >= colCount) {
+        if (colIdx < 0 || rowIdx < 0 || colIdx >= editorModel.columns.size) {
             // out of bounds, do nothing
             return;
         }
@@ -837,7 +837,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         nextCol = found.colIdx;
                         nextRow = found.rowIdx;
                     } else {
-                        nextCol = editorModel.colCount - 1;
+                        nextCol = editorModel.columns.size - 1;
                         nextRow = rowIdx;
                     }
                 } else {
@@ -868,7 +868,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 break;
 
             case Key.END:
-                nextCol = editorModel.colCount - 1;
+                nextCol = editorModel.columns.size - 1;
                 nextRow = rowIdx;
                 break;
 

@@ -77,8 +77,7 @@ describe('Editable Grids Utils', () => {
                 '2-2': List([]),
                 '3-1': List([]),
             }),
-            columns: ['SampleID', 'ParticipantID', 'VisitID', 'Date'],
-            colCount: 4,
+            columns: List(['SampleID', 'ParticipantID', 'VisitID', 'Date']),
             id: MODEL_ID_LOADED,
         });
         const extraColumns = [
@@ -128,7 +127,6 @@ describe('Editable Grids Utils', () => {
             expect(models.dataModel.rowsLoadingState).toEqual(LoadingState.LOADED);
             expect(models.editorModel.cellValues.size).toEqual(0);
             expect(models.editorModel.columns.toArray()).toEqual(expectedInsertColumns);
-            expect(models.editorModel.colCount).toEqual(expectedInsertColumns.length);
         });
 
         test('respects loader mode for columns', async () => {
@@ -141,7 +139,6 @@ describe('Editable Grids Utils', () => {
 
             const models = await initEditableGridModel(dataModel, editorModel, loader, dataModel);
             expect(models.editorModel.columns.toArray()).toEqual(expectedUpdateColumns);
-            expect(models.editorModel.colCount).toEqual(expectedUpdateColumns.length);
         });
 
         test('respects loader supplied columns', async () => {

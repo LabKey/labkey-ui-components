@@ -137,7 +137,7 @@ describe('EditorModel', () => {
                         },
                     ]),
                 }),
-                colCount: 5,
+                columns: List(['a', 'b', 'c', 'd', 'e']),
                 id: 'insert-samples|samples/sample set 2',
                 isPasting: false,
                 focusColIdx: 1,
@@ -211,7 +211,7 @@ describe('EditorModel', () => {
                         },
                     ]),
                 }),
-                colCount: 5,
+                columns: List(['a', 'b', 'c', 'd', 'e']),
                 id: 'insert-samples|samples/sample set 2',
                 isPasting: false,
                 focusColIdx: 1,
@@ -342,7 +342,7 @@ describe('EditorModel', () => {
                         },
                     ]),
                 }),
-                colCount: 5,
+                columns: List(['a', 'b', 'c', 'd', 'e']),
                 id: 'insert-samples|samples/sample set 2',
                 isPasting: false,
                 focusColIdx: 1,
@@ -448,7 +448,7 @@ describe('EditorModel', () => {
                     ]),
                     // missing RequiredData for row index 4
                 }),
-                colCount: 5,
+                columns: List(['a', 'b', 'c', 'd', 'e']),
                 id: 'insert-samples|samples/sample set 2',
                 isPasting: false,
                 focusColIdx: 1,
@@ -875,7 +875,7 @@ describe('EditorModel', () => {
         });
 
         test('isInBounds', () => {
-            const model = new EditorModel({ colCount: 1, rowCount: 1 });
+            const model = new EditorModel({ columns: List(['a']), rowCount: 1 });
             expect(model.isInBounds(-1, -1)).toBeFalsy();
             expect(model.isInBounds(0, -1)).toBeFalsy();
             expect(model.isInBounds(-1, 0)).toBeFalsy();

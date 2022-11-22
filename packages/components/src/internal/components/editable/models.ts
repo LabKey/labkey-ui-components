@@ -45,7 +45,6 @@ export interface EditorModelProps {
     cellMessages: CellMessages;
     cellValues: CellValues;
     columns: List<string>;
-    colCount: number;
     focusColIdx: number;
     focusRowIdx: number;
     focusValue: List<ValueDescriptor>;
@@ -86,7 +85,6 @@ export class EditorModel
         cellMessages: Map<string, CellMessage>(),
         cellValues: Map<string, List<ValueDescriptor>>(),
         columns: List<string>(),
-        colCount: 0,
         deletedIds: Set<any>(),
         focusColIdx: -1,
         focusRowIdx: -1,
@@ -104,7 +102,6 @@ export class EditorModel
     declare cellMessages: CellMessages;
     declare cellValues: CellValues;
     declare columns: List<string>;
-    declare colCount: number;
     declare deletedIds: Set<any>;
     declare focusColIdx: number;
     declare focusRowIdx: number;
@@ -453,7 +450,7 @@ export class EditorModel
     }
 
     isInBounds(colIdx: number, rowIdx: number): boolean {
-        return colIdx >= 0 && colIdx < this.colCount && rowIdx >= 0 && rowIdx < this.rowCount;
+        return colIdx >= 0 && colIdx < this.columns.size && rowIdx >= 0 && rowIdx < this.rowCount;
     }
 
     inSelection(colIdx: number, rowIdx: number): boolean {

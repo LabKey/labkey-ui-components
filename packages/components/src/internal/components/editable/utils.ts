@@ -89,7 +89,6 @@ export const loadEditorModelData = async (
     return {
         cellValues,
         columns: columns.map(col => col.fieldKey).toList(),
-        colCount: columns.size,
         deletedIds: Set<any>(),
         rowCount: orderedRows.length,
     };

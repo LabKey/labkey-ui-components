@@ -23,19 +23,19 @@ import { LabelHelpTip } from '../base/LabelHelpTip';
 import { HelpTipRenderer } from './HelpTipRenderer';
 
 export interface LabelOverlayProps {
+    addLabelAsterisk?: boolean;
+    canMouseOverTooltip?: boolean;
+    column?: QueryColumn;
+    content?: any; // other content to render to the popover
+    description?: string;
+    helpTipRenderer?: string;
     inputId?: string;
     isFormsy?: boolean;
     label?: string;
     labelClass?: string;
-    description?: string;
     placement?: any;
-    type?: string;
-    column?: QueryColumn;
     required?: boolean;
-    addLabelAsterisk?: boolean;
-    content?: any; // other content to render to the popover
-    canMouseOverTooltip?: boolean;
-    helpTipRenderer?: string;
+    type?: string;
 }
 
 export class LabelOverlay extends React.Component<LabelOverlayProps> {
@@ -140,7 +140,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
                 <span>
                     {label}&nbsp;
                     {overlay}
-                    {!required && addLabelAsterisk ? <span className="required-symbol"> *</span> : null}
+                    {required || addLabelAsterisk ? <span className="required-symbol"> *</span> : null}
                 </span>
             );
         }

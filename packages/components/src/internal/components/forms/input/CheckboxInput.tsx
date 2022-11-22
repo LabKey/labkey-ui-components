@@ -34,6 +34,7 @@ interface CheckboxInputProps extends DisableableInputProps, WithFormsyProps {
     rowClassName?: any[] | string;
     showLabel?: boolean;
     value?: any;
+    wrapperClassName?: string;
 }
 
 interface CheckboxInputState extends DisableableInputState {
@@ -41,7 +42,11 @@ interface CheckboxInputState extends DisableableInputState {
 }
 
 class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInputState> {
-    static defaultProps = { ...DisableableInput.defaultProps, showLabel: true };
+    static defaultProps = {
+        ...DisableableInput.defaultProps,
+        showLabel: true,
+        wrapperClassName: 'col-md-9 col-xs-12',
+    };
 
     constructor(props: CheckboxInputProps) {
         super(props);
@@ -75,12 +80,26 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
     };
 
     render() {
-        const { allowDisable, label, name, queryColumn, showLabel, addLabelAsterisk, renderFieldLabel } = this.props;
-        const { isDisabled } = this.state;
+        const {
+            addLabelAsterisk,
+            allowDisable,
+            formsy,
+            getValue,
+            label,
+            name,
+            queryColumn,
+            showLabel,
+            renderFieldLabel,
+            wrapperClassName,
+        } = this.props;
+        const { checked, isDisabled } = this.state;
 
         // N.B.  We do not use the Checkbox component from Formsy because it does not support
         // React.Nodes as labels.  Using a label that is anything but a string when using Checkbox
         // produces a "Converting circular structure to JSON" error.
+        // TODO: This label generation is inconsistent and does not align with other input elements.
+        // This should not be responsible for rendering the "required-symbol" and should allow for component prop
+        // to define label wrapper classes.
         return (
             <div className="form-group row">
                 {renderFieldLabel ? (
@@ -105,16 +124,16 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
                         }}
                     />
                 )}
-                <div className="col-sm-9 col-xs-12">
+                <div className={wrapperClassName}>
                     <input
-                        disabled={this.state.isDisabled}
+                        disabled={isDisabled}
                         name={name ?? queryColumn.fieldKey}
                         // Issue 43299: Ignore "required" property for boolean columns as this will
                         // cause any false value (i.e. unchecked) to prevent submission.
                         // required={queryColumn.required}
                         type="checkbox"
-                        value={this.props.formsy ? this.props.getValue() : this.state.checked}
-                        checked={this.state.checked}
+                        value={formsy ? getValue() : checked}
+                        checked={checked}
                         onChange={this.onChange}
                     />
                 </div>

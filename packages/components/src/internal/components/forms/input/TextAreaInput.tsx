@@ -33,11 +33,13 @@ interface TextAreaInputProps extends DisableableInputProps {
     name?: string;
     onChange?: any;
     queryColumn: QueryColumn;
-    rows?: number;
-    value?: any;
-    rowClassName?: any[] | string;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
+    required?: boolean;
+    rowClassName?: any[] | string;
+    rows?: number;
     showLabel?: boolean;
+    validatePristine?: boolean;
+    value?: any;
 }
 
 export class TextAreaInput extends DisableableInput<TextAreaInputProps, DisableableInputState> {
@@ -94,7 +96,18 @@ export class TextAreaInput extends DisableableInput<TextAreaInputProps, Disablea
     };
 
     render() {
-        const { cols, elementWrapperClassName, labelClassName, name, queryColumn, rowClassName, rows } = this.props;
+        const {
+            cols,
+            elementWrapperClassName,
+            labelClassName,
+            name,
+            queryColumn,
+            required,
+            rowClassName,
+            rows,
+            showLabel,
+            validatePristine,
+        } = this.props;
 
         return (
             <Textarea
@@ -105,12 +118,13 @@ export class TextAreaInput extends DisableableInput<TextAreaInputProps, Disablea
                 elementWrapperClassName={elementWrapperClassName}
                 id={queryColumn.fieldKey}
                 label={this.renderLabel()}
-                labelClassName={labelClassName}
+                labelClassName={showLabel ? labelClassName : 'hide-label'}
                 placeholder={`Enter ${queryColumn.caption.toLowerCase()}`}
-                name={name ? name : queryColumn.fieldKey}
+                name={name ?? queryColumn.fieldKey}
                 rowClassName={rowClassName}
                 rows={rows}
-                required={queryColumn.required}
+                required={required ?? queryColumn.required}
+                validatePristine={validatePristine}
                 value={this.getInputValue()}
             />
         );

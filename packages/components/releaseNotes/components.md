@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.259.0
+*Released*: 22 November 2022
+* Update `addColumns`, `changeColumn`, and `removeColumns` editable grid actions to update the new `columns` array on the `EditorModel`.
+* Process directly against `EditorModel.columns` in `EditorModel.getRawDataFromGridData()` rather than relying on all column oriented properties aligning with the initial configuration.
+* Introduce `EditorModel.getRawDataFromModel()` as a wrapped replacement for `EditorModel.getRawDataFromGridData()` to reduce redundant processing of the data on a `QueryModel`.
+* Remove concept of `getEditableValue` on the renderer for editable grid cells. This pattern is no longer needed.
+
 ### version 2.258.0
 *Released*: 22 November 2022
 * Update label on `ManageDropdownButton` to contain the word "Manage"

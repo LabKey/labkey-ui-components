@@ -308,21 +308,23 @@ export const getEditorTableData = (
             if (editableRow.has(col.fieldKey)) {
                 row = row.set(col.fieldKey, editableRow.get(col.fieldKey));
             } else {
-                const datas = queryModel.rows[rowKey]?.[col.fieldKey];
-                if (datas) {
-                    if (Array.isArray(datas)) {
+                const data = queryModel.rows[rowKey]?.[col.fieldKey];
+                if (data) {
+                    if (Array.isArray(data)) {
                         let sep = '';
                         row = row.set(
                             col.fieldKey,
-                            datas.reduce((str, row_) => {
+                            data.reduce((str, row_) => {
                                 str += sep + quoteValueWithDelimiters(row_.displayValue ?? row_.value, ',');
                                 sep = ', ';
                                 return str;
                             }, '')
                         );
                     } else {
-                        row = row.set(col.fieldKey, datas.displayValue ?? datas.value);
+                        row = row.set(col.fieldKey, data.displayValue ?? data.value);
                     }
+                } else {
+                    row = row.set(col.fieldKey, undefined);
                 }
             }
         });

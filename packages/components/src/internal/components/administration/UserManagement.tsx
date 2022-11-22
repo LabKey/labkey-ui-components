@@ -307,7 +307,7 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
 export const UserManagementPageImpl: FC<InjectedPermissionsPage & NotificationsContextProps> = props => {
     const { api } = useAppContext<AppContext>();
     const { container, moduleContext, project, user } = useServerContext();
-    const { userCreationExtraRoles } = useAdminAppContext();
+    const { extraPermissionRoles } = useAdminAppContext();
 
     return (
         <UserManagement
@@ -315,7 +315,7 @@ export const UserManagementPageImpl: FC<InjectedPermissionsPage & NotificationsC
             allowResetPassword={!isLoginAutoRedirectEnabled(moduleContext)}
             api={api.security}
             container={container}
-            extraRoles={userCreationExtraRoles}
+            extraRoles={extraPermissionRoles}
             project={project}
             user={user}
         />

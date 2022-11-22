@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Rename GroupManagement to GroupManagementPage
   * AuditQueriesListingPage update to get user from context so that apps don't have to wrap it
   * UserManagementPage update to get extraRoles from AdminAppContext
+  * PermissionManagementPage port from LKB and LKSM and get extraRoles from AdminAppContext
 
 ### version 2.257.0
 *Released*: 22 November 2022

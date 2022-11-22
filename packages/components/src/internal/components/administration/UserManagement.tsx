@@ -28,11 +28,15 @@ import { UserLimitSettings } from '../permissions/actions';
 
 import { NotificationsContextProps, withNotificationsContext } from '../notifications/NotificationsContext';
 
+import { AUDIT_EVENT_TYPE_PARAM, USER_AUDIT_QUERY } from '../auditlog/constants';
+
+import { AUDIT_KEY } from '../../app/constants';
+
 import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './utils';
 import { getUserGridFilterURL, updateSecurityPolicy } from './actions';
-import { AUDIT_EVENT_TYPE_PARAM, USER_AUDIT_QUERY } from '../auditlog/constants';
-import { AUDIT_KEY } from '../../app/constants';
+
 import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from './constants';
+import { useAdminAppContext } from './useAdminAppContext';
 
 export function getNewUserRoles(
     user: User,
@@ -260,7 +264,11 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
     renderButtons = (): ReactNode => {
         return (
             <ManageDropdownButton collapsed id="user-management-page-manage" pullRight>
-                <MenuItem href={AppURL.create(AUDIT_KEY).addParam(AUDIT_EVENT_TYPE_PARAM, USER_AUDIT_QUERY.value).toHref()}>View Audit History</MenuItem>
+                <MenuItem
+                    href={AppURL.create(AUDIT_KEY).addParam(AUDIT_EVENT_TYPE_PARAM, USER_AUDIT_QUERY.value).toHref()}
+                >
+                    View Audit History
+                </MenuItem>
             </ManageDropdownButton>
         );
     };
@@ -296,30 +304,22 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
     }
 }
 
-interface UserManagementPageProps {
-    extraRoles?: string[][];
-}
-
-export const UserManagementPageImpl: FC<
-    UserManagementPageProps & InjectedPermissionsPage & NotificationsContextProps
-> = props => {
-    const { extraRoles, ...injectedProps } = props;
+export const UserManagementPageImpl: FC<InjectedPermissionsPage & NotificationsContextProps> = props => {
     const { api } = useAppContext<AppContext>();
     const { container, moduleContext, project, user } = useServerContext();
+    const { userCreationExtraRoles } = useAdminAppContext();
 
     return (
         <UserManagement
-            {...injectedProps}
+            {...props}
             allowResetPassword={!isLoginAutoRedirectEnabled(moduleContext)}
             api={api.security}
             container={container}
-            extraRoles={extraRoles}
+            extraRoles={userCreationExtraRoles}
             project={project}
             user={user}
         />
     );
 };
 
-export const UserManagementPage = withPermissionsPage<UserManagementPageProps>(
-    withNotificationsContext(UserManagementPageImpl)
-);
+export const UserManagementPage = withPermissionsPage(withNotificationsContext(UserManagementPageImpl));

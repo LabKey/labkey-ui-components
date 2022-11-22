@@ -28,6 +28,7 @@ export interface NavigationSettings {
 
 export interface AdminAppContext {
     NotebookProjectSettingsComponent: NotebookProjectSettings;
+    userCreationExtraRoles: string[][];
 }
 
 export interface AppContext {

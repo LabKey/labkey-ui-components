@@ -18,6 +18,7 @@ import { TEST_USER_APP_ADMIN, TEST_USER_PROJECT_ADMIN } from '../../userFixtures
 import { InjectedPermissionsPage } from '../permissions/withPermissionsPage';
 
 import { getNewUserRoles, UserManagementPageImpl } from './UserManagement';
+import {AdminAppContext} from "../../AppContext";
 
 beforeAll(() => {
     initQueryGridState();
@@ -52,7 +53,7 @@ describe('UserManagement', () => {
                 createNotification={jest.fn()}
                 dismissNotifications={jest.fn()}
             />,
-            {},
+            { admin: {} as AdminAppContext },
             {
                 user: TEST_USER_APP_ADMIN,
             }
@@ -68,7 +69,7 @@ describe('UserManagement', () => {
                 createNotification={jest.fn()}
                 dismissNotifications={jest.fn()}
             />,
-            {},
+            { admin: {} as AdminAppContext },
             {
                 user: TEST_USER_APP_ADMIN,
             }
@@ -85,7 +86,7 @@ describe('UserManagement', () => {
                 createNotification={jest.fn()}
                 dismissNotifications={jest.fn()}
             />,
-            {},
+            { admin: {} as AdminAppContext },
             {
                 user: TEST_USER_APP_ADMIN,
             }
@@ -102,7 +103,7 @@ describe('UserManagement', () => {
                 createNotification={jest.fn()}
                 dismissNotifications={jest.fn()}
             />,
-            {},
+            { admin: {} as AdminAppContext },
             {
                 user: TEST_USER_APP_ADMIN,
                 moduleContext: { api: { AutoRedirectSSOAuthConfiguration: true } },

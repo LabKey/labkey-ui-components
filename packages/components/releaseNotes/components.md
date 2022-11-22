@@ -5,9 +5,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD November 2022
 * Updates for Admin page consistency
   * AdminSettingsPage refactor and port from LKB and LKSM
-  * Add new AdminAppContext
   * Rename GroupManagement to GroupManagementPage
-  * AuditQueriesListingPage.tsx to get user from context so that apps don't have to wrap it
+  * AuditQueriesListingPage update to get user from context so that apps don't have to wrap it
+  * UserManagementPage update to get extraRoles from AdminAppContext
 
 ### version 2.257.0
 *Released*: 22 November 2022

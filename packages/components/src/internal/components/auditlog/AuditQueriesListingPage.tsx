@@ -2,7 +2,7 @@
  * Copyright (c) 2016-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { PureComponent, ReactNode } from 'react';
+import React, { FC, PureComponent, ReactNode } from 'react';
 import { fromJS, List, Map } from 'immutable';
 import { Col, Row } from 'react-bootstrap';
 import { Query } from '@labkey/api';
@@ -20,8 +20,8 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Page } from '../base/Page';
 import { PageHeader } from '../base/PageHeader';
 import { SelectInput } from '../forms/input/SelectInput';
-
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+import { useServerContext } from '../base/ServerContext';
 
 import { getAuditQueries } from './utils';
 import { getAuditDetail } from './actions';
@@ -31,10 +31,13 @@ import { AuditQuery, AUDIT_EVENT_TYPE_PARAM, SAMPLE_TIMELINE_AUDIT_QUERY } from 
 
 interface OwnProps {
     params: any;
+}
+
+interface BodyProps {
     user: User;
 }
 
-type Props = OwnProps & InjectedQueryModels & WithRouterProps;
+type Props = OwnProps & BodyProps & InjectedQueryModels & WithRouterProps;
 
 interface State {
     auditQueries: AuditQuery[];
@@ -260,4 +263,11 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
     };
 }
 
-export const AuditQueriesListingPage = withQueryModels(AuditQueriesListingPageImpl);
+const AuditQueriesListingPageWithQueryModels = withQueryModels<OwnProps & BodyProps & WithRouterProps>(
+    AuditQueriesListingPageImpl
+);
+
+export const AuditQueriesListingPage: FC<OwnProps & WithRouterProps> = props => {
+    const { user } = useServerContext();
+    return <AuditQueriesListingPageWithQueryModels {...props} user={user} />;
+};

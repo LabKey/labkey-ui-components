@@ -1,6 +1,6 @@
 import React, { FC, memo, useMemo } from 'react';
 
-import { Filter, Query } from '@labkey/api';
+import { Query } from '@labkey/api';
 
 import { Cards, ICardProps } from '../internal/components/base/Cards';
 
@@ -10,7 +10,7 @@ import { naturalSort } from '../public/sort';
 import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 import { SCHEMAS } from '../internal/schemas';
 
-import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../public/QueryModel/withQueryModels';
+import { InjectedQueryModels, withQueryModels } from '../public/QueryModel/withQueryModels';
 
 import { SampleTypeEmptyAlert } from '../internal/components/samples/SampleEmptyAlert';
 import { NON_MEDIA_SAMPLE_TYPES_FILTER } from '../internal/components/samples/constants';
@@ -96,7 +96,7 @@ const SampleTypeCardsImpl: FC<Props & InjectedQueryModels> = memo(({ modelId, qu
 const SampleTypeCardsWithQueryModels = withQueryModels<Props>(SampleTypeCardsImpl);
 
 
-export const SampleTypeCards: FC<any> = memo(() => {
+export const SampleTypeCards: FC = memo(() => {
     const modelId = 'sample-type-cards';
     const queryConfigs = {
         [modelId]: {

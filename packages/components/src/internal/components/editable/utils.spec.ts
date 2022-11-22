@@ -9,10 +9,11 @@ import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
+import { QueryColumn } from '../../../public/QueryColumn';
+
 import { EditorMode, EditorModel, IEditableGridLoader, ValueDescriptor } from './models';
 
 import { getEditorExportData, initEditableGridModel } from './utils';
-import { QueryColumn } from '../../../public/QueryColumn';
 
 const MODEL_ID_LOADED = 'loaded';
 

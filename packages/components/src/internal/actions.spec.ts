@@ -306,7 +306,9 @@ describe('column mutation actions', () => {
             expect(updates.editorModelChanges.cellValues.get('0-0').get(0).display).toBe('Description 1');
             expect(updates.editorModelChanges.cellValues.get('0-1').get(0).display).toBe('Description 2');
             expect(updates.editorModelChanges.columns.size).toEqual(editorModel.columns.size - 1);
-            expect(updates.editorModelChanges.columns.find(fieldKey => fieldKey === firstInputColumn.fieldKey)).toBeUndefined();
+            expect(
+                updates.editorModelChanges.columns.find(fieldKey => fieldKey === firstInputColumn.fieldKey)
+            ).toBeUndefined();
             expect(updates.data.find(row => row.has(firstInputColumn.fieldKey))).toBeFalsy();
         });
 
@@ -324,7 +326,9 @@ describe('column mutation actions', () => {
             expect(updates.editorModelChanges.cellValues.get('0-1').get(0).display).toBe('S-2');
             expect(updates.editorModelChanges.cellValues.has('5-0')).toBe(false);
             expect(updates.editorModelChanges.columns.size).toEqual(editorModel.columns.size - 1);
-            expect(updates.editorModelChanges.columns.find(fieldKey => fieldKey === lastInputColumn.fieldKey)).toBeUndefined();
+            expect(
+                updates.editorModelChanges.columns.find(fieldKey => fieldKey === lastInputColumn.fieldKey)
+            ).toBeUndefined();
             expect(updates.data.find(row => row.has(lastInputColumn.fieldKey))).toBeFalsy();
         });
 

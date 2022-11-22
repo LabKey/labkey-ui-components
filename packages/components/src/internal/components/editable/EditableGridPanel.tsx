@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
-import { fromJS, List, Map, OrderedMap } from 'immutable';
+import { fromJS, List, Map } from 'immutable';
 import classNames from 'classnames';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
@@ -16,7 +16,7 @@ import { EditorModel, EditorModelProps } from './models';
 
 import { EditableGrid, SharedEditableGridPanelProps } from './EditableGrid';
 
-import { exportEditedData, getEditorTableData } from './utils';
+import { exportEditedData, getEditorExportData } from './utils';
 
 interface Props extends SharedEditableGridPanelProps {
     editorModel: EditorModel | EditorModel[];
@@ -43,30 +43,16 @@ const exportHandler = (
     extraColumns?: Array<Partial<QueryColumn>>,
     colFilter?: (col: QueryColumn) => boolean
 ): void => {
-    let headings = OrderedMap<string, string>();
-    let editorData = OrderedMap<string, Map<string, any>>();
-    models.forEach((queryModel, idx) => {
-        const [modelHeadings, modelEditorData] = getEditorTableData(
-            editorModels[idx],
-            queryModel,
-            headings,
-            editorData,
-            readOnlyColumns,
-            insertColumns,
-            updateColumns,
-            forUpdate,
-            extraColumns,
-            colFilter,
-            true
-        );
-        headings = modelHeadings;
-        editorData = modelEditorData;
-    });
-
-    const rows = [];
-    editorData.forEach(rowMap => rows.push([...rowMap.toArray().values()]));
-    const exportData = [headings.toArray(), ...rows];
-
+    const exportData = getEditorExportData(
+        editorModels,
+        models,
+        readOnlyColumns,
+        insertColumns,
+        updateColumns,
+        forUpdate,
+        extraColumns,
+        colFilter
+    );
     exportEditedData(exportType, 'data', exportData, models[activeTab]);
 };
 

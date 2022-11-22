@@ -1,4 +1,4 @@
-import { List, Map, OrderedMap } from 'immutable';
+import { List, Map } from 'immutable';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { LoadingState } from '../../../public/LoadingState';
@@ -9,9 +9,9 @@ import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
-import { EditorMode, EditorModel, IEditableGridLoader } from './models';
+import { EditorMode, EditorModel, IEditableGridLoader, ValueDescriptor } from './models';
 
-import { getEditorTableData, initEditableGridModel } from './utils';
+import { getEditorExportData, initEditableGridModel } from './utils';
 import { QueryColumn } from '../../../public/QueryColumn';
 
 const MODEL_ID_LOADED = 'loaded';
@@ -36,22 +36,79 @@ class MockEditableGridLoader implements IEditableGridLoader {
 }
 
 describe('Editable Grids Utils', () => {
-    test('getEditorTableData', () => {
+    test('getEditorExportData', () => {
+        // Arrange
         const { queryInfo } = ASSAY_WIZARD_MODEL;
         const queryModel = new QueryModel({
             id: MODEL_ID_LOADED,
             schemaQuery: queryInfo.schemaQuery,
         }).mutate({
-            rows: {},
-            orderedRows: [],
+            rows: {
+                '7197': {
+                    ParticipantID: { displayValue: 'p1234', value: 'p1234' },
+                    RowId: { value: 7197 },
+                    SampleID: { displayValue: 'Sample 1', value: 'Sample 1' },
+                    VisitID: { displayValue: 'Visit 1', value: 1 },
+                },
+                '8192': {
+                    ParticipantID: { displayValue: 'p4567', value: 'p4567' },
+                    RowId: { value: 8192 },
+                    SampleID: { displayValue: 'Sample 8192', value: 'Sample 8192' },
+                    VisitID: { value: null },
+                    'Run/Batch/batch_dbl_field': { value: 4.35 },
+                },
+            },
+            orderedRows: ['7197', '8192'],
             rowsLoadingState: LoadingState.LOADED,
             queryInfoLoadingState: LoadingState.LOADED,
             queryInfo,
         });
-        const editorModel = new EditorModel({ id: MODEL_ID_LOADED });
-        const [headings, rows] = getEditorTableData(editorModel, queryModel, OrderedMap(), OrderedMap());
+        const editorModel = new EditorModel({
+            cellValues: Map<string, List<ValueDescriptor>>({
+                // 7197
+                '0-0': List([{ display: 'Sample 1', raw: 'Sample 1' }]),
+                '1-0': List([{ display: 'p1234', raw: 'p1234' }]),
+                '2-0': List([{ display: 'Visit 1', raw: 'Visit 1' }]),
+                '3-0': List([{ display: '11/22/22', raw: '11/22/22' }]),
 
-        expect(headings.toArray()).toEqual(['SampleID', 'Participant ID', 'Visit ID', 'Date']);
+                // 8192
+                '0-1': List([{ display: 'Sample 8192-1', raw: 'Sample 8192-1' }]),
+                '1-1': List([{ display: 'p4567', raw: 'p4567' }]),
+                '2-2': List([]),
+                '3-1': List([]),
+            }),
+            columns: ['SampleID', 'ParticipantID', 'VisitID', 'Date'],
+            colCount: 4,
+            id: MODEL_ID_LOADED,
+        });
+        const extraColumns = [
+            { caption: 'Row ID', fieldKey: 'RowId' },
+            { caption: 'Batch Double Field', fieldKey: 'Run/Batch/batch_dbl_field' },
+        ];
+
+        // Act
+        const exportData = getEditorExportData(
+            [editorModel],
+            [queryModel],
+            undefined,
+            undefined,
+            undefined,
+            true,
+            extraColumns
+        );
+
+        // Assert
+        expect(exportData.length).toEqual(3);
+        expect(exportData[0]).toEqual([
+            'SampleID',
+            'Participant ID',
+            'Visit ID',
+            'Date',
+            'Row ID',
+            'Batch Double Field',
+        ]);
+        expect(exportData[1]).toEqual(['Sample 1', 'p1234', 'Visit 1', '11/22/22', 7197, undefined]);
+        expect(exportData[2]).toEqual(['Sample 8192-1', 'p4567', undefined, undefined, 8192, 4.35]);
     });
 
     describe('initEditableGridModel', () => {

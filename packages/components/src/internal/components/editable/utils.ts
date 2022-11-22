@@ -268,71 +268,79 @@ export const exportEditedData = (
     UtilsDOM.convertToTable(config);
 };
 
-export const getEditorTableData = (
-    editorModel: EditorModel,
-    queryModel: QueryModel,
-    headings: OrderedMap<string, string>,
-    editorData: OrderedMap<string, OrderedMap<string, any>>,
+export const getEditorExportData = (
+    editorModels: EditorModel[],
+    dataModels: QueryModel[],
     readOnlyColumns?: List<string>,
     insertColumns?: List<QueryColumn>,
     updateColumns?: List<QueryColumn>,
     forUpdate?: boolean,
     extraColumns?: Array<Partial<QueryColumn>>,
-    colFilter?: (col: QueryColumn) => boolean,
-    forExport?: boolean
-): [Map<string, string>, Map<string, Map<string, any>>] => {
-    const columns = editorModel.getColumns(
-        queryModel.queryInfo,
-        forUpdate,
-        readOnlyColumns,
-        insertColumns,
-        updateColumns,
-        colFilter
-    );
+    colFilter?: (col: QueryColumn) => boolean
+): any[][] => {
+    const headings = OrderedMap<string, string>().asMutable();
+    const editorData = OrderedMap<string, OrderedMap<string, any>>().asMutable();
 
-    // Prepare headers
-    columns.forEach(col => (headings = headings.set(col.fieldKey, col.isLookup() ? col.fieldKey : col.caption)));
-    extraColumns?.forEach(col => {
-        headings = headings.set(col.fieldKey, col.caption ?? col.fieldKey);
-    });
+    dataModels.forEach((dataModel, i) => {
+        const editorModel = editorModels[i];
 
-    // Prepare data
-    editorModel.getRawDataFromModel(queryModel, true, forUpdate, forExport).forEach((editableRow, idx) => {
-        const rowKey = queryModel.orderedRows[idx];
-        let row = editorData.get(rowKey) ?? OrderedMap<string, any>();
+        const columns = editorModel.getColumns(
+            dataModel.queryInfo,
+            forUpdate,
+            readOnlyColumns,
+            insertColumns,
+            updateColumns,
+            colFilter
+        );
+
+        // Prepare headers
         columns.forEach(col => {
-            row = row.set(col.fieldKey, editableRow.get(col.fieldKey));
+            headings.set(col.fieldKey, col.isLookup() ? col.fieldKey : col.caption);
         });
-
         extraColumns?.forEach(col => {
-            if (editableRow.has(col.fieldKey)) {
-                row = row.set(col.fieldKey, editableRow.get(col.fieldKey));
-            } else {
-                const data = queryModel.rows[rowKey]?.[col.fieldKey];
-                if (data) {
-                    if (Array.isArray(data)) {
-                        let sep = '';
-                        row = row.set(
-                            col.fieldKey,
-                            data.reduce((str, row_) => {
-                                str += sep + quoteValueWithDelimiters(row_.displayValue ?? row_.value, ',');
-                                sep = ', ';
-                                return str;
-                            }, '')
-                        );
-                    } else {
-                        row = row.set(col.fieldKey, data.displayValue ?? data.value);
-                    }
-                } else {
-                    row = row.set(col.fieldKey, undefined);
-                }
-            }
+            headings.set(col.fieldKey, col.caption ?? col.fieldKey);
         });
 
-        editorData = editorData.set(rowKey, row);
+        // Prepare data
+        editorModel.getRawDataFromModel(dataModel, true, forUpdate, true).forEach((editableRow, j) => {
+            const rowKey = dataModel.orderedRows[j];
+            const row = editorData.get(rowKey) ?? OrderedMap<string, any>().asMutable();
+            columns.forEach(col => {
+                row.set(col.fieldKey, editableRow.get(col.fieldKey));
+            });
+
+            extraColumns?.forEach(col => {
+                if (editableRow.has(col.fieldKey)) {
+                    row.set(col.fieldKey, editableRow.get(col.fieldKey));
+                } else {
+                    const data = dataModel.rows[rowKey]?.[col.fieldKey];
+                    if (data) {
+                        if (Array.isArray(data)) {
+                            let sep = '';
+                            row.set(
+                                col.fieldKey,
+                                data.reduce((str, row_) => {
+                                    str += sep + quoteValueWithDelimiters(row_.displayValue ?? row_.value, ',');
+                                    sep = ', ';
+                                    return str;
+                                }, '')
+                            );
+                        } else {
+                            row.set(col.fieldKey, data.displayValue ?? data.value);
+                        }
+                    } else {
+                        row.set(col.fieldKey, row.get(col.fieldKey));
+                    }
+                }
+            });
+
+            editorData.set(rowKey, row);
+        });
     });
 
-    return [headings, editorData];
+    const rows = [];
+    editorData.forEach(rowMap => rows.push([...rowMap.toArray().values()]));
+    return [headings.toArray(), ...rows];
 };
 
 export function onCellSelectChange(

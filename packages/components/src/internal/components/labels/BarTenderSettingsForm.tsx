@@ -18,7 +18,6 @@ interface OwnProps {
     onChange: () => void;
     onSuccess: () => void;
     title?: string;
-    titleCls?: string;
 }
 
 interface State {
@@ -216,7 +215,7 @@ export class BarTenderSettingsFormImpl extends PureComponent<Props, State> {
     };
 
     render(): ReactNode {
-        const { title = BARTENDER_CONFIGURATION_TITLE, titleCls } = this.props;
+        const { title = BARTENDER_CONFIGURATION_TITLE } = this.props;
         const { btServiceURL, connectionValidated, defaultLabel, dirty, failureMessage, submitting, testing } =
             this.state;
         const isBlank = !btServiceURL || btServiceURL.trim() === '';
@@ -225,9 +224,8 @@ export class BarTenderSettingsFormImpl extends PureComponent<Props, State> {
             <Row>
                 <Col xs={12}>
                     <Panel title={title}>
-                        {!titleCls && <Panel.Heading>{title}</Panel.Heading>}
+                        <Panel.Heading>{title}</Panel.Heading>
                         <Panel.Body>
-                            {titleCls && <h4 className={titleCls}>{title}</h4>}
                             {dirty && (
                                 <div className="permissions-groups-save-alert">
                                     <Alert bsStyle="info">

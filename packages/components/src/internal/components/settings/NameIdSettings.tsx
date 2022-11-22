@@ -98,11 +98,7 @@ export const IDNameSettings: FC = memo(() => {
     );
 });
 
-interface NameIdSettingsProps {
-    titleCls?: string;
-}
-
-interface NameIdSettingsFormProps extends NameIdSettingsProps {
+interface NameIdSettingsFormProps {
     loadNameExpressionOptions: () => Promise<{ allowUserSpecifiedNames: boolean; prefix: string }>;
     saveNameExpressionOptions: (key: string, value: string | boolean) => Promise<void>;
 }
@@ -128,7 +124,7 @@ const initialState: State = {
 };
 
 export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
-    const { loadNameExpressionOptions, saveNameExpressionOptions, titleCls } = props;
+    const { loadNameExpressionOptions, saveNameExpressionOptions } = props;
     const [state, setState] = useReducer(
         (currentState: State, newState: Partial<State>): State => ({ ...currentState, ...newState }),
         initialState
@@ -215,9 +211,8 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
 
     return (
         <div className="name-id-settings-panel panel panel-default">
-            {!titleCls && <div className="panel-heading">{TITLE}</div>}
+            <div className="panel-heading">{TITLE}</div>
             <div className="panel-body">
-                {titleCls && <h4 className={titleCls}>{TITLE}</h4>}
                 <div className="name-id-setting__setting-section">
                     <h5>User-defined IDs/Names</h5>
 
@@ -293,7 +288,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
     );
 };
 
-export const NameIdSettings: FC<NameIdSettingsProps> = memo(props => {
+export const NameIdSettings: FC = memo(props => {
     return (
         <RequiresPermission perms={PermissionTypes.Admin}>
             <NameIdSettingsForm

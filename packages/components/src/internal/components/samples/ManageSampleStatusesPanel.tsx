@@ -297,11 +297,10 @@ SampleStatusesList.displayName = 'SampleStatusesList';
 
 interface ManageSampleStatusesPanelProps {
     api?: ComponentsAPIWrapper;
-    titleCls?: string;
 }
 
 export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = memo(props => {
-    const { api, titleCls } = props;
+    const { api } = props;
     const [states, setStates] = useState<SampleState[]>();
     const [error, setError] = useState<string>();
     const [selected, setSelected] = useState<number>();
@@ -347,9 +346,8 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
 
     return (
         <div className="panel panel-default">
-            {!titleCls && <div className="panel-heading">{TITLE}</div>}
+            <div className="panel-heading">{TITLE}</div>
             <div className="panel-body">
-                {titleCls && <h4 className={titleCls}>{TITLE}</h4>}
                 {error && <Alert>{error}</Alert>}
                 {!states && <LoadingSpinner />}
                 {states && !error && (

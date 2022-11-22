@@ -27,13 +27,12 @@ describe('ManageSampleStatusesPanel', () => {
         }),
     };
 
-    function validate(wrapper: ReactWrapper, hasError = false, hasTitleCls = false): void {
+    function validate(wrapper: ReactWrapper, hasError = false): void {
         expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
         expect(wrapper.find(Alert)).toHaveLength(hasError ? 1 : 0);
 
         expect(wrapper.find('.panel')).toHaveLength(1);
-        expect(wrapper.find('h4')).toHaveLength(hasTitleCls ? 1 : 0);
-        expect(wrapper.find('.panel-heading')).toHaveLength(!hasTitleCls ? 1 : 0);
+        expect(wrapper.find('.panel-heading')).toHaveLength(1);
 
         const elCount = !hasError ? 1 : 0;
         expect(wrapper.find('.choices-container')).toHaveLength(elCount);
@@ -122,13 +121,6 @@ describe('ManageSampleStatusesPanel', () => {
         expect(wrapper.find(SampleStatusDetail).prop('addNew')).toBe(true);
         expect(wrapper.find(AddEntityButton).prop('disabled')).toBe(true);
 
-        wrapper.unmount();
-    });
-
-    test('titleCls', async () => {
-        const wrapper = mount(<ManageSampleStatusesPanel {...DEFAULT_PROPS} titleCls="test-cls" />);
-        await waitForLifecycle(wrapper);
-        validate(wrapper, false, true);
         wrapper.unmount();
     });
 });

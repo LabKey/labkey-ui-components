@@ -56,34 +56,25 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
                 rolesMap={SITE_SECURITY_ROLES}
                 showDetailsPanel={false}
                 disableRemoveSelf
-                titleCls="settings-panel-title"
             >
-                <ActiveUserLimit titleCls="settings-panel-title" />
-                <BarTenderSettingsForm
-                    titleCls="settings-panel-title"
-                    onChange={onSettingsChange}
-                    onSuccess={onBarTenderSuccess}
-                />
-                <NameIdSettings titleCls="settings-panel-title" />
-                {isSampleStatusEnabled(moduleContext) && <ManageSampleStatusesPanel titleCls="settings-panel-title" />}
+                <ActiveUserLimit />
+                <BarTenderSettingsForm onChange={onSettingsChange} onSuccess={onBarTenderSuccess} />
+                <NameIdSettings />
+                {isSampleStatusEnabled(moduleContext) && <ManageSampleStatusesPanel />}
             </BasePermissions>
         );
     }
 
     return (
         <BasePermissionsCheckPage user={user} title={TITLE} hasPermission={user.isAdmin}>
-            <ActiveUserLimit titleCls="settings-panel-title" />
+            <ActiveUserLimit />
             {isProductProjectsEnabled() && (
                 <ProjectSettings onChange={onSettingsChange} onSuccess={onSettingsSuccess} />
             )}
             {isELNEnabled(moduleContext) && <NotebookProjectSettingsComponent />}
-            <BarTenderSettingsForm
-                titleCls="settings-panel-title"
-                onChange={onSettingsChange}
-                onSuccess={onBarTenderSuccess}
-            />
-            <NameIdSettings titleCls="settings-panel-title" />
-            {isSampleStatusEnabled(moduleContext) && <ManageSampleStatusesPanel titleCls="settings-panel-title" />}
+            <BarTenderSettingsForm onChange={onSettingsChange} onSuccess={onBarTenderSuccess} />
+            <NameIdSettings />
+            {isSampleStatusEnabled(moduleContext) && <ManageSampleStatusesPanel />}
             {children}
         </BasePermissionsCheckPage>
     );

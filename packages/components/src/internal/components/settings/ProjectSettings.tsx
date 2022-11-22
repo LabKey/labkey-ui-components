@@ -71,9 +71,8 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(({ onChange, onSuc
 
     return (
         <div className="project-settings panel panel-default">
+            <div className="panel-heading">Project Settings</div>
             <div className="panel-body">
-                <h4 className="settings-panel-title">Project Settings</h4>
-
                 {!!error && <Alert>{error}</Alert>}
 
                 <form className="project-settings-form form-horizontal" onSubmit={onSubmit}>

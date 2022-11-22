@@ -40,7 +40,6 @@ export interface PermissionAssignmentsProps extends InjectedPermissionsPage {
     rolesToShow?: List<string>;
     showDetailsPanel?: boolean;
     title?: string;
-    titleCls?: string;
     /** Specific principal type (i.e. 'u' for users and 'g' for groups) to show in this component usage */
     typeToShow?: string;
 }
@@ -60,7 +59,6 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         rolesToShow,
         showDetailsPanel = true,
         title = 'Security Roles and Assignments',
-        titleCls,
     } = props;
     const [dirty, setDirty] = useState<boolean>();
     const [inherited, setInherited] = useState<boolean>(() => policy.isInheritFromParent());
@@ -232,9 +230,8 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         <Row>
             <Col xs={12} md={showDetailsPanel ? 8 : 12}>
                 <div className="panel panel-default">
-                    {!titleCls && <div className="panel-heading">{title}</div>}
+                    <div className="panel-heading">{title}</div>
                     <div className="panel-body permissions-groups-assignment-panel">
-                        {titleCls && <h4 className={titleCls}>{title}</h4>}
                         {dirty && (
                             <div className="permissions-groups-save-alert">
                                 <Alert bsStyle="info">

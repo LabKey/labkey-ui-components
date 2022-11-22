@@ -10,6 +10,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * UserManagementPage update to get extraRoles from AdminAppContext
   * PermissionManagementPage port from LKB and LKSM and get extraRoles from AdminAppContext
   * AccountSettingsPage port from LKB and LKSM and get premium components from AdminAppContext
+  * Remove settings-panel-title and revert all admin settings panels back to panel-default headings
 
 ### version 2.257.0
 *Released*: 22 November 2022

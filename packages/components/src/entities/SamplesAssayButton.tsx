@@ -34,6 +34,31 @@ export const SamplesAssayButtonImpl: FC<Props & InjectedAssayModel> = memo(props
 
     const picklistName = isPicklist ? model.queryName : undefined;
 
+    const selectedCount = model?.selections?.size;
+    if (!asSubMenu) {
+        let disabledMsg;
+        if (selectedCount > MAX_EDITABLE_GRID_ROWS) {
+            disabledMsg = 'At most ' + MAX_EDITABLE_GRID_ROWS + ' samples can be selected.';
+        } else if (!selectedCount) {
+            disabledMsg = 'Select one or more samples.';
+        }
+        if (disabledMsg) {
+            return (
+                <RequiresPermission permissionCheck="any" perms={PermissionTypes.Insert}>
+                    <DisableableButton
+                        bsStyle="default"
+                        className="responsive-menu"
+                        disabledMsg={disabledMsg}
+                        onClick={undefined}
+                    >
+                        Assay
+                    </DisableableButton>
+                </RequiresPermission>
+            );
+        }
+    }
+
+
     let items = (
         <AssayImportSubMenuItem
             queryModel={model?.hasSelections ? model : undefined}
@@ -51,21 +76,6 @@ export const SamplesAssayButtonImpl: FC<Props & InjectedAssayModel> = memo(props
         items = <MenuItem disabled>No assays defined</MenuItem>;
     }
 
-    const selectedCount = model?.selections?.size ?? -1;
-    if (!asSubMenu && selectedCount > MAX_EDITABLE_GRID_ROWS) {
-        return (
-            <RequiresPermission permissionCheck="any" perms={PermissionTypes.Insert}>
-                <DisableableButton
-                    bsStyle="default"
-                    className="responsive-menu"
-                    disabledMsg={'At most ' + MAX_EDITABLE_GRID_ROWS + ' samples can be selected.'}
-                    onClick={undefined}
-                >
-                    Assay
-                </DisableableButton>
-            </RequiresPermission>
-        );
-    }
 
     return (
         <RequiresPermission permissionCheck="any" perms={PermissionTypes.Insert}>

@@ -127,8 +127,9 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
         return null;
     }
 
+    const badSelection = overlayMessage.length > 0
     const menuProps = Object.assign({}, props, {
-        disabled: overlayMessage.length > 0,
+        disabled: badSelection,
         options: items,
         queryModel: undefined,
         text,

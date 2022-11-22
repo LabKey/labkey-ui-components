@@ -19,7 +19,8 @@ import { loadNameExpressionOptions, saveNameExpressionOptions } from './actions'
 
 const TITLE = 'ID/Name Settings';
 
-const IDNameHelpTip: FC = memo(() => {
+// exported for jest testing
+export const IDNameHelpTip: FC = memo(() => {
     const { moduleContext } = useServerContext();
 
     return (
@@ -37,7 +38,8 @@ const IDNameHelpTip: FC = memo(() => {
     );
 });
 
-const PrefixDescription: FC = memo(() => {
+// exported for jest testing
+export const PrefixDescription: FC = memo(() => {
     const { moduleContext } = useServerContext();
 
     return (
@@ -231,56 +233,58 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                     )}
                 </div>
 
-                <div className="name-id-setting__setting-section">
-                    <h5>ID/Name Prefix</h5>
-                    <PrefixDescription />
+                {biologicsIsPrimaryApp(moduleContext) && (
+                    <div className="name-id-setting__setting-section">
+                        <h5>ID/Name Prefix</h5>
+                        <PrefixDescription />
 
-                    {loading && <LoadingSpinner />}
-                    {!loading && (
-                        <>
-                            <div className="name-id-setting__prefix">
-                                <div className="name-id-setting__prefix-label"> Prefix: </div>
+                        {loading && <LoadingSpinner />}
+                        {!loading && (
+                            <>
+                                <div className="name-id-setting__prefix">
+                                    <div className="name-id-setting__prefix-label"> Prefix: </div>
 
-                                <div className="name-id-setting__prefix-field">
-                                    <FormControl
-                                        name="prefix"
-                                        type="text"
-                                        placeholder="Enter Prefix"
-                                        onChange={prefixOnChange}
-                                        value={prefix}
-                                    />
+                                    <div className="name-id-setting__prefix-field">
+                                        <FormControl
+                                            name="prefix"
+                                            type="text"
+                                            placeholder="Enter Prefix"
+                                            onChange={prefixOnChange}
+                                            value={prefix}
+                                        />
+                                    </div>
+
+                                    <Button className="btn btn-success" onClick={openConfirmModal} disabled={savingPrefix}>
+                                        Apply Prefix
+                                    </Button>
+                                </div>
+                                <div className="name-id-setting__prefix-example">
+                                    Example: {prefix}Blood-${'{'}GenId{'}'}
                                 </div>
 
-                                <Button className="btn btn-success" onClick={openConfirmModal} disabled={savingPrefix}>
-                                    Apply Prefix
-                                </Button>
-                            </div>
-                            <div className="name-id-setting__prefix-example">
-                                Example: {prefix}Blood-${'{'}GenId{'}'}
-                            </div>
-
-                            {confirmModalOpen && (
-                                <ConfirmModal
-                                    title="Apply Prefix?"
-                                    onCancel={closeConfirmModal}
-                                    onConfirm={savePrefix}
-                                    confirmButtonText="Yes, Save and Apply Prefix"
-                                    cancelButtonText="Cancel"
-                                >
-                                    <div>
-                                        <p>
-                                            This action will change the Naming Pattern for all new and existing Sample
-                                            Types and{' '}
-                                            {sampleManagerIsPrimaryApp(moduleContext) ? 'Source Types' : 'Data Classes'}
-                                            . No existing IDs/Names will be affected. Are you sure you want to apply the
-                                            prefix?
-                                        </p>
-                                    </div>
-                                </ConfirmModal>
-                            )}
-                        </>
-                    )}
-                </div>
+                                {confirmModalOpen && (
+                                    <ConfirmModal
+                                        title="Apply Prefix?"
+                                        onCancel={closeConfirmModal}
+                                        onConfirm={savePrefix}
+                                        confirmButtonText="Yes, Save and Apply Prefix"
+                                        cancelButtonText="Cancel"
+                                    >
+                                        <div>
+                                            <p>
+                                                This action will change the Naming Pattern for all new and existing Sample
+                                                Types and{' '}
+                                                {sampleManagerIsPrimaryApp(moduleContext) ? 'Source Types' : 'Data Classes'}
+                                                . No existing IDs/Names will be affected. Are you sure you want to apply the
+                                                prefix?
+                                            </p>
+                                        </div>
+                                    </ConfirmModal>
+                                )}
+                            </>
+                        )}
+                    </div>
+                )}
 
                 {error !== undefined && <Alert className="name-id-setting__error">{error}</Alert>}
             </div>

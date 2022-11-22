@@ -173,8 +173,6 @@ export class EditorModel
         queryModel: QueryModel,
         displayValues?: boolean,
         forUpdate?: boolean,
-        readOnlyColumns?: List<string>,
-        extraColumns?: Array<Partial<QueryColumn>>,
         forExport?: boolean
     ): List<Map<string, any>> {
         return this.getRawDataFromGridData(
@@ -183,8 +181,6 @@ export class EditorModel
             queryModel.queryInfo,
             displayValues,
             forUpdate,
-            readOnlyColumns,
-            extraColumns,
             forExport
         );
     }
@@ -196,24 +192,15 @@ export class EditorModel
         queryInfo: QueryInfo,
         displayValues = true,
         forUpdate = false,
-        readOnlyColumns?: List<string>,
-        extraColumns?: Array<Partial<QueryColumn>>,
         forExport?: boolean
     ): List<Map<string, any>> {
         let rawData = List<Map<string, any>>();
-        let columnMap = this.columns.reduce((map, fieldKey) => {
+        const columnMap = this.columns.reduce((map, fieldKey) => {
             const col = queryInfo.getColumn(fieldKey);
             // Log a warning but still retain the key in the map for column order
             if (!col) console.warn(`Unable to resolve column "${fieldKey}". Cannot retrieve raw data.`);
             return map.set(fieldKey, col);
         }, OrderedMap<string, QueryColumn>());
-
-        extraColumns?.forEach(col => {
-            const column = queryInfo.getColumn(col.fieldKey);
-            if (column && !columnMap.has(column.fieldKey)) {
-                columnMap = columnMap.set(col.fieldKey, column);
-            }
-        });
 
         for (let rn = 0; rn < dataKeys.size; rn++) {
             let row = Map<string, any>();
@@ -254,7 +241,7 @@ export class EditorModel
                                 return arr;
                             }, [])
                         );
-                    } else if (col.lookup.displayColumn == col.lookup.keyColumn) {
+                    } else if (col.lookup.displayColumn === col.lookup.keyColumn) {
                         row = row.set(
                             col.name,
                             values.size === 1 ? quoteValueWithDelimiters(values.first()?.display, ',') : undefined

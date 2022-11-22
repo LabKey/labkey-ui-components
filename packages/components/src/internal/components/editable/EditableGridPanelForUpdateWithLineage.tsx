@@ -164,7 +164,6 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
                 editableGridModels.dataModels,
                 editableGridModels.editorModels,
                 idField,
-                readOnlyColumns,
                 selectionData,
                 ind
             );
@@ -190,7 +189,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
             setIsSubmitting(false);
             onComplete();
         }
-    }, [editableGridModels, idField, onComplete, readOnlyColumns, selectionData, updateAllTabRows]);
+    }, [editableGridModels, idField, onComplete, selectionData, updateAllTabRows]);
 
     const getCurrentTab = useCallback(
         (tabInd: number): number => {

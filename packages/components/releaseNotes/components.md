@@ -9,6 +9,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * AuditQueriesListingPage update to get user from context so that apps don't have to wrap it
   * UserManagementPage update to get extraRoles from AdminAppContext
   * PermissionManagementPage port from LKB and LKSM and get extraRoles from AdminAppContext
+  * AccountSettingsPage port from LKB and LKSM and get premium components from AdminAppContext
 
 ### version 2.257.0
 *Released*: 22 November 2022

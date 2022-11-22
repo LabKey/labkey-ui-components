@@ -292,6 +292,7 @@ import { ProjectManagementPage } from './internal/components/administration/Proj
 import { BasePermissions } from './internal/components/administration/BasePermissions';
 import { GroupManagementPage } from './internal/components/administration/GroupManagementPage';
 import { PermissionManagementPage } from './internal/components/administration/PermissionManagementPage';
+import { AccountSettingsPage } from './internal/components/administration/AccountSettingsPage';
 import { showPremiumFeatures } from './internal/components/administration/utils';
 import {
     APPLICATION_SECURITY_ROLES,
@@ -1038,6 +1039,7 @@ export {
     NameIdSettings,
     ProjectSettings,
     // administration
+    AccountSettingsPage,
     AdministrationSubNav,
     UserManagementPage,
     CreateProjectPage,

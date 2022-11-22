@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD November 2022
+### version 2.257.0
+*Released*: 22 November 2022
 * Detail panel editMode fix for show/hide labels
   * defaultTitleRenderer to pass required prop to LabelOverlay
   * DetailDisplay processFields should always set hideLabel to true in editingMode

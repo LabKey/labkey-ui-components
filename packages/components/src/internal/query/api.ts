@@ -368,9 +368,6 @@ export function selectRowsDeprecated(userConfig, caller?): Promise<ISelectRowsRe
         function doResolve() {
             if (hasDetails && hasResults) {
                 if (key !== result.key) {
-                    console.warn(
-                        `Mismatched keys between query and model results. query: "${key}", model: "${result.key}".`
-                    );
                     key = result.key; // default to model key
                 }
                 resolve(

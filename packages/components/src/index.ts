@@ -282,24 +282,13 @@ import { SearchScope } from './internal/components/search/constants';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';
 import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
 import { FIND_SAMPLE_BY_ID_METRIC_AREA, getSearchScopeFromContainerFilter } from './internal/components/search/utils';
-import { ActiveUserLimit } from './internal/components/settings/ActiveUserLimit';
-import { NameIdSettings } from './internal/components/settings/NameIdSettings';
-import { ProjectSettings } from './internal/components/settings/ProjectSettings';
 import { AdministrationSubNav } from './internal/components/administration/AdministrationSubNav';
 import { UserManagementPage } from './internal/components/administration/UserManagement';
 import { CreateProjectPage } from './internal/components/administration/CreateProjectPage';
 import { ProjectManagementPage } from './internal/components/administration/ProjectManagementPage';
-import { BasePermissions } from './internal/components/administration/BasePermissions';
 import { GroupManagementPage } from './internal/components/administration/GroupManagementPage';
 import { PermissionManagementPage } from './internal/components/administration/PermissionManagementPage';
 import { AccountSettingsPage } from './internal/components/administration/AccountSettingsPage';
-import { showPremiumFeatures } from './internal/components/administration/utils';
-import {
-    APPLICATION_SECURITY_ROLES,
-    HOSTED_APPLICATION_SECURITY_ROLES,
-    SECURITY_ROLE_DESCRIPTIONS,
-    SITE_SECURITY_ROLES,
-} from './internal/components/administration/constants';
 import { searchUsingIndex } from './internal/components/search/actions';
 import { SearchResultsModel } from './internal/components/search/models';
 import {
@@ -944,8 +933,6 @@ export {
     UsersGridPanel,
     InsufficientPermissionsAlert,
     InsufficientPermissionsPage,
-    APPLICATION_SECURITY_ROLES,
-    SITE_SECURITY_ROLES,
     BasePermissionsCheckPage,
     RequiresPermission,
     hasAllPermissions,
@@ -1034,22 +1021,14 @@ export {
     searchUsingIndex,
     SearchScope,
     getSearchScopeFromContainerFilter,
-    // settings
-    ActiveUserLimit,
-    NameIdSettings,
-    ProjectSettings,
     // administration
     AccountSettingsPage,
     AdministrationSubNav,
     UserManagementPage,
     CreateProjectPage,
     ProjectManagementPage,
-    BasePermissions,
     GroupManagementPage,
     PermissionManagementPage,
-    SECURITY_ROLE_DESCRIPTIONS,
-    HOSTED_APPLICATION_SECURITY_ROLES,
-    showPremiumFeatures,
     AdminSettingsPage,
     // assay
     AssayUploadResultModel,

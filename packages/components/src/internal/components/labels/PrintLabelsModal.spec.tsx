@@ -9,6 +9,7 @@ import { SelectInput } from '../forms/input/SelectInput';
 import { Alert } from '../base/Alert';
 
 import { QueryInfo } from '../../../public/QueryInfo';
+
 import { PrintLabelsModalImpl } from './PrintLabelsModal';
 
 describe('<PrintLabelsModal/>', () => {
@@ -20,19 +21,18 @@ describe('<PrintLabelsModal/>', () => {
     beforeAll(() => {
         actions = makeTestActions();
         queryModels = {
-            'sampleModel': makeTestQueryModel(SchemaQuery.create(TEST_SCHEMA, TEST_QUERY), QueryInfo.create({}))
-                .mutate({
-                    queryInfoLoadingState: LoadingState.LOADED,
-                    rowsLoadingState: LoadingState.LOADED,
-                }
-            ),
-            'singleSampleModel': makeTestQueryModel(SchemaQuery.create(TEST_SCHEMA, TEST_QUERY), QueryInfo.create({}))
-                .mutate({
-                    queryInfoLoadingState: LoadingState.LOADED,
-                    rowsLoadingState: LoadingState.LOADED
-                }
-            ),
-        }
+            sampleModel: makeTestQueryModel(SchemaQuery.create(TEST_SCHEMA, TEST_QUERY), QueryInfo.create({})).mutate({
+                queryInfoLoadingState: LoadingState.LOADED,
+                rowsLoadingState: LoadingState.LOADED,
+            }),
+            singleSampleModel: makeTestQueryModel(
+                SchemaQuery.create(TEST_SCHEMA, TEST_QUERY),
+                QueryInfo.create({})
+            ).mutate({
+                queryInfoLoadingState: LoadingState.LOADED,
+                rowsLoadingState: LoadingState.LOADED,
+            }),
+        };
     });
 
     test('no selections', () => {

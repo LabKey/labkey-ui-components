@@ -1,6 +1,6 @@
 import React, { FC, memo, useMemo, useState } from 'react';
 
-import { Filter, PermissionTypes, Query } from '@labkey/api';
+import { PermissionTypes, Query } from '@labkey/api';
 
 import { SelectView, SelectViewInput } from '../internal/components/base/SelectViewInput';
 import { SCHEMAS } from '../internal/schemas';
@@ -9,8 +9,10 @@ import { hasAnyPermissions, User } from '../internal/components/base/models/User
 import { GridPanelWithModel } from '../public/QueryModel/GridPanel';
 import { QuerySort } from '../public/QuerySort';
 
-import { SampleSetHeatMap } from './SampleSetHeatMap';
-import { SampleSetCards } from './SampleSetCards';
+import { NON_MEDIA_SAMPLE_TYPES_FILTER } from '../internal/components/samples/constants';
+
+import { SampleTypeHeatMap } from './SampleTypeHeatMap';
+import { SampleTypeCards } from './SampleTypeCards';
 
 const SAMPLE_TYPE_VIEWS = [SelectView.Cards, SelectView.Grid, SelectView.Heatmap];
 
@@ -26,13 +28,12 @@ const SAMPLE_QUERY_CONFIG = {
 };
 
 interface Props {
-    excludedSampleSets?: string[];
     navigate: (url: string | AppURL) => any;
     user: User;
 }
 
 export const SampleTypeSummary: FC<Props> = memo(props => {
-    const { navigate, user, excludedSampleSets } = props;
+    const { navigate, user } = props;
     const [selectedView, setSelectedView] = useState(SelectView.Grid);
 
     const canUpdate = hasAnyPermissions(user, [PermissionTypes.Insert, PermissionTypes.Update]);
@@ -47,14 +48,12 @@ export const SampleTypeSummary: FC<Props> = memo(props => {
 
         return {
             ...SAMPLE_QUERY_CONFIG,
-            baseFilters: excludedSampleSets
-                ? [Filter.create('Name', excludedSampleSets, Filter.Types.NOT_IN)]
-                : undefined,
+            baseFilters: [NON_MEDIA_SAMPLE_TYPES_FILTER],
             requiredColumns,
             omittedColumns,
             sorts: [new QuerySort({ fieldKey: 'Name' })],
         };
-    }, [excludedSampleSets, canUpdate]);
+    }, [canUpdate]);
 
     return (
         <>
@@ -64,8 +63,8 @@ export const SampleTypeSummary: FC<Props> = memo(props => {
                 onViewSelect={setSelectedView}
                 views={SAMPLE_TYPE_VIEWS}
             />
-            {selectedView === SelectView.Heatmap && <SampleSetHeatMap navigate={navigate} user={user} />}
-            {selectedView === SelectView.Cards && <SampleSetCards excludedSampleSets={excludedSampleSets} />}
+            {selectedView === SelectView.Heatmap && <SampleTypeHeatMap navigate={navigate} user={user} />}
+            {selectedView === SelectView.Cards && <SampleTypeCards />}
             {selectedView === SelectView.Grid && (
                 <GridPanelWithModel
                     allowViewCustomization={false}

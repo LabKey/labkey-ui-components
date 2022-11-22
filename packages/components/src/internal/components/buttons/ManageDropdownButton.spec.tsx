@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 import React from 'react';
-import renderer from 'react-test-renderer';
+
+import { shallow } from 'enzyme';
+import { DropdownButton } from 'react-bootstrap';
 
 import { ManageDropdownButton } from './ManageDropdownButton';
 
@@ -22,14 +24,23 @@ describe('<ManageDropdownButton/>', () => {
     test('default props', () => {
         const component = <ManageDropdownButton id="jest-manage-1" />;
 
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
+        const wrapper = shallow(component);
+        const dropdown = wrapper.find(DropdownButton);
+        expect(dropdown.prop('noCaret')).toBe(false);
+        expect(dropdown.prop('title')).toBe('Manage');
     });
 
     test('custom props', () => {
         const component = <ManageDropdownButton id="jest-manage-2" collapsed={true} pullRight={true} />;
 
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
+        const wrapper = shallow(component);
+        const dropdown = wrapper.find(DropdownButton);
+        expect(dropdown.prop('noCaret')).toBe(true);
+        expect(dropdown.prop('pullRight')).toBe(true);
+        expect(dropdown.prop('title')).toStrictEqual(
+            <span>
+                <i className="fa fa-bars" /> Manage
+            </span>
+        );
     });
 });

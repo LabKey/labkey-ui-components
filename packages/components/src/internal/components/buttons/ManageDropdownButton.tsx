@@ -17,12 +17,12 @@ import React from 'react';
 import { DropdownButton } from 'react-bootstrap';
 
 interface Props {
+    className?: string;
+    collapsed: boolean;
     disabled: boolean;
     id: string;
     pullRight: boolean;
-    collapsed: boolean;
     title?: string;
-    className?: string;
 }
 
 export class ManageDropdownButton extends React.Component<Props, any> {
@@ -41,7 +41,7 @@ export class ManageDropdownButton extends React.Component<Props, any> {
         if (collapsed) {
             buttonLabel = (
                 <span>
-                    <i className="fa fa-bars" />
+                    <i className="fa fa-bars" /> Manage
                 </span>
             );
             noCaret = true;

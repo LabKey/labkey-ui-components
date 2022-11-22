@@ -151,7 +151,7 @@ interface JobsButtonsComponentProps {
 
 export type JobsButton = ComponentType<JobsButtonsComponentProps>;
 
-// Note: this is meant to correspond to the JobsMenuOptions component in workflow/src/Components/JobsButon.tsx
+// Note: this is meant to correspond to the JobsMenuOptions component in workflow/src/Components/JobsButton.tsx
 export type JobsMenuOptions = ComponentType<JobsButtonsComponentProps>;
 
 // Note: this should stay in sync with the workflow/src/Components/WorkflowGrid.tsx props

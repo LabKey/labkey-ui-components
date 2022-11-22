@@ -1,4 +1,4 @@
-import React, { ComponentType, FC, memo, useCallback, useMemo, useState } from 'react';
+import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 
 import { Filter, PermissionTypes } from '@labkey/api';
 
@@ -6,7 +6,7 @@ import { DisableableButton } from '../internal/components/buttons/DisableableBut
 
 import { userCanManagePicklists } from '../internal/app/utils';
 
-import { MY_PICKLISTS_HREF, PICKLIST_KEY, TEAM_PICKLISTS_HREF } from '../internal/app/constants';
+import { MY_PICKLISTS_HREF, TEAM_PICKLISTS_HREF } from '../internal/app/constants';
 
 import { User } from '../internal/components/base/models/User';
 import { RequiresPermission } from '../internal/components/base/Permissions';
@@ -17,37 +17,26 @@ import { QuerySort } from '../public/QuerySort';
 import { SCHEMAS } from '../internal/schemas';
 import { Page } from '../internal/components/base/Page';
 
-import {
-    Actions,
-    InjectedQueryModels,
-    RequiresModelAndActions,
-    withQueryModels,
-} from '../public/QueryModel/withQueryModels';
+import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from '../public/QueryModel/withQueryModels';
 
-import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
 import { Picklist } from '../internal/components/picklist/models';
 import { deletePicklists, getPicklistListingContainerFilter } from '../internal/components/picklist/actions';
 import { PUBLIC_PICKLIST_CATEGORY } from '../internal/components/picklist/constants';
+import { PicklistCreationMenuItem } from '../internal/components/picklist/PicklistCreationMenuItem';
+
+import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
 
 const MY_PICKLISTS_GRID_ID = 'my-picklists';
 const TEAM_PICKLISTS_GRID_ID = 'team-picklists';
 
 interface OwnProps {
-    CreateButton?: ComponentType<PicklistCreateButtonProps>;
     initTab?: string;
     user: User;
 }
 
 interface PicklistGridProps {
-    CreateButton?: ComponentType<PicklistCreateButtonProps>;
     activeTab?: string;
     user: User;
-}
-
-interface PicklistCreateButtonProps {
-    actions?: Actions;
-    currentSubMenuKey?: string;
-    pullRight?: boolean;
 }
 
 const PICKLISTS_CAPTION = 'Manage sample groups for storage and export';
@@ -79,7 +68,7 @@ const PicklistGridButtons: FC<ButtonProps & RequiresModelAndActions> = memo(prop
 });
 
 const PicklistGridImpl: FC<PicklistGridProps & InjectedQueryModels> = memo(props => {
-    const { actions, queryModels, user, activeTab, CreateButton } = props;
+    const { actions, queryModels, user, activeTab } = props;
     const { createNotification } = useNotificationsContext();
 
     const tabOrder = useMemo(() => {
@@ -131,9 +120,14 @@ const PicklistGridImpl: FC<PicklistGridProps & InjectedQueryModels> = memo(props
             title="Picklists"
             caption={PICKLISTS_CAPTION}
             context={
-                CreateButton !== undefined && (
-                    <CreateButton currentSubMenuKey={PICKLIST_KEY} pullRight actions={actions} />
-                )
+                userCanManagePicklists(user) ? (
+                    <PicklistCreationMenuItem
+                        user={user}
+                        asMenuItem={false}
+                        itemText="Create Picklist"
+                        onCreatePicklist={() => actions.loadAllModels()}
+                    />
+                ) : undefined
             }
         >
             <TabbedGridPanel
@@ -169,7 +163,7 @@ const PicklistGridImpl: FC<PicklistGridProps & InjectedQueryModels> = memo(props
 const PicklistGridWithModels = withQueryModels<PicklistGridProps>(PicklistGridImpl);
 
 export const PicklistListing: FC<OwnProps> = memo(props => {
-    const { user, initTab } = props;
+    const { initTab, user } = props;
 
     const queryConfigs = {};
     if (userCanManagePicklists(user)) {

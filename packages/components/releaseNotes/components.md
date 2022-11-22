@@ -1,6 +1,16 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.258.0
+*Released*: 22 November 2022
+* Update label on `ManageDropdownButton` to contain the word "Manage"
+* Remove need for mega-create button on `AssayListingPage`
+* Rename `SampleTypePage` to `SampleTypeListingPage` and incorporate empty state behavior from LKSM
+* Rename `SampleSetHeatMap` to `SampleTypeHeatMap` and explicitly filter out media sample types
+* Rename `SampleSetCards` to `SampleTypeCards` and explicitly filter out media sample types
+* Update `PicklistCreationMenuItem` to also work as a non-menu item
+* Fix problem in `AssayImportSubMenuItem` not respecting the `requireSelection` property
+
 ### version 2.257.0
 *Released*: 22 November 2022
 * Detail panel editMode fix for show/hide labels

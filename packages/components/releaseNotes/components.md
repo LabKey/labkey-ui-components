@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.258.0
+*Released*: 22 November 2022
 * Update label on `ManageDropdownButton` to contain the word "Manage"
 * Remove need for mega-create button on `AssayListingPage`
 * Rename `SampleTypePage` to `SampleTypeListingPage` and incorporate empty state behavior from LKSM

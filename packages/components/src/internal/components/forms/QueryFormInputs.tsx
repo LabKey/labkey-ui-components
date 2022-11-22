@@ -218,6 +218,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 onToggleDisable={this.onToggleDisable}
                                 renderLabelField={this.renderLabelField}
                                 showAsteriskSymbol={showAsteriskSymbol}
+                                showLabel
                                 value={value}
                             />
                         );

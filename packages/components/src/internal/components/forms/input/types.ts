@@ -22,5 +22,6 @@ export interface InputRendererProps {
     renderLabelField?: (col: QueryColumn) => ReactNode;
     selectInputProps?: Omit<SelectInputProps, 'onChange'>;
     showAsteriskSymbol?: boolean;
+    showLabel?: boolean;
     value: any;
 }

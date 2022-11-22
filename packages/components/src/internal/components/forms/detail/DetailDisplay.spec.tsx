@@ -1,9 +1,7 @@
 import { List, fromJS, Map } from 'immutable';
 import React from 'react';
 import Formsy from 'formsy-react';
-import { mount, ReactWrapper } from 'enzyme';
-
-import { Checkbox, Input, Textarea } from 'formsy-react-components';
+import { mount, ReactWrapper, shallow } from 'enzyme';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
 
@@ -15,6 +13,9 @@ import { QuerySelect } from '../QuerySelect';
 import { DatePickerInput } from '../input/DatePickerInput';
 import { FileInput } from '../input/FileInput';
 import { TextChoiceInput } from '../input/TextChoiceInput';
+import { CheckboxInput } from '../input/CheckboxInput';
+import { TextAreaInput } from '../input/TextAreaInput';
+import { TextInput } from '../input/TextInput';
 import { MultiValueRenderer } from '../../../renderers/MultiValueRenderer';
 import { AliasRenderer } from '../../../renderers/AliasRenderer';
 import { AppendUnits } from '../../../renderers/AppendUnits';
@@ -158,8 +159,8 @@ describe('DetailDisplay', () => {
 describe('defaultTitleRenderer', () => {
     test('editable', () => {
         const col = new QueryColumn({ caption: 'test', readOnly: false, userEditable: true, shownInUpdateView: true });
-        const result = mount(<div>{defaultTitleRenderer(col)}</div>);
-        expect(result.find('.field__un-editable')).toHaveLength(0);
+        const result = shallow(<div>{defaultTitleRenderer(col)}</div>);
+        expect(result.find('span')).toHaveLength(0);
         expect(result.find(LabelOverlay)).toHaveLength(1);
         expect(result.find(LabelOverlay).prop('column')).toBe(col);
         result.unmount();
@@ -167,9 +168,9 @@ describe('defaultTitleRenderer', () => {
 
     test('not editable', () => {
         const col = new QueryColumn({ caption: 'test', readOnly: false, userEditable: true, shownInUpdateView: false });
-        const result = mount(<div>{defaultTitleRenderer(col)}</div>);
-        expect(result.find('.field__un-editable')).toHaveLength(1);
-        expect(result.find('.field__un-editable').text()).toBe('test');
+        const result = shallow(<div>{defaultTitleRenderer(col)}</div>);
+        expect(result.find('span')).toHaveLength(1);
+        expect(result.find('span').text()).toBe('test');
         expect(result.find(LabelOverlay)).toHaveLength(0);
         result.unmount();
     });
@@ -180,12 +181,12 @@ describe('resolveDetailEditRenderer', () => {
         expect(wrapper.find('.field__un-editable')).toHaveLength(count['uneditable'] ?? 0);
         expect(wrapper.find(AliasInput)).toHaveLength(count['aliasinput'] ?? 0);
         expect(wrapper.find(QuerySelect)).toHaveLength(count['queryselect'] ?? 0);
-        expect(wrapper.find(Textarea)).toHaveLength(count['textarea'] ?? 0);
-        expect(wrapper.find(Checkbox)).toHaveLength(count['checkbox'] ?? 0);
+        expect(wrapper.find(TextAreaInput)).toHaveLength(count['textarea'] ?? 0);
+        expect(wrapper.find(CheckboxInput)).toHaveLength(count['checkbox'] ?? 0);
         expect(wrapper.find(DatePickerInput)).toHaveLength(count['datepickerinput'] ?? 0);
         expect(wrapper.find(FileInput)).toHaveLength(count['fileinput'] ?? 0);
         expect(wrapper.find(TextChoiceInput)).toHaveLength(count['textchoiceinput'] ?? 0);
-        expect(wrapper.find(Input)).toHaveLength(count['input'] ?? 0);
+        expect(wrapper.find(TextInput)).toHaveLength(count['input'] ?? 0);
     }
 
     const default_props = {

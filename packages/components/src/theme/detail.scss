@@ -121,7 +121,7 @@
 .field__unset,
 .field__unset__un-editable,
 .field__un-editable {
-  color: $light-gray;
+  color: $gray-lighten;
 }
 
 .detail__edit--heading {
@@ -142,6 +142,10 @@
 
 .edit__warning {
   color: $brand-warning;
+}
+
+.detail__editing .hide-label {
+    display: none;
 }
 
 .detail__header--container {

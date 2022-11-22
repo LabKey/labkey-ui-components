@@ -366,6 +366,7 @@ export class Cell extends React.PureComponent<Props, State> {
                     formsy={false}
                     onSelectChange={this.onSelectChange}
                     selectInputProps={gridCellSelectInputProps}
+                    showLabel={false}
                     value={values?.get(0)?.raw}
                 />
             );

@@ -71,6 +71,10 @@
     padding-left: 8px;
 }
 
+.margin-right {
+    margin-right: 10px;
+}
+
 .margin-left {
     margin-left: 10px;
 }
@@ -83,4 +87,8 @@
     .alert-button {
         padding: 0 12px;
     }
+}
+
+.pointer {
+    cursor: pointer;
 }

@@ -81,7 +81,7 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
     };
 
     fileInputRenderer = (col: QueryColumn, data: any): ReactNode => {
-        return <FileInput formsy initialValue={data} name={col.fieldKey} queryColumn={col} />;
+        return <FileInput formsy initialValue={data} name={col.fieldKey} queryColumn={col} showLabel={false} />;
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

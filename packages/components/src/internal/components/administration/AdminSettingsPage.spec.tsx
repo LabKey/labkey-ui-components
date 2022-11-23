@@ -22,8 +22,6 @@ import { ActiveUserLimit } from '../settings/ActiveUserLimit';
 import { BasePermissions } from './BasePermissions';
 import { AdminSettingsPageImpl } from './AdminSettingsPage';
 
-declare const LABKEY: import('@labkey/api').LabKey;
-
 describe('AdminSettingsPageImpl', () => {
     const getAPIContext = () => {
         return getTestAPIWrapper(jest.fn, {

@@ -22,7 +22,7 @@ import { LoadingPage } from '../internal/components/base/LoadingPage';
 
 import { SampleTypeSummary } from './SampleTypeSummary';
 
-import { useSampleTypeAppContext } from './SampleTypeAppContext';
+import { useSampleTypeAppContext } from './useSampleTypeAppContext';
 
 export const SampleTypeListingPage: FC<CommonPageProps> = memo(props => {
     const { menu, navigate } = props;

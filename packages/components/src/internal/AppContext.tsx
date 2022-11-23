@@ -80,6 +80,7 @@ export interface SampleTypeAppContext {
     lineagePagePermissions: string[];
     parentDataTypes: List<EntityDataType>;
     readOnlyQueryNames?: string[];
+    sampleTypeListingCaption: string;
     samplesGridRequiredColumns: string[];
     showParentLabelPrefix: boolean;
     showStudyProperties: boolean;

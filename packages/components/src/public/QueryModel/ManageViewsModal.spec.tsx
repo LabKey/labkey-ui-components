@@ -28,6 +28,14 @@ const SYSTEM_DEFAULT_VIEW = ViewInfo.create({
     name: '',
 });
 
+const SYSTEM_DETAIL_VIEW = ViewInfo.create({
+    columns: [],
+    filters: [],
+    default: false,
+    saved: false, // cannot be reverted
+    name: ViewInfo.DETAIL_NAME,
+});
+
 const SHARED_DEFAULT_VIEW = ViewInfo.create({
     columns: [],
     filters: [],
@@ -254,7 +262,7 @@ describe('ManageViewsModal', () => {
         const wrapper = mountWithAppServerContext(
             <ManageViewsModal onDone={jest.fn()} currentView={null} schemaQuery={null} />,
             {
-                api: getQueryAPI([SYSTEM_DEFAULT_VIEW, VIEW_1, SESSION_VIEW, SHARED_VIEW]),
+                api: getQueryAPI([SYSTEM_DEFAULT_VIEW, SYSTEM_DETAIL_VIEW, VIEW_1, SESSION_VIEW, SHARED_VIEW]),
             },
             {
                 user: TEST_USER_PROJECT_ADMIN,

@@ -40,6 +40,7 @@ import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
 import { PicklistGridButtons } from './PicklistGridButtons';
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 import { SamplesEditableGridProps } from './SamplesEditableGrid';
+import { hasProductProjects } from '../internal/app/utils';
 
 const PICKLIST_ITEMS_ID_PREFIX = 'picklist-items-';
 const PICKLIST_PER_SAMPLE_TYPE_ID_PREFIX = 'picklist-per-sample-type-';
@@ -303,6 +304,10 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
                 SCHEMAS.PICKLIST_TABLES.SCHEMA +
                 '/' +
                 picklist.name;
+            const omittedColumns = [];
+            if (!hasProductProjects()) {
+                omittedColumns.push('SampleID/SampleSet_Folder');
+            }
             configs[gridId] = {
                 id: gridId,
                 title: 'All Samples',
@@ -313,6 +318,7 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
                     'SampleID/AliquotedFromLsid',
                     ...SAMPLE_STATUS_REQUIRED_COLUMNS.map(name => 'SampleID/' + name),
                 ],
+                omittedColumns,
             };
 
             // add a queryConfig for each distinct sample type of the picklist samples, with a filter clause
@@ -326,6 +332,7 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
                     requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS.concat(
                         samplesEditableGridProps?.samplesGridRequiredColumns ?? []
                     ),
+                    omittedColumns,
                     baseFilters: [Filter.create('RowId', picklist.name, PICKLIST_SAMPLES_FILTER)],
                 };
             });

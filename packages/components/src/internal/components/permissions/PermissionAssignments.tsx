@@ -233,7 +233,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
             <Col xs={12} md={showDetailsPanel ? 8 : 12}>
                 <div className="panel panel-default">
                     <div className="panel-heading">{title}</div>
-                    <div className="panel-body permissions-groups-assignment-panel">
+                    <div className="panel-body permissions-groups-assignment-panel permissions-assignment-panel">
                         {!getIsDirty() && inherited && (
                             <Alert bsStyle="info">
                                 Permissions for this container are being inherited from its parent.

@@ -159,6 +159,11 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         if (this._hasError) this.props.dismissNotifications();
     }
 
+    get allAliquots(): boolean {
+        const { aliquots, displayQueryModel } = this.props;
+        return this.hasAliquots() && aliquots.length === displayQueryModel.selections.size;
+    }
+
     getReadOnlyColumns(): List<string> {
         const { displayQueryModel } = this.props;
 
@@ -186,8 +191,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     }
 
     getSchemaQuery = (): SchemaQuery => {
-        const { displayQueryModel } = this.props;
-        return displayQueryModel?.queryInfo?.schemaQuery;
+        return this.props.displayQueryModel?.queryInfo?.schemaQuery;
     };
 
     initLineageEditableGrid = async (): Promise<void> => {
@@ -202,8 +206,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     hasParentDataTypes = (): boolean => {
-        const { parentDataTypes } = this.props;
-        return parentDataTypes?.size > 0;
+        return this.props.parentDataTypes?.size > 0;
     };
 
     updateAllTabRows = (updateDataRows: any[], skipConfirmDiscard?: boolean): Promise<any> => {
@@ -399,8 +402,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     hasAliquots = (): boolean => {
-        const { aliquots } = this.props;
-        return aliquots && aliquots.length > 0;
+        return this.props.aliquots?.length > 0;
     };
 
     getSamplesUpdateColumns = (tabInd: number): List<QueryColumn> => {
@@ -422,16 +424,12 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         return updatedColumns;
     };
 
-    getExportColumnFilter = (col: QueryColumn): any => {
-        const { sampleTypeDomainFields } = this.props;
-
-        return sampleTypeDomainFields.aliquotFields.indexOf(col.fieldKey.toLowerCase()) === -1;
+    getExportColumnFilter = (col: QueryColumn): boolean => {
+        return this.props.sampleTypeDomainFields.aliquotFields.indexOf(col.fieldKey.toLowerCase()) === -1;
     };
 
     getSelectedSamplesNoun = (): string => {
-        const { aliquots, displayQueryModel } = this.props;
-        const allAliquots = this.hasAliquots() && aliquots.length === displayQueryModel.selections.size;
-        return allAliquots ? 'aliquot' : 'sample';
+        return this.allAliquots ? 'aliquot' : 'sample';
     };
 
     getCurrentTab = (tabInd: number): number => {
@@ -439,7 +437,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         return tabInd === undefined ? includedTabs[0] : includedTabs[tabInd];
     };
 
-    onConfirmConsumedSamplesDialog = (shouldDiscard: boolean, comment: string): any => {
+    onConfirmConsumedSamplesDialog = (shouldDiscard: boolean, comment: string): void => {
         const { pendingUpdateDataRows } = this.state;
         this.setState(
             {
@@ -453,10 +451,8 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         );
     };
 
-    onDismissConsumedSamplesDialog = (): any => {
-        this.setState({
-            showDiscardDialog: false,
-        });
+    onDismissConsumedSamplesDialog = (): void => {
+        this.setState({ showDiscardDialog: false });
     };
 
     render() {
@@ -487,12 +483,14 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
             includedTabs,
             parentTypeOptions,
         } = this.state;
-        const allAliquots = this.hasAliquots() && aliquots.length === displayQueryModel.selections.size;
 
-        if (determineLineage && this.hasParentDataTypes() && !originalParents) return <LoadingSpinner />;
+        if (determineLineage && this.hasParentDataTypes() && !originalParents) {
+            return <LoadingSpinner />;
+        }
 
         const loaders: IEditableGridLoader[] = [];
         if (determineSampleData) {
+            const allAliquots = this.allAliquots;
             loaders.push(
                 new EditableGridLoaderFromSelection(
                     SAMPLES_EDIT_GRID_ID,

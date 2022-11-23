@@ -67,8 +67,8 @@ describe('getLineageEditorUpdateColumns', () => {
         expect(cols.queryInfoColumns.get('rowid')).toBeDefined();
         expect(cols.queryInfoColumns.get('name')).toBeDefined();
         expect(cols.queryInfoColumns.get('other')).toBeUndefined();
-        expect(cols.queryInfoColumns.get('MaterialInputs/Test1')).toBeDefined();
-        expect(cols.queryInfoColumns.get('DataInputs/Test2')).toBeDefined();
+        expect(cols.queryInfoColumns.get('materialinputs/test1')).toBeDefined();
+        expect(cols.queryInfoColumns.get('datainputs/test2')).toBeDefined();
         expect(cols.columns.size).toBe(3);
         expect(cols.columns.get(0).get('fieldKey')).toBe('name');
         expect(cols.columns.get(1).get('fieldKey')).toBe('DataInputs/Test2');

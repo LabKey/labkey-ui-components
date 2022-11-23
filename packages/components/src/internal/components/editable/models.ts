@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, Iterable, List, Map, Record, Set } from 'immutable';
+import { fromJS, Iterable, List, Map, OrderedMap, Record as ImmutableRecord, Set } from 'immutable';
 
 import { encodePart } from '../../../public/SchemaQuery';
 
@@ -44,7 +44,7 @@ export type CellValues = Map<string, List<ValueDescriptor>>;
 export interface EditorModelProps {
     cellMessages: CellMessages;
     cellValues: CellValues;
-    colCount: number;
+    columns: List<string>;
     focusColIdx: number;
     focusRowIdx: number;
     focusValue: List<ValueDescriptor>;
@@ -55,7 +55,7 @@ export interface EditorModelProps {
     selectionCells: Set<string>;
 }
 
-export function getPkData(queryInfo: QueryInfo, row: Map<string, any>) {
+export function getPkData(queryInfo: QueryInfo, row: Map<string, any>): Record<string, any> {
     const data = {};
     queryInfo.getPkCols().forEach(pkCol => {
         let pkVal = row.getIn([pkCol.fieldKey]);
@@ -81,16 +81,16 @@ export enum EditorMode {
 }
 
 export class EditorModel
-    extends Record({
+    extends ImmutableRecord({
         cellMessages: Map<string, CellMessage>(),
         cellValues: Map<string, List<ValueDescriptor>>(),
-        colCount: 0,
+        columns: List<string>(),
         deletedIds: Set<any>(),
-        id: undefined,
-        isPasting: false,
         focusColIdx: -1,
         focusRowIdx: -1,
         focusValue: undefined,
+        id: undefined,
+        isPasting: false,
         numPastedRows: 0,
         rowCount: 0,
         selectedColIdx: -1,
@@ -101,13 +101,13 @@ export class EditorModel
 {
     declare cellMessages: CellMessages;
     declare cellValues: CellValues;
-    declare colCount: number;
+    declare columns: List<string>;
     declare deletedIds: Set<any>;
-    declare id: string;
-    declare isPasting: boolean;
     declare focusColIdx: number;
     declare focusRowIdx: number;
     declare focusValue: List<ValueDescriptor>;
+    declare id: string;
+    declare isPasting: boolean;
     declare numPastedRows: number;
     declare rowCount: number;
     declare selectedColIdx: number;
@@ -119,7 +119,7 @@ export class EditorModel
         startRow: number,
         predicate: (value: List<ValueDescriptor>, colIdx: number, rowIdx: number) => boolean,
         advance: (colIdx: number, rowIdx: number) => { colIdx: number; rowIdx: number }
-    ) {
+    ): { colIdx: number; rowIdx: number; value: List<ValueDescriptor> } {
         let colIdx = startCol,
             rowIdx = startRow;
 
@@ -166,30 +166,43 @@ export class EditorModel
         return columns.filter(col => !col.isFileInput);
     }
 
+    getRawDataFromModel(
+        queryModel: QueryModel,
+        displayValues?: boolean,
+        forUpdate?: boolean,
+        forExport?: boolean
+    ): List<Map<string, any>> {
+        return this.getRawDataFromGridData(
+            fromJS(queryModel.rows),
+            fromJS(queryModel.orderedRows),
+            queryModel.queryInfo,
+            displayValues,
+            forUpdate,
+            forExport
+        );
+    }
+
+    /** @deprecated Use getRawDataFromModel() instead. */
     getRawDataFromGridData(
         data: Map<any, Map<string, any>>,
         dataKeys: List<any>,
         queryInfo: QueryInfo,
         displayValues = true,
         forUpdate = false,
-        readOnlyColumns?: List<string>,
-        extraColumns?: Array<Partial<QueryColumn>>,
-        colFilter?: (col: QueryColumn) => boolean,
         forExport?: boolean
     ): List<Map<string, any>> {
         let rawData = List<Map<string, any>>();
-        const columns = this.getColumns(queryInfo, forUpdate, readOnlyColumns, undefined, undefined, colFilter);
-        const additionalColumns = [];
-        if (extraColumns) {
-            extraColumns.forEach(col => {
-                const column = queryInfo.getColumn(col.fieldKey);
-                if (column) additionalColumns.push(column);
-            });
-        }
+        const columnMap = this.columns.reduce((map, fieldKey) => {
+            const col = queryInfo.getColumn(fieldKey);
+            // Log a warning but still retain the key in the map for column order
+            if (!col) console.warn(`Unable to resolve column "${fieldKey}". Cannot retrieve raw data.`);
+            return map.set(fieldKey, col);
+        }, OrderedMap<string, QueryColumn>());
 
         for (let rn = 0; rn < dataKeys.size; rn++) {
             let row = Map<string, any>();
-            columns.push(...additionalColumns).forEach((col, cn) => {
+            columnMap.valueSeq().forEach((col, cn) => {
+                if (!col) return;
                 const values = this.getValue(cn, rn);
 
                 // Some column types have special handling of raw data, such as multi value columns like alias,
@@ -225,7 +238,7 @@ export class EditorModel
                                 return arr;
                             }, [])
                         );
-                    } else if (col.lookup.displayColumn == col.lookup.keyColumn) {
+                    } else if (col.lookup.displayColumn === col.lookup.keyColumn) {
                         row = row.set(
                             col.name,
                             values.size === 1 ? quoteValueWithDelimiters(values.first()?.display, ',') : undefined
@@ -437,7 +450,7 @@ export class EditorModel
     }
 
     isInBounds(colIdx: number, rowIdx: number): boolean {
-        return colIdx >= 0 && colIdx < this.colCount && rowIdx >= 0 && rowIdx < this.rowCount;
+        return colIdx >= 0 && colIdx < this.columns.size && rowIdx >= 0 && rowIdx < this.rowCount;
     }
 
     inSelection(colIdx: number, rowIdx: number): boolean {

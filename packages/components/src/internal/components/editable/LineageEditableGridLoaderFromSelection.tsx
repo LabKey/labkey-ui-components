@@ -37,8 +37,8 @@ export function getLineageEditorUpdateColumns(
                 queryModel.schemaName
             );
 
-            if (!parentColumns[parentCol.fieldKey]) {
-                parentColumns[parentCol.fieldKey] = parentCol;
+            if (!parentColumns[parentCol.fieldKey.toLowerCase()]) {
+                parentColumns[parentCol.fieldKey.toLowerCase()] = parentCol;
                 parentColIndex++;
             }
         });

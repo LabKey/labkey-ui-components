@@ -9,7 +9,7 @@ import { genCellKey } from '../../utils';
 
 import { LoadingState } from '../../../public/LoadingState';
 import { QueryInfo } from '../../../public/QueryInfo';
-import { getUpdatedDataFromGrid } from '../../util/utils';
+import { getUpdatedDataFromGrid, quoteValueWithDelimiters } from '../../util/utils';
 
 import { EXPORT_TYPES, MODIFICATION_TYPES } from '../../constants';
 
@@ -26,12 +26,10 @@ import { CellActions } from './constants';
  */
 export const loadEditorModelData = async (
     queryModelData: Partial<QueryModel>,
-    editorColumns?: List<QueryColumn>,
-    extraColumns?: QueryColumn[]
+    editorColumns?: List<QueryColumn>
 ): Promise<Partial<EditorModel>> => {
     const { orderedRows, rows, queryInfo } = queryModelData;
-    let columns = editorColumns ?? queryInfo.getInsertColumns();
-    if (extraColumns?.length > 0) columns = columns.push(...extraColumns);
+    const columns = editorColumns ?? queryInfo.getInsertColumns();
     const lookupValueDescriptors = await getLookupValueDescriptors(
         columns.toArray(),
         fromJS(rows),
@@ -90,7 +88,7 @@ export const loadEditorModelData = async (
 
     return {
         cellValues,
-        colCount: columns.size,
+        columns: columns.map(col => col.fieldKey).toList(),
         deletedIds: Set<any>(),
         rowCount: orderedRows.length,
     };
@@ -99,9 +97,8 @@ export const loadEditorModelData = async (
 export const initEditableGridModel = async (
     dataModel: QueryModel,
     editorModel: EditorModel,
-    queryModel: QueryModel,
     loader: IEditableGridLoader,
-    includeColumns?: Array<Partial<QueryColumn>>
+    queryModel: QueryModel
 ): Promise<{ dataModel: QueryModel; editorModel: EditorModel }> => {
     const response = await loader.fetch(queryModel);
     const gridData: Partial<QueryModel> = {
@@ -110,24 +107,15 @@ export const initEditableGridModel = async (
         queryInfo: loader.queryInfo,
     };
 
-    const extraColumns: QueryColumn[] = [];
-    includeColumns?.forEach(col => {
-        const column = queryModel.getColumn(col.fieldKey);
-        if (column) {
-            extraColumns.push(column);
-        }
-    });
-
     let columns: List<QueryColumn>;
     const forUpdate = loader.mode === EditorMode.Update;
-
     if (loader.columns) {
         columns = editorModel.getColumns(gridData.queryInfo, forUpdate, undefined, loader.columns, loader.columns);
     } else {
         columns = editorModel.getColumns(gridData.queryInfo, forUpdate);
     }
 
-    const editorModelData = await loadEditorModelData(gridData, columns, extraColumns);
+    const editorModelData = await loadEditorModelData(gridData, columns);
 
     return {
         dataModel: dataModel.mutate({
@@ -147,17 +135,14 @@ export interface EditableGridModels {
 export const initEditableGridModels = async (
     dataModels: QueryModel[],
     editorModels: EditorModel[],
-    queryModel: QueryModel,
     loaders: IEditableGridLoader[],
-    includeColumns?: Array<Partial<QueryColumn>>
+    queryModel: QueryModel
 ): Promise<EditableGridModels> => {
     const updatedDataModels = [];
     const updatedEditorModels = [];
 
     const results = await Promise.all(
-        dataModels.map((dataModel, i) =>
-            initEditableGridModel(dataModels[i], editorModels[i], queryModel, loaders[i], includeColumns)
-        )
+        dataModels.map((dataModel, i) => initEditableGridModel(dataModels[i], editorModels[i], loaders[i], queryModel))
     );
 
     results.forEach(result => {
@@ -204,7 +189,6 @@ export const getUpdatedDataFromEditableGrid = (
     dataModels: QueryModel[],
     editorModels: EditorModel[],
     idField: string,
-    readOnlyColumns?: List<string>,
     selectionData?: Map<string, any>,
     tabIndex?: number
 ): Record<string, any> => {
@@ -214,30 +198,20 @@ export const getUpdatedDataFromEditableGrid = (
     if (!editorModel) {
         console.error('Grid does not expose an editor. Ensure the grid is properly initialized for editing.');
         return null;
-    } else {
-        // Issue 37842: if we have data for the selection, this was the data that came from the display grid and was used
-        // to populate the queryInfoForm.  If we don't have this data, we came directly to the editable grid
-        // using values from the display grid to initialize the editable grid model, so we use that.
-        const initData = selectionData ?? fromJS(model.rows);
-        const editorData = editorModel
-            .getRawDataFromGridData(
-                fromJS(model.rows),
-                fromJS(model.orderedRows),
-                model.queryInfo,
-                true,
-                true,
-                readOnlyColumns
-            )
-            .toArray();
-        const updatedRows = getUpdatedDataFromGrid(initData, editorData, idField, model.queryInfo);
-
-        return {
-            schemaQuery: model.queryInfo.schemaQuery,
-            updatedRows,
-            originalRows: model.rows,
-            tabIndex: tabIndex ?? 0,
-        };
     }
+
+    // Issue 37842: if we have data for the selection, this was the data that came from the display grid and was used
+    // to populate the queryInfoForm. If we don't have this data, we came directly to the editable grid
+    // using values from the display grid to initialize the editable grid model, so we use that.
+    const initData = selectionData ?? fromJS(model.rows);
+    const editorData = editorModel.getRawDataFromModel(model, true, true).toArray();
+
+    return {
+        originalRows: model.rows,
+        schemaQuery: model.queryInfo.schemaQuery,
+        tabIndex: tabIndex ?? 0,
+        updatedRows: getUpdatedDataFromGrid(initData, editorData, idField, model.queryInfo),
+    };
 };
 
 const getTableExportConfig = (
@@ -253,7 +227,7 @@ const getTableExportConfig = (
             schema: activeModel.schemaName,
             query: activeModel.queryName,
         },
-        auditMessage: 'Exported editable grid to file: ', // Filename will be appeneded
+        auditMessage: 'Exported editable grid to file: ', // Filename will be appended
     } as UtilsDOM.ConvertToTableOptions;
 
     switch (exportType) {
@@ -293,65 +267,79 @@ export const exportEditedData = (
     UtilsDOM.convertToTable(config);
 };
 
-export const getEditorTableData = (
-    editorModel: EditorModel,
-    queryModel: QueryModel,
-    headings: OrderedMap<string, string>,
-    editorData: OrderedMap<string, OrderedMap<string, any>>,
+export const getEditorExportData = (
+    editorModels: EditorModel[],
+    dataModels: QueryModel[],
     readOnlyColumns?: List<string>,
     insertColumns?: List<QueryColumn>,
     updateColumns?: List<QueryColumn>,
     forUpdate?: boolean,
     extraColumns?: Array<Partial<QueryColumn>>,
-    colFilter?: (col: QueryColumn) => boolean,
-    forExport?: boolean
-): [Map<string, string>, Map<string, Map<string, any>>] => {
-    const tabData = editorModel
-        .getRawDataFromGridData(
-            fromJS(queryModel.rows),
-            fromJS(queryModel.orderedRows),
-            queryModel.queryInfo,
-            true,
+    colFilter?: (col: QueryColumn) => boolean
+): any[][] => {
+    const headings = OrderedMap<string, string>().asMutable();
+    const editorData = OrderedMap<string, OrderedMap<string, any>>().asMutable();
+
+    dataModels.forEach((dataModel, i) => {
+        const editorModel = editorModels[i];
+
+        const columns = editorModel.getColumns(
+            dataModel.queryInfo,
             forUpdate,
             readOnlyColumns,
-            extraColumns,
-            colFilter,
-            forExport
-        )
-        .toArray();
+            insertColumns,
+            updateColumns,
+            colFilter
+        );
 
-    const columns = editorModel.getColumns(
-        queryModel.queryInfo,
-        forUpdate,
-        readOnlyColumns,
-        insertColumns,
-        updateColumns,
-        colFilter
-    );
-    columns.forEach(col => (headings = headings.set(col.fieldKey, col.isLookup() ? col.fieldKey : col.caption)));
-
-    if (extraColumns) {
-        extraColumns.forEach(col => {
-            headings = headings.set(col.fieldKey, col.caption ?? col.fieldKey);
-        });
-    }
-
-    tabData.forEach((row, idx) => {
-        const rowId = row.get('RowId') ?? idx;
-        let draftRow = editorData.get(rowId) ?? OrderedMap<string, any>();
+        // Prepare headers
         columns.forEach(col => {
-            draftRow = draftRow.set(col.fieldKey, row.get(col.fieldKey));
+            headings.set(col.fieldKey, col.isLookup() ? col.fieldKey : col.caption);
+        });
+        extraColumns?.forEach(col => {
+            headings.set(col.fieldKey, col.caption ?? col.fieldKey);
         });
 
-        if (extraColumns) {
-            extraColumns.forEach(col => {
-                if (row.has(col.fieldKey)) draftRow = draftRow.set(col.fieldKey, row.get(col.fieldKey));
+        // Prepare data
+        editorModel.getRawDataFromModel(dataModel, true, forUpdate, true).forEach((editableRow, j) => {
+            const rowKey = dataModel.orderedRows[j];
+            const row = editorData.get(rowKey) ?? OrderedMap<string, any>().asMutable();
+            columns.forEach(col => {
+                row.set(col.fieldKey, editableRow.get(col.fieldKey));
             });
-        }
 
-        editorData = editorData.set(rowId, draftRow);
+            extraColumns?.forEach(col => {
+                if (editableRow.has(col.fieldKey)) {
+                    row.set(col.fieldKey, editableRow.get(col.fieldKey));
+                } else {
+                    const data = dataModel.rows[rowKey]?.[col.fieldKey];
+                    if (data) {
+                        if (Array.isArray(data)) {
+                            let sep = '';
+                            row.set(
+                                col.fieldKey,
+                                data.reduce((str, row_) => {
+                                    str += sep + quoteValueWithDelimiters(row_.displayValue ?? row_.value, ',');
+                                    sep = ', ';
+                                    return str;
+                                }, '')
+                            );
+                        } else {
+                            row.set(col.fieldKey, data.displayValue ?? data.value);
+                        }
+                    } else {
+                        row.set(col.fieldKey, row.get(col.fieldKey));
+                    }
+                }
+            });
+
+            editorData.set(rowKey, row);
+        });
     });
-    return [headings, editorData];
+
+    const rows = [];
+    editorData.forEach(rowMap => rows.push([...rowMap.toArray().values()]));
+    return [headings.toArray(), ...rows];
 };
 
 export function onCellSelectChange(

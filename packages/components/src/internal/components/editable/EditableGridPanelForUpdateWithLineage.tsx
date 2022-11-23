@@ -117,32 +117,22 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
     }, [loaders, parentDataTypes, queryModel.schemaQuery]);
 
     useEffect(() => {
-        const initEditorModel = async (): Promise<{
-            dataModels: QueryModel[];
-            editorModels: EditorModel[];
-        }> => {
-            return await initEditableGridModels(
-                editableGridModels.dataModels,
-                editableGridModels.editorModels,
-                queryModel,
-                loaders,
-                extraExportColumns
-            );
-        };
-
         if (loaders && editableGridModels?.dataModels?.find(dataModel => dataModel.isLoading)) {
-            initEditorModel()
-                .then(models => {
-                    setEditableGridModels(models);
-                })
-                .catch(error => {
-                    createNotification({
-                        message: error,
-                        alertClass: 'danger',
-                    });
-                });
+            (async () => {
+                try {
+                    const { dataModels, editorModels } = await initEditableGridModels(
+                        editableGridModels.dataModels,
+                        editableGridModels.editorModels,
+                        loaders,
+                        queryModel
+                    );
+                    setEditableGridModels({ dataModels, editorModels });
+                } catch (e) {
+                    createNotification({ alertClass: 'danger', message: e });
+                }
+            })();
         }
-    }, [loaders, queryModel, editableGridModels, extraExportColumns, createNotification]);
+    }, [loaders, queryModel, editableGridModels, createNotification]);
 
     const onGridChange = useCallback(
         (
@@ -174,7 +164,6 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
                 editableGridModels.dataModels,
                 editableGridModels.editorModels,
                 idField,
-                readOnlyColumns,
                 selectionData,
                 ind
             );
@@ -200,7 +189,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
             setIsSubmitting(false);
             onComplete();
         }
-    }, [editableGridModels, idField, onComplete, readOnlyColumns, selectionData, updateAllTabRows]);
+    }, [editableGridModels, idField, onComplete, selectionData, updateAllTabRows]);
 
     const getCurrentTab = useCallback(
         (tabInd: number): number => {
@@ -349,7 +338,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
             <WizardNavButtons
                 cancel={onCancel}
                 nextStep={onSubmit}
-                finish={true}
+                finish
                 isFinishing={isSubmitting}
                 isFinishingText="Updating..."
                 isFinishedText="Finished Updating"

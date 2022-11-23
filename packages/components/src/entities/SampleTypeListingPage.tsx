@@ -2,7 +2,7 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { ReactNode, FC, memo } from 'react';
+import React, { FC, memo } from 'react';
 import { PermissionTypes } from '@labkey/api';
 
 import { AppURL } from '../internal/url/AppURL';
@@ -15,25 +15,29 @@ import { RequiresPermission } from '../internal/components/base/Permissions';
 import { SampleTypeEmptyAlert } from '../internal/components/samples/SampleEmptyAlert';
 
 import { SampleTypeSummary } from './SampleTypeSummary';
+import { Button } from 'react-bootstrap';
+import { NEW_SAMPLE_TYPE_HREF, SAMPLES_KEY } from '../internal/app/constants';
+import { CommonPageProps } from '../internal/models';
+import { LoadingPage } from '../internal/components/base/LoadingPage';
+import { useSampleTypeAppContext } from './SampleTypeAppContext';
 
-interface Props {
-    buttons: ReactNode;
-    caption: string;
-    excludedSampleTypes?: string[];
-    hasSampleTypes: boolean;
-    navigate: (url: string | AppURL) => void;
-}
-
-export const SampleTypePage: FC<Props> = memo(props => {
-    const { caption, buttons, excludedSampleTypes, hasSampleTypes, navigate } = props;
+export const SampleTypeListingPage: FC<CommonPageProps> = memo(props => {
+    const { menu, navigate } = props;
     const { user } = useServerContext();
+    const { sampleTypeListingCaption } = useSampleTypeAppContext();
     const title = 'Sample Types';
+
+    if (!menu.isLoaded) {
+        return <LoadingPage title={title} />;
+    }
+
+    const hasSampleTypes = menu.hasSectionItems(SAMPLES_KEY);
 
     return (
         <Page title={title}>
             <Section
                 title={title}
-                caption={caption}
+                caption={sampleTypeListingCaption}
                 context={
                     <>
                         {isSampleStatusEnabled() && (
@@ -43,14 +47,17 @@ export const SampleTypePage: FC<Props> = memo(props => {
                                 </a>
                             </RequiresPermission>
                         )}
-                        {buttons}
+                        {user.hasDesignSampleTypesPermission() ?
+                            <Button bsStyle="success" href={NEW_SAMPLE_TYPE_HREF.toHref()}>Create Sample Type</Button>
+                            : undefined
+                        }
                     </>
                 }
             >
                 {hasSampleTypes && (
-                    <SampleTypeSummary excludedSampleSets={excludedSampleTypes} navigate={navigate} user={user} />
+                    <SampleTypeSummary user={user} navigate={navigate}  />
                 )}
-                {!hasSampleTypes && <SampleTypeEmptyAlert user={user} />}
+                {!hasSampleTypes && <SampleTypeEmptyAlert />}
             </Section>
         </Page>
     );

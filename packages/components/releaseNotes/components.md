@@ -14,6 +14,23 @@ Components, models, actions, and utility functions for LabKey applications and p
   * NameIdSettings to conditionally show prefix input for LKB only
   * Remove "You have unsaved changes" alert from several components
 
+### version 2.259.0
+*Released*: 22 November 2022
+* Update `addColumns`, `changeColumn`, and `removeColumns` editable grid actions to update the new `columns` array on the `EditorModel`.
+* Process directly against `EditorModel.columns` in `EditorModel.getRawDataFromGridData()` rather than relying on all column oriented properties aligning with the initial configuration.
+* Introduce `EditorModel.getRawDataFromModel()` as a wrapped replacement for `EditorModel.getRawDataFromGridData()` to reduce redundant processing of the data on a `QueryModel`.
+* Remove concept of `getEditableValue` on the renderer for editable grid cells. This pattern is no longer needed.
+
+### version 2.258.0
+*Released*: 22 November 2022
+* Update label on `ManageDropdownButton` to contain the word "Manage"
+* Remove need for mega-create button on `AssayListingPage`
+* Rename `SampleTypePage` to `SampleTypeListingPage` and incorporate empty state behavior from LKSM
+* Rename `SampleSetHeatMap` to `SampleTypeHeatMap` and explicitly filter out media sample types
+* Rename `SampleSetCards` to `SampleTypeCards` and explicitly filter out media sample types
+* Update `PicklistCreationMenuItem` to also work as a non-menu item
+* Fix problem in `AssayImportSubMenuItem` not respecting the `requireSelection` property
+
 ### version 2.257.0
 *Released*: 22 November 2022
 * Detail panel editMode fix for show/hide labels

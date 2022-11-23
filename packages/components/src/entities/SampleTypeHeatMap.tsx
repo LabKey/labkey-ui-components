@@ -9,6 +9,7 @@ import { User } from '../internal/components/base/models/User';
 import { SCHEMAS } from '../internal/schemas';
 
 import { SampleEmptyAlert } from '../internal/components/samples/SampleEmptyAlert';
+import { NON_MEDIA_SAMPLE_TYPES_FILTER } from '../internal/components/samples/constants';
 
 const getCellUrl = (row: Record<string, any>): AppURL => {
     const protocolName = row.Protocol?.displayValue;
@@ -18,26 +19,19 @@ const getCellUrl = (row: Record<string, any>): AppURL => {
 const getHeaderAndTotalUrl = (cell: HeatMapCell): AppURL => cell?.url;
 
 interface Props {
-    excludedSampleSets?: string[];
     navigate: (url: AppURL) => any;
     user: User;
 }
 
-export const SampleSetHeatMap: FC<Props> = memo(({ excludedSampleSets, navigate, user }) => {
+export const SampleTypeHeatMap: FC<Props> = memo(({ navigate }) => {
     const emptyDisplay = (
-        <SampleEmptyAlert user={user} message="No samples have been created within the last 12 months." />
+        <SampleEmptyAlert message="No samples have been created within the last 12 months." />
     );
-
-    const filters = useMemo(() => {
-        if (!excludedSampleSets) return undefined;
-
-        return [Filter.create('Name', excludedSampleSets, Filter.Types.NOT_IN)];
-    }, [excludedSampleSets]);
 
     return (
         <HeatMap
             schemaQuery={SCHEMAS.EXP_TABLES.SAMPLE_SET_HEAT_MAP}
-            filters={filters}
+            filters={[NON_MEDIA_SAMPLE_TYPES_FILTER]}
             nounSingular="sample"
             nounPlural="samples"
             yAxis="protocolName"

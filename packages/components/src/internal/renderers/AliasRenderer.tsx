@@ -40,17 +40,6 @@ export class AliasRenderer extends React.Component<Props, State> {
         }, []);
     };
 
-    static getEditableValue = (values: List<ValueDescriptor>): string => {
-        return values.reduce((str, v) => {
-            if (v.display) {
-                if (str) {
-                    return str + ', ' + v.display;
-                }
-                return v.display;
-            } else return str;
-        }, '');
-    };
-
     state: Readonly<State> = { showMore: false };
 
     handleClick = (): void => {

@@ -1,21 +1,23 @@
 import React, { FC, useCallback, useState } from 'react';
-import { MenuItem } from 'react-bootstrap';
+import { Button, MenuItem } from 'react-bootstrap';
 
 import { userCanManagePicklists } from '../../app/utils';
-import { User } from '../base/models/User';
 
 import { SelectionMenuItem } from '../menus/SelectionMenuItem';
+
+import { User } from '../base/models/User';
 
 import { PicklistEditModal, PicklistEditModalProps } from './PicklistEditModal';
 
 interface Props extends Omit<PicklistEditModalProps, 'onCancel' | 'onFinish' | 'showNotification'> {
+    asMenuItem?: boolean;
     itemText?: string;
     onCreatePicklist?: () => void;
     user: User;
 }
 
 export const PicklistCreationMenuItem: FC<Props> = props => {
-    const { itemText, user, onCreatePicklist, queryModel, sampleIds, ...editModalProps } = props;
+    const { asMenuItem, itemText, user, onCreatePicklist, queryModel, sampleIds, ...editModalProps } = props;
     const [showModal, setShowModal] = useState<boolean>(false);
 
     const onFinish = useCallback(() => {
@@ -46,7 +48,12 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
                     nounPlural="samples"
                 />
             )}
-            {!queryModel && <MenuItem onClick={onClick}>{itemText}</MenuItem>}
+            {!queryModel && asMenuItem && <MenuItem onClick={onClick}>{itemText}</MenuItem>}
+            {!queryModel && !asMenuItem && (
+                <Button bsStyle="success" onClick={onClick}>
+                    {itemText}
+                </Button>
+            )}
             {showModal && (
                 <PicklistEditModal
                     queryModel={queryModel}

@@ -45,6 +45,7 @@ import {
     WORKFLOW_HOME_HREF,
     WORKFLOW_KEY,
 } from './constants';
+import { Container } from '../components/base/models/Container';
 
 // Type definition not provided for event codes so here we provide our own
 // Source: https://www.iana.org/assignments/websocket/websocket.xml#close-code-number
@@ -565,20 +566,23 @@ function getApplicationUrlBase(moduleName: string, currentProductId: string, mod
         : buildURL(lcProductId, 'app.view', undefined, { returnUrl: false });
 }
 
-export function getDateFormat(): string {
-    return getServerContext().container.formats.dateFormat;
+// CONSIDER: Moving this to util/Date.ts after rectifying name collision with similar method already declared there.
+export function getDateFormat(container?: Partial<Container>): string {
+    return (container ?? getServerContext().container).formats.dateFormat;
 }
 
-export function getDateTimeFormat(): string {
-    return getServerContext().container.formats.dateTimeFormat;
+// CONSIDER: Moving this to util/Date.ts after rectifying name collision with similar method already declared there.
+export function getDateTimeFormat(container?: Partial<Container>): string {
+    return (container ?? getServerContext().container).formats.dateTimeFormat;
 }
+
 // Returns the friendly name of the product, primarily for use in help text.
-export function getCurrentProductName(): string {
+export function getCurrentProductName(moduleContext?: ModuleContext): string {
     const lcController = ActionURL.getController().toLowerCase();
     if (!lcController) return LABKEY_SERVER_PRODUCT_NAME;
 
-    if (isPremiumProductEnabled()) {
-        return getPrimaryAppProperties().name;
+    if (isPremiumProductEnabled(moduleContext)) {
+        return getPrimaryAppProperties(moduleContext).name;
     }
     return LABKEY_SERVER_PRODUCT_NAME;
 }

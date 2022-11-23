@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
-import { Button, Checkbox, Col, Panel, Row } from 'react-bootstrap';
+import { Button, Checkbox, Col, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 import { Security } from '@labkey/api';
 

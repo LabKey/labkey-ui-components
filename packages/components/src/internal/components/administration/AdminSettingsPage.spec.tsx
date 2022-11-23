@@ -10,7 +10,7 @@ import { TEST_USER_APP_ADMIN } from '../../userFixtures';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
 import { AdminAppContext } from '../../AppContext';
-import { TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
+import { TEST_PROJECT } from '../../../test/data/constants';
 
 import { TEST_LKS_STARTER_MODULE_CONTEXT } from '../../productFixtures';
 import { getTestAPIWrapper } from '../../APIWrapper';
@@ -26,13 +26,12 @@ describe('AdminSettingsPageImpl', () => {
     const getAPIContext = () => {
         return getTestAPIWrapper(jest.fn, {
             labelprinting: getLabelPrintingTestAPIWrapper(jest.fn, {
-                fetchBarTenderConfiguration: () =>
-                    Promise.resolve(
-                        new BarTenderConfiguration({
-                            defaultLabel: 'testDefaultLabel',
-                            serviceURL: 'testServerURL',
-                        })
-                    ),
+                fetchBarTenderConfiguration: jest.fn().mockResolvedValue(
+                    new BarTenderConfiguration({
+                        defaultLabel: 'testDefaultLabel',
+                        serviceURL: 'testServerURL',
+                    })
+                ),
             }),
         });
     };
@@ -45,14 +44,12 @@ describe('AdminSettingsPageImpl', () => {
     };
 
     test('app admin user, with premium', async () => {
-        LABKEY.moduleContext = { ...TEST_LKS_STARTER_MODULE_CONTEXT };
-
         const wrapper = mountWithAppServerContext(
             <AdminSettingsPageImpl {...getDefaultProps()}>
                 <div className="testing-child">testing</div>
             </AdminSettingsPageImpl>,
             { admin: {} as AdminAppContext, api: getAPIContext() },
-            { user: TEST_USER_APP_ADMIN, project: { ...TEST_PROJECT_CONTAINER, rootId: TEST_PROJECT_CONTAINER.id } }
+            { moduleContext: TEST_LKS_STARTER_MODULE_CONTEXT, user: TEST_USER_APP_ADMIN, project: TEST_PROJECT }
         );
         await waitForLifecycle(wrapper);
 

@@ -13,14 +13,15 @@ import { BasePermissions } from './BasePermissions';
 import { useAdminAppContext } from './useAdminAppContext';
 
 export const PermissionManagementPage: FC = memo(() => {
-    const { container, user } = useServerContext();
+    const { container, moduleContext, user } = useServerContext();
     const { extraPermissionRoles } = useAdminAppContext();
+    const showPremium = showPremiumFeatures(moduleContext);
 
     const rolesMap = useMemo(() => {
-        let roles = showPremiumFeatures() ? APPLICATION_SECURITY_ROLES : HOSTED_APPLICATION_SECURITY_ROLES;
+        let roles = showPremium ? APPLICATION_SECURITY_ROLES : HOSTED_APPLICATION_SECURITY_ROLES;
         roles = roles.merge(Map<string, string>(extraPermissionRoles));
         return roles;
-    }, [extraPermissionRoles]);
+    }, [extraPermissionRoles, showPremium]);
 
     return (
         <BasePermissions
@@ -31,7 +32,7 @@ export const PermissionManagementPage: FC = memo(() => {
             panelTitle="Application Roles and Assignments"
             rolesMap={rolesMap}
             showDetailsPanel={user.hasManageUsersPermission()}
-            description={showPremiumFeatures() ? container.path : undefined}
+            description={showPremium ? container.path : undefined}
         />
     );
 });

@@ -29,15 +29,11 @@ import { AuditDetailsModel } from './models';
 import { AuditDetails } from './AuditDetails';
 import { AuditQuery, AUDIT_EVENT_TYPE_PARAM, SAMPLE_TIMELINE_AUDIT_QUERY } from './constants';
 
-interface OwnProps {
-    params: any;
-}
-
 interface BodyProps {
     user: User;
 }
 
-type Props = OwnProps & BodyProps & InjectedQueryModels & WithRouterProps;
+type Props = BodyProps & InjectedQueryModels & WithRouterProps;
 
 interface State {
     auditQueries: AuditQuery[];
@@ -263,11 +259,11 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
     };
 }
 
-const AuditQueriesListingPageWithQueryModels = withQueryModels<OwnProps & BodyProps & WithRouterProps>(
+const AuditQueriesListingPageWithQueryModels = withQueryModels<BodyProps & WithRouterProps>(
     AuditQueriesListingPageImpl
 );
 
-export const AuditQueriesListingPage: FC<OwnProps & WithRouterProps> = props => {
+export const AuditQueriesListingPage: FC<WithRouterProps> = props => {
     const { user } = useServerContext();
     return <AuditQueriesListingPageWithQueryModels {...props} user={user} />;
 };

@@ -14,7 +14,7 @@ import { useAdminAppContext } from './useAdminAppContext';
 const TITLE = 'User Settings';
 
 export const AccountSettingsPage: FC = () => {
-    const { user } = useServerContext();
+    const { container, moduleContext, user } = useServerContext();
     const userProperties = useUserProperties(user);
     const { NotebookNotificationSettingsComponent, WorkflowNotificationSettingsComponent } = useAdminAppContext();
 
@@ -29,11 +29,11 @@ export const AccountSettingsPage: FC = () => {
                 userProperties={userProperties}
                 title={user.displayName + "'s Settings"}
                 description={getUserRoleDisplay(user)}
-                dateFormat={getDateFormat().toUpperCase()}
+                dateFormat={getDateFormat(container).toUpperCase()}
             />
             <Notifications />
-            {isELNEnabled() && <NotebookNotificationSettingsComponent />}
-            {isWorkflowEnabled() && <WorkflowNotificationSettingsComponent />}
+            {isELNEnabled(moduleContext) && <NotebookNotificationSettingsComponent />}
+            {isWorkflowEnabled(moduleContext) && <WorkflowNotificationSettingsComponent />}
         </Page>
     );
 };

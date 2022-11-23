@@ -46,7 +46,7 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
         return <InsufficientPermissionsPage title={TITLE} />;
     }
 
-    if (!showPremiumFeatures()) {
+    if (!showPremiumFeatures(moduleContext)) {
         return (
             <BasePermissions
                 pageTitle={TITLE}
@@ -68,7 +68,7 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
     return (
         <BasePermissionsCheckPage user={user} title={TITLE} hasPermission={user.isAdmin}>
             <ActiveUserLimit />
-            {isProductProjectsEnabled() && (
+            {isProductProjectsEnabled(moduleContext) && (
                 <ProjectSettings onChange={onSettingsChange} onSuccess={onSettingsSuccess} />
             )}
             {isELNEnabled(moduleContext) && <NotebookProjectSettingsComponent />}

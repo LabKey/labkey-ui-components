@@ -82,11 +82,13 @@ export function getColFormattedDateFilterValue(column: QueryColumn, value: strin
     return formatDate(new Date(valueFull), null, dateFormat);
 }
 
-// 30834: get look and feel display formats
+// Issue 30834: get look and feel display formats
+// TODO: Rename to getMomentDateFormat as this can be easily confused with the other utility method getDateFormat() which returns the raw context date format.
 export function getDateFormat(container?: Partial<Container>): string {
     return toMomentFormatString((container ?? getServerContext().container).formats.dateFormat);
 }
 
+// TODO: Rename to getMomentDateTimeFormat as this can be easily confused with the other utility method getDateTimeFormat() which returns the raw context date format.
 export function getDateTimeFormat(container?: Partial<Container>): string {
     return toMomentFormatString((container ?? getServerContext().container).formats.dateTimeFormat);
 }

@@ -1,7 +1,7 @@
 import { Record } from 'immutable';
 import { Container as IContainer } from '@labkey/api';
 
-interface ContainerDateFormats {
+export interface ContainerDateFormats {
     dateFormat: string;
     dateTimeFormat: string;
     numberFormat: string;

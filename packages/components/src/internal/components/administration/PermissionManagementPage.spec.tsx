@@ -11,7 +11,7 @@ import { AdminAppContext, AppContext } from '../../AppContext';
 
 import { TEST_LKS_STARTER_MODULE_CONTEXT, TEST_LKSM_STARTER_MODULE_CONTEXT } from '../../productFixtures';
 
-import { JEST_SITE_ADMIN_USER_ID, TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
+import { JEST_SITE_ADMIN_USER_ID, TEST_PROJECT, TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
 import { getSecurityTestAPIWrapper } from '../security/APIWrapper';
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { Principal, SecurityPolicy } from '../permissions/models';
@@ -20,16 +20,6 @@ import policyJSON from '../../../test/data/security-getPolicy.json';
 import { BasePermissions } from './BasePermissions';
 import { PermissionManagementPage } from './PermissionManagementPage';
 import { MemberType } from './models';
-
-beforeAll(() => {
-    LABKEY.container = {
-        formats: {
-            dateFormat: 'yyyy-MM-dd',
-            dateTimeFormat: 'yyyy-MM-dd HH:mm',
-            numberFormat: null,
-        },
-    };
-});
 
 const USER = Principal.createFromSelectRow(
     fromJS({
@@ -64,7 +54,7 @@ describe('PermissionManagementPage', () => {
         };
     }
 
-    function validate(wrapper: ReactWrapper, hasPermission = true) {
+    function validate(wrapper: ReactWrapper, hasPermission = true): void {
         expect(wrapper.find(BasePermissions)).toHaveLength(1);
         const props = wrapper.find(BasePermissions).props();
         expect(props.containerId).toBe(TEST_PROJECT_CONTAINER.id);
@@ -73,11 +63,10 @@ describe('PermissionManagementPage', () => {
     }
 
     test('premium roles', async () => {
-        LABKEY.moduleContext = { ...TEST_LKS_STARTER_MODULE_CONTEXT };
-
         const wrapper = mountWithAppServerContext(<PermissionManagementPage />, getDefaultAppContext(), {
             user: TEST_USER_APP_ADMIN,
             container: TEST_PROJECT_CONTAINER,
+            moduleContext: TEST_LKS_STARTER_MODULE_CONTEXT,
         });
         await waitForLifecycle(wrapper);
 
@@ -96,12 +85,11 @@ describe('PermissionManagementPage', () => {
     });
 
     test('hosted only roles', async () => {
-        LABKEY.moduleContext = { ...TEST_LKSM_STARTER_MODULE_CONTEXT };
-
         const wrapper = mountWithAppServerContext(<PermissionManagementPage />, getDefaultAppContext(), {
             user: TEST_USER_APP_ADMIN,
             container: TEST_PROJECT_CONTAINER,
-            project: { ...TEST_PROJECT_CONTAINER, rootId: 'TEST_ROOT_ID' },
+            moduleContext: TEST_LKSM_STARTER_MODULE_CONTEXT,
+            project: TEST_PROJECT,
         });
         await waitForLifecycle(wrapper);
 
@@ -114,11 +102,10 @@ describe('PermissionManagementPage', () => {
     });
 
     test('without perm', async () => {
-        LABKEY.moduleContext = { ...TEST_LKS_STARTER_MODULE_CONTEXT };
-
         const wrapper = mountWithAppServerContext(<PermissionManagementPage />, getDefaultAppContext(), {
             user: TEST_USER_EDITOR,
             container: TEST_PROJECT_CONTAINER,
+            moduleContext: TEST_LKS_STARTER_MODULE_CONTEXT,
         });
         await waitForLifecycle(wrapper);
 
@@ -128,8 +115,6 @@ describe('PermissionManagementPage', () => {
     });
 
     test('extraPermissionRoles', async () => {
-        LABKEY.moduleContext = { ...TEST_LKS_STARTER_MODULE_CONTEXT };
-
         const wrapper = mountWithAppServerContext(
             <PermissionManagementPage />,
             getDefaultAppContext({
@@ -138,7 +123,8 @@ describe('PermissionManagementPage', () => {
             {
                 user: TEST_USER_APP_ADMIN,
                 container: TEST_PROJECT_CONTAINER,
-                project: { ...TEST_PROJECT_CONTAINER, rootId: 'TEST_ROOT_ID' },
+                moduleContext: TEST_LKS_STARTER_MODULE_CONTEXT,
+                project: TEST_PROJECT,
             }
         );
         await waitForLifecycle(wrapper);

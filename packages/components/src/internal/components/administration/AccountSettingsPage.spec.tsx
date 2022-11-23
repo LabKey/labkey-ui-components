@@ -10,23 +10,14 @@ import { UserDetailHeader } from '../user/UserDetailHeader';
 import { Notifications } from '../notifications/Notifications';
 
 import { AccountSettingsPage } from './AccountSettingsPage';
-
-beforeAll(() => {
-    LABKEY.container = {
-        formats: {
-            dateFormat: 'yyyy-MM-dd',
-            dateTimeFormat: 'yyyy-MM-dd HH:mm',
-            numberFormat: null,
-        },
-    };
-});
+import { TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
 
 describe('AccountSettingsPage', () => {
     test('reader user', async () => {
         const wrapper = mountWithAppServerContext(
             <AccountSettingsPage />,
             { admin: {} as AdminAppContext },
-            { user: TEST_USER_READER }
+            { container: TEST_PROJECT_CONTAINER, user: TEST_USER_READER }
         );
         await waitForLifecycle(wrapper);
 
@@ -45,7 +36,7 @@ describe('AccountSettingsPage', () => {
         const wrapper = mountWithAppServerContext(
             <AccountSettingsPage />,
             { admin: {} as AdminAppContext },
-            { user: TEST_USER_GUEST }
+            { container: TEST_PROJECT_CONTAINER, user: TEST_USER_GUEST }
         );
         await waitForLifecycle(wrapper);
 

@@ -226,19 +226,6 @@ export class BarTenderSettingsFormImpl extends PureComponent<Props, State> {
                     <Panel title={title}>
                         <Panel.Heading>{title}</Panel.Heading>
                         <Panel.Body>
-                            {dirty && (
-                                <div className="permissions-groups-save-alert">
-                                    <Alert bsStyle="info">
-                                        You have unsaved changes.
-                                        <SaveButton
-                                            dirty={dirty}
-                                            onSave={this.onSave}
-                                            submitting={submitting}
-                                            testing={testing}
-                                        />
-                                    </Alert>
-                                </div>
-                            )}
                             {connectionValidated && (
                                 <div>
                                     <Alert bsStyle="success">{SUCCESSFUL_NOTIFICATION_MESSAGE}</Alert>

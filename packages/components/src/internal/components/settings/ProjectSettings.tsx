@@ -62,7 +62,7 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(({ onChange, onSuc
                 });
             }
         },
-        [api, container, dispatch, isSaving, onSuccess]
+        [api.folder, container, dispatch, isSaving, onSuccess]
     );
 
     if (container.isProject || !user.isAdmin) {
@@ -83,7 +83,7 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(({ onChange, onSuc
                     />
 
                     <div className="pull-right">
-                        <button className="btn btn-success" disabled={!dirty} type="submit">
+                        <button className="btn btn-success" disabled={isSaving || !dirty} type="submit">
                             {isSaving ? 'Saving' : 'Save'}
                         </button>
                     </div>

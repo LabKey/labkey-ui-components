@@ -232,6 +232,7 @@ import { DefaultRenderer } from './internal/renderers/DefaultRenderer';
 import { FileColumnRenderer } from './internal/renderers/FileColumnRenderer';
 import { MultiValueRenderer } from './internal/renderers/MultiValueRenderer';
 import { LabelColorRenderer } from './internal/renderers/LabelColorRenderer';
+import { ProjectColumnRenderer } from './internal/renderers/ProjectColumnRenderer';
 import {
     ImportAliasRenderer,
     SampleTypeImportAliasRenderer,
@@ -888,6 +889,7 @@ export {
     FileColumnRenderer,
     LabelColorRenderer,
     MultiValueRenderer,
+    ProjectColumnRenderer,
     StorageStatusRenderer,
     SampleStatusRenderer,
     ImportAliasRenderer,

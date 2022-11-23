@@ -1,6 +1,6 @@
 import React, { FC, memo, useEffect, useState } from 'react';
 import { List, Map } from 'immutable';
-import { Filter } from '@labkey/api';
+import {Filter, Query} from '@labkey/api';
 
 import { selectRows } from '../../../query/selectRows';
 
@@ -49,6 +49,7 @@ interface WorkflowTaskInputProps
     extends DisableableInputProps,
         Omit<SelectInputProps, 'isLoading' | 'loadOptions' | 'options'> {
     assayId: number;
+    containerFilter?: Query.ContainerFilter;
 }
 
 // Note: this component is specific to Workflow, and ideally would live in the Workflow package, however we do not

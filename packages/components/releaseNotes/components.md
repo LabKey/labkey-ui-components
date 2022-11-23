@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.XX
+*Released*: XX 2022
+  * TODO
+
 ### version 2.259.0
 *Released*: 22 November 2022
 * Update `addColumns`, `changeColumn`, and `removeColumns` editable grid actions to update the new `columns` array on the `EditorModel`.

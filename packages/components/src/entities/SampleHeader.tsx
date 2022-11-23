@@ -36,7 +36,7 @@ import { PrintLabelsModal } from '../internal/components/labels/PrintLabelsModal
 
 import { invalidateLineageResults } from '../internal/components/lineage/actions';
 
-import { isAssayEnabled, isWorkflowEnabled } from '../internal/app/utils';
+import {isAssayEnabled, isProjectContainer, isWorkflowEnabled} from '../internal/app/utils';
 
 import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
 import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
@@ -256,7 +256,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                                 </RequiresPermission>
                             )}
 
-                            {!isMedia && isAssayEnabled() && (
+                            {!isMedia && isAssayEnabled() && (!isCrossFolder || isProjectContainer(sampleContainer?.path)) && (
                                 <RequiresPermission user={user} perms={PermissionTypes.Insert}>
                                     <AssayImportSubMenuItem
                                         queryModel={sampleModel}

@@ -73,6 +73,7 @@ export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
                             formsy
                             name="workflowtask"
                             value={model.workflowTask}
+                            containerFilter={getContainerFilterForLookups()}
                         />
                     )}
                     {model.runColumns.size !== 0 && (

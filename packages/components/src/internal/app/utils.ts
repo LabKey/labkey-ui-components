@@ -45,6 +45,7 @@ import {
     WORKFLOW_HOME_HREF,
     WORKFLOW_KEY,
 } from './constants';
+import {Container} from "../components/base/models/Container";
 
 // Type definition not provided for event codes so here we provide our own
 // Source: https://www.iana.org/assignments/websocket/websocket.xml#close-code-number
@@ -179,6 +180,11 @@ export function isBiologicsEnabled(moduleContext?: ModuleContext): boolean {
 
 export function isPremiumProductEnabled(moduleContext?: ModuleContext): boolean {
     return isSampleManagerEnabled(moduleContext) || isBiologicsEnabled(moduleContext);
+}
+
+export function isAppHomeFolder(container?: Container): boolean {
+    const folderType = container?.folderType ?? getServerContext()?.container?.folderType;
+    return folderType === SAMPLE_MANAGER_APP_PROPERTIES.name || folderType === BIOLOGICS_APP_PROPERTIES.name;
 }
 
 export function sampleManagerIsPrimaryApp(moduleContext?: ModuleContext): boolean {

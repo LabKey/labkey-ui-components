@@ -282,11 +282,13 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                     >
                                         <div>
                                             <p>
-                                                This action will change the Naming Pattern for all new and existing Sample
-                                                Types and{' '}
-                                                {sampleManagerIsPrimaryApp(moduleContext) ? 'Source Types' : 'Data Classes'}
-                                                . No existing IDs/Names will be affected. Are you sure you want to apply the
-                                                prefix?
+                                                This action will change the Naming Pattern for all new and existing
+                                                Sample Types and{' '}
+                                                {sampleManagerIsPrimaryApp(moduleContext)
+                                                    ? 'Source Types'
+                                                    : 'Data Classes'}
+                                                . No existing IDs/Names will be affected but any new IDs/Names will have
+                                                the prefix applied. Are you sure you want to apply the prefix?
                                             </p>
                                         </div>
                                     </ConfirmModal>

@@ -16,6 +16,8 @@ import { imageURL } from '../url/ActionURL';
 import { AppURL, buildURL } from '../url/AppURL';
 import { ModuleContext } from '../components/base/ServerContext';
 
+import { Container } from '../components/base/models/Container';
+
 import { AppProperties } from './models';
 import {
     ASSAYS_KEY,
@@ -45,7 +47,6 @@ import {
     WORKFLOW_HOME_HREF,
     WORKFLOW_KEY,
 } from './constants';
-import {Container} from "../components/base/models/Container";
 
 // Type definition not provided for event codes so here we provide our own
 // Source: https://www.iana.org/assignments/websocket/websocket.xml#close-code-number

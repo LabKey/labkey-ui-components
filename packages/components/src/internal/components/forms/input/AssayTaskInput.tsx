@@ -1,6 +1,6 @@
 import React, { FC, memo, useEffect, useState } from 'react';
 import { List, Map } from 'immutable';
-import {Filter, Query} from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { selectRows } from '../../../query/selectRows';
 

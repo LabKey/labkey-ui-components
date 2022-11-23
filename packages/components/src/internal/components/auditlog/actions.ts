@@ -4,10 +4,15 @@
  */
 import { Ajax, Utils, ActionURL, Query } from '@labkey/api';
 
-import { AuditDetailsModel } from './models';
-import { getContainerFilter } from "../../query/api";
+import { getContainerFilter } from '../../query/api';
 
-export function getAuditDetail(auditRowId: number, auditEventType: string, containerFilter?: Query.ContainerFilter): Promise<AuditDetailsModel> {
+import { AuditDetailsModel } from './models';
+
+export function getAuditDetail(
+    auditRowId: number,
+    auditEventType: string,
+    containerFilter?: Query.ContainerFilter
+): Promise<AuditDetailsModel> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: ActionURL.buildURL('audit', 'GetDetailedAuditChanges.api'),

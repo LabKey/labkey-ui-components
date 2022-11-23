@@ -1226,7 +1226,7 @@ function validatePaste(
     ) {
         paste.success = false;
         paste.message = 'Unable to paste. Paste is not supported against multiple selections.';
-    } else if (coordinates.colMax >= model.colCount) {
+    } else if (coordinates.colMax >= model.columns.size) {
         paste.success = false;
         paste.message = 'Unable to paste. Cannot paste columns beyond the columns found in the grid.';
     } else if (coordinates.rowMax - coordinates.rowMin > maxRowPaste) {
@@ -1311,44 +1311,30 @@ export function changeColumn(
     // nothing to do if there is no such column
     if (colIndex === -1) return {};
 
-    let newCellMessages = editorModel.cellMessages;
-    let newCellValues = editorModel.cellValues;
-
     // get rid of existing messages and values at the designated index.
-    newCellMessages = newCellMessages.reduce((newCellMessages, message, cellKey) => {
+    const newCellMessages = editorModel.cellMessages.reduce((cellMessages, message, cellKey) => {
         const [oldColIdx] = cellKey.split('-').map(v => parseInt(v, 10));
         if (oldColIdx !== colIndex) {
-            return newCellMessages.set(cellKey, message);
+            return cellMessages.set(cellKey, message);
         }
 
-        return newCellMessages;
+        return cellMessages;
     }, Map<string, CellMessage>());
 
-    newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
-        const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
+    const newCellValues = editorModel.cellValues.reduce((cellValues, value, cellKey) => {
+        const [oldColIdx] = cellKey.split('-').map(v => parseInt(v, 10));
 
         if (oldColIdx !== colIndex) {
-            return newCellValues.set(cellKey, value);
+            return cellValues.set(cellKey, value);
         }
 
-        return newCellValues;
+        return cellValues;
     }, Map<string, List<ValueDescriptor>>());
-
-    const editorUpdates = {
-        focusColIdx: -1,
-        focusRowIdx: -1,
-        selectedColIdx: -1,
-        selectedRowIdx: -1,
-        selectionCells: Set<string>(),
-        cellMessages: newCellMessages,
-        cellValues: newCellValues,
-    };
 
     const currentCol = queryInfo.getColumn(existingFieldKey);
 
     // remove existing column and set new column in data
-    let data = originalData;
-    data = data
+    const data = originalData
         .map(rowData => {
             rowData = rowData.remove(currentCol.fieldKey);
             return rowData.set(newQueryColumn.fieldKey, undefined);
@@ -1364,8 +1350,23 @@ export function changeColumn(
         }
     });
 
+    let editorModelColumns = editorModel.columns;
+    const replaceIdx = editorModelColumns.findIndex(fieldKey => fieldKey === existingFieldKey);
+    if (replaceIdx > -1) {
+        editorModelColumns = editorModelColumns.set(replaceIdx, newQueryColumn.fieldKey);
+    }
+
     return {
-        editorModelChanges: editorUpdates,
+        editorModelChanges: {
+            columns: editorModelColumns,
+            focusColIdx: -1,
+            focusRowIdx: -1,
+            selectedColIdx: -1,
+            selectedRowIdx: -1,
+            selectionCells: Set<string>(),
+            cellMessages: newCellMessages,
+            cellValues: newCellValues,
+        },
         data,
         queryInfo: queryInfo.merge({ columns }) as QueryInfo,
     };
@@ -1381,57 +1382,51 @@ export function removeColumn(
     // nothing to do if there is no such column
     if (deleteIndex === -1) return {};
 
-    let newCellMessages = editorModel.cellMessages;
-    let newCellValues = editorModel.cellValues;
-
-    newCellMessages = newCellMessages.reduce((newCellMessages, message, cellKey) => {
+    const newCellMessages = editorModel.cellMessages.reduce((cellMessages, message, cellKey) => {
         const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
         if (oldColIdx > deleteIndex) {
-            return newCellMessages.set([oldColIdx - 1, oldRowIdx].join('-'), message);
+            return cellMessages.set([oldColIdx - 1, oldRowIdx].join('-'), message);
         } else if (oldColIdx < deleteIndex) {
-            return newCellMessages.set(cellKey, message);
+            return cellMessages.set(cellKey, message);
         }
 
-        return newCellMessages;
+        return cellMessages;
     }, Map<string, CellMessage>());
 
-    newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
+    const newCellValues = editorModel.cellValues.reduce((cellValues, value, cellKey) => {
         const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
 
         if (oldColIdx > deleteIndex) {
-            return newCellValues.set([oldColIdx - 1, oldRowIdx].join('-'), value);
+            return cellValues.set([oldColIdx - 1, oldRowIdx].join('-'), value);
         } else if (oldColIdx < deleteIndex) {
-            return newCellValues.set(cellKey, value);
+            return cellValues.set(cellKey, value);
         }
 
-        return newCellValues;
+        return cellValues;
     }, Map<string, List<ValueDescriptor>>());
 
-    const editorUpdates = {
-        colCount: editorModel.colCount - 1,
-        focusColIdx: -1,
-        focusRowIdx: -1,
-        selectedColIdx: -1,
-        selectedRowIdx: -1,
-        selectionCells: Set<string>(),
-        cellMessages: newCellMessages,
-        cellValues: newCellValues,
-    };
-
     // remove column from all rows in model data
-    let data = originalData;
-    data = data
-        .map(rowData => {
-            return rowData.remove(fieldKey);
-        })
-        .toMap();
+    const data = originalData.map(rowData => rowData.remove(fieldKey)).toMap();
 
-    const columns = queryInfo.columns.remove(fieldKey.toLowerCase());
+    let columns = editorModel.columns;
+    const removeIdx = editorModel.columns.findIndex(colFieldKey => Utils.caseInsensitiveEquals(colFieldKey, fieldKey));
+    if (removeIdx > -1) {
+        columns = columns.remove(removeIdx);
+    }
 
     return {
-        editorModelChanges: editorUpdates,
+        editorModelChanges: {
+            columns,
+            focusColIdx: -1,
+            focusRowIdx: -1,
+            selectedColIdx: -1,
+            selectedRowIdx: -1,
+            selectionCells: Set<string>(),
+            cellMessages: newCellMessages,
+            cellValues: newCellValues,
+        },
         data,
-        queryInfo: queryInfo.merge({ columns }) as QueryInfo,
+        queryInfo: queryInfo.merge({ columns: queryInfo.columns.remove(fieldKey.toLowerCase()) }) as QueryInfo,
     };
 }
 
@@ -1468,50 +1463,36 @@ export function addColumns(
 
     if (editorColIndex < 0 || editorColIndex > queryInfo.columns.size) return {};
 
-    let newCellMessages = editorModel.cellMessages;
-    let newCellValues = editorModel.cellValues;
-
-    newCellMessages = newCellMessages.reduce((newCellMessages, message, cellKey) => {
+    const newCellMessages = editorModel.cellMessages.reduce((cellMessages, message, cellKey) => {
         const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
         if (oldColIdx >= editorColIndex) {
-            return newCellMessages.set([oldColIdx + queryColumns.size, oldRowIdx].join('-'), message);
+            return cellMessages.set([oldColIdx + queryColumns.size, oldRowIdx].join('-'), message);
         } else if (oldColIdx < editorColIndex) {
-            return newCellMessages.set(cellKey, message);
+            return cellMessages.set(cellKey, message);
         }
 
-        return newCellMessages;
+        return cellMessages;
     }, Map<string, CellMessage>());
 
-    newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
+    let newCellValues = editorModel.cellValues.reduce((cellValues, value, cellKey) => {
         const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
 
         if (oldColIdx >= editorColIndex) {
-            return newCellValues.set([oldColIdx + queryColumns.size, oldRowIdx].join('-'), value);
+            return cellValues.set([oldColIdx + queryColumns.size, oldRowIdx].join('-'), value);
         } else if (oldColIdx < editorColIndex) {
-            return newCellValues.set(cellKey, value);
+            return cellValues.set(cellKey, value);
         }
 
-        return newCellValues;
+        return cellValues;
     }, Map<string, List<ValueDescriptor>>());
+
     for (let rowIdx = 0; rowIdx < editorModel.rowCount; rowIdx++) {
         for (let c = 0; c < queryColumns.size; c++) {
             newCellValues = newCellValues.set(genCellKey(editorColIndex + c, rowIdx), List<ValueDescriptor>());
         }
     }
 
-    const editorUpdates = {
-        colCount: editorModel.colCount + queryColumns.size,
-        focusColIdx: -1,
-        focusRowIdx: -1,
-        selectedColIdx: -1,
-        selectedRowIdx: -1,
-        selectionCells: Set<string>(),
-        cellMessages: newCellMessages,
-        cellValues: newCellValues,
-    };
-
-    let data = originalData;
-    data = data
+    const data = originalData
         .map(rowData => {
             queryColumns.forEach(column => {
                 rowData = rowData.set(column.fieldKey, undefined);
@@ -1520,12 +1501,29 @@ export function addColumns(
         })
         .toMap();
 
-    const columns = queryInfo.insertColumns(queryColIndex, queryColumns);
+    let { columns } = editorModel;
+    if (columns.size < editorColIndex) {
+        columns = columns.concat(queryColumns.valueSeq().map(col => col.fieldKey)).toList();
+    } else {
+        queryColumns.valueSeq().forEach((col, i) => {
+            columns = columns.insert(i + editorColIndex, col.fieldKey);
+        });
+        columns = columns.toList();
+    }
 
     return {
-        editorModelChanges: editorUpdates,
+        editorModelChanges: {
+            columns,
+            focusColIdx: -1,
+            focusRowIdx: -1,
+            selectedColIdx: -1,
+            selectedRowIdx: -1,
+            selectionCells: Set<string>(),
+            cellMessages: newCellMessages,
+            cellValues: newCellValues,
+        },
         data,
-        queryInfo: queryInfo.merge({ columns }) as QueryInfo,
+        queryInfo: queryInfo.merge({ columns: queryInfo.insertColumns(queryColIndex, queryColumns) }) as QueryInfo,
     };
 }
 

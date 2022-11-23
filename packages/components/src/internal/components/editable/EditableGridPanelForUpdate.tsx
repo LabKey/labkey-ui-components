@@ -39,6 +39,7 @@ interface State {
     editorModels: EditorModel[];
     error: string;
     isSubmitting: boolean;
+    loaders: IEditableGridLoader[];
 }
 
 export class EditableGridPanelForUpdate extends React.Component<Props, State> {
@@ -56,6 +57,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
             dataModels: [new QueryModel({ id, schemaQuery: props.queryModel.schemaQuery })],
             editorModels: [new EditorModel({ id })],
             error: undefined,
+            loaders: [props.loader],
         };
     }
 
@@ -64,12 +66,11 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
     }
 
     initEditorModel = async (): Promise<void> => {
-        const { queryModel, loader } = this.props;
         const { dataModels, editorModels } = await initEditableGridModels(
             this.state.dataModels,
             this.state.editorModels,
-            queryModel,
-            [loader]
+            this.state.loaders,
+            this.props.queryModel
         );
         this.setState({ dataModels, editorModels });
     };
@@ -101,14 +102,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
 
         const gridDataAllTabs = [];
         dataModels.forEach((model, ind) => {
-            const gridData = getUpdatedDataFromEditableGrid(
-                dataModels,
-                editorModels,
-                idField,
-                undefined,
-                selectionData,
-                ind
-            );
+            const gridData = getUpdatedDataFromEditableGrid(dataModels, editorModels, idField, selectionData, ind);
             if (gridData) {
                 gridDataAllTabs.push(gridData);
             }

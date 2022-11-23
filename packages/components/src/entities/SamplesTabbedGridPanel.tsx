@@ -131,7 +131,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             setIsDirty?.(true);
             return Promise.resolve(editableGridDataForSelection);
         },
-        []
+        [setIsDirty]
     );
 
     const [activeActiveAliquotMode, setActiveAliquotMode] = useState<string>(

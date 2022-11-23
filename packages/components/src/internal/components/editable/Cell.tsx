@@ -405,27 +405,13 @@ export class Cell extends React.PureComponent<Props, State> {
             );
         }
 
-        // Some cells have custom displays such as multi value comma separated values like alias so
-        // first check renderer for editable value
-        let renderer;
-        let defaultValue;
-        if (col.columnRenderer) {
-            renderer = getQueryColumnRenderers()[col.columnRenderer.toLowerCase()];
-        }
-
-        if (renderer?.getEditableValue) {
-            defaultValue = renderer.getEditableValue(values);
-        }
-
-        if (defaultValue === undefined) {
-            defaultValue = values.size === 0 ? '' : values.first().display !== undefined ? values.first().display : '';
-        }
-
         return (
             <input
                 autoFocus
                 className="cellular-input"
-                defaultValue={defaultValue}
+                defaultValue={
+                    values.size === 0 ? '' : values.first().display !== undefined ? values.first().display : ''
+                }
                 disabled={this.isReadOnly()}
                 onBlur={this.handleBlur}
                 onChange={this.handleChange}

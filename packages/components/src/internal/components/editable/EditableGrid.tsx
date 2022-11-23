@@ -370,7 +370,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     select = (row: Map<string, any>, event: ChangeEvent<HTMLInputElement>): void => {
         const checked = event.currentTarget.checked;
 
-        this.setState((state): EditableGridState => {
+        this.setState(state => {
             const { dataKeys } = this.props;
             const key = row.get(GRID_EDIT_INDEX);
             let selected = state.selected;
@@ -391,14 +391,16 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 selectedState = GRID_CHECKBOX_OPTIONS.SOME;
             }
 
-            return { ...state, selected, selectedState };
+            return { selected, selectedState };
         });
     };
 
     selectAll = (evt: ChangeEvent<HTMLInputElement>): void => {
         const { dataKeys } = this.props;
-        const selected = evt.currentTarget.checked === true && this.state.selectedState !== GRID_CHECKBOX_OPTIONS.ALL;
-        this.setState(() => {
+        const checked = evt.currentTarget.checked === true;
+
+        this.setState(state => {
+            const selected = checked && state.selectedState !== GRID_CHECKBOX_OPTIONS.ALL;
             return {
                 selected: selected ? Set<number>(dataKeys.map((v, i) => i, Set<number>())) : Set<number>(),
                 selectedState: selected ? GRID_CHECKBOX_OPTIONS.ALL : GRID_CHECKBOX_OPTIONS.NONE,
@@ -437,7 +439,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     applySelection = (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES): Partial<EditorModel> => {
         const { editorModel } = this.props;
-        const { colCount, rowCount } = editorModel;
+        const { rowCount } = editorModel;
         let selectionCells = Set<string>();
         const hasSelection = editorModel.hasSelection();
         let selectedColIdx = colIdx;
@@ -445,7 +447,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         switch (selection) {
             case SELECTION_TYPES.ALL:
-                for (let c = 0; c < colCount; c++) {
+                for (let c = 0; c < editorModel.columns.size; c++) {
                     for (let r = 0; r < rowCount; r++) {
                         selectionCells = selectionCells.add(genCellKey(c, r));
                     }
@@ -458,7 +460,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 if (hasSelection) {
                     const upperLeft = [Math.min(selectedColIdx, colIdx), Math.min(selectedRowIdx, rowIdx)];
                     const bottomRight = [Math.max(selectedColIdx, colIdx), Math.max(selectedRowIdx, rowIdx)];
-                    const maxColumn = Math.min(bottomRight[0], colCount - 1);
+                    const maxColumn = Math.min(bottomRight[0], editorModel.columns.size - 1);
                     const maxRow = Math.min(bottomRight[1], rowCount - 1);
 
                     for (let c = upperLeft[0]; c <= maxColumn; c++) {
@@ -486,9 +488,9 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     selectCell = (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean): void => {
         const { editorModel, onChange } = this.props;
-        const { cellValues, colCount, focusValue, rowCount } = editorModel;
+        const { cellValues, focusValue, rowCount } = editorModel;
 
-        if (colIdx < 0 || rowIdx < 0 || colIdx >= colCount) {
+        if (colIdx < 0 || rowIdx < 0 || colIdx >= editorModel.columns.size) {
             // out of bounds, do nothing
             return;
         }
@@ -543,7 +545,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             }
 
             changes.cellValues = cellValues.set(cellKey, values);
-        } else if (mod == MODIFICATION_TYPES.REMOVE_ALL) {
+        } else if (mod === MODIFICATION_TYPES.REMOVE_ALL) {
             if (editorModel.selectionCells.size > 0) {
                 // Remove all values and messages for the selected cells
                 changes.cellValues = editorModel.cellValues.reduce((result, value, key) => {
@@ -835,7 +837,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         nextCol = found.colIdx;
                         nextRow = found.rowIdx;
                     } else {
-                        nextCol = editorModel.colCount - 1;
+                        nextCol = editorModel.columns.size - 1;
                         nextRow = rowIdx;
                     }
                 } else {
@@ -866,7 +868,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 break;
 
             case Key.END:
-                nextCol = editorModel.colCount - 1;
+                nextCol = editorModel.columns.size - 1;
                 nextRow = rowIdx;
                 break;
 
@@ -1221,17 +1223,14 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     onBulkUpdateFormDataChange = (pendingBulkFormData?: any): void => {
         const { showAsTab, bulkUpdateProps } = this.props;
 
-        if (bulkUpdateProps?.onBulkUpdateFormDataChange)
-            bulkUpdateProps?.onBulkUpdateFormDataChange?.(pendingBulkFormData);
+        bulkUpdateProps?.onBulkUpdateFormDataChange?.(pendingBulkFormData);
 
         if (showAsTab) {
-            this.setState({
-                pendingBulkFormData,
-            });
+            this.setState({ pendingBulkFormData });
         }
     };
 
-    onTabChange = (event: SyntheticEvent<TabContainer, Event>) => {
+    onTabChange = (event: SyntheticEvent<TabContainer, Event>): void => {
         const { bulkUpdateProps } = this.props;
         const { activeEditTab, pendingBulkFormData } = this.state;
         const newTabKey: EditableGridTabs = event as any; // Crummy cast to make TS happy
@@ -1261,28 +1260,24 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         }
     };
 
-    onSaveClick = () => {
+    onSaveClick = (): void => {
         const { primaryBtnProps, editorModel, maxRows } = this.props;
         const { pendingBulkFormData } = this.state;
 
         if (editorModel.rowCount > maxRows) {
             // only bulk edit is supported
             primaryBtnProps?.onClick?.(pendingBulkFormData);
-            this.setState({
-                pendingBulkFormData: undefined,
-            });
+            this.setState({ pendingBulkFormData: undefined });
             return;
         }
 
         this.bulkUpdate(pendingBulkFormData).then(updates => {
-            this.setState({
-                pendingBulkFormData: undefined,
-            });
+            this.setState({ pendingBulkFormData: undefined });
             primaryBtnProps?.onClick?.(undefined, updates); // send back the updates in case caller uses useState to update EditorModel, which is async without cb
         });
     };
 
-    onCancelClick = () => {
+    onCancelClick = (): void => {
         this.props.cancelBtnProps?.onClick?.();
     };
 
@@ -1312,6 +1307,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         return (
             <BulkAddUpdateForm
+                asModal={!showAsTab}
                 data={data}
                 dataKeys={dataKeys}
                 editorModel={editorModel}
@@ -1326,7 +1322,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 queryInfo={queryInfo}
                 selectedRowIndexes={this.getSelectedRowIndices()}
                 singularNoun={addControlProps.nounSingular}
-                asModal={!showAsTab}
                 warning={bulkUpdateProps?.warning}
             />
         );
@@ -1334,31 +1329,25 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     render() {
         const {
-            addControlProps,
             allowAdd,
             editorModel,
             error,
             bordered,
-            bulkUpdateProps,
             condensed,
-            data,
-            dataKeys,
             emptyGridMsg,
-            queryInfo,
             striped,
             allowBulkUpdate,
             showAsTab,
             tabBtnProps,
             maxRows,
         } = this.props;
-        const { showBulkAdd, showBulkUpdate, showMask, activeEditTab } = this.state;
-        const wrapperClassName = classNames(EDITABLE_GRID_CONTAINER_CLS, { 'loading-mask': showMask });
+        const { showBulkAdd, showBulkUpdate, showMask, activeEditTab, selected } = this.state;
 
         const gridContent = (
             <>
                 {this.renderTopControls()}
                 <div
-                    className={wrapperClassName}
+                    className={classNames(EDITABLE_GRID_CONTAINER_CLS, { 'loading-mask': showMask })}
                     onKeyDown={this.onKeyDown}
                     onMouseDown={this.onMouseDown}
                     onMouseUp={this.onMouseUp}
@@ -1381,14 +1370,13 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             </>
         );
 
-        const tabBtns = this.renderTabButtons();
-
         if (showAsTab) {
-            const bulkDisabled = this.state.selected.size === 0;
+            const bulkDisabled = selected.size === 0;
             const gridDisabled = editorModel.rowCount > maxRows;
+
             return (
                 <>
-                    {tabBtnProps.placement === 'top' && <>{tabBtns}</>}
+                    {tabBtnProps.placement === 'top' && this.renderTabButtons()}
                     <Tab.Container activeKey={activeEditTab} id="editable-grid-tabs" onSelect={this.onTabChange}>
                         <div>
                             <Nav bsStyle="tabs">
@@ -1414,7 +1402,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                             </Tab.Content>
                         </div>
                     </Tab.Container>
-                    {tabBtnProps.placement === 'bottom' && <>{tabBtns}</>}
+                    {tabBtnProps.placement === 'bottom' && this.renderTabButtons()}
                 </>
             );
         }

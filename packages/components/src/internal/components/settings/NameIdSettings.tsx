@@ -16,6 +16,7 @@ import { Alert } from '../base/Alert';
 import { useServerContext } from '../base/ServerContext';
 
 import { loadNameExpressionOptions, saveNameExpressionOptions } from './actions';
+import {InjectedRouteLeaveProps} from "../../util/RouteLeave";
 
 const TITLE = 'ID/Name Settings';
 
@@ -100,7 +101,7 @@ export const IDNameSettings: FC = memo(() => {
     );
 });
 
-interface NameIdSettingsFormProps {
+interface NameIdSettingsFormProps extends InjectedRouteLeaveProps {
     loadNameExpressionOptions: () => Promise<{ allowUserSpecifiedNames: boolean; prefix: string }>;
     saveNameExpressionOptions: (key: string, value: string | boolean) => Promise<void>;
 }
@@ -126,7 +127,7 @@ const initialState: State = {
 };
 
 export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
-    const { loadNameExpressionOptions, saveNameExpressionOptions } = props;
+    const { loadNameExpressionOptions, saveNameExpressionOptions, setIsDirty } = props;
     const [state, setState] = useReducer(
         (currentState: State, newState: Partial<State>): State => ({ ...currentState, ...newState }),
         initialState
@@ -196,12 +197,17 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
             displayError(err);
         }
         setState({ savingPrefix: false, confirmModalOpen: false });
-    }, [prefix, saveNameExpressionOptions]);
+        setIsDirty(false);
+    }, [prefix, saveNameExpressionOptions, setIsDirty]);
 
-    const prefixOnChange = useCallback((evt: any) => {
-        const val = evt.target.value;
-        setState({ prefix: val });
-    }, []);
+    const prefixOnChange = useCallback(
+        (evt: any) => {
+            const val = evt.target.value;
+            setState({ prefix: val });
+            setIsDirty(true);
+        },
+        [setIsDirty]
+    );
 
     const openConfirmModal = useCallback(() => {
         setState({ confirmModalOpen: true });
@@ -254,7 +260,11 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                         />
                                     </div>
 
-                                    <Button className="btn btn-success" onClick={openConfirmModal} disabled={savingPrefix}>
+                                    <Button
+                                        className="btn btn-success"
+                                        onClick={openConfirmModal}
+                                        disabled={savingPrefix}
+                                    >
                                         Apply Prefix
                                     </Button>
                                 </div>
@@ -292,7 +302,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
     );
 };
 
-export const NameIdSettings: FC = memo(props => {
+export const NameIdSettings: FC<InjectedRouteLeaveProps> = memo(props => {
     return (
         <RequiresPermission perms={PermissionTypes.Admin}>
             <NameIdSettingsForm

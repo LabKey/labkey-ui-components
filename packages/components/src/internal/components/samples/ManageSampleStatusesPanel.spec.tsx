@@ -25,6 +25,8 @@ describe('ManageSampleStatusesPanel', () => {
                 getSampleStatuses: () => Promise.resolve([new SampleState()]),
             }),
         }),
+        getIsDirty: jest.fn(),
+        setIsDirty: jest.fn(),
     };
 
     function validate(wrapper: ReactWrapper, hasError = false): void {
@@ -168,7 +170,8 @@ describe('SampleStatusDetail', () => {
     const DEFAULT_PROPS = {
         addNew: false,
         state: STATE,
-        onActionComplete: jest.fn,
+        onActionComplete: jest.fn(),
+        onChange: jest.fn(),
     };
 
     function validate(wrapper: ReactWrapper, hasState = true, showSelect = true, inputCount = 3): void {

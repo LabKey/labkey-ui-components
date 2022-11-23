@@ -59,8 +59,8 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
             >
                 <ActiveUserLimit />
                 <BarTenderSettingsForm onChange={onSettingsChange} onSuccess={onBarTenderSuccess} />
-                <NameIdSettings />
-                {isSampleStatusEnabled(moduleContext) && <ManageSampleStatusesPanel />}
+                <NameIdSettings {...props} />
+                {isSampleStatusEnabled(moduleContext) && <ManageSampleStatusesPanel {...props} />}
             </BasePermissions>
         );
     }
@@ -73,8 +73,8 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
             )}
             {isELNEnabled(moduleContext) && <NotebookProjectSettingsComponent />}
             <BarTenderSettingsForm onChange={onSettingsChange} onSuccess={onBarTenderSuccess} />
-            <NameIdSettings />
-            {isSampleStatusEnabled(moduleContext) && <ManageSampleStatusesPanel />}
+            <NameIdSettings {...props} />
+            {isSampleStatusEnabled(moduleContext) && <ManageSampleStatusesPanel {...props} />}
             {children}
         </BasePermissionsCheckPage>
     );

@@ -24,6 +24,8 @@ describe('NameIdSettings', () => {
                 return { prefix: 'ABC-', allowUserSpecifiedNames: false };
             }),
             saveNameExpressionOptions: jest.fn(async () => {}),
+            getIsDirty: jest.fn(),
+            setIsDirty: jest.fn(),
         };
     });
 

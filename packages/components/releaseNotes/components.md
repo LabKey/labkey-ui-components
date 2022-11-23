@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Update default panel heading styling for apps
+
 ### version 2.259.0
 *Released*: 22 November 2022
 * Update `addColumns`, `changeColumn`, and `removeColumns` editable grid actions to update the new `columns` array on the `EditorModel`.

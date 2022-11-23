@@ -38,30 +38,34 @@ export class DetailPanelHeader extends React.Component<DetailPanelHeaderProps, a
 
         if (editing) {
             return (
-                <div className="detail__edit--heading">
+                <>
                     {verb} {title}
-                    {warning !== undefined && (
-                        <span>
-                            <span> - </span>
-                            <span className="edit__warning">{warning}</span>
-                        </span>
-                    )}
-                </div>
+                    <span className="detail__edit--heading">
+                        {warning !== undefined && (
+                            <span>
+                                <span> - </span>
+                                <span className="edit__warning">{warning}</span>
+                            </span>
+                        )}
+                    </span>
+                </>
             );
         }
 
         return (
-            <div className="detail__edit--heading">
+            <>
                 {title}
-                {isEditable && canUpdate && (
-                    <>
-                        <div className="detail__edit-button" onClick={onClickFn}>
-                            {useEditIcon ? <i className="fa fa-pencil-square-o" /> : 'Edit'}
-                        </div>
-                        <div className="clearfix" />
-                    </>
-                )}
-            </div>
+                <span className="detail__edit--heading">
+                    {isEditable && canUpdate && (
+                        <>
+                            <div className="detail__edit-button" onClick={onClickFn}>
+                                {useEditIcon ? <i className="fa fa-pencil-square-o" /> : 'Edit'}
+                            </div>
+                            <div className="clearfix" />
+                        </>
+                    )}
+                </span>
+            </>
         );
     }
 }

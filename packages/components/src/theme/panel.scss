@@ -43,3 +43,14 @@
         }
     }
 }
+
+.panel-default:not(.domain-form-panel) .panel-heading,
+.panel-info .panel-heading {
+    font-size: 18px;
+}
+.panel-default:not(.domain-form-panel) .panel-heading {
+    background-color: $white;
+    border-bottom: 1px solid $panel-content-border;
+    margin: 15px 15px 0 15px;
+    padding: 0 0 8px 0;
+}

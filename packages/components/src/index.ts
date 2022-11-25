@@ -140,8 +140,7 @@ import {
     formatDateTime,
     getDateFormat,
     getDateTimeFormat,
-    getMomentDateFormat,
-    parseDate
+    parseDate,
 } from './internal/util/Date';
 import { SVGIcon, Theme } from './internal/components/base/SVGIcon';
 import { CreatedModified } from './internal/components/base/CreatedModified';
@@ -1178,7 +1177,6 @@ export {
     uploadWebDavFile,
     createWebDavDirectory,
     // util functions
-    getMomentDateFormat,
     getDisambiguatedSelectInputOptions,
     filterDate,
     formatDate,

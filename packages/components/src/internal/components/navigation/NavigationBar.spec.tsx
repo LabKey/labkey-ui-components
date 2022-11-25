@@ -20,7 +20,7 @@ import { List } from 'immutable';
 import { TEST_USER_APP_ADMIN, TEST_USER_GUEST, TEST_USER_READER } from '../../userFixtures';
 import { ServerNotifications } from '../notifications/ServerNotifications';
 
-import { mountWithAppServerContext } from '../../testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
 import { markAllNotificationsRead } from '../../../test/data/notificationData';
 import { ServerNotificationModel } from '../notifications/model';
 
@@ -29,11 +29,14 @@ import { ProductNavigation } from '../productnavigation/ProductNavigation';
 
 import { SearchBox } from '../search/SearchBox';
 
+import { TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
+
 import { MenuSectionModel, ProductMenuModel } from './model';
 
 import { NavigationBar } from './NavigationBar';
 import { UserMenu } from './UserMenu';
 import { ProductMenu } from './ProductMenu';
+import { FolderMenu } from './FolderMenu';
 
 describe('NavigationBar', () => {
     const productMenuModel = new ProductMenuModel({
@@ -52,6 +55,7 @@ describe('NavigationBar', () => {
         expect(wrapper.find(ServerNotifications)).toHaveLength(compCounts.ServerNotifications ?? 0);
         expect(wrapper.find(ProductNavigation)).toHaveLength(compCounts.ProductNavigation ?? 0);
         expect(wrapper.find(FindAndSearchDropdown)).toHaveLength(compCounts.FindAndSearchDropdown ?? 0);
+        expect(wrapper.find(FolderMenu)).toHaveLength(compCounts.FolderMenu ?? 0);
     }
 
     const notificationsConfig = {
@@ -114,34 +118,47 @@ describe('NavigationBar', () => {
     });
 
     test('show ProductNavigation for hasPremiumModule, non-admin', () => {
-        LABKEY.moduleContext = { api: { moduleNames: ['premium'], applicationMenuDisplayMode: 'ALWAYS' } };
-        const component = mountWithAppServerContext(<NavigationBar model={productMenuModel} user={TEST_USER_READER} />);
+        const component = mountWithAppServerContext(
+            <NavigationBar model={productMenuModel} user={TEST_USER_READER} />,
+            undefined,
+            { moduleContext: { api: { moduleNames: ['premium'], applicationMenuDisplayMode: 'ALWAYS' } } }
+        );
         validate(component, { UserMenu: 1, ProductNavigation: 1 });
         component.unmount();
     });
 
     test('hide ProductNavigation for non-admin', () => {
-        LABKEY.moduleContext = { api: { moduleNames: ['premium'], applicationMenuDisplayMode: 'ADMIN' } };
-        const component = mountWithAppServerContext(<NavigationBar model={productMenuModel} user={TEST_USER_READER} />);
+        const component = mountWithAppServerContext(
+            <NavigationBar model={productMenuModel} user={TEST_USER_READER} />,
+            undefined,
+            { moduleContext: { api: { moduleNames: ['premium'], applicationMenuDisplayMode: 'ADMIN' } } }
+        );
         validate(component, { UserMenu: 1, ProductNavigation: 0 });
         component.unmount();
     });
 
     test('show ProductNavigation for hasPremiumModule, admin always', () => {
-        LABKEY.moduleContext = { api: { moduleNames: ['premium'], applicationMenuDisplayMode: 'ALWAYS' } };
         const component = mountWithAppServerContext(
-            <NavigationBar model={productMenuModel} user={TEST_USER_APP_ADMIN} />
+            <NavigationBar model={productMenuModel} user={TEST_USER_APP_ADMIN} />,
+            undefined,
+            { moduleContext: { api: { moduleNames: ['premium'], applicationMenuDisplayMode: 'ALWAYS' } } }
         );
         validate(component, { UserMenu: 1, ProductNavigation: 1 });
         component.unmount();
     });
 
-    test('show ProductNavigation for hasPremiumModule, admin only', () => {
-        LABKEY.moduleContext = { api: { moduleNames: ['premium'], applicationMenuDisplayMode: 'ADMIN' } };
+    test('show ProductNavigation and FolderMenu for hasPremiumModule, admin only', async () => {
         const component = mountWithAppServerContext(
-            <NavigationBar model={productMenuModel} user={TEST_USER_APP_ADMIN} />
+            <NavigationBar model={productMenuModel} showFolderMenu user={TEST_USER_APP_ADMIN} />,
+            undefined,
+            {
+                container: TEST_PROJECT_CONTAINER,
+                moduleContext: { api: { moduleNames: ['premium'], applicationMenuDisplayMode: 'ADMIN' } },
+            }
         );
-        validate(component, { UserMenu: 1, ProductNavigation: 1 });
+        // Load the folder menu
+        await waitForLifecycle(component);
+        validate(component, { FolderMenu: 1, UserMenu: 1, ProductNavigation: 1 });
         component.unmount();
     });
 });

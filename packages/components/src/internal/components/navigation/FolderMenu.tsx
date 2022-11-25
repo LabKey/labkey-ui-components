@@ -36,8 +36,7 @@ export interface FolderMenuProps {
     appProperties?: AppProperties;
 }
 
-export const FolderMenu: FC<FolderMenuProps> = memo(({ appProperties }) => {
-    const { controllerName } = appProperties ?? getCurrentAppProperties();
+export const FolderMenu: FC<FolderMenuProps> = memo(({ appProperties = getCurrentAppProperties() }) => {
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [open, setOpen] = useState(false);
@@ -64,19 +63,19 @@ export const FolderMenu: FC<FolderMenuProps> = memo(({ appProperties }) => {
                 if (topLevelFolderIdx > -1) {
                     // Remove top-level folder from array as it is always displayed as the first menu item
                     const topLevelFolder = folders.splice(topLevelFolderIdx, 1)[0];
-                    items_.push(createFolderItem(topLevelFolder, controllerName));
+                    items_.push(createFolderItem(topLevelFolder, appProperties?.controllerName));
                 }
 
                 // Issue 45805: sort folders by title as server-side sorting is insufficient
                 folders.sort(naturalSortByProperty('title'));
-                setItems(items_.concat(folders.map(folder => createFolderItem(folder, controllerName))));
+                setItems(items_.concat(folders.map(folder => createFolderItem(folder, appProperties?.controllerName))));
             } catch (e) {
                 setError(`Error: ${resolveErrorMessage(e)}`);
             }
 
             setLoading(LoadingState.LOADED);
         })();
-    }, [api, container, controllerName]);
+    }, [api, container, appProperties?.controllerName]);
 
     const toggleMenu = useCallback(() => {
         setOpen(open_ => !open_);

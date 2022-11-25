@@ -32,11 +32,11 @@ function createFolderItem(folder: Container, controllerName: string): FolderMenu
     };
 }
 
-interface Props {
+export interface FolderMenuProps {
     appProperties?: AppProperties;
 }
 
-export const FolderMenu: FC<Props> = memo(({ appProperties }) => {
+export const FolderMenu: FC<FolderMenuProps> = memo(({ appProperties }) => {
     const { controllerName } = appProperties ?? getCurrentAppProperties();
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
@@ -86,7 +86,7 @@ export const FolderMenu: FC<Props> = memo(({ appProperties }) => {
     if (isLoaded && !hasError && items.length === 1) return null;
 
     return (
-        <Dropdown className="nav-folder-menu" id="folder-menu" onToggle={toggleMenu} open={open}>
+        <Dropdown className="nav-folder-menu navbar-item" id="folder-menu" onToggle={toggleMenu} open={open}>
             <Dropdown.Toggle className="nav-folder-menu__button" title={container.title}>
                 {container.title}
             </Dropdown.Toggle>

@@ -35,10 +35,6 @@ import { NavigationBar } from './NavigationBar';
 import { UserMenu } from './UserMenu';
 import { ProductMenu } from './ProductMenu';
 
-beforeEach(() => {
-    LABKEY.devMode = false;
-});
-
 describe('NavigationBar', () => {
     const productMenuModel = new ProductMenuModel({
         productIds: ['testNavBar'],

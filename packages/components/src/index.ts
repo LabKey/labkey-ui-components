@@ -134,7 +134,15 @@ import {
     withNotificationsContext,
 } from './internal/components/notifications/NotificationsContext';
 import { ConfirmModal } from './internal/components/base/ConfirmModal';
-import { filterDate, formatDate, formatDateTime, getDateFormat, parseDate } from './internal/util/Date';
+import {
+    filterDate,
+    formatDate,
+    formatDateTime,
+    getDateFormat,
+    getDateTimeFormat,
+    getMomentDateFormat,
+    parseDate
+} from './internal/util/Date';
 import { SVGIcon, Theme } from './internal/components/base/SVGIcon';
 import { CreatedModified } from './internal/components/base/CreatedModified';
 import {
@@ -551,8 +559,6 @@ import {
 import {
     CloseEventCode,
     getCurrentAppProperties,
-    getDateFormat as getAppDateFormat,
-    getDateTimeFormat as getAppDateTimeFormat,
     getPrimaryAppProperties,
     getProjectPath,
     hasModule,
@@ -708,8 +714,8 @@ const App = {
     hasPremiumModule,
     hasProductProjects,
     hasModule,
-    getDateFormat: getAppDateFormat,
-    getDateTimeFormat: getAppDateTimeFormat,
+    getDateFormat,
+    getDateTimeFormat,
     useMenuSectionConfigs,
     menuInit,
     menuInvalidate,
@@ -1172,7 +1178,7 @@ export {
     uploadWebDavFile,
     createWebDavDirectory,
     // util functions
-    getDateFormat,
+    getMomentDateFormat,
     getDisambiguatedSelectInputOptions,
     filterDate,
     formatDate,

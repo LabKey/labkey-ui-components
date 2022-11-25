@@ -18,7 +18,7 @@ import moment from 'moment';
 
 import { useServerContext } from '../base/ServerContext';
 
-import { getDateFormat } from '../../util/Date';
+import { getMomentDateFormat } from '../../util/Date';
 
 import { NotificationItemModel, Persistence } from './model';
 import { setTrialBannerDismissSessionKey } from './actions';
@@ -56,7 +56,7 @@ export const Notifications: FC = () => {
     const { moduleContext, user, container } = useServerContext();
     const renderTrialServicesNotification = useCallback(() => {
         const { trialEndDate, upgradeLink, upgradeLinkText } = moduleContext.trialservices;
-        const endDate = moment(trialEndDate, getDateFormat(container));
+        const endDate = moment(trialEndDate, getMomentDateFormat(container));
         const today = moment();
         const secondsLeft = endDate.diff(today, 'seconds') % 86400;
         // seems a little silly, but if we have any time left in the current day, we count it as a day

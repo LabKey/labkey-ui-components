@@ -3,7 +3,7 @@ import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import moment from 'moment';
 import { Filter, PermissionTypes, Query } from '@labkey/api';
 
-import { getDateFormat } from '../../app/utils';
+import { getDateFormat } from '../../util/Date';
 
 import { ASSAYS_KEY, FIND_SAMPLES_BY_FILTER_HREF, NEW_SAMPLES_HREF, SAMPLES_KEY } from '../../app/constants';
 import { useAppContext } from '../../AppContext';

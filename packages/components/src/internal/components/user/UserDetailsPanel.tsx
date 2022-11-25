@@ -10,7 +10,7 @@ import { getServerContext, Utils } from '@labkey/api';
 
 import { EffectiveRolesList } from '../permissions/EffectiveRolesList';
 
-import { getDateTimeFormat } from '../../util/Date';
+import { getMomentDateTimeFormat } from '../../util/Date';
 
 import { SecurityPolicy, SecurityRole } from '../permissions/models';
 
@@ -115,7 +115,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
     renderUserProp(title: string, prop: string, formatDate = false) {
         let value = caseInsensitive(this.state.userProperties, prop);
         if (formatDate && value) {
-            value = moment(value).format(getDateTimeFormat());
+            value = moment(value).format(getMomentDateTimeFormat());
         }
 
         return (

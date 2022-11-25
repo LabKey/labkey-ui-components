@@ -7,7 +7,8 @@ import { Page } from '../base/Page';
 import { UserDetailHeader } from '../user/UserDetailHeader';
 import { getUserRoleDisplay } from '../user/actions';
 import { Notifications } from '../notifications/Notifications';
-import { getDateFormat, isELNEnabled, isWorkflowEnabled } from '../../app/utils';
+import { isELNEnabled, isWorkflowEnabled } from '../../app/utils';
+import { getDateFormat } from '../../util/Date';
 
 import { useAdminAppContext } from './useAdminAppContext';
 

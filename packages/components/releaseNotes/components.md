@@ -13,6 +13,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Remove settings-panel-title and revert all admin settings panels back to panel-default headings
   * NameIdSettings to conditionally show prefix input for LKB only
   * Remove "You have unsaved changes" alert from several components
+  * Rename util/Date.ts getDateFormat -> getMomentDateFormat and getDateTimeFormat -> getMomentDateTimeFormat
 
 ### version 2.259.0
 *Released*: 22 November 2022

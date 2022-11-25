@@ -67,6 +67,7 @@ describe('PermissionManagementPage', () => {
             user: TEST_USER_APP_ADMIN,
             container: TEST_PROJECT_CONTAINER,
             moduleContext: TEST_LKS_STARTER_MODULE_CONTEXT,
+            project: TEST_PROJECT,
         });
         await waitForLifecycle(wrapper);
 
@@ -106,6 +107,7 @@ describe('PermissionManagementPage', () => {
             user: TEST_USER_EDITOR,
             container: TEST_PROJECT_CONTAINER,
             moduleContext: TEST_LKS_STARTER_MODULE_CONTEXT,
+            project: TEST_PROJECT,
         });
         await waitForLifecycle(wrapper);
 

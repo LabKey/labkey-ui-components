@@ -8,6 +8,6 @@ interface Props {
 export class ProjectColumnRenderer extends PureComponent<Props> {
     render(): ReactNode {
         const { data } = this.props;
-        return data?.get('displayValue');
+        return data?.get('displayValue') ?? null;
     }
 }

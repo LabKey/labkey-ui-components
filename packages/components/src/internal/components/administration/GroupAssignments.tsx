@@ -148,15 +148,6 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                 <Panel>
                     <Panel.Heading> Application Groups and Assignments </Panel.Heading>
                     <Panel.Body className="permissions-groups-assignment-panel group-assignment-panel">
-                        {getIsDirty() && (
-                            <div className="permissions-groups-save-alert">
-                                <Alert bsStyle="info">
-                                    You have unsaved changes.
-                                    {saveButton}
-                                </Alert>
-                            </div>
-                        )}
-
                         <div className="create-group">
                             <input
                                 className="form-control create-group__input"

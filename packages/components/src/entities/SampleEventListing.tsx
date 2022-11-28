@@ -10,9 +10,9 @@ import { Alert } from '../internal/components/base/Alert';
 import { exportTimelineGrid } from '../internal/components/samples/actions';
 import { TimelineEventModel, TimelineGroupedEventInfo } from '../internal/components/auditlog/models';
 import { ExpandableFilterToggle } from '../internal/components/base/ExpandableFilterToggle';
-import { getDateFormat, isAssayEnabled, isWorkflowEnabled } from '../internal/app/utils';
+import { isAssayEnabled, isWorkflowEnabled } from '../internal/app/utils';
 import { ASSAYS_KEY, SAMPLES_KEY, WORKFLOW_KEY } from '../internal/app/constants';
-import { filterDate } from '../internal/util/Date';
+import { getDateFormat, filterDate } from '../internal/util/Date';
 import { TimelineView } from '../internal/components/auditlog/TimelineView';
 
 interface Props {

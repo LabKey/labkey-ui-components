@@ -134,7 +134,14 @@ import {
     withNotificationsContext,
 } from './internal/components/notifications/NotificationsContext';
 import { ConfirmModal } from './internal/components/base/ConfirmModal';
-import { filterDate, formatDate, formatDateTime, getDateFormat, parseDate } from './internal/util/Date';
+import {
+    filterDate,
+    formatDate,
+    formatDateTime,
+    getDateFormat,
+    getDateTimeFormat,
+    parseDate,
+} from './internal/util/Date';
 import { SVGIcon, Theme } from './internal/components/base/SVGIcon';
 import { CreatedModified } from './internal/components/base/CreatedModified';
 import {
@@ -282,22 +289,13 @@ import { SearchScope } from './internal/components/search/constants';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';
 import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
 import { FIND_SAMPLE_BY_ID_METRIC_AREA, getSearchScopeFromContainerFilter } from './internal/components/search/utils';
-import { ActiveUserLimit } from './internal/components/settings/ActiveUserLimit';
-import { NameIdSettings } from './internal/components/settings/NameIdSettings';
-import { ProjectSettings } from './internal/components/settings/ProjectSettings';
 import { AdministrationSubNav } from './internal/components/administration/AdministrationSubNav';
 import { UserManagementPage } from './internal/components/administration/UserManagement';
 import { CreateProjectPage } from './internal/components/administration/CreateProjectPage';
 import { ProjectManagementPage } from './internal/components/administration/ProjectManagementPage';
-import { BasePermissions } from './internal/components/administration/BasePermissions';
-import { GroupManagement } from './internal/components/administration/GroupManagement';
-import { showPremiumFeatures } from './internal/components/administration/utils';
-import {
-    APPLICATION_SECURITY_ROLES,
-    HOSTED_APPLICATION_SECURITY_ROLES,
-    SECURITY_ROLE_DESCRIPTIONS,
-    SITE_SECURITY_ROLES,
-} from './internal/components/administration/constants';
+import { GroupManagementPage } from './internal/components/administration/GroupManagementPage';
+import { PermissionManagementPage } from './internal/components/administration/PermissionManagementPage';
+import { AccountSettingsPage } from './internal/components/administration/AccountSettingsPage';
 import { searchUsingIndex } from './internal/components/search/actions';
 import { SearchResultsModel } from './internal/components/search/models';
 import {
@@ -560,8 +558,6 @@ import {
 import {
     CloseEventCode,
     getCurrentAppProperties,
-    getDateFormat as getAppDateFormat,
-    getDateTimeFormat as getAppDateTimeFormat,
     getPrimaryAppProperties,
     getProjectPath,
     hasModule,
@@ -682,6 +678,7 @@ import {
     TEST_LKSM_STARTER_MODULE_CONTEXT,
 } from './internal/productFixtures';
 import { GENERAL_ASSAY_PROVIDER_NAME, RUN_PROPERTIES_REQUIRED_COLUMNS } from './internal/components/assay/constants';
+import { AdminSettingsPage } from './internal/components/administration/AdminSettingsPage';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -716,8 +713,8 @@ const App = {
     hasPremiumModule,
     hasProductProjects,
     hasModule,
-    getDateFormat: getAppDateFormat,
-    getDateTimeFormat: getAppDateTimeFormat,
+    getDateFormat,
+    getDateTimeFormat,
     useMenuSectionConfigs,
     menuInit,
     menuInvalidate,
@@ -941,8 +938,6 @@ export {
     UsersGridPanel,
     InsufficientPermissionsAlert,
     InsufficientPermissionsPage,
-    APPLICATION_SECURITY_ROLES,
-    SITE_SECURITY_ROLES,
     BasePermissionsCheckPage,
     RequiresPermission,
     hasAllPermissions,
@@ -1031,20 +1026,15 @@ export {
     searchUsingIndex,
     SearchScope,
     getSearchScopeFromContainerFilter,
-    // settings
-    ActiveUserLimit,
-    NameIdSettings,
-    ProjectSettings,
     // administration
+    AccountSettingsPage,
     AdministrationSubNav,
     UserManagementPage,
     CreateProjectPage,
     ProjectManagementPage,
-    BasePermissions,
-    GroupManagement,
-    SECURITY_ROLE_DESCRIPTIONS,
-    HOSTED_APPLICATION_SECURITY_ROLES,
-    showPremiumFeatures,
+    GroupManagementPage,
+    PermissionManagementPage,
+    AdminSettingsPage,
     // assay
     AssayUploadResultModel,
     AssayDesignEmptyAlert,
@@ -1187,7 +1177,6 @@ export {
     uploadWebDavFile,
     createWebDavDirectory,
     // util functions
-    getDateFormat,
     getDisambiguatedSelectInputOptions,
     filterDate,
     formatDate,
@@ -1485,7 +1474,8 @@ export type { UsersLoader } from './internal/components/forms/actions';
 export type { LineageGroupingOptions } from './internal/components/lineage/types';
 export type { AnnouncementModel, ThreadActions } from './internal/announcements/model';
 export type { AnnouncementsAPIWrapper } from './internal/announcements/APIWrapper';
-export type { AppContext, ExtendableAppContext } from './internal/AppContext';
+export type { AdminAppContext, AppContext, ExtendableAppContext } from './internal/AppContext';
+export type { WithAdminAppContext } from './internal/components/administration/useAdminAppContext';
 export type { ThreadBlockProps } from './internal/announcements/ThreadBlock';
 export type { ThreadEditorProps } from './internal/announcements/ThreadEditor';
 export type { ContainerUser, UseContainerUser } from './internal/components/container/actions';

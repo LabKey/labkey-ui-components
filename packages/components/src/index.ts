@@ -124,7 +124,13 @@ import { DEFAULT_FILE } from './internal/components/files/models';
 import { FilesListing } from './internal/components/files/FilesListing';
 import { FilesListingForm } from './internal/components/files/FilesListingForm';
 import { FileAttachmentEntry } from './internal/components/files/FileAttachmentEntry';
-import { createWebDavDirectory, getWebDavFiles, uploadWebDavFile, WebDavFile } from './public/files/WebDav';
+import {
+    createWebDavDirectory,
+    deleteWebDavResource,
+    getWebDavFiles,
+    uploadWebDavFile,
+    WebDavFile,
+} from './public/files/WebDav';
 import { FileTree } from './internal/components/files/FileTree';
 import { Notifications } from './internal/components/notifications/Notifications';
 import { getPipelineActivityData, markAllNotificationsAsRead } from './internal/components/notifications/actions';
@@ -1186,6 +1192,7 @@ export {
     getWebDavFiles,
     uploadWebDavFile,
     createWebDavDirectory,
+    deleteWebDavResource,
     // util functions
     getDateFormat,
     getDisambiguatedSelectInputOptions,

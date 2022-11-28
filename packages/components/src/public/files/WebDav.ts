@@ -56,7 +56,8 @@ function getWebDavUrl(
     skipAtFiles?: boolean,
     asJSON?: boolean
 ): string {
-    let url = `${ActionURL.getContextPath()}/_webdav${ActionURL.encodePath(containerPath)}`;
+    const containerPath_ = containerPath?.startsWith('/') ? containerPath : '/' + containerPath;
+    let url = `${ActionURL.getContextPath()}/_webdav${ActionURL.encodePath(containerPath_)}`;
 
     if (!skipAtFiles) url += '/' + encodeURIComponent('@files');
     if (directory) url += '/' + encodeURIComponent(directory).replace(/%2F/g, '/');
@@ -147,6 +148,26 @@ export function createWebDavDirectory(
                 () => {
                     console.error('failure creating directory ' + directory);
                     reject(directory);
+                },
+                null,
+                false
+            ),
+        });
+    });
+}
+
+export function deleteWebDavResource(containerPath: string, directoryOrFilePath: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: getWebDavUrl(containerPath, directoryOrFilePath),
+            method: 'DELETE',
+            success: Utils.getCallbackWrapper(() => {
+                resolve(directoryOrFilePath);
+            }),
+            failure: Utils.getCallbackWrapper(
+                () => {
+                    console.error('failure deleting resource ' + directoryOrFilePath);
+                    reject(directoryOrFilePath);
                 },
                 null,
                 false

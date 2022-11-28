@@ -16,7 +16,7 @@ import { Notifications } from '../notifications/Notifications';
 
 import { useServerContext } from '../base/ServerContext';
 
-import { getDateFormat } from '../../app/utils';
+import { getDateFormat } from '../../util/Date';
 
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 

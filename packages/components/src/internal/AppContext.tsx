@@ -20,12 +20,21 @@ import { SampleTypeAppContext } from '../entities';
 import { AssayAppContext } from '../assay';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from './APIWrapper';
+import { NotebookNotificationSettings, NotebookProjectSettings, WorkflowNotificationSettings } from './app/models';
 
 export interface NavigationSettings {
     showCurrentContainer: boolean;
 }
 
+export interface AdminAppContext {
+    NotebookNotificationSettingsComponent: NotebookNotificationSettings;
+    NotebookProjectSettingsComponent: NotebookProjectSettings;
+    WorkflowNotificationSettingsComponent: WorkflowNotificationSettings;
+    extraPermissionRoles: string[][];
+}
+
 export interface AppContext {
+    admin?: AdminAppContext;
     api?: ComponentsAPIWrapper;
     assay?: AssayAppContext;
     navigation?: NavigationSettings;

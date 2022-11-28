@@ -22,6 +22,8 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { DisableableButton } from '../buttons/DisableableButton';
 
+import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
+
 import { SampleState } from './models';
 
 const TITLE = 'Manage Sample Statuses';
@@ -34,12 +36,13 @@ const SAMPLE_STATUS_LOCKED_TIP = 'This sample status cannot change status type o
 interface SampleStatusDetailProps {
     addNew: boolean;
     onActionComplete: (newStatusLabel?: string, isDelete?: boolean) => void;
+    onChange: () => void;
     state: SampleState;
 }
 
 // exported for jest testing
 export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
-    const { state, addNew, onActionComplete } = props;
+    const { state, addNew, onActionComplete, onChange } = props;
     const [typeOptions, setTypeOptions] = useState<Array<Record<string, any>>>();
     const [updatedState, setUpdatedState] = useState<SampleState>();
     const [dirty, setDirty] = useState<boolean>();
@@ -80,24 +83,27 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
             setUpdatedState(state);
         }
         setDirty(addNew);
+        if (addNew) onChange();
         resetState();
-    }, [state, addNew, typeOptions, resetState]);
+    }, [state, addNew, typeOptions, resetState, onChange]);
 
     const onFormChange = useCallback(
         (evt): void => {
             const { name, value } = evt.target;
             setUpdatedState(updatedState.set(name, value));
             setDirty(true);
+            onChange();
         },
-        [updatedState]
+        [updatedState, onChange]
     );
 
     const onSelectChange = useCallback(
         (name, value): void => {
             setUpdatedState(updatedState.set(name, value));
             setDirty(true);
+            onChange();
         },
-        [updatedState]
+        [updatedState, onChange]
     );
 
     const onCancel = useCallback(() => {
@@ -295,13 +301,12 @@ export const SampleStatusesList: FC<SampleStatusesListProps> = memo(props => {
 });
 SampleStatusesList.displayName = 'SampleStatusesList';
 
-interface ManageSampleStatusesPanelProps {
+interface ManageSampleStatusesPanelProps extends InjectedRouteLeaveProps {
     api?: ComponentsAPIWrapper;
-    titleCls?: string;
 }
 
 export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = memo(props => {
-    const { api, titleCls } = props;
+    const { api, setIsDirty } = props;
     const [states, setStates] = useState<SampleState[]>();
     const [error, setError] = useState<string>();
     const [selected, setSelected] = useState<number>();
@@ -337,19 +342,23 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
         setSelected(NEW_STATUS_INDEX);
     }, []);
 
+    const onChange = useCallback(() => {
+        setIsDirty(true);
+    }, [setIsDirty]);
+
     const onActionComplete = useCallback(
         (newStatusLabel?: string, isDelete = false) => {
             querySampleStatuses(newStatusLabel);
             if (isDelete) setSelected(undefined);
+            setIsDirty(false);
         },
-        [querySampleStatuses]
+        [querySampleStatuses, setIsDirty]
     );
 
     return (
         <div className="panel panel-default">
-            {!titleCls && <div className="panel-heading">{TITLE}</div>}
+            <div className="panel-heading">{TITLE}</div>
             <div className="panel-body">
-                {titleCls && <h4 className={titleCls}>{TITLE}</h4>}
                 {error && <Alert>{error}</Alert>}
                 {!states && <LoadingSpinner />}
                 {states && !error && (
@@ -364,6 +373,7 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
                                 state={states.length === 0 ? null : states[selected]}
                                 addNew={addNew}
                                 onActionComplete={onActionComplete}
+                                onChange={onChange}
                             />
                         </div>
                     </div>

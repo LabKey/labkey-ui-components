@@ -41,6 +41,7 @@ import { PicklistGridButtons } from './PicklistGridButtons';
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 import { SamplesEditableGridProps } from './SamplesEditableGrid';
 import { hasProductProjects } from '../internal/app/utils';
+import { useServerContext } from '../internal/components/base/ServerContext';
 
 const PICKLIST_ITEMS_ID_PREFIX = 'picklist-items-';
 const PICKLIST_PER_SAMPLE_TYPE_ID_PREFIX = 'picklist-per-sample-type-';
@@ -305,7 +306,8 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
                 '/' +
                 picklist.name;
             const omittedColumns = [];
-            if (!hasProductProjects()) {
+            const { moduleContext } = useServerContext();
+            if (!hasProductProjects(moduleContext)) {
                 omittedColumns.push('SampleID/SampleSet_Folder');
             }
             configs[gridId] = {

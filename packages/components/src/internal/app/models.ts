@@ -64,3 +64,7 @@ interface ReferencingNotebooksComponentProps {
 }
 
 export type ReferencingNotebooks = ComponentType<ReferencingNotebooksComponentProps>;
+
+export type NotebookNotificationSettings = ComponentType;
+export type NotebookProjectSettings = ComponentType;
+export type WorkflowNotificationSettings = ComponentType;

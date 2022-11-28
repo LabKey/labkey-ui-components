@@ -565,20 +565,13 @@ function getApplicationUrlBase(moduleName: string, currentProductId: string, mod
         : buildURL(lcProductId, 'app.view', undefined, { returnUrl: false });
 }
 
-export function getDateFormat(): string {
-    return getServerContext().container.formats.dateFormat;
-}
-
-export function getDateTimeFormat(): string {
-    return getServerContext().container.formats.dateTimeFormat;
-}
 // Returns the friendly name of the product, primarily for use in help text.
-export function getCurrentProductName(): string {
+export function getCurrentProductName(moduleContext?: ModuleContext): string {
     const lcController = ActionURL.getController().toLowerCase();
     if (!lcController) return LABKEY_SERVER_PRODUCT_NAME;
 
-    if (isPremiumProductEnabled()) {
-        return getPrimaryAppProperties().name;
+    if (isPremiumProductEnabled(moduleContext)) {
+        return getPrimaryAppProperties(moduleContext).name;
     }
     return LABKEY_SERVER_PRODUCT_NAME;
 }

@@ -25,15 +25,16 @@ describe('ManageSampleStatusesPanel', () => {
                 getSampleStatuses: () => Promise.resolve([new SampleState()]),
             }),
         }),
+        getIsDirty: jest.fn(),
+        setIsDirty: jest.fn(),
     };
 
-    function validate(wrapper: ReactWrapper, hasError = false, hasTitleCls = false): void {
+    function validate(wrapper: ReactWrapper, hasError = false): void {
         expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
         expect(wrapper.find(Alert)).toHaveLength(hasError ? 1 : 0);
 
         expect(wrapper.find('.panel')).toHaveLength(1);
-        expect(wrapper.find('h4')).toHaveLength(hasTitleCls ? 1 : 0);
-        expect(wrapper.find('.panel-heading')).toHaveLength(!hasTitleCls ? 1 : 0);
+        expect(wrapper.find('.panel-heading')).toHaveLength(1);
 
         const elCount = !hasError ? 1 : 0;
         expect(wrapper.find('.choices-container')).toHaveLength(elCount);
@@ -124,13 +125,6 @@ describe('ManageSampleStatusesPanel', () => {
 
         wrapper.unmount();
     });
-
-    test('titleCls', async () => {
-        const wrapper = mount(<ManageSampleStatusesPanel {...DEFAULT_PROPS} titleCls="test-cls" />);
-        await waitForLifecycle(wrapper);
-        validate(wrapper, false, true);
-        wrapper.unmount();
-    });
 });
 
 describe('SampleStatusesList', () => {
@@ -176,7 +170,8 @@ describe('SampleStatusDetail', () => {
     const DEFAULT_PROPS = {
         addNew: false,
         state: STATE,
-        onActionComplete: jest.fn,
+        onActionComplete: jest.fn(),
+        onChange: jest.fn(),
     };
 
     function validate(wrapper: ReactWrapper, hasState = true, showSelect = true, inputCount = 3): void {

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { mount } from 'enzyme';
+
 import { ViewInfo } from '../../internal/ViewInfo';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../internal/testHelpers';
@@ -10,7 +12,6 @@ import { getTestAPIWrapper } from '../../internal/APIWrapper';
 import { getQueryTestAPIWrapper } from '../../internal/query/APIWrapper';
 
 import { ManageViewsModal, ViewLabel } from './ManageViewsModal';
-import { mount } from 'enzyme';
 
 export const getQueryAPI = (views: ViewInfo[]) => {
     return getTestAPIWrapper(jest.fn, {
@@ -26,6 +27,14 @@ const SYSTEM_DEFAULT_VIEW = ViewInfo.create({
     default: true,
     saved: false, // cannot be reverted
     name: '',
+});
+
+const SYSTEM_DETAIL_VIEW = ViewInfo.create({
+    columns: [],
+    filters: [],
+    default: false,
+    saved: false, // cannot be reverted
+    name: ViewInfo.DETAIL_NAME,
 });
 
 const SHARED_DEFAULT_VIEW = ViewInfo.create({
@@ -71,108 +80,127 @@ const SHARED_VIEW = ViewInfo.create({
     shared: true,
 });
 
-describe("ViewLabel", () => {
-   test("default view", () => {
-       const wrapper = mount(<ViewLabel view={SYSTEM_DEFAULT_VIEW}/>);
-       expect(wrapper.text()).toBe("Default View");
-       wrapper.unmount();
-   });
-
-    test("own default view", () => {
-        const wrapper = mount(<ViewLabel view={MY_DEFAULT_VIEW}/>);
-        expect(wrapper.text()).toBe("My Default View");
+describe('ViewLabel', () => {
+    test('default view', () => {
+        const wrapper = mount(<ViewLabel view={SYSTEM_DEFAULT_VIEW} />);
+        expect(wrapper.text()).toBe('Default View');
         wrapper.unmount();
     });
 
-    test("shared default view", () => {
-        const wrapper = mount(<ViewLabel view={SHARED_DEFAULT_VIEW}/>);
-        expect(wrapper.text()).toBe("Default View (shared)");
+    test('own default view', () => {
+        const wrapper = mount(<ViewLabel view={MY_DEFAULT_VIEW} />);
+        expect(wrapper.text()).toBe('My Default View');
         wrapper.unmount();
     });
 
-   test("default view, edited", () => {
-       const wrapper = mount(<ViewLabel view={ViewInfo.create({default: true, session: true})}/>);
-       expect(wrapper.text()).toBe("Default View (edited)");
-       wrapper.unmount();
-   });
-
-   test("shared view", () => {
-       const wrapper = mount(<ViewLabel view={SHARED_VIEW}/>);
-       expect(wrapper.text()).toBe("View 3 (shared)");
-       wrapper.unmount();
-   });
-
-    test("shared view, edited", () => {
-        const wrapper = mount(<ViewLabel view={ViewInfo.create({
-            columns: [],
-            filters: [],
-            default: false,
-            label: 'View 3',
-            name: 'View3',
-            session: true,
-        })}/>);
-        expect(wrapper.text()).toBe("View 3 (edited)");
+    test('shared default view', () => {
+        const wrapper = mount(<ViewLabel view={SHARED_DEFAULT_VIEW} />);
+        expect(wrapper.text()).toBe('Default View (shared)');
         wrapper.unmount();
     });
 
-    test("inherited view", () => {
-       const wrapper = mount(<ViewLabel view={ViewInfo.create({
-           columns: [],
-           filers: [],
-           default: false,
-           label: "View 4",
-           name: 'View4',
-           shared: false,
-           inherit: true
-       })}/>);
-       expect(wrapper.text()).toBe("View 4 (inherited)");
+    test('default view, edited', () => {
+        const wrapper = mount(<ViewLabel view={ViewInfo.create({ default: true, session: true })} />);
+        expect(wrapper.text()).toBe('Default View (edited)');
         wrapper.unmount();
     });
 
-    test("inherited view, edited", () => {
-        const wrapper = mount(<ViewLabel view={ViewInfo.create({
-            columns: [],
-            filers: [],
-            default: false,
-            label: "View 4",
-            name: 'View4',
-            shared: false,
-            inherit: true,
-            session: true
-        })}/>);
-        expect(wrapper.text()).toBe("View 4 (edited)");
+    test('shared view', () => {
+        const wrapper = mount(<ViewLabel view={SHARED_VIEW} />);
+        expect(wrapper.text()).toBe('View 3 (shared)');
         wrapper.unmount();
     });
 
-    test("shared, inherited view", () => {
-        const wrapper = mount(<ViewLabel view={ViewInfo.create({
-            columns: [],
-            filers: [],
-            default: false,
-            label: "View 5",
-            name: 'View5',
-            shared: true,
-            inherit: true
-        })}/>);
-        expect(wrapper.text()).toBe("View 5 (inherited, shared)");
+    test('shared view, edited', () => {
+        const wrapper = mount(
+            <ViewLabel
+                view={ViewInfo.create({
+                    columns: [],
+                    filters: [],
+                    default: false,
+                    label: 'View 3',
+                    name: 'View3',
+                    session: true,
+                })}
+            />
+        );
+        expect(wrapper.text()).toBe('View 3 (edited)');
         wrapper.unmount();
     });
 
-    test("edited, shared, inherited view", () => {
-        const wrapper = mount(<ViewLabel view={ViewInfo.create({
-            columns: [],
-            filers: [],
-            default: false,
-            label: "View 5",
-            name: 'View5',
-            shared: true,
-            inherit: true,
-            session: true,
-        })}/>);
-        expect(wrapper.text()).toBe("View 5 (edited)");
+    test('inherited view', () => {
+        const wrapper = mount(
+            <ViewLabel
+                view={ViewInfo.create({
+                    columns: [],
+                    filers: [],
+                    default: false,
+                    label: 'View 4',
+                    name: 'View4',
+                    shared: false,
+                    inherit: true,
+                })}
+            />
+        );
+        expect(wrapper.text()).toBe('View 4 (inherited)');
         wrapper.unmount();
     });
 
+    test('inherited view, edited', () => {
+        const wrapper = mount(
+            <ViewLabel
+                view={ViewInfo.create({
+                    columns: [],
+                    filers: [],
+                    default: false,
+                    label: 'View 4',
+                    name: 'View4',
+                    shared: false,
+                    inherit: true,
+                    session: true,
+                })}
+            />
+        );
+        expect(wrapper.text()).toBe('View 4 (edited)');
+        wrapper.unmount();
+    });
+
+    test('shared, inherited view', () => {
+        const wrapper = mount(
+            <ViewLabel
+                view={ViewInfo.create({
+                    columns: [],
+                    filers: [],
+                    default: false,
+                    label: 'View 5',
+                    name: 'View5',
+                    shared: true,
+                    inherit: true,
+                })}
+            />
+        );
+        expect(wrapper.text()).toBe('View 5 (inherited, shared)');
+        wrapper.unmount();
+    });
+
+    test('edited, shared, inherited view', () => {
+        const wrapper = mount(
+            <ViewLabel
+                view={ViewInfo.create({
+                    columns: [],
+                    filers: [],
+                    default: false,
+                    label: 'View 5',
+                    name: 'View5',
+                    shared: true,
+                    inherit: true,
+                    session: true,
+                })}
+            />
+        );
+        expect(wrapper.text()).toBe('View 5 (edited)');
+        wrapper.unmount();
+    });
 });
 
 describe('ManageViewsModal', () => {
@@ -254,7 +282,7 @@ describe('ManageViewsModal', () => {
         const wrapper = mountWithAppServerContext(
             <ManageViewsModal onDone={jest.fn()} currentView={null} schemaQuery={null} />,
             {
-                api: getQueryAPI([SYSTEM_DEFAULT_VIEW, VIEW_1, SESSION_VIEW, SHARED_VIEW]),
+                api: getQueryAPI([SYSTEM_DEFAULT_VIEW, SYSTEM_DETAIL_VIEW, VIEW_1, SESSION_VIEW, SHARED_VIEW]),
             },
             {
                 user: TEST_USER_PROJECT_ADMIN,

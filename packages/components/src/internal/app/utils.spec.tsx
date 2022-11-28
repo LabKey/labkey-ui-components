@@ -30,7 +30,7 @@ import {
     getPrimaryAppProperties,
     getProjectPath,
     getStorageSectionConfig,
-    hasPremiumModule,
+    hasPremiumModule, isAppHomeFolder,
     isAssayEnabled,
     isAssayQCEnabled,
     isAssayRequestsEnabled,
@@ -68,6 +68,7 @@ import {
     SOURCES_KEY,
     WORKFLOW_KEY,
 } from './constants';
+import {Container} from "../components/base/models/Container";
 
 describe('getMenuSectionConfigs', () => {
     test('LKS starter enabled', () => {
@@ -626,6 +627,16 @@ describe('utils', () => {
         expect(isPremiumProductEnabled({ biologics: {}, samplemanagement: {}, inventory: {} })).toBeTruthy();
         expect(isPremiumProductEnabled({ inventory: {} })).toBeFalsy();
         expect(isPremiumProductEnabled({ samplemanagement: {} })).toBeTruthy();
+    });
+
+    test('isAppHomeFolder', () => {
+        LABKEY.container = { folderType: 'Collaboration' };
+        expect(isAppHomeFolder()).toBeFalsy();
+        LABKEY.container = { folderType: 'Sample Manager' };
+        expect(isAppHomeFolder()).toBeTruthy();
+        LABKEY.container = { folderType: 'Biologics' };
+        expect(isAppHomeFolder()).toBeTruthy();
+        expect(isAppHomeFolder(new Container({ path: 'project a/b', folderType: 'Collaboration' }))).toBeFalsy();
     });
 
     test('sampleManagerIsPrimaryApp', () => {

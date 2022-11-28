@@ -34,7 +34,7 @@ async function fetchItemCount(schemaQuery: SchemaQuery, filterArray: Filter.IFil
             filterArray,
             maxRows: 1,
             schemaQuery,
-            containerFilter: Query.ContainerFilter.currentPlusProjectAndShared // Issue 46098
+            containerFilter: Query.ContainerFilter.currentPlusProjectAndShared, // Issue 46098
         });
         return response.rowCount;
     } catch (error) {

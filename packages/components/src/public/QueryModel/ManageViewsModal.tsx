@@ -9,15 +9,20 @@ import { useServerContext } from '../../internal/components/base/ServerContext';
 import { useAppContext } from '../../internal/AppContext';
 import { resolveErrorMessage } from '../../internal/util/messaging';
 import { deleteView, renameGridView, revertViewEdit, saveGridView, saveSessionView } from '../../internal/actions';
+
 import { ViewNameInput } from './SaveViewModal';
 
 // exported for jest tests
 export const ViewLabel: FC<{ view: ViewInfo }> = memo(props => {
     const { view } = props;
-    let viewLabel = view.isDefault ? ((view.saved && !view.shared) ? 'My Default View' :  'Default View') : view.label;
+    const viewLabel = view.isDefault ? (view.saved && !view.shared ? 'My Default View' : 'Default View') : view.label;
     const modifiers = view.modifiers;
     if (modifiers.length > 0) {
-        return <>{viewLabel} <span className={"text-muted"}>({modifiers.join(", ")})</span></>
+        return (
+            <>
+                {viewLabel} <span className="text-muted">({modifiers.join(', ')})</span>
+            </>
+        );
     }
     return <>{viewLabel}</>;
 });
@@ -116,42 +121,45 @@ export const ManageViewsModal: FC<Props> = memo(props => {
         [schemaQuery, containerPath, currentView, getActionView]
     );
 
-    const deleteSavedView = useCallback(
-        () => {
-            handleAction(async () => {
-                const viewName = deleting.name;
-                await deleteView(schemaQuery, containerPath, viewName, false);
-                if (currentView.name === viewName || reselectViewName === viewName) setReselectViewName('');
-            });
-        },
-        [currentView, deleting, schemaQuery, containerPath, reselectViewName]
-    );
+    const deleteSavedView = useCallback(() => {
+        handleAction(async () => {
+            const viewName = deleting.name;
+            await deleteView(schemaQuery, containerPath, viewName, false);
+            if (currentView.name === viewName || reselectViewName === viewName) setReselectViewName('');
+        });
+    }, [currentView, deleting, schemaQuery, containerPath, reselectViewName]);
 
-    const onDeleteView = useCallback(event => {
-        setDeleting(getActionView(event));
-    }, [getActionView]);
+    const onDeleteView = useCallback(
+        event => {
+            setDeleting(getActionView(event));
+        },
+        [getActionView]
+    );
 
     const cancelDeleteView = useCallback(event => {
         setDeleting(undefined);
     }, []);
 
-    const renameView = useCallback(async (newName: string, hasError: boolean) => {
-        if (!selectedView || !newName || !newName.trim() || hasError) {
-            setSelectedView(undefined);
-            return;
-        }
+    const renameView = useCallback(
+        async (newName: string, hasError: boolean) => {
+            if (!selectedView || !newName || !newName.trim() || hasError) {
+                setSelectedView(undefined);
+                return;
+            }
 
-        if (selectedView.name.toLowerCase() === newName.toLowerCase()) {
-            setSelectedView(undefined);
-            return;
-        }
+            if (selectedView.name.toLowerCase() === newName.toLowerCase()) {
+                setSelectedView(undefined);
+                return;
+            }
 
-        await handleAction(async () => {
-            await renameGridView(schemaQuery, containerPath, selectedView.name, newName);
-            setSelectedView(undefined);
-            if (selectedView.name === currentView.name) setReselectViewName(newName);
-        });
-    }, [selectedView, currentView, schemaQuery, containerPath]);
+            await handleAction(async () => {
+                await renameGridView(schemaQuery, containerPath, selectedView.name, newName);
+                setSelectedView(undefined);
+                if (selectedView.name === currentView.name) setReselectViewName(newName);
+            });
+        },
+        [selectedView, currentView, schemaQuery, containerPath]
+    );
 
     return (
         <Modal onHide={onClose} show>
@@ -194,7 +202,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                                 defaultValue={selectedView?.name}
                                             />
                                         ) : (
-                                            <ViewLabel view={view}/>
+                                            <ViewLabel view={view} />
                                         )}
                                     </Col>
                                     <Col xs={4}>
@@ -225,7 +233,10 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                         )}
                                         {canEdit && (
                                             <span className="pull-right">
-                                                <span className="edit-inline-field__toggle small-right-spacing" onClick={onSelectView}>
+                                                <span
+                                                    className="edit-inline-field__toggle small-right-spacing"
+                                                    onClick={onSelectView}
+                                                >
                                                     <i id={'select-' + ind} className="fa fa-pencil" />
                                                 </span>
                                                 <span className="edit-inline-field__toggle" onClick={onDeleteView}>
@@ -235,19 +246,33 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                         )}
                                     </Col>
                                 </Row>
-                            {(deleting === view) && (
-                                <Row className={"bottom-spacing"}>
-                                    <Col xs={12}>
-                                        <div className="inline-confirmation">
-                                            <div >
-                                                <span className="inline-confirmation__label">Permanently remove this view?</span>
-                                                <button className={"button-left-spacing alert-button btn btn-danger"} id={'confirm-delete-' + ind} onClick={deleteSavedView}>Yes</button>
-                                                <button className={"button-left-spacing alert-button btn btn-default"} id={'cancel-delete-' + ind} onClick={cancelDeleteView}>No</button>
+                                {deleting === view && (
+                                    <Row className="bottom-spacing">
+                                        <Col xs={12}>
+                                            <div className="inline-confirmation">
+                                                <div>
+                                                    <span className="inline-confirmation__label">
+                                                        Permanently remove this view?
+                                                    </span>
+                                                    <button
+                                                        className="button-left-spacing alert-button btn btn-danger"
+                                                        id={'confirm-delete-' + ind}
+                                                        onClick={deleteSavedView}
+                                                    >
+                                                        Yes
+                                                    </button>
+                                                    <button
+                                                        className="button-left-spacing alert-button btn btn-default"
+                                                        id={'cancel-delete-' + ind}
+                                                        onClick={cancelDeleteView}
+                                                    >
+                                                        No
+                                                    </button>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </Col>
-                                </Row>
-                            )}
+                                        </Col>
+                                    </Row>
+                                )}
                             </>
                         );
                     })}

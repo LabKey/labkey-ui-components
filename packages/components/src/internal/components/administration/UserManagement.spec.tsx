@@ -17,8 +17,9 @@ import { TEST_USER_APP_ADMIN, TEST_USER_PROJECT_ADMIN } from '../../userFixtures
 
 import { InjectedPermissionsPage } from '../permissions/withPermissionsPage';
 
+import { AdminAppContext } from '../../AppContext';
+
 import { getNewUserRoles, UserManagementPageImpl } from './UserManagement';
-import {AdminAppContext} from "../../AppContext";
 
 beforeAll(() => {
     initQueryGridState();

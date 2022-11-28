@@ -15,8 +15,9 @@ import { Alert } from '../base/Alert';
 
 import { useServerContext } from '../base/ServerContext';
 
+import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
+
 import { loadNameExpressionOptions, saveNameExpressionOptions } from './actions';
-import {InjectedRouteLeaveProps} from "../../util/RouteLeave";
 
 const TITLE = 'ID/Name Settings';
 

@@ -7,8 +7,9 @@ import { mountWithServerContext, waitForLifecycle } from '../../testHelpers';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ConfirmModal } from '../base/ConfirmModal';
 
-import { IDNameHelpTip, NameIdSettingsForm, PrefixDescription } from './NameIdSettings';
 import { BIOLOGICS_APP_PROPERTIES, SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
+
+import { IDNameHelpTip, NameIdSettingsForm, PrefixDescription } from './NameIdSettings';
 
 describe('NameIdSettings', () => {
     let DEFAULT_PROPS;

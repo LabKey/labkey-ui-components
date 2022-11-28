@@ -22,8 +22,9 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { DisableableButton } from '../buttons/DisableableButton';
 
+import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
+
 import { SampleState } from './models';
-import {InjectedRouteLeaveProps} from "../../util/RouteLeave";
 
 const TITLE = 'Manage Sample Statuses';
 const STATE_TYPE_SQ = SchemaQuery.create('exp', 'SampleStateType');

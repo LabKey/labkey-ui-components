@@ -71,7 +71,9 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
             {isProductProjectsEnabled(moduleContext) && (
                 <ProjectSettings onChange={onSettingsChange} onSuccess={onSettingsSuccess} />
             )}
-            {biologicsIsPrimaryApp(moduleContext) && isELNEnabled(moduleContext) && <NotebookProjectSettingsComponent />}
+            {biologicsIsPrimaryApp(moduleContext) && isELNEnabled(moduleContext) && (
+                <NotebookProjectSettingsComponent />
+            )}
             <BarTenderSettingsForm onChange={onSettingsChange} onSuccess={onBarTenderSuccess} />
             <NameIdSettings {...props} />
             {isSampleStatusEnabled(moduleContext) && <ManageSampleStatusesPanel {...props} />}

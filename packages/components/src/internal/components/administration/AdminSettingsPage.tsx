@@ -8,7 +8,7 @@ import { InsufficientPermissionsPage } from '../permissions/InsufficientPermissi
 import { ActiveUserLimit } from '../settings/ActiveUserLimit';
 import { NameIdSettings } from '../settings/NameIdSettings';
 import { ManageSampleStatusesPanel } from '../samples/ManageSampleStatusesPanel';
-import { isELNEnabled, isProductProjectsEnabled, isSampleStatusEnabled } from '../../app/utils';
+import { biologicsIsPrimaryApp, isELNEnabled, isProductProjectsEnabled, isSampleStatusEnabled } from '../../app/utils';
 import { ProjectSettings } from '../settings/ProjectSettings';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 
@@ -71,7 +71,7 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
             {isProductProjectsEnabled(moduleContext) && (
                 <ProjectSettings onChange={onSettingsChange} onSuccess={onSettingsSuccess} />
             )}
-            {isELNEnabled(moduleContext) && <NotebookProjectSettingsComponent />}
+            {biologicsIsPrimaryApp(moduleContext) && isELNEnabled(moduleContext) && <NotebookProjectSettingsComponent />}
             <BarTenderSettingsForm onChange={onSettingsChange} onSuccess={onBarTenderSuccess} />
             <NameIdSettings {...props} />
             {isSampleStatusEnabled(moduleContext) && <ManageSampleStatusesPanel {...props} />}

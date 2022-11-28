@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { List, Map } from 'immutable';
 
 import { TEST_PROJECT, TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
@@ -15,11 +14,11 @@ import { TEST_USER_FOLDER_ADMIN } from '../../userFixtures';
 
 import { Alert } from '../base/Alert';
 
-import { GroupManagementImpl, GroupPermissionsProps } from './GroupManagement';
+import { GroupManagementPageImpl, GroupManagementPageProps } from './GroupManagementPage';
 import { GroupAssignments } from './GroupAssignments';
 
 describe('BasePermissions', () => {
-    function getDefaultProps(): GroupPermissionsProps {
+    function getDefaultProps(): GroupManagementPageProps {
         return {
             error: undefined,
             inactiveUsersById: Map(),
@@ -57,7 +56,7 @@ describe('BasePermissions', () => {
 
     test('loads', async () => {
         const wrapper = mountWithAppServerContext(
-            <GroupManagementImpl {...getDefaultProps()} />,
+            <GroupManagementPageImpl {...getDefaultProps()} />,
             getDefaultAppContext(),
             getDefaultServerContext()
         );
@@ -71,7 +70,7 @@ describe('BasePermissions', () => {
 
     test('handles error', async () => {
         const wrapper = mountWithAppServerContext(
-            <GroupManagementImpl {...getDefaultProps()} />,
+            <GroupManagementPageImpl {...getDefaultProps()} />,
             getDefaultAppContext({ fetchPolicy: jest.fn().mockRejectedValue(undefined) }),
             getDefaultServerContext()
         );

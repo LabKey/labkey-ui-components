@@ -15,11 +15,14 @@ import { Alert } from '../base/Alert';
 
 import { useServerContext } from '../base/ServerContext';
 
+import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
+
 import { loadNameExpressionOptions, saveNameExpressionOptions } from './actions';
 
 const TITLE = 'ID/Name Settings';
 
-const IDNameHelpTip: FC = memo(() => {
+// exported for jest testing
+export const IDNameHelpTip: FC = memo(() => {
     const { moduleContext } = useServerContext();
 
     return (
@@ -37,7 +40,8 @@ const IDNameHelpTip: FC = memo(() => {
     );
 });
 
-const PrefixDescription: FC = memo(() => {
+// exported for jest testing
+export const PrefixDescription: FC = memo(() => {
     const { moduleContext } = useServerContext();
 
     return (
@@ -98,11 +102,7 @@ export const IDNameSettings: FC = memo(() => {
     );
 });
 
-interface NameIdSettingsProps {
-    titleCls?: string;
-}
-
-interface NameIdSettingsFormProps extends NameIdSettingsProps {
+interface NameIdSettingsFormProps extends InjectedRouteLeaveProps {
     loadNameExpressionOptions: () => Promise<{ allowUserSpecifiedNames: boolean; prefix: string }>;
     saveNameExpressionOptions: (key: string, value: string | boolean) => Promise<void>;
 }
@@ -128,7 +128,7 @@ const initialState: State = {
 };
 
 export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
-    const { loadNameExpressionOptions, saveNameExpressionOptions, titleCls } = props;
+    const { loadNameExpressionOptions, saveNameExpressionOptions, setIsDirty } = props;
     const [state, setState] = useReducer(
         (currentState: State, newState: Partial<State>): State => ({ ...currentState, ...newState }),
         initialState
@@ -198,12 +198,17 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
             displayError(err);
         }
         setState({ savingPrefix: false, confirmModalOpen: false });
-    }, [prefix, saveNameExpressionOptions]);
+        setIsDirty(false);
+    }, [prefix, saveNameExpressionOptions, setIsDirty]);
 
-    const prefixOnChange = useCallback((evt: any) => {
-        const val = evt.target.value;
-        setState({ prefix: val });
-    }, []);
+    const prefixOnChange = useCallback(
+        (evt: any) => {
+            const val = evt.target.value;
+            setState({ prefix: val });
+            setIsDirty(true);
+        },
+        [setIsDirty]
+    );
 
     const openConfirmModal = useCallback(() => {
         setState({ confirmModalOpen: true });
@@ -215,9 +220,8 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
 
     return (
         <div className="name-id-settings-panel panel panel-default">
-            {!titleCls && <div className="panel-heading">{TITLE}</div>}
+            <div className="panel-heading">{TITLE}</div>
             <div className="panel-body">
-                {titleCls && <h4 className={titleCls}>{TITLE}</h4>}
                 <div className="name-id-setting__setting-section">
                     <h5>User-defined IDs/Names</h5>
 
@@ -236,56 +240,64 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                     )}
                 </div>
 
-                <div className="name-id-setting__setting-section">
-                    <h5>ID/Name Prefix</h5>
-                    <PrefixDescription />
+                {biologicsIsPrimaryApp(moduleContext) && (
+                    <div className="name-id-setting__setting-section">
+                        <h5>ID/Name Prefix</h5>
+                        <PrefixDescription />
 
-                    {loading && <LoadingSpinner />}
-                    {!loading && (
-                        <>
-                            <div className="name-id-setting__prefix">
-                                <div className="name-id-setting__prefix-label"> Prefix: </div>
+                        {loading && <LoadingSpinner />}
+                        {!loading && (
+                            <>
+                                <div className="name-id-setting__prefix">
+                                    <div className="name-id-setting__prefix-label"> Prefix: </div>
 
-                                <div className="name-id-setting__prefix-field">
-                                    <FormControl
-                                        name="prefix"
-                                        type="text"
-                                        placeholder="Enter Prefix"
-                                        onChange={prefixOnChange}
-                                        value={prefix}
-                                    />
+                                    <div className="name-id-setting__prefix-field">
+                                        <FormControl
+                                            name="prefix"
+                                            type="text"
+                                            placeholder="Enter Prefix"
+                                            onChange={prefixOnChange}
+                                            value={prefix}
+                                        />
+                                    </div>
+
+                                    <Button
+                                        className="btn btn-success"
+                                        onClick={openConfirmModal}
+                                        disabled={savingPrefix}
+                                    >
+                                        Apply Prefix
+                                    </Button>
+                                </div>
+                                <div className="name-id-setting__prefix-example">
+                                    Example: {prefix}Blood-${'{'}GenId{'}'}
                                 </div>
 
-                                <Button className="btn btn-success" onClick={openConfirmModal} disabled={savingPrefix}>
-                                    Apply Prefix
-                                </Button>
-                            </div>
-                            <div className="name-id-setting__prefix-example">
-                                Example: {prefix}Blood-${'{'}GenId{'}'}
-                            </div>
-
-                            {confirmModalOpen && (
-                                <ConfirmModal
-                                    title="Apply Prefix?"
-                                    onCancel={closeConfirmModal}
-                                    onConfirm={savePrefix}
-                                    confirmButtonText="Yes, Save and Apply Prefix"
-                                    cancelButtonText="Cancel"
-                                >
-                                    <div>
-                                        <p>
-                                            This action will change the Naming Pattern for all new and existing Sample
-                                            Types and{' '}
-                                            {sampleManagerIsPrimaryApp(moduleContext) ? 'Source Types' : 'Data Classes'}
-                                            . No existing IDs/Names will be affected. Are you sure you want to apply the
-                                            prefix?
-                                        </p>
-                                    </div>
-                                </ConfirmModal>
-                            )}
-                        </>
-                    )}
-                </div>
+                                {confirmModalOpen && (
+                                    <ConfirmModal
+                                        title="Apply Prefix?"
+                                        onCancel={closeConfirmModal}
+                                        onConfirm={savePrefix}
+                                        confirmButtonText="Yes, Save and Apply Prefix"
+                                        cancelButtonText="Cancel"
+                                    >
+                                        <div>
+                                            <p>
+                                                This action will change the Naming Pattern for all new and existing
+                                                Sample Types and{' '}
+                                                {sampleManagerIsPrimaryApp(moduleContext)
+                                                    ? 'Source Types'
+                                                    : 'Data Classes'}
+                                                . No existing IDs/Names will be affected but any new IDs/Names will have
+                                                the prefix applied. Are you sure you want to apply the prefix?
+                                            </p>
+                                        </div>
+                                    </ConfirmModal>
+                                )}
+                            </>
+                        )}
+                    </div>
+                )}
 
                 {error !== undefined && <Alert className="name-id-setting__error">{error}</Alert>}
             </div>
@@ -293,7 +305,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
     );
 };
 
-export const NameIdSettings: FC<NameIdSettingsProps> = memo(props => {
+export const NameIdSettings: FC<InjectedRouteLeaveProps> = memo(props => {
     return (
         <RequiresPermission perms={PermissionTypes.Admin}>
             <NameIdSettingsForm

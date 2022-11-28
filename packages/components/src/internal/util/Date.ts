@@ -31,11 +31,11 @@ export function datePlaceholder(col: QueryColumn): string {
         // attempt to use the rangeURI to figure out if we are working with a dateTime or date object
         // note Created and Modified columns do not include the rangeURI information
         if (rangeURI.indexOf('datetime') > -1) {
-            placeholder = getDateTimeFormat();
+            placeholder = getMomentDateTimeFormat();
         } else if (rangeURI.indexOf('date') > -1) {
-            placeholder = getDateFormat();
+            placeholder = getMomentDateFormat();
         } else {
-            placeholder = getDateTimeFormat();
+            placeholder = getMomentDateTimeFormat();
         }
     }
 
@@ -59,13 +59,13 @@ export function isDateTimeCol(col: QueryColumn): boolean {
 export function getColDateFormat(queryColumn: QueryColumn, dateFormat?: string, dateOnly?: boolean): string {
     let rawFormat = dateFormat || queryColumn.format;
     if (!rawFormat) {
-        if (dateOnly) rawFormat = getDateFormat();
+        if (dateOnly) rawFormat = getMomentDateFormat();
         else rawFormat = datePlaceholder(queryColumn);
     }
 
     // Issue 44011: account for the shortcut values (i.e. "Date", "DateTime", and "Time")
-    if (rawFormat === 'Date') rawFormat = getDateFormat();
-    if (rawFormat === 'DateTime') rawFormat = getDateTimeFormat();
+    if (rawFormat === 'Date') rawFormat = getMomentDateFormat();
+    if (rawFormat === 'DateTime') rawFormat = getMomentDateTimeFormat();
     if (rawFormat === 'Time') rawFormat = getTimeFormat();
 
     // Moment.js and react datepicker date format is different
@@ -82,12 +82,20 @@ export function getColFormattedDateFilterValue(column: QueryColumn, value: strin
     return formatDate(new Date(valueFull), null, dateFormat);
 }
 
-// 30834: get look and feel display formats
 export function getDateFormat(container?: Partial<Container>): string {
-    return toMomentFormatString((container ?? getServerContext().container).formats.dateFormat);
+    return (container ?? getServerContext().container).formats.dateFormat;
 }
 
 export function getDateTimeFormat(container?: Partial<Container>): string {
+    return (container ?? getServerContext().container).formats.dateTimeFormat;
+}
+
+// Issue 30834: get look and feel display formats
+export function getMomentDateFormat(container?: Partial<Container>): string {
+    return toMomentFormatString((container ?? getServerContext().container).formats.dateFormat);
+}
+
+export function getMomentDateTimeFormat(container?: Partial<Container>): string {
     return toMomentFormatString((container ?? getServerContext().container).formats.dateTimeFormat);
 }
 
@@ -111,7 +119,7 @@ export function parseDate(dateStr: string, dateFormat?: string): Date {
     }
 
     // Issue 45140: if a dateFormat was provided here and the date didn't parse, try the default container format and no format
-    let date = moment(dateStr, getDateTimeFormat(), true);
+    let date = moment(dateStr, getMomentDateTimeFormat(), true);
     if (date && date.isValid()) {
         return date.toDate();
     }
@@ -138,11 +146,11 @@ function _formatDate(date: Date | number, dateFormat: string, timezone?: string)
 }
 
 export function formatDate(date: Date | number, timezone?: string, dateFormat?: string): string {
-    return _formatDate(date, dateFormat ?? getDateFormat(), timezone);
+    return _formatDate(date, dateFormat ?? getMomentDateFormat(), timezone);
 }
 
 export function formatDateTime(date: Date | number, timezone?: string, dateFormat?: string): string {
-    return _formatDate(date, dateFormat ?? getDateTimeFormat(), timezone);
+    return _formatDate(date, dateFormat ?? getMomentDateTimeFormat(), timezone);
 }
 
 export function getUnFormattedNumber(n): number {

@@ -1,8 +1,6 @@
 import React, { FC, memo, useEffect, useMemo, useState } from 'react';
 import { List } from 'immutable';
 
-import { getServerContext } from '@labkey/api';
-
 import { SchemaQuery } from '../public/SchemaQuery';
 
 import { AppURL } from '../internal/url/AppURL';
@@ -69,13 +67,14 @@ export const CreateSamplesSubMenu: FC<Props> = memo(props => {
     const itemKey = parentQueryModel?.queryInfo?.name;
     const [sampleQueryInfos, setSampleQueryInfos] = useState<QueryInfo[]>(undefined);
     const isSamples = useMemo(() => isSamplesSchema(selectedQueryInfo?.schemaQuery), [selectedQueryInfo]);
+    const { moduleContext } = useServerContext();
 
     useEffect(() => {
         // if we are showing this menu as a subMenu, only include the given selectedQueryInfo
         if (subMenuText && selectedQueryInfo) {
             setSampleQueryInfos([selectedQueryInfo]);
         } else {
-            const includeMedia = isMediaEnabled(getServerContext().moduleContext);
+            const includeMedia = isMediaEnabled(moduleContext);
             loadSampleTypes(includeMedia)
                 .then(allSampleTypes => {
                     const queryInfos = allSampleTypes
@@ -92,7 +91,7 @@ export const CreateSamplesSubMenu: FC<Props> = memo(props => {
                     console.error('Unable to load sample types', error);
                 });
         }
-    }, [loadSampleTypes, subMenuText, selectedQueryInfo]);
+    }, [loadSampleTypes, moduleContext, subMenuText, selectedQueryInfo]);
 
     const getOptions = (
         useOnClick: boolean,
@@ -126,7 +125,6 @@ export const CreateSamplesSubMenu: FC<Props> = memo(props => {
         return <DisableableMenuItem operationPermitted={false}>{menuText}</DisableableMenuItem>;
     }
 
-    const { moduleContext } = useServerContext();
     let selectionNoun;
     let selectionNounPlural;
     if (!isSamples) {

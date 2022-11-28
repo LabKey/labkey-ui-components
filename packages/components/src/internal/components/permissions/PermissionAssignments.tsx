@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
-import { Button, Checkbox, Col, Panel, Row } from 'react-bootstrap';
+import { Button, Checkbox, Col, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 import { Security } from '@labkey/api';
 
@@ -16,6 +16,7 @@ import { useServerContext } from '../base/ServerContext';
 import { AppContext, useAppContext } from '../../AppContext';
 
 import { resolveErrorMessage } from '../../util/messaging';
+import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
 
 import { Alert } from '../base/Alert';
 
@@ -29,7 +30,7 @@ import { GroupDetailsPanel } from './GroupDetailsPanel';
 import { InjectedPermissionsPage } from './withPermissionsPage';
 
 // exported for testing
-export interface PermissionAssignmentsProps extends InjectedPermissionsPage {
+export interface PermissionAssignmentsProps extends InjectedPermissionsPage, InjectedRouteLeaveProps {
     containerId: string;
     /** UserId to disable to prevent removing assignments for that id */
     disabledId?: number;
@@ -48,6 +49,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
     const {
         containerId,
         disabledId,
+        getIsDirty,
         inactiveUsersById,
         onChange,
         onSuccess,
@@ -57,10 +59,10 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         roles,
         rolesByUniqueName,
         rolesToShow,
+        setIsDirty,
         showDetailsPanel = true,
         title = 'Security Roles and Assignments',
     } = props;
-    const [dirty, setDirty] = useState<boolean>();
     const [inherited, setInherited] = useState<boolean>(() => policy.isInheritFromParent());
     const [rootPolicy, setRootPolicy] = useState<SecurityPolicy>();
     const [saveErrorMsg, setSaveErrorMsg] = useState<string>();
@@ -110,13 +112,13 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         (principal: Principal, role: SecurityRole) => {
             onChange(SecurityPolicy.addAssignment(policy, principal, role));
             setSelectedUserId(principal.userId);
-            setDirty(true);
+            setIsDirty(true);
         },
         [onChange, policy]
     );
 
     const onInheritChange = useCallback(() => {
-        setDirty(true);
+        setIsDirty(true);
         setInherited(!inherited);
     }, [inherited]);
 
@@ -131,7 +133,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         // Policy remains inherited. Act as if it was a successful change.
         if (inherited && wasInherited) {
             _onSuccess();
-            setDirty(false);
+            setIsDirty(false);
             return;
         }
 
@@ -146,7 +148,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                     if (response.success) {
                         _onSuccess();
                         setSelectedUserId(undefined);
-                        setDirty(false);
+                        setIsDirty(false);
                     } else {
                         setSaveErrorMsg(resolveErrorMessage(response) ?? 'Failed to inherit policy');
                     }
@@ -177,7 +179,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                     if (response.success) {
                         _onSuccess();
                         setSelectedUserId(undefined);
-                        setDirty(false);
+                        setIsDirty(false);
                     } else {
                         // TODO when this is used in LKS, need to support response.needsConfirmation
                         setSaveErrorMsg(response.message.replace('Are you sure that you want to continue?', ''));
@@ -197,7 +199,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         (userId: number, role: SecurityRole) => {
             onChange(SecurityPolicy.removeAssignment(policy, userId, role));
             setSelectedUserId(undefined);
-            setDirty(true);
+            setIsDirty(true);
         },
         [onChange, policy]
     );
@@ -219,7 +221,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         <Button
             className="pull-right alert-button permissions-assignment-save-btn"
             bsStyle="success"
-            disabled={submitting || !dirty}
+            disabled={submitting || !getIsDirty()}
             onClick={onSavePolicy}
         >
             Save
@@ -229,24 +231,13 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
     return (
         <Row>
             <Col xs={12} md={showDetailsPanel ? 8 : 12}>
-                <Panel>
-                    <Panel.Heading>{title}</Panel.Heading>
-                    <Panel.Body className="permissions-groups-assignment-panel permissions-assignment-panel">
-                        {dirty && (
-                            <div className="permissions-groups-save-alert">
-                                <Alert bsStyle="info">
-                                    You have unsaved changes.
-                                    {saveButton}
-                                </Alert>
-                            </div>
-                        )}
-
-                        {!dirty && inherited && (
-                            <div className="permissions-groups-save-alert">
-                                <Alert bsStyle="info">
-                                    Permissions for this container are being inherited from its parent.
-                                </Alert>
-                            </div>
+                <div className="panel panel-default">
+                    <div className="panel-heading">{title}</div>
+                    <div className="panel-body permissions-groups-assignment-panel permissions-assignment-panel">
+                        {!getIsDirty() && inherited && (
+                            <Alert bsStyle="info">
+                                Permissions for this container are being inherited from its parent.
+                            </Alert>
                         )}
 
                         {isSubfolder && (
@@ -281,8 +272,8 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                         <br />
                         {saveErrorMsg && <Alert>{saveErrorMsg}</Alert>}
                         {saveButton}
-                    </Panel.Body>
-                </Panel>
+                    </div>
+                </div>
             </Col>
             {showDetailsPanel && (
                 <Col xs={12} md={4}>

@@ -1,7 +1,5 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-
 import { MenuItem } from 'react-bootstrap';
-
 import { List } from 'immutable';
 
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
@@ -38,9 +36,9 @@ import { showPremiumFeatures } from './utils';
 import { GroupMembership, MemberType } from './models';
 import { fetchGroupMembership } from './actions';
 
-export type GroupPermissionsProps = InjectedRouteLeaveProps & InjectedPermissionsPage;
+export type GroupManagementPageProps = InjectedRouteLeaveProps & InjectedPermissionsPage;
 
-export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
+export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props => {
     const { setIsDirty, getIsDirty, inactiveUsersById, principalsById, rolesByUniqueName, principals } = props;
     const [error, setError] = useState<string>();
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
@@ -286,4 +284,4 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
     );
 });
 
-export const GroupManagement = withRouteLeave<{}>(withPermissionsPage(GroupManagementImpl));
+export const GroupManagementPage = withRouteLeave<{}>(withPermissionsPage(GroupManagementPageImpl));

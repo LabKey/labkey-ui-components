@@ -80,6 +80,8 @@ describe('PermissionAssignments', () => {
             principalsById: PRINCIPALS_BY_ID,
             roles: ROLES,
             rolesByUniqueName: ROLES_BY_NAME,
+            getIsDirty: jest.fn(),
+            setIsDirty: jest.fn(),
         };
     }
 
@@ -251,7 +253,6 @@ describe('PermissionAssignments', () => {
 
         await waitForLifecycle(wrapper);
         expect(onChange).toHaveBeenCalledTimes(1);
-        expect(wrapper.find(Alert).text()).toContain('You have unsaved changes.');
 
         const onRemoveAssignment = wrapper.find(PermissionsRole).at(0).prop('onRemoveAssignment');
         act(() => {

@@ -819,10 +819,10 @@ export function getSampleAssayResultViewConfigs(): Promise<SampleAssayResultView
 }
 
 export async function createSessionAssayRunSummaryQuery(sampleIds: number[]): Promise<ISelectRowsResult> {
-    let assayRunsQuery = "AssayRunsPerSample";
+    let assayRunsQuery = 'AssayRunsPerSample';
 
     if (isProductProjectsEnabled() && !isProjectContainer()) {
-        assayRunsQuery = "AssayRunsPerSampleChildProject";
+        assayRunsQuery = 'AssayRunsPerSampleChildProject';
     }
 
     return await selectRowsDeprecated({
@@ -830,7 +830,9 @@ export async function createSessionAssayRunSummaryQuery(sampleIds: number[]): Pr
         schemaName: 'exp',
         sql:
             'SELECT RowId, SampleID, SampleType, Assay, COUNT(*) AS RunCount\n' +
-            "FROM (SELECT RowId, SampleID, SampleType, Assay || ' Run Count' AS Assay FROM " + assayRunsQuery + ") X\n" +
+            "FROM (SELECT RowId, SampleID, SampleType, Assay || ' Run Count' AS Assay FROM " +
+            assayRunsQuery +
+            ') X\n' +
             'WHERE RowId IN (' +
             sampleIds.join(',') +
             ')\n' +

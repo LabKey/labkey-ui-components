@@ -20,6 +20,8 @@ import {
 
 import { MenuSectionConfig } from '../components/navigation/ProductMenuSection';
 
+import { Container } from '../components/base/models/Container';
+
 import {
     addAssaysSectionConfig,
     addSamplesSectionConfig,
@@ -30,7 +32,8 @@ import {
     getPrimaryAppProperties,
     getProjectPath,
     getStorageSectionConfig,
-    hasPremiumModule, isAppHomeFolder,
+    hasPremiumModule,
+    isAppHomeFolder,
     isAssayEnabled,
     isAssayQCEnabled,
     isAssayRequestsEnabled,
@@ -68,7 +71,6 @@ import {
     SOURCES_KEY,
     WORKFLOW_KEY,
 } from './constants';
-import {Container} from "../components/base/models/Container";
 
 describe('getMenuSectionConfigs', () => {
     test('LKS starter enabled', () => {

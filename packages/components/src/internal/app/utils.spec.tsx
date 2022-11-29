@@ -20,6 +20,8 @@ import {
 
 import { MenuSectionConfig } from '../components/navigation/ProductMenuSection';
 
+import { Container } from '../components/base/models/Container';
+
 import {
     addAssaysSectionConfig,
     addSamplesSectionConfig,
@@ -31,6 +33,7 @@ import {
     getProjectPath,
     getStorageSectionConfig,
     hasPremiumModule,
+    isAppHomeFolder,
     isAssayEnabled,
     isAssayQCEnabled,
     isAssayRequestsEnabled,
@@ -626,6 +629,16 @@ describe('utils', () => {
         expect(isPremiumProductEnabled({ biologics: {}, samplemanagement: {}, inventory: {} })).toBeTruthy();
         expect(isPremiumProductEnabled({ inventory: {} })).toBeFalsy();
         expect(isPremiumProductEnabled({ samplemanagement: {} })).toBeTruthy();
+    });
+
+    test('isAppHomeFolder', () => {
+        LABKEY.container = { folderType: 'Collaboration' };
+        expect(isAppHomeFolder()).toBeFalsy();
+        LABKEY.container = { folderType: 'Sample Manager' };
+        expect(isAppHomeFolder()).toBeTruthy();
+        LABKEY.container = { folderType: 'Biologics' };
+        expect(isAppHomeFolder()).toBeTruthy();
+        expect(isAppHomeFolder(new Container({ path: 'project a/b', folderType: 'Collaboration' }))).toBeFalsy();
     });
 
     test('sampleManagerIsPrimaryApp', () => {

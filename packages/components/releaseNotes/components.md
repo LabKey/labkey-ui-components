@@ -4,7 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Issue 46756: Change aliquots grid to use default view instead of details view
-* Issue 46737: Use proper selection key when constructing URL for assay import
+* Issue 46737: Use the proper selection key when constructing URL for assay import
 
 ### version 2.261.0
 *Released*: 28 November 2022

@@ -34,7 +34,7 @@ import { ParentEntityLineageColumns } from '../entities/constants';
 
 import { DERIVATION_DATA_SCOPES, STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
 
-import { isSampleStatusEnabled } from '../../app/utils';
+import { isProductProjectsEnabled, isProjectContainer, isSampleStatusEnabled } from '../../app/utils';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
 import { EXP_TABLES, SCHEMAS } from '../../schemas';
@@ -819,12 +819,20 @@ export function getSampleAssayResultViewConfigs(): Promise<SampleAssayResultView
 }
 
 export async function createSessionAssayRunSummaryQuery(sampleIds: number[]): Promise<ISelectRowsResult> {
+    let assayRunsQuery = 'AssayRunsPerSample';
+
+    if (isProductProjectsEnabled() && !isProjectContainer()) {
+        assayRunsQuery = 'AssayRunsPerSampleChildProject';
+    }
+
     return await selectRowsDeprecated({
         saveInSession: true,
         schemaName: 'exp',
         sql:
             'SELECT RowId, SampleID, SampleType, Assay, COUNT(*) AS RunCount\n' +
-            "FROM (SELECT RowId, SampleID, SampleType, Assay || ' Run Count' AS Assay FROM AssayRunsPerSample) X\n" +
+            "FROM (SELECT RowId, SampleID, SampleType, Assay || ' Run Count' AS Assay FROM " +
+            assayRunsQuery +
+            ') X\n' +
             'WHERE RowId IN (' +
             sampleIds.join(',') +
             ')\n' +

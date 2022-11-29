@@ -16,6 +16,8 @@ import { imageURL } from '../url/ActionURL';
 import { AppURL, buildURL } from '../url/AppURL';
 import { ModuleContext } from '../components/base/ServerContext';
 
+import { Container } from '../components/base/models/Container';
+
 import { AppProperties } from './models';
 import {
     ASSAYS_KEY,
@@ -179,6 +181,11 @@ export function isBiologicsEnabled(moduleContext?: ModuleContext): boolean {
 
 export function isPremiumProductEnabled(moduleContext?: ModuleContext): boolean {
     return isSampleManagerEnabled(moduleContext) || isBiologicsEnabled(moduleContext);
+}
+
+export function isAppHomeFolder(container?: Container): boolean {
+    const folderType = container?.folderType ?? getServerContext()?.container?.folderType;
+    return folderType === SAMPLE_MANAGER_APP_PROPERTIES.name || folderType === BIOLOGICS_APP_PROPERTIES.name;
 }
 
 export function sampleManagerIsPrimaryApp(moduleContext?: ModuleContext): boolean {

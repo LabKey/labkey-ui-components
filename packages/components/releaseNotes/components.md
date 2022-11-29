@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.261.1
+*Released*: 29 November 2022
+* Various projects container filtering fixes
+  * disallow assay import for child samples at Home project
+  * added isAppHomeFolder util to check folder with app folder type
+  * fix cross folder audit log event detail
+
 ### version 2.261.0
 *Released*: 28 November 2022
 * WebDav helper for deleting directories and files: deleteWebDavResource()

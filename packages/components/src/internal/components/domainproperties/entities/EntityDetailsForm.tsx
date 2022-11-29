@@ -91,7 +91,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                     </Col>
                     <Col xs={10}>
                         <textarea
-                            className="form-control textarea-noresize"
+                            className="form-control"
                             id={ENTITY_FORM_IDS.DESCRIPTION}
                             onChange={onFormChange}
                             value={getEntityDescriptionValue(formValues, data)}

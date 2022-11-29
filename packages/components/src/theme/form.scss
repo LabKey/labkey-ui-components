@@ -215,9 +215,9 @@ div.react-datepicker__current-month {
     font-size: 13px;
 }
 
-.textarea-noresize {
-    resize: none;
-    padding-bottom: 2%;
+textarea.form-control {
+    resize: vertical;
+    min-height: 54px;
 }
 
 .textarea-fullwidth {

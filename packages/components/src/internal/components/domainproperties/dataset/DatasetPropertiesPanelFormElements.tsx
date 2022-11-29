@@ -54,7 +54,7 @@ export class DescriptionInput extends React.PureComponent<BasicPropertiesInputsP
 
                 <Col xs={7}>
                     <textarea
-                        className="form-control textarea-noresize"
+                        className="form-control"
                         id="description"
                         value={value}
                         onChange={onInputChange}

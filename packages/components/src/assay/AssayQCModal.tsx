@@ -111,7 +111,6 @@ export class AssayQCModal extends PureComponent<Props, AssayQCState> {
                             <div className="col-sm-9">
                                 <FormControl
                                     componentClass="textarea"
-                                    className="textarea-noresize"
                                     value={comment}
                                     onChange={this.updateComment}
                                 />

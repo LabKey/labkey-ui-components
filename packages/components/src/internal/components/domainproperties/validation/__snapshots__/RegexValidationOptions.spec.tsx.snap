@@ -176,7 +176,7 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
               <div>
                 <FormControl
                   bsClass="form-control"
-                  className="domain-validation-textarea"
+                  className="textarea-fullwidth"
                   componentClass="textarea"
                   id="domainpropertiesrow-expression-1-0"
                   name="domainpropertiesrow-expression"
@@ -185,7 +185,7 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
                   value="$[abc]"
                 >
                   <textarea
-                    className="domain-validation-textarea form-control"
+                    className="textarea-fullwidth form-control"
                     id="domainpropertiesrow-expression-1-0"
                     name="domainpropertiesrow-expression"
                     onChange={[Function]}
@@ -230,7 +230,7 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
               <div>
                 <FormControl
                   bsClass="form-control"
-                  className="domain-validation-textarea"
+                  className="textarea-fullwidth"
                   componentClass="textarea"
                   id="domainpropertiesrow-description-1-0"
                   name="domainpropertiesrow-description"
@@ -239,7 +239,7 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
                   value="This is my validator description"
                 >
                   <textarea
-                    className="domain-validation-textarea form-control"
+                    className="textarea-fullwidth form-control"
                     id="domainpropertiesrow-description-1-0"
                     name="domainpropertiesrow-description"
                     onChange={[Function]}
@@ -311,7 +311,7 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
               <div>
                 <FormControl
                   bsClass="form-control"
-                  className="domain-validation-textarea"
+                  className="textarea-fullwidth"
                   componentClass="textarea"
                   id="domainpropertiesrow-errorMessage-1-0"
                   name="domainpropertiesrow-errorMessage"
@@ -320,7 +320,7 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
                   value="Test Validation Failure"
                 >
                   <textarea
-                    className="domain-validation-textarea form-control"
+                    className="textarea-fullwidth form-control"
                     id="domainpropertiesrow-errorMessage-1-0"
                     name="domainpropertiesrow-errorMessage"
                     onChange={[Function]}

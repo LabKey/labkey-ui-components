@@ -37,7 +37,7 @@ export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
             <div className="form-group">
                 <div className="storage-item-data">Reason for discarding</div>
                 <textarea
-                    className="form-control textarea-noresize"
+                    className="form-control"
                     id={DISCARD_CONSUMED_COMMENT_FIELD}
                     name={DISCARD_CONSUMED_COMMENT_FIELD}
                     placeholder="Enter comments (optional)"

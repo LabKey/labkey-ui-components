@@ -534,7 +534,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
               <div>
                 <FormControl
                   bsClass="form-control"
-                  className="domain-validation-textarea"
+                  className="textarea-fullwidth"
                   componentClass="textarea"
                   id="domainpropertiesrow-description-1-0"
                   name="domainpropertiesrow-description"
@@ -543,7 +543,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                   value="This is a range validator"
                 >
                   <textarea
-                    className="domain-validation-textarea form-control"
+                    className="textarea-fullwidth form-control"
                     id="domainpropertiesrow-description-1-0"
                     name="domainpropertiesrow-description"
                     onChange={[Function]}
@@ -588,7 +588,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
               <div>
                 <FormControl
                   bsClass="form-control"
-                  className="domain-validation-textarea"
+                  className="textarea-fullwidth"
                   componentClass="textarea"
                   id="domainpropertiesrow-errorMessage-1-0"
                   name="domainpropertiesrow-errorMessage"
@@ -597,7 +597,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                   value="Range validation failed"
                 >
                   <textarea
-                    className="domain-validation-textarea form-control"
+                    className="textarea-fullwidth form-control"
                     id="domainpropertiesrow-errorMessage-1-0"
                     name="domainpropertiesrow-errorMessage"
                     onChange={[Function]}

@@ -50,7 +50,7 @@ export class RangeValidationOptions extends PureComponent<RangeValidationOptions
                     <div>
                         <FormControl
                             componentClass="textarea"
-                            className="domain-validation-textarea"
+                            className="textarea-fullwidth"
                             rows={3}
                             id={createFormInputId(name, domainIndex, validatorIndex)}
                             name={createFormInputName(name)}

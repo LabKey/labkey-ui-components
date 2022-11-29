@@ -97,7 +97,7 @@ export class CreateUsersModal extends React.Component<Props, State> {
                 </div>
                 <FormControl
                     componentClass="textarea"
-                    className="form-control create-users-textarea"
+                    className="form-control"
                     id="create-users-email-input"
                     rows={5}
                     value={emailText || ''}
@@ -129,7 +129,7 @@ export class CreateUsersModal extends React.Component<Props, State> {
                 <div className="create-users-label-bottom">Optional message to send to new users:</div>
                 <FormControl
                     componentClass="textarea"
-                    className="form-control create-users-textarea"
+                    className="form-control"
                     id="create-users-optionalMessage-input"
                     rows={5}
                     value={optionalMessage || ''}

@@ -165,7 +165,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
               className="col-xs-7"
             >
               <textarea
-                className="form-control textarea-noresize"
+                className="form-control"
                 id="description"
                 onChange={[Function]}
                 value="This is the first dataset"
@@ -787,7 +787,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
               className="col-xs-7"
             >
               <textarea
-                className="form-control textarea-noresize"
+                className="form-control"
                 id="description"
                 onChange={[Function]}
                 value=""

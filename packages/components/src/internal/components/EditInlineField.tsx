@@ -175,7 +175,7 @@ export const EditInlineField: FC<Props> = memo(props => {
                     <textarea
                         autoFocus
                         className="form-control"
-                        cols={50}
+                        cols={100}
                         defaultValue={_value}
                         onBlur={onBlur}
                         onFocus={onTextAreaFocus}

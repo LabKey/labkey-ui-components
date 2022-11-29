@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.261.2
+*Released*: 29 November 2022
 * Issue 46756: Change aliquots grid to use default view instead of details view
 * Issue 46737: Use the proper selection key when constructing URL for assay import
 

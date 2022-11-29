@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.XX
-*Released*: XX 2022
+### version 2.261.1
+*Released*: 29 November 2022
 * Various projects container filtering fixes
   * disallow assay import for child samples at Home project
   * added isAppHomeFolder util to check folder with app folder type

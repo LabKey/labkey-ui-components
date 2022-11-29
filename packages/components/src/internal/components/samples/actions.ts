@@ -777,9 +777,8 @@ export function getSampleAliquotsQueryConfig(
 ): QueryConfig {
     const omitCol = IS_ALIQUOT_COL;
 
-    // use Detail view so we get all info even if default view has been filtered
     return {
-        schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet, ViewInfo.DETAIL_NAME),
+        schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet),
         bindURL: forGridView,
         maxRows: forGridView ? undefined : -1,
         omittedColumns: omitCols ? [...omitCols, omitCol] : [omitCol],

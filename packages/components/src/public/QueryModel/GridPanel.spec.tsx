@@ -501,10 +501,11 @@ describe('GridTitle', () => {
     }
 
     test('no title, no view', () => {
-        const tree = renderer
-            .create(<GridTitle model={model} actions={actions} allowSelections={true} allowViewCustomization={false} />)
-            .toJSON();
-        expect(tree).toBeNull();
+        const wrapper = mountWithServerContext(
+            <GridTitle model={model} actions={actions} allowSelections allowViewCustomization={false} />
+        );
+        expect(wrapper.exists('.view-header')).toBeFalsy();
+        wrapper.unmount();
     });
 
     test('title, no view', () => {
@@ -542,7 +543,7 @@ describe('GridTitle', () => {
         ) as QueryInfo;
         const model = makeTestQueryModel(SCHEMA_QUERY, sessionQueryInfo);
         const wrapper = mountWithServerContext(
-            <GridTitle {...GRID_TITLE_PROPS} model={model} allowViewCustomization={true} />,
+            <GridTitle {...GRID_TITLE_PROPS} model={model} allowViewCustomization />,
             { user: TEST_USER_PROJECT_ADMIN }
         );
         validate(wrapper, testTitle, true, true, true, false);
@@ -572,7 +573,7 @@ describe('GridTitle', () => {
         ) as QueryInfo;
         const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
         const wrapper = mountWithServerContext(
-            <GridTitle {...GRID_TITLE_PROPS} model={model} allowViewCustomization={true} />,
+            <GridTitle {...GRID_TITLE_PROPS} model={model} allowViewCustomization />,
             { user: TEST_USER_PROJECT_ADMIN }
         );
         validate(wrapper, 'No Extra Column', true, true, false, false);
@@ -587,7 +588,7 @@ describe('GridTitle', () => {
         ) as QueryInfo;
         const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
         const wrapper = mountWithServerContext(
-            <GridTitle {...GRID_TITLE_PROPS} model={model} allowViewCustomization={true} />,
+            <GridTitle {...GRID_TITLE_PROPS} model={model} allowViewCustomization />,
             { user: TEST_USER_READER }
         );
         validate(wrapper, testTitle + ' - No Extra Column', true, true, false, false);
@@ -601,7 +602,7 @@ describe('GridTitle', () => {
             .setIn(['views', 'noextracolumn', 'hidden'], true) as QueryInfo;
         const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
         const wrapper = mountWithServerContext(
-            <GridTitle {...GRID_TITLE_PROPS} model={model} allowViewCustomization={true} />,
+            <GridTitle {...GRID_TITLE_PROPS} model={model} allowViewCustomization />,
             { user: TEST_USER_READER }
         );
         validate(wrapper, testTitle, true, true, false, true);
@@ -615,7 +616,7 @@ describe('GridTitle', () => {
             .setIn(['views', 'noextracolumn', 'hidden'], true) as QueryInfo;
         const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
         const wrapper = mountWithServerContext(
-            <GridTitle actions={actions} allowSelections={true} model={model} allowViewCustomization={true} />,
+            <GridTitle actions={actions} allowSelections model={model} allowViewCustomization />,
             { user: TEST_USER_READER }
         );
         validate(wrapper, 'EditedDefault ViewUndoSave', true, true, false, true);
@@ -626,9 +627,10 @@ describe('GridTitle', () => {
         const viewSchemaQuery = SchemaQuery.create('exp.data', 'mixtures', 'noExtraColumn');
         const sessionQueryInfo = QUERY_INFO.setIn(['views', 'noextracolumn', 'hidden'], true) as QueryInfo;
         const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
-        const tree = renderer
-            .create(<GridTitle model={model} actions={actions} allowSelections={true} allowViewCustomization={false} />)
-            .toJSON();
-        expect(tree).toBeNull();
+        const wrapper = mountWithServerContext(
+            <GridTitle model={model} actions={actions} allowSelections allowViewCustomization={false} />
+        );
+        expect(wrapper.exists('.view-header')).toBeFalsy();
+        wrapper.unmount();
     });
 });

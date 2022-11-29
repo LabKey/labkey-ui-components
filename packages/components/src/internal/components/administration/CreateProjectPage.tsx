@@ -3,7 +3,7 @@ import { WithRouterProps } from 'react-router';
 import { ActionURL } from '@labkey/api';
 
 import { Page } from '../base/Page';
-import { useServerContext } from '../base/ServerContext';
+import { useServerContext, useServerContextDispatch } from '../base/ServerContext';
 import { Alert } from '../base/Alert';
 import { AppContext, useAppContext } from '../../AppContext';
 import { FolderAPIWrapper, ProjectSettingsOptions } from '../container/FolderAPIWrapper';
@@ -12,12 +12,13 @@ import { useNotificationsContext } from '../notifications/NotificationsContext';
 import { Container } from '../base/models/Container';
 import { AppURL } from '../../url/AppURL';
 
-import { getCurrentAppProperties } from '../../app/utils';
+import { getCurrentAppProperties, hasProductProjects, setProductProjects } from '../../app/utils';
 
 import { useFolderMenuContext } from '../navigation/hooks';
 import { IDNameSettings } from '../settings/NameIdSettings';
 
 import { ProjectProperties } from './ProjectProperties';
+import { invalidateFullQueryDetailsCache } from '../../query/api';
 
 export interface CreateProjectContainerProps {
     api: FolderAPIWrapper;
@@ -104,8 +105,10 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
 export const CreateProjectPage: FC<WithRouterProps> = memo(({ router }) => {
     const { api } = useAppContext<AppContext>();
     const { createNotification } = useNotificationsContext();
-    const { user } = useServerContext();
+    const { moduleContext, user } = useServerContext();
     const { reload } = useFolderMenuContext();
+    const dispatch = useServerContextDispatch();
+    const hasProjects = hasProductProjects(moduleContext);
 
     const onCreated = useCallback(
         (project: Container) => {
@@ -127,10 +130,18 @@ export const CreateProjectPage: FC<WithRouterProps> = memo(({ router }) => {
                 ),
             });
 
+            // If this is the first project created then update the moduleContext
+            if (!hasProjects) {
+                dispatch({ moduleContext: setProductProjects(moduleContext, true) });
+
+                // Invalidate caches due to moduleContext change
+                invalidateFullQueryDetailsCache();
+            }
+
             // Reload the folder menu to ensure the new project appears in the navigation for this session
             reload();
         },
-        [createNotification, reload, router]
+        [createNotification, dispatch, hasProjects, moduleContext, reload, router]
     );
 
     return (

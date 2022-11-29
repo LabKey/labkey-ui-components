@@ -17,8 +17,9 @@ import React, { FC, useRef, useState, useCallback, useEffect, memo } from 'react
 import { List } from 'immutable';
 import { Button } from 'react-bootstrap';
 
-import { useAppContext } from '../../AppContext';
 import { useServerContext } from '../base/ServerContext';
+
+import { hasPremiumModule, hasProductProjects } from '../../app/utils';
 
 import NavItem, { ParentNavItem } from './NavItem';
 import { ITab, SubNavGlobalContext } from './types';
@@ -31,8 +32,8 @@ interface Props {
 
 export const SubNav: FC<Props> = ({ noun, tabs }) => {
     const scrollable = useRef<HTMLDivElement>();
-    const { navigation } = useAppContext();
-    const { container } = useServerContext();
+    const { container, moduleContext } = useServerContext();
+    const showCurrentContainer = hasPremiumModule(moduleContext) && !hasProductProjects(moduleContext);
     const [isScrollable, setIsScrollable] = useState<boolean>(false);
     const scroll = useCallback(offset => {
         scrollable.current.scrollLeft = scrollable.current.scrollLeft + offset;
@@ -110,7 +111,7 @@ export const SubNav: FC<Props> = ({ noun, tabs }) => {
                     </div>
                 )}
 
-                {navigation.showCurrentContainer && (
+                {showCurrentContainer && (
                     <div className="container-nav">
                         <span className="fa fa-folder-open" />
                         <span className="container-nav__name" title={container.name}>

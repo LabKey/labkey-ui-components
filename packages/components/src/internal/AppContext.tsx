@@ -22,10 +22,6 @@ import { AssayAppContext } from '../assay';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from './APIWrapper';
 import { NotebookNotificationSettings, NotebookProjectSettings, WorkflowNotificationSettings } from './app/models';
 
-export interface NavigationSettings {
-    showCurrentContainer: boolean;
-}
-
 export interface AdminAppContext {
     NotebookNotificationSettingsComponent: NotebookNotificationSettings;
     NotebookProjectSettingsComponent: NotebookProjectSettings;
@@ -37,7 +33,6 @@ export interface AppContext {
     admin?: AdminAppContext;
     api?: ComponentsAPIWrapper;
     assay?: AssayAppContext;
-    navigation?: NavigationSettings;
     sampleType?: SampleTypeAppContext;
 }
 
@@ -105,8 +100,6 @@ export function AppContextProvider<T>({
         () => ({
             // Provide a default API so that external users don't have to specify it
             api: getDefaultAPIWrapper(),
-            // By default we don't show the container in SubNav, but apps can override this
-            navigation: { showCurrentContainer: false },
             ...initialContext,
         }),
         [initialContext]

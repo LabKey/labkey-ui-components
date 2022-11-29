@@ -2,15 +2,21 @@
  * Copyright (c) 2016-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { Ajax, Utils, ActionURL } from '@labkey/api';
+import { Ajax, Utils, ActionURL, Query } from '@labkey/api';
+
+import { getContainerFilter } from '../../query/api';
 
 import { AuditDetailsModel } from './models';
 
-export function getAuditDetail(auditRowId: number, auditEventType: string): Promise<AuditDetailsModel> {
+export function getAuditDetail(
+    auditRowId: number,
+    auditEventType: string,
+    containerFilter?: Query.ContainerFilter
+): Promise<AuditDetailsModel> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: ActionURL.buildURL('audit', 'GetDetailedAuditChanges.api'),
-            params: { auditRowId, auditEventType },
+            params: { auditRowId, auditEventType, containerFilter: containerFilter ?? getContainerFilter() },
             success: Utils.getCallbackWrapper(response => {
                 resolve(AuditDetailsModel.create(response));
             }),

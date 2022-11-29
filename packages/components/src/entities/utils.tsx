@@ -464,7 +464,7 @@ export function getImportItemsForAssayDefinitions(
     ignoreFilter?: boolean
 ): OrderedMap<AssayDefinitionModel, string> {
     let targetSQ;
-    const selectionKey = sampleModel?.id;
+    const selectionKey = sampleModel?.selectionKey;
 
     if (sampleModel?.queryInfo) {
         targetSQ = sampleModel.queryInfo.schemaQuery;

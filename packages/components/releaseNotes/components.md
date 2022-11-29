@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Update default panel heading styling for apps
+  * Panel default heading update to increase font size, set background to white, remove title bottom border, and remove title bottom padding
 
 ### version 2.261.0
 *Released*: 28 November 2022

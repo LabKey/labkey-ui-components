@@ -1,6 +1,10 @@
 
 .detail-component--table__fixed {
   table-layout: fixed;
+
+  tbody tr:first-child td {
+      border-top: none;
+  }
 }
 
 .detail-component--sequence--container__relative {

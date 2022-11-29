@@ -90,7 +90,7 @@ export const Setting: FC<SettingProps> = memo(props => {
     const { error, loading, saving, save, enabled } = useSetting(getUrl, setUrl, name, enabledValue, disabledValue);
     return (
         <div className="setting-checkbox">
-            {heading !== undefined && <h5>{heading}</h5>}
+            {heading !== undefined && <div className="list__bold-text margin-bottom">{heading}</div>}
 
             {loading && <LoadingSpinner />}
 

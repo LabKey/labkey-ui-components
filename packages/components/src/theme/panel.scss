@@ -2,13 +2,9 @@
     @include panel-variant($panel-content-border, $panel-content-text, $panel-content-heading-bg, $panel-content-border);
 
     & > .panel-heading {
-        border-bottom: 1px solid $panel-content-border;
+        border-bottom: none;
         margin: 15px 15px 0 15px;
         padding: 0;
-
-        & > div {
-            margin-bottom: 8px;
-        }
 
         &.panel-content-flex {
             display: flex;
@@ -50,7 +46,7 @@
 }
 .panel-default:not(.domain-form-panel) .panel-heading {
     background-color: $white;
-    border-bottom: 1px solid $panel-content-border;
+    border-bottom: none;
     margin: 15px 15px 0 15px;
-    padding: 0 0 8px 0;
+    padding: 0;
 }

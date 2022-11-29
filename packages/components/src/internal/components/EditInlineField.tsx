@@ -3,7 +3,7 @@ import moment from 'moment';
 import classNames from 'classnames';
 import Formsy from 'formsy-react';
 
-import { getColDateFormat, getDateFormat, getJsonDateTimeFormatString } from '../util/Date';
+import { getColDateFormat, getMomentDateFormat, getJsonDateTimeFormatString } from '../util/Date';
 import { Key, useEnterEscape } from '../../public/useEnterEscape';
 
 import { QueryColumn } from '../../public/QueryColumn';
@@ -45,7 +45,7 @@ export const EditInlineField: FC<Props> = memo(props => {
         tooltip,
     } = props;
     const { container } = useServerContext();
-    const dateFormat = getDateFormat(container);
+    const dateFormat = getMomentDateFormat(container);
     const isDate = type === 'date';
     const isTextArea = type === 'textarea';
     const isText = !isDate && !isTextArea;
@@ -167,7 +167,7 @@ export const EditInlineField: FC<Props> = memo(props => {
                     placeholderText={placeholder}
                     selected={dateValue}
                     showTimeSelect={!!column}
-                    dateFormat={getColDateFormat(column, column ? undefined : getDateFormat())}
+                    dateFormat={getColDateFormat(column, column ? undefined : getMomentDateFormat())}
                 />
             )}
             {state.editing && isTextArea && (

@@ -62,7 +62,7 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(({ onChange, onSuc
                 });
             }
         },
-        [api, container, dispatch, isSaving, onSuccess]
+        [api.folder, container, dispatch, isSaving, onSuccess]
     );
 
     if (container.isProject || !user.isAdmin) {
@@ -70,10 +70,9 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(({ onChange, onSuc
     }
 
     return (
-        <div className="project-settings panel">
+        <div className="project-settings panel panel-default">
+            <div className="panel-heading">Project Settings</div>
             <div className="panel-body">
-                <h4 className="settings-panel-title">Project Settings</h4>
-
                 {!!error && <Alert>{error}</Alert>}
 
                 <form className="project-settings-form form-horizontal" onSubmit={onSubmit}>
@@ -84,7 +83,7 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(({ onChange, onSuc
                     />
 
                     <div className="pull-right">
-                        <button className="btn btn-success" disabled={!dirty} type="submit">
+                        <button className="btn btn-success" disabled={isSaving || !dirty} type="submit">
                             {isSaving ? 'Saving' : 'Save'}
                         </button>
                     </div>

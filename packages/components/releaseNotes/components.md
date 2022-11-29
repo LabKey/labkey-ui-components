@@ -6,6 +6,25 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Update `PicklistOverview` to show project column when there are project folders present
 * Add `ProjectColumnRenderer` to remove link to container from Project columns
 
+### version 2.261.0
+*Released*: 28 November 2022
+* WebDav helper for deleting directories and files: deleteWebDavResource()
+* Allow for container GUID to be used instead of containerPath in webdav helpers
+
+### version 2.260.0
+*Released*: 28 November 2022
+* Updates for Admin page consistency
+  * AdminSettingsPage refactor and port from LKB and LKSM
+  * Rename GroupManagement to GroupManagementPage
+  * AuditQueriesListingPage update to get user from context so that apps don't have to wrap it
+  * UserManagementPage update to get extraRoles from AdminAppContext
+  * PermissionManagementPage port from LKB and LKSM and get extraRoles from AdminAppContext
+  * AccountSettingsPage port from LKB and LKSM and get premium components from AdminAppContext
+  * Remove settings-panel-title and revert all admin settings panels back to panel-default headings
+  * NameIdSettings to conditionally show prefix input for LKB only
+  * Remove "You have unsaved changes" alert from several components
+  * Rename util/Date.ts getDateFormat -> getMomentDateFormat and getDateTimeFormat -> getMomentDateTimeFormat
+
 ### version 2.259.0
 *Released*: 22 November 2022
 * Update `addColumns`, `changeColumn`, and `removeColumns` editable grid actions to update the new `columns` array on the `EditorModel`.

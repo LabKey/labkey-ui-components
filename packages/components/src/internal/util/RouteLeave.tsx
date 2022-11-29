@@ -90,9 +90,9 @@ export const useRouteLeave = (
     );
 
     useEffect(() => {
-        const currentRoute = routes[routes.length - 1];
+        const currentRoute = routes?.[routes.length - 1];
         // setRouteLeaveHook returns a cleanup function.
-        return router.setRouteLeaveHook(currentRoute, onRouteLeave);
+        return router?.setRouteLeaveHook(currentRoute, onRouteLeave);
     }, [onRouteLeave]);
 
     useEffect(() => {

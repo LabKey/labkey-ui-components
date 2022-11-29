@@ -25,7 +25,7 @@ import { QueryInfo } from '../../public/QueryInfo';
 import { IFile } from '../../internal/components/files/models';
 import { LoadingState } from '../../public/LoadingState';
 import { AssayStateModel } from '../../internal/components/assay/models';
-import { Container } from '../../internal/components/base/models/Container';
+import { Container, ContainerDateFormats } from '../../internal/components/base/models/Container';
 import { SchemaQuery } from '../../public/SchemaQuery';
 import { EntityDataType } from '../../internal/components/entities/models';
 
@@ -385,8 +385,15 @@ export const TEST_ASSAY_STATE_MODEL = new AssayStateModel({
     ],
 });
 
+export const TEST_DATE_FORMATS: ContainerDateFormats = {
+    dateFormat: 'yyyy-MM-dd',
+    dateTimeFormat: 'yyyy-MM-dd HH:mm',
+    numberFormat: null,
+};
+
 export const TEST_PROJECT_CONTAINER = new Container({
     activeModules: ['a', 'b', 'c'],
+    formats: TEST_DATE_FORMATS,
     id: 'a685712e-0900-103a-9486-0131958dce60',
     isContainerTab: false,
     isWorkbook: false,
@@ -408,6 +415,7 @@ export const TEST_PROJECT: Project = {
 
 export const TEST_FOLDER_CONTAINER = new Container({
     activeModules: ['a', 'b', 'c'],
+    formats: TEST_DATE_FORMATS,
     id: 'b685712f-0800-103a-9286-0131958dcf60',
     isContainerTab: false,
     isWorkbook: false,

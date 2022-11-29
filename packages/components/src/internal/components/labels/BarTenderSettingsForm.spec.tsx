@@ -42,13 +42,6 @@ describe('BarTenderSettingsForm', () => {
         wrapper.unmount();
     });
 
-    test('titleCls', () => {
-        const wrapper = mount(<BarTenderSettingsFormImpl {...DEFAULT_PROPS} titleCls="test-title-cls" />);
-        validate(wrapper, false);
-        expect(wrapper.find('.test-title-cls')).toHaveLength(1);
-        wrapper.unmount();
-    });
-
     test('with initial form values', async () => {
         const wrapper = mountWithAppServerContext(
             <BarTenderSettingsFormImpl

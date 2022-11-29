@@ -9,12 +9,7 @@ import { UserLimitSettings } from '../permissions/actions';
 
 const TITLE = 'Active Users';
 
-interface Props {
-    titleCls?: string;
-}
-
-export const ActiveUserLimit: FC<Props> = memo(props => {
-    const { titleCls } = props;
+export const ActiveUserLimit: FC = memo(() => {
     const [error, setError] = useState<string>();
     const [settings, setSettings] = useState<UserLimitSettings>();
     const { user } = useServerContext();
@@ -39,9 +34,8 @@ export const ActiveUserLimit: FC<Props> = memo(props => {
 
     return (
         <div className="active-user-limit-panel panel panel-default">
-            {!titleCls && <div className="panel-heading">{TITLE}</div>}
+            <div className="panel-heading">{TITLE}</div>
             <div className="panel-body">
-                {titleCls && <h4 className={titleCls}>{TITLE}</h4>}
                 <Alert>{error}</Alert>
                 {settings && (
                     <>

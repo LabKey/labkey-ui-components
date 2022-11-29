@@ -45,17 +45,18 @@ type Props = OwnProps & WithRouterProps & InjectedAssayModel;
 
 const AssayResultsForSamplesImpl: FC<Props & InjectedQueryModels> = memo(props => {
     const { queryModels, actions, sampleIds } = props;
-    const { user } = useServerContext();
+    const { moduleContext, user } = useServerContext();
     const [tabOrder, setTabOrder] = useState<string[]>();
     const [allowViewCustomizationForGridIds, setAllowViewCustomizationForGridIds] = useState<string[]>();
     const allModels = Object.values(queryModels);
     const allLoaded = allModels.every(model => !model.isLoading);
+    const assayEnabled = isAssayEnabled(moduleContext);
 
     useEffect(() => {
-        if (isAssayEnabled() && userCanReadAssays(user)) {
+        if (assayEnabled && userCanReadAssays(user)) {
             actions.loadAllModels(true);
         }
-    }, [actions, user]);
+    }, [actions, assayEnabled, user]);
 
     useEffect(() => {
         // only calculate the tabOrder after all models have loaded and before any
@@ -84,7 +85,7 @@ const AssayResultsForSamplesImpl: FC<Props & InjectedQueryModels> = memo(props =
         setAllowViewCustomizationForGridIds(Object.keys(models).filter(id => id !== summaryGridId));
     }, [allLoaded, tabOrder, allModels]);
 
-    if (!isAssayEnabled()) return <NotFound title={PAGE_TITLE} />;
+    if (!assayEnabled) return <NotFound title={PAGE_TITLE} />;
     if (!userCanReadAssays(user)) return <InsufficientPermissionsPage title={PAGE_TITLE} />;
     if (tabOrder === undefined) return <LoadingPage title={PAGE_TITLE} />;
 

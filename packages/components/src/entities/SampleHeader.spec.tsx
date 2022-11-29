@@ -6,6 +6,7 @@ import { makeTestQueryModel } from '../public/QueryModel/testUtils';
 import { LoadingState } from '../public/LoadingState';
 import { mountWithAppServerContext } from '../internal/testHelpers';
 import { TEST_USER_AUTHOR, TEST_USER_READER } from '../internal/userFixtures';
+
 import { SampleHeaderImpl } from './SampleHeader';
 import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
 
@@ -67,11 +68,7 @@ describe('SampleHeader', () => {
 
     test('empty model as reader', () => {
         const wrapper = mountWithAppServerContext(
-            <SampleHeaderImpl
-                {...DEFAULT_PROPS}
-                user={TEST_USER_READER}
-                sampleModel={EMPTY_MODEL}
-            />,
+            <SampleHeaderImpl {...DEFAULT_PROPS} user={TEST_USER_READER} sampleModel={EMPTY_MODEL} />,
             {},
             { user: TEST_USER_READER }
         );
@@ -107,11 +104,7 @@ describe('SampleHeader', () => {
 
     test('partial data model as reader', () => {
         const wrapper = mountWithAppServerContext(
-            <SampleHeaderImpl
-                {...DEFAULT_PROPS}
-                user={TEST_USER_READER}
-                sampleModel={PARTIAL_DATA_MODEL}
-            />,
+            <SampleHeaderImpl {...DEFAULT_PROPS} user={TEST_USER_READER} sampleModel={PARTIAL_DATA_MODEL} />,
             {},
             { user: TEST_USER_READER }
         );
@@ -126,11 +119,7 @@ describe('SampleHeader', () => {
 
     test('CreateSamplesSubMenu permissions', () => {
         let wrapper = mountWithAppServerContext(
-            <SampleHeaderImpl
-                {...DEFAULT_PROPS}
-                user={TEST_USER_READER}
-                sampleModel={DATA_MODEL}
-            />,
+            <SampleHeaderImpl {...DEFAULT_PROPS} user={TEST_USER_READER} sampleModel={DATA_MODEL} />,
             {},
             { user: TEST_USER_READER }
         );
@@ -138,11 +127,7 @@ describe('SampleHeader', () => {
         wrapper.unmount();
 
         wrapper = mountWithAppServerContext(
-            <SampleHeaderImpl
-                {...DEFAULT_PROPS}
-                user={TEST_USER_AUTHOR}
-                sampleModel={DATA_MODEL}
-            />,
+            <SampleHeaderImpl {...DEFAULT_PROPS} user={TEST_USER_AUTHOR} sampleModel={DATA_MODEL} />,
             {},
             { user: TEST_USER_AUTHOR }
         );
@@ -152,11 +137,7 @@ describe('SampleHeader', () => {
 
     test('CreateSamplesSubMenu props', () => {
         const wrapper = mountWithAppServerContext(
-            <SampleHeaderImpl
-                {...DEFAULT_PROPS}
-                user={TEST_USER_AUTHOR}
-                sampleModel={DATA_MODEL}
-            />,
+            <SampleHeaderImpl {...DEFAULT_PROPS} user={TEST_USER_AUTHOR} sampleModel={DATA_MODEL} />,
             {},
             { user: TEST_USER_AUTHOR }
         );

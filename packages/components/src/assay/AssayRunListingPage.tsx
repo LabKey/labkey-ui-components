@@ -11,6 +11,8 @@ import { isWorkflowEnabled } from '../internal/app/utils';
 
 import { RUN_PROPERTIES_REQUIRED_COLUMNS } from '../internal/components/assay/constants';
 
+import { useServerContext } from '../internal/components/base/ServerContext';
+
 import { AssayHeader } from './AssayHeader';
 import { AssayDesignHeaderButtons } from './AssayButtons';
 import { AssayOverrideBanner } from './AssayOverrideBanner';
@@ -20,7 +22,7 @@ import { assayPage } from './AssayPageHOC';
 
 const AssayRunListingPageImpl: FC<CommonPageProps & InjectedAssayModel & InjectedRouteLeaveProps> = props => {
     const { assayDefinition, assayProtocol, menu, menuInit, navigate, getIsDirty, setIsDirty } = props;
-
+    const { moduleContext } = useServerContext();
     const subTitle = 'Assay Runs';
 
     return (
@@ -38,7 +40,7 @@ const AssayRunListingPageImpl: FC<CommonPageProps & InjectedAssayModel & Injecte
                 canUpdate={assayProtocol.editableRuns}
                 queryName="Runs"
                 nounPlural="Runs"
-                requiredColumns={isWorkflowEnabled() ? RUN_PROPERTIES_REQUIRED_COLUMNS.toArray() : undefined}
+                requiredColumns={isWorkflowEnabled(moduleContext) ? RUN_PROPERTIES_REQUIRED_COLUMNS.toArray() : undefined}
             />
         </Page>
     );

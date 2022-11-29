@@ -197,7 +197,7 @@ export function isPremiumProductEnabled(moduleContext?: ModuleContext): boolean 
 }
 
 export function isAppHomeFolder(container?: Container): boolean {
-    const folderType = container?.folderType ?? getServerContext()?.container?.folderType;
+    const folderType = (container ?? getServerContext().container).folderType;
     return folderType === SAMPLE_MANAGER_APP_PROPERTIES.name || folderType === BIOLOGICS_APP_PROPERTIES.name;
 }
 

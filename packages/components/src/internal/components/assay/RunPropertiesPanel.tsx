@@ -25,10 +25,13 @@ import { QueryFormInputs } from '../forms/QueryFormInputs';
 
 import { getContainerFilterForLookups } from '../../query/api';
 
+import { useServerContext } from '../base/ServerContext';
+
 import { AssayPropertiesPanelProps } from './models';
 
 export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
     const { model, onChange, title = 'Run Details', showQuerySelectPreviewOptions } = props;
+    const { moduleContext } = useServerContext();
     const nameLabel = useMemo(
         () => (
             <LabelOverlay
@@ -67,7 +70,7 @@ export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
                         rows={2}
                         value={model.comment}
                     />
-                    {isWorkflowEnabled() && (
+                    {isWorkflowEnabled(moduleContext) && (
                         <AssayTaskInput
                             assayId={model.assayDef.id}
                             formsy

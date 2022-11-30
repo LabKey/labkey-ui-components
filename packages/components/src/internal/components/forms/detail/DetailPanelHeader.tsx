@@ -16,14 +16,14 @@
 import React from 'react';
 
 interface DetailPanelHeaderProps {
-    isEditable: boolean;
     canUpdate: boolean;
     editing?: boolean;
-    verb?: string;
+    isEditable: boolean;
     onClickFn?: () => void;
     title?: string;
-    warning?: string;
     useEditIcon: boolean;
+    verb?: string;
+    warning?: string;
 }
 
 export class DetailPanelHeader extends React.Component<DetailPanelHeaderProps, any> {

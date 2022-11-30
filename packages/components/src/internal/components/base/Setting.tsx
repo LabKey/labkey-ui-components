@@ -8,11 +8,11 @@ import { LoadingSpinner } from './LoadingSpinner';
 import { Alert } from './Alert';
 
 interface SettingState {
+    enabled: boolean;
     error: string;
     loading: boolean;
-    saving: boolean;
     save: () => void;
-    enabled: boolean;
+    saving: boolean;
 }
 
 const useSetting = (
@@ -76,13 +76,13 @@ const useSetting = (
 };
 
 interface SettingProps {
+    disabledValue?: any; // likely to be boolean, but could be integers/strings in some case
+    enabledValue?: any; // likely to be boolean, but could be integers/strings in some case
     getUrl: string;
     heading?: string;
     label: string;
     name: string;
     setUrl: string;
-    enabledValue?: any; // likely to be boolean, but could be integers/strings in some case
-    disabledValue?: any; // likely to be boolean, but could be integers/strings in some case
 }
 
 export const Setting: FC<SettingProps> = memo(props => {

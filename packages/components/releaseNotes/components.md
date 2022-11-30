@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.265.0
+*Released*: 30 November 2022
+* AssayProtocolModel: Add hasBatchFields
+* Fix circular deps between entrypoints
+  * Moved several interfaces from entities and assay entrypoints to main entrypoint
+
 ### version 2.264.0
 *Released*: 1 December 2022
 * Updates for form consistency in apps: textarea resizing

@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.263.0
+*Released*: 30 November 2022
+* Fully hide DOM for `FolderMenu` when rendering `NavigationBar` when respecting `!showFolderMenu`.
+* `QuerySelect` skip processing of stale requests.
+* Introduce `setProductProjects` to update moduleContext in React context and global context.
+* Update moduleContext and invalidate query details cache upon creation of the first project.
+
 ### version 2.262.0
 *Released*: 30 November 2022
 * Update `PicklistOverview` to show project column when there are project folders present

@@ -6,6 +6,18 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Update default panel heading styling for apps
   * Panel default heading update to increase font size, set background to white, remove title bottom border, and remove title bottom padding
 
+### version 2.261.2
+*Released*: 29 November 2022
+* Issue 46756: Change aliquots grid to use default view instead of details view
+* Issue 46737: Use the proper selection key when constructing URL for assay import
+
+### version 2.261.1
+*Released*: 29 November 2022
+* Various projects container filtering fixes
+  * disallow assay import for child samples at Home project
+  * added isAppHomeFolder util to check folder with app folder type
+  * fix cross folder audit log event detail
+
 ### version 2.261.0
 *Released*: 28 November 2022
 * WebDav helper for deleting directories and files: deleteWebDavResource()

@@ -6,6 +6,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Update `PicklistOverview` to show project column when there are project folders present
 * Add `ProjectColumnRenderer` to remove link to container from Project columns
 
+### version 2.261.3
+*Released*: 30 November 2022
+* Update default panel heading styling for apps
+  * Panel default heading update to increase font size, set background to white, remove title bottom border, and remove title bottom padding
+
 ### version 2.261.2
 *Released*: 29 November 2022
 * Issue 46756: Change aliquots grid to use default view instead of details view

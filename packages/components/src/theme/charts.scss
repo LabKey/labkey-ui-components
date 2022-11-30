@@ -17,8 +17,11 @@
 
 .horizontal-bar-section {
     width: 100%;
-    margin-top: 15px;
     margin-bottom: 20px;
+}
+
+.panel-body .horizontal-bar-section:not(:first-child) {
+    margin-top: 15px;
 }
 
 .horizontal-bar--title {

@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List, Map } from 'immutable';
-import { ActionURL, getServerContext, PermissionTypes } from '@labkey/api';
+import { ActionURL, LabKey, getServerContext, PermissionTypes } from '@labkey/api';
 
 import { useMemo } from 'react';
 
@@ -47,6 +47,8 @@ import {
     WORKFLOW_HOME_HREF,
     WORKFLOW_KEY,
 } from './constants';
+
+declare var LABKEY: LabKey;
 
 // Type definition not provided for event codes so here we provide our own
 // Source: https://www.iana.org/assignments/websocket/websocket.xml#close-code-number
@@ -171,6 +173,17 @@ export function hasProductProjects(moduleContext?: ModuleContext): boolean {
     return resolveModuleContext(moduleContext)?.query?.hasProductProjects === true;
 }
 
+export function setProductProjects(moduleContext: ModuleContext, hasProductProjects: boolean): ModuleContext {
+    // side-effect set global moduleContext
+    if (LABKEY?.moduleContext?.query) {
+        LABKEY.moduleContext.query.hasProductProjects = hasProductProjects;
+    }
+
+    return Object.assign(moduleContext ?? {}, {
+        query: Object.assign(moduleContext?.query ?? {}, { hasProductProjects }),
+    });
+}
+
 export function isSampleManagerEnabled(moduleContext?: ModuleContext): boolean {
     return resolveModuleContext(moduleContext)?.samplemanagement !== undefined;
 }
@@ -184,7 +197,7 @@ export function isPremiumProductEnabled(moduleContext?: ModuleContext): boolean 
 }
 
 export function isAppHomeFolder(container?: Container): boolean {
-    const folderType = container?.folderType ?? getServerContext()?.container?.folderType;
+    const folderType = (container ?? getServerContext().container).folderType;
     return folderType === SAMPLE_MANAGER_APP_PROPERTIES.name || folderType === BIOLOGICS_APP_PROPERTIES.name;
 }
 

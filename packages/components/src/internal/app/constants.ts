@@ -100,6 +100,7 @@ export enum ProductFeature {
     ELN = 'ELN',
     FreezerManagement = 'FreezerManagement',
     Media = 'Media',
+    Projects = 'Projects',
     SampleManagement = 'SampleManagement',
     Workflow = 'Workflow',
 }

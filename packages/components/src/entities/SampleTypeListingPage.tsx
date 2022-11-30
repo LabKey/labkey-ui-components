@@ -5,6 +5,8 @@
 import React, { FC, memo } from 'react';
 import { PermissionTypes } from '@labkey/api';
 
+import { Button } from 'react-bootstrap';
+
 import { AppURL } from '../internal/url/AppURL';
 import { useServerContext } from '../internal/components/base/ServerContext';
 import { Page } from '../internal/components/base/Page';
@@ -14,16 +16,17 @@ import { RequiresPermission } from '../internal/components/base/Permissions';
 
 import { SampleTypeEmptyAlert } from '../internal/components/samples/SampleEmptyAlert';
 
-import { SampleTypeSummary } from './SampleTypeSummary';
-import { Button } from 'react-bootstrap';
 import { NEW_SAMPLE_TYPE_HREF, SAMPLES_KEY } from '../internal/app/constants';
 import { CommonPageProps } from '../internal/models';
 import { LoadingPage } from '../internal/components/base/LoadingPage';
+
+import { SampleTypeSummary } from './SampleTypeSummary';
+
 import { useSampleTypeAppContext } from './SampleTypeAppContext';
 
 export const SampleTypeListingPage: FC<CommonPageProps> = memo(props => {
     const { menu, navigate } = props;
-    const { user } = useServerContext();
+    const { moduleContext, user } = useServerContext();
     const { sampleTypeListingCaption } = useSampleTypeAppContext();
     const title = 'Sample Types';
 
@@ -40,23 +43,22 @@ export const SampleTypeListingPage: FC<CommonPageProps> = memo(props => {
                 caption={sampleTypeListingCaption}
                 context={
                     <>
-                        {isSampleStatusEnabled() && (
+                        {isSampleStatusEnabled(moduleContext) && (
                             <RequiresPermission perms={PermissionTypes.Admin}>
                                 <a href={AppURL.create('admin', 'settings').toHref()} className="right-spacing">
                                     Manage Sample Statuses
                                 </a>
                             </RequiresPermission>
                         )}
-                        {user.hasDesignSampleTypesPermission() ?
-                            <Button bsStyle="success" href={NEW_SAMPLE_TYPE_HREF.toHref()}>Create Sample Type</Button>
-                            : undefined
-                        }
+                        {user.hasDesignSampleTypesPermission() && (
+                            <Button bsStyle="success" href={NEW_SAMPLE_TYPE_HREF.toHref()}>
+                                Create Sample Type
+                            </Button>
+                        )}
                     </>
                 }
             >
-                {hasSampleTypes && (
-                    <SampleTypeSummary user={user} navigate={navigate}  />
-                )}
+                {hasSampleTypes && <SampleTypeSummary user={user} navigate={navigate} />}
                 {!hasSampleTypes && <SampleTypeEmptyAlert />}
             </Section>
         </Page>

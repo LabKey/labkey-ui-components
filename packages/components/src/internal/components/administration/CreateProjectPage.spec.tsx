@@ -1,4 +1,5 @@
 import React from 'react';
+import { act } from 'react-dom/test-utils';
 
 import { mountWithAppServerContext, mountWithServerContext, waitForLifecycle } from '../../testHelpers';
 
@@ -12,11 +13,9 @@ import { createMockWithRouterProps } from '../../mockUtils';
 
 import { AppURL } from '../../url/AppURL';
 
-import { CreateProjectContainer, CreateProjectContainerProps, CreateProjectPage } from './CreateProjectPage';
+import { TEST_LIMS_STARTER_MODULE_CONTEXT } from '../../productFixtures';
 
-beforeAll(() => {
-    LABKEY.moduleContext.biologics = { productId: ['Biologics'] };
-});
+import { CreateProjectContainer, CreateProjectContainerProps, CreateProjectPage } from './CreateProjectPage';
 
 describe('CreateProjectPage', () => {
     function getDefaultProps(overrides?: Partial<FolderAPIWrapper>): CreateProjectContainerProps {
@@ -27,6 +26,16 @@ describe('CreateProjectPage', () => {
         };
     }
 
+    const { location } = window;
+
+    beforeAll(() => {
+        delete window.location;
+    });
+
+    afterAll(() => {
+        window.location = location;
+    });
+
     test('submits data', async () => {
         // Arrange
         const project = TEST_FOLDER_CONTAINER;
@@ -35,7 +44,8 @@ describe('CreateProjectPage', () => {
 
         // Act
         const wrapper = mountWithServerContext(
-            <CreateProjectContainer {...getDefaultProps({ createProject })} onCreated={onCreated} />
+            <CreateProjectContainer {...getDefaultProps({ createProject })} onCreated={onCreated} />,
+            { moduleContext: TEST_LIMS_STARTER_MODULE_CONTEXT }
         );
 
         // Assert
@@ -58,11 +68,18 @@ describe('CreateProjectPage', () => {
     });
 
     test('page displays notifications and reroutes', async () => {
+        window.location = Object.assign(
+            { ...location },
+            {
+                pathname: 'labkey/Biologics/samplemanager-app.view#',
+            }
+        );
+
         const replace = jest.fn();
         const wrapper = mountWithAppServerContext(
             <CreateProjectPage {...createMockWithRouterProps(jest.fn, { replace })} />,
             undefined,
-            { user: TEST_USER_APP_ADMIN }
+            { moduleContext: TEST_LIMS_STARTER_MODULE_CONTEXT, user: TEST_USER_APP_ADMIN }
         );
 
         const container = wrapper.find(CreateProjectContainer);
@@ -70,8 +87,10 @@ describe('CreateProjectPage', () => {
         const onCreated = container.prop('onCreated');
         expect(onCreated).toBeDefined();
 
-        // Simulate creation of a project
-        onCreated(TEST_FOLDER_CONTAINER);
+        act(() => {
+            // Simulate creation of a project
+            onCreated(TEST_FOLDER_CONTAINER);
+        });
 
         await waitForLifecycle(wrapper);
         expect(replace).toHaveBeenCalledWith(AppURL.create('admin', 'projects').toString());

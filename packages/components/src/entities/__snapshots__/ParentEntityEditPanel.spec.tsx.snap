@@ -84,13 +84,12 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                 useEditIcon={true}
                 verb="Editing"
               >
-                <div
+                Editing
+                 
+                Test 123
+                <span
                   className="detail__edit--heading"
-                >
-                  Editing
-                   
-                  Test 123
-                </div>
+                />
               </DetailPanelHeader>
             </div>
           </PanelHeading>
@@ -4879,11 +4878,10 @@ exports[`ParentEntityEditPanel error state 1`] = `
                 useEditIcon={true}
                 verb="Editing"
               >
-                <div
+                Test 123
+                <span
                   className="detail__edit--heading"
-                >
-                  Test 123
-                </div>
+                />
               </DetailPanelHeader>
             </div>
           </PanelHeading>
@@ -5279,11 +5277,10 @@ exports[`ParentEntityEditPanel loading state 1`] = `
                 useEditIcon={true}
                 verb="Editing"
               >
-                <div
+                Test 123
+                <span
                   className="detail__edit--heading"
-                >
-                  Test 123
-                </div>
+                />
               </DetailPanelHeader>
             </div>
           </PanelHeading>

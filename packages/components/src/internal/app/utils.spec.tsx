@@ -50,6 +50,7 @@ import {
     isSampleStatusEnabled,
     isWorkflowEnabled,
     sampleManagerIsPrimaryApp,
+    setProductProjects,
     userCanDesignLocations,
     userCanDesignSourceTypes,
     userCanEditStorageData,
@@ -562,6 +563,16 @@ describe('utils', () => {
         expect(
             isProductNavigationEnabled(BIOLOGICS_APP_PROPERTIES.productId, { biologics: {}, samplemanagement: {} })
         ).toBeTruthy();
+    });
+
+    test('setProductProjects', () => {
+        expect(setProductProjects({}, true)).toEqual({ query: { hasProductProjects: true } });
+        expect(setProductProjects({ query: { hasProductProjects: false } }, true)).toEqual({
+            query: { hasProductProjects: true },
+        });
+        LABKEY.moduleContext = { query: { ken: 'griffey' } };
+        setProductProjects({ query: { hasProductProjects: true } }, false);
+        expect(LABKEY.moduleContext.query).toEqual({ hasProductProjects: false, ken: 'griffey' });
     });
 
     test('hasPremiumModule', () => {

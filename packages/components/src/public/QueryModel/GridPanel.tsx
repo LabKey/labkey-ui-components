@@ -320,9 +320,9 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
         onRevertView?.();
     }, [model, onRevertView, actions, allowSelections]);
 
-    const _onSaveCurrentView = (): void => {
+    const _onSaveCurrentView = useCallback((): void => {
         onSaveView(user?.isAdmin);
-    };
+    }, [onSaveView, user]);
 
     if (!displayTitle && (!allowViewCustomization || (!isEdited && !isUpdated))) {
         return null;

@@ -40,7 +40,9 @@ const AssayRunListingPageImpl: FC<CommonPageProps & InjectedAssayModel & Injecte
                 canUpdate={assayProtocol.editableRuns}
                 queryName="Runs"
                 nounPlural="Runs"
-                requiredColumns={isWorkflowEnabled(moduleContext) ? RUN_PROPERTIES_REQUIRED_COLUMNS.toArray() : undefined}
+                requiredColumns={
+                    isWorkflowEnabled(moduleContext) ? RUN_PROPERTIES_REQUIRED_COLUMNS.toArray() : undefined
+                }
             />
         </Page>
     );

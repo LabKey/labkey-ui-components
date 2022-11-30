@@ -13,8 +13,9 @@ import { createMockWithRouterProps } from '../../mockUtils';
 
 import { AppURL } from '../../url/AppURL';
 
-import { CreateProjectContainer, CreateProjectContainerProps, CreateProjectPage } from './CreateProjectPage';
 import { TEST_LIMS_STARTER_MODULE_CONTEXT } from '../../productFixtures';
+
+import { CreateProjectContainer, CreateProjectContainerProps, CreateProjectPage } from './CreateProjectPage';
 
 describe('CreateProjectPage', () => {
     function getDefaultProps(overrides?: Partial<FolderAPIWrapper>): CreateProjectContainerProps {

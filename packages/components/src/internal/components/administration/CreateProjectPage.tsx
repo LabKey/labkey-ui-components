@@ -17,8 +17,9 @@ import { getCurrentAppProperties, hasProductProjects, setProductProjects } from 
 import { useFolderMenuContext } from '../navigation/hooks';
 import { IDNameSettings } from '../settings/NameIdSettings';
 
-import { ProjectProperties } from './ProjectProperties';
 import { invalidateFullQueryDetailsCache } from '../../query/api';
+
+import { ProjectProperties } from './ProjectProperties';
 
 export interface CreateProjectContainerProps {
     api: FolderAPIWrapper;

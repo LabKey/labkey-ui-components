@@ -111,7 +111,7 @@ export const AssayGridButtons: FC<AssayGridButtonsComponentProps> = memo(props =
     if (showQCButton) manageItemCount++;
     const showManageBtn = manageItemCount > 1;
 
-    if (!showImportBtn && manageItemCount == 0 && !showSampleBtn) {
+    if (!showImportBtn && manageItemCount === 0 && !showSampleBtn) {
         return null;
     }
 
@@ -192,7 +192,7 @@ export const AssayGridButtons: FC<AssayGridButtonsComponentProps> = memo(props =
                     metricFeatureArea="assayResultsSampleButton"
                     sampleFinderProps={sampleFinderProps}
                 >
-                    {isWorkflowEnabled() && (
+                    {isWorkflowEnabled(moduleContext) && (
                         <>
                             <MenuItem header>Jobs</MenuItem>
                             <JobsMenuOptionsComponent user={user} model={model} isAssay />
@@ -452,13 +452,14 @@ const AssayGridBody = withQueryModels<AssayGridPanelProps>(AssayGridBodyImpl);
 export const AssayGridPanel: FC<AssayGridPanelProps> = memo(props => {
     const { assayDefinition, filters, queryName, requiredColumns } = props;
     const { protocolSchemaName } = assayDefinition;
+    const { moduleContext } = useServerContext();
     const id = `${protocolSchemaName}.${queryName}`;
     const hasBatchDomain = assayDefinition.getDomainByType(AssayDomainTypes.BATCH).size > 0; // Issue 39412
     const omittedColumns = [];
     if (!hasBatchDomain) {
         omittedColumns.push('Batch');
     }
-    if (!isWorkflowEnabled()) {
+    if (!isWorkflowEnabled(moduleContext)) {
         omittedColumns.push('WorkflowTask');
     }
     const queryConfigs = {

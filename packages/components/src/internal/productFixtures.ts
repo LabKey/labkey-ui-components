@@ -1,4 +1,9 @@
-import { FREEZER_MANAGER_APP_PROPERTIES, ProductFeature, SAMPLE_MANAGER_APP_PROPERTIES } from './app/constants';
+import {
+    BIOLOGICS_APP_PROPERTIES,
+    FREEZER_MANAGER_APP_PROPERTIES,
+    ProductFeature,
+    SAMPLE_MANAGER_APP_PROPERTIES,
+} from './app/constants';
 
 export const TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT = {
     api: {
@@ -42,5 +47,27 @@ export const TEST_LKS_STARTER_MODULE_CONTEXT = {
     },
     core: {
         productFeatures: [ProductFeature.Assay],
+    },
+};
+
+export const TEST_LIMS_STARTER_MODULE_CONTEXT = {
+    biologics: {
+        productId: BIOLOGICS_APP_PROPERTIES.productId,
+    },
+    core: {
+        productFeatures: [
+            ProductFeature.Assay,
+            ProductFeature.ELN,
+            ProductFeature.FreezerManagement,
+            ProductFeature.Projects,
+            ProductFeature.SampleManagement,
+            ProductFeature.Workflow,
+        ],
+    },
+    inventory: {
+        productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
+    },
+    samplemanagement: {
+        productId: SAMPLE_MANAGER_APP_PROPERTIES.productId,
     },
 };

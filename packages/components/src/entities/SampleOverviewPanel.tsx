@@ -12,6 +12,8 @@ import { getContainerFilterForLookups } from '../internal/query/api';
 
 import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 
+import { useServerContext } from '../internal/components/base/ServerContext';
+
 import { SampleAliquotsSummary } from './SampleAliquotsSummary';
 import { SampleDetailEditing } from './SampleDetailEditing';
 
@@ -43,6 +45,7 @@ export const SampleOverviewPanel: FC<Props> = memo(props => {
         noun,
         SampleStorageLocationComponent,
     } = props;
+    const { moduleContext } = useServerContext();
     const { getWorkflowGridQueryConfigs, ReferencingNotebooksComponent, detailRenderer } = useSampleTypeAppContext();
     const [isEditing, setIsEditing] = useState(false);
     const row = useMemo(() => {
@@ -113,7 +116,7 @@ export const SampleOverviewPanel: FC<Props> = memo(props => {
                             />
                         </div>
                     )}
-                    {isELNEnabled() && ReferencingNotebooksComponent && (
+                    {isELNEnabled(moduleContext) && ReferencingNotebooksComponent && (
                         <div className="col-xs-12 col-md-4">
                             <ReferencingNotebooksComponent
                                 label={sampleName}
@@ -141,7 +144,7 @@ export const SampleOverviewPanel: FC<Props> = memo(props => {
                         sampleSet={sampleType}
                     />
                 </div>
-                {isMedia && isELNEnabled() && ReferencingNotebooksComponent && (
+                {isMedia && isELNEnabled(moduleContext) && ReferencingNotebooksComponent && (
                     <div className="col-md-5">
                         <ReferencingNotebooksComponent
                             label={sampleName}

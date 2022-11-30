@@ -171,6 +171,7 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
         showLoading: true,
     };
 
+    private lastRequest: Record<string, string>;
     private querySelectTimer: number;
 
     constructor(props: QuerySelectOwnProps) {
@@ -208,6 +209,7 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
     };
 
     loadOptions = (input: string): Promise<SelectInputOption[]> => {
+        const request = (this.lastRequest = {});
         clearTimeout(this.querySelectTimer);
 
         // If loadOptions occurs prior to call to "onFocus" then there is no need to "loadOnFocus".
@@ -223,6 +225,10 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
                     const { model } = this.state;
 
                     const data = await model.search(input);
+
+                    // Issue 46816: Skip processing stale requests
+                    if (request !== this.lastRequest) return;
+                    delete this.lastRequest;
 
                     const models = fromJS(data.models[data.key]);
 

@@ -68,7 +68,7 @@ const AssayRunDetailsPageBodyImpl: FC<Props & InjectedQueryModels & Notification
 
     const [editingRunDetails, setEditingRunDetails] = useState<boolean>(false);
     const [editingResults, setEditingResults] = useState<boolean>(false);
-    const elnEnabled = isELNEnabled();
+    const elnEnabled = isELNEnabled(moduleContext);
     const subTitle = 'Assay Run Details';
     const resultsFilter = [
         Filter.create('Run/rowId', runId),
@@ -80,7 +80,7 @@ const AssayRunDetailsPageBodyImpl: FC<Props & InjectedQueryModels & Notification
 
     const onQCStateUpdate = useCallback(() => {
         actions.loadModel(model.id);
-    }, [actions]);
+    }, [actions, model.id]);
 
     const onRunDetailUpdate = useCallback(() => {
         actions.loadModel(model.id);
@@ -200,6 +200,7 @@ const AssayRunDetailsPageImpl: FC<Props & InjectedQueryModels> = memo(props => {
         [assayDefinition.protocolSchemaName, runId]
     );
     const { qcEnabledForApp } = useAssayAppContext();
+    const { moduleContext } = useServerContext();
 
     const queryConfigs = useMemo(
         () => ({
@@ -207,14 +208,14 @@ const AssayRunDetailsPageImpl: FC<Props & InjectedQueryModels> = memo(props => {
                 baseFilters: [Filter.create('Replaced', undefined, Filter.Types.NONBLANK)],
                 keyValue: runId,
                 requiredColumns:
-                    qcEnabledForApp && isAssayQCEnabled()
+                    qcEnabledForApp && isAssayQCEnabled(moduleContext)
                         ? RUN_PROPERTIES_REQUIRED_COLUMNS.concat(['LSID', 'QCFlags']).toArray()
                         : RUN_PROPERTIES_REQUIRED_COLUMNS.toArray(),
                 schemaQuery: SchemaQuery.create(assayDefinition.protocolSchemaName, 'Runs'),
-                omittedColumns: isWorkflowEnabled() ? undefined : ['WorkflowTask'],
+                omittedColumns: isWorkflowEnabled(moduleContext) ? undefined : ['WorkflowTask'],
             },
         }),
-        [assayDefinition.protocolSchemaName, runId, id, qcEnabledForApp]
+        [assayDefinition.protocolSchemaName, moduleContext, runId, id, qcEnabledForApp]
     );
 
     return <AssayRunDetailsPageBody {...props} autoLoad key={id} queryConfigs={queryConfigs} />;

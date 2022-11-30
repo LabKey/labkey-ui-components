@@ -55,6 +55,7 @@ export const PrefixDescription: FC = memo(() => {
 
 export const IDNameSettings: FC = memo(() => {
     const [prefix, setPrefix] = useState<string>();
+    const { moduleContext } = useServerContext();
 
     const onPrefixChange = useCallback(evt => {
         setPrefix(evt.target.value);
@@ -75,7 +76,7 @@ export const IDNameSettings: FC = memo(() => {
                 </Col>
             </FormGroup>
 
-            {biologicsIsPrimaryApp() && (
+            {biologicsIsPrimaryApp(moduleContext) && (
                 <FormGroup controlId="id-name-prop-prefix">
                     <Col componentClass={ControlLabel} xs={12} sm={2} className="text-left">
                         ID/Name Prefix

@@ -96,7 +96,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
     const [showPrintDialog, setShowPrintDialog] = useState<boolean>(false);
     const sampleId = useMemo(() => sampleModel.getRowValue('RowId'), [sampleModel]);
     const sampleIds = useMemo(() => [sampleId], [sampleId]);
-    const { user } = useServerContext();
+    const { moduleContext, user } = useServerContext();
 
     const isMedia = queryInfo?.isMedia;
 
@@ -211,7 +211,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
         const color = caseInsensitive(row, 'SampleSet/LabelColor')?.value;
         const labelDisplay = getTitleDisplay(sampleType, hasActiveJob);
         return color ? <ColorIcon label={labelDisplay} useSmall value={color} /> : sampleType;
-    }, [row, subtitle]);
+    }, [hasActiveJob, row, subtitle]);
 
     return (
         <>
@@ -257,7 +257,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                             )}
 
                             {!isMedia &&
-                                isAssayEnabled() &&
+                                isAssayEnabled(moduleContext) &&
                                 (!isCrossFolder || isProjectContainer(sampleContainer?.path)) && (
                                     <RequiresPermission user={user} perms={PermissionTypes.Insert}>
                                         <AssayImportSubMenuItem
@@ -280,7 +280,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                                     />
                                 </RequiresPermission>
                             )}
-                            {isWorkflowEnabled() && (
+                            {isWorkflowEnabled(moduleContext) && (
                                 <RequiresPermission user={user} perms={PermissionTypes.ManageSampleWorkflows}>
                                     <DisableableMenuItem
                                         href={getJobCreationHref(sampleModel, undefined, true)}

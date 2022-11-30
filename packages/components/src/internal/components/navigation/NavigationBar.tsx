@@ -96,19 +96,15 @@ export const NavigationBar: FC<Props> = memo(props => {
     const _showNotifications = showNotifications !== false && !!notificationsConfig && !!user && !user.isGuest;
     const _showProductNav = showProductNav !== false && shouldShowProductNavigation(user, moduleContext);
     const hasSubNav = Children.count(children) > 0;
-    const className = classNames('app-navigation', { 'with-sub-nav': hasSubNav });
+
     return (
-        <div className={className}>
+        <div className={classNames('app-navigation', { 'with-sub-nav': hasSubNav })}>
             <nav className="main-nav navbar navbar-container test-loc-nav-header">
                 <div className="container">
                     <div className="row">
                         <div className="navbar-left col-xs-8 col-md-7">
                             <span className="navbar-item pull-left">{brand}</span>
-                            {showFolderMenu && (
-                                <span className="navbar-item">
-                                    <FolderMenu key={folderMenuContext.key} />
-                                </span>
-                            )}
+                            {showFolderMenu && <FolderMenu key={folderMenuContext.key} />}
                             {showNavMenu && !!model && (
                                 <span className="navbar-item">
                                     <ProductMenu model={model} sectionConfigs={menuSectionConfigs} />

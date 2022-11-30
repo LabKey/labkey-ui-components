@@ -25,6 +25,8 @@ import { useLabelPrintingContext } from '../internal/components/labels/LabelPrin
 import { PrintLabelsModal } from '../internal/components/labels/PrintLabelsModal';
 import { useNotificationsContext } from '../internal/components/notifications/NotificationsContext';
 
+import { useServerContext } from '../internal/components/base/ServerContext';
+
 import { useSampleTypeAppContext } from './SampleTypeAppContext';
 import { EntityDeleteModal } from './EntityDeleteModal';
 import { SamplesAssayButton } from './SamplesAssayButton';
@@ -43,6 +45,7 @@ interface AliquotGridButtonsProps {
 const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> = props => {
     const { afterAction, lineageUpdateAllowed, model, onDelete, user, assayProviderType } = props;
     const { JobsButtonComponent, SampleStorageButtonComponent } = useSampleTypeAppContext();
+    const { moduleContext } = useServerContext();
     const metricFeatureArea = 'sampleAliquots';
 
     const moreItems = [];
@@ -54,7 +57,7 @@ const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> 
         button: <PicklistButton model={model} user={user} metricFeatureArea={metricFeatureArea} />,
         perm: PermissionTypes.ManagePicklists,
     });
-    if (JobsButtonComponent && isWorkflowEnabled()) {
+    if (JobsButtonComponent && isWorkflowEnabled(moduleContext)) {
         moreItems.push({
             button: <JobsButtonComponent model={model} user={user} metricFeatureArea={metricFeatureArea} />,
             perm: PermissionTypes.ManageSampleWorkflows,
@@ -74,7 +77,7 @@ const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> 
             perm: PermissionTypes.EditStorageData,
         });
     }
-    if (isAssayEnabled()) {
+    if (isAssayEnabled(moduleContext)) {
         moreItems.push({
             button: <AssayResultsForSamplesButton user={user} model={model} metricFeatureArea={metricFeatureArea} />,
             perm: PermissionTypes.ReadAssay,

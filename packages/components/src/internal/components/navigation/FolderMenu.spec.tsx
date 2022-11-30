@@ -13,10 +13,12 @@ import { AppContext } from '../../AppContext';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
 
-import { FolderMenu } from './FolderMenu';
+import { ServerContext } from '../base/ServerContext';
+
+import { FolderMenu, FolderMenuProps } from './FolderMenu';
 
 describe('FolderMenu', () => {
-    function getDefaultProps() {
+    function getDefaultProps(): FolderMenuProps {
         return {
             appProperties: BIOLOGICS_APP_PROPERTIES,
         };
@@ -33,7 +35,7 @@ describe('FolderMenu', () => {
         };
     }
 
-    function getDefaultServerContext() {
+    function getDefaultServerContext(): Partial<ServerContext> {
         return {
             container: TEST_PROJECT_CONTAINER,
         };
@@ -56,6 +58,20 @@ describe('FolderMenu', () => {
         await waitForLifecycle(wrapper);
 
         expect(wrapper.find(Alert).text()).toEqual(`Error: ${expectedError}`);
+    });
+
+    it('does not display when no projects are retrieved', async () => {
+        const wrapper = mountWithAppServerContext(
+            <FolderMenu {...getDefaultProps()} />,
+            getDefaultAppContext({ fetchContainers: jest.fn().mockResolvedValue([TEST_PROJECT_CONTAINER]) }),
+            getDefaultServerContext()
+        );
+
+        // load
+        await waitForLifecycle(wrapper);
+
+        expect(wrapper.find(Dropdown).exists()).toBeFalsy();
+        expect(wrapper.find(MenuItem).exists()).toBeFalsy();
     });
 
     it('loads successfully', async () => {

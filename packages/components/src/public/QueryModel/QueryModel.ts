@@ -834,7 +834,7 @@ export class QueryModel {
      * Key to attach to selections, which are specific to a view
      */
     get selectionKey(): string {
-        return this.id + (this.viewName ? '/' + encodePart(this.viewName).toLowerCase() : '');
+        return this.id + (this.viewName && this.viewName !== ViewInfo.DETAIL_NAME ? '/' + encodePart(this.viewName).toLowerCase() : '');
     }
 
     /**

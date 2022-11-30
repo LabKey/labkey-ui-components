@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.262.0
+*Released*: 30 November 2022
+* Update `PicklistOverview` to show project column when there are project folders present
+* Add `ProjectColumnRenderer` to remove link to container from Project columns
+
 ### version 2.261.3
 *Released*: 30 November 2022
 * Update default panel heading styling for apps

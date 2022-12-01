@@ -85,7 +85,7 @@ export function DescriptionInput(props: InputProps) {
             helpTipBody={<p>A short description for this assay design.</p>}
         >
             <textarea
-                className="form-control textarea-noresize"
+                className="form-control"
                 id={FORM_IDS.ASSAY_DESCRIPTION}
                 value={props.model.description || ''}
                 onChange={props.onChange}

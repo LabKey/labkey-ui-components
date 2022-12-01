@@ -113,7 +113,7 @@ exports[`DataClassPropertiesPanel custom properties 1`] = `
           className="col-xs-10"
         >
           <textarea
-            className="form-control textarea-noresize"
+            className="form-control"
             id="entity-description"
             onChange={[Function]}
             value=""
@@ -263,7 +263,7 @@ exports[`DataClassPropertiesPanel default properties 1`] = `
           className="col-xs-10"
         >
           <textarea
-            className="form-control textarea-noresize"
+            className="form-control"
             id="entity-description"
             onChange={[Function]}
             value=""

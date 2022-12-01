@@ -56,7 +56,7 @@ exports[`<EntityDetailsForm/> default properties 1`] = `
       className="col-xs-10"
     >
       <textarea
-        className="form-control textarea-noresize"
+        className="form-control"
         id="entity-description"
         onChange={[MockFunction]}
         value=""
@@ -162,7 +162,7 @@ exports[`<EntityDetailsForm/> initial data 1`] = `
       className="col-xs-10"
     >
       <textarea
-        className="form-control textarea-noresize"
+        className="form-control"
         id="entity-description"
         onChange={[MockFunction]}
         value="Test Entity Description"
@@ -268,7 +268,7 @@ exports[`<EntityDetailsForm/> nameExpression properties 1`] = `
       className="col-xs-10"
     >
       <textarea
-        className="form-control textarea-noresize"
+        className="form-control"
         id="entity-description"
         onChange={[MockFunction]}
         value=""
@@ -375,7 +375,7 @@ exports[`<EntityDetailsForm/> with formValues 1`] = `
       className="col-xs-10"
     >
       <textarea
-        className="form-control textarea-noresize"
+        className="form-control"
         id="entity-description"
         onChange={[MockFunction]}
         value="Test Entity Description"
@@ -573,7 +573,7 @@ exports[`<EntityDetailsForm/> with previewName 1`] = `
               className="col-xs-10"
             >
               <textarea
-                className="form-control textarea-noresize"
+                className="form-control"
                 id="entity-description"
                 onChange={[MockFunction]}
                 value="Test Entity Description"

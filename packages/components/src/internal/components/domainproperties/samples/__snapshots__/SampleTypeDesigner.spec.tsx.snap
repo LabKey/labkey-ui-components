@@ -118,7 +118,7 @@ exports[`SampleTypeDesigner custom properties 1`] = `
               className="col-xs-10"
             >
               <textarea
-                className="form-control textarea-noresize"
+                className="form-control"
                 id="entity-description"
                 onChange={[Function]}
                 value=""
@@ -464,7 +464,7 @@ exports[`SampleTypeDesigner default properties 1`] = `
               className="col-xs-10"
             >
               <textarea
-                className="form-control textarea-noresize"
+                className="form-control"
                 id="entity-description"
                 onChange={[Function]}
                 value=""
@@ -2200,7 +2200,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                               className="col-xs-10"
                                             >
                                               <textarea
-                                                className="form-control textarea-noresize"
+                                                className="form-control"
                                                 id="entity-description"
                                                 onChange={[Function]}
                                                 value=""
@@ -4803,7 +4803,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                           </div>
                                                                                           <FormControl
                                                                                             bsClass="form-control"
-                                                                                            className="form-control textarea-noresize"
                                                                                             componentClass="textarea"
                                                                                             disabled={false}
                                                                                             id="domainpropertiesrow-description-0-0"
@@ -4813,7 +4812,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                             value=""
                                                                                           >
                                                                                             <textarea
-                                                                                              className="form-control textarea-noresize form-control"
+                                                                                              className="form-control"
                                                                                               disabled={false}
                                                                                               id="domainpropertiesrow-description-0-0"
                                                                                               name="domainpropertiesrow-description"

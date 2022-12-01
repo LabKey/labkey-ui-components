@@ -192,7 +192,7 @@ exports[`BasicPropertiesFields existing list, existing properties 1`] = `
       className="col-lg-8 col-xs-9"
     >
       <textarea
-        className="form-control textarea-noresize"
+        className="form-control"
         id="description"
         onChange={[MockFunction]}
         value=""
@@ -269,7 +269,7 @@ exports[`BasicPropertiesFields new list, default properties 1`] = `
       className="col-lg-8 col-xs-9"
     >
       <textarea
-        className="form-control textarea-noresize"
+        className="form-control"
         id="description"
         onChange={[MockFunction]}
         value=""

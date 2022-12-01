@@ -1447,7 +1447,6 @@ exports[`DomainRow Sample Field 1`] = `
                                                       </div>
                                                       <FormControl
                                                         bsClass="form-control"
-                                                        className="form-control textarea-noresize"
                                                         componentClass="textarea"
                                                         disabled={false}
                                                         id="domainpropertiesrow-description-1-0"
@@ -1457,7 +1456,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                         value=""
                                                       >
                                                         <textarea
-                                                          className="form-control textarea-noresize form-control"
+                                                          className="form-control"
                                                           disabled={false}
                                                           id="domainpropertiesrow-description-1-0"
                                                           name="domainpropertiesrow-description"
@@ -3466,7 +3465,6 @@ exports[`DomainRow client side warning on field 1`] = `
                                                       </div>
                                                       <FormControl
                                                         bsClass="form-control"
-                                                        className="form-control textarea-noresize"
                                                         componentClass="textarea"
                                                         disabled={false}
                                                         id="domainpropertiesrow-description-1-1"
@@ -3476,7 +3474,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                         value=""
                                                       >
                                                         <textarea
-                                                          className="form-control textarea-noresize form-control"
+                                                          className="form-control"
                                                           disabled={false}
                                                           id="domainpropertiesrow-description-1-1"
                                                           name="domainpropertiesrow-description"
@@ -5383,7 +5381,6 @@ exports[`DomainRow date time field 1`] = `
                                                       </div>
                                                       <FormControl
                                                         bsClass="form-control"
-                                                        className="form-control textarea-noresize"
                                                         componentClass="textarea"
                                                         disabled={false}
                                                         id="domainpropertiesrow-description-1-0"
@@ -5393,7 +5390,7 @@ exports[`DomainRow date time field 1`] = `
                                                         value=""
                                                       >
                                                         <textarea
-                                                          className="form-control textarea-noresize form-control"
+                                                          className="form-control"
                                                           disabled={false}
                                                           id="domainpropertiesrow-description-1-0"
                                                           name="domainpropertiesrow-description"
@@ -7419,7 +7416,6 @@ exports[`DomainRow decimal field 1`] = `
                                                       </div>
                                                       <FormControl
                                                         bsClass="form-control"
-                                                        className="form-control textarea-noresize"
                                                         componentClass="textarea"
                                                         disabled={false}
                                                         id="domainpropertiesrow-description-1-2"
@@ -7429,7 +7425,7 @@ exports[`DomainRow decimal field 1`] = `
                                                         value=""
                                                       >
                                                         <textarea
-                                                          className="form-control textarea-noresize form-control"
+                                                          className="form-control"
                                                           disabled={false}
                                                           id="domainpropertiesrow-description-1-2"
                                                           name="domainpropertiesrow-description"
@@ -9255,7 +9251,6 @@ exports[`DomainRow participant id field 1`] = `
                                                       </div>
                                                       <FormControl
                                                         bsClass="form-control"
-                                                        className="form-control textarea-noresize"
                                                         componentClass="textarea"
                                                         disabled={false}
                                                         id="domainpropertiesrow-description-1-0"
@@ -9265,7 +9260,7 @@ exports[`DomainRow participant id field 1`] = `
                                                         value=""
                                                       >
                                                         <textarea
-                                                          className="form-control textarea-noresize form-control"
+                                                          className="form-control"
                                                           disabled={false}
                                                           id="domainpropertiesrow-description-1-0"
                                                           name="domainpropertiesrow-description"
@@ -11314,7 +11309,6 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                       </div>
                                                       <FormControl
                                                         bsClass="form-control"
-                                                        className="form-control textarea-noresize"
                                                         componentClass="textarea"
                                                         disabled={false}
                                                         id="domainpropertiesrow-description-1-1"
@@ -11324,7 +11318,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                         value=""
                                                       >
                                                         <textarea
-                                                          className="form-control textarea-noresize form-control"
+                                                          className="form-control"
                                                           disabled={false}
                                                           id="domainpropertiesrow-description-1-1"
                                                           name="domainpropertiesrow-description"
@@ -13322,7 +13316,6 @@ exports[`DomainRow string field test 1`] = `
                                                       </div>
                                                       <FormControl
                                                         bsClass="form-control"
-                                                        className="form-control textarea-noresize"
                                                         componentClass="textarea"
                                                         disabled={false}
                                                         id="domainpropertiesrow-description-1-1"
@@ -13332,7 +13325,7 @@ exports[`DomainRow string field test 1`] = `
                                                         value=""
                                                       >
                                                         <textarea
-                                                          className="form-control textarea-noresize form-control"
+                                                          className="form-control"
                                                           disabled={false}
                                                           id="domainpropertiesrow-description-1-1"
                                                           name="domainpropertiesrow-description"
@@ -15472,7 +15465,6 @@ exports[`DomainRow with empty domain form 1`] = `
                                                       </div>
                                                       <FormControl
                                                         bsClass="form-control"
-                                                        className="form-control textarea-noresize"
                                                         componentClass="textarea"
                                                         disabled={false}
                                                         id="domainpropertiesrow-description-1-1"
@@ -15482,7 +15474,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                         value=""
                                                       >
                                                         <textarea
-                                                          className="form-control textarea-noresize form-control"
+                                                          className="form-control"
                                                           disabled={false}
                                                           id="domainpropertiesrow-description-1-1"
                                                           name="domainpropertiesrow-description"

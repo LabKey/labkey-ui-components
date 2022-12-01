@@ -8,10 +8,10 @@ import { getValidValuesFromArray } from './models';
 
 interface Props {
     fieldName: string;
-    onCancel: () => void;
-    onApply: (values: string[]) => void;
     initialValueCount?: number;
     maxValueCount?: number;
+    onApply: (values: string[]) => void;
+    onCancel: () => void;
 }
 
 export const TextChoiceAddValuesModal: FC<Props> = memo(props => {
@@ -49,7 +49,7 @@ export const TextChoiceAddValuesModal: FC<Props> = memo(props => {
                 <textarea
                     rows={8}
                     cols={50}
-                    className="textarea-fullwidth textarea-noresize"
+                    className="form-control textarea-fullwidth"
                     placeholder="Enter new values..."
                     onChange={onChange}
                     value={valueStr}

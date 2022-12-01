@@ -118,7 +118,7 @@ exports[`DataClassDesigner custom properties 1`] = `
               className="col-xs-10"
             >
               <textarea
-                className="form-control textarea-noresize"
+                className="form-control"
                 id="entity-description"
                 onChange={[Function]}
                 value=""
@@ -459,7 +459,7 @@ exports[`DataClassDesigner default properties 1`] = `
               className="col-xs-10"
             >
               <textarea
-                className="form-control textarea-noresize"
+                className="form-control"
                 id="entity-description"
                 onChange={[Function]}
                 value=""
@@ -3346,7 +3346,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                               className="col-xs-10"
                                             >
                                               <textarea
-                                                className="form-control textarea-noresize"
+                                                className="form-control"
                                                 id="entity-description"
                                                 onChange={[Function]}
                                                 value="with a description"
@@ -20610,7 +20610,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                           </div>
                                                                                           <FormControl
                                                                                             bsClass="form-control"
-                                                                                            className="form-control textarea-noresize"
                                                                                             componentClass="textarea"
                                                                                             disabled={false}
                                                                                             id="domainpropertiesrow-description-0-0"
@@ -20620,7 +20619,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                             value=""
                                                                                           >
                                                                                             <textarea
-                                                                                              className="form-control textarea-noresize form-control"
+                                                                                              className="form-control"
                                                                                               disabled={false}
                                                                                               id="domainpropertiesrow-description-0-0"
                                                                                               name="domainpropertiesrow-description"
@@ -22553,7 +22552,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                           </div>
                                                                                           <FormControl
                                                                                             bsClass="form-control"
-                                                                                            className="form-control textarea-noresize"
                                                                                             componentClass="textarea"
                                                                                             disabled={false}
                                                                                             id="domainpropertiesrow-description-0-1"
@@ -22563,7 +22561,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                             value=""
                                                                                           >
                                                                                             <textarea
-                                                                                              className="form-control textarea-noresize form-control"
+                                                                                              className="form-control"
                                                                                               disabled={false}
                                                                                               id="domainpropertiesrow-description-0-1"
                                                                                               name="domainpropertiesrow-description"
@@ -24410,7 +24408,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                           </div>
                                                                                           <FormControl
                                                                                             bsClass="form-control"
-                                                                                            className="form-control textarea-noresize"
                                                                                             componentClass="textarea"
                                                                                             disabled={false}
                                                                                             id="domainpropertiesrow-description-0-2"
@@ -24420,7 +24417,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                             value=""
                                                                                           >
                                                                                             <textarea
-                                                                                              className="form-control textarea-noresize form-control"
+                                                                                              className="form-control"
                                                                                               disabled={false}
                                                                                               id="domainpropertiesrow-description-0-2"
                                                                                               name="domainpropertiesrow-description"

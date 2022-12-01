@@ -115,7 +115,7 @@ exports[`ListPropertiesPanel existing list 1`] = `
             className="col-lg-8 col-xs-9"
           >
             <textarea
-              className="form-control textarea-noresize"
+              className="form-control"
               id="description"
               onChange={[Function]}
               value=""
@@ -321,7 +321,7 @@ exports[`ListPropertiesPanel list with error 1`] = `
             className="col-lg-8 col-xs-9"
           >
             <textarea
-              className="form-control textarea-noresize"
+              className="form-control"
               id="description"
               onChange={[Function]}
               value=""
@@ -514,7 +514,7 @@ exports[`ListPropertiesPanel new list 1`] = `
             className="col-lg-8 col-xs-9"
           >
             <textarea
-              className="form-control textarea-noresize"
+              className="form-control"
               id="description"
               onChange={[Function]}
               value=""

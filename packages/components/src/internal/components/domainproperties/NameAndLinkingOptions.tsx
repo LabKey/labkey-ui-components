@@ -79,7 +79,6 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                         <div className="domain-field-label">Description</div>
                         <FormControl
                             componentClass="textarea"
-                            className="form-control textarea-noresize"
                             rows={4}
                             value={field.description || ''}
                             id={createFormInputId(DOMAIN_FIELD_DESCRIPTION, domainIndex, index)}

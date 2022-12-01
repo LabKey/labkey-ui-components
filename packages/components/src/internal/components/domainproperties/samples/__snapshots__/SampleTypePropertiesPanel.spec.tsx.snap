@@ -102,7 +102,7 @@ exports[`<SampleTypePropertiesPanel/> appPropertiesOnly 1`] = `
           className="col-xs-10"
         >
           <textarea
-            className="form-control textarea-noresize"
+            className="form-control"
             id="entity-description"
             onChange={[Function]}
             value=""
@@ -340,7 +340,7 @@ exports[`<SampleTypePropertiesPanel/> default props 1`] = `
           className="col-xs-10"
         >
           <textarea
-            className="form-control textarea-noresize"
+            className="form-control"
             id="entity-description"
             onChange={[Function]}
             value=""
@@ -528,7 +528,7 @@ exports[`<SampleTypePropertiesPanel/> include dataclass and use custom labels 1`
           className="col-xs-10"
         >
           <textarea
-            className="form-control textarea-noresize"
+            className="form-control"
             id="entity-description"
             onChange={[Function]}
             value=""
@@ -759,7 +759,7 @@ exports[`<SampleTypePropertiesPanel/> includeMetricUnitProperty 1`] = `
           className="col-xs-10"
         >
           <textarea
-            className="form-control textarea-noresize"
+            className="form-control"
             id="entity-description"
             onChange={[Function]}
             value=""
@@ -1037,7 +1037,7 @@ exports[`<SampleTypePropertiesPanel/> metricUnitOptions 1`] = `
           className="col-xs-10"
         >
           <textarea
-            className="form-control textarea-noresize"
+            className="form-control"
             id="entity-description"
             onChange={[Function]}
             value=""
@@ -1427,7 +1427,7 @@ exports[`<SampleTypePropertiesPanel/> nameExpressionInfoUrl 1`] = `
           className="col-xs-10"
         >
           <textarea
-            className="form-control textarea-noresize"
+            className="form-control"
             id="entity-description"
             onChange={[Function]}
             value=""
@@ -2067,7 +2067,7 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                                 className="col-xs-10"
                               >
                                 <textarea
-                                  className="form-control textarea-noresize"
+                                  className="form-control"
                                   id="entity-description"
                                   onChange={[Function]}
                                   value=""

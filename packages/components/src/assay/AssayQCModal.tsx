@@ -109,12 +109,7 @@ export class AssayQCModal extends PureComponent<Props, AssayQCState> {
                             <label className="control-label col-sm-3 text-left">Comment{requireComment && ' *'}</label>
 
                             <div className="col-sm-9">
-                                <FormControl
-                                    componentClass="textarea"
-                                    className="textarea-noresize"
-                                    value={comment}
-                                    onChange={this.updateComment}
-                                />
+                                <FormControl componentClass="textarea" value={comment} onChange={this.updateComment} />
                             </div>
                         </div>
 

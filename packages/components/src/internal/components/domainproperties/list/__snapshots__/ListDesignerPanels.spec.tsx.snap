@@ -12151,7 +12151,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                     className="col-lg-8 col-xs-9"
                                                   >
                                                     <textarea
-                                                      className="form-control textarea-noresize"
+                                                      className="form-control"
                                                       id="description"
                                                       onChange={[Function]}
                                                       value=""
@@ -20733,7 +20733,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                           </div>
                                                                                           <FormControl
                                                                                             bsClass="form-control"
-                                                                                            className="form-control textarea-noresize"
                                                                                             componentClass="textarea"
                                                                                             disabled={false}
                                                                                             id="domainpropertiesrow-description-0-0"
@@ -20743,7 +20742,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                             value=""
                                                                                           >
                                                                                             <textarea
-                                                                                              className="form-control textarea-noresize form-control"
+                                                                                              className="form-control"
                                                                                               disabled={false}
                                                                                               id="domainpropertiesrow-description-0-0"
                                                                                               name="domainpropertiesrow-description"
@@ -22715,7 +22714,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                           </div>
                                                                                           <FormControl
                                                                                             bsClass="form-control"
-                                                                                            className="form-control textarea-noresize"
                                                                                             componentClass="textarea"
                                                                                             disabled={false}
                                                                                             id="domainpropertiesrow-description-0-1"
@@ -22725,7 +22723,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                             value=""
                                                                                           >
                                                                                             <textarea
-                                                                                              className="form-control textarea-noresize form-control"
+                                                                                              className="form-control"
                                                                                               disabled={false}
                                                                                               id="domainpropertiesrow-description-0-1"
                                                                                               name="domainpropertiesrow-description"
@@ -24708,7 +24706,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                           </div>
                                                                                           <FormControl
                                                                                             bsClass="form-control"
-                                                                                            className="form-control textarea-noresize"
                                                                                             componentClass="textarea"
                                                                                             disabled={false}
                                                                                             id="domainpropertiesrow-description-0-2"
@@ -24718,7 +24715,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                             value=""
                                                                                           >
                                                                                             <textarea
-                                                                                              className="form-control textarea-noresize form-control"
+                                                                                              className="form-control"
                                                                                               disabled={false}
                                                                                               id="domainpropertiesrow-description-0-2"
                                                                                               name="domainpropertiesrow-description"
@@ -27017,7 +27014,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                           </div>
                                                                                           <FormControl
                                                                                             bsClass="form-control"
-                                                                                            className="form-control textarea-noresize"
                                                                                             componentClass="textarea"
                                                                                             disabled={false}
                                                                                             id="domainpropertiesrow-description-0-3"
@@ -27027,7 +27023,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                             value=""
                                                                                           >
                                                                                             <textarea
-                                                                                              className="form-control textarea-noresize form-control"
+                                                                                              className="form-control"
                                                                                               disabled={false}
                                                                                               id="domainpropertiesrow-description-0-3"
                                                                                               name="domainpropertiesrow-description"
@@ -29326,7 +29322,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                           </div>
                                                                                           <FormControl
                                                                                             bsClass="form-control"
-                                                                                            className="form-control textarea-noresize"
                                                                                             componentClass="textarea"
                                                                                             disabled={false}
                                                                                             id="domainpropertiesrow-description-0-4"
@@ -29336,7 +29331,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                             value=""
                                                                                           >
                                                                                             <textarea
-                                                                                              className="form-control textarea-noresize form-control"
+                                                                                              className="form-control"
                                                                                               disabled={false}
                                                                                               id="domainpropertiesrow-description-0-4"
                                                                                               name="domainpropertiesrow-description"
@@ -31319,7 +31314,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                           </div>
                                                                                           <FormControl
                                                                                             bsClass="form-control"
-                                                                                            className="form-control textarea-noresize"
                                                                                             componentClass="textarea"
                                                                                             disabled={false}
                                                                                             id="domainpropertiesrow-description-0-5"
@@ -31329,7 +31323,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                             value=""
                                                                                           >
                                                                                             <textarea
-                                                                                              className="form-control textarea-noresize form-control"
+                                                                                              className="form-control"
                                                                                               disabled={false}
                                                                                               id="domainpropertiesrow-description-0-5"
                                                                                               name="domainpropertiesrow-description"
@@ -33114,7 +33108,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                           </div>
                                                                                           <FormControl
                                                                                             bsClass="form-control"
-                                                                                            className="form-control textarea-noresize"
                                                                                             componentClass="textarea"
                                                                                             disabled={false}
                                                                                             id="domainpropertiesrow-description-0-6"
@@ -33124,7 +33117,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                             value=""
                                                                                           >
                                                                                             <textarea
-                                                                                              className="form-control textarea-noresize form-control"
+                                                                                              className="form-control"
                                                                                               disabled={false}
                                                                                               id="domainpropertiesrow-description-0-6"
                                                                                               name="domainpropertiesrow-description"
@@ -35337,7 +35330,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                           </div>
                                                                                           <FormControl
                                                                                             bsClass="form-control"
-                                                                                            className="form-control textarea-noresize"
                                                                                             componentClass="textarea"
                                                                                             disabled={false}
                                                                                             id="domainpropertiesrow-description-0-7"
@@ -35347,7 +35339,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                             value=""
                                                                                           >
                                                                                             <textarea
-                                                                                              className="form-control textarea-noresize form-control"
+                                                                                              className="form-control"
                                                                                               disabled={false}
                                                                                               id="domainpropertiesrow-description-0-7"
                                                                                               name="domainpropertiesrow-description"
@@ -37330,7 +37322,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                           </div>
                                                                                           <FormControl
                                                                                             bsClass="form-control"
-                                                                                            className="form-control textarea-noresize"
                                                                                             componentClass="textarea"
                                                                                             disabled={false}
                                                                                             id="domainpropertiesrow-description-0-8"
@@ -37340,7 +37331,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                             value=""
                                                                                           >
                                                                                             <textarea
-                                                                                              className="form-control textarea-noresize form-control"
+                                                                                              className="form-control"
                                                                                               disabled={false}
                                                                                               id="domainpropertiesrow-description-0-8"
                                                                                               name="domainpropertiesrow-description"
@@ -39323,7 +39314,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                           </div>
                                                                                           <FormControl
                                                                                             bsClass="form-control"
-                                                                                            className="form-control textarea-noresize"
                                                                                             componentClass="textarea"
                                                                                             disabled={false}
                                                                                             id="domainpropertiesrow-description-0-9"
@@ -39333,7 +39323,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                             value=""
                                                                                           >
                                                                                             <textarea
-                                                                                              className="form-control textarea-noresize form-control"
+                                                                                              className="form-control"
                                                                                               disabled={false}
                                                                                               id="domainpropertiesrow-description-0-9"
                                                                                               name="domainpropertiesrow-description"
@@ -41316,7 +41306,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                           </div>
                                                                                           <FormControl
                                                                                             bsClass="form-control"
-                                                                                            className="form-control textarea-noresize"
                                                                                             componentClass="textarea"
                                                                                             disabled={false}
                                                                                             id="domainpropertiesrow-description-0-10"
@@ -41326,7 +41315,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                             value=""
                                                                                           >
                                                                                             <textarea
-                                                                                              className="form-control textarea-noresize form-control"
+                                                                                              className="form-control"
                                                                                               disabled={false}
                                                                                               id="domainpropertiesrow-description-0-10"
                                                                                               name="domainpropertiesrow-description"
@@ -43179,7 +43168,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                           </div>
                                                                                           <FormControl
                                                                                             bsClass="form-control"
-                                                                                            className="form-control textarea-noresize"
                                                                                             componentClass="textarea"
                                                                                             disabled={false}
                                                                                             id="domainpropertiesrow-description-0-11"
@@ -43189,7 +43177,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                             value=""
                                                                                           >
                                                                                             <textarea
-                                                                                              className="form-control textarea-noresize form-control"
+                                                                                              className="form-control"
                                                                                               disabled={false}
                                                                                               id="domainpropertiesrow-description-0-11"
                                                                                               name="domainpropertiesrow-description"
@@ -44997,7 +44985,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                           </div>
                                                                                           <FormControl
                                                                                             bsClass="form-control"
-                                                                                            className="form-control textarea-noresize"
                                                                                             componentClass="textarea"
                                                                                             disabled={false}
                                                                                             id="domainpropertiesrow-description-0-12"
@@ -45007,7 +44994,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                             value=""
                                                                                           >
                                                                                             <textarea
-                                                                                              className="form-control textarea-noresize form-control"
+                                                                                              className="form-control"
                                                                                               disabled={false}
                                                                                               id="domainpropertiesrow-description-0-12"
                                                                                               name="domainpropertiesrow-description"
@@ -45852,7 +45839,7 @@ exports[`ListDesignerPanel new list 1`] = `
                 className="col-lg-8 col-xs-9"
               >
                 <textarea
-                  className="form-control textarea-noresize"
+                  className="form-control"
                   id="description"
                   onChange={[Function]}
                   value=""

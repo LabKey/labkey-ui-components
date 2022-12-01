@@ -43,7 +43,7 @@ export const DescriptionInput: FC<BasicPropertiesInputsProps> = memo(({ model, o
 
         <Col xs={9} lg={8}>
             <textarea
-                className="form-control textarea-noresize"
+                className="form-control"
                 id="description"
                 value={model.description === null ? '' : model.description}
                 onChange={onInputChange}

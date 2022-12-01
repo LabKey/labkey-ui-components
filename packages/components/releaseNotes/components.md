@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.264.0
+*Released*: 1 December 2022
 * Updates for form consistency in apps: textarea resizing
   * only allow for vertical resizing, not horizontal
 

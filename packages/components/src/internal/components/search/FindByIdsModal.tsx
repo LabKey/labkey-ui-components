@@ -12,8 +12,8 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 // exported for Jest testing
 export const FindFieldOption: FC<{
-    field: FindField;
     checked: boolean;
+    field: FindField;
     onFieldChange: (field: FindField) => void;
 }> = memo(({ field, checked, onFieldChange }) => {
     const onChange = useCallback(
@@ -38,12 +38,12 @@ export const FindFieldOption: FC<{
 
 interface Props {
     api?: ComponentsAPIWrapper;
-    show: boolean;
+    initialField?: FindField;
+    nounPlural: string;
     onCancel: () => void;
     onFind: (sessionKey: string) => void;
-    nounPlural: string;
-    initialField?: FindField;
     sessionKey?: string; // when defined, ids entered will be added to the existing ones in session
+    show: boolean;
 }
 
 export const FindByIdsModal: FC<Props> = memo(props => {

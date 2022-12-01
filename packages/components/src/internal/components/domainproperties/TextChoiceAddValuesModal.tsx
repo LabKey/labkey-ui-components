@@ -8,10 +8,10 @@ import { getValidValuesFromArray } from './models';
 
 interface Props {
     fieldName: string;
-    onCancel: () => void;
-    onApply: (values: string[]) => void;
     initialValueCount?: number;
     maxValueCount?: number;
+    onApply: (values: string[]) => void;
+    onCancel: () => void;
 }
 
 export const TextChoiceAddValuesModal: FC<Props> = memo(props => {

@@ -53,12 +53,7 @@ export class DescriptionInput extends React.PureComponent<BasicPropertiesInputsP
                 </Col>
 
                 <Col xs={7}>
-                    <textarea
-                        className="form-control"
-                        id="description"
-                        value={value}
-                        onChange={onInputChange}
-                    />
+                    <textarea className="form-control" id="description" value={value} onChange={onInputChange} />
                 </Col>
 
                 <Col xs={1} />

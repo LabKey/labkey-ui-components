@@ -20,19 +20,19 @@ import {
 import { ENTITY_FORM_IDS } from './constants';
 
 export interface EntityDetailsProps {
-    noun: string;
-    onFormChange: (evt: any) => any;
-    warning?: string;
-    formValues?: IEntityDetails;
     data?: Map<string, any>;
+    formValues?: IEntityDetails;
+    nameExpressionGenIdProps?: NameExpressionGenIdProps;
     nameExpressionInfoUrl?: string;
     nameExpressionPlaceholder?: string;
-    nameReadOnly?: boolean;
-    showPreviewName?: boolean;
-    previewName?: string;
     namePreviewsLoading?: boolean;
+    nameReadOnly?: boolean;
+    noun: string;
+    onFormChange: (evt: any) => any;
     onNameFieldHover?: () => any;
-    nameExpressionGenIdProps?: NameExpressionGenIdProps;
+    previewName?: string;
+    showPreviewName?: boolean;
+    warning?: string;
 }
 
 export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, any> {
@@ -66,10 +66,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
             <Form>
                 <Row className="margin-bottom margin-top">
                     <Col xs={2}>
-                        <DomainFieldLabel
-                            label="Name"
-                            required={true}
-                        />
+                        <DomainFieldLabel label="Name" required={true} />
                     </Col>
                     <Col xs={10}>
                         <FormControl

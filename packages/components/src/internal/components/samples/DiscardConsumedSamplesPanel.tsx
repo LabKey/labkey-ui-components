@@ -2,10 +2,10 @@ import React, { FC, memo } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 interface Props {
-    shouldDiscard: boolean;
-    onCommentChange: (event) => any;
-    toggleShouldDiscard: () => any;
     discardTitle?: string;
+    onCommentChange: (event) => any;
+    shouldDiscard: boolean;
+    toggleShouldDiscard: () => any;
 }
 
 export const DISCARD_CONSUMED_CHECKBOX_FIELD = 'discardcheckbox';

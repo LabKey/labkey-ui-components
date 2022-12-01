@@ -18,8 +18,8 @@ import { SampleAliquotsSummary } from './SampleAliquotsSummary';
 import { SampleDetailEditing } from './SampleDetailEditing';
 
 import { getSampleAuditBehaviorType } from './utils';
-import { SampleStorageLocation } from './models';
-import { useSampleTypeAppContext } from './SampleTypeAppContext';
+import { SampleStorageLocation } from '../internal/sampleModels';
+import { useSampleTypeAppContext } from './useSampleTypeAppContext';
 
 interface Props {
     SampleStorageLocationComponent: SampleStorageLocation;

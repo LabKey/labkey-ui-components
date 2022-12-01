@@ -35,7 +35,7 @@ import { getContainerFilter } from '../../query/api';
 
 import { AssayResultDataType } from '../entities/constants';
 
-import { AssaySampleColumnProp } from '../../../entities/models';
+import { AssaySampleColumnProp } from '../../sampleModels';
 
 import { caseInsensitive } from '../../util/utils';
 

@@ -35,11 +35,11 @@ import { PicklistEditModal } from '../internal/components/picklist/PicklistEditM
 
 import { Picklist, PICKLIST_SAMPLES_FILTER } from '../internal/components/picklist/models';
 import { deletePicklists, updatePicklist } from '../internal/components/picklist/actions';
+import { SamplesEditableGridProps } from '../internal/sampleModels';
 
-import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
 import { PicklistGridButtons } from './PicklistGridButtons';
+import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
-import { SamplesEditableGridProps } from './SamplesEditableGrid';
 import { hasProductProjects } from '../internal/app/utils';
 import { useServerContext } from '../internal/components/base/ServerContext';
 

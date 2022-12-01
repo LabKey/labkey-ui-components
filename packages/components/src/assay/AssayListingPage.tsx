@@ -14,7 +14,7 @@ import { AssayDesignEmptyAlert } from '../internal/components/assay/AssayDesignE
 import { Section } from '../internal/components/base/Section';
 
 import { AssayTypeSummary } from './AssayTypeSummary';
-import { useAssayAppContext } from './AssayAppContext';
+import { useAssayAppContext } from './useAssayAppContext';
 
 const ASSAY_CAPTION = 'Capture analytical data about samples';
 

@@ -30,7 +30,7 @@ import { EntityDataType } from '../internal/components/entities/models';
 
 import { SampleHeader } from './SampleHeader';
 import { SampleOverviewPanel } from './SampleOverviewPanel';
-import { useSampleTypeAppContext } from './SampleTypeAppContext';
+import { useSampleTypeAppContext } from './useSampleTypeAppContext';
 
 // These are additional columns required for details
 const REQUIRED_COLUMNS = ParentEntityRequiredColumns.concat(

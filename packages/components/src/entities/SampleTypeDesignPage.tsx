@@ -29,7 +29,7 @@ import { useAppContext } from '../internal/AppContext';
 import { CommonPageProps } from '../internal/models';
 
 import { SampleTypeBasePage } from './SampleTypeBasePage';
-import { useSampleTypeAppContext } from './SampleTypeAppContext';
+import { useSampleTypeAppContext } from './useSampleTypeAppContext';
 import { onSampleTypeChange } from './actions';
 
 const DESIGNER_HEADER =

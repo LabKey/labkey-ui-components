@@ -11,6 +11,13 @@ import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../public/
 
 import { CommonPageProps } from '../internal/models';
 
+import { useAssayAppContext } from './useAssayAppContext';
+
+import { AssayHeader } from './AssayHeader';
+import { AssayDesignHeaderButtons } from './AssayButtons';
+import { assayPage } from './AssayPageHOC';
+import { AssayOverrideBanner } from './AssayOverrideBanner';
+import { AssayGridPanel } from './AssayGridPanel';
 import { InjectedRouteLeaveProps, withRouteLeave } from '../internal/util/RouteLeave';
 import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/constants';
 import { QueryModel } from '../public/QueryModel/QueryModel';
@@ -22,13 +29,6 @@ import { DetailPanel } from '../public/QueryModel/DetailPanel';
 import { SCHEMAS } from '../internal/schemas';
 import { Alert } from '../internal/components/base/Alert';
 import { useContainerUser } from '../internal/components/container/actions';
-
-import { AssayGridPanel } from './AssayGridPanel';
-import { AssayOverrideBanner } from './AssayOverrideBanner';
-import { assayPage } from './AssayPageHOC';
-import { AssayHeader } from './AssayHeader';
-import { AssayDesignHeaderButtons } from './AssayButtons';
-import { useAssayAppContext } from './AssayAppContext';
 
 const REQUIRED_COLUMN_NAMES = ['Description', 'Created', 'CreatedBy', 'Status'];
 

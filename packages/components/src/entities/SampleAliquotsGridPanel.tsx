@@ -27,7 +27,7 @@ import { useNotificationsContext } from '../internal/components/notifications/No
 
 import { useServerContext } from '../internal/components/base/ServerContext';
 
-import { useSampleTypeAppContext } from './SampleTypeAppContext';
+import { useSampleTypeAppContext } from './useSampleTypeAppContext';
 import { EntityDeleteModal } from './EntityDeleteModal';
 import { SamplesAssayButton } from './SamplesAssayButton';
 

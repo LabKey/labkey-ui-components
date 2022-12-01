@@ -3,7 +3,7 @@ import { List, Map, OrderedMap } from 'immutable';
 import { AuditBehaviorTypes, Filter, Query } from '@labkey/api';
 
 import { TabbedGridPanel, TabbedGridPanelProps } from '../public/QueryModel/TabbedGridPanel';
-
+import { SamplesEditableGridProps } from '../internal/sampleModels';
 import { userCanEditStorageData } from '../internal/app/utils';
 
 import {
@@ -31,7 +31,7 @@ import { useLabelPrintingContext } from '../internal/components/labels/LabelPrin
 
 import { isAllSamplesSchema } from '../internal/components/samples/utils';
 
-import { SamplesEditableGrid, SamplesEditableGridProps } from './SamplesEditableGrid';
+import { SamplesEditableGrid } from './SamplesEditableGrid';
 import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
 import { GridAliquotViewSelector } from './GridAliquotViewSelector';
 

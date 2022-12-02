@@ -3,7 +3,7 @@ import { List, Map } from 'immutable';
 import { WithRouterProps } from 'react-router';
 
 import { InjectedAssayModel } from '../internal/components/assay/withAssayModels';
-import { InjectedRouteLeaveProps, useRouteLeave } from '../internal/util/RouteLeave';
+import { useRouteLeave } from '../internal/util/RouteLeave';
 import { useNotificationsContext } from '../internal/components/notifications/NotificationsContext';
 import { AssayProtocolModel } from '../internal/components/domainproperties/assay/models';
 import { useServerContext } from '../internal/components/base/ServerContext';
@@ -22,7 +22,6 @@ import { Page } from '../internal/components/base/Page';
 import { Alert } from '../internal/components/base/Alert';
 import { getActionErrorMessage } from '../internal/util/messaging';
 import { AssayDesignerPanels } from '../internal/components/domainproperties/assay/AssayDesignerPanels';
-import { ProductMenuModel } from '../internal/components/navigation/model';
 
 import { DEFAULT_SAMPLE_FIELD_CONFIG } from '../internal/components/samples/constants';
 
@@ -177,7 +176,13 @@ const AssayDesignPageBody: FC<Props> = memo(props => {
     // Intentionally not showing buttons in header, for consistency with other domain editing pages
     return (
         <Page title={title + ' - ' + subtitle} hasHeader>
-            <AssayHeader menu={menu} title={title} subTitle={subtitle} description={ASSAY_DESIGNER_HEADER} />
+            <AssayHeader
+                menu={menu}
+                title={title}
+                subTitle={subtitle}
+                description={ASSAY_DESIGNER_HEADER}
+                includeTemplateButton={false}
+            />
             {(protocol.exception || hasError) && (
                 <Alert>{getActionErrorMessage('There was a problem loading the assay design.', 'assay design')}</Alert>
             )}

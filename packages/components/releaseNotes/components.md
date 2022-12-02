@@ -5,6 +5,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD December 2022
 * Updates for workflow consistency: status-tag styling
   * LKSM fix for assay creation URL for empty app state
+  * revert panel heading font size when panel is within the tabbed grid panel
+  * AssayDesignPage update to hide template button from header
 
 ### version 2.264.0
 *Released*: 1 December 2022

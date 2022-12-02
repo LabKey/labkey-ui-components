@@ -668,8 +668,8 @@ export function getSelectedData(
 }
 
 interface RemappedKeyValues {
-    mapFromValues: any[],
-    mapToValues: any[]
+    mapFromValues: any[];
+    mapToValues: any[];
 }
 
 /**
@@ -685,12 +685,16 @@ interface RemappedKeyValues {
  * @param queryParameters
  * @param viewName
  */
-export function getOrderedSelectedMappedKeys(fromColumn: string, toColumn?: string, schemaName?: string,
-                                             queryName?: string,
-                                             selections?: string[],
-                                             sortString?: string,
-                                             queryParameters?: Record<string, any>,
-                                             viewName?: string,): Promise<RemappedKeyValues> {
+export function getOrderedSelectedMappedKeys(
+    fromColumn: string,
+    toColumn?: string,
+    schemaName?: string,
+    queryName?: string,
+    selections?: string[],
+    sortString?: string,
+    queryParameters?: Record<string, any>,
+    viewName?: string
+): Promise<RemappedKeyValues> {
     return new Promise((resolve, reject) => {
         getSelectedData(
             schemaName,
@@ -701,41 +705,41 @@ export function getOrderedSelectedMappedKeys(fromColumn: string, toColumn?: stri
             queryParameters,
             viewName,
             fromColumn
-        ).then(response => {
-            const { data, dataIds } = response;
-            const toIds = [];
-            const fromIds = [];
-            const values = [];
-            data.forEach(row => {
-                const rowData = row.toJS();
-                fromIds.push(caseInsensitive(rowData, fromColumn)?.value);
-                if (toColumn)
-                    toIds.push(caseInsensitive(rowData, toColumn)?.value);
-            });
-
-            fromIds.forEach((rowId, ind) => {
-                const orderNum = dataIds.indexOf(rowId + '');
-                const to = toColumn ? toIds[ind] : undefined;
-                values.push({
-                    from: rowId,
-                    to,
-                    orderNum
+        )
+            .then(response => {
+                const { data, dataIds } = response;
+                const toIds = [];
+                const fromIds = [];
+                const values = [];
+                data.forEach(row => {
+                    const rowData = row.toJS();
+                    fromIds.push(caseInsensitive(rowData, fromColumn)?.value);
+                    if (toColumn) toIds.push(caseInsensitive(rowData, toColumn)?.value);
                 });
-            });
 
-            const mapFromValues = [];
-            const mapToValues = [];
-            values.sort((a, b) => a.orderNum - b.orderNum);
-            values.forEach(value => {
-                mapToValues.push(value.to);
-                mapFromValues.push(value.from);
-            });
+                fromIds.forEach((rowId, ind) => {
+                    const orderNum = dataIds.indexOf(rowId + '');
+                    const to = toColumn ? toIds[ind] : undefined;
+                    values.push({
+                        from: rowId,
+                        to,
+                        orderNum,
+                    });
+                });
 
-            resolve({
-                mapToValues,
-                mapFromValues
-            });
-        })
+                const mapFromValues = [];
+                const mapToValues = [];
+                values.sort((a, b) => a.orderNum - b.orderNum);
+                values.forEach(value => {
+                    mapToValues.push(value.to);
+                    mapFromValues.push(value.from);
+                });
+
+                resolve({
+                    mapToValues,
+                    mapFromValues,
+                });
+            })
             .catch(reason => {
                 console.error(reason);
                 reject(reason);

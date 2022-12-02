@@ -13,14 +13,15 @@ import { AppURL, buildURL, createProductUrlFromParts } from '../../url/AppURL';
 import { fetchListDesign, getListIdFromDomainId } from '../domainproperties/list/actions';
 
 import { PICKLIST_KEY } from '../../app/constants';
-import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
 
 import { isProductProjectsEnabled } from '../../app/utils';
 
-import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './models';
 import { SCHEMAS } from '../../schemas';
 import { OperationConfirmationData } from '../entities/models';
 import { caseInsensitive } from '../../util/utils';
+
+import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './models';
+import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
 
 export function getPicklistsForInsert(): Promise<Picklist[]> {
     return new Promise((resolve, reject) => {
@@ -201,7 +202,15 @@ export function getPicklistSamples(listName: string): Promise<Set<string>> {
 
 export function getOrderedSelectedPicklistSamples(queryModel: QueryModel, saveSnapshot?: boolean): Promise<number[]> {
     const { queryName, queryParameters, selections, sortString, viewName, selectionKey } = queryModel;
-    return getSelectedPicklistSamples(queryName, Array.of(...selections), saveSnapshot, selectionKey, sortString, queryParameters, viewName)
+    return getSelectedPicklistSamples(
+        queryName,
+        Array.of(...selections),
+        saveSnapshot,
+        selectionKey,
+        sortString,
+        queryParameters,
+        viewName
+    );
 }
 
 export function getSelectedPicklistSamples(
@@ -211,7 +220,7 @@ export function getSelectedPicklistSamples(
     selectionKey?: string,
     sorts?: string,
     queryParameters?: Record<string, any>,
-    viewName?: string,
+    viewName?: string
 ): Promise<number[]> {
     return new Promise((resolve, reject) => {
         getOrderedSelectedMappedKeys(
@@ -223,17 +232,19 @@ export function getSelectedPicklistSamples(
             sorts,
             queryParameters,
             viewName
-        ).then((result) => {
-            const rowIds = result.mapFromValues;
-            const sampleIds = result.mapToValues;
-            if (saveSnapshot) {
-                setSnapshotSelections(selectionKey, rowIds);
-            }
-            resolve(sampleIds);
-        }).catch((reason) => {
-            console.error(reason);
-            reject(reason);
-        })
+        )
+            .then(result => {
+                const rowIds = result.mapFromValues;
+                const sampleIds = result.mapToValues;
+                if (saveSnapshot) {
+                    setSnapshotSelections(selectionKey, rowIds);
+                }
+                resolve(sampleIds);
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject(reason);
+            });
     });
 }
 
@@ -309,7 +320,16 @@ export interface PicklistDeletionData {
 export function getPicklistDeleteData(model: QueryModel, user: User): Promise<PicklistDeletionData> {
     return new Promise((resolve, reject) => {
         const columnString = 'Name,listId,category,createdBy';
-        getSelectedData(model.schemaName, model.queryName, [...model.selections], columnString, undefined, undefined, undefined, 'ListId')
+        getSelectedData(
+            model.schemaName,
+            model.queryName,
+            [...model.selections],
+            columnString,
+            undefined,
+            undefined,
+            undefined,
+            'ListId'
+        )
             .then(response => {
                 const { data } = response;
                 let numNotDeletable = 0;
@@ -446,10 +466,10 @@ export const getPicklistFromId = async (listId: number, loadSampleTypes = true):
                 .filter(value => !!value),
         });
         picklist = picklist.mutate({
-            hasMedia: !!Object.values(listSampleTypeData.models[listSampleTypeData.key])
-                .find(row => caseInsensitive(row, 'Category')?.value === 'media')
+            hasMedia: !!Object.values(listSampleTypeData.models[listSampleTypeData.key]).find(
+                row => caseInsensitive(row, 'Category')?.value === 'media'
+            ),
         });
-
     }
 
     return picklist;

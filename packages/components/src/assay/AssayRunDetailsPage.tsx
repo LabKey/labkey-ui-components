@@ -38,7 +38,7 @@ import { AssayOverrideBanner } from './AssayOverrideBanner';
 
 import { assayPage } from './AssayPageHOC';
 import { AssayGridPanel } from './AssayGridPanel';
-import { useAssayAppContext } from './AssayAppContext';
+import { useAssayAppContext } from './useAssayAppContext';
 import { AssayRunDetailHeaderButtons } from './AssayButtons';
 import { AssayHeader } from './AssayHeader';
 

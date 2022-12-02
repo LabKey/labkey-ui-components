@@ -13,20 +13,92 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { Filter } from '@labkey/api';
+import { List } from 'immutable';
 import React, { createContext, PropsWithChildren, ReactElement, useContext, useMemo } from 'react';
 
-import { SampleTypeAppContext } from '../entities';
-
-import { AssayAppContext } from '../assay';
+import { QueryConfigMap } from '../public/QueryModel/withQueryModels';
+import { SchemaQuery } from '../public/SchemaQuery';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from './APIWrapper';
 import { NotebookNotificationSettings, NotebookProjectSettings, WorkflowNotificationSettings } from './app/models';
+import { ReferencingNotebooks } from './app/models';
+import { User } from './components/base/models/User';
+import { DomainDetails } from './components/domainproperties/models';
+import { EntityDataType } from './components/entities/models';
+import { DetailRenderer } from './components/forms/detail/DetailDisplay';
+import { ALIQUOT_FILTER_MODE } from './components/samples/constants';
+import {
+    AddSamplesToStorageModal,
+    JobsButton,
+    JobsMenuOptions,
+    SampleStorageButton,
+    WorkflowGrid,
+} from './components/samples/models';
+import { SampleGridButton, SamplesEditableGridProps, SampleStorageLocation, SampleStorageMenu } from './sampleModels';
 
 export interface AdminAppContext {
     NotebookNotificationSettingsComponent: NotebookNotificationSettings;
     NotebookProjectSettingsComponent: NotebookProjectSettings;
     WorkflowNotificationSettingsComponent: WorkflowNotificationSettings;
     extraPermissionRoles: string[][];
+}
+
+export interface SampleTypeAppContext {
+    AddSamplesToStorageModalComponent: AddSamplesToStorageModal;
+    JobsButtonComponent: JobsButton;
+    ReferencingNotebooksComponent: ReferencingNotebooks;
+    SampleGridButtonComponent: SampleGridButton;
+    SampleStorageButtonComponent: SampleStorageButton;
+    SampleStorageLocationComponent: SampleStorageLocation;
+    SampleStorageMenuComponent: SampleStorageMenu;
+    WorkflowGridComponent: WorkflowGrid;
+    assayProviderType?: string;
+    combineParentTypes?: boolean;
+    controllerName: string;
+    dataClassAliasCaption?: string;
+    dataClassParentageLabel?: string;
+    dataClassTypeCaption?: string;
+    detailRenderer?: DetailRenderer;
+    downloadTemplateExcludeColumns?: string[];
+    getMetricUnitOptions: () => any[];
+    getSamplesEditableGridProps: (user: User) => Partial<SamplesEditableGridProps>;
+    getWorkflowGridQueryConfigs?: (
+        visibleTabs: string[],
+        gridPrefix: string,
+        user: User,
+        schemaQuery?: SchemaQuery,
+        initialFilters?: Filter.IFilter[],
+        sampleLSID?: string,
+        sourceLSID?: string,
+        activeSampleAliquotType?: ALIQUOT_FILTER_MODE,
+        containerPath?: string
+    ) => QueryConfigMap;
+    hideConditionalFormatting: boolean;
+    importHelpLinkTopic: string;
+    isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean;
+    lineagePagePermissions: string[];
+    parentDataTypes: List<EntityDataType>;
+    readOnlyQueryNames?: string[];
+    sampleTypeListingCaption: string;
+    samplesGridRequiredColumns: string[];
+    showParentLabelPrefix: boolean;
+    showStudyProperties: boolean;
+    useSeparateDataClassesAliasMenu: boolean;
+    validateNewSampleTypeUnit: (sampleSet: DomainDetails, newUnit: string) => Promise<any>;
+}
+
+export interface AssayAppContext {
+    JobsMenuOptionsComponent: JobsMenuOptions;
+    ReferencingNotebooksComponent: ReferencingNotebooks;
+    assayProviderType?: string;
+    assayTypes?: string[];
+    detailRenderer?: DetailRenderer;
+    excludedAssayProviders?: string[];
+    jobNotificationProvider: string; // pipeline job not workflow job
+    qcEnabledForApp?: boolean;
+    requireSampleField?: boolean;
+    showProviderName?: boolean;
 }
 
 export interface AppContext {

@@ -213,4 +213,8 @@ export class AssayProtocolModel extends Record({
             this.validateTransformScripts() === undefined
         );
     }
+
+    get hasBatchFields(): boolean {
+        return this.getDomainByNameSuffix('Batch')?.fields.size > 0;
+    }
 }

@@ -4,7 +4,7 @@ import { ALIQUOT_FILTER_MODE, SampleOperation } from '../internal/components/sam
 import { getSampleStatusType, isSampleOperationPermitted } from '../internal/components/samples/utils';
 
 import { SampleDetailContextConsumer, SampleDetailPage, SampleDetailPageProps } from './SampleDetailPage';
-import { useSampleTypeAppContext } from './SampleTypeAppContext';
+import { useSampleTypeAppContext } from './useSampleTypeAppContext';
 
 export const SampleJobsPage: FC<SampleDetailPageProps> = memo(props => {
     const { WorkflowGridComponent } = useSampleTypeAppContext();

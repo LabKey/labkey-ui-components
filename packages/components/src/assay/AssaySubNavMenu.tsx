@@ -14,8 +14,8 @@ import { SubNav } from '../internal/components/navigation/SubNav';
 
 import { InjectedAssayModel, withAssayModelsFromLocation } from '../internal/components/assay/withAssayModels';
 
-const BATCHES_TAB = 'Batches';
 const TABS_WITHOUT_BATCHES = List<string>(['Overview', 'Runs', 'Results']);
+const TABS_WITH_BATCHES = TABS_WITHOUT_BATCHES.insert(1, 'Batches');
 
 interface AssaySubNavMenuProps {
     getUrl: (provider: string, protocol: string, text: string) => AppURL;
@@ -32,15 +32,7 @@ class AssaySubNavMenuImpl extends Component<Props> {
     generateTabs(): List<ITab> {
         const { assayProtocol, params, getUrl } = this.props;
         const { provider, protocol } = params;
-
-        let tabs = TABS_WITHOUT_BATCHES;
-        if (assayProtocol) {
-            // only show the batch domain if it is already populated (i.e. has at least one field)
-            const batchDomain = assayProtocol.getDomainByNameSuffix('Batch');
-            if (batchDomain?.fields.size > 0) {
-                tabs = tabs.insert(1, BATCHES_TAB);
-            }
-        }
+        const tabs = assayProtocol?.hasBatchFields ? TABS_WITH_BATCHES : TABS_WITHOUT_BATCHES;
         return tabs
             .map(text => ({
                 text,

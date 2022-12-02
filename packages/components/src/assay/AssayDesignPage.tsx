@@ -30,7 +30,7 @@ import { CommonPageProps } from '../internal/models';
 import { protocolHasSample, renderSampleRequiredPanelHeader } from './SampleRequiredDomainHeader';
 import { AssayHeader } from './AssayHeader';
 import { onAssayDesignChange } from './actions';
-import { useAssayAppContext } from './AssayAppContext';
+import { useAssayAppContext } from './useAssayAppContext';
 import { assayPage } from './AssayPageHOC';
 
 const ASSAY_DESIGNER_HEADER = 'Connect your experimental results to samples for rich data connections.';
@@ -106,7 +106,7 @@ const AssayDesignPageBody: FC<Props> = memo(props => {
         }
 
         if (params?.copy && assayProtocol?.protocolId) {
-            getProtocol(assayProtocol.protocolId, assayProtocol.name, true);
+            getProtocol(assayProtocol.protocolId, undefined, true);
         } else if (!assayProtocol && params?.provider) {
             getProtocol(undefined, params.provider, false);
         } else if (assayProtocol) {

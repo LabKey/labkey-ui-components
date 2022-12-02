@@ -6,7 +6,7 @@ import { SampleOperation } from '../internal/components/samples/constants';
 import { onSampleChange } from './actions';
 import { SampleAliquotsGridPanel } from './SampleAliquotsGridPanel';
 import { SampleDetailContextConsumer, SampleDetailPage, SampleDetailPageProps } from './SampleDetailPage';
-import { useSampleTypeAppContext } from './SampleTypeAppContext';
+import { useSampleTypeAppContext } from './useSampleTypeAppContext';
 
 interface Props extends SampleDetailPageProps {
     omittedColumns?: string[];

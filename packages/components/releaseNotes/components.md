@@ -8,6 +8,12 @@ Components, models, actions, and utility functions for LabKey applications and p
   * revert panel heading font size when panel is within the tabbed grid panel
   * AssayDesignPage update to hide template button from header
 
+### version 2.265.0
+*Released*: 1 December 2022
+* AssayProtocolModel: Add hasBatchFields
+* Fix circular deps between entrypoints
+  * Moved several interfaces from entities and assay entrypoints to main entrypoint
+
 ### version 2.264.0
 *Released*: 1 December 2022
 * Updates for form consistency in apps: textarea resizing

@@ -30,4 +30,4 @@ export {
     AssayUploadPage,
 };
 
-export type { AssayAppContext, WithAssayAppContext, AppContextWithAssay } from './AssayAppContext';
+export type { WithAssayAppContext, AppContextWithAssay } from './useAssayAppContext';

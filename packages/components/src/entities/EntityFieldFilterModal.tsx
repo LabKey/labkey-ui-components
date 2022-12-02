@@ -33,7 +33,7 @@ import {
 } from '../internal/components/search/utils';
 import { QueryFilterPanel } from '../internal/components/search/QueryFilterPanel';
 
-import { AssaySampleColumnProp } from './models';
+import { AssaySampleColumnProp } from '../internal/sampleModels';
 
 interface Props {
     api?: ComponentsAPIWrapper;

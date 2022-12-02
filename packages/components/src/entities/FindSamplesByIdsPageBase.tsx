@@ -32,9 +32,9 @@ import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from '.
 import { getSampleTypesFromFindByIdQuery } from '../internal/components/search/actions';
 import { FIND_SAMPLE_BY_ID_METRIC_AREA } from '../internal/components/search/utils';
 import { selectDistinctRows } from '../internal/query/api';
+import { SamplesEditableGridProps } from '../internal/sampleModels';
 
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
-import { SamplesEditableGridProps } from './SamplesEditableGrid';
 import { FindSamplesByIdHeaderPanel } from './FindSamplesByIdHeaderPanel';
 
 const TYPE_GRID_PREFIX = 'find-by-id-';

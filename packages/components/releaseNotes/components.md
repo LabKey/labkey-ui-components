@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD December 2022
 * Updates for workflow consistency: status-tag styling
+  * LKSM fix for assay creation URL for empty app state
 
 ### version 2.264.0
 *Released*: 1 December 2022

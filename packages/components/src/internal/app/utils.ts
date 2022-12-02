@@ -33,6 +33,7 @@ import {
     NEW_ASSAY_DESIGN_HREF,
     NEW_SAMPLE_TYPE_HREF,
     NEW_SOURCE_TYPE_HREF,
+    NEW_STANDARD_ASSAY_DESIGN_HREF,
     NOTEBOOKS_KEY,
     PICKLIST_HOME_HREF,
     PICKLIST_KEY,
@@ -399,7 +400,8 @@ export function addSamplesSectionConfig(
 export function addAssaysSectionConfig(
     user: User,
     appBase: string,
-    sectionConfigs: List<Map<string, MenuSectionConfig>>
+    sectionConfigs: List<Map<string, MenuSectionConfig>>,
+    isSMPrimary: boolean
 ): List<Map<string, MenuSectionConfig>> {
     if (!userCanReadAssays(user)) return sectionConfigs;
 
@@ -412,7 +414,8 @@ export function addAssaysSectionConfig(
     });
     if (user.hasDesignAssaysPermission()) {
         assaysMenuConfig = assaysMenuConfig.merge({
-            emptyURL: appBase + NEW_ASSAY_DESIGN_HREF.toHref(),
+            emptyURL:
+                appBase + (isSMPrimary ? NEW_STANDARD_ASSAY_DESIGN_HREF.toHref() : NEW_ASSAY_DESIGN_HREF.toHref()),
             emptyURLText: 'Create an assay design',
         }) as MenuSectionConfig;
     }
@@ -510,7 +513,7 @@ export function getMenuSectionConfigs(
     if (isBioOrSM) {
         sectionConfigs = addSamplesSectionConfig(user, appBase, sectionConfigs);
         if (isAssayEnabled(moduleContext)) {
-            sectionConfigs = addAssaysSectionConfig(user, appBase, sectionConfigs);
+            sectionConfigs = addAssaysSectionConfig(user, appBase, sectionConfigs, isSMPrimary);
         }
     }
 

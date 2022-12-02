@@ -31,11 +31,11 @@ export const AssayListingPage: FC<CommonPageProps> = memo(props => {
     }
 
     let button;
+    let createUrl;
     if (user.hasDesignAssaysPermission()) {
-        const href =
-            assayTypes?.length === 1 ? NEW_STANDARD_ASSAY_DESIGN_HREF.toHref() : NEW_ASSAY_DESIGN_HREF.toHref();
+        createUrl = assayTypes?.length === 1 ? NEW_STANDARD_ASSAY_DESIGN_HREF : NEW_ASSAY_DESIGN_HREF;
         button = (
-            <Button bsStyle="success" href={href}>
+            <Button bsStyle="success" href={createUrl.toHref()}>
                 Create Assay Design
             </Button>
         );
@@ -53,7 +53,7 @@ export const AssayListingPage: FC<CommonPageProps> = memo(props => {
                         navigate={navigate}
                     />
                 )}
-                {!hasItems && <AssayDesignEmptyAlert />}
+                {!hasItems && <AssayDesignEmptyAlert user={user} actionURL={createUrl} />}
             </Section>
         </Page>
     );

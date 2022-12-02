@@ -250,7 +250,7 @@ export async function getSelectedSampleIdsFromSelectionKey(location: Location): 
     let sampleIds;
 
     if (getLocationQueryVal(location, 'selectionKeyType') === SAMPLE_INVENTORY_ITEM_SELECTION_KEY) {
-        const response = await getSnapshotSelections(key);
+        const response = await getSnapshotSelections(key);// ordered ? is this still needed
         sampleIds = await getSelectedItemSamples(response.selected);
     } else if (getLocationQueryVal(location, 'isAssay')) {
         const schemaName = getLocationQueryVal(location, 'assayProtocol');

@@ -4,7 +4,7 @@ import { List } from 'immutable';
 
 import { deleteRows, insertRows, InsertRowsResponse, selectRowsDeprecated } from '../../query/api';
 import { resolveKey, SchemaQuery } from '../../../public/SchemaQuery';
-import { getSelected, getSelectedData, setSnapshotSelections } from '../../actions';
+import { getOrderedSelectedMappedKeys, getSelected, getSelectedData, setSnapshotSelections } from '../../actions';
 import { PICKLIST } from '../domainproperties/list/constants';
 import { saveDomain } from '../domainproperties/actions';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
@@ -199,41 +199,41 @@ export function getPicklistSamples(listName: string): Promise<Set<string>> {
     });
 }
 
+export function getOrderedSelectedPicklistSamples(queryModel: QueryModel, saveSnapshot?: boolean): Promise<number[]> {
+    const { queryName, queryParameters, selections, sortString, viewName, selectionKey } = queryModel;
+    return getSelectedPicklistSamples(queryName, Array.of(...selections), saveSnapshot, selectionKey, sortString, queryParameters, viewName)
+}
+
 export function getSelectedPicklistSamples(
     picklistName: string,
     selectedIds: string[],
     saveSnapshot?: boolean,
-    selectionKey?: string
+    selectionKey?: string,
+    sorts?: string,
+    queryParameters?: Record<string, any>,
+    viewName?: string,
 ): Promise<number[]> {
     return new Promise((resolve, reject) => {
-        getSelectedData(
+        getOrderedSelectedMappedKeys(
+            PICKLIST_KEY_COLUMN,
+            PICKLIST_SAMPLE_ID_COLUMN,
             SCHEMAS.PICKLIST_TABLES.SCHEMA,
             picklistName,
             selectedIds,
-            [PICKLIST_SAMPLE_ID_COLUMN, PICKLIST_KEY_COLUMN].join(','),
-            undefined,
-            undefined,
-            undefined,
-            PICKLIST_KEY_COLUMN)
-            .then(response => {
-                const { data } = response;
-                const sampleIds = [];
-                const rowIds = [];
-                data.forEach(row => {
-                    sampleIds.push(row.getIn([PICKLIST_SAMPLE_ID_COLUMN, 'value']));
-                    if (saveSnapshot) {
-                        rowIds.push(row.getIn([PICKLIST_KEY_COLUMN, 'value']));
-                    }
-                });
-                if (saveSnapshot) {
-                    setSnapshotSelections(selectionKey, rowIds);
-                }
-                resolve(sampleIds);
-            })
-            .catch(reason => {
-                console.error(reason);
-                reject(reason);
-            });
+            sorts,
+            queryParameters,
+            viewName
+        ).then((result) => {
+            const rowIds = result.mapFromValues;
+            const sampleIds = result.mapToValues;
+            if (saveSnapshot) {
+                setSnapshotSelections(selectionKey, rowIds);
+            }
+            resolve(sampleIds);
+        }).catch((reason) => {
+            console.error(reason);
+            reject(reason);
+        })
     });
 }
 

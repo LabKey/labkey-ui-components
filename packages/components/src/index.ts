@@ -173,6 +173,7 @@ import { ValueList } from './internal/components/base/ValueList';
 import { EditorModel } from './internal/components/editable/models';
 import {
     clearSelected,
+    getOrderedSelectedMappedKeys,
     getSelected,
     getSelectedData,
     getSelection,
@@ -545,7 +546,7 @@ import { PicklistCreationMenuItem } from './internal/components/picklist/Picklis
 import { PicklistButton } from './internal/components/picklist/PicklistButton';
 
 import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
-import { getSelectedPicklistSamples } from './internal/components/picklist/actions';
+import { getSelectedPicklistSamples, getOrderedSelectedPicklistSamples } from './internal/components/picklist/actions';
 import { BarTenderSettingsForm } from './internal/components/labels/BarTenderSettingsForm';
 import { PrintLabelsModal } from './internal/components/labels/PrintLabelsModal';
 import { BarTenderConfiguration } from './internal/components/labels/models';
@@ -826,6 +827,7 @@ export {
     createGridModelId,
     clearSelected,
     // grid functions
+    getOrderedSelectedMappedKeys,
     getSelected,
     getSelectedData,
     getSelection,
@@ -967,6 +969,7 @@ export {
     PicklistButton,
     PicklistCreationMenuItem,
     Picklist,
+    getOrderedSelectedPicklistSamples,
     getSelectedPicklistSamples,
     // data class and sample type related items
     ALIQUOT_FILTER_MODE,

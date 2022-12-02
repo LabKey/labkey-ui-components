@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.XX
+*Released*: XX December 2022
+* Add samples to storage in the order they are in grid
+    * TODO
+
 ### version 2.265.0
 *Released*: 1 December 2022
 * AssayProtocolModel: Add hasBatchFields

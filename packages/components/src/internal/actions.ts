@@ -667,6 +667,82 @@ export function getSelectedData(
     );
 }
 
+interface RemappedKeyValues {
+    mapFromValues: any[],
+    mapToValues: any[]
+}
+
+/**
+ * Get the ordered remapped key values from a QueryModel based on grid's current selection.
+ * For example, picklist grid has a "ID" PK column and a "SampleId" FK column.
+ * This function can be used to get the SampleIds for the currently selected IDs, in the order that respect current grid filter/sort
+ * @param fromColumn Key column for the current grid
+ * @param toColumn Key column for the FK field, can be empty.
+ * @param schemaName
+ * @param queryName
+ * @param selections
+ * @param sortString
+ * @param queryParameters
+ * @param viewName
+ */
+export function getOrderedSelectedMappedKeys(fromColumn: string, toColumn?: string, schemaName?: string,
+                                             queryName?: string,
+                                             selections?: string[],
+                                             sortString?: string,
+                                             queryParameters?: Record<string, any>,
+                                             viewName?: string,): Promise<RemappedKeyValues> {
+    return new Promise((resolve, reject) => {
+        getSelectedData(
+            schemaName,
+            queryName,
+            Array.of(...selections),
+            toColumn ? [fromColumn, toColumn].join(',') : fromColumn,
+            sortString,
+            queryParameters,
+            viewName,
+            fromColumn
+        ).then(response => {
+            const { data, dataIds } = response;
+            const toIds = [];
+            const fromIds = [];
+            const values = [];
+            data.forEach(row => {
+                const rowData = row.toJS();
+                fromIds.push(caseInsensitive(rowData, fromColumn)?.value);
+                if (toColumn)
+                    toIds.push(caseInsensitive(rowData, toColumn)?.value);
+            });
+
+            fromIds.forEach((rowId, ind) => {
+                const orderNum = dataIds.indexOf(rowId + '');
+                const to = toColumn ? toIds[ind] : undefined;
+                values.push({
+                    from: rowId,
+                    to,
+                    orderNum
+                });
+            });
+
+            const mapFromValues = [];
+            const mapToValues = [];
+            values.sort((a, b) => a.orderNum - b.orderNum);
+            values.forEach(value => {
+                mapToValues.push(value.to);
+                mapFromValues.push(value.from);
+            });
+
+            resolve({
+                mapToValues,
+                mapFromValues
+            });
+        })
+            .catch(reason => {
+                console.error(reason);
+                reject(reason);
+            });
+    });
+}
+
 export function fetchCharts(schemaQuery: SchemaQuery, containerPath?: string): Promise<List<DataViewInfo>> {
     return new Promise((resolve, reject) => {
         // if we know we don't have the study module, no need to make the API call

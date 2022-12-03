@@ -15,7 +15,6 @@ import { AppURL } from '../../url/AppURL';
 import { getCurrentAppProperties, hasProductProjects, setProductProjects } from '../../app/utils';
 
 import { useFolderMenuContext } from '../navigation/hooks';
-import { IDNameSettings } from '../settings/NameIdSettings';
 
 import { invalidateFullQueryDetailsCache } from '../../query/api';
 
@@ -40,10 +39,8 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
 
             const formData = new FormData(evt.target);
             const options: ProjectSettingsOptions = {
-                allowUserSpecifiedNames: !!formData.get('allowUserSpecifiedNames'),
                 name: formData.get('name') as string,
                 nameAsTitle: !!formData.get('nameAsTitle'),
-                prefix: formData.get('prefix') as string,
                 title: formData.get('title') as string,
             };
 
@@ -73,10 +70,6 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
                             <div className="form-subtitle">Project Properties</div>
 
                             <ProjectProperties autoFocus />
-
-                            <div className="form-subtitle">ID/Name Settings</div>
-
-                            <IDNameSettings />
 
                             {/* Dummy submit button so browsers trigger onSubmit with enter key */}
                             <button type="submit" className="dummy-input" tabIndex={-1} />

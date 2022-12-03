@@ -56,10 +56,8 @@ describe('CreateProjectPage', () => {
         await waitForLifecycle(wrapper);
 
         expect(createProject).toHaveBeenCalledWith({
-            allowUserSpecifiedNames: true,
             name: '',
             nameAsTitle: true,
-            prefix: '',
             title: null,
         });
         expect(onCreated).toHaveBeenCalledWith(project);

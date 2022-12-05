@@ -245,7 +245,7 @@ export function withQueryModels<Props>(
             const { router, location } = this.props;
 
             if (location === undefined) {
-                // This happens when we're rendering a component outside of a router.
+                // This happens when we're rendering a component outside a router.
                 return;
             }
 

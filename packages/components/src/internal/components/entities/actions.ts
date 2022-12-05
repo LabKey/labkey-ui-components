@@ -8,7 +8,7 @@ import { getFilterForSampleOperation, isSamplesSchema } from '../samples/utils';
 import { importData, InsertOptions, selectRowsDeprecated } from '../../query/api';
 import { caseInsensitive } from '../../util/utils';
 import { SampleCreationType } from '../samples/models';
-import { getSelected, getSelectedData } from '../../actions';
+import { getSelected, getSelectedData, getSnapshotSelections } from '../../actions';
 import { SHARED_CONTAINER_PATH } from '../../constants';
 import { naturalSort } from '../../../public/sort';
 import { QueryInfo } from '../../../public/QueryInfo';
@@ -237,7 +237,8 @@ function resolveSampleParentTypes(response: any, isAliquotParent?: boolean): Lis
  * or a selection key and determine the schema query from parsing the selection key.  In any case, this
  * assumes parents from a single data type.
  * @param initialParents
- * @param selectionKey
+ * @param selectionKey the key for the parent selection
+ * @param isSnapshotSelection whether this selection key is a snapshot selection or not
  * @param creationType
  * @param isItemSamples
  * @param targetQueryName
@@ -245,6 +246,7 @@ function resolveSampleParentTypes(response: any, isAliquotParent?: boolean): Lis
 async function initParents(
     initialParents: string[],
     selectionKey: string,
+    isSnapshotSelection,
     creationType?: SampleCreationType,
     isItemSamples?: boolean,
     targetQueryName?: string
@@ -252,14 +254,17 @@ async function initParents(
     const isAliquotParent = creationType === SampleCreationType.Aliquots;
 
     if (selectionKey) {
-        const { schemaQuery } = SchemaQuery.parseSelectionKey(selectionKey);
-        const selectionResponse = await getSelected(selectionKey);
+        const {schemaQuery} = SchemaQuery.parseSelectionKey(selectionKey);
+        let selectionResponse;
+        if (isSnapshotSelection)
+            selectionResponse = await getSnapshotSelections(selectionKey);
+        else
+            selectionResponse = await getSelected(selectionKey);
 
-        if (isItemSamples) {
-            return getSelectedSampleParentsFromItems(selectionResponse.selected, isAliquotParent);
-        }
+        const filterArray = [
+            Filter.create('RowId', selectionResponse.selected, Filter.Types.IN),
+        ];
 
-        const filterArray = [Filter.create('RowId', selectionResponse.selected, Filter.Types.IN)];
         const opFilter = getFilterForSampleOperation(SampleOperation.EditLineage);
         if (opFilter) {
             filterArray.push(opFilter);
@@ -372,11 +377,12 @@ export async function getChosenParentData(
 
     if (allowParents) {
         const parentSchemaNames = parentEntityDataTypes.keySeq();
-        const { creationType, originalParents, selectionKey } = model;
+        const { creationType, originalParents, selectionKey, isSnapshotSelection } = model;
 
         const chosenParents = await initParents(
             originalParents,
             selectionKey,
+            isSnapshotSelection,
             creationType,
             isItemSamples,
             targetQueryName
@@ -636,6 +642,7 @@ export function getDataOperationConfirmationData(
 export function getCrossFolderSelectionResult(
     dataRegionSelectionKey: string,
     dataType: 'sample' | 'data',
+    useSnapshotSelection?: boolean,
     rowIds?: string[] | number[],
     picklistName?: string
 ): Promise<CrossFolderSelectionResult> {
@@ -652,6 +659,7 @@ export function getCrossFolderSelectionResult(
                 rowIds,
                 dataType,
                 picklistName,
+                useSnapshotSelection,
             },
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {

@@ -25,7 +25,7 @@ interface Props {
     onSubmit: (creationType: SampleCreationType, numPerParent?: number) => void;
     options: SampleCreationTypeModel[];
     parentCount: number;
-    selectedItems?: Record<string, any>;
+    selectionData?: Map<any, any>;
     selectionKey?: string;
     show: boolean;
     showIcons: boolean;
@@ -71,10 +71,10 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
     }
 
     init = async (): Promise<void> => {
-        const { api, selectedItems, selectionKey } = this.props;
-        if (selectedItems) {
-            const { rows, statusMessage, statusData } = filterSampleRowsForOperation(
-                selectedItems,
+        const { api, selectionData, selectionKey } = this.props;
+        if (selectionData) {
+            const { statusData } = filterSampleRowsForOperation(
+                selectionData,
                 SampleOperation.EditLineage
             );
             if (this._mounted) {

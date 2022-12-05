@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useMemo, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { List } from 'immutable';
 
 import { SchemaQuery } from '../public/SchemaQuery';
@@ -21,12 +21,14 @@ import {
 import { MAX_EDITABLE_GRID_ROWS } from '../internal/constants';
 
 import { SampleCreationTypeModal } from './SampleCreationTypeModal';
+import { getSelectedData, setSnapshotSelections } from '../internal/actions';
+import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
+import { caseInsensitive } from '../internal/util/utils';
 
 interface CreateSamplesSubMenuProps {
     allowPooledSamples?: boolean;
     currentProductId?: string;
     getOptions: (useOnClick: boolean, disabledMsg: string, itemActionFn: (key: string) => any) => List<MenuOption>;
-    getProductSampleWizardURL?: (targetSampleType?: string, parent?: string, selectionKey?: string) => string | AppURL;
     inlineItemsCount?: number;
     isSelectingSamples?: (schemaQuery: SchemaQuery) => boolean;
     maxParentPerSample: number;
@@ -36,14 +38,14 @@ interface CreateSamplesSubMenuProps {
     parentKey?: string;
     parentQueryModel?: QueryModel;
     parentType?: string;
-    sampleWizardURL?: (
+    sampleWizardURL: (
         targetSampleType?: string,
         parent?: string,
+        selectionKey?: string,
+        useSnapshotSelection?: boolean,
         currentProductId?: string,
         targetProductId?: string,
-        selectionKey?: string
     ) => string | AppURL;
-    selectedItems?: Record<string, any>;
     selectedType?: SampleCreationType;
     selectionNoun?: string;
     selectionNounPlural?: string;
@@ -63,9 +65,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         getOptions,
         maxParentPerSample,
         sampleWizardURL,
-        getProductSampleWizardURL,
         isSelectingSamples,
-        selectedItems,
         selectedType,
         inlineItemsCount,
         currentProductId,
@@ -78,7 +78,38 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
     const [sampleCreationURL, setSampleCreationURL] = useState<string | AppURL>();
     const [selectedOption, setSelectedOption] = useState<string>();
     const [crossFolderSelectionResult, setCrossFolderSelectionResult] = useState(undefined);
+    const [isLoading, setIsLoading] = useState<boolean>(parentQueryModel.filterArray.length > 0);
+    const [selectionData, setSelectionData] = useState<Map<any, any>>();
+    const useSnapshotSelection = useMemo(() => {
+        return parentQueryModel?.filterArray.length > 0;
+    }, [parentQueryModel?.filterArray]);
 
+
+    const selectionKey = useMemo(() => {
+        if (!parentQueryModel?.hasSelections) return null;
+
+        return parentQueryModel.selectionKey;
+    }, [parentQueryModel, useSnapshotSelection]);
+
+    useEffect(() => {
+        ( async () => {
+            if (isLoading && !parentQueryModel?.isLoadingSelections && useSnapshotSelection) {
+                try {
+                    const {
+                        data,
+                    } = await getSelectedData(parentQueryModel.schemaName, parentQueryModel.queryName, [...parentQueryModel.selections], parentQueryModel.getRequestColumnsString(), undefined);
+                    const dataMap = data.toJS();
+                    await setSnapshotSelections(parentQueryModel.selectionKey, Object.values(dataMap).map(row => caseInsensitive(row, "RowId").value));
+                    setSelectionData(dataMap);
+                    setIsLoading(false);
+                }
+                catch (reason) {
+                    console.error("There was a problem loading the filtered selection data. Your actions will not obey these filters.", reason);
+                    setIsLoading(false);
+                }
+            }
+        })();
+    }, [isLoading, parentQueryModel?.isLoadingSelections, useSnapshotSelection]);
     const selectedQuantity = parentQueryModel ? parentQueryModel.selections?.size ?? 0 : 1;
     const schemaQuery = parentQueryModel?.schemaQuery;
 
@@ -105,19 +136,9 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
 
     const useOnClick = parentKey !== undefined || (parentQueryModel && selectedQuantity > 0 && selectingSampleParents);
 
-    const selectionKey = useMemo(() => {
-        return parentQueryModel?.hasSelections ? parentQueryModel.selectionKey : null;
-    }, [parentQueryModel]);
-
     const onSampleCreationMenuSelect = useCallback(
         (key: string) => {
-            let appURL: string | AppURL;
-
-            if (sampleWizardURL) {
-                appURL = sampleWizardURL(key, parentKey, selectionKey, currentProductId, targetProductId);
-            } else if (getProductSampleWizardURL) {
-                appURL = getProductSampleWizardURL(key, parentKey, selectionKey);
-            }
+            let appURL: string | AppURL = sampleWizardURL(key, parentKey, selectionKey, useSnapshotSelection, currentProductId, targetProductId);
 
             if (useOnClick) {
                 setSelectedOption(key);
@@ -128,12 +149,12 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         },
         [
             sampleWizardURL,
-            getProductSampleWizardURL,
             useOnClick,
             parentKey,
             currentProductId,
             targetProductId,
             selectionKey,
+            useSnapshotSelection
         ]
     );
 
@@ -143,7 +164,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
             if (parentQueryModel && selectedQuantity > 0 && selectingSampleParents && !skipCrossFolderCheck) {
                 const dataType = parentQueryModel.schemaName === SCHEMAS.DATA_CLASSES.SCHEMA ? 'data' : 'sample';
                 setCrossFolderSelectionResult(undefined);
-                const result = await getCrossFolderSelectionResult(parentQueryModel.id, dataType);
+                const result = await getCrossFolderSelectionResult(parentQueryModel.id, dataType, useSnapshotSelection);
 
                 if (result.crossFolderSelectionCount > 0) {
                     let verb = 'Create';
@@ -168,7 +189,6 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         },
         [
             sampleWizardURL,
-            getProductSampleWizardURL,
             useOnClick,
             parentKey,
             currentProductId,
@@ -229,6 +249,9 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         nounPlural = 'Raw Materials';
     }
 
+    if (isLoading)
+        return <LoadingSpinner />;
+
     return (
         <>
             <SubMenu
@@ -259,8 +282,8 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                     options={parentType === SOURCES_KEY ? [CHILD_SAMPLE_CREATION] : sampleOptions}
                     onCancel={onCancel}
                     onSubmit={onSampleCreationSubmit}
-                    selectionKey={selectedItems ? undefined : selectionKey}
-                    selectedItems={selectedItems}
+                    selectionKey={selectionData ? undefined : selectionKey}
+                    selectionData={selectionData}
                     noun={noun}
                     nounPlural={nounPlural}
                 />

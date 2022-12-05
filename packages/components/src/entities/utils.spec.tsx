@@ -215,32 +215,38 @@ describe('getSampleWizardURL', () => {
     });
 
     test('default props, with productId', () => {
-        expect(getSampleWizardURL(null, null, null, 'from', 'to').toString()).toBe('/labkey/to/app.view#/samples/new');
+        expect(getSampleWizardURL(null, null, null, undefined, 'from', 'to').toString()).toBe('/labkey/to/app.view#/samples/new');
     });
 
     test('targetSampleSet, with productId', () => {
-        expect(getSampleWizardURL('target1', null, null, 'from', 'to').toString()).toBe(
+        expect(getSampleWizardURL('target1', null, null, undefined, 'from', 'to').toString()).toBe(
             '/labkey/to/app.view#/samples/new?target=target1'
         );
     });
 
     test('parent, with productId', () => {
-        expect(getSampleWizardURL(undefined, 'parent1', null, 'from', 'to').toString()).toBe(
+        expect(getSampleWizardURL(undefined, 'parent1', null, undefined, 'from', 'to').toString()).toBe(
             '/labkey/to/app.view#/samples/new?parent=parent1'
         );
     });
 
     test('targetSampleSet and parent, with productId', () => {
-        expect(getSampleWizardURL('target1', 'parent1', null, 'from', 'to').toString()).toBe(
+        expect(getSampleWizardURL('target1', 'parent1', null, undefined, 'from', 'to').toString()).toBe(
             '/labkey/to/app.view#/samples/new?target=target1&parent=parent1'
         );
     });
 
     test('targetSampleSet and parent and selectionKey, with productId', () => {
-        expect(getSampleWizardURL('target1', 'parent1', 'grid-1|samples|type1', 'from', 'to').toString()).toBe(
+        expect(getSampleWizardURL('target1', 'parent1', 'grid-1|samples|type1', undefined, 'from', 'to').toString()).toBe(
             '/labkey/to/app.view#/samples/new?target=target1&parent=parent1&selectionKey=grid-1%7Csamples%7Ctype1'
         );
     });
+
+    test("use snapshot selection", () => {
+        expect(getSampleWizardURL('target1', 'parent1', 'grid-1|samples|type1', true).toHref()).toBe(
+            '#/samples/new?target=target1&parent=parent1&selectionKey=grid-1%7Csamples%7Ctype1&selectionKeyType=snapshot'
+        );
+    })
 });
 
 describe('getSampleDeleteMessage', () => {

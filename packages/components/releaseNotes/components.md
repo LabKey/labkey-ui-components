@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 46465: Support filtered selections when exporting, deriving and adding to picklists
+
 ### version 2.265.0
 *Released*: 1 December 2022
 * AssayProtocolModel: Add hasBatchFields

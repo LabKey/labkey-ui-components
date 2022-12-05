@@ -34,7 +34,10 @@ import { getCurrentProductName, isSampleManagerEnabled, sampleManagerIsPrimaryAp
 
 import { fetchDomainDetails, getDomainNamePreviews } from '../domainproperties/actions';
 
-import { SAMPLE_INVENTORY_ITEM_SELECTION_KEY, SAMPLE_STATE_COLUMN_NAME } from '../samples/constants';
+import {
+    SAMPLE_STATE_COLUMN_NAME,
+    SELECTION_KEY_TYPE,
+} from '../samples/constants';
 
 import { loadNameExpressionOptions } from '../settings/actions';
 
@@ -167,6 +170,7 @@ interface OwnProps {
 interface FromLocationProps {
     creationType?: SampleCreationType;
     isItemSamples?: boolean;
+    isSnapshotSelection?: boolean;
     numPerParent?: number;
     parents?: string[];
     selectionKey?: string;
@@ -295,6 +299,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             originalParents,
             selectedParents,
             combineParentTypes,
+            isSnapshotSelection,
         } = this.props;
 
         const { creationType } = this.state;
@@ -340,6 +345,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             numPerParent,
             originalParents: allowParents ? parents ?? originalParents : undefined,
             selectionKey,
+            isSnapshotSelection,
         });
 
         let parentSchemaQueries = Map<string, EntityDataType>();
@@ -1459,7 +1465,8 @@ export const EntityInsertPanel: FC<{ location?: Location } & OwnProps> = memo(pr
             target,
             selectionKeyType,
         } = location.query;
-        const isItemSamples = selectionKeyType === SAMPLE_INVENTORY_ITEM_SELECTION_KEY;
+        const isItemSamples = selectionKeyType === SELECTION_KEY_TYPE.inventoryItems;
+        const isSnapshotSelection = selectionKeyType === SELECTION_KEY_TYPE.snapshot;
         return {
             creationType,
             numPerParent,
@@ -1468,6 +1475,7 @@ export const EntityInsertPanel: FC<{ location?: Location } & OwnProps> = memo(pr
             tab: entityInsertPanelProps.selectedTab ?? parseInt(tab, 10),
             target,
             isItemSamples,
+            isSnapshotSelection,
         };
     }, [location, entityInsertPanelProps.selectedTab]);
 

@@ -4,7 +4,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.XX
 *Released*: XX December 2022
 * Add samples to storage in the order they are in grid
-    * TODO
+    * added getOrderedSelectedMappedKeys util to get remapped ordered selections from grid
+    * modify getSelectedPicklistSamples to return ordered samples from selected ids
 
 ### version 2.265.0
 *Released*: 1 December 2022

@@ -74,7 +74,7 @@ export function filterSampleRowsForOperation(
     const notAllowed = [];
     const validRows = {};
     Object.values(rows).forEach(row => {
-        const statusType = caseInsensitive(row, SAMPLE_STATE_TYPE_COLUMN_NAME).value;
+        const statusType = caseInsensitive(row, SAMPLE_STATE_TYPE_COLUMN_NAME)?.value;
         const id = caseInsensitive(row, sampleIdField).value;
         const statusRecord = {
             RowId: caseInsensitive(row, sampleIdField).value,

@@ -38,7 +38,7 @@ export const SampleStatusTag: FC<Props> = memo(props => {
         <>
             <span
                 className={classNames(className, {
-                    'sample-status-tag': !iconOnly,
+                    'status-tag sample-status-tag': !iconOnly,
                     'alert-danger': !iconOnly && statusType === SampleStateType.Locked,
                     'alert-warning': !iconOnly && statusType === SampleStateType.Consumed,
                     'alert-success': !iconOnly && statusType === SampleStateType.Available,

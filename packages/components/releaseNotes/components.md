@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 46843: Remove export notification for tabbed grids
+
 ### version 2.265.0
 *Released*: 1 December 2022
 * AssayProtocolModel: Add hasBatchFields

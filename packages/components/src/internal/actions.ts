@@ -687,10 +687,10 @@ interface RemappedKeyValues {
  */
 export function getOrderedSelectedMappedKeys(
     fromColumn: string,
-    toColumn?: string,
-    schemaName?: string,
-    queryName?: string,
-    selections?: string[],
+    toColumn: string,
+    schemaName: string,
+    queryName: string,
+    selections: string[],
     sortString?: string,
     queryParameters?: Record<string, any>,
     viewName?: string
@@ -708,20 +708,14 @@ export function getOrderedSelectedMappedKeys(
         )
             .then(response => {
                 const { data, dataIds } = response;
-                const toIds = [];
-                const fromIds = [];
                 const values = [];
                 data.forEach(row => {
                     const rowData = row.toJS();
-                    fromIds.push(caseInsensitive(rowData, fromColumn)?.value);
-                    if (toColumn) toIds.push(caseInsensitive(rowData, toColumn)?.value);
-                });
-
-                fromIds.forEach((rowId, ind) => {
-                    const orderNum = dataIds.indexOf(rowId + '');
-                    const to = toColumn ? toIds[ind] : undefined;
+                    const from = caseInsensitive(rowData, fromColumn)?.value;
+                    const to = toColumn ? caseInsensitive(rowData, toColumn)?.value : null;
+                    const orderNum = dataIds.indexOf(from + '');
                     values.push({
-                        from: rowId,
+                        from,
                         to,
                         orderNum,
                     });

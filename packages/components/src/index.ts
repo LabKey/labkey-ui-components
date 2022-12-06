@@ -15,7 +15,14 @@
  */
 import { enableMapSet, enablePatches } from 'immer';
 
-import { AppURL, buildURL, createProductUrl, createProductUrlFromParts, spliceURL } from './internal/url/AppURL';
+import {
+    AppURL,
+    applyURL,
+    buildURL,
+    createProductUrl,
+    createProductUrlFromParts,
+    spliceURL,
+} from './internal/url/AppURL';
 import { getHref } from './internal/url/utils';
 import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
 import { Container } from './internal/components/base/models/Container';
@@ -261,6 +268,7 @@ import {
 import { QueryFormInputs } from './internal/components/forms/QueryFormInputs';
 import { LookupSelectInput } from './internal/components/forms/input/LookupSelectInput';
 import { SelectInput } from './internal/components/forms/input/SelectInput';
+import { selectOptionByText } from './internal/components/forms/input/SelectInputTestUtils';
 import { DatePickerInput } from './internal/components/forms/input/DatePickerInput';
 import { FileInput } from './internal/components/forms/input/FileInput';
 import { TextInput } from './internal/components/forms/input/TextInput';
@@ -333,7 +341,8 @@ import {
     SamplesEditButtonSections,
 } from './internal/components/samples/utils';
 import {
-    AssayContextConsumer,
+    AssayContext,
+    AssayContextProvider,
     withAssayModels,
     withAssayModelsFromLocation,
 } from './internal/components/assay/withAssayModels';
@@ -413,6 +422,7 @@ import {
 import { getUniqueIdColumnMetadata } from './internal/components/entities/utils';
 import { EntityInsertPanel } from './internal/components/entities/EntityInsertPanel';
 import { EntityCrossProjectSelectionConfirmModal } from './internal/components/entities/EntityCrossProjectSelectionConfirmModal';
+import { EntityDeleteConfirmModal } from './internal/components/entities/EntityDeleteConfirmModal';
 import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
 
 import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';
@@ -480,6 +490,9 @@ import { DomainFieldLabel } from './internal/components/domainproperties/DomainF
 import { RangeValidationOptionsModal } from './internal/components/domainproperties/validation/RangeValidationOptions';
 
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
+import { AssayDesignEmptyAlert } from './internal/components/assay/AssayDesignEmptyAlert';
+import { AssayResultsForSamplesMenuItem } from './internal/components/entities/AssayResultsForSamplesButton';
+import { FindDerivativesMenuItem } from './internal/components/entities/FindDerivativesButton';
 import {
     makeQueryInfo,
     mountWithAppServerContext,
@@ -570,6 +583,7 @@ import {
     hasPremiumModule,
     hasProductProjects,
     isAppHomeFolder,
+    isAssayDesignExportEnabled,
     isAssayEnabled,
     isAssayQCEnabled,
     isAssayRequestsEnabled,
@@ -623,6 +637,7 @@ import {
     TEST_USER_READER,
     TEST_USER_STORAGE_DESIGNER,
     TEST_USER_STORAGE_EDITOR,
+    TEST_USER_QC_ANALYST,
 } from './internal/userFixtures';
 import {
     ASSAY_DESIGN_KEY,
@@ -700,6 +715,7 @@ const App = {
     getCurrentAppProperties,
     registerWebSocketListeners,
     isAppHomeFolder,
+    isAssayDesignExportEnabled,
     isAssayEnabled,
     isAssayQCEnabled,
     isAssayRequestsEnabled,
@@ -794,6 +810,7 @@ const App = {
     TEST_USER_APP_ADMIN,
     TEST_USER_STORAGE_DESIGNER,
     TEST_USER_STORAGE_EDITOR,
+    TEST_USER_QC_ANALYST,
     TEST_LKS_STARTER_MODULE_CONTEXT,
     TEST_LKSM_STARTER_MODULE_CONTEXT,
     TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
@@ -877,6 +894,7 @@ export {
     resetParameters,
     hasParameter,
     toggleParameter,
+    applyURL,
     buildURL,
     imageURL,
     spliceURL,
@@ -1003,6 +1021,7 @@ export {
     getSelectedSampleIdsFromSelectionKey,
     EntityInsertPanel,
     EntityCrossProjectSelectionConfirmModal,
+    EntityDeleteConfirmModal,
     SampleTypeDataType,
     DataClassDataType,
     AssayResultDataType,
@@ -1028,6 +1047,7 @@ export {
     getOperationConfirmationData,
     getUniqueIdColumnMetadata,
     // search related items
+    FindDerivativesMenuItem,
     FIND_SAMPLE_BY_ID_METRIC_AREA,
     SearchResultsModel,
     SearchResultCard,
@@ -1052,10 +1072,13 @@ export {
     AssayPickerTabs,
     withAssayModels,
     withAssayModelsFromLocation,
-    AssayContextConsumer,
+    AssayContext,
+    AssayContextProvider,
     AssayDefinitionModel,
     AssayDomainTypes,
     AssayLink,
+    AssayDesignEmptyAlert,
+    AssayResultsForSamplesMenuItem,
     allowReimportAssayRun,
     clearAssayDefinitionCache,
     fetchAllAssays,
@@ -1367,6 +1390,7 @@ export {
     mountWithServerContext,
     waitForLifecycle,
     wrapDraggable,
+    selectOptionByText,
     // Ontology
     OntologyBrowserPage,
     OntologyConceptOverviewPanel,

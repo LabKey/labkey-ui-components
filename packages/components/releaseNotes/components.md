@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD December 2022
+* Updates for creation of @labkey/premium package
+  * move /assay subpackage to new repo / package
+  * add some missing components to index.ts needed by @labkey/premium
+
 ### version 2.266.0
 *Released*: 6 December 2022
 * Updates for workflow consistency: status-tag styling

@@ -52,15 +52,6 @@ body {
 }
 
 @media (max-width: 768px) {
-  // Keeps sub nav from wrapping at sm breakpoint
-  .navbar.sub-nav {
-    min-height: 0;
-
-    .navbar-nav {
-      margin: 0;
-    }
-  }
-
   .navbar .navbar-nav .open .dropdown-menu {
     position: absolute;
     background-color: #fff;

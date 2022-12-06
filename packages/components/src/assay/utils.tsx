@@ -2,10 +2,41 @@ import React, { ReactNode } from 'react';
 
 import { AssayDefinitionModel } from '../internal/AssayDefinitionModel';
 import { AppURL } from '../internal/url/AppURL';
-import { ASSAYS_KEY } from '../internal/app/constants';
+import { ASSAYS_KEY, WORKFLOW_KEY } from '../internal/app/constants';
 import { AssayUploadResultModel } from '../internal/components/assay/models';
-import { getPipelineLinkMsg, getWorkflowLinkMsg } from '../internal/components/pipeline/utils';
 import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
+
+function getPipelineLinkMsg(response: AssayUploadResultModel): ReactNode {
+    return (
+        <>
+            Click <a href={AppURL.create('pipeline', response.jobId).toHref()}> here </a> to check the status of the
+            background import.{' '}
+        </>
+    );
+}
+
+function getWorkflowLinkMsg(workflowJobId?: string, workflowTaskId?: string): ReactNode {
+    if (workflowJobId) {
+        let jobTasksUrl = AppURL.create(WORKFLOW_KEY, workflowJobId, 'tasks');
+        if (workflowTaskId) {
+            jobTasksUrl = jobTasksUrl.addParams({
+                taskId: workflowTaskId,
+            });
+        }
+
+        return (
+            <>
+                Click
+                <a href={jobTasksUrl.toHref()} className="alert-link">
+                    {' '}
+                    here{' '}
+                </a>
+                to go back to the workflow task.
+            </>
+        );
+    }
+    return null;
+}
 
 function getAssayImportSuccessMsg(
     runId: number,

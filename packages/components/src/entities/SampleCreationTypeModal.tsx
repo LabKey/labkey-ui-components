@@ -85,10 +85,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
             }
         } else {
             try {
-                const confirmationData = await api.samples.getSampleOperationConfirmationData(
-                    SampleOperation.EditLineage,
-                    selectionKey
-                );
+                const confirmationData = await api.samples.getSampleOperationConfirmationData(SampleOperation.EditLineage, undefined, selectionKey);
                 if (this._mounted) {
                     this.setState({
                         statusData: confirmationData,

@@ -30,9 +30,10 @@ import {
 } from './models';
 
 export function getOperationConfirmationData(
-    selectionKey: string,
     dataType: EntityDataType,
-    rowIds?: string[] | number[],
+    rowIds: string[] | number[],
+    selectionKey?: string,
+    useSnapshotSelection?: boolean,
     extraParams?: Record<string, any>
 ): Promise<OperationConfirmationData> {
     if (!selectionKey && !rowIds?.length) {
@@ -45,6 +46,9 @@ export function getOperationConfirmationData(
             params = {
                 dataRegionSelectionKey: selectionKey,
             };
+            if (useSnapshotSelection) {
+                params['useSnapshotSelection'] = true;
+            }
         } else {
             params = {
                 rowIds,
@@ -74,31 +78,27 @@ export function getOperationConfirmationData(
 }
 
 export function getDeleteConfirmationData(
-    selectionKey: string,
     dataType: EntityDataType,
-    rowIds?: string[] | number[]
-): Promise<OperationConfirmationData> {
+    rowIds: string[] | number[],
+    selectionKey?: string,
+    useSnapshotSelection?: boolean): Promise<OperationConfirmationData> {
     if (isSampleEntity(dataType)) {
-        return getSampleOperationConfirmationData(SampleOperation.Delete, selectionKey, rowIds);
+        return getSampleOperationConfirmationData(SampleOperation.Delete, rowIds, selectionKey, useSnapshotSelection);
     }
-    return getOperationConfirmationData(
-        selectionKey,
-        dataType,
-        rowIds,
-        isDataClassEntity(dataType)
-            ? {
-                  dataOperation: DataOperation.Delete,
-              }
-            : undefined
-    );
+    return getOperationConfirmationData(dataType, rowIds, selectionKey, useSnapshotSelection, isDataClassEntity(dataType)
+        ? {
+            dataOperation: DataOperation.Delete,
+        }
+        : undefined);
 }
 
 export function getSampleOperationConfirmationData(
     operation: SampleOperation,
-    selectionKey: string,
-    rowIds?: string[] | number[]
+    rowIds?: string[] | number[],
+    selectionKey?: string,
+    useSnapshotSelection?: boolean
 ): Promise<OperationConfirmationData> {
-    return getOperationConfirmationData(selectionKey, SampleTypeDataType, rowIds, {
+    return getOperationConfirmationData(SampleTypeDataType, rowIds, selectionKey, useSnapshotSelection, {
         sampleOperation: SampleOperation[operation],
     });
 }
@@ -623,18 +623,19 @@ export function handleEntityFileImport(
 }
 
 export function getDataDeleteConfirmationData(
-    selectionKey: string,
-    rowIds?: string[] | number[]
-): Promise<OperationConfirmationData> {
-    return getDataOperationConfirmationData(DataOperation.Delete, selectionKey, rowIds);
+    rowIds: string[] | number[],
+    selectionKey?: string,
+    useSnapshotSelection?: boolean): Promise<OperationConfirmationData> {
+    return getDataOperationConfirmationData(DataOperation.Delete, rowIds, selectionKey, useSnapshotSelection);
 }
 
 export function getDataOperationConfirmationData(
     operation: DataOperation,
-    selectionKey: string,
-    rowIds?: string[] | number[]
+    rowIds: string[] | number[],
+    selectionKey?: string,
+    useSnapshotSelection?: boolean
 ): Promise<OperationConfirmationData> {
-    return getOperationConfirmationData(selectionKey, DataClassDataType, rowIds, {
+    return getOperationConfirmationData(DataClassDataType, rowIds, selectionKey, useSnapshotSelection, {
         dataOperation: DataOperation[operation],
     });
 }

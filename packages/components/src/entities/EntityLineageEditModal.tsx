@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { AuditBehaviorTypes, Utils } from '@labkey/api';
 
@@ -26,6 +26,7 @@ import { getEntityNoun, isSampleEntity } from '../internal/components/entities/u
 import { EntityChoice, EntityDataType, OperationConfirmationData } from '../internal/components/entities/models';
 import { getUpdatedLineageRowsForBulkEdit } from './utils';
 import { getOriginalParentsFromLineage } from './actions';
+import { setSnapshotSelections } from '../internal/actions';
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -77,6 +78,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
     const [selectedParents, setSelectedParents] = useState<List<EntityChoice>>(List<EntityChoice>());
     const [statusData, setStatusData] = useState<OperationConfirmationData>(undefined);
     const { createNotification } = useNotificationsContext();
+    const useSnapshotSelection = queryModel?.filterArray.length > 0;
 
     useEffect(() => {
         if (!queryModel) return;
@@ -84,15 +86,22 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
         (async () => {
             try {
                 let confirmationData;
+                if (useSnapshotSelection) {
+                    await setSnapshotSelections(queryModel.id, [...queryModel.selections]);
+                }
                 if (isSampleEntity(childEntityDataType)) {
                     confirmationData = await api.samples.getSampleOperationConfirmationData(
                         SampleOperation.EditLineage,
-                        queryModel.id
+                        undefined,
+                        queryModel.id,
+                        useSnapshotSelection
                     );
                 } else {
                     confirmationData = await api.entity.getDataOperationConfirmationData(
                         DataOperation.EditLineage,
-                        queryModel.id
+                        undefined,
+                        queryModel.id,
+                        useSnapshotSelection
                     );
                 }
 
@@ -127,7 +136,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                 else setErrorMessage(error);
             }
         })();
-    }, []);
+    }, [useSnapshotSelection, queryModel?.id, queryModel?.selections, queryModel?.schemaName, queryModel?.queryName, queryModel?.viewName]);
 
     const onParentChange = useCallback((entityParents: List<EntityChoice>) => {
         setSelectedParents(entityParents);

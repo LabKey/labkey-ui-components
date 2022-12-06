@@ -78,7 +78,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
     const [sampleCreationURL, setSampleCreationURL] = useState<string | AppURL>();
     const [selectedOption, setSelectedOption] = useState<string>();
     const [crossFolderSelectionResult, setCrossFolderSelectionResult] = useState(undefined);
-    const [isLoading, setIsLoading] = useState<boolean>(parentQueryModel.filterArray.length > 0);
+    const [selectionsAreSet, setSelectionsAreSet] = useState<boolean>(!parentQueryModel?.isLoadingSelections && parentQueryModel?.filterArray?.length === 0);
     const [selectionData, setSelectionData] = useState<Map<any, any>>();
     const useSnapshotSelection = useMemo(() => {
         return parentQueryModel?.filterArray.length > 0;
@@ -93,7 +93,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
 
     useEffect(() => {
         ( async () => {
-            if (isLoading && !parentQueryModel?.isLoadingSelections && useSnapshotSelection) {
+            if (useSnapshotSelection) {
                 try {
                     const {
                         data,
@@ -101,15 +101,15 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                     const dataMap = data.toJS();
                     await setSnapshotSelections(parentQueryModel.selectionKey, Object.values(dataMap).map(row => caseInsensitive(row, "RowId").value));
                     setSelectionData(dataMap);
-                    setIsLoading(false);
+                    setSelectionsAreSet(true);
                 }
                 catch (reason) {
                     console.error("There was a problem loading the filtered selection data. Your actions will not obey these filters.", reason);
-                    setIsLoading(false);
+                    setSelectionsAreSet(true);
                 }
             }
         })();
-    }, [isLoading, parentQueryModel?.isLoadingSelections, useSnapshotSelection]);
+    }, [selectionsAreSet, parentQueryModel.schemaName, parentQueryModel.queryName, parentQueryModel.selections, parentQueryModel.selectionKey, useSnapshotSelection]);
     const selectedQuantity = parentQueryModel ? parentQueryModel.selections?.size ?? 0 : 1;
     const schemaQuery = parentQueryModel?.schemaQuery;
 
@@ -249,7 +249,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         nounPlural = 'Raw Materials';
     }
 
-    if (isLoading)
+    if (!selectionsAreSet)
         return <LoadingSpinner />;
 
     return (

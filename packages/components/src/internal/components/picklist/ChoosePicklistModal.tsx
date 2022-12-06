@@ -24,6 +24,7 @@ import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 import { Picklist } from './models';
 import { addSamplesToPicklist, getPicklistsForInsert, getPicklistUrl, SampleTypeCount } from './actions';
+import { setSnapshotSelections } from '../../actions';
 
 interface PicklistListProps {
     activeItem: Picklist;
@@ -261,7 +262,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             let numAdded = 0;
 
             try {
-                const response = await addSamplesToPicklist(activeItem.name, statusData, selectionKey, sampleIds);
+                const response = await addSamplesToPicklist(activeItem.name, statusData, false, selectionKey, sampleIds);
                 api.query.incrementClientSideMetricCount(metricFeatureArea, 'addSamplesToPicklist');
                 numAdded = response.rows.length;
                 setSubmitting(false);
@@ -334,7 +335,30 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
         let body;
         let title;
         let buttons;
-        if (statusData?.anyAllowed) {
+        if (loading) {
+            title = 'Choose a Picklist';
+            body = <LoadingSpinner />;
+            buttons = (
+                <>
+                    <div className="pull-left">
+                        <button type="button" className="btn btn-default" onClick={closeModal}>
+                            Cancel
+                        </button>
+                    </div>
+
+                    <div className="pull-right">
+                        <button
+                            type="button"
+                            className="btn btn-success"
+                            disabled
+                        >
+                            Add to Picklist
+                        </button>
+                    </div>
+                </>
+            );
+        }
+        else if (statusData?.anyAllowed) {
             title = 'Choose a Picklist';
             body = (
                 <>
@@ -461,12 +485,16 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
     const [ids, setIds] = useState<string[]>(sampleIds);
     const [validCount, setValidCount] = useState<number>(numSelected);
     const [statusData, setStatusData] = useState<OperationConfirmationData>();
+    const [selectionsLoading, setSelectionsLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
+    const useSnapshotSelection = queryModel?.filterArray.length > 0;
+
     const schemaQuery = queryModel?.schemaQuery;
     const selections = queryModel?.selections;
     const { api } = useAppContext();
 
     useEffect(() => {
         setItemsLoading(LoadingState.LOADING);
+
         (async () => {
             try {
                 const picklists = await getPicklistsForInsert();
@@ -475,56 +503,69 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
                 setError(resolveErrorMessage(e) ?? 'Failed to retrieve picklists.');
             }
             setItemsLoading(LoadingState.LOADED);
+            if (useSnapshotSelection && queryModel) {
+                try {
+                    await setSnapshotSelections(queryModel.selectionKey, [...queryModel.selections]);
+                } catch (reason) {
+                    console.error("There was a problem loading the filtered selection data. Your actions will not obey these filters.", reason);
+                }
+                setSelectionsLoading(LoadingState.LOADED);
+            }
         })();
-    }, []);
+    }, [queryModel?.selectionKey, queryModel?.selections]);
 
     useEffect(() => {
         setIdsLoading(LoadingState.LOADING);
-        (async () => {
-            // This method is responsible for:
-            // 1. Determining the sample IDs for the set of samples to be added to the picklist.
-            // 2. Verifying what operations are allowed for those samples.
-            let ids_: string[];
-            if (sampleIds) {
-                ids_ = sampleIds;
-            } else if (sampleFieldKey && schemaQuery) {
-                // Look up SampleIds from the selected row ids.
-                // Using sampleFieldKey as proxy flag to determine if lookup is needed.
-                try {
-                    ids_ = await api.samples.getFieldLookupFromSelection(
-                        schemaQuery.schemaName,
-                        schemaQuery.queryName,
-                        [...selections],
-                        sampleFieldKey
-                    );
-                } catch (e) {
-                    setError(resolveErrorMessage(e) ?? 'Failed to retrieve picklist selection.');
+        if (selectionsLoading === LoadingState.LOADED) {
+            (async () => {
+                // This method is responsible for:
+                // 1. Determining the sample IDs for the set of samples to be added to the picklist.
+                // 2. Verifying what operations are allowed for those samples.
+                let ids_: string[];
+                if (sampleIds) {
+                    ids_ = sampleIds;
+                } else if (sampleFieldKey && schemaQuery) {
+                    // Look up SampleIds from the selected row ids.
+                    // Using sampleFieldKey as proxy flag to determine if lookup is needed.
+                    try {
+                        ids_ = await api.samples.getFieldLookupFromSelection(
+                            schemaQuery.schemaName,
+                            schemaQuery.queryName,
+                            [...selections],
+                            sampleFieldKey
+                        );
+                    }
+                    catch (e) {
+                        setError(resolveErrorMessage(e) ?? 'Failed to retrieve picklist selection.');
+                    }
                 }
-            }
 
-            try {
-                const data = await api.samples.getSampleOperationConfirmationData(
-                    SampleOperation.AddToPicklist,
-                    // If sample IDs are explicitly provided, then do not pass
-                    // the selectionKey to ensure the ids are processed.
-                    ids_ ? undefined : selectionKey,
-                    ids_
-                );
-                setIds(ids_);
-                setStatusData(data);
-                setValidCount(data.allowed.length);
-            } catch (e) {
-                setError(resolveErrorMessage(e) ?? 'Failed to retrieve sample operations.');
-            }
+                try {
+                    const data = await api.samples.getSampleOperationConfirmationData(
+                        SampleOperation.AddToPicklist,
+                        ids_,
+                        // If sample IDs are explicitly provided, then do not pass
+                        // the selectionKey to ensure the ids are processed.
+                        ids_ ? undefined : selectionKey,
+                        ids_ ? false : queryModel.filterArray.length > 0
+                    );
+                    setIds(ids_);
+                    setStatusData(data);
+                    setValidCount(data.allowed.length);
+                }
+                catch (e) {
+                    setError(resolveErrorMessage(e) ?? 'Failed to retrieve sample operations.');
+                }
 
-            setIdsLoading(LoadingState.LOADED);
-        })();
-    }, [api.samples, sampleFieldKey, sampleIds, schemaQuery, selectionKey, selections]);
+                setIdsLoading(LoadingState.LOADED);
+            })();
+        }
+    }, [api.samples, selectionsLoading, sampleFieldKey, sampleIds, schemaQuery, selectionKey, selections]);
 
     return (
         <ChoosePicklistModalDisplay
             {...props}
-            loading={isLoading(itemsLoading) || isLoading(idsLoading)}
+            loading={isLoading(itemsLoading) || isLoading(idsLoading) || isLoading(selectionsLoading)}
             picklists={items}
             picklistLoadError={error}
             sampleIds={ids}

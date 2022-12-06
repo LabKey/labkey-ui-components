@@ -112,7 +112,7 @@ export const AssayRunDetailHeaderButtons: FC<AssayRunDetailHeaderButtonProps> = 
             // we prevent deletion of assay runs that are referenced in ELNs.
             (async () => {
                 try {
-                    const confirmationData = await getOperationConfirmationData(undefined, AssayRunDataType, [runId]);
+                    const confirmationData = await getOperationConfirmationData(AssayRunDataType, [runId]);
                     setCanDelete(confirmationData.allowed.length === 1);
                 } catch (e) {
                     console.error('There was a problem retrieving the delete confirmation data.', e);

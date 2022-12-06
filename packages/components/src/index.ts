@@ -401,7 +401,6 @@ import {
     getCrossFolderSelectionResult,
     getDataDeleteConfirmationData,
     getDataOperationConfirmationData,
-    getOperationConfirmationData,
     getSampleOperationConfirmationData,
 } from './internal/components/entities/actions';
 import {
@@ -1025,7 +1024,6 @@ export {
     getCrossFolderSelectionResult,
     getDataOperationConfirmationData,
     getDataDeleteConfirmationData,
-    getOperationConfirmationData,
     getUniqueIdColumnMetadata,
     // search related items
     FIND_SAMPLE_BY_ID_METRIC_AREA,

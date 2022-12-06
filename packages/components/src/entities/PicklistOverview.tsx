@@ -41,6 +41,8 @@ import { hasProductProjects } from '../internal/app/utils';
 
 import { useServerContext } from '../internal/components/base/ServerContext';
 
+import { Notifications } from '../internal/components/notifications/Notifications';
+
 import { PicklistGridButtons } from './PicklistGridButtons';
 import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
@@ -184,7 +186,7 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
     };
 
     return (
-        <Page title={picklist?.name}>
+        <Page title={picklist?.name} hasHeader>
             <PageDetailHeader
                 iconDir="_images"
                 iconSrc="picklist"
@@ -207,7 +209,7 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
                     </ManageDropdownButton>
                 )}
             </PageDetailHeader>
-
+            <Notifications />
             <div className="panel panel-default">
                 <div className="panel-body">
                     <div className="picklist-grid">

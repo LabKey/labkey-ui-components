@@ -1,0 +1,13 @@
+.status-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 2px;
+    white-space: break-spaces;
+    border-style: solid;
+    border-width: 1px;
+
+    &.alert-disabled {
+        background-color: $gray-lighter;
+        border-color: $gray-border;
+    }
+}

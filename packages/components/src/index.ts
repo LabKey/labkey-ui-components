@@ -338,7 +338,6 @@ import {
     withAssayModels,
     withAssayModelsFromLocation,
 } from './internal/components/assay/withAssayModels';
-import { AssayDesignEmptyAlert } from './internal/components/assay/AssayDesignEmptyAlert';
 import { AssayPicker, AssayPickerTabs } from './internal/components/assay/AssayPicker';
 import { AssayStateModel, AssayUploadResultModel } from './internal/components/assay/models';
 import { allowReimportAssayRun, clearAssayDefinitionCache, fetchAllAssays } from './internal/components/assay/actions';
@@ -1050,7 +1049,6 @@ export {
     AdminSettingsPage,
     // assay
     AssayUploadResultModel,
-    AssayDesignEmptyAlert,
     AssayStateModel,
     AssayImportPanels,
     AssayPicker,

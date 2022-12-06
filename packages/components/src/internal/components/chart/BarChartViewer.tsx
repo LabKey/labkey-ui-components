@@ -176,7 +176,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
             if (selectedGroup.key === SAMPLES_KEY) {
                 body = <SampleTypeEmptyAlert user={user} />;
             } else if (selectedGroup.key === ASSAYS_KEY) {
-                body = <AssayDesignEmptyAlert user={user} />;
+                body = <AssayDesignEmptyAlert />; // don't pass user, prevents creating assay design from alert message
             }
         } else if (!hasData) {
             if (selectedGroup.key === SAMPLES_KEY) {

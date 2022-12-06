@@ -342,6 +342,7 @@ import {
 } from './internal/components/samples/utils';
 import {
     AssayContext,
+    AssayContextConsumer,
     AssayContextProvider,
     withAssayModels,
     withAssayModelsFromLocation,
@@ -1073,6 +1074,7 @@ export {
     withAssayModels,
     withAssayModelsFromLocation,
     AssayContext,
+    AssayContextConsumer,
     AssayContextProvider,
     AssayDefinitionModel,
     AssayDomainTypes,

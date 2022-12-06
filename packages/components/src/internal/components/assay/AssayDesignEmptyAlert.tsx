@@ -9,11 +9,11 @@ interface Props extends EmptyAlertWithPermissionsProps {
 }
 
 export const AssayDesignEmptyAlert: FC<Props> = memo(props => {
-    const { message, ...baseProps } = props;
+    const { message, actionURL, ...baseProps } = props;
     return (
         <EmptyAlertWithPermissions
             {...baseProps}
-            actionURL={NEW_ASSAY_DESIGN_HREF}
+            actionURL={actionURL ?? NEW_ASSAY_DESIGN_HREF}
             message={message ?? 'No assays are currently active.'}
             permission={PermissionTypes.DesignAssay}
         />

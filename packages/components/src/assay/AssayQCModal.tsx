@@ -129,7 +129,7 @@ export class AssayQCModal extends PureComponent<Props, AssayQCState> {
                         isFinishingText="Saving..."
                         canFinish={saveEnabled}
                         finish={true}
-                        finishText="Save changes"
+                        finishText="Save Changes"
                     />
                 </Modal.Footer>
             </Modal>

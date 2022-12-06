@@ -3,22 +3,22 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, memo } from 'react';
-import { PermissionTypes } from '@labkey/api';
 
-import { Button } from 'react-bootstrap';
+import { Button, MenuItem } from 'react-bootstrap';
 
 import { AppURL } from '../internal/url/AppURL';
 import { useServerContext } from '../internal/components/base/ServerContext';
 import { Page } from '../internal/components/base/Page';
 import { Section } from '../internal/components/base/Section';
 import { isSampleStatusEnabled } from '../internal/app/utils';
-import { RequiresPermission } from '../internal/components/base/Permissions';
 
 import { SampleTypeEmptyAlert } from '../internal/components/samples/SampleEmptyAlert';
 
 import { NEW_SAMPLE_TYPE_HREF, SAMPLES_KEY } from '../internal/app/constants';
 import { CommonPageProps } from '../internal/models';
 import { LoadingPage } from '../internal/components/base/LoadingPage';
+
+import { ManageDropdownButton } from '../internal/components/buttons/ManageDropdownButton';
 
 import { SampleTypeSummary } from './SampleTypeSummary';
 
@@ -35,6 +35,7 @@ export const SampleTypeListingPage: FC<CommonPageProps> = memo(props => {
     }
 
     const hasSampleTypes = menu.hasSectionItems(SAMPLES_KEY);
+    const showManageBtn = isSampleStatusEnabled(moduleContext) && user.hasAdminPermission();
 
     return (
         <Page title={title}>
@@ -43,17 +44,19 @@ export const SampleTypeListingPage: FC<CommonPageProps> = memo(props => {
                 caption={sampleTypeListingCaption}
                 context={
                     <>
-                        {isSampleStatusEnabled(moduleContext) && (
-                            <RequiresPermission perms={PermissionTypes.Admin}>
-                                <a href={AppURL.create('admin', 'settings').toHref()} className="right-spacing">
-                                    Manage Sample Statuses
-                                </a>
-                            </RequiresPermission>
-                        )}
                         {user.hasDesignSampleTypesPermission() && (
-                            <Button bsStyle="success" href={NEW_SAMPLE_TYPE_HREF.toHref()}>
+                            <Button
+                                bsStyle="success"
+                                className={showManageBtn ? 'button-right-spacing' : ''}
+                                href={NEW_SAMPLE_TYPE_HREF.toHref()}
+                            >
                                 Create Sample Type
                             </Button>
+                        )}
+                        {showManageBtn && (
+                            <ManageDropdownButton id="sampletype-manage-menu" collapsed pullRight>
+                                <MenuItem href={AppURL.create('admin', 'settings').toHref()}>Sample Statuses</MenuItem>
+                            </ManageDropdownButton>
                         )}
                     </>
                 }

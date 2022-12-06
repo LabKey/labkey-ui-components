@@ -18,10 +18,11 @@ import { NEW_SAMPLE_TYPE_HREF, SAMPLES_KEY } from '../internal/app/constants';
 import { CommonPageProps } from '../internal/models';
 import { LoadingPage } from '../internal/components/base/LoadingPage';
 
+import { ManageDropdownButton } from '../internal/components/buttons/ManageDropdownButton';
+
 import { SampleTypeSummary } from './SampleTypeSummary';
 
 import { useSampleTypeAppContext } from './useSampleTypeAppContext';
-import { ManageDropdownButton } from '../internal/components/buttons/ManageDropdownButton';
 
 export const SampleTypeListingPage: FC<CommonPageProps> = memo(props => {
     const { menu, navigate } = props;

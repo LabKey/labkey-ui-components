@@ -9,10 +9,10 @@ import { SampleStateType } from './constants';
 import { SampleStatus } from './models';
 
 interface Props {
-    status: SampleStatus;
-    iconOnly?: boolean;
     className?: string;
     hideDescription?: boolean;
+    iconOnly?: boolean;
+    status: SampleStatus;
 }
 
 export const SampleStatusTag: FC<Props> = memo(props => {

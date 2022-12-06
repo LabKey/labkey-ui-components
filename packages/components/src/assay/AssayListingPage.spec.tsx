@@ -2,20 +2,22 @@ import React from 'react';
 import { ReactWrapper } from 'enzyme';
 import { Button } from 'react-bootstrap';
 
+import { List } from 'immutable';
+
+import { AssayDesignEmptyAlert } from '../internal/components/assay/AssayDesignEmptyAlert';
+import { MenuSectionModel, ProductMenuModel } from '../internal/components/navigation/model';
+import { Section } from '../internal/components/base/Section';
+import { LoadingPage } from '../internal/components/base/LoadingPage';
+import { Page } from '../internal/components/base/Page';
+import { InsufficientPermissionsPage } from '../internal/components/permissions/InsufficientPermissionsPage';
 import { mountWithAppServerContext } from '../internal/testHelpers';
+import { ASSAYS_KEY } from '../internal/app/constants';
+import { TEST_USER_APP_ADMIN, TEST_USER_READER } from '../internal/userFixtures';
+import { AssayAppContext } from '../internal/AppContext';
+
+import { AssayTypeSummary } from './AssayTypeSummary';
 
 import { AssayListingPage } from './AssayListingPage';
-import { InsufficientPermissionsPage } from '../internal/components/permissions/InsufficientPermissionsPage';
-import {LoadingPage} from "../internal/components/base/LoadingPage";
-import {Page} from "../internal/components/base/Page";
-import { Section } from '../internal/components/base/Section';
-import {AssayTypeSummary} from "./AssayTypeSummary";
-import {AssayDesignEmptyAlert} from "../internal/components/assay/AssayDesignEmptyAlert";
-import {MenuSectionModel, ProductMenuModel} from "../internal/components/navigation/model";
-import {List} from "immutable";
-import {ASSAYS_KEY} from "../internal/app/constants";
-import {TEST_USER_APP_ADMIN, TEST_USER_READER} from "../internal/userFixtures";
-import {AssayAppContext} from "../internal/AppContext";
 
 describe('AssayListingPage', () => {
     const MENU_HAS_ITEMS = new ProductMenuModel({

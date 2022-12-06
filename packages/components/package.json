@@ -11,8 +11,7 @@
   "types": "dist/index.d.ts",
   "exports": {
     ".": "./dist/components.js",
-    "./entities": "./dist/entities.js",
-    "./assay": "./dist/assay.js"
+    "./entities": "./dist/entities.js"
   },
   "typesVersions": {
     "*": {
@@ -21,9 +20,6 @@
       ],
       "entities": [
         "dist/entities/index.d.ts"
-      ],
-      "assay": [
-        "dist/assay/index.d.ts"
       ]
     }
   },

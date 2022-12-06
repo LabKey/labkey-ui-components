@@ -13,10 +13,6 @@ module.exports = merge(baseConfig, {
             import: './src/entities/index.ts',
             dependOn: 'components',
         },
-        assay: {
-            import: './src/assay/index.ts',
-            dependOn: 'components',
-        },
     },
     output: {
         filename: '[name].js',

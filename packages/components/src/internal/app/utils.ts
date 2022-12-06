@@ -401,7 +401,7 @@ export function addAssaysSectionConfig(
     user: User,
     appBase: string,
     sectionConfigs: List<Map<string, MenuSectionConfig>>,
-    isSMPrimary: boolean
+    standardAssayOnly: boolean
 ): List<Map<string, MenuSectionConfig>> {
     if (!userCanReadAssays(user)) return sectionConfigs;
 
@@ -415,7 +415,8 @@ export function addAssaysSectionConfig(
     if (user.hasDesignAssaysPermission()) {
         assaysMenuConfig = assaysMenuConfig.merge({
             emptyURL:
-                appBase + (isSMPrimary ? NEW_STANDARD_ASSAY_DESIGN_HREF.toHref() : NEW_ASSAY_DESIGN_HREF.toHref()),
+                appBase +
+                (standardAssayOnly ? NEW_STANDARD_ASSAY_DESIGN_HREF.toHref() : NEW_ASSAY_DESIGN_HREF.toHref()),
             emptyURLText: 'Create an assay design',
         }) as MenuSectionConfig;
     }

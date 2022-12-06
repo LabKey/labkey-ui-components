@@ -492,7 +492,7 @@ import { RangeValidationOptionsModal } from './internal/components/domainpropert
 
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 import { AssayDesignEmptyAlert } from './internal/components/assay/AssayDesignEmptyAlert';
-import { AssayResultsForSamplesMenuItem } from './internal/components/entities/AssayResultsForSamplesButton';
+import { AssayResultsForSamplesMenuItem, AssayResultsForSamplesButton } from './internal/components/entities/AssayResultsForSamplesButton';
 import { FindDerivativesMenuItem } from './internal/components/entities/FindDerivativesButton';
 import {
     makeQueryInfo,
@@ -1080,6 +1080,7 @@ export {
     AssayDomainTypes,
     AssayLink,
     AssayDesignEmptyAlert,
+    AssayResultsForSamplesButton,
     AssayResultsForSamplesMenuItem,
     allowReimportAssayRun,
     clearAssayDefinitionCache,

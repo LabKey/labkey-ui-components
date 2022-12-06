@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 2.266.1
-*Released*: ? December 2022
+*Released*: 6 December 2022
 * Fix Issue 46607: On smaller formats the parent in the subnav consumes the majority of the space
 
 ### version 2.266.0

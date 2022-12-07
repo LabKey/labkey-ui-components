@@ -109,7 +109,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                 }
             }
         })();
-    }, [selectionsAreSet, parentQueryModel.schemaName, parentQueryModel.queryName, parentQueryModel.selections, parentQueryModel.selectionKey, useSnapshotSelection]);
+    }, [selectionsAreSet, parentQueryModel?.schemaName, parentQueryModel?.queryName, parentQueryModel?.selections, parentQueryModel?.selectionKey, useSnapshotSelection]);
     const selectedQuantity = parentQueryModel ? parentQueryModel.selections?.size ?? 0 : 1;
     const schemaQuery = parentQueryModel?.schemaQuery;
 

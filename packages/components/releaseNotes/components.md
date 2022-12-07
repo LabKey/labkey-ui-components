@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.267.1
+*Released*: 7 December 2022
+* Merge release22.12-SNAPSHOT to develop:
+  * includes changes from 2.263.1
+
 ### version 2.267.0
 *Released*: 6 December 2022
 * Add samples to storage in the order they are in grid

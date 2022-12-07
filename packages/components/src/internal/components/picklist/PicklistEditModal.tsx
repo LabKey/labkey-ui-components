@@ -45,13 +45,12 @@ export const PicklistEditModal: FC<PicklistEditModalProps> = memo(props => {
     const { api, selectionKey, queryModel, sampleFieldKey, sampleIds } = props;
     const [ids, setIds] = useState<string[]>(sampleIds);
     const [selKey, setSelKey] = useState<string>(selectionKey);
-    const [error, setError] = useState<string>(undefined);
 
     useEffect(() => {
         (async () => {
             // Look up SampleIds from the selected row ids.
             // Using sampleFieldKey as proxy flag to determine if lookup is needed
-            if (sampleFieldKey && queryModel) {
+            if (sampleFieldKey && queryModel && !queryModel.isLoadingSelections) {
                 try {
                     const ids_ = await api.samples.getFieldLookupFromSelection(
                         queryModel.schemaQuery.schemaName,
@@ -63,7 +62,6 @@ export const PicklistEditModal: FC<PicklistEditModalProps> = memo(props => {
                     await setSnapshotSelections(queryModel.selectionKey, [...queryModel.selections]);
                 } catch (error) {
                     console.error(error);
-                    setError(resolveErrorMessage(error));
                 }
 
                 // Clear the selection key as it will not correctly map to the sampleIds
@@ -72,7 +70,7 @@ export const PicklistEditModal: FC<PicklistEditModalProps> = memo(props => {
         })();
     }, [api, sampleFieldKey, queryModel]);
 
-    return <PicklistEditModalDisplay {...props} selectionKey={selKey} sampleIds={ids} useSnapshotSelection={queryModel.filterArray.length > 0} />;
+    return <PicklistEditModalDisplay {...props} selectionKey={selKey} sampleIds={ids} useSnapshotSelection={queryModel?.filterArray.length > 0} />;
 });
 
 const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {

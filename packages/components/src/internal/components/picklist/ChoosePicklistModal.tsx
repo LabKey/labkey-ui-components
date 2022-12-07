@@ -504,7 +504,7 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
             }
             setItemsLoading(LoadingState.LOADED);
             if (useSnapshotSelection) {
-                if (queryModel) {
+                if (!queryModel?.isLoadingSelections) {
                     try {
                         await setSnapshotSelections(queryModel.selectionKey, [...queryModel.selections]);
                     }
@@ -518,7 +518,7 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
                 setSelectionsLoading(LoadingState.LOADED);
             }
         })();
-    }, [queryModel?.selectionKey, queryModel?.selections, useSnapshotSelection]);
+    }, [queryModel?.selectionKey, queryModel?.selections, queryModel?.isLoadingSelections, useSnapshotSelection]);
 
     useEffect(() => {
         setIdsLoading(LoadingState.LOADING);

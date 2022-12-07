@@ -27,6 +27,7 @@ import { EntityChoice, EntityDataType, OperationConfirmationData } from '../inte
 import { getUpdatedLineageRowsForBulkEdit } from './utils';
 import { getOriginalParentsFromLineage } from './actions';
 import { setSnapshotSelections } from '../internal/actions';
+import { isLoading, LoadingState } from '../public/LoadingState';
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -77,6 +78,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
     const lcParentNounPlural = parentNounPlural.toLowerCase();
     const [selectedParents, setSelectedParents] = useState<List<EntityChoice>>(List<EntityChoice>());
     const [statusData, setStatusData] = useState<OperationConfirmationData>(undefined);
+    const [selectionsLoading, setSelectionsLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
     const { createNotification } = useNotificationsContext();
     const useSnapshotSelection = queryModel?.filterArray.length > 0;
 
@@ -87,56 +89,64 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
             try {
                 let confirmationData;
                 if (useSnapshotSelection) {
-                    await setSnapshotSelections(queryModel.id, [...queryModel.selections]);
-                }
-                if (isSampleEntity(childEntityDataType)) {
-                    confirmationData = await api.samples.getSampleOperationConfirmationData(
-                        SampleOperation.EditLineage,
-                        undefined,
-                        queryModel.id,
-                        useSnapshotSelection
-                    );
-                } else {
-                    confirmationData = await api.entity.getDataOperationConfirmationData(
-                        DataOperation.EditLineage,
-                        undefined,
-                        queryModel.id,
-                        useSnapshotSelection
-                    );
-                }
-
-                // This API will retrieve lineage data for samples or dataclasses
-                const lineageData = await api.samples.getSelectionLineageData(
-                    List.of(...queryModel.selections),
-                    queryModel.schemaName,
-                    queryModel.queryName,
-                    queryModel.viewName,
-                    List.of('RowId', 'Name', 'LSID', IS_ALIQUOT_COL).concat(ParentEntityLineageColumns).toArray()
-                );
-
-                const { key, models } = lineageData;
-                const allowedForUpdate = {};
-                const aIds = [];
-                Object.keys(models[key]).forEach(id => {
-                    const d = models[key][id];
-                    const isAliq = caseInsensitive(d, IS_ALIQUOT_COL);
-                    if (isAliq && isAliq['value']) {
-                        aIds.push(id);
-                    } else {
-                        if (confirmationData.isIdAllowed(id)) {
-                            allowedForUpdate[id] = d;
-                        }
+                    if (!queryModel.isLoadingSelections) {
+                        await setSnapshotSelections(queryModel.id, [...queryModel.selections]);
+                        setSelectionsLoading(LoadingState.LOADED);
                     }
-                });
-                setStatusData(confirmationData);
-                setAliquotIds(aIds);
-                setAllowedForUpdate(allowedForUpdate);
+                } else  {
+                    setSelectionsLoading(LoadingState.LOADED);
+                }
+                if (!isLoading(selectionsLoading)) {
+                    if (isSampleEntity(childEntityDataType)) {
+                        confirmationData = await api.samples.getSampleOperationConfirmationData(
+                            SampleOperation.EditLineage,
+                            undefined,
+                            queryModel.id,
+                            useSnapshotSelection
+                        );
+                    } else {
+                        confirmationData = await api.entity.getDataOperationConfirmationData(
+                            DataOperation.EditLineage,
+                            undefined,
+                            queryModel.id,
+                            useSnapshotSelection
+                        );
+                    }
+
+
+                    // This API will retrieve lineage data for samples or dataclasses
+                    const lineageData = await api.samples.getSelectionLineageData(
+                        List.of(...queryModel.selections),
+                        queryModel.schemaName,
+                        queryModel.queryName,
+                        queryModel.viewName,
+                        List.of('RowId', 'Name', 'LSID', IS_ALIQUOT_COL).concat(ParentEntityLineageColumns).toArray()
+                    );
+
+                    const {key, models} = lineageData;
+                    const allowedForUpdate = {};
+                    const aIds = [];
+                    Object.keys(models[key]).forEach(id => {
+                        const d = models[key][id];
+                        const isAliq = caseInsensitive(d, IS_ALIQUOT_COL);
+                        if (isAliq && isAliq['value']) {
+                            aIds.push(id);
+                        } else {
+                            if (confirmationData.isIdAllowed(id)) {
+                                allowedForUpdate[id] = d;
+                            }
+                        }
+                    });
+                    setStatusData(confirmationData);
+                    setAliquotIds(aIds);
+                    setAllowedForUpdate(allowedForUpdate);
+                }
             } catch (error) {
                 if (errorMessage) setErrorMessage(errorMessage + ' ' + error);
                 else setErrorMessage(error);
             }
         })();
-    }, [useSnapshotSelection, queryModel?.id, queryModel?.selections, queryModel?.schemaName, queryModel?.queryName, queryModel?.viewName]);
+    }, [useSnapshotSelection, selectionsLoading, queryModel]);
 
     const onParentChange = useCallback((entityParents: List<EntityChoice>) => {
         setSelectedParents(entityParents);

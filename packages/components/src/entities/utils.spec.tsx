@@ -118,27 +118,27 @@ describe('filterMediaSampleTypes', () => {
 describe('filterSampleRowsForOperation', () => {
     const availableRow1 = {
         rowId: { value: 1 },
-        SampleID: { value: 1, displayValue: 'T-1' },
+        Name: { value: 1, displayValue: 'T-1' },
         [SAMPLE_STATE_TYPE_COLUMN_NAME]: { value: SampleStateType.Available },
     };
     const availableRow2 = {
         rowId: { value: 2 },
-        sampleId: { value: 2, displayValue: 'T-2' },
+        Name: { value: 2, displayValue: 'T-2' },
         [SAMPLE_STATE_TYPE_COLUMN_NAME]: { value: SampleStateType.Available },
     };
     const consumedRow1 = {
         rowId: { value: 20 },
-        SampleID: { value: 20, displayValue: 'T-20' },
+        name: { value: 20, displayValue: 'T-20' },
         [SAMPLE_STATE_TYPE_COLUMN_NAME]: { value: SampleStateType.Consumed },
     };
     const lockedRow1 = {
         rowId: { value: 30 },
-        SampleID: { value: 30, displayValue: 'T-30' },
+        name: { value: 30, displayValue: 'T-30' },
         [SAMPLE_STATE_TYPE_COLUMN_NAME]: { value: SampleStateType.Locked },
     };
     const lockedRow2 = {
         rowId: { value: 31 },
-        SampleID: { value: 310, displayValue: 'T-310' },
+        Name: { value: 310, displayValue: 'T-310' },
         [SAMPLE_STATE_TYPE_COLUMN_NAME]: { value: SampleStateType.Locked },
     };
 

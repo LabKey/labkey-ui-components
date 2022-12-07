@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { List, OrderedMap, Set } from 'immutable';
-import { ActionURL, AuditBehaviorTypes, Filter, Utils, getServerContext } from '@labkey/api';
+import { ActionURL, AuditBehaviorTypes, Filter, getServerContext, Utils } from '@labkey/api';
 
 import {
     getOperationNotPermittedMessage,
@@ -18,7 +18,8 @@ import {
     SAMPLE_EXPORT_CONFIG,
     SAMPLE_INSERT_EXTRA_COLUMNS,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
-    SampleOperation, SELECTION_KEY_TYPE,
+    SampleOperation,
+    SELECTION_KEY_TYPE,
 } from '../internal/components/samples/constants';
 import { ModuleContext } from '../internal/components/base/ServerContext';
 import { EntityChoice, OperationConfirmationData } from '../internal/components/entities/models';

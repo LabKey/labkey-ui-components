@@ -337,7 +337,6 @@ import {
     withAssayModels,
     withAssayModelsFromLocation,
 } from './internal/components/assay/withAssayModels';
-import { AssayDesignEmptyAlert } from './internal/components/assay/AssayDesignEmptyAlert';
 import { AssayPicker, AssayPickerTabs } from './internal/components/assay/AssayPicker';
 import { AssayStateModel, AssayUploadResultModel } from './internal/components/assay/models';
 import { allowReimportAssayRun, clearAssayDefinitionCache, fetchAllAssays } from './internal/components/assay/actions';
@@ -1044,7 +1043,6 @@ export {
     AdminSettingsPage,
     // assay
     AssayUploadResultModel,
-    AssayDesignEmptyAlert,
     AssayStateModel,
     AssayImportPanels,
     AssayPicker,
@@ -1483,7 +1481,13 @@ export type { UsersLoader } from './internal/components/forms/actions';
 export type { LineageGroupingOptions } from './internal/components/lineage/types';
 export type { AnnouncementModel, ThreadActions } from './internal/announcements/model';
 export type { AnnouncementsAPIWrapper } from './internal/announcements/APIWrapper';
-export type { AdminAppContext, AppContext, AssayAppContext, ExtendableAppContext, SampleTypeAppContext } from './internal/AppContext';
+export type {
+    AdminAppContext,
+    AppContext,
+    AssayAppContext,
+    ExtendableAppContext,
+    SampleTypeAppContext,
+} from './internal/AppContext';
 export type { WithAdminAppContext } from './internal/components/administration/useAdminAppContext';
 export type { ThreadBlockProps } from './internal/announcements/ThreadBlock';
 export type { ThreadEditorProps } from './internal/announcements/ThreadEditor';

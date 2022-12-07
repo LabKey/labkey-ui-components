@@ -9,10 +9,10 @@ import { SampleStateType } from './constants';
 import { SampleStatus } from './models';
 
 interface Props {
-    status: SampleStatus;
-    iconOnly?: boolean;
     className?: string;
     hideDescription?: boolean;
+    iconOnly?: boolean;
+    status: SampleStatus;
 }
 
 export const SampleStatusTag: FC<Props> = memo(props => {
@@ -38,7 +38,7 @@ export const SampleStatusTag: FC<Props> = memo(props => {
         <>
             <span
                 className={classNames(className, {
-                    'sample-status-tag': !iconOnly,
+                    'status-tag sample-status-tag': !iconOnly,
                     'alert-danger': !iconOnly && statusType === SampleStateType.Locked,
                     'alert-warning': !iconOnly && statusType === SampleStateType.Consumed,
                     'alert-success': !iconOnly && statusType === SampleStateType.Available,

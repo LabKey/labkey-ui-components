@@ -960,9 +960,9 @@ describe('addSamplesSectionConfig', () => {
 describe('addAssaySectionConfig', () => {
     test('reader', () => {
         let configs = List<Map<string, MenuSectionConfig>>();
-        configs = addAssaysSectionConfig(TEST_USER_READER, '/labkey/test/app.view', configs);
+        configs = addAssaysSectionConfig(TEST_USER_READER, '/labkey/test/app.view', configs, false);
         expect(configs.size).toBe(1);
-        const sectionConfig = configs.get(0).get(ASSAYS_KEY);
+        let sectionConfig = configs.get(0).get(ASSAYS_KEY);
         expect(sectionConfig.maxColumns).toBe(1);
         expect(sectionConfig.maxItemsPerColumn).toBe(12);
         expect(sectionConfig.emptyText).toBe('No assays have been defined');
@@ -972,15 +972,27 @@ describe('addAssaySectionConfig', () => {
         expect(sectionConfig.iconURL).toBe('/labkey/_images/assay.svg');
         expect(sectionConfig.headerURL).toBe(undefined);
         expect(sectionConfig.headerText).toBe(undefined);
+
+        configs = List<Map<string, MenuSectionConfig>>();
+        configs = addAssaysSectionConfig(TEST_USER_READER, '/labkey/test/app.view', configs, true);
+        expect(configs.size).toBe(1);
+        sectionConfig = configs.get(0).get(ASSAYS_KEY);
+        expect(sectionConfig.emptyURL).toBe(undefined);
     });
 
     test('admin', () => {
         let configs = List<Map<string, MenuSectionConfig>>();
-        configs = addAssaysSectionConfig(TEST_USER_FOLDER_ADMIN, '/labkey/test/app.view', configs);
+        configs = addAssaysSectionConfig(TEST_USER_FOLDER_ADMIN, '/labkey/test/app.view', configs, false);
         expect(configs.size).toBe(1);
-        const sectionConfig = configs.get(0).get(ASSAYS_KEY);
+        let sectionConfig = configs.get(0).get(ASSAYS_KEY);
         expect(sectionConfig.emptyText).toBe('No assays have been defined');
         expect(sectionConfig.emptyURL).toBe('/labkey/test/app.view#/assayDesign/new');
         expect(sectionConfig.emptyURLText).toBe('Create an assay design');
+
+        configs = List<Map<string, MenuSectionConfig>>();
+        configs = addAssaysSectionConfig(TEST_USER_FOLDER_ADMIN, '/labkey/test/app.view', configs, true);
+        expect(configs.size).toBe(1);
+        sectionConfig = configs.get(0).get(ASSAYS_KEY);
+        expect(sectionConfig.emptyURL).toBe('/labkey/test/app.view#/assayDesign/General');
     });
 });

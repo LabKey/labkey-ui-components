@@ -176,7 +176,13 @@ const AssayDesignPageBody: FC<Props> = memo(props => {
     // Intentionally not showing buttons in header, for consistency with other domain editing pages
     return (
         <Page title={title + ' - ' + subtitle} hasHeader>
-            <AssayHeader menu={menu} title={title} subTitle={subtitle} description={ASSAY_DESIGNER_HEADER} />
+            <AssayHeader
+                menu={menu}
+                title={title}
+                subTitle={subtitle}
+                description={ASSAY_DESIGNER_HEADER}
+                includeTemplateButton={false}
+            />
             {(protocol.exception || hasError) && (
                 <Alert>{getActionErrorMessage('There was a problem loading the assay design.', 'assay design')}</Alert>
             )}

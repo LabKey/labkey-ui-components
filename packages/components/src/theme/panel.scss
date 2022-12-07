@@ -50,3 +50,8 @@
     margin: 15px 15px 0 15px;
     padding: 0;
 }
+
+// revert panel heading font-size for those within a tabbed-grid-panel
+.tabbed-grid-panel .panel-heading {
+    font-size: 14px !important;
+}

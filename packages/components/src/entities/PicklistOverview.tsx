@@ -37,11 +37,15 @@ import { Picklist, PICKLIST_SAMPLES_FILTER } from '../internal/components/pickli
 import { deletePicklists, updatePicklist } from '../internal/components/picklist/actions';
 import { SamplesEditableGridProps } from '../internal/sampleModels';
 
+import { hasProductProjects } from '../internal/app/utils';
+
+import { useServerContext } from '../internal/components/base/ServerContext';
+
+import { Notifications } from '../internal/components/notifications/Notifications';
+
 import { PicklistGridButtons } from './PicklistGridButtons';
 import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
-import { hasProductProjects } from '../internal/app/utils';
-import { useServerContext } from '../internal/components/base/ServerContext';
 
 const PICKLIST_ITEMS_ID_PREFIX = 'picklist-items-';
 const PICKLIST_PER_SAMPLE_TYPE_ID_PREFIX = 'picklist-per-sample-type-';
@@ -182,7 +186,7 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
     };
 
     return (
-        <Page title={picklist?.name}>
+        <Page title={picklist?.name} hasHeader>
             <PageDetailHeader
                 iconDir="_images"
                 iconSrc="picklist"
@@ -205,7 +209,7 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
                     </ManageDropdownButton>
                 )}
             </PageDetailHeader>
-
+            <Notifications />
             <div className="panel panel-default">
                 <div className="panel-body">
                     <div className="picklist-grid">

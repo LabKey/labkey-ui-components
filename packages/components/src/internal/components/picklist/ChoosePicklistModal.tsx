@@ -503,16 +503,22 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
                 setError(resolveErrorMessage(e) ?? 'Failed to retrieve picklists.');
             }
             setItemsLoading(LoadingState.LOADED);
-            if (useSnapshotSelection && queryModel) {
-                try {
-                    await setSnapshotSelections(queryModel.selectionKey, [...queryModel.selections]);
-                } catch (reason) {
-                    console.error("There was a problem loading the filtered selection data. Your actions will not obey these filters.", reason);
+            if (useSnapshotSelection) {
+                if (queryModel) {
+                    try {
+                        await setSnapshotSelections(queryModel.selectionKey, [...queryModel.selections]);
+                    }
+                    catch (reason) {
+                        console.error("There was a problem loading the filtered selection data. Your actions will not obey these filters.", reason);
+                    }
+                    setSelectionsLoading(LoadingState.LOADED);
                 }
+            }
+            else {
                 setSelectionsLoading(LoadingState.LOADED);
             }
         })();
-    }, [queryModel?.selectionKey, queryModel?.selections]);
+    }, [queryModel?.selectionKey, queryModel?.selections, useSnapshotSelection]);
 
     useEffect(() => {
         setIdsLoading(LoadingState.LOADING);

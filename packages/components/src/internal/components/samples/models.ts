@@ -205,7 +205,6 @@ export interface SampleGridButtonProps {
     createBtnParentType?: string;
     excludeAddButton?: boolean;
     excludedMenuKeys?: SamplesEditButtonSections[];
-    hasOrdinal?: boolean;
     includesMedia?: boolean;
     initAliquotMode?: ALIQUOT_FILTER_MODE;
     metricFeatureArea?: string;

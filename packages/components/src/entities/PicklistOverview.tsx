@@ -313,7 +313,7 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
             const omittedColumns = [];
 
             if (!hasProductProjects(moduleContext)) {
-                omittedColumns.push('SampleID/SampleSet_Folder');
+                omittedColumns.push('SampleID/Folder');
             }
             configs[gridId] = {
                 id: gridId,

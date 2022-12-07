@@ -93,7 +93,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
 
     useEffect(() => {
         ( async () => {
-            if (useSnapshotSelection) {
+            if (useSnapshotSelection && !parentQueryModel.isLoadingSelections) {
                 try {
                     const {
                         data,
@@ -111,7 +111,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                 setSelectionsAreSet(true);
             }
         })();
-    }, [selectionsAreSet, parentQueryModel?.schemaName, parentQueryModel?.queryName, parentQueryModel?.selections, parentQueryModel?.selectionKey, useSnapshotSelection]);
+    }, [selectionsAreSet, parentQueryModel?.isLoadingSelections, parentQueryModel?.schemaName, parentQueryModel?.queryName, parentQueryModel?.selections, parentQueryModel?.selectionKey, useSnapshotSelection]);
     const selectedQuantity = parentQueryModel ? parentQueryModel.selections?.size ?? 0 : 1;
     const schemaQuery = parentQueryModel?.schemaQuery;
 

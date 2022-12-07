@@ -56,7 +56,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
         async (onClick: () => void, errorMsg?: string): Promise<void> => {
             if (model?.hasSelections) {
                 setCrossFolderSelectionResult(undefined);
-                const result = await getCrossFolderSelectionResult(model.id, 'sample');
+                const result = await getCrossFolderSelectionResult(model.id, 'sample', model.filterArray.length > 0);
                 if (result.crossFolderSelectionCount > 0) {
                     setCrossFolderSelectionResult({
                         ...result,

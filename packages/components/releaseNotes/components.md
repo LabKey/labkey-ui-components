@@ -7,6 +7,11 @@ Components, models, actions, and utility functions for LabKey applications and p
   * move /assay subpackage to new repo / package and remove from this repo
   * add some missing components to index.ts needed by @labkey/premium
 
+### version 2.267.1
+*Released*: 7 December 2022
+* Merge release22.12-SNAPSHOT to develop:
+  * includes changes from 2.263.1
+
 ### version 2.267.0
 *Released*: 6 December 2022
 * Add samples to storage in the order they are in grid
@@ -34,6 +39,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 1 December 2022
 * Updates for form consistency in apps: textarea resizing
   * only allow for vertical resizing, not horizontal
+
+### version 2.263.1
+*Released*: 2 December 2022
+* Remove ID/Name Settings from `CreateProjectPage`.
+* Coalesce usage of `IDNameHelpTip` and `PrefixDescription` now that they are no longer utilized separately.
 
 ### version 2.263.0
 *Released*: 30 November 2022

@@ -493,8 +493,11 @@ import { RangeValidationOptionsModal } from './internal/components/domainpropert
 
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 import { AssayDesignEmptyAlert } from './internal/components/assay/AssayDesignEmptyAlert';
-import { AssayResultsForSamplesMenuItem, AssayResultsForSamplesButton } from './internal/components/entities/AssayResultsForSamplesButton';
-import { FindDerivativesMenuItem } from './internal/components/entities/FindDerivativesButton';
+import {
+    AssayResultsForSamplesMenuItem,
+    AssayResultsForSamplesButton,
+} from './internal/components/entities/AssayResultsForSamplesButton';
+import { FindDerivativesMenuItem, FindDerivativesButton } from './internal/components/entities/FindDerivativesButton';
 import {
     makeQueryInfo,
     mountWithAppServerContext,
@@ -1052,6 +1055,7 @@ export {
     getUniqueIdColumnMetadata,
     // search related items
     FindDerivativesMenuItem,
+    FindDerivativesButton,
     FIND_SAMPLE_BY_ID_METRIC_AREA,
     SearchResultsModel,
     SearchResultCard,

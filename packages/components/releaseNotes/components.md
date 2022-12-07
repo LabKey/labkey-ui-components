@@ -3,7 +3,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Issue 46465: Support filtered selections when exporting, deriving and adding to picklists
+* Issue 46465: Support filtered selections when acting on items in grids
+  * Reorder parameters in `getOperationConfirmationData` and relatives to account for additional `useSnapshotSelection` parameter when `selectionKey` is provided
+  * Add `useSnapshotSelection` parameter in several methods that get data for various actions
+  * Update `CreateSamplesSubMenuBase`, `EntityDeleteModal`, `EntityLineageEditModal`, `PicklistEditModal` and relatives to set and use snapshot selections when grid is filtered
 
 ### version 2.267.0
 *Released*: 6 December 2022

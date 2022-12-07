@@ -78,7 +78,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
     const [sampleCreationURL, setSampleCreationURL] = useState<string | AppURL>();
     const [selectedOption, setSelectedOption] = useState<string>();
     const [crossFolderSelectionResult, setCrossFolderSelectionResult] = useState(undefined);
-    const [selectionsAreSet, setSelectionsAreSet] = useState<boolean>(!parentQueryModel?.isLoadingSelections && parentQueryModel?.filterArray?.length === 0);
+    const [selectionsAreSet, setSelectionsAreSet] = useState<boolean>(false);
     const [selectionData, setSelectionData] = useState<Map<any, any>>();
     const useSnapshotSelection = useMemo(() => {
         return parentQueryModel?.filterArray.length > 0;
@@ -107,6 +107,8 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                     console.error("There was a problem loading the filtered selection data. Your actions will not obey these filters.", reason);
                     setSelectionsAreSet(true);
                 }
+            } else {
+                setSelectionsAreSet(true);
             }
         })();
     }, [selectionsAreSet, parentQueryModel?.schemaName, parentQueryModel?.queryName, parentQueryModel?.selections, parentQueryModel?.selectionKey, useSnapshotSelection]);

@@ -9,7 +9,7 @@ import { ConfirmModal } from '../base/ConfirmModal';
 
 import { BIOLOGICS_APP_PROPERTIES, SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
-import { IDNameHelpTip, NameIdSettingsForm, PrefixDescription } from './NameIdSettings';
+import { NameIdSettingsForm } from './NameIdSettings';
 
 describe('NameIdSettings', () => {
     let DEFAULT_PROPS;
@@ -42,8 +42,6 @@ describe('NameIdSettings', () => {
         expect(wrapper.find('.name-id-setting__setting-section')).toHaveLength(2);
         expect(wrapper.find('.name-id-setting__prefix-field')).toHaveLength(1);
         expect(wrapper.find(Checkbox)).toHaveLength(1);
-        expect(wrapper.find(IDNameHelpTip)).toHaveLength(1);
-        expect(wrapper.find(PrefixDescription)).toHaveLength(1);
         expect(wrapper.find(FormControl)).toHaveLength(1);
         expect(DEFAULT_PROPS.loadNameExpressionOptions).toHaveBeenCalled();
     });
@@ -104,8 +102,6 @@ describe('NameIdSettings', () => {
         expect(wrapper.find('.name-id-setting__setting-section')).toHaveLength(1);
         expect(wrapper.find('.name-id-setting__prefix-field')).toHaveLength(0);
         expect(wrapper.find(Checkbox)).toHaveLength(1);
-        expect(wrapper.find(IDNameHelpTip)).toHaveLength(1);
-        expect(wrapper.find(PrefixDescription)).toHaveLength(0);
         expect(wrapper.find(FormControl)).toHaveLength(0);
     });
 });

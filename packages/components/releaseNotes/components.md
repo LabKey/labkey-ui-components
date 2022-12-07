@@ -29,6 +29,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Updates for form consistency in apps: textarea resizing
   * only allow for vertical resizing, not horizontal
 
+### version 2.263.1
+*Released*: 2 December 2022
+* Remove ID/Name Settings from `CreateProjectPage`.
+* Coalesce usage of `IDNameHelpTip` and `PrefixDescription` now that they are no longer utilized separately.
+
 ### version 2.263.0
 *Released*: 30 November 2022
 * Fully hide DOM for `FolderMenu` when rendering `NavigationBar` when respecting `!showFolderMenu`.

@@ -70,7 +70,7 @@ export function usePortalRef(portalId): HTMLDivElement {
                 portalContainer.remove();
             }
         };
-    });
+    }, []);
 
     return portalElementRef.current;
 }

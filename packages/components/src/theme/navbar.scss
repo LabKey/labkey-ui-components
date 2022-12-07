@@ -13,6 +13,13 @@
     height: 41px;
 }
 
+.sub-nav-container {
+    width: 95%;
+    display: flex;
+    position: relative;
+    margin: 0 auto;
+}
+
 .app-navigation .navbar {
     margin-bottom: 0;
 }
@@ -340,6 +347,11 @@ $nav-menu-btn-width: 85px;
     position: relative;
   }
 
+  .parent-nav .navbar-nav,
+  .tab-scroll-ct .navbar-nav {
+      margin: 0;
+  }
+
   .parent-nav {
 
     li {
@@ -373,8 +385,6 @@ $nav-menu-btn-width: 85px;
     flex: 1;
 
     .navbar-nav {
-      margin: 0;
-
       & > li {
         display: inline-block;
         float: initial !important;

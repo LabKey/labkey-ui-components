@@ -1,11 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.XX
-*Released*: XX December 2022
+### version 2.267.0
+*Released*: 6 December 2022
 * Add samples to storage in the order they are in grid
     * added getOrderedSelectedMappedKeys util to get remapped ordered selections from grid
     * modify getSelectedPicklistSamples to return ordered samples from selected ids
+
+### version 2.266.1
+*Released*: 6 December 2022
+* Fix Issue 46607: On smaller formats the parent in the subnav consumes the majority of the space
 
 ### version 2.266.0
 *Released*: 6 December 2022

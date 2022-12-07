@@ -83,7 +83,7 @@ export const SubNav: FC<Props> = ({ noun, tabs }) => {
 
     return (
         <nav className="navbar navbar-inverse sub-nav">
-            <div className="container">
+            <div className="sub-nav-container">
                 {noun && <ParentNavItem to={noun.url}>{noun.text}</ParentNavItem>}
 
                 <div className="tab-scroll-ct" ref={scrollable}>

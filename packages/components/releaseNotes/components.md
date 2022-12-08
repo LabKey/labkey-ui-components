@@ -7,6 +7,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * move /assay subpackage to new repo / package and remove from this repo
   * add some missing components to index.ts needed by @labkey/premium
 
+### version 2.267.2
+*Released*: 7 December 2022
+* Issue 46843: Remove export notification for tabbed grids
+
 ### version 2.267.1
 *Released*: 7 December 2022
 * Merge release22.12-SNAPSHOT to develop:

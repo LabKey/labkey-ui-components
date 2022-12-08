@@ -1,7 +1,7 @@
 # @labkey/build
 
-### version 6.4.0
-*Released*: 2 November 2022
+### version 6.5.0
+*Released*: 8 November 2022
 * webpack updates for `@labkey/premium` package
   * move of `@labkey/components/assay` subpackage to `@labkey/premium/assay`
 

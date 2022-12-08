@@ -28,11 +28,7 @@ See [below](#version-numbering) for more on version numbering.
 version number and date will be set just before you merge your feature branch.
 * Write [jest](https://jestjs.io/docs/en/getting-started.html) tests for your React components, models, and utility functions.
     * See additional documentation on [Jest testing recommendations](./jest.md).
-* Write or update [storybook stories](#storybook) that illustrate the functionality.  This is the easiest way to do the bulk of manual
-testing and iteration on display updates.
-    * We have several examples of stories that use actual data captured
-from the server for various Ajax calls that are required.
-* Test within the application, using a published alpha package version, once display and functionality are as expected from within storybook.
+* Test within the application using a published alpha package version.
 Alternatively, you can get faster dev iteration by using the `npm run start-link` command from your LabKey module (see details below).
 
 #### Getting @labkey/components packages to the application
@@ -128,16 +124,13 @@ Periodically we should review the @labkey/components package bundle size to make
 aren't any inadvertent dependencies or files getting included in the bundle. To do this, we have
 used the `webpack-bundle-analyzer` npm package. See [docs](https://github.com/webpack-contrib/webpack-bundle-analyzer) for more details.
 
-You can analyze the bundle size for any of our npm packages or app builds by updating the build
-command in the package.json file to include the `ANALYZE=true` parameter.
-
-For example, with the `@labkey/components` package, it would look like:
+You can analyze the bundle size for any of our npm packages by running the following command:
 ```
-"build": "npm run clean && cross-env NODE_ENV=production ANALYZE=true webpack --config package.config.js --color --progress --profile",
+yarn build-analyze
 ```
-and for the Sample Manager app build it would look like:
+For analyzing the bundle size of one of the applications, you can do the same using the npm command:
 ```
-"build-dev": "npm run clean && cross-env NODE_ENV=development ANALYZE=true webpack --config node_modules/@labkey/build/webpack/dev.config.js --color",
+npm run build-analyze
 ```
 
 ### Adding an entry point / subpackage to @labkey/components

@@ -73,10 +73,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
     init = async (): Promise<void> => {
         const { api, selectionData, selectionKey } = this.props;
         if (selectionData) {
-            const { statusData } = filterSampleRowsForOperation(
-                selectionData,
-                SampleOperation.EditLineage
-            );
+            const { statusData } = filterSampleRowsForOperation(selectionData, SampleOperation.EditLineage);
             if (this._mounted) {
                 this.setState({
                     statusData,

@@ -148,8 +148,8 @@ describe('filterSampleRowsForOperation', () => {
         numAllowed: number,
         numNotAllowed: number
     ): void {
-        const filteredData = filterSampleRowsForOperation(rows, operation, 'RowId', {
-            api: { moduleNames: ['samplemanagement'] },
+        const filteredData = filterSampleRowsForOperation(rows, operation, 'RowId', 'Name', {
+            api: {moduleNames: ['samplemanagement']},
         });
         expect(Object.keys(filteredData.rows)).toHaveLength(numAllowed);
         expect(filteredData.statusData.allowed).toHaveLength(numAllowed);

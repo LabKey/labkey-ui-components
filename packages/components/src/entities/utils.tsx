@@ -68,18 +68,18 @@ export function filterMediaSampleTypes(includeMedia?: boolean): Filter.IFilter[]
 export function filterSampleRowsForOperation(
     rows: Record<any, any>,
     operation: SampleOperation,
-    sampleIdField = 'RowId',
-    moduleContext?: ModuleContext
-): { rows: { [p: string]: any }; statusData: OperationConfirmationData; statusMessage: string } {
+    idField = 'RowId',
+    nameField: string = 'Name',
+    moduleContext?: ModuleContext): { rows: { [p: string]: any }; statusData: OperationConfirmationData; statusMessage: string } {
     const allowed = [];
     const notAllowed = [];
     const validRows = {};
     Object.values(rows).forEach(row => {
         const statusType = caseInsensitive(row, SAMPLE_STATE_TYPE_COLUMN_NAME)?.value;
-        const id = caseInsensitive(row, sampleIdField).value;
+        const id = caseInsensitive(row, idField).value;
         const statusRecord = {
-            RowId: caseInsensitive(row, sampleIdField).value,
-            Name: caseInsensitive(row, 'Name').value,
+            RowId: caseInsensitive(row, idField).value,
+            Name: caseInsensitive(row, nameField).value,
         };
         if (isSampleOperationPermitted(statusType, operation, moduleContext)) {
             allowed.push(statusRecord);

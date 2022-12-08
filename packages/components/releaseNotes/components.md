@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.268.0
+*Released*: 8 December 2022
+* Updates for creation of @labkey/premium package
+  * move /assay subpackage to new repo / package and remove from this repo
+  * add some missing components to index.ts needed by @labkey/premium
+
 ### version 2.267.2
 *Released*: 7 December 2022
 * Issue 46843: Remove export notification for tabbed grids

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.267.2",
+  "version": "2.268.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [
@@ -11,8 +11,7 @@
   "types": "dist/index.d.ts",
   "exports": {
     ".": "./dist/components.js",
-    "./entities": "./dist/entities.js",
-    "./assay": "./dist/assay.js"
+    "./entities": "./dist/entities.js"
   },
   "typesVersions": {
     "*": {
@@ -21,14 +20,12 @@
       ],
       "entities": [
         "dist/entities/index.d.ts"
-      ],
-      "assay": [
-        "dist/assay/index.d.ts"
       ]
     }
   },
   "scripts": {
     "build": "npm run clean && cross-env NODE_ENV=production webpack --config package.config.js --color --progress --profile",
+    "build-analyze": "cross-env ANALYZE=true yarn build",
     "clean": "rimraf dist",
     "cleanAll": "rimraf dist && rimraf node_modules",
     "prepublishOnly": "yarn install && cross-env WEBPACK_STATS=errors-only yarn build",
@@ -84,7 +81,7 @@
     "vis-network": "~6.5.2"
   },
   "devDependencies": {
-    "@labkey/build": "6.4.0",
+    "@labkey/build": "6.5.0",
     "@labkey/eslint-config-react": "~0.0.12",
     "@types/enzyme": "~3.10.12",
     "@types/history": "~4.7.9",

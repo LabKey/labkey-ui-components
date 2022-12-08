@@ -1,10 +1,3 @@
-import { FindDerivativesButton, FindDerivativesMenuItem } from '../internal/components/entities/FindDerivativesButton';
-
-import {
-    AssayResultsForSamplesButton,
-    AssayResultsForSamplesMenuItem,
-} from '../internal/components/entities/AssayResultsForSamplesButton';
-
 import {
     getSampleTypes,
     getOriginalParentsFromLineage,
@@ -100,15 +93,11 @@ export {
     AssayImportSubMenuItem,
     AssayResultsForSamplesPage,
     AssayResultsForSamplesSubNav,
-    AssayResultsForSamplesButton,
-    AssayResultsForSamplesMenuItem,
     CreateSamplesSubMenu,
     CreateSamplesSubMenuBase,
     EntityDeleteModal,
     EntityLineageEditMenuItem,
     EntityTypeDeleteConfirmModal,
-    FindDerivativesButton,
-    FindDerivativesMenuItem,
     FindSamplesByIdHeaderPanel,
     FindSamplesByIdsPageBase,
     GridAliquotViewSelector,

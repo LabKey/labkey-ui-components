@@ -79,7 +79,7 @@ export function filterSampleRowsForOperation(
         const id = caseInsensitive(row, idField).value;
         const statusRecord = {
             RowId: caseInsensitive(row, idField).value,
-            Name: caseInsensitive(row, nameField).value,
+            Name: caseInsensitive(row, nameField).displayValue ?? caseInsensitive(row, nameField).value,
         };
         if (isSampleOperationPermitted(statusType, operation, moduleContext)) {
             allowed.push(statusRecord);

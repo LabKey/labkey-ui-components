@@ -53,13 +53,13 @@ export const ExportModal: FC<ExportModalProperties> = memo(props => {
                 <Modal.Title>{title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                    <table className="export-modal-body">
+                <table className="export-modal-body">
+                    <tbody>
                         <tr>
                             <th></th>
                             <th className="pull-right">Count</th>
                             <th className="view-name">View</th>
                         </tr>
-
                         {tabOrder.map(modelId => {
                             const model = queryModels[modelId];
                             return (
@@ -81,7 +81,8 @@ export const ExportModal: FC<ExportModalProperties> = memo(props => {
                                 </tr>
                             );
                         })}
-                    </table>
+                    </tbody>
+                </table>
             </Modal.Body>
             <Modal.Footer>
                 <div className="pull-left">

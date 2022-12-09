@@ -1,5 +1,4 @@
 import React from 'react';
-import { Checkbox } from 'react-bootstrap';
 import { ReactWrapper } from 'enzyme';
 
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../internal/userFixtures';
@@ -245,9 +244,7 @@ describe('PicklistOverviewImpl', () => {
         expect(wrapper.find(ManageDropdownButton)).toHaveLength(canEdit ? 1 : 0);
         expect(wrapper.find('.picklistHeader-edit')).toHaveLength(canEdit && owner ? 2 : 0);
         expect(wrapper.find('.picklistHeader-delete')).toHaveLength(canDelete ? 2 : 0);
-        expect(wrapper.find('.picklist-sharing')).toHaveLength(canEdit ? 1 : 0);
         expect(wrapper.find(SamplesTabbedGridPanel)).toHaveLength(1);
-        if (canEdit) expect(wrapper.find(Checkbox).prop('checked')).toBe(isPublic);
     }
 
     test('picklist with multiple sample types', () => {

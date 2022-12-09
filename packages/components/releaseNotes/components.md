@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD December 2022
+* Updates for picklist consistency
+  * remove checkbox to change sharing state of picklist from overview page
+
 ### version 2.268.0
 *Released*: 8 December 2022
 * Updates for creation of @labkey/premium package

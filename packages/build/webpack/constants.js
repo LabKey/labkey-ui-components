@@ -20,8 +20,9 @@ const isProductionBuild = process.env.NODE_ENV === 'production';
 // Default to the @labkey packages in the node_moules directory.
 // If LINK is set we configure the paths of @labkey modules to point to the source files (see below), which enables
 // hot module reload to work across packages.
-// NOTE: the LABKEY_UI_COMPONENTS_HOME environment variable must be set for this to work.
+// NOTE: the LABKEY_UI_COMPONENTS_HOME and LABKEY_UI_PREMIUM_HOME environment variable must be set for this to work.
 let labkeyUIComponentsPath = path.resolve('./node_modules/@labkey/components');
+let labkeyUIPremiumPath = path.resolve('./node_modules/@labkey/premium');
 let freezerManagerPath = path.resolve('./node_modules/@labkey/freezermanager');
 let workflowPath = path.resolve('./node_modules/@labkey/workflow');
 let elnPath = path.resolve('./node_modules/@labkey/eln');
@@ -31,8 +32,12 @@ if (process.env.LINK) {
     if (process.env.LABKEY_UI_COMPONENTS_HOME === undefined) {
         throw 'ERROR: You must set your LABKEY_UI_COMPONENTS_HOME environment variable in order to link your @labkey packages.';
     }
+    if (process.env.LABKEY_UI_PREMIUM_HOME === undefined) {
+        throw 'ERROR: You must set your LABKEY_UI_PREMIUM_HOME environment variable in order to link your @labkey packages.';
+    }
 
     labkeyUIComponentsPath = process.env.LABKEY_UI_COMPONENTS_HOME + '/packages/components/src';
+    labkeyUIPremiumPath = process.env.LABKEY_UI_PREMIUM_HOME + '/packages/premium/src';
     // lastIndexOf just in case someone is weird and has their LKS deployment under a directory named modules.
     const lkModulesPath = cwd.slice(0, cwd.lastIndexOf('modules') + 1);
     freezerManagerPath = lkModulesPath.concat(FREEZER_MANAGER_DIRS).join(path.sep);
@@ -40,6 +45,7 @@ if (process.env.LINK) {
     elnPath = lkModulesPath.concat(ELN_DIRS).join(path.sep);
 
     console.log('Using @labkey/components path:', labkeyUIComponentsPath);
+    console.log('Using @labkey/premium path:', labkeyUIPremiumPath);
     console.log('Using @labkey/freezermanager path:', freezerManagerPath);
     console.log('Using @labkey/workflow path:', workflowPath);
     console.log('Using @labkey/eln path:', elnPath);
@@ -160,7 +166,8 @@ const TS_CHECKER_DEV_CONFIG = {
                 "paths": {
                     "@labkey/components": [labkeyUIComponentsPath],
                     "@labkey/components/entities": [labkeyUIComponentsPath + '/entities'],
-                    "@labkey/components/assay": [labkeyUIComponentsPath + '/assay'],
+                    "@labkey/premium": [labkeyUIPremiumPath],
+                    "@labkey/premium/assay": [labkeyUIPremiumPath + '/assay'],
                     "@labkey/freezermanager": [freezerManagerPath],
                     "@labkey/workflow": [workflowPath],
                     "@labkey/eln": [elnPath],
@@ -176,7 +183,8 @@ const labkeyPackagesDev = process.env.LINK
         // seem to cause any problems.
         '@labkey/components': labkeyUIComponentsPath,
         '@labkey/components/entities': labkeyUIComponentsPath + '/entities',
-        '@labkey/components/assay': labkeyUIComponentsPath + '/assay',
+        '@labkey/premium': labkeyUIPremiumPath,
+        '@labkey/premium/assay': labkeyUIPremiumPath + '/assay',
         '@labkey/freezermanager': freezerManagerPath,
         '@labkey/workflow': workflowPath,
         '@labkey/eln': elnPath,
@@ -186,6 +194,7 @@ const labkeyPackagesDev = process.env.LINK
 module.exports = {
     lkModule,
     labkeyUIComponentsPath,
+    labkeyUIPremiumPath,
     freezerManagerPath,
     workflowPath,
     tsconfigPath,
@@ -256,6 +265,7 @@ module.exports = {
         LABKEY_PACKAGES: {
             '@labkey/components-scss': labkeyUIComponentsPath + '/dist/assets/scss/theme',
             '@labkey/components-app-scss': labkeyUIComponentsPath + '/dist/assets/scss/theme/app',
+            '@labkey/premium-scss': labkeyUIPremiumPath + '/dist/assets/scss/theme',
             '@labkey/freezermanager-scss': freezerManagerPath + '/dist/assets/scss/theme',
             '@labkey/workflow-scss': workflowPath + '/dist/assets/scss/theme',
             '@labkey/eln-scss': elnPath + '/dist/assets/scss/theme',
@@ -265,6 +275,7 @@ module.exports = {
             // need to set the path based on the LINK var
             '@labkey/components-scss': labkeyUIComponentsPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
             '@labkey/components-app-scss': labkeyUIComponentsPath + (process.env.LINK ? '/theme/app' : '/dist/assets/scss/theme/app'),
+            '@labkey/premium-scss': labkeyUIPremiumPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
             '@labkey/freezermanager-scss': freezerManagerPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
             '@labkey/workflow-scss': workflowPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
             '@labkey/eln-scss': elnPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),

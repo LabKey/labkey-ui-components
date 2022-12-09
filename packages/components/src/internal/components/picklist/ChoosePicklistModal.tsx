@@ -493,16 +493,18 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
     const { api } = useAppContext();
 
     useEffect(() => {
-        setItemsLoading(LoadingState.LOADING);
-
         (async () => {
-            try {
-                const picklists = await getPicklistsForInsert();
-                setItems(picklists);
-            } catch (e) {
-                setError(resolveErrorMessage(e) ?? 'Failed to retrieve picklists.');
+            if (selectionsLoading === LoadingState.INITIALIZED) {
+                setItemsLoading(LoadingState.LOADING);
+                try {
+                    const picklists = await getPicklistsForInsert();
+                    setItems(picklists);
+                }
+                catch (e) {
+                    setError(resolveErrorMessage(e) ?? 'Failed to retrieve picklists.');
+                }
+                setItemsLoading(LoadingState.LOADED);
             }
-            setItemsLoading(LoadingState.LOADED);
             if (useSnapshotSelection) {
                 if (!queryModel?.isLoadingSelections) {
                     try {

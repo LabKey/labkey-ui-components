@@ -138,7 +138,7 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
                 selectProvider(GENERAL_ASSAY_PROVIDER_NAME);
             } else if (tab_ === AssayPickerTabs.SPECIALTY_ASSAY_TAB) {
                 if (providers.length > 0 && (!provider || provider.name === GENERAL_ASSAY_PROVIDER_NAME)) {
-                    selectProvider(providers[0].name);
+                    selectProvider(providers.filter(p => p.name !== GENERAL_ASSAY_PROVIDER_NAME)[0].name);
                 }
             }
         },

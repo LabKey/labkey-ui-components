@@ -255,13 +255,7 @@ export function getSamplesNotInList(listName: string, selectionKey?: string, use
             if (sampleIds) {
                 resolve(sampleIds.filter(id => !existingSamples.has(id.toString())));
             } else if (selectionKey) {
-                let response;
-                if (useSnapshotSelection) {
-                   response =  await getSnapshotSelections(selectionKey)
-                }
-                else {
-                    response = await getSelected(selectionKey)
-                }
+                const response = await getSelected(selectionKey, useSnapshotSelection)
                 resolve(response.selected.filter(id => !existingSamples.has(id.toString())));
             } else {
                 resolve([]);

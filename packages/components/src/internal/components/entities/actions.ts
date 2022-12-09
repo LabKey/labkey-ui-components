@@ -255,11 +255,7 @@ async function initParents(
 
     if (selectionKey) {
         const {schemaQuery} = SchemaQuery.parseSelectionKey(selectionKey);
-        let selectionResponse;
-        if (isSnapshotSelection)
-            selectionResponse = await getSnapshotSelections(selectionKey);
-        else
-            selectionResponse = await getSelected(selectionKey);
+        const selectionResponse = await getSelected(selectionKey, isSnapshotSelection);
 
         const filterArray = [
             Filter.create('RowId', selectionResponse.selected, Filter.Types.IN),

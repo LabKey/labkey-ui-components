@@ -412,6 +412,7 @@ import {
     getDataDeleteConfirmationData,
     getDataOperationConfirmationData,
     getSampleOperationConfirmationData,
+    getOperationConfirmationData,
 } from './internal/components/entities/actions';
 import {
     AssayResultDataType,
@@ -1047,6 +1048,7 @@ export {
     RemoveEntityButton,
     getSampleOperationConfirmationData,
     getCrossFolderSelectionResult,
+    getOperationConfirmationData,
     getDataOperationConfirmationData,
     getDataDeleteConfirmationData,
     getUniqueIdColumnMetadata,

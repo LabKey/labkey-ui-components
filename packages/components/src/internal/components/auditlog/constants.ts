@@ -20,7 +20,7 @@ export const DATA_UPDATE_AUDIT_QUERY: AuditQuery = {
 };
 export const INVENTORY_AUDIT_QUERY: AuditQuery = {
     value: 'inventoryauditevent',
-    label: 'Freezer Management Events',
+    label: 'Storage Management Events',
     hasDetail: true,
 };
 export const LIST_AUDIT_QUERY: AuditQuery = { value: 'listauditevent', label: 'List Events' };

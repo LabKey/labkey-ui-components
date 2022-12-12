@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Update FM UI to use "Storage" instead of "Freezer"
+  * Update audit query name
+  * Update mega-menu empty state messaging
+
 ### version 2.268.1
 *Released*: 12 December 2022
 * Issue 46681: Don't show the assay button for Aliquots if assays is not enabled

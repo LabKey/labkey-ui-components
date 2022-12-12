@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.269.1
+*Released*: 12 December 2022
+* Issue 46841: Require permission/role when creating a new user via app modal
+
 ### version 2.269.0
 *Released*: 12 December 2022
 * Updates for picklist consistency

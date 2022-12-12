@@ -12,14 +12,17 @@ import { makeTestActions, makeTestQueryModel } from '../public/QueryModel/testUt
 import { Page } from '../internal/components/base/Page';
 import { PageDetailHeader } from '../internal/components/forms/PageDetailHeader';
 import { ManageDropdownButton } from '../internal/components/buttons/ManageDropdownButton';
-import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
+
 import { SchemaQuery } from '../public/SchemaQuery';
 
 import { getTestAPIWrapper } from '../internal/APIWrapper';
 
 import { Picklist } from '../internal/components/picklist/models';
-import { PicklistOverview, PicklistOverviewImpl, PicklistOverviewWithQueryModels } from './PicklistOverview';
+
 import { getPicklistTestAPIWrapper } from '../internal/components/picklist/APIWrapper';
+
+import { PicklistOverview, PicklistOverviewImpl, PicklistOverviewWithQueryModels } from './PicklistOverview';
+import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 
 const MULTI_SAMPLE_TYPE_PICKLIST = new Picklist({
     listId: 1,

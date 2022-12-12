@@ -49,10 +49,12 @@ const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> 
     const metricFeatureArea = 'sampleAliquots';
 
     const moreItems = [];
-    moreItems.push({
-        button: <SamplesAssayButton model={model} providerType={assayProviderType} />,
-        perm: PermissionTypes.Insert,
-    });
+    if (isAssayEnabled(moduleContext)) {
+        moreItems.push({
+            button: <SamplesAssayButton model={model} providerType={assayProviderType}/>,
+            perm: PermissionTypes.Insert,
+        });
+    }
     moreItems.push({
         button: <PicklistButton model={model} user={user} metricFeatureArea={metricFeatureArea} />,
         perm: PermissionTypes.ManagePicklists,

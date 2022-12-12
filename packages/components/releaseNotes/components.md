@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.268.1
+*Released*: 12 December 2022
+* Issue 46681: Don't show the assay button for Aliquots if assays is not enabled
+* Issue 46023: Exclude General assay provider when choosing a speciality assay
+
 ### version 2.268.0
 *Released*: 8 December 2022
 * Updates for creation of @labkey/premium package

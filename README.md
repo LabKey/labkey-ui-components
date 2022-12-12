@@ -1,6 +1,6 @@
 # LabKey NPM Packages (@labkey)
 
-This repository defines all of the npm packages available in the @labkey scope.
+This repository defines npm packages available in the @labkey scope.
 
 ## Package listing
 

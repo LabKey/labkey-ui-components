@@ -41,7 +41,7 @@ describe('<CreateUsersModal/>', () => {
         expect(wrapper.find('SelectInput')).toHaveLength(0);
         expect(wrapper.find('.btn')).toHaveLength(2);
         expect(wrapper.find('.btn-success')).toHaveLength(1);
-        expect(wrapper.find('.btn-success').props().disabled).toBe(false);
+        expect(wrapper.find('.btn-success').props().disabled).toBe(true); // no emailText
         wrapper.unmount();
     });
 
@@ -60,7 +60,7 @@ describe('<CreateUsersModal/>', () => {
         expect(wrapper.find('SelectInput').props().value).toStrictEqual([ROLE_OPTIONS[0].id]);
         expect(wrapper.find('.btn')).toHaveLength(2);
         expect(wrapper.find('.btn-success')).toHaveLength(1);
-        expect(wrapper.find('.btn-success').props().disabled).toBe(false);
+        expect(wrapper.find('.btn-success').props().disabled).toBe(true); // no emailText
         wrapper.unmount();
     });
 
@@ -70,13 +70,27 @@ describe('<CreateUsersModal/>', () => {
         );
 
         const wrapper = mount(component);
+        expect(wrapper.find('.btn-success').props().disabled).toBe(true); // no emailText
+
         wrapper.setState({
             emailText: 'TestEmailText',
             sendEmail: false,
             optionalMessage: 'TestOptionalMessage',
             roles: [ROLE_OPTIONS[1].id],
-            isSubmitting: true,
             error: 'TestError',
+        });
+
+        expect(wrapper.find('.btn-success').props().disabled).toBe(false);
+
+        wrapper.setState({
+            roles: [],
+        });
+
+        expect(wrapper.find('.btn-success').props().disabled).toBe(true); // no roles
+
+        wrapper.setState({
+            isSubmitting: true,
+            roles: [ROLE_OPTIONS[1].id],
         });
 
         expect(wrapper.find('Alert')).toHaveLength(2);
@@ -88,7 +102,7 @@ describe('<CreateUsersModal/>', () => {
         expect(wrapper.find('SelectInput').props().value).toStrictEqual([ROLE_OPTIONS[1].id]);
         expect(wrapper.find('.btn')).toHaveLength(2);
         expect(wrapper.find('.btn-success')).toHaveLength(1);
-        expect(wrapper.find('.btn-success').props().disabled).toBe(true);
+        expect(wrapper.find('.btn-success').props().disabled).toBe(true); // submitting
         wrapper.unmount();
     });
 

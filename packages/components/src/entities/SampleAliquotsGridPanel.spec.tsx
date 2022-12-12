@@ -79,7 +79,7 @@ describe('SampleAliquotsGridPanel', () => {
         );
         expect(wrapper.find(ResponsiveMenuButtonGroup)).toHaveLength(1);
         const items = wrapper.find(ResponsiveMenuButtonGroup).prop('items');
-        expect(items.length).toBe(3);
+        expect(items.length).toBe(2);
         wrapper.unmount();
     });
 

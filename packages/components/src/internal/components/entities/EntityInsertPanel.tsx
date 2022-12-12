@@ -30,7 +30,12 @@ import { BulkAddData, EditableColumnMetadata } from '../editable/EditableGrid';
 
 import { DERIVATION_DATA_SCOPES } from '../domainproperties/constants';
 
-import { getCurrentProductName, isSampleManagerEnabled, sampleManagerIsPrimaryApp } from '../../app/utils';
+import {
+    getCurrentProductName,
+    isImportWithUpdateEnabled,
+    isSampleManagerEnabled,
+    sampleManagerIsPrimaryApp
+} from '../../app/utils';
 
 import { fetchDomainDetails, getDomainNamePreviews } from '../domainproperties/actions';
 
@@ -53,7 +58,7 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { FileSizeLimitProps } from '../../../public/files/models';
 import { capitalizeFirstChar } from '../../util/utils';
 import { getActionErrorMessage, resolveErrorMessage } from '../../util/messaging';
-import { getQueryDetails } from '../../query/api';
+import { getQueryDetails, InsertOptions } from '../../query/api';
 import { getSampleTypeDetails } from '../samples/actions';
 import { insertColumnFilter, QueryColumn } from '../../../public/QueryColumn';
 import { SelectInput } from '../forms/input/SelectInput';
@@ -173,6 +178,7 @@ interface FromLocationProps {
     tab?: number;
     target?: any;
     user?: User;
+    isEditMode?: boolean;
 }
 
 type Props = FromLocationProps & OwnProps & WithFormStepsProps;
@@ -213,6 +219,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     private readonly capTypeTextSingular;
     private readonly typeTextSingular;
     private readonly typeTextPlural;
+    private readonly useDeprecatedUI;
 
     constructor(props: Props) {
         super(props);
@@ -223,6 +230,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         this.capTypeTextSingular = this.capNounSingular + ' Type';
         this.typeTextSingular = props.nounSingular + ' type';
         this.typeTextPlural = props.nounSingular + ' types';
+        this.useDeprecatedUI = !isImportWithUpdateEnabled(); // UI prior to the support of import with update
 
         this.state = {
             insertModel: undefined,
@@ -246,7 +254,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     componentDidMount(): void {
         const { selectStep, tab } = this.props;
 
-        if (tab !== EntityInsertPanelTabs.First) {
+        const tabs = this.getTabs();
+        if (tab !== EntityInsertPanelTabs.First && tabs.length > EntityInsertPanelTabs.First) {
             selectStep(tab);
         }
 
@@ -270,15 +279,31 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     getTabs = (): string[] => {
-        if (this.props.importOnly) {
-            return ['Import ' + this.capNounPlural + ' from File'];
+        const { isEditMode, importOnly, gridInsertOnly } = this.props;
+        const importTabTitle = (isEditMode ? 'Update' : 'Import') + ' ' + this.capNounPlural + ' from File';
+        const gridTabTitle = 'Create ' + this.capNounPlural + ' from Grid';
+
+        if (this.useDeprecatedUI) { // code is written with redundancy to allow easy remove all of this.useDeprecatedUI usage
+            if (importOnly) {
+                return [importTabTitle];
+            }
+
+            if (gridInsertOnly) {
+                return [gridTabTitle];
+            }
+
+            return [gridTabTitle, importTabTitle];
         }
 
-        if (this.props.gridInsertOnly) {
-            return ['Create ' + this.capNounPlural + ' from Grid'];
+        if (importOnly || isEditMode) {
+            return [importTabTitle];
         }
 
-        return ['Create ' + this.capNounPlural + ' from Grid', 'Import ' + this.capNounPlural + ' from File'];
+        if (gridInsertOnly) {
+            return [gridTabTitle];
+        }
+
+        return [gridTabTitle, importTabTitle];
     };
 
     init = async (): Promise<void> => {
@@ -624,6 +649,72 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         return null;
     };
 
+    renderMergeOption = (isGrid: boolean) : ReactNode => {
+        const { disableMerge, user, nounPlural, isEditMode } = this.props;
+        const { insertModel, allowUserSpecifiedNames, isMerge, originalQueryInfo } = this.state;
+
+        if (isGrid)
+            return null;
+
+        console.log(disableMerge);
+        console.log(allowUserSpecifiedNames);
+        console.log(originalQueryInfo.supportMerge);
+        let allowMerge = isEditMode && !disableMerge && user.hasUpdatePermission() && allowUserSpecifiedNames && originalQueryInfo.supportMerge;
+
+        if (this.useDeprecatedUI)
+            allowMerge = !disableMerge && user.hasUpdatePermission();
+
+        const entityTypeName = insertModel.getTargetEntityTypeLabel();
+        if (!allowMerge || !entityTypeName)
+            return null;
+
+        const mergeMsg = this.useDeprecatedUI ? `Update data for existing ${nounPlural} during this file import` : `Allow new ${nounPlural}`;
+
+        return (
+            <div className={this.useDeprecatedUI ? "margin-bottom" : "pull-right"}>
+                <input
+                    type="checkbox"
+                    checked={isMerge}
+                    onChange={this.toggleInsertOptionChange}
+                />
+                <span
+                    className="entity-mergeoption-checkbox"
+                    onClick={this.toggleInsertOptionChange}
+                >
+                    {mergeMsg}
+                </span>
+                &nbsp;
+                <LabelHelpTip title="Import Options" placement="top">
+                    {this.renderUpdateTooltipText()}
+                    <p>
+                        For more information on import options for {nounPlural}, see the{' '}
+                        {this.props.importHelpLinkNode} documentation page.
+                    </p>
+                </LabelHelpTip>
+            </div>
+        );
+    };
+
+    renderTargetEntitySelect = () : ReactNode => {
+        const { insertModel } = this.state;
+        const hasTargetEntityType = insertModel?.hasTargetEntityType();
+
+        return (
+            <SelectInput
+                autoValue={false}
+                inputClass="col-sm-5"
+                label={this.capTypeTextSingular}
+                labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"
+                name="targetEntityType"
+                placeholder={'Select a ' + this.capTypeTextSingular + '...'}
+                onChange={this.changeTargetEntityType}
+                options={insertModel.entityTypeOptions.toArray()}
+                required
+                selectedOptions={hasTargetEntityType ? insertModel?.targetEntityType : undefined}
+            />
+        );
+    };
+
     renderHeader = (isGrid: boolean): ReactNode => {
         const { insertModel, creationType } = this.state;
 
@@ -634,18 +725,21 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         return (
             <>
                 {insertModel.isInit && (
-                    <SelectInput
-                        autoValue={false}
-                        inputClass="col-sm-5"
-                        label={this.capTypeTextSingular}
-                        labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"
-                        name="targetEntityType"
-                        placeholder={'Select a ' + this.capTypeTextSingular + '...'}
-                        onChange={this.changeTargetEntityType}
-                        options={insertModel.entityTypeOptions.toArray()}
-                        required
-                        selectedOptions={hasTargetEntityType ? insertModel.targetEntityType : undefined}
-                    />
+                    this.useDeprecatedUI ? (
+                        <>
+                            {this.renderTargetEntitySelect()}
+                            {this.renderMergeOption(isGrid)}
+                        </>
+                    ) : (
+                        <div className="row">
+                            <div className="col-sm-9">
+                                {this.renderTargetEntitySelect()}
+                            </div>
+                            <div className="col-sm-3">
+                                {this.renderMergeOption(isGrid)}
+                            </div>
+                        </div>
+                    )
                 )}
                 {insertModel.isError && (
                     <Alert>
@@ -1036,7 +1130,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         );
     };
 
-    renderUpdateTooltipText = (): ReactNode => {
+    renderUpdateTooltipTextDeprecatd = (): ReactNode => {
         const { nounPlural } = this.props;
         const { allowUserSpecifiedNames } = this.state;
 
@@ -1066,6 +1160,27 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 </p>
                 <p>
                     When update is selected, data will be updated for matching {this.capIdsText}, and new {nounPlural}{' '}
+                    will be created for any new {this.capIdsText} provided. Data will not be changed for any columns not
+                    in the imported file.
+                </p>
+            </>
+        );
+    };
+
+    renderUpdateTooltipText = (): ReactNode => {
+        const { nounPlural } = this.props;
+
+        if (this.useDeprecatedUI)
+            return this.renderUpdateTooltipTextDeprecatd();
+
+        return (
+            <>
+                <p>
+                    By default, import will update existing {nounPlural} based on the file provided. The operation will fail
+                    if there are new {this.capIdsText} being imported.
+                </p>
+                <p>
+                    When the "Allow new {nounPlural}" checkbox is checked, data will be updated for matching {this.capIdsText}, and new {nounPlural}{' '}
                     will be created for any new {this.capIdsText} provided. Data will not be changed for any columns not
                     in the imported file.
                 </p>
@@ -1119,16 +1234,24 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             onBackgroundJobStart,
             afterEntityCreation,
             saveToPipeline,
+            isEditMode
         } = this.props;
         const { insertModel, file, isMerge, originalQueryInfo, useAsync } = this.state;
 
         this.setSubmitting(true);
+        let importOption = isEditMode ? (isMerge ? InsertOptions.MERGE : InsertOptions.UPDATE) : InsertOptions.IMPORT;
+
+        if (this.useDeprecatedUI) {
+            if (isMerge)
+                importOption = InsertOptions.MERGE;
+        }
+
         try {
             const response = await handleEntityFileImport(
                 entityDataType.importFileAction,
                 originalQueryInfo,
                 file,
-                isMerge,
+                importOption,
                 useAsync,
                 fileImportParameters,
                 entityDataType.importFileController,
@@ -1182,7 +1305,10 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     isGridStep = (): boolean => {
-        return this.props.currentStep === EntityInsertPanelTabs.First && !this.props.importOnly;
+        if (this.useDeprecatedUI)
+            return this.props.currentStep === EntityInsertPanelTabs.First && !this.props.importOnly;
+
+        return this.props.currentStep === EntityInsertPanelTabs.First && !this.props.importOnly && !this.props.isEditMode;
     };
 
     renderProgress = (): ReactNode => {
@@ -1300,19 +1426,25 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             });
     };
 
+    shouldShowGrid = () : boolean => {
+        const { importOnly, isEditMode } = this.props;
+
+        if (this.useDeprecatedUI)
+            return !importOnly;
+
+        return !importOnly && !isEditMode;
+    };
+
     render() {
         const {
             acceptedFormats,
             canEditEntityTypeDetails,
-            disableMerge,
             fileSizeLimits,
-            importOnly,
-            nounPlural,
             entityDataType,
-            user,
             filePreviewFormats,
+            gridInsertOnly
         } = this.props;
-        const { error, file, insertModel, isMerge, isSubmitting, originalQueryInfo } = this.state;
+        const { error, file, insertModel, isSubmitting, originalQueryInfo } = this.state;
 
         if (!insertModel) {
             if (error) {
@@ -1330,6 +1462,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             entityTypeName && entityDataType?.editTypeAppUrlPrefix && !isFromSharedContainer
                 ? AppURL.create(entityDataType.editTypeAppUrlPrefix, entityTypeName)
                 : undefined;
+
+        const showGrid = this.shouldShowGrid();
 
         return (
             <>
@@ -1352,64 +1486,45 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                         </div>
                         <div className="row">
                             <div className="col-sm-12">
-                                {!importOnly && (
+                                {showGrid && (
                                     <FormStep stepIndex={EntityInsertPanelTabs.First}>
                                         {this.renderCreateFromGrid()}
                                     </FormStep>
                                 )}
-                                <FormStep
-                                    stepIndex={importOnly ? EntityInsertPanelTabs.First : EntityInsertPanelTabs.Second}
-                                >
-                                    {this.renderHeader(false)}
-                                    {!disableMerge && user.hasUpdatePermission() && entityTypeName && (
-                                        <div className="margin-bottom">
-                                            <input
-                                                type="checkbox"
-                                                checked={isMerge}
-                                                onChange={this.toggleInsertOptionChange}
+                                {!gridInsertOnly && (
+                                    <FormStep
+                                        stepIndex={
+                                            showGrid ? EntityInsertPanelTabs.Second : EntityInsertPanelTabs.First
+                                        }
+                                    >
+                                        {this.renderHeader(false)}
+                                        {entityTypeName && (
+                                            <FileAttachmentForm
+                                                showLabel={false}
+                                                acceptedFormats={acceptedFormats ?? '.csv, .tsv, .txt, .xls, .xlsx'}
+                                                allowMultiple={false}
+                                                allowDirectories={false}
+                                                previewGridProps={{
+                                                    previewCount: 3,
+                                                    onPreviewLoad: this.onPreviewLoad,
+                                                    warningMsg: this.state.fieldsWarningMsg,
+                                                    acceptedFormats: filePreviewFormats,
+                                                }}
+                                                onFileChange={this.handleFileChange}
+                                                onFileRemoval={this.handleFileRemoval}
+                                                templateUrl={this.getTemplateUrl()}
+                                                sizeLimits={fileSizeLimits}
+                                                sizeLimitsHelpText={
+                                                    <>
+                                                        We recommend dividing your data into smaller files that meet this
+                                                        limit. See our {helpLinkNode(DATA_IMPORT_TOPIC, 'help article')} for
+                                                        best practices on data import.
+                                                    </>
+                                                }
                                             />
-                                            <span
-                                                className="entity-mergeoption-checkbox"
-                                                onClick={this.toggleInsertOptionChange}
-                                            >
-                                                Update data for existing {nounPlural} during this file import
-                                            </span>
-                                            &nbsp;
-                                            <LabelHelpTip title="Import Options">
-                                                {this.renderUpdateTooltipText()}
-                                                <p>
-                                                    For more information on import options for {nounPlural}, see the{' '}
-                                                    {this.props.importHelpLinkNode} documentation page.
-                                                </p>
-                                            </LabelHelpTip>
-                                        </div>
-                                    )}
-                                    {entityTypeName && (
-                                        <FileAttachmentForm
-                                            showLabel={false}
-                                            acceptedFormats={acceptedFormats ?? '.csv, .tsv, .txt, .xls, .xlsx'}
-                                            allowMultiple={false}
-                                            allowDirectories={false}
-                                            previewGridProps={{
-                                                previewCount: 3,
-                                                onPreviewLoad: this.onPreviewLoad,
-                                                warningMsg: this.state.fieldsWarningMsg,
-                                                acceptedFormats: filePreviewFormats,
-                                            }}
-                                            onFileChange={this.handleFileChange}
-                                            onFileRemoval={this.handleFileRemoval}
-                                            templateUrl={this.getTemplateUrl()}
-                                            sizeLimits={fileSizeLimits}
-                                            sizeLimitsHelpText={
-                                                <>
-                                                    We recommend dividing your data into smaller files that meet this
-                                                    limit. See our {helpLinkNode(DATA_IMPORT_TOPIC, 'help article')} for
-                                                    best practices on data import.
-                                                </>
-                                            }
-                                        />
-                                    )}
-                                </FormStep>
+                                        )}
+                                    </FormStep>
+                                )}
                             </div>
                         </div>
                         <Alert>{error}</Alert>
@@ -1458,8 +1573,10 @@ export const EntityInsertPanel: FC<{ location?: Location } & OwnProps> = memo(pr
             tab,
             target,
             selectionKeyType,
+            mode
         } = location.query;
         const isItemSamples = selectionKeyType === SAMPLE_INVENTORY_ITEM_SELECTION_KEY;
+        const isEditMode = mode?.toLowerCase() === 'update';
         return {
             creationType,
             numPerParent,
@@ -1468,6 +1585,7 @@ export const EntityInsertPanel: FC<{ location?: Location } & OwnProps> = memo(pr
             tab: entityInsertPanelProps.selectedTab ?? parseInt(tab, 10),
             target,
             isItemSamples,
+            isEditMode,
         };
     }, [location, entityInsertPanelProps.selectedTab]);
 

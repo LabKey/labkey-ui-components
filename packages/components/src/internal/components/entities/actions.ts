@@ -1,22 +1,22 @@
-import { ActionURL, Ajax, Filter, Query, Utils } from '@labkey/api';
-import { fromJS, List, Map } from 'immutable';
+import {ActionURL, Ajax, Filter, Query, Utils} from '@labkey/api';
+import {fromJS, List, Map} from 'immutable';
 
-import { buildURL } from '../../url/AppURL';
-import { SampleOperation } from '../samples/constants';
-import { SchemaQuery } from '../../../public/SchemaQuery';
-import { getFilterForSampleOperation, isSamplesSchema } from '../samples/utils';
-import { importData, InsertOptions, selectRowsDeprecated } from '../../query/api';
-import { caseInsensitive } from '../../util/utils';
-import { SampleCreationType } from '../samples/models';
-import { getSelected, getSelectedData } from '../../actions';
-import { SHARED_CONTAINER_PATH } from '../../constants';
-import { naturalSort } from '../../../public/sort';
-import { QueryInfo } from '../../../public/QueryInfo';
-import { SCHEMAS } from '../../schemas';
-import { ViewInfo } from '../../ViewInfo';
+import {buildURL} from '../../url/AppURL';
+import {SampleOperation} from '../samples/constants';
+import {SchemaQuery} from '../../../public/SchemaQuery';
+import {getFilterForSampleOperation, isSamplesSchema} from '../samples/utils';
+import {importData, InsertOptions, selectRowsDeprecated} from '../../query/api';
+import {caseInsensitive} from '../../util/utils';
+import {SampleCreationType} from '../samples/models';
+import {getSelected, getSelectedData} from '../../actions';
+import {SHARED_CONTAINER_PATH} from '../../constants';
+import {naturalSort} from '../../../public/sort';
+import {QueryInfo} from '../../../public/QueryInfo';
+import {SCHEMAS} from '../../schemas';
+import {ViewInfo} from '../../ViewInfo';
 
-import { isDataClassEntity, isSampleEntity } from './utils';
-import { DataClassDataType, DataOperation, SampleTypeDataType } from './constants';
+import {isDataClassEntity, isSampleEntity} from './utils';
+import {DataClassDataType, DataOperation, SampleTypeDataType} from './constants';
 import {
     CrossFolderSelectionResult,
     DisplayObject,
@@ -581,13 +581,18 @@ export function handleEntityFileImport(
     importAction: string,
     queryInfo: QueryInfo,
     file: File,
-    isMerge: boolean,
+    insertOption: InsertOptions,
     useAsync: boolean,
     importParameters?: Record<string, any>,
     importFileController?: string,
     saveToPipeline?: boolean
 ): Promise<any> {
     return new Promise((resolve, reject) => {
+
+        if (insertOption === InsertOptions.UPDATE)
+            reject('Import with Update currently not supported.');
+
+
         const { schemaQuery } = queryInfo;
 
         return importData({
@@ -599,7 +604,7 @@ export function handleEntityFileImport(
             }),
             importLookupByAlternateKey: true,
             useAsync,
-            insertOption: InsertOptions[isMerge ? InsertOptions.MERGE : InsertOptions.IMPORT],
+            insertOption: insertOption.toString(),
             saveToPipeline,
         })
             .then(response => {

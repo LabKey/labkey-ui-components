@@ -49,6 +49,7 @@ export class QueryInfo extends Record({
     insertUrl: undefined,
 
     supportGroupConcatSubSelect: false,
+    supportMerge: false,
 
     // our stuff
     appEditableTable: false,
@@ -88,6 +89,7 @@ export class QueryInfo extends Record({
     declare singular: string;
     declare status: QueryInfoStatus;
     declare supportGroupConcatSubSelect: boolean;
+    declare supportMerge: boolean;
     // declare targetContainers: List<any>;
     declare title: string;
     declare titleColumn: string;

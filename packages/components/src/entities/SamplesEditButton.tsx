@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useState } from 'react';
+import React, {FC, memo, useCallback, useMemo, useState} from 'react';
 import { MenuItem } from 'react-bootstrap';
 import { PermissionTypes } from '@labkey/api';
 
@@ -8,10 +8,10 @@ import { RequiresModelAndActions } from '../public/QueryModel/withQueryModels';
 
 import { EntityLineageEditMenuItem } from './EntityLineageEditMenuItem';
 
-import { hasModule } from '../internal/app/utils';
+import {hasModule, isImportWithUpdateEnabled} from '../internal/app/utils';
 
 import { useServerContext } from '../internal/components/base/ServerContext';
-import { buildURL } from '../internal/url/AppURL';
+import {buildURL, createProductUrlFromParts} from '../internal/url/AppURL';
 import { hasAnyPermissions } from '../internal/components/base/models/User';
 import { RequiresPermission } from '../internal/components/base/Permissions';
 import { ManageDropdownButton } from '../internal/components/buttons/ManageDropdownButton';
@@ -28,11 +28,14 @@ import { SamplesEditButtonSections } from '../internal/components/samples/utils'
 import { shouldIncludeMenuItem } from './utils';
 import { getSampleTypeRowId } from '../internal/components/samples/actions';
 import { SampleGridButtonProps } from '../internal/components/samples/models';
+import { NEW_SAMPLES_HREF, SAMPLES_KEY } from "../internal/app/constants";
 
 interface OwnProps {
     combineParentTypes?: boolean;
     parentEntityDataTypes: EntityDataType[];
     showLinkToStudy?: boolean;
+    currentProductId?: string;
+    targetProductId?: string;
 }
 
 export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresModelAndActions> = memo(props => {
@@ -47,6 +50,8 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
         excludedMenuKeys,
         model,
         metricFeatureArea,
+        currentProductId,
+        targetProductId,
     } = props;
     const [crossFolderSelectionResult, setCrossFolderSelectionResult] = useState(undefined);
 
@@ -93,6 +98,26 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
         }
     }, [model?.hasSelections, model.id, model.schemaQuery.queryName]);
 
+    const updateSampleHref = useMemo(() => {
+        const updateUrlParam = {
+            target: model?.schemaQuery?.queryName,
+            mode: 'update'
+        };
+
+        let href: any = NEW_SAMPLES_HREF.addParams(updateUrlParam).toHref();
+        if (currentProductId && targetProductId && targetProductId !== currentProductId) {
+            href = createProductUrlFromParts(
+                targetProductId,
+                currentProductId,
+                updateUrlParam,
+                SAMPLES_KEY,
+                'new'
+            );
+        }
+
+        return href;
+    }, [model?.schemaQuery?.queryName]);
+
     if (!model || model.isLoading) return null;
 
     const showEdit =
@@ -138,6 +163,9 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
                                 queryModel={model}
                                 nounPlural={SampleTypeDataType.nounPlural}
                             />
+                        )}
+                        {(isImportWithUpdateEnabled() && model?.showImportDataButton) && (
+                            <MenuItem href={updateSampleHref}>Update from File</MenuItem>
                         )}
                         {user.canUpdate && parentEntityDataTypes?.length > 0 && <MenuItem divider />}
                         {!combineParentTypes &&

@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.XX
+*Released*: XX December 2022
+* UI for samples/sources/dataclasses import with Update in apps
+  * Add check for isImportWithUpdateEnabled
+  * Modify EntityInsertPanel to distinguish import vs update/merge
+  * Modify SamplesEditButton to allow 'Update from File'
+
 ### version 2.269.1
 *Released*: 12 December 2022
 * Issue 46841: Require permission/role when creating a new user via app modal

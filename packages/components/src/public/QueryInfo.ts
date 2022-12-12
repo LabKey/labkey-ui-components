@@ -4,9 +4,11 @@ import { List, Map, OrderedMap, Record } from 'immutable';
 import { Filter } from '@labkey/api';
 
 import { toLowerSafe } from '../internal/util/utils';
-import { insertColumnFilter, QueryColumn } from './QueryColumn';
+
 import { ViewInfo } from '../internal/ViewInfo';
 import { LastActionStatus } from '../internal/LastActionStatus';
+
+import { insertColumnFilter, QueryColumn } from './QueryColumn';
 import { SchemaQuery } from './SchemaQuery';
 import { QuerySort } from './QuerySort';
 import { naturalSort } from './sort';

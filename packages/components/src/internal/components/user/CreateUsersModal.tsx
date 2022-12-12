@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Checkbox, FormControl, Modal } from 'react-bootstrap';
+import { FormControl, Modal } from 'react-bootstrap';
 import { Security } from '@labkey/api';
 
 import { UserLimitSettings } from '../permissions/actions';
@@ -122,6 +122,7 @@ export class CreateUsersModal extends React.Component<Props, State> {
                             valueKey="id"
                             onChange={this.handleRoles}
                             clearable={false}
+                            required
                             multiple
                         />
                     </>
@@ -140,23 +141,10 @@ export class CreateUsersModal extends React.Component<Props, State> {
         );
     }
 
-    renderButtons(): ReactNode {
-        return (
-            <WizardNavButtons
-                containerClassName=""
-                cancel={this.props.onCancel}
-                finish={true}
-                finishText="Create Users"
-                isFinishing={this.state.isSubmitting}
-                isFinishingText="Creating Users..."
-                nextStep={this.createUsers}
-            />
-        );
-    }
-
     render(): ReactNode {
         const { show, onCancel } = this.props;
-        const { error } = this.state;
+        const { error, emailText } = this.state;
+        const valid = emailText?.length > 0 && this.getSelectedRoles()?.length > 0; // Issue 46841
 
         return (
             <Modal show={show} onHide={onCancel}>
@@ -167,7 +155,18 @@ export class CreateUsersModal extends React.Component<Props, State> {
                     {this.renderForm()}
                     {error && <Alert style={{ marginTop: '10px' }}>{error}</Alert>}
                 </Modal.Body>
-                <Modal.Footer>{this.renderButtons()}</Modal.Footer>
+                <Modal.Footer>
+                    <WizardNavButtons
+                        containerClassName=""
+                        cancel={this.props.onCancel}
+                        finish={true}
+                        canFinish={valid}
+                        finishText="Create Users"
+                        isFinishing={this.state.isSubmitting}
+                        isFinishingText="Creating Users..."
+                        nextStep={this.createUsers}
+                    />
+                </Modal.Footer>
             </Modal>
         );
     }

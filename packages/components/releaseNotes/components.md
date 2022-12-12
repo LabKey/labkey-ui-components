@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD December 2022
+* Updates for data class consistency
+  * remove HeatMap and Cards view from app landing pages
+
 ### version 2.269.1
 *Released*: 12 December 2022
 * Issue 46841: Require permission/role when creating a new user via app modal

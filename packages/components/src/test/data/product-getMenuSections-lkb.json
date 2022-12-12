@@ -165,15 +165,6 @@
     "productId" : "Biologics",
     "orderNum" : -1
   }, {
-    "key" : "?viewAs=heatmap&mine.sort=DueDate&active.sort=DueDate",
-    "id" : null,
-    "hasActiveJob" : false,
-    "url" : null,
-    "label" : "Workflow Heatmap",
-    "requiresLogin" : false,
-    "productId" : "Biologics",
-    "orderNum" : -1
-  }, {
     "key" : "?viewAs=grid&tab=all&mine.sort=DueDate&active.sort=DueDate",
     "id" : null,
     "hasActiveJob" : false,

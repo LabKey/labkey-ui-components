@@ -210,40 +210,26 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
                 )}
             </PageDetailHeader>
             <Notifications />
-            <div className="panel panel-default">
-                <div className="panel-body">
-                    <div className="picklist-grid">
-                        {picklist.isEditable(user) && (
-                            <>
-                                <div className="picklist-sharing">Sharing</div>
-                                <Checkbox checked={picklist.isPublic()} onChange={onSharedChanged}>
-                                    <span>Share this picklist publicly with team members</span>
-                                </Checkbox>
-                            </>
-                        )}
-                        <SamplesTabbedGridPanel
-                            withTitle={false}
-                            actions={actions}
-                            queryModels={queryModels}
-                            user={user}
-                            gridButtons={PicklistGridButtons}
-                            gridButtonProps={gridButtonProps}
-                            getIsDirty={getIsDirty}
-                            setIsDirty={setIsDirty}
-                            getSampleAuditBehaviorType={getSampleAuditBehaviorType}
-                            afterSampleActionComplete={afterSampleActionComplete}
-                            samplesEditableGridProps={samplesEditableGridProps}
-                            tabbedGridPanelProps={{
-                                advancedExportOptions: exportConfig,
-                                alwaysShowTabs: true,
-                                exportFilename: picklist.name + '_Samples',
-                            }}
-                            showLabelOption
-                            isAllSamplesTab={isListSchema}
-                        />
-                    </div>
-                </div>
-            </div>
+            <SamplesTabbedGridPanel
+                withTitle={false}
+                actions={actions}
+                queryModels={queryModels}
+                user={user}
+                gridButtons={PicklistGridButtons}
+                gridButtonProps={gridButtonProps}
+                getIsDirty={getIsDirty}
+                setIsDirty={setIsDirty}
+                getSampleAuditBehaviorType={getSampleAuditBehaviorType}
+                afterSampleActionComplete={afterSampleActionComplete}
+                samplesEditableGridProps={samplesEditableGridProps}
+                tabbedGridPanelProps={{
+                    advancedExportOptions: exportConfig,
+                    alwaysShowTabs: true,
+                    exportFilename: picklist.name + '_Samples',
+                }}
+                showLabelOption
+                isAllSamplesTab={isListSchema}
+            />
             {showDeleteModal && (
                 <PicklistDeleteConfirm
                     picklist={picklist}

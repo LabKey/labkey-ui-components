@@ -20,10 +20,11 @@ import {
 } from '../internal/components/samples/models';
 import { MAX_EDITABLE_GRID_ROWS } from '../internal/constants';
 
-import { SampleCreationTypeModal } from './SampleCreationTypeModal';
 import { getSelectedData, setSnapshotSelections } from '../internal/actions';
 import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 import { caseInsensitive } from '../internal/util/utils';
+
+import { SampleCreationTypeModal } from './SampleCreationTypeModal';
 
 interface CreateSamplesSubMenuProps {
     allowPooledSamples?: boolean;
@@ -44,7 +45,7 @@ interface CreateSamplesSubMenuProps {
         selectionKey?: string,
         useSnapshotSelection?: boolean,
         currentProductId?: string,
-        targetProductId?: string,
+        targetProductId?: string
     ) => string | AppURL;
     selectedType?: SampleCreationType;
     selectionNoun?: string;
@@ -84,28 +85,31 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         return parentQueryModel?.filterArray.length > 0;
     }, [parentQueryModel?.filterArray]);
 
-
     const selectionKey = useMemo(() => {
         if (!parentQueryModel?.hasSelections) return null;
 
         return parentQueryModel.selectionKey;
-    }, [parentQueryModel, useSnapshotSelection]);
+    }, [parentQueryModel?.hasSelections, parentQueryModel?.selectionKey]);
 
     useEffect(() => {
-        ( async () => {
-            if (useSnapshotSelection) {
+        (async () => {
+            if (parentQueryModel?.filterArray.length) {
                 if (!parentQueryModel.isLoadingSelections) {
                     try {
-                        const {
-                            data,
-                        } = await getSelectedData(parentQueryModel.schemaName, parentQueryModel.queryName, [...parentQueryModel.selections], parentQueryModel.getRequestColumnsString(), undefined);
-                        const dataMap = data.toJS();
-                        await setSnapshotSelections(parentQueryModel.selectionKey, Object.values(dataMap).map(row => caseInsensitive(row, "RowId").value));
-                        setSelectionData(dataMap);
+                        const { data } = await getSelectedData(
+                            parentQueryModel.schemaName,
+                            parentQueryModel.queryName,
+                            [...parentQueryModel.selections],
+                            parentQueryModel.getRequestColumnsString(),
+                            undefined
+                        );
+                        setSelectionData(data.toJS());
                         setSelectionsAreSet(true);
-                    }
-                    catch (reason) {
-                        console.error("There was a problem loading the filtered selection data. Your actions will not obey these filters.", reason);
+                    } catch (reason) {
+                        console.error(
+                            'There was a problem loading the filtered selection data. Your actions will not obey these filters.',
+                            reason
+                        );
                         setSelectionsAreSet(true);
                     }
                 }
@@ -113,7 +117,16 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                 setSelectionsAreSet(true);
             }
         })();
-    }, [selectionsAreSet, parentQueryModel?.isLoadingSelections, parentQueryModel?.schemaName, parentQueryModel?.queryName, parentQueryModel?.selections, parentQueryModel?.selectionKey, useSnapshotSelection]);
+    }, [
+        selectionsAreSet,
+        parentQueryModel.isLoadingSelections,
+        parentQueryModel.schemaName,
+        parentQueryModel.queryName,
+        parentQueryModel.selections,
+        parentQueryModel.selectionKey,
+        parentQueryModel.filterArray,
+        useSnapshotSelection,
+    ]);
     const selectedQuantity = parentQueryModel ? parentQueryModel.selections?.size ?? 0 : 1;
     const schemaQuery = parentQueryModel?.schemaQuery;
 
@@ -142,7 +155,14 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
 
     const onSampleCreationMenuSelect = useCallback(
         (key: string) => {
-            let appURL: string | AppURL = sampleWizardURL(key, parentKey, selectionKey, useSnapshotSelection, currentProductId, targetProductId);
+            const appURL: string | AppURL = sampleWizardURL(
+                key,
+                parentKey,
+                selectionKey,
+                useSnapshotSelection,
+                currentProductId,
+                targetProductId
+            );
 
             if (useOnClick) {
                 setSelectedOption(key);
@@ -151,15 +171,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                 return appURL;
             }
         },
-        [
-            sampleWizardURL,
-            useOnClick,
-            parentKey,
-            currentProductId,
-            targetProductId,
-            selectionKey,
-            useSnapshotSelection
-        ]
+        [sampleWizardURL, useOnClick, parentKey, currentProductId, targetProductId, selectionKey, useSnapshotSelection]
     );
 
     const onSampleCreationMenuSelectOnClick = useCallback(
@@ -200,6 +212,11 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
             selectionKey,
             menuText,
             selectedType,
+            parentQueryModel,
+            selectedQuantity,
+            selectingSampleParents,
+            skipCrossFolderCheck,
+            useSnapshotSelection,
         ]
     );
 
@@ -209,14 +226,20 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
     }, []);
 
     const onSampleCreationSubmit = useCallback(
-        (creationType: SampleCreationType, numPerParent?: number) => {
+        async (creationType: SampleCreationType, numPerParent?: number) => {
+            if (selectionData) {
+                await setSnapshotSelections(
+                    parentQueryModel.selectionKey,
+                    Object.values(selectionData).map(row => caseInsensitive(row, 'RowId').value)
+                );
+            }
             if (sampleCreationURL instanceof AppURL) {
                 navigate(sampleCreationURL.addParams({ creationType, numPerParent }));
             } else {
                 window.location.href = sampleCreationURL + `&creationType=${creationType}&numPerParent=${numPerParent}`;
             }
         },
-        [navigate, sampleCreationURL]
+        [navigate, sampleCreationURL, parentQueryModel?.selectionKey, selectionData]
     );
 
     const dismissCrossFolderError = useCallback(() => {
@@ -253,8 +276,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         nounPlural = 'Raw Materials';
     }
 
-    if (!selectionsAreSet)
-        return <LoadingSpinner />;
+    if (!selectionsAreSet) return <LoadingSpinner />;
 
     return (
         <>

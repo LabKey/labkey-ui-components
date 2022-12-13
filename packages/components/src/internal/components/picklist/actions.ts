@@ -248,23 +248,15 @@ export function getSelectedPicklistSamples(
     });
 }
 
-export function getSamplesNotInList(listName: string, selectionKey?: string, useSnapshotSelection?: boolean, sampleIds?: string[]): Promise<string[]> {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const existingSamples = await getPicklistSamples(listName)
-            if (sampleIds) {
-                resolve(sampleIds.filter(id => !existingSamples.has(id.toString())));
-            } else if (selectionKey) {
-                const response = await getSelected(selectionKey, useSnapshotSelection)
-                resolve(response.selected.filter(id => !existingSamples.has(id.toString())));
-            } else {
-                resolve([]);
-            }
-        } catch(reason)  {
-            console.error(reason);
-            reject(reason);
-        }
-    });
+export async function getSamplesNotInList(listName: string, selectionKey?: string, useSnapshotSelection?: boolean, sampleIds?: string[]): Promise<string[]> {
+    const existingSamples = await getPicklistSamples(listName)
+    if (sampleIds) {
+        return sampleIds.filter(id => !existingSamples.has(id.toString()));
+    } else if (selectionKey) {
+        const response = await getSelected(selectionKey, useSnapshotSelection)
+        return response.selected.filter(id => !existingSamples.has(id.toString()));
+    }
+    return [];
 }
 
 export function addSamplesToPicklist(

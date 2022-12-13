@@ -119,12 +119,12 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         })();
     }, [
         selectionsAreSet,
-        parentQueryModel.isLoadingSelections,
-        parentQueryModel.schemaName,
-        parentQueryModel.queryName,
-        parentQueryModel.selections,
-        parentQueryModel.selectionKey,
-        parentQueryModel.filterArray,
+        parentQueryModel?.isLoadingSelections,
+        parentQueryModel?.schemaName,
+        parentQueryModel?.queryName,
+        parentQueryModel?.selections,
+        parentQueryModel?.selectionKey,
+        parentQueryModel?.filterArray,
         useSnapshotSelection,
     ]);
     const selectedQuantity = parentQueryModel ? parentQueryModel.selections?.size ?? 0 : 1;

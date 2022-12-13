@@ -53,7 +53,7 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
 
     if (queryModel) {
         if (useSelected) {
-            selectionKey = queryModel.id;
+            selectionKey = queryModel.selectionKey;
             useSnapshotSelection = queryModel.filterArray.length > 0;
         } else {
             if (queryModel.hasData) {

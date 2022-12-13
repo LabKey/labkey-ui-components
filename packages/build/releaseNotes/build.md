@@ -1,5 +1,10 @@
 # @labkey/build
 
+### version 6.6.0
+*Released*: 12 November 2022
+* webpack updates for `@labkey/premium/eln` package
+  * move of `@labkey/eln` from labbook module to `@labkey/premium/eln`
+
 ### version 6.5.0
 *Released*: 8 November 2022
 * webpack updates for `@labkey/premium` package

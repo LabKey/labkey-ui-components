@@ -656,9 +656,6 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
         if (isGrid) return null;
 
-        console.log(disableMerge);
-        console.log(allowUserSpecifiedNames);
-        console.log(originalQueryInfo.supportMerge);
         let allowMerge =
             isEditMode &&
             !disableMerge &&

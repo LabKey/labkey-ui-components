@@ -601,7 +601,7 @@ export function handleEntityFileImport(
             }),
             importLookupByAlternateKey: true,
             useAsync,
-            insertOption: insertOption.toString(),
+            insertOption: InsertOptions[insertOption],
             saveToPipeline,
         })
             .then(response => {

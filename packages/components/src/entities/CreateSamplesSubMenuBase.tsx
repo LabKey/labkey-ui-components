@@ -93,19 +93,21 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
 
     useEffect(() => {
         ( async () => {
-            if (useSnapshotSelection && !parentQueryModel.isLoadingSelections) {
-                try {
-                    const {
-                        data,
-                    } = await getSelectedData(parentQueryModel.schemaName, parentQueryModel.queryName, [...parentQueryModel.selections], parentQueryModel.getRequestColumnsString(), undefined);
-                    const dataMap = data.toJS();
-                    await setSnapshotSelections(parentQueryModel.selectionKey, Object.values(dataMap).map(row => caseInsensitive(row, "RowId").value));
-                    setSelectionData(dataMap);
-                    setSelectionsAreSet(true);
-                }
-                catch (reason) {
-                    console.error("There was a problem loading the filtered selection data. Your actions will not obey these filters.", reason);
-                    setSelectionsAreSet(true);
+            if (useSnapshotSelection) {
+                if (!parentQueryModel.isLoadingSelections) {
+                    try {
+                        const {
+                            data,
+                        } = await getSelectedData(parentQueryModel.schemaName, parentQueryModel.queryName, [...parentQueryModel.selections], parentQueryModel.getRequestColumnsString(), undefined);
+                        const dataMap = data.toJS();
+                        await setSnapshotSelections(parentQueryModel.selectionKey, Object.values(dataMap).map(row => caseInsensitive(row, "RowId").value));
+                        setSelectionData(dataMap);
+                        setSelectionsAreSet(true);
+                    }
+                    catch (reason) {
+                        console.error("There was a problem loading the filtered selection data. Your actions will not obey these filters.", reason);
+                        setSelectionsAreSet(true);
+                    }
                 }
             } else {
                 setSelectionsAreSet(true);

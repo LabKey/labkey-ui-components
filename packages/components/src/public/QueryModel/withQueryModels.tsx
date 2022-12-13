@@ -791,6 +791,9 @@ export function withQueryModels<Props>(
                         // Changing filters affects row count so we need to reset the offset or pagination can get into
                         // an impossible state (e.g. page 3 on a grid with one row of data).
                         model.offset = 0;
+                        if (shouldLoad && loadSelections) {
+                            model.selectionsLoadingState = LoadingState.INITIALIZED;
+                        }
                     }
                 }),
                 // When filters change we need to reload selections.

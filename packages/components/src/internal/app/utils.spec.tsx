@@ -777,7 +777,7 @@ describe('getStorageSectionConfig', () => {
         );
         expect(config.maxColumns).toBe(1);
         expect(config.maxItemsPerColumn).toBe(3);
-        expect(config.emptyText).toBe('No freezers have been defined');
+        expect(config.emptyText).toBe('No storage has been defined');
         expect(config.emptyURL).toBe(undefined);
         expect(config.iconURL).toBe('/labkey/_images/freezer_menu.svg');
         expect(config.seeAllURL).toBe('#/home');

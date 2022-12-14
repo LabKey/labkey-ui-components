@@ -8,7 +8,7 @@ import { getFilterForSampleOperation, isSamplesSchema } from '../samples/utils';
 import { importData, InsertOptions, selectRowsDeprecated } from '../../query/api';
 import { caseInsensitive } from '../../util/utils';
 import { SampleCreationType } from '../samples/models';
-import { getSelected, getSelectedData } from '../../actions';
+import { getSelected, getSelectedData, getSnapshotSelections } from '../../actions';
 import { SHARED_CONTAINER_PATH } from '../../constants';
 import { naturalSort } from '../../../public/sort';
 import { QueryInfo } from '../../../public/QueryInfo';
@@ -30,9 +30,10 @@ import {
 } from './models';
 
 export function getOperationConfirmationData(
-    selectionKey: string,
     dataType: EntityDataType,
-    rowIds?: string[] | number[],
+    rowIds: string[] | number[],
+    selectionKey?: string,
+    useSnapshotSelection?: boolean,
     extraParams?: Record<string, any>
 ): Promise<OperationConfirmationData> {
     if (!selectionKey && !rowIds?.length) {
@@ -45,6 +46,9 @@ export function getOperationConfirmationData(
             params = {
                 dataRegionSelectionKey: selectionKey,
             };
+            if (useSnapshotSelection) {
+                params['useSnapshotSelection'] = true;
+            }
         } else {
             params = {
                 rowIds,
@@ -74,31 +78,27 @@ export function getOperationConfirmationData(
 }
 
 export function getDeleteConfirmationData(
-    selectionKey: string,
     dataType: EntityDataType,
-    rowIds?: string[] | number[]
-): Promise<OperationConfirmationData> {
+    rowIds: string[] | number[],
+    selectionKey?: string,
+    useSnapshotSelection?: boolean): Promise<OperationConfirmationData> {
     if (isSampleEntity(dataType)) {
-        return getSampleOperationConfirmationData(SampleOperation.Delete, selectionKey, rowIds);
+        return getSampleOperationConfirmationData(SampleOperation.Delete, rowIds, selectionKey, useSnapshotSelection);
     }
-    return getOperationConfirmationData(
-        selectionKey,
-        dataType,
-        rowIds,
-        isDataClassEntity(dataType)
-            ? {
-                  dataOperation: DataOperation.Delete,
-              }
-            : undefined
-    );
+    return getOperationConfirmationData(dataType, rowIds, selectionKey, useSnapshotSelection, isDataClassEntity(dataType)
+        ? {
+            dataOperation: DataOperation.Delete,
+        }
+        : undefined);
 }
 
 export function getSampleOperationConfirmationData(
     operation: SampleOperation,
-    selectionKey: string,
-    rowIds?: string[] | number[]
+    rowIds?: string[] | number[],
+    selectionKey?: string,
+    useSnapshotSelection?: boolean
 ): Promise<OperationConfirmationData> {
-    return getOperationConfirmationData(selectionKey, SampleTypeDataType, rowIds, {
+    return getOperationConfirmationData(SampleTypeDataType, rowIds, selectionKey, useSnapshotSelection, {
         sampleOperation: SampleOperation[operation],
     });
 }
@@ -237,7 +237,8 @@ function resolveSampleParentTypes(response: any, isAliquotParent?: boolean): Lis
  * or a selection key and determine the schema query from parsing the selection key.  In any case, this
  * assumes parents from a single data type.
  * @param initialParents
- * @param selectionKey
+ * @param selectionKey the key for the parent selection
+ * @param isSnapshotSelection whether this selection key is a snapshot selection or not
  * @param creationType
  * @param isItemSamples
  * @param targetQueryName
@@ -245,6 +246,7 @@ function resolveSampleParentTypes(response: any, isAliquotParent?: boolean): Lis
 async function initParents(
     initialParents: string[],
     selectionKey: string,
+    isSnapshotSelection,
     creationType?: SampleCreationType,
     isItemSamples?: boolean,
     targetQueryName?: string
@@ -252,14 +254,13 @@ async function initParents(
     const isAliquotParent = creationType === SampleCreationType.Aliquots;
 
     if (selectionKey) {
-        const { schemaQuery } = SchemaQuery.parseSelectionKey(selectionKey);
-        const selectionResponse = await getSelected(selectionKey);
+        const {schemaQuery} = SchemaQuery.parseSelectionKey(selectionKey);
+        const selectionResponse = await getSelected(selectionKey, isSnapshotSelection);
 
-        if (isItemSamples) {
-            return getSelectedSampleParentsFromItems(selectionResponse.selected, isAliquotParent);
-        }
+        const filterArray = [
+            Filter.create('RowId', selectionResponse.selected, Filter.Types.IN),
+        ];
 
-        const filterArray = [Filter.create('RowId', selectionResponse.selected, Filter.Types.IN)];
         const opFilter = getFilterForSampleOperation(SampleOperation.EditLineage);
         if (opFilter) {
             filterArray.push(opFilter);
@@ -372,11 +373,12 @@ export async function getChosenParentData(
 
     if (allowParents) {
         const parentSchemaNames = parentEntityDataTypes.keySeq();
-        const { creationType, originalParents, selectionKey } = model;
+        const { creationType, originalParents, selectionKey, isSnapshotSelection } = model;
 
         const chosenParents = await initParents(
             originalParents,
             selectionKey,
+            isSnapshotSelection,
             creationType,
             isItemSamples,
             targetQueryName
@@ -617,18 +619,19 @@ export function handleEntityFileImport(
 }
 
 export function getDataDeleteConfirmationData(
-    selectionKey: string,
-    rowIds?: string[] | number[]
-): Promise<OperationConfirmationData> {
-    return getDataOperationConfirmationData(DataOperation.Delete, selectionKey, rowIds);
+    rowIds: string[] | number[],
+    selectionKey?: string,
+    useSnapshotSelection?: boolean): Promise<OperationConfirmationData> {
+    return getDataOperationConfirmationData(DataOperation.Delete, rowIds, selectionKey, useSnapshotSelection);
 }
 
 export function getDataOperationConfirmationData(
     operation: DataOperation,
-    selectionKey: string,
-    rowIds?: string[] | number[]
+    rowIds: string[] | number[],
+    selectionKey?: string,
+    useSnapshotSelection?: boolean
 ): Promise<OperationConfirmationData> {
-    return getOperationConfirmationData(selectionKey, DataClassDataType, rowIds, {
+    return getOperationConfirmationData(DataClassDataType, rowIds, selectionKey, useSnapshotSelection, {
         dataOperation: DataOperation[operation],
     });
 }
@@ -636,6 +639,7 @@ export function getDataOperationConfirmationData(
 export function getCrossFolderSelectionResult(
     dataRegionSelectionKey: string,
     dataType: 'sample' | 'data',
+    useSnapshotSelection?: boolean,
     rowIds?: string[] | number[],
     picklistName?: string
 ): Promise<CrossFolderSelectionResult> {
@@ -652,6 +656,7 @@ export function getCrossFolderSelectionResult(
                 rowIds,
                 dataType,
                 picklistName,
+                useSnapshotSelection,
             },
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {

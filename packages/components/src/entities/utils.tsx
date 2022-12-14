@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { List, OrderedMap, Set } from 'immutable';
-import { ActionURL, AuditBehaviorTypes, Filter, Utils, getServerContext } from '@labkey/api';
+import { ActionURL, AuditBehaviorTypes, Filter, getServerContext, Utils } from '@labkey/api';
 
 import {
     getOperationNotPermittedMessage,
@@ -19,6 +19,7 @@ import {
     SAMPLE_INSERT_EXTRA_COLUMNS,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SampleOperation,
+    SELECTION_KEY_TYPE,
 } from '../internal/components/samples/constants';
 import { ModuleContext } from '../internal/components/base/ServerContext';
 import { EntityChoice, OperationConfirmationData } from '../internal/components/entities/models';
@@ -65,20 +66,20 @@ export function filterMediaSampleTypes(includeMedia?: boolean): Filter.IFilter[]
 }
 
 export function filterSampleRowsForOperation(
-    rows: Record<string, any>,
+    rows: Record<any, any>,
     operation: SampleOperation,
-    sampleIdField = 'RowId',
-    moduleContext?: ModuleContext
-): { rows: { [p: string]: any }; statusData: OperationConfirmationData; statusMessage: string } {
+    idField = 'RowId',
+    nameField: string = 'Name',
+    moduleContext?: ModuleContext): { rows: { [p: string]: any }; statusData: OperationConfirmationData; statusMessage: string } {
     const allowed = [];
     const notAllowed = [];
     const validRows = {};
     Object.values(rows).forEach(row => {
-        const statusType = caseInsensitive(row, SAMPLE_STATE_TYPE_COLUMN_NAME).value;
-        const id = caseInsensitive(row, sampleIdField).value;
+        const statusType = caseInsensitive(row, SAMPLE_STATE_TYPE_COLUMN_NAME)?.value;
+        const id = caseInsensitive(row, idField).value;
         const statusRecord = {
-            RowId: caseInsensitive(row, sampleIdField).value,
-            Name: caseInsensitive(row, 'SampleID').displayValue,
+            RowId: caseInsensitive(row, idField).value,
+            Name: caseInsensitive(row, nameField).displayValue ?? caseInsensitive(row, nameField).value,
         };
         if (isSampleOperationPermitted(statusType, operation, moduleContext)) {
             allowed.push(statusRecord);
@@ -117,18 +118,20 @@ export function isFindByIdsSchema(schemaQuery: SchemaQuery): boolean {
 
 /**
  * Provides sample wizard URL for this application.
- * @param targetSampleSet - Intended sample type of newly created samples.
- * @param parent - Intended parent of derived samples. Format SCHEMA:QUERY:ID
- * @param selectionKey
- * @param currentProductId
- * @param targetProductId
+ * @param targetSampleSet? - Intended sample type of newly created samples.
+ * @param parent? - Intended parent of derived samples. Format SCHEMA:QUERY:ID
+ * @param selectionKey?
+ * @param useSnapshotSelection? - whether the selection key is a snapshot selection key or not
+ * @param currentProductId?
+ * @param targetProductId?
  */
 export function getSampleWizardURL(
     targetSampleSet?: string,
     parent?: string,
     selectionKey?: string,
+    useSnapshotSelection?: boolean,
     currentProductId?: string,
-    targetProductId?: string
+    targetProductId?: string,
 ): string | AppURL {
     const params = {};
 
@@ -141,6 +144,7 @@ export function getSampleWizardURL(
     }
 
     if (selectionKey) params['selectionKey'] = selectionKey;
+    if (useSnapshotSelection) params['selectionKeyType'] = SELECTION_KEY_TYPE.snapshot;
 
     return createProductUrlFromParts(targetProductId, currentProductId, params, SAMPLES_KEY, 'new');
 }

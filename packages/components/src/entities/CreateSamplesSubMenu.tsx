@@ -40,7 +40,6 @@ interface Props {
     parentKey?: string;
     parentQueryModel?: QueryModel;
     parentType?: string;
-    selectedItems?: Record<string, any>;
     selectedQueryInfo?: QueryInfo;
     selectedType?: SampleCreationType;
     subMenuText?: string;

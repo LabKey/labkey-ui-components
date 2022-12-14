@@ -4,7 +4,7 @@ import { List } from 'immutable';
 
 import { deleteRows, insertRows, InsertRowsResponse, selectRowsDeprecated } from '../../query/api';
 import { resolveKey, SchemaQuery } from '../../../public/SchemaQuery';
-import { getOrderedSelectedMappedKeys, getSelected, getSelectedData, setSnapshotSelections } from '../../actions';
+import { getOrderedSelectedMappedKeys, getSelected, getSelectedData, getSnapshotSelections, setSnapshotSelections } from '../../actions';
 import { PICKLIST } from '../domainproperties/list/constants';
 import { saveDomain } from '../domainproperties/actions';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
@@ -56,8 +56,8 @@ export function createPicklist(
     shared: boolean,
     statusData: OperationConfirmationData,
     selectionKey: string,
-    sampleIds: string[]
-): Promise<Picklist> {
+    useSnapshotSelection: boolean,
+    sampleIds: string[]): Promise<Picklist> {
     return new Promise((resolve, reject) => {
         Domain.create({
             domainDesign: {
@@ -88,7 +88,7 @@ export function createPicklist(
             success: response => {
                 Promise.all([
                     getListIdFromDomainId(response.domainId),
-                    addSamplesToPicklist(name, statusData, selectionKey, sampleIds),
+                    addSamplesToPicklist(name, statusData, useSnapshotSelection, selectionKey, sampleIds),
                 ])
                     .then(responses => {
                         const [listId] = responses;
@@ -248,35 +248,25 @@ export function getSelectedPicklistSamples(
     });
 }
 
-export function getSamplesNotInList(listName: string, selectionKey?: string, sampleIds?: string[]): Promise<string[]> {
-    return new Promise((resolve, reject) => {
-        getPicklistSamples(listName)
-            .then(existingSamples => {
-                if (sampleIds) {
-                    resolve(sampleIds.filter(id => !existingSamples.has(id.toString())));
-                } else if (selectionKey) {
-                    getSelected(selectionKey).then(response => {
-                        resolve(response.selected.filter(id => !existingSamples.has(id.toString())));
-                    });
-                } else {
-                    resolve([]);
-                }
-            })
-            .catch(reason => {
-                console.error(reason);
-                reject(reason);
-            });
-    });
+export async function getSamplesNotInList(listName: string, selectionKey?: string, useSnapshotSelection?: boolean, sampleIds?: string[]): Promise<string[]> {
+    const existingSamples = await getPicklistSamples(listName)
+    if (sampleIds) {
+        return sampleIds.filter(id => !existingSamples.has(id.toString()));
+    } else if (selectionKey) {
+        const response = await getSelected(selectionKey, useSnapshotSelection)
+        return response.selected.filter(id => !existingSamples.has(id.toString()));
+    }
+    return [];
 }
 
 export function addSamplesToPicklist(
     listName: string,
     statusData: OperationConfirmationData,
+    useSnapshotSelection?: boolean,
     selectionKey?: string,
-    sampleIds?: string[]
-): Promise<InsertRowsResponse> {
+    sampleIds?: string[]): Promise<InsertRowsResponse> {
     return new Promise((resolve, reject) => {
-        return getSamplesNotInList(listName, selectionKey, sampleIds)
+        return getSamplesNotInList(listName, selectionKey, useSnapshotSelection, sampleIds)
             .then(sampleIdsToAdd => {
                 let rows = List<any>();
                 sampleIdsToAdd.forEach(id => {

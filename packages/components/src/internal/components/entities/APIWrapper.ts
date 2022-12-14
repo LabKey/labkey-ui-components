@@ -7,8 +7,9 @@ import { OperationConfirmationData } from './models';
 export interface EntityAPIWrapper {
     getDataOperationConfirmationData: (
         operation: DataOperation,
-        selectionKey: string,
-        rowIds?: string[] | number[]
+        rowIds: string[] | number[],
+        selectionKey?: string,
+        useSnapshotSelection?: boolean
     ) => Promise<OperationConfirmationData>;
 
     loadNameExpressionOptions: (containerPath?: string) => Promise<GetNameExpressionOptionsResponse>;

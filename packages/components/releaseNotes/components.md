@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.270.0
+*Released*: 13 December 2022
 * Issue 46465: Support filtered selections when acting on items in grids
   * Reorder parameters in `getOperationConfirmationData` and relatives to account for additional `useSnapshotSelection` parameter when `selectionKey` is provided
   * Add `useSnapshotSelection` parameter in several methods that get data for various actions

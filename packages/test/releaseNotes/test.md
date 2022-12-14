@@ -1,6 +1,10 @@
 # @labkey/test
 Utilities and configurations for running JavaScript tests with LabKey Server.
 
+### version 1.1.2
+*Released*: 14 December 2022
+* Initialize sessionId for RequestContext created via `createRequestContext()`
+
 ### version 1.1.1
 *Released*: 26 May 2022
 * handle htmlErrors response from CreateNewUsersAction

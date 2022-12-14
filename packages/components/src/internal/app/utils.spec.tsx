@@ -815,7 +815,7 @@ describe('getStorageSectionConfig', () => {
         expect(config.seeAllURL).toBe('/labkey/freezermanager/Project%20A/app.view#/home');
         expect(config.headerURL).toBe('/labkey/freezermanager/Project%20A/app.view#/home');
         expect(config.emptyURL).toBe('/labkey/freezermanager/Project%20A/app.view#/freezers/new');
-        expect(config.emptyURLText).toBe('Create a freezer');
+        expect(config.emptyURLText).toBe('Create storage');
     });
 
     test('admin, child folder', () => {
@@ -868,7 +868,7 @@ describe('getStorageSectionConfig', () => {
         expect(config.seeAllURL).toBe('/labkey/freezermanager/Project%20B/app.view#/home');
         expect(config.headerURL).toBe('/labkey/freezermanager/Project%20B/app.view#/home');
         expect(config.emptyURL).toBe('/labkey/freezermanager/Project%20B/app.view#/freezers/new');
-        expect(config.emptyURLText).toBe('Create a freezer');
+        expect(config.emptyURLText).toBe('Create storage');
     });
 
     test('storage designer, child container', () => {

@@ -259,7 +259,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const { selectStep, tab } = this.props;
 
         const tabs = this.getTabs();
-        if (tab !== EntityInsertPanelTabs.First && tabs.length > EntityInsertPanelTabs.First) {
+        if (tab !== EntityInsertPanelTabs.First && tabs.length > 1) {
             selectStep(tab);
         }
 
@@ -1126,7 +1126,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         );
     };
 
-    renderUpdateTooltipTextDeprecatd = (): ReactNode => {
+    renderUpdateTooltipTextDeprecated = (): ReactNode => {
         const { nounPlural } = this.props;
         const { allowUserSpecifiedNames } = this.state;
 
@@ -1166,7 +1166,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     renderUpdateTooltipText = (): ReactNode => {
         const { nounPlural } = this.props;
 
-        if (this.useDeprecatedUI) return this.renderUpdateTooltipTextDeprecatd();
+        if (this.useDeprecatedUI) return this.renderUpdateTooltipTextDeprecated();
 
         return (
             <>

@@ -111,7 +111,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
         }
 
         return href;
-    }, [model?.schemaQuery?.queryName]);
+    }, [currentProductId, targetProductId, model.schemaQuery.queryName]);
 
     if (!model || model.isLoading) return null;
 
@@ -159,7 +159,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
                                 nounPlural={SampleTypeDataType.nounPlural}
                             />
                         )}
-                        {isImportWithUpdateEnabled() && model?.showImportDataButton && (
+                        {isImportWithUpdateEnabled(moduleContext) && model?.showImportDataButton && (
                             <MenuItem href={updateSampleHref}>Update from File</MenuItem>
                         )}
                         {user.canUpdate && parentEntityDataTypes?.length > 0 && <MenuItem divider />}

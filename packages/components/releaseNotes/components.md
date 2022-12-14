@@ -5,6 +5,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD December 2022
 * Updates for data class consistency
   * remove HeatMap and Cards view from app landing pages
+  * add project/folder column to app landing page grid views
+  * remove overview subtitle from listing page subtitle
 
 ### version 2.270.0
 *Released*: 13 December 2022

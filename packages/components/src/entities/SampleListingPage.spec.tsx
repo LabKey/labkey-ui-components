@@ -37,7 +37,6 @@ import { PrintLabelsModal } from '../internal/components/labels/PrintLabelsModal
 
 import { ColorIcon } from '../internal/components/base/ColorIcon';
 
-import { SampleTypeAppContext } from './SampleTypeAppContext';
 import { SampleTypeBasePage } from './SampleTypeBasePage';
 import {
     getIsSharedModel,
@@ -49,6 +48,7 @@ import {
 import { SampleTypeInsightsPanel } from './SampleTypeInsightsPanel';
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 import { SampleSetDeleteModal } from './SampleSetDeleteModal';
+import { SampleTypeAppContext } from '../internal/AppContext';
 
 const SQ = SchemaQuery.create('schema', 'query');
 
@@ -204,7 +204,7 @@ describe('SampleListingPageBody', () => {
         await waitForLifecycle(wrapper, 100);
         validate(wrapper);
         expect(wrapper.find(SampleTypeBasePage).prop('title')).toBe('Sample Type - Overview');
-        expect(wrapper.find(SampleTypeBasePage).prop('description')).toBe('No Label Color');
+        expect(wrapper.find(ColorIcon)).toHaveLength(0);
         wrapper.unmount();
     });
 
@@ -244,7 +244,7 @@ describe('SampleListingPageBody', () => {
 
         await waitForLifecycle(wrapper, 100);
         validate(wrapper);
-        expect(wrapper.find(SampleTypeBasePage).prop('description')).not.toBe('No Label Color');
+        expect(wrapper.find(ColorIcon)).toHaveLength(1);
         wrapper.unmount();
     });
 

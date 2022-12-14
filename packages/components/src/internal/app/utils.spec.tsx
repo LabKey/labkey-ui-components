@@ -81,13 +81,13 @@ describe('getMenuSectionConfigs', () => {
 
         expect(configs.size).toBe(5);
         expect(configs.hasIn([0, SOURCES_KEY])).toBeTruthy();
-        expect(configs.getIn([0, SOURCES_KEY, 'seeAllURL'])).toEqual('#/sources?viewAs=grid');
+        expect(configs.getIn([0, SOURCES_KEY, 'seeAllURL'])).toEqual('#/sources');
 
         expect(configs.hasIn([1, SAMPLES_KEY])).toBeTruthy();
-        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples?viewAs=cards');
+        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples');
 
         expect(configs.hasIn([2, ASSAYS_KEY])).toBeTruthy();
-        expect(configs.getIn([2, ASSAYS_KEY, 'seeAllURL'])).toEqual('#/assays?viewAs=grid');
+        expect(configs.getIn([2, ASSAYS_KEY, 'seeAllURL'])).toEqual('#/assays');
 
         expect(configs.hasIn([3, FREEZERS_KEY])).toBeTruthy();
         expect(configs.getIn([3, FREEZERS_KEY, 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
@@ -105,10 +105,10 @@ describe('getMenuSectionConfigs', () => {
 
         expect(configs.size).toBe(4);
         expect(configs.hasIn([0, SOURCES_KEY])).toBeTruthy();
-        expect(configs.getIn([0, SOURCES_KEY, 'seeAllURL'])).toEqual('#/sources?viewAs=grid');
+        expect(configs.getIn([0, SOURCES_KEY, 'seeAllURL'])).toEqual('#/sources');
 
         expect(configs.hasIn([1, SAMPLES_KEY])).toBeTruthy();
-        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples?viewAs=cards');
+        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples');
 
         expect(configs.hasIn([2, FREEZERS_KEY])).toBeTruthy();
         expect(configs.getIn([2, FREEZERS_KEY, 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
@@ -126,13 +126,13 @@ describe('getMenuSectionConfigs', () => {
 
         expect(configs.size).toBe(5);
         expect(configs.hasIn([0, SOURCES_KEY])).toBeTruthy();
-        expect(configs.getIn([0, SOURCES_KEY, 'seeAllURL'])).toEqual('#/sources?viewAs=grid');
+        expect(configs.getIn([0, SOURCES_KEY, 'seeAllURL'])).toEqual('#/sources');
 
         expect(configs.hasIn([1, SAMPLES_KEY])).toBeTruthy();
-        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples?viewAs=cards');
+        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples');
 
         expect(configs.hasIn([2, ASSAYS_KEY])).toBeTruthy();
-        expect(configs.getIn([2, ASSAYS_KEY, 'seeAllURL'])).toEqual('#/assays?viewAs=grid');
+        expect(configs.getIn([2, ASSAYS_KEY, 'seeAllURL'])).toEqual('#/assays');
 
         expect(configs.hasIn([3, FREEZERS_KEY])).toBeTruthy();
         expect(configs.getIn([3, FREEZERS_KEY, 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
@@ -186,10 +186,10 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.getIn([0, REGISTRY_KEY, 'seeAllURL'])).toEqual('#/registry');
 
         expect(configs.hasIn([1, SAMPLES_KEY])).toBeTruthy();
-        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples?viewAs=cards');
+        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples');
 
         expect(configs.hasIn([2, ASSAYS_KEY])).toBeTruthy();
-        expect(configs.getIn([2, ASSAYS_KEY, 'seeAllURL'])).toEqual('#/assays?viewAs=grid');
+        expect(configs.getIn([2, ASSAYS_KEY, 'seeAllURL'])).toEqual('#/assays');
 
         expect(configs.hasIn([3, FREEZERS_KEY])).toBeTruthy();
         expect(configs.getIn([3, FREEZERS_KEY, 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
@@ -244,10 +244,10 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.getIn([0, REGISTRY_KEY, 'seeAllURL'])).toEqual('#/registry');
 
         expect(configs.hasIn([1, SAMPLES_KEY])).toBeTruthy();
-        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples?viewAs=cards');
+        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples');
 
         expect(configs.hasIn([2, ASSAYS_KEY])).toBeTruthy();
-        expect(configs.getIn([2, ASSAYS_KEY, 'seeAllURL'])).toEqual('#/assays?viewAs=grid');
+        expect(configs.getIn([2, ASSAYS_KEY, 'seeAllURL'])).toEqual('#/assays');
 
         expect(configs.hasIn([3, FREEZERS_KEY])).toBeTruthy();
         expect(configs.getIn([3, FREEZERS_KEY, 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
@@ -273,12 +273,12 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.size).toBe(4);
         expect(configs.hasIn([0, SOURCES_KEY])).toBeTruthy();
         expect(configs.getIn([0, SOURCES_KEY, 'seeAllURL'])).toEqual(
-            '/labkey/samplemanager/app.view#/sources?viewAs=grid'
+            '/labkey/samplemanager/app.view#/sources'
         );
 
         expect(configs.hasIn([1, SAMPLES_KEY])).toBeTruthy();
         expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual(
-            '/labkey/samplemanager/app.view#/samples?viewAs=cards'
+            '/labkey/samplemanager/app.view#/samples'
         );
 
         expect(configs.hasIn([2, FREEZERS_KEY])).toBeTruthy();
@@ -294,7 +294,7 @@ describe('getMenuSectionConfigs', () => {
         });
         expect(configs.size).toBe(3);
         expect(configs.hasIn([0, SAMPLES_KEY])).toBeTruthy();
-        expect(configs.getIn([0, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples?viewAs=cards');
+        expect(configs.getIn([0, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples');
 
         expect(configs.hasIn([1, FREEZERS_KEY])).toBeTruthy();
         expect(configs.getIn([1, FREEZERS_KEY, 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
@@ -314,13 +314,13 @@ describe('getMenuSectionConfigs', () => {
         });
         expect(configs.size).toBe(5);
         expect(configs.hasIn([0, SOURCES_KEY])).toBeTruthy();
-        expect(configs.getIn([0, SOURCES_KEY, 'seeAllURL'])).toEqual('#/sources?viewAs=grid');
+        expect(configs.getIn([0, SOURCES_KEY, 'seeAllURL'])).toEqual('#/sources');
 
         expect(configs.hasIn([1, SAMPLES_KEY])).toBeTruthy();
-        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples?viewAs=cards');
+        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples');
 
         expect(configs.hasIn([2, ASSAYS_KEY])).toBeTruthy();
-        expect(configs.getIn([2, ASSAYS_KEY, 'seeAllURL'])).toEqual('#/assays?viewAs=grid');
+        expect(configs.getIn([2, ASSAYS_KEY, 'seeAllURL'])).toEqual('#/assays');
 
         expect(configs.hasIn([3, FREEZERS_KEY])).toBeTruthy();
         expect(configs.getIn([3, FREEZERS_KEY, 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
@@ -900,7 +900,7 @@ describe('addSourcesSectionConfig', () => {
         expect(sectionConfig.maxItemsPerColumn).toBe(12);
         expect(sectionConfig.emptyText).toBe('No source types have been defined');
         expect(sectionConfig.emptyURL).toBe(undefined);
-        expect(sectionConfig.seeAllURL).toBe('/labkey/test/app.view#/sources?viewAs=grid');
+        expect(sectionConfig.seeAllURL).toBe('/labkey/test/app.view#/sources');
         expect(sectionConfig.showActiveJobIcon).toBeTruthy();
         expect(sectionConfig.iconURL).toBe('/labkey/_images/source_type.svg');
         expect(sectionConfig.headerURL).toBe(undefined);
@@ -940,7 +940,7 @@ describe('addSamplesSectionConfig', () => {
         expect(sectionConfig.maxItemsPerColumn).toBe(12);
         expect(sectionConfig.emptyText).toBe('No sample types have been defined');
         expect(sectionConfig.emptyURL).toBe(undefined);
-        expect(sectionConfig.seeAllURL).toBe('/labkey/samplemanager/app.view#/samples?viewAs=cards');
+        expect(sectionConfig.seeAllURL).toBe('/labkey/samplemanager/app.view#/samples');
         expect(sectionConfig.showActiveJobIcon).toBeTruthy();
         expect(sectionConfig.iconURL).toBe('/labkey/_images/samples.svg');
         expect(sectionConfig.headerURL).toBe(undefined);
@@ -967,7 +967,7 @@ describe('addAssaySectionConfig', () => {
         expect(sectionConfig.maxItemsPerColumn).toBe(12);
         expect(sectionConfig.emptyText).toBe('No assays have been defined');
         expect(sectionConfig.emptyURL).toBe(undefined);
-        expect(sectionConfig.seeAllURL).toBe('/labkey/test/app.view#/assays?viewAs=grid');
+        expect(sectionConfig.seeAllURL).toBe('/labkey/test/app.view#/assays');
         expect(sectionConfig.showActiveJobIcon).toBeTruthy();
         expect(sectionConfig.iconURL).toBe('/labkey/_images/assay.svg');
         expect(sectionConfig.headerURL).toBe(undefined);

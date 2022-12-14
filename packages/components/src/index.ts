@@ -703,6 +703,7 @@ import {
 } from './internal/productFixtures';
 import { GENERAL_ASSAY_PROVIDER_NAME, RUN_PROPERTIES_REQUIRED_COLUMNS } from './internal/components/assay/constants';
 import { AdminSettingsPage } from './internal/components/administration/AdminSettingsPage';
+import { GlobalStateContextProvider } from './internal/GlobalStateContext';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -1314,6 +1315,7 @@ export {
     AppContextProvider,
     useAppContext,
     AppContexts,
+    GlobalStateContextProvider,
     ServerContextProvider,
     ServerContextConsumer,
     useServerContext,

@@ -73,7 +73,7 @@ export function SamplesSelectionProvider<T>(
         loadEditConfirmationData(): void {
             const { selection, determineSampleData } = this.props;
             if (determineSampleData) {
-                getSampleOperationConfirmationData(SampleOperation.EditMetadata, undefined, selection.toArray())
+                getSampleOperationConfirmationData(SampleOperation.EditMetadata, selection.toArray())
                     .then(editConfirmationData => {
                         this.setState({
                             editStatusData: editConfirmationData,

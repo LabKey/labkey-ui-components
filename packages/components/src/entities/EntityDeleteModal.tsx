@@ -49,10 +49,12 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
     let rowIds;
     let numSelected = 0;
     let selectionKey: string;
+    let useSnapshotSelection: boolean = false;
 
     if (queryModel) {
         if (useSelected) {
-            selectionKey = queryModel.id;
+            selectionKey = queryModel.selectionKey;
+            useSnapshotSelection = queryModel.filterArray.length > 0;
         } else {
             if (queryModel.hasData) {
                 rowIds = [Object.keys(queryModel.rows)[0]];
@@ -112,6 +114,7 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
             {!showProgress && (
                 <EntityDeleteConfirmModal
                     selectionKey={selectionKey}
+                    useSnapshotSelection={useSnapshotSelection}
                     rowIds={rowIds}
                     onConfirm={onConfirm}
                     onCancel={onCancel}

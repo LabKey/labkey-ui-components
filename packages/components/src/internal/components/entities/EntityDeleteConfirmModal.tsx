@@ -32,6 +32,7 @@ interface Props {
     onConfirm: (rowsToDelete: any[], rowsToKeep: any[]) => any;
     rowIds?: string[];
     selectionKey?: string;
+    useSnapshotSelection?: boolean;
     verb?: string;
 }
 
@@ -72,10 +73,10 @@ export class EntityDeleteConfirmModal extends PureComponent<Props, State> {
     }
 
     init = async (): Promise<void> => {
-        const { entityDataType, rowIds, selectionKey } = this.props;
+        const { entityDataType, rowIds, selectionKey, useSnapshotSelection } = this.props;
 
         try {
-            const confirmationData = await getDeleteConfirmationData(selectionKey, entityDataType, rowIds);
+            const confirmationData = await getDeleteConfirmationData(entityDataType, rowIds, selectionKey, useSnapshotSelection);
             if (this._mounted) {
                 this.setState({ confirmationData, isLoading: false });
             }

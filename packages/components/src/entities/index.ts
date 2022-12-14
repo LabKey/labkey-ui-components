@@ -6,7 +6,6 @@ import {
     onSampleTypeChange,
 } from './actions';
 import {
-    getSampleWizardURL,
     filterMediaSampleTypes,
     filterSampleRowsForOperation,
     getSampleSetMenuItem,
@@ -81,7 +80,6 @@ export {
     getSampleDeleteMessage,
     getSampleTypeTemplateUrl,
     getSampleTypes,
-    getSampleWizardURL,
     getSamplesCreatedSuccessMessage,
     getSamplesImportSuccessMessage,
     isFindByIdsSchema,

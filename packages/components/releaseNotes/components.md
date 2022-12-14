@@ -6,6 +6,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Updates for data class consistency
   * remove HeatMap and Cards view from app landing pages
 
+### version 2.270.0
+*Released*: 13 December 2022
+* Issue 46465: Support filtered selections when acting on items in grids
+  * Reorder parameters in `getOperationConfirmationData` and relatives to account for additional `useSnapshotSelection` parameter when `selectionKey` is provided
+  * Add `useSnapshotSelection` parameter in several methods that get data for various actions
+  * Update `CreateSamplesSubMenuBase`, `EntityDeleteModal`, `EntityLineageEditModal`, `PicklistEditModal` and relatives to set and use snapshot selections when grid is filtered
+* When setting filters, reset selectionsLoadingState if also loading selections
+
 ### version 2.269.1
 *Released*: 12 December 2022
 * Issue 46841: Require permission/role when creating a new user via app modal

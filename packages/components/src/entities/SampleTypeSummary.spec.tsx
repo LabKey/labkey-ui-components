@@ -22,7 +22,6 @@ describe('<SampleTypeSummary />', () => {
             'ImportAliases',
             'MaterialInputImportAliases',
             'DataInputImportAliases',
-            'Folder',
         ]);
     });
 
@@ -36,7 +35,6 @@ describe('<SampleTypeSummary />', () => {
             'ImportAliases',
             'MaterialInputImportAliases',
             'DataInputImportAliases',
-            'Folder',
             'lsid',
         ]);
     });

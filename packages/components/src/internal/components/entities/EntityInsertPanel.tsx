@@ -661,7 +661,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             !disableMerge &&
             user.hasUpdatePermission() &&
             allowUserSpecifiedNames &&
-            originalQueryInfo.supportMerge;
+            originalQueryInfo?.supportMerge;
 
         if (this.useDeprecatedUI) allowMerge = !disableMerge && user.hasUpdatePermission();
 

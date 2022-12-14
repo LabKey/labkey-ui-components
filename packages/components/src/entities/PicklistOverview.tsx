@@ -260,6 +260,7 @@ let LOAD_PICKLIST_COUNTER = 0;
 
 export const PicklistOverview: FC<OwnProps> = memo(props => {
     const { params, user, api, samplesEditableGridProps } = props;
+    const { moduleContext } = useServerContext();
     const listId = parseInt(params.id, 10);
     const [picklist, setPicklist] = useState<Picklist>();
 
@@ -296,7 +297,7 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
                 '/' +
                 picklist.name;
             const omittedColumns = [];
-            const { moduleContext } = useServerContext();
+
             if (!hasProductProjects(moduleContext)) {
                 omittedColumns.push('SampleID/Folder');
             }

@@ -60,15 +60,7 @@ export class EditableGridLoaderFromSelection implements IEditableGridLoader {
         return new Promise((resolve, reject) => {
             const { queryName, queryParameters, schemaName, selections, sortString, viewName } = gridModel;
 
-            return getSelectedData(
-                schemaName,
-                queryName,
-                [...selections],
-                gridModel.getRequestColumnsString(this.requiredColumns, this.omittedColumns, true),
-                sortString,
-                queryParameters,
-                viewName
-            )
+            return getSelectedData(schemaName, queryName, [...selections], gridModel.getRequestColumnsString(this.requiredColumns, this.omittedColumns, true), sortString, queryParameters, viewName)
                 .then(response => {
                     const { data, dataIds, totalRows } = response;
                     resolve({

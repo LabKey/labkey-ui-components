@@ -205,6 +205,7 @@ export class EntityIdCreationModel extends Record({
     entityParents: Map<string, List<EntityParentType>>(),
     entityTypeOptions: List<IEntityTypeOption>(),
     selectionKey: undefined,
+    isSnapshotSelection: false,
     targetEntityType: undefined,
     entityCount: 0,
     entityDataType: undefined,
@@ -221,6 +222,7 @@ export class EntityIdCreationModel extends Record({
     declare entityParents: Map<string, List<EntityParentType>>; // map from query name to the parents already selected for that query
     declare entityTypeOptions: List<IEntityTypeOption>; // the target type options
     declare selectionKey: string;
+    declare isSnapshotSelection: boolean;
     declare targetEntityType: EntityTypeOption; // the target entity Type
     declare entityCount: number; // how many rows are in the grid
     declare entityDataType: EntityDataType; // target entity data type

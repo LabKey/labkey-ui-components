@@ -411,8 +411,8 @@ import {
     getCrossFolderSelectionResult,
     getDataDeleteConfirmationData,
     getDataOperationConfirmationData,
-    getOperationConfirmationData,
     getSampleOperationConfirmationData,
+    getOperationConfirmationData,
 } from './internal/components/entities/actions';
 import {
     AssayResultDataType,
@@ -540,7 +540,7 @@ import {
     SAMPLE_DATA_EXPORT_CONFIG,
     SAMPLE_EXPORT_CONFIG,
     SAMPLE_INSERT_EXTRA_COLUMNS,
-    SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
+    SELECTION_KEY_TYPE,
     SAMPLE_STATE_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
@@ -1040,7 +1040,6 @@ export {
     SampleTypeEmptyAlert,
     SampleCreationType,
     SamplesEditButtonSections,
-    SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
     getOmittedSampleTypeColumns,
     getOperationNotPermittedMessage,
     ManageSampleStatusesPanel,
@@ -1051,9 +1050,9 @@ export {
     RemoveEntityButton,
     getSampleOperationConfirmationData,
     getCrossFolderSelectionResult,
+    getOperationConfirmationData,
     getDataOperationConfirmationData,
     getDataDeleteConfirmationData,
-    getOperationConfirmationData,
     getUniqueIdColumnMetadata,
     // search related items
     FindDerivativesMenuItem,
@@ -1348,6 +1347,7 @@ export {
     resolveSchemaQuery,
     insertColumnFilter,
     EXPORT_TYPES,
+    SELECTION_KEY_TYPE,
     // QueryModel
     GRID_CHECKBOX_OPTIONS,
     QueryModel,

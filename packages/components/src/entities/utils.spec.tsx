@@ -118,27 +118,27 @@ describe('filterMediaSampleTypes', () => {
 describe('filterSampleRowsForOperation', () => {
     const availableRow1 = {
         rowId: { value: 1 },
-        SampleID: { value: 1, displayValue: 'T-1' },
+        Name: { value: 1, displayValue: 'T-1' },
         [SAMPLE_STATE_TYPE_COLUMN_NAME]: { value: SampleStateType.Available },
     };
     const availableRow2 = {
         rowId: { value: 2 },
-        sampleId: { value: 2, displayValue: 'T-2' },
+        Name: { value: 2, displayValue: 'T-2' },
         [SAMPLE_STATE_TYPE_COLUMN_NAME]: { value: SampleStateType.Available },
     };
     const consumedRow1 = {
         rowId: { value: 20 },
-        SampleID: { value: 20, displayValue: 'T-20' },
+        name: { value: 20, displayValue: 'T-20' },
         [SAMPLE_STATE_TYPE_COLUMN_NAME]: { value: SampleStateType.Consumed },
     };
     const lockedRow1 = {
         rowId: { value: 30 },
-        SampleID: { value: 30, displayValue: 'T-30' },
+        name: { value: 30, displayValue: 'T-30' },
         [SAMPLE_STATE_TYPE_COLUMN_NAME]: { value: SampleStateType.Locked },
     };
     const lockedRow2 = {
         rowId: { value: 31 },
-        SampleID: { value: 310, displayValue: 'T-310' },
+        Name: { value: 310, displayValue: 'T-310' },
         [SAMPLE_STATE_TYPE_COLUMN_NAME]: { value: SampleStateType.Locked },
     };
 
@@ -148,8 +148,8 @@ describe('filterSampleRowsForOperation', () => {
         numAllowed: number,
         numNotAllowed: number
     ): void {
-        const filteredData = filterSampleRowsForOperation(rows, operation, 'RowId', {
-            api: { moduleNames: ['samplemanagement'] },
+        const filteredData = filterSampleRowsForOperation(rows, operation, 'RowId', 'Name', {
+            api: {moduleNames: ['samplemanagement']},
         });
         expect(Object.keys(filteredData.rows)).toHaveLength(numAllowed);
         expect(filteredData.statusData.allowed).toHaveLength(numAllowed);
@@ -215,32 +215,38 @@ describe('getSampleWizardURL', () => {
     });
 
     test('default props, with productId', () => {
-        expect(getSampleWizardURL(null, null, null, 'from', 'to').toString()).toBe('/labkey/to/app.view#/samples/new');
+        expect(getSampleWizardURL(null, null, null, undefined, 'from', 'to').toString()).toBe('/labkey/to/app.view#/samples/new');
     });
 
     test('targetSampleSet, with productId', () => {
-        expect(getSampleWizardURL('target1', null, null, 'from', 'to').toString()).toBe(
+        expect(getSampleWizardURL('target1', null, null, undefined, 'from', 'to').toString()).toBe(
             '/labkey/to/app.view#/samples/new?target=target1'
         );
     });
 
     test('parent, with productId', () => {
-        expect(getSampleWizardURL(undefined, 'parent1', null, 'from', 'to').toString()).toBe(
+        expect(getSampleWizardURL(undefined, 'parent1', null, undefined, 'from', 'to').toString()).toBe(
             '/labkey/to/app.view#/samples/new?parent=parent1'
         );
     });
 
     test('targetSampleSet and parent, with productId', () => {
-        expect(getSampleWizardURL('target1', 'parent1', null, 'from', 'to').toString()).toBe(
+        expect(getSampleWizardURL('target1', 'parent1', null, undefined, 'from', 'to').toString()).toBe(
             '/labkey/to/app.view#/samples/new?target=target1&parent=parent1'
         );
     });
 
     test('targetSampleSet and parent and selectionKey, with productId', () => {
-        expect(getSampleWizardURL('target1', 'parent1', 'grid-1|samples|type1', 'from', 'to').toString()).toBe(
+        expect(getSampleWizardURL('target1', 'parent1', 'grid-1|samples|type1', undefined, 'from', 'to').toString()).toBe(
             '/labkey/to/app.view#/samples/new?target=target1&parent=parent1&selectionKey=grid-1%7Csamples%7Ctype1'
         );
     });
+
+    test("use snapshot selection", () => {
+        expect(getSampleWizardURL('target1', 'parent1', 'grid-1|samples|type1', true).toHref()).toBe(
+            '#/samples/new?target=target1&parent=parent1&selectionKey=grid-1%7Csamples%7Ctype1&selectionKeyType=snapshot'
+        );
+    })
 });
 
 describe('getSampleDeleteMessage', () => {

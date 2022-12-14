@@ -39,7 +39,10 @@ import {
 
 import { fetchDomainDetails, getDomainNamePreviews } from '../domainproperties/actions';
 
-import { SAMPLE_INVENTORY_ITEM_SELECTION_KEY, SAMPLE_STATE_COLUMN_NAME } from '../samples/constants';
+import {
+    SAMPLE_STATE_COLUMN_NAME,
+    SELECTION_KEY_TYPE,
+} from '../samples/constants';
 
 import { loadNameExpressionOptions } from '../settings/actions';
 
@@ -173,6 +176,7 @@ interface FromLocationProps {
     creationType?: SampleCreationType;
     isEditMode?: boolean;
     isItemSamples?: boolean;
+    isSnapshotSelection?: boolean;
     numPerParent?: number;
     parents?: string[];
     selectionKey?: string;
@@ -321,6 +325,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             originalParents,
             selectedParents,
             combineParentTypes,
+            isSnapshotSelection,
         } = this.props;
 
         const { creationType } = this.state;
@@ -366,6 +371,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             numPerParent,
             originalParents: allowParents ? parents ?? originalParents : undefined,
             selectionKey,
+            isSnapshotSelection,
         });
 
         let parentSchemaQueries = Map<string, EntityDataType>();
@@ -1565,7 +1571,8 @@ export const EntityInsertPanel: FC<{ location?: Location } & OwnProps> = memo(pr
             selectionKeyType,
             mode,
         } = location.query;
-        const isItemSamples = selectionKeyType === SAMPLE_INVENTORY_ITEM_SELECTION_KEY;
+        const isItemSamples = selectionKeyType === SELECTION_KEY_TYPE.inventoryItems;
+        const isSnapshotSelection = selectionKeyType === SELECTION_KEY_TYPE.snapshot;
         const isEditMode = mode?.toLowerCase() === 'update';
         return {
             creationType,
@@ -1575,6 +1582,7 @@ export const EntityInsertPanel: FC<{ location?: Location } & OwnProps> = memo(pr
             tab: entityInsertPanelProps.selectedTab ?? parseInt(tab, 10),
             target,
             isItemSamples,
+            isSnapshotSelection,
             isEditMode,
         };
     }, [location, entityInsertPanelProps.selectedTab]);

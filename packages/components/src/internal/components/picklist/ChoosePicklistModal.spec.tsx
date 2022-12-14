@@ -320,20 +320,9 @@ describe('ChoosePicklistModalDisplay', () => {
 
         await waitForLifecycle(wrapper);
         const alert = wrapper.find('.alert-info');
-        expect(alert).toHaveLength(1);
-        expect(alert.text()).toBe('Adding 2 samples to selected picklist. ');
-        const input = wrapper.find('input');
-        expect(input).toHaveLength(1);
-        expect(input.prop('placeholder')).toBe('Find a picklist');
-        const navItems = wrapper.find(NavItem);
-        expect(navItems).toHaveLength(2);
-        expect(navItems.at(0).text()).toBe('My Picklists');
-        expect(navItems.at(1).text()).toBe('Team Picklists');
-        const emptyMessages = wrapper.find('.choices-list__empty-message');
-        expect(emptyMessages).toHaveLength(3);
-        expect(emptyMessages.at(0).text()).toBe(' Loading...');
-        expect(emptyMessages.at(1).text()).toBe(' Loading...');
-        expect(emptyMessages.at(2).text()).toBe('Choose a picklist');
+        expect(alert).toHaveLength(0);
+        const body = wrapper.find(ModalBody);
+        expect(body.text()).toBe(' Loading...');
         wrapper.unmount();
     });
 

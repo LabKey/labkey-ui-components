@@ -13,7 +13,10 @@ export enum ALIQUOT_FILTER_MODE {
     samples = 'samples', // when using grid filter with 'is blank'
 }
 
-export const SAMPLE_INVENTORY_ITEM_SELECTION_KEY = 'inventoryItems';
+export enum SELECTION_KEY_TYPE {
+    inventoryItems = 'inventoryItems',
+    snapshot = 'snapshot',
+};
 
 export const MAX_SELECTED_SAMPLES = 10000;
 

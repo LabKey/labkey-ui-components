@@ -386,6 +386,7 @@ function getQueryParams(
 /**
  * Gets selected ids from a particular query view, optionally using the provided query parameters
  * @param key the selection key associated with the grid
+ * @param useSnapshotSelection whether the selections are snapshotted or not
  * @param schemaName? name of the schema for the query grid
  * @param queryName? name of the query
  * @param filterList? list of filters to use
@@ -394,12 +395,16 @@ function getQueryParams(
  */
 export function getSelected(
     key: string,
+    useSnapshotSelection?: boolean,
     schemaName?: string,
     queryName?: string,
     filterList?: List<Filter.IFilter>,
     containerPath?: string,
     queryParameters?: Record<string, any>
 ): Promise<IGetSelectedResponse> {
+    if (useSnapshotSelection)
+        return getSnapshotSelections(key, containerPath);
+
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: buildURL('query', 'getSelected.api', undefined, {
@@ -609,12 +614,7 @@ export function getSelection(location: any, schemaName?: string, queryName?: str
                 );
             }
 
-            return getSelected(
-                key,
-                schemaQuery.schemaName,
-                schemaQuery.queryName,
-                getFilterListFromQuery(location)
-            ).then(response => {
+            return getSelected(key, false, schemaQuery.schemaName, schemaQuery.queryName, getFilterListFromQuery(location)).then(response => {
                 resolve({
                     resolved: true,
                     schemaQuery,

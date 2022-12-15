@@ -336,7 +336,7 @@ export function getStorageSectionConfig(
             moduleContext
         );
         let locationsMenuConfig = new MenuSectionConfig({
-            emptyText: 'No freezers have been defined',
+            emptyText: 'No storage has been defined',
             iconURL: imageURL('_images', 'freezer_menu.svg'),
             maxColumns: 1,
             maxItemsPerColumn,
@@ -347,7 +347,7 @@ export function getStorageSectionConfig(
         if (userCanDesignLocations(user) && isProjectContainer()) {
             locationsMenuConfig = locationsMenuConfig.merge({
                 emptyURL: fmAppBase + AppURL.create(FREEZERS_KEY, 'new').toHref(),
-                emptyURLText: 'Create a freezer',
+                emptyURLText: 'Create storage',
             }) as MenuSectionConfig;
         }
         return locationsMenuConfig;

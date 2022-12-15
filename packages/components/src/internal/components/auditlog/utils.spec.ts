@@ -30,7 +30,7 @@ describe('getAuditQueries', () => {
         const auditQueries = getAuditQueries();
         expect(auditQueries.length).toBe(12);
         expect(auditQueries.findIndex(entry => entry == ASSAY_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
-        expect(auditQueries.findIndex(entry => entry.value === 'inventoryauditevent')).toBe(5);
+        expect(auditQueries.findIndex(entry => entry.value === 'inventoryauditevent')).toBe(10);
         expect(auditQueries.findIndex(entry => entry == WORKFLOW_AUDIT_QUERY)).toBe(-1);
         expect(auditQueries.findIndex(entry => entry == SOURCE_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
     });
@@ -41,7 +41,7 @@ describe('getAuditQueries', () => {
         };
         const auditQueries = getAuditQueries();
         expect(auditQueries.length).toBe(11);
-        expect(auditQueries.findIndex(entry => entry.value === 'inventoryauditevent')).toBe(4);
+        expect(auditQueries.findIndex(entry => entry.value === 'inventoryauditevent')).toBe(9);
         expect(auditQueries.findIndex(entry => entry == ASSAY_AUDIT_QUERY)).toBe(-1);
         expect(auditQueries.findIndex(entry => entry == WORKFLOW_AUDIT_QUERY)).toBe(-1);
         expect(auditQueries.findIndex(entry => entry == SOURCE_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
@@ -53,7 +53,7 @@ describe('getAuditQueries', () => {
         };
         const auditQueries = getAuditQueries();
         expect(auditQueries.length).toBe(15);
-        expect(auditQueries.findIndex(entry => entry.value === 'inventoryauditevent')).toBe(5);
+        expect(auditQueries.findIndex(entry => entry.value === 'inventoryauditevent')).toBe(13);
         expect(auditQueries.findIndex(entry => entry == ASSAY_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
         expect(auditQueries.findIndex(entry => entry == WORKFLOW_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
         expect(auditQueries.findIndex(entry => entry == SOURCE_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
@@ -75,7 +75,7 @@ describe('getAuditQueries', () => {
         };
         const auditQueries = getAuditQueries();
         expect(auditQueries.length).toBe(14);
-        expect(auditQueries.findIndex(entry => entry.value === 'inventoryauditevent')).toBe(5);
+        expect(auditQueries.findIndex(entry => entry.value === 'inventoryauditevent')).toBe(12);
         expect(auditQueries.findIndex(entry => entry == ASSAY_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
         expect(auditQueries.findIndex(entry => entry == WORKFLOW_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
         expect(auditQueries.findIndex(entry => entry == NOTEBOOK_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);

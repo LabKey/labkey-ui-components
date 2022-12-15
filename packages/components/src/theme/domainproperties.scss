@@ -17,6 +17,12 @@
   cursor: pointer;
 }
 
+.domain-form-panel input[type="radio"] {
+    &.input-left-spacing {
+        margin-left: 15px;
+    }
+}
+
 .domain-toolbar-export-btn-icon {
     color: $brand-primary;
 }

@@ -4,8 +4,9 @@ import { mount } from 'enzyme';
 import { initUnitTestMocks } from '../test/testHelperMocks';
 import { TEST_USER_READER, TEST_USER_EDITOR } from '../internal/userFixtures';
 
-import { SampleTypeSummary } from './SampleTypeSummary';
 import { GridPanelWithModel } from '../public/QueryModel/GridPanel';
+
+import { SampleTypeSummary } from './SampleTypeSummary';
 
 beforeAll(() => {
     initUnitTestMocks();

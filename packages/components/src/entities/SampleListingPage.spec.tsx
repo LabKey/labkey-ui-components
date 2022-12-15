@@ -37,6 +37,8 @@ import { PrintLabelsModal } from '../internal/components/labels/PrintLabelsModal
 
 import { ColorIcon } from '../internal/components/base/ColorIcon';
 
+import { SampleTypeAppContext } from '../internal/AppContext';
+
 import { SampleTypeBasePage } from './SampleTypeBasePage';
 import {
     getIsSharedModel,
@@ -48,7 +50,6 @@ import {
 import { SampleTypeInsightsPanel } from './SampleTypeInsightsPanel';
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 import { SampleSetDeleteModal } from './SampleSetDeleteModal';
-import { SampleTypeAppContext } from '../internal/AppContext';
 
 const SQ = SchemaQuery.create('schema', 'query');
 

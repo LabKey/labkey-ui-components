@@ -272,14 +272,10 @@ describe('getMenuSectionConfigs', () => {
         });
         expect(configs.size).toBe(4);
         expect(configs.hasIn([0, SOURCES_KEY])).toBeTruthy();
-        expect(configs.getIn([0, SOURCES_KEY, 'seeAllURL'])).toEqual(
-            '/labkey/samplemanager/app.view#/sources'
-        );
+        expect(configs.getIn([0, SOURCES_KEY, 'seeAllURL'])).toEqual('/labkey/samplemanager/app.view#/sources');
 
         expect(configs.hasIn([1, SAMPLES_KEY])).toBeTruthy();
-        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual(
-            '/labkey/samplemanager/app.view#/samples'
-        );
+        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('/labkey/samplemanager/app.view#/samples');
 
         expect(configs.hasIn([2, FREEZERS_KEY])).toBeTruthy();
         expect(configs.getIn([2, FREEZERS_KEY, 'seeAllURL'])).toEqual('#/home');

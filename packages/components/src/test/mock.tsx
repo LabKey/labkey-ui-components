@@ -27,10 +27,6 @@ import noDataQuery from './data/noData-getQuery.json';
 import getSchemasJson from './data/getSchemas.json';
 import assayGetSchemasJson from './data/assay-getSchemas.json';
 import assayGetQueriesJson from './data/assay-getQueries.json';
-import sampleSetHeatMapQueryInfo from './data/sampleSetHeatMap-getQueryDetails.json';
-import sampleSetHeatMapQuery from './data/sampleSetHeatMap-getQuery.json';
-import assaysHeatMapQueryInfo from './data/assaysHeatMap-getQueryDetails.json';
-import assaysHeatMapQuery from './data/assaysHeatMap-getQuery.json';
 import sampleSetQueryInfo from './data/samplesSet-getQueryDetails.json';
 import sampleDetailsQuery from './data/sampleDetails-getQuery.json';
 import lookuplistQueryInfo from './data/lookuplist-getQueryDetails.json';
@@ -146,8 +142,6 @@ const QUERY_DETAILS_RESPONSES = fromJS({
         members: getMembersJson,
     },
     exp: {
-        samplesetheatmap: sampleSetHeatMapQueryInfo,
-        assaysheatmap: assaysHeatMapQueryInfo,
         samplesets: sampleSetsQueryInfo,
         dataclasses: dataClassesQueryInfo,
         dataclasscategorytype: dataClassCategoryTypeQueryInfo,
@@ -210,8 +204,6 @@ const QUERY_RESPONSES = fromJS({
         users: usersQuery,
     },
     exp: {
-        samplesetheatmap: sampleSetHeatMapQuery,
-        assaysheatmap: assaysHeatMapQuery,
         samplesets: sampleSetsQuery,
         dataclasses: dataClassesQuery,
         dataclasscategorytype: dataClassCategoryTypeQuery,

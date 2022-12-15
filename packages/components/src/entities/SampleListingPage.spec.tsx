@@ -37,7 +37,8 @@ import { PrintLabelsModal } from '../internal/components/labels/PrintLabelsModal
 
 import { ColorIcon } from '../internal/components/base/ColorIcon';
 
-import { SampleTypeAppContext } from './SampleTypeAppContext';
+import { SampleTypeAppContext } from '../internal/AppContext';
+
 import { SampleTypeBasePage } from './SampleTypeBasePage';
 import {
     getIsSharedModel,
@@ -204,7 +205,7 @@ describe('SampleListingPageBody', () => {
         await waitForLifecycle(wrapper, 100);
         validate(wrapper);
         expect(wrapper.find(SampleTypeBasePage).prop('title')).toBe('Sample Type - Overview');
-        expect(wrapper.find(SampleTypeBasePage).prop('description')).toBe('No Label Color');
+        expect(wrapper.find(ColorIcon)).toHaveLength(0);
         wrapper.unmount();
     });
 
@@ -244,7 +245,7 @@ describe('SampleListingPageBody', () => {
 
         await waitForLifecycle(wrapper, 100);
         validate(wrapper);
-        expect(wrapper.find(SampleTypeBasePage).prop('description')).not.toBe('No Label Color');
+        expect(wrapper.find(ColorIcon)).toHaveLength(1);
         wrapper.unmount();
     });
 

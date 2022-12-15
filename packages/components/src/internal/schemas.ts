@@ -34,7 +34,6 @@ export const ASSAY_TABLES = {
 // EXP
 const EXP_SCHEMA = 'exp';
 export const EXP_TABLES = {
-    ASSAY_HEAT_MAP: SchemaQuery.create(EXP_SCHEMA, 'AssaysHeatMap'),
     ASSAY_RUNS: SchemaQuery.create(EXP_SCHEMA, 'AssayRuns'),
     DATA: SchemaQuery.create(EXP_SCHEMA, 'Data'),
     DATA_CLASSES: SchemaQuery.create(EXP_SCHEMA, 'DataClasses'),
@@ -44,7 +43,6 @@ export const EXP_TABLES = {
     SCHEMA: EXP_SCHEMA,
     SAMPLE_SETS: SchemaQuery.create(EXP_SCHEMA, 'SampleSets'),
     SAMPLE_SETS_DETAILS: SchemaQuery.create(EXP_SCHEMA, 'SampleSets', ViewInfo.DETAIL_NAME),
-    SAMPLE_SET_HEAT_MAP: SchemaQuery.create(EXP_SCHEMA, 'SampleSetHeatMap'),
     SAMPLE_STATUS: SchemaQuery.create(EXP_SCHEMA, 'SampleStatus'),
 };
 

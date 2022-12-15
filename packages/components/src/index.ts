@@ -102,7 +102,6 @@ import { Alert } from './internal/components/base/Alert';
 import { DeleteIcon } from './internal/components/base/DeleteIcon';
 import { LockIcon } from './internal/components/base/LockIcon';
 import { ExpandableFilterToggle } from './internal/components/base/ExpandableFilterToggle';
-import { SelectView, SelectViewInput } from './internal/components/base/SelectViewInput';
 import { DragDropHandle } from './internal/components/base/DragDropHandle';
 import { FieldExpansionToggle } from './internal/components/base/FieldExpansionToggle';
 import { MultiMenuButton } from './internal/components/menus/MultiMenuButton';
@@ -294,8 +293,6 @@ import { SchemaListing } from './internal/components/listing/SchemaListing';
 import { QueriesListing } from './internal/components/listing/QueriesListing';
 import { QueriesListingPage } from './internal/components/listing/pages/QueriesListingPage';
 import { SchemaListingPage } from './internal/components/listing/pages/SchemaListingPage';
-import { HeatMap } from './internal/components/heatmap/HeatMap';
-import { addDateRangeFilter, last12Months, monthSort } from './internal/components/heatmap/utils';
 import {
     EntityIdCreationModel,
     EntityParentType,
@@ -706,6 +703,7 @@ import {
 } from './internal/productFixtures';
 import { GENERAL_ASSAY_PROVIDER_NAME, RUN_PROPERTIES_REQUIRED_COLUMNS } from './internal/components/assay/constants';
 import { AdminSettingsPage } from './internal/components/administration/AdminSettingsPage';
+import { GlobalStateContextProvider } from './internal/GlobalStateContext';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -1093,11 +1091,6 @@ export {
     fetchAllAssays,
     RUN_PROPERTIES_REQUIRED_COLUMNS,
     GENERAL_ASSAY_PROVIDER_NAME,
-    // heatmap
-    HeatMap,
-    addDateRangeFilter,
-    last12Months,
-    monthSort,
     // report / chart related items
     BaseBarChart,
     BarChartViewer,
@@ -1314,8 +1307,6 @@ export {
     DeleteIcon,
     LockIcon,
     ExpandableFilterToggle,
-    SelectView,
-    SelectViewInput,
     Setting,
     ValueList,
     // base models, enums, constants
@@ -1324,6 +1315,7 @@ export {
     AppContextProvider,
     useAppContext,
     AppContexts,
+    GlobalStateContextProvider,
     ServerContextProvider,
     ServerContextConsumer,
     useServerContext,
@@ -1471,7 +1463,6 @@ export type { VisGraphNode } from './internal/components/lineage/models';
 export type { ITab } from './internal/components/navigation/types';
 export type { EditorModelProps, IGridLoader, IGridResponse } from './internal/components/editable/models';
 export type { IDataViewInfo } from './internal/DataViewInfo';
-export type { HeatMapCell } from './internal/components/heatmap/HeatMap';
 export type { InjectedAssayModel, WithAssayModelProps } from './internal/components/assay/withAssayModels';
 export type { SearchResultCardData } from './internal/components/search/models';
 export type { AssayPickerSelectionModel } from './internal/components/assay/AssayPicker';

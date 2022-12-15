@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.271.0
+*Released*: 15 December 2022
+* Updates for data class consistency
+  * remove HeatMap and Cards view from app landing pages
+  * add project/folder column to app landing page grid views
+  * remove overview subtitle from listing page subtitle
+
 ### version 2.270.0
 *Released*: 13 December 2022
 * Issue 46465: Support filtered selections when acting on items in grids

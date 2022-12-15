@@ -1490,10 +1490,10 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@labkey/api@1.16.2-freezerToStorage.0":
-  version "1.16.2-freezerToStorage.0"
-  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.16.2-freezerToStorage.0.tgz#a51c5f6019a0de777c76590b18b6a8c080c24eae"
-  integrity sha512-xM1cETnB/MjjE/3LMPkID4GOUbHK8GxkOkq7egSyxBemnSbnmAAuN5ebz/gaS2I2T6Fk1wHIKvSKbwS1ZoXKQw==
+"@labkey/api@~1.17.0":
+  version "1.17.0"
+  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.17.0.tgz#3100ce360e93595b3fcce8968ab25224a6320cf3"
+  integrity sha512-RJ/8+1DF4zdCI+QwIHtKqz0ZTfm3Kk4QcWu6k9cDPlzB77MBzRaKQ+y6Co2xrnH7hE/UDcn0h1AarOJIRx99Pg==
 
 "@labkey/build@6.5.0":
   version "6.5.0"

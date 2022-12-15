@@ -11,7 +11,6 @@ const CircularDependencyPlugin = require('circular-dependency-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const FREEZER_MANAGER_DIRS = ['inventory', 'packages', 'freezermanager', 'src'];
-const WORKFLOW_DIRS = ['sampleManagement', 'packages', 'workflow', 'src'];
 const cwd = path.resolve('./').split(path.sep);
 const lkModule = cwd[cwd.length - 1];
 const isProductionBuild = process.env.NODE_ENV === 'production';
@@ -23,7 +22,6 @@ const isProductionBuild = process.env.NODE_ENV === 'production';
 let labkeyUIComponentsPath = path.resolve('./node_modules/@labkey/components');
 let labkeyUIPremiumPath = path.resolve('./node_modules/@labkey/premium');
 let freezerManagerPath = path.resolve('./node_modules/@labkey/freezermanager');
-let workflowPath = path.resolve('./node_modules/@labkey/workflow');
 const tsconfigPath = path.resolve('./node_modules/@labkey/build/webpack/tsconfig.json');
 
 if (process.env.LINK) {
@@ -39,12 +37,10 @@ if (process.env.LINK) {
     // lastIndexOf just in case someone is weird and has their LKS deployment under a directory named modules.
     const lkModulesPath = cwd.slice(0, cwd.lastIndexOf('modules') + 1);
     freezerManagerPath = lkModulesPath.concat(FREEZER_MANAGER_DIRS).join(path.sep);
-    workflowPath = lkModulesPath.concat(WORKFLOW_DIRS).join(path.sep);
 
     console.log('Using @labkey/components path:', labkeyUIComponentsPath);
     console.log('Using @labkey/premium path:', labkeyUIPremiumPath);
     console.log('Using @labkey/freezermanager path:', freezerManagerPath);
-    console.log('Using @labkey/workflow path:', workflowPath);
 }
 
 const watchPort = process.env.WATCH_PORT || 3001;
@@ -165,8 +161,8 @@ const TS_CHECKER_DEV_CONFIG = {
                     "@labkey/premium": [labkeyUIPremiumPath],
                     "@labkey/premium/assay": [labkeyUIPremiumPath + '/assay'],
                     "@labkey/premium/eln": [labkeyUIPremiumPath + '/eln'],
+                    "@labkey/premium/workflow": [labkeyUIPremiumPath + '/workflow'],
                     "@labkey/freezermanager": [freezerManagerPath],
-                    "@labkey/workflow": [workflowPath],
                 }
             }
         },
@@ -182,8 +178,8 @@ const labkeyPackagesDev = process.env.LINK
         '@labkey/premium': labkeyUIPremiumPath,
         '@labkey/premium/assay': labkeyUIPremiumPath + '/assay',
         '@labkey/premium/eln': labkeyUIPremiumPath + '/eln',
+        '@labkey/premium/workflow': labkeyUIPremiumPath + '/workflow',
         '@labkey/freezermanager': freezerManagerPath,
-        '@labkey/workflow': workflowPath,
     }
     : {};
 
@@ -192,7 +188,6 @@ module.exports = {
     labkeyUIComponentsPath,
     labkeyUIPremiumPath,
     freezerManagerPath,
-    workflowPath,
     tsconfigPath,
     watchPort,
     TS_CHECKER_CONFIG,
@@ -263,7 +258,6 @@ module.exports = {
             '@labkey/components-app-scss': labkeyUIComponentsPath + '/dist/assets/scss/theme/app',
             '@labkey/premium-scss': labkeyUIPremiumPath + '/dist/assets/scss/theme',
             '@labkey/freezermanager-scss': freezerManagerPath + '/dist/assets/scss/theme',
-            '@labkey/workflow-scss': workflowPath + '/dist/assets/scss/theme',
         },
         LABKEY_PACKAGES_DEV: {
             ...labkeyPackagesDev,
@@ -272,7 +266,6 @@ module.exports = {
             '@labkey/components-app-scss': labkeyUIComponentsPath + (process.env.LINK ? '/theme/app' : '/dist/assets/scss/theme/app'),
             '@labkey/premium-scss': labkeyUIPremiumPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
             '@labkey/freezermanager-scss': freezerManagerPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
-            '@labkey/workflow-scss': workflowPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
         },
     },
     outputPath: path.resolve('./resources/web/gen'),

@@ -583,13 +583,15 @@ export function handleEntityFileImport(
     importAction: string,
     queryInfo: QueryInfo,
     file: File,
-    isMerge: boolean,
+    insertOption: InsertOptions,
     useAsync: boolean,
     importParameters?: Record<string, any>,
     importFileController?: string,
     saveToPipeline?: boolean
 ): Promise<any> {
     return new Promise((resolve, reject) => {
+        if (insertOption === InsertOptions.UPDATE) reject('Import with Update currently not supported.');
+
         const { schemaQuery } = queryInfo;
 
         return importData({
@@ -601,7 +603,7 @@ export function handleEntityFileImport(
             }),
             importLookupByAlternateKey: true,
             useAsync,
-            insertOption: InsertOptions[isMerge ? InsertOptions.MERGE : InsertOptions.IMPORT],
+            insertOption: InsertOptions[insertOption],
             saveToPipeline,
         })
             .then(response => {

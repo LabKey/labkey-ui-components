@@ -145,9 +145,9 @@ const _createContainer = async (ctx: ServerContext, containerPath: string, name:
     return response.body;
 };
 
-const createRequestContext = async (ctx: ServerContext, config: Partial<RequestContext>) => {
+const createRequestContext = async (ctx: ServerContext, config: Partial<RequestContext>): Promise<RequestContext> => {
     const requestCtx = new RequestContext(config);
-    const { csrfToken, sessionId } = await initCSRF(ctx);
+    const { csrfToken, sessionId } = await initRequestContext(ctx, { requestContext: requestCtx });
     requestCtx.csrfToken = csrfToken;
     requestCtx.sessionId = sessionId;
     return requestCtx;
@@ -267,7 +267,7 @@ export const hookServer = (env: NodeJS.ProcessEnv): IntegrationTestServer => {
 
 const init = async (ctx: ServerContext, projectName: string, containerOptions?: any): Promise<void> => {
     // Initialize the default request context
-    const { csrfToken, sessionId } = await initCSRF(ctx);
+    const { csrfToken, sessionId } = await initRequestContext(ctx);
     ctx.defaultContext.csrfToken = csrfToken;
     ctx.defaultContext.sessionId = sessionId;
 
@@ -313,13 +313,16 @@ const init = async (ctx: ServerContext, projectName: string, containerOptions?: 
     console.log('container path:', ctx.containerPath);
 };
 
-const initCSRF = async (ctx: ServerContext): Promise<{ csrfToken: string, sessionId: string }> => {
+const initRequestContext = async (
+    ctx: ServerContext,
+    options?: RequestOptions
+): Promise<{ csrfToken: string, sessionId: string }> => {
     const MAX_RETRIES = 5;
     let lastResponse;
 
     for (let i = 0; i < MAX_RETRIES; i++) {
         try {
-            let whoAmIResponse = await getRequest(ctx, 'login', 'whoAmI.api').send();
+            let whoAmIResponse = await getRequest(ctx, 'login', 'whoAmI.api', undefined, options).send();
 
             if (whoAmIResponse.status === 200) {
                 return {

@@ -22,6 +22,7 @@ import { AppProperties } from './models';
 import {
     ASSAYS_KEY,
     BIOLOGICS_APP_PROPERTIES,
+    EXPERIMENTAL_ALLOW_IMPORT_WITH_UPDATE,
     EXPERIMENTAL_REQUESTS_MENU,
     EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR,
     FREEZER_MANAGER_APP_PROPERTIES,
@@ -302,6 +303,10 @@ export function hasPremiumModule(moduleContext?: ModuleContext): boolean {
 
 export function isCommunityDistribution(moduleContext?: ModuleContext): boolean {
     return !hasModule('SampleManagement', moduleContext) && !hasPremiumModule(moduleContext);
+}
+
+export function isImportWithUpdateEnabled(moduleContext?: ModuleContext): boolean {
+    return resolveModuleContext(moduleContext)?.query?.[EXPERIMENTAL_ALLOW_IMPORT_WITH_UPDATE] === true;
 }
 
 export function isProjectContainer(containerPath?: string): boolean {

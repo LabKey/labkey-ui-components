@@ -7,6 +7,13 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Update audit query name
   * Update mega-menu empty state messaging
 
+### version 2.272.0
+*Released*: 15 December 2022
+* UI for samples/sources/dataclasses import with Update in apps
+  * Add check for isImportWithUpdateEnabled
+  * Modify EntityInsertPanel to distinguish import vs update/merge
+  * Modify SamplesEditButton to allow 'Update from File'
+
 ### version 2.271.0
 *Released*: 15 December 2022
 * Updates for data class consistency

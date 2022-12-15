@@ -4,9 +4,11 @@ import { List, Map, OrderedMap, Record } from 'immutable';
 import { Filter } from '@labkey/api';
 
 import { toLowerSafe } from '../internal/util/utils';
-import { insertColumnFilter, QueryColumn } from './QueryColumn';
+
 import { ViewInfo } from '../internal/ViewInfo';
 import { LastActionStatus } from '../internal/LastActionStatus';
+
+import { insertColumnFilter, QueryColumn } from './QueryColumn';
 import { SchemaQuery } from './SchemaQuery';
 import { QuerySort } from './QuerySort';
 import { naturalSort } from './sort';
@@ -49,6 +51,7 @@ export class QueryInfo extends Record({
     insertUrl: undefined,
 
     supportGroupConcatSubSelect: false,
+    supportMerge: false,
 
     // our stuff
     appEditableTable: false,
@@ -88,6 +91,7 @@ export class QueryInfo extends Record({
     declare singular: string;
     declare status: QueryInfoStatus;
     declare supportGroupConcatSubSelect: boolean;
+    declare supportMerge: boolean;
     // declare targetContainers: List<any>;
     declare title: string;
     declare titleColumn: string;

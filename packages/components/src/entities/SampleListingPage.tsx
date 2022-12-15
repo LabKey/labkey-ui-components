@@ -360,7 +360,11 @@ export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
     }, [detailsModel]);
 
     const colorIcon = useMemo(() => {
-        return color ? <ColorIcon value={color} label="Label Color" useSmall={true} /> : 'No Label Color';
+        return (
+            <div className="top-spacing-less">
+                {color ? <ColorIcon value={color} label="Label Color" useSmall /> : 'No Label Color'}
+            </div>
+        );
     }, [color]);
 
     const onDownloadTemplate = useCallback(() => {
@@ -438,7 +442,6 @@ export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
         <SampleTypeBasePage
             title={title}
             hasActiveJob={hasActivePipelineJob(menu, SAMPLES_KEY, listModel.queryInfo?.name)}
-            subtitle="Overview"
             description={colorIcon}
             buttons={headerButtons}
             onTemplateDownload={onDownloadTemplate}

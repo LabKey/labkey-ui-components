@@ -31,7 +31,7 @@
   "label" : "Workflow",
   "productId" : "SampleManager",
   "items" : [ {
-    "key" : "?viewAs=grid&tab=mine&mine.sort=DueDate&active.sort=DueDate",
+    "key" : "?tab=mine&mine.sort=DueDate&active.sort=DueDate",
     "id" : null,
     "label" : "My Queue",
     "url" : null,
@@ -40,16 +40,7 @@
     "hasActiveJob" : false,
     "requiresLogin" : false
   }, {
-    "key" : "?viewAs=heatmap&mine.sort=DueDate&active.sort=DueDate",
-    "id" : null,
-    "label" : "Workflow Heatmap",
-    "url" : null,
-    "productId" : "SampleManager",
-    "orderNum" : -1,
-    "hasActiveJob" : false,
-    "requiresLogin" : false
-  }, {
-    "key" : "?viewAs=grid&tab=all&mine.sort=DueDate&active.sort=DueDate",
+    "key" : "?tab=all&mine.sort=DueDate&active.sort=DueDate",
     "id" : null,
     "label" : "Workflow List",
     "url" : null,

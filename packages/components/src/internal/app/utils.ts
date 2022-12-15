@@ -368,7 +368,7 @@ export function addSourcesSectionConfig(
         iconURL: imageURL('_images', 'source_type.svg'),
         maxColumns: 1,
         maxItemsPerColumn: 12,
-        seeAllURL: appBase + AppURL.create(SOURCES_KEY).addParam('viewAs', 'grid').toHref(),
+        seeAllURL: appBase + AppURL.create(SOURCES_KEY).toHref(),
     });
     if (userCanDesignSourceTypes(user)) {
         sourcesMenuConfig = sourcesMenuConfig.merge({
@@ -390,7 +390,7 @@ export function addSamplesSectionConfig(
         iconURL: imageURL('_images', 'samples.svg'),
         maxColumns: 1,
         maxItemsPerColumn: 12,
-        seeAllURL: appBase + AppURL.create(SAMPLES_KEY).addParam('viewAs', 'cards').toHref(),
+        seeAllURL: appBase + AppURL.create(SAMPLES_KEY).toHref(),
     });
     if (user.hasDesignSampleTypesPermission()) {
         samplesMenuConfig = samplesMenuConfig.merge({
@@ -415,7 +415,7 @@ export function addAssaysSectionConfig(
         iconURL: imageURL('_images', 'assay.svg'),
         maxColumns: 1,
         maxItemsPerColumn: 12,
-        seeAllURL: appBase + AppURL.create(ASSAYS_KEY).addParam('viewAs', 'grid').toHref(),
+        seeAllURL: appBase + AppURL.create(ASSAYS_KEY).toHref(),
     });
     if (user.hasDesignAssaysPermission()) {
         assaysMenuConfig = assaysMenuConfig.merge({

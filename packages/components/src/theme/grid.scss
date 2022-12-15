@@ -145,14 +145,6 @@
   color: #333;
 }
 
-.heatmap-container td.heat-map--cell {
-  box-sizing: border-box;
-  border: 0;
-  &:hover {
-    outline: 1px solid rgba(0, 0, 0, .6) !important;
-  }
-}
-
 .requested-value--link {
   color: $brand-primary;
   cursor: pointer;

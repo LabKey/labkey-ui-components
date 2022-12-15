@@ -1,12 +1,19 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.XX
-*Released*: XX December 2022
+### version 2.272.0
+*Released*: 15 December 2022
 * UI for samples/sources/dataclasses import with Update in apps
   * Add check for isImportWithUpdateEnabled
   * Modify EntityInsertPanel to distinguish import vs update/merge
   * Modify SamplesEditButton to allow 'Update from File'
+
+### version 2.271.0
+*Released*: 15 December 2022
+* Updates for data class consistency
+  * remove HeatMap and Cards view from app landing pages
+  * add project/folder column to app landing page grid views
+  * remove overview subtitle from listing page subtitle
 
 ### version 2.270.0
 *Released*: 13 December 2022

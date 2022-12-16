@@ -8,6 +8,8 @@ interface Props {
     onChange?: () => void;
 }
 
+const MAX_FOLDER_NAME_LENGTH = 255;
+
 export const ProjectProperties: FC<Props> = memo(props => {
     const { autoFocus, defaultTitle, defaultName, onChange } = props;
     const [name, setName] = useState<string>(defaultName);
@@ -47,6 +49,7 @@ export const ProjectProperties: FC<Props> = memo(props => {
                         onChange={onNameChange}
                         required
                         type="text"
+                        maxLength={MAX_FOLDER_NAME_LENGTH}
                     />
                     <span className="help-block">
                         <label className="checkbox-inline" title={toggleLabel}>

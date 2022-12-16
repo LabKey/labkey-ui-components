@@ -90,6 +90,9 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
         const { label, queryColumn, showLabel, allowDisable, addLabelAsterisk, renderFieldLabel } = this.props;
         const { isDisabled } = this.state;
 
+        if (!showLabel)
+            return null;
+
         if (renderFieldLabel) {
             return renderFieldLabel(queryColumn);
         }

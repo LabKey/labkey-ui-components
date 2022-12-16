@@ -773,7 +773,7 @@ describe('getStorageSectionConfig', () => {
         );
         expect(config.maxColumns).toBe(1);
         expect(config.maxItemsPerColumn).toBe(3);
-        expect(config.emptyText).toBe('No freezers have been defined');
+        expect(config.emptyText).toBe('No storage has been defined');
         expect(config.emptyURL).toBe(undefined);
         expect(config.iconURL).toBe('/labkey/_images/freezer_menu.svg');
         expect(config.seeAllURL).toBe('#/home');
@@ -811,7 +811,7 @@ describe('getStorageSectionConfig', () => {
         expect(config.seeAllURL).toBe('/labkey/freezermanager/Project%20A/app.view#/home');
         expect(config.headerURL).toBe('/labkey/freezermanager/Project%20A/app.view#/home');
         expect(config.emptyURL).toBe('/labkey/freezermanager/Project%20A/app.view#/freezers/new');
-        expect(config.emptyURLText).toBe('Create a freezer');
+        expect(config.emptyURLText).toBe('Create storage');
     });
 
     test('admin, child folder', () => {
@@ -864,7 +864,7 @@ describe('getStorageSectionConfig', () => {
         expect(config.seeAllURL).toBe('/labkey/freezermanager/Project%20B/app.view#/home');
         expect(config.headerURL).toBe('/labkey/freezermanager/Project%20B/app.view#/home');
         expect(config.emptyURL).toBe('/labkey/freezermanager/Project%20B/app.view#/freezers/new');
-        expect(config.emptyURLText).toBe('Create a freezer');
+        expect(config.emptyURLText).toBe('Create storage');
     });
 
     test('storage designer, child container', () => {

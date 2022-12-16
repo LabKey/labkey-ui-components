@@ -884,6 +884,7 @@ export function deleteRows(options: DeleteRowsOptions): Promise<any> {
 export enum InsertOptions {
     IMPORT,
     MERGE,
+    UPDATE,
 }
 
 export enum InsertFormats {

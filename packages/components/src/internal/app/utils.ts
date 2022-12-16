@@ -22,6 +22,7 @@ import { AppProperties } from './models';
 import {
     ASSAYS_KEY,
     BIOLOGICS_APP_PROPERTIES,
+    EXPERIMENTAL_ALLOW_IMPORT_WITH_UPDATE,
     EXPERIMENTAL_REQUESTS_MENU,
     EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR,
     FREEZER_MANAGER_APP_PROPERTIES,
@@ -304,6 +305,10 @@ export function isCommunityDistribution(moduleContext?: ModuleContext): boolean 
     return !hasModule('SampleManagement', moduleContext) && !hasPremiumModule(moduleContext);
 }
 
+export function isImportWithUpdateEnabled(moduleContext?: ModuleContext): boolean {
+    return resolveModuleContext(moduleContext)?.query?.[EXPERIMENTAL_ALLOW_IMPORT_WITH_UPDATE] === true;
+}
+
 export function isProjectContainer(containerPath?: string): boolean {
     let path = containerPath ?? getServerContext().container.path;
     if (!path) return false;
@@ -331,7 +336,7 @@ export function getStorageSectionConfig(
             moduleContext
         );
         let locationsMenuConfig = new MenuSectionConfig({
-            emptyText: 'No freezers have been defined',
+            emptyText: 'No storage has been defined',
             iconURL: imageURL('_images', 'freezer_menu.svg'),
             maxColumns: 1,
             maxItemsPerColumn,
@@ -342,7 +347,7 @@ export function getStorageSectionConfig(
         if (userCanDesignLocations(user) && isProjectContainer()) {
             locationsMenuConfig = locationsMenuConfig.merge({
                 emptyURL: fmAppBase + AppURL.create(FREEZERS_KEY, 'new').toHref(),
-                emptyURLText: 'Create a freezer',
+                emptyURLText: 'Create storage',
             }) as MenuSectionConfig;
         }
         return locationsMenuConfig;

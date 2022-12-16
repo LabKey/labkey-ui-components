@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Remove premature return from renderLabel in TextInput
+* Set maxLength property on ProjectProperties name field
+
 ### version 2.273.0
 *Released*: 15 December 2022
 * Update FM UI to use "Storage" instead of "Freezer"

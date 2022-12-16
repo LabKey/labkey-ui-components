@@ -1,7 +1,7 @@
 # @labkey/build
 
-### version TBD
-*Released*: TBD December 2022
+### version 6.7.0
+*Released*: 16 December 2022
 * webpack updates for `@labkey/premium/workflow` package
   * move of `@labkey/workflow` from sampleManagement module to `@labkey/premium/workflow`
 

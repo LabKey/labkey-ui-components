@@ -89,6 +89,7 @@ module.exports = {
         '@labkey/premium/assay',
         '@labkey/premium/eln',
         '@labkey/premium/workflow',
+        '@labkey/premium/storage',
         '@remirror/pm',
         'boostrap-sass',
         'classnames',

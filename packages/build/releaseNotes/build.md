@@ -1,5 +1,10 @@
 # @labkey/build
 
+### version 6.8.0
+*Released*: 19 December 2022
+* webpack updates for `@labkey/premium/storage` package
+  * move of `@labkey/freezermanager` from inventory module to `@labkey/premium/storage`
+
 ### version 6.7.0
 *Released*: 16 December 2022
 * webpack updates for `@labkey/premium/workflow` package

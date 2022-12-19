@@ -10,7 +10,6 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-const FREEZER_MANAGER_DIRS = ['inventory', 'packages', 'freezermanager', 'src'];
 const cwd = path.resolve('./').split(path.sep);
 const lkModule = cwd[cwd.length - 1];
 const isProductionBuild = process.env.NODE_ENV === 'production';
@@ -21,7 +20,6 @@ const isProductionBuild = process.env.NODE_ENV === 'production';
 // NOTE: the LABKEY_UI_COMPONENTS_HOME and LABKEY_UI_PREMIUM_HOME environment variable must be set for this to work.
 let labkeyUIComponentsPath = path.resolve('./node_modules/@labkey/components');
 let labkeyUIPremiumPath = path.resolve('./node_modules/@labkey/premium');
-let freezerManagerPath = path.resolve('./node_modules/@labkey/freezermanager');
 const tsconfigPath = path.resolve('./node_modules/@labkey/build/webpack/tsconfig.json');
 
 if (process.env.LINK) {
@@ -33,14 +31,10 @@ if (process.env.LINK) {
     }
 
     labkeyUIComponentsPath = process.env.LABKEY_UI_COMPONENTS_HOME + '/packages/components/src';
-    labkeyUIPremiumPath = process.env.LABKEY_UI_PREMIUM_HOME + '/packages/premium/src';
-    // lastIndexOf just in case someone is weird and has their LKS deployment under a directory named modules.
-    const lkModulesPath = cwd.slice(0, cwd.lastIndexOf('modules') + 1);
-    freezerManagerPath = lkModulesPath.concat(FREEZER_MANAGER_DIRS).join(path.sep);
-
     console.log('Using @labkey/components path:', labkeyUIComponentsPath);
+
+    labkeyUIPremiumPath = process.env.LABKEY_UI_PREMIUM_HOME + '/packages/premium/src';
     console.log('Using @labkey/premium path:', labkeyUIPremiumPath);
-    console.log('Using @labkey/freezermanager path:', freezerManagerPath);
 }
 
 const watchPort = process.env.WATCH_PORT || 3001;
@@ -162,7 +156,7 @@ const TS_CHECKER_DEV_CONFIG = {
                     "@labkey/premium/assay": [labkeyUIPremiumPath + '/assay'],
                     "@labkey/premium/eln": [labkeyUIPremiumPath + '/eln'],
                     "@labkey/premium/workflow": [labkeyUIPremiumPath + '/workflow'],
-                    "@labkey/freezermanager": [freezerManagerPath],
+                    "@labkey/premium/storage": [labkeyUIPremiumPath + '/storage'],
                 }
             }
         },
@@ -179,7 +173,7 @@ const labkeyPackagesDev = process.env.LINK
         '@labkey/premium/assay': labkeyUIPremiumPath + '/assay',
         '@labkey/premium/eln': labkeyUIPremiumPath + '/eln',
         '@labkey/premium/workflow': labkeyUIPremiumPath + '/workflow',
-        '@labkey/freezermanager': freezerManagerPath,
+        '@labkey/premium/storage': labkeyUIPremiumPath + '/storage',
     }
     : {};
 
@@ -187,7 +181,6 @@ module.exports = {
     lkModule,
     labkeyUIComponentsPath,
     labkeyUIPremiumPath,
-    freezerManagerPath,
     tsconfigPath,
     watchPort,
     TS_CHECKER_CONFIG,
@@ -257,7 +250,6 @@ module.exports = {
             '@labkey/components-scss': labkeyUIComponentsPath + '/dist/assets/scss/theme',
             '@labkey/components-app-scss': labkeyUIComponentsPath + '/dist/assets/scss/theme/app',
             '@labkey/premium-scss': labkeyUIPremiumPath + '/dist/assets/scss/theme',
-            '@labkey/freezermanager-scss': freezerManagerPath + '/dist/assets/scss/theme',
         },
         LABKEY_PACKAGES_DEV: {
             ...labkeyPackagesDev,
@@ -265,7 +257,6 @@ module.exports = {
             '@labkey/components-scss': labkeyUIComponentsPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
             '@labkey/components-app-scss': labkeyUIComponentsPath + (process.env.LINK ? '/theme/app' : '/dist/assets/scss/theme/app'),
             '@labkey/premium-scss': labkeyUIPremiumPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
-            '@labkey/freezermanager-scss': freezerManagerPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
         },
     },
     outputPath: path.resolve('./resources/web/gen'),

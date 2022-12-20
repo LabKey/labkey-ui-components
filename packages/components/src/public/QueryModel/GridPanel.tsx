@@ -820,8 +820,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                     return col.fieldKey.toLowerCase()
                 }).toArray();
                 queryInfo.columns.forEach(queryCol => {
-                    if (queryCol.fieldKey && queryCol.addToSystemView && columnFieldKeys.indexOf(queryCol.fieldKey.toLowerCase()) == -1) {
-                        columns = columns.push ({
+                    if (queryCol.fieldKey && queryCol.addToSystemView && columnFieldKeys.indexOf(queryCol.fieldKey.toLowerCase()) === -1) {
+                        columns = columns.push({
                             fieldKey: queryCol.fieldKey,
                             key: queryCol.fieldKey,
                             name: queryCol.name,
@@ -832,7 +832,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 updatedViewInfo = updatedViewInfo.mutate({columns});
             }
             updatedViewInfo = updatedViewInfo.mutate({
-                // update/set sorts and filters to combine view and user defined items
+                // update/set sorts and filters to combine view and user-defined items
                 filters: List(model.filterArray.concat(view.filters.toArray())),
                 sorts: List(model.sorts.concat(view.sorts.toArray())),
             });

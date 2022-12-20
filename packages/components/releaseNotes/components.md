@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 46908: Assure that columns added via `addToSystemView` in metadata are carried through to saved views
+
 ### version 2.273.1
 *Released*: 19 December 2022
 * Remove premature return from renderLabel in TextInput

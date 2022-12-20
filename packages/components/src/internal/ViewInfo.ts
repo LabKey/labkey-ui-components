@@ -1,6 +1,7 @@
 import { List, Record } from 'immutable';
 import { Filter } from '@labkey/api';
 import { QuerySort } from '../public/QuerySort';
+import { QueryInfo } from '../public/QueryInfo';
 
 function getFiltersFromView(rawViewInfo): List<Filter.IFilter> {
     const filters = List<Filter.IFilter>().asMutable();
@@ -169,6 +170,27 @@ export class ViewInfo extends Record({
                 modifiers.push('shared');
         }
         return modifiers;
+    }
+
+    addSystemViewColumns(queryInfo: QueryInfo) {
+        if (this.isDefault && !this.session) {
+            let columns = this.columns;
+            const columnFieldKeys = this.columns.map(col => {
+                return col.fieldKey.toLowerCase()
+            }).toArray();
+            queryInfo.columns.forEach(queryCol => {
+                if (queryCol.fieldKey && queryCol.addToSystemView && columnFieldKeys.indexOf(queryCol.fieldKey.toLowerCase()) === -1) {
+                    columns = columns.push({
+                        fieldKey: queryCol.fieldKey,
+                        key: queryCol.fieldKey,
+                        name: queryCol.name,
+                        title: queryCol.caption || queryCol.name,
+                    });
+                }
+            });
+            return this.mutate({columns});
+        }
+        return this;
     }
 
     mutate(updates: Partial<ViewInfo>) {

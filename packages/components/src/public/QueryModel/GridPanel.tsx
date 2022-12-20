@@ -813,24 +813,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
         return new Promise((resolve, reject) => {
             const view = queryInfo?.getView(viewName, true);
-            let updatedViewInfo = view;
-            if (view.isDefault && !view.session) {
-                let columns = view.columns;
-                const columnFieldKeys = view.columns.map(col => {
-                    return col.fieldKey.toLowerCase()
-                }).toArray();
-                queryInfo.columns.forEach(queryCol => {
-                    if (queryCol.fieldKey && queryCol.addToSystemView && columnFieldKeys.indexOf(queryCol.fieldKey.toLowerCase()) === -1) {
-                        columns = columns.push({
-                            fieldKey: queryCol.fieldKey,
-                            key: queryCol.fieldKey,
-                            name: queryCol.name,
-                            title: queryCol.caption,
-                        });
-                    }
-                });
-                updatedViewInfo = updatedViewInfo.mutate({columns});
-            }
+            let updatedViewInfo = view.addSystemViewColumns(queryInfo);
             updatedViewInfo = updatedViewInfo.mutate({
                 // update/set sorts and filters to combine view and user-defined items
                 filters: List(model.filterArray.concat(view.filters.toArray())),

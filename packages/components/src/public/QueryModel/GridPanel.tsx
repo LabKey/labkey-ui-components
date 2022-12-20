@@ -813,9 +813,9 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
         return new Promise((resolve, reject) => {
             const view = queryInfo?.getView(viewName, true);
-
-            const updatedViewInfo = view.mutate({
-                // update/set sorts and filters to combine view and user defined items
+            let updatedViewInfo = view.addSystemViewColumns(queryInfo);
+            updatedViewInfo = updatedViewInfo.mutate({
+                // update/set sorts and filters to combine view and user-defined items
                 filters: List(model.filterArray.concat(view.filters.toArray())),
                 sorts: List(model.sorts.concat(view.sorts.toArray())),
             });

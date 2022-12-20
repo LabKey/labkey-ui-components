@@ -1,6 +1,8 @@
-import { List } from 'immutable';
+import { fromJS, List } from 'immutable';
 
 import { ViewInfo } from './ViewInfo';
+import { QueryInfo } from '../public/QueryInfo';
+import { QueryColumn } from '../public/QueryColumn';
 
 describe('ViewInfo', () => {
     test('create', () => {
@@ -79,5 +81,131 @@ describe('ViewInfo', () => {
         expect(view.modifiers).toStrictEqual(['inherited']);
         view = ViewInfo.create({ shared: true, inherit: true });
         expect(view.modifiers).toStrictEqual(['inherited', 'shared']);
-    })
+    });
+
+    test("addSystemViewColumns, default view", () => {
+        let view = ViewInfo.create({
+            default: true,
+            columns: [{
+                fieldKey: "col1",
+                key: "col1",
+                name: "Column 1",
+            }]
+        });
+        const queryInfo = QueryInfo.create({
+           columns: fromJS({
+               "hideMe": new QueryColumn({
+                   name: "Hide Me",
+                   fieldKey: "hideMe",
+               }),
+               "systemCol1": new QueryColumn({
+                   name: "System Col 1",
+                   addToSystemView: true,
+                   fieldKey: "systemCol1",
+               }),
+               "notSystem": new QueryColumn({
+                   name: "Not System",
+                   addToSystemView: false,
+                   fieldKey: "notSystem",
+               }),
+               "otherSystemCol": new QueryColumn({
+                   name: "other",
+                   addToSystemView: true,
+                   fieldKey: "other",
+                   caption: "Other Column",
+               })
+           })
+        });
+        view = view.addSystemViewColumns(queryInfo);
+        expect(view.columns.toJS()).toStrictEqual([
+            {
+                fieldKey: "col1",
+                key: "col1",
+                name: "Column 1",
+            },
+            {
+                name: "System Col 1",
+                fieldKey: "systemCol1",
+                key: "systemCol1",
+                title: "System Col 1",
+            },
+            {
+                name: "other",
+                fieldKey: "other",
+                key: "other",
+                title: "Other Column",
+            }
+        ]);
+    });
+
+    test("addSystemViewColumns, default session view", () => {
+        let view = ViewInfo.create({
+            default: true,
+            session: true,
+            columns: [{
+                fieldKey: "col1",
+                key: "col1",
+                name: "Column 1",
+            }]
+        });
+        const queryInfo = QueryInfo.create({
+            columns: fromJS({
+                "hideMe": new QueryColumn({
+                    name: "Hide Me",
+                    hidden: true,
+                    fieldKey: "hideMe",
+                }),
+                "systemCol1": new QueryColumn({
+                    name: "System Col 1",
+                    addToSystemView: true,
+                    fieldKey: "systemCol1",
+                }),
+            })
+        });
+        view = view.addSystemViewColumns(queryInfo);
+        // if it's a session view, no additional columns should be added
+        expect(view.columns.toJS()).toStrictEqual([
+            {
+                fieldKey: "col1",
+                key: "col1",
+                name: "Column 1",
+            }
+        ]);
+    });
+
+    test("addSystemViewColumns, not default view", () => {
+        let view = ViewInfo.create({
+            default: false,
+            name: "Not Default",
+            session: true,
+            columns: [{
+                fieldKey: "col1",
+                key: "col1",
+                name: "Column 1",
+            }]
+        });
+        const queryInfo = QueryInfo.create({
+            columns: fromJS({
+                "hideMe": new QueryColumn({
+                    name: "Hide Me",
+                    hidden: true,
+                    fieldKey: "hideMe",
+                }),
+                "systemCol1": new QueryColumn({
+                    name: "System Col 1",
+                    addToSystemView: true,
+                    fieldKey: "systemCol1",
+                }),
+            })
+        });
+        view = view.addSystemViewColumns(queryInfo);
+        // if it's not the default view, no additional columns shoulb be added
+        expect(view.columns.toJS()).toStrictEqual([
+            {
+                fieldKey: "col1",
+                key: "col1",
+                name: "Column 1",
+            }
+        ]);
+    });
 });

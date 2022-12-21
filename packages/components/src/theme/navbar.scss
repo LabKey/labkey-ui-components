@@ -114,43 +114,60 @@ $nav-menu-btn-width: 85px;
 }
 
 .product-menu-content {
-  padding: 12px 15px 12px 0;
-  width: 780px;
+  //padding: 12px 15px 12px 0;
+  width: 945px; // TODO fix me
+  height: 500px; // TODO fix me
 
   &.error {
     color: $brand-danger;
     padding-left: 8px;
   }
 
-  .col-2 {
-    width: 50%
+    // TODO what about without folders column shown?
+  .col-folders {
+      width: 25%;
+      background-color: #eee; // TODO
+
+      li.active {
+          font-weight: bold; // TODO
+      }
+  }
+  .col-product-section {
+      width: 15%;
   }
 
-  .col-3 {
-    width: 33%;
-  }
-
-  .col-4 {
-    width: 25%;
-  }
-
-  .col-5 {
-    width: 20%;
-  }
+  //.col-2 {
+  //  width: 50%
+  //}
+  //
+  //.col-3 {
+  //  width: 33%;
+  //}
+  //
+  //.col-4 {
+  //  width: 25%;
+  //}
+  //
+  //.col-5 {
+  //  width: 20%;
+  //}
 
   .menu-section {
-    padding-left: 15px;
+    padding: 0 8px;
     vertical-align: top;
     display: inline-block;
+    height: 100%;
     word-break: break-word;
 
     .menu-section-header {
       font-family: FontAwesome, $font-family-sans-serif;
       color: $brand-primary;
 
-        a {
-            display: block;
-        }
+      a {
+        display: block;
+        color: $brand-primary;
+        cursor: pointer;
+      }
     }
 
     .menu-loading {
@@ -178,24 +195,9 @@ $nav-menu-btn-width: 85px;
 
               &:focus, &:hover {
                   color: $link-hover-color;
+                  cursor: pointer;
               }
           }
-      }
-
-      &.col-1 {
-        width: 95%;
-      }
-      &.col-2 {
-        width: 45%;
-      }
-    }
-
-    .overflow-link {
-      float: left;
-      margin: 0 5px;
-
-      a {
-        color: $brand-primary;
       }
     }
 
@@ -203,46 +205,46 @@ $nav-menu-btn-width: 85px;
       margin-top: 3px;
       margin-bottom: 5px;
       border-top-color: $brand-primary;
-      height: 3px;
+      height: 1px;
       background-color: $light-gray;
       border: none;
     }
   }
 }
 
-.navbar-left {
-    // For when 'Project' dropdown is not present
-    .navbar-item:first-child:nth-last-child(2),
-    .navbar-item:first-child:nth-last-child(2) ~ .navbar-item {
-        @media (min-width: 1200px) {
-            .product-menu-content {
-                width: 1000px;
-            }
-        }
-
-        @media (min-width: 1450px) {
-            .product-menu-content {
-                width: 1230px;
-            }
-        }
-    }
-
-    // For when 'Project' dropdown is present
-    .navbar-item:first-child:nth-last-child(3),
-    .navbar-item:first-child:nth-last-child(3) ~ .navbar-item {
-        @media (min-width: 1550px) {
-            .product-menu-content {
-                width: 1000px;
-            }
-        }
-
-        @media (min-width: 1775px) {
-            .product-menu-content {
-                width: 1230px;
-            }
-        }
-    }
-}
+//.navbar-left {
+//    // For when 'Project' dropdown is not present
+//    .navbar-item:first-child:nth-last-child(2),
+//    .navbar-item:first-child:nth-last-child(2) ~ .navbar-item {
+//        @media (min-width: 1200px) {
+//            .product-menu-content {
+//                width: 1000px;
+//            }
+//        }
+//
+//        @media (min-width: 1450px) {
+//            .product-menu-content {
+//                width: 1230px;
+//            }
+//        }
+//    }
+//
+//    // For when 'Project' dropdown is present
+//    .navbar-item:first-child:nth-last-child(3),
+//    .navbar-item:first-child:nth-last-child(3) ~ .navbar-item {
+//        @media (min-width: 1550px) {
+//            .product-menu-content {
+//                width: 1000px;
+//            }
+//        }
+//
+//        @media (min-width: 1775px) {
+//            .product-menu-content {
+//                width: 1230px;
+//            }
+//        }
+//    }
+//}
 
 .empty-section {
   font-style: italic;

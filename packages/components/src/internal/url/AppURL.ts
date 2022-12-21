@@ -26,16 +26,32 @@ export function createProductUrlFromParts(
     return createProductUrl(urlProductId, currentProductId, appUrl);
 }
 
+export function createProductUrlFromPartsWithContainer(
+    urlProductId: string,
+    currentProductId: string,
+    containerPath: string,
+    params: { [key: string]: any },
+    ...parts
+): string | AppURL {
+    const appUrl = AppURL.create(...parts).addParams(params);
+    return createProductUrl(urlProductId, currentProductId, appUrl, containerPath);
+}
+
 export function createProductUrl(
     urlProductId: string,
     currentProductId: string,
     appUrl: string | AppURL,
     containerPath?: string
 ): string | AppURL {
-    if (urlProductId && (!currentProductId || urlProductId.toLowerCase() !== currentProductId.toLowerCase())) {
+    // if caller provided a containerPath, then buildURL
+    // else if target productId of the URL is different then the current productId, then buildURL
+    if (
+        (containerPath && urlProductId) ||
+        (urlProductId && (!currentProductId || urlProductId.toLowerCase() !== currentProductId.toLowerCase()))
+    ) {
         const href = appUrl instanceof AppURL ? appUrl.toHref() : appUrl;
         return (
-            buildURL(urlProductId.toLowerCase(), 'app.view', undefined, {
+            buildURL(urlProductId.toLowerCase(), `${ActionURL.getAction()}.view`, undefined, {
                 returnUrl: false,
                 container: containerPath, // if undefined, buildURL will use current container from server context
             }) + href

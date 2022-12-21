@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 import { List, Record } from 'immutable';
-import { ActionURL, Ajax, Utils, QueryKey } from '@labkey/api';
+import { Ajax, Utils, QueryKey } from '@labkey/api';
 
-// These imports cannot be shortened or tests will start failing.
-import { buildURL, createProductUrl, createProductUrlFromParts, AppURL } from '../../url/AppURL';
+import { buildURL, createProductUrl, AppURL, createProductUrlFromPartsWithContainer } from '../../url/AppURL';
 
 export class MenuSectionModel extends Record({
     label: undefined,
@@ -38,12 +37,14 @@ export class MenuSectionModel extends Record({
     declare productId: string;
     declare sectionKey: string;
 
-    static create(rawData: any, currentProductId?: string): MenuSectionModel {
+    static create(rawData: any, currentProductId?: string, containerPath?: string): MenuSectionModel {
         if (rawData) {
             let items;
 
             if (rawData.items) {
-                items = rawData.items.map(i => MenuItemModel.create(i, rawData.sectionKey, currentProductId));
+                items = rawData.items.map(i =>
+                    MenuItemModel.create(i, rawData.sectionKey, currentProductId, containerPath)
+                );
             }
 
             return new MenuSectionModel(
@@ -63,6 +64,7 @@ export class MenuItemModel extends Record({
     label: undefined,
     url: undefined,
     orderNum: undefined,
+    originalUrl: undefined,
     requiresLogin: false,
     hasActiveJob: false,
     fromSharedContainer: false,
@@ -72,11 +74,12 @@ export class MenuItemModel extends Record({
     declare label: string;
     declare url: string | AppURL;
     declare orderNum: number;
+    declare originalUrl: string;
     declare requiresLogin: boolean;
     declare hasActiveJob: boolean;
     declare fromSharedContainer: boolean;
 
-    static create(rawData, sectionKey: string, currentProductId?: string): MenuItemModel {
+    static create(rawData, sectionKey: string, currentProductId?: string, containerPath?: string): MenuItemModel {
         if (rawData) {
             const dataProductId = rawData.productId ? rawData.productId.toLowerCase() : undefined;
 
@@ -93,9 +96,11 @@ export class MenuItemModel extends Record({
 
                 return new MenuItemModel(
                     Object.assign({}, rawData, {
-                        url: createProductUrlFromParts(
+                        originalUrl: rawData.url,
+                        url: createProductUrlFromPartsWithContainer(
                             dataProductId,
                             currentProductId,
+                            containerPath,
                             undefined,
                             sectionKey,
                             ...subParts
@@ -106,7 +111,8 @@ export class MenuItemModel extends Record({
             } else {
                 return new MenuItemModel(
                     Object.assign({}, rawData, {
-                        url: createProductUrl(dataProductId, currentProductId, rawData.url),
+                        originalUrl: rawData.url,
+                        url: createProductUrl(dataProductId, currentProductId, rawData.url, containerPath),
                     })
                 );
             }
@@ -114,7 +120,8 @@ export class MenuItemModel extends Record({
         return new MenuItemModel();
     }
 
-    getUrlString(): string {
+    getUrlString(useOriginalUrl?: boolean): string {
+        if (useOriginalUrl && this.originalUrl) return this.originalUrl;
         return typeof this.url === 'string' ? this.url : this.url?.toHref();
     }
 }
@@ -125,6 +132,7 @@ export class ProductMenuModel extends Record({
     isLoading: false,
     sections: List<MenuSectionModel>(),
     message: undefined,
+    containerPath: undefined,
     currentProductId: undefined,
     userMenuProductId: undefined,
     productIds: undefined,
@@ -135,23 +143,11 @@ export class ProductMenuModel extends Record({
     declare isLoading: boolean;
     declare message: string;
     declare sections: List<MenuSectionModel>;
+    declare containerPath: string;
     declare currentProductId: string; // the current product's id
     declare userMenuProductId: string; // the product's id for the user menu items
     declare productIds: List<string>; // the list of all product ids to be included in the menu; leave undefined for all products in the container
     declare needsReload: boolean;
-
-    init(): void {
-        if (!this.isLoaded && !this.isLoading) {
-            this.getMenuSections()
-                .then(this.setLoadedSections)
-                .catch(reason => {
-                    console.error('Problem retrieving product menu data.', reason);
-                    return this.setError(
-                        'Error in retrieving product menu data. Please contact your site administrator.'
-                    );
-                });
-        }
-    }
 
     /**
      * Retrieve the product menu sections for this productId
@@ -159,7 +155,9 @@ export class ProductMenuModel extends Record({
     getMenuSections(itemLimit?: number): Promise<List<MenuSectionModel>> {
         return new Promise((resolve, reject) => {
             return Ajax.request({
-                url: buildURL('product', 'menuSections.api'),
+                url: buildURL('product', 'menuSections.api', undefined, {
+                    container: this.containerPath,
+                }),
                 params: Object.assign({
                     currentProductId: this.currentProductId,
                     userMenuProductId: this.userMenuProductId,
@@ -170,7 +168,9 @@ export class ProductMenuModel extends Record({
                     let sections = List<MenuSectionModel>();
                     if (response) {
                         response.forEach(sectionData => {
-                            sections = sections.push(MenuSectionModel.create(sectionData, this.currentProductId));
+                            sections = sections.push(
+                                MenuSectionModel.create(sectionData, this.currentProductId, this.containerPath)
+                            );
                         });
                     }
                     resolve(sections);
@@ -194,8 +194,8 @@ export class ProductMenuModel extends Record({
 
     setError(message: string): ProductMenuModel {
         return this.merge({
-            isLoading: false,
             isLoaded: true,
+            isLoading: false,
             needsReload: false,
             isError: true,
             message,
@@ -215,4 +215,30 @@ export class ProductMenuModel extends Record({
             needsReload: true,
         }) as ProductMenuModel;
     }
+}
+
+export class MenuSectionConfig extends Record({
+    activeJobIconCls: 'fa-spinner fa-pulse',
+    emptyText: undefined,
+    emptyAppURL: undefined,
+    emptyURLProjectOnly: false,
+    emptyURLText: 'Get started...',
+    headerURLPart: undefined,
+    headerText: undefined,
+    iconCls: undefined,
+    iconURL: undefined,
+    showActiveJobIcon: true,
+    useOriginalURL: false,
+}) {
+    declare activeJobIconCls?: string;
+    declare emptyText?: string;
+    declare emptyAppURL?: AppURL;
+    declare emptyURLProjectOnly: boolean;
+    declare emptyURLText: string;
+    declare headerURLPart: string;
+    declare headerText?: string;
+    declare iconCls?: string;
+    declare iconURL?: string;
+    declare showActiveJobIcon?: boolean;
+    declare useOriginalURL?: boolean;
 }

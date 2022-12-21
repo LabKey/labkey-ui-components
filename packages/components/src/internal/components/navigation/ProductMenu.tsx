@@ -13,31 +13,82 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { MouseEvent, FC, memo, ReactNode, useCallback, useState } from 'react';
+import React, { MouseEvent, FC, memo, useCallback, useState, useEffect } from 'react';
 import classNames from 'classnames';
 import { List, Map } from 'immutable';
 import { DropdownButton } from 'react-bootstrap';
 
 import { blurActiveElement } from '../../util/utils';
-
 import { LoadingSpinner } from '../base/LoadingSpinner';
+import { useServerContext } from '../base/ServerContext';
+import { AppProperties } from '../../app/models';
+import { getAppProductIds, getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
 
-import { MenuSectionModel, ProductMenuModel } from './model';
-import { MenuSectionConfig, ProductMenuSection } from './ProductMenuSection';
+import { Alert } from '../base/Alert';
+
+import { useFolderMenuContext } from './hooks';
+
+import { ProductMenuSection } from './ProductMenuSection';
+import { MenuSectionConfig, MenuSectionModel, ProductMenuModel } from './model';
+import { FolderMenu, FolderMenuItem } from './FolderMenu';
+
+async function initMenuModel(
+    appProperties: AppProperties,
+    userMenuProductId: string,
+    containerPath?: string
+): Promise<ProductMenuModel> {
+    const menuModel = new ProductMenuModel({
+        containerPath,
+        currentProductId: appProperties.productId,
+        userMenuProductId: getPrimaryAppProperties().productId,
+        productIds: getAppProductIds(appProperties.productId),
+    });
+
+    try {
+        const sections = await menuModel.getMenuSections();
+        return menuModel.setLoadedSections(sections);
+    } catch (e) {
+        console.error('Problem retrieving product menu data.', e);
+        return menuModel.setError('Error in retrieving product menu data. Please contact your site administrator.');
+    }
+}
 
 interface ProductMenuProps {
-    maxColumns?: number;
-    model: ProductMenuModel;
-    sectionConfigs?: List<Map<string, MenuSectionConfig>>;
+    appProperties?: AppProperties;
+    sectionConfigs: List<Map<string, MenuSectionConfig>>;
+    showFolderMenu: boolean;
 }
 
 export const ProductMenu: FC<ProductMenuProps> = memo(props => {
-    const { model, sectionConfigs } = props;
+    const { sectionConfigs, showFolderMenu, appProperties = getCurrentAppProperties() } = props;
     const [menuOpen, setMenuOpen] = useState(false);
+    const [menuModel, setMenuModel] = useState<ProductMenuModel>(new ProductMenuModel());
+    const { container } = useServerContext();
+    const folderMenuContext = useFolderMenuContext();
+
+    useEffect(() => {
+        (async () => {
+            // no try/catch as the initMenuModel will catch errors and put them in the model isError/message
+            const menuModel_ = await initMenuModel(appProperties, getPrimaryAppProperties().productId);
+            setMenuModel(menuModel_);
+        })();
+    }, [appProperties, container.id]);
+
+    const onFolderItemClick = useCallback(
+        async (folderItem: FolderMenuItem) => {
+            setMenuModel(new ProductMenuModel()); // loading state, reset error
+
+            // no try/catch as the initMenuModel will catch errors and put them in the model isError/message
+            const containerPath = folderItem.id === container.id ? undefined : folderItem.path;
+            const menuModel_ = await initMenuModel(appProperties, getPrimaryAppProperties().productId, containerPath);
+            setMenuModel(menuModel_);
+        },
+        [appProperties, container.id]
+    );
 
     const getSectionModel = useCallback(
-        (key: string): MenuSectionModel => model.sections.find(section => section.key === key),
-        [model]
+        (key: string): MenuSectionModel => menuModel.sections.find(section => section.key === key),
+        [menuModel]
     );
 
     const toggleMenu = useCallback(() => {
@@ -45,55 +96,17 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
         blurActiveElement();
     }, [menuOpen, setMenuOpen]);
 
-    // Only toggle the menu closing if a link has been clicked.
-    // Clicking anywhere else inside the menu will not toggle the menu.
+    // Only toggle the menu closing if a menu section link has been clicked.
+    // Clicking anywhere else inside the menu will not toggle the menu, including side panel folder clicks.
     const onClick = useCallback(
         (evt: MouseEvent<HTMLDivElement>) => {
-            const nodeName = (evt.target as any).nodeName;
-            if (!nodeName || nodeName.toLowerCase() === 'a') {
+            const { nodeName, className } = evt.target as any;
+            if (!nodeName || (nodeName.toLowerCase() === 'a' && className !== 'menu-folder-item')) {
                 toggleMenu();
             }
         },
         [toggleMenu]
     );
-
-    let menuSectionCls = `menu-section col-${model.sections.size}`;
-    let content: ReactNode = (
-        <div className={`${menuSectionCls} menu-loading`}>
-            <LoadingSpinner />
-        </div>
-    );
-
-    if (model?.isLoaded) {
-        if (model.isError) {
-            content = <span>{model.message}</span>;
-        } else if (sectionConfigs) {
-            menuSectionCls = `menu-section col-${sectionConfigs.size}`;
-
-            content = sectionConfigs.map((sectionConfig, ind) => (
-                <div key={ind} className={menuSectionCls}>
-                    {sectionConfig.entrySeq().map(([key, menuConfig]) => (
-                        <ProductMenuSection
-                            key={key}
-                            section={getSectionModel(key)}
-                            config={menuConfig}
-                            currentProductId={model.currentProductId}
-                        />
-                    ))}
-                </div>
-            ));
-        } else {
-            content = model.sections.map(section => (
-                <div key={section.key} className={menuSectionCls}>
-                    <ProductMenuSection
-                        section={section}
-                        config={new MenuSectionConfig()}
-                        currentProductId={model.currentProductId}
-                    />
-                </div>
-            ));
-        }
-    }
 
     return (
         <DropdownButton
@@ -103,9 +116,33 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
             open={menuOpen}
             title="Menu"
         >
-            <div className={classNames('product-menu-content', { error: !!model?.isError })} onClick={onClick}>
+            <div className={classNames('product-menu-content', { error: !!menuModel.isError })} onClick={onClick}>
                 <div className="navbar-connector" />
-                {content}
+                {showFolderMenu && <FolderMenu key={folderMenuContext.key} onClick={onFolderItemClick} />}
+                {!menuModel.isLoaded && (
+                    <div className="menu-section">
+                        <LoadingSpinner />
+                    </div>
+                )}
+                {menuModel.isError && (
+                    <div className="menu-section">
+                        <Alert>{menuModel.message}</Alert>
+                    </div>
+                )}
+                {menuModel.isLoaded &&
+                    sectionConfigs.map((sectionConfig, i) => (
+                        <div key={i} className="menu-section col-product-section">
+                            {sectionConfig.entrySeq().map(([key, menuConfig]) => (
+                                <ProductMenuSection
+                                    key={key}
+                                    section={getSectionModel(key)}
+                                    config={menuConfig}
+                                    containerPath={menuModel.containerPath}
+                                    currentProductId={menuModel.currentProductId}
+                                />
+                            ))}
+                        </div>
+                    ))}
             </div>
         </DropdownButton>
     );

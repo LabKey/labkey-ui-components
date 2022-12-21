@@ -36,13 +36,8 @@ import { useServerContext } from '../base/ServerContext';
 
 import { ProductMenu } from './ProductMenu';
 import { UserMenu, UserMenuProps } from './UserMenu';
-import { MenuSectionConfig } from './ProductMenuSection';
-import { ProductMenuModel } from './model';
-
-import { FolderMenu } from './FolderMenu';
-
+import { MenuSectionConfig, ProductMenuModel } from './model';
 import { SEARCH_PLACEHOLDER } from './constants';
-import { useFolderMenuContext } from './hooks';
 
 interface NavigationBarProps {
     brand?: ReactNode;
@@ -76,7 +71,6 @@ export const NavigationBar: FC<Props> = memo(props => {
         onSignIn,
         onSignOut,
         searchPlaceholder,
-        showFolderMenu,
         showNavMenu,
         showNotifications,
         showProductNav,
@@ -86,7 +80,6 @@ export const NavigationBar: FC<Props> = memo(props => {
     } = props;
 
     const { moduleContext } = useServerContext();
-    const folderMenuContext = useFolderMenuContext();
     const onSearchIconClick = useCallback(() => {
         onSearch('');
     }, [onSearch]);
@@ -104,10 +97,9 @@ export const NavigationBar: FC<Props> = memo(props => {
                     <div className="row">
                         <div className="navbar-left col-xs-8 col-md-7">
                             <span className="navbar-item pull-left">{brand}</span>
-                            {showFolderMenu && <FolderMenu key={folderMenuContext.key} />}
-                            {showNavMenu && !!model && (
+                            {showNavMenu && (
                                 <span className="navbar-item">
-                                    <ProductMenu model={model} sectionConfigs={menuSectionConfigs} />
+                                    <ProductMenu sectionConfigs={menuSectionConfigs} showFolderMenu />
                                 </span>
                             )}
                         </div>

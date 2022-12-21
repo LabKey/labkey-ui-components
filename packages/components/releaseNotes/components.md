@@ -10,6 +10,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Remove premature return from renderLabel in TextInput
 * Set maxLength property on ProjectProperties name field
 
+### version TBD
+*Released*: TBD December 2022
+* App header Projects and Menu consolidation
+  * FolderMenu component to render within ProductMenu
+  * ProductMenu component use state variable for ProductMenuModel object for current and selected folder
+  * Add createProductUrlFromPartsWithContainer() to create menu links for selected container when not current
+  * Pass containerPath through to create methods of MenuSectionModel and MenuItemModel
+  * Update menuSectionConfig generation utils to remove appBase prop
+
 ### version 2.273.0
 *Released*: 15 December 2022
 * Update FM UI to use "Storage" instead of "Freezer"

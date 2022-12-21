@@ -11,9 +11,9 @@ import { LABKEY_WEBSOCKET } from '../constants';
 
 import { hasAllPermissions, User } from '../components/base/models/User';
 
-import { MenuSectionConfig } from '../components/navigation/ProductMenuSection';
+import { MenuSectionConfig } from '../components/navigation/model';
 import { imageURL } from '../url/ActionURL';
-import { AppURL, buildURL } from '../url/AppURL';
+import { AppURL } from '../url/AppURL';
 import { ModuleContext } from '../components/base/ServerContext';
 
 import { Container } from '../components/base/models/Container';
@@ -36,7 +36,6 @@ import {
     NEW_SOURCE_TYPE_HREF,
     NEW_STANDARD_ASSAY_DESIGN_HREF,
     NOTEBOOKS_KEY,
-    PICKLIST_HOME_HREF,
     PICKLIST_KEY,
     ProductFeature,
     REGISTRY_KEY,
@@ -46,7 +45,6 @@ import {
     SERVER_NOTIFICATIONS_INVALIDATE,
     SOURCES_KEY,
     USER_KEY,
-    WORKFLOW_HOME_HREF,
     WORKFLOW_KEY,
 } from './constants';
 
@@ -323,30 +321,18 @@ export function getProjectPath(containerPath?: string): string {
 }
 
 // exported for testing
-export function getStorageSectionConfig(
-    user: User,
-    currentProductId: string,
-    moduleContext: any,
-    maxItemsPerColumn: number
-): MenuSectionConfig {
+export function getStorageSectionConfig(user: User, currentProductId: string, moduleContext: any): MenuSectionConfig {
     if (isFreezerManagementEnabled(moduleContext)) {
-        const fmAppBase = getApplicationUrlBase(
-            FREEZER_MANAGER_APP_PROPERTIES.moduleName,
-            currentProductId,
-            moduleContext
-        );
         let locationsMenuConfig = new MenuSectionConfig({
             emptyText: 'No storage has been defined',
             iconURL: imageURL('_images', 'freezer_menu.svg'),
-            maxColumns: 1,
-            maxItemsPerColumn,
-            seeAllURL: fmAppBase + AppURL.create(HOME_KEY).toHref(),
-            headerURL: fmAppBase + AppURL.create(HOME_KEY).toHref(),
+            headerURLPart: HOME_KEY,
         });
         // freezer creation not supported in sub folders
-        if (userCanDesignLocations(user) && isProjectContainer()) {
+        if (userCanDesignLocations(user)) {
             locationsMenuConfig = locationsMenuConfig.merge({
-                emptyURL: fmAppBase + AppURL.create(FREEZERS_KEY, 'new').toHref(),
+                emptyAppURL: AppURL.create(FREEZERS_KEY, 'new'),
+                emptyURLProjectOnly: true,
                 emptyURLText: 'Create storage',
             }) as MenuSectionConfig;
         }
@@ -358,7 +344,6 @@ export function getStorageSectionConfig(
 // exported for testing
 export function addSourcesSectionConfig(
     user: User,
-    appBase: string,
     sectionConfigs: List<Map<string, MenuSectionConfig>>
 ): List<Map<string, MenuSectionConfig>> {
     if (!userCanReadSources(user)) return sectionConfigs;
@@ -366,13 +351,10 @@ export function addSourcesSectionConfig(
     let sourcesMenuConfig = new MenuSectionConfig({
         emptyText: 'No source types have been defined',
         iconURL: imageURL('_images', 'source_type.svg'),
-        maxColumns: 1,
-        maxItemsPerColumn: 12,
-        seeAllURL: appBase + AppURL.create(SOURCES_KEY).toHref(),
     });
     if (userCanDesignSourceTypes(user)) {
         sourcesMenuConfig = sourcesMenuConfig.merge({
-            emptyURL: appBase + NEW_SOURCE_TYPE_HREF.toHref(),
+            emptyAppURL: NEW_SOURCE_TYPE_HREF,
             emptyURLText: 'Create a source type',
         }) as MenuSectionConfig;
     }
@@ -382,19 +364,15 @@ export function addSourcesSectionConfig(
 // exported for testing
 export function addSamplesSectionConfig(
     user: User,
-    appBase: string,
     sectionConfigs: List<Map<string, MenuSectionConfig>>
 ): List<Map<string, MenuSectionConfig>> {
     let samplesMenuConfig = new MenuSectionConfig({
         emptyText: 'No sample types have been defined',
         iconURL: imageURL('_images', 'samples.svg'),
-        maxColumns: 1,
-        maxItemsPerColumn: 12,
-        seeAllURL: appBase + AppURL.create(SAMPLES_KEY).toHref(),
     });
     if (user.hasDesignSampleTypesPermission()) {
         samplesMenuConfig = samplesMenuConfig.merge({
-            emptyURL: appBase + NEW_SAMPLE_TYPE_HREF.toHref(),
+            emptyAppURL: NEW_SAMPLE_TYPE_HREF,
             emptyURLText: 'Create a sample type',
         }) as MenuSectionConfig;
     }
@@ -404,7 +382,6 @@ export function addSamplesSectionConfig(
 // exported for testing
 export function addAssaysSectionConfig(
     user: User,
-    appBase: string,
     sectionConfigs: List<Map<string, MenuSectionConfig>>,
     standardAssayOnly: boolean
 ): List<Map<string, MenuSectionConfig>> {
@@ -413,55 +390,43 @@ export function addAssaysSectionConfig(
     let assaysMenuConfig = new MenuSectionConfig({
         emptyText: 'No assays have been defined',
         iconURL: imageURL('_images', 'assay.svg'),
-        maxColumns: 1,
-        maxItemsPerColumn: 12,
-        seeAllURL: appBase + AppURL.create(ASSAYS_KEY).toHref(),
     });
     if (user.hasDesignAssaysPermission()) {
         assaysMenuConfig = assaysMenuConfig.merge({
-            emptyURL:
-                appBase +
-                (standardAssayOnly ? NEW_STANDARD_ASSAY_DESIGN_HREF.toHref() : NEW_ASSAY_DESIGN_HREF.toHref()),
+            emptyAppURL: standardAssayOnly ? NEW_STANDARD_ASSAY_DESIGN_HREF : NEW_ASSAY_DESIGN_HREF,
             emptyURLText: 'Create an assay design',
         }) as MenuSectionConfig;
     }
     return sectionConfigs.push(Map<string, MenuSectionConfig>().set(ASSAYS_KEY, assaysMenuConfig));
 }
 
-function getWorkflowSectionConfig(appBase: string): MenuSectionConfig {
+function getWorkflowSectionConfig(): MenuSectionConfig {
     return new MenuSectionConfig({
-        headerURL: appBase + WORKFLOW_HOME_HREF.toHref(),
         iconURL: imageURL('_images', 'workflow.svg'),
-        seeAllURL: appBase + AppURL.create(WORKFLOW_KEY).toHref(),
     });
 }
 
-function getPicklistsSectionConfig(appBase: string): MenuSectionConfig {
+function getPicklistsSectionConfig(): MenuSectionConfig {
     return new MenuSectionConfig({
-        headerURL: appBase + PICKLIST_HOME_HREF.toHref(),
         iconURL: imageURL('_images', 'picklist.svg'),
     });
 }
 
-function getNotebooksSectionConfig(appBase: string): MenuSectionConfig {
+function getNotebooksSectionConfig(): MenuSectionConfig {
     return new MenuSectionConfig({
         iconURL: imageURL('labbook/images', 'notebook_blue.svg'),
-        headerURL: appBase + AppURL.create(NOTEBOOKS_KEY).toHref(),
     });
 }
 
-function getMediaSectionConfig(appBase: string): MenuSectionConfig {
+function getMediaSectionConfig(): MenuSectionConfig {
     return new MenuSectionConfig({
-        headerURL: appBase + AppURL.create(MEDIA_KEY).toHref(),
         iconURL: imageURL('_images', 'mixtures.svg'),
-        seeAllURL: appBase + AppURL.create(MEDIA_KEY).toHref(),
     });
 }
 
-function getRegistrySectionConfig(appBase: string): MenuSectionConfig {
+function getRegistrySectionConfig(): MenuSectionConfig {
     return new MenuSectionConfig({
         iconURL: imageURL('_images', 'molecule.svg'),
-        seeAllURL: appBase + AppURL.create(REGISTRY_KEY).toHref(),
     });
 }
 
@@ -470,23 +435,20 @@ const USER_SECTION_CONFIG = new MenuSectionConfig({
 });
 
 const REQUESTS_SECTION_CONFIG = new MenuSectionConfig({
-    headerURL: buildURL('query', 'executeQuery', {
-        schemaName: 'issues',
-        'query.queryName': 'IssueListDef',
-    }),
+    useOriginalURL: true,
     iconURL: imageURL('_images', 'default.svg'),
 });
 
-function getBioWorkflowNotebookMediaConfigs(appBase: string, user: User): Map<string, MenuSectionConfig> {
+function getBioWorkflowNotebookMediaConfigs(user: User): Map<string, MenuSectionConfig> {
     let configs = Map({
-        [WORKFLOW_KEY]: getWorkflowSectionConfig(appBase),
+        [WORKFLOW_KEY]: getWorkflowSectionConfig(),
     });
     if (userCanReadMedia(user)) {
-        configs = configs.set(MEDIA_KEY, getMediaSectionConfig(appBase));
+        configs = configs.set(MEDIA_KEY, getMediaSectionConfig());
     }
-    configs = configs.set(PICKLIST_KEY, getPicklistsSectionConfig(appBase));
+    configs = configs.set(PICKLIST_KEY, getPicklistsSectionConfig());
     if (userCanReadNotebooks(user)) {
-        configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig(appBase));
+        configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig());
     }
     return configs;
 }
@@ -499,36 +461,26 @@ export function getMenuSectionConfigs(
 ): List<Map<string, MenuSectionConfig>> {
     let sectionConfigs = List<Map<string, MenuSectionConfig>>();
 
-    const appBase = getApplicationUrlBase(
-        getPrimaryAppProperties(moduleContext).moduleName,
-        currentProductId,
-        moduleContext
-    );
     const currentAppProperties = getCurrentAppProperties(); // based on the controller name
     const isSMPrimary = sampleManagerIsPrimaryApp(moduleContext);
     const isBioPrimary = biologicsIsPrimaryApp(moduleContext);
     const isBioOrSM = isSMPrimary || isBioPrimary;
     const inSMApp = isSMPrimary || currentAppProperties?.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId;
     if (inSMApp) {
-        sectionConfigs = addSourcesSectionConfig(user, appBase, sectionConfigs);
+        sectionConfigs = addSourcesSectionConfig(user, sectionConfigs);
     } else if (isBioPrimary) {
         if (userCanReadDataClasses(user)) {
-            sectionConfigs = sectionConfigs.push(Map({ [REGISTRY_KEY]: getRegistrySectionConfig(appBase) }));
+            sectionConfigs = sectionConfigs.push(Map({ [REGISTRY_KEY]: getRegistrySectionConfig() }));
         }
     }
     if (isBioOrSM) {
-        sectionConfigs = addSamplesSectionConfig(user, appBase, sectionConfigs);
+        sectionConfigs = addSamplesSectionConfig(user, sectionConfigs);
         if (isAssayEnabled(moduleContext)) {
-            sectionConfigs = addAssaysSectionConfig(user, appBase, sectionConfigs, isSMPrimary);
+            sectionConfigs = addAssaysSectionConfig(user, sectionConfigs, isSMPrimary);
         }
     }
 
-    const storageConfig = getStorageSectionConfig(
-        user,
-        currentProductId,
-        moduleContext,
-        isBioPrimary && isAssayRequestsEnabled(moduleContext) ? 7 : 12
-    );
+    const storageConfig = getStorageSectionConfig(user, currentProductId, moduleContext);
 
     if (inSMApp) {
         if (storageConfig) {
@@ -536,12 +488,12 @@ export function getMenuSectionConfigs(
         }
         let configs = Map<string, MenuSectionConfig>({});
         if (isWorkflowEnabled(moduleContext)) {
-            configs = configs.set(WORKFLOW_KEY, getWorkflowSectionConfig(appBase));
+            configs = configs.set(WORKFLOW_KEY, getWorkflowSectionConfig());
         }
-        configs = configs.set(PICKLIST_KEY, getPicklistsSectionConfig(appBase));
+        configs = configs.set(PICKLIST_KEY, getPicklistsSectionConfig());
 
         if (userCanReadNotebooks(user) && isELNEnabled(moduleContext)) {
-            configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig(appBase));
+            configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig());
         }
         sectionConfigs = sectionConfigs.push(configs);
     } else if (isBioPrimary) {
@@ -554,13 +506,13 @@ export function getMenuSectionConfigs(
             if (storageConfig) {
                 requestsCol = requestsCol.set(FREEZERS_KEY, storageConfig);
             }
-            sectionConfigs = sectionConfigs.push(requestsCol, getBioWorkflowNotebookMediaConfigs(appBase, user));
+            sectionConfigs = sectionConfigs.push(requestsCol, getBioWorkflowNotebookMediaConfigs(user));
         } else {
             if (storageConfig) {
                 sectionConfigs = sectionConfigs.push(Map({ [FREEZERS_KEY]: storageConfig }));
             }
 
-            sectionConfigs = sectionConfigs.push(getBioWorkflowNotebookMediaConfigs(appBase, user));
+            sectionConfigs = sectionConfigs.push(getBioWorkflowNotebookMediaConfigs(user));
         }
     } else {
         if (storageConfig) {
@@ -581,19 +533,6 @@ export const useMenuSectionConfigs = (
     }, [user, moduleContext, appProperties.productId]);
 };
 
-function getProductId(moduleName: string, moduleContext: any): string {
-    const lcModuleName = moduleName.toLowerCase();
-    const context = resolveModuleContext(moduleContext)?.[lcModuleName];
-    return context?.productId?.toLowerCase();
-}
-
-function getApplicationUrlBase(moduleName: string, currentProductId: string, moduleContext: any): string {
-    const lcProductId = getProductId(moduleName, moduleContext);
-    return !lcProductId || lcProductId === currentProductId.toLowerCase()
-        ? ''
-        : buildURL(lcProductId, 'app.view', undefined, { returnUrl: false });
-}
-
 // Returns the friendly name of the product, primarily for use in help text.
 export function getCurrentProductName(moduleContext?: ModuleContext): string {
     const lcController = ActionURL.getController().toLowerCase();
@@ -605,12 +544,11 @@ export function getCurrentProductName(moduleContext?: ModuleContext): string {
     return LABKEY_SERVER_PRODUCT_NAME;
 }
 
-// TODO when isFreezerManagerEnabled goes away, we can put this data in the AppProperties constants instead
 export function getAppProductIds(appProductId: string): List<string> {
     let productIds = List.of(appProductId);
     if (
         appProductId === SAMPLE_MANAGER_APP_PROPERTIES.productId ||
-        appProductId == BIOLOGICS_APP_PROPERTIES.productId
+        appProductId === BIOLOGICS_APP_PROPERTIES.productId
     ) {
         productIds = productIds.push(FREEZER_MANAGER_APP_PROPERTIES.productId);
     }

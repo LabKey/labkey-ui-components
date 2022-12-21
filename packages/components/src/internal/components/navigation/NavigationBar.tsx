@@ -38,6 +38,7 @@ import { ProductMenuButton } from './ProductMenu';
 import { UserMenu, UserMenuProps } from './UserMenu';
 import { MenuSectionConfig, ProductMenuModel } from './model';
 import { SEARCH_PLACEHOLDER } from './constants';
+import { useFolderMenuContext } from './hooks';
 
 interface NavigationBarProps {
     brand?: ReactNode;
@@ -80,6 +81,7 @@ export const NavigationBar: FC<Props> = memo(props => {
     } = props;
 
     const { moduleContext } = useServerContext();
+    const folderMenuContext = useFolderMenuContext();
     const onSearchIconClick = useCallback(() => {
         onSearch('');
     }, [onSearch]);
@@ -99,7 +101,11 @@ export const NavigationBar: FC<Props> = memo(props => {
                             <span className="navbar-item pull-left">{brand}</span>
                             {showNavMenu && (
                                 <span className="navbar-item">
-                                    <ProductMenuButton sectionConfigs={menuSectionConfigs} showFolderMenu />
+                                    <ProductMenuButton
+                                        key={folderMenuContext.key} // re-render and reload folderItems when project added
+                                        sectionConfigs={menuSectionConfigs}
+                                        showFolderMenu
+                                    />
                                 </span>
                             )}
                         </div>

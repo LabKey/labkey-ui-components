@@ -132,6 +132,7 @@ export class ProductMenuModel extends Record({
     isLoading: false,
     sections: List<MenuSectionModel>(),
     message: undefined,
+    containerId: undefined,
     containerPath: undefined,
     currentProductId: undefined,
     userMenuProductId: undefined,
@@ -143,6 +144,7 @@ export class ProductMenuModel extends Record({
     declare isLoading: boolean;
     declare message: string;
     declare sections: List<MenuSectionModel>;
+    declare containerId: string;
     declare containerPath: string;
     declare currentProductId: string; // the current product's id
     declare userMenuProductId: string; // the product's id for the user menu items

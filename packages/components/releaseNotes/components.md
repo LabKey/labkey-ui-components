@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD December 2022
 * App header Projects and Menu consolidation
+  * ProductMenuButton to hold state for folderItems
   * FolderMenu component to render within ProductMenu
   * ProductMenu component use state variable for ProductMenuModel object for current and selected folder
   * Add createProductUrlFromPartsWithContainer() to create menu links for selected container when not current

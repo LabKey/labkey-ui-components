@@ -3,8 +3,6 @@ import { Dropdown, MenuItem, Modal } from 'react-bootstrap';
 import moment from 'moment';
 import { User, UserWithPermissions } from '@labkey/api';
 
-import { UserAvatar } from '../components/UserAvatars';
-
 import { resolveErrorMessage } from '../util/messaging';
 
 import { Alert } from '../components/base/Alert';

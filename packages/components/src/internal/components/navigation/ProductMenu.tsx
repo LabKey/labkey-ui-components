@@ -109,6 +109,7 @@ export const ProductMenuButton: FC<ProductMenuButtonProps> = memo(props => {
     if (!isLoaded && !hasError) return null;
     const showFolders = folderItems?.length > 1;
     const title = showFolders ? container.title : 'Menu';
+    const subtitle = 'Dashboard';
 
     return (
         <DropdownButton
@@ -116,7 +117,12 @@ export const ProductMenuButton: FC<ProductMenuButtonProps> = memo(props => {
             id="product-menu"
             onToggle={toggleMenu}
             open={menuOpen}
-            title={title}
+            title={
+                <>
+                    <div className="title">{title}</div>
+                    <div className="subtitle">{subtitle}</div>
+                </>
+            }
         >
             {menuOpen && (
                 <ProductMenu

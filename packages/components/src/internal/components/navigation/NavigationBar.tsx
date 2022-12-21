@@ -98,9 +98,9 @@ export const NavigationBar: FC<Props> = memo(props => {
                 <div className="container">
                     <div className="row">
                         <div className="navbar-left col-xs-8 col-md-7">
-                            <span className="navbar-item pull-left">{brand}</span>
+                            <span className="navbar-item navbar-left-icon pull-left">{brand}</span>
                             {showNavMenu && (
-                                <span className="navbar-item">
+                                <span className="navbar-item navbar-left-menu">
                                     <ProductMenuButton
                                         key={folderMenuContext.key} // re-render and reload folderItems when project added
                                         sectionConfigs={menuSectionConfigs}

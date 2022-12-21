@@ -30,11 +30,14 @@
 }
 
 .navbar-left {
-  margin: 10px 0;
   padding: 0;
 
   .navbar-item {
     margin-left: 20px;
+  }
+
+  .navbar-left-icon {
+      margin: 10px 0;
   }
 }
 
@@ -51,40 +54,55 @@
   font-family: FontAwesome, $font-family-sans-serif
 }
 
-$nav-menu-btn-box-shadow: 0 2px 4px 0 rgba(0,0,0,0.12), 0 2px 2px 0 rgba(0,0,0,0.24);
-$nav-menu-btn-width: 85px;
+.navbar-left-menu {
+    .product-menu-button {
+        height: 54px;
+        min-width: 85px;
+        max-width: 300px; // ~40 characters plus text overflow and caret padding
+        padding-right: 28px; // for caret
+        text-align: left;
 
-.nav-folder-menu .dropdown-menu {
-    max-height: 400px;
-    overflow: auto;
-}
+        background-color: transparent;
+        color: $white !important;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
 
-.nav-folder-menu .dropdown-menu > li {
-    min-width: 240px;
-}
+        &:hover, &:focus {
+            background-color: $brand-secondary;
+        }
 
-// TODO update
-.nav-folder-menu__button {
-    box-shadow: $nav-menu-btn-box-shadow;
-    overflow: hidden;
-    padding: 6px 28px 6px 12px;
-    max-width: 300px; // 40 characters plus text overflow and caret padding
-    min-width: $nav-menu-btn-width;
-    text-align: left;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+        // Due to how we want the overflow handling of the text the caret is positioned
+        // using "absolute" and is provided spacing by the padding on the button itself.
+        .caret {
+            position: absolute;
+            top: 25px;
+            right: 15px;
+        }
 
-    // Due to how we want the overflow handling of the text the caret is positioned
-    // using "absolute" and is provided spacing by the padding on the button itself.
-    .caret {
-        position: absolute;
-        top: 15px;
-        right: 15px;
+        .title {
+            font-size: 11px;
+            font-weight: 700;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            font-weight: 400;
+        }
+    }
+
+    .btn-group.open .dropdown-toggle {
+        background-color: $brand-secondary;
+        border: none;
+        box-shadow: none;
     }
 }
 
 @media (max-width: 767px) { // $screen-xs-max
-    .nav-folder-menu__button {
+    .navbar-left-menu .product-menu-button {
         max-width: 180px;
     }
 
@@ -105,15 +123,6 @@ $nav-menu-btn-width: 85px;
     }
 }
 
-.product-menu-button {
-    //width: $nav-menu-btn-width;
-    //box-shadow: $nav-menu-btn-box-shadow;
-
-    .caret {
-        margin-left: 4px;
-    }
-}
-
 .product-menu-content {
   //padding: 12px 15px 12px 0;
   width: 945px; // TODO fix me
@@ -130,7 +139,7 @@ $nav-menu-btn-width: 85px;
   .col-folders {
       width: 25%;
       padding-top: 8px !important;
-      background-color: #eee; // TODO
+      background-color: $gray-shadow;
 
       li.active {
           font-weight: bold; // TODO
@@ -144,22 +153,6 @@ $nav-menu-btn-width: 85px;
           width: 15%;
       }
   }
-
-  //.col-2 {
-  //  width: 50%
-  //}
-  //
-  //.col-3 {
-  //  width: 33%;
-  //}
-  //
-  //.col-4 {
-  //  width: 25%;
-  //}
-  //
-  //.col-5 {
-  //  width: 20%;
-  //}
 
   .menu-section {
     padding: 0 8px;
@@ -285,8 +278,9 @@ $nav-menu-btn-width: 85px;
       border-color: transparent transparent #ffffff transparent;
     }
 
+    // Move the dropdown up a little bit since the button height fills the header
     .open .dropdown-menu {
-      top: 120%;
+      top: 95%;
     }
   }
 

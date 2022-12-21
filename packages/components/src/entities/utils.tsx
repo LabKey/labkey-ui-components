@@ -25,7 +25,7 @@ import { ModuleContext } from '../internal/components/base/ServerContext';
 import { EntityChoice, OperationConfirmationData } from '../internal/components/entities/models';
 import { caseInsensitive, parseCsvString } from '../internal/util/utils';
 import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
-import { getPrimaryAppProperties, isELNEnabled } from '../internal/app/utils';
+import { getPrimaryAppProperties, isAssayEnabled, isELNEnabled, isWorkflowEnabled } from '../internal/app/utils';
 import { QueryInfo } from '../public/QueryInfo';
 import { naturalSort, naturalSortByProperty } from '../public/sort';
 import { DELIMITER } from '../internal/components/forms/constants';
@@ -159,13 +159,27 @@ export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: bool
         if (deleteInfoError) {
             deleteMsg += 'there was a problem loading the delete confirmation data.';
         } else {
-            deleteMsg += 'it has either derived sample, job, or assay data dependencies, ';
+            if (isWorkflowEnabled()) {
+                if (isAssayEnabled()) {
+                    deleteMsg += 'it has either derived sample, job, or assay data dependencies, '
+                }
+                else {
+                    deleteMsg += 'it has either derived sample or job dependencies, '
+                }
+            } else {
+                if (isAssayEnabled()) {
+                    deleteMsg += 'it has either derived sample or assay data dependencies, '
+                } else {
+                    deleteMsg += 'it has derived sample dependencies ';
+                }
+            }
             if (isELNEnabled()) {
                 deleteMsg += 'status that prevents deletion, or references in one or more active notebooks';
             } else {
                 deleteMsg += 'or status that prevents deletion';
             }
-            deleteMsg += '. Check the Lineage, Assays, and Jobs tabs for this sample to get more information.';
+
+            deleteMsg += '. Check the other tabs for this sample to get more information.';
         }
     }
     return deleteMsg;

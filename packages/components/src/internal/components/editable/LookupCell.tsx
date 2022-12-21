@@ -29,6 +29,7 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 import { ValueDescriptor } from './models';
 
 import { gridCellSelectInputProps, onCellSelectChange } from './utils';
+import { getContainerFilterForLookups } from '../../query/api';
 
 export interface LookupCellProps {
     col: QueryColumn;
@@ -98,7 +99,7 @@ export class LookupCell extends PureComponent<LookupCellProps> {
             <QuerySelect
                 {...gridCellSelectInputProps}
                 autoFocus
-                containerFilter={lookup.containerFilter ?? containerFilter}
+                containerFilter={lookup.containerFilter ?? containerFilter ?? getContainerFilterForLookups()}
                 disabled={disabled}
                 queryFilters={queryFilters}
                 multiple={isMultiple}

@@ -35,6 +35,23 @@ export const TEST_LKSM_STARTER_MODULE_CONTEXT = {
     },
 };
 
+export const TEST_LKSM_STARTER_AND_WORKFLOW_MODULE_CONTEXT = {
+    api: {
+        moduleNames: ['samplemanagement', 'inventory'],
+    },
+    samplemanagement: {
+        productId: SAMPLE_MANAGER_APP_PROPERTIES.productId,
+    },
+    inventory: {
+        productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
+    },
+    core: {
+        productFeatures: [
+            ProductFeature.Workflow,
+        ],
+    },
+}
+
 export const TEST_LKS_STARTER_MODULE_CONTEXT = {
     api: {
         moduleNames: ['samplemanagement', 'inventory', 'assay', 'premium'],

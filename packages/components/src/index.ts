@@ -417,6 +417,7 @@ import {
     DataClassDataType,
     ParentEntityRequiredColumns,
     SampleTypeDataType,
+    DataOperation,
 } from './internal/components/entities/constants';
 import { getUniqueIdColumnMetadata } from './internal/components/entities/utils';
 import { EntityInsertPanel } from './internal/components/entities/EntityInsertPanel';
@@ -1033,6 +1034,7 @@ export {
     DataClassDataType,
     AssayResultDataType,
     AssayRunDataType,
+    DataOperation,
     ParentEntityRequiredColumns,
     SampleEmptyAlert,
     SampleTypeEmptyAlert,

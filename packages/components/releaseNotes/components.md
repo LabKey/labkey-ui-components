@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.273.3
+*Released*: 21 December 2022
+* Issue 46923: Use lookup container filter as default in LookupCell
+* Issue 46932: Don't show fields that are not filterable in filter modal
+* Issue 46974: Update delete warning messages to correspond to enabled features
+
 ### version 2.273.2
 *Released*: 20 December 2022
 * Issue 46908: Assure that columns added via `addToSystemView` in metadata are carried through to saved views

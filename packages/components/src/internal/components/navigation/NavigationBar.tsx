@@ -34,7 +34,7 @@ import { User } from '../base/models/User';
 
 import { useServerContext } from '../base/ServerContext';
 
-import { ProductMenu } from './ProductMenu';
+import { ProductMenuButton } from './ProductMenu';
 import { UserMenu, UserMenuProps } from './UserMenu';
 import { MenuSectionConfig, ProductMenuModel } from './model';
 import { SEARCH_PLACEHOLDER } from './constants';
@@ -99,7 +99,7 @@ export const NavigationBar: FC<Props> = memo(props => {
                             <span className="navbar-item pull-left">{brand}</span>
                             {showNavMenu && (
                                 <span className="navbar-item">
-                                    <ProductMenu sectionConfigs={menuSectionConfigs} showFolderMenu />
+                                    <ProductMenuButton sectionConfigs={menuSectionConfigs} showFolderMenu />
                                 </span>
                             )}
                         </div>

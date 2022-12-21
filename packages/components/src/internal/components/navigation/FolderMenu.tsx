@@ -80,8 +80,7 @@ export const FolderMenu: FC<FolderMenuProps> = memo(({ appProperties = getCurren
         })();
     }, [api, container, appProperties?.controllerName]);
 
-    // TODO keep this?
-    // if (isLoaded && !hasError && items.length === 1) return null;
+    if (isLoaded && !hasError && items.length === 1) return null;
 
     return (
         <div className="menu-section col-folders">

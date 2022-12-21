@@ -32,16 +32,56 @@ import { ProductMenuSection } from './ProductMenuSection';
 import { MenuSectionConfig, MenuSectionModel, ProductMenuModel } from './model';
 import { FolderMenu, FolderMenuItem } from './FolderMenu';
 
+interface ProductMenuButtonProps {
+    appProperties?: AppProperties;
+    sectionConfigs: List<Map<string, MenuSectionConfig>>;
+    showFolderMenu: boolean;
+}
+
+export const ProductMenuButton: FC<ProductMenuButtonProps> = memo(props => {
+    const [menuOpen, setMenuOpen] = useState(false);
+
+    const toggleMenu = useCallback(() => {
+        setMenuOpen(!menuOpen);
+        blurActiveElement();
+    }, [menuOpen, setMenuOpen]);
+
+    // Only toggle the menu closing if a menu section link has been clicked.
+    // Clicking anywhere else inside the menu will not toggle the menu, including side panel folder clicks.
+    const onClick = useCallback(
+        (evt: MouseEvent<HTMLDivElement>) => {
+            const { nodeName, className } = evt.target as any;
+            if (!nodeName || (nodeName.toLowerCase() === 'a' && className !== 'menu-folder-item')) {
+                toggleMenu();
+            }
+        },
+        [toggleMenu]
+    );
+
+    return (
+        <DropdownButton
+            className="product-menu-button"
+            id="product-menu"
+            onToggle={toggleMenu}
+            open={menuOpen}
+            title="Menu"
+        >
+            {menuOpen && <ProductMenu {...props} onClick={onClick} />}
+        </DropdownButton>
+    );
+});
+
 async function initMenuModel(
     appProperties: AppProperties,
     userMenuProductId: string,
     containerPath?: string
 ): Promise<ProductMenuModel> {
+    const primaryProductId = getPrimaryAppProperties().productId;
     const menuModel = new ProductMenuModel({
         containerPath,
         currentProductId: appProperties.productId,
-        userMenuProductId: getPrimaryAppProperties().productId,
-        productIds: getAppProductIds(appProperties.productId),
+        userMenuProductId: primaryProductId,
+        productIds: getAppProductIds(primaryProductId),
     });
 
     try {
@@ -53,15 +93,12 @@ async function initMenuModel(
     }
 }
 
-interface ProductMenuProps {
-    appProperties?: AppProperties;
-    sectionConfigs: List<Map<string, MenuSectionConfig>>;
-    showFolderMenu: boolean;
+interface ProductMenuProps extends ProductMenuButtonProps {
+    onClick: (evt: MouseEvent<HTMLDivElement>) => void;
 }
 
-export const ProductMenu: FC<ProductMenuProps> = memo(props => {
-    const { sectionConfigs, showFolderMenu, appProperties = getCurrentAppProperties() } = props;
-    const [menuOpen, setMenuOpen] = useState(false);
+const ProductMenu: FC<ProductMenuProps> = memo(props => {
+    const { onClick, sectionConfigs, showFolderMenu, appProperties = getCurrentAppProperties() } = props;
     const [menuModel, setMenuModel] = useState<ProductMenuModel>(new ProductMenuModel());
     const { container } = useServerContext();
     const folderMenuContext = useFolderMenuContext();
@@ -91,59 +128,34 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
         [menuModel]
     );
 
-    const toggleMenu = useCallback(() => {
-        setMenuOpen(!menuOpen);
-        blurActiveElement();
-    }, [menuOpen, setMenuOpen]);
-
-    // Only toggle the menu closing if a menu section link has been clicked.
-    // Clicking anywhere else inside the menu will not toggle the menu, including side panel folder clicks.
-    const onClick = useCallback(
-        (evt: MouseEvent<HTMLDivElement>) => {
-            const { nodeName, className } = evt.target as any;
-            if (!nodeName || (nodeName.toLowerCase() === 'a' && className !== 'menu-folder-item')) {
-                toggleMenu();
-            }
-        },
-        [toggleMenu]
-    );
-
     return (
-        <DropdownButton
-            className="product-menu-button"
-            id="product-menu"
-            onToggle={toggleMenu}
-            open={menuOpen}
-            title="Menu"
-        >
-            <div className={classNames('product-menu-content', { error: !!menuModel.isError })} onClick={onClick}>
-                <div className="navbar-connector" />
-                {showFolderMenu && <FolderMenu key={folderMenuContext.key} onClick={onFolderItemClick} />}
-                {!menuModel.isLoaded && (
-                    <div className="menu-section">
-                        <LoadingSpinner />
+        <div className={classNames('product-menu-content', { error: !!menuModel.isError })} onClick={onClick}>
+            <div className="navbar-connector" />
+            {showFolderMenu && <FolderMenu key={folderMenuContext.key} onClick={onFolderItemClick} />}
+            {!menuModel.isLoaded && (
+                <div className="menu-section">
+                    <LoadingSpinner />
+                </div>
+            )}
+            {menuModel.isError && (
+                <div className="menu-section">
+                    <Alert>{menuModel.message}</Alert>
+                </div>
+            )}
+            {menuModel.isLoaded &&
+                sectionConfigs.map((sectionConfig, i) => (
+                    <div key={i} className="menu-section col-product-section">
+                        {sectionConfig.entrySeq().map(([key, menuConfig]) => (
+                            <ProductMenuSection
+                                key={key}
+                                section={getSectionModel(key)}
+                                config={menuConfig}
+                                containerPath={menuModel.containerPath}
+                                currentProductId={menuModel.currentProductId}
+                            />
+                        ))}
                     </div>
-                )}
-                {menuModel.isError && (
-                    <div className="menu-section">
-                        <Alert>{menuModel.message}</Alert>
-                    </div>
-                )}
-                {menuModel.isLoaded &&
-                    sectionConfigs.map((sectionConfig, i) => (
-                        <div key={i} className="menu-section col-product-section">
-                            {sectionConfig.entrySeq().map(([key, menuConfig]) => (
-                                <ProductMenuSection
-                                    key={key}
-                                    section={getSectionModel(key)}
-                                    config={menuConfig}
-                                    containerPath={menuModel.containerPath}
-                                    currentProductId={menuModel.currentProductId}
-                                />
-                            ))}
-                        </div>
-                    ))}
-            </div>
-        </DropdownButton>
+                ))}
+        </div>
     );
 });

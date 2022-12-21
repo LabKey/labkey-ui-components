@@ -1,15 +1,6 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.273.2
-*Released*: 20 December 2022
-* Issue 46908: Assure that columns added via `addToSystemView` in metadata are carried through to saved views
-
-### version 2.273.1
-*Released*: 19 December 2022
-* Remove premature return from renderLabel in TextInput
-* Set maxLength property on ProjectProperties name field
-
 ### version TBD
 *Released*: TBD December 2022
 * App header Projects and Menu consolidation
@@ -18,6 +9,15 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Add createProductUrlFromPartsWithContainer() to create menu links for selected container when not current
   * Pass containerPath through to create methods of MenuSectionModel and MenuItemModel
   * Update menuSectionConfig generation utils to remove appBase prop
+
+### version 2.273.2
+*Released*: 20 December 2022
+* Issue 46908: Assure that columns added via `addToSystemView` in metadata are carried through to saved views
+
+### version 2.273.1
+*Released*: 19 December 2022
+* Remove premature return from renderLabel in TextInput
+* Set maxLength property on ProjectProperties name field
 
 ### version 2.273.0
 *Released*: 15 December 2022

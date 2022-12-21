@@ -51,6 +51,11 @@ import {
     getJobCreationHref,
     processSampleBulkAdd,
 } from './utils';
+import {
+    TEST_LKS_STARTER_MODULE_CONTEXT,
+    TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT, TEST_LKSM_STARTER_AND_WORKFLOW_MODULE_CONTEXT,
+    TEST_LKSM_STARTER_MODULE_CONTEXT
+} from '../internal/productFixtures';
 
 describe('getCrossFolderSelectionMsg', () => {
     test('without cross folder selection', () => {
@@ -256,12 +261,12 @@ describe('getSampleDeleteMessage', () => {
         expect(wrapper.find(LoadingSpinner).exists()).toBeTruthy();
     });
 
-    test('cannot delete', () => {
-        LABKEY.moduleContext = {};
+    test('cannot delete, professional', () => {
+        LABKEY.moduleContext = {...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT};
         const wrapper = mount(<span>{getSampleDeleteMessage(false, false)}</span>);
         expect(wrapper.find(LoadingSpinner).exists()).toBeFalsy();
         expect(wrapper.text()).toContain(
-            'This sample cannot be deleted because it has either derived sample, job, or assay data dependencies, or status that prevents deletion.'
+            'This sample cannot be deleted because it has either derived sample, job, or assay data dependencies, status that prevents deletion, or references in one or more active notebooks.'
         );
     });
 
@@ -270,6 +275,33 @@ describe('getSampleDeleteMessage', () => {
         const wrapper = mount(<span>{getSampleDeleteMessage(false, true)}</span>);
         expect(wrapper.text()).toContain(
             'This sample cannot be deleted because there was a problem loading the delete confirmation data.'
+        );
+    });
+
+    test('cannot delete, no workflow', () => {
+        LABKEY.moduleContext = {...TEST_LKS_STARTER_MODULE_CONTEXT};
+        const wrapper = mount(<span>{getSampleDeleteMessage(false, false)}</span>);
+        expect(wrapper.find(LoadingSpinner).exists()).toBeFalsy();
+        expect(wrapper.text()).toContain(
+            'This sample cannot be deleted because it has either derived sample or assay data dependencies, or status that prevents deletion.'
+        );
+    });
+
+    test('cannot delete, workflow no assay', () => {
+        LABKEY.moduleContext = {...TEST_LKSM_STARTER_AND_WORKFLOW_MODULE_CONTEXT};
+        const wrapper = mount(<span>{getSampleDeleteMessage(false, false)}</span>);
+        expect(wrapper.find(LoadingSpinner).exists()).toBeFalsy();
+        expect(wrapper.text()).toContain(
+            'This sample cannot be deleted because it has either derived sample or job dependencies, or status that prevents deletion.'
+        );
+    });
+
+    test('cannot delete no workflow or assay', () => {
+        LABKEY.moduleContext = {...TEST_LKSM_STARTER_MODULE_CONTEXT};
+        const wrapper = mount(<span>{getSampleDeleteMessage(false, false)}</span>);
+        expect(wrapper.find(LoadingSpinner).exists()).toBeFalsy();
+        expect(wrapper.text()).toContain(
+            'This sample cannot be deleted because it has derived sample dependencies or status that prevents deletion.'
         );
     });
 });

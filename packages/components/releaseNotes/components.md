@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Don't use text-capitalize class in PageHeader. It doesn't always do what we want
+* Don't provide default `itemLabel` in `BulkUpdateForm` to allow for shorter messaging
+* Convert to lower case in `BulkUpdateForm` where it is expected
+
 ### version 2.273.3
 *Released*: 21 December 2022
 * Issue 46923: Use lookup container filter as default in LookupCell

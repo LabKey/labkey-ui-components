@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { MouseEvent, FC, memo, useCallback, useState, useEffect, useRef } from 'react';
+import React, { MouseEvent, FC, memo, useCallback, useState, useEffect, useRef, useMemo } from 'react';
 import classNames from 'classnames';
 import { List, Map } from 'immutable';
 import { DropdownButton } from 'react-bootstrap';
-
+import { withRouter, WithRouterProps } from 'react-router';
 import { ActionURL } from '@labkey/api';
 
 import { blurActiveElement } from '../../util/utils';
@@ -35,6 +35,24 @@ import { AppContext, useAppContext } from '../../AppContext';
 import { Container } from '../base/models/Container';
 import { buildURL } from '../../url/AppURL';
 
+import {
+    AUDIT_KEY,
+    MEDIA_KEY,
+    REGISTRY_KEY,
+    SAMPLE_TYPE_KEY,
+    SAMPLES_KEY,
+    SEARCH_KEY,
+    WORKFLOW_KEY,
+    ASSAY_DESIGN_KEY,
+    ASSAYS_KEY,
+    PICKLIST_KEY,
+    ELN_KEY,
+    SOURCE_TYPE_KEY,
+    SOURCES_KEY,
+    FREEZERS_KEY,
+    BOXES_KEY,
+} from '../../app/constants';
+
 import { FolderMenu, FolderMenuItem } from './FolderMenu';
 import { ProductMenuSection } from './ProductMenuSection';
 import { MenuSectionConfig, MenuSectionModel, ProductMenuModel } from './model';
@@ -45,8 +63,8 @@ interface ProductMenuButtonProps {
     showFolderMenu: boolean;
 }
 
-export const ProductMenuButton: FC<ProductMenuButtonProps> = memo(props => {
-    const { appProperties = getCurrentAppProperties() } = props;
+const ProductMenuButtonImpl: FC<ProductMenuButtonProps & WithRouterProps> = memo(props => {
+    const { appProperties = getCurrentAppProperties(), routes } = props;
     const [menuOpen, setMenuOpen] = useState(false);
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
@@ -106,10 +124,13 @@ export const ProductMenuButton: FC<ProductMenuButtonProps> = memo(props => {
         [toggleMenu]
     );
 
+    const subtitle = useMemo(() => {
+        return getHeaderMenuSubtitle(routes?.[1]?.path);
+    }, [routes]);
+
     if (!isLoaded && !hasError) return null;
     const showFolders = folderItems?.length > 1;
     const title = showFolders ? container.title : 'Menu';
-    const subtitle = 'Dashboard';
 
     return (
         <DropdownButton
@@ -136,6 +157,8 @@ export const ProductMenuButton: FC<ProductMenuButtonProps> = memo(props => {
         </DropdownButton>
     );
 });
+
+export const ProductMenuButton = withRouter<ProductMenuButtonProps>(ProductMenuButtonImpl);
 
 interface ProductMenuProps extends ProductMenuButtonProps {
     className: string;
@@ -272,4 +295,35 @@ async function initMenuModel(
         console.error('Problem retrieving product menu data.', e);
         return menuModel.setError('Error in retrieving product menu data. Please contact your site administrator.');
     }
+}
+
+const HEADER_MENU_SUBTITLE_MAP = {
+    account: 'Administration',
+    admin: 'Administration',
+    items: 'Storage',
+    lineage: 'Lineage',
+    home: 'Dashboard',
+    pipeline: 'Pipeline',
+    q: 'Schemas',
+    reports: 'Reports',
+
+    [ASSAY_DESIGN_KEY]: 'Assays',
+    [ASSAYS_KEY]: 'Assays',
+    [AUDIT_KEY]: 'Administration',
+    [BOXES_KEY]: 'Storage',
+    [ELN_KEY]: 'Notebooks',
+    [FREEZERS_KEY]: 'Storage',
+    [MEDIA_KEY]: 'Media',
+    [PICKLIST_KEY]: 'Picklists',
+    [REGISTRY_KEY]: 'Registry',
+    [SAMPLE_TYPE_KEY]: 'Sample Types',
+    [SAMPLES_KEY]: 'Sample Types',
+    [SOURCE_TYPE_KEY]: 'Source Types',
+    [SOURCES_KEY]: 'Source Types',
+    [SEARCH_KEY]: 'Search',
+    [WORKFLOW_KEY]: 'Workflow',
+};
+
+function getHeaderMenuSubtitle(baseRoute: string) {
+    return HEADER_MENU_SUBTITLE_MAP[baseRoute] ?? 'Dashboard';
 }

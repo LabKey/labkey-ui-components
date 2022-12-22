@@ -163,7 +163,7 @@ const ProductMenu: FC<ProductMenuProps> = memo(props => {
         let height = 400; // match navbar.scss product-menu-content min-height
         const maxHeight = window.innerHeight * 0.8;
         const sections = Array.from(contentRef.current.getElementsByClassName('menu-section'));
-        sections.forEach(section => (height = Math.max(height, section.firstElementChild.clientHeight + 16))); // padding-bottom = 16
+        sections.forEach(section => (height = Math.max(height, section.clientHeight)));
         contentRef.current.style.height = Math.min(height, maxHeight) + 'px';
     }, [menuModel.isLoaded]);
 

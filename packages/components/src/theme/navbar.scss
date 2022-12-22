@@ -103,7 +103,29 @@
     .dropdown-menu {
         padding: 0;
         margin: 0;
-        min-width: 945px;
+        width: 944px;
+        left: -50px;
+    }
+}
+
+@media (min-width: 992px) {
+    .navbar-left-menu .dropdown-menu {
+        width: 944px;
+        left: -150px;
+    }
+}
+
+@media (min-width: 1290px) {
+    .navbar-left-menu .dropdown-menu {
+        width: 1168px;
+        left: -150px;
+    }
+}
+
+@media (min-width: 1450px) {
+    .navbar-left-menu .dropdown-menu {
+        width: 1320px;
+        left: -150px;
     }
 }
 
@@ -248,40 +270,6 @@
   }
 }
 
-//.navbar-left {
-//    // For when 'Project' dropdown is not present
-//    .navbar-item:first-child:nth-last-child(2),
-//    .navbar-item:first-child:nth-last-child(2) ~ .navbar-item {
-//        @media (min-width: 1200px) {
-//            .product-menu-content {
-//                width: 1000px;
-//            }
-//        }
-//
-//        @media (min-width: 1450px) {
-//            .product-menu-content {
-//                width: 1230px;
-//            }
-//        }
-//    }
-//
-//    // For when 'Project' dropdown is present
-//    .navbar-item:first-child:nth-last-child(3),
-//    .navbar-item:first-child:nth-last-child(3) ~ .navbar-item {
-//        @media (min-width: 1550px) {
-//            .product-menu-content {
-//                width: 1000px;
-//            }
-//        }
-//
-//        @media (min-width: 1775px) {
-//            .product-menu-content {
-//                width: 1230px;
-//            }
-//        }
-//    }
-//}
-
 .empty-section {
   font-style: italic;
   color: $light-gray;
@@ -303,17 +291,12 @@
     .navbar-connector {
       position: absolute;
       top: -10px;
-      left: 20px;
+      left: 70px;
       width: 0;
       height: 0;
       border-style: solid;
       border-width: 0 10px 10px 10px;
       border-color: transparent transparent #ffffff transparent;
-    }
-
-    // Move the dropdown up a little bit since the button height fills the header
-    .open .dropdown-menu {
-      top: 95%;
     }
   }
 
@@ -334,6 +317,12 @@
       top: 125%;
     }
   }
+}
+
+@media (min-width: 992px) {
+    .navbar .navbar-left .navbar-connector {
+        left: 170px;
+    }
 }
 
 .navbar-item.navbar-item-notification, .navbar-item.navbar-item-product-navigation {

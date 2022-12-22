@@ -498,11 +498,11 @@ export class DomainIndex
 }
 
 export enum FieldErrors {
+    ALIQUOTE_ONLY_REQUIRED = "Fields that are 'Editable for aliquots only' cannot be 'Required'.",
     MISSING_DATA_TYPE = 'Please provide a data type for each field.',
     MISSING_FIELD_NAME = 'Please provide a name for each field.',
     MISSING_ONTOLOGY_PROPERTIES = 'Missing required ontology source or label field property.',
     MISSING_SCHEMA_QUERY = 'Missing required lookup target schema or table property.',
-    ALIQUOTE_ONLY_REQUIRED = "Fields that are 'Editable for aliquots only' cannot be 'Required'.",
     NONE = '',
 }
 

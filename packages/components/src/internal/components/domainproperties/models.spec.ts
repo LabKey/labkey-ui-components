@@ -853,9 +853,7 @@ describe('DomainField', () => {
         expect(field.getDetailsArray(0).join('')).toBe('Updated. SRC. Primary Key. Locked');
 
         field = field.merge({ principalConceptCode: 'abc:123' }) as DomainField;
-        expect(field.getDetailsArray(0).join('')).toBe(
-            'Updated. SRC. Ontology Concept: abc:123. Primary Key. Locked'
-        );
+        expect(field.getDetailsArray(0).join('')).toBe('Updated. SRC. Ontology Concept: abc:123. Primary Key. Locked');
 
         expect(field.getDetailsArray(0, { test: 'Additional Info' }).join('')).toBe(
             'Updated. SRC. Ontology Concept: abc:123. Primary Key. Locked. Additional Info'

@@ -167,6 +167,9 @@ const ProductMenu: FC<ProductMenuProps> = memo(props => {
 
     const onFolderItemClick = useCallback(
         async (folderItem: FolderMenuItem) => {
+            // return early if folderItem is already active
+            if (folderItem.id === menuModel.containerId) return;
+
             setMenuModel(new ProductMenuModel({ containerId: folderItem.id })); // loading state, reset error
 
             // no try/catch as the initMenuModel will catch errors and put them in the model isError/message
@@ -179,7 +182,7 @@ const ProductMenu: FC<ProductMenuProps> = memo(props => {
             );
             setMenuModel(menuModel_);
         },
-        [appProperties, container.id]
+        [appProperties, container.id, menuModel.containerId]
     );
 
     const getSectionModel = useCallback(
@@ -188,17 +191,14 @@ const ProductMenu: FC<ProductMenuProps> = memo(props => {
     );
 
     return (
-        <div
-            className={classNames('product-menu-content', className, { error: !!menuModel.isError })}
-            onClick={onClick}
-        >
+        <div className={classNames('product-menu-content', className)} onClick={onClick}>
             <div className="navbar-connector" />
             {error && <Alert>{error}</Alert>}
             {showFolderMenu && (
                 <FolderMenu activeContainerId={menuModel.containerId} items={folderItems} onClick={onFolderItemClick} />
             )}
             {!menuModel.isLoaded && (
-                <div className="menu-section">
+                <div className="menu-section menu-loading">
                     <LoadingSpinner />
                 </div>
             )}

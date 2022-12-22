@@ -31,13 +31,18 @@ export const FolderMenu: FC<FolderMenuProps> = memo(props => {
                                 className={classNames({
                                     active: item.id === activeContainerId,
                                     'menu-section-header': item.isTopLevel,
+                                    'menu-section-item': !item.isTopLevel,
                                 })}
                             >
                                 <a className="menu-folder-item" onClick={() => onClick(item)}>
                                     {item.label}
                                 </a>
                             </li>
-                            {item.isTopLevel && <hr />}
+                            {item.isTopLevel && (
+                                <li>
+                                    <hr />
+                                </li>
+                            )}
                         </>
                     );
                 })}

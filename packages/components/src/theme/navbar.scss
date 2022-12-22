@@ -99,6 +99,12 @@
         border: none;
         box-shadow: none;
     }
+
+    .dropdown-menu {
+        padding: 0;
+        margin: 0;
+        min-width: 945px;
+    }
 }
 
 @media (max-width: 767px) { // $screen-xs-max
@@ -124,29 +130,54 @@
 }
 
 .product-menu-content {
-  //padding: 12px 15px 12px 0;
-  width: 945px; // TODO fix me
-  height: 320px; // TODO fix me
-  overflow-y: scroll; // TODO fix me
-  padding: 8px;
-
-    // TODO remove this?
-  &.error {
-    color: $brand-danger;
-    padding-left: 8px;
-  }
+  //height: 400px;
+  //overflow-y: scroll;
 
   .col-folders {
       width: 25%;
-      padding-top: 8px !important;
+      //height: 100%;
       background-color: $gray-shadow;
+      border-radius: 4px 0 0 4px;
+      padding-left: 8px;
+
+      li:hover {
+          background-color: $light-gray;
+          border-radius: 4px 0 0 4px;
+      }
 
       li.active {
-          font-weight: bold; // TODO
+          background-color: $white;
+          border-radius: 4px 0 0 4px;
+
+          a {
+              color: $text-color;
+          }
+      }
+
+      li.menu-section-header {
+          font-weight: 500;
+          padding: 5px 8px 4px 8px;
+          height: 33px;
+      }
+
+      li.menu-section-item {
+          padding: 8px;
+      }
+
+      li hr {
+          margin: 4px 8px;
       }
   }
   .col-product-section {
       width: 20%;
+
+      li {
+          padding: 3px 8px;
+
+          a {
+              color: $text-color;
+          }
+      }
   }
   &.with-col-folders {
       .col-product-section {
@@ -154,16 +185,20 @@
       }
   }
 
+  .col-product-section:last-child {
+      padding-right: 8px;
+  }
+
   .menu-section {
-    padding: 0 8px;
     vertical-align: top;
     display: inline-block;
-    height: 100%;
     word-break: break-word;
+    padding-bottom: 16px;
 
     .menu-section-header {
       font-family: FontAwesome, $font-family-sans-serif;
       color: $brand-primary;
+      margin-top: 16px;
 
       a {
         display: block;
@@ -172,41 +207,31 @@
       }
     }
 
-    .menu-loading {
-      padding-left: 8px;
-    }
-
-    img {
-      margin-bottom: 4px;
-      margin-top: 5px;
+    &.menu-loading {
+      padding: 24px 16px;
     }
 
     ul {
       display: inline-block;
-      //width: 100%;
+      width: 100%;
       vertical-align: top;
-      margin: 0 5px;
-      padding: 0;
       list-style-type: none;
+      margin: 0;
+      padding: 0;
 
-      li {
-          padding-bottom: 5px;
+      li a {
+          display: block;
+          padding: 0 4px;
 
-          a {
-              color: $text-color;
-              display: block;
-
-              &:focus, &:hover {
-                  color: $link-hover-color;
-                  cursor: pointer;
-              }
+          &:focus, &:hover {
+              color: $link-hover-color;
+              cursor: pointer;
           }
       }
     }
 
     hr {
-      margin-top: 3px;
-      margin-bottom: 5px;
+      margin: 4px 0;
       border-top-color: $brand-primary;
       height: 1px;
       background-color: $light-gray;

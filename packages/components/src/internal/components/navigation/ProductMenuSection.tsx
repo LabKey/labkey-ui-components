@@ -75,54 +75,53 @@ export class ProductMenuSection extends PureComponent<MenuSectionProps> {
         }
 
         return (
-            <>
-                <div className="menu-section-header">
+            <ul key={section.key}>
+                <li className="menu-section-header">
                     {headerURL ? <a href={getHref(headerURL)}>{label}</a> : <>{label}</>}
-                </div>
-                <hr />
-                {/* TODO remove/update scss related to col-1, col-2, col-3, etc.*/}
-                <ul key={section.key}>
-                    {section.items.isEmpty() ? (
-                        <>
-                            {config.emptyText && (
-                                <li key="empty" className="empty-section">
-                                    {config.emptyText}
-                                </li>
-                            )}
-                            {emptyURL && (!config.emptyURLProjectOnly || isProjectContainer(containerPath)) && (
-                                <li key="emptyUrl" className="empty-section-link">
-                                    <a href={getHref(emptyURL)}>{config.emptyURLText}</a>
-                                </li>
-                            )}
-                        </>
-                    ) : (
-                        section.items
-                            .sortBy(item => item.label, naturalSort)
-                            .map(item => {
-                                const labelDisplay =
-                                    item.hasActiveJob && showActiveJobIcon ? (
-                                        <>
-                                            <i className={classNames('fa', activeJobIconCls)} />
-                                            <span className="spacer-left product-menu-item">{item.label}</span>
-                                        </>
-                                    ) : (
-                                        item.label
-                                    );
+                </li>
+                <li>
+                    <hr />
+                </li>
+                {section.items.isEmpty() ? (
+                    <>
+                        {config.emptyText && (
+                            <li key="empty" className="empty-section">
+                                {config.emptyText}
+                            </li>
+                        )}
+                        {emptyURL && (!config.emptyURLProjectOnly || isProjectContainer(containerPath)) && (
+                            <li key="emptyUrl" className="empty-section-link">
+                                <a href={getHref(emptyURL)}>{config.emptyURLText}</a>
+                            </li>
+                        )}
+                    </>
+                ) : (
+                    section.items
+                        .sortBy(item => item.label, naturalSort)
+                        .map(item => {
+                            const labelDisplay =
+                                item.hasActiveJob && showActiveJobIcon ? (
+                                    <>
+                                        <i className={classNames('fa', activeJobIconCls)} />
+                                        <span className="spacer-left product-menu-item">{item.label}</span>
+                                    </>
+                                ) : (
+                                    item.label
+                                );
 
-                                if (item.url) {
-                                    return (
-                                        <li key={item.label}>
-                                            <a href={item.getUrlString(config.useOriginalURL)} target="_self">
-                                                {labelDisplay}
-                                            </a>
-                                        </li>
-                                    );
-                                }
-                                return <li key={item.label}>{labelDisplay}</li>;
-                            })
-                    )}
-                </ul>
-            </>
+                            if (item.url) {
+                                return (
+                                    <li key={item.label}>
+                                        <a href={item.getUrlString(config.useOriginalURL)} target="_self">
+                                            {labelDisplay}
+                                        </a>
+                                    </li>
+                                );
+                            }
+                            return <li key={item.label}>{labelDisplay}</li>;
+                        })
+                )}
+            </ul>
         );
     }
 }

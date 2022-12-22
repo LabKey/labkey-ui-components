@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { MouseEvent, FC, memo, useCallback, useState, useEffect } from 'react';
+import React, { MouseEvent, FC, memo, useCallback, useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { List, Map } from 'immutable';
 import { DropdownButton } from 'react-bootstrap';
@@ -156,6 +156,16 @@ const ProductMenu: FC<ProductMenuProps> = memo(props => {
     } = props;
     const { container } = useServerContext();
     const [menuModel, setMenuModel] = useState<ProductMenuModel>(new ProductMenuModel({ containerId: container.id }));
+    const contentRef = useRef<HTMLDivElement>();
+
+    useEffect(() => {
+        if (!menuModel.isLoaded) return;
+        let height = 400; // match navbar.scss product-menu-content min-height
+        const maxHeight = window.innerHeight * 0.8;
+        const sections = Array.from(contentRef.current.getElementsByClassName('menu-section'));
+        sections.forEach(section => (height = Math.max(height, section.firstElementChild.clientHeight + 16))); // padding-bottom = 16
+        contentRef.current.style.height = Math.min(height, maxHeight) + 'px';
+    }, [menuModel.isLoaded]);
 
     useEffect(() => {
         (async () => {
@@ -191,36 +201,38 @@ const ProductMenu: FC<ProductMenuProps> = memo(props => {
     );
 
     return (
-        <div className={classNames('product-menu-content', className)} onClick={onClick}>
+        <div className={classNames('product-menu-content', className)} onClick={onClick} ref={contentRef}>
             <div className="navbar-connector" />
             {error && <Alert>{error}</Alert>}
             {showFolderMenu && (
                 <FolderMenu activeContainerId={menuModel.containerId} items={folderItems} onClick={onFolderItemClick} />
             )}
-            {!menuModel.isLoaded && (
-                <div className="menu-section menu-loading">
-                    <LoadingSpinner />
-                </div>
-            )}
-            {menuModel.isError && (
-                <div className="menu-section">
-                    <Alert>{menuModel.message}</Alert>
-                </div>
-            )}
-            {menuModel.isLoaded &&
-                sectionConfigs.map((sectionConfig, i) => (
-                    <div key={i} className="menu-section col-product-section">
-                        {sectionConfig.entrySeq().map(([key, menuConfig]) => (
-                            <ProductMenuSection
-                                key={key}
-                                section={getSectionModel(key)}
-                                config={menuConfig}
-                                containerPath={menuModel.containerPath}
-                                currentProductId={menuModel.currentProductId}
-                            />
-                        ))}
+            <div className="sections-content">
+                {!menuModel.isLoaded && (
+                    <div className="menu-section menu-loading">
+                        <LoadingSpinner />
                     </div>
-                ))}
+                )}
+                {menuModel.isError && (
+                    <div className="menu-section">
+                        <Alert>{menuModel.message}</Alert>
+                    </div>
+                )}
+                {menuModel.isLoaded &&
+                    sectionConfigs.map((sectionConfig, i) => (
+                        <div key={i} className="menu-section col-product-section">
+                            {sectionConfig.entrySeq().map(([key, menuConfig]) => (
+                                <ProductMenuSection
+                                    key={key}
+                                    section={getSectionModel(key)}
+                                    config={menuConfig}
+                                    containerPath={menuModel.containerPath}
+                                    currentProductId={menuModel.currentProductId}
+                                />
+                            ))}
+                        </div>
+                    ))}
+            </div>
         </div>
     );
 });

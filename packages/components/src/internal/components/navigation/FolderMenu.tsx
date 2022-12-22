@@ -23,29 +23,27 @@ export const FolderMenu: FC<FolderMenuProps> = memo(props => {
     return (
         <div className="menu-section col-folders">
             <ul>
-                {items.map(item => {
-                    return (
-                        <>
-                            <li
-                                key={item.id}
-                                className={classNames({
-                                    active: item.id === activeContainerId,
-                                    'menu-section-header': item.isTopLevel,
-                                    'menu-section-item': !item.isTopLevel,
-                                })}
-                            >
-                                <a className="menu-folder-item" onClick={() => onClick(item)}>
-                                    {item.label}
-                                </a>
+                {items.map(item => (
+                    <>
+                        <li
+                            key={item.id}
+                            className={classNames({
+                                active: item.id === activeContainerId,
+                                'menu-section-header': item.isTopLevel,
+                                'menu-section-item': !item.isTopLevel,
+                            })}
+                        >
+                            <a className="menu-folder-item" onClick={() => onClick(item)}>
+                                {item.label}
+                            </a>
+                        </li>
+                        {item.isTopLevel && (
+                            <li>
+                                <hr />
                             </li>
-                            {item.isTopLevel && (
-                                <li>
-                                    <hr />
-                                </li>
-                            )}
-                        </>
-                    );
-                })}
+                        )}
+                    </>
+                ))}
             </ul>
         </div>
     );

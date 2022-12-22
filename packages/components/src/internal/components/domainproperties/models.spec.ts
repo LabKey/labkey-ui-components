@@ -77,6 +77,7 @@ import {
     STORAGE_UNIQUE_ID_CONCEPT_URI,
     STRING_RANGE_URI,
     TEXT_CHOICE_CONCEPT_URI,
+    DERIVATION_DATA_SCOPES,
 } from './constants';
 
 beforeAll(() => {
@@ -798,6 +799,15 @@ describe('DomainField', () => {
                 sourceOntology: undefined,
             }).getErrors()
         ).toBe(FieldErrors.MISSING_ONTOLOGY_PROPERTIES);
+
+        expect(
+            DomainField.create({
+                name: 'req',
+                required: true,
+                derivationDataScope: DERIVATION_DATA_SCOPES.CHILD_ONLY,
+            }).getErrors()
+        ).toBe(FieldErrors.ALIQUOTE_ONLY_REQUIRED);
+
         expect(
             DomainField.create({
                 name: 'test',

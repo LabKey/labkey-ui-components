@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.XX
+*Released*: XX December 2022
+* Issue 46733: Editable for aliquots only/Required Field: Adding Samples gives error
+
 ### version 2.273.3
 *Released*: 21 December 2022
 * Issue 46923: Use lookup container filter as default in LookupCell

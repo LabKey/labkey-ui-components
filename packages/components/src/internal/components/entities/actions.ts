@@ -590,8 +590,6 @@ export function handleEntityFileImport(
     saveToPipeline?: boolean
 ): Promise<any> {
     return new Promise((resolve, reject) => {
-        if (insertOption === InsertOptions.UPDATE) reject('Import with Update currently not supported.');
-
         const { schemaQuery } = queryInfo;
 
         return importData({

@@ -33,6 +33,7 @@ import { SCHEMAS } from '../../schemas';
 
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
+    DERIVATION_DATA_SCOPES,
     DOMAIN_FIELD_DIMENSION,
     DOMAIN_FIELD_FULLY_LOCKED,
     DOMAIN_FIELD_MEASURE,
@@ -501,6 +502,7 @@ export enum FieldErrors {
     MISSING_FIELD_NAME = 'Please provide a name for each field.',
     MISSING_ONTOLOGY_PROPERTIES = 'Missing required ontology source or label field property.',
     MISSING_SCHEMA_QUERY = 'Missing required lookup target schema or table property.',
+    ALIQUOTE_ONLY_REQUIRED = "Fields that are 'Editable for aliquots only' cannot be 'Required'.",
     NONE = '',
 }
 
@@ -1085,6 +1087,11 @@ export class DomainField
         // Issue 41829: for an ontology lookup field, only the sourceOntology is required (other ontology props are optional)
         if (this.dataType.isOntologyLookup() && !this.sourceOntology) {
             return FieldErrors.MISSING_ONTOLOGY_PROPERTIES;
+        }
+
+        // Issue 46733: Editable for aliquots only/Required Field: Adding Samples gives error
+        if (this.derivationDataScope === DERIVATION_DATA_SCOPES.CHILD_ONLY && this.required) {
+            return FieldErrors.ALIQUOTE_ONLY_REQUIRED;
         }
 
         return FieldErrors.NONE;

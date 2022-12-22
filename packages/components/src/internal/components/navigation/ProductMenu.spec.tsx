@@ -19,8 +19,7 @@ import { mount } from 'enzyme';
 import { List, Map } from 'immutable';
 
 import { ProductMenu } from './ProductMenu';
-import { MenuSectionModel, ProductMenuModel } from './model';
-import { MenuSectionConfig } from './ProductMenuSection';
+import { MenuSectionModel, ProductMenuModel, MenuSectionConfig } from './model';
 
 describe('ProductMenu render', () => {
     const sampleSetItems = List<MenuSectionModel>([
@@ -124,7 +123,6 @@ describe('ProductMenu render', () => {
                 label: 'Sample Sets',
                 url: undefined,
                 items: sampleSetItems,
-                itemLimit: 2,
                 key: 'samples',
             })
         );
@@ -159,7 +157,6 @@ describe('ProductMenu render', () => {
                 label: 'Sample Sets',
                 url: undefined,
                 items: sampleSetItems,
-                itemLimit: 2,
                 key: 'samples',
             })
         );

@@ -18,8 +18,6 @@ import {
     TEST_LKSM_STARTER_MODULE_CONTEXT,
 } from '../productFixtures';
 
-import { MenuSectionConfig } from '../components/navigation/ProductMenuSection';
-
 import { Container } from '../components/base/models/Container';
 
 import {
@@ -72,6 +70,7 @@ import {
     SOURCES_KEY,
     WORKFLOW_KEY,
 } from './constants';
+import { MenuSectionConfig } from '../components/navigation/model';
 
 describe('getMenuSectionConfigs', () => {
     test('LKS starter enabled', () => {
@@ -768,11 +767,8 @@ describe('getStorageSectionConfig', () => {
         const config = getStorageSectionConfig(
             TEST_USER_READER,
             FREEZER_MANAGER_APP_PROPERTIES.productId,
-            { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } },
-            3
+            { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } }
         );
-        expect(config.maxColumns).toBe(1);
-        expect(config.maxItemsPerColumn).toBe(3);
         expect(config.emptyText).toBe('No storage has been defined');
         expect(config.emptyURL).toBe(undefined);
         expect(config.iconURL).toBe('/labkey/_images/freezer_menu.svg');
@@ -787,10 +783,8 @@ describe('getStorageSectionConfig', () => {
         const config = getStorageSectionConfig(
             TEST_USER_READER,
             SAMPLE_MANAGER_APP_PROPERTIES.productId,
-            { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } },
-            4
+            { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } }
         );
-        expect(config.maxItemsPerColumn).toBe(4);
         expect(config.seeAllURL).toBe('/labkey/freezermanager/app.view#/home');
         expect(config.headerURL).toBe('/labkey/freezermanager/app.view#/home');
         expect(config.emptyURL).toBe(undefined);
@@ -805,9 +799,7 @@ describe('getStorageSectionConfig', () => {
             TEST_USER_FOLDER_ADMIN,
             BIOLOGICS_APP_PROPERTIES.productId,
             { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } },
-            4
         );
-        expect(config.maxItemsPerColumn).toBe(4);
         expect(config.seeAllURL).toBe('/labkey/freezermanager/Project%20A/app.view#/home');
         expect(config.headerURL).toBe('/labkey/freezermanager/Project%20A/app.view#/home');
         expect(config.emptyURL).toBe('/labkey/freezermanager/Project%20A/app.view#/freezers/new');
@@ -825,7 +817,6 @@ describe('getStorageSectionConfig', () => {
             { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } },
             4
         );
-        expect(config.maxItemsPerColumn).toBe(4);
         expect(config.seeAllURL).toBe('/labkey/freezermanager/Project%20A/Child%20Folder%201/app.view#/home');
         expect(config.headerURL).toBe('/labkey/freezermanager/Project%20A/Child%20Folder%201/app.view#/home');
         expect(config.emptyURL).toBe(undefined);
@@ -843,7 +834,6 @@ describe('getStorageSectionConfig', () => {
             { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } },
             4
         );
-        expect(config.maxItemsPerColumn).toBe(4);
         expect(config.seeAllURL).toBe('/labkey/freezermanager/app.view#/home');
         expect(config.headerURL).toBe('/labkey/freezermanager/app.view#/home');
         expect(config.emptyURL).toBe(undefined);
@@ -857,10 +847,8 @@ describe('getStorageSectionConfig', () => {
         const config = getStorageSectionConfig(
             TEST_USER_STORAGE_DESIGNER,
             BIOLOGICS_APP_PROPERTIES.productId,
-            { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } },
-            4
+            { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } }
         );
-        expect(config.maxItemsPerColumn).toBe(4);
         expect(config.seeAllURL).toBe('/labkey/freezermanager/Project%20B/app.view#/home');
         expect(config.headerURL).toBe('/labkey/freezermanager/Project%20B/app.view#/home');
         expect(config.emptyURL).toBe('/labkey/freezermanager/Project%20B/app.view#/freezers/new');
@@ -875,10 +863,8 @@ describe('getStorageSectionConfig', () => {
         const config = getStorageSectionConfig(
             TEST_USER_STORAGE_DESIGNER,
             BIOLOGICS_APP_PROPERTIES.productId,
-            { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } },
-            4
+            { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } }
         );
-        expect(config.maxItemsPerColumn).toBe(4);
         expect(config.seeAllURL).toBe('/labkey/freezermanager/Project%20B/Child%201/app.view#/home');
         expect(config.headerURL).toBe('/labkey/freezermanager/Project%20B/Child%201/app.view#/home');
         expect(config.emptyURL).toBe(undefined);
@@ -892,8 +878,6 @@ describe('addSourcesSectionConfig', () => {
         configs = addSourcesSectionConfig(TEST_USER_READER, '/labkey/test/app.view', configs);
         expect(configs.size).toBe(1);
         const sectionConfig = configs.get(0).get(SOURCES_KEY);
-        expect(sectionConfig.maxColumns).toBe(1);
-        expect(sectionConfig.maxItemsPerColumn).toBe(12);
         expect(sectionConfig.emptyText).toBe('No source types have been defined');
         expect(sectionConfig.emptyURL).toBe(undefined);
         expect(sectionConfig.seeAllURL).toBe('/labkey/test/app.view#/sources');
@@ -932,8 +916,6 @@ describe('addSamplesSectionConfig', () => {
         configs = addSamplesSectionConfig(TEST_USER_READER, '/labkey/samplemanager/app.view', configs);
         expect(configs.size).toBe(1);
         const sectionConfig = configs.get(0).get(SAMPLES_KEY);
-        expect(sectionConfig.maxColumns).toBe(1);
-        expect(sectionConfig.maxItemsPerColumn).toBe(12);
         expect(sectionConfig.emptyText).toBe('No sample types have been defined');
         expect(sectionConfig.emptyURL).toBe(undefined);
         expect(sectionConfig.seeAllURL).toBe('/labkey/samplemanager/app.view#/samples');
@@ -959,8 +941,6 @@ describe('addAssaySectionConfig', () => {
         configs = addAssaysSectionConfig(TEST_USER_READER, '/labkey/test/app.view', configs, false);
         expect(configs.size).toBe(1);
         let sectionConfig = configs.get(0).get(ASSAYS_KEY);
-        expect(sectionConfig.maxColumns).toBe(1);
-        expect(sectionConfig.maxItemsPerColumn).toBe(12);
         expect(sectionConfig.emptyText).toBe('No assays have been defined');
         expect(sectionConfig.emptyURL).toBe(undefined);
         expect(sectionConfig.seeAllURL).toBe('/labkey/test/app.view#/assays');

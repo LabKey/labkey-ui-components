@@ -144,7 +144,7 @@ interface ProductMenuProps extends ProductMenuButtonProps {
     onClick: (evt: MouseEvent<HTMLDivElement>) => void;
 }
 
-const ProductMenu: FC<ProductMenuProps> = memo(props => {
+export const ProductMenu: FC<ProductMenuProps> = memo(props => {
     const {
         className,
         onClick,

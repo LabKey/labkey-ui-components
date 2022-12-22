@@ -19,8 +19,8 @@ import { List } from 'immutable';
 
 import { AppURL } from '../../url/AppURL';
 
-import { MenuSectionModel } from './model';
-import { MenuSectionConfig, ProductMenuSection } from './ProductMenuSection';
+import { MenuSectionModel, MenuSectionConfig } from './model';
+import { ProductMenuSection } from './ProductMenuSection';
 
 describe('ProductMenuSection render', () => {
     const sampleSetItems = List<MenuSectionModel>([
@@ -70,7 +70,6 @@ describe('ProductMenuSection render', () => {
         const section = MenuSectionModel.create({
             label: 'Sample Sets',
             items: List<MenuSectionModel>(),
-            itemLimit: 2,
             key: 'samples',
         });
 
@@ -116,7 +115,6 @@ describe('ProductMenuSection render', () => {
         const section = MenuSectionModel.create({
             label: 'Sample Sets',
             items: List<MenuSectionModel>(),
-            itemLimit: 2,
             key: 'samples',
         });
 
@@ -144,7 +142,6 @@ describe('ProductMenuSection render', () => {
             label: 'Sample Sets',
             url: undefined,
             items: sampleSetItems,
-            itemLimit: 2,
             key: 'samples',
         });
 
@@ -176,8 +173,6 @@ describe('ProductMenuSection render', () => {
 
         const sectionConfig = new MenuSectionConfig({
             iconURL: '/testProduct4Columns/images/assays.svg',
-            maxColumns: 1,
-            maxItemsPerColumn: 2,
         });
 
         const menuSection = mount(
@@ -202,8 +197,6 @@ describe('ProductMenuSection render', () => {
 
         const sectionConfig = new MenuSectionConfig({
             iconURL: '/testProductOverflowLink/images/assays.svg',
-            maxColumns: 1,
-            maxItemsPerColumn: 2,
         });
 
         const menuSection = mount(
@@ -219,7 +212,6 @@ describe('ProductMenuSection render', () => {
         const section = MenuSectionModel.create({
             label: 'Sample Sets',
             items: List<MenuSectionModel>(),
-            itemLimit: 3,
             key: 'samples',
         });
 
@@ -242,7 +234,6 @@ describe('ProductMenuSection render', () => {
         const section = MenuSectionModel.create({
             label: 'Sample Sets',
             items: List<MenuSectionModel>(),
-            itemLimit: 3,
             key: 'samples',
         });
 

@@ -51,7 +51,7 @@ export function createProductUrl(
     ) {
         const href = appUrl instanceof AppURL ? appUrl.toHref() : appUrl;
         return (
-            buildURL(urlProductId.toLowerCase(), `${ActionURL.getAction()}.view`, undefined, {
+            buildURL(urlProductId.toLowerCase(), `${ActionURL.getAction() || 'app'}.view`, undefined, {
                 returnUrl: false,
                 container: containerPath, // if undefined, buildURL will use current container from server context
             }) + href

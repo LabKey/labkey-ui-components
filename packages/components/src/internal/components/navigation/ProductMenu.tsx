@@ -239,7 +239,7 @@ const ProductMenu: FC<ProductMenuProps> = memo(props => {
 
 function createFolderItem(folder: Container, controllerName: string, isTopLevel: boolean): FolderMenuItem {
     return {
-        href: buildURL(controllerName, `${ActionURL.getAction()}.view`, undefined, {
+        href: buildURL(controllerName, `${ActionURL.getAction() || 'app'}.view`, undefined, {
             container: folder.path,
             returnUrl: false,
         }),

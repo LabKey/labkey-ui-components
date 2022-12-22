@@ -18,8 +18,6 @@ export interface FolderMenuProps {
 export const FolderMenu: FC<FolderMenuProps> = memo(props => {
     const { items, onClick, activeContainerId } = props;
 
-    if (items?.length < 2) return null;
-
     return (
         <div className="menu-section col-folders">
             <ul>

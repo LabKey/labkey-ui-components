@@ -152,6 +152,7 @@ const ProductMenuButtonImpl: FC<ProductMenuButtonProps & WithRouterProps> = memo
                     onClick={onClick}
                     error={error}
                     folderItems={folderItems}
+                    showFolderMenu={showFolders}
                 />
             )}
         </DropdownButton>
@@ -223,6 +224,10 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
         [menuModel]
     );
 
+    const dashboardURL = useMemo(() => {
+        return showFolderMenu && appProperties.logoBadgeColorImageUrl;
+    }, [appProperties.logoBadgeColorImageUrl, showFolderMenu]);
+
     return (
         <div className={classNames('product-menu-content', className)} onClick={onClick} ref={contentRef}>
             <div className="navbar-connector" />
@@ -244,15 +249,20 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
                 {menuModel.isLoaded &&
                     sectionConfigs.map((sectionConfig, i) => (
                         <div key={i} className="menu-section col-product-section">
-                            {sectionConfig.entrySeq().map(([key, menuConfig]) => (
-                                <ProductMenuSection
-                                    key={key}
-                                    section={getSectionModel(key)}
-                                    config={menuConfig}
-                                    containerPath={menuModel.containerPath}
-                                    currentProductId={menuModel.currentProductId}
-                                />
-                            ))}
+                            {sectionConfig.entrySeq().map(([key, menuConfig], j) => {
+                                const isLast = i === sectionConfigs.size - 1 && j === sectionConfig.size - 1;
+
+                                return (
+                                    <ProductMenuSection
+                                        key={key}
+                                        section={getSectionModel(key)}
+                                        config={menuConfig}
+                                        containerPath={menuModel.containerPath}
+                                        currentProductId={menuModel.currentProductId}
+                                        dashboardImgURL={isLast && dashboardURL}
+                                    />
+                                );
+                            })}
                         </div>
                     ))}
             </div>

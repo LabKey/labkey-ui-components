@@ -12,6 +12,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Update menuSectionConfig generation utils to remove appBase prop
   * Styling updates for header project/menu button and menu sections / columns
   * Remove MenuSectionModel itemLimit
+  * Remove some user menu items and add a conditional Dashboard section to the menu
 
 ### version 2.273.2
 *Released*: 20 December 2022

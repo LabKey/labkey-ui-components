@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { PureComponent, ReactNode } from 'react';
+import React, { PureComponent, ReactNode, FC, memo } from 'react';
 import classNames from 'classnames';
 
-import { createProductUrl, createProductUrlFromPartsWithContainer } from '../../url/AppURL';
+import { AppURL, createProductUrl, createProductUrlFromPartsWithContainer } from '../../url/AppURL';
 import { naturalSort } from '../../../public/sort';
 import { getHref } from '../../url/utils';
 import { isProjectContainer } from '../../app/utils';
@@ -27,12 +27,13 @@ interface MenuSectionProps {
     config: MenuSectionConfig;
     containerPath: string;
     currentProductId: string;
+    dashboardImgURL?: string;
     section: MenuSectionModel;
 }
 
 export class ProductMenuSection extends PureComponent<MenuSectionProps> {
     render(): ReactNode {
-        const { config, section, currentProductId, containerPath } = this.props;
+        const { config, section, currentProductId, containerPath, dashboardImgURL } = this.props;
         const { activeJobIconCls, showActiveJobIcon } = config;
 
         if (!section) return null;
@@ -54,7 +55,7 @@ export class ProductMenuSection extends PureComponent<MenuSectionProps> {
         const headerText = config.headerText ?? section.label;
         const label = icon ? (
             <>
-                {icon}&nbsp;{headerText}
+                {icon}{' '}{headerText}
             </>
         ) : (
             headerText
@@ -121,7 +122,37 @@ export class ProductMenuSection extends PureComponent<MenuSectionProps> {
                             return <li key={item.label}>{labelDisplay}</li>;
                         })
                 )}
+                {dashboardImgURL && (
+                    <DashboardSectionHeader
+                        currentProductId={currentProductId}
+                        containerPath={containerPath}
+                        src={dashboardImgURL}
+                    />
+                )}
             </ul>
         );
     }
 }
+
+interface DashboardSectionHeaderProps {
+    containerPath: string;
+    currentProductId: string;
+    src: string;
+}
+
+const DashboardSectionHeader: FC<DashboardSectionHeaderProps> = memo(props => {
+    const { src, currentProductId, containerPath } = props;
+
+    return (
+        <li key="dashbaord" className="menu-section-header">
+            <a
+                href={getHref(
+                    createProductUrl(currentProductId, currentProductId, AppURL.create('home'), containerPath)
+                )}
+            >
+                <img alt="Dashboard icon" className="menu-section-image" src={src} height="24px" width="24px" />{' '}
+                Dashboard
+            </a>
+        </li>
+    );
+});

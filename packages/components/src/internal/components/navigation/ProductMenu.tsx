@@ -298,12 +298,12 @@ async function initMenuModel(
 }
 
 const HEADER_MENU_SUBTITLE_MAP = {
-    account: 'Administration',
+    account: 'Settings',
     admin: 'Administration',
     items: 'Storage',
     lineage: 'Lineage',
     home: 'Dashboard',
-    pipeline: 'Pipeline',
+    pipeline: 'Imports',
     q: 'Schemas',
     reports: 'Reports',
 

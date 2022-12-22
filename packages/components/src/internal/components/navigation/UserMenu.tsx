@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React, { FC, ReactNode, useCallback, useMemo } from 'react';
+import React, { FC, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { Dropdown, Image, MenuItem } from 'react-bootstrap';
 import { getServerContext } from '@labkey/api';
 
@@ -22,13 +22,17 @@ import { User } from '../base/models/User';
 
 import { devToolsActive, toggleDevTools } from '../../util/utils';
 
+import { useServerContext } from '../base/ServerContext';
+import { getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
+import { AppProperties } from '../../app/models';
+
+import { signOut, signIn, initMenuModel } from './actions';
 import { ProductMenuModel } from './model';
-import { signOut, signIn } from './actions';
 
 export interface UserMenuProps {
+    appProperties?: AppProperties;
     extraDevItems?: ReactNode;
     extraUserItems?: ReactNode;
-    model: ProductMenuModel;
     onSignIn?: () => void;
     onSignOut?: (signOutUrl: string) => void;
     signOutUrl?: string;
@@ -36,8 +40,27 @@ export interface UserMenuProps {
 }
 
 export const UserMenu: FC<UserMenuProps> = props => {
-    const { extraDevItems, extraUserItems, model, onSignIn, onSignOut, user, signOutUrl } = props;
-    const menuSection = useMemo(() => model.getSection('user'), [model]);
+    const {
+        extraDevItems,
+        extraUserItems,
+        onSignIn,
+        onSignOut,
+        user,
+        signOutUrl,
+        appProperties = getCurrentAppProperties(),
+    } = props;
+    const { container } = useServerContext();
+    const [model, setModel] = useState<ProductMenuModel>();
+
+    useEffect(() => {
+        (async () => {
+            // no try/catch as the initMenuModel will catch errors and put them in the model isError/message
+            const menuModel = await initMenuModel(appProperties, getPrimaryAppProperties().productId, container.id);
+            setModel(menuModel);
+        })();
+    }, [appProperties, container.id]);
+
+    const menuSection = useMemo(() => model?.getSection('user'), [model]);
 
     const menuItems = useMemo(() => {
         return menuSection?.items

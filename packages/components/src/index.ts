@@ -379,12 +379,7 @@ import { useSubNavContext } from './internal/components/navigation/hooks';
 import { SubNav, SubNavWithContext } from './internal/components/navigation/SubNav';
 import { Breadcrumb } from './internal/components/navigation/Breadcrumb';
 import { BreadcrumbCreate } from './internal/components/navigation/BreadcrumbCreate';
-import {
-    MenuItemModel,
-    MenuSectionModel,
-    ProductMenuModel,
-    MenuSectionConfig,
-} from './internal/components/navigation/model';
+import { MenuItemModel, MenuSectionModel, ProductMenuModel } from './internal/components/navigation/model';
 
 import { UserSelectInput } from './internal/components/forms/input/UserSelectInput';
 import { UserDetailHeader } from './internal/components/user/UserDetailHeader';
@@ -1128,7 +1123,6 @@ export {
     getLineageFilterValue,
     withLineage,
     // Navigation
-    MenuSectionConfig,
     ProductMenuModel,
     MenuSectionModel,
     MenuItemModel,

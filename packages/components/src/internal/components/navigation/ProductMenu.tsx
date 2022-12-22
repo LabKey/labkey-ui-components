@@ -56,6 +56,7 @@ import {
 import { FolderMenu, FolderMenuItem } from './FolderMenu';
 import { ProductMenuSection } from './ProductMenuSection';
 import { MenuSectionConfig, MenuSectionModel, ProductMenuModel } from './model';
+import { initMenuModel } from './actions';
 
 interface ProductMenuButtonProps {
     appProperties?: AppProperties;
@@ -281,30 +282,6 @@ function createFolderItem(folder: Container, controllerName: string, isTopLevel:
         label: folder.title,
         path: folder.path,
     };
-}
-
-async function initMenuModel(
-    appProperties: AppProperties,
-    userMenuProductId: string,
-    containerId: string,
-    containerPath?: string
-): Promise<ProductMenuModel> {
-    const primaryProductId = getPrimaryAppProperties().productId;
-    const menuModel = new ProductMenuModel({
-        containerId,
-        containerPath,
-        currentProductId: appProperties.productId,
-        userMenuProductId: primaryProductId,
-        productIds: getAppProductIds(primaryProductId),
-    });
-
-    try {
-        const sections = await menuModel.getMenuSections();
-        return menuModel.setLoadedSections(sections);
-    } catch (e) {
-        console.error('Problem retrieving product menu data.', e);
-        return menuModel.setError('Error in retrieving product menu data. Please contact your site administrator.');
-    }
 }
 
 const HEADER_MENU_SUBTITLE_MAP = {

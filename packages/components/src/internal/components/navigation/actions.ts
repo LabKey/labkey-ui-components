@@ -1,6 +1,11 @@
 import { Ajax, Utils, ActionURL } from '@labkey/api';
 
 import { buildURL } from '../../url/AppURL';
+import { AppProperties } from '../../app/models';
+
+import { getAppProductIds, getPrimaryAppProperties } from '../../app/utils';
+
+import { ProductMenuModel } from './model';
 
 export function signOut(navigateUrl?: string): void {
     const startUrl = buildURL('project', 'start', undefined, { returnUrl: false });
@@ -23,4 +28,28 @@ export function signOut(navigateUrl?: string): void {
 
 export function signIn(): void {
     window.location.href = buildURL('login', 'login');
+}
+
+export async function initMenuModel(
+    appProperties: AppProperties,
+    userMenuProductId: string,
+    containerId: string,
+    containerPath?: string
+): Promise<ProductMenuModel> {
+    const primaryProductId = getPrimaryAppProperties().productId;
+    const menuModel = new ProductMenuModel({
+        containerId,
+        containerPath,
+        currentProductId: appProperties.productId,
+        userMenuProductId: primaryProductId,
+        productIds: getAppProductIds(primaryProductId),
+    });
+
+    try {
+        const sections = await menuModel.getMenuSections();
+        return menuModel.setLoadedSections(sections);
+    } catch (e) {
+        console.error('Problem retrieving product menu data.', e);
+        return menuModel.setError('Error in retrieving product menu data. Please contact your site administrator.');
+    }
 }

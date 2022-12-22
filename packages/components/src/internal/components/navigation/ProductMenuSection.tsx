@@ -19,7 +19,7 @@ import classNames from 'classnames';
 import { AppURL, createProductUrl, createProductUrlFromPartsWithContainer } from '../../url/AppURL';
 import { naturalSort } from '../../../public/sort';
 import { getHref } from '../../url/utils';
-import { isProjectContainer } from '../../app/utils';
+import { getPrimaryAppProperties, isProjectContainer } from '../../app/utils';
 
 import { MenuSectionModel, MenuSectionConfig } from './model';
 
@@ -147,7 +147,7 @@ const DashboardSectionHeader: FC<DashboardSectionHeaderProps> = memo(props => {
         <li key="dashbaord" className="menu-section-header">
             <a
                 href={getHref(
-                    createProductUrl(currentProductId, currentProductId, AppURL.create('home'), containerPath)
+                    createProductUrl(getPrimaryAppProperties().productId, currentProductId, AppURL.create('home'), containerPath)
                 )}
             >
                 <img alt="Dashboard icon" className="menu-section-image" src={src} height="24px" width="24px" />{' '}

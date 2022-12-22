@@ -36,14 +36,13 @@ import { useServerContext } from '../base/ServerContext';
 
 import { ProductMenuButton } from './ProductMenu';
 import { UserMenu, UserMenuProps } from './UserMenu';
-import { MenuSectionConfig, ProductMenuModel } from './model';
+import { MenuSectionConfig } from './model';
 import { SEARCH_PLACEHOLDER } from './constants';
 import { useFolderMenuContext } from './hooks';
 
 interface NavigationBarProps {
     brand?: ReactNode;
     menuSectionConfigs?: List<Map<string, MenuSectionConfig>>;
-    model: ProductMenuModel;
     notificationsConfig?: ServerNotificationsConfig;
     onFindByIds?: (sessionkey: string) => void;
     onSearch?: (form: any) => void;
@@ -65,7 +64,6 @@ export const NavigationBar: FC<Props> = memo(props => {
         extraDevItems,
         extraUserItems,
         menuSectionConfigs,
-        model,
         notificationsConfig,
         onSearch,
         onFindByIds,
@@ -115,7 +113,6 @@ export const NavigationBar: FC<Props> = memo(props => {
                                     <UserMenu
                                         extraDevItems={extraDevItems}
                                         extraUserItems={extraUserItems}
-                                        model={model}
                                         onSignIn={onSignIn}
                                         onSignOut={onSignOut}
                                         signOutUrl={signOutUrl}

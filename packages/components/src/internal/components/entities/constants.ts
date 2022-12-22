@@ -89,6 +89,7 @@ export const SampleTypeDataType: EntityDataType = {
     importFileAction: 'importSamples',
     filterCardHeaderClass: 'filter-card__header-success',
     exprColumnsWithSubSelect: SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR,
+    typeIcon: 'sample_set',
 };
 
 export const DataClassDataType: EntityDataType = {
@@ -114,6 +115,7 @@ export const DataClassDataType: EntityDataType = {
     insertColumnNamePrefix: 'DataInputs/',
     importFileAction: 'importData',
     filterCardHeaderClass: 'filter-card__header-primary',
+    typeIcon: 'source_type',
 };
 
 export const ParentEntityLineageColumns = List.of('Inputs/Materials/First', 'Inputs/Data/First');

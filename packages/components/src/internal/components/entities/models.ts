@@ -544,6 +544,7 @@ export interface EntityDataType {
     typeListingSchemaQuery: SchemaQuery;
     typeNounAsParentSingular: string;
     typeNounSingular: string;
+    typeIcon?: string;
     uniqueFieldKey: string;
 }
 

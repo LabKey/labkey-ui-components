@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Don't use text-capitalize class in PageHeader. It doesn't always do what we want
 * Don't provide default `itemLabel` in `BulkUpdateForm` to allow for shorter messaging
 * Convert to lower case in `BulkUpdateForm` where it is expected
+* Add `typeIcon` field to `EntityDataType`
 
 ### version 2.273.3
 *Released*: 21 December 2022

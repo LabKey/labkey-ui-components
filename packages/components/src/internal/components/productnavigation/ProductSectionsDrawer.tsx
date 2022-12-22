@@ -42,7 +42,7 @@ export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
         });
 
         model
-            .getMenuSections(0)
+            .getMenuSections()
             .then(modelSections => {
                 setSections(parseProductMenuSectionResponse(modelSections, product, currentContainer.path));
             })

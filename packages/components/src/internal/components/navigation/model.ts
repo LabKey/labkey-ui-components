@@ -23,7 +23,6 @@ export class MenuSectionModel extends Record({
     url: undefined,
     items: List<MenuItemModel>(),
     totalCount: 0,
-    itemLimit: undefined,
     key: undefined,
     productId: undefined,
     sectionKey: undefined,
@@ -32,7 +31,6 @@ export class MenuSectionModel extends Record({
     declare url: string;
     declare items: List<MenuItemModel>;
     declare totalCount: number;
-    declare itemLimit: number;
     declare key: string;
     declare productId: string;
     declare sectionKey: string;
@@ -154,7 +152,7 @@ export class ProductMenuModel extends Record({
     /**
      * Retrieve the product menu sections for this productId
      */
-    getMenuSections(itemLimit?: number): Promise<List<MenuSectionModel>> {
+    getMenuSections(): Promise<List<MenuSectionModel>> {
         return new Promise((resolve, reject) => {
             return Ajax.request({
                 url: buildURL('product', 'menuSections.api', undefined, {
@@ -164,7 +162,6 @@ export class ProductMenuModel extends Record({
                     currentProductId: this.currentProductId,
                     userMenuProductId: this.userMenuProductId,
                     productIds: List.isList(this.productIds) ? this.productIds.toArray().join(',') : this.productIds,
-                    itemLimit,
                 }),
                 success: Utils.getCallbackWrapper(response => {
                     let sections = List<MenuSectionModel>();

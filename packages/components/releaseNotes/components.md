@@ -11,6 +11,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Pass containerPath through to create methods of MenuSectionModel and MenuItemModel
   * Update menuSectionConfig generation utils to remove appBase prop
   * Styling updates for header project/menu button and menu sections / columns
+  * Remove MenuSectionModel itemLimit
 
 ### version 2.273.2
 *Released*: 20 December 2022

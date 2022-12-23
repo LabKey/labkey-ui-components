@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Add support for tracking and using multiple BarTender Label templates
+
 ### version 2.273.3
 *Released*: 21 December 2022
 * Issue 46923: Use lookup container filter as default in LookupCell

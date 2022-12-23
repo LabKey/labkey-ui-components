@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, FormEventHandler, memo, PureComponent, ReactNode, useCallback } from 'react';
+import React, { FC, memo, PureComponent, ReactNode, useCallback } from 'react';
 import { Col, Panel, FormControl, Row, Button } from 'react-bootstrap';
 
 import { Alert } from '../base/Alert';
@@ -9,11 +9,14 @@ import { LabelHelpTip } from '../base/LabelHelpTip';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
+import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
+
 import { BarTenderConfiguration, BarTenderResponse } from './models';
 import { withLabelPrintingContext, LabelPrintingProviderProps } from './LabelPrintingContextProvider';
 import { BAR_TENDER_TOPIC, BARTENDER_CONFIGURATION_TITLE, LABEL_NOT_FOUND_ERROR } from './constants';
+import { LabelsConfigurationPanel } from './LabelsConfigurationPanel';
 
-interface OwnProps {
+interface OwnProps extends InjectedRouteLeaveProps {
     api?: ComponentsAPIWrapper;
     onChange: () => void;
     onSuccess: () => void;
@@ -109,7 +112,7 @@ export class BarTenderSettingsFormImpl extends PureComponent<Props, State> {
 
     private btTestConnectionTemplate = (label: string): string => {
         // Should be able to run connection test w/o a default label set.
-        const formatNode = label ? `<Format>${label}</Format>` : '';
+        const formatNode = `<Format>${label}</Format>`;
 
         return `<XMLScript Version="2.0">
             <Command Name="Job1">
@@ -193,7 +196,7 @@ export class BarTenderSettingsFormImpl extends PureComponent<Props, State> {
         const { btServiceURL, defaultLabel } = this.state;
 
         this.props.api.labelprinting
-            .printBarTenderLabels(this.btTestConnectionTemplate(defaultLabel), btServiceURL)
+            .printBarTenderLabels(this.btTestConnectionTemplate(''), btServiceURL)
             .then((btResponse: BarTenderResponse) => {
                 if (btResponse.ranToCompletion()) {
                     this.setState(() => ({ testing: false, connectionValidated: true, failureMessage: undefined }));
@@ -216,8 +219,7 @@ export class BarTenderSettingsFormImpl extends PureComponent<Props, State> {
 
     render(): ReactNode {
         const { title = BARTENDER_CONFIGURATION_TITLE } = this.props;
-        const { btServiceURL, connectionValidated, defaultLabel, dirty, failureMessage, submitting, testing } =
-            this.state;
+        const { btServiceURL, connectionValidated, dirty, failureMessage, submitting, testing } = this.state;
         const isBlank = !btServiceURL || btServiceURL.trim() === '';
 
         return (
@@ -248,16 +250,7 @@ export class BarTenderSettingsFormImpl extends PureComponent<Props, State> {
                                 </div>
                             </SettingsInput>
 
-                            <SettingsInput
-                                description={DEFAULT_LABEL_DESCRIPTION}
-                                label="Label Template File"
-                                name="defaultLabel"
-                                onChange={this.onChange}
-                                type="text"
-                                value={defaultLabel}
-                            />
-
-                            <div>
+                            <div className="bt-service-buttons">
                                 <SaveButton
                                     dirty={dirty}
                                     onSave={this.onSave}
@@ -273,6 +266,9 @@ export class BarTenderSettingsFormImpl extends PureComponent<Props, State> {
                                 >
                                     Test Connection
                                 </Button>
+                            </div>
+                            <div className="label-templates-panel">
+                                <LabelsConfigurationPanel {...this.props} />
                             </div>
                         </Panel.Body>
                     </Panel>

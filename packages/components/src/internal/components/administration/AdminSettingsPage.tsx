@@ -23,7 +23,7 @@ const TITLE = 'Settings';
 
 // export for jest testing
 export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
-    const { setIsDirty, children } = props;
+    const { setIsDirty, getIsDirty, children } = props;
     const { moduleContext, user, project } = useServerContext();
     const { createNotification, dismissNotifications } = useNotificationsContext();
     const { NotebookProjectSettingsComponent } = useAdminAppContext();
@@ -58,7 +58,12 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
                 disableRemoveSelf
             >
                 <ActiveUserLimit />
-                <BarTenderSettingsForm onChange={onSettingsChange} onSuccess={onBarTenderSuccess} />
+                <BarTenderSettingsForm
+                    onChange={onSettingsChange}
+                    onSuccess={onBarTenderSuccess}
+                    setIsDirty={setIsDirty}
+                    getIsDirty={getIsDirty}
+                />
                 <NameIdSettings {...props} />
                 {isSampleStatusEnabled(moduleContext) && <ManageSampleStatusesPanel {...props} />}
             </BasePermissions>
@@ -74,7 +79,12 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
             {biologicsIsPrimaryApp(moduleContext) && isELNEnabled(moduleContext) && (
                 <NotebookProjectSettingsComponent />
             )}
-            <BarTenderSettingsForm onChange={onSettingsChange} onSuccess={onBarTenderSuccess} />
+            <BarTenderSettingsForm
+                onChange={onSettingsChange}
+                onSuccess={onBarTenderSuccess}
+                setIsDirty={setIsDirty}
+                getIsDirty={getIsDirty}
+            />
             <NameIdSettings {...props} />
             {isSampleStatusEnabled(moduleContext) && <ManageSampleStatusesPanel {...props} />}
             {children}

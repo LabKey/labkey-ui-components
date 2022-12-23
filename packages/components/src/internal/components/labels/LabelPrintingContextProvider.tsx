@@ -7,10 +7,10 @@ import { useServerContext } from '../base/ServerContext';
 import { isSampleManagerEnabled } from '../../app/utils';
 
 import { userCanPrintLabels } from './utils';
+import { BarTenderConfiguration, LabelTemplate } from './models';
 
 export interface LabelPrintingProviderProps {
     canPrintLabels: boolean;
-    labelTemplate: string;
     printServiceUrl: string;
 }
 
@@ -30,24 +30,25 @@ export const useLabelPrintingContext = (): LabelPrintingProviderProps => {
 export const LabelPrintingProvider: FC<OwnProps> = memo(({ children, initialContext }) => {
     const { user } = useServerContext();
     const { api } = useAppContext();
-    const { fetchBarTenderConfiguration } = api.labelprinting;
+    const { fetchBarTenderConfiguration, ensureLabelTemplatesList } = api.labelprinting;
     const [canPrintLabels, setCanPrintLabels] = useState<boolean>(() => userCanPrintLabels(user));
-    const [labelTemplate, setLabelTemplate] = useState<string>(initialContext?.labelTemplate);
     const [printServiceUrl, setPrintServiceUrl] = useState<string>(initialContext?.printServiceUrl);
 
     useEffect(() => {
         if (userCanPrintLabels(user) && isSampleManagerEnabled()) {
-            fetchBarTenderConfiguration().then(btConfiguration => {
-                setLabelTemplate(btConfiguration.defaultLabel);
-                setCanPrintLabels(!!btConfiguration.serviceURL);
-                setPrintServiceUrl(btConfiguration.serviceURL);
-            });
+            Promise.all([fetchBarTenderConfiguration(), ensureLabelTemplatesList()]).then(
+                (responses: [BarTenderConfiguration, LabelTemplate[]]) => {
+                    const [btConfiguration, templates] = responses;
+                    setCanPrintLabels(!!btConfiguration.serviceURL && templates?.length > 0);
+                    setPrintServiceUrl(btConfiguration.serviceURL);
+                }
+            );
         }
-    }, [fetchBarTenderConfiguration, user]);
+    }, [fetchBarTenderConfiguration, ensureLabelTemplatesList, user]);
 
-    const labelContext = useMemo<LabelPrintingProviderProps>(
-        () => ({ labelTemplate, printServiceUrl, canPrintLabels }),
-        [labelTemplate, printServiceUrl, canPrintLabels]
+    const labelContext = useMemo<LabelPrintingProviderProps> (
+        () => ({ printServiceUrl, canPrintLabels }),
+        [printServiceUrl, canPrintLabels]
     );
 
     return <LabelPrintingContext.Provider value={labelContext}>{children}</LabelPrintingContext.Provider>;

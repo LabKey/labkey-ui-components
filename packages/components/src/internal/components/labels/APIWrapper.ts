@@ -1,4 +1,4 @@
-import { ActionURL, Ajax, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Domain, Utils } from '@labkey/api';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { getQueryModelExportParams } from '../../../public/QueryModel/utils';
@@ -7,7 +7,11 @@ import { EXPORT_TYPES } from '../../constants';
 import { buildURL } from '../../url/AppURL';
 import { SAMPLE_EXPORT_CONFIG } from '../samples/constants';
 
-import { BarTenderConfiguration, BarTenderResponse } from './models';
+import { BarTenderConfiguration, BarTenderResponse, LabelTemplate } from './models';
+
+import { selectRows } from '../../query/selectRows';
+
+import { LABEL_TEMPLATE_SQ, LABEL_TEMPLATES_LIST_NAME } from './constants';
 
 function handleBarTenderConfigurationResponse(response: any): BarTenderConfiguration {
     // Separate the BarTender configuration object from the success response
@@ -15,8 +19,51 @@ function handleBarTenderConfigurationResponse(response: any): BarTenderConfigura
     return new BarTenderConfiguration(btConfiguration);
 }
 
+function createLabelTemplateList(): Promise<any> {
+    return new Promise((resolve, reject) => {
+        Domain.create({
+            kind: 'IntList',
+            domainDesign: {
+                name: LABEL_TEMPLATES_LIST_NAME,
+                fields: [
+                    {
+                        name: 'rowId',
+                        rangeURI: 'int',
+                    },
+                    {
+                        name: 'name',
+                        rangeURI: 'string',
+                        required: true,
+                    },
+                    {
+                        name: 'description',
+                        rangeURI: 'string',
+                    },
+                    {
+                        name: 'path',
+                        rangeURI: 'string',
+                        required: true,
+                    },
+                ],
+            },
+            options: {
+                keyName: 'rowId',
+                keyType: 'AutoIncrementInteger',
+            },
+            success: response => {
+                resolve(response);
+            },
+            failure: response => {
+                reject(response);
+            },
+        });
+    });
+}
+
 export interface LabelPrintingAPIWrapper {
+    ensureLabelTemplatesList: () => Promise<LabelTemplate[]>;
     fetchBarTenderConfiguration: () => Promise<BarTenderConfiguration>;
+    getLabelTemplates: () => Promise<LabelTemplate[]>;
     printBarTenderLabels: (btxml: string, serviceURL: string) => Promise<BarTenderResponse>;
     printGridLabels: (
         sampleModel: QueryModel,
@@ -131,6 +178,33 @@ export class LabelPrintingServerAPIWrapper implements LabelPrintingAPIWrapper {
             });
         });
     };
+
+    ensureLabelTemplatesList = (): Promise<LabelTemplate[]> => {
+        return new Promise<LabelTemplate[]>((resolve) => {
+            this.getLabelTemplates()
+                .then((templates: LabelTemplate[]) => resolve(templates))
+                .catch(reason => {
+                    if (reason.status !== 404) {
+                        resolve(undefined);
+                    } else {
+                        // try to create list
+                        createLabelTemplateList()
+                            .then(() => resolve([]))
+                            .catch(() => resolve(undefined));
+                    }
+                });
+        });
+    };
+
+    getLabelTemplates = (): Promise<LabelTemplate[]> => {
+        return new Promise<LabelTemplate[]>((resolve, reject) => {
+            selectRows({ schemaQuery: LABEL_TEMPLATE_SQ })
+                .then(response => {
+                    resolve(response?.rows?.map(row => LabelTemplate.create(row)) ?? []);
+                })
+                .catch(reason => reject(reason));
+        });
+    };
 }
 
 /**
@@ -141,7 +215,9 @@ export function getLabelPrintingTestAPIWrapper(
     overrides: Partial<LabelPrintingAPIWrapper> = {}
 ): LabelPrintingAPIWrapper {
     return {
+        ensureLabelTemplatesList: mockFn(),
         fetchBarTenderConfiguration: () => Promise.resolve(new BarTenderConfiguration()),
+        getLabelTemplates: mockFn(),
         printBarTenderLabels: mockFn(),
         printGridLabels: mockFn(),
         saveBarTenderConfiguration: mockFn(),

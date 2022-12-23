@@ -14,12 +14,11 @@ import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { BarTenderResponse } from './models';
-import { BAR_TENDER_TOPIC, LABEL_NOT_FOUND_ERROR } from './constants';
+import { BAR_TENDER_TOPIC, LABEL_NOT_FOUND_ERROR, LABEL_TEMPLATE_SQ } from './constants';
 
 export interface PrintModalProps {
     afterPrint?: (numSamples: number, numLabels: number) => void;
     api?: ComponentsAPIWrapper;
-    labelTemplate: string;
     model: QueryModel;
     onCancel?: (any) => void;
     printServiceUrl: string;
@@ -58,7 +57,7 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
             submitting: false,
             error: undefined,
             numCopies: 1,
-            labelTemplate: props.labelTemplate,
+            labelTemplate: undefined,
             sampleCount: props.sampleIds.length,
         };
     }
@@ -163,6 +162,10 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
         this.props.actions.replaceSelections(this._modelId, sampleIds);
     };
 
+    changeTemplateSelection = (name: string, value: string): void => {
+        this.setState(() => ({ labelTemplate: value }));
+    };
+
     isReadyForPrint(): boolean {
         const { labelTemplate, numCopies } = this.state;
         return (
@@ -235,7 +238,7 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
                     )}
                     <div className="top-spacing">
                         <b>
-                            Label template
+                            Label templates
                             <LabelHelpTip title="BarTender Label Template">
                                 <p>
                                     Provide the label template to use with BarTender. The path should be relative to the
@@ -243,11 +246,20 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
                                 </p>
                             </LabelHelpTip>
                         </b>
-                        <input
-                            className="form-control"
-                            name="labelTemplate"
-                            onChange={this.onLabelTemplateChange}
-                            type="text"
+                        <QuerySelect
+                            formsy={false}
+                            fireQSChangeOnInit={true}
+                            showLabel={false}
+                            loadOnFocus
+                            maxRows={10}
+                            name="label-template"
+                            onQSChange={this.changeTemplateSelection}
+                            placeholder="Select or type to search..."
+                            previewOptions={true}
+                            required={true}
+                            schemaQuery={LABEL_TEMPLATE_SQ}
+                            displayColumn="name"
+                            valueColumn="path"
                             value={labelTemplate}
                         />
                     </div>

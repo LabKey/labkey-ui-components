@@ -31,6 +31,7 @@ describe('SampleAliquotsGridPanel', () => {
     const DEFAULT_PROPS = {
         actions: makeTestActions(jest.fn),
         onSampleChangeInvalidate: jest.fn(),
+        queryModelId: 'model',
         queryModels: {
             model: makeTestQueryModel(SCHEMA_QUERY, new QueryInfo(), {}, [], 0, 'model'),
         },

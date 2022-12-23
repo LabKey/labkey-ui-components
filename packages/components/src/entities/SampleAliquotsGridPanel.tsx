@@ -119,6 +119,7 @@ const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> 
 
 interface Props {
     assayProviderType?: string;
+    queryModelId: string;
     lineageUpdateAllowed: boolean;
     onSampleChangeInvalidate: (schemaQuery: SchemaQuery) => void;
     showLabelOption?: boolean;
@@ -126,13 +127,12 @@ interface Props {
 }
 
 export const SampleAliquotsGridPanelImpl: FC<Props & InjectedQueryModels> = memo(props => {
-    const { actions, queryModels, showLabelOption = true, ...buttonProps } = props;
+    const { actions, queryModels, queryModelId, showLabelOption = true, ...buttonProps } = props;
     const [showConfirmDelete, setConfirmDelete] = useState<boolean>(false);
     const [showPrintDialog, setShowPrintDialog] = useState<boolean>(false);
     const { createNotification } = useNotificationsContext();
     const { canPrintLabels, printServiceUrl, labelTemplate } = useLabelPrintingContext();
-
-    const queryModel = queryModels.model;
+    const queryModel = queryModels[queryModelId];
 
     const resetState = useCallback((): void => {
         setConfirmDelete(false);
@@ -227,11 +227,10 @@ export const SampleAliquotsGridPanel: FC<SampleAliquotsGridPanelProps> = props =
         ? [...getOmittedSampleTypeColumns(user), ...omittedColumns]
         : getOmittedSampleTypeColumns(user);
 
-    const queryConfigs = {
-        model: getSampleAliquotsQueryConfig(schemaQuery.getQuery(), sampleLsid, true, rootLsid, omitted),
-    };
+    const queryConfig = getSampleAliquotsQueryConfig(schemaQuery.getQuery(), sampleLsid, true, rootLsid, omitted);
+    const queryConfigs = { [queryConfig.id]: queryConfig };
 
-    return <SampleAliquotsGridPanelWithModel {...props} queryConfigs={queryConfigs} />;
+    return <SampleAliquotsGridPanelWithModel {...props} queryModelId={queryConfig.id} queryConfigs={queryConfigs} />;
 };
 
 SampleAliquotsGridPanel.displayName = 'SampleAliquotsGridPanel';

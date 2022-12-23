@@ -3,6 +3,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 2.273.3
 *Released*: 21 December 2022
+* View Assay Results report fix for selectionKey when coming from sample > aliquots grid
+
+### version 2.273.3
+*Released*: 21 December 2022
 * Issue 46923: Use lookup container filter as default in LookupCell
 * Issue 46932: Don't show fields that are not filterable in filter modal
 * Issue 46974: Update delete warning messages to correspond to enabled features

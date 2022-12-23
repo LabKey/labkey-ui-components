@@ -52,6 +52,7 @@ import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 
 import { IS_ALIQUOT_COL, SAMPLE_STATUS_REQUIRED_COLUMNS, SELECTION_KEY_TYPE } from './constants';
 import { FindField, GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
+import {createGridModelId} from "../../models";
 
 export function initSampleSetSelects(
     isUpdate: boolean,
@@ -779,9 +780,11 @@ export function getSampleAliquotsQueryConfig(
     omitCols?: string[]
 ): QueryConfig {
     const omitCol = IS_ALIQUOT_COL;
+    const schemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet);
 
     return {
-        schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet),
+        id: createGridModelId('sample-aliquots-' + sampleLsid, schemaQuery),
+        schemaQuery,
         bindURL: forGridView,
         maxRows: forGridView ? undefined : -1,
         omittedColumns: omitCols ? [...omitCols, omitCol] : [omitCol],

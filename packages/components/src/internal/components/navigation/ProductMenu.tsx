@@ -24,7 +24,7 @@ import { blurActiveElement } from '../../util/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { useServerContext } from '../base/ServerContext';
 import { AppProperties } from '../../app/models';
-import { getAppProductIds, getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
+import { getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
 
 import { Alert } from '../base/Alert';
 

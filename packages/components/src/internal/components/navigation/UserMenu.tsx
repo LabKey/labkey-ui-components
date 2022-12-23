@@ -39,26 +39,13 @@ export interface UserMenuProps {
     user?: User;
 }
 
-export const UserMenu: FC<UserMenuProps> = props => {
-    const {
-        extraDevItems,
-        extraUserItems,
-        onSignIn,
-        onSignOut,
-        user,
-        signOutUrl,
-        appProperties = getCurrentAppProperties(),
-    } = props;
-    const { container } = useServerContext();
-    const [model, setModel] = useState<ProductMenuModel>();
+interface ImplProps {
+    model: ProductMenuModel;
+}
 
-    useEffect(() => {
-        (async () => {
-            // no try/catch as the initMenuModel will catch errors and put them in the model isError/message
-            const menuModel = await initMenuModel(appProperties, getPrimaryAppProperties().productId, container.id);
-            setModel(menuModel);
-        })();
-    }, [appProperties, container.id]);
+// exported for jest testing
+export const UserMenuImpl: FC<UserMenuProps & ImplProps> = props => {
+    const { model, extraDevItems, extraUserItems, onSignIn, onSignOut, user, signOutUrl } = props;
 
     const menuSection = useMemo(() => model?.getSection('user'), [model]);
 
@@ -127,6 +114,22 @@ export const UserMenu: FC<UserMenuProps> = props => {
             </Dropdown.Menu>
         </Dropdown>
     );
+};
+
+export const UserMenu: FC<UserMenuProps> = props => {
+    const { appProperties = getCurrentAppProperties() } = props;
+    const { container } = useServerContext();
+    const [model, setModel] = useState<ProductMenuModel>();
+
+    useEffect(() => {
+        (async () => {
+            // no try/catch as the initMenuModel will catch errors and put them in the model isError/message
+            const menuModel = await initMenuModel(appProperties, getPrimaryAppProperties().productId, container.id);
+            setModel(menuModel);
+        })();
+    }, [appProperties, container.id]);
+
+    return <UserMenuImpl {...props} model={model} />;
 };
 
 UserMenu.defaultProps = {

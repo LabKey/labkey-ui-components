@@ -75,6 +75,7 @@ describe('ProductMenuSection render', () => {
 
         const menuSection = mount(
             <ProductMenuSection
+                containerPath="/test/path"
                 currentProductId="testProduct"
                 section={section}
                 config={
@@ -85,7 +86,7 @@ describe('ProductMenuSection render', () => {
             />
         );
 
-        expect(menuSection.find('li').length).toBe(0);
+        expect(menuSection.find('li').length).toBe(2); // header and hr
         expect(menuSection).toMatchSnapshot();
     });
 
@@ -103,7 +104,12 @@ describe('ProductMenuSection render', () => {
         });
 
         const menuSection = mount(
-            <ProductMenuSection config={config} currentProductId="testProduct" section={section} />
+            <ProductMenuSection
+                config={config}
+                containerPath="/test/path"
+                currentProductId="testProduct"
+                section={section}
+            />
         );
 
         expect(menuSection.find('li.empty-section').length).toBe(1);
@@ -120,6 +126,7 @@ describe('ProductMenuSection render', () => {
 
         const menuSection = mount(
             <ProductMenuSection
+                containerPath="/test/path"
                 currentProductId="testProductHeaderUrl"
                 section={section}
                 config={
@@ -147,6 +154,7 @@ describe('ProductMenuSection render', () => {
 
         const menuSection = mount(
             <ProductMenuSection
+                containerPath="/test/path"
                 currentProductId={productId}
                 section={section}
                 config={
@@ -162,7 +170,7 @@ describe('ProductMenuSection render', () => {
         menuSection.unmount();
     });
 
-    test('one-column section', () => {
+    test('one column section', () => {
         const productId = 'testProduct4Columns';
 
         const section = MenuSectionModel.create({
@@ -176,34 +184,16 @@ describe('ProductMenuSection render', () => {
         });
 
         const menuSection = mount(
-            <ProductMenuSection section={section} currentProductId={productId} config={sectionConfig} />
+            <ProductMenuSection
+                section={section}
+                containerPath="/test/path"
+                currentProductId={productId}
+                config={sectionConfig}
+            />
         );
 
         expect(menuSection.find('ul').length).toBe(1);
         expect(menuSection.find('i.fa-spinner').length).toBe(0); // no active jobs present
-        expect(menuSection).toMatchSnapshot();
-        menuSection.unmount();
-    });
-
-    test('one column with overflow link', () => {
-        const productId = 'testProductOverflowLink';
-
-        const section = new MenuSectionModel({
-            label: 'Assays',
-            items: assayItems,
-            key: 'assays',
-            totalCount: 5,
-        });
-
-        const sectionConfig = new MenuSectionConfig({
-            iconURL: '/testProductOverflowLink/images/assays.svg',
-        });
-
-        const menuSection = mount(
-            <ProductMenuSection section={section} currentProductId={productId} config={sectionConfig} />
-        );
-        expect(menuSection.find('ul').length).toBe(1);
-        expect(menuSection.find('span.overflow-link').length).toBe(1);
         expect(menuSection).toMatchSnapshot();
         menuSection.unmount();
     });
@@ -217,6 +207,7 @@ describe('ProductMenuSection render', () => {
 
         const menuSection = mount(
             <ProductMenuSection
+                containerPath="/test/path"
                 currentProductId="testProductHeaderUrl"
                 section={section}
                 config={
@@ -239,6 +230,7 @@ describe('ProductMenuSection render', () => {
 
         const menuSection = mount(
             <ProductMenuSection
+                containerPath="/test/path"
                 currentProductId="testProductHeaderUrl"
                 section={section}
                 config={

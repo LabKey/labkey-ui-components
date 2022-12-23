@@ -33,7 +33,12 @@ import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
 import { EXP_TABLES, SCHEMAS } from '../../schemas';
 
-import { getContainerFilter, ISelectRowsResult, selectRowsDeprecated } from '../../query/api';
+import {
+    getContainerFilter,
+    invalidateFullQueryDetailsCache,
+    ISelectRowsResult,
+    selectRowsDeprecated,
+} from '../../query/api';
 
 import { buildURL } from '../../url/AppURL';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -824,8 +829,10 @@ export function getSampleAssayResultViewConfigs(): Promise<SampleAssayResultView
 }
 
 export async function createSessionAssayRunSummaryQuery(sampleIds: number[]): Promise<ISelectRowsResult> {
-    let assayRunsQuery = 'AssayRunsPerSample';
+    // issue with temp table re-use of queryName, invalidate cache to clear any queryDetails for old temp table
+    invalidateFullQueryDetailsCache();
 
+    let assayRunsQuery = 'AssayRunsPerSample';
     if (isProductProjectsEnabled() && !isProjectContainer()) {
         assayRunsQuery = 'AssayRunsPerSampleChildProject';
     }

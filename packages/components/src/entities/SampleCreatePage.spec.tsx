@@ -11,7 +11,7 @@ import { BACKGROUND_IMPORT_MIN_FILE_SIZE } from '../internal/components/pipeline
 
 import { SampleCreatePage, SampleCreatePageProps } from './SampleCreatePage';
 import { SampleTypeBasePage } from './SampleTypeBasePage';
-import { SampleTypeAppContext } from './SampleTypeAppContext';
+import { SampleTypeAppContext } from '../internal/AppContext';
 
 function getDefaultProps(): SampleCreatePageProps {
     return {

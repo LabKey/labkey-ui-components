@@ -16,7 +16,7 @@
 import { List, Map, OrderedMap } from 'immutable';
 import { ActionURL, Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
 
-import { EntityDataType, IEntityTypeDetails, IEntityTypeOption, } from '../entities/models';
+import { EntityDataType, IEntityTypeDetails, IEntityTypeOption } from '../entities/models';
 import { deleteEntityType, getEntityTypeOptions, getSelectedItemSamples } from '../entities/actions';
 
 import { Location } from '../../util/URL';
@@ -55,9 +55,10 @@ import { ViewInfo } from '../../ViewInfo';
 
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 
+import { createGridModelId } from '../../models';
+
 import { IS_ALIQUOT_COL, SAMPLE_STATUS_REQUIRED_COLUMNS, SELECTION_KEY_TYPE } from './constants';
 import { FindField, GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
-import {createGridModelId} from "../../models";
 
 export function initSampleSetSelects(
     isUpdate: boolean,
@@ -258,18 +259,15 @@ export async function getSelectedSampleIdsFromSelectionKey(location: Location): 
         const sampleFieldKey = getLocationQueryVal(location, 'sampleFieldKey');
         const queryName = SCHEMAS.ASSAY_TABLES.RESULTS_QUERYNAME;
         let response;
-        if (isSnapshot)
-            response = await getSnapshotSelections(location.query.selectionKey);
-        else
-            response = await getSelection(location, schemaName, queryName);
+        if (isSnapshot) response = await getSnapshotSelections(location.query.selectionKey);
+        else response = await getSelection(location, schemaName, queryName);
         sampleIds = await getFieldLookupFromSelection(schemaName, queryName, response?.selected, sampleFieldKey);
     } else {
         const picklistName = getLocationQueryVal(location, 'picklistName');
         let response;
         if (isSnapshot && location.query?.selectionKey)
             response = await getSnapshotSelections(location.query.selectionKey);
-        else
-            response = await getSelection(location, SCHEMAS.PICKLIST_TABLES.SCHEMA, picklistName);
+        else response = await getSelection(location, SCHEMAS.PICKLIST_TABLES.SCHEMA, picklistName);
         if (picklistName) {
             sampleIds = await getSelectedPicklistSamples(picklistName, response.selected, false, undefined);
         } else {

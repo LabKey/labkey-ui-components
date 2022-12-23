@@ -51,7 +51,7 @@ const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> 
     const moreItems = [];
     if (isAssayEnabled(moduleContext)) {
         moreItems.push({
-            button: <SamplesAssayButton model={model} providerType={assayProviderType}/>,
+            button: <SamplesAssayButton model={model} providerType={assayProviderType} />,
             perm: PermissionTypes.Insert,
         });
     }
@@ -119,9 +119,9 @@ const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> 
 
 interface Props {
     assayProviderType?: string;
-    queryModelId: string;
     lineageUpdateAllowed: boolean;
     onSampleChangeInvalidate: (schemaQuery: SchemaQuery) => void;
+    queryModelId: string;
     showLabelOption?: boolean;
     user: User;
 }

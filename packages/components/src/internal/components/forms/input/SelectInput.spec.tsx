@@ -24,7 +24,7 @@ import { initOptions, SelectInputImpl, SelectInputProps } from './SelectInput';
 import { blurSelectInputInput, setSelectInputText } from './SelectInputTestUtils';
 
 describe('SelectInput', () => {
-    function getFormsyProps(): Partial<SelectInputProps> {
+    function getDefaultProps(): Partial<SelectInputProps> {
         return {
             formsy: true,
             getErrorMessage: jest.fn(),
@@ -38,36 +38,41 @@ describe('SelectInput', () => {
         const inputCls = 'input-class-test';
 
         const component = shallow(
-            <SelectInputImpl {...getFormsyProps()} containerClass={containerCls} inputClass={inputCls} />
+            <SelectInputImpl {...getDefaultProps()} containerClass={containerCls} inputClass={inputCls} />
         );
         expect(component.find('.' + containerCls).length).toBe(1);
         expect(component.find('.' + inputCls).length).toBe(1);
     });
 
-    test('Should saveOnBlur - creatable', () => {
+    test('Should saveOnBlur - creatable', async () => {
         const expectedInputValue = 'Hello';
-        const selectProps = getFormsyProps();
+        const selectProps = getDefaultProps();
 
         const component = mount<SelectInputImpl>(<SelectInputImpl {...selectProps} allowCreate saveOnBlur />);
         setSelectInputText(component, expectedInputValue, true);
+        await waitForLifecycle(component);
 
         expect(selectProps.setValue).toHaveBeenCalledTimes(1);
         expect(component.state().selectedOptions).toHaveProperty('value', expectedInputValue);
     });
 
     test('Should saveOnBlur - async', async () => {
-        const selectProps = {
-            ...getFormsyProps(),
-            filterOption: jest.fn((option, rawValue: string) => option.label === rawValue),
-            loadOptions: jest.fn().mockResolvedValue([
-                { value: 'one', label: 'One' },
-                { value: 'two', label: 'Two' },
-            ]),
-            multiple: true,
-            saveOnBlur: true,
-        };
+        const selectProps = getDefaultProps();
+        const filterOption = jest.fn((option, rawValue: string) => option.label === rawValue);
+        const loadOptions = jest.fn().mockResolvedValue([
+            { value: 'one', label: 'One' },
+            { value: 'two', label: 'Two' },
+        ]);
 
-        const component = mount<SelectInputImpl>(<SelectInputImpl {...selectProps} />);
+        const component = mount<SelectInputImpl>(
+            <SelectInputImpl
+                {...selectProps}
+                filterOption={filterOption}
+                loadOptions={loadOptions}
+                multiple
+                saveOnBlur
+            />
+        );
         setSelectInputText(component, 'Two');
         await waitForLifecycle(component);
         blurSelectInputInput(component);
@@ -90,7 +95,7 @@ describe('SelectInput', () => {
         const defaultLabel = 'Jest Label Test';
         const customLabel = 'Jest Custom Label Test';
 
-        const component = mount(<SelectInputImpl {...getFormsyProps()} label={defaultLabel} showLabel />);
+        const component = mount(<SelectInputImpl {...getDefaultProps()} label={defaultLabel} showLabel />);
         validateFieldLabel(component, true, defaultLabel);
 
         component.setProps({ renderFieldLabel: () => <div>{customLabel}</div> });

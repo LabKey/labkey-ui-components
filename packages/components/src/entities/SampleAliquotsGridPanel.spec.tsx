@@ -17,7 +17,7 @@ import { ManageDropdownButton } from '../internal/components/buttons/ManageDropd
 import { TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT, TEST_LKSM_STARTER_MODULE_CONTEXT } from '../internal/productFixtures';
 
 import { SampleAliquotsGridPanelImpl } from './SampleAliquotsGridPanel';
-import { SampleTypeAppContext } from './SampleTypeAppContext';
+import { SampleTypeAppContext } from '../internal/AppContext';
 
 beforeEach(() => {
     LABKEY.moduleContext = { ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT };

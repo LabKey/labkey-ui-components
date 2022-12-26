@@ -72,6 +72,7 @@ export const NavigationBar: FC<Props> = memo(props => {
         searchPlaceholder,
         showNavMenu,
         showNotifications,
+        showFolderMenu,
         showProductNav,
         showSearchBox,
         signOutUrl,
@@ -102,7 +103,7 @@ export const NavigationBar: FC<Props> = memo(props => {
                                     <ProductMenuButton
                                         key={folderMenuContext.key} // re-render and reload folderItems when project added
                                         sectionConfigs={menuSectionConfigs}
-                                        showFolderMenu
+                                        showFolderMenu={showFolderMenu}
                                     />
                                 </span>
                             )}

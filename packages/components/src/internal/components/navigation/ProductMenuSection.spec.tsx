@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 import React from 'react';
-import { mount } from 'enzyme';
 import { List } from 'immutable';
 
 import { AppURL } from '../../url/AppURL';
 
-import { MenuSectionModel, MenuSectionConfig } from './model';
+import { mountWithServerContext } from '../../testHelpers';
+import { TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
+import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
+
 import { ProductMenuSection } from './ProductMenuSection';
+import { MenuSectionModel, MenuSectionConfig } from './model';
 
 describe('ProductMenuSection render', () => {
     const sampleSetItems = List<MenuSectionModel>([
@@ -66,6 +69,18 @@ describe('ProductMenuSection render', () => {
         },
     ]);
 
+    function getDefaultServerContext() {
+        return {
+            container: TEST_PROJECT_CONTAINER,
+            moduleContext: {
+                api: {
+                    moduleNames: ['samplemanagement', 'premium'],
+                },
+                samplemanagement: { productId: SAMPLE_MANAGER_APP_PROPERTIES.productId },
+            },
+        };
+    }
+
     test('empty section no text', () => {
         const section = MenuSectionModel.create({
             label: 'Sample Sets',
@@ -73,7 +88,7 @@ describe('ProductMenuSection render', () => {
             key: 'samples',
         });
 
-        const menuSection = mount(
+        const menuSection = mountWithServerContext(
             <ProductMenuSection
                 containerPath="/test/path"
                 currentProductId="testProduct"
@@ -83,7 +98,8 @@ describe('ProductMenuSection render', () => {
                         iconURL: '/testProduct/images/samples.svg',
                     })
                 }
-            />
+            />,
+            getDefaultServerContext()
         );
 
         expect(menuSection.find('li').length).toBe(2); // header and hr
@@ -103,17 +119,22 @@ describe('ProductMenuSection render', () => {
             key: 'samples',
         });
 
-        const menuSection = mount(
+        const menuSection = mountWithServerContext(
             <ProductMenuSection
                 config={config}
                 containerPath="/test/path"
                 currentProductId="testProduct"
                 section={section}
-            />
+            />,
+            getDefaultServerContext()
         );
 
         expect(menuSection.find('li.empty-section').length).toBe(1);
         expect(menuSection.contains('Test empty text')).toBe(true);
+
+        expect(menuSection.find('.menu-section-header').length).toBe(1);
+        expect(menuSection.find('.menu-section-header').childAt(0).prop('href')).toBe('#/samples');
+
         expect(menuSection).toMatchSnapshot();
     });
 
@@ -124,7 +145,7 @@ describe('ProductMenuSection render', () => {
             key: 'samples',
         });
 
-        const menuSection = mount(
+        const menuSection = mountWithServerContext(
             <ProductMenuSection
                 containerPath="/test/path"
                 currentProductId="testProductHeaderUrl"
@@ -132,12 +153,16 @@ describe('ProductMenuSection render', () => {
                 config={
                     new MenuSectionConfig({
                         iconURL: '/testProduct/images/samples.svg',
-                        headerURL: AppURL.create('sample', 'new').addParams({ sort: 'date' }),
+                        headerURLPart: AppURL.create('sample', 'new').addParams({ sort: 'date' }),
                         headerText: 'Custom Sample Sets',
                     })
                 }
-            />
+            />,
+            getDefaultServerContext()
         );
+
+        expect(menuSection.find('.menu-section-header').length).toBe(1);
+        expect(menuSection.find('.menu-section-header').childAt(0).prop('href')).toBe('#%2Fsample%2Fnew%3Fsort%3Ddate');
 
         expect(menuSection).toMatchSnapshot();
     });
@@ -152,7 +177,7 @@ describe('ProductMenuSection render', () => {
             key: 'samples',
         });
 
-        const menuSection = mount(
+        const menuSection = mountWithServerContext(
             <ProductMenuSection
                 containerPath="/test/path"
                 currentProductId={productId}
@@ -162,7 +187,8 @@ describe('ProductMenuSection render', () => {
                         iconURL: '/testProduct3Columns/images/samples.svg',
                     })
                 }
-            />
+            />,
+            getDefaultServerContext()
         );
         expect(menuSection.find('ul').length).toBe(1);
         expect(menuSection.find('i.fa-spinner').length).toBe(1); // verify active job indicator
@@ -183,13 +209,14 @@ describe('ProductMenuSection render', () => {
             iconURL: '/testProduct4Columns/images/assays.svg',
         });
 
-        const menuSection = mount(
+        const menuSection = mountWithServerContext(
             <ProductMenuSection
                 section={section}
                 containerPath="/test/path"
                 currentProductId={productId}
                 config={sectionConfig}
-            />
+            />,
+            getDefaultServerContext()
         );
 
         expect(menuSection.find('ul').length).toBe(1);
@@ -205,7 +232,7 @@ describe('ProductMenuSection render', () => {
             key: 'samples',
         });
 
-        const menuSection = mount(
+        const menuSection = mountWithServerContext(
             <ProductMenuSection
                 containerPath="/test/path"
                 currentProductId="testProductHeaderUrl"
@@ -215,7 +242,8 @@ describe('ProductMenuSection render', () => {
                         showActiveJobIcon: false,
                     })
                 }
-            />
+            />,
+            getDefaultServerContext()
         );
 
         expect(menuSection.find('i.fa-spinner').length).toBe(0);
@@ -228,7 +256,7 @@ describe('ProductMenuSection render', () => {
             key: 'samples',
         });
 
-        const menuSection = mount(
+        const menuSection = mountWithServerContext(
             <ProductMenuSection
                 containerPath="/test/path"
                 currentProductId="testProductHeaderUrl"
@@ -238,10 +266,124 @@ describe('ProductMenuSection render', () => {
                         activeJobIconCls: 'job-running-icon',
                     })
                 }
-            />
+            />,
+            getDefaultServerContext()
         );
 
         expect(menuSection.find('i.fa-spinner').length).toBe(0);
         expect(menuSection.find('i.job-running-icon').length).toBe(0);
+    });
+
+    test('emptyURLProjectOnly from project', () => {
+        const section = MenuSectionModel.create({
+            label: 'Sample Sets',
+            items: List<MenuSectionModel>(),
+            key: 'samples',
+        });
+
+        const menuSection = mountWithServerContext(
+            <ProductMenuSection
+                containerPath="/test"
+                currentProductId="testProductHeaderUrl"
+                section={section}
+                config={
+                    new MenuSectionConfig({
+                        emptyText: 'Testing empty',
+                        emptyAppURL: 'home',
+                        emptyURLProjectOnly: true,
+                        emptyURLText: 'Create it',
+                    })
+                }
+            />,
+            getDefaultServerContext()
+        );
+
+        expect(menuSection.find('.empty-section').text()).toBe('Testing empty');
+        expect(menuSection.find('.empty-section-link').length).toBe(1);
+        expect(menuSection.find('.empty-section-link').text()).toBe('Create it');
+        expect(menuSection.find('.empty-section-link').childAt(0).prop('href')).toBe('home');
+    });
+
+    test('emptyURLProjectOnly from subproject', () => {
+        const section = MenuSectionModel.create({
+            label: 'Sample Sets',
+            items: List<MenuSectionModel>(),
+            key: 'samples',
+        });
+
+        const menuSection = mountWithServerContext(
+            <ProductMenuSection
+                containerPath="/test/sub"
+                currentProductId="testProductHeaderUrl"
+                section={section}
+                config={
+                    new MenuSectionConfig({
+                        emptyText: 'Testing empty',
+                        emptyAppURL: 'home',
+                        emptyURLProjectOnly: true,
+                        emptyURLText: 'Create it',
+                    })
+                }
+            />,
+            getDefaultServerContext()
+        );
+
+        expect(menuSection.find('.empty-section').text()).toBe('Testing empty');
+        expect(menuSection.find('.empty-section-link').length).toBe(0);
+    });
+
+    test('useOriginalURL', () => {
+        const section = MenuSectionModel.create({
+            label: 'Sample Sets',
+            items: List<MenuSectionModel>(),
+            key: 'samples',
+            url: 'www.labkey.org',
+        });
+
+        const menuSection = mountWithServerContext(
+            <ProductMenuSection
+                containerPath="/test/sub"
+                currentProductId="testProductHeaderUrl"
+                section={section}
+                config={
+                    new MenuSectionConfig({
+                        useOriginalURL: true,
+                    })
+                }
+            />,
+            getDefaultServerContext()
+        );
+
+        expect(menuSection.find('.menu-section-header').length).toBe(1);
+        expect(menuSection.find('.menu-section-header').childAt(0).prop('href')).toBe('www.labkey.org');
+    });
+
+    test('dashboardImgURL', () => {
+        const section = MenuSectionModel.create({
+            label: 'Sample Sets',
+            items: List<MenuSectionModel>(),
+            key: 'samples',
+            url: 'www.labkey.org',
+        });
+
+        const menuSection = mountWithServerContext(
+            <ProductMenuSection
+                containerPath="/test/sub"
+                currentProductId="testProductHeaderUrl"
+                section={section}
+                dashboardImgURL="dashboard"
+                config={new MenuSectionConfig({})}
+            />,
+            getDefaultServerContext()
+        );
+
+        expect(menuSection.find('.menu-section-header')).toHaveLength(2);
+        expect(menuSection.find('hr')).toHaveLength(1);
+        expect(menuSection.find('ul')).toHaveLength(1);
+        expect(menuSection.find('li')).toHaveLength(3);
+        expect(menuSection.find('li').last().text()).toBe(' Dashboard');
+        expect(menuSection.find('li').last().childAt(0).prop('href')).toBe(
+            '/labkey/samplemanager/test/sub/app.view#/home'
+        );
     });
 });

@@ -6,6 +6,7 @@ import { AppProperties } from '../../app/models';
 import { getAppProductIds, getPrimaryAppProperties } from '../../app/utils';
 
 import { ProductMenuModel } from './model';
+import { ModuleContext } from '../base/ServerContext';
 
 export function signOut(navigateUrl?: string): void {
     const startUrl = buildURL('project', 'start', undefined, { returnUrl: false });
@@ -32,15 +33,15 @@ export function signIn(): void {
 
 export async function initMenuModel(
     appProperties: AppProperties,
-    userMenuProductId: string,
+    moduleContext: ModuleContext,
     containerId: string,
     containerPath?: string
 ): Promise<ProductMenuModel> {
-    const primaryProductId = getPrimaryAppProperties().productId;
+    const primaryProductId = getPrimaryAppProperties(moduleContext).productId;
     const menuModel = new ProductMenuModel({
         containerId,
         containerPath,
-        currentProductId: appProperties.productId,
+        currentProductId: appProperties?.productId ?? primaryProductId,
         userMenuProductId: primaryProductId,
         productIds: getAppProductIds(primaryProductId),
     });

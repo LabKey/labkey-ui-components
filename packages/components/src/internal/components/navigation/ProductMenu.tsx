@@ -24,7 +24,7 @@ import { blurActiveElement } from '../../util/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { useServerContext } from '../base/ServerContext';
 import { AppProperties } from '../../app/models';
-import { getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
+import { getCurrentAppProperties } from '../../app/utils';
 
 import { Alert } from '../base/Alert';
 
@@ -179,7 +179,7 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
         showFolderMenu,
         appProperties = getCurrentAppProperties(),
     } = props;
-    const { container } = useServerContext();
+    const { container, moduleContext } = useServerContext();
     const [menuModel, setMenuModel] = useState<ProductMenuModel>(new ProductMenuModel({ containerId: container.id }));
     const contentRef = useRef<HTMLDivElement>();
 
@@ -203,10 +203,10 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
     useEffect(() => {
         (async () => {
             // no try/catch as the initMenuModel will catch errors and put them in the model isError/message
-            const menuModel_ = await initMenuModel(appProperties, getPrimaryAppProperties().productId, container.id);
+            const menuModel_ = await initMenuModel(appProperties, moduleContext, container.id);
             setMenuModel(menuModel_);
         })();
-    }, [appProperties, container.id]);
+    }, [appProperties, container.id, moduleContext]);
 
     const onFolderItemClick = useCallback(
         async (folderItem: FolderMenuItem) => {
@@ -217,15 +217,10 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
 
             // no try/catch as the initMenuModel will catch errors and put them in the model isError/message
             const containerPath = folderItem.id === container.id ? undefined : folderItem.path;
-            const menuModel_ = await initMenuModel(
-                appProperties,
-                getPrimaryAppProperties().productId,
-                folderItem.id,
-                containerPath
-            );
+            const menuModel_ = await initMenuModel(appProperties, moduleContext, folderItem.id, containerPath);
             setMenuModel(menuModel_);
         },
-        [appProperties, container.id, menuModel.containerId]
+        [appProperties, container.id, menuModel.containerId, moduleContext]
     );
 
     const getSectionModel = useCallback(

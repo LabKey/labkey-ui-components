@@ -30,7 +30,7 @@ import { Container } from '../internal/components/base/models/Container';
 import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/constants';
 
 import { SampleDetailPage, SampleDetailPageBody, SampleDetailPageBodyProps } from './SampleDetailPage';
-import { SampleTypeAppContext } from './SampleTypeAppContext';
+import { SampleTypeAppContext } from '../internal/AppContext';
 import { SampleHeader } from './SampleHeader';
 import { SampleOverviewPanel } from './SampleOverviewPanel';
 import { SampleAliquotsPage } from './SampleAliquotsPage';

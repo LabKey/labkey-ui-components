@@ -400,7 +400,13 @@ exports[`ProductMenuSection render section with custom headerURL and headerText 
       "emptyAppURL": undefined,
       "emptyURLProjectOnly": false,
       "emptyURLText": "Get started...",
-      "headerURLPart": undefined,
+      "headerURLPart": Immutable.Record {
+        "_baseUrl": "/sample/new",
+        "_filters": undefined,
+        "_params": Immutable.Map {
+          "sort": "date",
+        },
+      },
       "headerText": "Custom Sample Sets",
       "iconCls": undefined,
       "iconURL": "/testProduct/images/samples.svg",
@@ -429,7 +435,7 @@ exports[`ProductMenuSection render section with custom headerURL and headerText 
       className="menu-section-header"
     >
       <a
-        href="#/samples"
+        href="#%2Fsample%2Fnew%3Fsort%3Ddate"
       >
         <img
           alt="Sample Sets icon"

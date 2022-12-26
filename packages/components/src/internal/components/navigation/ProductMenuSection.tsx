@@ -22,6 +22,7 @@ import { getHref } from '../../url/utils';
 import { getPrimaryAppProperties, isProjectContainer } from '../../app/utils';
 
 import { MenuSectionModel, MenuSectionConfig } from './model';
+import { useServerContext } from '../base/ServerContext';
 
 interface MenuSectionProps {
     config: MenuSectionConfig;
@@ -142,12 +143,18 @@ interface DashboardSectionHeaderProps {
 
 const DashboardSectionHeader: FC<DashboardSectionHeaderProps> = memo(props => {
     const { src, currentProductId, containerPath } = props;
+    const { moduleContext } = useServerContext();
 
     return (
         <li key="dashbaord" className="menu-section-header">
             <a
                 href={getHref(
-                    createProductUrl(getPrimaryAppProperties().productId, currentProductId, AppURL.create('home'), containerPath)
+                    createProductUrl(
+                        getPrimaryAppProperties(moduleContext).productId,
+                        currentProductId,
+                        AppURL.create('home'),
+                        containerPath
+                    )
                 )}
             >
                 <img alt="Dashboard icon" className="menu-section-image" src={src} height="24px" width="24px" />{' '}

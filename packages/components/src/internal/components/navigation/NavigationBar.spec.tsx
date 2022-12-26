@@ -15,7 +15,6 @@
  */
 import React from 'react';
 import { ReactWrapper } from 'enzyme';
-import { List } from 'immutable';
 
 import { TEST_USER_APP_ADMIN, TEST_USER_GUEST, TEST_USER_READER } from '../../userFixtures';
 import { ServerNotifications } from '../notifications/ServerNotifications';
@@ -29,33 +28,51 @@ import { ProductNavigation } from '../productnavigation/ProductNavigation';
 
 import { SearchBox } from '../search/SearchBox';
 
-import { TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
+import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
 
-import { MenuSectionModel, ProductMenuModel } from './model';
+import { getSecurityTestAPIWrapper, SecurityAPIWrapper } from '../security/APIWrapper';
+import { AppContext } from '../../AppContext';
+import { getTestAPIWrapper } from '../../APIWrapper';
+import { ServerContext } from '../base/ServerContext';
 
-import { NavigationBar } from './NavigationBar';
+import { ProductMenuButton } from './ProductMenu';
 import { UserMenu } from './UserMenu';
-import { ProductMenu } from './ProductMenu';
-import { FolderMenu } from './FolderMenu';
+import { NavigationBar } from './NavigationBar';
+import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
 describe('NavigationBar', () => {
-    const productMenuModel = new ProductMenuModel({
-        productIds: ['testNavBar'],
-        isLoaded: true,
-        isLoading: false,
-        sections: List<MenuSectionModel>(),
-    });
+    function getDefaultAppContext(overrides?: Partial<SecurityAPIWrapper>): Partial<AppContext> {
+        return {
+            api: getTestAPIWrapper(jest.fn, {
+                security: getSecurityTestAPIWrapper(jest.fn, {
+                    fetchContainers: jest.fn().mockResolvedValue([TEST_PROJECT_CONTAINER, TEST_FOLDER_CONTAINER]),
+                    ...overrides,
+                }),
+            }),
+        };
+    }
+
+    function getDefaultServerContext(): Partial<ServerContext> {
+        return {
+            container: TEST_PROJECT_CONTAINER,
+            moduleContext: {
+                api: {
+                    moduleNames: ['samplemanagement', 'premium'],
+                },
+                samplemanagement: { productId: SAMPLE_MANAGER_APP_PROPERTIES.productId },
+            },
+        };
+    }
 
     function validate(wrapper: ReactWrapper, compCounts: Record<string, number> = {}): void {
         expect(wrapper.find('.project-name')).toHaveLength(compCounts.ProjectName ?? 0);
-        expect(wrapper.find(ProductMenu)).toHaveLength(compCounts.ProductMenu ?? 1);
+        expect(wrapper.find(ProductMenuButton)).toHaveLength(compCounts.ProductMenu ?? 1);
         expect(wrapper.find(UserMenu)).toHaveLength(compCounts.UserMenu ?? 0);
         expect(wrapper.find(SearchBox)).toHaveLength(compCounts.SearchBox ?? 0);
         expect(wrapper.find('.navbar__xs-search-icon')).toHaveLength(compCounts.SearchBox ?? 0);
         expect(wrapper.find(ServerNotifications)).toHaveLength(compCounts.ServerNotifications ?? 0);
         expect(wrapper.find(ProductNavigation)).toHaveLength(compCounts.ProductNavigation ?? 0);
         expect(wrapper.find(FindAndSearchDropdown)).toHaveLength(compCounts.FindAndSearchDropdown ?? 0);
-        expect(wrapper.find(FolderMenu)).toHaveLength(compCounts.FolderMenu ?? 0);
     }
 
     const notificationsConfig = {
@@ -65,100 +82,154 @@ describe('NavigationBar', () => {
         onViewAll: jest.fn(),
     };
 
-    test('default props', () => {
-        const component = mountWithAppServerContext(<NavigationBar model={productMenuModel} />);
+    test('default props', async () => {
+        const component = mountWithAppServerContext(
+            <NavigationBar />,
+            getDefaultAppContext(),
+            getDefaultServerContext()
+        );
+        await waitForLifecycle(component);
         validate(component);
         component.unmount();
     });
 
-    test('with search box', () => {
-        const component = mountWithAppServerContext(<NavigationBar model={productMenuModel} showSearchBox />);
+    test('with search box', async () => {
+        const component = mountWithAppServerContext(
+            <NavigationBar showSearchBox />,
+            getDefaultAppContext(),
+            getDefaultServerContext()
+        );
+        await waitForLifecycle(component);
         validate(component, { SearchBox: 1 });
         component.unmount();
     });
 
-    test('with findByIds', () => {
+    test('with findByIds', async () => {
         const component = mountWithAppServerContext(
-            <NavigationBar model={productMenuModel} onFindByIds={jest.fn} showSearchBox />
+            <NavigationBar onFindByIds={jest.fn} showSearchBox />,
+            getDefaultAppContext(),
+            getDefaultServerContext()
         );
+        await waitForLifecycle(component);
         validate(component, { FindAndSearchDropdown: 2, SearchBox: 1 });
         component.unmount();
     });
 
-    test('without search but with findByIds', () => {
+    test('without search but with findByIds', async () => {
         const component = mountWithAppServerContext(
-            <NavigationBar model={productMenuModel} onFindByIds={jest.fn} showSearchBox={false} />
+            <NavigationBar onFindByIds={jest.fn} showSearchBox={false} />,
+            getDefaultAppContext(),
+            getDefaultServerContext()
         );
+        await waitForLifecycle(component);
         validate(component, { FindAndSearchDropdown: 0, SearchBox: 0 });
         component.unmount();
     });
 
-    test('with notifications no user', () => {
+    test('with notifications no user', async () => {
         const component = mountWithAppServerContext(
-            <NavigationBar model={productMenuModel} notificationsConfig={notificationsConfig} />
+            <NavigationBar notificationsConfig={notificationsConfig} />,
+            getDefaultAppContext(),
+            getDefaultServerContext()
         );
+        await waitForLifecycle(component);
         validate(component, { ServerNotifications: 0 });
         component.unmount();
     });
 
-    test('with notifications, guest user', () => {
+    test('with notifications, guest user', async () => {
         const component = mountWithAppServerContext(
-            <NavigationBar model={productMenuModel} user={TEST_USER_GUEST} notificationsConfig={notificationsConfig} />
+            <NavigationBar user={TEST_USER_GUEST} notificationsConfig={notificationsConfig} />,
+            getDefaultAppContext(),
+            getDefaultServerContext()
         );
+        await waitForLifecycle(component);
         validate(component, { UserMenu: 1, ServerNotifications: 0 });
         component.unmount();
     });
 
-    test('with notifications, non-guest user', () => {
+    test('with notifications, non-guest user', async () => {
         const component = mountWithAppServerContext(
-            <NavigationBar model={productMenuModel} user={TEST_USER_READER} notificationsConfig={notificationsConfig} />
+            <NavigationBar user={TEST_USER_READER} notificationsConfig={notificationsConfig} />,
+            getDefaultAppContext(),
+            getDefaultServerContext()
         );
+        await waitForLifecycle(component);
         validate(component, { UserMenu: 1, ServerNotifications: 1 });
         component.unmount();
     });
 
-    test('show ProductNavigation for hasPremiumModule, non-admin', () => {
-        const component = mountWithAppServerContext(
-            <NavigationBar model={productMenuModel} user={TEST_USER_READER} />,
-            undefined,
-            { moduleContext: { api: { moduleNames: ['premium'], applicationMenuDisplayMode: 'ALWAYS' } } }
-        );
+    test('show ProductNavigation for hasPremiumModule, non-admin', async () => {
+        const component = mountWithAppServerContext(<NavigationBar user={TEST_USER_READER} />, getDefaultAppContext(), {
+            container: TEST_PROJECT_CONTAINER,
+            moduleContext: {
+                api: {
+                    moduleNames: ['samplemanagement', 'premium'],
+                    applicationMenuDisplayMode: 'ALWAYS',
+                },
+                samplemanagement: { productId: SAMPLE_MANAGER_APP_PROPERTIES.productId },
+            },
+        });
+        await waitForLifecycle(component);
         validate(component, { UserMenu: 1, ProductNavigation: 1 });
         component.unmount();
     });
 
-    test('hide ProductNavigation for non-admin', () => {
-        const component = mountWithAppServerContext(
-            <NavigationBar model={productMenuModel} user={TEST_USER_READER} />,
-            undefined,
-            { moduleContext: { api: { moduleNames: ['premium'], applicationMenuDisplayMode: 'ADMIN' } } }
-        );
+    test('hide ProductNavigation for non-admin', async () => {
+        const component = mountWithAppServerContext(<NavigationBar user={TEST_USER_READER} />, getDefaultAppContext(), {
+            container: TEST_PROJECT_CONTAINER,
+            moduleContext: {
+                api: {
+                    moduleNames: ['samplemanagement', 'premium'],
+                    applicationMenuDisplayMode: 'ADMIN',
+                },
+                samplemanagement: { productId: SAMPLE_MANAGER_APP_PROPERTIES.productId },
+            },
+        });
+        await waitForLifecycle(component);
         validate(component, { UserMenu: 1, ProductNavigation: 0 });
         component.unmount();
     });
 
-    test('show ProductNavigation for hasPremiumModule, admin always', () => {
+    test('show ProductNavigation for hasPremiumModule, admin always', async () => {
         const component = mountWithAppServerContext(
-            <NavigationBar model={productMenuModel} user={TEST_USER_APP_ADMIN} />,
-            undefined,
-            { moduleContext: { api: { moduleNames: ['premium'], applicationMenuDisplayMode: 'ALWAYS' } } }
+            <NavigationBar showFolderMenu={false} user={TEST_USER_APP_ADMIN} />,
+            getDefaultAppContext(),
+            {
+                container: TEST_PROJECT_CONTAINER,
+                moduleContext: {
+                    api: {
+                        moduleNames: ['samplemanagement', 'premium'],
+                        applicationMenuDisplayMode: 'ALWAYS',
+                    },
+                    samplemanagement: { productId: SAMPLE_MANAGER_APP_PROPERTIES.productId },
+                },
+            }
         );
+        await waitForLifecycle(component);
         validate(component, { UserMenu: 1, ProductNavigation: 1 });
+        expect(component.find(ProductMenuButton).prop('showFolderMenu')).toBeFalsy();
         component.unmount();
     });
 
-    test('show ProductNavigation and FolderMenu for hasPremiumModule, admin only', async () => {
+    test('show ProductNavigation for hasPremiumModule, admin only', async () => {
         const component = mountWithAppServerContext(
-            <NavigationBar model={productMenuModel} showFolderMenu user={TEST_USER_APP_ADMIN} />,
-            undefined,
+            <NavigationBar showFolderMenu user={TEST_USER_APP_ADMIN} />,
+            getDefaultAppContext(),
             {
                 container: TEST_PROJECT_CONTAINER,
-                moduleContext: { api: { moduleNames: ['premium'], applicationMenuDisplayMode: 'ADMIN' } },
+                moduleContext: {
+                    api: {
+                        moduleNames: ['samplemanagement', 'premium'],
+                        applicationMenuDisplayMode: 'ADMIN',
+                    },
+                    samplemanagement: { productId: SAMPLE_MANAGER_APP_PROPERTIES.productId },
+                },
             }
         );
-        // Load the folder menu
         await waitForLifecycle(component);
-        validate(component, { FolderMenu: 1, UserMenu: 1, ProductNavigation: 1 });
+        validate(component, { UserMenu: 1, ProductNavigation: 1 });
+        expect(component.find(ProductMenuButton).prop('showFolderMenu')).toBeTruthy();
         component.unmount();
     });
 });

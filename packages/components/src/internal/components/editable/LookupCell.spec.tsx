@@ -9,6 +9,7 @@ import { QuerySelect } from '../forms/QuerySelect';
 import { ValueDescriptor } from './models';
 
 import { LookupCell } from './LookupCell';
+import { Query } from '@labkey/api';
 
 describe('LookupCell', () => {
     const DEFAULT_PROPS = {
@@ -102,6 +103,45 @@ describe('LookupCell', () => {
         expect(filters.get(0).getURLParameterName()).toBe('query.display~in');
         expect(filters.get(0).getValue()).toStrictEqual(['a', 'b']);
         wrapper.unmount();
+    });
+
+    test('QuerySelect default container filter without projects', () => {
+        const wrapper = mount(<LookupCell {...DEFAULT_PROPS} />);
+        const containerFilter = wrapper.find(QuerySelect).prop('containerFilter');
+        expect(containerFilter).toBe(undefined);
+    });
+
+    test('QuerySelect lookup with container filter', () => {
+        const wrapper = mount(<LookupCell
+            {...DEFAULT_PROPS}
+            col={ QueryColumn.create({
+                lookup: {
+                    schemaName: 'schema',
+                    queryName: 'query',
+                    displayColumn: 'display',
+                    keyColumn: 'key',
+                    containerFilter: Query.ContainerFilter.current
+                }})
+            }
+            containerFilter={Query.ContainerFilter.allFolders}
+        />);
+        const containerFilter = wrapper.find(QuerySelect).prop('containerFilter');
+        expect(containerFilter).toBe(Query.ContainerFilter.current);
+    });
+
+    test('QuerySelect container filter prop', () => {
+        const wrapper = mount(<LookupCell {...DEFAULT_PROPS}  containerFilter={Query.ContainerFilter.current} />);
+        const containerFilter = wrapper.find(QuerySelect).prop('containerFilter');
+        expect(containerFilter).toBe(Query.ContainerFilter.current);
+    });
+
+    test('QuerySelect default container filter with projects', () => {
+        LABKEY.moduleContext.query = {
+           isProductProjectsEnabled: true
+        };
+        const wrapper = mount(<LookupCell {...DEFAULT_PROPS} />);
+        const containerFilter = wrapper.find(QuerySelect).prop('containerFilter');
+        expect(containerFilter).toBe(Query.ContainerFilter.currentPlusProjectAndShared);
     });
 
     test('col with validValues', () => {

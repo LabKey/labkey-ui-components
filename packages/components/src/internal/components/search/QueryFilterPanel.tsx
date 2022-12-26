@@ -140,9 +140,10 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         setQueryFields(
             fromJS(
                 fields.filter(
-                    field =>
+                    field => field.filterable && (
                         !validFilterField ||
                         validFilterField(field, queryInfo, entityDataType?.exprColumnsWithSubSelect)
+                    )
                 )
             )
         );

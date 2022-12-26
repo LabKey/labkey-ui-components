@@ -17,6 +17,7 @@ import { FilterExpressionView } from './FilterExpressionView';
 import { FilterFacetedSelector } from './FilterFacetedSelector';
 import { QueryFilterPanel } from './QueryFilterPanel';
 import { FieldFilter } from './models';
+import { QueryColumn } from '../../../public/QueryColumn';
 
 describe('QueryFilterPanel', () => {
     const DEFAULT_PROPS = {
@@ -92,6 +93,21 @@ describe('QueryFilterPanel', () => {
         );
         validate(wrapper, 6);
         wrapper.unmount();
+    });
+
+    test('one field not filterable', () => {
+        const props = {...DEFAULT_PROPS};
+        let queryInfo = props.queryInfo;
+        let col: QueryColumn = queryInfo.getDisplayColumns().find(field => field.jsonType === 'string');
+        col = col.set('filterable', false) as QueryColumn;
+        queryInfo = queryInfo.setIn(['columns', col.fieldKey.toLowerCase()], col) as QueryInfo;
+        props.queryInfo = queryInfo;
+        const wrapper = mount(
+            <QueryFilterPanel
+                {...props}
+                 validFilterField={(field, queryInfo) => field.jsonType === 'string'} />
+        );
+        validate(wrapper, 5);
     });
 
     test('with text activeField', () => {

@@ -26,8 +26,9 @@ import { useServerContext } from '../base/ServerContext';
 import { getCurrentAppProperties } from '../../app/utils';
 import { AppProperties } from '../../app/models';
 
-import { signOut, signIn, initMenuModel } from './actions';
+import { signOut, signIn } from './actions';
 import { ProductMenuModel } from './model';
+import { AppContext, useAppContext } from '../../AppContext';
 
 export interface UserMenuProps {
     appProperties?: AppProperties;
@@ -118,16 +119,17 @@ export const UserMenuImpl: FC<UserMenuProps & ImplProps> = props => {
 
 export const UserMenu: FC<UserMenuProps> = props => {
     const { appProperties = getCurrentAppProperties() } = props;
+    const { api } = useAppContext<AppContext>();
     const { container, moduleContext } = useServerContext();
     const [model, setModel] = useState<ProductMenuModel>();
 
     useEffect(() => {
         (async () => {
             // no try/catch as the initMenuModel will catch errors and put them in the model isError/message
-            const menuModel = await initMenuModel(appProperties, moduleContext, container.id);
+            const menuModel = await api.navigation.initMenuModel(appProperties, moduleContext, container.id);
             setModel(menuModel);
         })();
-    }, [appProperties, container.id, moduleContext]);
+    }, [api.navigation, appProperties, container.id, moduleContext]);
 
     return <UserMenuImpl {...props} model={model} />;
 };

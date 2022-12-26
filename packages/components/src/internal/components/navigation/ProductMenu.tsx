@@ -56,9 +56,8 @@ import {
 import { FolderMenu, FolderMenuItem } from './FolderMenu';
 import { ProductMenuSection } from './ProductMenuSection';
 import { MenuSectionConfig, MenuSectionModel, ProductMenuModel } from './model';
-import { initMenuModel } from './actions';
 
-interface ProductMenuButtonProps {
+export interface ProductMenuButtonProps {
     appProperties?: AppProperties;
     sectionConfigs: List<Map<string, MenuSectionConfig>>;
     showFolderMenu: boolean;
@@ -125,13 +124,8 @@ const ProductMenuButtonImpl: FC<ProductMenuButtonProps & WithRouterProps> = memo
         [toggleMenu]
     );
 
-    const subtitle = useMemo(() => {
-        return getHeaderMenuSubtitle(routes?.[1]?.path);
-    }, [routes]);
-
     if (!isLoaded && !hasError) return null;
     const showFolders = folderItems?.length > 1;
-    const title = showFolders ? container.title : 'Menu';
 
     return (
         <DropdownButton
@@ -139,12 +133,7 @@ const ProductMenuButtonImpl: FC<ProductMenuButtonProps & WithRouterProps> = memo
             id="product-menu"
             onToggle={toggleMenu}
             open={menuOpen}
-            title={
-                <>
-                    <div className="title">{title}</div>
-                    <div className="subtitle">{subtitle}</div>
-                </>
-            }
+            title={<ProductMenuButtonTitle container={container} folderItems={folderItems} routes={routes} />}
         >
             {menuOpen && (
                 <ProductMenu
@@ -162,7 +151,7 @@ const ProductMenuButtonImpl: FC<ProductMenuButtonProps & WithRouterProps> = memo
 
 export const ProductMenuButton = withRouter<ProductMenuButtonProps>(ProductMenuButtonImpl);
 
-interface ProductMenuProps extends ProductMenuButtonProps {
+export interface ProductMenuProps extends ProductMenuButtonProps {
     className: string;
     error: string;
     folderItems: FolderMenuItem[];
@@ -179,6 +168,7 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
         showFolderMenu,
         appProperties = getCurrentAppProperties(),
     } = props;
+    const { api } = useAppContext<AppContext>();
     const { container, moduleContext } = useServerContext();
     const [menuModel, setMenuModel] = useState<ProductMenuModel>(new ProductMenuModel({ containerId: container.id }));
     const contentRef = useRef<HTMLDivElement>();
@@ -203,10 +193,10 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
     useEffect(() => {
         (async () => {
             // no try/catch as the initMenuModel will catch errors and put them in the model isError/message
-            const menuModel_ = await initMenuModel(appProperties, moduleContext, container.id);
+            const menuModel_ = await api.navigation.initMenuModel(appProperties, moduleContext, container.id);
             setMenuModel(menuModel_);
         })();
-    }, [appProperties, container.id, moduleContext]);
+    }, [api.navigation, appProperties, container.id, moduleContext]);
 
     const onFolderItemClick = useCallback(
         async (folderItem: FolderMenuItem) => {
@@ -217,10 +207,15 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
 
             // no try/catch as the initMenuModel will catch errors and put them in the model isError/message
             const containerPath = folderItem.id === container.id ? undefined : folderItem.path;
-            const menuModel_ = await initMenuModel(appProperties, moduleContext, folderItem.id, containerPath);
+            const menuModel_ = await api.navigation.initMenuModel(
+                appProperties,
+                moduleContext,
+                folderItem.id,
+                containerPath
+            );
             setMenuModel(menuModel_);
         },
-        [appProperties, container.id, menuModel.containerId, moduleContext]
+        [api.navigation, appProperties, container.id, menuModel.containerId, moduleContext]
     );
 
     const getSectionModel = useCallback(
@@ -274,7 +269,32 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
     );
 });
 
-function createFolderItem(folder: Container, controllerName: string, isTopLevel: boolean): FolderMenuItem {
+interface ProductMenuButtonTitle {
+    container: Container,
+    folderItems: FolderMenuItem[],
+    routes: any[],
+}
+
+export const ProductMenuButtonTitle: FC<ProductMenuButtonTitle> = memo(props => {
+    const { container, folderItems, routes } = props;
+    const title = useMemo(() => {
+        return folderItems?.length > 1 ? container.title : 'Menu';
+    }, [container.title, folderItems?.length]);
+
+    const subtitle = useMemo(() => {
+        return getHeaderMenuSubtitle(routes?.[1]?.path);
+    }, [routes]);
+
+    return (
+        <>
+            <div className="title">{title}</div>
+            <div className="subtitle">{subtitle}</div>
+        </>
+    );
+});
+
+// export for jest testing
+export function createFolderItem(folder: Container, controllerName: string, isTopLevel: boolean): FolderMenuItem {
     return {
         href: buildURL(controllerName, `${ActionURL.getAction() || 'app'}.view`, undefined, {
             container: folder.path,
@@ -297,7 +317,7 @@ const HEADER_MENU_SUBTITLE_MAP = {
     q: 'Schemas',
     reports: 'Reports',
 
-    [ASSAY_DESIGN_KEY]: 'Assays',
+    [ASSAY_DESIGN_KEY.toLowerCase()]: 'Assays',
     [ASSAYS_KEY]: 'Assays',
     [AUDIT_KEY]: 'Administration',
     [BOXES_KEY]: 'Storage',
@@ -306,14 +326,15 @@ const HEADER_MENU_SUBTITLE_MAP = {
     [MEDIA_KEY]: 'Media',
     [PICKLIST_KEY]: 'Picklists',
     [REGISTRY_KEY]: 'Registry',
-    [SAMPLE_TYPE_KEY]: 'Sample Types',
+    [SAMPLE_TYPE_KEY.toLowerCase()]: 'Sample Types',
     [SAMPLES_KEY]: 'Sample Types',
-    [SOURCE_TYPE_KEY]: 'Source Types',
+    [SOURCE_TYPE_KEY.toLowerCase()]: 'Source Types',
     [SOURCES_KEY]: 'Source Types',
     [SEARCH_KEY]: 'Search',
     [WORKFLOW_KEY]: 'Workflow',
 };
 
-function getHeaderMenuSubtitle(baseRoute: string) {
-    return HEADER_MENU_SUBTITLE_MAP[baseRoute] ?? 'Dashboard';
+// export for jest testing
+export function getHeaderMenuSubtitle(baseRoute: string) {
+    return HEADER_MENU_SUBTITLE_MAP[baseRoute?.toLowerCase()] ?? 'Dashboard';
 }

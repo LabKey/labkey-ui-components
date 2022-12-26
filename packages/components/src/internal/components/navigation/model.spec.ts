@@ -36,6 +36,28 @@ describe('ProductMenuModel', () => {
         sectionKey: testSectionKey,
     });
 
+    const testContainerSectionKey = 'testContainer';
+    const testContainerSection = MenuSectionModel.create(
+        {
+            key: testContainerSectionKey,
+            label: 'My Items',
+            totalCount: 2,
+            items: [
+                {
+                    key: 'a',
+                    label: 'A',
+                },
+                {
+                    key: 'b',
+                    label: 'B',
+                },
+            ],
+            sectionKey: testContainerSectionKey,
+        },
+        'current',
+        '/test/path'
+    );
+
     const emptySectionKey = 'empty';
     const emptySection = MenuSectionModel.create({
         key: emptySectionKey,
@@ -56,12 +78,24 @@ describe('ProductMenuModel', () => {
         model = model.setLoadedSections(List<MenuSectionModel>([testSection, emptySection]));
         expect(model.hasSectionItems(testSectionKey)).toBeTruthy();
         expect(model.hasSectionItems(testSectionKey + 'BOGUS')).toBeFalsy();
+
+        const item = model.sections.get(0).items.get(0);
+        expect(item.getUrlString()).toBe('#/test/a');
     });
 
     test('hasSectionItems empty section', () => {
         let model = new ProductMenuModel({ productIds: ['hasSectionItems'] });
         model = model.setLoadedSections(List<MenuSectionModel>([testSection, emptySection]));
         expect(model.hasSectionItems(emptySectionKey)).toBeFalsy();
+    });
+
+    test('containerPath', () => {
+        let model = new ProductMenuModel({ productIds: ['hasSectionItems'] });
+        model = model.setLoadedSections(List<MenuSectionModel>([testContainerSection]));
+        expect(model.hasSectionItems(testContainerSectionKey)).toBeTruthy();
+
+        const item = model.sections.get(0).items.get(0);
+        expect(item.getUrlString()).toBe('#/testContainer/a');
     });
 });
 
@@ -90,6 +124,21 @@ describe('MenuItemModel', () => {
         );
 
         expect(model.url).toBe('/labkey/product2/app.view#/menuItem');
+    });
+
+    test('originalUrl', () => {
+        const model = MenuItemModel.create(
+            {
+                productId: 'product2',
+                url: '#/menuItem',
+            },
+            'sectionKey',
+            'product1'
+        );
+
+        expect(model.getUrlString()).toBe('/labkey/product2/app.view#/menuItem');
+        expect(model.getUrlString(false)).toBe('/labkey/product2/app.view#/menuItem');
+        expect(model.getUrlString(true)).toBe('#/menuItem');
     });
 
     // Check that $ in item keys are correctly escaped. see Issue #45944

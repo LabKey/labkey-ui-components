@@ -190,6 +190,14 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
         const sections = Array.from(contentRef.current.getElementsByClassName('menu-section'));
         sections.forEach(section => (height = Math.max(height, section.clientHeight)));
         contentRef.current.style.height = Math.min(height, maxHeight) + 'px';
+
+        // if the selected project is out of view, scrollIntoView
+        const activeProject = contentRef.current.getElementsByClassName('active')?.[0];
+        if (activeProject) {
+            if (activeProject.getBoundingClientRect().bottom > contentRef.current.getBoundingClientRect().bottom) {
+                contentRef.current.getElementsByClassName('active')?.[0].scrollIntoView({ behavior: 'smooth' });
+            }
+        }
     }, [menuModel.isLoaded]);
 
     useEffect(() => {

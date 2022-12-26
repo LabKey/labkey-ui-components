@@ -65,6 +65,8 @@ import { AssayStateModel } from '../internal/components/assay/models';
 import { AssayDomainTypes } from '../internal/AssayDefinitionModel';
 import { AssaySampleColumnProp, SamplesEditableGridProps } from '../internal/sampleModels';
 
+import { COLUMN_NOT_IN_FILTER_TYPE } from '../internal/query/filter';
+
 import { getSampleFinderLocalStorageKey } from './utils';
 import { EntityFieldFilterModal } from './EntityFieldFilterModal';
 
@@ -73,7 +75,6 @@ import { SampleFinderSaveViewModal } from './SampleFinderSaveViewModal';
 import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
 
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
-import { COLUMN_NOT_IN_FILTER_TYPE } from "../internal/query/filter";
 
 interface SampleFinderSamplesGridProps {
     columnDisplayNames?: { [key: string]: string };
@@ -274,7 +275,8 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
 
                     hasWithoutAssayResultFilter = filters.some(
                         fieldFilter =>
-                            fieldFilter.filter.getFilterType().getURLSuffix() === COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix()
+                            fieldFilter.filter.getFilterType().getURLSuffix() ===
+                            COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix()
                     );
                 }
 
@@ -294,7 +296,10 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
             updateFilters(filterChangeCounter + 1, newFilterCards, !currentView?.entityId, true);
 
             if (isAssay) {
-                api.query.incrementClientSideMetricCount(SAMPLE_FILTER_METRIC_AREA, 'with ' + assayDesignCount + ' AssayDesgin' + (assayDesignCount > 1 ? 's' : ''));
+                api.query.incrementClientSideMetricCount(
+                    SAMPLE_FILTER_METRIC_AREA,
+                    'with ' + assayDesignCount + ' AssayDesgin' + (assayDesignCount > 1 ? 's' : '')
+                );
                 api.query.incrementClientSideMetricCount(SAMPLE_FILTER_METRIC_AREA, 'hasWithoutAssayResultChecked');
             }
             api.query.incrementClientSideMetricCount(SAMPLE_FILTER_METRIC_AREA, 'filterModalApply');

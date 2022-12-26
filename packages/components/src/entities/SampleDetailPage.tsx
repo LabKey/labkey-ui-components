@@ -28,10 +28,11 @@ import { createGridModelId, CommonPageProps } from '../internal/models';
 
 import { EntityDataType } from '../internal/components/entities/models';
 
+import { isProjectContainer } from '../internal/app/utils';
+
 import { SampleHeader } from './SampleHeader';
 import { SampleOverviewPanel } from './SampleOverviewPanel';
 import { useSampleTypeAppContext } from './useSampleTypeAppContext';
-import { isProjectContainer } from "../internal/app/utils";
 
 // These are additional columns required for details
 const REQUIRED_COLUMNS = ParentEntityRequiredColumns.concat(
@@ -115,7 +116,7 @@ export const SampleDetailPageBody: FC<SampleDetailPageBodyProps> = memo(props =>
 
     const canDerive = useMemo(() => {
         return container?.id === sampleContainer?.id || isProjectContainer(sampleContainer?.path);
-    }, [container, sampleContainer])
+    }, [container, sampleContainer]);
 
     const onDetailUpdate = useCallback(
         (skipChangeCount?: boolean): void => {

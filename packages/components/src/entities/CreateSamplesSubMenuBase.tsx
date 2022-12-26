@@ -24,8 +24,9 @@ import { getSelectedData, setSnapshotSelections } from '../internal/actions';
 import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 import { caseInsensitive } from '../internal/util/utils';
 
+import { isProjectContainer } from '../internal/app/utils';
+
 import { SampleCreationTypeModal } from './SampleCreationTypeModal';
-import { isProjectContainer } from "../internal/app/utils";
 
 interface CreateSamplesSubMenuProps {
     allowPooledSamples?: boolean;
@@ -179,7 +180,13 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
     const onSampleCreationMenuSelectOnClick = useCallback(
         async (key: string) => {
             // check cross folder selection
-            if (parentQueryModel && selectedQuantity > 0 && selectingSampleParents && !skipCrossFolderCheck && !allowCrossFolderDerive) {
+            if (
+                parentQueryModel &&
+                selectedQuantity > 0 &&
+                selectingSampleParents &&
+                !skipCrossFolderCheck &&
+                !allowCrossFolderDerive
+            ) {
                 const dataType = parentQueryModel.schemaName === SCHEMAS.DATA_CLASSES.SCHEMA ? 'data' : 'sample';
                 setCrossFolderSelectionResult(undefined);
                 const result = await getCrossFolderSelectionResult(parentQueryModel.id, dataType, useSnapshotSelection);

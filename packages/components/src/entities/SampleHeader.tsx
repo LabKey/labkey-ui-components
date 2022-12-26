@@ -52,10 +52,10 @@ interface StorageMenuProps {
 interface HeaderProps {
     StorageMenu?: ComponentType<StorageMenuProps>;
     assayProviderType?: string;
+    canDerive?: boolean;
     entityDataType?: EntityDataType;
     hasActiveJob?: boolean;
     iconSrc?: string;
-    canDerive?: boolean;
     navigate: (url: string | AppURL) => void;
     onUpdate: () => void;
     sampleContainer?: Container;
@@ -107,7 +107,10 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                     user.hasDeletePermission() &&
                     isSampleOperationPermitted(getSampleStatusType(sampleModel.getRow()), SampleOperation.Delete)
                 ) {
-                    const confirmationData = await getSampleOperationConfirmationData(SampleOperation.Delete, sampleIds);
+                    const confirmationData = await getSampleOperationConfirmationData(
+                        SampleOperation.Delete,
+                        sampleIds
+                    );
                     setCanDelete(confirmationData.allowed.length === 1);
                 }
             } catch (e) {
@@ -252,18 +255,16 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                                 </RequiresPermission>
                             )}
 
-                            {!isMedia &&
-                                isAssayEnabled(moduleContext) &&
-                                canDerive && (
-                                    <RequiresPermission user={user} perms={PermissionTypes.Insert}>
-                                        <AssayImportSubMenuItem
-                                            queryModel={sampleModel}
-                                            providerType={assayProviderType}
-                                            requireSelection={false}
-                                            disabled={!canUploadAssayData}
-                                        />
-                                    </RequiresPermission>
-                                )}
+                            {!isMedia && isAssayEnabled(moduleContext) && canDerive && (
+                                <RequiresPermission user={user} perms={PermissionTypes.Insert}>
+                                    <AssayImportSubMenuItem
+                                        queryModel={sampleModel}
+                                        providerType={assayProviderType}
+                                        requireSelection={false}
+                                        disabled={!canUploadAssayData}
+                                    />
+                                </RequiresPermission>
+                            )}
 
                             {!isMedia && (
                                 <RequiresPermission user={user} perms={PermissionTypes.ManagePicklists}>

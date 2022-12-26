@@ -31,6 +31,7 @@ import { EntityDataType } from '../internal/components/entities/models';
 import { SampleHeader } from './SampleHeader';
 import { SampleOverviewPanel } from './SampleOverviewPanel';
 import { useSampleTypeAppContext } from './useSampleTypeAppContext';
+import { isProjectContainer } from "../internal/app/utils";
 
 // These are additional columns required for details
 const REQUIRED_COLUMNS = ParentEntityRequiredColumns.concat(
@@ -112,6 +113,10 @@ export const SampleDetailPageBody: FC<SampleDetailPageBodyProps> = memo(props =>
     const { container } = useServerContext();
     const { SampleStorageMenuComponent, SampleStorageLocationComponent, assayProviderType } = useSampleTypeAppContext();
 
+    const canDerive = useMemo(() => {
+        return container?.id === sampleContainer?.id || isProjectContainer(sampleContainer?.path);
+    }, [container, sampleContainer])
+
     const onDetailUpdate = useCallback(
         (skipChangeCount?: boolean): void => {
             if (!skipChangeCount) {
@@ -165,7 +170,7 @@ export const SampleDetailPageBody: FC<SampleDetailPageBodyProps> = memo(props =>
                 sampleContainer={sampleContainer}
                 entityDataType={entityDataType}
                 user={user}
-                isCrossFolder={sampleContainer.id !== container.id}
+                canDerive={canDerive}
                 StorageMenu={context.isMedia ? undefined : SampleStorageMenuComponent}
             />
             <Notifications />

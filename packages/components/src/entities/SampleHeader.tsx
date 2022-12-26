@@ -55,7 +55,7 @@ interface HeaderProps {
     entityDataType?: EntityDataType;
     hasActiveJob?: boolean;
     iconSrc?: string;
-    isCrossFolder?: boolean;
+    canDerive?: boolean;
     navigate: (url: string | AppURL) => void;
     onUpdate: () => void;
     sampleContainer?: Container;
@@ -83,7 +83,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
         sampleContainer,
         sampleModel,
         showDescription,
-        isCrossFolder,
+        canDerive,
         title,
         subtitle,
         StorageMenu,
@@ -233,7 +233,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                 >
                     <span className="sample-status-header-button">
                         <ManageDropdownButton id="sampledetail" pullRight collapsed>
-                            {!isCrossFolder && (
+                            {canDerive && (
                                 <RequiresPermission user={user} perms={PermissionTypes.Insert}>
                                     {isMedia && (
                                         <MenuItem href={insertURL}>
@@ -254,7 +254,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
 
                             {!isMedia &&
                                 isAssayEnabled(moduleContext) &&
-                                (!isCrossFolder || isProjectContainer(sampleContainer?.path)) && (
+                                canDerive && (
                                     <RequiresPermission user={user} perms={PermissionTypes.Insert}>
                                         <AssayImportSubMenuItem
                                             queryModel={sampleModel}

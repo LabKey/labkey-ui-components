@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.X
+*Released*: X 2022
+* Issue 46853: LKSM/LKB Projects: should allow derivation of samples within projects when parent/source is in Home
+* Issue 46696: Metrics: Sample Finder with Assay Results as Filter
+
 ### version 2.273.3
 *Released*: 21 December 2022
 * Issue 46923: Use lookup container filter as default in LookupCell

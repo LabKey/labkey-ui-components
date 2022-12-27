@@ -175,6 +175,10 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
 
     useEffect(() => {
         if (!menuModel.isLoaded) return;
+
+        // The desired behavior is that we have a min-height and then grow the menu to the max-height of 80% of the
+        // browser height. The menu should grow based on the longest section column list or the project list, whichever
+        // is longer.
         let height = 400; // match navbar.scss product-menu-content min-height
         const maxHeight = window.innerHeight * 0.8;
         const sections = Array.from(contentRef.current.getElementsByClassName('menu-section'));

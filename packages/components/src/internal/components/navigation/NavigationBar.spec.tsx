@@ -35,10 +35,11 @@ import { AppContext } from '../../AppContext';
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { ServerContext } from '../base/ServerContext';
 
+import { TEST_LKS_STARTER_MODULE_CONTEXT } from '../../productFixtures';
+
 import { ProductMenuButton } from './ProductMenu';
 import { UserMenu } from './UserMenu';
 import { NavigationBar } from './NavigationBar';
-import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
 describe('NavigationBar', () => {
     function getDefaultAppContext(overrides?: Partial<SecurityAPIWrapper>): Partial<AppContext> {
@@ -55,12 +56,7 @@ describe('NavigationBar', () => {
     function getDefaultServerContext(): Partial<ServerContext> {
         return {
             container: TEST_PROJECT_CONTAINER,
-            moduleContext: {
-                api: {
-                    moduleNames: ['samplemanagement', 'premium'],
-                },
-                samplemanagement: { productId: SAMPLE_MANAGER_APP_PROPERTIES.productId },
-            },
+            moduleContext: { ...TEST_LKS_STARTER_MODULE_CONTEXT },
         };
     }
 
@@ -106,7 +102,7 @@ describe('NavigationBar', () => {
 
     test('with findByIds', async () => {
         const component = mountWithAppServerContext(
-            <NavigationBar onFindByIds={jest.fn} showSearchBox />,
+            <NavigationBar onFindByIds={jest.fn()} showSearchBox />,
             getDefaultAppContext(),
             getDefaultServerContext()
         );
@@ -117,7 +113,7 @@ describe('NavigationBar', () => {
 
     test('without search but with findByIds', async () => {
         const component = mountWithAppServerContext(
-            <NavigationBar onFindByIds={jest.fn} showSearchBox={false} />,
+            <NavigationBar onFindByIds={jest.fn()} showSearchBox={false} />,
             getDefaultAppContext(),
             getDefaultServerContext()
         );
@@ -163,11 +159,11 @@ describe('NavigationBar', () => {
         const component = mountWithAppServerContext(<NavigationBar user={TEST_USER_READER} />, getDefaultAppContext(), {
             container: TEST_PROJECT_CONTAINER,
             moduleContext: {
+                ...TEST_LKS_STARTER_MODULE_CONTEXT,
                 api: {
                     moduleNames: ['samplemanagement', 'premium'],
                     applicationMenuDisplayMode: 'ALWAYS',
                 },
-                samplemanagement: { productId: SAMPLE_MANAGER_APP_PROPERTIES.productId },
             },
         });
         await waitForLifecycle(component);
@@ -179,11 +175,11 @@ describe('NavigationBar', () => {
         const component = mountWithAppServerContext(<NavigationBar user={TEST_USER_READER} />, getDefaultAppContext(), {
             container: TEST_PROJECT_CONTAINER,
             moduleContext: {
+                ...TEST_LKS_STARTER_MODULE_CONTEXT,
                 api: {
                     moduleNames: ['samplemanagement', 'premium'],
                     applicationMenuDisplayMode: 'ADMIN',
                 },
-                samplemanagement: { productId: SAMPLE_MANAGER_APP_PROPERTIES.productId },
             },
         });
         await waitForLifecycle(component);
@@ -198,11 +194,11 @@ describe('NavigationBar', () => {
             {
                 container: TEST_PROJECT_CONTAINER,
                 moduleContext: {
+                    ...TEST_LKS_STARTER_MODULE_CONTEXT,
                     api: {
                         moduleNames: ['samplemanagement', 'premium'],
                         applicationMenuDisplayMode: 'ALWAYS',
                     },
-                    samplemanagement: { productId: SAMPLE_MANAGER_APP_PROPERTIES.productId },
                 },
             }
         );
@@ -219,11 +215,11 @@ describe('NavigationBar', () => {
             {
                 container: TEST_PROJECT_CONTAINER,
                 moduleContext: {
+                    ...TEST_LKS_STARTER_MODULE_CONTEXT,
                     api: {
                         moduleNames: ['samplemanagement', 'premium'],
                         applicationMenuDisplayMode: 'ADMIN',
                     },
-                    samplemanagement: { productId: SAMPLE_MANAGER_APP_PROPERTIES.productId },
                 },
             }
         );

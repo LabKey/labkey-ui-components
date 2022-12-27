@@ -32,6 +32,8 @@ import { Alert } from '../base/Alert';
 
 import { getSecurityTestAPIWrapper, SecurityAPIWrapper } from '../security/APIWrapper';
 
+import { TEST_LKS_STARTER_MODULE_CONTEXT } from '../../productFixtures';
+
 import { getNavigationTestAPIWrapper, NavigationAPIWrapper } from './NavigationAPIWrapper';
 
 import { FolderMenu, FolderMenuItem } from './FolderMenu';
@@ -51,12 +53,7 @@ import {
 function getDefaultServerContext(): Partial<ServerContext> {
     return {
         container: TEST_PROJECT_CONTAINER,
-        moduleContext: {
-            api: {
-                moduleNames: ['samplemanagement', 'premium'],
-            },
-            samplemanagement: { productId: SAMPLE_MANAGER_APP_PROPERTIES.productId },
-        },
+        moduleContext: { ...TEST_LKS_STARTER_MODULE_CONTEXT },
     };
 }
 

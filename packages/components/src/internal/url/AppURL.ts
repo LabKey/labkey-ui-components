@@ -50,11 +50,19 @@ export function createProductUrl(
         (urlProductId && (!currentProductId || urlProductId.toLowerCase() !== currentProductId.toLowerCase()))
     ) {
         const href = appUrl instanceof AppURL ? appUrl.toHref() : appUrl;
+
+        // Stay in dev mode if we are staying in the same controller and using action appDev
+        const useDevMode =
+            ActionURL.getController().toLowerCase() === urlProductId.toLowerCase() &&
+            ActionURL.getAction().toLowerCase() === 'appdev';
+
         return (
-            buildURL(urlProductId.toLowerCase(), `${ActionURL.getAction() || 'app'}.view`, undefined, {
-                returnUrl: false,
-                container: containerPath, // if undefined, buildURL will use current container from server context
-            }) + href
+            buildURL(
+                urlProductId.toLowerCase(),
+                useDevMode ? 'appDev.view' : 'app.view',
+                undefined,
+                { returnUrl: false, container: containerPath } // if undefined, buildURL will use current container from server context
+            ) + href
         );
     } else {
         return appUrl;

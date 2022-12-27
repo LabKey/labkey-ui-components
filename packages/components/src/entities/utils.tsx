@@ -25,7 +25,7 @@ import { ModuleContext } from '../internal/components/base/ServerContext';
 import { EntityChoice, OperationConfirmationData } from '../internal/components/entities/models';
 import { caseInsensitive, parseCsvString } from '../internal/util/utils';
 import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
-import { getPrimaryAppProperties, isAssayEnabled, isELNEnabled, isWorkflowEnabled } from '../internal/app/utils';
+import { getPrimaryAppProperties } from '../internal/app/utils';
 import { QueryInfo } from '../public/QueryInfo';
 import { naturalSort, naturalSortByProperty } from '../public/sort';
 import { DELIMITER } from '../internal/components/forms/constants';
@@ -39,6 +39,7 @@ import { QueryConfigMap } from '../public/QueryModel/withQueryModels';
 import { BulkAddData } from '../internal/components/editable/EditableGrid';
 import { SampleCreationType } from '../internal/components/samples/models';
 import { DataClassDataType, SampleTypeDataType } from '../internal/components/entities/constants';
+import { sampleDeleteDependencyText } from '../internal/components/entities/utils';
 
 export function getCrossFolderSelectionMsg(
     crossFolderSelectionCount: number,
@@ -149,6 +150,7 @@ export function getSampleWizardURL(
     return createProductUrlFromParts(targetProductId, currentProductId, params, SAMPLES_KEY, 'new');
 }
 
+
 // TODO: Convert this into a component and utilize useServerContext() to fetch moduleContext for isELNEnabled() check
 export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: boolean): ReactNode {
     let deleteMsg;
@@ -159,26 +161,7 @@ export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: bool
         if (deleteInfoError) {
             deleteMsg += 'there was a problem loading the delete confirmation data.';
         } else {
-            if (isWorkflowEnabled()) {
-                if (isAssayEnabled()) {
-                    deleteMsg += 'it has either derived sample, job, or assay data dependencies, '
-                }
-                else {
-                    deleteMsg += 'it has either derived sample or job dependencies, '
-                }
-            } else {
-                if (isAssayEnabled()) {
-                    deleteMsg += 'it has either derived sample or assay data dependencies, '
-                } else {
-                    deleteMsg += 'it has derived sample dependencies ';
-                }
-            }
-            if (isELNEnabled()) {
-                deleteMsg += 'status that prevents deletion, or references in one or more active notebooks';
-            } else {
-                deleteMsg += 'or status that prevents deletion';
-            }
-
+            deleteMsg += 'it has ' + sampleDeleteDependencyText();
             deleteMsg += '. Check the other tabs for this sample to get more information.';
         }
     }

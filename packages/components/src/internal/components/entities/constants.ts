@@ -11,6 +11,7 @@ import { SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR } from '../samples/constants
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { EntityDataType } from './models';
+import { sampleDeleteDependencyText } from './utils';
 
 export const DATA_OPERATION_CONFIRMATION_ACTION = 'getDataOperationConfirmationData.api';
 export const SAMPLE_OPERATION_CONFIRMATION_ACTION = 'getMaterialOperationConfirmationData.api';
@@ -63,6 +64,7 @@ export const AssayResultDataType: EntityDataType = {
     filterCardHeaderClass: 'filter-card__header-purple',
 };
 
+
 export const SampleTypeDataType: EntityDataType = {
     typeListingSchemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
     listingSchemaQuery: SCHEMAS.EXP_TABLES.MATERIALS,
@@ -79,7 +81,7 @@ export const SampleTypeDataType: EntityDataType = {
     descriptionSingular: 'parent sample type',
     descriptionPlural: 'parent sample types',
     uniqueFieldKey: 'Name',
-    dependencyText: 'derived sample, job, or assay data dependencies or status that prevents deletion',
+    dependencyText: sampleDeleteDependencyText(),
     deleteHelpLinkTopic: DELETE_SAMPLES_TOPIC,
     inputColumnName: 'Inputs/Materials/First',
     ancestorColumnName: 'Ancestors/Samples',

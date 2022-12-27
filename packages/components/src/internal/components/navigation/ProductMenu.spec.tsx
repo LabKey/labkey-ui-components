@@ -329,7 +329,7 @@ describe('ProductMenu', () => {
 
         await waitForLifecycle(wrapper);
         validate(wrapper);
-        expect(wrapper.find(ProductMenuSection).first().prop('dashboardImgURL')).toBe(false);
+        expect(wrapper.find(ProductMenuSection).first().prop('dashboardImgURL')).toBeFalsy();
         expect(wrapper.find(ProductMenuSection).last().prop('dashboardImgURL')).toBe(
             SAMPLE_MANAGER_APP_PROPERTIES.logoBadgeColorImageUrl
         );

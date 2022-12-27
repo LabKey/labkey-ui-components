@@ -16,8 +16,9 @@ import { ManageDropdownButton } from '../internal/components/buttons/ManageDropd
 
 import { TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT, TEST_LKSM_STARTER_MODULE_CONTEXT } from '../internal/productFixtures';
 
-import { SampleAliquotsGridPanelImpl } from './SampleAliquotsGridPanel';
 import { SampleTypeAppContext } from '../internal/AppContext';
+
+import { SampleAliquotsGridPanelImpl } from './SampleAliquotsGridPanel';
 
 beforeEach(() => {
     LABKEY.moduleContext = { ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT };
@@ -31,6 +32,7 @@ describe('SampleAliquotsGridPanel', () => {
     const DEFAULT_PROPS = {
         actions: makeTestActions(jest.fn),
         onSampleChangeInvalidate: jest.fn(),
+        queryModelId: 'model',
         queryModels: {
             model: makeTestQueryModel(SCHEMA_QUERY, new QueryInfo(), {}, [], 0, 'model'),
         },

@@ -41,8 +41,6 @@ const SUCCESSFUL_NOTIFICATION_MESSAGE = 'Successfully connected to BarTender web
 const FAILED_NOTIFICATION_MESSAGE = 'Failed to connect to BarTender web service.';
 const UNKNOWN_STATUS_MESSAGE = 'Unrecognized status code returned from BarTender service';
 const FAILED_TO_SAVE_MESSAGE = 'Failed to save connection configuration';
-const DEFAULT_LABEL_DESCRIPTION =
-    'Default Label file to use when printing labels with BarTender. The path should be relative to the default folder configured for the BarTender web service.';
 
 interface SaveButtonProps {
     dirty: boolean;

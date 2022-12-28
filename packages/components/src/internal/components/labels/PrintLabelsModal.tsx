@@ -104,11 +104,6 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
         this.setState(() => ({ numCopies }));
     };
 
-    onLabelTemplateChange = event => {
-        const labelTemplate = event.target.value;
-        this.setState(() => ({ labelTemplate }));
-    };
-
     onConfirmPrint = (): void => {
         this.setState(() => ({ error: undefined, submitting: true }));
         const labelTemplate = this.state.labelTemplate.trim();
@@ -237,15 +232,7 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
                         </div>
                     )}
                     <div className="top-spacing">
-                        <b>
-                            Label templates
-                            <LabelHelpTip title="BarTender Label Template">
-                                <p>
-                                    Provide the label template to use with BarTender. The path should be relative to the
-                                    default folder configured in the BarTender web service.
-                                </p>
-                            </LabelHelpTip>
-                        </b>
+                        <b>Label template</b>
                         <QuerySelect
                             formsy={false}
                             fireQSChangeOnInit={true}

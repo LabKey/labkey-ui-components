@@ -12,6 +12,8 @@ import { BarTenderConfiguration, BarTenderResponse, LabelTemplate } from './mode
 import { selectRows } from '../../query/selectRows';
 
 import { LABEL_TEMPLATE_SQ, LABEL_TEMPLATES_LIST_NAME } from './constants';
+import { DomainDesign } from '../domainproperties/models';
+import { User } from '../base/models/User';
 
 function handleBarTenderConfigurationResponse(response: any): BarTenderConfiguration {
     // Separate the BarTender configuration object from the success response
@@ -19,7 +21,7 @@ function handleBarTenderConfigurationResponse(response: any): BarTenderConfigura
     return new BarTenderConfiguration(btConfiguration);
 }
 
-function createLabelTemplateList(): Promise<any> {
+function createLabelTemplateList(): Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
         Domain.create({
             kind: 'IntList',
@@ -34,6 +36,7 @@ function createLabelTemplateList(): Promise<any> {
                         name: 'name',
                         rangeURI: 'string',
                         required: true,
+                        description: 'Display name for template',
                     },
                     {
                         name: 'description',
@@ -43,6 +46,7 @@ function createLabelTemplateList(): Promise<any> {
                         name: 'path',
                         rangeURI: 'string',
                         required: true,
+                        description: "Label template's relative location for print service",
                     },
                 ],
             },
@@ -51,7 +55,7 @@ function createLabelTemplateList(): Promise<any> {
                 keyType: 'AutoIncrementInteger',
             },
             success: response => {
-                resolve(response);
+                resolve(DomainDesign.create(response));
             },
             failure: response => {
                 reject(response);
@@ -61,7 +65,7 @@ function createLabelTemplateList(): Promise<any> {
 }
 
 export interface LabelPrintingAPIWrapper {
-    ensureLabelTemplatesList: () => Promise<LabelTemplate[]>;
+    ensureLabelTemplatesList: (user: User) => Promise<LabelTemplate[]>;
     fetchBarTenderConfiguration: () => Promise<BarTenderConfiguration>;
     getLabelTemplates: () => Promise<LabelTemplate[]>;
     printBarTenderLabels: (btxml: string, serviceURL: string) => Promise<BarTenderResponse>;
@@ -179,7 +183,7 @@ export class LabelPrintingServerAPIWrapper implements LabelPrintingAPIWrapper {
         });
     };
 
-    ensureLabelTemplatesList = (): Promise<LabelTemplate[]> => {
+    ensureLabelTemplatesList = (user: User): Promise<LabelTemplate[]> => {
         return new Promise<LabelTemplate[]>((resolve) => {
             this.getLabelTemplates()
                 .then((templates: LabelTemplate[]) => resolve(templates))
@@ -187,10 +191,21 @@ export class LabelPrintingServerAPIWrapper implements LabelPrintingAPIWrapper {
                     if (reason.status !== 404) {
                         resolve(undefined);
                     } else {
+                        if (!user.isAppAdmin()) {
+                            console.error(
+                                'User has insufficient permissions to create the template list. Please contact administrator'
+                            );
+                            resolve(undefined);
+                            return;
+                        }
+
                         // try to create list
                         createLabelTemplateList()
                             .then(() => resolve([]))
-                            .catch(() => resolve(undefined));
+                            .catch(createReason => {
+                                console.error(createReason);
+                                resolve(undefined);
+                            });
                     }
                 });
         });
@@ -202,7 +217,10 @@ export class LabelPrintingServerAPIWrapper implements LabelPrintingAPIWrapper {
                 .then(response => {
                     resolve(response?.rows?.map(row => LabelTemplate.create(row)) ?? []);
                 })
-                .catch(reason => reject(reason));
+                .catch(reason => {
+                    console.error(reason);
+                    reject(reason);
+                });
         });
     };
 }

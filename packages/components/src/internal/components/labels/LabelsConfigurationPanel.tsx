@@ -22,6 +22,8 @@ import { ChoicesListItem } from '../base/ChoicesListItem';
 
 import { LabelTemplate } from './models';
 import { LABEL_TEMPLATE_SQ } from './constants';
+import { useServerContext } from '../base/ServerContext';
+import { LabelHelpTip } from '../base/LabelHelpTip';
 
 const TITLE = 'Manage Label Templates';
 const NEW_LABEL_INDEX = -1;
@@ -112,12 +114,12 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                 .then(() => onActionCompleted(undefined, true))
                 .catch(reason => {
                     setError(resolveErrorMessage(reason, 'template', 'templates', 'deleting'));
-                    setShowDeleteConfirm(false);
+                    onToggleDeleteConfirm();
                 });
         } else {
-            setShowDeleteConfirm(false);
+            onToggleDeleteConfirm();
         }
-    }, [updatedTemplate, onActionCompleted]);
+    }, [updatedTemplate, onActionCompleted, onToggleDeleteConfirm]);
 
     const onFormChange = useCallback(
         (evt): void => {
@@ -182,7 +184,7 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                                 name="name"
                                 onChange={onFormChange}
                                 disabled={saving}
-                                placeholder="Enter label's display name"
+                                placeholder="Enter label template's display name"
                                 type="text"
                                 value={updatedTemplate.name ?? ''}
                             />
@@ -205,6 +207,12 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                     <FormGroup>
                         <div className="col-sm-4">
                             <DomainFieldLabel label="File Path" required />
+                            <LabelHelpTip title="BarTender Label Template">
+                                <p>
+                                    Provide the label template to use with BarTender. The path should be relative to the
+                                    default folder configured in the BarTender web service.
+                                </p>
+                            </LabelHelpTip>
                         </div>
                         <div className="col-sm-8">
                             <input
@@ -245,12 +253,12 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                 <ConfirmModal
                     cancelButtonText="Cancel"
                     confirmButtonText="Yes, Delete"
-                    title="Delete Label"
+                    title="Delete Label Template"
                     onCancel={onToggleDeleteConfirm}
                     onConfirm={onConfirmDelete}
                 >
                     <div>
-                        The <b>{updatedTemplate.name}</b> label will be deleted.
+                        The <b>{updatedTemplate.name}</b> label template will be deleted.
                         <strong>This cannot be undone.</strong> Do you wish to proceed?
                     </div>
                 </ConfirmModal>
@@ -261,6 +269,7 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
 
 export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props => {
     const { api, setIsDirty } = props;
+    const { user } = useServerContext();
     const [templates, setTemplates] = useState<LabelTemplate[]>([]);
     const [error, setError] = useState<string>();
     const [selected, setSelected] = useState<number>();
@@ -271,30 +280,17 @@ export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props
             setError(undefined);
 
             api.labelprinting
-                .getLabelTemplates()
+                .ensureLabelTemplatesList(user)
                 .then(labelTemplates => {
                     setTemplates(labelTemplates);
-
                     if (newLabelTemplate)
                         setSelected(labelTemplates.findIndex(template => template.rowId === newLabelTemplate));
                 })
-                .catch(reason => {
-                    if (reason.status === 404) {
-                        // try to create list
-                        api.labelprinting
-                            .ensureLabelTemplatesList()
-                            .then(() => queryLabelTemplates(newLabelTemplate))
-                            .catch(newReason => {
-                                console.error(newReason);
-                                setError('Error: Failed to create template list.');
-                            });
-                    } else {
-                        console.error(reason);
-                        setError('Error: Unable to load label templates.');
-                    }
+                .catch(() => {
+                    setError('Error: Unable to load label templates.');
                 });
         },
-        [api]
+        [api, user]
     );
 
     // Load template list
@@ -333,11 +329,11 @@ export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props
                     <div className="row choices-container">
                         <div className="col-lg-4 col-md-6 choices-container-left-panel">
                             <LabelTemplatesList templates={templates} selected={selected} onSelect={onSetSelected} />
-                            <AddEntityButton onClick={onAddLabel} entity="New Status" disabled={addNew} />
+                            <AddEntityButton onClick={onAddLabel} entity="New Label Template" disabled={addNew} />
                         </div>
                         <div className="col-lg-8 col-md-6">
                             <LabelTemplateDetails
-                                // use null to indicate that no statuses exist to be selected, so don't show the empty message
+                                // use null to indicate that no label templates exist to be selected, so don't show the empty message
                                 template={templates.length === 0 ? null : templates[selected]}
                                 isNew={addNew}
                                 onActionCompleted={onActionCompleted}

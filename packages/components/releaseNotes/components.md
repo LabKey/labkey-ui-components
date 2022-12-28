@@ -4,6 +4,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Add support for tracking and using multiple BarTender Label templates
+  * Changed from input to an Admin managed list
+  * Default template used as first entry in above list, and property removed
 
 ### version 2.273.4
 *Released*: 27 December 2022

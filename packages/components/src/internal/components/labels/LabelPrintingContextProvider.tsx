@@ -36,7 +36,7 @@ export const LabelPrintingProvider: FC<OwnProps> = memo(({ children, initialCont
 
     useEffect(() => {
         if (userCanPrintLabels(user) && isSampleManagerEnabled()) {
-            Promise.all([fetchBarTenderConfiguration(), ensureLabelTemplatesList()]).then(
+            Promise.all([fetchBarTenderConfiguration(), ensureLabelTemplatesList(user)]).then(
                 (responses: [BarTenderConfiguration, LabelTemplate[]]) => {
                     const [btConfiguration, templates] = responses;
                     setCanPrintLabels(!!btConfiguration.serviceURL && templates?.length > 0);

@@ -111,6 +111,7 @@ export const BIOLOGICS_APP_PROPERTIES: AppProperties = {
     name: BIOLOGICS_PRODUCT_NAME,
     logoWithTextImageUrl: imageURL('biologics/images', 'lk-bio-logo-text.svg'),
     logoBadgeImageUrl: imageURL('biologics/images', 'lk-bio-logo-badge.svg'),
+    logoBadgeColorImageUrl: imageURL('biologics/images', 'lk-bio-logo-badge-color.svg'),
     controllerName: BIOLOGICS_CONTROLLER_NAME,
     moduleName: 'biologics',
     searchPlaceholder: SEARCH_PLACEHOLDER,
@@ -121,6 +122,7 @@ export const SAMPLE_MANAGER_APP_PROPERTIES: AppProperties = {
     name: SAMPLE_MANAGER_PRODUCT_NAME,
     logoWithTextImageUrl: imageURL('sampleManagement/images', 'LK-SampleManager-appmenu-WHITE.svg'),
     logoBadgeImageUrl: imageURL('sampleManagement/images', 'LK-SampleManager-Badge-WHITE.svg'),
+    logoBadgeColorImageUrl: imageURL('sampleManagement/images', 'LK-SampleManager-Badge-COLOR.svg'),
     controllerName: SAMPLE_MANAGER_CONTROLLER_NAME,
     moduleName: 'sampleManagement',
     searchPlaceholder: SAMPLE_MANAGER_SEARCH_PLACEHOLDER,
@@ -131,6 +133,7 @@ export const FREEZER_MANAGER_APP_PROPERTIES: AppProperties = {
     name: FREEZER_MANAGER_PRODUCT_NAME,
     logoWithTextImageUrl: imageURL('_images', 'LK-noTAG-overcast.svg'),
     logoBadgeImageUrl: imageURL('_images', 'mobile-logo-overcast.svg'),
+    logoBadgeColorImageUrl: imageURL('_images', 'mobile-logo-seattle.svg'),
     controllerName: FREEZER_MANAGER_CONTROLLER_NAME,
     moduleName: 'inventory',
 };

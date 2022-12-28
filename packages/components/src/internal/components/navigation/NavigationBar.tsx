@@ -34,20 +34,15 @@ import { User } from '../base/models/User';
 
 import { useServerContext } from '../base/ServerContext';
 
-import { ProductMenu } from './ProductMenu';
+import { ProductMenuButton } from './ProductMenu';
 import { UserMenu, UserMenuProps } from './UserMenu';
-import { MenuSectionConfig } from './ProductMenuSection';
-import { ProductMenuModel } from './model';
-
-import { FolderMenu } from './FolderMenu';
-
+import { MenuSectionConfig } from './model';
 import { SEARCH_PLACEHOLDER } from './constants';
 import { useFolderMenuContext } from './hooks';
 
 interface NavigationBarProps {
     brand?: ReactNode;
     menuSectionConfigs?: List<Map<string, MenuSectionConfig>>;
-    model: ProductMenuModel;
     notificationsConfig?: ServerNotificationsConfig;
     onFindByIds?: (sessionkey: string) => void;
     onSearch?: (form: any) => void;
@@ -69,16 +64,15 @@ export const NavigationBar: FC<Props> = memo(props => {
         extraDevItems,
         extraUserItems,
         menuSectionConfigs,
-        model,
         notificationsConfig,
         onSearch,
         onFindByIds,
         onSignIn,
         onSignOut,
         searchPlaceholder,
-        showFolderMenu,
         showNavMenu,
         showNotifications,
+        showFolderMenu,
         showProductNav,
         showSearchBox,
         signOutUrl,
@@ -103,11 +97,14 @@ export const NavigationBar: FC<Props> = memo(props => {
                 <div className="container">
                     <div className="row">
                         <div className="navbar-left col-xs-8 col-md-7">
-                            <span className="navbar-item pull-left">{brand}</span>
-                            {showFolderMenu && <FolderMenu key={folderMenuContext.key} />}
-                            {showNavMenu && !!model && (
-                                <span className="navbar-item">
-                                    <ProductMenu model={model} sectionConfigs={menuSectionConfigs} />
+                            <span className="navbar-item navbar-left-icon pull-left">{brand}</span>
+                            {showNavMenu && (
+                                <span className="navbar-item navbar-left-menu">
+                                    <ProductMenuButton
+                                        key={folderMenuContext.key} // re-render and reload folderItems when project added
+                                        sectionConfigs={menuSectionConfigs}
+                                        showFolderMenu={showFolderMenu}
+                                    />
                                 </span>
                             )}
                         </div>
@@ -117,7 +114,6 @@ export const NavigationBar: FC<Props> = memo(props => {
                                     <UserMenu
                                         extraDevItems={extraDevItems}
                                         extraUserItems={extraUserItems}
-                                        model={model}
                                         onSignIn={onSignIn}
                                         onSignOut={onSignOut}
                                         signOutUrl={signOutUrl}

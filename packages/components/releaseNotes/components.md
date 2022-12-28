@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD December 2022
+### version 2.274.0
+*Released*: 28 December 2022
 * App header Projects and Menu consolidation
   * ProductMenuButton to hold state for folderItems
   * FolderMenu component to render within ProductMenu

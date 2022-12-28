@@ -1,6 +1,19 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.274.0
+*Released*: 28 December 2022
+* App header Projects and Menu consolidation
+  * ProductMenuButton to hold state for folderItems
+  * FolderMenu component to render within ProductMenu
+  * ProductMenu component use state variable for ProductMenuModel object for current and selected folder
+  * Add createProductUrlFromPartsWithContainer() to create menu links for selected container when not current
+  * Pass containerPath through to create methods of MenuSectionModel and MenuItemModel
+  * Update menuSectionConfig generation utils to remove appBase prop
+  * Styling updates for header project/menu button and menu sections / columns
+  * Remove MenuSectionModel itemLimit
+  * Remove some user menu items and add a conditional Dashboard section to the menu
+
 ### version 2.273.4
 *Released*: 27 December 2022
 * View Assay Results report fix for selectionKey when coming from sample > aliquots grid

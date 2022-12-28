@@ -375,7 +375,6 @@ import { NavigationBar } from './internal/components/navigation/NavigationBar';
 import { SEARCH_PLACEHOLDER } from './internal/components/navigation/constants';
 import { FindByIdsModal } from './internal/components/search/FindByIdsModal';
 import { ProductNavigationMenu } from './internal/components/productnavigation/ProductNavigationMenu';
-import { MenuSectionConfig } from './internal/components/navigation/ProductMenuSection';
 import { useSubNavContext } from './internal/components/navigation/hooks';
 import { SubNav, SubNavWithContext } from './internal/components/navigation/SubNav';
 import { Breadcrumb } from './internal/components/navigation/Breadcrumb';
@@ -1126,7 +1125,6 @@ export {
     getLineageFilterValue,
     withLineage,
     // Navigation
-    MenuSectionConfig,
     ProductMenuModel,
     MenuSectionModel,
     MenuItemModel,

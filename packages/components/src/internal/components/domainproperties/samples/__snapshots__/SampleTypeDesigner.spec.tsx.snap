@@ -905,6 +905,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           "printGridLabels": [Function],
           "saveBarTenderConfiguration": [Function],
         },
+        "navigation": ServerNavigationAPIWrapper {
+          "initMenuModel": [Function],
+        },
         "picklist": PicklistServerAPIWrapper {
           "getPicklistCountsBySampleType": [Function],
           "getPicklistDeleteData": [Function],

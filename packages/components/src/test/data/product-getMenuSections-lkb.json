@@ -86,7 +86,6 @@
   } ],
   "productId" : "Biologics",
   "totalCount" : 9,
-  "itemLimit" : 9,
   "sectionKey" : "registry"
 }, {
   "url" : "/labkey/Biologics%20Example/experiment-listSampleTypes.view?",
@@ -95,7 +94,6 @@
   "items" : [ ],
   "productId" : "Biologics",
   "totalCount" : 0,
-  "itemLimit" : 0,
   "sectionKey" : "samples"
 }, {
   "url" : "/labkey/Biologics%20Example/assay-begin.view?",
@@ -104,7 +102,6 @@
   "items" : [ ],
   "productId" : "Biologics",
   "totalCount" : 1,
-  "itemLimit" : 0,
   "sectionKey" : "assays"
 }, {
   "url" : "/labkey/Biologics%20Example/biologics-app.view?#/experiments",
@@ -113,7 +110,6 @@
   "items" : [ ],
   "productId" : "Biologics",
   "totalCount" : 0,
-  "itemLimit" : 0,
   "sectionKey" : "experiments"
 }, {
   "key" : "biologicsWorkflow",
@@ -149,7 +145,6 @@
   } ],
   "productId" : "Biologics",
   "totalCount" : 3,
-  "itemLimit" : null,
   "sectionKey" : "workflow"
 }, {
   "url" : "/labkey/Biologics%20Example/experiment-listDataClass.view?",
@@ -176,7 +171,6 @@
   } ],
   "productId" : "Biologics",
   "totalCount" : 3,
-  "itemLimit" : 3,
   "sectionKey" : "workflow"
 }, {
   "key" : "media",
@@ -221,7 +215,6 @@
   } ],
   "productId" : "Biologics",
   "totalCount" : 4,
-  "itemLimit" : null,
   "sectionKey" : "media"
 }, {
   "url" : "/labkey/Biologics%20Example/biologics-app.view?#/notebooks",
@@ -248,7 +241,6 @@
   } ],
   "productId" : "Biologics",
   "totalCount" : 2,
-  "itemLimit" : null,
   "sectionKey" : "notebooks"
 }, {
   "url" : null,
@@ -266,6 +258,5 @@
   } ],
   "productId" : "Biologics",
   "totalCount" : 1,
-  "itemLimit" : null,
   "sectionKey" : "user"
 } ]

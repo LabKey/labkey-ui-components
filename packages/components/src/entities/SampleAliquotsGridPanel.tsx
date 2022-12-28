@@ -51,7 +51,7 @@ const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> 
     const moreItems = [];
     if (isAssayEnabled(moduleContext)) {
         moreItems.push({
-            button: <SamplesAssayButton model={model} providerType={assayProviderType}/>,
+            button: <SamplesAssayButton model={model} providerType={assayProviderType} />,
             perm: PermissionTypes.Insert,
         });
     }
@@ -121,18 +121,18 @@ interface Props {
     assayProviderType?: string;
     lineageUpdateAllowed: boolean;
     onSampleChangeInvalidate: (schemaQuery: SchemaQuery) => void;
+    queryModelId: string;
     showLabelOption?: boolean;
     user: User;
 }
 
 export const SampleAliquotsGridPanelImpl: FC<Props & InjectedQueryModels> = memo(props => {
-    const { actions, queryModels, showLabelOption = true, ...buttonProps } = props;
+    const { actions, queryModels, queryModelId, showLabelOption = true, ...buttonProps } = props;
     const [showConfirmDelete, setConfirmDelete] = useState<boolean>(false);
     const [showPrintDialog, setShowPrintDialog] = useState<boolean>(false);
     const { createNotification } = useNotificationsContext();
     const { canPrintLabels, printServiceUrl } = useLabelPrintingContext();
-
-    const queryModel = queryModels.model;
+    const queryModel = queryModels[queryModelId];
 
     const resetState = useCallback((): void => {
         setConfirmDelete(false);
@@ -226,11 +226,10 @@ export const SampleAliquotsGridPanel: FC<SampleAliquotsGridPanelProps> = props =
         ? [...getOmittedSampleTypeColumns(user), ...omittedColumns]
         : getOmittedSampleTypeColumns(user);
 
-    const queryConfigs = {
-        model: getSampleAliquotsQueryConfig(schemaQuery.getQuery(), sampleLsid, true, rootLsid, omitted),
-    };
+    const queryConfig = getSampleAliquotsQueryConfig(schemaQuery.getQuery(), sampleLsid, true, rootLsid, omitted);
+    const queryConfigs = { [queryConfig.id]: queryConfig };
 
-    return <SampleAliquotsGridPanelWithModel {...props} queryConfigs={queryConfigs} />;
+    return <SampleAliquotsGridPanelWithModel {...props} queryModelId={queryConfig.id} queryConfigs={queryConfigs} />;
 };
 
 SampleAliquotsGridPanel.displayName = 'SampleAliquotsGridPanel';

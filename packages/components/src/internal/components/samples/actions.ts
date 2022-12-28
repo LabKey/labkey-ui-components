@@ -16,7 +16,7 @@
 import { List, Map, OrderedMap } from 'immutable';
 import { ActionURL, Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
 
-import { EntityDataType, IEntityTypeDetails, IEntityTypeOption, } from '../entities/models';
+import { EntityDataType, IEntityTypeDetails, IEntityTypeOption } from '../entities/models';
 import { deleteEntityType, getEntityTypeOptions, getSelectedItemSamples } from '../entities/actions';
 
 import { Location } from '../../util/URL';
@@ -33,7 +33,12 @@ import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
 import { EXP_TABLES, SCHEMAS } from '../../schemas';
 
-import { getContainerFilter, ISelectRowsResult, selectRowsDeprecated } from '../../query/api';
+import {
+    getContainerFilter,
+    invalidateFullQueryDetailsCache,
+    ISelectRowsResult,
+    selectRowsDeprecated,
+} from '../../query/api';
 
 import { buildURL } from '../../url/AppURL';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -49,6 +54,8 @@ import { TimelineEventModel } from '../auditlog/models';
 import { ViewInfo } from '../../ViewInfo';
 
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';
+
+import { createGridModelId } from '../../models';
 
 import { IS_ALIQUOT_COL, SAMPLE_STATUS_REQUIRED_COLUMNS, SELECTION_KEY_TYPE } from './constants';
 import { FindField, GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
@@ -252,18 +259,15 @@ export async function getSelectedSampleIdsFromSelectionKey(location: Location): 
         const sampleFieldKey = getLocationQueryVal(location, 'sampleFieldKey');
         const queryName = SCHEMAS.ASSAY_TABLES.RESULTS_QUERYNAME;
         let response;
-        if (isSnapshot)
-            response = await getSnapshotSelections(location.query.selectionKey);
-        else
-            response = await getSelection(location, schemaName, queryName);
+        if (isSnapshot) response = await getSnapshotSelections(location.query.selectionKey);
+        else response = await getSelection(location, schemaName, queryName);
         sampleIds = await getFieldLookupFromSelection(schemaName, queryName, response?.selected, sampleFieldKey);
     } else {
         const picklistName = getLocationQueryVal(location, 'picklistName');
         let response;
         if (isSnapshot && location.query?.selectionKey)
             response = await getSnapshotSelections(location.query.selectionKey);
-        else
-            response = await getSelection(location, SCHEMAS.PICKLIST_TABLES.SCHEMA, picklistName);
+        else response = await getSelection(location, SCHEMAS.PICKLIST_TABLES.SCHEMA, picklistName);
         if (picklistName) {
             sampleIds = await getSelectedPicklistSamples(picklistName, response.selected, false, undefined);
         } else {
@@ -779,9 +783,11 @@ export function getSampleAliquotsQueryConfig(
     omitCols?: string[]
 ): QueryConfig {
     const omitCol = IS_ALIQUOT_COL;
+    const schemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet);
 
     return {
-        schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet),
+        id: createGridModelId('sample-aliquots-' + sampleLsid, schemaQuery),
+        schemaQuery,
         bindURL: forGridView,
         maxRows: forGridView ? undefined : -1,
         omittedColumns: omitCols ? [...omitCols, omitCol] : [omitCol],
@@ -821,8 +827,10 @@ export function getSampleAssayResultViewConfigs(): Promise<SampleAssayResultView
 }
 
 export async function createSessionAssayRunSummaryQuery(sampleIds: number[]): Promise<ISelectRowsResult> {
-    let assayRunsQuery = 'AssayRunsPerSample';
+    // issue with temp table re-use of queryName, invalidate cache to clear any queryDetails for old temp table
+    invalidateFullQueryDetailsCache();
 
+    let assayRunsQuery = 'AssayRunsPerSample';
     if (isProductProjectsEnabled() && !isProjectContainer()) {
         assayRunsQuery = 'AssayRunsPerSampleChildProject';
     }

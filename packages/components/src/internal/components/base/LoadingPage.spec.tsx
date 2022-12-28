@@ -21,6 +21,7 @@ import { shallow } from 'enzyme';
 import { LoadingPage } from './LoadingPage';
 import { PageHeader } from './PageHeader';
 import { LoadingSpinner } from './LoadingSpinner';
+import { Page } from './Page';
 
 describe('<LoadingPage/>', () => {
     test('no props', () => {
@@ -29,11 +30,11 @@ describe('<LoadingPage/>', () => {
         expect(page.find(PageHeader)).toHaveLength(1);
         // add the loading spinner
         expect(page.find(LoadingSpinner)).toHaveLength(1);
-        expect(page).toMatchSnapshot();
     });
 
     test('Custom message and title', () => {
-        const tree = renderer.create(<LoadingPage title="Waiting room" msg="Wait here" />).toJSON();
-        expect(tree).toMatchSnapshot();
+        const page = shallow(<LoadingPage title="Waiting room" msg="Wait here" />);
+        expect(page.find(Page).prop("title")).toBe("Waiting room");
+        expect(page.find(LoadingSpinner).prop("msg")).toBe("Wait here");
     });
 });

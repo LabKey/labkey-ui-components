@@ -91,7 +91,7 @@ describe('SampleCreatePage', () => {
         );
         await waitForLifecycle(wrapper);
         validate(wrapper);
-        expect(wrapper.find(EntityInsertPanel).prop('canEditEntityTypeDetails')).toBeTruthy();
+        expect(wrapper.find(EntityInsertPanel).prop('canEditEntityTypeDetails')).toBeFalsy();
         expect(wrapper.find(EntityInsertPanel).prop('asyncSize')).toBe(BACKGROUND_IMPORT_MIN_FILE_SIZE);
         wrapper.unmount();
     });

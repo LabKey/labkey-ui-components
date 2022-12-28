@@ -51,7 +51,6 @@ interface State {
 
 export class BulkUpdateForm extends PureComponent<Props, State> {
     static defaultProps = {
-        itemLabel: 'table',
         pluralNoun: 'rows',
         singularNoun: 'row',
     };
@@ -117,12 +116,13 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
 
     getSelectionNoun(): string {
         const { singularNoun, pluralNoun } = this.props;
-        return this.getSelectionCount() === 1 ? singularNoun : pluralNoun;
+        return this.getSelectionCount() === 1 ? singularNoun.toLowerCase() : pluralNoun.toLowerCase();
     }
 
     getTitle(): string {
+        const { itemLabel } = this.props;
         const prefix = 'Update ' + this.getSelectionCount() + ' ' + this.getSelectionNoun();
-        return prefix + " selected from '" + this.props.itemLabel + "'";
+        return itemLabel ? prefix + " selected from '" + this.props.itemLabel + "'" : prefix;
     }
 
     columnFilter = (col: QueryColumn): boolean => {

@@ -22,6 +22,7 @@ import { HelpLink } from '../../util/helpLinks';
 import { ConfirmModal } from '../base/ConfirmModal';
 
 import { EntityDataType, OperationConfirmationData } from './models';
+import { Utils } from '@labkey/api';
 
 interface Props {
     confirmationData: OperationConfirmationData;
@@ -51,9 +52,14 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
 
         if (!confirmationData) return undefined;
 
-        const _dependencyText = isELNEnabled()
-            ? (dependencyText ? dependencyText + ' or' : '') + ' references in one or more active notebooks'
-            : dependencyText;
+        let _dependencyText;
+        if (Utils.isFunction(dependencyText))
+            _dependencyText = (dependencyText as Function)();
+        else {
+            _dependencyText = isELNEnabled()
+                ? (dependencyText ? dependencyText + ' or' : '') + ' references in one or more active notebooks'
+                : dependencyText;
+        }
 
         const numCanDelete = confirmationData.allowed.length;
         const numCannotDelete = confirmationData.notAllowed.length;

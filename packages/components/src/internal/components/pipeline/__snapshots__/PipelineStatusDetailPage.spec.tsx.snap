@@ -6,7 +6,7 @@ exports[`<PipelineStatusDetailPage> Completed job, no warn, no error 1`] = `
     <div className="app-page">
       <PageHeader title="assays - Workflow_Assay01">
         <div className="page-header">
-          <h2 className="text-capitalize no-margin-top">
+          <h2 className="no-margin-top">
             assays - Workflow_Assay01
           </h2>
           <Notifications>
@@ -182,7 +182,7 @@ exports[`<PipelineStatusDetailPage> Failed job, with error 1`] = `
     <div className="app-page">
       <PageHeader title="SampleType_01 - SampleType_01_00.xlsx">
         <div className="page-header">
-          <h2 className="text-capitalize no-margin-top">
+          <h2 className="no-margin-top">
             SampleType_01 - SampleType_01_00.xlsx
           </h2>
           <Notifications>
@@ -313,7 +313,7 @@ exports[`<PipelineStatusDetailPage> Running job, with warning 1`] = `
     <div className="app-page">
       <PageHeader title="exp.data - sourceType1 - data_2021-01-10_06-02-08-2.xlsx">
         <div className="page-header">
-          <h2 className="text-capitalize no-margin-top">
+          <h2 className="no-margin-top">
             exp.data - sourceType1 - data_2021-01-10_06-02-08-2.xlsx
           </h2>
           <Notifications>

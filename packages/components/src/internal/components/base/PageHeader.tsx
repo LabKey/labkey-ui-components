@@ -27,7 +27,7 @@ export const PageHeader: FC<PageHeaderProps> = ({ children, iconCls, showNotific
     <div className="page-header">
         {children}
 
-        <h2 className="text-capitalize no-margin-top">
+        <h2 className="no-margin-top">
             {iconCls ? <span className={'page-header-icon ' + iconCls}>&nbsp;</span> : null}
             {title}
         </h2>

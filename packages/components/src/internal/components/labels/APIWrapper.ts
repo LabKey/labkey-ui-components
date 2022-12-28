@@ -27,6 +27,7 @@ function createLabelTemplateList(): Promise<DomainDesign> {
             kind: 'IntList',
             domainDesign: {
                 name: LABEL_TEMPLATES_LIST_NAME,
+                description: 'Set of label templates available to print.',
                 fields: [
                     {
                         name: 'rowId',

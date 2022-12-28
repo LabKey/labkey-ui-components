@@ -26,9 +26,10 @@ import { useServerContext } from '../base/ServerContext';
 import { getCurrentAppProperties } from '../../app/utils';
 import { AppProperties } from '../../app/models';
 
+import { AppContext, useAppContext } from '../../AppContext';
+
 import { signOut, signIn } from './actions';
 import { ProductMenuModel } from './model';
-import { AppContext, useAppContext } from '../../AppContext';
 
 export interface UserMenuProps {
     appProperties?: AppProperties;

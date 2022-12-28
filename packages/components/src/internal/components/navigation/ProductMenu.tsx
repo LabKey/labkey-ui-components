@@ -274,9 +274,9 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
 });
 
 interface ProductMenuButtonTitle {
-    container: Container,
-    folderItems: FolderMenuItem[],
-    routes: any[],
+    container: Container;
+    folderItems: FolderMenuItem[];
+    routes: any[];
 }
 
 export const ProductMenuButtonTitle: FC<ProductMenuButtonTitle> = memo(props => {

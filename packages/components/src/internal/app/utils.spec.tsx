@@ -20,6 +20,8 @@ import {
 
 import { Container } from '../components/base/models/Container';
 
+import { MenuSectionConfig } from '../components/navigation/model';
+
 import {
     addAssaysSectionConfig,
     addSamplesSectionConfig,
@@ -70,7 +72,6 @@ import {
     SOURCES_KEY,
     WORKFLOW_KEY,
 } from './constants';
-import { MenuSectionConfig } from '../components/navigation/model';
 
 describe('getMenuSectionConfigs', () => {
     test('LKS starter enabled', () => {
@@ -831,11 +832,9 @@ describe('getCurrentAppProperties', () => {
 
 describe('getStorageSectionConfig', () => {
     test('reader, inventory app', () => {
-        const config = getStorageSectionConfig(
-            TEST_USER_READER,
-            FREEZER_MANAGER_APP_PROPERTIES.productId,
-            { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } }
-        );
+        const config = getStorageSectionConfig(TEST_USER_READER, FREEZER_MANAGER_APP_PROPERTIES.productId, {
+            inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
+        });
         expect(config.emptyText).toBe('No storage has been defined');
         expect(config.emptyAppURL).toBe(undefined);
         expect(config.emptyURLProjectOnly).toBe(false);
@@ -847,11 +846,9 @@ describe('getStorageSectionConfig', () => {
     test('reader, non-inventory app', () => {
         LABKEY.container = {};
 
-        const config = getStorageSectionConfig(
-            TEST_USER_READER,
-            SAMPLE_MANAGER_APP_PROPERTIES.productId,
-            { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } }
-        );
+        const config = getStorageSectionConfig(TEST_USER_READER, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
+            inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
+        });
         expect(config.emptyURLText).toBe('Get started...');
         expect(config.emptyAppURL).toBe(undefined);
         expect(config.emptyURLProjectOnly).toBe(false);
@@ -863,11 +860,9 @@ describe('getStorageSectionConfig', () => {
             path: 'Project A',
         };
 
-        const config = getStorageSectionConfig(
-            TEST_USER_FOLDER_ADMIN,
-            BIOLOGICS_APP_PROPERTIES.productId,
-            { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } },
-        );
+        const config = getStorageSectionConfig(TEST_USER_FOLDER_ADMIN, BIOLOGICS_APP_PROPERTIES.productId, {
+            inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
+        });
         expect(config.emptyURLText).toBe('Create storage');
         expect(config.emptyAppURL?.toHref()).toBe('#/freezers/new');
         expect(config.emptyURLProjectOnly).toBe(true);
@@ -879,11 +874,9 @@ describe('getStorageSectionConfig', () => {
             path: 'Project A/Child Folder 1',
         };
 
-        const config = getStorageSectionConfig(
-            TEST_USER_FOLDER_ADMIN,
-            BIOLOGICS_APP_PROPERTIES.productId,
-            { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } }
-        );
+        const config = getStorageSectionConfig(TEST_USER_FOLDER_ADMIN, BIOLOGICS_APP_PROPERTIES.productId, {
+            inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
+        });
         expect(config.emptyURLText).toBe('Create storage');
         expect(config.emptyAppURL?.toHref()).toBe('#/freezers/new');
         expect(config.emptyURLProjectOnly).toBe(true);
@@ -895,11 +888,9 @@ describe('getStorageSectionConfig', () => {
             path: undefined,
         };
 
-        const config = getStorageSectionConfig(
-            TEST_USER_STORAGE_EDITOR,
-            BIOLOGICS_APP_PROPERTIES.productId,
-            { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } }
-        );
+        const config = getStorageSectionConfig(TEST_USER_STORAGE_EDITOR, BIOLOGICS_APP_PROPERTIES.productId, {
+            inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
+        });
         expect(config.emptyURLText).toBe('Get started...');
         expect(config.emptyAppURL).toBe(undefined);
         expect(config.emptyURLProjectOnly).toBe(false);
@@ -911,11 +902,9 @@ describe('getStorageSectionConfig', () => {
             path: 'Project B',
         };
 
-        const config = getStorageSectionConfig(
-            TEST_USER_STORAGE_DESIGNER,
-            BIOLOGICS_APP_PROPERTIES.productId,
-            { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } }
-        );
+        const config = getStorageSectionConfig(TEST_USER_STORAGE_DESIGNER, BIOLOGICS_APP_PROPERTIES.productId, {
+            inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
+        });
         expect(config.emptyURLText).toBe('Create storage');
         expect(config.emptyAppURL?.toHref()).toBe('#/freezers/new');
         expect(config.emptyURLProjectOnly).toBe(true);
@@ -927,11 +916,9 @@ describe('getStorageSectionConfig', () => {
             path: 'Project B/Child 1',
         };
 
-        const config = getStorageSectionConfig(
-            TEST_USER_STORAGE_DESIGNER,
-            BIOLOGICS_APP_PROPERTIES.productId,
-            { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } }
-        );
+        const config = getStorageSectionConfig(TEST_USER_STORAGE_DESIGNER, BIOLOGICS_APP_PROPERTIES.productId, {
+            inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
+        });
         expect(config.emptyURLText).toBe('Create storage');
         expect(config.emptyAppURL?.toHref()).toBe('#/freezers/new');
         expect(config.emptyURLProjectOnly).toBe(true);

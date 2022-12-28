@@ -21,8 +21,9 @@ import { naturalSort } from '../../../public/sort';
 import { getHref } from '../../url/utils';
 import { getPrimaryAppProperties, isProjectContainer } from '../../app/utils';
 
-import { MenuSectionModel, MenuSectionConfig } from './model';
 import { useServerContext } from '../base/ServerContext';
+
+import { MenuSectionModel, MenuSectionConfig } from './model';
 
 interface MenuSectionProps {
     config: MenuSectionConfig;

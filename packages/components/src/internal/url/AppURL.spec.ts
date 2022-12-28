@@ -187,9 +187,7 @@ describe('createProductUrl', () => {
 
 describe('createProductUrlFromPartsWithContainer', () => {
     test('no containerPath, productId match', () => {
-        expect((createProductUrlFromPartsWithContainer('a', 'a', undefined, undefined) as AppURL).toHref()).toBe(
-            '#'
-        );
+        expect((createProductUrlFromPartsWithContainer('a', 'a', undefined, undefined) as AppURL).toHref()).toBe('#');
     });
 
     test('no containerPath, productId mismatch', () => {

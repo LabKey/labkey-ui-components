@@ -81,7 +81,7 @@ export const SampleTypeDataType: EntityDataType = {
     descriptionSingular: 'parent sample type',
     descriptionPlural: 'parent sample types',
     uniqueFieldKey: 'Name',
-    dependencyText: sampleDeleteDependencyText(),
+    dependencyText: sampleDeleteDependencyText,
     deleteHelpLinkTopic: DELETE_SAMPLES_TOPIC,
     inputColumnName: 'Inputs/Materials/First',
     ancestorColumnName: 'Ancestors/Samples',

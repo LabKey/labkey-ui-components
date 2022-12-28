@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.274.1
+*Released*: 28 December 2022
 * Don't use text-capitalize class in PageHeader. It doesn't always do what we want
 * Don't provide default `itemLabel` in `BulkUpdateForm` to allow for shorter messaging
 * Convert to lower case in `BulkUpdateForm` where it is expected

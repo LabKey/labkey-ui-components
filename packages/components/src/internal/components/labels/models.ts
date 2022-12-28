@@ -1,4 +1,5 @@
 import { Draft, immerable, produce } from 'immer';
+
 import { flattenValuesFromRow } from '../../../public/QueryModel/QueryModel';
 
 export interface BarTenderConfigurationModel {
@@ -110,12 +111,12 @@ export class LabelTemplate {
     readonly name: string;
     readonly path: string;
 
-    constructor(values: {[k:string]: any}) {
+    constructor(values: { [k: string]: any }) {
         Object.assign(this, values);
     }
 
-    set(prop:string, val:any): LabelTemplate {
-        return this.mutate({[prop]: val });
+    set(prop: string, val: any): LabelTemplate {
+        return this.mutate({ [prop]: val });
     }
 
     mutate(props: Partial<LabelTemplate>): LabelTemplate {
@@ -124,7 +125,7 @@ export class LabelTemplate {
         });
     }
 
-    static create(row?: {[k:string]: {'value': any}}): LabelTemplate {
+    static create(row?: { [k: string]: { value: any } }): LabelTemplate {
         const fieldValues = flattenValuesFromRow(row, Object.keys(row));
 
         return new LabelTemplate({

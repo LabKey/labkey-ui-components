@@ -46,7 +46,7 @@ export const LabelPrintingProvider: FC<OwnProps> = memo(({ children, initialCont
         }
     }, [fetchBarTenderConfiguration, ensureLabelTemplatesList, user]);
 
-    const labelContext = useMemo<LabelPrintingProviderProps> (
+    const labelContext = useMemo<LabelPrintingProviderProps>(
         () => ({ printServiceUrl, canPrintLabels }),
         [printServiceUrl, canPrintLabels]
     );

@@ -7,13 +7,13 @@ import { EXPORT_TYPES } from '../../constants';
 import { buildURL } from '../../url/AppURL';
 import { SAMPLE_EXPORT_CONFIG } from '../samples/constants';
 
-import { BarTenderConfiguration, BarTenderResponse, LabelTemplate } from './models';
-
 import { selectRows } from '../../query/selectRows';
 
-import { LABEL_TEMPLATE_SQ, LABEL_TEMPLATES_LIST_NAME } from './constants';
 import { DomainDesign } from '../domainproperties/models';
 import { User } from '../base/models/User';
+
+import { LABEL_TEMPLATE_SQ, LABEL_TEMPLATES_LIST_NAME } from './constants';
+import { BarTenderConfiguration, BarTenderResponse, LabelTemplate } from './models';
 
 function handleBarTenderConfigurationResponse(response: any): BarTenderConfiguration {
     // Separate the BarTender configuration object from the success response
@@ -185,7 +185,7 @@ export class LabelPrintingServerAPIWrapper implements LabelPrintingAPIWrapper {
     };
 
     ensureLabelTemplatesList = (user: User): Promise<LabelTemplate[]> => {
-        return new Promise<LabelTemplate[]>((resolve) => {
+        return new Promise<LabelTemplate[]>(resolve => {
             this.getLabelTemplates()
                 .then((templates: LabelTemplate[]) => resolve(templates))
                 .catch(reason => {

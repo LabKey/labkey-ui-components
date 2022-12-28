@@ -19,11 +19,12 @@ import { DisableableButton } from '../buttons/DisableableButton';
 
 import { ChoicesListItem } from '../base/ChoicesListItem';
 
+import { useServerContext } from '../base/ServerContext';
+
+import { LabelHelpTip } from '../base/LabelHelpTip';
 
 import { LabelTemplate } from './models';
 import { LABEL_TEMPLATE_SQ } from './constants';
-import { useServerContext } from '../base/ServerContext';
-import { LabelHelpTip } from '../base/LabelHelpTip';
 
 const TITLE = 'Manage Label Templates';
 const NEW_LABEL_INDEX = -1;

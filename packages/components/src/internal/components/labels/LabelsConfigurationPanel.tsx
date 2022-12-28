@@ -111,7 +111,10 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                 schemaQuery: LABEL_TEMPLATE_SQ,
                 rows: [updatedTemplate],
             })
-                .then(() => onActionCompleted(undefined, true))
+                .then(() => {
+                    onToggleDeleteConfirm();
+                    onActionCompleted(undefined, true);
+                })
                 .catch(reason => {
                     setError(resolveErrorMessage(reason, 'template', 'templates', 'deleting'));
                     onToggleDeleteConfirm();
@@ -155,8 +158,8 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                 schemaQuery: LABEL_TEMPLATE_SQ,
                 rows: List([templateToSave]),
             })
-                .then(() => {
-                    onActionCompleted(templateToSave.rowId);
+                .then(response => {
+                    onActionCompleted(response?.rows[0]?.rowId);
                     setSaving(false);
                 })
                 .catch(response => {
@@ -290,7 +293,7 @@ export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props
                     setError('Error: Unable to load label templates.');
                 });
         },
-        [api, user]
+        [api.labelprinting, user]
     );
 
     // Load template list
@@ -319,6 +322,8 @@ export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props
         [queryLabelTemplates, setIsDirty]
     );
 
+    const template = templates.length === 0 ? null : templates[selected];
+
     return (
         <div className="panel panel-default label-templates-container">
             <div className="list__bold-text">{TITLE}</div>
@@ -334,7 +339,7 @@ export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props
                         <div className="col-lg-8 col-md-6">
                             <LabelTemplateDetails
                                 // use null to indicate that no label templates exist to be selected, so don't show the empty message
-                                template={templates.length === 0 ? null : templates[selected]}
+                                template={template}
                                 isNew={addNew}
                                 onActionCompleted={onActionCompleted}
                                 onChange={onChange}

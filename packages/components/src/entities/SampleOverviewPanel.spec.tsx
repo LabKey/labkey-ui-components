@@ -13,7 +13,8 @@ import { TEST_PROJECT_CONTAINER } from '../test/data/constants';
 
 import { User } from '../internal/components/base/models/User';
 
-import { SampleTypeAppContext } from './SampleTypeAppContext';
+import { SampleTypeAppContext } from '../internal/AppContext';
+
 import { SampleOverviewPanel } from './SampleOverviewPanel';
 import { SampleAliquotsSummary } from './SampleAliquotsSummary';
 import { SampleDetailEditing } from './SampleDetailEditing';

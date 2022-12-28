@@ -7,6 +7,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 46696: Metrics: Sample Finder with Assay Results as Filter
 * Issue 46997: Increase allowed pooling parents limit
 
+### version 2.273.4
+*Released*: 27 December 2022
+* View Assay Results report fix for selectionKey when coming from sample > aliquots grid
+
 ### version 2.273.3
 *Released*: 21 December 2022
 * Issue 46923: Use lookup container filter as default in LookupCell

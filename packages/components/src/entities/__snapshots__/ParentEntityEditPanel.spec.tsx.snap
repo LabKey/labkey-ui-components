@@ -39,6 +39,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
         "nounSingular": "data",
         "operationConfirmationActionName": "getDataOperationConfirmationData.api",
         "operationConfirmationControllerName": "experiment",
+        "typeIcon": "source_type",
         "typeListingSchemaQuery": Immutable.Record {
           "schemaName": "exp",
           "queryName": "DataClasses",
@@ -146,6 +147,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                       "nounSingular": "data",
                       "operationConfirmationActionName": "getDataOperationConfirmationData.api",
                       "operationConfirmationControllerName": "experiment",
+                      "typeIcon": "source_type",
                       "typeListingSchemaQuery": Immutable.Record {
                         "schemaName": "exp",
                         "queryName": "DataClasses",
@@ -191,6 +193,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                         "nounSingular": "data",
                         "operationConfirmationActionName": "getDataOperationConfirmationData.api",
                         "operationConfirmationControllerName": "experiment",
+                        "typeIcon": "source_type",
                         "typeListingSchemaQuery": Immutable.Record {
                           "schemaName": "exp",
                           "queryName": "DataClasses",
@@ -250,6 +253,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                           "nounSingular": "data",
                           "operationConfirmationActionName": "getDataOperationConfirmationData.api",
                           "operationConfirmationControllerName": "experiment",
+                          "typeIcon": "source_type",
                           "typeListingSchemaQuery": Immutable.Record {
                             "schemaName": "exp",
                             "queryName": "DataClasses",
@@ -323,6 +327,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                             "nounSingular": "data",
                             "operationConfirmationActionName": "getDataOperationConfirmationData.api",
                             "operationConfirmationControllerName": "experiment",
+                            "typeIcon": "source_type",
                             "typeListingSchemaQuery": Immutable.Record {
                               "schemaName": "exp",
                               "queryName": "DataClasses",
@@ -4833,6 +4838,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
         "nounSingular": "data",
         "operationConfirmationActionName": "getDataOperationConfirmationData.api",
         "operationConfirmationControllerName": "experiment",
+        "typeIcon": "source_type",
         "typeListingSchemaQuery": Immutable.Record {
           "schemaName": "exp",
           "queryName": "DataClasses",
@@ -4950,6 +4956,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                       "nounSingular": "data",
                       "operationConfirmationActionName": "getDataOperationConfirmationData.api",
                       "operationConfirmationControllerName": "experiment",
+                      "typeIcon": "source_type",
                       "typeListingSchemaQuery": Immutable.Record {
                         "schemaName": "exp",
                         "queryName": "DataClasses",
@@ -4995,6 +5002,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                         "nounSingular": "data",
                         "operationConfirmationActionName": "getDataOperationConfirmationData.api",
                         "operationConfirmationControllerName": "experiment",
+                        "typeIcon": "source_type",
                         "typeListingSchemaQuery": Immutable.Record {
                           "schemaName": "exp",
                           "queryName": "DataClasses",
@@ -5054,6 +5062,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                           "nounSingular": "data",
                           "operationConfirmationActionName": "getDataOperationConfirmationData.api",
                           "operationConfirmationControllerName": "experiment",
+                          "typeIcon": "source_type",
                           "typeListingSchemaQuery": Immutable.Record {
                             "schemaName": "exp",
                             "queryName": "DataClasses",
@@ -5127,6 +5136,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                             "nounSingular": "data",
                             "operationConfirmationActionName": "getDataOperationConfirmationData.api",
                             "operationConfirmationControllerName": "experiment",
+                            "typeIcon": "source_type",
                             "typeListingSchemaQuery": Immutable.Record {
                               "schemaName": "exp",
                               "queryName": "DataClasses",
@@ -5232,6 +5242,7 @@ exports[`ParentEntityEditPanel loading state 1`] = `
         "nounSingular": "data",
         "operationConfirmationActionName": "getDataOperationConfirmationData.api",
         "operationConfirmationControllerName": "experiment",
+        "typeIcon": "source_type",
         "typeListingSchemaQuery": Immutable.Record {
           "schemaName": "exp",
           "queryName": "DataClasses",

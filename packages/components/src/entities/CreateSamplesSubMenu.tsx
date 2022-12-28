@@ -46,7 +46,7 @@ interface Props {
     targetProductId?: string;
 }
 
-export const MAX_PARENTS_PER_SAMPLE = 20;
+export const MAX_PARENTS_PER_SAMPLE = 50;
 
 export const CreateSamplesSubMenu: FC<Props> = memo(props => {
     const {

@@ -65,6 +65,8 @@ import { AssayStateModel } from '../internal/components/assay/models';
 import { AssayDomainTypes } from '../internal/AssayDefinitionModel';
 import { AssaySampleColumnProp, SamplesEditableGridProps } from '../internal/sampleModels';
 
+import { COLUMN_NOT_IN_FILTER_TYPE } from '../internal/query/filter';
+
 import { getSampleFinderLocalStorageKey } from './utils';
 import { EntityFieldFilterModal } from './EntityFieldFilterModal';
 
@@ -259,10 +261,25 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
 
             const schemaName = entityDataType.instanceSchemaName;
             const isAssay = schemaName === AssayResultDataType.instanceSchemaName;
+            let assayDesignCount = 0;
+            let hasWithoutAssayResultFilter = false;
             const newFilterCards = [...filters].filter(filter => {
                 return filter.entityDataType.instanceSchemaName !== chosenEntityType.instanceSchemaName;
             });
             Object.keys(dataTypeFilters).forEach(queryName => {
+                if (isAssay) {
+                    assayDesignCount++;
+
+                    const filters = dataTypeFilters[queryName];
+                    if (!filters || filters.length === 0) return false;
+
+                    hasWithoutAssayResultFilter = filters.some(
+                        fieldFilter =>
+                            fieldFilter.filter.getFilterType().getURLSuffix() ===
+                            COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix()
+                    );
+                }
+
                 newFilterCards.push({
                     schemaQuery: isAssay
                         ? entityDataType.getInstanceSchemaQuery(queryName)
@@ -278,6 +295,13 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
             onFilterClose();
             updateFilters(filterChangeCounter + 1, newFilterCards, !currentView?.entityId, true);
 
+            if (isAssay) {
+                api.query.incrementClientSideMetricCount(
+                    SAMPLE_FILTER_METRIC_AREA,
+                    'with ' + assayDesignCount + ' AssayDesgin' + (assayDesignCount > 1 ? 's' : '')
+                );
+                api.query.incrementClientSideMetricCount(SAMPLE_FILTER_METRIC_AREA, 'hasWithoutAssayResultChecked');
+            }
             api.query.incrementClientSideMetricCount(SAMPLE_FILTER_METRIC_AREA, 'filterModalApply');
         },
         [

@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.274.2
+*Released*: 28 December 2022
+* Issue 46853: LKSM/LKB Projects: should allow derivation of samples within projects when parent/source is in Home
+* Issue 46696: Metrics: Sample Finder with Assay Results as Filter
+* Issue 46997: Increase allowed pooling parents limit
+
 ### version 2.274.1
 *Released*: 28 December 2022
 * Don't use text-capitalize class in PageHeader. It doesn't always do what we want

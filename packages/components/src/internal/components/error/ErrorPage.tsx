@@ -13,7 +13,7 @@ interface ErrorPageProps {
 
 export class ErrorPage extends React.PureComponent<ErrorPageProps> {
     static defaultProps = {
-        title: 'Unexpected error occurred',
+        title: 'Unexpected Error Occurred',
     };
 
     isFeatureEnabled = (feature: ExperimentalFeatures): boolean => {

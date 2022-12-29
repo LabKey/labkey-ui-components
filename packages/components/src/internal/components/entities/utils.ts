@@ -1,6 +1,6 @@
 import { List, Map } from 'immutable';
 
-import { getCurrentProductName } from '../../app/utils';
+import { getCurrentProductName, isAssayEnabled, isELNEnabled, isWorkflowEnabled } from '../../app/utils';
 
 import { ParentIdData } from '../samples/actions';
 
@@ -18,6 +18,31 @@ import {
 } from '../samples/models';
 
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
+
+export function sampleDeleteDependencyText() {
+    let deleteMsg = '';
+    if (isWorkflowEnabled()) {
+        if (isAssayEnabled()) {
+            deleteMsg += 'either derived sample, job, or assay data dependencies, '
+        }
+        else {
+            deleteMsg += 'either derived sample or job dependencies, '
+        }
+    } else {
+        if (isAssayEnabled()) {
+            deleteMsg += 'either derived sample or assay data dependencies, '
+        } else {
+            deleteMsg += 'derived sample dependencies ';
+        }
+    }
+    if (isELNEnabled()) {
+        deleteMsg += 'status that prevents deletion, or references in one or more active notebooks';
+    } else {
+        deleteMsg += 'or status that prevents deletion';
+    }
+    return deleteMsg;
+
+}
 
 export function getInitialParentChoices(
     parentTypeOptions: List<IEntityTypeOption>,

@@ -1,103 +1,135 @@
 import React from 'react';
-import { Dropdown, MenuItem } from 'react-bootstrap';
+import { mount } from 'enzyme';
 
 import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
-import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
-import { BIOLOGICS_APP_PROPERTIES } from '../../app/constants';
-
-import { getTestAPIWrapper } from '../../APIWrapper';
-
-import { getSecurityTestAPIWrapper, SecurityAPIWrapper } from '../security/APIWrapper';
-
-import { AppContext } from '../../AppContext';
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import { Alert } from '../base/Alert';
-
-import { ServerContext } from '../base/ServerContext';
 
 import { FolderMenu, FolderMenuProps } from './FolderMenu';
 
 describe('FolderMenu', () => {
     function getDefaultProps(): FolderMenuProps {
         return {
-            appProperties: BIOLOGICS_APP_PROPERTIES,
+            activeContainerId: undefined,
+            items: [],
+            onClick: jest.fn(),
         };
     }
 
-    function getDefaultAppContext(overrides?: Partial<SecurityAPIWrapper>): Partial<AppContext> {
-        return {
-            api: getTestAPIWrapper(jest.fn, {
-                security: getSecurityTestAPIWrapper(jest.fn, {
-                    fetchContainers: jest.fn().mockResolvedValue([TEST_PROJECT_CONTAINER, TEST_FOLDER_CONTAINER]),
-                    ...overrides,
-                }),
-            }),
-        };
-    }
+    it('no projects', () => {
+        const wrapper = mount(<FolderMenu {...getDefaultProps()} />);
 
-    function getDefaultServerContext(): Partial<ServerContext> {
-        return {
-            container: TEST_PROJECT_CONTAINER,
-        };
-    }
+        expect(wrapper.find('.col-folders')).toHaveLength(1);
+        expect(wrapper.find('ul')).toHaveLength(1);
+        expect(wrapper.find('li')).toHaveLength(0);
+        expect(wrapper.find('.menu-section-header')).toHaveLength(0);
+        expect(wrapper.find('.menu-section-item')).toHaveLength(0);
+        expect(wrapper.find('.active')).toHaveLength(0);
+        expect(wrapper.find('.menu-folder-item')).toHaveLength(0);
+        expect(wrapper.find('hr')).toHaveLength(0);
 
-    it('displays loading and errors', async () => {
-        const expectedError = 'This is a failure.';
-
-        const wrapper = mountWithAppServerContext(
-            <FolderMenu {...getDefaultProps()} />,
-            getDefaultAppContext({
-                fetchContainers: jest.fn().mockRejectedValue(expectedError),
-            }),
-            getDefaultServerContext()
-        );
-
-        expect(wrapper.find(LoadingSpinner).length).toEqual(1);
-
-        // load
-        await waitForLifecycle(wrapper);
-
-        expect(wrapper.find(Alert).text()).toEqual(`Error: ${expectedError}`);
+        wrapper.unmount();
     });
 
-    it('does not display when no projects are retrieved', async () => {
-        const wrapper = mountWithAppServerContext(
-            <FolderMenu {...getDefaultProps()} />,
-            getDefaultAppContext({ fetchContainers: jest.fn().mockResolvedValue([TEST_PROJECT_CONTAINER]) }),
-            getDefaultServerContext()
+    it('with projects, with top level', () => {
+        const wrapper = mount(
+            <FolderMenu
+                {...getDefaultProps()}
+                items={[
+                    {
+                        id: TEST_PROJECT_CONTAINER.id,
+                        path: TEST_PROJECT_CONTAINER.path,
+                        href: undefined,
+                        isTopLevel: true,
+                        label: TEST_PROJECT_CONTAINER.title,
+                    },
+                    {
+                        id: TEST_PROJECT_CONTAINER.id,
+                        path: TEST_PROJECT_CONTAINER.path,
+                        href: undefined,
+                        isTopLevel: false,
+                        label: TEST_FOLDER_CONTAINER.title,
+                    },
+                ]}
+            />
         );
 
-        // load
-        await waitForLifecycle(wrapper);
+        expect(wrapper.find('.col-folders')).toHaveLength(1);
+        expect(wrapper.find('ul')).toHaveLength(1);
+        expect(wrapper.find('li')).toHaveLength(3);
+        expect(wrapper.find('.menu-section-header')).toHaveLength(1);
+        expect(wrapper.find('.menu-section-item')).toHaveLength(1);
+        expect(wrapper.find('.active')).toHaveLength(0);
+        expect(wrapper.find('.menu-folder-item')).toHaveLength(2);
+        expect(wrapper.find('.menu-folder-item').first().text()).toBe(TEST_PROJECT_CONTAINER.title);
+        expect(wrapper.find('.menu-folder-item').last().text()).toBe(TEST_FOLDER_CONTAINER.title);
+        expect(wrapper.find('hr')).toHaveLength(1);
 
-        expect(wrapper.find(Dropdown).exists()).toBeFalsy();
-        expect(wrapper.find(MenuItem).exists()).toBeFalsy();
+        wrapper.unmount();
     });
 
-    it('loads successfully', async () => {
-        const wrapper = mountWithAppServerContext(
-            <FolderMenu {...getDefaultProps()} />,
-            getDefaultAppContext(),
-            getDefaultServerContext()
+    it('with projects, without top level', () => {
+        const wrapper = mount(
+            <FolderMenu
+                {...getDefaultProps()}
+                items={[
+                    {
+                        id: TEST_PROJECT_CONTAINER.id,
+                        path: TEST_PROJECT_CONTAINER.path,
+                        href: undefined,
+                        isTopLevel: false,
+                        label: TEST_FOLDER_CONTAINER.title,
+                    },
+                ]}
+            />
         );
 
-        // Verify current folder title is displayed even while loading
-        // Bootstrap dropdown adds whitespace
-        expect(wrapper.find(Dropdown.Toggle).text()).toEqual(TEST_PROJECT_CONTAINER.title + ' ');
+        expect(wrapper.find('.col-folders')).toHaveLength(1);
+        expect(wrapper.find('ul')).toHaveLength(1);
+        expect(wrapper.find('li')).toHaveLength(1);
+        expect(wrapper.find('.menu-section-header')).toHaveLength(0);
+        expect(wrapper.find('.menu-section-item')).toHaveLength(1);
+        expect(wrapper.find('.active')).toHaveLength(0);
+        expect(wrapper.find('.menu-folder-item')).toHaveLength(1);
+        expect(wrapper.find('.menu-folder-item').first().text()).toBe(TEST_FOLDER_CONTAINER.title);
+        expect(wrapper.find('hr')).toHaveLength(0);
 
-        // load
-        await waitForLifecycle(wrapper);
+        wrapper.unmount();
+    });
 
-        const menuItems = wrapper.find(MenuItem);
-        expect(menuItems.length).toEqual(2);
-        const projectItem = menuItems.at(0);
-        const folderItem = menuItems.at(1);
-        expect(projectItem.text()).toEqual(TEST_PROJECT_CONTAINER.title);
-        expect(projectItem.prop('active')).toEqual(true);
-        expect(projectItem.prop('href')).toBeDefined();
+    it('with projects, activeContainerId', () => {
+        const wrapper = mount(
+            <FolderMenu
+                {...getDefaultProps()}
+                activeContainerId={TEST_PROJECT_CONTAINER.id}
+                items={[
+                    {
+                        id: TEST_PROJECT_CONTAINER.id,
+                        path: TEST_PROJECT_CONTAINER.path,
+                        href: undefined,
+                        isTopLevel: true,
+                        label: TEST_PROJECT_CONTAINER.title,
+                    },
+                    {
+                        id: TEST_PROJECT_CONTAINER.id,
+                        path: TEST_PROJECT_CONTAINER.path,
+                        href: undefined,
+                        isTopLevel: false,
+                        label: TEST_FOLDER_CONTAINER.title,
+                    },
+                ]}
+            />
+        );
 
-        expect(folderItem.text()).toEqual(TEST_FOLDER_CONTAINER.title);
-        expect(folderItem.prop('active')).toEqual(false);
-        expect(projectItem.prop('href')).toBeDefined();
+        expect(wrapper.find('.col-folders')).toHaveLength(1);
+        expect(wrapper.find('ul')).toHaveLength(1);
+        expect(wrapper.find('li')).toHaveLength(3);
+        expect(wrapper.find('.menu-section-header')).toHaveLength(1);
+        expect(wrapper.find('.menu-section-item')).toHaveLength(1);
+        expect(wrapper.find('.active')).toHaveLength(2);
+        expect(wrapper.find('.menu-folder-item')).toHaveLength(2);
+        expect(wrapper.find('.menu-folder-item').first().text()).toBe(TEST_PROJECT_CONTAINER.title);
+        expect(wrapper.find('.menu-folder-item').last().text()).toBe(TEST_FOLDER_CONTAINER.title);
+        expect(wrapper.find('hr')).toHaveLength(1);
+
+        wrapper.unmount();
     });
 });

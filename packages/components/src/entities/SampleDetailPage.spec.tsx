@@ -19,7 +19,7 @@ import { LoadingState } from '../public/LoadingState';
 import { LoadingPage } from '../internal/components/base/LoadingPage';
 import { getTestAPIWrapper } from '../internal/APIWrapper';
 import { getSecurityTestAPIWrapper } from '../internal/components/security/APIWrapper';
-import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../test/data/constants';
+import {TEST_FOLDER_CONTAINER, TEST_PROJECT, TEST_PROJECT_CONTAINER} from '../test/data/constants';
 
 import { Notifications } from '../internal/components/notifications/Notifications';
 
@@ -29,8 +29,9 @@ import { Container } from '../internal/components/base/models/Container';
 
 import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/constants';
 
+import { SampleTypeAppContext } from '../internal/AppContext';
+
 import { SampleDetailPage, SampleDetailPageBody, SampleDetailPageBodyProps } from './SampleDetailPage';
-import { SampleTypeAppContext } from './SampleTypeAppContext';
 import { SampleHeader } from './SampleHeader';
 import { SampleOverviewPanel } from './SampleOverviewPanel';
 import { SampleAliquotsPage } from './SampleAliquotsPage';
@@ -57,6 +58,25 @@ const QUERY_MODEL = makeTestQueryModel(
     1,
     'sample-detail|samples/blood|1'
 ).mutate({ queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADED });
+
+const CHILD_SAMPLE_QUERY_MODEL = makeTestQueryModel(
+    SchemaQuery.create('schema', 'query'),
+    new QueryInfo(),
+    {
+        1: {
+            RowId: { value: 1 },
+            Name: { value: 'S1' },
+            LSID: { value: 'S1-LSID' },
+            RootMaterialLSID: { value: 'S1-RootMaterialLSID' },
+            IsAliquot: { value: false },
+            Folder: { value: TEST_FOLDER_CONTAINER.id },
+        },
+    },
+    [1],
+    1,
+    'sample-detail|samples/blood|1'
+).mutate({ queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADED });
+
 function getDefaultProps(): SampleDetailPageBodyProps {
     return {
         ...createMockWithRouterProps(jest.fn),
@@ -122,13 +142,13 @@ describe('SampleDetailPage', () => {
         validate(wrapper);
         expect(wrapper.find(Page).prop('title')).toBe('S1 - undefined');
         expect(wrapper.find(SampleHeader).prop('showDescription')).toBe(true);
-        expect(wrapper.find(SampleHeader).prop('isCrossFolder')).toBe(false);
+        expect(wrapper.find(SampleHeader).prop('canDerive')).toBe(true);
         expect(wrapper.find(SampleHeader).prop('StorageMenu')).toBe(null);
         expect(wrapper.find(SampleOverviewPanel)).toHaveLength(0);
         wrapper.unmount();
     });
 
-    test('isCrossFolder', async () => {
+    test('isCrossFolder: parent entity at child', async () => {
         const wrapper = mountWithAppServerContext(
             <SampleDetailPageBody {...getDefaultProps()} />,
             { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT },
@@ -136,7 +156,7 @@ describe('SampleDetailPage', () => {
         );
         await waitForLifecycle(wrapper, 1000);
         validate(wrapper);
-        expect(wrapper.find(SampleHeader).prop('isCrossFolder')).toBe(true);
+        expect(wrapper.find(SampleHeader).prop('canDerive')).toBe(true);
         wrapper.unmount();
     });
 

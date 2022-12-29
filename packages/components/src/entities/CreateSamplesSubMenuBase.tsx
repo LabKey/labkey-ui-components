@@ -24,6 +24,8 @@ import { getSelectedData, setSnapshotSelections } from '../internal/actions';
 import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 import { caseInsensitive } from '../internal/util/utils';
 
+import { isProjectContainer } from '../internal/app/utils';
+
 import { SampleCreationTypeModal } from './SampleCreationTypeModal';
 
 interface CreateSamplesSubMenuProps {
@@ -81,6 +83,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
     const [crossFolderSelectionResult, setCrossFolderSelectionResult] = useState(undefined);
     const [selectionsAreSet, setSelectionsAreSet] = useState<boolean>(false);
     const [selectionData, setSelectionData] = useState<Map<any, any>>();
+    const allowCrossFolderDerive = !isProjectContainer(); // Issue 46853: LKSM/LKB Projects: should allow derivation of samples within projects when parent/source is in Home
     const useSnapshotSelection = useMemo(() => {
         return parentQueryModel?.filterArray.length > 0;
     }, [parentQueryModel?.filterArray]);
@@ -177,7 +180,13 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
     const onSampleCreationMenuSelectOnClick = useCallback(
         async (key: string) => {
             // check cross folder selection
-            if (parentQueryModel && selectedQuantity > 0 && selectingSampleParents && !skipCrossFolderCheck) {
+            if (
+                parentQueryModel &&
+                selectedQuantity > 0 &&
+                selectingSampleParents &&
+                !skipCrossFolderCheck &&
+                !allowCrossFolderDerive
+            ) {
                 const dataType = parentQueryModel.schemaName === SCHEMAS.DATA_CLASSES.SCHEMA ? 'data' : 'sample';
                 setCrossFolderSelectionResult(undefined);
                 const result = await getCrossFolderSelectionResult(parentQueryModel.id, dataType, useSnapshotSelection);

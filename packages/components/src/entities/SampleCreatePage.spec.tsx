@@ -9,9 +9,10 @@ import { createMockWithRouterProps } from '../internal/mockUtils';
 import { ProductMenuModel } from '../internal/components/navigation/model';
 import { BACKGROUND_IMPORT_MIN_FILE_SIZE } from '../internal/components/pipeline/constants';
 
+import { SampleTypeAppContext } from '../internal/AppContext';
+
 import { SampleCreatePage, SampleCreatePageProps } from './SampleCreatePage';
 import { SampleTypeBasePage } from './SampleTypeBasePage';
-import { SampleTypeAppContext } from './SampleTypeAppContext';
 
 function getDefaultProps(): SampleCreatePageProps {
     return {
@@ -90,7 +91,7 @@ describe('SampleCreatePage', () => {
         );
         await waitForLifecycle(wrapper);
         validate(wrapper);
-        expect(wrapper.find(EntityInsertPanel).prop('canEditEntityTypeDetails')).toBeTruthy();
+        expect(wrapper.find(EntityInsertPanel).prop('canEditEntityTypeDetails')).toBeFalsy();
         expect(wrapper.find(EntityInsertPanel).prop('asyncSize')).toBe(BACKGROUND_IMPORT_MIN_FILE_SIZE);
         wrapper.unmount();
     });

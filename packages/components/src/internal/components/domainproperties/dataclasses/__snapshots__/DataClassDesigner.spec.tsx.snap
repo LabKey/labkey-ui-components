@@ -1324,6 +1324,9 @@ exports[`DataClassDesigner initModel 1`] = `
           "printGridLabels": [Function],
           "saveBarTenderConfiguration": [Function],
         },
+        "navigation": ServerNavigationAPIWrapper {
+          "initMenuModel": [Function],
+        },
         "picklist": PicklistServerAPIWrapper {
           "getPicklistCountsBySampleType": [Function],
           "getPicklistDeleteData": [Function],

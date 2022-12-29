@@ -13,87 +13,119 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { MouseEvent, FC, memo, ReactNode, useCallback, useState } from 'react';
+import React, { MouseEvent, FC, memo, useCallback, useState, useEffect, useRef, useMemo } from 'react';
 import classNames from 'classnames';
 import { List, Map } from 'immutable';
 import { DropdownButton } from 'react-bootstrap';
+import { withRouter, WithRouterProps } from 'react-router';
+import { ActionURL } from '@labkey/api';
 
 import { blurActiveElement } from '../../util/utils';
-
 import { LoadingSpinner } from '../base/LoadingSpinner';
+import { useServerContext } from '../base/ServerContext';
+import { AppProperties } from '../../app/models';
+import { getCurrentAppProperties } from '../../app/utils';
 
-import { MenuSectionModel, ProductMenuModel } from './model';
-import { MenuSectionConfig, ProductMenuSection } from './ProductMenuSection';
+import { Alert } from '../base/Alert';
 
-interface ProductMenuProps {
-    maxColumns?: number;
-    model: ProductMenuModel;
-    sectionConfigs?: List<Map<string, MenuSectionConfig>>;
+import { isLoading, LoadingState } from '../../../public/LoadingState';
+import { naturalSortByProperty } from '../../../public/sort';
+import { resolveErrorMessage } from '../../util/messaging';
+import { AppContext, useAppContext } from '../../AppContext';
+import { Container } from '../base/models/Container';
+import { buildURL } from '../../url/AppURL';
+
+import {
+    AUDIT_KEY,
+    MEDIA_KEY,
+    REGISTRY_KEY,
+    SAMPLE_TYPE_KEY,
+    SAMPLES_KEY,
+    SEARCH_KEY,
+    WORKFLOW_KEY,
+    ASSAY_DESIGN_KEY,
+    ASSAYS_KEY,
+    PICKLIST_KEY,
+    ELN_KEY,
+    SOURCE_TYPE_KEY,
+    SOURCES_KEY,
+    FREEZERS_KEY,
+    BOXES_KEY,
+} from '../../app/constants';
+
+import { FolderMenu, FolderMenuItem } from './FolderMenu';
+import { ProductMenuSection } from './ProductMenuSection';
+import { MenuSectionConfig, MenuSectionModel, ProductMenuModel } from './model';
+
+export interface ProductMenuButtonProps {
+    appProperties?: AppProperties;
+    sectionConfigs: List<Map<string, MenuSectionConfig>>;
+    showFolderMenu: boolean;
 }
 
-export const ProductMenu: FC<ProductMenuProps> = memo(props => {
-    const { model, sectionConfigs } = props;
+const ProductMenuButtonImpl: FC<ProductMenuButtonProps & WithRouterProps> = memo(props => {
+    const { appProperties = getCurrentAppProperties(), routes } = props;
     const [menuOpen, setMenuOpen] = useState(false);
+    const [error, setError] = useState<string>();
+    const [loading, setLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
+    const [folderItems, setFolderItems] = useState<FolderMenuItem[]>([]);
+    const hasError = !!error;
+    const isLoaded = !isLoading(loading);
+    const { api } = useAppContext<AppContext>();
+    const { container } = useServerContext();
 
-    const getSectionModel = useCallback(
-        (key: string): MenuSectionModel => model.sections.find(section => section.key === key),
-        [model]
-    );
+    useEffect(() => {
+        setLoading(LoadingState.LOADING);
+        setError(undefined);
+
+        (async () => {
+            try {
+                const folders = await api.security.fetchContainers({
+                    // Container metadata does not always provide "type" so inspecting the
+                    // "parentPath" to determine top-level folder vs subfolder.
+                    containerPath: container.parentPath === '/' ? container.path : container.parentPath,
+                });
+
+                const items_: FolderMenuItem[] = [];
+                const topLevelFolderIdx = folders.findIndex(f => f.parentPath === '/');
+                if (topLevelFolderIdx > -1) {
+                    // Remove top-level folder from array as it is always displayed as the first menu item
+                    const topLevelFolder = folders.splice(topLevelFolderIdx, 1)[0];
+                    items_.push(createFolderItem(topLevelFolder, appProperties.controllerName, true));
+                }
+
+                // Issue 45805: sort folders by title as server-side sorting is insufficient
+                folders.sort(naturalSortByProperty('title'));
+                setFolderItems(
+                    items_.concat(folders.map(folder => createFolderItem(folder, appProperties.controllerName, false)))
+                );
+            } catch (e) {
+                setError(`Error: ${resolveErrorMessage(e)}`);
+            }
+
+            setLoading(LoadingState.LOADED);
+        })();
+    }, [api, container, appProperties?.controllerName]);
 
     const toggleMenu = useCallback(() => {
         setMenuOpen(!menuOpen);
         blurActiveElement();
     }, [menuOpen, setMenuOpen]);
 
-    // Only toggle the menu closing if a link has been clicked.
-    // Clicking anywhere else inside the menu will not toggle the menu.
+    // Only toggle the menu closing if a menu section link has been clicked.
+    // Clicking anywhere else inside the menu will not toggle the menu, including side panel folder clicks.
     const onClick = useCallback(
         (evt: MouseEvent<HTMLDivElement>) => {
-            const nodeName = (evt.target as any).nodeName;
-            if (!nodeName || nodeName.toLowerCase() === 'a') {
+            const { nodeName, className } = evt.target as any;
+            if (!nodeName || (nodeName.toLowerCase() === 'a' && className !== 'menu-folder-item')) {
                 toggleMenu();
             }
         },
         [toggleMenu]
     );
 
-    let menuSectionCls = `menu-section col-${model.sections.size}`;
-    let content: ReactNode = (
-        <div className={`${menuSectionCls} menu-loading`}>
-            <LoadingSpinner />
-        </div>
-    );
-
-    if (model?.isLoaded) {
-        if (model.isError) {
-            content = <span>{model.message}</span>;
-        } else if (sectionConfigs) {
-            menuSectionCls = `menu-section col-${sectionConfigs.size}`;
-
-            content = sectionConfigs.map((sectionConfig, ind) => (
-                <div key={ind} className={menuSectionCls}>
-                    {sectionConfig.entrySeq().map(([key, menuConfig]) => (
-                        <ProductMenuSection
-                            key={key}
-                            section={getSectionModel(key)}
-                            config={menuConfig}
-                            currentProductId={model.currentProductId}
-                        />
-                    ))}
-                </div>
-            ));
-        } else {
-            content = model.sections.map(section => (
-                <div key={section.key} className={menuSectionCls}>
-                    <ProductMenuSection
-                        section={section}
-                        config={new MenuSectionConfig()}
-                        currentProductId={model.currentProductId}
-                    />
-                </div>
-            ));
-        }
-    }
+    if (!isLoaded && !hasError) return null;
+    const showFolders = folderItems?.length > 1;
 
     return (
         <DropdownButton
@@ -101,12 +133,212 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
             id="product-menu"
             onToggle={toggleMenu}
             open={menuOpen}
-            title="Menu"
+            title={<ProductMenuButtonTitle container={container} folderItems={folderItems} routes={routes} />}
         >
-            <div className={classNames('product-menu-content', { error: !!model?.isError })} onClick={onClick}>
-                <div className="navbar-connector" />
-                {content}
-            </div>
+            {menuOpen && (
+                <ProductMenu
+                    {...props}
+                    className={classNames({ 'with-col-folders': showFolders })}
+                    onClick={onClick}
+                    error={error}
+                    folderItems={folderItems}
+                    showFolderMenu={showFolders}
+                />
+            )}
         </DropdownButton>
     );
 });
+
+export const ProductMenuButton = withRouter<ProductMenuButtonProps>(ProductMenuButtonImpl);
+
+export interface ProductMenuProps extends ProductMenuButtonProps {
+    className: string;
+    error: string;
+    folderItems: FolderMenuItem[];
+    onClick: (evt: MouseEvent<HTMLDivElement>) => void;
+}
+
+export const ProductMenu: FC<ProductMenuProps> = memo(props => {
+    const {
+        className,
+        onClick,
+        error,
+        folderItems,
+        sectionConfigs,
+        showFolderMenu,
+        appProperties = getCurrentAppProperties(),
+    } = props;
+    const { api } = useAppContext<AppContext>();
+    const { container, moduleContext } = useServerContext();
+    const [menuModel, setMenuModel] = useState<ProductMenuModel>(new ProductMenuModel({ containerId: container.id }));
+    const contentRef = useRef<HTMLDivElement>();
+
+    useEffect(() => {
+        if (!menuModel.isLoaded) return;
+
+        // The desired behavior is that we have a min-height and then grow the menu to the max-height of 80% of the
+        // browser height. The menu should grow based on the longest section column list or the project list, whichever
+        // is longer.
+        let height = 400; // match navbar.scss product-menu-content min-height
+        const maxHeight = window.innerHeight * 0.8;
+        const sections = Array.from(contentRef.current.getElementsByClassName('menu-section'));
+        sections.forEach(section => (height = Math.max(height, section.clientHeight)));
+        contentRef.current.style.height = Math.min(height, maxHeight) + 'px';
+
+        // if the selected project is out of view, scrollIntoView
+        const activeProject = contentRef.current.getElementsByClassName('active')?.[0];
+        if (activeProject) {
+            if (activeProject.getBoundingClientRect().bottom > contentRef.current.getBoundingClientRect().bottom) {
+                contentRef.current.getElementsByClassName('active')?.[0].scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    }, [menuModel.isLoaded]);
+
+    useEffect(() => {
+        (async () => {
+            // no try/catch as the initMenuModel will catch errors and put them in the model isError/message
+            const menuModel_ = await api.navigation.initMenuModel(appProperties, moduleContext, container.id);
+            setMenuModel(menuModel_);
+        })();
+    }, [api.navigation, appProperties, container.id, moduleContext]);
+
+    const onFolderItemClick = useCallback(
+        async (folderItem: FolderMenuItem) => {
+            // return early if folderItem is already active
+            if (folderItem.id === menuModel.containerId) return;
+
+            setMenuModel(new ProductMenuModel({ containerId: folderItem.id })); // loading state, reset error
+
+            // no try/catch as the initMenuModel will catch errors and put them in the model isError/message
+            const containerPath = folderItem.id === container.id ? undefined : folderItem.path;
+            const menuModel_ = await api.navigation.initMenuModel(
+                appProperties,
+                moduleContext,
+                folderItem.id,
+                containerPath
+            );
+            setMenuModel(menuModel_);
+        },
+        [api.navigation, appProperties, container.id, menuModel.containerId, moduleContext]
+    );
+
+    const getSectionModel = useCallback(
+        (key: string): MenuSectionModel => menuModel.sections.find(section => section.key === key),
+        [menuModel]
+    );
+
+    const dashboardURL = useMemo(() => {
+        return showFolderMenu && appProperties.logoBadgeColorImageUrl;
+    }, [appProperties.logoBadgeColorImageUrl, showFolderMenu]);
+
+    return (
+        <div className={classNames('product-menu-content', className)} onClick={onClick} ref={contentRef}>
+            <div className="navbar-connector" />
+            {error && <Alert>{error}</Alert>}
+            {showFolderMenu && (
+                <FolderMenu activeContainerId={menuModel.containerId} items={folderItems} onClick={onFolderItemClick} />
+            )}
+            <div className="sections-content">
+                {!menuModel.isLoaded && (
+                    <div className="menu-section menu-loading">
+                        <LoadingSpinner />
+                    </div>
+                )}
+                {menuModel.isError && (
+                    <div className="menu-section">
+                        <Alert>{menuModel.message}</Alert>
+                    </div>
+                )}
+                {menuModel.isLoaded &&
+                    sectionConfigs.map((sectionConfig, i) => (
+                        <div key={i} className="menu-section col-product-section">
+                            {sectionConfig.entrySeq().map(([key, menuConfig], j) => {
+                                const isLast = i === sectionConfigs.size - 1 && j === sectionConfig.size - 1;
+
+                                return (
+                                    <ProductMenuSection
+                                        key={key}
+                                        section={getSectionModel(key)}
+                                        config={menuConfig}
+                                        containerPath={menuModel.containerPath}
+                                        currentProductId={menuModel.currentProductId}
+                                        dashboardImgURL={isLast && dashboardURL}
+                                    />
+                                );
+                            })}
+                        </div>
+                    ))}
+            </div>
+        </div>
+    );
+});
+
+interface ProductMenuButtonTitle {
+    container: Container;
+    folderItems: FolderMenuItem[];
+    routes: any[];
+}
+
+export const ProductMenuButtonTitle: FC<ProductMenuButtonTitle> = memo(props => {
+    const { container, folderItems, routes } = props;
+    const title = useMemo(() => {
+        return folderItems?.length > 1 ? container.title : 'Menu';
+    }, [container.title, folderItems?.length]);
+
+    const subtitle = useMemo(() => {
+        return getHeaderMenuSubtitle(routes?.[1]?.path);
+    }, [routes]);
+
+    return (
+        <>
+            <div className="title">{title}</div>
+            <div className="subtitle">{subtitle}</div>
+        </>
+    );
+});
+
+// export for jest testing
+export function createFolderItem(folder: Container, controllerName: string, isTopLevel: boolean): FolderMenuItem {
+    return {
+        href: buildURL(controllerName, `${ActionURL.getAction() || 'app'}.view`, undefined, {
+            container: folder.path,
+            returnUrl: false,
+        }),
+        id: folder.id,
+        isTopLevel,
+        label: folder.title,
+        path: folder.path,
+    };
+}
+
+const HEADER_MENU_SUBTITLE_MAP = {
+    account: 'Settings',
+    admin: 'Administration',
+    items: 'Storage',
+    lineage: 'Lineage',
+    home: 'Dashboard',
+    pipeline: 'Imports',
+    q: 'Schemas',
+    reports: 'Reports',
+
+    [ASSAY_DESIGN_KEY.toLowerCase()]: 'Assays',
+    [ASSAYS_KEY]: 'Assays',
+    [AUDIT_KEY]: 'Administration',
+    [BOXES_KEY]: 'Storage',
+    [ELN_KEY]: 'Notebooks',
+    [FREEZERS_KEY]: 'Storage',
+    [MEDIA_KEY]: 'Media',
+    [PICKLIST_KEY]: 'Picklists',
+    [REGISTRY_KEY]: 'Registry',
+    [SAMPLE_TYPE_KEY.toLowerCase()]: 'Sample Types',
+    [SAMPLES_KEY]: 'Sample Types',
+    [SOURCE_TYPE_KEY.toLowerCase()]: 'Source Types',
+    [SOURCES_KEY]: 'Source Types',
+    [SEARCH_KEY]: 'Search',
+    [WORKFLOW_KEY]: 'Workflow',
+};
+
+// export for jest testing
+export function getHeaderMenuSubtitle(baseRoute: string) {
+    return HEADER_MENU_SUBTITLE_MAP[baseRoute?.toLowerCase()] ?? 'Dashboard';
+}

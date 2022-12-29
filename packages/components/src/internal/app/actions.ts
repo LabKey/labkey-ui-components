@@ -2,8 +2,6 @@
  * Copyright (c) 2016-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { List } from 'immutable';
-
 import { User } from '../components/base/models/User';
 import { ServerActivity } from '../components/notifications/model';
 
@@ -29,7 +27,7 @@ export const updateUserDisplayName = (displayName: string) => ({ type: UPDATE_US
 
 export const setReloadRequired = () => ({ type: SET_RELOAD_REQUIRED });
 
-export function menuInit(currentProductId: string, appProductId: string, productIds?: List<string>) {
+export function menuInit(currentProductId: string, appProductId: string) {
     return (dispatch, getState) => {
         let menu = getState().routing.menu;
         if ((!menu.isLoaded && !menu.isLoading) || menu.needsReload) {
@@ -38,8 +36,7 @@ export function menuInit(currentProductId: string, appProductId: string, product
                     type: MENU_LOADING_START,
                     currentProductId,
                     userMenuProductId: appProductId,
-                    // when productIds is undefined, this returns all menu sections for modules in this container, which we currently don't ever want
-                    productIds: productIds ?? getAppProductIds(appProductId),
+                    productIds: getAppProductIds(appProductId),
                 });
             }
             menu = getState().routing.menu;

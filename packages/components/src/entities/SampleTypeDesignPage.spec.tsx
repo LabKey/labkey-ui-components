@@ -19,7 +19,7 @@ import { Container } from '../internal/components/base/models/Container';
 
 import { getEntityTestAPIWrapper } from '../internal/components/entities/APIWrapper';
 
-import { SampleTypeAppContext } from './SampleTypeAppContext';
+import { SampleTypeAppContext } from '../internal/AppContext';
 
 import { SampleTypeBasePage } from './SampleTypeBasePage';
 import { SampleTypeDesignPage } from './SampleTypeDesignPage';

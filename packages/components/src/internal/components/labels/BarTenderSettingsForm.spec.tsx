@@ -9,23 +9,25 @@ import { getLabelPrintingTestAPIWrapper } from './APIWrapper';
 
 import { BarTenderSettingsFormImpl } from './BarTenderSettingsForm';
 import { BarTenderConfiguration } from './models';
+import { LabelsConfigurationPanel } from './LabelsConfigurationPanel';
 
 describe('BarTenderSettingsForm', () => {
     const DEFAULT_PROPS = {
         api: getTestAPIWrapper(jest.fn, {
-            labelprinting: getLabelPrintingTestAPIWrapper(jest.fn, {}),
+            labelprinting: getLabelPrintingTestAPIWrapper(jest.fn),
         }),
         canPrintLabels: false,
-        labelTemplate: '',
         printServiceUrl: '',
         onChange: jest.fn(),
         onSuccess: jest.fn(),
+        getIsDirty: jest.fn(),
+        setIsDirty: jest.fn(),
     };
 
     function validate(wrapper: ReactWrapper, withHeading = true): void {
+        expect(wrapper.find(LabelsConfigurationPanel)).toHaveLength(1);
         expect(wrapper.find('.panel-heading')).toHaveLength(withHeading ? 1 : 0);
         expect(wrapper.find('.permissions-save-alert')).toHaveLength(0);
-        expect(wrapper.find(FormControl)).toHaveLength(2);
         expect(wrapper.find('.label-printing--help-link').hostNodes()).toHaveLength(1);
         expect(wrapper.find(Button)).toHaveLength(2);
     }
@@ -34,7 +36,6 @@ describe('BarTenderSettingsForm', () => {
         const wrapper = mountWithAppServerContext(<BarTenderSettingsFormImpl {...DEFAULT_PROPS} />);
         validate(wrapper);
         expect(wrapper.find(FormControl).first().prop('type')).toBe('url');
-        expect(wrapper.find(FormControl).last().prop('type')).toBe('text');
         expect(wrapper.find(Button).first().text()).toBe('Save');
         expect(wrapper.find(Button).first().prop('disabled')).toBeTruthy();
         expect(wrapper.find(Button).last().text()).toBe('Test Connection');
@@ -51,7 +52,6 @@ describe('BarTenderSettingsForm', () => {
                         fetchBarTenderConfiguration: () =>
                             Promise.resolve(
                                 new BarTenderConfiguration({
-                                    defaultLabel: 'testDefaultLabel',
                                     serviceURL: 'testServerURL',
                                 })
                             ),
@@ -63,8 +63,6 @@ describe('BarTenderSettingsForm', () => {
         validate(wrapper);
         expect(wrapper.find(FormControl).first().prop('type')).toBe('url');
         expect(wrapper.find(FormControl).first().prop('value')).toBe('testServerURL');
-        expect(wrapper.find(FormControl).last().prop('type')).toBe('text');
-        expect(wrapper.find(FormControl).last().prop('value')).toBe('testDefaultLabel');
         expect(wrapper.find(Button).first().text()).toBe('Save');
         expect(wrapper.find(Button).first().prop('disabled')).toBeTruthy();
         expect(wrapper.find(Button).last().text()).toBe('Test Connection');

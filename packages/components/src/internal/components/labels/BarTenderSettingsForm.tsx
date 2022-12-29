@@ -26,7 +26,6 @@ interface OwnProps extends InjectedRouteLeaveProps {
 interface State {
     btServiceURL: string;
     connectionValidated: boolean;
-    defaultLabel: string;
     dirty: boolean;
     failureMessage: string;
     saveErrorMsg: string;
@@ -126,7 +125,6 @@ export class BarTenderSettingsFormImpl extends PureComponent<Props, State> {
 
         this.state = {
             btServiceURL: undefined,
-            defaultLabel: undefined,
             dirty: false,
             submitting: false,
             testing: false,
@@ -144,7 +142,6 @@ export class BarTenderSettingsFormImpl extends PureComponent<Props, State> {
         this.props.api.labelprinting.fetchBarTenderConfiguration().then(btConfiguration => {
             this.setState(() => ({
                 btServiceURL: btConfiguration.serviceURL,
-                defaultLabel: btConfiguration.defaultLabel,
                 dirty: false,
                 submitting: false,
             }));
@@ -168,15 +165,14 @@ export class BarTenderSettingsFormImpl extends PureComponent<Props, State> {
     onSave = (): void => {
         this.setState(() => ({ submitting: true }));
 
-        const { btServiceURL, defaultLabel } = this.state;
-        const config = new BarTenderConfiguration({ serviceURL: btServiceURL, defaultLabel });
+        const { btServiceURL } = this.state;
+        const config = new BarTenderConfiguration({ serviceURL: btServiceURL });
 
         this.props.api.labelprinting
             .saveBarTenderConfiguration(config)
             .then((btConfig: BarTenderConfiguration): void => {
                 this.setState(() => ({
                     btServiceURL: btConfig.serviceURL,
-                    defaultLabel: btConfig.defaultLabel,
                     dirty: false,
                     submitting: false,
                 }));
@@ -191,7 +187,7 @@ export class BarTenderSettingsFormImpl extends PureComponent<Props, State> {
 
     onVerifyBarTenderConfiguration = (): void => {
         this.setState(() => ({ testing: true }));
-        const { btServiceURL, defaultLabel } = this.state;
+        const { btServiceURL } = this.state;
 
         this.props.api.labelprinting
             .printBarTenderLabels(this.btTestConnectionTemplate(''), btServiceURL)
@@ -199,9 +195,7 @@ export class BarTenderSettingsFormImpl extends PureComponent<Props, State> {
                 if (btResponse.ranToCompletion()) {
                     this.setState(() => ({ testing: false, connectionValidated: true, failureMessage: undefined }));
                 } else if (btResponse.faulted()) {
-                    if (btResponse.isLabelUnavailableError(defaultLabel))
-                        this.onConnectionFailure(LABEL_NOT_FOUND_ERROR);
-                    else this.onConnectionFailure(btResponse.getFaultMessage());
+                    this.onConnectionFailure(btResponse.getFaultMessage());
                 } else {
                     this.onConnectionFailure(UNKNOWN_STATUS_MESSAGE);
                 }

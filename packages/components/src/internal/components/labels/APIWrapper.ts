@@ -234,9 +234,13 @@ export function getLabelPrintingTestAPIWrapper(
     overrides: Partial<LabelPrintingAPIWrapper> = {}
 ): LabelPrintingAPIWrapper {
     return {
-        ensureLabelTemplatesList: mockFn(),
-        fetchBarTenderConfiguration: () => Promise.resolve(new BarTenderConfiguration()),
-        getLabelTemplates: mockFn(),
+        ensureLabelTemplatesList: () => Promise.resolve([]),
+        fetchBarTenderConfiguration: () => Promise.resolve(
+            new BarTenderConfiguration({
+                serviceURL: '',
+            })
+        ),
+        getLabelTemplates: () => Promise.resolve([]),
         printBarTenderLabels: mockFn(),
         printGridLabels: mockFn(),
         saveBarTenderConfiguration: mockFn(),

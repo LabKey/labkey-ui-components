@@ -806,7 +806,7 @@ describe('DomainField', () => {
                 required: true,
                 derivationDataScope: DERIVATION_DATA_SCOPES.CHILD_ONLY,
             }).getErrors()
-        ).toBe(FieldErrors.ALIQUOTE_ONLY_REQUIRED);
+        ).toBe(FieldErrors.ALIQUOT_ONLY_REQUIRED);
 
         expect(
             DomainField.create({

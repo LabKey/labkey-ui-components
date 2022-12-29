@@ -498,7 +498,7 @@ export class DomainIndex
 }
 
 export enum FieldErrors {
-    ALIQUOTE_ONLY_REQUIRED = "Fields that are 'Editable for aliquots only' cannot be 'Required'.",
+    ALIQUOT_ONLY_REQUIRED = "Fields that are 'Editable for aliquots only' cannot be 'Required'.",
     MISSING_DATA_TYPE = 'Please provide a data type for each field.',
     MISSING_FIELD_NAME = 'Please provide a name for each field.',
     MISSING_ONTOLOGY_PROPERTIES = 'Missing required ontology source or label field property.',
@@ -1091,7 +1091,7 @@ export class DomainField
 
         // Issue 46733: Editable for aliquots only/Required Field: Adding Samples gives error
         if (this.derivationDataScope === DERIVATION_DATA_SCOPES.CHILD_ONLY && this.required) {
-            return FieldErrors.ALIQUOTE_ONLY_REQUIRED;
+            return FieldErrors.ALIQUOT_ONLY_REQUIRED;
         }
 
         return FieldErrors.NONE;

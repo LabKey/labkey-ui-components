@@ -18,9 +18,9 @@ import {
     TEST_LKSM_STARTER_MODULE_CONTEXT,
 } from '../productFixtures';
 
-import { MenuSectionConfig } from '../components/navigation/ProductMenuSection';
-
 import { Container } from '../components/base/models/Container';
+
+import { MenuSectionConfig } from '../components/navigation/model';
 
 import {
     addAssaysSectionConfig,
@@ -81,21 +81,28 @@ describe('getMenuSectionConfigs', () => {
 
         expect(configs.size).toBe(5);
         expect(configs.hasIn([0, SOURCES_KEY])).toBeTruthy();
-        expect(configs.getIn([0, SOURCES_KEY, 'seeAllURL'])).toEqual('#/sources');
+        expect(configs.getIn([0, SOURCES_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([0, SOURCES_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([1, SAMPLES_KEY])).toBeTruthy();
-        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples');
+        expect(configs.getIn([1, SAMPLES_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([1, SAMPLES_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([2, ASSAYS_KEY])).toBeTruthy();
-        expect(configs.getIn([2, ASSAYS_KEY, 'seeAllURL'])).toEqual('#/assays');
+        expect(configs.getIn([2, ASSAYS_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([2, ASSAYS_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([3, FREEZERS_KEY])).toBeTruthy();
-        expect(configs.getIn([3, FREEZERS_KEY, 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
+        expect(configs.getIn([3, FREEZERS_KEY, 'headerURLPart'])).toEqual('home');
+        expect(configs.getIn([3, FREEZERS_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([4, PICKLIST_KEY])).toBeTruthy();
-        expect(configs.getIn([4, PICKLIST_KEY, 'headerURL'])).toEqual('#/picklist');
+        expect(configs.getIn([4, PICKLIST_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([4, PICKLIST_KEY, 'emptyAppURL'])).toEqual(undefined);
+
         expect(configs.hasIn([4, WORKFLOW_KEY])).toBeFalsy();
         expect(configs.hasIn([4, NOTEBOOKS_KEY])).toBeFalsy();
+        expect(configs.hasIn([4, 'user'])).toBeFalsy();
     });
 
     test('sampleManager starter enabled', () => {
@@ -105,18 +112,24 @@ describe('getMenuSectionConfigs', () => {
 
         expect(configs.size).toBe(4);
         expect(configs.hasIn([0, SOURCES_KEY])).toBeTruthy();
-        expect(configs.getIn([0, SOURCES_KEY, 'seeAllURL'])).toEqual('#/sources');
+        expect(configs.getIn([0, SOURCES_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([0, SOURCES_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([1, SAMPLES_KEY])).toBeTruthy();
-        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples');
+        expect(configs.getIn([1, SAMPLES_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([1, SAMPLES_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([2, FREEZERS_KEY])).toBeTruthy();
-        expect(configs.getIn([2, FREEZERS_KEY, 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
+        expect(configs.getIn([2, FREEZERS_KEY, 'headerURLPart'])).toEqual('home');
+        expect(configs.getIn([2, FREEZERS_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([3, PICKLIST_KEY])).toBeTruthy();
-        expect(configs.getIn([3, PICKLIST_KEY, 'headerURL'])).toEqual('#/picklist');
+        expect(configs.getIn([3, PICKLIST_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([3, PICKLIST_KEY, 'emptyAppURL'])).toEqual(undefined);
+
         expect(configs.hasIn([3, WORKFLOW_KEY])).toBeFalsy();
         expect(configs.hasIn([3, NOTEBOOKS_KEY])).toBeFalsy();
+        expect(configs.hasIn([3, 'user'])).toBeFalsy();
     });
 
     test('sampleManager professional enabled', () => {
@@ -126,25 +139,34 @@ describe('getMenuSectionConfigs', () => {
 
         expect(configs.size).toBe(5);
         expect(configs.hasIn([0, SOURCES_KEY])).toBeTruthy();
-        expect(configs.getIn([0, SOURCES_KEY, 'seeAllURL'])).toEqual('#/sources');
+        expect(configs.getIn([0, SOURCES_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([0, SOURCES_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([1, SAMPLES_KEY])).toBeTruthy();
-        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples');
+        expect(configs.getIn([1, SAMPLES_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([1, SAMPLES_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([2, ASSAYS_KEY])).toBeTruthy();
-        expect(configs.getIn([2, ASSAYS_KEY, 'seeAllURL'])).toEqual('#/assays');
+        expect(configs.getIn([2, ASSAYS_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([2, ASSAYS_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([3, FREEZERS_KEY])).toBeTruthy();
-        expect(configs.getIn([3, FREEZERS_KEY, 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
+        expect(configs.getIn([3, FREEZERS_KEY, 'headerURLPart'])).toEqual('home');
+        expect(configs.getIn([3, FREEZERS_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([4, WORKFLOW_KEY])).toBeTruthy();
-        expect(configs.getIn([4, WORKFLOW_KEY, 'seeAllURL'])).toEqual('#/workflow');
+        expect(configs.getIn([4, WORKFLOW_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([4, WORKFLOW_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([4, PICKLIST_KEY])).toBeTruthy();
-        expect(configs.getIn([4, PICKLIST_KEY, 'headerURL'])).toEqual('#/picklist');
+        expect(configs.getIn([4, PICKLIST_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([4, PICKLIST_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([4, NOTEBOOKS_KEY])).toBeTruthy();
-        expect(configs.getIn([4, NOTEBOOKS_KEY, 'headerURL'])).toEqual('#/notebooks');
+        expect(configs.getIn([4, NOTEBOOKS_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([4, NOTEBOOKS_KEY, 'emptyAppURL'])).toEqual(undefined);
+
+        expect(configs.hasIn([4, 'user'])).toBeFalsy();
     });
 
     test('freezerManager enabled', () => {
@@ -156,7 +178,8 @@ describe('getMenuSectionConfigs', () => {
 
         expect(configs.size).toBe(2);
         expect(configs.hasIn([0, FREEZERS_KEY])).toBeTruthy();
-        expect(configs.getIn([0, FREEZERS_KEY, 'seeAllURL'])).toEqual('#/home');
+        expect(configs.getIn([0, FREEZERS_KEY, 'headerURLPart'])).toEqual('home');
+        expect(configs.getIn([0, FREEZERS_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([1, 'user'])).toBeTruthy();
     });
@@ -183,28 +206,38 @@ describe('getMenuSectionConfigs', () => {
         const configs = getMenuSectionConfigs(TEST_USER_EDITOR, BIOLOGICS_APP_PROPERTIES.productId, moduleContext);
         expect(configs.size).toBe(5);
         expect(configs.hasIn([0, REGISTRY_KEY])).toBeTruthy();
-        expect(configs.getIn([0, REGISTRY_KEY, 'seeAllURL'])).toEqual('#/registry');
+        expect(configs.getIn([0, REGISTRY_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([0, REGISTRY_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([1, SAMPLES_KEY])).toBeTruthy();
-        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples');
+        expect(configs.getIn([1, SAMPLES_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([1, SAMPLES_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([2, ASSAYS_KEY])).toBeTruthy();
-        expect(configs.getIn([2, ASSAYS_KEY, 'seeAllURL'])).toEqual('#/assays');
+        expect(configs.getIn([2, ASSAYS_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([2, ASSAYS_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([3, FREEZERS_KEY])).toBeTruthy();
-        expect(configs.getIn([3, FREEZERS_KEY, 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
+        expect(configs.getIn([3, FREEZERS_KEY, 'headerURLPart'])).toEqual('home');
+        expect(configs.getIn([3, FREEZERS_KEY, 'emptyAppURL'])).toEqual(undefined);
+
+        expect(configs.hasIn([3, REQUESTS_KEY])).toBeFalsy();
 
         expect(configs.hasIn([4, WORKFLOW_KEY])).toBeTruthy();
-        expect(configs.getIn([4, WORKFLOW_KEY, 'seeAllURL'])).toEqual('#/workflow');
+        expect(configs.getIn([4, WORKFLOW_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([4, WORKFLOW_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([4, PICKLIST_KEY])).toBeTruthy();
-        expect(configs.getIn([4, PICKLIST_KEY, 'headerURL'])).toEqual('#/picklist');
+        expect(configs.getIn([4, PICKLIST_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([4, PICKLIST_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([4, MEDIA_KEY])).toBeTruthy();
-        expect(configs.getIn([4, MEDIA_KEY, 'headerURL'])).toEqual('#/media');
+        expect(configs.getIn([4, MEDIA_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([4, MEDIA_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([4, NOTEBOOKS_KEY])).toBeTruthy();
-        expect(configs.getIn([4, NOTEBOOKS_KEY, 'headerURL'])).toEqual('#/notebooks');
+        expect(configs.getIn([4, NOTEBOOKS_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([4, NOTEBOOKS_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([4, 'user'])).toBeFalsy();
     });
@@ -241,29 +274,41 @@ describe('getMenuSectionConfigs', () => {
         const configs = getMenuSectionConfigs(TEST_USER_EDITOR, BIOLOGICS_APP_PROPERTIES.productId, moduleContext);
         expect(configs.size).toBe(5);
         expect(configs.hasIn([0, REGISTRY_KEY])).toBeTruthy();
-        expect(configs.getIn([0, REGISTRY_KEY, 'seeAllURL'])).toEqual('#/registry');
+        expect(configs.getIn([0, REGISTRY_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([0, REGISTRY_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([1, SAMPLES_KEY])).toBeTruthy();
-        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples');
+        expect(configs.getIn([1, SAMPLES_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([1, SAMPLES_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([2, ASSAYS_KEY])).toBeTruthy();
-        expect(configs.getIn([2, ASSAYS_KEY, 'seeAllURL'])).toEqual('#/assays');
+        expect(configs.getIn([2, ASSAYS_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([2, ASSAYS_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([3, FREEZERS_KEY])).toBeTruthy();
-        expect(configs.getIn([3, FREEZERS_KEY, 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
-        expect(configs.getIn([3, REQUESTS_KEY])).toBeDefined();
+        expect(configs.getIn([3, FREEZERS_KEY, 'headerURLPart'])).toEqual('home');
+        expect(configs.getIn([3, FREEZERS_KEY, 'emptyAppURL'])).toEqual(undefined);
+
+        expect(configs.hasIn([3, REQUESTS_KEY])).toBeTruthy();
+        expect(configs.getIn([3, REQUESTS_KEY, 'useOriginalURL'])).toEqual(true);
 
         expect(configs.hasIn([4, WORKFLOW_KEY])).toBeTruthy();
-        expect(configs.getIn([4, WORKFLOW_KEY, 'seeAllURL'])).toEqual('#/workflow');
+        expect(configs.getIn([4, WORKFLOW_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([4, WORKFLOW_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([4, PICKLIST_KEY])).toBeTruthy();
-        expect(configs.getIn([4, PICKLIST_KEY, 'headerURL'])).toEqual('#/picklist');
+        expect(configs.getIn([4, PICKLIST_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([4, PICKLIST_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([4, MEDIA_KEY])).toBeTruthy();
-        expect(configs.getIn([4, MEDIA_KEY, 'headerURL'])).toEqual('#/media');
+        expect(configs.getIn([4, MEDIA_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([4, MEDIA_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([4, NOTEBOOKS_KEY])).toBeTruthy();
-        expect(configs.getIn([4, NOTEBOOKS_KEY, 'headerURL'])).toEqual('#/notebooks');
+        expect(configs.getIn([4, NOTEBOOKS_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([4, NOTEBOOKS_KEY, 'emptyAppURL'])).toEqual(undefined);
+
+        expect(configs.hasIn([4, 'user'])).toBeFalsy();
     });
 
     test('SM starter enabled, FM current app', () => {
@@ -272,16 +317,24 @@ describe('getMenuSectionConfigs', () => {
         });
         expect(configs.size).toBe(4);
         expect(configs.hasIn([0, SOURCES_KEY])).toBeTruthy();
-        expect(configs.getIn([0, SOURCES_KEY, 'seeAllURL'])).toEqual('/labkey/samplemanager/app.view#/sources');
+        expect(configs.getIn([0, SOURCES_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([0, SOURCES_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([1, SAMPLES_KEY])).toBeTruthy();
-        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('/labkey/samplemanager/app.view#/samples');
+        expect(configs.getIn([1, SAMPLES_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([1, SAMPLES_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([2, FREEZERS_KEY])).toBeTruthy();
-        expect(configs.getIn([2, FREEZERS_KEY, 'seeAllURL'])).toEqual('#/home');
+        expect(configs.getIn([2, FREEZERS_KEY, 'headerURLPart'])).toEqual('home');
+        expect(configs.getIn([2, FREEZERS_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([3, PICKLIST_KEY])).toBeTruthy();
-        expect(configs.getIn([3, PICKLIST_KEY, 'headerURL'])).toEqual('/labkey/samplemanager/app.view#/picklist');
+        expect(configs.getIn([3, PICKLIST_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([3, PICKLIST_KEY, 'emptyAppURL'])).toEqual(undefined);
+
+        expect(configs.hasIn([3, WORKFLOW_KEY])).toBeFalsy();
+        expect(configs.hasIn([3, NOTEBOOKS_KEY])).toBeFalsy();
+        expect(configs.hasIn([3, 'user'])).toBeFalsy();
     });
 
     test('SM professional, SM current app, storage editor', () => {
@@ -290,18 +343,23 @@ describe('getMenuSectionConfigs', () => {
         });
         expect(configs.size).toBe(3);
         expect(configs.hasIn([0, SAMPLES_KEY])).toBeTruthy();
-        expect(configs.getIn([0, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples');
+        expect(configs.getIn([0, SAMPLES_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([0, SAMPLES_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([1, FREEZERS_KEY])).toBeTruthy();
-        expect(configs.getIn([1, FREEZERS_KEY, 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
+        expect(configs.getIn([1, FREEZERS_KEY, 'headerURLPart'])).toEqual('home');
+        expect(configs.getIn([1, FREEZERS_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([2, WORKFLOW_KEY])).toBeTruthy();
-        expect(configs.getIn([2, WORKFLOW_KEY, 'seeAllURL'])).toEqual('#/workflow');
+        expect(configs.getIn([2, WORKFLOW_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([2, WORKFLOW_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([2, PICKLIST_KEY])).toBeTruthy();
-        expect(configs.getIn([2, PICKLIST_KEY, 'headerURL'])).toEqual('#/picklist');
+        expect(configs.getIn([2, PICKLIST_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([2, PICKLIST_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([2, NOTEBOOKS_KEY])).toBeFalsy();
+        expect(configs.hasIn([2, 'user'])).toBeFalsy();
     });
 
     test('SM professional, SM current app, reader', () => {
@@ -310,25 +368,34 @@ describe('getMenuSectionConfigs', () => {
         });
         expect(configs.size).toBe(5);
         expect(configs.hasIn([0, SOURCES_KEY])).toBeTruthy();
-        expect(configs.getIn([0, SOURCES_KEY, 'seeAllURL'])).toEqual('#/sources');
+        expect(configs.getIn([0, SOURCES_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([0, SOURCES_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([1, SAMPLES_KEY])).toBeTruthy();
-        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples');
+        expect(configs.getIn([1, SAMPLES_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([1, SAMPLES_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([2, ASSAYS_KEY])).toBeTruthy();
-        expect(configs.getIn([2, ASSAYS_KEY, 'seeAllURL'])).toEqual('#/assays');
+        expect(configs.getIn([2, ASSAYS_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([2, ASSAYS_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([3, FREEZERS_KEY])).toBeTruthy();
-        expect(configs.getIn([3, FREEZERS_KEY, 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
+        expect(configs.getIn([3, FREEZERS_KEY, 'headerURLPart'])).toEqual('home');
+        expect(configs.getIn([3, FREEZERS_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([4, WORKFLOW_KEY])).toBeTruthy();
-        expect(configs.getIn([4, WORKFLOW_KEY, 'seeAllURL'])).toEqual('#/workflow');
+        expect(configs.getIn([4, WORKFLOW_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([4, WORKFLOW_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([4, PICKLIST_KEY])).toBeTruthy();
-        expect(configs.getIn([4, PICKLIST_KEY, 'headerURL'])).toEqual('#/picklist');
+        expect(configs.getIn([4, PICKLIST_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([4, PICKLIST_KEY, 'emptyAppURL'])).toEqual(undefined);
 
         expect(configs.hasIn([4, NOTEBOOKS_KEY])).toBeTruthy();
-        expect(configs.getIn([4, NOTEBOOKS_KEY, 'headerURL'])).toEqual('#/notebooks');
+        expect(configs.getIn([4, NOTEBOOKS_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([4, NOTEBOOKS_KEY, 'emptyAppURL'])).toEqual(undefined);
+
+        expect(configs.hasIn([4, 'user'])).toBeFalsy();
     });
 });
 
@@ -765,35 +832,27 @@ describe('getCurrentAppProperties', () => {
 
 describe('getStorageSectionConfig', () => {
     test('reader, inventory app', () => {
-        const config = getStorageSectionConfig(
-            TEST_USER_READER,
-            FREEZER_MANAGER_APP_PROPERTIES.productId,
-            { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } },
-            3
-        );
-        expect(config.maxColumns).toBe(1);
-        expect(config.maxItemsPerColumn).toBe(3);
+        const config = getStorageSectionConfig(TEST_USER_READER, FREEZER_MANAGER_APP_PROPERTIES.productId, {
+            inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
+        });
         expect(config.emptyText).toBe('No storage has been defined');
-        expect(config.emptyURL).toBe(undefined);
+        expect(config.emptyAppURL).toBe(undefined);
+        expect(config.emptyURLProjectOnly).toBe(false);
         expect(config.iconURL).toBe('/labkey/_images/freezer_menu.svg');
-        expect(config.seeAllURL).toBe('#/home');
-        expect(config.headerURL).toBe('#/home');
+        expect(config.headerURLPart).toBe('home');
         expect(config.headerText).toBe(undefined);
     });
 
     test('reader, non-inventory app', () => {
         LABKEY.container = {};
 
-        const config = getStorageSectionConfig(
-            TEST_USER_READER,
-            SAMPLE_MANAGER_APP_PROPERTIES.productId,
-            { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } },
-            4
-        );
-        expect(config.maxItemsPerColumn).toBe(4);
-        expect(config.seeAllURL).toBe('/labkey/freezermanager/app.view#/home');
-        expect(config.headerURL).toBe('/labkey/freezermanager/app.view#/home');
-        expect(config.emptyURL).toBe(undefined);
+        const config = getStorageSectionConfig(TEST_USER_READER, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
+            inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
+        });
+        expect(config.emptyURLText).toBe('Get started...');
+        expect(config.emptyAppURL).toBe(undefined);
+        expect(config.emptyURLProjectOnly).toBe(false);
+        expect(config.headerURLPart).toBe('home');
     });
 
     test('admin', () => {
@@ -801,17 +860,13 @@ describe('getStorageSectionConfig', () => {
             path: 'Project A',
         };
 
-        const config = getStorageSectionConfig(
-            TEST_USER_FOLDER_ADMIN,
-            BIOLOGICS_APP_PROPERTIES.productId,
-            { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } },
-            4
-        );
-        expect(config.maxItemsPerColumn).toBe(4);
-        expect(config.seeAllURL).toBe('/labkey/freezermanager/Project%20A/app.view#/home');
-        expect(config.headerURL).toBe('/labkey/freezermanager/Project%20A/app.view#/home');
-        expect(config.emptyURL).toBe('/labkey/freezermanager/Project%20A/app.view#/freezers/new');
+        const config = getStorageSectionConfig(TEST_USER_FOLDER_ADMIN, BIOLOGICS_APP_PROPERTIES.productId, {
+            inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
+        });
         expect(config.emptyURLText).toBe('Create storage');
+        expect(config.emptyAppURL?.toHref()).toBe('#/freezers/new');
+        expect(config.emptyURLProjectOnly).toBe(true);
+        expect(config.headerURLPart).toBe('home');
     });
 
     test('admin, child folder', () => {
@@ -819,17 +874,13 @@ describe('getStorageSectionConfig', () => {
             path: 'Project A/Child Folder 1',
         };
 
-        const config = getStorageSectionConfig(
-            TEST_USER_FOLDER_ADMIN,
-            BIOLOGICS_APP_PROPERTIES.productId,
-            { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } },
-            4
-        );
-        expect(config.maxItemsPerColumn).toBe(4);
-        expect(config.seeAllURL).toBe('/labkey/freezermanager/Project%20A/Child%20Folder%201/app.view#/home');
-        expect(config.headerURL).toBe('/labkey/freezermanager/Project%20A/Child%20Folder%201/app.view#/home');
-        expect(config.emptyURL).toBe(undefined);
-        expect(config.emptyURLText).toBe('Get started...');
+        const config = getStorageSectionConfig(TEST_USER_FOLDER_ADMIN, BIOLOGICS_APP_PROPERTIES.productId, {
+            inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
+        });
+        expect(config.emptyURLText).toBe('Create storage');
+        expect(config.emptyAppURL?.toHref()).toBe('#/freezers/new');
+        expect(config.emptyURLProjectOnly).toBe(true);
+        expect(config.headerURLPart).toBe('home');
     });
 
     test('storage editor', () => {
@@ -837,16 +888,13 @@ describe('getStorageSectionConfig', () => {
             path: undefined,
         };
 
-        const config = getStorageSectionConfig(
-            TEST_USER_STORAGE_EDITOR,
-            BIOLOGICS_APP_PROPERTIES.productId,
-            { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } },
-            4
-        );
-        expect(config.maxItemsPerColumn).toBe(4);
-        expect(config.seeAllURL).toBe('/labkey/freezermanager/app.view#/home');
-        expect(config.headerURL).toBe('/labkey/freezermanager/app.view#/home');
-        expect(config.emptyURL).toBe(undefined);
+        const config = getStorageSectionConfig(TEST_USER_STORAGE_EDITOR, BIOLOGICS_APP_PROPERTIES.productId, {
+            inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
+        });
+        expect(config.emptyURLText).toBe('Get started...');
+        expect(config.emptyAppURL).toBe(undefined);
+        expect(config.emptyURLProjectOnly).toBe(false);
+        expect(config.headerURLPart).toBe('home');
     });
 
     test('storage designer', () => {
@@ -854,17 +902,13 @@ describe('getStorageSectionConfig', () => {
             path: 'Project B',
         };
 
-        const config = getStorageSectionConfig(
-            TEST_USER_STORAGE_DESIGNER,
-            BIOLOGICS_APP_PROPERTIES.productId,
-            { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } },
-            4
-        );
-        expect(config.maxItemsPerColumn).toBe(4);
-        expect(config.seeAllURL).toBe('/labkey/freezermanager/Project%20B/app.view#/home');
-        expect(config.headerURL).toBe('/labkey/freezermanager/Project%20B/app.view#/home');
-        expect(config.emptyURL).toBe('/labkey/freezermanager/Project%20B/app.view#/freezers/new');
+        const config = getStorageSectionConfig(TEST_USER_STORAGE_DESIGNER, BIOLOGICS_APP_PROPERTIES.productId, {
+            inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
+        });
         expect(config.emptyURLText).toBe('Create storage');
+        expect(config.emptyAppURL?.toHref()).toBe('#/freezers/new');
+        expect(config.emptyURLProjectOnly).toBe(true);
+        expect(config.headerURLPart).toBe('home');
     });
 
     test('storage designer, child container', () => {
@@ -872,56 +916,49 @@ describe('getStorageSectionConfig', () => {
             path: 'Project B/Child 1',
         };
 
-        const config = getStorageSectionConfig(
-            TEST_USER_STORAGE_DESIGNER,
-            BIOLOGICS_APP_PROPERTIES.productId,
-            { inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId } },
-            4
-        );
-        expect(config.maxItemsPerColumn).toBe(4);
-        expect(config.seeAllURL).toBe('/labkey/freezermanager/Project%20B/Child%201/app.view#/home');
-        expect(config.headerURL).toBe('/labkey/freezermanager/Project%20B/Child%201/app.view#/home');
-        expect(config.emptyURL).toBe(undefined);
-        expect(config.emptyURLText).toBe('Get started...');
+        const config = getStorageSectionConfig(TEST_USER_STORAGE_DESIGNER, BIOLOGICS_APP_PROPERTIES.productId, {
+            inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
+        });
+        expect(config.emptyURLText).toBe('Create storage');
+        expect(config.emptyAppURL?.toHref()).toBe('#/freezers/new');
+        expect(config.emptyURLProjectOnly).toBe(true);
+        expect(config.headerURLPart).toBe('home');
     });
 });
 
 describe('addSourcesSectionConfig', () => {
     test('reader', () => {
         let configs = List<Map<string, MenuSectionConfig>>();
-        configs = addSourcesSectionConfig(TEST_USER_READER, '/labkey/test/app.view', configs);
+        configs = addSourcesSectionConfig(TEST_USER_READER, configs);
         expect(configs.size).toBe(1);
         const sectionConfig = configs.get(0).get(SOURCES_KEY);
-        expect(sectionConfig.maxColumns).toBe(1);
-        expect(sectionConfig.maxItemsPerColumn).toBe(12);
         expect(sectionConfig.emptyText).toBe('No source types have been defined');
-        expect(sectionConfig.emptyURL).toBe(undefined);
-        expect(sectionConfig.seeAllURL).toBe('/labkey/test/app.view#/sources');
+        expect(sectionConfig.emptyAppURL).toBe(undefined);
         expect(sectionConfig.showActiveJobIcon).toBeTruthy();
         expect(sectionConfig.iconURL).toBe('/labkey/_images/source_type.svg');
-        expect(sectionConfig.headerURL).toBe(undefined);
+        expect(sectionConfig.headerURLPart).toBe(undefined);
         expect(sectionConfig.headerText).toBe(undefined);
     });
 
     test('admin', () => {
         let configs = List<Map<string, MenuSectionConfig>>();
-        configs = addSourcesSectionConfig(TEST_USER_FOLDER_ADMIN, '/labkey/test/app.view', configs);
+        configs = addSourcesSectionConfig(TEST_USER_FOLDER_ADMIN, configs);
         expect(configs.size).toBe(1);
         const sectionConfig = configs.get(0).get(SOURCES_KEY);
         expect(sectionConfig.emptyText).toBe('No source types have been defined');
-        expect(sectionConfig.emptyURL).toBe('/labkey/test/app.view#/sourceType/new');
+        expect(sectionConfig.emptyAppURL?.toHref()).toBe('#/sourceType/new');
         expect(sectionConfig.emptyURLText).toBe('Create a source type');
     });
 
     test('storage editor', () => {
         let configs = List<Map<string, MenuSectionConfig>>();
-        configs = addSourcesSectionConfig(TEST_USER_STORAGE_EDITOR, '/labkey/test/app.view', configs);
+        configs = addSourcesSectionConfig(TEST_USER_STORAGE_EDITOR, configs);
         expect(configs.size).toBe(0);
     });
 
     test('storage designer', () => {
         let configs = List<Map<string, MenuSectionConfig>>();
-        configs = addSourcesSectionConfig(TEST_USER_STORAGE_DESIGNER, '/labkey/test/app.view', configs);
+        configs = addSourcesSectionConfig(TEST_USER_STORAGE_DESIGNER, configs);
         expect(configs.size).toBe(0);
     });
 });
@@ -929,26 +966,23 @@ describe('addSourcesSectionConfig', () => {
 describe('addSamplesSectionConfig', () => {
     test('reader', () => {
         let configs = List<Map<string, MenuSectionConfig>>();
-        configs = addSamplesSectionConfig(TEST_USER_READER, '/labkey/samplemanager/app.view', configs);
+        configs = addSamplesSectionConfig(TEST_USER_READER, configs);
         expect(configs.size).toBe(1);
         const sectionConfig = configs.get(0).get(SAMPLES_KEY);
-        expect(sectionConfig.maxColumns).toBe(1);
-        expect(sectionConfig.maxItemsPerColumn).toBe(12);
         expect(sectionConfig.emptyText).toBe('No sample types have been defined');
-        expect(sectionConfig.emptyURL).toBe(undefined);
-        expect(sectionConfig.seeAllURL).toBe('/labkey/samplemanager/app.view#/samples');
+        expect(sectionConfig.emptyAppURL).toBe(undefined);
         expect(sectionConfig.showActiveJobIcon).toBeTruthy();
         expect(sectionConfig.iconURL).toBe('/labkey/_images/samples.svg');
-        expect(sectionConfig.headerURL).toBe(undefined);
+        expect(sectionConfig.headerURLPart).toBe(undefined);
         expect(sectionConfig.headerText).toBe(undefined);
     });
 
     test('admin', () => {
         let configs = List<Map<string, MenuSectionConfig>>();
-        configs = addSamplesSectionConfig(TEST_USER_FOLDER_ADMIN, '/labkey/samplemanager/app.view', configs);
+        configs = addSamplesSectionConfig(TEST_USER_FOLDER_ADMIN, configs);
         expect(configs.size).toBe(1);
         const sectionConfig = configs.get(0).get(SAMPLES_KEY);
-        expect(sectionConfig.emptyURL).toBe('/labkey/samplemanager/app.view#/sampleType/new');
+        expect(sectionConfig.emptyAppURL?.toHref()).toBe('#/sampleType/new');
         expect(sectionConfig.emptyURLText).toBe('Create a sample type');
     });
 });
@@ -956,39 +990,36 @@ describe('addSamplesSectionConfig', () => {
 describe('addAssaySectionConfig', () => {
     test('reader', () => {
         let configs = List<Map<string, MenuSectionConfig>>();
-        configs = addAssaysSectionConfig(TEST_USER_READER, '/labkey/test/app.view', configs, false);
+        configs = addAssaysSectionConfig(TEST_USER_READER, configs, false);
         expect(configs.size).toBe(1);
         let sectionConfig = configs.get(0).get(ASSAYS_KEY);
-        expect(sectionConfig.maxColumns).toBe(1);
-        expect(sectionConfig.maxItemsPerColumn).toBe(12);
         expect(sectionConfig.emptyText).toBe('No assays have been defined');
-        expect(sectionConfig.emptyURL).toBe(undefined);
-        expect(sectionConfig.seeAllURL).toBe('/labkey/test/app.view#/assays');
+        expect(sectionConfig.emptyAppURL).toBe(undefined);
         expect(sectionConfig.showActiveJobIcon).toBeTruthy();
         expect(sectionConfig.iconURL).toBe('/labkey/_images/assay.svg');
-        expect(sectionConfig.headerURL).toBe(undefined);
+        expect(sectionConfig.headerURLPart).toBe(undefined);
         expect(sectionConfig.headerText).toBe(undefined);
 
         configs = List<Map<string, MenuSectionConfig>>();
-        configs = addAssaysSectionConfig(TEST_USER_READER, '/labkey/test/app.view', configs, true);
+        configs = addAssaysSectionConfig(TEST_USER_READER, configs, true);
         expect(configs.size).toBe(1);
         sectionConfig = configs.get(0).get(ASSAYS_KEY);
-        expect(sectionConfig.emptyURL).toBe(undefined);
+        expect(sectionConfig.emptyAppURL).toBe(undefined);
     });
 
     test('admin', () => {
         let configs = List<Map<string, MenuSectionConfig>>();
-        configs = addAssaysSectionConfig(TEST_USER_FOLDER_ADMIN, '/labkey/test/app.view', configs, false);
+        configs = addAssaysSectionConfig(TEST_USER_FOLDER_ADMIN, configs, false);
         expect(configs.size).toBe(1);
         let sectionConfig = configs.get(0).get(ASSAYS_KEY);
         expect(sectionConfig.emptyText).toBe('No assays have been defined');
-        expect(sectionConfig.emptyURL).toBe('/labkey/test/app.view#/assayDesign/new');
+        expect(sectionConfig.emptyAppURL?.toHref()).toBe('#/assayDesign/new');
         expect(sectionConfig.emptyURLText).toBe('Create an assay design');
 
         configs = List<Map<string, MenuSectionConfig>>();
-        configs = addAssaysSectionConfig(TEST_USER_FOLDER_ADMIN, '/labkey/test/app.view', configs, true);
+        configs = addAssaysSectionConfig(TEST_USER_FOLDER_ADMIN, configs, true);
         expect(configs.size).toBe(1);
         sectionConfig = configs.get(0).get(ASSAYS_KEY);
-        expect(sectionConfig.emptyURL).toBe('/labkey/test/app.view#/assayDesign/General');
+        expect(sectionConfig.emptyAppURL?.toHref()).toBe('#/assayDesign/General');
     });
 });

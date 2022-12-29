@@ -139,7 +139,6 @@ export const SampleCreatePage: FC<SampleCreatePageProps> = memo(props => {
                 allowedNonDomainFields={SAMPLE_INSERT_EXTRA_COLUMNS}
                 asyncSize={useAsync === 'true' ? 1 : BACKGROUND_IMPORT_MIN_FILE_SIZE}
                 auditBehavior={auditBehavior}
-                canEditEntityTypeDetails={user.hasDesignSampleTypesPermission()}
                 combineParentTypes={combineParentTypes}
                 containerFilter={getContainerFilterForLookups()}
                 entityDataType={entityDataType}

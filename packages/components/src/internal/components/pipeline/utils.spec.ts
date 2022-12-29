@@ -23,7 +23,6 @@ describe('pipeline utils', () => {
             label: 'Sample Sets',
             url: undefined,
             items: sampleSetItems,
-            itemLimit: 2,
             key: 'samples',
         });
         sections.push(samplesSection);

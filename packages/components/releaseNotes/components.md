@@ -7,6 +7,32 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Changed from input to an Admin managed list
   * Default template used as first entry in above list, and property removed
 
+### version 2.274.2
+*Released*: 28 December 2022
+* Issue 46853: LKSM/LKB Projects: should allow derivation of samples within projects when parent/source is in Home
+* Issue 46696: Metrics: Sample Finder with Assay Results as Filter
+* Issue 46997: Increase allowed pooling parents limit
+
+### version 2.274.1
+*Released*: 28 December 2022
+* Don't use text-capitalize class in PageHeader. It doesn't always do what we want
+* Don't provide default `itemLabel` in `BulkUpdateForm` to allow for shorter messaging
+* Convert to lower case in `BulkUpdateForm` where it is expected
+* Add `typeIcon` field to `EntityDataType`
+
+### version 2.274.0
+*Released*: 28 December 2022
+* App header Projects and Menu consolidation
+  * ProductMenuButton to hold state for folderItems
+  * FolderMenu component to render within ProductMenu
+  * ProductMenu component use state variable for ProductMenuModel object for current and selected folder
+  * Add createProductUrlFromPartsWithContainer() to create menu links for selected container when not current
+  * Pass containerPath through to create methods of MenuSectionModel and MenuItemModel
+  * Update menuSectionConfig generation utils to remove appBase prop
+  * Styling updates for header project/menu button and menu sections / columns
+  * Remove MenuSectionModel itemLimit
+  * Remove some user menu items and add a conditional Dashboard section to the menu
+
 ### version 2.273.4
 *Released*: 27 December 2022
 * View Assay Results report fix for selectionKey when coming from sample > aliquots grid

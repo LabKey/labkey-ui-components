@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React, { FC, ReactNode, useCallback, useMemo } from 'react';
+import React, { FC, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { Dropdown, Image, MenuItem } from 'react-bootstrap';
 import { getServerContext } from '@labkey/api';
 
@@ -22,22 +22,34 @@ import { User } from '../base/models/User';
 
 import { devToolsActive, toggleDevTools } from '../../util/utils';
 
-import { ProductMenuModel } from './model';
+import { useServerContext } from '../base/ServerContext';
+import { getCurrentAppProperties } from '../../app/utils';
+import { AppProperties } from '../../app/models';
+
+import { AppContext, useAppContext } from '../../AppContext';
+
 import { signOut, signIn } from './actions';
+import { ProductMenuModel } from './model';
 
 export interface UserMenuProps {
+    appProperties?: AppProperties;
     extraDevItems?: ReactNode;
     extraUserItems?: ReactNode;
-    model: ProductMenuModel;
     onSignIn?: () => void;
     onSignOut?: (signOutUrl: string) => void;
     signOutUrl?: string;
     user?: User;
 }
 
-export const UserMenu: FC<UserMenuProps> = props => {
-    const { extraDevItems, extraUserItems, model, onSignIn, onSignOut, user, signOutUrl } = props;
-    const menuSection = useMemo(() => model.getSection('user'), [model]);
+interface ImplProps {
+    model: ProductMenuModel;
+}
+
+// exported for jest testing
+export const UserMenuImpl: FC<UserMenuProps & ImplProps> = props => {
+    const { model, extraDevItems, extraUserItems, onSignIn, onSignOut, user, signOutUrl } = props;
+
+    const menuSection = useMemo(() => model?.getSection('user'), [model]);
 
     const menuItems = useMemo(() => {
         return menuSection?.items
@@ -104,6 +116,23 @@ export const UserMenu: FC<UserMenuProps> = props => {
             </Dropdown.Menu>
         </Dropdown>
     );
+};
+
+export const UserMenu: FC<UserMenuProps> = props => {
+    const { appProperties = getCurrentAppProperties() } = props;
+    const { api } = useAppContext<AppContext>();
+    const { container, moduleContext } = useServerContext();
+    const [model, setModel] = useState<ProductMenuModel>();
+
+    useEffect(() => {
+        (async () => {
+            // no try/catch as the initMenuModel will catch errors and put them in the model isError/message
+            const menuModel = await api.navigation.initMenuModel(appProperties, moduleContext, container.id);
+            setModel(menuModel);
+        })();
+    }, [api.navigation, appProperties, container.id, moduleContext]);
+
+    return <UserMenuImpl {...props} model={model} />;
 };
 
 UserMenu.defaultProps = {

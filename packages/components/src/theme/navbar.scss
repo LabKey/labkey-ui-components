@@ -30,11 +30,14 @@
 }
 
 .navbar-left {
-  margin: 10px 0;
   padding: 0;
 
   .navbar-item {
     margin-left: 20px;
+  }
+
+  .navbar-left-icon {
+      margin: 10px 0;
   }
 }
 
@@ -51,39 +54,83 @@
   font-family: FontAwesome, $font-family-sans-serif
 }
 
-$nav-menu-btn-box-shadow: 0 2px 4px 0 rgba(0,0,0,0.12), 0 2px 2px 0 rgba(0,0,0,0.24);
-$nav-menu-btn-width: 85px;
+.navbar-left-menu {
+    .product-menu-button {
+        height: 54px;
+        min-width: 85px;
+        max-width: 300px; // ~40 characters plus text overflow and caret padding
+        padding-right: 28px; // for caret
+        text-align: left;
 
-.nav-folder-menu .dropdown-menu {
-    max-height: 400px;
-    overflow: auto;
+        background-color: transparent;
+        color: $white !important;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+
+        &:hover, &:focus {
+            background-color: $brand-secondary;
+        }
+
+        // Due to how we want the overflow handling of the text the caret is positioned
+        // using "absolute" and is provided spacing by the padding on the button itself.
+        .caret {
+            position: absolute;
+            top: 25px;
+            right: 15px;
+        }
+
+        .title {
+            font-size: 11px;
+            font-weight: 700;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            font-weight: 400;
+        }
+    }
+
+    .btn-group.open .dropdown-toggle {
+        background-color: $brand-secondary;
+        border: none;
+        box-shadow: none;
+    }
+
+    .dropdown-menu {
+        padding: 0;
+        margin: 0;
+        width: 944px;
+        left: -50px;
+    }
 }
 
-.nav-folder-menu .dropdown-menu > li {
-    min-width: 240px;
+@media (min-width: 992px) {
+    .navbar-left-menu .dropdown-menu {
+        width: 944px;
+        left: -100px;
+    }
 }
 
-.nav-folder-menu__button {
-    box-shadow: $nav-menu-btn-box-shadow;
-    overflow: hidden;
-    padding: 6px 28px 6px 12px;
-    max-width: 300px; // 40 characters plus text overflow and caret padding
-    min-width: $nav-menu-btn-width;
-    text-align: left;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+@media (min-width: 1340px) {
+    .navbar-left-menu .dropdown-menu {
+        width: 1168px;
+        left: -100px;
+    }
+}
 
-    // Due to how we want the overflow handling of the text the caret is positioned
-    // using "absolute" and is provided spacing by the padding on the button itself.
-    .caret {
-        position: absolute;
-        top: 15px;
-        right: 15px;
+@media (min-width: 1500px) {
+    .navbar-left-menu .dropdown-menu {
+        width: 1320px;
+        left: -100px;
     }
 }
 
 @media (max-width: 767px) { // $screen-xs-max
-    .nav-folder-menu__button {
+    .navbar-left-menu .product-menu-button {
         max-width: 180px;
     }
 
@@ -104,144 +151,143 @@ $nav-menu-btn-width: 85px;
     }
 }
 
-.product-menu-button {
-    width: $nav-menu-btn-width;
-    box-shadow: $nav-menu-btn-box-shadow;
-
-    .caret {
-        margin-left: 4px;
-    }
-}
-
 .product-menu-content {
-  padding: 12px 15px 12px 0;
-  width: 780px;
+    /* Works on Firefox */
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: $light-gray $white;
+    }
 
-  &.error {
-    color: $brand-danger;
-    padding-left: 8px;
+    /* Works on Chrome, Edge, and Safari */
+    *::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    *::-webkit-scrollbar-track {
+        background-color: $white;
+    }
+
+    *::-webkit-scrollbar-thumb {
+        background-color: $light-gray;
+        border-radius: 20px;
+        border: 3px solid $white;
+    }
+
+  .sections-content {
+      display: inline;
   }
 
-  .col-2 {
-    width: 50%
+  .col-folders {
+      width: 25%;
+      background-color: $gray-shadow;
+      border-radius: 4px 0 0 4px;
+      padding-left: 8px;
+
+      li:hover {
+          background-color: $light-gray;
+          border-radius: 4px 0 0 4px;
+      }
+
+      li.active {
+          background-color: $white;
+          border-radius: 4px 0 0 4px;
+
+          a {
+              color: $text-color;
+          }
+      }
+
+      li.menu-section-header {
+          font-weight: 500;
+          padding: 5px 8px 4px 8px;
+          min-height: 33px;
+      }
+
+      li.menu-section-item {
+          padding: 8px;
+      }
+
+      li hr {
+          margin: 4px 8px;
+      }
+  }
+  .col-product-section {
+      li {
+          padding: 3px 8px;
+
+          a {
+              color: $text-color;
+          }
+      }
   }
 
-  .col-3 {
-    width: 33%;
+  &.with-col-folders {
+      .col-product-section {
+          width: 15%;
+      }
+  }
+  &:not(.with-col-folders) {
+      padding-left: 8px;
+
+      .col-product-section {
+          width: 20%;
+      }
   }
 
-  .col-4 {
-    width: 25%;
-  }
-
-  .col-5 {
-    width: 20%;
+  .col-product-section:last-child {
+      padding-right: 8px;
   }
 
   .menu-section {
-    padding-left: 15px;
     vertical-align: top;
     display: inline-block;
     word-break: break-word;
+    padding-bottom: 16px;
+    height: 100%;
+    overflow-y: scroll;
 
     .menu-section-header {
       font-family: FontAwesome, $font-family-sans-serif;
       color: $brand-primary;
+      margin-top: 16px;
 
-        a {
-            display: block;
-        }
+      a {
+        color: $brand-primary;
+        cursor: pointer;
+      }
     }
 
-    .menu-loading {
-      padding-left: 8px;
-    }
-
-    img {
-      margin-bottom: 4px;
-      margin-top: 5px;
+    &.menu-loading {
+      padding: 24px 16px;
     }
 
     ul {
       display: inline-block;
+      width: 100%;
       vertical-align: top;
-      margin: 0 5px;
-      padding: 0;
       list-style-type: none;
+      margin: 0;
+      padding: 0;
 
-      li {
-          padding-bottom: 5px;
+      li a {
+          display: block;
+          padding: 0 4px;
 
-          a {
-              color: $text-color;
-              display: block;
-
-              &:focus, &:hover {
-                  color: $link-hover-color;
-              }
+          &:focus, &:hover {
+              color: $link-hover-color;
+              cursor: pointer;
           }
-      }
-
-      &.col-1 {
-        width: 95%;
-      }
-      &.col-2 {
-        width: 45%;
-      }
-    }
-
-    .overflow-link {
-      float: left;
-      margin: 0 5px;
-
-      a {
-        color: $brand-primary;
       }
     }
 
     hr {
-      margin-top: 3px;
-      margin-bottom: 5px;
+      margin: 4px 0;
       border-top-color: $brand-primary;
-      height: 3px;
+      height: 1px;
       background-color: $light-gray;
       border: none;
     }
   }
-}
-
-.navbar-left {
-    // For when 'Project' dropdown is not present
-    .navbar-item:first-child:nth-last-child(2),
-    .navbar-item:first-child:nth-last-child(2) ~ .navbar-item {
-        @media (min-width: 1200px) {
-            .product-menu-content {
-                width: 1000px;
-            }
-        }
-
-        @media (min-width: 1450px) {
-            .product-menu-content {
-                width: 1230px;
-            }
-        }
-    }
-
-    // For when 'Project' dropdown is present
-    .navbar-item:first-child:nth-last-child(3),
-    .navbar-item:first-child:nth-last-child(3) ~ .navbar-item {
-        @media (min-width: 1550px) {
-            .product-menu-content {
-                width: 1000px;
-            }
-        }
-
-        @media (min-width: 1775px) {
-            .product-menu-content {
-                width: 1230px;
-            }
-        }
-    }
 }
 
 .empty-section {
@@ -265,16 +311,12 @@ $nav-menu-btn-width: 85px;
     .navbar-connector {
       position: absolute;
       top: -10px;
-      left: 20px;
+      left: 70px;
       width: 0;
       height: 0;
       border-style: solid;
       border-width: 0 10px 10px 10px;
       border-color: transparent transparent #ffffff transparent;
-    }
-
-    .open .dropdown-menu {
-      top: 120%;
     }
   }
 
@@ -295,6 +337,12 @@ $nav-menu-btn-width: 85px;
       top: 125%;
     }
   }
+}
+
+@media (min-width: 992px) {
+    .navbar .navbar-left .navbar-connector {
+        left: 120px;
+    }
 }
 
 .navbar-item.navbar-item-notification, .navbar-item.navbar-item-product-navigation {

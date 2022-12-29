@@ -119,7 +119,7 @@ describe('SampleHeader', () => {
 
     test('CreateSamplesSubMenu permissions', () => {
         let wrapper = mountWithAppServerContext(
-            <SampleHeaderImpl {...DEFAULT_PROPS} user={TEST_USER_READER} sampleModel={DATA_MODEL} />,
+            <SampleHeaderImpl {...DEFAULT_PROPS} user={TEST_USER_READER} sampleModel={DATA_MODEL} canDerive={true}/>,
             {},
             { user: TEST_USER_READER }
         );
@@ -127,7 +127,7 @@ describe('SampleHeader', () => {
         wrapper.unmount();
 
         wrapper = mountWithAppServerContext(
-            <SampleHeaderImpl {...DEFAULT_PROPS} user={TEST_USER_AUTHOR} sampleModel={DATA_MODEL} />,
+            <SampleHeaderImpl {...DEFAULT_PROPS} user={TEST_USER_AUTHOR} sampleModel={DATA_MODEL} canDerive={true}/>,
             {},
             { user: TEST_USER_AUTHOR }
         );
@@ -137,7 +137,7 @@ describe('SampleHeader', () => {
 
     test('CreateSamplesSubMenu props', () => {
         const wrapper = mountWithAppServerContext(
-            <SampleHeaderImpl {...DEFAULT_PROPS} user={TEST_USER_AUTHOR} sampleModel={DATA_MODEL} />,
+            <SampleHeaderImpl {...DEFAULT_PROPS} user={TEST_USER_AUTHOR} sampleModel={DATA_MODEL} canDerive={true}/>,
             {},
             { user: TEST_USER_AUTHOR }
         );

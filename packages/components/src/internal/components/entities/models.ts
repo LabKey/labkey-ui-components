@@ -517,7 +517,7 @@ export interface EntityDataType {
     appUrlPrefixParts?: string[];
     containerFilter?: Query.ContainerFilter;
     deleteHelpLinkTopic: string;
-    dependencyText: string;
+    dependencyText: Function | string ;
     descriptionPlural: string;
     descriptionSingular: string;
     editTypeAppUrlPrefix?: string;
@@ -544,6 +544,7 @@ export interface EntityDataType {
     typeListingSchemaQuery: SchemaQuery;
     typeNounAsParentSingular: string;
     typeNounSingular: string;
+    typeIcon?: string;
     uniqueFieldKey: string;
 }
 

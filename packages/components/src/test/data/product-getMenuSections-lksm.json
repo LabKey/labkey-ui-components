@@ -5,7 +5,6 @@
   "productId" : "SampleManager",
   "items" : [ ],
   "totalCount" : 3,
-  "itemLimit" : 0,
   "sectionKey" : "sources"
 }, {
   "url" : "/labkey/Sample%20Manager/experiment-listSampleTypes.view?",
@@ -14,7 +13,6 @@
   "productId" : "SampleManager",
   "items" : [ ],
   "totalCount" : 10,
-  "itemLimit" : 0,
   "sectionKey" : "samples"
 }, {
   "url" : "/labkey/Sample%20Manager/assay-begin.view?",
@@ -23,7 +21,6 @@
   "productId" : "SampleManager",
   "items" : [ ],
   "totalCount" : 12,
-  "itemLimit" : 0,
   "sectionKey" : "assays"
 }, {
   "url" : "/labkey/Sample%20Manager/experiment-listDataClass.view?",
@@ -50,7 +47,6 @@
     "requiresLogin" : false
   } ],
   "totalCount" : 3,
-  "itemLimit" : 3,
   "sectionKey" : "workflow"
 }, {
   "key" : "freezers",
@@ -59,7 +55,6 @@
   "productId" : "freezerManager",
   "items" : [ ],
   "totalCount" : 14,
-  "itemLimit" : 0,
   "sectionKey" : "freezers"
 }, {
   "url" : null,
@@ -131,6 +126,5 @@
     "requiresLogin" : false
   } ],
   "totalCount" : 7,
-  "itemLimit" : null,
   "sectionKey" : "user"
 } ]

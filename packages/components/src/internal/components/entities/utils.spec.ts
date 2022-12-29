@@ -3,8 +3,23 @@ import { List } from 'immutable';
 import { SampleCreationType } from '../samples/models';
 
 import { IEntityTypeOption } from './models';
-import { getBulkCreationTypeOptions, getEntityDescription, getEntityNoun, getInitialParentChoices } from './utils';
+import {
+    getBulkCreationTypeOptions,
+    getEntityDescription,
+    getEntityNoun,
+    getInitialParentChoices,
+    sampleDeleteDependencyText
+} from './utils';
 import { DataClassDataType, SampleTypeDataType } from './constants';
+import {
+    TEST_LKS_STARTER_MODULE_CONTEXT,
+    TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
+    TEST_LKSM_STARTER_AND_WORKFLOW_MODULE_CONTEXT, TEST_LKSM_STARTER_MODULE_CONTEXT
+} from '../../productFixtures';
+import { mount } from 'enzyme';
+import { getSampleDeleteMessage } from '../../../entities/index';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import React from 'react';
 
 describe('getInitialParentChoices', () => {
     const parentTypeOptions = List<IEntityTypeOption>([
@@ -242,5 +257,35 @@ describe('getBulkCreationTypeOptions', () => {
         expect(options[0].selected).toBe(false);
         expect(options[1].type).toBe(SampleCreationType.PooledSamples);
         expect(options[1].selected).toBe(true);
+    });
+});
+
+describe("sampleDeleteDependencyText", () => {
+    test('cannot delete, professional', () => {
+        LABKEY.moduleContext = {...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT};
+        expect(sampleDeleteDependencyText()).toBe(
+            'either derived sample, job, or assay data dependencies, status that prevents deletion, or references in one or more active notebooks'
+        );
+    });
+
+    test('cannot delete, no workflow', () => {
+        LABKEY.moduleContext = {...TEST_LKS_STARTER_MODULE_CONTEXT};
+        expect(sampleDeleteDependencyText()).toBe(
+            'either derived sample or assay data dependencies, or status that prevents deletion'
+        );
+    });
+
+    test('cannot delete, workflow no assay', () => {
+        LABKEY.moduleContext = {...TEST_LKSM_STARTER_AND_WORKFLOW_MODULE_CONTEXT};
+        expect(sampleDeleteDependencyText()).toBe(
+            'either derived sample or job dependencies, or status that prevents deletion'
+        );
+    });
+
+    test('cannot delete no workflow or assay', () => {
+        LABKEY.moduleContext = {...TEST_LKSM_STARTER_MODULE_CONTEXT};
+        expect(sampleDeleteDependencyText()).toBe(
+            'derived sample dependencies or status that prevents deletion'
+        );
     });
 });

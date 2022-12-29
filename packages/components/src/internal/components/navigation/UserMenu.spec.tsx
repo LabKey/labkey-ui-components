@@ -20,7 +20,7 @@ import { mount } from 'enzyme';
 
 import { User } from '../base/models/User';
 
-import { UserMenu } from './UserMenu';
+import { UserMenuImpl } from './UserMenu';
 import { MenuSectionModel, ProductMenuModel } from './model';
 
 beforeAll(() => {
@@ -55,7 +55,7 @@ describe('UserMenu', () => {
         const model = new ProductMenuModel({
             productIds: ['testProduct'],
         });
-        const tree = mount(<UserMenu model={model} user={new User()} />);
+        const tree = mount(<UserMenuImpl model={model} user={new User()} />);
         expect(tree).toEqual({});
     });
 
@@ -71,7 +71,7 @@ describe('UserMenu', () => {
             productIds,
             sections,
         });
-        const tree = renderer.create(<UserMenu model={model} user={user} />);
+        const tree = renderer.create(<UserMenuImpl model={model} user={user} />);
         expect(tree).toMatchSnapshot();
     });
 
@@ -87,7 +87,7 @@ describe('UserMenu', () => {
             productIds,
             sections,
         });
-        const tree = renderer.create(<UserMenu model={model} user={user} />);
+        const tree = renderer.create(<UserMenuImpl model={model} user={user} />);
         expect(tree).toMatchSnapshot();
     });
 
@@ -103,7 +103,7 @@ describe('UserMenu', () => {
             productIds,
             sections,
         });
-        const tree = renderer.create(<UserMenu model={model} user={user} />);
+        const tree = renderer.create(<UserMenuImpl model={model} user={user} />);
         expect(tree).toMatchSnapshot();
     });
 
@@ -120,7 +120,7 @@ describe('UserMenu', () => {
             sections,
         });
         const extraUserItems = [<div key="e1">Extra One</div>, <div key="e2">Extra Two</div>];
-        const tree = renderer.create(<UserMenu model={model} user={user} extraUserItems={extraUserItems} />);
+        const tree = renderer.create(<UserMenuImpl model={model} user={user} extraUserItems={extraUserItems} />);
         expect(tree).toMatchSnapshot();
     });
 
@@ -139,7 +139,7 @@ describe('UserMenu', () => {
         const extraUserItems = [<div key="e1">Extra One</div>, <div key="e2">Extra Two</div>];
         const extraDevItems = [<div key="e1">Extra Dev One</div>, <div key="e2">Extra Dev Two</div>];
         const tree = renderer.create(
-            <UserMenu extraDevItems={extraDevItems} extraUserItems={extraUserItems} model={model} user={user} />
+            <UserMenuImpl extraDevItems={extraDevItems} extraUserItems={extraUserItems} model={model} user={user} />
         );
         expect(tree).toMatchSnapshot();
     });

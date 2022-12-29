@@ -147,8 +147,9 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                 rows: [templateToSave],
             })
                 .then(() => {
-                    onActionCompleted(templateToSave.rowId);
                     setSaving(false);
+                    setDirty(false);
+                    onActionCompleted(templateToSave.rowId);
                 })
                 .catch(reason => {
                     setError(resolveErrorMessage(reason, 'template', 'templates', 'updating'));
@@ -160,8 +161,9 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                 rows: List([templateToSave]),
             })
                 .then(response => {
-                    onActionCompleted(response?.rows[0]?.rowId);
+                    setDirty(false);
                     setSaving(false);
+                    onActionCompleted(response?.rows[0]?.rowId);
                 })
                 .catch(response => {
                     setError(resolveErrorMessage(response.get('error'), 'template', 'templates', 'inserting'));
@@ -316,9 +318,9 @@ export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props
 
     const onActionCompleted = useCallback(
         (newLabelTemplate?: number, isDelete = false): void => {
+            setIsDirty(false);
             queryLabelTemplates(newLabelTemplate);
             if (isDelete) setSelected(undefined);
-            setIsDirty(false);
         },
         [queryLabelTemplates, setIsDirty]
     );

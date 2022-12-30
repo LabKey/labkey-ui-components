@@ -235,11 +235,12 @@ export function getLabelPrintingTestAPIWrapper(
 ): LabelPrintingAPIWrapper {
     return {
         ensureLabelTemplatesList: () => Promise.resolve([]),
-        fetchBarTenderConfiguration: () => Promise.resolve(
-            new BarTenderConfiguration({
-                serviceURL: '',
-            })
-        ),
+        fetchBarTenderConfiguration: () =>
+            Promise.resolve(
+                new BarTenderConfiguration({
+                    serviceURL: '',
+                })
+            ),
         getLabelTemplates: () => Promise.resolve([]),
         printBarTenderLabels: mockFn(),
         printGridLabels: mockFn(),

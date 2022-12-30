@@ -33,6 +33,7 @@ import { SampleStatusTag } from '../internal/components/samples/SampleStatusTag'
 import { InjectedQueryModels, withQueryModels } from '../public/QueryModel/withQueryModels';
 
 import { SampleEventListing } from './SampleEventListing';
+import {getPrimaryAppProperties, isBiologicsEnabled} from "../internal/app/utils";
 
 interface OwnProps {
     api?: ComponentsAPIWrapper;
@@ -154,7 +155,7 @@ export const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = me
         if (value && value.startsWith('materialinputs/')) {
             return getMaterialDataInputDisplay(SAMPLES_KEY, field.toLowerCase(), value, 'materialinputs/');
         } else if (value && value.startsWith('datainputs/')) {
-            return getMaterialDataInputDisplay(SOURCES_KEY, field.toLowerCase(), value, 'datainputs/');
+            return getMaterialDataInputDisplay(getPrimaryAppProperties().dataclassUrlPart, field.toLowerCase(), value, 'datainputs/');
         }
 
         return displayValue;

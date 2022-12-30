@@ -54,6 +54,7 @@ export interface AppProperties {
     name: string;
     productId: string;
     searchPlaceholder?: string;
+    dataclassUrlPart?: string;
 }
 
 // Note: this should stay in sync with the eln/src/ReferencingNotebooks.tsx props

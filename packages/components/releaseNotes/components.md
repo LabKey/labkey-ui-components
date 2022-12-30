@@ -3,6 +3,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 2.275.0
 *Released*: 29 December 2022
+* Issue 46949: Sample timeline detail links to sources instead of registry for LKB
+
+### version 2.275.0
+*Released*: 29 December 2022
 * Add support for tracking and using multiple BarTender Label templates
   * Changed from input to an Admin managed list
   * Default template used as first entry in above list, and property removed

@@ -33,7 +33,7 @@ if (process.env.LINK) {
     labkeyUIComponentsPath = process.env.LABKEY_UI_COMPONENTS_HOME + '/packages/components/src';
     console.log('Using @labkey/components path:', labkeyUIComponentsPath);
 
-    labkeyUIPremiumPath = process.env.LABKEY_UI_PREMIUM_HOME + '/packages/premium/src';
+    labkeyUIPremiumPath = process.env.LABKEY_UI_PREMIUM_HOME + '/src';
     console.log('Using @labkey/premium path:', labkeyUIPremiumPath);
 }
 

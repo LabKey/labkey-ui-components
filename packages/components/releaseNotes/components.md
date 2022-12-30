@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.275.0
+*Released*: 29 December 2022
+* Add support for tracking and using multiple BarTender Label templates
+  * Changed from input to an Admin managed list
+  * Default template used as first entry in above list, and property removed
+
 ### version 2.274.2
 *Released*: 28 December 2022
 * Issue 46853: LKSM/LKB Projects: should allow derivation of samples within projects when parent/source is in Home

@@ -120,7 +120,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     );
 
     const [printDialogModel, setPrintDialogModel] = useState<QueryModel>();
-    const { canPrintLabels, printServiceUrl, labelTemplate } = useLabelPrintingContext();
+    const { canPrintLabels, printServiceUrl } = useLabelPrintingContext();
 
     const onEditSelectionInGrid = useCallback(
         (
@@ -377,7 +377,6 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             {printDialogModel && (
                 <PrintLabelsModal
                     afterPrint={afterPrint}
-                    labelTemplate={labelTemplate}
                     printServiceUrl={printServiceUrl}
                     onCancel={onCancelPrint}
                     model={printDialogModel}

@@ -1,7 +1,7 @@
 # @labkey/build
 
-### version TBD
-*Released*: TBD
+### version 6.8.1
+*Released*: 30 December 2022
 * Update path for premium package src after code move within that repo
 
 ### version 6.8.0

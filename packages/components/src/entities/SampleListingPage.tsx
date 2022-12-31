@@ -197,7 +197,7 @@ export type SampleListingPageBodyProps = CommonPageProps &
 export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
     const { menuInit, navigate, queryModels, actions, sampleListModelId, menu, setIsDirty, getIsDirty } = props;
     const { sampleType } = props.params;
-    const { canPrintLabels, labelTemplate, printServiceUrl } = useLabelPrintingContext();
+    const { canPrintLabels, printServiceUrl } = useLabelPrintingContext();
     const { createNotification, dismissNotifications } = useNotificationsContext();
     const {
         detailRenderer,
@@ -499,7 +499,6 @@ export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
                     <PrintLabelsModal
                         afterPrint={afterPrint}
                         onCancel={onCancelPrint}
-                        labelTemplate={labelTemplate}
                         model={listModel}
                         printServiceUrl={printServiceUrl}
                         sampleIds={[...listModel.selections]}

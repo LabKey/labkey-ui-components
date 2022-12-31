@@ -1,4 +1,6 @@
-import { immerable } from 'immer';
+import { Draft, immerable, produce } from 'immer';
+
+import { flattenValuesFromRow } from '../../../public/QueryModel/QueryModel';
 
 export interface BarTenderConfigurationModel {
     defaultLabel?: string;
@@ -97,5 +99,40 @@ export class BarTenderResponse implements BarTenderResponseModel {
         // best we can do is to look in the error message as this doesn't have a specific property to indicate this error
         const message = this.getFaultMessage();
         return message.indexOf(BarTenderResponse.LABEL_NOT_FOUND_MSG) >= 0;
+    }
+}
+
+// LabKey model for Label Template
+export class LabelTemplate {
+    [immerable] = true;
+
+    readonly description: string;
+    readonly rowId: number;
+    readonly name: string;
+    readonly path: string;
+
+    constructor(values: { [k: string]: any }) {
+        Object.assign(this, values);
+    }
+
+    set(prop: string, val: any): LabelTemplate {
+        return this.mutate({ [prop]: val });
+    }
+
+    mutate(props: Partial<LabelTemplate>): LabelTemplate {
+        return produce(this, (draft: Draft<LabelTemplate>) => {
+            Object.assign(draft, props);
+        });
+    }
+
+    static create(row?: { [k: string]: { value: any } }): LabelTemplate {
+        const fieldValues = flattenValuesFromRow(row, Object.keys(row));
+
+        return new LabelTemplate({
+            path: fieldValues.path,
+            rowId: fieldValues.rowId,
+            name: fieldValues.name,
+            description: fieldValues.description,
+        });
     }
 }

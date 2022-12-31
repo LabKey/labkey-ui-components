@@ -1,5 +1,9 @@
 # @labkey/build
 
+### version 6.8.1
+*Released*: 30 December 2022
+* Update path for premium package src after code move within that repo
+
 ### version 6.8.0
 *Released*: 19 December 2022
 * webpack updates for `@labkey/premium/storage` package

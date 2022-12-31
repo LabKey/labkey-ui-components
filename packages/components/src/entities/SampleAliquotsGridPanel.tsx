@@ -131,7 +131,7 @@ export const SampleAliquotsGridPanelImpl: FC<Props & InjectedQueryModels> = memo
     const [showConfirmDelete, setConfirmDelete] = useState<boolean>(false);
     const [showPrintDialog, setShowPrintDialog] = useState<boolean>(false);
     const { createNotification } = useNotificationsContext();
-    const { canPrintLabels, printServiceUrl, labelTemplate } = useLabelPrintingContext();
+    const { canPrintLabels, printServiceUrl } = useLabelPrintingContext();
     const queryModel = queryModels[queryModelId];
 
     const resetState = useCallback((): void => {
@@ -198,7 +198,6 @@ export const SampleAliquotsGridPanelImpl: FC<Props & InjectedQueryModels> = memo
             {showPrintDialog && canPrintLabels && (
                 <PrintLabelsModal
                     afterPrint={afterPrint}
-                    labelTemplate={labelTemplate}
                     printServiceUrl={printServiceUrl}
                     model={queryModel}
                     onCancel={resetState}

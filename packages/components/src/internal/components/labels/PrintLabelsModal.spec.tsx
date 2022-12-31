@@ -10,13 +10,29 @@ import { Alert } from '../base/Alert';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
-import { PrintLabelsModalImpl } from './PrintLabelsModal';
+import { PrintLabelsModalImpl, PrintModalProps } from './PrintLabelsModal';
+import { waitForLifecycle } from '../../testHelpers';
+import { getTestAPIWrapper } from '../../APIWrapper';
+import { InjectedQueryModels } from '../../../public/QueryModel/withQueryModels';
 
 describe('<PrintLabelsModal/>', () => {
     let actions;
     let queryModels;
     const TEST_SCHEMA = 'testSchema';
     const TEST_QUERY = 'testQuery';
+
+    const DEFAULT_PROPS = (): PrintModalProps & InjectedQueryModels => {
+        return {
+            api: getTestAPIWrapper(),
+            show: true,
+            sampleIds:[],
+            showSelection: true,
+            printServiceUrl:"test",
+            queryModels: queryModels,
+            actions: actions,
+            model:queryModels.sampleModel,
+        };
+    };
 
     beforeAll(() => {
         actions = makeTestActions();
@@ -37,44 +53,29 @@ describe('<PrintLabelsModal/>', () => {
 
     test('no selections', () => {
         const wrapper = mount(
-            <PrintLabelsModalImpl
-                show={true}
-                schemaName={TEST_SCHEMA}
-                queryName={TEST_QUERY}
-                sampleIds={[]}
-                showSelection={true}
-                labelTemplate="testTemplate"
-                printServiceUrl="test"
-                queryModels={queryModels}
-                actions={actions}
-            />
+            <PrintLabelsModalImpl {...DEFAULT_PROPS()} />
         );
 
         expect(wrapper.find(ModalTitle).text()).toBe('Print Labels with BarTender');
-        expect(wrapper.find(SelectInput)).toHaveLength(1);
+        expect(wrapper.find(SelectInput)).toHaveLength(2);
         expect(wrapper.find('div.modal-body').text()).toContain('Select samples to print labels for.');
         expect(wrapper.find(Button).prop('disabled')).toBe(true);
 
         wrapper.unmount();
     });
 
-    test('single sample with selection', () => {
+    test('single sample with selection', async () => {
         const wrapper = mount(
             <PrintLabelsModalImpl
-                show={true}
-                schemaName={TEST_SCHEMA}
-                queryName={TEST_QUERY}
+                {...DEFAULT_PROPS()}
                 sampleIds={['1']}
-                showSelection={true}
-                labelTemplate="testTemplate"
-                printServiceUrl="test"
-                queryModels={queryModels}
-                actions={actions}
             />
         );
+        wrapper.setState( { labelTemplate: 'alpha' });
+        await waitForLifecycle(wrapper);
 
         expect(wrapper.find(ModalTitle).text()).toBe('Print Labels for 1 Sample with BarTender');
-        expect(wrapper.find(SelectInput)).toHaveLength(1);
+        expect(wrapper.find(SelectInput)).toHaveLength(2);
         expect(wrapper.find('div.modal-body').text()).toContain(
             "Confirm you've selected the samples you want and the proper label template."
         );
@@ -83,23 +84,20 @@ describe('<PrintLabelsModal/>', () => {
         wrapper.unmount();
     });
 
-    test('single sample without selection', () => {
+    test('single sample without selection', async () => {
         const wrapper = mount(
             <PrintLabelsModalImpl
-                show={true}
-                schemaName={TEST_SCHEMA}
-                queryName={TEST_QUERY}
+                {...DEFAULT_PROPS()}
                 sampleIds={['1']}
                 showSelection={false}
-                labelTemplate="testTemplate"
-                printServiceUrl="test"
-                queryModels={queryModels}
-                actions={actions}
             />
         );
 
+        wrapper.setState( { labelTemplate: 'alpha' });
+        await waitForLifecycle(wrapper);
+
         expect(wrapper.find(ModalTitle).text()).toBe('Print Labels for 1 Sample with BarTender');
-        expect(wrapper.find(SelectInput)).toHaveLength(0);
+        expect(wrapper.find(SelectInput)).toHaveLength(1);
         expect(wrapper.find('div.modal-body').text()).toContain(
             'Choose the number of copies of the label for this sample'
         );
@@ -108,23 +106,19 @@ describe('<PrintLabelsModal/>', () => {
         wrapper.unmount();
     });
 
-    test('multiple labels', () => {
+    test('multiple labels', async () => {
         const wrapper = mount(
             <PrintLabelsModalImpl
-                show={true}
-                schemaName={TEST_SCHEMA}
-                queryName={TEST_QUERY}
+                {...DEFAULT_PROPS()}
                 sampleIds={['1', '2', '3']}
-                showSelection={true}
-                labelTemplate="testTemplate"
-                printServiceUrl="testUrl"
-                queryModels={queryModels}
-                actions={actions}
             />
         );
 
+        wrapper.setState( { labelTemplate: 'alpha' });
+        await waitForLifecycle(wrapper);
+
         expect(wrapper.find(ModalTitle).text()).toBe('Print Labels for 3 Samples with BarTender');
-        expect(wrapper.find(SelectInput)).toHaveLength(1);
+        expect(wrapper.find(SelectInput)).toHaveLength(2);
         expect(wrapper.find('div.modal-body').text()).toContain(
             "Confirm you've selected the samples you want and the proper label template."
         );
@@ -134,15 +128,8 @@ describe('<PrintLabelsModal/>', () => {
     test('no label template', () => {
         const wrapper = mount(
             <PrintLabelsModalImpl
-                show={true}
-                schemaName={TEST_SCHEMA}
-                queryName={TEST_QUERY}
+                {...DEFAULT_PROPS()}
                 sampleIds={['1', '2', '3']}
-                showSelection={true}
-                labelTemplate={undefined}
-                printServiceUrl="testUrl"
-                queryModels={queryModels}
-                actions={actions}
             />
         );
         expect(wrapper.find(Button).prop('disabled')).toBe(true);
@@ -151,15 +138,8 @@ describe('<PrintLabelsModal/>', () => {
     test('no copy count', () => {
         const wrapper = mount(
             <PrintLabelsModalImpl
-                show={true}
-                schemaName={TEST_SCHEMA}
-                queryName={TEST_QUERY}
+                {...DEFAULT_PROPS()}
                 sampleIds={['1', '2', '3']}
-                showSelection={true}
-                labelTemplate="testTemplate"
-                printServiceUrl="testUrl"
-                queryModels={queryModels}
-                actions={actions}
             />
         );
         wrapper.setState({ numCopies: undefined });
@@ -169,36 +149,24 @@ describe('<PrintLabelsModal/>', () => {
     test('submitting', () => {
         const wrapper = mount(
             <PrintLabelsModalImpl
-                show={true}
-                schemaName={TEST_SCHEMA}
-                queryName={TEST_QUERY}
+                {...DEFAULT_PROPS()}
                 sampleIds={['1', '2', '3']}
-                showSelection={true}
-                labelTemplate="testTemplate"
-                printServiceUrl="testUrl"
-                queryModels={queryModels}
-                actions={actions}
             />
         );
         wrapper.setState({ submitting: true });
         expect(wrapper.find(Button).prop('disabled')).toBe(true);
     });
 
-    test('error', () => {
+    test('error', async () => {
         const wrapper = mount(
             <PrintLabelsModalImpl
-                show={true}
-                schemaName="test"
-                queryName="test"
-                sampleIds={[]}
-                showSelection={true}
-                labelTemplate="testTemplate"
-                printServiceUrl="test"
-                queryModels={queryModels}
-                actions={actions}
+                {...DEFAULT_PROPS()}
             />
         );
+        //TODO this should use override the print method and test the error handlers...
         wrapper.setState({ error: "We've got a problem" });
+        await waitForLifecycle(wrapper);
+
         const alert = wrapper.find(Alert);
         expect(alert).toHaveLength(1);
         expect(alert.text()).toBe("We've got a problem");

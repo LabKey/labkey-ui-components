@@ -76,7 +76,6 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
         entityDataType,
         iconSrc = 'samples',
         hasActiveJob,
-        labelTemplate,
         navigate,
         onUpdate,
         printServiceUrl,
@@ -341,7 +340,6 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                     afterPrint={onAfterPrint}
                     model={sampleModel}
                     sampleIds={sampleIds}
-                    labelTemplate={labelTemplate}
                     printServiceUrl={printServiceUrl}
                 />
             )}

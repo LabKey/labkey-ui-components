@@ -1,4 +1,4 @@
-import { ActionURL, Ajax, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Domain, Utils } from '@labkey/api';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { getQueryModelExportParams } from '../../../public/QueryModel/utils';
@@ -7,7 +7,13 @@ import { EXPORT_TYPES } from '../../constants';
 import { buildURL } from '../../url/AppURL';
 import { SAMPLE_EXPORT_CONFIG } from '../samples/constants';
 
-import { BarTenderConfiguration, BarTenderResponse } from './models';
+import { selectRows } from '../../query/selectRows';
+
+import { DomainDesign } from '../domainproperties/models';
+import { User } from '../base/models/User';
+
+import { LABEL_TEMPLATE_SQ, LABEL_TEMPLATES_LIST_NAME } from './constants';
+import { BarTenderConfiguration, BarTenderResponse, LabelTemplate } from './models';
 
 function handleBarTenderConfigurationResponse(response: any): BarTenderConfiguration {
     // Separate the BarTender configuration object from the success response
@@ -15,8 +21,54 @@ function handleBarTenderConfigurationResponse(response: any): BarTenderConfigura
     return new BarTenderConfiguration(btConfiguration);
 }
 
+function createLabelTemplateList(): Promise<DomainDesign> {
+    return new Promise((resolve, reject) => {
+        Domain.create({
+            kind: 'IntList',
+            domainDesign: {
+                name: LABEL_TEMPLATES_LIST_NAME,
+                description: 'Set of label templates available to print.',
+                fields: [
+                    {
+                        name: 'rowId',
+                        rangeURI: 'int',
+                    },
+                    {
+                        name: 'name',
+                        rangeURI: 'string',
+                        required: true,
+                        description: 'Display name for template',
+                    },
+                    {
+                        name: 'description',
+                        rangeURI: 'string',
+                    },
+                    {
+                        name: 'path',
+                        rangeURI: 'string',
+                        required: true,
+                        description: "Label template's relative location for print service",
+                    },
+                ],
+            },
+            options: {
+                keyName: 'rowId',
+                keyType: 'AutoIncrementInteger',
+            },
+            success: response => {
+                resolve(DomainDesign.create(response));
+            },
+            failure: response => {
+                reject(response);
+            },
+        });
+    });
+}
+
 export interface LabelPrintingAPIWrapper {
+    ensureLabelTemplatesList: (user: User) => Promise<LabelTemplate[]>;
     fetchBarTenderConfiguration: () => Promise<BarTenderConfiguration>;
+    getLabelTemplates: () => Promise<LabelTemplate[]>;
     printBarTenderLabels: (btxml: string, serviceURL: string) => Promise<BarTenderResponse>;
     printGridLabels: (
         sampleModel: QueryModel,
@@ -131,6 +183,47 @@ export class LabelPrintingServerAPIWrapper implements LabelPrintingAPIWrapper {
             });
         });
     };
+
+    ensureLabelTemplatesList = (user: User): Promise<LabelTemplate[]> => {
+        return new Promise<LabelTemplate[]>(resolve => {
+            this.getLabelTemplates()
+                .then((templates: LabelTemplate[]) => resolve(templates))
+                .catch(reason => {
+                    if (reason.status !== 404) {
+                        resolve(undefined);
+                    } else {
+                        if (!user.isAppAdmin()) {
+                            console.error(
+                                'User has insufficient permissions to create the template list. Please contact administrator'
+                            );
+                            resolve(undefined);
+                            return;
+                        }
+
+                        // try to create list
+                        createLabelTemplateList()
+                            .then(() => resolve([]))
+                            .catch(createReason => {
+                                console.error(createReason);
+                                resolve(undefined);
+                            });
+                    }
+                });
+        });
+    };
+
+    getLabelTemplates = (): Promise<LabelTemplate[]> => {
+        return new Promise<LabelTemplate[]>((resolve, reject) => {
+            selectRows({ schemaQuery: LABEL_TEMPLATE_SQ })
+                .then(response => {
+                    resolve(response?.rows?.map(row => LabelTemplate.create(row)) ?? []);
+                })
+                .catch(reason => {
+                    console.error(reason);
+                    reject(reason);
+                });
+        });
+    };
 }
 
 /**
@@ -141,7 +234,13 @@ export function getLabelPrintingTestAPIWrapper(
     overrides: Partial<LabelPrintingAPIWrapper> = {}
 ): LabelPrintingAPIWrapper {
     return {
-        fetchBarTenderConfiguration: () => Promise.resolve(new BarTenderConfiguration()),
+        ensureLabelTemplatesList: () => Promise.resolve([]),
+        fetchBarTenderConfiguration: () => Promise.resolve(
+            new BarTenderConfiguration({
+                serviceURL: '',
+            })
+        ),
+        getLabelTemplates: () => Promise.resolve([]),
         printBarTenderLabels: mockFn(),
         printGridLabels: mockFn(),
         saveBarTenderConfiguration: mockFn(),

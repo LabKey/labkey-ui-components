@@ -900,7 +900,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           "renameProject": [Function],
         },
         "labelprinting": LabelPrintingServerAPIWrapper {
+          "ensureLabelTemplatesList": [Function],
           "fetchBarTenderConfiguration": [Function],
+          "getLabelTemplates": [Function],
           "printBarTenderLabels": [Function],
           "printGridLabels": [Function],
           "saveBarTenderConfiguration": [Function],

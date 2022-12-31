@@ -5,3 +5,23 @@
 .label-printing--help-link {
     margin-right: 15px;
 }
+
+.label-templates-container {
+    clear: both;
+    margin-top: 10px;
+    border: none;
+    box-shadow: unset;
+
+    .sub-heading {
+
+        margin: unset;
+    }
+
+    .choices-list__empty-message {
+        padding-bottom: 5px;
+    }
+
+    .choices-container {
+        padding-top: 5px;
+    }
+}

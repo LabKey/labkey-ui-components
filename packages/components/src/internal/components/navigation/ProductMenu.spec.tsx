@@ -49,6 +49,7 @@ import {
     ProductMenuButtonTitle,
     ProductMenuProps,
 } from './ProductMenu';
+import {Container} from "../base/models/Container";
 
 function getDefaultServerContext(): Partial<ServerContext> {
     return {
@@ -160,6 +161,8 @@ twoSectionConfig.set(
 );
 sectionConfigs = sectionConfigs.push(twoSectionConfig);
 
+const HOME_PROJECT = new Container({ id: '12345', path: '/home', title: 'home' });
+
 describe('ProductMenuButton', () => {
     function getDefaultAppContext(overrides?: Partial<SecurityAPIWrapper>): Partial<AppContext> {
         return {
@@ -244,6 +247,22 @@ describe('ProductMenuButton', () => {
         );
         await waitForLifecycle(wrapper);
         expect(wrapper.find('.title').text()).toBe(TEST_FOLDER_CONTAINER.title);
+        expect(wrapper.find('.subtitle').text()).toBe('Dashboard');
+        wrapper.unmount();
+    });
+
+    test('ProductMenuButtonTitle home', async () => {
+        const wrapper = mountWithAppServerContext(
+            <ProductMenuButtonTitle
+                container={HOME_PROJECT}
+                folderItems={[{} as FolderMenuItem, {} as FolderMenuItem]}
+                routes={[]}
+            />,
+            getDefaultAppContext(),
+            getDefaultServerContext()
+        );
+        await waitForLifecycle(wrapper);
+        expect(wrapper.find('.title').text()).toBe('Home Project');
         expect(wrapper.find('.subtitle').text()).toBe('Dashboard');
         wrapper.unmount();
     });
@@ -358,6 +377,15 @@ describe('createFolderItem', () => {
         expect(item.path).toBe(TEST_FOLDER_CONTAINER.path);
         expect(item.isTopLevel).toBe(true);
         expect(item.href).toBe('/labkey/controller/TestProjectContainer/TestFolderContainer/app.view');
+    });
+
+    test('home project', () => {
+        const item = createFolderItem(HOME_PROJECT, 'controller', true);
+        expect(item.id).toBe(HOME_PROJECT.id);
+        expect(item.label).toBe('Home Project');
+        expect(item.path).toBe(HOME_PROJECT.path);
+        expect(item.isTopLevel).toBe(true);
+        expect(item.href).toBe('/labkey/controller/home/app.view');
     });
 });
 

@@ -80,11 +80,14 @@ const ProductMenuButtonImpl: FC<ProductMenuButtonProps & WithRouterProps> = memo
 
         (async () => {
             try {
-                const folders = await api.security.fetchContainers({
+                let folders = await api.security.fetchContainers({
                     // Container metadata does not always provide "type" so inspecting the
                     // "parentPath" to determine top-level folder vs subfolder.
                     containerPath: container.parentPath === '/' ? container.path : container.parentPath,
                 });
+
+                // if user doesn't have permissions to the parent/project, the response will come back with an empty Container object
+                folders = folders.filter(c => c !== undefined && c.id !== '');
 
                 const items_: FolderMenuItem[] = [];
                 const topLevelFolderIdx = folders.findIndex(f => f.parentPath === '/');
@@ -279,11 +282,14 @@ interface ProductMenuButtonTitle {
     routes: any[];
 }
 
+const HOME_PATH = '/home';
+const HOME_TITLE = 'Home Project';
+
 export const ProductMenuButtonTitle: FC<ProductMenuButtonTitle> = memo(props => {
     const { container, folderItems, routes } = props;
     const title = useMemo(() => {
-        return folderItems?.length > 1 ? container.title : 'Menu';
-    }, [container.title, folderItems?.length]);
+        return folderItems?.length > 1 ? (container.path === HOME_PATH ? HOME_TITLE : container.title) : 'Menu';
+    }, [container.path, container.title, folderItems?.length]);
 
     const subtitle = useMemo(() => {
         return getHeaderMenuSubtitle(routes?.[1]?.path);
@@ -306,7 +312,7 @@ export function createFolderItem(folder: Container, controllerName: string, isTo
         }),
         id: folder.id,
         isTopLevel,
-        label: folder.title,
+        label: folder.path === HOME_PATH ? HOME_TITLE : folder.title,
         path: folder.path,
     };
 }

@@ -1,6 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* App header Projects and Menu misc fixes
+  * don't show projects column when user only has perm to a single subfolder
+  * add new app icons with lighter background color for use in menu Dashboard link
+  * adjust hover styling of menu items and menu widths for various screen sizes
+  * show 'Home Project' for title when in /home container
+* Issue 46299: Lineage Graph: Make Font Larger
+
 ### version 2.275.0
 *Released*: 29 December 2022
 * Add support for tracking and using multiple BarTender Label templates

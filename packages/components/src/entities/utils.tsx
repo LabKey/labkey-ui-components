@@ -181,6 +181,11 @@ export const getSampleTypeTemplateUrl = (
         col => excludeColumns.indexOf(col) == -1
     );
 
+    // Issue 46593: if the table XML metadata override specifies a custom importTemplate, use it
+    if (queryInfo.importTemplates?.[0]?.url.toLowerCase().indexOf('exportexceltemplate.view') === -1) {
+        return queryInfo.importTemplates?.[0].url;
+    }
+
     return ActionURL.buildURL('query', 'ExportExcelTemplate', null, {
         ...exportConfig,
         schemaName: schemaQuery.getSchema(),

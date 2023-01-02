@@ -9,6 +9,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * adjust hover styling of menu items and menu widths for various screen sizes
   * show 'Home Project' for title when in /home container
 * Issue 46299: Lineage Graph: Make Font Larger
+* Issue 46593:App template download button ignores custom XML metadata <importTemplates> override for sample types
 
 ### version 2.275.0
 *Released*: 29 December 2022

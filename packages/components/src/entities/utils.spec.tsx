@@ -375,6 +375,16 @@ describe('getSampleTypeTemplateUrl', () => {
             expect(url.indexOf('includeColumn=' + col)).toBe(-1);
         });
     });
+
+    test('with queryInfo importTemplates', () => {
+        const qInfo = QueryInfo.fromJSON({
+            schemaName: 'schema',
+            name: 'query',
+            columns: {},
+            importTemplates: [{ url: 'www.labkey.com' }],
+        });
+        expect(getSampleTypeTemplateUrl(qInfo, undefined)).toBe('www.labkey.com');
+    });
 });
 
 describe('createEntityParentKey', () => {

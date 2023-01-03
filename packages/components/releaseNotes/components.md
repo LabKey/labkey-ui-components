@@ -5,6 +5,22 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: XX December 2022
 * Issue 46733: Editable for aliquots only/Required Field: Adding Samples gives error
 
+### version 2.276.1
+*Released*: 3 January 2023
+* Issue 46767: DatePicker valid dates start at year 1000 (i.e. new Date('1000-01-01'))
+  * update `parseDate` to add an optional minDate param for valid dates for DatePicker selected date
+* Issue 46839: Allow click on search input icon for grid panel to apply search value
+
+### version 2.276.0
+*Released*: 3 January 2023
+* App header Projects and Menu misc fixes
+  * don't show projects column when user only has perm to a single subfolder
+  * add new app icons with lighter background color for use in menu Dashboard link
+  * adjust hover styling of menu items and menu widths for various screen sizes
+  * show 'Home Project' for title when in /home container
+* Issue 46299: Lineage Graph: Make Font Larger
+* Issue 46593:App template download button ignores custom XML metadata <importTemplates> override for sample types
+
 ### version 2.275.0
 *Released*: 29 December 2022
 * Add support for tracking and using multiple BarTender Label templates

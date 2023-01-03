@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.276.0
+*Released*: 3 January 2023
 * App header Projects and Menu misc fixes
   * don't show projects column when user only has perm to a single subfolder
   * add new app icons with lighter background color for use in menu Dashboard link

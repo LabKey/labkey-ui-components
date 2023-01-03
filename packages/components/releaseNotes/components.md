@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.276.1
+*Released*: 3 January 2023
+* Issue 46767: DatePicker valid dates start at year 1000 (i.e. new Date('1000-01-01'))
+  * update `parseDate` to add an optional minDate param for valid dates for DatePicker selected date
+* Issue 46839: Allow click on search input icon for grid panel to apply search value
+
 ### version 2.276.0
 *Released*: 3 January 2023
 * App header Projects and Menu misc fixes

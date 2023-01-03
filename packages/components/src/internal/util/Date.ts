@@ -104,32 +104,42 @@ export function getTimeFormat(): string {
     return toMomentFormatString('HH:mm:ss');
 }
 
-export function parseDate(dateStr: string, dateFormat?: string): Date {
+export function parseDate(dateStr: string, dateFormat?: string, minDate?: Date): Date {
     if (!dateStr) return null;
 
     // Moment.js and react datepicker date format is different
     // https://github.com/Hacker0x01/react-datepicker/issues/1609
     const _dateFormat = dateFormat?.replace('yyyy', 'YYYY').replace('yy', 'YY').replace('dd', 'DD');
 
+    let validDate;
     if (_dateFormat) {
         const date = moment(dateStr, _dateFormat, true);
         if (date && date.isValid()) {
-            return date.toDate();
+            validDate = date;
         }
     }
 
     // Issue 45140: if a dateFormat was provided here and the date didn't parse, try the default container format and no format
-    let date = moment(dateStr, getMomentDateTimeFormat(), true);
-    if (date && date.isValid()) {
-        return date.toDate();
+    if (!validDate) {
+        const date = moment(dateStr, getMomentDateTimeFormat(), true);
+        if (date && date.isValid()) {
+            validDate = date;
+        }
     }
 
-    date = moment(dateStr);
-    if (date && date.isValid()) {
-        return date.toDate();
+    if (!validDate) {
+        const date = moment(dateStr);
+        if (date && date.isValid()) {
+            validDate = date;
+        }
     }
 
-    return null;
+    // Issue 46767: DatePicker valid dates start at year 1000 (i.e. new Date('1000-01-01'))
+    if (validDate && minDate && validDate.isBefore(minDate)) {
+        return null;
+    }
+
+    return validDate ? validDate.toDate() : null;
 }
 
 function _formatDate(date: Date | number, dateFormat: string, timezone?: string): string {

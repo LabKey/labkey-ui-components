@@ -59,7 +59,7 @@
 }
 .grid-panel__menu-toggle {
     color: $light-gray;
-    fontSize: 12px;
+    font-size: 12px;
 }
 
 .grid-panel__search-form {
@@ -68,10 +68,11 @@
 
     .input-group-addon {
         background-color: inherit;
-    }
 
-    .grid-panel__search-input {
-        padding: 7px 22px;
+        &:hover {
+            cursor: pointer;
+            background-color: $light-gray;
+        }
     }
 }
 

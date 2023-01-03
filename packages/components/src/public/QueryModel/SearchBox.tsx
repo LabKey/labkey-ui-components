@@ -32,6 +32,10 @@ export const SearchBox: FC<Props> = memo(props => {
         [onSearch, searchValue]
     );
 
+    const onIconClick = useCallback(() => {
+        onSearch(searchValue);
+    }, [onSearch, searchValue]);
+
     const removeSearch = useCallback(() => {
         onSearch('');
         setSearchValue('');
@@ -41,7 +45,7 @@ export const SearchBox: FC<Props> = memo(props => {
         <form className="grid-panel__search-form" onSubmit={onSubmit}>
             <div className="form-group">
                 <span className="grid-panel__input-group input-group">
-                    <span className="input-group-addon">
+                    <span className="input-group-addon" onClick={onIconClick}>
                         <i className="fa fa-search" />
                     </span>
                     <input

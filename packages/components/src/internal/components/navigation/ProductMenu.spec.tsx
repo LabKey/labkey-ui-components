@@ -51,6 +51,7 @@ import {
     ProductMenuButtonTitle,
     ProductMenuProps,
 } from './ProductMenu';
+import { HOME_PATH, HOME_TITLE } from './constants';
 
 function getDefaultServerContext(): Partial<ServerContext> {
     return {
@@ -162,7 +163,7 @@ twoSectionConfig.set(
 );
 sectionConfigs = sectionConfigs.push(twoSectionConfig);
 
-const HOME_PROJECT = new Container({ id: '12345', path: '/home', title: 'home' });
+const HOME_PROJECT = new Container({ id: '12345', path: HOME_PATH, title: 'home' });
 
 describe('ProductMenuButton', () => {
     function getDefaultAppContext(overrides?: Partial<SecurityAPIWrapper>): Partial<AppContext> {
@@ -263,7 +264,7 @@ describe('ProductMenuButton', () => {
             getDefaultServerContext()
         );
         await waitForLifecycle(wrapper);
-        expect(wrapper.find('.title').text()).toBe('Home Project');
+        expect(wrapper.find('.title').text()).toBe(HOME_TITLE);
         expect(wrapper.find('.subtitle').text()).toBe('Dashboard');
         wrapper.unmount();
     });
@@ -383,7 +384,7 @@ describe('createFolderItem', () => {
     test('home project', () => {
         const item = createFolderItem(HOME_PROJECT, 'controller', true);
         expect(item.id).toBe(HOME_PROJECT.id);
-        expect(item.label).toBe('Home Project');
+        expect(item.label).toBe(HOME_TITLE);
         expect(item.path).toBe(HOME_PROJECT.path);
         expect(item.isTopLevel).toBe(true);
         expect(item.href).toBe('/labkey/controller/home/app.view');

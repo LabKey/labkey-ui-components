@@ -56,6 +56,7 @@ import {
 import { FolderMenu, FolderMenuItem } from './FolderMenu';
 import { ProductMenuSection } from './ProductMenuSection';
 import { MenuSectionConfig, MenuSectionModel, ProductMenuModel } from './model';
+import { HOME_PATH, HOME_TITLE } from './constants';
 
 export interface ProductMenuButtonProps {
     appProperties?: AppProperties;
@@ -281,9 +282,6 @@ interface ProductMenuButtonTitle {
     folderItems: FolderMenuItem[];
     routes: any[];
 }
-
-const HOME_PATH = '/home';
-const HOME_TITLE = 'Home Project';
 
 export const ProductMenuButtonTitle: FC<ProductMenuButtonTitle> = memo(props => {
     const { container, folderItems, routes } = props;

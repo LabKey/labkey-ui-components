@@ -1,4 +1,4 @@
-import { ActionURL, Ajax, Domain, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Utils } from '@labkey/api';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { getQueryModelExportParams } from '../../../public/QueryModel/utils';
@@ -23,44 +23,17 @@ function handleBarTenderConfigurationResponse(response: any): BarTenderConfigura
 
 function createLabelTemplateList(): Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
-        Domain.create({
-            kind: 'IntList',
-            domainDesign: {
-                name: LABEL_TEMPLATES_LIST_NAME,
-                description: 'Set of label templates available to print.',
-                fields: [
-                    {
-                        name: 'rowId',
-                        rangeURI: 'int',
-                    },
-                    {
-                        name: 'name',
-                        rangeURI: 'string',
-                        required: true,
-                        description: 'Display name for template',
-                    },
-                    {
-                        name: 'description',
-                        rangeURI: 'string',
-                    },
-                    {
-                        name: 'path',
-                        rangeURI: 'string',
-                        required: true,
-                        description: "Label template's relative location for print service",
-                    },
-                ],
+        Ajax.request({
+            url: buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'ensureLabelTemplateList.api', undefined, {
+                returnUrl: false,
+            }),
+            method: 'POST',
+            success: () => {
+                resolve(undefined);
             },
-            options: {
-                keyName: 'rowId',
-                keyType: 'AutoIncrementInteger',
-            },
-            success: response => {
-                resolve(DomainDesign.create(response));
-            },
-            failure: response => {
-                reject(response);
-            },
+            failure: reason => {
+                reject(reason);
+            }
         });
     });
 }

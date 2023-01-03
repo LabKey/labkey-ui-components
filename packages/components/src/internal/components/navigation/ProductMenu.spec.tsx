@@ -34,6 +34,8 @@ import { getSecurityTestAPIWrapper, SecurityAPIWrapper } from '../security/APIWr
 
 import { TEST_LKS_STARTER_MODULE_CONTEXT } from '../../productFixtures';
 
+import { Container } from '../base/models/Container';
+
 import { getNavigationTestAPIWrapper, NavigationAPIWrapper } from './NavigationAPIWrapper';
 
 import { FolderMenu, FolderMenuItem } from './FolderMenu';
@@ -49,7 +51,6 @@ import {
     ProductMenuButtonTitle,
     ProductMenuProps,
 } from './ProductMenu';
-import {Container} from "../base/models/Container";
 
 function getDefaultServerContext(): Partial<ServerContext> {
     return {

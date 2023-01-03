@@ -36,6 +36,13 @@ import { getSamplesTestAPIWrapper } from '../internal/components/samples/APIWrap
 import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/constants';
 
 import {
+    TEST_LKS_STARTER_MODULE_CONTEXT,
+    TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
+    TEST_LKSM_STARTER_AND_WORKFLOW_MODULE_CONTEXT,
+    TEST_LKSM_STARTER_MODULE_CONTEXT,
+} from '../internal/productFixtures';
+
+import {
     getSampleWizardURL,
     filterMediaSampleTypes,
     filterSampleRowsForOperation,
@@ -51,11 +58,6 @@ import {
     getJobCreationHref,
     processSampleBulkAdd,
 } from './utils';
-import {
-    TEST_LKS_STARTER_MODULE_CONTEXT,
-    TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT, TEST_LKSM_STARTER_AND_WORKFLOW_MODULE_CONTEXT,
-    TEST_LKSM_STARTER_MODULE_CONTEXT
-} from '../internal/productFixtures';
 
 describe('getCrossFolderSelectionMsg', () => {
     test('without cross folder selection', () => {
@@ -154,7 +156,7 @@ describe('filterSampleRowsForOperation', () => {
         numNotAllowed: number
     ): void {
         const filteredData = filterSampleRowsForOperation(rows, operation, 'RowId', 'Name', {
-            api: {moduleNames: ['samplemanagement']},
+            api: { moduleNames: ['samplemanagement'] },
         });
         expect(Object.keys(filteredData.rows)).toHaveLength(numAllowed);
         expect(filteredData.statusData.allowed).toHaveLength(numAllowed);
@@ -220,7 +222,9 @@ describe('getSampleWizardURL', () => {
     });
 
     test('default props, with productId', () => {
-        expect(getSampleWizardURL(null, null, null, undefined, 'from', 'to').toString()).toBe('/labkey/to/app.view#/samples/new');
+        expect(getSampleWizardURL(null, null, null, undefined, 'from', 'to').toString()).toBe(
+            '/labkey/to/app.view#/samples/new'
+        );
     });
 
     test('targetSampleSet, with productId', () => {
@@ -242,16 +246,16 @@ describe('getSampleWizardURL', () => {
     });
 
     test('targetSampleSet and parent and selectionKey, with productId', () => {
-        expect(getSampleWizardURL('target1', 'parent1', 'grid-1|samples|type1', undefined, 'from', 'to').toString()).toBe(
-            '/labkey/to/app.view#/samples/new?target=target1&parent=parent1&selectionKey=grid-1%7Csamples%7Ctype1'
-        );
+        expect(
+            getSampleWizardURL('target1', 'parent1', 'grid-1|samples|type1', undefined, 'from', 'to').toString()
+        ).toBe('/labkey/to/app.view#/samples/new?target=target1&parent=parent1&selectionKey=grid-1%7Csamples%7Ctype1');
     });
 
-    test("use snapshot selection", () => {
+    test('use snapshot selection', () => {
         expect(getSampleWizardURL('target1', 'parent1', 'grid-1|samples|type1', true).toHref()).toBe(
             '#/samples/new?target=target1&parent=parent1&selectionKey=grid-1%7Csamples%7Ctype1&selectionKeyType=snapshot'
         );
-    })
+    });
 });
 
 describe('getSampleDeleteMessage', () => {
@@ -262,7 +266,7 @@ describe('getSampleDeleteMessage', () => {
     });
 
     test('cannot delete, professional', () => {
-        LABKEY.moduleContext = {...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT};
+        LABKEY.moduleContext = { ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT };
         const wrapper = mount(<span>{getSampleDeleteMessage(false, false)}</span>);
         expect(wrapper.find(LoadingSpinner).exists()).toBeFalsy();
         expect(wrapper.text()).toContain(
@@ -279,7 +283,7 @@ describe('getSampleDeleteMessage', () => {
     });
 
     test('cannot delete, no workflow', () => {
-        LABKEY.moduleContext = {...TEST_LKS_STARTER_MODULE_CONTEXT};
+        LABKEY.moduleContext = { ...TEST_LKS_STARTER_MODULE_CONTEXT };
         const wrapper = mount(<span>{getSampleDeleteMessage(false, false)}</span>);
         expect(wrapper.find(LoadingSpinner).exists()).toBeFalsy();
         expect(wrapper.text()).toContain(
@@ -288,7 +292,7 @@ describe('getSampleDeleteMessage', () => {
     });
 
     test('cannot delete, workflow no assay', () => {
-        LABKEY.moduleContext = {...TEST_LKSM_STARTER_AND_WORKFLOW_MODULE_CONTEXT};
+        LABKEY.moduleContext = { ...TEST_LKSM_STARTER_AND_WORKFLOW_MODULE_CONTEXT };
         const wrapper = mount(<span>{getSampleDeleteMessage(false, false)}</span>);
         expect(wrapper.find(LoadingSpinner).exists()).toBeFalsy();
         expect(wrapper.text()).toContain(
@@ -297,7 +301,7 @@ describe('getSampleDeleteMessage', () => {
     });
 
     test('cannot delete no workflow or assay', () => {
-        LABKEY.moduleContext = {...TEST_LKSM_STARTER_MODULE_CONTEXT};
+        LABKEY.moduleContext = { ...TEST_LKSM_STARTER_MODULE_CONTEXT };
         const wrapper = mount(<span>{getSampleDeleteMessage(false, false)}</span>);
         expect(wrapper.find(LoadingSpinner).exists()).toBeFalsy();
         expect(wrapper.text()).toContain(

@@ -70,8 +70,9 @@ export function filterSampleRowsForOperation(
     rows: Record<any, any>,
     operation: SampleOperation,
     idField = 'RowId',
-    nameField: string = 'Name',
-    moduleContext?: ModuleContext): { rows: { [p: string]: any }; statusData: OperationConfirmationData; statusMessage: string } {
+    nameField = 'Name',
+    moduleContext?: ModuleContext
+): { rows: { [p: string]: any }; statusData: OperationConfirmationData; statusMessage: string } {
     const allowed = [];
     const notAllowed = [];
     const validRows = {};
@@ -132,7 +133,7 @@ export function getSampleWizardURL(
     selectionKey?: string,
     useSnapshotSelection?: boolean,
     currentProductId?: string,
-    targetProductId?: string,
+    targetProductId?: string
 ): string | AppURL {
     const params = {};
 
@@ -149,7 +150,6 @@ export function getSampleWizardURL(
 
     return createProductUrlFromParts(targetProductId, currentProductId, params, SAMPLES_KEY, 'new');
 }
-
 
 // TODO: Convert this into a component and utilize useServerContext() to fetch moduleContext for isELNEnabled() check
 export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: boolean): ReactNode {

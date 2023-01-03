@@ -1323,7 +1323,7 @@ const DEFAULT_NODE_PROPS = {
         useBorderWithImage: true,
     },
     font: {
-        size: 10,
+        size: 14,
     },
     chosen: {
         node: function (values, id, selected, hovering) {

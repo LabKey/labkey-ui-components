@@ -273,4 +273,29 @@ describe('EntityInsertPanel.getInferredFieldWarnings', () => {
         expect(wrapper.text()).toHaveLength(0);
         wrapper.unmount();
     });
+
+    test('with other allowed fields and disallowedUpdateFields', () => {
+        const wrapper = mount(
+            <div>
+                {EntityInsertPanelImpl.getInferredFieldWarnings(
+                    new InferDomainResponse({
+                        data: List<any>(),
+                        fields: List<QueryColumn>([
+                            QueryColumn.create({ name: 'known' }),
+                            QueryColumn.create({ name: 'alsoAllowed' }),
+                            QueryColumn.create({ name: 'materialInputs/X', lookup }),
+                            QueryColumn.create({ name: 'dataInputs/Y', lookup }),
+                        ]),
+                        reservedFields: List<QueryColumn>(),
+                    }),
+                    domainDetails,
+                    baseColumns,
+                    ['otherAllowed', 'alsoAllowed'],
+                    ['alsoAllowed']
+                )}
+            </div>
+        );
+        expect(wrapper.text()).toContain('alsoAllowed cannot be updated and and will be ignored.');
+        wrapper.unmount();
+    });
 });

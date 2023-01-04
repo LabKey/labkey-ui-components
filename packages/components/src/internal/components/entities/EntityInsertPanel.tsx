@@ -132,6 +132,7 @@ interface OwnProps {
     acceptedFormats?: string;
     afterEntityCreation?: (entityTypeName, filter, entityCount, actionStr, transactionAuditId?, response?) => void;
     allowedNonDomainFields?: string[];
+    disallowedUpdateFields?: string[];
     api?: ComponentsAPIWrapper;
     asyncSize?: number; // the file size cutoff to enable async import. If undefined, async is not supported
     auditBehavior?: AuditBehaviorTypes;
@@ -1341,21 +1342,29 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         inferred: InferDomainResponse,
         domainDetails: DomainDetails,
         columns: OrderedMap<string, QueryColumn>,
-        otherAllowedFields?: string[]
+        otherAllowedFields?: string[],
+        disallowedUpdateFields?: string[]
     ): React.ReactNode[] {
         const uniqueIdFields = [];
-        const unknownFields = [];
+        const unknownFields = [], noUpdateFields = [];
         const { domainDesign } = domainDetails;
-        let allowedFields = [];
+        let allowedFields = [], lcDisallowedUdateFields = [];
         if (domainDetails.options.has('importAliases')) {
             allowedFields = Object.keys(domainDetails.options.get('importAliases')).map(key => key.toLowerCase());
         }
         if (otherAllowedFields) {
             allowedFields = allowedFields.concat(otherAllowedFields.map(field => field.toLowerCase()));
         }
+        if (disallowedUpdateFields) {
+            lcDisallowedUdateFields = disallowedUpdateFields.map(field => field.toLowerCase());
+        }
 
         inferred.fields.forEach(field => {
             const lcName = field.name.toLowerCase();
+
+            if (lcDisallowedUdateFields.indexOf(lcName) >= 0) {
+                noUpdateFields.push(field.name);
+            }
 
             if (!field.isExpInput(false) && allowedFields.indexOf(lcName) < 0) {
                 const aliasField = domainDesign.fields.find(
@@ -1378,6 +1387,15 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         });
 
         const msg = [];
+        if (noUpdateFields.length > 0) {
+            msg.push(
+                <p key="noUpdateFields">
+                    {EntityInsertPanelImpl.getWarningFieldList(noUpdateFields)}
+                    {' cannot be updated and and will be ignored.'}
+                </p>
+            );
+        }
+
         if (unknownFields.length > 0) {
             msg.push(
                 <p key="unknownFields">
@@ -1402,7 +1420,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     }
 
     onPreviewLoad = (inferred: InferDomainResponse): any => {
-        const { allowedNonDomainFields } = this.props;
+        const { allowedNonDomainFields, disallowedUpdateFields, isEditMode } = this.props;
         const { insertModel, originalQueryInfo } = this.state;
         fetchDomainDetails(undefined, insertModel.getSchemaQuery().schemaName, insertModel.getSchemaQuery().queryName)
             .then(domainDetails => {
@@ -1410,7 +1428,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                     inferred,
                     domainDetails,
                     originalQueryInfo.columns,
-                    allowedNonDomainFields
+                    allowedNonDomainFields,
+                    isEditMode ? disallowedUpdateFields : undefined
                 );
 
                 if (msg.length > 0) {

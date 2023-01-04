@@ -17,7 +17,7 @@ import { QueryInfo } from '../public/QueryInfo';
 import { BulkAddData } from '../internal/components/editable/EditableGrid';
 import { InsufficientPermissionsPage } from '../internal/components/permissions/InsufficientPermissionsPage';
 import { EntityInsertPanel } from '../internal/components/entities/EntityInsertPanel';
-import { SAMPLE_INSERT_EXTRA_COLUMNS } from '../internal/components/samples/constants';
+import {ALIQUOTED_FROM_COL, SAMPLE_INSERT_EXTRA_COLUMNS} from '../internal/components/samples/constants';
 import {
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
     DATA_IMPORT_FILE_SIZE_LIMITS,
@@ -33,12 +33,13 @@ import { useSampleTypeAppContext } from './useSampleTypeAppContext';
 
 const TITLE = 'Sample Type';
 const SUBTITLE = 'Create New Samples';
+const SUBTITLE_UPDATE = 'Update Samples';
 
 export interface SampleCreatePageProps extends CommonPageProps, WithRouterProps, InjectedRouteLeaveProps {}
 
 export const SampleCreatePage: FC<SampleCreatePageProps> = memo(props => {
     const { location, navigate, router, routes, goBack } = props;
-    const { useAsync } = location?.query;
+    const { useAsync, mode } = location?.query;
     const { user } = useServerContext();
     const { createNotification } = useNotificationsContext();
     const { combineParentTypes, controllerName, downloadTemplateExcludeColumns, importHelpLinkTopic, parentDataTypes } =
@@ -133,10 +134,11 @@ export const SampleCreatePage: FC<SampleCreatePageProps> = memo(props => {
     // and not subsequently re-query if the filter(s) change. Here this is blocked by not rendering
     // the EntityInsertPanel until sample type information is available.
     return (
-        <SampleTypeBasePage subtitle={SUBTITLE} title={TITLE}>
+        <SampleTypeBasePage subtitle={mode?.toLowerCase() === 'update' ? SUBTITLE_UPDATE : SUBTITLE} title={TITLE}>
             <EntityInsertPanel
                 afterEntityCreation={afterEntityCreation}
                 allowedNonDomainFields={SAMPLE_INSERT_EXTRA_COLUMNS}
+                disallowedUpdateFields={[ALIQUOTED_FROM_COL]}
                 asyncSize={useAsync === 'true' ? 1 : BACKGROUND_IMPORT_MIN_FILE_SIZE}
                 auditBehavior={auditBehavior}
                 combineParentTypes={combineParentTypes}

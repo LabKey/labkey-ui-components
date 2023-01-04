@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 4 Jan 2023
 * Remove UserAvatars
   * It is no longer used by our apps
+* Remove AssayButtons.tsx
 
 ### version 2.276.1
 *Released*: 3 January 2023

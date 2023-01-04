@@ -5,6 +5,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: XX December 2022
 * Issue 46733: Editable for aliquots only/Required Field: Adding Samples gives error
 
+### version 2.277.0
+*Released*: 4 Jan 2023
+* Remove UserAvatars
+  * It is no longer used by our apps
+* Remove AssayButtons.tsx
+
 ### version 2.276.1
 *Released*: 3 January 2023
 * Issue 46767: DatePicker valid dates start at year 1000 (i.e. new Date('1000-01-01'))

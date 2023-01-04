@@ -12,14 +12,12 @@ import React, {
 } from 'react';
 import classNames from 'classnames';
 import { Dropdown, MenuItem } from 'react-bootstrap';
-import { User } from '@labkey/api';
 
 import { generateId, handleFileInputChange } from '../util/utils';
 import { isLoading, LoadingState } from '../../public/LoadingState';
 import { resolveErrorMessage } from '../util/messaging';
 import { LoadingSpinner } from '../components/base/LoadingSpinner';
 import { Key } from '../../public/useEnterEscape';
-import { UserAvatar } from '../components/UserAvatars';
 
 import { AnnouncementsAPIWrapper } from './APIWrapper';
 

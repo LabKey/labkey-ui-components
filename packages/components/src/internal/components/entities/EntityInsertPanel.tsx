@@ -39,10 +39,7 @@ import {
 
 import { fetchDomainDetails, getDomainNamePreviews } from '../domainproperties/actions';
 
-import {
-    SAMPLE_STATE_COLUMN_NAME,
-    SELECTION_KEY_TYPE,
-} from '../samples/constants';
+import { SAMPLE_STATE_COLUMN_NAME, SELECTION_KEY_TYPE } from '../samples/constants';
 
 import { loadNameExpressionOptions } from '../settings/actions';
 
@@ -132,14 +129,16 @@ interface OwnProps {
     acceptedFormats?: string;
     afterEntityCreation?: (entityTypeName, filter, entityCount, actionStr, transactionAuditId?, response?) => void;
     allowedNonDomainFields?: string[];
-    disallowedUpdateFields?: string[];
     api?: ComponentsAPIWrapper;
-    asyncSize?: number; // the file size cutoff to enable async import. If undefined, async is not supported
+    asyncSize?: number;
+    // the file size cutoff to enable async import. If undefined, async is not supported
     auditBehavior?: AuditBehaviorTypes;
     canEditEntityTypeDetails?: boolean;
-    combineParentTypes?: boolean; // Puts all parent types in one parent button. Name on the button will be the first parent type listed
+    combineParentTypes?: boolean;
+    // Puts all parent types in one parent button. Name on the button will be the first parent type listed
     containerFilter?: Query.ContainerFilter;
     disableMerge?: boolean;
+    disallowedUpdateFields?: string[];
     entityDataType: EntityDataType;
     errorNounPlural?: string; // Used if you want a different noun in error messages than on the other components
     fileImportParameters?: Record<string, any>;
@@ -1346,9 +1345,11 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         disallowedUpdateFields?: string[]
     ): React.ReactNode[] {
         const uniqueIdFields = [];
-        const unknownFields = [], noUpdateFields = [];
+        const unknownFields = [],
+            noUpdateFields = [];
         const { domainDesign } = domainDetails;
-        let allowedFields = [], lcDisallowedUdateFields = [];
+        let allowedFields = [],
+            lcDisallowedUdateFields = [];
         if (domainDetails.options.has('importAliases')) {
             allowedFields = Object.keys(domainDetails.options.get('importAliases')).map(key => key.toLowerCase());
         }

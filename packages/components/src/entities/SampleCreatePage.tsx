@@ -17,7 +17,7 @@ import { QueryInfo } from '../public/QueryInfo';
 import { BulkAddData } from '../internal/components/editable/EditableGrid';
 import { InsufficientPermissionsPage } from '../internal/components/permissions/InsufficientPermissionsPage';
 import { EntityInsertPanel } from '../internal/components/entities/EntityInsertPanel';
-import {ALIQUOTED_FROM_COL, SAMPLE_INSERT_EXTRA_COLUMNS} from '../internal/components/samples/constants';
+import { ALIQUOTED_FROM_COL, SAMPLE_INSERT_EXTRA_COLUMNS } from '../internal/components/samples/constants';
 import {
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
     DATA_IMPORT_FILE_SIZE_LIMITS,

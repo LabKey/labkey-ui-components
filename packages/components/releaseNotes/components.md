@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 46574: Filter Panel boolean labels are not clickable
 * Issue 46765: Grid cell sample status input requires multiple clicks to open select options menu
 * Issue 46837: Checkbox inputs with label render incorrectly on col-sm size
+* Issue 46581: Editable Grid doesn't de-focus cells if you click outside the table
 
 ### version 2.277.0
 *Released*: 4 Jan 2023

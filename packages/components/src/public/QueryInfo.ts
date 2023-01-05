@@ -234,8 +234,13 @@ export class QueryInfo extends Record({
         return List<QueryColumn>();
     }
 
-    getLookupViewColumns(): List<QueryColumn> {
-        return this.columns.filter(col => col.shownInLookupView).toList();
+    // Note: Yes, all of the other QueryInfo methods return Immutable lists or related types, but all usages of this
+    // method need arrays, and doing that computation in one area is ideal.
+    getLookupViewColumns(omittedColumns?: string[]): QueryColumn[] {
+        const lcCols = omittedColumns ? omittedColumns.map(c => c.toLowerCase()) : [];
+        return this.columns
+            .filter(col => col.shownInLookupView && lcCols.indexOf(col.fieldKey.toLowerCase()) === -1)
+            .toArray();
     }
 
     getAllColumns(viewName?: string, omittedColumns?: List<string>): List<QueryColumn> {

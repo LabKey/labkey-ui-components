@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD Jan 2023
+* Issue 46574: Filter Panel boolean labels are not clickable
+* Issue 46765: Grid cell sample status input requires multiple clicks to open select options menu
+* Issue 46837: Checkbox inputs with label render incorrectly on col-sm size
+
 ### version 2.277.0
 *Released*: 4 Jan 2023
 * Remove UserAvatars

@@ -690,7 +690,6 @@ import { Key, useEnterEscape } from './public/useEnterEscape';
 import { DateInput } from './internal/components/DateInput';
 import { EditInlineField } from './internal/components/EditInlineField';
 import { FileAttachmentArea } from './internal/components/files/FileAttachmentArea';
-import { UserAvatar, UserAvatars } from './internal/components/UserAvatars';
 import { AnnouncementRenderType } from './internal/announcements/model';
 import { Discussions } from './internal/announcements/Discussions';
 import { Thread } from './internal/announcements/Thread';
@@ -1402,9 +1401,6 @@ export {
     OntologyConceptPicker,
     OntologySearchInput,
     ConceptModel,
-    // UserAvatars
-    UserAvatar,
-    UserAvatars,
     // Announcements
     AnnouncementRenderType,
     Discussions,

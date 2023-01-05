@@ -234,6 +234,10 @@ export class QueryInfo extends Record({
         return List<QueryColumn>();
     }
 
+    getLookupViewColumns(): List<QueryColumn> {
+        return this.columns.filter(col => col.shownInLookupView).toList();
+    }
+
     getAllColumns(viewName?: string, omittedColumns?: List<string>): List<QueryColumn> {
         // initialReduction is getDisplayColumns() because they include custom metadata from the view, like alternate
         // column display names (e.g. the Experiment grid overrides Title to "Experiment Title"). See Issue 38186 for

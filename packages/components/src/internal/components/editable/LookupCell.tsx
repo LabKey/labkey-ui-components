@@ -98,7 +98,6 @@ export class LookupCell extends PureComponent<LookupCellProps> {
         return (
             <QuerySelect
                 {...gridCellSelectInputProps}
-                autoFocus
                 containerFilter={lookup.containerFilter ?? containerFilter ?? getContainerFilterForLookups()}
                 disabled={disabled}
                 queryFilters={queryFilters}

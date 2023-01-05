@@ -23,7 +23,6 @@ export interface AssayPropertiesPanelProps {
     model: AssayWizardModel;
     onChange: Function;
     title?: string;
-    showQuerySelectPreviewOptions?: boolean;
 }
 
 export class AssayUploadResultModel {

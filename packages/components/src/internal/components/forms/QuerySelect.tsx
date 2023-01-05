@@ -146,7 +146,6 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
     onInitValue?: (value: any, selectedValues: List<any>) => void;
     onQSChange?: QuerySelectChange;
     preLoad?: boolean;
-    previewOptions?: boolean;
     queryFilters?: List<Filter.IFilter>;
     requiredColumns?: string[];
     schemaQuery: SchemaQuery;
@@ -169,7 +168,6 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
         fireQSChangeOnInit: false,
         loadOnFocus: false,
         preLoad: true,
-        previewOptions: false,
         showLoading: true,
     };
 
@@ -307,7 +305,6 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
             onToggleDisable,
             openMenuOnFocus,
             optionRenderer,
-            previewOptions,
             required,
             showLoading,
         } = this.props;
@@ -358,7 +355,7 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
                     onFocus: this.onFocus,
                     openMenuOnFocus,
                     options: undefined, // prevent override
-                    optionRenderer: previewOptions ? this.optionRenderer : optionRenderer,
+                    optionRenderer: optionRenderer ? optionRenderer : this.optionRenderer,
                     selectedOptions: model.getSelectedOptions(),
                     value: getValue(model, this.props), // needed to initialize the Formsy "value" properly
                 }

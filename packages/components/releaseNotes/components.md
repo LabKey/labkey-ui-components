@@ -1,6 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.280.0
+*Released*: ? January 2023
+* QueryColumn: Add shownInLookupView
+* QueryInfo: Add getLookupViewColumns
+* QuerySelect
+  * remove previewOptions, we now render additional columns based on the shownInLookupView attribute of QueryColumn
+  * update default option renderer to only render column captions when multiple columns are set to show in lookup views
+* AssayImportPanels: remove showQuerySelectPreviewOptions
+
 ### version 2.279.1
 *Released*: 9 January 2023
 * Issue 47020: Use unique grid id so selections are not shared between FindByIds queries

@@ -221,7 +221,6 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
                                 name="label-samples"
                                 onQSChange={this.changeSampleSelection}
                                 placeholder="Select or type to search..."
-                                previewOptions={true}
                                 required={false}
                                 schemaQuery={model.schemaQuery}
                                 queryFilters={List(model.filters)}
@@ -242,7 +241,6 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
                             name="label-template"
                             onQSChange={this.changeTemplateSelection}
                             placeholder="Select or type to search..."
-                            previewOptions={true}
                             required={true}
                             schemaQuery={LABEL_TEMPLATE_SQ}
                             displayColumn="name"

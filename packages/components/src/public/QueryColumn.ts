@@ -133,7 +133,6 @@ export class QueryColumn extends Record({
     detailRenderer: undefined,
     helpTipRenderer: undefined,
     inputRenderer: undefined,
-    previewOptions: false,
     removeFromViews: false,
     sorts: undefined,
     units: undefined,
@@ -210,7 +209,6 @@ export class QueryColumn extends Record({
     declare detailRenderer: string;
     declare helpTipRenderer: string;
     declare inputRenderer: string;
-    declare previewOptions: boolean;
     declare sorts: '+' | '-';
     declare removeFromViews: boolean; // strips this column from all ViewInfo definitions
     declare units: string;

@@ -21,7 +21,7 @@ function handleBarTenderConfigurationResponse(response: any): BarTenderConfigura
     return new BarTenderConfiguration(btConfiguration);
 }
 
-function createLabelTemplateList(): Promise<DomainDesign> {
+function createLabelTemplateList(): Promise<LabelTemplate[]> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'ensureLabelTemplateList.api', undefined, {
@@ -29,7 +29,7 @@ function createLabelTemplateList(): Promise<DomainDesign> {
             }),
             method: 'POST',
             success: () => {
-                resolve(undefined);
+                resolve([]);
             },
             failure: reason => {
                 reject(reason);
@@ -175,7 +175,7 @@ export class LabelPrintingServerAPIWrapper implements LabelPrintingAPIWrapper {
 
                         // try to create list
                         createLabelTemplateList()
-                            .then(() => resolve([]))
+                            .then(result => resolve(result))
                             .catch(createReason => {
                                 console.error(createReason);
                                 resolve(undefined);

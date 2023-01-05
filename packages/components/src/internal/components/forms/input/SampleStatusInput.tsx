@@ -15,8 +15,9 @@ import { useServerContext } from '../../base/ServerContext';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper';
 
+import { LOOKUP_DEFAULT_SIZE } from '../../../constants';
+
 import { InputRendererProps } from './types';
-import {LOOKUP_DEFAULT_SIZE} from "../../../constants";
 
 interface SampleStatusInputProps extends Omit<QuerySelectOwnProps, 'schemaQuery' | 'valueColumn'> {
     api?: ComponentsAPIWrapper;

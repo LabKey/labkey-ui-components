@@ -26,10 +26,11 @@ import { SelectInputChange } from '../forms/input/SelectInput';
 import { ViewInfo } from '../../ViewInfo';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
+import { getContainerFilterForLookups } from '../../query/api';
+
 import { ValueDescriptor } from './models';
 
 import { gridCellSelectInputProps, onCellSelectChange } from './utils';
-import { getContainerFilterForLookups } from '../../query/api';
 
 export interface LookupCellProps {
     col: QueryColumn;

@@ -15,6 +15,8 @@ import { useServerContext } from '../../base/ServerContext';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper';
 
+import { LOOKUP_DEFAULT_SIZE } from '../../../constants';
+
 import { InputRendererProps } from './types';
 
 interface SampleStatusInputProps extends Omit<QuerySelectOwnProps, 'schemaQuery' | 'valueColumn'> {
@@ -117,12 +119,11 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 helpTipRenderer={col.helpTipRenderer}
                 joinValues={col.isJunctionLookup()}
                 label={col.caption}
-                loadOnFocus
-                maxRows={10}
+                maxRows={LOOKUP_DEFAULT_SIZE}
                 multiple={col.isJunctionLookup()}
                 name={col.fieldKey}
+                openMenuOnFocus={!col.isJunctionLookup()}
                 required={col.required}
-                showLoading={false}
                 {...selectInputProps}
                 onQSChange={onChange}
                 schemaQuery={col.lookup.schemaQuery}

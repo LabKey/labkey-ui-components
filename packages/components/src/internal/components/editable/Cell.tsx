@@ -134,6 +134,7 @@ export class Cell extends React.PureComponent<Props, State> {
 
     handleBlur = (evt: any): void => {
         clearTimeout(this.changeTO);
+        this.handleSelectionBlur();
         this.replaceCurrentCellValue(evt.target.value, evt.target.value);
     };
 

@@ -371,6 +371,7 @@ export function onCellSelectChange(
 }
 
 export const gridCellSelectInputProps: Partial<SelectInputProps> = {
+    autoFocus: true,
     containerClass: 'select-input-cell-container',
     customStyles: {
         control: provided => ({

@@ -4,7 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Issue 47020: Use unique grid id so selections are not shared between FindByIds queries
-*
+* Issue 47003: don't try to load rows if queryInfo is not yet loaded.
 
 ### version 2.278.0
 *Released*: 6 Jan 2023

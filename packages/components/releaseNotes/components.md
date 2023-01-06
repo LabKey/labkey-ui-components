@@ -1,8 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### versionTBD
+*Released*: TBD
+* Show "View All Activity" link in ServerActivityList when there are any items in the list
+
 ### version 2.277.2
-*Released*: 6 Jan 2022
+*Released*: 6 Jan 2023
 * Issue 46733: Editable for aliquots only/Required Field: Adding Samples gives error
 
 ### version 2.277.1

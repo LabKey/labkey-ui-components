@@ -130,7 +130,7 @@ export class ServerActivityList extends React.PureComponent<Props> {
                         {serverActivity.data.slice(0, maxRows).map((data, index) => this.renderData(data, index))}
                     </ul>
                 </div>
-                {serverActivity.totalRows > 1 && (
+                {serverActivity.totalRows > 0 && (
                     <div className="server-notifications-footer server-notifications-link" onClick={onViewAll}>
                         {viewAllText}
                     </div>

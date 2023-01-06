@@ -233,28 +233,32 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 return (
                     <>
                         <div key="field-value-bool-true">
-                            <input
-                                checked={valueRaw == 'true'}
-                                className=""
-                                type="radio"
-                                name={'field-value-bool' + suffix}
-                                value="true"
-                                disabled={disabled}
-                                onChange={event => updateBooleanFilterFieldValue(filterIndex, event)}
-                            />{' '}
-                            TRUE
+                            <label className="field-value-bool-label clickable">
+                                <input
+                                    checked={valueRaw == 'true'}
+                                    className=""
+                                    type="radio"
+                                    name={'field-value-bool' + suffix}
+                                    value="true"
+                                    disabled={disabled}
+                                    onChange={event => updateBooleanFilterFieldValue(filterIndex, event)}
+                                />{' '}
+                                TRUE
+                            </label>
                         </div>
                         <div key="field-value-bool-false">
-                            <input
-                                checked={valueRaw != 'true'}
-                                className=""
-                                type="radio"
-                                name={'field-value-bool' + suffix}
-                                value="false"
-                                disabled={disabled}
-                                onChange={event => updateBooleanFilterFieldValue(filterIndex, event)}
-                            />{' '}
-                            FALSE
+                            <label className="field-value-bool-label clickable">
+                                <input
+                                    checked={valueRaw != 'true'}
+                                    className=""
+                                    type="radio"
+                                    name={'field-value-bool' + suffix}
+                                    value="false"
+                                    disabled={disabled}
+                                    onChange={event => updateBooleanFilterFieldValue(filterIndex, event)}
+                                />{' '}
+                                FALSE
+                            </label>
                         </div>
                     </>
                 );

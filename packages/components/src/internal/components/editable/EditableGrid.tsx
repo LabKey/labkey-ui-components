@@ -434,7 +434,12 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     clearSelection = (): void => {
         const { onChange } = this.props;
-        onChange({ selectedColIdx: -1, selectedRowIdx: -1 });
+        onChange({
+            selectedColIdx: -1,
+            selectedRowIdx: -1,
+            focusColIdx: -1,
+            focusRowIdx: -1,
+        });
     };
 
     applySelection = (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES): Partial<EditorModel> => {

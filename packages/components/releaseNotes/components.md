@@ -1,14 +1,19 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 47020: Use unique grid id so selections are not shared between FindByIds queries
+*
+
 ### version 2.278.0
-*Released*: 6 Jan 2022
+*Released*: 6 Jan 2023
 * Update `react-select` to `5.7.0`.
 * Remove `@types/react-select` as types are now provided by `react-select`.
 * Update `@labkey/build`.
 
 ### version 2.277.2
-*Released*: 6 Jan 2022
+*Released*: 6 Jan 2023
 * Issue 46733: Editable for aliquots only/Required Field: Adding Samples gives error
 
 ### version 2.277.1

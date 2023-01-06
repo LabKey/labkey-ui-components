@@ -125,7 +125,7 @@ const FindSamplesByIdsTabbedGridPanel: FC<FindSamplesByIdsTabProps> = memo(props
                     Object.keys(sampleTypesRows).forEach(sampleType => {
                         const sampleSchemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType);
 
-                        const sampleGridId = createGridModelId(TYPE_GRID_PREFIX, sampleSchemaQuery);
+                        const sampleGridId = createGridModelId(TYPE_GRID_PREFIX + allSamplesModel.queryName, sampleSchemaQuery);
 
                         // note: changed to using Name IN clause instead of RowId IN clause so that the filter
                         // will pass through to the Sample Finder via the FindDerivativesButton to match

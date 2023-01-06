@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* pull forward v2.275.1 changes
+
 ### version 2.278.0
 *Released*: 6 Jan 2022
 * Update `react-select` to `5.7.0`.
@@ -39,6 +43,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * show 'Home Project' for title when in /home container
 * Issue 46299: Lineage Graph: Make Font Larger
 * Issue 46593:App template download button ignores custom XML metadata <importTemplates> override for sample types
+
+### version 2.275.1
+*Released*: 6 January 2023
+* Fix race condition that causes LabelTemplates table creation to fail
 
 ### version 2.275.0
 *Released*: 29 December 2022

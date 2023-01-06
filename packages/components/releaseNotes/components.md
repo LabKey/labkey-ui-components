@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.275.TBD
-*Released*: TBD
+### version 2.275.1
+*Released*: 06 January 2023
 * Fix race condition that causes LabelTemplates table creation to fail
 
 ### version 2.275.0

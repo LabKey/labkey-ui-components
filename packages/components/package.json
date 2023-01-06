@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.275.0-23-1-fb-fixLabelTable.1",
+  "version": "2.275.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

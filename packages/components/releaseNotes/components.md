@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.275.1
+*Released*: 06 January 2023
+* Fix race condition that causes LabelTemplates table creation to fail
+
 ### version 2.275.0
 *Released*: 29 December 2022
 * Add support for tracking and using multiple BarTender Label templates

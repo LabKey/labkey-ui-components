@@ -288,7 +288,7 @@ export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props
             api.labelprinting
                 .ensureLabelTemplatesList(user)
                 .then(labelTemplates => {
-                    setTemplates(labelTemplates);
+                    setTemplates(labelTemplates ?? []);
                     if (newLabelTemplate)
                         setSelected(labelTemplates.findIndex(template => template.rowId === newLabelTemplate));
                 })
@@ -325,7 +325,7 @@ export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props
         [queryLabelTemplates, setIsDirty]
     );
 
-    const template = templates.length === 0 ? null : templates[selected];
+    const template = !templates.length ? null : templates[selected];
 
     return (
         <div className="panel panel-default label-templates-container">

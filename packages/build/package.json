@@ -1,6 +1,6 @@
 {
   "name": "@labkey/build",
-  "version": "6.8.1-fb-react-select-0123.2",
+  "version": "6.9.0",
   "description": "LabKey client-side build assets",
   "files": [
     "webpack/"

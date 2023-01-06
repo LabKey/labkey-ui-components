@@ -1506,15 +1506,15 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@labkey/api@1.17.1":
-  version "1.17.1"
-  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.17.1.tgz#669bc03abe94fe832a4e6fd8adb13144536ab092"
-  integrity sha512-WkHwxiLtaTw/G5puYpHHr+kNLUQLEa+d8rA46kMU6GGHv1yjDwLQdmzJHKWRLTsJdpTSZ+ODMQkJG4T/B/JInA==
+"@labkey/api@1.18.0":
+  version "1.18.0"
+  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.18.0.tgz#791a469ece1e7a2398fd911811bbe7437d3e173b"
+  integrity sha512-mBuV4oC85E/MgbwF1OYCkcpoAV+d948CLfBDoUYY0d6on9aqwwy4papbETaQxZUbStxKQz6ogC6MmLP0iVJx8w==
 
-"@labkey/build@6.8.1-fb-react-select-0123.2":
-  version "6.8.1-fb-react-select-0123.2"
-  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/build/-/@labkey/build-6.8.1-fb-react-select-0123.2.tgz#7a654cf5a43fe6b5dacddba7cf4574bb4d183374"
-  integrity sha512-n6QYNqvGafx5tJh+2s/43RqlZS9fnOphKp0A/LlWBBctMWRg/1QBDTgkJLugfFQj/OZKdP174wLTCbWWDWXPTg==
+"@labkey/build@6.9.0":
+  version "6.9.0"
+  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/build/-/@labkey/build-6.9.0.tgz#9ecc8bfa8693108220a1b71ce5a80124f04b62ea"
+  integrity sha512-ZcFZbVU69b5BjQV08a61lnpJsOKwQonlU25T5Yt2HpmAwk3qB1HoX+7hXK24Ynfph6zL6lykrFudB1hrfR8rWg==
   dependencies:
     "@babel/core" "~7.20.12"
     "@babel/plugin-proposal-class-properties" "~7.18.6"

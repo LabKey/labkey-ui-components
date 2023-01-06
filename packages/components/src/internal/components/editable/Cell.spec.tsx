@@ -137,7 +137,7 @@ describe('Cell', () => {
     });
 
     const expectLookup = (cell: ReactWrapper, focused = false, readOnly = false): void => {
-        expect(cell.find('div')).toHaveLength(focused ? 11 : 2);
+        expect(cell.find('div')).toHaveLength(focused ? 9 : 2);
         expect(cell.find('.cell-menu')).toHaveLength(focused ? 0 : 1);
         expect(cell.find('.cell-menu-value')).toHaveLength(focused ? 0 : 1);
         expect(cell.find('.cell-menu-selector')).toHaveLength(focused || readOnly ? 0 : 1);
@@ -173,7 +173,7 @@ describe('Cell', () => {
     test('col has validValues and focused', () => {
         const lookupCol = QueryColumn.create({ name: 'test', validValues: ['a', 'b'] });
         const cell = mount(<Cell cellActions={actions} col={lookupCol} colIdx={1} rowIdx={2} focused selected />);
-        expect(cell.find('div')).toHaveLength(11);
+        expect(cell.find('div')).toHaveLength(9);
         expect(cell.find('.cell-menu')).toHaveLength(0);
         expect(cell.find('.cell-menu-value')).toHaveLength(0);
         expect(cell.find('.cell-menu-selector')).toHaveLength(0);

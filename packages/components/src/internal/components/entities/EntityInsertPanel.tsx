@@ -32,7 +32,6 @@ import { DERIVATION_DATA_SCOPES } from '../domainproperties/constants';
 
 import {
     getCurrentProductName,
-    isImportWithUpdateEnabled,
     isSampleManagerEnabled,
     sampleManagerIsPrimaryApp,
 } from '../../app/utils';
@@ -223,7 +222,6 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     private readonly capTypeTextSingular;
     private readonly typeTextSingular;
     private readonly typeTextPlural;
-    private readonly useDeprecatedUI;
 
     constructor(props: Props) {
         super(props);
@@ -234,7 +232,6 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         this.capTypeTextSingular = this.capNounSingular + ' Type';
         this.typeTextSingular = props.nounSingular + ' type';
         this.typeTextPlural = props.nounSingular + ' types';
-        this.useDeprecatedUI = !isImportWithUpdateEnabled(); // UI prior to the support of import with update
 
         this.state = {
             insertModel: undefined,
@@ -286,19 +283,6 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const { isEditMode, importOnly, gridInsertOnly } = this.props;
         const importTabTitle = (isEditMode ? 'Update' : 'Import') + ' ' + this.capNounPlural + ' from File';
         const gridTabTitle = 'Create ' + this.capNounPlural + ' from Grid';
-
-        if (this.useDeprecatedUI) {
-            // code is written with redundancy to allow easy remove all of this.useDeprecatedUI usage
-            if (importOnly) {
-                return [importTabTitle];
-            }
-
-            if (gridInsertOnly) {
-                return [gridTabTitle];
-            }
-
-            return [gridTabTitle, importTabTitle];
-        }
 
         if (importOnly || isEditMode) {
             return [importTabTitle];
@@ -669,17 +653,13 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             allowUserSpecifiedNames &&
             originalQueryInfo?.supportMerge;
 
-        if (this.useDeprecatedUI) allowMerge = !disableMerge && user.hasUpdatePermission();
-
         const entityTypeName = insertModel.getTargetEntityTypeLabel();
         if (!allowMerge || !entityTypeName) return null;
 
-        const mergeMsg = this.useDeprecatedUI
-            ? `Update data for existing ${nounPlural} during this file import`
-            : `Allow new ${nounPlural}`;
+        const mergeMsg = `Allow new ${nounPlural}`;
 
         return (
-            <div className={this.useDeprecatedUI ? 'margin-bottom' : 'pull-right'}>
+            <div className={'pull-right'}>
                 <input type="checkbox" checked={isMerge} onChange={this.toggleInsertOptionChange} />
                 <span className="entity-mergeoption-checkbox" onClick={this.toggleInsertOptionChange}>
                     {mergeMsg}
@@ -725,18 +705,12 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
         return (
             <>
-                {insertModel.isInit &&
-                    (this.useDeprecatedUI ? (
-                        <>
-                            {this.renderTargetEntitySelect()}
-                            {this.renderMergeOption(isGrid)}
-                        </>
-                    ) : (
-                        <div className="row">
-                            <div className="col-sm-9">{this.renderTargetEntitySelect()}</div>
-                            <div className="col-sm-3">{this.renderMergeOption(isGrid)}</div>
-                        </div>
-                    ))}
+                {insertModel.isInit && (
+                    <div className="row">
+                        <div className="col-sm-9">{this.renderTargetEntitySelect()}</div>
+                        <div className="col-sm-3">{this.renderMergeOption(isGrid)}</div>
+                    </div>
+                )}
                 {insertModel.isError && (
                     <Alert>
                         {insertModel.errors ??
@@ -1166,8 +1140,6 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     renderUpdateTooltipText = (): ReactNode => {
         const { nounPlural } = this.props;
 
-        if (this.useDeprecatedUI) return this.renderUpdateTooltipTextDeprecated();
-
         return (
             <>
                 <p>
@@ -1236,10 +1208,6 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         this.setSubmitting(true);
         let importOption = isEditMode ? (isMerge ? InsertOptions.MERGE : InsertOptions.UPDATE) : InsertOptions.IMPORT;
 
-        if (this.useDeprecatedUI) {
-            if (isMerge) importOption = InsertOptions.MERGE;
-        }
-
         try {
             const response = await handleEntityFileImport(
                 entityDataType.importFileAction,
@@ -1299,9 +1267,6 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     isGridStep = (): boolean => {
-        if (this.useDeprecatedUI)
-            return this.props.currentStep === EntityInsertPanelTabs.First && !this.props.importOnly;
-
         return (
             this.props.currentStep === EntityInsertPanelTabs.First && !this.props.importOnly && !this.props.isEditMode
         );
@@ -1444,8 +1409,6 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     shouldShowGrid = (): boolean => {
         const { importOnly, isEditMode } = this.props;
-
-        if (this.useDeprecatedUI) return !importOnly;
 
         return !importOnly && !isEditMode;
     };

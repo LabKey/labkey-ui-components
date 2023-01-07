@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.XX
+*Released*: X Jan 2022
+* Handle update and clarify merge - enable update action for apps
+  * Remove isImportWithUpdateEnabled experimental flag
+
 ### version 2.278.0
 *Released*: 6 Jan 2022
 * Update `react-select` to `5.7.0`.

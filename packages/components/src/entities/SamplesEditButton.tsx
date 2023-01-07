@@ -6,7 +6,7 @@ import { EntityDataType } from '../internal/components/entities/models';
 
 import { RequiresModelAndActions } from '../public/QueryModel/withQueryModels';
 
-import { hasModule, isImportWithUpdateEnabled } from '../internal/app/utils';
+import { hasModule } from '../internal/app/utils';
 
 import { useServerContext } from '../internal/components/base/ServerContext';
 import { buildURL, createProductUrlFromParts } from '../internal/url/AppURL';
@@ -159,7 +159,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
                                 nounPlural={SampleTypeDataType.nounPlural}
                             />
                         )}
-                        {isImportWithUpdateEnabled(moduleContext) && model?.showImportDataButton && (
+                        {model?.showImportDataButton && (
                             <MenuItem href={updateSampleHref}>Update from File</MenuItem>
                         )}
                         {user.canUpdate && parentEntityDataTypes?.length > 0 && <MenuItem divider />}

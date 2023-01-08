@@ -37,7 +37,7 @@ describe('SamplesEditButton', () => {
         show = true,
         parentEntityItemCount = 2,
         selMenuItemCount = 5,
-        menuItemCount = 7,
+        menuItemCount = 8,
         deleteItemCount = 1
     ): void {
         expect(wrapper.find(ManageDropdownButton)).toHaveLength(show ? 1 : 0);
@@ -77,7 +77,7 @@ describe('SamplesEditButton', () => {
         const wrapper = mountWithServerContext(<SamplesEditButton {...DEFAULT_PROPS} combineParentTypes />, {
             user: TEST_USER_EDITOR,
         });
-        validate(wrapper, true, 1, 4, 6);
+        validate(wrapper, true, 1, 4, 7);
         wrapper.unmount();
     });
 
@@ -85,7 +85,7 @@ describe('SamplesEditButton', () => {
         const wrapper = mountWithServerContext(<SamplesEditButton {...DEFAULT_PROPS} />, {
             user: TEST_USER_EDITOR_WITHOUT_DELETE,
         });
-        validate(wrapper, true, 2, 4, 5, 0);
+        validate(wrapper, true, 2, 4, 6, 0);
         wrapper.unmount();
     });
 
@@ -101,7 +101,7 @@ describe('SamplesEditButton', () => {
         const wrapper = mountWithServerContext(<SamplesEditButton {...DEFAULT_PROPS} />, {
             user: TEST_USER_STORAGE_EDITOR,
         });
-        validate(wrapper, true, 0, 1, 1, 0);
+        validate(wrapper, true, 0, 1, 2, 0);
     });
 
     test('reader', () => {
@@ -131,7 +131,7 @@ describe('SamplesEditButton', () => {
         const wrapper = mountWithServerContext(<SamplesEditButton {...DEFAULT_PROPS} showLinkToStudy />, {
             user: TEST_USER_EDITOR,
         });
-        validate(wrapper, true, 2, 6, 8);
+        validate(wrapper, true, 2, 6, 9);
         wrapper.unmount();
     });
 

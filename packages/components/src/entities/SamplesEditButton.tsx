@@ -159,9 +159,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
                                 nounPlural={SampleTypeDataType.nounPlural}
                             />
                         )}
-                        {model?.showImportDataButton && (
-                            <MenuItem href={updateSampleHref}>Update from File</MenuItem>
-                        )}
+                        {model?.showImportDataButton && <MenuItem href={updateSampleHref}>Update from File</MenuItem>}
                         {user.canUpdate && parentEntityDataTypes?.length > 0 && <MenuItem divider />}
                         {!combineParentTypes &&
                             user.canUpdate &&

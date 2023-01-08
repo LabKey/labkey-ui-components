@@ -30,11 +30,7 @@ import { BulkAddData, EditableColumnMetadata } from '../editable/EditableGrid';
 
 import { DERIVATION_DATA_SCOPES } from '../domainproperties/constants';
 
-import {
-    getCurrentProductName,
-    isSampleManagerEnabled,
-    sampleManagerIsPrimaryApp,
-} from '../../app/utils';
+import { getCurrentProductName, isSampleManagerEnabled, sampleManagerIsPrimaryApp } from '../../app/utils';
 
 import { fetchDomainDetails, getDomainNamePreviews } from '../domainproperties/actions';
 
@@ -646,7 +642,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
         if (isGrid) return null;
 
-        let allowMerge =
+        const allowMerge =
             isEditMode &&
             !disableMerge &&
             user.hasUpdatePermission() &&
@@ -659,7 +655,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const mergeMsg = `Allow new ${nounPlural}`;
 
         return (
-            <div className={'pull-right'}>
+            <div className="pull-right">
                 <input type="checkbox" checked={isMerge} onChange={this.toggleInsertOptionChange} />
                 <span className="entity-mergeoption-checkbox" onClick={this.toggleInsertOptionChange}>
                     {mergeMsg}
@@ -1206,7 +1202,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const { insertModel, file, isMerge, originalQueryInfo, useAsync } = this.state;
 
         this.setSubmitting(true);
-        let importOption = isEditMode ? (isMerge ? InsertOptions.MERGE : InsertOptions.UPDATE) : InsertOptions.IMPORT;
+        const importOption = isEditMode ? (isMerge ? InsertOptions.MERGE : InsertOptions.UPDATE) : InsertOptions.IMPORT;
 
         try {
             const response = await handleEntityFileImport(

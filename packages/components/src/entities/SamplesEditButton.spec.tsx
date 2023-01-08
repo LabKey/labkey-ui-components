@@ -11,7 +11,6 @@ import {
 } from '../internal/userFixtures';
 import { mountWithServerContext } from '../internal/testHelpers';
 
-import { EntityLineageEditMenuItem } from './EntityLineageEditMenuItem';
 import { QueryInfo } from '../public/QueryInfo';
 import { SchemaQuery } from '../public/SchemaQuery';
 import { ManageDropdownButton } from '../internal/components/buttons/ManageDropdownButton';
@@ -20,9 +19,11 @@ import { DataClassDataType, SampleTypeDataType } from '../internal/components/en
 import { makeTestActions, makeTestQueryModel } from '../public/QueryModel/testUtils';
 import { LoadingState } from '../public/LoadingState';
 
+import { SamplesEditButtonSections } from '../internal/components/samples/utils';
+
 import { SampleDeleteMenuItem } from './SampleDeleteMenuItem';
 import { SamplesEditButton } from './SamplesEditButton';
-import { SamplesEditButtonSections } from '../internal/components/samples/utils';
+import { EntityLineageEditMenuItem } from './EntityLineageEditMenuItem';
 
 describe('SamplesEditButton', () => {
     const queryInfo = new QueryInfo({

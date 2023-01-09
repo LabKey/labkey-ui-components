@@ -9,7 +9,8 @@ interface Props {
 export class NoLinkRenderer extends PureComponent<Props> {
     render(): ReactNode {
         let { data } = this.props;
-        data = data.delete("url");
+        if (data)
+            data = data.delete("url");
         return <DefaultRenderer data={data}/>;
     }
 }

@@ -5,6 +5,7 @@ import { Container } from '../base/models/Container';
 import { fetchContainerSecurityPolicy, UserLimitSettings, getUserLimitSettings } from '../permissions/actions';
 import { Principal, SecurityPolicy } from '../permissions/models';
 import { Row } from '../../query/selectRows';
+import { SCHEMAS } from '../../schemas';
 
 export type FetchContainerOptions = Omit<Security.GetContainersOptions, 'success' | 'failure' | 'scope'>;
 
@@ -137,7 +138,7 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         return new Promise((resolve, reject) => {
             Query.selectRows({
                 method: 'POST',
-                schemaName: 'auditLog',
+                schemaName: SCHEMAS.AUDIT_TABLES.SCHEMA,
                 queryName: 'GroupAuditEvent',
                 columns,
                 filterArray: [Filter.create(filterCol, filterVal, Filter.Types.EQUAL)],

@@ -28,6 +28,7 @@ import { getAuditDetail } from './actions';
 import { AuditDetailsModel } from './models';
 import { AuditDetails } from './AuditDetails';
 import { AuditQuery, AUDIT_EVENT_TYPE_PARAM, SAMPLE_TIMELINE_AUDIT_QUERY } from './constants';
+import { SCHEMAS } from '../../schemas';
 
 interface BodyProps {
     user: User;
@@ -152,7 +153,7 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
             actions.addModel(
                 {
                     id,
-                    schemaQuery: SchemaQuery.create('auditLog', selected),
+                    schemaQuery: SchemaQuery.create(SCHEMAS.AUDIT_TABLES.SCHEMA, selected),
                     containerFilter: this.containerFilter,
                     bindURL: isFirstModel,
                 },

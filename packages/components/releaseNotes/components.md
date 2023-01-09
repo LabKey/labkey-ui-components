@@ -7,25 +7,29 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 47003: don't try to load rows if queryInfo is not yet loaded.
 * Issue 46876: Remove links from audit log entries that lead to LKS
 
+### version 2.279.0
+*Released*: 8 January 2023
+* pull forward v2.275.1 changes
+
 ### version 2.278.0
-*Released*: 6 Jan 2023
+*Released*: 6 January 2023
 * Update `react-select` to `5.7.0`.
 * Remove `@types/react-select` as types are now provided by `react-select`.
 * Update `@labkey/build`.
 
 ### version 2.277.2
-*Released*: 6 Jan 2023
+*Released*: 6 January 2023
 * Issue 46733: Editable for aliquots only/Required Field: Adding Samples gives error
 
 ### version 2.277.1
-*Released*: 6 Jan 2023
+*Released*: 6 January 2023
 * Issue 46574: Filter Panel boolean labels are not clickable
 * Issue 46765: Grid cell sample status input requires multiple clicks to open select options menu
 * Issue 46837: Checkbox inputs with label render incorrectly on col-sm size
 * Issue 46581: Editable Grid doesn't de-focus cells if you click outside the table
 
 ### version 2.277.0
-*Released*: 4 Jan 2023
+*Released*: 4 January 2023
 * Remove UserAvatars
   * It is no longer used by our apps
 * Remove AssayButtons.tsx
@@ -45,6 +49,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * show 'Home Project' for title when in /home container
 * Issue 46299: Lineage Graph: Make Font Larger
 * Issue 46593:App template download button ignores custom XML metadata <importTemplates> override for sample types
+
+### version 2.275.1
+*Released*: 6 January 2023
+* Fix race condition that causes LabelTemplates table creation to fail
 
 ### version 2.275.0
 *Released*: 29 December 2022

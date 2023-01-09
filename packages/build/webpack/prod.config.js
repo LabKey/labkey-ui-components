@@ -5,6 +5,7 @@
  */
 const entryPoints = require('../../../../src/client/entryPoints');
 const constants = require('./constants');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
     context: constants.context,
@@ -24,6 +25,22 @@ module.exports = {
         extensions: constants.extensions.TYPESCRIPT
     },
     optimization: {
+        minimize: true,
+        minimizer: [
+            // Use the defacto Webpack Terser plugin which comes distributed with webpack.
+            // See https://webpack.js.org/plugins/terser-webpack-plugin
+            new TerserPlugin({
+                terserOptions: {
+                    // For other "compress" options see https://github.com/terser/terser#compress-options
+                    compress: {
+                        // Disable "Collapse single-use non-constant variables, side effects permitting."
+                        // There are some cases where this optimization fails to recognize a side effect
+                        // resulting in a change in behavior from the non-minified code.
+                        collapse_vars: false,
+                    },
+                },
+            }),
+        ],
         splitChunks: {
             maxSize: 2 * 1000000, // 2 MB
             cacheGroups: {

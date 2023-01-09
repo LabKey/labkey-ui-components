@@ -1,5 +1,10 @@
 # @labkey/build
 
+### version 6.9.0
+*Released*: 6 January 2022
+* Package updates
+* Disable "collapse_vars" minification optimization in production build
+
 ### version 6.8.1
 *Released*: 30 December 2022
 * Update path for premium package src after code move within that repo

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.279.1
+*Released*: 9 January 2023
 * Issue 47020: Use unique grid id so selections are not shared between FindByIds queries
 * Issue 47003: don't try to load rows if queryInfo is not yet loaded.
 * Issue 46876: Remove links from audit log entries that lead to LKS

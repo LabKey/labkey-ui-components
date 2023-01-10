@@ -6,6 +6,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Handle update and clarify merge - enable update action for apps
   * Remove isImportWithUpdateEnabled experimental flag
 
+### version 2.279.1
+*Released*: 9 January 2023
+* Issue 47020: Use unique grid id so selections are not shared between FindByIds queries
+* Issue 47003: don't try to load rows if queryInfo is not yet loaded.
+* Issue 46876: Remove links from audit log entries that lead to LKS
+
 ### version 2.279.0
 *Released*: 8 January 2023
 * pull forward v2.275.1 changes

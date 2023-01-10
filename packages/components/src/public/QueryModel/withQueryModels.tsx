@@ -10,7 +10,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 import { SchemaQuery } from '../SchemaQuery';
 import { QuerySort } from '../QuerySort';
-import { LoadingState } from '../LoadingState';
+import { isLoading, LoadingState } from '../LoadingState';
 import { naturalSort } from '../sort';
 import { resolveErrorMessage } from '../../internal/util/messaging';
 
@@ -479,6 +479,9 @@ export function withQueryModels<Props>(
         loadRows = async (id: string): Promise<void> => {
             const { loadRows } = this.props.modelLoader;
 
+            if (isLoading(this.state.queryModels[id].queryInfoLoadingState))
+                return;
+
             this.setState(
                 produce<State>(draft => {
                     draft.queryModels[id].rowsLoadingState = LoadingState.LOADING;
@@ -487,7 +490,7 @@ export function withQueryModels<Props>(
 
             try {
                 const result = await loadRows(this.state.queryModels[id]);
-                const { messages, rows, orderedRows, rowCount } = result;
+                const {messages, rows, orderedRows, rowCount} = result;
 
                 this.setState(
                     produce<State>(draft => {

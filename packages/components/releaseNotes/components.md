@@ -3,8 +3,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Show "View All Activity" link in ServerActivityList when there are any items in the list
+* Show "View All Activity" link in `ServerActivityList` when there are any items in the list
 * Use `PIPELINE_MAPPER` in `ServerActivityList` to resolve `ActionLinkUrl` when possible
+* Make sure `ServerNofifications` button closes after clicking a link in it.
 
 ### version 2.279.1
 *Released*: 9 January 2023

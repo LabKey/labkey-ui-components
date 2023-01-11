@@ -15,6 +15,7 @@ interface Props {
     maxRows: number;
     noActivityMsg: string;
     onRead: (id: number) => void;
+    onViewClick: () => void;
     onViewAll: () => any;
     serverActivity: ServerActivity;
     viewAllText: string;
@@ -75,7 +76,7 @@ export class ServerActivityList extends React.PureComponent<Props> {
     };
 
     renderData(activity: ServerActivityData, key: number): ReactNode {
-        const { actionLinkLabel } = this.props;
+        const { actionLinkLabel, onViewClick } = this.props;
         const isUnread = activity.isUnread() && !activity.inProgress;
         let resolvedUrl =  PIPELINE_MAPPER.resolve(
             activity.ActionLinkUrl,
@@ -112,7 +113,7 @@ export class ServerActivityList extends React.PureComponent<Props> {
                 <br />
                 {activity.ActionLinkUrl ? (
                     <span className="server-notifications-link">
-                        <a href={resolvedUrl instanceof AppURL ? resolvedUrl.toHref() : activity.ActionLinkUrl}>
+                        <a href={resolvedUrl instanceof AppURL ? resolvedUrl.toHref() : activity.ActionLinkUrl} onClick={onViewClick}>
                             {capitalizeFirstChar(activity.ActionLinkText ? activity.ActionLinkText : actionLinkLabel)}
                         </a>
                     </span>

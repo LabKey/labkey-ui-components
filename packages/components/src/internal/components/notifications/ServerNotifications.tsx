@@ -67,6 +67,11 @@ export class ServerNotifications extends React.Component<Props, State> {
         this.setState(state => ({ show: !state.show }));
     };
 
+    _onViewAll = (): void => {
+        this.toggleMenu();
+        this.props.onViewAll();
+    }
+
     render(): ReactNode {
         const { serverActivity, maxRows, onViewAll } = this.props;
         const { show } = this.state;
@@ -101,7 +106,8 @@ export class ServerNotifications extends React.Component<Props, State> {
                 <ServerActivityList
                     maxRows={maxRows}
                     serverActivity={serverActivity}
-                    onViewAll={onViewAll}
+                    onViewAll={this._onViewAll}
+                    onViewClick={this.toggleMenu}
                     onRead={this.onRead}
                 />
             );

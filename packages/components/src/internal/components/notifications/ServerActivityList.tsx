@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import { Map } from 'immutable';
 import classNames from 'classnames';
 
 import { formatDateTime, parseDate } from '../../util/Date';
@@ -6,6 +7,8 @@ import { resolveErrorMessage } from '../../util/messaging';
 import { capitalizeFirstChar } from '../../util/utils';
 
 import { ServerActivity, ServerActivityData } from './model';
+import { PIPELINE_MAPPER } from '../../url/URLResolver';
+import { AppURL } from '../../url/AppURL';
 
 interface Props {
     actionLinkLabel: string;
@@ -74,6 +77,13 @@ export class ServerActivityList extends React.PureComponent<Props> {
     renderData(activity: ServerActivityData, key: number): ReactNode {
         const { actionLinkLabel } = this.props;
         const isUnread = activity.isUnread() && !activity.inProgress;
+        let resolvedUrl =  PIPELINE_MAPPER.resolve(
+            activity.ActionLinkUrl,
+            Map({rowId: activity.RowId, url: activity.ActionLinkUrl }),
+            undefined,
+            undefined,
+            undefined);
+
         return (
             <li
                 key={key}
@@ -102,7 +112,7 @@ export class ServerActivityList extends React.PureComponent<Props> {
                 <br />
                 {activity.ActionLinkUrl ? (
                     <span className="server-notifications-link">
-                        <a href={activity.ActionLinkUrl}>
+                        <a href={resolvedUrl instanceof AppURL ? resolvedUrl.toHref() : activity.ActionLinkUrl}>
                             {capitalizeFirstChar(activity.ActionLinkText ? activity.ActionLinkText : actionLinkLabel)}
                         </a>
                     </span>

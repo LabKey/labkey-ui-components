@@ -1,9 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### versionTBD
+### version TBD
 *Released*: TBD
 * Show "View All Activity" link in ServerActivityList when there are any items in the list
+* Use `PIPELINE_MAPPER` in `ServerActivityList` to resolve `ActionLinkUrl` when possible
 
 ### version 2.279.1
 *Released*: 9 January 2023

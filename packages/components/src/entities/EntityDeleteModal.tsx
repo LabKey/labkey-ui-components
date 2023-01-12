@@ -64,7 +64,7 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
     }
 
     const onConfirm = useCallback(
-        async (rowsToDelete: any[], rowsToKeep: any[]) => {
+        async (rowsToDelete: any[], rowsToKeep: any[], userComment: string) => {
             setNumConfirmed(rowsToDelete.length);
             setShowProgress(true);
             beforeDelete?.();
@@ -76,6 +76,7 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
                     rows: rowsToDelete,
                     schemaQuery: queryModel.schemaQuery,
                     containerPath,
+                    ['auditUserComment']: userComment,
                 });
                 afterDelete(rowsToKeep);
                 createNotification(deleteSuccessMessage(noun, rowsToDelete.length, undefined));

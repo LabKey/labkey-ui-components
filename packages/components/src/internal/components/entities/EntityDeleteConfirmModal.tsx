@@ -21,15 +21,16 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { Alert } from '../base/Alert';
 
-import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
+import { DeleteConfirmationHandler, EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
 import { getDeleteConfirmationData } from './actions';
 import { EntityDataType, OperationConfirmationData } from './models';
+
 
 interface Props {
     entityDataType: EntityDataType;
     getDeletionDescription?: (numToDelete: number) => React.ReactNode;
     onCancel: () => any;
-    onConfirm: (rowsToDelete: any[], rowsToKeep: any[]) => any;
+    onConfirm: DeleteConfirmationHandler;
     rowIds?: string[];
     selectionKey?: string;
     useSnapshotSelection?: boolean;

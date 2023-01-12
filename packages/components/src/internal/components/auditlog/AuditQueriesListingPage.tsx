@@ -224,7 +224,7 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
         const { detail } = this.state;
         if (!detail) return null;
 
-        const { eventUserId, eventDateFormatted } = detail;
+        const { eventUserId, eventDateFormatted, userComment } = detail;
 
         const rows = [];
         if (eventUserId) {
@@ -233,6 +233,10 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
 
         if (eventDateFormatted) {
             rows.push({ field: 'Date', value: eventDateFormatted });
+        }
+
+        if (userComment) {
+            rows.push({field: 'User Comment', value: userComment});
         }
 
         return fromJS(rows);

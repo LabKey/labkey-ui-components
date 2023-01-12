@@ -24,13 +24,20 @@ import { ConfirmModal } from '../base/ConfirmModal';
 import { EntityDataType, OperationConfirmationData } from './models';
 import { Utils } from '@labkey/api';
 
+//TODO change userComment to optional, making required for now to make sure we update the ones we need to.
+export type DeleteConfirmationHandler = (rowsToDelete: any[], rowsToKeep: any[], userComment: string) => any;
+
 interface Props {
     confirmationData: OperationConfirmationData;
     entityDataType: EntityDataType;
     getDeletionDescription?: (numToDelete: number) => React.ReactNode;
     onCancel: () => any;
-    onConfirm: (rowsToDelete: any[], rowsToKeep: any[]) => any;
+    onConfirm: DeleteConfirmationHandler;
     verb?: string;
+}
+
+interface State {
+    userComment: string;
 }
 
 /**
@@ -39,9 +46,14 @@ interface Props {
  * within DeleteConfirmationModal, the jest tests do not render the component fully enough to test
  * different confirmation data scenarios.
  */
-export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
+export class EntityDeleteConfirmModalDisplay extends PureComponent<Props, State> {
     static defaultProps = {
         verb: 'deleted',
+    };
+
+    onCommentChange = (evt) => {
+        const val = evt.target.value;
+        this.setState(() => ({userComment: val}));
     };
 
     getConfirmationProperties(): { canDelete: boolean; message: any; title: string } {
@@ -124,9 +136,15 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
                     </>
                 )}
                 {numCanDelete > 0 && (
-                    <p className="top-spacing">
-                        <strong>Deletion cannot be undone.</strong> Do you want to proceed?
-                    </p>
+                    <div className="top-spacing">
+                        <div><strong>Deletion cannot be undone.</strong> Do you want to proceed?</div>
+                        <div>
+                            <label>
+                                <strong>Reason for deleting</strong>
+                                <input type="textarea" placeholder="Enter comments (optional)" onChange={this.onCommentChange}/>
+                            </label>
+                        </div>
+                    </div>
                 )}
             </span>
         );
@@ -144,7 +162,7 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
     }
 
     onConfirm = (): void => {
-        this.props.onConfirm?.(this.props.confirmationData.allowed, this.props.confirmationData.notAllowed);
+        this.props.onConfirm?.(this.props.confirmationData.allowed, this.props.confirmationData.notAllowed, this.state.userComment);
     };
 
     render() {

@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD January 2023
 * ProductMenu fix so that column section header <hr> don't look clickable
+* Consolidate status-tag with notebook tags, rename as status-pill / pill.scss
 
 ### version 2.279.1
 *Released*: 9 January 2023

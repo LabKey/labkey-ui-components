@@ -61,7 +61,6 @@ export interface QueryFormInputsProps {
     renderFileInputs?: boolean;
     // only used if checkRequiredFields is false, to show * for fields that are originally required
     showLabelAsterisk?: boolean;
-    showQuerySelectPreviewOptions?: boolean;
 }
 
 interface State {
@@ -77,7 +76,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         allowFieldDisable: false,
         initiallyDisableFields: false,
         disabledFields: List<string>(),
-        showQuerySelectPreviewOptions: false,
     };
 
     private _fieldEnabledCount = 0;
@@ -165,7 +163,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             allowFieldDisable,
             disabledFields,
             renderFieldLabel,
-            showQuerySelectPreviewOptions,
             onAdditionalFormDataChange,
             queryFilters,
         } = this.props;
@@ -257,7 +254,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         onQSChange={this.onSelectChange}
                                         onToggleDisable={this.onToggleDisable}
                                         placeholder="Select or type to search..."
-                                        previewOptions={col.previewOptions === true || showQuerySelectPreviewOptions}
                                         queryFilters={queryFilter}
                                         renderFieldLabel={renderFieldLabel}
                                         required={col.required}

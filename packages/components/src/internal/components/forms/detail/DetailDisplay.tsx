@@ -320,7 +320,6 @@ export function resolveDetailEditRenderer(
                         onBlur={options?.onBlur}
                         onQSChange={options?.onSelectChange}
                         placeholder={options?.placeholder ?? 'Select or type to search...'}
-                        previewOptions={col.previewOptions}
                         required={col.required}
                         schemaQuery={col.lookup.schemaQuery}
                         showLabel={showLabel}

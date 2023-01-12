@@ -71,11 +71,13 @@ const PreviewOption: FC<any> = props => {
     const { allResults, queryInfo } = model;
 
     if (queryInfo && allResults.size) {
+        const displayColumn = queryInfo.getColumn(model.displayColumn);
+        const columns = [displayColumn].concat(queryInfo.getLookupViewColumns([model.displayColumn]));
         const item = allResults.find(result => value === result.getIn([model.valueColumn, 'value']));
 
         return (
             <>
-                {queryInfo.getDisplayColumns(model.schemaQuery.viewName).map((column, i) => {
+                {columns.map((column, i) => {
                     if (item !== undefined) {
                         let text = resolveDetailFieldValue(item.get(column.name));
                         if (!Utils.isString(text)) {
@@ -84,7 +86,7 @@ const PreviewOption: FC<any> = props => {
 
                         return (
                             <div key={i} className="text__truncate">
-                                <strong>{column.caption}: </strong>
+                                {columns.length > 1 && <strong>{column.caption}: </strong>}
                                 <span>{text}</span>
                             </div>
                         );
@@ -144,7 +146,6 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
     onInitValue?: (value: any, selectedValues: List<any>) => void;
     onQSChange?: QuerySelectChange;
     preLoad?: boolean;
-    previewOptions?: boolean;
     queryFilters?: List<Filter.IFilter>;
     requiredColumns?: string[];
     schemaQuery: SchemaQuery;
@@ -167,7 +168,6 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
         fireQSChangeOnInit: false,
         loadOnFocus: false,
         preLoad: true,
-        previewOptions: false,
         showLoading: true,
     };
 
@@ -305,7 +305,6 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
             onToggleDisable,
             openMenuOnFocus,
             optionRenderer,
-            previewOptions,
             required,
             showLoading,
         } = this.props;
@@ -356,7 +355,7 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
                     onFocus: this.onFocus,
                     openMenuOnFocus,
                     options: undefined, // prevent override
-                    optionRenderer: previewOptions ? this.optionRenderer : optionRenderer,
+                    optionRenderer: optionRenderer ? optionRenderer : this.optionRenderer,
                     selectedOptions: model.getSelectedOptions(),
                     value: getValue(model, this.props), // needed to initialize the Formsy "value" properly
                 }

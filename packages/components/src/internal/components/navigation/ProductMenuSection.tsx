@@ -79,7 +79,7 @@ export class ProductMenuSection extends PureComponent<MenuSectionProps> {
 
         return (
             <ul key={section.key}>
-                <li className="menu-section-header">
+                <li className="menu-section-header clickable-item">
                     {headerURL ? <a href={getHref(headerURL)}>{label}</a> : <>{label}</>}
                 </li>
                 <li>
@@ -114,7 +114,7 @@ export class ProductMenuSection extends PureComponent<MenuSectionProps> {
 
                             if (item.url) {
                                 return (
-                                    <li key={item.label}>
+                                    <li key={item.label} className="clickable-item">
                                         <a href={item.getUrlString(config.useOriginalURL)} target="_self">
                                             {labelDisplay}
                                         </a>
@@ -147,7 +147,7 @@ const DashboardSectionHeader: FC<DashboardSectionHeaderProps> = memo(props => {
     const { moduleContext } = useServerContext();
 
     return (
-        <li key="dashbaord" className="menu-section-header">
+        <li key="dashbaord" className="menu-section-header clickable-item">
             <a
                 href={getHref(
                     createProductUrl(

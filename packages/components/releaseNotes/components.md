@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD January 2023
+* ProductMenu fix so that column section header <hr> don't look clickable
+
 ### version 2.279.1
 *Released*: 9 January 2023
 * Issue 47020: Use unique grid id so selections are not shared between FindByIds queries

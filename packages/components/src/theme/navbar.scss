@@ -103,14 +103,14 @@
     .dropdown-menu {
         padding: 0;
         margin: 0;
-        width: 894px;
+        width: 925px;
         left: -62px;
     }
 }
 
 @media (min-width: 992px) {
     .navbar-left-menu .dropdown-menu {
-        width: 894px;
+        width: 925px;
         left: -156px;
     }
 }
@@ -254,12 +254,14 @@
     word-break: break-word;
     padding-bottom: 16px;
     height: 100%;
+    overflow-x: hidden;
     overflow-y: scroll;
 
     .menu-section-header {
       font-family: FontAwesome, $font-family-sans-serif;
       color: $brand-primary;
       margin-top: 16px;
+      white-space: nowrap;
 
       a {
         color: $brand-primary;
@@ -279,7 +281,7 @@
       margin: 0;
       padding: 0;
 
-      li:focus, li:hover {
+      li.clickable-item:focus, li.clickable-item:hover {
           background-color: $gray-lighter;
       }
 

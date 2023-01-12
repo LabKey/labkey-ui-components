@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 2.280.0
-*Released*: ? January 2023
+*Released*: 12 January 2023
 * QueryColumn: Add shownInLookupView
 * QueryInfo: Add getLookupViewColumns
 * QuerySelect

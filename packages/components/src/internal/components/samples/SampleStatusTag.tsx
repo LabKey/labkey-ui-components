@@ -24,9 +24,9 @@ export const SampleStatusTag: FC<Props> = memo(props => {
     const icon = iconOnly ? (
         <i
             className={classNames('status-icon fa fa-info', {
-                'danger': statusType === SampleStateType.Locked,
-                'warning': statusType === SampleStateType.Consumed,
-                'success': statusType === SampleStateType.Available,
+                danger: statusType === SampleStateType.Locked,
+                warning: statusType === SampleStateType.Consumed,
+                success: statusType === SampleStateType.Available,
             })}
         />
     ) : (
@@ -39,9 +39,9 @@ export const SampleStatusTag: FC<Props> = memo(props => {
             <span
                 className={classNames(className, {
                     'status-pill sample-status-pill': !iconOnly,
-                    'danger': !iconOnly && statusType === SampleStateType.Locked,
-                    'warning': !iconOnly && statusType === SampleStateType.Consumed,
-                    'success': !iconOnly && statusType === SampleStateType.Available,
+                    danger: !iconOnly && statusType === SampleStateType.Locked,
+                    warning: !iconOnly && statusType === SampleStateType.Consumed,
+                    success: !iconOnly && statusType === SampleStateType.Available,
                 })}
             >
                 {!hideDescription && (description || !isAvailable || iconOnly) ? (

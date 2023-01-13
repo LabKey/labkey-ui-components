@@ -57,7 +57,7 @@ export class ProductMenuSection extends PureComponent<MenuSectionProps> {
         const headerText = config.headerText ?? section.label;
         const label = icon ? (
             <>
-                {icon}{' '}{headerText}
+                {icon} {headerText}
             </>
         ) : (
             headerText

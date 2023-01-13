@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD January 2023
 * ProductMenu fix so that column section header <hr> don't look clickable
 * Consolidate status-tag with notebook tags, rename as status-pill / pill.scss
+* FileAttachmentArea.tsx compact mode
 
 ### version 2.280.0
 *Released*: 12 January 2023

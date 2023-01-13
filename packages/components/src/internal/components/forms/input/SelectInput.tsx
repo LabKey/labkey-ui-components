@@ -170,6 +170,7 @@ export interface SelectInputProps extends WithFormsyProps {
     disabled?: boolean;
     filterOption?: FilterOption;
     formsy?: boolean;
+    help?: ReactNode;
     helpTipRenderer?: string;
     id?: any;
     initiallyDisabled?: boolean;
@@ -396,24 +397,6 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
         return formValue;
     }
 
-    renderError() {
-        const { formsy, getErrorMessage } = this.props;
-
-        if (formsy && Utils.isFunction(getErrorMessage)) {
-            const error = getErrorMessage();
-
-            if (error) {
-                return (
-                    <div className="has-error">
-                        <span className="error-message help-block">{error}</span>
-                    </div>
-                );
-            }
-        }
-
-        return null;
-    }
-
     renderLabel = (): ReactNode => {
         const {
             allowDisable,
@@ -594,14 +577,21 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
     };
 
     render() {
-        const { containerClass, inputClass } = this.props;
+        const { containerClass, formsy, getErrorMessage, help, inputClass } = this.props;
+        const error = getErrorMessage?.();
+        const hasError = formsy && !!error;
 
         return (
             <div className={`select-input-container ${containerClass}`}>
                 {this.renderLabel()}
                 <div className={inputClass}>
                     {this.renderSelect()}
-                    {this.renderError()}
+                    {hasError && (
+                        <div className="has-error">
+                            <span className="error-message help-block">{error}</span>
+                        </div>
+                    )}
+                    {!hasError && !!help && <span className="help-block">{help}</span>}
                 </div>
             </div>
         );

@@ -6,7 +6,9 @@ import React, { ReactNode } from 'react';
 import { Map } from 'immutable';
 
 import {
+    biologicsIsPrimaryApp,
     isAssayEnabled,
+    isBiologicsEnabled,
     isELNEnabled,
     isProductProjectsEnabled,
     isSampleManagerEnabled,
@@ -24,17 +26,20 @@ import {
     NOTEBOOK_AUDIT_QUERY,
     NOTEBOOK_REVIEW_AUDIT_QUERY,
     PROJECT_AUDIT_QUERY,
+    REGISTRY_AUDIT_QUERY,
     SOURCE_AUDIT_QUERY,
     WORKFLOW_AUDIT_QUERY,
 } from './constants';
+import { ModuleContext } from '../base/ServerContext';
 
-export function getAuditQueries(): AuditQuery[] {
+export function getAuditQueries(ctx: ModuleContext): AuditQuery[] {
     const queries = [...COMMON_AUDIT_QUERIES];
-    if (isProductProjectsEnabled()) queries.push(PROJECT_AUDIT_QUERY);
-    if (isWorkflowEnabled()) queries.push(WORKFLOW_AUDIT_QUERY);
-    if (isAssayEnabled()) queries.push(ASSAY_AUDIT_QUERY);
-    if (isSampleManagerEnabled() && sampleManagerIsPrimaryApp()) queries.push(SOURCE_AUDIT_QUERY);
-    if (isELNEnabled()) {
+    if (isProductProjectsEnabled(ctx)) queries.push(PROJECT_AUDIT_QUERY);
+    if (isWorkflowEnabled(ctx)) queries.push(WORKFLOW_AUDIT_QUERY);
+    if (isAssayEnabled(ctx)) queries.push(ASSAY_AUDIT_QUERY);
+    if (isSampleManagerEnabled(ctx) && sampleManagerIsPrimaryApp(ctx)) queries.push(SOURCE_AUDIT_QUERY);
+    if (isBiologicsEnabled(ctx) && biologicsIsPrimaryApp(ctx)) queries.push(REGISTRY_AUDIT_QUERY);
+    if (isELNEnabled(ctx)) {
         queries.push(NOTEBOOK_AUDIT_QUERY);
         queries.push(NOTEBOOK_REVIEW_AUDIT_QUERY);
     }

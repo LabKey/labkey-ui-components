@@ -30,7 +30,7 @@ import { useServerContext } from '../base/ServerContext';
 import { AssayPropertiesPanelProps } from './models';
 
 export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
-    const { model, onChange, title = 'Run Details', showQuerySelectPreviewOptions } = props;
+    const { model, onChange, title = 'Run Details' } = props;
     const { moduleContext } = useServerContext();
     const nameLabel = useMemo(
         () => (
@@ -85,7 +85,6 @@ export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
                             queryColumns={model.runColumns}
                             renderFileInputs
                             containerFilter={getContainerFilterForLookups()}
-                            showQuerySelectPreviewOptions={showQuerySelectPreviewOptions}
                         />
                     )}
                 </Formsy>

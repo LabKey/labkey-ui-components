@@ -105,7 +105,6 @@ interface OwnProps {
     runDataPanelTitle?: string;
     runId?: string;
     setIsDirty?: (isDirty: boolean) => void;
-    showQuerySelectPreviewOptions?: boolean;
     showUploadTabs?: boolean;
 }
 
@@ -651,7 +650,6 @@ class AssayImportPanelsBody extends Component<Props, State> {
             maxRows,
             onSave,
             showUploadTabs,
-            showQuerySelectPreviewOptions,
             runDataPanelTitle,
             fileSizeLimits,
             user,
@@ -707,12 +705,10 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 <BatchPropertiesPanel
                     model={model}
                     onChange={this.handleBatchChange}
-                    showQuerySelectPreviewOptions={showQuerySelectPreviewOptions}
                 />
                 <RunPropertiesPanel
                     model={model}
                     onChange={this.handleRunChange}
-                    showQuerySelectPreviewOptions={showQuerySelectPreviewOptions}
                 />
                 <RunDataPanel
                     acceptedPreviewFileFormats={acceptedPreviewFileFormats}

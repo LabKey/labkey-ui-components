@@ -27,6 +27,7 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
+                onViewClick={jest.fn()}
                 serverActivity={undefined}
                 noActivityMsg={noActivityMsg}
                 onRead={jest.fn()}
@@ -41,6 +42,7 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
+                onViewClick={jest.fn()}
                 serverActivity={{ data: [], totalRows: 0, unreadCount: 0, inProgressCount: 0 }}
                 onRead={jest.fn()}
             />
@@ -54,6 +56,7 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
+                onViewClick={jest.fn()}
                 serverActivity={{
                     data: [DONE_NOT_READ, DONE_AND_READ, IN_PROGRESS, UNREAD_WITH_ERROR],
                     totalRows: 4,
@@ -78,7 +81,7 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
-                
+                onViewClick={jest.fn()}
                 serverActivity={{
                     data: [DONE_NOT_READ, DONE_AND_READ, IN_PROGRESS, UNREAD_WITH_ERROR],
                     totalRows: 4,
@@ -92,7 +95,7 @@ describe('<ServerActivityList>', () => {
         const listings = listing.find('li');
         expect(listings).toHaveLength(4);
         expect(listings.at(1).text()).toContain(DONE_AND_READ.HtmlContent);
-        expect(wrapper.find('.server-notifications-footer')).toHaveLength(0);
+        expect(wrapper.find('.server-notifications-footer')).toHaveLength(1);
         wrapper.unmount();
     });
 
@@ -101,6 +104,7 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
+                onViewClick={jest.fn()}
                 serverActivity={{
                     data: [DONE_NOT_READ, DONE_AND_READ, IN_PROGRESS, UNREAD_WITH_ERROR],
                     totalRows: 4,
@@ -122,6 +126,7 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
+                onViewClick={jest.fn()}
                 serverActivity={{
                     data: [UNREAD_WITH_ERROR],
                     totalRows: 1,
@@ -152,6 +157,7 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
+                onViewClick={jest.fn()}
                 serverActivity={{
                     data: [UNREAD_WITH_ERROR_HTML],
                     totalRows: 1,
@@ -179,6 +185,7 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
+                onViewClick={jest.fn()}
                 serverActivity={{
                     data: [IN_PROGRESS],
                     totalRows: 1,
@@ -203,6 +210,7 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
+                onViewClick={jest.fn()}
                 serverActivity={{
                     data: [DONE_NOT_READ],
                     totalRows: 1,
@@ -232,6 +240,7 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
+                onViewClick={jest.fn()}
                 serverActivity={{
                     data: [DONE_AND_READ],
                     totalRows: 1,

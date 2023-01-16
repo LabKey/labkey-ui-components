@@ -19,8 +19,9 @@ import { Alert } from '../base/Alert';
 import { getActionErrorMessage, resolveErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
+import { hasPermissions } from '../../../entities/SampleListingPage';
+
 import { getUserDetailsRowData, getUserGroups, updateUserDetails } from './actions';
-import { hasPermissions } from "../../../entities/SampleListingPage";
 
 const FIELDS_TO_EXCLUDE = List<string>([
     'userid',
@@ -107,7 +108,6 @@ export class UserProfile extends PureComponent<Props, State> {
                 </div>
             );
         }
-        return;
     }
 
     onAvatarFileChange = (files: {}): void => {

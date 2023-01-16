@@ -35,6 +35,7 @@ interface State {
     includeSampleEvent?: boolean;
     includeStorageEvent: boolean;
     showRecentFirst?: boolean;
+    hasDetailedEvents?: boolean;
 }
 
 const defaultFilterState: State = {
@@ -55,6 +56,7 @@ export class SampleEventListing extends React.Component<Props, State> {
         this.state = {
             showRecentFirst: false,
             filterExpanded: false,
+            hasDetailedEvents: props.events?.filter(e => e.rowId > 0).length > 0,
             ...defaultFilterState,
         };
     }
@@ -180,18 +182,21 @@ export class SampleEventListing extends React.Component<Props, State> {
 
     renderHeader() {
         const { sampleName } = this.props;
+        const { hasDetailedEvents } = this.state;
         return (
             <div>
                 <Row>
                     <Col xs={7} className="font-large timeline-title">
                         {`Event Timeline for ${sampleName}`}
                     </Col>
-                    <Col xs={5}>
-                        <span className="pull-right">
-                            {this.renderSorterDropdown()}
-                            {this.renderExportBtn()}
-                        </span>
-                    </Col>
+                    {hasDetailedEvents && (
+                        <Col xs={5}>
+                            <span className="pull-right">
+                                {this.renderSorterDropdown()}
+                                {this.renderExportBtn()}
+                            </span>
+                        </Col>
+                    )}
                 </Row>
                 <hr />
             </div>
@@ -249,7 +254,12 @@ export class SampleEventListing extends React.Component<Props, State> {
     };
 
     renderFilterPanel() {
-        const { filterExpanded } = this.state;
+        const { filterExpanded, hasDetailedEvents } = this.state;
+
+        if (!hasDetailedEvents) {
+            return null;
+        }
+
         return (
             <div>
                 {this.renderFilterToggle()}
@@ -502,13 +512,15 @@ export class SampleEventListing extends React.Component<Props, State> {
     }
 
     renderTimelineGrid() {
-        const { showRecentFirst } = this.state;
+        const { showRecentFirst, hasDetailedEvents } = this.state;
         const filteredEvents = this.getFilteredEvents();
-        if (filteredEvents.length === 0) return <Alert bsStyle="warning">No events match this filter criteria</Alert>;
+        if (filteredEvents.length === 0) return <Alert bsStyle="warning">No events match the filter criteria.</Alert>;
 
         const sortedEvents = [...filteredEvents].sort((a, b) => {
             return showRecentFirst ? b.eventTimestamp - a.eventTimestamp : a.eventTimestamp - b.eventTimestamp;
         });
+
+        if (!hasDetailedEvents) return <Alert bsStyle="warning">No events available for this sample.</Alert>
 
         return (
             <Row>

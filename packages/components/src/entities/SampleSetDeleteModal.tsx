@@ -24,12 +24,12 @@ export const SampleSetDeleteModal: FC<Props> = props => {
     const [showProgress, setShowProgress] = useState<boolean>();
     const isShared = containerPath === SHARED_CONTAINER_PATH;
 
-    const onConfirm = useCallback(async () => {
+    const onConfirm = useCallback(async (auditUserComment: string) => {
         beforeDelete?.();
         setShowProgress(true);
 
         try {
-            await deleteSampleSet(rowId, containerPath);
+            await deleteSampleSet(rowId, containerPath, auditUserComment);
             afterDelete?.(true);
             createNotification(deleteSuccessMessage('sample type'));
         } catch (error) {

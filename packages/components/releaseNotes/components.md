@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD January 2023
+### version 2.281.0
+*Released*: 16 January 2023
 * Updates for notebook consistency
   * ProductMenu fix so that column section header `<hr>` don't look clickable
   * Consolidate status-tag with notebook tags, rename as status-pill / pill.scss

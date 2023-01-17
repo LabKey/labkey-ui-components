@@ -121,25 +121,14 @@
 }
 
 .sample-status-header-tag {
-    font-size: 14px;
+    vertical-align: top;
+    line-height: 1.42;
     font-weight: normal;
     margin-left: 8px;
 }
 
 .sample-status-warning {
     font-style: italic;
-}
-
-
-.sample-status-icon.fa {
-    border: none;
-    border-radius: 50%;
-    font-size: 14px;
-    width: 20px;
-    padding: 2px;
-    margin-right: 0.2em;
-    text-align:center;
-    margin-left: 0.2em;
 }
 
 .sample-status-legend--table {

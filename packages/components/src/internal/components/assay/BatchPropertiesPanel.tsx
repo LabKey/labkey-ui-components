@@ -19,11 +19,10 @@ import Formsy from 'formsy-react';
 import { QueryFormInputs } from '../forms/QueryFormInputs';
 
 import { AssayPropertiesPanelProps } from './models';
-import { Query } from '@labkey/api';
 import { getContainerFilterForLookups } from '../../query/api';
 
 export const BatchPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
-    const { model, onChange, title = 'Batch Details', showQuerySelectPreviewOptions } = props;
+    const { model, onChange, title = 'Batch Details' } = props;
 
     if (model.batchColumns.size === 0) {
         return null;
@@ -42,7 +41,6 @@ export const BatchPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props =>
                         queryColumns={model.batchColumns}
                         renderFileInputs
                         containerFilter={getContainerFilterForLookups()}
-                        showQuerySelectPreviewOptions={showQuerySelectPreviewOptions}
                     />
                 </Formsy>
             </div>

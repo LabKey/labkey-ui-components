@@ -151,7 +151,7 @@ export function fetchSearchResults(model: QuerySelectModel, input: any): Promise
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
             viewName: schemaQuery.viewName,
-            columns: getQueryColumnNames(model),
+            columns: model.getQueryColumnNames(),
             filterArray: allFilters,
             sort: displayColumn,
             maxRows,
@@ -212,22 +212,6 @@ function initDisplayColumn(queryInfo: QueryInfo, column?: string): string {
     return displayColumn;
 }
 
-function getQueryColumnNames(model: QuerySelectModel): string[] {
-    const { displayColumn, includeViewColumns, queryInfo, requiredColumns, schemaQuery, valueColumn } = model;
-
-    const queryColumns = queryInfo.pkCols.concat([displayColumn, valueColumn].concat(requiredColumns));
-
-    if (includeViewColumns) {
-        return queryInfo
-            .getDisplayColumns(schemaQuery.viewName)
-            .map(c => c.fieldKey)
-            .concat(queryColumns)
-            .toArray();
-    }
-
-    return queryColumns.toArray();
-}
-
 export async function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel> {
     const { containerFilter, containerPath, schemaQuery } = props;
     const { queryName, schemaName, viewName } = schemaQuery;
@@ -240,8 +224,6 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<QuerySelec
     let model = new QuerySelectModel({
         ...props,
         displayColumn,
-        // Issue 46430: Only include necessary columns when not previewing options
-        includeViewColumns: props.previewOptions === true,
         isInit: true,
         queryInfo,
         valueColumn,
@@ -269,7 +251,7 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<QuerySelec
         }
 
         const data = await selectRowsDeprecated({
-            columns: getQueryColumnNames(model),
+            columns: model.getQueryColumnNames(),
             containerFilter,
             containerPath,
             filterArray: [filter],
@@ -317,7 +299,6 @@ export interface QuerySelectModelProps {
     containerPath?: string;
     delimiter: string;
     displayColumn: string;
-    includeViewColumns: boolean;
     isInit: boolean;
     maxRows: number;
     multiple: boolean;
@@ -339,7 +320,6 @@ export class QuerySelectModel
         containerPath: undefined,
         displayColumn: undefined,
         delimiter: DELIMITER,
-        includeViewColumns: false,
         isInit: false,
         maxRows: 20,
         multiple: false,
@@ -361,7 +341,6 @@ export class QuerySelectModel
     declare containerPath: string;
     declare displayColumn: string;
     declare delimiter: string;
-    declare includeViewColumns: boolean;
     declare isInit: boolean;
     declare maxRows: number;
     declare multiple: boolean;
@@ -393,6 +372,18 @@ export class QuerySelectModel
         }
 
         return undefined;
+    }
+
+    getQueryColumnNames(): string[] {
+        const { displayColumn, queryInfo, requiredColumns, valueColumn } = this;
+        const queryColumns = queryInfo.pkCols.concat([displayColumn, valueColumn].concat(requiredColumns)).toArray();
+        const lookupViewColumns = queryInfo.getLookupViewColumns();
+
+        if (lookupViewColumns.length > 0) {
+            return lookupViewColumns.map(c => c.fieldKey).concat(queryColumns);
+        }
+
+        return queryColumns;
     }
 
     saveSearchResults(data: Map<string, Map<string, any>>) {

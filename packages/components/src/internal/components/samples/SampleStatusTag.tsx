@@ -23,10 +23,10 @@ export const SampleStatusTag: FC<Props> = memo(props => {
 
     const icon = iconOnly ? (
         <i
-            className={classNames('sample-status-icon fa fa-info', {
-                'alert-danger': statusType === SampleStateType.Locked,
-                'alert-warning': statusType === SampleStateType.Consumed,
-                'alert-success': statusType === SampleStateType.Available,
+            className={classNames('status-icon fa fa-info', {
+                danger: statusType === SampleStateType.Locked,
+                warning: statusType === SampleStateType.Consumed,
+                success: statusType === SampleStateType.Available,
             })}
         />
     ) : (
@@ -38,10 +38,10 @@ export const SampleStatusTag: FC<Props> = memo(props => {
         <>
             <span
                 className={classNames(className, {
-                    'status-tag sample-status-tag': !iconOnly,
-                    'alert-danger': !iconOnly && statusType === SampleStateType.Locked,
-                    'alert-warning': !iconOnly && statusType === SampleStateType.Consumed,
-                    'alert-success': !iconOnly && statusType === SampleStateType.Available,
+                    'status-pill sample-status-pill': !iconOnly,
+                    danger: !iconOnly && statusType === SampleStateType.Locked,
+                    warning: !iconOnly && statusType === SampleStateType.Consumed,
+                    success: !iconOnly && statusType === SampleStateType.Available,
                 })}
             >
                 {!hideDescription && (description || !isAvailable || iconOnly) ? (

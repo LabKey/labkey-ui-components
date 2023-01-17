@@ -1,8 +1,10 @@
 import React, { ChangeEvent, DragEvent, FC, memo, useCallback, useState } from 'react';
+import classNames from 'classnames';
 
 import { cancelEvent } from '../../events';
 
 interface SimpleFileAttachmentContainerProps {
+    compact?: boolean;
     onAttach: (files: File[]) => void;
 }
 
@@ -11,7 +13,7 @@ interface SimpleFileAttachmentContainerProps {
  * area/input, it does not render attached files. This is useful if you render attached files separately from your
  * attachment area, such as in cases where files are automatically uploaded.
  */
-export const FileAttachmentArea: FC<SimpleFileAttachmentContainerProps> = memo(({ onAttach }) => {
+export const FileAttachmentArea: FC<SimpleFileAttachmentContainerProps> = memo(({ onAttach, compact }) => {
     const [highlight, setHighlight] = useState<boolean>(false);
     const onChange = useCallback(
         (evt: ChangeEvent<HTMLInputElement>) => {
@@ -43,14 +45,19 @@ export const FileAttachmentArea: FC<SimpleFileAttachmentContainerProps> = memo((
         <div className="file-attachment-area" onDrop={onDrop}>
             <div className="file-upload--container">
                 <label
-                    className={`file-upload--label ${highlight ? 'file-upload__is-hover' : ''}`}
+                    className={classNames({
+                        'file-upload--label': !compact,
+                        'file-upload--label--compact': compact,
+                        'file-upload__is-hover': highlight,
+                    })}
                     htmlFor="simple-file-attachment-container"
                     onDragEnter={onDrag}
                     onDragLeave={onDragLeave}
                     onDragOver={onDrag}
                     onDrop={onDrop}
                 >
-                    <span className="fa fa-cloud-upload fa-2x" aria-hidden="true" /> Select file or drag and drop here
+                    <span className={classNames('fa fa-cloud-upload', { 'fa-2x': !compact })} aria-hidden="true" />{' '}
+                    Select file or drag and drop here
                 </label>
                 <input
                     className="file-upload--input"

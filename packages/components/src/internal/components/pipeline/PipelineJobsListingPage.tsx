@@ -10,7 +10,7 @@ import { PIPELINE_PROVIDER_FILTER_LKB, PIPELINE_PROVIDER_FILTER_LKSM } from './c
 export const PipelineJobsListingPage: FC<WithRouterProps> = props => {
     const baseFilters = sampleManagerIsPrimaryApp()
         ? [PIPELINE_PROVIDER_FILTER_LKSM]
-        : biologicsIsPrimaryApp
+        : biologicsIsPrimaryApp()
         ? [PIPELINE_PROVIDER_FILTER_LKB]
         : null;
 

@@ -78,6 +78,10 @@ const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> = memo(p
         return models;
     }, [allSamplesModel, sampleGridIds, queryModels]);
 
+    const showViewMenu = useCallback(gridId => {
+        return gridId != allSamplesModel.id
+    }, [allSamplesModel]);
+
     return (
         <>
             <SamplesTabbedGridPanel
@@ -102,7 +106,7 @@ const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> = memo(p
                     alwaysShowTabs: true,
                     getAdvancedExportOptions,
                     exportFilename: 'SamplesFoundById',
-                    showViewMenu: false,
+                    getShowViewMenu: showViewMenu,
                 }}
                 showLabelOption={true}
                 user={user}

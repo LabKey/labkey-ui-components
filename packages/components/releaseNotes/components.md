@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 2.282.0
-*Released*: 17 Jan 2022
+*Released*: 17 January 2023
 * Handle update and clarify merge - enable update action for apps
   * Remove isImportWithUpdateEnabled experimental flag
 

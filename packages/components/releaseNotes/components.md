@@ -3,7 +3,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Issue 47066: Adjust timeline to show created date and created by user in timeline's current status, even if detailed audit logging was not on
+* Issue 47066: Adjust timeline to show created date and created by user in timeline's current status, even if detailed audit logging was not on.
+* Issue 47059: Show grid customization on sample-type-specific grids on Find By Ids page.
 
 ### version 2.281.0
 *Released*: 16 January 2023

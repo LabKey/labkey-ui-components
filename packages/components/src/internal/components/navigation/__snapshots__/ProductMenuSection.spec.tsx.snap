@@ -35,7 +35,7 @@ exports[`ProductMenuSection render empty section no text 1`] = `
     key="samples"
   >
     <li
-      className="menu-section-header"
+      className="menu-section-header clickable-item"
     >
       <a
         href="#/samples"
@@ -93,7 +93,7 @@ exports[`ProductMenuSection render empty section with empty text and create link
     key="samples"
   >
     <li
-      className="menu-section-header"
+      className="menu-section-header clickable-item"
     >
       <a
         href="#/samples"
@@ -213,7 +213,7 @@ exports[`ProductMenuSection render one column section 1`] = `
     key="assays"
   >
     <li
-      className="menu-section-header"
+      className="menu-section-header clickable-item"
     >
       <a
         href="#/assays"
@@ -341,7 +341,7 @@ exports[`ProductMenuSection render one-column section 1`] = `
     key="samples"
   >
     <li
-      className="menu-section-header"
+      className="menu-section-header clickable-item"
     >
       <a
         href="#/samples"
@@ -432,7 +432,7 @@ exports[`ProductMenuSection render section with custom headerURL and headerText 
     key="samples"
   >
     <li
-      className="menu-section-header"
+      className="menu-section-header clickable-item"
     >
       <a
         href="#%2Fsample%2Fnew%3Fsort%3Ddate"

@@ -5,6 +5,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Issue 47066: Adjust timeline to show created date and created by user in timeline's current status, even if detailed audit logging was not on
 
+### version 2.281.0
+*Released*: 16 January 2023
+* Updates for notebook consistency
+  * ProductMenu fix so that column section header `<hr>` don't look clickable
+  * Consolidate status-tag with notebook tags, rename as status-pill / pill.scss
+  * FileAttachmentArea.tsx compact mode
+
 ### version 2.280.1
 *Released*: 13 January 2023
 * Show "View All Activity" link in `ServerActivityList` when there are any items in the list

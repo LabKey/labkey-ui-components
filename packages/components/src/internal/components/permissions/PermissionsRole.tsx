@@ -6,11 +6,15 @@ import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 
+import { PermissionRoles } from '@labkey/api';
+
 import { ExpandableContainer } from '../ExpandableContainer';
 
 import { naturalSort } from '../../../public/sort';
 
 import { GroupMembership, MemberType } from '../administration/models';
+
+import { biologicsIsPrimaryApp, hasPremiumModule } from '../../app/utils';
 
 import { Principal, SecurityAssignment, SecurityRole } from './models';
 import { RemovableButton } from './RemovableButton';
@@ -77,7 +81,13 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
             assignments && assignments.size > 0
                 ? assignments.map(assignment => assignment.userId).toList()
                 : List<number>();
-        const principalsToAdd = Principal.filterAndSort(principals, groupMembership, existingAssignments);
+
+        const isRightDistroTempVariableName = true;
+        const isFolderAdmin = role.uniqueName === PermissionRoles.FolderAdmin;
+        // Below numerical values must align with 'statics' values in platform/.../SecurityCache.js
+        const excludedSiteGroupIds = List(isRightDistroTempVariableName ? (isFolderAdmin ? [-1, -2, -3] : [-1]) : [-1, -2, -3, -4]);
+        const excludeUserIds = existingAssignments.concat(excludedSiteGroupIds) as List<number>;
+        const principalsToAdd = Principal.filterAndSort(principals, groupMembership, excludeUserIds);
 
         return (
             <ExpandableContainer

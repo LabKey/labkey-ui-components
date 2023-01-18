@@ -46,21 +46,24 @@ export class Principal extends Record({
     ): List<Principal> {
         return (
             principals
-                // filter out any principals that are already members of this role, and built-in site groups
-                .filter(
-                    principal =>
-                        (excludeUserIds === undefined || !excludeUserIds.contains(principal.userId)) &&
-                        principal.userId > 0
-                )
-                // Supply information on whether a principal is a site group or not
-                .map(
-                    principal =>
-                        (groupMembership && groupMembership[principal.userId]?.type === MemberType.siteGroup
-                            ? principal.set('isSiteGroup', true)
-                            : principal) as Principal
-                )
-                // finally sort by type (group or user) and then display name
-                .sort((p1, p2) => naturalSort(p1.displayName, p2.displayName))
+                // filter out any principals that are already members of this role, and certain built-in site groups
+                .filter(principal => excludeUserIds === undefined || !excludeUserIds.contains(principal.userId))
+                // Supply information on whether a principal is a site group or not, and replace 'Users' displayName with 'All Site Users'
+                .map(principal => {
+                    const isSiteGroup =
+                        groupMembership && groupMembership[principal.userId]?.type === MemberType.siteGroup;
+                    const displayName = principal.userId === -2 ? 'All Site Users' : principal.displayName;
+                    return principal.set('isSiteGroup', isSiteGroup).set('displayName', displayName) as Principal;
+                })
+                // finally sort by built-in site group membership name, then site group membership, and then display name
+                .sort((p1, p2) => {
+                    const nameSort = naturalSort(p1.displayName, p2.displayName);
+                    return (
+                        (p1.userId < 0 && p2.userId < 0 ? nameSort : 0) ||
+                        (p1.userId < 0 || p2.userId < 0 ? p1.userId - p2.userId : 0) ||
+                        nameSort
+                    );
+                })
                 .toList()
         );
     }

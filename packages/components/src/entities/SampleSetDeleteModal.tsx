@@ -51,6 +51,7 @@ export const SampleSetDeleteModal: FC<Props> = props => {
                     onConfirm={onConfirm}
                     onCancel={onCancel}
                     isShared={isShared}
+                    showDeleteComment
                 />
             )}
             <Progress

@@ -137,12 +137,20 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props, State>
                 )}
                 {numCanDelete > 0 && (
                     <div className="top-spacing">
-                        <div><strong>Deletion cannot be undone.</strong> Do you want to proceed?</div>
                         <div>
-                            <label>
-                                <strong>Reason for deleting</strong>
-                                <input type="textarea" placeholder="Enter comments (optional)" onChange={this.onCommentChange}/>
-                            </label>
+                            <strong>Deletion cannot be undone.</strong> Do you want to proceed?
+                        </div>
+                        <div>
+                            <div>
+                                <strong>Reason(s) for deleting</strong>
+                            </div>
+                            <div>
+                                <textarea
+                                    className="form-control"
+                                    placeholder="Enter comments (optional)"
+                                    onChange={this.onCommentChange}
+                                />
+                            </div>
                         </div>
                     </div>
                 )}

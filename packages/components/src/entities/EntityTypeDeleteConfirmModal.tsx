@@ -13,6 +13,7 @@ interface Props {
     onCancel: () => any;
     onConfirm: (userComment: string) => any;
     rowId: number;
+    showDeleteComment?: boolean;
     showDependenciesLink?: boolean;
 }
 
@@ -26,10 +27,11 @@ export const EntityTypeDeleteConfirmModal: FC<Props> = memo(props => {
         rowId,
         deleteConfirmationActionName,
         noun,
+        showDeleteComment,
     } = props;
     const [auditUserComment, setAuditUserComment] = useState<string>();
 
-    const onConfirmCallback = useCallback(()=>{
+    const onConfirmCallback = useCallback(() => {
         onConfirm(auditUserComment);
     }, [onConfirm, auditUserComment]);
 
@@ -44,9 +46,7 @@ export const EntityTypeDeleteConfirmModal: FC<Props> = memo(props => {
         if (isSample) {
             params = params.set('sampleOperation', SampleOperation[SampleOperation.Delete]);
         }
-        dependencies = (
-            <a href={buildURL('experiment', deleteConfirmationActionName, params.toJS())}>dependencies</a>
-        );
+        dependencies = <a href={buildURL('experiment', deleteConfirmationActionName, params.toJS())}>dependencies</a>;
     }
 
     return (
@@ -68,13 +68,24 @@ export const EntityTypeDeleteConfirmModal: FC<Props> = memo(props => {
                     </>
                 )}
                 <div className="top-spacing">
-                    <strong>Deletion cannot be undone.</strong> Do you want to proceed?
-                     <div>
-                        <label>
-                            <strong>Reason for deleting</strong>
-                            <input type="textarea" placeholder="Enter comments (optional)" value={auditUserComment} onChange={onCommentChange}/>
-                        </label>
+                    <div>
+                        <strong>Deletion cannot be undone.</strong> Do you want to proceed?
                     </div>
+                    {showDeleteComment && (
+                        <div>
+                            <div>
+                                <strong>Reason(s) for deleting</strong>
+                            </div>
+                            <div>
+                                <textarea
+                                    className="form-control"
+                                    placeholder="Enter comments (optional)"
+                                    value={auditUserComment}
+                                    onChange={onCommentChange}
+                                />
+                            </div>
+                        </div>
+                    )}
                 </div>
             </span>
         </ConfirmModal>

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Add user audit comments when deleting Samples, Sources, and assays
+
 ### version 2.283.0
 *Released*: 17 January 2023
 * Issue 47066: Adjust timeline to show created date and created by user in timeline's current status, even if detailed audit logging was not on.

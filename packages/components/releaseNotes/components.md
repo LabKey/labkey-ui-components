@@ -5,6 +5,16 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Issue 46344: Display group membership on profile page
 
+### version 2.283.0
+*Released*: 17 January 2023
+* Issue 47066: Adjust timeline to show created date and created by user in timeline's current status, even if detailed audit logging was not on.
+* Issue 47059: Show grid customization on sample-type-specific grids on Find By Ids page.
+
+### version 2.282.0
+*Released*: 17 January 2023
+* Handle update and clarify merge - enable update action for apps
+  * Remove isImportWithUpdateEnabled experimental flag
+
 ### version 2.281.0
 *Released*: 16 January 2023
 * Updates for notebook consistency

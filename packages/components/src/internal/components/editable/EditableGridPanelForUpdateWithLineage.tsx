@@ -44,14 +44,14 @@ const DEFAULT_PLURAL_NOUN = 'rows';
 
 export interface EditableGridPanelForUpdateWithLineageProps
     extends Omit<SharedEditableGridPanelProps, 'allowAdd' | 'allowRemove' | 'forUpdate'> {
-    altIdField: string;
+    altIdField?: string;
     combineParentTypes?: boolean;
     exportColFilter?: (col: QueryColumn) => boolean;
     extraExportColumns?: Array<Partial<QueryColumn>>;
     getIsDirty?: () => boolean;
     getParentTypeWarning?: () => ReactNode;
     getUpdateColumns?: (tabId?: number) => List<QueryColumn>;
-    idField: string;
+    idField?: string;
     includedTabs: UpdateGridTab[];
     loaders: IEditableGridLoader[];
     onCancel: () => void;

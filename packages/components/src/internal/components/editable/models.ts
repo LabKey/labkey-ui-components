@@ -55,10 +55,14 @@ export interface EditorModelProps {
     selectionCells: Set<string>;
 }
 
-export function getPkData(queryInfo: QueryInfo, row: Map<string, any>): Record<string, any> {
+export function getPkData(queryInfo: QueryInfo, row: Map<string, any>, additionalPK?: string): Record<string, any> {
     const data = {};
-    queryInfo.getPkCols().forEach(pkCol => {
-        let pkVal = row.getIn([pkCol.fieldKey]);
+    const pkCols = [];
+    queryInfo.getPkCols().forEach(col => pkCols.push(col.fieldKey));
+    if (additionalPK)
+        pkCols.push(additionalPK);
+    pkCols.forEach(pkCol => {
+        let pkVal = row.getIn([pkCol]);
         if (Array.isArray(pkVal)) pkVal = pkVal[0];
         if (List.isList(pkVal)) pkVal = pkVal.get(0);
 
@@ -67,9 +71,9 @@ export function getPkData(queryInfo: QueryInfo, row: Map<string, any>): Record<s
             // backing a grid, it is a Map, which has type 'object'.
             if (Map.isMap(pkVal)) pkVal = pkVal.toJS();
 
-            data[pkCol.fieldKey] = typeof pkVal === 'object' ? pkVal.value : pkVal;
+            data[pkCol] = typeof pkVal === 'object' ? pkVal.value : pkVal;
         } else {
-            console.warn('Unable to find value for pkCol "' + pkCol.fieldKey + '"');
+            console.warn('Unable to find value for pkCol "' + pkCol + '"');
         }
     });
     return data;
@@ -170,7 +174,8 @@ export class EditorModel
         queryModel: QueryModel,
         displayValues?: boolean,
         forUpdate?: boolean,
-        forExport?: boolean
+        forExport?: boolean,
+        additionalPK?: string
     ): List<Map<string, any>> {
         return this.getRawDataFromGridData(
             fromJS(queryModel.rows),
@@ -178,7 +183,8 @@ export class EditorModel
             queryModel.queryInfo,
             displayValues,
             forUpdate,
-            forExport
+            forExport,
+            additionalPK
         );
     }
 
@@ -189,7 +195,8 @@ export class EditorModel
         queryInfo: QueryInfo,
         displayValues = true,
         forUpdate = false,
-        forExport?: boolean
+        forExport?: boolean,
+        additionalPK?: string,
     ): List<Map<string, any>> {
         let rawData = List<Map<string, any>>();
         const columnMap = this.columns.reduce((map, fieldKey) => {
@@ -264,7 +271,7 @@ export class EditorModel
 
             if (forUpdate) {
                 const gridRow = data.get(dataKeys.get(rn));
-                row = row.merge(getPkData(queryInfo, gridRow));
+                row = row.merge(getPkData(queryInfo, gridRow, additionalPK));
             }
 
             rawData = rawData.push(row);

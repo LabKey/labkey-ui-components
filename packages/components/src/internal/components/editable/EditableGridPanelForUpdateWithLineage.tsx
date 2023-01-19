@@ -51,6 +51,7 @@ export interface EditableGridPanelForUpdateWithLineageProps
     getParentTypeWarning?: () => ReactNode;
     getUpdateColumns?: (tabId?: number) => List<QueryColumn>;
     idField: string;
+    altIdField: string;
     includedTabs: UpdateGridTab[];
     loaders: IEditableGridLoader[];
     onCancel: () => void;
@@ -72,6 +73,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
         getParentTypeWarning,
         getTabHeader,
         idField,
+        altIdField,
         includedTabs,
         loaders,
         onCancel,
@@ -165,7 +167,8 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
                 editableGridModels.editorModels,
                 idField,
                 selectionData,
-                ind
+                ind,
+                altIdField
             );
             if (gridData) {
                 gridDataAllTabs.push(gridData);
@@ -189,7 +192,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
             setIsSubmitting(false);
             onComplete();
         }
-    }, [editableGridModels, idField, onComplete, selectionData, updateAllTabRows]);
+    }, [editableGridModels, idField, onComplete, selectionData, updateAllTabRows, altIdField]);
 
     const getCurrentTab = useCallback(
         (tabInd: number): number => {
@@ -354,3 +357,9 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
         </>
     );
 });
+
+
+EditableGridPanelForUpdateWithLineage.defaultProps = {
+    idField: 'RowId',
+    altIdField: 'LSID',
+};

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.XX
+*Released*: XX January 2023
+* Handle update and clarify merge - use DIB for updateRows
+    * use LSID as keys for updateRows and saveRows for samples and dataclasses
+
 ### version 2.283.0
 *Released*: 17 January 2023
 * Issue 47066: Adjust timeline to show created date and created by user in timeline's current status, even if detailed audit logging was not on.

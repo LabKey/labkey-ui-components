@@ -20,6 +20,7 @@ import { EditableGridPanel } from './EditableGridPanel';
 import { applyEditableGridChangesToModels, getUpdatedDataFromEditableGrid, initEditableGridModels } from './utils';
 
 interface Props {
+    altIdField?: string;
     containerFilter?: Query.ContainerFilter;
     getIsDirty?: () => boolean;
     idField: string;
@@ -97,12 +98,12 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
     };
 
     onSubmit = (): void => {
-        const { onComplete, updateRows, idField, selectionData, singularNoun } = this.props;
+        const { altIdField, onComplete, updateRows, idField, selectionData, singularNoun } = this.props;
         const { dataModels, editorModels } = this.state;
 
         const gridDataAllTabs = [];
         dataModels.forEach((model, ind) => {
-            const gridData = getUpdatedDataFromEditableGrid(dataModels, editorModels, idField, selectionData, ind);
+            const gridData = getUpdatedDataFromEditableGrid(dataModels, editorModels, idField, selectionData, ind, altIdField);
             if (gridData) {
                 gridDataAllTabs.push(gridData);
             }

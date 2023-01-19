@@ -207,6 +207,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
 
         return (
             <BulkUpdateForm
+                additionalPkCols={['lsid']}
                 containerFilter={containerFilter}
                 singularNoun={selectedNoun}
                 pluralNoun={`${selectedNoun}s`}

@@ -14,6 +14,7 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { QueryInfoForm } from './QueryInfoForm';
 
 interface Props {
+    additionalPkCols?: string[];
     canSubmitForEdit: boolean;
     containerFilter?: Query.ContainerFilter;
     header?: ReactNode;
@@ -131,8 +132,8 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
     };
 
     onSubmit = (data): Promise<any> => {
-        const { queryInfo, updateRows } = this.props;
-        const rows = !Utils.isEmptyObj(data) ? getUpdatedData(this.state.dataForSelection, data, queryInfo.pkCols) : [];
+        const { additionalPkCols, queryInfo, updateRows } = this.props;
+        const rows = !Utils.isEmptyObj(data) ? getUpdatedData(this.state.dataForSelection, data, queryInfo.pkCols, additionalPkCols) : [];
 
         return updateRows(queryInfo.schemaQuery, rows);
     };

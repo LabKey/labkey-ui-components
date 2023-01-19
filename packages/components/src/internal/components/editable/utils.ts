@@ -190,7 +190,8 @@ export const getUpdatedDataFromEditableGrid = (
     editorModels: EditorModel[],
     idField: string,
     selectionData?: Map<string, any>,
-    tabIndex?: number
+    tabIndex?: number,
+    altIdField?: string,
 ): Record<string, any> => {
     const model = dataModels[tabIndex];
     const editorModel = editorModels[tabIndex];
@@ -204,13 +205,13 @@ export const getUpdatedDataFromEditableGrid = (
     // to populate the queryInfoForm. If we don't have this data, we came directly to the editable grid
     // using values from the display grid to initialize the editable grid model, so we use that.
     const initData = selectionData ?? fromJS(model.rows);
-    const editorData = editorModel.getRawDataFromModel(model, true, true).toArray();
+    const editorData = editorModel.getRawDataFromModel(model, true, true, false, altIdField).toArray();
 
     return {
         originalRows: model.rows,
         schemaQuery: model.queryInfo.schemaQuery,
         tabIndex: tabIndex ?? 0,
-        updatedRows: getUpdatedDataFromGrid(initData, editorData, idField, model.queryInfo),
+        updatedRows: getUpdatedDataFromGrid(initData, editorData, idField, model.queryInfo, altIdField),
     };
 };
 

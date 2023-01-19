@@ -960,7 +960,10 @@ describe('getPkData', () => {
     });
 
     test('with additionalPK', () => {
-        expect(getPkData(queryInfo, Map.of('RowId', 1, 'lsid', 'abc'), 'lsid')).toStrictEqual({ RowId: 1, lsid: 'abc' });
+        expect(getPkData(queryInfo, Map.of('RowId', 1, 'lsid', 'abc'), 'lsid')).toStrictEqual({
+            RowId: 1,
+            lsid: 'abc',
+        });
     });
 
     test('as object', () => {

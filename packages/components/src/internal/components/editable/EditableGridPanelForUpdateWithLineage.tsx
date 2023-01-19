@@ -44,6 +44,7 @@ const DEFAULT_PLURAL_NOUN = 'rows';
 
 export interface EditableGridPanelForUpdateWithLineageProps
     extends Omit<SharedEditableGridPanelProps, 'allowAdd' | 'allowRemove' | 'forUpdate'> {
+    altIdField: string;
     combineParentTypes?: boolean;
     exportColFilter?: (col: QueryColumn) => boolean;
     extraExportColumns?: Array<Partial<QueryColumn>>;
@@ -51,7 +52,6 @@ export interface EditableGridPanelForUpdateWithLineageProps
     getParentTypeWarning?: () => ReactNode;
     getUpdateColumns?: (tabId?: number) => List<QueryColumn>;
     idField: string;
-    altIdField: string;
     includedTabs: UpdateGridTab[];
     loaders: IEditableGridLoader[];
     onCancel: () => void;
@@ -357,7 +357,6 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
         </>
     );
 });
-
 
 EditableGridPanelForUpdateWithLineage.defaultProps = {
     idField: 'RowId',

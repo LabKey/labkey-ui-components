@@ -59,8 +59,7 @@ export function getPkData(queryInfo: QueryInfo, row: Map<string, any>, additiona
     const data = {};
     const pkCols = [];
     queryInfo.getPkCols().forEach(col => pkCols.push(col.fieldKey));
-    if (additionalPK)
-        pkCols.push(additionalPK);
+    if (additionalPK) pkCols.push(additionalPK);
     pkCols.forEach(pkCol => {
         let pkVal = row.getIn([pkCol]);
         if (Array.isArray(pkVal)) pkVal = pkVal[0];
@@ -196,7 +195,7 @@ export class EditorModel
         displayValues = true,
         forUpdate = false,
         forExport?: boolean,
-        additionalPK?: string,
+        additionalPK?: string
     ): List<Map<string, any>> {
         let rawData = List<Map<string, any>>();
         const columnMap = this.columns.reduce((map, fieldKey) => {

@@ -191,7 +191,7 @@ export const getUpdatedDataFromEditableGrid = (
     idField: string,
     selectionData?: Map<string, any>,
     tabIndex?: number,
-    altIdField?: string,
+    altIdField?: string
 ): Record<string, any> => {
     const model = dataModels[tabIndex];
     const editorModel = editorModels[tabIndex];

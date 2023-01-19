@@ -942,6 +942,11 @@ describe('getPkData', () => {
                 fieldKey: 'RowId',
                 inputType: 'number',
             }),
+            lsid: QueryColumn.create({
+                caption: 'LSID',
+                fieldKey: 'lsid',
+                inputType: 'text',
+            }),
             description: QueryColumn.create({
                 caption: 'Description',
                 fieldKey: 'Description',
@@ -951,7 +956,11 @@ describe('getPkData', () => {
     });
 
     test('as value', () => {
-        expect(getPkData(queryInfo, Map.of('RowId', 1))).toStrictEqual({ RowId: 1 });
+        expect(getPkData(queryInfo, Map.of('RowId', 1, 'lsid', 'abc'))).toStrictEqual({ RowId: 1 });
+    });
+
+    test('with additionalPK', () => {
+        expect(getPkData(queryInfo, Map.of('RowId', 1, 'lsid', 'abc'), 'lsid')).toStrictEqual({ RowId: 1, lsid: 'abc' });
     });
 
     test('as object', () => {

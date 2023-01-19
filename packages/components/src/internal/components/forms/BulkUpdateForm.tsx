@@ -133,7 +133,9 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
 
     onSubmit = (data): Promise<any> => {
         const { additionalPkCols, queryInfo, updateRows } = this.props;
-        const rows = !Utils.isEmptyObj(data) ? getUpdatedData(this.state.dataForSelection, data, queryInfo.pkCols, additionalPkCols) : [];
+        const rows = !Utils.isEmptyObj(data)
+            ? getUpdatedData(this.state.dataForSelection, data, queryInfo.pkCols, additionalPkCols)
+            : [];
 
         return updateRows(queryInfo.schemaQuery, rows);
     };

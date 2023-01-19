@@ -309,17 +309,23 @@ function isSameWithStringCompare(value1: any, value2: any): boolean {
  * @param updatedValues an object mapping fieldKeys to values that are being updated
  * @param primaryKeys the list of primary fieldKey names
  */
-export function getUpdatedData(originalData: Map<string, any>, updatedValues: any, primaryKeys: List<string>, additionalPkCols?: string[]): any[] {
+export function getUpdatedData(
+    originalData: Map<string, any>,
+    updatedValues: any,
+    primaryKeys: List<string>,
+    additionalPkCols?: string[]
+): any[] {
     const updateValuesMap = Map<any, any>(updatedValues);
-    const additionalPkColsLc = [];
-    additionalPkCols?.forEach(col => additionalPkColsLc.push(col.toLowerCase()));
+    const pkColsLc = [];
+    primaryKeys.forEach(key => pkColsLc.push(key.toLowerCase()));
+    additionalPkCols?.forEach(col => pkColsLc.push(col.toLowerCase()));
     const updatedData = originalData.map(originalRowMap => {
         return originalRowMap.reduce((m, fieldValueMap, key) => {
             // Issue 42672: The original data has keys that are names or captions for the columns.  We need to use
             // the encoded key that will match what's expected for filtering on the server side (e.g., "U g$Sl" instead of "U g/l")
             const encodedKey = encodePart(key);
             if (fieldValueMap?.has('value')) {
-                if (primaryKeys.indexOf(key) > -1 || additionalPkColsLc.indexOf(key.toLowerCase()) > -1) {
+                if (pkColsLc.indexOf(key.toLowerCase()) > -1) {
                     return m.set(key, fieldValueMap.get('value'));
                 } else if (
                     updateValuesMap.has(encodedKey) &&
@@ -354,7 +360,7 @@ export function getUpdatedData(originalData: Map<string, any>, updatedValues: an
     });
     // we want the rows that contain more than just the primaryKeys
     return updatedData
-        .filter(rowData => rowData.size > primaryKeys.size)
+        .filter(rowData => rowData.size > pkColsLc.length)
         .map(rowData => rowData.toJS())
         .toArray();
 }
@@ -373,7 +379,7 @@ export function getUpdatedDataFromGrid(
     editorRows: Array<Map<string, any>>,
     idField: string,
     queryInfo: QueryInfo,
-    altIdField?: string,
+    altIdField?: string
 ): any[] {
     const updatedRows = [];
     editorRows.forEach(editedRow => {
@@ -436,8 +442,7 @@ export function getUpdatedDataFromGrid(
             }, {});
             if (!Utils.isEmptyObj(row)) {
                 row[idField] = id;
-                if (altId)
-                    row[altIdField] = altId;
+                if (altId) row[altIdField] = altId;
                 updatedRows.push(row);
             }
         } else {

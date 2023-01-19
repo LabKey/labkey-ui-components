@@ -715,6 +715,37 @@ describe('getUpdatedData', () => {
             Alias: [],
         });
     });
+
+    test('with additionalPkCols', () => {
+        const updatedData = getUpdatedData(
+            originalData,
+            {
+                Value: 'val',
+                And$SAgain: 'again',
+                Other: 'other3',
+            },
+            List<string>(['RowId']),
+            ['Data']
+        );
+        expect(updatedData).toHaveLength(3);
+        expect(updatedData[0]).toStrictEqual({
+            RowId: 445,
+            Other: 'other3',
+            Data: 'data1',
+        });
+        expect(updatedData[1]).toStrictEqual({
+            RowId: 447,
+            Value: 'val',
+            Other: 'other3',
+            Data: 'data1',
+        });
+        expect(updatedData[2]).toStrictEqual({
+            RowId: 448,
+            Value: 'val',
+            Other: 'other3',
+            Data: 'data1',
+        });
+    });
 });
 
 describe('getUpdatedDataFromGrid', () => {
@@ -1039,6 +1070,32 @@ describe('getUpdatedDataFromGrid', () => {
         expect(updatedData).toHaveLength(1);
         expect(updatedData[0]).toStrictEqual({
             'New Field': 'new value',
+            Bool2: false,
+            Int2: 22,
+            RowId: '448',
+        });
+    });
+
+    test('with altIdField', () => {
+        const updatedData = getUpdatedDataFromGrid(
+            originalData,
+            [
+                Map<string, any>({
+                    RowId: '448',
+                    Data: 'data1',
+                    'New Field': 'new value',
+                    Bool2: false,
+                    Int2: 22,
+                }),
+            ],
+            'RowId',
+            queryInfo,
+            'Data'
+        );
+        expect(updatedData).toHaveLength(1);
+        expect(updatedData[0]).toStrictEqual({
+            'New Field': 'new value',
+            Data: 'data1',
             Bool2: false,
             Int2: 22,
             RowId: '448',

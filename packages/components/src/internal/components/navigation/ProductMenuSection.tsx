@@ -78,7 +78,7 @@ export class ProductMenuSection extends PureComponent<MenuSectionProps> {
         }
 
         return (
-            <ul key={section.key}>
+            <ul>
                 <li className="menu-section-header clickable-item">
                     {headerURL ? <a href={getHref(headerURL)}>{label}</a> : <>{label}</>}
                 </li>
@@ -87,13 +87,9 @@ export class ProductMenuSection extends PureComponent<MenuSectionProps> {
                 </li>
                 {section.items.isEmpty() ? (
                     <>
-                        {config.emptyText && (
-                            <li key="empty" className="empty-section">
-                                {config.emptyText}
-                            </li>
-                        )}
+                        {config.emptyText && <li className="empty-section">{config.emptyText}</li>}
                         {emptyURL && (!config.emptyURLProjectOnly || isProjectContainer(containerPath)) && (
-                            <li key="emptyUrl" className="empty-section-link">
+                            <li className="empty-section-link">
                                 <a href={getHref(emptyURL)}>{config.emptyURLText}</a>
                             </li>
                         )}
@@ -147,7 +143,7 @@ const DashboardSectionHeader: FC<DashboardSectionHeaderProps> = memo(props => {
     const { moduleContext } = useServerContext();
 
     return (
-        <li key="dashbaord" className="menu-section-header clickable-item">
+        <li className="menu-section-header clickable-item">
             <a
                 href={getHref(
                     createProductUrl(

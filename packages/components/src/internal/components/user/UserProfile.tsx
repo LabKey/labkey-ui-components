@@ -70,14 +70,13 @@ export class UserProfile extends PureComponent<Props, State> {
     }
 
     componentDidMount = async (): Promise<void> => {
-        getQueryDetails(SCHEMAS.CORE_TABLES.USERS)
-            .then(queryInfo => {
-                this.setState(() => ({ queryInfo }));
-            })
-            .catch(reason => {
-                console.error(reason);
-                this.setState(() => ({ hasError: true }));
-            });
+        try {
+            const queryInfo = await getQueryDetails(SCHEMAS.CORE_TABLES.USERS);
+            this.setState(() => ({ queryInfo }));
+        } catch (e) {
+            console.error(e.message);
+            this.setState(() => ({ hasError: true }));
+        }
 
         if (hasPermissions(this.props.user, [PermissionTypes.CanSeeGroupDetails])) {
             try {

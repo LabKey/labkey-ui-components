@@ -51,6 +51,10 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props, State>
         verb: 'deleted',
     };
 
+    state: Readonly<State> = {
+        userComment: undefined,
+    };
+
     onCommentChange = (evt) => {
         const val = evt.target.value;
         this.setState(() => ({userComment: val}));

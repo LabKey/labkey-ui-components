@@ -76,7 +76,7 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
                     rows: rowsToDelete,
                     schemaQuery: queryModel.schemaQuery,
                     containerPath,
-                    ['auditUserComment']: userComment,
+                    auditUserComment: userComment,
                 });
                 afterDelete(rowsToKeep);
                 createNotification(deleteSuccessMessage(noun, rowsToDelete.length, undefined));

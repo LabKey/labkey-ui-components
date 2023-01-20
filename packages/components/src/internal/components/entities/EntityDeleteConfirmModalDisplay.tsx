@@ -19,12 +19,11 @@ import { isELNEnabled } from '../../app/utils';
 
 import { capitalizeFirstChar } from '../../util/utils';
 import { HelpLink } from '../../util/helpLinks';
-import { ConfirmModal } from '../base/ConfirmModal';
 
 import { EntityDataType, OperationConfirmationData } from './models';
 import { Utils } from '@labkey/api';
+import { DeleteConfirmModal } from '../../../entities/EntityTypeDeleteConfirmModal';
 
-//TODO change userComment to optional, making required for now to make sure we update the ones we need to.
 export type DeleteConfirmationHandler = (rowsToDelete: any[], rowsToKeep: any[], userComment: string) => any;
 
 interface Props {
@@ -49,15 +48,6 @@ interface State {
 export class EntityDeleteConfirmModalDisplay extends PureComponent<Props, State> {
     static defaultProps = {
         verb: 'deleted',
-    };
-
-    state: Readonly<State> = {
-        userComment: undefined,
-    };
-
-    onCommentChange = (evt) => {
-        const val = evt.target.value;
-        this.setState(() => ({userComment: val}));
     };
 
     getConfirmationProperties(): { canDelete: boolean; message: any; title: string } {
@@ -132,33 +122,14 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props, State>
                 );
         }
         const message = (
-            <span>
+            <>
                 {text}
                 {numCannotDelete > 0 && deleteHelpLinkTopic && (
                     <>
                         &nbsp;(<HelpLink topic={deleteHelpLinkTopic}>more info</HelpLink>)
                     </>
                 )}
-                {numCanDelete > 0 && (
-                    <div className="top-spacing">
-                        <div>
-                            <strong>Deletion cannot be undone.</strong> Do you want to proceed?
-                        </div>
-                        <div>
-                            <div>
-                                <strong>Reason(s) for deleting</strong>
-                            </div>
-                            <div>
-                                <textarea
-                                    className="form-control"
-                                    placeholder="Enter comments (optional)"
-                                    onChange={this.onCommentChange}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                )}
-            </span>
+            </>
         );
 
         return {
@@ -173,24 +144,23 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props, State>
         };
     }
 
-    onConfirm = (): void => {
-        this.props.onConfirm?.(this.props.confirmationData.allowed, this.props.confirmationData.notAllowed, this.state.userComment);
+    onConfirm = (userComment: string): void => {
+        this.props.onConfirm?.(this.props.confirmationData.allowed, this.props.confirmationData.notAllowed, userComment);
     };
 
     render() {
         const { onCancel } = this.props;
         const confirmProps = this.getConfirmationProperties();
         return (
-            <ConfirmModal
+            <DeleteConfirmModal
                 title={confirmProps.title}
                 onConfirm={confirmProps.canDelete ? this.onConfirm : undefined}
                 onCancel={onCancel}
-                confirmVariant="danger"
                 confirmButtonText={confirmProps.canDelete ? 'Yes, Delete' : undefined}
                 cancelButtonText={confirmProps.canDelete ? 'Cancel' : 'Dismiss'}
-            >
-                {confirmProps.message}
-            </ConfirmModal>
+                message={confirmProps.message}
+                showDeleteComment={confirmProps.canDelete}
+            />
         );
     }
 }

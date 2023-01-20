@@ -1,66 +1,14 @@
-import React, { FC, memo, ReactNode, useCallback, useMemo, useState } from 'react';
+import React, { FC, memo, useMemo } from 'react';
 import { Map } from 'immutable';
 
 import { SampleOperation } from '../internal/components/samples/constants';
 import { buildURL } from '../internal/url/AppURL';
-import { ConfirmModal, ConfirmModalProps } from '../internal/components/base/ConfirmModal';
+import {
+    DeleteConfirmationModal,
+    DeleteConfirmationModalProps,
+} from '../internal/components/entities/DeleteConfirmationModal';
 
-export interface DeleteConfirmModalProps extends Omit<ConfirmModalProps, 'onConfirm'> {
-    message: ReactNode;
-    onCancel: () => any;
-    onConfirm: (userComment: string) => any;
-    showDeleteComment?: boolean;
-}
-
-export const DeleteConfirmModal: FC<DeleteConfirmModalProps> = memo(props => {
-    const { cancelButtonText, confirmButtonText, message, onCancel, onConfirm, showDeleteComment, title } = props;
-    const [auditUserComment, setAuditUserComment] = useState<string>();
-
-    const onConfirmCallback = useCallback(() => {
-        onConfirm(auditUserComment);
-    }, [onConfirm, auditUserComment]);
-
-    const onCommentChange = useCallback(evt => {
-        setAuditUserComment(evt.target.value);
-    }, []);
-
-    return (
-        <ConfirmModal
-            title={title}
-            onConfirm={showDeleteComment ? onConfirmCallback : undefined}
-            onCancel={onCancel}
-            confirmVariant="danger"
-            confirmButtonText={confirmButtonText}
-            cancelButtonText={cancelButtonText}
-        >
-            <span>
-                {message}
-                {showDeleteComment && (
-                    <div className="top-spacing">
-                        <div>
-                            <strong>Deletion cannot be undone.</strong> Do you want to proceed?
-                        </div>
-                        <div className="top-spacing">
-                            <div className="bottom-spacing">
-                                <strong>Reason(s) for deleting</strong>
-                            </div>
-                            <div>
-                                <textarea
-                                    className="form-control"
-                                    placeholder="Enter comments (optional)"
-                                    onChange={onCommentChange}
-                                    rows={5}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                )}
-            </span>
-        </ConfirmModal>
-    );
-});
-
-interface Props extends Omit<DeleteConfirmModalProps, 'message'> {
+interface Props extends Omit<DeleteConfirmationModalProps, 'message'> {
     deleteConfirmationActionName?: string;
     isSample?: boolean;
     isShared?: boolean;
@@ -112,7 +60,7 @@ export const EntityTypeDeleteConfirmModal: FC<Props> = memo(props => {
     }, [dependencies, isShared, noun]);
 
     return (
-        <DeleteConfirmModal
+        <DeleteConfirmationModal
             {...rest}
             cancelButtonText="Cancel"
             confirmButtonText="Yes, Delete"

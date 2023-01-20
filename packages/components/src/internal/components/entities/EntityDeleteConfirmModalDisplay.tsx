@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import React, { PureComponent } from 'react';
+import { Utils } from '@labkey/api';
 
 import { isELNEnabled } from '../../app/utils';
 
@@ -21,8 +22,7 @@ import { capitalizeFirstChar } from '../../util/utils';
 import { HelpLink } from '../../util/helpLinks';
 
 import { EntityDataType, OperationConfirmationData } from './models';
-import { Utils } from '@labkey/api';
-import { DeleteConfirmModal } from '../../../entities/EntityTypeDeleteConfirmModal';
+import { DeleteConfirmationModal } from './DeleteConfirmationModal';
 
 export type DeleteConfirmationHandler = (rowsToDelete: any[], rowsToKeep: any[], userComment: string) => any;
 
@@ -152,7 +152,7 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props, State>
         const { onCancel } = this.props;
         const confirmProps = this.getConfirmationProperties();
         return (
-            <DeleteConfirmModal
+            <DeleteConfirmationModal
                 title={confirmProps.title}
                 onConfirm={confirmProps.canDelete ? this.onConfirm : undefined}
                 onCancel={onCancel}

@@ -19,7 +19,7 @@ import ReactSelect, { components } from 'react-select';
 import AsyncSelect from 'react-select/async';
 import AsyncCreatableSelect from 'react-select/async-creatable';
 import CreatableSelect from 'react-select/creatable';
-import { getServerContext, Utils } from '@labkey/api';
+import { Utils } from '@labkey/api';
 
 import { FieldLabel } from '../FieldLabel';
 
@@ -169,6 +169,7 @@ export interface SelectInputProps extends WithFormsyProps {
     description?: string;
     disabled?: boolean;
     filterOption?: FilterOption;
+    formatCreateLabel?: (inputValue: string) => ReactNode;
     formsy?: boolean;
     help?: ReactNode;
     helpTipRenderer?: string;
@@ -176,6 +177,7 @@ export interface SelectInputProps extends WithFormsyProps {
     initiallyDisabled?: boolean;
     inputClass?: string;
     isLoading?: boolean;
+    isValidNewOption?: (inputValue: string) => boolean;
     // FIXME: this is named incorrectly. I would expect that if this is true it would join the values, nope, it joins
     //   the values when false.
     joinValues?: boolean;
@@ -186,7 +188,7 @@ export interface SelectInputProps extends WithFormsyProps {
     menuPosition?: string;
     multiple?: boolean;
     name?: string;
-    noResultsText?: string;
+    noResultsText?: ReactNode;
     onBlur?: (event: FocusEvent<HTMLElement>) => void;
     // TODO: this is getting confused with formsy on change, need to separate
     onChange?: SelectInputChange;
@@ -196,7 +198,6 @@ export interface SelectInputProps extends WithFormsyProps {
     optionRenderer?: any;
     options?: any[];
     placeholder?: ReactNode;
-    promptTextCreator?: (filterText: string) => string;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     required?: boolean;
     resolveFormValue?: (selectedOptions: SelectInputOption | SelectInputOption[]) => any;
@@ -294,14 +295,8 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
         if (saveOnBlur) {
             const select = this.refs.reactSelect;
 
-            if (select?.selectOption) {
-                if (select?.state?.focusedOption) {
-                    select.selectOption(select.state.focusedOption);
-                }
-            } else if (getServerContext().devMode) {
-                console.warn(
-                    'ReactSelect implementation may have changed. SelectInput "saveOnBlur" no longer working.'
-                );
+            if (select?.selectOption && select.state?.focusedOption) {
+                select.selectOption(select.state.focusedOption);
             }
         }
 
@@ -469,7 +464,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
 
     Option = optionProps => <CustomOption {...optionProps}>{this.props.optionRenderer(optionProps)}</CustomOption>;
 
-    noOptionsMessage = (): string => this.props.noResultsText;
+    noOptionsMessage = (): ReactNode => this.props.noResultsText;
 
     renderSelect = (): ReactNode => {
         const {
@@ -483,7 +478,9 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             delimiter,
             disabled,
             filterOption,
+            formatCreateLabel,
             isLoading,
+            isValidNewOption,
             labelKey,
             menuPosition,
             multiple,
@@ -492,7 +489,6 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             optionRenderer,
             options,
             placeholder,
-            promptTextCreator,
             valueKey,
             valueRenderer,
         } = this.props;
@@ -520,6 +516,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             components,
             delimiter,
             filterOption,
+            formatCreateLabel,
             getOptionLabel: labelKey && labelKey !== 'label' ? this.getOptionLabel : undefined,
             getOptionValue: valueKey && valueKey !== 'value' ? this.getOptionValue : undefined,
             id: this.getId(),
@@ -527,6 +524,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             isDisabled: disabled || this.state.isDisabled,
             isLoading,
             isMulti: multiple,
+            isValidNewOption,
             menuPlacement: 'auto',
             menuPosition,
             name,
@@ -537,7 +535,6 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             openMenuOnFocus,
             options,
             placeholder,
-            promptTextCreator,
             ref: 'reactSelect',
             styles: { ...customStyles, ..._customStyles },
             theme: customTheme || _customTheme,

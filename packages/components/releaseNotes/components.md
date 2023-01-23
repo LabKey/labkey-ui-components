@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.283.2
+*Released*: 23 January 2023
+* Fix issue with react keys in Navigation
+
 ### version 2.283.1
 *Released*: 20 January 2023
 * Issue 46344: Display group membership on profile page

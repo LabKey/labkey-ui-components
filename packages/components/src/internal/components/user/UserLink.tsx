@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { List } from 'immutable';
 import { User as IUser } from '@labkey/api';
 
 import { User } from '../base/models/User';
-import { AppURL } from '../../url/AppURL';
+import { userCanReadUserDetails } from '../../app/utils';
+import { UserDetailsPanel } from './UserDetailsPanel';
 
 interface Props {
     allUsers: List<IUser>;
@@ -11,20 +12,35 @@ interface Props {
     userId: string;
 }
 
-export class UserLink extends React.PureComponent<Props> {
-    render() {
-        const { allUsers, currentUser, userId } = this.props;
-        if (!allUsers || !userId) return null;
+export const UserLink : FC<Props> = (props) =>  {
 
-        let targetUser: IUser = null;
-        if (allUsers) {
-            targetUser = allUsers.find(user => user.userId === parseInt(userId));
-        }
+    const { allUsers, currentUser, userId } = props;
+    const [ showDetails, setShowDetails ] = useState<boolean>(false);
 
-        if (targetUser) {
-            const link = AppURL.create('q', 'core', 'siteusers', userId).toHref();
-            return currentUser.isAdmin ? <a href={link}>{targetUser.displayName}</a> : targetUser.displayName;
-        }
-        return null;
+    const toggleDetailsModal = useCallback(() => {
+        setShowDetails(!showDetails);
+    }, [showDetails]);
+
+    if (!allUsers || !userId) return null;
+
+    let targetUser: IUser = null;
+    if (allUsers) {
+        targetUser = allUsers.find(user => user.userId === parseInt(userId));
     }
+
+    if (!targetUser)
+        return null;
+
+    if (!userCanReadUserDetails(currentUser))
+        return <>{targetUser.displayName}</>;
+
+    return (
+        <>
+            <a onClick={toggleDetailsModal}>{targetUser.displayName}</a>;
+            {showDetails && (
+                <UserDetailsPanel userId={targetUser.userId} asModal/>
+            )}
+        </>
+    )
+
 }

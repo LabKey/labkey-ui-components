@@ -2,9 +2,9 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react';
+import React, { FC } from 'react';
 import moment from 'moment';
-import { Panel, Row, Col, Button } from 'react-bootstrap';
+import { Button, Col, Modal, Panel, Row } from 'react-bootstrap';
 import { Map } from 'immutable';
 import { getServerContext, Utils } from '@labkey/api';
 
@@ -22,11 +22,32 @@ import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
 import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
 import { UserResetPasswordConfirmModal } from './UserResetPasswordConfirmModal';
 import { getUserGroups, getUserProperties } from './actions';
-import { MembersList } from './GroupsList';
+import { RolesAndGroups } from './RolesAndGroups';
+import classNames from 'classnames';
+
+
+interface UserDetailRowProps {
+    label: string,
+    value: React.ReactNode
+}
+
+const UserDetailRow: FC<UserDetailRowProps> = ({label, value}) => {
+    return (
+        <Row>
+            <Col xs={4} className="principal-detail-label">
+                {label}
+            </Col>
+            <Col xs={8} className="principal-detail-value">
+                {value}
+            </Col>
+        </Row>
+    )
+};
 
 interface Props {
     allowDelete?: boolean;
     allowResetPassword?: boolean;
+    asModal?: boolean;
     onUsersStateChangeComplete?: (response: any, resetSelection: boolean) => any;
     policy?: SecurityPolicy;
     rolesByUniqueName?: Map<string, SecurityRole>;
@@ -35,7 +56,7 @@ interface Props {
 }
 
 interface State {
-    groups: string[];
+    roles: string[];
     loading: boolean;
     showDialog: string;
     userProperties: {}; // valid options are 'deactivate', 'reactivate', 'delete', 'reset', undefined
@@ -52,7 +73,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         super(props);
 
         this.state = {
-            groups: [],
+            roles: [],
             loading: false,
             userProperties: undefined,
             showDialog: undefined,
@@ -83,15 +104,6 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                     console.error(error);
                     this.setState(() => ({ userProperties: undefined, loading: false }));
                 });
-
-            getUserGroups(userId)
-                .then(groups => {
-                    this.setState({ groups });
-                })
-                .catch(error => {
-                    // Note that getUserGroups()'s call to selectRows() will console.error
-                    // On error, simply do not show group assignments, rather than rendering error within side panel
-                });
         } else {
             this.setState(() => ({ userProperties: undefined }));
         }
@@ -112,21 +124,14 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         }
     };
 
-    renderUserProp(title: string, prop: string, formatDate = false) {
+    renderUserProp(label: string, prop: string, formatDate = false) {
         let value = caseInsensitive(this.state.userProperties, prop);
         if (formatDate && value) {
             value = moment(value).format(getMomentDateTimeFormat());
         }
 
         return (
-            <Row>
-                <Col xs={4} className="principal-detail-label">
-                    {title}
-                </Col>
-                <Col xs={8} className="principal-detail-value">
-                    {value}
-                </Col>
-            </Row>
+            <UserDetailRow label={label} value={value} />
         );
     }
 
@@ -161,41 +166,44 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
     }
 
     renderBody() {
-        const { onUsersStateChangeComplete, userId } = this.props;
-        const { loading, userProperties, groups } = this.state;
-        const isSelf = userId === getServerContext().user.id;
+        const { userId } = this.props;
+        const { loading, userProperties } = this.state;
 
         if (loading) {
             return <LoadingSpinner />;
         }
 
         if (userProperties) {
-            const displayName = caseInsensitive(userProperties, 'displayName');
             const description = caseInsensitive(userProperties, 'description');
+            let name = caseInsensitive(userProperties, 'firstName') ?? '';
+            if (name) {
+                name += ' ';
+            }
+            name += caseInsensitive(userProperties, 'lastName') ?? '';
 
             return (
                 <>
-                    <p className="principal-title-primary">{displayName}</p>
+                    {!!name &&
+                        <UserDetailRow label={'Name'} value={name}/>
+                    }
                     {this.renderUserProp('Email', 'email')}
-                    {this.renderUserProp('First Name', 'firstName')}
-                    {this.renderUserProp('Last Name', 'lastName')}
 
                     {description && (
                         <>
-                            <hr className="principal-hr" />
                             {this.renderUserProp('Description', 'description')}
                         </>
                     )}
 
                     <hr className="principal-hr" />
-                    {this.renderUserProp('Created', 'created', true)}
                     {this.renderUserProp('Last Login', 'lastLogin', true)}
+                    {this.renderUserProp('Created', 'created', true)}
 
+                    <hr className="principal-hr" />
+                    {this.renderUserProp('User ID', 'userId')}
+                    <UserDetailRow label='Has Password' value={caseInsensitive(userProperties, 'hasPassword').toString()} />
                     <EffectiveRolesList {...this.props} />
 
-                    <MembersList groups={groups} />
-
-                    {!isSelf && onUsersStateChangeComplete && this.renderButtons()}
+                    <RolesAndGroups userId={userId} />
                 </>
             );
         }
@@ -203,15 +211,48 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         return <div>No user selected.</div>;
     }
 
+    renderHeader() {
+        const {loading, userProperties} = this.state;
+        if (loading || !userProperties)
+            return 'User Details';
+
+        const displayName = caseInsensitive(userProperties, 'displayName');
+        const active = caseInsensitive(userProperties, 'active');
+        return (
+            <>
+                <span>{displayName}</span>
+                <span className={classNames('margin-left status-pill', {
+                    'active': active,
+                    'inactive': !active
+                    }
+                )}>{active ? 'Active' : 'Inactive'}</span>
+            </>
+        )
+    }
+
     render() {
-        const { userId, allowDelete, allowResetPassword } = this.props;
+        const { userId, allowDelete, allowResetPassword, asModal, onUsersStateChangeComplete, } = this.props;
         const { showDialog, userProperties } = this.state;
+        const isSelf = userId === getServerContext().user.id;
+
+        if (asModal) {
+            return (
+                <Modal onHide={this.toggleDialog} show={true}>
+                    <Modal.Title>{this.renderHeader()}</Modal.Title>
+                    <Modal.Body>{this.renderBody()}</Modal.Body>
+                    <Modal.Footer>
+
+                    </Modal.Footer>
+                </Modal>
+            )
+        }
 
         return (
             <Panel>
-                <Panel.Heading>User Details</Panel.Heading>
+                <Panel.Heading>{this.renderHeader()}</Panel.Heading>
                 <Panel.Body>
                     {this.renderBody()}
+                    {!isSelf && onUsersStateChangeComplete && this.renderButtons()}
                     {allowResetPassword && showDialog === 'reset' && (
                         <UserResetPasswordConfirmModal
                             email={caseInsensitive(userProperties, 'email')}

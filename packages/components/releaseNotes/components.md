@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Update links from users to display user detail data for those who have permission
+
 ### version 2.283.1
 *Released*: 20 January 2023
 * Issue 46344: Display group membership on profile page

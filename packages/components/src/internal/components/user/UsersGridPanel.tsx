@@ -40,7 +40,6 @@ const OMITTED_COLUMNS = [
     'mobile',
     'pager',
     'groups',
-    'hasPassword',
     'firstName',
     'lastName',
     'description',

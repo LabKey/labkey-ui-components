@@ -5,7 +5,7 @@ import { ProductNavigationMenu } from './ProductNavigationMenu';
 
 export const ProductNavigation: FC = memo(() => {
     const [show, setShow] = useState<boolean>(false);
-    const onCloseMenu = useCallback(() => setShow(false), [setShow]);
+    const onCloseMenu = useCallback(() => setShow(false), []);
     const toggleMenu = useCallback(() => {
         setShow(current => !current);
     }, []);

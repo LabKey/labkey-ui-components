@@ -5,17 +5,20 @@ import { ProductNavigationMenu } from './ProductNavigationMenu';
 
 export const ProductNavigation: FC = memo(() => {
     const [show, setShow] = useState<boolean>(false);
-    const onCloseMenu = useCallback(() => setShow(false), [setShow]);
+    const onCloseMenu = useCallback(() => setShow(false), []);
+    const toggleMenu = useCallback(() => {
+        setShow(current => !current);
+    }, []);
 
     return (
         <DropdownButton
             id="product-navigation-button"
             className="navbar-icon-button-right"
             title={<i className="fa fa-th-large navbar-header-icon" />}
-            onToggle={() => setShow(!show)}
+            onToggle={toggleMenu}
             open={show}
-            noCaret={true}
-            pullRight={true}
+            noCaret
+            pullRight
         >
             {show && <ProductNavigationMenu onCloseMenu={onCloseMenu} />}
         </DropdownButton>

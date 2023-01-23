@@ -22,7 +22,7 @@ import { capitalizeFirstChar } from '../../util/utils';
 import { HelpLink } from '../../util/helpLinks';
 
 import { EntityDataType, OperationConfirmationData } from './models';
-import { DeleteConfirmationModal } from './DeleteConfirmationModal';
+import { DeleteConfirmationModal } from '../../../entities/DeleteConfirmationModal';
 
 export type DeleteConfirmationHandler = (rowsToDelete: any[], rowsToKeep: any[], userComment: string) => any;
 

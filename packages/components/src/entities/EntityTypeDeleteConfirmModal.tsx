@@ -3,10 +3,8 @@ import { Map } from 'immutable';
 
 import { SampleOperation } from '../internal/components/samples/constants';
 import { buildURL } from '../internal/url/AppURL';
-import {
-    DeleteConfirmationModal,
-    DeleteConfirmationModalProps,
-} from '../internal/components/entities/DeleteConfirmationModal';
+
+import { DeleteConfirmationModal, DeleteConfirmationModalProps } from './DeleteConfirmationModal';
 
 interface Props extends Omit<DeleteConfirmationModalProps, 'message'> {
     deleteConfirmationActionName?: string;
@@ -29,7 +27,7 @@ export const EntityTypeDeleteConfirmModal: FC<Props> = memo(props => {
     } = props;
 
     const dependencies = useMemo(() => {
-        if (!showDependenciesLink || !deleteConfirmationActionName) return undefined;
+        if (!showDependenciesLink || !deleteConfirmationActionName) return 'dependencies';
 
         let params = Map<string, string>();
         params = params.set('singleObjectRowId', rowId.toString());

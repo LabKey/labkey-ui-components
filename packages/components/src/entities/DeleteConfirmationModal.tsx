@@ -1,6 +1,6 @@
 import React, { FC, memo, ReactNode, useCallback, useState } from 'react';
 
-import { ConfirmModal, ConfirmModalProps } from '../base/ConfirmModal';
+import { ConfirmModal, ConfirmModalProps } from '../internal/components/base/ConfirmModal';
 
 export interface DeleteConfirmationModalProps extends Omit<ConfirmModalProps, 'onConfirm'> {
     message: ReactNode;
@@ -24,7 +24,7 @@ export const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = memo(pr
     return (
         <ConfirmModal
             title={title}
-            onConfirm={showDeleteComment ? onConfirmCallback : undefined}
+            onConfirm={onConfirmCallback}
             onCancel={onCancel}
             confirmVariant="danger"
             confirmButtonText={confirmButtonText}
@@ -32,24 +32,26 @@ export const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = memo(pr
         >
             <span>
                 {message}
-                {showDeleteComment && (
+                {!!onConfirm && (
                     <div className="top-spacing">
                         <div>
                             <strong>Deletion cannot be undone.</strong> Do you want to proceed?
                         </div>
-                        <div className="top-spacing">
-                            <div className="bottom-spacing">
-                                <strong>Reason(s) for deleting</strong>
+                        {showDeleteComment && (
+                            <div className="top-spacing">
+                                <div className="bottom-spacing">
+                                    <strong>Reason(s) for deleting</strong>
+                                </div>
+                                <div>
+                                    <textarea
+                                        className="form-control"
+                                        placeholder="Enter comments (optional)"
+                                        onChange={onCommentChange}
+                                        rows={5}
+                                    />
+                                </div>
                             </div>
-                            <div>
-                                <textarea
-                                    className="form-control"
-                                    placeholder="Enter comments (optional)"
-                                    onChange={onCommentChange}
-                                    rows={5}
-                                />
-                            </div>
-                        </div>
+                        )}
                     </div>
                 )}
             </span>

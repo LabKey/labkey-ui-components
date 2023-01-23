@@ -10,7 +10,7 @@ import { AppURL } from '../internal/url/AppURL';
 import { useServerContext } from '../internal/components/base/ServerContext';
 import { Page } from '../internal/components/base/Page';
 import { Section } from '../internal/components/base/Section';
-import { isSampleStatusEnabled } from '../internal/app/utils';
+import {isAppHomeFolder, isSampleStatusEnabled} from '../internal/app/utils';
 
 import { SampleTypeEmptyAlert } from '../internal/components/samples/SampleEmptyAlert';
 
@@ -26,7 +26,7 @@ import { useSampleTypeAppContext } from './useSampleTypeAppContext';
 
 export const SampleTypeListingPage: FC<CommonPageProps> = memo(props => {
     const { menu, navigate } = props;
-    const { moduleContext, user } = useServerContext();
+    const { container, moduleContext, user } = useServerContext();
     const { sampleTypeListingCaption } = useSampleTypeAppContext();
     const title = 'Sample Types';
 
@@ -44,7 +44,7 @@ export const SampleTypeListingPage: FC<CommonPageProps> = memo(props => {
                 caption={sampleTypeListingCaption}
                 context={
                     <>
-                        {user.hasDesignSampleTypesPermission() && (
+                        {(user.hasDesignSampleTypesPermission() && isAppHomeFolder(container, moduleContext)) && (
                             <Button
                                 bsStyle="success"
                                 className={showManageBtn ? 'button-right-spacing' : ''}

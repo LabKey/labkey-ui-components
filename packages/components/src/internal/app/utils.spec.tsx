@@ -706,13 +706,26 @@ describe('utils', () => {
     });
 
     test('isAppHomeFolder', () => {
-        LABKEY.container = { folderType: 'Collaboration' };
-        expect(isAppHomeFolder()).toBeFalsy();
-        LABKEY.container = { folderType: 'Sample Manager' };
+        LABKEY.container = { type: 'project', path: 'project', folderType: 'Collaboration' };
         expect(isAppHomeFolder()).toBeTruthy();
-        LABKEY.container = { folderType: 'Biologics' };
+        LABKEY.container = { type: 'project', path: 'project', folderType: 'Sample Manager' };
         expect(isAppHomeFolder()).toBeTruthy();
-        expect(isAppHomeFolder(new Container({ path: 'project a/b', folderType: 'Collaboration' }))).toBeFalsy();
+        LABKEY.container = { type: 'folder', path: 'project/a', folderType: 'Collaboration' };
+        expect(isAppHomeFolder()).toBeTruthy();
+        expect(isAppHomeFolder(null, { query: { isProductProjectsEnabled: false } })).toBeTruthy();
+        expect(isAppHomeFolder(null, { query: { isProductProjectsEnabled: true } })).toBeFalsy();
+        LABKEY.container = { type: 'folder', path: 'project/a', folderType: 'Biologics' };
+        expect(isAppHomeFolder()).toBeTruthy();
+        expect(isAppHomeFolder(null, { query: { isProductProjectsEnabled: false } })).toBeTruthy();
+        expect(isAppHomeFolder(null, { query: { isProductProjectsEnabled: true } })).toBeFalsy();
+
+        expect(isAppHomeFolder(new Container({ type: 'project', path: 'project' }) )).toBeTruthy();
+        expect(isAppHomeFolder(new Container({ type: 'project', path: 'project', folderType: 'Collaboration'}) )).toBeTruthy();
+        expect(isAppHomeFolder(new Container({ type: 'project', path: 'project', folderType: 'Collaboration'}), { query: { isProductProjectsEnabled: false } })).toBeTruthy();
+        expect(isAppHomeFolder(new Container({ type: 'project', path: 'project', folderType: 'Sample Manager'}), { query: { isProductProjectsEnabled: false } })).toBeTruthy();
+        expect(isAppHomeFolder(new Container({ type: 'folder', path: 'project/a', folderType: 'Sample Manager'}))).toBeTruthy();
+        expect(isAppHomeFolder(new Container({ type: 'folder', path: 'project/a'}), { query: { isProductProjectsEnabled: false } })).toBeTruthy();
+        expect(isAppHomeFolder(new Container({ type: 'folder', path: 'project/a'}), { query: { isProductProjectsEnabled: true } })).toBeFalsy();
     });
 
     test('sampleManagerIsPrimaryApp', () => {

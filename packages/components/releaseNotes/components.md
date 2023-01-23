@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.XX
+*Released*: XX January 2023
+* Projects: disallow project-specific data type creation
+  * Hide create data type urls from ProductMenuSection
+  * Show 'Not Found' page for SampleTypeDesignPage
+  * Hide 'Create Sample Type' button from SampleTypeListingPage
+  * Hide create url link from Sample/Assay EmptyAlert
+
 ### version 2.283.2
 *Released*: 23 January 2023
 * Fix issue with react keys in Navigation

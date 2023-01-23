@@ -195,9 +195,14 @@ export function isPremiumProductEnabled(moduleContext?: ModuleContext): boolean 
     return isSampleManagerEnabled(moduleContext) || isBiologicsEnabled(moduleContext);
 }
 
-export function isAppHomeFolder(container?: Container): boolean {
-    const folderType = (container ?? getServerContext().container).folderType;
-    return folderType === SAMPLE_MANAGER_APP_PROPERTIES.name || folderType === BIOLOGICS_APP_PROPERTIES.name;
+export function isAppHomeFolder(container?: Container, moduleContext?: ModuleContext): boolean {
+    // If it's a Home project, or if it's a subfolder and products are disabled.
+    const currentContainer : Partial<Container> = container ?? getServerContext().container;
+    const isTopFolder = currentContainer.isProject || isProjectContainer(currentContainer.path);
+    const isSubFolder = currentContainer.isFolder || isSubFolderContainer(currentContainer.path);
+    return (isTopFolder ||
+        (isSubFolder && !isProductProjectsEnabled(resolveModuleContext(moduleContext)))
+    );
 }
 
 export function sampleManagerIsPrimaryApp(moduleContext?: ModuleContext): boolean {
@@ -303,10 +308,18 @@ export function isCommunityDistribution(moduleContext?: ModuleContext): boolean 
 }
 
 export function isProjectContainer(containerPath?: string): boolean {
+    return getContainerDepth(containerPath) === 1;
+}
+
+function isSubFolderContainer(containerPath?: string): boolean {
+    return getContainerDepth(containerPath) > 1;
+}
+
+export function getContainerDepth(containerPath?: string): number {
     let path = containerPath ?? getServerContext().container.path;
-    if (!path) return false;
+    if (!path) return 0;
     if (!path.endsWith('/')) path = path + '/';
-    return path.split('/').filter(p => !!p).length === 1;
+    return path.split('/').filter(p => !!p).length;
 }
 
 export function getProjectPath(containerPath?: string): string {

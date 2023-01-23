@@ -24,7 +24,7 @@ import { blurActiveElement } from '../../util/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { useServerContext } from '../base/ServerContext';
 import { AppProperties } from '../../app/models';
-import { getCurrentAppProperties } from '../../app/utils';
+import { getCurrentAppProperties, isAppHomeFolder } from '../../app/utils';
 
 import { Alert } from '../base/Alert';
 
@@ -266,6 +266,7 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
                                         section={getSectionModel(key)}
                                         config={menuConfig}
                                         containerPath={menuModel.containerPath}
+                                        hideEmptyUrl={!isAppHomeFolder(container, moduleContext)}
                                         currentProductId={menuModel.currentProductId}
                                         dashboardImgURL={isLast && dashboardURL}
                                     />

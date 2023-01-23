@@ -3,8 +3,8 @@ import { PermissionTypes } from '@labkey/api';
 
 import { EmptyAlertWithPermissions, EmptyAlertWithPermissionsProps } from '../base/EmptyAlert';
 import { NEW_SAMPLE_TYPE_HREF, NEW_SAMPLES_HREF } from '../../app/constants';
-import { useServerContext } from "../base/ServerContext";
-import { isAppHomeFolder } from "../../app/utils";
+import { useServerContext } from '../base/ServerContext';
+import { isAppHomeFolder } from '../../app/utils';
 
 interface Props extends EmptyAlertWithPermissionsProps {
     message?: string;

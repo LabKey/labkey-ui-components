@@ -28,10 +28,11 @@ import { SampleTypeDesigner } from '../internal/components/domainproperties/samp
 import { useAppContext } from '../internal/AppContext';
 import { CommonPageProps } from '../internal/models';
 
+import { isAppHomeFolder } from '../internal/app/utils';
+
 import { SampleTypeBasePage } from './SampleTypeBasePage';
 import { useSampleTypeAppContext } from './useSampleTypeAppContext';
 import { onSampleTypeChange } from './actions';
-import {isAppHomeFolder} from "../internal/app/utils";
 
 const DESIGNER_HEADER =
     'Sample types help you organize samples in your lab and allow you to add properties for easy tracking of data.';

@@ -10,7 +10,7 @@ import { AppURL } from '../internal/url/AppURL';
 import { useServerContext } from '../internal/components/base/ServerContext';
 import { Page } from '../internal/components/base/Page';
 import { Section } from '../internal/components/base/Section';
-import {isAppHomeFolder, isSampleStatusEnabled} from '../internal/app/utils';
+import { isAppHomeFolder, isSampleStatusEnabled } from '../internal/app/utils';
 
 import { SampleTypeEmptyAlert } from '../internal/components/samples/SampleEmptyAlert';
 
@@ -44,7 +44,7 @@ export const SampleTypeListingPage: FC<CommonPageProps> = memo(props => {
                 caption={sampleTypeListingCaption}
                 context={
                     <>
-                        {(user.hasDesignSampleTypesPermission() && isAppHomeFolder(container, moduleContext)) && (
+                        {user.hasDesignSampleTypesPermission() && isAppHomeFolder(container, moduleContext) && (
                             <Button
                                 bsStyle="success"
                                 className={showManageBtn ? 'button-right-spacing' : ''}

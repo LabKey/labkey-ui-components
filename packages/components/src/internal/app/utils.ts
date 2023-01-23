@@ -197,12 +197,10 @@ export function isPremiumProductEnabled(moduleContext?: ModuleContext): boolean 
 
 export function isAppHomeFolder(container?: Container, moduleContext?: ModuleContext): boolean {
     // If it's a Home project, or if it's a subfolder and products are disabled.
-    const currentContainer : Partial<Container> = container ?? getServerContext().container;
+    const currentContainer: Partial<Container> = container ?? getServerContext().container;
     const isTopFolder = currentContainer.isProject || isProjectContainer(currentContainer.path);
     const isSubFolder = currentContainer.isFolder || isSubFolderContainer(currentContainer.path);
-    return (isTopFolder ||
-        (isSubFolder && !isProductProjectsEnabled(resolveModuleContext(moduleContext)))
-    );
+    return isTopFolder || (isSubFolder && !isProductProjectsEnabled(resolveModuleContext(moduleContext)));
 }
 
 export function sampleManagerIsPrimaryApp(moduleContext?: ModuleContext): boolean {

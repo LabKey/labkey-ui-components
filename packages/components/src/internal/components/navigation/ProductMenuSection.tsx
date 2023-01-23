@@ -30,8 +30,8 @@ interface MenuSectionProps {
     containerPath: string;
     currentProductId: string;
     dashboardImgURL?: string;
-    section: MenuSectionModel;
     hideEmptyUrl?: boolean;
+    section: MenuSectionModel;
 }
 
 export class ProductMenuSection extends PureComponent<MenuSectionProps> {

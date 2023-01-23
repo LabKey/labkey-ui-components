@@ -1,7 +1,7 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.283.1
+### version 2.283.2
 *Released*: ?? January 2023
 * Fix issue with react keys in Navigation
 

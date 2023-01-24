@@ -7,16 +7,11 @@ exports[`<GroupDetailsPanel/> as site group 1`] = `
   <div
     className="panel-heading"
   >
-    Group Details
+    Editor User Group
   </div>
   <div
     className="panel-body"
   >
-    <p
-      className="principal-title-primary"
-    >
-      Editor User Group
-    </p>
     <div
       className="row"
     >
@@ -80,35 +75,57 @@ exports[`<GroupDetailsPanel/> as site group 1`] = `
       className="principal-hr"
     />
     <div
-      className="principal-detail-label"
+      className="row"
     >
-      Effective Roles
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Permissions
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        <ul
+          className="principal-detail-ul"
+        >
+          <li
+            className="principal-detail-li"
+          >
+            Editor
+          </li>
+        </ul>
+      </div>
     </div>
-    <ul
-      className="permissions-groups-ul"
-    >
-      <li>
-        Editor
-      </li>
-    </ul>
     <hr
       className="principal-hr"
     />
     <div
-      className="principal-detail-label"
+      className="row"
     >
-      Members
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Members
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        <ul
+          className="principal-detail-ul"
+        >
+          <li
+            className="principal-detail-li"
+          >
+            user1
+          </li>
+          <li
+            className="principal-detail-li"
+          >
+            group1
+          </li>
+        </ul>
+      </div>
     </div>
-    <ul
-      className="permissions-groups-ul"
-    >
-      <li>
-        user1
-      </li>
-      <li>
-        group1
-      </li>
-    </ul>
   </div>
 </div>
 `;
@@ -139,16 +156,11 @@ exports[`<GroupDetailsPanel/> with principal and members 1`] = `
   <div
     className="panel-heading"
   >
-    Group Details
+    Editor User Group
   </div>
   <div
     className="panel-body"
   >
-    <p
-      className="principal-title-primary"
-    >
-      Editor User Group
-    </p>
     <div
       className="row"
     >
@@ -198,38 +210,62 @@ exports[`<GroupDetailsPanel/> with principal and members 1`] = `
       className="principal-hr"
     />
     <div
-      className="principal-detail-label"
+      className="row"
     >
-      Effective Roles
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Permissions
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        <ul
+          className="principal-detail-ul"
+        >
+          <li
+            className="principal-detail-li"
+          >
+            Editor
+          </li>
+        </ul>
+      </div>
     </div>
-    <ul
-      className="permissions-groups-ul"
-    >
-      <li>
-        Editor
-      </li>
-    </ul>
     <hr
       className="principal-hr"
     />
     <div
-      className="principal-detail-label"
+      className="row"
     >
-      Members
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Members
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        <ul
+          className="principal-detail-ul"
+        >
+          <li
+            className="principal-detail-li"
+          >
+            user1
+          </li>
+          <li
+            className="principal-detail-li"
+          >
+            user2
+          </li>
+          <li
+            className="principal-detail-li"
+          >
+            group1
+          </li>
+        </ul>
+      </div>
     </div>
-    <ul
-      className="permissions-groups-ul"
-    >
-      <li>
-        user1
-      </li>
-      <li>
-        user2
-      </li>
-      <li>
-        group1
-      </li>
-    </ul>
   </div>
 </div>
 `;

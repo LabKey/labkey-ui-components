@@ -6,32 +6,52 @@ exports[`<EffectiveRolesList/> multiple roles 1`] = `
     className="principal-hr"
   />,
   <div
-    className="principal-detail-label"
+    className="row"
   >
-    Effective Roles
+    <div
+      className="principal-detail-label col-xs-4"
+    >
+      Permissions
+    </div>
+    <div
+      className="principal-detail-value col-xs-8"
+    >
+      <ul
+        className="principal-detail-ul"
+      >
+        <li
+          className="principal-detail-li"
+        >
+          Editor
+        </li>
+        <li
+          className="principal-detail-li"
+        >
+          Folder Administrator
+        </li>
+        <li
+          className="principal-detail-li"
+        >
+          Project Administrator
+        </li>
+        <li
+          className="principal-detail-li"
+        >
+          Reader
+        </li>
+        <li
+          className="principal-detail-li"
+        >
+          Restricted Reader
+        </li>
+        <li
+          className="principal-detail-li"
+        >
+          Submitter
+        </li>
+      </ul>
+    </div>
   </div>,
-  <ul
-    className="permissions-groups-ul"
-  >
-    <li>
-      Editor
-    </li>
-    <li>
-      Folder Administrator
-    </li>
-    <li>
-      Project Administrator
-    </li>
-    <li>
-      Reader
-    </li>
-    <li>
-      Restricted Reader
-    </li>
-    <li>
-      Submitter
-    </li>
-  </ul>,
 ]
 `;
 
@@ -43,17 +63,27 @@ exports[`<EffectiveRolesList/> single role 1`] = `
     className="principal-hr"
   />,
   <div
-    className="principal-detail-label"
+    className="row"
   >
-    Effective Roles
+    <div
+      className="principal-detail-label col-xs-4"
+    >
+      Permissions
+    </div>
+    <div
+      className="principal-detail-value col-xs-8"
+    >
+      <ul
+        className="principal-detail-ul"
+      >
+        <li
+          className="principal-detail-li"
+        >
+          Editor
+        </li>
+      </ul>
+    </div>
   </div>,
-  <ul
-    className="permissions-groups-ul"
-  >
-    <li>
-      Editor
-    </li>
-  </ul>,
 ]
 `;
 
@@ -63,35 +93,57 @@ exports[`<EffectiveRolesList/> with root policy 1`] = `
     className="principal-hr"
   />,
   <div
-    className="principal-detail-label"
+    className="row"
   >
-    Effective Roles
+    <div
+      className="principal-detail-label col-xs-4"
+    >
+      Permissions
+    </div>
+    <div
+      className="principal-detail-value col-xs-8"
+    >
+      <ul
+        className="principal-detail-ul"
+      >
+        <li
+          className="principal-detail-li"
+        >
+          Editor
+        </li>
+        <li
+          className="principal-detail-li"
+        >
+          Folder Administrator
+        </li>
+        <li
+          className="principal-detail-li"
+        >
+          Project Administrator
+        </li>
+        <li
+          className="principal-detail-li"
+        >
+          Reader
+        </li>
+        <li
+          className="principal-detail-li"
+        >
+          Restricted Reader
+        </li>
+        <li
+          className="principal-detail-li"
+        >
+          Submitter
+        </li>
+        <li
+          className="principal-detail-li"
+        >
+          Application Admin
+        </li>
+      </ul>
+    </div>
   </div>,
-  <ul
-    className="permissions-groups-ul"
-  >
-    <li>
-      Editor
-    </li>
-    <li>
-      Folder Administrator
-    </li>
-    <li>
-      Project Administrator
-    </li>
-    <li>
-      Reader
-    </li>
-    <li>
-      Restricted Reader
-    </li>
-    <li>
-      Submitter
-    </li>
-    <li>
-      Application Admin
-    </li>
-  </ul>,
 ]
 `;
 

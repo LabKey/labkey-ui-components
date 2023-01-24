@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.283.2-fb-deleteComment.4",
+  "version": "2.283.2-fb-deleteComment.5",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

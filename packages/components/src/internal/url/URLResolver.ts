@@ -405,14 +405,7 @@ const DETAILS_QUERY_ROW_MAPPER = new ActionMapper('query', 'detailsQueryRow', ro
 const EXECUTE_QUERY_MAPPER = new ActionMapper('query', 'executeQuery', () => false);
 
 const USER_DETAILS_MAPPERS = [
-    new ActionMapper('user', 'details', row => {
-        const url = row.get('url');
-        if (url) {
-            const params = ActionURL.getParameters(url);
-            return AppURL.create('q', 'core', 'siteusers', params.userId);
-        }
-    }),
-
+    new ActionMapper('user', 'details', () => false),
     new ActionMapper('user', 'attachmentDownload', () => false),
 ];
 

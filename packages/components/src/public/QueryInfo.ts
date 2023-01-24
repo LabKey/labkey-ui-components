@@ -138,7 +138,7 @@ export class QueryInfo extends Record({
             columns = columns.set(rawColumn.fieldKey.toLowerCase(), QueryColumn.create(rawColumn));
         });
 
-        let altUpdateKeys = undefined;
+        let altUpdateKeys;
         if (queryInfoJson.altUpdateKeys?.length > 0) {
             altUpdateKeys = new Set<string>();
             queryInfoJson.altUpdateKeys?.forEach(key => {

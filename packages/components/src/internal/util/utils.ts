@@ -379,7 +379,7 @@ export function getUpdatedDataFromGrid(
     originalGridData: Map<string, Map<string, any>>,
     editorRows: Array<Map<string, any>>,
     idField: string,
-    queryInfo: QueryInfo,
+    queryInfo: QueryInfo
 ): any[] {
     const updatedRows = [];
     const altIdFields = queryInfo.altUpdateKeys;

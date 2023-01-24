@@ -111,7 +111,14 @@ export const initEditableGridModel = async (
     let columns: List<QueryColumn>;
     const forUpdate = loader.mode === EditorMode.Update;
     if (loader.columns) {
-        columns = editorModel.getColumns(gridData.queryInfo, forUpdate, undefined, loader.columns, loader.columns, colFilter);
+        columns = editorModel.getColumns(
+            gridData.queryInfo,
+            forUpdate,
+            undefined,
+            loader.columns,
+            loader.columns,
+            colFilter
+        );
     } else {
         columns = editorModel.getColumns(gridData.queryInfo, forUpdate, undefined, undefined, undefined, colFilter);
     }

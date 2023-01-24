@@ -27,7 +27,7 @@ import { genCellKey, getSortedCellKeys, parseCellKey } from '../../utils';
 import { getQueryColumnRenderers } from '../../global';
 import { GRID_EDIT_INDEX } from '../../constants';
 import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from '../../util/Date';
-import {caseInsensitive, quoteValueWithDelimiters} from '../../util/utils';
+import { caseInsensitive, quoteValueWithDelimiters } from '../../util/utils';
 
 export interface ValueDescriptor {
     display: any;

@@ -422,7 +422,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                 queryModel,
                                 new EditorModel({ id: ENTITY_GRID_ID }),
                                 new EntityGridLoader(insertModel, queryModel.queryInfo),
-                                queryModel
+                                queryModel,
+                                this.isIncludedColumn
                             );
                             this.setState({ dataModel, editorModel });
                         }

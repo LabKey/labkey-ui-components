@@ -5,7 +5,7 @@
 import React, { PureComponent } from 'react';
 import { List, OrderedMap } from 'immutable';
 import { Col, Row } from 'react-bootstrap';
-import { ActionURL } from '@labkey/api';
+import { ActionURL, PermissionTypes } from '@labkey/api';
 
 import { QueryInfoForm } from '../forms/QueryInfoForm';
 
@@ -16,10 +16,12 @@ import { SCHEMAS } from '../../schemas';
 import { insertColumnFilter, QueryColumn } from '../../../public/QueryColumn';
 import { FileInput } from '../forms/input/FileInput';
 import { Alert } from '../base/Alert';
-import { getActionErrorMessage } from '../../util/messaging';
+import { getActionErrorMessage, resolveErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
-import { getUserDetailsRowData, updateUserDetails } from './actions';
+import { hasPermissions } from '../../../entities/SampleListingPage';
+
+import { getUserDetailsRowData, getUserGroups, updateUserDetails } from './actions';
 
 const FIELDS_TO_EXCLUDE = List<string>([
     'userid',
@@ -39,6 +41,7 @@ const DEFAULT_AVATAR_PATH = '/_images/defaultavatar.png';
 
 interface State {
     avatar: File;
+    groups: string;
     hasError: boolean;
     queryInfo: QueryInfo;
     reloadRequired: boolean;
@@ -62,18 +65,29 @@ export class UserProfile extends PureComponent<Props, State> {
             removeCurrentAvatar: false,
             reloadRequired: false,
             hasError: false,
+            groups: undefined,
         };
     }
 
-    componentDidMount = (): void => {
-        getQueryDetails(SCHEMAS.CORE_TABLES.USERS)
-            .then(queryInfo => {
-                this.setState(() => ({ queryInfo }));
-            })
-            .catch(reason => {
-                console.error(reason);
+    componentDidMount = async (): Promise<void> => {
+        try {
+            const queryInfo = await getQueryDetails(SCHEMAS.CORE_TABLES.USERS);
+            this.setState(() => ({ queryInfo }));
+        } catch (e) {
+            console.error(e.message);
+            this.setState(() => ({ hasError: true }));
+        }
+
+        if (hasPermissions(this.props.user, [PermissionTypes.CanSeeGroupDetails])) {
+            try {
+                const groupsResult = await getUserGroups(this.props.user.id);
+                const groups = groupsResult.join(', ');
+                this.setState(() => ({ groups }));
+            } catch (e) {
+                console.error(resolveErrorMessage(e) ?? 'Failed to load group data');
                 this.setState(() => ({ hasError: true }));
-            });
+            }
+        }
     };
 
     columnFilter = (col: QueryColumn): boolean => {
@@ -81,6 +95,19 @@ export class UserProfile extends PureComponent<Props, State> {
         const _col = col.merge({ shownInInsertView: true, readOnly: !col.get('userEditable') }) as QueryColumn;
         return insertColumnFilter(_col) && !FIELDS_TO_EXCLUDE.contains(_col.fieldKey.toLowerCase());
     };
+
+    footer() {
+        const { groups } = this.state;
+
+        if (groups) {
+            return (
+                <div className="form-group row">
+                    <label className="control-label col-sm-3 text-left col-xs-12"> Groups </label>
+                    <div className="col-sm-9 col-md-9 col-xs-12"> {groups} </div>
+                </div>
+            );
+        }
+    }
 
     onAvatarFileChange = (files: {}): void => {
         this.setState(() => ({ avatar: files[USER_AVATAR_FILE] }));
@@ -168,6 +195,7 @@ export class UserProfile extends PureComponent<Props, State> {
                     onSuccess={this.onSuccess}
                     onHide={onCancel}
                     disabledFields={DISABLED_FIELDS}
+                    footer={this.footer()}
                     showErrorsAtBottom
                 />
             </>

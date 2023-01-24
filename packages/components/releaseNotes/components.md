@@ -6,6 +6,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Handle update and clarify merge - use DIB for updateRows
     * use LSID as keys for updateRows and saveRows for samples and dataclasses
 
+### version 2.283.2
+*Released*: 23 January 2023
+* Fix issue with react keys in Navigation
+
+### version 2.283.1
+*Released*: 20 January 2023
+* Issue 46344: Display group membership on profile page
+
 ### version 2.283.0
 *Released*: 17 January 2023
 * Issue 47066: Adjust timeline to show created date and created by user in timeline's current status, even if detailed audit logging was not on.

@@ -2,11 +2,11 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC } from 'react';
+import React, {FC, memo} from 'react';
 import moment from 'moment';
 import { Button, Col, Modal, Panel, Row } from 'react-bootstrap';
 import { Map } from 'immutable';
-import { getServerContext, Utils } from '@labkey/api';
+import {Filter, getServerContext, Utils} from '@labkey/api';
 
 import { EffectiveRolesList } from '../permissions/EffectiveRolesList';
 
@@ -21,14 +21,16 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
 import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
 import { UserResetPasswordConfirmModal } from './UserResetPasswordConfirmModal';
-import { getUserGroups, getUserProperties } from './actions';
-import { RolesAndGroups } from './RolesAndGroups';
 import classNames from 'classnames';
+import {selectRows} from "../../query/selectRows";
+import {SCHEMAS} from "../../schemas";
+import {flattenValuesFromRow} from "../../../public/QueryModel/QueryModel";
+import {getUserProperties} from "./actions";
 
 
 interface UserDetailRowProps {
-    label: string,
-    value: React.ReactNode
+    label: string;
+    value: React.ReactNode;
 }
 
 const UserDetailRow: FC<UserDetailRowProps> = ({label, value}) => {
@@ -44,22 +46,70 @@ const UserDetailRow: FC<UserDetailRowProps> = ({label, value}) => {
     )
 };
 
+interface GroupsListingProps {
+    groups: [{ displayValue: string; value: number }];
+}
+
+const GroupsListing: FC<GroupsListingProps> = memo(props => {
+    const { groups } = props;
+
+    if (!groups) return null;
+
+    const body = (
+        <ul className="principal-detail-ul">
+            {groups.length > 0 ? (
+                groups.map(group => <li key={group.value} className="principal-detail-li">{group.displayValue}</li>)
+            ) : (
+                <li className="principal-detail-li">None</li>
+            )}
+        </ul>
+    );
+
+    return (
+        <>
+            <hr className="principal-hr" />
+            <UserDetailRow label="Groups" value={body} />
+        </>
+    );
+});
+
+export const selectRowsUserProps = function(userId: number): Promise<{ [key: string]: any }> {
+    return new Promise((resolve, reject) => {
+        selectRows({
+            filterArray: [Filter.create('UserId', userId)],
+            schemaQuery: SCHEMAS.CORE_TABLES.USERS,
+        }).then(response => {
+            const row = response.rows[0];
+            const rowValues = flattenValuesFromRow(row, Object.keys(row));
+
+            // special case for the Groups prop as it is an array
+            rowValues.Groups = caseInsensitive(row, 'Groups');
+
+            resolve(rowValues);
+        }).catch(error => {
+            console.error(error);
+            reject(error);
+        });
+    });
+};
+
 interface Props {
     allowDelete?: boolean;
     allowResetPassword?: boolean;
-    asModal?: boolean;
+    isSelf?: boolean;
     onUsersStateChangeComplete?: (response: any, resetSelection: boolean) => any;
     policy?: SecurityPolicy;
     rolesByUniqueName?: Map<string, SecurityRole>;
     rootPolicy?: SecurityPolicy;
+    toggleDetailsModal?: () => void;
     userId: number;
 }
 
 interface State {
-    roles: string[];
     loading: boolean;
+    roles: string[];
     showDialog: string;
-    userProperties: {}; // valid options are 'deactivate', 'reactivate', 'delete', 'reset', undefined
+    userProperties: {};
 }
 
 export class UserDetailsPanel extends React.PureComponent<Props, State> {
@@ -91,19 +141,28 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
     }
 
     loadUserDetails = (): void => {
-        const { userId } = this.props;
+        const { userId, isSelf } = this.props;
 
         if (userId) {
             this.setState(() => ({ loading: true }));
 
-            getUserProperties(userId)
-                .then(response => {
-                    this.setState(() => ({ userProperties: response.props, loading: false }));
-                })
-                .catch(error => {
-                    console.error(error);
-                    this.setState(() => ({ userProperties: undefined, loading: false }));
-                });
+            if (isSelf) {
+                getUserProperties(userId)
+                    .then(response => {
+                        this.setState(() => ({ userProperties: response.props, loading: false }));
+                    })
+                    .catch(() => {
+                        this.setState(() => ({ userProperties: undefined, loading: false }));
+                    });
+            } else {
+                selectRowsUserProps(userId)
+                    .then(response => {
+                        this.setState(() => ({ userProperties: response, loading: false }));
+                    })
+                    .catch(() => {
+                        this.setState(() => ({ userProperties: undefined, loading: false }));
+                    });
+            }
         } else {
             this.setState(() => ({ userProperties: undefined }));
         }
@@ -166,7 +225,6 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
     }
 
     renderBody() {
-        const { userId } = this.props;
         const { loading, userProperties } = this.state;
 
         if (loading) {
@@ -180,6 +238,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                 name += ' ';
             }
             name += caseInsensitive(userProperties, 'lastName') ?? '';
+            const hasPassword = caseInsensitive(userProperties, 'hasPassword');
 
             return (
                 <>
@@ -200,10 +259,9 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
 
                     <hr className="principal-hr" />
                     {this.renderUserProp('User ID', 'userId')}
-                    <UserDetailRow label='Has Password' value={caseInsensitive(userProperties, 'hasPassword').toString()} />
+                    {!!hasPassword && <UserDetailRow label="Has Password" value={hasPassword.toString()} />}
                     <EffectiveRolesList {...this.props} />
-
-                    <RolesAndGroups userId={userId} />
+                    <GroupsListing groups={caseInsensitive(userProperties, 'groups')} />
                 </>
             );
         }
@@ -213,38 +271,39 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
 
     renderHeader() {
         const {loading, userProperties} = this.state;
-        if (loading || !userProperties)
-            return 'User Details';
+        if (loading || !userProperties) return 'User Details';
 
         const displayName = caseInsensitive(userProperties, 'displayName');
         const active = caseInsensitive(userProperties, 'active');
+
         return (
             <>
                 <span>{displayName}</span>
-                <span className={classNames('margin-left status-pill', {
-                    'active': active,
-                    'inactive': !active
-                    }
-                )}>{active ? 'Active' : 'Inactive'}</span>
+                {!!active && (
+                    <span className={classNames('margin-left status-pill', {
+                            'active': active,
+                            'inactive': !active
+                        }
+                    )}>{active ? 'Active' : 'Inactive'}</span>
+                )}
             </>
         )
     }
 
     render() {
-        const { userId, allowDelete, allowResetPassword, asModal, onUsersStateChangeComplete, } = this.props;
+        const { userId, allowDelete, allowResetPassword, toggleDetailsModal, onUsersStateChangeComplete } = this.props;
         const { showDialog, userProperties } = this.state;
         const isSelf = userId === getServerContext().user.id;
 
-        if (asModal) {
+        if (toggleDetailsModal) {
             return (
-                <Modal onHide={this.toggleDialog} show={true}>
-                    <Modal.Title>{this.renderHeader()}</Modal.Title>
+                <Modal onHide={toggleDetailsModal} show={true}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>{this.renderHeader()}</Modal.Title>
+                    </Modal.Header>
                     <Modal.Body>{this.renderBody()}</Modal.Body>
-                    <Modal.Footer>
-
-                    </Modal.Footer>
                 </Modal>
-            )
+            );
         }
 
         return (

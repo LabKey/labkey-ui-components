@@ -147,7 +147,7 @@ export function userCanEditStorageData(user: User): boolean {
 }
 
 export function userCanReadUserDetails(user: User): boolean {
-    return hasAllPermissions(user, ['org.labkey.api.security.permissions.SeeUserDetailsPermission'], false);
+    return hasAllPermissions(user, [PermissionTypes.CanSeeUserDetails], false);
 }
 
 export function userCanReadGroupDetails(user: User): boolean {

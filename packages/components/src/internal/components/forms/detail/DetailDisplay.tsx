@@ -36,6 +36,7 @@ import { TextAreaInput } from '../input/TextAreaInput';
 import { TextInput } from '../input/TextInput';
 import { CheckboxInput } from '../input/CheckboxInput';
 import { NoLinkRenderer } from '../../../renderers/NoLinkRenderer';
+import {UserDetailsRenderer} from "../../../renderers/UserDetailsRenderer";
 
 export type Renderer = (data: any, row?: any) => ReactNode;
 
@@ -453,6 +454,9 @@ export function resolveDetailRenderer(column: QueryColumn): Renderer {
                 break;
             case 'samplestatusrenderer':
                 renderer = (d, r) => <SampleStatusRenderer row={r} />;
+                break;
+            case 'userdetailsrenderer':
+                renderer = d => <UserDetailsRenderer data={d} />;
                 break;
             default:
                 break;

@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Update links from users to display user detail data for those who have permission
+  * add modal version of UserDetailsPanel, via UserDetailsRenderer and UserLink
 
 ### version 2.283.2
 *Released*: 23 January 2023

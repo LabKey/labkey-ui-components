@@ -1,46 +1,55 @@
-import React, { FC, useCallback, useState } from 'react';
-import { List } from 'immutable';
-import { User as IUser } from '@labkey/api';
+import React, { FC, useCallback, useState, useEffect } from 'react';
 
 import { User } from '../base/models/User';
 import { userCanReadUserDetails } from '../../app/utils';
-import { UserDetailsPanel } from './UserDetailsPanel';
+
+import { caseInsensitive } from '../../util/utils';
+
+import { selectRowsUserProps, UserDetailsPanel } from './UserDetailsPanel';
 
 interface Props {
-    allUsers: List<IUser>;
     currentUser: User;
-    userId: string;
+    userDisplayValue?: string;
+    userId: number;
 }
 
-export const UserLink : FC<Props> = (props) =>  {
+export const UserLink: FC<Props> = props => {
+    const { currentUser, userId, userDisplayValue } = props;
+    const [showDetails, setShowDetails] = useState<boolean>(false);
+    const [targetUserDisplayValue, setTargetUserDisplayValue] = useState<string>();
+    const isSelf = userId === currentUser.id;
 
-    const { allUsers, currentUser, userId } = props;
-    const [ showDetails, setShowDetails ] = useState<boolean>(false);
+    useEffect(() => {
+        (async () => {
+            try {
+                if (!!userId && userDisplayValue === undefined) {
+                    const targetUser2 = await selectRowsUserProps(userId);
+                    setTargetUserDisplayValue(caseInsensitive(targetUser2, 'DisplayName'));
+                } else {
+                    setTargetUserDisplayValue(userDisplayValue);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        })();
+    }, [userDisplayValue, userId]);
 
     const toggleDetailsModal = useCallback(() => {
-        setShowDetails(!showDetails);
-    }, [showDetails]);
+        setShowDetails(current => !current);
+    }, []);
 
-    if (!allUsers || !userId) return null;
+    if (!userId) return null;
 
-    let targetUser: IUser = null;
-    if (allUsers) {
-        targetUser = allUsers.find(user => user.userId === parseInt(userId));
+    if (!isSelf && (!userCanReadUserDetails(currentUser) || !targetUserDisplayValue)) {
+        return <div>{targetUserDisplayValue ?? userId}</div>;
     }
-
-    if (!targetUser)
-        return null;
-
-    if (!userCanReadUserDetails(currentUser))
-        return <>{targetUser.displayName}</>;
 
     return (
         <>
-            <a onClick={toggleDetailsModal}>{targetUser.displayName}</a>;
-            {showDetails && (
-                <UserDetailsPanel userId={targetUser.userId} asModal/>
-            )}
+            <a onClick={toggleDetailsModal} style={{ cursor: 'pointer' }}>
+                {targetUserDisplayValue}
+            </a>
+            {showDetails && <UserDetailsPanel userId={userId} toggleDetailsModal={toggleDetailsModal} isSelf={!userCanReadUserDetails(currentUser) && isSelf} />}
         </>
-    )
-
-}
+    );
+};

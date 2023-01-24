@@ -253,6 +253,7 @@ import { FileColumnRenderer } from './internal/renderers/FileColumnRenderer';
 import { MultiValueRenderer } from './internal/renderers/MultiValueRenderer';
 import { LabelColorRenderer } from './internal/renderers/LabelColorRenderer';
 import { NoLinkRenderer } from './internal/renderers/NoLinkRenderer';
+import { UserDetailsRenderer } from './internal/renderers/UserDetailsRenderer';
 import {
     ImportAliasRenderer,
     SampleTypeImportAliasRenderer,
@@ -922,6 +923,7 @@ export {
     ImportAliasRenderer,
     SampleTypeImportAliasRenderer,
     SourceTypeImportAliasRenderer,
+    UserDetailsRenderer,
     resolveDetailRenderer,
     // form related items
     BulkUpdateForm,

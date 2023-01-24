@@ -213,9 +213,9 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
         } = this.props;
         const selectedNoun = this.getSelectedNoun();
 
+        console.log(this.getQueryInfo().toJS());
         return (
             <BulkUpdateForm
-                additionalPkCols={['lsid']}
                 containerFilter={containerFilter}
                 singularNoun={selectedNoun}
                 pluralNoun={`${selectedNoun}s`}

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Iterable, List, Map, Set } from 'immutable';
+import { Iterable, List, Map, Set as ImmutableSet } from 'immutable';
 import { getServerContext, Utils } from '@labkey/api';
 import { ChangeEvent } from 'react';
 
@@ -56,8 +56,8 @@ export function intersect(a: List<string>, b: List<string>): List<string> {
         return emptyList;
     }
 
-    const sa = a.reduce(toLowerReducer, Set<string>().asMutable()).asImmutable();
-    const sb = b.reduce(toLowerReducer, Set<string>().asMutable()).asImmutable();
+    const sa = a.reduce(toLowerReducer, ImmutableSet<string>().asMutable()).asImmutable();
+    const sb = b.reduce(toLowerReducer, ImmutableSet<string>().asMutable()).asImmutable();
 
     return sa.intersect(sb).toList();
 }
@@ -123,7 +123,7 @@ export function toLowerSafe(a: List<string>): List<string> {
     return emptyList;
 }
 
-function toLowerReducer(s: Set<string>, v: string): Set<string> {
+function toLowerReducer(s: ImmutableSet<string>, v: string): ImmutableSet<string> {
     if (typeof v === 'string') {
         s.add(v.toLowerCase());
     }
@@ -234,8 +234,8 @@ export function valueIsEmpty(value): boolean {
  */
 export function getCommonDataValues(data: Map<any, any>): any {
     let valueMap = Map<string, any>(); // map from fields to the value shared by all rows
-    let fieldsInConflict = Set<string>();
-    let emptyFields = Set<string>(); // those fields that are empty
+    let fieldsInConflict = ImmutableSet<string>();
+    let emptyFields = ImmutableSet<string>(); // those fields that are empty
     data.map((rowData, id) => {
         // const rowData = data.get(id);
         if (rowData) {
@@ -308,24 +308,25 @@ function isSameWithStringCompare(value1: any, value2: any): boolean {
  * @param originalData a map from an id field to a Map from fieldKeys to an object with a 'value' field
  * @param updatedValues an object mapping fieldKeys to values that are being updated
  * @param primaryKeys the list of primary fieldKey names
+ * @param additionalPkCols additional array of primary fieldKey names
  */
 export function getUpdatedData(
     originalData: Map<string, any>,
     updatedValues: any,
     primaryKeys: List<string>,
-    additionalPkCols?: string[]
+    additionalPkCols?: Set<string>
 ): any[] {
     const updateValuesMap = Map<any, any>(updatedValues);
-    const pkColsLc = [];
-    primaryKeys.forEach(key => pkColsLc.push(key.toLowerCase()));
-    additionalPkCols?.forEach(col => pkColsLc.push(col.toLowerCase()));
+    const pkColsLc = new Set<string>();
+    primaryKeys.forEach(key => pkColsLc.add(key.toLowerCase()));
+    additionalPkCols?.forEach(col => pkColsLc.add(col.toLowerCase()));
     const updatedData = originalData.map(originalRowMap => {
         return originalRowMap.reduce((m, fieldValueMap, key) => {
             // Issue 42672: The original data has keys that are names or captions for the columns.  We need to use
             // the encoded key that will match what's expected for filtering on the server side (e.g., "U g$Sl" instead of "U g/l")
             const encodedKey = encodePart(key);
             if (fieldValueMap?.has('value')) {
-                if (pkColsLc.indexOf(key.toLowerCase()) > -1) {
+                if (pkColsLc.has(key.toLowerCase())) {
                     return m.set(key, fieldValueMap.get('value'));
                 } else if (
                     updateValuesMap.has(encodedKey) &&
@@ -360,7 +361,7 @@ export function getUpdatedData(
     });
     // we want the rows that contain more than just the primaryKeys
     return updatedData
-        .filter(rowData => rowData.size > pkColsLc.length)
+        .filter(rowData => rowData.size > pkColsLc.size)
         .map(rowData => rowData.toJS())
         .toArray();
 }
@@ -379,12 +380,15 @@ export function getUpdatedDataFromGrid(
     editorRows: Array<Map<string, any>>,
     idField: string,
     queryInfo: QueryInfo,
-    altIdField?: string
 ): any[] {
     const updatedRows = [];
+    const altIdFields = queryInfo.altUpdateKeys;
     editorRows.forEach(editedRow => {
         const id = editedRow.get(idField);
-        const altId = altIdField ? editedRow.get(altIdField) : undefined;
+        const altIds = {};
+        altIdFields?.forEach(altIdField => {
+            altIds[altIdField] = altIdField ? editedRow.get(altIdField) : undefined;
+        });
         const originalRow = originalGridData.get(id.toString());
         if (originalRow) {
             const row = editedRow.reduce((row, value, key) => {
@@ -442,7 +446,7 @@ export function getUpdatedDataFromGrid(
             }, {});
             if (!Utils.isEmptyObj(row)) {
                 row[idField] = id;
-                if (altId) row[altIdField] = altId;
+                Object.assign(row, altIds);
                 updatedRows.push(row);
             }
         } else {

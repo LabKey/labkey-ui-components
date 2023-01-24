@@ -44,7 +44,6 @@ const DEFAULT_PLURAL_NOUN = 'rows';
 
 export interface EditableGridPanelForUpdateWithLineageProps
     extends Omit<SharedEditableGridPanelProps, 'allowAdd' | 'allowRemove' | 'forUpdate'> {
-    altIdField?: string;
     combineParentTypes?: boolean;
     exportColFilter?: (col: QueryColumn) => boolean;
     extraExportColumns?: Array<Partial<QueryColumn>>;
@@ -73,7 +72,6 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
         getParentTypeWarning,
         getTabHeader,
         idField,
-        altIdField,
         includedTabs,
         loaders,
         onCancel,
@@ -167,8 +165,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
                 editableGridModels.editorModels,
                 idField,
                 selectionData,
-                ind,
-                altIdField
+                ind
             );
             if (gridData) {
                 gridDataAllTabs.push(gridData);
@@ -192,7 +189,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
             setIsSubmitting(false);
             onComplete();
         }
-    }, [editableGridModels, idField, onComplete, selectionData, updateAllTabRows, altIdField]);
+    }, [editableGridModels, idField, onComplete, selectionData, updateAllTabRows]);
 
     const getCurrentTab = useCallback(
         (tabInd: number): number => {
@@ -360,5 +357,4 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
 
 EditableGridPanelForUpdateWithLineage.defaultProps = {
     idField: 'RowId',
-    altIdField: 'LSID',
 };

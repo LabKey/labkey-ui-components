@@ -16,15 +16,16 @@ import { Progress } from '../internal/components/base/Progress';
 import { getEntityNoun } from '../internal/components/entities/utils';
 import { EntityDataType } from '../internal/components/entities/models';
 import { EntityDeleteConfirmModal } from '../internal/components/entities/EntityDeleteConfirmModal';
+import { EntityDeleteConfirmHandler } from '../internal/components/entities/EntityDeleteConfirmModalDisplay';
 
 interface Props {
-    afterDelete: (rowsToKeep?: any[]) => any;
+    afterDelete: (rowsToKeep?: any[]) => void;
     auditBehavior?: AuditBehaviorTypes;
-    beforeDelete?: () => any;
+    beforeDelete?: () => void;
     containerPath?: string;
     entityDataType: EntityDataType;
     maxSelected?: number;
-    onCancel: () => any;
+    onCancel: () => void;
     queryModel?: QueryModel;
     useSelected: boolean;
     verb?: string;
@@ -63,8 +64,8 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
         }
     }
 
-    const onConfirm = useCallback(
-        async (rowsToDelete: any[], rowsToKeep: any[], userComment: string) => {
+    const onConfirm: EntityDeleteConfirmHandler = useCallback(
+        async (rowsToDelete, rowsToKeep, userComment) => {
             setNumConfirmed(rowsToDelete.length);
             setShowProgress(true);
             beforeDelete?.();
@@ -73,10 +74,10 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
             try {
                 await deleteRows({
                     auditBehavior,
+                    auditUserComment: userComment,
+                    containerPath,
                     rows: rowsToDelete,
                     schemaQuery: queryModel.schemaQuery,
-                    containerPath,
-                    auditUserComment: userComment,
                 });
                 afterDelete(rowsToKeep);
                 createNotification(deleteSuccessMessage(noun, rowsToDelete.length, undefined));
@@ -89,7 +90,16 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
                 onCancel(); // close the modal so the error notification is more apparent.
             }
         },
-        [afterDelete, auditBehavior, beforeDelete, createNotification, entityDataType, queryModel.schemaQuery]
+        [
+            afterDelete,
+            auditBehavior,
+            beforeDelete,
+            containerPath,
+            createNotification,
+            entityDataType,
+            onCancel,
+            queryModel.schemaQuery,
+        ]
     );
 
     if (!queryModel) {
@@ -101,7 +111,6 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
             <ConfirmModal
                 title={'Cannot Delete ' + capitalizeFirstChar(nounPlural)}
                 onCancel={onCancel}
-                onConfirm={undefined}
                 cancelButtonText="Dismiss"
             >
                 You cannot delete more than {maxSelected} individual {nounPlural} at a time. Please select fewer

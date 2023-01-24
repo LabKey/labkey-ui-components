@@ -1,12 +1,11 @@
 import React, { FC, memo, useMemo } from 'react';
-import { Map } from 'immutable';
 
 import { SampleOperation } from '../internal/components/samples/constants';
 import { buildURL } from '../internal/url/AppURL';
 
 import { DeleteConfirmationModal, DeleteConfirmationModalProps } from './DeleteConfirmationModal';
 
-interface Props extends Omit<DeleteConfirmationModalProps, 'message'> {
+interface Props extends DeleteConfirmationModalProps {
     deleteConfirmationActionName?: string;
     isSample?: boolean;
     isShared?: boolean;
@@ -17,53 +16,42 @@ interface Props extends Omit<DeleteConfirmationModalProps, 'message'> {
 
 export const EntityTypeDeleteConfirmModal: FC<Props> = memo(props => {
     const {
+        deleteConfirmationActionName,
         isShared,
         isSample,
-        showDependenciesLink = false,
-        rowId,
-        deleteConfirmationActionName,
         noun,
+        rowId,
+        showDependenciesLink = false,
         ...rest
     } = props;
 
     const dependencies = useMemo(() => {
         if (!showDependenciesLink || !deleteConfirmationActionName) return 'dependencies';
 
-        let params = Map<string, string>();
-        params = params.set('singleObjectRowId', rowId.toString());
+        const params: Record<string, any> = { singleObjectRowId: rowId.toString() };
+
         if (isSample) {
-            params = params.set('sampleOperation', SampleOperation[SampleOperation.Delete]);
+            params.sampleOperation = SampleOperation[SampleOperation.Delete];
         }
 
-        return (
-            <>
-                <a href={buildURL('experiment', deleteConfirmationActionName, params.toJS())}>dependencies</a>
-            </>
-        );
+        return <a href={buildURL('experiment', deleteConfirmationActionName, params)}>dependencies</a>;
     }, [deleteConfirmationActionName, isSample, rowId, showDependenciesLink]);
-
-    const message = useMemo(() => {
-        return (
-            <>
-                The {noun.toLowerCase()} type and all of its {dependencies} will be permanently deleted.
-                {isShared && (
-                    <>
-                        {' '}
-                        Because this is a <strong>shared</strong> {noun.toLowerCase()} type, you may be affecting other
-                        folders.
-                    </>
-                )}
-            </>
-        );
-    }, [dependencies, isShared, noun]);
 
     return (
         <DeleteConfirmationModal
             {...rest}
             cancelButtonText="Cancel"
             confirmButtonText="Yes, Delete"
-            message={message}
             title={`Permanently delete ${isShared ? 'shared ' : ''}${noun.toLowerCase()} type?`}
-        />
+        >
+            The {noun.toLowerCase()} type and all of its {dependencies} will be permanently deleted.
+            {isShared && (
+                <>
+                    {' '}
+                    Because this is a <strong>shared</strong> {noun.toLowerCase()} type, you may be affecting other
+                    folders.
+                </>
+            )}
+        </DeleteConfirmationModal>
     );
 });

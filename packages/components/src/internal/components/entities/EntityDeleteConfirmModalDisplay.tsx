@@ -25,14 +25,14 @@ import { DeleteConfirmationModal } from '../../../entities/DeleteConfirmationMod
 
 import { EntityDataType, OperationConfirmationData } from './models';
 
-export type DeleteConfirmationHandler = (rowsToDelete: any[], rowsToKeep: any[], userComment: string) => any;
+export type EntityDeleteConfirmHandler = (rowsToDelete: any[], rowsToKeep: any[], userComment: string) => void;
 
 interface Props {
     confirmationData: OperationConfirmationData;
     entityDataType: EntityDataType;
     getDeletionDescription?: (numToDelete: number) => React.ReactNode;
-    onCancel: () => any;
-    onConfirm: DeleteConfirmationHandler;
+    onCancel: () => void;
+    onConfirm: EntityDeleteConfirmHandler;
     verb?: string;
 }
 
@@ -154,17 +154,19 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props, State>
 
     render() {
         const { onCancel } = this.props;
-        const confirmProps = this.getConfirmationProperties();
+        const { canDelete, message, title } = this.getConfirmationProperties();
+
         return (
             <DeleteConfirmationModal
-                title={confirmProps.title}
-                onConfirm={confirmProps.canDelete ? this.onConfirm : undefined}
+                cancelButtonText={canDelete ? 'Cancel' : 'Dismiss'}
+                confirmButtonText={canDelete ? 'Yes, Delete' : undefined}
                 onCancel={onCancel}
-                confirmButtonText={confirmProps.canDelete ? 'Yes, Delete' : undefined}
-                cancelButtonText={confirmProps.canDelete ? 'Cancel' : 'Dismiss'}
-                message={confirmProps.message}
-                showDeleteComment={confirmProps.canDelete}
-            />
+                onConfirm={canDelete ? this.onConfirm : undefined}
+                showDeleteComment={canDelete}
+                title={title}
+            >
+                {message}
+            </DeleteConfirmationModal>
         );
     }
 }

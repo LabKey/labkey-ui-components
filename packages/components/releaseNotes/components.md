@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Update links from users to display user detail data for those who have permission
   * add modal version of UserDetailsPanel, via UserDetailsRenderer and UserLink
   * remove URL mapper that takes user-details link to q view
+  * update list display of GroupsList, EffectiveRolesList, and MembersList
 
 ### version 2.283.2
 *Released*: 23 January 2023

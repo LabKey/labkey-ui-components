@@ -52,12 +52,10 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
 
     return (
         <Panel>
-            <Panel.Heading>Group Details</Panel.Heading>
+            <Panel.Heading>{principal ? principal.displayName : 'Group Details'}</Panel.Heading>
             <Panel.Body>
                 {principal ? (
                     <>
-                        <p className="principal-title-primary">{principal.displayName}</p>
-
                         <UserProperties prop={usersCount.toString()} title="User Count" />
                         <UserProperties prop={groupsCount} title="Group Count" />
 

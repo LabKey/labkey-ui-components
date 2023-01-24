@@ -67,16 +67,6 @@
     padding-bottom: 15px;
 }
 
-.principal-title {
-    font-size: 130%;
-    overflow-wrap: break-word;
-}
-.principal-title-primary {
-    font-size: 130%;
-    overflow-wrap: break-word;
-    color: $brand-primary;
-}
-
 .principal-detail-label {
     color: $gray;
     padding-bottom: 15px;
@@ -98,4 +88,5 @@
 
 .principal-detail-li {
     display: block;
+    padding-bottom: 5px;
 }

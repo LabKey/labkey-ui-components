@@ -26,6 +26,7 @@ import {selectRows} from "../../query/selectRows";
 import {SCHEMAS} from "../../schemas";
 import {flattenValuesFromRow} from "../../../public/QueryModel/QueryModel";
 import {getUserProperties} from "./actions";
+import { GroupsList } from '../permissions/GroupsList';
 
 
 interface UserDetailRowProps {
@@ -45,33 +46,6 @@ const UserDetailRow: FC<UserDetailRowProps> = ({label, value}) => {
         </Row>
     )
 };
-
-interface GroupsListingProps {
-    groups: [{ displayValue: string; value: number }];
-}
-
-const GroupsListing: FC<GroupsListingProps> = memo(props => {
-    const { groups } = props;
-
-    if (!groups) return null;
-
-    const body = (
-        <ul className="principal-detail-ul">
-            {groups.length > 0 ? (
-                groups.map(group => <li key={group.value} className="principal-detail-li">{group.displayValue}</li>)
-            ) : (
-                <li className="principal-detail-li">None</li>
-            )}
-        </ul>
-    );
-
-    return (
-        <>
-            <hr className="principal-hr" />
-            <UserDetailRow label="Groups" value={body} />
-        </>
-    );
-});
 
 export const selectRowsUserProps = function(userId: number): Promise<{ [key: string]: any }> {
     return new Promise((resolve, reject) => {
@@ -261,7 +235,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                     {this.renderUserProp('User ID', 'userId')}
                     {!!hasPassword && <UserDetailRow label="Has Password" value={hasPassword.toString()} />}
                     <EffectiveRolesList {...this.props} />
-                    <GroupsListing groups={caseInsensitive(userProperties, 'groups')} />
+                    <GroupsList groups={caseInsensitive(userProperties, 'groups')} />
                 </>
             );
         }
@@ -279,7 +253,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         return (
             <>
                 <span>{displayName}</span>
-                {!!active && (
+                {active !== undefined && (
                     <span className={classNames('margin-left status-pill', {
                             'active': active,
                             'inactive': !active

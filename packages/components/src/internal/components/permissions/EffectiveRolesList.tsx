@@ -6,6 +6,7 @@ import React from 'react';
 import { Map, List } from 'immutable';
 
 import { SecurityAssignment, SecurityPolicy, SecurityRole } from './models';
+import {Col, Row} from "react-bootstrap";
 
 interface Props {
     policy?: SecurityPolicy;
@@ -35,13 +36,23 @@ export class EffectiveRolesList extends React.PureComponent<Props, any> {
         return (
             <>
                 <hr className="principal-hr" />
-                <div className="principal-detail-label">Effective Roles</div>
-                <ul className="permissions-groups-ul">
-                    {assignments.map(assignment => {
-                        const role = rolesByUniqueName.get(assignment.role);
-                        return <li key={assignment.role}>{role ? role.displayName : assignment.role}</li>;
-                    })}
-                </ul>
+                <Row>
+                    <Col xs={4} className="principal-detail-label">
+                        Permissions
+                    </Col>
+                    <Col xs={8} className="principal-detail-value">
+                        <ul className="principal-detail-ul">
+                            {assignments.map(assignment => {
+                                const role = rolesByUniqueName.get(assignment.role);
+                                return (
+                                    <li key={assignment.role} className="principal-detail-li">
+                                        {role ? role.displayName : assignment.role}
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </Col>
+                </Row>
             </>
         );
     }

@@ -220,7 +220,6 @@ export class MenuSectionConfig extends Record({
     activeJobIconCls: 'fa-spinner fa-pulse',
     emptyText: undefined,
     emptyAppURL: undefined,
-    emptyURLProjectOnly: false,
     emptyURLText: 'Get started...',
     headerURLPart: undefined,
     headerText: undefined,
@@ -232,7 +231,6 @@ export class MenuSectionConfig extends Record({
     declare activeJobIconCls?: string;
     declare emptyText?: string;
     declare emptyAppURL?: AppURL;
-    declare emptyURLProjectOnly: boolean;
     declare emptyURLText: string;
     declare headerURLPart: string;
     declare headerText?: string;

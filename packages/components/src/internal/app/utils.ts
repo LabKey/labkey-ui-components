@@ -337,7 +337,6 @@ export function getStorageSectionConfig(user: User, currentProductId: string, mo
         if (userCanDesignLocations(user)) {
             locationsMenuConfig = locationsMenuConfig.merge({
                 emptyAppURL: AppURL.create(FREEZERS_KEY, 'new'),
-                emptyURLProjectOnly: true, // freezer creation not supported in sub folders
                 emptyURLText: 'Create storage',
             }) as MenuSectionConfig;
         }

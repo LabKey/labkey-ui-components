@@ -5,12 +5,14 @@ import { TEST_USER_APP_ADMIN, TEST_USER_FOLDER_ADMIN, TEST_USER_READER } from '.
 import { NEW_SAMPLE_TYPE_HREF, NEW_SAMPLES_HREF } from '../../app/constants';
 
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './SampleEmptyAlert';
+import {mountWithAppServerContext} from "../../testHelpers";
+import {Container} from "../base/models/Container";
 
 const EMPTY_ALERT = '.empty-alert';
 
 describe('SampleEmptyAlert', () => {
     test('with permissions', () => {
-        const wrapper = mount(<SampleEmptyAlert user={TEST_USER_FOLDER_ADMIN} />);
+        const wrapper = mountWithAppServerContext(<SampleEmptyAlert user={TEST_USER_FOLDER_ADMIN} />);
 
         // Expect default message
         expect(wrapper.find(EMPTY_ALERT).at(0).text()).toContain(
@@ -22,15 +24,35 @@ describe('SampleEmptyAlert', () => {
     });
     test('without permissions', () => {
         const expectedMessage = 'I am just a reader';
-        const wrapper = mount(<SampleEmptyAlert message={expectedMessage} user={TEST_USER_READER} />);
+        const wrapper = mountWithAppServerContext(<SampleEmptyAlert message={expectedMessage} user={TEST_USER_READER} />);
 
         expect(wrapper.find(EMPTY_ALERT).at(0).text()).toEqual(expectedMessage);
     });
 });
 
 describe('SampleTypeEmptyAlert', () => {
+    const topFolderContext = {
+        container: new Container({ type: 'project', path: 'project' }),
+        moduleContext: { query: { isProductProjectsEnabled: false } }
+    };
+
+    const homeProjectContext = {
+        container: new Container({ type: 'project', path: 'project' }),
+        moduleContext: { query: { isProductProjectsEnabled: true } }
+    };
+
+    const childProjectContext = {
+        container: new Container({ type: 'folder', path: 'project/sub1' }),
+        moduleContext: { query: { isProductProjectsEnabled: true } }
+    };
+
+    const childFolderNonProjectContext = {
+        container: new Container({ type: 'folder', path: 'project/sub1' }),
+        moduleContext: { query: { isProductProjectsEnabled: false } }
+    };
+
     test('with permissions', () => {
-        const wrapper = mount(<SampleTypeEmptyAlert user={TEST_USER_APP_ADMIN} />);
+        const wrapper = mountWithAppServerContext(<SampleTypeEmptyAlert user={TEST_USER_APP_ADMIN} />, {}, homeProjectContext);
 
         // Expect default message
         expect(wrapper.find(EMPTY_ALERT).at(0).text()).toContain('No sample types have been created');
@@ -40,8 +62,28 @@ describe('SampleTypeEmptyAlert', () => {
     });
     test('without permissions', () => {
         const expectedMessage = 'I am just a reader';
-        const wrapper = mount(<SampleTypeEmptyAlert message={expectedMessage} user={TEST_USER_READER} />);
+        const wrapper = mountWithAppServerContext(<SampleTypeEmptyAlert message={expectedMessage} user={TEST_USER_READER} />, {}, homeProjectContext);
 
         expect(wrapper.find(EMPTY_ALERT).at(0).text()).toEqual(expectedMessage);
     });
+    test('top level folder context', () => {
+        const wrapper = mountWithAppServerContext(<SampleTypeEmptyAlert user={TEST_USER_APP_ADMIN} />, {}, topFolderContext);
+
+        // Expect link to design
+        expect(wrapper.find(`${EMPTY_ALERT} a`).prop('href')).toEqual(NEW_SAMPLE_TYPE_HREF.toHref());
+    });
+    test('child project folder context', () => {
+        const wrapper = mountWithAppServerContext(<SampleTypeEmptyAlert user={TEST_USER_APP_ADMIN} />, {}, childProjectContext);
+
+        expect(wrapper.find(EMPTY_ALERT).at(0).text()).toEqual("No sample types have been created.");
+        // Expect no link to design
+        expect(wrapper.find(`${EMPTY_ALERT} a`).length).toEqual(0);
+    });
+    test('child folder but Projects feature not enabled for folder', () => {
+        const wrapper = mountWithAppServerContext(<SampleTypeEmptyAlert user={TEST_USER_APP_ADMIN} />, {}, childFolderNonProjectContext);
+
+        // Expect link to design
+        expect(wrapper.find(`${EMPTY_ALERT} a`).prop('href')).toEqual(NEW_SAMPLE_TYPE_HREF.toHref());
+    });
+
 });

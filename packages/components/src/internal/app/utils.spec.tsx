@@ -870,7 +870,6 @@ describe('getStorageSectionConfig', () => {
         });
         expect(config.emptyText).toBe('No storage has been defined');
         expect(config.emptyAppURL).toBe(undefined);
-        expect(config.emptyURLProjectOnly).toBe(false);
         expect(config.iconURL).toBe('/labkey/_images/freezer_menu.svg');
         expect(config.headerURLPart).toBe('home');
         expect(config.headerText).toBe(undefined);
@@ -884,7 +883,6 @@ describe('getStorageSectionConfig', () => {
         });
         expect(config.emptyURLText).toBe('Get started...');
         expect(config.emptyAppURL).toBe(undefined);
-        expect(config.emptyURLProjectOnly).toBe(false);
         expect(config.headerURLPart).toBe('home');
     });
 
@@ -898,7 +896,6 @@ describe('getStorageSectionConfig', () => {
         });
         expect(config.emptyURLText).toBe('Create storage');
         expect(config.emptyAppURL?.toHref()).toBe('#/freezers/new');
-        expect(config.emptyURLProjectOnly).toBe(true);
         expect(config.headerURLPart).toBe('home');
     });
 
@@ -912,7 +909,6 @@ describe('getStorageSectionConfig', () => {
         });
         expect(config.emptyURLText).toBe('Create storage');
         expect(config.emptyAppURL?.toHref()).toBe('#/freezers/new');
-        expect(config.emptyURLProjectOnly).toBe(true);
         expect(config.headerURLPart).toBe('home');
     });
 
@@ -926,7 +922,6 @@ describe('getStorageSectionConfig', () => {
         });
         expect(config.emptyURLText).toBe('Get started...');
         expect(config.emptyAppURL).toBe(undefined);
-        expect(config.emptyURLProjectOnly).toBe(false);
         expect(config.headerURLPart).toBe('home');
     });
 
@@ -940,7 +935,6 @@ describe('getStorageSectionConfig', () => {
         });
         expect(config.emptyURLText).toBe('Create storage');
         expect(config.emptyAppURL?.toHref()).toBe('#/freezers/new');
-        expect(config.emptyURLProjectOnly).toBe(true);
         expect(config.headerURLPart).toBe('home');
     });
 
@@ -954,7 +948,6 @@ describe('getStorageSectionConfig', () => {
         });
         expect(config.emptyURLText).toBe('Create storage');
         expect(config.emptyAppURL?.toHref()).toBe('#/freezers/new');
-        expect(config.emptyURLProjectOnly).toBe(true);
         expect(config.headerURLPart).toBe('home');
     });
 });

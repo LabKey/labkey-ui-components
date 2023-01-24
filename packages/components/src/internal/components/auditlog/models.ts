@@ -13,7 +13,7 @@ export class AuditDetailsModel extends Record({
     eventDateFormatted: undefined,
     oldData: undefined,
     newData: undefined,
-    userComment: undefined
+    userComment: undefined,
 }) {
     declare rowId?: number;
     declare comment?: string;

@@ -6,17 +6,18 @@ import { formatDateTime, parseDate } from '../../util/Date';
 import { resolveErrorMessage } from '../../util/messaging';
 import { capitalizeFirstChar } from '../../util/utils';
 
-import { ServerActivity, ServerActivityData } from './model';
 import { PIPELINE_MAPPER } from '../../url/URLResolver';
 import { AppURL } from '../../url/AppURL';
+
+import { ServerActivity, ServerActivityData } from './model';
 
 interface Props {
     actionLinkLabel: string;
     maxRows: number;
     noActivityMsg: string;
     onRead: (id: number) => void;
-    onViewClick: () => void;
     onViewAll: () => any;
+    onViewClick: () => void;
     serverActivity: ServerActivity;
     viewAllText: string;
 }
@@ -78,12 +79,13 @@ export class ServerActivityList extends React.PureComponent<Props> {
     renderData(activity: ServerActivityData, key: number): ReactNode {
         const { actionLinkLabel, onViewClick } = this.props;
         const isUnread = activity.isUnread() && !activity.inProgress;
-        let resolvedUrl =  PIPELINE_MAPPER.resolve(
+        const resolvedUrl = PIPELINE_MAPPER.resolve(
             activity.ActionLinkUrl,
-            Map({rowId: activity.RowId, url: activity.ActionLinkUrl }),
+            Map({ rowId: activity.RowId, url: activity.ActionLinkUrl }),
             undefined,
             undefined,
-            undefined);
+            undefined
+        );
 
         return (
             <li
@@ -113,7 +115,10 @@ export class ServerActivityList extends React.PureComponent<Props> {
                 <br />
                 {activity.ActionLinkUrl ? (
                     <span className="server-notifications-link">
-                        <a href={resolvedUrl instanceof AppURL ? resolvedUrl.toHref() : activity.ActionLinkUrl} onClick={onViewClick}>
+                        <a
+                            href={resolvedUrl instanceof AppURL ? resolvedUrl.toHref() : activity.ActionLinkUrl}
+                            onClick={onViewClick}
+                        >
                             {capitalizeFirstChar(activity.ActionLinkText ? activity.ActionLinkText : actionLinkLabel)}
                         </a>
                     </span>

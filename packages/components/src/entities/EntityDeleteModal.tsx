@@ -49,7 +49,7 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
     let rowIds;
     let numSelected = 0;
     let selectionKey: string;
-    let useSnapshotSelection: boolean = false;
+    let useSnapshotSelection = false;
 
     if (queryModel) {
         if (useSelected) {

@@ -21,8 +21,9 @@ import { isELNEnabled } from '../../app/utils';
 import { capitalizeFirstChar } from '../../util/utils';
 import { HelpLink } from '../../util/helpLinks';
 
-import { EntityDataType, OperationConfirmationData } from './models';
 import { DeleteConfirmationModal } from '../../../entities/DeleteConfirmationModal';
+
+import { EntityDataType, OperationConfirmationData } from './models';
 
 export type DeleteConfirmationHandler = (rowsToDelete: any[], rowsToKeep: any[], userComment: string) => any;
 
@@ -59,8 +60,7 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props, State>
         if (!confirmationData) return undefined;
 
         let _dependencyText;
-        if (Utils.isFunction(dependencyText))
-            _dependencyText = (dependencyText as Function)();
+        if (Utils.isFunction(dependencyText)) _dependencyText = (dependencyText as Function)();
         else {
             _dependencyText = isELNEnabled()
                 ? (dependencyText ? dependencyText + ' or' : '') + ' references in one or more active notebooks'
@@ -145,7 +145,11 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props, State>
     }
 
     onConfirm = (userComment: string): void => {
-        this.props.onConfirm?.(this.props.confirmationData.allowed, this.props.confirmationData.notAllowed, userComment);
+        this.props.onConfirm?.(
+            this.props.confirmationData.allowed,
+            this.props.confirmationData.notAllowed,
+            userComment
+        );
     };
 
     render() {

@@ -25,7 +25,6 @@ import { DeleteConfirmationHandler, EntityDeleteConfirmModalDisplay } from './En
 import { getDeleteConfirmationData } from './actions';
 import { EntityDataType, OperationConfirmationData } from './models';
 
-
 interface Props {
     entityDataType: EntityDataType;
     getDeletionDescription?: (numToDelete: number) => React.ReactNode;
@@ -77,7 +76,12 @@ export class EntityDeleteConfirmModal extends PureComponent<Props, State> {
         const { entityDataType, rowIds, selectionKey, useSnapshotSelection } = this.props;
 
         try {
-            const confirmationData = await getDeleteConfirmationData(entityDataType, rowIds, selectionKey, useSnapshotSelection);
+            const confirmationData = await getDeleteConfirmationData(
+                entityDataType,
+                rowIds,
+                selectionKey,
+                useSnapshotSelection
+            );
             if (this._mounted) {
                 this.setState({ confirmationData, isLoading: false });
             }

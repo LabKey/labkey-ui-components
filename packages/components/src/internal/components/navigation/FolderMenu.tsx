@@ -1,4 +1,4 @@
-import React, { FC, memo } from 'react';
+import React, { FC, Fragment, memo } from 'react';
 import classNames from 'classnames';
 
 export interface FolderMenuItem {
@@ -22,9 +22,8 @@ export const FolderMenu: FC<FolderMenuProps> = memo(props => {
         <div className="menu-section col-folders">
             <ul>
                 {items.map(item => (
-                    <>
+                    <Fragment key={item.id}>
                         <li
-                            key={item.id}
                             className={classNames({
                                 active: item.id === activeContainerId,
                                 'menu-section-header': item.isTopLevel,
@@ -40,7 +39,7 @@ export const FolderMenu: FC<FolderMenuProps> = memo(props => {
                                 <hr />
                             </li>
                         )}
-                    </>
+                    </Fragment>
                 ))}
             </ul>
         </div>

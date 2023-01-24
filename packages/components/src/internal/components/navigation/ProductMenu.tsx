@@ -255,6 +255,7 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
                 )}
                 {menuModel.isLoaded &&
                     sectionConfigs.map((sectionConfig, i) => (
+                        // eslint-disable-next-line react/no-array-index-key
                         <div key={i} className="menu-section col-product-section">
                             {sectionConfig.entrySeq().map(([key, menuConfig], j) => {
                                 const isLast = i === sectionConfigs.size - 1 && j === sectionConfig.size - 1;

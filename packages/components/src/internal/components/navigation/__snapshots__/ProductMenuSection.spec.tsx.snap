@@ -1,0 +1,440 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProductMenuSection render empty section no text 1`] = `
+<ProductMenuSection
+  config={
+    Immutable.Record {
+      "activeJobIconCls": "fa-spinner fa-pulse",
+      "emptyText": undefined,
+      "emptyAppURL": undefined,
+      "emptyURLText": "Get started...",
+      "headerURLPart": undefined,
+      "headerText": undefined,
+      "iconCls": undefined,
+      "iconURL": "/testProduct/images/samples.svg",
+      "showActiveJobIcon": true,
+      "useOriginalURL": false,
+    }
+  }
+  containerPath="/test/path"
+  currentProductId="testProduct"
+  section={
+    Immutable.Record {
+      "label": "Sample Sets",
+      "url": undefined,
+      "items": Immutable.List [],
+      "totalCount": 0,
+      "key": "samples",
+      "productId": undefined,
+      "sectionKey": undefined,
+    }
+  }
+>
+  <ul>
+    <li
+      className="menu-section-header clickable-item"
+    >
+      <a
+        href="#/samples"
+      >
+        <img
+          alt="Sample Sets icon"
+          className="menu-section-image "
+          height="24px"
+          src="/testProduct/images/samples.svg"
+          width="24px"
+        />
+         
+        Sample Sets
+      </a>
+    </li>
+    <li>
+      <hr />
+    </li>
+  </ul>
+</ProductMenuSection>
+`;
+
+exports[`ProductMenuSection render empty section with empty text and create link 1`] = `
+<ProductMenuSection
+  config={
+    Immutable.Record {
+      "activeJobIconCls": "fa-spinner fa-pulse",
+      "emptyText": "Test empty text",
+      "emptyAppURL": undefined,
+      "emptyURLText": "Test empty link",
+      "headerURLPart": undefined,
+      "headerText": undefined,
+      "iconCls": undefined,
+      "iconURL": "/testProduct/images/samples.svg",
+      "showActiveJobIcon": true,
+      "useOriginalURL": false,
+    }
+  }
+  containerPath="/test/path"
+  currentProductId="testProduct"
+  section={
+    Immutable.Record {
+      "label": "Sample Sets",
+      "url": undefined,
+      "items": Immutable.List [],
+      "totalCount": 0,
+      "key": "samples",
+      "productId": undefined,
+      "sectionKey": undefined,
+    }
+  }
+>
+  <ul>
+    <li
+      className="menu-section-header clickable-item"
+    >
+      <a
+        href="#/samples"
+      >
+        <img
+          alt="Sample Sets icon"
+          className="menu-section-image "
+          height="24px"
+          src="/testProduct/images/samples.svg"
+          width="24px"
+        />
+         
+        Sample Sets
+      </a>
+    </li>
+    <li>
+      <hr />
+    </li>
+    <li
+      className="empty-section"
+    >
+      Test empty text
+    </li>
+  </ul>
+</ProductMenuSection>
+`;
+
+exports[`ProductMenuSection render one column section 1`] = `
+<ProductMenuSection
+  config={
+    Immutable.Record {
+      "activeJobIconCls": "fa-spinner fa-pulse",
+      "emptyText": undefined,
+      "emptyAppURL": undefined,
+      "emptyURLText": "Get started...",
+      "headerURLPart": undefined,
+      "headerText": undefined,
+      "iconCls": undefined,
+      "iconURL": "/testProduct4Columns/images/assays.svg",
+      "showActiveJobIcon": true,
+      "useOriginalURL": false,
+    }
+  }
+  containerPath="/test/path"
+  currentProductId="testProduct4Columns"
+  section={
+    Immutable.Record {
+      "label": "Assays",
+      "url": undefined,
+      "items": Immutable.List [
+        Immutable.Record {
+          "id": 11,
+          "key": undefined,
+          "label": "Assay 1",
+          "url": undefined,
+          "orderNum": undefined,
+          "originalUrl": undefined,
+          "requiresLogin": false,
+          "hasActiveJob": false,
+          "fromSharedContainer": false,
+        },
+        Immutable.Record {
+          "id": 12,
+          "key": undefined,
+          "label": "Assay 2",
+          "url": undefined,
+          "orderNum": undefined,
+          "originalUrl": undefined,
+          "requiresLogin": false,
+          "hasActiveJob": false,
+          "fromSharedContainer": false,
+        },
+        Immutable.Record {
+          "id": 13,
+          "key": undefined,
+          "label": "Assay 3",
+          "url": undefined,
+          "orderNum": undefined,
+          "originalUrl": undefined,
+          "requiresLogin": false,
+          "hasActiveJob": false,
+          "fromSharedContainer": false,
+        },
+        Immutable.Record {
+          "id": 14,
+          "key": undefined,
+          "label": "Assay 4",
+          "url": undefined,
+          "orderNum": undefined,
+          "originalUrl": undefined,
+          "requiresLogin": false,
+          "hasActiveJob": false,
+          "fromSharedContainer": false,
+        },
+        Immutable.Record {
+          "id": 15,
+          "key": undefined,
+          "label": "Assay 5",
+          "url": undefined,
+          "orderNum": undefined,
+          "originalUrl": undefined,
+          "requiresLogin": false,
+          "hasActiveJob": false,
+          "fromSharedContainer": false,
+        },
+      ],
+      "totalCount": 0,
+      "key": "assays",
+      "productId": undefined,
+      "sectionKey": undefined,
+    }
+  }
+>
+  <ul>
+    <li
+      className="menu-section-header clickable-item"
+    >
+      <a
+        href="#/assays"
+      >
+        <img
+          alt="Assays icon"
+          className="menu-section-image "
+          height="24px"
+          src="/testProduct4Columns/images/assays.svg"
+          width="24px"
+        />
+         
+        Assays
+      </a>
+    </li>
+    <li>
+      <hr />
+    </li>
+    <li
+      key="Assay 1"
+    >
+      Assay 1
+    </li>
+    <li
+      key="Assay 2"
+    >
+      Assay 2
+    </li>
+    <li
+      key="Assay 3"
+    >
+      Assay 3
+    </li>
+    <li
+      key="Assay 4"
+    >
+      Assay 4
+    </li>
+    <li
+      key="Assay 5"
+    >
+      Assay 5
+    </li>
+  </ul>
+</ProductMenuSection>
+`;
+
+exports[`ProductMenuSection render one-column section 1`] = `
+<ProductMenuSection
+  config={
+    Immutable.Record {
+      "activeJobIconCls": "fa-spinner fa-pulse",
+      "emptyText": undefined,
+      "emptyAppURL": undefined,
+      "emptyURLText": "Get started...",
+      "headerURLPart": undefined,
+      "headerText": undefined,
+      "iconCls": undefined,
+      "iconURL": "/testProduct3Columns/images/samples.svg",
+      "showActiveJobIcon": true,
+      "useOriginalURL": false,
+    }
+  }
+  containerPath="/test/path"
+  currentProductId="testProduct3Columns"
+  section={
+    Immutable.Record {
+      "label": "Sample Sets",
+      "url": undefined,
+      "items": Immutable.List [
+        Immutable.Record {
+          "id": 1,
+          "key": undefined,
+          "label": "Sample Set 1",
+          "url": undefined,
+          "orderNum": undefined,
+          "originalUrl": undefined,
+          "requiresLogin": false,
+          "hasActiveJob": false,
+          "fromSharedContainer": false,
+        },
+        Immutable.Record {
+          "id": 2,
+          "key": undefined,
+          "label": "Sample Set 2",
+          "url": undefined,
+          "orderNum": undefined,
+          "originalUrl": undefined,
+          "requiresLogin": false,
+          "hasActiveJob": true,
+          "fromSharedContainer": false,
+        },
+        Immutable.Record {
+          "id": 3,
+          "key": undefined,
+          "label": "Sample Set 3",
+          "url": undefined,
+          "orderNum": undefined,
+          "originalUrl": undefined,
+          "requiresLogin": false,
+          "hasActiveJob": false,
+          "fromSharedContainer": false,
+        },
+        Immutable.Record {
+          "id": 4,
+          "key": undefined,
+          "label": "Sample Set 4",
+          "url": undefined,
+          "orderNum": undefined,
+          "originalUrl": undefined,
+          "requiresLogin": false,
+          "hasActiveJob": false,
+          "fromSharedContainer": false,
+        },
+      ],
+      "totalCount": 0,
+      "key": "samples",
+      "productId": undefined,
+      "sectionKey": undefined,
+    }
+  }
+>
+  <ul>
+    <li
+      className="menu-section-header clickable-item"
+    >
+      <a
+        href="#/samples"
+      >
+        <img
+          alt="Sample Sets icon"
+          className="menu-section-image "
+          height="24px"
+          src="/testProduct3Columns/images/samples.svg"
+          width="24px"
+        />
+         
+        Sample Sets
+      </a>
+    </li>
+    <li>
+      <hr />
+    </li>
+    <li
+      key="Sample Set 1"
+    >
+      Sample Set 1
+    </li>
+    <li
+      key="Sample Set 2"
+    >
+      <i
+        className="fa fa-spinner fa-pulse"
+      />
+      <span
+        className="spacer-left product-menu-item"
+      >
+        Sample Set 2
+      </span>
+    </li>
+    <li
+      key="Sample Set 3"
+    >
+      Sample Set 3
+    </li>
+    <li
+      key="Sample Set 4"
+    >
+      Sample Set 4
+    </li>
+  </ul>
+</ProductMenuSection>
+`;
+
+exports[`ProductMenuSection render section with custom headerURL and headerText 1`] = `
+<ProductMenuSection
+  config={
+    Immutable.Record {
+      "activeJobIconCls": "fa-spinner fa-pulse",
+      "emptyText": undefined,
+      "emptyAppURL": undefined,
+      "emptyURLText": "Get started...",
+      "headerURLPart": Immutable.Record {
+        "_baseUrl": "/sample/new",
+        "_filters": undefined,
+        "_params": Immutable.Map {
+          "sort": "date",
+        },
+      },
+      "headerText": "Custom Sample Sets",
+      "iconCls": undefined,
+      "iconURL": "/testProduct/images/samples.svg",
+      "showActiveJobIcon": true,
+      "useOriginalURL": false,
+    }
+  }
+  containerPath="/test/path"
+  currentProductId="testProductHeaderUrl"
+  section={
+    Immutable.Record {
+      "label": "Sample Sets",
+      "url": undefined,
+      "items": Immutable.List [],
+      "totalCount": 0,
+      "key": "samples",
+      "productId": undefined,
+      "sectionKey": undefined,
+    }
+  }
+>
+  <ul>
+    <li
+      className="menu-section-header clickable-item"
+    >
+      <a
+        href="#%2Fsample%2Fnew%3Fsort%3Ddate"
+      >
+        <img
+          alt="Sample Sets icon"
+          className="menu-section-image "
+          height="24px"
+          src="/testProduct/images/samples.svg"
+          width="24px"
+        />
+         
+        Custom Sample Sets
+      </a>
+    </li>
+    <li>
+      <hr />
+    </li>
+  </ul>
+</ProductMenuSection>
+`;

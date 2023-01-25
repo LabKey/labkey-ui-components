@@ -7,6 +7,8 @@ import { LabelHelpTip } from '../base/LabelHelpTip';
 
 import { TimelineEventModel, TimelineGroupedEventInfo } from './models';
 import { getEventDataValueDisplay } from './utils';
+import { UserLink } from '../user/UserLink';
+import { User } from '../base/models/User';
 
 interface Props {
     events: TimelineEventModel[];
@@ -16,7 +18,7 @@ interface Props {
     selectedEvent?: TimelineEventModel;
     selectionDisabled?: boolean;
     showRecentFirst: boolean;
-    showUserLinks?: boolean;
+    user: User;
 }
 
 export class TimelineView extends React.Component<Props, any> {
@@ -188,7 +190,6 @@ export class TimelineView extends React.Component<Props, any> {
     }
 
     renderDetailCol(event: TimelineEventModel) {
-        const { showUserLinks } = this.props;
         const { summary, user, entity, entitySeparator } = event;
         const comment = event.getComment();
         return (
@@ -199,7 +200,13 @@ export class TimelineView extends React.Component<Props, any> {
                     {entity != null && getEventDataValueDisplay(entity)}
                 </div>
                 <div>
-                    <div className="field-text-nowrap">{getEventDataValueDisplay(user, showUserLinks)}</div>{' '}
+                    <div className="field-text-nowrap">
+                        <UserLink
+                            currentUser={this.props.user}
+                            userId={user.get('value')}
+                            userDisplayValue={user.get('displayValue')}
+                        />
+                    </div>{' '}
                     {this.renderComment(comment)}
                     {this.renderInfoBubble(event)}
                 </div>

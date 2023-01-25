@@ -133,14 +133,6 @@ export class AuditDetails extends Component<Props> {
         );
     }
 
-    getUserDisplay = (userId: number): ReactNode => {
-        return (
-            <span className="empty-section" title="User deleted from server">
-                <UserLink currentUser={this.props.user} userId={userId} />
-            </span>
-        );
-    };
-
     getGridColumns = (): List<GridColumn> => {
         const { user, gridColumnRenderer } = this.props;
         return List<GridColumn>([
@@ -155,8 +147,19 @@ export class AuditDetails extends Component<Props> {
                 showHeader: false,
                 cell: (data, row) => {
                     let display;
-                    if (row.get('isUser')) display = this.getUserDisplay(data);
-                    else display = getEventDataValueDisplay(data, user.isAdmin);
+                    if (row.get('isUser')) {
+                        display = <UserLink currentUser={user} userId={row.get('value')} />;
+                    } else if (Map.isMap(data) && data.get('urlType') === 'user') {
+                        display = (
+                            <UserLink
+                                currentUser={user}
+                                userId={data.get('value')}
+                                userDisplayValue={data.get('displayValue')}
+                            />
+                        );
+                    } else {
+                        display = getEventDataValueDisplay(data, user.isAdmin);
+                    }
 
                     if (gridColumnRenderer) display = gridColumnRenderer(data, row, display);
 

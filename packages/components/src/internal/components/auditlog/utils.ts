@@ -107,7 +107,7 @@ export function getTimelineEntityUrl(d: Record<string, any>): AppURL {
                 url = AppURL.create(WORKFLOW_KEY, 'template', value);
                 break;
             case USER_KEY:
-                url = AppURL.create('q', 'core', 'siteusers', value);
+                url = undefined; // handle display render via UserLink
                 break;
             case 'assayRun':
                 if (Array.isArray(value) && value.length > 1) {

@@ -447,7 +447,7 @@ import {
 import { AuditQueriesListingPage } from './internal/components/auditlog/AuditQueriesListingPage';
 import { AuditDetails } from './internal/components/auditlog/AuditDetails';
 import { TimelineView } from './internal/components/auditlog/TimelineView';
-import { getEventDataValueDisplay, getTimelineEntityUrl } from './internal/components/auditlog/utils';
+import { getEventDataValueDisplay } from './internal/components/auditlog/utils';
 import {
     fetchDomain,
     fetchDomainDetails,
@@ -1370,7 +1370,6 @@ export {
     AuditQueriesListingPage,
     AuditDetails,
     getEventDataValueDisplay,
-    getTimelineEntityUrl,
     TimelineEventModel,
     TimelineView,
     // pipeline

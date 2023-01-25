@@ -33,6 +33,7 @@ import { SampleStatusTag } from '../internal/components/samples/SampleStatusTag'
 import { InjectedQueryModels, withQueryModels } from '../public/QueryModel/withQueryModels';
 
 import { SampleEventListing } from './SampleEventListing';
+import { UserLink } from '../internal/components/user/UserLink';
 
 interface OwnProps {
     api?: ComponentsAPIWrapper;
@@ -100,12 +101,12 @@ export const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = me
     const renderEventListing = () => {
         return (
             <SampleEventListing
-                showUserLinks={user.isAdmin}
                 sampleId={sampleId}
                 sampleName={sampleName}
                 onEventSelection={onEventSelection}
                 events={events}
                 selectedEvent={selectedEvent}
+                user={user}
             />
         );
     };
@@ -237,7 +238,11 @@ export const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = me
             <>
                 {renderCurrentStatusDetailRow(
                     'Registered By',
-                    getEventDataValueDisplay(registrationEvent.user, user.isAdmin)
+                    <UserLink
+                        currentUser={user}
+                        userId={registrationEvent.user.get('value')}
+                        userDisplayValue={registrationEvent.user.get('displayValue')}
+                    />
                 )}
                 {renderCurrentStatusDetailRow(
                     'Registration Date',
@@ -255,7 +260,11 @@ export const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = me
                 {renderCurrentStatusDetailRow('Last Event', eventDisplay)}
                 {renderCurrentStatusDetailRow(
                     'Last Event Handled By',
-                    getEventDataValueDisplay(lastEvent.user, user.isAdmin)
+                    <UserLink
+                        currentUser={user}
+                        userId={lastEvent.user.get('value')}
+                        userDisplayValue={lastEvent.user.get('displayValue')}
+                    />
                 )}
                 {renderCurrentStatusDetailRow('Last Event Date', getEventDataValueDisplay(lastEvent.timestamp))}
             </>

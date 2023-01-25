@@ -9,6 +9,7 @@ import { DefaultRenderer } from '../internal/renderers/DefaultRenderer';
 import { SAMPLE_STATE_COLUMN_NAME } from '../internal/components/samples/constants';
 import { SampleStatusTag } from '../internal/components/samples/SampleStatusTag';
 import { getSampleStatus } from '../internal/components/samples/utils';
+import {UserDetailsRenderer} from "../internal/renderers/UserDetailsRenderer";
 
 interface SampleAliquotDetailHeaderProps {
     aliquotHeaderDisplayColumns: List<QueryColumn>;
@@ -16,12 +17,13 @@ interface SampleAliquotDetailHeaderProps {
 }
 
 export class SampleAliquotDetailHeader extends PureComponent<SampleAliquotDetailHeaderProps> {
-    renderDetailRow(label: string, data: any, key: any) {
+    renderDetailRow(label: string, data: any, key: any, userLookup = false) {
         return (
             <tr key={key}>
                 <td>{label}</td>
                 <td>
-                    <DefaultRenderer data={data} />
+                    {userLookup && <UserDetailsRenderer data={data} />}
+                    {!userLookup && <DefaultRenderer data={data} />}
                 </td>
             </tr>
         );
@@ -44,7 +46,7 @@ export class SampleAliquotDetailHeader extends PureComponent<SampleAliquotDetail
                 <table className="table table-responsive table-condensed detail-component--table__fixed sample-aliquots-details-table">
                     <tbody>
                         {this.renderDetailRow(QueryColumn.ALIQUOTED_FROM_CAPTION, parent, 'aliquotedfrom')}
-                        {this.renderDetailRow('Aliquoted By', createdBy, 'aliquotedby')}
+                        {this.renderDetailRow('Aliquoted By', createdBy, 'aliquotedby', true)}
                         {this.renderDetailRow('Aliquot Date', created, 'aliquoteddate')}
                         {this.renderDetailRow('Aliquot Description', description, 'aliquoteddescription')}
                         {isSampleStatusEnabled() && status !== undefined && (
@@ -59,7 +61,8 @@ export class SampleAliquotDetailHeader extends PureComponent<SampleAliquotDetail
                             return this.renderDetailRow(
                                 aliquotCol.caption,
                                 newRow.get(aliquotCol.fieldKey.toLowerCase()),
-                                key
+                                key,
+                                QueryColumn.isUserLookup(aliquotCol.lookup)
                             );
                         })}
                     </tbody>

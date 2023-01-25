@@ -9,6 +9,8 @@ interface Props {
 }
 
 export const UserDetailsRenderer: FC<Props> = memo(({ data }) => {
+    if (!data) return null;
+
     const { displayValue, value } = data.toJS();
     const { user } = useServerContext();
     return <UserLink currentUser={user} userId={value} userDisplayValue={displayValue} />;

@@ -2,11 +2,11 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, {FC, memo} from 'react';
+import React, { FC } from 'react';
 import moment from 'moment';
 import { Button, Col, Modal, Panel, Row } from 'react-bootstrap';
 import { Map } from 'immutable';
-import {Filter, getServerContext, Utils} from '@labkey/api';
+import { Filter, getServerContext, Utils } from '@labkey/api';
 
 import { EffectiveRolesList } from '../permissions/EffectiveRolesList';
 
@@ -234,6 +234,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                     <hr className="principal-hr" />
                     {this.renderUserProp('User ID', 'userId')}
                     {!!hasPassword && <UserDetailRow label="Has Password" value={hasPassword.toString()} />}
+
                     <EffectiveRolesList {...this.props} />
                     <GroupsList groups={caseInsensitive(userProperties, 'groups')} />
                 </>

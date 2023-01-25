@@ -296,15 +296,12 @@ class Renderers {
 
     static applyColumnRenderer(columnMetadata, rawColumn, metadata) {
         let value = this._check(columnMetadata, rawColumn, 'columnRenderer', metadata);
-        const types = Set.of(rawColumn.type.toLowerCase(), rawColumn.friendlyType.toLowerCase());
 
         if (value === undefined) {
-            if (rawColumn.multiValue === true) {
-                value = 'MultiValueColumnRenderer';
-            } else if (rawColumn.name === 'harvest') {
+            if (rawColumn.name === 'harvest') {
                 value = 'MaterialLookupColumnRenderer';
-            } else if (types.contains('file')) {
-                value = 'FileColumnRenderer';
+            } else {
+                value = this._applyDefaultRenderer(columnMetadata, rawColumn, metadata);
             }
         }
 
@@ -313,17 +310,26 @@ class Renderers {
 
     static applyDetailRenderer(columnMetadata, rawColumn, metadata) {
         let value = this._check(columnMetadata, rawColumn, 'detailRenderer', metadata);
-        const types = Set.of(rawColumn.type.toLowerCase(), rawColumn.friendlyType.toLowerCase());
 
         if (value === undefined) {
-            if (rawColumn.multiValue === true) {
-                value = 'MultiValueDetailRenderer';
-            } else if (types.contains('file')) {
-                value = 'FileColumnRenderer';
-            }
+            value = this._applyDefaultRenderer(columnMetadata, rawColumn, metadata);
         }
 
         return value;
+    }
+
+    static _applyDefaultRenderer(columnMetadata, rawColumn, metadata) {
+        const types = Set.of(rawColumn.type.toLowerCase(), rawColumn.friendlyType.toLowerCase());
+
+        if (rawColumn.multiValue === true) {
+            return 'MultiValueDetailRenderer';
+        } else if (types.contains('file')) {
+            return 'FileColumnRenderer';
+        } else if (QueryColumn.isUserLookup(rawColumn.lookup)) {
+            return 'UserDetailsRenderer';
+        }
+
+        return undefined;
     }
 
     static applyInputRenderer(columnMetadata, rawColumn, metadata) {

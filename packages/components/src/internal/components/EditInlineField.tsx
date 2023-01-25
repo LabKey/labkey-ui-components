@@ -11,6 +11,7 @@ import { QueryColumn } from '../../public/QueryColumn';
 import { DateInput } from './DateInput';
 import { useServerContext } from './base/ServerContext';
 import { resolveDetailEditRenderer } from './forms/detail/DetailDisplay';
+import {UserLink} from "./user/UserLink";
 
 interface Props {
     allowBlank?: boolean;
@@ -44,11 +45,12 @@ export const EditInlineField: FC<Props> = memo(props => {
         useJsonDateFormat,
         tooltip,
     } = props;
-    const { container } = useServerContext();
+    const { container, user } = useServerContext();
     const dateFormat = getMomentDateFormat(container);
     const isDate = type === 'date';
     const isTextArea = type === 'textarea';
     const isText = !isDate && !isTextArea;
+    const isUser = QueryColumn.isUserLookup(column?.lookup);
     const inputType = type === 'int' || type === 'float' ? 'number' : 'text';
     const inputRef = useRef(null);
     const _value = typeof value === 'object' ? value?.value : value;
@@ -222,13 +224,16 @@ export const EditInlineField: FC<Props> = memo(props => {
                             {label}
                         </span>
                     )}
+                    {isUser && (
+                        <UserLink currentUser={user} userId={value.value} userDisplayValue={value.displayValue} />
+                    )}
                     <span
                         className={classNames({ 'edit-inline-field__toggle': allowEdit, 'ws-pre-wrap': isTextArea })}
                         onClick={toggleEdit}
                         onKeyDown={toggleKeyDown}
                         tabIndex={1}
                     >
-                        {displayValue}
+                        {!isUser && displayValue}
                         {allowEdit && <i className="fa fa-pencil" />}
                     </span>
                 </>

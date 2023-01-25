@@ -10,6 +10,8 @@ import { Alert } from '../components/base/Alert';
 import { AnnouncementModel } from './model';
 import { ThreadEditor, ThreadEditorProps } from './ThreadEditor';
 import { ThreadAttachments } from './ThreadAttachments';
+import {UserLink} from "../components/user/UserLink";
+import {useServerContext} from "../components/base/ServerContext";
 
 interface DeleteThreadModalProps {
     cancel: () => void;
@@ -48,12 +50,13 @@ interface ThreadBlockHeaderProps {
     modified: number | string;
     onDelete?: () => void;
     onEdit?: () => void;
-    user: User;
+    author: User;
 }
 
 const ThreadBlockHeader: FC<ThreadBlockHeaderProps> = props => {
-    const { created, modified, onDelete, onEdit, user } = props;
+    const { created, modified, onDelete, onEdit, author } = props;
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const { user } = useServerContext();
 
     const formattedCreate = useMemo(() => moment(created).fromNow(), [created]);
     const isEdited = useMemo(() => {
@@ -71,7 +74,7 @@ const ThreadBlockHeader: FC<ThreadBlockHeaderProps> = props => {
     return (
         <div className="thread-block-header">
             <span className="thread-block-header__user">
-                <span>{user.displayName}</span>
+                <UserLink currentUser={user} userId={author.id} userDisplayValue={author.displayName} />
             </span>
             <div className="pull-right">
                 <span className="thread-block-header__date">
@@ -195,7 +198,7 @@ export const ThreadBlock: FC<ThreadBlockProps> = props => {
                             modified={thread.modified}
                             onDelete={allowDelete ? onDeleteThread : undefined}
                             onEdit={allowUpdate ? onEdit : undefined}
-                            user={thread.author}
+                            author={thread.author}
                         />
                         {error !== undefined && <Alert>{error}</Alert>}
                         <div className="thread-block-body__content" dangerouslySetInnerHTML={threadBody} />

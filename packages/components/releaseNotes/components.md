@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * update list display of GroupsList, EffectiveRolesList, and MembersList
   * shows user permissions on the User Management page
   * use UserDetailsRenderer as default renderer for columns with user lookup
+  * use UserLink and UserLinkList in various components that render user displayName
 
 ### version 2.283.2
 *Released*: 23 January 2023

@@ -7,13 +7,13 @@ import { caseInsensitive } from '../../util/utils';
 
 import { selectRowsUserProps, UserDetailsPanel } from './UserDetailsPanel';
 
-interface Props {
+interface UserLinkProps {
     currentUser: User;
     userDisplayValue?: string;
     userId: number;
 }
 
-export const UserLink: FC<Props> = props => {
+export const UserLink: FC<UserLinkProps> = props => {
     const { currentUser, userId, userDisplayValue } = props;
     const [showDetails, setShowDetails] = useState<boolean>(false);
     const [targetUserDisplayValue, setTargetUserDisplayValue] = useState<string>();
@@ -29,7 +29,7 @@ export const UserLink: FC<Props> = props => {
                     setTargetUserDisplayValue(userDisplayValue);
                 }
             } catch (error) {
-                console.log(error);
+                console.error(error);
             }
         })();
     }, [userDisplayValue, userId]);
@@ -41,7 +41,7 @@ export const UserLink: FC<Props> = props => {
     if (!userId) return null;
 
     if (!isSelf && (!userCanReadUserDetails(currentUser) || !targetUserDisplayValue)) {
-        return <div>{targetUserDisplayValue ?? userId}</div>;
+        return <span>{targetUserDisplayValue ?? userId}</span>;
     }
 
     return (
@@ -49,7 +49,41 @@ export const UserLink: FC<Props> = props => {
             <a onClick={toggleDetailsModal} style={{ cursor: 'pointer' }}>
                 {targetUserDisplayValue}
             </a>
-            {showDetails && <UserDetailsPanel userId={userId} toggleDetailsModal={toggleDetailsModal} isSelf={!userCanReadUserDetails(currentUser) && isSelf} />}
+            {showDetails && (
+                <UserDetailsPanel
+                    userId={userId}
+                    toggleDetailsModal={toggleDetailsModal}
+                    isSelf={!userCanReadUserDetails(currentUser) && isSelf}
+                />
+            )}
+        </>
+    );
+};
+
+interface UserOrGroup {
+    displayName: string;
+    id: number;
+    type?: string;
+}
+
+interface UserLinkListProps {
+    currentUser: User;
+    users: UserOrGroup[];
+}
+
+export const UserLinkList: FC<UserLinkListProps> = ({ currentUser, users }) => {
+    return (
+        <>
+            {users.map((u, i) => (
+                <>
+                    {i > 0 && <>, </>}
+                    {u.type === 'u' || u.type === undefined ? (
+                        <UserLink key={u.id} currentUser={currentUser} userId={u.id} userDisplayValue={u.displayName} />
+                    ) : (
+                        <span>{u.displayName}</span>
+                    )}
+                </>
+            ))}
         </>
     );
 };

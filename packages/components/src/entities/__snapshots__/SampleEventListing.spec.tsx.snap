@@ -604,7 +604,6 @@ exports[`<SampleEventListing/> Filter by event type and date 1`] = `
           onEventSelection={[MockFunction]}
           selectedEntityConnectionInfo={null}
           showRecentFirst={false}
-          showUserLinks={true}
         />
       </Col>
     </Row>
@@ -1135,7 +1134,6 @@ exports[`<SampleEventListing/> Sort by latest 1`] = `
           onEventSelection={[MockFunction]}
           selectedEntityConnectionInfo={null}
           showRecentFirst={true}
-          showUserLinks={true}
         />
       </Col>
     </Row>
@@ -4026,7 +4024,6 @@ exports[`<SampleEventListing/> With selected job that is completed and with filt
             }
           }
           showRecentFirst={false}
-          showUserLinks={true}
         />
       </Col>
     </Row>

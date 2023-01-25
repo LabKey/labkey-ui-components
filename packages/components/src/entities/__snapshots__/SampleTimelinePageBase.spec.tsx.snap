@@ -169,10 +169,13 @@ exports[`<SampleTimelinePageBase/> With selected assay re-import event 1`] = `
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
-                        >
-                          Vader
-                        </a>
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
+                        />
                       </div>
                        
                     </div>
@@ -231,10 +234,13 @@ exports[`<SampleTimelinePageBase/> With selected assay re-import event 1`] = `
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
-                        >
-                          Vader
-                        </a>
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
+                        />
                       </div>
                        
                     </div>
@@ -285,10 +291,13 @@ exports[`<SampleTimelinePageBase/> With selected assay re-import event 1`] = `
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
-                        >
-                          Vader
-                        </a>
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
+                        />
                       </div>
                        
                     </div>
@@ -347,10 +356,13 @@ exports[`<SampleTimelinePageBase/> With selected assay re-import event 1`] = `
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
-                        >
-                          Vader
-                        </a>
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
+                        />
                       </div>
                        
                     </div>
@@ -408,11 +420,9 @@ exports[`<SampleTimelinePageBase/> With selected assay re-import event 1`] = `
                       <div
                         className="field-text-nowrap"
                       >
-                        <a
-                          href="#/q/core/siteusers/1038"
-                        >
-                          Test Lab User
-                        </a>
+                        <span>
+                          1038
+                        </span>
                       </div>
                        
                     </div>
@@ -470,11 +480,9 @@ exports[`<SampleTimelinePageBase/> With selected assay re-import event 1`] = `
                       <div
                         className="field-text-nowrap"
                       >
-                        <a
-                          href="#/q/core/siteusers/1038"
-                        >
-                          Test Lab User
-                        </a>
+                        <span>
+                          1038
+                        </span>
                       </div>
                        
                     </div>
@@ -533,10 +541,13 @@ exports[`<SampleTimelinePageBase/> With selected assay re-import event 1`] = `
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
-                        >
-                          Vader
-                        </a>
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
+                        />
                       </div>
                        
                     </div>
@@ -595,10 +606,13 @@ exports[`<SampleTimelinePageBase/> With selected assay re-import event 1`] = `
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
-                        >
-                          Vader
-                        </a>
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
+                        />
                       </div>
                        
                     </div>
@@ -656,11 +670,9 @@ exports[`<SampleTimelinePageBase/> With selected assay re-import event 1`] = `
                       <div
                         className="field-text-nowrap"
                       >
-                        <a
-                          href="#/q/core/siteusers/1038"
-                        >
-                          Test Lab User
-                        </a>
+                        <span>
+                          1038
+                        </span>
                       </div>
                        
                     </div>
@@ -702,10 +714,13 @@ exports[`<SampleTimelinePageBase/> With selected assay re-import event 1`] = `
               className="pull-right field-hide-overflow"
             >
               <a
-                href="#/q/core/siteusers/1005"
-              >
-                Vader
-              </a>
+                onClick={[Function]}
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+              />
             </span>
           </div>
         </div>
@@ -779,11 +794,9 @@ exports[`<SampleTimelinePageBase/> With selected assay re-import event 1`] = `
             <span
               className="pull-right field-hide-overflow"
             >
-              <a
-                href="#/q/core/siteusers/1038"
-              >
-                Test Lab User
-              </a>
+              <span>
+                1038
+              </span>
             </span>
           </div>
         </div>
@@ -916,10 +929,13 @@ exports[`<SampleTimelinePageBase/> With selected assay re-import event 1`] = `
                   }
                 >
                   <a
-                    href="#/q/core/siteusers/1005"
-                  >
-                    Vader
-                  </a>
+                    onClick={[Function]}
+                    style={
+                      {
+                        "cursor": "pointer",
+                      }
+                    }
+                  />
                 </td>
               </tr>
               <tr
@@ -1122,10 +1138,13 @@ exports[`<SampleTimelinePageBase/> With selected job 1`] = `
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
-                        >
-                          Vader
-                        </a>
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
+                        />
                       </div>
                        
                     </div>
@@ -1190,10 +1209,13 @@ exports[`<SampleTimelinePageBase/> With selected job 1`] = `
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
-                        >
-                          Vader
-                        </a>
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
+                        />
                       </div>
                        
                     </div>
@@ -1244,10 +1266,13 @@ exports[`<SampleTimelinePageBase/> With selected job 1`] = `
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
-                        >
-                          Vader
-                        </a>
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
+                        />
                       </div>
                        
                     </div>
@@ -1306,10 +1331,13 @@ exports[`<SampleTimelinePageBase/> With selected job 1`] = `
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
-                        >
-                          Vader
-                        </a>
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
+                        />
                       </div>
                        
                     </div>
@@ -1367,11 +1395,9 @@ exports[`<SampleTimelinePageBase/> With selected job 1`] = `
                       <div
                         className="field-text-nowrap"
                       >
-                        <a
-                          href="#/q/core/siteusers/1038"
-                        >
-                          Test Lab User
-                        </a>
+                        <span>
+                          1038
+                        </span>
                       </div>
                        
                     </div>
@@ -1429,11 +1455,9 @@ exports[`<SampleTimelinePageBase/> With selected job 1`] = `
                       <div
                         className="field-text-nowrap"
                       >
-                        <a
-                          href="#/q/core/siteusers/1038"
-                        >
-                          Test Lab User
-                        </a>
+                        <span>
+                          1038
+                        </span>
                       </div>
                        
                     </div>
@@ -1498,10 +1522,13 @@ exports[`<SampleTimelinePageBase/> With selected job 1`] = `
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
-                        >
-                          Vader
-                        </a>
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
+                        />
                       </div>
                        
                     </div>
@@ -1560,10 +1587,13 @@ exports[`<SampleTimelinePageBase/> With selected job 1`] = `
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
-                        >
-                          Vader
-                        </a>
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
+                        />
                       </div>
                        
                     </div>
@@ -1621,11 +1651,9 @@ exports[`<SampleTimelinePageBase/> With selected job 1`] = `
                       <div
                         className="field-text-nowrap"
                       >
-                        <a
-                          href="#/q/core/siteusers/1038"
-                        >
-                          Test Lab User
-                        </a>
+                        <span>
+                          1038
+                        </span>
                       </div>
                        
                     </div>
@@ -1667,10 +1695,13 @@ exports[`<SampleTimelinePageBase/> With selected job 1`] = `
               className="pull-right field-hide-overflow"
             >
               <a
-                href="#/q/core/siteusers/1005"
-              >
-                Vader
-              </a>
+                onClick={[Function]}
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+              />
             </span>
           </div>
         </div>
@@ -1744,11 +1775,9 @@ exports[`<SampleTimelinePageBase/> With selected job 1`] = `
             <span
               className="pull-right field-hide-overflow"
             >
-              <a
-                href="#/q/core/siteusers/1038"
-              >
-                Test Lab User
-              </a>
+              <span>
+                1038
+              </span>
             </span>
           </div>
         </div>
@@ -1855,10 +1884,13 @@ exports[`<SampleTimelinePageBase/> With selected job 1`] = `
                   }
                 >
                   <a
-                    href="#/q/core/siteusers/1005"
-                  >
-                    Vader
-                  </a>
+                    onClick={[Function]}
+                    style={
+                      {
+                        "cursor": "pointer",
+                      }
+                    }
+                  />
                 </td>
               </tr>
               <tr
@@ -2061,7 +2093,12 @@ exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] =
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
                         >
                           Vader
                         </a>
@@ -2123,7 +2160,12 @@ exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] =
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
                         >
                           Vader
                         </a>
@@ -2177,7 +2219,12 @@ exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] =
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
                         >
                           Vader
                         </a>
@@ -2239,7 +2286,12 @@ exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] =
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
                         >
                           Vader
                         </a>
@@ -2300,11 +2352,9 @@ exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] =
                       <div
                         className="field-text-nowrap"
                       >
-                        <a
-                          href="#/q/core/siteusers/1038"
-                        >
+                        <span>
                           Test Lab User
-                        </a>
+                        </span>
                       </div>
                        
                     </div>
@@ -2362,11 +2412,9 @@ exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] =
                       <div
                         className="field-text-nowrap"
                       >
-                        <a
-                          href="#/q/core/siteusers/1038"
-                        >
+                        <span>
                           Test Lab User
-                        </a>
+                        </span>
                       </div>
                        
                     </div>
@@ -2425,7 +2473,12 @@ exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] =
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
                         >
                           Vader
                         </a>
@@ -2487,7 +2540,12 @@ exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] =
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
                         >
                           Vader
                         </a>
@@ -2548,11 +2606,9 @@ exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] =
                       <div
                         className="field-text-nowrap"
                       >
-                        <a
-                          href="#/q/core/siteusers/1038"
-                        >
+                        <span>
                           Test Lab User
-                        </a>
+                        </span>
                       </div>
                        
                     </div>
@@ -2594,7 +2650,12 @@ exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] =
               className="pull-right field-hide-overflow"
             >
               <a
-                href="#/q/core/siteusers/1005"
+                onClick={[Function]}
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
               >
                 Vader
               </a>
@@ -2671,11 +2732,9 @@ exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] =
             <span
               className="pull-right field-hide-overflow"
             >
-              <a
-                href="#/q/core/siteusers/1038"
-              >
+              <span>
                 Test Lab User
-              </a>
+              </span>
             </span>
           </div>
         </div>
@@ -2737,7 +2796,14 @@ exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] =
             <span
               className="new-audit-value"
             >
-              1005
+              <a
+                onClick={[Function]}
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+              />
             </span>
           </div>
         </div>
@@ -3001,7 +3067,14 @@ exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] =
             <span
               className="new-audit-value"
             >
-              1005
+              <a
+                onClick={[Function]}
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+              />
             </span>
           </div>
         </div>
@@ -3180,10 +3253,13 @@ exports[`<SampleTimelinePageBase/> With selected sample update event 1`] = `
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
-                        >
-                          Vader
-                        </a>
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
+                        />
                       </div>
                        
                     </div>
@@ -3242,10 +3318,13 @@ exports[`<SampleTimelinePageBase/> With selected sample update event 1`] = `
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
-                        >
-                          Vader
-                        </a>
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
+                        />
                       </div>
                        
                     </div>
@@ -3296,10 +3375,13 @@ exports[`<SampleTimelinePageBase/> With selected sample update event 1`] = `
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
-                        >
-                          Vader
-                        </a>
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
+                        />
                       </div>
                        
                     </div>
@@ -3358,10 +3440,13 @@ exports[`<SampleTimelinePageBase/> With selected sample update event 1`] = `
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
-                        >
-                          Vader
-                        </a>
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
+                        />
                       </div>
                        
                     </div>
@@ -3419,11 +3504,9 @@ exports[`<SampleTimelinePageBase/> With selected sample update event 1`] = `
                       <div
                         className="field-text-nowrap"
                       >
-                        <a
-                          href="#/q/core/siteusers/1038"
-                        >
-                          Test Lab User
-                        </a>
+                        <span>
+                          1038
+                        </span>
                       </div>
                        
                     </div>
@@ -3481,11 +3564,9 @@ exports[`<SampleTimelinePageBase/> With selected sample update event 1`] = `
                       <div
                         className="field-text-nowrap"
                       >
-                        <a
-                          href="#/q/core/siteusers/1038"
-                        >
-                          Test Lab User
-                        </a>
+                        <span>
+                          1038
+                        </span>
                       </div>
                        
                     </div>
@@ -3544,10 +3625,13 @@ exports[`<SampleTimelinePageBase/> With selected sample update event 1`] = `
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
-                        >
-                          Vader
-                        </a>
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
+                        />
                       </div>
                        
                     </div>
@@ -3606,10 +3690,13 @@ exports[`<SampleTimelinePageBase/> With selected sample update event 1`] = `
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
-                        >
-                          Vader
-                        </a>
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
+                        />
                       </div>
                        
                     </div>
@@ -3667,11 +3754,9 @@ exports[`<SampleTimelinePageBase/> With selected sample update event 1`] = `
                       <div
                         className="field-text-nowrap"
                       >
-                        <a
-                          href="#/q/core/siteusers/1038"
-                        >
-                          Test Lab User
-                        </a>
+                        <span>
+                          1038
+                        </span>
                       </div>
                        
                     </div>
@@ -3713,10 +3798,13 @@ exports[`<SampleTimelinePageBase/> With selected sample update event 1`] = `
               className="pull-right field-hide-overflow"
             >
               <a
-                href="#/q/core/siteusers/1005"
-              >
-                Vader
-              </a>
+                onClick={[Function]}
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+              />
             </span>
           </div>
         </div>
@@ -3790,11 +3878,9 @@ exports[`<SampleTimelinePageBase/> With selected sample update event 1`] = `
             <span
               className="pull-right field-hide-overflow"
             >
-              <a
-                href="#/q/core/siteusers/1038"
-              >
-                Test Lab User
-              </a>
+              <span>
+                1038
+              </span>
             </span>
           </div>
         </div>
@@ -4073,10 +4159,13 @@ exports[`<SampleTimelinePageBase/> Without selected event 1`] = `
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
-                        >
-                          Vader
-                        </a>
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
+                        />
                       </div>
                        
                     </div>
@@ -4135,10 +4224,13 @@ exports[`<SampleTimelinePageBase/> Without selected event 1`] = `
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
-                        >
-                          Vader
-                        </a>
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
+                        />
                       </div>
                        
                     </div>
@@ -4189,10 +4281,13 @@ exports[`<SampleTimelinePageBase/> Without selected event 1`] = `
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
-                        >
-                          Vader
-                        </a>
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
+                        />
                       </div>
                        
                     </div>
@@ -4251,10 +4346,13 @@ exports[`<SampleTimelinePageBase/> Without selected event 1`] = `
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
-                        >
-                          Vader
-                        </a>
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
+                        />
                       </div>
                        
                     </div>
@@ -4312,11 +4410,9 @@ exports[`<SampleTimelinePageBase/> Without selected event 1`] = `
                       <div
                         className="field-text-nowrap"
                       >
-                        <a
-                          href="#/q/core/siteusers/1038"
-                        >
-                          Test Lab User
-                        </a>
+                        <span>
+                          1038
+                        </span>
                       </div>
                        
                     </div>
@@ -4374,11 +4470,9 @@ exports[`<SampleTimelinePageBase/> Without selected event 1`] = `
                       <div
                         className="field-text-nowrap"
                       >
-                        <a
-                          href="#/q/core/siteusers/1038"
-                        >
-                          Test Lab User
-                        </a>
+                        <span>
+                          1038
+                        </span>
                       </div>
                        
                     </div>
@@ -4437,10 +4531,13 @@ exports[`<SampleTimelinePageBase/> Without selected event 1`] = `
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
-                        >
-                          Vader
-                        </a>
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
+                        />
                       </div>
                        
                     </div>
@@ -4499,10 +4596,13 @@ exports[`<SampleTimelinePageBase/> Without selected event 1`] = `
                         className="field-text-nowrap"
                       >
                         <a
-                          href="#/q/core/siteusers/1005"
-                        >
-                          Vader
-                        </a>
+                          onClick={[Function]}
+                          style={
+                            {
+                              "cursor": "pointer",
+                            }
+                          }
+                        />
                       </div>
                        
                     </div>
@@ -4560,11 +4660,9 @@ exports[`<SampleTimelinePageBase/> Without selected event 1`] = `
                       <div
                         className="field-text-nowrap"
                       >
-                        <a
-                          href="#/q/core/siteusers/1038"
-                        >
-                          Test Lab User
-                        </a>
+                        <span>
+                          1038
+                        </span>
                       </div>
                        
                     </div>
@@ -4606,10 +4704,13 @@ exports[`<SampleTimelinePageBase/> Without selected event 1`] = `
               className="pull-right field-hide-overflow"
             >
               <a
-                href="#/q/core/siteusers/1005"
-              >
-                Vader
-              </a>
+                onClick={[Function]}
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+              />
             </span>
           </div>
         </div>
@@ -4683,11 +4784,9 @@ exports[`<SampleTimelinePageBase/> Without selected event 1`] = `
             <span
               className="pull-right field-hide-overflow"
             >
-              <a
-                href="#/q/core/siteusers/1038"
-              >
-                Test Lab User
-              </a>
+              <span>
+                1038
+              </span>
             </span>
           </div>
         </div>

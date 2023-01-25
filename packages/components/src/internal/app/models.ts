@@ -47,7 +47,7 @@ export class AppModel extends Record({
 
 export interface AppProperties {
     controllerName: string;
-    dataclassUrlPart?: string;
+    dataClassUrlPart?: string;
     logoBadgeColorImageUrl: string;
     logoBadgeImageUrl: string;
     logoWithTextImageUrl: string;

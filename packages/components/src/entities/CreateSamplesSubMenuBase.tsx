@@ -1,5 +1,6 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { List } from 'immutable';
+import { withRouter, WithRouterProps } from 'react-router';
 
 import { SchemaQuery } from '../public/SchemaQuery';
 import { QueryModel } from '../public/QueryModel/QueryModel';
@@ -28,7 +29,7 @@ import { isProjectContainer } from '../internal/app/utils';
 
 import { SampleCreationTypeModal } from './SampleCreationTypeModal';
 
-interface CreateSamplesSubMenuProps {
+export interface CreateSamplesSubMenuBaseProps {
     allowPooledSamples?: boolean;
     currentProductId?: string;
     getOptions: (useOnClick: boolean, disabledMsg: string, itemActionFn: (key: string) => any) => List<MenuOption>;
@@ -37,7 +38,6 @@ interface CreateSamplesSubMenuProps {
     maxParentPerSample: number;
     menuCurrentChoice?: string;
     menuText?: string;
-    navigate: (url: string | AppURL) => any;
     parentKey?: string;
     parentQueryModel?: QueryModel;
     parentType?: string;
@@ -56,7 +56,7 @@ interface CreateSamplesSubMenuProps {
     targetProductId?: string;
 }
 
-export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(props => {
+const CreateSamplesSubMenuBaseImpl: FC<CreateSamplesSubMenuBaseProps & WithRouterProps> = memo(props => {
     const {
         allowPooledSamples = true,
         menuCurrentChoice,
@@ -64,7 +64,6 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         parentType,
         parentKey,
         parentQueryModel,
-        navigate,
         getOptions,
         maxParentPerSample,
         sampleWizardURL,
@@ -76,6 +75,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         selectionNoun = 'sample',
         selectionNounPlural = 'samples',
         skipCrossFolderCheck,
+        router,
     } = props;
 
     const [sampleCreationURL, setSampleCreationURL] = useState<string | AppURL>();
@@ -213,19 +213,14 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
             return onSampleCreationMenuSelect(key);
         },
         [
-            sampleWizardURL,
-            useOnClick,
-            parentKey,
-            currentProductId,
-            targetProductId,
-            selectionKey,
-            menuText,
-            selectedType,
             parentQueryModel,
             selectedQuantity,
             selectingSampleParents,
             skipCrossFolderCheck,
+            allowCrossFolderDerive,
+            onSampleCreationMenuSelect,
             useSnapshotSelection,
+            selectedType,
         ]
     );
 
@@ -243,12 +238,12 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                 );
             }
             if (sampleCreationURL instanceof AppURL) {
-                navigate(sampleCreationURL.addParams({ creationType, numPerParent }));
+                router.push(sampleCreationURL.addParams({ creationType, numPerParent }).toString());
             } else {
                 window.location.href = sampleCreationURL + `&creationType=${creationType}&numPerParent=${numPerParent}`;
             }
         },
-        [navigate, sampleCreationURL, parentQueryModel?.selectionKey, selectionData]
+        [router, sampleCreationURL, parentQueryModel?.selectionKey, selectionData]
     );
 
     const dismissCrossFolderError = useCallback(() => {
@@ -336,3 +331,5 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         </>
     );
 });
+
+export const CreateSamplesSubMenuBase = withRouter<CreateSamplesSubMenuBaseProps>(CreateSamplesSubMenuBaseImpl);

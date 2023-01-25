@@ -9,6 +9,7 @@ import DUMMY_TIMELINE from '../test/data/SampleTimeline.json';
 import { TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT } from '../internal/productFixtures';
 
 import { SampleEventListing } from './SampleEventListing';
+import {TEST_USER_APP_ADMIN, TEST_USER_READER} from "../internal/userFixtures";
 
 beforeAll(() => {
     LABKEY.container = {
@@ -40,9 +41,9 @@ describe('<SampleEventListing/>', () => {
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
-                showUserLinks={true}
                 onEventSelection={jest.fn()}
                 events={events}
+                user={TEST_USER_APP_ADMIN}
             />
         );
         expect(tree).toMatchSnapshot();
@@ -53,9 +54,9 @@ describe('<SampleEventListing/>', () => {
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
-                showUserLinks={false}
                 onEventSelection={jest.fn()}
                 events={events}
+                user={TEST_USER_READER}
             />
         );
         expect(tree).toMatchSnapshot();
@@ -66,9 +67,9 @@ describe('<SampleEventListing/>', () => {
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
-                showUserLinks={true}
                 onEventSelection={jest.fn()}
                 events={events}
+                user={TEST_USER_APP_ADMIN}
             />
         );
 
@@ -85,9 +86,9 @@ describe('<SampleEventListing/>', () => {
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
-                showUserLinks={true}
                 onEventSelection={jest.fn()}
                 events={events}
+                user={TEST_USER_APP_ADMIN}
             />
         );
 
@@ -107,10 +108,10 @@ describe('<SampleEventListing/>', () => {
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
-                showUserLinks={true}
                 onEventSelection={jest.fn()}
                 events={events}
                 selectedEvent={registrationEvent}
+                user={TEST_USER_APP_ADMIN}
             />
         );
         expect(tree).toMatchSnapshot();
@@ -121,10 +122,10 @@ describe('<SampleEventListing/>', () => {
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
-                showUserLinks={true}
                 onEventSelection={jest.fn()}
                 events={events}
                 selectedEvent={sampleUpdateEvent}
+                user={TEST_USER_APP_ADMIN}
             />
         );
         expect(tree).toMatchSnapshot();
@@ -135,10 +136,10 @@ describe('<SampleEventListing/>', () => {
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
-                showUserLinks={true}
                 onEventSelection={jest.fn()}
                 events={events}
                 selectedEvent={assayDataUploadEvent}
+                user={TEST_USER_APP_ADMIN}
             />
         );
         expect(tree).toMatchSnapshot();
@@ -149,10 +150,10 @@ describe('<SampleEventListing/>', () => {
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
-                showUserLinks={true}
                 onEventSelection={jest.fn()}
                 events={events}
                 selectedEvent={assayReimportEvent}
+                user={TEST_USER_APP_ADMIN}
             />
         );
         expect(tree).toMatchSnapshot();
@@ -166,10 +167,10 @@ describe('<SampleEventListing/>', () => {
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
-                showUserLinks={true}
                 onEventSelection={jest.fn()}
                 events={events}
                 selectedEvent={jobCompleted}
+                user={TEST_USER_APP_ADMIN}
             />
         );
         expect(tree).toMatchSnapshot();
@@ -180,10 +181,10 @@ describe('<SampleEventListing/>', () => {
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
-                showUserLinks={true}
                 onEventSelection={jest.fn()}
                 events={events}
                 selectedEvent={jobCompleted}
+                user={TEST_USER_APP_ADMIN}
             />
         );
 
@@ -199,10 +200,10 @@ describe('<SampleEventListing/>', () => {
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
-                showUserLinks={true}
                 onEventSelection={jest.fn()}
                 events={events}
                 selectedEvent={jobNotCompletedNoRelated}
+                user={TEST_USER_APP_ADMIN}
             />
         );
         expect(tree).toMatchSnapshot();
@@ -213,10 +214,10 @@ describe('<SampleEventListing/>', () => {
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
-                showUserLinks={true}
                 onEventSelection={jest.fn()}
                 events={events}
                 selectedEvent={jobNotCompleteWithRelated}
+                user={TEST_USER_APP_ADMIN}
             />
         );
         expect(tree).toMatchSnapshot();

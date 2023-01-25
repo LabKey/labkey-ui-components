@@ -604,6 +604,49 @@ exports[`<SampleEventListing/> Filter by event type and date 1`] = `
           onEventSelection={[MockFunction]}
           selectedEntityConnectionInfo={null}
           showRecentFirst={false}
+          user={
+            Immutable.Record {
+              "id": 1005,
+              "canDelete": true,
+              "canDeleteOwn": true,
+              "canInsert": true,
+              "canUpdate": true,
+              "canUpdateOwn": true,
+              "displayName": "AppAdminDisplayName",
+              "email": "guest",
+              "phone": null,
+              "avatar": "/labkey/_images/defaultavatar.png",
+              "isAdmin": true,
+              "isAnalyst": false,
+              "isDeveloper": false,
+              "isGuest": false,
+              "isRootAdmin": true,
+              "isSignedIn": true,
+              "isSystemAdmin": false,
+              "isTrusted": false,
+              "maxAllowedPhi": undefined,
+              "permissionsList": Immutable.List [
+                "org.labkey.api.security.permissions.DeletePermission",
+                "org.labkey.api.security.permissions.ReadPermission",
+                "org.labkey.api.security.permissions.DesignDataClassPermission",
+                "org.labkey.api.security.permissions.DesignSampleTypePermission",
+                "org.labkey.api.assay.security.DesignAssayPermission",
+                "org.labkey.api.inventory.security.StorageDesignPermission",
+                "org.labkey.api.security.permissions.InsertPermission",
+                "org.labkey.api.security.permissions.UpdatePermission",
+                "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+                "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+                "org.labkey.api.security.permissions.AdminPermission",
+                "org.labkey.api.security.permissions.UserManagementPermission",
+                "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                "org.labkey.api.security.permissions.AddUserPermission",
+                "org.labkey.api.security.permissions.NotebookReadPermission",
+                "org.labkey.api.security.permissions.DataClassReadPermission",
+                "org.labkey.api.security.permissions.AssayReadPermission",
+                "org.labkey.api.security.permissions.MediaReadPermission",
+              ],
+            }
+          }
         />
       </Col>
     </Row>
@@ -1134,6 +1177,49 @@ exports[`<SampleEventListing/> Sort by latest 1`] = `
           onEventSelection={[MockFunction]}
           selectedEntityConnectionInfo={null}
           showRecentFirst={true}
+          user={
+            Immutable.Record {
+              "id": 1005,
+              "canDelete": true,
+              "canDeleteOwn": true,
+              "canInsert": true,
+              "canUpdate": true,
+              "canUpdateOwn": true,
+              "displayName": "AppAdminDisplayName",
+              "email": "guest",
+              "phone": null,
+              "avatar": "/labkey/_images/defaultavatar.png",
+              "isAdmin": true,
+              "isAnalyst": false,
+              "isDeveloper": false,
+              "isGuest": false,
+              "isRootAdmin": true,
+              "isSignedIn": true,
+              "isSystemAdmin": false,
+              "isTrusted": false,
+              "maxAllowedPhi": undefined,
+              "permissionsList": Immutable.List [
+                "org.labkey.api.security.permissions.DeletePermission",
+                "org.labkey.api.security.permissions.ReadPermission",
+                "org.labkey.api.security.permissions.DesignDataClassPermission",
+                "org.labkey.api.security.permissions.DesignSampleTypePermission",
+                "org.labkey.api.assay.security.DesignAssayPermission",
+                "org.labkey.api.inventory.security.StorageDesignPermission",
+                "org.labkey.api.security.permissions.InsertPermission",
+                "org.labkey.api.security.permissions.UpdatePermission",
+                "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+                "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+                "org.labkey.api.security.permissions.AdminPermission",
+                "org.labkey.api.security.permissions.UserManagementPermission",
+                "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                "org.labkey.api.security.permissions.AddUserPermission",
+                "org.labkey.api.security.permissions.NotebookReadPermission",
+                "org.labkey.api.security.permissions.DataClassReadPermission",
+                "org.labkey.api.security.permissions.AssayReadPermission",
+                "org.labkey.api.security.permissions.MediaReadPermission",
+              ],
+            }
+          }
         />
       </Col>
     </Row>
@@ -1304,7 +1390,12 @@ exports[`<SampleEventListing/> With selected assay re-import event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
                     >
                       Vader
                     </a>
@@ -1366,7 +1457,12 @@ exports[`<SampleEventListing/> With selected assay re-import event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
                     >
                       Vader
                     </a>
@@ -1420,7 +1516,12 @@ exports[`<SampleEventListing/> With selected assay re-import event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
                     >
                       Vader
                     </a>
@@ -1482,7 +1583,12 @@ exports[`<SampleEventListing/> With selected assay re-import event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
                     >
                       Vader
                     </a>
@@ -1543,11 +1649,9 @@ exports[`<SampleEventListing/> With selected assay re-import event 1`] = `
                   <div
                     className="field-text-nowrap"
                   >
-                    <a
-                      href="#/q/core/siteusers/1038"
-                    >
+                    <span>
                       Test Lab User
-                    </a>
+                    </span>
                   </div>
                    
                 </div>
@@ -1605,11 +1709,9 @@ exports[`<SampleEventListing/> With selected assay re-import event 1`] = `
                   <div
                     className="field-text-nowrap"
                   >
-                    <a
-                      href="#/q/core/siteusers/1038"
-                    >
+                    <span>
                       Test Lab User
-                    </a>
+                    </span>
                   </div>
                    
                 </div>
@@ -1668,7 +1770,12 @@ exports[`<SampleEventListing/> With selected assay re-import event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
                     >
                       Vader
                     </a>
@@ -1730,7 +1837,12 @@ exports[`<SampleEventListing/> With selected assay re-import event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
                     >
                       Vader
                     </a>
@@ -1791,11 +1903,9 @@ exports[`<SampleEventListing/> With selected assay re-import event 1`] = `
                   <div
                     className="field-text-nowrap"
                   >
-                    <a
-                      href="#/q/core/siteusers/1038"
-                    >
+                    <span>
                       Test Lab User
-                    </a>
+                    </span>
                   </div>
                    
                 </div>
@@ -1972,10 +2082,13 @@ exports[`<SampleEventListing/> With selected assay upload event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -2034,10 +2147,13 @@ exports[`<SampleEventListing/> With selected assay upload event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -2088,10 +2204,13 @@ exports[`<SampleEventListing/> With selected assay upload event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -2150,10 +2269,13 @@ exports[`<SampleEventListing/> With selected assay upload event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -2211,11 +2333,9 @@ exports[`<SampleEventListing/> With selected assay upload event 1`] = `
                   <div
                     className="field-text-nowrap"
                   >
-                    <a
-                      href="#/q/core/siteusers/1038"
-                    >
-                      Test Lab User
-                    </a>
+                    <span>
+                      1038
+                    </span>
                   </div>
                    
                 </div>
@@ -2273,11 +2393,9 @@ exports[`<SampleEventListing/> With selected assay upload event 1`] = `
                   <div
                     className="field-text-nowrap"
                   >
-                    <a
-                      href="#/q/core/siteusers/1038"
-                    >
-                      Test Lab User
-                    </a>
+                    <span>
+                      1038
+                    </span>
                   </div>
                    
                 </div>
@@ -2336,10 +2454,13 @@ exports[`<SampleEventListing/> With selected assay upload event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -2398,10 +2519,13 @@ exports[`<SampleEventListing/> With selected assay upload event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -2459,11 +2583,9 @@ exports[`<SampleEventListing/> With selected assay upload event 1`] = `
                   <div
                     className="field-text-nowrap"
                   >
-                    <a
-                      href="#/q/core/siteusers/1038"
-                    >
-                      Test Lab User
-                    </a>
+                    <span>
+                      1038
+                    </span>
                   </div>
                    
                 </div>
@@ -2640,10 +2762,13 @@ exports[`<SampleEventListing/> With selected job that is completed 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -2708,10 +2833,13 @@ exports[`<SampleEventListing/> With selected job that is completed 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -2762,10 +2890,13 @@ exports[`<SampleEventListing/> With selected job that is completed 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -2824,10 +2955,13 @@ exports[`<SampleEventListing/> With selected job that is completed 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -2885,11 +3019,9 @@ exports[`<SampleEventListing/> With selected job that is completed 1`] = `
                   <div
                     className="field-text-nowrap"
                   >
-                    <a
-                      href="#/q/core/siteusers/1038"
-                    >
-                      Test Lab User
-                    </a>
+                    <span>
+                      1038
+                    </span>
                   </div>
                    
                 </div>
@@ -2947,11 +3079,9 @@ exports[`<SampleEventListing/> With selected job that is completed 1`] = `
                   <div
                     className="field-text-nowrap"
                   >
-                    <a
-                      href="#/q/core/siteusers/1038"
-                    >
-                      Test Lab User
-                    </a>
+                    <span>
+                      1038
+                    </span>
                   </div>
                    
                 </div>
@@ -3016,10 +3146,13 @@ exports[`<SampleEventListing/> With selected job that is completed 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -3078,10 +3211,13 @@ exports[`<SampleEventListing/> With selected job that is completed 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -3139,11 +3275,9 @@ exports[`<SampleEventListing/> With selected job that is completed 1`] = `
                   <div
                     className="field-text-nowrap"
                   >
-                    <a
-                      href="#/q/core/siteusers/1038"
-                    >
-                      Test Lab User
-                    </a>
+                    <span>
+                      1038
+                    </span>
                   </div>
                    
                 </div>
@@ -4024,6 +4158,49 @@ exports[`<SampleEventListing/> With selected job that is completed and with filt
             }
           }
           showRecentFirst={false}
+          user={
+            Immutable.Record {
+              "id": 1005,
+              "canDelete": true,
+              "canDeleteOwn": true,
+              "canInsert": true,
+              "canUpdate": true,
+              "canUpdateOwn": true,
+              "displayName": "AppAdminDisplayName",
+              "email": "guest",
+              "phone": null,
+              "avatar": "/labkey/_images/defaultavatar.png",
+              "isAdmin": true,
+              "isAnalyst": false,
+              "isDeveloper": false,
+              "isGuest": false,
+              "isRootAdmin": true,
+              "isSignedIn": true,
+              "isSystemAdmin": false,
+              "isTrusted": false,
+              "maxAllowedPhi": undefined,
+              "permissionsList": Immutable.List [
+                "org.labkey.api.security.permissions.DeletePermission",
+                "org.labkey.api.security.permissions.ReadPermission",
+                "org.labkey.api.security.permissions.DesignDataClassPermission",
+                "org.labkey.api.security.permissions.DesignSampleTypePermission",
+                "org.labkey.api.assay.security.DesignAssayPermission",
+                "org.labkey.api.inventory.security.StorageDesignPermission",
+                "org.labkey.api.security.permissions.InsertPermission",
+                "org.labkey.api.security.permissions.UpdatePermission",
+                "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+                "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+                "org.labkey.api.security.permissions.AdminPermission",
+                "org.labkey.api.security.permissions.UserManagementPermission",
+                "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                "org.labkey.api.security.permissions.AddUserPermission",
+                "org.labkey.api.security.permissions.NotebookReadPermission",
+                "org.labkey.api.security.permissions.DataClassReadPermission",
+                "org.labkey.api.security.permissions.AssayReadPermission",
+                "org.labkey.api.security.permissions.MediaReadPermission",
+              ],
+            }
+          }
         />
       </Col>
     </Row>
@@ -4194,7 +4371,12 @@ exports[`<SampleEventListing/> With selected job that is not completed and has n
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
                     >
                       Vader
                     </a>
@@ -4256,7 +4438,12 @@ exports[`<SampleEventListing/> With selected job that is not completed and has n
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
                     >
                       Vader
                     </a>
@@ -4310,7 +4497,12 @@ exports[`<SampleEventListing/> With selected job that is not completed and has n
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
                     >
                       Vader
                     </a>
@@ -4372,7 +4564,12 @@ exports[`<SampleEventListing/> With selected job that is not completed and has n
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
                     >
                       Vader
                     </a>
@@ -4433,11 +4630,9 @@ exports[`<SampleEventListing/> With selected job that is not completed and has n
                   <div
                     className="field-text-nowrap"
                   >
-                    <a
-                      href="#/q/core/siteusers/1038"
-                    >
+                    <span>
                       Test Lab User
-                    </a>
+                    </span>
                   </div>
                    
                 </div>
@@ -4495,11 +4690,9 @@ exports[`<SampleEventListing/> With selected job that is not completed and has n
                   <div
                     className="field-text-nowrap"
                   >
-                    <a
-                      href="#/q/core/siteusers/1038"
-                    >
+                    <span>
                       Test Lab User
-                    </a>
+                    </span>
                   </div>
                    
                 </div>
@@ -4558,7 +4751,12 @@ exports[`<SampleEventListing/> With selected job that is not completed and has n
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
                     >
                       Vader
                     </a>
@@ -4620,7 +4818,12 @@ exports[`<SampleEventListing/> With selected job that is not completed and has n
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
                     >
                       Vader
                     </a>
@@ -4687,11 +4890,9 @@ exports[`<SampleEventListing/> With selected job that is not completed and has n
                   <div
                     className="field-text-nowrap"
                   >
-                    <a
-                      href="#/q/core/siteusers/1038"
-                    >
+                    <span>
                       Test Lab User
-                    </a>
+                    </span>
                   </div>
                    
                 </div>
@@ -4868,10 +5069,13 @@ exports[`<SampleEventListing/> With selected job that is not completed but has r
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -4930,10 +5134,13 @@ exports[`<SampleEventListing/> With selected job that is not completed but has r
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -4984,10 +5191,13 @@ exports[`<SampleEventListing/> With selected job that is not completed but has r
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -5046,10 +5256,13 @@ exports[`<SampleEventListing/> With selected job that is not completed but has r
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -5113,11 +5326,9 @@ exports[`<SampleEventListing/> With selected job that is not completed but has r
                   <div
                     className="field-text-nowrap"
                   >
-                    <a
-                      href="#/q/core/siteusers/1038"
-                    >
-                      Test Lab User
-                    </a>
+                    <span>
+                      1038
+                    </span>
                   </div>
                    
                 </div>
@@ -5181,11 +5392,9 @@ exports[`<SampleEventListing/> With selected job that is not completed but has r
                   <div
                     className="field-text-nowrap"
                   >
-                    <a
-                      href="#/q/core/siteusers/1038"
-                    >
-                      Test Lab User
-                    </a>
+                    <span>
+                      1038
+                    </span>
                   </div>
                    
                 </div>
@@ -5244,10 +5453,13 @@ exports[`<SampleEventListing/> With selected job that is not completed but has r
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -5306,10 +5518,13 @@ exports[`<SampleEventListing/> With selected job that is not completed but has r
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -5367,11 +5582,9 @@ exports[`<SampleEventListing/> With selected job that is not completed but has r
                   <div
                     className="field-text-nowrap"
                   >
-                    <a
-                      href="#/q/core/siteusers/1038"
-                    >
-                      Test Lab User
-                    </a>
+                    <span>
+                      1038
+                    </span>
                   </div>
                    
                 </div>
@@ -5548,10 +5761,13 @@ exports[`<SampleEventListing/> With selected sample registration event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -5610,10 +5826,13 @@ exports[`<SampleEventListing/> With selected sample registration event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -5664,10 +5883,13 @@ exports[`<SampleEventListing/> With selected sample registration event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -5726,10 +5948,13 @@ exports[`<SampleEventListing/> With selected sample registration event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -5787,11 +6012,9 @@ exports[`<SampleEventListing/> With selected sample registration event 1`] = `
                   <div
                     className="field-text-nowrap"
                   >
-                    <a
-                      href="#/q/core/siteusers/1038"
-                    >
-                      Test Lab User
-                    </a>
+                    <span>
+                      1038
+                    </span>
                   </div>
                    
                 </div>
@@ -5849,11 +6072,9 @@ exports[`<SampleEventListing/> With selected sample registration event 1`] = `
                   <div
                     className="field-text-nowrap"
                   >
-                    <a
-                      href="#/q/core/siteusers/1038"
-                    >
-                      Test Lab User
-                    </a>
+                    <span>
+                      1038
+                    </span>
                   </div>
                    
                 </div>
@@ -5912,10 +6133,13 @@ exports[`<SampleEventListing/> With selected sample registration event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -5974,10 +6198,13 @@ exports[`<SampleEventListing/> With selected sample registration event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -6035,11 +6262,9 @@ exports[`<SampleEventListing/> With selected sample registration event 1`] = `
                   <div
                     className="field-text-nowrap"
                   >
-                    <a
-                      href="#/q/core/siteusers/1038"
-                    >
-                      Test Lab User
-                    </a>
+                    <span>
+                      1038
+                    </span>
                   </div>
                    
                 </div>
@@ -6216,7 +6441,12 @@ exports[`<SampleEventListing/> With selected sample update event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
                     >
                       Vader
                     </a>
@@ -6278,7 +6508,12 @@ exports[`<SampleEventListing/> With selected sample update event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
                     >
                       Vader
                     </a>
@@ -6332,7 +6567,12 @@ exports[`<SampleEventListing/> With selected sample update event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
                     >
                       Vader
                     </a>
@@ -6394,7 +6634,12 @@ exports[`<SampleEventListing/> With selected sample update event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
                     >
                       Vader
                     </a>
@@ -6455,11 +6700,9 @@ exports[`<SampleEventListing/> With selected sample update event 1`] = `
                   <div
                     className="field-text-nowrap"
                   >
-                    <a
-                      href="#/q/core/siteusers/1038"
-                    >
+                    <span>
                       Test Lab User
-                    </a>
+                    </span>
                   </div>
                    
                 </div>
@@ -6517,11 +6760,9 @@ exports[`<SampleEventListing/> With selected sample update event 1`] = `
                   <div
                     className="field-text-nowrap"
                   >
-                    <a
-                      href="#/q/core/siteusers/1038"
-                    >
+                    <span>
                       Test Lab User
-                    </a>
+                    </span>
                   </div>
                    
                 </div>
@@ -6580,7 +6821,12 @@ exports[`<SampleEventListing/> With selected sample update event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
                     >
                       Vader
                     </a>
@@ -6642,7 +6888,12 @@ exports[`<SampleEventListing/> With selected sample update event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
                     >
                       Vader
                     </a>
@@ -6703,11 +6954,9 @@ exports[`<SampleEventListing/> With selected sample update event 1`] = `
                   <div
                     className="field-text-nowrap"
                   >
-                    <a
-                      href="#/q/core/siteusers/1038"
-                    >
+                    <span>
                       Test Lab User
-                    </a>
+                    </span>
                   </div>
                    
                 </div>
@@ -6884,10 +7133,13 @@ exports[`<SampleEventListing/> Without selected event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -6946,10 +7198,13 @@ exports[`<SampleEventListing/> Without selected event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -7000,10 +7255,13 @@ exports[`<SampleEventListing/> Without selected event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -7062,10 +7320,13 @@ exports[`<SampleEventListing/> Without selected event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -7123,11 +7384,9 @@ exports[`<SampleEventListing/> Without selected event 1`] = `
                   <div
                     className="field-text-nowrap"
                   >
-                    <a
-                      href="#/q/core/siteusers/1038"
-                    >
-                      Test Lab User
-                    </a>
+                    <span>
+                      1038
+                    </span>
                   </div>
                    
                 </div>
@@ -7185,11 +7444,9 @@ exports[`<SampleEventListing/> Without selected event 1`] = `
                   <div
                     className="field-text-nowrap"
                   >
-                    <a
-                      href="#/q/core/siteusers/1038"
-                    >
-                      Test Lab User
-                    </a>
+                    <span>
+                      1038
+                    </span>
                   </div>
                    
                 </div>
@@ -7248,10 +7505,13 @@ exports[`<SampleEventListing/> Without selected event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -7310,10 +7570,13 @@ exports[`<SampleEventListing/> Without selected event 1`] = `
                     className="field-text-nowrap"
                   >
                     <a
-                      href="#/q/core/siteusers/1005"
-                    >
-                      Vader
-                    </a>
+                      onClick={[Function]}
+                      style={
+                        {
+                          "cursor": "pointer",
+                        }
+                      }
+                    />
                   </div>
                    
                 </div>
@@ -7371,11 +7634,9 @@ exports[`<SampleEventListing/> Without selected event 1`] = `
                   <div
                     className="field-text-nowrap"
                   >
-                    <a
-                      href="#/q/core/siteusers/1038"
-                    >
-                      Test Lab User
-                    </a>
+                    <span>
+                      1038
+                    </span>
                   </div>
                    
                 </div>
@@ -7551,7 +7812,9 @@ exports[`<SampleEventListing/> Without view user link perm 1`] = `
                   <div
                     className="field-text-nowrap"
                   >
-                    Vader
+                    <span>
+                      Vader
+                    </span>
                   </div>
                    
                 </div>
@@ -7609,7 +7872,9 @@ exports[`<SampleEventListing/> Without view user link perm 1`] = `
                   <div
                     className="field-text-nowrap"
                   >
-                    Vader
+                    <span>
+                      Vader
+                    </span>
                   </div>
                    
                 </div>
@@ -7659,7 +7924,9 @@ exports[`<SampleEventListing/> Without view user link perm 1`] = `
                   <div
                     className="field-text-nowrap"
                   >
-                    Vader
+                    <span>
+                      Vader
+                    </span>
                   </div>
                    
                 </div>
@@ -7717,7 +7984,9 @@ exports[`<SampleEventListing/> Without view user link perm 1`] = `
                   <div
                     className="field-text-nowrap"
                   >
-                    Vader
+                    <span>
+                      Vader
+                    </span>
                   </div>
                    
                 </div>
@@ -7775,7 +8044,9 @@ exports[`<SampleEventListing/> Without view user link perm 1`] = `
                   <div
                     className="field-text-nowrap"
                   >
-                    Test Lab User
+                    <span>
+                      Test Lab User
+                    </span>
                   </div>
                    
                 </div>
@@ -7833,7 +8104,9 @@ exports[`<SampleEventListing/> Without view user link perm 1`] = `
                   <div
                     className="field-text-nowrap"
                   >
-                    Test Lab User
+                    <span>
+                      Test Lab User
+                    </span>
                   </div>
                    
                 </div>
@@ -7891,7 +8164,9 @@ exports[`<SampleEventListing/> Without view user link perm 1`] = `
                   <div
                     className="field-text-nowrap"
                   >
-                    Vader
+                    <span>
+                      Vader
+                    </span>
                   </div>
                    
                 </div>
@@ -7949,7 +8224,9 @@ exports[`<SampleEventListing/> Without view user link perm 1`] = `
                   <div
                     className="field-text-nowrap"
                   >
-                    Vader
+                    <span>
+                      Vader
+                    </span>
                   </div>
                    
                 </div>
@@ -8007,7 +8284,9 @@ exports[`<SampleEventListing/> Without view user link perm 1`] = `
                   <div
                     className="field-text-nowrap"
                   >
-                    Test Lab User
+                    <span>
+                      Test Lab User
+                    </span>
                   </div>
                    
                 </div>

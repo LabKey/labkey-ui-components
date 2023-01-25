@@ -1,13 +1,13 @@
 import React from 'react';
-import { mount } from 'enzyme';
 
 import { ThreadBlock } from './ThreadBlock';
 import { createTestAPIWrapper } from './test/utils';
 import { COMMENTER, NOUN_PLURAL, NOUN_SINGULAR, THREAD, THREAD_WITH_RESPONSE } from './test/fixtures';
+import {mountWithServerContext} from "../testHelpers";
 
 describe('ThreadBlock', () => {
     test('displays thread', () => {
-        const wrapper = mount(
+        const wrapper = mountWithServerContext(
             <ThreadBlock
                 api={createTestAPIWrapper()}
                 canReply={true}
@@ -15,7 +15,8 @@ describe('ThreadBlock', () => {
                 nounSingular={NOUN_SINGULAR}
                 thread={THREAD}
                 user={COMMENTER}
-            />
+            />,
+            { user: COMMENTER }
         );
 
         // Displays formatted body -- not body
@@ -37,7 +38,7 @@ describe('ThreadBlock', () => {
     test('toggles thread replies', () => {
         const onToggleResponses = jest.fn();
 
-        const wrapper = mount(
+        const wrapper = mountWithServerContext(
             <ThreadBlock
                 api={createTestAPIWrapper()}
                 canReply={true}
@@ -46,7 +47,8 @@ describe('ThreadBlock', () => {
                 onToggleResponses={onToggleResponses}
                 thread={THREAD_WITH_RESPONSE}
                 user={COMMENTER}
-            />
+            />,
+            { user: COMMENTER }
         );
 
         // Displays toggle with responses initially hidden
@@ -64,7 +66,7 @@ describe('ThreadBlock', () => {
     test('delete thread', async () => {
         const CANNOT_DELETE_USER = Object.assign({}, COMMENTER, { canDelete: false });
 
-        const wrapper = mount(
+        const wrapper = mountWithServerContext(
             <ThreadBlock
                 api={createTestAPIWrapper()}
                 canReply={true}
@@ -73,7 +75,8 @@ describe('ThreadBlock', () => {
                 onDelete={jest.fn()}
                 thread={THREAD}
                 user={CANNOT_DELETE_USER}
-            />
+            />,
+            { user: CANNOT_DELETE_USER }
         );
 
         // respects "canDelete"

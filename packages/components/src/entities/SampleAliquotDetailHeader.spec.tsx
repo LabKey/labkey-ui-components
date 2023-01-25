@@ -19,7 +19,6 @@ describe('<SampleAliquotDetailHeader/>', () => {
     const aliquotCols = List.of(COLUMN_ALIQUOT);
 
     const dataRow = fromJS({
-        ModifiedBy: { value: 1005, url: '#/q/core/siteusers/1005', displayValue: 'xyang' },
         LSID: { value: 'urn:lsid:labkey.com:Sample.6.sampletype1:S-1-1-3' },
         'SampleSet/LabelColor': { value: '#2980b9' },
         'AliquotedFromLSID/Name': { value: 'S-1-1', url: '#/rd/samples/2' },
@@ -39,7 +38,6 @@ describe('<SampleAliquotDetailHeader/>', () => {
         AliquotSpecific: { value: 'ali-1-1 - child4' },
         Description: { value: 'this is a sub-aliquot - 3' },
         IsAliquot: { value: true },
-        CreatedBy: { value: 1005, url: '#/q/core/siteusers/1005', displayValue: 'xyang' },
     });
 
     test('aliquot detail header', () => {

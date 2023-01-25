@@ -144,7 +144,7 @@ describe('utils', () => {
         expect(getTimelineEntityUrl({ urlType: 'workflowTemplate', value: 101 }).toHref()).toEqual(
             `#/${WORKFLOW_KEY}/template/101`
         );
-        expect(getTimelineEntityUrl({ urlType: USER_KEY, value: 24 }).toHref()).toEqual('#/q/core/siteusers/24');
+        expect(getTimelineEntityUrl({ urlType: USER_KEY, value: 24 })).toBeUndefined();
         expect(getTimelineEntityUrl({ urlType: 'assayRun', value: ['myassay', 13] }).toHref()).toEqual(
             `#/${ASSAYS_KEY}/general/myassay/runs/13`
         );

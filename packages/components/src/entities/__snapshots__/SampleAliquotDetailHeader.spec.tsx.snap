@@ -22,14 +22,7 @@ exports[`<SampleAliquotDetailHeader/> aliquot detail header 1`] = `
       <td>
         Aliquoted By
       </td>
-      <td>
-        <a
-          className="ws-pre-wrap"
-          href="#/q/core/siteusers/1005"
-        >
-          xyang
-        </a>
-      </td>
+      <td />
     </tr>
     <tr>
       <td>

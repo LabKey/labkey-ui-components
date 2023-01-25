@@ -291,7 +291,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
 
         // Issue 33774: fields should be able to preserve input onBlur
         if (saveOnBlur) {
-            const select = this.refs.reactSelect?.select?.select;
+            const select = this.refs.reactSelect;
 
             if (select?.selectOption) {
                 if (select?.state?.focusedOption) {

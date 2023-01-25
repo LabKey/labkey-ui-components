@@ -74,42 +74,42 @@ describe('SampleStatusTag', () => {
 
     test('iconOnly, locked', () => {
         const wrapper = mount(<SampleStatusTag status={lockedStatus} iconOnly={true} />);
-        validateIconOnly(wrapper, 'alert-danger');
+        validateIconOnly(wrapper, 'danger');
     });
 
     test('iconOnly, consumed', () => {
         const wrapper = mount(<SampleStatusTag status={consumedStatus} iconOnly={true} />);
-        validateIconOnly(wrapper, 'alert-warning');
+        validateIconOnly(wrapper, 'warning');
     });
 
     test('iconOnly, available', () => {
         const wrapper = mount(<SampleStatusTag status={availableStatus} iconOnly={true} />);
-        validateIconOnly(wrapper, 'alert-success');
+        validateIconOnly(wrapper, 'success');
     });
 
     test('iconOnly, no description', () => {
         const wrapper = mount(<SampleStatusTag status={availableNoDescription} iconOnly={true} />);
-        validateIconOnly(wrapper, 'alert-success');
+        validateIconOnly(wrapper, 'success');
     });
 
     test('not iconOnly, locked status type', () => {
         const wrapper = mount(<SampleStatusTag status={lockedStatus} />);
-        validateNotIconOnly(wrapper, 'alert-danger', lockedStatus.label);
+        validateNotIconOnly(wrapper, 'danger', lockedStatus.label);
     });
 
     test('consumed status type', () => {
         const wrapper = mount(<SampleStatusTag status={consumedStatus} />);
-        validateNotIconOnly(wrapper, 'alert-warning', consumedStatus.label);
+        validateNotIconOnly(wrapper, 'warning', consumedStatus.label);
     });
 
     test('available status type with description', () => {
         const wrapper = mount(<SampleStatusTag status={availableStatus} />);
-        validateNotIconOnly(wrapper, 'alert-success', availableStatus.label);
+        validateNotIconOnly(wrapper, 'success', availableStatus.label);
     });
 
     test('available status, hide description', () => {
         const wrapper = mount(<SampleStatusTag status={availableStatus} hideDescription />);
-        validateNotIconOnly(wrapper, 'alert-success', availableStatus.label, false);
+        validateNotIconOnly(wrapper, 'success', availableStatus.label, false);
     });
 
     test('available status type, no description', () => {
@@ -118,6 +118,6 @@ describe('SampleStatusTag', () => {
             statusType: SampleStateType.Available,
         };
         const wrapper = mount(<SampleStatusTag status={status} />);
-        validateNotIconOnly(wrapper, 'alert-success', status.label, false);
+        validateNotIconOnly(wrapper, 'success', status.label, false);
     });
 });

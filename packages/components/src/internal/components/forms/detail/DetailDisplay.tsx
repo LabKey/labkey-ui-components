@@ -35,7 +35,7 @@ import { SelectInputChange } from '../input/SelectInput';
 import { TextAreaInput } from '../input/TextAreaInput';
 import { TextInput } from '../input/TextInput';
 import { CheckboxInput } from '../input/CheckboxInput';
-import { ProjectColumnRenderer } from '../../../renderers/ProjectColumnRenderer';
+import { NoLinkRenderer } from '../../../renderers/NoLinkRenderer';
 
 export type Renderer = (data: any, row?: any) => ReactNode;
 
@@ -320,7 +320,6 @@ export function resolveDetailEditRenderer(
                         onBlur={options?.onBlur}
                         onQSChange={options?.onSelectChange}
                         placeholder={options?.placeholder ?? 'Select or type to search...'}
-                        previewOptions={col.previewOptions}
                         required={col.required}
                         schemaQuery={col.lookup.schemaQuery}
                         showLabel={showLabel}
@@ -443,8 +442,8 @@ export function resolveDetailRenderer(column: QueryColumn): Renderer {
             case 'filecolumnrenderer':
                 renderer = d => <FileColumnRenderer data={d} col={column} />;
                 break;
-            case 'projectcolumnrenderer':
-                renderer = d => <ProjectColumnRenderer data={d} />;
+            case 'nolinkrenderer':
+                renderer = d => <NoLinkRenderer data={d} />;
                 break;
             case 'sampletypeimportaliasrenderer':
                 renderer = d => <SampleTypeImportAliasRenderer data={d} />;

@@ -139,8 +139,14 @@ export const PICKLIST_TABLES = {
     SCHEMA: PICKLIST_SCHEMA,
 };
 
+const AUDIT_SCHEMA = 'auditlog';
+export const AUDIT_TABLES = {
+    SCHEMA: AUDIT_SCHEMA,
+};
+
 export const SCHEMAS = {
     ASSAY_TABLES,
+    AUDIT_TABLES,
     EXP_TABLES,
     CORE_TABLES,
     SAMPLE_SETS,

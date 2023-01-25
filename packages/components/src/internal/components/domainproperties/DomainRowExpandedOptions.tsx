@@ -272,6 +272,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                                 onChange={onChange}
                                 lockType={field.lockType}
                                 isExistingField={!field.isNew()}
+                                isRequiredField={field.required}
                                 fieldDataType={field.dataType}
                             />
                         </Col>

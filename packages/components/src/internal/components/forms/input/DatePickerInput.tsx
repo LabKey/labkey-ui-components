@@ -104,7 +104,9 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
         // Issue 45140: props.value is the original formatted date, so pass the date format
         // to parseDate when getting the initial value.
         const dateFormat = props.initValueFormatted ? this.getDateFormat() : undefined;
-        return props.value ? parseDate(props.value, dateFormat) : undefined;
+
+        // Issue 46767: DatePicker valid dates start at year 1000 (i.e. new Date('1000-01-01'))
+        return props.value ? parseDate(props.value, dateFormat, new Date('1000-01-01')) : undefined;
     }
 
     onChange = (date: Date): void => {

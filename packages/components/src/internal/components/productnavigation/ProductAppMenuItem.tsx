@@ -2,12 +2,12 @@ import React, { FC, memo, useCallback, useState } from 'react';
 import classNames from 'classnames';
 
 interface ProductAppMenuItemProps {
+    disabled?: boolean;
     iconUrl: string;
     iconUrlAlt?: string;
-    title: string;
-    subtitle?: string;
     onClick: () => void;
-    disabled?: boolean;
+    subtitle?: string;
+    title: string;
 }
 
 export const ProductAppMenuItem: FC<ProductAppMenuItemProps> = memo(props => {
@@ -38,7 +38,7 @@ export const ProductAppMenuItem: FC<ProductAppMenuItemProps> = memo(props => {
                     <i className="fa fa-chevron-right" />
                 </div>
             )}
-            <div className={classNames('product-title', { 'no-subtitle': subtitle == undefined })}>{title}</div>
+            <div className={classNames('product-title', { 'no-subtitle': subtitle === undefined })}>{title}</div>
             <div className="product-subtitle">{subtitle}</div>
         </li>
     );

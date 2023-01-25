@@ -81,15 +81,22 @@ export function getDeleteConfirmationData(
     dataType: EntityDataType,
     rowIds: string[] | number[],
     selectionKey?: string,
-    useSnapshotSelection?: boolean): Promise<OperationConfirmationData> {
+    useSnapshotSelection?: boolean
+): Promise<OperationConfirmationData> {
     if (isSampleEntity(dataType)) {
         return getSampleOperationConfirmationData(SampleOperation.Delete, rowIds, selectionKey, useSnapshotSelection);
     }
-    return getOperationConfirmationData(dataType, rowIds, selectionKey, useSnapshotSelection, isDataClassEntity(dataType)
-        ? {
-            dataOperation: DataOperation.Delete,
-        }
-        : undefined);
+    return getOperationConfirmationData(
+        dataType,
+        rowIds,
+        selectionKey,
+        useSnapshotSelection,
+        isDataClassEntity(dataType)
+            ? {
+                  dataOperation: DataOperation.Delete,
+              }
+            : undefined
+    );
 }
 
 export function getSampleOperationConfirmationData(
@@ -254,12 +261,10 @@ async function initParents(
     const isAliquotParent = creationType === SampleCreationType.Aliquots;
 
     if (selectionKey) {
-        const {schemaQuery} = SchemaQuery.parseSelectionKey(selectionKey);
+        const { schemaQuery } = SchemaQuery.parseSelectionKey(selectionKey);
         const selectionResponse = await getSelected(selectionKey, isSnapshotSelection);
 
-        const filterArray = [
-            Filter.create('RowId', selectionResponse.selected, Filter.Types.IN),
-        ];
+        const filterArray = [Filter.create('RowId', selectionResponse.selected, Filter.Types.IN)];
 
         const opFilter = getFilterForSampleOperation(SampleOperation.EditLineage);
         if (opFilter) {
@@ -590,8 +595,6 @@ export function handleEntityFileImport(
     saveToPipeline?: boolean
 ): Promise<any> {
     return new Promise((resolve, reject) => {
-        if (insertOption === InsertOptions.UPDATE) reject('Import with Update currently not supported.');
-
         const { schemaQuery } = queryInfo;
 
         return importData({
@@ -623,7 +626,8 @@ export function handleEntityFileImport(
 export function getDataDeleteConfirmationData(
     rowIds: string[] | number[],
     selectionKey?: string,
-    useSnapshotSelection?: boolean): Promise<OperationConfirmationData> {
+    useSnapshotSelection?: boolean
+): Promise<OperationConfirmationData> {
     return getDataOperationConfirmationData(DataOperation.Delete, rowIds, selectionKey, useSnapshotSelection);
 }
 

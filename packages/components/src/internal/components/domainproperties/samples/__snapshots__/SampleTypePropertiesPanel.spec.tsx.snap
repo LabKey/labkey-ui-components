@@ -1207,10 +1207,14 @@ exports[`<SampleTypePropertiesPanel/> metricUnitOptions 1`] = `
             className="sampleset-metric-unit-select"
           >
             <div
-              className="select-input css-2b097c-container"
+              className="select-input css-b62m3t-container"
               id="selectinput-0"
               onKeyDown={[Function]}
             >
+              <span
+                className="css-1f43avz-a11yText-A11yText"
+                id="react-select-2-live-region"
+              />
               <span
                 aria-atomic="false"
                 aria-live="polite"
@@ -1218,86 +1222,71 @@ exports[`<SampleTypePropertiesPanel/> metricUnitOptions 1`] = `
                 className="css-1f43avz-a11yText-A11yText"
               />
               <div
-                className="select-input__control css-yk16xz-control"
+                className="select-input__control css-13cymwt-control"
                 onMouseDown={[Function]}
                 onTouchEnd={[Function]}
               >
                 <div
-                  className="select-input__value-container css-g1d714-ValueContainer"
+                  className="select-input__value-container css-1fdsijx-ValueContainer"
                 >
                   <div
-                    className="select-input__placeholder css-1wa3eu0-placeholder"
+                    className="select-input__placeholder css-1jqq78o-placeholder"
+                    id="react-select-2-placeholder"
                   >
                     Select a unit...
                   </div>
                   <div
-                    className="css-b8ldur-Input"
+                    className="select-input__input-container css-qbdosj-Input"
+                    data-value=""
                   >
-                    <div
+                    <input
+                      aria-autocomplete="list"
+                      aria-describedby="react-select-2-placeholder"
+                      aria-expanded={false}
+                      aria-haspopup={true}
+                      autoCapitalize="none"
+                      autoComplete="off"
+                      autoCorrect="off"
                       className="select-input__input"
+                      disabled={false}
+                      id="react-select-2-input"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      required={true}
+                      role="combobox"
+                      spellCheck="false"
                       style={
                         {
-                          "display": "inline-block",
+                          "background": 0,
+                          "border": 0,
+                          "color": "inherit",
+                          "font": "inherit",
+                          "gridArea": "1 / 2",
+                          "label": "input",
+                          "margin": 0,
+                          "minWidth": "2px",
+                          "opacity": 1,
+                          "outline": 0,
+                          "padding": 0,
+                          "width": "100%",
                         }
                       }
-                    >
-                      <input
-                        aria-autocomplete="list"
-                        autoCapitalize="none"
-                        autoComplete="off"
-                        autoCorrect="off"
-                        disabled={false}
-                        id="react-select-2-input"
-                        onBlur={[Function]}
-                        onChange={[Function]}
-                        onFocus={[Function]}
-                        required={true}
-                        spellCheck="false"
-                        style={
-                          {
-                            "background": 0,
-                            "border": 0,
-                            "boxSizing": "content-box",
-                            "color": "inherit",
-                            "fontSize": "inherit",
-                            "label": "input",
-                            "opacity": 1,
-                            "outline": 0,
-                            "padding": 0,
-                            "width": "1px",
-                          }
-                        }
-                        tabIndex="0"
-                        type="text"
-                        value=""
-                      />
-                      <div
-                        style={
-                          {
-                            "height": 0,
-                            "left": 0,
-                            "overflow": "scroll",
-                            "position": "absolute",
-                            "top": 0,
-                            "visibility": "hidden",
-                            "whiteSpace": "pre",
-                          }
-                        }
-                      >
-                        
-                      </div>
-                    </div>
+                      tabIndex={0}
+                      type="text"
+                      value=""
+                    />
                   </div>
                 </div>
                 <div
                   className="select-input__indicators css-1hb7zxy-IndicatorsContainer"
                 >
                   <span
-                    className="select-input__indicator-separator css-1okebmr-indicatorSeparator"
+                    className="select-input__indicator-separator css-1u9des2-indicatorSeparator"
                   />
                   <div
                     aria-hidden="true"
-                    className="select-input__indicator select-input__dropdown-indicator css-tlfecz-indicatorContainer"
+                    className="select-input__indicator select-input__dropdown-indicator css-1xc3v61-indicatorContainer"
                     onMouseDown={[Function]}
                     onTouchEnd={[Function]}
                   >

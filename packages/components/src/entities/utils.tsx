@@ -70,8 +70,9 @@ export function filterSampleRowsForOperation(
     rows: Record<any, any>,
     operation: SampleOperation,
     idField = 'RowId',
-    nameField: string = 'Name',
-    moduleContext?: ModuleContext): { rows: { [p: string]: any }; statusData: OperationConfirmationData; statusMessage: string } {
+    nameField = 'Name',
+    moduleContext?: ModuleContext
+): { rows: { [p: string]: any }; statusData: OperationConfirmationData; statusMessage: string } {
     const allowed = [];
     const notAllowed = [];
     const validRows = {};
@@ -132,7 +133,7 @@ export function getSampleWizardURL(
     selectionKey?: string,
     useSnapshotSelection?: boolean,
     currentProductId?: string,
-    targetProductId?: string,
+    targetProductId?: string
 ): string | AppURL {
     const params = {};
 
@@ -149,7 +150,6 @@ export function getSampleWizardURL(
 
     return createProductUrlFromParts(targetProductId, currentProductId, params, SAMPLES_KEY, 'new');
 }
-
 
 // TODO: Convert this into a component and utilize useServerContext() to fetch moduleContext for isELNEnabled() check
 export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: boolean): ReactNode {
@@ -180,6 +180,11 @@ export const getSampleTypeTemplateUrl = (
     const extraColumns = SAMPLE_INSERT_EXTRA_COLUMNS.concat(Object.keys(importAliases || {})).filter(
         col => excludeColumns.indexOf(col) == -1
     );
+
+    // Issue 46593: if the table XML metadata override specifies a custom importTemplate, use it
+    if (queryInfo.importTemplates?.[0]?.url.toLowerCase().indexOf('exportexceltemplate.view') === -1) {
+        return queryInfo.importTemplates[0].url;
+    }
 
     return ActionURL.buildURL('query', 'ExportExcelTemplate', null, {
         ...exportConfig,

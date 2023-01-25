@@ -224,5 +224,12 @@ describe('Date Utilities', () => {
             expect(parseDate('22/04/11', 'yy/MM/dd').toString()).toContain('Apr 11 2022');
             expect(parseDate('22/04/11', 'YY/MM/DD').toString()).toContain('Apr 11 2022');
         });
+
+        test('minDate', () => {
+            expect(parseDate('0218-11-18', undefined).toString()).toContain('0218');
+            expect(parseDate('0218-11-18', undefined, new Date('1000-01-01'))).toBe(null);
+            expect(parseDate('0218-11-18 00:00', 'yyyy-MM-dd HH:ss').toString()).toContain('0218');
+            expect(parseDate('0218-11-18 00:00', 'yyyy-MM-dd HH:ss', new Date('1000-01-01'))).toBe(null);
+        });
     });
 });

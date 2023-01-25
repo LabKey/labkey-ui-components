@@ -30,19 +30,11 @@ import { BulkAddData, EditableColumnMetadata } from '../editable/EditableGrid';
 
 import { DERIVATION_DATA_SCOPES } from '../domainproperties/constants';
 
-import {
-    getCurrentProductName,
-    isImportWithUpdateEnabled,
-    isSampleManagerEnabled,
-    sampleManagerIsPrimaryApp,
-} from '../../app/utils';
+import { getCurrentProductName, isSampleManagerEnabled, sampleManagerIsPrimaryApp } from '../../app/utils';
 
 import { fetchDomainDetails, getDomainNamePreviews } from '../domainproperties/actions';
 
-import {
-    SAMPLE_STATE_COLUMN_NAME,
-    SELECTION_KEY_TYPE,
-} from '../samples/constants';
+import { SAMPLE_STATE_COLUMN_NAME, SELECTION_KEY_TYPE } from '../samples/constants';
 
 import { loadNameExpressionOptions } from '../settings/actions';
 
@@ -133,12 +125,15 @@ interface OwnProps {
     afterEntityCreation?: (entityTypeName, filter, entityCount, actionStr, transactionAuditId?, response?) => void;
     allowedNonDomainFields?: string[];
     api?: ComponentsAPIWrapper;
-    asyncSize?: number; // the file size cutoff to enable async import. If undefined, async is not supported
+    asyncSize?: number;
+    // the file size cutoff to enable async import. If undefined, async is not supported
     auditBehavior?: AuditBehaviorTypes;
     canEditEntityTypeDetails?: boolean;
-    combineParentTypes?: boolean; // Puts all parent types in one parent button. Name on the button will be the first parent type listed
+    combineParentTypes?: boolean;
+    // Puts all parent types in one parent button. Name on the button will be the first parent type listed
     containerFilter?: Query.ContainerFilter;
     disableMerge?: boolean;
+    disallowedUpdateFields?: string[];
     entityDataType: EntityDataType;
     errorNounPlural?: string; // Used if you want a different noun in error messages than on the other components
     fileImportParameters?: Record<string, any>;
@@ -223,7 +218,6 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     private readonly capTypeTextSingular;
     private readonly typeTextSingular;
     private readonly typeTextPlural;
-    private readonly useDeprecatedUI;
 
     constructor(props: Props) {
         super(props);
@@ -234,7 +228,6 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         this.capTypeTextSingular = this.capNounSingular + ' Type';
         this.typeTextSingular = props.nounSingular + ' type';
         this.typeTextPlural = props.nounSingular + ' types';
-        this.useDeprecatedUI = !isImportWithUpdateEnabled(); // UI prior to the support of import with update
 
         this.state = {
             insertModel: undefined,
@@ -286,19 +279,6 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const { isEditMode, importOnly, gridInsertOnly } = this.props;
         const importTabTitle = (isEditMode ? 'Update' : 'Import') + ' ' + this.capNounPlural + ' from File';
         const gridTabTitle = 'Create ' + this.capNounPlural + ' from Grid';
-
-        if (this.useDeprecatedUI) {
-            // code is written with redundancy to allow easy remove all of this.useDeprecatedUI usage
-            if (importOnly) {
-                return [importTabTitle];
-            }
-
-            if (gridInsertOnly) {
-                return [gridTabTitle];
-            }
-
-            return [gridTabTitle, importTabTitle];
-        }
 
         if (importOnly || isEditMode) {
             return [importTabTitle];
@@ -662,24 +642,20 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
         if (isGrid) return null;
 
-        let allowMerge =
+        const allowMerge =
             isEditMode &&
             !disableMerge &&
             user.hasUpdatePermission() &&
             allowUserSpecifiedNames &&
             originalQueryInfo?.supportMerge;
 
-        if (this.useDeprecatedUI) allowMerge = !disableMerge && user.hasUpdatePermission();
-
         const entityTypeName = insertModel.getTargetEntityTypeLabel();
         if (!allowMerge || !entityTypeName) return null;
 
-        const mergeMsg = this.useDeprecatedUI
-            ? `Update data for existing ${nounPlural} during this file import`
-            : `Allow new ${nounPlural}`;
+        const mergeMsg = `Allow new ${nounPlural}`;
 
         return (
-            <div className={this.useDeprecatedUI ? 'margin-bottom' : 'pull-right'}>
+            <div className="pull-right">
                 <input type="checkbox" checked={isMerge} onChange={this.toggleInsertOptionChange} />
                 <span className="entity-mergeoption-checkbox" onClick={this.toggleInsertOptionChange}>
                     {mergeMsg}
@@ -725,18 +701,12 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
         return (
             <>
-                {insertModel.isInit &&
-                    (this.useDeprecatedUI ? (
-                        <>
-                            {this.renderTargetEntitySelect()}
-                            {this.renderMergeOption(isGrid)}
-                        </>
-                    ) : (
-                        <div className="row">
-                            <div className="col-sm-9">{this.renderTargetEntitySelect()}</div>
-                            <div className="col-sm-3">{this.renderMergeOption(isGrid)}</div>
-                        </div>
-                    ))}
+                {insertModel.isInit && (
+                    <div className="row">
+                        <div className="col-sm-9">{this.renderTargetEntitySelect()}</div>
+                        <div className="col-sm-3">{this.renderMergeOption(isGrid)}</div>
+                    </div>
+                )}
                 {insertModel.isError && (
                     <Alert>
                         {insertModel.errors ??
@@ -1166,8 +1136,6 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     renderUpdateTooltipText = (): ReactNode => {
         const { nounPlural } = this.props;
 
-        if (this.useDeprecatedUI) return this.renderUpdateTooltipTextDeprecated();
-
         return (
             <>
                 <p>
@@ -1234,11 +1202,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const { insertModel, file, isMerge, originalQueryInfo, useAsync } = this.state;
 
         this.setSubmitting(true);
-        let importOption = isEditMode ? (isMerge ? InsertOptions.MERGE : InsertOptions.UPDATE) : InsertOptions.IMPORT;
-
-        if (this.useDeprecatedUI) {
-            if (isMerge) importOption = InsertOptions.MERGE;
-        }
+        const importOption = isEditMode ? (isMerge ? InsertOptions.MERGE : InsertOptions.UPDATE) : InsertOptions.IMPORT;
 
         try {
             const response = await handleEntityFileImport(
@@ -1299,9 +1263,6 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     isGridStep = (): boolean => {
-        if (this.useDeprecatedUI)
-            return this.props.currentStep === EntityInsertPanelTabs.First && !this.props.importOnly;
-
         return (
             this.props.currentStep === EntityInsertPanelTabs.First && !this.props.importOnly && !this.props.isEditMode
         );
@@ -1341,21 +1302,31 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         inferred: InferDomainResponse,
         domainDetails: DomainDetails,
         columns: OrderedMap<string, QueryColumn>,
-        otherAllowedFields?: string[]
+        otherAllowedFields?: string[],
+        disallowedUpdateFields?: string[]
     ): React.ReactNode[] {
         const uniqueIdFields = [];
-        const unknownFields = [];
+        const unknownFields = [],
+            noUpdateFields = [];
         const { domainDesign } = domainDetails;
-        let allowedFields = [];
+        let allowedFields = [],
+            lcDisallowedUdateFields = [];
         if (domainDetails.options.has('importAliases')) {
             allowedFields = Object.keys(domainDetails.options.get('importAliases')).map(key => key.toLowerCase());
         }
         if (otherAllowedFields) {
             allowedFields = allowedFields.concat(otherAllowedFields.map(field => field.toLowerCase()));
         }
+        if (disallowedUpdateFields) {
+            lcDisallowedUdateFields = disallowedUpdateFields.map(field => field.toLowerCase());
+        }
 
         inferred.fields.forEach(field => {
             const lcName = field.name.toLowerCase();
+
+            if (lcDisallowedUdateFields.indexOf(lcName) >= 0) {
+                noUpdateFields.push(field.name);
+            }
 
             if (!field.isExpInput(false) && allowedFields.indexOf(lcName) < 0) {
                 const aliasField = domainDesign.fields.find(
@@ -1378,6 +1349,15 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         });
 
         const msg = [];
+        if (noUpdateFields.length > 0) {
+            msg.push(
+                <p key="noUpdateFields">
+                    {EntityInsertPanelImpl.getWarningFieldList(noUpdateFields)}
+                    {' cannot be updated and and will be ignored.'}
+                </p>
+            );
+        }
+
         if (unknownFields.length > 0) {
             msg.push(
                 <p key="unknownFields">
@@ -1402,7 +1382,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     }
 
     onPreviewLoad = (inferred: InferDomainResponse): any => {
-        const { allowedNonDomainFields } = this.props;
+        const { allowedNonDomainFields, disallowedUpdateFields, isEditMode } = this.props;
         const { insertModel, originalQueryInfo } = this.state;
         fetchDomainDetails(undefined, insertModel.getSchemaQuery().schemaName, insertModel.getSchemaQuery().queryName)
             .then(domainDetails => {
@@ -1410,7 +1390,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                     inferred,
                     domainDetails,
                     originalQueryInfo.columns,
-                    allowedNonDomainFields
+                    allowedNonDomainFields,
+                    isEditMode ? disallowedUpdateFields : undefined
                 );
 
                 if (msg.length > 0) {
@@ -1424,8 +1405,6 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     shouldShowGrid = (): boolean => {
         const { importOnly, isEditMode } = this.props;
-
-        if (this.useDeprecatedUI) return !importOnly;
 
         return !importOnly && !isEditMode;
     };

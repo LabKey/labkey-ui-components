@@ -252,7 +252,7 @@ import { DefaultRenderer } from './internal/renderers/DefaultRenderer';
 import { FileColumnRenderer } from './internal/renderers/FileColumnRenderer';
 import { MultiValueRenderer } from './internal/renderers/MultiValueRenderer';
 import { LabelColorRenderer } from './internal/renderers/LabelColorRenderer';
-import { ProjectColumnRenderer } from './internal/renderers/ProjectColumnRenderer';
+import { NoLinkRenderer } from './internal/renderers/NoLinkRenderer';
 import {
     ImportAliasRenderer,
     SampleTypeImportAliasRenderer,
@@ -518,6 +518,8 @@ import {
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
     BACKGROUND_IMPORT_MIN_ROW_SIZE,
     DATA_IMPORT_FILE_SIZE_LIMITS,
+    PIPELINE_PROVIDER_FILTER_LKSM,
+    PIPELINE_PROVIDER_FILTER_LKB,
 } from './internal/components/pipeline/constants';
 import { PipelineJobDetailPage } from './internal/components/pipeline/PipelineJobDetailPage';
 import { PipelineJobsListingPage } from './internal/components/pipeline/PipelineJobsListingPage';
@@ -601,7 +603,6 @@ import {
     isSampleManagerEnabled,
     isSampleStatusEnabled,
     isWorkflowEnabled,
-    isImportWithUpdateEnabled,
     registerWebSocketListeners,
     sampleManagerIsPrimaryApp,
     useMenuSectionConfigs,
@@ -690,7 +691,6 @@ import { Key, useEnterEscape } from './public/useEnterEscape';
 import { DateInput } from './internal/components/DateInput';
 import { EditInlineField } from './internal/components/EditInlineField';
 import { FileAttachmentArea } from './internal/components/files/FileAttachmentArea';
-import { UserAvatar, UserAvatars } from './internal/components/UserAvatars';
 import { AnnouncementRenderType } from './internal/announcements/model';
 import { Discussions } from './internal/announcements/Discussions';
 import { Thread } from './internal/announcements/Thread';
@@ -736,7 +736,6 @@ const App = {
     sampleManagerIsPrimaryApp,
     isSampleStatusEnabled,
     isProductProjectsEnabled,
-    isImportWithUpdateEnabled,
     getPrimaryAppProperties,
     getProjectPath,
     hasPremiumModule,
@@ -917,7 +916,7 @@ export {
     FileColumnRenderer,
     LabelColorRenderer,
     MultiValueRenderer,
-    ProjectColumnRenderer,
+    NoLinkRenderer,
     StorageStatusRenderer,
     SampleStatusRenderer,
     ImportAliasRenderer,
@@ -1383,6 +1382,8 @@ export {
     BACKGROUND_IMPORT_MIN_ROW_SIZE,
     DATA_IMPORT_FILE_SIZE_LIMITS,
     ACTIVE_JOB_INDICATOR_CLS,
+    PIPELINE_PROVIDER_FILTER_LKSM,
+    PIPELINE_PROVIDER_FILTER_LKB,
     // Test Helpers
     sleep,
     createMockWithRouteLeave,
@@ -1402,9 +1403,6 @@ export {
     OntologyConceptPicker,
     OntologySearchInput,
     ConceptModel,
-    // UserAvatars
-    UserAvatar,
-    UserAvatars,
     // Announcements
     AnnouncementRenderType,
     Discussions,

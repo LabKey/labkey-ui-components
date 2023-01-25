@@ -34,6 +34,8 @@ import { getSecurityTestAPIWrapper, SecurityAPIWrapper } from '../security/APIWr
 
 import { TEST_LKS_STARTER_MODULE_CONTEXT } from '../../productFixtures';
 
+import { Container } from '../base/models/Container';
+
 import { getNavigationTestAPIWrapper, NavigationAPIWrapper } from './NavigationAPIWrapper';
 
 import { FolderMenu, FolderMenuItem } from './FolderMenu';
@@ -49,6 +51,7 @@ import {
     ProductMenuButtonTitle,
     ProductMenuProps,
 } from './ProductMenu';
+import { HOME_PATH, HOME_TITLE } from './constants';
 
 function getDefaultServerContext(): Partial<ServerContext> {
     return {
@@ -160,6 +163,8 @@ twoSectionConfig.set(
 );
 sectionConfigs = sectionConfigs.push(twoSectionConfig);
 
+const HOME_PROJECT = new Container({ id: '12345', path: HOME_PATH, title: 'home' });
+
 describe('ProductMenuButton', () => {
     function getDefaultAppContext(overrides?: Partial<SecurityAPIWrapper>): Partial<AppContext> {
         return {
@@ -244,6 +249,22 @@ describe('ProductMenuButton', () => {
         );
         await waitForLifecycle(wrapper);
         expect(wrapper.find('.title').text()).toBe(TEST_FOLDER_CONTAINER.title);
+        expect(wrapper.find('.subtitle').text()).toBe('Dashboard');
+        wrapper.unmount();
+    });
+
+    test('ProductMenuButtonTitle home', async () => {
+        const wrapper = mountWithAppServerContext(
+            <ProductMenuButtonTitle
+                container={HOME_PROJECT}
+                folderItems={[{} as FolderMenuItem, {} as FolderMenuItem]}
+                routes={[]}
+            />,
+            getDefaultAppContext(),
+            getDefaultServerContext()
+        );
+        await waitForLifecycle(wrapper);
+        expect(wrapper.find('.title').text()).toBe(HOME_TITLE);
         expect(wrapper.find('.subtitle').text()).toBe('Dashboard');
         wrapper.unmount();
     });
@@ -358,6 +379,15 @@ describe('createFolderItem', () => {
         expect(item.path).toBe(TEST_FOLDER_CONTAINER.path);
         expect(item.isTopLevel).toBe(true);
         expect(item.href).toBe('/labkey/controller/TestProjectContainer/TestFolderContainer/app.view');
+    });
+
+    test('home project', () => {
+        const item = createFolderItem(HOME_PROJECT, 'controller', true);
+        expect(item.id).toBe(HOME_PROJECT.id);
+        expect(item.label).toBe(HOME_TITLE);
+        expect(item.path).toBe(HOME_PROJECT.path);
+        expect(item.isTopLevel).toBe(true);
+        expect(item.href).toBe('/labkey/controller/home/app.view');
     });
 });
 

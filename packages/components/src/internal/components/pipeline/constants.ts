@@ -6,7 +6,7 @@ import { FileSizeLimitProps } from '../../../public/files/models';
 const SAMPLES_IMPORT_PIPELINE_PROVIDER = 'Samples Import';
 const SOURCES_IMPORT_PIPELINE_PROVIDER = 'Sources Import';
 
-const PROVIDERS_LKB = [SAMPLES_IMPORT_PIPELINE_PROVIDER, 'General'];
+const PROVIDERS_LKB = [SAMPLES_IMPORT_PIPELINE_PROVIDER, 'General', 'ETL'];
 export const PIPELINE_PROVIDER_FILTER_LKB = Filter.create('Provider', PROVIDERS_LKB, Filter.Types.IN);
 
 const PROVIDERS_LKSM = [...PROVIDERS_LKB, SOURCES_IMPORT_PIPELINE_PROVIDER];

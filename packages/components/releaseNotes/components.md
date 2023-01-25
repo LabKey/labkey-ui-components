@@ -1,9 +1,102 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.275.0
-*Released*: 29 December 2022
+### version 2.283.X
+*Released*: X January 2023
 * Issue 46949: Sample timeline detail links to sources instead of registry for LKB
+
+### version 2.283.2
+*Released*: 23 January 2023
+* Fix issue with react keys in Navigation
+
+### version 2.283.1
+*Released*: 20 January 2023
+* Issue 46344: Display group membership on profile page
+
+### version 2.283.0
+*Released*: 17 January 2023
+* Issue 47066: Adjust timeline to show created date and created by user in timeline's current status, even if detailed audit logging was not on.
+* Issue 47059: Show grid customization on sample-type-specific grids on Find By Ids page.
+
+### version 2.282.0
+*Released*: 17 January 2023
+* Handle update and clarify merge - enable update action for apps
+  * Remove isImportWithUpdateEnabled experimental flag
+
+### version 2.281.0
+*Released*: 16 January 2023
+* Updates for notebook consistency
+  * ProductMenu fix so that column section header `<hr>` don't look clickable
+  * Consolidate status-tag with notebook tags, rename as status-pill / pill.scss
+  * FileAttachmentArea.tsx compact mode
+
+### version 2.280.1
+*Released*: 13 January 2023
+* Show "View All Activity" link in `ServerActivityList` when there are any items in the list
+* Use `PIPELINE_MAPPER` in `ServerActivityList` to resolve `ActionLinkUrl` when possible
+* Make sure `ServerNofifications` button closes after clicking a link in it.
+
+### version 2.280.0
+*Released*: 12 January 2023
+* QueryColumn: Add shownInLookupView
+* QueryInfo: Add getLookupViewColumns
+* QuerySelect
+  * remove previewOptions, we now render additional columns based on the shownInLookupView attribute of QueryColumn
+  * update default option renderer to only render column captions when multiple columns are set to show in lookup views
+* AssayImportPanels: remove showQuerySelectPreviewOptions
+
+### version 2.279.1
+*Released*: 9 January 2023
+* Issue 47020: Use unique grid id so selections are not shared between FindByIds queries
+* Issue 47003: don't try to load rows if queryInfo is not yet loaded.
+* Issue 46876: Remove links from audit log entries that lead to LKS
+
+### version 2.279.0
+*Released*: 8 January 2023
+* pull forward v2.275.1 changes
+
+### version 2.278.0
+*Released*: 6 January 2023
+* Update `react-select` to `5.7.0`.
+* Remove `@types/react-select` as types are now provided by `react-select`.
+* Update `@labkey/build`.
+
+### version 2.277.2
+*Released*: 6 January 2023
+* Issue 46733: Editable for aliquots only/Required Field: Adding Samples gives error
+
+### version 2.277.1
+*Released*: 6 January 2023
+* Issue 46574: Filter Panel boolean labels are not clickable
+* Issue 46765: Grid cell sample status input requires multiple clicks to open select options menu
+* Issue 46837: Checkbox inputs with label render incorrectly on col-sm size
+* Issue 46581: Editable Grid doesn't de-focus cells if you click outside the table
+
+### version 2.277.0
+*Released*: 4 January 2023
+* Remove UserAvatars
+  * It is no longer used by our apps
+* Remove AssayButtons.tsx
+
+### version 2.276.1
+*Released*: 3 January 2023
+* Issue 46767: DatePicker valid dates start at year 1000 (i.e. new Date('1000-01-01'))
+  * update `parseDate` to add an optional minDate param for valid dates for DatePicker selected date
+* Issue 46839: Allow click on search input icon for grid panel to apply search value
+
+### version 2.276.0
+*Released*: 3 January 2023
+* App header Projects and Menu misc fixes
+  * don't show projects column when user only has perm to a single subfolder
+  * add new app icons with lighter background color for use in menu Dashboard link
+  * adjust hover styling of menu items and menu widths for various screen sizes
+  * show 'Home Project' for title when in /home container
+* Issue 46299: Lineage Graph: Make Font Larger
+* Issue 46593:App template download button ignores custom XML metadata <importTemplates> override for sample types
+
+### version 2.275.1
+*Released*: 6 January 2023
+* Fix race condition that causes LabelTemplates table creation to fail
 
 ### version 2.275.0
 *Released*: 29 December 2022

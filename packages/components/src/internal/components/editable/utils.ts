@@ -371,6 +371,7 @@ export function onCellSelectChange(
 }
 
 export const gridCellSelectInputProps: Partial<SelectInputProps> = {
+    autoFocus: true,
     containerClass: 'select-input-cell-container',
     customStyles: {
         control: provided => ({
@@ -409,7 +410,7 @@ export const gridCellSelectInputProps: Partial<SelectInputProps> = {
         },
     }),
     inputClass: 'select-input-cell',
-    menuPosition: 'fixed', // note that there is an open issue related to scrolling when the menu is open: https://github.com/JedWatson/react-select/issues/4088
+    menuPosition: 'fixed',
     placeholder: '',
     showLabel: false,
 };

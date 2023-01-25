@@ -433,7 +433,7 @@ const LOOKUP_MAPPER = new LookupMapper('q', {
     issues: () => false, // 33680: Prevent remapping issues lookup
 });
 
-const PIPELINE_MAPPER = new ActionMapper('pipeline-status', 'details', row => {
+export const PIPELINE_MAPPER = new ActionMapper('pipeline-status', 'details', row => {
     const url = row.get('url');
     if (url) {
         const params = ActionURL.getParameters(url);

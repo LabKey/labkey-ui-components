@@ -14,11 +14,23 @@ interface Props extends ITypeDependentProps {
     config?: IDerivationDataScope;
     fieldDataType?: PropDescType;
     isExistingField?: boolean;
+    isRequiredField?: boolean;
     value?: string;
 }
 
 export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
-    const { domainIndex, index, onChange, config, lockType, value, label, isExistingField, fieldDataType } = props;
+    const {
+        domainIndex,
+        index,
+        onChange,
+        config,
+        lockType,
+        value,
+        label,
+        isExistingField,
+        isRequiredField,
+        fieldDataType,
+    } = props;
 
     const [isExistingParentOnly, setIsExistingParentOnly] = useState<boolean>(false);
     const [isChildOnlyValidOption, setIsChildOnlyValidOption] = useState<boolean>(false);
@@ -85,7 +97,7 @@ export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
                             value={DERIVATION_DATA_SCOPES.CHILD_ONLY}
                             checked={value === DERIVATION_DATA_SCOPES.CHILD_ONLY}
                             onChange={onRadioChange}
-                            disabled={isFullyLocked || !isChildOnlyValidOption}
+                            disabled={isFullyLocked || !isChildOnlyValidOption || isRequiredField}
                         >
                             {config.labelChild}
                         </Radio>

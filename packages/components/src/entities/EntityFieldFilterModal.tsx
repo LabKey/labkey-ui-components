@@ -34,10 +34,11 @@ import {
 import { QueryFilterPanel } from '../internal/components/search/QueryFilterPanel';
 
 import { AssaySampleColumnProp } from '../internal/sampleModels';
+import { isLoading, LoadingState } from '../public/LoadingState';
 
-interface Props {
+export interface EntityFieldFilterModalProps {
     api?: ComponentsAPIWrapper;
-    assaySampleIdCols?: { [key: string]: AssaySampleColumnProp };
+    assaySampleIdCols?: Record<string, AssaySampleColumnProp>;
     cards?: FilterProps[];
     entityDataType: EntityDataType;
     fieldKey?: string;
@@ -49,12 +50,12 @@ interface Props {
         queryLabels: { [key: string]: string }
     ) => void;
     queryName?: string;
-    setCardDirty?: (dirty: boolean) => any;
+    setCardDirty?: (dirty: boolean) => void;
     // for jest tests only due to lack of views from QueryInfo.fromJSON. check all fields, instead of only columns from default view
     skipDefaultViewCheck?: boolean;
 }
 
-export const EntityFieldFilterModal: FC<Props> = memo(props => {
+export const EntityFieldFilterModal: FC<EntityFieldFilterModalProps> = memo(props => {
     const {
         api,
         assaySampleIdCols,
@@ -70,30 +71,28 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
     } = props;
 
     const capParentNoun = capitalizeFirstChar(entityDataType.nounAsParentSingular);
-
-    const [entityQueries, setEntityQueries] = useState<IEntityTypeOption[]>(undefined);
-    const [activeQuery, setActiveQuery] = useState<string>(undefined);
-    const [activeQueryInfo, setActiveQueryInfo] = useState<QueryInfo>(undefined);
-    const [loadingError, setLoadingError] = useState<string>(undefined);
-    const [filterError, setFilterError] = useState<string>(undefined);
+    const [activeQuery, setActiveQuery] = useState<string>();
+    const [activeQueryInfo, setActiveQueryInfo] = useState<QueryInfo>();
+    const [entityQueries, setEntityQueries] = useState<IEntityTypeOption[]>([]);
+    const [filterError, setFilterError] = useState<string>();
+    const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
+    const [loadingError, setLoadingError] = useState<string>();
+    const isLoaded = !isLoading(loadingState);
 
     // key is the parent query name
-    const [dataTypeFilters, setDataTypeFilters] = useState<{ [key: string]: FieldFilter[] }>({});
+    const [dataTypeFilters, setDataTypeFilters] = useState<Record<string, FieldFilter[]>>({});
 
     const onEntityClick = useCallback(
         async (selectedQueryName: string) => {
             try {
                 let schemaName = entityDataType.instanceSchemaName;
-                let queryName = selectedQueryName;
+                let _queryName = selectedQueryName;
                 if (!schemaName && entityDataType.getInstanceSchemaQuery) {
                     const schemaQuery = entityDataType.getInstanceSchemaQuery(selectedQueryName);
                     schemaName = schemaQuery.schemaName;
-                    queryName = schemaQuery.queryName;
+                    _queryName = schemaQuery.queryName;
                 }
-                const queryInfo = await api.query.getQueryDetails({
-                    schemaName,
-                    queryName,
-                });
+                const queryInfo = await api.query.getQueryDetails({ schemaName, queryName: _queryName });
                 setActiveQuery(selectedQueryName);
                 setActiveQueryInfo(queryInfo);
                 setLoadingError(undefined);
@@ -101,28 +100,32 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                 setLoadingError(resolveErrorMessage(error, selectedQueryName, selectedQueryName, 'load'));
             }
         },
-        [api, entityDataType.instanceSchemaName, entityDataType.getInstanceSchemaQuery]
+        [api, entityDataType]
     );
 
     useEffect(() => {
-        const activeDataTypeFilters = {};
+        (async () => {
+            setLoadingState(LoadingState.LOADING);
+            setLoadingError(undefined);
 
-        cards?.forEach(card => {
-            if (card.entityDataType.instanceSchemaName !== entityDataType.instanceSchemaName) return;
-            let parent = card.schemaQuery.queryName.toLowerCase(); // if is assay, change to datatype
-            if (card.entityDataType.getInstanceDataType)
-                parent = card.entityDataType.getInstanceDataType(card.schemaQuery).toLowerCase();
-            activeDataTypeFilters[parent] = card.filterArray;
-        });
-        setDataTypeFilters(activeDataTypeFilters);
+            const activeDataTypeFilters = {};
 
-        setLoadingError(undefined);
-        api.query
-            .getEntityTypeOptions(entityDataType)
-            .then(results => {
+            cards?.forEach(card => {
+                if (card.entityDataType.instanceSchemaName !== entityDataType.instanceSchemaName) return;
+                let parent = card.schemaQuery.queryName.toLowerCase(); // if is assay, change to datatype
+                if (card.entityDataType.getInstanceDataType)
+                    parent = card.entityDataType.getInstanceDataType(card.schemaQuery).toLowerCase();
+                activeDataTypeFilters[parent] = card.filterArray;
+            });
+
+            setDataTypeFilters(activeDataTypeFilters);
+
+            try {
+                const results = await api.query.getEntityTypeOptions(entityDataType);
+
                 // filter assays
                 const parents = [];
-                results.map(result => {
+                results.forEach(result => {
                     if (entityDataType.typeListingSchemaQuery === AssayResultDataType.typeListingSchemaQuery) {
                         result.forEach(assay => {
                             if (assaySampleIdCols?.[assay.value.toLowerCase()]) {
@@ -130,7 +133,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                             }
                         });
                     } else {
-                        result.map(res => {
+                        result.forEach(res => {
                             parents.push(res);
                         });
                     }
@@ -139,8 +142,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                 if (queryName) {
                     onEntityClick(queryName);
                 }
-            })
-            .catch(error => {
+            } catch (error) {
                 setLoadingError(
                     resolveErrorMessage(
                         error,
@@ -149,7 +151,10 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                         'load'
                     )
                 );
-            });
+            } finally {
+                setLoadingState(LoadingState.LOADED);
+            }
+        })();
     }, [entityDataType]); // don't add cards or queryName to deps, only init DataTypeFilters once per entityDataType
 
     const closeModal = useCallback(() => {
@@ -175,7 +180,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
 
     const _onFind = useCallback(() => {
         const queryLabels = {};
-        entityQueries?.forEach(parent => {
+        entityQueries.forEach(parent => {
             const label = parent.label ?? parent.get?.('label');
             const parentValue = parent.value ?? parent.get?.('value');
             queryLabels[parentValue] = label;
@@ -190,12 +195,12 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
     }, [api, metricFeatureArea, entityQueries, entityDataType, onFind, validDataTypeFilters]);
 
     const onFilterUpdate = useCallback(
-        (field: QueryColumn, newFilters: Filter.IFilter[], index: number) => {
+        (field: QueryColumn, newFilters: Filter.IFilter[]) => {
             setCardDirty?.(true);
             setFilterError(undefined);
             setDataTypeFilters(getUpdatedDataTypeFilters(dataTypeFilters, activeQuery, field, newFilters));
         },
-        [dataTypeFilters, activeQuery]
+        [setCardDirty, dataTypeFilters, activeQuery]
     );
 
     const onHasNoValueInQueryChange = useCallback(
@@ -218,7 +223,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                 )
             );
         },
-        [dataTypeFilters, activeQuery, entityDataType, assaySampleIdCols]
+        [entityDataType, setCardDirty, activeQuery, assaySampleIdCols, dataTypeFilters]
     );
 
     const hasNotInQueryFilter = useMemo((): boolean => {
@@ -256,21 +261,20 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                             {entityDataType.nounAsParentPlural ?? entityDataType.nounPlural}
                         </div>
                         <div className="list-group field-modal__col-content">
-                            {!entityQueries && <LoadingSpinner wrapperClassName="loading-spinner" />}
-                            {entityQueries?.map((parent, index) => {
-                                const label = parent.label ?? parent.get?.('label'); // jest test data is Map, instead of js object
-                                const parentValue = parent.value ?? parent.get?.('value');
+                            {!isLoaded && <LoadingSpinner wrapperClassName="loading-spinner" />}
+                            {entityQueries.map((parent, index) => {
+                                const { label, value } = parent;
                                 const fieldFilterCount =
-                                    dataTypeFilters?.[parentValue]?.filter(
+                                    dataTypeFilters?.[value]?.filter(
                                         f => f.filter.getFilterType() !== NOT_ANY_FILTER_TYPE
                                     )?.length ?? 0;
                                 return (
                                     <ChoicesListItem
-                                        active={parentValue === activeQuery}
+                                        active={value === activeQuery}
                                         index={index}
-                                        key={parent.rowId + ''}
+                                        key={parent.rowId}
                                         label={label}
-                                        onSelect={() => onEntityClick(parentValue)}
+                                        onSelect={() => onEntityClick(value)}
                                         componentRight={
                                             fieldFilterCount !== 0 && (
                                                 <span className="pull-right field_count_circle">

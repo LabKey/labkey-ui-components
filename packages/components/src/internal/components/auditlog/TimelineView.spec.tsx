@@ -6,6 +6,7 @@ import { TIMELINE_DATA } from '../../../test/data/constants';
 
 import { TimelineView } from './TimelineView';
 import { TimelineEventModel } from './models';
+import {TEST_USER_APP_ADMIN, TEST_USER_READER} from "../../userFixtures";
 
 const events: TimelineEventModel[] = [];
 TIMELINE_DATA.forEach(event => events.push(TimelineEventModel.create(event, 'UTC')));
@@ -19,8 +20,8 @@ describe('<TimelineView />', () => {
                 selectionDisabled={true}
                 onEventSelection={jest.fn()}
                 selectedEvent={null}
-                showUserLinks={true}
                 selectedEntityConnectionInfo={null}
+                user={TEST_USER_APP_ADMIN}
             />
         );
 
@@ -35,8 +36,8 @@ describe('<TimelineView />', () => {
                 selectionDisabled={true}
                 onEventSelection={jest.fn()}
                 selectedEvent={null}
-                showUserLinks={false}
                 selectedEntityConnectionInfo={null}
+                user={TEST_USER_READER}
             />
         );
 
@@ -51,8 +52,8 @@ describe('<TimelineView />', () => {
                 selectionDisabled={true}
                 onEventSelection={jest.fn()}
                 selectedEvent={events[1]}
-                showUserLinks={true}
                 selectedEntityConnectionInfo={[{ firstEvent: events[1], lastEvent: events[5], isCompleted: true }]}
+                user={TEST_USER_APP_ADMIN}
             />
         );
 
@@ -67,8 +68,8 @@ describe('<TimelineView />', () => {
                 selectionDisabled={true}
                 onEventSelection={jest.fn()}
                 selectedEvent={events[7]}
-                showUserLinks={true}
                 selectedEntityConnectionInfo={[{ firstEvent: events[2], lastEvent: events[7], isCompleted: false }]}
+                user={TEST_USER_APP_ADMIN}
             />
         );
 
@@ -90,9 +91,9 @@ describe('<TimelineView />', () => {
                 selectionDisabled={true}
                 onEventSelection={jest.fn()}
                 selectedEvent={events[7]}
-                showUserLinks={true}
                 selectedEntityConnectionInfo={null}
                 getInfoBubbleContent={getInfoBubbleContent}
+                user={TEST_USER_APP_ADMIN}
             />
         );
 

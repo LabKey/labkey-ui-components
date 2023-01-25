@@ -57,6 +57,49 @@ exports[`<TimelineView /> Disable selection 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1005,
+                  "canDelete": true,
+                  "canDeleteOwn": true,
+                  "canInsert": true,
+                  "canUpdate": true,
+                  "canUpdateOwn": true,
+                  "displayName": "AppAdminDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": true,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": true,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.DeletePermission",
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DesignDataClassPermission",
+                    "org.labkey.api.security.permissions.DesignSampleTypePermission",
+                    "org.labkey.api.assay.security.DesignAssayPermission",
+                    "org.labkey.api.inventory.security.StorageDesignPermission",
+                    "org.labkey.api.security.permissions.InsertPermission",
+                    "org.labkey.api.security.permissions.UpdatePermission",
+                    "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+                    "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+                    "org.labkey.api.security.permissions.AdminPermission",
+                    "org.labkey.api.security.permissions.UserManagementPermission",
+                    "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                    "org.labkey.api.security.permissions.AddUserPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -125,6 +168,49 @@ exports[`<TimelineView /> Disable selection 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1005,
+                  "canDelete": true,
+                  "canDeleteOwn": true,
+                  "canInsert": true,
+                  "canUpdate": true,
+                  "canUpdateOwn": true,
+                  "displayName": "AppAdminDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": true,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": true,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.DeletePermission",
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DesignDataClassPermission",
+                    "org.labkey.api.security.permissions.DesignSampleTypePermission",
+                    "org.labkey.api.assay.security.DesignAssayPermission",
+                    "org.labkey.api.inventory.security.StorageDesignPermission",
+                    "org.labkey.api.security.permissions.InsertPermission",
+                    "org.labkey.api.security.permissions.UpdatePermission",
+                    "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+                    "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+                    "org.labkey.api.security.permissions.AdminPermission",
+                    "org.labkey.api.security.permissions.UserManagementPermission",
+                    "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                    "org.labkey.api.security.permissions.AddUserPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -193,6 +279,49 @@ exports[`<TimelineView /> Disable selection 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1005,
+                  "canDelete": true,
+                  "canDeleteOwn": true,
+                  "canInsert": true,
+                  "canUpdate": true,
+                  "canUpdateOwn": true,
+                  "displayName": "AppAdminDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": true,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": true,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.DeletePermission",
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DesignDataClassPermission",
+                    "org.labkey.api.security.permissions.DesignSampleTypePermission",
+                    "org.labkey.api.assay.security.DesignAssayPermission",
+                    "org.labkey.api.inventory.security.StorageDesignPermission",
+                    "org.labkey.api.security.permissions.InsertPermission",
+                    "org.labkey.api.security.permissions.UpdatePermission",
+                    "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+                    "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+                    "org.labkey.api.security.permissions.AdminPermission",
+                    "org.labkey.api.security.permissions.UserManagementPermission",
+                    "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                    "org.labkey.api.security.permissions.AddUserPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="xyang"
               userId={1005}
             />
@@ -261,6 +390,49 @@ exports[`<TimelineView /> Disable selection 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1005,
+                  "canDelete": true,
+                  "canDeleteOwn": true,
+                  "canInsert": true,
+                  "canUpdate": true,
+                  "canUpdateOwn": true,
+                  "displayName": "AppAdminDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": true,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": true,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.DeletePermission",
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DesignDataClassPermission",
+                    "org.labkey.api.security.permissions.DesignSampleTypePermission",
+                    "org.labkey.api.assay.security.DesignAssayPermission",
+                    "org.labkey.api.inventory.security.StorageDesignPermission",
+                    "org.labkey.api.security.permissions.InsertPermission",
+                    "org.labkey.api.security.permissions.UpdatePermission",
+                    "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+                    "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+                    "org.labkey.api.security.permissions.AdminPermission",
+                    "org.labkey.api.security.permissions.UserManagementPermission",
+                    "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                    "org.labkey.api.security.permissions.AddUserPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -329,6 +501,49 @@ exports[`<TimelineView /> Disable selection 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1005,
+                  "canDelete": true,
+                  "canDeleteOwn": true,
+                  "canInsert": true,
+                  "canUpdate": true,
+                  "canUpdateOwn": true,
+                  "displayName": "AppAdminDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": true,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": true,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.DeletePermission",
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DesignDataClassPermission",
+                    "org.labkey.api.security.permissions.DesignSampleTypePermission",
+                    "org.labkey.api.assay.security.DesignAssayPermission",
+                    "org.labkey.api.inventory.security.StorageDesignPermission",
+                    "org.labkey.api.security.permissions.InsertPermission",
+                    "org.labkey.api.security.permissions.UpdatePermission",
+                    "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+                    "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+                    "org.labkey.api.security.permissions.AdminPermission",
+                    "org.labkey.api.security.permissions.UserManagementPermission",
+                    "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                    "org.labkey.api.security.permissions.AddUserPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="Test Lab User"
               userId={1038}
             />
@@ -397,6 +612,49 @@ exports[`<TimelineView /> Disable selection 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1005,
+                  "canDelete": true,
+                  "canDeleteOwn": true,
+                  "canInsert": true,
+                  "canUpdate": true,
+                  "canUpdateOwn": true,
+                  "displayName": "AppAdminDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": true,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": true,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.DeletePermission",
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DesignDataClassPermission",
+                    "org.labkey.api.security.permissions.DesignSampleTypePermission",
+                    "org.labkey.api.assay.security.DesignAssayPermission",
+                    "org.labkey.api.inventory.security.StorageDesignPermission",
+                    "org.labkey.api.security.permissions.InsertPermission",
+                    "org.labkey.api.security.permissions.UpdatePermission",
+                    "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+                    "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+                    "org.labkey.api.security.permissions.AdminPermission",
+                    "org.labkey.api.security.permissions.UserManagementPermission",
+                    "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                    "org.labkey.api.security.permissions.AddUserPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="Test Lab User"
               userId={1038}
             />
@@ -465,6 +723,49 @@ exports[`<TimelineView /> Disable selection 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1005,
+                  "canDelete": true,
+                  "canDeleteOwn": true,
+                  "canInsert": true,
+                  "canUpdate": true,
+                  "canUpdateOwn": true,
+                  "displayName": "AppAdminDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": true,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": true,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.DeletePermission",
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DesignDataClassPermission",
+                    "org.labkey.api.security.permissions.DesignSampleTypePermission",
+                    "org.labkey.api.assay.security.DesignAssayPermission",
+                    "org.labkey.api.inventory.security.StorageDesignPermission",
+                    "org.labkey.api.security.permissions.InsertPermission",
+                    "org.labkey.api.security.permissions.UpdatePermission",
+                    "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+                    "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+                    "org.labkey.api.security.permissions.AdminPermission",
+                    "org.labkey.api.security.permissions.UserManagementPermission",
+                    "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                    "org.labkey.api.security.permissions.AddUserPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -533,6 +834,49 @@ exports[`<TimelineView /> Disable selection 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1005,
+                  "canDelete": true,
+                  "canDeleteOwn": true,
+                  "canInsert": true,
+                  "canUpdate": true,
+                  "canUpdateOwn": true,
+                  "displayName": "AppAdminDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": true,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": true,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.DeletePermission",
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DesignDataClassPermission",
+                    "org.labkey.api.security.permissions.DesignSampleTypePermission",
+                    "org.labkey.api.assay.security.DesignAssayPermission",
+                    "org.labkey.api.inventory.security.StorageDesignPermission",
+                    "org.labkey.api.security.permissions.InsertPermission",
+                    "org.labkey.api.security.permissions.UpdatePermission",
+                    "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+                    "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+                    "org.labkey.api.security.permissions.AdminPermission",
+                    "org.labkey.api.security.permissions.UserManagementPermission",
+                    "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                    "org.labkey.api.security.permissions.AddUserPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="xyang"
               userId={1005}
             />
@@ -618,6 +962,36 @@ exports[`<TimelineView /> Hide user link 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1200,
+                  "canDelete": false,
+                  "canDeleteOwn": false,
+                  "canInsert": false,
+                  "canUpdate": false,
+                  "canUpdateOwn": false,
+                  "displayName": "ReaderDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": false,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": false,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -686,6 +1060,36 @@ exports[`<TimelineView /> Hide user link 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1200,
+                  "canDelete": false,
+                  "canDeleteOwn": false,
+                  "canInsert": false,
+                  "canUpdate": false,
+                  "canUpdateOwn": false,
+                  "displayName": "ReaderDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": false,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": false,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -754,6 +1158,36 @@ exports[`<TimelineView /> Hide user link 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1200,
+                  "canDelete": false,
+                  "canDeleteOwn": false,
+                  "canInsert": false,
+                  "canUpdate": false,
+                  "canUpdateOwn": false,
+                  "displayName": "ReaderDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": false,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": false,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="xyang"
               userId={1005}
             />
@@ -822,6 +1256,36 @@ exports[`<TimelineView /> Hide user link 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1200,
+                  "canDelete": false,
+                  "canDeleteOwn": false,
+                  "canInsert": false,
+                  "canUpdate": false,
+                  "canUpdateOwn": false,
+                  "displayName": "ReaderDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": false,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": false,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -890,6 +1354,36 @@ exports[`<TimelineView /> Hide user link 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1200,
+                  "canDelete": false,
+                  "canDeleteOwn": false,
+                  "canInsert": false,
+                  "canUpdate": false,
+                  "canUpdateOwn": false,
+                  "displayName": "ReaderDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": false,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": false,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="Test Lab User"
               userId={1038}
             />
@@ -958,6 +1452,36 @@ exports[`<TimelineView /> Hide user link 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1200,
+                  "canDelete": false,
+                  "canDeleteOwn": false,
+                  "canInsert": false,
+                  "canUpdate": false,
+                  "canUpdateOwn": false,
+                  "displayName": "ReaderDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": false,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": false,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="Test Lab User"
               userId={1038}
             />
@@ -1026,6 +1550,36 @@ exports[`<TimelineView /> Hide user link 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1200,
+                  "canDelete": false,
+                  "canDeleteOwn": false,
+                  "canInsert": false,
+                  "canUpdate": false,
+                  "canUpdateOwn": false,
+                  "displayName": "ReaderDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": false,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": false,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -1094,6 +1648,36 @@ exports[`<TimelineView /> Hide user link 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1200,
+                  "canDelete": false,
+                  "canDeleteOwn": false,
+                  "canInsert": false,
+                  "canUpdate": false,
+                  "canUpdateOwn": false,
+                  "displayName": "ReaderDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": false,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": false,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="xyang"
               userId={1005}
             />
@@ -1179,6 +1763,49 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1005,
+                  "canDelete": true,
+                  "canDeleteOwn": true,
+                  "canInsert": true,
+                  "canUpdate": true,
+                  "canUpdateOwn": true,
+                  "displayName": "AppAdminDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": true,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": true,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.DeletePermission",
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DesignDataClassPermission",
+                    "org.labkey.api.security.permissions.DesignSampleTypePermission",
+                    "org.labkey.api.assay.security.DesignAssayPermission",
+                    "org.labkey.api.inventory.security.StorageDesignPermission",
+                    "org.labkey.api.security.permissions.InsertPermission",
+                    "org.labkey.api.security.permissions.UpdatePermission",
+                    "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+                    "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+                    "org.labkey.api.security.permissions.AdminPermission",
+                    "org.labkey.api.security.permissions.UserManagementPermission",
+                    "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                    "org.labkey.api.security.permissions.AddUserPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -1253,6 +1880,49 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1005,
+                  "canDelete": true,
+                  "canDeleteOwn": true,
+                  "canInsert": true,
+                  "canUpdate": true,
+                  "canUpdateOwn": true,
+                  "displayName": "AppAdminDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": true,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": true,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.DeletePermission",
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DesignDataClassPermission",
+                    "org.labkey.api.security.permissions.DesignSampleTypePermission",
+                    "org.labkey.api.assay.security.DesignAssayPermission",
+                    "org.labkey.api.inventory.security.StorageDesignPermission",
+                    "org.labkey.api.security.permissions.InsertPermission",
+                    "org.labkey.api.security.permissions.UpdatePermission",
+                    "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+                    "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+                    "org.labkey.api.security.permissions.AdminPermission",
+                    "org.labkey.api.security.permissions.UserManagementPermission",
+                    "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                    "org.labkey.api.security.permissions.AddUserPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -1321,6 +1991,49 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1005,
+                  "canDelete": true,
+                  "canDeleteOwn": true,
+                  "canInsert": true,
+                  "canUpdate": true,
+                  "canUpdateOwn": true,
+                  "displayName": "AppAdminDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": true,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": true,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.DeletePermission",
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DesignDataClassPermission",
+                    "org.labkey.api.security.permissions.DesignSampleTypePermission",
+                    "org.labkey.api.assay.security.DesignAssayPermission",
+                    "org.labkey.api.inventory.security.StorageDesignPermission",
+                    "org.labkey.api.security.permissions.InsertPermission",
+                    "org.labkey.api.security.permissions.UpdatePermission",
+                    "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+                    "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+                    "org.labkey.api.security.permissions.AdminPermission",
+                    "org.labkey.api.security.permissions.UserManagementPermission",
+                    "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                    "org.labkey.api.security.permissions.AddUserPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="xyang"
               userId={1005}
             />
@@ -1389,6 +2102,49 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1005,
+                  "canDelete": true,
+                  "canDeleteOwn": true,
+                  "canInsert": true,
+                  "canUpdate": true,
+                  "canUpdateOwn": true,
+                  "displayName": "AppAdminDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": true,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": true,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.DeletePermission",
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DesignDataClassPermission",
+                    "org.labkey.api.security.permissions.DesignSampleTypePermission",
+                    "org.labkey.api.assay.security.DesignAssayPermission",
+                    "org.labkey.api.inventory.security.StorageDesignPermission",
+                    "org.labkey.api.security.permissions.InsertPermission",
+                    "org.labkey.api.security.permissions.UpdatePermission",
+                    "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+                    "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+                    "org.labkey.api.security.permissions.AdminPermission",
+                    "org.labkey.api.security.permissions.UserManagementPermission",
+                    "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                    "org.labkey.api.security.permissions.AddUserPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -1457,6 +2213,49 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1005,
+                  "canDelete": true,
+                  "canDeleteOwn": true,
+                  "canInsert": true,
+                  "canUpdate": true,
+                  "canUpdateOwn": true,
+                  "displayName": "AppAdminDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": true,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": true,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.DeletePermission",
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DesignDataClassPermission",
+                    "org.labkey.api.security.permissions.DesignSampleTypePermission",
+                    "org.labkey.api.assay.security.DesignAssayPermission",
+                    "org.labkey.api.inventory.security.StorageDesignPermission",
+                    "org.labkey.api.security.permissions.InsertPermission",
+                    "org.labkey.api.security.permissions.UpdatePermission",
+                    "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+                    "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+                    "org.labkey.api.security.permissions.AdminPermission",
+                    "org.labkey.api.security.permissions.UserManagementPermission",
+                    "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                    "org.labkey.api.security.permissions.AddUserPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="Test Lab User"
               userId={1038}
             />
@@ -1531,6 +2330,49 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1005,
+                  "canDelete": true,
+                  "canDeleteOwn": true,
+                  "canInsert": true,
+                  "canUpdate": true,
+                  "canUpdateOwn": true,
+                  "displayName": "AppAdminDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": true,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": true,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.DeletePermission",
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DesignDataClassPermission",
+                    "org.labkey.api.security.permissions.DesignSampleTypePermission",
+                    "org.labkey.api.assay.security.DesignAssayPermission",
+                    "org.labkey.api.inventory.security.StorageDesignPermission",
+                    "org.labkey.api.security.permissions.InsertPermission",
+                    "org.labkey.api.security.permissions.UpdatePermission",
+                    "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+                    "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+                    "org.labkey.api.security.permissions.AdminPermission",
+                    "org.labkey.api.security.permissions.UserManagementPermission",
+                    "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                    "org.labkey.api.security.permissions.AddUserPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="Test Lab User"
               userId={1038}
             />
@@ -1599,6 +2441,49 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1005,
+                  "canDelete": true,
+                  "canDeleteOwn": true,
+                  "canInsert": true,
+                  "canUpdate": true,
+                  "canUpdateOwn": true,
+                  "displayName": "AppAdminDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": true,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": true,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.DeletePermission",
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DesignDataClassPermission",
+                    "org.labkey.api.security.permissions.DesignSampleTypePermission",
+                    "org.labkey.api.assay.security.DesignAssayPermission",
+                    "org.labkey.api.inventory.security.StorageDesignPermission",
+                    "org.labkey.api.security.permissions.InsertPermission",
+                    "org.labkey.api.security.permissions.UpdatePermission",
+                    "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+                    "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+                    "org.labkey.api.security.permissions.AdminPermission",
+                    "org.labkey.api.security.permissions.UserManagementPermission",
+                    "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                    "org.labkey.api.security.permissions.AddUserPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -1667,6 +2552,49 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1005,
+                  "canDelete": true,
+                  "canDeleteOwn": true,
+                  "canInsert": true,
+                  "canUpdate": true,
+                  "canUpdateOwn": true,
+                  "displayName": "AppAdminDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": true,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": true,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.DeletePermission",
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DesignDataClassPermission",
+                    "org.labkey.api.security.permissions.DesignSampleTypePermission",
+                    "org.labkey.api.assay.security.DesignAssayPermission",
+                    "org.labkey.api.inventory.security.StorageDesignPermission",
+                    "org.labkey.api.security.permissions.InsertPermission",
+                    "org.labkey.api.security.permissions.UpdatePermission",
+                    "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+                    "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+                    "org.labkey.api.security.permissions.AdminPermission",
+                    "org.labkey.api.security.permissions.UserManagementPermission",
+                    "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                    "org.labkey.api.security.permissions.AddUserPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="xyang"
               userId={1005}
             />
@@ -1752,6 +2680,49 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1005,
+                  "canDelete": true,
+                  "canDeleteOwn": true,
+                  "canInsert": true,
+                  "canUpdate": true,
+                  "canUpdateOwn": true,
+                  "displayName": "AppAdminDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": true,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": true,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.DeletePermission",
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DesignDataClassPermission",
+                    "org.labkey.api.security.permissions.DesignSampleTypePermission",
+                    "org.labkey.api.assay.security.DesignAssayPermission",
+                    "org.labkey.api.inventory.security.StorageDesignPermission",
+                    "org.labkey.api.security.permissions.InsertPermission",
+                    "org.labkey.api.security.permissions.UpdatePermission",
+                    "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+                    "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+                    "org.labkey.api.security.permissions.AdminPermission",
+                    "org.labkey.api.security.permissions.UserManagementPermission",
+                    "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                    "org.labkey.api.security.permissions.AddUserPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -1820,6 +2791,49 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1005,
+                  "canDelete": true,
+                  "canDeleteOwn": true,
+                  "canInsert": true,
+                  "canUpdate": true,
+                  "canUpdateOwn": true,
+                  "displayName": "AppAdminDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": true,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": true,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.DeletePermission",
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DesignDataClassPermission",
+                    "org.labkey.api.security.permissions.DesignSampleTypePermission",
+                    "org.labkey.api.assay.security.DesignAssayPermission",
+                    "org.labkey.api.inventory.security.StorageDesignPermission",
+                    "org.labkey.api.security.permissions.InsertPermission",
+                    "org.labkey.api.security.permissions.UpdatePermission",
+                    "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+                    "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+                    "org.labkey.api.security.permissions.AdminPermission",
+                    "org.labkey.api.security.permissions.UserManagementPermission",
+                    "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                    "org.labkey.api.security.permissions.AddUserPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -1894,6 +2908,49 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1005,
+                  "canDelete": true,
+                  "canDeleteOwn": true,
+                  "canInsert": true,
+                  "canUpdate": true,
+                  "canUpdateOwn": true,
+                  "displayName": "AppAdminDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": true,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": true,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.DeletePermission",
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DesignDataClassPermission",
+                    "org.labkey.api.security.permissions.DesignSampleTypePermission",
+                    "org.labkey.api.assay.security.DesignAssayPermission",
+                    "org.labkey.api.inventory.security.StorageDesignPermission",
+                    "org.labkey.api.security.permissions.InsertPermission",
+                    "org.labkey.api.security.permissions.UpdatePermission",
+                    "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+                    "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+                    "org.labkey.api.security.permissions.AdminPermission",
+                    "org.labkey.api.security.permissions.UserManagementPermission",
+                    "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                    "org.labkey.api.security.permissions.AddUserPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="xyang"
               userId={1005}
             />
@@ -1962,6 +3019,49 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1005,
+                  "canDelete": true,
+                  "canDeleteOwn": true,
+                  "canInsert": true,
+                  "canUpdate": true,
+                  "canUpdateOwn": true,
+                  "displayName": "AppAdminDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": true,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": true,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.DeletePermission",
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DesignDataClassPermission",
+                    "org.labkey.api.security.permissions.DesignSampleTypePermission",
+                    "org.labkey.api.assay.security.DesignAssayPermission",
+                    "org.labkey.api.inventory.security.StorageDesignPermission",
+                    "org.labkey.api.security.permissions.InsertPermission",
+                    "org.labkey.api.security.permissions.UpdatePermission",
+                    "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+                    "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+                    "org.labkey.api.security.permissions.AdminPermission",
+                    "org.labkey.api.security.permissions.UserManagementPermission",
+                    "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                    "org.labkey.api.security.permissions.AddUserPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -2030,6 +3130,49 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1005,
+                  "canDelete": true,
+                  "canDeleteOwn": true,
+                  "canInsert": true,
+                  "canUpdate": true,
+                  "canUpdateOwn": true,
+                  "displayName": "AppAdminDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": true,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": true,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.DeletePermission",
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DesignDataClassPermission",
+                    "org.labkey.api.security.permissions.DesignSampleTypePermission",
+                    "org.labkey.api.assay.security.DesignAssayPermission",
+                    "org.labkey.api.inventory.security.StorageDesignPermission",
+                    "org.labkey.api.security.permissions.InsertPermission",
+                    "org.labkey.api.security.permissions.UpdatePermission",
+                    "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+                    "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+                    "org.labkey.api.security.permissions.AdminPermission",
+                    "org.labkey.api.security.permissions.UserManagementPermission",
+                    "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                    "org.labkey.api.security.permissions.AddUserPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="Test Lab User"
               userId={1038}
             />
@@ -2098,6 +3241,49 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1005,
+                  "canDelete": true,
+                  "canDeleteOwn": true,
+                  "canInsert": true,
+                  "canUpdate": true,
+                  "canUpdateOwn": true,
+                  "displayName": "AppAdminDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": true,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": true,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.DeletePermission",
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DesignDataClassPermission",
+                    "org.labkey.api.security.permissions.DesignSampleTypePermission",
+                    "org.labkey.api.assay.security.DesignAssayPermission",
+                    "org.labkey.api.inventory.security.StorageDesignPermission",
+                    "org.labkey.api.security.permissions.InsertPermission",
+                    "org.labkey.api.security.permissions.UpdatePermission",
+                    "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+                    "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+                    "org.labkey.api.security.permissions.AdminPermission",
+                    "org.labkey.api.security.permissions.UserManagementPermission",
+                    "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                    "org.labkey.api.security.permissions.AddUserPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="Test Lab User"
               userId={1038}
             />
@@ -2166,6 +3352,49 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1005,
+                  "canDelete": true,
+                  "canDeleteOwn": true,
+                  "canInsert": true,
+                  "canUpdate": true,
+                  "canUpdateOwn": true,
+                  "displayName": "AppAdminDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": true,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": true,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.DeletePermission",
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DesignDataClassPermission",
+                    "org.labkey.api.security.permissions.DesignSampleTypePermission",
+                    "org.labkey.api.assay.security.DesignAssayPermission",
+                    "org.labkey.api.inventory.security.StorageDesignPermission",
+                    "org.labkey.api.security.permissions.InsertPermission",
+                    "org.labkey.api.security.permissions.UpdatePermission",
+                    "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+                    "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+                    "org.labkey.api.security.permissions.AdminPermission",
+                    "org.labkey.api.security.permissions.UserManagementPermission",
+                    "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                    "org.labkey.api.security.permissions.AddUserPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -2240,6 +3469,49 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              currentUser={
+                Immutable.Record {
+                  "id": 1005,
+                  "canDelete": true,
+                  "canDeleteOwn": true,
+                  "canInsert": true,
+                  "canUpdate": true,
+                  "canUpdateOwn": true,
+                  "displayName": "AppAdminDisplayName",
+                  "email": "guest",
+                  "phone": null,
+                  "avatar": "/labkey/_images/defaultavatar.png",
+                  "isAdmin": true,
+                  "isAnalyst": false,
+                  "isDeveloper": false,
+                  "isGuest": false,
+                  "isRootAdmin": true,
+                  "isSignedIn": true,
+                  "isSystemAdmin": false,
+                  "isTrusted": false,
+                  "maxAllowedPhi": undefined,
+                  "permissionsList": Immutable.List [
+                    "org.labkey.api.security.permissions.DeletePermission",
+                    "org.labkey.api.security.permissions.ReadPermission",
+                    "org.labkey.api.security.permissions.DesignDataClassPermission",
+                    "org.labkey.api.security.permissions.DesignSampleTypePermission",
+                    "org.labkey.api.assay.security.DesignAssayPermission",
+                    "org.labkey.api.inventory.security.StorageDesignPermission",
+                    "org.labkey.api.security.permissions.InsertPermission",
+                    "org.labkey.api.security.permissions.UpdatePermission",
+                    "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+                    "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+                    "org.labkey.api.security.permissions.AdminPermission",
+                    "org.labkey.api.security.permissions.UserManagementPermission",
+                    "org.labkey.api.security.permissions.ApplicationAdminPermission",
+                    "org.labkey.api.security.permissions.AddUserPermission",
+                    "org.labkey.api.security.permissions.NotebookReadPermission",
+                    "org.labkey.api.security.permissions.DataClassReadPermission",
+                    "org.labkey.api.security.permissions.AssayReadPermission",
+                    "org.labkey.api.security.permissions.MediaReadPermission",
+                  ],
+                }
+              }
               userDisplayValue="xyang"
               userId={1005}
             />

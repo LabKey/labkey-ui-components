@@ -20,7 +20,7 @@ export const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = memo(pr
     }, []);
 
     return (
-        <ConfirmModal confirmVariant="danger" {...confirmModalProps} onConfirm={onConfirmCallback}>
+        <ConfirmModal confirmVariant="danger" {...confirmModalProps} onConfirm={!!onConfirm ? onConfirmCallback : undefined}>
             {children}
             {!!onConfirm && (
                 <div className="top-spacing">

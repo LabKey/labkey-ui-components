@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.283.2",
+  "version": "2.283.3-fb-issue46949.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

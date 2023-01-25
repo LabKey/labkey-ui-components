@@ -6,7 +6,7 @@ import { SchemaQuery } from '../public/SchemaQuery';
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { MenuOption, SubMenu } from '../internal/components/menus/SubMenu';
 import { AppURL } from '../internal/url/AppURL';
-import { SAMPLES_KEY, SOURCES_KEY } from '../internal/app/constants';
+import { SOURCES_KEY } from '../internal/app/constants';
 import { SCHEMAS } from '../internal/schemas';
 import { getCrossFolderSelectionResult } from '../internal/components/entities/actions';
 import { EntityCrossProjectSelectionConfirmModal } from '../internal/components/entities/EntityCrossProjectSelectionConfirmModal';
@@ -26,6 +26,8 @@ import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 import { caseInsensitive } from '../internal/util/utils';
 
 import { isProjectContainer } from '../internal/app/utils';
+
+import { CrossFolderSelectionResult } from '../internal/components/entities/models';
 
 import { SampleCreationTypeModal } from './SampleCreationTypeModal';
 
@@ -80,7 +82,7 @@ const CreateSamplesSubMenuBaseImpl: FC<CreateSamplesSubMenuBaseProps & WithRoute
 
     const [sampleCreationURL, setSampleCreationURL] = useState<string | AppURL>();
     const [selectedOption, setSelectedOption] = useState<string>();
-    const [crossFolderSelectionResult, setCrossFolderSelectionResult] = useState(undefined);
+    const [crossFolderSelectionResult, setCrossFolderSelectionResult] = useState<CrossFolderSelectionResult>();
     const [selectionsAreSet, setSelectionsAreSet] = useState<boolean>(false);
     const [selectionData, setSelectionData] = useState<Map<any, any>>();
     const allowCrossFolderDerive = !isProjectContainer(); // Issue 46853: LKSM/LKB Projects: should allow derivation of samples within projects when parent/source is in Home
@@ -287,7 +289,6 @@ const CreateSamplesSubMenuBaseImpl: FC<CreateSamplesSubMenuBaseProps & WithRoute
             <SubMenu
                 currentMenuChoice={menuCurrentChoice}
                 extractCurrentMenuChoice={false}
-                key={SAMPLES_KEY}
                 options={
                     getOptions
                         ? getOptions(

@@ -10,12 +10,16 @@ import { DisableableButton } from '../internal/components/buttons/DisableableBut
 
 import { CreateSamplesSubMenu, CreateSamplesSubMenuProps } from './CreateSamplesSubMenu';
 
-interface Props extends Pick<CreateSamplesSubMenuProps, 'currentProductId' | 'isSelectingSamples' | 'targetProductId'> {
+export interface SamplesDeriveButtonBaseProps
+    extends Omit<
+        CreateSamplesSubMenuProps,
+        'id' | 'menuText' | 'parentQueryModel' | 'selectedQueryInfo' | 'selectedType' | 'subMenuText'
+    > {
     asSubMenu?: boolean;
     model: QueryModel;
 }
 
-export const SamplesDeriveButtonBase: FC<Props> = memo(props => {
+export const SamplesDeriveButtonBase: FC<SamplesDeriveButtonBaseProps> = memo(props => {
     const { model, asSubMenu, ...createSampleMenuProps } = props;
 
     const selectedCount = model?.selections?.size ?? -1;

@@ -48,8 +48,6 @@ interface OwnProps {
     sampleName: string;
     sampleSet: string;
     sampleStatus: SampleStatus;
-    // for jest test
-    skipAuditDetailUserLoading?: boolean;
     // for jest test on teamcity
     timezoneAbbr?: string;
 
@@ -67,7 +65,6 @@ export const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = me
         sampleStatus,
         timezoneAbbr,
         user,
-        skipAuditDetailUserLoading,
         renderAdditionalCurrentStatus,
         queryModels,
         sampleJobsGidId,
@@ -207,7 +204,6 @@ export const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = me
                 user={user}
                 rowId={selectedEvent ? selectedEvent.rowId : undefined}
                 summary={selectedEvent ? selectedEvent.summary : undefined}
-                hasUserField={!skipAuditDetailUserLoading}
                 gridData={selectedEvent ? selectedEvent.metadata : undefined}
                 changeDetails={selectedEvent ? selectedEvent.getAuditDetailsModel() : undefined}
                 fieldValueRenderer={auditDetailValueRenderer}

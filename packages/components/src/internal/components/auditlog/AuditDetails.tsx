@@ -5,21 +5,15 @@
 import React, { Component, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 import { Row, Col } from 'react-bootstrap';
-import { User as IUser } from '@labkey/api';
 
 import { User } from '../base/models/User';
-import { isLoading, LoadingState } from '../../../public/LoadingState';
-import { getUsersWithPermissions } from '../forms/actions';
-import { resolveErrorMessage } from '../../util/messaging';
-import { AppURL } from '../../url/AppURL';
 import { capitalizeFirstChar } from '../../util/utils';
 import { GridColumn } from '../base/models/GridColumn';
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import { Alert } from '../base/Alert';
 import { Grid } from '../base/Grid';
 
 import { getEventDataValueDisplay } from './utils';
 import { AuditDetailsModel } from './models';
+import { UserLink } from '../user/UserLink';
 
 interface Props {
     changeDetails?: AuditDetailsModel;
@@ -27,74 +21,21 @@ interface Props {
     fieldValueRenderer?: (label, value, displayValue) => any;
     gridColumnRenderer?: (data: any, row: any, displayValue: any) => any;
     gridData?: List<Map<string, any>>;
-    hasUserField?: boolean;
     rowId: number;
     summary?: string;
     title?: string;
     user: User;
 }
 
-interface State {
-    users: IUser[];
-    usersError: string;
-    usersLoadingState: LoadingState;
-}
-
-export class AuditDetails extends Component<Props, State> {
+export class AuditDetails extends Component<Props> {
     static defaultProps = {
         title: 'Audit Event Details',
         emptyMsg: 'No audit event selected.',
     };
 
     static isUserFieldLabel(field: string): boolean {
-        return ['created by', 'modified by'].indexOf(field.toLowerCase()) > -1;
+        return ['created by', 'createdby', 'modified by', 'modifiedby'].indexOf(field.toLowerCase()) > -1;
     }
-
-    constructor(props: Props) {
-        super(props);
-
-        this.state = {
-            users: [],
-            usersError: undefined,
-            usersLoadingState: LoadingState.INITIALIZED,
-        };
-    }
-
-    componentDidMount = (): void => {
-        this.init();
-    };
-
-    componentDidUpdate = (prevProps: Readonly<Props>): void => {
-        if (prevProps.rowId !== this.props.rowId) {
-            this.init();
-        }
-    };
-
-    getUserById = (userId: number): IUser => {
-        return this.state.users.find(u => u.userId === userId);
-    };
-
-    init = async (): Promise<void> => {
-        const { hasUserField, rowId } = this.props;
-
-        if (!rowId) return;
-
-        if (hasUserField) {
-            this.setState({ usersError: undefined, usersLoadingState: LoadingState.LOADING });
-
-            try {
-                const users = await getUsersWithPermissions();
-                this.setState({ users });
-            } catch (e) {
-                this.setState({
-                    users: [],
-                    usersError: resolveErrorMessage(e) ?? 'Failed to load users',
-                });
-            }
-
-            this.setState({ usersLoadingState: LoadingState.LOADED });
-        }
-    };
 
     renderUpdateValue = (oldVal: string, newVal: string): ReactNode => {
         const changed = oldVal !== newVal;
@@ -121,24 +62,12 @@ export class AuditDetails extends Component<Props, State> {
 
     getValueDisplay = (field: string, value: string): any => {
         const { fieldValueRenderer, user } = this.props;
-        const { users } = this.state;
 
         let displayVal: any = value;
         if (value == null || value === '') displayVal = 'NA';
 
         if (AuditDetails.isUserFieldLabel(field)) {
-            let targetUser: IUser;
-            if (users) {
-                const userId = parseInt(value, 10);
-                if (!isNaN(userId)) {
-                    targetUser = this.getUserById(userId);
-                }
-            }
-
-            if (targetUser) {
-                const link = AppURL.create('q', 'core', 'siteusers', value).toHref();
-                displayVal = user.isAdmin ? <a href={link}>{targetUser.displayName}</a> : targetUser.displayName;
-            }
+            displayVal = <UserLink currentUser={user} userId={parseInt(value, 10)} />;
         }
 
         if (fieldValueRenderer) displayVal = fieldValueRenderer(field, value, displayVal);
@@ -204,18 +133,10 @@ export class AuditDetails extends Component<Props, State> {
         );
     }
 
-    getUserDisplay = (userId: number, showUserLink: boolean): ReactNode => {
-        const user = this.getUserById(userId);
-
-        if (user) {
-            const link = AppURL.create('q', 'core', 'siteusers', userId).toHref();
-            return showUserLink ? <a href={link}>{user.displayName}</a> : <span>{user.displayName}</span>;
-        }
-
-        // user may have been deleted
+    getUserDisplay = (userId: number): ReactNode => {
         return (
             <span className="empty-section" title="User deleted from server">
-                {'<' + userId + '>'}
+                <UserLink currentUser={this.props.user} userId={userId} />
             </span>
         );
     };
@@ -234,7 +155,7 @@ export class AuditDetails extends Component<Props, State> {
                 showHeader: false,
                 cell: (data, row) => {
                     let display;
-                    if (row.get('isUser')) display = this.getUserDisplay(data, user.isAdmin);
+                    if (row.get('isUser')) display = this.getUserDisplay(data);
                     else display = getEventDataValueDisplay(data, user.isAdmin);
 
                     if (gridColumnRenderer) display = gridColumnRenderer(data, row, display);
@@ -246,19 +167,10 @@ export class AuditDetails extends Component<Props, State> {
     };
 
     renderBody() {
-        const { gridData, changeDetails, rowId, summary, hasUserField, emptyMsg } = this.props;
-        const { usersError, usersLoadingState } = this.state;
+        const { gridData, changeDetails, rowId, summary, emptyMsg } = this.props;
 
         if (!rowId) {
             return <div>{emptyMsg}</div>;
-        }
-
-        if (hasUserField) {
-            if (usersError) {
-                return <Alert>{usersError}</Alert>;
-            } else if (isLoading(usersLoadingState)) {
-                return <LoadingSpinner />;
-            }
         }
 
         return (

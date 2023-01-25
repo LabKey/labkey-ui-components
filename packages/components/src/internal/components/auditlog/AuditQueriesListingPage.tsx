@@ -192,7 +192,6 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
                 rowId={selectedRowId}
                 user={user}
                 summary={detail ? detail.comment : undefined}
-                hasUserField={true}
                 gridData={this.getDetailsGridData()}
                 changeDetails={detail}
             />

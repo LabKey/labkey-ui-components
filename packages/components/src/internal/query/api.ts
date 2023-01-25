@@ -170,9 +170,8 @@ export function applyQueryMetadata(rawQueryInfo: any, schemaName?: string, query
             singular: queryLabel,
         };
 
-        let altUpdateKeys;
+        const altUpdateKeys = new Set<string>();
         if (rawQueryInfo.altUpdateKeys?.length > 0) {
-            altUpdateKeys = new Set<string>();
             rawQueryInfo.altUpdateKeys?.forEach(key => {
                 altUpdateKeys.add(key);
             });

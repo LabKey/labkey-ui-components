@@ -1,73 +1,57 @@
-import React from 'react';
-import { Map } from 'immutable';
+import React, { FC, memo, useMemo } from 'react';
 
 import { SampleOperation } from '../internal/components/samples/constants';
 import { buildURL } from '../internal/url/AppURL';
-import { ConfirmModal } from '../internal/components/base/ConfirmModal';
 
-interface Props {
+import { DeleteConfirmationModal, DeleteConfirmationModalProps } from './DeleteConfirmationModal';
+
+interface Props extends DeleteConfirmationModalProps {
     deleteConfirmationActionName?: string;
     isSample?: boolean;
     isShared?: boolean;
     noun: string;
-    onCancel: () => any;
-    onConfirm: () => any;
     rowId: number;
-    showDependenciesLink: boolean;
+    showDependenciesLink?: boolean;
 }
 
-export class EntityTypeDeleteConfirmModal extends React.Component<Props, any> {
-    static defaultProps = {
-        showDependenciesLink: false,
-    };
+export const EntityTypeDeleteConfirmModal: FC<Props> = memo(props => {
+    const {
+        deleteConfirmationActionName,
+        isShared,
+        isSample,
+        noun,
+        rowId,
+        showDependenciesLink = false,
+        ...rest
+    } = props;
 
-    render() {
-        const {
-            isShared,
-            isSample,
-            onConfirm,
-            onCancel,
-            showDependenciesLink,
-            rowId,
-            deleteConfirmationActionName,
-            noun,
-        } = this.props;
+    const dependencies = useMemo(() => {
+        if (!showDependenciesLink || !deleteConfirmationActionName) return 'dependencies';
 
-        let dependencies = <>dependencies</>;
-        if (showDependenciesLink && deleteConfirmationActionName) {
-            let params = Map<string, string>();
-            params = params.set('singleObjectRowId', rowId.toString());
-            if (isSample) {
-                params = params.set('sampleOperation', SampleOperation[SampleOperation.Delete]);
-            }
-            dependencies = (
-                <a href={buildURL('experiment', deleteConfirmationActionName, params.toJS())}>dependencies</a>
-            );
+        const params: Record<string, any> = { singleObjectRowId: rowId.toString() };
+
+        if (isSample) {
+            params.sampleOperation = SampleOperation[SampleOperation.Delete];
         }
 
-        return (
-            <ConfirmModal
-                title={`Permanently delete ${isShared ? 'shared ' : ''}${noun.toLowerCase()} type?`}
-                onConfirm={onConfirm}
-                onCancel={onCancel}
-                confirmVariant="danger"
-                confirmButtonText="Yes, Delete"
-                cancelButtonText="Cancel"
-            >
-                <span>
-                    The {noun.toLowerCase()} type and all of its {dependencies} will be permanently deleted.
-                    {isShared && (
-                        <>
-                            {' '}
-                            Because this is a <strong>shared</strong> {noun.toLowerCase()} type, you may be affecting
-                            other folders.
-                        </>
-                    )}
-                    <p className="top-spacing">
-                        <strong>Deletion cannot be undone.</strong> Do you want to proceed?
-                    </p>
-                </span>
-            </ConfirmModal>
-        );
-    }
-}
+        return <a href={buildURL('experiment', deleteConfirmationActionName, params)}>dependencies</a>;
+    }, [deleteConfirmationActionName, isSample, rowId, showDependenciesLink]);
+
+    return (
+        <DeleteConfirmationModal
+            {...rest}
+            cancelButtonText="Cancel"
+            confirmButtonText="Yes, Delete"
+            title={`Permanently delete ${isShared ? 'shared ' : ''}${noun.toLowerCase()} type?`}
+        >
+            The {noun.toLowerCase()} type and all of its {dependencies} will be permanently deleted.
+            {isShared && (
+                <>
+                    {' '}
+                    Because this is a <strong>shared</strong> {noun.toLowerCase()} type, you may be affecting other
+                    folders.
+                </>
+            )}
+        </DeleteConfirmationModal>
+    );
+});

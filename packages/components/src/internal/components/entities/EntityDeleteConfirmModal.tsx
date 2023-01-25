@@ -21,15 +21,15 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { Alert } from '../base/Alert';
 
-import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
+import { EntityDeleteConfirmHandler, EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
 import { getDeleteConfirmationData } from './actions';
 import { EntityDataType, OperationConfirmationData } from './models';
 
 interface Props {
     entityDataType: EntityDataType;
     getDeletionDescription?: (numToDelete: number) => React.ReactNode;
-    onCancel: () => any;
-    onConfirm: (rowsToDelete: any[], rowsToKeep: any[]) => any;
+    onCancel: () => void;
+    onConfirm: EntityDeleteConfirmHandler;
     rowIds?: string[];
     selectionKey?: string;
     useSnapshotSelection?: boolean;
@@ -76,7 +76,12 @@ export class EntityDeleteConfirmModal extends PureComponent<Props, State> {
         const { entityDataType, rowIds, selectionKey, useSnapshotSelection } = this.props;
 
         try {
-            const confirmationData = await getDeleteConfirmationData(entityDataType, rowIds, selectionKey, useSnapshotSelection);
+            const confirmationData = await getDeleteConfirmationData(
+                entityDataType,
+                rowIds,
+                selectionKey,
+                useSnapshotSelection
+            );
             if (this._mounted) {
                 this.setState({ confirmationData, isLoading: false });
             }

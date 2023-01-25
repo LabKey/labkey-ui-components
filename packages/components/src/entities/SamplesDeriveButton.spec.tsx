@@ -10,11 +10,11 @@ import { TEST_USER_EDITOR, TEST_USER_READER } from '../internal/userFixtures';
 
 import { DisableableButton } from '../internal/components/buttons/DisableableButton';
 
-import { SamplesDeriveButtonBase, SamplesDeriveButtonBaseProps } from './SamplesDeriveButtonBase';
+import { SamplesDeriveButton, SamplesDeriveButtonProps } from './SamplesDeriveButton';
 import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
 
-describe('SamplesDeriveButtonBase', () => {
-    function defaultProps(): SamplesDeriveButtonBaseProps {
+describe('SamplesDeriveButton', () => {
+    function defaultProps(): SamplesDeriveButtonProps {
         return {
             model: makeTestQueryModel(SchemaQuery.create('schema', 'query')),
             isSelectingSamples: jest.fn().mockReturnValue(true),
@@ -28,7 +28,7 @@ describe('SamplesDeriveButtonBase', () => {
     }
 
     test('default props', () => {
-        const wrapper = mountWithServerContext(<SamplesDeriveButtonBase {...defaultProps()} />, {
+        const wrapper = mountWithServerContext(<SamplesDeriveButton {...defaultProps()} />, {
             user: TEST_USER_EDITOR,
         });
         validate(wrapper);
@@ -37,7 +37,7 @@ describe('SamplesDeriveButtonBase', () => {
     });
 
     test('asSubMenu', () => {
-        const wrapper = mountWithServerContext(<SamplesDeriveButtonBase {...defaultProps()} asSubMenu />, {
+        const wrapper = mountWithServerContext(<SamplesDeriveButton {...defaultProps()} asSubMenu />, {
             user: TEST_USER_EDITOR,
         });
         validate(wrapper, true, true);
@@ -46,7 +46,7 @@ describe('SamplesDeriveButtonBase', () => {
     });
 
     test('reader', () => {
-        const wrapper = mountWithServerContext(<SamplesDeriveButtonBase {...defaultProps()} />, {
+        const wrapper = mountWithServerContext(<SamplesDeriveButton {...defaultProps()} />, {
             user: TEST_USER_READER,
         });
         validate(wrapper, false);
@@ -58,7 +58,7 @@ describe('SamplesDeriveButtonBase', () => {
         const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({
             selections: new Set(Array.from(Array(1001).keys()).map(key => key + '')),
         });
-        const wrapper = mountWithServerContext(<SamplesDeriveButtonBase {...defaultProps()} model={model} />, {
+        const wrapper = mountWithServerContext(<SamplesDeriveButton {...defaultProps()} model={model} />, {
             user: TEST_USER_EDITOR,
         });
         validate(wrapper, false, false, true);

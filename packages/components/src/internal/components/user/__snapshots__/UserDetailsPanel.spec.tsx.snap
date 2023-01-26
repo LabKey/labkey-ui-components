@@ -2,7 +2,7 @@
 
 exports[`<UserDetailsPanel/> no principal 1`] = `
 <div
-  className="panel panel-default"
+  className="user-detail-panel panel panel-default"
 >
   <div
     className="panel-heading"
@@ -21,7 +21,7 @@ exports[`<UserDetailsPanel/> no principal 1`] = `
 
 exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
 <div
-  className="panel panel-default"
+  className="user-detail-panel panel panel-default"
 >
   <div
     className="panel-heading"
@@ -130,7 +130,7 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
 
 exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allowResetPassword 1`] = `
 <div
-  className="panel panel-default"
+  className="user-detail-panel panel panel-default"
 >
   <div
     className="panel-heading"
@@ -226,7 +226,7 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
 
 exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
 <div
-  className="panel panel-default"
+  className="user-detail-panel panel panel-default"
 >
   <div
     className="panel-heading"

@@ -303,7 +303,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         }
 
         return (
-            <Panel>
+            <Panel className="user-detail-panel">
                 <Panel.Heading>{this.renderHeader()}</Panel.Heading>
                 <Panel.Body>
                     {this.renderBody()}

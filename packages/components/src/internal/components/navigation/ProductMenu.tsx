@@ -236,7 +236,8 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
     }, [appProperties.logoBadgeColorImageUrl, showFolderMenu]);
 
     const showEmptyActionUrl = useMemo(() => {
-        if (isProjectContainer(menuModel.containerPath)) // if top folder
+        if (isProjectContainer(menuModel.containerPath))
+            // if top folder
             return true;
 
         return !isProductProjectsEnabled(moduleContext); // or if subfolder where Projects are not enable

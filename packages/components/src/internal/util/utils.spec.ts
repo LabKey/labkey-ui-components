@@ -765,7 +765,7 @@ describe('getUpdatedDataFromGrid', () => {
     });
     const queryInfoWithAltPK = QueryInfo.create({
         columns: cols,
-        altUpdateKeys: new Set<strin>(['Data'])
+        altUpdateKeys: new Set<strin>(['Data']),
     });
     const originalData = fromJS({
         448: {

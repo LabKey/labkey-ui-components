@@ -188,8 +188,8 @@ interface StateProps {
     dataModel: QueryModel;
     editorModel: EditorModel;
     error: ReactNode;
-    fieldsWarningMsg: ReactNode;
     fieldsUpdateWarningMsg: ReactNode;
+    fieldsWarningMsg: ReactNode;
     file: File;
     importAliases: Record<string, string>;
     insertModel: EntityIdCreationModel;
@@ -1385,7 +1385,6 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             if (lcDisallowedUdateFields.indexOf(lcName) >= 0) {
                 noUpdateFields.push(field.name);
             }
-
         });
 
         const msg = [];
@@ -1399,7 +1398,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         }
 
         return msg;
-    };
+    }
 
     onPreviewLoad = (inferred: InferDomainResponse): any => {
         const { allowedNonDomainFields, disallowedUpdateFields, isEditMode } = this.props;
@@ -1413,14 +1412,14 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                     allowedNonDomainFields
                 );
 
-                let updateMsg : React.ReactNode[] = null;
+                let updateMsg: React.ReactNode[] = null;
                 if (isEditMode) {
                     updateMsg = EntityInsertPanelImpl.getNoUpdateFieldWarnings(inferred, disallowedUpdateFields);
                 }
 
                 this.setState({
                     fieldsWarningMsg: msg?.length > 0 ? <>{msg}</> : undefined,
-                    fieldsUpdateWarningMsg: updateMsg?.length > 0 ? <>{updateMsg}</> : undefined
+                    fieldsUpdateWarningMsg: updateMsg?.length > 0 ? <>{updateMsg}</> : undefined,
                 });
             })
             .catch(reason => {
@@ -1442,9 +1441,18 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             entityDataType,
             filePreviewFormats,
             gridInsertOnly,
-            isEditMode
+            isEditMode,
         } = this.props;
-        const { error, file, insertModel, isSubmitting, originalQueryInfo, fieldsWarningMsg, fieldsUpdateWarningMsg, isMerge } = this.state;
+        const {
+            error,
+            file,
+            insertModel,
+            isSubmitting,
+            originalQueryInfo,
+            fieldsWarningMsg,
+            fieldsUpdateWarningMsg,
+            isMerge,
+        } = this.state;
 
         if (!insertModel) {
             if (error) {
@@ -1465,12 +1473,14 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
         const showGrid = this.shouldShowGrid();
 
-        let filePreviewWarningMsg = undefined;
-        if (!!fieldsWarningMsg || (isEditMode && !isMerge && !!fieldsUpdateWarningMsg) ) {
-            filePreviewWarningMsg = (<>
-                {isEditMode && !isMerge ? fieldsUpdateWarningMsg : undefined}
-                {fieldsWarningMsg}
-            </>);
+        let filePreviewWarningMsg;
+        if (!!fieldsWarningMsg || (isEditMode && !isMerge && !!fieldsUpdateWarningMsg)) {
+            filePreviewWarningMsg = (
+                <>
+                    {isEditMode && !isMerge ? fieldsUpdateWarningMsg : undefined}
+                    {fieldsWarningMsg}
+                </>
+            );
         }
 
         return (

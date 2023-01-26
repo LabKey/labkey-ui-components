@@ -957,7 +957,7 @@ describe('getPkData', () => {
     const queryInfo = new QueryInfo(config);
     const queryInfoWithAltKey = new QueryInfo({
         ...config,
-        altUpdateKeys: new Set<strin>(['lsid'])
+        altUpdateKeys: new Set<strin>(['lsid']),
     });
 
     test('as value', () => {

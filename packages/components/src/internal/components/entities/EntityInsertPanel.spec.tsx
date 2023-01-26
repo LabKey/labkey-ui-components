@@ -291,7 +291,8 @@ describe('EntityInsertPanel.getNoUpdateFieldWarnings', () => {
                             QueryColumn.create({ name: 'dataInputs/Y', lookup }),
                         ]),
                         reservedFields: List<QueryColumn>(),
-                    }),['alsoAllowed']
+                    }),
+                    ['alsoAllowed']
                 )}
             </div>
         );

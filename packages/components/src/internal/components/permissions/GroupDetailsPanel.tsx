@@ -54,7 +54,7 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
     }, [members]);
 
     return (
-        <Panel>
+        <Panel className="group-details-panel">
             <Panel.Heading>{principal ? principal.displayName : 'Group Details'}</Panel.Heading>
             <Panel.Body>
                 {principal ? (

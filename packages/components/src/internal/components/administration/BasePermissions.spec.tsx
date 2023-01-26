@@ -18,8 +18,13 @@ import { SecurityPolicy, SecurityRole } from '../permissions/models';
 import { PermissionAssignments } from '../permissions/PermissionAssignments';
 
 import { BasePermissionsImpl, BasePermissionsImplProps } from './BasePermissions';
+import {initBrowserHistoryState} from "../../util/global";
 
 const TEST_POLICY = SecurityPolicy.create(policyJSON);
+
+beforeAll(() => {
+    initBrowserHistoryState();
+});
 
 describe('BasePermissions', () => {
     function getDefaultProps(): BasePermissionsImplProps {

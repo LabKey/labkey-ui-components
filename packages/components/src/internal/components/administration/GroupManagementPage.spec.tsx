@@ -16,6 +16,11 @@ import { Alert } from '../base/Alert';
 
 import { GroupManagementPageImpl, GroupManagementPageProps } from './GroupManagementPage';
 import { GroupAssignments } from './GroupAssignments';
+import {initBrowserHistoryState} from "../../util/global";
+
+beforeAll(() => {
+    initBrowserHistoryState();
+});
 
 describe('BasePermissions', () => {
     function getDefaultProps(): GroupManagementPageProps {

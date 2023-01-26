@@ -32,6 +32,7 @@ import { getRolesByUniqueName, processGetRolesResponse } from './actions';
 import { Principal, SecurityPolicy } from './models';
 import { PermissionAssignments, PermissionAssignmentsProps } from './PermissionAssignments';
 import { GroupDetailsPanel } from './GroupDetailsPanel';
+import {initBrowserHistoryState} from "../../util/global";
 
 const GROUP = Principal.createFromSelectRow(
     fromJS({
@@ -66,6 +67,10 @@ const PRINCIPALS_BY_ID = PRINCIPALS.reduce((map, principal) => {
 const POLICY = SecurityPolicy.updateAssignmentsData(SecurityPolicy.create(policyJSON), PRINCIPALS_BY_ID);
 const ROLES = processGetRolesResponse(rolesJSON.roles);
 const ROLES_BY_NAME = getRolesByUniqueName(ROLES);
+
+beforeAll(() => {
+    initBrowserHistoryState();
+});
 
 describe('PermissionAssignments', () => {
     function getDefaultProps(): PermissionAssignmentsProps {

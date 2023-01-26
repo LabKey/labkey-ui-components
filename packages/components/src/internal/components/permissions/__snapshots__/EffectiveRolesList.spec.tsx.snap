@@ -22,32 +22,56 @@ exports[`<EffectiveRolesList/> multiple roles 1`] = `
         <li
           className="principal-detail-li"
         >
-          Editor
+          <a
+            href="#/admin/permissions?expand=Editor"
+          >
+            Editor
+          </a>
         </li>
         <li
           className="principal-detail-li"
         >
-          Folder Administrator
+          <a
+            href="#/admin/permissions?expand=Folder%20Administrator"
+          >
+            Folder Administrator
+          </a>
         </li>
         <li
           className="principal-detail-li"
         >
-          Project Administrator
+          <a
+            href="#/admin/permissions?expand=Project%20Administrator"
+          >
+            Project Administrator
+          </a>
         </li>
         <li
           className="principal-detail-li"
         >
-          Reader
+          <a
+            href="#/admin/permissions?expand=Reader"
+          >
+            Reader
+          </a>
         </li>
         <li
           className="principal-detail-li"
         >
-          Restricted Reader
+          <a
+            href="#/admin/permissions?expand=Restricted%20Reader"
+          >
+            Restricted Reader
+          </a>
         </li>
         <li
           className="principal-detail-li"
         >
-          Submitter
+          <a
+            href="#/admin/permissions?expand=Submitter"
+          >
+            Submitter
+          </a>
         </li>
       </ul>
     </div>
@@ -79,7 +103,11 @@ exports[`<EffectiveRolesList/> single role 1`] = `
         <li
           className="principal-detail-li"
         >
-          Editor
+          <a
+            href="#/admin/permissions?expand=Editor"
+          >
+            Editor
+          </a>
         </li>
       </ul>
     </div>
@@ -109,37 +137,65 @@ exports[`<EffectiveRolesList/> with root policy 1`] = `
         <li
           className="principal-detail-li"
         >
-          Editor
+          <a
+            href="#/admin/permissions?expand=Editor"
+          >
+            Editor
+          </a>
         </li>
         <li
           className="principal-detail-li"
         >
-          Folder Administrator
+          <a
+            href="#/admin/permissions?expand=Folder%20Administrator"
+          >
+            Folder Administrator
+          </a>
         </li>
         <li
           className="principal-detail-li"
         >
-          Project Administrator
+          <a
+            href="#/admin/permissions?expand=Project%20Administrator"
+          >
+            Project Administrator
+          </a>
         </li>
         <li
           className="principal-detail-li"
         >
-          Reader
+          <a
+            href="#/admin/permissions?expand=Reader"
+          >
+            Reader
+          </a>
         </li>
         <li
           className="principal-detail-li"
         >
-          Restricted Reader
+          <a
+            href="#/admin/permissions?expand=Restricted%20Reader"
+          >
+            Restricted Reader
+          </a>
         </li>
         <li
           className="principal-detail-li"
         >
-          Submitter
+          <a
+            href="#/admin/permissions?expand=Submitter"
+          >
+            Submitter
+          </a>
         </li>
         <li
           className="principal-detail-li"
         >
-          Application Admin
+          <a
+            href="#/admin/permissions?expand=Application%20Admin"
+          >
+            Application Admin
+          </a>
         </li>
       </ul>
     </div>

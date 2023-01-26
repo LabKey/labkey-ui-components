@@ -24,7 +24,7 @@ import { blurActiveElement } from '../../util/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { useServerContext } from '../base/ServerContext';
 import { AppProperties } from '../../app/models';
-import { getCurrentAppProperties, isAppHomeFolder } from '../../app/utils';
+import { getCurrentAppProperties, isProductProjectsEnabled, isProjectContainer } from '../../app/utils';
 
 import { Alert } from '../base/Alert';
 
@@ -235,6 +235,13 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
         return showFolderMenu && appProperties.logoBadgeColorImageUrl;
     }, [appProperties.logoBadgeColorImageUrl, showFolderMenu]);
 
+    const showEmptyActionUrl = useMemo(() => {
+        if (isProjectContainer(menuModel.containerPath)) // if top folder
+            return true;
+
+        return !isProductProjectsEnabled(moduleContext); // or if subfolder where Projects are not enable
+    }, [menuModel, moduleContext]);
+
     return (
         <div className={classNames('product-menu-content', className)} onClick={onClick} ref={contentRef}>
             <div className="navbar-connector" />
@@ -266,7 +273,7 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
                                         section={getSectionModel(key)}
                                         config={menuConfig}
                                         containerPath={menuModel.containerPath}
-                                        hideEmptyUrl={!isAppHomeFolder(container, moduleContext)}
+                                        hideEmptyUrl={!showEmptyActionUrl}
                                         currentProductId={menuModel.currentProductId}
                                         dashboardImgURL={isLast && dashboardURL}
                                     />

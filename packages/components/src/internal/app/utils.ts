@@ -200,7 +200,7 @@ export function isAppHomeFolder(container?: Container, moduleContext?: ModuleCon
     const currentContainer: Partial<Container> = container ?? getServerContext().container;
     const isTopFolder = currentContainer.isProject || isProjectContainer(currentContainer.path);
     const isSubFolder = currentContainer.isFolder || isSubFolderContainer(currentContainer.path);
-    return isTopFolder || (isSubFolder && !isProductProjectsEnabled(resolveModuleContext(moduleContext)));
+    return isTopFolder || (isSubFolder && !isProductProjectsEnabled(moduleContext));
 }
 
 export function sampleManagerIsPrimaryApp(moduleContext?: ModuleContext): boolean {

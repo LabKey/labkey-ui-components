@@ -5,6 +5,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: XX January 2023
 * Handle update and clarify merge - use DIB for updateRows
     * use LSID as keys for updateRows and saveRows for samples and dataclasses
+* Issue 47152: Having a field that can be edited by both aliquots and samples after an "aliquot only" will not get populated on sample create.
+* Issue 47162: Using file import to create aliquots does not behave as expected if the column header is "Aliquoted From" and not "AliquotedFrom"
 
 ### version 2.284.0
 *Released*: 25 January 2023

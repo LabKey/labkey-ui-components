@@ -66,6 +66,7 @@ describe('EntityTypeDeleteConfirmModal', () => {
                 deleteConfirmationActionName="deleteSampleTypes"
                 onCancel={onCancelFn}
                 onConfirm={onConfirmFn}
+                showDeleteComment
             />
         );
 

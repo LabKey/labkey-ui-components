@@ -68,6 +68,7 @@ import {
     getSamplesCreatedSuccessMessage,
 } from './SampleListingPage';
 import { SampleCreatePage } from './SampleCreatePage';
+import { DeleteConfirmationModal } from './DeleteConfirmationModal';
 
 export {
     createEntityParentKey,
@@ -93,6 +94,7 @@ export {
     AssayResultsForSamplesSubNav,
     CreateSamplesSubMenu,
     CreateSamplesSubMenuBase,
+    DeleteConfirmationModal,
     EntityDeleteModal,
     EntityLineageEditMenuItem,
     EntityTypeDeleteConfirmModal,

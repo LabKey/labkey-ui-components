@@ -70,7 +70,7 @@ export class ServerNotifications extends React.Component<Props, State> {
     _onViewAll = (): void => {
         this.toggleMenu();
         this.props.onViewAll();
-    }
+    };
 
     render(): ReactNode {
         const { serverActivity, maxRows, onViewAll } = this.props;

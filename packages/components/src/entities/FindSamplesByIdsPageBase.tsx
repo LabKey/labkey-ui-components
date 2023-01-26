@@ -78,9 +78,12 @@ const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> = memo(p
         return models;
     }, [allSamplesModel, sampleGridIds, queryModels]);
 
-    const showViewMenu = useCallback(gridId => {
-        return gridId != allSamplesModel.id
-    }, [allSamplesModel]);
+    const showViewMenu = useCallback(
+        gridId => {
+            return gridId != allSamplesModel.id;
+        },
+        [allSamplesModel]
+    );
 
     return (
         <>
@@ -129,7 +132,10 @@ const FindSamplesByIdsTabbedGridPanel: FC<FindSamplesByIdsTabProps> = memo(props
                     Object.keys(sampleTypesRows).forEach(sampleType => {
                         const sampleSchemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType);
 
-                        const sampleGridId = createGridModelId(TYPE_GRID_PREFIX + allSamplesModel.queryName, sampleSchemaQuery);
+                        const sampleGridId = createGridModelId(
+                            TYPE_GRID_PREFIX + allSamplesModel.queryName,
+                            sampleSchemaQuery
+                        );
 
                         // note: changed to using Name IN clause instead of RowId IN clause so that the filter
                         // will pass through to the Sample Finder via the FindDerivativesButton to match

@@ -1,12 +1,16 @@
 import React, { FC, memo } from 'react';
 import { Col, Row } from 'react-bootstrap';
+import {AppURL} from "../../url/AppURL";
+import {User} from "../base/models/User";
 
 interface Props {
+    currentUser: User;
     groups: [{ displayValue: string; value: number }];
+    showLinks?: boolean;
 }
 
 export const GroupsList: FC<Props> = memo(props => {
-    const { groups } = props;
+    const { groups, currentUser, showLinks = true } = props;
 
     if (!groups) return null;
 
@@ -22,7 +26,17 @@ export const GroupsList: FC<Props> = memo(props => {
                         {groups.length > 0 ? (
                             groups.map(group => (
                                 <li key={group.value} className="principal-detail-li">
-                                    {group.displayValue}
+                                    {currentUser.isAdmin && showLinks ? (
+                                        <a
+                                            href={AppURL.create('admin', 'groups')
+                                                .addParam('expand', group.value)
+                                                .toHref()}
+                                        >
+                                            {group.displayValue}
+                                        </a>
+                                    ) : (
+                                        group.displayValue
+                                    )}
                                 </li>
                             ))
                         ) : (

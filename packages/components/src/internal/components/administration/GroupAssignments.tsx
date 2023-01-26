@@ -1,6 +1,5 @@
 import React, { ChangeEvent, FC, memo, useCallback, useMemo, useState } from 'react';
 import { Button, Col, Panel, Row } from 'react-bootstrap';
-
 import { List, Map } from 'immutable';
 
 import { Alert } from '../base/Alert';
@@ -13,6 +12,8 @@ import { naturalSort } from '../../../public/sort';
 
 import { Group } from './Group';
 import { GroupMembership, MemberType } from './models';
+import {getLocation} from "../../util/URL";
+import {useServerContext} from "../base/ServerContext";
 
 export interface GroupAssignmentsProps {
     addMembers: (groupId: string, principalId: number, principalName: string, principalType: string) => void;
@@ -52,10 +53,11 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         setErrorMsg,
         setIsDirty,
     } = props;
-
+    const { user } = useServerContext();
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [selectedPrincipalId, setSelectedPrincipalId] = useState<number>();
     const [newGroupName, setNewGroupName] = useState<string>('');
+    const initExpandedGroup = getLocation().query?.get('expand');
 
     const onSave = useCallback(async () => {
         setSubmitting(true);
@@ -165,11 +167,11 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                                 Create Group
                             </Button>
                         </div>
-
                         {orderedGroupMembership.map(id => (
                             <Group
                                 key={id}
                                 id={id}
+                                initExpanded={initExpandedGroup === id}
                                 name={groupMembership[id].groupName}
                                 usersAndGroups={usersAndGroups}
                                 onClickAssignment={showDetails}
@@ -201,9 +203,11 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                         />
                     ) : (
                         <UserDetailsPanel
+                            currentUser={user}
                             userId={selectedPrincipalId}
                             policy={policy}
                             rolesByUniqueName={rolesByUniqueName}
+                            showGroupListLinks={false}
                         />
                     )}
                 </Col>

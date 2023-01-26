@@ -27,6 +27,8 @@ import {SCHEMAS} from "../../schemas";
 import {flattenValuesFromRow} from "../../../public/QueryModel/QueryModel";
 import {getUserProperties} from "./actions";
 import { GroupsList } from '../permissions/GroupsList';
+import {AppURL} from "../../url/AppURL";
+import {User} from "../base/models/User";
 
 
 interface UserDetailRowProps {
@@ -70,11 +72,14 @@ export const selectRowsUserProps = function(userId: number): Promise<{ [key: str
 interface Props {
     allowDelete?: boolean;
     allowResetPassword?: boolean;
+    currentUser: User;
     isSelf?: boolean;
     onUsersStateChangeComplete?: (response: any, resetSelection: boolean) => any;
     policy?: SecurityPolicy;
     rolesByUniqueName?: Map<string, SecurityRole>;
     rootPolicy?: SecurityPolicy;
+    showGroupListLinks?: boolean;
+    showPermissionListLinks?: boolean;
     toggleDetailsModal?: () => void;
     userId: number;
 }
@@ -91,6 +96,8 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         allowDelete: true,
         allowResetPassword: true,
         onUsersStateChangeComplete: undefined,
+        showGroupListLinks: true,
+        showPermissionListLinks: true,
     };
 
     constructor(props: Props) {
@@ -170,7 +177,11 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
 
     renderButtons() {
         const { allowDelete, allowResetPassword } = this.props;
-        const isActive = caseInsensitive(this.state.userProperties, 'active');
+        const { userProperties } = this.state;
+
+        if (!userProperties) return null;
+
+        const isActive = caseInsensitive(userProperties, 'active');
 
         return (
             <>
@@ -199,6 +210,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
     }
 
     renderBody() {
+        const { showGroupListLinks, showPermissionListLinks, currentUser } = this.props;
         const { loading, userProperties } = this.state;
 
         if (loading) {
@@ -235,8 +247,8 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                     {this.renderUserProp('User ID', 'userId')}
                     {!!hasPassword && <UserDetailRow label="Has Password" value={hasPassword.toString()} />}
 
-                    <EffectiveRolesList {...this.props} />
-                    <GroupsList groups={caseInsensitive(userProperties, 'groups')} />
+                    <EffectiveRolesList {...this.props} showLinks={showPermissionListLinks} />
+                    <GroupsList groups={caseInsensitive(userProperties, 'groups')} currentUser={currentUser} showLinks={showGroupListLinks} />
                 </>
             );
         }
@@ -268,7 +280,9 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
     render() {
         const { userId, allowDelete, allowResetPassword, toggleDetailsModal, onUsersStateChangeComplete } = this.props;
         const { showDialog, userProperties } = this.state;
-        const isSelf = userId === getServerContext().user.id;
+        const { user } = getServerContext();
+        const isSelf = userId === user.id;
+        const manageUrl = AppURL.create('admin', 'users').addParam('usersView', 'all').addParam('all.UserId~eq', userId);
 
         if (toggleDetailsModal) {
             return (
@@ -277,6 +291,13 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                         <Modal.Title>{this.renderHeader()}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>{this.renderBody()}</Modal.Body>
+                    {user.isAdmin && !isSelf && (
+                        <Modal.Footer>
+                            <Button className="pull-right" href={manageUrl.toHref()}>
+                                Manage
+                            </Button>
+                        </Modal.Footer>
+                    )}
                 </Modal>
             );
         }

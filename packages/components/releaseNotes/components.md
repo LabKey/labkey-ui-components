@@ -9,6 +9,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * shows user permissions on the User Management page
   * use UserDetailsRenderer as default renderer for columns with user lookup
   * use UserLink and UserLinkList in various components that render user displayName
+  * update UserDetailsPanel so that permissions and group listing items are links to admin groups/permissions page
   * add dirty state check for user Profile page navigation
 
 ### version 2.283.2

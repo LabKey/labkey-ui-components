@@ -15,6 +15,7 @@ import { EffectiveRolesList } from './EffectiveRolesList';
 
 import { Principal, SecurityPolicy, SecurityRole } from './models';
 import { MembersList } from './MembersList';
+import {useServerContext} from "../base/ServerContext";
 
 interface Props {
     getAuditLogData: (columns: string, filterCol: string, filterVal: string | number) => Promise<string>;
@@ -23,11 +24,13 @@ interface Props {
     policy: SecurityPolicy;
     principal: Principal;
     rolesByUniqueName: Map<string, SecurityRole>;
+    showPermissionListLinks?: boolean;
 }
 
 export const GroupDetailsPanel: FC<Props> = memo(props => {
-    const { getAuditLogData, principal, members, isSiteGroup } = props;
+    const { getAuditLogData, principal, members, isSiteGroup, showPermissionListLinks = true } = props;
     const [created, setCreated] = useState<string>('');
+    const { user } = useServerContext();
 
     const loadWhenCreated = useCallback(async () => {
         try {
@@ -63,7 +66,7 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
                         <UserProperties prop={created} title="Created" />
                         {isSiteGroup && <UserProperties prop="true" title="Site Group" />}
 
-                        <EffectiveRolesList {...props} userId={principal.userId} />
+                        <EffectiveRolesList {...props} currentUser={user} userId={principal.userId} showLinks={showPermissionListLinks} />
                         <MembersList members={members} />
                     </>
                 ) : (

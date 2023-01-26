@@ -51,6 +51,7 @@ export const UserLink: FC<UserLinkProps> = props => {
             </a>
             {showDetails && (
                 <UserDetailsPanel
+                    currentUser={currentUser}
                     userId={userId}
                     toggleDetailsModal={toggleDetailsModal}
                     isSelf={!userCanReadUserDetails(currentUser) && isSelf}

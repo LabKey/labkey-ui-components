@@ -13,6 +13,7 @@ export class AuditDetailsModel extends Record({
     eventDateFormatted: undefined,
     oldData: undefined,
     newData: undefined,
+    userComment: undefined,
 }) {
     declare rowId?: number;
     declare comment?: string;
@@ -20,6 +21,7 @@ export class AuditDetailsModel extends Record({
     declare eventDateFormatted?: string;
     declare oldData?: Map<string, string>;
     declare newData?: Map<string, string>;
+    declare userComment?: string;
 
     static create(raw: any): AuditDetailsModel {
         return new AuditDetailsModel({
@@ -63,6 +65,7 @@ export class TimelineEventModel extends Record({
     metadata: undefined,
     oldData: undefined,
     newData: undefined,
+    userComment: undefined,
 }) {
     declare rowId?: number;
     declare eventType?: string; // sample, assay, workflow, inventory, etc
@@ -77,6 +80,7 @@ export class TimelineEventModel extends Record({
     declare metadata?: List<Map<string, any>>;
     declare oldData?: Map<string, string>;
     declare newData?: Map<string, string>;
+    declare userComment?: string;
 
     constructor(values?: { [key: string]: any }) {
         super(values);
@@ -102,6 +106,7 @@ export class TimelineEventModel extends Record({
                 : new Date(raw['timestamp']['value']);
         fields.entity = fromJS(raw['entity']);
         fields.entitySeparator = raw['entitySeparator'];
+        fields.userComment = raw['userComment'];
 
         if (raw.metadata) {
             const metaRows = [];
@@ -124,6 +129,7 @@ export class TimelineEventModel extends Record({
             rowId: this.rowId,
             oldData: this.oldData,
             newData: this.newData,
+            userComment: this.userComment,
         });
     }
 

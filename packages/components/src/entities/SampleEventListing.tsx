@@ -31,12 +31,12 @@ interface State {
     filterExpanded?: boolean;
     filterStartDate?: any;
     filteredEvents?: TimelineEventModel[];
+    hasDetailedEvents?: boolean;
     includeAssayEvent?: boolean;
     includeJobEvent?: boolean;
     includeSampleEvent?: boolean;
     includeStorageEvent: boolean;
     showRecentFirst?: boolean;
-    hasDetailedEvents?: boolean;
 }
 
 const defaultFilterState: State = {
@@ -522,7 +522,7 @@ export class SampleEventListing extends React.Component<Props, State> {
             return showRecentFirst ? b.eventTimestamp - a.eventTimestamp : a.eventTimestamp - b.eventTimestamp;
         });
 
-        if (!hasDetailedEvents) return <Alert bsStyle="warning">No events available for this sample.</Alert>
+        if (!hasDetailedEvents) return <Alert bsStyle="warning">No events available for this sample.</Alert>;
 
         return (
             <Row>

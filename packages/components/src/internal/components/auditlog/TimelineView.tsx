@@ -65,7 +65,10 @@ export class TimelineView extends React.Component<Props, any> {
                 onClick={() => {
                     if (event.rowId) this.selectEvent(event);
                 }}
-                className={classNames({ 'timeline-event-row': event.rowId !== 0, 'timeline-row-selected': eventSelected })}
+                className={classNames({
+                    'timeline-event-row': event.rowId !== 0,
+                    'timeline-row-selected': eventSelected,
+                })}
             >
                 {this.renderTimestampCol(event.timestamp)}
                 {this.renderIconCol(
@@ -224,8 +227,7 @@ export class TimelineView extends React.Component<Props, any> {
             >
                 <tbody>
                     {events.map(event => {
-                        if (event.rowId > 0)
-                            return this.renderRow(event);
+                        if (event.rowId > 0) return this.renderRow(event);
                     })}
                 </tbody>
             </table>

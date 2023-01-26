@@ -23,12 +23,13 @@ import { SelectInput } from '../forms/input/SelectInput';
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 import { useServerContext } from '../base/ServerContext';
 
+import { SCHEMAS } from '../../schemas';
+
 import { getAuditQueries } from './utils';
 import { getAuditDetail } from './actions';
 import { AuditDetailsModel } from './models';
 import { AuditDetails } from './AuditDetails';
 import { AuditQuery, AUDIT_EVENT_TYPE_PARAM, SAMPLE_TIMELINE_AUDIT_QUERY } from './constants';
-import { SCHEMAS } from '../../schemas';
 
 interface BodyProps {
     user: User;
@@ -223,7 +224,7 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
         const { detail } = this.state;
         if (!detail) return null;
 
-        const { eventUserId, eventDateFormatted } = detail;
+        const { eventUserId, eventDateFormatted, userComment } = detail;
 
         const rows = [];
         if (eventUserId) {
@@ -232,6 +233,10 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
 
         if (eventDateFormatted) {
             rows.push({ field: 'Date', value: eventDateFormatted });
+        }
+
+        if (userComment) {
+            rows.push({ field: 'User Comment', value: userComment });
         }
 
         return fromJS(rows);

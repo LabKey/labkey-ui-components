@@ -189,6 +189,7 @@ interface StateProps {
     editorModel: EditorModel;
     error: ReactNode;
     fieldsWarningMsg: ReactNode;
+    fieldsUpdateWarningMsg: ReactNode;
     file: File;
     importAliases: Record<string, string>;
     insertModel: EntityIdCreationModel;
@@ -239,6 +240,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             file: undefined,
             useAsync: false,
             fieldsWarningMsg: undefined,
+            fieldsUpdateWarningMsg: undefined,
             creationType: props.creationType,
             allowUserSpecifiedNames: true,
             previewName: undefined,
@@ -1172,6 +1174,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             file: files.first(),
             useAsync: asyncSize && fileSize > asyncSize,
             fieldsWarningMsg: undefined,
+            fieldsUpdateWarningMsg: undefined,
         });
     };
 
@@ -1184,6 +1187,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             file: undefined,
             useAsync: false,
             fieldsWarningMsg: undefined,
+            fieldsUpdateWarningMsg: undefined,
         });
     };
 
@@ -1303,12 +1307,10 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         inferred: InferDomainResponse,
         domainDetails: DomainDetails,
         columns: OrderedMap<string, QueryColumn>,
-        otherAllowedFields?: string[],
-        disallowedUpdateFields?: string[]
+        otherAllowedFields?: string[]
     ): React.ReactNode[] {
         const uniqueIdFields = [];
-        const unknownFields = [],
-            noUpdateFields = [];
+        const unknownFields = [];
         const { domainDesign } = domainDetails;
         let allowedFields = [],
             lcDisallowedUdateFields = [];
@@ -1318,16 +1320,9 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         if (otherAllowedFields) {
             allowedFields = allowedFields.concat(otherAllowedFields.map(field => field.toLowerCase()));
         }
-        if (disallowedUpdateFields) {
-            lcDisallowedUdateFields = disallowedUpdateFields.map(field => field.toLowerCase());
-        }
 
         inferred.fields.forEach(field => {
             const lcName = field.name.toLowerCase();
-
-            if (lcDisallowedUdateFields.indexOf(lcName) >= 0) {
-                noUpdateFields.push(field.name);
-            }
 
             if (!field.isExpInput(false) && allowedFields.indexOf(lcName) < 0) {
                 const aliasField = domainDesign.fields.find(
@@ -1350,14 +1345,6 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         });
 
         const msg = [];
-        if (noUpdateFields.length > 0) {
-            msg.push(
-                <p key="noUpdateFields">
-                    {EntityInsertPanelImpl.getWarningFieldList(noUpdateFields)}
-                    {' cannot be updated and and will be ignored.'}
-                </p>
-            );
-        }
 
         if (unknownFields.length > 0) {
             msg.push(
@@ -1382,6 +1369,38 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         return msg;
     }
 
+    static getNoUpdateFieldWarnings(
+        inferred: InferDomainResponse,
+        disallowedUpdateFields?: string[]
+    ): React.ReactNode[] {
+        const noUpdateFields = [];
+        let lcDisallowedUdateFields = [];
+        if (disallowedUpdateFields) {
+            lcDisallowedUdateFields = disallowedUpdateFields.map(field => field.toLowerCase());
+        }
+
+        inferred.fields.forEach(field => {
+            const lcName = field.name.toLowerCase();
+
+            if (lcDisallowedUdateFields.indexOf(lcName) >= 0) {
+                noUpdateFields.push(field.name);
+            }
+
+        });
+
+        const msg = [];
+        if (noUpdateFields.length > 0) {
+            msg.push(
+                <p key="noUpdateFields">
+                    {EntityInsertPanelImpl.getWarningFieldList(noUpdateFields)}
+                    {' cannot be updated and and will be ignored.'}
+                </p>
+            );
+        }
+
+        return msg;
+    };
+
     onPreviewLoad = (inferred: InferDomainResponse): any => {
         const { allowedNonDomainFields, disallowedUpdateFields, isEditMode } = this.props;
         const { insertModel, originalQueryInfo } = this.state;
@@ -1391,13 +1410,18 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                     inferred,
                     domainDetails,
                     originalQueryInfo.columns,
-                    allowedNonDomainFields,
-                    isEditMode ? disallowedUpdateFields : undefined
+                    allowedNonDomainFields
                 );
 
-                if (msg.length > 0) {
-                    this.setState({ fieldsWarningMsg: <>{msg}</> });
+                let updateMsg : React.ReactNode[] = null;
+                if (isEditMode) {
+                    updateMsg = EntityInsertPanelImpl.getNoUpdateFieldWarnings(inferred, disallowedUpdateFields);
                 }
+
+                this.setState({
+                    fieldsWarningMsg: msg?.length > 0 ? <>{msg}</> : undefined,
+                    fieldsUpdateWarningMsg: updateMsg?.length > 0 ? <>{updateMsg}</> : undefined
+                });
             })
             .catch(reason => {
                 console.error('Unable to retrieve domain ', reason);
@@ -1418,8 +1442,9 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             entityDataType,
             filePreviewFormats,
             gridInsertOnly,
+            isEditMode
         } = this.props;
-        const { error, file, insertModel, isSubmitting, originalQueryInfo } = this.state;
+        const { error, file, insertModel, isSubmitting, originalQueryInfo, fieldsWarningMsg, fieldsUpdateWarningMsg, isMerge } = this.state;
 
         if (!insertModel) {
             if (error) {
@@ -1439,6 +1464,14 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 : undefined;
 
         const showGrid = this.shouldShowGrid();
+
+        let filePreviewWarningMsg = undefined;
+        if (!!fieldsWarningMsg || (isEditMode && !isMerge && !!fieldsUpdateWarningMsg) ) {
+            filePreviewWarningMsg = (<>
+                {isEditMode && !isMerge ? fieldsUpdateWarningMsg : undefined}
+                {fieldsWarningMsg}
+            </>);
+        }
 
         return (
             <>
@@ -1482,7 +1515,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                                 previewGridProps={{
                                                     previewCount: 3,
                                                     onPreviewLoad: this.onPreviewLoad,
-                                                    warningMsg: this.state.fieldsWarningMsg,
+                                                    warningMsg: filePreviewWarningMsg,
                                                     acceptedFormats: filePreviewFormats,
                                                 }}
                                                 onFileChange={this.handleFileChange}

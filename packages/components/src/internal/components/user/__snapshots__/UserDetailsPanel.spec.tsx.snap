@@ -232,7 +232,12 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
     className="panel-heading"
   >
     <span>
-      cnathe
+      ReaderDisplayName
+    </span>
+    <span
+      className="margin-left status-pill active"
+    >
+      Active
     </span>
   </div>
   <div
@@ -244,12 +249,40 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
       <div
         className="principal-detail-label col-xs-4"
       >
+        Name
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        test1 test2
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
         Email
       </div>
       <div
         className="principal-detail-value col-xs-8"
       >
-        cnathe@labkey.com
+        reader_email_address_might_be_long@localhost.test
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Description
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        This is my user description of what I do for the company. Isn't it really interesting?
       </div>
     </div>
     <hr
@@ -266,7 +299,7 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
       <div
         className="principal-detail-value col-xs-8"
       >
-        2020-01-06 15:30
+        2019-11-18 09:15
       </div>
     </div>
     <div
@@ -280,7 +313,7 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
       <div
         className="principal-detail-value col-xs-8"
       >
-        2017-05-08 08:43
+        2017-10-27 11:34
       </div>
     </div>
     <hr
@@ -297,7 +330,21 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
       <div
         className="principal-detail-value col-xs-8"
       >
-        1004
+        4973
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Has Password
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        true
       </div>
     </div>
     <hr
@@ -320,32 +367,81 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
           <li
             className="principal-detail-li"
           >
-            Editor
+            <a
+              href="#/admin/permissions?expand=Editor"
+            >
+              Editor
+            </a>
           </li>
           <li
             className="principal-detail-li"
           >
-            Folder Administrator
+            <a
+              href="#/admin/permissions?expand=Folder%20Administrator"
+            >
+              Folder Administrator
+            </a>
           </li>
           <li
             className="principal-detail-li"
           >
-            Project Administrator
+            <a
+              href="#/admin/permissions?expand=Project%20Administrator"
+            >
+              Project Administrator
+            </a>
           </li>
           <li
             className="principal-detail-li"
           >
-            Reader
+            <a
+              href="#/admin/permissions?expand=Reader"
+            >
+              Reader
+            </a>
           </li>
           <li
             className="principal-detail-li"
           >
-            Restricted Reader
+            <a
+              href="#/admin/permissions?expand=Restricted%20Reader"
+            >
+              Restricted Reader
+            </a>
           </li>
           <li
             className="principal-detail-li"
           >
-            Submitter
+            <a
+              href="#/admin/permissions?expand=Submitter"
+            >
+              Submitter
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <hr
+      className="principal-hr"
+    />
+    <div
+      className="row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Groups
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        <ul
+          className="principal-detail-ul"
+        >
+          <li
+            className="principal-detail-li"
+          >
+            None
           </li>
         </ul>
       </div>

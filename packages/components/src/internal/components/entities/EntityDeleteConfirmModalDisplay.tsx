@@ -14,23 +14,30 @@
  * limitations under the License.
  */
 import React, { PureComponent } from 'react';
+import { Utils } from '@labkey/api';
 
 import { isELNEnabled } from '../../app/utils';
 
 import { capitalizeFirstChar } from '../../util/utils';
 import { HelpLink } from '../../util/helpLinks';
-import { ConfirmModal } from '../base/ConfirmModal';
+
+import { DeleteConfirmationModal } from '../../../entities/DeleteConfirmationModal';
 
 import { EntityDataType, OperationConfirmationData } from './models';
-import { Utils } from '@labkey/api';
+
+export type EntityDeleteConfirmHandler = (rowsToDelete: any[], rowsToKeep: any[], userComment: string) => void;
 
 interface Props {
     confirmationData: OperationConfirmationData;
     entityDataType: EntityDataType;
     getDeletionDescription?: (numToDelete: number) => React.ReactNode;
-    onCancel: () => any;
-    onConfirm: (rowsToDelete: any[], rowsToKeep: any[]) => any;
+    onCancel: () => void;
+    onConfirm: EntityDeleteConfirmHandler;
     verb?: string;
+}
+
+interface State {
+    userComment: string;
 }
 
 /**
@@ -39,7 +46,7 @@ interface Props {
  * within DeleteConfirmationModal, the jest tests do not render the component fully enough to test
  * different confirmation data scenarios.
  */
-export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
+export class EntityDeleteConfirmModalDisplay extends PureComponent<Props, State> {
     static defaultProps = {
         verb: 'deleted',
     };
@@ -53,8 +60,7 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
         if (!confirmationData) return undefined;
 
         let _dependencyText;
-        if (Utils.isFunction(dependencyText))
-            _dependencyText = (dependencyText as Function)();
+        if (Utils.isFunction(dependencyText)) _dependencyText = (dependencyText as Function)();
         else {
             _dependencyText = isELNEnabled()
                 ? (dependencyText ? dependencyText + ' or' : '') + ' references in one or more active notebooks'
@@ -116,19 +122,14 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
                 );
         }
         const message = (
-            <span>
+            <>
                 {text}
                 {numCannotDelete > 0 && deleteHelpLinkTopic && (
                     <>
                         &nbsp;(<HelpLink topic={deleteHelpLinkTopic}>more info</HelpLink>)
                     </>
                 )}
-                {numCanDelete > 0 && (
-                    <p className="top-spacing">
-                        <strong>Deletion cannot be undone.</strong> Do you want to proceed?
-                    </p>
-                )}
-            </span>
+            </>
         );
 
         return {
@@ -143,24 +144,29 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
         };
     }
 
-    onConfirm = (): void => {
-        this.props.onConfirm?.(this.props.confirmationData.allowed, this.props.confirmationData.notAllowed);
+    onConfirm = (userComment: string): void => {
+        this.props.onConfirm?.(
+            this.props.confirmationData.allowed,
+            this.props.confirmationData.notAllowed,
+            userComment
+        );
     };
 
     render() {
         const { onCancel } = this.props;
-        const confirmProps = this.getConfirmationProperties();
+        const { canDelete, message, title } = this.getConfirmationProperties();
+
         return (
-            <ConfirmModal
-                title={confirmProps.title}
-                onConfirm={confirmProps.canDelete ? this.onConfirm : undefined}
+            <DeleteConfirmationModal
+                cancelButtonText={canDelete ? 'Cancel' : 'Dismiss'}
+                confirmButtonText={canDelete ? 'Yes, Delete' : undefined}
                 onCancel={onCancel}
-                confirmVariant="danger"
-                confirmButtonText={confirmProps.canDelete ? 'Yes, Delete' : undefined}
-                cancelButtonText={confirmProps.canDelete ? 'Cancel' : 'Dismiss'}
+                onConfirm={canDelete ? this.onConfirm : undefined}
+                showDeleteComment={canDelete}
+                title={title}
             >
-                {confirmProps.message}
-            </ConfirmModal>
+                {message}
+            </DeleteConfirmationModal>
         );
     }
 }

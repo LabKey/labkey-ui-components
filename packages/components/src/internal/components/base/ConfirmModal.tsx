@@ -17,7 +17,7 @@ import React, { ReactNode } from 'react';
 import { Button, Modal, Sizes } from 'react-bootstrap';
 import classNames from 'classnames';
 
-interface Props {
+export interface ConfirmModalProps {
     backdrop?: string;
     cancelButtonText?: string;
     confirmButtonText?: string;
@@ -30,7 +30,7 @@ interface Props {
     title?: string;
 }
 
-export class ConfirmModal extends React.PureComponent<Props> {
+export class ConfirmModal extends React.PureComponent<ConfirmModalProps> {
     static defaultProps = {
         show: true,
         title: 'Confirm',

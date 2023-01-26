@@ -75,6 +75,6 @@ function fetchDataClassProperties(rowId: number, containerPath?: string): Promis
     });
 }
 
-export function deleteDataClass(rowId: number, containerPath?: string): Promise<any> {
-    return deleteEntityType('deleteDataClass', rowId, containerPath);
+export function deleteDataClass(rowId: number, containerPath?: string, auditUserComment?: string): Promise<any> {
+    return deleteEntityType('deleteDataClass', rowId, containerPath, auditUserComment);
 }

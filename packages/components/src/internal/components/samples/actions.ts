@@ -133,8 +133,8 @@ export function getSampleTypeDetails(
     });
 }
 
-export function deleteSampleSet(rowId: number, containerPath?: string): Promise<any> {
-    return deleteEntityType('deleteSampleTypes', rowId, containerPath);
+export function deleteSampleSet(rowId: number, containerPath?: string, auditUserComment?: string): Promise<any> {
+    return deleteEntityType('deleteSampleTypes', rowId, containerPath, auditUserComment);
 }
 
 /**

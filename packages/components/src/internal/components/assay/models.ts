@@ -15,9 +15,10 @@
  */
 import { Draft, immerable, produce } from 'immer';
 
-import { AssayWizardModel } from './AssayWizardModel';
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 import { LoadingState } from '../../../public/LoadingState';
+
+import { AssayWizardModel } from './AssayWizardModel';
 
 export interface AssayPropertiesPanelProps {
     model: AssayWizardModel;

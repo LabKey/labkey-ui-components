@@ -9,6 +9,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Hide 'Create Sample Type' button from SampleTypeListingPage
   * Hide create url link from Sample/Assay EmptyAlert
 
+### version 2.284.0
+*Released*: 25 January 2023
+* Enable adding user audit comments when deleting Samples, Sources, and Assays & the associated entity types
+
 ### version 2.283.2
 *Released*: 23 January 2023
 * Fix issue with react keys in Navigation

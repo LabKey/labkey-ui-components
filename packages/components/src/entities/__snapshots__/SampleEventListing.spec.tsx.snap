@@ -457,6 +457,7 @@ exports[`<SampleEventListing/> Filter by event type and date 1`] = `
                 ],
                 "oldData": undefined,
                 "newData": undefined,
+                "userComment": undefined,
               },
               Immutable.Record {
                 "rowId": 547,
@@ -504,6 +505,7 @@ exports[`<SampleEventListing/> Filter by event type and date 1`] = `
                 ],
                 "oldData": undefined,
                 "newData": undefined,
+                "userComment": undefined,
               },
               Immutable.Record {
                 "rowId": 548,
@@ -551,6 +553,7 @@ exports[`<SampleEventListing/> Filter by event type and date 1`] = `
                 ],
                 "oldData": undefined,
                 "newData": undefined,
+                "userComment": undefined,
               },
               Immutable.Record {
                 "rowId": 550,
@@ -598,6 +601,7 @@ exports[`<SampleEventListing/> Filter by event type and date 1`] = `
                 ],
                 "oldData": undefined,
                 "newData": undefined,
+                "userComment": undefined,
               },
             ]
           }
@@ -763,6 +767,7 @@ exports[`<SampleEventListing/> Sort by latest 1`] = `
                 ],
                 "oldData": undefined,
                 "newData": undefined,
+                "userComment": undefined,
               },
               Immutable.Record {
                 "rowId": 1549,
@@ -827,6 +832,7 @@ exports[`<SampleEventListing/> Sort by latest 1`] = `
                 ],
                 "oldData": undefined,
                 "newData": undefined,
+                "userComment": undefined,
               },
               Immutable.Record {
                 "rowId": 548,
@@ -874,6 +880,7 @@ exports[`<SampleEventListing/> Sort by latest 1`] = `
                 ],
                 "oldData": undefined,
                 "newData": undefined,
+                "userComment": undefined,
               },
               Immutable.Record {
                 "rowId": 547,
@@ -921,6 +928,7 @@ exports[`<SampleEventListing/> Sort by latest 1`] = `
                 ],
                 "oldData": undefined,
                 "newData": undefined,
+                "userComment": undefined,
               },
               Immutable.Record {
                 "rowId": 546,
@@ -968,6 +976,7 @@ exports[`<SampleEventListing/> Sort by latest 1`] = `
                 ],
                 "oldData": undefined,
                 "newData": undefined,
+                "userComment": undefined,
               },
               Immutable.Record {
                 "rowId": 1548,
@@ -1018,6 +1027,7 @@ exports[`<SampleEventListing/> Sort by latest 1`] = `
                 ],
                 "oldData": undefined,
                 "newData": undefined,
+                "userComment": undefined,
               },
               Immutable.Record {
                 "rowId": 462023,
@@ -1046,6 +1056,7 @@ exports[`<SampleEventListing/> Sort by latest 1`] = `
                   "description": "desc",
                   "modified": "2020-04-05T21:57:36.915-07:00",
                 },
+                "userComment": undefined,
               },
               Immutable.Record {
                 "rowId": 544,
@@ -1093,6 +1104,7 @@ exports[`<SampleEventListing/> Sort by latest 1`] = `
                 ],
                 "oldData": undefined,
                 "newData": undefined,
+                "userComment": undefined,
               },
               Immutable.Record {
                 "rowId": 462022,
@@ -1129,6 +1141,7 @@ exports[`<SampleEventListing/> Sort by latest 1`] = `
                   "Description": "des",
                   "CreatedBy": "1005",
                 },
+                "userComment": undefined,
               },
             ]
           }
@@ -3619,6 +3632,7 @@ exports[`<SampleEventListing/> With selected job that is completed and with filt
                 ],
                 "oldData": undefined,
                 "newData": undefined,
+                "userComment": undefined,
               },
               Immutable.Record {
                 "rowId": 546,
@@ -3666,6 +3680,7 @@ exports[`<SampleEventListing/> With selected job that is completed and with filt
                 ],
                 "oldData": undefined,
                 "newData": undefined,
+                "userComment": undefined,
               },
               Immutable.Record {
                 "rowId": 547,
@@ -3713,6 +3728,7 @@ exports[`<SampleEventListing/> With selected job that is completed and with filt
                 ],
                 "oldData": undefined,
                 "newData": undefined,
+                "userComment": undefined,
               },
               Immutable.Record {
                 "rowId": 548,
@@ -3760,6 +3776,7 @@ exports[`<SampleEventListing/> With selected job that is completed and with filt
                 ],
                 "oldData": undefined,
                 "newData": undefined,
+                "userComment": undefined,
               },
               Immutable.Record {
                 "rowId": 1549,
@@ -3824,6 +3841,7 @@ exports[`<SampleEventListing/> With selected job that is completed and with filt
                 ],
                 "oldData": undefined,
                 "newData": undefined,
+                "userComment": undefined,
               },
               Immutable.Record {
                 "rowId": 550,
@@ -3871,6 +3889,7 @@ exports[`<SampleEventListing/> With selected job that is completed and with filt
                 ],
                 "oldData": undefined,
                 "newData": undefined,
+                "userComment": undefined,
               },
             ]
           }
@@ -3924,6 +3943,7 @@ exports[`<SampleEventListing/> With selected job that is completed and with filt
                   ],
                   "oldData": undefined,
                   "newData": undefined,
+                  "userComment": undefined,
                 },
                 "isCompleted": true,
                 "lastEvent": Immutable.Record {
@@ -3972,6 +3992,7 @@ exports[`<SampleEventListing/> With selected job that is completed and with filt
                   ],
                   "oldData": undefined,
                   "newData": undefined,
+                  "userComment": undefined,
                 },
               },
             ]
@@ -4023,6 +4044,7 @@ exports[`<SampleEventListing/> With selected job that is completed and with filt
               ],
               "oldData": undefined,
               "newData": undefined,
+              "userComment": undefined,
             }
           }
           showRecentFirst={false}

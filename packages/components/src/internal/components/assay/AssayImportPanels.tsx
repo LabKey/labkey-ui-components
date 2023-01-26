@@ -300,7 +300,10 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 const { column, domain } = sampleColumnData;
                 const samples = await this.props.loadSelectedSamples(location, column);
 
-                const statusConfirmationData = await getSampleOperationConfirmationData(SampleOperation.AddAssayData, samples.keySeq().toArray());
+                const statusConfirmationData = await getSampleOperationConfirmationData(
+                    SampleOperation.AddAssayData,
+                    samples.keySeq().toArray()
+                );
 
                 // Only one sample can be added at batch or run level, so ignore selected samples if multiple are selected.
                 const validSamples = samples.filter((_, key) => statusConfirmationData.isIdAllowed(key)).toOrderedMap();
@@ -702,14 +705,8 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     />
                 )}
                 <Alert bsStyle="warning">{sampleStatusWarning}</Alert>
-                <BatchPropertiesPanel
-                    model={model}
-                    onChange={this.handleBatchChange}
-                />
-                <RunPropertiesPanel
-                    model={model}
-                    onChange={this.handleRunChange}
-                />
+                <BatchPropertiesPanel model={model} onChange={this.handleBatchChange} />
+                <RunPropertiesPanel model={model} onChange={this.handleRunChange} />
                 <RunDataPanel
                     acceptedPreviewFileFormats={acceptedPreviewFileFormats}
                     allowBulkRemove={allowBulkRemove}

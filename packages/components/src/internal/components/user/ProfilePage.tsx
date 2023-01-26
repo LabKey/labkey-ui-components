@@ -27,16 +27,20 @@ import { UserProfile } from './UserProfile';
 import { ChangePasswordModal } from './ChangePasswordModal';
 
 import { useUserProperties } from './UserProvider';
+import {InjectedRouteLeaveProps, withRouteLeave} from "../../util/RouteLeave";
 
-interface Props {
+interface OwnProps {
     goBack: (n?: number) => any;
     setReloadRequired: () => any;
     updateUserDisplayName: (displayName: string) => any;
 }
 
+type Props = OwnProps & InjectedRouteLeaveProps;
+
 const TITLE = 'User Profile';
 
-export const ProfilePage: FC<Props> = props => {
+const ProfilePageImpl: FC<Props> = props => {
+    const { goBack, setReloadRequired, updateUserDisplayName, setIsDirty, getIsDirty } = props;
     const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
     const { moduleContext, user } = useServerContext();
     const userProperties = useUserProperties(user);
@@ -47,7 +51,7 @@ export const ProfilePage: FC<Props> = props => {
     }
 
     const navigate = (result: {}, shouldReload: boolean): void => {
-        const { goBack, setReloadRequired, updateUserDisplayName } = props;
+        setIsDirty(false);
         const successMsg = 'Successfully updated your user profile.';
 
         if (shouldReload) {
@@ -97,7 +101,14 @@ export const ProfilePage: FC<Props> = props => {
             />
             <Notifications />
             <Section>
-                <UserProfile userProperties={userProperties} user={user} onCancel={onCancel} onSuccess={navigate} />
+                <UserProfile
+                    userProperties={userProperties}
+                    user={user}
+                    onCancel={onCancel}
+                    onSuccess={navigate}
+                    setIsDirty={setIsDirty}
+                    getIsDirty={getIsDirty}
+                />
             </Section>
             {allowChangePassword && showChangePassword && (
                 <ChangePasswordModal user={user} onHide={toggleChangePassword} onSuccess={onChangePassword} />
@@ -105,3 +116,5 @@ export const ProfilePage: FC<Props> = props => {
         </Page>
     );
 };
+
+export const ProfilePage = withRouteLeave(ProfilePageImpl);

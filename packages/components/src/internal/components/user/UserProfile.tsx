@@ -49,8 +49,10 @@ interface State {
 }
 
 interface Props {
+    getIsDirty: () => boolean;
     onCancel: () => void;
     onSuccess: (result: {}, shouldReload: boolean) => void;
+    setIsDirty: (isDirty: boolean) => void;
     user: User;
     userProperties: Record<string, any>;
 }
@@ -110,11 +112,17 @@ export class UserProfile extends PureComponent<Props, State> {
     }
 
     onAvatarFileChange = (files: {}): void => {
+        this.onFormChange();
         this.setState(() => ({ avatar: files[USER_AVATAR_FILE] }));
     };
 
     removeCurrentAvatar = (): void => {
+        this.onFormChange();
         this.setState({ removeCurrentAvatar: true });
+    };
+
+    onFormChange = (): void => {
+        this.props.setIsDirty(true);
     };
 
     submitUserDetails = (data: OrderedMap<string, any>): Promise<any> => {
@@ -191,6 +199,7 @@ export class UserProfile extends PureComponent<Props, State> {
                     includeCountField={false}
                     submitText="Save"
                     isSubmittedText="Saving..."
+                    onFormChange={this.onFormChange}
                     onSubmit={this.submitUserDetails}
                     onSuccess={this.onSuccess}
                     onHide={onCancel}
@@ -203,13 +212,14 @@ export class UserProfile extends PureComponent<Props, State> {
     }
 
     render() {
+        const { userProperties } = this.props;
         const { hasError, queryInfo } = this.state;
 
         return (
             <>
                 {hasError ? (
                     <Alert>{getActionErrorMessage('There was a problem loading your user profile', 'profile')}</Alert>
-                ) : !queryInfo ? (
+                ) : !queryInfo || !userProperties ? (
                     <LoadingSpinner />
                 ) : (
                     this.renderForm()

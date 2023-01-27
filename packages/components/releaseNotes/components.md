@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.285.1
+*Released*: 27 January 2023
+- `waitForLifeCycle` now supports `ShallowWrapper` components (and can be used with `shallow()`)
+- `EntityFieldFilterModal` update unit tests to match expected behavior and remove test-specific workarounds from component.
+- Wrap `CreateSamplesSubMenuBaseImpl` with `withRouterProps` to support in-app navigation.
+- Rename `SamplesDeriveButtonBase` to `SamplesDeriveButton`.
+- Remove redundant prop declarations for `CreateSamplesSubMenuBaseProps` and `CreateSamplesSubMenuProps` and `SamplesDeriveButtonProps`
+
 ### version 2.285.0
 *Released*: 27 January 2023
 * Add `help` prop to `SelectInput` and render without colliding with error message rendering.

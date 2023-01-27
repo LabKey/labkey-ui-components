@@ -19,6 +19,8 @@ import { ASSAYS_KEY, BOXES_KEY, SAMPLES_KEY, USER_KEY, WORKFLOW_KEY } from '../.
 import { naturalSortByProperty } from '../../../public/sort';
 import { AppURL } from '../../url/AppURL';
 
+import { ModuleContext } from '../base/ServerContext';
+
 import {
     AuditQuery,
     ASSAY_AUDIT_QUERY,
@@ -30,7 +32,6 @@ import {
     SOURCE_AUDIT_QUERY,
     WORKFLOW_AUDIT_QUERY,
 } from './constants';
-import { ModuleContext } from '../base/ServerContext';
 
 export function getAuditQueries(ctx: ModuleContext): AuditQuery[] {
     const queries = [...COMMON_AUDIT_QUERIES];

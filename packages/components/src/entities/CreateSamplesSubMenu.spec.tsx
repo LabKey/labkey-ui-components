@@ -12,42 +12,39 @@ import { SCHEMAS } from '../internal/schemas';
 import { QueryInfo } from '../public/QueryInfo';
 import { mountWithAppServerContext, waitForLifecycle } from '../internal/testHelpers';
 
-import { CreateSamplesSubMenuBase } from './CreateSamplesSubMenuBase';
+import { createMockWithRouterProps } from '../internal/mockUtils';
+
+import { CreateSamplesSubMenuBase, CreateSamplesSubMenuBaseProps } from './CreateSamplesSubMenuBase';
 import { CreateSamplesSubMenu, MAX_PARENTS_PER_SAMPLE } from './CreateSamplesSubMenu';
 import { SampleCreationTypeModal } from './SampleCreationTypeModal';
 
-const sampleOptions = [
-    {
-        key: 'Blood',
-        name: 'Blood',
-        disabled: false,
-        href: '#/samples/new?target=Blood',
-    },
-    {
-        key: 'MixtureBatches',
-        name: 'MixtureBatches',
-        disabled: false,
-        href: '#/samples/new?target=MixtureBatches',
-    },
-];
-
-const getOptions = (useOnClick: boolean, disabledMsg: string, itemActionFn: (key: string) => any) => {
-    return List<MenuOption>(sampleOptions);
-};
-
-const DEFAULT_PROPS = {
-    navigate: () => {},
-    maxParentPerSample: 10,
-    getOptions,
-    parentType: 'samples',
-    isSelectingSamples: (schemaQuery: SchemaQuery) => {
-        return schemaQuery?.schemaName.toLowerCase() === 'samples';
-    },
-    loadSampleTypes: jest.fn(async () => [
-        new QueryInfo({ insertUrl: '#/b/new', name: 'b', queryLabel: 'B' }),
-        new QueryInfo({ insertUrl: '#/a/new', name: 'a', queryLabel: 'A' }),
-    ]),
-};
+function defaultBaseProps(): CreateSamplesSubMenuBaseProps {
+    return {
+        getOptions: jest.fn().mockReturnValue(
+            List<MenuOption>([
+                {
+                    key: 'Blood',
+                    name: 'Blood',
+                    disabled: false,
+                    href: '#/samples/new?target=Blood',
+                },
+                {
+                    key: 'MixtureBatches',
+                    name: 'MixtureBatches',
+                    disabled: false,
+                    href: '#/samples/new?target=MixtureBatches',
+                },
+            ])
+        ),
+        maxParentPerSample: 10,
+        isSelectingSamples: (schemaQuery: SchemaQuery) => {
+            return schemaQuery?.schemaName.toLowerCase() === 'samples';
+        },
+        parentType: 'samples',
+        sampleWizardURL: jest.fn(),
+        ...createMockWithRouterProps(jest.fn),
+    };
+}
 
 describe('CreateSamplesSubMenuBase', () => {
     function validate(
@@ -69,20 +66,20 @@ describe('CreateSamplesSubMenuBase', () => {
     }
 
     test('default props', () => {
-        const wrapper = mount(<CreateSamplesSubMenuBase {...DEFAULT_PROPS} />);
+        const wrapper = mount(<CreateSamplesSubMenuBase {...defaultBaseProps()} />);
         const options = validate(wrapper, 2);
 
         expect(options.get(0).name).toBe('Blood');
         expect(options.get(0).disabled).toBe(false);
-        expect(options.get(0).disabledMsg).toBe(undefined);
+        expect(options.get(0).disabledMsg).toBeUndefined();
         expect(options.get(0).href).toBe('#/samples/new?target=Blood');
-        expect(options.get(0).onClick).toBe(undefined);
+        expect(options.get(0).onClick).toBeUndefined();
         wrapper.unmount();
     });
 
     test('SubMenu props', () => {
         const wrapper = mount(
-            <CreateSamplesSubMenuBase {...DEFAULT_PROPS} menuText="Test1" menuCurrentChoice="MixtureBatches" />
+            <CreateSamplesSubMenuBase {...defaultBaseProps()} menuText="Test1" menuCurrentChoice="MixtureBatches" />
         );
         validate(wrapper, 2, 'Test1', 'MixtureBatches');
         wrapper.unmount();
@@ -90,6 +87,18 @@ describe('CreateSamplesSubMenuBase', () => {
 });
 
 describe('CreateSamplesSubMenu', () => {
+    function defaultProps() {
+        return {
+            ...defaultBaseProps(),
+            loadSampleTypes: jest
+                .fn()
+                .mockResolvedValue([
+                    new QueryInfo({ insertUrl: '#/b/new', name: 'b', queryLabel: 'B' }),
+                    new QueryInfo({ insertUrl: '#/a/new', name: 'a', queryLabel: 'A' }),
+                ]),
+        };
+    }
+
     function validate(
         wrapper: ReactWrapper,
         optionCount: number,
@@ -109,21 +118,21 @@ describe('CreateSamplesSubMenu', () => {
     }
 
     test('default props', async () => {
-        const wrapper = mountWithAppServerContext(<CreateSamplesSubMenu {...DEFAULT_PROPS} />);
+        const wrapper = mountWithAppServerContext(<CreateSamplesSubMenu {...defaultProps()} />);
         await waitForLifecycle(wrapper);
         const options = validate(wrapper, 2);
         expect(options.get(0).name).toBe('A');
         expect(options.get(0).disabled).toBe(false);
-        expect(options.get(0).disabledMsg).toBe(undefined);
+        expect(options.get(0).disabledMsg).toBeUndefined();
         expect(options.get(0).href).toBe('#/samples/new?target=a');
-        expect(options.get(0).onClick).toBe(undefined);
+        expect(options.get(0).onClick).toBeUndefined();
         wrapper.unmount();
     });
 
     test('without sampleQueryInfos', async () => {
         const loadSampleTypesEmpty = jest.fn(async () => []);
         const wrapper = mountWithAppServerContext(
-            <CreateSamplesSubMenu {...DEFAULT_PROPS} loadSampleTypes={loadSampleTypesEmpty} />
+            <CreateSamplesSubMenu {...defaultProps()} loadSampleTypes={loadSampleTypesEmpty} />
         );
         await waitForLifecycle(wrapper);
         validate(wrapper, 1);
@@ -131,7 +140,7 @@ describe('CreateSamplesSubMenu', () => {
     });
 
     test('menuText', async () => {
-        const wrapper = mountWithAppServerContext(<CreateSamplesSubMenu {...DEFAULT_PROPS} />);
+        const wrapper = mountWithAppServerContext(<CreateSamplesSubMenu {...defaultProps()} />);
         await waitForLifecycle(wrapper);
         validate(wrapper, 2);
         expect(wrapper.find(SubMenu).prop('text')).toBe('Create Samples');
@@ -143,7 +152,7 @@ describe('CreateSamplesSubMenu', () => {
     test('current sample type', async () => {
         const wrapper = mountWithAppServerContext(
             <CreateSamplesSubMenu
-                {...DEFAULT_PROPS}
+                {...defaultProps()}
                 selectedQueryInfo={
                     new QueryInfo({
                         schemaName: 'samples',
@@ -159,7 +168,7 @@ describe('CreateSamplesSubMenu', () => {
     });
 
     test('item sorting by queryLabel', async () => {
-        const wrapper = mountWithAppServerContext(<CreateSamplesSubMenu {...DEFAULT_PROPS} />);
+        const wrapper = mountWithAppServerContext(<CreateSamplesSubMenu {...defaultProps()} />);
         await waitForLifecycle(wrapper);
         const options = validate(wrapper, 2);
         expect(options.get(0).name).toBe('A');
@@ -168,10 +177,10 @@ describe('CreateSamplesSubMenu', () => {
     });
 
     test('useOnClick for parentKey', async () => {
-        const wrapper = mountWithAppServerContext(<CreateSamplesSubMenu {...DEFAULT_PROPS} parentKey="123" />);
+        const wrapper = mountWithAppServerContext(<CreateSamplesSubMenu {...defaultProps()} parentKey="123" />);
         await waitForLifecycle(wrapper);
         const options = validate(wrapper, 2);
-        expect(options.get(0).href).toBe(undefined);
+        expect(options.get(0).href).toBeUndefined();
         expect(options.get(0).onClick).toBeDefined();
         wrapper.unmount();
     });
@@ -179,11 +188,11 @@ describe('CreateSamplesSubMenu', () => {
     test('useOnClick for parentQueryModel with selection', async () => {
         const model = makeTestQueryModel(SchemaQuery.create('samples', 'Test')).mutate({ selections: new Set('1') });
         const wrapper = mountWithAppServerContext(
-            <CreateSamplesSubMenu {...DEFAULT_PROPS} parentQueryModel={model} isSelectingSamples={() => true} />
+            <CreateSamplesSubMenu {...defaultProps()} parentQueryModel={model} isSelectingSamples={() => true} />
         );
         await waitForLifecycle(wrapper);
         const options = validate(wrapper, 2);
-        expect(options.get(0).href).toBe(undefined);
+        expect(options.get(0).href).toBeUndefined();
         expect(options.get(0).onClick).toBeDefined();
         wrapper.unmount();
     });
@@ -192,7 +201,7 @@ describe('CreateSamplesSubMenu', () => {
         const model = makeTestQueryModel(SCHEMAS.SAMPLE_SETS.SAMPLES).mutate({ selections: new Set() });
         const wrapper = mountWithAppServerContext(
             <CreateSamplesSubMenu
-                {...DEFAULT_PROPS}
+                {...defaultProps()}
                 selectedQueryInfo={new QueryInfo({ schemaName: 'samples', isMedia: true })}
                 parentQueryModel={model}
             />
@@ -207,11 +216,13 @@ describe('CreateSamplesSubMenu', () => {
 
     test('use href for parentQueryModel with non sample or source schema', async () => {
         const model = makeTestQueryModel(SchemaQuery.create('other', 'Test')).mutate({ selections: new Set('1') });
-        const wrapper = mountWithAppServerContext(<CreateSamplesSubMenu {...DEFAULT_PROPS} parentQueryModel={model} />);
+        const wrapper = mountWithAppServerContext(
+            <CreateSamplesSubMenu {...defaultProps()} parentQueryModel={model} />
+        );
         await waitForLifecycle(wrapper);
         const options = validate(wrapper, 2);
         expect(options.get(0).href).toBe('#/samples/new?target=a&selectionKey=model');
-        expect(options.get(0).onClick).toBe(undefined);
+        expect(options.get(0).onClick).toBeUndefined();
         wrapper.unmount();
     });
 
@@ -223,7 +234,7 @@ describe('CreateSamplesSubMenu', () => {
         const model = makeTestQueryModel(SchemaQuery.create('samples', 'Test')).mutate({ selections });
         const wrapper = mountWithAppServerContext(
             <CreateSamplesSubMenu
-                {...DEFAULT_PROPS}
+                {...defaultProps()}
                 parentQueryModel={model}
                 selectedType={SampleCreationType.PooledSamples}
             />
@@ -232,21 +243,21 @@ describe('CreateSamplesSubMenu', () => {
         const options = validate(wrapper, 2);
         expect(options.get(0).disabled).toBe(true);
         expect(options.get(0).disabledMsg).toBeDefined();
-        expect(options.get(0).href).toBe(undefined);
-        expect(options.get(0).onClick).toBe(undefined);
+        expect(options.get(0).href).toBeUndefined();
+        expect(options.get(0).onClick).toBeUndefined();
         wrapper.unmount();
     });
 
     test('subMenuText', () => {
         const wrapper = mountWithAppServerContext(
-            <CreateSamplesSubMenu {...DEFAULT_PROPS} subMenuText="subMenuText" />
+            <CreateSamplesSubMenu {...defaultProps()} subMenuText="subMenuText" />
         );
         const options = validate(wrapper, 1, null);
         expect(options.get(0).name).toBe('subMenuText');
         expect(options.get(0).disabled).toBe(false);
-        expect(options.get(0).disabledMsg).toBe(undefined);
+        expect(options.get(0).disabledMsg).toBeUndefined();
         expect(options.get(0).href).toBe('#/samples/new');
-        expect(options.get(0).onClick).toBe(undefined);
+        expect(options.get(0).onClick).toBeUndefined();
         wrapper.unmount();
     });
 });

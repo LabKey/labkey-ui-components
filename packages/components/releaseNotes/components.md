@@ -9,6 +9,21 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Hide 'Create Sample Type' button from SampleTypeListingPage
   * Hide create url link from Sample/Assay EmptyAlert
 
+### version 2.285.1
+*Released*: 27 January 2023
+- `waitForLifeCycle` now supports `ShallowWrapper` components (and can be used with `shallow()`)
+- `EntityFieldFilterModal` update unit tests to match expected behavior and remove test-specific workarounds from component.
+- Wrap `CreateSamplesSubMenuBaseImpl` with `withRouterProps` to support in-app navigation.
+- Rename `SamplesDeriveButtonBase` to `SamplesDeriveButton`.
+- Remove redundant prop declarations for `CreateSamplesSubMenuBaseProps` and `CreateSamplesSubMenuProps` and `SamplesDeriveButtonProps`
+
+### version 2.285.0
+*Released*: 27 January 2023
+* Add `help` prop to `SelectInput` and render without colliding with error message rendering.
+* Add `REGISTRY_AUDIT_QUERY` events to be displayed in only in LKB.
+* Update `getAuditQueries()` to require a `ModuleContext` parameter.
+* Issue 45729: Inform user that commas are not supported for values in the alias field
+
 ### version 2.284.0
 *Released*: 25 January 2023
 * Enable adding user audit comments when deleting Samples, Sources, and Assays & the associated entity types

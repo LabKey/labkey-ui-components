@@ -50,7 +50,7 @@ export interface EditableGridPanelForUpdateWithLineageProps
     getIsDirty?: () => boolean;
     getParentTypeWarning?: () => ReactNode;
     getUpdateColumns?: (tabId?: number) => List<QueryColumn>;
-    idField: string;
+    idField?: string;
     includedTabs: UpdateGridTab[];
     loaders: IEditableGridLoader[];
     onCancel: () => void;
@@ -354,3 +354,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
         </>
     );
 });
+
+EditableGridPanelForUpdateWithLineage.defaultProps = {
+    idField: 'RowId',
+};

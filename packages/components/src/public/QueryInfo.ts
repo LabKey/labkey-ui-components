@@ -20,6 +20,7 @@ export enum QueryInfoStatus {
 }
 
 export class QueryInfo extends Record({
+    altUpdateKeys: undefined,
     // canEdit: false,
     // canEditSharedViews: false,
     columns: OrderedMap<string, QueryColumn>(),
@@ -65,6 +66,7 @@ export class QueryInfo extends Record({
     plural: undefined, // defaults to value of queryLabel
 }) {
     private declare appEditableTable: boolean; // use isAppEditable()
+    declare altUpdateKeys: Set<string>;
     // declare canEdit: boolean;
     // declare canEditSharedViews: boolean;
     declare columns: OrderedMap<string, QueryColumn>;
@@ -136,6 +138,13 @@ export class QueryInfo extends Record({
             columns = columns.set(rawColumn.fieldKey.toLowerCase(), QueryColumn.create(rawColumn));
         });
 
+        const altUpdateKeys = new Set<string>();
+        if (queryInfoJson.altUpdateKeys?.length > 0) {
+            queryInfoJson.altUpdateKeys?.forEach(key => {
+                altUpdateKeys.add(key);
+            });
+        }
+
         let views = Map<string, ViewInfo>();
         if (includeViews) {
             queryInfoJson.views.forEach(view => {
@@ -146,6 +155,7 @@ export class QueryInfo extends Record({
 
         return QueryInfo.create(
             Object.assign({}, queryInfoJson, {
+                altUpdateKeys,
                 columns,
                 schemaQuery,
                 views,

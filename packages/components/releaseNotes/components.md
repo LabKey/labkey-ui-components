@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.286.0
+*Released*: 27 January 2023
+* Handle update and clarify merge - use DIB for updateRows
+    * use LSID as keys for updateRows and saveRows for samples and dataclasses
+* Issue 47152: Having a field that can be edited by both aliquots and samples after an "aliquot only" will not get populated on sample create.
+* Issue 47162: Using file import to create aliquots does not behave as expected if the column header is "Aliquoted From" and not "AliquotedFrom"
+
 ### version 2.285.1
 *Released*: 27 January 2023
 - `waitForLifeCycle` now supports `ShallowWrapper` components (and can be used with `shallow()`)

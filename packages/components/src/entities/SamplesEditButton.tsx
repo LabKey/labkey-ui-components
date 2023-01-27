@@ -2,7 +2,7 @@ import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 import { MenuItem } from 'react-bootstrap';
 import { PermissionTypes } from '@labkey/api';
 
-import { EntityDataType } from '../internal/components/entities/models';
+import { CrossFolderSelectionResult, EntityDataType } from '../internal/components/entities/models';
 
 import { RequiresModelAndActions } from '../public/QueryModel/withQueryModels';
 
@@ -54,8 +54,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
         currentProductId,
         targetProductId,
     } = props;
-    const [crossFolderSelectionResult, setCrossFolderSelectionResult] = useState(undefined);
-
+    const [crossFolderSelectionResult, setCrossFolderSelectionResult] = useState<CrossFolderSelectionResult>();
     const { user, moduleContext } = useServerContext();
 
     const handleMenuClick = useCallback(
@@ -78,11 +77,11 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
 
     const onToggleEditWithGridUpdate = useCallback(() => {
         handleMenuClick(toggleEditWithGridUpdate, 'Cannot Edit Samples');
-    }, [toggleEditWithGridUpdate]);
+    }, [handleMenuClick, toggleEditWithGridUpdate]);
 
     const onShowBulkUpdate = useCallback(() => {
         handleMenuClick(showBulkUpdate, 'Cannot Edit Samples');
-    }, [showBulkUpdate]);
+    }, [handleMenuClick, showBulkUpdate]);
 
     const dismissCrossFolderError = useCallback(() => {
         setCrossFolderSelectionResult(undefined);
@@ -163,18 +162,16 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
                         {user.canUpdate && parentEntityDataTypes?.length > 0 && <MenuItem divider />}
                         {!combineParentTypes &&
                             user.canUpdate &&
-                            parentEntityDataTypes.map(parentEntityDataType => {
-                                return (
-                                    <EntityLineageEditMenuItem
-                                        key={parentEntityDataType.nounSingular}
-                                        childEntityDataType={SampleTypeDataType}
-                                        parentEntityDataTypes={[parentEntityDataType]}
-                                        queryModel={model}
-                                        onSuccess={afterSampleActionComplete}
-                                        handleClick={handleMenuClick}
-                                    />
-                                );
-                            })}
+                            parentEntityDataTypes.map(parentEntityDataType => (
+                                <EntityLineageEditMenuItem
+                                    key={parentEntityDataType.nounSingular}
+                                    childEntityDataType={SampleTypeDataType}
+                                    parentEntityDataTypes={[parentEntityDataType]}
+                                    queryModel={model}
+                                    onSuccess={afterSampleActionComplete}
+                                    handleClick={handleMenuClick}
+                                />
+                            ))}
                         {combineParentTypes && user.canUpdate && (
                             <EntityLineageEditMenuItem
                                 childEntityDataType={SampleTypeDataType}

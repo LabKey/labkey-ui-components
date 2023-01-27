@@ -3,7 +3,8 @@ import { ModuleContext } from '../base/ServerContext';
 
 import { getAppProductIds, getPrimaryAppProperties } from '../../app/utils';
 
-import { ProductMenuModel } from './model';
+import { MenuSectionModel, ProductMenuModel } from './model';
+import { getUserMenuSection } from './actions';
 
 export interface NavigationAPIWrapper {
     initMenuModel: (
@@ -12,6 +13,11 @@ export interface NavigationAPIWrapper {
         containerId: string,
         containerPath?: string
     ) => Promise<ProductMenuModel>;
+    loadUserMenu: (
+        appProperties: AppProperties,
+        moduleContext: ModuleContext,
+        containerPath: string
+    ) => Promise<MenuSectionModel>;
 }
 
 export class ServerNavigationAPIWrapper implements NavigationAPIWrapper {
@@ -26,7 +32,6 @@ export class ServerNavigationAPIWrapper implements NavigationAPIWrapper {
             containerId,
             containerPath,
             currentProductId: appProperties?.productId ?? primaryProductId,
-            userMenuProductId: primaryProductId,
             productIds: getAppProductIds(primaryProductId),
         });
 
@@ -36,6 +41,19 @@ export class ServerNavigationAPIWrapper implements NavigationAPIWrapper {
         } catch (e) {
             console.error('Problem retrieving product menu data.', e);
             return menuModel.setError('Error in retrieving product menu data. Please contact your site administrator.');
+        }
+    };
+
+    loadUserMenu = async (
+        appProperties: AppProperties,
+        moduleContext: ModuleContext,
+        containerPath: string,
+    ): Promise<MenuSectionModel> => {
+        const primaryProductId = getPrimaryAppProperties(moduleContext).productId;
+        try {
+            return await getUserMenuSection(appProperties?.productId ?? primaryProductId, containerPath);
+        } catch (e) {
+            return undefined;
         }
     };
 }
@@ -49,6 +67,7 @@ export function getNavigationTestAPIWrapper(
 ): NavigationAPIWrapper {
     return {
         initMenuModel: mockFn(),
+        loadUserMenu: mockFn(),
         ...overrides,
     };
 }

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Get product menu sections separately from user menu since they are no longer displayed together
+
 ### version 2.285.1
 *Released*: 27 January 2023
 - `waitForLifeCycle` now supports `ShallowWrapper` components (and can be used with `shallow()`)

@@ -715,21 +715,57 @@ describe('getUpdatedData', () => {
             Alias: [],
         });
     });
+
+    test('with additionalPkCols', () => {
+        const updatedData = getUpdatedData(
+            originalData,
+            {
+                Value: 'val',
+                And$SAgain: 'again',
+                Other: 'other3',
+            },
+            List<string>(['RowId']),
+            ['Data']
+        );
+        expect(updatedData).toHaveLength(3);
+        expect(updatedData[0]).toStrictEqual({
+            RowId: 445,
+            Other: 'other3',
+            Data: 'data1',
+        });
+        expect(updatedData[1]).toStrictEqual({
+            RowId: 447,
+            Value: 'val',
+            Other: 'other3',
+            Data: 'data1',
+        });
+        expect(updatedData[2]).toStrictEqual({
+            RowId: 448,
+            Value: 'val',
+            Other: 'other3',
+            Data: 'data1',
+        });
+    });
 });
 
 describe('getUpdatedDataFromGrid', () => {
+    const cols = Map<string, QueryColumn>({
+        rowid: new QueryColumn({ name: 'RowId', rangeURI: INTEGER_TYPE.rangeURI }),
+        value: new QueryColumn({ name: 'Value', rangeURI: INTEGER_TYPE.rangeURI }),
+        data: new QueryColumn({ name: 'Data', rangeURI: TEXT_TYPE.rangeURI }),
+        andagain: new QueryColumn({ name: 'AndAgain', rangeURI: TEXT_TYPE.rangeURI }),
+        name: new QueryColumn({ name: 'Name', rangeURI: TEXT_TYPE.rangeURI }),
+        other: new QueryColumn({ name: 'Other', rangeURI: TEXT_TYPE.rangeURI }),
+        bool: new QueryColumn({ name: 'Bool', rangeURI: BOOLEAN_TYPE.rangeURI }),
+        int: new QueryColumn({ name: 'Int', rangeURI: INTEGER_TYPE.rangeURI }),
+        date: new QueryColumn({ name: 'Date', rangeURI: DATE_TYPE.rangeURI }),
+    });
     const queryInfo = QueryInfo.create({
-        columns: Map<string, QueryColumn>({
-            rowid: new QueryColumn({ name: 'RowId', rangeURI: INTEGER_TYPE.rangeURI }),
-            value: new QueryColumn({ name: 'Value', rangeURI: INTEGER_TYPE.rangeURI }),
-            data: new QueryColumn({ name: 'Data', rangeURI: TEXT_TYPE.rangeURI }),
-            andagain: new QueryColumn({ name: 'AndAgain', rangeURI: TEXT_TYPE.rangeURI }),
-            name: new QueryColumn({ name: 'Name', rangeURI: TEXT_TYPE.rangeURI }),
-            other: new QueryColumn({ name: 'Other', rangeURI: TEXT_TYPE.rangeURI }),
-            bool: new QueryColumn({ name: 'Bool', rangeURI: BOOLEAN_TYPE.rangeURI }),
-            int: new QueryColumn({ name: 'Int', rangeURI: INTEGER_TYPE.rangeURI }),
-            date: new QueryColumn({ name: 'Date', rangeURI: DATE_TYPE.rangeURI }),
-        }),
+        columns: cols,
+    });
+    const queryInfoWithAltPK = QueryInfo.create({
+        columns: cols,
+        altUpdateKeys: new Set<strin>(['Data']),
     });
     const originalData = fromJS({
         448: {
@@ -1039,6 +1075,31 @@ describe('getUpdatedDataFromGrid', () => {
         expect(updatedData).toHaveLength(1);
         expect(updatedData[0]).toStrictEqual({
             'New Field': 'new value',
+            Bool2: false,
+            Int2: 22,
+            RowId: '448',
+        });
+    });
+
+    test('with altUpdateKeys', () => {
+        const updatedData = getUpdatedDataFromGrid(
+            originalData,
+            [
+                Map<string, any>({
+                    RowId: '448',
+                    Data: 'data1',
+                    'New Field': 'new value',
+                    Bool2: false,
+                    Int2: 22,
+                }),
+            ],
+            'RowId',
+            queryInfoWithAltPK
+        );
+        expect(updatedData).toHaveLength(1);
+        expect(updatedData[0]).toStrictEqual({
+            'New Field': 'new value',
+            Data: 'data1',
             Bool2: false,
             Int2: 22,
             RowId: '448',

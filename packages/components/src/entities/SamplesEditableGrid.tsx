@@ -77,7 +77,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     private _hasError: boolean;
 
     static defaultProps = {
-        samplesGridRequiredColumns: ['description', 'AliquotedFromLSID'],
+        samplesGridRequiredColumns: ['description', 'AliquotedFromLSID', 'lsid'],
         api: getDefaultAPIWrapper(),
     };
 
@@ -546,7 +546,6 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                     updateAllTabRows={this.updateAllTabRows}
                     onCancel={onGridEditCancel}
                     onComplete={this.onGridEditComplete}
-                    idField="RowId"
                     singularNoun={this.getSelectedSamplesNoun()}
                     pluralNoun={this.getSelectedSamplesNoun() + 's'}
                     readOnlyColumns={this.getReadOnlyColumns()}

@@ -273,11 +273,15 @@ describe('EntityInsertPanel.getInferredFieldWarnings', () => {
         expect(wrapper.text()).toHaveLength(0);
         wrapper.unmount();
     });
+});
 
-    test('with other allowed fields and disallowedUpdateFields', () => {
+describe('EntityInsertPanel.getNoUpdateFieldWarnings', () => {
+    const lookup = { containerPath: '/Look', keyColumn: 'Name', displayColumn: 'Name', query: 'LookHere' };
+
+    test('with disallowedUpdateFields', () => {
         const wrapper = mount(
             <div>
-                {EntityInsertPanelImpl.getInferredFieldWarnings(
+                {EntityInsertPanelImpl.getNoUpdateFieldWarnings(
                     new InferDomainResponse({
                         data: List<any>(),
                         fields: List<QueryColumn>([
@@ -288,9 +292,6 @@ describe('EntityInsertPanel.getInferredFieldWarnings', () => {
                         ]),
                         reservedFields: List<QueryColumn>(),
                     }),
-                    domainDetails,
-                    baseColumns,
-                    ['otherAllowed', 'alsoAllowed'],
                     ['alsoAllowed']
                 )}
             </div>

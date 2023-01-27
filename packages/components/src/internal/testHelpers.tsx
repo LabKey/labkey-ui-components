@@ -2,7 +2,7 @@ import React, { FC, ReactElement, useMemo } from 'react';
 import { act } from 'react-dom/test-utils';
 import { Map } from 'immutable';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { mount, MountRendererProps, ReactWrapper } from 'enzyme';
+import { mount, MountRendererProps, ReactWrapper, ShallowWrapper } from 'enzyme';
 import { LabKey, Query } from '@labkey/api';
 
 import { RowsResponse, bindColumnRenderers } from '../public/QueryModel/QueryModelLoader';
@@ -252,10 +252,10 @@ export const sleep = (ms = 0): Promise<void> => {
  *      await waitForLifecycle(wrapper);
  *      // Items have been loaded and rendered
  *      expect(wrapper.find('.item').length).toEqual(4);
- * @param wrapper: enzyme ReactWrapper
+ * @param wrapper: enzyme ReactWrapper or ShallowWrapper
  * @param ms: the amount of time (in ms) to sleep
  */
-export const waitForLifecycle = (wrapper: ReactWrapper, ms?: number): Promise<undefined> => {
+export const waitForLifecycle = (wrapper: ReactWrapper | ShallowWrapper, ms?: number): Promise<undefined> => {
     // Wrap in react-dom/utils act so we don't get errors in our test logs
     return act(async () => {
         await sleep(ms);

@@ -23,8 +23,8 @@ export const UserLink: FC<UserLinkProps> = props => {
         (async () => {
             try {
                 if (!!userId && userDisplayValue === undefined) {
-                    const targetUser2 = await selectRowsUserProps(userId);
-                    setTargetUserDisplayValue(caseInsensitive(targetUser2, 'DisplayName'));
+                    const targetUser = await selectRowsUserProps(userId);
+                    setTargetUserDisplayValue(caseInsensitive(targetUser, 'DisplayName'));
                 } else {
                     setTargetUserDisplayValue(userDisplayValue);
                 }

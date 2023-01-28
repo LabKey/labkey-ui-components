@@ -62,11 +62,8 @@ import { SampleAssaysPage } from './SampleAssaysPage';
 import { SampleLineagePage } from './SampleLineagePage';
 import { SampleAliquotsPage } from './SampleAliquotsPage';
 import { SampleJobsPage } from './SampleJobsPage';
-import {
-    SampleListingPage,
-    getSamplesImportSuccessMessage,
-    getSamplesCreatedSuccessMessage,
-} from './SampleListingPage';
+import { SamplesCreatedSuccessMessage } from './SamplesCreatedSuccessMessage';
+import { SampleListingPage, getSamplesImportSuccessMessage } from './SampleListingPage';
 import { SampleCreatePage } from './SampleCreatePage';
 import { DeleteConfirmationModal } from './DeleteConfirmationModal';
 
@@ -81,7 +78,7 @@ export {
     getSampleDeleteMessage,
     getSampleTypeTemplateUrl,
     getSampleTypes,
-    getSamplesCreatedSuccessMessage,
+    SamplesCreatedSuccessMessage,
     getSamplesImportSuccessMessage,
     isFindByIdsSchema,
     loadSampleTypes,

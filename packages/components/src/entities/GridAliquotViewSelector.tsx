@@ -19,20 +19,22 @@ import { Filter } from '@labkey/api';
 
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { Actions } from '../public/QueryModel/withQueryModels';
-import { SampleAliquotViewSelector } from './SampleAliquotViewSelector';
+
 import { ALIQUOT_FILTER_MODE, IS_ALIQUOT_COL } from '../internal/components/samples/constants';
 import { isSampleAliquotSelectorEnabled } from '../internal/app/utils';
 
+import { SampleAliquotViewSelector } from './SampleAliquotViewSelector';
+
 interface Props {
     actions?: Actions;
+    initAliquotMode?: ALIQUOT_FILTER_MODE;
     queryModel?: QueryModel;
     updateFilter?: (
         filter: Filter.IFilter,
         filterColumnToRemove?: string,
         newModel?: ALIQUOT_FILTER_MODE,
         queryModel?: QueryModel
-    ) => void;
-    initAliquotMode?: ALIQUOT_FILTER_MODE; // allow to set aliquot filter from a init value
+    ) => void; // allow to set aliquot filter from a init value
 }
 
 interface State {

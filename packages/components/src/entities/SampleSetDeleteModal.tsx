@@ -4,10 +4,11 @@ import { deleteErrorMessage, deleteSuccessMessage } from '../internal/util/messa
 import { useNotificationsContext } from '../internal/components/notifications/NotificationsContext';
 import { SHARED_CONTAINER_PATH } from '../internal/constants';
 
-import { EntityTypeDeleteConfirmModal } from './EntityTypeDeleteConfirmModal';
 import { Progress } from '../internal/components/base/Progress';
 
 import { deleteSampleSet } from '../internal/components/samples/actions';
+
+import { EntityTypeDeleteConfirmModal } from './EntityTypeDeleteConfirmModal';
 
 interface Props {
     afterDelete?: (success: boolean) => void;
@@ -24,22 +25,25 @@ export const SampleSetDeleteModal: FC<Props> = props => {
     const [showProgress, setShowProgress] = useState<boolean>();
     const isShared = containerPath === SHARED_CONTAINER_PATH;
 
-    const onConfirm = useCallback(async () => {
-        beforeDelete?.();
-        setShowProgress(true);
+    const onConfirm = useCallback(
+        async (auditUserComment: string) => {
+            beforeDelete?.();
+            setShowProgress(true);
 
-        try {
-            await deleteSampleSet(rowId, containerPath);
-            afterDelete?.(true);
-            createNotification(deleteSuccessMessage('sample type'));
-        } catch (error) {
-            afterDelete?.(false);
-            createNotification({
-                alertClass: 'danger',
-                message: deleteErrorMessage('sample type'),
-            });
-        }
-    }, [afterDelete, beforeDelete, containerPath, createNotification, rowId]);
+            try {
+                await deleteSampleSet(rowId, containerPath, auditUserComment);
+                afterDelete?.(true);
+                createNotification(deleteSuccessMessage('sample type'));
+            } catch (error) {
+                afterDelete?.(false);
+                createNotification({
+                    alertClass: 'danger',
+                    message: deleteErrorMessage('sample type'),
+                });
+            }
+        },
+        [afterDelete, beforeDelete, containerPath, createNotification, rowId]
+    );
 
     return (
         <>
@@ -51,6 +55,7 @@ export const SampleSetDeleteModal: FC<Props> = props => {
                     onConfirm={onConfirm}
                     onCancel={onCancel}
                     isShared={isShared}
+                    showDeleteComment
                 />
             )}
             <Progress

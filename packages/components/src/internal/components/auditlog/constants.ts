@@ -71,4 +71,6 @@ export const NOTEBOOK_REVIEW_AUDIT_QUERY: AuditQuery = {
     label: 'Notebook Review Events',
 };
 
+export const REGISTRY_AUDIT_QUERY: AuditQuery = { value: 'RegistryEvent', label: 'Registry Events' };
+
 export const AUDIT_EVENT_TYPE_PARAM = 'eventType';

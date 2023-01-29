@@ -1,15 +1,10 @@
-import React, { FC, memo, useEffect, useMemo, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { List } from 'immutable';
 
-import { SchemaQuery } from '../public/SchemaQuery';
-
 import { AppURL } from '../internal/url/AppURL';
-import { QueryModel } from '../public/QueryModel/QueryModel';
 
 import { MenuOption } from '../internal/components/menus/SubMenu';
 import { getMenuItemForSectionKey } from '../internal/components/buttons/utils';
-
-import { SampleCreationType } from '../internal/components/samples/models';
 
 import { DisableableMenuItem } from '../internal/components/samples/DisableableMenuItem';
 
@@ -22,33 +17,30 @@ import { useServerContext } from '../internal/components/base/ServerContext';
 
 import { loadSampleTypes } from './actions';
 import { getSampleWizardURL } from './utils';
-import { CreateSamplesSubMenuBase } from './CreateSamplesSubMenuBase';
+import { CreateSamplesSubMenuBase, CreateSamplesSubMenuBaseProps } from './CreateSamplesSubMenuBase';
 
-interface Props {
-    allowPooledSamples?: boolean;
-    currentProductId?: string;
+export interface CreateSamplesSubMenuProps
+    extends Omit<
+        CreateSamplesSubMenuBaseProps,
+        | 'getOptions'
+        | 'inlineItemsCount'
+        | 'maxParentPerSample'
+        | 'sampleWizardURL'
+        | 'selectionNoun'
+        | 'selectionNounPlural'
+    > {
     disabled?: boolean;
     getWizardUrl?: (targetSampleType?: string, parent?: string) => AppURL; // for media
     id?: string;
-    inlineItemsCount?: number;
-    isSelectingSamples?: (schemaQuery: SchemaQuery) => boolean;
     loadSampleTypes?: (includeMedia: boolean) => Promise<QueryInfo[]>;
     mediaOptions?: string[];
-    menuCurrentChoice?: string;
-    menuText?: string;
-    navigate: (url: string | AppURL) => void;
-    parentKey?: string;
-    parentQueryModel?: QueryModel;
-    parentType?: string;
     selectedQueryInfo?: QueryInfo;
-    selectedType?: SampleCreationType;
     subMenuText?: string;
-    targetProductId?: string;
 }
 
 export const MAX_PARENTS_PER_SAMPLE = 100;
 
-export const CreateSamplesSubMenu: FC<Props> = memo(props => {
+export const CreateSamplesSubMenu: FC<CreateSamplesSubMenuProps> = memo(props => {
     const {
         menuCurrentChoice,
         getWizardUrl,
@@ -58,9 +50,6 @@ export const CreateSamplesSubMenu: FC<Props> = memo(props => {
         mediaOptions,
         menuText,
         disabled,
-        isSelectingSamples,
-        currentProductId,
-        targetProductId,
         selectedQueryInfo,
     } = props;
     const itemKey = parentQueryModel?.queryInfo?.name;
@@ -92,33 +81,32 @@ export const CreateSamplesSubMenu: FC<Props> = memo(props => {
         }
     }, [loadSampleTypes, moduleContext, subMenuText, selectedQueryInfo]);
 
-    const getOptions = (
-        useOnClick: boolean,
-        disabledMsg: string,
-        itemActionFn: (key: string) => any
-    ): List<MenuOption> => {
-        if (subMenuText) {
-            return List.of(
-                getMenuItemForSectionKey(itemKey, subMenuText, undefined, useOnClick, itemActionFn, disabledMsg)
-            );
-        }
-        const qiOptions =
-            sampleQueryInfos?.map(queryInfo => ({
-                key: queryInfo.name,
-                name: subMenuText ?? queryInfo.queryLabel,
-                disabled: disabledMsg !== undefined,
-                disabledMsg,
-                href: !useOnClick ? itemActionFn?.(queryInfo.name)?.toHref?.() : undefined,
-                onClick: useOnClick && !disabledMsg ? itemActionFn?.bind(this, queryInfo.name) : undefined,
-            })) ?? [];
-        const options = List(qiOptions);
+    const getOptions = useCallback(
+        (useOnClick: boolean, disabledMsg: string, itemActionFn: (key: string) => any): List<MenuOption> => {
+            if (subMenuText) {
+                return List.of(
+                    getMenuItemForSectionKey(itemKey, subMenuText, undefined, useOnClick, itemActionFn, disabledMsg)
+                );
+            }
+            const qiOptions =
+                sampleQueryInfos?.map(queryInfo => ({
+                    key: queryInfo.name,
+                    name: subMenuText ?? queryInfo.queryLabel,
+                    disabled: disabledMsg !== undefined,
+                    disabledMsg,
+                    href: !useOnClick ? itemActionFn?.(queryInfo.name)?.toHref?.() : undefined,
+                    onClick: useOnClick && !disabledMsg ? itemActionFn?.bind(this, queryInfo.name) : undefined,
+                })) ?? [];
+            const options = List(qiOptions);
 
-        if (options?.size === 0) {
-            return List.of({ name: 'No sample types defined', disabled: true } as MenuOption);
-        }
+            if (options?.size === 0) {
+                return List.of({ name: 'No sample types defined', disabled: true } as MenuOption);
+            }
 
-        return options;
-    };
+            return options;
+        },
+        [itemKey, sampleQueryInfos, subMenuText]
+    );
 
     if (disabled) {
         return <DisableableMenuItem operationPermitted={false}>{menuText}</DisableableMenuItem>;
@@ -144,10 +132,7 @@ export const CreateSamplesSubMenu: FC<Props> = memo(props => {
             menuCurrentChoice={itemKey ?? menuCurrentChoice ?? selectedQueryInfo?.schemaQuery?.queryName}
             maxParentPerSample={MAX_PARENTS_PER_SAMPLE}
             sampleWizardURL={getWizardUrl ?? getSampleWizardURL}
-            isSelectingSamples={isSelectingSamples}
             inlineItemsCount={0}
-            currentProductId={currentProductId}
-            targetProductId={targetProductId}
             selectionNoun={selectionNoun}
             selectionNounPlural={selectionNounPlural}
         />

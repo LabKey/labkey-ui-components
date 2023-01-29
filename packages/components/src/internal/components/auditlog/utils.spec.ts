@@ -16,53 +16,47 @@ import {
 import { getAuditQueries, getEventDataValueDisplay, getTimelineEntityUrl } from './utils';
 import {
     ASSAY_AUDIT_QUERY,
+    INVENTORY_AUDIT_QUERY,
     NOTEBOOK_AUDIT_QUERY,
     NOTEBOOK_REVIEW_AUDIT_QUERY,
+    REGISTRY_AUDIT_QUERY,
     SOURCE_AUDIT_QUERY,
-    WORKFLOW_AUDIT_QUERY
+    WORKFLOW_AUDIT_QUERY,
 } from './constants';
 
 describe('getAuditQueries', () => {
     test('LKS starter', () => {
-        LABKEY.moduleContext = {
-            ...TEST_LKS_STARTER_MODULE_CONTEXT,
-        };
-        const auditQueries = getAuditQueries();
+        const auditQueries = getAuditQueries(TEST_LKS_STARTER_MODULE_CONTEXT);
         expect(auditQueries.length).toBe(12);
-        expect(auditQueries.findIndex(entry => entry == ASSAY_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
-        expect(auditQueries.findIndex(entry => entry.value === 'inventoryauditevent')).toBe(10);
-        expect(auditQueries.findIndex(entry => entry == WORKFLOW_AUDIT_QUERY)).toBe(-1);
-        expect(auditQueries.findIndex(entry => entry == SOURCE_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
+        expect(auditQueries.findIndex(entry => entry === ASSAY_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
+        expect(auditQueries.findIndex(entry => entry === INVENTORY_AUDIT_QUERY)).toBe(10);
+        expect(auditQueries.findIndex(entry => entry === WORKFLOW_AUDIT_QUERY)).toBe(-1);
+        expect(auditQueries.findIndex(entry => entry === SOURCE_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
     });
 
     test('LKSM starter', () => {
-        LABKEY.moduleContext = {
-            ...TEST_LKSM_STARTER_MODULE_CONTEXT,
-        };
-        const auditQueries = getAuditQueries();
+        const auditQueries = getAuditQueries(TEST_LKSM_STARTER_MODULE_CONTEXT);
         expect(auditQueries.length).toBe(11);
-        expect(auditQueries.findIndex(entry => entry.value === 'inventoryauditevent')).toBe(9);
-        expect(auditQueries.findIndex(entry => entry == ASSAY_AUDIT_QUERY)).toBe(-1);
-        expect(auditQueries.findIndex(entry => entry == WORKFLOW_AUDIT_QUERY)).toBe(-1);
-        expect(auditQueries.findIndex(entry => entry == SOURCE_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
+        expect(auditQueries.findIndex(entry => entry === INVENTORY_AUDIT_QUERY)).toBe(9);
+        expect(auditQueries.findIndex(entry => entry === ASSAY_AUDIT_QUERY)).toBe(-1);
+        expect(auditQueries.findIndex(entry => entry === WORKFLOW_AUDIT_QUERY)).toBe(-1);
+        expect(auditQueries.findIndex(entry => entry === SOURCE_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
     });
 
     test('LKSM professional', () => {
-        LABKEY.moduleContext = {
-            ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
-        };
-        const auditQueries = getAuditQueries();
+        const auditQueries = getAuditQueries(TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT);
         expect(auditQueries.length).toBe(15);
-        expect(auditQueries.findIndex(entry => entry.value === 'inventoryauditevent')).toBe(13);
-        expect(auditQueries.findIndex(entry => entry == ASSAY_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
-        expect(auditQueries.findIndex(entry => entry == WORKFLOW_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
-        expect(auditQueries.findIndex(entry => entry == SOURCE_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
-        expect(auditQueries.findIndex(entry => entry == NOTEBOOK_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
-        expect(auditQueries.findIndex(entry => entry == NOTEBOOK_REVIEW_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
+        expect(auditQueries.findIndex(entry => entry === INVENTORY_AUDIT_QUERY)).toBe(13);
+        expect(auditQueries.findIndex(entry => entry === ASSAY_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
+        expect(auditQueries.findIndex(entry => entry === WORKFLOW_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
+        expect(auditQueries.findIndex(entry => entry === SOURCE_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
+        expect(auditQueries.findIndex(entry => entry === NOTEBOOK_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
+        expect(auditQueries.findIndex(entry => entry === NOTEBOOK_REVIEW_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
+        expect(auditQueries.findIndex(entry => entry === REGISTRY_AUDIT_QUERY)).toBe(-1);
     });
 
     test('LKB', () => {
-        LABKEY.moduleContext = {
+        const moduleContext = {
             api: {
                 moduleNames: ['biologics', 'samplemanagement', 'inventory', 'assay', 'labbook'],
             },
@@ -73,14 +67,15 @@ describe('getAuditQueries', () => {
                 productFeatures: [ProductFeature.Workflow, ProductFeature.ELN, ProductFeature.Assay],
             },
         };
-        const auditQueries = getAuditQueries();
-        expect(auditQueries.length).toBe(14);
-        expect(auditQueries.findIndex(entry => entry.value === 'inventoryauditevent')).toBe(12);
-        expect(auditQueries.findIndex(entry => entry == ASSAY_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
-        expect(auditQueries.findIndex(entry => entry == WORKFLOW_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
-        expect(auditQueries.findIndex(entry => entry == NOTEBOOK_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
-        expect(auditQueries.findIndex(entry => entry == NOTEBOOK_REVIEW_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
-        expect(auditQueries.findIndex(entry => entry == SOURCE_AUDIT_QUERY)).toBe(-1);
+        const auditQueries = getAuditQueries(moduleContext);
+        expect(auditQueries.length).toBe(15);
+        expect(auditQueries.findIndex(entry => entry === INVENTORY_AUDIT_QUERY)).toBe(13);
+        expect(auditQueries.findIndex(entry => entry === ASSAY_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
+        expect(auditQueries.findIndex(entry => entry === WORKFLOW_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
+        expect(auditQueries.findIndex(entry => entry === NOTEBOOK_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
+        expect(auditQueries.findIndex(entry => entry === NOTEBOOK_REVIEW_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
+        expect(auditQueries.findIndex(entry => entry === REGISTRY_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
+        expect(auditQueries.findIndex(entry => entry === SOURCE_AUDIT_QUERY)).toBe(-1);
     });
 });
 

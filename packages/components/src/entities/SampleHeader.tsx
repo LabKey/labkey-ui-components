@@ -36,7 +36,7 @@ import { PrintLabelsModal } from '../internal/components/labels/PrintLabelsModal
 
 import { invalidateLineageResults } from '../internal/components/lineage/actions';
 
-import { isAssayEnabled, isProjectContainer, isWorkflowEnabled } from '../internal/app/utils';
+import { isAssayEnabled, isWorkflowEnabled } from '../internal/app/utils';
 
 import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
 import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
@@ -248,7 +248,6 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                                             selectedQueryInfo={sampleModel.queryInfo}
                                             parentType={SAMPLES_KEY}
                                             parentKey={parent}
-                                            navigate={navigate}
                                         />
                                     )}
                                 </RequiresPermission>

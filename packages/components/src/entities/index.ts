@@ -24,7 +24,7 @@ import { SampleDetailEditing } from './SampleDetailEditing';
 import { SampleLineageGraph } from './SampleLineageGraph';
 import { SampleHeader } from './SampleHeader';
 import { SampleSetDeleteModal } from './SampleSetDeleteModal';
-import { SamplesDeriveButtonBase } from './SamplesDeriveButtonBase';
+import { SamplesDeriveButton } from './SamplesDeriveButton';
 import { SamplesEditButton } from './SamplesEditButton';
 import { SampleAliquotDetailHeader } from './SampleAliquotDetailHeader';
 import { SampleCreationTypeModal } from './SampleCreationTypeModal';
@@ -68,6 +68,7 @@ import {
     getSamplesCreatedSuccessMessage,
 } from './SampleListingPage';
 import { SampleCreatePage } from './SampleCreatePage';
+import { DeleteConfirmationModal } from './DeleteConfirmationModal';
 
 export {
     createEntityParentKey,
@@ -93,6 +94,7 @@ export {
     AssayResultsForSamplesSubNav,
     CreateSamplesSubMenu,
     CreateSamplesSubMenuBase,
+    DeleteConfirmationModal,
     EntityDeleteModal,
     EntityLineageEditMenuItem,
     EntityTypeDeleteConfirmModal,
@@ -134,7 +136,7 @@ export {
     SampleTypeInsightsPanel,
     SampleTypeTemplateDownloadRenderer,
     SamplesAssayButton,
-    SamplesDeriveButtonBase,
+    SamplesDeriveButton,
     SamplesEditButton,
     SamplesTabbedGridPanel,
 };

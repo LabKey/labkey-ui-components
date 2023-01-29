@@ -115,6 +115,7 @@ export const BIOLOGICS_APP_PROPERTIES: AppProperties = {
     controllerName: BIOLOGICS_CONTROLLER_NAME,
     moduleName: 'biologics',
     searchPlaceholder: SEARCH_PLACEHOLDER,
+    dataClassUrlPart: REGISTRY_KEY,
 };
 
 export const SAMPLE_MANAGER_APP_PROPERTIES: AppProperties = {
@@ -126,6 +127,7 @@ export const SAMPLE_MANAGER_APP_PROPERTIES: AppProperties = {
     controllerName: SAMPLE_MANAGER_CONTROLLER_NAME,
     moduleName: 'sampleManagement',
     searchPlaceholder: SAMPLE_MANAGER_SEARCH_PLACEHOLDER,
+    dataClassUrlPart: SOURCES_KEY,
 };
 
 export const FREEZER_MANAGER_APP_PROPERTIES: AppProperties = {

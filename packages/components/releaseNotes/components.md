@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.286.2
+*Released*: 28 January 2023
+* Issue 46949: Sample timeline detail links to sources instead of registry for LKB
+
 ### version 2.286.1
 *Released*: 28 January 2023
 * Projects: disallow project-specific data type creation

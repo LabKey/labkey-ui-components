@@ -706,13 +706,46 @@ describe('utils', () => {
     });
 
     test('isAppHomeFolder', () => {
-        LABKEY.container = { folderType: 'Collaboration' };
-        expect(isAppHomeFolder()).toBeFalsy();
-        LABKEY.container = { folderType: 'Sample Manager' };
+        LABKEY.container = { type: 'project', path: 'project', folderType: 'Collaboration' };
         expect(isAppHomeFolder()).toBeTruthy();
-        LABKEY.container = { folderType: 'Biologics' };
+        LABKEY.container = { type: 'project', path: 'project', folderType: 'Sample Manager' };
         expect(isAppHomeFolder()).toBeTruthy();
-        expect(isAppHomeFolder(new Container({ path: 'project a/b', folderType: 'Collaboration' }))).toBeFalsy();
+        LABKEY.container = { type: 'folder', path: 'project/a', folderType: 'Collaboration' };
+        expect(isAppHomeFolder()).toBeTruthy();
+        expect(isAppHomeFolder(null, { query: { isProductProjectsEnabled: false } })).toBeTruthy();
+        expect(isAppHomeFolder(null, { query: { isProductProjectsEnabled: true } })).toBeFalsy();
+        LABKEY.container = { type: 'folder', path: 'project/a', folderType: 'Biologics' };
+        expect(isAppHomeFolder()).toBeTruthy();
+        expect(isAppHomeFolder(null, { query: { isProductProjectsEnabled: false } })).toBeTruthy();
+        expect(isAppHomeFolder(null, { query: { isProductProjectsEnabled: true } })).toBeFalsy();
+
+        expect(isAppHomeFolder(new Container({ type: 'project', path: 'project' }))).toBeTruthy();
+        expect(
+            isAppHomeFolder(new Container({ type: 'project', path: 'project', folderType: 'Collaboration' }))
+        ).toBeTruthy();
+        expect(
+            isAppHomeFolder(new Container({ type: 'project', path: 'project', folderType: 'Collaboration' }), {
+                query: { isProductProjectsEnabled: false },
+            })
+        ).toBeTruthy();
+        expect(
+            isAppHomeFolder(new Container({ type: 'project', path: 'project', folderType: 'Sample Manager' }), {
+                query: { isProductProjectsEnabled: false },
+            })
+        ).toBeTruthy();
+        expect(
+            isAppHomeFolder(new Container({ type: 'folder', path: 'project/a', folderType: 'Sample Manager' }))
+        ).toBeTruthy();
+        expect(
+            isAppHomeFolder(new Container({ type: 'folder', path: 'project/a' }), {
+                query: { isProductProjectsEnabled: false },
+            })
+        ).toBeTruthy();
+        expect(
+            isAppHomeFolder(new Container({ type: 'folder', path: 'project/a' }), {
+                query: { isProductProjectsEnabled: true },
+            })
+        ).toBeFalsy();
     });
 
     test('sampleManagerIsPrimaryApp', () => {
@@ -837,7 +870,6 @@ describe('getStorageSectionConfig', () => {
         });
         expect(config.emptyText).toBe('No storage has been defined');
         expect(config.emptyAppURL).toBe(undefined);
-        expect(config.emptyURLProjectOnly).toBe(false);
         expect(config.iconURL).toBe('/labkey/_images/freezer_menu.svg');
         expect(config.headerURLPart).toBe('home');
         expect(config.headerText).toBe(undefined);
@@ -851,7 +883,6 @@ describe('getStorageSectionConfig', () => {
         });
         expect(config.emptyURLText).toBe('Get started...');
         expect(config.emptyAppURL).toBe(undefined);
-        expect(config.emptyURLProjectOnly).toBe(false);
         expect(config.headerURLPart).toBe('home');
     });
 
@@ -865,7 +896,6 @@ describe('getStorageSectionConfig', () => {
         });
         expect(config.emptyURLText).toBe('Create storage');
         expect(config.emptyAppURL?.toHref()).toBe('#/freezers/new');
-        expect(config.emptyURLProjectOnly).toBe(true);
         expect(config.headerURLPart).toBe('home');
     });
 
@@ -879,7 +909,6 @@ describe('getStorageSectionConfig', () => {
         });
         expect(config.emptyURLText).toBe('Create storage');
         expect(config.emptyAppURL?.toHref()).toBe('#/freezers/new');
-        expect(config.emptyURLProjectOnly).toBe(true);
         expect(config.headerURLPart).toBe('home');
     });
 
@@ -893,7 +922,6 @@ describe('getStorageSectionConfig', () => {
         });
         expect(config.emptyURLText).toBe('Get started...');
         expect(config.emptyAppURL).toBe(undefined);
-        expect(config.emptyURLProjectOnly).toBe(false);
         expect(config.headerURLPart).toBe('home');
     });
 
@@ -907,7 +935,6 @@ describe('getStorageSectionConfig', () => {
         });
         expect(config.emptyURLText).toBe('Create storage');
         expect(config.emptyAppURL?.toHref()).toBe('#/freezers/new');
-        expect(config.emptyURLProjectOnly).toBe(true);
         expect(config.headerURLPart).toBe('home');
     });
 
@@ -921,7 +948,6 @@ describe('getStorageSectionConfig', () => {
         });
         expect(config.emptyURLText).toBe('Create storage');
         expect(config.emptyAppURL?.toHref()).toBe('#/freezers/new');
-        expect(config.emptyURLProjectOnly).toBe(true);
         expect(config.headerURLPart).toBe('home');
     });
 });

@@ -1,8 +1,6 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { List } from 'immutable';
 
-import { AppURL } from '../internal/url/AppURL';
-
 import { MenuOption } from '../internal/components/menus/SubMenu';
 import { getMenuItemForSectionKey } from '../internal/components/buttons/utils';
 
@@ -16,21 +14,14 @@ import { isSamplesSchema } from '../internal/components/samples/utils';
 import { useServerContext } from '../internal/components/base/ServerContext';
 
 import { loadSampleTypes } from './actions';
-import { getSampleWizardURL } from './utils';
 import { CreateSamplesSubMenuBase, CreateSamplesSubMenuBaseProps } from './CreateSamplesSubMenuBase';
 
 export interface CreateSamplesSubMenuProps
     extends Omit<
         CreateSamplesSubMenuBaseProps,
-        | 'getOptions'
-        | 'inlineItemsCount'
-        | 'maxParentPerSample'
-        | 'sampleWizardURL'
-        | 'selectionNoun'
-        | 'selectionNounPlural'
+        'getOptions' | 'inlineItemsCount' | 'maxParentPerSample' | 'selectionNoun' | 'selectionNounPlural'
     > {
     disabled?: boolean;
-    getWizardUrl?: (targetSampleType?: string, parent?: string) => AppURL; // for media
     id?: string;
     loadSampleTypes?: (includeMedia: boolean) => Promise<QueryInfo[]>;
     mediaOptions?: string[];
@@ -43,7 +34,6 @@ export const MAX_PARENTS_PER_SAMPLE = 100;
 export const CreateSamplesSubMenu: FC<CreateSamplesSubMenuProps> = memo(props => {
     const {
         menuCurrentChoice,
-        getWizardUrl,
         loadSampleTypes,
         parentQueryModel,
         subMenuText,
@@ -131,7 +121,6 @@ export const CreateSamplesSubMenu: FC<CreateSamplesSubMenuProps> = memo(props =>
             menuText={subMenuText ? null : menuText} // using null will render the submenu items inline in this button
             menuCurrentChoice={itemKey ?? menuCurrentChoice ?? selectedQueryInfo?.schemaQuery?.queryName}
             maxParentPerSample={MAX_PARENTS_PER_SAMPLE}
-            sampleWizardURL={getWizardUrl ?? getSampleWizardURL}
             inlineItemsCount={0}
             selectionNoun={selectionNoun}
             selectionNounPlural={selectionNounPlural}

@@ -29,7 +29,6 @@ import { SamplesEditButton } from './SamplesEditButton';
 import { SampleAliquotDetailHeader } from './SampleAliquotDetailHeader';
 import { SampleCreationTypeModal } from './SampleCreationTypeModal';
 import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
-import { CreateSamplesSubMenuBase } from './CreateSamplesSubMenuBase';
 import { SamplesAssayButton } from './SamplesAssayButton';
 import { SampleTypeInsightsPanel } from './SampleTypeInsightsPanel';
 import { FindSamplesByIdHeaderPanel } from './FindSamplesByIdHeaderPanel';
@@ -90,7 +89,6 @@ export {
     AssayResultsForSamplesPage,
     AssayResultsForSamplesSubNav,
     CreateSamplesSubMenu,
-    CreateSamplesSubMenuBase,
     DeleteConfirmationModal,
     EntityDeleteModal,
     EntityLineageEditMenuItem,
@@ -144,3 +142,4 @@ export {
 //  https://github.com/babel/babel-loader/issues/603
 export type { SampleDetailPageProps } from './SampleDetailPage';
 export type { WithSampleTypeAppContext, AppContextWithSampleType } from './useSampleTypeAppContext';
+export type { SampleTypeWizardURLResolver } from './utils';

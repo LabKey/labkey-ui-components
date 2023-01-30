@@ -1467,6 +1467,7 @@ export type { InjectedAssayModel, WithAssayModelProps } from './internal/compone
 export type { SearchResultCardData } from './internal/components/search/models';
 export type { AssayPickerSelectionModel } from './internal/components/assay/AssayPicker';
 export type {
+    CrossFolderSelectionResult,
     EntityDataType,
     EntityInputProps,
     IDerivePayload,

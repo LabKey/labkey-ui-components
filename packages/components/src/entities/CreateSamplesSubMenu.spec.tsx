@@ -41,7 +41,6 @@ function defaultBaseProps(): CreateSamplesSubMenuBaseProps {
             return schemaQuery?.schemaName.toLowerCase() === 'samples';
         },
         parentType: 'samples',
-        sampleWizardURL: jest.fn(),
         ...createMockWithRouterProps(jest.fn),
     };
 }

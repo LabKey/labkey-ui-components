@@ -5,6 +5,11 @@ import { fromJS, List } from 'immutable';
 import { QueryColumn } from '../public/QueryColumn';
 
 import { SampleAliquotDetailHeader } from './SampleAliquotDetailHeader';
+import {shallow} from "enzyme";
+import {DefaultRenderer} from "../internal/renderers/DefaultRenderer";
+import {UserDetailsRenderer} from "../internal/renderers/UserDetailsRenderer";
+import {SampleStatusTag} from "../internal/components/samples/SampleStatusTag";
+import {TEST_LKSM_STARTER_MODULE_CONTEXT} from "../internal/productFixtures";
 
 describe('<SampleAliquotDetailHeader/>', () => {
     const COLUMN_ALIQUOT = new QueryColumn({
@@ -19,6 +24,7 @@ describe('<SampleAliquotDetailHeader/>', () => {
     const aliquotCols = List.of(COLUMN_ALIQUOT);
 
     const dataRow = fromJS({
+        ModifiedBy: { value: 1005, url: '#/q/core/siteusers/1005', displayValue: 'xyang' },
         LSID: { value: 'urn:lsid:labkey.com:Sample.6.sampletype1:S-1-1-3' },
         'SampleSet/LabelColor': { value: '#2980b9' },
         'AliquotedFromLSID/Name': { value: 'S-1-1', url: '#/rd/samples/2' },
@@ -35,15 +41,30 @@ describe('<SampleAliquotDetailHeader/>', () => {
             displayValue: 'sampletype1',
         },
         links: null,
+        SampleState: { value: 1, displayValue: 'Available' },
         AliquotSpecific: { value: 'ali-1-1 - child4' },
         Description: { value: 'this is a sub-aliquot - 3' },
         IsAliquot: { value: true },
+        CreatedBy: { value: 1005, url: '#/q/core/siteusers/1005', displayValue: 'xyang' },
     });
 
-    test('aliquot detail header', () => {
-        const component = <SampleAliquotDetailHeader row={dataRow} aliquotHeaderDisplayColumns={aliquotCols} />;
+    test('aliquot detail header, default props', () => {
+        const component = shallow(
+            <SampleAliquotDetailHeader row={dataRow} aliquotHeaderDisplayColumns={aliquotCols} />,
+        );
+        expect(component.find(DefaultRenderer)).toHaveLength(4);
+        expect(component.find(UserDetailsRenderer)).toHaveLength(1);
+        expect(component.find(SampleStatusTag)).toHaveLength(0);
+    });
 
-        const tree = renderer.create(component);
-        expect(tree).toMatchSnapshot();
+    test('aliquot detail header, LKSM context', () => {
+        LABKEY.moduleContext = { ...TEST_LKSM_STARTER_MODULE_CONTEXT };
+
+        const component = shallow(
+            <SampleAliquotDetailHeader row={dataRow} aliquotHeaderDisplayColumns={aliquotCols} />,
+        );
+        expect(component.find(DefaultRenderer)).toHaveLength(4);
+        expect(component.find(UserDetailsRenderer)).toHaveLength(1);
+        expect(component.find(SampleStatusTag)).toHaveLength(1);
     });
 });

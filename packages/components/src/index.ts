@@ -225,7 +225,7 @@ import {
     PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS,
     SHARED_CONTAINER_PATH,
 } from './internal/constants';
-import { getLocation, pushParameter, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
+import { getLocation, pushParameter, removeParameters, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
 import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
 import { getHelpLink, HELP_LINK_REFERRER, HelpLink } from './internal/util/helpLinks';
 import { ExperimentRunResolver, ListResolver } from './internal/url/AppURLResolver';
@@ -894,6 +894,7 @@ export {
     getLocation,
     getHref,
     pushParameter,
+    removeParameters,
     replaceParameter,
     replaceParameters,
     resetParameters,

@@ -23,7 +23,6 @@ import { SampleAssayDetail } from './SampleAssayDetail';
 import { SampleDetailEditing } from './SampleDetailEditing';
 import { SampleLineageGraph } from './SampleLineageGraph';
 import { SampleHeader } from './SampleHeader';
-import { SampleSetDeleteModal } from './SampleSetDeleteModal';
 import { SamplesDeriveButton } from './SamplesDeriveButton';
 import { SamplesEditButton } from './SamplesEditButton';
 import { SampleAliquotDetailHeader } from './SampleAliquotDetailHeader';
@@ -62,7 +61,7 @@ import { SampleLineagePage } from './SampleLineagePage';
 import { SampleAliquotsPage } from './SampleAliquotsPage';
 import { SampleJobsPage } from './SampleJobsPage';
 import { SamplesCreatedSuccessMessage } from './SamplesCreatedSuccessMessage';
-import { SampleListingPage, getSamplesImportSuccessMessage } from './SampleListingPage';
+import { SampleListingPage, SamplesImportSuccessMessage } from './SampleListingPage';
 import { SampleCreatePage } from './SampleCreatePage';
 import { DeleteConfirmationModal } from './DeleteConfirmationModal';
 
@@ -78,7 +77,7 @@ export {
     getSampleTypeTemplateUrl,
     getSampleTypes,
     SamplesCreatedSuccessMessage,
-    getSamplesImportSuccessMessage,
+    SamplesImportSuccessMessage,
     isFindByIdsSchema,
     loadSampleTypes,
     onSampleChange,
@@ -122,7 +121,6 @@ export {
     SampleListingPage,
     SampleOverviewPanel,
     SamplesResolver,
-    SampleSetDeleteModal,
     SampleTimelinePageBase,
     SampleTypeIndexNav,
     SampleTypeListingPage,

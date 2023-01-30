@@ -35,7 +35,6 @@ export function menuInit(currentProductId: string, appProductId: string) {
                 dispatch({
                     type: MENU_LOADING_START,
                     currentProductId,
-                    userMenuProductId: appProductId,
                     productIds: getAppProductIds(appProductId),
                 });
             }

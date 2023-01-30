@@ -133,7 +133,6 @@ export class ProductMenuModel extends Record({
     containerId: undefined,
     containerPath: undefined,
     currentProductId: undefined,
-    userMenuProductId: undefined,
     productIds: undefined,
     needsReload: false,
 }) {
@@ -145,7 +144,6 @@ export class ProductMenuModel extends Record({
     declare containerId: string;
     declare containerPath: string;
     declare currentProductId: string; // the current product's id
-    declare userMenuProductId: string; // the product's id for the user menu items
     declare productIds: List<string>; // the list of all product ids to be included in the menu; leave undefined for all products in the container
     declare needsReload: boolean;
 
@@ -160,7 +158,6 @@ export class ProductMenuModel extends Record({
                 }),
                 params: Object.assign({
                     currentProductId: this.currentProductId,
-                    userMenuProductId: this.userMenuProductId,
                     productIds: List.isList(this.productIds) ? this.productIds.toArray().join(',') : this.productIds,
                 }),
                 success: Utils.getCallbackWrapper(response => {

@@ -93,11 +93,10 @@ export const ProductMenuReducers = handleActions<ProductMenuState, any>(
         [MENU_RELOAD]: (state: ProductMenuState) => state.setNeedsReload(),
 
         [MENU_LOADING_START]: (state: ProductMenuState, action: any) => {
-            const { currentProductId, userMenuProductId, productIds } = action;
+            const { currentProductId,  productIds } = action;
 
             return state.merge({
                 currentProductId,
-                userMenuProductId,
                 productIds,
                 isLoading: true,
             });

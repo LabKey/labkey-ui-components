@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.287.0
+*Released*: 30 January 2023
+- Get product menu sections separately from user menu since they are no longer displayed together
+
 ### version 2.286.2
 *Released*: 28 January 2023
 * Issue 46949: Sample timeline detail links to sources instead of registry for LKB

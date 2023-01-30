@@ -27,14 +27,14 @@ import { SampleAliquotViewSelector } from './SampleAliquotViewSelector';
 
 interface Props {
     actions?: Actions;
-    initAliquotMode?: ALIQUOT_FILTER_MODE;
+    initAliquotMode?: ALIQUOT_FILTER_MODE; // allow to set aliquot filter from a init value
     queryModel?: QueryModel;
     updateFilter?: (
         filter: Filter.IFilter,
         filterColumnToRemove?: string,
         newModel?: ALIQUOT_FILTER_MODE,
         queryModel?: QueryModel
-    ) => void; // allow to set aliquot filter from a init value
+    ) => void;
 }
 
 interface State {

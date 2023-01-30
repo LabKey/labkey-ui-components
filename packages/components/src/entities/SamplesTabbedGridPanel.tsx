@@ -302,6 +302,19 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         [createNotification]
     );
 
+    const _gridButtonProps = {
+        ...gridButtonProps,
+        afterSampleDelete,
+        afterSampleActionComplete: _afterSampleActionComplete,
+        createBtnParentType,
+        createBtnParentKey,
+        model: activeModel,
+        showBulkUpdate: onShowBulkUpdate,
+        toggleEditWithGridUpdate,
+        onTabbedViewAliquotSelectorUpdate: onAliquotViewUpdate,
+        initAliquotMode: activeActiveAliquotMode,
+    };
+
     const isMedia = activeModel?.queryInfo?.isMedia;
     const showPrintOption = !isAllSamplesTab(activeModel?.schemaQuery) && showLabelOption && canPrintLabels;
 
@@ -335,18 +348,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     tabOrder={tabs}
                     onTabSelect={onTabSelect}
                     ButtonsComponent={gridButtons}
-                    buttonsComponentProps={{
-                        afterSampleDelete,
-                        afterSampleActionComplete: _afterSampleActionComplete,
-                        createBtnParentType,
-                        createBtnParentKey,
-                        model: activeModel,
-                        showBulkUpdate: onShowBulkUpdate,
-                        toggleEditWithGridUpdate,
-                        onTabbedViewAliquotSelectorUpdate: onAliquotViewUpdate,
-                        initAliquotMode: activeActiveAliquotMode,
-                        ...gridButtonProps,
-                    }}
+                    buttonsComponentProps={_gridButtonProps}
                     ButtonsComponentRight={SampleTabbedGridButtonsRight}
                     supportedExportTypes={showPrintOption ? EXPORT_TYPES_WITH_LABEL : undefined}
                     onExport={showPrintOption ? onLabelExport : undefined}

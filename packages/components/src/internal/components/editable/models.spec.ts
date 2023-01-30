@@ -933,7 +933,7 @@ describe('EditorModel', () => {
 });
 
 describe('getPkData', () => {
-    const queryInfo = new QueryInfo({
+    const config = {
         appEditableTable: true,
         pkCols: List(['RowId']),
         columns: fromJS({
@@ -942,16 +942,33 @@ describe('getPkData', () => {
                 fieldKey: 'RowId',
                 inputType: 'number',
             }),
+            lsid: QueryColumn.create({
+                caption: 'LSID',
+                fieldKey: 'lsid',
+                inputType: 'text',
+            }),
             description: QueryColumn.create({
                 caption: 'Description',
                 fieldKey: 'Description',
                 inputType: 'textarea',
             }),
         }),
+    };
+    const queryInfo = new QueryInfo(config);
+    const queryInfoWithAltKey = new QueryInfo({
+        ...config,
+        altUpdateKeys: new Set<strin>(['lsid']),
     });
 
     test('as value', () => {
-        expect(getPkData(queryInfo, Map.of('RowId', 1))).toStrictEqual({ RowId: 1 });
+        expect(getPkData(queryInfo, Map.of('RowId', 1, 'lsid', 'abc'))).toStrictEqual({ RowId: 1 });
+    });
+
+    test('with altUpdateKeys', () => {
+        expect(getPkData(queryInfoWithAltKey, Map.of('RowId', 1, 'lsid', 'abc'))).toStrictEqual({
+            RowId: 1,
+            lsid: 'abc',
+        });
     });
 
     test('as object', () => {

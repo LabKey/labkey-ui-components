@@ -909,6 +909,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         },
         "navigation": ServerNavigationAPIWrapper {
           "initMenuModel": [Function],
+          "loadUserMenu": [Function],
         },
         "picklist": PicklistServerAPIWrapper {
           "getPicklistCountsBySampleType": [Function],

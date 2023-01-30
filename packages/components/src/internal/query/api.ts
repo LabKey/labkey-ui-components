@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map, OrderedMap, Record as ImmutableRecord, Set } from 'immutable';
+import { fromJS, List, Map, OrderedMap, Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
 import { normalize, schema } from 'normalizr';
 import { Filter, Query, QueryDOM } from '@labkey/api';
 
@@ -170,7 +170,15 @@ export function applyQueryMetadata(rawQueryInfo: any, schemaName?: string, query
             singular: queryLabel,
         };
 
+        const altUpdateKeys = new Set<string>();
+        if (rawQueryInfo.altUpdateKeys?.length > 0) {
+            rawQueryInfo.altUpdateKeys?.forEach(key => {
+                altUpdateKeys.add(key);
+            });
+        }
+
         queryInfo = Object.assign({}, rawQueryInfo, schemaMeta, defaultQueryMeta, queryMeta, {
+            altUpdateKeys,
             // derived fields
             columns,
             pkCols: columns
@@ -319,7 +327,7 @@ class Renderers {
     }
 
     static _applyDefaultRenderer(columnMetadata, rawColumn, metadata) {
-        const types = Set.of(rawColumn.type.toLowerCase(), rawColumn.friendlyType.toLowerCase());
+        const types = ImmutableSet.of(rawColumn.type.toLowerCase(), rawColumn.friendlyType.toLowerCase());
 
         if (rawColumn.multiValue === true) {
             return 'MultiValueDetailRenderer';

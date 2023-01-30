@@ -14,21 +14,20 @@
  * limitations under the License.
  */
 import React from 'react';
-import { List } from 'immutable';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
 import { User } from '../base/models/User';
 
 import { UserMenuImpl } from './UserMenu';
-import { MenuSectionModel, ProductMenuModel } from './model';
+import { MenuSectionModel } from './model';
 
 beforeAll(() => {
     LABKEY.devMode = false;
 });
 
 describe('UserMenu', () => {
-    const sections = List([
+    const section =
         MenuSectionModel.create({
             key: 'user',
             label: 'Your Items',
@@ -48,62 +47,40 @@ describe('UserMenu', () => {
                 },
             ],
             sectionKey: 'user',
-        }),
-    ]);
+        })
 
     test('not initialized', () => {
-        const model = new ProductMenuModel({
-            productIds: ['testProduct'],
+        const model = new MenuSectionModel({
         });
         const tree = mount(<UserMenuImpl model={model} user={new User()} />);
         expect(tree).toEqual({});
     });
 
     test('user not logged in', () => {
-        const productIds = ['notLoggedInUser'];
         const user = new User({
             isSignedIn: false,
         });
 
-        const model = new ProductMenuModel({
-            isLoaded: true,
-            isLoading: false,
-            productIds,
-            sections,
-        });
-        const tree = renderer.create(<UserMenuImpl model={model} user={user} />);
+        const tree = renderer.create(<UserMenuImpl model={section} user={user} />);
         expect(tree).toMatchSnapshot();
     });
 
     test('user logged in, but not in dev mode', () => {
-        const productIds = ['loggedInUser'];
         const user = new User({
             isSignedIn: true,
         });
 
-        const model = new ProductMenuModel({
-            isLoaded: true,
-            isLoading: false,
-            productIds,
-            sections,
-        });
-        const tree = renderer.create(<UserMenuImpl model={model} user={user} />);
+        const tree = renderer.create(<UserMenuImpl model={section} user={user} />);
         expect(tree).toMatchSnapshot();
     });
 
     test('user logged in dev mode', () => {
-        const productIds = ['logginedInDevMode'];
         const user = new User({
             isSignedIn: true,
         });
         LABKEY.devMode = true;
-        const model = new ProductMenuModel({
-            isLoaded: true,
-            isLoading: false,
-            productIds,
-            sections,
-        });
-        const tree = renderer.create(<UserMenuImpl model={model} user={user} />);
+
+        const tree = renderer.create(<UserMenuImpl model={section} user={user} />);
         expect(tree).toMatchSnapshot();
     });
 
@@ -113,14 +90,8 @@ describe('UserMenu', () => {
             isSignedIn: true,
         });
 
-        const model = new ProductMenuModel({
-            isLoaded: true,
-            isLoading: false,
-            productIds,
-            sections,
-        });
         const extraUserItems = [<div key="e1">Extra One</div>, <div key="e2">Extra Two</div>];
-        const tree = renderer.create(<UserMenuImpl model={model} user={user} extraUserItems={extraUserItems} />);
+        const tree = renderer.create(<UserMenuImpl model={section} user={user} extraUserItems={extraUserItems} />);
         expect(tree).toMatchSnapshot();
     });
 
@@ -130,16 +101,10 @@ describe('UserMenu', () => {
             isSignedIn: true,
         });
 
-        const model = new ProductMenuModel({
-            isLoaded: true,
-            isLoading: false,
-            productIds,
-            sections,
-        });
         const extraUserItems = [<div key="e1">Extra One</div>, <div key="e2">Extra Two</div>];
         const extraDevItems = [<div key="e1">Extra Dev One</div>, <div key="e2">Extra Dev Two</div>];
         const tree = renderer.create(
-            <UserMenuImpl extraDevItems={extraDevItems} extraUserItems={extraUserItems} model={model} user={user} />
+            <UserMenuImpl extraDevItems={extraDevItems} extraUserItems={extraUserItems} model={section} user={user} />
         );
         expect(tree).toMatchSnapshot();
     });

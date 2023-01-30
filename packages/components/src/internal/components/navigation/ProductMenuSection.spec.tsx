@@ -274,7 +274,7 @@ describe('ProductMenuSection render', () => {
         expect(menuSection.find('i.job-running-icon').length).toBe(0);
     });
 
-    test('emptyURLProjectOnly from project', () => {
+    test('home project', () => {
         const section = MenuSectionModel.create({
             label: 'Sample Sets',
             items: List<MenuSectionModel>(),
@@ -286,11 +286,11 @@ describe('ProductMenuSection render', () => {
                 containerPath="/test"
                 currentProductId="testProductHeaderUrl"
                 section={section}
+                hideEmptyUrl={false}
                 config={
                     new MenuSectionConfig({
                         emptyText: 'Testing empty',
                         emptyAppURL: 'home',
-                        emptyURLProjectOnly: true,
                         emptyURLText: 'Create it',
                     })
                 }
@@ -304,7 +304,7 @@ describe('ProductMenuSection render', () => {
         expect(menuSection.find('.empty-section-link').childAt(0).prop('href')).toBe('home');
     });
 
-    test('emptyURLProjectOnly from subproject', () => {
+    test('hideEmptyUrl', () => {
         const section = MenuSectionModel.create({
             label: 'Sample Sets',
             items: List<MenuSectionModel>(),
@@ -315,12 +315,12 @@ describe('ProductMenuSection render', () => {
             <ProductMenuSection
                 containerPath="/test/sub"
                 currentProductId="testProductHeaderUrl"
+                hideEmptyUrl={true}
                 section={section}
                 config={
                     new MenuSectionConfig({
                         emptyText: 'Testing empty',
                         emptyAppURL: 'home',
-                        emptyURLProjectOnly: true,
                         emptyURLText: 'Create it',
                     })
                 }

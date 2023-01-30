@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useMemo } from 'react';
+import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 import { Map } from 'immutable';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
@@ -15,7 +15,26 @@ interface Props extends Omit<SelectInputProps, 'loadOptions' | 'options' | 'reso
 
 export const AliasSelectInput: FC<Props> = memo(props => {
     const { col, data, ...selectProps } = props;
+    const [containsCommas, setContainsComma] = useState<boolean>();
     const generatedId = useMemo(() => generateId(), []);
+
+    // Issue 45729: Inform user that commas are not supported for values in the alias field.
+    const isValidNewOption = useCallback((inputValue: string) => {
+        const isEmpty = inputValue?.trim().length === 0;
+        const _containsComma = inputValue?.indexOf(',') > -1;
+        setContainsComma(_containsComma);
+
+        // Empty string is considered invalid. This matches default react-select behavior.
+        return !!inputValue && !isEmpty && !_containsComma;
+    }, []);
+
+    // Here we utilize the noResultsText to display a validation message.
+    const noResultsText = useMemo(() => {
+        if (containsCommas) {
+            return <span className="has-error">Aliases cannot include the "," character</span>;
+        }
+        return 'Enter alias name(s)';
+    }, [containsCommas]);
 
     // AliasInput supplies its own formValue resolution
     // - The value is mapped from the "label"
@@ -38,8 +57,10 @@ export const AliasSelectInput: FC<Props> = memo(props => {
         <SelectInput
             description={col.description}
             id={generatedId}
+            isValidNewOption={isValidNewOption}
             label={col.caption}
             name={col.fieldKey}
+            noResultsText={noResultsText}
             required={col.required}
             {...selectProps}
             resolveFormValue={resolveFormValue}
@@ -50,12 +71,11 @@ export const AliasSelectInput: FC<Props> = memo(props => {
 
 AliasSelectInput.defaultProps = {
     allowCreate: true,
+    formatCreateLabel: inputValue => `Create alias "${inputValue}"`,
     formsy: true,
     joinValues: true,
     multiple: true,
-    noResultsText: 'Enter alias name(s)',
     placeholder: 'Enter alias name(s)',
-    promptTextCreator: (text: string) => `Create alias "${text}"`,
     saveOnBlur: true,
     showLabel: true,
 };

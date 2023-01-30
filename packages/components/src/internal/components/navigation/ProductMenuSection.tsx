@@ -19,7 +19,7 @@ import classNames from 'classnames';
 import { AppURL, createProductUrl, createProductUrlFromPartsWithContainer } from '../../url/AppURL';
 import { naturalSort } from '../../../public/sort';
 import { getHref } from '../../url/utils';
-import { getPrimaryAppProperties, isProjectContainer } from '../../app/utils';
+import { getPrimaryAppProperties } from '../../app/utils';
 
 import { useServerContext } from '../base/ServerContext';
 
@@ -30,12 +30,13 @@ interface MenuSectionProps {
     containerPath: string;
     currentProductId: string;
     dashboardImgURL?: string;
+    hideEmptyUrl?: boolean;
     section: MenuSectionModel;
 }
 
 export class ProductMenuSection extends PureComponent<MenuSectionProps> {
     render(): ReactNode {
-        const { config, section, currentProductId, containerPath, dashboardImgURL } = this.props;
+        const { config, section, currentProductId, containerPath, hideEmptyUrl, dashboardImgURL } = this.props;
         const { activeJobIconCls, showActiveJobIcon } = config;
 
         if (!section) return null;
@@ -88,7 +89,7 @@ export class ProductMenuSection extends PureComponent<MenuSectionProps> {
                 {section.items.isEmpty() ? (
                     <>
                         {config.emptyText && <li className="empty-section">{config.emptyText}</li>}
-                        {emptyURL && (!config.emptyURLProjectOnly || isProjectContainer(containerPath)) && (
+                        {emptyURL && !hideEmptyUrl && (
                             <li className="empty-section-link">
                                 <a href={getHref(emptyURL)}>{config.emptyURLText}</a>
                             </li>

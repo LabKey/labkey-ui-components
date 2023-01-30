@@ -21,7 +21,7 @@ import { Page } from '../base/Page';
 import { PageHeader } from '../base/PageHeader';
 import { SelectInput } from '../forms/input/SelectInput';
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
-import { useServerContext } from '../base/ServerContext';
+import { ModuleContext, useServerContext } from '../base/ServerContext';
 
 import { SCHEMAS } from '../../schemas';
 
@@ -32,6 +32,7 @@ import { AuditDetails } from './AuditDetails';
 import { AuditQuery, AUDIT_EVENT_TYPE_PARAM, SAMPLE_TIMELINE_AUDIT_QUERY } from './constants';
 
 interface BodyProps {
+    moduleContext: ModuleContext;
     user: User;
 }
 
@@ -52,7 +53,7 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
         this.state = {
             selected: props.location.query?.eventType ?? SAMPLE_TIMELINE_AUDIT_QUERY.value,
             selectedRowId: undefined,
-            auditQueries: getAuditQueries(),
+            auditQueries: getAuditQueries(props.moduleContext),
         };
     }
 
@@ -269,6 +270,6 @@ const AuditQueriesListingPageWithQueryModels = withQueryModels<BodyProps & WithR
 );
 
 export const AuditQueriesListingPage: FC<WithRouterProps> = props => {
-    const { user } = useServerContext();
-    return <AuditQueriesListingPageWithQueryModels {...props} user={user} />;
+    const { moduleContext, user } = useServerContext();
+    return <AuditQueriesListingPageWithQueryModels {...props} moduleContext={moduleContext} user={user} />;
 };

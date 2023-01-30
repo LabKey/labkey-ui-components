@@ -37,7 +37,6 @@ export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
     useEffect(() => {
         const model = new ProductMenuModel({
             currentProductId: product.productId,
-            userMenuProductId: product.productId,
             productIds,
         });
 

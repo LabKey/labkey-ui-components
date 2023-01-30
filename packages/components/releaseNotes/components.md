@@ -12,6 +12,44 @@ Components, models, actions, and utility functions for LabKey applications and p
   * update UserDetailsPanel so that permissions and group listing items are links to admin groups/permissions page
   * add dirty state check for user Profile page navigation
 
+### version 2.287.0
+*Released*: 30 January 2023
+- Get product menu sections separately from user menu since they are no longer displayed together
+
+### version 2.286.2
+*Released*: 28 January 2023
+* Issue 46949: Sample timeline detail links to sources instead of registry for LKB
+
+### version 2.286.1
+*Released*: 28 January 2023
+* Projects: disallow project-specific data type creation
+  * Hide create data type urls from ProductMenuSection
+  * Show 'Not Found' page for SampleTypeDesignPage
+  * Hide 'Create Sample Type' button from SampleTypeListingPage
+  * Hide create url link from Sample/Assay EmptyAlert
+
+### version 2.286.0
+*Released*: 27 January 2023
+* Handle update and clarify merge - use DIB for updateRows
+    * use LSID as keys for updateRows and saveRows for samples and dataclasses
+* Issue 47152: Having a field that can be edited by both aliquots and samples after an "aliquot only" will not get populated on sample create.
+* Issue 47162: Using file import to create aliquots does not behave as expected if the column header is "Aliquoted From" and not "AliquotedFrom"
+
+### version 2.285.1
+*Released*: 27 January 2023
+- `waitForLifeCycle` now supports `ShallowWrapper` components (and can be used with `shallow()`)
+- `EntityFieldFilterModal` update unit tests to match expected behavior and remove test-specific workarounds from component.
+- Wrap `CreateSamplesSubMenuBaseImpl` with `withRouterProps` to support in-app navigation.
+- Rename `SamplesDeriveButtonBase` to `SamplesDeriveButton`.
+- Remove redundant prop declarations for `CreateSamplesSubMenuBaseProps` and `CreateSamplesSubMenuProps` and `SamplesDeriveButtonProps`
+
+### version 2.285.0
+*Released*: 27 January 2023
+* Add `help` prop to `SelectInput` and render without colliding with error message rendering.
+* Add `REGISTRY_AUDIT_QUERY` events to be displayed in only in LKB.
+* Update `getAuditQueries()` to require a `ModuleContext` parameter.
+* Issue 45729: Inform user that commas are not supported for values in the alias field
+
 ### version 2.284.0
 *Released*: 25 January 2023
 * Enable adding user audit comments when deleting Samples, Sources, and Assays & the associated entity types

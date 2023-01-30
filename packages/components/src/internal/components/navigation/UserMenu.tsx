@@ -28,8 +28,8 @@ import { AppProperties } from '../../app/models';
 
 import { AppContext, useAppContext } from '../../AppContext';
 
-import { signOut, signIn } from './actions';
-import { ProductMenuModel } from './model';
+import { signIn, signOut } from './actions';
+import { MenuSectionModel } from './model';
 
 export interface UserMenuProps {
     appProperties?: AppProperties;
@@ -42,17 +42,15 @@ export interface UserMenuProps {
 }
 
 interface ImplProps {
-    model: ProductMenuModel;
+    model: MenuSectionModel;
 }
 
 // exported for jest testing
 export const UserMenuImpl: FC<UserMenuProps & ImplProps> = props => {
     const { model, extraDevItems, extraUserItems, onSignIn, onSignOut, user, signOutUrl } = props;
 
-    const menuSection = useMemo(() => model?.getSection('user'), [model]);
-
     const menuItems = useMemo(() => {
-        return menuSection?.items
+        return model?.items
             .filter(item => !item.requiresLogin || (item.requiresLogin && user?.isSignedIn))
             .map(item => {
                 if (item.key === 'docs') {
@@ -69,13 +67,13 @@ export const UserMenuImpl: FC<UserMenuProps & ImplProps> = props => {
                     </MenuItem>
                 );
             });
-    }, [menuSection?.items, user?.isSignedIn]);
+    }, [model?.items, user?.isSignedIn]);
 
     const handleSignOut = useCallback(() => {
         onSignOut(signOutUrl);
     }, [onSignOut, signOutUrl]);
 
-    if (!menuSection || !user) {
+    if (!model || !user) {
         return null;
     }
 
@@ -122,15 +120,15 @@ export const UserMenu: FC<UserMenuProps> = props => {
     const { appProperties = getCurrentAppProperties() } = props;
     const { api } = useAppContext<AppContext>();
     const { container, moduleContext } = useServerContext();
-    const [model, setModel] = useState<ProductMenuModel>();
+    const [model, setModel] = useState<MenuSectionModel>();
 
     useEffect(() => {
         (async () => {
-            // no try/catch as the initMenuModel will catch errors and put them in the model isError/message
-            const menuModel = await api.navigation.initMenuModel(appProperties, moduleContext, container.id);
-            setModel(menuModel);
+            // no try/catch as the loadUserMenu will catch errors and return undefined
+            const sectionModel = await api.navigation.loadUserMenu(appProperties, moduleContext);
+            setModel(sectionModel);
         })();
-    }, [api.navigation, appProperties, container.id, moduleContext]);
+    }, [api.navigation, appProperties, container.path, moduleContext]);
 
     return <UserMenuImpl {...props} model={model} />;
 };

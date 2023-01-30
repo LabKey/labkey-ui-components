@@ -16,7 +16,7 @@ export interface NavigationAPIWrapper {
     loadUserMenu: (
         appProperties: AppProperties,
         moduleContext: ModuleContext,
-        containerPath: string
+        containerPath?: string
     ) => Promise<MenuSectionModel>;
 }
 
@@ -47,7 +47,7 @@ export class ServerNavigationAPIWrapper implements NavigationAPIWrapper {
     loadUserMenu = async (
         appProperties: AppProperties,
         moduleContext: ModuleContext,
-        containerPath: string,
+        containerPath?: string,
     ): Promise<MenuSectionModel> => {
         const primaryProductId = getPrimaryAppProperties(moduleContext).productId;
         try {

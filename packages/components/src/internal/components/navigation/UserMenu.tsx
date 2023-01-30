@@ -125,7 +125,7 @@ export const UserMenu: FC<UserMenuProps> = props => {
     useEffect(() => {
         (async () => {
             // no try/catch as the loadUserMenu will catch errors and return undefined
-            const sectionModel = await api.navigation.loadUserMenu(appProperties, moduleContext, container.path);
+            const sectionModel = await api.navigation.loadUserMenu(appProperties, moduleContext);
             setModel(sectionModel);
         })();
     }, [api.navigation, appProperties, container.path, moduleContext]);

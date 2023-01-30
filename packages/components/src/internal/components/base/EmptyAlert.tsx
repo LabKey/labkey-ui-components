@@ -15,14 +15,15 @@ interface EmptyAlertProps {
 }
 
 export const EmptyAlert: FC<EmptyAlertProps> = memo(({ actionURL, allowAction, className, message, messageSuffix }) => {
+    const showActionUrl = allowAction && !!actionURL;
     return (
         <Alert bsStyle="warning" className={classNames('empty-alert', className)}>
-            {allowAction && !!actionURL && (
+            {showActionUrl && (
                 <>
                     {message} Click <a href={actionURL.toHref()}>here</a> {messageSuffix ?? 'to get started.'}
                 </>
             )}
-            {!allowAction && message}
+            {!showActionUrl && message}
         </Alert>
     );
 });

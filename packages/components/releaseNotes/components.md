@@ -5,6 +5,25 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Get product menu sections separately from user menu since they are no longer displayed together
 
+### version 2.286.2
+*Released*: 28 January 2023
+* Issue 46949: Sample timeline detail links to sources instead of registry for LKB
+
+### version 2.286.1
+*Released*: 28 January 2023
+* Projects: disallow project-specific data type creation
+  * Hide create data type urls from ProductMenuSection
+  * Show 'Not Found' page for SampleTypeDesignPage
+  * Hide 'Create Sample Type' button from SampleTypeListingPage
+  * Hide create url link from Sample/Assay EmptyAlert
+
+### version 2.286.0
+*Released*: 27 January 2023
+* Handle update and clarify merge - use DIB for updateRows
+    * use LSID as keys for updateRows and saveRows for samples and dataclasses
+* Issue 47152: Having a field that can be edited by both aliquots and samples after an "aliquot only" will not get populated on sample create.
+* Issue 47162: Using file import to create aliquots does not behave as expected if the column header is "Aliquoted From" and not "AliquotedFrom"
+
 ### version 2.285.1
 *Released*: 27 January 2023
 - `waitForLifeCycle` now supports `ShallowWrapper` components (and can be used with `shallow()`)

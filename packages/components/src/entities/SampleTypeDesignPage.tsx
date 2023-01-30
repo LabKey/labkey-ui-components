@@ -28,6 +28,8 @@ import { SampleTypeDesigner } from '../internal/components/domainproperties/samp
 import { useAppContext } from '../internal/AppContext';
 import { CommonPageProps } from '../internal/models';
 
+import { isAppHomeFolder } from '../internal/app/utils';
+
 import { SampleTypeBasePage } from './SampleTypeBasePage';
 import { useSampleTypeAppContext } from './useSampleTypeAppContext';
 import { onSampleTypeChange } from './actions';
@@ -84,7 +86,7 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
     const [_, setIsDirty] = useRouteLeave(router, routes);
     const [domainContainerPath, setDomainContainerPath] = useState<string>();
     const { api } = useAppContext();
-    const { container } = useServerContext();
+    const { container, moduleContext } = useServerContext();
     const { createNotification } = useNotificationsContext();
     const domainContainerUser = useContainerUser(domainContainerPath);
     const isInOtherFolder = domainContainerPath !== container.path;
@@ -236,6 +238,8 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
         return <LoadingPage title={pageTitle} />;
     } else if (!domainContainerUser.user.hasDesignSampleTypesPermission()) {
         return <InsufficientPermissionsPage title={pageTitle} />;
+    } else if (!isUpdate && !isAppHomeFolder(container, moduleContext)) {
+        return <NotFound />;
     }
 
     return (

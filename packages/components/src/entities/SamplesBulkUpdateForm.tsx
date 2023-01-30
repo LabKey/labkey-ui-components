@@ -7,7 +7,10 @@ import { OperationConfirmationData } from '../internal/components/entities/model
 
 import { userCanEditStorageData } from '../internal/app/utils';
 
-import { withNotificationsContext, NotificationsContextProps } from '../internal/components/notifications/NotificationsContext';
+import {
+    withNotificationsContext,
+    NotificationsContextProps,
+} from '../internal/components/notifications/NotificationsContext';
 
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { SchemaQuery } from '../public/SchemaQuery';
@@ -23,9 +26,14 @@ import { BulkUpdateForm } from '../internal/components/forms/BulkUpdateForm';
 
 import { SampleOperation } from '../internal/components/samples/constants';
 import { getOperationNotPermittedMessage } from '../internal/components/samples/utils';
-import { DISCARD_CONSUMED_CHECKBOX_FIELD, DISCARD_CONSUMED_COMMENT_FIELD } from '../internal/components/samples/DiscardConsumedSamplesPanel';
-import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
+import {
+    DISCARD_CONSUMED_CHECKBOX_FIELD,
+    DISCARD_CONSUMED_COMMENT_FIELD,
+} from '../internal/components/samples/DiscardConsumedSamplesPanel';
+
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from '../internal/components/samples/models';
+
+import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
 
 interface OwnProps {
     containerFilter?: Query.ContainerFilter;

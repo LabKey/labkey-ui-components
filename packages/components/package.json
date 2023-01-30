@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.285.2-userMenuSection.0",
+  "version": "2.286.3-userMenuSection.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

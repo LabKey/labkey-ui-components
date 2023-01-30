@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, Iterable, List, Map, OrderedMap, Record as ImmutableRecord, Set } from 'immutable';
+import { fromJS, Iterable, List, Map, OrderedMap, Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
 
 import { encodePart } from '../../../public/SchemaQuery';
 
@@ -27,7 +27,7 @@ import { genCellKey, getSortedCellKeys, parseCellKey } from '../../utils';
 import { getQueryColumnRenderers } from '../../global';
 import { GRID_EDIT_INDEX } from '../../constants';
 import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from '../../util/Date';
-import { quoteValueWithDelimiters } from '../../util/utils';
+import { caseInsensitive, quoteValueWithDelimiters } from '../../util/utils';
 
 export interface ValueDescriptor {
     display: any;
@@ -52,13 +52,16 @@ export interface EditorModelProps {
     rowCount: number;
     selectedColIdx: number;
     selectedRowIdx: number;
-    selectionCells: Set<string>;
+    selectionCells: ImmutableSet<string>;
 }
 
 export function getPkData(queryInfo: QueryInfo, row: Map<string, any>): Record<string, any> {
     const data = {};
-    queryInfo.getPkCols().forEach(pkCol => {
-        let pkVal = row.getIn([pkCol.fieldKey]);
+    const pkCols = new Set<string>();
+    queryInfo.getPkCols().forEach(col => pkCols.add(col.fieldKey));
+    queryInfo.altUpdateKeys?.forEach(key => pkCols.add(key));
+    pkCols.forEach(pkCol => {
+        let pkVal = caseInsensitive(row.toJS(), pkCol);
         if (Array.isArray(pkVal)) pkVal = pkVal[0];
         if (List.isList(pkVal)) pkVal = pkVal.get(0);
 
@@ -67,9 +70,9 @@ export function getPkData(queryInfo: QueryInfo, row: Map<string, any>): Record<s
             // backing a grid, it is a Map, which has type 'object'.
             if (Map.isMap(pkVal)) pkVal = pkVal.toJS();
 
-            data[pkCol.fieldKey] = typeof pkVal === 'object' ? pkVal.value : pkVal;
+            data[pkCol] = typeof pkVal === 'object' ? pkVal.value : pkVal;
         } else {
-            console.warn('Unable to find value for pkCol "' + pkCol.fieldKey + '"');
+            console.warn('Unable to find value for pkCol "' + pkCol + '"');
         }
     });
     return data;
@@ -85,7 +88,7 @@ export class EditorModel
         cellMessages: Map<string, CellMessage>(),
         cellValues: Map<string, List<ValueDescriptor>>(),
         columns: List<string>(),
-        deletedIds: Set<any>(),
+        deletedIds: ImmutableSet<any>(),
         focusColIdx: -1,
         focusRowIdx: -1,
         focusValue: undefined,
@@ -95,14 +98,14 @@ export class EditorModel
         rowCount: 0,
         selectedColIdx: -1,
         selectedRowIdx: -1,
-        selectionCells: Set<string>(),
+        selectionCells: ImmutableSet<string>(),
     })
     implements EditorModelProps
 {
     declare cellMessages: CellMessages;
     declare cellValues: CellValues;
     declare columns: List<string>;
-    declare deletedIds: Set<any>;
+    declare deletedIds: ImmutableSet<any>;
     declare focusColIdx: number;
     declare focusRowIdx: number;
     declare focusValue: List<ValueDescriptor>;
@@ -112,7 +115,7 @@ export class EditorModel
     declare rowCount: number;
     declare selectedColIdx: number;
     declare selectedRowIdx: number;
-    declare selectionCells: Set<string>;
+    declare selectionCells: ImmutableSet<string>;
 
     findNextCell(
         startCol: number,
@@ -533,7 +536,7 @@ export class EditorModel
         }) as Map<any, Map<string, any>>;
     }
 
-    getDeletedIds(): Set<any> {
+    getDeletedIds(): ImmutableSet<any> {
         return this.deletedIds.filter(id => id.toString().indexOf(GRID_EDIT_INDEX) === -1).toSet();
     }
 

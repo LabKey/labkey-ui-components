@@ -23,7 +23,6 @@ import {
     FREEZER_MANAGER_APP_PROPERTIES,
     SAMPLE_MANAGER_APP_PROPERTIES,
     SAMPLES_KEY,
-    SOURCES_KEY,
 } from '../internal/app/constants';
 import { isLoading } from '../public/LoadingState';
 import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
@@ -31,6 +30,8 @@ import { getEventDataValueDisplay, getTimelineEntityUrl } from '../internal/comp
 import { SampleStatusTag } from '../internal/components/samples/SampleStatusTag';
 
 import { InjectedQueryModels, withQueryModels } from '../public/QueryModel/withQueryModels';
+
+import { getPrimaryAppProperties } from '../internal/app/utils';
 
 import { SampleEventListing } from './SampleEventListing';
 
@@ -154,7 +155,12 @@ export const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = me
         if (value && value.startsWith('materialinputs/')) {
             return getMaterialDataInputDisplay(SAMPLES_KEY, field.toLowerCase(), value, 'materialinputs/');
         } else if (value && value.startsWith('datainputs/')) {
-            return getMaterialDataInputDisplay(SOURCES_KEY, field.toLowerCase(), value, 'datainputs/');
+            return getMaterialDataInputDisplay(
+                getPrimaryAppProperties().dataClassUrlPart,
+                field.toLowerCase(),
+                value,
+                'datainputs/'
+            );
         }
 
         return displayValue;

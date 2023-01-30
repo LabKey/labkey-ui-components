@@ -98,7 +98,8 @@ export const initEditableGridModel = async (
     dataModel: QueryModel,
     editorModel: EditorModel,
     loader: IEditableGridLoader,
-    queryModel: QueryModel
+    queryModel: QueryModel,
+    colFilter?: (col: QueryColumn) => boolean
 ): Promise<{ dataModel: QueryModel; editorModel: EditorModel }> => {
     const response = await loader.fetch(queryModel);
     const gridData: Partial<QueryModel> = {
@@ -110,9 +111,16 @@ export const initEditableGridModel = async (
     let columns: List<QueryColumn>;
     const forUpdate = loader.mode === EditorMode.Update;
     if (loader.columns) {
-        columns = editorModel.getColumns(gridData.queryInfo, forUpdate, undefined, loader.columns, loader.columns);
+        columns = editorModel.getColumns(
+            gridData.queryInfo,
+            forUpdate,
+            undefined,
+            loader.columns,
+            loader.columns,
+            colFilter
+        );
     } else {
-        columns = editorModel.getColumns(gridData.queryInfo, forUpdate);
+        columns = editorModel.getColumns(gridData.queryInfo, forUpdate, undefined, undefined, undefined, colFilter);
     }
 
     const editorModelData = await loadEditorModelData(gridData, columns);
@@ -204,7 +212,7 @@ export const getUpdatedDataFromEditableGrid = (
     // to populate the queryInfoForm. If we don't have this data, we came directly to the editable grid
     // using values from the display grid to initialize the editable grid model, so we use that.
     const initData = selectionData ?? fromJS(model.rows);
-    const editorData = editorModel.getRawDataFromModel(model, true, true).toArray();
+    const editorData = editorModel.getRawDataFromModel(model, true, true, false).toArray();
 
     return {
         originalRows: model.rows,

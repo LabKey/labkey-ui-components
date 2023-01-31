@@ -1,5 +1,6 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+
+import { shallow } from 'enzyme';
 
 import { getRolesByUniqueName, processGetRolesResponse } from '../permissions/actions';
 import policyJSON from '../../../test/data/security-getPolicy.json';
@@ -10,8 +11,9 @@ import { JEST_SITE_ADMIN_USER_ID } from '../../../test/data/constants';
 
 import { SecurityPolicy } from '../permissions/models';
 
+import { TEST_USER_APP_ADMIN } from '../../userFixtures';
+
 import { UserDetailsPanel } from './UserDetailsPanel';
-import {TEST_USER_APP_ADMIN} from "../../userFixtures";
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -23,8 +25,13 @@ const ROLES_BY_NAME = getRolesByUniqueName(ROLES);
 
 describe('<UserDetailsPanel/>', () => {
     test('no principal', async () => {
-        const tree = renderer.create(
-            <UserDetailsPanel currentUser={TEST_USER_APP_ADMIN} userId={undefined} policy={POLICY} rolesByUniqueName={ROLES_BY_NAME} />
+        const tree = shallow(
+            <UserDetailsPanel
+                currentUser={TEST_USER_APP_ADMIN}
+                userId={undefined}
+                policy={POLICY}
+                rolesByUniqueName={ROLES_BY_NAME}
+            />
         );
 
         await sleep();
@@ -33,7 +40,7 @@ describe('<UserDetailsPanel/>', () => {
     });
 
     test('with principal no buttons because of self', async () => {
-        const tree = renderer.create(
+        const tree = shallow(
             <UserDetailsPanel
                 currentUser={TEST_USER_APP_ADMIN}
                 userId={JEST_SITE_ADMIN_USER_ID} // see components/package.json "jest" config for the setting of self's userId
@@ -50,7 +57,7 @@ describe('<UserDetailsPanel/>', () => {
     });
 
     test('with principal and buttons', async () => {
-        const tree = renderer.create(
+        const tree = shallow(
             <UserDetailsPanel
                 currentUser={TEST_USER_APP_ADMIN}
                 userId={1005} // self is JEST_SITE_ADMIN_USER_ID which will prevent buttons from rendering
@@ -66,7 +73,7 @@ describe('<UserDetailsPanel/>', () => {
     });
 
     test('with principal and buttons not allowDelete or allowResetPassword', async () => {
-        const tree = renderer.create(
+        const tree = shallow(
             <UserDetailsPanel
                 currentUser={TEST_USER_APP_ADMIN}
                 userId={1005} // self is JEST_SITE_ADMIN_USER_ID which will prevent buttons from rendering

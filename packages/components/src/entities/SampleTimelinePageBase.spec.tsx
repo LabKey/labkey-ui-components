@@ -1,5 +1,4 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
 
 import SampleTimelineJson from '../test/data/SampleTimeline.json';
 
@@ -9,12 +8,14 @@ import { getSamplesTestAPIWrapper } from '../internal/components/samples/APIWrap
 import { TimelineEventModel } from '../internal/components/auditlog/models';
 import { SampleStateType } from '../internal/components/samples/constants';
 
-import { sleep } from '../internal/testHelpers';
+import {mountWithServerContext, waitForLifecycle} from '../internal/testHelpers';
 
 import { makeTestActions } from '../public/QueryModel/testUtils';
 import { TEST_USER_FOLDER_ADMIN } from '../internal/userFixtures';
 
 import { SampleTimelinePageBaseImpl } from './SampleTimelinePageBase';
+import {AuditDetails} from "../internal/components/auditlog/AuditDetails";
+import {SampleEventListing} from "./SampleEventListing";
 
 describe('<SampleTimelinePageBase/>', () => {
     const dummyData = SampleTimelineJson;
@@ -46,49 +47,55 @@ describe('<SampleTimelinePageBase/>', () => {
     };
 
     const registrationEvent = events[0],
-        sampleUpdateEvent = events[2],
-        jobCompleted = events[6],
         assayReimportEvent = events[7];
 
     test('Without selected event', async () => {
-        const tree = renderer.create(<SampleTimelinePageBaseImpl {...DEFAULT_PROPS} />);
-        await sleep();
-        expect(tree).toMatchSnapshot();
+        const wrapper = mountWithServerContext(
+            <SampleTimelinePageBaseImpl {...DEFAULT_PROPS} />,
+            { user: TEST_USER_FOLDER_ADMIN }
+        );
+        await waitForLifecycle(wrapper);
+
+        expect(wrapper.find(SampleEventListing)).toHaveLength(1);
+        expect(wrapper.find(SampleEventListing).prop('selectedEvent')).toBeUndefined();
+        expect(wrapper.find(AuditDetails)).toHaveLength(1);
+        expect(wrapper.find(AuditDetails).prop('rowId')).toBeUndefined();
+        expect(wrapper.find(AuditDetails).prop('summary')).toBeUndefined();
+        expect(wrapper.find(AuditDetails).prop('gridData')).toBeUndefined();
+        expect(wrapper.find(AuditDetails).prop('changeDetails')).toBeUndefined();
+
+        wrapper.unmount();
     });
 
     test('With selected sample registration event', async () => {
-        const tree = renderer.create(
-            <SampleTimelinePageBaseImpl {...DEFAULT_PROPS} initialSelectedEvent={registrationEvent} />
+        const wrapper = mountWithServerContext(
+            <SampleTimelinePageBaseImpl {...DEFAULT_PROPS} initialSelectedEvent={registrationEvent} />,
+            { user: TEST_USER_FOLDER_ADMIN }
         );
-        await sleep();
-        expect(tree).toMatchSnapshot();
-        tree.unmount();
-    });
+        await waitForLifecycle(wrapper);
 
-    test('With selected sample update event', async () => {
-        const tree = renderer.create(
-            <SampleTimelinePageBaseImpl {...DEFAULT_PROPS} initialSelectedEvent={sampleUpdateEvent} />
-        );
-        await sleep();
-        expect(tree).toMatchSnapshot();
-        tree.unmount();
+        expect(wrapper.find(SampleEventListing)).toHaveLength(1);
+        expect(wrapper.find(SampleEventListing).prop('selectedEvent')).toBe(registrationEvent);
+        expect(wrapper.find(AuditDetails)).toHaveLength(1);
+        expect(wrapper.find(AuditDetails).prop('rowId')).toBe(registrationEvent.rowId);
+        expect(wrapper.find(AuditDetails).prop('summary')).toBe('Sample Registered');
+
+        wrapper.unmount();
     });
 
     test('With selected assay re-import event', async () => {
-        const tree = renderer.create(
-            <SampleTimelinePageBaseImpl {...DEFAULT_PROPS} initialSelectedEvent={assayReimportEvent} />
+        const wrapper = mountWithServerContext(
+            <SampleTimelinePageBaseImpl {...DEFAULT_PROPS} initialSelectedEvent={assayReimportEvent} />,
+            { user: TEST_USER_FOLDER_ADMIN }
         );
-        await sleep();
-        expect(tree).toMatchSnapshot();
-        tree.unmount();
-    });
+        await waitForLifecycle(wrapper);
 
-    test('With selected job', async () => {
-        const tree = renderer.create(
-            <SampleTimelinePageBaseImpl {...DEFAULT_PROPS} initialSelectedEvent={jobCompleted} />
-        );
-        await sleep();
-        expect(tree).toMatchSnapshot();
-        tree.unmount();
+        expect(wrapper.find(SampleEventListing)).toHaveLength(1);
+        expect(wrapper.find(SampleEventListing).prop('selectedEvent')).toBe(assayReimportEvent);
+        expect(wrapper.find(AuditDetails)).toHaveLength(1);
+        expect(wrapper.find(AuditDetails).prop('rowId')).toBe(assayReimportEvent.rowId);
+        expect(wrapper.find(AuditDetails).prop('summary')).toBe('Assay Data Re-Import Run');
+
+        wrapper.unmount();
     });
 });

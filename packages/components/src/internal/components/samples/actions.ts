@@ -119,8 +119,8 @@ export function getSampleTypeDetails(
         return Domain.getDomainDetails({
             containerPath,
             domainId,
-            queryName: query ? query.getQuery() : undefined,
-            schemaName: query ? query.getSchema() : undefined,
+            queryName: query ? query.queryName : undefined,
+            schemaName: query ? query.schemaName : undefined,
             domainKind: query === undefined && domainId === undefined ? 'SampleSet' : undefined,
             success: response => {
                 resolve(DomainDetails.create(Map(response)));

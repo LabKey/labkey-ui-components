@@ -161,7 +161,7 @@ export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
         if (!isLoaded) return;
 
         const { createdSampleCount, importFile, importedSampleCount, transactionAuditId } = props.location?.query;
-        const _sampleType = listModel.schemaQuery.getQuery();
+        const _sampleType = listModel.schemaQuery.queryName;
 
         if (transactionAuditId) {
             const createdCount = parseInt(createdSampleCount, 10);

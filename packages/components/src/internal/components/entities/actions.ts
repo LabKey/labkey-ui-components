@@ -334,8 +334,8 @@ function resolveEntityParentTypeFromIds(
     return List<EntityParentType>([
         EntityParentType.create({
             index: 1,
-            schema: schemaQuery.getSchema(),
-            query: schemaQuery.getQuery(),
+            schema: schemaQuery.schemaName,
+            query: schemaQuery.queryName,
             value: data,
             isAliquotParent,
         }),
@@ -601,11 +601,11 @@ export function handleEntityFileImport(
     saveToPipeline?: boolean
 ): Promise<any> {
     return new Promise((resolve, reject) => {
-        const { schemaQuery } = queryInfo;
+        const { schemaName, queryName } = queryInfo.schemaQuery;
 
         return importData({
-            schemaName: schemaQuery.getSchema(),
-            queryName: schemaQuery.getQuery(),
+            schemaName,
+            queryName,
             file,
             importUrl: ActionURL.buildURL(importFileController ?? 'experiment', importAction, null, {
                 ...importParameters,

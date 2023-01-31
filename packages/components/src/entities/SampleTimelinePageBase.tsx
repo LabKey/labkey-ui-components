@@ -244,8 +244,9 @@ export const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = me
                 {renderCurrentStatusDetailRow(
                     'Registered By',
                     <UserLink
-                        userId={registrationEvent.user.get('value')}
-                        userDisplayValue={registrationEvent.user.get('displayValue')}
+                        userId={registrationEvent.user?.get('value')}
+                        userDisplayValue={registrationEvent.user?.get('displayValue')}
+                        unknown={!registrationEvent.user}
                     />
                 )}
                 {renderCurrentStatusDetailRow(
@@ -265,8 +266,9 @@ export const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = me
                 {renderCurrentStatusDetailRow(
                     'Last Event Handled By',
                     <UserLink
-                        userId={lastEvent.user.get('value')}
-                        userDisplayValue={lastEvent.user.get('displayValue')}
+                        userId={lastEvent.user?.get('value')}
+                        userDisplayValue={lastEvent.user?.get('displayValue')}
+                        unknown={!lastEvent.user}
                     />
                 )}
                 {renderCurrentStatusDetailRow('Last Event Date', getEventDataValueDisplay(lastEvent.timestamp))}

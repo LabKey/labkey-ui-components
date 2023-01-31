@@ -57,6 +57,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -125,6 +126,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -193,6 +195,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="xyang"
               userId={1005}
             />
@@ -261,6 +264,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -329,6 +333,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="Test Lab User"
               userId={1038}
             />
@@ -397,6 +402,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="Test Lab User"
               userId={1038}
             />
@@ -465,6 +471,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -533,6 +540,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="xyang"
               userId={1005}
             />
@@ -618,6 +626,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -686,6 +695,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -754,6 +764,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="xyang"
               userId={1005}
             />
@@ -822,6 +833,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -890,6 +902,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="Test Lab User"
               userId={1038}
             />
@@ -958,6 +971,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="Test Lab User"
               userId={1038}
             />
@@ -1026,6 +1040,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -1094,6 +1109,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="xyang"
               userId={1005}
             />
@@ -1179,6 +1195,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -1253,6 +1270,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -1321,6 +1339,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="xyang"
               userId={1005}
             />
@@ -1389,6 +1408,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -1457,6 +1477,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="Test Lab User"
               userId={1038}
             />
@@ -1531,6 +1552,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="Test Lab User"
               userId={1038}
             />
@@ -1599,6 +1621,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -1667,6 +1690,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="xyang"
               userId={1005}
             />
@@ -1752,6 +1776,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -1820,6 +1845,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -1894,6 +1920,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="xyang"
               userId={1005}
             />
@@ -1962,6 +1989,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -2030,6 +2058,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="Test Lab User"
               userId={1038}
             />
@@ -2098,6 +2127,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="Test Lab User"
               userId={1038}
             />
@@ -2166,6 +2196,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="Vader"
               userId={1005}
             />
@@ -2240,6 +2271,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
+              unknown={false}
               userDisplayValue="xyang"
               userId={1005}
             />

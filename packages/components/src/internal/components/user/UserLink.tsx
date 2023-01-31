@@ -11,10 +11,11 @@ import {useServerContext} from "../base/ServerContext";
 interface UserLinkProps {
     userDisplayValue?: string;
     userId: number;
+    unknown?: boolean;
 }
 
 export const UserLink: FC<UserLinkProps> = props => {
-    const { userId, userDisplayValue } = props;
+    const { userId, userDisplayValue, unknown } = props;
     const [showDetails, setShowDetails] = useState<boolean>(false);
     const [targetUserDisplayValue, setTargetUserDisplayValue] = useState<string>();
     const { user, container } = useServerContext();
@@ -40,6 +41,14 @@ export const UserLink: FC<UserLinkProps> = props => {
     }, []);
 
     if (targetUserDisplayValue && !userId) return <span>{targetUserDisplayValue}</span>;
+
+    if (unknown) {
+        return (
+            <span className="gray-text" title="User may have been deleted from the system.">
+                &lt;unknown&gt;
+            </span>
+        );
+    }
 
     if (!userId) return null;
 

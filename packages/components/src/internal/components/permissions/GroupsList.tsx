@@ -1,7 +1,12 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
-import {AppURL} from "../../url/AppURL";
-import {User} from "../base/models/User";
+
+import { AppURL } from '../../url/AppURL';
+import { User } from '../base/models/User';
+import { fetchGroupMembership } from '../administration/actions';
+import { useAppContext } from '../../AppContext';
+import { useServerContext } from '../base/ServerContext';
+import { GroupMembership, MemberType } from '../administration/models';
 
 interface Props {
     currentUser: User;
@@ -11,6 +16,16 @@ interface Props {
 
 export const GroupsList: FC<Props> = memo(props => {
     const { groups, currentUser, showLinks = true } = props;
+    const [groupMembership, setGroupMembership] = useState<GroupMembership>();
+    const { api } = useAppContext();
+    const { container } = useServerContext();
+
+    useEffect(() => {
+        (async () => {
+            const groupMembership_ = await fetchGroupMembership(container, api.security);
+            setGroupMembership(groupMembership_);
+        })();
+    }, [api.security, container]);
 
     if (!groups) return null;
 
@@ -26,7 +41,9 @@ export const GroupsList: FC<Props> = memo(props => {
                         {groups.length > 0 ? (
                             groups.map(group => (
                                 <li key={group.value} className="principal-detail-li">
-                                    {currentUser.isAdmin && showLinks ? (
+                                    {currentUser.isAdmin &&
+                                    showLinks &&
+                                    groupMembership?.[group.value].type !== MemberType.siteGroup ? (
                                         <a
                                             href={AppURL.create('admin', 'groups')
                                                 .addParam('expand', group.value)

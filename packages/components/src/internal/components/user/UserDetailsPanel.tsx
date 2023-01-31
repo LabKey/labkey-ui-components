@@ -136,9 +136,9 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
     }
 
     loadPolicyAndRoles = async (): Promise<void> => {
-        const { policy, rolesByUniqueName, container, api } = this.props;
+        const { policy, rolesByUniqueName, container, currentUser, api } = this.props;
 
-        if (!policy && !rolesByUniqueName && container) {
+        if (currentUser.isAdmin && !policy && !rolesByUniqueName && container) {
             const policy_ = await api.fetchPolicy(container.id);
 
             Security.getRoles({
@@ -347,7 +347,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                         <Modal.Title>{this.renderHeader()}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>{this.renderBody()}</Modal.Body>
-                    {user.isAdmin && !isSelf && (
+                    {user.isAdmin && (
                         <Modal.Footer>
                             <Button className="pull-right" href={manageUrl.toHref()}>
                                 Manage

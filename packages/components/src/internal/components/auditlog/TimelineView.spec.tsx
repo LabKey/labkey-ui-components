@@ -7,6 +7,7 @@ import { TIMELINE_DATA } from '../../../test/data/constants';
 import { TimelineView } from './TimelineView';
 import { TimelineEventModel } from './models';
 import {TEST_USER_APP_ADMIN, TEST_USER_READER} from "../../userFixtures";
+import {mountWithServerContext} from "../../testHelpers";
 
 const events: TimelineEventModel[] = [];
 TIMELINE_DATA.forEach(event => events.push(TimelineEventModel.create(event, 'UTC')));
@@ -84,7 +85,7 @@ describe('<TimelineView />', () => {
                 content: <span>hello</span>,
             };
         };
-        const wrapper = mount(
+        const wrapper = mountWithServerContext(
             <TimelineView
                 events={events}
                 showRecentFirst={false}
@@ -94,7 +95,8 @@ describe('<TimelineView />', () => {
                 selectedEntityConnectionInfo={null}
                 getInfoBubbleContent={getInfoBubbleContent}
                 user={TEST_USER_APP_ADMIN}
-            />
+            />,
+            { user: TEST_USER_APP_ADMIN }
         );
 
         expect(wrapper.find('.timeline-info-icon')).toHaveLength(8);

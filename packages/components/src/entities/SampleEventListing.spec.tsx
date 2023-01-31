@@ -37,7 +37,7 @@ describe('<SampleEventListing/>', () => {
         assayReimportEvent = events[7];
 
     test('Without selected event', () => {
-        const tree = renderer.create(
+        const tree = shallow(
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
@@ -50,7 +50,7 @@ describe('<SampleEventListing/>', () => {
     });
 
     test('Without view user link perm', () => {
-        const tree = renderer.create(
+        const tree = shallow(
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
@@ -104,7 +104,7 @@ describe('<SampleEventListing/>', () => {
     });
 
     test('With selected sample registration event', () => {
-        const tree = renderer.create(
+        const tree = shallow(
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
@@ -118,7 +118,7 @@ describe('<SampleEventListing/>', () => {
     });
 
     test('With selected sample update event', () => {
-        const tree = renderer.create(
+        const tree = shallow(
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
@@ -132,7 +132,7 @@ describe('<SampleEventListing/>', () => {
     });
 
     test('With selected assay upload event', () => {
-        const tree = renderer.create(
+        const tree = shallow(
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
@@ -146,7 +146,7 @@ describe('<SampleEventListing/>', () => {
     });
 
     test('With selected assay re-import event', () => {
-        const tree = renderer.create(
+        const tree = shallow(
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
@@ -163,7 +163,7 @@ describe('<SampleEventListing/>', () => {
         LABKEY.moduleContext = {
             ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
         };
-        const tree = renderer.create(
+        const tree = shallow(
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
@@ -196,7 +196,7 @@ describe('<SampleEventListing/>', () => {
     });
 
     test('With selected job that is not completed and has no related job events', () => {
-        const tree = renderer.create(
+        const tree = shallow(
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
@@ -210,7 +210,7 @@ describe('<SampleEventListing/>', () => {
     });
 
     test('With selected job that is not completed but has related job events', () => {
-        const tree = renderer.create(
+        const tree = shallow(
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"

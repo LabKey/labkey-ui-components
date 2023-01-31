@@ -11,7 +11,7 @@ exports[`<EffectiveRolesList/> multiple roles 1`] = `
     <div
       className="principal-detail-label col-xs-4"
     >
-      Permissions
+      Effective Roles
     </div>
     <div
       className="principal-detail-value col-xs-8"
@@ -92,7 +92,7 @@ exports[`<EffectiveRolesList/> single role 1`] = `
     <div
       className="principal-detail-label col-xs-4"
     >
-      Permissions
+      Effective Roles
     </div>
     <div
       className="principal-detail-value col-xs-8"
@@ -126,7 +126,7 @@ exports[`<EffectiveRolesList/> with root policy 1`] = `
     <div
       className="principal-detail-label col-xs-4"
     >
-      Permissions
+      Effective Roles
     </div>
     <div
       className="principal-detail-value col-xs-8"

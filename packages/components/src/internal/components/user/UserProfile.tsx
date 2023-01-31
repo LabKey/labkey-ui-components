@@ -21,7 +21,10 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { hasPermissions } from '../../../entities/SampleListingPage';
 
-import { getUserDetailsRowData, getUserGroups, updateUserDetails } from './actions';
+import { getUserDetailsRowData, updateUserDetails } from './actions';
+import {selectRowsUserProps} from "./UserDetailsPanel";
+import {caseInsensitive} from "../../util/utils";
+import {GroupsList} from "../permissions/GroupsList";
 
 const FIELDS_TO_EXCLUDE = List<string>([
     'userid',
@@ -41,7 +44,7 @@ const DEFAULT_AVATAR_PATH = '/_images/defaultavatar.png';
 
 interface State {
     avatar: File;
-    groups: string;
+    groups: [{ displayValue: string; value: number }];
     hasError: boolean;
     queryInfo: QueryInfo;
     reloadRequired: boolean;
@@ -80,10 +83,10 @@ export class UserProfile extends PureComponent<Props, State> {
             this.setState(() => ({ hasError: true }));
         }
 
-        if (hasPermissions(this.props.user, [PermissionTypes.CanSeeGroupDetails])) {
+        if (hasPermissions(this.props.user, [PermissionTypes.CanSeeUserDetails])) {
             try {
-                const groupsResult = await getUserGroups(this.props.user.id);
-                const groups = groupsResult.join(', ');
+                const response = await selectRowsUserProps(this.props.user.id);
+                const groups = caseInsensitive(response, 'Groups');
                 this.setState(() => ({ groups }));
             } catch (e) {
                 console.error(resolveErrorMessage(e) ?? 'Failed to load group data');
@@ -99,13 +102,16 @@ export class UserProfile extends PureComponent<Props, State> {
     };
 
     footer() {
+        const { user } = this.props;
         const { groups } = this.state;
 
         if (groups) {
             return (
                 <div className="form-group row">
                     <label className="control-label col-sm-3 text-left col-xs-12"> Groups </label>
-                    <div className="col-sm-9 col-md-9 col-xs-12"> {groups} </div>
+                    <div className="col-sm-9 col-md-9 col-xs-12">
+                        <GroupsList currentUser={user} groups={groups} asRow={false} />
+                    </div>
                 </div>
             );
         }

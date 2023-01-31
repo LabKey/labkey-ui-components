@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { OrderedMap } from 'immutable';
-import { Ajax, Filter, PermissionRoles, PermissionTypes, Security, Utils } from '@labkey/api';
+import { Ajax, PermissionRoles, PermissionTypes, Security, Utils } from '@labkey/api';
 
 import { processRequest } from '../../query/api';
 
@@ -9,9 +9,6 @@ import { hasAllPermissions, User } from '../base/models/User';
 import { caseInsensitive } from '../../util/utils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { SHARED_CONTAINER_PATH } from '../../constants';
-
-import { selectRows } from '../../query/selectRows';
-import { SCHEMAS } from '../../schemas';
 
 import { ChangePasswordModel } from './models';
 import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from '../administration/constants';
@@ -230,19 +227,4 @@ export function getUserSharedContainerPermissions(): Promise<string[]> {
             },
         });
     });
-}
-
-export async function getUserGroups(userid: number): Promise<string[]> {
-    const response = await selectRows({
-        schemaQuery: SCHEMAS.CORE_TABLES.USERS,
-        filterArray: [Filter.create('UserId', userid)],
-        columns: ['Groups'],
-        maxRows: 1,
-    });
-    if (response.rows.length > 0 && Array.isArray(response.rows[0].Groups)) {
-        const groupsData = response.rows[0].Groups;
-        return groupsData.map(group => group.displayValue).sort();
-    } else {
-        return [];
-    }
 }

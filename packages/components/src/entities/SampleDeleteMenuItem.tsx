@@ -7,10 +7,12 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../internal/APIWrapp
 
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { SelectionMenuItem } from '../internal/components/menus/SelectionMenuItem';
-import { EntityDeleteModal } from './EntityDeleteModal';
+
 import { SampleTypeDataType } from '../internal/components/entities/constants';
 
 import { MAX_SELECTED_SAMPLES } from '../internal/components/samples/constants';
+
+import { EntityDeleteModal } from './EntityDeleteModal';
 
 interface Props {
     afterSampleDelete?: (rowsToKeep?: any[]) => void;

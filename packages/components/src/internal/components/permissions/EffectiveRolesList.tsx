@@ -51,7 +51,6 @@ export class EffectiveRolesList extends React.PureComponent<Props> {
                                 const roleDisplay = role ? role.displayName : assignment.role;
                                 return (
                                     <li key={assignment.role} className="principal-detail-li">
-                                        {}
                                         {currentUser.isAdmin && showLinks ? (
                                             <a
                                                 href={AppURL.create('admin', 'permissions')

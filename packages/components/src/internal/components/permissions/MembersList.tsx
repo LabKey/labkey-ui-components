@@ -4,7 +4,6 @@ import { Col, Row } from 'react-bootstrap';
 
 import { Member } from '../administration/models';
 import {UserLink} from "../user/UserLink";
-import {useServerContext} from "../base/ServerContext";
 
 interface Props {
     members: Member[];
@@ -12,7 +11,6 @@ interface Props {
 
 export const MembersList: FC<Props> = memo(props => {
     const { members } = props;
-    const { user } = useServerContext();
 
     return members.length === 0 ? (
         <></>
@@ -28,7 +26,7 @@ export const MembersList: FC<Props> = memo(props => {
                         {members.map(member => (
                             <li key={member.id} className="principal-detail-li">
                                 {member.type === 'u'
-                                    ? <UserLink currentUser={user} userId={member.id} userDisplayValue={member.name} />
+                                    ? <UserLink userId={member.id} userDisplayValue={member.name} />
                                     : member.name
                                 }
                             </li>

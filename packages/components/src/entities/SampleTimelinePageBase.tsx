@@ -107,7 +107,6 @@ export const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = me
                 onEventSelection={onEventSelection}
                 events={events}
                 selectedEvent={selectedEvent}
-                user={user}
             />
         );
     };
@@ -245,7 +244,6 @@ export const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = me
                 {renderCurrentStatusDetailRow(
                     'Registered By',
                     <UserLink
-                        currentUser={user}
                         userId={registrationEvent.user.get('value')}
                         userDisplayValue={registrationEvent.user.get('displayValue')}
                     />
@@ -267,7 +265,6 @@ export const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = me
                 {renderCurrentStatusDetailRow(
                     'Last Event Handled By',
                     <UserLink
-                        currentUser={user}
                         userId={lastEvent.user.get('value')}
                         userDisplayValue={lastEvent.user.get('displayValue')}
                     />

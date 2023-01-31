@@ -14,7 +14,6 @@ import { isAssayEnabled, isWorkflowEnabled } from '../internal/app/utils';
 import { ASSAYS_KEY, SAMPLES_KEY, WORKFLOW_KEY } from '../internal/app/constants';
 import { getDateFormat, filterDate } from '../internal/util/Date';
 import { TimelineView } from '../internal/components/auditlog/TimelineView';
-import { User } from '../internal/components/base/models/User';
 
 interface Props {
     events?: TimelineEventModel[];
@@ -22,7 +21,6 @@ interface Props {
     sampleId: number;
     sampleName: string;
     selectedEvent?: TimelineEventModel;
-    user: User;
 }
 
 interface State {
@@ -513,7 +511,6 @@ export class SampleEventListing extends React.Component<Props, State> {
     }
 
     renderTimelineGrid() {
-        const { user } = this.props;
         const { showRecentFirst, hasDetailedEvents } = this.state;
         const filteredEvents = this.getFilteredEvents();
         if (filteredEvents.length === 0) return <Alert bsStyle="warning">No events match the filter criteria.</Alert>;
@@ -533,7 +530,6 @@ export class SampleEventListing extends React.Component<Props, State> {
                         onEventSelection={this.props.onEventSelection}
                         selectedEvent={this.props.selectedEvent}
                         selectedEntityConnectionInfo={this.determineEntityConnectionInfo()}
-                        user={user}
                     />
                 </Col>
             </Row>

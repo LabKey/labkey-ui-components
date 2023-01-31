@@ -61,13 +61,13 @@ export class AuditDetails extends Component<Props> {
     }
 
     getValueDisplay = (field: string, value: string): any => {
-        const { fieldValueRenderer, user } = this.props;
+        const { fieldValueRenderer } = this.props;
 
         let displayVal: any = value;
         if (value == null || value === '') displayVal = 'NA';
 
         if (AuditDetails.isUserFieldLabel(field)) {
-            displayVal = <UserLink currentUser={user} userId={parseInt(value, 10)} />;
+            displayVal = <UserLink userId={parseInt(value, 10)} />;
         }
 
         if (fieldValueRenderer) displayVal = fieldValueRenderer(field, value, displayVal);
@@ -148,11 +148,10 @@ export class AuditDetails extends Component<Props> {
                 cell: (data, row) => {
                     let display;
                     if (row.get('isUser')) {
-                        display = <UserLink currentUser={user} userId={row.get('value')} />;
+                        display = <UserLink userId={row.get('value')} />;
                     } else if (Map.isMap(data) && data.get('urlType') === 'user') {
                         display = (
                             <UserLink
-                                currentUser={user}
                                 userId={data.get('value')}
                                 userDisplayValue={data.get('displayValue')}
                             />

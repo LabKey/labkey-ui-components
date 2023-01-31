@@ -45,7 +45,7 @@ export const EditInlineField: FC<Props> = memo(props => {
         useJsonDateFormat,
         tooltip,
     } = props;
-    const { container, user } = useServerContext();
+    const { container } = useServerContext();
     const dateFormat = getMomentDateFormat(container);
     const isDate = type === 'date';
     const isTextArea = type === 'textarea';
@@ -224,9 +224,7 @@ export const EditInlineField: FC<Props> = memo(props => {
                             {label}
                         </span>
                     )}
-                    {isUser && (
-                        <UserLink currentUser={user} userId={value.value} userDisplayValue={value.displayValue} />
-                    )}
+                    {isUser && <UserLink userId={value.value} userDisplayValue={value.displayValue} />}
                     <span
                         className={classNames({ 'edit-inline-field__toggle': allowEdit, 'ws-pre-wrap': isTextArea })}
                         onClick={toggleEdit}

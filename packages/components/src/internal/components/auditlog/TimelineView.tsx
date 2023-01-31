@@ -8,7 +8,6 @@ import { LabelHelpTip } from '../base/LabelHelpTip';
 import { TimelineEventModel, TimelineGroupedEventInfo } from './models';
 import { getEventDataValueDisplay } from './utils';
 import { UserLink } from '../user/UserLink';
-import { User } from '../base/models/User';
 
 interface Props {
     events: TimelineEventModel[];
@@ -18,7 +17,6 @@ interface Props {
     selectedEvent?: TimelineEventModel;
     selectionDisabled?: boolean;
     showRecentFirst: boolean;
-    user: User;
 }
 
 export class TimelineView extends React.Component<Props, any> {
@@ -205,7 +203,6 @@ export class TimelineView extends React.Component<Props, any> {
                 <div>
                     <div className="field-text-nowrap">
                         <UserLink
-                            currentUser={this.props.user}
                             userId={user.get('value')}
                             userDisplayValue={user.get('displayValue')}
                         />

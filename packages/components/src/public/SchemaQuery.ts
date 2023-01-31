@@ -1,5 +1,3 @@
-import { Record } from 'immutable';
-
 const APP_SELECTION_PREFIX = 'appkey';
 
 // 36009: Case-insensitive variant of QueryKey.decodePart
@@ -63,14 +61,14 @@ export interface IParsedSelectionKey {
     schemaQuery: SchemaQuery;
 }
 
-export class SchemaQuery extends Record({
-    schemaName: undefined,
-    queryName: undefined,
-    viewName: undefined,
-}) {
-    declare schemaName: string;
-    declare queryName: string;
-    declare viewName: string;
+export class SchemaQuery {
+    schemaName: string;
+    queryName: string;
+    viewName: string;
+
+    constructor(schemaQuery: Partial<SchemaQuery>) {
+        Object.assign(this, schemaQuery);
+    }
 
     static create(schemaName: string, queryName: string, viewName?: string): SchemaQuery {
         return new SchemaQuery({ schemaName, queryName, viewName });

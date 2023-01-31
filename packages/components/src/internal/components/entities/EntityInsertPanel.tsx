@@ -395,7 +395,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 });
             }
 
-            getQueryDetails(schemaQuery.toJS())
+            getQueryDetails(schemaQuery)
                 .then(originalQueryInfo => {
                     this.setState(
                         () => ({ insertModel, originalQueryInfo }),

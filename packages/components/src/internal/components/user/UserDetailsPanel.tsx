@@ -6,7 +6,7 @@ import React, { FC } from 'react';
 import moment from 'moment';
 import { Button, Col, Modal, Panel, Row } from 'react-bootstrap';
 import { Map } from 'immutable';
-import { Filter, getServerContext, Utils } from '@labkey/api';
+import {Filter, getServerContext, Security, Utils} from '@labkey/api';
 
 import { EffectiveRolesList } from '../permissions/EffectiveRolesList';
 
@@ -29,6 +29,10 @@ import {getUserProperties} from "./actions";
 import { GroupsList } from '../permissions/GroupsList';
 import {AppURL} from "../../url/AppURL";
 import {User} from "../base/models/User";
+import {getDefaultAPIWrapper} from "../../APIWrapper";
+import {SecurityAPIWrapper} from "../security/APIWrapper";
+import {Container} from "../base/models/Container";
+import {getRolesByUniqueName, processGetRolesResponse} from "../permissions/actions";
 
 
 interface UserDetailRowProps {
@@ -55,13 +59,17 @@ export const selectRowsUserProps = function(userId: number): Promise<{ [key: str
             filterArray: [Filter.create('UserId', userId)],
             schemaQuery: SCHEMAS.CORE_TABLES.USERS,
         }).then(response => {
-            const row = response.rows[0];
-            const rowValues = flattenValuesFromRow(row, Object.keys(row));
+            if (response.rows.length > 0) {
+                const row = response.rows[0];
+                const rowValues = flattenValuesFromRow(row, Object.keys(row));
 
-            // special case for the Groups prop as it is an array
-            rowValues.Groups = caseInsensitive(row, 'Groups');
+                // special case for the Groups prop as it is an array
+                rowValues.Groups = caseInsensitive(row, 'Groups');
 
-            resolve(rowValues);
+                resolve(rowValues);
+            } else {
+                resolve({});
+            }
         }).catch(error => {
             console.error(error);
             reject(error);
@@ -72,6 +80,8 @@ export const selectRowsUserProps = function(userId: number): Promise<{ [key: str
 interface Props {
     allowDelete?: boolean;
     allowResetPassword?: boolean;
+    api?: SecurityAPIWrapper;
+    container?: Container;
     currentUser: User;
     isSelf?: boolean;
     onUsersStateChangeComplete?: (response: any, resetSelection: boolean) => any;
@@ -86,15 +96,17 @@ interface Props {
 
 interface State {
     loading: boolean;
-    roles: string[];
+    policy?: SecurityPolicy;
+    rolesByUniqueName?: Map<string, SecurityRole>;
     showDialog: string;
-    userProperties: {};
+    userProperties: Record<string, any>;
 }
 
 export class UserDetailsPanel extends React.PureComponent<Props, State> {
     static defaultProps = {
         allowDelete: true,
         allowResetPassword: true,
+        api: getDefaultAPIWrapper().security,
         onUsersStateChangeComplete: undefined,
         showGroupListLinks: true,
         showPermissionListLinks: true,
@@ -104,15 +116,17 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         super(props);
 
         this.state = {
-            roles: [],
             loading: false,
-            userProperties: undefined,
+            policy: undefined,
+            rolesByUniqueName: undefined,
             showDialog: undefined,
+            userProperties: undefined,
         };
     }
 
     componentDidMount() {
         this.loadUserDetails();
+        this.loadPolicyAndRoles();
     }
 
     componentDidUpdate(prevProps: Readonly<Props>) {
@@ -120,6 +134,29 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
             this.loadUserDetails();
         }
     }
+
+    loadPolicyAndRoles = async (): Promise<void> => {
+        const { policy, rolesByUniqueName, container, api } = this.props;
+
+        if (!policy && !rolesByUniqueName && container) {
+            const policy_ = await api.fetchPolicy(container.id);
+
+            Security.getRoles({
+                success: rawRoles => {
+                    const roles = processGetRolesResponse(rawRoles);
+                    const rolesByUniqueName_ = getRolesByUniqueName(roles);
+
+                    this.setState(() => ({
+                        policy: policy_,
+                        rolesByUniqueName: rolesByUniqueName_,
+                    }));
+                },
+                failure: e => {
+                    console.error('Failed to load security roles', e);
+                },
+            });
+        }
+    };
 
     loadUserDetails = (): void => {
         const { userId, isSelf } = this.props;
@@ -210,7 +247,15 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
     }
 
     renderBody() {
-        const { showGroupListLinks, showPermissionListLinks, currentUser } = this.props;
+        const {
+            showGroupListLinks,
+            showPermissionListLinks,
+            currentUser,
+            policy,
+            rolesByUniqueName,
+            rootPolicy,
+            userId,
+        } = this.props;
         const { loading, userProperties } = this.state;
 
         if (loading) {
@@ -247,8 +292,19 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                     {this.renderUserProp('User ID', 'userId')}
                     {!!hasPassword && <UserDetailRow label="Has Password" value={hasPassword.toString()} />}
 
-                    <EffectiveRolesList {...this.props} showLinks={showPermissionListLinks} />
-                    <GroupsList groups={caseInsensitive(userProperties, 'groups')} currentUser={currentUser} showLinks={showGroupListLinks} />
+                    <EffectiveRolesList
+                        currentUser={currentUser}
+                        policy={policy ?? this.state.policy}
+                        rolesByUniqueName={rolesByUniqueName ?? this.state.rolesByUniqueName}
+                        rootPolicy={rootPolicy}
+                        showLinks={showPermissionListLinks}
+                        userId={userId}
+                    />
+                    <GroupsList
+                        groups={caseInsensitive(userProperties, 'groups')}
+                        currentUser={currentUser}
+                        showLinks={showGroupListLinks}
+                    />
                 </>
             );
         }

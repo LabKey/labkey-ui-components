@@ -5,10 +5,12 @@
 import React from 'react';
 import { Map, List } from 'immutable';
 
+import { Col, Row } from 'react-bootstrap';
+
+import { User } from '../base/models/User';
+import { AppURL } from '../../url/AppURL';
+
 import { SecurityAssignment, SecurityPolicy, SecurityRole } from './models';
-import {Col, Row} from "react-bootstrap";
-import {User} from "../base/models/User";
-import {AppURL} from "../../url/AppURL";
 
 interface Props {
     currentUser: User;
@@ -42,7 +44,7 @@ export class EffectiveRolesList extends React.PureComponent<Props> {
                 <hr className="principal-hr" />
                 <Row>
                     <Col xs={4} className="principal-detail-label">
-                        Permissions
+                        Effective Roles
                     </Col>
                     <Col xs={8} className="principal-detail-value">
                         <ul className="principal-detail-ul">

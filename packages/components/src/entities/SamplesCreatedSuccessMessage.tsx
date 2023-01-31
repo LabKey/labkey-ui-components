@@ -62,7 +62,7 @@ const SamplesCreatedSuccessMessageImpl: FC<SamplesCreatedSuccessMessageProps & W
 
     const [error, setError] = useState<string>();
     const count = createdSampleCount > 0 ? createdSampleCount : importedSampleCount;
-    const noun = count === 1 ? ' ' + nounSingular : ' ' + nounPlural;
+    const noun = (count === 1 ? ' ' + nounSingular : ' ' + nounPlural).toLowerCase();
     const itThem = count === 1 ? 'it' : 'them';
     const action = createdSampleCount > 0 ? 'created' : 'imported';
 

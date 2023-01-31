@@ -107,7 +107,7 @@ export const SamplesImportSuccessMessage: FC<SamplesImportSuccessMessageProps> =
 
     return (
         <>
-            Background import of {nounPlural}
+            Background import of {nounPlural.toLowerCase()}
             {fromFile} completed. To work with the imported samples,&nbsp;
             <a onClick={onSelect}>select them in the grid.</a>
         </>

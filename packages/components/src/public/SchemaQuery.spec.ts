@@ -1,27 +1,4 @@
-import { getSchemaQuery, resolveKey, resolveKeyFromJson, resolveSchemaQuery, SchemaQuery } from './SchemaQuery';
-
-describe('resolveSchemaQuery', () => {
-    test('handle undefined schemaQuery', () => {
-        expect(resolveSchemaQuery(undefined)).toBeNull();
-    });
-
-    test('schema without encoding required', () => {
-        const schemaQuery = new SchemaQuery({
-            schemaName: 'name',
-            queryName: 'my favorite query',
-        });
-        expect(resolveSchemaQuery(schemaQuery)).toBe('name/my favorite query');
-    });
-
-    test('schema with view', () => {
-        const schemaQuery = new SchemaQuery({
-            schemaName: 'name',
-            queryName: 'my favorite query',
-            viewName: 'view2'
-        });
-        expect(resolveSchemaQuery(schemaQuery)).toBe('name/my favorite query/view2');
-    });
-});
+import { getSchemaQuery, resolveKey, resolveKeyFromJson, SchemaQuery } from './SchemaQuery';
 
 describe('getSchemaQuery', () => {
     test('no decoding required, no view', () => {

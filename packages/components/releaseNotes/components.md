@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.288.0
+*Released*: 1 February 2023
+- Create components for `SamplesCreatedSuccessMessage` and `SamplesImportSuccessMessage`. Utilize `withRouter`.
+- Add URL utility to `removeParameters()`.
+- Default implementation of `sampleWizardURL` is now `getSampleWizardURL()`. Update typings to be more easily exported.
+
 ### version 2.287.0
 *Released*: 30 January 2023
 - Get product menu sections separately from user menu since they are no longer displayed together

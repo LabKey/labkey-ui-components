@@ -547,6 +547,8 @@ import {
     SampleOperation,
     SAMPLES_WITH_TYPES_FILTER,
     SampleStateType,
+    SAMPLE_DOMAIN_BASE_SYSTEM_FIELDS,
+    SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS,
 } from './internal/components/samples/constants';
 import { createMockWithRouteLeave, createMockWithRouterProps } from './internal/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
@@ -1016,6 +1018,8 @@ export {
     SAMPLE_DATA_EXPORT_CONFIG,
     SAMPLE_EXPORT_CONFIG,
     SAMPLE_INSERT_EXTRA_COLUMNS,
+    SAMPLE_DOMAIN_BASE_SYSTEM_FIELDS,
+    SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS,
     IS_ALIQUOT_COL,
     SampleTypeModel,
     deleteSampleSet,

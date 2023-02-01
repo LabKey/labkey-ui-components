@@ -296,7 +296,7 @@ async function initParents(
             filterArray.push(opFilter);
         }
 
-        return getSelectedParents(SchemaQuery.create(schema, query), filterArray, isAliquotParent);
+        return getSelectedParents(new SchemaQuery(schema, query), filterArray, isAliquotParent);
     } else if (isAliquotParent && targetQueryName) {
         return List<EntityParentType>([
             EntityParentType.create({

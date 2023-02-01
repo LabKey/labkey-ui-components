@@ -76,7 +76,7 @@ export const SampleCreatePage: FC<SampleCreatePageProps> = memo(props => {
                 // so we need to reload the queryInfo for the sample type.
                 // N.B.  We could call getDomainDetails for the sample type and see if there is an options.autoLinkTargetContainerId and
                 // clear the cache only then, but the minor optimization doesn't seem worth it.
-                invalidateQueryDetailsCache(SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, targetSampleTypeName));
+                invalidateQueryDetailsCache(new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, targetSampleTypeName));
             }
             onSampleChange();
 

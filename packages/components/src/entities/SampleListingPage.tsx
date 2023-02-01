@@ -91,7 +91,7 @@ export const SamplesImportSuccessMessage: FC<SamplesImportSuccessMessageProps> =
         try {
             selectGridIdsFromTransactionId(
                 sampleListingGridId,
-                SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType),
+                new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType),
                 transactionAuditId,
                 SAMPLES_KEY,
                 actions
@@ -321,9 +321,9 @@ export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
             setShowPrintDialog(false);
             createNotification(
                 'Successfully printed ' +
-                    numLabels +
-                    (numSamples === 0 ? ' blank ' : '') +
-                    (numLabels > 1 ? ' labels.' : ' label.')
+                numLabels +
+                (numSamples === 0 ? ' blank ' : '') +
+                (numLabels > 1 ? ' labels.' : ' label.')
             );
         },
         [createNotification]
@@ -458,7 +458,7 @@ const SampleListingPageWithQueryModels = withRouteLeave(withQueryModels(SampleLi
 export const SampleListingPage: FC<CommonPageProps & WithRouterProps> = props => {
     const { params, location } = props;
     const { sampleType } = params;
-    const listSchemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType);
+    const listSchemaQuery = new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType);
     const sampleListModelId = createGridModelId(SAMPLES_LISTING_GRID_ID, listSchemaQuery);
     const key = sampleType + (location.query?.importInProgress ? '-importing' : ''); // Issue 43154
     const { samplesGridRequiredColumns } = useSampleTypeAppContext();

@@ -11,7 +11,7 @@ import { SampleHeaderImpl } from './SampleHeader';
 import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
 
 describe('SampleHeader', () => {
-    const SQ = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'TestSampleType');
+    const SQ = new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, 'TestSampleType');
 
     const EMPTY_MODEL = makeTestQueryModel(SQ, undefined, {}, [], 0, 'empty-model').mutate({
         queryInfoLoadingState: LoadingState.LOADED,

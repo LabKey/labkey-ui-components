@@ -54,7 +54,7 @@ describe('getFindIdCountsByTypeMessage', () => {
 
 describe('FindSamplesByIdHeaderPanel', () => {
     test('loading', () => {
-        const queryModel = makeTestQueryModel(SchemaQuery.create('test', 'query'));
+        const queryModel = makeTestQueryModel(new SchemaQuery('test', 'query'));
 
         const wrapper = mount(
             <FindSamplesByIdHeaderPanel
@@ -96,7 +96,7 @@ describe('FindSamplesByIdHeaderPanel', () => {
     });
 
     test('list model loading', () => {
-        const queryModel = makeTestQueryModel(SchemaQuery.create('test', 'query'));
+        const queryModel = makeTestQueryModel(new SchemaQuery('test', 'query'));
 
         const wrapper = mount(
             <FindSamplesByIdHeaderPanel
@@ -113,7 +113,7 @@ describe('FindSamplesByIdHeaderPanel', () => {
     });
 
     test('no ids', () => {
-        const queryModel = makeTestQueryModel(SchemaQuery.create('test', 'query'), new QueryInfo(), {}, [], 0);
+        const queryModel = makeTestQueryModel(new SchemaQuery('test', 'query'), new QueryInfo(), {}, [], 0);
 
         const wrapper = mount(
             <FindSamplesByIdHeaderPanel
@@ -134,7 +134,7 @@ describe('FindSamplesByIdHeaderPanel', () => {
     });
 
     test('with error', () => {
-        const queryModel = makeTestQueryModel(SchemaQuery.create('test', 'query'), new QueryInfo(), {}, [], 0);
+        const queryModel = makeTestQueryModel(new SchemaQuery('test', 'query'), new QueryInfo(), {}, [], 0);
 
         const wrapper = mount(
             <FindSamplesByIdHeaderPanel
@@ -158,7 +158,7 @@ describe('FindSamplesByIdHeaderPanel', () => {
 
     test('found multiple samples', () => {
         const queryModel = makeTestQueryModel(
-            SchemaQuery.create('test', 'query'),
+            new SchemaQuery('test', 'query'),
             new QueryInfo(),
             { 1: {}, 2: {} },
             ['1', '2'],
@@ -194,7 +194,7 @@ describe('FindSamplesByIdHeaderPanel', () => {
 
     test('custom workWithSamplesMsg', () => {
         const queryModel = makeTestQueryModel(
-            SchemaQuery.create('test', 'query'),
+            new SchemaQuery('test', 'query'),
             new QueryInfo(),
             { 1: {}, 2: {} },
             ['1', '2'],

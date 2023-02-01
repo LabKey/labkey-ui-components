@@ -304,7 +304,7 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
             configs[gridId] = {
                 id: gridId,
                 title: 'All Samples',
-                schemaQuery: SchemaQuery.create(SCHEMAS.PICKLIST_TABLES.SCHEMA, picklist.name),
+                schemaQuery: new SchemaQuery(SCHEMAS.PICKLIST_TABLES.SCHEMA, picklist.name),
                 // For picklists, we get sample-related things via a lookup through SampleID.
                 requiredColumns: [
                     'Created',
@@ -321,7 +321,7 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
                 configs[id] = {
                     id,
                     title: sampleType,
-                    schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType),
+                    schemaQuery: new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType),
                     requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS.concat(
                         samplesEditableGridProps?.samplesGridRequiredColumns ?? []
                     ),

@@ -26,7 +26,7 @@ import { SelectionMenuItem } from './SelectionMenuItem';
 describe('SelectionMenuItem', () => {
     test('without selections', () => {
         const text = 'Menu Item Text';
-        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({
+        const model = makeTestQueryModel(new SchemaQuery('schema', 'query')).mutate({
             rowCount: 3,
             selections: new Set(),
         });
@@ -42,7 +42,7 @@ describe('SelectionMenuItem', () => {
 
     test('with selections', () => {
         const text = 'Menu Item Text';
-        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({
+        const model = makeTestQueryModel(new SchemaQuery('schema', 'query')).mutate({
             rowCount: 3,
             selections: new Set(['1', '2']),
         });
@@ -58,7 +58,7 @@ describe('SelectionMenuItem', () => {
 
     test('with maxSelection but not too many', () => {
         const text = 'Menu Item Text';
-        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({
+        const model = makeTestQueryModel(new SchemaQuery('schema', 'query')).mutate({
             rowCount: 5,
             selections: new Set(['1', '2', '3']),
         });
@@ -75,7 +75,7 @@ describe('SelectionMenuItem', () => {
 
     test('with maxSelection too many', () => {
         const text = 'Menu Item Text';
-        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({
+        const model = makeTestQueryModel(new SchemaQuery('schema', 'query')).mutate({
             rowCount: 5,
             selections: new Set(['1', '2', '3']),
         });
@@ -92,7 +92,7 @@ describe('SelectionMenuItem', () => {
 
     test('with href', () => {
         const text = 'Menu Item Text';
-        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({
+        const model = makeTestQueryModel(new SchemaQuery('schema', 'query')).mutate({
             rowCount: 5,
             selections: new Set(['1', '2', '3']),
         });

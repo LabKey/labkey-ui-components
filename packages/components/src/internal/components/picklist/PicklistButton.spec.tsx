@@ -15,7 +15,7 @@ import { AddToPicklistMenuItem } from './AddToPicklistMenuItem';
 
 describe('PicklistButton', () => {
     test('with model no selections', () => {
-        const queryModel = makeTestQueryModel(SchemaQuery.create('test', 'query'));
+        const queryModel = makeTestQueryModel(new SchemaQuery('test', 'query'));
         const featureArea = 'featureArea';
         const wrapper = mountWithServerContext(
             <PicklistButton model={queryModel} user={TEST_USER_EDITOR} metricFeatureArea={featureArea} />,
@@ -34,7 +34,7 @@ describe('PicklistButton', () => {
     });
 
     test('asSubMenu', () => {
-        const queryModel = makeTestQueryModel(SchemaQuery.create('test', 'query'));
+        const queryModel = makeTestQueryModel(new SchemaQuery('test', 'query'));
         const featureArea = 'featureArea';
         const wrapper = mountWithServerContext(
             <PicklistButton model={queryModel} user={TEST_USER_EDITOR} metricFeatureArea={featureArea} asSubMenu />,
@@ -45,7 +45,7 @@ describe('PicklistButton', () => {
     });
 
     test('with model and selections', () => {
-        let queryModel = makeTestQueryModel(SchemaQuery.create('test', 'query'));
+        let queryModel = makeTestQueryModel(new SchemaQuery('test', 'query'));
         queryModel = queryModel.mutate({ selections: new Set(['1', '2']) });
         const wrapper = mountWithServerContext(<PicklistButton model={queryModel} user={TEST_USER_EDITOR} />, {
             user: TEST_USER_EDITOR,

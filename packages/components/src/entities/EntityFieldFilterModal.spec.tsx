@@ -62,7 +62,7 @@ describe('EntityFieldFilterModal', () => {
                     jsonType: 'boolean',
                 },
             ],
-            schemaQuery: SchemaQuery.create('TestSchema', 'samplesetallfieldtypes'),
+            schemaQuery: new SchemaQuery('TestSchema', 'samplesetallfieldtypes'),
             index: 1,
         },
     ];

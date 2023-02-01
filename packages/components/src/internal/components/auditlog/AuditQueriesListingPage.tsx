@@ -155,7 +155,7 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
             actions.addModel(
                 {
                     id,
-                    schemaQuery: SchemaQuery.create(SCHEMAS.AUDIT_TABLES.SCHEMA, selected),
+                    schemaQuery: new SchemaQuery(SCHEMAS.AUDIT_TABLES.SCHEMA, selected),
                     containerFilter: this.containerFilter,
                     bindURL: isFirstModel,
                 },

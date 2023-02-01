@@ -66,12 +66,10 @@ export class SchemaQuery {
     queryName: string;
     viewName: string;
 
-    constructor(schemaQuery: Partial<SchemaQuery>) {
-        Object.assign(this, schemaQuery);
-    }
-
-    static create(schemaName: string, queryName: string, viewName?: string): SchemaQuery {
-        return new SchemaQuery({ schemaName, queryName, viewName });
+    constructor(schemaName: string, queryName: string, viewName?: string) {
+        this.schemaName = schemaName;
+        this.queryName = queryName;
+        this.viewName = viewName;
     }
 
     isEqual(sq: SchemaQuery): boolean {
@@ -112,5 +110,5 @@ export class SchemaQuery {
 export function getSchemaQuery(encodedKey: string): SchemaQuery {
     const [encodedSchema, encodedQuery, encodedViewName] = encodedKey.split('/');
 
-    return SchemaQuery.create(decodePart(encodedSchema), decodePart(encodedQuery), decodePart(encodedViewName));
+    return new SchemaQuery(decodePart(encodedSchema), decodePart(encodedQuery), decodePart(encodedViewName));
 }

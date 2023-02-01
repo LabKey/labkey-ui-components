@@ -21,7 +21,7 @@ interface Props {
 export class SampleTypeTemplateDownloadRenderer extends React.PureComponent<Props> {
     onDownload = () => {
         const { row, excludeColumns } = this.props;
-        const schemaQuery = SchemaQuery.create(
+        const schemaQuery = new SchemaQuery(
             SCHEMAS.SAMPLE_SETS.SCHEMA,
             row.getIn(['Name', 'value']) ?? row.getIn(['name', 'value'])
         );

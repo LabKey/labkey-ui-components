@@ -12,7 +12,7 @@ const DEFAULT_PROPS = {
     queryModels: {},
     actions: makeTestActions(),
     hideAssayData: true,
-    aliquotJobsQueryConfig: { schemaQuery: SchemaQuery.create('test', 'query') },
+    aliquotJobsQueryConfig: { schemaQuery: new SchemaQuery('test', 'query') },
 };
 
 const noAliquotVolume = {
@@ -35,7 +35,7 @@ const zeroAliquotVolume = {
 
 function getQueryModelFromRows(rows) {
     return makeTestQueryModel(
-        SchemaQuery.create('schema', 'query'),
+        new SchemaQuery('schema', 'query'),
         undefined,
         rows,
         Object.keys(rows),
@@ -93,7 +93,7 @@ describe('<SampleAliquotsSummaryWithModels/>', () => {
                 sampleLsid="S-20200404-1"
                 sampleSet="dirt"
                 sampleRow={noAliquotVolume}
-                aliquotsModel={makeTestQueryModel(SchemaQuery.create('schema', 'query'))}
+                aliquotsModel={makeTestQueryModel(new SchemaQuery('schema', 'query'))}
                 jobsModel={undefined}
             />
         );

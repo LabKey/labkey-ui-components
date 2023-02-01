@@ -25,7 +25,7 @@ describe('<GridAliquotViewSelector/>', () => {
 
     test('experimental flag disabled', () => {
         LABKEY.moduleContext = { samplemanagement: { 'experimental-sample-aliquot-selector': false } };
-        const model = makeTestQueryModel(SchemaQuery.create('a', 'b'));
+        const model = makeTestQueryModel(new SchemaQuery('a', 'b'));
         const component = <GridAliquotViewSelector queryModel={model} />;
         const tree = renderer.create(component).toJSON();
         expect(tree).toBe(null);
@@ -52,7 +52,7 @@ describe('<GridAliquotViewSelector/>', () => {
     }
 
     test('with queryModel, without filter', () => {
-        const model = makeTestQueryModel(SchemaQuery.create('a', 'b'));
+        const model = makeTestQueryModel(new SchemaQuery('a', 'b'));
 
         const component = <GridAliquotViewSelector queryModel={model} />;
         const wrapper = mount(component);
@@ -63,7 +63,7 @@ describe('<GridAliquotViewSelector/>', () => {
     });
 
     test('with queryModel, filtered to aliquots only', () => {
-        let model = makeTestQueryModel(SchemaQuery.create('a', 'b'));
+        let model = makeTestQueryModel(new SchemaQuery('a', 'b'));
         model = model.mutate({
             filterArray: [Filter.create(IS_ALIQUOT_COL, true)],
         });
@@ -76,7 +76,7 @@ describe('<GridAliquotViewSelector/>', () => {
     });
 
     test('with queryModel, filtered to samples only', () => {
-        let model = makeTestQueryModel(SchemaQuery.create('a', 'b'));
+        let model = makeTestQueryModel(new SchemaQuery('a', 'b'));
         model = model.mutate({
             filterArray: [Filter.create(IS_ALIQUOT_COL, false)],
         });

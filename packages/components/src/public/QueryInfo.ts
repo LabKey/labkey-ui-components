@@ -110,7 +110,7 @@ export class QueryInfo extends Record({
         let schemaQuery: SchemaQuery;
 
         if (rawQueryInfo.schemaName && rawQueryInfo.name) {
-            schemaQuery = SchemaQuery.create(rawQueryInfo.schemaName, rawQueryInfo.name);
+            schemaQuery = new SchemaQuery(rawQueryInfo.schemaName, rawQueryInfo.name);
         }
 
         return new QueryInfo(
@@ -130,7 +130,7 @@ export class QueryInfo extends Record({
         let schemaQuery: SchemaQuery;
 
         if (queryInfoJson.schemaName && queryInfoJson.name) {
-            schemaQuery = SchemaQuery.create(queryInfoJson.schemaName, queryInfoJson.name);
+            schemaQuery = new SchemaQuery(queryInfoJson.schemaName, queryInfoJson.name);
         }
         let columns = OrderedMap<string, QueryColumn>();
         Object.keys(queryInfoJson.columns).forEach(columnKey => {

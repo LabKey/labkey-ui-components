@@ -373,7 +373,7 @@ export class QueryModel {
         // Note: this default may not be appropriate outside of Biologics/SM
         if (keyValue !== undefined && schemaQuery.viewName === undefined) {
             const { schemaName, queryName } = schemaQuery;
-            this.schemaQuery = SchemaQuery.create(schemaName, queryName, ViewInfo.DETAIL_NAME);
+            this.schemaQuery = new SchemaQuery(schemaName, queryName, ViewInfo.DETAIL_NAME);
             this.bindURL = false;
         } else {
             this.schemaQuery = schemaQuery;
@@ -980,7 +980,7 @@ export class QueryModel {
         const columnFilters = Filter.getFiltersFromParameters(queryParams, prefix) || [];
         let filterArray = columnFilters.concat(searchFilters);
         let offset = offsetFromString(this.maxRows, queryParams[`${prefix}.p`]) ?? DEFAULT_OFFSET;
-        let schemaQuery = SchemaQuery.create(this.schemaName, this.queryName, viewName);
+        let schemaQuery = new SchemaQuery(this.schemaName, this.queryName, viewName);
         let selectedReportId = queryParams[`${prefix}.reportId`] ?? undefined;
         let sorts = querySortsFromString(queryParams[`${prefix}.sort`]) ?? [];
 

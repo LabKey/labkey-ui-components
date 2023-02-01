@@ -66,7 +66,7 @@ describe('HeaderCellDropdown', () => {
             title: 'Column',
             raw: QueryColumn.create({ fieldKey: 'column', sortable: true, filterable: true }),
         }),
-        model: makeTestQueryModel(SchemaQuery.create('schema', 'query')),
+        model: makeTestQueryModel(new SchemaQuery('schema', 'query')),
         handleSort: jest.fn,
         handleFilter: jest.fn,
     };
@@ -270,7 +270,7 @@ describe('HeaderCellDropdown', () => {
     });
 
     test('isSortAsc', () => {
-        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({
+        const model = makeTestQueryModel(new SchemaQuery('schema', 'query')).mutate({
             sorts: [new QuerySort({ fieldKey: 'column', dir: '' })],
         });
         const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} model={model} />);
@@ -295,7 +295,7 @@ describe('HeaderCellDropdown', () => {
         const view = ViewInfo.create({ sort: [sortObj] });
         const queryInfo = QueryInfo.create({ views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }) });
 
-        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query'), queryInfo).mutate({
+        const model = makeTestQueryModel(new SchemaQuery('schema', 'query'), queryInfo).mutate({
             sorts: [],
         });
         const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} model={model} />);
@@ -316,7 +316,7 @@ describe('HeaderCellDropdown', () => {
     });
 
     test('isSortDesc', () => {
-        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({
+        const model = makeTestQueryModel(new SchemaQuery('schema', 'query')).mutate({
             sorts: [new QuerySort({ fieldKey: 'column', dir: '-' })],
         });
         const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} model={model} />);
@@ -341,7 +341,7 @@ describe('HeaderCellDropdown', () => {
         const view = ViewInfo.create({ sort: [sortObj] });
         const queryInfo = QueryInfo.create({ views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }) });
 
-        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query'), queryInfo).mutate({
+        const model = makeTestQueryModel(new SchemaQuery('schema', 'query'), queryInfo).mutate({
             sorts: [],
         });
         const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} model={model} />);
@@ -362,7 +362,7 @@ describe('HeaderCellDropdown', () => {
     });
 
     test('one colFilters', () => {
-        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({
+        const model = makeTestQueryModel(new SchemaQuery('schema', 'query')).mutate({
             filterArray: [Filter.create('column', 'value', Filter.Types.EQUALS)],
         });
         const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} model={model} />);
@@ -381,7 +381,7 @@ describe('HeaderCellDropdown', () => {
         const view = ViewInfo.create({ filter: [filterObj] });
         const queryInfo = QueryInfo.create({ views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }) });
 
-        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query'), queryInfo).mutate({
+        const model = makeTestQueryModel(new SchemaQuery('schema', 'query'), queryInfo).mutate({
             filterArray: [],
         });
         const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} model={model} />);
@@ -400,7 +400,7 @@ describe('HeaderCellDropdown', () => {
         const view = ViewInfo.create({ filter: [filterObj] });
         const queryInfo = QueryInfo.create({ views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }) });
 
-        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query'), queryInfo).mutate({
+        const model = makeTestQueryModel(new SchemaQuery('schema', 'query'), queryInfo).mutate({
             filterArray: [Filter.create('column', 'value', Filter.Types.EQUALS)],
         });
         const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} model={model} />);

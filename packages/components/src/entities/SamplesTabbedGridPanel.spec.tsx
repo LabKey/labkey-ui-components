@@ -17,7 +17,7 @@ import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
 import { SamplesEditableGrid } from './SamplesEditableGrid';
 
-const SQ = SchemaQuery.create('schema', 'query');
+const SQ = new SchemaQuery('schema', 'query');
 const QI = QueryInfo.create({ title: 'Test title' });
 
 const QM1 = makeTestQueryModel(SQ, QI);

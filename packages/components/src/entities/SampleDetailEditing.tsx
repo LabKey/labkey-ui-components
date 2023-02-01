@@ -103,7 +103,7 @@ class SampleDetailEditingImpl extends PureComponent<Props & NotificationsContext
         const rootLsid = model.getRowValue('RootMaterialLSID');
 
         return {
-            schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet, ViewInfo.DETAIL_NAME),
+            schemaQuery: new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet, ViewInfo.DETAIL_NAME),
             baseFilters: [Filter.create('lsid', rootLsid)],
             requiredColumns: ['Name', 'Description', ...SAMPLE_STATUS_REQUIRED_COLUMNS],
             omittedColumns: [IS_ALIQUOT_COL],

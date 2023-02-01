@@ -393,10 +393,10 @@ describe('getSampleTypeTemplateUrl', () => {
 
 describe('createEntityParentKey', () => {
     test('without id', () => {
-        expect(createEntityParentKey(SchemaQuery.create('schema', 'query'))).toBe('schema:query');
+        expect(createEntityParentKey(new SchemaQuery('schema', 'query'))).toBe('schema:query');
     });
     test('with id', () => {
-        expect(createEntityParentKey(SchemaQuery.create('schema', 'query'), 'id')).toBe('schema:query:id');
+        expect(createEntityParentKey(new SchemaQuery('schema', 'query'), 'id')).toBe('schema:query:id');
     });
 });
 
@@ -914,7 +914,7 @@ describe('getUpdatedLineageRowsForBulkEdit', () => {
 
 describe('getImportItemsForAssayDefinitions', () => {
     test('empty list', () => {
-        const sampleModel = makeTestQueryModel(SchemaQuery.create('samples', 'samples'));
+        const sampleModel = makeTestQueryModel(new SchemaQuery('samples', 'samples'));
         const items = getImportItemsForAssayDefinitions(new AssayStateModel(), sampleModel);
         expect(items.size).toBe(0);
     });
@@ -924,13 +924,13 @@ describe('getImportItemsForAssayDefinitions', () => {
         let queryInfo = QueryInfo.create(sampleSet2QueryInfo);
 
         // with a query name that DOES NOT match the assay def sampleColumn lookup
-        queryInfo = queryInfo.set('schemaQuery', SchemaQuery.create('samples', 'Sample set 1')) as QueryInfo;
+        queryInfo = queryInfo.set('schemaQuery', new SchemaQuery('samples', 'Sample set 1')) as QueryInfo;
         let sampleModel = makeTestQueryModel(queryInfo.schemaQuery, queryInfo);
         let items = getImportItemsForAssayDefinitions(assayStateModel, sampleModel);
         expect(items.size).toBe(0);
 
         // with a query name that DOES match the assay def sampleColumn lookup
-        queryInfo = queryInfo.set('schemaQuery', SchemaQuery.create('samples', 'Sample set 10')) as QueryInfo;
+        queryInfo = queryInfo.set('schemaQuery', new SchemaQuery('samples', 'Sample set 10')) as QueryInfo;
         sampleModel = makeTestQueryModel(queryInfo.schemaQuery, queryInfo);
         items = getImportItemsForAssayDefinitions(assayStateModel, sampleModel);
         expect(items.size).toBe(1);
@@ -1051,7 +1051,7 @@ describe('getSamplesAssayGridQueryConfigs', () => {
 });
 
 describe('getJobCreationHref', () => {
-    const schemaQuery = SchemaQuery.create('s', 'q');
+    const schemaQuery = new SchemaQuery('s', 'q');
     const queryInfo = new QueryInfo({ pkCols: List(['pk']), schemaQuery });
     const modelId = 'id';
     const queryModel = makeTestQueryModel(schemaQuery, queryInfo, undefined, undefined, undefined, modelId);

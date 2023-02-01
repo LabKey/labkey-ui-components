@@ -3,7 +3,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 2.290.0
 *Released*: 2 February 2023
-* SchemaQuery: Convert to vanilla class, remove getQuery, getSchema, getView
+* SchemaQuery: Convert to vanilla class, remove getQuery, getSchema, getView, create
+  * Use new SchemaQuery(schemaName, queryName, viewName) instead of SchemaQuery.create
 * Remove unused resolveSchemaQuery
 
 ### version 2.289.0

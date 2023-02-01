@@ -51,7 +51,7 @@ import { SampleTypeInsightsPanel } from './SampleTypeInsightsPanel';
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 import { SampleSetDeleteModal } from './SampleSetDeleteModal';
 
-const SQ = SchemaQuery.create('schema', 'query');
+const SQ = new SchemaQuery('schema', 'query');
 
 beforeAll(() => {
     initBrowserHistoryState();

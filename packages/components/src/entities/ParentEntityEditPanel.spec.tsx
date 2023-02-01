@@ -24,7 +24,7 @@ beforeAll(() => {
 });
 
 describe('ParentEntityEditPanel', () => {
-    const schemaQuery = SchemaQuery.create('samples', 'example');
+    const schemaQuery = new SchemaQuery('samples', 'example');
     const queryInfo = QueryInfo.create({
         schemaName: schemaQuery.schemaName,
         queryName: schemaQuery.queryName,

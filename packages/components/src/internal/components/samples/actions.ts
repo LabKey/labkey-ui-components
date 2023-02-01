@@ -190,7 +190,7 @@ export function loadSelectedSamples(location: Location, sampleColumn: QueryColum
     // If the "workflowJobId" URL parameter is specified, then fetch the samples associated with the workflow job.
     if (location?.query?.workflowJobId) {
         return fetchSamples(
-            SchemaQuery.create('sampleManagement', 'inputSamples'),
+            new SchemaQuery('sampleManagement', 'inputSamples'),
             sampleColumn,
             [
                 Filter.create('ApplicationType', 'ExperimentRun'),
@@ -280,7 +280,7 @@ export async function getSelectedSampleIdsFromSelectionKey(location: Location): 
 
 export function getGroupedSampleDomainFields(sampleType: string): Promise<GroupedSampleFields> {
     return new Promise((resolve, reject) => {
-        getSampleTypeDetails(SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType))
+        getSampleTypeDetails(new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType))
             .then(sampleTypeDomain => {
                 const metaFields = [],
                     independentFields = [],
@@ -712,7 +712,7 @@ export function createQueryConfigFilteredBySample(
             model.createSampleFilter(sampleColumns, value, singleFilter, whereClausePart, useLsid, singleFilterValue),
         ],
         omittedColumns: omitSampleCols ? sampleColumns.toArray() : undefined,
-        schemaQuery: SchemaQuery.create(model.protocolSchemaName, 'Data'),
+        schemaQuery: new SchemaQuery(model.protocolSchemaName, 'Data'),
         title: model.name,
         urlPrefix: model.name,
     };
@@ -783,7 +783,7 @@ export function getSampleAliquotsQueryConfig(
     omitCols?: string[]
 ): QueryConfig {
     const omitCol = IS_ALIQUOT_COL;
-    const schemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet);
+    const schemaQuery = new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet);
 
     return {
         id: createGridModelId('sample-aliquots-' + sampleLsid, schemaQuery),

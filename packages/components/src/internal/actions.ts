@@ -599,7 +599,7 @@ export function getSelection(location: any, schemaName?: string, queryName?: str
             }
             if (!schemaQuery) {
                 if (schemaName && queryName) {
-                    schemaQuery = SchemaQuery.create(schemaName, queryName);
+                    schemaQuery = new SchemaQuery(schemaName, queryName);
                 }
             }
 

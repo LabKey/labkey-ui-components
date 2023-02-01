@@ -387,7 +387,7 @@ export async function getSamplesAssayGridQueryConfigs(
         if (activeModules?.indexOf(config.moduleName) > -1) {
             const baseConfig = {
                 title: config.title,
-                schemaQuery: SchemaQuery.create(config.schemaName, config.queryName, config.viewName),
+                schemaQuery: new SchemaQuery(config.schemaName, config.queryName, config.viewName),
                 containerFilter: config.containerFilter,
             };
 

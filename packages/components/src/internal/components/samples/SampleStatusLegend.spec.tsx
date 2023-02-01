@@ -11,7 +11,7 @@ import { SampleStatusLegendImpl } from './SampleStatusLegend';
 import { SampleStatusTag } from './SampleStatusTag';
 
 describe('SampleStatusLegend', () => {
-    const SQ = SchemaQuery.create('schema', 'query');
+    const SQ = new SchemaQuery('schema', 'query');
     const MODEL_NO_ROWS = makeTestQueryModel(SQ, new QueryInfo(), {}, [], 0).mutate({
         queryInfoLoadingState: LoadingState.LOADED,
         rowsLoadingState: LoadingState.LOADED,

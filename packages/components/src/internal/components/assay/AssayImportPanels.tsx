@@ -143,7 +143,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
 
     constructor(props: Props) {
         super(props);
-        const schemaQuery = SchemaQuery.create(props.assayDefinition.protocolSchemaName, 'Data');
+        const schemaQuery = new SchemaQuery(props.assayDefinition.protocolSchemaName, 'Data');
         this.state = {
             dataModel: new QueryModel({ id: DATA_GRID_ID, schemaQuery }),
             editorModel: new EditorModel({ id: DATA_GRID_ID }),
@@ -174,7 +174,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 {
                     id: BATCH_PROPERTIES_GRID_ID,
                     keyValue: batchId,
-                    schemaQuery: SchemaQuery.create(assayDefinition.protocolSchemaName, 'Batches'),
+                    schemaQuery: new SchemaQuery(assayDefinition.protocolSchemaName, 'Batches'),
                     requiredColumns: SCHEMAS.CBMB.concat('Name', 'RowId').toArray(),
                 },
                 true
@@ -773,7 +773,7 @@ const AssayImportPanelsBodyImpl: FC<OwnProps & WithFormStepsProps> = props => {
     const { container, user } = useServerContext();
     const key = [runId, assayDefinition.protocolSchemaName].join('|');
     const schemaQuery = useMemo(
-        () => SchemaQuery.create(assayDefinition.protocolSchemaName, 'Runs'),
+        () => new SchemaQuery(assayDefinition.protocolSchemaName, 'Runs'),
         [assayDefinition.protocolSchemaName]
     );
     const queryConfigs: QueryConfigMap = useMemo(

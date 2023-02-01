@@ -7,16 +7,18 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../internal/APIWrapp
 
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { SelectionMenuItem } from '../internal/components/menus/SelectionMenuItem';
-import { EntityDeleteModal } from './EntityDeleteModal';
+
 import { SampleTypeDataType } from '../internal/components/entities/constants';
 
 import { MAX_SELECTED_SAMPLES } from '../internal/components/samples/constants';
 
+import { EntityDeleteModal } from './EntityDeleteModal';
+
 interface Props {
-    afterSampleDelete?: (rowsToKeep?: any[]) => any;
+    afterSampleDelete?: (rowsToKeep?: any[]) => void;
     api?: ComponentsAPIWrapper;
     auditBehavior?: AuditBehaviorTypes;
-    beforeSampleDelete?: () => any;
+    beforeSampleDelete?: () => void;
     handleClick?: (cb: () => void, errorMsg?: string) => void;
     itemText?: string;
     maxDeleteRows?: number;
@@ -47,7 +49,7 @@ export const SampleDeleteMenuItem: FC<Props> = memo(props => {
             if (handleClick) handleClick(() => setShowConfirmDeleteSamples(true), 'Cannot Delete Samples');
             else setShowConfirmDeleteSamples(true);
         }
-    }, [queryModel]);
+    }, [handleClick, queryModel]);
 
     const onClose = useCallback(() => {
         setShowConfirmDeleteSamples(false);
@@ -96,9 +98,9 @@ export const SampleDeleteMenuItem: FC<Props> = memo(props => {
 
 SampleDeleteMenuItem.defaultProps = {
     api: getDefaultAPIWrapper(),
-    itemText: 'Delete',
-    verb: 'deleted and removed from storage',
-    maxDeleteRows: MAX_SELECTED_SAMPLES,
     auditBehavior: AuditBehaviorTypes.DETAILED,
+    itemText: 'Delete',
+    maxDeleteRows: MAX_SELECTED_SAMPLES,
     selectionMenuId: 'delete-samples-menu-item',
+    verb: 'deleted and removed from storage',
 };

@@ -57,7 +57,6 @@ import {
     parseScientificInt,
 } from './util/utils';
 import { resolveErrorMessage } from './util/messaging';
-import { hasModule } from './app/utils';
 import { buildURL } from './url/AppURL';
 
 import { ViewInfo } from './ViewInfo';
@@ -743,15 +742,9 @@ export function getOrderedSelectedMappedKeys(
 
 export function fetchCharts(schemaQuery: SchemaQuery, containerPath?: string): Promise<List<DataViewInfo>> {
     return new Promise((resolve, reject) => {
-        // if we know we don't have the study module, no need to make the API call
-        if (!hasModule('Study')) {
-            resolve(List<DataViewInfo>());
-            return;
-        }
-
         Ajax.request({
             url: buildURL(
-                'study-reports',
+                'reports',
                 'getReportInfos.api',
                 {
                     schemaName: schemaQuery.getSchema(),
@@ -770,7 +763,7 @@ export function fetchCharts(schemaQuery: SchemaQuery, containerPath?: string): P
                     resolve(result);
                 } else {
                     reject({
-                        error: 'study-report-getReportInfos.api responded to success without success',
+                        error: 'report-getReportInfos.api responded to success without success',
                     });
                 }
             }),

@@ -433,11 +433,9 @@ export class DomainDesign
                 const fieldIndex = row.get('fieldIndex');
 
                 return (
-                    <>
-                        <a onClick={() => scrollFunction(fieldIndex)} style={{ cursor: 'pointer' }}>
-                            {text}
-                        </a>
-                    </>
+                    <a onClick={() => scrollFunction(fieldIndex)} className="clickable">
+                        {text}
+                    </a>
                 );
             },
         });

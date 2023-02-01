@@ -63,7 +63,7 @@ export const UserLink: FC<UserLinkProps> = props => {
 
     return (
         <>
-            <a onClick={toggleDetailsModal} style={{ cursor: 'pointer' }}>
+            <a onClick={toggleDetailsModal} className="clickable">
                 {targetUserDisplayValue}
             </a>
             {showDetails && (

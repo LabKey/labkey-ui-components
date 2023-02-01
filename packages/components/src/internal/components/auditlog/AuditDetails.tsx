@@ -66,7 +66,7 @@ export class AuditDetails extends Component<Props> {
         let displayVal: any = value;
         if (value == null || value === '') displayVal = 'NA';
 
-        if (AuditDetails.isUserFieldLabel(field)) {
+        if (AuditDetails.isUserFieldLabel(field) && value !== undefined) {
             displayVal = <UserLink userId={parseInt(value, 10)} />;
         }
 

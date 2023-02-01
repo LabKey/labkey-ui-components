@@ -45,7 +45,7 @@ export const UserLink: FC<UserLinkProps> = props => {
     if (unknown) {
         return (
             <span className="gray-text" title="User may have been deleted from the system.">
-                &lt;unknown&gt;
+                &lt;unknown user&gt;
             </span>
         );
     }
@@ -53,7 +53,12 @@ export const UserLink: FC<UserLinkProps> = props => {
     if (!userId) return null;
 
     if (!isSelf && (!userCanReadUserDetails(user) || !targetUserDisplayValue)) {
-        return <span>{targetUserDisplayValue ?? userId}</span>;
+        if (targetUserDisplayValue) return <span>{targetUserDisplayValue}</span>;
+        return (
+            <span className="gray-text" title="User may have been deleted from the system.">
+                &lt;{userId}&gt;
+            </span>
+        );
     }
 
     return (

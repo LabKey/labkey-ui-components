@@ -211,3 +211,62 @@ export const SAMPLE_DATA_EXPORT_CONFIG = {
 // Issue 46037: Some plate-based assays (e.g., NAB) create samples with a bogus 'Material' sample type, which should get excluded everywhere in the application
 export const SAMPLES_WITH_TYPES_FILTER = Filter.create('SampleSet', 'Material', Filter.Types.NEQ);
 export const NON_MEDIA_SAMPLE_TYPES_FILTER = Filter.create('Category', 'media', Filter.Types.NEQ_OR_NULL);
+
+// TODO: Add note to help keep hardcodes in sync
+export const SAMPLE_DOMAIN_BASE_SYSTEM_FIELDS = [
+    {
+        'System Field': 'Name',
+        Label: 'Sample ID',
+        'Data Type': 'Text',
+        Required: false,
+        Description: 'Unique ID generated from the Naming Pattern or Aliquot Naming Pattern.',
+    },
+    {
+        'System Field': 'Description',
+        Label: 'Description',
+        'Data Type': 'Text',
+        Required: false,
+        Description: 'Contains a Description for this sample',
+    },
+    {
+        'System Field': 'SampleState',
+        Label: 'Status',
+        'Data Type': 'Integer',
+        Required: false,
+        Description: 'Represents the status of the sample',
+    },
+];
+
+export const SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS = [
+    { 'System Field': 'Units', Label: 'Units', 'Data Type': 'Text', Required: false, Description: '' },
+    {
+        'System Field': 'StoredAmount',
+        Label: 'Stored Amount',
+        'Data Type': 'Decimal (floating point)',
+        Required: false,
+        Description: '',
+    },
+    {
+        'System Field': 'AliquotCount',
+        Label: 'Aliquots Created Count',
+        'Data Type': 'Integer',
+        Required: false,
+        Description: '',
+    },
+    {
+        'System Field': 'FreezeThawCount',
+        Label: 'Freeze/Thaw Count',
+        'Data Type': 'Integer',
+        Required: false,
+        Description: '',
+    },
+    {
+        'System Field': 'StorageLocation',
+        Label: 'Storage Location',
+        'Data Type': 'Text',
+        Required: false,
+        Description: '',
+    },
+    { 'System Field': 'StorageRow', Label: 'Storage Row', 'Data Type': 'Text', Required: false, Description: '' },
+    { 'System Field': 'StorageCol', Label: 'Storage Col', 'Data Type': 'Text', Required: false, Description: '' },
+];

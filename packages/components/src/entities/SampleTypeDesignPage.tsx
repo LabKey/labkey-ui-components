@@ -28,7 +28,14 @@ import { SampleTypeDesigner } from '../internal/components/domainproperties/samp
 import { useAppContext } from '../internal/AppContext';
 import { CommonPageProps } from '../internal/models';
 
-import { isAppHomeFolder } from '../internal/app/utils';
+import { isAppHomeFolder, isFreezerManagementEnabled } from '../internal/app/utils';
+
+import {
+    SAMPLE_DOMAIN_BASE_SYSTEM_FIELDS,
+    SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS,
+} from '../internal/components/samples/constants';
+
+import { SystemField } from '../internal/components/samples/models';
 
 import { SampleTypeBasePage } from './SampleTypeBasePage';
 import { useSampleTypeAppContext } from './useSampleTypeAppContext';
@@ -39,6 +46,7 @@ const DESIGNER_HEADER =
 const BRAND_PRIMARY_COLOR = '#2980b9';
 
 function createDefaultSampleType(
+    systemFields: SystemField[],
     domainDesign?: DomainDesign,
     prefix?: string,
     showStudyProperties = false
@@ -56,6 +64,7 @@ function createDefaultSampleType(
                 fromJS({
                     nameExpression: nameExpressionVal,
                     labelColor: BRAND_PRIMARY_COLOR,
+                    systemFields,
                 })
             ),
             domainKindName: Domain.KINDS.SAMPLE_TYPE,
@@ -100,6 +109,10 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
     }, [isMedia, params, routes]);
 
     const schemaQuery = useMemo(() => SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, queryName), [queryName]);
+    const freezerManagementEnabled = isFreezerManagementEnabled(moduleContext);
+    const systemFields = freezerManagementEnabled
+        ? SAMPLE_DOMAIN_BASE_SYSTEM_FIELDS.concat(SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS)
+        : SAMPLE_DOMAIN_BASE_SYSTEM_FIELDS;
 
     const init = async () => {
         if (queryName) {
@@ -129,6 +142,8 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
                     showStudyProperties
                 ) as DomainDetails;
 
+                updatedSampleType = updatedSampleType.setIn(['options', 'systemFields'], systemFields) as DomainDetails;
+
                 if (readOnlyQueryNames?.map(q => q.toLowerCase()).indexOf(queryName.toLowerCase()) > -1) {
                     updatedSampleType = updatedSampleType.set('nameReadOnly', true) as DomainDetails;
                 }
@@ -144,11 +159,16 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
                 const expressionOptions = await api.entity.loadNameExpressionOptions();
                 setDomainContainerPath(container.path);
                 setSampleType(
-                    createDefaultSampleType(sampleType_.domainDesign, expressionOptions.prefix, showStudyProperties)
+                    createDefaultSampleType(
+                        systemFields,
+                        sampleType_.domainDesign,
+                        expressionOptions.prefix,
+                        showStudyProperties
+                    )
                 );
             } catch (reason) {
                 console.error(reason);
-                setSampleType(createDefaultSampleType());
+                setSampleType(createDefaultSampleType(systemFields));
             }
         }
         setLoadingSampleType(false);

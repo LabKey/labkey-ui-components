@@ -47,6 +47,8 @@ import { InferDomainResponse } from '../../../public/InferDomainResponse';
 
 import { FileAttachmentForm } from '../../../public/files/FileAttachmentForm';
 
+import { SystemField } from '../samples/models';
+
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     EXPAND_TRANSITION,
@@ -102,6 +104,7 @@ import {
     isFieldDeletable,
 } from './propertiesUtil';
 import { DomainPropertiesGrid } from './DomainPropertiesGrid';
+import { SystemFields } from './SystemFields';
 
 interface IDomainFormInput {
     appDomainHeaderRenderer?: HeaderRenderer;
@@ -130,6 +133,7 @@ interface IDomainFormInput {
     setFileImportData?: (file: File, shouldImportData: boolean) => any; // having this prop set is also an indicator that you want to show the file preview grid with the import data option
     showHeader?: boolean;
     successBsStyle?: string;
+    systemFields?: SystemField[];
     testMode?: boolean;
     todoIconHelpMsg?: string;
     useTheme?: boolean;
@@ -1294,7 +1298,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     renderForm(): ReactNode {
-        const { domain, appDomainHeaderRenderer, appPropertiesOnly } = this.props;
+        const { domain, appDomainHeaderRenderer, appPropertiesOnly, systemFields } = this.props;
         const { summaryViewMode, search, selectAll } = this.state;
         const hasFields = domain.fields.size > 0;
         const actions = {
@@ -1305,6 +1309,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         return (
             <>
+                {systemFields && <SystemFields systemFields={systemFields} />}
+
                 {(hasFields || !(this.shouldShowInferFromFile() || this.shouldShowImportExport())) &&
                     this.renderToolbar()}
                 {this.renderPanelHeaderContent()}
@@ -1348,6 +1354,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             fieldsAdditionalRenderer,
             domainFormDisplayOptions,
             todoIconHelpMsg,
+            systemFields,
         } = this.props;
         const { collapsed, confirmDeleteRowIndex, filePreviewData, file, bulkDeleteConfirmInfo } = this.state;
         const title = getDomainHeaderName(domain.name, headerTitle, headerPrefix);
@@ -1356,7 +1363,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 ? '' + domain.fields.size + ' Field' + (domain.fields.size > 1 ? 's' : '') + ' Defined'
                 : undefined;
         const hasFields = domain.fields.size > 0;
-        const styleToolbar = !hasFields && (this.shouldShowInferFromFile() || this.shouldShowImportExport());
+        const styleToolbar =
+            !hasFields && (this.shouldShowInferFromFile() || this.shouldShowImportExport()) && !systemFields;
 
         return (
             <>

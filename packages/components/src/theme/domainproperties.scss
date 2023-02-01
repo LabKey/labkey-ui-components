@@ -819,3 +819,39 @@
 .drag-drop-handle .fa-ellipsis-v {
     margin-right: 2px;
 }
+
+.domain-system-fields {
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+
+.domain-system-fields-header {
+    display: flex;
+    align-items: center;
+}
+
+.domain-system-fields-header__icon {
+    color: $gray-no-highlight;
+    margin-bottom: 2px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.domain-system-fields-header__text {
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 26px;
+    cursor: pointer;
+}
+
+.domain-system-fields__grid {
+    margin-top: 10px;
+}
+
+.domain-custom-fields-header__text {
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 26px;
+    margin-bottom: 5px;
+    width: 240px;
+}

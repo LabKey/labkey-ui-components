@@ -30,6 +30,7 @@ import { isProjectContainer } from '../internal/app/utils';
 import { CrossFolderSelectionResult } from '../internal/components/entities/models';
 
 import { SampleCreationTypeModal } from './SampleCreationTypeModal';
+import { getSampleWizardURL, SampleTypeWizardURLResolver } from './utils';
 
 export interface CreateSamplesSubMenuBaseProps {
     allowPooledSamples?: boolean;
@@ -43,14 +44,7 @@ export interface CreateSamplesSubMenuBaseProps {
     parentKey?: string;
     parentQueryModel?: QueryModel;
     parentType?: string;
-    sampleWizardURL: (
-        targetSampleType?: string,
-        parent?: string,
-        selectionKey?: string,
-        useSnapshotSelection?: boolean,
-        currentProductId?: string,
-        targetProductId?: string
-    ) => string | AppURL;
+    sampleWizardURL?: SampleTypeWizardURLResolver;
     selectedType?: SampleCreationType;
     selectionNoun?: string;
     selectionNounPlural?: string;
@@ -60,9 +54,9 @@ export interface CreateSamplesSubMenuBaseProps {
 
 const CreateSamplesSubMenuBaseImpl: FC<CreateSamplesSubMenuBaseProps & WithRouterProps> = memo(props => {
     const {
-        allowPooledSamples = true,
+        allowPooledSamples,
         menuCurrentChoice,
-        menuText = 'Create Samples',
+        menuText,
         parentType,
         parentKey,
         parentQueryModel,
@@ -74,8 +68,8 @@ const CreateSamplesSubMenuBaseImpl: FC<CreateSamplesSubMenuBaseProps & WithRoute
         inlineItemsCount,
         currentProductId,
         targetProductId,
-        selectionNoun = 'sample',
-        selectionNounPlural = 'samples',
+        selectionNoun,
+        selectionNounPlural,
         skipCrossFolderCheck,
         router,
     } = props;
@@ -332,5 +326,13 @@ const CreateSamplesSubMenuBaseImpl: FC<CreateSamplesSubMenuBaseProps & WithRoute
         </>
     );
 });
+
+CreateSamplesSubMenuBaseImpl.defaultProps = {
+    allowPooledSamples: true,
+    menuText: 'Create Samples',
+    sampleWizardURL: getSampleWizardURL,
+    selectionNoun: 'sample',
+    selectionNounPlural: 'samples',
+};
 
 export const CreateSamplesSubMenuBase = withRouter<CreateSamplesSubMenuBaseProps>(CreateSamplesSubMenuBaseImpl);

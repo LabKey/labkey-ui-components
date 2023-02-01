@@ -2,7 +2,7 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { ReactNode, FC, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { MenuItem } from 'react-bootstrap';
 import { fromJS, List } from 'immutable';
 import { WithRouterProps } from 'react-router';
@@ -17,7 +17,7 @@ import { User } from '../internal/components/base/models/User';
 import { AppURL } from '../internal/url/AppURL';
 import { AUDIT_KEY, SAMPLES_KEY, SAMPLE_TYPE_KEY } from '../internal/app/constants';
 import { SCHEMAS } from '../internal/schemas';
-import { selectGridIdsFromTransactionId, setSnapshotSelections } from '../internal/actions';
+import { selectGridIdsFromTransactionId } from '../internal/actions';
 import { createGridModelId, CommonPageProps } from '../internal/models';
 import { InjectedRouteLeaveProps, withRouteLeave } from '../internal/util/RouteLeave';
 import { useLabelPrintingContext } from '../internal/components/labels/LabelPrintingContextProvider';
@@ -26,7 +26,7 @@ import { getContainerFilterForLookups } from '../internal/query/api';
 import { useContainerUser } from '../internal/components/container/actions';
 import { getUserSharedContainerPermissions } from '../internal/components/user/actions';
 import { userCanEditStorageData } from '../internal/app/utils';
-import { getLocation, replaceParameter } from '../internal/util/URL';
+import { getLocation, removeParameters } from '../internal/util/URL';
 import { ColorIcon } from '../internal/components/base/ColorIcon';
 import { NotFound } from '../internal/components/base/NotFound';
 import { LoadingPage } from '../internal/components/base/LoadingPage';
@@ -36,7 +36,10 @@ import { hasActivePipelineJob } from '../internal/components/pipeline/utils';
 import { DesignerDetailPanel } from '../internal/components/domainproperties/DesignerDetailPanel';
 import { SAMPLE_DATA_EXPORT_CONFIG, SAMPLE_STATUS_REQUIRED_COLUMNS } from '../internal/components/samples/constants';
 import { PrintLabelsModal } from '../internal/components/labels/PrintLabelsModal';
+import { resolveErrorMessage } from '../internal/util/messaging';
+import { Alert } from '../internal/components/base/Alert';
 
+import { SamplesCreatedSuccessMessage } from './SamplesCreatedSuccessMessage';
 import { SampleTypeInsightsPanel } from './SampleTypeInsightsPanel';
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 import { SampleSetDeleteModal } from './SampleSetDeleteModal';
@@ -70,115 +73,43 @@ export const hasPermissions = (
     return perms.every(p => allPerms.indexOf(p) > -1);
 };
 
-function selectSamplesAndAddToStorage(
-    targetSampleTypeName: string,
-    sampleCount: number,
-    transactionAuditId: number,
-    sampleListingGridId: string,
-    navigate: (url: string | AppURL) => any,
-    actions: Actions
-): void {
-    let sampleTypeURL = AppURL.create(SAMPLES_KEY, targetSampleTypeName);
-    const schemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, targetSampleTypeName);
-    selectGridIdsFromTransactionId(sampleListingGridId, schemaQuery, transactionAuditId, SAMPLES_KEY, actions).then(
-        selected => {
-            const modelId = createGridModelId(sampleListingGridId, schemaQuery);
-            setSnapshotSelections(modelId, selected).then(() => {
-                sampleTypeURL = sampleTypeURL.addParam('addToStorageCount', sampleCount); // show AddSamplesToStorageModal
-                navigate(sampleTypeURL);
-            });
-        }
-    );
+interface SamplesImportSuccessMessageProps {
+    actions: Actions;
+    filename: string;
+    nounPlural?: string;
+    sampleListingGridId: string;
+    sampleType: string;
+    transactionAuditId: number;
 }
 
-export const getSamplesImportSuccessMessage = (
-    sampleType: string,
-    transactionAuditId: number,
-    sampleListingGridId: string,
-    filename: string,
-    actions: Actions,
-    nounPlural = 'samples'
-): ReactNode => {
+export const SamplesImportSuccessMessage: FC<SamplesImportSuccessMessageProps> = props => {
+    const { actions, filename, nounPlural = 'samples', sampleListingGridId, sampleType, transactionAuditId } = props;
     const fromFile = filename ? ' from ' + filename : '';
+    const [error, setError] = useState<string>();
+
+    const onSelect = useCallback(() => {
+        try {
+            selectGridIdsFromTransactionId(
+                sampleListingGridId,
+                SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType),
+                transactionAuditId,
+                SAMPLES_KEY,
+                actions
+            );
+        } catch (e) {
+            setError(resolveErrorMessage(e));
+        }
+    }, [actions, sampleListingGridId, sampleType, transactionAuditId]);
+
+    if (error) {
+        return <Alert>{error}</Alert>;
+    }
 
     return (
         <>
-            Background import of {nounPlural}
+            Background import of {nounPlural.toLowerCase()}
             {fromFile} completed. To work with the imported samples,&nbsp;
-            <a
-                onClick={() =>
-                    selectGridIdsFromTransactionId(
-                        sampleListingGridId,
-                        SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType),
-                        transactionAuditId,
-                        SAMPLES_KEY,
-                        actions
-                    )
-                }
-            >
-                select them in the grid.
-            </a>
-        </>
-    );
-};
-
-export const getSamplesCreatedSuccessMessage = (
-    sampleType: string,
-    transactionAuditId: number,
-    createdSampleCount: number,
-    importedSampleCount: number,
-    showAddToStorage: boolean,
-    sampleListingGridId: string,
-    navigate: (url: string | AppURL) => void,
-    actions: Actions,
-    nounSingular = 'item',
-    nounPlural = 'items'
-): ReactNode => {
-    const count = createdSampleCount > 0 ? createdSampleCount : importedSampleCount;
-    const noun = count == 1 ? ' ' + nounSingular : ' ' + nounPlural;
-    const itThem = count == 1 ? 'it' : 'them';
-    const action = createdSampleCount > 0 ? 'created' : 'imported';
-
-    return (
-        <>
-            Successfully {action} {count} {noun}.&nbsp;
-            {showAddToStorage && (
-                <>
-                    <a
-                        onClick={() =>
-                            selectSamplesAndAddToStorage(
-                                sampleType,
-                                count,
-                                transactionAuditId,
-                                sampleListingGridId,
-                                navigate,
-                                actions
-                            )
-                        }
-                    >
-                        Add {itThem} to storage
-                    </a>
-                    &nbsp;now or
-                </>
-            )}
-            {transactionAuditId && (
-                <>
-                    <a
-                        onClick={() =>
-                            selectGridIdsFromTransactionId(
-                                sampleListingGridId,
-                                SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType),
-                                transactionAuditId,
-                                SAMPLES_KEY,
-                                actions
-                            )
-                        }
-                    >
-                        &nbsp;{showAddToStorage ? 'select' : 'Select'} {itThem} in the grid&nbsp;
-                    </a>
-                </>
-            )}
-            to work with {itThem}.
+            <a onClick={onSelect}>select them in the grid.</a>
         </>
     );
 };
@@ -229,39 +160,42 @@ export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
     useEffect(() => {
         if (!isLoaded) return;
 
-        const { transactionAuditId, createdSampleCount, importedSampleCount } = props.location?.query;
-        const sampleType = listModel.schemaQuery.getQuery();
+        const { createdSampleCount, importFile, importedSampleCount, transactionAuditId } = props.location?.query;
+        const _sampleType = listModel.schemaQuery.getQuery();
 
         if (transactionAuditId) {
-            if (createdSampleCount || importedSampleCount) {
+            const createdCount = parseInt(createdSampleCount, 10);
+            const importedCount = parseInt(importedSampleCount, 10);
+
+            if (createdCount || importedCount) {
                 const canAddToStorage = userCanEditStorageData(user);
                 createNotification(
                     {
-                        message: getSamplesCreatedSuccessMessage(
-                            sampleType,
-                            transactionAuditId,
-                            createdSampleCount,
-                            importedSampleCount,
-                            canAddToStorage,
-                            SAMPLES_LISTING_GRID_ID,
-                            navigate,
-                            actions,
-                            'sample',
-                            'samples'
+                        message: (
+                            <SamplesCreatedSuccessMessage
+                                actions={actions}
+                                createdSampleCount={createdCount}
+                                importedSampleCount={importedCount}
+                                sampleListingGridId={SAMPLES_LISTING_GRID_ID}
+                                sampleType={_sampleType}
+                                showAddToStorage={canAddToStorage}
+                                transactionAuditId={transactionAuditId}
+                            />
                         ),
                     },
                     true
                 );
             } else {
-                const filename = props.location?.query?.importFile;
                 createNotification(
                     {
-                        message: getSamplesImportSuccessMessage(
-                            sampleType,
-                            transactionAuditId,
-                            SAMPLES_LISTING_GRID_ID,
-                            filename,
-                            actions
+                        message: (
+                            <SamplesImportSuccessMessage
+                                actions={actions}
+                                sampleListingGridId={SAMPLES_LISTING_GRID_ID}
+                                sampleType={_sampleType}
+                                filename={importFile}
+                                transactionAuditId={transactionAuditId}
+                            />
                         ),
                     },
                     true
@@ -270,15 +204,13 @@ export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
         }
 
         // Issue 44278: Remove these parameters after using them so a cancel action from the next page doesn't regenerate the notification
-        replaceParameter(getLocation(), 'createdSampleCount', undefined);
-        replaceParameter(getLocation(), 'importedSampleCount', undefined);
-        replaceParameter(getLocation(), 'transactionAuditId', undefined);
+        removeParameters(getLocation(), 'createdSampleCount', 'importedSampleCount', 'transactionAuditId');
     }, [isLoaded]);
 
     useEffect(() => {
         if (props.location?.query?.addToStorageCount > 0) {
             setShowAddToStorage(true);
-            replaceParameter(getLocation(), 'addToStorageCount', undefined);
+            removeParameters(getLocation(), 'addToStorageCount');
         }
     }, [props.location?.query?.addToStorageCount]);
 

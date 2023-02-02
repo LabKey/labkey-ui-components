@@ -11,7 +11,7 @@ import { GroupMembership, MemberType } from '../administration/models';
 interface Props {
     asRow?: boolean;
     currentUser: User;
-    groups: [{ displayValue: string; value: number }];
+    groups: Array<{ displayValue: string; value: number }>;
     showLinks?: boolean;
 }
 

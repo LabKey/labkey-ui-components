@@ -417,6 +417,15 @@ describe('QueryColumn', () => {
             }).resolveFieldKey()
         ).toBe('name$Sslash/displayColumn1$SdisplayColumn2');
     });
+
+    test('isUserLookup', () => {
+       expect(QueryColumn.isUserLookup(undefined)).toBeFalsy();
+       expect(QueryColumn.isUserLookup(null)).toBeFalsy();
+       expect(QueryColumn.isUserLookup({})).toBeFalsy();
+       expect(QueryColumn.isUserLookup({ schemaName: 'test', queryName: 'test' })).toBeFalsy();
+       expect(QueryColumn.isUserLookup({ schemaName: 'core', queryName: 'Users' })).toBeTruthy();
+       expect(QueryColumn.isUserLookup({ schemaName: 'core', queryName: 'SiteUsers' })).toBeTruthy();
+    });
 });
 
 describe('insertColumnFilter', () => {

@@ -40,10 +40,7 @@ beforeAll(() => {
     initUnitTestMocks();
 });
 
-const SCHEMA_QUERY = new SchemaQuery({
-    schemaName: 'assay.General.GPAT 1',
-    queryName: 'Data',
-});
+const SCHEMA_QUERY = new SchemaQuery( 'assay.General.GPAT 1', 'Data');
 
 describe('QueryFormInputs', () => {
     test('default properties with queryInfo', () => {

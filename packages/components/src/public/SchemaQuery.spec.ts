@@ -2,42 +2,17 @@ import { getSchemaQuery, resolveKey, resolveKeyFromJson, SchemaQuery } from './S
 
 describe('getSchemaQuery', () => {
     test('no decoding required, no view', () => {
-        expect(getSchemaQuery('name/query')).toEqual(
-            new SchemaQuery({
-                schemaName: 'name',
-                queryName: 'query',
-            })
-        );
-        expect(getSchemaQuery('name/query/view')).toEqual(
-            new SchemaQuery({
-                schemaName: 'name',
-                queryName: 'query',
-                viewName: 'view',
-            })
-        );
+        expect(getSchemaQuery('name/query')).toEqual(new SchemaQuery('name', 'query'));
+        expect(getSchemaQuery('name/query/view')).toEqual(new SchemaQuery('name', 'query', 'view'));
     });
 
     test('no decoding required, with view', () => {});
 
     test('decoding required', () => {
-        expect(getSchemaQuery('my$Sname/just$pask')).toEqual(
-            new SchemaQuery({
-                schemaName: 'my/name',
-                queryName: 'just.ask',
-            })
-        );
-        expect(getSchemaQuery('one$ptwo$pthree$d/q1')).toEqual(
-            new SchemaQuery({
-                schemaName: 'one.two.three$',
-                queryName: 'q1',
-            })
-        );
+        expect(getSchemaQuery('my$Sname/just$pask')).toEqual(new SchemaQuery('my/name', 'just.ask'));
+        expect(getSchemaQuery('one$ptwo$pthree$d/q1')).toEqual(new SchemaQuery('one.two.three$', 'q1'));
         expect(getSchemaQuery('one$ptwo$pthree$d/q1/view$s2$d')).toEqual(
-            new SchemaQuery({
-                schemaName: 'one.two.three$',
-                queryName: 'q1',
-                viewName: 'view/2$',
-            })
+            new SchemaQuery('one.two.three$', 'q1', 'view/2$')
         );
     });
 });

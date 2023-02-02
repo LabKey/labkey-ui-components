@@ -98,7 +98,7 @@ export class TimelineEventModel extends Record({
         fields.subEventType = raw['subEventType'];
         fields.summary = raw['summary'];
         fields.user = fromJS(raw['user']);
-        fields.eventUserId = raw['user']['value'];
+        fields.eventUserId = raw['user']?.['value'];
         fields.timestamp = fromJS(raw['timestamp']);
         if (raw['timestamp']['value'])
             fields.eventTimestamp = timezoneStr

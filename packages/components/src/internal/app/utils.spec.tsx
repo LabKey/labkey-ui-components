@@ -54,6 +54,8 @@ import {
     userCanDesignLocations,
     userCanDesignSourceTypes,
     userCanEditStorageData,
+    userCanReadUserDetails,
+    userCanReadGroupDetails,
 } from './utils';
 import {
     ASSAYS_KEY,
@@ -432,6 +434,30 @@ describe('utils', () => {
         expect(userCanEditStorageData(TEST_USER_APP_ADMIN)).toBeFalsy();
         expect(userCanEditStorageData(TEST_USER_STORAGE_DESIGNER)).toBeFalsy();
         expect(userCanEditStorageData(TEST_USER_STORAGE_EDITOR)).toBeTruthy();
+    });
+
+    test('userCanReadUserDetails', () => {
+        expect(userCanReadUserDetails(TEST_USER_GUEST)).toBeFalsy();
+        expect(userCanReadUserDetails(TEST_USER_READER)).toBeFalsy();
+        expect(userCanReadUserDetails(TEST_USER_AUTHOR)).toBeFalsy();
+        expect(userCanReadUserDetails(TEST_USER_EDITOR)).toBeFalsy();
+        expect(userCanReadUserDetails(TEST_USER_ASSAY_DESIGNER)).toBeFalsy();
+        expect(userCanReadUserDetails(TEST_USER_FOLDER_ADMIN)).toBeTruthy();
+        expect(userCanReadUserDetails(TEST_USER_APP_ADMIN)).toBeTruthy();
+        expect(userCanReadUserDetails(TEST_USER_STORAGE_DESIGNER)).toBeFalsy();
+        expect(userCanReadUserDetails(TEST_USER_STORAGE_EDITOR)).toBeFalsy();
+    });
+
+    test('userCanReadGroupDetails', () => {
+        expect(userCanReadGroupDetails(TEST_USER_GUEST)).toBeFalsy();
+        expect(userCanReadGroupDetails(TEST_USER_READER)).toBeFalsy();
+        expect(userCanReadGroupDetails(TEST_USER_AUTHOR)).toBeFalsy();
+        expect(userCanReadGroupDetails(TEST_USER_EDITOR)).toBeFalsy();
+        expect(userCanReadGroupDetails(TEST_USER_ASSAY_DESIGNER)).toBeFalsy();
+        expect(userCanReadGroupDetails(TEST_USER_FOLDER_ADMIN)).toBeTruthy();
+        expect(userCanReadGroupDetails(TEST_USER_APP_ADMIN)).toBeTruthy();
+        expect(userCanReadGroupDetails(TEST_USER_STORAGE_DESIGNER)).toBeFalsy();
+        expect(userCanReadGroupDetails(TEST_USER_STORAGE_EDITOR)).toBeFalsy();
     });
 
     test('isELNEnabled', () => {

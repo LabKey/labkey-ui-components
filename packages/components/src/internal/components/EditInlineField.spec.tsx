@@ -1,14 +1,17 @@
 import React from 'react';
-import { mount, ReactWrapper } from 'enzyme';
+import { ReactWrapper } from 'enzyme';
 
 import { mountWithServerContext } from '../testHelpers';
 
 import { QueryColumn } from '../../public/QueryColumn';
 
+import { TEST_USER_EDITOR } from '../userFixtures';
+
 import { EditInlineField } from './EditInlineField';
 import { DateInput } from './DateInput';
 
 import { TextChoiceInput } from './forms/input/TextChoiceInput';
+import { UserLink } from './user/UserLink';
 
 beforeAll(() => {
     LABKEY.container = {
@@ -29,7 +32,9 @@ describe('EditInlineField', () => {
         label: 'Test Label',
     };
 
-    const SERVER_CONTEXT = {};
+    const SERVER_CONTEXT = {
+        user: TEST_USER_EDITOR,
+    };
 
     function validate(wrapper: ReactWrapper, editing = false, allowEdit = true, type?: Record<string, number>): void {
         expect(wrapper.find('.edit-inline-field__label')).toHaveLength(!editing ? 1 : 0);
@@ -42,6 +47,8 @@ describe('EditInlineField', () => {
         expect(wrapper.find(DateInput)).toHaveLength(type?.date ?? 0);
         expect(wrapper.find('textarea')).toHaveLength(type?.textarea ?? 0);
         expect(wrapper.find('input')).toHaveLength(type?.text ?? type?.date ?? 0);
+
+        expect(wrapper.find(UserLink)).toHaveLength(type?.user ?? 0);
     }
 
     test('default props', () => {
@@ -185,6 +192,30 @@ describe('EditInlineField', () => {
         wrapper.find('.edit-inline-field__toggle').simulate('click');
         validate(wrapper, true, true, { text: 2 });
         expect(wrapper.find(TextChoiceInput)).toHaveLength(1);
+        wrapper.unmount();
+    });
+
+    test('isUser', () => {
+        const wrapper = mountWithServerContext(
+            <EditInlineField
+                {...DEFAULT_PROPS}
+                column={QueryColumn.create({
+                    fieldKey: 'test',
+                    caption: 'Test',
+                    readOnly: false,
+                    userEditable: true,
+                    shownInUpdateView: true,
+                    lookup: {
+                        schemaName: 'core',
+                        queryName: 'users',
+                    },
+                })}
+            />,
+            SERVER_CONTEXT
+        );
+        validate(wrapper, false, true, { user: 1 });
+        wrapper.find('.edit-inline-field__toggle').simulate('click');
+        validate(wrapper, true, true, { text: 1 });
         wrapper.unmount();
     });
 });

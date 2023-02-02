@@ -21,7 +21,12 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { hasPermissions } from '../../../entities/SampleListingPage';
 
-import { getUserDetailsRowData, getUserGroups, updateUserDetails } from './actions';
+import { caseInsensitive } from '../../util/utils';
+
+import { GroupsList } from '../permissions/GroupsList';
+
+import { getUserDetailsRowData, updateUserDetails } from './actions';
+import { selectRowsUserProps } from './UserDetailsPanel';
 
 const FIELDS_TO_EXCLUDE = List<string>([
     'userid',
@@ -41,7 +46,7 @@ const DEFAULT_AVATAR_PATH = '/_images/defaultavatar.png';
 
 interface State {
     avatar: File;
-    groups: string;
+    groups: [{ displayValue: string; value: number }];
     hasError: boolean;
     queryInfo: QueryInfo;
     reloadRequired: boolean;
@@ -49,8 +54,10 @@ interface State {
 }
 
 interface Props {
+    getIsDirty: () => boolean;
     onCancel: () => void;
     onSuccess: (result: {}, shouldReload: boolean) => void;
+    setIsDirty: (isDirty: boolean) => void;
     user: User;
     userProperties: Record<string, any>;
 }
@@ -78,10 +85,10 @@ export class UserProfile extends PureComponent<Props, State> {
             this.setState(() => ({ hasError: true }));
         }
 
-        if (hasPermissions(this.props.user, [PermissionTypes.CanSeeGroupDetails])) {
+        if (hasPermissions(this.props.user, [PermissionTypes.CanSeeUserDetails])) {
             try {
-                const groupsResult = await getUserGroups(this.props.user.id);
-                const groups = groupsResult.join(', ');
+                const response = await selectRowsUserProps(this.props.user.id);
+                const groups = caseInsensitive(response, 'Groups');
                 this.setState(() => ({ groups }));
             } catch (e) {
                 console.error(resolveErrorMessage(e) ?? 'Failed to load group data');
@@ -97,24 +104,33 @@ export class UserProfile extends PureComponent<Props, State> {
     };
 
     footer() {
+        const { user } = this.props;
         const { groups } = this.state;
 
         if (groups) {
             return (
                 <div className="form-group row">
                     <label className="control-label col-sm-3 text-left col-xs-12"> Groups </label>
-                    <div className="col-sm-9 col-md-9 col-xs-12"> {groups} </div>
+                    <div className="col-sm-9 col-md-9 col-xs-12">
+                        <GroupsList currentUser={user} groups={groups} asRow={false} />
+                    </div>
                 </div>
             );
         }
     }
 
     onAvatarFileChange = (files: {}): void => {
+        this.onFormChange();
         this.setState(() => ({ avatar: files[USER_AVATAR_FILE] }));
     };
 
     removeCurrentAvatar = (): void => {
+        this.onFormChange();
         this.setState({ removeCurrentAvatar: true });
+    };
+
+    onFormChange = (): void => {
+        this.props.setIsDirty(true);
     };
 
     submitUserDetails = (data: OrderedMap<string, any>): Promise<any> => {
@@ -191,6 +207,7 @@ export class UserProfile extends PureComponent<Props, State> {
                     includeCountField={false}
                     submitText="Save"
                     isSubmittedText="Saving..."
+                    onFormChange={this.onFormChange}
                     onSubmit={this.submitUserDetails}
                     onSuccess={this.onSuccess}
                     onHide={onCancel}
@@ -203,13 +220,14 @@ export class UserProfile extends PureComponent<Props, State> {
     }
 
     render() {
+        const { userProperties } = this.props;
         const { hasError, queryInfo } = this.state;
 
         return (
             <>
                 {hasError ? (
                     <Alert>{getActionErrorMessage('There was a problem loading your user profile', 'profile')}</Alert>
-                ) : !queryInfo ? (
+                ) : !queryInfo || !userProperties ? (
                     <LoadingSpinner />
                 ) : (
                     this.renderForm()

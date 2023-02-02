@@ -235,6 +235,14 @@ export class QueryColumn extends Record({
     static ALIQUOTED_FROM_CAPTION = 'Aliquoted From';
     static ALIQUOTED_FROM_LSID = 'AliquotedFromLSID';
 
+    static isUserLookup(lookupInfo: Record<string, any>): boolean {
+        if (!lookupInfo) return false;
+
+        const lcSchema = lookupInfo.schemaName?.toLowerCase();
+        const lcQuery = lookupInfo.queryName?.toLowerCase();
+        return lcSchema === 'core' && (lcQuery === 'users' || lcQuery === 'siteusers');
+    }
+
     get index(): string {
         // See Issues 41621, 45148
         // The server provides data indices into row data from selectRows based on FieldKey. In the

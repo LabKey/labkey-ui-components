@@ -35,7 +35,7 @@ export interface SecurityAPIWrapper {
     fetchGroups: (projectPath: string) => Promise<FetchedGroup[]>;
     fetchPolicy: (
         containerId: string,
-        principalsById: Map<number, Principal>,
+        principalsById?: Map<number, Principal>,
         inactiveUsersById?: Map<number, Principal>
     ) => Promise<SecurityPolicy>;
     getAuditLogData: (columns: string, filterCol: string, filterVal: string | number) => Promise<string>;

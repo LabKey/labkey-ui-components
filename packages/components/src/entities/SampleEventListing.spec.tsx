@@ -8,6 +8,8 @@ import DUMMY_TIMELINE from '../test/data/SampleTimeline.json';
 
 import { TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT } from '../internal/productFixtures';
 
+import { TEST_USER_APP_ADMIN, TEST_USER_READER } from '../internal/userFixtures';
+
 import { SampleEventListing } from './SampleEventListing';
 
 beforeAll(() => {
@@ -36,26 +38,26 @@ describe('<SampleEventListing/>', () => {
         assayReimportEvent = events[7];
 
     test('Without selected event', () => {
-        const tree = renderer.create(
+        const tree = shallow(
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
-                showUserLinks={true}
                 onEventSelection={jest.fn()}
                 events={events}
+                user={TEST_USER_APP_ADMIN}
             />
         );
         expect(tree).toMatchSnapshot();
     });
 
     test('Without view user link perm', () => {
-        const tree = renderer.create(
+        const tree = shallow(
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
-                showUserLinks={false}
                 onEventSelection={jest.fn()}
                 events={events}
+                user={TEST_USER_READER}
             />
         );
         expect(tree).toMatchSnapshot();
@@ -66,9 +68,9 @@ describe('<SampleEventListing/>', () => {
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
-                showUserLinks={true}
                 onEventSelection={jest.fn()}
                 events={events}
+                user={TEST_USER_APP_ADMIN}
             />
         );
 
@@ -85,9 +87,9 @@ describe('<SampleEventListing/>', () => {
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
-                showUserLinks={true}
                 onEventSelection={jest.fn()}
                 events={events}
+                user={TEST_USER_APP_ADMIN}
             />
         );
 
@@ -103,56 +105,56 @@ describe('<SampleEventListing/>', () => {
     });
 
     test('With selected sample registration event', () => {
-        const tree = renderer.create(
+        const tree = shallow(
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
-                showUserLinks={true}
                 onEventSelection={jest.fn()}
                 events={events}
                 selectedEvent={registrationEvent}
+                user={TEST_USER_APP_ADMIN}
             />
         );
         expect(tree).toMatchSnapshot();
     });
 
     test('With selected sample update event', () => {
-        const tree = renderer.create(
+        const tree = shallow(
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
-                showUserLinks={true}
                 onEventSelection={jest.fn()}
                 events={events}
                 selectedEvent={sampleUpdateEvent}
+                user={TEST_USER_APP_ADMIN}
             />
         );
         expect(tree).toMatchSnapshot();
     });
 
     test('With selected assay upload event', () => {
-        const tree = renderer.create(
+        const tree = shallow(
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
-                showUserLinks={true}
                 onEventSelection={jest.fn()}
                 events={events}
                 selectedEvent={assayDataUploadEvent}
+                user={TEST_USER_APP_ADMIN}
             />
         );
         expect(tree).toMatchSnapshot();
     });
 
     test('With selected assay re-import event', () => {
-        const tree = renderer.create(
+        const tree = shallow(
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
-                showUserLinks={true}
                 onEventSelection={jest.fn()}
                 events={events}
                 selectedEvent={assayReimportEvent}
+                user={TEST_USER_APP_ADMIN}
             />
         );
         expect(tree).toMatchSnapshot();
@@ -162,14 +164,14 @@ describe('<SampleEventListing/>', () => {
         LABKEY.moduleContext = {
             ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
         };
-        const tree = renderer.create(
+        const tree = shallow(
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
-                showUserLinks={true}
                 onEventSelection={jest.fn()}
                 events={events}
                 selectedEvent={jobCompleted}
+                user={TEST_USER_APP_ADMIN}
             />
         );
         expect(tree).toMatchSnapshot();
@@ -180,10 +182,10 @@ describe('<SampleEventListing/>', () => {
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
-                showUserLinks={true}
                 onEventSelection={jest.fn()}
                 events={events}
                 selectedEvent={jobCompleted}
+                user={TEST_USER_APP_ADMIN}
             />
         );
 
@@ -195,28 +197,28 @@ describe('<SampleEventListing/>', () => {
     });
 
     test('With selected job that is not completed and has no related job events', () => {
-        const tree = renderer.create(
+        const tree = shallow(
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
-                showUserLinks={true}
                 onEventSelection={jest.fn()}
                 events={events}
                 selectedEvent={jobNotCompletedNoRelated}
+                user={TEST_USER_APP_ADMIN}
             />
         );
         expect(tree).toMatchSnapshot();
     });
 
     test('With selected job that is not completed but has related job events', () => {
-        const tree = renderer.create(
+        const tree = shallow(
             <SampleEventListing
                 sampleId={86873}
                 sampleName="S-20200404-1"
-                showUserLinks={true}
                 onEventSelection={jest.fn()}
                 events={events}
                 selectedEvent={jobNotCompleteWithRelated}
+                user={TEST_USER_APP_ADMIN}
             />
         );
         expect(tree).toMatchSnapshot();

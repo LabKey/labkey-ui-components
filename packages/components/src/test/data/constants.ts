@@ -360,7 +360,7 @@ export const TIMELINE_DATA = [
     {
         summary: 'Checked out',
         eventType: 'inventory',
-        user: { displayValue: 'xyang', urlType: 'user', value: 1005 },
+        user: undefined, // simulate a deleted user
         entity: { displayValue: 'S-1', value: 6, url: '/labkey/inventory0804/experiment-showMaterial.view?rowId=6' },
         rowId: 49,
         timestamp: { formattedValue: '2020-05-04 23:00', value: '2020-05-04 23:00:23.403' },

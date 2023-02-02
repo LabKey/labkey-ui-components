@@ -4,8 +4,12 @@ import { shallow, mount } from 'enzyme';
 
 import { TIMELINE_DATA } from '../../../test/data/constants';
 
-import { TimelineView } from './TimelineView';
+import { TEST_USER_APP_ADMIN, TEST_USER_READER } from '../../userFixtures';
+import { mountWithServerContext } from '../../testHelpers';
+import { UserLink } from '../user/UserLink';
+
 import { TimelineEventModel } from './models';
+import { TimelineView } from './TimelineView';
 
 const events: TimelineEventModel[] = [];
 TIMELINE_DATA.forEach(event => events.push(TimelineEventModel.create(event, 'UTC')));
@@ -19,8 +23,8 @@ describe('<TimelineView />', () => {
                 selectionDisabled={true}
                 onEventSelection={jest.fn()}
                 selectedEvent={null}
-                showUserLinks={true}
                 selectedEntityConnectionInfo={null}
+                user={TEST_USER_APP_ADMIN}
             />
         );
 
@@ -35,8 +39,8 @@ describe('<TimelineView />', () => {
                 selectionDisabled={true}
                 onEventSelection={jest.fn()}
                 selectedEvent={null}
-                showUserLinks={false}
                 selectedEntityConnectionInfo={null}
+                user={TEST_USER_READER}
             />
         );
 
@@ -51,8 +55,8 @@ describe('<TimelineView />', () => {
                 selectionDisabled={true}
                 onEventSelection={jest.fn()}
                 selectedEvent={events[1]}
-                showUserLinks={true}
                 selectedEntityConnectionInfo={[{ firstEvent: events[1], lastEvent: events[5], isCompleted: true }]}
+                user={TEST_USER_APP_ADMIN}
             />
         );
 
@@ -67,8 +71,8 @@ describe('<TimelineView />', () => {
                 selectionDisabled={true}
                 onEventSelection={jest.fn()}
                 selectedEvent={events[7]}
-                showUserLinks={true}
                 selectedEntityConnectionInfo={[{ firstEvent: events[2], lastEvent: events[7], isCompleted: false }]}
+                user={TEST_USER_APP_ADMIN}
             />
         );
 
@@ -83,20 +87,28 @@ describe('<TimelineView />', () => {
                 content: <span>hello</span>,
             };
         };
-        const wrapper = mount(
+        const wrapper = mountWithServerContext(
             <TimelineView
                 events={events}
                 showRecentFirst={false}
                 selectionDisabled={true}
                 onEventSelection={jest.fn()}
                 selectedEvent={events[7]}
-                showUserLinks={true}
                 selectedEntityConnectionInfo={null}
                 getInfoBubbleContent={getInfoBubbleContent}
-            />
+                user={TEST_USER_APP_ADMIN}
+            />,
+            { user: TEST_USER_APP_ADMIN }
         );
 
         expect(wrapper.find('.timeline-info-icon')).toHaveLength(8);
+        expect(wrapper.find(UserLink)).toHaveLength(8);
+
+        // test unknown user display
+        expect(wrapper.find(UserLink).first().prop('userDisplayValue')).toBe('Vader');
+        expect(wrapper.find(UserLink).first().prop('unknown')).toBeFalsy();
+        expect(wrapper.find(UserLink).last().prop('userDisplayValue')).toBeUndefined();
+        expect(wrapper.find(UserLink).last().prop('unknown')).toBeTruthy();
 
         wrapper.unmount();
     });

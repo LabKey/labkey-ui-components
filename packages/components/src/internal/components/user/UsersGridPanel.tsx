@@ -40,7 +40,6 @@ const OMITTED_COLUMNS = [
     'mobile',
     'pager',
     'groups',
-    'hasPassword',
     'firstName',
     'lastName',
     'description',
@@ -339,6 +338,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                         <Col xs={12} md={4}>
                             <UserDetailsPanel
                                 {...this.props}
+                                currentUser={user}
                                 userId={selectedUserId}
                                 onUsersStateChangeComplete={this.onUsersStateChangeComplete}
                             />

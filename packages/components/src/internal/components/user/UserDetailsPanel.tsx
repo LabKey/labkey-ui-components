@@ -2,65 +2,131 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react';
+import React, { FC } from 'react';
 import moment from 'moment';
-import { Panel, Row, Col, Button } from 'react-bootstrap';
+import { Button, Col, Modal, Panel, Row } from 'react-bootstrap';
 import { Map } from 'immutable';
-import { getServerContext, Utils } from '@labkey/api';
+import { Filter, getServerContext, Security, Utils } from '@labkey/api';
 
-import { EffectiveRolesList } from '../permissions/EffectiveRolesList';
-
-import { getMomentDateTimeFormat } from '../../util/Date';
-
-import { SecurityPolicy, SecurityRole } from '../permissions/models';
+import classNames from 'classnames';
 
 import { caseInsensitive } from '../../util/utils';
-
 import { LoadingSpinner } from '../base/LoadingSpinner';
+import { getMomentDateTimeFormat } from '../../util/Date';
+import { SecurityPolicy, SecurityRole } from '../permissions/models';
+import { EffectiveRolesList } from '../permissions/EffectiveRolesList';
+import { selectRows } from '../../query/selectRows';
+import { SCHEMAS } from '../../schemas';
+import { flattenValuesFromRow } from '../../../public/QueryModel/QueryModel';
 
+import { GroupsList } from '../permissions/GroupsList';
+import { AppURL } from '../../url/AppURL';
+import { User } from '../base/models/User';
+import { getDefaultAPIWrapper } from '../../APIWrapper';
+import { SecurityAPIWrapper } from '../security/APIWrapper';
+import { Container } from '../base/models/Container';
+import { getRolesByUniqueName, processGetRolesResponse } from '../permissions/actions';
+
+import { UserResetPasswordConfirmModal } from './UserResetPasswordConfirmModal';
 import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
 import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
-import { UserResetPasswordConfirmModal } from './UserResetPasswordConfirmModal';
-import { getUserGroups, getUserProperties } from './actions';
-import { MembersList } from './GroupsList';
+
+import { getUserProperties } from './actions';
+
+interface UserDetailRowProps {
+    label: string;
+    value: React.ReactNode;
+}
+
+const UserDetailRow: FC<UserDetailRowProps> = ({ label, value }) => {
+    return (
+        <Row>
+            <Col xs={4} className="principal-detail-label">
+                {label}
+            </Col>
+            <Col xs={8} className="principal-detail-value">
+                {value}
+            </Col>
+        </Row>
+    );
+};
+
+export const selectRowsUserProps = function (userId: number): Promise<{ [key: string]: any }> {
+    return new Promise((resolve, reject) => {
+        selectRows({
+            filterArray: [Filter.create('UserId', userId)],
+            schemaQuery: SCHEMAS.CORE_TABLES.USERS,
+        })
+            .then(response => {
+                if (response.rows.length > 0) {
+                    const row = response.rows[0];
+                    const rowValues = flattenValuesFromRow(row, Object.keys(row));
+
+                    // special case for the Groups prop as it is an array
+                    rowValues.Groups = caseInsensitive(row, 'Groups');
+
+                    resolve(rowValues);
+                } else {
+                    resolve({});
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                reject(error);
+            });
+    });
+};
 
 interface Props {
     allowDelete?: boolean;
     allowResetPassword?: boolean;
+    api?: SecurityAPIWrapper;
+    container?: Container;
+    currentUser: User;
+    isSelf?: boolean;
     onUsersStateChangeComplete?: (response: any, resetSelection: boolean) => any;
     policy?: SecurityPolicy;
     rolesByUniqueName?: Map<string, SecurityRole>;
     rootPolicy?: SecurityPolicy;
+    showGroupListLinks?: boolean;
+    showPermissionListLinks?: boolean;
+    toggleDetailsModal?: () => void;
     userId: number;
 }
 
 interface State {
-    groups: string[];
     loading: boolean;
+    policy?: SecurityPolicy;
+    rolesByUniqueName?: Map<string, SecurityRole>;
     showDialog: string;
-    userProperties: {}; // valid options are 'deactivate', 'reactivate', 'delete', 'reset', undefined
+    userProperties: Record<string, any>;
 }
 
 export class UserDetailsPanel extends React.PureComponent<Props, State> {
     static defaultProps = {
         allowDelete: true,
         allowResetPassword: true,
+        api: getDefaultAPIWrapper().security,
         onUsersStateChangeComplete: undefined,
+        showGroupListLinks: true,
+        showPermissionListLinks: true,
     };
 
     constructor(props: Props) {
         super(props);
 
         this.state = {
-            groups: [],
             loading: false,
-            userProperties: undefined,
+            policy: undefined,
+            rolesByUniqueName: undefined,
             showDialog: undefined,
+            userProperties: undefined,
         };
     }
 
     componentDidMount() {
         this.loadUserDetails();
+        this.loadPolicyAndRoles();
     }
 
     componentDidUpdate(prevProps: Readonly<Props>) {
@@ -69,29 +135,52 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         }
     }
 
+    loadPolicyAndRoles = async (): Promise<void> => {
+        const { policy, rolesByUniqueName, container, currentUser, api } = this.props;
+
+        if (currentUser.isAdmin && !policy && !rolesByUniqueName && container) {
+            const policy_ = await api.fetchPolicy(container.id);
+
+            Security.getRoles({
+                success: rawRoles => {
+                    const roles = processGetRolesResponse(rawRoles);
+                    const rolesByUniqueName_ = getRolesByUniqueName(roles);
+
+                    this.setState(() => ({
+                        policy: policy_,
+                        rolesByUniqueName: rolesByUniqueName_,
+                    }));
+                },
+                failure: e => {
+                    console.error('Failed to load security roles', e);
+                },
+            });
+        }
+    };
+
     loadUserDetails = (): void => {
-        const { userId } = this.props;
+        const { userId, isSelf } = this.props;
 
         if (userId) {
             this.setState(() => ({ loading: true }));
 
-            getUserProperties(userId)
-                .then(response => {
-                    this.setState(() => ({ userProperties: response.props, loading: false }));
-                })
-                .catch(error => {
-                    console.error(error);
-                    this.setState(() => ({ userProperties: undefined, loading: false }));
-                });
-
-            getUserGroups(userId)
-                .then(groups => {
-                    this.setState({ groups });
-                })
-                .catch(error => {
-                    // Note that getUserGroups()'s call to selectRows() will console.error
-                    // On error, simply do not show group assignments, rather than rendering error within side panel
-                });
+            if (isSelf) {
+                getUserProperties(userId)
+                    .then(response => {
+                        this.setState(() => ({ userProperties: response.props, loading: false }));
+                    })
+                    .catch(() => {
+                        this.setState(() => ({ userProperties: undefined, loading: false }));
+                    });
+            } else {
+                selectRowsUserProps(userId)
+                    .then(response => {
+                        this.setState(() => ({ userProperties: response, loading: false }));
+                    })
+                    .catch(() => {
+                        this.setState(() => ({ userProperties: undefined, loading: false }));
+                    });
+            }
         } else {
             this.setState(() => ({ userProperties: undefined }));
         }
@@ -112,27 +201,22 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         }
     };
 
-    renderUserProp(title: string, prop: string, formatDate = false) {
+    renderUserProp(label: string, prop: string, formatDate = false) {
         let value = caseInsensitive(this.state.userProperties, prop);
         if (formatDate && value) {
             value = moment(value).format(getMomentDateTimeFormat());
         }
 
-        return (
-            <Row>
-                <Col xs={4} className="principal-detail-label">
-                    {title}
-                </Col>
-                <Col xs={8} className="principal-detail-value">
-                    {value}
-                </Col>
-            </Row>
-        );
+        return <UserDetailRow label={label} value={value} />;
     }
 
     renderButtons() {
         const { allowDelete, allowResetPassword } = this.props;
-        const isActive = caseInsensitive(this.state.userProperties, 'active');
+        const { userProperties } = this.state;
+
+        if (!userProperties) return null;
+
+        const isActive = caseInsensitive(userProperties, 'active');
 
         return (
             <>
@@ -161,41 +245,58 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
     }
 
     renderBody() {
-        const { onUsersStateChangeComplete, userId } = this.props;
-        const { loading, userProperties, groups } = this.state;
-        const isSelf = userId === getServerContext().user.id;
+        const {
+            showGroupListLinks,
+            showPermissionListLinks,
+            currentUser,
+            policy,
+            rolesByUniqueName,
+            rootPolicy,
+            userId,
+        } = this.props;
+        const { loading, userProperties } = this.state;
 
         if (loading) {
             return <LoadingSpinner />;
         }
 
         if (userProperties) {
-            const displayName = caseInsensitive(userProperties, 'displayName');
             const description = caseInsensitive(userProperties, 'description');
+            let name = caseInsensitive(userProperties, 'firstName') ?? '';
+            if (name) {
+                name += ' ';
+            }
+            name += caseInsensitive(userProperties, 'lastName') ?? '';
+            const hasPassword = caseInsensitive(userProperties, 'hasPassword');
 
             return (
                 <>
-                    <p className="principal-title-primary">{displayName}</p>
+                    {!!name && <UserDetailRow label="Name" value={name} />}
                     {this.renderUserProp('Email', 'email')}
-                    {this.renderUserProp('First Name', 'firstName')}
-                    {this.renderUserProp('Last Name', 'lastName')}
 
-                    {description && (
-                        <>
-                            <hr className="principal-hr" />
-                            {this.renderUserProp('Description', 'description')}
-                        </>
-                    )}
+                    {description && <>{this.renderUserProp('Description', 'description')}</>}
 
                     <hr className="principal-hr" />
-                    {this.renderUserProp('Created', 'created', true)}
                     {this.renderUserProp('Last Login', 'lastLogin', true)}
+                    {this.renderUserProp('Created', 'created', true)}
 
-                    <EffectiveRolesList {...this.props} />
+                    <hr className="principal-hr" />
+                    {this.renderUserProp('User ID', 'userId')}
+                    {!!hasPassword && <UserDetailRow label="Has Password" value={hasPassword.toString()} />}
 
-                    <MembersList groups={groups} />
-
-                    {!isSelf && onUsersStateChangeComplete && this.renderButtons()}
+                    <EffectiveRolesList
+                        currentUser={currentUser}
+                        policy={policy ?? this.state.policy}
+                        rolesByUniqueName={rolesByUniqueName ?? this.state.rolesByUniqueName}
+                        rootPolicy={rootPolicy}
+                        showLinks={showPermissionListLinks}
+                        userId={userId}
+                    />
+                    <GroupsList
+                        groups={caseInsensitive(userProperties, 'groups')}
+                        currentUser={currentUser}
+                        showLinks={showGroupListLinks}
+                    />
                 </>
             );
         }
@@ -203,15 +304,63 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         return <div>No user selected.</div>;
     }
 
-    render() {
-        const { userId, allowDelete, allowResetPassword } = this.props;
-        const { showDialog, userProperties } = this.state;
+    renderHeader() {
+        const { loading, userProperties } = this.state;
+        if (loading || !userProperties) return 'User Details';
+
+        const displayName = caseInsensitive(userProperties, 'displayName');
+        const active = caseInsensitive(userProperties, 'active');
 
         return (
-            <Panel>
-                <Panel.Heading>User Details</Panel.Heading>
+            <>
+                <span>{displayName}</span>
+                {active !== undefined && (
+                    <span
+                        className={classNames('margin-left status-pill', {
+                            active,
+                            inactive: !active,
+                        })}
+                    >
+                        {active ? 'Active' : 'Inactive'}
+                    </span>
+                )}
+            </>
+        );
+    }
+
+    render() {
+        const { userId, allowDelete, allowResetPassword, toggleDetailsModal, onUsersStateChangeComplete } = this.props;
+        const { showDialog, userProperties } = this.state;
+        const { user } = getServerContext();
+        const isSelf = userId === user.id;
+        const manageUrl = AppURL.create('admin', 'users')
+            .addParam('usersView', 'all')
+            .addParam('all.UserId~eq', userId);
+
+        if (toggleDetailsModal) {
+            return (
+                <Modal onHide={toggleDetailsModal} show={true}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>{this.renderHeader()}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>{this.renderBody()}</Modal.Body>
+                    {user.isAdmin && (
+                        <Modal.Footer>
+                            <Button className="pull-right" href={manageUrl.toHref()}>
+                                Manage
+                            </Button>
+                        </Modal.Footer>
+                    )}
+                </Modal>
+            );
+        }
+
+        return (
+            <Panel className="user-details-panel">
+                <Panel.Heading>{this.renderHeader()}</Panel.Heading>
                 <Panel.Body>
                     {this.renderBody()}
+                    {!isSelf && onUsersStateChangeComplete && this.renderButtons()}
                     {allowResetPassword && showDialog === 'reset' && (
                         <UserResetPasswordConfirmModal
                             email={caseInsensitive(userProperties, 'email')}

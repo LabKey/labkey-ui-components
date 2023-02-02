@@ -101,7 +101,7 @@ export const AttachmentCard: FC<Props> = memo(props => {
             <Modal bsSize="large" show={showModal} onHide={_hideModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>
-                        <a onClick={_onDownload} style={{ cursor: 'pointer' }} title={'Download ' + noun}>
+                        <a onClick={_onDownload} className="clickable" title={'Download ' + noun}>
                             {title ?? name}
                         </a>
                     </Modal.Title>

@@ -18,6 +18,7 @@ export interface GroupProps {
     addMember: (groupId: string, principalId: number, principalName: string, principalType: string) => void;
     deleteGroup: (id: string) => void;
     id: string;
+    initExpanded: boolean;
     members: Member[];
     name: string;
     onClickAssignment: (selectedUserId: number) => void;
@@ -37,6 +38,7 @@ export const Group: FC<GroupProps> = memo(props => {
         deleteGroup,
         addMember,
         onRemoveMember,
+        initExpanded,
     } = props;
 
     const generateClause = useMemo(() => {
@@ -107,6 +109,7 @@ export const Group: FC<GroupProps> = memo(props => {
         <ExpandableContainer
             clause={generateClause}
             links={generateLinks}
+            initExpanded={initExpanded}
             iconFaCls="users fa-3x"
             useGreyTheme={true}
             isExpandable={true}

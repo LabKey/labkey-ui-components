@@ -65,7 +65,7 @@ export const UserProvider = (Component: React.ComponentType) => {
 
 export function useUserProperties(user: User): Record<string, any> {
     const { id, isGuest } = user;
-    const [userProperties, setUserProperties] = useState<Record<string, any>>({});
+    const [userProperties, setUserProperties] = useState<Record<string, any>>();
 
     useEffect(() => {
         if (isGuest) {

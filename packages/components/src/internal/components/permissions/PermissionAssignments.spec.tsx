@@ -27,6 +27,8 @@ import { UserDetailsPanel } from '../user/UserDetailsPanel';
 
 import { MemberType } from '../administration/models';
 
+import { initBrowserHistoryState } from '../../util/global';
+
 import { PermissionsRole } from './PermissionsRole';
 import { getRolesByUniqueName, processGetRolesResponse } from './actions';
 import { Principal, SecurityPolicy } from './models';
@@ -66,6 +68,10 @@ const PRINCIPALS_BY_ID = PRINCIPALS.reduce((map, principal) => {
 const POLICY = SecurityPolicy.updateAssignmentsData(SecurityPolicy.create(policyJSON), PRINCIPALS_BY_ID);
 const ROLES = processGetRolesResponse(rolesJSON.roles);
 const ROLES_BY_NAME = getRolesByUniqueName(ROLES);
+
+beforeAll(() => {
+    initBrowserHistoryState();
+});
 
 describe('PermissionAssignments', () => {
     function getDefaultProps(): PermissionAssignmentsProps {

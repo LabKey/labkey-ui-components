@@ -1,6 +1,17 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.289.0
+*Released*: 2 February 2023
+* Update links from users to display user detail data via modal for those who have permission
+  * add modal version of UserDetailsPanel, via UserDetailsRenderer and UserLink
+  * update list display of GroupsList, EffectiveRolesList, and MembersList
+  * shows user permissions on the User Management page
+  * use UserDetailsRenderer as default renderer for columns with user lookup
+  * use UserLink and UserLinkList in various components that render user displayName
+  * update UserDetailsPanel so that permissions and group listing items are links to admin groups/permissions page
+  * add dirty state check for user Profile page navigation
+
 ### version 2.288.0
 *Released*: 1 February 2023
 - Create components for `SamplesCreatedSuccessMessage` and `SamplesImportSuccessMessage`. Utilize `withRouter`.

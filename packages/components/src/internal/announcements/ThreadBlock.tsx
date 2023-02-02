@@ -7,6 +7,8 @@ import { resolveErrorMessage } from '../util/messaging';
 
 import { Alert } from '../components/base/Alert';
 
+import { UserLink } from '../components/user/UserLink';
+
 import { AnnouncementModel } from './model';
 import { ThreadEditor, ThreadEditorProps } from './ThreadEditor';
 import { ThreadAttachments } from './ThreadAttachments';
@@ -44,15 +46,15 @@ const DeleteThreadModal: FC<DeleteThreadModalProps> = ({ cancel, onDelete }) => 
 );
 
 interface ThreadBlockHeaderProps {
+    author: User;
     created: number | string;
     modified: number | string;
     onDelete?: () => void;
     onEdit?: () => void;
-    user: User;
 }
 
 const ThreadBlockHeader: FC<ThreadBlockHeaderProps> = props => {
-    const { created, modified, onDelete, onEdit, user } = props;
+    const { created, modified, onDelete, onEdit, author } = props;
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const formattedCreate = useMemo(() => moment(created).fromNow(), [created]);
@@ -71,7 +73,7 @@ const ThreadBlockHeader: FC<ThreadBlockHeaderProps> = props => {
     return (
         <div className="thread-block-header">
             <span className="thread-block-header__user">
-                <span>{user.displayName}</span>
+                <UserLink userId={author.id} userDisplayValue={author.displayName} />
             </span>
             <div className="pull-right">
                 <span className="thread-block-header__date">
@@ -195,7 +197,7 @@ export const ThreadBlock: FC<ThreadBlockProps> = props => {
                             modified={thread.modified}
                             onDelete={allowDelete ? onDeleteThread : undefined}
                             onEdit={allowUpdate ? onEdit : undefined}
-                            user={thread.author}
+                            author={thread.author}
                         />
                         {error !== undefined && <Alert>{error}</Alert>}
                         <div className="thread-block-body__content" dangerouslySetInnerHTML={threadBody} />

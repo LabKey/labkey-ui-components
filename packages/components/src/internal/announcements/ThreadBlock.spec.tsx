@@ -4,6 +4,7 @@ import { ThreadBlock } from './ThreadBlock';
 import { createTestAPIWrapper } from './test/utils';
 import { COMMENTER, NOUN_PLURAL, NOUN_SINGULAR, THREAD, THREAD_WITH_RESPONSE } from './test/fixtures';
 import {mountWithServerContext} from "../testHelpers";
+import {UserLink} from "../components/user/UserLink";
 
 describe('ThreadBlock', () => {
     test('displays thread', () => {
@@ -27,6 +28,7 @@ describe('ThreadBlock', () => {
         expect(wrapper.find('.thread-editor').exists()).toEqual(false);
 
         // Displays header
+        expect(wrapper.find(UserLink)).toHaveLength(1);
         expect(wrapper.find('.thread-block-header__user').text()).toEqual(COMMENTER.displayName);
 
         // Allows for reply
@@ -35,6 +37,7 @@ describe('ThreadBlock', () => {
         // Does not show reply toggle when responses are not available
         expect(wrapper.find('.thread-block__toggle-reply').exists()).toEqual(false);
     });
+
     test('toggles thread replies', () => {
         const onToggleResponses = jest.fn();
 
@@ -63,6 +66,7 @@ describe('ThreadBlock', () => {
         replyToggle = wrapper.find('.thread-block__toggle-reply');
         expect(replyToggle.text()).toContain('Hide all replies');
     });
+
     test('delete thread', async () => {
         const CANNOT_DELETE_USER = Object.assign({}, COMMENTER, { canDelete: false });
 

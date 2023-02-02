@@ -20,6 +20,8 @@ import { getDateFormat } from '../../util/Date';
 
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 
+import { InjectedRouteLeaveProps, withRouteLeave } from '../../util/RouteLeave';
+
 import { UserDetailHeader } from './UserDetailHeader';
 import { getUserRoleDisplay } from './actions';
 
@@ -27,7 +29,6 @@ import { UserProfile } from './UserProfile';
 import { ChangePasswordModal } from './ChangePasswordModal';
 
 import { useUserProperties } from './UserProvider';
-import {InjectedRouteLeaveProps, withRouteLeave} from "../../util/RouteLeave";
 
 interface OwnProps {
     goBack: (n?: number) => any;

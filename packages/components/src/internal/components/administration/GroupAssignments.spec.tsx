@@ -14,11 +14,12 @@ import { ExpandableContainer } from '../ExpandableContainer';
 
 import { Alert } from '../base/Alert';
 
-import { GroupAssignments } from './GroupAssignments';
+import { mountWithServerContext } from '../../testHelpers';
+import { TEST_USER_APP_ADMIN } from '../../userFixtures';
+import { initBrowserHistoryState } from '../../util/global';
+
 import { MemberType } from './models';
-import {mountWithServerContext} from "../../testHelpers";
-import {TEST_USER_APP_ADMIN} from "../../userFixtures";
-import {initBrowserHistoryState} from "../../util/global";
+import { GroupAssignments } from './GroupAssignments';
 
 beforeAll(() => {
     initBrowserHistoryState();
@@ -134,7 +135,10 @@ describe('<GroupAssignments/>', () => {
     });
 
     test('with members', async () => {
-        const wrapper = mountWithServerContext(<GroupAssignments {...DEFAULT_PROPS} groupMembership={GROUP_MEMBERSHIP} />, { user: TEST_USER_APP_ADMIN });
+        const wrapper = mountWithServerContext(
+            <GroupAssignments {...DEFAULT_PROPS} groupMembership={GROUP_MEMBERSHIP} />,
+            { user: TEST_USER_APP_ADMIN }
+        );
 
         expect(wrapper.find(ExpandableContainer)).toHaveLength(2);
         expect(wrapper.find('.permissions-title').first().text()).toBe(' group1 ');
@@ -144,7 +148,10 @@ describe('<GroupAssignments/>', () => {
     });
 
     test('creating a group', async () => {
-        const wrapper = mountWithServerContext(<GroupAssignments {...DEFAULT_PROPS} groupMembership={GROUP_MEMBERSHIP} />, { user: TEST_USER_APP_ADMIN });
+        const wrapper = mountWithServerContext(
+            <GroupAssignments {...DEFAULT_PROPS} groupMembership={GROUP_MEMBERSHIP} />,
+            { user: TEST_USER_APP_ADMIN }
+        );
 
         // Does not create duplicate 'group1' group
         wrapper.find('.create-group__input').simulate('change', { target: { value: 'group1' } });
@@ -172,7 +179,9 @@ describe('<GroupAssignments/>', () => {
     });
 
     test('with error', async () => {
-        const wrapper = mountWithServerContext(<GroupAssignments {...DEFAULT_PROPS} errorMsg="Error message." />, { user: TEST_USER_APP_ADMIN });
+        const wrapper = mountWithServerContext(<GroupAssignments {...DEFAULT_PROPS} errorMsg="Error message." />, {
+            user: TEST_USER_APP_ADMIN,
+        });
         expect(wrapper.find(Alert).text()).toBe('Error message.');
 
         wrapper.unmount();

@@ -9,7 +9,7 @@ import { DefaultRenderer } from '../internal/renderers/DefaultRenderer';
 import { SAMPLE_STATE_COLUMN_NAME } from '../internal/components/samples/constants';
 import { SampleStatusTag } from '../internal/components/samples/SampleStatusTag';
 import { getSampleStatus } from '../internal/components/samples/utils';
-import {UserDetailsRenderer} from "../internal/renderers/UserDetailsRenderer";
+import { UserDetailsRenderer } from '../internal/renderers/UserDetailsRenderer';
 
 interface SampleAliquotDetailHeaderProps {
     aliquotHeaderDisplayColumns: List<QueryColumn>;

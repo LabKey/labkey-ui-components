@@ -11,9 +11,10 @@ import { capitalizeFirstChar } from '../../util/utils';
 import { GridColumn } from '../base/models/GridColumn';
 import { Grid } from '../base/Grid';
 
+import { UserLink } from '../user/UserLink';
+
 import { getEventDataValueDisplay } from './utils';
 import { AuditDetailsModel } from './models';
-import { UserLink } from '../user/UserLink';
 
 interface Props {
     changeDetails?: AuditDetailsModel;
@@ -150,12 +151,7 @@ export class AuditDetails extends Component<Props> {
                     if (row.get('isUser')) {
                         display = <UserLink userId={row.get('value')} />;
                     } else if (Map.isMap(data) && data.get('urlType') === 'user') {
-                        display = (
-                            <UserLink
-                                userId={data.get('value')}
-                                userDisplayValue={data.get('displayValue')}
-                            />
-                        );
+                        display = <UserLink userId={data.get('value')} userDisplayValue={data.get('displayValue')} />;
                     } else {
                         display = getEventDataValueDisplay(data, user.isAdmin);
                     }

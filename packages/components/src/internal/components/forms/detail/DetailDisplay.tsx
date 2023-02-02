@@ -36,7 +36,7 @@ import { TextAreaInput } from '../input/TextAreaInput';
 import { TextInput } from '../input/TextInput';
 import { CheckboxInput } from '../input/CheckboxInput';
 import { NoLinkRenderer } from '../../../renderers/NoLinkRenderer';
-import {UserDetailsRenderer} from "../../../renderers/UserDetailsRenderer";
+import { UserDetailsRenderer } from '../../../renderers/UserDetailsRenderer';
 
 export type Renderer = (data: any, row?: any) => ReactNode;
 

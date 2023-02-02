@@ -17,10 +17,11 @@ import { getTestAPIWrapper } from '../../APIWrapper';
 import { Principal, SecurityPolicy } from '../permissions/models';
 import policyJSON from '../../../test/data/security-getPolicy.json';
 
+import { initBrowserHistoryState } from '../../util/global';
+
 import { BasePermissions } from './BasePermissions';
 import { PermissionManagementPage } from './PermissionManagementPage';
 import { MemberType } from './models';
-import {initBrowserHistoryState} from "../../util/global";
 
 const USER = Principal.createFromSelectRow(
     fromJS({

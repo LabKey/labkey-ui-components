@@ -5,13 +5,14 @@ import { userCanReadUserDetails } from '../../app/utils';
 
 import { caseInsensitive } from '../../util/utils';
 
+import { useServerContext } from '../base/ServerContext';
+
 import { selectRowsUserProps, UserDetailsPanel } from './UserDetailsPanel';
-import {useServerContext} from "../base/ServerContext";
 
 interface UserLinkProps {
+    unknown?: boolean;
     userDisplayValue?: string;
     userId: number;
-    unknown?: boolean;
 }
 
 export const UserLink: FC<UserLinkProps> = props => {

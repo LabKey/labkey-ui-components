@@ -4,11 +4,12 @@ import { shallow, mount } from 'enzyme';
 
 import { TIMELINE_DATA } from '../../../test/data/constants';
 
-import { TimelineView } from './TimelineView';
+import { TEST_USER_APP_ADMIN, TEST_USER_READER } from '../../userFixtures';
+import { mountWithServerContext } from '../../testHelpers';
+import { UserLink } from '../user/UserLink';
+
 import { TimelineEventModel } from './models';
-import {TEST_USER_APP_ADMIN, TEST_USER_READER} from "../../userFixtures";
-import {mountWithServerContext} from "../../testHelpers";
-import {UserLink} from "../user/UserLink";
+import { TimelineView } from './TimelineView';
 
 const events: TimelineEventModel[] = [];
 TIMELINE_DATA.forEach(event => events.push(TimelineEventModel.create(event, 'UTC')));

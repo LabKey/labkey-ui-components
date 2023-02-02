@@ -11,11 +11,12 @@ import { Member, MemberType } from '../administration/models';
 
 import { UserProperties } from '../user/UserProperties';
 
+import { useServerContext } from '../base/ServerContext';
+
 import { EffectiveRolesList } from './EffectiveRolesList';
 
 import { Principal, SecurityPolicy, SecurityRole } from './models';
 import { MembersList } from './MembersList';
-import {useServerContext} from "../base/ServerContext";
 
 interface Props {
     getAuditLogData: (columns: string, filterCol: string, filterVal: string | number) => Promise<string>;
@@ -66,7 +67,12 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
                         <UserProperties prop={created} title="Created" />
                         {isSiteGroup && <UserProperties prop="true" title="Site Group" />}
 
-                        <EffectiveRolesList {...props} currentUser={user} userId={principal.userId} showLinks={showPermissionListLinks} />
+                        <EffectiveRolesList
+                            {...props}
+                            currentUser={user}
+                            userId={principal.userId}
+                            showLinks={showPermissionListLinks}
+                        />
                         <MembersList members={members} />
                     </>
                 ) : (

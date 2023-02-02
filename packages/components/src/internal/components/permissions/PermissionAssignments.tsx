@@ -24,11 +24,12 @@ import { GroupMembership, MemberType } from '../administration/models';
 
 import { fetchGroupMembership } from '../administration/actions';
 
+import { getLocation } from '../../util/URL';
+
 import { Principal, SecurityPolicy, SecurityRole } from './models';
 import { PermissionsRole } from './PermissionsRole';
 import { GroupDetailsPanel } from './GroupDetailsPanel';
 import { InjectedPermissionsPage } from './withPermissionsPage';
-import {getLocation} from "../../util/URL";
 
 // exported for testing
 export interface PermissionAssignmentsProps extends InjectedPermissionsPage, InjectedRouteLeaveProps {
@@ -76,7 +77,9 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
     const { container, project, user } = useServerContext();
 
     const selectedPrincipal = principalsById?.get(selectedUserId);
-    const initExpandedRole = getLocation().query?.get('expand') ? decodeURI(getLocation().query?.get('expand')) : undefined;
+    const initExpandedRole = getLocation().query?.get('expand')
+        ? decodeURI(getLocation().query?.get('expand'))
+        : undefined;
 
     const loadGroupMembership = useCallback(async () => {
         try {

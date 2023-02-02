@@ -8,8 +8,9 @@ import DUMMY_TIMELINE from '../test/data/SampleTimeline.json';
 
 import { TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT } from '../internal/productFixtures';
 
+import { TEST_USER_APP_ADMIN, TEST_USER_READER } from '../internal/userFixtures';
+
 import { SampleEventListing } from './SampleEventListing';
-import {TEST_USER_APP_ADMIN, TEST_USER_READER} from "../internal/userFixtures";
 
 beforeAll(() => {
     LABKEY.container = {

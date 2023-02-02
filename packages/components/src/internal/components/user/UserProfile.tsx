@@ -21,10 +21,12 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { hasPermissions } from '../../../entities/SampleListingPage';
 
+import { caseInsensitive } from '../../util/utils';
+
+import { GroupsList } from '../permissions/GroupsList';
+
 import { getUserDetailsRowData, updateUserDetails } from './actions';
-import {selectRowsUserProps} from "./UserDetailsPanel";
-import {caseInsensitive} from "../../util/utils";
-import {GroupsList} from "../permissions/GroupsList";
+import { selectRowsUserProps } from './UserDetailsPanel';
 
 const FIELDS_TO_EXCLUDE = List<string>([
     'userid',

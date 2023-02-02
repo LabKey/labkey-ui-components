@@ -33,8 +33,9 @@ import { InjectedQueryModels, withQueryModels } from '../public/QueryModel/withQ
 
 import { getPrimaryAppProperties } from '../internal/app/utils';
 
-import { SampleEventListing } from './SampleEventListing';
 import { UserLink } from '../internal/components/user/UserLink';
+
+import { SampleEventListing } from './SampleEventListing';
 
 interface OwnProps {
     api?: ComponentsAPIWrapper;

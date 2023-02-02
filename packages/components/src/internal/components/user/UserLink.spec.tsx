@@ -3,7 +3,7 @@ import React from 'react';
 import { mountWithServerContext, waitForLifecycle } from '../../testHelpers';
 import { TEST_USER_APP_ADMIN, TEST_USER_READER } from '../../userFixtures';
 
-import {UserLink, UserLinkList} from './UserLink';
+import { UserLink, UserLinkList } from './UserLink';
 
 describe('UserLink', () => {
     test('unknown', () => {
@@ -79,10 +79,12 @@ describe('UserLink', () => {
 describe('UserLinkList', () => {
     test('all users', () => {
         const wrapper = mountWithServerContext(
-            <UserLinkList users={[
-                { id: 1, displayName: 'a', type: 'u' },
-                { id: 2, displayName: 'b', type: 'u' },
-            ]} />,
+            <UserLinkList
+                users={[
+                    { id: 1, displayName: 'a', type: 'u' },
+                    { id: 2, displayName: 'b', type: 'u' },
+                ]}
+            />,
             { user: TEST_USER_APP_ADMIN }
         );
         expect(wrapper.find(UserLink)).toHaveLength(2);
@@ -92,11 +94,13 @@ describe('UserLinkList', () => {
 
     test('users and groups', () => {
         const wrapper = mountWithServerContext(
-            <UserLinkList users={[
-                { id: 1, displayName: 'a', type: 'u' },
-                { id: 2, displayName: 'b', type: 'u' },
-                { id: 3, displayName: 'c', type: 'g' },
-            ]} />,
+            <UserLinkList
+                users={[
+                    { id: 1, displayName: 'a', type: 'u' },
+                    { id: 2, displayName: 'b', type: 'u' },
+                    { id: 3, displayName: 'c', type: 'g' },
+                ]}
+            />,
             { user: TEST_USER_APP_ADMIN }
         );
         expect(wrapper.find(UserLink)).toHaveLength(2);

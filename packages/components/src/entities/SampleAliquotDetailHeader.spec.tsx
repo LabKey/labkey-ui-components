@@ -2,14 +2,15 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { fromJS, List } from 'immutable';
 
+import { shallow } from 'enzyme';
+
 import { QueryColumn } from '../public/QueryColumn';
+import { DefaultRenderer } from '../internal/renderers/DefaultRenderer';
+import { UserDetailsRenderer } from '../internal/renderers/UserDetailsRenderer';
+import { SampleStatusTag } from '../internal/components/samples/SampleStatusTag';
+import { TEST_LKSM_STARTER_MODULE_CONTEXT } from '../internal/productFixtures';
 
 import { SampleAliquotDetailHeader } from './SampleAliquotDetailHeader';
-import {shallow} from "enzyme";
-import {DefaultRenderer} from "../internal/renderers/DefaultRenderer";
-import {UserDetailsRenderer} from "../internal/renderers/UserDetailsRenderer";
-import {SampleStatusTag} from "../internal/components/samples/SampleStatusTag";
-import {TEST_LKSM_STARTER_MODULE_CONTEXT} from "../internal/productFixtures";
 
 describe('<SampleAliquotDetailHeader/>', () => {
     const COLUMN_ALIQUOT = new QueryColumn({
@@ -50,7 +51,7 @@ describe('<SampleAliquotDetailHeader/>', () => {
 
     test('aliquot detail header, default props', () => {
         const component = shallow(
-            <SampleAliquotDetailHeader row={dataRow} aliquotHeaderDisplayColumns={aliquotCols} />,
+            <SampleAliquotDetailHeader row={dataRow} aliquotHeaderDisplayColumns={aliquotCols} />
         );
         expect(component.find(DefaultRenderer)).toHaveLength(4);
         expect(component.find(UserDetailsRenderer)).toHaveLength(1);
@@ -61,7 +62,7 @@ describe('<SampleAliquotDetailHeader/>', () => {
         LABKEY.moduleContext = { ...TEST_LKSM_STARTER_MODULE_CONTEXT };
 
         const component = shallow(
-            <SampleAliquotDetailHeader row={dataRow} aliquotHeaderDisplayColumns={aliquotCols} />,
+            <SampleAliquotDetailHeader row={dataRow} aliquotHeaderDisplayColumns={aliquotCols} />
         );
         expect(component.find(DefaultRenderer)).toHaveLength(4);
         expect(component.find(UserDetailsRenderer)).toHaveLength(1);

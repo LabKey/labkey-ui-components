@@ -10,8 +10,9 @@ import { caseInsensitive } from '../../util/utils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { SHARED_CONTAINER_PATH } from '../../constants';
 
-import { ChangePasswordModel } from './models';
 import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from '../administration/constants';
+
+import { ChangePasswordModel } from './models';
 
 export function getUserProperties(userId: number): Promise<any> {
     return new Promise((resolve, reject) => {

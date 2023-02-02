@@ -7,10 +7,11 @@ import { resolveErrorMessage } from '../util/messaging';
 
 import { Alert } from '../components/base/Alert';
 
+import { UserLink } from '../components/user/UserLink';
+
 import { AnnouncementModel } from './model';
 import { ThreadEditor, ThreadEditorProps } from './ThreadEditor';
 import { ThreadAttachments } from './ThreadAttachments';
-import {UserLink} from "../components/user/UserLink";
 
 interface DeleteThreadModalProps {
     cancel: () => void;
@@ -45,11 +46,11 @@ const DeleteThreadModal: FC<DeleteThreadModalProps> = ({ cancel, onDelete }) => 
 );
 
 interface ThreadBlockHeaderProps {
+    author: User;
     created: number | string;
     modified: number | string;
     onDelete?: () => void;
     onEdit?: () => void;
-    author: User;
 }
 
 const ThreadBlockHeader: FC<ThreadBlockHeaderProps> = props => {

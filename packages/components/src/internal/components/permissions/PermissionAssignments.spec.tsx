@@ -27,12 +27,13 @@ import { UserDetailsPanel } from '../user/UserDetailsPanel';
 
 import { MemberType } from '../administration/models';
 
+import { initBrowserHistoryState } from '../../util/global';
+
 import { PermissionsRole } from './PermissionsRole';
 import { getRolesByUniqueName, processGetRolesResponse } from './actions';
 import { Principal, SecurityPolicy } from './models';
 import { PermissionAssignments, PermissionAssignmentsProps } from './PermissionAssignments';
 import { GroupDetailsPanel } from './GroupDetailsPanel';
-import {initBrowserHistoryState} from "../../util/global";
 
 const GROUP = Principal.createFromSelectRow(
     fromJS({

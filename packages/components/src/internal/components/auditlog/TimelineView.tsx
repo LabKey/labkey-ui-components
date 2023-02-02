@@ -5,9 +5,10 @@ import { SVGIcon } from '../base/SVGIcon';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
+import { UserLink } from '../user/UserLink';
+
 import { TimelineEventModel, TimelineGroupedEventInfo } from './models';
 import { getEventDataValueDisplay } from './utils';
-import { UserLink } from '../user/UserLink';
 
 interface Props {
     events: TimelineEventModel[];

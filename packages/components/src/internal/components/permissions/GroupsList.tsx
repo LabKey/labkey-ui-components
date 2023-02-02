@@ -40,11 +40,7 @@ export const GroupsList: FC<Props> = memo(props => {
                         {currentUser.isAdmin &&
                         showLinks &&
                         groupMembership?.[group.value].type !== MemberType.siteGroup ? (
-                            <a
-                                href={AppURL.create('admin', 'groups')
-                                    .addParam('expand', group.value)
-                                    .toHref()}
-                            >
+                            <a href={AppURL.create('admin', 'groups').addParam('expand', group.value).toHref()}>
                                 {group.displayValue}
                             </a>
                         ) : (

@@ -3,7 +3,7 @@ import React, { FC, memo } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 import { Member } from '../administration/models';
-import {UserLink} from "../user/UserLink";
+import { UserLink } from '../user/UserLink';
 
 interface Props {
     members: Member[];
@@ -25,10 +25,11 @@ export const MembersList: FC<Props> = memo(props => {
                     <ul className="principal-detail-ul">
                         {members.map(member => (
                             <li key={member.id} className="principal-detail-li">
-                                {member.type === 'u'
-                                    ? <UserLink userId={member.id} userDisplayValue={member.name} />
-                                    : member.name
-                                }
+                                {member.type === 'u' ? (
+                                    <UserLink userId={member.id} userDisplayValue={member.name} />
+                                ) : (
+                                    member.name
+                                )}
                             </li>
                         ))}
                     </ul>

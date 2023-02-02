@@ -10,10 +10,12 @@ import { GroupDetailsPanel } from '../permissions/GroupDetailsPanel';
 
 import { naturalSort } from '../../../public/sort';
 
+import { getLocation } from '../../util/URL';
+
+import { useServerContext } from '../base/ServerContext';
+
 import { Group } from './Group';
 import { GroupMembership, MemberType } from './models';
-import {getLocation} from "../../util/URL";
-import {useServerContext} from "../base/ServerContext";
 
 export interface GroupAssignmentsProps {
     addMembers: (groupId: string, principalId: number, principalName: string, principalType: string) => void;

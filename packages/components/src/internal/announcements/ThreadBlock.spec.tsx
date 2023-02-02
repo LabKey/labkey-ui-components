@@ -1,10 +1,12 @@
 import React from 'react';
 
+import { mountWithServerContext } from '../testHelpers';
+
+import { UserLink } from '../components/user/UserLink';
+
 import { ThreadBlock } from './ThreadBlock';
 import { createTestAPIWrapper } from './test/utils';
 import { COMMENTER, NOUN_PLURAL, NOUN_SINGULAR, THREAD, THREAD_WITH_RESPONSE } from './test/fixtures';
-import {mountWithServerContext} from "../testHelpers";
-import {UserLink} from "../components/user/UserLink";
 
 describe('ThreadBlock', () => {
     test('displays thread', () => {

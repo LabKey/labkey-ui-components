@@ -6,41 +6,39 @@ import React, { FC } from 'react';
 import moment from 'moment';
 import { Button, Col, Modal, Panel, Row } from 'react-bootstrap';
 import { Map } from 'immutable';
-import {Filter, getServerContext, Security, Utils} from '@labkey/api';
+import { Filter, getServerContext, Security, Utils } from '@labkey/api';
 
-import { EffectiveRolesList } from '../permissions/EffectiveRolesList';
-
-import { getMomentDateTimeFormat } from '../../util/Date';
-
-import { SecurityPolicy, SecurityRole } from '../permissions/models';
+import classNames from 'classnames';
 
 import { caseInsensitive } from '../../util/utils';
-
 import { LoadingSpinner } from '../base/LoadingSpinner';
+import { getMomentDateTimeFormat } from '../../util/Date';
+import { SecurityPolicy, SecurityRole } from '../permissions/models';
+import { EffectiveRolesList } from '../permissions/EffectiveRolesList';
+import { selectRows } from '../../query/selectRows';
+import { SCHEMAS } from '../../schemas';
+import { flattenValuesFromRow } from '../../../public/QueryModel/QueryModel';
 
+import { GroupsList } from '../permissions/GroupsList';
+import { AppURL } from '../../url/AppURL';
+import { User } from '../base/models/User';
+import { getDefaultAPIWrapper } from '../../APIWrapper';
+import { SecurityAPIWrapper } from '../security/APIWrapper';
+import { Container } from '../base/models/Container';
+import { getRolesByUniqueName, processGetRolesResponse } from '../permissions/actions';
+
+import { UserResetPasswordConfirmModal } from './UserResetPasswordConfirmModal';
 import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
 import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
-import { UserResetPasswordConfirmModal } from './UserResetPasswordConfirmModal';
-import classNames from 'classnames';
-import {selectRows} from "../../query/selectRows";
-import {SCHEMAS} from "../../schemas";
-import {flattenValuesFromRow} from "../../../public/QueryModel/QueryModel";
-import {getUserProperties} from "./actions";
-import { GroupsList } from '../permissions/GroupsList';
-import {AppURL} from "../../url/AppURL";
-import {User} from "../base/models/User";
-import {getDefaultAPIWrapper} from "../../APIWrapper";
-import {SecurityAPIWrapper} from "../security/APIWrapper";
-import {Container} from "../base/models/Container";
-import {getRolesByUniqueName, processGetRolesResponse} from "../permissions/actions";
 
+import { getUserProperties } from './actions';
 
 interface UserDetailRowProps {
     label: string;
     value: React.ReactNode;
 }
 
-const UserDetailRow: FC<UserDetailRowProps> = ({label, value}) => {
+const UserDetailRow: FC<UserDetailRowProps> = ({ label, value }) => {
     return (
         <Row>
             <Col xs={4} className="principal-detail-label">
@@ -50,30 +48,32 @@ const UserDetailRow: FC<UserDetailRowProps> = ({label, value}) => {
                 {value}
             </Col>
         </Row>
-    )
+    );
 };
 
-export const selectRowsUserProps = function(userId: number): Promise<{ [key: string]: any }> {
+export const selectRowsUserProps = function (userId: number): Promise<{ [key: string]: any }> {
     return new Promise((resolve, reject) => {
         selectRows({
             filterArray: [Filter.create('UserId', userId)],
             schemaQuery: SCHEMAS.CORE_TABLES.USERS,
-        }).then(response => {
-            if (response.rows.length > 0) {
-                const row = response.rows[0];
-                const rowValues = flattenValuesFromRow(row, Object.keys(row));
+        })
+            .then(response => {
+                if (response.rows.length > 0) {
+                    const row = response.rows[0];
+                    const rowValues = flattenValuesFromRow(row, Object.keys(row));
 
-                // special case for the Groups prop as it is an array
-                rowValues.Groups = caseInsensitive(row, 'Groups');
+                    // special case for the Groups prop as it is an array
+                    rowValues.Groups = caseInsensitive(row, 'Groups');
 
-                resolve(rowValues);
-            } else {
-                resolve({});
-            }
-        }).catch(error => {
-            console.error(error);
-            reject(error);
-        });
+                    resolve(rowValues);
+                } else {
+                    resolve({});
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                reject(error);
+            });
     });
 };
 
@@ -207,9 +207,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
             value = moment(value).format(getMomentDateTimeFormat());
         }
 
-        return (
-            <UserDetailRow label={label} value={value} />
-        );
+        return <UserDetailRow label={label} value={value} />;
     }
 
     renderButtons() {
@@ -273,16 +271,10 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
 
             return (
                 <>
-                    {!!name &&
-                        <UserDetailRow label={'Name'} value={name}/>
-                    }
+                    {!!name && <UserDetailRow label="Name" value={name} />}
                     {this.renderUserProp('Email', 'email')}
 
-                    {description && (
-                        <>
-                            {this.renderUserProp('Description', 'description')}
-                        </>
-                    )}
+                    {description && <>{this.renderUserProp('Description', 'description')}</>}
 
                     <hr className="principal-hr" />
                     {this.renderUserProp('Last Login', 'lastLogin', true)}
@@ -313,7 +305,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
     }
 
     renderHeader() {
-        const {loading, userProperties} = this.state;
+        const { loading, userProperties } = this.state;
         if (loading || !userProperties) return 'User Details';
 
         const displayName = caseInsensitive(userProperties, 'displayName');
@@ -323,14 +315,17 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
             <>
                 <span>{displayName}</span>
                 {active !== undefined && (
-                    <span className={classNames('margin-left status-pill', {
-                            'active': active,
-                            'inactive': !active
-                        }
-                    )}>{active ? 'Active' : 'Inactive'}</span>
+                    <span
+                        className={classNames('margin-left status-pill', {
+                            active,
+                            inactive: !active,
+                        })}
+                    >
+                        {active ? 'Active' : 'Inactive'}
+                    </span>
                 )}
             </>
-        )
+        );
     }
 
     render() {
@@ -338,7 +333,9 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         const { showDialog, userProperties } = this.state;
         const { user } = getServerContext();
         const isSelf = userId === user.id;
-        const manageUrl = AppURL.create('admin', 'users').addParam('usersView', 'all').addParam('all.UserId~eq', userId);
+        const manageUrl = AppURL.create('admin', 'users')
+            .addParam('usersView', 'all')
+            .addParam('all.UserId~eq', userId);
 
         if (toggleDetailsModal) {
             return (

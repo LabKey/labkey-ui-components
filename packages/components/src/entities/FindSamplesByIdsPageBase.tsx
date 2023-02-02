@@ -130,7 +130,7 @@ const FindSamplesByIdsTabbedGridPanel: FC<FindSamplesByIdsTabProps> = memo(props
             .then(sampleTypesRows => {
                 if (sampleTypesRows) {
                     Object.keys(sampleTypesRows).forEach(sampleType => {
-                        const sampleSchemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType);
+                        const sampleSchemaQuery = new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType);
 
                         const sampleGridId = createGridModelId(
                             TYPE_GRID_PREFIX + allSamplesModel.queryName,
@@ -237,7 +237,7 @@ const FindSamplesByIdsPageBaseImpl: FC<Props> = memo(props => {
                 setMissingIds(missingIds);
                 setIds(ids);
                 if (queryName) {
-                    listSchemaQuery = SchemaQuery.create(SCHEMAS.EXP_TABLES.SCHEMA, queryName);
+                    listSchemaQuery = new SchemaQuery(SCHEMAS.EXP_TABLES.SCHEMA, queryName);
                     // add model twice, one used for header, one for tabbed grid, so that header doesn't reload when switching tabs
 
                     const listId = createGridModelId('find-samples-by-id', listSchemaQuery);

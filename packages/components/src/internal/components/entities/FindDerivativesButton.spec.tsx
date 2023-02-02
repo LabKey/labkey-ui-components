@@ -74,7 +74,7 @@ const QUERY_INFO = QueryInfo.fromJSON({
         },
     ],
 });
-const MODEL = makeTestQueryModel(SchemaQuery.create('samples', 'query', VIEW_NAME), QUERY_INFO).mutate({
+const MODEL = makeTestQueryModel(new SchemaQuery('samples', 'query', VIEW_NAME), QUERY_INFO).mutate({
     baseFilters: [Filter.create('a', null, Filter.Types.ISBLANK)],
     filterArray: [Filter.create('b', null, Filter.Types.ISBLANK)],
 });
@@ -184,7 +184,7 @@ describe('getSessionSearchFilterProps', () => {
 
     test('baseFilter, with baseModel for sample type', () => {
         const baseModel = MODEL.mutate({
-            schemaQuery: SchemaQuery.create('samples', 'query2'),
+            schemaQuery: new SchemaQuery('samples', 'query2'),
         });
         const props = getSessionSearchFilterProps(SampleTypeDataType, MODEL, [], SampleTypeDataType, baseModel, [
             Filter.create('a', 'Something'),
@@ -198,7 +198,7 @@ describe('getSessionSearchFilterProps', () => {
 
     test('baseFilter, with baseModel for data class', () => {
         const baseModel = MODEL.mutate({
-            schemaQuery: SchemaQuery.create('exp.data', 'query3'),
+            schemaQuery: new SchemaQuery('exp.data', 'query3'),
         });
         const props = getSessionSearchFilterProps(SampleTypeDataType, MODEL, [], DataClassDataType, baseModel, [
             Filter.create('a', 'Something'),

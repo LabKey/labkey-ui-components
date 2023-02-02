@@ -276,7 +276,7 @@ export function addSamplesToPicklist(
                 });
                 if (rows.size > 0) {
                     insertRows({
-                        schemaQuery: SchemaQuery.create('lists', listName),
+                        schemaQuery: new SchemaQuery('lists', listName),
                         rows,
                     })
                         .then(response => {
@@ -287,7 +287,7 @@ export function addSamplesToPicklist(
                     resolve(
                         new InsertRowsResponse({
                             rows: [],
-                            schemaQuery: SchemaQuery.create('lists', listName),
+                            schemaQuery: new SchemaQuery('lists', listName),
                             error: undefined,
                             transactionAuditId: undefined,
                         })
@@ -409,7 +409,7 @@ export const removeSamplesFromPicklist = async (picklist: Picklist, selectionMod
             resolve(0);
         } else {
             deleteRows({
-                schemaQuery: SchemaQuery.create(SCHEMAS.PICKLIST_TABLES.SCHEMA, picklist.name),
+                schemaQuery: new SchemaQuery(SCHEMAS.PICKLIST_TABLES.SCHEMA, picklist.name),
                 rows,
             })
                 .then(response => {

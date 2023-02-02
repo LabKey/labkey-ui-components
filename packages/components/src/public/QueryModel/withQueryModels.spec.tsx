@@ -30,10 +30,10 @@ import { RowsResponse } from './QueryModelLoader';
  * better idea by all means try it.
  */
 
-const MIXTURES_SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
+const MIXTURES_SCHEMA_QUERY = new SchemaQuery('exp.data', 'mixtures');
 let MIXTURES_QUERY_INFO: QueryInfo;
 let MIXTURES_DATA: RowsResponse;
-const AMINO_ACIDS_SCHEMA_QUERY = SchemaQuery.create('assay.General.Amino Acids', 'Runs');
+const AMINO_ACIDS_SCHEMA_QUERY = new SchemaQuery('assay.General.Amino Acids', 'Runs');
 let AMINO_ACIDS_QUERY_INFO: QueryInfo;
 let AMINO_ACIDS_DATA: RowsResponse;
 

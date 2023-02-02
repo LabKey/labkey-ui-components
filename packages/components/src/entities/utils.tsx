@@ -196,14 +196,14 @@ export const getSampleTypeTemplateUrl = (
 
     return ActionURL.buildURL('query', 'ExportExcelTemplate', null, {
         ...exportConfig,
-        schemaName: schemaQuery.getSchema(),
-        'query.queryName': schemaQuery.getQuery(),
+        schemaName: schemaQuery.schemaName,
+        'query.queryName': schemaQuery.queryName,
         headerType: 'DisplayFieldKey',
         excludeColumn: excludeColumns
             ? excludeColumns.concat(queryInfo.getFileColumnFieldKeys())
             : queryInfo.getFileColumnFieldKeys(),
         includeColumn: extraColumns,
-        filenamePrefix: schemaQuery.getQuery(),
+        filenamePrefix: schemaQuery.queryName,
     });
 };
 
@@ -387,7 +387,7 @@ export async function getSamplesAssayGridQueryConfigs(
         if (activeModules?.indexOf(config.moduleName) > -1) {
             const baseConfig = {
                 title: config.title,
-                schemaQuery: SchemaQuery.create(config.schemaName, config.queryName, config.viewName),
+                schemaQuery: new SchemaQuery(config.schemaName, config.queryName, config.viewName),
                 containerFilter: config.containerFilter,
             };
 

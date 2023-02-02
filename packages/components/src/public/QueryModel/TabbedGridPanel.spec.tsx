@@ -41,7 +41,7 @@ describe('TabbedGridPanel', () => {
 
     beforeEach(() => {
         mixturesModel = makeTestQueryModel(
-            SchemaQuery.create('exp.data', 'mixtures'),
+            new SchemaQuery('exp.data', 'mixtures'),
             MIXTURES_QUERY_INFO,
             MIXTURES_DATA.rows,
             MIXTURES_DATA.orderedRows,
@@ -49,7 +49,7 @@ describe('TabbedGridPanel', () => {
             'mixtures'
         );
         aminoAcidsModel = makeTestQueryModel(
-            SchemaQuery.create('assay.General.Amino Acids', 'Runs'),
+            new SchemaQuery('assay.General.Amino Acids', 'Runs'),
             AMINO_ACIDS_QUERY_INFO,
             AMINO_ACIDS_DATA.rows,
             AMINO_ACIDS_DATA.orderedRows,

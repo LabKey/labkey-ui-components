@@ -42,7 +42,7 @@ import { SampleAssayDetail } from './SampleAssayDetail';
 import { SampleLineagePage, SampleLineagePanel } from './SampleLineagePage';
 
 const QUERY_MODEL = makeTestQueryModel(
-    SchemaQuery.create('schema', 'query'),
+    new SchemaQuery('schema', 'query'),
     new QueryInfo(),
     {
         1: {
@@ -60,7 +60,7 @@ const QUERY_MODEL = makeTestQueryModel(
 ).mutate({ queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADED });
 
 const CHILD_SAMPLE_QUERY_MODEL = makeTestQueryModel(
-    SchemaQuery.create('schema', 'query'),
+    new SchemaQuery('schema', 'query'),
     new QueryInfo(),
     {
         1: {
@@ -161,7 +161,7 @@ describe('SampleDetailPage', () => {
     });
 
     test('NotFound', async () => {
-        const queryModel = makeTestQueryModel(SchemaQuery.create('schema', 'query'), new QueryInfo(), {}, [], 0).mutate(
+        const queryModel = makeTestQueryModel(new SchemaQuery('schema', 'query'), new QueryInfo(), {}, [], 0).mutate(
             { queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADED }
         );
         const wrapper = mountWithAppServerContext(

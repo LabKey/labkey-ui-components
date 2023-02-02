@@ -18,7 +18,7 @@ async function selectSamplesAndAddToStorage(
     sampleListingGridId: string,
     actions: Actions
 ): Promise<AppURL> {
-    const schemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, targetSampleTypeName);
+    const schemaQuery = new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, targetSampleTypeName);
 
     const selected = await selectGridIdsFromTransactionId(
         sampleListingGridId,
@@ -85,7 +85,7 @@ const SamplesCreatedSuccessMessageImpl: FC<SamplesCreatedSuccessMessageProps & W
         try {
             selectGridIdsFromTransactionId(
                 sampleListingGridId,
-                SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType),
+                new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType),
                 transactionAuditId,
                 SAMPLES_KEY,
                 actions

@@ -27,7 +27,7 @@ import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
 import { SampleState } from './models';
 
 const TITLE = 'Manage Sample Statuses';
-const STATE_TYPE_SQ = SchemaQuery.create('exp', 'SampleStateType');
+const STATE_TYPE_SQ = new SchemaQuery('exp', 'SampleStateType');
 const DEFAULT_TYPE_OPTIONS = [{ value: 'Available' }, { value: 'Consumed' }, { value: 'Locked' }];
 const NEW_STATUS_INDEX = -1;
 const SAMPLE_STATUS_LOCKED_TITLE = 'Sample Status Locked';

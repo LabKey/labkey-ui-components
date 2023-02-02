@@ -155,7 +155,7 @@ describe('CreateSamplesSubMenu', () => {
                 selectedQueryInfo={
                     new QueryInfo({
                         schemaName: 'samples',
-                        schemaQuery: SchemaQuery.create('samples', 'Other'),
+                        schemaQuery: new SchemaQuery('samples', 'Other'),
                     })
                 }
             />
@@ -185,7 +185,7 @@ describe('CreateSamplesSubMenu', () => {
     });
 
     test('useOnClick for parentQueryModel with selection', async () => {
-        const model = makeTestQueryModel(SchemaQuery.create('samples', 'Test')).mutate({ selections: new Set('1') });
+        const model = makeTestQueryModel(new SchemaQuery('samples', 'Test')).mutate({ selections: new Set('1') });
         const wrapper = mountWithAppServerContext(
             <CreateSamplesSubMenu {...defaultProps()} parentQueryModel={model} isSelectingSamples={() => true} />
         );
@@ -214,7 +214,7 @@ describe('CreateSamplesSubMenu', () => {
     });
 
     test('use href for parentQueryModel with non sample or source schema', async () => {
-        const model = makeTestQueryModel(SchemaQuery.create('other', 'Test')).mutate({ selections: new Set('1') });
+        const model = makeTestQueryModel(new SchemaQuery('other', 'Test')).mutate({ selections: new Set('1') });
         const wrapper = mountWithAppServerContext(
             <CreateSamplesSubMenu {...defaultProps()} parentQueryModel={model} />
         );
@@ -230,7 +230,7 @@ describe('CreateSamplesSubMenu', () => {
         for (var i = 0; i < MAX_PARENTS_PER_SAMPLE + 1; i++) {
             selections.add('' + i);
         }
-        const model = makeTestQueryModel(SchemaQuery.create('samples', 'Test')).mutate({ selections });
+        const model = makeTestQueryModel(new SchemaQuery('samples', 'Test')).mutate({ selections });
         const wrapper = mountWithAppServerContext(
             <CreateSamplesSubMenu
                 {...defaultProps()}

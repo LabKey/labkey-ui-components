@@ -13,7 +13,7 @@ import { QueryInfo } from '../QueryInfo';
 import { ViewMenu } from './ViewMenu';
 import { makeTestQueryModel } from './testUtils';
 
-const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
+const SCHEMA_QUERY = new SchemaQuery('exp.data', 'mixtures');
 let QUERY_INFO_NO_VIEWS: QueryInfo;
 let QUERY_INFO_PUBLIC_VIEWS: QueryInfo;
 let QUERY_INFO_PRIVATE_VIEWS: QueryInfo;
@@ -80,7 +80,7 @@ describe('ViewMenu', () => {
 
         // Same as previous, but the No Extra Column view is set to active.
         model = model.mutate({
-            schemaQuery: SchemaQuery.create(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, 'noExtraColumn'),
+            schemaQuery: new SchemaQuery(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, 'noExtraColumn'),
         });
         tree = renderer.create(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={true} model={model} />);
         expect(tree.toJSON()).toMatchSnapshot();

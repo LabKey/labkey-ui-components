@@ -120,8 +120,8 @@ export function selectGridIdsFromTransactionId(
                         selected,
                         undefined,
                         true,
-                        schemaQuery.getSchema(),
-                        schemaQuery.getQuery()
+                        schemaQuery.schemaName,
+                        schemaQuery.queryName
                     )
                         .then(response => {
                             actions.replaceSelections(modelId, selected);
@@ -599,7 +599,7 @@ export function getSelection(location: any, schemaName?: string, queryName?: str
             }
             if (!schemaQuery) {
                 if (schemaName && queryName) {
-                    schemaQuery = SchemaQuery.create(schemaName, queryName);
+                    schemaQuery = new SchemaQuery(schemaName, queryName);
                 }
             }
 
@@ -754,8 +754,8 @@ export function fetchCharts(schemaQuery: SchemaQuery, containerPath?: string): P
                 'study-reports',
                 'getReportInfos.api',
                 {
-                    schemaName: schemaQuery.getSchema(),
-                    queryName: schemaQuery.getQuery(),
+                    schemaName: schemaQuery.schemaName,
+                    queryName: schemaQuery.queryName,
                 },
                 {
                     container: containerPath,

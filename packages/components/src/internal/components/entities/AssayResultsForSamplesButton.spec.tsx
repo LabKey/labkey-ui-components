@@ -10,7 +10,7 @@ import { TEST_USER_READER, TEST_USER_STORAGE_EDITOR } from '../../userFixtures';
 
 import { AssayResultsForSamplesMenuItem } from './AssayResultsForSamplesButton';
 
-const MODEL = makeTestQueryModel(SchemaQuery.create('samples', 'query'), new QueryInfo());
+const MODEL = makeTestQueryModel(new SchemaQuery('samples', 'query'), new QueryInfo());
 
 describe('AssayResultsForSamplesButton', () => {
     const DEFAULT_PROPS = {

@@ -1,5 +1,3 @@
-import { Record } from 'immutable';
-
 const APP_SELECTION_PREFIX = 'appkey';
 
 // 36009: Case-insensitive variant of QueryKey.decodePart
@@ -32,9 +30,10 @@ export function encodePart(s: string): string {
 
 export function resolveKey(schema: string, query: string, viewName?: string): string {
     /*
-       It's questionable if we really need to encodePart schema here and the suspicion is that this would result in double encoding.
-       Since schema is not recognisable by api when not encoded, it would be reasonable to assume the passed in schema is already QueryKey encoded.
-       Though it won't hurt to double encode as long as resolveKey, resolveKeyFromJson and getSchemaQuery have the same assumption on the need to encode/decode
+       It's questionable if we really need to encodePart schema here and the suspicion is that this would result in
+       double encoding. Since schema is not recognisable by api when not encoded, it would be reasonable to assume the
+       passed in schema is already QueryKey encoded.  Though it won't hurt to double encode as long as resolveKey,
+       resolveKeyFromJson and getSchemaQuery have the same assumption on the need to encode/decode
     */
     const parts = [encodePart(schema), encodePart(query)];
     if (viewName) parts.push(encodePart(viewName));
@@ -62,32 +61,15 @@ export interface IParsedSelectionKey {
     schemaQuery: SchemaQuery;
 }
 
-export class SchemaQuery extends Record({
-    schemaName: undefined,
-    queryName: undefined,
-    viewName: undefined,
-}) {
-    declare schemaName: string;
-    declare queryName: string;
-    declare viewName: string;
+export class SchemaQuery {
+    schemaName: string;
+    queryName: string;
+    viewName: string;
 
-    static create(schemaName: string, queryName: string, viewName?: string): SchemaQuery {
-        return new SchemaQuery({ schemaName, queryName, viewName });
-    }
-
-    // TODO: remove unnecessary function, Records are Immutable and/or this can be a getter function.
-    getSchema() {
-        return this.schemaName;
-    }
-
-    // TODO: remove unnecessary function, Records are Immutable and/or this can be a getter function.
-    getQuery() {
-        return this.queryName;
-    }
-
-    // TODO: remove unnecessary function, Records are Immutable and/or this can be a getter function.
-    getView() {
-        return this.viewName;
+    constructor(schemaName: string, queryName: string, viewName?: string) {
+        this.schemaName = schemaName;
+        this.queryName = queryName;
+        this.viewName = viewName;
     }
 
     isEqual(sq: SchemaQuery): boolean {
@@ -125,16 +107,8 @@ export class SchemaQuery extends Record({
     }
 }
 
-// TODO: resolveSchemaQuery should have a better name, and it should be added as a property on the SchemaQuery record
-//  class. I'm really not sure what resolve is supposed to mean in this context, but I think we can add this as a
-//  property called "key", or something similar since it mostly seems to be used as a state key.
-/** @deprecated Use schemaQuery.getKey() instead */
-export function resolveSchemaQuery(schemaQuery: SchemaQuery): string {
-    return schemaQuery ? resolveKey(schemaQuery.getSchema(), schemaQuery.getQuery(), schemaQuery.getView()) : null;
-}
-
 export function getSchemaQuery(encodedKey: string): SchemaQuery {
     const [encodedSchema, encodedQuery, encodedViewName] = encodedKey.split('/');
 
-    return SchemaQuery.create(decodePart(encodedSchema), decodePart(encodedQuery), decodePart(encodedViewName));
+    return new SchemaQuery(decodePart(encodedSchema), decodePart(encodedQuery), decodePart(encodedViewName));
 }

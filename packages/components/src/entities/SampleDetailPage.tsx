@@ -201,7 +201,7 @@ export const SampleDetailPage: FC<SampleDetailPageProps> = props => {
     const { params, requiredColumns, sampleType } = props;
     const { id } = params;
     const sampleType_ = sampleType ?? params.sampleType;
-    const schemaQuery = useMemo(() => SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType_), [sampleType_]);
+    const schemaQuery = useMemo(() => new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType_), [sampleType_]);
     const modelId = useMemo(() => createGridModelId('sample-detail', schemaQuery, id), [id, schemaQuery]);
 
     const queryConfigs: QueryConfigMap = useMemo(

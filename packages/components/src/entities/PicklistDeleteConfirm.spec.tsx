@@ -373,7 +373,7 @@ describe('PicklistDeleteConfirm', () => {
     });
 
     test('with model selections', async () => {
-        let model = makeTestQueryModel(SchemaQuery.create('test', 'query'));
+        let model = makeTestQueryModel(new SchemaQuery('test', 'query'));
         model = model.mutate({ selections: new Set(['1', '2']) });
         const wrapper = mount(
             <PicklistDeleteConfirm
@@ -407,7 +407,7 @@ describe('PicklistDeleteConfirm', () => {
     });
 
     test('with model selections, none deletable', async () => {
-        let model = makeTestQueryModel(SchemaQuery.create('test', 'query'));
+        let model = makeTestQueryModel(new SchemaQuery('test', 'query'));
         model = model.mutate({ selections: new Set(['1', '2']) });
         const wrapper = mount(
             <PicklistDeleteConfirm

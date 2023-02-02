@@ -25,7 +25,7 @@ export const ProjectManagementPage: FC = memo(() => {
     const queryConfig: QueryConfig = useMemo(
         () => ({
             bindURL: true,
-            schemaQuery: SchemaQuery.create('core', 'ProjectManagement'),
+            schemaQuery: new SchemaQuery('core', 'ProjectManagement'),
         }),
         []
     );

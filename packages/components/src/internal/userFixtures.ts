@@ -174,6 +174,8 @@ export const TEST_USER_FOLDER_ADMIN = new User({
         PermissionTypes.ReadDataClass,
         PermissionTypes.ReadAssay,
         PermissionTypes.ReadMedia,
+        PermissionTypes.CanSeeGroupDetails,
+        PermissionTypes.CanSeeUserDetails,
     ]),
 });
 
@@ -210,6 +212,8 @@ export const TEST_USER_PROJECT_ADMIN = new User({
         PermissionTypes.ReadDataClass,
         PermissionTypes.ReadAssay,
         PermissionTypes.ReadMedia,
+        PermissionTypes.CanSeeGroupDetails,
+        PermissionTypes.CanSeeUserDetails,
     ]),
 });
 
@@ -248,6 +252,8 @@ export const TEST_USER_APP_ADMIN = new User({
         PermissionTypes.ReadDataClass,
         PermissionTypes.ReadAssay,
         PermissionTypes.ReadMedia,
+        PermissionTypes.CanSeeGroupDetails,
+        PermissionTypes.CanSeeUserDetails,
     ]),
 });
 

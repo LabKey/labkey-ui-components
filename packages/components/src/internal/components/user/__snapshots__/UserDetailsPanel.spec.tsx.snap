@@ -100,6 +100,8 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
             "org.labkey.api.security.permissions.DataClassReadPermission",
             "org.labkey.api.security.permissions.AssayReadPermission",
             "org.labkey.api.security.permissions.MediaReadPermission",
+            "org.labkey.api.security.permissions.SeeGroupDetailsPermission",
+            "org.labkey.api.security.permissions.SeeUserDetailsPermission",
           ],
         }
       }
@@ -1045,6 +1047,8 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
             "org.labkey.api.security.permissions.DataClassReadPermission",
             "org.labkey.api.security.permissions.AssayReadPermission",
             "org.labkey.api.security.permissions.MediaReadPermission",
+            "org.labkey.api.security.permissions.SeeGroupDetailsPermission",
+            "org.labkey.api.security.permissions.SeeUserDetailsPermission",
           ],
         }
       }
@@ -1168,6 +1172,8 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
             "org.labkey.api.security.permissions.DataClassReadPermission",
             "org.labkey.api.security.permissions.AssayReadPermission",
             "org.labkey.api.security.permissions.MediaReadPermission",
+            "org.labkey.api.security.permissions.SeeGroupDetailsPermission",
+            "org.labkey.api.security.permissions.SeeUserDetailsPermission",
           ],
         }
       }
@@ -2113,6 +2119,8 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
             "org.labkey.api.security.permissions.DataClassReadPermission",
             "org.labkey.api.security.permissions.AssayReadPermission",
             "org.labkey.api.security.permissions.MediaReadPermission",
+            "org.labkey.api.security.permissions.SeeGroupDetailsPermission",
+            "org.labkey.api.security.permissions.SeeUserDetailsPermission",
           ],
         }
       }
@@ -2237,6 +2245,8 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
             "org.labkey.api.security.permissions.DataClassReadPermission",
             "org.labkey.api.security.permissions.AssayReadPermission",
             "org.labkey.api.security.permissions.MediaReadPermission",
+            "org.labkey.api.security.permissions.SeeGroupDetailsPermission",
+            "org.labkey.api.security.permissions.SeeUserDetailsPermission",
           ],
         }
       }
@@ -3182,6 +3192,8 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
             "org.labkey.api.security.permissions.DataClassReadPermission",
             "org.labkey.api.security.permissions.AssayReadPermission",
             "org.labkey.api.security.permissions.MediaReadPermission",
+            "org.labkey.api.security.permissions.SeeGroupDetailsPermission",
+            "org.labkey.api.security.permissions.SeeUserDetailsPermission",
           ],
         }
       }

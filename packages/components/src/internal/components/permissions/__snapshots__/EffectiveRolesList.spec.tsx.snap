@@ -1,5 +1,35 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<EffectiveRolesList/> admin, showLinks false 1`] = `
+[
+  <hr
+    className="principal-hr"
+  />,
+  <div
+    className="row"
+  >
+    <div
+      className="principal-detail-label col-xs-4"
+    >
+      Effective Roles
+    </div>
+    <div
+      className="principal-detail-value col-xs-8"
+    >
+      <ul
+        className="principal-detail-ul"
+      >
+        <li
+          className="principal-detail-li"
+        >
+          Editor
+        </li>
+      </ul>
+    </div>
+  </div>,
+]
+`;
+
 exports[`<EffectiveRolesList/> multiple roles 1`] = `
 [
   <hr
@@ -80,6 +110,36 @@ exports[`<EffectiveRolesList/> multiple roles 1`] = `
 `;
 
 exports[`<EffectiveRolesList/> no roles 1`] = `null`;
+
+exports[`<EffectiveRolesList/> non admin 1`] = `
+[
+  <hr
+    className="principal-hr"
+  />,
+  <div
+    className="row"
+  >
+    <div
+      className="principal-detail-label col-xs-4"
+    >
+      Effective Roles
+    </div>
+    <div
+      className="principal-detail-value col-xs-8"
+    >
+      <ul
+        className="principal-detail-ul"
+      >
+        <li
+          className="principal-detail-li"
+        >
+          Editor
+        </li>
+      </ul>
+    </div>
+  </div>,
+]
+`;
 
 exports[`<EffectiveRolesList/> single role 1`] = `
 [

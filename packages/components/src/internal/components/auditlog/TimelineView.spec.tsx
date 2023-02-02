@@ -8,6 +8,7 @@ import { TimelineView } from './TimelineView';
 import { TimelineEventModel } from './models';
 import {TEST_USER_APP_ADMIN, TEST_USER_READER} from "../../userFixtures";
 import {mountWithServerContext} from "../../testHelpers";
+import {UserLink} from "../user/UserLink";
 
 const events: TimelineEventModel[] = [];
 TIMELINE_DATA.forEach(event => events.push(TimelineEventModel.create(event, 'UTC')));
@@ -100,6 +101,13 @@ describe('<TimelineView />', () => {
         );
 
         expect(wrapper.find('.timeline-info-icon')).toHaveLength(8);
+        expect(wrapper.find(UserLink)).toHaveLength(8);
+
+        // test unknown user display
+        expect(wrapper.find(UserLink).first().prop('userDisplayValue')).toBe('Vader');
+        expect(wrapper.find(UserLink).first().prop('unknown')).toBeFalsy();
+        expect(wrapper.find(UserLink).last().prop('userDisplayValue')).toBeUndefined();
+        expect(wrapper.find(UserLink).last().prop('unknown')).toBeTruthy();
 
         wrapper.unmount();
     });

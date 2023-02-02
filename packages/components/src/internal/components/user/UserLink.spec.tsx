@@ -3,7 +3,7 @@ import React from 'react';
 import { mountWithServerContext, waitForLifecycle } from '../../testHelpers';
 import { TEST_USER_APP_ADMIN, TEST_USER_READER } from '../../userFixtures';
 
-import { UserLink } from './UserLink';
+import {UserLink, UserLinkList} from './UserLink';
 
 describe('UserLink', () => {
     test('unknown', () => {
@@ -72,6 +72,35 @@ describe('UserLink', () => {
         expect(wrapper.find('span')).toHaveLength(0);
         expect(wrapper.find('.gray-text')).toHaveLength(0);
         expect(wrapper.find('a').text()).toBe('Test display');
+        wrapper.unmount();
+    });
+});
+
+describe('UserLinkList', () => {
+    test('all users', () => {
+        const wrapper = mountWithServerContext(
+            <UserLinkList users={[
+                { id: 1, displayName: 'a', type: 'u' },
+                { id: 2, displayName: 'b', type: 'u' },
+            ]} />,
+            { user: TEST_USER_APP_ADMIN }
+        );
+        expect(wrapper.find(UserLink)).toHaveLength(2);
+        expect(wrapper.text()).toBe('a, b');
+        wrapper.unmount();
+    });
+
+    test('users and groups', () => {
+        const wrapper = mountWithServerContext(
+            <UserLinkList users={[
+                { id: 1, displayName: 'a', type: 'u' },
+                { id: 2, displayName: 'b', type: 'u' },
+                { id: 3, displayName: 'c', type: 'g' },
+            ]} />,
+            { user: TEST_USER_APP_ADMIN }
+        );
+        expect(wrapper.find(UserLink)).toHaveLength(2);
+        expect(wrapper.text()).toBe('a, b, c');
         wrapper.unmount();
     });
 });

@@ -540,9 +540,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
-              unknown={false}
-              userDisplayValue="xyang"
-              userId={1005}
+              unknown={true}
             />
           </div>
            
@@ -1109,9 +1107,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
-              unknown={false}
-              userDisplayValue="xyang"
-              userId={1005}
+              unknown={true}
             />
           </div>
            
@@ -1690,9 +1686,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
-              unknown={false}
-              userDisplayValue="xyang"
-              userId={1005}
+              unknown={true}
             />
           </div>
            
@@ -2271,9 +2265,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             className="field-text-nowrap"
           >
             <UserLink
-              unknown={false}
-              userDisplayValue="xyang"
-              userId={1005}
+              unknown={true}
             />
           </div>
            

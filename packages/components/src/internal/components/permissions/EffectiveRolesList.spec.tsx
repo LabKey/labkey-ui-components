@@ -7,10 +7,11 @@ import policyJSON from '../../../test/data/security-getPolicy.json';
 import rootPolicyJSON from '../../../test/data/security-getPolicyRoot.json';
 import rolesJSON from '../../../test/data/security-getRoles.json';
 
+import { TEST_USER_APP_ADMIN, TEST_USER_READER } from '../../userFixtures';
+
 import { EffectiveRolesList } from './EffectiveRolesList';
 import { SecurityPolicy } from './models';
 import { getRolesByUniqueName, processGetRolesResponse } from './actions';
-import {TEST_USER_APP_ADMIN} from "../../userFixtures";
 
 const POLICY = SecurityPolicy.create(policyJSON);
 const ROOT_POLICY = SecurityPolicy.create(rootPolicyJSON);
@@ -39,9 +40,43 @@ describe('<EffectiveRolesList/>', () => {
         expect(tree).toMatchSnapshot();
     });
 
+    test('admin, showLinks false', () => {
+        const component = (
+            <EffectiveRolesList
+                currentUser={TEST_USER_APP_ADMIN}
+                userId={4971} // reader only
+                policy={POLICY}
+                rolesByUniqueName={ROLES_BY_NAME}
+                showLinks={false}
+            />
+        );
+
+        const tree = renderer.create(component).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
+
+    test('non admin', () => {
+        const component = (
+            <EffectiveRolesList
+                currentUser={TEST_USER_READER}
+                userId={4971} // reader only
+                policy={POLICY}
+                rolesByUniqueName={ROLES_BY_NAME}
+            />
+        );
+
+        const tree = renderer.create(component).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
+
     test('multiple roles', () => {
         const component = (
-            <EffectiveRolesList currentUser={TEST_USER_APP_ADMIN} userId={JEST_SITE_ADMIN_USER_ID} policy={POLICY} rolesByUniqueName={ROLES_BY_NAME} />
+            <EffectiveRolesList
+                currentUser={TEST_USER_APP_ADMIN}
+                userId={JEST_SITE_ADMIN_USER_ID}
+                policy={POLICY}
+                rolesByUniqueName={ROLES_BY_NAME}
+            />
         );
 
         const tree = renderer.create(component).toJSON();

@@ -12,6 +12,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * update UserDetailsPanel so that permissions and group listing items are links to admin groups/permissions page
   * add dirty state check for user Profile page navigation
 
+### version TBD
+*Released*: TBD
+- Issue 47190: Don't warn about required fields added to default grid from lookups
+
 ### version 2.288.0
 *Released*: 1 February 2023
 - Create components for `SamplesCreatedSuccessMessage` and `SamplesImportSuccessMessage`. Utilize `withRouter`.

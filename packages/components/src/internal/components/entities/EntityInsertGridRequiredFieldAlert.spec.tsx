@@ -91,6 +91,7 @@ describe('getFieldKeysOfRequiredCols', () => {
                 List.of(
                     QueryColumn.create({
                         fieldKey: 'col1',
+                        fieldKeyArray: ['col1'],
                         readOnly: false,
                         userEditable: true,
                         shownInUpdateView: true,
@@ -105,6 +106,7 @@ describe('getFieldKeysOfRequiredCols', () => {
                 List.of(
                     QueryColumn.create({
                         fieldKey: 'col1',
+                        fieldKeyArray: ['col1'],
                         readOnly: false,
                         userEditable: true,
                         shownInUpdateView: true,
@@ -121,6 +123,7 @@ describe('getFieldKeysOfRequiredCols', () => {
                 List.of(
                     QueryColumn.create({
                         fieldKey: 'col1',
+                        fieldKeyArray: ['col1'],
                         readOnly: false,
                         userEditable: true,
                         shownInUpdateView: true,
@@ -137,6 +140,7 @@ describe('getFieldKeysOfRequiredCols', () => {
                 List.of(
                     QueryColumn.create({
                         fieldKey: 'col1',
+                        fieldKeyArray: ['col1'],
                         readOnly: false,
                         userEditable: false,
                         shownInUpdateView: true,
@@ -153,10 +157,28 @@ describe('getFieldKeysOfRequiredCols', () => {
                 List.of(
                     QueryColumn.create({
                         fieldKey: 'col1',
+                        fieldKeyArray: ['col1'],
                         readOnly: false,
                         userEditable: false,
                         shownInUpdateView: true,
                         required: false,
+                    })
+                )
+            ).length
+        ).toBe(0);
+    });
+
+    test('editable, required lookup field', () => {
+        expect(
+            getFieldKeysOfRequiredCols(
+                List.of(
+                    QueryColumn.create({
+                        fieldKey: 'lookup/col1',
+                        fieldKeyArray: ['lookup', 'col1'],
+                        readOnly: false,
+                        userEditable: true,
+                        shownInUpdateView: true,
+                        required: true,
                     })
                 )
             ).length

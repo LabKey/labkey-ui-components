@@ -284,7 +284,7 @@ function applyViewColumns(
     return columns;
 }
 
-class Renderers {
+export class Renderers {
     static _check(columnMetadata, rawColumn, field, metadata) {
         if (columnMetadata.conceptURI || rawColumn.conceptURI) {
             const concept = metadata.getIn([

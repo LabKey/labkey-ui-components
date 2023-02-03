@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.290.1
+*Released*: 3 February 2023
+- Move getReportInfos.api to reports controller since it does not rely on study module
+
 ### version 2.290.0
 *Released*: 2 February 2023
 * SchemaQuery: Convert to vanilla class, remove getQuery, getSchema, getView, create

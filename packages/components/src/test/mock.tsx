@@ -593,7 +593,7 @@ export function initQueryGridMocks(delayMs = undefined) {
     });
 
     // TODO conditionalize based on queryName
-    mock.get(/.*\/study-reports\/?.*\/getReportInfos.*/, jsonResponse(mixturesReportInfos));
+    mock.get(/.*\/reports\/?.*\/getReportInfos.*/, jsonResponse(mixturesReportInfos));
 }
 
 export function initDomainPropertiesMocks() {

@@ -760,7 +760,11 @@ export function fetchCharts(schemaQuery: SchemaQuery, containerPath?: string): P
                     resolve(result);
                 } else {
                     reject({
-                        error: 'report-getReportInfos.api responded to success without success',
+                        error:
+                            'Unable to get report info for schema/query: ' +
+                            schemaQuery.schemaName +
+                            '/' +
+                            schemaQuery.queryName,
                     });
                 }
             }),

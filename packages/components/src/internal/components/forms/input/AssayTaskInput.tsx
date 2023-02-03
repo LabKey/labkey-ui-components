@@ -26,7 +26,7 @@ async function loadInputOptions(assayId: number): Promise<InputOption[]> {
             Filter.create('Status/Value', 'In Progress'),
         ],
         maxRows: -1,
-        schemaQuery: SchemaQuery.create('samplemanagement', 'Tasks', ViewInfo.DETAIL_NAME),
+        schemaQuery: new SchemaQuery('samplemanagement', 'Tasks', ViewInfo.DETAIL_NAME),
     });
     const taskOptions: InputOption[] = [];
 

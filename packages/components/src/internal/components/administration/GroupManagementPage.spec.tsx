@@ -14,8 +14,14 @@ import { TEST_USER_FOLDER_ADMIN } from '../../userFixtures';
 
 import { Alert } from '../base/Alert';
 
+import { initBrowserHistoryState } from '../../util/global';
+
 import { GroupManagementPageImpl, GroupManagementPageProps } from './GroupManagementPage';
 import { GroupAssignments } from './GroupAssignments';
+
+beforeAll(() => {
+    initBrowserHistoryState();
+});
 
 describe('BasePermissions', () => {
     function getDefaultProps(): GroupManagementPageProps {

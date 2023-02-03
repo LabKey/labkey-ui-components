@@ -59,7 +59,7 @@ export interface GetQueryDetailsOptions {
 
 export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryInfo> {
     const { containerPath, queryName, schemaName, viewName, fk, lookup } = options;
-    const schemaQuery = SchemaQuery.create(schemaName, queryName, viewName);
+    const schemaQuery = new SchemaQuery(schemaName, queryName, viewName);
     const key = getQueryDetailsCacheKey(schemaQuery, containerPath, fk);
 
     if (!queryDetailsCache[key]) {
@@ -111,7 +111,7 @@ export function applyQueryMetadata(rawQueryInfo: any, schemaName?: string, query
     const _queryName = queryName ?? rawQueryInfo?.name;
 
     if (rawQueryInfo && _schemaName && _queryName) {
-        const schemaQuery = SchemaQuery.create(_schemaName, _queryName);
+        const schemaQuery = new SchemaQuery(_schemaName, _queryName);
 
         let columns = OrderedMap<string, QueryColumn>();
         rawQueryInfo.columns.forEach(rawColumn => {
@@ -284,7 +284,7 @@ function applyViewColumns(
     return columns;
 }
 
-class Renderers {
+export class Renderers {
     static _check(columnMetadata, rawColumn, field, metadata) {
         if (columnMetadata.conceptURI || rawColumn.conceptURI) {
             const concept = metadata.getIn([
@@ -304,15 +304,12 @@ class Renderers {
 
     static applyColumnRenderer(columnMetadata, rawColumn, metadata) {
         let value = this._check(columnMetadata, rawColumn, 'columnRenderer', metadata);
-        const types = ImmutableSet.of(rawColumn.type.toLowerCase(), rawColumn.friendlyType.toLowerCase());
 
         if (value === undefined) {
-            if (rawColumn.multiValue === true) {
-                value = 'MultiValueColumnRenderer';
-            } else if (rawColumn.name === 'harvest') {
+            if (rawColumn.name === 'harvest') {
                 value = 'MaterialLookupColumnRenderer';
-            } else if (types.contains('file')) {
-                value = 'FileColumnRenderer';
+            } else {
+                value = this._applyDefaultRenderer(columnMetadata, rawColumn, metadata);
             }
         }
 
@@ -321,17 +318,26 @@ class Renderers {
 
     static applyDetailRenderer(columnMetadata, rawColumn, metadata) {
         let value = this._check(columnMetadata, rawColumn, 'detailRenderer', metadata);
-        const types = ImmutableSet.of(rawColumn.type.toLowerCase(), rawColumn.friendlyType.toLowerCase());
 
         if (value === undefined) {
-            if (rawColumn.multiValue === true) {
-                value = 'MultiValueDetailRenderer';
-            } else if (types.contains('file')) {
-                value = 'FileColumnRenderer';
-            }
+            value = this._applyDefaultRenderer(columnMetadata, rawColumn, metadata);
         }
 
         return value;
+    }
+
+    static _applyDefaultRenderer(columnMetadata, rawColumn, metadata) {
+        const types = ImmutableSet.of(rawColumn.type.toLowerCase(), rawColumn.friendlyType.toLowerCase());
+
+        if (rawColumn.multiValue === true) {
+            return 'MultiValueDetailRenderer';
+        } else if (types.contains('file')) {
+            return 'FileColumnRenderer';
+        } else if (QueryColumn.isUserLookup(rawColumn.lookup)) {
+            return 'UserDetailsRenderer';
+        }
+
+        return undefined;
     }
 
     static applyInputRenderer(columnMetadata, rawColumn, metadata) {
@@ -364,7 +370,7 @@ export function selectRowsDeprecated(userConfig, caller?): Promise<ISelectRowsRe
     return new Promise((resolve, reject) => {
         let schemaQuery, key;
         if (userConfig.queryName) {
-            schemaQuery = SchemaQuery.create(userConfig.schemaName, userConfig.queryName, userConfig.viewName);
+            schemaQuery = new SchemaQuery(userConfig.schemaName, userConfig.queryName, userConfig.viewName);
             key = schemaQuery.getKey();
         }
 
@@ -412,7 +418,7 @@ export function selectRowsDeprecated(userConfig, caller?): Promise<ISelectRowsRe
                         let resultSchemaQuery: SchemaQuery;
 
                         if (saveInSession) {
-                            resultSchemaQuery = SchemaQuery.create(userConfig.schemaName, json.queryName);
+                            resultSchemaQuery = new SchemaQuery(userConfig.schemaName, json.queryName);
                             key = resultSchemaQuery.getKey();
                         } else {
                             resultSchemaQuery = schemaQuery;
@@ -1005,7 +1011,7 @@ export function selectDistinctRows(options: Query.SelectDistinctOptions): Promis
 
 export function loadQueries(schemaQueries: SchemaQuery[]): Promise<QueryInfo[]> {
     return Promise.all(
-        schemaQueries.map(sq => getQueryDetails({ schemaName: sq.getSchema(), queryName: sq.getQuery() }))
+        schemaQueries.map(sq => getQueryDetails({ schemaName: sq.schemaName, queryName: sq.queryName }))
     );
 }
 
@@ -1035,11 +1041,8 @@ export async function loadQueriesFromTable(
     containerFilter?: Query.ContainerFilter,
     filters?: Filter.IFilter[]
 ): Promise<QueryInfo[]> {
-    const info = await getQueryDetails({
-        queryName: tableSchemaQuery.getQuery(),
-        schemaName: tableSchemaQuery.getSchema(),
-    });
-
+    const { schemaName, queryName, viewName } = tableSchemaQuery;
+    const info = await getQueryDetails({ queryName, schemaName });
     const queryNameField = info.getColumn(tableFieldKey);
 
     if (queryNameField) {
@@ -1052,17 +1055,17 @@ export async function loadQueriesFromTable(
                 .add(queryNameField.name)
                 .join(','),
             filterArray: filters,
-            queryName: tableSchemaQuery.getQuery(),
-            schemaName: tableSchemaQuery.getSchema(),
-            viewName: tableSchemaQuery.getView(),
+            queryName,
+            schemaName,
+            viewName,
         });
 
         const schemaQueries: SchemaQuery[] = Object.values(models[key])
             .map(row => caseInsensitive(row, queryNameField.name)?.value)
-            .filter(queryName => queryName !== undefined)
-            .map(queryName => SchemaQuery.create(targetSchemaName, queryName));
+            .filter(query => query !== undefined)
+            .map(query => new SchemaQuery(targetSchemaName, query));
 
-        return await loadQueries(schemaQueries);
+        return loadQueries(schemaQueries);
     }
 
     return [];

@@ -102,7 +102,7 @@ export function getPrincipalsById(principals: List<Principal>): Map<number, Prin
 
 export function fetchContainerSecurityPolicy(
     containerId: string,
-    principalsById: Map<number, Principal>,
+    principalsById?: Map<number, Principal>,
     inactiveUsersById?: Map<number, Principal>
 ): Promise<SecurityPolicy> {
     return new Promise((resolve, reject) => {

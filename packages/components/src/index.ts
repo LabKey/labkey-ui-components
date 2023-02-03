@@ -33,7 +33,6 @@ import {
     encodePart,
     getSchemaQuery,
     resolveKey,
-    resolveSchemaQuery,
     SchemaQuery,
 } from './public/SchemaQuery';
 import { insertColumnFilter, QueryColumn, QueryLookup } from './public/QueryColumn';
@@ -260,6 +259,7 @@ import { FileColumnRenderer } from './internal/renderers/FileColumnRenderer';
 import { MultiValueRenderer } from './internal/renderers/MultiValueRenderer';
 import { LabelColorRenderer } from './internal/renderers/LabelColorRenderer';
 import { NoLinkRenderer } from './internal/renderers/NoLinkRenderer';
+import { UserDetailsRenderer } from './internal/renderers/UserDetailsRenderer';
 import {
     ImportAliasRenderer,
     SampleTypeImportAliasRenderer,
@@ -394,7 +394,7 @@ import { UserProfile } from './internal/components/user/UserProfile';
 import { ChangePasswordModal } from './internal/components/user/ChangePasswordModal';
 import { UsersGridPanel } from './internal/components/user/UsersGridPanel';
 import { UserProvider, useUserProperties } from './internal/components/user/UserProvider';
-import { UserLink } from './internal/components/user/UserLink';
+import { UserLink, UserLinkList } from './internal/components/user/UserLink';
 import { AccountSubNav } from './internal/components/user/AccountSubNav';
 import { ProfilePage } from './internal/components/user/ProfilePage';
 import {
@@ -453,7 +453,7 @@ import {
 import { AuditQueriesListingPage } from './internal/components/auditlog/AuditQueriesListingPage';
 import { AuditDetails } from './internal/components/auditlog/AuditDetails';
 import { TimelineView } from './internal/components/auditlog/TimelineView';
-import { getEventDataValueDisplay, getTimelineEntityUrl } from './internal/components/auditlog/utils';
+import { getEventDataValueDisplay } from './internal/components/auditlog/utils';
 import {
     fetchDomain,
     fetchDomainDetails,
@@ -930,6 +930,7 @@ export {
     ImportAliasRenderer,
     SampleTypeImportAliasRenderer,
     SourceTypeImportAliasRenderer,
+    UserDetailsRenderer,
     resolveDetailRenderer,
     // form related items
     BulkUpdateForm,
@@ -972,6 +973,7 @@ export {
     UserDetailHeader,
     UserProfile,
     UserLink,
+    UserLinkList,
     AccountSubNav,
     ProfilePage,
     ChangePasswordModal,
@@ -1343,7 +1345,6 @@ export {
     LoadingState,
     SCHEMAS,
     getSchemaQuery,
-    resolveSchemaQuery,
     insertColumnFilter,
     EXPORT_TYPES,
     SELECTION_KEY_TYPE,
@@ -1375,7 +1376,6 @@ export {
     AuditQueriesListingPage,
     AuditDetails,
     getEventDataValueDisplay,
-    getTimelineEntityUrl,
     TimelineEventModel,
     TimelineView,
     // pipeline

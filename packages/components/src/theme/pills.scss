@@ -22,6 +22,7 @@
     }
     &.danger,
     &.rejected,
+    &.inactive,
     &.overdue {
         color: #D9534F;
         background-color: #FDDEDE;
@@ -33,6 +34,7 @@
         border-color: #CDCDCD;
     }
     &.success,
+    &.active,
     &.approved {
         color: #3C763D;
         background-color: #F0F8ED;

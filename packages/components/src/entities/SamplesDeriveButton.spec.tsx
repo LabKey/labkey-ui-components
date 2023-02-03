@@ -16,7 +16,7 @@ import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
 describe('SamplesDeriveButton', () => {
     function defaultProps(): SamplesDeriveButtonProps {
         return {
-            model: makeTestQueryModel(SchemaQuery.create('schema', 'query')),
+            model: makeTestQueryModel(new SchemaQuery('schema', 'query')),
             isSelectingSamples: jest.fn().mockReturnValue(true),
         };
     }
@@ -55,7 +55,7 @@ describe('SamplesDeriveButton', () => {
     });
 
     test('over max selections', () => {
-        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({
+        const model = makeTestQueryModel(new SchemaQuery('schema', 'query')).mutate({
             selections: new Set(Array.from(Array(1001).keys()).map(key => key + '')),
         });
         const wrapper = mountWithServerContext(<SamplesDeriveButton {...defaultProps()} model={model} />, {

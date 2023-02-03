@@ -13,7 +13,7 @@ beforeAll(() => {
     registerDefaultURLMappers();
 });
 
-const SQ = SchemaQuery.create('exp.data', 'mixtures', '~~default~~');
+const SQ = new SchemaQuery('exp.data', 'mixtures', '~~default~~');
 
 describe('PreviewGrid render', () => {
     test('PreviewGrid loading', () => {

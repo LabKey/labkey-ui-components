@@ -34,14 +34,14 @@ describe('SampleDeleteMenuItem', () => {
     });
 
     test('click menu item with no selection', () => {
-        const queryModel = makeTestQueryModel(SchemaQuery.create('test', 'query'));
+        const queryModel = makeTestQueryModel(new SchemaQuery('test', 'query'));
         const wrapper = mountWithAppServerContext(<SampleDeleteMenuItem queryModel={queryModel} />);
         validate(wrapper);
         wrapper.unmount();
     });
 
     test('click menu item', () => {
-        let queryModel = makeTestQueryModel(SchemaQuery.create('test', 'query'));
+        let queryModel = makeTestQueryModel(new SchemaQuery('test', 'query'));
         queryModel = queryModel.mutate({ rowCount: 2, selections: new Set(['1', '2']) });
         const wrapper = mountWithAppServerContext(<SampleDeleteMenuItem queryModel={queryModel} />);
         validate(wrapper, 1);

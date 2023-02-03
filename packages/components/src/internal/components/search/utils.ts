@@ -291,7 +291,7 @@ export function getSampleFinderQueryConfigs(
         [allSamplesKey]: {
             id: allSamplesKey,
             title: 'All Samples',
-            schemaQuery: SchemaQuery.create(
+            schemaQuery: new SchemaQuery(
                 SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
                 SCHEMAS.EXP_TABLES.MATERIALS.queryName,
                 SAMPLE_FINDER_VIEW_NAME
@@ -306,7 +306,7 @@ export function getSampleFinderQueryConfigs(
 
         for (const name of sampleTypeNames) {
             const id = getSampleFinderConfigId(finderId, 'samples/' + name);
-            const schemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, name, SAMPLE_FINDER_VIEW_NAME);
+            const schemaQuery = new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, name, SAMPLE_FINDER_VIEW_NAME);
 
             configs[id] = {
                 id,

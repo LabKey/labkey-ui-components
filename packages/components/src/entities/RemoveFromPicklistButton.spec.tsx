@@ -36,7 +36,7 @@ describe('RemoveFromPicklistButton', () => {
     const DEFAULT_PROPS = {
         user: TEST_USER_EDITOR,
         afterSampleActionComplete: jest.fn,
-        model: makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({
+        model: makeTestQueryModel(new SchemaQuery('schema', 'query')).mutate({
             rowCount: 2,
             selections: new Set(['1', '2']),
         }),

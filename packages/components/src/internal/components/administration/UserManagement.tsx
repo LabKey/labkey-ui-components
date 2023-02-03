@@ -274,7 +274,7 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
     };
 
     render(): ReactNode {
-        const { allowResetPassword, container, extraRoles, project, user } = this.props;
+        const { allowResetPassword, container, extraRoles, project, user, rolesByUniqueName } = this.props;
         const { policy, userLimitSettings } = this.state;
 
         // issue 39501: only allow permissions changes to be made if policy is stored in this container (i.e. not inherited)
@@ -295,6 +295,7 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
                     onUsersStateChangeComplete={this.onUsersStateChangeComplete}
                     newUserRoleOptions={newUserRoleOptions}
                     policy={policy}
+                    rolesByUniqueName={rolesByUniqueName}
                     allowResetPassword={allowResetPassword}
                     showDetailsPanel={user.hasManageUsersPermission()}
                     userLimitSettings={userLimitSettings}

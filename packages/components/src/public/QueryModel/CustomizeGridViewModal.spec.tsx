@@ -299,7 +299,7 @@ describe('CustomizeGridViewModal', () => {
             views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
             columns,
         });
-        let model = makeTestQueryModel(SchemaQuery.create('test', QUERY_NAME), queryInfo);
+        let model = makeTestQueryModel(new SchemaQuery('test', QUERY_NAME), queryInfo);
         model = model.mutate({ title: 'Title' });
         const wrapper = mount(<CustomizeGridViewModal model={model} onCancel={jest.fn()} onUpdate={jest.fn()} />);
         expect(wrapper.find(Modal.Title).text()).toBe('Customize Title Grid');
@@ -313,7 +313,7 @@ describe('CustomizeGridViewModal', () => {
             views: fromJS({ [viewName.toLowerCase()]: view }),
             columns,
         });
-        const model = makeTestQueryModel(SchemaQuery.create('test', QUERY_NAME, viewName), queryInfo);
+        const model = makeTestQueryModel(new SchemaQuery('test', QUERY_NAME, viewName), queryInfo);
         const wrapper = mount(<CustomizeGridViewModal model={model} onCancel={jest.fn()} onUpdate={jest.fn()} />);
         expect(wrapper.find(Modal.Title).text()).toBe('Customize ' + QUERY_NAME + ' Grid - ' + viewName);
         wrapper.unmount();
@@ -328,7 +328,7 @@ describe('CustomizeGridViewModal', () => {
             views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
             columns,
         });
-        const model = makeTestQueryModel(SchemaQuery.create('test', QUERY_NAME), queryInfo);
+        const model = makeTestQueryModel(new SchemaQuery('test', QUERY_NAME), queryInfo);
         const wrapper = mount(<CustomizeGridViewModal model={model} onCancel={jest.fn()} onUpdate={jest.fn()} />);
         let columnChoices = wrapper.find(ColumnChoice);
         expect(columnChoices).toHaveLength(3);
@@ -389,7 +389,7 @@ describe('CustomizeGridViewModal', () => {
             views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
             columns,
         });
-        const model = makeTestQueryModel(SchemaQuery.create('test', QUERY_NAME), queryInfo);
+        const model = makeTestQueryModel(new SchemaQuery('test', QUERY_NAME), queryInfo);
         const wrapper = mount(
             <CustomizeGridViewModal
                 model={model}

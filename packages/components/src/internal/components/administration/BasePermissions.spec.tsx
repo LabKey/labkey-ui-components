@@ -17,9 +17,15 @@ import { getSecurityTestAPIWrapper, SecurityAPIWrapper } from '../security/APIWr
 import { SecurityPolicy, SecurityRole } from '../permissions/models';
 import { PermissionAssignments } from '../permissions/PermissionAssignments';
 
+import { initBrowserHistoryState } from '../../util/global';
+
 import { BasePermissionsImpl, BasePermissionsImplProps } from './BasePermissions';
 
 const TEST_POLICY = SecurityPolicy.create(policyJSON);
+
+beforeAll(() => {
+    initBrowserHistoryState();
+});
 
 describe('BasePermissions', () => {
     function getDefaultProps(): BasePermissionsImplProps {

@@ -30,7 +30,7 @@ describe('SamplesEditButton', () => {
         showInsertNewButton: true,
         importUrl: 'test',
         importUrlDisabled: false,
-        schemaQuery: SchemaQuery.create('schema', 'query'),
+        schemaQuery: new SchemaQuery('schema', 'query'),
     });
 
     function validate(
@@ -52,7 +52,7 @@ describe('SamplesEditButton', () => {
 
     const DEFAULT_PROPS = {
         parentEntityDataTypes: [DataClassDataType, SampleTypeDataType],
-        model: makeTestQueryModel(SchemaQuery.create('schema', 'query'), queryInfo).mutate({
+        model: makeTestQueryModel(new SchemaQuery('schema', 'query'), queryInfo).mutate({
             queryInfoLoadingState: LoadingState.LOADED,
             rowsLoadingState: LoadingState.LOADED,
         }),
@@ -67,7 +67,7 @@ describe('SamplesEditButton', () => {
 
     test('loading', () => {
         const wrapper = mountWithServerContext(
-            <SamplesEditButton {...DEFAULT_PROPS} model={makeTestQueryModel(SchemaQuery.create('schema', 'query'))} />,
+            <SamplesEditButton {...DEFAULT_PROPS} model={makeTestQueryModel(new SchemaQuery('schema', 'query'))} />,
             { user: TEST_USER_EDITOR }
         );
         validate(wrapper, false);
@@ -115,7 +115,7 @@ describe('SamplesEditButton', () => {
 
     test('not showImportDataButton', () => {
         const queryInfo2 = new QueryInfo({ showInsertNewButton: false });
-        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query'), queryInfo2).mutate({
+        const model = makeTestQueryModel(new SchemaQuery('schema', 'query'), queryInfo2).mutate({
             queryInfoLoadingState: LoadingState.LOADED,
             rowsLoadingState: LoadingState.LOADED,
         });

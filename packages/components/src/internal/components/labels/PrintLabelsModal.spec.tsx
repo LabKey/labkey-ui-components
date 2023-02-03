@@ -38,12 +38,12 @@ describe('<PrintLabelsModal/>', () => {
     beforeAll(() => {
         actions = makeTestActions();
         queryModels = {
-            sampleModel: makeTestQueryModel(SchemaQuery.create(TEST_SCHEMA, TEST_QUERY), QueryInfo.create({})).mutate({
+            sampleModel: makeTestQueryModel(new SchemaQuery(TEST_SCHEMA, TEST_QUERY), QueryInfo.create({})).mutate({
                 queryInfoLoadingState: LoadingState.LOADED,
                 rowsLoadingState: LoadingState.LOADED,
             }),
             singleSampleModel: makeTestQueryModel(
-                SchemaQuery.create(TEST_SCHEMA, TEST_QUERY),
+                new SchemaQuery(TEST_SCHEMA, TEST_QUERY),
                 QueryInfo.create({})
             ).mutate({
                 queryInfoLoadingState: LoadingState.LOADED,

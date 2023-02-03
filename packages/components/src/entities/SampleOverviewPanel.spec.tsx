@@ -19,7 +19,7 @@ import { SampleOverviewPanel } from './SampleOverviewPanel';
 import { SampleAliquotsSummary } from './SampleAliquotsSummary';
 import { SampleDetailEditing } from './SampleDetailEditing';
 
-const SQ = SchemaQuery.create('schema', 'query');
+const SQ = new SchemaQuery('schema', 'query');
 const ROW = {
     Folder: { value: TEST_PROJECT_CONTAINER.id },
     RowId: { value: 1 },

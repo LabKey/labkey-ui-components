@@ -14,7 +14,7 @@ import { LabelHelpTip } from '../internal/components/base/LabelHelpTip';
 import { INSIGHTS_MODEL_ID, SampleTypeInsightsPanelImpl, STATUS_COUNTS_MODEL_ID } from './SampleTypeInsightsPanel';
 
 describe('SampleTypeInsightsPanel', () => {
-    const SQ = SchemaQuery.create('schema', 'query');
+    const SQ = new SchemaQuery('schema', 'query');
     const MODEL_NO_ROWS = makeTestQueryModel(SQ, new QueryInfo(), {}, [], 0).mutate({
         queryInfoLoadingState: LoadingState.LOADED,
         rowsLoadingState: LoadingState.LOADED,

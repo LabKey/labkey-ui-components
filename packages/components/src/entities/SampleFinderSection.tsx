@@ -283,7 +283,7 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
                 newFilterCards.push({
                     schemaQuery: isAssay
                         ? entityDataType.getInstanceSchemaQuery(queryName)
-                        : SchemaQuery.create(schemaName, queryLabels[queryName]),
+                        : new SchemaQuery(schemaName, queryLabels[queryName]),
                     filterArray: dataTypeFilters[queryName],
                     entityDataType: chosenEntityType,
                     dataTypeDisplayName: queryLabels[queryName],

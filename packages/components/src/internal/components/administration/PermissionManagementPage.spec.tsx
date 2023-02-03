@@ -17,6 +17,8 @@ import { getTestAPIWrapper } from '../../APIWrapper';
 import { Principal, SecurityPolicy } from '../permissions/models';
 import policyJSON from '../../../test/data/security-getPolicy.json';
 
+import { initBrowserHistoryState } from '../../util/global';
+
 import { BasePermissions } from './BasePermissions';
 import { PermissionManagementPage } from './PermissionManagementPage';
 import { MemberType } from './models';
@@ -41,6 +43,10 @@ const PRINCIPALS_BY_ID = PRINCIPALS.reduce((map, principal) => {
     return map.set(principal.userId, principal);
 }, Map<number, Principal>());
 const POLICY = SecurityPolicy.updateAssignmentsData(SecurityPolicy.create(policyJSON), PRINCIPALS_BY_ID);
+
+beforeAll(() => {
+    initBrowserHistoryState();
+});
 
 describe('PermissionManagementPage', () => {
     function getDefaultAppContext(admin = {}): Partial<AppContext> {

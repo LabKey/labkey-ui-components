@@ -19,7 +19,7 @@ import { DataClassDataType, SampleTypeDataType } from '../internal/components/en
 import { ParentEntityEditPanel } from './ParentEntityEditPanel';
 import { OperationConfirmationData } from '../internal/components/entities/models';
 
-const SQ = SchemaQuery.create('schema', 'query');
+const SQ = new SchemaQuery('schema', 'query');
 const MODEL = makeTestQueryModel(SQ).mutate({
     selections: new Set(['1', '2', '3']),
 });

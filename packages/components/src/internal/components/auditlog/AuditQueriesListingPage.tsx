@@ -155,7 +155,7 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
             actions.addModel(
                 {
                     id,
-                    schemaQuery: SchemaQuery.create(SCHEMAS.AUDIT_TABLES.SCHEMA, selected),
+                    schemaQuery: new SchemaQuery(SCHEMAS.AUDIT_TABLES.SCHEMA, selected),
                     containerFilter: this.containerFilter,
                     bindURL: isFirstModel,
                 },
@@ -194,7 +194,6 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
                 rowId={selectedRowId}
                 user={user}
                 summary={detail ? detail.comment : undefined}
-                hasUserField={true}
                 gridData={this.getDetailsGridData()}
                 changeDetails={detail}
             />

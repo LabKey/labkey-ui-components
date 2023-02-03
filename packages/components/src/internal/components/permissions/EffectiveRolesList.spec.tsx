@@ -7,6 +7,8 @@ import policyJSON from '../../../test/data/security-getPolicy.json';
 import rootPolicyJSON from '../../../test/data/security-getPolicyRoot.json';
 import rolesJSON from '../../../test/data/security-getRoles.json';
 
+import { TEST_USER_APP_ADMIN, TEST_USER_READER } from '../../userFixtures';
+
 import { EffectiveRolesList } from './EffectiveRolesList';
 import { SecurityPolicy } from './models';
 import { getRolesByUniqueName, processGetRolesResponse } from './actions';
@@ -18,7 +20,7 @@ const ROLES_BY_NAME = getRolesByUniqueName(ROLES);
 
 describe('<EffectiveRolesList/>', () => {
     test('without policy', () => {
-        const component = <EffectiveRolesList userId={4971} />;
+        const component = <EffectiveRolesList userId={4971} currentUser={TEST_USER_APP_ADMIN} />;
 
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();
@@ -27,6 +29,36 @@ describe('<EffectiveRolesList/>', () => {
     test('single role', () => {
         const component = (
             <EffectiveRolesList
+                currentUser={TEST_USER_APP_ADMIN}
+                userId={4971} // reader only
+                policy={POLICY}
+                rolesByUniqueName={ROLES_BY_NAME}
+            />
+        );
+
+        const tree = renderer.create(component).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
+
+    test('admin, showLinks false', () => {
+        const component = (
+            <EffectiveRolesList
+                currentUser={TEST_USER_APP_ADMIN}
+                userId={4971} // reader only
+                policy={POLICY}
+                rolesByUniqueName={ROLES_BY_NAME}
+                showLinks={false}
+            />
+        );
+
+        const tree = renderer.create(component).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
+
+    test('non admin', () => {
+        const component = (
+            <EffectiveRolesList
+                currentUser={TEST_USER_READER}
                 userId={4971} // reader only
                 policy={POLICY}
                 rolesByUniqueName={ROLES_BY_NAME}
@@ -39,7 +71,12 @@ describe('<EffectiveRolesList/>', () => {
 
     test('multiple roles', () => {
         const component = (
-            <EffectiveRolesList userId={JEST_SITE_ADMIN_USER_ID} policy={POLICY} rolesByUniqueName={ROLES_BY_NAME} />
+            <EffectiveRolesList
+                currentUser={TEST_USER_APP_ADMIN}
+                userId={JEST_SITE_ADMIN_USER_ID}
+                policy={POLICY}
+                rolesByUniqueName={ROLES_BY_NAME}
+            />
         );
 
         const tree = renderer.create(component).toJSON();
@@ -49,6 +86,7 @@ describe('<EffectiveRolesList/>', () => {
     test('no roles', () => {
         const component = (
             <EffectiveRolesList
+                currentUser={TEST_USER_APP_ADMIN}
                 userId={1} // user doesn't have an assignment
                 policy={POLICY}
                 rolesByUniqueName={ROLES_BY_NAME}
@@ -62,6 +100,7 @@ describe('<EffectiveRolesList/>', () => {
     test('with root policy', () => {
         const component = (
             <EffectiveRolesList
+                currentUser={TEST_USER_APP_ADMIN}
                 userId={1004}
                 policy={POLICY}
                 rootPolicy={ROOT_POLICY}

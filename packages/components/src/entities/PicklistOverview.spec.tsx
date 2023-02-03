@@ -228,7 +228,7 @@ describe('PicklistOverviewImpl', () => {
         navigate: jest.fn,
         loadPicklist: jest.fn,
         queryModels: {
-            model: makeTestQueryModel(SchemaQuery.create('schema', 'query')),
+            model: makeTestQueryModel(new SchemaQuery('schema', 'query')),
         },
         actions: makeTestActions(),
     };

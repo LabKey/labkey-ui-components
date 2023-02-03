@@ -113,15 +113,7 @@ export function selectGridIdsFromTransactionId(
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {
                     const selected = response.rowIds;
-                    setSelected(
-                        modelId,
-                        true,
-                        selected,
-                        undefined,
-                        true,
-                        schemaQuery.schemaName,
-                        schemaQuery.queryName
-                    )
+                    setSelected(modelId, true, selected, undefined, true, schemaQuery.schemaName, schemaQuery.queryName)
                         .then(response => {
                             actions.replaceSelections(modelId, selected);
                             actions.loadModel(modelId, true);
@@ -401,8 +393,7 @@ export function getSelected(
     containerPath?: string,
     queryParameters?: Record<string, any>
 ): Promise<IGetSelectedResponse> {
-    if (useSnapshotSelection)
-        return getSnapshotSelections(key, containerPath);
+    if (useSnapshotSelection) return getSnapshotSelections(key, containerPath);
 
     return new Promise((resolve, reject) => {
         return Ajax.request({
@@ -613,7 +604,13 @@ export function getSelection(location: any, schemaName?: string, queryName?: str
                 );
             }
 
-            return getSelected(key, false, schemaQuery.schemaName, schemaQuery.queryName, getFilterListFromQuery(location)).then(response => {
+            return getSelected(
+                key,
+                false,
+                schemaQuery.schemaName,
+                schemaQuery.queryName,
+                getFilterListFromQuery(location)
+            ).then(response => {
                 resolve({
                     resolved: true,
                     schemaQuery,

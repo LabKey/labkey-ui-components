@@ -24,6 +24,8 @@ import { GroupMembership, MemberType } from '../administration/models';
 
 import { fetchGroupMembership } from '../administration/actions';
 
+import { getLocation } from '../../util/URL';
+
 import { Principal, SecurityPolicy, SecurityRole } from './models';
 import { PermissionsRole } from './PermissionsRole';
 import { GroupDetailsPanel } from './GroupDetailsPanel';
@@ -75,6 +77,9 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
     const { container, project, user } = useServerContext();
 
     const selectedPrincipal = principalsById?.get(selectedUserId);
+    const initExpandedRole = getLocation().query?.get('expand')
+        ? decodeURI(getLocation().query?.get('expand'))
+        : undefined;
 
     const loadGroupMembership = useCallback(async () => {
         try {
@@ -267,6 +272,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                                 role={role}
                                 selectedUserId={selectedUserId}
                                 groupMembership={groupMembership}
+                                initExpanded={initExpandedRole === role.displayName}
                             />
                         ))}
                         <br />
@@ -285,13 +291,16 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                             members={groupMembership[selectedPrincipal?.userId].members}
                             isSiteGroup={groupMembership[selectedPrincipal?.userId]?.type === MemberType.siteGroup}
                             getAuditLogData={api.security.getAuditLogData}
+                            showPermissionListLinks={false}
                         />
                     ) : (
                         <UserDetailsPanel
+                            currentUser={user}
                             userId={selectedUserId}
                             policy={policy}
                             rootPolicy={rootPolicy}
                             rolesByUniqueName={rolesByUniqueName}
+                            showPermissionListLinks={false}
                         />
                     )}
                 </Col>

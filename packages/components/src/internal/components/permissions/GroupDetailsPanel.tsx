@@ -11,6 +11,8 @@ import { Member, MemberType } from '../administration/models';
 
 import { UserProperties } from '../user/UserProperties';
 
+import { useServerContext } from '../base/ServerContext';
+
 import { EffectiveRolesList } from './EffectiveRolesList';
 
 import { Principal, SecurityPolicy, SecurityRole } from './models';
@@ -23,11 +25,13 @@ interface Props {
     policy: SecurityPolicy;
     principal: Principal;
     rolesByUniqueName: Map<string, SecurityRole>;
+    showPermissionListLinks?: boolean;
 }
 
 export const GroupDetailsPanel: FC<Props> = memo(props => {
-    const { getAuditLogData, principal, members, isSiteGroup } = props;
+    const { getAuditLogData, principal, members, isSiteGroup, showPermissionListLinks = true } = props;
     const [created, setCreated] = useState<string>('');
+    const { user } = useServerContext();
 
     const loadWhenCreated = useCallback(async () => {
         try {
@@ -51,13 +55,11 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
     }, [members]);
 
     return (
-        <Panel>
-            <Panel.Heading>Group Details</Panel.Heading>
+        <Panel className="group-details-panel">
+            <Panel.Heading>{principal ? principal.displayName : 'Group Details'}</Panel.Heading>
             <Panel.Body>
                 {principal ? (
                     <>
-                        <p className="principal-title-primary">{principal.displayName}</p>
-
                         <UserProperties prop={usersCount.toString()} title="User Count" />
                         <UserProperties prop={groupsCount} title="Group Count" />
 
@@ -65,7 +67,12 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
                         <UserProperties prop={created} title="Created" />
                         {isSiteGroup && <UserProperties prop="true" title="Site Group" />}
 
-                        <EffectiveRolesList {...props} userId={principal.userId} />
+                        <EffectiveRolesList
+                            {...props}
+                            currentUser={user}
+                            userId={principal.userId}
+                            showLinks={showPermissionListLinks}
+                        />
                         <MembersList members={members} />
                     </>
                 ) : (

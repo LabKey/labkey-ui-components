@@ -49,7 +49,7 @@ export class PipelineJobsPageImpl extends React.PureComponent<Props & InjectedQu
 
         const queryConfig = {
             id: gridId,
-            schemaQuery: SchemaQuery.create('pipeline', 'job'),
+            schemaQuery: new SchemaQuery('pipeline', 'job'),
             baseFilters,
             sorts: [new QuerySort({ fieldKey: 'Created', dir: '-' })],
             requiredColumns: ['Provider'],

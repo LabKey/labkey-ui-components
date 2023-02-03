@@ -1,5 +1,6 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+
+import { ReactWrapper } from 'enzyme';
 
 import SampleTimelineJson from '../test/data/SampleTimeline.json';
 
@@ -9,11 +10,17 @@ import { getSamplesTestAPIWrapper } from '../internal/components/samples/APIWrap
 import { TimelineEventModel } from '../internal/components/auditlog/models';
 import { SampleStateType } from '../internal/components/samples/constants';
 
-import { sleep } from '../internal/testHelpers';
+import { mountWithServerContext, waitForLifecycle } from '../internal/testHelpers';
 
 import { makeTestActions } from '../public/QueryModel/testUtils';
 import { TEST_USER_FOLDER_ADMIN } from '../internal/userFixtures';
 
+import { AuditDetails } from '../internal/components/auditlog/AuditDetails';
+
+import { UserLink } from '../internal/components/user/UserLink';
+import { SampleStatusTag } from '../internal/components/samples/SampleStatusTag';
+
+import { SampleEventListing } from './SampleEventListing';
 import { SampleTimelinePageBaseImpl } from './SampleTimelinePageBase';
 
 describe('<SampleTimelinePageBase/>', () => {
@@ -46,49 +53,83 @@ describe('<SampleTimelinePageBase/>', () => {
     };
 
     const registrationEvent = events[0],
-        sampleUpdateEvent = events[2],
-        jobCompleted = events[6],
         assayReimportEvent = events[7];
 
+    function verifyEventTimelinePanel(wrapper: ReactWrapper, selectedEvent) {
+        const eventTimelinePanel = wrapper.find('.panel-body').at(0);
+        expect(eventTimelinePanel.find('.timeline-title').hostNodes().text()).toBe(
+            'Event Timeline for ' + DEFAULT_PROPS.sampleName
+        );
+
+        expect(wrapper.find(SampleEventListing)).toHaveLength(1);
+        expect(wrapper.find(SampleEventListing).prop('selectedEvent')).toBe(selectedEvent);
+
+        expect(wrapper.find('.timeline-event-row')).toHaveLength(events.length);
+    }
+
+    function verifyCurrentStatusPanel(wrapper: ReactWrapper) {
+        const currentStatusPanel = wrapper.find('.panel-body').at(1);
+        expect(currentStatusPanel.find('.row')).toHaveLength(6);
+        expect(currentStatusPanel.find('.row').at(0).text()).toBe('Registered ByVader');
+        expect(currentStatusPanel.find('.row').at(1).text()).toBe('Registration Date2020-04-04 21:57');
+        expect(currentStatusPanel.find('.row').at(2).text()).toBe('Sample Status');
+        expect(currentStatusPanel.find('.row').at(3).text()).toBe('Last EventAdded to job');
+        expect(currentStatusPanel.find('.row').at(4).text()).toBe('Last Event Handled ByTest Lab User');
+        expect(currentStatusPanel.find('.row').at(5).text()).toBe('Last Event Date2020-04-10 02:57');
+
+        expect(currentStatusPanel.find(UserLink)).toHaveLength(2);
+        expect(currentStatusPanel.find(SampleStatusTag)).toHaveLength(1);
+    }
+
     test('Without selected event', async () => {
-        const tree = renderer.create(<SampleTimelinePageBaseImpl {...DEFAULT_PROPS} />);
-        await sleep();
-        expect(tree).toMatchSnapshot();
+        const wrapper = mountWithServerContext(<SampleTimelinePageBaseImpl {...DEFAULT_PROPS} />, {
+            user: TEST_USER_FOLDER_ADMIN,
+        });
+        await waitForLifecycle(wrapper);
+
+        verifyEventTimelinePanel(wrapper, undefined);
+        verifyCurrentStatusPanel(wrapper);
+
+        expect(wrapper.find(AuditDetails)).toHaveLength(1);
+        expect(wrapper.find(AuditDetails).prop('rowId')).toBeUndefined();
+        expect(wrapper.find(AuditDetails).prop('summary')).toBeUndefined();
+        expect(wrapper.find(AuditDetails).prop('gridData')).toBeUndefined();
+        expect(wrapper.find(AuditDetails).prop('changeDetails')).toBeUndefined();
+
+        wrapper.unmount();
     });
 
     test('With selected sample registration event', async () => {
-        const tree = renderer.create(
-            <SampleTimelinePageBaseImpl {...DEFAULT_PROPS} initialSelectedEvent={registrationEvent} />
+        const wrapper = mountWithServerContext(
+            <SampleTimelinePageBaseImpl {...DEFAULT_PROPS} initialSelectedEvent={registrationEvent} />,
+            { user: TEST_USER_FOLDER_ADMIN }
         );
-        await sleep();
-        expect(tree).toMatchSnapshot();
-        tree.unmount();
-    });
+        await waitForLifecycle(wrapper);
 
-    test('With selected sample update event', async () => {
-        const tree = renderer.create(
-            <SampleTimelinePageBaseImpl {...DEFAULT_PROPS} initialSelectedEvent={sampleUpdateEvent} />
-        );
-        await sleep();
-        expect(tree).toMatchSnapshot();
-        tree.unmount();
+        verifyEventTimelinePanel(wrapper, registrationEvent);
+        verifyCurrentStatusPanel(wrapper);
+
+        expect(wrapper.find(AuditDetails)).toHaveLength(1);
+        expect(wrapper.find(AuditDetails).prop('rowId')).toBe(registrationEvent.rowId);
+        expect(wrapper.find(AuditDetails).prop('summary')).toBe('Sample Registered');
+
+        wrapper.unmount();
     });
 
     test('With selected assay re-import event', async () => {
-        const tree = renderer.create(
-            <SampleTimelinePageBaseImpl {...DEFAULT_PROPS} initialSelectedEvent={assayReimportEvent} />
+        const wrapper = mountWithServerContext(
+            <SampleTimelinePageBaseImpl {...DEFAULT_PROPS} initialSelectedEvent={assayReimportEvent} />,
+            { user: TEST_USER_FOLDER_ADMIN }
         );
-        await sleep();
-        expect(tree).toMatchSnapshot();
-        tree.unmount();
-    });
+        await waitForLifecycle(wrapper);
 
-    test('With selected job', async () => {
-        const tree = renderer.create(
-            <SampleTimelinePageBaseImpl {...DEFAULT_PROPS} initialSelectedEvent={jobCompleted} />
-        );
-        await sleep();
-        expect(tree).toMatchSnapshot();
-        tree.unmount();
+        verifyEventTimelinePanel(wrapper, assayReimportEvent);
+        verifyCurrentStatusPanel(wrapper);
+
+        expect(wrapper.find(AuditDetails)).toHaveLength(1);
+        expect(wrapper.find(AuditDetails).prop('rowId')).toBe(assayReimportEvent.rowId);
+        expect(wrapper.find(AuditDetails).prop('summary')).toBe('Assay Data Re-Import Run');
+
+        wrapper.unmount();
     });
 });

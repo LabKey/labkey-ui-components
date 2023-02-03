@@ -108,7 +108,8 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
         return query;
     }, [isMedia, params, routes]);
 
-    const schemaQuery = useMemo(() => SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, queryName), [queryName]);
+    const schemaQuery = useMemo(() => new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, queryName), [queryName]);
+
     const freezerManagementEnabled = isFreezerManagementEnabled(moduleContext);
     const systemFields = freezerManagementEnabled
         ? SAMPLE_DOMAIN_BASE_SYSTEM_FIELDS.concat(SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS)

@@ -55,7 +55,7 @@ describe('SamplesAssayButton', () => {
 
     test('not isSamplesSchema', () => {
         const model = makeTestQueryModel(
-            SchemaQuery.create('schema', 'query'),
+            new SchemaQuery('schema', 'query'),
             QueryInfo.create({ importUrl: 'testimporturl', insertUrl: 'testinserturl' })
         ).mutate({ selections: new Set(['1']) });
         const wrapper = mountWithServerContext(<SamplesAssayButtonImpl {...DEFAULT_PROPS} model={model} />, {

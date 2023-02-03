@@ -34,7 +34,7 @@ describe('FilterCard', () => {
             <FilterCard
                 dataTypeDisplayName="Parent"
                 entityDataType={TestTypeDataType}
-                schemaQuery={SchemaQuery.create('testSample', 'parent')}
+                schemaQuery={new SchemaQuery('testSample', 'parent')}
                 filterArray={[]}
                 onAdd={jest.fn}
                 onEdit={jest.fn}
@@ -73,7 +73,7 @@ describe('FilterCard', () => {
         const wrapper = mount(
             <FilterCard
                 entityDataType={TestTypeDataType}
-                schemaQuery={SchemaQuery.create('testSample', 'parent')}
+                schemaQuery={new SchemaQuery('testSample', 'parent')}
                 filterArray={[filter1, filter2]}
                 onAdd={jest.fn}
                 onEdit={jest.fn}

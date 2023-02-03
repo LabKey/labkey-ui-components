@@ -14,7 +14,7 @@ import { mountWithServerContext } from '../../testHelpers';
 import { ResponsiveMenuButtonGroup } from './ResponsiveMenuButtonGroup';
 
 describe('ResponsiveMenuButtonGroup', () => {
-    const model = makeTestQueryModel(SchemaQuery.create('s', 'q'));
+    const model = makeTestQueryModel(new SchemaQuery('s', 'q'));
     const DEFAULT_PROPS = {
         items: [
             { button: <PicklistButton model={model} user={TEST_USER_READER} />, perm: PermissionTypes.ManagePicklists },

@@ -1,11 +1,6 @@
-import { fromJS, List, Map } from 'immutable';
-
-import { mount } from 'enzyme';
-
 import React from 'react';
-
+import { fromJS, List, Map } from 'immutable';
 import { Button } from 'react-bootstrap';
-
 import PanelBody from 'react-bootstrap/lib/PanelBody';
 
 import { Principal, SecurityPolicy } from '../permissions/models';
@@ -19,8 +14,16 @@ import { ExpandableContainer } from '../ExpandableContainer';
 
 import { Alert } from '../base/Alert';
 
-import { GroupAssignments } from './GroupAssignments';
+import { mountWithServerContext } from '../../testHelpers';
+import { TEST_USER_APP_ADMIN } from '../../userFixtures';
+import { initBrowserHistoryState } from '../../util/global';
+
 import { MemberType } from './models';
+import { GroupAssignments } from './GroupAssignments';
+
+beforeAll(() => {
+    initBrowserHistoryState();
+});
 
 describe('<GroupAssignments/>', () => {
     const GROUP_MEMBERSHIP = {
@@ -120,7 +123,7 @@ describe('<GroupAssignments/>', () => {
     };
 
     test('without members', async () => {
-        const wrapper = mount(<GroupAssignments {...DEFAULT_PROPS} />);
+        const wrapper = mountWithServerContext(<GroupAssignments {...DEFAULT_PROPS} />, { user: TEST_USER_APP_ADMIN });
 
         expect(wrapper.find(PanelBody).last().text()).toBe('No user selected.');
         // 'Create Group' and 'Save' button are disabled
@@ -132,7 +135,10 @@ describe('<GroupAssignments/>', () => {
     });
 
     test('with members', async () => {
-        const wrapper = mount(<GroupAssignments {...DEFAULT_PROPS} groupMembership={GROUP_MEMBERSHIP} />);
+        const wrapper = mountWithServerContext(
+            <GroupAssignments {...DEFAULT_PROPS} groupMembership={GROUP_MEMBERSHIP} />,
+            { user: TEST_USER_APP_ADMIN }
+        );
 
         expect(wrapper.find(ExpandableContainer)).toHaveLength(2);
         expect(wrapper.find('.permissions-title').first().text()).toBe(' group1 ');
@@ -142,7 +148,10 @@ describe('<GroupAssignments/>', () => {
     });
 
     test('creating a group', async () => {
-        const wrapper = mount(<GroupAssignments {...DEFAULT_PROPS} groupMembership={GROUP_MEMBERSHIP} />);
+        const wrapper = mountWithServerContext(
+            <GroupAssignments {...DEFAULT_PROPS} groupMembership={GROUP_MEMBERSHIP} />,
+            { user: TEST_USER_APP_ADMIN }
+        );
 
         // Does not create duplicate 'group1' group
         wrapper.find('.create-group__input').simulate('change', { target: { value: 'group1' } });
@@ -160,7 +169,7 @@ describe('<GroupAssignments/>', () => {
     });
 
     test('dirtiness', async () => {
-        const wrapper = mount(<GroupAssignments {...DEFAULT_PROPS} />);
+        const wrapper = mountWithServerContext(<GroupAssignments {...DEFAULT_PROPS} />, { user: TEST_USER_APP_ADMIN });
 
         wrapper.find('.create-group__input').simulate('change', { target: { value: 'group3' } });
         wrapper.find(Button).first().simulate('click');
@@ -170,7 +179,9 @@ describe('<GroupAssignments/>', () => {
     });
 
     test('with error', async () => {
-        const wrapper = mount(<GroupAssignments {...DEFAULT_PROPS} errorMsg="Error message." />);
+        const wrapper = mountWithServerContext(<GroupAssignments {...DEFAULT_PROPS} errorMsg="Error message." />, {
+            user: TEST_USER_APP_ADMIN,
+        });
         expect(wrapper.find(Alert).text()).toBe('Error message.');
 
         wrapper.unmount();

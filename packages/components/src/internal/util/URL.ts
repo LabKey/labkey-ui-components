@@ -60,7 +60,7 @@ export function getLocation(): Location {
     return { action, pathname, search, key, state, hash, query };
 }
 
-export function getRouteFromLocationHash(hash: string) {
+export function getRouteFromLocationHash(hash: string): string {
     if (hash) {
         const index = hash.indexOf('?');
         if (index > -1) {
@@ -88,12 +88,12 @@ export function build(pathname: string, hash?: string, params?: Map<string, stri
     return pathname + (hash || '') + (params ? buildQueryString(params) : '');
 }
 
-function setParameter(location: Location, key: string, value: string | number, asReplace = false) {
+function setParameter(location: Location, key: string, value: string | number, asReplace = false): void {
     const params = Map<string, string | number>();
     setParameters(location, params.set(key, value), asReplace);
 }
 
-function setParameters(location: Location, params: Map<string, string | number>, asReplace = false) {
+function setParameters(location: Location, params: Map<string, string | number>, asReplace = false): void {
     const { query } = location;
 
     const newParams = Map<string, string | number>(query).asMutable();
@@ -112,23 +112,32 @@ function setParameters(location: Location, params: Map<string, string | number>,
     }
 }
 
-export function pushParameter(location: Location, key: string, value: string | number) {
+export function pushParameter(location: Location, key: string, value: string | number): void {
     setParameter(location, key, value);
 }
 
-export function pushParameters(location: Location, params: Map<string, string | number>) {
+export function pushParameters(location: Location, params: Map<string, string | number>): void {
     setParameters(location, params);
 }
 
-export function replaceParameter(location: Location, key: string, value: string | number) {
+export function removeParameters(location: Location, ...params: string[]): void {
+    if (!params) return;
+    setParameters(
+        location,
+        params.reduce((map, param) => map.set(param, undefined), Map<string, string>()),
+        true
+    );
+}
+
+export function replaceParameter(location: Location, key: string, value: string | number): void {
     setParameter(location, key, value, true);
 }
 
-export function replaceParameters(location: Location, params: Map<string, string | number>) {
+export function replaceParameters(location: Location, params: Map<string, string | number>): void {
     setParameters(location, params, true);
 }
 
-export function resetParameters(except?: List<string>) {
+export function resetParameters(except?: List<string>): void {
     const location = getLocation();
 
     const emptyParams = location.query.map((value: string, key: string) => {

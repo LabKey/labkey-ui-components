@@ -59,7 +59,7 @@ describe('AssayImportSubMenuItem', () => {
     });
 
     test('requireSelection with too few selected', () => {
-        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({ selections: new Set() });
+        const model = makeTestQueryModel(new SchemaQuery('schema', 'query')).mutate({ selections: new Set() });
         const wrapper = mount(
             <AssayImportSubMenuItemImpl {...DEFAULT_PROPS} requireSelection={true} queryModel={model} />
         );
@@ -78,7 +78,7 @@ describe('AssayImportSubMenuItem', () => {
     });
 
     test('requireSelection with proper number selected', () => {
-        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({
+        const model = makeTestQueryModel(new SchemaQuery('schema', 'query')).mutate({
             selections: new Set(['test']),
         });
         const wrapper = mount(

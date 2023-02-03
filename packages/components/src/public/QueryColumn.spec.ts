@@ -5,24 +5,23 @@ import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../internal/components/domainprop
 import { insertColumnFilter, QueryColumn, QueryLookup } from './QueryColumn';
 
 describe('QueryLookup', () => {
-    test("Not samples lookup", () => {
+    test('Not samples lookup', () => {
         const lookup = QueryLookup.create({
             schemaName: 'test',
-            queryName: 'lookup'
+            queryName: 'lookup',
         });
         expect(lookup.hasQueryFilters()).toBe(false);
         expect(lookup.getQueryFilters()).toBeUndefined();
     });
 
-    test("Samples lookup", () => {
+    test('Samples lookup', () => {
         const lookup = QueryLookup.create({
             schemaName: 'exp',
-            queryName: 'materials'
+            queryName: 'materials',
         });
         expect(lookup.hasQueryFilters()).toBe(true);
         expect(lookup.getQueryFilters()).toHaveLength(1);
     });
-
 });
 
 describe('QueryColumn', () => {
@@ -416,6 +415,15 @@ describe('QueryColumn', () => {
                 lookup: { displayColumn: 'displayColumn1/displayColumn2' },
             }).resolveFieldKey()
         ).toBe('name$Sslash/displayColumn1$SdisplayColumn2');
+    });
+
+    test('isUserLookup', () => {
+        expect(QueryColumn.isUserLookup(undefined)).toBeFalsy();
+        expect(QueryColumn.isUserLookup(null)).toBeFalsy();
+        expect(QueryColumn.isUserLookup({})).toBeFalsy();
+        expect(QueryColumn.isUserLookup({ schemaName: 'test', queryName: 'test' })).toBeFalsy();
+        expect(QueryColumn.isUserLookup({ schemaName: 'core', queryName: 'Users' })).toBeTruthy();
+        expect(QueryColumn.isUserLookup({ schemaName: 'core', queryName: 'SiteUsers' })).toBeTruthy();
     });
 });
 

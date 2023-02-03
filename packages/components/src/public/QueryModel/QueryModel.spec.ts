@@ -15,7 +15,7 @@ import { ViewInfo } from '../../internal/ViewInfo';
 import { flattenValuesFromRow, QueryConfig, QueryModel } from './QueryModel';
 import { makeTestQueryModel } from './testUtils';
 
-const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
+const SCHEMA_QUERY = new SchemaQuery('exp.data', 'mixtures');
 let QUERY_INFO: QueryInfo;
 const ROWS = {
     '0': {
@@ -49,7 +49,7 @@ describe('QueryModel', () => {
         expect(model.viewName).toEqual(undefined);
         // Auto-generated model ids are based off of the SchemaQuery in the QueryConfig
         expect(model.id).toEqual('exp.data.mixtures');
-        const schemaQuery = SchemaQuery.create('exp.data', 'mixtures', 'someViewName');
+        const schemaQuery = new SchemaQuery('exp.data', 'mixtures', 'someViewName');
         model = new QueryModel({ schemaQuery });
         expect(model.viewName).toEqual('someViewName');
         model = new QueryModel({ id: 'custom', schemaQuery: SCHEMA_QUERY });
@@ -150,7 +150,7 @@ describe('QueryModel', () => {
 
         // Change view to noExtraColumn which should change our expected columns.
         model = model.mutate({
-            schemaQuery: SchemaQuery.create('exp.data', 'mixtures', 'noExtraColumn'),
+            schemaQuery: new SchemaQuery('exp.data', 'mixtures', 'noExtraColumn'),
         });
         expectedDisplayCols = [
             cols.get('name'),
@@ -245,7 +245,7 @@ describe('QueryModel', () => {
         const queryInfo = QueryInfo.create({
             views: fromJS({ [viewName.toLowerCase()]: view }),
         });
-        const sq = SchemaQuery.create('exp.data', 'mixtures', viewName);
+        const sq = new SchemaQuery('exp.data', 'mixtures', viewName);
 
         const model = makeTestQueryModel(sq, queryInfo).mutate({
             baseFilters: [

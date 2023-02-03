@@ -33,6 +33,8 @@ import { InjectedQueryModels, withQueryModels } from '../public/QueryModel/withQ
 
 import { getPrimaryAppProperties } from '../internal/app/utils';
 
+import { UserLink } from '../internal/components/user/UserLink';
+
 import { SampleEventListing } from './SampleEventListing';
 
 interface OwnProps {
@@ -49,8 +51,6 @@ interface OwnProps {
     sampleName: string;
     sampleSet: string;
     sampleStatus: SampleStatus;
-    // for jest test
-    skipAuditDetailUserLoading?: boolean;
     // for jest test on teamcity
     timezoneAbbr?: string;
 
@@ -68,7 +68,6 @@ export const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = me
         sampleStatus,
         timezoneAbbr,
         user,
-        skipAuditDetailUserLoading,
         renderAdditionalCurrentStatus,
         queryModels,
         sampleJobsGidId,
@@ -104,7 +103,6 @@ export const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = me
     const renderEventListing = () => {
         return (
             <SampleEventListing
-                showUserLinks={user.isAdmin}
                 sampleId={sampleId}
                 sampleName={sampleName}
                 onEventSelection={onEventSelection}
@@ -213,7 +211,6 @@ export const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = me
                 user={user}
                 rowId={selectedEvent ? selectedEvent.rowId : undefined}
                 summary={selectedEvent ? selectedEvent.summary : undefined}
-                hasUserField={!skipAuditDetailUserLoading}
                 gridData={selectedEvent ? selectedEvent.metadata : undefined}
                 changeDetails={selectedEvent ? selectedEvent.getAuditDetailsModel() : undefined}
                 fieldValueRenderer={auditDetailValueRenderer}
@@ -247,7 +244,11 @@ export const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = me
             <>
                 {renderCurrentStatusDetailRow(
                     'Registered By',
-                    getEventDataValueDisplay(registrationEvent.user, user.isAdmin)
+                    <UserLink
+                        userId={registrationEvent.user?.get('value')}
+                        userDisplayValue={registrationEvent.user?.get('displayValue')}
+                        unknown={!registrationEvent.user}
+                    />
                 )}
                 {renderCurrentStatusDetailRow(
                     'Registration Date',
@@ -265,7 +266,11 @@ export const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = me
                 {renderCurrentStatusDetailRow('Last Event', eventDisplay)}
                 {renderCurrentStatusDetailRow(
                     'Last Event Handled By',
-                    getEventDataValueDisplay(lastEvent.user, user.isAdmin)
+                    <UserLink
+                        userId={lastEvent.user?.get('value')}
+                        userDisplayValue={lastEvent.user?.get('displayValue')}
+                        unknown={!lastEvent.user}
+                    />
                 )}
                 {renderCurrentStatusDetailRow('Last Event Date', getEventDataValueDisplay(lastEvent.timestamp))}
             </>

@@ -349,7 +349,7 @@ describe('column mutation actions', () => {
 describe('getExportParams', () => {
     const schemaName = 'test';
     const queryName = 'query';
-    const schemaQuery = SchemaQuery.create(schemaName, queryName);
+    const schemaQuery = new SchemaQuery(schemaName, queryName);
     test('no options or advanced options', () => {
         expect(getExportParams(EXPORT_TYPES.TSV, schemaQuery)).toStrictEqual({
             schemaName,
@@ -359,7 +359,7 @@ describe('getExportParams', () => {
     });
 
     test('with schema view', () => {
-        expect(getExportParams(EXPORT_TYPES.TSV, SchemaQuery.create(schemaName, queryName, 'testView'))).toStrictEqual({
+        expect(getExportParams(EXPORT_TYPES.TSV, new SchemaQuery(schemaName, queryName, 'testView'))).toStrictEqual({
             schemaName,
             'query.queryName': queryName,
             'query.showRows': ['ALL'],

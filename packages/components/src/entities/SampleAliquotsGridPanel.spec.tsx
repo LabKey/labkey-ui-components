@@ -25,7 +25,7 @@ beforeEach(() => {
 });
 
 describe('SampleAliquotsGridPanel', () => {
-    const SCHEMA_QUERY = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'SampleTypeName');
+    const SCHEMA_QUERY = new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, 'SampleTypeName');
     const DEFAULT_CONTEXT = { user: TEST_USER_EDITOR };
     const SAMPLE_TYPE_APP_CONTEXT = {} as SampleTypeAppContext;
 

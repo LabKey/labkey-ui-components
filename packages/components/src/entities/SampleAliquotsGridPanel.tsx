@@ -226,7 +226,7 @@ export const SampleAliquotsGridPanel: FC<SampleAliquotsGridPanelProps> = props =
         ? [...getOmittedSampleTypeColumns(user), ...omittedColumns]
         : getOmittedSampleTypeColumns(user);
 
-    const queryConfig = getSampleAliquotsQueryConfig(schemaQuery.getQuery(), sampleLsid, true, rootLsid, omitted);
+    const queryConfig = getSampleAliquotsQueryConfig(schemaQuery.queryName, sampleLsid, true, rootLsid, omitted);
     const queryConfigs = { [queryConfig.id]: queryConfig };
 
     return <SampleAliquotsGridPanelWithModel {...props} queryModelId={queryConfig.id} queryConfigs={queryConfigs} />;

@@ -752,7 +752,7 @@ export function withQueryModels<Props>(
 
                     if (model.viewName !== viewName) {
                         shouldLoad = true;
-                        model.schemaQuery = SchemaQuery.create(model.schemaName, model.queryName, viewName);
+                        model.schemaQuery = new SchemaQuery(model.schemaName, model.queryName, viewName);
                         // We need to reset all data for the model because changing the view will change things such as
                         // columns and rowCount. If we don't do this we'll render a grid with empty rows/columns.
                         resetRowsState(model);

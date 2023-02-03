@@ -56,11 +56,11 @@ exports[`<TimelineView /> Disable selection 1`] = `
           <div
             className="field-text-nowrap"
           >
-            <a
-              href="#/q/core/siteusers/1005"
-            >
-              Vader
-            </a>
+            <UserLink
+              unknown={false}
+              userDisplayValue="Vader"
+              userId={1005}
+            />
           </div>
            
         </div>
@@ -125,11 +125,11 @@ exports[`<TimelineView /> Disable selection 1`] = `
           <div
             className="field-text-nowrap"
           >
-            <a
-              href="#/q/core/siteusers/1005"
-            >
-              Vader
-            </a>
+            <UserLink
+              unknown={false}
+              userDisplayValue="Vader"
+              userId={1005}
+            />
           </div>
            
         </div>
@@ -194,11 +194,11 @@ exports[`<TimelineView /> Disable selection 1`] = `
           <div
             className="field-text-nowrap"
           >
-            <a
-              href="#/q/core/siteusers/1005"
-            >
-              xyang
-            </a>
+            <UserLink
+              unknown={false}
+              userDisplayValue="xyang"
+              userId={1005}
+            />
           </div>
            
         </div>
@@ -263,11 +263,11 @@ exports[`<TimelineView /> Disable selection 1`] = `
           <div
             className="field-text-nowrap"
           >
-            <a
-              href="#/q/core/siteusers/1005"
-            >
-              Vader
-            </a>
+            <UserLink
+              unknown={false}
+              userDisplayValue="Vader"
+              userId={1005}
+            />
           </div>
            
         </div>
@@ -332,11 +332,11 @@ exports[`<TimelineView /> Disable selection 1`] = `
           <div
             className="field-text-nowrap"
           >
-            <a
-              href="#/q/core/siteusers/1038"
-            >
-              Test Lab User
-            </a>
+            <UserLink
+              unknown={false}
+              userDisplayValue="Test Lab User"
+              userId={1038}
+            />
           </div>
            
         </div>
@@ -401,11 +401,11 @@ exports[`<TimelineView /> Disable selection 1`] = `
           <div
             className="field-text-nowrap"
           >
-            <a
-              href="#/q/core/siteusers/1038"
-            >
-              Test Lab User
-            </a>
+            <UserLink
+              unknown={false}
+              userDisplayValue="Test Lab User"
+              userId={1038}
+            />
           </div>
            
         </div>
@@ -470,11 +470,11 @@ exports[`<TimelineView /> Disable selection 1`] = `
           <div
             className="field-text-nowrap"
           >
-            <a
-              href="#/q/core/siteusers/1005"
-            >
-              Vader
-            </a>
+            <UserLink
+              unknown={false}
+              userDisplayValue="Vader"
+              userId={1005}
+            />
           </div>
            
         </div>
@@ -539,11 +539,9 @@ exports[`<TimelineView /> Disable selection 1`] = `
           <div
             className="field-text-nowrap"
           >
-            <a
-              href="#/q/core/siteusers/1005"
-            >
-              xyang
-            </a>
+            <UserLink
+              unknown={true}
+            />
           </div>
            
           <LabelHelpTip
@@ -625,7 +623,11 @@ exports[`<TimelineView /> Hide user link 1`] = `
           <div
             className="field-text-nowrap"
           >
-            Vader
+            <UserLink
+              unknown={false}
+              userDisplayValue="Vader"
+              userId={1005}
+            />
           </div>
            
         </div>
@@ -690,7 +692,11 @@ exports[`<TimelineView /> Hide user link 1`] = `
           <div
             className="field-text-nowrap"
           >
-            Vader
+            <UserLink
+              unknown={false}
+              userDisplayValue="Vader"
+              userId={1005}
+            />
           </div>
            
         </div>
@@ -755,7 +761,11 @@ exports[`<TimelineView /> Hide user link 1`] = `
           <div
             className="field-text-nowrap"
           >
-            xyang
+            <UserLink
+              unknown={false}
+              userDisplayValue="xyang"
+              userId={1005}
+            />
           </div>
            
         </div>
@@ -820,7 +830,11 @@ exports[`<TimelineView /> Hide user link 1`] = `
           <div
             className="field-text-nowrap"
           >
-            Vader
+            <UserLink
+              unknown={false}
+              userDisplayValue="Vader"
+              userId={1005}
+            />
           </div>
            
         </div>
@@ -885,7 +899,11 @@ exports[`<TimelineView /> Hide user link 1`] = `
           <div
             className="field-text-nowrap"
           >
-            Test Lab User
+            <UserLink
+              unknown={false}
+              userDisplayValue="Test Lab User"
+              userId={1038}
+            />
           </div>
            
         </div>
@@ -950,7 +968,11 @@ exports[`<TimelineView /> Hide user link 1`] = `
           <div
             className="field-text-nowrap"
           >
-            Test Lab User
+            <UserLink
+              unknown={false}
+              userDisplayValue="Test Lab User"
+              userId={1038}
+            />
           </div>
            
         </div>
@@ -1015,7 +1037,11 @@ exports[`<TimelineView /> Hide user link 1`] = `
           <div
             className="field-text-nowrap"
           >
-            Vader
+            <UserLink
+              unknown={false}
+              userDisplayValue="Vader"
+              userId={1005}
+            />
           </div>
            
         </div>
@@ -1080,7 +1106,9 @@ exports[`<TimelineView /> Hide user link 1`] = `
           <div
             className="field-text-nowrap"
           >
-            xyang
+            <UserLink
+              unknown={true}
+            />
           </div>
            
           <LabelHelpTip
@@ -1162,11 +1190,11 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           <div
             className="field-text-nowrap"
           >
-            <a
-              href="#/q/core/siteusers/1005"
-            >
-              Vader
-            </a>
+            <UserLink
+              unknown={false}
+              userDisplayValue="Vader"
+              userId={1005}
+            />
           </div>
            
         </div>
@@ -1237,11 +1265,11 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           <div
             className="field-text-nowrap"
           >
-            <a
-              href="#/q/core/siteusers/1005"
-            >
-              Vader
-            </a>
+            <UserLink
+              unknown={false}
+              userDisplayValue="Vader"
+              userId={1005}
+            />
           </div>
            
         </div>
@@ -1306,11 +1334,11 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           <div
             className="field-text-nowrap"
           >
-            <a
-              href="#/q/core/siteusers/1005"
-            >
-              xyang
-            </a>
+            <UserLink
+              unknown={false}
+              userDisplayValue="xyang"
+              userId={1005}
+            />
           </div>
            
         </div>
@@ -1375,11 +1403,11 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           <div
             className="field-text-nowrap"
           >
-            <a
-              href="#/q/core/siteusers/1005"
-            >
-              Vader
-            </a>
+            <UserLink
+              unknown={false}
+              userDisplayValue="Vader"
+              userId={1005}
+            />
           </div>
            
         </div>
@@ -1444,11 +1472,11 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           <div
             className="field-text-nowrap"
           >
-            <a
-              href="#/q/core/siteusers/1038"
-            >
-              Test Lab User
-            </a>
+            <UserLink
+              unknown={false}
+              userDisplayValue="Test Lab User"
+              userId={1038}
+            />
           </div>
            
         </div>
@@ -1519,11 +1547,11 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           <div
             className="field-text-nowrap"
           >
-            <a
-              href="#/q/core/siteusers/1038"
-            >
-              Test Lab User
-            </a>
+            <UserLink
+              unknown={false}
+              userDisplayValue="Test Lab User"
+              userId={1038}
+            />
           </div>
            
         </div>
@@ -1588,11 +1616,11 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           <div
             className="field-text-nowrap"
           >
-            <a
-              href="#/q/core/siteusers/1005"
-            >
-              Vader
-            </a>
+            <UserLink
+              unknown={false}
+              userDisplayValue="Vader"
+              userId={1005}
+            />
           </div>
            
         </div>
@@ -1657,11 +1685,9 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           <div
             className="field-text-nowrap"
           >
-            <a
-              href="#/q/core/siteusers/1005"
-            >
-              xyang
-            </a>
+            <UserLink
+              unknown={true}
+            />
           </div>
            
           <LabelHelpTip
@@ -1743,11 +1769,11 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           <div
             className="field-text-nowrap"
           >
-            <a
-              href="#/q/core/siteusers/1005"
-            >
-              Vader
-            </a>
+            <UserLink
+              unknown={false}
+              userDisplayValue="Vader"
+              userId={1005}
+            />
           </div>
            
         </div>
@@ -1812,11 +1838,11 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           <div
             className="field-text-nowrap"
           >
-            <a
-              href="#/q/core/siteusers/1005"
-            >
-              Vader
-            </a>
+            <UserLink
+              unknown={false}
+              userDisplayValue="Vader"
+              userId={1005}
+            />
           </div>
            
         </div>
@@ -1887,11 +1913,11 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           <div
             className="field-text-nowrap"
           >
-            <a
-              href="#/q/core/siteusers/1005"
-            >
-              xyang
-            </a>
+            <UserLink
+              unknown={false}
+              userDisplayValue="xyang"
+              userId={1005}
+            />
           </div>
            
         </div>
@@ -1956,11 +1982,11 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           <div
             className="field-text-nowrap"
           >
-            <a
-              href="#/q/core/siteusers/1005"
-            >
-              Vader
-            </a>
+            <UserLink
+              unknown={false}
+              userDisplayValue="Vader"
+              userId={1005}
+            />
           </div>
            
         </div>
@@ -2025,11 +2051,11 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           <div
             className="field-text-nowrap"
           >
-            <a
-              href="#/q/core/siteusers/1038"
-            >
-              Test Lab User
-            </a>
+            <UserLink
+              unknown={false}
+              userDisplayValue="Test Lab User"
+              userId={1038}
+            />
           </div>
            
         </div>
@@ -2094,11 +2120,11 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           <div
             className="field-text-nowrap"
           >
-            <a
-              href="#/q/core/siteusers/1038"
-            >
-              Test Lab User
-            </a>
+            <UserLink
+              unknown={false}
+              userDisplayValue="Test Lab User"
+              userId={1038}
+            />
           </div>
            
         </div>
@@ -2163,11 +2189,11 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           <div
             className="field-text-nowrap"
           >
-            <a
-              href="#/q/core/siteusers/1005"
-            >
-              Vader
-            </a>
+            <UserLink
+              unknown={false}
+              userDisplayValue="Vader"
+              userId={1005}
+            />
           </div>
            
         </div>
@@ -2238,11 +2264,9 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           <div
             className="field-text-nowrap"
           >
-            <a
-              href="#/q/core/siteusers/1005"
-            >
-              xyang
-            </a>
+            <UserLink
+              unknown={true}
+            />
           </div>
            
           <LabelHelpTip

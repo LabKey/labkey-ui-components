@@ -78,7 +78,7 @@ test('getFinderStartText', () => {
                 TestTypeDataType,
                 {
                     ...TestTypeDataType,
-                    typeListingSchemaQuery: SchemaQuery.create('TestClasses', 'query2'),
+                    typeListingSchemaQuery: new SchemaQuery('TestClasses', 'query2'),
                     nounAsParentSingular: 'Other Parents',
                 },
             ],
@@ -91,7 +91,7 @@ test('getFinderStartText', () => {
                 TestTypeDataType,
                 {
                     ...TestTypeDataType,
-                    typeListingSchemaQuery: SchemaQuery.create('TestClasses', 'query2'),
+                    typeListingSchemaQuery: new SchemaQuery('TestClasses', 'query2'),
                     nounAsParentSingular: 'Other Parents',
                 },
             ],
@@ -156,7 +156,7 @@ describe('getFinderViewColumnsConfig', () => {
         }),
     });
     const model = makeTestQueryModel(
-        SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Test', SAMPLE_FINDER_VIEW_NAME),
+        new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Test', SAMPLE_FINDER_VIEW_NAME),
         queryInfo,
         {},
         [],
@@ -240,7 +240,7 @@ describe('getFinderViewColumnsConfig', () => {
             }),
         });
         const model = makeTestQueryModel(
-            SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Test', SAMPLE_FINDER_VIEW_NAME),
+            new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Test', SAMPLE_FINDER_VIEW_NAME),
             queryInfo,
             {},
             [],
@@ -261,7 +261,7 @@ describe('getFinderViewColumnsConfig', () => {
 });
 
 const assay1 = 'assay1';
-const assay1SchemaQuery = SchemaQuery.create('assay.general.' + assay1, 'data');
+const assay1SchemaQuery = new SchemaQuery('assay.general.' + assay1, 'data');
 
 const AssayColumnInFilter = Filter.create(
     'RowId',
@@ -292,7 +292,7 @@ describe('getAssayFilter', () => {
         expect(
             getAssayFilter({
                 entityDataType: AssayResultDataType,
-                schemaQuery: SchemaQuery.create('assay.general.' + assay1, 'data'),
+                schemaQuery: new SchemaQuery('assay.general.' + assay1, 'data'),
                 filterArray: [cardFilter],
                 targetColumnFieldKey: 'SampleId',
                 selectColumnFieldKey: 'RowId',
@@ -310,7 +310,7 @@ describe('getAssayFilter', () => {
         expect(
             getAssayFilter({
                 entityDataType: AssayResultDataType,
-                schemaQuery: SchemaQuery.create('assay.general.' + assay1, 'data'),
+                schemaQuery: new SchemaQuery('assay.general.' + assay1, 'data'),
                 filterArray: [AssayNotInFilterField],
             })
         ).toEqual(AssayNotInFilter);
@@ -331,7 +331,7 @@ describe('getSampleFinderCommonConfigs', () => {
                 [
                     {
                         entityDataType: TestTypeDataType,
-                        schemaQuery: SchemaQuery.create('Samples', 'TestQuery'),
+                        schemaQuery: new SchemaQuery('Samples', 'TestQuery'),
                     },
                 ],
                 false
@@ -354,7 +354,7 @@ describe('getSampleFinderCommonConfigs', () => {
                 [
                     {
                         entityDataType: AssayResultDataType,
-                        schemaQuery: SchemaQuery.create('assay.general.' + assay1, 'data'),
+                        schemaQuery: new SchemaQuery('assay.general.' + assay1, 'data'),
                     },
                 ],
                 false
@@ -371,7 +371,7 @@ describe('getSampleFinderCommonConfigs', () => {
                 [
                     {
                         entityDataType: TestTypeDataType,
-                        schemaQuery: SchemaQuery.create('Samples', 'TestQuery'),
+                        schemaQuery: new SchemaQuery('Samples', 'TestQuery'),
                     },
                 ],
                 true
@@ -401,11 +401,11 @@ describe('getSampleFinderCommonConfigs', () => {
                 [
                     {
                         entityDataType: TestTypeDataType,
-                        schemaQuery: SchemaQuery.create('Samples', 'TestQuery'),
+                        schemaQuery: new SchemaQuery('Samples', 'TestQuery'),
                     },
                     {
                         entityDataType: TestTypeDataType,
-                        schemaQuery: SchemaQuery.create('Samples', 'TestQuery2'),
+                        schemaQuery: new SchemaQuery('Samples', 'TestQuery2'),
                         filterArray: [cardFilter],
                     },
                 ],
@@ -446,7 +446,7 @@ describe('getSampleFinderCommonConfigs', () => {
                 [
                     {
                         entityDataType: AssayResultDataType,
-                        schemaQuery: SchemaQuery.create('assay.general.' + assay1, 'data'),
+                        schemaQuery: new SchemaQuery('assay.general.' + assay1, 'data'),
                         filterArray: [cardFilter],
                         targetColumnFieldKey: 'SampleId',
                         selectColumnFieldKey: 'RowId',
@@ -466,7 +466,7 @@ describe('getSampleFinderCommonConfigs', () => {
                 [
                     {
                         entityDataType: AssayResultDataType,
-                        schemaQuery: SchemaQuery.create('assay.general.' + assay1, 'data'),
+                        schemaQuery: new SchemaQuery('assay.general.' + assay1, 'data'),
                         filterArray: [AssayNotInFilterField],
                     },
                 ],
@@ -491,7 +491,7 @@ describe('getSampleFinderQueryConfigs', () => {
             'uuid-1-testId|exp/materials': {
                 id: 'uuid-1-testId|exp/materials',
                 title: 'All Samples',
-                schemaQuery: SchemaQuery.create(
+                schemaQuery: new SchemaQuery(
                     SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
                     SCHEMAS.EXP_TABLES.MATERIALS.queryName,
                     SAMPLE_FINDER_VIEW_NAME
@@ -511,7 +511,7 @@ describe('getSampleFinderQueryConfigs', () => {
                 [
                     {
                         entityDataType: TestTypeDataType,
-                        schemaQuery: SchemaQuery.create('Samples', 'TestQuery'),
+                        schemaQuery: new SchemaQuery('Samples', 'TestQuery'),
                     },
                 ],
                 'testId'
@@ -520,7 +520,7 @@ describe('getSampleFinderQueryConfigs', () => {
             'uuid-1-testId|exp/materials': {
                 id: 'uuid-1-testId|exp/materials',
                 title: 'All Samples',
-                schemaQuery: SchemaQuery.create(
+                schemaQuery: new SchemaQuery(
                     SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
                     SCHEMAS.EXP_TABLES.MATERIALS.queryName,
                     SAMPLE_FINDER_VIEW_NAME
@@ -545,7 +545,7 @@ describe('getSampleFinderQueryConfigs', () => {
             'uuid-1-testId|exp/materials': {
                 id: 'uuid-1-testId|exp/materials',
                 title: 'All Samples',
-                schemaQuery: SchemaQuery.create(
+                schemaQuery: new SchemaQuery(
                     SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
                     SCHEMAS.EXP_TABLES.MATERIALS.queryName,
                     SAMPLE_FINDER_VIEW_NAME
@@ -557,7 +557,7 @@ describe('getSampleFinderQueryConfigs', () => {
             'uuid-1-testId|samples/Sample Type 1': {
                 id: 'uuid-1-testId|samples/Sample Type 1',
                 title: 'Sample Type 1',
-                schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Sample Type 1', SAMPLE_FINDER_VIEW_NAME),
+                schemaQuery: new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Sample Type 1', SAMPLE_FINDER_VIEW_NAME),
                 omittedColumns: ['checkedOutBy'],
                 baseFilters: [],
                 requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
@@ -565,7 +565,7 @@ describe('getSampleFinderQueryConfigs', () => {
             'uuid-1-testId|samples/Sample Type 2': {
                 id: 'uuid-1-testId|samples/Sample Type 2',
                 title: 'Sample Type 2',
-                schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Sample Type 2', SAMPLE_FINDER_VIEW_NAME),
+                schemaQuery: new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Sample Type 2', SAMPLE_FINDER_VIEW_NAME),
                 omittedColumns: ['checkedOutBy'],
                 baseFilters: [],
                 requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
@@ -577,7 +577,7 @@ describe('getSampleFinderQueryConfigs', () => {
         const cards = [
             {
                 entityDataType: TestTypeDataType,
-                schemaQuery: SchemaQuery.create('Samples', 'TestQuery'),
+                schemaQuery: new SchemaQuery('Samples', 'TestQuery'),
             },
         ];
         expect(
@@ -586,7 +586,7 @@ describe('getSampleFinderQueryConfigs', () => {
             'uuid-1-testId|exp/materials': {
                 id: 'uuid-1-testId|exp/materials',
                 title: 'All Samples',
-                schemaQuery: SchemaQuery.create(
+                schemaQuery: new SchemaQuery(
                     SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
                     SCHEMAS.EXP_TABLES.MATERIALS.queryName,
                     SAMPLE_FINDER_VIEW_NAME
@@ -604,7 +604,7 @@ describe('getSampleFinderQueryConfigs', () => {
             'uuid-1-testId|samples/Sample Type 1': {
                 id: 'uuid-1-testId|samples/Sample Type 1',
                 title: 'Sample Type 1',
-                schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Sample Type 1', SAMPLE_FINDER_VIEW_NAME),
+                schemaQuery: new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Sample Type 1', SAMPLE_FINDER_VIEW_NAME),
                 omittedColumns: ['checkedOutBy'],
                 baseFilters: [
                     Filter.create(
@@ -618,7 +618,7 @@ describe('getSampleFinderQueryConfigs', () => {
             'uuid-1-testId|samples/Sample Type 2': {
                 id: 'uuid-1-testId|samples/Sample Type 2',
                 title: 'Sample Type 2',
-                schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Sample Type 2', SAMPLE_FINDER_VIEW_NAME),
+                schemaQuery: new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Sample Type 2', SAMPLE_FINDER_VIEW_NAME),
                 omittedColumns: ['checkedOutBy'],
                 baseFilters: [
                     Filter.create(
@@ -699,7 +699,7 @@ const badBetweenFilter = {
 const card = {
     entityDataType: TestTypeDataType,
     filterArray: [anyValueFilter, stringBetweenFilter],
-    schemaQuery: SchemaQuery.create('TestSchema', 'samples1'),
+    schemaQuery: new SchemaQuery('TestSchema', 'samples1'),
     index: 1,
 };
 
@@ -716,7 +716,7 @@ const cardJSON =
 const cardWithEntityTypeFilter = {
     entityDataType: TestTypeDataTypeWithEntityFilter,
     filterArray: [anyValueFilter, stringBetweenFilter],
-    schemaQuery: SchemaQuery.create('TestSchema', 'samples1'),
+    schemaQuery: new SchemaQuery('TestSchema', 'samples1'),
     index: 1,
 };
 
@@ -1324,8 +1324,8 @@ describe('getLabKeySql', () => {
     });
 });
 
-const schemaQuery = SchemaQuery.create('Test', 'SampleA');
-const schemaQueryWithSpace = SchemaQuery.create('Test', 'Sample Type A');
+const schemaQuery = new SchemaQuery('Test', 'SampleA');
+const schemaQueryWithSpace = new SchemaQuery('Test', 'Sample Type A');
 
 describe('getExpDescendantOfSelectClause', () => {
     test('empty', () => {
@@ -1388,7 +1388,7 @@ describe('getSampleFinderColumnNames', () => {
             getSampleFinderColumnNames([
                 {
                     entityDataType: SampleTypeDataType,
-                    schemaQuery: SchemaQuery.create('test', 'query'),
+                    schemaQuery: new SchemaQuery('test', 'query'),
                     filterArray: [
                         {
                             fieldKey: 'IntValue',
@@ -1407,7 +1407,7 @@ describe('getSampleFinderColumnNames', () => {
             getSampleFinderColumnNames([
                 {
                     entityDataType: SampleTypeDataType,
-                    schemaQuery: SchemaQuery.create('test', 'query'),
+                    schemaQuery: new SchemaQuery('test', 'query'),
                     dataTypeDisplayName: 'Test Samples',
                     filterArray: [],
                 },
@@ -1423,7 +1423,7 @@ describe('getSampleFinderColumnNames', () => {
             getSampleFinderColumnNames([
                 {
                     entityDataType: SampleTypeDataType,
-                    schemaQuery: SchemaQuery.create('test', 'query'),
+                    schemaQuery: new SchemaQuery('test', 'query'),
                     dataTypeDisplayName: 'Test Samples',
                     filterArray: [
                         {
@@ -1448,7 +1448,7 @@ describe('getSampleFinderColumnNames', () => {
             getSampleFinderColumnNames([
                 {
                     entityDataType: AssayResultDataType,
-                    schemaQuery: SchemaQuery.create('test', 'query'),
+                    schemaQuery: new SchemaQuery('test', 'query'),
                     dataTypeDisplayName: 'Test Assays',
                     filterArray: [
                         {

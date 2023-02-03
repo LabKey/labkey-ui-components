@@ -26,7 +26,7 @@ interface Props {
     entityDataType: EntityDataType;
     maxSelected?: number;
     onCancel: () => void;
-    queryModel?: QueryModel;
+    queryModel: QueryModel;
     useSelected: boolean;
     verb?: string;
 }
@@ -45,27 +45,23 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
     } = props;
     const { nounPlural } = entityDataType;
     const { createNotification } = useNotificationsContext();
-    const [showProgress, setShowProgress] = useState(false);
-    const [numConfirmed, setNumConfirmed] = useState(0);
+    const [showProgress, setShowProgress] = useState<boolean>(false);
+    const [numConfirmed, setNumConfirmed] = useState<number>(0);
     let rowIds;
     let numSelected = 0;
     let selectionKey: string;
     let useSnapshotSelection = false;
 
-    if (queryModel) {
-        if (useSelected) {
-            selectionKey = queryModel.selectionKey;
-            useSnapshotSelection = queryModel.filterArray.length > 0;
-        } else {
-            if (queryModel.hasData) {
-                rowIds = [Object.keys(queryModel.rows)[0]];
-                numSelected = 1;
-            }
-        }
+    if (useSelected) {
+        selectionKey = queryModel.selectionKey;
+        useSnapshotSelection = queryModel.filterArray.length > 0;
+    } else if (queryModel.hasData) {
+        rowIds = [Object.keys(queryModel.rows)[0]];
+        numSelected = 1;
     }
 
     const onConfirm: EntityDeleteConfirmHandler = useCallback(
-        async (rowsToDelete, rowsToKeep, userComment) => {
+        async (rowsToDelete, rowsToKeep, auditUserComment) => {
             setNumConfirmed(rowsToDelete.length);
             setShowProgress(true);
             beforeDelete?.();
@@ -74,7 +70,7 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
             try {
                 await deleteRows({
                     auditBehavior,
-                    auditUserComment: userComment,
+                    auditUserComment,
                     containerPath,
                     rows: rowsToDelete,
                     schemaQuery: queryModel.schemaQuery,
@@ -101,10 +97,6 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
             queryModel.schemaQuery,
         ]
     );
-
-    if (!queryModel) {
-        return null;
-    }
 
     if (useSelected && maxSelected && numSelected > maxSelected) {
         return (

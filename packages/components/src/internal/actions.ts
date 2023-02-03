@@ -57,7 +57,6 @@ import {
     parseScientificInt,
 } from './util/utils';
 import { resolveErrorMessage } from './util/messaging';
-import { hasModule } from './app/utils';
 import { buildURL } from './url/AppURL';
 
 import { ViewInfo } from './ViewInfo';
@@ -114,15 +113,7 @@ export function selectGridIdsFromTransactionId(
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {
                     const selected = response.rowIds;
-                    setSelected(
-                        modelId,
-                        true,
-                        selected,
-                        undefined,
-                        true,
-                        schemaQuery.getSchema(),
-                        schemaQuery.getQuery()
-                    )
+                    setSelected(modelId, true, selected, undefined, true, schemaQuery.schemaName, schemaQuery.queryName)
                         .then(response => {
                             actions.replaceSelections(modelId, selected);
                             actions.loadModel(modelId, true);
@@ -402,8 +393,7 @@ export function getSelected(
     containerPath?: string,
     queryParameters?: Record<string, any>
 ): Promise<IGetSelectedResponse> {
-    if (useSnapshotSelection)
-        return getSnapshotSelections(key, containerPath);
+    if (useSnapshotSelection) return getSnapshotSelections(key, containerPath);
 
     return new Promise((resolve, reject) => {
         return Ajax.request({
@@ -599,7 +589,7 @@ export function getSelection(location: any, schemaName?: string, queryName?: str
             }
             if (!schemaQuery) {
                 if (schemaName && queryName) {
-                    schemaQuery = SchemaQuery.create(schemaName, queryName);
+                    schemaQuery = new SchemaQuery(schemaName, queryName);
                 }
             }
 
@@ -614,7 +604,13 @@ export function getSelection(location: any, schemaName?: string, queryName?: str
                 );
             }
 
-            return getSelected(key, false, schemaQuery.schemaName, schemaQuery.queryName, getFilterListFromQuery(location)).then(response => {
+            return getSelected(
+                key,
+                false,
+                schemaQuery.schemaName,
+                schemaQuery.queryName,
+                getFilterListFromQuery(location)
+            ).then(response => {
                 resolve({
                     resolved: true,
                     schemaQuery,
@@ -743,19 +739,13 @@ export function getOrderedSelectedMappedKeys(
 
 export function fetchCharts(schemaQuery: SchemaQuery, containerPath?: string): Promise<List<DataViewInfo>> {
     return new Promise((resolve, reject) => {
-        // if we know we don't have the study module, no need to make the API call
-        if (!hasModule('Study')) {
-            resolve(List<DataViewInfo>());
-            return;
-        }
-
         Ajax.request({
             url: buildURL(
-                'study-reports',
+                'reports',
                 'getReportInfos.api',
                 {
-                    schemaName: schemaQuery.getSchema(),
-                    queryName: schemaQuery.getQuery(),
+                    schemaName: schemaQuery.schemaName,
+                    queryName: schemaQuery.queryName,
                 },
                 {
                     container: containerPath,
@@ -770,7 +760,11 @@ export function fetchCharts(schemaQuery: SchemaQuery, containerPath?: string): P
                     resolve(result);
                 } else {
                     reject({
-                        error: 'study-report-getReportInfos.api responded to success without success',
+                        error:
+                            'Unable to get report info for schema/query: ' +
+                            schemaQuery.schemaName +
+                            '/' +
+                            schemaQuery.queryName,
                     });
                 }
             }),

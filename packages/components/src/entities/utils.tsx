@@ -127,14 +127,23 @@ export function isFindByIdsSchema(schemaQuery: SchemaQuery): boolean {
  * @param currentProductId?
  * @param targetProductId?
  */
-export function getSampleWizardURL(
-    targetSampleSet?: string,
+export type SampleTypeWizardURLResolver = (
+    targetSampleType?: string,
     parent?: string,
     selectionKey?: string,
     useSnapshotSelection?: boolean,
     currentProductId?: string,
     targetProductId?: string
-): string | AppURL {
+) => string | AppURL;
+
+export const getSampleWizardURL: SampleTypeWizardURLResolver = (
+    targetSampleSet,
+    parent,
+    selectionKey,
+    useSnapshotSelection,
+    currentProductId,
+    targetProductId
+): string | AppURL => {
     const params = {};
 
     if (targetSampleSet) {
@@ -149,9 +158,8 @@ export function getSampleWizardURL(
     if (useSnapshotSelection) params['selectionKeyType'] = SELECTION_KEY_TYPE.snapshot;
 
     return createProductUrlFromParts(targetProductId, currentProductId, params, SAMPLES_KEY, 'new');
-}
+};
 
-// TODO: Convert this into a component and utilize useServerContext() to fetch moduleContext for isELNEnabled() check
 export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: boolean): ReactNode {
     let deleteMsg;
     if (canDelete === undefined) {
@@ -188,14 +196,14 @@ export const getSampleTypeTemplateUrl = (
 
     return ActionURL.buildURL('query', 'ExportExcelTemplate', null, {
         ...exportConfig,
-        schemaName: schemaQuery.getSchema(),
-        'query.queryName': schemaQuery.getQuery(),
+        schemaName: schemaQuery.schemaName,
+        'query.queryName': schemaQuery.queryName,
         headerType: 'DisplayFieldKey',
         excludeColumn: excludeColumns
             ? excludeColumns.concat(queryInfo.getFileColumnFieldKeys())
             : queryInfo.getFileColumnFieldKeys(),
         includeColumn: extraColumns,
-        filenamePrefix: schemaQuery.getQuery(),
+        filenamePrefix: schemaQuery.queryName,
     });
 };
 
@@ -379,7 +387,7 @@ export async function getSamplesAssayGridQueryConfigs(
         if (activeModules?.indexOf(config.moduleName) > -1) {
             const baseConfig = {
                 title: config.title,
-                schemaQuery: SchemaQuery.create(config.schemaName, config.queryName, config.viewName),
+                schemaQuery: new SchemaQuery(config.schemaName, config.queryName, config.viewName),
                 containerFilter: config.containerFilter,
             };
 

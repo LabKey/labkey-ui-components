@@ -125,7 +125,7 @@ class UnsupportedReportBody extends PureComponent<ReportConsumer> {
 class GridReportBody extends PureComponent<ReportConsumer> {
     render() {
         const { schemaName, queryName, viewName, runUrl, appUrl } = this.props.report;
-        const schemaQuery = SchemaQuery.create(schemaName, queryName, viewName);
+        const schemaQuery = new SchemaQuery(schemaName, queryName, viewName);
 
         return (
             <div className="report-list__grid-preview">

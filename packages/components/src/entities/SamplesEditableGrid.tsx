@@ -56,7 +56,7 @@ const SAMPLES_EDIT_GRID_ID = 'update-samples-grid';
 const SAMPLES_STORAGE_EDIT_GRID_ID = 'update-samples-storage-grid';
 const SAMPLES_LINEAGE_EDIT_GRID_ID = 'update-samples-lineage-grid';
 
-const INVENTORY_ITEM_QS = SchemaQuery.create('inventory', 'item');
+const INVENTORY_ITEM_QS = new SchemaQuery('inventory', 'item');
 
 interface State {
     consumedStatusIds: number[];

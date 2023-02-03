@@ -100,7 +100,7 @@ function fetchNodeMetadata(lineage: LineageResult): Array<Promise<ISelectRowsRes
     // keys cannot be filtered upon and thus are also not supported.
     return lineage.nodes
         .filter(n => n.schemaName !== undefined && n.queryName !== undefined && n.pkFilters.length === 1)
-        .groupBy(n => SchemaQuery.create(n.schemaName, n.queryName))
+        .groupBy(n => new SchemaQuery(n.schemaName, n.queryName))
         .map((nodes, schemaQuery) => {
             const node = nodes.first();
             const { fieldKey } = node.pkFilters[0];

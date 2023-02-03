@@ -275,19 +275,19 @@ describe('isSamplesSchema', () => {
     });
 
     test('sample set', () => {
-        expect(isSamplesSchema(SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'test'))).toBeTruthy();
-        expect(isSamplesSchema(SchemaQuery.create('Samples', 'test'))).toBeTruthy();
+        expect(isSamplesSchema(new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, 'test'))).toBeTruthy();
+        expect(isSamplesSchema(new SchemaQuery('Samples', 'test'))).toBeTruthy();
     });
 
     test('exp.materials', () => {
-        expect(isSamplesSchema(SchemaQuery.create('EXP', 'materials'))).toBeTruthy();
+        expect(isSamplesSchema(new SchemaQuery('EXP', 'materials'))).toBeTruthy();
         expect(isSamplesSchema(SCHEMAS.EXP_TABLES.MATERIALS)).toBeTruthy();
     });
 
     test('source samples', () => {
         expect(isSamplesSchema(SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES)).toBeTruthy();
-        expect(isSamplesSchema(SchemaQuery.create('sampleManagement', 'SourceSamples'))).toBeTruthy();
-        expect(isSamplesSchema(SchemaQuery.create('sampleManagement', 'Jobs'))).toBeFalsy();
+        expect(isSamplesSchema(new SchemaQuery('sampleManagement', 'SourceSamples'))).toBeTruthy();
+        expect(isSamplesSchema(new SchemaQuery('sampleManagement', 'Jobs'))).toBeFalsy();
     });
 });
 
@@ -326,7 +326,7 @@ describe('getSampleStatus', () => {
     });
 });
 
-const TEST_SQ = SchemaQuery.create('schema', 'query');
+const TEST_SQ = new SchemaQuery('schema', 'query');
 const TEST_QUERY_INFO = new QueryInfo({ schemaQuery: TEST_SQ });
 const TEST_MODEL = makeTestQueryModel(TEST_SQ, TEST_QUERY_INFO).mutate({ id: 'model-id' });
 

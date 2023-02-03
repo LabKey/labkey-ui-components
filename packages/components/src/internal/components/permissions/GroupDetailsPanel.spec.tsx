@@ -1,12 +1,17 @@
 import React from 'react';
 import { fromJS } from 'immutable';
-import renderer from 'react-test-renderer';
 
 import policyJSON from '../../../test/data/security-getPolicy.json';
 
 import rolesJSON from '../../../test/data/security-getRoles.json';
 
 import { MemberType } from '../administration/models';
+
+import { mountWithServerContext } from '../../testHelpers';
+
+import { TEST_USER_APP_ADMIN } from '../../userFixtures';
+
+import { UserProperties } from '../user/UserProperties';
 
 import { GroupDetailsPanel } from './GroupDetailsPanel';
 import { Principal, SecurityPolicy } from './models';
@@ -26,7 +31,7 @@ const ROLES_BY_NAME = getRolesByUniqueName(ROLES);
 
 describe('<GroupDetailsPanel/>', () => {
     test('no principal', () => {
-        const component = (
+        const component = mountWithServerContext(
             <GroupDetailsPanel
                 principal={undefined}
                 policy={POLICY}
@@ -34,15 +39,19 @@ describe('<GroupDetailsPanel/>', () => {
                 members={[]}
                 isSiteGroup={false}
                 getAuditLogData={jest.fn()}
-            />
+            />,
+            { user: TEST_USER_APP_ADMIN }
         );
 
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
+        expect(component.find('.panel-heading').text()).toBe('Group Details');
+        expect(component.find(UserProperties)).toHaveLength(0);
+        expect(component.find('.principal-detail-li')).toHaveLength(0);
+
+        component.unmount();
     });
 
     test('with principal and members', () => {
-        const component = (
+        const component = mountWithServerContext(
             <GroupDetailsPanel
                 principal={GROUP}
                 policy={POLICY}
@@ -54,15 +63,27 @@ describe('<GroupDetailsPanel/>', () => {
                 ]}
                 isSiteGroup={false}
                 getAuditLogData={jest.fn()}
-            />
+            />,
+            { user: TEST_USER_APP_ADMIN }
         );
 
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
+        expect(component.find('.panel-heading').text()).toBe(GROUP.name);
+
+        expect(component.find(UserProperties)).toHaveLength(3);
+        expect(component.find(UserProperties).at(0).text()).toBe('User Count2');
+        expect(component.find(UserProperties).at(1).text()).toBe('Group Count1');
+
+        expect(component.find('.principal-detail-li')).toHaveLength(4);
+        expect(component.find('.principal-detail-li').at(0).text()).toBe('Editor');
+        expect(component.find('.principal-detail-li').at(1).text()).toBe('user1');
+        expect(component.find('.principal-detail-li').at(2).text()).toBe('user2');
+        expect(component.find('.principal-detail-li').at(3).text()).toBe('group1');
+
+        component.unmount();
     });
 
     test('as site group', () => {
-        const component = (
+        const component = mountWithServerContext(
             <GroupDetailsPanel
                 principal={GROUP}
                 policy={POLICY}
@@ -73,10 +94,22 @@ describe('<GroupDetailsPanel/>', () => {
                 ]}
                 isSiteGroup={true}
                 getAuditLogData={jest.fn()}
-            />
+            />,
+            { user: TEST_USER_APP_ADMIN }
         );
 
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
+        expect(component.find('.panel-heading').text()).toBe(GROUP.name);
+
+        expect(component.find(UserProperties)).toHaveLength(4);
+        expect(component.find(UserProperties).at(0).text()).toBe('User Count1');
+        expect(component.find(UserProperties).at(1).text()).toBe('Group Count1');
+        expect(component.find(UserProperties).at(3).text()).toBe('Site Grouptrue');
+
+        expect(component.find('.principal-detail-li')).toHaveLength(3);
+        expect(component.find('.principal-detail-li').at(0).text()).toBe('Editor');
+        expect(component.find('.principal-detail-li').at(1).text()).toBe('user1');
+        expect(component.find('.principal-detail-li').at(2).text()).toBe('group1');
+
+        component.unmount();
     });
 });

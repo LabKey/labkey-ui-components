@@ -21,7 +21,6 @@ interface Props {
     sampleId: number;
     sampleName: string;
     selectedEvent?: TimelineEventModel;
-    showUserLinks?: boolean;
 }
 
 interface State {
@@ -530,7 +529,6 @@ export class SampleEventListing extends React.Component<Props, State> {
                         showRecentFirst={showRecentFirst}
                         onEventSelection={this.props.onEventSelection}
                         selectedEvent={this.props.selectedEvent}
-                        showUserLinks={this.props.showUserLinks}
                         selectedEntityConnectionInfo={this.determineEntityConnectionInfo()}
                     />
                 </Col>

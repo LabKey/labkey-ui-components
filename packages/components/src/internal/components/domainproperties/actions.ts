@@ -1111,8 +1111,8 @@ export function getDomainNamePreviews(
         return Domain.getDomainNamePreviews({
             containerPath,
             domainId,
-            queryName: schemaQuery?.getQuery(),
-            schemaName: schemaQuery?.getSchema(),
+            queryName: schemaQuery?.queryName,
+            schemaName: schemaQuery?.schemaName,
             success: response => {
                 resolve(response['previews']);
             },

@@ -39,7 +39,7 @@ const assayModel = new AssayStateModel({
     ],
     definitionsLoadingState: LoadingState.LOADED,
 });
-const SQ = SchemaQuery.create('schema', 'query');
+const SQ = new SchemaQuery('schema', 'query');
 const modelLoadedNoRows = makeTestQueryModel(SQ, new QueryInfo(), {}, [], 0).mutate({
     queryInfoLoadingState: LoadingState.LOADED,
     rowsLoadingState: LoadingState.LOADED,
@@ -78,14 +78,14 @@ describe('SampleAssayDetailButtons', () => {
     });
 
     test('currentAssayHref undefined', () => {
-        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({ title: 'Other Assay' });
+        const model = makeTestQueryModel(new SchemaQuery('schema', 'query')).mutate({ title: 'Other Assay' });
         const wrapper = mount(<SampleAssayDetailButtons {...DEFAULT_PROPS} model={model} user={TEST_USER_AUTHOR} />);
         validate(wrapper);
         wrapper.unmount();
     });
 
     test('multiple menu items', () => {
-        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({ title: 'NAb Assay' });
+        const model = makeTestQueryModel(new SchemaQuery('schema', 'query')).mutate({ title: 'NAb Assay' });
         const wrapper = mount(<SampleAssayDetailButtons {...DEFAULT_PROPS} model={model} user={TEST_USER_AUTHOR} />);
         validate(wrapper, 2);
         expect(wrapper.find(SplitButton).prop('href')).toBe('test2');
@@ -162,7 +162,7 @@ describe('getSampleAssayDetailEmptyText', () => {
 
 const SUMMARY_GRID_ID = 'assay-detail:assayruncount:1';
 const SUMMARY_GRID_MODEL = makeTestQueryModel(
-    SchemaQuery.create('exp', 'AssayRunsPerSample'),
+    new SchemaQuery('exp', 'AssayRunsPerSample'),
     new QueryInfo(),
     { 1: { RowId: { value: 1 }, Name: { value: 'Name1' } } },
     ['1'],

@@ -22,8 +22,8 @@ beforeAll(() => {
 describe('AddToPicklistMenuItem', () => {
     const text = 'Picklist Testing';
 
-    const queryModelWithoutSelections = makeTestQueryModel(SchemaQuery.create('test', 'query'));
-    let queryModelWithSelections = makeTestQueryModel(SchemaQuery.create('test', 'query'));
+    const queryModelWithoutSelections = makeTestQueryModel(new SchemaQuery('test', 'query'));
+    let queryModelWithSelections = makeTestQueryModel(new SchemaQuery('test', 'query'));
     queryModelWithSelections = queryModelWithSelections.mutate({
         rowCount: 2,
         selections: new Set(['1', '2']),
@@ -87,7 +87,7 @@ describe('AddToPicklistMenuItem', () => {
         );
         validateMenuItemClick(wrapper, false);
 
-        wrapper.setProps({ queryModel: makeTestQueryModel(SchemaQuery.create('test', 'query')) });
+        wrapper.setProps({ queryModel: makeTestQueryModel(new SchemaQuery('test', 'query')) });
         validateMenuItemClick(wrapper, false);
 
         wrapper.setProps({ queryModel: queryModelWithSelections });
@@ -110,7 +110,7 @@ describe('AddToPicklistMenuItem', () => {
     });
 
     test('sample with status', () => {
-        let model = makeTestQueryModel(SchemaQuery.create('test', 'query'));
+        let model = makeTestQueryModel(new SchemaQuery('test', 'query'));
         model = model.mutate({
             rows: {
                 '1': {

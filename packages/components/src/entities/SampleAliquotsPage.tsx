@@ -3,11 +3,12 @@ import React, { FC, memo } from 'react';
 import { getSampleStatusType, isSampleOperationPermitted } from '../internal/components/samples/utils';
 import { SampleOperation } from '../internal/components/samples/constants';
 
+import { InjectedRouteLeaveProps, withRouteLeave } from '../internal/util/RouteLeave';
+
 import { onSampleChange } from './actions';
 import { SampleAliquotsGridPanel } from './SampleAliquotsGridPanel';
 import { SampleDetailContextConsumer, SampleDetailPage, SampleDetailPageProps } from './SampleDetailPage';
 import { useSampleTypeAppContext } from './useSampleTypeAppContext';
-import {InjectedRouteLeaveProps, withRouteLeave} from "../internal/util/RouteLeave";
 
 interface OwnProps {
     omittedColumns?: string[];

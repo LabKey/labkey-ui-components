@@ -1,121 +1,26 @@
-import React, { FC, memo, useCallback, useState } from 'react';
-import { PermissionTypes } from '@labkey/api';
+import React, {FC, memo, useCallback, useMemo, useState} from 'react';
 
 import { User } from '../internal/components/base/models/User';
 
-import { PicklistButton } from '../internal/components/picklist/PicklistButton';
-import { RequiresPermission } from '../internal/components/base/Permissions';
-import { DisableableButton } from '../internal/components/buttons/DisableableButton';
-import { ResponsiveMenuButtonGroup } from '../internal/components/buttons/ResponsiveMenuButtonGroup';
 import { SchemaQuery } from '../public/SchemaQuery';
-import { GridPanel } from '../public/QueryModel/GridPanel';
 
-import { SampleTypeDataType } from '../internal/components/entities/constants';
-
-import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from '../public/QueryModel/withQueryModels';
+import { InjectedQueryModels, withQueryModels } from '../public/QueryModel/withQueryModels';
 
 import { getSampleAliquotsQueryConfig } from '../internal/components/samples/actions';
-import { getOmittedSampleTypeColumns } from '../internal/components/samples/utils';
-import { isAssayEnabled, isWorkflowEnabled } from '../internal/app/utils';
+import {getOmittedSampleTypeColumns, SamplesEditButtonSections} from '../internal/components/samples/utils';
 
-import { AssayResultsForSamplesButton } from '../internal/components/entities/AssayResultsForSamplesButton';
-
-import { EXPORT_TYPES, EXPORT_TYPES_WITH_LABEL } from '../internal/constants';
 import { useLabelPrintingContext } from '../internal/components/labels/LabelPrintingContextProvider';
 import { PrintLabelsModal } from '../internal/components/labels/PrintLabelsModal';
 import { useNotificationsContext } from '../internal/components/notifications/NotificationsContext';
 
-import { useServerContext } from '../internal/components/base/ServerContext';
-
 import { useSampleTypeAppContext } from './useSampleTypeAppContext';
-import { EntityDeleteModal } from './EntityDeleteModal';
-import { SamplesAssayButton } from './SamplesAssayButton';
+import {getSampleAuditBehaviorType} from "./utils";
+import {SAMPLE_DATA_EXPORT_CONFIG} from "../internal/components/samples/constants";
+import {SamplesTabbedGridPanel} from "./SamplesTabbedGridPanel";
+import {getContainerFilterForLookups} from "../internal/query/api";
 
 // We are only looking at single model here
 const SUB_MENU_WIDTH = 1350;
-
-interface AliquotGridButtonsProps {
-    afterAction: () => void;
-    assayProviderType?: string;
-    lineageUpdateAllowed: boolean;
-    onDelete: () => void;
-    user: User;
-}
-
-const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> = props => {
-    const { afterAction, lineageUpdateAllowed, model, onDelete, user, assayProviderType } = props;
-    const { JobsButtonComponent, SampleStorageButtonComponent } = useSampleTypeAppContext();
-    const { moduleContext } = useServerContext();
-    const metricFeatureArea = 'sampleAliquots';
-
-    const moreItems = [];
-    if (isAssayEnabled(moduleContext)) {
-        moreItems.push({
-            button: <SamplesAssayButton model={model} providerType={assayProviderType} />,
-            perm: PermissionTypes.Insert,
-        });
-    }
-    moreItems.push({
-        button: <PicklistButton model={model} user={user} metricFeatureArea={metricFeatureArea} />,
-        perm: PermissionTypes.ManagePicklists,
-    });
-    if (JobsButtonComponent && isWorkflowEnabled(moduleContext)) {
-        moreItems.push({
-            button: <JobsButtonComponent model={model} user={user} metricFeatureArea={metricFeatureArea} />,
-            perm: PermissionTypes.ManageSampleWorkflows,
-        });
-    }
-    if (SampleStorageButtonComponent) {
-        moreItems.push({
-            button: (
-                <SampleStorageButtonComponent
-                    afterStorageUpdate={afterAction}
-                    queryModel={model}
-                    user={user}
-                    nounPlural="aliquots"
-                    metricFeatureArea={metricFeatureArea}
-                />
-            ),
-            perm: PermissionTypes.EditStorageData,
-        });
-    }
-    if (isAssayEnabled(moduleContext)) {
-        moreItems.push({
-            button: <AssayResultsForSamplesButton user={user} model={model} metricFeatureArea={metricFeatureArea} />,
-            perm: PermissionTypes.ReadAssay,
-        });
-    }
-
-    return (
-        <RequiresPermission
-            permissionCheck="any"
-            perms={[
-                PermissionTypes.Insert,
-                PermissionTypes.Update,
-                PermissionTypes.Delete,
-                PermissionTypes.ManagePicklists,
-                PermissionTypes.ManageSampleWorkflows,
-                PermissionTypes.EditStorageData,
-            ]}
-        >
-            <div className="responsive-btn-group">
-                {lineageUpdateAllowed && (
-                    <RequiresPermission perms={PermissionTypes.Delete}>
-                        <DisableableButton
-                            bsStyle="default"
-                            onClick={onDelete}
-                            disabledMsg={!model.hasSelections ? 'Select one or more aliquots.' : undefined}
-                        >
-                            <span className="fa fa-trash" />
-                            <span>&nbsp;Delete</span>
-                        </DisableableButton>
-                    </RequiresPermission>
-                )}
-                <ResponsiveMenuButtonGroup user={user} items={moreItems} subMenuWidth={SUB_MENU_WIDTH} />
-            </div>
-        </RequiresPermission>
-    );
-};
 
 interface Props {
     assayProviderType?: string;
@@ -124,18 +29,24 @@ interface Props {
     queryModelId: string;
     showLabelOption?: boolean;
     user: User;
+    metricFeatureArea?: string;
+    getIsDirty: () => boolean;
+    setIsDirty: (isDirty: boolean) => void;
 }
 
 export const SampleAliquotsGridPanelImpl: FC<Props & InjectedQueryModels> = memo(props => {
-    const { actions, queryModels, queryModelId, showLabelOption = true, ...buttonProps } = props;
-    const [showConfirmDelete, setConfirmDelete] = useState<boolean>(false);
+    const { actions, queryModels, queryModelId, user, metricFeatureArea, getIsDirty, setIsDirty } = props;
     const [showPrintDialog, setShowPrintDialog] = useState<boolean>(false);
     const { createNotification } = useNotificationsContext();
     const { canPrintLabels, printServiceUrl } = useLabelPrintingContext();
     const queryModel = queryModels[queryModelId];
 
+    const {
+        getSamplesEditableGridProps,
+        SampleGridButtonComponent,
+    } = useSampleTypeAppContext();
+
     const resetState = useCallback((): void => {
-        setConfirmDelete(false);
         setShowPrintDialog(false);
     }, []);
 
@@ -147,14 +58,6 @@ export const SampleAliquotsGridPanelImpl: FC<Props & InjectedQueryModels> = memo
         actions.loadModel(queryModel.id, true);
     }, [actions, props, queryModel.id, queryModel.schemaQuery, resetState]);
 
-    const onDelete = useCallback((): void => {
-        if (queryModel.hasSelections) {
-            setConfirmDelete(true);
-        }
-    }, [queryModel]);
-
-    const onPrintLabel = useCallback(() => setShowPrintDialog(true), []);
-
     const afterPrint = useCallback(
         (numSamples: number, numLabels: number): void => {
             setShowPrintDialog(false);
@@ -163,38 +66,36 @@ export const SampleAliquotsGridPanelImpl: FC<Props & InjectedQueryModels> = memo
         [createNotification]
     );
 
-    const exportOption = {
-        [EXPORT_TYPES.LABEL]: onPrintLabel,
-    };
-
-    const showPrintOption = showLabelOption && canPrintLabels;
+    const containerFilter = useMemo(() => getContainerFilterForLookups(), []);
 
     return (
         <>
-            <GridPanel
+            <SamplesTabbedGridPanel
                 actions={actions}
-                ButtonsComponent={AliquotGridButtons}
-                buttonsComponentProps={{
-                    ...buttonProps,
-                    afterAction,
-                    onDelete,
+                afterSampleActionComplete={afterAction}
+                containerFilter={containerFilter}
+                getIsDirty={getIsDirty}
+                getSampleAuditBehaviorType={getSampleAuditBehaviorType}
+                gridButtonProps={{
+                    metricFeatureArea,
+                    subMenuWidth: SUB_MENU_WIDTH,
+                    excludedMenuKeys: [SamplesEditButtonSections.IMPORT, SamplesEditButtonSections.EDIT_PARENT],
+                    excludeAddButton: true,
+                    parentEntityDataTypes: [] // aliquots cannot change parents
                 }}
-                model={queryModel}
-                supportedExportTypes={showPrintOption ? EXPORT_TYPES_WITH_LABEL : undefined}
-                onExport={exportOption}
+                gridButtons={SampleGridButtonComponent}
+                modelId={queryModel.id}
+                queryModels={queryModels}
+                samplesEditableGridProps={getSamplesEditableGridProps(user)}
+                showLabelOption
+                setIsDirty={setIsDirty}
+                tabbedGridPanelProps={{
+                    advancedExportOptions: SAMPLE_DATA_EXPORT_CONFIG,
+                    hideEmptyViewMenu: false,
+                }}
+                user={user}
+                withTitle={false}
             />
-
-            {showConfirmDelete && (
-                <EntityDeleteModal
-                    afterDelete={afterAction}
-                    entityDataType={SampleTypeDataType}
-                    onCancel={resetState}
-                    queryModel={queryModel}
-                    useSelected
-                    verb="deleted and removed from storage"
-                />
-            )}
-
             {showPrintDialog && canPrintLabels && (
                 <PrintLabelsModal
                     afterPrint={afterPrint}
@@ -218,6 +119,8 @@ interface SampleAliquotsGridPanelProps extends Omit<Props, 'queryModelId'> {
     sampleId: string | number;
     sampleLsid: string; // if sample is an aliquot, use the aliquot's root to find subaliquots
     schemaQuery: SchemaQuery;
+    getIsDirty: () => boolean;
+    setIsDirty: (isDirty: boolean) => void;
 }
 
 export const SampleAliquotsGridPanel: FC<SampleAliquotsGridPanelProps> = props => {

@@ -7,13 +7,16 @@ import { onSampleChange } from './actions';
 import { SampleAliquotsGridPanel } from './SampleAliquotsGridPanel';
 import { SampleDetailContextConsumer, SampleDetailPage, SampleDetailPageProps } from './SampleDetailPage';
 import { useSampleTypeAppContext } from './useSampleTypeAppContext';
+import {InjectedRouteLeaveProps, withRouteLeave} from "../internal/util/RouteLeave";
 
-interface Props extends SampleDetailPageProps {
+interface OwnProps {
     omittedColumns?: string[];
 }
 
-export const SampleAliquotsPage: FC<Props> = memo(props => {
-    const { omittedColumns, ...sampleDetailPageProps } = props;
+export type Props = OwnProps & SampleDetailPageProps & InjectedRouteLeaveProps;
+
+const SampleAliquotsPageImpl: FC<Props> = memo(props => {
+    const { omittedColumns, setIsDirty, getIsDirty, ...sampleDetailPageProps } = props;
     const { assayProviderType } = useSampleTypeAppContext();
 
     return (
@@ -34,6 +37,8 @@ export const SampleAliquotsPage: FC<Props> = memo(props => {
                             onSampleChangeInvalidate={onSampleChange}
                             assayProviderType={assayProviderType}
                             omittedColumns={omittedColumns}
+                            setIsDirty={setIsDirty}
+                            getIsDirty={getIsDirty}
                         />
                     );
                 }}
@@ -41,3 +46,5 @@ export const SampleAliquotsPage: FC<Props> = memo(props => {
         </SampleDetailPage>
     );
 });
+
+export const SampleAliquotsPage = withRouteLeave(SampleAliquotsPageImpl);

@@ -79,7 +79,7 @@ export const SampleAliquotsGridPanelImpl: FC<Props & InjectedQueryModels> = memo
     const containerFilter = useMemo(() => getContainerFilterForLookups(), []);
 
     const excludedMenuKeys = useMemo(() => {
-        const exclude = [SamplesEditButtonSections.IMPORT, SamplesEditButtonSections.EDIT_PARENT];
+        const exclude = [SamplesEditButtonSections.EDIT_PARENT];
         if (!lineageUpdateAllowed) exclude.push(SamplesEditButtonSections.DELETE);
         return exclude;
     }, [lineageUpdateAllowed]);
@@ -132,10 +132,9 @@ const SampleAliquotsGridPanelWithModel = withQueryModels<Props>(SampleAliquotsGr
 
 interface SampleAliquotsGridPanelProps extends Omit<Props, 'queryModelId'> {
     omittedColumns?: string[];
-    rootLsid?: string;
+    rootLsid?: string; // if sample is an aliquot, use the aliquot's root to find subaliquots
     sampleId: string | number;
     sampleLsid: string;
-    // if sample is an aliquot, use the aliquot's root to find subaliquots
     schemaQuery: SchemaQuery;
 }
 

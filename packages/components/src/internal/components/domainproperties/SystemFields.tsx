@@ -2,9 +2,12 @@ import React, { FC, memo, useCallback, useState } from 'react';
 
 import classNames from 'classnames';
 
+import { Collapse } from 'react-bootstrap';
+
 import { Grid } from '../base/Grid';
 
 import { SystemField } from './models';
+import { EXPAND_TRANSITION } from './constants';
 
 interface Props {
     systemFields: SystemField[];
@@ -28,13 +31,14 @@ export const SystemFields: FC<Props> = memo(({ systemFields }) => {
                         Default System Fields
                     </div>
                 </div>
-
-                {!collapsed && (
-                    <div className="domain-system-fields__grid">
-                        <Grid data={systemFields} condensed={true} />
-                    </div>
-                )}
             </div>
+
+            <Collapse in={!collapsed} timeout={EXPAND_TRANSITION}>
+                <div className="domain-system-fields__grid">
+                    <Grid data={systemFields} condensed={true} />
+                </div>
+            </Collapse>
+
             <div className="domain-custom-fields-header__text"> Custom Fields </div>
         </>
     );

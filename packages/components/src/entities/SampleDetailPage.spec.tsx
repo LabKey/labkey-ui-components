@@ -19,7 +19,7 @@ import { LoadingState } from '../public/LoadingState';
 import { LoadingPage } from '../internal/components/base/LoadingPage';
 import { getTestAPIWrapper } from '../internal/APIWrapper';
 import { getSecurityTestAPIWrapper } from '../internal/components/security/APIWrapper';
-import {TEST_FOLDER_CONTAINER, TEST_PROJECT, TEST_PROJECT_CONTAINER} from '../test/data/constants';
+import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../test/data/constants';
 
 import { Notifications } from '../internal/components/notifications/Notifications';
 
@@ -31,16 +31,17 @@ import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/consta
 
 import { SampleTypeAppContext } from '../internal/AppContext';
 
+import { User } from '../internal/components/base/models/User';
+
 import { SampleDetailPage, SampleDetailPageBody, SampleDetailPageBodyProps } from './SampleDetailPage';
 import { SampleHeader } from './SampleHeader';
 import { SampleOverviewPanel } from './SampleOverviewPanel';
-import {SampleAliquotsPage, SampleAliquotsPageImpl} from './SampleAliquotsPage';
+import { SampleAliquotsPage, SampleAliquotsPageImpl } from './SampleAliquotsPage';
 import { SampleAliquotsGridPanel } from './SampleAliquotsGridPanel';
 import { SampleAssaysPage } from './SampleAssaysPage';
 import { SampleAssayDetail } from './SampleAssayDetail';
 
 import { SampleLineagePage, SampleLineagePanel } from './SampleLineagePage';
-import {User} from "../internal/components/base/models/User";
 
 const QUERY_MODEL = makeTestQueryModel(
     new SchemaQuery('schema', 'query'),
@@ -163,9 +164,10 @@ describe('SampleDetailPage', () => {
     });
 
     test('NotFound', async () => {
-        const queryModel = makeTestQueryModel(new SchemaQuery('schema', 'query'), new QueryInfo(), {}, [], 0).mutate(
-            { queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADED }
-        );
+        const queryModel = makeTestQueryModel(new SchemaQuery('schema', 'query'), new QueryInfo(), {}, [], 0).mutate({
+            queryInfoLoadingState: LoadingState.LOADED,
+            rowsLoadingState: LoadingState.LOADED,
+        });
         const wrapper = mountWithAppServerContext(
             <SampleDetailPageBody
                 {...getDefaultProps()}

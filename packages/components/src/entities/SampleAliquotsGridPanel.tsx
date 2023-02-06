@@ -38,7 +38,17 @@ interface Props {
 }
 
 export const SampleAliquotsGridPanelImpl: FC<Props & InjectedQueryModels> = memo(props => {
-    const { actions, parentSampleName, queryModels, queryModelId, user, metricFeatureArea, getIsDirty, setIsDirty, lineageUpdateAllowed } = props;
+    const {
+        actions,
+        parentSampleName,
+        queryModels,
+        queryModelId,
+        user,
+        metricFeatureArea,
+        getIsDirty,
+        setIsDirty,
+        lineageUpdateAllowed,
+    } = props;
     const [showPrintDialog, setShowPrintDialog] = useState<boolean>(false);
     const { createNotification } = useNotificationsContext();
     const { canPrintLabels, printServiceUrl } = useLabelPrintingContext();
@@ -70,8 +80,7 @@ export const SampleAliquotsGridPanelImpl: FC<Props & InjectedQueryModels> = memo
 
     const excludedMenuKeys = useMemo(() => {
         const exclude = [SamplesEditButtonSections.IMPORT, SamplesEditButtonSections.EDIT_PARENT];
-        if (!lineageUpdateAllowed)
-            exclude.push(SamplesEditButtonSections.DELETE);
+        if (!lineageUpdateAllowed) exclude.push(SamplesEditButtonSections.DELETE);
         return exclude;
     }, [lineageUpdateAllowed]);
 
@@ -99,7 +108,7 @@ export const SampleAliquotsGridPanelImpl: FC<Props & InjectedQueryModels> = memo
                 tabbedGridPanelProps={{
                     advancedExportOptions: SAMPLE_DATA_EXPORT_CONFIG,
                     hideEmptyViewMenu: false,
-                    exportFilename: parentSampleName + "_Aliquots",
+                    exportFilename: parentSampleName + '_Aliquots',
                 }}
                 user={user}
                 withTitle={false}

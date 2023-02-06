@@ -24,7 +24,7 @@ export const SampleAliquotsPageImpl: FC<Props> = memo(props => {
     return (
         <SampleDetailPage title="Aliquots" {...sampleDetailPageProps}>
             <SampleDetailContextConsumer>
-                {({ sampleId, sampleModel, rootLsid, sampleLsid, user , sampleName}) => {
+                {({ sampleId, sampleModel, rootLsid, sampleLsid, user, sampleName }) => {
                     return (
                         <SampleAliquotsGridPanel
                             lineageUpdateAllowed={isSampleOperationPermitted(

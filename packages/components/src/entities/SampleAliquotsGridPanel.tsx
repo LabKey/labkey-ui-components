@@ -30,6 +30,7 @@ interface Props {
     lineageUpdateAllowed: boolean;
     metricFeatureArea?: string;
     onSampleChangeInvalidate: (schemaQuery: SchemaQuery) => void;
+    parentSampleName: string;
     queryModelId: string;
     setIsDirty: (isDirty: boolean) => void;
     showLabelOption?: boolean;
@@ -37,7 +38,7 @@ interface Props {
 }
 
 export const SampleAliquotsGridPanelImpl: FC<Props & InjectedQueryModels> = memo(props => {
-    const { actions, queryModels, queryModelId, user, metricFeatureArea, getIsDirty, setIsDirty } = props;
+    const { actions, parentSampleName, queryModels, queryModelId, user, metricFeatureArea, getIsDirty, setIsDirty } = props;
     const [showPrintDialog, setShowPrintDialog] = useState<boolean>(false);
     const { createNotification } = useNotificationsContext();
     const { canPrintLabels, printServiceUrl } = useLabelPrintingContext();
@@ -91,6 +92,7 @@ export const SampleAliquotsGridPanelImpl: FC<Props & InjectedQueryModels> = memo
                 tabbedGridPanelProps={{
                     advancedExportOptions: SAMPLE_DATA_EXPORT_CONFIG,
                     hideEmptyViewMenu: false,
+                    exportFilename: parentSampleName + "_Aliquots",
                 }}
                 user={user}
                 withTitle={false}
@@ -113,14 +115,12 @@ export const SampleAliquotsGridPanelImpl: FC<Props & InjectedQueryModels> = memo
 const SampleAliquotsGridPanelWithModel = withQueryModels<Props>(SampleAliquotsGridPanelImpl);
 
 interface SampleAliquotsGridPanelProps extends Omit<Props, 'queryModelId'> {
-    getIsDirty: () => boolean;
     omittedColumns?: string[];
     rootLsid?: string;
     sampleId: string | number;
     sampleLsid: string;
     // if sample is an aliquot, use the aliquot's root to find subaliquots
     schemaQuery: SchemaQuery;
-    setIsDirty: (isDirty: boolean) => void;
 }
 
 export const SampleAliquotsGridPanel: FC<SampleAliquotsGridPanelProps> = props => {

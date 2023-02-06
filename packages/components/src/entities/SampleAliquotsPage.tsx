@@ -23,7 +23,7 @@ const SampleAliquotsPageImpl: FC<Props> = memo(props => {
     return (
         <SampleDetailPage title="Aliquots" {...sampleDetailPageProps}>
             <SampleDetailContextConsumer>
-                {({ sampleId, sampleModel, rootLsid, sampleLsid, user }) => {
+                {({ sampleId, sampleModel, rootLsid, sampleLsid, user , sampleName}) => {
                     return (
                         <SampleAliquotsGridPanel
                             lineageUpdateAllowed={isSampleOperationPermitted(
@@ -32,6 +32,7 @@ const SampleAliquotsPageImpl: FC<Props> = memo(props => {
                             )}
                             sampleId={sampleId}
                             sampleLsid={sampleLsid}
+                            parentSampleName={sampleName}
                             rootLsid={rootLsid}
                             schemaQuery={sampleModel.schemaQuery}
                             user={user}

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.X
-*Released*: X February 2023
+### version 2.290.2
+*Released*: 6 February 2023
 * Issue 47035: Sample Aliquot grid should allow for edit
   * Use SamplesTabbedGridPanel for SampleAliquotsGridPanel
 

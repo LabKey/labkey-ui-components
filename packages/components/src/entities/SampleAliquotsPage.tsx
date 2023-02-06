@@ -16,7 +16,8 @@ interface OwnProps {
 
 export type Props = OwnProps & SampleDetailPageProps & InjectedRouteLeaveProps;
 
-const SampleAliquotsPageImpl: FC<Props> = memo(props => {
+// export for jest
+export const SampleAliquotsPageImpl: FC<Props> = memo(props => {
     const { omittedColumns, setIsDirty, getIsDirty, ...sampleDetailPageProps } = props;
     const { assayProviderType } = useSampleTypeAppContext();
 

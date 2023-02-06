@@ -34,12 +34,13 @@ import { SampleTypeAppContext } from '../internal/AppContext';
 import { SampleDetailPage, SampleDetailPageBody, SampleDetailPageBodyProps } from './SampleDetailPage';
 import { SampleHeader } from './SampleHeader';
 import { SampleOverviewPanel } from './SampleOverviewPanel';
-import { SampleAliquotsPage } from './SampleAliquotsPage';
+import {SampleAliquotsPage, SampleAliquotsPageImpl} from './SampleAliquotsPage';
 import { SampleAliquotsGridPanel } from './SampleAliquotsGridPanel';
 import { SampleAssaysPage } from './SampleAssaysPage';
 import { SampleAssayDetail } from './SampleAssayDetail';
 
 import { SampleLineagePage, SampleLineagePanel } from './SampleLineagePage';
+import {User} from "../internal/components/base/models/User";
 
 const QUERY_MODEL = makeTestQueryModel(
     new SchemaQuery('schema', 'query'),
@@ -94,6 +95,7 @@ const SAMPLE_TYPE_APP_CONTEXT = {
     SampleStorageMenuComponent: null,
     assayProviderType: GENERAL_ASSAY_PROVIDER_NAME,
     lineagePagePermissions: [PermissionTypes.DesignDataClass],
+    getSamplesEditableGridProps: (user: User) => {},
 } as SampleTypeAppContext;
 const API_APP_CONTEXT = getTestAPIWrapper(jest.fn, {
     security: getSecurityTestAPIWrapper(jest.fn, {
@@ -211,7 +213,7 @@ describe('SampleDetailPage', () => {
 describe('SampleAliquotsPage', () => {
     test('default props', async () => {
         const wrapper = mountWithAppServerContext(
-            <SampleAliquotsPage {...getDefaultProps()} />,
+            <SampleAliquotsPageImpl {...getDefaultProps()} />,
             { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT },
             DEFAULT_CONTEXT
         );
@@ -228,7 +230,7 @@ describe('SampleAliquotsPage', () => {
 
     test('title', async () => {
         const wrapper = mountWithAppServerContext(
-            <SampleAliquotsPage {...getDefaultProps()} title="Test title" />,
+            <SampleAliquotsPageImpl {...getDefaultProps()} title="Test title" />,
             { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT },
             DEFAULT_CONTEXT
         );

@@ -38,7 +38,7 @@ interface Props {
 }
 
 export const SampleAliquotsGridPanelImpl: FC<Props & InjectedQueryModels> = memo(props => {
-    const { actions, parentSampleName, queryModels, queryModelId, user, metricFeatureArea, getIsDirty, setIsDirty } = props;
+    const { actions, parentSampleName, queryModels, queryModelId, user, metricFeatureArea, getIsDirty, setIsDirty, lineageUpdateAllowed } = props;
     const [showPrintDialog, setShowPrintDialog] = useState<boolean>(false);
     const { createNotification } = useNotificationsContext();
     const { canPrintLabels, printServiceUrl } = useLabelPrintingContext();
@@ -68,6 +68,13 @@ export const SampleAliquotsGridPanelImpl: FC<Props & InjectedQueryModels> = memo
 
     const containerFilter = useMemo(() => getContainerFilterForLookups(), []);
 
+    const excludedMenuKeys = useMemo(() => {
+        const exclude = [SamplesEditButtonSections.IMPORT, SamplesEditButtonSections.EDIT_PARENT];
+        if (!lineageUpdateAllowed)
+            exclude.push(SamplesEditButtonSections.DELETE);
+        return exclude;
+    }, [lineageUpdateAllowed]);
+
     return (
         <>
             <SamplesTabbedGridPanel
@@ -79,7 +86,7 @@ export const SampleAliquotsGridPanelImpl: FC<Props & InjectedQueryModels> = memo
                 gridButtonProps={{
                     metricFeatureArea,
                     subMenuWidth: SUB_MENU_WIDTH,
-                    excludedMenuKeys: [SamplesEditButtonSections.IMPORT, SamplesEditButtonSections.EDIT_PARENT],
+                    excludedMenuKeys,
                     excludeAddButton: true,
                     parentEntityDataTypes: [], // aliquots cannot change parents
                 }}

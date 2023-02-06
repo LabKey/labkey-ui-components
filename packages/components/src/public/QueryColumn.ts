@@ -87,6 +87,7 @@ export class QueryColumn extends Record({
     filterable: true,
     format: undefined,
     // friendlyType: undefined,
+    hasSortKey: false,
     hidden: undefined,
     inputType: undefined,
     // isAutoIncrement: undefined, // DUPLICATE
@@ -163,6 +164,7 @@ export class QueryColumn extends Record({
     declare filterable: boolean;
     declare format: string;
     // declare friendlyType: string;
+    declare hasSortKey: boolean;
     declare hidden: boolean;
     declare inputType: string;
     // declare isAutoIncrement: boolean; // DUPLICATE

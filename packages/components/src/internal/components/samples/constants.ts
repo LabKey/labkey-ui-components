@@ -212,24 +212,23 @@ export const SAMPLE_DATA_EXPORT_CONFIG = {
 export const SAMPLES_WITH_TYPES_FILTER = Filter.create('SampleSet', 'Material', Filter.Types.NEQ);
 export const NON_MEDIA_SAMPLE_TYPES_FILTER = Filter.create('Category', 'media', Filter.Types.NEQ_OR_NULL);
 
-// TODO: Add note to help keep hardcodes in sync
-export const SAMPLE_DOMAIN_BASE_SYSTEM_FIELDS = [
+export const SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS = [
     {
-        'System Field': 'Name',
+        Name: 'Name',
         Label: 'Sample ID',
         'Data Type': 'Text',
         Required: false,
         Description: 'Unique ID generated from the Naming Pattern or Aliquot Naming Pattern.',
     },
     {
-        'System Field': 'Description',
+        Name: 'Description',
         Label: 'Description',
         'Data Type': 'Text',
         Required: false,
         Description: 'Contains a Description for this sample',
     },
     {
-        'System Field': 'SampleState',
+        Name: 'SampleState',
         Label: 'Status',
         'Data Type': 'Integer',
         Required: false,
@@ -238,35 +237,35 @@ export const SAMPLE_DOMAIN_BASE_SYSTEM_FIELDS = [
 ];
 
 export const SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS = [
-    { 'System Field': 'Units', Label: 'Units', 'Data Type': 'Text', Required: false, Description: '' },
+    { Name: 'Units', Label: 'Units', 'Data Type': 'Text', Required: false, Description: '' },
     {
-        'System Field': 'StoredAmount',
+        Name: 'StoredAmount',
         Label: 'Stored Amount',
         'Data Type': 'Decimal (floating point)',
         Required: false,
         Description: '',
     },
     {
-        'System Field': 'AliquotCount',
+        Name: 'AliquotCount',
         Label: 'Aliquots Created Count',
         'Data Type': 'Integer',
         Required: false,
         Description: '',
     },
     {
-        'System Field': 'FreezeThawCount',
+        Name: 'FreezeThawCount',
         Label: 'Freeze/Thaw Count',
         'Data Type': 'Integer',
         Required: false,
         Description: '',
     },
     {
-        'System Field': 'StorageLocation',
+        Name: 'StorageLocation',
         Label: 'Storage Location',
         'Data Type': 'Text',
         Required: false,
         Description: '',
     },
-    { 'System Field': 'StorageRow', Label: 'Storage Row', 'Data Type': 'Text', Required: false, Description: '' },
-    { 'System Field': 'StorageCol', Label: 'Storage Col', 'Data Type': 'Text', Required: false, Description: '' },
+    { Name: 'StorageRow', Label: 'Storage Row', 'Data Type': 'Text', Required: false, Description: '' },
+    { Name: 'StorageCol', Label: 'Storage Col', 'Data Type': 'Text', Required: false, Description: '' },
 ];

@@ -47,8 +47,6 @@ import { InferDomainResponse } from '../../../public/InferDomainResponse';
 
 import { FileAttachmentForm } from '../../../public/files/FileAttachmentForm';
 
-import { SystemField } from '../samples/models';
-
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     EXPAND_TRANSITION,
@@ -92,6 +90,7 @@ import {
     IDomainField,
     IDomainFormDisplayOptions,
     IFieldChange,
+    SystemField,
 } from './models';
 import { PropDescType } from './PropDescType';
 import { CollapsiblePanelHeader } from './CollapsiblePanelHeader';

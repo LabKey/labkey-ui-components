@@ -215,12 +215,3 @@ export interface SampleGridButtonProps {
     subMenuWidth?: number;
     toggleEditWithGridUpdate?: () => void;
 }
-
-// TODO: Temp type until question about hardcoding resolved
-export interface SystemField {
-    'Data Type': string;
-    Description: string;
-    Label: string;
-    Required: boolean;
-    'System Field': string;
-}

@@ -3,7 +3,8 @@ import React, { FC, memo, useCallback, useState } from 'react';
 import classNames from 'classnames';
 
 import { Grid } from '../base/Grid';
-import { SystemField } from '../samples/models';
+
+import { SystemField } from './models';
 
 interface Props {
     systemFields: SystemField[];

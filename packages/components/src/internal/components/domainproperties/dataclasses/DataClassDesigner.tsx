@@ -354,6 +354,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                     successBsStyle={successBsStyle}
                     testMode={testMode}
                     domainFormDisplayOptions={domainFormDisplayOptions}
+                    systemFields={model.options.systemFields}
                 />
                 <NameExpressionValidationModal
                     onHide={this.onNameExpressionWarningCancel}

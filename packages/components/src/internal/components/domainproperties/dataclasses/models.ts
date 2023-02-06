@@ -16,7 +16,9 @@
 import { Draft, immerable, produce } from 'immer';
 import { Map, fromJS } from 'immutable';
 
-import { DomainDesign, IDomainField } from '../models';
+import {DomainDesign, IDomainField, SystemField} from '../models';
+
+import { DATACLASS_DOMAIN_SYSTEM_FIELDS } from './constants';
 
 interface DataClassOptionsConfig {
     category: string;
@@ -25,6 +27,7 @@ interface DataClassOptionsConfig {
     nameExpression: string;
     rowId: number;
     sampleSet: number;
+    systemFields?: SystemField[];
 }
 
 export interface DataClassModelConfig extends DataClassOptionsConfig {
@@ -43,6 +46,7 @@ export class DataClassModel implements DataClassModelConfig {
     readonly nameExpression: string;
     readonly rowId: number;
     readonly sampleSet: number;
+    readonly systemFields: SystemField[];
     readonly isBuiltIn?: boolean;
 
     constructor(values?: Partial<DataClassModelConfig>) {
@@ -55,19 +59,17 @@ export class DataClassModel implements DataClassModelConfig {
             domain = DomainDesign.create(raw.domainDesign);
         }
 
-        if (raw.options) {
-            const model = new DataClassModel({ ...raw.options, domain });
-            return produce(model, (draft: Draft<DataClassModel>) => {
-                if (model.category === null) {
-                    draft.category = undefined;
-                }
-                if (model.sampleSet === null) {
-                    draft.sampleSet = undefined;
-                }
-            });
-        }
+        const model = new DataClassModel({ ...(raw.options ? raw.options : raw), domain });
 
-        return new DataClassModel({ ...raw, domain });
+        return produce(model, (draft: Draft<DataClassModel>) => {
+            if (raw.options && model.category === null) {
+                draft.category = undefined;
+            }
+            if (raw.options && model.sampleSet === null) {
+                draft.sampleSet = undefined;
+            }
+            draft.systemFields = DATACLASS_DOMAIN_SYSTEM_FIELDS;
+        });
     }
 
     get containerPath(): string {
@@ -111,6 +113,7 @@ export class DataClassModel implements DataClassModelConfig {
             nameExpression: this.nameExpression,
             category: this.category,
             sampleSet: this.sampleSet,
+            systemFields: this.systemFields,
         };
     }
 

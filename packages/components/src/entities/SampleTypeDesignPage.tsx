@@ -7,7 +7,7 @@ import { WithRouterProps } from 'react-router';
 import { fromJS, Map } from 'immutable';
 import { Domain } from '@labkey/api';
 
-import { DomainDesign, DomainDetails } from '../internal/components/domainproperties/models';
+import { DomainDesign, DomainDetails, SystemField } from '../internal/components/domainproperties/models';
 import { useRouteLeave } from '../internal/util/RouteLeave';
 import { useServerContext } from '../internal/components/base/ServerContext';
 import { useNotificationsContext } from '../internal/components/notifications/NotificationsContext';
@@ -31,11 +31,9 @@ import { CommonPageProps } from '../internal/models';
 import { isAppHomeFolder, isFreezerManagementEnabled } from '../internal/app/utils';
 
 import {
-    SAMPLE_DOMAIN_BASE_SYSTEM_FIELDS,
+    SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS,
     SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS,
 } from '../internal/components/samples/constants';
-
-import { SystemField } from '../internal/components/samples/models';
 
 import { SampleTypeBasePage } from './SampleTypeBasePage';
 import { useSampleTypeAppContext } from './useSampleTypeAppContext';
@@ -112,8 +110,8 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
 
     const freezerManagementEnabled = isFreezerManagementEnabled(moduleContext);
     const systemFields = freezerManagementEnabled
-        ? SAMPLE_DOMAIN_BASE_SYSTEM_FIELDS.concat(SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS)
-        : SAMPLE_DOMAIN_BASE_SYSTEM_FIELDS;
+        ? SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS.concat(SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS)
+        : SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS;
 
     const init = async () => {
         if (queryName) {

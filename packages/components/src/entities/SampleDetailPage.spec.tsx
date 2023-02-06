@@ -19,7 +19,7 @@ import { LoadingState } from '../public/LoadingState';
 import { LoadingPage } from '../internal/components/base/LoadingPage';
 import { getTestAPIWrapper } from '../internal/APIWrapper';
 import { getSecurityTestAPIWrapper } from '../internal/components/security/APIWrapper';
-import {TEST_FOLDER_CONTAINER, TEST_PROJECT, TEST_PROJECT_CONTAINER} from '../test/data/constants';
+import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../test/data/constants';
 
 import { Notifications } from '../internal/components/notifications/Notifications';
 
@@ -31,10 +31,12 @@ import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/consta
 
 import { SampleTypeAppContext } from '../internal/AppContext';
 
+import { User } from '../internal/components/base/models/User';
+
 import { SampleDetailPage, SampleDetailPageBody, SampleDetailPageBodyProps } from './SampleDetailPage';
 import { SampleHeader } from './SampleHeader';
 import { SampleOverviewPanel } from './SampleOverviewPanel';
-import { SampleAliquotsPage } from './SampleAliquotsPage';
+import { SampleAliquotsPage, SampleAliquotsPageImpl } from './SampleAliquotsPage';
 import { SampleAliquotsGridPanel } from './SampleAliquotsGridPanel';
 import { SampleAssaysPage } from './SampleAssaysPage';
 import { SampleAssayDetail } from './SampleAssayDetail';
@@ -94,6 +96,7 @@ const SAMPLE_TYPE_APP_CONTEXT = {
     SampleStorageMenuComponent: null,
     assayProviderType: GENERAL_ASSAY_PROVIDER_NAME,
     lineagePagePermissions: [PermissionTypes.DesignDataClass],
+    getSamplesEditableGridProps: (user: User) => {},
 } as SampleTypeAppContext;
 const API_APP_CONTEXT = getTestAPIWrapper(jest.fn, {
     security: getSecurityTestAPIWrapper(jest.fn, {
@@ -161,9 +164,10 @@ describe('SampleDetailPage', () => {
     });
 
     test('NotFound', async () => {
-        const queryModel = makeTestQueryModel(new SchemaQuery('schema', 'query'), new QueryInfo(), {}, [], 0).mutate(
-            { queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADED }
-        );
+        const queryModel = makeTestQueryModel(new SchemaQuery('schema', 'query'), new QueryInfo(), {}, [], 0).mutate({
+            queryInfoLoadingState: LoadingState.LOADED,
+            rowsLoadingState: LoadingState.LOADED,
+        });
         const wrapper = mountWithAppServerContext(
             <SampleDetailPageBody
                 {...getDefaultProps()}
@@ -211,7 +215,7 @@ describe('SampleDetailPage', () => {
 describe('SampleAliquotsPage', () => {
     test('default props', async () => {
         const wrapper = mountWithAppServerContext(
-            <SampleAliquotsPage {...getDefaultProps()} />,
+            <SampleAliquotsPageImpl {...getDefaultProps()} />,
             { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT },
             DEFAULT_CONTEXT
         );
@@ -228,7 +232,7 @@ describe('SampleAliquotsPage', () => {
 
     test('title', async () => {
         const wrapper = mountWithAppServerContext(
-            <SampleAliquotsPage {...getDefaultProps()} title="Test title" />,
+            <SampleAliquotsPageImpl {...getDefaultProps()} title="Test title" />,
             { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT },
             DEFAULT_CONTEXT
         );

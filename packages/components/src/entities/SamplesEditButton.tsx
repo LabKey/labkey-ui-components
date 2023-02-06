@@ -117,6 +117,9 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
     const showEdit =
         shouldIncludeMenuItem(SamplesEditButtonSections.EDIT, excludedMenuKeys) &&
         hasAnyPermissions(user, [PermissionTypes.Update, PermissionTypes.EditStorageData]);
+    const showEditParent =
+        shouldIncludeMenuItem(SamplesEditButtonSections.EDIT_PARENT, excludedMenuKeys) &&
+        hasAnyPermissions(user, [PermissionTypes.Update]);
     const showDelete =
         shouldIncludeMenuItem(SamplesEditButtonSections.DELETE, excludedMenuKeys) &&
         hasAnyPermissions(user, [PermissionTypes.Delete]);
@@ -159,27 +162,31 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
                             />
                         )}
                         {model?.showImportDataButton && <MenuItem href={updateSampleHref}>Update from File</MenuItem>}
-                        {user.canUpdate && parentEntityDataTypes?.length > 0 && <MenuItem divider />}
-                        {!combineParentTypes &&
-                            user.canUpdate &&
-                            parentEntityDataTypes.map(parentEntityDataType => (
-                                <EntityLineageEditMenuItem
-                                    key={parentEntityDataType.nounSingular}
-                                    childEntityDataType={SampleTypeDataType}
-                                    parentEntityDataTypes={[parentEntityDataType]}
-                                    queryModel={model}
-                                    onSuccess={afterSampleActionComplete}
-                                    handleClick={handleMenuClick}
-                                />
-                            ))}
-                        {combineParentTypes && user.canUpdate && (
-                            <EntityLineageEditMenuItem
-                                childEntityDataType={SampleTypeDataType}
-                                parentEntityDataTypes={parentEntityDataTypes}
-                                queryModel={model}
-                                onSuccess={afterSampleActionComplete}
-                                handleClick={handleMenuClick}
-                            />
+                        {showEditParent && (
+                            <>
+                                {user.canUpdate && parentEntityDataTypes?.length > 0 && <MenuItem divider />}
+                                {!combineParentTypes &&
+                                    user.canUpdate &&
+                                    parentEntityDataTypes.map(parentEntityDataType => (
+                                        <EntityLineageEditMenuItem
+                                            key={parentEntityDataType.nounSingular}
+                                            childEntityDataType={SampleTypeDataType}
+                                            parentEntityDataTypes={[parentEntityDataType]}
+                                            queryModel={model}
+                                            onSuccess={afterSampleActionComplete}
+                                            handleClick={handleMenuClick}
+                                        />
+                                    ))}
+                                {combineParentTypes && user.canUpdate && (
+                                    <EntityLineageEditMenuItem
+                                        childEntityDataType={SampleTypeDataType}
+                                        parentEntityDataTypes={parentEntityDataTypes}
+                                        queryModel={model}
+                                        onSuccess={afterSampleActionComplete}
+                                        handleClick={handleMenuClick}
+                                    />
+                                )}
+                            </>
                         )}
                     </RequiresPermission>
                 )}

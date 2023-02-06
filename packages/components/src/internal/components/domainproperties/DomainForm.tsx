@@ -1363,7 +1363,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 : undefined;
         const hasFields = domain.fields.size > 0;
         const styleToolbar =
-            !hasFields && (this.shouldShowInferFromFile() || this.shouldShowImportExport()) && !systemFields;
+            !hasFields && !systemFields && (this.shouldShowInferFromFile() || this.shouldShowImportExport());
 
         return (
             <>

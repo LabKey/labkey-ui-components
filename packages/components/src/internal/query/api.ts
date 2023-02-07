@@ -964,12 +964,15 @@ export function getContainerFilter(containerPath?: string): Query.ContainerFilte
         return undefined;
     }
 
-    const isProject = isProjectContainer(containerPath);
-
     // When requesting data from a top-level folder context the ContainerFilter filters
     // "down" the folder hierarchy for data.
-    if (isProject) {
+    if (isProjectContainer(containerPath)) {
         return Query.ContainerFilter.currentAndSubfoldersPlusShared;
+    }
+
+    if (isAllProductFoldersFilteringEnabled()) {
+        // When requesting data from a sub-folder context the ContainerFilter filters to the current folder.
+        return undefined;
     }
 
     // When requesting data from a sub-folder context the ContainerFilter filters

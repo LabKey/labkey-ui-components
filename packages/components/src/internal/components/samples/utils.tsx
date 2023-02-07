@@ -168,6 +168,7 @@ export function getOperationNotPermittedMessage(
 export enum SamplesEditButtonSections {
     DELETE = 'delete',
     EDIT = 'edit',
+    EDIT_PARENT = 'editparent',
     FIND_DERIVATIVES = 'findderivatives',
     IMPORT = 'import',
     LINKTOSTUDY = 'linktostudy',

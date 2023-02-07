@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Add Default System Fields to Domain Designer for Sample Types and Data Classes
 
+### version 2.290.2
+*Released*: 6 February 2023
+* Issue 47035: Sample Aliquot grid should allow for edit
+  * Use SamplesTabbedGridPanel for SampleAliquotsGridPanel
+
 ### version 2.290.1
 *Released*: 3 February 2023
 - Move getReportInfos.api to reports controller since it does not rely on study module

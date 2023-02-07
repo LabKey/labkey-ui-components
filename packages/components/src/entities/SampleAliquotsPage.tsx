@@ -3,23 +3,28 @@ import React, { FC, memo } from 'react';
 import { getSampleStatusType, isSampleOperationPermitted } from '../internal/components/samples/utils';
 import { SampleOperation } from '../internal/components/samples/constants';
 
+import { InjectedRouteLeaveProps, withRouteLeave } from '../internal/util/RouteLeave';
+
 import { onSampleChange } from './actions';
 import { SampleAliquotsGridPanel } from './SampleAliquotsGridPanel';
 import { SampleDetailContextConsumer, SampleDetailPage, SampleDetailPageProps } from './SampleDetailPage';
 import { useSampleTypeAppContext } from './useSampleTypeAppContext';
 
-interface Props extends SampleDetailPageProps {
+interface OwnProps {
     omittedColumns?: string[];
 }
 
-export const SampleAliquotsPage: FC<Props> = memo(props => {
-    const { omittedColumns, ...sampleDetailPageProps } = props;
+export type Props = OwnProps & SampleDetailPageProps & InjectedRouteLeaveProps;
+
+// export for jest
+export const SampleAliquotsPageImpl: FC<Props> = memo(props => {
+    const { omittedColumns, setIsDirty, getIsDirty, ...sampleDetailPageProps } = props;
     const { assayProviderType } = useSampleTypeAppContext();
 
     return (
         <SampleDetailPage title="Aliquots" {...sampleDetailPageProps}>
             <SampleDetailContextConsumer>
-                {({ sampleId, sampleModel, rootLsid, sampleLsid, user }) => {
+                {({ sampleId, sampleModel, rootLsid, sampleLsid, user, sampleName }) => {
                     return (
                         <SampleAliquotsGridPanel
                             lineageUpdateAllowed={isSampleOperationPermitted(
@@ -28,12 +33,15 @@ export const SampleAliquotsPage: FC<Props> = memo(props => {
                             )}
                             sampleId={sampleId}
                             sampleLsid={sampleLsid}
+                            parentSampleName={sampleName}
                             rootLsid={rootLsid}
                             schemaQuery={sampleModel.schemaQuery}
                             user={user}
                             onSampleChangeInvalidate={onSampleChange}
                             assayProviderType={assayProviderType}
                             omittedColumns={omittedColumns}
+                            setIsDirty={setIsDirty}
+                            getIsDirty={getIsDirty}
                         />
                     );
                 }}
@@ -41,3 +49,5 @@ export const SampleAliquotsPage: FC<Props> = memo(props => {
         </SampleDetailPage>
     );
 });
+
+export const SampleAliquotsPage = withRouteLeave(SampleAliquotsPageImpl);

@@ -10,10 +10,10 @@ import { SystemField } from './models';
 import { EXPAND_TRANSITION } from './constants';
 
 interface Props {
-    systemFields: SystemField[];
+    fields: SystemField[];
 }
 
-export const SystemFields: FC<Props> = memo(({ systemFields }) => {
+export const SystemFields: FC<Props> = memo(({ fields }) => {
     const [collapsed, setCollapsed] = useState<boolean>(false);
 
     const onToggle = useCallback(() => {
@@ -35,7 +35,7 @@ export const SystemFields: FC<Props> = memo(({ systemFields }) => {
 
             <Collapse in={!collapsed} timeout={EXPAND_TRANSITION}>
                 <div className="domain-system-fields__grid">
-                    <Grid data={systemFields} condensed={true} />
+                    <Grid data={fields} condensed={true} />
                 </div>
             </Collapse>
 

@@ -217,8 +217,9 @@ export const SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS = [
         Name: 'Name',
         Label: 'Sample ID',
         'Data Type': 'Text',
-        Required: false,
-        Description: 'Unique ID generated from the Naming Pattern or Aliquot Naming Pattern.',
+        Required: true,
+        // For user clarity, below text differs intentionally from schema browser
+        Description: 'Unique ID generated from the Naming Pattern or Aliquot Naming Pattern',
     },
     {
         Name: 'Description',

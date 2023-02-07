@@ -1308,7 +1308,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         return (
             <>
-                {systemFields && <SystemFields systemFields={systemFields} />}
+                {systemFields && <SystemFields fields={systemFields} />}
 
                 {(hasFields || !(this.shouldShowInferFromFile() || this.shouldShowImportExport())) &&
                     this.renderToolbar()}

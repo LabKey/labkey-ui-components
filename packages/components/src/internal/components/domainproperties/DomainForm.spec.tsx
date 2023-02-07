@@ -124,6 +124,9 @@ describe('DomainForm', () => {
         });
         expect(helpLink.length).toEqual(1);
 
+        // No Default System Fields
+        expect(form.find(SystemFields)).toHaveLength(0);
+
         expect(form).toMatchSnapshot();
         form.unmount();
     });

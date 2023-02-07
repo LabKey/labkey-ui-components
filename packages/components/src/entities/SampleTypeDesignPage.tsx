@@ -28,12 +28,9 @@ import { SampleTypeDesigner } from '../internal/components/domainproperties/samp
 import { useAppContext } from '../internal/AppContext';
 import { CommonPageProps } from '../internal/models';
 
-import { isAppHomeFolder, isFreezerManagementEnabled } from '../internal/app/utils';
+import { isAppHomeFolder } from '../internal/app/utils';
 
-import {
-    SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS,
-    SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS,
-} from '../internal/components/samples/constants';
+import { getSampleDomainDefaultSystemFields } from '../internal/components/samples/utils';
 
 import { SampleTypeBasePage } from './SampleTypeBasePage';
 import { useSampleTypeAppContext } from './useSampleTypeAppContext';
@@ -108,10 +105,7 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
 
     const schemaQuery = useMemo(() => new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, queryName), [queryName]);
 
-    const freezerManagementEnabled = isFreezerManagementEnabled(moduleContext);
-    const systemFields = freezerManagementEnabled
-        ? SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS.concat(SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS)
-        : SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS;
+    const systemFields = useMemo(() => getSampleDomainDefaultSystemFields(moduleContext), [moduleContext]);
 
     const init = async () => {
         if (queryName) {

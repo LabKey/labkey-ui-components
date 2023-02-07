@@ -9,12 +9,12 @@ import { SystemFields } from './SystemFields';
 
 describe('SystemFields', () => {
     test('Default', () => {
-        const wrapped = mount(<SystemFields systemFields={SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS} />);
+        const wrapped = mount(<SystemFields fields={SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS} />);
         expect(wrapped.find('tr')).toHaveLength(4);
     });
 
     test('Toggle', () => {
-        const wrapped = mount(<SystemFields systemFields={SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS} />);
+        const wrapped = mount(<SystemFields fields={SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS} />);
 
         let collapsed = wrapped.find(Collapse).props().in;
         expect(collapsed).toBe(true);

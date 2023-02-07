@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.291.0
+*Released*: ? February 2023
+* UserLinkList: Fix issue with keys
+* AttachmentCard: Add optional onCopyLink prop
+
 ### version 2.290.3
 *Released*: 8 February 2023
 * Merge release23.2-SNAPSHOT to develop:

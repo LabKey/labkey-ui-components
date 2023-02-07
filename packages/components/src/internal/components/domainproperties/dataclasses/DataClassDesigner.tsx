@@ -134,12 +134,15 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
             name, // This will be the Data Class Name
         }) as DomainDesign;
 
+        // Remove display-only option field
+        const { systemFields, ...options } = model.options;
+
         if (validateNameExpressions && !hasConfirmedNameExpression) {
             try {
                 const response = await api.domain.validateDomainNameExpressions(
                     domainDesign,
                     Domain.KINDS.DATA_CLASS,
-                    model.options,
+                    options,
                     true
                 );
 
@@ -164,7 +167,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         }
 
         try {
-            const savedDomain = await saveDomain(domainDesign, Domain.KINDS.DATA_CLASS, model.options, model.name);
+            const savedDomain = await saveDomain(domainDesign, Domain.KINDS.DATA_CLASS, options, model.name);
 
             setSubmitting(false, () => {
                 this.saveModel({ domain: savedDomain, exception: undefined }, () => {

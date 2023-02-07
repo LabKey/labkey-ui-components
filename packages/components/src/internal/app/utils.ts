@@ -21,7 +21,7 @@ import { Container } from '../components/base/models/Container';
 import { AppProperties } from './models';
 import {
     ASSAYS_KEY,
-    BIOLOGICS_APP_PROPERTIES,
+    BIOLOGICS_APP_PROPERTIES, EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS,
     EXPERIMENTAL_REQUESTS_MENU,
     EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR,
     FREEZER_MANAGER_APP_PROPERTIES,
@@ -244,6 +244,10 @@ export function getPrimaryAppProperties(moduleContext?: ModuleContext): AppPrope
     } else {
         return undefined;
     }
+}
+
+export function isAllProductFoldersFilteringEnabled(moduleContext?: ModuleContext): boolean {
+    return resolveModuleContext(moduleContext)?.query?.[EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS] === true;
 }
 
 export function isAssayEnabled(moduleContext?: ModuleContext): boolean {

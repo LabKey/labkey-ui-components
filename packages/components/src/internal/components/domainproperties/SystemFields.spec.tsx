@@ -7,7 +7,7 @@ import { SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS } from '../samples/constants';
 
 import { SystemFields } from './SystemFields';
 
-describe('DataClassDesigner', () => {
+describe('SystemFields', () => {
     test('Default', () => {
         const wrapped = mount(<SystemFields systemFields={SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS} />);
         expect(wrapped.find('tr')).toHaveLength(4);

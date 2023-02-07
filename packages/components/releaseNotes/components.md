@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.288.1
+*Released*: 6 February 2023
+- Issue 46618: Retain result row ordering in `formatSavedResults` and `formatResults` when processing results of `QuerySelect` queries.
+- Add the `hasSortKey` property to the `QueryColumn` model. Now supported by `query-getQueryDetails.api`.
+
 ### version 2.288.0
 *Released*: 1 February 2023
 - Create components for `SamplesCreatedSuccessMessage` and `SamplesImportSuccessMessage`. Utilize `withRouter`.

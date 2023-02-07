@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map, Record } from 'immutable';
+import { fromJS, List, Map, OrderedMap, Record as ImmutableRecord } from 'immutable';
 import { Filter, Query, Utils } from '@labkey/api';
 
 import { QueryInfo } from '../../../public/QueryInfo';
@@ -36,45 +36,52 @@ import { QuerySelectOwnProps } from './QuerySelect';
 import { resolveDetailFieldValue } from './utils';
 
 function formatResults(model: QuerySelectModel, results: Map<string, any>, token?: string): SelectInputOption[] {
-    if (!model.queryInfo || !results) {
+    const { displayColumn, queryInfo, valueColumn } = model;
+
+    if (!queryInfo || !results) {
         return [];
     }
 
-    return results
-        .map(result => ({
-            label: (resolveDetailFieldValue(result.get(model.displayColumn)) ??
-                resolveDetailFieldValue(result.get(model.valueColumn))) as string,
-            value: result.getIn([model.valueColumn, 'value']),
-        }))
-        .sortBy(item => item.label, similaritySortFactory(token))
-        .toArray();
+    let options = results.map(result => ({
+        label: (resolveDetailFieldValue(result.get(displayColumn)) ??
+            resolveDetailFieldValue(result.get(valueColumn))) as string,
+        value: result.getIn([valueColumn, 'value']),
+    }));
+
+    // Issue 46618: If a sort key is applied, then skip sorting on the client to retain sort done on server.
+    if (!queryInfo.getColumn(displayColumn).hasSortKey) {
+        options = options.sortBy(item => item.label, similaritySortFactory(token));
+    }
+
+    return options.toArray();
 }
 
 /**
  * Given a model this method returns "options" that are consumable by a ReactSelect.
- * @param {QuerySelectModel} model for which results are formatted
- * @param {Map<string, Map<string, any>>} results can be optionally supplied to override model searchResults
- * @param {string} token an optional search token that will be used to sort the results
+ * @param model for which results are formatted
+ * @param result select rows result
+ * @param token an optional search token that will be used to sort the results
  */
-function formatSavedResults(
-    model: QuerySelectModel,
-    results?: Map<string, Map<string, any>>,
-    token?: string
-): SelectInputOption[] {
-    const { queryInfo, selectedItems, searchResults } = model;
+function formatSavedResults(model: QuerySelectModel, result: ISelectRowsResult, token?: string): SelectInputOption[] {
+    const { queryInfo, selectedItems } = model;
 
     if (!queryInfo) {
         return [];
     }
 
-    const filteredResults = (results !== undefined ? results : searchResults)
-        .filter((v, k) => !selectedItems.has(k))
-        .toMap();
+    const { key, orderedModels } = result;
+    const models = fromJS(result.models[key]);
+    const filteredResults = orderedModels[key]
+        .filter(k => !selectedItems.has(k))
+        .reduce((ordered, k) => ordered.set(k, models.get(k)), OrderedMap<string, any>());
 
     return formatResults(model, filteredResults, token);
 }
 
-function saveSearchResults(model: QuerySelectModel, searchResults: Map<string, Map<string, any>>): QuerySelectModel {
+function saveSearchResults(model: QuerySelectModel, result: ISelectRowsResult): QuerySelectModel {
+    const { key } = result;
+    const searchResults = fromJS(result.models[key]);
+
     return model.merge({
         allResults: model.allResults.merge(searchResults),
         searchResults,
@@ -313,7 +320,7 @@ export interface QuerySelectModelProps {
 }
 
 export class QuerySelectModel
-    extends Record({
+    extends ImmutableRecord({
         addExactFilter: true,
         allResults: Map<string, Map<string, any>>(),
         containerFilter: undefined,
@@ -354,8 +361,8 @@ export class QuerySelectModel
     declare selectedItems: Map<string, any>;
     declare valueColumn: string;
 
-    formatSavedResults(data?: Map<string, Map<string, any>>, token?: string): SelectInputOption[] {
-        return formatSavedResults(this, data, token);
+    formatSavedResults(result: ISelectRowsResult, token?: string): SelectInputOption[] {
+        return formatSavedResults(this, result, token);
     }
 
     getSelectedOptions(): SelectInputOption | SelectInputOption[] {
@@ -386,11 +393,11 @@ export class QuerySelectModel
         return queryColumns;
     }
 
-    saveSearchResults(data: Map<string, Map<string, any>>) {
-        return saveSearchResults(this, data);
+    saveSearchResults(result: ISelectRowsResult): QuerySelectModel {
+        return saveSearchResults(this, result);
     }
 
-    setSelection(value: any) {
+    setSelection(value: any): QuerySelectModel {
         return setSelection(this, value);
     }
 

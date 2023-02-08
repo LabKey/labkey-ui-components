@@ -1317,14 +1317,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
                 {hasFields ? (
                     summaryViewMode ? (
-                        <DomainPropertiesGrid
-                            domain={domain}
-                            search={search}
-                            selectAll={selectAll}
-                            actions={actions}
-                            appPropertiesOnly={appPropertiesOnly}
-                            hasOntologyModule={hasModule(ONTOLOGY_MODULE_NAME)}
-                        />
+                        <div className="domain-form__summary-mode">
+                            <DomainPropertiesGrid
+                                domain={domain}
+                                search={search}
+                                selectAll={selectAll}
+                                actions={actions}
+                                appPropertiesOnly={appPropertiesOnly}
+                                hasOntologyModule={hasModule(ONTOLOGY_MODULE_NAME)}
+                            />
+                        </div>
                     ) : (
                         this.renderDetailedFieldView()
                     )

@@ -14,32 +14,22 @@
  * limitations under the License.
  */
 import React, { ReactNode } from 'react';
-import { Textarea } from 'formsy-react-components';
+import { Textarea as OldTextarea } from 'formsy-react-components';
 
 import { FieldLabel } from '../FieldLabel';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
+import { Textarea, TextareaProps } from './FormsyReactComponents';
 
-interface TextAreaInputProps extends DisableableInputProps {
+interface TextAreaInputProps extends DisableableInputProps, Omit<TextareaProps, 'onChange'> {
     addLabelAsterisk?: boolean;
-    allowDisable?: boolean;
-    cols?: number;
-    elementWrapperClassName?: any[] | string;
-    initiallyDisabled?: boolean;
-    label?: any;
-    labelClassName?: any[] | string;
-    name?: string;
-    onChange?: any;
+    onChange?: (value: any) => void;
     queryColumn: QueryColumn;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
-    required?: boolean;
-    rowClassName?: any[] | string;
-    rows?: number;
     showLabel?: boolean;
     validatePristine?: boolean;
-    value?: any;
 }
 
 export class TextAreaInput extends DisableableInput<TextAreaInputProps, DisableableInputState> {
@@ -110,23 +100,42 @@ export class TextAreaInput extends DisableableInput<TextAreaInputProps, Disablea
         } = this.props;
 
         return (
-            <Textarea
-                changeDebounceInterval={0}
-                disabled={this.state.isDisabled}
-                onChange={this.onChange}
-                cols={cols}
-                elementWrapperClassName={elementWrapperClassName}
-                id={queryColumn.fieldKey}
-                label={this.renderLabel()}
-                labelClassName={showLabel ? labelClassName : 'hide-label'}
-                placeholder={`Enter ${queryColumn.caption.toLowerCase()}`}
-                name={name ?? queryColumn.fieldKey}
-                rowClassName={rowClassName}
-                rows={rows}
-                required={required ?? queryColumn.required}
-                validatePristine={validatePristine}
-                value={this.getInputValue()}
-            />
+            <>
+                <OldTextarea
+                    disabled={this.state.isDisabled}
+                    onChange={this.onChange}
+                    cols={cols}
+                    elementWrapperClassName={elementWrapperClassName}
+                    id={queryColumn.fieldKey}
+                    label={this.renderLabel()}
+                    labelClassName={showLabel ? labelClassName : 'hide-label'}
+                    placeholder={`Enter ${queryColumn.caption.toLowerCase()}`}
+                    name={name ?? queryColumn.fieldKey}
+                    rowClassName={rowClassName}
+                    rows={rows}
+                    required
+                    // required={required ?? queryColumn.required}
+                    validatePristine={validatePristine}
+                    value={this.getInputValue()}
+                />
+                <Textarea
+                    disabled={this.state.isDisabled}
+                    onChange={this.onChange}
+                    cols={cols}
+                    elementWrapperClassName={elementWrapperClassName}
+                    id={queryColumn.fieldKey}
+                    label={this.renderLabel()}
+                    labelClassName={showLabel ? labelClassName : 'hide-label'}
+                    placeholder={`Enter ${queryColumn.caption.toLowerCase()}`}
+                    name={name ?? queryColumn.fieldKey}
+                    rowClassName={rowClassName}
+                    rows={rows}
+                    required
+                    // required={required ?? queryColumn.required}
+                    validatePristine={validatePristine}
+                    value={this.getInputValue()}
+                />
+            </>
         );
     }
 }

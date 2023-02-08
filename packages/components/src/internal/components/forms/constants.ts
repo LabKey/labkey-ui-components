@@ -20,8 +20,12 @@ export const DELIMITER = ',';
 // Interface for components that support the withFormsy() component wrapper.
 export interface WithFormsyProps {
     getErrorMessage?: Function;
+    getErrorMessages?: Function;
     getValue?: Function;
+    isRequired?: () => boolean;
+    isValid?: Function;
     setValue?: Function;
+    showError?: () => boolean;
     showRequired?: Function;
     validations?: any;
 }

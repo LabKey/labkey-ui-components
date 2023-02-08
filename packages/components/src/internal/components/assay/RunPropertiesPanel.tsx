@@ -15,7 +15,7 @@
  */
 import React, { FC, memo, useMemo } from 'react';
 import Formsy from 'formsy-react';
-import { Input, Textarea } from 'formsy-react-components';
+import { Input } from 'formsy-react-components';
 import { ExtendedMap } from '../../../public/ExtendedMap';
 import { QueryColumn } from '../../../public/QueryColumn';
 
@@ -24,6 +24,7 @@ import { AssayTaskInput } from '../forms/input/AssayTaskInput';
 import { isWorkflowEnabled } from '../../app/utils';
 import { LabelOverlay } from '../forms/LabelOverlay';
 import { QueryFormInputs } from '../forms/QueryFormInputs';
+import { Textarea } from '../forms/input/FormsyReactComponents';
 
 import { getContainerFilterForLookups } from '../../query/api';
 
@@ -66,7 +67,6 @@ export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(({ model, 
                         value={model.runName}
                     />
                     <Textarea
-                        changeDebounceInterval={0}
                         cols={60}
                         id="comment"
                         label={COMMENT_LABEL}

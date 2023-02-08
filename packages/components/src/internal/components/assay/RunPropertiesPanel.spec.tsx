@@ -1,6 +1,6 @@
 import React from 'react';
 import { OrderedMap } from 'immutable';
-import { Input, Textarea } from 'formsy-react-components';
+import { Input } from 'formsy-react-components';
 
 import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
 
@@ -11,6 +11,7 @@ import { QueryFormInputs } from '../forms/QueryFormInputs';
 import { TextInput } from '../forms/input/TextInput';
 import { DatePickerInput } from '../forms/input/DatePickerInput';
 import { SelectInput } from '../forms/input/SelectInput';
+import { Textarea } from '../forms/input/FormsyReactComponents';
 
 import { mountWithServerContext } from '../../test/enzymeTestHelpers';
 

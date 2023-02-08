@@ -356,7 +356,7 @@ export function resolveDetailEditRenderer(
             return (
                 <TextAreaInput
                     cols={4}
-                    elementWrapperClassName={[{ 'col-sm-9': false }, 'col-sm-12']}
+                    elementWrapperClassName="col-sm-12"
                     queryColumn={col}
                     rows={4}
                     showLabel={showLabel}

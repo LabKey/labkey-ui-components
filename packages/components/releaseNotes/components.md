@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.290.3
+*Released*: 8 February 2023
+* Merge release23.2-SNAPSHOT to develop:
+  * includes changes from 2.288.1
+
 ### version 2.290.2
 *Released*: 6 February 2023
 * Issue 47035: Sample Aliquot grid should allow for edit
@@ -26,6 +31,11 @@ Components, models, actions, and utility functions for LabKey applications and p
   * use UserLink and UserLinkList in various components that render user displayName
   * update UserDetailsPanel so that permissions and group listing items are links to admin groups/permissions page
   * add dirty state check for user Profile page navigation
+
+### version 2.288.1
+*Released*: 6 February 2023
+- Issue 46618: Retain result row ordering in `formatSavedResults` and `formatResults` when processing results of `QuerySelect` queries.
+- Add the `hasSortKey` property to the `QueryColumn` model. Now supported by `query-getQueryDetails.api`.
 
 ### version 2.288.0
 *Released*: 1 February 2023

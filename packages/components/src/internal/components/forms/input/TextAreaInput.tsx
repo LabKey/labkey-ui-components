@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import React, { ReactNode } from 'react';
-import { Textarea as OldTextarea } from 'formsy-react-components';
 
 import { FieldLabel } from '../FieldLabel';
 
@@ -100,42 +99,22 @@ export class TextAreaInput extends DisableableInput<TextAreaInputProps, Disablea
         } = this.props;
 
         return (
-            <>
-                <OldTextarea
-                    disabled={this.state.isDisabled}
-                    onChange={this.onChange}
-                    cols={cols}
-                    elementWrapperClassName={elementWrapperClassName}
-                    id={queryColumn.fieldKey}
-                    label={this.renderLabel()}
-                    labelClassName={showLabel ? labelClassName : 'hide-label'}
-                    placeholder={`Enter ${queryColumn.caption.toLowerCase()}`}
-                    name={name ?? queryColumn.fieldKey}
-                    rowClassName={rowClassName}
-                    rows={rows}
-                    required
-                    // required={required ?? queryColumn.required}
-                    validatePristine={validatePristine}
-                    value={this.getInputValue()}
-                />
-                <Textarea
-                    disabled={this.state.isDisabled}
-                    onChange={this.onChange}
-                    cols={cols}
-                    elementWrapperClassName={elementWrapperClassName}
-                    id={queryColumn.fieldKey}
-                    label={this.renderLabel()}
-                    labelClassName={showLabel ? labelClassName : 'hide-label'}
-                    placeholder={`Enter ${queryColumn.caption.toLowerCase()}`}
-                    name={name ?? queryColumn.fieldKey}
-                    rowClassName={rowClassName}
-                    rows={rows}
-                    required
-                    // required={required ?? queryColumn.required}
-                    validatePristine={validatePristine}
-                    value={this.getInputValue()}
-                />
-            </>
+            <Textarea
+                disabled={this.state.isDisabled}
+                onChange={this.onChange}
+                cols={cols}
+                elementWrapperClassName={elementWrapperClassName}
+                id={queryColumn.fieldKey}
+                label={this.renderLabel()}
+                labelClassName={showLabel ? labelClassName : 'hide-label'}
+                placeholder={`Enter ${queryColumn.caption.toLowerCase()}`}
+                name={name ?? queryColumn.fieldKey}
+                rowClassName={rowClassName}
+                rows={rows}
+                required={required ?? queryColumn.required}
+                validatePristine={validatePristine}
+                value={this.getInputValue()}
+            />
         );
     }
 }

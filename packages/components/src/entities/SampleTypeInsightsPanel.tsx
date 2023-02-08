@@ -16,6 +16,7 @@ import { SCHEMAS } from '../internal/schemas';
 import { caseInsensitive } from '../internal/util/utils';
 
 import { InjectedQueryModels, withQueryModels } from '../public/QueryModel/withQueryModels';
+import { getContainerFilterForFolder } from '../internal/query/api';
 
 export const INSIGHTS_MODEL_ID = 'sample-type-insights';
 export const STATUS_COUNTS_MODEL_ID = 'sample-type-status-counts';
@@ -133,11 +134,13 @@ const SampleTypeInsightsPanelWithQueryModels = withQueryModels<OwnProps>(SampleT
 export const SampleTypeInsightsPanel: FC<OwnProps> = memo(props => {
     const queryConfigs = {
         [INSIGHTS_MODEL_ID]: {
+            containerFilter: getContainerFilterForFolder(),
             id: INSIGHTS_MODEL_ID,
             schemaQuery: SCHEMAS.SAMPLE_MANAGEMENT.SAMPLE_TYPE_INSIGHTS,
             baseFilters: [Filter.create('SampleSet/Name', props.sampleSet)],
         },
         [STATUS_COUNTS_MODEL_ID]: {
+            containerFilter: getContainerFilterForFolder(),
             id: STATUS_COUNTS_MODEL_ID,
             schemaQuery: SCHEMAS.SAMPLE_MANAGEMENT.SAMPLE_STATUS_COUNTS,
             baseFilters: [Filter.create('Name', props.sampleSet)],

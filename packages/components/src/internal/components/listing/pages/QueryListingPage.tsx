@@ -5,13 +5,14 @@
 import React, { FC, memo, useMemo } from 'react';
 import { Link, WithRouterProps } from 'react-router';
 
-import { InjectedQueryModels, withQueryModels } from '../../../../public/QueryModel/withQueryModels';
+import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../../public/QueryModel/withQueryModels';
 import { Page } from '../../base/Page';
 import { Breadcrumb } from '../../navigation/Breadcrumb';
 import { AppURL } from '../../../url/AppURL';
 import { PageHeader } from '../../base/PageHeader';
 import { GridPanel } from '../../../../public/QueryModel/GridPanel';
 import { SchemaQuery } from '../../../../public/SchemaQuery';
+import { getContainerFilterForFolder } from '../../../query/api';
 
 interface BodyProps {
     id: string;
@@ -44,9 +45,14 @@ const QueryListingBody = withQueryModels<BodyProps>(QueryListingBodyImpl);
 export const QueryListingPage: FC<WithRouterProps> = ({ params }) => {
     const { schema, query } = params;
     const modelId = `q.${schema}.${query}`;
-    const queryConfigs = useMemo(
+    const queryConfigs: QueryConfigMap = useMemo(
         () => ({
-            [modelId]: { bindURL: true, schemaQuery: new SchemaQuery(schema, query), includeTotalCount: true },
+            [modelId]: {
+                bindURL: true,
+                containerFilter: getContainerFilterForFolder(),
+                includeTotalCount: true,
+                schemaQuery: new SchemaQuery(schema, query),
+            },
         }),
         [modelId]
     );

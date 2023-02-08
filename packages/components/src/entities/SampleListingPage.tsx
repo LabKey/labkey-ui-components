@@ -22,7 +22,7 @@ import { createGridModelId, CommonPageProps } from '../internal/models';
 import { InjectedRouteLeaveProps, withRouteLeave } from '../internal/util/RouteLeave';
 import { useLabelPrintingContext } from '../internal/components/labels/LabelPrintingContextProvider';
 import { useNotificationsContext } from '../internal/components/notifications/NotificationsContext';
-import { getContainerFilterForLookups } from '../internal/query/api';
+import {getContainerFilterForFolder, getContainerFilterForLookups} from '../internal/query/api';
 import { useContainerUser } from '../internal/components/container/actions';
 import { getUserSharedContainerPermissions } from '../internal/components/user/actions';
 import { userCanEditStorageData } from '../internal/app/utils';
@@ -465,6 +465,7 @@ export const SampleListingPage: FC<CommonPageProps & WithRouterProps> = props =>
 
     const queryConfigs = {
         [sampleListModelId]: {
+            containerFilter: getContainerFilterForFolder(),
             id: sampleListModelId,
             isPaged: true,
             requiredColumns: [...samplesGridRequiredColumns, ...SAMPLE_STATUS_REQUIRED_COLUMNS],

@@ -958,7 +958,7 @@ export function processRequest(response: any, request: any, reject: (reason?: an
  * provided by `@labkey/components`.
  * @private
  */
-export function getContainerFilter(containerPath?: string): Query.ContainerFilter {
+export function getContainerFilter(containerPath?: string, forFolder?: boolean): Query.ContainerFilter {
     // Check to see if product projects support is enabled.
     if (!isProductProjectsEnabled()) {
         return undefined;
@@ -970,14 +970,26 @@ export function getContainerFilter(containerPath?: string): Query.ContainerFilte
         return Query.ContainerFilter.currentAndSubfoldersPlusShared;
     }
 
+    // When all folder filtering is enabled resolve data across all folders.
     if (isAllProductFoldersFilteringEnabled()) {
-        // When requesting data from a sub-folder context the ContainerFilter filters to the current folder.
-        return undefined;
+        if (forFolder) {
+            return Query.ContainerFilter.current;
+        }
+        return Query.ContainerFilter.allInProjectPlusShared;
     }
 
     // When requesting data from a sub-folder context the ContainerFilter filters
     // "up" the folder hierarchy for data.
     return Query.ContainerFilter.currentPlusProjectAndShared;
+}
+
+/**
+ * Provides the configured ContainerFilter to utilize when requesting data that is being read
+ * within a folder context.
+ * @private
+ */
+export function getContainerFilterForFolder(containerPath?: string): Query.ContainerFilter {
+    return getContainerFilter(containerPath, true);
 }
 
 /**

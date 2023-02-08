@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { FC, PureComponent, ReactNode } from 'react';
-import { fromJS, List, Map } from 'immutable';
+import { List, Map } from 'immutable';
 import { Filter, Query, Utils } from '@labkey/api';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -230,12 +230,10 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
                     if (request !== this.lastRequest) return;
                     delete this.lastRequest;
 
-                    const models = fromJS(data.models[data.key]);
-
-                    resolve(model.formatSavedResults(models, input));
+                    resolve(model.formatSavedResults(data, input));
 
                     this.setState(() => ({
-                        model: model.saveSearchResults(models),
+                        model: model.saveSearchResults(data),
                     }));
                 } catch (error) {
                     const errorMsg = resolveErrorMessage(error) ?? 'Failed to retrieve search results.';

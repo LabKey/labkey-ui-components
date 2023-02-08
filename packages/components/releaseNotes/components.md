@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Update `SamplesEditableGrid` for move of amount and units from inventory.item to exp.materials
+
 ### version 2.291.0
 *Released*: 8 February 2023
 * UserLinkList: Fix issue with keys

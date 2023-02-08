@@ -51,7 +51,7 @@ type Props = SamplesEditableGridProps &
     SamplesSelectionResultProps &
     NotificationsContextProps;
 
-const STORAGE_UPDATE_FIELDS = ['StoredAmount', 'Units', 'FreezeThawCount'];
+const STORAGE_UPDATE_FIELDS = ['FreezeThawCount'];
 const SAMPLES_EDIT_GRID_ID = 'update-samples-grid';
 const SAMPLES_STORAGE_EDIT_GRID_ID = 'update-samples-storage-grid';
 const SAMPLES_LINEAGE_EDIT_GRID_ID = 'update-samples-lineage-grid';
@@ -207,6 +207,16 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
             } else {
                 sampleRows = data.updatedRows;
                 sampleSchemaQuery = data.schemaQuery;
+                sampleRows.forEach(row => {
+                   const amount = caseInsensitive(row, 'StoredAmount');
+                   if (amount !== undefined) {
+                       const units = caseInsensitive(row, 'Units');
+                       if (units == undefined) { // have an amount but have not updated the units; use the display units
+                           const rowId = caseInsensitive(row, 'RowId');
+                           row.Units = data.originalRows[rowId].Units[0].displayValue;
+                       }
+                   }
+                });
                 if (sampleItems) {
                     sampleRows.forEach(row => {
                         if (consumedStatusIds?.indexOf(caseInsensitive(row, 'sampleState')) > -1) {
@@ -602,22 +612,8 @@ class StorageEditableGridLoaderFromSelection implements IEditableGridLoader {
             return getSelectedData(schemaName, queryName, selectedIds, columnString, sorts, queryParameters, viewName)
                 .then(response => {
                     const { data, dataIds, totalRows } = response;
-                    let convertedData = OrderedMap<string, any>();
-                    data.forEach((d, key) => {
-                        let updatedRow = d;
-                        if (d) {
-                            const storedAmount = d.getIn(['StoredAmount', 'value']);
-                            if (storedAmount != null) {
-                                updatedRow = updatedRow.set(
-                                    'StoredAmount',
-                                    d.get('StoredAmount').set('value', storedAmount)
-                                );
-                            }
-                            convertedData = convertedData.set(key, updatedRow);
-                        }
-                    });
                     resolve({
-                        data: EditorModel.convertQueryDataToEditorData(convertedData),
+                        data: EditorModel.convertQueryDataToEditorData(data),
                         dataIds,
                         totalRows,
                     });

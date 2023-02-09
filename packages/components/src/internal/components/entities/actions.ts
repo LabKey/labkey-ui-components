@@ -8,7 +8,7 @@ import { getFilterForSampleOperation, isSamplesSchema } from '../samples/utils';
 import { importData, InsertOptions, selectRowsDeprecated } from '../../query/api';
 import { caseInsensitive } from '../../util/utils';
 import { SampleCreationType } from '../samples/models';
-import { getSelected, getSelectedData, getSnapshotSelections } from '../../actions';
+import { getSelected, getSelectedData } from '../../actions';
 import { SHARED_CONTAINER_PATH } from '../../constants';
 import { naturalSort } from '../../../public/sort';
 import { QueryInfo } from '../../../public/QueryInfo';

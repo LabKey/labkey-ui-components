@@ -408,7 +408,8 @@ export function clearSelected(
     schemaQuery?: SchemaQuery,
     filterArray?: Filter.IFilter[],
     containerPath?: string,
-    queryParameters?: Record<string, any>
+    queryParameters?: Record<string, any>,
+    containerFilter?: Query.ContainerFilter
 ): Promise<ISelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
@@ -416,7 +417,7 @@ export function clearSelected(
                 container: containerPath,
             }),
             method: 'POST',
-            jsonData: getFilteredQueryParams(key, schemaQuery, filterArray, queryParameters, containerPath),
+            jsonData: getFilteredQueryParams(key, schemaQuery, filterArray, queryParameters, containerPath, containerFilter),
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),

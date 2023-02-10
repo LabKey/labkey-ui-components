@@ -1955,3 +1955,11 @@ export interface NameExpressionsValidationResults {
     previews: string[];
     warnings: string[];
 }
+
+export interface SystemField {
+    'Data Type': string;
+    Description: string;
+    Label: string;
+    Name: string;
+    Required: boolean;
+}

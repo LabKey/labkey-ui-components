@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.292.0
+*Released*: 10 February 2023
+- Add Default System Fields to Domain Designer for Sample Types and Data Classes
+
 ### version 2.291.0
 *Released*: 8 February 2023
 * UserLinkList: Fix issue with keys

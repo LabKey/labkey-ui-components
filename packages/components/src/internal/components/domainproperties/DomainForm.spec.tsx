@@ -25,6 +25,8 @@ import { Alert } from '../base/Alert';
 
 import { FileAttachmentForm } from '../../../public/files/FileAttachmentForm';
 
+import { SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS } from '../samples/constants';
+
 import { DomainDesign } from './models';
 import DomainForm, { DomainFormImpl } from './DomainForm';
 import {
@@ -49,6 +51,7 @@ import { clearFieldDetails, updateDomainField } from './actions';
 
 import { DomainRow } from './DomainRow';
 import { INT_LIST } from './list/constants';
+import { SystemFields } from './SystemFields';
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -120,6 +123,9 @@ describe('DomainForm', () => {
             href: 'https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=fieldEditor',
         });
         expect(helpLink.length).toEqual(1);
+
+        // No Default System Fields
+        expect(form.find(SystemFields)).toHaveLength(0);
 
         expect(form).toMatchSnapshot();
         form.unmount();
@@ -1031,5 +1037,19 @@ describe('DomainForm', () => {
         form.setState({ summaryViewMode: true });
 
         expect(form.text()).toContain('Is Primary Key');
+    });
+
+    test('with systemFields', () => {
+        const domain = DomainDesign.create({});
+        const form = mount(
+            <DomainFormImpl
+                domain={domain}
+                onChange={jest.fn()}
+                systemFields={SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS}
+                testMode={true}
+            />
+        );
+
+        expect(form.find(SystemFields)).toHaveLength(1);
     });
 });

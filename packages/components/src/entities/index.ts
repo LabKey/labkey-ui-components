@@ -17,7 +17,6 @@ import {
     processSampleBulkAdd,
 } from './utils';
 import { SampleTypeBasePage } from './SampleTypeBasePage';
-import { SampleAliquotsSummary } from './SampleAliquotsSummary';
 import { SamplesAddButton } from './SamplesAddButton';
 import { SampleAssayDetail } from './SampleAssayDetail';
 import { SampleDetailEditing } from './SampleDetailEditing';
@@ -102,7 +101,6 @@ export {
     RemoveFromPicklistButton,
     SampleAliquotDetailHeader,
     SampleAliquotViewSelector,
-    SampleAliquotsSummary,
     SamplesAddButton,
     SampleAliquotsPage,
     SampleAssayDetail,

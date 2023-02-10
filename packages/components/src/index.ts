@@ -33,7 +33,6 @@ import {
     encodePart,
     getSchemaQuery,
     resolveKey,
-    resolveSchemaQuery,
     SchemaQuery,
 } from './public/SchemaQuery';
 import { insertColumnFilter, QueryColumn, QueryLookup } from './public/QueryColumn';
@@ -1346,7 +1345,6 @@ export {
     LoadingState,
     SCHEMAS,
     getSchemaQuery,
-    resolveSchemaQuery,
     insertColumnFilter,
     EXPORT_TYPES,
     SELECTION_KEY_TYPE,

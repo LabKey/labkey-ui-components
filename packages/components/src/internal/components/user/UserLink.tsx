@@ -1,6 +1,5 @@
-import React, { FC, useCallback, useState, useEffect } from 'react';
+import React, { FC, useCallback, useState, useEffect, Fragment } from 'react';
 
-import { User } from '../base/models/User';
 import { userCanReadUserDetails } from '../../app/utils';
 
 import { caseInsensitive } from '../../util/utils';
@@ -94,14 +93,14 @@ export const UserLinkList: FC<UserLinkListProps> = ({ users }) => {
     return (
         <>
             {users.map((u, i) => (
-                <>
+                <Fragment key={u.id}>
                     {i > 0 && ', '}
                     {u.type === 'u' || u.type === undefined ? (
-                        <UserLink key={u.id} userId={u.id} userDisplayValue={u.displayName} />
+                        <UserLink userId={u.id} userDisplayValue={u.displayName} />
                     ) : (
                         <span>{u.displayName}</span>
                     )}
-                </>
+                </Fragment>
             ))}
         </>
     );

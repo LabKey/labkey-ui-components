@@ -99,7 +99,7 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
         return query;
     }, [isMedia, params, routes]);
 
-    const schemaQuery = useMemo(() => SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, queryName), [queryName]);
+    const schemaQuery = useMemo(() => new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, queryName), [queryName]);
 
     const init = async () => {
         if (queryName) {

@@ -21,7 +21,7 @@ describe('GridFilterModal', () => {
         api: getTestAPIWrapper(jest.fn, {}),
         initFilters: [],
         model: makeTestQueryModel(
-            SchemaQuery.create('schema', 'query', 'view'),
+            new SchemaQuery('schema', 'query', 'view'),
             QueryInfo.create({ name: 'Query', title: 'Query Title' })
         ),
         onApply: jest.fn,

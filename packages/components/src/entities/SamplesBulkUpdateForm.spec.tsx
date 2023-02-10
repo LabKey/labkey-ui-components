@@ -76,7 +76,7 @@ describe('SamplesBulkUpdateForm', () => {
     const samplesSelection = fromJS(['1', '2', '3']);
 
     const DEFAULT_PROPS = {
-        queryModel: makeTestQueryModel(SchemaQuery.create('schema', 'query'), QUERY_INFO).mutate({
+        queryModel: makeTestQueryModel(new SchemaQuery('schema', 'query'), QUERY_INFO).mutate({
             urlPrefix: 'Sample1',
             selections: new Set(['1', '2', '3']),
         }),

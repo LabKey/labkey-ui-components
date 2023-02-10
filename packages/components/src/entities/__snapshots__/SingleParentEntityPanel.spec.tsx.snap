@@ -18,9 +18,9 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
       "inputTypeValueField": "rowId",
       "insertColumnNamePrefix": "DataInputs/",
       "instanceSchemaName": "exp.data",
-      "listingSchemaQuery": Immutable.Record {
-        "schemaName": "exp",
+      "listingSchemaQuery": SchemaQuery {
         "queryName": "Data",
+        "schemaName": "exp",
         "viewName": undefined,
       },
       "nounAsParentPlural": "Data Types",
@@ -30,9 +30,9 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
       "operationConfirmationActionName": "getDataOperationConfirmationData.api",
       "operationConfirmationControllerName": "experiment",
       "typeIcon": "source_type",
-      "typeListingSchemaQuery": Immutable.Record {
-        "schemaName": "exp",
+      "typeListingSchemaQuery": SchemaQuery {
         "queryName": "DataClasses",
+        "schemaName": "exp",
         "viewName": undefined,
       },
       "typeNounAsParentSingular": "Data Type",
@@ -88,9 +88,9 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
         "inputTypeValueField": "rowId",
         "insertColumnNamePrefix": "DataInputs/",
         "instanceSchemaName": "exp.data",
-        "listingSchemaQuery": Immutable.Record {
-          "schemaName": "exp",
+        "listingSchemaQuery": SchemaQuery {
           "queryName": "Data",
+          "schemaName": "exp",
           "viewName": undefined,
         },
         "nounAsParentPlural": "Data Types",
@@ -100,9 +100,9 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
         "operationConfirmationActionName": "getDataOperationConfirmationData.api",
         "operationConfirmationControllerName": "experiment",
         "typeIcon": "source_type",
-        "typeListingSchemaQuery": Immutable.Record {
-          "schemaName": "exp",
+        "typeListingSchemaQuery": SchemaQuery {
           "queryName": "DataClasses",
+          "schemaName": "exp",
           "viewName": undefined,
         },
         "typeNounAsParentSingular": "Data Type",
@@ -172,9 +172,9 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
           "inputTypeValueField": "rowId",
           "insertColumnNamePrefix": "DataInputs/",
           "instanceSchemaName": "exp.data",
-          "listingSchemaQuery": Immutable.Record {
-            "schemaName": "exp",
+          "listingSchemaQuery": SchemaQuery {
             "queryName": "Data",
+            "schemaName": "exp",
             "viewName": undefined,
           },
           "nounAsParentPlural": "Data Types",
@@ -184,9 +184,9 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
           "operationConfirmationActionName": "getDataOperationConfirmationData.api",
           "operationConfirmationControllerName": "experiment",
           "typeIcon": "source_type",
-          "typeListingSchemaQuery": Immutable.Record {
-            "schemaName": "exp",
+          "typeListingSchemaQuery": SchemaQuery {
             "queryName": "DataClasses",
+            "schemaName": "exp",
             "viewName": undefined,
           },
           "typeNounAsParentSingular": "Data Type",
@@ -270,9 +270,9 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
             "inputTypeValueField": "rowId",
             "insertColumnNamePrefix": "DataInputs/",
             "instanceSchemaName": "exp.data",
-            "listingSchemaQuery": Immutable.Record {
-              "schemaName": "exp",
+            "listingSchemaQuery": SchemaQuery {
               "queryName": "Data",
+              "schemaName": "exp",
               "viewName": undefined,
             },
             "nounAsParentPlural": "Data Types",
@@ -282,9 +282,9 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
             "operationConfirmationActionName": "getDataOperationConfirmationData.api",
             "operationConfirmationControllerName": "experiment",
             "typeIcon": "source_type",
-            "typeListingSchemaQuery": Immutable.Record {
-              "schemaName": "exp",
+            "typeListingSchemaQuery": SchemaQuery {
               "queryName": "DataClasses",
+              "schemaName": "exp",
               "viewName": undefined,
             },
             "typeNounAsParentSingular": "Data Type",
@@ -5310,9 +5310,9 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
       "inputTypeValueField": "rowId",
       "insertColumnNamePrefix": "DataInputs/",
       "instanceSchemaName": "exp.data",
-      "listingSchemaQuery": Immutable.Record {
-        "schemaName": "exp",
+      "listingSchemaQuery": SchemaQuery {
         "queryName": "Data",
+        "schemaName": "exp",
         "viewName": undefined,
       },
       "nounAsParentPlural": "Data Types",
@@ -5322,9 +5322,9 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
       "operationConfirmationActionName": "getDataOperationConfirmationData.api",
       "operationConfirmationControllerName": "experiment",
       "typeIcon": "source_type",
-      "typeListingSchemaQuery": Immutable.Record {
-        "schemaName": "exp",
+      "typeListingSchemaQuery": SchemaQuery {
         "queryName": "DataClasses",
+        "schemaName": "exp",
         "viewName": undefined,
       },
       "typeNounAsParentSingular": "Data Type",
@@ -5380,9 +5380,9 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
         "inputTypeValueField": "rowId",
         "insertColumnNamePrefix": "DataInputs/",
         "instanceSchemaName": "exp.data",
-        "listingSchemaQuery": Immutable.Record {
-          "schemaName": "exp",
+        "listingSchemaQuery": SchemaQuery {
           "queryName": "Data",
+          "schemaName": "exp",
           "viewName": undefined,
         },
         "nounAsParentPlural": "Data Types",
@@ -5392,9 +5392,9 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
         "operationConfirmationActionName": "getDataOperationConfirmationData.api",
         "operationConfirmationControllerName": "experiment",
         "typeIcon": "source_type",
-        "typeListingSchemaQuery": Immutable.Record {
-          "schemaName": "exp",
+        "typeListingSchemaQuery": SchemaQuery {
           "queryName": "DataClasses",
+          "schemaName": "exp",
           "viewName": undefined,
         },
         "typeNounAsParentSingular": "Data Type",
@@ -5464,9 +5464,9 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
           "inputTypeValueField": "rowId",
           "insertColumnNamePrefix": "DataInputs/",
           "instanceSchemaName": "exp.data",
-          "listingSchemaQuery": Immutable.Record {
-            "schemaName": "exp",
+          "listingSchemaQuery": SchemaQuery {
             "queryName": "Data",
+            "schemaName": "exp",
             "viewName": undefined,
           },
           "nounAsParentPlural": "Data Types",
@@ -5476,9 +5476,9 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
           "operationConfirmationActionName": "getDataOperationConfirmationData.api",
           "operationConfirmationControllerName": "experiment",
           "typeIcon": "source_type",
-          "typeListingSchemaQuery": Immutable.Record {
-            "schemaName": "exp",
+          "typeListingSchemaQuery": SchemaQuery {
             "queryName": "DataClasses",
+            "schemaName": "exp",
             "viewName": undefined,
           },
           "typeNounAsParentSingular": "Data Type",
@@ -5562,9 +5562,9 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
             "inputTypeValueField": "rowId",
             "insertColumnNamePrefix": "DataInputs/",
             "instanceSchemaName": "exp.data",
-            "listingSchemaQuery": Immutable.Record {
-              "schemaName": "exp",
+            "listingSchemaQuery": SchemaQuery {
               "queryName": "Data",
+              "schemaName": "exp",
               "viewName": undefined,
             },
             "nounAsParentPlural": "Data Types",
@@ -5574,9 +5574,9 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
             "operationConfirmationActionName": "getDataOperationConfirmationData.api",
             "operationConfirmationControllerName": "experiment",
             "typeIcon": "source_type",
-            "typeListingSchemaQuery": Immutable.Record {
-              "schemaName": "exp",
+            "typeListingSchemaQuery": SchemaQuery {
               "queryName": "DataClasses",
+              "schemaName": "exp",
               "viewName": undefined,
             },
             "typeNounAsParentSingular": "Data Type",
@@ -5682,9 +5682,9 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
       "inputTypeValueField": "rowId",
       "insertColumnNamePrefix": "DataInputs/",
       "instanceSchemaName": "exp.data",
-      "listingSchemaQuery": Immutable.Record {
-        "schemaName": "exp",
+      "listingSchemaQuery": SchemaQuery {
         "queryName": "Data",
+        "schemaName": "exp",
         "viewName": undefined,
       },
       "nounAsParentPlural": "Data Types",
@@ -5694,9 +5694,9 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
       "operationConfirmationActionName": "getDataOperationConfirmationData.api",
       "operationConfirmationControllerName": "experiment",
       "typeIcon": "source_type",
-      "typeListingSchemaQuery": Immutable.Record {
-        "schemaName": "exp",
+      "typeListingSchemaQuery": SchemaQuery {
         "queryName": "DataClasses",
+        "schemaName": "exp",
         "viewName": undefined,
       },
       "typeNounAsParentSingular": "Data Type",
@@ -5781,9 +5781,9 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
         "inputTypeValueField": "rowId",
         "insertColumnNamePrefix": "DataInputs/",
         "instanceSchemaName": "exp.data",
-        "listingSchemaQuery": Immutable.Record {
-          "schemaName": "exp",
+        "listingSchemaQuery": SchemaQuery {
           "queryName": "Data",
+          "schemaName": "exp",
           "viewName": undefined,
         },
         "nounAsParentPlural": "Data Types",
@@ -5793,9 +5793,9 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
         "operationConfirmationActionName": "getDataOperationConfirmationData.api",
         "operationConfirmationControllerName": "experiment",
         "typeIcon": "source_type",
-        "typeListingSchemaQuery": Immutable.Record {
-          "schemaName": "exp",
+        "typeListingSchemaQuery": SchemaQuery {
           "queryName": "DataClasses",
+          "schemaName": "exp",
           "viewName": undefined,
         },
         "typeNounAsParentSingular": "Data Type",
@@ -5884,9 +5884,9 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
           "requiredColumns": [
             "Name",
           ],
-          "schemaQuery": Immutable.Record {
-            "schemaName": "exp.data",
+          "schemaQuery": SchemaQuery {
             "queryName": "Second Source",
+            "schemaName": "exp.data",
             "viewName": "~~DETAILS~~",
           },
         },
@@ -5939,9 +5939,9 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
           "inputTypeValueField": "rowId",
           "insertColumnNamePrefix": "DataInputs/",
           "instanceSchemaName": "exp.data",
-          "listingSchemaQuery": Immutable.Record {
-            "schemaName": "exp",
+          "listingSchemaQuery": SchemaQuery {
             "queryName": "Data",
+            "schemaName": "exp",
             "viewName": undefined,
           },
           "nounAsParentPlural": "Data Types",
@@ -5951,9 +5951,9 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
           "operationConfirmationActionName": "getDataOperationConfirmationData.api",
           "operationConfirmationControllerName": "experiment",
           "typeIcon": "source_type",
-          "typeListingSchemaQuery": Immutable.Record {
-            "schemaName": "exp",
+          "typeListingSchemaQuery": SchemaQuery {
             "queryName": "DataClasses",
+            "schemaName": "exp",
             "viewName": undefined,
           },
           "typeNounAsParentSingular": "Data Type",
@@ -6042,9 +6042,9 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             "requiredColumns": [
               "Name",
             ],
-            "schemaQuery": Immutable.Record {
-              "schemaName": "exp.data",
+            "schemaQuery": SchemaQuery {
               "queryName": "Second Source",
+              "schemaName": "exp.data",
               "viewName": "~~DETAILS~~",
             },
           },
@@ -6111,9 +6111,9 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             "inputTypeValueField": "rowId",
             "insertColumnNamePrefix": "DataInputs/",
             "instanceSchemaName": "exp.data",
-            "listingSchemaQuery": Immutable.Record {
-              "schemaName": "exp",
+            "listingSchemaQuery": SchemaQuery {
               "queryName": "Data",
+              "schemaName": "exp",
               "viewName": undefined,
             },
             "nounAsParentPlural": "Data Types",
@@ -6123,9 +6123,9 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             "operationConfirmationActionName": "getDataOperationConfirmationData.api",
             "operationConfirmationControllerName": "experiment",
             "typeIcon": "source_type",
-            "typeListingSchemaQuery": Immutable.Record {
-              "schemaName": "exp",
+            "typeListingSchemaQuery": SchemaQuery {
               "queryName": "DataClasses",
+              "schemaName": "exp",
               "viewName": undefined,
             },
             "typeNounAsParentSingular": "Data Type",
@@ -6235,9 +6235,9 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
               "rows": undefined,
               "rowsError": undefined,
               "rowsLoadingState": "INITIALIZED",
-              "schemaQuery": Immutable.Record {
-                "schemaName": "exp.data",
+              "schemaQuery": SchemaQuery {
                 "queryName": "Second Source",
+                "schemaName": "exp.data",
                 "viewName": "~~DETAILS~~",
               },
               "selectedReportId": undefined,
@@ -6370,9 +6370,9 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                 "rows": undefined,
                 "rowsError": undefined,
                 "rowsLoadingState": "INITIALIZED",
-                "schemaQuery": Immutable.Record {
-                  "schemaName": "exp.data",
+                "schemaQuery": SchemaQuery {
                   "queryName": "Second Source",
+                  "schemaName": "exp.data",
                   "viewName": "~~DETAILS~~",
                 },
                 "selectedReportId": undefined,
@@ -6486,9 +6486,9 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                     "rows": undefined,
                     "rowsError": undefined,
                     "rowsLoadingState": "INITIALIZED",
-                    "schemaQuery": Immutable.Record {
-                      "schemaName": "exp.data",
+                    "schemaQuery": SchemaQuery {
                       "queryName": "Second Source",
+                      "schemaName": "exp.data",
                       "viewName": "~~DETAILS~~",
                     },
                     "selectedReportId": undefined,

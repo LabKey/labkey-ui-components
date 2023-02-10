@@ -29,7 +29,7 @@ import { ActionValue } from './grid/actions/Action';
 // The wrapper's return type for mount<GridPanel>(<GridPanel ... />)
 type GridPanelWrapper = ReactWrapper<Readonly<GridPanel['props']>, Readonly<GridPanel['state']>, GridPanel>;
 
-const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
+const SCHEMA_QUERY = new SchemaQuery('exp.data', 'mixtures');
 let QUERY_INFO: QueryInfo;
 let DATA: RowsResponse;
 
@@ -276,7 +276,7 @@ describe('GridPanel', () => {
         const nameFilter = Filter.create('Name', 'DMXP', Filter.Types.EQUAL);
         const expirFilter = Filter.create('expirationTime', '1', Filter.Types.EQUAL);
         const viewName = 'noMixtures';
-        const noMixturesSQ = SchemaQuery.create(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, viewName);
+        const noMixturesSQ = new SchemaQuery(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, viewName);
         const search = Filter.create('*', 'foobar', Filter.Types.Q);
 
         expectBoundState(wrapper, {}, 0, []);
@@ -517,7 +517,7 @@ describe('GridTitle', () => {
     });
 
     test('view, no title', () => {
-        const viewSchemaQuery = SchemaQuery.create('exp.data', 'mixtures', 'noExtraColumn');
+        const viewSchemaQuery = new SchemaQuery('exp.data', 'mixtures', 'noExtraColumn');
         const modelWithView = makeTestQueryModel(viewSchemaQuery, QUERY_INFO);
         const wrapper = mountWithServerContext(<GridTitle {...GRID_TITLE_PROPS} model={modelWithView} />, {
             user: TEST_USER_EDITOR,
@@ -527,7 +527,7 @@ describe('GridTitle', () => {
     });
 
     test('title and view', () => {
-        const viewSchemaQuery = SchemaQuery.create('exp.data', 'mixtures', 'noExtraColumn');
+        const viewSchemaQuery = new SchemaQuery('exp.data', 'mixtures', 'noExtraColumn');
         const modelWithView = makeTestQueryModel(viewSchemaQuery, QUERY_INFO);
         const wrapper = mountWithServerContext(<GridTitle {...GRID_TITLE_PROPS} model={modelWithView} />, {
             user: TEST_USER_EDITOR,
@@ -566,7 +566,7 @@ describe('GridTitle', () => {
     });
 
     test('updated named view, no title, customizable', () => {
-        const viewSchemaQuery = SchemaQuery.create('exp.data', 'mixtures', 'noExtraColumn');
+        const viewSchemaQuery = new SchemaQuery('exp.data', 'mixtures', 'noExtraColumn');
         const sessionQueryInfo = QUERY_INFO.setIn(['views', 'noextracolumn', 'session'], true).setIn(
             ['views', 'noextracolumn', 'revertable'],
             true
@@ -581,7 +581,7 @@ describe('GridTitle', () => {
     });
 
     test('updated named view with title', () => {
-        const viewSchemaQuery = SchemaQuery.create('exp.data', 'mixtures', 'noExtraColumn');
+        const viewSchemaQuery = new SchemaQuery('exp.data', 'mixtures', 'noExtraColumn');
         const sessionQueryInfo = QUERY_INFO.setIn(['views', 'noextracolumn', 'session'], true).setIn(
             ['views', 'noextracolumn', 'revertable'],
             true
@@ -596,7 +596,7 @@ describe('GridTitle', () => {
     });
 
     test('hidden view, edited', () => {
-        const viewSchemaQuery = SchemaQuery.create('exp.data', 'mixtures', 'noExtraColumn');
+        const viewSchemaQuery = new SchemaQuery('exp.data', 'mixtures', 'noExtraColumn');
         const sessionQueryInfo = QUERY_INFO.setIn(['views', 'noextracolumn', 'session'], true)
             .setIn(['views', 'noextracolumn', 'revertable'], true)
             .setIn(['views', 'noextracolumn', 'hidden'], true) as QueryInfo;
@@ -610,7 +610,7 @@ describe('GridTitle', () => {
     });
 
     test('hidden view, edited, no title', () => {
-        const viewSchemaQuery = SchemaQuery.create('exp.data', 'mixtures', 'noExtraColumn');
+        const viewSchemaQuery = new SchemaQuery('exp.data', 'mixtures', 'noExtraColumn');
         const sessionQueryInfo = QUERY_INFO.setIn(['views', 'noextracolumn', 'session'], true)
             .setIn(['views', 'noextracolumn', 'revertable'], true)
             .setIn(['views', 'noextracolumn', 'hidden'], true) as QueryInfo;
@@ -624,7 +624,7 @@ describe('GridTitle', () => {
     });
 
     test('hidden view, not edited, no title', () => {
-        const viewSchemaQuery = SchemaQuery.create('exp.data', 'mixtures', 'noExtraColumn');
+        const viewSchemaQuery = new SchemaQuery('exp.data', 'mixtures', 'noExtraColumn');
         const sessionQueryInfo = QUERY_INFO.setIn(['views', 'noextracolumn', 'hidden'], true) as QueryInfo;
         const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
         const wrapper = mountWithServerContext(

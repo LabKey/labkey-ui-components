@@ -34,10 +34,7 @@ beforeAll(() => {
     initUnitTestMocks();
 });
 
-const schemaQuery = new SchemaQuery({
-    schemaName: 'exp.data',
-    queryName: 'Mixtures',
-});
+const schemaQuery = new SchemaQuery('exp.data', 'Mixtures');
 
 describe('QueryInfoForm', () => {
     test('default props', () => {

@@ -44,7 +44,7 @@ export const AssayResultDataType: EntityDataType = {
     instanceSchemaName: undefined,
     supportHasNoValueInQuery: true,
     getInstanceSchemaQuery: (assayName: string) => {
-        return SchemaQuery.create('assay.General.' + assayName, 'data');
+        return new SchemaQuery('assay.General.' + assayName, 'data');
     },
     getInstanceDataType: (schemaQuery: SchemaQuery) => {
         return schemaQuery.schemaName.replace('assay.General.', '');

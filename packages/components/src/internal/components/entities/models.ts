@@ -243,7 +243,7 @@ export class EntityIdCreationModel extends Record({
                     throw new Error('Invalid inputColumn fieldKey. "' + fieldKey[0] + '"');
                 }
 
-                return SchemaQuery.create(decodePart(schemaName), decodePart(fieldKey[1]));
+                return new SchemaQuery(decodePart(schemaName), decodePart(fieldKey[1]));
             }
 
             throw new Error('invalid inputColumn fieldKey length.');
@@ -353,7 +353,7 @@ export class EntityIdCreationModel extends Record({
 
     getSchemaQuery(): SchemaQuery {
         const entityTypeName = this.getTargetEntityTypeValue();
-        return entityTypeName ? SchemaQuery.create(this.entityDataType.instanceSchemaName, entityTypeName) : undefined;
+        return entityTypeName ? new SchemaQuery(this.entityDataType.instanceSchemaName, entityTypeName) : undefined;
     }
 
     postEntityGrid(

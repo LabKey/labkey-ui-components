@@ -23,12 +23,15 @@ interface Props {
     imageCls?: string;
     imageURL?: string;
     noun?: string;
+    onCopyLink?: (attachment: IAttachment) => void;
     onDownload?: (attachment: IAttachment) => void;
     onRemove?: (attachment: IAttachment) => void;
 }
 
 export const AttachmentCard: FC<Props> = memo(props => {
-    const { noun = 'attachment', allowRemove = true, attachment, imageURL, imageCls, onRemove, onDownload } = props;
+    const { attachment, imageURL, imageCls, onCopyLink, onRemove, onDownload } = props;
+    const noun = props.noun ?? 'attachment';
+    const allowRemove = props.allowRemove ?? true;
     const [showModal, setShowModal] = useState<boolean>();
 
     const _showModal = useCallback(() => {
@@ -38,6 +41,8 @@ export const AttachmentCard: FC<Props> = memo(props => {
     const _hideModal = useCallback(() => {
         setShowModal(false);
     }, [setShowModal]);
+
+    const _onCopyLink = useCallback((): void => onCopyLink(attachment), [attachment, onCopyLink]);
 
     const _onDownload = useCallback((): void => {
         onDownload?.(attachment);
@@ -91,6 +96,7 @@ export const AttachmentCard: FC<Props> = memo(props => {
                             <i className="fa fa-ellipsis-v" />
                         </Dropdown.Toggle>
                         <Dropdown.Menu className="pull-right">
+                            {onCopyLink && <MenuItem onClick={_onCopyLink}>Copy link</MenuItem>}
                             <MenuItem onClick={_onDownload}>Download</MenuItem>
                             {allowRemove && <MenuItem onClick={_onRemove}>Remove {noun}</MenuItem>}
                         </Dropdown.Menu>

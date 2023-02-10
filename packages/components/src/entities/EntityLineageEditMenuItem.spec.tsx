@@ -28,7 +28,7 @@ describe('EntityLineageEditMenuItem', () => {
     });
 
     test('multiple selections', () => {
-        const queryModel = makeTestQueryModel(SchemaQuery.create('test', 'q'));
+        const queryModel = makeTestQueryModel(new SchemaQuery('test', 'q'));
         queryModel.mutate({ selections: new Set<string>(['1', '2']) });
         const wrapper = mount(
             <EntityLineageEditMenuItem
@@ -43,7 +43,7 @@ describe('EntityLineageEditMenuItem', () => {
     });
 
     test('single selection', () => {
-        let queryModel = makeTestQueryModel(SchemaQuery.create('test', 'q'));
+        let queryModel = makeTestQueryModel(new SchemaQuery('test', 'q'));
         queryModel = queryModel.mutate({ selections: new Set<string>(['1']) });
         const wrapper = mount(
             <EntityLineageEditMenuItem

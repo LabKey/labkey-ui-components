@@ -30,7 +30,7 @@ describe('SampleFinderSection', () => {
                     TestTypeDataType,
                     {
                         ...TestTypeDataType,
-                        typeListingSchemaQuery: SchemaQuery.create('TestClasses', 'query2'),
+                        typeListingSchemaQuery: new SchemaQuery('TestClasses', 'query2'),
                         nounSingular: 'Other',
                         nounAsParentSingular: 'Other Parent',
                     },
@@ -57,7 +57,7 @@ describe('SampleFinderSection', () => {
                     TestTypeDataType,
                     {
                         ...TestTypeDataType,
-                        typeListingSchemaQuery: SchemaQuery.create('TestClasses', 'query2'),
+                        typeListingSchemaQuery: new SchemaQuery('TestClasses', 'query2'),
                         nounSingular: 'Other',
                         nounAsParentSingular: 'Other Parent',
                     },

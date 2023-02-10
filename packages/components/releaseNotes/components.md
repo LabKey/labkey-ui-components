@@ -1,6 +1,35 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Issue 47190: Don't warn about required fields added to default grid from lookups
+
+### version 2.291.0
+*Released*: 8 February 2023
+* UserLinkList: Fix issue with keys
+* AttachmentCard: Add optional onCopyLink prop
+
+### version 2.290.3
+*Released*: 8 February 2023
+* Merge release23.2-SNAPSHOT to develop:
+  * includes changes from 2.288.1
+
+### version 2.290.2
+*Released*: 6 February 2023
+* Issue 47035: Sample Aliquot grid should allow for edit
+  * Use SamplesTabbedGridPanel for SampleAliquotsGridPanel
+
+### version 2.290.1
+*Released*: 3 February 2023
+- Move getReportInfos.api to reports controller since it does not rely on study module
+
+### version 2.290.0
+*Released*: 2 February 2023
+* SchemaQuery: Convert to vanilla class, remove getQuery, getSchema, getView, create
+  * Use new SchemaQuery(schemaName, queryName, viewName) instead of SchemaQuery.create
+* Remove unused resolveSchemaQuery
+
 ### version 2.289.0
 *Released*: 2 February 2023
 * Update links from users to display user detail data via modal for those who have permission
@@ -12,9 +41,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * update UserDetailsPanel so that permissions and group listing items are links to admin groups/permissions page
   * add dirty state check for user Profile page navigation
 
-### version TBD
-*Released*: TBD
-- Issue 47190: Don't warn about required fields added to default grid from lookups
+### version 2.288.1
+*Released*: 6 February 2023
+- Issue 46618: Retain result row ordering in `formatSavedResults` and `formatResults` when processing results of `QuerySelect` queries.
+- Add the `hasSortKey` property to the `QueryColumn` model. Now supported by `query-getQueryDetails.api`.
 
 ### version 2.288.0
 *Released*: 1 February 2023

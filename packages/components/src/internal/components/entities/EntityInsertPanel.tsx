@@ -395,7 +395,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 });
             }
 
-            getQueryDetails(schemaQuery.toJS())
+            getQueryDetails(schemaQuery)
                 .then(originalQueryInfo => {
                     this.setState(
                         () => ({ insertModel, originalQueryInfo }),
@@ -1038,7 +1038,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         // Issue 45483: allowed creation types in bulk insert modal to be based on if sample parent types exist and based on the creation type for the page
         const numSampleParentTypes = insertModel.entityParents
             ?.get(SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName)
-            ?.filter(parentType => isSamplesSchema(SchemaQuery.create(parentType.schema, parentType.query))).size;
+            ?.filter(parentType => isSamplesSchema(new SchemaQuery(parentType.schema, parentType.query))).size;
         const bulkCreationTypeOptions = getBulkCreationTypeOptions(numSampleParentTypes > 0, creationType);
 
         return (

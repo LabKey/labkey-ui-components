@@ -12,7 +12,7 @@ import { getLineageEditorUpdateColumns } from './LineageEditableGridLoaderFromSe
 
 describe('getLineageEditorUpdateColumns', () => {
     const MODEL = makeTestQueryModel(
-        SchemaQuery.create('schema', 'query'),
+        new SchemaQuery('schema', 'query'),
         QueryInfo.fromJSON({
             columns: [
                 { fieldKey: 'rowId' },

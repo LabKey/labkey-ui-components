@@ -428,8 +428,8 @@ export const TEST_FOLDER_CONTAINER = new Container({
 });
 
 export const TestTypeDataType: EntityDataType = {
-    typeListingSchemaQuery: SchemaQuery.create('TestListing', 'query'),
-    listingSchemaQuery: SchemaQuery.create('Test', 'query'),
+    typeListingSchemaQuery: new SchemaQuery('TestListing', 'query'),
+    listingSchemaQuery: new SchemaQuery('Test', 'query'),
     instanceSchemaName: 'TestSchema',
     operationConfirmationControllerName: 'controller',
     operationConfirmationActionName: 'test-delete-confirmation.api',

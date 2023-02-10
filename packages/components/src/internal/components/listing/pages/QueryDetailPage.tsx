@@ -87,7 +87,7 @@ export const QueryDetailPage: FC<WithRouterProps> = memo(({ params }) => {
                 bindURL: true,
                 keyValue: id,
                 requiredColumns: SCHEMAS.CBMB.toArray(),
-                schemaQuery: SchemaQuery.create(schema, query),
+                schemaQuery: new SchemaQuery(schema, query),
             },
         }),
         [modelId]

@@ -19,7 +19,12 @@ import { Filter, Query, QueryDOM } from '@labkey/api';
 
 import { getQueryMetadata } from '../global';
 import { resolveKeyFromJson, SchemaQuery } from '../../public/SchemaQuery';
-import { isAllProductFoldersFilteringEnabled, isProductProjectsEnabled, isProjectContainer } from '../app/utils';
+import {
+    isAllProductFoldersFilteringEnabled,
+    isProductProjectsDataListingScopedToProject,
+    isProductProjectsEnabled,
+    isProjectContainer,
+} from '../app/utils';
 
 import { caseInsensitive, quoteValueWithDelimiters } from '../util/utils';
 import { QueryInfo, QueryInfoStatus } from '../../public/QueryInfo';
@@ -970,11 +975,14 @@ export function getContainerFilter(containerPath?: string, forFolder?: boolean):
         return Query.ContainerFilter.currentAndSubfoldersPlusShared;
     }
 
+    // When listing data in a folder scope returned data to the current
+    // folder when the experimental feature is enabled.
+    if (forFolder && isProductProjectsDataListingScopedToProject()) {
+        return Query.ContainerFilter.current;
+    }
+
     // When all folder filtering is enabled resolve data across all folders.
     if (isAllProductFoldersFilteringEnabled()) {
-        if (forFolder) {
-            return Query.ContainerFilter.current;
-        }
         return Query.ContainerFilter.allInProjectPlusShared;
     }
 

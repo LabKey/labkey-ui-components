@@ -814,6 +814,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     newFieldConfig={{
                         derivationDataScope: DERIVATION_DATA_SCOPES.PARENT_ONLY,
                     }}
+                    systemFields={options?.get('systemFields')}
                 />
                 {error && <div className="domain-form-panel">{error && <Alert bsStyle="danger">{error}</Alert>}</div>}
                 {showUniqueIdConfirmation && (

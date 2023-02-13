@@ -5,6 +5,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Update `SamplesEditableGrid` for move of amount and units from inventory.item to exp.materials
 
+### version 2.292.1
+*Released*: 13 February 2023
+- Issue 47190: Don't warn about required fields added to default grid from lookups
+
+### version 2.292.0
+*Released*: 10 February 2023
+- Add Default System Fields to Domain Designer for Sample Types and Data Classes
+
 ### version 2.291.0
 *Released*: 8 February 2023
 * UserLinkList: Fix issue with keys

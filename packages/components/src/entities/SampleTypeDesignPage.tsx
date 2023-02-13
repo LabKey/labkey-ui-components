@@ -7,7 +7,7 @@ import { WithRouterProps } from 'react-router';
 import { fromJS, Map } from 'immutable';
 import { Domain } from '@labkey/api';
 
-import { DomainDesign, DomainDetails } from '../internal/components/domainproperties/models';
+import { DomainDesign, DomainDetails, SystemField } from '../internal/components/domainproperties/models';
 import { useRouteLeave } from '../internal/util/RouteLeave';
 import { useServerContext } from '../internal/components/base/ServerContext';
 import { useNotificationsContext } from '../internal/components/notifications/NotificationsContext';
@@ -30,6 +30,8 @@ import { CommonPageProps } from '../internal/models';
 
 import { isAppHomeFolder } from '../internal/app/utils';
 
+import { getSampleDomainDefaultSystemFields } from '../internal/components/samples/utils';
+
 import { SampleTypeBasePage } from './SampleTypeBasePage';
 import { useSampleTypeAppContext } from './useSampleTypeAppContext';
 import { onSampleTypeChange } from './actions';
@@ -39,6 +41,7 @@ const DESIGNER_HEADER =
 const BRAND_PRIMARY_COLOR = '#2980b9';
 
 function createDefaultSampleType(
+    systemFields: SystemField[],
     domainDesign?: DomainDesign,
     prefix?: string,
     showStudyProperties = false
@@ -56,6 +59,7 @@ function createDefaultSampleType(
                 fromJS({
                     nameExpression: nameExpressionVal,
                     labelColor: BRAND_PRIMARY_COLOR,
+                    systemFields,
                 })
             ),
             domainKindName: Domain.KINDS.SAMPLE_TYPE,
@@ -101,6 +105,8 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
 
     const schemaQuery = useMemo(() => new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, queryName), [queryName]);
 
+    const systemFields = useMemo(() => getSampleDomainDefaultSystemFields(moduleContext), [moduleContext]);
+
     const init = async () => {
         if (queryName) {
             // Clear the current sample type so the Designer gets unmounted
@@ -129,6 +135,8 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
                     showStudyProperties
                 ) as DomainDetails;
 
+                updatedSampleType = updatedSampleType.setIn(['options', 'systemFields'], systemFields) as DomainDetails;
+
                 if (readOnlyQueryNames?.map(q => q.toLowerCase()).indexOf(queryName.toLowerCase()) > -1) {
                     updatedSampleType = updatedSampleType.set('nameReadOnly', true) as DomainDetails;
                 }
@@ -144,11 +152,16 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
                 const expressionOptions = await api.entity.loadNameExpressionOptions();
                 setDomainContainerPath(container.path);
                 setSampleType(
-                    createDefaultSampleType(sampleType_.domainDesign, expressionOptions.prefix, showStudyProperties)
+                    createDefaultSampleType(
+                        systemFields,
+                        sampleType_.domainDesign,
+                        expressionOptions.prefix,
+                        showStudyProperties
+                    )
                 );
             } catch (reason) {
                 console.error(reason);
-                setSampleType(createDefaultSampleType());
+                setSampleType(createDefaultSampleType(systemFields));
             }
         }
         setLoadingSampleType(false);

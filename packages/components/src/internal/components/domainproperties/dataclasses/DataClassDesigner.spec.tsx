@@ -13,6 +13,8 @@ import { FileAttachmentForm } from '../../../../public/files/FileAttachmentForm'
 
 import { Alert } from '../../base/Alert';
 
+import { SystemFields } from '../SystemFields';
+
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 import { DataClassModel } from './models';
 import { DataClassDesigner } from './DataClassDesigner';
@@ -77,6 +79,7 @@ describe('DataClassDesigner', () => {
         panelHeader.simulate('click');
         expect(wrapped.find('#domain-header').at(2).hasClass('domain-panel-header-expanded')).toBeTruthy();
         expect(wrapped.find(FileAttachmentForm)).toHaveLength(1);
+        expect(wrapped.find(SystemFields)).toHaveLength(1);
 
         expect(wrapped.find(Alert)).toHaveLength(2);
         expect(wrapped.find(Alert).at(0).text()).toEqual(PROPERTIES_PANEL_ERROR_MSG);

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.292.1
+*Released*: 13 February 2023
+- Issue 47190: Don't warn about required fields added to default grid from lookups
+
 ### version 2.292.0
 *Released*: 10 February 2023
 - Add Default System Fields to Domain Designer for Sample Types and Data Classes

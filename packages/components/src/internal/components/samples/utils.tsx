@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { Filter } from '@labkey/api';
 
@@ -18,11 +18,15 @@ import { PICKLIST_SAMPLES_FILTER } from '../picklist/models';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
+import { SystemField } from '../domainproperties/models';
+
 import { SampleStatus } from './models';
 
 import {
     operationRestrictionMessage,
     permittedOps,
+    SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS,
+    SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS,
     SAMPLE_STATE_COLUMN_NAME,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
@@ -241,4 +245,10 @@ export function getURLParamsForSampleSelectionKey(
     }
 
     return params;
+}
+
+export function getSampleDomainDefaultSystemFields(moduleContext?: ModuleContext): SystemField[] {
+    return isFreezerManagementEnabled(moduleContext)
+        ? SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS.concat(SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS)
+        : SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS;
 }

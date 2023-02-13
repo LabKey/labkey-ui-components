@@ -43,7 +43,7 @@ export const SearchBox: FC<Props> = memo(props => {
 
     return (
         <form className="grid-panel__search-form" onSubmit={onSubmit}>
-            <div className="form-group">
+            <div>
                 <span className="grid-panel__input-group input-group">
                     <span className="input-group-addon" onClick={onIconClick}>
                         <i className="fa fa-search" />

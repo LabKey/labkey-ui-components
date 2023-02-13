@@ -90,6 +90,7 @@ import {
     IDomainField,
     IDomainFormDisplayOptions,
     IFieldChange,
+    SystemField,
 } from './models';
 import { PropDescType } from './PropDescType';
 import { CollapsiblePanelHeader } from './CollapsiblePanelHeader';
@@ -102,6 +103,7 @@ import {
     isFieldDeletable,
 } from './propertiesUtil';
 import { DomainPropertiesGrid } from './DomainPropertiesGrid';
+import { SystemFields } from './SystemFields';
 
 interface IDomainFormInput {
     appDomainHeaderRenderer?: HeaderRenderer;
@@ -130,6 +132,7 @@ interface IDomainFormInput {
     setFileImportData?: (file: File, shouldImportData: boolean) => any; // having this prop set is also an indicator that you want to show the file preview grid with the import data option
     showHeader?: boolean;
     successBsStyle?: string;
+    systemFields?: SystemField[];
     testMode?: boolean;
     todoIconHelpMsg?: string;
     useTheme?: boolean;
@@ -1294,7 +1297,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     renderForm(): ReactNode {
-        const { domain, appDomainHeaderRenderer, appPropertiesOnly } = this.props;
+        const { domain, appDomainHeaderRenderer, appPropertiesOnly, systemFields } = this.props;
         const { summaryViewMode, search, selectAll } = this.state;
         const hasFields = domain.fields.size > 0;
         const actions = {
@@ -1305,6 +1308,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         return (
             <>
+                {systemFields && <SystemFields fields={systemFields} />}
+
                 {(hasFields || !(this.shouldShowInferFromFile() || this.shouldShowImportExport())) &&
                     this.renderToolbar()}
                 {this.renderPanelHeaderContent()}
@@ -1312,14 +1317,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
                 {hasFields ? (
                     summaryViewMode ? (
-                        <DomainPropertiesGrid
-                            domain={domain}
-                            search={search}
-                            selectAll={selectAll}
-                            actions={actions}
-                            appPropertiesOnly={appPropertiesOnly}
-                            hasOntologyModule={hasModule(ONTOLOGY_MODULE_NAME)}
-                        />
+                        <div className="domain-form__summary-mode">
+                            <DomainPropertiesGrid
+                                domain={domain}
+                                search={search}
+                                selectAll={selectAll}
+                                actions={actions}
+                                appPropertiesOnly={appPropertiesOnly}
+                                hasOntologyModule={hasModule(ONTOLOGY_MODULE_NAME)}
+                            />
+                        </div>
                     ) : (
                         this.renderDetailedFieldView()
                     )
@@ -1348,6 +1355,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             fieldsAdditionalRenderer,
             domainFormDisplayOptions,
             todoIconHelpMsg,
+            systemFields,
         } = this.props;
         const { collapsed, confirmDeleteRowIndex, filePreviewData, file, bulkDeleteConfirmInfo } = this.state;
         const title = getDomainHeaderName(domain.name, headerTitle, headerPrefix);
@@ -1356,7 +1364,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 ? '' + domain.fields.size + ' Field' + (domain.fields.size > 1 ? 's' : '') + ' Defined'
                 : undefined;
         const hasFields = domain.fields.size > 0;
-        const styleToolbar = !hasFields && (this.shouldShowInferFromFile() || this.shouldShowImportExport());
+        const styleToolbar =
+            !hasFields && !systemFields && (this.shouldShowInferFromFile() || this.shouldShowImportExport());
 
         return (
             <>

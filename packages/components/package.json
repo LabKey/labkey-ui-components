@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.291.1-lookupRequiredFields.1",
+  "version": "2.292.1-lookupRequiredFields.2",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

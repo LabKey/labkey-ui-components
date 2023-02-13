@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { DomainDesign, DomainField } from '../models';
+import { DomainDesign } from '../models';
 
 import { DataClassModel } from './models';
+import { DATACLASS_DOMAIN_SYSTEM_FIELDS } from './constants';
 
 describe('DataClassModel', () => {
     test('isNew', () => {
@@ -63,5 +64,6 @@ describe('DataClassModel', () => {
         expect(model.options.description).toBe('description');
         expect(model.options.sampleSet).toBe(2);
         expect(model.options.category).toBe('category');
+        expect(model.options.systemFields).toBe(DATACLASS_DOMAIN_SYSTEM_FIELDS);
     });
 });

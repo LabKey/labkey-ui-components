@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 2.288.2
-*Released*: TBD
+*Released*: 14 February 2023
 - Issue 47303: fix bad URL redirection from SamplesCreatedSuccessMessage
 
 ### version 2.288.1

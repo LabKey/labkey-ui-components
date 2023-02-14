@@ -27,10 +27,11 @@ import { getSampleTypeRowId } from '../internal/components/samples/actions';
 import { SampleGridButtonProps } from '../internal/components/samples/models';
 import { NEW_SAMPLES_HREF, SAMPLES_KEY } from '../internal/app/constants';
 
+import { setSnapshotSelections } from '../internal/actions';
+
 import { shouldIncludeMenuItem } from './utils';
 import { SampleDeleteMenuItem } from './SampleDeleteMenuItem';
 import { EntityLineageEditMenuItem } from './EntityLineageEditMenuItem';
-import { setSnapshotSelections } from '../internal/actions';
 
 interface OwnProps {
     combineParentTypes?: boolean;

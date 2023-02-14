@@ -82,6 +82,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
             }
         } else {
             try {
+                // no need to setSnapshotSelections for this selectionKey case since if the model had filters it would use the selectionData case above
                 const confirmationData = await api.samples.getSampleOperationConfirmationData(SampleOperation.EditLineage, undefined, selectionKey);
                 if (this._mounted) {
                     this.setState({

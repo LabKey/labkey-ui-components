@@ -16,6 +16,8 @@ import { MenuOption, SubMenu } from '../internal/components/menus/SubMenu';
 import { isProjectContainer } from '../internal/app/utils';
 import { EntityCrossProjectSelectionConfirmModal } from '../internal/components/entities/EntityCrossProjectSelectionConfirmModal';
 
+import { setSnapshotSelections } from '../internal/actions';
+
 import { getImportItemsForAssayDefinitions } from './utils';
 
 interface Props extends SubMenuItemProps {
@@ -54,7 +56,15 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
             // check cross folder selection
             if (queryModel?.hasSelections) {
                 setCrossFolderSelectionResult(undefined);
-                const result = await getCrossFolderSelectionResult(queryModel.id, 'sample', queryModel.filterArray.length > 0, undefined, picklistName);
+                const useSnapshotSelection = queryModel.filterArray.length > 0;
+                if (useSnapshotSelection) await setSnapshotSelections(queryModel.id, [...queryModel.selections]);
+                const result = await getCrossFolderSelectionResult(
+                    queryModel.id,
+                    'sample',
+                    useSnapshotSelection,
+                    undefined,
+                    picklistName
+                );
 
                 if (result.crossFolderSelectionCount > 0) {
                     setCrossFolderSelectionResult({
@@ -127,7 +137,7 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
         return null;
     }
 
-    const badSelection = overlayMessage.length > 0
+    const badSelection = overlayMessage.length > 0;
     const menuProps = Object.assign({}, props, {
         disabled: badSelection,
         options: items,

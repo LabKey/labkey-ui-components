@@ -183,8 +183,9 @@ const CreateSamplesSubMenuBaseImpl: FC<CreateSamplesSubMenuBaseProps & WithRoute
                 !skipCrossFolderCheck &&
                 !allowCrossFolderDerive
             ) {
-                const dataType = parentQueryModel.schemaName === SCHEMAS.DATA_CLASSES.SCHEMA ? 'data' : 'sample';
                 setCrossFolderSelectionResult(undefined);
+                const dataType = parentQueryModel.schemaName === SCHEMAS.DATA_CLASSES.SCHEMA ? 'data' : 'sample';
+                if (useSnapshotSelection) await setSnapshotSelections(selectionKey, [...parentQueryModel.selections]);
                 const result = await getCrossFolderSelectionResult(parentQueryModel.id, dataType, useSnapshotSelection);
 
                 if (result.crossFolderSelectionCount > 0) {
@@ -216,6 +217,7 @@ const CreateSamplesSubMenuBaseImpl: FC<CreateSamplesSubMenuBaseProps & WithRoute
             allowCrossFolderDerive,
             onSampleCreationMenuSelect,
             useSnapshotSelection,
+            selectionKey,
             selectedType,
         ]
     );

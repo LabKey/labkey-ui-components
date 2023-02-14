@@ -30,6 +30,7 @@ import { NEW_SAMPLES_HREF, SAMPLES_KEY } from '../internal/app/constants';
 import { shouldIncludeMenuItem } from './utils';
 import { SampleDeleteMenuItem } from './SampleDeleteMenuItem';
 import { EntityLineageEditMenuItem } from './EntityLineageEditMenuItem';
+import { setSnapshotSelections } from '../internal/actions';
 
 interface OwnProps {
     combineParentTypes?: boolean;
@@ -61,7 +62,9 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
         async (onClick: () => void, errorMsg?: string): Promise<void> => {
             if (model?.hasSelections) {
                 setCrossFolderSelectionResult(undefined);
-                const result = await getCrossFolderSelectionResult(model.id, 'sample', model.filterArray.length > 0);
+                const useSnapshotSelection = model.filterArray.length > 0;
+                if (useSnapshotSelection) await setSnapshotSelections(model.id, [...model.selections]);
+                const result = await getCrossFolderSelectionResult(model.id, 'sample', useSnapshotSelection);
                 if (result.crossFolderSelectionCount > 0) {
                     setCrossFolderSelectionResult({
                         ...result,
@@ -72,7 +75,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
                 }
             }
         },
-        [model?.hasSelections, model.id]
+        [model]
     );
 
     const onToggleEditWithGridUpdate = useCallback(() => {

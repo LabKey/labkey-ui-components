@@ -75,7 +75,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
                 }
             }
         },
-        [model]
+        [model.filterArray.length, model?.hasSelections, model.id, model.selections]
     );
 
     const onToggleEditWithGridUpdate = useCallback(() => {

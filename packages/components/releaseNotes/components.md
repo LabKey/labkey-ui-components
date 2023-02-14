@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 2.288.TBD
 *Released*: TBD February 2023
-- Issue 47257: ...
+- Issue 47257: Cannot delete samples from a grid that has a filter applied
   - make sure setSnapshotSelections() is called before selectionKey based call to getCrossFolderSelectionResult()
 
 ### version 2.288.2

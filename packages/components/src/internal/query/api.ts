@@ -977,8 +977,14 @@ export function getContainerFilter(containerPath?: string, forFolder?: boolean):
 
     // When listing data in a folder scope returned data to the current
     // folder when the experimental feature is enabled.
-    if (forFolder && isProductProjectsDataListingScopedToProject()) {
-        return Query.ContainerFilter.current;
+    if (forFolder) {
+        if (isProductProjectsDataListingScopedToProject()) {
+            return Query.ContainerFilter.current;
+        }
+
+        // When requesting data from a sub-folder context the ContainerFilter filters
+        // "up" the folder hierarchy for data.
+        return Query.ContainerFilter.currentPlusProjectAndShared;
     }
 
     // When all folder filtering is enabled resolve data across all folders.

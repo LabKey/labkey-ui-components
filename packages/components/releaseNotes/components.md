@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.288.2
+*Released*: TBD
+- Issue 47303: fix bad URL redirection from SamplesCreatedSuccessMessage
+
 ### version 2.288.1
 *Released*: 6 February 2023
 - Issue 46618: Retain result row ordering in `formatSavedResults` and `formatResults` when processing results of `QuerySelect` queries.

@@ -182,6 +182,8 @@ export const SAMPLE_STORAGE_COLUMNS = [
     'StorageComment',
 ];
 
+export const SAMPLE_STORAGE_COLUMNS_LC = SAMPLE_STORAGE_COLUMNS.map(col => col.toLowerCase());
+
 export const SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR = [
     'SourceProtocolLSID',
     'StorageStatus',

@@ -57,7 +57,12 @@ import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 
 import { createGridModelId } from '../../models';
 
-import { IS_ALIQUOT_COL, SAMPLE_STATUS_REQUIRED_COLUMNS, SELECTION_KEY_TYPE } from './constants';
+import {
+    IS_ALIQUOT_COL,
+    SAMPLE_STATUS_REQUIRED_COLUMNS,
+    SAMPLE_STORAGE_COLUMNS_LC,
+    SELECTION_KEY_TYPE
+} from './constants';
 import { FindField, GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
 
 export function initSampleSetSelects(
@@ -583,6 +588,8 @@ export function getGroupedSampleDisplayColumns(
 
     allDisplayColumns.forEach(col => {
         const colName = col.name.toLowerCase();
+        if (SAMPLE_STORAGE_COLUMNS_LC.indexOf(colName) > -1)
+            return;
         if (isAliquot) {
             // barcodes belong to the individual sample or aliquot (but not both)
             if (col.conceptURI === STORAGE_UNIQUE_ID_CONCEPT_URI) {

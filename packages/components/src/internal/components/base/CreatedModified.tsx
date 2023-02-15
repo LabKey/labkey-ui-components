@@ -141,7 +141,10 @@ export class CreatedModified extends Component<CreatedModifiedProps, State> {
             const displayTxt = serverDate ? moment(timestamp).from(serverDate) : moment(timestamp).fromNow();
 
             return (
-                <span title={this.formatTitle(config)} className={classNames('createdmodified', className)}>
+                <span
+                    title={this.formatTitle(config)}
+                    className={classNames('createdmodified', 'gray-text', className)}
+                >
                     {config.useCreated ? 'Created' : 'Modified'} {displayTxt}
                 </span>
             );

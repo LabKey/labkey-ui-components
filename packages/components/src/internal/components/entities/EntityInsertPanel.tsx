@@ -668,8 +668,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                     <LabelHelpTip title="Import Options" placement="top">
                         {this.renderUpdateTooltipText()}
                         <p>
-                            For more information on import options for {nounPlural}, see the {this.props.importHelpLinkNode}{' '}
-                            documentation page.
+                            For more information on import options for {nounPlural}, see the{' '}
+                            {this.props.importHelpLinkNode} documentation page.
                         </p>
                     </LabelHelpTip>
                 </div>

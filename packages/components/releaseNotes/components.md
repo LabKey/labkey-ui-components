@@ -49,6 +49,15 @@ Components, models, actions, and utility functions for LabKey applications and p
   * update UserDetailsPanel so that permissions and group listing items are links to admin groups/permissions page
   * add dirty state check for user Profile page navigation
 
+### version 2.288.3
+*Released*: 14 February 2023
+- Issue 47257: Cannot delete samples from a grid that has a filter applied
+    - make sure setSnapshotSelections() is called before selectionKey based call to getCrossFolderSelectionResult()
+
+### version 2.288.2
+*Released*: 14 February 2023
+- Issue 47303: fix bad URL redirection from SamplesCreatedSuccessMessage
+
 ### version 2.288.1
 *Released*: 6 February 2023
 - Issue 46618: Retain result row ordering in `formatSavedResults` and `formatResults` when processing results of `QuerySelect` queries.

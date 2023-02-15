@@ -75,7 +75,7 @@ const SamplesCreatedSuccessMessageImpl: FC<SamplesCreatedSuccessMessageProps & W
                 sampleListingGridId,
                 actions
             );
-            router.push(url.toHref());
+            router.push(url.toString());
         } catch (e) {
             setError(resolveErrorMessage(e));
         }

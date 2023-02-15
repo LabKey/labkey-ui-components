@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.290.TBD
-*Released*: TBD February 2023
+### version 2.293.1
+*Released*: 15 February 2023
 * Merge release23.2-SNAPSHOT to develop:
     * includes changes from 2.288.2 and 2.288.3
 

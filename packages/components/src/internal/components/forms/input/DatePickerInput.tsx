@@ -52,6 +52,7 @@ export interface DatePickerInputProps extends DisableableInputProps, WithFormsyP
 
 interface DatePickerInputState extends DisableableInputState {
     selectedDate: any;
+    invalid: boolean;
 }
 
 // export for jest testing
@@ -82,9 +83,14 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
             props.setValue?.(initDate);
         }
 
+        // Issue 46767: DatePicker valid dates start at year 1000 (i.e. new Date('1000-01-01'))
+        const dateFormat = props.initValueFormatted ? this.getDateFormat() : undefined;
+        const invalid = props.value ? parseDate(props.value, dateFormat, new Date('1000-01-01')) === null : false;
+
         this.state = {
             isDisabled: props.initiallyDisabled,
             selectedDate: initDate,
+            invalid,
         };
     }
 
@@ -105,12 +111,11 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
         // to parseDate when getting the initial value.
         const dateFormat = props.initValueFormatted ? this.getDateFormat() : undefined;
 
-        // Issue 46767: DatePicker valid dates start at year 1000 (i.e. new Date('1000-01-01'))
-        return props.value ? parseDate(props.value, dateFormat, new Date('1000-01-01')) : undefined;
+        return props.value ? parseDate(props.value, dateFormat) : undefined;
     }
 
     onChange = (date: Date): void => {
-        this.setState({ selectedDate: date });
+        this.setState({ selectedDate: date, invalid: false });
 
         this.props.onChange?.(date);
 
@@ -150,7 +155,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
             onKeyDown,
         } = this.props;
 
-        const { isDisabled, selectedDate } = this.state;
+        const { isDisabled, selectedDate, invalid } = this.state;
 
         const picker = (
             <DatePicker
@@ -160,7 +165,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
                 isClearable={isClearable}
                 name={name ? name : queryColumn.fieldKey}
                 id={queryColumn.fieldKey}
-                disabled={isDisabled}
+                disabled={isDisabled || invalid}
                 selected={selectedDate}
                 onChange={this.onChange}
                 showTimeSelect={this.shouldShowTime()}

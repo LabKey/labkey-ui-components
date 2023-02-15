@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD February 2023
+- Issue 46767: DatePicker valid dates start at year 1000 (i.e. new Date('1000-01-01'))
+  - set the DatePicker as disabled in an invalid date is used, still allows it to be removed
+
 ### version 2.293.0
 *Released*: 15 February 2023
 - Add LK version to app admin settings page header

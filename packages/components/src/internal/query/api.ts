@@ -963,7 +963,7 @@ export function processRequest(response: any, request: any, reject: (reason?: an
  * provided by `@labkey/components`.
  * @private
  */
-export function getContainerFilter(containerPath?: string, forFolder?: boolean): Query.ContainerFilter {
+export function getContainerFilter(containerPath?: string): Query.ContainerFilter {
     // Check to see if product projects support is enabled.
     if (!isProductProjectsEnabled()) {
         return undefined;
@@ -973,18 +973,6 @@ export function getContainerFilter(containerPath?: string, forFolder?: boolean):
     // "down" the folder hierarchy for data.
     if (isProjectContainer(containerPath)) {
         return Query.ContainerFilter.currentAndSubfoldersPlusShared;
-    }
-
-    // When listing data in a folder scope returned data to the current
-    // folder when the experimental feature is enabled.
-    if (forFolder) {
-        if (isProductProjectsDataListingScopedToProject()) {
-            return Query.ContainerFilter.current;
-        }
-
-        // When requesting data from a sub-folder context the ContainerFilter filters
-        // "up" the folder hierarchy for data.
-        return Query.ContainerFilter.currentPlusProjectAndShared;
     }
 
     // When all folder filtering is enabled resolve data across all folders.
@@ -1003,7 +991,26 @@ export function getContainerFilter(containerPath?: string, forFolder?: boolean):
  * @private
  */
 export function getContainerFilterForFolder(containerPath?: string): Query.ContainerFilter {
-    return getContainerFilter(containerPath, true);
+    // Check to see if product projects support is enabled.
+    if (!isProductProjectsEnabled()) {
+        return undefined;
+    }
+
+    // When requesting data from a top-level folder context the ContainerFilter filters
+    // "down" the folder hierarchy for data.
+    if (isProjectContainer(containerPath)) {
+        return Query.ContainerFilter.currentAndSubfoldersPlusShared;
+    }
+
+    // When listing data in a folder scope returned data to the current
+    // folder when the experimental feature is enabled.
+    if (isProductProjectsDataListingScopedToProject()) {
+        return Query.ContainerFilter.current;
+    }
+
+    // When requesting data from a sub-folder context the ContainerFilter filters
+    // "up" the folder hierarchy for data.
+    return Query.ContainerFilter.currentPlusProjectAndShared;
 }
 
 /**

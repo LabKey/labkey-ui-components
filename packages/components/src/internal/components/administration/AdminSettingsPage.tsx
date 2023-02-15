@@ -44,7 +44,7 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
     }, [createNotification, dismissNotifications, setIsDirty]);
 
     const lkVersion = useCallback(() => {
-        return <div className="gray-text">Version: {getServerContext().versionString}</div>;
+        return <div className="gray-text admin-settings-version">Version: {getServerContext().versionString}</div>;
     }, []);
 
     if (!user.isAdmin) {

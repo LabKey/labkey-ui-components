@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD February 2023
+- Add LK version to app admin settings page header
+
 ### version 2.292.1
 *Released*: 13 February 2023
 - Issue 47190: Don't warn about required fields added to default grid from lookups

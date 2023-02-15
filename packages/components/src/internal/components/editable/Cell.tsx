@@ -303,7 +303,7 @@ export class Cell extends React.PureComponent<Props, State> {
                     'cell-warning': message !== undefined,
                     'cell-read-only': this.isReadOnly(),
                     'cell-locked': this.isLocked(),
-                    'cell-menu': showLookup,
+                    'cell-menu': showLookup || col.inputRenderer,
                     'cell-placeholder': valueDisplay.length === 0 && placeholder !== undefined,
                 }),
                 onDoubleClick: this.handleDblClick,

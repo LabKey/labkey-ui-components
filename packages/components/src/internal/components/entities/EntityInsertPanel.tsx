@@ -658,19 +658,21 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const mergeMsg = `Allow new ${nounPlural}`;
 
         return (
-            <div className="pull-right">
-                <input type="checkbox" checked={isMerge} onChange={this.toggleInsertOptionChange} />
-                <span className="entity-mergeoption-checkbox" onClick={this.toggleInsertOptionChange}>
-                    {mergeMsg}
-                </span>
-                &nbsp;
-                <LabelHelpTip title="Import Options" placement="top">
-                    {this.renderUpdateTooltipText()}
-                    <p>
-                        For more information on import options for {nounPlural}, see the {this.props.importHelpLinkNode}{' '}
-                        documentation page.
-                    </p>
-                </LabelHelpTip>
+            <div className="col-sm-3">
+                <div className="pull-right">
+                    <input type="checkbox" checked={isMerge} onChange={this.toggleInsertOptionChange} />
+                    <span className="entity-mergeoption-checkbox" onClick={this.toggleInsertOptionChange}>
+                        {mergeMsg}
+                    </span>
+                    &nbsp;
+                    <LabelHelpTip title="Import Options" placement="top">
+                        {this.renderUpdateTooltipText()}
+                        <p>
+                            For more information on import options for {nounPlural}, see the{' '}
+                            {this.props.importHelpLinkNode} documentation page.
+                        </p>
+                    </LabelHelpTip>
+                </div>
             </div>
         );
     };
@@ -706,8 +708,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             <>
                 {insertModel.isInit && (
                     <div className="row">
-                        <div className="col-sm-9">{this.renderTargetEntitySelect()}</div>
-                        <div className="col-sm-3">{this.renderMergeOption(isGrid)}</div>
+                        <div className={isGrid ? 'col-sm-12' : 'col-sm-9'}>{this.renderTargetEntitySelect()}</div>
+                        {this.renderMergeOption(isGrid)}
                     </div>
                 )}
                 {insertModel.isError && (

@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.293.2
+*Released*: 15 February 2023
+* Fix EntityInsertPanel UI issues
+    * fix alignment of parent type inputs on sample creation grid
+    * fix extra caret on entity insert panel when alias cells are present
+
 ### version 2.293.1
 *Released*: 15 February 2023
 * Merge release23.2-SNAPSHOT to develop:

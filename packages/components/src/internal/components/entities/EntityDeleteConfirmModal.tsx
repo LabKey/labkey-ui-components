@@ -21,6 +21,10 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { Alert } from '../base/Alert';
 
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+
+import { setSnapshotSelections } from '../../actions';
+
 import { EntityDeleteConfirmHandler, EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
 import { getDeleteConfirmationData } from './actions';
 import { EntityDataType, OperationConfirmationData } from './models';
@@ -28,11 +32,11 @@ import { EntityDataType, OperationConfirmationData } from './models';
 interface Props {
     entityDataType: EntityDataType;
     getDeletionDescription?: (numToDelete: number) => React.ReactNode;
+    model?: QueryModel;
     onCancel: () => void;
     onConfirm: EntityDeleteConfirmHandler;
     rowIds?: string[];
     selectionKey?: string;
-    useSnapshotSelection?: boolean;
     verb?: string;
 }
 
@@ -73,9 +77,11 @@ export class EntityDeleteConfirmModal extends PureComponent<Props, State> {
     }
 
     init = async (): Promise<void> => {
-        const { entityDataType, rowIds, selectionKey, useSnapshotSelection } = this.props;
+        const { entityDataType, rowIds, selectionKey, model } = this.props;
 
         try {
+            const useSnapshotSelection = model?.filterArray.length > 0;
+            if (useSnapshotSelection) await setSnapshotSelections(selectionKey, [...model.selections]);
             const confirmationData = await getDeleteConfirmationData(
                 entityDataType,
                 rowIds,

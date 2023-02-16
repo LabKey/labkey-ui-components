@@ -6,6 +6,21 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 46767: DatePicker valid dates start at year 1000 (i.e. new Date('1000-01-01'))
   - set the DatePicker as disabled in an invalid date is used, still allows it to be removed
 
+### version 2.293.3
+*Released*: 15 February 2023
+* Issue 47322: Ensure node requests are grouped by schema/query
+
+### version 2.293.2
+*Released*: 15 February 2023
+* Fix EntityInsertPanel UI issues
+    * fix alignment of parent type inputs on sample creation grid
+    * fix extra caret on entity insert panel when alias cells are present
+
+### version 2.293.1
+*Released*: 15 February 2023
+* Merge release23.2-SNAPSHOT to develop:
+    * includes changes from 2.288.2 and 2.288.3
+
 ### version 2.293.0
 *Released*: 15 February 2023
 - Add LK version to app admin settings page header
@@ -53,6 +68,15 @@ Components, models, actions, and utility functions for LabKey applications and p
   * use UserLink and UserLinkList in various components that render user displayName
   * update UserDetailsPanel so that permissions and group listing items are links to admin groups/permissions page
   * add dirty state check for user Profile page navigation
+
+### version 2.288.3
+*Released*: 14 February 2023
+- Issue 47257: Cannot delete samples from a grid that has a filter applied
+    - make sure setSnapshotSelections() is called before selectionKey based call to getCrossFolderSelectionResult()
+
+### version 2.288.2
+*Released*: 14 February 2023
+- Issue 47303: fix bad URL redirection from SamplesCreatedSuccessMessage
 
 ### version 2.288.1
 *Released*: 6 February 2023

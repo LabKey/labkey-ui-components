@@ -10,11 +10,13 @@ import { MAX_EDITABLE_GRID_ROWS } from '../internal/constants';
 
 import { Alert } from '../internal/components/base/Alert';
 
-import { SampleCreationTypeOption } from './SampleCreationTypeOption';
 import { SampleCreationType, SampleCreationTypeModel } from '../internal/components/samples/models';
 import { getOperationNotPermittedMessage } from '../internal/components/samples/utils';
-import { filterSampleRowsForOperation } from './utils';
+
 import { SampleOperation } from '../internal/components/samples/constants';
+
+import { filterSampleRowsForOperation } from './utils';
+import { SampleCreationTypeOption } from './SampleCreationTypeOption';
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -82,7 +84,12 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
             }
         } else {
             try {
-                const confirmationData = await api.samples.getSampleOperationConfirmationData(SampleOperation.EditLineage, undefined, selectionKey);
+                // no need to setSnapshotSelections for this selectionKey case since if the model had filters it would use the selectionData case above
+                const confirmationData = await api.samples.getSampleOperationConfirmationData(
+                    SampleOperation.EditLineage,
+                    undefined,
+                    selectionKey
+                );
                 if (this._mounted) {
                     this.setState({
                         statusData: confirmationData,

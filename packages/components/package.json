@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.293.0-fb-datepickerInvalid46767.0",
+  "version": "2.293.3",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

@@ -997,8 +997,13 @@ export function getContainerFilterForFolder(containerPath?: string): Query.Conta
     }
 
     if (isProductProjectsDataListingScopedToProject()) {
+        // When requesting data from a top-level folder context the ContainerFilter filters
+        // "down" the folder hierarchy for data.
         if (isProjectContainer(containerPath)) {
-            return Query.ContainerFilter.allInProjectPlusShared;
+            if (isAllProductFoldersFilteringEnabled()) {
+                return Query.ContainerFilter.allInProjectPlusShared;
+            }
+            return Query.ContainerFilter.currentPlusProjectAndShared;
         }
 
         // When listing data in a folder scope returned data to the current
@@ -1031,7 +1036,7 @@ export function getContainerFilterForLookups(moduleContext?: ModuleContext): Que
     // When all folder filtering is enabled getContainerFilterForLookups()
     // and getContainerFilter() are functionally equivalent.
     if (isAllProductFoldersFilteringEnabled(moduleContext)) {
-        return getContainerFilter();
+        return Query.ContainerFilter.allInProjectPlusShared;
     }
 
     // When inserting data from a top-level folder or a sub-folder context

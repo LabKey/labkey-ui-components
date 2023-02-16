@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD February 2023
+- Issue 46465: Grid actions that use a selectionKey doesn't get expected selections when filters applied to grid
+  - make sure setSnapshotSelections() is called before selectionKey based call to getSampleOperationConfirmationData()
+
 ### version 2.293.3
 *Released*: 15 February 2023
 * Issue 47322: Ensure node requests are grouped by schema/query

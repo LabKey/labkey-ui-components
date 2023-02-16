@@ -26,7 +26,6 @@ import { setSnapshotSelections } from '../../actions';
 // Is selectedQuantity needed if we always have either the sampleIds or the queryModel?
 export interface PicklistEditModalProps {
     selectionKey?: string; // pass in either selectionKey and selectedQuantity or sampleIds.
-    useSnapshotSelection?: boolean;
     selectedQuantity?: number;
     sampleIds?: string[];
     picklist?: Picklist;
@@ -70,7 +69,7 @@ export const PicklistEditModal: FC<PicklistEditModalProps> = memo(props => {
         })();
     }, [api, sampleFieldKey, queryModel]);
 
-    return <PicklistEditModalDisplay {...props} selectionKey={selKey} sampleIds={ids} useSnapshotSelection={queryModel?.filterArray.length > 0} />;
+    return <PicklistEditModalDisplay {...props} selectionKey={selKey} sampleIds={ids} />;
 });
 
 const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
@@ -86,8 +85,9 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
         currentProductId,
         picklistProductId,
         metricFeatureArea,
-        useSnapshotSelection,
+        queryModel,
     } = props;
+    const useSnapshotSelection = queryModel?.filterArray.length > 0;
     const { createNotification } = useNotificationsContext();
     const [name, setName] = useState<string>(picklist?.name ?? '');
     const onNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setName(evt.target.value), []);
@@ -110,6 +110,7 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
 
     useEffect(() => {
         (async () => {
+            if (useSnapshotSelection) await setSnapshotSelections(selectionKey, [...queryModel.selections]);
             api.samples
                 .getSampleOperationConfirmationData(SampleOperation.AddToPicklist, sampleIds, selectionKey, useSnapshotSelection)
                 .then(data => {

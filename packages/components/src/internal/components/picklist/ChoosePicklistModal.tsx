@@ -508,19 +508,17 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
             if (useSnapshotSelection) {
                 if (!queryModel?.isLoadingSelections) {
                     try {
-                        await setSnapshotSelections(queryModel.selectionKey, [...queryModel.selections]);
-                    }
-                    catch (reason) {
+                        await setSnapshotSelections(queryModel.selectionKey, [...selections]);
+                    } catch (reason) {
                         console.error("There was a problem loading the filtered selection data. Your actions will not obey these filters.", reason);
                     }
                     setSelectionsLoading(LoadingState.LOADED);
                 }
-            }
-            else {
+            } else {
                 setSelectionsLoading(LoadingState.LOADED);
             }
         })();
-    }, [queryModel?.selectionKey, queryModel?.selections, queryModel?.isLoadingSelections, useSnapshotSelection]);
+    }, [queryModel?.selectionKey, selections, queryModel?.isLoadingSelections, useSnapshotSelection]);
 
     useEffect(() => {
         setIdsLoading(LoadingState.LOADING);
@@ -542,8 +540,7 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
                             [...selections],
                             sampleFieldKey
                         );
-                    }
-                    catch (e) {
+                    } catch (e) {
                         setError(resolveErrorMessage(e) ?? 'Failed to retrieve picklist selection.');
                     }
                 }
@@ -555,20 +552,28 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
                         // If sample IDs are explicitly provided, then do not pass
                         // the selectionKey to ensure the ids are processed.
                         ids_ ? undefined : selectionKey,
-                        ids_ ? false : queryModel.filterArray.length > 0
+                        ids_ ? false : useSnapshotSelection
                     );
                     setIds(ids_);
                     setStatusData(data);
                     setValidCount(data.allowed.length);
-                }
-                catch (e) {
+                } catch (e) {
                     setError(resolveErrorMessage(e) ?? 'Failed to retrieve sample operations.');
                 }
 
                 setIdsLoading(LoadingState.LOADED);
             })();
         }
-    }, [api.samples, selectionsLoading, sampleFieldKey, sampleIds, schemaQuery, selectionKey, selections]);
+    }, [
+        api.samples,
+        selectionsLoading,
+        sampleFieldKey,
+        sampleIds,
+        schemaQuery,
+        selectionKey,
+        selections,
+        useSnapshotSelection,
+    ]);
 
     return (
         <ChoosePicklistModalDisplay

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.293.3
+*Released*: 15 February 2023
+* Issue 47322: Ensure node requests are grouped by schema/query
+
 ### version 2.293.2
 *Released*: 15 February 2023
 * Fix EntityInsertPanel UI issues

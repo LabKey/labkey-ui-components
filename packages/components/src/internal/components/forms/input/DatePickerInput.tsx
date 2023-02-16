@@ -51,8 +51,8 @@ export interface DatePickerInputProps extends DisableableInputProps, WithFormsyP
 }
 
 interface DatePickerInputState extends DisableableInputState {
-    selectedDate: any;
     invalid: boolean;
+    selectedDate: any;
 }
 
 // export for jest testing

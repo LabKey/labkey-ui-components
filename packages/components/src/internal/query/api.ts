@@ -969,15 +969,15 @@ export function getContainerFilter(containerPath?: string): Query.ContainerFilte
         return undefined;
     }
 
+    // When all folder filtering is enabled resolve data across all folders.
+    if (isAllProductFoldersFilteringEnabled()) {
+        return Query.ContainerFilter.allInProjectPlusShared;
+    }
+
     // When requesting data from a top-level folder context the ContainerFilter filters
     // "down" the folder hierarchy for data.
     if (isProjectContainer(containerPath)) {
         return Query.ContainerFilter.currentAndSubfoldersPlusShared;
-    }
-
-    // When all folder filtering is enabled resolve data across all folders.
-    if (isAllProductFoldersFilteringEnabled()) {
-        return Query.ContainerFilter.allInProjectPlusShared;
     }
 
     // When requesting data from a sub-folder context the ContainerFilter filters
@@ -996,16 +996,20 @@ export function getContainerFilterForFolder(containerPath?: string): Query.Conta
         return undefined;
     }
 
+    if (isProductProjectsDataListingScopedToProject()) {
+        if (isProjectContainer(containerPath)) {
+            return Query.ContainerFilter.allInProjectPlusShared;
+        }
+
+        // When listing data in a folder scope returned data to the current
+        // folder when the experimental feature is enabled.
+        return Query.ContainerFilter.current;
+    }
+
     // When requesting data from a top-level folder context the ContainerFilter filters
     // "down" the folder hierarchy for data.
     if (isProjectContainer(containerPath)) {
         return Query.ContainerFilter.currentAndSubfoldersPlusShared;
-    }
-
-    // When listing data in a folder scope returned data to the current
-    // folder when the experimental feature is enabled.
-    if (isProductProjectsDataListingScopedToProject()) {
-        return Query.ContainerFilter.current;
     }
 
     // When requesting data from a sub-folder context the ContainerFilter filters
@@ -1024,8 +1028,10 @@ export function getContainerFilterForLookups(moduleContext?: ModuleContext): Que
         return undefined;
     }
 
+    // When all folder filtering is enabled getContainerFilterForLookups()
+    // and getContainerFilter() are functionally equivalent.
     if (isAllProductFoldersFilteringEnabled(moduleContext)) {
-        return Query.ContainerFilter.allInProjectPlusShared;
+        return getContainerFilter();
     }
 
     // When inserting data from a top-level folder or a sub-folder context

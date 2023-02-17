@@ -275,6 +275,7 @@ export function getSampleFinderCommonConfigs(
     return {
         requiredColumns,
         baseFilters,
+        includeTotalCount: true,
     };
 }
 

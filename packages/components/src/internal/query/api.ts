@@ -963,14 +963,14 @@ export function processRequest(response: any, request: any, reject: (reason?: an
  * provided by `@labkey/components`.
  * @private
  */
-export function getContainerFilter(containerPath?: string): Query.ContainerFilter {
+export function getContainerFilter(containerPath?: string, moduleContext?: ModuleContext): Query.ContainerFilter {
     // Check to see if product projects support is enabled.
-    if (!isProductProjectsEnabled()) {
+    if (!isProductProjectsEnabled(moduleContext)) {
         return undefined;
     }
 
     // When all folder filtering is enabled resolve data across all folders.
-    if (isAllProductFoldersFilteringEnabled()) {
+    if (isAllProductFoldersFilteringEnabled(moduleContext)) {
         return Query.ContainerFilter.allInProjectPlusShared;
     }
 
@@ -990,17 +990,20 @@ export function getContainerFilter(containerPath?: string): Query.ContainerFilte
  * within a folder context.
  * @private
  */
-export function getContainerFilterForFolder(containerPath?: string): Query.ContainerFilter {
+export function getContainerFilterForFolder(
+    containerPath?: string,
+    moduleContext?: ModuleContext
+): Query.ContainerFilter {
     // Check to see if product projects support is enabled.
-    if (!isProductProjectsEnabled()) {
+    if (!isProductProjectsEnabled(moduleContext)) {
         return undefined;
     }
 
-    if (isProductProjectsDataListingScopedToProject()) {
+    if (isProductProjectsDataListingScopedToProject(moduleContext)) {
         // When requesting data from a top-level folder context the ContainerFilter filters
         // "down" the folder hierarchy for data.
         if (isProjectContainer(containerPath)) {
-            if (isAllProductFoldersFilteringEnabled()) {
+            if (isAllProductFoldersFilteringEnabled(moduleContext)) {
                 return Query.ContainerFilter.allInProjectPlusShared;
             }
             return Query.ContainerFilter.currentPlusProjectAndShared;
@@ -1033,8 +1036,8 @@ export function getContainerFilterForLookups(moduleContext?: ModuleContext): Que
         return undefined;
     }
 
-    // When all folder filtering is enabled getContainerFilterForLookups()
-    // and getContainerFilter() are functionally equivalent.
+    // When all folder filtering is enabled resolve lookups against all folders
+    // within the top-level folder plus shared.
     if (isAllProductFoldersFilteringEnabled(moduleContext)) {
         return Query.ContainerFilter.allInProjectPlusShared;
     }

@@ -1192,6 +1192,6 @@ interface GridPanelWithModelProps<T = {}> extends GridPanelProps<T> {
  */
 export const GridPanelWithModel: FC<GridPanelWithModelProps> = memo(({ queryConfig, ...props }) => {
     const id = useMemo(() => queryConfig.id ?? createQueryModelId(queryConfig.schemaQuery), [queryConfig]);
-    const queryConfigs = useMemo(() => ({ [id]: queryConfig }), [id, queryConfig]);
+    const queryConfigs = useMemo(() => ({ [id]: { ...queryConfig, includeTotalCount: true } }), [id, queryConfig]);
     return <GridPanelWithModelBody {...props} id={id} key={id} queryConfigs={queryConfigs} />;
 });

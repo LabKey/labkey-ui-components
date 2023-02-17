@@ -140,6 +140,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                 omittedColumns: OMITTED_COLUMNS,
                 bindURL: true,
                 urlPrefix: usersView, // each model needs to have its own urlPrefix for paging to work across models
+                includeTotalCount: true,
             },
             true,
             true

@@ -715,6 +715,7 @@ export function createQueryConfigFilteredBySample(
         schemaQuery: new SchemaQuery(model.protocolSchemaName, 'Data'),
         title: model.name,
         urlPrefix: model.name,
+        includeTotalCount: true,
     };
 }
 

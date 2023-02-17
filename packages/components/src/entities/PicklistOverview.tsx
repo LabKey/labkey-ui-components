@@ -312,6 +312,7 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
                     ...SAMPLE_STATUS_REQUIRED_COLUMNS.map(name => 'SampleID/' + name),
                 ],
                 omittedColumns,
+                includeTotalCount: true,
             };
 
             // add a queryConfig for each distinct sample type of the picklist samples, with a filter clause
@@ -327,6 +328,7 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
                     ),
                     omittedColumns,
                     baseFilters: [Filter.create('RowId', picklist.name, PICKLIST_SAMPLES_FILTER)],
+                    includeTotalCount: true,
                 };
             });
         }

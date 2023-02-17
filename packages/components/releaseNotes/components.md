@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- ...default to includeTotalCount false and have grid QueryModel opt-in
+
 ### version 2.293.5
 *Released*: 17 February 2023
 - Issue 46465: Grid actions that use a selectionKey doesn't get expected selections when filters applied to grid

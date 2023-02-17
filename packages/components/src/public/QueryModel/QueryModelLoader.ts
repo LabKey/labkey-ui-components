@@ -126,6 +126,7 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
             parameters: model.queryParameters,
             includeDetailsColumn: model.includeDetailsColumn,
             includeUpdateColumn: model.includeUpdateColumn,
+            includeTotalCount: model.includeTotalCount,
         });
         const { key, models, orderedModels, totalRows, messages } = result;
 
@@ -133,7 +134,7 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
             messages: messages.toJS(),
             rows: models[key],
             orderedRows: orderedModels[key].toArray(),
-            rowCount: totalRows, // rename to match what the server returns
+            rowCount: model.includeTotalCount ? totalRows : undefined, // rename to match what the server returns
         };
     },
     // The selection related methods may seem like overly simple passthroughs, but by putting them on QueryModelLoader,

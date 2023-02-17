@@ -470,6 +470,7 @@ export const SampleListingPage: FC<CommonPageProps & WithRouterProps> = props =>
             requiredColumns: [...samplesGridRequiredColumns, ...SAMPLE_STATUS_REQUIRED_COLUMNS],
             schemaQuery: listSchemaQuery,
             bindURL: true,
+            includeTotalCount: true,
         },
     };
 

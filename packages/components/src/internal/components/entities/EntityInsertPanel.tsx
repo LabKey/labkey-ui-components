@@ -1314,8 +1314,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const uniqueIdFields = [];
         const unknownFields = [];
         const { domainDesign } = domainDetails;
-        let allowedFields = [],
-            lcDisallowedUdateFields = [];
+        let allowedFields = [];
         if (domainDetails.options.has('importAliases')) {
             allowedFields = Object.keys(domainDetails.options.get('importAliases')).map(key => key.toLowerCase());
         }

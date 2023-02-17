@@ -100,15 +100,15 @@ function fetchNodeMetadata(lineage: LineageResult): Array<Promise<ISelectRowsRes
     // keys cannot be filtered upon and thus are also not supported.
     return lineage.nodes
         .filter(n => n.schemaName !== undefined && n.queryName !== undefined && n.pkFilters.length === 1)
-        .groupBy(n => new SchemaQuery(n.schemaName, n.queryName))
-        .map((nodes, schemaQuery) => {
+        .groupBy(n => [n.schemaName, n.queryName].join('|||').toLowerCase())
+        .map(nodes => {
             const node = nodes.first();
             const { fieldKey } = node.pkFilters[0];
 
             return selectRowsDeprecated({
                 containerPath: node.container,
-                schemaName: schemaQuery.schemaName,
-                queryName: schemaQuery.queryName,
+                schemaName: node.schemaName,
+                queryName: node.queryName,
                 viewName: ViewInfo.DETAIL_NAME, // use Detail view to assure we get all data, even when default view is filtered
                 // TODO: Is there a better way to determine set of columns? Can we follow convention for detail views?
                 // See LineageNodeMetadata (and it's usages) for why this is currently necessary

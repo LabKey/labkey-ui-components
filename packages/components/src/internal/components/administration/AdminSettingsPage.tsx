@@ -1,4 +1,5 @@
 import React, { FC, useCallback } from 'react';
+import { getServerContext } from '@labkey/api';
 
 import { InjectedRouteLeaveProps, withRouteLeave } from '../../util/RouteLeave';
 import { useServerContext } from '../base/ServerContext';
@@ -42,6 +43,10 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
         createNotification('Successfully updated BarTender configuration.');
     }, [createNotification, dismissNotifications, setIsDirty]);
 
+    const lkVersion = useCallback(() => {
+        return <div className="gray-text admin-settings-version">Version: {getServerContext().versionString}</div>;
+    }, []);
+
     if (!user.isAdmin) {
         return <InsufficientPermissionsPage title={TITLE} />;
     }
@@ -71,7 +76,7 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
     }
 
     return (
-        <BasePermissionsCheckPage user={user} title={TITLE} hasPermission={user.isAdmin}>
+        <BasePermissionsCheckPage user={user} title={TITLE} hasPermission={user.isAdmin} renderButtons={lkVersion}>
             <ActiveUserLimit />
             {isProductProjectsEnabled(moduleContext) && (
                 <ProjectSettings onChange={onSettingsChange} onSuccess={onSettingsSuccess} />

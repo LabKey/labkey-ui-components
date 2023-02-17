@@ -3,7 +3,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Update `SamplesEditableGrid` for move of amount and units from inventory.item to exp.materials
+* Migrate inventory.item.volume to exp.materials.storedAmount and inventory.item.volumeUnits to exp.materials.Units
+  * Update `SamplesEditableGrid` for move of amount and units from inventory.item to exp.materials
+
+### version 2.293.5
+*Released*: 17 February 2023
+- Issue 46465: Grid actions that use a selectionKey doesn't get expected selections when filters applied to grid
+  - make sure setSnapshotSelections() is called before selectionKey based call to getSampleOperationConfirmationData()
 
 ### version 2.293.4
 *Released*: 16 February 2023

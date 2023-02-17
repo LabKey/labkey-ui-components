@@ -22,9 +22,10 @@ import { useAppContext } from '../../AppContext';
 
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 
+import { setSnapshotSelections } from '../../actions';
+
 import { Picklist } from './models';
 import { addSamplesToPicklist, getPicklistsForInsert, getPicklistUrl, SampleTypeCount } from './actions';
-import { setSnapshotSelections } from '../../actions';
 
 interface PicklistListProps {
     activeItem: Picklist;
@@ -262,7 +263,13 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             let numAdded = 0;
 
             try {
-                const response = await addSamplesToPicklist(activeItem.name, statusData, false, selectionKey, sampleIds);
+                const response = await addSamplesToPicklist(
+                    activeItem.name,
+                    statusData,
+                    false,
+                    selectionKey,
+                    sampleIds
+                );
                 api.query.incrementClientSideMetricCount(metricFeatureArea, 'addSamplesToPicklist');
                 numAdded = response.rows.length;
                 setSubmitting(false);
@@ -347,18 +354,13 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                     </div>
 
                     <div className="pull-right">
-                        <button
-                            type="button"
-                            className="btn btn-success"
-                            disabled
-                        >
+                        <button type="button" className="btn btn-success" disabled>
                             Add to Picklist
                         </button>
                     </div>
                 </>
             );
-        }
-        else if (statusData?.anyAllowed) {
+        } else if (statusData?.anyAllowed) {
             title = 'Choose a Picklist';
             body = (
                 <>
@@ -499,8 +501,7 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
                 try {
                     const picklists = await getPicklistsForInsert();
                     setItems(picklists);
-                }
-                catch (e) {
+                } catch (e) {
                     setError(resolveErrorMessage(e) ?? 'Failed to retrieve picklists.');
                 }
                 setItemsLoading(LoadingState.LOADED);
@@ -508,19 +509,20 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
             if (useSnapshotSelection) {
                 if (!queryModel?.isLoadingSelections) {
                     try {
-                        await setSnapshotSelections(queryModel.selectionKey, [...queryModel.selections]);
-                    }
-                    catch (reason) {
-                        console.error("There was a problem loading the filtered selection data. Your actions will not obey these filters.", reason);
+                        await setSnapshotSelections(queryModel.selectionKey, [...selections]);
+                    } catch (reason) {
+                        console.error(
+                            'There was a problem loading the filtered selection data. Your actions will not obey these filters.',
+                            reason
+                        );
                     }
                     setSelectionsLoading(LoadingState.LOADED);
                 }
-            }
-            else {
+            } else {
                 setSelectionsLoading(LoadingState.LOADED);
             }
         })();
-    }, [queryModel?.selectionKey, queryModel?.selections, queryModel?.isLoadingSelections, useSnapshotSelection]);
+    }, [queryModel?.selectionKey, selections, queryModel?.isLoadingSelections, useSnapshotSelection]);
 
     useEffect(() => {
         setIdsLoading(LoadingState.LOADING);
@@ -542,8 +544,7 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
                             [...selections],
                             sampleFieldKey
                         );
-                    }
-                    catch (e) {
+                    } catch (e) {
                         setError(resolveErrorMessage(e) ?? 'Failed to retrieve picklist selection.');
                     }
                 }
@@ -555,20 +556,28 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
                         // If sample IDs are explicitly provided, then do not pass
                         // the selectionKey to ensure the ids are processed.
                         ids_ ? undefined : selectionKey,
-                        ids_ ? false : queryModel.filterArray.length > 0
+                        ids_ ? false : useSnapshotSelection
                     );
                     setIds(ids_);
                     setStatusData(data);
                     setValidCount(data.allowed.length);
-                }
-                catch (e) {
+                } catch (e) {
                     setError(resolveErrorMessage(e) ?? 'Failed to retrieve sample operations.');
                 }
 
                 setIdsLoading(LoadingState.LOADED);
             })();
         }
-    }, [api.samples, selectionsLoading, sampleFieldKey, sampleIds, schemaQuery, selectionKey, selections]);
+    }, [
+        api.samples,
+        selectionsLoading,
+        sampleFieldKey,
+        sampleIds,
+        schemaQuery,
+        selectionKey,
+        selections,
+        useSnapshotSelection,
+    ]);
 
     return (
         <ChoosePicklistModalDisplay

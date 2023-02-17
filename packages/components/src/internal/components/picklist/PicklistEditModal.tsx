@@ -8,7 +8,6 @@ import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { Alert } from '../base/Alert';
 import { resolveErrorMessage } from '../../util/messaging';
 
-import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
 import { SampleOperation } from '../samples/constants';
 import { OperationConfirmationData } from '../entities/models';
 import { getOperationNotPermittedMessage } from '../samples/utils';
@@ -18,15 +17,16 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 
+import { setSnapshotSelections } from '../../actions';
+
 import { Picklist } from './models';
 import { createPicklist, getPicklistUrl, updatePicklist } from './actions';
-import { setSnapshotSelections } from '../../actions';
+import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
 
 // TODO reconcile these properties. Do we need both selectionKey and queryModel.
 // Is selectedQuantity needed if we always have either the sampleIds or the queryModel?
 export interface PicklistEditModalProps {
     selectionKey?: string; // pass in either selectionKey and selectedQuantity or sampleIds.
-    useSnapshotSelection?: boolean;
     selectedQuantity?: number;
     sampleIds?: string[];
     picklist?: Picklist;
@@ -70,7 +70,7 @@ export const PicklistEditModal: FC<PicklistEditModalProps> = memo(props => {
         })();
     }, [api, sampleFieldKey, queryModel]);
 
-    return <PicklistEditModalDisplay {...props} selectionKey={selKey} sampleIds={ids} useSnapshotSelection={queryModel?.filterArray.length > 0} />;
+    return <PicklistEditModalDisplay {...props} selectionKey={selKey} sampleIds={ids} />;
 });
 
 const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
@@ -86,8 +86,9 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
         currentProductId,
         picklistProductId,
         metricFeatureArea,
-        useSnapshotSelection,
+        queryModel,
     } = props;
+    const useSnapshotSelection = queryModel?.filterArray.length > 0;
     const { createNotification } = useNotificationsContext();
     const [name, setName] = useState<string>(picklist?.name ?? '');
     const onNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setName(evt.target.value), []);
@@ -110,8 +111,14 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
 
     useEffect(() => {
         (async () => {
+            if (useSnapshotSelection) await setSnapshotSelections(selectionKey, [...queryModel.selections]);
             api.samples
-                .getSampleOperationConfirmationData(SampleOperation.AddToPicklist, sampleIds, selectionKey, useSnapshotSelection)
+                .getSampleOperationConfirmationData(
+                    SampleOperation.AddToPicklist,
+                    sampleIds,
+                    selectionKey,
+                    useSnapshotSelection
+                )
                 .then(data => {
                     setStatusData(data);
                     setValidCount(data.allowed.length);
@@ -174,7 +181,15 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
                     })
                 );
             } else {
-                updatedList = await createPicklist(trimmedName, description, shared, statusData, selectionKey, useSnapshotSelection, sampleIds);
+                updatedList = await createPicklist(
+                    trimmedName,
+                    description,
+                    shared,
+                    statusData,
+                    selectionKey,
+                    useSnapshotSelection,
+                    sampleIds
+                );
                 api.query.incrementClientSideMetricCount(metricFeatureArea, 'createPicklist');
             }
             reset();

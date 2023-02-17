@@ -94,7 +94,7 @@ import {
 } from './models';
 
 const ENTITY_GRID_ID = 'entity-insert-grid-data';
-const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'description', 'samplestate'];
+const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'description', 'samplestate', 'storedamount', 'units', 'foo'];
 const ALIQUOT_NOUN_SINGULAR = 'Aliquot';
 const ALIQUOT_NOUN_PLURAL = 'Aliquots';
 

@@ -85,6 +85,8 @@ interface State {
     shouldDiscard: boolean;
 }
 
+const COMMON_SYSTEM_FIELDS_FOR_UPDATE = ['description', 'samplestate', 'storedamount', 'units'];
+
 // exported for jest testing
 export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State> {
     constructor(props: Props) {
@@ -119,8 +121,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
                 const isIndependentField =
                     sampleTypeDomainFields.independentFields.indexOf(column.fieldKey.toLowerCase()) > -1;
                 if (
-                    column.fieldKey.toLowerCase() === 'description' ||
-                    column.fieldKey.toLowerCase() === 'samplestate' ||
+                    COMMON_SYSTEM_FIELDS_FOR_UPDATE.indexOf(column.fieldKey.toLowerCase()) >=0 ||
                     isAliquotField ||
                     isIndependentField
                 )

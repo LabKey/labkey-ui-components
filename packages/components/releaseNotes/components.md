@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.293.5
+*Released*: 17 February 2023
+- Issue 46465: Grid actions that use a selectionKey doesn't get expected selections when filters applied to grid
+  - make sure setSnapshotSelections() is called before selectionKey based call to getSampleOperationConfirmationData()
+
 ### version 2.293.4
 *Released*: 16 February 2023
 - Issue 46767: DatePicker valid dates start at year 1000 (i.e. new Date('1000-01-01'))

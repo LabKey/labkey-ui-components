@@ -117,8 +117,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
             originalQueryInfo.columns.forEach((column, key) => {
                 const colLc = column.fieldKey.toLowerCase();
                 const isAliquotField = sampleTypeDomainFields.aliquotFields.indexOf(colLc) > -1;
-                const isIndependentField =
-                    sampleTypeDomainFields.independentFields.indexOf(colLc) > -1;
+                const isIndependentField = sampleTypeDomainFields.independentFields.indexOf(colLc) > -1;
                 if (
                     colLc === 'description' ||
                     colLc === 'samplestate' ||

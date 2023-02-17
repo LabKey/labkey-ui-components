@@ -797,6 +797,7 @@ export function getSampleAliquotsQueryConfig(
             Filter.create('RootMaterialLSID', aliquotRootLsid ?? sampleLsid),
             Filter.create('Lsid', sampleLsid, Filter.Types.EXP_CHILD_OF),
         ],
+        includeTotalCount: true,
     };
 }
 

@@ -169,14 +169,13 @@ export const DEFAULT_SAMPLE_FIELD_CONFIG = {
 export const ALIQUOTED_FROM_COL = 'AliquotedFrom';
 const STATUS_COL = 'Status';
 
-export const STORED_AMOUNT_COLUMNS_LC = [
-    'storedamount',
-    'units',
-]
+
 export const SAMPLE_STORAGE_COLUMNS = [
     'StorageLocation',
     'StorageRow',
     'StorageCol',
+    'StoredAmount',
+    'Units',
     'FreezeThawCount',
     'EnteredStorage',
     'CheckedOut',
@@ -203,6 +202,7 @@ export const SAMPLE_EXPORT_CONFIG = {
     'exportAlias.name': DEFAULT_SAMPLE_FIELD_CONFIG.label,
     'exportAlias.aliquotedFromLSID': ALIQUOTED_FROM_COL,
     'exportAlias.sampleState': STATUS_COL,
+    'exportAlias.storedAmount': 'Amount',
 };
 
 export const SAMPLE_DATA_EXPORT_CONFIG = {

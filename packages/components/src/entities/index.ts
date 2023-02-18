@@ -28,7 +28,6 @@ import { SampleAliquotDetailHeader } from './SampleAliquotDetailHeader';
 import { SampleCreationTypeModal } from './SampleCreationTypeModal';
 import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
 import { SamplesAssayButton } from './SamplesAssayButton';
-import { SampleTypeInsightsPanel } from './SampleTypeInsightsPanel';
 import { FindSamplesByIdHeaderPanel } from './FindSamplesByIdHeaderPanel';
 import { FindSamplesByIdsPageBase } from './FindSamplesByIdsPageBase';
 import { SampleFinderSection } from './SampleFinderSection';
@@ -124,7 +123,6 @@ export {
     SampleTypeListingPage,
     SampleTypeBasePage,
     SampleTypeDesignPage,
-    SampleTypeInsightsPanel,
     SampleTypeTemplateDownloadRenderer,
     SamplesAssayButton,
     SamplesDeriveButton,

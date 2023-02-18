@@ -92,6 +92,7 @@ export class SamplesEditableGridPanelForUpdate extends React.Component<Props> {
         }
     };
 
+
     getSamplesColumnMetadata = (tabInd: number): Map<string, EditableColumnMetadata> => {
         if (this.getCurrentTab(tabInd) !== UpdateGridTab.Samples) return undefined;
 
@@ -102,6 +103,12 @@ export class SamplesEditableGridPanelForUpdate extends React.Component<Props> {
             toolTip: <SampleStatusLegend />,
             popoverClassName: 'label-help-arrow-left',
         });
+
+        // TODO move MetricUnit classes and functions so we can properly filter based on sampleTypeDomainFields.metricUnit
+        // columnMetadata = columnMetadata.set(SAMPLE_UNITS_COLUMN_NAME, {
+        //     linkedColInd: 0,
+        //     filteredLookupKeys: List<any>(['kL', 'L', 'mL', 'uL', 'g', 'mg', 'ug', 'unit']),
+        // });
 
         const allSamples = !aliquots || aliquots.length === 0;
         if (allSamples) return columnMetadata.asImmutable();

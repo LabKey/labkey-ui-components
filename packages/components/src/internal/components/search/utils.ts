@@ -1017,8 +1017,6 @@ export function getSearchScopeFromContainerFilter(cf: Query.ContainerFilter): Se
     switch (cf) {
         case Query.ContainerFilter.allFolders:
             return SearchScope.All;
-        case Query.ContainerFilter.allInProjectPlusShared:
-            return SearchScope.ProjectAndShared;
         case Query.ContainerFilter.current:
             return SearchScope.Folder;
         case Query.ContainerFilter.currentAndParents:

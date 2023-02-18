@@ -169,12 +169,14 @@ export const DEFAULT_SAMPLE_FIELD_CONFIG = {
 export const ALIQUOTED_FROM_COL = 'AliquotedFrom';
 const STATUS_COL = 'Status';
 
+export const STORED_AMOUNT_COLUMNS_LC = [
+    'storedamount',
+    'units',
+]
 export const SAMPLE_STORAGE_COLUMNS = [
     'StorageLocation',
     'StorageRow',
     'StorageCol',
-    'StoredAmount',
-    'Units',
     'FreezeThawCount',
     'EnteredStorage',
     'CheckedOut',
@@ -188,8 +190,6 @@ export const SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR = [
     'SourceProtocolLSID',
     'StorageStatus',
     'SampleTypeUnits',
-    'StoredAmount',
-    'Units',
     'FreezeThawCount',
     'CheckedOutBy',
     'StorageRow',

@@ -66,10 +66,11 @@ interface OwnProps {
 type Props = OwnProps & InjectedQueryModels;
 
 interface State {
+    selectedUserId: number;
     // valid options are 'create', 'deactivate', 'reactivate', 'delete', undefined
-    selectedUserId: number; // valid options are 'active', 'inactive', 'all'
     showDialog: string;
     unlisten: any;
+    // valid options are 'active', 'inactive', 'all'
     usersView: string;
 }
 

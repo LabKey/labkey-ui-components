@@ -37,6 +37,7 @@ export class SampleAliquotDetailHeader extends PureComponent<SampleAliquotDetail
 
         const description = newRow.get('description');
         const created = newRow.get('created');
+        const expDate = newRow.get('materialexpdate');
         const status = newRow.get(SAMPLE_STATE_COLUMN_NAME.toLowerCase());
         const createdBy = newRow.get('createdby');
         const parent = newRow.get('aliquotedfromlsid/name');
@@ -48,6 +49,7 @@ export class SampleAliquotDetailHeader extends PureComponent<SampleAliquotDetail
                         {this.renderDetailRow(QueryColumn.ALIQUOTED_FROM_CAPTION, parent, 'aliquotedfrom')}
                         {this.renderDetailRow('Aliquoted By', createdBy, 'aliquotedby', true)}
                         {this.renderDetailRow('Aliquot Date', created, 'aliquoteddate')}
+                        {this.renderDetailRow('Aliquot Expiration Date', expDate, 'aliquotedexpdate')}
                         {this.renderDetailRow('Aliquot Description', description, 'aliquoteddescription')}
                         {isSampleStatusEnabled() && status !== undefined && (
                             <tr key="aliquotedstatus">

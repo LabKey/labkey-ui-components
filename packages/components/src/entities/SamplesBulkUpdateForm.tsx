@@ -115,12 +115,13 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
         // if the selection includes any aliquots, only show pk, aliquot specific and description/samplestate columns
         if (aliquots?.length > 0) {
             originalQueryInfo.columns.forEach((column, key) => {
-                const isAliquotField = sampleTypeDomainFields.aliquotFields.indexOf(column.fieldKey.toLowerCase()) > -1;
-                const isIndependentField =
-                    sampleTypeDomainFields.independentFields.indexOf(column.fieldKey.toLowerCase()) > -1;
+                const colLc = column.fieldKey.toLowerCase();
+                const isAliquotField = sampleTypeDomainFields.aliquotFields.indexOf(colLc) > -1;
+                const isIndependentField = sampleTypeDomainFields.independentFields.indexOf(colLc) > -1;
                 if (
-                    column.fieldKey.toLowerCase() === 'description' ||
-                    column.fieldKey.toLowerCase() === 'samplestate' ||
+                    colLc === 'description' ||
+                    colLc === 'samplestate' ||
+                    colLc === 'materialexpdate' ||
                     isAliquotField ||
                     isIndependentField
                 )

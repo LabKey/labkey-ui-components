@@ -1,4 +1,3 @@
-import * as console from 'console';
 import { List, fromJS, Map } from 'immutable';
 import React from 'react';
 import Formsy from 'formsy-react';

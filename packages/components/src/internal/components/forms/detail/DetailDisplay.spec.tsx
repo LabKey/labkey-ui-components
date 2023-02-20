@@ -1,3 +1,4 @@
+import * as console from 'console';
 import { List, fromJS, Map } from 'immutable';
 import React from 'react';
 import Formsy from 'formsy-react';
@@ -213,7 +214,7 @@ describe('resolveDetailEditRenderer', () => {
     });
 
     test('isPublicLookup, displayAsLookup = true', () => {
-        const col = new QueryColumn({
+        const col = QueryColumn.create({
             ...default_props,
             lookup: { isPublic: true },
             displayAsLookup: true,

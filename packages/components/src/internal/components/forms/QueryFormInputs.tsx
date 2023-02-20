@@ -211,7 +211,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 data={fieldValues}
                                 formsy
                                 initiallyDisabled={shouldDisableField}
-                                key={col.name}
+                                key={i}
                                 onAdditionalFormDataChange={onAdditionalFormDataChange}
                                 onSelectChange={this.onSelectChange}
                                 onToggleDisable={this.onToggleDisable}
@@ -233,7 +233,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 ? List(col.lookup.getQueryFilters(operation))
                                 : queryFilters?.[col.fieldKey];
                             return (
-                                <React.Fragment key={col.name}>
+                                <React.Fragment key={i}>
                                     {this.renderLabelField(col)}
                                     <QuerySelect
                                         addLabelAsterisk={showAsteriskSymbol}
@@ -274,7 +274,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 allowDisable={allowFieldDisable}
                                 formsy
                                 initiallyDisabled={shouldDisableField}
-                                key={col.name}
+                                key={i}
                                 onChange={this.onSelectChange}
                                 onToggleDisable={this.onToggleDisable}
                                 placeholder="Select or type to search..."
@@ -288,7 +288,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     if (col.inputType === 'textarea') {
                         return (
                             <TextAreaInput
-                                key={col.name}
+                                key={i}
                                 queryColumn={col}
                                 value={value}
                                 allowDisable={allowFieldDisable}
@@ -302,7 +302,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         return (
                             <FileInput
                                 formsy
-                                key={col.name}
+                                key={i}
                                 queryColumn={col}
                                 initialValue={value}
                                 name={col.fieldKey}
@@ -319,7 +319,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         case 'date':
                             return (
                                 <DatePickerInput
-                                    key={col.name}
+                                    key={i}
                                     queryColumn={col}
                                     value={value}
                                     initValueFormatted={false}
@@ -333,7 +333,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         case 'boolean':
                             return (
                                 <CheckboxInput
-                                    key={col.name}
+                                    key={i}
                                     queryColumn={col}
                                     value={value}
                                     allowDisable={allowFieldDisable}
@@ -346,7 +346,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         default:
                             return (
                                 <TextInput
-                                    key={col.name}
+                                    key={i}
                                     queryColumn={col}
                                     value={value ? String(value) : value}
                                     allowDisable={allowFieldDisable}

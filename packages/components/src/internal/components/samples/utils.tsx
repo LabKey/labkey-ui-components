@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import { Filter } from '@labkey/api';
 
@@ -33,6 +33,7 @@ import {
     SampleOperation,
     SampleStateType,
 } from './constants';
+import { List } from 'immutable';
 
 export function getOmittedSampleTypeColumns(user: User, moduleContext?: ModuleContext): string[] {
     let cols: string[] = [];
@@ -252,3 +253,133 @@ export function getSampleDomainDefaultSystemFields(moduleContext?: ModuleContext
         ? SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS.concat(SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS)
         : SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS;
 }
+
+
+export function getStorageItemUpdateData(
+    storageRows: any[],
+    sampleItems: {},
+    sampleTypeUnit: string,
+    noStorageSamples: any[],
+    selection: List<any>
+): any {
+    if (storageRows.length === 0) {
+        return null;
+    }
+
+    const sampleRowIds = [];
+    selection.forEach(sel => sampleRowIds.push(parseInt(sel)));
+
+    const errors: string[] = [],
+        normalizedRowsMap: any = {};
+    storageRows.forEach(row => {
+        const sampleId = caseInsensitive(row, 'RowId');
+        if (noStorageSamples.indexOf(sampleId) > -1) {
+            return;
+        }
+
+        const rowInd = sampleRowIds.indexOf(sampleId) + 1;
+
+        const existingStorageItem = sampleItems[sampleId];
+        if (!existingStorageItem) {
+            const errorMsg = `Unable to find storage data for sample for row ${rowInd}.`;
+            errors.push(errorMsg);
+            return;
+        }
+
+        normalizedRowsMap[sampleId] = {
+            rowId: existingStorageItem.rowId,
+            freezeThawCount: caseInsensitive(row, 'FreezeThawCount'),
+        };
+    });
+
+    return {
+        normalizedRowsMap,
+        errors: errors.length > 0 ? errors : undefined,
+    };
+}
+
+// export function getConvertedSampleAmountUpdateData (
+//     sampleRows: any[],
+//     originalRows: any[],
+//     sampleTypeUnit: string,
+//     selection: List<any>
+// ): {rows: any[], errors: string[]} {
+//     if (sampleRows.length === 0) {
+//         return null;
+//     }
+//     const sampleRowIds = [];
+//     selection.forEach(sel => sampleRowIds.push(parseInt(sel)));
+//     const errors: string[] = [];
+//     const normalizedRows: any[] = [];
+//     sampleRows.forEach((row, i) => {
+//         const sampleId = row['RowId'];
+//         const normalizedRow = [...row];
+//         const rowInd = sampleRowIds.indexOf(sampleId) + 1;
+//         const { storedAmount, units } = getConvertedAmount(row, originalRows[i], sampleTypeUnit, rowInd, errors);
+//         normalizedRow['storedAmount'] = storedAmount;
+//         normalizedRow['units'] = units;
+//         normalizedRows.push(normalizedRow);
+//     });
+//     return {rows: normalizedRows, errors};
+// }
+//
+//
+// export function getConvertedAmount(newData: any, originalData: any, sampleTypeUnit: string, rowInd: number, errors: string[])
+// {
+//     const amount = caseInsensitive(newData, 'StoredAmount');
+//     let existingAmount;
+//     const unit = caseInsensitive(newData, 'Units');
+//     // if no change to amount, still need to update amount since the grid displays the 'display' amount, not the db amount
+//     if (unit != null && amount == null) {
+//         existingAmount = caseInsensitive(originalData, 'storedAmount');
+//     }
+//     let normalizedUnit = unit;
+//     let normalizedAmount = amount;
+//
+//     if (amount != null && unit == null) {
+//         normalizedUnit = sampleTypeUnit ?? undefined; // if sampleTypeUnit is absent, use undefined (instead of null) to skip updating unit
+//     } else {
+//         let result;
+//         if (amount != null && unit != null) {
+//             result = _getNormalizedAmount(unit, sampleTypeUnit, amount, rowInd);
+//         } else if (amount == null && unit != null && existingAmount != null) {
+//             result = _getNormalizedAmount(unit, sampleTypeUnit, existingAmount, rowInd);
+//         }
+//
+//         if (result) {
+//             if (result.error) {
+//                 errors.push(result.error);
+//                 return;
+//             }
+//
+//             normalizedAmount = result.normalizedAmount;
+//             normalizedUnit = result.normalizedUnit;
+//         }
+//     }
+//     return {
+//         storedAmount: normalizedAmount,
+//         units: normalizedUnit,
+//     }
+// }
+//
+// function _getNormalizedAmount(unit: string, sampleTypeUnit: string, amount: number, rowInd: number) {
+//     let normalizedAmount, normalizedUnit, error;
+//     if (!sampleTypeUnit) {
+//         normalizedAmount = amount;
+//         normalizedUnit = unit;
+//     } else {
+//         const amountUnit = new UnitModel(amount, unit);
+//         if (amountUnit.canConvert(sampleTypeUnit)) {
+//             normalizedAmount = amountUnit.as(sampleTypeUnit).value;
+//             normalizedUnit = sampleTypeUnit;
+//         } else {
+//             error = `Invalid Units. Unable to convert '${unit}' to its preferred unit type '${sampleTypeUnit}' for row ${rowInd}.`;
+//         }
+//     }
+//
+//     return {
+//         normalizedAmount,
+//         normalizedUnit,
+//         error,
+//     };
+// }

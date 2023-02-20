@@ -323,7 +323,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             {isEditing || selectionData ? (
                 <SamplesEditableGrid
                     {...editableGridProps}
-                    determineSampleData={user.canUpdate}
+                    determineSampleData={user.canUpdate || userCanEditStorageData(user)}
                     determineLineage={user.canUpdate && !isMedia}
                     determineStorage={userCanEditStorageData(user) && !isMedia}
                     displayQueryModel={activeModel}
@@ -336,6 +336,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     sampleSet={activeModel?.schemaQuery.queryName}
                     selection={selection}
                     selectionData={selectionData}
+                    user={user}
                 />
             ) : (
                 <TabbedGridPanel

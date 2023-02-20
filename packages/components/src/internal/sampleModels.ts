@@ -41,13 +41,6 @@ export interface SamplesEditableGridProps {
     combineParentTypes?: boolean;
     displayQueryModel: QueryModel;
     editableGridUpdateData?: OrderedMap<string, any>;
-    getConvertedStorageUpdateData?: (
-        storageRows: any[],
-        sampleItems: {},
-        sampleTypeUnit: string,
-        noStorageSamples: any[],
-        selection: List<any>
-    ) => any;
     getIsDirty?: () => boolean;
     invalidateSampleQueries?: (schemaQuery: SchemaQuery) => void;
     onGridEditCancel: () => void;

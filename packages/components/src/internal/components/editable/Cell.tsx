@@ -46,6 +46,7 @@ interface Props {
     filteredLookupKeys?: List<any>;
     filteredLookupValues?: List<string>;
     focused?: boolean;
+    forUpdate: boolean;
     getFilteredLookupKeys?: (linkedValues: any[]) => Promise<List<any>>;
     lastSelection?: boolean;
     linkedValues?: any[];
@@ -273,6 +274,7 @@ export class Cell extends React.PureComponent<Props, State> {
             colIdx,
             containerFilter,
             focused,
+            forUpdate,
             lastSelection,
             message,
             placeholder,
@@ -382,6 +384,7 @@ export class Cell extends React.PureComponent<Props, State> {
                     disabled={this.isReadOnly()}
                     filteredLookupKeys={filteredLookupKeys}
                     filteredLookupValues={filteredLookupValues}
+                    forUpdate={forUpdate}
                     modifyCell={cellActions.modifyCell}
                     rowIdx={rowIdx}
                     select={cellActions.selectCell}

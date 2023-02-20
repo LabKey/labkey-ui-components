@@ -109,7 +109,8 @@ function inputCellFactory(
     readonlyRows: List<any>,
     lockedRows: List<any>,
     cellActions: CellActions,
-    containerFilter: Query.ContainerFilter
+    containerFilter: Query.ContainerFilter,
+    forUpdate: boolean
 ) {
     return (value: any, row: any, c: GridColumn, rn: number, cn: number) => {
         let colOffset = 0;
@@ -147,6 +148,7 @@ function inputCellFactory(
                 locked={isLockedRow}
                 rowIdx={rn}
                 focused={editorModel ? editorModel.isFocused(colIdx, rn) : false}
+                forUpdate={forUpdate}
                 message={editorModel?.getMessage(colIdx, rn)}
                 selected={editorModel ? editorModel.isSelected(colIdx, rn) : false}
                 selection={editorModel ? editorModel.inSelection(colIdx, rn) : false}
@@ -634,6 +636,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             allowRemove,
             containerFilter,
             editorModel,
+            forUpdate,
             hideCountCol,
             queryInfo,
             rowNumColumn,
@@ -677,7 +680,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         readonlyRows,
                         lockedRows,
                         this.cellActions,
-                        containerFilter
+                        containerFilter,
+                        forUpdate
                     ),
                     index: qCol.fieldKey,
                     raw: qCol,
@@ -1183,7 +1187,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     renderBulkAdd = (): ReactNode => {
-        const { addControlProps, allowFieldDisable, bulkAddProps, data, maxRows, queryInfo } = this.props;
+        const { addControlProps, allowFieldDisable, bulkAddProps, data, forUpdate, maxRows, queryInfo } = this.props;
         const maxToAdd =
             maxRows && maxRows - data.size < MAX_EDITABLE_GRID_ROWS ? maxRows - data.size : MAX_EDITABLE_GRID_ROWS;
         return (
@@ -1197,6 +1201,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 maxCount={maxToAdd}
                 onHide={this.toggleBulkAdd}
                 onCancel={this.toggleBulkAdd}
+                operation={forUpdate ? 'update' : 'insert'}
                 onSuccess={this.toggleBulkAdd}
                 queryInfo={queryInfo.getInsertQueryInfo()}
                 header={
@@ -1286,7 +1291,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         this.props.cancelBtnProps?.onClick?.();
     };
 
-    renderTabButtons = () => {
+    renderTabButtons = (): ReactNode => {
         const { primaryBtnProps, cancelBtnProps, tabBtnProps } = this.props;
         if (!tabBtnProps?.show) return null;
 
@@ -1307,8 +1312,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         );
     };
 
-    renderBulkUpdate = () => {
-        const { addControlProps, editorModel, bulkUpdateProps, data, dataKeys, queryInfo, showAsTab } = this.props;
+    renderBulkUpdate = (): ReactNode => {
+        const { addControlProps, bulkUpdateProps, data, dataKeys, editorModel, forUpdate, queryInfo, showAsTab } = this.props;
 
         return (
             <BulkAddUpdateForm
@@ -1321,6 +1326,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 onCancel={this.toggleBulkUpdate}
                 onFormChangeWithData={showAsTab ? this.onBulkUpdateFormDataChange : undefined}
                 onHide={this.toggleBulkUpdate}
+                operation={forUpdate ? 'update' : 'insert'}
                 onSubmitForEdit={this.bulkUpdate}
                 onSuccess={this.toggleBulkUpdate}
                 pluralNoun={addControlProps.nounPlural}
@@ -1332,7 +1338,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         );
     };
 
-    render() {
+    render(): ReactNode {
         const {
             allowAdd,
             editorModel,

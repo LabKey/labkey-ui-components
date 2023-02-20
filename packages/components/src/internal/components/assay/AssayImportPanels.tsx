@@ -102,7 +102,6 @@ interface OwnProps {
     onCancel: () => void;
     onComplete: (response: AssayUploadResultModel, isAsync?: boolean) => void;
     onSave?: (response: AssayUploadResultModel, isAsync?: boolean) => void;
-    runDataPanelTitle?: string;
     runId?: string;
     setIsDirty?: (isDirty: boolean) => void;
     showUploadTabs?: boolean;
@@ -653,7 +652,6 @@ class AssayImportPanelsBody extends Component<Props, State> {
             maxRows,
             onSave,
             showUploadTabs,
-            runDataPanelTitle,
             fileSizeLimits,
             user,
             getIsDirty,
@@ -678,6 +676,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         }
 
         const isReimport = this.isReimport();
+        const operation = isReimport ? 'update' : 'insert';
         const runContainerId = runPropsModel.getRowValue('Folder');
         const folderNoun = isPremiumProductEnabled() ? 'project' : 'folder';
 
@@ -705,8 +704,8 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     />
                 )}
                 <Alert bsStyle="warning">{sampleStatusWarning}</Alert>
-                <BatchPropertiesPanel model={model} onChange={this.handleBatchChange} />
-                <RunPropertiesPanel model={model} onChange={this.handleRunChange} />
+                <BatchPropertiesPanel model={model} operation={operation} onChange={this.handleBatchChange} />
+                <RunPropertiesPanel model={model} operation={operation} onChange={this.handleRunChange} />
                 <RunDataPanel
                     acceptedPreviewFileFormats={acceptedPreviewFileFormats}
                     allowBulkRemove={allowBulkRemove}
@@ -720,11 +719,11 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     onFileChange={this.handleFileChange}
                     onFileRemoval={this.handleFileRemove}
                     onGridChange={this.onGridChange}
+                    operation={operation}
                     onTextChange={this.handleDataTextChange}
                     queryModel={dataModel}
                     runPropertiesRow={runProps}
                     showTabs={showUploadTabs}
-                    title={runDataPanelTitle}
                     wizardModel={model}
                     getIsDirty={getIsDirty}
                     setIsDirty={setIsDirty}

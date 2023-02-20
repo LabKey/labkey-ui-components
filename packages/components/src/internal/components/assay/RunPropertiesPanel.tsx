@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, memo, useMemo } from 'react';
+import React, { FC, memo } from 'react';
 import Formsy from 'formsy-react';
 import { Input, Textarea } from 'formsy-react-components';
 
@@ -29,32 +29,30 @@ import { useServerContext } from '../base/ServerContext';
 
 import { AssayPropertiesPanelProps } from './models';
 
-export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
-    const { model, onChange, title = 'Run Details' } = props;
+const NAME_LABEL = (
+    <LabelOverlay
+        description="The assay/experiment ID that uniquely identifies this assay run."
+        label="Assay ID"
+        type="Text (String)"
+    />
+);
+
+const COMMENT_LABEL = (
+    <LabelOverlay description="Contains comments about this run" label="Comments" type="Text (String)" />
+);
+
+export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(({ model, onChange, operation }) => {
     const { moduleContext } = useServerContext();
-    const nameLabel = useMemo(
-        () => (
-            <LabelOverlay
-                description="The assay/experiment ID that uniquely identifies this assay run."
-                label="Assay ID"
-                type="Text (String)"
-            />
-        ),
-        []
-    );
-    const commentLabel = useMemo(
-        () => <LabelOverlay description="Contains comments about this run" label="Comments" type="Text (String)" />,
-        []
-    );
+
     return (
         <div className="panel panel-default">
-            <div className="panel-heading">{title}</div>
+            <div className="panel-heading">Run Details</div>
             <div className="panel-body">
                 <Formsy className="form-horizontal" onChange={onChange}>
                     <Input
                         changeDebounceInterval={0}
                         id="runname"
-                        label={nameLabel}
+                        label={NAME_LABEL}
                         labelClassName="text-left"
                         name="runname"
                         type="text"
@@ -64,7 +62,7 @@ export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
                         changeDebounceInterval={0}
                         cols={60}
                         id="comment"
-                        label={commentLabel}
+                        label={COMMENT_LABEL}
                         labelClassName="text-left"
                         name="comment"
                         rows={2}
@@ -73,18 +71,19 @@ export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
                     {isWorkflowEnabled(moduleContext) && (
                         <AssayTaskInput
                             assayId={model.assayDef.id}
+                            containerFilter={getContainerFilterForLookups()}
                             formsy
                             name="workflowtask"
                             value={model.workflowTask}
-                            containerFilter={getContainerFilterForLookups()}
                         />
                     )}
                     {model.runColumns.size !== 0 && (
                         <QueryFormInputs
+                            containerFilter={getContainerFilterForLookups()}
                             fieldValues={model.runProperties.toObject()}
+                            operation={operation}
                             queryColumns={model.runColumns}
                             renderFileInputs
-                            containerFilter={getContainerFilterForLookups()}
                         />
                     )}
                 </Formsy>

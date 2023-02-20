@@ -1,5 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import { List, Map } from 'immutable';
+import { Operation } from '../../../public/QueryColumn';
 
 import { capitalizeFirstChar, getCommonDataValues } from '../../util/utils';
 import { EditorModel } from '../editable/models';
@@ -12,6 +13,7 @@ interface BulkAddUpdateFormProps extends Omit<QueryInfoFormProps, 'fieldValues'>
     data: Map<any, Map<string, any>>;
     dataKeys: List<any>;
     editorModel: EditorModel;
+    operation: Operation;
     selectedRowIndexes: List<number>;
     warning?: string;
 }

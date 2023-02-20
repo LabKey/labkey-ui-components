@@ -39,6 +39,7 @@ export interface LookupCellProps {
     disabled?: boolean;
     filteredLookupKeys?: List<any>;
     filteredLookupValues?: List<string>;
+    forUpdate: boolean;
     modifyCell: (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES) => void;
     rowIdx: number;
     select: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => void;
@@ -56,7 +57,7 @@ export class LookupCell extends PureComponent<LookupCellProps> {
     };
 
     render(): ReactNode {
-        const { col, containerFilter, disabled, values, filteredLookupKeys, filteredLookupValues } = this.props;
+        const { col, containerFilter, disabled, filteredLookupKeys, filteredLookupValues, forUpdate, values } = this.props;
 
         const rawValues = values
             .filter(vd => vd.raw !== undefined)
@@ -92,29 +93,29 @@ export class LookupCell extends PureComponent<LookupCellProps> {
             );
         }
 
-        if (lookup.hasQueryFilters()) {
-            queryFilters = queryFilters.push(...lookup.getQueryFilters());
+        const operation = forUpdate ? 'update' : 'insert';
+        if (lookup.hasQueryFilters(operation)) {
+            queryFilters = queryFilters.push(...lookup.getQueryFilters(operation));
         }
 
         return (
             <QuerySelect
                 {...gridCellSelectInputProps}
                 containerFilter={lookup.containerFilter ?? containerFilter ?? getContainerFilterForLookups()}
+                containerPath={lookup.containerPath}
                 disabled={disabled}
-                queryFilters={queryFilters}
+                maxRows={LOOKUP_DEFAULT_SIZE}
                 multiple={isMultiple}
+                onQSChange={this.onSelectChange}
+                openMenuOnFocus={!isMultiple} // If set to true for the multi-select case, it's not possible to tab out of the cell.
+                preLoad
+                queryFilters={queryFilters}
                 // use detail view to assure we get values that may have been filtered out in the default view
                 schemaQuery={new SchemaQuery(
                     lookup.schemaQuery.schemaName,
                     lookup.schemaQuery.queryName,
                     ViewInfo.DETAIL_NAME
                 )}
-                key={col.lookupKey}
-                maxRows={LOOKUP_DEFAULT_SIZE}
-                containerPath={lookup.containerPath}
-                openMenuOnFocus={!isMultiple} // If set to true for the multi-select case, it's not possible to tab out of the cell.
-                onQSChange={this.onSelectChange}
-                preLoad
                 value={isMultiple ? rawValues : rawValues[0]}
             />
         );

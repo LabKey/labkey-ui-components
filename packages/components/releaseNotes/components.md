@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Migrate inventory.item.volume to exp.materials.storedAmount and inventory.item.volumeUnits to exp.materials.Units
   * Update `SamplesEditableGrid` for move of amount and units from inventory.item to exp.materials
+  * Move measurement- and sample amount-related methods and models from ui-premium to here
+  * Relabel "Stored Amount" to "Amount"
+  * Separate editing of Stored Amount and Freeze/Thaw count on
+  * Account for storedAmount and Units fields now on samples grids
+  * Don't display amount and units in details display
 
 ### version 2.293.5
 *Released*: 17 February 2023

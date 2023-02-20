@@ -273,3 +273,15 @@ export const SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS = [
     { Name: 'StorageRow', Label: 'Storage Row', 'Data Type': 'Text', Required: false, Description: '' },
     { Name: 'StorageCol', Label: 'Storage Col', 'Data Type': 'Text', Required: false, Description: '' },
 ];
+
+export const AMOUNT_PRECISION_ERROR_TEXT = 'Amount used is too precise for selected units.';
+
+export const STORED_AMOUNT_FIELDS = {
+    ROWID: 'RowId',
+    AMOUNT: 'StoredAmount',
+    UNITS: 'Units',
+    RAW_AMOUNT: 'RawAmount',
+    RAW_UNITS: 'RawUnits',
+    FREEZE_THAW_COUNT: 'FreezeThawCount',
+    AUDIT_COMMENT: 'auditUserComment',
+};

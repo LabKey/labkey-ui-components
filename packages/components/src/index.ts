@@ -16,8 +16,8 @@
 import { enableMapSet, enablePatches } from 'immer';
 
 import {
-    AppURL,
     applyURL,
+    AppURL,
     buildURL,
     createProductUrl,
     createProductUrlFromParts,
@@ -28,13 +28,7 @@ import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionUR
 import { Container } from './internal/components/base/models/Container';
 import { hasAllPermissions, hasAnyPermissions, hasPermissions, User } from './internal/components/base/models/User';
 import { GridColumn } from './internal/components/base/models/GridColumn';
-import {
-    decodePart,
-    encodePart,
-    getSchemaQuery,
-    resolveKey,
-    SchemaQuery,
-} from './public/SchemaQuery';
+import { decodePart, encodePart, getSchemaQuery, resolveKey, SchemaQuery, } from './public/SchemaQuery';
 import { insertColumnFilter, QueryColumn, QueryLookup } from './public/QueryColumn';
 import { QuerySort } from './public/QuerySort';
 import { LastActionStatus, MessageLevel } from './internal/LastActionStatus';
@@ -184,9 +178,9 @@ import {
     getSelection,
     incrementClientSideMetricCount,
     replaceSelected,
+    selectGridIdsFromTransactionId,
     setSelected,
     setSnapshotSelections,
-    selectGridIdsFromTransactionId,
 } from './internal/actions';
 import { cancelEvent } from './internal/events';
 import { createGridModelId } from './internal/models';
@@ -243,7 +237,9 @@ import {
     EditableGridPanelForUpdateWithLineage,
     UpdateGridTab,
 } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
-import { LineageEditableGridLoaderFromSelection } from './internal/components/editable/LineageEditableGridLoaderFromSelection';
+import {
+    LineageEditableGridLoaderFromSelection
+} from './internal/components/editable/LineageEditableGridLoaderFromSelection';
 
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
 
@@ -328,6 +324,21 @@ import {
     getSelectionLineageData,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
+import { SampleAmountEditModal } from './internal/components/samples/SampleAmountEditModal';
+import { StorageAmountInput } from './internal/components/samples/StorageAmountInput';
+import { UnitModel } from './internal/components/measurement/models';
+import {
+    areUnitsCompatible,
+    convertUnitDisplay,
+    getAltMetricUnitOptions,
+    getAltUnitKeys,
+    getMetricUnitOptions,
+    getMultiAltUnitKeys,
+    getStoredAmountDisplay,
+    isValuePrecisionValid,
+    MEASUREMENT_UNITS,
+} from './internal/components/measurement/utils';
+
 
 import { AppContextProvider, useAppContext } from './internal/AppContext';
 import { AppContexts } from './internal/AppContexts';
@@ -415,20 +426,22 @@ import {
     getCrossFolderSelectionResult,
     getDataDeleteConfirmationData,
     getDataOperationConfirmationData,
-    getSampleOperationConfirmationData,
     getOperationConfirmationData,
+    getSampleOperationConfirmationData,
 } from './internal/components/entities/actions';
 import {
     AssayResultDataType,
     AssayRunDataType,
     DataClassDataType,
+    DataOperation,
     ParentEntityRequiredColumns,
     SampleTypeDataType,
-    DataOperation,
 } from './internal/components/entities/constants';
 import { getUniqueIdColumnMetadata } from './internal/components/entities/utils';
 import { EntityInsertPanel } from './internal/components/entities/EntityInsertPanel';
-import { EntityCrossProjectSelectionConfirmModal } from './internal/components/entities/EntityCrossProjectSelectionConfirmModal';
+import {
+    EntityCrossProjectSelectionConfirmModal
+} from './internal/components/entities/EntityCrossProjectSelectionConfirmModal';
 import { EntityDeleteConfirmModal } from './internal/components/entities/EntityDeleteConfirmModal';
 import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
 
@@ -499,10 +512,10 @@ import { RangeValidationOptionsModal } from './internal/components/domainpropert
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 import { AssayDesignEmptyAlert } from './internal/components/assay/AssayDesignEmptyAlert';
 import {
-    AssayResultsForSamplesMenuItem,
     AssayResultsForSamplesButton,
+    AssayResultsForSamplesMenuItem,
 } from './internal/components/entities/AssayResultsForSamplesButton';
-import { FindDerivativesMenuItem, FindDerivativesButton } from './internal/components/entities/FindDerivativesButton';
+import { FindDerivativesButton, FindDerivativesMenuItem } from './internal/components/entities/FindDerivativesButton';
 import {
     makeQueryInfo,
     mountWithAppServerContext,
@@ -526,8 +539,8 @@ import {
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
     BACKGROUND_IMPORT_MIN_ROW_SIZE,
     DATA_IMPORT_FILE_SIZE_LIMITS,
-    PIPELINE_PROVIDER_FILTER_LKSM,
     PIPELINE_PROVIDER_FILTER_LKB,
+    PIPELINE_PROVIDER_FILTER_LKSM,
 } from './internal/components/pipeline/constants';
 import { PipelineJobDetailPage } from './internal/components/pipeline/PipelineJobDetailPage';
 import { PipelineJobsListingPage } from './internal/components/pipeline/PipelineJobsListingPage';
@@ -547,7 +560,6 @@ import {
     SAMPLE_DATA_EXPORT_CONFIG,
     SAMPLE_EXPORT_CONFIG,
     SAMPLE_INSERT_EXTRA_COLUMNS,
-    SELECTION_KEY_TYPE,
     SAMPLE_STATE_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
@@ -555,6 +567,7 @@ import {
     SampleOperation,
     SAMPLES_WITH_TYPES_FILTER,
     SampleStateType,
+    SELECTION_KEY_TYPE,
 } from './internal/components/samples/constants';
 import { createMockWithRouteLeave, createMockWithRouterProps } from './internal/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
@@ -569,7 +582,7 @@ import { PicklistCreationMenuItem } from './internal/components/picklist/Picklis
 import { PicklistButton } from './internal/components/picklist/PicklistButton';
 
 import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
-import { getSelectedPicklistSamples, getOrderedSelectedPicklistSamples } from './internal/components/picklist/actions';
+import { getOrderedSelectedPicklistSamples, getSelectedPicklistSamples } from './internal/components/picklist/actions';
 import { BarTenderSettingsForm } from './internal/components/labels/BarTenderSettingsForm';
 import { PrintLabelsModal } from './internal/components/labels/PrintLabelsModal';
 import { BarTenderConfiguration } from './internal/components/labels/models';
@@ -646,10 +659,10 @@ import {
     TEST_USER_FOLDER_ADMIN,
     TEST_USER_GUEST,
     TEST_USER_PROJECT_ADMIN,
+    TEST_USER_QC_ANALYST,
     TEST_USER_READER,
     TEST_USER_STORAGE_DESIGNER,
     TEST_USER_STORAGE_EDITOR,
-    TEST_USER_QC_ANALYST,
 } from './internal/userFixtures';
 import {
     ASSAY_DESIGN_KEY,
@@ -1046,10 +1059,12 @@ export {
     AssayRunDataType,
     DataOperation,
     ParentEntityRequiredColumns,
+    SampleAmountEditModal,
     SampleEmptyAlert,
     SampleTypeEmptyAlert,
     SampleCreationType,
     SamplesEditButtonSections,
+    StorageAmountInput,
     getOmittedSampleTypeColumns,
     getOperationNotPermittedMessage,
     ManageSampleStatusesPanel,
@@ -1064,6 +1079,17 @@ export {
     getDataOperationConfirmationData,
     getDataDeleteConfirmationData,
     getUniqueIdColumnMetadata,
+    // metric related items
+    UnitModel,
+    MEASUREMENT_UNITS,
+    areUnitsCompatible,
+    convertUnitDisplay,
+    getAltMetricUnitOptions,
+    getAltUnitKeys,
+    getMultiAltUnitKeys,
+    getMetricUnitOptions,
+    getStoredAmountDisplay,
+    isValuePrecisionValid,
     // search related items
     FindDerivativesMenuItem,
     FindDerivativesButton,
@@ -1540,3 +1566,4 @@ export type {
     LabelPrintingContextProps,
 } from './internal/components/labels/LabelPrintingContextProvider';
 export type { SamplesEditableGridProps } from './internal/sampleModels';
+export type { MeasurementUnit } from './internal/components/measurement/models';

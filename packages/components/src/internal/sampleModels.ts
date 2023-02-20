@@ -57,4 +57,5 @@ export interface SamplesEditableGridProps {
     samplesGridRequiredColumns?: string[];
     selectionData: Map<string, any>;
     setIsDirty?: (isDirty: boolean) => void;
+    user: User;
 }

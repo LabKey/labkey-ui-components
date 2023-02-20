@@ -39,8 +39,6 @@ import {
     ISelectRowsResult,
     selectRowsDeprecated,
 } from '../../query/api';
-
-import { buildURL } from '../../url/AppURL';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { DomainDetails } from '../domainproperties/models';
 import { QueryColumn } from '../../../public/QueryColumn';
@@ -62,8 +60,10 @@ import {
     SAMPLE_STATUS_REQUIRED_COLUMNS,
     SAMPLE_STORAGE_COLUMNS_LC,
     SELECTION_KEY_TYPE,
+    STORED_AMOUNT_FIELDS,
 } from './constants';
 import { FindField, GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
+import { buildURL } from '../../url/AppURL';
 
 export function initSampleSetSelects(
     isUpdate: boolean,
@@ -975,6 +975,38 @@ export function getTimelineEvents(sampleId: number, timezone?: string): Promise<
             failure: Utils.getCallbackWrapper(error => {
                 console.error('Problem retrieving the sample timeline', error);
                 reject('There was a problem retrieving the sample timeline.');
+            }),
+        });
+    });
+}
+
+interface SampleStorageData {
+    itemId?: number,
+    materialId: number,
+    storedAmount?: number,
+    units?: string,
+    freezeThawCount?: number,
+}
+
+export function updateSampleStorageData(sampleStorageData: SampleStorageData[], containerPath?: string, userComment?: string): Promise<any> {
+    if (sampleStorageData.length == 0) {
+        return Promise.resolve();
+    }
+
+    return new Promise<any>((resolve, reject) => {
+
+        return Ajax.request({
+            url: buildURL('inventory', 'UpdateSampleStorageData.api', undefined, {container: containerPath}),
+            jsonData: {
+                sampleRows: sampleStorageData,
+                [STORED_AMOUNT_FIELDS.AUDIT_COMMENT]: userComment
+            },
+            success: Utils.getCallbackWrapper(response => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper(response => {
+                console.error(response);
+                reject(response);
             }),
         });
     });

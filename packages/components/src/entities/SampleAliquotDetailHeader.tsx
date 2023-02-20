@@ -37,7 +37,7 @@ export class SampleAliquotDetailHeader extends PureComponent<SampleAliquotDetail
 
         const description = newRow.get('description');
         const created = newRow.get('created');
-        const expDate = newRow.get('materialExpDate');
+        const expDate = newRow.get('materialexpdate');
         const status = newRow.get(SAMPLE_STATE_COLUMN_NAME.toLowerCase());
         const createdBy = newRow.get('createdby');
         const parent = newRow.get('aliquotedfromlsid/name');

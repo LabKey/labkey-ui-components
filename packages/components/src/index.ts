@@ -1566,4 +1566,4 @@ export type {
     LabelPrintingContextProps,
 } from './internal/components/labels/LabelPrintingContextProvider';
 export type { SamplesEditableGridProps } from './internal/sampleModels';
-export { MeasurementUnit } from './internal/util/measurement';
+export type { MeasurementUnit } from './internal/util/measurement';

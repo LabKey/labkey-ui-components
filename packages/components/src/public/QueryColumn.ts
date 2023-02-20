@@ -15,7 +15,10 @@ import { SAMPLES_WITH_TYPES_FILTER } from '../internal/components/samples/consta
 
 import { SchemaQuery } from './SchemaQuery';
 
-export type Operation = 'insert' | 'update';
+export enum Operation {
+    insert = 'insert',
+    update = 'update',
+}
 
 interface FilterGroupFilter {
     column: string;
@@ -58,7 +61,7 @@ export class QueryLookup {
     }
 
     getFilterGroup(operation: Operation): FilterGroup {
-        return this.filterGroups?.find((filterGroup: FilterGroup) => filterGroup.operation === operation);
+        return this.filterGroups?.find(filterGroup => filterGroup.operation === operation);
     }
 
     getQueryFilters(operation?: Operation): Filter.IFilter[] {

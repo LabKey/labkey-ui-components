@@ -18,11 +18,36 @@ import { List, Map, OrderedMap } from 'immutable';
 import React, { Component, FC, ReactNode, useMemo } from 'react';
 import { Button } from 'react-bootstrap';
 
-import { Location } from '../../util/URL';
+import { FileSizeLimitProps } from '../../../public/files/models';
+import { LoadingState } from '../../../public/LoadingState';
+import { Operation, QueryColumn } from '../../../public/QueryColumn';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
+import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+
+import { isPremiumProductEnabled } from '../../app/utils';
+
+import { AssayDefinitionModel, AssayDomainTypes } from '../../AssayDefinitionModel';
+
 import { AssayUploadTabs } from '../../constants';
+import { getQueryDetails } from '../../query/api';
+import { SCHEMAS } from '../../schemas';
+import { getActionErrorMessage, resolveErrorMessage } from '../../util/messaging';
+
+import { Location } from '../../util/URL';
+import { Alert } from '../base/Alert';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { Container } from '../base/models/Container';
+import { User } from '../base/models/User';
+import { Progress } from '../base/Progress';
+import { useServerContext } from '../base/ServerContext';
+import { WizardNavButtons } from '../buttons/WizardNavButtons';
+import { AssayProtocolModel } from '../domainproperties/assay/models';
 import { EditorModel, EditorModelProps } from '../editable/models';
+import { getSampleOperationConfirmationData } from '../entities/actions';
+import { withFormSteps, WithFormStepsProps } from '../forms/FormStep';
+import { NotificationsContextProps, withNotificationsContext } from '../notifications/NotificationsContext';
 
 import {
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
@@ -33,40 +58,7 @@ import {
 import { loadSelectedSamples } from '../samples/actions';
 
 import { SampleOperation, STATUS_DATA_RETRIEVAL_ERROR } from '../samples/constants';
-
-import { AssayDefinitionModel, AssayDomainTypes } from '../../AssayDefinitionModel';
-
-import { FileSizeLimitProps } from '../../../public/files/models';
-import { QueryColumn } from '../../../public/QueryColumn';
-import { AssayProtocolModel } from '../domainproperties/assay/models';
-import { withFormSteps, WithFormStepsProps } from '../forms/FormStep';
-import { NotificationsContextProps, withNotificationsContext } from '../notifications/NotificationsContext';
-import { User } from '../base/models/User';
-import { Container } from '../base/models/Container';
-import { SchemaQuery } from '../../../public/SchemaQuery';
-import { getQueryDetails } from '../../query/api';
-import { getSampleOperationConfirmationData } from '../entities/actions';
-import { LoadingState } from '../../../public/LoadingState';
-import { getActionErrorMessage, resolveErrorMessage } from '../../util/messaging';
-import { Alert } from '../base/Alert';
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import { WizardNavButtons } from '../buttons/WizardNavButtons';
-import { Progress } from '../base/Progress';
-import { useServerContext } from '../base/ServerContext';
 import { getOperationNotPermittedMessage } from '../samples/utils';
-import { SCHEMAS } from '../../schemas';
-
-import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
-
-import { isPremiumProductEnabled } from '../../app/utils';
-
-import { AssayUploadResultModel } from './models';
-import { RunPropertiesPanel } from './RunPropertiesPanel';
-import { RunDataPanel } from './RunDataPanel';
-import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
-import { BatchPropertiesPanel } from './BatchPropertiesPanel';
-import { AssayWizardModel, IAssayUploadOptions } from './AssayWizardModel';
-import { AssayReimportHeader } from './AssayReimportHeader';
 import {
     allowReimportAssayRun,
     checkForDuplicateAssayFiles,
@@ -76,7 +68,15 @@ import {
     importAssayRun,
     uploadAssayRunFiles,
 } from './actions';
+import { AssayReimportHeader } from './AssayReimportHeader';
+import { AssayWizardModel, IAssayUploadOptions } from './AssayWizardModel';
+import { BatchPropertiesPanel } from './BatchPropertiesPanel';
 import { RUN_PROPERTIES_REQUIRED_COLUMNS } from './constants';
+import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
+
+import { AssayUploadResultModel } from './models';
+import { RunDataPanel } from './RunDataPanel';
+import { RunPropertiesPanel } from './RunPropertiesPanel';
 
 const BASE_FILE_TYPES = ['.csv', '.tsv', '.txt', '.xlsx', '.xls'];
 const BATCH_PROPERTIES_GRID_ID = 'assay-batch-details';
@@ -676,7 +676,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         }
 
         const isReimport = this.isReimport();
-        const operation = isReimport ? 'update' : 'insert';
+        const operation = isReimport ? Operation.update : Operation.insert;
         const runContainerId = runPropsModel.getRowValue('Folder');
         const folderNoun = isPremiumProductEnabled() ? 'project' : 'folder';
 

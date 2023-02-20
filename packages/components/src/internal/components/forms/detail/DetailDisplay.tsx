@@ -7,7 +7,7 @@ import { DETAIL_TABLE_CLASSES } from '../constants';
 
 import { decodePart } from '../../../../public/SchemaQuery';
 
-import { QueryColumn } from '../../../../public/QueryColumn';
+import { Operation, QueryColumn } from '../../../../public/QueryColumn';
 import { DefaultRenderer } from '../../../renderers/DefaultRenderer';
 import { LabelHelpTip } from '../../base/LabelHelpTip';
 
@@ -302,8 +302,8 @@ export function resolveDetailEditRenderer(
                 // Issue 29232: When displaying a lookup, always use the value
                 const multiple = col.isJunctionLookup();
                 const joinValues = multiple && !col.isDataInput();
-                const queryFilters = col.lookup.hasQueryFilters('update')
-                    ? List(col.lookup.getQueryFilters('update'))
+                const queryFilters = col.lookup.hasQueryFilters(Operation.update)
+                    ? List(col.lookup.getQueryFilters(Operation.update))
                     : undefined;
 
                 return (

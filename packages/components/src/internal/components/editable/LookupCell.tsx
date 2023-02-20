@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { PureComponent, ReactNode } from 'react';
-import { List } from 'immutable';
-
 import { Filter, Query } from '@labkey/api';
+import { List } from 'immutable';
+import React, { PureComponent, ReactNode } from 'react';
 
-import { LOOKUP_DEFAULT_SIZE, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
-import { TextChoiceInput } from '../forms/input/TextChoiceInput';
-import { QueryColumn } from '../../../public/QueryColumn';
-import { QuerySelect } from '../forms/QuerySelect';
-import { SelectInputChange } from '../forms/input/SelectInput';
-import { ViewInfo } from '../../ViewInfo';
+import { Operation, QueryColumn } from '../../../public/QueryColumn';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
+import { LOOKUP_DEFAULT_SIZE, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
+
 import { getContainerFilterForLookups } from '../../query/api';
+import { ViewInfo } from '../../ViewInfo';
+import { SelectInputChange } from '../forms/input/SelectInput';
+import { TextChoiceInput } from '../forms/input/TextChoiceInput';
+import { QuerySelect } from '../forms/QuerySelect';
 
 import { ValueDescriptor } from './models';
 
@@ -57,7 +57,8 @@ export class LookupCell extends PureComponent<LookupCellProps> {
     };
 
     render(): ReactNode {
-        const { col, containerFilter, disabled, filteredLookupKeys, filteredLookupValues, forUpdate, values } = this.props;
+        const { col, containerFilter, disabled, filteredLookupKeys, filteredLookupValues, forUpdate, values } =
+            this.props;
 
         const rawValues = values
             .filter(vd => vd.raw !== undefined)
@@ -93,7 +94,7 @@ export class LookupCell extends PureComponent<LookupCellProps> {
             );
         }
 
-        const operation = forUpdate ? 'update' : 'insert';
+        const operation = forUpdate ? Operation.update : Operation.insert;
         if (lookup.hasQueryFilters(operation)) {
             queryFilters = queryFilters.push(...lookup.getQueryFilters(operation));
         }
@@ -111,11 +112,9 @@ export class LookupCell extends PureComponent<LookupCellProps> {
                 preLoad
                 queryFilters={queryFilters}
                 // use detail view to assure we get values that may have been filtered out in the default view
-                schemaQuery={new SchemaQuery(
-                    lookup.schemaQuery.schemaName,
-                    lookup.schemaQuery.queryName,
-                    ViewInfo.DETAIL_NAME
-                )}
+                schemaQuery={
+                    new SchemaQuery(lookup.schemaQuery.schemaName, lookup.schemaQuery.queryName, ViewInfo.DETAIL_NAME)
+                }
                 value={isMultiple ? rawValues : rawValues[0]}
             />
         );

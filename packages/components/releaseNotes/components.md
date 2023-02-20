@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.X
-*Released*: X February 2023
+### version 2.293.6
+*Released*: 20 February 2023
 - Add “ExpirationDate” field to exp.material
     - Add Expiration Date to the set of aliquot fields
 

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.292.6-moveAmountFields.8",
+  "version": "2.292.6-moveAmountFields.9",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

@@ -326,18 +326,6 @@ import {
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SampleAmountEditModal } from './internal/components/samples/SampleAmountEditModal';
 import { StorageAmountInput } from './internal/components/samples/StorageAmountInput';
-import { UnitModel } from './internal/components/measurement/models';
-import {
-    areUnitsCompatible,
-    convertUnitDisplay,
-    getAltMetricUnitOptions,
-    getAltUnitKeys,
-    getMetricUnitOptions,
-    getMultiAltUnitKeys,
-    getStoredAmountDisplay,
-    isValuePrecisionValid,
-    MEASUREMENT_UNITS,
-} from './internal/components/measurement/utils';
 
 
 import { AppContextProvider, useAppContext } from './internal/AppContext';
@@ -726,6 +714,18 @@ import {
 import { GENERAL_ASSAY_PROVIDER_NAME, RUN_PROPERTIES_REQUIRED_COLUMNS } from './internal/components/assay/constants';
 import { AdminSettingsPage } from './internal/components/administration/AdminSettingsPage';
 import { GlobalStateContextProvider } from './internal/GlobalStateContext';
+import {
+    areUnitsCompatible,
+    convertUnitDisplay,
+    getAltMetricUnitOptions,
+    getAltUnitKeys,
+    getMetricUnitOptions,
+    getMultiAltUnitKeys,
+    getStoredAmountDisplay,
+    isValuePrecisionValid,
+    MEASUREMENT_UNITS,
+    UnitModel
+} from './internal/util/measurement';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -1566,4 +1566,4 @@ export type {
     LabelPrintingContextProps,
 } from './internal/components/labels/LabelPrintingContextProvider';
 export type { SamplesEditableGridProps } from './internal/sampleModels';
-export type { MeasurementUnit } from './internal/components/measurement/models';
+export { MeasurementUnit } from './internal/util/measurement';

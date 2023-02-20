@@ -1,10 +1,8 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import { AuditBehaviorTypes } from '@labkey/api';
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import { isValuePrecisionValid, MEASUREMENT_UNITS } from '../measurement/utils';
 import { AMOUNT_PRECISION_ERROR_TEXT, STORED_AMOUNT_FIELDS } from './constants';
 import { updateSampleStorageData } from './actions';
-import { UnitModel } from '../measurement/models';
 import { Button, Modal } from 'react-bootstrap';
 import { useServerContext } from '../base/ServerContext';
 import { caseInsensitive } from '../../util/utils';
@@ -12,6 +10,7 @@ import { updateRows } from '../../query/api';
 import { Alert } from '../base/Alert';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import { StorageAmountInput } from './StorageAmountInput';
+import { isValuePrecisionValid, MEASUREMENT_UNITS, UnitModel } from '../../util/measurement';
 
 interface Props {
     schemaQuery: SchemaQuery,

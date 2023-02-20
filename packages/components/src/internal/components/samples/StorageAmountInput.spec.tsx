@@ -1,9 +1,9 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { StorageAmountInput } from './StorageAmountInput';
-import { UnitModel } from '../measurement/models';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import { Alert } from '../base/Alert';
+import { UnitModel } from '../../util/measurement';
 
 const testModel = new UnitModel(0, 'uL');
 

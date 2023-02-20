@@ -1,16 +1,15 @@
 import React, { FC, memo, } from 'react';
 import { FormControl, } from 'react-bootstrap';
-import {
-    getAltMetricUnitOptions,
-    getVolumeMinStep,
-    isMeasurementUnitIgnoreCase, isValuePrecisionValid,
-    MEASUREMENT_UNITS,
-} from '../measurement/utils';
-import { UnitModel } from '../measurement/models';
 import { AMOUNT_PRECISION_ERROR_TEXT } from './constants';
 import { Alert } from '../base/Alert';
 import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
 import { LabelHelpTip } from '../base/LabelHelpTip';
+import {
+    getAltMetricUnitOptions,
+    getVolumeMinStep,
+    isMeasurementUnitIgnoreCase,
+    isValuePrecisionValid, MEASUREMENT_UNITS, UnitModel
+} from '../../util/measurement';
 
 const deltaTooPreciseMessage = (
     <Alert bsStyle="danger" className="storage-item-precision-alert">

@@ -18,7 +18,7 @@ import { List, Map, OrderedMap } from 'immutable';
 import { Input } from 'formsy-react-components';
 import { Filter, Query } from '@labkey/api';
 
-import { insertColumnFilter, QueryColumn } from '../../../public/QueryColumn';
+import { insertColumnFilter, Operation, QueryColumn } from '../../../public/QueryColumn';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
@@ -53,6 +53,7 @@ export interface QueryFormInputsProps {
     lookups?: Map<string, number>;
     onAdditionalFormDataChange?: (name: string, value: any) => void;
     onFieldsEnabledChange?: (numEnabled: number) => void;
+    operation?: Operation;
     onSelectChange?: SelectInputChange;
     queryColumns?: OrderedMap<string, QueryColumn>;
     queryFilters?: Record<string, List<Filter.IFilter>>;
@@ -157,6 +158,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             showLabelAsterisk,
             initiallyDisableFields,
             lookups,
+            operation,
             queryColumns,
             queryInfo,
             renderFileInputs,
@@ -209,7 +211,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 data={fieldValues}
                                 formsy
                                 initiallyDisabled={shouldDisableField}
-                                key={i}
+                                key={col.name}
                                 onAdditionalFormDataChange={onAdditionalFormDataChange}
                                 onSelectChange={this.onSelectChange}
                                 onToggleDisable={this.onToggleDisable}
@@ -227,17 +229,15 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         if (col.displayAsLookup !== false) {
                             const multiple = col.isJunctionLookup();
                             const joinValues = multiple;
-                            const id = col.fieldKey + i + (componentKey ?? '');
-                            const queryFilter = col.lookup.hasQueryFilters()
-                                ? List(col.lookup.getQueryFilters())
+                            const queryFilter = col.lookup.hasQueryFilters(operation)
+                                ? List(col.lookup.getQueryFilters(operation))
                                 : queryFilters?.[col.fieldKey];
                             return (
-                                <React.Fragment key={i}>
+                                <React.Fragment key={col.name}>
                                     {this.renderLabelField(col)}
                                     <QuerySelect
                                         addLabelAsterisk={showAsteriskSymbol}
                                         allowDisable={allowFieldDisable}
-                                        key={id}
                                         containerFilter={col.lookup.containerFilter ?? containerFilter}
                                         containerPath={col.lookup.containerPath}
                                         description={col.description}
@@ -274,7 +274,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 allowDisable={allowFieldDisable}
                                 formsy
                                 initiallyDisabled={shouldDisableField}
-                                key={i}
+                                key={col.name}
                                 onChange={this.onSelectChange}
                                 onToggleDisable={this.onToggleDisable}
                                 placeholder="Select or type to search..."
@@ -288,7 +288,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     if (col.inputType === 'textarea') {
                         return (
                             <TextAreaInput
-                                key={i}
+                                key={col.name}
                                 queryColumn={col}
                                 value={value}
                                 allowDisable={allowFieldDisable}
@@ -302,7 +302,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         return (
                             <FileInput
                                 formsy
-                                key={i}
+                                key={col.name}
                                 queryColumn={col}
                                 initialValue={value}
                                 name={col.fieldKey}
@@ -319,7 +319,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         case 'date':
                             return (
                                 <DatePickerInput
-                                    key={i}
+                                    key={col.name}
                                     queryColumn={col}
                                     value={value}
                                     initValueFormatted={false}
@@ -333,7 +333,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         case 'boolean':
                             return (
                                 <CheckboxInput
-                                    key={i}
+                                    key={col.name}
                                     queryColumn={col}
                                     value={value}
                                     allowDisable={allowFieldDisable}
@@ -346,7 +346,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         default:
                             return (
                                 <TextInput
-                                    key={i}
+                                    key={col.name}
                                     queryColumn={col}
                                     value={value ? String(value) : value}
                                     allowDisable={allowFieldDisable}

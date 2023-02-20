@@ -302,10 +302,13 @@ export function resolveDetailEditRenderer(
                 // Issue 29232: When displaying a lookup, always use the value
                 const multiple = col.isJunctionLookup();
                 const joinValues = multiple && !col.isDataInput();
+                const queryFilters = col.lookup.hasQueryFilters('update')
+                    ? List(col.lookup.getQueryFilters('update'))
+                    : undefined;
 
                 return (
                     <QuerySelect
-                        key={col.fieldKey}
+                        autoFocus={options?.autoFocus}
                         containerFilter={col.lookup.containerFilter ?? options?.containerFilter}
                         containerPath={col.lookup.containerPath ?? options?.containerPath}
                         description={col.description}
@@ -313,14 +316,15 @@ export function resolveDetailEditRenderer(
                         formsy
                         inputClass="col-sm-12"
                         joinValues={joinValues}
+                        key={col.fieldKey}
                         label={col.caption}
                         maxRows={10}
                         multiple={multiple}
                         name={col.name}
-                        autoFocus={options?.autoFocus}
                         onBlur={options?.onBlur}
                         onQSChange={options?.onSelectChange}
                         placeholder={options?.placeholder ?? 'Select or type to search...'}
+                        queryFilters={queryFilters}
                         required={col.required}
                         schemaQuery={col.lookup.schemaQuery}
                         showLabel={showLabel}

@@ -6,7 +6,7 @@ import { insertColumnFilter, QueryColumn, QueryLookup } from './QueryColumn';
 
 describe('QueryLookup', () => {
     test('Not samples lookup', () => {
-        const lookup = QueryLookup.create({
+        const lookup = new QueryLookup({
             schemaName: 'test',
             queryName: 'lookup',
         });
@@ -15,7 +15,7 @@ describe('QueryLookup', () => {
     });
 
     test('Samples lookup', () => {
-        const lookup = QueryLookup.create({
+        const lookup = new QueryLookup({
             schemaName: 'exp',
             queryName: 'materials',
         });

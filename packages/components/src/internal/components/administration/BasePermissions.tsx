@@ -37,6 +37,7 @@ interface OwnProps {
     description?: ReactNode;
     disableRemoveSelf: boolean;
     hasPermission: boolean;
+    lkVersion?: () => ReactNode;
     pageTitle: string;
     panelTitle: string;
     rolesMap: Map<string, string>;
@@ -61,6 +62,7 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
         roles,
         rolesMap,
         setIsDirty,
+        lkVersion,
     } = props;
     const [error, setError] = useState<string>();
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
@@ -114,7 +116,8 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
 
         return (
             <>
-                <CreatedModified row={row} />
+                {lkVersion?.()}
+                {!lkVersion && <CreatedModified row={row} />}
                 <ManageDropdownButton collapsed id="admin-page-manage" pullRight>
                     <MenuItem
                         href={AppURL.create(AUDIT_KEY)

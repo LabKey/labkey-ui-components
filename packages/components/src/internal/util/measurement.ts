@@ -292,7 +292,7 @@ export function convertUnitDisplay(
     }
 
     const newAmount = amount * (currentUnit.ratio / targetUnit.ratio);
-    // show up to 6 decimal points
+    // show up to 6 decimal places
     return parseFloat(newAmount.toFixed(6)).toString() + (includeUnits ? ' ' + displayUnit : '');
 }
 

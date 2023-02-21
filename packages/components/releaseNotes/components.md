@@ -7,6 +7,15 @@ Components, models, actions, and utility functions for LabKey applications and p
   - add QueryModel prop for includeTotalCount, default to false
   - update all grid panel QueryConfig usages to includeTotalCount true
 
+### version 2.294.0
+*Released*: 21 February 2023
+- Add LK version to app admin settings page header - fix for non-premium app case
+
+### version 2.293.6
+*Released*: 20 February 2023
+- Add “ExpirationDate” field to exp.material
+    - Add Expiration Date to the set of aliquot fields
+
 ### version 2.293.5
 *Released*: 17 February 2023
 - Issue 46465: Grid actions that use a selectionKey doesn't get expected selections when filters applied to grid

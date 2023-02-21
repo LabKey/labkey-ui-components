@@ -216,7 +216,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                        const units = caseInsensitive(row, 'Units');
                        if (units == undefined) { // have an amount but have not updated the units; use the display units
                            const rowId = caseInsensitive(row, 'RowId');
-                           row.Units = data.originalRows[rowId].Units[0].displayValue;
+                           row.Units = data.originalRows[rowId].Units?.[0].displayValue;
                        }
                    }
                 });
@@ -334,7 +334,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                     auditBehavior: AuditBehaviorTypes.DETAILED,
                 });
             }
-            if (Object.values(convertedStorageData?.normalizedRowsMap).length > 0) {
+            if (convertedStorageData && Object.values(convertedStorageData?.normalizedRowsMap).length > 0) {
                 commands.push({
                     command: 'update',
                     schemaName: INVENTORY_ITEM_QS.schemaName,

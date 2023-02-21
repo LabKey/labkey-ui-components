@@ -37,6 +37,7 @@ import { SampleTimelinePageBase } from './SampleTimelinePageBase';
 import { EntityTypeDeleteConfirmModal } from './EntityTypeDeleteConfirmModal';
 import { EntityDeleteModal } from './EntityDeleteModal';
 import { EntityLineageEditMenuItem } from './EntityLineageEditMenuItem';
+import { ParentEntityEditPanel } from './ParentEntityEditPanel';
 import { RemoveFromPicklistButton } from './RemoveFromPicklistButton';
 import { PicklistListing } from './PicklistListing';
 import { PicklistOverview } from './PicklistOverview';
@@ -92,6 +93,7 @@ export {
     FindSamplesByIdHeaderPanel,
     FindSamplesByIdsPageBase,
     GridAliquotViewSelector,
+    ParentEntityEditPanel,
     PicklistListing,
     PicklistOverview,
     PicklistSubNav,

@@ -7,7 +7,7 @@ import { AuditBehaviorTypes, Filter, Query } from '@labkey/api';
 
 import { DetailPanelHeader } from '../internal/components/forms/detail/DetailPanelHeader';
 
-import { getParentTypeDataForLineage } from '../internal/components/samples/actions';
+import { getParentTypeDataForLineage, GetParentTypeDataForLineage } from '../internal/components/samples/actions';
 
 import { DELIMITER } from '../internal/components/forms/constants';
 
@@ -31,7 +31,7 @@ import { SingleParentEntityPanel } from './SingleParentEntityPanel';
 import { EntityChoice, EntityDataType, IEntityTypeOption } from '../internal/components/entities/models';
 import { parentValuesDiffer, getUpdatedRowForParentChanges } from './utils';
 
-interface Props {
+export interface ParentEntityEditPanelProps {
     auditBehavior?: AuditBehaviorTypes;
     canUpdate: boolean;
     cancelText?: string;
@@ -41,6 +41,7 @@ interface Props {
     childSchemaQuery: SchemaQuery;
     containerFilter?: Query.ContainerFilter;
     editOnly?: boolean;
+    getParentTypeDataForLineage?: GetParentTypeDataForLineage;
     hideButtons?: boolean;
     includePanelHeader?: boolean;
     onChangeParent?: (currentParents: List<EntityChoice>) => void;
@@ -66,13 +67,14 @@ interface State {
     submitting: boolean;
 }
 
-export class ParentEntityEditPanel extends Component<Props, State> {
+export class ParentEntityEditPanel extends Component<ParentEntityEditPanelProps, State> {
     static defaultProps = {
         cancelText: 'Cancel',
-        submitText: 'Save',
-        includePanelHeader: true,
-        title: 'Details',
         containerFilter: Query.containerFilter.currentPlusProjectAndShared,
+        getParentTypeDataForLineage,
+        includePanelHeader: true,
+        submitText: 'Save',
+        title: 'Details',
     };
 
     state: Readonly<State> = {
@@ -114,7 +116,6 @@ export class ParentEntityEditPanel extends Component<Props, State> {
                 childQueryInfo = queries[key];
                 childData = rows[Object.keys(rows)[0]];
             } catch (e) {
-                console.error(e);
                 this.setState({
                     error: getActionErrorMessage('Unable to load parent data.', undefined, true),
                 });
@@ -128,7 +129,7 @@ export class ParentEntityEditPanel extends Component<Props, State> {
         await Promise.all(
             parentDataTypes.map(async parentDataType => {
                 try {
-                    const typeData = await getParentTypeDataForLineage(
+                    const typeData = await this.props.getParentTypeDataForLineage(
                         parentDataType,
                         childData ? [childData] : [],
                         childContainerPath,
@@ -144,7 +145,6 @@ export class ParentEntityEditPanel extends Component<Props, State> {
                         )
                     ) as List<EntityChoice>;
                 } catch (reason) {
-                    console.error(reason);
                     this.setState({
                         error: getActionErrorMessage(
                             'Unable to load ' + parentDataType.descriptionSingular + ' data.',
@@ -437,7 +437,7 @@ export class ParentEntityEditPanel extends Component<Props, State> {
                         </Panel.Heading>
                     )}
                     <Panel.Body>
-                        <Alert>{error}</Alert>
+                        {!!error && <Alert>{error}</Alert>}
                         {childName && (
                             <div className="bottom-spacing">
                                 <b>

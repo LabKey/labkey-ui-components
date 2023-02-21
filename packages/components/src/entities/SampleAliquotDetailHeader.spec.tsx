@@ -53,7 +53,7 @@ describe('<SampleAliquotDetailHeader/>', () => {
         const component = shallow(
             <SampleAliquotDetailHeader row={dataRow} aliquotHeaderDisplayColumns={aliquotCols} />
         );
-        expect(component.find(DefaultRenderer)).toHaveLength(4);
+        expect(component.find(DefaultRenderer)).toHaveLength(5);
         expect(component.find(UserDetailsRenderer)).toHaveLength(1);
         expect(component.find(SampleStatusTag)).toHaveLength(0);
     });
@@ -64,7 +64,7 @@ describe('<SampleAliquotDetailHeader/>', () => {
         const component = shallow(
             <SampleAliquotDetailHeader row={dataRow} aliquotHeaderDisplayColumns={aliquotCols} />
         );
-        expect(component.find(DefaultRenderer)).toHaveLength(4);
+        expect(component.find(DefaultRenderer)).toHaveLength(5);
         expect(component.find(UserDetailsRenderer)).toHaveLength(1);
         expect(component.find(SampleStatusTag)).toHaveLength(1);
     });

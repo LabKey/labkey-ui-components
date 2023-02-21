@@ -11,6 +11,11 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Account for storedAmount and Units fields now on samples grids
   * Don't display amount and units in details display
 
+### version 2.293.6
+*Released*: 20 February 2023
+- Add “ExpirationDate” field to exp.material
+    - Add Expiration Date to the set of aliquot fields
+
 ### version 2.293.5
 *Released*: 17 February 2023
 - Issue 46465: Grid actions that use a selectionKey doesn't get expected selections when filters applied to grid

@@ -85,7 +85,7 @@ interface State {
     shouldDiscard: boolean;
 }
 
-const COMMON_SYSTEM_FIELDS_FOR_UPDATE = ['description', 'samplestate', 'storedamount', 'units'];
+const COMMON_SYSTEM_FIELDS_FOR_UPDATE = ['description', 'samplestate', 'storedamount', 'units', 'materialexpdate'];
 
 // exported for jest testing
 export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State> {
@@ -117,11 +117,11 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
         // if the selection includes any aliquots, only show pk, aliquot specific and description/samplestate columns
         if (aliquots?.length > 0) {
             originalQueryInfo.columns.forEach((column, key) => {
-                const isAliquotField = sampleTypeDomainFields.aliquotFields.indexOf(column.fieldKey.toLowerCase()) > -1;
-                const isIndependentField =
-                    sampleTypeDomainFields.independentFields.indexOf(column.fieldKey.toLowerCase()) > -1;
+                const colLc = column.fieldKey.toLowerCase();
+                const isAliquotField = sampleTypeDomainFields.aliquotFields.indexOf(colLc) > -1;
+                const isIndependentField = sampleTypeDomainFields.independentFields.indexOf(colLc) > -1;
                 if (
-                    COMMON_SYSTEM_FIELDS_FOR_UPDATE.indexOf(column.fieldKey.toLowerCase()) >=0 ||
+                    COMMON_SYSTEM_FIELDS_FOR_UPDATE.indexOf(colLc) >=0 ||
                     isAliquotField ||
                     isIndependentField
                 )

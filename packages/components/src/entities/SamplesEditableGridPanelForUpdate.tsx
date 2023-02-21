@@ -14,9 +14,10 @@ import { EditableColumnMetadata } from '../internal/components/editable/Editable
 
 import { SampleTypeDataType } from '../internal/components/entities/constants';
 
-import { SAMPLE_STATE_COLUMN_NAME } from '../internal/components/samples/constants';
+import { SAMPLE_STATE_COLUMN_NAME, SAMPLE_UNITS_COLUMN_NAME } from '../internal/components/samples/constants';
 import { GroupedSampleFields } from '../internal/components/samples/models';
 import { SampleStatusLegend } from '../internal/components/samples/SampleStatusLegend';
+import { getAltUnitKeys } from '../internal/util/measurement';
 
 const extraExportColumns = [
     {
@@ -104,11 +105,12 @@ export class SamplesEditableGridPanelForUpdate extends React.Component<Props> {
             popoverClassName: 'label-help-arrow-left',
         });
 
-        // TODO move MetricUnit classes and functions so we can properly filter based on sampleTypeDomainFields.metricUnit
-        // columnMetadata = columnMetadata.set(SAMPLE_UNITS_COLUMN_NAME, {
-        //     linkedColInd: 0,
-        //     filteredLookupKeys: List<any>(['kL', 'L', 'mL', 'uL', 'g', 'mg', 'ug', 'unit']),
-        // });
+        if (sampleTypeDomainFields.metricUnit) {
+            columnMetadata = columnMetadata.set(SAMPLE_UNITS_COLUMN_NAME, {
+                linkedColInd: 0,
+                filteredLookupKeys: List<string>(getAltUnitKeys(sampleTypeDomainFields.metricUnit)),
+            });
+        }
 
         const allSamples = !aliquots || aliquots.length === 0;
         if (allSamples) return columnMetadata.asImmutable();

@@ -1,4 +1,4 @@
-import React, { FC, memo, useMemo } from 'react';
+import React, { FC, memo, useEffect, useMemo, useState } from 'react';
 import { MenuItem } from 'react-bootstrap';
 
 import { useServerContext } from '../base/ServerContext';
@@ -11,6 +11,8 @@ import { RequiresModelAndActions } from '../../../public/QueryModel/withQueryMod
 import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
 import { AUDIT_KEY } from '../../app/constants';
 import { AUDIT_EVENT_TYPE_PARAM, PROJECT_AUDIT_QUERY } from '../auditlog/constants';
+import { Alert } from '../base/Alert';
+import { getLocation } from '../../util/URL';
 
 const Buttons: FC<RequiresModelAndActions> = memo(() => {
     return (
@@ -21,7 +23,14 @@ const Buttons: FC<RequiresModelAndActions> = memo(() => {
 });
 
 export const ProjectManagementPage: FC = memo(() => {
+    const [successMsg, setSuccessMsg] = useState<string>();
     const { user } = useServerContext();
+
+    useEffect(() => {
+        const successMessage = decodeURI(getLocation().query?.get('successMsg'));
+        if (successMessage) setSuccessMsg(successMessage);
+    }, []);
+
     const queryConfig: QueryConfig = useMemo(
         () => ({
             bindURL: true,
@@ -47,13 +56,25 @@ export const ProjectManagementPage: FC = memo(() => {
     );
 
     return (
-        <BasePermissionsCheckPage
-            hasPermission={user.isAdmin}
-            renderButtons={renderButtons}
-            title="Projects"
-            user={user}
-        >
-            <GridPanelWithModel allowViewCustomization={false} ButtonsComponent={Buttons} queryConfig={queryConfig} />
-        </BasePermissionsCheckPage>
+        <>
+            {successMsg && (
+                <Alert bsStyle="success" className="admin-settings-error">
+                    {successMsg}
+                </Alert>
+            )}
+
+            <BasePermissionsCheckPage
+                hasPermission={user.isAdmin}
+                renderButtons={renderButtons}
+                title="Projects"
+                user={user}
+            >
+                <GridPanelWithModel
+                    allowViewCustomization={false}
+                    ButtonsComponent={Buttons}
+                    queryConfig={queryConfig}
+                />
+            </BasePermissionsCheckPage>
+        </>
     );
 });

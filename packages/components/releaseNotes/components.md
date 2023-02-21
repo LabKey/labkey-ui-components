@@ -3,7 +3,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-- ...default to includeTotalCount false and have grid QueryModel opt-in
+- QueryModel switch to default to includeTotalCount false
+  - add QueryModel prop for includeTotalCount, default to false
+  - update all grid panel QueryConfig usages to includeTotalCount true
 
 ### version 2.293.5
 *Released*: 17 February 2023

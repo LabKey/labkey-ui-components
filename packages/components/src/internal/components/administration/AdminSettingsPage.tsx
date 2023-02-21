@@ -19,6 +19,7 @@ import { SITE_SECURITY_ROLES } from './constants';
 import { BasePermissions } from './BasePermissions';
 import { showPremiumFeatures } from './utils';
 import { useAdminAppContext } from './useAdminAppContext';
+import classNames from "classnames";
 
 const TITLE = 'Settings';
 
@@ -44,8 +45,16 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
     }, [createNotification, dismissNotifications, setIsDirty]);
 
     const lkVersion = useCallback(() => {
-        return <div className="gray-text admin-settings-version">Version: {getServerContext().versionString}</div>;
-    }, []);
+        return (
+            <span
+                className={classNames('gray-text', 'admin-settings-version', {
+                    'margin-right': !showPremiumFeatures(moduleContext),
+                })}
+            >
+                Version: {getServerContext().versionString}
+            </span>
+        );
+    }, [moduleContext]);
 
     if (!user.isAdmin) {
         return <InsufficientPermissionsPage title={TITLE} />;
@@ -61,6 +70,7 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
                 rolesMap={SITE_SECURITY_ROLES}
                 showDetailsPanel={false}
                 disableRemoveSelf
+                lkVersion={lkVersion}
             >
                 <ActiveUserLimit />
                 <BarTenderSettingsForm

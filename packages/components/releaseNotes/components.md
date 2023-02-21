@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD February 2023
+- Add LK version to app admin settings page header - fix for non-premium app case
+
 ### version 2.293.6
 *Released*: 20 February 2023
 - Add “ExpirationDate” field to exp.material

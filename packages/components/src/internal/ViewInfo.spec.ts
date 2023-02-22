@@ -208,4 +208,55 @@ describe('ViewInfo', () => {
             }
         ]);
     });
+
+    test("addSystemViewColumns, default view, with disabledSysFields", () => {
+        let view = ViewInfo.create({
+            default: true,
+            columns: [{
+                fieldKey: "col1",
+                key: "col1",
+                name: "Column 1",
+            }]
+        });
+        const queryInfo = QueryInfo.create({
+            columns: fromJS({
+                "hideMe": new QueryColumn({
+                    name: "Hide Me",
+                    fieldKey: "hideMe",
+                }),
+                "systemCol1": new QueryColumn({
+                    name: "System Col 1",
+                    addToSystemView: true,
+                    fieldKey: "systemCol1",
+                }),
+                "notSystem": new QueryColumn({
+                    name: "Not System",
+                    addToSystemView: false,
+                    fieldKey: "notSystem",
+                }),
+                "otherSystemCol": new QueryColumn({
+                    name: "other",
+                    addToSystemView: true,
+                    fieldKey: "other",
+                    caption: "Other Column",
+                })
+            }),
+            disabledSystemFields: ['Other']
+        });
+        view = view.addSystemViewColumns(queryInfo);
+        expect(view.columns.toJS()).toStrictEqual([
+            {
+                fieldKey: "col1",
+                key: "col1",
+                name: "Column 1",
+            },
+            {
+                name: "System Col 1",
+                fieldKey: "systemCol1",
+                key: "systemCol1",
+                title: "System Col 1",
+            }
+        ]);
+    });
+
 });

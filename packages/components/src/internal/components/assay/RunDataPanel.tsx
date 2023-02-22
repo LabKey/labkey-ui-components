@@ -15,6 +15,7 @@
  */
 import React, { PureComponent, ReactNode } from 'react';
 import { List, Map } from 'immutable';
+import { Operation } from '../../../public/QueryColumn';
 
 import { AssayUploadTabs } from '../../constants';
 import { InferDomainResponse } from '../../../public/InferDomainResponse';
@@ -58,12 +59,12 @@ interface Props {
         dataKeys?: List<any>,
         data?: Map<any, Map<string, any>>
     ) => void;
+    operation: Operation;
     onTextChange: (value: any) => any;
     queryModel: QueryModel;
     runPropertiesRow?: Record<string, any>;
     setIsDirty?: (isDirty: boolean) => void;
     showTabs?: boolean;
-    title: string;
     wizardModel: AssayWizardModel;
 }
 
@@ -85,7 +86,6 @@ export class RunDataPanel extends PureComponent<Props, State> {
         allowBulkRemove: false,
         allowBulkInsert: false,
         allowBulkUpdate: false,
-        title: 'Results',
         showTabs: true,
     };
 
@@ -214,7 +214,6 @@ export class RunDataPanel extends PureComponent<Props, State> {
             editorModel,
             maxEditableGridRowMsg,
             queryModel,
-            title,
             showTabs,
             wizardModel,
             getIsDirty,
@@ -226,7 +225,7 @@ export class RunDataPanel extends PureComponent<Props, State> {
 
         return (
             <div className="panel panel-default">
-                <div className="panel-heading">{title}</div>
+                <div className="panel-heading">Results</div>
                 <div className="panel-body">
                     {isLoading ? (
                         <LoadingSpinner />

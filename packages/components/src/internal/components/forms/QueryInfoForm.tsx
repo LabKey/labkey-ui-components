@@ -18,6 +18,7 @@ import { OrderedMap } from 'immutable';
 import { Alert, Button, Modal } from 'react-bootstrap';
 import Formsy from 'formsy-react';
 import { Utils } from '@labkey/api';
+import { Operation } from '../../../public/QueryColumn';
 
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 
@@ -54,6 +55,7 @@ export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFields
     // allow passing of full form data, compare with onFormChange
     onFormChangeWithData?: (formData?: any) => void;
     onHide?: () => void;
+    operation?: Operation;
     onSubmit?: (data: OrderedMap<string, any>) => Promise<any>;
     onSubmitForEdit?: (data: OrderedMap<string, any>) => Promise<any>;
     onSuccess?: (data: any, submitForEdit: boolean) => void;

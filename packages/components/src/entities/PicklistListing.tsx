@@ -175,6 +175,7 @@ export const PicklistListing: FC<OwnProps> = memo(props => {
             title: 'My Picklists',
             omittedColumns: ['CreatedBy'],
             schemaQuery: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS,
+            includeTotalCount: true,
         };
     }
     queryConfigs[TEAM_PICKLISTS_GRID_ID] = {
@@ -185,6 +186,7 @@ export const PicklistListing: FC<OwnProps> = memo(props => {
         title: 'Team Picklists',
         omittedColumns: ['Category', 'Sharing'],
         schemaQuery: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS,
+        includeTotalCount: true,
     };
 
     return (

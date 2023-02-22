@@ -258,19 +258,8 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
 
                     const noun = rows.length === 1 ? SampleTypeDataType.nounSingular : SampleTypeDataType.nounPlural;
                     createNotification('Successfully updated ' + result.rows.length + ' ' + noun + '.', true);
-                })
-                .catch(reason => {
-                    dismissNotifications(); // get rid of any error notifications that have already been created
-                    createNotification({
-                        alertClass: 'danger',
-                        message: resolveErrorMessage(
-                            reason,
-                            SampleTypeDataType.nounSingular,
-                            SampleTypeDataType.nounPlural,
-                            'update'
-                        ),
-                    });
                 });
+            // catch block intentionally absent to callers can handle the errors appropriately
         },
         [createNotification, dismissNotifications, getSampleAuditBehaviorType]
     );

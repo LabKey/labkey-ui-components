@@ -321,9 +321,9 @@ export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
             setShowPrintDialog(false);
             createNotification(
                 'Successfully printed ' +
-                numLabels +
-                (numSamples === 0 ? ' blank ' : '') +
-                (numLabels > 1 ? ' labels.' : ' label.')
+                    numLabels +
+                    (numSamples === 0 ? ' blank ' : '') +
+                    (numLabels > 1 ? ' labels.' : ' label.')
             );
         },
         [createNotification]
@@ -470,6 +470,7 @@ export const SampleListingPage: FC<CommonPageProps & WithRouterProps> = props =>
             requiredColumns: [...samplesGridRequiredColumns, ...SAMPLE_STATUS_REQUIRED_COLUMNS],
             schemaQuery: listSchemaQuery,
             bindURL: true,
+            includeTotalCount: true,
         },
     };
 

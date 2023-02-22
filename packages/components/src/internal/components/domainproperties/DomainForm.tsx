@@ -111,6 +111,7 @@ interface IDomainFormInput {
     appPropertiesOnly?: boolean; // Flag to indicate if LKS specific properties/features should be excluded, default to false
     collapsible?: boolean;
     controlledCollapse?: boolean;
+    disabledSystemFields?: string[];
     domain: DomainDesign;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
     domainIndex?: number;
@@ -120,7 +121,6 @@ interface IDomainFormInput {
     helpNoun?: string;
     helpTopic?: string;
     index?: number; // Used in AssayDesignerPanels for distinguishing FileAttachmentForms
-    initCollapsed?: boolean;
     isNew?: boolean;
     maxPhiLevel?: string; // Just for testing, only affects display
     modelDomains?: List<DomainDesign>; // Set of domains that encompass the full protocol, that may impact validation or alerts
@@ -134,7 +134,7 @@ interface IDomainFormInput {
     showHeader?: boolean;
     successBsStyle?: string;
     systemFields?: SystemField[];
-    disabledSystemFields?: string[];
+    initCollapsed?: boolean;
     testMode?: boolean;
     todoIconHelpMsg?: string;
     useTheme?: boolean;
@@ -1315,7 +1315,13 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         return (
             <>
-                {systemFields && <SystemFields fields={systemFields} disabledSystemFields={domain.disabledSystemFields} onSystemFieldEnable={this.onSystemFieldEnable} />}
+                {systemFields && (
+                    <SystemFields
+                        fields={systemFields}
+                        disabledSystemFields={domain.disabledSystemFields}
+                        onSystemFieldEnable={this.onSystemFieldEnable}
+                    />
+                )}
 
                 {(hasFields || !(this.shouldShowInferFromFile() || this.shouldShowImportExport())) &&
                     this.renderToolbar()}

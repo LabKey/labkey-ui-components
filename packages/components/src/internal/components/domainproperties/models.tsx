@@ -134,6 +134,7 @@ interface IDomainDesign {
     defaultDefaultValueType: string;
     defaultValueOptions: List<string>;
     description?: string;
+    disabledSystemFields?: string[];
     domainException?: DomainException;
     domainId: number;
     domainKindName?: string;
@@ -144,10 +145,9 @@ interface IDomainDesign {
     name: string;
     // set of fields to initialize a manually created design
     newDesignFields?: List<DomainField>;
-    queryName?: string;
     schemaName?: string;
     showDefaultValueSettings: boolean;
-    disabledSystemFields?: string[];
+    queryName?: string;
 }
 
 export class DomainDesign
@@ -1962,9 +1962,9 @@ export interface NameExpressionsValidationResults {
 export interface SystemField {
     DataType: string;
     Description: string;
+    Disableble: boolean;
+    Enabled?: boolean;
     Label: string;
     Name: string;
     Required: boolean;
-    Disableble: boolean;
-    Enabled?: boolean;
 }

@@ -513,13 +513,11 @@ export function handleSystemFieldUpdates(domain: DomainDesign, field: string, en
     const disabledFieldNames = domain.disabledSystemFields ? [...domain.disabledSystemFields] : [];
     const disabledFieldNamesLc = disabledFieldNames.map(field => field.toLowerCase());
     const fieldInd = disabledFieldNamesLc.indexOf(field.toLowerCase());
-    if (enable && fieldInd > -1)
-        disabledFieldNames.splice(fieldInd, 1);
-    else if (!enable && fieldInd === -1)
-        disabledFieldNames.push(field);
+    if (enable && fieldInd > -1) disabledFieldNames.splice(fieldInd, 1);
+    else if (!enable && fieldInd === -1) disabledFieldNames.push(field);
 
     return domain.merge({
-        disabledSystemFields: disabledFieldNames
+        disabledSystemFields: disabledFieldNames,
     }) as DomainDesign;
 }
 

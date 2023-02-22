@@ -8,9 +8,7 @@ import { SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS } from '../samples/constants';
 import { SystemFields } from './SystemFields';
 
 describe('SystemFields', () => {
-
-    function verifyEnableCheckbox(enableCheckboxes : any, isExpDateDisabled: boolean)
-    {
+    function verifyEnableCheckbox(enableCheckboxes: any, isExpDateDisabled: boolean) {
         expect(enableCheckboxes.length).toEqual(4 * 2);
         const nameCheckbox = enableCheckboxes.at(0);
         expect(nameCheckbox.prop('checked')).toBeTruthy();
@@ -27,7 +25,9 @@ describe('SystemFields', () => {
     }
 
     test('Default', () => {
-        const wrapped = mount(<SystemFields fields={SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS} onSystemFieldEnable={jest.fn()} />);
+        const wrapped = mount(
+            <SystemFields fields={SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS} onSystemFieldEnable={jest.fn()} />
+        );
         const rowCount = SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS.length;
         expect(wrapped.find('tr')).toHaveLength(rowCount + 1);
         expect(wrapped.find('th')).toHaveLength(6);
@@ -39,7 +39,9 @@ describe('SystemFields', () => {
     });
 
     test('Toggle', () => {
-        const wrapped = mount(<SystemFields fields={SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS} onSystemFieldEnable={jest.fn()} />);
+        const wrapped = mount(
+            <SystemFields fields={SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS} onSystemFieldEnable={jest.fn()} />
+        );
 
         let collapsed = wrapped.find(Collapse).props().in;
         expect(collapsed).toBe(true);
@@ -52,13 +54,25 @@ describe('SystemFields', () => {
     });
 
     test('With disabled fields', () => {
-        const wrapped = mount(<SystemFields fields={SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS} onSystemFieldEnable={jest.fn()} disabledSystemFields={['MaterialExpDate']} />);
+        const wrapped = mount(
+            <SystemFields
+                fields={SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS}
+                onSystemFieldEnable={jest.fn()}
+                disabledSystemFields={['MaterialExpDate']}
+            />
+        );
         const enableCheckboxes = wrapped.find('input[type="checkbox"]');
         verifyEnableCheckbox(enableCheckboxes, true);
     });
 
     test('With disabled fields, case insenstive', () => {
-        const wrapped = mount(<SystemFields fields={SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS} onSystemFieldEnable={jest.fn()} disabledSystemFields={['materialexpdate']} />);
+        const wrapped = mount(
+            <SystemFields
+                fields={SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS}
+                onSystemFieldEnable={jest.fn()}
+                disabledSystemFields={['materialexpdate']}
+            />
+        );
         const enableCheckboxes = wrapped.find('input[type="checkbox"]');
         verifyEnableCheckbox(enableCheckboxes, true);
     });

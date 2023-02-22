@@ -16,7 +16,7 @@ export enum ALIQUOT_FILTER_MODE {
 export enum SELECTION_KEY_TYPE {
     inventoryItems = 'inventoryItems',
     snapshot = 'snapshot',
-};
+}
 
 export const MAX_SELECTED_SAMPLES = 10000;
 
@@ -249,7 +249,7 @@ export const SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS = [
 ];
 
 export const SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS = [
-    { Name: 'Units', Label: 'Units', DataType: 'Text', Required: false, Description: '', Disableble: true, },
+    { Name: 'Units', Label: 'Units', DataType: 'Text', Required: false, Description: '', Disableble: true },
     {
         Name: 'StoredAmount',
         Label: 'Stored Amount',
@@ -282,6 +282,6 @@ export const SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS = [
         Description: '',
         Disableble: true,
     },
-    { Name: 'StorageRow', Label: 'Storage Row', DataType: 'Text', Required: false, Description: '', Disableble: true, },
-    { Name: 'StorageCol', Label: 'Storage Col', DataType: 'Text', Required: false, Description: '', Disableble: true, },
+    { Name: 'StorageRow', Label: 'Storage Row', DataType: 'Text', Required: false, Description: '', Disableble: true },
+    { Name: 'StorageCol', Label: 'Storage Col', DataType: 'Text', Required: false, Description: '', Disableble: true },
 ];

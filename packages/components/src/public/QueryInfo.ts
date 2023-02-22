@@ -247,7 +247,12 @@ export class QueryInfo extends Record({
 
                 this.columns.forEach(col => {
                     const fieldKey = col.fieldKey?.toLowerCase();
-                    if (fieldKey && col.addToSystemView && !columnFieldKeys.includes(fieldKey) && disabledSysFields.indexOf(fieldKey) === -1) {
+                    if (
+                        fieldKey &&
+                        col.addToSystemView &&
+                        !columnFieldKeys.includes(fieldKey) &&
+                        disabledSysFields.indexOf(fieldKey) === -1
+                    ) {
                         if (!lowerOmit || !lowerOmit.includes(col.fieldKey.toLowerCase()))
                             displayColumns = displayColumns.push(col);
                     }

@@ -46,7 +46,7 @@ export const QueryListingPage: FC<WithRouterProps> = ({ params }) => {
     const modelId = `q.${schema}.${query}`;
     const queryConfigs = useMemo(
         () => ({
-            [modelId]: { bindURL: true, schemaQuery: new SchemaQuery(schema, query) },
+            [modelId]: { bindURL: true, schemaQuery: new SchemaQuery(schema, query), includeTotalCount: true },
         }),
         [modelId]
     );

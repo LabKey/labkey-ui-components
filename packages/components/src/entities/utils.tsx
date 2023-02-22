@@ -334,6 +334,7 @@ export async function getSamplesAssayGridQueryConfigs(
             schemaQuery: sessionAssayRunsQueryInfo.schemaQuery,
             baseFilters: [Filter.create('RowId', sampleIds, Filter.Types.IN)],
             omittedColumns: ['RowId', 'NULL::RunCount'],
+            includeTotalCount: true,
         });
     }
 
@@ -362,6 +363,7 @@ export async function getSamplesAssayGridQueryConfigs(
                 title: 'Assay Run Summary',
                 schemaQuery: sessionAssayRunsQueryInfo.schemaQuery,
                 omittedColumns: ['RowId', 'NULL::RunCount'],
+                includeTotalCount: true,
             });
         }
 

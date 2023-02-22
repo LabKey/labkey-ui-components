@@ -154,6 +154,7 @@ const FindSamplesByIdsTabbedGridPanel: FC<FindSamplesByIdsTabProps> = memo(props
                                 baseFilters: [filter],
                                 bindURL: false,
                                 title: sampleType,
+                                includeTotalCount: true,
                             };
 
                             actions.addModel(queryConfig, true, false);
@@ -254,6 +255,7 @@ const FindSamplesByIdsPageBaseImpl: FC<Props> = memo(props => {
                                 requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
                                 sorts: [new QuerySort({ fieldKey: 'Ordinal' })],
                                 title: id === listId ? 'All Samples' : undefined,
+                                includeTotalCount: true,
                             },
                             true
                         );

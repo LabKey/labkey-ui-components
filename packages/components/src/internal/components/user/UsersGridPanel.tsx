@@ -140,6 +140,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                 omittedColumns: OMITTED_COLUMNS,
                 bindURL: true,
                 urlPrefix: usersView, // each model needs to have its own urlPrefix for paging to work across models
+                includeTotalCount: true,
             },
             true,
             true
@@ -230,7 +231,15 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
         if (model.selectionsLoadingState === LoadingState.LOADED) {
             this.updateSelectedUserId(this.getLastSelectedId());
         } else {
-            getSelected(model.id, false, model.schemaName, model.queryName, List.of(...model.filters), model.containerPath, model.queryParameters).then(response => {
+            getSelected(
+                model.id,
+                false,
+                model.schemaName,
+                model.queryName,
+                List.of(...model.filters),
+                model.containerPath,
+                model.queryParameters
+            ).then(response => {
                 const selectedUserId =
                     response.selected.length > 0 ? parseInt(List.of(...response.selected).last()) : undefined;
                 this.updateSelectedUserId(selectedUserId);

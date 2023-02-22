@@ -213,7 +213,7 @@ describe('resolveDetailEditRenderer', () => {
     });
 
     test('isPublicLookup, displayAsLookup = true', () => {
-        const col = new QueryColumn({
+        const col = QueryColumn.create({
             ...default_props,
             lookup: { isPublic: true },
             displayAsLookup: true,

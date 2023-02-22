@@ -45,6 +45,7 @@ export const SampleTypeSummary: FC<Props> = memo(props => {
             requiredColumns,
             omittedColumns,
             sorts: [new QuerySort({ fieldKey: 'Name' })],
+            includeTotalCount: true,
         };
     }, [canUpdate]);
 

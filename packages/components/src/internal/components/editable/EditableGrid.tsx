@@ -13,11 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { Query } from '@labkey/api';
 import classNames from 'classnames';
+import { List, Map, OrderedMap, Set } from 'immutable';
 import React, { ChangeEvent, MouseEvent, PureComponent, ReactNode, SyntheticEvent } from 'react';
 import { Button, Nav, NavItem, OverlayTrigger, Popover, Tab, TabContainer } from 'react-bootstrap';
-import { List, Map, OrderedMap, Set } from 'immutable';
-import { Query } from '@labkey/api';
+import { Operation, QueryColumn } from '../../../public/QueryColumn';
+import { QueryInfo } from '../../../public/QueryInfo';
+
+import { EditableGridExportMenu, ExportOption } from '../../../public/QueryModel/ExportMenu';
+import { Key } from '../../../public/useEnterEscape';
 
 import {
     addRows,
@@ -31,10 +36,6 @@ import {
     pasteEvent,
     updateGridFromBulkForm,
 } from '../../actions';
-import { genCellKey, parseCellKey } from '../../utils';
-
-import { headerSelectionCell } from '../../renderers';
-import { QueryInfoForm, QueryInfoFormProps } from '../forms/QueryInfoForm';
 import {
     GRID_CHECKBOX_OPTIONS,
     GRID_EDIT_INDEX,
@@ -43,26 +44,25 @@ import {
     MODIFICATION_TYPES,
     SELECTION_TYPES,
 } from '../../constants';
+import { cancelEvent } from '../../events';
+
+import { headerSelectionCell } from '../../renderers';
 import { blurActiveElement, capitalizeFirstChar, caseInsensitive, not } from '../../util/utils';
-
-import { BulkAddUpdateForm } from '../forms/BulkAddUpdateForm';
-
-import { EditableGridExportMenu, ExportOption } from '../../../public/QueryModel/ExportMenu';
+import { genCellKey, parseCellKey } from '../../utils';
+import { Alert } from '../base/Alert';
+import { DeleteIcon } from '../base/DeleteIcon';
+import { Grid } from '../base/Grid';
 
 import { GridColumn } from '../base/models/GridColumn';
-import { QueryInfo } from '../../../public/QueryInfo';
-import { QueryColumn } from '../../../public/QueryColumn';
-import { DeleteIcon } from '../base/DeleteIcon';
-import { Key } from '../../../public/useEnterEscape';
-import { cancelEvent } from '../../events';
-import { Grid } from '../base/Grid';
-import { Alert } from '../base/Alert';
 
-import { CellMessage, EditorModel, EditorModelProps, ValueDescriptor } from './models';
+import { BulkAddUpdateForm } from '../forms/BulkAddUpdateForm';
+import { QueryInfoForm, QueryInfoFormProps } from '../forms/QueryInfoForm';
+import { Cell } from './Cell';
 
 import { CellActions, EDITABLE_GRID_CONTAINER_CLS } from './constants';
-import { Cell } from './Cell';
 import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
+
+import { CellMessage, EditorModel, EditorModelProps, ValueDescriptor } from './models';
 
 function isCellEmpty(values: List<ValueDescriptor>): boolean {
     return !values || values.isEmpty() || values.some(v => v.raw === undefined || v.raw === null || v.raw === '');
@@ -109,7 +109,8 @@ function inputCellFactory(
     readonlyRows: List<any>,
     lockedRows: List<any>,
     cellActions: CellActions,
-    containerFilter: Query.ContainerFilter
+    containerFilter: Query.ContainerFilter,
+    forUpdate: boolean
 ) {
     return (value: any, row: any, c: GridColumn, rn: number, cn: number) => {
         let colOffset = 0;
@@ -147,6 +148,7 @@ function inputCellFactory(
                 locked={isLockedRow}
                 rowIdx={rn}
                 focused={editorModel ? editorModel.isFocused(colIdx, rn) : false}
+                forUpdate={forUpdate}
                 message={editorModel?.getMessage(colIdx, rn)}
                 selected={editorModel ? editorModel.isSelected(colIdx, rn) : false}
                 selection={editorModel ? editorModel.inSelection(colIdx, rn) : false}
@@ -634,6 +636,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             allowRemove,
             containerFilter,
             editorModel,
+            forUpdate,
             hideCountCol,
             queryInfo,
             rowNumColumn,
@@ -677,7 +680,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         readonlyRows,
                         lockedRows,
                         this.cellActions,
-                        containerFilter
+                        containerFilter,
+                        forUpdate
                     ),
                     index: qCol.fieldKey,
                     raw: qCol,
@@ -1183,7 +1187,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     renderBulkAdd = (): ReactNode => {
-        const { addControlProps, allowFieldDisable, bulkAddProps, data, maxRows, queryInfo } = this.props;
+        const { addControlProps, allowFieldDisable, bulkAddProps, data, forUpdate, maxRows, queryInfo } = this.props;
         const maxToAdd =
             maxRows && maxRows - data.size < MAX_EDITABLE_GRID_ROWS ? maxRows - data.size : MAX_EDITABLE_GRID_ROWS;
         return (
@@ -1197,6 +1201,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 maxCount={maxToAdd}
                 onHide={this.toggleBulkAdd}
                 onCancel={this.toggleBulkAdd}
+                operation={forUpdate ? Operation.update : Operation.insert}
                 onSuccess={this.toggleBulkAdd}
                 queryInfo={queryInfo.getInsertQueryInfo()}
                 header={
@@ -1286,7 +1291,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         this.props.cancelBtnProps?.onClick?.();
     };
 
-    renderTabButtons = () => {
+    renderTabButtons = (): ReactNode => {
         const { primaryBtnProps, cancelBtnProps, tabBtnProps } = this.props;
         if (!tabBtnProps?.show) return null;
 
@@ -1307,8 +1312,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         );
     };
 
-    renderBulkUpdate = () => {
-        const { addControlProps, editorModel, bulkUpdateProps, data, dataKeys, queryInfo, showAsTab } = this.props;
+    renderBulkUpdate = (): ReactNode => {
+        const { addControlProps, bulkUpdateProps, data, dataKeys, editorModel, forUpdate, queryInfo, showAsTab } = this.props;
 
         return (
             <BulkAddUpdateForm
@@ -1321,6 +1326,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 onCancel={this.toggleBulkUpdate}
                 onFormChangeWithData={showAsTab ? this.onBulkUpdateFormDataChange : undefined}
                 onHide={this.toggleBulkUpdate}
+                operation={forUpdate ? Operation.update : Operation.insert}
                 onSubmitForEdit={this.bulkUpdate}
                 onSuccess={this.toggleBulkUpdate}
                 pluralNoun={addControlProps.nounPlural}
@@ -1332,7 +1338,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         );
     };
 
-    render() {
+    render(): ReactNode {
         const {
             allowAdd,
             editorModel,

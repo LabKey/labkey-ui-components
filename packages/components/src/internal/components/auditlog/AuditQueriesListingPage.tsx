@@ -158,6 +158,7 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
                     schemaQuery: new SchemaQuery(SCHEMAS.AUDIT_TABLES.SCHEMA, selected),
                     containerFilter: this.containerFilter,
                     bindURL: isFirstModel,
+                    includeTotalCount: true,
                 },
                 true,
                 true

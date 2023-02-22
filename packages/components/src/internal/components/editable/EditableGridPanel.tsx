@@ -6,7 +6,7 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { getUniqueIdColumnMetadata } from '../entities/utils';
 
-import { QueryColumn } from '../../../public/QueryColumn';
+import { Operation, QueryColumn } from '../../../public/QueryColumn';
 
 import { EXPORT_TYPES } from '../../constants';
 

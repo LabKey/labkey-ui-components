@@ -147,6 +147,7 @@ interface IDomainDesign {
     queryName?: string;
     schemaName?: string;
     showDefaultValueSettings: boolean;
+    disabledSystemFields?: string[];
 }
 
 export class DomainDesign
@@ -175,6 +176,7 @@ export class DomainDesign
         domainKindName: undefined,
         schemaName: undefined,
         queryName: undefined,
+        disabledSystemFields: undefined,
     })
     implements IDomainDesign
 {
@@ -202,6 +204,7 @@ export class DomainDesign
     declare domainKindName: string;
     declare schemaName: string;
     declare queryName: string;
+    declare disabledSystemFields?: string[];
 
     static create(rawModel: any, exception?: any): DomainDesign {
         let fields = List<DomainField>();
@@ -1957,9 +1960,11 @@ export interface NameExpressionsValidationResults {
 }
 
 export interface SystemField {
-    'Data Type': string;
+    DataType: string;
     Description: string;
     Label: string;
     Name: string;
     Required: boolean;
+    Disableble: boolean;
+    Enabled?: boolean;
 }

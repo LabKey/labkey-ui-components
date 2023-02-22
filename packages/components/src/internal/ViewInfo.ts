@@ -178,8 +178,18 @@ export class ViewInfo extends Record({
             const columnFieldKeys = this.columns.map(col => {
                 return col.fieldKey.toLowerCase()
             }).toArray();
+
+            const disabledSysFields = [];
+            queryInfo.disabledSystemFields?.forEach(field => {
+                disabledSysFields.push(field.toLowerCase());
+            });
+
             queryInfo.columns.forEach(queryCol => {
-                if (queryCol.fieldKey && queryCol.addToSystemView && columnFieldKeys.indexOf(queryCol.fieldKey.toLowerCase()) === -1) {
+                const fieldKey = queryCol.fieldKey?.toLowerCase();
+                if (fieldKey && queryCol.addToSystemView
+                    && columnFieldKeys.indexOf(fieldKey) === -1
+                    && disabledSysFields.indexOf(fieldKey) === -1
+                ) {
                     columns = columns.push({
                         fieldKey: queryCol.fieldKey,
                         key: queryCol.fieldKey,

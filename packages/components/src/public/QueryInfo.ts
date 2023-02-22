@@ -21,6 +21,7 @@ export enum QueryInfoStatus {
 
 export class QueryInfo extends Record({
     altUpdateKeys: undefined,
+    disabledSystemFields: undefined,
     // canEdit: false,
     // canEditSharedViews: false,
     columns: OrderedMap<string, QueryColumn>(),
@@ -67,6 +68,7 @@ export class QueryInfo extends Record({
 }) {
     private declare appEditableTable: boolean; // use isAppEditable()
     declare altUpdateKeys: Set<string>;
+    declare disabledSystemFields: Set<string>;
     // declare canEdit: boolean;
     // declare canEditSharedViews: boolean;
     declare columns: OrderedMap<string, QueryColumn>;
@@ -138,6 +140,13 @@ export class QueryInfo extends Record({
             columns = columns.set(rawColumn.fieldKey.toLowerCase(), QueryColumn.create(rawColumn));
         });
 
+        const disabledSystemFields = new Set<string>();
+        if (queryInfoJson.disabledSystemFields?.length > 0) {
+            queryInfoJson.disabledSystemFields?.forEach(field => {
+                disabledSystemFields.add(field);
+            });
+        }
+
         const altUpdateKeys = new Set<string>();
         if (queryInfoJson.altUpdateKeys?.length > 0) {
             queryInfoJson.altUpdateKeys?.forEach(key => {
@@ -156,6 +165,7 @@ export class QueryInfo extends Record({
         return QueryInfo.create(
             Object.assign({}, queryInfoJson, {
                 altUpdateKeys,
+                disabledSystemFields,
                 columns,
                 schemaQuery,
                 views,
@@ -229,8 +239,17 @@ export class QueryInfo extends Record({
                 const columnFieldKeys = viewInfo.columns.reduce((list, col) => {
                     return list.push(col.fieldKey.toLowerCase());
                 }, List<string>());
+
+                const disabledSysFields = [];
+                this.disabledSystemFields?.forEach(field => {
+                    disabledSysFields.push(field.toLowerCase());
+                });
+
+                console.log(this.disabledSystemFields);
+
                 this.columns.forEach(col => {
-                    if (col.fieldKey && col.addToSystemView && !columnFieldKeys.includes(col.fieldKey.toLowerCase())) {
+                    const fieldKey = col.fieldKey?.toLowerCase();
+                    if (fieldKey && col.addToSystemView && !columnFieldKeys.includes(fieldKey) && disabledSysFields.indexOf(fieldKey) === -1) {
                         if (!lowerOmit || !lowerOmit.includes(col.fieldKey.toLowerCase()))
                             displayColumns = displayColumns.push(col);
                     }

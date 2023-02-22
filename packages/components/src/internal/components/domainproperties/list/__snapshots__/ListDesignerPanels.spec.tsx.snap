@@ -1277,6 +1277,7 @@ exports[`ListDesignerPanel existing list 1`] = `
         "domainKindName": "List",
         "schemaName": null,
         "queryName": null,
+        "disabledSystemFields": undefined,
       },
       "entityId": "ea23d3e0-acd6-1037-8e6d-25f311da6f8b",
       "createdBy": 1005,
@@ -2594,6 +2595,7 @@ exports[`ListDesignerPanel existing list 1`] = `
           "domainKindName": "List",
           "schemaName": null,
           "queryName": null,
+          "disabledSystemFields": undefined,
         },
         "entityId": "ea23d3e0-acd6-1037-8e6d-25f311da6f8b",
         "createdBy": 1005,
@@ -3913,6 +3915,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "domainKindName": "List",
             "schemaName": null,
             "queryName": null,
+            "disabledSystemFields": undefined,
           },
         ]
       }
@@ -5202,6 +5205,7 @@ exports[`ListDesignerPanel existing list 1`] = `
               "domainKindName": "List",
               "schemaName": null,
               "queryName": null,
+              "disabledSystemFields": undefined,
             },
             "entityId": "ea23d3e0-acd6-1037-8e6d-25f311da6f8b",
             "createdBy": 1005,
@@ -6520,6 +6524,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                 "domainKindName": "List",
                 "schemaName": null,
                 "queryName": null,
+                "disabledSystemFields": undefined,
               },
               "entityId": "ea23d3e0-acd6-1037-8e6d-25f311da6f8b",
               "createdBy": 1005,
@@ -7840,6 +7845,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                   "domainKindName": "List",
                   "schemaName": null,
                   "queryName": null,
+                  "disabledSystemFields": undefined,
                 },
                 "entityId": "ea23d3e0-acd6-1037-8e6d-25f311da6f8b",
                 "createdBy": 1005,
@@ -9332,6 +9338,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                             "domainKindName": "List",
                                             "schemaName": null,
                                             "queryName": null,
+                                            "disabledSystemFields": undefined,
                                           },
                                           "entityId": "ea23d3e0-acd6-1037-8e6d-25f311da6f8b",
                                           "createdBy": 1005,
@@ -10663,6 +10670,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                   "domainKindName": "List",
                                                   "schemaName": null,
                                                   "queryName": null,
+                                                  "disabledSystemFields": undefined,
                                                 },
                                                 "entityId": "ea23d3e0-acd6-1037-8e6d-25f311da6f8b",
                                                 "createdBy": 1005,
@@ -12076,6 +12084,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                   "domainKindName": "List",
                                                   "schemaName": null,
                                                   "queryName": null,
+                                                  "disabledSystemFields": undefined,
                                                 },
                                                 "entityId": "ea23d3e0-acd6-1037-8e6d-25f311da6f8b",
                                                 "createdBy": 1005,
@@ -13449,6 +13458,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                             "domainKindName": "List",
                                             "schemaName": null,
                                             "queryName": null,
+                                            "disabledSystemFields": undefined,
                                           },
                                           "entityId": "ea23d3e0-acd6-1037-8e6d-25f311da6f8b",
                                           "createdBy": 1005,
@@ -14780,6 +14790,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                   "domainKindName": "List",
                                                   "schemaName": null,
                                                   "queryName": null,
+                                                  "disabledSystemFields": undefined,
                                                 },
                                                 "entityId": "ea23d3e0-acd6-1037-8e6d-25f311da6f8b",
                                                 "createdBy": 1005,
@@ -16171,6 +16182,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                             "domainKindName": "List",
                                             "schemaName": null,
                                             "queryName": null,
+                                            "disabledSystemFields": undefined,
                                           },
                                           "entityId": "ea23d3e0-acd6-1037-8e6d-25f311da6f8b",
                                           "createdBy": 1005,
@@ -17573,6 +17585,7 @@ exports[`ListDesignerPanel existing list 1`] = `
             "domainKindName": "List",
             "schemaName": null,
             "queryName": null,
+            "disabledSystemFields": undefined,
           }
         }
         domainIndex={0}
@@ -18867,6 +18880,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                 "domainKindName": "List",
                 "schemaName": null,
                 "queryName": null,
+                "disabledSystemFields": undefined,
               }
             }
             domainFormDisplayOptions={

@@ -67,7 +67,7 @@ export const SystemFields: FC<Props> = memo(({ fields, disabledSystemFields, onS
         fields.forEach(field => {
             const dataRow = {...field};
             const fieldName = field.Name;
-            dataRow.Enabled = disabledFieldsLc.indexOf(fieldName.toLowerCase()) === -1;
+            dataRow.Enabled = disabledFieldsLc.indexOf(fieldName?.toLowerCase()) === -1;
             data.push(dataRow);
         });
         return data;

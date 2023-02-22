@@ -245,8 +245,6 @@ export class QueryInfo extends Record({
                     disabledSysFields.push(field.toLowerCase());
                 });
 
-                console.log(this.disabledSystemFields);
-
                 this.columns.forEach(col => {
                     const fieldKey = col.fieldKey?.toLowerCase();
                     if (fieldKey && col.addToSystemView && !columnFieldKeys.includes(fieldKey) && disabledSysFields.indexOf(fieldKey) === -1) {

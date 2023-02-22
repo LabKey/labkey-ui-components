@@ -321,9 +321,9 @@ export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
             setShowPrintDialog(false);
             createNotification(
                 'Successfully printed ' +
-                numLabels +
-                (numSamples === 0 ? ' blank ' : '') +
-                (numLabels > 1 ? ' labels.' : ' label.')
+                    numLabels +
+                    (numSamples === 0 ? ' blank ' : '') +
+                    (numLabels > 1 ? ' labels.' : ' label.')
             );
         },
         [createNotification]

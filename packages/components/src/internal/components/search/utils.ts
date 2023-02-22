@@ -202,8 +202,7 @@ export function getAssayFilter(card: FilterProps, cf?: Query.ContainerFilter): F
 
     if (noAssayDataFilter) return noAssayDataFilter;
 
-    if (!selectColumnFieldKey)
-        return null;
+    if (!selectColumnFieldKey) return null;
 
     const whereConditions = getLabKeySqlWhere(filterArray, true);
     if (!whereConditions) return null;

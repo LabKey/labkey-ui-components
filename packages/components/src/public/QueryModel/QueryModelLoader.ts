@@ -145,7 +145,15 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
     },
     async loadSelections(model) {
         const { selectionKey, schemaName, queryName, filters, containerPath, queryParameters } = model;
-        const result = await getSelected(selectionKey, false, schemaName, queryName, List(filters), containerPath, queryParameters);
+        const result = await getSelected(
+            selectionKey,
+            false,
+            schemaName,
+            queryName,
+            List(filters),
+            containerPath,
+            queryParameters
+        );
         return new Set(result.selected);
     },
     setSelections(model, checked: boolean, selections: string[]) {

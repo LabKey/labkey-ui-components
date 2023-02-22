@@ -316,6 +316,7 @@ describe('getSampleTypeTemplateUrl', () => {
         'exportAlias.name=Sample%20ID' +
         '&exportAlias.aliquotedFromLSID=AliquotedFrom' +
         '&exportAlias.sampleState=Status' +
+        '&exportAlias.storedAmount=Amount' +
         '&schemaName=schema' +
         '&query.queryName=query' +
         '&headerType=DisplayFieldKey' +

@@ -258,7 +258,6 @@ export function getSampleDomainDefaultSystemFields(moduleContext?: ModuleContext
 export function getStorageItemUpdateData(
     storageRows: any[],
     sampleItems: {},
-    sampleTypeUnit: string,
     noStorageSamples: any[],
     selection: List<any>
 ): any {

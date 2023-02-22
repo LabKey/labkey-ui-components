@@ -379,65 +379,29 @@ describe('getConvertedSampleStorageUpdateData1', () => {
     const sampleItems = { '846': { rowId: 73, storedAmount: 1.41 }, '1192': { rowId: 79, storedAmount: 2200 } };
 
     test('no data', () => {
-        expect(getStorageItemUpdateData([], {}, null, [], null)).toBeNull();
+        expect(getStorageItemUpdateData([], {}, [], null)).toBeNull();
     });
 
-    test('unit match sample type unit', () => {
+    test('not in storage', () => {
         const storageRow = [{ StoredAmount: 3.21, Units: 'g', RowId: 846 }];
         const selection = List.of('73', '79');
-        const result = getStorageItemUpdateData(storageRow, sampleItems, 'g', [], selection);
-        const expected = [{ freezeThawCount: undefined, rowId: 73, amount: 3.21, units: 'g' }];
+        const result = getStorageItemUpdateData(storageRow, {}, [], selection);
+        verifyResult(result, "Unable to find storage data for sample for row 0.", []);
+    });
+
+    test('with freezeThaw count', () => {
+        const storageRow = [{  RowId: 846, FreezeThawCount: 3 }];
+        const selection = List.of('73', '79');
+        const result = getStorageItemUpdateData(storageRow, sampleItems, [], selection);
+        const expected = [{ freezeThawCount: 3, rowId: 73 }];
         verifyResult(result, undefined, expected);
     });
 
-    test('unit is not the same but compatible with sample type unit', () => {
-        const storageRow = [{ StoredAmount: 1.23, Units: 'kg', RowId: 846 }];
+    test('without freezeThaw count', () => {
+        const storageRow = [{ RowId: 846 }];
         const selection = List.of('73', '79');
-        const result = getStorageItemUpdateData(storageRow, sampleItems, 'g', [], selection);
-        const expected = [{ freezeThawCount: undefined, rowId: 73, amount: 1230, units: 'g' }];
-        verifyResult(result, undefined, expected);
-    });
-
-    test('missing amount, with unit', () => {
-        const storageRow = [
-            { Units: 'kg', RowId: 846 },
-            { Units: 'mg', RowId: 1192 },
-        ];
-        const selection = List.of('73', '79');
-        const result = getStorageItemUpdateData(storageRow, sampleItems, 'g', [], selection);
-        const expected = [
-            { freezeThawCount: undefined, rowId: 73, amount: 1410, units: 'g' },
-            { freezeThawCount: undefined, rowId: 79, amount: 2.2, units: 'g' },
-        ];
-        verifyResult(result, undefined, expected);
-    });
-
-    test('missing unit, with amount', () => {
-        const storageRow = [
-            { StoredAmount: 0.99, RowId: 846 },
-            { StoredAmount: 2100, RowId: 1192 },
-        ];
-        const selection = List.of('73', '79');
-        const result = getStorageItemUpdateData(storageRow, sampleItems, 'g', [], selection);
-        const expected = [
-            { freezeThawCount: undefined, rowId: 73, amount: 0.99, units: 'g' },
-            { freezeThawCount: undefined, rowId: 79, amount: 2100, units: 'g' },
-        ];
-        verifyResult(result, undefined, expected);
-    });
-
-    test('unit is not compatible with sample type unit', () => {
-        const storageRow = [{ StoredAmount: 1.23, Units: 'mL', RowId: 846 }];
-        const selection = List.of('73', '79');
-        const result = getStorageItemUpdateData(storageRow, sampleItems, 'g', [], selection);
-        verifyResult(result, "Invalid Units. Unable to convert 'mL' to its preferred unit type 'g' for row 0.", []);
-    });
-
-    test('sample type unit is blank but unit is present', () => {
-        const storageRow = [{ StoredAmount: 1.23, Units: 'kg', RowId: 846 }];
-        const selection = List.of('73', '79');
-        const result = getStorageItemUpdateData(storageRow, sampleItems, null, [], selection);
-        const expected = [{ freezeThawCount: undefined, rowId: 73, amount: 1.23, units: 'kg' }];
+        const result = getStorageItemUpdateData(storageRow, sampleItems, [], selection);
+        const expected = [{ freezeThawCount: undefined, rowId: 73 }];
         verifyResult(result, undefined, expected);
     });
 });

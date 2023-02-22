@@ -410,7 +410,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
 
         const sampleTypeUnit = sampleTypeDomainFields.metricUnit;
 
-        return getStorageItemUpdateData(storageRows, sampleItems, sampleTypeUnit, noStorageSamples, selection);
+        return getStorageItemUpdateData(storageRows, sampleItems, noStorageSamples, selection);
     }
 
     onGridEditComplete = (): void => {

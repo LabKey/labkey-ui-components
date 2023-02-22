@@ -9,6 +9,8 @@ import {
     TEST_USER_PROJECT_ADMIN,
     TEST_USER_GUEST,
     TEST_USER_READER,
+    TEST_USER_EDITOR_WITHOUT_DELETE,
+    TEST_USER_WORKFLOW_EDITOR,
 } from '../../../userFixtures';
 
 import { hasAllPermissions, hasAnyPermissions } from './User';
@@ -174,5 +176,18 @@ describe('User permissions', () => {
         expect(TEST_USER_FOLDER_ADMIN.hasAddUsersPermission()).toBeFalsy();
         expect(TEST_USER_PROJECT_ADMIN.hasAddUsersPermission()).toBeTruthy();
         expect(TEST_USER_APP_ADMIN.hasAddUsersPermission()).toBeTruthy();
+    });
+
+    test('hasSampleWorkflowDeletePermission', () => {
+        expect(TEST_USER_GUEST.hasSampleWorkflowDeletePermission()).toBeFalsy();
+        expect(TEST_USER_READER.hasSampleWorkflowDeletePermission()).toBeFalsy();
+        expect(TEST_USER_AUTHOR.hasSampleWorkflowDeletePermission()).toBeFalsy();
+        expect(TEST_USER_EDITOR.hasSampleWorkflowDeletePermission()).toBeTruthy();
+        expect(TEST_USER_EDITOR_WITHOUT_DELETE.hasSampleWorkflowDeletePermission()).toBeFalsy();
+        expect(TEST_USER_WORKFLOW_EDITOR.hasSampleWorkflowDeletePermission()).toBeTruthy();
+        expect(TEST_USER_ASSAY_DESIGNER.hasSampleWorkflowDeletePermission()).toBeFalsy();
+        expect(TEST_USER_FOLDER_ADMIN.hasSampleWorkflowDeletePermission()).toBeTruthy();
+        expect(TEST_USER_PROJECT_ADMIN.hasSampleWorkflowDeletePermission()).toBeTruthy();
+        expect(TEST_USER_APP_ADMIN.hasSampleWorkflowDeletePermission()).toBeTruthy();
     });
 });

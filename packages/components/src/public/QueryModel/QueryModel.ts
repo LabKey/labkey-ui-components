@@ -118,6 +118,11 @@ export interface QueryConfig {
      */
     includeDetailsColumn?: boolean;
     /**
+     * Include the total count in the query response. If true, this can slow down the query performance as the server
+     * will need to do a second query to get that count for all rows in the query. Defaults to false.
+     */
+    includeTotalCount?: boolean;
+    /**
      * Include the Update (or edit) link column in the set of columns (defaults to false). If included, the column
      * will have the name "\~\~Update\~\~". The underlying table/query must support update links or the column
      * will be omitted in the response.
@@ -231,6 +236,11 @@ export class QueryModel {
      * will be omitted in the response.
      */
     readonly includeUpdateColumn: boolean;
+    /**
+     * Include the total count in the query response. If true, this can slow down the query performance as the server
+     * will need to do a second query to get that count for all rows in the query.
+     */
+    readonly includeTotalCount: boolean;
     /**
      * Primary key value, used when loading/rendering details pages to get a single row of data in a QueryModel.
      */
@@ -383,6 +393,7 @@ export class QueryModel {
         this.id = queryConfig.id ?? createQueryModelId(this.schemaQuery);
         this.includeDetailsColumn = queryConfig.includeDetailsColumn ?? false;
         this.includeUpdateColumn = queryConfig.includeUpdateColumn ?? false;
+        this.includeTotalCount = queryConfig.includeTotalCount ?? false;
         this.keyValue = queryConfig.keyValue;
         this.maxRows = queryConfig.maxRows ?? DEFAULT_MAX_ROWS;
         this.offset = queryConfig.offset ?? DEFAULT_OFFSET;
@@ -834,7 +845,12 @@ export class QueryModel {
      * Key to attach to selections, which are specific to a view
      */
     get selectionKey(): string {
-        return this.id + (this.viewName && this.viewName !== ViewInfo.DETAIL_NAME ? '/' + encodePart(this.viewName).toLowerCase() : '');
+        return (
+            this.id +
+            (this.viewName && this.viewName !== ViewInfo.DETAIL_NAME
+                ? '/' + encodePart(this.viewName).toLowerCase()
+                : '')
+        );
     }
 
     /**

@@ -18,7 +18,7 @@ import { List, Map, OrderedMap } from 'immutable';
 import { Input } from 'formsy-react-components';
 import { Filter, Query } from '@labkey/api';
 
-import { insertColumnFilter, QueryColumn } from '../../../public/QueryColumn';
+import { insertColumnFilter, Operation, QueryColumn } from '../../../public/QueryColumn';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
@@ -53,6 +53,7 @@ export interface QueryFormInputsProps {
     lookups?: Map<string, number>;
     onAdditionalFormDataChange?: (name: string, value: any) => void;
     onFieldsEnabledChange?: (numEnabled: number) => void;
+    operation?: Operation;
     onSelectChange?: SelectInputChange;
     queryColumns?: OrderedMap<string, QueryColumn>;
     queryFilters?: Record<string, List<Filter.IFilter>>;
@@ -157,6 +158,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             showLabelAsterisk,
             initiallyDisableFields,
             lookups,
+            operation,
             queryColumns,
             queryInfo,
             renderFileInputs,
@@ -227,9 +229,8 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         if (col.displayAsLookup !== false) {
                             const multiple = col.isJunctionLookup();
                             const joinValues = multiple;
-                            const id = col.fieldKey + i + (componentKey ?? '');
-                            const queryFilter = col.lookup.hasQueryFilters()
-                                ? List(col.lookup.getQueryFilters())
+                            const queryFilter = col.lookup.hasQueryFilters(operation)
+                                ? List(col.lookup.getQueryFilters(operation))
                                 : queryFilters?.[col.fieldKey];
                             return (
                                 <React.Fragment key={i}>
@@ -237,7 +238,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                     <QuerySelect
                                         addLabelAsterisk={showAsteriskSymbol}
                                         allowDisable={allowFieldDisable}
-                                        key={id}
                                         containerFilter={col.lookup.containerFilter ?? containerFilter}
                                         containerPath={col.lookup.containerPath}
                                         description={col.description}

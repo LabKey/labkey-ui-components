@@ -11,6 +11,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Account for storedAmount and Units fields now on samples grids
   * Don't display amount and units in details display
 
+### version 2.294.0
+*Released*: 21 February 2023
+- Add LK version to app admin settings page header - fix for non-premium app case
+
 ### version 2.293.6
 *Released*: 20 February 2023
 - Add “ExpirationDate” field to exp.material

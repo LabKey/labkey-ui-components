@@ -30,7 +30,7 @@ export const BasePermissionsCheckPage: FC<Props> = memo(props => {
     }
 
     let body;
-    if (!user.permissionsList) {
+    if (!user.permissionsList || user.permissionsList.length === 0) {
         body = <LoadingSpinner />;
     }
 

@@ -4,7 +4,7 @@ import { buildURL } from '../../url/AppURL';
 import { handleRequestFailure } from '../../util/utils';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
-import { SUMMARY_ORDER } from './constants';
+import { naturalSortByProperty } from '../../../public/sort';
 
 export const saveNameExpressionOptions = (
     key: string,
@@ -44,20 +44,14 @@ export interface Summary {
     noun: string;
 }
 
-export const getDeletionSummaries = (): Promise<any> => {
+export const getDeletionSummaries = (): Promise<Summary[]> => {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL('core', 'getModuleSummary.api'),
             method: 'GET',
             success: Utils.getCallbackWrapper(response => {
-                // TODO: Maybe inelegant, prob rethink this
                 const summaries = response?.moduleSummary;
-                summaries.sort((summary1, summary2) => {
-                    const order1 = SUMMARY_ORDER[summary1.noun] ?? 100;
-                    const order2 = SUMMARY_ORDER[summary2.noun] ?? 100;
-
-                    return order1 - order2;
-                });
+                summaries.sort(naturalSortByProperty('noun'));
                 resolve(summaries);
             }),
             failure: handleRequestFailure(reject, 'Failed to retrieve deletion summary.'),

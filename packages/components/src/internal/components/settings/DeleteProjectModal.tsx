@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { ChangeEventHandler, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
@@ -12,6 +12,99 @@ import { getCurrentAppProperties, getPrimaryAppProperties } from '../../app/util
 import { resolveErrorMessage } from '../../util/messaging';
 
 import { deleteContainerWithComment, getDeletionSummaries, Summary } from './actions';
+
+interface CommentAreaProps {
+    comment: string;
+    onChangeComment: ChangeEventHandler<HTMLTextAreaElement>;
+}
+export const CommentArea: FC<CommentAreaProps> = memo(({ comment, onChangeComment }) => {
+    return (
+        <div className="delete-project-modal__comment">
+            <p>
+                <b>Deletion cannot be undone.</b> Do you want to proceed?{' '}
+            </p>
+            <p>
+                <b>Reason for deleting</b>
+            </p>
+            <textarea
+                className="form-control"
+                placeholder="Enter comments (optional)"
+                value={comment}
+                rows={5}
+                cols={50}
+                onChange={onChangeComment}
+            />
+        </div>
+    );
+});
+
+export const BodyEmpty: FC<CommentAreaProps> = memo(({ comment, onChangeComment }) => {
+    return (
+        <Modal.Body>
+            <div className="delete-project-modal__text">
+                <p>This project will be permanently deleted. It contains no data.</p>
+            </div>
+
+            <CommentArea comment={comment} onChangeComment={onChangeComment} />
+        </Modal.Body>
+    );
+});
+
+interface BodyProps {
+    comment: string;
+    onChangeComment: ChangeEventHandler<HTMLTextAreaElement>;
+    summaries: Summary[];
+}
+export const Body: FC<BodyProps> = memo(({ summaries, comment, onChangeComment }) => {
+    return (
+        <Modal.Body>
+            <div className="delete-project-modal__text">
+                <p>This project and all of its data will be permanently deleted.</p>
+                <p>
+                    Before deleting this project, ensure there are no references to data (samples, sources or registry,
+                    assay data, etc.) in other projects.
+                </p>
+            </div>
+
+            <b> Project Data </b>
+
+            <table className="table table-responsive table-condensed delete-project-modal__table ">
+                <tbody>
+                    {summaries ? (
+                        summaries.map(s => (
+                            <tr key={s.count + s.noun}>
+                                <td>{s.noun}</td>
+                                <td>{s.count}</td>
+                            </tr>
+                        ))
+                    ) : (
+                        <LoadingSpinner />
+                    )}
+                </tbody>
+            </table>
+
+            <CommentArea comment={comment} onChangeComment={onChangeComment} />
+        </Modal.Body>
+    );
+});
+
+interface BodyDeletingProps {
+    totalCountFromSummaries: number;
+}
+export const BodyDeleting: FC<BodyDeletingProps> = memo(({ totalCountFromSummaries }) => {
+    const [toggle, seToggle] = React.useState<boolean>(false);
+
+    React.useEffect(() => {
+        setTimeout(() => seToggle(true), 1);
+    }, []);
+
+    return (
+        <Modal.Body>
+            <div className="deleting-project-modal-text">Please don't close this page until deleting is done.</div>
+            <Progress delay={0} estimate={totalCountFromSummaries * 15} toggle={toggle} />
+        </Modal.Body>
+    );
+});
 
 interface Props {
     onCancel: () => void;
@@ -77,64 +170,21 @@ export const DeleteProjectModal: FC<Props> = memo(props => {
         [summaries]
     );
 
+    const noData = useMemo(() => summaries?.length === 0, [summaries]);
+
     return (
         <Modal onHide={onCancel} show>
             <Modal.Header closeButton={!isDeleting}>
                 <Modal.Title>{isDeleting ? 'Deleting project' : <> Permanently delete {projectName}? </>} </Modal.Title>
             </Modal.Header>
 
-            <Modal.Body>
-                {isDeleting ? (
-                    <div className="deleting-project-modal-text">
-                        Please don't close this page until deleting is done.
-                    </div>
-                ) : (
-                    <>
-                        <div className="delete-project-modal__text">
-                            <p>This project and all of its data will be permanently deleted.</p>
-                            <p>
-                                Before deleting this project, ensure there are no references to data (samples, sources
-                                or registry, assay data, etc.) in other projects.
-                            </p>
-                        </div>
-
-                        <b> Project Data </b>
-
-                        <table className="table table-responsive table-condensed delete-project-modal__table ">
-                            <tbody>
-                                {summaries ? (
-                                    summaries.map(s => (
-                                        <tr key={s.count + s.noun}>
-                                            <td>{s.noun}</td>
-                                            <td>{s.count}</td>
-                                        </tr>
-                                    ))
-                                ) : (
-                                    <LoadingSpinner />
-                                )}
-                            </tbody>
-                        </table>
-
-                        <div className="delete-project-modal__comment">
-                            <p>
-                                <b>Deletion cannot be undone.</b> Do you want to proceed?{' '}
-                            </p>
-                            <p>
-                                <b>Reason for deleting</b>
-                            </p>
-                            <textarea
-                                className="form-control"
-                                placeholder="Enter comments (optional)"
-                                value={comment}
-                                rows={5}
-                                cols={50}
-                                onChange={onChangeComment}
-                            />
-                        </div>
-                    </>
-                )}
-                <Progress delay={0} estimate={totalCountFromSummaries * 15} toggle={isDeleting} />
-            </Modal.Body>
+            {isDeleting ? (
+                <BodyDeleting totalCountFromSummaries={totalCountFromSummaries} />
+            ) : noData ? (
+                <BodyEmpty onChangeComment={onChangeComment} comment={comment} />
+            ) : (
+                <Body comment={comment} onChangeComment={onChangeComment} summaries={summaries} />
+            )}
 
             {!isDeleting && (
                 <Modal.Footer>

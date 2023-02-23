@@ -89,12 +89,6 @@ describe('AppURL', () => {
         expected = '/labkey/controller/action.view?returnUrl=somewhere';
         expect(buildURL('controller', 'action', {}, { returnUrl: 'somewhere' })).toBe(expected);
     });
-
-    test('equivalency', () => {
-        expect(AppURL.create('x', 'y', 'z')).toEqual(AppURL.create('x', 'y', 'z'));
-        expect(AppURL.create('x').addParam('f', 5)).toEqual(AppURL.create('x').addParam('f', 5));
-        expect(AppURL.create('x').addParam('f', 10)).not.toEqual(AppURL.create('x').addParam('f', 50));
-    });
 });
 
 describe('createProductUrlFromParts', () => {

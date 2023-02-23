@@ -28,13 +28,7 @@ import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionUR
 import { Container } from './internal/components/base/models/Container';
 import { hasAllPermissions, hasAnyPermissions, hasPermissions, User } from './internal/components/base/models/User';
 import { GridColumn } from './internal/components/base/models/GridColumn';
-import {
-    decodePart,
-    encodePart,
-    getSchemaQuery,
-    resolveKey,
-    SchemaQuery,
-} from './public/SchemaQuery';
+import { decodePart, encodePart, getSchemaQuery, resolveKey, SchemaQuery } from './public/SchemaQuery';
 import { insertColumnFilter, Operation, QueryColumn, QueryLookup } from './public/QueryColumn';
 import { QuerySort } from './public/QuerySort';
 import { LastActionStatus, MessageLevel } from './internal/LastActionStatus';

@@ -1,6 +1,6 @@
 // Consider having this implement Query.QueryColumn from @labkey/api
 // commented out attributes are not used in app
-import { Record } from 'immutable';
+import { Record as ImmutableRecord } from 'immutable';
 import { Filter, Query } from '@labkey/api';
 
 import {
@@ -15,22 +15,27 @@ import { SAMPLES_WITH_TYPES_FILTER } from '../internal/components/samples/consta
 
 import { SchemaQuery } from './SchemaQuery';
 
-export class QueryLookup extends Record({
-    containerFilter: undefined,
-    containerPath: undefined,
-    displayColumn: undefined,
-    isPublic: false,
-    keyColumn: undefined,
-    junctionLookup: undefined,
-    multiValued: undefined,
-    queryName: undefined,
-    schemaName: undefined,
-    schemaQuery: undefined,
-    table: undefined,
-}) {
+export enum Operation {
+    insert = 'insert',
+    update = 'update',
+}
+
+interface FilterGroupFilter {
+    column: string;
+    operator: string;
+    value: string;
+}
+
+interface FilterGroup {
+    filters: FilterGroupFilter[];
+    operation: Operation;
+}
+
+export class QueryLookup {
     declare containerFilter: Query.ContainerFilter;
     declare containerPath: string;
     declare displayColumn: string;
+    declare filterGroups: FilterGroup[];
     declare isPublic: boolean;
     declare junctionLookup: string; // name of the column on the junction table that is also a lookup
     declare keyColumn: string;
@@ -42,29 +47,46 @@ export class QueryLookup extends Record({
     declare schemaQuery: SchemaQuery;
     // declare table: string; -- NOT ALLOWING -- USE queryName
 
-    static create(rawLookup): QueryLookup {
-        return new QueryLookup(
-            Object.assign({}, rawLookup, {
-                schemaQuery: new SchemaQuery(rawLookup.schemaName, rawLookup.queryName, rawLookup.viewName),
-            })
+    constructor(rawLookup: Record<string, any>) {
+        Object.assign(this, rawLookup, {
+            schemaQuery: new SchemaQuery(rawLookup.schemaName, rawLookup.queryName, rawLookup.viewName),
+        });
+    }
+
+    hasQueryFilters(operation?: Operation): boolean {
+        return (
+            isAllSamplesSchema(this.schemaQuery) ||
+            (operation !== undefined && this.getFilterGroup(operation) !== undefined)
         );
     }
 
-    hasQueryFilters(): boolean {
-        return isAllSamplesSchema(this.schemaQuery);
+    getFilterGroup(operation: Operation): FilterGroup {
+        return this.filterGroups?.find(filterGroup => filterGroup.operation === operation);
     }
 
-    getQueryFilters(): Filter.IFilter[] {
+    getQueryFilters(operation?: Operation): Filter.IFilter[] {
         // Issue 46037: Some plate-based assays (e.g., NAB) create samples with a bogus 'Material' sample type, which should get excluded here
         if (isAllSamplesSchema(this.schemaQuery)) {
             return [SAMPLES_WITH_TYPES_FILTER];
-        } else {
-            return undefined;
         }
+
+        const filterGroup = this.getFilterGroup(operation);
+
+        if (filterGroup) {
+            return filterGroup.filters.map(filterGroupFilter =>
+                Filter.create(
+                    filterGroupFilter.column,
+                    filterGroupFilter.value,
+                    Filter.Types[filterGroupFilter.operator.toUpperCase()]
+                )
+            );
+        }
+
+        return undefined;
     }
 }
 
-export class QueryColumn extends Record({
+export class QueryColumn extends ImmutableRecord({
     align: undefined,
     // autoIncrement: undefined,
     // calculated: undefined,
@@ -223,7 +245,7 @@ export class QueryColumn extends Record({
         if (rawColumn && rawColumn.lookup !== undefined) {
             return new QueryColumn(
                 Object.assign({}, rawColumn, {
-                    lookup: QueryLookup.create(rawColumn.lookup),
+                    lookup: new QueryLookup(rawColumn.lookup),
                 })
             );
         }
@@ -404,9 +426,9 @@ export class QueryColumn extends Record({
                 // OR if it is of type : (boolean, int, date, text), multiline excluded
                 if (this.lookup || this.dimension) return true;
                 else if (
-                    this.jsonType == 'boolean' ||
-                    this.jsonType == 'int' ||
-                    (this.jsonType == 'string' && this.inputType != 'textarea')
+                    this.jsonType === 'boolean' ||
+                    this.jsonType === 'int' ||
+                    (this.jsonType === 'string' && this.inputType !== 'textarea')
                 )
                     return true;
         }

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import { Draft, immerable, produce } from 'immer';
+import { Operation } from '../../../public/QueryColumn';
 
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 import { LoadingState } from '../../../public/LoadingState';
@@ -21,9 +22,9 @@ import { LoadingState } from '../../../public/LoadingState';
 import { AssayWizardModel } from './AssayWizardModel';
 
 export interface AssayPropertiesPanelProps {
+    operation: Operation;
     model: AssayWizardModel;
-    onChange: Function;
-    title?: string;
+    onChange: (fieldValues: any, isChanged?: boolean) => void;
 }
 
 export class AssayUploadResultModel {

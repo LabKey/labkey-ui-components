@@ -35,7 +35,7 @@ import {
     resolveKey,
     SchemaQuery,
 } from './public/SchemaQuery';
-import { insertColumnFilter, QueryColumn, QueryLookup } from './public/QueryColumn';
+import { insertColumnFilter, Operation, QueryColumn, QueryLookup } from './public/QueryColumn';
 import { QuerySort } from './public/QuerySort';
 import { LastActionStatus, MessageLevel } from './internal/LastActionStatus';
 import { InferDomainResponse } from './public/InferDomainResponse';
@@ -1339,6 +1339,7 @@ export {
     QueryColumn,
     QueryInfo,
     QueryLookup,
+    Operation,
     QueryInfoStatus,
     QuerySort,
     SchemaDetails,

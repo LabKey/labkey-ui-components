@@ -6,6 +6,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Add perm check helper hasSampleWorkflowDeletePermission()
 - update @labkey/api package version
 
+### version 2.296.0
+*Released*: 22 February 2023
+- QueryLookup: convert to regular class, add filterGroups attribute, use filterGroups in getQueryFilters
+- QueryFormInputs: Add optional "operation" prop
+  - Add equivalent prop to QueryInfoForm, AssayImportPanels (and child components), BulkAddUpdateForm, LookupCell
+- DetailDisplay: use QueryColumn.getQueryFilters when rendering QuerySelect
+
 ### version 2.295.0
 *Released*: 22 February 2023
 - QueryModel switch to default to includeTotalCount false

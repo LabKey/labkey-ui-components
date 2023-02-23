@@ -1,8 +1,7 @@
-import { List, Record } from 'immutable';
 import { ActionURL, PermissionTypes, UserWithPermissions } from '@labkey/api';
 
 interface IUserProps extends UserWithPermissions {
-    permissionsList: List<string>;
+    permissionsList: string[];
 }
 
 const defaultUser: IUserProps = {
@@ -29,13 +28,13 @@ const defaultUser: IUserProps = {
     isTrusted: false,
 
     maxAllowedPhi: undefined,
-    permissionsList: List(),
+    permissionsList: [],
 };
 
 /**
  * Model for org.labkey.api.security.User as returned by User.getUserProps()
  */
-export class User extends Record(defaultUser) implements IUserProps {
+export class User implements IUserProps {
     declare id: number;
 
     declare canDelete: boolean;
@@ -59,7 +58,11 @@ export class User extends Record(defaultUser) implements IUserProps {
     declare isTrusted: boolean;
 
     declare maxAllowedPhi: string;
-    declare permissionsList: List<string>;
+    declare permissionsList: string[];
+
+    constructor(props) {
+        Object.assign(this, defaultUser, props);
+    }
 
     static getDefaultUser(): User {
         return new User(defaultUser);
@@ -124,7 +127,7 @@ export function hasPermissions(
     if (checkIsAdmin && user.isAdmin) {
         return perms?.length > 0;
     } else if (perms) {
-        const allPerms = user.get('permissionsList');
+        const allPerms = user.permissionsList;
 
         if (permissionCheck === 'any') {
             return perms.some(p => allPerms.indexOf(p) > -1);

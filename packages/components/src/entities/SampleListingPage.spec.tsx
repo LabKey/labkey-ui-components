@@ -97,7 +97,7 @@ describe('hasPermissions', () => {
                 TEST_USER_EDITOR,
                 [PermissionTypes.Insert, PermissionTypes.Update],
                 false,
-                List.of(PermissionTypes.Insert)
+                [PermissionTypes.Insert]
             )
         ).toBeTruthy();
     });
@@ -108,7 +108,7 @@ describe('hasPermissions', () => {
                 TEST_USER_AUTHOR,
                 [PermissionTypes.Insert, PermissionTypes.Update],
                 true,
-                List.of(PermissionTypes.Insert)
+                [PermissionTypes.Insert]
             )
         ).toBeFalsy();
         expect(
@@ -116,7 +116,7 @@ describe('hasPermissions', () => {
                 TEST_USER_AUTHOR,
                 [PermissionTypes.Insert, PermissionTypes.Update],
                 true,
-                List.of(PermissionTypes.Insert, PermissionTypes.Update)
+                [PermissionTypes.Insert, PermissionTypes.Update]
             )
         ).toBeTruthy();
         expect(
@@ -124,7 +124,7 @@ describe('hasPermissions', () => {
                 TEST_USER_EDITOR,
                 [PermissionTypes.Insert, PermissionTypes.Update],
                 true,
-                List.of(PermissionTypes.Insert)
+                [PermissionTypes.Insert]
             )
         ).toBeFalsy();
         expect(
@@ -132,7 +132,7 @@ describe('hasPermissions', () => {
                 TEST_USER_EDITOR,
                 [PermissionTypes.Insert, PermissionTypes.Update],
                 true,
-                List.of(PermissionTypes.Insert, PermissionTypes.Update)
+                [PermissionTypes.Insert, PermissionTypes.Update]
             )
         ).toBeTruthy();
         expect(hasPermissions(TEST_USER_EDITOR, [PermissionTypes.Insert, PermissionTypes.Update], true)).toBeFalsy();

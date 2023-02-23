@@ -1,13 +1,21 @@
 import { Map } from 'immutable';
-import { Filter, Query, Security } from '@labkey/api';
+import { Ajax, Filter, Query, Security, Utils } from '@labkey/api';
 
 import { Container } from '../base/models/Container';
 import { fetchContainerSecurityPolicy, UserLimitSettings, getUserLimitSettings } from '../permissions/actions';
 import { Principal, SecurityPolicy } from '../permissions/models';
 import { Row } from '../../query/selectRows';
 import { SCHEMAS } from '../../schemas';
+import { buildURL } from '../../url/AppURL';
+import { naturalSortByProperty } from '../../../public/sort';
+import { handleRequestFailure } from '../../util/utils';
 
 export type FetchContainerOptions = Omit<Security.GetContainersOptions, 'success' | 'failure' | 'scope'>;
+
+export interface Summary {
+    count: number;
+    noun: string;
+}
 
 export interface FetchedGroup {
     id: number;
@@ -30,6 +38,7 @@ export interface RemoveGroupMembersResponse {
 export interface SecurityAPIWrapper {
     addGroupMembers: (groupId: number, principalIds: number[], projectPath: string) => Promise<AddGroupMembersResponse>;
     createGroup: (groupName: string, projectPath: string) => Promise<Security.CreateGroupResponse>;
+    deleteContainer: (comment: string) => Promise<Record<string, unknown>>;
     deleteGroup: (id: number, projectPath: string) => Promise<DeleteGroupResponse>;
     fetchContainers: (options: FetchContainerOptions) => Promise<Container[]>;
     fetchGroups: (projectPath: string) => Promise<FetchedGroup[]>;
@@ -39,6 +48,7 @@ export interface SecurityAPIWrapper {
         inactiveUsersById?: Map<number, Principal>
     ) => Promise<SecurityPolicy>;
     getAuditLogData: (columns: string, filterCol: string, filterVal: string | number) => Promise<string>;
+    getDeletionSummaries: () => Promise<Summary[]>;
     getGroupMemberships: () => Promise<Row[]>;
     getUserLimitSettings: () => Promise<UserLimitSettings>;
     removeGroupMembers: (
@@ -80,6 +90,21 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
                 },
                 failure: error => {
                     console.error('Failed to create group', error);
+                    reject(error);
+                },
+            });
+        });
+    };
+
+    deleteContainer = (comment: string): Promise<Record<string, unknown>> => {
+        return new Promise((resolve, reject) => {
+            Security.deleteContainer({
+                comment,
+                success: data => {
+                    resolve(data);
+                },
+                failure: error => {
+                    console.error('Failed to delete project', error);
                     reject(error);
                 },
             });
@@ -156,6 +181,21 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         });
     };
 
+    getDeletionSummaries = (): Promise<Summary[]> => {
+        return new Promise((resolve, reject) => {
+            Ajax.request({
+                url: buildURL('core', 'getModuleSummary.api'),
+                method: 'GET',
+                success: Utils.getCallbackWrapper(response => {
+                    const summaries = response?.moduleSummary;
+                    summaries.sort(naturalSortByProperty('noun'));
+                    resolve(summaries);
+                }),
+                failure: handleRequestFailure(reject, 'Failed to retrieve deletion summary.'),
+            });
+        });
+    };
+
     getGroupMemberships = (): Promise<Row[]> => {
         return new Promise((resolve, reject) => {
             Query.selectRows({
@@ -215,11 +255,13 @@ export function getSecurityTestAPIWrapper(
     return {
         addGroupMembers: mockFn(),
         createGroup: mockFn(),
+        deleteContainer: mockFn(),
         deleteGroup: mockFn(),
         fetchContainers: mockFn(),
         fetchGroups: mockFn(),
         fetchPolicy: mockFn(),
         getAuditLogData: mockFn(),
+        getDeletionSummaries: mockFn(),
         getGroupMemberships: mockFn(),
         getUserLimitSettings: mockFn(),
         removeGroupMembers: mockFn(),

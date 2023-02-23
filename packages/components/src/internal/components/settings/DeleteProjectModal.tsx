@@ -1,5 +1,5 @@
 import React, { ChangeEventHandler, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Modal } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
@@ -11,7 +11,8 @@ import { getCurrentAppProperties, getPrimaryAppProperties } from '../../app/util
 
 import { resolveErrorMessage } from '../../util/messaging';
 
-import { deleteContainerWithComment, getDeletionSummaries, Summary } from './actions';
+import { useAppContext } from '../../AppContext';
+import { Summary } from '../security/APIWrapper';
 
 interface CommentAreaProps {
     comment: string;
@@ -118,19 +119,20 @@ export const DeleteProjectModal: FC<Props> = memo(props => {
     const [comment, setComment] = useState<string>(undefined);
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
+    const { api } = useAppContext();
     const { container, user } = useServerContext();
 
     useEffect(() => {
         (async () => {
             try {
-                const allSummaries = await getDeletionSummaries();
+                const allSummaries = await api.security.getDeletionSummaries();
                 setSummaries(allSummaries);
             } catch (e) {
                 // getDeletionSummaries() handles error logging
                 // Purposely leave loading spinner indefinitely in case of summary retrieval failure
             }
         })();
-    }, []);
+    }, [api.security]);
 
     const onHide = useCallback(() => {
         if (!isDeleting) onCancel();
@@ -143,7 +145,7 @@ export const DeleteProjectModal: FC<Props> = memo(props => {
     const onDeleteProject = useCallback(async () => {
         setIsDeleting(true);
         try {
-            await deleteContainerWithComment(comment);
+            await api.security.deleteContainer(comment);
 
             const successMsg = `${projectName} successfully deleted.`;
             const adminProjectsHref = createProductUrl(
@@ -164,7 +166,7 @@ export const DeleteProjectModal: FC<Props> = memo(props => {
         } catch (e) {
             onError(resolveErrorMessage(e) ?? `${projectName} could not be deleted. Please try again.`);
         }
-    }, [comment, container.parentPath, onError, projectName, user.isAdmin]);
+    }, [api.security, comment, container.parentPath, onError, projectName, user.isAdmin]);
 
     const totalCountFromSummaries = useMemo(
         () =>
@@ -192,13 +194,13 @@ export const DeleteProjectModal: FC<Props> = memo(props => {
 
             {!isDeleting && (
                 <Modal.Footer>
-                    <button className="btn btn-default pull-left" type="button" onClick={onCancel}>
+                    <Button className="btn btn-default pull-left" type="button" onClick={onCancel}>
                         Cancel
-                    </button>
+                    </Button>
 
-                    <button className="btn btn-danger" type="button" onClick={onDeleteProject} style={{}}>
+                    <Button className="btn btn-danger" type="button" onClick={onDeleteProject} style={{}}>
                         Yes, Delete
-                    </button>
+                    </Button>
                 </Modal.Footer>
             )}
         </Modal>

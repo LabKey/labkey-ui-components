@@ -1,5 +1,7 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 
+import { Button } from 'react-bootstrap';
+
 import { useAppContext } from '../../AppContext';
 import { useServerContext, useServerContextDispatch } from '../base/ServerContext';
 import { ProjectProperties } from '../administration/ProjectProperties';
@@ -103,13 +105,13 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(({ onChange, onSuc
                     />
 
                     <div className="pull-right">
-                        <button
+                        <Button
                             className="btn btn-default delete-project-button"
                             type="button"
                             onClick={openModalHandler}
                         >
                             <i className="fa fa-trash" /> Delete
-                        </button>
+                        </Button>
 
                         <button className="btn btn-success" disabled={isSaving || !dirty} type="submit">
                             {isSaving ? 'Saving' : 'Save'}

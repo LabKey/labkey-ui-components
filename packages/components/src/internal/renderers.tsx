@@ -400,8 +400,8 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     if (viewColFilters?.length) colFilters = colFilters.concat(viewColFilters);
     // first check the model users (user-defined) and then fall back to the view sorts
     const colQuerySortDir =
-        model?.sorts?.find(sort => sort.get('fieldKey') === queryColumn.resolveFieldKey())?.get('dir') ??
-        view?.sorts?.find(sort => sort.get('fieldKey') === queryColumn.resolveFieldKey())?.get('dir');
+        model?.sorts?.find(sort => sort.fieldKey === queryColumn.resolveFieldKey())?.dir ??
+        view?.sorts?.find(sort => sort.fieldKey === queryColumn.resolveFieldKey())?.dir;
     const isSortAsc = queryColumn.sorts === '+' || colQuerySortDir === '+' || colQuerySortDir === '';
     const isSortDesc = queryColumn.sorts === '-' || colQuerySortDir === '-';
 

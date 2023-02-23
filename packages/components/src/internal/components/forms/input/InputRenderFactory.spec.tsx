@@ -9,7 +9,7 @@ import { AppendUnitsInput } from './AppendUnitsInput';
 import { resolveInputRenderer } from './InputRenderFactory';
 
 describe('resolveInputRenderer', () => {
-    const column = QueryColumn.create({
+    const column = new QueryColumn({
         name: 'resolveInputRendererTestColumn',
     });
 

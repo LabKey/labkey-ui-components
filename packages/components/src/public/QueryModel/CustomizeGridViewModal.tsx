@@ -351,8 +351,8 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
     }, []);
 
     const updateColumnTitle = useCallback(
-        (updatedColumn: QueryColumn, title: string) => {
-            const relabeledColumn = updatedColumn.set('caption', title);
+        (updatedColumn: QueryColumn, caption: string) => {
+            const relabeledColumn = updatedColumn.mutate({ caption });
             const index = columnsInView.findIndex(column => column.index === updatedColumn.index);
             setColumnsInView([...columnsInView.slice(0, index), relabeledColumn, ...columnsInView.slice(index + 1)]);
             setIsDirty(true);

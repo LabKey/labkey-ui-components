@@ -268,7 +268,7 @@ function applyColumnMetadata(schemaQuery: SchemaQuery, rawColumn: any): QueryCol
         }
     }
 
-    return QueryColumn.create(Object.assign({}, rawColumn, columnMetadata));
+    return new QueryColumn(Object.assign({}, rawColumn, columnMetadata));
 }
 
 // As of r57235 some column info's are only found on the views "fields" property that were previously

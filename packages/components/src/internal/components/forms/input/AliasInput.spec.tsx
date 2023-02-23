@@ -9,7 +9,7 @@ import { SelectInput } from './SelectInput';
 
 describe('AliasInput', () => {
     const fieldKey = 'Alias';
-    const aliasColumn = QueryColumn.create({
+    const aliasColumn = new QueryColumn({
         caption: fieldKey,
         fieldKey,
         required: false,

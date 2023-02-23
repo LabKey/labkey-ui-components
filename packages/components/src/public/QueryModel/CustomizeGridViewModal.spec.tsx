@@ -25,7 +25,7 @@ import {
     includedColumnsForCustomizationFilter,
 } from './CustomizeGridViewModal';
 
-const QUERY_COL = QueryColumn.create({
+const QUERY_COL = new QueryColumn({
     name: 'test/Column',
     fieldKey: 'test$SColumn',
     fieldKeyArray: ['test/Column'],
@@ -34,7 +34,7 @@ const QUERY_COL = QueryColumn.create({
     selectable: true,
 });
 
-const QUERY_COL_LOOKUP = QueryColumn.create({
+const QUERY_COL_LOOKUP = new QueryColumn({
     name: 'test/Column',
     fieldKey: 'test$SColumn',
     fieldKeyArray: ['test/Column'],
@@ -159,7 +159,7 @@ describe('ColumnInView', () => {
     });
 
     test('addToDisplayView can be removed', () => {
-        const column = QueryColumn.create({
+        const column = new QueryColumn({
             name: 'testColumn',
             fieldKey: 'testColumn',
             fieldKeyArray: ['testColumn'],
@@ -187,7 +187,7 @@ describe('ColumnInView', () => {
     });
 
     test('drag disabled', () => {
-        const column = QueryColumn.create({
+        const column = new QueryColumn({
             name: 'testColumn',
             fieldKey: 'testColumn',
             fieldKeyArray: ['testColumn'],
@@ -215,7 +215,7 @@ describe('ColumnInView', () => {
     });
 
     test('Editing', () => {
-        const column = QueryColumn.create({
+        const column = new QueryColumn({
             name: 'testColumn',
             fieldKey: 'testColumn',
             fieldKeyArray: ['testColumn'],
@@ -535,7 +535,7 @@ describe('ColumnChoiceGroup', () => {
     });
 
     test('lookup column with children, child hidden', () => {
-        const colHidden = QueryColumn.create({ ...QUERY_COL.toJS(), hidden: true });
+        const colHidden = new QueryColumn({ ...QUERY_COL.toJS(), hidden: true });
         const queryInfo = QueryInfo.create({ columns: fromJS({ [colHidden.fieldKey]: colHidden }) });
         const wrapper = mount(
             <ColumnChoiceGroup
@@ -550,7 +550,7 @@ describe('ColumnChoiceGroup', () => {
     });
 
     test('lookup column with children, child hidden with showAllColumns', () => {
-        const colHidden = QueryColumn.create({ ...QUERY_COL.toJS(), hidden: true });
+        const colHidden = new QueryColumn({ ...QUERY_COL.toJS(), hidden: true });
         const queryInfo = QueryInfo.create({ columns: fromJS({ [colHidden.fieldKey]: colHidden }) });
         const wrapper = mount(
             <ColumnChoiceGroup
@@ -568,7 +568,7 @@ describe('ColumnChoiceGroup', () => {
     });
 
     test('lookup column with children, child removeFromViews', () => {
-        const colHidden = QueryColumn.create({ ...QUERY_COL.toJS(), removeFromViews: true });
+        const colHidden = new QueryColumn({ ...QUERY_COL.toJS(), removeFromViews: true });
         const queryInfo = QueryInfo.create({ columns: fromJS({ [colHidden.fieldKey]: colHidden }) });
         const wrapper = mount(
             <ColumnChoiceGroup
@@ -585,29 +585,29 @@ describe('ColumnChoiceGroup', () => {
 
 describe('includedColumnsForCustomizationFilter', () => {
     test('hidden', () => {
-        let col = QueryColumn.create({ name: 'testColumn', hidden: false });
+        let col = new QueryColumn({ name: 'testColumn', hidden: false });
         expect(includedColumnsForCustomizationFilter(col, false)).toBeTruthy;
         expect(includedColumnsForCustomizationFilter(col, true)).toBeTruthy;
 
-        col = QueryColumn.create({ name: 'testColumn', hidden: true });
+        col = new QueryColumn({ name: 'testColumn', hidden: true });
         expect(includedColumnsForCustomizationFilter(col, false)).toBeFalsy();
         expect(includedColumnsForCustomizationFilter(col, true)).toBeTruthy;
     });
 
     test('removeFromViews', () => {
-        let col = QueryColumn.create({ name: 'testColumn', removeFromViews: false });
+        let col = new QueryColumn({ name: 'testColumn', removeFromViews: false });
         expect(includedColumnsForCustomizationFilter(col, false)).toBeTruthy();
 
-        col = QueryColumn.create({ name: 'testColumn', removeFromViews: true });
+        col = new QueryColumn({ name: 'testColumn', removeFromViews: true });
         expect(includedColumnsForCustomizationFilter(col, false)).toBeFalsy();
     });
 
     test('removeFromViewCustomization', () => {
-        let col = QueryColumn.create({ name: 'testColumn', removeFromViewCustomization: false });
+        let col = new QueryColumn({ name: 'testColumn', removeFromViewCustomization: false });
         expect(includedColumnsForCustomizationFilter(col, false)).toBeTruthy();
         expect(includedColumnsForCustomizationFilter(col, true)).toBeTruthy();
 
-        col = QueryColumn.create({ name: 'testColumn', removeFromViewCustomization: true });
+        col = new QueryColumn({ name: 'testColumn', removeFromViewCustomization: true });
         expect(includedColumnsForCustomizationFilter(col, false)).toBeFalsy();
         expect(includedColumnsForCustomizationFilter(col, true)).toBeFalsy();
 

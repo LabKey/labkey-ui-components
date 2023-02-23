@@ -376,7 +376,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     const onColumnTitleUpdate = useCallback(
         (newTitle: string) => {
             setEditingTitle(false);
-            onColumnTitleChange(queryColumn.set('caption', newTitle) as QueryColumn);
+            onColumnTitleChange(queryColumn.mutate({ caption: newTitle }));
             onColumnTitleEdit?.(queryColumn);
         },
         [onColumnTitleChange, queryColumn, onColumnTitleEdit]

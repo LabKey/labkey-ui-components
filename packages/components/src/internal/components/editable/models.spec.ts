@@ -937,17 +937,17 @@ describe('getPkData', () => {
         appEditableTable: true,
         pkCols: List(['RowId']),
         columns: fromJS({
-            rowid: QueryColumn.create({
+            rowid: new QueryColumn({
                 caption: 'Row Id',
                 fieldKey: 'RowId',
                 inputType: 'number',
             }),
-            lsid: QueryColumn.create({
+            lsid: new QueryColumn({
                 caption: 'LSID',
                 fieldKey: 'lsid',
                 inputType: 'text',
             }),
-            description: QueryColumn.create({
+            description: new QueryColumn({
                 caption: 'Description',
                 fieldKey: 'Description',
                 inputType: 'textarea',

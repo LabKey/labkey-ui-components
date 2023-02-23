@@ -46,6 +46,7 @@ export class QueryLookup {
     declare schemaName: string;
     declare schemaQuery: SchemaQuery;
     // declare table: string; -- NOT ALLOWING -- USE queryName
+    declare viewName: string;
 
     constructor(rawLookup: Record<string, any>) {
         Object.assign(this, rawLookup, {
@@ -86,84 +87,7 @@ export class QueryLookup {
     }
 }
 
-export class QueryColumn extends ImmutableRecord({
-    align: undefined,
-    // autoIncrement: undefined,
-    // calculated: undefined,
-    caption: undefined,
-    conceptURI: null,
-    // defaultScale: undefined,
-    defaultValue: null,
-    description: undefined,
-    dimension: undefined,
-    displayAsLookup: undefined,
-    displayField: undefined,
-    displayFieldSqlType: undefined,
-    displayFieldJsonType: undefined,
-    // excludeFromShifting: undefined,
-    // ext: undefined,
-    facetingBehaviorType: undefined,
-    fieldKey: undefined,
-    fieldKeyArray: undefined,
-    fieldKeyPath: undefined,
-    filterable: true,
-    format: undefined,
-    // friendlyType: undefined,
-    hasSortKey: false,
-    hidden: undefined,
-    inputType: undefined,
-    // isAutoIncrement: undefined, // DUPLICATE
-    // isHidden: undefined, // DUPLICATE
-    isKeyField: undefined,
-    // isMvEnabled: undefined,
-    // isNullable: undefined,
-    // isReadOnly: undefined,
-    // isSelectable: undefined, // DUPLICATE
-    // isUserEditable: undefined, // DUPLICATE
-    // isVersionField: undefined,
-    jsonType: undefined,
-    // keyField: undefined,
-    lookup: undefined,
-    measure: undefined,
-    multiValue: false,
-    // mvEnabled: undefined,
-    name: undefined,
-    nameExpression: undefined,
-    // nullable: undefined,
-    phiProtected: undefined,
-    protected: undefined,
-    rangeURI: undefined,
-    readOnly: undefined,
-    // recommendedVariable: undefined,
-    required: undefined,
-    selectable: undefined,
-    shortCaption: undefined,
-    addToSystemView: undefined,
-    removeFromViewCustomization: undefined,
-    shownInDetailsView: undefined,
-    shownInInsertView: undefined,
-    shownInLookupView: undefined,
-    shownInUpdateView: undefined,
-    sortable: true,
-    // sqlType: undefined,
-    type: undefined,
-    userEditable: undefined,
-    validValues: undefined,
-    // versionField: undefined,
-
-    cell: undefined,
-    columnRenderer: undefined,
-    detailRenderer: undefined,
-    helpTipRenderer: undefined,
-    inputRenderer: undefined,
-    removeFromViews: false,
-    sorts: undefined,
-    units: undefined,
-    derivationDataScope: undefined,
-
-    sourceOntology: undefined,
-    conceptSubtree: undefined,
-}) {
+export class QueryColumn {
     declare align: string;
     // declare autoIncrement: boolean;
     // declare calculated: boolean;
@@ -241,16 +165,12 @@ export class QueryColumn extends ImmutableRecord({
     declare sourceOntology: string;
     declare conceptSubtree: string;
 
-    static create(rawColumn): QueryColumn {
-        if (rawColumn && rawColumn.lookup !== undefined) {
-            return new QueryColumn(
-                Object.assign({}, rawColumn, {
-                    lookup: new QueryLookup(rawColumn.lookup),
-                })
-            );
-        }
+    constructor(rawColumn: Partial<QueryColumn>) {
+        Object.assign(this, rawColumn);
 
-        return new QueryColumn(rawColumn);
+        if (rawColumn && rawColumn.lookup !== undefined) {
+            Object.assign(this, { lookup: new QueryLookup(rawColumn.lookup) });
+        }
     }
 
     static DATA_INPUTS = 'DataInputs';
@@ -446,6 +366,10 @@ export class QueryColumn extends ImmutableRecord({
 
     get customViewTitle(): string {
         return this.caption === this.name ? '' : this.caption;
+    }
+
+    mutate(partial: Partial<QueryColumn>): QueryColumn {
+        return new QueryColumn(Object.assign({}, this, partial));
     }
 }
 

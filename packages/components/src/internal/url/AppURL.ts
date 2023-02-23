@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map, Record } from 'immutable';
 import { ActionURL, Filter } from '@labkey/api';
 
 export function createProductUrlFromParts(
@@ -120,29 +119,22 @@ export function buildURL(controller: string, action: string, params?: any, optio
     return ActionURL.buildURL(controller, action, options?.container, parameters);
 }
 
-export class AppURL extends Record({
-    _baseUrl: undefined,
-    _filters: undefined,
-    _params: undefined,
-}) {
+type URLParam = boolean | number | string;
+
+export class AppURL {
     declare _baseUrl: string;
-    declare _filters: List<Filter.IFilter>;
-    declare _params: Map<string, any>;
+    declare _filters: Filter.IFilter[];
+    declare _params: Record<string, string>;
+
+    constructor(partial: Partial<AppURL>) {
+        Object.assign(this, partial);
+    }
 
     static create(...parts): AppURL {
         let baseUrl = '';
         for (let i = 0; i < parts.length; i++) {
             if (parts[i] === undefined || parts[i] === null || parts[i] === '') {
-                let sep = '';
-                throw (
-                    'AppURL: Unable to create URL with empty parts. Parts are [' +
-                    parts.reduce((str, part) => {
-                        str += sep + part;
-                        sep = ', ';
-                        return str;
-                    }, '') +
-                    '].'
-                );
+                throw 'AppURL: Unable to create URL with empty parts. Parts are [' + parts.join(', ') + '].';
             }
 
             const stringPart = parts[i].toString();
@@ -163,28 +155,26 @@ export class AppURL extends Record({
     }
 
     addFilters(...filters: Filter.IFilter[]): AppURL {
-        return this.merge({
-            _filters: this._filters ? this._filters.concat(filters) : List(filters),
-        }) as AppURL;
+        return new AppURL({
+            _filters: this._filters ? this._filters.concat(filters) : filters,
+        });
     }
 
-    addParam(key: string, value: any): AppURL {
+    addParam(key: string, value: URLParam): AppURL {
         return this.addParams({
             [key]: value,
         });
     }
 
-    addParams(params: any): AppURL {
+    addParams(params: Record<string, URLParam>): AppURL {
         if (params) {
-            let mapParams = Map<string, any>();
-            mapParams = mapParams.merge(params);
-            let encodedParams = Map<string, any>();
-            mapParams.forEach((value, key) => {
-                encodedParams = encodedParams.set(encodeURIComponent(key), encodeURIComponent(value));
+            const encodedParams: Record<string, string> = {};
+            Object.keys(params).forEach(key => {
+                encodedParams[encodeURIComponent(key)] = encodeURIComponent(params[key]);
             });
-            return this.merge({
-                _params: this._params ? this._params.merge(encodedParams) : encodedParams,
-            }) as AppURL;
+            return new AppURL({
+                _params: this._params ? { ...this._params, ...encodedParams } : encodedParams,
+            });
         }
 
         return this;
@@ -194,14 +184,8 @@ export class AppURL extends Record({
         return '#' + this.toString(urlPrefix);
     }
 
-    toQuery(urlPrefix?: string): { [key: string]: any } {
-        const query = {};
-
-        if (this._params) {
-            this._params.forEach((value: any, key: string) => {
-                query[key] = value;
-            });
-        }
+    toQuery(urlPrefix?: string): Record<string, string> {
+        const query = { ...this._params };
 
         if (this._filters) {
             this._filters.forEach(f => {
@@ -217,8 +201,8 @@ export class AppURL extends Record({
         const parts = [];
 
         if (this._params) {
-            this._params.forEach((value: any, key: string) => {
-                parts.push(key + '=' + value);
+            Object.keys(this._params).forEach(key => {
+                parts.push(key + '=' + this._params[key]);
             });
         }
 

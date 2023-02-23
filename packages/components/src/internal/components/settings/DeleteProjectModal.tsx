@@ -68,20 +68,20 @@ export const Body: FC<BodyProps> = memo(({ summaries, comment, onChangeComment }
 
             <b> Project Data </b>
 
-            <table className="table table-responsive table-condensed delete-project-modal__table ">
-                <tbody>
-                    {summaries ? (
-                        summaries.map(s => (
+            {summaries ? (
+                <table className="table table-responsive table-condensed delete-project-modal__table ">
+                    <tbody>
+                        {summaries.map(s => (
                             <tr key={s.count + s.noun}>
                                 <td>{s.noun}</td>
                                 <td>{s.count}</td>
                             </tr>
-                        ))
-                    ) : (
-                        <LoadingSpinner />
-                    )}
-                </tbody>
-            </table>
+                        ))}
+                    </tbody>
+                </table>
+            ) : (
+                <LoadingSpinner wrapperClassName="delete-project-modal__spinner" />
+            )}
 
             <CommentArea comment={comment} onChangeComment={onChangeComment} />
         </Modal.Body>
@@ -132,6 +132,10 @@ export const DeleteProjectModal: FC<Props> = memo(props => {
         })();
     }, []);
 
+    const onHide = useCallback(() => {
+        if (!isDeleting) onCancel();
+    }, [isDeleting, onCancel]);
+
     const onChangeComment = useCallback(e => {
         setComment(e.target.value);
     }, []);
@@ -173,7 +177,7 @@ export const DeleteProjectModal: FC<Props> = memo(props => {
     const noData = useMemo(() => summaries?.length === 0, [summaries]);
 
     return (
-        <Modal onHide={onCancel} show>
+        <Modal onHide={onHide} show>
             <Modal.Header closeButton={!isDeleting}>
                 <Modal.Title>{isDeleting ? 'Deleting project' : <> Permanently delete {projectName}? </>} </Modal.Title>
             </Modal.Header>

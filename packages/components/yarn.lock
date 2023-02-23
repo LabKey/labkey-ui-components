@@ -1506,10 +1506,10 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@labkey/api@1.18.3-fb-sampleWorkflowDelete.0":
-  version "1.18.3-fb-sampleWorkflowDelete.0"
-  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.18.3-fb-sampleWorkflowDelete.0.tgz#253f0dfbd449408103bc6657a479a9679dabfd3f"
-  integrity sha512-bq61FAbc966uMWHH3kq/pUe+fzooD9o8x7VoUk0EW2+3+7Deu8myv/sq0nFx0PJ/+GQQe7az000ENmghGMAkXg==
+"@labkey/api@1.18.4":
+  version "1.18.4"
+  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.18.4.tgz#3aa93a8b48e77792343c157e68c51d13ffbfba07"
+  integrity sha512-p2Uvug7acByzhb5QB077r9emphZ6+wAwqN6vqIZcQLHxjoecMFJA5RRbfyEEPiY2ta8/hkaTalDhFpGL2YRr0Q==
 
 "@labkey/build@6.9.0":
   version "6.9.0"

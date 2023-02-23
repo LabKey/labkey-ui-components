@@ -134,7 +134,11 @@ export class AppURL {
         let baseUrl = '';
         for (let i = 0; i < parts.length; i++) {
             if (parts[i] === undefined || parts[i] === null || parts[i] === '') {
-                throw 'AppURL: Unable to create URL with empty parts. Parts are [' + parts.join(', ') + '].';
+                throw (
+                    'AppURL: Unable to create URL with empty parts. Parts are [' +
+                    parts.map(p => p + '').join(', ') +
+                    '].'
+                );
             }
 
             const stringPart = parts[i].toString();
@@ -156,6 +160,7 @@ export class AppURL {
 
     addFilters(...filters: Filter.IFilter[]): AppURL {
         return new AppURL({
+            ...this,
             _filters: this._filters ? this._filters.concat(filters) : filters,
         });
     }
@@ -173,6 +178,7 @@ export class AppURL {
                 encodedParams[encodeURIComponent(key)] = encodeURIComponent(params[key]);
             });
             return new AppURL({
+                ...this,
                 _params: this._params ? { ...this._params, ...encodedParams } : encodedParams,
             });
         }

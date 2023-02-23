@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.296.1-moveAmountFields.14",
+  "version": "2.296.2-moveAmountFields.15",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [
@@ -52,7 +52,7 @@
   },
   "homepage": "https://github.com/LabKey/labkey-ui-components#readme",
   "dependencies": {
-    "@labkey/api": "1.18.3",
+    "@labkey/api": "1.18.4",
     "bootstrap": "~3.4.1",
     "classnames": "~2.3.2",
     "enzyme": "~3.11.0",

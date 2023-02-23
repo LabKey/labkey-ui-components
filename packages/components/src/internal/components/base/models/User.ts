@@ -100,6 +100,10 @@ export class User extends Record(defaultUser) implements IUserProps {
     hasAddUsersPermission(): boolean {
         return hasAllPermissions(this, [PermissionTypes.AddUser], false);
     }
+
+    hasSampleWorkflowDeletePermission(): boolean {
+        return hasAllPermissions(this, [PermissionTypes.SampleWorkflowDelete]);
+    }
 }
 
 /**

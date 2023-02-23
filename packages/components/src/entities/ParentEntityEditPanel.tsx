@@ -3,7 +3,7 @@ import { Button, Panel } from 'react-bootstrap';
 
 import { List } from 'immutable';
 
-import { AuditBehaviorTypes, Filter, Query } from '@labkey/api';
+import { AuditBehaviorTypes, Filter } from '@labkey/api';
 
 import { DetailPanelHeader } from '../internal/components/forms/detail/DetailPanelHeader';
 
@@ -14,7 +14,7 @@ import { DELIMITER } from '../internal/components/forms/constants';
 import { SchemaQuery } from '../public/SchemaQuery';
 import { QueryInfo } from '../public/QueryInfo';
 
-import { selectRowsDeprecated, updateRows } from '../internal/query/api';
+import { updateRows } from '../internal/query/api';
 import { getActionErrorMessage, resolveErrorMessage } from '../internal/util/messaging';
 import { capitalizeFirstChar, caseInsensitive } from '../internal/util/utils';
 import { naturalSortByProperty } from '../public/sort';
@@ -27,8 +27,12 @@ import { ViewInfo } from '../internal/ViewInfo';
 
 import { ParentEntityRequiredColumns } from '../internal/components/entities/constants';
 import { getInitialParentChoices } from '../internal/components/entities/utils';
-import { SingleParentEntityPanel } from './SingleParentEntityPanel';
+
 import { EntityChoice, EntityDataType, IEntityTypeOption } from '../internal/components/entities/models';
+
+import { selectRows } from '../internal/query/selectRows';
+
+import { SingleParentEntityPanel } from './SingleParentEntityPanel';
 import { parentValuesDiffer, getUpdatedRowForParentChanges } from './utils';
 
 export interface ParentEntityEditPanelProps {
@@ -39,7 +43,6 @@ export interface ParentEntityEditPanelProps {
     childLSID?: string;
     childNounSingular: string;
     childSchemaQuery: SchemaQuery;
-    containerFilter?: Query.ContainerFilter;
     editOnly?: boolean;
     getParentTypeDataForLineage?: GetParentTypeDataForLineage;
     hideButtons?: boolean;
@@ -70,7 +73,6 @@ interface State {
 export class ParentEntityEditPanel extends Component<ParentEntityEditPanelProps, State> {
     static defaultProps = {
         cancelText: 'Cancel',
-        containerFilter: Query.containerFilter.currentPlusProjectAndShared,
         getParentTypeDataForLineage,
         includePanelHeader: true,
         submitText: 'Save',
@@ -96,25 +98,34 @@ export class ParentEntityEditPanel extends Component<ParentEntityEditPanelProps,
     }
 
     init = async (): Promise<void> => {
-        const { parentDataTypes, childContainerPath, childLSID, childSchemaQuery, containerFilter } = this.props;
+        const { parentDataTypes, childContainerPath, childLSID, childSchemaQuery } = this.props;
 
         let childData: any;
         let childQueryInfo: QueryInfo;
 
         if (childLSID) {
             try {
-                const { key, models, queries } = await selectRowsDeprecated({
+                const { queryInfo, rows } = await selectRows({
                     columns: ParentEntityRequiredColumns.toArray(),
                     containerPath: childContainerPath,
                     filterArray: [Filter.create('LSID', childLSID)],
-                    queryName: childSchemaQuery.queryName,
-                    schemaName: childSchemaQuery.schemaName,
+                    schemaQuery: childSchemaQuery,
                     viewName: ViewInfo.DETAIL_NAME, // use the detail view because it won't be a filtered view that might exclude this entity.
                 });
 
-                const rows = models[key];
-                childQueryInfo = queries[key];
-                childData = rows[Object.keys(rows)[0]];
+                if (rows.length !== 1) {
+                    this.setState({
+                        error: getActionErrorMessage(
+                            `Unable to load parent data. Invalid number of child entities (${rows.length}) with LSID "${childLSID}".`,
+                            undefined,
+                            true
+                        ),
+                    });
+                    return;
+                }
+
+                childQueryInfo = queryInfo;
+                childData = rows[0];
             } catch (e) {
                 this.setState({
                     error: getActionErrorMessage('Unable to load parent data.', undefined, true),
@@ -132,8 +143,7 @@ export class ParentEntityEditPanel extends Component<ParentEntityEditPanelProps,
                     const typeData = await this.props.getParentTypeDataForLineage(
                         parentDataType,
                         childData ? [childData] : [],
-                        childContainerPath,
-                        containerFilter
+                        childContainerPath
                     );
                     parentTypeOptions = parentTypeOptions.concat(typeData.parentTypeOptions) as List<IEntityTypeOption>;
                     originalParents = originalParents.concat(
@@ -323,7 +333,7 @@ export class ParentEntityEditPanel extends Component<ParentEntityEditPanelProps,
     };
 
     renderParentData = (): ReactNode => {
-        const { childContainerPath, parentDataTypes, childNounSingular, containerFilter } = this.props;
+        const { childContainerPath, parentDataTypes, childNounSingular } = this.props;
         const { editing } = this.state;
 
         if (this.hasParents()) {
@@ -344,7 +354,6 @@ export class ParentEntityEditPanel extends Component<ParentEntityEditPanelProps,
                             onChangeParentValue={this.onParentValueChange}
                             onInitialParentValue={this.onInitialParentValue}
                             onRemoveParentType={this.onRemoveParentType}
-                            containerFilter={containerFilter}
                         />
                     </div>
                 ))
@@ -364,7 +373,6 @@ export class ParentEntityEditPanel extends Component<ParentEntityEditPanelProps,
                     onChangeParentType={this.changeEntityType}
                     onChangeParentValue={this.onParentValueChange}
                     onInitialParentValue={this.onInitialParentValue}
-                    containerFilter={containerFilter}
                 />
             </div>
         );

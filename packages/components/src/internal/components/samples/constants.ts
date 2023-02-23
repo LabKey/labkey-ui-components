@@ -238,16 +238,19 @@ export const SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS = [
         Required: false,
         Description: 'Represents the status of the sample',
     },
-];
-
-export const SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS = [
-    { Name: 'Units', Label: 'Units', 'Data Type': 'Text', Required: false, Description: '' },
     {
         Name: 'StoredAmount',
-        Label: 'Stored Amount',
+        Label: 'Amount',
         'Data Type': 'Decimal (floating point)',
         Required: false,
-        Description: '',
+        Description: 'The amount of this sample',
+    },
+    {
+        Name: 'Units',
+        Label: 'Units',
+        'Data Type': 'Text',
+        Required: false,
+        Description: 'The units associated with the Amount value for this sample'
     },
     {
         Name: 'AliquotCount',
@@ -256,6 +259,9 @@ export const SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS = [
         Required: false,
         Description: '',
     },
+];
+
+export const SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS = [
     {
         Name: 'FreezeThawCount',
         Label: 'Freeze/Thaw Count',

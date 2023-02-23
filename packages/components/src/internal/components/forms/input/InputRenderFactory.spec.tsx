@@ -14,26 +14,26 @@ describe('resolveInputRenderer', () => {
     });
 
     test('appendunitsinput', () => {
-        const appendUnitsCol = column.set('inputRenderer', 'appendunitsinput') as QueryColumn;
-        const AppendUnitsInputComponent = resolveInputRenderer(appendUnitsCol);
+        column.inputRenderer = 'appendunitsinput';
+        const AppendUnitsInputComponent = resolveInputRenderer(column);
         expect(AppendUnitsInputComponent).toEqual(AppendUnitsInput);
     });
 
     test('experimentalias', () => {
-        const appendUnitsCol = column.set('inputRenderer', 'experimentalias') as QueryColumn;
-        const AppendUnitsInputComponent = resolveInputRenderer(appendUnitsCol);
+        column.inputRenderer = 'experimentalias';
+        const AppendUnitsInputComponent = resolveInputRenderer(column);
         expect(AppendUnitsInputComponent).toEqual(AliasInput);
     });
 
     test('samplestatusinput', () => {
-        const appendUnitsCol = column.set('inputRenderer', 'samplestatusinput') as QueryColumn;
-        const AppendUnitsInputComponent = resolveInputRenderer(appendUnitsCol);
+        column.inputRenderer = 'samplestatusinput';
+        const AppendUnitsInputComponent = resolveInputRenderer(column);
         expect(AppendUnitsInputComponent).toEqual(SampleStatusInputRenderer);
     });
 
     test('workflowtask', () => {
-        const appendUnitsCol = column.set('inputRenderer', 'workflowtask') as QueryColumn;
-        const AppendUnitsInputComponent = resolveInputRenderer(appendUnitsCol);
+        column.inputRenderer = 'workflowtask';
+        const AppendUnitsInputComponent = resolveInputRenderer(column);
         expect(AppendUnitsInputComponent).toEqual(AssayTaskInputRenderer);
     });
 });

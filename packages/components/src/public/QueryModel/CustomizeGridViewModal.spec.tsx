@@ -11,7 +11,7 @@ import { Draggable } from 'react-beautiful-dnd';
 import { SchemaQuery } from '../SchemaQuery';
 import { QueryInfo } from '../QueryInfo';
 import { ViewInfo } from '../../internal/ViewInfo';
-import { QueryColumn } from '../QueryColumn';
+import { QueryColumn, QueryLookup } from '../QueryColumn';
 import { wrapDraggable } from '../../internal/testHelpers';
 
 import { makeTestQueryModel } from './testUtils';
@@ -41,9 +41,7 @@ const QUERY_COL_LOOKUP = new QueryColumn({
     fieldKeyPath: 'parent1/parent2/test$SColumn',
     caption: 'Test Column',
     selectable: true,
-    lookup: {
-        /* this would define the schema/query */
-    },
+    lookup: new QueryLookup({}),
 });
 
 describe('ColumnChoice', () => {
@@ -165,7 +163,6 @@ describe('ColumnInView', () => {
             fieldKeyArray: ['testColumn'],
             fieldKeyPath: 'testColumn',
             caption: 'Test Column',
-            addToDisplayView: true,
         });
 
         const wrapper = mount(
@@ -193,7 +190,6 @@ describe('ColumnInView', () => {
             fieldKeyArray: ['testColumn'],
             fieldKeyPath: 'testColumn',
             caption: 'Test Column',
-            addToDisplayView: true,
         });
 
         const wrapper = mount(
@@ -221,7 +217,6 @@ describe('ColumnInView', () => {
             fieldKeyArray: ['testColumn'],
             fieldKeyPath: 'testColumn',
             caption: 'Test Column',
-            addToDisplayView: true,
         });
 
         const wrapper = mount(
@@ -535,7 +530,7 @@ describe('ColumnChoiceGroup', () => {
     });
 
     test('lookup column with children, child hidden', () => {
-        const colHidden = new QueryColumn({ ...QUERY_COL.toJS(), hidden: true });
+        const colHidden = new QueryColumn({ ...QUERY_COL, hidden: true });
         const queryInfo = QueryInfo.create({ columns: fromJS({ [colHidden.fieldKey]: colHidden }) });
         const wrapper = mount(
             <ColumnChoiceGroup
@@ -550,7 +545,7 @@ describe('ColumnChoiceGroup', () => {
     });
 
     test('lookup column with children, child hidden with showAllColumns', () => {
-        const colHidden = new QueryColumn({ ...QUERY_COL.toJS(), hidden: true });
+        const colHidden = new QueryColumn({ ...QUERY_COL, hidden: true });
         const queryInfo = QueryInfo.create({ columns: fromJS({ [colHidden.fieldKey]: colHidden }) });
         const wrapper = mount(
             <ColumnChoiceGroup
@@ -568,7 +563,7 @@ describe('ColumnChoiceGroup', () => {
     });
 
     test('lookup column with children, child removeFromViews', () => {
-        const colHidden = new QueryColumn({ ...QUERY_COL.toJS(), removeFromViews: true });
+        const colHidden = new QueryColumn({ ...QUERY_COL, removeFromViews: true });
         const queryInfo = QueryInfo.create({ columns: fromJS({ [colHidden.fieldKey]: colHidden }) });
         const wrapper = mount(
             <ColumnChoiceGroup

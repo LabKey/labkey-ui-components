@@ -1,4 +1,3 @@
-import { List } from 'immutable';
 import { PermissionTypes } from '@labkey/api';
 
 import { User } from './components/base/models/User';

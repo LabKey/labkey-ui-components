@@ -87,6 +87,16 @@ export class QueryLookup {
     }
 }
 
+const defaultQueryColumn = {
+    conceptURI: null,
+    defaultValue: null,
+    filterable: true,
+    hasSortKey: false,
+    multiValue: false,
+    sortable: true,
+    removeFromViews: false,
+};
+
 export class QueryColumn {
     declare align: string;
     // declare autoIncrement: boolean;
@@ -166,7 +176,7 @@ export class QueryColumn {
     declare conceptSubtree: string;
 
     constructor(rawColumn: Partial<QueryColumn>) {
-        Object.assign(this, rawColumn);
+        Object.assign(this, defaultQueryColumn, rawColumn);
 
         if (rawColumn && rawColumn.lookup !== undefined) {
             Object.assign(this, { lookup: new QueryLookup(rawColumn.lookup) });

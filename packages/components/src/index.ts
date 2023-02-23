@@ -28,13 +28,7 @@ import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionUR
 import { Container } from './internal/components/base/models/Container';
 import { hasAllPermissions, hasAnyPermissions, hasPermissions, User } from './internal/components/base/models/User';
 import { GridColumn } from './internal/components/base/models/GridColumn';
-import {
-    decodePart,
-    encodePart,
-    getSchemaQuery,
-    resolveKey,
-    SchemaQuery,
-} from './public/SchemaQuery';
+import { decodePart, encodePart, getSchemaQuery, resolveKey, SchemaQuery } from './public/SchemaQuery';
 import { insertColumnFilter, Operation, QueryColumn, QueryLookup } from './public/QueryColumn';
 import { QuerySort } from './public/QuerySort';
 import { LastActionStatus, MessageLevel } from './internal/LastActionStatus';
@@ -650,6 +644,7 @@ import {
     TEST_USER_STORAGE_DESIGNER,
     TEST_USER_STORAGE_EDITOR,
     TEST_USER_QC_ANALYST,
+    TEST_USER_WORKFLOW_EDITOR,
 } from './internal/userFixtures';
 import {
     ASSAY_DESIGN_KEY,
@@ -823,6 +818,7 @@ const App = {
     TEST_USER_STORAGE_DESIGNER,
     TEST_USER_STORAGE_EDITOR,
     TEST_USER_QC_ANALYST,
+    TEST_USER_WORKFLOW_EDITOR,
     TEST_LKS_STARTER_MODULE_CONTEXT,
     TEST_LKSM_STARTER_MODULE_CONTEXT,
     TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,

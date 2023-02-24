@@ -20,7 +20,7 @@ import { LineageLinkMetadata } from '../components/lineage/types';
 
 import { FREEZER_MANAGER_APP_PROPERTIES } from '../app/constants';
 
-import { getCurrentAppProperties } from '../app/utils';
+import { getCurrentAppProperties, getProjectPath } from '../app/utils';
 
 import { AppURL, createProductUrl } from './AppURL';
 import { AppRouteResolver } from './models';
@@ -515,15 +515,15 @@ export class URLResolver {
         // tree of the current container. This scopes the apps to their current container and container tree, and supports
         // adding FKs from other containers and preserving the URL from the server.
         if (mapper.url) {
-            const currentContainerPath = ActionURL.getContainer();
-            const urlContainerPath = ActionURL.getPathFromLocation(mapper.url).containerPath;
-            if (
-                urlContainerPath &&
-                urlContainerPath !== currentContainerPath && // not current container
-                urlContainerPath.indexOf(currentContainerPath + '/') === -1 && // not sub-container
-                currentContainerPath.indexOf(urlContainerPath + '/') === -1 // not super-container
-            ) {
-                return mapper.url;
+            const urlPath = ActionURL.getPathFromLocation(mapper.url).containerPath;
+
+            if (urlPath) {
+                const currentPath = getServerContext().container.path;
+
+                // not current container AND not same top-level folder
+                if (urlPath !== currentPath && getProjectPath(currentPath) !== getProjectPath(urlPath)) {
+                    return mapper.url;
+                }
             }
         }
 

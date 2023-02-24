@@ -90,9 +90,10 @@ export const NOTIFICATION_TIMEOUT = 500;
 
 export const SERVER_NOTIFICATION_MAX_ROWS = 8;
 
+export const EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS = 'queryProductAllFolderLookups';
+export const EXPERIMENTAL_PRODUCT_PROJECT_DATA_LISTING_SCOPED = 'queryProductProjectDataListingScoped';
 export const EXPERIMENTAL_REQUESTS_MENU = 'experimental-biologics-requests-menu';
 export const EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR = 'experimental-sample-aliquot-selector';
-export const EXPERIMENTAL_ALLOW_IMPORT_WITH_UPDATE = 'allowImportUsingUpdateOnly';
 
 // The enum values here should align with the ProductFeature.java enum values (some not currently used but included for completeness)
 export enum ProductFeature {

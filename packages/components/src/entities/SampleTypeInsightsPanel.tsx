@@ -1,6 +1,6 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useMemo } from 'react';
 import { Panel } from 'react-bootstrap';
-import { Filter } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { createPercentageBarData, createHorizontalBarLegendData } from '../internal/components/chart/utils';
 import { HorizontalBarData, HorizontalBarSection } from '../internal/components/chart/HorizontalBarSection';
@@ -15,12 +15,13 @@ import { LabelHelpTip } from '../internal/components/base/LabelHelpTip';
 import { SCHEMAS } from '../internal/schemas';
 import { caseInsensitive } from '../internal/util/utils';
 
-import { InjectedQueryModels, withQueryModels } from '../public/QueryModel/withQueryModels';
+import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../public/QueryModel/withQueryModels';
 
 export const INSIGHTS_MODEL_ID = 'sample-type-insights';
 export const STATUS_COUNTS_MODEL_ID = 'sample-type-status-counts';
 
 interface OwnProps {
+    containerFilter?: Query.ContainerFilter;
     sampleSet: string;
 }
 
@@ -130,21 +131,27 @@ export const SampleTypeInsightsPanelImpl: FC<Props> = memo(props => {
 
 const SampleTypeInsightsPanelWithQueryModels = withQueryModels<OwnProps>(SampleTypeInsightsPanelImpl);
 
-export const SampleTypeInsightsPanel: FC<OwnProps> = memo(props => {
-    const queryConfigs = {
-        [INSIGHTS_MODEL_ID]: {
-            id: INSIGHTS_MODEL_ID,
-            schemaQuery: SCHEMAS.SAMPLE_MANAGEMENT.SAMPLE_TYPE_INSIGHTS,
-            baseFilters: [Filter.create('SampleSet/Name', props.sampleSet)],
-        },
-        [STATUS_COUNTS_MODEL_ID]: {
-            id: STATUS_COUNTS_MODEL_ID,
-            schemaQuery: SCHEMAS.SAMPLE_MANAGEMENT.SAMPLE_STATUS_COUNTS,
-            baseFilters: [Filter.create('Name', props.sampleSet)],
-            sorts: [new QuerySort({ fieldKey: 'ClassName' }), new QuerySort({ fieldKey: 'Status' })],
-        },
-    };
-    return <SampleTypeInsightsPanelWithQueryModels {...props} autoLoad queryConfigs={queryConfigs} />;
+export const SampleTypeInsightsPanel: FC<OwnProps> = memo(({ containerFilter, sampleSet }) => {
+    const queryConfigs = useMemo<QueryConfigMap>(
+        () => ({
+            [INSIGHTS_MODEL_ID]: {
+                containerFilter,
+                id: INSIGHTS_MODEL_ID,
+                schemaQuery: SCHEMAS.SAMPLE_MANAGEMENT.SAMPLE_TYPE_INSIGHTS,
+                baseFilters: [Filter.create('SampleSet/Name', sampleSet)],
+            },
+            [STATUS_COUNTS_MODEL_ID]: {
+                containerFilter,
+                id: STATUS_COUNTS_MODEL_ID,
+                schemaQuery: SCHEMAS.SAMPLE_MANAGEMENT.SAMPLE_STATUS_COUNTS,
+                baseFilters: [Filter.create('Name', sampleSet)],
+                sorts: [new QuerySort({ fieldKey: 'ClassName' }), new QuerySort({ fieldKey: 'Status' })],
+            },
+        }),
+        [containerFilter, sampleSet]
+    );
+
+    return <SampleTypeInsightsPanelWithQueryModels autoLoad queryConfigs={queryConfigs} sampleSet={sampleSet} />;
 });
 
 const getSampleStatusBarData = (model: QueryModel): HorizontalBarData[] => {

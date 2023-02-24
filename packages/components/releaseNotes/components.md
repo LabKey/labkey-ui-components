@@ -7,6 +7,11 @@ Components, models, actions, and utility functions for LabKey applications and p
   - add disabledSystemFields property to DomainDesign and QueryInfo
   - allow updating Enabled property for SystemFields
 
+### version 2.296.1
+*Released*: 23 February 2023
+- Add perm check helper hasSampleWorkflowDeletePermission()
+- update @labkey/api package version
+
 ### version 2.296.0
 *Released*: 22 February 2023
 - QueryLookup: convert to regular class, add filterGroups attribute, use filterGroups in getQueryFilters

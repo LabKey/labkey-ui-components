@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.XX
-*Released*: XX February 2023
+### version 2.297.1
+*Released*: 24 February 2023
 - Issue 47392: Parent link to registry data types not resolving
 
 ### version 2.297.0

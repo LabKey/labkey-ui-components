@@ -145,9 +145,9 @@ interface IDomainDesign {
     name: string;
     // set of fields to initialize a manually created design
     newDesignFields?: List<DomainField>;
+    queryName?: string;
     schemaName?: string;
     showDefaultValueSettings: boolean;
-    queryName?: string;
 }
 
 export class DomainDesign

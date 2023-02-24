@@ -302,7 +302,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
             const storageSampleRows = [];
             sampleRows.forEach(row => {
                 const sampleId = caseInsensitive(row, 'rowId');
-                const storageItem = convertedStorageData.normalizedRowsMap[sampleId];
+                const storageItem = convertedStorageData?.normalizedRowsMap?.[sampleId];
                 const storageSampleRow = {
                     materialId: sampleId,
                 };
@@ -405,10 +405,8 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     getStorageUpdateData(storageRows: any[]) {
-        const { sampleItems, sampleTypeDomainFields, noStorageSamples, selection } = this.props;
+        const { sampleItems,  noStorageSamples, selection } = this.props;
         if (storageRows.length === 0 ) return null;
-
-        const sampleTypeUnit = sampleTypeDomainFields.metricUnit;
 
         return getStorageItemUpdateData(storageRows, sampleItems, noStorageSamples, selection);
     }

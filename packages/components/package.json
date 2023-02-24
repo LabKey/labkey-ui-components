@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.297.0",
+  "version": "2.298.0-fb-disableSysFields.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

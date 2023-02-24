@@ -13,41 +13,54 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { FC, memo, ReactNode } from 'react';
 import { Map } from 'immutable';
 
-interface MultiValueRendererProps {
+export interface MultiValueRendererProps {
     data: Map<any, any>;
 }
 
-export class MultiValueRenderer extends React.Component<MultiValueRendererProps, any> {
-    render() {
-        const { data } = this.props;
-
-        if (data && data.size > 0) {
-            const len = data.size;
-            return (
-                <div>
-                    {data.map((item, i) => {
-                        let text;
-                        if (item.has('formattedValue')) {
-                            text = item.get('formattedValue');
-                        } else {
-                            const o = item.has('displayValue') ? item.get('displayValue') : item.get('value');
-                            text = o !== null && o !== undefined ? o.toString() : null;
-                        }
-
-                        return (
-                            <span key={i}>
-                                {item.get('url') ? <a href={item.get('url')}>{text}</a> : text}
-                                {i + 1 < len ? ', ' : ''}
-                            </span>
-                        );
-                    })}
-                </div>
-            );
-        }
-
+export const MultiValueRenderer: FC<MultiValueRendererProps> = memo(({ data }) => {
+    if (!data || data.size === 0) {
         return null;
     }
-}
+
+    let i = -1;
+    return (
+        <div>
+            {data.map((item, key) => {
+                let text: ReactNode;
+                let url: string;
+
+                if (Map.isMap(item)) {
+                    if (item.has('formattedValue')) {
+                        text = item.get('formattedValue');
+                    } else {
+                        const o = item.has('displayValue') ? item.get('displayValue') : item.get('value');
+                        text = o !== null && o !== undefined ? o.toString() : null;
+                    }
+
+                    url = item.get('url');
+                } else if (item !== undefined && item !== null) {
+                    text = item.toString();
+                } else {
+                    return null;
+                }
+
+                if (text === undefined || text === null || text === '') return null;
+
+                return (
+                    // IntelliJ mistakenly presumes that key is an index.
+                    // In fact, it is the key of the map which is unique.
+                    // eslint-disable-next-line react/no-array-index-key
+                    <span key={key}>
+                        {++i > 0 ? ', ' : ''}
+                        {url ? <a href={url}>{text}</a> : text}
+                    </span>
+                );
+            })}
+        </div>
+    );
+});
+
+MultiValueRenderer.displayName = 'MultiValueRenderer';

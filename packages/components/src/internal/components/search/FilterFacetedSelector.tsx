@@ -40,49 +40,60 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
     const [fieldDistinctValues, setFieldDistinctValues] = useState<string[]>(undefined);
     const [error, setError] = useState<string>(undefined);
     const [searchStr, setSearchStr] = useState<string>(undefined);
-    const [allShown, setAllShown] = useState<boolean>(true);
+    const [allShown, setAllShown] = useState<boolean>(undefined);
 
     useEffect(() => {
         setDistinctValues(true);
     }, [fieldKey]); // on fieldKey change, reload selection values
 
     const setDistinctValues = useCallback(
-        (checkAllShown: boolean, searchStr?: string) => {
-            const filterArray = searchStr
-                ? [Filter.create(fieldKey, searchStr, Filter.Types.CONTAINS)].concat(selectDistinctOptions?.filterArray)
-                : selectDistinctOptions?.filterArray;
-            api.query
-                .selectDistinctRows({ ...selectDistinctOptions, filterArray, maxRows: MAX_DISTINCT_FILTER_OPTIONS + 1 })
-                .then(result => {
-                    if (checkAllShown) setAllShown(result.values.length <= MAX_DISTINCT_FILTER_OPTIONS);
-                    const toShow = result.values.slice(0, MAX_DISTINCT_FILTER_OPTIONS);
-                    const distinctValues = toShow.sort(naturalSort).map(val => {
-                        if (val === '' || val === null || val === undefined) return EMPTY_VALUE_DISPLAY;
-                        return val;
-                    });
+        async (checkForAll: boolean, searchStr?: string) => {
+            try {
+                const filterArray = searchStr
+                    ? [Filter.create(fieldKey, searchStr, Filter.Types.CONTAINS)].concat(
+                          selectDistinctOptions?.filterArray
+                      )
+                    : selectDistinctOptions?.filterArray;
 
-                    // move [blank] to first
-                    if (distinctValues.indexOf(EMPTY_VALUE_DISPLAY) >= 0) {
-                        distinctValues.splice(distinctValues.indexOf(EMPTY_VALUE_DISPLAY), 1);
-                    }
-                    if (canBeBlank && toShow.length > 0) distinctValues.unshift(EMPTY_VALUE_DISPLAY);
-
-                    // add [All] to first
-                    distinctValues.unshift(ALL_VALUE_DISPLAY);
-                    setFieldDistinctValues(distinctValues);
-                })
-                .catch(error => {
-                    console.error(error);
-                    setFieldDistinctValues([]);
-                    setError(resolveErrorMessage(error));
+                const result = await api.query.selectDistinctRows({
+                    ...selectDistinctOptions,
+                    filterArray,
+                    maxRows: MAX_DISTINCT_FILTER_OPTIONS + 1,
                 });
+
+                const toShow = result.values.slice(0, MAX_DISTINCT_FILTER_OPTIONS);
+                const distinctValues = toShow.sort(naturalSort).map(val => {
+                    if (val === '' || val === null || val === undefined) return EMPTY_VALUE_DISPLAY;
+                    return val;
+                });
+
+                // move [blank] to first
+                if (distinctValues.indexOf(EMPTY_VALUE_DISPLAY) >= 0) {
+                    distinctValues.splice(distinctValues.indexOf(EMPTY_VALUE_DISPLAY), 1);
+                }
+                if (canBeBlank && toShow.length > 0) distinctValues.unshift(EMPTY_VALUE_DISPLAY);
+
+                // add [All] to first if the total distinct values is < 250
+                const hasAllValues = !searchStr && result.values.length <= MAX_DISTINCT_FILTER_OPTIONS;
+                if (hasAllValues) distinctValues.unshift(ALL_VALUE_DISPLAY);
+                if (checkForAll) {
+                    setAllShown(hasAllValues);
+                }
+
+                setFieldDistinctValues(distinctValues);
+            } catch (e) {
+                console.error(e);
+                setAllShown(true);
+                setFieldDistinctValues([]);
+                setError(resolveErrorMessage(e));
+            }
         },
-        [selectDistinctOptions]
+        [api.query, canBeBlank, fieldKey, selectDistinctOptions]
     );
 
     const checkedValues = useMemo(() => {
-        return getCheckedFilterValues(fieldFilters?.[0], fieldDistinctValues);
-    }, [fieldFilters?.[0], fieldKey, fieldDistinctValues]); // need to add fieldKey
+        return getCheckedFilterValues(fieldFilters?.[0], allShown ? fieldDistinctValues : undefined);
+    }, [fieldFilters?.[0], fieldKey, fieldDistinctValues, allShown]); // need to add fieldKey
 
     const taggedValues = useMemo(() => {
         if (checkedValues?.indexOf(ALL_VALUE_DISPLAY) > -1) return [];
@@ -99,7 +110,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
             if (disabled) return;
 
             const newFilter = getUpdatedChooseValuesFilter(
-                fieldDistinctValues,
+                allShown ? fieldDistinctValues : undefined,
                 fieldKey,
                 value,
                 checked,
@@ -108,7 +119,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
             );
             onFieldFilterUpdate([newFilter], 0);
         },
-        [disabled, fieldDistinctValues, fieldKey, fieldFilters, onFieldFilterUpdate]
+        [disabled, allShown, fieldDistinctValues, fieldKey, fieldFilters, onFieldFilterUpdate]
     );
 
     const filteredFieldDistinctValues = useMemo(() => {
@@ -123,10 +134,11 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
             });
     }, [fieldDistinctValues, searchStr]);
 
+    if (!fieldDistinctValues || allShown === undefined) return <LoadingSpinner />;
+
     return (
         <>
             {error && <Alert>{error}</Alert>}
-            {!fieldDistinctValues && <LoadingSpinner />}
             <div className="filter-faceted__panel">
                 {(fieldDistinctValues?.length > showSearchLength || searchStr) && (
                     <div>

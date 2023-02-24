@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD February 2023
+- Issue 47266: For a grid the filter dialog does not enable the 'Apply' button if I type in a value unless I uncheck the [All] option first
+- Issue 47247: LKSM: Filtering values >250 doesn't save selection
+
 ### version 2.296.1
 *Released*: 23 February 2023
 - Add perm check helper hasSampleWorkflowDeletePermission()

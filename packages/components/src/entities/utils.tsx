@@ -185,8 +185,15 @@ export const getSampleTypeTemplateUrl = (
     const { schemaQuery } = queryInfo;
     if (!schemaQuery) return undefined;
 
+    const disabledSysFields = [];
+    queryInfo.disabledSystemFields?.forEach(field => {
+        disabledSysFields.push(field.toLowerCase());
+    });
+
     const extraColumns = SAMPLE_INSERT_EXTRA_COLUMNS.concat(Object.keys(importAliases || {})).filter(
-        col => excludeColumns.indexOf(col) == -1
+        col => {
+            return excludeColumns.indexOf(col) === -1 && disabledSysFields.indexOf(col.toLowerCase()) === -1;
+        }
     );
 
     // Issue 46593: if the table XML metadata override specifies a custom importTemplate, use it

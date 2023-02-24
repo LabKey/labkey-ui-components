@@ -46,6 +46,7 @@ export const SampleCreatePage: FC<SampleCreatePageProps> = memo(props => {
         useSampleTypeAppContext();
     const [getIsDirty, setIsDirty] = useRouteLeave(router, routes);
     const auditBehavior = getSampleAuditBehaviorType();
+
     const fileImportParameters = useMemo(
         () => ({
             auditBehavior,

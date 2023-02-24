@@ -20,7 +20,6 @@ import { SchemaQuery } from '../public/SchemaQuery';
 import { updateRows } from '../internal/query/api';
 import { invalidateLineageResults } from '../internal/components/lineage/actions';
 import { SampleTypeDataType } from '../internal/components/entities/constants';
-import { resolveErrorMessage } from '../internal/util/messaging';
 
 import { ALIQUOT_FILTER_MODE, IS_ALIQUOT_COL } from '../internal/components/samples/constants';
 import { SampleGridButtonProps } from '../internal/components/samples/models';

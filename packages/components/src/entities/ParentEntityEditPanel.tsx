@@ -3,18 +3,18 @@ import { Button, Panel } from 'react-bootstrap';
 
 import { List } from 'immutable';
 
-import { AuditBehaviorTypes, Filter, Query } from '@labkey/api';
+import { AuditBehaviorTypes, Filter } from '@labkey/api';
 
 import { DetailPanelHeader } from '../internal/components/forms/detail/DetailPanelHeader';
 
-import { getParentTypeDataForLineage } from '../internal/components/samples/actions';
+import { getParentTypeDataForLineage, GetParentTypeDataForLineage } from '../internal/components/samples/actions';
 
 import { DELIMITER } from '../internal/components/forms/constants';
 
 import { SchemaQuery } from '../public/SchemaQuery';
 import { QueryInfo } from '../public/QueryInfo';
 
-import { selectRowsDeprecated, updateRows } from '../internal/query/api';
+import { updateRows } from '../internal/query/api';
 import { getActionErrorMessage, resolveErrorMessage } from '../internal/util/messaging';
 import { capitalizeFirstChar, caseInsensitive } from '../internal/util/utils';
 import { naturalSortByProperty } from '../public/sort';
@@ -27,11 +27,15 @@ import { ViewInfo } from '../internal/ViewInfo';
 
 import { ParentEntityRequiredColumns } from '../internal/components/entities/constants';
 import { getInitialParentChoices } from '../internal/components/entities/utils';
-import { SingleParentEntityPanel } from './SingleParentEntityPanel';
+
 import { EntityChoice, EntityDataType, IEntityTypeOption } from '../internal/components/entities/models';
+
+import { selectRows } from '../internal/query/selectRows';
+
+import { SingleParentEntityPanel } from './SingleParentEntityPanel';
 import { parentValuesDiffer, getUpdatedRowForParentChanges } from './utils';
 
-interface Props {
+export interface ParentEntityEditPanelProps {
     auditBehavior?: AuditBehaviorTypes;
     canUpdate: boolean;
     cancelText?: string;
@@ -39,8 +43,8 @@ interface Props {
     childLSID?: string;
     childNounSingular: string;
     childSchemaQuery: SchemaQuery;
-    containerFilter?: Query.ContainerFilter;
     editOnly?: boolean;
+    getParentTypeDataForLineage?: GetParentTypeDataForLineage;
     hideButtons?: boolean;
     includePanelHeader?: boolean;
     onChangeParent?: (currentParents: List<EntityChoice>) => void;
@@ -66,13 +70,13 @@ interface State {
     submitting: boolean;
 }
 
-export class ParentEntityEditPanel extends Component<Props, State> {
+export class ParentEntityEditPanel extends Component<ParentEntityEditPanelProps, State> {
     static defaultProps = {
         cancelText: 'Cancel',
-        submitText: 'Save',
+        getParentTypeDataForLineage,
         includePanelHeader: true,
+        submitText: 'Save',
         title: 'Details',
-        containerFilter: Query.containerFilter.currentPlusProjectAndShared,
     };
 
     state: Readonly<State> = {
@@ -94,27 +98,35 @@ export class ParentEntityEditPanel extends Component<Props, State> {
     }
 
     init = async (): Promise<void> => {
-        const { parentDataTypes, childContainerPath, childLSID, childSchemaQuery, containerFilter } = this.props;
+        const { parentDataTypes, childContainerPath, childLSID, childSchemaQuery } = this.props;
 
         let childData: any;
         let childQueryInfo: QueryInfo;
 
         if (childLSID) {
             try {
-                const { key, models, queries } = await selectRowsDeprecated({
+                const { queryInfo, rows } = await selectRows({
                     columns: ParentEntityRequiredColumns.toArray(),
                     containerPath: childContainerPath,
                     filterArray: [Filter.create('LSID', childLSID)],
-                    queryName: childSchemaQuery.queryName,
-                    schemaName: childSchemaQuery.schemaName,
+                    schemaQuery: childSchemaQuery,
                     viewName: ViewInfo.DETAIL_NAME, // use the detail view because it won't be a filtered view that might exclude this entity.
                 });
 
-                const rows = models[key];
-                childQueryInfo = queries[key];
-                childData = rows[Object.keys(rows)[0]];
+                if (rows.length !== 1) {
+                    this.setState({
+                        error: getActionErrorMessage(
+                            `Unable to load parent data. Invalid number of child entities (${rows.length}) with LSID "${childLSID}".`,
+                            undefined,
+                            true
+                        ),
+                    });
+                    return;
+                }
+
+                childQueryInfo = queryInfo;
+                childData = rows[0];
             } catch (e) {
-                console.error(e);
                 this.setState({
                     error: getActionErrorMessage('Unable to load parent data.', undefined, true),
                 });
@@ -128,11 +140,10 @@ export class ParentEntityEditPanel extends Component<Props, State> {
         await Promise.all(
             parentDataTypes.map(async parentDataType => {
                 try {
-                    const typeData = await getParentTypeDataForLineage(
+                    const typeData = await this.props.getParentTypeDataForLineage(
                         parentDataType,
                         childData ? [childData] : [],
-                        childContainerPath,
-                        containerFilter
+                        childContainerPath
                     );
                     parentTypeOptions = parentTypeOptions.concat(typeData.parentTypeOptions) as List<IEntityTypeOption>;
                     originalParents = originalParents.concat(
@@ -144,7 +155,6 @@ export class ParentEntityEditPanel extends Component<Props, State> {
                         )
                     ) as List<EntityChoice>;
                 } catch (reason) {
-                    console.error(reason);
                     this.setState({
                         error: getActionErrorMessage(
                             'Unable to load ' + parentDataType.descriptionSingular + ' data.',
@@ -323,7 +333,7 @@ export class ParentEntityEditPanel extends Component<Props, State> {
     };
 
     renderParentData = (): ReactNode => {
-        const { childContainerPath, parentDataTypes, childNounSingular, containerFilter } = this.props;
+        const { childContainerPath, parentDataTypes, childNounSingular } = this.props;
         const { editing } = this.state;
 
         if (this.hasParents()) {
@@ -344,7 +354,6 @@ export class ParentEntityEditPanel extends Component<Props, State> {
                             onChangeParentValue={this.onParentValueChange}
                             onInitialParentValue={this.onInitialParentValue}
                             onRemoveParentType={this.onRemoveParentType}
-                            containerFilter={containerFilter}
                         />
                     </div>
                 ))
@@ -364,7 +373,6 @@ export class ParentEntityEditPanel extends Component<Props, State> {
                     onChangeParentType={this.changeEntityType}
                     onChangeParentValue={this.onParentValueChange}
                     onInitialParentValue={this.onInitialParentValue}
-                    containerFilter={containerFilter}
                 />
             </div>
         );
@@ -437,7 +445,7 @@ export class ParentEntityEditPanel extends Component<Props, State> {
                         </Panel.Heading>
                     )}
                     <Panel.Body>
-                        <Alert>{error}</Alert>
+                        {!!error && <Alert>{error}</Alert>}
                         {childName && (
                             <div className="bottom-spacing">
                                 <b>

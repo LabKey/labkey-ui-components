@@ -1,19 +1,14 @@
 import React from 'react';
-import { mount, ReactWrapper } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 
-import { makeTestActions, makeTestQueryModel } from '../public/QueryModel/testUtils';
+import { makeTestQueryModel } from '../public/QueryModel/testUtils';
 import { SchemaQuery } from '../public/SchemaQuery';
 import { LoadingState } from '../public/LoadingState';
 import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 
-import { SampleAliquotsSummaryWithModels } from './SampleAliquotsSummary';
+import { QueryModel } from '../public/QueryModel/QueryModel';
 
-const DEFAULT_PROPS = {
-    queryModels: {},
-    actions: makeTestActions(),
-    hideAssayData: true,
-    aliquotJobsQueryConfig: { schemaQuery: new SchemaQuery('test', 'query') },
-};
+import { SampleAliquotsSummaryWithModels, SampleAliquotsSummaryWithModelsProps } from './SampleAliquotsSummary';
 
 const noAliquotVolume = {
     AliquotVolume: {
@@ -33,7 +28,7 @@ const zeroAliquotVolume = {
     },
 };
 
-function getQueryModelFromRows(rows) {
+function getQueryModelFromRows(rows = {}): QueryModel {
     return makeTestQueryModel(
         new SchemaQuery('schema', 'query'),
         undefined,
@@ -44,16 +39,27 @@ function getQueryModelFromRows(rows) {
     ).mutate({ rowsLoadingState: LoadingState.LOADED });
 }
 
-describe('<SampleAliquotsSummaryWithModels/>', () => {
+describe('SampleAliquotsSummaryWithModels', () => {
+    function defaultProps(): SampleAliquotsSummaryWithModelsProps {
+        return {
+            aliquotsModel: getQueryModelFromRows(),
+            jobsModel: getQueryModelFromRows(),
+            sampleId: '86873',
+            sampleLsid: 'S-20200404-1',
+            sampleRow: noAliquotVolume,
+            sampleSet: 'dirt',
+        };
+    }
+
     function validateStats(
-        wrapper: ReactWrapper,
+        wrapper: ShallowWrapper,
         loading = false,
         empty?: boolean,
         totalAliquots?: number,
         availableCount?: number,
         totalVolume?: string,
         jobsWithAliquots?: number
-    ) {
+    ): void {
         expect(wrapper.find(LoadingSpinner)).toHaveLength(loading ? 1 : 0);
         if (loading) return;
 
@@ -61,71 +67,24 @@ describe('<SampleAliquotsSummaryWithModels/>', () => {
         if (empty) return;
 
         const stats = wrapper.find('.aliquot-stats-value');
-        expect(stats).toHaveLength(4);
+        expect(stats).toHaveLength(5);
         expect(stats.at(0).text()).toBe(totalAliquots + '');
         expect(stats.at(1).text()).toBe(availableCount + '/' + totalAliquots);
         expect(stats.at(2).text()).toBe(totalVolume);
         expect(stats.at(3).text()).toBe(jobsWithAliquots + '');
     }
 
-    test('query model not yet created', () => {
-        const wrapper = mount(
-            <SampleAliquotsSummaryWithModels
-                {...DEFAULT_PROPS}
-                sampleId="86873"
-                sampleLsid="S-20200404-1"
-                sampleSet="dirt"
-                sampleRow={noAliquotVolume}
-                aliquotsModel={undefined}
-                jobsModel={undefined}
-            />
-        );
-
-        validateStats(wrapper, true);
-        wrapper.unmount();
-    });
-
-    test('query loading', () => {
-        const wrapper = mount(
-            <SampleAliquotsSummaryWithModels
-                {...DEFAULT_PROPS}
-                sampleId="86873"
-                sampleLsid="S-20200404-1"
-                sampleSet="dirt"
-                sampleRow={noAliquotVolume}
-                aliquotsModel={makeTestQueryModel(new SchemaQuery('schema', 'query'))}
-                jobsModel={undefined}
-            />
-        );
-
-        validateStats(wrapper, true);
-        wrapper.unmount();
-    });
-
     test('no aliquots present', () => {
-        const wrapper = mount(
-            <SampleAliquotsSummaryWithModels
-                {...DEFAULT_PROPS}
-                sampleId="86873"
-                sampleLsid="S-20200404-1"
-                sampleSet="dirt"
-                sampleRow={noAliquotVolume}
-                aliquotsModel={getQueryModelFromRows({})}
-                jobsModel={getQueryModelFromRows({})}
-            />
-        );
+        const wrapper = shallow(<SampleAliquotsSummaryWithModels {...defaultProps()} sampleRow={noAliquotVolume} />);
 
         validateStats(wrapper, false, true);
         wrapper.unmount();
     });
 
     test('has single aliquot, not in storage, not added to job', () => {
-        const wrapper = mount(
+        const wrapper = shallow(
             <SampleAliquotsSummaryWithModels
-                {...DEFAULT_PROPS}
-                sampleId="86873"
-                sampleLsid="S-20200404-1"
-                sampleSet="dirt"
+                {...defaultProps()}
                 sampleRow={zeroAliquotVolume}
                 aliquotsModel={getQueryModelFromRows({
                     1: {
@@ -134,7 +93,6 @@ describe('<SampleAliquotsSummaryWithModels/>', () => {
                         Units: { value: null },
                     },
                 })}
-                jobsModel={getQueryModelFromRows({})}
             />
         );
 
@@ -143,12 +101,9 @@ describe('<SampleAliquotsSummaryWithModels/>', () => {
     });
 
     test('has single aliquot, in storage, no volume, added to job', () => {
-        const wrapper = mount(
+        const wrapper = shallow(
             <SampleAliquotsSummaryWithModels
-                {...DEFAULT_PROPS}
-                sampleId="86873"
-                sampleLsid="S-20200404-1"
-                sampleSet="dirt"
+                {...defaultProps()}
                 sampleRow={zeroAliquotVolume}
                 aliquotsModel={getQueryModelFromRows({
                     1: {
@@ -166,12 +121,9 @@ describe('<SampleAliquotsSummaryWithModels/>', () => {
     });
 
     test('has single aliquot, in storage, without amount, but with unit', () => {
-        const wrapper = mount(
+        const wrapper = shallow(
             <SampleAliquotsSummaryWithModels
-                {...DEFAULT_PROPS}
-                sampleId="86873"
-                sampleLsid="S-20200404-1"
-                sampleSet="dirt"
+                {...defaultProps()}
                 sampleRow={{
                     AliquotVolume: {
                         value: 0,
@@ -196,12 +148,9 @@ describe('<SampleAliquotsSummaryWithModels/>', () => {
     });
 
     test('has single aliquot, in storage, with amount, but without unit', () => {
-        const wrapper = mount(
+        const wrapper = shallow(
             <SampleAliquotsSummaryWithModels
-                {...DEFAULT_PROPS}
-                sampleId="86873"
-                sampleLsid="S-20200404-1"
-                sampleSet="dirt"
+                {...defaultProps()}
                 sampleRow={{
                     AliquotVolume: {
                         value: 100.1,
@@ -226,12 +175,9 @@ describe('<SampleAliquotsSummaryWithModels/>', () => {
     });
 
     test('has multiple aliquots, some storage, without unit, some has jobs', () => {
-        const wrapper = mount(
+        const wrapper = shallow(
             <SampleAliquotsSummaryWithModels
-                {...DEFAULT_PROPS}
-                sampleId="86873"
-                sampleLsid="S-20200404-1"
-                sampleSet="dirt"
+                {...defaultProps()}
                 sampleRow={{
                     AliquotVolume: {
                         value: 150.6,
@@ -273,12 +219,9 @@ describe('<SampleAliquotsSummaryWithModels/>', () => {
     });
 
     test('has multiple aliquots, some storage, with same unit', () => {
-        const wrapper = mount(
+        const wrapper = shallow(
             <SampleAliquotsSummaryWithModels
-                {...DEFAULT_PROPS}
-                sampleId="86873"
-                sampleLsid="S-20200404-1"
-                sampleSet="dirt"
+                {...defaultProps()}
                 sampleRow={{
                     AliquotVolume: {
                         value: 150.6,
@@ -304,7 +247,6 @@ describe('<SampleAliquotsSummaryWithModels/>', () => {
                         Units: { value: 'mL' },
                     },
                 })}
-                jobsModel={getQueryModelFromRows({})}
             />
         );
 
@@ -313,12 +255,9 @@ describe('<SampleAliquotsSummaryWithModels/>', () => {
     });
 
     test('has multiple aliquots, some storage, with different unit', () => {
-        const wrapper = mount(
+        const wrapper = shallow(
             <SampleAliquotsSummaryWithModels
-                {...DEFAULT_PROPS}
-                sampleId="86873"
-                sampleLsid="S-20200404-1"
-                sampleSet="dirt"
+                {...defaultProps()}
                 sampleRow={{
                     AliquotVolume: {
                         value: 50600.1,
@@ -344,7 +283,6 @@ describe('<SampleAliquotsSummaryWithModels/>', () => {
                         Units: { value: 'L' },
                     },
                 })}
-                jobsModel={getQueryModelFromRows({})}
             />
         );
 
@@ -353,12 +291,9 @@ describe('<SampleAliquotsSummaryWithModels/>', () => {
     });
 
     test('has multiple aliquots, all in storage, but some are checked out', () => {
-        const wrapper = mount(
+        const wrapper = shallow(
             <SampleAliquotsSummaryWithModels
-                {...DEFAULT_PROPS}
-                sampleId="86873"
-                sampleLsid="S-20200404-1"
-                sampleSet="dirt"
+                {...defaultProps()}
                 sampleRow={{
                     AliquotVolume: {
                         value: 1100.1,

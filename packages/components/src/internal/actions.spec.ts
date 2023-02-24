@@ -115,10 +115,7 @@ describe('column mutation actions', () => {
     const dataKeys = ['1', '2'];
 
     const queryModel = makeTestQueryModel(
-        new SchemaQuery({
-            schemaName: 'samples',
-            queryName: 'Sample Set 2',
-        }),
+        new SchemaQuery('samples', 'Sample Set 2'),
         queryInfo,
         dataRows,
         dataKeys,

@@ -1015,7 +1015,7 @@ export function updateSampleStorageData(sampleStorageData: SampleStorageData[], 
             }),
             failure: Utils.getCallbackWrapper(response => {
                 console.error(response);
-                reject(response);
+                reject(resolveErrorMessage(response));
             }),
         });
     });

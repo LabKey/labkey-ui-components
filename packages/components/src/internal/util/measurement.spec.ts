@@ -176,6 +176,7 @@ describe("MetricUnit utils", () => {
         expect(getStoredAmountDisplay('10 (mL)')).toBe('10');
         expect(getStoredAmountDisplay('10 (mL)', true)).toBe('10 mL');
         expect(getStoredAmountDisplay('10', true)).toBe('10');
+        expect(getStoredAmountDisplay('0 (mL)', true)).toBe('0 mL');
         expect(getStoredAmountDisplay(null)).toBe(null);
         expect(getStoredAmountDisplay(null, true)).toBe(null);
     });

@@ -46,6 +46,7 @@ async function fetchItemCount(schemaQuery: SchemaQuery, filterArray: Filter.IFil
 
 interface Props {
     chartConfigs: ChartConfig[];
+    containerFilter?: Query.ContainerFilter;
     navigate: (url: string | AppURL) => any;
     user: User;
 }
@@ -76,7 +77,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
     }
 
     loadChartData = async (): Promise<void> => {
-        const { chartConfigs } = this.props;
+        const { chartConfigs, containerFilter } = this.props;
         const { responses, currentGroup } = this.state;
 
         if (!responses.hasOwnProperty(currentGroup)) {
@@ -87,7 +88,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
                 const { queryName, schemaName, sort } = this.getSelectedChartGroup();
                 // default view is fine here; using custom query that is assumed not to be customized or customized
                 // to specifically affect this view.
-                const response = await selectRowsDeprecated({ schemaName, queryName, sort });
+                const response = await selectRowsDeprecated({ containerFilter, schemaName, queryName, sort });
 
                 this.setState(state => ({
                     itemCounts: { ...state.itemCounts, [currentGroup]: itemCount },

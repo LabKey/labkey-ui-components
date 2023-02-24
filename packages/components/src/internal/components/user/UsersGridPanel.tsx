@@ -47,29 +47,31 @@ const OMITTED_COLUMNS = [
 ];
 
 interface OwnProps {
-    user: User;
+    // option to disable the reset password UI pieces for this component
+    allowResetPassword?: boolean;
+    // optional array of role options, objects with id and label values (i.e. [{id: "org.labkey.api.security.roles.ReaderRole", label: "Reader (default)"}])
+    // note that the createNewUser action will not use this value but it will be passed back to the onCreateComplete
+    newUserRoleOptions?: any[];
     onCreateComplete: (response: any, roles: string[]) => any;
     onUsersStateChangeComplete: (response: any) => any;
     policy: SecurityPolicy;
     rolesByUniqueName?: Map<string, SecurityRole>;
     showDetailsPanel?: boolean;
+
+    user: User;
+
     userLimitSettings?: UserLimitSettings;
-
-    // optional array of role options, objects with id and label values (i.e. [{id: "org.labkey.api.security.roles.ReaderRole", label: "Reader (default)"}])
-    // note that the createNewUser action will not use this value but it will be passed back to the onCreateComplete
-    newUserRoleOptions?: any[];
-
-    // option to disable the reset password UI pieces for this component
-    allowResetPassword?: boolean;
 }
 
 type Props = OwnProps & InjectedQueryModels;
 
 interface State {
-    usersView: string; // valid options are 'active', 'inactive', 'all'
-    showDialog: string; // valid options are 'create', 'deactivate', 'reactivate', 'delete', undefined
     selectedUserId: number;
+    // valid options are 'create', 'deactivate', 'reactivate', 'delete', undefined
+    showDialog: string;
     unlisten: any;
+    // valid options are 'active', 'inactive', 'all'
+    usersView: string;
 }
 
 // exported for jest testing
@@ -234,11 +236,11 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
             getSelected(
                 model.id,
                 false,
-                model.schemaName,
-                model.queryName,
-                List.of(...model.filters),
+                model.schemaQuery,
+                model.filters,
                 model.containerPath,
-                model.queryParameters
+                model.queryParameters,
+                model.containerFilter
             ).then(response => {
                 const selectedUserId =
                     response.selected.length > 0 ? parseInt(List.of(...response.selected).last()) : undefined;

@@ -445,17 +445,24 @@ export function getSelectionLineageData(
     });
 }
 
-export const getParentTypeDataForLineage = async (
+export type GetParentTypeDataForLineage = (
     parentDataType: EntityDataType,
     data: any[],
     containerPath?: string,
     containerFilter?: Query.ContainerFilter
-): Promise<{
+) => Promise<{
     parentIdData: Record<string, ParentIdData>;
     parentTypeOptions: List<IEntityTypeOption>;
-}> => {
+}>;
+
+export const getParentTypeDataForLineage: GetParentTypeDataForLineage = async (
+    parentDataType,
+    data,
+    containerPath,
+    containerFilter
+) => {
     let parentTypeOptions = List<IEntityTypeOption>();
-    let parentIdData: {};
+    let parentIdData: Record<string, ParentIdData>;
     if (parentDataType) {
         const options = await getEntityTypeOptions(parentDataType, containerPath, containerFilter);
         parentTypeOptions = List<IEntityTypeOption>(options.get(parentDataType.typeListingSchemaQuery.queryName));

@@ -49,7 +49,7 @@ function formatResults(model: QuerySelectModel, results: Map<string, any>, token
     }));
 
     // Issue 46618: If a sort key is applied, then skip sorting on the client to retain sort done on server.
-    if (!queryInfo.getColumn(displayColumn).hasSortKey) {
+    if (!queryInfo.getColumn(displayColumn)?.hasSortKey) {
         options = options.sortBy(item => item.label, similaritySortFactory(token));
     }
 
@@ -198,13 +198,13 @@ function initValueColumn(queryInfo: QueryInfo, column?: string): string {
     return valueColumn;
 }
 
-function initDisplayColumn(queryInfo: QueryInfo, column?: string): string {
+function initDisplayColumn(queryInfo: QueryInfo, valueColumn: string, column?: string): string {
     let displayColumn: string;
 
     if (column) {
         if (!queryInfo.getColumn(column)) {
             console.warn(
-                `Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}). The "displayColumn" "${column}" does not exist.`
+                `Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}). The display column "${column}" does not exist.`
             );
         } else {
             displayColumn = column;
@@ -212,8 +212,13 @@ function initDisplayColumn(queryInfo: QueryInfo, column?: string): string {
     }
 
     // fallback to titleColumn
-    if (!displayColumn) {
+    if (!displayColumn && queryInfo.titleColumn && queryInfo.getColumn(queryInfo.titleColumn)) {
         displayColumn = queryInfo.titleColumn;
+    }
+
+    // fallback to valueColumn
+    if (!displayColumn) {
+        displayColumn = valueColumn;
     }
 
     return displayColumn;
@@ -226,7 +231,7 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<QuerySelec
     const queryInfo = await getQueryDetails({ schemaName, queryName, containerPath });
 
     const valueColumn = initValueColumn(queryInfo, props.valueColumn);
-    const displayColumn = initDisplayColumn(queryInfo, props.displayColumn);
+    const displayColumn = initDisplayColumn(queryInfo, valueColumn, props.displayColumn);
 
     let model = new QuerySelectModel({
         ...props,

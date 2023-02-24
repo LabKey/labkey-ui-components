@@ -19,13 +19,19 @@ import { Filter, Query, QueryDOM } from '@labkey/api';
 
 import { getQueryMetadata } from '../global';
 import { resolveKeyFromJson, SchemaQuery } from '../../public/SchemaQuery';
-import { isProductProjectsEnabled, isProjectContainer } from '../app/utils';
+import {
+    isAllProductFoldersFilteringEnabled,
+    isProductProjectsDataListingScopedToProject,
+    isProductProjectsEnabled,
+    isProjectContainer,
+} from '../app/utils';
 
 import { caseInsensitive, quoteValueWithDelimiters } from '../util/utils';
 import { QueryInfo, QueryInfoStatus } from '../../public/QueryInfo';
 import { QueryColumn, QueryLookup } from '../../public/QueryColumn';
 import { ViewInfo } from '../ViewInfo';
 import { URLResolver } from '../url/URLResolver';
+import { ModuleContext } from '../components/base/ServerContext';
 
 let queryDetailsCache: Record<string, Promise<QueryInfo>> = {};
 
@@ -957,17 +963,60 @@ export function processRequest(response: any, request: any, reject: (reason?: an
  * provided by `@labkey/components`.
  * @private
  */
-export function getContainerFilter(containerPath?: string): Query.ContainerFilter {
-    // Check experimental flag to see if cross-folder data support is enabled.
-    if (!isProductProjectsEnabled()) {
+export function getContainerFilter(containerPath?: string, moduleContext?: ModuleContext): Query.ContainerFilter {
+    // Check to see if product projects support is enabled.
+    if (!isProductProjectsEnabled(moduleContext)) {
         return undefined;
     }
 
-    const isProject = isProjectContainer(containerPath);
+    // When all folder filtering is enabled resolve data across all folders.
+    if (isAllProductFoldersFilteringEnabled(moduleContext)) {
+        return Query.ContainerFilter.allInProjectPlusShared;
+    }
 
     // When requesting data from a top-level folder context the ContainerFilter filters
     // "down" the folder hierarchy for data.
-    if (isProject) {
+    if (isProjectContainer(containerPath)) {
+        return Query.ContainerFilter.currentAndSubfoldersPlusShared;
+    }
+
+    // When requesting data from a sub-folder context the ContainerFilter filters
+    // "up" the folder hierarchy for data.
+    return Query.ContainerFilter.currentPlusProjectAndShared;
+}
+
+/**
+ * Provides the configured ContainerFilter to utilize when requesting data that is being read
+ * within a folder context.
+ * @private
+ */
+export function getContainerFilterForFolder(
+    containerPath?: string,
+    moduleContext?: ModuleContext
+): Query.ContainerFilter {
+    // Check to see if product projects support is enabled.
+    if (!isProductProjectsEnabled(moduleContext)) {
+        return undefined;
+    }
+
+    if (isProductProjectsDataListingScopedToProject(moduleContext)) {
+        // When requesting data from a top-level folder context the ContainerFilter filters
+        // "down" the folder hierarchy for data.
+        if (isProjectContainer(containerPath)) {
+            if (isAllProductFoldersFilteringEnabled(moduleContext)) {
+                return Query.ContainerFilter.allInProjectPlusShared;
+            }
+            return Query.ContainerFilter.currentPlusProjectAndShared;
+        }
+
+        // When listing data in a folder scope returned data to the current
+        // folder when the experimental feature is enabled.
+        return Query.ContainerFilter.current;
+    }
+
+    // When requesting data from a top-level folder context the ContainerFilter filters
+    // "down" the folder hierarchy for data.
+    if (isProjectContainer(containerPath)) {
         return Query.ContainerFilter.currentAndSubfoldersPlusShared;
     }
 
@@ -981,10 +1030,16 @@ export function getContainerFilter(containerPath?: string): Query.ContainerFilte
  * This ContainerFilter must be explicitly applied to be respected.
  * @private
  */
-export function getContainerFilterForLookups(): Query.ContainerFilter {
+export function getContainerFilterForLookups(moduleContext?: ModuleContext): Query.ContainerFilter {
     // Check to see if product projects support is enabled.
-    if (!isProductProjectsEnabled()) {
+    if (!isProductProjectsEnabled(moduleContext)) {
         return undefined;
+    }
+
+    // When all folder filtering is enabled resolve lookups against all folders
+    // within the top-level folder plus shared.
+    if (isAllProductFoldersFilteringEnabled(moduleContext)) {
+        return Query.ContainerFilter.allInProjectPlusShared;
     }
 
     // When inserting data from a top-level folder or a sub-folder context

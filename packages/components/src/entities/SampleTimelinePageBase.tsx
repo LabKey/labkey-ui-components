@@ -1,4 +1,4 @@
-import React, { FC, memo, ReactNode, useEffect, useState } from 'react';
+import React, { FC, memo, ReactNode, useCallback, useEffect, useState } from 'react';
 
 import { Col, Panel, Row } from 'react-bootstrap';
 
@@ -24,7 +24,6 @@ import {
     SAMPLE_MANAGER_APP_PROPERTIES,
     SAMPLES_KEY,
 } from '../internal/app/constants';
-import { isLoading } from '../public/LoadingState';
 import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 import { getEventDataValueDisplay, getTimelineEntityUrl } from '../internal/components/auditlog/utils';
 import { SampleStatusTag } from '../internal/components/samples/SampleStatusTag';
@@ -37,6 +36,91 @@ import { UserLink } from '../internal/components/user/UserLink';
 
 import { SampleEventListing } from './SampleEventListing';
 
+interface StatusDetailRowProps {
+    label: ReactNode;
+}
+
+const StatusDetailRow: FC<StatusDetailRowProps> = memo(({ children, label }) => (
+    <Row className="bottom-spacing">
+        <Col xs={6}>{label}</Col>
+        <Col xs={6}>
+            <span className="pull-right field-hide-overflow">{children}</span>
+        </Col>
+    </Row>
+));
+
+const renderCurrentStatusDetailRow = (label: string, valueNode: any): ReactNode => (
+    <StatusDetailRow label={label}>{valueNode}</StatusDetailRow>
+);
+
+const gridColumnRenderer = (data: any, row: any, displayValue: any): ReactNode => {
+    if (Iterable.isIterable(data)) {
+        if (data.get('urlType') === 'box') {
+            const boxId = data.get('value');
+            const label = displayValue || data.get('displayValue');
+            if (boxId && label) {
+                const boxLink = createProductUrlFromParts(
+                    FREEZER_MANAGER_APP_PROPERTIES.productId,
+                    SAMPLE_MANAGER_APP_PROPERTIES.productId,
+                    undefined,
+                    BOXES_KEY,
+                    boxId
+                );
+                return <a href={boxLink.toString()}>{label}</a>;
+            }
+        }
+        if (data.get('urlType') === 'boxCell') {
+            const cellKey = data.get('value');
+            const [boxId, row, col] = cellKey.split('-');
+            const label = displayValue || data.get('displayValue');
+            if (cellKey && label) {
+                const cellLink = createProductUrlFromParts(
+                    FREEZER_MANAGER_APP_PROPERTIES.productId,
+                    SAMPLE_MANAGER_APP_PROPERTIES.productId,
+                    { detailsTab: 'history', row, col },
+                    BOXES_KEY,
+                    boxId
+                );
+                return <a href={cellLink.toString()}>{label}</a>;
+            }
+        }
+    }
+
+    return displayValue;
+};
+
+const getMaterialDataInputDisplay = (
+    datatypeKey: string,
+    datatypeName: string,
+    value: string,
+    inputPrefix: string
+): any => {
+    const parts = parseCsvString(value.replace(inputPrefix, ''), ',', true);
+    const parents = [];
+    for (let i = 0; i < parts.length; i += 2) {
+        const name = parts[i],
+            id = parts[i + 1];
+        if (id === '0') {
+            parents.push(name);
+        } else {
+            const link = AppURL.create(datatypeKey, datatypeName, id).toHref();
+            parents.push(<a href={link}>{name}</a>);
+        }
+    }
+    return (
+        <>
+            {parents.map((parent, ind) => {
+                return (
+                    <span key={datatypeName + '-' + ind}>
+                        {parent}
+                        {ind < parents.length - 1 ? ',' : ''}&nbsp;
+                    </span>
+                );
+            })}
+        </>
+    );
+};
+
 interface OwnProps {
     api?: ComponentsAPIWrapper;
     // for jest test only
@@ -46,19 +130,18 @@ interface OwnProps {
         renderCurrentStatusDetailRowFn: (label: string, valueNode: any) => ReactNode
     ) => ReactNode;
     sampleId: number;
-    sampleJobsGidId?: string;
-    sampleJobsGridConfig: QueryConfig;
     sampleName: string;
     sampleSet: string;
     sampleStatus: SampleStatus;
     // for jest test on teamcity
     timezoneAbbr?: string;
-
     user: User;
 }
 
+export type SampleTimelinePageBaseImplProps = OwnProps & InjectedQueryModels;
+
 // export for jest
-export const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = memo(props => {
+export const SampleTimelinePageBaseImpl: FC<SampleTimelinePageBaseImplProps> = memo(props => {
     const {
         api,
         initialSelectedEvent,
@@ -70,270 +153,145 @@ export const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = me
         user,
         renderAdditionalCurrentStatus,
         queryModels,
-        sampleJobsGidId,
     } = props;
 
-    const [events, setEvents] = useState<TimelineEventModel[]>(undefined);
+    const [events, setEvents] = useState<TimelineEventModel[]>();
     const [timelineLoaded, setTimelineLoaded] = useState<boolean>(false);
     const [selectedEvent, setSelectedEvent] = useState<TimelineEventModel>(initialSelectedEvent);
-    const [error, setError] = useState<React.ReactNode>(undefined);
-
-    const loadTimeline = async () => {
-        setTimelineLoaded(false);
-        setEvents(undefined);
-
-        try {
-            const timelineEvents = await api.samples.getTimelineEvents(sampleId, timezoneAbbr);
-            setEvents(timelineEvents);
-            setTimelineLoaded(true);
-        } catch (error) {
-            setTimelineLoaded(true);
-            setError(error);
-        }
-    };
+    const [error, setError] = useState<ReactNode>();
 
     useEffect(() => {
-        loadTimeline();
-    }, [sampleId]);
+        (async () => {
+            setTimelineLoaded(false);
 
-    const onEventSelection = selectedEvent => {
-        setSelectedEvent(selectedEvent);
-    };
-
-    const renderEventListing = () => {
-        return (
-            <SampleEventListing
-                sampleId={sampleId}
-                sampleName={sampleName}
-                onEventSelection={onEventSelection}
-                events={events}
-                selectedEvent={selectedEvent}
-            />
-        );
-    };
-
-    const getMaterialDataInputDisplay = (
-        datatypeKey: string,
-        datatypeName: string,
-        value: string,
-        inputPrefix: string
-    ): any => {
-        const parts = parseCsvString(value.replace(inputPrefix, ''), ',', true);
-        const parents = [];
-        for (let i = 0; i < parts.length; i += 2) {
-            const name = parts[i],
-                id = parts[i + 1];
-            if (id === '0') {
-                parents.push(name);
-            } else {
-                const link = AppURL.create(datatypeKey, datatypeName, id).toHref();
-                parents.push(<a href={link}>{name}</a>);
+            try {
+                const timelineEvents = await api.samples.getTimelineEvents(sampleId, timezoneAbbr);
+                setEvents(timelineEvents);
+                setTimelineLoaded(true);
+            } catch (_error) {
+                setEvents(undefined);
+                setTimelineLoaded(true);
+                setError(_error);
             }
-        }
-        return (
-            <>
-                {parents.map((parent, ind) => {
-                    return (
-                        <span key={datatypeName + '-' + ind}>
-                            {parent}
-                            {ind < parents.length - 1 ? ',' : ''}&nbsp;
-                        </span>
-                    );
-                })}
-            </>
-        );
-    };
+        })();
+    }, [api, sampleId, timezoneAbbr]);
 
-    const auditDetailValueRenderer = (field: string, value: string, displayValue: any): any => {
-        if (field.toLowerCase() === 'sample id') {
-            const sampleLink = AppURL.create(SAMPLES_KEY, sampleSet, sampleId).toHref();
-            return <a href={sampleLink}>{value}</a>;
-        }
-
-        if (value && value.startsWith('materialinputs/')) {
-            return getMaterialDataInputDisplay(SAMPLES_KEY, field.toLowerCase(), value, 'materialinputs/');
-        } else if (value && value.startsWith('datainputs/')) {
-            return getMaterialDataInputDisplay(
-                getPrimaryAppProperties().dataClassUrlPart,
-                field.toLowerCase(),
-                value,
-                'datainputs/'
-            );
-        }
-
-        return displayValue;
-    };
-
-    const gridColumnRenderer = (data: any, row: any, displayValue: any): any => {
-        if (Iterable.isIterable(data)) {
-            if (data.get('urlType') === 'box') {
-                const boxId = data.get('value');
-                const label = displayValue || data.get('displayValue');
-                if (boxId && label) {
-                    let boxLink;
-                    boxLink = createProductUrlFromParts(
-                        FREEZER_MANAGER_APP_PROPERTIES.productId,
-                        SAMPLE_MANAGER_APP_PROPERTIES.productId,
-                        undefined,
-                        BOXES_KEY,
-                        boxId
-                    );
-                    return <a href={boxLink}>{label}</a>;
-                }
+    const auditDetailValueRenderer = useCallback(
+        (field: string, value: string, displayValue: any): ReactNode => {
+            if (field.toLowerCase() === 'sample id') {
+                const sampleLink = AppURL.create(SAMPLES_KEY, sampleSet, sampleId).toHref();
+                return <a href={sampleLink}>{value}</a>;
             }
-            if (data.get('urlType') === 'boxCell') {
-                const cellKey = data.get('value');
-                const [boxId, row, col] = cellKey.split('-');
-                const label = displayValue || data.get('displayValue');
-                if (cellKey && label) {
-                    let cellLink;
-                    const params = { detailsTab: 'history', row, col };
-                    cellLink = createProductUrlFromParts(
-                        FREEZER_MANAGER_APP_PROPERTIES.productId,
-                        SAMPLE_MANAGER_APP_PROPERTIES.productId,
-                        params,
-                        BOXES_KEY,
-                        boxId
-                    );
-                    return <a href={cellLink}>{label}</a>;
-                }
+
+            if (value?.startsWith('materialinputs/')) {
+                return getMaterialDataInputDisplay(SAMPLES_KEY, field.toLowerCase(), value, 'materialinputs/');
+            } else if (value?.startsWith('datainputs/')) {
+                return getMaterialDataInputDisplay(
+                    getPrimaryAppProperties().dataClassUrlPart,
+                    field.toLowerCase(),
+                    value,
+                    'datainputs/'
+                );
             }
-        }
 
-        return displayValue;
-    };
-
-    const renderEventDetails = () => {
-        return (
-            <AuditDetails
-                title="Event Details"
-                emptyMsg="No event selected"
-                user={user}
-                rowId={selectedEvent ? selectedEvent.rowId : undefined}
-                summary={selectedEvent ? selectedEvent.summary : undefined}
-                gridData={selectedEvent ? selectedEvent.metadata : undefined}
-                changeDetails={selectedEvent ? selectedEvent.getAuditDetailsModel() : undefined}
-                fieldValueRenderer={auditDetailValueRenderer}
-                gridColumnRenderer={
-                    selectedEvent && selectedEvent.eventType == 'inventory' ? gridColumnRenderer : undefined
-                }
-            />
-        );
-    };
-
-    const renderCurrentStatusDetailRow = (label: string, valueNode: any): ReactNode => {
-        return (
-            <Row className="bottom-spacing">
-                <Col xs={6}>{label}</Col>
-                <Col xs={6}>
-                    <span className="pull-right field-hide-overflow">{valueNode}</span>
-                </Col>
-            </Row>
-        );
-    };
-
-    const renderCurrentStatusDetails = () => {
-        const sampleJobsModel = queryModels[sampleJobsGidId];
-        if (renderAdditionalCurrentStatus && (!sampleJobsModel || isLoading(sampleJobsModel.rowsLoadingState)))
-            return <LoadingSpinner />;
-
-        const registrationEvent = events[0];
-        const lastEvent = events[events.length - 1];
-
-        const registrationStatus = (
-            <>
-                {renderCurrentStatusDetailRow(
-                    'Registered By',
-                    <UserLink
-                        userId={registrationEvent.user?.get('value')}
-                        userDisplayValue={registrationEvent.user?.get('displayValue')}
-                        unknown={!registrationEvent.user}
-                    />
-                )}
-                {renderCurrentStatusDetailRow(
-                    'Registration Date',
-                    getEventDataValueDisplay(registrationEvent.timestamp)
-                )}
-            </>
-        );
-
-        const eventLink = lastEvent.entity?.has('urlType')
-            ? getTimelineEntityUrl(lastEvent.entity.toJS()).toHref()
-            : undefined;
-        const eventDisplay = eventLink ? <a href={eventLink}>{lastEvent.summary}</a> : lastEvent.summary;
-        const lastEventStatus = (
-            <>
-                {renderCurrentStatusDetailRow('Last Event', eventDisplay)}
-                {renderCurrentStatusDetailRow(
-                    'Last Event Handled By',
-                    <UserLink
-                        userId={lastEvent.user?.get('value')}
-                        userDisplayValue={lastEvent.user?.get('displayValue')}
-                        unknown={!lastEvent.user}
-                    />
-                )}
-                {renderCurrentStatusDetailRow('Last Event Date', getEventDataValueDisplay(lastEvent.timestamp))}
-            </>
-        );
-
-        return (
-            <>
-                {registrationStatus}
-                {renderCurrentStatusDetailRow('Sample Status', <SampleStatusTag status={sampleStatus} />)}
-                {renderAdditionalCurrentStatus?.(sampleJobsModel, renderCurrentStatusDetailRow)}
-                {lastEventStatus}
-            </>
-        );
-    };
-
-    const renderCurrentStatus = () => {
-        return (
-            <Panel>
-                <Panel.Heading>Current Status</Panel.Heading>
-                <Panel.Body>{renderCurrentStatusDetails()}</Panel.Body>
-            </Panel>
-        );
-    };
+            return displayValue;
+        },
+        [sampleId, sampleSet]
+    );
 
     if (error) return <Alert bsStyle="danger">{error}</Alert>;
-
     if (!timelineLoaded) return <LoadingSpinner />;
-
     if (!events) return <NotFound />;
-
     if (events.length === 0) return <Alert bsStyle="danger">Unable to load timeline events</Alert>;
+
+    const sampleJobsModel = queryModels[Object.keys(queryModels)[0]];
+    const isAdditionalStatusLoading = !!renderAdditionalCurrentStatus && sampleJobsModel.isLoading;
+
+    const registrationEvent = events[0];
+    const lastEvent = events[events.length - 1];
+
+    const eventLink = lastEvent.entity?.has('urlType')
+        ? getTimelineEntityUrl(lastEvent.entity.toJS()).toHref()
+        : undefined;
 
     return (
         <Row>
             <Col xs={12} md={8}>
-                {renderEventListing()}
+                <SampleEventListing
+                    sampleId={sampleId}
+                    sampleName={sampleName}
+                    onEventSelection={setSelectedEvent}
+                    events={events}
+                    selectedEvent={selectedEvent}
+                />
             </Col>
             <Col xs={12} md={4}>
-                {renderCurrentStatus()}
-                {renderEventDetails()}
+                <Panel>
+                    <Panel.Heading>Current Status</Panel.Heading>
+                    <Panel.Body>
+                        {isAdditionalStatusLoading && <LoadingSpinner />}
+                        {!isAdditionalStatusLoading && (
+                            <>
+                                <StatusDetailRow label="Registered By">
+                                    <UserLink
+                                        userId={registrationEvent.user?.get('value')}
+                                        userDisplayValue={registrationEvent.user?.get('displayValue')}
+                                        unknown={!registrationEvent.user}
+                                    />
+                                </StatusDetailRow>
+                                <StatusDetailRow label="Registration Date">
+                                    {getEventDataValueDisplay(registrationEvent.timestamp)}
+                                </StatusDetailRow>
+                                <StatusDetailRow label="Sample Status">
+                                    <SampleStatusTag status={sampleStatus} />
+                                </StatusDetailRow>
+                                {renderAdditionalCurrentStatus?.(sampleJobsModel, renderCurrentStatusDetailRow)}
+                                <StatusDetailRow label="Last Event">
+                                    {eventLink ? <a href={eventLink}>{lastEvent.summary}</a> : lastEvent.summary}
+                                </StatusDetailRow>
+                                <StatusDetailRow label="Last Event Handled By">
+                                    <UserLink
+                                        userId={lastEvent.user?.get('value')}
+                                        userDisplayValue={lastEvent.user?.get('displayValue')}
+                                        unknown={!lastEvent.user}
+                                    />
+                                </StatusDetailRow>
+                                <StatusDetailRow label="Last Event Date">
+                                    {getEventDataValueDisplay(lastEvent.timestamp)}
+                                </StatusDetailRow>
+                            </>
+                        )}
+                    </Panel.Body>
+                </Panel>
+                <AuditDetails
+                    changeDetails={selectedEvent?.getAuditDetailsModel()}
+                    emptyMsg="No event selected"
+                    fieldValueRenderer={auditDetailValueRenderer}
+                    gridColumnRenderer={selectedEvent?.eventType === 'inventory' ? gridColumnRenderer : undefined}
+                    gridData={selectedEvent?.metadata}
+                    rowId={selectedEvent?.rowId}
+                    summary={selectedEvent?.summary}
+                    title="Event Details"
+                    user={user}
+                />
             </Col>
         </Row>
     );
 });
 
-const SampleTimelinePageWithQueryModel = withQueryModels<OwnProps>(SampleTimelinePageBaseImpl);
-
-export const SampleTimelinePageBase: FC<OwnProps> = memo(props => {
-    const { sampleJobsGridConfig } = props;
-
-    const queryConfigs = {};
-    queryConfigs[sampleJobsGridConfig.id] = sampleJobsGridConfig;
-
-    return (
-        <SampleTimelinePageWithQueryModel
-            {...props}
-            sampleJobsGidId={sampleJobsGridConfig.id}
-            queryConfigs={queryConfigs}
-            autoLoad={true}
-        />
-    );
-});
-
-SampleTimelinePageBase.defaultProps = {
+SampleTimelinePageBaseImpl.defaultProps = {
     api: getDefaultAPIWrapper(),
 };
+
+const SampleTimelinePageWithQueryModel = withQueryModels<OwnProps>(SampleTimelinePageBaseImpl);
+
+interface SampleTimelinePageBaseProps extends OwnProps {
+    sampleJobsGridConfig: QueryConfig;
+}
+
+export const SampleTimelinePageBase: FC<SampleTimelinePageBaseProps> = memo(props => {
+    const { sampleJobsGridConfig, ...ownProps } = props;
+    const queryConfigs = { [sampleJobsGridConfig.id]: sampleJobsGridConfig };
+
+    return <SampleTimelinePageWithQueryModel {...ownProps} autoLoad queryConfigs={queryConfigs} />;
+});

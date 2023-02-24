@@ -616,6 +616,8 @@ export function getGroupedSampleDisplayColumns(
 
     allUpdateColumns.forEach(col => {
         const colName = col.name.toLowerCase();
+        if (SAMPLE_STORAGE_COLUMNS_LC.indexOf(colName) > -1)
+            return;
         if (sampleTypeDomainFields.independentFields.indexOf(colName) > -1) {
             editColumns.push(col);
             return;

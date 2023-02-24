@@ -17,7 +17,6 @@ import {
     processSampleBulkAdd,
 } from './utils';
 import { SampleTypeBasePage } from './SampleTypeBasePage';
-import { SampleAliquotsSummary } from './SampleAliquotsSummary';
 import { SamplesAddButton } from './SamplesAddButton';
 import { SampleAssayDetail } from './SampleAssayDetail';
 import { SampleDetailEditing } from './SampleDetailEditing';
@@ -29,7 +28,6 @@ import { SampleAliquotDetailHeader } from './SampleAliquotDetailHeader';
 import { SampleCreationTypeModal } from './SampleCreationTypeModal';
 import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
 import { SamplesAssayButton } from './SamplesAssayButton';
-import { SampleTypeInsightsPanel } from './SampleTypeInsightsPanel';
 import { FindSamplesByIdHeaderPanel } from './FindSamplesByIdHeaderPanel';
 import { FindSamplesByIdsPageBase } from './FindSamplesByIdsPageBase';
 import { SampleFinderSection } from './SampleFinderSection';
@@ -102,7 +100,6 @@ export {
     RemoveFromPicklistButton,
     SampleAliquotDetailHeader,
     SampleAliquotViewSelector,
-    SampleAliquotsSummary,
     SamplesAddButton,
     SampleAliquotsPage,
     SampleAssayDetail,
@@ -126,7 +123,6 @@ export {
     SampleTypeListingPage,
     SampleTypeBasePage,
     SampleTypeDesignPage,
-    SampleTypeInsightsPanel,
     SampleTypeTemplateDownloadRenderer,
     SamplesAssayButton,
     SamplesDeriveButton,

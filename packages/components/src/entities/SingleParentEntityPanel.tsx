@@ -2,7 +2,7 @@ import React, { FC, memo, PureComponent, ReactNode, useMemo, useState } from 're
 
 import { List } from 'immutable';
 
-import { Filter, Query } from '@labkey/api';
+import { Filter } from '@labkey/api';
 
 import { DELIMITER, DETAIL_TABLE_CLASSES } from '../internal/components/forms/constants';
 
@@ -27,6 +27,7 @@ import { ViewInfo } from '../internal/ViewInfo';
 
 import { isSampleEntity } from '../internal/components/entities/utils';
 import { EntityDataType, IEntityTypeOption } from '../internal/components/entities/models';
+import { getContainerFilterForLookups } from '../internal/query/api';
 
 interface OwnProps {
     chosenType: IEntityTypeOption;
@@ -37,7 +38,6 @@ interface OwnProps {
 interface Props {
     childNounSingular?: string;
     chosenValue?: string | any[];
-    containerFilter?: Query.ContainerFilter;
     containerPath?: string;
     editing?: boolean;
     index: number;
@@ -90,16 +90,8 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
     };
 
     renderParentSelection = (model: QueryModel): ReactNode => {
-        const {
-            chosenType,
-            chosenValue,
-            containerPath,
-            containerFilter,
-            parentLSIDs,
-            parentTypeOptions,
-            parentDataType,
-            index,
-        } = this.props;
+        const { chosenType, chosenValue, containerPath, parentLSIDs, parentTypeOptions, parentDataType, index } =
+            this.props;
 
         if (model?.rowsError || model?.queryInfoError) {
             return <Alert>{model.rowsError || model.queryInfoError}</Alert>;
@@ -152,6 +144,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                         <QuerySelect
                             key={'parentEntityValue_' + chosenType.label} // important that this key off of the schemaQuery or it won't update when the SelectInput changes
                             containerClass="row"
+                            containerFilter={getContainerFilterForLookups()}
                             containerPath={containerPath}
                             inputClass="col-sm-6"
                             label={capitalizeFirstChar(parentDataType.nounSingular) + ' IDs'}
@@ -165,7 +158,6 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                             showLoading
                             value={value}
                             valueColumn="Name"
-                            containerFilter={containerFilter}
                         />
                         {!chosenValue && (
                             <div className="row top-spacing edit-parent-danger">

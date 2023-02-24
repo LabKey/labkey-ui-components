@@ -6,11 +6,11 @@ import { DataClassDataType, SampleTypeDataType } from './constants';
 
 describe('extractEntityTypeOptionFromRow', () => {
     const NAME = 'Test Name';
-    const ROW = fromJS({
+    const ROW = {
         RowId: { value: 1 },
         Name: { value: NAME },
         LSID: { value: 'ABC123' },
-    });
+    };
 
     test('lowerCaseValue = true', () => {
         const options = extractEntityTypeOptionFromRow(ROW);

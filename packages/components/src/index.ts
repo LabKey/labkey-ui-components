@@ -188,6 +188,7 @@ import { initQueryGridState } from './internal/global';
 import {
     deleteRows,
     getContainerFilter,
+    getContainerFilterForFolder,
     getContainerFilterForLookups,
     getQueryDetails,
     importData,
@@ -846,6 +847,7 @@ export {
     // global state functions
     initQueryGridState,
     getContainerFilter,
+    getContainerFilterForFolder,
     getContainerFilterForLookups,
     createGridModelId,
     clearSelected,

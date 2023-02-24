@@ -80,9 +80,6 @@ export const SystemFields: FC<Props> = memo(({ fields, disabledSystemFields, onS
             title: 'Enabled',
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             cell: (selected: boolean, row: any): ReactNode => {
-                // const onChange = (event): void => this.selectRow(row, event);
-                // const disabled = isLoading || isLoadingSelections;
-
                 const onChange = (event): void => {
                     const checked = event.target.checked === true;
                     onSystemFieldEnable(row.get('Name'), checked);

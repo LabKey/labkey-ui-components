@@ -333,7 +333,7 @@ export class ParentEntityEditPanel extends Component<Props, State> {
                         {editing && (!this.compactEditDisplay() || index > 0) && <hr />}
                         <SingleParentEntityPanel
                             containerPath={childContainerPath}
-                            parentDataType={parentDataTypes[0]}
+                            parentDataType={choice.type?.entityDataType ?? parentDataTypes[0]}
                             parentTypeOptions={this.getParentTypeOptions(index)}
                             parentEntityType={choice.type}
                             parentLSIDs={choice.ids}

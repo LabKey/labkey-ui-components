@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.XX
+*Released*: XX February 2023
+- Issue 47392: Parent link to registry data types not resolving
+
 ### version 2.296.1
 *Released*: 23 February 2023
 - Add perm check helper hasSampleWorkflowDeletePermission()

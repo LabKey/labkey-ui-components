@@ -390,7 +390,14 @@ export function getSelected(
                 container: containerPath,
             }),
             method: 'POST',
-            jsonData: getFilteredQueryParams(key, schemaQuery, filterArray, queryParameters, containerPath, containerFilter),
+            jsonData: getFilteredQueryParams(
+                key,
+                schemaQuery,
+                filterArray,
+                queryParameters,
+                containerPath,
+                containerFilter
+            ),
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
@@ -417,7 +424,14 @@ export function clearSelected(
                 container: containerPath,
             }),
             method: 'POST',
-            jsonData: getFilteredQueryParams(key, schemaQuery, filterArray, queryParameters, containerPath, containerFilter),
+            jsonData: getFilteredQueryParams(
+                key,
+                schemaQuery,
+                filterArray,
+                queryParameters,
+                containerPath,
+                containerFilter
+            ),
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),

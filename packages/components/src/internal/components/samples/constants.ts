@@ -16,7 +16,7 @@ export enum ALIQUOT_FILTER_MODE {
 export enum SELECTION_KEY_TYPE {
     inventoryItems = 'inventoryItems',
     snapshot = 'snapshot',
-};
+}
 
 export const MAX_SELECTED_SAMPLES = 10000;
 
@@ -216,57 +216,72 @@ export const SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS = [
     {
         Name: 'Name',
         Label: 'Sample ID',
-        'Data Type': 'Text',
+        DataType: 'Text',
         Required: true,
         // For user clarity, below text differs intentionally from schema browser
         Description: 'Unique ID generated from the Naming Pattern or Aliquot Naming Pattern',
-    },
-    {
-        Name: 'Description',
-        Label: 'Description',
-        'Data Type': 'Text',
-        Required: false,
-        Description: 'Contains a Description for this sample',
+        Disableble: false,
     },
     {
         Name: 'SampleState',
         Label: 'Status',
-        'Data Type': 'Integer',
+        DataType: 'Integer',
         Required: false,
         Description: 'Represents the status of the sample',
+        Disableble: false,
+    },
+    {
+        Name: 'Description',
+        Label: 'Description',
+        DataType: 'Text',
+        Required: false,
+        Description: 'Contains a Description for this sample',
+        Disableble: true,
+    },
+    {
+        Name: 'MaterialExpDate',
+        Label: 'Expiration Date',
+        DataType: 'DateTime',
+        Required: false,
+        Description: 'The date that this sample expires on',
+        Disableble: true,
     },
 ];
 
 export const SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS = [
-    { Name: 'Units', Label: 'Units', 'Data Type': 'Text', Required: false, Description: '' },
+    { Name: 'Units', Label: 'Units', DataType: 'Text', Required: false, Description: '', Disableble: true },
     {
         Name: 'StoredAmount',
         Label: 'Stored Amount',
-        'Data Type': 'Decimal (floating point)',
+        DataType: 'Decimal (floating point)',
         Required: false,
         Description: '',
+        Disableble: true,
     },
     {
         Name: 'AliquotCount',
         Label: 'Aliquots Created Count',
-        'Data Type': 'Integer',
+        DataType: 'Integer',
         Required: false,
         Description: '',
+        Disableble: true,
     },
     {
         Name: 'FreezeThawCount',
         Label: 'Freeze/Thaw Count',
-        'Data Type': 'Integer',
+        DataType: 'Integer',
         Required: false,
         Description: '',
+        Disableble: true,
     },
     {
         Name: 'StorageLocation',
         Label: 'Storage Location',
-        'Data Type': 'Text',
+        DataType: 'Text',
         Required: false,
         Description: '',
+        Disableble: true,
     },
-    { Name: 'StorageRow', Label: 'Storage Row', 'Data Type': 'Text', Required: false, Description: '' },
-    { Name: 'StorageCol', Label: 'Storage Col', 'Data Type': 'Text', Required: false, Description: '' },
+    { Name: 'StorageRow', Label: 'Storage Row', DataType: 'Text', Required: false, Description: '', Disableble: true },
+    { Name: 'StorageCol', Label: 'Storage Col', DataType: 'Text', Required: false, Description: '', Disableble: true },
 ];

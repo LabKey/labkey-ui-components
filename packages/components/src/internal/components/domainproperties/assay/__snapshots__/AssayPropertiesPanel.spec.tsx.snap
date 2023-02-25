@@ -49,6 +49,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
           "domainKindName": undefined,
           "schemaName": undefined,
           "queryName": undefined,
+          "disabledSystemFields": undefined,
         },
         Immutable.Record {
           "name": "Run Fields",
@@ -75,6 +76,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
           "domainKindName": undefined,
           "schemaName": undefined,
           "queryName": undefined,
+          "disabledSystemFields": undefined,
         },
         Immutable.Record {
           "name": "Data Fields",
@@ -101,6 +103,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
           "domainKindName": undefined,
           "schemaName": undefined,
           "queryName": undefined,
+          "disabledSystemFields": undefined,
         },
       ],
       "editableResults": false,
@@ -175,6 +178,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
             "domainKindName": undefined,
             "schemaName": undefined,
             "queryName": undefined,
+            "disabledSystemFields": undefined,
           },
           Immutable.Record {
             "name": "Run Fields",
@@ -201,6 +205,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
             "domainKindName": undefined,
             "schemaName": undefined,
             "queryName": undefined,
+            "disabledSystemFields": undefined,
           },
           Immutable.Record {
             "name": "Data Fields",
@@ -227,6 +232,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
             "domainKindName": undefined,
             "schemaName": undefined,
             "queryName": undefined,
+            "disabledSystemFields": undefined,
           },
         ],
         "editableResults": false,
@@ -298,6 +304,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
               "domainKindName": undefined,
               "schemaName": undefined,
               "queryName": undefined,
+              "disabledSystemFields": undefined,
             },
             Immutable.Record {
               "name": "Run Fields",
@@ -324,6 +331,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
               "domainKindName": undefined,
               "schemaName": undefined,
               "queryName": undefined,
+              "disabledSystemFields": undefined,
             },
             Immutable.Record {
               "name": "Data Fields",
@@ -350,6 +358,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
               "domainKindName": undefined,
               "schemaName": undefined,
               "queryName": undefined,
+              "disabledSystemFields": undefined,
             },
           ],
           "editableResults": false,
@@ -446,6 +455,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                           "domainKindName": undefined,
                           "schemaName": undefined,
                           "queryName": undefined,
+                          "disabledSystemFields": undefined,
                         },
                         Immutable.Record {
                           "name": "Run Fields",
@@ -472,6 +482,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                           "domainKindName": undefined,
                           "schemaName": undefined,
                           "queryName": undefined,
+                          "disabledSystemFields": undefined,
                         },
                         Immutable.Record {
                           "name": "Data Fields",
@@ -498,6 +509,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                           "domainKindName": undefined,
                           "schemaName": undefined,
                           "queryName": undefined,
+                          "disabledSystemFields": undefined,
                         },
                       ],
                       "editableResults": false,
@@ -673,6 +685,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                           "domainKindName": undefined,
                           "schemaName": undefined,
                           "queryName": undefined,
+                          "disabledSystemFields": undefined,
                         },
                         Immutable.Record {
                           "name": "Run Fields",
@@ -699,6 +712,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                           "domainKindName": undefined,
                           "schemaName": undefined,
                           "queryName": undefined,
+                          "disabledSystemFields": undefined,
                         },
                         Immutable.Record {
                           "name": "Data Fields",
@@ -725,6 +739,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                           "domainKindName": undefined,
                           "schemaName": undefined,
                           "queryName": undefined,
+                          "disabledSystemFields": undefined,
                         },
                       ],
                       "editableResults": false,
@@ -895,6 +910,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                           "domainKindName": undefined,
                           "schemaName": undefined,
                           "queryName": undefined,
+                          "disabledSystemFields": undefined,
                         },
                         Immutable.Record {
                           "name": "Run Fields",
@@ -921,6 +937,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                           "domainKindName": undefined,
                           "schemaName": undefined,
                           "queryName": undefined,
+                          "disabledSystemFields": undefined,
                         },
                         Immutable.Record {
                           "name": "Data Fields",
@@ -947,6 +964,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                           "domainKindName": undefined,
                           "schemaName": undefined,
                           "queryName": undefined,
+                          "disabledSystemFields": undefined,
                         },
                       ],
                       "editableResults": false,
@@ -1118,6 +1136,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
           "domainKindName": undefined,
           "schemaName": undefined,
           "queryName": undefined,
+          "disabledSystemFields": undefined,
         },
         Immutable.Record {
           "name": "Run Fields",
@@ -1144,6 +1163,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
           "domainKindName": undefined,
           "schemaName": undefined,
           "queryName": undefined,
+          "disabledSystemFields": undefined,
         },
         Immutable.Record {
           "name": "Data Fields",
@@ -1170,6 +1190,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
           "domainKindName": undefined,
           "schemaName": undefined,
           "queryName": undefined,
+          "disabledSystemFields": undefined,
         },
       ],
       "editableResults": false,
@@ -1244,6 +1265,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
             "domainKindName": undefined,
             "schemaName": undefined,
             "queryName": undefined,
+            "disabledSystemFields": undefined,
           },
           Immutable.Record {
             "name": "Run Fields",
@@ -1270,6 +1292,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
             "domainKindName": undefined,
             "schemaName": undefined,
             "queryName": undefined,
+            "disabledSystemFields": undefined,
           },
           Immutable.Record {
             "name": "Data Fields",
@@ -1296,6 +1319,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
             "domainKindName": undefined,
             "schemaName": undefined,
             "queryName": undefined,
+            "disabledSystemFields": undefined,
           },
         ],
         "editableResults": false,
@@ -1373,6 +1397,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
               "domainKindName": undefined,
               "schemaName": undefined,
               "queryName": undefined,
+              "disabledSystemFields": undefined,
             },
             Immutable.Record {
               "name": "Run Fields",
@@ -1399,6 +1424,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
               "domainKindName": undefined,
               "schemaName": undefined,
               "queryName": undefined,
+              "disabledSystemFields": undefined,
             },
             Immutable.Record {
               "name": "Data Fields",
@@ -1425,6 +1451,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
               "domainKindName": undefined,
               "schemaName": undefined,
               "queryName": undefined,
+              "disabledSystemFields": undefined,
             },
           ],
           "editableResults": false,
@@ -1594,6 +1621,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                             "domainKindName": undefined,
                             "schemaName": undefined,
                             "queryName": undefined,
+                            "disabledSystemFields": undefined,
                           },
                           Immutable.Record {
                             "name": "Run Fields",
@@ -1620,6 +1648,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                             "domainKindName": undefined,
                             "schemaName": undefined,
                             "queryName": undefined,
+                            "disabledSystemFields": undefined,
                           },
                           Immutable.Record {
                             "name": "Data Fields",
@@ -1646,6 +1675,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                             "domainKindName": undefined,
                             "schemaName": undefined,
                             "queryName": undefined,
+                            "disabledSystemFields": undefined,
                           },
                         ],
                         "editableResults": false,
@@ -1742,6 +1772,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                         "domainKindName": undefined,
                                         "schemaName": undefined,
                                         "queryName": undefined,
+                                        "disabledSystemFields": undefined,
                                       },
                                       Immutable.Record {
                                         "name": "Run Fields",
@@ -1768,6 +1799,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                         "domainKindName": undefined,
                                         "schemaName": undefined,
                                         "queryName": undefined,
+                                        "disabledSystemFields": undefined,
                                       },
                                       Immutable.Record {
                                         "name": "Data Fields",
@@ -1794,6 +1826,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                         "domainKindName": undefined,
                                         "schemaName": undefined,
                                         "queryName": undefined,
+                                        "disabledSystemFields": undefined,
                                       },
                                     ],
                                     "editableResults": false,
@@ -1969,6 +2002,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                         "domainKindName": undefined,
                                         "schemaName": undefined,
                                         "queryName": undefined,
+                                        "disabledSystemFields": undefined,
                                       },
                                       Immutable.Record {
                                         "name": "Run Fields",
@@ -1995,6 +2029,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                         "domainKindName": undefined,
                                         "schemaName": undefined,
                                         "queryName": undefined,
+                                        "disabledSystemFields": undefined,
                                       },
                                       Immutable.Record {
                                         "name": "Data Fields",
@@ -2021,6 +2056,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                         "domainKindName": undefined,
                                         "schemaName": undefined,
                                         "queryName": undefined,
+                                        "disabledSystemFields": undefined,
                                       },
                                     ],
                                     "editableResults": false,
@@ -2191,6 +2227,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                         "domainKindName": undefined,
                                         "schemaName": undefined,
                                         "queryName": undefined,
+                                        "disabledSystemFields": undefined,
                                       },
                                       Immutable.Record {
                                         "name": "Run Fields",
@@ -2217,6 +2254,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                         "domainKindName": undefined,
                                         "schemaName": undefined,
                                         "queryName": undefined,
+                                        "disabledSystemFields": undefined,
                                       },
                                       Immutable.Record {
                                         "name": "Data Fields",
@@ -2243,6 +2281,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                         "domainKindName": undefined,
                                         "schemaName": undefined,
                                         "queryName": undefined,
+                                        "disabledSystemFields": undefined,
                                       },
                                     ],
                                     "editableResults": false,
@@ -2445,6 +2484,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
           "domainKindName": undefined,
           "schemaName": undefined,
           "queryName": undefined,
+          "disabledSystemFields": undefined,
         },
         Immutable.Record {
           "name": "Run Fields",
@@ -2471,6 +2511,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
           "domainKindName": undefined,
           "schemaName": undefined,
           "queryName": undefined,
+          "disabledSystemFields": undefined,
         },
         Immutable.Record {
           "name": "Data Fields",
@@ -2497,6 +2538,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
           "domainKindName": undefined,
           "schemaName": undefined,
           "queryName": undefined,
+          "disabledSystemFields": undefined,
         },
       ],
       "editableResults": false,
@@ -2571,6 +2613,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
             "domainKindName": undefined,
             "schemaName": undefined,
             "queryName": undefined,
+            "disabledSystemFields": undefined,
           },
           Immutable.Record {
             "name": "Run Fields",
@@ -2597,6 +2640,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
             "domainKindName": undefined,
             "schemaName": undefined,
             "queryName": undefined,
+            "disabledSystemFields": undefined,
           },
           Immutable.Record {
             "name": "Data Fields",
@@ -2623,6 +2667,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
             "domainKindName": undefined,
             "schemaName": undefined,
             "queryName": undefined,
+            "disabledSystemFields": undefined,
           },
         ],
         "editableResults": false,
@@ -2700,6 +2745,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
               "domainKindName": undefined,
               "schemaName": undefined,
               "queryName": undefined,
+              "disabledSystemFields": undefined,
             },
             Immutable.Record {
               "name": "Run Fields",
@@ -2726,6 +2772,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
               "domainKindName": undefined,
               "schemaName": undefined,
               "queryName": undefined,
+              "disabledSystemFields": undefined,
             },
             Immutable.Record {
               "name": "Data Fields",
@@ -2752,6 +2799,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
               "domainKindName": undefined,
               "schemaName": undefined,
               "queryName": undefined,
+              "disabledSystemFields": undefined,
             },
           ],
           "editableResults": false,
@@ -2921,6 +2969,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                             "domainKindName": undefined,
                             "schemaName": undefined,
                             "queryName": undefined,
+                            "disabledSystemFields": undefined,
                           },
                           Immutable.Record {
                             "name": "Run Fields",
@@ -2947,6 +2996,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                             "domainKindName": undefined,
                             "schemaName": undefined,
                             "queryName": undefined,
+                            "disabledSystemFields": undefined,
                           },
                           Immutable.Record {
                             "name": "Data Fields",
@@ -2973,6 +3023,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                             "domainKindName": undefined,
                             "schemaName": undefined,
                             "queryName": undefined,
+                            "disabledSystemFields": undefined,
                           },
                         ],
                         "editableResults": false,
@@ -3069,6 +3120,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                         "domainKindName": undefined,
                                         "schemaName": undefined,
                                         "queryName": undefined,
+                                        "disabledSystemFields": undefined,
                                       },
                                       Immutable.Record {
                                         "name": "Run Fields",
@@ -3095,6 +3147,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                         "domainKindName": undefined,
                                         "schemaName": undefined,
                                         "queryName": undefined,
+                                        "disabledSystemFields": undefined,
                                       },
                                       Immutable.Record {
                                         "name": "Data Fields",
@@ -3121,6 +3174,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                         "domainKindName": undefined,
                                         "schemaName": undefined,
                                         "queryName": undefined,
+                                        "disabledSystemFields": undefined,
                                       },
                                     ],
                                     "editableResults": false,
@@ -3296,6 +3350,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                         "domainKindName": undefined,
                                         "schemaName": undefined,
                                         "queryName": undefined,
+                                        "disabledSystemFields": undefined,
                                       },
                                       Immutable.Record {
                                         "name": "Run Fields",
@@ -3322,6 +3377,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                         "domainKindName": undefined,
                                         "schemaName": undefined,
                                         "queryName": undefined,
+                                        "disabledSystemFields": undefined,
                                       },
                                       Immutable.Record {
                                         "name": "Data Fields",
@@ -3348,6 +3404,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                         "domainKindName": undefined,
                                         "schemaName": undefined,
                                         "queryName": undefined,
+                                        "disabledSystemFields": undefined,
                                       },
                                     ],
                                     "editableResults": false,
@@ -3518,6 +3575,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                         "domainKindName": undefined,
                                         "schemaName": undefined,
                                         "queryName": undefined,
+                                        "disabledSystemFields": undefined,
                                       },
                                       Immutable.Record {
                                         "name": "Run Fields",
@@ -3544,6 +3602,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                         "domainKindName": undefined,
                                         "schemaName": undefined,
                                         "queryName": undefined,
+                                        "disabledSystemFields": undefined,
                                       },
                                       Immutable.Record {
                                         "name": "Data Fields",
@@ -3570,6 +3629,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                         "domainKindName": undefined,
                                         "schemaName": undefined,
                                         "queryName": undefined,
+                                        "disabledSystemFields": undefined,
                                       },
                                     ],
                                     "editableResults": false,
@@ -4548,6 +4608,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
           "domainKindName": undefined,
           "schemaName": undefined,
           "queryName": undefined,
+          "disabledSystemFields": undefined,
         },
         Immutable.Record {
           "name": "Run Fields",
@@ -4574,6 +4635,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
           "domainKindName": undefined,
           "schemaName": undefined,
           "queryName": undefined,
+          "disabledSystemFields": undefined,
         },
         Immutable.Record {
           "name": "Data Fields",
@@ -4600,6 +4662,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
           "domainKindName": undefined,
           "schemaName": undefined,
           "queryName": undefined,
+          "disabledSystemFields": undefined,
         },
       ],
       "editableResults": false,
@@ -4674,6 +4737,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
             "domainKindName": undefined,
             "schemaName": undefined,
             "queryName": undefined,
+            "disabledSystemFields": undefined,
           },
           Immutable.Record {
             "name": "Run Fields",
@@ -4700,6 +4764,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
             "domainKindName": undefined,
             "schemaName": undefined,
             "queryName": undefined,
+            "disabledSystemFields": undefined,
           },
           Immutable.Record {
             "name": "Data Fields",
@@ -4726,6 +4791,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
             "domainKindName": undefined,
             "schemaName": undefined,
             "queryName": undefined,
+            "disabledSystemFields": undefined,
           },
         ],
         "editableResults": false,
@@ -4803,6 +4869,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
               "domainKindName": undefined,
               "schemaName": undefined,
               "queryName": undefined,
+              "disabledSystemFields": undefined,
             },
             Immutable.Record {
               "name": "Run Fields",
@@ -4829,6 +4896,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
               "domainKindName": undefined,
               "schemaName": undefined,
               "queryName": undefined,
+              "disabledSystemFields": undefined,
             },
             Immutable.Record {
               "name": "Data Fields",
@@ -4855,6 +4923,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
               "domainKindName": undefined,
               "schemaName": undefined,
               "queryName": undefined,
+              "disabledSystemFields": undefined,
             },
           ],
           "editableResults": false,
@@ -4987,6 +5056,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                             "domainKindName": undefined,
                             "schemaName": undefined,
                             "queryName": undefined,
+                            "disabledSystemFields": undefined,
                           },
                           Immutable.Record {
                             "name": "Run Fields",
@@ -5013,6 +5083,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                             "domainKindName": undefined,
                             "schemaName": undefined,
                             "queryName": undefined,
+                            "disabledSystemFields": undefined,
                           },
                           Immutable.Record {
                             "name": "Data Fields",
@@ -5039,6 +5110,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                             "domainKindName": undefined,
                             "schemaName": undefined,
                             "queryName": undefined,
+                            "disabledSystemFields": undefined,
                           },
                         ],
                         "editableResults": false,
@@ -5135,6 +5207,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                         "domainKindName": undefined,
                                         "schemaName": undefined,
                                         "queryName": undefined,
+                                        "disabledSystemFields": undefined,
                                       },
                                       Immutable.Record {
                                         "name": "Run Fields",
@@ -5161,6 +5234,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                         "domainKindName": undefined,
                                         "schemaName": undefined,
                                         "queryName": undefined,
+                                        "disabledSystemFields": undefined,
                                       },
                                       Immutable.Record {
                                         "name": "Data Fields",
@@ -5187,6 +5261,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                         "domainKindName": undefined,
                                         "schemaName": undefined,
                                         "queryName": undefined,
+                                        "disabledSystemFields": undefined,
                                       },
                                     ],
                                     "editableResults": false,
@@ -5362,6 +5437,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                         "domainKindName": undefined,
                                         "schemaName": undefined,
                                         "queryName": undefined,
+                                        "disabledSystemFields": undefined,
                                       },
                                       Immutable.Record {
                                         "name": "Run Fields",
@@ -5388,6 +5464,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                         "domainKindName": undefined,
                                         "schemaName": undefined,
                                         "queryName": undefined,
+                                        "disabledSystemFields": undefined,
                                       },
                                       Immutable.Record {
                                         "name": "Data Fields",
@@ -5414,6 +5491,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                         "domainKindName": undefined,
                                         "schemaName": undefined,
                                         "queryName": undefined,
+                                        "disabledSystemFields": undefined,
                                       },
                                     ],
                                     "editableResults": false,
@@ -5584,6 +5662,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                         "domainKindName": undefined,
                                         "schemaName": undefined,
                                         "queryName": undefined,
+                                        "disabledSystemFields": undefined,
                                       },
                                       Immutable.Record {
                                         "name": "Run Fields",
@@ -5610,6 +5689,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                         "domainKindName": undefined,
                                         "schemaName": undefined,
                                         "queryName": undefined,
+                                        "disabledSystemFields": undefined,
                                       },
                                       Immutable.Record {
                                         "name": "Data Fields",
@@ -5636,6 +5716,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                         "domainKindName": undefined,
                                         "schemaName": undefined,
                                         "queryName": undefined,
+                                        "disabledSystemFields": undefined,
                                       },
                                     ],
                                     "editableResults": false,

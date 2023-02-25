@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.298.0
+*Released*: 25 February 2023
+- Support Enable/Disable “System Default Fields”
+  - add disabledSystemFields property to DomainDesign and QueryInfo
+  - allow updating Enabled property for SystemFields
+
 ### version 2.297.1
 *Released*: 24 February 2023
 - Issue 47392: Parent link to registry data types not resolving

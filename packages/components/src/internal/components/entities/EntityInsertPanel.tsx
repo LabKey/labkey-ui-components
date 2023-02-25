@@ -95,7 +95,7 @@ import {
 import { getAltUnitKeys } from '../../util/measurement';
 
 const ENTITY_GRID_ID = 'entity-insert-grid-data';
-const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'description', 'samplestate', 'storedamount', 'units', 'foo'];
+const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'materialexpdate', 'description', 'samplestate', 'storedamount', 'units'];
 const ALIQUOT_NOUN_SINGULAR = 'Aliquot';
 const ALIQUOT_NOUN_PLURAL = 'Aliquots';
 

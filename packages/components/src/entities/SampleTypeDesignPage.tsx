@@ -48,6 +48,13 @@ function createDefaultSampleType(
 ): DomainDetails {
     const nameExpressionVal = (prefix ?? '') + 'S-${genId}';
 
+    let options = Map<string, any>(
+        fromJS({
+            nameExpression: nameExpressionVal,
+            labelColor: BRAND_PRIMARY_COLOR,
+        })
+    );
+    options = options.set('systemFields', systemFields);
     return DomainDetails.create(
         Map<string, any>({
             domainDesign: {
@@ -55,13 +62,7 @@ function createDefaultSampleType(
                 domainKindName: Domain.KINDS.SAMPLE_TYPE,
                 allowTimepointProperties: showStudyProperties, // Because LKB is not yet integrated with Study, we do not display timepoint-related field Data Types
             },
-            options: Map<string, any>(
-                fromJS({
-                    nameExpression: nameExpressionVal,
-                    labelColor: BRAND_PRIMARY_COLOR,
-                    systemFields,
-                })
-            ),
+            options,
             domainKindName: Domain.KINDS.SAMPLE_TYPE,
         })
     );

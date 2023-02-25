@@ -11,6 +11,16 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Account for storedAmount and Units fields now on samples grids
   * Don't display amount and units in details display
 
+### version 2.298.0
+*Released*: 25 February 2023
+- Support Enable/Disable “System Default Fields”
+  - add disabledSystemFields property to DomainDesign and QueryInfo
+  - allow updating Enabled property for SystemFields
+
+### version 2.297.1
+*Released*: 24 February 2023
+- Issue 47392: Parent link to registry data types not resolving
+
 ### version 2.297.0
 *Released*: 24 February 2023
 - Introduce `getContainerFilterForFolder` to specify container filter specific to listing data in the current folder context.

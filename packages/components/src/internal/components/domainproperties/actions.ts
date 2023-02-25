@@ -509,6 +509,18 @@ export function processJsonImport(content: string, domain: DomainDesign): Simple
     return { success: true, fields: tsFields };
 }
 
+export function handleSystemFieldUpdates(domain: DomainDesign, field: string, enable: boolean): DomainDesign {
+    const disabledFieldNames = domain.disabledSystemFields ? [...domain.disabledSystemFields] : [];
+    const disabledFieldNamesLc = disabledFieldNames.map(field => field.toLowerCase());
+    const fieldInd = disabledFieldNamesLc.indexOf(field.toLowerCase());
+    if (enable && fieldInd > -1) disabledFieldNames.splice(fieldInd, 1);
+    else if (!enable && fieldInd === -1) disabledFieldNames.push(field);
+
+    return domain.merge({
+        disabledSystemFields: disabledFieldNames,
+    }) as DomainDesign;
+}
+
 export function addDomainField(domain: DomainDesign, fieldConfig: Partial<IDomainField> = {}): DomainDesign {
     const newField = createNewDomainField(domain, fieldConfig);
 

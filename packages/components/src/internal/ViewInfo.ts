@@ -1,5 +1,6 @@
 import { List, Record } from 'immutable';
 import { Filter } from '@labkey/api';
+
 import { QuerySort } from '../public/QuerySort';
 import { QueryInfo } from '../public/QueryInfo';
 
@@ -161,13 +162,10 @@ export class ViewInfo extends Record({
     get modifiers(): string[] {
         const modifiers = [];
         if (this.session) {
-            modifiers.push('edited')
-        }
-        else {
-            if (this.inherit)
-                modifiers.push('inherited');
-            if (this.shared)
-                modifiers.push('shared');
+            modifiers.push('edited');
+        } else {
+            if (this.inherit) modifiers.push('inherited');
+            if (this.shared) modifiers.push('shared');
         }
         return modifiers;
     }
@@ -175,11 +173,25 @@ export class ViewInfo extends Record({
     addSystemViewColumns(queryInfo: QueryInfo) {
         if (this.isDefault && !this.session) {
             let columns = this.columns;
-            const columnFieldKeys = this.columns.map(col => {
-                return col.fieldKey.toLowerCase()
-            }).toArray();
+            const columnFieldKeys = this.columns
+                .map(col => {
+                    return col.fieldKey.toLowerCase();
+                })
+                .toArray();
+
+            const disabledSysFields = [];
+            queryInfo.disabledSystemFields?.forEach(field => {
+                disabledSysFields.push(field.toLowerCase());
+            });
+
             queryInfo.columns.forEach(queryCol => {
-                if (queryCol.fieldKey && queryCol.addToSystemView && columnFieldKeys.indexOf(queryCol.fieldKey.toLowerCase()) === -1) {
+                const fieldKey = queryCol.fieldKey?.toLowerCase();
+                if (
+                    fieldKey &&
+                    queryCol.addToSystemView &&
+                    columnFieldKeys.indexOf(fieldKey) === -1 &&
+                    disabledSysFields.indexOf(fieldKey) === -1
+                ) {
                     columns = columns.push({
                         fieldKey: queryCol.fieldKey,
                         key: queryCol.fieldKey,
@@ -188,7 +200,7 @@ export class ViewInfo extends Record({
                     });
                 }
             });
-            return this.mutate({columns});
+            return this.mutate({ columns });
         }
         return this;
     }

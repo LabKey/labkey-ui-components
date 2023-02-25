@@ -64,13 +64,13 @@ export const SampleAliquotsSummaryWithModels: FC<SampleAliquotsSummaryWithModels
                 <table className="table table-responsive table-condensed detail-component--table__fixed sample-aliquots-stats-table">
                     <tbody>
                         <tr>
-                            <td>Total aliquots created:</td>
+                            <td>Total Aliquots Created</td>
                             <td className="aliquot-stats-value">
                                 <a href={aliquotUrl.toHref()}>{stats.aliquotCount}</a>
                             </td>
                         </tr>
                         <tr>
-                            <td>Available aliquots:</td>
+                            <td>Available Aliquots</td>
                             <td className="aliquot-stats-value">
                                 <a href={aliquotUrl.addFilters(Filter.create('StorageStatus', 'In storage')).toHref()}>
                                     {stats.inStorageCount + '/' + stats.aliquotCount}
@@ -78,19 +78,19 @@ export const SampleAliquotsSummaryWithModels: FC<SampleAliquotsSummaryWithModels
                             </td>
                         </tr>
                         <tr>
-                            <td>Current available amount:</td>
+                            <td>Current Available Amount</td>
                             <td className="aliquot-stats-value">
                                 {totalAliquotVolumeDisplay ? totalAliquotVolumeDisplay : 'Not available'}
                             </td>
                         </tr>
                         <tr>
-                            <td>Jobs with aliquots:</td>
+                            <td>Jobs with Aliquots</td>
                             <td className="aliquot-stats-value">
                                 <a href={jobUrl}>{stats.jobsCount}</a>
                             </td>
                         </tr>
                         <tr>
-                            <td>Assay data with aliquots:</td>
+                            <td>Assay Data with Aliquots</td>
                             <td className="aliquot-stats-value">
                                 <a href={assayDataUrl}>
                                     <SampleAliquotAssaysCount

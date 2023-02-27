@@ -1,19 +1,20 @@
 import { ActionURL, Ajax, Filter, Query, Utils } from '@labkey/api';
-import { fromJS, List, Map } from 'immutable';
+import { List, Map } from 'immutable';
 
 import { buildURL } from '../../url/AppURL';
 import { SampleOperation } from '../samples/constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { getFilterForSampleOperation, isSamplesSchema } from '../samples/utils';
-import { importData, InsertOptions, selectRowsDeprecated } from '../../query/api';
+import { importData, InsertOptions } from '../../query/api';
 import { caseInsensitive } from '../../util/utils';
 import { SampleCreationType } from '../samples/models';
-import { getSelected, getSelectedData, getSnapshotSelections } from '../../actions';
+import { getSelected, getSelectedData } from '../../actions';
 import { SHARED_CONTAINER_PATH } from '../../constants';
-import { naturalSort } from '../../../public/sort';
+import { naturalSortByProperty } from '../../../public/sort';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { SCHEMAS } from '../../schemas';
-import { ViewInfo } from '../../ViewInfo';
+
+import { Row, selectRows, SelectRowsResponse } from '../../query/selectRows';
 
 import { isDataClassEntity, isSampleEntity } from './utils';
 import { DataClassDataType, DataOperation, SampleTypeDataType } from './constants';
@@ -110,119 +111,50 @@ export function getSampleOperationConfirmationData(
     });
 }
 
-function getSelectedParents(
+async function getSelectedParents(
     schemaQuery: SchemaQuery,
     filterArray: Filter.IFilter[],
     isAliquotParent?: boolean
 ): Promise<List<EntityParentType>> {
-    return new Promise((resolve, reject) => {
-        const isSampleParent = isSamplesSchema(schemaQuery);
-        let columns = 'LSID,Name,RowId';
-        if (isSampleParent) {
-            columns += ',SampleSet';
-        }
-        return selectRowsDeprecated({
-            schemaName: schemaQuery.schemaName,
-            queryName: schemaQuery.queryName,
-            viewName: schemaQuery.viewName,
-            columns,
-            filterArray,
-        })
-            .then(response => {
-                if (isSampleParent) {
-                    resolve(resolveSampleParentTypes(response, isAliquotParent));
-                } else {
-                    resolve(resolveEntityParentTypeFromIds(schemaQuery, response, isAliquotParent));
-                }
-            })
-            .catch(reason => {
-                console.error("There was a problem getting the selected parents' data", reason);
-                reject(reason);
-            });
-    });
+    const isSampleParent = isSamplesSchema(schemaQuery);
+    const columns = ['LSID', 'Name', 'RowId'];
+    if (isSampleParent) {
+        columns.push('SampleSet');
+    }
+
+    const response = await selectRows({ columns, filterArray, schemaQuery });
+
+    if (isSampleParent) {
+        return resolveSampleParentTypes(response, isAliquotParent);
+    }
+
+    return resolveEntityParentTypeFromIds(schemaQuery, response, isAliquotParent);
 }
 
-export function getSelectedItemSamples(selectedItemIds: string[]): Promise<number[]> {
-    return new Promise((resolve, reject) => {
-        getSelectedData(
-            SCHEMAS.INVENTORY.ITEMS.schemaName,
-            SCHEMAS.INVENTORY.ITEMS.queryName,
-            selectedItemIds,
-            'RowId, MaterialId',
-            undefined,
-            undefined,
-            undefined
-        )
-            .then(response => {
-                const { data } = response;
-                const sampleIds = [];
-                data.forEach(row => {
-                    sampleIds.push(row.getIn(['MaterialId', 'value']));
-                });
-                resolve(sampleIds);
-            })
-            .catch(reason => {
-                console.error(reason);
-                reject(reason);
-            });
-    });
+export async function getSelectedItemSamples(selectedItemIds: string[]): Promise<number[]> {
+    const { queryName, schemaName } = SCHEMAS.INVENTORY.ITEMS;
+    const { data } = await getSelectedData(schemaName, queryName, selectedItemIds, 'RowId, MaterialId');
+    return data.map(row => row.getIn(['MaterialId', 'value'])).toArray();
 }
 
-function getSelectedSampleParentsFromItems(itemIds: any[], isAliquotParent?: boolean): Promise<List<EntityParentType>> {
-    return new Promise((resolve, reject) => {
-        return getSelectedItemSamples(itemIds)
-            .then(sampleIds => {
-                const filterArray = [Filter.create('RowId', sampleIds, Filter.Types.IN)];
-                const opFilter = getFilterForSampleOperation(SampleOperation.EditLineage);
-                if (opFilter) {
-                    filterArray.push(opFilter);
-                }
-                // use Detail view to assure we get values even if the default view is filtered
-                return selectRowsDeprecated({
-                    schemaName: 'exp',
-                    queryName: 'materials',
-                    viewName: ViewInfo.DETAIL_NAME,
-                    columns: 'LSID,Name,RowId,SampleSet',
-                    filterArray,
-                })
-                    .then(response => {
-                        resolve(resolveSampleParentTypes(response, isAliquotParent));
-                    })
-                    .catch(reason => {
-                        console.error("There was a problem getting the selected parents' data", reason);
-                        reject(reason);
-                    });
-            })
-            .catch(reason => {
-                console.error("There was a problem getting the selected parents' data", reason);
-                reject(reason);
-            });
-    });
-}
-
-function resolveSampleParentTypes(response: any, isAliquotParent?: boolean): List<EntityParentType> {
-    const { key, models, orderedModels } = response;
-    const rows = fromJS(models[key]);
-
+function resolveSampleParentTypes(response: SelectRowsResponse, isAliquotParent?: boolean): List<EntityParentType> {
     const groups = {};
+    const results = [];
 
     // The transformation done here makes the entities compatible with the editable grid
-    orderedModels[key].forEach(id => {
-        const row = rows.get(id).toJS();
+    response.rows.forEach(row => {
         const displayValue = caseInsensitive(row, 'Name')?.value;
         const sampleType = caseInsensitive(row, 'SampleSet')?.displayValue;
         const value = caseInsensitive(row, 'RowId')?.value;
 
-        if (!groups[sampleType]) groups[sampleType] = [];
+        if (!groups.hasOwnProperty(sampleType)) {
+            groups[sampleType] = [];
+        }
 
-        groups[sampleType].push({
-            displayValue,
-            value,
-        });
+        groups[sampleType].push({ displayValue, value });
     });
 
-    let results = [],
-        index = 1;
+    let index = 1;
     for (const [sampleType, data] of Object.entries(groups)) {
         results.push(
             EntityParentType.create({
@@ -315,48 +247,39 @@ async function initParents(
 
 function resolveEntityParentTypeFromIds(
     schemaQuery: SchemaQuery,
-    response: any,
+    response: SelectRowsResponse,
     isAliquotParent?: boolean
 ): List<EntityParentType> {
-    const { key, models, orderedModels } = response;
-    const rows = fromJS(models[key]);
-    let data = List<DisplayObject>();
-
     // The transformation done here makes the entities compatible with the editable grid
-    orderedModels[key].forEach(id => {
-        const row = extractEntityTypeOptionFromRow(rows.get(id));
-        data = data.push({
-            displayValue: row.label,
-            value: row.rowId,
-        });
-    });
+    const data: DisplayObject[] = response.rows
+        .map(row => extractEntityTypeOptionFromRow(row))
+        .map(({ label, rowId }) => ({ displayValue: label, value: rowId }));
 
     return List<EntityParentType>([
         EntityParentType.create({
             index: 1,
             schema: schemaQuery.schemaName,
             query: schemaQuery.queryName,
-            value: data,
+            value: List(data),
             isAliquotParent,
         }),
     ]);
 }
 
 export function extractEntityTypeOptionFromRow(
-    row: Map<string, any>,
+    row: Row,
     lowerCaseValue = true,
     entityDataType?: EntityDataType
 ): IEntityTypeOption {
-    const rowObj = row.toJS();
-    const name = caseInsensitive(rowObj, 'Name').value;
+    const name = caseInsensitive(row, 'Name').value;
     return {
         label: name,
-        lsid: caseInsensitive(rowObj, 'LSID').value,
-        rowId: caseInsensitive(rowObj, 'RowId').value,
+        lsid: caseInsensitive(row, 'LSID').value,
+        rowId: caseInsensitive(row, 'RowId').value,
         value: lowerCaseValue ? name.toLowerCase() : name, // we match values on lower case because (at least) when parsed from an id they are lower case
         query: name,
         entityDataType,
-        isFromSharedContainer: caseInsensitive(rowObj, 'Folder/Path')?.value === SHARED_CONTAINER_PATH,
+        isFromSharedContainer: caseInsensitive(row, 'Folder/Path')?.value === SHARED_CONTAINER_PATH,
     };
 }
 
@@ -452,47 +375,31 @@ export function getAllEntityTypeOptions(
 
 // get back a map from the typeListQueryName (e.g., 'SampleSet') and the list of options for that query
 // where the schema field for those options is the typeSchemaName (e.g., 'samples')
-export function getEntityTypeOptions(
+export async function getEntityTypeOptions(
     entityDataType: EntityDataType,
     containerPath?: string,
     containerFilter?: Query.ContainerFilter
 ): Promise<Map<string, List<IEntityTypeOption>>> {
     const { typeListingSchemaQuery, filterArray, instanceSchemaName } = entityDataType;
 
-    return new Promise((resolve, reject) => {
-        // use of default view here is ok. Assumed that view is overridden only if there is desire to
-        // hide types.
-        selectRowsDeprecated({
-            containerPath,
-            schemaName: typeListingSchemaQuery.schemaName,
-            queryName: typeListingSchemaQuery.queryName,
-            columns: 'LSID,Name,RowId,Folder/Path',
-            filterArray,
-            containerFilter:
-                containerFilter ?? entityDataType.containerFilter ?? Query.containerFilter.currentPlusProjectAndShared,
-        })
-            .then(result => {
-                const rows = fromJS(result.models[result.key]);
-                let optionMap = Map<string, List<IEntityTypeOption>>();
-                optionMap = optionMap.set(
-                    typeListingSchemaQuery.queryName,
-                    rows
-                        .map(row => {
-                            return {
-                                ...extractEntityTypeOptionFromRow(row, true, entityDataType),
-                                schema: instanceSchemaName, // e.g. "samples" or "dataclasses"
-                            };
-                        })
-                        .sortBy(r => r.label, naturalSort)
-                        .toList()
-                );
-                resolve(optionMap);
-            })
-            .catch(reason => {
-                console.error(reason);
-                reject(reason);
-            });
+    const result = await selectRows({
+        columns: 'LSID,Name,RowId,Folder/Path',
+        containerFilter:
+            containerFilter ?? entityDataType.containerFilter ?? Query.containerFilter.currentPlusProjectAndShared,
+        containerPath,
+        filterArray,
+        // Use of default view here is ok. Assumed that view is overridden only if there is desire to hide types.
+        schemaQuery: new SchemaQuery(typeListingSchemaQuery.schemaName, typeListingSchemaQuery.queryName),
     });
+
+    const options: IEntityTypeOption[] = result.rows
+        .map(row => ({
+            ...extractEntityTypeOptionFromRow(row, true, entityDataType),
+            schema: instanceSchemaName, // e.g. "samples" or "dataclasses"
+        }))
+        .sort(naturalSortByProperty('label'));
+
+    return Map({ [typeListingSchemaQuery.queryName]: List(options) });
 }
 
 /**

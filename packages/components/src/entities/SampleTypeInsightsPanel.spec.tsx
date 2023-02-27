@@ -90,7 +90,7 @@ describe('SampleTypeInsightsPanel', () => {
     });
     const DEFAULT_PROPS = {
         sampleSet: 'Blood',
-        actions: makeTestActions(),
+        actions: makeTestActions(jest.fn),
     };
 
     function validate(wrapper: ReactWrapper, loading: boolean, hasData = true): void {
@@ -180,11 +180,11 @@ describe('SampleTypeInsightsPanel', () => {
             />
         );
         validate(wrapper, false, false);
-        expect(wrapper.find(HorizontalBarSection).at(0).prop('subtitle')).toBe(undefined);
+        expect(wrapper.find(HorizontalBarSection).at(0).prop('subtitle')).toBeUndefined();
         expect(wrapper.find(HorizontalBarSection).at(0).prop('data')).toStrictEqual([]);
         expect(wrapper.find(HorizontalBarSection).at(1).prop('subtitle')).toBe(false);
         expect(wrapper.find(HorizontalBarSection).at(1).prop('data')).toStrictEqual([]);
-        expect(wrapper.find(HorizontalBarSection).at(2).prop('subtitle')).toBe(undefined);
+        expect(wrapper.find(HorizontalBarSection).at(2).prop('subtitle')).toBeUndefined();
         expect(wrapper.find(HorizontalBarSection).at(2).prop('data')).toStrictEqual([]);
         wrapper.unmount();
     });

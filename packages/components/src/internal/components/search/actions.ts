@@ -3,7 +3,7 @@ import { Ajax, Query, Utils } from '@labkey/api';
 
 import { DataViewInfoTypes, RELEVANT_SEARCH_RESULT_TYPES } from '../../constants';
 
-import { getPrimaryAppProperties } from '../../app/utils';
+import { getPrimaryAppProperties, getProjectPath, isAllProductFoldersFilteringEnabled } from '../../app/utils';
 
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
@@ -20,11 +20,21 @@ import { caseInsensitive } from '../../util/utils';
 
 import { SAMPLE_FINDER_VIEW_NAME } from './utils';
 import { FinderReport, SearchIdData, SearchResultCardData } from './models';
+import { SearchScope } from './constants';
 
 type GetCardDataFn = (data: Map<any, any>, category?: string) => SearchResultCardData;
 
+export interface SearchOptions {
+    category?: string;
+    experimentalCustomJson?: boolean;
+    limit?: number;
+    normalizeUrls?: boolean;
+    q: any;
+    scope?: SearchScope;
+}
+
 export function searchUsingIndex(
-    userConfig: any,
+    options: SearchOptions,
     getCardDataFn?: GetCardDataFn,
     filterCategories?: string[]
 ): Promise<Record<string, any>> {
@@ -32,11 +42,19 @@ export function searchUsingIndex(
     if (appProps?.productId) {
         incrementClientSideMetricCount(appProps.productId + 'Search', 'count');
     }
+
+    let containerPath: string;
+    if (isAllProductFoldersFilteringEnabled()) {
+        containerPath = getProjectPath();
+        options.scope = SearchScope.FolderAndSubfoldersAndShared;
+    }
+
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: buildURL('search', 'json.api'),
-            method: 'GET',
-            params: userConfig,
+            url: buildURL('search', 'json.api', undefined, {
+                container: containerPath,
+            }),
+            params: options,
             success: Utils.getCallbackWrapper(json => {
                 addDataObjects(json);
                 const results = new URLResolver().resolveSearchUsingIndex(json);
@@ -288,7 +306,7 @@ export function loadFinderSearch(view: FinderReport): Promise<any> {
 
 export function getSampleTypesFromFindByIdQuery(
     schemaQuery: SchemaQuery
-): Promise<{ [key: string]: Record<string, any>[] }> {
+): Promise<{ [key: string]: Array<Record<string, any>> }> {
     return new Promise((resolve, reject) => {
         selectRows({
             schemaQuery,

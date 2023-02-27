@@ -6,6 +6,27 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 47266: For a grid the filter dialog does not enable the 'Apply' button if I type in a value unless I uncheck the [All] option first
 - Issue 47247: LKSM: Filtering values >250 doesn't save selection
 
+### version 2.298.0
+*Released*: 25 February 2023
+- Support Enable/Disable “System Default Fields”
+  - add disabledSystemFields property to DomainDesign and QueryInfo
+  - allow updating Enabled property for SystemFields
+
+### version 2.297.1
+*Released*: 24 February 2023
+- Issue 47392: Parent link to registry data types not resolving
+
+### version 2.297.0
+*Released*: 24 February 2023
+- Introduce `getContainerFilterForFolder` to specify container filter specific to listing data in the current folder context.
+- Use `getContainerFilterForFolder` for listing data on `SampleListingPage` and `QueryListingPage`.
+- Explicitly support container filters on grid selection endpoint wrappers (e.g. `getSelected`, `selectAll`, etc).
+- Add wrappers for new experimental flags for product projects.
+- Update `SampleAliquotsSummary` to consolidate loading logic to present consistent loading behavior.
+- Update `SampleTimelinePageBase` to consolidate loading logic to present consistent loading behavior.
+- BarChartViewer: respect container filter settings
+- Addresses Issue 47371: Harden MultiValueRenderer
+
 ### version 2.296.1
 *Released*: 23 February 2023
 - Add perm check helper hasSampleWorkflowDeletePermission()

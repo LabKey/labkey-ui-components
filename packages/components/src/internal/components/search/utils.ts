@@ -554,10 +554,12 @@ export function searchFiltersFromJson(
 
 export const ALL_VALUE_DISPLAY = '[All]';
 export const EMPTY_VALUE_DISPLAY = '[blank]';
-export function getFilterValuesAsArray(filter: Filter.IFilter, blankValue?: string): any[] {
+export function getFilterValuesAsArray(filter: Filter.IFilter, blankValue?: string, checkNull = false): any[] {
     let values = [],
         rawValues;
     const rawValue = filter.getValue();
+
+    if (checkNull && rawValue === null) return [];
 
     if (Array.isArray(rawValue)) {
         rawValues = [...rawValue];
@@ -689,7 +691,7 @@ export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string
     if (!filter && !allValues) return [];
 
     // if allValues is undefined, then we don't know the full set of values so filter must be an Equals/Equals one of
-    if (!allValues) return getFilterValuesAsArray(filter);
+    if (!allValues) return getFilterValuesAsArray(filter, undefined, true);
 
     // if no existing filter, check all values by default
     if (!filter) return allValues;

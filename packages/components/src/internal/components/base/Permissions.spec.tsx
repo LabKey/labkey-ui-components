@@ -1,13 +1,9 @@
 import React from 'react';
 import { PermissionTypes } from '@labkey/api';
 
-import {
-    TEST_USER_APP_ADMIN,
-    TEST_USER_ASSAY_DESIGNER,
-    TEST_USER_EDITOR, TEST_USER_FOLDER_ADMIN,
-    TEST_USER_READER,
-} from '../../userFixtures';
+import { TEST_USER_APP_ADMIN, TEST_USER_ASSAY_DESIGNER, TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
 import { mountWithServerContext } from '../../testHelpers';
+
 import { User } from './models/User';
 
 import { RequiresPermission } from './Permissions';

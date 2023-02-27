@@ -2,15 +2,17 @@ export const DATACLASS_DOMAIN_SYSTEM_FIELDS = [
     {
         Name: 'Name',
         Label: 'Name',
-        'Data Type': 'Text',
+        DataType: 'Text',
         Required: true,
         Description: 'Contains a short name for this data object',
+        Disableble: false,
     },
     {
         Name: 'Description',
         Label: 'Description',
-        'Data Type': 'Text',
+        DataType: 'Text',
         Required: false,
         Description: 'Contains a description for this data object',
+        Disableble: true,
     },
 ];

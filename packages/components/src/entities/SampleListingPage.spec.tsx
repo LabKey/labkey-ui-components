@@ -172,7 +172,7 @@ describe('SampleListingPageBody', () => {
     function getDefaultProps(): SampleListingPageBodyProps {
         return {
             ...createMockWithRouterProps(jest.fn),
-            actions: makeTestActions(),
+            actions: makeTestActions(jest.fn),
             queryModels: { 'samples-listing': QUERY_MODEL, 'samples-details': QUERY_MODEL },
             menu: new ProductMenuModel(),
             sampleListModelId: 'samples-listing',

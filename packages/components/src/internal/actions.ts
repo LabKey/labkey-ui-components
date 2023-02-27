@@ -68,11 +68,11 @@ let ID_COUNTER = 0;
 
 export function selectAll(
     key: string,
-    schemaName: string,
-    queryName: string,
-    filterList: List<Filter.IFilter>,
+    schemaQuery: SchemaQuery,
+    filterArray: Filter.IFilter[],
     containerPath?: string,
-    queryParameters?: Record<string, any>
+    queryParameters?: Record<string, any>,
+    containerFilter?: Query.ContainerFilter
 ): Promise<ISelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
@@ -80,13 +80,13 @@ export function selectAll(
                 container: containerPath,
             }),
             method: 'POST',
-            params: getQueryParams(key, schemaName, queryName, filterList, queryParameters),
+            params: getQueryParams(key, schemaQuery, filterArray, queryParameters, containerPath, containerFilter),
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
             failure: handleRequestFailure(
                 reject,
-                `Problem in selecting all items in the grid ${key} ${schemaName} ${queryName}`
+                `Problem in selecting all items in the grid ${key} ${schemaQuery.schemaName} ${schemaQuery.queryName}`
             ),
         });
     });
@@ -108,7 +108,6 @@ export function selectGridIdsFromTransactionId(
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: ActionURL.buildURL('audit', 'getTransactionRowIds.api'),
-            method: 'GET',
             params: { transactionAuditId, dataType },
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {
@@ -323,42 +322,41 @@ interface IGetSelectedResponse {
 
 function getFilteredQueryParams(
     key: string,
-    schemaName: string,
-    queryName: string,
-    filterList: List<Filter.IFilter>,
+    schemaQuery?: SchemaQuery,
+    filterArray?: Filter.IFilter[],
     queryParameters?: Record<string, any>,
-    containerPath?: string
+    containerPath?: string,
+    containerFilter?: Query.ContainerFilter
 ): Record<string, any> {
-    if (schemaName && queryName && filterList && !filterList.isEmpty()) {
-        return getQueryParams(key, schemaName, queryName, filterList, queryParameters, containerPath);
-    } else {
-        return {
-            key,
-        };
+    if (schemaQuery && filterArray) {
+        return getQueryParams(key, schemaQuery, filterArray, queryParameters, containerPath, containerFilter);
     }
+
+    return { key };
 }
 
 function getQueryParams(
     key: string,
-    schemaName: string,
-    queryName: string,
-    filterList: List<Filter.IFilter>,
+    schemaQuery: SchemaQuery,
+    filterArray: Filter.IFilter[],
     queryParameters?: Record<string, any>,
-    containerPath?: string
+    containerPath?: string,
+    containerFilter?: Query.ContainerFilter
 ): Record<string, any> {
-    const filters = filterList.reduce((prev, next) => {
-        return Object.assign(prev, { [next.getURLParameterName()]: next.getURLParameterValue() });
+    const filters: Record<string, any> = filterArray.reduce((_filters, filter) => {
+        _filters[filter.getURLParameterName()] = filter.getURLParameterValue();
+        return _filters;
     }, {});
 
     const params = {
-        schemaName,
-        queryName,
+        schemaName: schemaQuery.schemaName,
+        queryName: schemaQuery.queryName,
         'query.selectionKey': key,
     };
 
-    const containerFilter = queryParameters?.containerFilter ?? getContainerFilter(containerPath);
-    if (containerFilter) {
-        params['query.containerFilterName'] = containerFilter;
+    const _containerFilter = containerFilter ?? queryParameters?.containerFilter ?? getContainerFilter(containerPath);
+    if (_containerFilter) {
+        params['query.containerFilterName'] = _containerFilter;
     }
 
     if (queryParameters) {
@@ -374,24 +372,15 @@ function getQueryParams(
     };
 }
 
-/**
- * Gets selected ids from a particular query view, optionally using the provided query parameters
- * @param key the selection key associated with the grid
- * @param useSnapshotSelection whether the selections are snapshotted or not
- * @param schemaName? name of the schema for the query grid
- * @param queryName? name of the query
- * @param filterList? list of filters to use
- * @param containerPath? the container path to use for this API call
- * @param queryParameters? the parameters to the underlying query
- */
+/** Gets selected ids from a particular query view, optionally using the provided query parameters. */
 export function getSelected(
     key: string,
     useSnapshotSelection?: boolean,
-    schemaName?: string,
-    queryName?: string,
-    filterList?: List<Filter.IFilter>,
+    schemaQuery?: SchemaQuery,
+    filterArray?: Filter.IFilter[],
     containerPath?: string,
-    queryParameters?: Record<string, any>
+    queryParameters?: Record<string, any>,
+    containerFilter?: Query.ContainerFilter
 ): Promise<IGetSelectedResponse> {
     if (useSnapshotSelection) return getSnapshotSelections(key, containerPath);
 
@@ -401,7 +390,14 @@ export function getSelected(
                 container: containerPath,
             }),
             method: 'POST',
-            jsonData: getFilteredQueryParams(key, schemaName, queryName, filterList, queryParameters, containerPath),
+            jsonData: getFilteredQueryParams(
+                key,
+                schemaQuery,
+                filterArray,
+                queryParameters,
+                containerPath,
+                containerFilter
+            ),
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
@@ -416,11 +412,11 @@ export interface ISelectResponse {
 
 export function clearSelected(
     key: string,
-    schemaName?: string,
-    queryName?: string,
-    filterList?: List<Filter.IFilter>,
+    schemaQuery?: SchemaQuery,
+    filterArray?: Filter.IFilter[],
     containerPath?: string,
-    queryParameters?: { [key: string]: any }
+    queryParameters?: Record<string, any>,
+    containerFilter?: Query.ContainerFilter
 ): Promise<ISelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
@@ -428,11 +424,21 @@ export function clearSelected(
                 container: containerPath,
             }),
             method: 'POST',
-            jsonData: getFilteredQueryParams(key, schemaName, queryName, filterList, queryParameters, containerPath),
+            jsonData: getFilteredQueryParams(
+                key,
+                schemaQuery,
+                filterArray,
+                queryParameters,
+                containerPath,
+                containerFilter
+            ),
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
-            failure: handleRequestFailure(reject, `Problem clearing the selection ${key} ${schemaName} ${queryName}`),
+            failure: handleRequestFailure(
+                reject,
+                `Problem clearing the selection ${key} ${schemaQuery?.schemaName} ${schemaQuery?.queryName}`
+            ),
         });
     });
 }
@@ -567,63 +573,38 @@ interface ISelectionResponse {
     selected: any[];
 }
 
-export function getFilterListFromQuery(location: Location): List<Filter.IFilter> {
-    const filters = Filter.getFiltersFromParameters(Object.assign({}, location.query));
-    if (filters.length > 0) return List<Filter.IFilter>(filters);
-    return undefined;
-}
-
-export function getSelection(location: any, schemaName?: string, queryName?: string): Promise<ISelectionResponse> {
+export async function getSelection(
+    location: any,
+    schemaName?: string,
+    queryName?: string
+): Promise<ISelectionResponse> {
     if (location?.query?.selectionKey) {
-        const key = location.query.selectionKey;
+        const { selectionKey } = location.query;
+        let { keys, schemaQuery } = SchemaQuery.parseSelectionKey(selectionKey);
 
-        return new Promise((resolve, reject) => {
-            let { keys, schemaQuery } = SchemaQuery.parseSelectionKey(key);
+        if (keys !== undefined) {
+            return { resolved: true, schemaQuery, selected: keys.split(';') };
+        }
 
-            if (keys !== undefined) {
-                return resolve({
-                    resolved: true,
-                    schemaQuery,
-                    selected: keys.split(';'),
-                });
+        if (!schemaQuery) {
+            if (schemaName && queryName) {
+                schemaQuery = new SchemaQuery(schemaName, queryName);
             }
-            if (!schemaQuery) {
-                if (schemaName && queryName) {
-                    schemaQuery = new SchemaQuery(schemaName, queryName);
-                }
-            }
+        }
 
-            if (!schemaQuery) {
-                reject(
-                    'No schema found for selection with selectionKey ' +
-                        location.query.selectionKey +
-                        ' schemaName ' +
-                        schemaName +
-                        ' queryName ' +
-                        queryName
-                );
-            }
+        if (!schemaQuery) {
+            throw new Error(
+                `No schema found for selection with selectionKey ${selectionKey} schemaName ${schemaName} queryName ${queryName}`
+            );
+        }
 
-            return getSelected(
-                key,
-                false,
-                schemaQuery.schemaName,
-                schemaQuery.queryName,
-                getFilterListFromQuery(location)
-            ).then(response => {
-                resolve({
-                    resolved: true,
-                    schemaQuery,
-                    selected: response.selected,
-                });
-            });
-        });
+        const filters = Filter.getFiltersFromParameters(Object.assign({}, location.query));
+        const response = await getSelected(selectionKey, false, schemaQuery, filters);
+
+        return { resolved: true, schemaQuery, selected: response.selected };
     }
 
-    return Promise.resolve({
-        resolved: false,
-        selected: [],
-    });
+    return { resolved: false, selected: [] };
 }
 
 export function getSelectedData(

@@ -22,7 +22,7 @@ import { createGridModelId, CommonPageProps } from '../internal/models';
 import { InjectedRouteLeaveProps, withRouteLeave } from '../internal/util/RouteLeave';
 import { useLabelPrintingContext } from '../internal/components/labels/LabelPrintingContextProvider';
 import { useNotificationsContext } from '../internal/components/notifications/NotificationsContext';
-import { getContainerFilterForLookups } from '../internal/query/api';
+import { getContainerFilterForFolder, getContainerFilterForLookups } from '../internal/query/api';
 import { useContainerUser } from '../internal/components/container/actions';
 import { getUserSharedContainerPermissions } from '../internal/components/user/actions';
 import { userCanEditStorageData } from '../internal/app/utils';
@@ -385,11 +385,15 @@ export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
                         asPanel
                         detailRenderer={detailRenderer}
                         model={detailsModel}
-                        schemaQuery={listModel?.schemaQuery}
+                        schemaQuery={listModel.schemaQuery}
                     />
                 </div>
                 <div className="col-xs-12 col-md-6">
-                    <SampleTypeInsightsPanel sampleSet={title} key={SAMPLE_ACTION_UPDATE_COUNTER} />
+                    <SampleTypeInsightsPanel
+                        containerFilter={listModel.containerFilter}
+                        key={SAMPLE_ACTION_UPDATE_COUNTER}
+                        sampleSet={title}
+                    />
                 </div>
             </div>
             <div className="sample-list-page-samples">
@@ -465,12 +469,13 @@ export const SampleListingPage: FC<CommonPageProps & WithRouterProps> = props =>
 
     const queryConfigs = {
         [sampleListModelId]: {
+            bindURL: true,
+            containerFilter: getContainerFilterForFolder(),
             id: sampleListModelId,
+            includeTotalCount: true,
             isPaged: true,
             requiredColumns: [...samplesGridRequiredColumns, ...SAMPLE_STATUS_REQUIRED_COLUMNS],
             schemaQuery: listSchemaQuery,
-            bindURL: true,
-            includeTotalCount: true,
         },
     };
 

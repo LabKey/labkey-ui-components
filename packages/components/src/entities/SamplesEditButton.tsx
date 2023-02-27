@@ -130,7 +130,8 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
     const showStudy =
         showLinkToStudy &&
         hasModule('study', moduleContext) &&
-        shouldIncludeMenuItem(SamplesEditButtonSections.LINKTOSTUDY, excludedMenuKeys);
+        shouldIncludeMenuItem(SamplesEditButtonSections.LINKTOSTUDY, excludedMenuKeys) &&
+        hasAnyPermissions(user, [PermissionTypes.Insert]);
 
     return (
         <RequiresPermission

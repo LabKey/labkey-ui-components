@@ -1506,10 +1506,10 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@labkey/api@1.18.5":
-  version "1.18.5"
-  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.18.5.tgz#35fb69bedc74d3f06f84f23a9e7af35e514b3ad9"
-  integrity sha512-vgjLTTE34wd1xUI1wsy5661SykxJ6KRdr25zNYb9EaFHhTBcrAQlIVucyqv3ZxRP0EuUQvM3+8/N3a3tOLXNsQ==
+"@labkey/api@1.18.5-fb-deleteprojectsinapp.0":
+  version "1.18.5-fb-deleteprojectsinapp.0"
+  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.18.5-fb-deleteprojectsinapp.0.tgz#e4fe2f6af0d935cd64ce90406534828fc2939e2f"
+  integrity sha512-BGJGuenJ9Eq9UAaL5F09CnRyXui7rLyePASgfkTu21yRf9G6lXlPTXM+bWhfuQDMNrulQ0fss2VsR+broIBMOg==
 
 "@labkey/build@6.9.0":
   version "6.9.0"

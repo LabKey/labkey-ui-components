@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD February 2023
 - Issue 47266: For a grid the filter dialog does not enable the 'Apply' button if I type in a value unless I uncheck the [All] option first
 - Issue 47247: LKSM: Filtering values >250 doesn't save selection
+- Issue 46870: Don't allow selection/inclusion of multi-valued lookup fields from Ancestors
 
 ### version 2.298.0
 *Released*: 25 February 2023

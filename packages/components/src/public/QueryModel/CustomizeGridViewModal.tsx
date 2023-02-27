@@ -19,7 +19,9 @@ export const includedColumnsForCustomizationFilter = (column: QueryColumn, showA
     return (
         (showAllColumns || !column.hidden) &&
         !column.removeFromViews &&
-        (showPremiumFeatures() || !column.removeFromViewCustomization)
+        (showPremiumFeatures() || !column.removeFromViewCustomization) &&
+        // Issue 46870: Don't allow selection/inclusion of multi-valued lookup fields from Ancestors
+        (!column.fieldKeyPath?.startsWith('Ancestors/') || !column.isJunctionLookup())
     );
 };
 

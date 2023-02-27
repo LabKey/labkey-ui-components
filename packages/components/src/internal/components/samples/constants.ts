@@ -176,6 +176,8 @@ export const SAMPLE_STORAGE_COLUMNS = [
     'StorageCol',
     'StoredAmount',
     'Units',
+    'RawAmount',
+    'RawUnits',
     'FreezeThawCount',
     'EnteredStorage',
     'CheckedOut',

@@ -430,7 +430,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         if (!user.canUpdate && userCanEditStorageData(user)) {
             let updatedColumns = List<QueryColumn>();
             allColumns.forEach(col => {
-                if (['name', 'storedamount', 'units'].indexOf(col.fieldKey.toLowerCase()) !== -1)
+                if (['name', 'storedamount', 'units', 'rawamount', 'rawunits'].indexOf(col.fieldKey.toLowerCase()) !== -1)
                     updatedColumns = updatedColumns.push(col);
             });
             return updatedColumns;

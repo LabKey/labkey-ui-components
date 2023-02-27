@@ -211,7 +211,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                 <FolderSelectImpl
                   context={
                     {
-                      "activeContainer": Immutable.Record {
+                      "activeContainer": Container {
                         "activeModules": [],
                         "effectivePermissions": [],
                         "folderType": "",
@@ -250,7 +250,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                     componentClass="select"
                     context={
                       {
-                        "activeContainer": Immutable.Record {
+                        "activeContainer": Container {
                           "activeModules": [],
                           "effectivePermissions": [],
                           "folderType": "",
@@ -288,7 +288,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                       className="form-control"
                       context={
                         {
-                          "activeContainer": Immutable.Record {
+                          "activeContainer": Container {
                             "activeModules": [],
                             "effectivePermissions": [],
                             "folderType": "",
@@ -360,7 +360,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                   containerPath="/StudyVerifyProject/My Study"
                   context={
                     {
-                      "activeContainer": Immutable.Record {
+                      "activeContainer": Container {
                         "activeModules": [],
                         "effectivePermissions": [],
                         "folderType": "",
@@ -454,7 +454,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                   containerPath="/StudyVerifyProject/My Study"
                   context={
                     {
-                      "activeContainer": Immutable.Record {
+                      "activeContainer": Container {
                         "activeModules": [],
                         "effectivePermissions": [],
                         "folderType": "",
@@ -814,7 +814,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                 <FolderSelectImpl
                   context={
                     {
-                      "activeContainer": Immutable.Record {
+                      "activeContainer": Container {
                         "activeModules": [],
                         "effectivePermissions": [],
                         "folderType": "",
@@ -853,7 +853,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                     componentClass="select"
                     context={
                       {
-                        "activeContainer": Immutable.Record {
+                        "activeContainer": Container {
                           "activeModules": [],
                           "effectivePermissions": [],
                           "folderType": "",
@@ -891,7 +891,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                       className="form-control"
                       context={
                         {
-                          "activeContainer": Immutable.Record {
+                          "activeContainer": Container {
                             "activeModules": [],
                             "effectivePermissions": [],
                             "folderType": "",
@@ -975,7 +975,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                   containerPath="/StudyVerifyProject"
                   context={
                     {
-                      "activeContainer": Immutable.Record {
+                      "activeContainer": Container {
                         "activeModules": [],
                         "effectivePermissions": [],
                         "folderType": "",
@@ -1095,7 +1095,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                   containerPath="/StudyVerifyProject"
                   context={
                     {
-                      "activeContainer": Immutable.Record {
+                      "activeContainer": Container {
                         "activeModules": [],
                         "effectivePermissions": [],
                         "folderType": "",
@@ -1496,7 +1496,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                 <FolderSelectImpl
                   context={
                     {
-                      "activeContainer": Immutable.Record {
+                      "activeContainer": Container {
                         "activeModules": [],
                         "effectivePermissions": [],
                         "folderType": "",
@@ -1535,7 +1535,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                     componentClass="select"
                     context={
                       {
-                        "activeContainer": Immutable.Record {
+                        "activeContainer": Container {
                           "activeModules": [],
                           "effectivePermissions": [],
                           "folderType": "",
@@ -1573,7 +1573,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                       className="form-control"
                       context={
                         {
-                          "activeContainer": Immutable.Record {
+                          "activeContainer": Container {
                             "activeModules": [],
                             "effectivePermissions": [],
                             "folderType": "",
@@ -1657,7 +1657,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                   containerPath="/StudyVerifyProject"
                   context={
                     {
-                      "activeContainer": Immutable.Record {
+                      "activeContainer": Container {
                         "activeModules": [],
                         "effectivePermissions": [],
                         "folderType": "",
@@ -1777,7 +1777,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                   containerPath="/StudyVerifyProject"
                   context={
                     {
-                      "activeContainer": Immutable.Record {
+                      "activeContainer": Container {
                         "activeModules": [],
                         "effectivePermissions": [],
                         "folderType": "",
@@ -2178,7 +2178,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                 <FolderSelectImpl
                   context={
                     {
-                      "activeContainer": Immutable.Record {
+                      "activeContainer": Container {
                         "activeModules": [],
                         "effectivePermissions": [],
                         "folderType": "",
@@ -2217,7 +2217,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                     componentClass="select"
                     context={
                       {
-                        "activeContainer": Immutable.Record {
+                        "activeContainer": Container {
                           "activeModules": [],
                           "effectivePermissions": [],
                           "folderType": "",
@@ -2255,7 +2255,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                       className="form-control"
                       context={
                         {
-                          "activeContainer": Immutable.Record {
+                          "activeContainer": Container {
                             "activeModules": [],
                             "effectivePermissions": [],
                             "folderType": "",
@@ -2339,7 +2339,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                   containerPath="/StudyVerifyProject/My Study"
                   context={
                     {
-                      "activeContainer": Immutable.Record {
+                      "activeContainer": Container {
                         "activeModules": [],
                         "effectivePermissions": [],
                         "folderType": "",
@@ -2456,7 +2456,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                   containerPath="/StudyVerifyProject/My Study"
                   context={
                     {
-                      "activeContainer": Immutable.Record {
+                      "activeContainer": Container {
                         "activeModules": [],
                         "effectivePermissions": [],
                         "folderType": "",

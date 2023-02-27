@@ -13,7 +13,7 @@ import { Query } from '@labkey/api';
 
 describe('LookupCell', () => {
     const DEFAULT_PROPS = {
-        col: QueryColumn.create({
+        col: new QueryColumn({
             lookup: {
                 schemaName: 'schema',
                 queryName: 'query',
@@ -47,7 +47,7 @@ describe('LookupCell', () => {
         const wrapper = mount(
             <LookupCell
                 {...DEFAULT_PROPS}
-                col={QueryColumn.create({
+                col={new QueryColumn({
                     lookup: {
                         schemaName: 'exp',
                         queryName: 'materials',
@@ -75,7 +75,7 @@ describe('LookupCell', () => {
         const wrapper = mount(
             <LookupCell
                 {...DEFAULT_PROPS}
-                col={QueryColumn.create({
+                col={new QueryColumn({
                     lookup: { schemaName: 'schema', queryName: 'query', multiValued: 'junction' },
                 })}
             />
@@ -114,7 +114,7 @@ describe('LookupCell', () => {
     test('QuerySelect lookup with container filter', () => {
         const wrapper = mount(<LookupCell
             {...DEFAULT_PROPS}
-            col={ QueryColumn.create({
+            col={ new QueryColumn({
                 lookup: {
                     schemaName: 'schema',
                     queryName: 'query',
@@ -148,7 +148,7 @@ describe('LookupCell', () => {
         const wrapper = mount(
             <LookupCell
                 {...DEFAULT_PROPS}
-                col={QueryColumn.create({
+                col={new QueryColumn({
                     validValues: ['a', 'b'],
                 })}
             />

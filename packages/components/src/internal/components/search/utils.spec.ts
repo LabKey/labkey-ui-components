@@ -118,15 +118,15 @@ describe('getFinderViewColumnsConfig', () => {
         appEditableTable: true,
         pkCols: List(['RowId']),
         columns: fromJS({
-            rowid: QueryColumn.create({ caption: 'Row Id', fieldKey: 'RowId', inputType: 'number' }),
-            description: QueryColumn.create({
+            rowid: new QueryColumn({ caption: 'Row Id', fieldKey: 'RowId', inputType: 'number' }),
+            description: new QueryColumn({
                 caption: 'Description',
                 fieldKey: 'Description',
                 inputType: 'textarea',
             }),
-            samplestate: QueryColumn.create({ caption: 'SampleState', fieldKey: 'SampleState', inputType: 'text' }),
-            name: QueryColumn.create({ caption: 'Name', fieldKey: 'Name', inputType: 'text' }),
-            extrafield: QueryColumn.create({ caption: 'Extra', fieldKey: 'ExtraField', inputType: 'text' }),
+            samplestate: new QueryColumn({ caption: 'SampleState', fieldKey: 'SampleState', inputType: 'text' }),
+            name: new QueryColumn({ caption: 'Name', fieldKey: 'Name', inputType: 'text' }),
+            extrafield: new QueryColumn({ caption: 'Extra', fieldKey: 'ExtraField', inputType: 'text' }),
         }),
         views: Map({
             '~~default~~': {
@@ -197,15 +197,15 @@ describe('getFinderViewColumnsConfig', () => {
             appEditableTable: true,
             pkCols: List(['RowId']),
             columns: fromJS({
-                rowid: QueryColumn.create({ caption: 'Row Id', fieldKey: 'RowId', inputType: 'number' }),
-                description: QueryColumn.create({
+                rowid: new QueryColumn({ caption: 'Row Id', fieldKey: 'RowId', inputType: 'number' }),
+                description: new QueryColumn({
                     caption: 'Description',
                     fieldKey: 'Description',
                     inputType: 'textarea',
                 }),
-                samplestate: QueryColumn.create({ caption: 'SampleState', fieldKey: 'SampleState', inputType: 'text' }),
-                name: QueryColumn.create({ caption: 'Name', fieldKey: 'Name', inputType: 'text' }),
-                extrafield: QueryColumn.create({ caption: 'Extra', fieldKey: 'ExtraField', inputType: 'text' }),
+                samplestate: new QueryColumn({ caption: 'SampleState', fieldKey: 'SampleState', inputType: 'text' }),
+                name: new QueryColumn({ caption: 'Name', fieldKey: 'Name', inputType: 'text' }),
+                extrafield: new QueryColumn({ caption: 'Extra', fieldKey: 'ExtraField', inputType: 'text' }),
             }),
             views: Map({
                 '~~default~~': {
@@ -873,7 +873,7 @@ describe('getFieldFiltersValidationResult', () => {
 
 describe('getUpdateFilterExpressionFilter', () => {
     const fieldKey = 'StringField';
-    const stringField = QueryColumn.create({
+    const stringField = new QueryColumn({
         name: fieldKey,
         rangeURI: TEXT_TYPE.rangeURI,
         jsonType: 'string',
@@ -1481,7 +1481,7 @@ describe('getSampleFinderColumnNames', () => {
 
 describe('isValidFilterField', () => {
     test('lookup field', () => {
-        const field = QueryColumn.create({ name: 'test', lookup: { isPublic: true } });
+        const field = new QueryColumn({ name: 'test', lookup: { isPublic: true } });
         const queryInfo = QueryInfo.create({
             schemaName: 'test',
             name: 'query',
@@ -1497,7 +1497,7 @@ describe('isValidFilterField', () => {
     });
 
     test('mult-value lookup field', () => {
-        const field = QueryColumn.create({ name: 'test', lookup: { isPublic: true }, multiValue: true });
+        const field = new QueryColumn({ name: 'test', lookup: { isPublic: true }, multiValue: true });
         const queryInfo = QueryInfo.create({
             schemaName: 'test',
             name: 'query',
@@ -1513,7 +1513,7 @@ describe('isValidFilterField', () => {
     });
 
     test('mult-value lookup field and not supportGroupConcatSubSelect', () => {
-        const field = QueryColumn.create({ name: 'test', lookup: { isPublic: true }, multiValue: true });
+        const field = new QueryColumn({ name: 'test', lookup: { isPublic: true }, multiValue: true });
         const queryInfo = QueryInfo.create({
             schemaName: 'test',
             name: 'query',
@@ -1529,7 +1529,7 @@ describe('isValidFilterField', () => {
     });
 
     test('Units field', () => {
-        const field = QueryColumn.create({ name: 'Units', fieldKey: 'Units' });
+        const field = new QueryColumn({ name: 'Units', fieldKey: 'Units' });
         const queryInfo = QueryInfo.create({
             schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
             name: 'test',
@@ -1545,7 +1545,7 @@ describe('isValidFilterField', () => {
     });
 
     test('group concat field not supported', () => {
-        const field = QueryColumn.create({ name: 'StorageStatus', fieldKey: 'StorageStatus' });
+        const field = new QueryColumn({ name: 'StorageStatus', fieldKey: 'StorageStatus' });
         const queryInfo = QueryInfo.create({
             schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
             name: 'test',
@@ -1561,7 +1561,7 @@ describe('isValidFilterField', () => {
     });
 
     test('group concat field not supported, regular field', () => {
-        const field = QueryColumn.create({ name: 'RowId', fieldKey: 'RowId' });
+        const field = new QueryColumn({ name: 'RowId', fieldKey: 'RowId' });
         const queryInfo = QueryInfo.create({
             schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
             name: 'test',
@@ -1577,7 +1577,7 @@ describe('isValidFilterField', () => {
     });
 
     test('group concat field not supported, no group concat fields', () => {
-        const field = QueryColumn.create({ name: 'RowId', fieldKey: 'RowId' });
+        const field = new QueryColumn({ name: 'RowId', fieldKey: 'RowId' });
         const queryInfo = QueryInfo.create({
             schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
             name: 'test',
@@ -1589,7 +1589,7 @@ describe('isValidFilterField', () => {
     });
 
     test('group concat field is supported', () => {
-        const field = QueryColumn.create({ name: 'StorageStatus', fieldKey: 'StorageStatus' });
+        const field = new QueryColumn({ name: 'StorageStatus', fieldKey: 'StorageStatus' });
         const queryInfo = QueryInfo.create({
             schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
             name: 'test',
@@ -1605,7 +1605,7 @@ describe('isValidFilterField', () => {
     });
 
     test('regular field', () => {
-        const field = QueryColumn.create({ name: 'Regular', fieldKey: 'Regular' });
+        const field = new QueryColumn({ name: 'Regular', fieldKey: 'Regular' });
         const queryInfo = QueryInfo.create({
             schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
             name: 'test',
@@ -1633,7 +1633,7 @@ describe('getUpdatedDataTypeFilters', () => {
         const updatedFilters = getUpdatedDataTypeFilters(
             DATA_TYPE_FILTERS,
             PARENT_WITH_FILTERS,
-            QueryColumn.create({
+            new QueryColumn({
                 caption: floatBetweenFilter.fieldCaption,
                 fieldKey: floatBetweenFilter.fieldKey,
             }),
@@ -1646,7 +1646,7 @@ describe('getUpdatedDataTypeFilters', () => {
         const updatedFilters = getUpdatedDataTypeFilters(
             DATA_TYPE_FILTERS,
             PARENT_WITH_FILTERS,
-            QueryColumn.create({
+            new QueryColumn({
                 name: stringEqualFilter.fieldKey,
                 caption: stringEqualFilter.fieldCaption,
                 fieldKey: stringEqualFilter.fieldKey,
@@ -1663,7 +1663,7 @@ describe('getUpdatedDataTypeFilters', () => {
         const updatedFilters = getUpdatedDataTypeFilters(
             DATA_TYPE_FILTERS,
             PARENT_WITH_FILTERS,
-            QueryColumn.create({
+            new QueryColumn({
                 name: stringEqualFilter.fieldKey,
                 caption: stringEqualFilter.fieldCaption,
                 fieldKey: stringEqualFilter.fieldKey,
@@ -1680,7 +1680,7 @@ describe('getUpdatedDataTypeFilters', () => {
         const updatedFilters = getUpdatedDataTypeFilters(
             DATA_TYPE_FILTERS,
             PARENT_WITH_FILTERS,
-            QueryColumn.create({
+            new QueryColumn({
                 name: stringEqualFilter.fieldKey,
                 caption: stringEqualFilter.fieldCaption,
                 fieldKey: stringEqualFilter.fieldKey,
@@ -1697,7 +1697,7 @@ describe('getUpdatedDataTypeFilters', () => {
         const updatedFilters = getUpdatedDataTypeFilters(
             DATA_TYPE_FILTERS,
             PARENT_WITH_FILTERS,
-            QueryColumn.create({
+            new QueryColumn({
                 name: stringEqualFilter.fieldKey,
                 caption: stringEqualFilter.fieldCaption,
                 fieldKey: stringEqualFilter.fieldKey,
@@ -1714,7 +1714,7 @@ describe('getUpdatedDataTypeFilters', () => {
         const updatedFilters = getUpdatedDataTypeFilters(
             DATA_TYPE_FILTERS,
             PARENT_WITHOUT_FILTERS,
-            QueryColumn.create({
+            new QueryColumn({
                 name: stringEqualFilter.fieldKey,
                 caption: stringEqualFilter.fieldCaption,
                 fieldKey: stringEqualFilter.fieldKey,
@@ -1914,7 +1914,7 @@ describe('getFilterSelections', () => {
 });
 
 describe('getUpdatedFilters', () => {
-    const field = QueryColumn.create({
+    const field = new QueryColumn({
         name: stringEqualFilter.fieldKey,
         caption: stringEqualFilter.fieldCaption,
         fieldKey: stringEqualFilter.fieldKey,

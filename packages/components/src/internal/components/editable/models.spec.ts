@@ -24,10 +24,7 @@ import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 
 import { CellMessage, EditorModel, getPkData, ValueDescriptor } from './models';
 
-const schemaQ = new SchemaQuery({
-    schemaName: 'samples',
-    queryName: 'Sample Set 2',
-});
+const schemaQ = new SchemaQuery('samples', 'Sample Set 2');
 
 const COLUMN_CAN_INSERT_AND_UPDATE = new QueryColumn({
     fieldKey: 'both',
@@ -666,24 +663,24 @@ describe('EditorModel', () => {
             const editorModel = new EditorModel({});
             const columns = editorModel.getColumns(QUERY_INFO);
             expect(columns.size).toBe(2);
-            expect(columns.get(0)).toBe(COLUMN_CAN_INSERT_AND_UPDATE);
-            expect(columns.get(1)).toBe(COLUMN_CAN_INSERT);
+            expect(columns.get(0)).toStrictEqual(COLUMN_CAN_INSERT_AND_UPDATE);
+            expect(columns.get(1)).toStrictEqual(COLUMN_CAN_INSERT);
         });
 
         test('getColumns forUpdate', () => {
             const editorModel = new EditorModel({});
             const columns = editorModel.getColumns(QUERY_INFO, true);
             expect(columns.size).toBe(2);
-            expect(columns.get(0)).toBe(COLUMN_CAN_INSERT_AND_UPDATE);
-            expect(columns.get(1)).toBe(COLUMN_CAN_UPDATE);
+            expect(columns.get(0)).toStrictEqual(COLUMN_CAN_INSERT_AND_UPDATE);
+            expect(columns.get(1)).toStrictEqual(COLUMN_CAN_UPDATE);
         });
 
         test('getColumns readOnlyColumns', () => {
             const editorModel = new EditorModel({});
             const columns = editorModel.getColumns(QUERY_INFO, true, List(['neither']));
             expect(columns.size).toBe(3);
-            expect(columns.get(0)).toBe(COLUMN_CAN_INSERT_AND_UPDATE);
-            expect(columns.get(1)).toBe(COLUMN_CAN_UPDATE);
+            expect(columns.get(0)).toStrictEqual(COLUMN_CAN_INSERT_AND_UPDATE);
+            expect(columns.get(1)).toStrictEqual(COLUMN_CAN_UPDATE);
             expect(columns.get(2).fieldKey).toBe(COLUMN_CANNOT_INSERT_AND_UPDATE.fieldKey);
             expect(columns.get(2).readOnly).toBe(true);
         });
@@ -937,17 +934,17 @@ describe('getPkData', () => {
         appEditableTable: true,
         pkCols: List(['RowId']),
         columns: fromJS({
-            rowid: QueryColumn.create({
+            rowid: new QueryColumn({
                 caption: 'Row Id',
                 fieldKey: 'RowId',
                 inputType: 'number',
             }),
-            lsid: QueryColumn.create({
+            lsid: new QueryColumn({
                 caption: 'LSID',
                 fieldKey: 'lsid',
                 inputType: 'text',
             }),
-            description: QueryColumn.create({
+            description: new QueryColumn({
                 caption: 'Description',
                 fieldKey: 'Description',
                 inputType: 'textarea',
@@ -957,7 +954,7 @@ describe('getPkData', () => {
     const queryInfo = new QueryInfo(config);
     const queryInfoWithAltKey = new QueryInfo({
         ...config,
-        altUpdateKeys: new Set<strin>(['lsid']),
+        altUpdateKeys: Set<string>(['lsid']),
     });
 
     test('as value', () => {

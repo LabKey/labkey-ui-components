@@ -4,7 +4,17 @@ import { ActionURL, Ajax, Utils } from '@labkey/api';
 
 import { DEFAULT_FILE, IFile } from '../../internal/components/files/models';
 
-export class WebDavFile extends Record(DEFAULT_FILE) implements IFile {
+export interface IFileExtended extends IFile {
+    collection: boolean; // Gets coerced to isCollection
+    contenttype: string; // Gets coerced to contentType
+    creationdate: string; // Gets coerced to created
+    href: string; // Gets coerced to downloadUrl
+    lastmodified: string; // Gets coerced to lastModified
+    leaf: boolean; // Gets coerced to isLeaf
+    text: string; // Gets coerced to name
+}
+
+export class WebDavFile implements IFile {
     declare canDelete: boolean;
     declare canEdit: boolean;
     declare canRead: boolean;
@@ -28,24 +38,18 @@ export class WebDavFile extends Record(DEFAULT_FILE) implements IFile {
     declare options: string;
     declare propertiesRowId?: number;
 
-    static create(values): WebDavFile {
-        const webDavFile = new WebDavFile(values);
+    constructor(props: IFileExtended) {
+        const { collection, contenttype, creationdate, href, lastmodified, leaf, text, ...validProps } = props;
 
-        return webDavFile.merge({
-            canDelete: values.canDelete,
-            canEdit: values.canEdit,
-            canRead: values.canRead,
-            canRename: values.canRename,
-            canUpload: values.canUpload,
-            isCollection: values.collection,
-            isLeaf: values.leaf,
-            createdBy: values.createdby,
-            created: values.creationdate,
-            lastModified: values.lastmodified,
-            downloadUrl: values.href ? values.href + '?contentDisposition=attachment' : undefined,
-            name: values.text,
-            contentType: values.contenttype || webDavFile.contentType,
-        }) as WebDavFile;
+        if (collection !== undefined) validProps.isCollection = collection;
+        if (contenttype !== undefined) validProps.contentType = contenttype;
+        if (creationdate !== undefined) validProps.created = creationdate;
+        if (href !== undefined) validProps.downloadUrl = href + '?contentDisposition=attachment';
+        if (lastmodified !== undefined) validProps.lastModified = lastmodified;
+        if (leaf !== undefined) validProps.isLeaf = leaf;
+        if (text !== undefined) validProps.name = text;
+
+        Object.assign(this, DEFAULT_FILE, validProps);
     }
 }
 
@@ -84,7 +88,7 @@ export function getWebDavFiles(
                         ? alternateFilterCondition(file)
                         : includeDirectories || !file.collection;
                     if (filterCondition) {
-                        return filtered.set(file.text, WebDavFile.create(file));
+                        return filtered.set(file.text, new WebDavFile(file));
                     } else {
                         return filtered;
                     }

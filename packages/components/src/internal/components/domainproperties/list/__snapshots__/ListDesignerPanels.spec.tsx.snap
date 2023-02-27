@@ -26454,7 +26454,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                             <FolderSelectImpl
                                                                                               context={
                                                                                                 {
-                                                                                                  "activeContainer": Immutable.Record {
+                                                                                                  "activeContainer": Container {
                                                                                                     "activeModules": [],
                                                                                                     "effectivePermissions": [],
                                                                                                     "folderType": "",
@@ -26493,7 +26493,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                                 componentClass="select"
                                                                                                 context={
                                                                                                   {
-                                                                                                    "activeContainer": Immutable.Record {
+                                                                                                    "activeContainer": Container {
                                                                                                       "activeModules": [],
                                                                                                       "effectivePermissions": [],
                                                                                                       "folderType": "",
@@ -26531,7 +26531,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                                   className="form-control"
                                                                                                   context={
                                                                                                     {
-                                                                                                      "activeContainer": Immutable.Record {
+                                                                                                      "activeContainer": Container {
                                                                                                         "activeModules": [],
                                                                                                         "effectivePermissions": [],
                                                                                                         "folderType": "",
@@ -26603,7 +26603,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                               containerPath="ea23d322-acd6-1037-8e6d-25f311da6f8b"
                                                                                               context={
                                                                                                 {
-                                                                                                  "activeContainer": Immutable.Record {
+                                                                                                  "activeContainer": Container {
                                                                                                     "activeModules": [],
                                                                                                     "effectivePermissions": [],
                                                                                                     "folderType": "",
@@ -26697,7 +26697,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                               containerPath="ea23d322-acd6-1037-8e6d-25f311da6f8b"
                                                                                               context={
                                                                                                 {
-                                                                                                  "activeContainer": Immutable.Record {
+                                                                                                  "activeContainer": Container {
                                                                                                     "activeModules": [],
                                                                                                     "effectivePermissions": [],
                                                                                                     "folderType": "",
@@ -28762,7 +28762,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                             <FolderSelectImpl
                                                                                               context={
                                                                                                 {
-                                                                                                  "activeContainer": Immutable.Record {
+                                                                                                  "activeContainer": Container {
                                                                                                     "activeModules": [],
                                                                                                     "effectivePermissions": [],
                                                                                                     "folderType": "",
@@ -28801,7 +28801,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                                 componentClass="select"
                                                                                                 context={
                                                                                                   {
-                                                                                                    "activeContainer": Immutable.Record {
+                                                                                                    "activeContainer": Container {
                                                                                                       "activeModules": [],
                                                                                                       "effectivePermissions": [],
                                                                                                       "folderType": "",
@@ -28839,7 +28839,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                                   className="form-control"
                                                                                                   context={
                                                                                                     {
-                                                                                                      "activeContainer": Immutable.Record {
+                                                                                                      "activeContainer": Container {
                                                                                                         "activeModules": [],
                                                                                                         "effectivePermissions": [],
                                                                                                         "folderType": "",
@@ -28911,7 +28911,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                               containerPath="ea23d322-acd6-1037-8e6d-25f311da6f8b"
                                                                                               context={
                                                                                                 {
-                                                                                                  "activeContainer": Immutable.Record {
+                                                                                                  "activeContainer": Container {
                                                                                                     "activeModules": [],
                                                                                                     "effectivePermissions": [],
                                                                                                     "folderType": "",
@@ -29005,7 +29005,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                               containerPath="ea23d322-acd6-1037-8e6d-25f311da6f8b"
                                                                                               context={
                                                                                                 {
-                                                                                                  "activeContainer": Immutable.Record {
+                                                                                                  "activeContainer": Container {
                                                                                                     "activeModules": [],
                                                                                                     "effectivePermissions": [],
                                                                                                     "folderType": "",
@@ -34770,7 +34770,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                             <FolderSelectImpl
                                                                                               context={
                                                                                                 {
-                                                                                                  "activeContainer": Immutable.Record {
+                                                                                                  "activeContainer": Container {
                                                                                                     "activeModules": [],
                                                                                                     "effectivePermissions": [],
                                                                                                     "folderType": "",
@@ -34809,7 +34809,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                                 componentClass="select"
                                                                                                 context={
                                                                                                   {
-                                                                                                    "activeContainer": Immutable.Record {
+                                                                                                    "activeContainer": Container {
                                                                                                       "activeModules": [],
                                                                                                       "effectivePermissions": [],
                                                                                                       "folderType": "",
@@ -34847,7 +34847,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                                   className="form-control"
                                                                                                   context={
                                                                                                     {
-                                                                                                      "activeContainer": Immutable.Record {
+                                                                                                      "activeContainer": Container {
                                                                                                         "activeModules": [],
                                                                                                         "effectivePermissions": [],
                                                                                                         "folderType": "",
@@ -34919,7 +34919,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                               containerPath="ea23d322-acd6-1037-8e6d-25f311da6f8b"
                                                                                               context={
                                                                                                 {
-                                                                                                  "activeContainer": Immutable.Record {
+                                                                                                  "activeContainer": Container {
                                                                                                     "activeModules": [],
                                                                                                     "effectivePermissions": [],
                                                                                                     "folderType": "",
@@ -35013,7 +35013,7 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                               containerPath="ea23d322-acd6-1037-8e6d-25f311da6f8b"
                                                                                               context={
                                                                                                 {
-                                                                                                  "activeContainer": Immutable.Record {
+                                                                                                  "activeContainer": Container {
                                                                                                     "activeModules": [],
                                                                                                     "effectivePermissions": [],
                                                                                                     "folderType": "",

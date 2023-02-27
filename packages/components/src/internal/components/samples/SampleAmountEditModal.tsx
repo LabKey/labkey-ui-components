@@ -109,7 +109,7 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
     const amountChangeHandler = useCallback((newAmount: string) => {
         let newVal = parseFloat(newAmount);
         if (isNaN(newVal)) {
-            newVal = undefined;
+            newVal = null; // set to null to indicate any existing value should be cleared; undefined values are removed before submission.
         }
 
         setStorageAmount(newVal);

@@ -5608,7 +5608,7 @@ locate-path@^5.0.0:
   dependencies:
     p-locate "^4.1.0"
 
-lodash-es@^4.17.15, lodash-es@^4.17.4:
+lodash-es@^4.17.15:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
   integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
@@ -5643,7 +5643,7 @@ lodash.merge@^4.6.2:
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
 
-lodash@^4.0.1, lodash@^4.13.1, lodash@^4.17.15, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.17.5:
+lodash@^4.0.1, lodash@^4.17.15, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.17.5:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -6775,21 +6775,6 @@ rechoir@^0.8.0:
   integrity sha512-/vxpCXddiX8NGfGO/mTafwjq4aFa/71pvamip0++IQk3zG8cbCj0fifNPrjjF1XMXUne91jL9OoxmdykoEtifQ==
   dependencies:
     resolve "^1.20.0"
-
-reduce-reducers@^0.1.0:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/reduce-reducers/-/reduce-reducers-0.1.5.tgz#ff77ca8068ff41007319b8b4b91533c7e0e54576"
-  integrity sha512-uoVmQnZQ+BtKKDKpBdbBri5SLNyIK9ULZGOA504++VbHcwouWE+fJDIo8AuESPF9/EYSkI0v05LDEQK6stCbTA==
-
-redux-actions@~2.3.2:
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/redux-actions/-/redux-actions-2.3.2.tgz#b93cf1585c7d8d1b15800d093427c9d75c53222f"
-  integrity sha512-PPclrJFIbDzD48oNj46biisg34NTtb1VxP9MTTAxsgIFuV4mEe5UXLRNBwyqrlXrMQHUbmpnjJupxocS4mxpvA==
-  dependencies:
-    invariant "^2.2.1"
-    lodash "^4.13.1"
-    lodash-es "^4.17.4"
-    reduce-reducers "^0.1.0"
 
 redux@^4.0.0, redux@^4.0.4:
   version "4.2.0"

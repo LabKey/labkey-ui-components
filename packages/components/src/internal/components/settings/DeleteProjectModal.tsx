@@ -53,10 +53,11 @@ export const BodyEmpty: FC<CommentAreaProps> = memo(({ comment, onChangeComment 
 
 interface BodyProps {
     comment: string;
+    isLoading: boolean;
     onChangeComment: ChangeEventHandler<HTMLTextAreaElement>;
     summaries: Summary[];
 }
-export const Body: FC<BodyProps> = memo(({ summaries, comment, onChangeComment }) => {
+export const Body: FC<BodyProps> = memo(({ summaries, comment, isLoading, onChangeComment }) => {
     return (
         <Modal.Body>
             <div className="delete-project-modal__text">
@@ -69,7 +70,9 @@ export const Body: FC<BodyProps> = memo(({ summaries, comment, onChangeComment }
 
             <b> Project Data </b>
 
-            {summaries ? (
+            {isLoading ? (
+                <LoadingSpinner wrapperClassName="delete-project-modal__spinner" />
+            ) : (
                 <table className="table table-responsive table-condensed delete-project-modal__table ">
                     <tbody>
                         {summaries.map(s => (
@@ -80,8 +83,6 @@ export const Body: FC<BodyProps> = memo(({ summaries, comment, onChangeComment }
                         ))}
                     </tbody>
                 </table>
-            ) : (
-                <LoadingSpinner wrapperClassName="delete-project-modal__spinner" />
             )}
 
             <CommentArea comment={comment} onChangeComment={onChangeComment} />
@@ -93,10 +94,11 @@ interface BodyDeletingProps {
     totalCountFromSummaries: number;
 }
 export const BodyDeleting: FC<BodyDeletingProps> = memo(({ totalCountFromSummaries }) => {
-    const [toggle, seToggle] = React.useState<boolean>(false);
+    const [toggle, setToggle] = React.useState<boolean>(false);
 
+    // Note that <Progress/> requires a 'toggle' that flips from false to true in order to render
     React.useEffect(() => {
-        setTimeout(() => seToggle(true), 1);
+        setTimeout(() => setToggle(true), 1);
     }, []);
 
     return (
@@ -115,8 +117,9 @@ interface Props {
 
 export const DeleteProjectModal: FC<Props> = memo(props => {
     const { projectName, onCancel, onError } = props;
-    const [summaries, setSummaries] = useState<Summary[]>(undefined);
+    const [summaries, setSummaries] = useState<Summary[]>([]);
     const [comment, setComment] = useState<string>(undefined);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
     const { api } = useAppContext();
@@ -127,6 +130,7 @@ export const DeleteProjectModal: FC<Props> = memo(props => {
             try {
                 const allSummaries = await api.security.getDeletionSummaries();
                 setSummaries(allSummaries);
+                setIsLoading(false);
             } catch (e) {
                 // getDeletionSummaries() handles error logging
                 // Purposely leave loading spinner indefinitely in case of summary retrieval failure
@@ -145,9 +149,9 @@ export const DeleteProjectModal: FC<Props> = memo(props => {
     const onDeleteProject = useCallback(async () => {
         setIsDeleting(true);
         try {
-            await api.security.deleteContainer(comment);
+            await api.security.deleteContainer({ comment });
 
-            const successMsg = `${projectName} successfully deleted.`;
+            const successMsg = projectName;
             const adminProjectsHref = createProductUrl(
                 getPrimaryAppProperties()?.productId,
                 getCurrentAppProperties()?.productId,
@@ -170,13 +174,13 @@ export const DeleteProjectModal: FC<Props> = memo(props => {
 
     const totalCountFromSummaries = useMemo(
         () =>
-            summaries?.reduce((prev, curr) => {
+            summaries.reduce((prev, curr) => {
                 return prev + curr.count;
             }, 0) ?? 0,
         [summaries]
     );
 
-    const noData = useMemo(() => summaries?.length === 0, [summaries]);
+    const noData = !isLoading && summaries.length === 0;
 
     return (
         <Modal onHide={onHide} show>
@@ -189,7 +193,7 @@ export const DeleteProjectModal: FC<Props> = memo(props => {
             ) : noData ? (
                 <BodyEmpty onChangeComment={onChangeComment} comment={comment} />
             ) : (
-                <Body comment={comment} onChangeComment={onChangeComment} summaries={summaries} />
+                <Body comment={comment} onChangeComment={onChangeComment} summaries={summaries} isLoading={isLoading} />
             )}
 
             {!isDeleting && (
@@ -198,7 +202,7 @@ export const DeleteProjectModal: FC<Props> = memo(props => {
                         Cancel
                     </Button>
 
-                    <Button className="btn btn-danger" type="button" onClick={onDeleteProject} style={{}}>
+                    <Button className="btn btn-danger" type="button" onClick={onDeleteProject}>
                         Yes, Delete
                     </Button>
                 </Modal.Footer>

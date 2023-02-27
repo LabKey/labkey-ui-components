@@ -38,7 +38,7 @@ export interface RemoveGroupMembersResponse {
 export interface SecurityAPIWrapper {
     addGroupMembers: (groupId: number, principalIds: number[], projectPath: string) => Promise<AddGroupMembersResponse>;
     createGroup: (groupName: string, projectPath: string) => Promise<Security.CreateGroupResponse>;
-    deleteContainer: (comment: string) => Promise<Record<string, unknown>>;
+    deleteContainer: (options: Security.DeleteContainerOptions) => Promise<Record<string, unknown>>;
     deleteGroup: (id: number, projectPath: string) => Promise<DeleteGroupResponse>;
     fetchContainers: (options: FetchContainerOptions) => Promise<Container[]>;
     fetchGroups: (projectPath: string) => Promise<FetchedGroup[]>;
@@ -96,10 +96,10 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         });
     };
 
-    deleteContainer = (comment: string): Promise<Record<string, unknown>> => {
+    deleteContainer = (options: Security.DeleteContainerOptions): Promise<Record<string, unknown>> => {
         return new Promise((resolve, reject) => {
             Security.deleteContainer({
-                comment,
+                comment: options.comment,
                 success: data => {
                     resolve(data);
                 },
@@ -185,11 +185,10 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         return new Promise((resolve, reject) => {
             Ajax.request({
                 url: buildURL('core', 'getModuleSummary.api'),
-                method: 'GET',
                 success: Utils.getCallbackWrapper(response => {
-                    const summaries = response?.moduleSummary;
-                    summaries.sort(naturalSortByProperty('noun'));
-                    resolve(summaries);
+                    const { moduleSummary } = response;
+                    moduleSummary.sort(naturalSortByProperty('noun'));
+                    resolve(moduleSummary);
                 }),
                 failure: handleRequestFailure(reject, 'Failed to retrieve deletion summary.'),
             });

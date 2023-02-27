@@ -27,8 +27,8 @@ export const ProjectManagementPage: FC = memo(() => {
     const { user } = useServerContext();
 
     useEffect(() => {
-        const successMessage = decodeURI(getLocation().query?.get('successMsg'));
-        if (successMessage) setSuccessMsg(successMessage);
+        const successMessage = getLocation().query?.get('successMsg');
+        if (successMessage) setSuccessMsg(`${decodeURI(successMessage)} successfully deleted.`);
     }, []);
 
     const queryConfig: QueryConfig = useMemo(

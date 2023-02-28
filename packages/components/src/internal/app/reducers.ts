@@ -3,6 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { Map } from 'immutable';
+
 import { User } from '../components/base/models/User';
 
 import { ProductMenuModel } from '../components/navigation/model';

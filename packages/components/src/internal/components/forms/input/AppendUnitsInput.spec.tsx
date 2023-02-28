@@ -8,7 +8,7 @@ import { QueryColumn } from '../../../../public/QueryColumn';
 import { AppendUnitsInput } from './AppendUnitsInput';
 
 describe('AppendUnitsInput', () => {
-    const column = QueryColumn.create({
+    const column = new QueryColumn({
         caption: 'Molecular Weight',
         fieldKey: 'appendUnitsColumn',
         name: 'appendUnitsColumn',

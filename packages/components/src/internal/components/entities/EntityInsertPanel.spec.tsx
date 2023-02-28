@@ -38,13 +38,13 @@ describe('EntityInsertPanel.getWarningFieldList', () => {
 
 describe('EntityInsertPanel.getInferredFieldWarnings', () => {
     const lookup = { containerPath: '/Look', keyColumn: 'Name', displayColumn: 'Name', query: 'LookHere' };
-    const knownColumn = QueryColumn.create({
+    const knownColumn = new QueryColumn({
         name: 'known',
     });
-    const alsoKnownColumn = QueryColumn.create({
+    const alsoKnownColumn = new QueryColumn({
         name: 'alsoKnown',
     });
-    const aliasedColumn = QueryColumn.create({
+    const aliasedColumn = new QueryColumn({
         name: 'aliased',
     });
 
@@ -75,8 +75,8 @@ describe('EntityInsertPanel.getInferredFieldWarnings', () => {
                     new InferDomainResponse({
                         data: List<any>(),
                         fields: List<QueryColumn>([
-                            QueryColumn.create({ name: 'known' }),
-                            QueryColumn.create({ name: 'aliasName' }),
+                            new QueryColumn({ name: 'known' }),
+                            new QueryColumn({ name: 'aliasName' }),
                         ]),
                         reservedFields: List<QueryColumn>(),
                     }),
@@ -92,7 +92,7 @@ describe('EntityInsertPanel.getInferredFieldWarnings', () => {
     test('none unknown, one unique', () => {
         const columns = baseColumns.set(
             'barcode1',
-            QueryColumn.create({
+            new QueryColumn({
                 name: 'barcode1',
                 caption: 'Barcode 1',
                 conceptURI: STORAGE_UNIQUE_ID_CONCEPT_URI,
@@ -105,8 +105,8 @@ describe('EntityInsertPanel.getInferredFieldWarnings', () => {
                     new InferDomainResponse({
                         data: List<any>(),
                         fields: List<QueryColumn>([
-                            QueryColumn.create({ name: 'known' }),
-                            QueryColumn.create({ name: 'barcode1' }),
+                            new QueryColumn({ name: 'known' }),
+                            new QueryColumn({ name: 'barcode1' }),
                         ]),
                         reservedFields: List<QueryColumn>(),
                     }),
@@ -124,12 +124,12 @@ describe('EntityInsertPanel.getInferredFieldWarnings', () => {
     test('none unknown, multiple unique', () => {
         const columns = baseColumns.merge(
             OrderedMap<string, QueryColumn>({
-                barcode1: QueryColumn.create({
+                barcode1: new QueryColumn({
                     name: 'barcode1',
                     caption: 'Barcode 1',
                     conceptURI: STORAGE_UNIQUE_ID_CONCEPT_URI,
                 }),
-                otherCode: QueryColumn.create({
+                otherCode: new QueryColumn({
                     name: 'otherCode',
                     caption: 'Other Code',
                     conceptURI: STORAGE_UNIQUE_ID_CONCEPT_URI,
@@ -143,9 +143,9 @@ describe('EntityInsertPanel.getInferredFieldWarnings', () => {
                     new InferDomainResponse({
                         data: List<any>(),
                         fields: List<QueryColumn>([
-                            QueryColumn.create({ name: 'known' }),
-                            QueryColumn.create({ name: 'barcode1' }),
-                            QueryColumn.create({ name: 'Other Code' }),
+                            new QueryColumn({ name: 'known' }),
+                            new QueryColumn({ name: 'barcode1' }),
+                            new QueryColumn({ name: 'Other Code' }),
                         ]),
                         reservedFields: List<QueryColumn>(),
                     }),
@@ -167,8 +167,8 @@ describe('EntityInsertPanel.getInferredFieldWarnings', () => {
                     new InferDomainResponse({
                         data: List<any>(),
                         fields: List<QueryColumn>([
-                            QueryColumn.create({ name: 'known' }),
-                            QueryColumn.create({ name: 'Nonesuch' }),
+                            new QueryColumn({ name: 'known' }),
+                            new QueryColumn({ name: 'Nonesuch' }),
                         ]),
                         reservedFields: List<QueryColumn>(),
                     }),
@@ -184,12 +184,12 @@ describe('EntityInsertPanel.getInferredFieldWarnings', () => {
     test('multiple unknown, multiple unique', () => {
         const columns = baseColumns.merge(
             OrderedMap<string, QueryColumn>({
-                bcode: QueryColumn.create({
+                bcode: new QueryColumn({
                     name: 'bcode',
                     caption: 'Barcode',
                     conceptURI: STORAGE_UNIQUE_ID_CONCEPT_URI,
                 }),
-                otherCode: QueryColumn.create({
+                otherCode: new QueryColumn({
                     name: 'otherCode',
                     caption: 'Other Code',
                     conceptURI: STORAGE_UNIQUE_ID_CONCEPT_URI,
@@ -203,13 +203,13 @@ describe('EntityInsertPanel.getInferredFieldWarnings', () => {
                     new InferDomainResponse({
                         data: List<any>(),
                         fields: List<QueryColumn>([
-                            QueryColumn.create({ name: 'known' }),
-                            QueryColumn.create({ name: 'Nonesuch' }),
-                            QueryColumn.create({ name: 'Nonesuch' }),
-                            QueryColumn.create({ name: 'Not Again' }),
-                            QueryColumn.create({ name: 'bcode' }),
-                            QueryColumn.create({ name: 'OtherCode' }),
-                            QueryColumn.create({ name: 'OtherCode' }),
+                            new QueryColumn({ name: 'known' }),
+                            new QueryColumn({ name: 'Nonesuch' }),
+                            new QueryColumn({ name: 'Nonesuch' }),
+                            new QueryColumn({ name: 'Not Again' }),
+                            new QueryColumn({ name: 'bcode' }),
+                            new QueryColumn({ name: 'OtherCode' }),
+                            new QueryColumn({ name: 'OtherCode' }),
                         ]),
                         reservedFields: List<QueryColumn>(),
                     }),
@@ -232,12 +232,12 @@ describe('EntityInsertPanel.getInferredFieldWarnings', () => {
                     new InferDomainResponse({
                         data: List<any>(),
                         fields: List<QueryColumn>([
-                            QueryColumn.create({ name: 'known' }),
-                            QueryColumn.create({ name: 'parentA' }),
-                            QueryColumn.create({ name: 'parentB' }),
-                            QueryColumn.create({ name: 'parentc' }),
-                            QueryColumn.create({ name: 'materialInputs/X', lookup }),
-                            QueryColumn.create({ name: 'dataInputs/Y', lookup }),
+                            new QueryColumn({ name: 'known' }),
+                            new QueryColumn({ name: 'parentA' }),
+                            new QueryColumn({ name: 'parentB' }),
+                            new QueryColumn({ name: 'parentc' }),
+                            new QueryColumn({ name: 'materialInputs/X', lookup }),
+                            new QueryColumn({ name: 'dataInputs/Y', lookup }),
                         ]),
                         reservedFields: List<QueryColumn>(),
                     }),
@@ -257,10 +257,10 @@ describe('EntityInsertPanel.getInferredFieldWarnings', () => {
                     new InferDomainResponse({
                         data: List<any>(),
                         fields: List<QueryColumn>([
-                            QueryColumn.create({ name: 'known' }),
-                            QueryColumn.create({ name: 'alsoAllowed' }),
-                            QueryColumn.create({ name: 'materialInputs/X', lookup }),
-                            QueryColumn.create({ name: 'dataInputs/Y', lookup }),
+                            new QueryColumn({ name: 'known' }),
+                            new QueryColumn({ name: 'alsoAllowed' }),
+                            new QueryColumn({ name: 'materialInputs/X', lookup }),
+                            new QueryColumn({ name: 'dataInputs/Y', lookup }),
                         ]),
                         reservedFields: List<QueryColumn>(),
                     }),
@@ -285,10 +285,10 @@ describe('EntityInsertPanel.getNoUpdateFieldWarnings', () => {
                     new InferDomainResponse({
                         data: List<any>(),
                         fields: List<QueryColumn>([
-                            QueryColumn.create({ name: 'known' }),
-                            QueryColumn.create({ name: 'alsoAllowed' }),
-                            QueryColumn.create({ name: 'materialInputs/X', lookup }),
-                            QueryColumn.create({ name: 'dataInputs/Y', lookup }),
+                            new QueryColumn({ name: 'known' }),
+                            new QueryColumn({ name: 'alsoAllowed' }),
+                            new QueryColumn({ name: 'materialInputs/X', lookup }),
+                            new QueryColumn({ name: 'dataInputs/Y', lookup }),
                         ]),
                         reservedFields: List<QueryColumn>(),
                     }),

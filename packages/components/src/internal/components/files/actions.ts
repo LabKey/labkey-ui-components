@@ -28,7 +28,7 @@ export function convertRowDataIntoPreviewData(
     const integerFieldInds = [];
     if (fields && fields.size > 0) {
         fields.forEach((field, ind) => {
-            const rangeURI = field.get('rangeURI');
+            const rangeURI = field.rangeURI;
             if (
                 rangeURI &&
                 (rangeURI.toLowerCase() === 'xsd:int' ||

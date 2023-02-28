@@ -1,4 +1,3 @@
-import { List } from 'immutable';
 import { PermissionTypes } from '@labkey/api';
 
 import { User } from './components/base/models/User';
@@ -17,7 +16,7 @@ export const TEST_USER_GUEST = new User({
     isSignedIn: false,
     isSystemAdmin: false,
     isTrusted: false,
-    permissionsList: List<string>([PermissionTypes.Read]),
+    permissionsList: [PermissionTypes.Read],
 });
 
 export const TEST_USER_READER = new User({
@@ -36,13 +35,13 @@ export const TEST_USER_READER = new User({
     isSignedIn: true,
     isSystemAdmin: false,
     isTrusted: false,
-    permissionsList: List<string>([
+    permissionsList: [
         PermissionTypes.Read,
         PermissionTypes.ReadDataClass,
         PermissionTypes.ReadAssay,
         PermissionTypes.ReadMedia,
         PermissionTypes.ReadNotebooks,
-    ]),
+    ],
 });
 
 export const TEST_USER_AUTHOR = new User({
@@ -61,7 +60,7 @@ export const TEST_USER_AUTHOR = new User({
     isSignedIn: true,
     isSystemAdmin: false,
     isTrusted: false,
-    permissionsList: List<string>([PermissionTypes.Read, PermissionTypes.Insert]),
+    permissionsList: [PermissionTypes.Read, PermissionTypes.Insert],
 });
 
 export const TEST_USER_EDITOR = new User({
@@ -80,7 +79,7 @@ export const TEST_USER_EDITOR = new User({
     isSignedIn: true,
     isSystemAdmin: false,
     isTrusted: false,
-    permissionsList: List<string>([
+    permissionsList: [
         PermissionTypes.Delete,
         PermissionTypes.Read,
         PermissionTypes.Insert,
@@ -92,7 +91,7 @@ export const TEST_USER_EDITOR = new User({
         PermissionTypes.ReadDataClass,
         PermissionTypes.ReadAssay,
         PermissionTypes.ReadMedia,
-    ]),
+    ],
 });
 
 export const TEST_USER_EDITOR_WITHOUT_DELETE = new User({
@@ -111,7 +110,7 @@ export const TEST_USER_EDITOR_WITHOUT_DELETE = new User({
     isSignedIn: true,
     isSystemAdmin: false,
     isTrusted: false,
-    permissionsList: List<string>([
+    permissionsList: [
         PermissionTypes.Read,
         PermissionTypes.Insert,
         PermissionTypes.Update,
@@ -121,7 +120,7 @@ export const TEST_USER_EDITOR_WITHOUT_DELETE = new User({
         PermissionTypes.ReadDataClass,
         PermissionTypes.ReadAssay,
         PermissionTypes.ReadMedia,
-    ]),
+    ],
 });
 
 export const TEST_USER_ASSAY_DESIGNER = new User({
@@ -140,7 +139,7 @@ export const TEST_USER_ASSAY_DESIGNER = new User({
     isSignedIn: true,
     isSystemAdmin: false,
     isTrusted: false,
-    permissionsList: List<string>([PermissionTypes.Read, PermissionTypes.DesignAssay]),
+    permissionsList: [PermissionTypes.Read, PermissionTypes.DesignAssay],
 });
 
 export const TEST_USER_FOLDER_ADMIN = new User({
@@ -159,7 +158,7 @@ export const TEST_USER_FOLDER_ADMIN = new User({
     isSignedIn: true,
     isSystemAdmin: false,
     isTrusted: true,
-    permissionsList: List<string>([
+    permissionsList: [
         PermissionTypes.Delete,
         PermissionTypes.Read,
         PermissionTypes.DesignDataClass,
@@ -178,7 +177,7 @@ export const TEST_USER_FOLDER_ADMIN = new User({
         PermissionTypes.ReadMedia,
         PermissionTypes.CanSeeGroupDetails,
         PermissionTypes.CanSeeUserDetails,
-    ]),
+    ],
 });
 
 export const TEST_USER_PROJECT_ADMIN = new User({
@@ -197,7 +196,7 @@ export const TEST_USER_PROJECT_ADMIN = new User({
     isSignedIn: true,
     isSystemAdmin: false,
     isTrusted: true,
-    permissionsList: List<string>([
+    permissionsList: [
         PermissionTypes.Delete,
         PermissionTypes.Read,
         PermissionTypes.DesignDataClass,
@@ -217,7 +216,7 @@ export const TEST_USER_PROJECT_ADMIN = new User({
         PermissionTypes.ReadMedia,
         PermissionTypes.CanSeeGroupDetails,
         PermissionTypes.CanSeeUserDetails,
-    ]),
+    ],
 });
 
 export const TEST_USER_APP_ADMIN = new User({
@@ -236,7 +235,7 @@ export const TEST_USER_APP_ADMIN = new User({
     isSignedIn: true,
     isSystemAdmin: false,
     isTrusted: false,
-    permissionsList: List<string>([
+    permissionsList: [
         PermissionTypes.Delete,
         PermissionTypes.Read,
         PermissionTypes.DesignDataClass,
@@ -258,7 +257,7 @@ export const TEST_USER_APP_ADMIN = new User({
         PermissionTypes.ReadMedia,
         PermissionTypes.CanSeeGroupDetails,
         PermissionTypes.CanSeeUserDetails,
-    ]),
+    ],
 });
 
 export const TEST_USER_STORAGE_DESIGNER = new User({
@@ -275,7 +274,7 @@ export const TEST_USER_STORAGE_DESIGNER = new User({
     isSignedIn: false,
     isSystemAdmin: false,
     isTrusted: false,
-    permissionsList: List<string>([PermissionTypes.Read, PermissionTypes.DesignStorage]),
+    permissionsList: [PermissionTypes.Read, PermissionTypes.DesignStorage],
 });
 
 export const TEST_USER_STORAGE_EDITOR = new User({
@@ -292,12 +291,12 @@ export const TEST_USER_STORAGE_EDITOR = new User({
     isSignedIn: false,
     isSystemAdmin: false,
     isTrusted: false,
-    permissionsList: List<string>([
+    permissionsList: [
         PermissionTypes.Read,
         PermissionTypes.EditStorageData,
         PermissionTypes.ManageSampleWorkflows,
         PermissionTypes.ManagePicklists,
-    ]),
+    ],
 });
 
 export const TEST_USER_WORKFLOW_EDITOR = new User({
@@ -314,12 +313,12 @@ export const TEST_USER_WORKFLOW_EDITOR = new User({
     isSignedIn: false,
     isSystemAdmin: false,
     isTrusted: false,
-    permissionsList: List<string>([
+    permissionsList: [
         PermissionTypes.Read,
         PermissionTypes.ManageSampleWorkflows,
         PermissionTypes.SampleWorkflowDelete,
         PermissionTypes.ManagePicklists,
-    ]),
+    ],
 });
 
 export const TEST_USER_QC_ANALYST = new User({
@@ -336,5 +335,5 @@ export const TEST_USER_QC_ANALYST = new User({
     isSignedIn: false,
     isSystemAdmin: false,
     isTrusted: false,
-    permissionsList: List<string>([PermissionTypes.QCAnalyst]),
+    permissionsList: [PermissionTypes.QCAnalyst],
 });

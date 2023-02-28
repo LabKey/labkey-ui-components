@@ -464,10 +464,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             if (this.isAliquotField(column)) {
                 let col = column;
                 // Aliquot name can be auto generated, regardless of sample name expression config
-                if (column.fieldKey.toLowerCase() === 'name')
-                    col = col.merge({
-                        required: false,
-                    }) as QueryColumn;
+                if (column.fieldKey.toLowerCase() === 'name') col = col.mutate({ required: false });
                 columns = columns.set(key, col);
             }
         });

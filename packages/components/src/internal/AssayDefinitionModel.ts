@@ -79,7 +79,7 @@ export class AssayDefinitionModel extends Record({
 
             if (rawModel.domains) {
                 const rawDomains = Object.keys(rawModel.domains).reduce((result, k) => {
-                    result[k] = List<QueryColumn>(rawModel.domains[k].map(rawColumn => QueryColumn.create(rawColumn)));
+                    result[k] = List<QueryColumn>(rawModel.domains[k].map(rawColumn => new QueryColumn(rawColumn)));
                     return result;
                 }, {});
                 domains = Map<string, List<QueryColumn>>(rawDomains);

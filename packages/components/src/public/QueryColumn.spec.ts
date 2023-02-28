@@ -26,7 +26,7 @@ describe('QueryLookup', () => {
 
 describe('QueryColumn', () => {
     // prepare stuff we need
-    const validColumn = QueryColumn.create({
+    const validColumn = new QueryColumn({
         align: 'left',
         caption: 'Special Column',
         conceptURI: null,
@@ -59,7 +59,7 @@ describe('QueryColumn', () => {
         removeFromViews: false,
     });
 
-    const bogusColumn = QueryColumn.create({
+    const bogusColumn = new QueryColumn({
         align: 'left',
         caption: 'Special Column',
         conceptURI: null,
@@ -92,7 +92,7 @@ describe('QueryColumn', () => {
         removeFromViews: false,
     });
 
-    const materialSamplesColumn = QueryColumn.create({
+    const materialSamplesColumn = new QueryColumn({
         align: 'left',
         caption: 'Special Column',
         conceptURI: null,
@@ -125,7 +125,7 @@ describe('QueryColumn', () => {
         removeFromViews: false,
     });
 
-    const materialSamplesWithAllCapsColumn = QueryColumn.create({
+    const materialSamplesWithAllCapsColumn = new QueryColumn({
         align: 'left',
         caption: 'Special Column',
         conceptURI: null,
@@ -161,14 +161,14 @@ describe('QueryColumn', () => {
     test('index', () => {
         const singlePartFieldKey = new FieldKey(null, 'This<Arro|?#$!Thing');
 
-        const singlePartFieldKeyColumn = QueryColumn.create({
+        const singlePartFieldKeyColumn = new QueryColumn({
             fieldKey: singlePartFieldKey.toString(),
             fieldKeyArray: singlePartFieldKey.getParts(),
         });
 
         expect(singlePartFieldKeyColumn.index).toEqual(singlePartFieldKey.name);
 
-        const lookupFieldKeyColumn = QueryColumn.create({
+        const lookupFieldKeyColumn = new QueryColumn({
             fieldKey: singlePartFieldKey.toString(),
             fieldKeyArray: singlePartFieldKey.getParts(),
             fieldKeyPath: 'parent/' + singlePartFieldKey.toString(),
@@ -179,7 +179,7 @@ describe('QueryColumn', () => {
         const parentFieldKey = new FieldKey(null, 'runApplicationOutput');
         const multiPartFieldKey = new FieldKey(parentFieldKey, 'urn:recipe.labkey.org/#RecipeAmount');
 
-        const multiPartFieldKeyColumn = QueryColumn.create({
+        const multiPartFieldKeyColumn = new QueryColumn({
             fieldKey: multiPartFieldKey.toString(),
             fieldKeyArray: multiPartFieldKey.getParts(),
         });
@@ -193,12 +193,12 @@ describe('QueryColumn', () => {
         expect(materialSamplesColumn.isSampleLookup()).toBe(true);
         expect(materialSamplesWithAllCapsColumn.isSampleLookup()).toBe(true);
 
-        const samplesDataTypeColumnNonLookup = QueryColumn.create({
+        const samplesDataTypeColumnNonLookup = new QueryColumn({
             conceptURI: 'http://www.labkey.org/exp/xml#sample',
         });
         expect(samplesDataTypeColumnNonLookup.isSampleLookup()).toBe(false);
 
-        const samplesDataTypeColumnLookup = QueryColumn.create({
+        const samplesDataTypeColumnLookup = new QueryColumn({
             conceptURI: 'http://www.labkey.org/exp/xml#sample',
             lookup: {
                 displayColumn: 'Name',

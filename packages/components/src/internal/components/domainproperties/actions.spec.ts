@@ -234,9 +234,9 @@ describe('domain properties actions', () => {
         expect(initDomain.fields.get(1).rangeURI).toBe(INTEGER_TYPE.rangeURI);
 
         const newFields = [
-            QueryColumn.create({ name: 'text', rangeURI: TEXT_TYPE.rangeURI }),
-            QueryColumn.create({ name: 'dbl', rangeURI: DOUBLE_TYPE.rangeURI }),
-            QueryColumn.create({ name: 'dt', rangeURI: DATETIME_TYPE.rangeURI }),
+            new QueryColumn({ name: 'text', rangeURI: TEXT_TYPE.rangeURI }),
+            new QueryColumn({ name: 'dbl', rangeURI: DOUBLE_TYPE.rangeURI }),
+            new QueryColumn({ name: 'dt', rangeURI: DATETIME_TYPE.rangeURI }),
         ];
 
         const updatedDomain = setDomainFields(initDomain, List<QueryColumn>(newFields));

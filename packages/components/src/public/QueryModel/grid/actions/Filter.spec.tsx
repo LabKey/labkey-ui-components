@@ -59,7 +59,7 @@ describe('FilterAction::actionValueFromFilter', () => {
     });
 
     test('with label from QueryColumn', () => {
-        const col = QueryColumn.create({ shortCaption: 'otherLabel' });
+        const col = new QueryColumn({ shortCaption: 'otherLabel' });
         const filter = Filter.create('U mgS$L', 'x', Filter.Types.EQUAL);
         const value: ActionValue = action.actionValueFromFilter(filter, col);
         expect(value.displayValue).toBe('otherLabel = x');
@@ -67,21 +67,21 @@ describe('FilterAction::actionValueFromFilter', () => {
     });
 
     test('date formatting, date and time', () => {
-        const col = QueryColumn.create({ shortCaption: 'DateCol', jsonType: 'date', format: 'dd/MM/yyyy HH:mm' });
+        const col = new QueryColumn({ shortCaption: 'DateCol', jsonType: 'date', format: 'dd/MM/yyyy HH:mm' });
         const filter = Filter.create('DateCol', '2022-04-19 01:02', Filter.Types.EQUAL);
         const value: ActionValue = action.actionValueFromFilter(filter, col);
         expect(value.displayValue).toBe('DateCol = 19/04/2022 01:02');
     });
 
     test('date formatting, date only', () => {
-        const col = QueryColumn.create({ shortCaption: 'DateCol', jsonType: 'date', format: 'dd/MM/yyyy' });
+        const col = new QueryColumn({ shortCaption: 'DateCol', jsonType: 'date', format: 'dd/MM/yyyy' });
         const filter = Filter.create('DateCol', '2022-04-19 01:02', Filter.Types.EQUAL);
         const value: ActionValue = action.actionValueFromFilter(filter, col);
         expect(value.displayValue).toBe('DateCol = 19/04/2022');
     });
 
     test('date formatting, time only', () => {
-        const col = QueryColumn.create({ shortCaption: 'DateCol', jsonType: 'date', format: 'HH:mm:ss' });
+        const col = new QueryColumn({ shortCaption: 'DateCol', jsonType: 'date', format: 'HH:mm:ss' });
         const filter = Filter.create('DateCol', '2022-04-19 01:02', Filter.Types.EQUAL);
         const value: ActionValue = action.actionValueFromFilter(filter, col);
         expect(value.displayValue).toBe('DateCol = 01:02:00');

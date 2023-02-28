@@ -12,7 +12,7 @@ import { FieldLabel } from './FieldLabel';
 import { LabelOverlay } from './LabelOverlay';
 import { ToggleWithInputField } from './input/ToggleWithInputField';
 
-const queryColumn = QueryColumn.create({
+const queryColumn = new QueryColumn({
     name: 'testColumn',
     caption: 'test Column',
 });

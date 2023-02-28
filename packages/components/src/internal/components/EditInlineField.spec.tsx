@@ -157,7 +157,7 @@ describe('EditInlineField', () => {
                 {...DEFAULT_PROPS}
                 type="date"
                 value="2022-08-11"
-                column={QueryColumn.create({ format: 'MM/dd/YYYY HH:mm:ss' })}
+                column={new QueryColumn({ format: 'MM/dd/YYYY HH:mm:ss' })}
             />,
             SERVER_CONTEXT
         );
@@ -175,7 +175,7 @@ describe('EditInlineField', () => {
         const wrapper = mountWithServerContext(
             <EditInlineField
                 {...DEFAULT_PROPS}
-                column={QueryColumn.create({
+                column={new QueryColumn({
                     fieldKey: 'test',
                     readOnly: false,
                     userEditable: true,
@@ -199,7 +199,7 @@ describe('EditInlineField', () => {
         const wrapper = mountWithServerContext(
             <EditInlineField
                 {...DEFAULT_PROPS}
-                column={QueryColumn.create({
+                column={new QueryColumn({
                     fieldKey: 'test',
                     caption: 'Test',
                     readOnly: false,

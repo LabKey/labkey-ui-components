@@ -19,7 +19,7 @@ beforeAll(() => {
 
 describe('DatePickerInput', () => {
     const DEFAULT_PROPS = {
-        queryColumn: QueryColumn.create({ fieldKey: 'col', caption: 'Test Column', required: true }),
+        queryColumn: new QueryColumn({ fieldKey: 'col', caption: 'Test Column', required: true }),
     };
 
     function validate(wrapper: ReactWrapper, hasFieldLabel = true): void {

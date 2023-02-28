@@ -61,10 +61,11 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(({ onChange, onSuc
             // context update of the container's name and title.
             if (project?.id === container.id) {
                 dispatch({
-                    container: container.merge({
+                    container: new Container({
+                        ...container,
                         name: project.name,
                         title: project.title,
-                    }) as Container,
+                    }),
                 });
             }
         },

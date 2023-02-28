@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD February 2023
+### version 2.300.0
+*Released*: 28 February 2023
 - FilterFacetedSelector fix to better handle selection filters when we don't have all distinct values (i.e. > 250 facet filter values)
   - don't compare current selection to allValues if we don't have allValues
   - don't default to selected/checked if we don't have allValues

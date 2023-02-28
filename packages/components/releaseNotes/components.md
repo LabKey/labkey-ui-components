@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - SampleStatusTag to query for status type if not provided
 - getSampleStatuses() boolean property for whether API should include inUse information or not
+- Issue 47411: Include viewName in selectDistinct query for FilterFacetedSelector
 
 ### version 2.300.1
 *Released*: 28 February 2023

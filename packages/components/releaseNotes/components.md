@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.300.1
+*Released*: 28 February 2023
+- Add a `focusSeed` method to the `VisGraph` component which fits the graph to the seed node and then zooms in to an appropriate level.
+- Revise `fitGraph` to take determine whether or not the graph should be focused on the seed.
+
 ### version 2.300.0
 *Released*: 28 February 2023
 - FilterFacetedSelector fix to better handle selection filters when we don't have all distinct values (i.e. > 250 facet filter values)

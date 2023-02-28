@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.302.0
+*Released*: 28 February 2023
 - SampleStatusTag to query for status type if not provided
 - getSampleStatuses() boolean property for whether API should include inUse information or not
 - Issue 47411: Include viewName in selectDistinct query for FilterFacetedSelector

@@ -54,6 +54,12 @@ const distinctValuesRespLong = {
     queryName: 'sampleType1',
 };
 
+const distinctValuesRespSearch = {
+    values: ['hop', 'pop'],
+    schemaName: 'samples',
+    queryName: 'sampleType1',
+};
+
 const DEFAULT_PROPS = {
     api: getTestAPIWrapper(jest.fn, {
         query: getQueryTestAPIWrapper(jest.fn, {
@@ -70,7 +76,10 @@ const DEFAULT_PROPS = {
 const DEFAULT_PROPS_LONG = {
     api: getTestAPIWrapper(jest.fn, {
         query: getQueryTestAPIWrapper(jest.fn, {
-            selectDistinctRows: () => Promise.resolve(distinctValuesRespLong),
+            selectDistinctRows: (options) => {
+                if (options.filterArray?.[0]) return Promise.resolve(distinctValuesRespSearch);
+                return Promise.resolve(distinctValuesRespLong);
+            },
         }),
     }),
     fieldKey: 'stringField',

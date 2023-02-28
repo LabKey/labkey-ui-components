@@ -38,9 +38,11 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
     } = props;
 
     const [fieldDistinctValues, setFieldDistinctValues] = useState<string[]>(undefined);
+    const [searchDistinctValues, setSearchDistinctValues] = useState<string[]>(undefined);
     const [error, setError] = useState<string>(undefined);
     const [searchStr, setSearchStr] = useState<string>(undefined);
     const [allShown, setAllShown] = useState<boolean>(undefined);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         setDistinctValues(true);
@@ -49,6 +51,9 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
     const setDistinctValues = useCallback(
         async (checkForAll: boolean, searchStr?: string) => {
             try {
+                setLoading(true);
+                setError(undefined);
+
                 const filterArray = searchStr
                     ? [Filter.create(fieldKey, searchStr, Filter.Types.CONTAINS)].concat(
                           selectDistinctOptions?.filterArray
@@ -80,12 +85,22 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                     setAllShown(hasAllValues);
                 }
 
-                setFieldDistinctValues(distinctValues);
+                if (searchStr) {
+                    setSearchDistinctValues(distinctValues);
+                } else {
+                    setFieldDistinctValues(distinctValues);
+                }
             } catch (e) {
                 console.error(e);
                 setAllShown(true);
-                setFieldDistinctValues([]);
+                if (searchStr) {
+                    setSearchDistinctValues([]);
+                } else {
+                    setFieldDistinctValues([]);
+                }
                 setError(resolveErrorMessage(e));
+            } finally {
+                setLoading(false);
             }
         },
         [api.query, canBeBlank, fieldKey, selectDistinctOptions]
@@ -125,14 +140,10 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
     const filteredFieldDistinctValues = useMemo(() => {
         if (!searchStr) return fieldDistinctValues;
 
-        return fieldDistinctValues
-            ?.filter(val => {
-                return val !== ALL_VALUE_DISPLAY && val != EMPTY_VALUE_DISPLAY;
-            })
-            .filter(val => {
-                return val?.toLowerCase().indexOf(searchStr.toLowerCase()) > -1;
-            });
-    }, [fieldDistinctValues, searchStr]);
+        return searchDistinctValues?.filter(val => {
+            return val !== ALL_VALUE_DISPLAY && val != EMPTY_VALUE_DISPLAY;
+        });
+    }, [fieldDistinctValues, searchDistinctValues, searchStr]);
 
     if (!fieldDistinctValues || allShown === undefined) return <LoadingSpinner />;
 
@@ -165,36 +176,39 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                 )}
                 <Row>
                     <Col xs={taggedValues?.length > 0 ? 6 : 12}>
-                        <ul className="nav nav-stacked labkey-wizard-pills">
-                            {filteredFieldDistinctValues?.map((value, index) => {
-                                let displayValue = value;
-                                if (value === null || value === undefined) displayValue = '[blank]';
+                        {loading && <LoadingSpinner />}
+                        {!loading && (
+                            <ul className="nav nav-stacked labkey-wizard-pills">
+                                {filteredFieldDistinctValues?.map((value, index) => {
+                                    let displayValue = value;
+                                    if (value === null || value === undefined) displayValue = '[blank]';
 
-                                return (
-                                    <li key={index} className="filter-faceted__li">
-                                        <div className="form-check">
-                                            <input
-                                                className="form-check-input filter-faceted__checkbox"
-                                                type="checkbox"
-                                                name={'field-value-' + index}
-                                                onChange={event => onChange(value, event.target.checked)}
-                                                checked={checkedValues.indexOf(value) > -1}
-                                                disabled={disabled}
-                                            />
-                                            <div
-                                                className="filter-faceted__value"
-                                                onClick={() => onChange(value, true, true)}
-                                            >
-                                                {displayValue}
+                                    return (
+                                        <li key={index} className="filter-faceted__li">
+                                            <div className="form-check">
+                                                <input
+                                                    className="form-check-input filter-faceted__checkbox"
+                                                    type="checkbox"
+                                                    name={'field-value-' + index}
+                                                    onChange={event => onChange(value, event.target.checked)}
+                                                    checked={checkedValues.indexOf(value) > -1}
+                                                    disabled={disabled}
+                                                />
+                                                <div
+                                                    className="filter-faceted__value"
+                                                    onClick={() => onChange(value, true, true)}
+                                                >
+                                                    {displayValue}
+                                                </div>
                                             </div>
-                                        </div>
-                                    </li>
-                                );
-                            })}
-                            {searchStr && filteredFieldDistinctValues?.length === 0 && (
-                                <div className="field-modal__empty-msg">No value matches '{searchStr}'.</div>
-                            )}
-                        </ul>
+                                        </li>
+                                    );
+                                })}
+                                {searchStr && filteredFieldDistinctValues?.length === 0 && (
+                                    <div className="field-modal__empty-msg">No value matches '{searchStr}'.</div>
+                                )}
+                            </ul>
+                        )}
                     </Col>
                     {taggedValues?.length > 0 && (
                         <Col xs={6}>

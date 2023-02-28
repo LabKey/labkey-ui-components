@@ -179,7 +179,7 @@ export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: bool
 export const getSampleTypeTemplateUrl = (
     queryInfo: QueryInfo,
     importAliases: Record<string, string>,
-    excludeColumns: string[] = ['flag', 'Ancestors'],
+    excludeColumns: string[] = ['flag', 'Ancestors', 'RawAmount', 'RawUnits'],
     exportConfig: any = SAMPLE_EXPORT_CONFIG
 ): string => {
     const { schemaQuery } = queryInfo;

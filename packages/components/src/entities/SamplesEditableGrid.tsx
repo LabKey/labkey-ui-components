@@ -300,28 +300,32 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
 
         if (!user.canUpdate && userCanEditStorageData(user)) {
             const storageSampleRows = [];
+            const rowsMap = {};
+            if (convertedStorageData?.normalizedRowsMap) {
+                Object.keys(convertedStorageData.normalizedRowsMap).forEach(sampleId => {
+                    const storageItemData = convertedStorageData.normalizedRowsMap[sampleId];
+                    rowsMap[sampleId] = {
+                        materialId: parseInt(sampleId),
+                        rowId: storageItemData.rowId,
+                        freezeThawCount: storageItemData.freezeThawCount,
+                    }
+                });
+            }
             sampleRows.forEach(row => {
                 const sampleId = caseInsensitive(row, 'rowId');
-                const storageItem = convertedStorageData?.normalizedRowsMap?.[sampleId];
-                const storageSampleRow = {
+                const storageSampleRow = rowsMap[sampleId] ?? {
                     materialId: sampleId,
                 };
-                if (storageItem) {
-                    Object.assign(storageSampleRow, {
-                        rowId: storageItem.rowId,
-                        freezeThawCount: storageItem.freezeThawCount
-                    });
-                }
                 Object.assign(storageSampleRow,
                 {
-                    materialId: caseInsensitive(row, 'rowId'),
                     StoredAmount: caseInsensitive(row, 'StoredAmount'),
                     Units: caseInsensitive(row, 'Units'),
                 });
                 storageSampleRows.push(storageSampleRow);
+                rowsMap[sampleId] = storageSampleRow;
             });
 
-            return updateSampleStorageData(storageSampleRows);
+            return updateSampleStorageData(Object.values(rowsMap));
         }
         else {
             const commands = [];
@@ -430,7 +434,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         if (!user.canUpdate && userCanEditStorageData(user)) {
             let updatedColumns = List<QueryColumn>();
             allColumns.forEach(col => {
-                if (['name', 'storedamount', 'units', 'rawamount', 'rawunits'].indexOf(col.fieldKey.toLowerCase()) !== -1)
+                if (['name', 'storedamount', 'units'].indexOf(col.fieldKey.toLowerCase()) !== -1)
                     updatedColumns = updatedColumns.push(col);
             });
             return updatedColumns;

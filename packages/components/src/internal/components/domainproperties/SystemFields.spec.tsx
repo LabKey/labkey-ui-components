@@ -9,7 +9,7 @@ import { SystemFields } from './SystemFields';
 
 describe('SystemFields', () => {
     function verifyEnableCheckbox(enableCheckboxes: any, isExpDateDisabled: boolean) {
-        expect(enableCheckboxes.length).toEqual(4 * 2);
+        expect(enableCheckboxes.length).toEqual(7 * 2);
         const nameCheckbox = enableCheckboxes.at(0);
         expect(nameCheckbox.prop('checked')).toBeTruthy();
         expect(nameCheckbox.prop('disabled')).toBeTruthy();

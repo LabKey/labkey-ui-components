@@ -460,9 +460,10 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
             originalParents,
             includedTabs,
             parentTypeOptions,
+            consumedStatusIds,
         } = this.state;
 
-        if (determineLineage && this.hasParentDataTypes() && !originalParents) {
+        if ((determineLineage && this.hasParentDataTypes() && !originalParents) || !consumedStatusIds) {
             return <LoadingSpinner />;
         }
 

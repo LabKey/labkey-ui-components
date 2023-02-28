@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - SampleStatusTag to query for status type if not provided
+- getSampleStatuses() boolean property for whether API should include inUse information or not
 
 ### version 2.300.0
 *Released*: 28 February 2023

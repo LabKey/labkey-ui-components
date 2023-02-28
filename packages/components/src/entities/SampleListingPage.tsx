@@ -64,9 +64,9 @@ export const hasPermissions = (
     user: User,
     perms: string[],
     isSharedContainer?: boolean,
-    sharedContainerPermissions?: List<string>
+    sharedContainerPermissions?: string[]
 ): boolean => {
-    const allPerms = isSharedContainer ? sharedContainerPermissions : user.get('permissionsList');
+    const allPerms = isSharedContainer ? sharedContainerPermissions : user.permissionsList;
 
     if (!allPerms) return false;
 
@@ -140,7 +140,7 @@ export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
     const [showPrintDialog, setShowPrintDialog] = useState(false);
     const [showAddToStorage, setShowAddToStorage] = useState(false);
     const [showConfirmDeleteSampleType, setShowConfirmDeleteSampleType] = useState(false);
-    const [sharedContainerPermissions, setSharedContainerPermissions] = useState<List<string>>();
+    const [sharedContainerPermissions, setSharedContainerPermissions] = useState<string[]>();
     const containerFilter = useMemo(() => getContainerFilterForLookups(), []);
 
     const detailsModel = queryModels[DETAIL_GRID_ID];
@@ -150,7 +150,7 @@ export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
     useEffect(() => {
         getUserSharedContainerPermissions()
             .then(permissions => {
-                setSharedContainerPermissions(fromJS(permissions));
+                setSharedContainerPermissions(permissions);
             })
             .catch(reason => {
                 console.error(reason);

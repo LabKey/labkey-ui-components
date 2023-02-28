@@ -2,7 +2,7 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { List, Record } from 'immutable';
+import { Record } from 'immutable';
 import { ActionURL, getServerContext } from '@labkey/api';
 
 import { ComponentType } from 'react';
@@ -12,7 +12,7 @@ import { User } from '../components/base/models/User';
 
 const user = new User({
     ...getServerContext().user,
-    permissionsList: List(getServerContext().container?.effectivePermissions ?? []),
+    permissionsList: getServerContext().container?.effectivePermissions ?? [],
 });
 
 export enum LogoutReason {

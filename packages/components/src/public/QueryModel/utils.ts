@@ -77,10 +77,7 @@ export function runDetailsColumnsForQueryModel(model: QueryModel, reRunSupport: 
     if (replacedByIndex > -1) {
         if (includeRerunColumns) {
             // Direct manipulation by index is ok here because displayColumns returns a new array every time.
-            columns[replacedByIndex] = columns[replacedByIndex].set(
-                'detailRenderer',
-                'assayrunreference'
-            ) as QueryColumn;
+            columns[replacedByIndex] = columns[replacedByIndex].mutate({ detailRenderer: 'assayrunreference' });
         } else {
             columns = columns.filter((col, index): boolean => replacedByIndex !== index);
         }
@@ -90,7 +87,7 @@ export function runDetailsColumnsForQueryModel(model: QueryModel, reRunSupport: 
         const replaces = model.getColumn('ReplacesRun');
 
         if (replaces) {
-            const column = replaces.set('detailRenderer', 'assayrunreference') as QueryColumn;
+            const column = replaces.mutate({ detailRenderer: 'assayrunreference' });
 
             if (replacedByIndex > -1) {
                 columns = [...columns.slice(0, replacedByIndex + 1), column, ...columns.slice(replacedByIndex)];

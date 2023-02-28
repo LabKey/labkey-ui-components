@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { List } from 'immutable';
 import { PermissionTypes } from '@labkey/api';
 
 import { isLoading, LoadingState } from '../../../public/LoadingState';
@@ -13,23 +12,22 @@ import { resolveErrorMessage } from '../../util/messaging';
  * Applies the permissions on the container to the user. Only permission related User fields are mutated.
  */
 function applyPermissions(container: Container, user: User): User {
-    return user.withMutations(u => {
-        // Must set "isAdmin" and "permissionsList" prior to configuring
-        // permission bits (e.g. "canDelete", "canUpdate", etc).
-        const contextUser = u.merge({
-            isAdmin: container.effectivePermissions.indexOf(PermissionTypes.Admin) > -1,
-            permissionsList: List(container.effectivePermissions),
-        }) as User;
-
-        // Update permission bits that are explicitly defined on the user.
-        return contextUser.merge({
-            canDelete: contextUser.hasDeletePermission(),
-            canDeleteOwn: contextUser.hasDeletePermission(),
-            canInsert: contextUser.hasInsertPermission(),
-            canUpdate: contextUser.hasUpdatePermission(),
-            canUpdateOwn: contextUser.hasUpdatePermission(),
-        });
+    // Must set "isAdmin" and "permissionsList" prior to configuring
+    // permission bits (e.g. "canDelete", "canUpdate", etc).
+    const contextUser = new User({
+        ...user,
+        isAdmin: container.effectivePermissions.indexOf(PermissionTypes.Admin) > -1,
+        permissionsList: container.effectivePermissions,
     }) as User;
+
+    return new User({
+        ...contextUser,
+        canDelete: contextUser.hasDeletePermission(),
+        canDeleteOwn: contextUser.hasDeletePermission(),
+        canInsert: contextUser.hasInsertPermission(),
+        canUpdate: contextUser.hasUpdatePermission(),
+        canUpdateOwn: contextUser.hasUpdatePermission(),
+    });
 }
 
 export interface ContainerUser {

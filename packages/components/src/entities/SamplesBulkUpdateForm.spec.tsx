@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 
 import { fromJS } from 'immutable';
 
@@ -103,19 +103,30 @@ describe('SamplesBulkUpdateForm', () => {
         user: TEST_USER_EDITOR,
         createNotification: jest.fn(),
         dismissNotifications: jest.fn(),
+        viewName: undefined,
     };
 
     test('all selected are samples', () => {
         const wrapper = mount(<SamplesBulkUpdateFormBase {...DEFAULT_PROPS} />);
         const queryInfo = wrapper.find(BulkUpdateForm).prop('queryInfo');
         expect(queryInfo.columns.size).toBe(4);
-        expect(queryInfo.columns.get('description')).toBe(COLUMN_DESCRIPTION);
-        expect(queryInfo.columns.get('samplestate')).toBe(COLUMN_STATUS);
-        expect(queryInfo.columns.get('meta')).toBe(COLUMN_META);
-        expect(queryInfo.columns.get('independent')).toBe(COLUMN_INDEPENDENT);
+        expect(queryInfo.columns.get('description')).toStrictEqual(COLUMN_DESCRIPTION);
+        expect(queryInfo.columns.get('samplestate')).toStrictEqual(COLUMN_STATUS);
+        expect(queryInfo.columns.get('meta')).toStrictEqual(COLUMN_META);
+        expect(queryInfo.columns.get('independent')).toStrictEqual(COLUMN_INDEPENDENT);
         expect(queryInfo.columns.get('aliquotspecific')).toBeUndefined();
         wrapper.unmount();
     });
+
+    function validateWithAliquots(wrapper: ReactWrapper) {
+        const queryInfo = wrapper.find(BulkUpdateForm).prop('queryInfo');
+        expect(queryInfo.columns.size).toBe(4);
+        expect(queryInfo.columns.get('description')).toStrictEqual(COLUMN_DESCRIPTION);
+        expect(queryInfo.columns.get('samplestate')).toStrictEqual(COLUMN_STATUS);
+        expect(queryInfo.columns.get('meta')).toBeUndefined();
+        expect(queryInfo.columns.get('aliquotspecific')).toStrictEqual(COLUMN_ALIQUOT);
+        expect(queryInfo.columns.get('independent')).toStrictEqual(COLUMN_INDEPENDENT);
+    }
 
     test('all selected are aliquots', () => {
         const props = {
@@ -123,14 +134,7 @@ describe('SamplesBulkUpdateForm', () => {
             aliquots: [1, 2, 3],
         };
         const wrapper = mount(<SamplesBulkUpdateFormBase {...props} />);
-        const queryInfo = wrapper.find(BulkUpdateForm).prop('queryInfo');
-        expect(queryInfo.columns.size).toBe(4);
-        expect(queryInfo.columns.get('description')).toBe(COLUMN_DESCRIPTION);
-        expect(queryInfo.columns.get('samplestate')).toBe(COLUMN_STATUS);
-        expect(queryInfo.columns.get('meta')).toBeUndefined();
-        expect(queryInfo.columns.get('aliquotspecific')).toBe(COLUMN_ALIQUOT);
-        expect(queryInfo.columns.get('independent')).toBe(COLUMN_INDEPENDENT);
-
+        validateWithAliquots(wrapper);
         wrapper.unmount();
     });
 
@@ -140,14 +144,7 @@ describe('SamplesBulkUpdateForm', () => {
             aliquots: [1],
         };
         const wrapper = mount(<SamplesBulkUpdateFormBase {...props} />);
-        const queryInfo = wrapper.find(BulkUpdateForm).prop('queryInfo');
-        expect(queryInfo.columns.size).toBe(4);
-        expect(queryInfo.columns.get('description')).toBe(COLUMN_DESCRIPTION);
-        expect(queryInfo.columns.get('samplestate')).toBe(COLUMN_STATUS);
-        expect(queryInfo.columns.get('meta')).toBeUndefined();
-        expect(queryInfo.columns.get('aliquotspecific')).toBe(COLUMN_ALIQUOT);
-        expect(queryInfo.columns.get('independent')).toBe(COLUMN_INDEPENDENT);
-
+        validateWithAliquots(wrapper);
         wrapper.unmount();
     });
 
@@ -157,14 +154,7 @@ describe('SamplesBulkUpdateForm', () => {
             aliquots: [1, 2],
         };
         const wrapper = mount(<SamplesBulkUpdateFormBase {...props} />);
-        const queryInfo = wrapper.find(BulkUpdateForm).prop('queryInfo');
-        expect(queryInfo.columns.size).toBe(4);
-        expect(queryInfo.columns.get('description')).toBe(COLUMN_DESCRIPTION);
-        expect(queryInfo.columns.get('samplestate')).toBe(COLUMN_STATUS);
-        expect(queryInfo.columns.get('meta')).toBeUndefined();
-        expect(queryInfo.columns.get('aliquotspecific')).toBe(COLUMN_ALIQUOT);
-        expect(queryInfo.columns.get('independent')).toBe(COLUMN_INDEPENDENT);
-
+        validateWithAliquots(wrapper);
         wrapper.unmount();
     });
 });

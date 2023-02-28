@@ -61,7 +61,7 @@ describe('GridFilterModal', () => {
 
         // add a filter
         wrapper.find(QueryFilterPanel).prop('onFilterUpdate')(
-            QueryColumn.create({ fieldKey: 'a' }),
+            new QueryColumn({ fieldKey: 'a' }),
             [Filter.create('a', '1')],
             0
         );
@@ -69,7 +69,7 @@ describe('GridFilterModal', () => {
         expect(wrapper.find('.btn-success').prop('disabled')).toBe(false);
 
         // remove the filter for the same field
-        wrapper.find(QueryFilterPanel).prop('onFilterUpdate')(QueryColumn.create({ fieldKey: 'a' }), undefined, 0);
+        wrapper.find(QueryFilterPanel).prop('onFilterUpdate')(new QueryColumn({ fieldKey: 'a' }), undefined, 0);
         await waitForLifecycle(wrapper);
         expect(wrapper.find('.btn-success').prop('disabled')).toBe(true);
         wrapper.unmount();

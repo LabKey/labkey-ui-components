@@ -47,8 +47,9 @@ describe('QueryFilterPanel', () => {
         wrapper.unmount();
     });
 
-    test('skipDefaultViewCheck', () => {
+    test('skipDefaultViewCheck', async () => {
         const wrapper = mount(<QueryFilterPanel {...DEFAULT_PROPS} skipDefaultViewCheck />);
+        await waitForLifecycle(wrapper);
         validate(wrapper, 28);
         wrapper.unmount();
     });
@@ -99,7 +100,7 @@ describe('QueryFilterPanel', () => {
         const props = {...DEFAULT_PROPS};
         let queryInfo = props.queryInfo;
         let col: QueryColumn = queryInfo.getDisplayColumns().find(field => field.jsonType === 'string');
-        col = col.set('filterable', false) as QueryColumn;
+        col = col.mutate({ filterable: false });
         queryInfo = queryInfo.setIn(['columns', col.fieldKey.toLowerCase()], col) as QueryInfo;
         props.queryInfo = queryInfo;
         const wrapper = mount(

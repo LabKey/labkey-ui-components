@@ -1,13 +1,10 @@
 import React from 'react';
 import { PermissionTypes } from '@labkey/api';
 
-import {
-    TEST_USER_APP_ADMIN,
-    TEST_USER_ASSAY_DESIGNER,
-    TEST_USER_EDITOR,
-    TEST_USER_READER,
-} from '../../userFixtures';
+import { TEST_USER_APP_ADMIN, TEST_USER_ASSAY_DESIGNER, TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
 import { mountWithServerContext } from '../../testHelpers';
+
+import { User } from './models/User';
 
 import { RequiresPermission } from './Permissions';
 
@@ -89,7 +86,7 @@ describe('<RequiresPermission/>', () => {
     });
     test('respects checkIsAdmin', () => {
         // Arrange
-        const ADMIN_READER = TEST_USER_READER.set('isAdmin', true);
+        const ADMIN_READER = new User({ ...TEST_USER_READER, isAdmin: true });
 
         // Act
         // "checkIsAdmin" defaults to true

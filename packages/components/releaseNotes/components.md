@@ -11,6 +11,15 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Account for storedAmount and Units fields now on samples grids
   * Don't display amount and units in details display
 
+### version 2.299.0
+*Released*: 27 February 2023
+- QueryColumn: convert to plain class
+- AppURL: convert to plain class
+- Container: convert to plain class
+- User: convert to plain class
+- QuerySort: convert to plain class
+- WebDavFile: convert to plain class
+
 ### version 2.298.0
 *Released*: 25 February 2023
 - Support Enable/Disable “System Default Fields”

@@ -137,16 +137,15 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         if (!queryInfo) return;
 
         const fields = skipDefaultViewCheck ? queryInfo.getAllColumns(viewName) : queryInfo.getDisplayColumns(viewName);
-        setQueryFields(
-            fromJS(
-                fields.filter(
-                    field => field.filterable && (
-                        !validFilterField ||
-                        validFilterField(field, queryInfo, entityDataType?.exprColumnsWithSubSelect)
-                    )
+        const qF = fromJS(
+            fields.filter(
+                field => field.filterable && (
+                    !validFilterField ||
+                    validFilterField(field, queryInfo, entityDataType?.exprColumnsWithSubSelect)
                 )
             )
         );
+        setQueryFields(qF);
         if (fieldKey) {
             const field = fields.find(f => f.getDisplayFieldKey() === fieldKey);
             setActiveField(field);

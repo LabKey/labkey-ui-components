@@ -813,6 +813,14 @@ describe('getFilterValuesAsArray', () => {
             'c',
         ]);
     });
+
+    test('null value, checkNull false', () => {
+        expect(getFilterValuesAsArray(Filter.create('textField', null, Filter.Types.IN), '[empty]')).toStrictEqual([null]);
+    });
+
+    test('null value, checkNull true', () => {
+        expect(getFilterValuesAsArray(Filter.create('textField', null, Filter.Types.IN), '[empty]', true)).toStrictEqual([]);
+    });
 });
 
 describe('getFieldFiltersValidationResult', () => {
@@ -983,12 +991,20 @@ const blankFilter = Filter.create(fieldKey, null, Filter.Types.ISBLANK);
 const notblankFilter = Filter.create(fieldKey, null, Filter.Types.NONBLANK);
 
 describe('getCheckedFilterValues', () => {
+    test('no filter or values', () => {
+        expect(getCheckedFilterValues(null, undefined)).toEqual([]);
+    });
+
     test('no filter', () => {
         expect(getCheckedFilterValues(null, distinctValues)).toEqual(distinctValues);
     });
 
     test('any filter', () => {
         expect(getCheckedFilterValues(anyFilter, distinctValues)).toEqual(distinctValues);
+    });
+
+    test('with filter but no values', () => {
+        expect(getCheckedFilterValues(checkedTwo, undefined)).toEqual(['ed', 'ned']);
     });
 
     test('eq one', () => {
@@ -1121,6 +1137,7 @@ describe('getUpdatedChooseValuesFilter', () => {
 
     test('check another, from eq one', () => {
         validate(getUpdatedChooseValuesFilter(distinctValues, fieldKey, 'ned', true, checkedOne), 'in', ['ed', 'ned']);
+        validate(getUpdatedChooseValuesFilter(undefined, fieldKey, 'ned', true, checkedOne), 'in', ['ed', 'ned']);
     });
 
     test('check blank, from eq one', () => {
@@ -1136,6 +1153,7 @@ describe('getUpdatedChooseValuesFilter', () => {
 
     test('two checked, then uncheck one', () => {
         validate(getUpdatedChooseValuesFilter(distinctValues, fieldKey, 'ed', false, checkedTwo), 'eq', 'ned');
+        validate(getUpdatedChooseValuesFilter(undefined, fieldKey, 'ed', false, checkedTwo), 'eq', 'ned');
     });
 
     test('two checked, then uncheck another so blank is the only value left', () => {
@@ -1158,6 +1176,7 @@ describe('getUpdatedChooseValuesFilter', () => {
 
     test('none checked, then check one', () => {
         validate(getUpdatedChooseValuesFilter(distinctValues, fieldKey, 'ed', true, checkedZero), 'eq', 'ed');
+        validate(getUpdatedChooseValuesFilter(undefined, fieldKey, 'ed', true, checkedZero), 'eq', 'ed');
     });
 
     test('all checked, then check blank and uncheck everything else', () => {
@@ -1172,6 +1191,7 @@ describe('getUpdatedChooseValuesFilter', () => {
             '',
             'bed',
         ]);
+        validate(getUpdatedChooseValuesFilter(undefined, fieldKey, 'red', true, checkedThree), 'in', ['ed', 'ned','ted','red']);
     });
 
     test('half checked, then uncheck one', () => {
@@ -1179,10 +1199,15 @@ describe('getUpdatedChooseValuesFilter', () => {
             'ned',
             'ted',
         ]);
+        validate(getUpdatedChooseValuesFilter(undefined, fieldKey, 'ed', false, checkedThree), 'in', [
+            'ned',
+            'ted',
+        ]);
     });
 
     test('one checked, then uncheck that one', () => {
         validate(getUpdatedChooseValuesFilter(distinctValues, fieldKey, 'ed', false, checkedOne), 'notany');
+        validate(getUpdatedChooseValuesFilter(undefined, fieldKey, 'ed', false, checkedOne), 'notany');
     });
 
     test('one unchecked, then check that one', () => {

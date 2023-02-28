@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.301.0
+*Released*: 28 February 2023
 - Add ability to delete projects while in-app
 
 ### version 2.300.1

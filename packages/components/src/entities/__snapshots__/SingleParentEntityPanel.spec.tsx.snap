@@ -5883,6 +5883,8 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
           ],
           "requiredColumns": [
             "Name",
+            "SampleState",
+            "SampleState/StatusType",
           ],
           "schemaQuery": SchemaQuery {
             "queryName": "Second Source",
@@ -6041,6 +6043,8 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             ],
             "requiredColumns": [
               "Name",
+              "SampleState",
+              "SampleState/StatusType",
             ],
             "schemaQuery": SchemaQuery {
               "queryName": "Second Source",
@@ -6231,6 +6235,8 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
               "queryParameters": undefined,
               "requiredColumns": [
                 "Name",
+                "SampleState",
+                "SampleState/StatusType",
               ],
               "rowCount": undefined,
               "rows": undefined,
@@ -6367,6 +6373,8 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                 "queryParameters": undefined,
                 "requiredColumns": [
                   "Name",
+                  "SampleState",
+                  "SampleState/StatusType",
                 ],
                 "rowCount": undefined,
                 "rows": undefined,
@@ -6484,6 +6492,8 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                     "queryParameters": undefined,
                     "requiredColumns": [
                       "Name",
+                      "SampleState",
+                      "SampleState/StatusType",
                     ],
                     "rowCount": undefined,
                     "rows": undefined,

@@ -137,7 +137,7 @@ export class QueryInfo extends Record({
         let columns = OrderedMap<string, QueryColumn>();
         Object.keys(queryInfoJson.columns).forEach(columnKey => {
             const rawColumn = queryInfoJson.columns[columnKey];
-            columns = columns.set(rawColumn.fieldKey.toLowerCase(), QueryColumn.create(rawColumn));
+            columns = columns.set(rawColumn.fieldKey.toLowerCase(), new QueryColumn(rawColumn));
         });
 
         const disabledSystemFields = new Set<string>();
@@ -219,10 +219,10 @@ export class QueryInfo extends Record({
 
                 if (c !== undefined) {
                     if (col.title !== undefined) {
-                        c = c.merge({
+                        c = c.mutate({
                             caption: col.title,
                             shortCaption: col.title,
-                        }) as QueryColumn;
+                        });
                     }
 
                     return list.push(c);
@@ -313,7 +313,7 @@ export class QueryInfo extends Record({
             })
             .map(column => {
                 if (lowerReadOnlyColumnsList && lowerReadOnlyColumnsList.indexOf(column.fieldKey.toLowerCase()) > -1) {
-                    return column.set('readOnly', true) as QueryColumn;
+                    return column.mutate({ readOnly: true });
                 } else {
                     return column;
                 }

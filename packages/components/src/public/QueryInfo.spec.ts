@@ -51,8 +51,8 @@ describe('QueryInfo', () => {
 
     const queryInfo = QueryInfo.fromJSON(sampleSetQueryInfo);
     let newColumns = OrderedMap<string, QueryColumn>();
-    newColumns = newColumns.set(FIRST_COL_KEY, QueryColumn.create(sampleSet3QueryColumn));
-    newColumns = newColumns.set(SECOND_COL_KEY, QueryColumn.create(nameExpSetQueryColumn));
+    newColumns = newColumns.set(FIRST_COL_KEY, new QueryColumn(sampleSet3QueryColumn));
+    newColumns = newColumns.set(SECOND_COL_KEY, new QueryColumn(nameExpSetQueryColumn));
 
     describe('insertColumns', () => {
         test('negative columnIndex', () => {

@@ -174,11 +174,9 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                     <div className="name-id-setting__setting-section">
                         <div className="list__bold-text margin-bottom margin-top">ID/Name Prefix</div>
                         <div>
-                            Enter a prefix to be applied to all Sample Types and{' '}
-                            {sampleManagerIsPrimaryApp(moduleContext)
-                                ? 'Source Types'
-                                : 'Data Classes (e.g., CellLine, Construct)'}
-                            . Prefixes generally are 2-3 characters long but will not be limited.
+                            Enter a prefix to the Naming Pattern for all new Samples and{' '}
+                            {sampleManagerIsPrimaryApp(moduleContext) ? 'Sources' : 'Data Classes'}. No existing
+                            IDs/Names will be changed.
                         </div>
 
                         {loading && <LoadingSpinner />}

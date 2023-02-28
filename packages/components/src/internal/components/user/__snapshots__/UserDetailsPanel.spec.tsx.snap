@@ -61,8 +61,8 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
     />
     <EffectiveRolesList
       currentUser={
-        Immutable.Record {
-          "id": 1005,
+        User {
+          "avatar": "/labkey/_images/defaultavatar.png",
           "canDelete": true,
           "canDeleteOwn": true,
           "canInsert": true,
@@ -70,8 +70,7 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
           "canUpdateOwn": true,
           "displayName": "AppAdminDisplayName",
           "email": "guest",
-          "phone": null,
-          "avatar": "/labkey/_images/defaultavatar.png",
+          "id": 1005,
           "isAdmin": true,
           "isAnalyst": false,
           "isDeveloper": false,
@@ -81,7 +80,7 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
           "isSystemAdmin": false,
           "isTrusted": false,
           "maxAllowedPhi": undefined,
-          "permissionsList": Immutable.List [
+          "permissionsList": [
             "org.labkey.api.security.permissions.DeletePermission",
             "org.labkey.api.security.permissions.ReadPermission",
             "org.labkey.api.security.permissions.DesignDataClassPermission",
@@ -104,6 +103,7 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
             "org.labkey.api.security.permissions.SeeGroupDetailsPermission",
             "org.labkey.api.security.permissions.SeeUserDetailsPermission",
           ],
+          "phone": null,
         }
       }
       policy={
@@ -1009,8 +1009,8 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
     />
     <Memo()
       currentUser={
-        Immutable.Record {
-          "id": 1005,
+        User {
+          "avatar": "/labkey/_images/defaultavatar.png",
           "canDelete": true,
           "canDeleteOwn": true,
           "canInsert": true,
@@ -1018,8 +1018,7 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
           "canUpdateOwn": true,
           "displayName": "AppAdminDisplayName",
           "email": "guest",
-          "phone": null,
-          "avatar": "/labkey/_images/defaultavatar.png",
+          "id": 1005,
           "isAdmin": true,
           "isAnalyst": false,
           "isDeveloper": false,
@@ -1029,7 +1028,7 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
           "isSystemAdmin": false,
           "isTrusted": false,
           "maxAllowedPhi": undefined,
-          "permissionsList": Immutable.List [
+          "permissionsList": [
             "org.labkey.api.security.permissions.DeletePermission",
             "org.labkey.api.security.permissions.ReadPermission",
             "org.labkey.api.security.permissions.DesignDataClassPermission",
@@ -1052,6 +1051,7 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
             "org.labkey.api.security.permissions.SeeGroupDetailsPermission",
             "org.labkey.api.security.permissions.SeeUserDetailsPermission",
           ],
+          "phone": null,
         }
       }
       showLinks={true}
@@ -1135,8 +1135,8 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
     />
     <EffectiveRolesList
       currentUser={
-        Immutable.Record {
-          "id": 1005,
+        User {
+          "avatar": "/labkey/_images/defaultavatar.png",
           "canDelete": true,
           "canDeleteOwn": true,
           "canInsert": true,
@@ -1144,8 +1144,7 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
           "canUpdateOwn": true,
           "displayName": "AppAdminDisplayName",
           "email": "guest",
-          "phone": null,
-          "avatar": "/labkey/_images/defaultavatar.png",
+          "id": 1005,
           "isAdmin": true,
           "isAnalyst": false,
           "isDeveloper": false,
@@ -1155,7 +1154,7 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
           "isSystemAdmin": false,
           "isTrusted": false,
           "maxAllowedPhi": undefined,
-          "permissionsList": Immutable.List [
+          "permissionsList": [
             "org.labkey.api.security.permissions.DeletePermission",
             "org.labkey.api.security.permissions.ReadPermission",
             "org.labkey.api.security.permissions.DesignDataClassPermission",
@@ -1178,6 +1177,7 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
             "org.labkey.api.security.permissions.SeeGroupDetailsPermission",
             "org.labkey.api.security.permissions.SeeUserDetailsPermission",
           ],
+          "phone": null,
         }
       }
       policy={
@@ -2083,8 +2083,8 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
     />
     <Memo()
       currentUser={
-        Immutable.Record {
-          "id": 1005,
+        User {
+          "avatar": "/labkey/_images/defaultavatar.png",
           "canDelete": true,
           "canDeleteOwn": true,
           "canInsert": true,
@@ -2092,8 +2092,7 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
           "canUpdateOwn": true,
           "displayName": "AppAdminDisplayName",
           "email": "guest",
-          "phone": null,
-          "avatar": "/labkey/_images/defaultavatar.png",
+          "id": 1005,
           "isAdmin": true,
           "isAnalyst": false,
           "isDeveloper": false,
@@ -2103,7 +2102,7 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
           "isSystemAdmin": false,
           "isTrusted": false,
           "maxAllowedPhi": undefined,
-          "permissionsList": Immutable.List [
+          "permissionsList": [
             "org.labkey.api.security.permissions.DeletePermission",
             "org.labkey.api.security.permissions.ReadPermission",
             "org.labkey.api.security.permissions.DesignDataClassPermission",
@@ -2126,6 +2125,7 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
             "org.labkey.api.security.permissions.SeeGroupDetailsPermission",
             "org.labkey.api.security.permissions.SeeUserDetailsPermission",
           ],
+          "phone": null,
         }
       }
       showLinks={true}
@@ -2210,8 +2210,8 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
     />
     <EffectiveRolesList
       currentUser={
-        Immutable.Record {
-          "id": 1005,
+        User {
+          "avatar": "/labkey/_images/defaultavatar.png",
           "canDelete": true,
           "canDeleteOwn": true,
           "canInsert": true,
@@ -2219,8 +2219,7 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
           "canUpdateOwn": true,
           "displayName": "AppAdminDisplayName",
           "email": "guest",
-          "phone": null,
-          "avatar": "/labkey/_images/defaultavatar.png",
+          "id": 1005,
           "isAdmin": true,
           "isAnalyst": false,
           "isDeveloper": false,
@@ -2230,7 +2229,7 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
           "isSystemAdmin": false,
           "isTrusted": false,
           "maxAllowedPhi": undefined,
-          "permissionsList": Immutable.List [
+          "permissionsList": [
             "org.labkey.api.security.permissions.DeletePermission",
             "org.labkey.api.security.permissions.ReadPermission",
             "org.labkey.api.security.permissions.DesignDataClassPermission",
@@ -2253,6 +2252,7 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
             "org.labkey.api.security.permissions.SeeGroupDetailsPermission",
             "org.labkey.api.security.permissions.SeeUserDetailsPermission",
           ],
+          "phone": null,
         }
       }
       policy={
@@ -3158,8 +3158,8 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
     />
     <Memo()
       currentUser={
-        Immutable.Record {
-          "id": 1005,
+        User {
+          "avatar": "/labkey/_images/defaultavatar.png",
           "canDelete": true,
           "canDeleteOwn": true,
           "canInsert": true,
@@ -3167,8 +3167,7 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
           "canUpdateOwn": true,
           "displayName": "AppAdminDisplayName",
           "email": "guest",
-          "phone": null,
-          "avatar": "/labkey/_images/defaultavatar.png",
+          "id": 1005,
           "isAdmin": true,
           "isAnalyst": false,
           "isDeveloper": false,
@@ -3178,7 +3177,7 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
           "isSystemAdmin": false,
           "isTrusted": false,
           "maxAllowedPhi": undefined,
-          "permissionsList": Immutable.List [
+          "permissionsList": [
             "org.labkey.api.security.permissions.DeletePermission",
             "org.labkey.api.security.permissions.ReadPermission",
             "org.labkey.api.security.permissions.DesignDataClassPermission",
@@ -3201,6 +3200,7 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
             "org.labkey.api.security.permissions.SeeGroupDetailsPermission",
             "org.labkey.api.security.permissions.SeeUserDetailsPermission",
           ],
+          "phone": null,
         }
       }
       groups={4973}

@@ -22,11 +22,11 @@ export class InferDomainResponse extends Record({
             }
 
             if (rawModel.fields) {
-                fields = List(rawModel.fields.map(QueryColumn.create));
+                fields = List(rawModel.fields.map(field => new QueryColumn(field)));
             }
 
             if (rawModel.reservedFields) {
-                reservedFields = List(rawModel.reservedFields.map(QueryColumn.create));
+                reservedFields = List(rawModel.reservedFields.map(field => new QueryColumn(field)));
             }
         }
 

@@ -9,31 +9,31 @@ import { SelectInput } from '../forms/input/SelectInput';
 
 import { FilterExpressionView } from './FilterExpressionView';
 
-const stringField = QueryColumn.create({
+const stringField = new QueryColumn({
     name: 'StringField',
     caption: 'StringField',
     rangeURI: TEXT_TYPE.rangeURI,
     jsonType: 'string',
 });
-const doubleField = QueryColumn.create({
+const doubleField = new QueryColumn({
     name: 'DoubleField',
     caption: 'DoubleField',
     rangeURI: DOUBLE_TYPE.rangeURI,
     jsonType: 'float',
 });
-const intField = QueryColumn.create({
+const intField = new QueryColumn({
     name: 'IntField',
     caption: 'IntField',
     rangeURI: INTEGER_TYPE.rangeURI,
     jsonType: 'int',
 });
-const booleanField = QueryColumn.create({
+const booleanField = new QueryColumn({
     name: 'BooleanField',
     caption: 'BooleanField',
     rangeURI: BOOLEAN_TYPE.rangeURI,
     jsonType: 'boolean',
 });
-const dateField = QueryColumn.create({
+const dateField = new QueryColumn({
     name: 'DateField',
     caption: 'DateField',
     rangeURI: DATE_TYPE.rangeURI,

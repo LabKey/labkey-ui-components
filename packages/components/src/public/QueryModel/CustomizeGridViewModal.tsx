@@ -19,7 +19,9 @@ export const includedColumnsForCustomizationFilter = (column: QueryColumn, showA
     return (
         (showAllColumns || !column.hidden) &&
         !column.removeFromViews &&
-        (showPremiumFeatures() || !column.removeFromViewCustomization)
+        (showPremiumFeatures() || !column.removeFromViewCustomization) &&
+        // Issue 46870: Don't allow selection/inclusion of multi-valued lookup fields from Ancestors
+        (!column.fieldKeyPath?.startsWith('Ancestors/') || !column.isJunctionLookup())
     );
 };
 
@@ -351,8 +353,8 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
     }, []);
 
     const updateColumnTitle = useCallback(
-        (updatedColumn: QueryColumn, title: string) => {
-            const relabeledColumn = updatedColumn.set('caption', title);
+        (updatedColumn: QueryColumn, caption: string) => {
+            const relabeledColumn = updatedColumn.mutate({ caption });
             const index = columnsInView.findIndex(column => column.index === updatedColumn.index);
             setColumnsInView([...columnsInView.slice(0, index), relabeledColumn, ...columnsInView.slice(index + 1)]);
             setIsDirty(true);

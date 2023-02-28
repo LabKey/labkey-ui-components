@@ -4,6 +4,7 @@
  */
 import { Map } from 'immutable';
 import { handleActions } from 'redux-actions';
+import { User } from '../components/base/models/User';
 
 import { ProductMenuModel } from '../components/navigation/model';
 
@@ -37,13 +38,13 @@ export const AppReducers = handleActions<AppReducerState, any>(
 
         [UPDATE_USER]: (state: AppReducerState, action: any) => {
             return state.merge({
-                user: state.user.merge(action.userProps),
+                user: new User({ ...state.user, ...action.userProps }),
             });
         },
 
         [UPDATE_USER_DISPLAY_NAME]: (state: AppReducerState, action: any) => {
             return state.merge({
-                user: state.user.set('displayName', action.displayName),
+                user: new User({ ...state.user, displayName: action.displayName }),
             });
         },
 

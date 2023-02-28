@@ -25,34 +25,34 @@ describe('isFilterColumnNameMatch', () => {
     const filter = Filter.create('Column', 'Value');
 
     test('by column name', () => {
-        expect(isFilterColumnNameMatch(filter, QueryColumn.create({ name: '' }))).toBeFalsy();
-        expect(isFilterColumnNameMatch(filter, QueryColumn.create({ name: 'column' }))).toBeFalsy();
-        expect(isFilterColumnNameMatch(filter, QueryColumn.create({ name: ' Column ' }))).toBeFalsy();
-        expect(isFilterColumnNameMatch(filter, QueryColumn.create({ name: 'Column' }))).toBeTruthy();
+        expect(isFilterColumnNameMatch(filter, new QueryColumn({ name: '' }))).toBeFalsy();
+        expect(isFilterColumnNameMatch(filter, new QueryColumn({ name: 'column' }))).toBeFalsy();
+        expect(isFilterColumnNameMatch(filter, new QueryColumn({ name: ' Column ' }))).toBeFalsy();
+        expect(isFilterColumnNameMatch(filter, new QueryColumn({ name: 'Column' }))).toBeTruthy();
     });
 
     test('by fieldKey', () => {
-        expect(isFilterColumnNameMatch(filter, QueryColumn.create({ fieldKey: '' }))).toBeFalsy();
-        expect(isFilterColumnNameMatch(filter, QueryColumn.create({ fieldKey: 'column' }))).toBeFalsy();
-        expect(isFilterColumnNameMatch(filter, QueryColumn.create({ fieldKey: ' Column ' }))).toBeFalsy();
-        expect(isFilterColumnNameMatch(filter, QueryColumn.create({ fieldKey: 'Column' }))).toBeTruthy();
+        expect(isFilterColumnNameMatch(filter, new QueryColumn({ fieldKey: '' }))).toBeFalsy();
+        expect(isFilterColumnNameMatch(filter, new QueryColumn({ fieldKey: 'column' }))).toBeFalsy();
+        expect(isFilterColumnNameMatch(filter, new QueryColumn({ fieldKey: ' Column ' }))).toBeFalsy();
+        expect(isFilterColumnNameMatch(filter, new QueryColumn({ fieldKey: 'Column' }))).toBeTruthy();
     });
 
     test('lookup fieldKey', () => {
         const lkFilter = Filter.create('Column/Lookup', 'Value');
         expect(
-            isFilterColumnNameMatch(lkFilter, QueryColumn.create({ fieldKey: 'Column', lookup: { displayColumn: '' } }))
+            isFilterColumnNameMatch(lkFilter, new QueryColumn({ fieldKey: 'Column', lookup: { displayColumn: '' } }))
         ).toBeFalsy();
         expect(
             isFilterColumnNameMatch(
                 lkFilter,
-                QueryColumn.create({ fieldKey: 'Column', lookup: { displayColumn: 'lookup' } })
+                new QueryColumn({ fieldKey: 'Column', lookup: { displayColumn: 'lookup' } })
             )
         ).toBeFalsy();
         expect(
             isFilterColumnNameMatch(
                 lkFilter,
-                QueryColumn.create({ fieldKey: 'Column', lookup: { displayColumn: 'Lookup' } })
+                new QueryColumn({ fieldKey: 'Column', lookup: { displayColumn: 'Lookup' } })
             )
         ).toBeTruthy();
     });
@@ -64,7 +64,7 @@ describe('HeaderCellDropdown', () => {
         column: new GridColumn({
             index: 'column',
             title: 'Column',
-            raw: QueryColumn.create({ fieldKey: 'column', sortable: true, filterable: true }),
+            raw: new QueryColumn({ fieldKey: 'column', sortable: true, filterable: true }),
         }),
         model: makeTestQueryModel(new SchemaQuery('schema', 'query')),
         handleSort: jest.fn,
@@ -119,7 +119,7 @@ describe('HeaderCellDropdown', () => {
                     new GridColumn({
                         index: 'column',
                         title: 'Column',
-                        raw: QueryColumn.create({ fieldKey: 'column', sortable: false, filterable: false }),
+                        raw: new QueryColumn({ fieldKey: 'column', sortable: false, filterable: false }),
                     })
                 }
             />
@@ -136,7 +136,7 @@ describe('HeaderCellDropdown', () => {
                     new GridColumn({
                         index: 'column',
                         title: 'Column',
-                        raw: QueryColumn.create({ fieldKey: 'column', sortable: false, filterable: false }),
+                        raw: new QueryColumn({ fieldKey: 'column', sortable: false, filterable: false }),
                     })
                 }
                 handleAddColumn={jest.fn}
@@ -155,7 +155,7 @@ describe('HeaderCellDropdown', () => {
                     new GridColumn({
                         index: 'column',
                         title: 'Column',
-                        raw: QueryColumn.create({ fieldKey: 'column', sortable: false, filterable: false }),
+                        raw: new QueryColumn({ fieldKey: 'column', sortable: false, filterable: false }),
                     })
                 }
                 handleAddColumn={jest.fn}
@@ -177,7 +177,7 @@ describe('HeaderCellDropdown', () => {
                     new GridColumn({
                         index: 'column',
                         title: 'Column',
-                        raw: QueryColumn.create({ fieldKey: 'column', sortable: false, filterable: false }),
+                        raw: new QueryColumn({ fieldKey: 'column', sortable: false, filterable: false }),
                     })
                 }
                 handleAddColumn={jest.fn}
@@ -199,7 +199,7 @@ describe('HeaderCellDropdown', () => {
                     new GridColumn({
                         index: 'column',
                         title: 'Column',
-                        raw: QueryColumn.create({ fieldKey: 'column', sortable: true, filterable: false }),
+                        raw: new QueryColumn({ fieldKey: 'column', sortable: true, filterable: false }),
                     })
                 }
             />
@@ -216,7 +216,7 @@ describe('HeaderCellDropdown', () => {
                     new GridColumn({
                         index: 'column',
                         title: 'Column',
-                        raw: QueryColumn.create({ fieldKey: 'column', sortable: true, filterable: false }),
+                        raw: new QueryColumn({ fieldKey: 'column', sortable: true, filterable: false }),
                     })
                 }
                 handleHideColumn={jest.fn}
@@ -234,7 +234,7 @@ describe('HeaderCellDropdown', () => {
                     new GridColumn({
                         index: 'column',
                         title: 'Column',
-                        raw: QueryColumn.create({ fieldKey: 'column', sortable: false, filterable: true }),
+                        raw: new QueryColumn({ fieldKey: 'column', sortable: false, filterable: true }),
                     })
                 }
             />
@@ -251,7 +251,7 @@ describe('HeaderCellDropdown', () => {
                     new GridColumn({
                         index: 'column',
                         title: 'Column',
-                        raw: QueryColumn.create({ fieldKey: 'column', sortable: false, filterable: true }),
+                        raw: new QueryColumn({ fieldKey: 'column', sortable: false, filterable: true }),
                     })
                 }
                 handleHideColumn={jest.fn}
@@ -417,7 +417,7 @@ describe('HeaderCellDropdown', () => {
 
 describe('EditableColumnTitle', () => {
     test('Not editing, with caption', () => {
-        const column = QueryColumn.create({
+        const column = new QueryColumn({
             caption: 'Test Column',
             name: 'Testing',
         });
@@ -430,7 +430,7 @@ describe('EditableColumnTitle', () => {
     test('Not editing, no caption', () => {
         const wrapper = mount(
             <EditableColumnTitle
-                column={QueryColumn.create({ name: 'TestName' })}
+                column={new QueryColumn({ name: 'TestName' })}
                 onChange={jest.fn()}
                 onCancel={jest.fn()}
             />
@@ -443,7 +443,7 @@ describe('EditableColumnTitle', () => {
     test('Not editing with nbsp', () => {
         const wrapper = mount(
             <EditableColumnTitle
-                column={QueryColumn.create({ name: 'TestName', caption: '&nbsp;' })}
+                column={new QueryColumn({ name: 'TestName', caption: '&nbsp;' })}
                 onChange={jest.fn()}
                 onCancel={jest.fn()}
             />
@@ -456,7 +456,7 @@ describe('EditableColumnTitle', () => {
     test('Editing with nbsp', () => {
         const wrapper = mount(
             <EditableColumnTitle
-                column={QueryColumn.create({ name: 'TestName', caption: '&nbsp;' })}
+                column={new QueryColumn({ name: 'TestName', caption: '&nbsp;' })}
                 onChange={jest.fn()}
                 onCancel={jest.fn()}
                 editing
@@ -468,7 +468,7 @@ describe('EditableColumnTitle', () => {
     });
 
     test('Editing', async () => {
-        const column = QueryColumn.create({
+        const column = new QueryColumn({
             caption: 'Test Column',
             name: 'Testing',
         });

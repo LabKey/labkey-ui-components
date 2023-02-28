@@ -22,7 +22,7 @@ import { decodePart, encodePart, SchemaQuery } from '../../../public/SchemaQuery
 import { IEntityDetails } from '../domainproperties/entities/models';
 import { SelectInputOption } from '../forms/input/SelectInput';
 import { capitalizeFirstChar, caseInsensitive, generateId } from '../../util/utils';
-import { QueryColumn } from '../../../public/QueryColumn';
+import { QueryColumn, QueryLookup } from '../../../public/QueryColumn';
 import { SCHEMAS } from '../../schemas';
 import { SampleCreationType } from '../samples/models';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
@@ -136,14 +136,14 @@ export class EntityParentType extends Record({
             displayColumn = 'scientificName';
         }
 
-        return QueryColumn.create({
+        return new QueryColumn({
             caption: this.isAliquotParent ? QueryColumn.ALIQUOTED_FROM_CAPTION : formattedQueryName + captionSuffix,
             description: this.isAliquotParent
                 ? 'The parent sample of the aliquot'
                 : 'Contains optional parent entity for this ' + formattedQueryName,
             fieldKeyArray: [parentColName],
             fieldKey: parentColName,
-            lookup: {
+            lookup: new QueryLookup({
                 displayColumn,
                 isPublic: true,
                 keyColumn: 'RowId',
@@ -151,8 +151,7 @@ export class EntityParentType extends Record({
                 queryName: this.query,
                 schemaName: this.schema,
                 viewName: ViewInfo.DETAIL_NAME, // use the details view to assure we see values even if default view is filtered
-                table: this.isAliquotParent ? QueryColumn.MATERIAL_INPUTS : parentInputType,
-            },
+            }),
             name: parentColName,
             required: this.isAliquotParent,
             shownInInsertView: true,

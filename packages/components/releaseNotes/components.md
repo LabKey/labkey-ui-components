@@ -7,6 +7,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 - getSampleStatuses() boolean property for whether API should include inUse information or not
 - Issue 47411: Include viewName in selectDistinct query for FilterFacetedSelector
 
+### version 2.301.0
+*Released*: 28 February 2023
+- Add ability to delete projects while in-app
+
 ### version 2.300.1
 *Released*: 28 February 2023
 - Add a `focusSeed` method to the `VisGraph` component which fits the graph to the seed node and then zooms in to an appropriate level.

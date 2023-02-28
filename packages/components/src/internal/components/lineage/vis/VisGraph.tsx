@@ -6,9 +6,10 @@ import React, { Component } from 'react';
 import { DataSet, Edge, IdType, Network, Node } from 'vis-network';
 
 import { isCombinedNode, VisGraphCombinedNode, VisGraphNodeType, VisGraphOptions } from '../models';
+
 import { VisGraphControls } from './VisGraphControls';
 
-export type HoverNodeCoords = { top: number; left: number; bottom: number; right: number };
+export type HoverNodeCoords = { bottom: number; left: number; right: number; top: number };
 
 // Directly from https://github.com/visjs/vis-network/blob/v6.5.2/lib/network/shapes.ts#L9
 /**
@@ -29,8 +30,8 @@ function drawCircle(ctx: CanvasRenderingContext2D, x: number, y: number, r: numb
 interface InternalVisNetwork extends Network {
     body: {
         container: HTMLElement;
-        nodes: { [key: string]: InternalVisNode };
         nodeIndices: IdType[];
+        nodes: { [key: string]: InternalVisNode };
     };
     layoutEngine: {
         _centerParent: (node: InternalVisNode) => void;
@@ -39,16 +40,16 @@ interface InternalVisNetwork extends Network {
 
 // defined in vis/lib/network/modules/components/Node.js
 interface InternalVisNode {
-    options: Node;
-    id: string;
-    shape: {
-        top: number;
-        left: number;
-        width: number;
-        height: number;
-        radius: number;
-    };
     hover: boolean;
+    id: string;
+    options: Node;
+    shape: {
+        height: number;
+        left: number;
+        radius: number;
+        top: number;
+        width: number;
+    };
     x: number;
     y: number;
 }
@@ -61,8 +62,8 @@ interface VisPointerEvent {
 
 interface VisClickEvent {
     edges: Array<number | string>;
-    nodes: Array<number | string>;
     event: MouseEvent;
+    nodes: Array<number | string>;
     pointer: VisPointerEvent;
 }
 
@@ -74,19 +75,19 @@ interface VisDeselectEvent extends VisClickEvent {
 }
 
 interface VisHoverEvent {
-    node: string;
     event: MouseEvent;
+    node: string;
     pointer: VisPointerEvent;
 }
 
 interface VisGraphProps {
     fitOnResize?: boolean;
-    onNodeClick?: (clickedNode: VisGraphNodeType) => void;
-    onNodeDoubleClick?: (clickedNode: VisGraphNodeType) => void;
-    onNodeSelect?: (selectedNodes: VisGraphNodeType[]) => void;
-    onNodeDeselect?: (selectedNodes: VisGraphNodeType[], previousSelectedNodes: VisGraphNodeType[]) => void;
-    onNodeHover?: (node: VisGraphNodeType, coords: HoverNodeCoords) => void;
     onNodeBlur?: () => void;
+    onNodeClick?: (clickedNode: VisGraphNodeType) => void;
+    onNodeDeselect?: (selectedNodes: VisGraphNodeType[], previousSelectedNodes: VisGraphNodeType[]) => void;
+    onNodeDoubleClick?: (clickedNode: VisGraphNodeType) => void;
+    onNodeHover?: (node: VisGraphNodeType, coords: HoverNodeCoords) => void;
+    onNodeSelect?: (selectedNodes: VisGraphNodeType[]) => void;
     options: VisGraphOptions;
     seed?: string;
 }
@@ -169,7 +170,24 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
     };
 
     fitGraph = (): void => {
-        this.network.fit();
+        // NK: This is a arbitrarily set heuristic for deciding when to focus vs when to fit to
+        // the entire graph. I'm trying to delineate "small" graphs from "large" graphs.
+        if (this.network.body.nodeIndices.length > 50) {
+            this.focusSeed();
+        } else {
+            this.network.fit();
+        }
+    };
+
+    focusSeed = (): void => {
+        // Focus on the seed
+        this.network.fit({ animation: false, nodes: [this.props.seed] });
+
+        // Zoom out a bit from the default fitted zoom level
+        const scale = this.network.getScale() - 0.25;
+        if (scale > 0) {
+            this.network.moveTo({ scale });
+        }
     };
 
     private getInternalNode = (id: IdType): InternalVisNode => {
@@ -224,9 +242,7 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
             selected: this.unique(prevState.selected, addToSelection),
         }));
 
-        if (this.props.onNodeSelect) {
-            this.props.onNodeSelect(selectedNodes);
-        }
+        this.props.onNodeSelect?.(selectedNodes);
     };
 
     // create a new array from the two arrays with any duplicates removed
@@ -247,9 +263,7 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
         const id = visEvent.nodes[0];
         const clickedNode = this.getNode(id);
         if (clickedNode) {
-            if (this.props.onNodeClick) {
-                this.props.onNodeClick(clickedNode);
-            }
+            this.props.onNodeClick?.(clickedNode);
         } else {
             // it could happen that the graph was reset after an expanded node was selected in which case the selected node might no longer exist
             // the node specified by selected no longer exist so reset selected
@@ -268,24 +282,19 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
 
     private onDoubleClick = (visEvent: VisClickEvent): void => {
         if (visEvent.nodes.length === 1) {
-            const clickedNode = this.getNode(visEvent.nodes[0]);
-            if (this.props.onNodeDoubleClick) {
-                this.props.onNodeDoubleClick(clickedNode);
-            }
+            this.props.onNodeDoubleClick?.(this.getNode(visEvent.nodes[0]));
         }
     };
 
     private onNodeBlur = (): void => {
         this.network.body.container.style.cursor = 'default';
-        if (this.props.onNodeBlur) {
-            this.props.onNodeBlur();
-        }
+        this.props.onNodeBlur?.();
     };
 
-    private onNodeDeselect = (visEvent: VisDeselectEvent) => {
-        const selectedNodes = this.getNodes(visEvent.nodes);
-        const previousSelectedNodes = this.getNodes(visEvent.previousSelection.nodes);
+    private onNodeDeselect = (visEvent: VisDeselectEvent): void => {
         if (this.props.onNodeDeselect) {
+            const selectedNodes = this.getNodes(visEvent.nodes);
+            const previousSelectedNodes = this.getNodes(visEvent.previousSelection.nodes);
             this.props.onNodeDeselect(selectedNodes, previousSelectedNodes);
         }
     };

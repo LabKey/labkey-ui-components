@@ -941,11 +941,13 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         "security": ServerSecurityAPIWrapper {
           "addGroupMembers": [Function],
           "createGroup": [Function],
+          "deleteContainer": [Function],
           "deleteGroup": [Function],
           "fetchContainers": [Function],
           "fetchGroups": [Function],
           "fetchPolicy": [Function],
           "getAuditLogData": [Function],
+          "getDeletionSummaries": [Function],
           "getGroupMemberships": [Function],
           "getUserLimitSettings": [Function],
           "removeGroupMembers": [Function],

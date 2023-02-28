@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.301.0
+*Released*: 28 February 2023
+- Add ability to delete projects while in-app
+
 ### version 2.300.1
 *Released*: 28 February 2023
 - Add a `focusSeed` method to the `VisGraph` component which fits the graph to the seed node and then zooms in to an appropriate level.

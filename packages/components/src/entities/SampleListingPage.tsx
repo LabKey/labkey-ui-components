@@ -228,7 +228,7 @@ export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
                 true
             );
         }
-    }, [listModel.queryInfoLoadingState]);
+    }, [detailsModel, listModel.queryInfoLoadingState, sampleType]);
 
     const isSharedSampleType = useMemo(() => {
         if (detailsModel && !detailsModel.isLoading) return getIsSharedModel(detailsModel);

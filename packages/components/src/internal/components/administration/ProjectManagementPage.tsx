@@ -12,7 +12,7 @@ import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
 import { AUDIT_KEY } from '../../app/constants';
 import { AUDIT_EVENT_TYPE_PARAM, PROJECT_AUDIT_QUERY } from '../auditlog/constants';
 import { Alert } from '../base/Alert';
-import { getLocation } from '../../util/URL';
+import { getLocation, removeParameters } from '../../util/URL';
 
 const Buttons: FC<RequiresModelAndActions> = memo(() => {
     return (
@@ -28,7 +28,10 @@ export const ProjectManagementPage: FC = memo(() => {
 
     useEffect(() => {
         const successMessage = getLocation().query?.get('successMsg');
-        if (successMessage) setSuccessMsg(`${decodeURI(successMessage)} successfully deleted.`);
+        if (successMessage) {
+            setSuccessMsg(`${decodeURI(successMessage)} successfully deleted.`);
+            removeParameters(getLocation(), 'successMsg');
+        }
     }, []);
 
     const queryConfig: QueryConfig = useMemo(

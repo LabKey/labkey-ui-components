@@ -13,6 +13,7 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { useAppContext } from '../../AppContext';
 import { Summary } from '../security/APIWrapper';
+import { Alert } from '../base/Alert';
 
 interface CommentAreaProps {
     comment: string;
@@ -53,11 +54,12 @@ export const BodyEmpty: FC<CommentAreaProps> = memo(({ comment, onChangeComment 
 
 interface BodyProps {
     comment: string;
+    error: string;
     isLoading: boolean;
     onChangeComment: ChangeEventHandler<HTMLTextAreaElement>;
     summaries: Summary[];
 }
-export const Body: FC<BodyProps> = memo(({ summaries, comment, isLoading, onChangeComment }) => {
+export const Body: FC<BodyProps> = memo(({ summaries, comment, isLoading, onChangeComment, error }) => {
     return (
         <Modal.Body>
             <div className="delete-project-modal__text">
@@ -70,7 +72,9 @@ export const Body: FC<BodyProps> = memo(({ summaries, comment, isLoading, onChan
 
             <b> Project Data </b>
 
-            {isLoading ? (
+            {error && <Alert bsStyle="danger">{error}</Alert>}
+
+            {!error && isLoading ? (
                 <LoadingSpinner wrapperClassName="delete-project-modal__spinner" />
             ) : (
                 <table className="table table-responsive table-condensed delete-project-modal__table ">
@@ -103,7 +107,9 @@ export const BodyDeleting: FC<BodyDeletingProps> = memo(({ totalCountFromSummari
 
     return (
         <Modal.Body>
-            <div className="deleting-project-modal-text">Please don't close this page until deleting is done.</div>
+            <div className="deleting-project-modal-text">
+                Please don't close this page until until deletion is complete.
+            </div>
             <Progress delay={0} estimate={totalCountFromSummaries * 15} toggle={toggle} />
         </Modal.Body>
     );
@@ -119,6 +125,7 @@ export const DeleteProjectModal: FC<Props> = memo(props => {
     const { projectName, onCancel, onError } = props;
     const [summaries, setSummaries] = useState<Summary[]>([]);
     const [comment, setComment] = useState<string>(undefined);
+    const [error, setError] = useState<string>(undefined);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
@@ -133,7 +140,8 @@ export const DeleteProjectModal: FC<Props> = memo(props => {
                 setIsLoading(false);
             } catch (e) {
                 // getDeletionSummaries() handles error logging
-                // Purposely leave loading spinner indefinitely in case of summary retrieval failure
+                setError(resolveErrorMessage(e));
+                setIsLoading(false);
             }
         })();
     }, [api.security]);
@@ -166,11 +174,11 @@ export const DeleteProjectModal: FC<Props> = memo(props => {
                 container.parentPath
             ).toString();
 
-            window.location.href = user.isAdmin ? adminProjectsHref : homeHref;
+            window.location.href = user.isRootAdmin ? adminProjectsHref : homeHref;
         } catch (e) {
             onError(resolveErrorMessage(e) ?? `${projectName} could not be deleted. Please try again.`);
         }
-    }, [api.security, comment, container.parentPath, onError, projectName, user.isAdmin]);
+    }, [api.security, comment, container.parentPath, onError, projectName, user.isRootAdmin]);
 
     const totalCountFromSummaries = useMemo(
         () =>
@@ -180,7 +188,7 @@ export const DeleteProjectModal: FC<Props> = memo(props => {
         [summaries]
     );
 
-    const noData = !isLoading && summaries.length === 0;
+    const noData = !isLoading && summaries.length === 0 && !error;
 
     return (
         <Modal onHide={onHide} show>
@@ -193,7 +201,13 @@ export const DeleteProjectModal: FC<Props> = memo(props => {
             ) : noData ? (
                 <BodyEmpty onChangeComment={onChangeComment} comment={comment} />
             ) : (
-                <Body comment={comment} onChangeComment={onChangeComment} summaries={summaries} isLoading={isLoading} />
+                <Body
+                    comment={comment}
+                    onChangeComment={onChangeComment}
+                    summaries={summaries}
+                    isLoading={isLoading}
+                    error={error}
+                />
             )}
 
             {!isDeleting && (

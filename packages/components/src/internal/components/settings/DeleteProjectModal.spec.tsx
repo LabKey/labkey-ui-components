@@ -18,6 +18,8 @@ import { AppContext } from '../../AppContext';
 
 import { Progress } from '../base/Progress';
 
+import { Alert } from '../base/Alert';
+
 import { DeleteProjectModal } from './DeleteProjectModal';
 
 describe('ProjectSettings', () => {
@@ -45,13 +47,40 @@ describe('ProjectSettings', () => {
         };
     }
 
+    function getAppContextWithMockRejectedValue(error: string): Partial<AppContext> {
+        return {
+            api: getTestAPIWrapper(jest.fn, {
+                security: getSecurityTestAPIWrapper(jest.fn, {
+                    getDeletionSummaries: jest.fn().mockRejectedValue(error),
+                    deleteContainer: jest.fn().mockResolvedValue({}),
+                }),
+            }),
+        };
+    }
+
     test('Loading summaries', () => {
         const wrapper = mountWithAppServerContext(<DeleteProjectModal {...DEFAULT_PROPS} />, {}, getServerContext());
 
         expect(wrapper.find(LoadingSpinner).length).toBe(1);
+        expect(wrapper.find(Alert).length).toBe(0);
         expect(wrapper.find({ children: 'This project and all of its data will be permanently deleted.' }).length).toBe(
             1
         );
+        expect(wrapper.find(Button).last().prop('disabled')).toBeFalsy();
+
+        wrapper.unmount();
+    });
+
+    test('Error loading summaries', async () => {
+        const wrapper = mountWithAppServerContext(
+            <DeleteProjectModal {...DEFAULT_PROPS} />,
+            getAppContextWithMockRejectedValue('Error loading!'),
+            getServerContext()
+        );
+        await waitForLifecycle(wrapper);
+
+        expect(wrapper.find(LoadingSpinner).length).toBe(0);
+        expect(wrapper.find(Alert).length).toBe(1);
         expect(wrapper.find(Button).last().prop('disabled')).toBeFalsy();
 
         wrapper.unmount();
@@ -66,6 +95,7 @@ describe('ProjectSettings', () => {
         await waitForLifecycle(wrapper);
 
         expect(wrapper.find(LoadingSpinner).length).toBe(0);
+        expect(wrapper.find(Alert).length).toBe(0);
         expect(
             wrapper.find({ children: 'This project will be permanently deleted. It contains no data.' }).length
         ).toBe(1);
@@ -83,6 +113,7 @@ describe('ProjectSettings', () => {
         await waitForLifecycle(wrapper);
 
         expect(wrapper.find(LoadingSpinner).length).toBe(0);
+        expect(wrapper.find(Alert).length).toBe(0);
         expect(wrapper.find({ children: 'This project and all of its data will be permanently deleted.' }).length).toBe(
             1
         );
@@ -110,7 +141,9 @@ describe('ProjectSettings', () => {
 
         expect(wrapper.find(LoadingSpinner).length).toBe(0);
         expect(wrapper.find(Progress).length).toBe(1);
-        expect(wrapper.find({ children: "Please don't close this page until deleting is done." }).length).toBe(1);
+        expect(
+            wrapper.find({ children: "Please don't close this page until until deletion is complete." }).length
+        ).toBe(1);
         expect(wrapper.find(Button).length).toBe(0);
 
         wrapper.unmount();

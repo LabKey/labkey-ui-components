@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.302.0
+*Released*: 28 February 2023
+- SampleStatusTag to query for status type if not provided
+- getSampleStatuses() boolean property for whether API should include inUse information or not
+- Issue 47411: Include viewName in selectDistinct query for FilterFacetedSelector
+
 ### version 2.301.0
 *Released*: 28 February 2023
 - Add ability to delete projects while in-app
@@ -19,7 +25,6 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Issue 47266: For a grid the filter dialog does not enable the 'Apply' button if I type in a value unless I uncheck the [All] option first
   - Issue 47247: LKSM: Filtering values >250 doesn't save selection
 - Issue 46870: Don't allow selection/inclusion of multi-valued lookup fields from Ancestors
-
 
 ### version 2.299.0
 *Released*: 27 February 2023

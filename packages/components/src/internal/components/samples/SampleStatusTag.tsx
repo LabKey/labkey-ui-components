@@ -1,12 +1,16 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
+import { Filter } from '@labkey/api';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
-
 import { isSampleStatusEnabled } from '../../app/utils';
 
-import { SampleStateType } from './constants';
+import { selectRows } from '../../query/selectRows';
+import { SCHEMAS } from '../../schemas';
+import { caseInsensitive } from '../../util/utils';
+
 import { SampleStatus } from './models';
+import { SampleStateType } from './constants';
 
 interface Props {
     className?: string;
@@ -18,30 +22,46 @@ interface Props {
 export const SampleStatusTag: FC<Props> = memo(props => {
     const { status, iconOnly, className, hideDescription } = props;
     const { label, statusType, description } = status;
+    const [queryStatusType, setQueryStatusType] = useState<SampleStateType>();
+    const statusType_ = useMemo(() => statusType || queryStatusType, [statusType, queryStatusType]);
+
+    useEffect(() => {
+        (async () => {
+            // if the queryModel had the status label value but not the type, query to get it from the SampleStatus table
+            if (label && !statusType) {
+                const response = await selectRows({
+                    filterArray: [Filter.create('Label', label)],
+                    schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_STATUS,
+                });
+                const statusTypeStr = caseInsensitive(response.rows[0], 'StatusType')?.value;
+                if (statusTypeStr) setQueryStatusType(SampleStateType[statusTypeStr]);
+            }
+        })();
+    }, [label, statusType]);
 
     if (!label || !isSampleStatusEnabled()) return null;
 
     const icon = iconOnly ? (
         <i
             className={classNames('status-icon fa fa-info', {
-                danger: statusType === SampleStateType.Locked,
-                warning: statusType === SampleStateType.Consumed,
-                success: statusType === SampleStateType.Available,
+                danger: statusType_ === SampleStateType.Locked,
+                warning: statusType_ === SampleStateType.Consumed,
+                success: statusType_ === SampleStateType.Available,
             })}
         />
     ) : (
         <span>{label}</span>
     );
-    const isAvailable = statusType === SampleStateType.Available || !statusType;
+    const isAvailable = statusType_ === SampleStateType.Available || !statusType_;
 
     return (
         <>
             <span
                 className={classNames(className, {
                     'status-pill sample-status-pill': !iconOnly,
-                    danger: !iconOnly && statusType === SampleStateType.Locked,
-                    warning: !iconOnly && statusType === SampleStateType.Consumed,
-                    success: !iconOnly && statusType === SampleStateType.Available,
+                    danger: !iconOnly && statusType_ === SampleStateType.Locked,
+                    warning: !iconOnly && statusType_ === SampleStateType.Consumed,
+                    success: !iconOnly && statusType_ === SampleStateType.Available,
                 })}
             >
                 {!hideDescription && (description || !isAvailable || iconOnly) ? (

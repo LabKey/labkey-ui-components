@@ -44,7 +44,7 @@ const QUERY_COL_LOOKUP = new QueryColumn({
     lookup: new QueryLookup({}),
 });
 
-const QUERY_COL_LOOKUP_ANCESTOR_STANDARD = QueryColumn.create({
+const QUERY_COL_LOOKUP_ANCESTOR_STANDARD = new QueryColumn({
     name: 'standard',
     fieldKey: 'standard',
     fieldKeyArray: ['standard'],
@@ -56,7 +56,7 @@ const QUERY_COL_LOOKUP_ANCESTOR_STANDARD = QueryColumn.create({
     },
 });
 
-const QUERY_COL_LOOKUP_ANCESTOR_MULTIVALUED = QueryColumn.create({
+const QUERY_COL_LOOKUP_ANCESTOR_MULTIVALUED = new QueryColumn({
     name: 'multi',
     fieldKey: 'multi',
     fieldKeyArray: ['multi'],

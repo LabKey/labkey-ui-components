@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.300.0-fb-workflowTemplateFix.0",
+  "version": "2.300.0-fb-workflowTemplateFix.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

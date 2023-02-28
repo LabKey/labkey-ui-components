@@ -146,6 +146,10 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
             .sort((id1, id2) => naturalSort(groupMembership[id1].groupName, groupMembership[id2].groupName));
     }, [groupMembership]);
 
+    // Folder and Project Admins may receive inaccurate group membership counts due to lack of permissions for viewing
+    // data for users outside their Project. In this case, we opt to not display counts.
+    const userIsAppAdmin = user.isAppAdmin();
+
     return (
         <Row>
             <Col xs={12} md={showDetailsPanel ? 8 : 12}>
@@ -202,6 +206,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                             members={groupMembership[selectedPrincipal?.userId]?.members}
                             isSiteGroup={groupMembership[selectedPrincipal?.userId]?.type === MemberType.siteGroup}
                             getAuditLogData={getAuditLogData}
+                            displayCounts={userIsAppAdmin}
                         />
                     ) : (
                         <UserDetailsPanel

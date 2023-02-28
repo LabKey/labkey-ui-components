@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Issue 47306: Resolve Permissions page error by skipping no-resolvable users.
+
 ### version 2.298.0
 *Released*: 25 February 2023
 - Support Enable/Disable “System Default Fields”

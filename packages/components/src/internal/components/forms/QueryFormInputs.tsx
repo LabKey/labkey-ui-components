@@ -186,7 +186,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     }
                     let showAsteriskSymbol = false;
                     if (!checkRequiredFields && col.required) {
-                        col = col.set('required', false) as QueryColumn;
+                        col = col.mutate({ required: false });
                         showAsteriskSymbol = showLabelAsterisk;
                     }
 

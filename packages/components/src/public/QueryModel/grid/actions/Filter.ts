@@ -100,9 +100,7 @@ export function resolveFilterType(token: string, column: QueryColumn): Filter.IF
             const suffix = getURLSuffix(types[i]);
             if (symbolTypes.has(suffix)) {
                 if (match) {
-                    console.warn(
-                        `Column of type \"${column.get('jsonType')}\" has multiple filters for symbol \"${token}\".`
-                    );
+                    console.warn(`Column of type "${column.jsonType}" has multiple filters for symbol "${token}".`);
                     match = false;
                     value = undefined;
                     break; // stop the loop, ambiguous

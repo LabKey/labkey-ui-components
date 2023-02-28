@@ -493,10 +493,10 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                     queryInfoCols = queryInfoCols.set(key, column);
                     updateColumns = updateColumns.push(column);
                 } else if (STORAGE_UPDATE_FIELDS.indexOf(column.fieldKey) > -1) {
-                    const updatedCol = column.merge({
+                    const updatedCol = column.mutate({
                         shownInUpdateView: true,
                         userEditable: true,
-                    }) as QueryColumn;
+                    });
                     queryInfoCols = queryInfoCols.set(key, updatedCol);
                     updateColumns = updateColumns.push(updatedCol);
                 }

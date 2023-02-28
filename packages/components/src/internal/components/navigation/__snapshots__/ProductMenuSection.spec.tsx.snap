@@ -386,10 +386,9 @@ exports[`ProductMenuSection render section with custom headerURL and headerText 
       "emptyText": undefined,
       "emptyAppURL": undefined,
       "emptyURLText": "Get started...",
-      "headerURLPart": Immutable.Record {
+      "headerURLPart": AppURL {
         "_baseUrl": "/sample/new",
-        "_filters": undefined,
-        "_params": Immutable.Map {
+        "_params": {
           "sort": "date",
         },
       },

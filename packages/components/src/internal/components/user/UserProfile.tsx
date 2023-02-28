@@ -2,7 +2,7 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { PureComponent } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { List, OrderedMap } from 'immutable';
 import { Col, Row } from 'react-bootstrap';
 import { ActionURL, PermissionTypes } from '@labkey/api';
@@ -99,11 +99,11 @@ export class UserProfile extends PureComponent<Props, State> {
 
     columnFilter = (col: QueryColumn): boolean => {
         // make sure all columns are set as shownInInsertView and those that are marked as editable are not also readOnly
-        const _col = col.merge({ shownInInsertView: true, readOnly: !col.get('userEditable') }) as QueryColumn;
+        const _col = col.mutate({ shownInInsertView: true, readOnly: !col.userEditable });
         return insertColumnFilter(_col) && !FIELDS_TO_EXCLUDE.contains(_col.fieldKey.toLowerCase());
     };
 
-    footer() {
+    footer(): ReactNode {
         const { user } = this.props;
         const { groups } = this.state;
 

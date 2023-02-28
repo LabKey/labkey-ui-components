@@ -89,7 +89,7 @@ describe('getFieldKeysOfRequiredCols', () => {
         expect(
             getFieldKeysOfRequiredCols(
                 List.of(
-                    QueryColumn.create({
+                    new QueryColumn({
                         fieldKey: 'col1',
                         fieldKeyArray: ['col1'],
                         readOnly: false,
@@ -104,7 +104,7 @@ describe('getFieldKeysOfRequiredCols', () => {
         expect(
             getFieldKeysOfRequiredCols(
                 List.of(
-                    QueryColumn.create({
+                    new QueryColumn({
                         fieldKey: 'col1',
                         fieldKeyArray: ['col1'],
                         readOnly: false,
@@ -121,7 +121,7 @@ describe('getFieldKeysOfRequiredCols', () => {
         expect(
             getFieldKeysOfRequiredCols(
                 List.of(
-                    QueryColumn.create({
+                    new QueryColumn({
                         fieldKey: 'col1',
                         fieldKeyArray: ['col1'],
                         readOnly: false,
@@ -138,7 +138,7 @@ describe('getFieldKeysOfRequiredCols', () => {
         expect(
             getFieldKeysOfRequiredCols(
                 List.of(
-                    QueryColumn.create({
+                    new QueryColumn({
                         fieldKey: 'col1',
                         fieldKeyArray: ['col1'],
                         readOnly: false,
@@ -155,7 +155,7 @@ describe('getFieldKeysOfRequiredCols', () => {
         expect(
             getFieldKeysOfRequiredCols(
                 List.of(
-                    QueryColumn.create({
+                    new QueryColumn({
                         fieldKey: 'col1',
                         fieldKeyArray: ['col1'],
                         readOnly: false,
@@ -172,7 +172,7 @@ describe('getFieldKeysOfRequiredCols', () => {
         expect(
             getFieldKeysOfRequiredCols(
                 List.of(
-                    QueryColumn.create({
+                    new QueryColumn({
                         fieldKey: 'lookup/col1',
                         fieldKeyArray: ['lookup', 'col1'],
                         readOnly: false,

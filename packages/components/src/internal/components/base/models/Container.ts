@@ -1,4 +1,3 @@
-import { Record } from 'immutable';
 import { Container as IContainer } from '@labkey/api';
 
 export interface ContainerDateFormats {
@@ -34,7 +33,7 @@ const defaultContainer: IContainer = {
 /**
  * Model for org.labkey.api.data.Container as returned by Container.toJSON()
  */
-export class Container extends Record(defaultContainer) implements IContainer {
+export class Container implements IContainer {
     declare activeModules: string[];
     declare effectivePermissions: string[];
     declare folderType: string;
@@ -52,6 +51,10 @@ export class Container extends Record(defaultContainer) implements IContainer {
     declare startUrl: string;
     declare title: string;
     declare type: string;
+
+    constructor(props) {
+        Object.assign(this, defaultContainer, props);
+    }
 
     /**
      * Verify if the given moduleName parameter is in the array of active modules for this container object.

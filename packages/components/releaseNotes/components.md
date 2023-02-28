@@ -1,6 +1,17 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.300.0
+*Released*: 28 February 2023
+- FilterFacetedSelector fix to better handle selection filters when we don't have all distinct values (i.e. > 250 facet filter values)
+  - don't compare current selection to allValues if we don't have allValues
+  - don't default to selected/checked if we don't have allValues
+  - handle case with search/filter input but not max distinct options
+  - Issue 47266: For a grid the filter dialog does not enable the 'Apply' button if I type in a value unless I uncheck the [All] option first
+  - Issue 47247: LKSM: Filtering values >250 doesn't save selection
+- Issue 46870: Don't allow selection/inclusion of multi-valued lookup fields from Ancestors
+
+
 ### version 2.299.0
 *Released*: 27 February 2023
 - QueryColumn: convert to plain class

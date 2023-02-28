@@ -554,10 +554,12 @@ export function searchFiltersFromJson(
 
 export const ALL_VALUE_DISPLAY = '[All]';
 export const EMPTY_VALUE_DISPLAY = '[blank]';
-export function getFilterValuesAsArray(filter: Filter.IFilter, blankValue?: string): any[] {
+export function getFilterValuesAsArray(filter: Filter.IFilter, blankValue?: string, checkNull = false): any[] {
     let values = [],
         rawValues;
     const rawValue = filter.getValue();
+
+    if (checkNull && rawValue === null) return [];
 
     if (Array.isArray(rawValue)) {
         rawValues = [...rawValue];
@@ -686,10 +688,13 @@ export function getUpdateFilterExpressionFilter(
 
 // this util is only for string field type
 export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string[]): string[] {
-    if (!filter || !allValues)
-        // if no existing filter, check all values by default
-        return allValues;
+    if (!filter && !allValues) return [];
 
+    // if allValues is undefined, then we don't know the full set of values so filter must be an Equals/Equals one of
+    if (!allValues) return getFilterValuesAsArray(filter, undefined, true);
+
+    // if no existing filter, check all values by default
+    if (!filter) return allValues;
     if (filter.getFilterType().isDataValueRequired() && filter.getValue() == null) return allValues;
 
     const filterUrlSuffix = filter.getFilterType().getURLSuffix();
@@ -732,7 +737,7 @@ export function getUpdatedCheckedValues(
     let newCheckedValues = [...oldCheckedValues];
     if (check) {
         if (newCheckedValues.indexOf(newValue) === -1) newCheckedValues.push(newValue);
-        if (allValues.length - newCheckedValues.length === 1) {
+        if (allValues && allValues.length - newCheckedValues.length === 1) {
             if (newCheckedValues.indexOf(ALL_VALUE_DISPLAY) === -1) newCheckedValues.push(ALL_VALUE_DISPLAY);
         }
     } else {
@@ -750,7 +755,7 @@ export function getUpdatedChooseValuesFilter(
     oldFilter: Filter.IFilter,
     uncheckOthers?: /* click on the row but not on the checkbox would check the row value and uncheck everything else*/ boolean
 ): Filter.IFilter {
-    const hasBlank = allValues.findIndex(value => value === EMPTY_VALUE_DISPLAY) !== -1;
+    const hasBlank = allValues ? allValues.findIndex(value => value === EMPTY_VALUE_DISPLAY) !== -1 : false;
     // if check all, or everything is checked, this is essentially "no filter", unless there is no blank value
     // then it's an NONBLANK filter
     if (newValue === ALL_VALUE_DISPLAY && check) {
@@ -758,22 +763,17 @@ export function getUpdatedChooseValuesFilter(
     }
 
     const newCheckedDisplayValues = getUpdatedCheckedValues(allValues, newValue, check, oldFilter, uncheckOthers);
-    const newUncheckedDisplayValue = allValues.filter(val => newCheckedDisplayValues.indexOf(val) === -1);
 
     const newCheckedValues = [];
-    const newUncheckedValues = [];
 
     newCheckedDisplayValues.forEach(v => {
         newCheckedValues.push(v === EMPTY_VALUE_DISPLAY ? '' : v);
     });
-    newUncheckedDisplayValue
-        .filter(v => v !== ALL_VALUE_DISPLAY)
-        .forEach(v => {
-            newUncheckedValues.push(v === EMPTY_VALUE_DISPLAY ? '' : v);
-        });
 
     // if everything is checked, this is the same as not filtering
-    if ((newValue === ALL_VALUE_DISPLAY && check) || newCheckedValues.length === allValues.length) return null;
+    if ((newValue === ALL_VALUE_DISPLAY && check) || (allValues && newCheckedValues.length === allValues.length)) {
+        return null;
+    }
 
     // if uncheck all or if everything is unchecked, create a new NOTANY filter type
     if ((newValue === ALL_VALUE_DISPLAY && !check) || newCheckedValues.length === 0)
@@ -786,16 +786,27 @@ export function getUpdatedChooseValuesFilter(
         return Filter.create(fieldKey, newCheckedValues[0]);
     }
 
-    // if only one is unchecked
-    if (newUncheckedValues.length === 1) {
-        if (newUncheckedValues[0] === '') return Filter.create(fieldKey, null, Filter.Types.NONBLANK);
+    // using anything but an in clause only applies if we know all the values
+    if (allValues) {
+        const newUncheckedDisplayValue = allValues.filter(val => newCheckedDisplayValues.indexOf(val) === -1);
+        const newUncheckedValues = [];
+        newUncheckedDisplayValue
+            .filter(v => v !== ALL_VALUE_DISPLAY)
+            .forEach(v => {
+                newUncheckedValues.push(v === EMPTY_VALUE_DISPLAY ? '' : v);
+            });
 
-        return Filter.create(fieldKey, newUncheckedValues[0], Filter.Types.NEQ_OR_NULL);
-    }
+        // if only one is unchecked
+        if (newUncheckedValues.length === 1) {
+            if (newUncheckedValues[0] === '') return Filter.create(fieldKey, null, Filter.Types.NONBLANK);
 
-    // if number of checked is greater than unchecked, use Not_In unchecked
-    if (newCheckedValues.length > newUncheckedValues.length) {
-        return Filter.create(fieldKey, newUncheckedValues, Filter.Types.NOT_IN);
+            return Filter.create(fieldKey, newUncheckedValues[0], Filter.Types.NEQ_OR_NULL);
+        }
+
+        // if number of checked is greater than unchecked, use Not_In unchecked
+        if (newCheckedValues.length > newUncheckedValues.length) {
+            return Filter.create(fieldKey, newUncheckedValues, Filter.Types.NOT_IN);
+        }
     }
 
     return Filter.create(fieldKey, newCheckedValues, Filter.Types.IN);

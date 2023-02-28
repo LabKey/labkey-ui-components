@@ -54,6 +54,12 @@ const distinctValuesRespLong = {
     queryName: 'sampleType1',
 };
 
+const distinctValuesRespSearch = {
+    values: ['hop', 'pop'],
+    schemaName: 'samples',
+    queryName: 'sampleType1',
+};
+
 const DEFAULT_PROPS = {
     api: getTestAPIWrapper(jest.fn, {
         query: getQueryTestAPIWrapper(jest.fn, {
@@ -70,7 +76,10 @@ const DEFAULT_PROPS = {
 const DEFAULT_PROPS_LONG = {
     api: getTestAPIWrapper(jest.fn, {
         query: getQueryTestAPIWrapper(jest.fn, {
-            selectDistinctRows: () => Promise.resolve(distinctValuesRespLong),
+            selectDistinctRows: options => {
+                if (options.filterArray?.[0]) return Promise.resolve(distinctValuesRespSearch);
+                return Promise.resolve(distinctValuesRespLong);
+            },
         }),
     }),
     fieldKey: 'stringField',
@@ -103,8 +112,7 @@ describe('FilterFacetedSelector', () => {
                 const checkBox = valuesDiv.find('.form-check-input');
                 if (checkedOptions.indexOf(allOptions[ind]) > -1) {
                     expect(checkBox.props().checked).toBeTruthy();
-                }
-                else {
+                } else {
                     expect(checkBox.props().checked).toBeFalsy();
                 }
             }
@@ -133,13 +141,13 @@ describe('FilterFacetedSelector', () => {
     });
 
     test('with no initial filter, not blank', async () => {
-        const wrapper = mount(<FilterFacetedSelector {...{...DEFAULT_PROPS, canBeBlank: false}}/>);
+        const wrapper = mount(<FilterFacetedSelector {...{ ...DEFAULT_PROPS, canBeBlank: false }} />);
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
 
-        validate(wrapper, allWithoutBlankDisplayValuesShort, [],  allWithoutBlankDisplayValuesShort, false);
+        validate(wrapper, allWithoutBlankDisplayValuesShort, [], allWithoutBlankDisplayValuesShort, false);
 
         wrapper.unmount();
     });

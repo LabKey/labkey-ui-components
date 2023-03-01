@@ -875,10 +875,10 @@ export async function createSessionAssayRunSummaryQuery(sampleIds: number[]): Pr
     });
 }
 
-export function getSampleStatuses(): Promise<SampleState[]> {
+export function getSampleStatuses(includeInUse = false): Promise<SampleState[]> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getSampleStatuses.api'),
+            url: buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getSampleStatuses.api', { includeInUse }),
             method: 'GET',
             success: Utils.getCallbackWrapper(response => {
                 resolve(response.statuses?.map(state => new SampleState(state)) ?? []);

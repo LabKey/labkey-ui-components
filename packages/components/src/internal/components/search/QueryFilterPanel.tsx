@@ -307,6 +307,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                                     column: activeFieldKey,
                                                     schemaName: queryInfo.schemaName,
                                                     queryName,
+                                                    viewName,
                                                     filterArray: fieldDistinctValueFilters,
                                                 }}
                                                 fieldFilters={currentFieldFilters?.map(filter => filter.filter)}

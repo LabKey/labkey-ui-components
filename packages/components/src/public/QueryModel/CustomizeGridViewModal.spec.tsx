@@ -44,6 +44,31 @@ const QUERY_COL_LOOKUP = new QueryColumn({
     lookup: new QueryLookup({}),
 });
 
+const QUERY_COL_LOOKUP_ANCESTOR_STANDARD = new QueryColumn({
+    name: 'standard',
+    fieldKey: 'standard',
+    fieldKeyArray: ['standard'],
+    fieldKeyPath: 'Ancestors/parent1/standard',
+    caption: 'Test Standard',
+    selectable: true,
+    lookup: {
+        /* this would define the schema/query */
+    },
+});
+
+const QUERY_COL_LOOKUP_ANCESTOR_MULTIVALUED = new QueryColumn({
+    name: 'multi',
+    fieldKey: 'multi',
+    fieldKeyArray: ['multi'],
+    fieldKeyPath: 'Ancestors/parent1/multi',
+    caption: 'Test Multi',
+    selectable: true,
+    lookup: {
+        /* this would define the schema/query */
+        multiValued: 'junction',
+    },
+});
+
 describe('ColumnChoice', () => {
     test('isInView', () => {
         const wrapper = mount(
@@ -574,6 +599,29 @@ describe('ColumnChoiceGroup', () => {
             />
         );
         validate(wrapper, true, true);
+        wrapper.unmount();
+    });
+
+    test('lookup column, ancestor expanded', () => {
+        const queryInfo = QueryInfo.create({
+            columns: fromJS({
+                [QUERY_COL_LOOKUP_ANCESTOR_STANDARD.fieldKey]: QUERY_COL_LOOKUP_ANCESTOR_STANDARD,
+                [QUERY_COL_LOOKUP_ANCESTOR_MULTIVALUED.fieldKey]: QUERY_COL_LOOKUP_ANCESTOR_MULTIVALUED,
+            }),
+        });
+        const wrapper = mount(
+            <ColumnChoiceGroup
+                {...DEFAULT_PROPS}
+                column={QUERY_COL_LOOKUP}
+                expandedColumns={{ [QUERY_COL_LOOKUP.index]: queryInfo }}
+                columnsInView={[QUERY_COL_LOOKUP]}
+                showAllColumns
+            />
+        );
+        validate(wrapper, true, true, true);
+        expect(wrapper.find('.list-group-item')).toHaveLength(2);
+        expect(wrapper.find('.list-group-item').first().text()).toBe('Test Column');
+        expect(wrapper.find('.list-group-item').last().text()).toBe('Test Standard');
         wrapper.unmount();
     });
 });

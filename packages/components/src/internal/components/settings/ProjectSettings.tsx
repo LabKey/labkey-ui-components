@@ -1,5 +1,7 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 
+import { Button } from 'react-bootstrap';
+
 import { useAppContext } from '../../AppContext';
 import { useServerContext, useServerContextDispatch } from '../base/ServerContext';
 import { ProjectProperties } from '../administration/ProjectProperties';
@@ -8,12 +10,16 @@ import { resolveErrorMessage } from '../../util/messaging';
 import { Alert } from '../base/Alert';
 import { Container } from '../base/models/Container';
 
+import { DeleteProjectModal } from './DeleteProjectModal';
+
 export interface ProjectSettingsProps {
     onChange: () => void;
+    onPageError: (e: string) => void;
     onSuccess: () => void;
 }
 
-export const ProjectSettings: FC<ProjectSettingsProps> = memo(({ onChange, onSuccess }) => {
+export const ProjectSettings: FC<ProjectSettingsProps> = memo(({ onChange, onSuccess, onPageError }) => {
+    const [showModal, setShowModal] = useState<boolean>(false);
     const [dirty, setDirty] = useState<boolean>(false);
     const [error, setError] = useState<string>();
     const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -66,6 +72,22 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(({ onChange, onSuc
         [api.folder, container, dispatch, isSaving, onSuccess]
     );
 
+    const closeModalHandler = useCallback(() => {
+        setShowModal(false);
+    }, []);
+
+    const openModalHandler = useCallback(() => {
+        setShowModal(true);
+    }, []);
+
+    const onDeleteError = useCallback(
+        (e: string) => {
+            setShowModal(false);
+            onPageError(e);
+        },
+        [onPageError]
+    );
+
     if (container.isProject || !user.isAdmin) {
         return null;
     }
@@ -84,12 +106,24 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(({ onChange, onSuc
                     />
 
                     <div className="pull-right">
+                        <Button
+                            className="btn btn-default delete-project-button"
+                            type="button"
+                            onClick={openModalHandler}
+                        >
+                            <i className="fa fa-trash" /> Delete
+                        </Button>
+
                         <button className="btn btn-success" disabled={isSaving || !dirty} type="submit">
                             {isSaving ? 'Saving' : 'Save'}
                         </button>
                     </div>
                 </form>
             </div>
+
+            {showModal && (
+                <DeleteProjectModal projectName={container.name} onCancel={closeModalHandler} onError={onDeleteError} />
+            )}
         </div>
     );
 });

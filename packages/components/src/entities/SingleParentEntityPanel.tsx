@@ -14,7 +14,11 @@ import { capitalizeFirstChar, caseInsensitive, quoteValueWithDelimiters } from '
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { Alert } from '../internal/components/base/Alert';
 import { SchemaQuery } from '../public/SchemaQuery';
-import { SampleOperation } from '../internal/components/samples/constants';
+import {
+    SAMPLE_STATE_COLUMN_NAME,
+    SAMPLE_STATE_TYPE_COLUMN_NAME,
+    SampleOperation,
+} from '../internal/components/samples/constants';
 import { SelectInput } from '../internal/components/forms/input/SelectInput';
 import { RemoveEntityButton } from '../internal/components/buttons/RemoveEntityButton';
 import { QuerySelect } from '../internal/components/forms/QuerySelect';
@@ -271,7 +275,7 @@ export const SingleParentEntityPanel: FC<Props> = memo(props => {
                 containerPath,
                 schemaQuery: new SchemaQuery(chosenType.schema, chosenType.query, ViewInfo.DETAIL_NAME),
                 omittedColumns: ['Run'],
-                requiredColumns: ['Name'],
+                requiredColumns: ['Name', SAMPLE_STATE_COLUMN_NAME, SAMPLE_STATE_TYPE_COLUMN_NAME],
             },
         };
     }, [chosenType, containerPath, parentTypeOptions, parentLSIDs]);

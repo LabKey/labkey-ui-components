@@ -2,44 +2,49 @@ import React, { PureComponent, ReactNode } from 'react';
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import { Network } from 'vis-network';
 
+const PAN_INCREMENT = 20;
+const ZOOM_INCREMENT = 0.05;
+
 interface GraphControlsProps {
     getNetwork: () => Network;
-    onReset: (selectSeed) => any;
+    onReset: (selectSeed: boolean) => void;
 }
 
 export class VisGraphControls extends PureComponent<GraphControlsProps> {
-    graphReset = (selectSeed: boolean): void => {
-        if (this.props.onReset) {
-            this.props.onReset(selectSeed);
-        }
-    };
-
     panDown = (): void => {
-        this.props.getNetwork().moveTo({ offset: { x: 0, y: -20 } });
+        this.props.getNetwork().moveTo({ offset: { x: 0, y: -PAN_INCREMENT } });
     };
 
     panUp = (): void => {
-        this.props.getNetwork().moveTo({ offset: { x: 0, y: 20 } });
+        this.props.getNetwork().moveTo({ offset: { x: 0, y: PAN_INCREMENT } });
     };
 
     panLeft = (): void => {
-        this.props.getNetwork().moveTo({ offset: { x: 20, y: 0 } });
+        this.props.getNetwork().moveTo({ offset: { x: PAN_INCREMENT, y: 0 } });
     };
 
     panRight = (): void => {
-        this.props.getNetwork().moveTo({ offset: { x: -20, y: 0 } });
+        this.props.getNetwork().moveTo({ offset: { x: -PAN_INCREMENT, y: 0 } });
+    };
+
+    reset = (): void => {
+        this.props.onReset?.(false);
+    };
+
+    resetSelect = (): void => {
+        this.props.onReset?.(true);
     };
 
     zoomIn = (): void => {
         const network = this.props.getNetwork();
         network.moveTo({
-            scale: network.getScale() + 0.05,
+            scale: network.getScale() + ZOOM_INCREMENT,
         });
     };
 
     zoomOut = (): void => {
         const network = this.props.getNetwork();
-        const scale = network.getScale() - 0.05;
+        const scale = network.getScale() - ZOOM_INCREMENT;
         if (scale > 0) {
             network.moveTo({ scale });
         }
@@ -51,8 +56,8 @@ export class VisGraphControls extends PureComponent<GraphControlsProps> {
                 <div className="lineage-visgraph-control-settings">
                     <div className="btn-group">
                         <DropdownButton id="graph-control-dd" title={<i className="fa fa-undo" />} pullRight>
-                            <MenuItem onClick={() => this.graphReset(true)}>Reset view and select seed</MenuItem>
-                            <MenuItem onClick={() => this.graphReset(false)}>Reset view</MenuItem>
+                            <MenuItem onClick={this.resetSelect}>Reset view and select seed</MenuItem>
+                            <MenuItem onClick={this.reset}>Reset view</MenuItem>
                         </DropdownButton>
                     </div>
                 </div>

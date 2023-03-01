@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { getServerContext } from '@labkey/api';
 
 import classNames from 'classnames';
@@ -17,6 +17,8 @@ import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPag
 
 import { BarTenderSettingsForm } from '../labels/BarTenderSettingsForm';
 
+import { Alert } from '../base/Alert';
+
 import { SITE_SECURITY_ROLES } from './constants';
 import { BasePermissions } from './BasePermissions';
 import { showPremiumFeatures } from './utils';
@@ -27,9 +29,14 @@ const TITLE = 'Settings';
 // export for jest testing
 export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
     const { setIsDirty, getIsDirty, children } = props;
+    const [error, setError] = useState<string>();
     const { moduleContext, user, project } = useServerContext();
     const { createNotification, dismissNotifications } = useNotificationsContext();
     const { NotebookProjectSettingsComponent } = useAdminAppContext();
+
+    const onError = useCallback((e: string) => {
+        setError(e);
+    }, []);
 
     const onSettingsChange = useCallback(() => {
         setIsDirty(true);
@@ -87,24 +94,27 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
     }
 
     return (
-        <BasePermissionsCheckPage user={user} title={TITLE} hasPermission={user.isAdmin} renderButtons={lkVersion}>
-            <ActiveUserLimit />
-            {isProductProjectsEnabled(moduleContext) && (
-                <ProjectSettings onChange={onSettingsChange} onSuccess={onSettingsSuccess} />
-            )}
-            {biologicsIsPrimaryApp(moduleContext) && isELNEnabled(moduleContext) && (
-                <NotebookProjectSettingsComponent />
-            )}
-            <BarTenderSettingsForm
-                onChange={onSettingsChange}
-                onSuccess={onBarTenderSuccess}
-                setIsDirty={setIsDirty}
-                getIsDirty={getIsDirty}
-            />
-            <NameIdSettings {...props} />
-            {isSampleStatusEnabled(moduleContext) && <ManageSampleStatusesPanel {...props} />}
-            {children}
-        </BasePermissionsCheckPage>
+        <>
+            {error && <Alert className="admin-settings-error"> {error} </Alert>}
+            <BasePermissionsCheckPage user={user} title={TITLE} hasPermission={user.isAdmin} renderButtons={lkVersion}>
+                <ActiveUserLimit />
+                {isProductProjectsEnabled(moduleContext) && (
+                    <ProjectSettings onChange={onSettingsChange} onSuccess={onSettingsSuccess} onPageError={onError} />
+                )}
+                {biologicsIsPrimaryApp(moduleContext) && isELNEnabled(moduleContext) && (
+                    <NotebookProjectSettingsComponent />
+                )}
+                <BarTenderSettingsForm
+                    onChange={onSettingsChange}
+                    onSuccess={onBarTenderSuccess}
+                    setIsDirty={setIsDirty}
+                    getIsDirty={getIsDirty}
+                />
+                <NameIdSettings {...props} />
+                {isSampleStatusEnabled(moduleContext) && <ManageSampleStatusesPanel {...props} />}
+                {children}
+            </BasePermissionsCheckPage>
+        </>
     );
 };
 

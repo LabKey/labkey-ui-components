@@ -317,7 +317,7 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
             setError(undefined);
 
             api.samples
-                .getSampleStatuses()
+                .getSampleStatuses(true)
                 .then(statuses => {
                     setStates(statuses);
                     if (newStatusLabel) setSelected(statuses.findIndex(state => state.label === newStatusLabel));

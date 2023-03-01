@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.302.1-moveAmountFields.24",
+  "version": "2.303.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

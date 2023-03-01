@@ -37,6 +37,7 @@ describe('ProjectSettings', () => {
         });
 
         expect(wrapper.find('.project-settings').exists()).toBe(false);
+        expect(wrapper.find('.delete-project-button').exists()).toBe(false);
         wrapper.unmount();
 
         wrapper = mountWithAppServerContext(<ProjectSettings {...getDefaultProps()} />, undefined, {
@@ -45,11 +46,13 @@ describe('ProjectSettings', () => {
         });
 
         expect(wrapper.find('.project-settings').exists()).toBe(false);
+        expect(wrapper.find('.delete-project-button').exists()).toBe(false);
         wrapper.unmount();
 
         wrapper = mountWithAppServerContext(<ProjectSettings {...getDefaultProps()} />, undefined, getServerContext());
 
         expect(wrapper.find('.project-settings').exists()).toBe(true);
+        expect(wrapper.find('.delete-project-button').exists()).toBe(true);
         wrapper.unmount();
     });
 

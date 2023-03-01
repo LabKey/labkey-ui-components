@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Issue 47306: Resolve Permissions page error by skipping no-resolvable users.
+
 ### version 2.302.0
 *Released*: 28 February 2023
 - SampleStatusTag to query for status type if not provided

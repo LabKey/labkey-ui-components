@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import { Filter } from '@labkey/api';
 
@@ -33,6 +33,7 @@ import {
     SampleOperation,
     SampleStateType,
 } from './constants';
+import { List } from 'immutable';
 
 export function getOmittedSampleTypeColumns(user: User, moduleContext?: ModuleContext): string[] {
     let cols: string[] = [];
@@ -252,3 +253,47 @@ export function getSampleDomainDefaultSystemFields(moduleContext?: ModuleContext
         ? SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS.concat(SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS)
         : SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS;
 }
+
+
+export function getStorageItemUpdateData(
+    storageRows: any[],
+    sampleItems: {},
+    noStorageSamples: any[],
+    selection: List<any>
+): any {
+    if (storageRows.length === 0) {
+        return null;
+    }
+
+    const sampleRowIds = [];
+    selection.forEach(sel => sampleRowIds.push(parseInt(sel)));
+
+    const errors: string[] = [],
+        normalizedRowsMap: any = {};
+    storageRows.forEach(row => {
+        const sampleId = caseInsensitive(row, 'RowId');
+        if (noStorageSamples.indexOf(sampleId) > -1) {
+            return;
+        }
+
+        const rowInd = sampleRowIds.indexOf(sampleId) + 1;
+
+        const existingStorageItem = sampleItems[sampleId];
+        if (!existingStorageItem) {
+            const errorMsg = `Unable to find storage data for sample for row ${rowInd}.`;
+            errors.push(errorMsg);
+            return;
+        }
+
+        normalizedRowsMap[sampleId] = {
+            rowId: existingStorageItem.rowId,
+            freezeThawCount: caseInsensitive(row, 'FreezeThawCount'),
+        };
+    });
+
+    return {
+        normalizedRowsMap,
+        errors: errors.length > 0 ? errors : undefined,
+    };
+}
+

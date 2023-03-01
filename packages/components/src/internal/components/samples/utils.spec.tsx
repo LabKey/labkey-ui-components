@@ -17,6 +17,7 @@ import { QueryInfo } from '../../../public/QueryInfo';
 
 import { SAMPLE_STATE_TYPE_COLUMN_NAME, SampleOperation, SampleStateType } from './constants';
 import {
+    getStorageItemUpdateData,
     getFilterForSampleOperation,
     getOmittedSampleTypeColumns,
     getOperationNotPermittedMessage,
@@ -26,6 +27,7 @@ import {
     isSampleOperationPermitted,
     isSamplesSchema,
 } from './utils';
+import { List } from 'immutable';
 
 const CHECKED_OUT_BY_FIELD = SCHEMAS.INVENTORY.CHECKED_OUT_BY_FIELD;
 const INVENTORY_COLS = SCHEMAS.INVENTORY.INVENTORY_COLS;
@@ -356,5 +358,50 @@ describe('getURLParamsForSampleSelectionKey', () => {
         expect(getURLParamsForSampleSelectionKey(model)).toStrictEqual({
             selectionKey: 'appkey|schema/query|123',
         });
+    });
+});
+
+describe('getConvertedSampleStorageUpdateData1', () => {
+    const verifyResult = (result, expectedError: string, normalizedRows: any[]) => {
+        if (expectedError) expect(result.errors.join('')).toEqual(expectedError);
+        else expect(result.errors).toBeUndefined;
+
+        expect(result.normalizedRows?.length === normalizedRows?.length);
+
+        if (result.normalizedRows) {
+            result.normalizedRows.forEach((row, ind) => {
+                const expectedRow = normalizedRows[ind];
+                expect(row).toStrictEqual(expectedRow);
+            });
+        }
+    };
+
+    const sampleItems = { '846': { rowId: 73, storedAmount: 1.41 }, '1192': { rowId: 79, storedAmount: 2200 } };
+
+    test('no data', () => {
+        expect(getStorageItemUpdateData([], {}, [], null)).toBeNull();
+    });
+
+    test('not in storage', () => {
+        const storageRow = [{ StoredAmount: 3.21, Units: 'g', RowId: 846 }];
+        const selection = List.of('73', '79');
+        const result = getStorageItemUpdateData(storageRow, {}, [], selection);
+        verifyResult(result, "Unable to find storage data for sample for row 0.", []);
+    });
+
+    test('with freezeThaw count', () => {
+        const storageRow = [{  RowId: 846, FreezeThawCount: 3 }];
+        const selection = List.of('73', '79');
+        const result = getStorageItemUpdateData(storageRow, sampleItems, [], selection);
+        const expected = [{ freezeThawCount: 3, rowId: 73 }];
+        verifyResult(result, undefined, expected);
+    });
+
+    test('without freezeThaw count', () => {
+        const storageRow = [{ RowId: 846 }];
+        const selection = List.of('73', '79');
+        const result = getStorageItemUpdateData(storageRow, sampleItems, [], selection);
+        const expected = [{ freezeThawCount: undefined, rowId: 73 }];
+        verifyResult(result, undefined, expected);
     });
 });

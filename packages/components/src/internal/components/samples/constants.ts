@@ -45,6 +45,7 @@ export const IS_ALIQUOT_COL = 'IsAliquot';
 export const SAMPLE_STATE_COLUMN_NAME = 'SampleState';
 export const SAMPLE_STATE_TYPE_COLUMN_NAME = 'SampleState/StatusType';
 export const SAMPLE_STATE_DESCRIPTION_COLUMN_NAME = 'SampleState/Description';
+export const SAMPLE_UNITS_COLUMN_NAME = 'Units';
 
 export const SAMPLE_STATUS_REQUIRED_COLUMNS = [
     SAMPLE_STATE_COLUMN_NAME,
@@ -175,6 +176,8 @@ export const SAMPLE_STORAGE_COLUMNS = [
     'StorageCol',
     'StoredAmount',
     'Units',
+    'RawAmount',
+    'RawUnits',
     'FreezeThawCount',
     'EnteredStorage',
     'CheckedOut',
@@ -182,12 +185,12 @@ export const SAMPLE_STORAGE_COLUMNS = [
     'StorageComment',
 ];
 
+export const SAMPLE_STORAGE_COLUMNS_LC = SAMPLE_STORAGE_COLUMNS.map(col => col.toLowerCase());
+
 export const SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR = [
     'SourceProtocolLSID',
     'StorageStatus',
     'SampleTypeUnits',
-    'StoredAmount',
-    'Units',
     'FreezeThawCount',
     'CheckedOutBy',
     'StorageRow',
@@ -201,6 +204,7 @@ export const SAMPLE_EXPORT_CONFIG = {
     'exportAlias.name': DEFAULT_SAMPLE_FIELD_CONFIG.label,
     'exportAlias.aliquotedFromLSID': ALIQUOTED_FROM_COL,
     'exportAlias.sampleState': STATUS_COL,
+    'exportAlias.storedAmount': 'Amount',
 };
 
 export const SAMPLE_DATA_EXPORT_CONFIG = {
@@ -246,16 +250,20 @@ export const SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS = [
         Description: 'The date that this sample expires on',
         Disableble: true,
     },
-];
-
-export const SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS = [
-    { Name: 'Units', Label: 'Units', DataType: 'Text', Required: false, Description: '', Disableble: true },
     {
         Name: 'StoredAmount',
-        Label: 'Stored Amount',
+        Label: 'Amount',
         DataType: 'Decimal (floating point)',
         Required: false,
-        Description: '',
+        Description: 'The amount of this sample',
+        Disableble: true,
+    },
+    {
+        Name: 'Units',
+        Label: 'Units',
+        DataType: 'Text',
+        Required: false,
+        Description: 'The units associated with the Amount value for this sample',
         Disableble: true,
     },
     {
@@ -266,6 +274,9 @@ export const SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS = [
         Description: '',
         Disableble: true,
     },
+];
+
+export const SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS = [
     {
         Name: 'FreezeThawCount',
         Label: 'Freeze/Thaw Count',
@@ -285,3 +296,15 @@ export const SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS = [
     { Name: 'StorageRow', Label: 'Storage Row', DataType: 'Text', Required: false, Description: '', Disableble: true },
     { Name: 'StorageCol', Label: 'Storage Col', DataType: 'Text', Required: false, Description: '', Disableble: true },
 ];
+
+export const AMOUNT_PRECISION_ERROR_TEXT = 'Amount used is too precise for selected units.';
+
+export const STORED_AMOUNT_FIELDS = {
+    ROWID: 'RowId',
+    AMOUNT: 'StoredAmount',
+    UNITS: 'Units',
+    RAW_AMOUNT: 'RawAmount',
+    RAW_UNITS: 'RawUnits',
+    FREEZE_THAW_COUNT: 'FreezeThawCount',
+    AUDIT_COMMENT: 'auditUserComment',
+};

@@ -11,7 +11,7 @@ import { UpdateGridTab } from '../internal/components/editable/EditableGridPanel
 
 import { EditorMode, EditorModel, IEditableGridLoader, IGridResponse } from '../internal/components/editable/models';
 
-import { isFreezerManagementEnabled } from '../internal/app/utils';
+import { isFreezerManagementEnabled, userCanEditStorageData } from '../internal/app/utils';
 import { SamplesEditableGridProps } from '../internal/sampleModels';
 
 import { QueryModel } from '../public/QueryModel/QueryModel';
@@ -31,12 +31,14 @@ import { QueryColumn } from '../public/QueryColumn';
 import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 import { EditableGridLoaderFromSelection } from '../internal/components/editable/EditableGridLoaderFromSelection';
 import { QueryInfo } from '../public/QueryInfo';
-import { LineageEditableGridLoaderFromSelection } from '../internal/components/editable/LineageEditableGridLoaderFromSelection';
+import {
+    LineageEditableGridLoaderFromSelection
+} from '../internal/components/editable/LineageEditableGridLoaderFromSelection';
 import { getSelectedData } from '../internal/actions';
 
 import { SampleStateType } from '../internal/components/samples/constants';
 
-import { getUpdatedLineageRows } from '../internal/components/samples/actions';
+import { getUpdatedLineageRows, updateSampleStorageData } from '../internal/components/samples/actions';
 
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from '../internal/components/samples/models';
 
@@ -45,13 +47,14 @@ import { DiscardConsumedSamplesModal } from './DiscardConsumedSamplesModal';
 import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
 
 import { getOriginalParentsFromLineage } from './actions';
+import { getStorageItemUpdateData } from '../internal/components/samples/utils';
 
 type Props = SamplesEditableGridProps &
     SamplesSelectionProviderProps &
     SamplesSelectionResultProps &
     NotificationsContextProps;
 
-const STORAGE_UPDATE_FIELDS = ['StoredAmount', 'Units', 'FreezeThawCount'];
+const STORAGE_UPDATE_FIELDS = ['FreezeThawCount'];
 const SAMPLES_EDIT_GRID_ID = 'update-samples-grid';
 const SAMPLES_STORAGE_EDIT_GRID_ID = 'update-samples-storage-grid';
 const SAMPLES_LINEAGE_EDIT_GRID_ID = 'update-samples-lineage-grid';
@@ -188,7 +191,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     updateAllTabRows = (updateDataRows: any[], skipConfirmDiscard?: boolean): Promise<any> => {
-        const { aliquots, sampleItems, noStorageSamples, invalidateSampleQueries } = this.props;
+        const { aliquots, sampleItems, noStorageSamples, invalidateSampleQueries, user } = this.props;
         const { discardConsumed, discardSamplesComment, consumedStatusIds, includedTabs } = this.state;
 
         let sampleSchemaQuery: SchemaQuery = null,
@@ -207,6 +210,16 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
             } else {
                 sampleRows = data.updatedRows;
                 sampleSchemaQuery = data.schemaQuery;
+                sampleRows.forEach(row => {
+                   const amount = caseInsensitive(row, 'StoredAmount');
+                   if (amount !== undefined) {
+                       const units = caseInsensitive(row, 'Units');
+                       if (units == undefined) { // have an amount but have not updated the units; use the display units
+                           const rowId = caseInsensitive(row, 'RowId');
+                           row.Units = data.originalRows[rowId].Units?.[0].displayValue;
+                       }
+                   }
+                });
                 if (sampleItems) {
                     sampleRows.forEach(row => {
                         if (consumedStatusIds?.indexOf(caseInsensitive(row, 'sampleState')) > -1) {
@@ -285,93 +298,121 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
             });
         }
 
-        const commands = [];
-        if (sampleRows.length > 0) {
-            commands.push({
-                command: 'update',
-                schemaName: sampleSchemaQuery.schemaName,
-                queryName: sampleSchemaQuery.queryName,
-                rows: sampleRows,
-                auditBehavior: AuditBehaviorTypes.DETAILED,
+        if (!user.canUpdate && userCanEditStorageData(user)) {
+            const storageSampleRows = [];
+            const rowsMap = {};
+            if (convertedStorageData?.normalizedRowsMap) {
+                Object.keys(convertedStorageData.normalizedRowsMap).forEach(sampleId => {
+                    const storageItemData = convertedStorageData.normalizedRowsMap[sampleId];
+                    rowsMap[sampleId] = {
+                        materialId: parseInt(sampleId),
+                        rowId: storageItemData.rowId,
+                        freezeThawCount: storageItemData.freezeThawCount,
+                    }
+                });
+            }
+            sampleRows.forEach(row => {
+                const sampleId = caseInsensitive(row, 'rowId');
+                const storageSampleRow = rowsMap[sampleId] ?? {
+                    materialId: sampleId,
+                };
+                Object.assign(storageSampleRow,
+                {
+                    StoredAmount: caseInsensitive(row, 'StoredAmount'),
+                    Units: caseInsensitive(row, 'Units'),
+                });
+                storageSampleRows.push(storageSampleRow);
+                rowsMap[sampleId] = storageSampleRow;
+            });
+
+            return updateSampleStorageData(Object.values(rowsMap));
+        }
+        else {
+            const commands = [];
+            if (sampleRows.length > 0) {
+                commands.push({
+                    command: 'update',
+                    schemaName: sampleSchemaQuery.schemaName,
+                    queryName: sampleSchemaQuery.queryName,
+                    rows: sampleRows,
+                    auditBehavior: AuditBehaviorTypes.DETAILED,
+                });
+            }
+            if (convertedStorageData && Object.values(convertedStorageData?.normalizedRowsMap).length > 0) {
+                commands.push({
+                    command: 'update',
+                    schemaName: INVENTORY_ITEM_QS.schemaName,
+                    queryName: INVENTORY_ITEM_QS.queryName,
+                    rows: Object.values(convertedStorageData.normalizedRowsMap),
+                    auditBehavior: AuditBehaviorTypes.DETAILED,
+                });
+            }
+
+            return new Promise((resolve, reject) => {
+                Query.saveRows({
+                    commands,
+                    success: async result => {
+                        this._hasError = false;
+                        let discardSuccessMsg = '';
+                        const doDiscard = discardStorageRows?.length > 0 && discardConsumed;
+
+                        if (doDiscard) {
+                            try {
+                                await deleteRows({
+                                    schemaQuery: SCHEMAS.INVENTORY.ITEMS,
+                                    rows: discardStorageRows,
+                                    auditBehavior: AuditBehaviorTypes.DETAILED,
+                                    auditUserComment: discardSamplesComment,
+                                });
+                                discardSuccessMsg =
+                                    ' and discarded ' +
+                                    discardStorageRows.length +
+                                    (discardStorageRows.length > 1 ? ' samples' : ' sample') +
+                                    ' from storage';
+                            }
+                            catch (error) {
+                                console.error(error);
+                                this._hasError = true;
+                                this.props.dismissNotifications();
+                                this.props.createNotification({
+                                    alertClass: 'danger',
+                                    message: resolveErrorMessage(error, 'sample', 'samples', 'discard'),
+                                });
+                                resolve(error);
+                            }
+                        }
+
+                        if (sampleSchemaQuery) {
+                            if (invalidateSampleQueries) {
+                                invalidateSampleQueries(sampleSchemaQuery);
+                            } else {
+                                invalidateLineageResults();
+                            }
+                        }
+
+                        this.props.dismissNotifications(); // get rid of any error notifications that have already been created
+                        this.props.createNotification(
+                            'Successfully updated ' + totalSamplesToUpdate + ' ' + noun + discardSuccessMsg + '.'
+                        );
+
+                        this.onGridEditComplete();
+
+                        resolve(result);
+                    },
+                    failure: reason => {
+                        this._hasError = true;
+                        reject(resolveErrorMessage(reason, 'sample', 'samples', 'update'));
+                    },
+                });
             });
         }
-        if (convertedStorageData?.normalizedRows.length > 0) {
-            commands.push({
-                command: 'update',
-                schemaName: INVENTORY_ITEM_QS.schemaName,
-                queryName: INVENTORY_ITEM_QS.queryName,
-                rows: convertedStorageData.normalizedRows,
-                auditBehavior: AuditBehaviorTypes.DETAILED,
-            });
-        }
-
-        return new Promise((resolve, reject) => {
-            Query.saveRows({
-                commands,
-                success: async result => {
-                    this._hasError = false;
-                    let discardSuccessMsg = '';
-                    const doDiscard = discardStorageRows?.length > 0 && discardConsumed;
-
-                    if (doDiscard) {
-                        try {
-                            await deleteRows({
-                                schemaQuery: SCHEMAS.INVENTORY.ITEMS,
-                                rows: discardStorageRows,
-                                auditBehavior: AuditBehaviorTypes.DETAILED,
-                                auditUserComment: discardSamplesComment,
-                            });
-                            discardSuccessMsg =
-                                ' and discarded ' +
-                                discardStorageRows.length +
-                                (discardStorageRows.length > 1 ? ' samples' : ' sample') +
-                                ' from storage';
-                        } catch (error) {
-                            console.error(error);
-                            this._hasError = true;
-                            this.props.dismissNotifications();
-                            this.props.createNotification({
-                                alertClass: 'danger',
-                                message: resolveErrorMessage(error, 'sample', 'samples', 'discard'),
-                            });
-                            resolve(error);
-                        }
-                    }
-
-                    if (sampleSchemaQuery) {
-                        if (invalidateSampleQueries) {
-                            invalidateSampleQueries(sampleSchemaQuery);
-                        } else {
-                            invalidateLineageResults();
-                        }
-                    }
-
-                    this.props.dismissNotifications(); // get rid of any error notifications that have already been created
-                    this.props.createNotification(
-                        'Successfully updated ' + totalSamplesToUpdate + ' ' + noun + discardSuccessMsg + '.'
-                    );
-
-                    this.onGridEditComplete();
-
-                    resolve(result);
-                },
-                failure: reason => {
-                    this._hasError = true;
-                    reject(resolveErrorMessage(reason, 'sample', 'samples', 'update'));
-                },
-            });
-        });
     };
 
     getStorageUpdateData(storageRows: any[]) {
-        const { sampleItems, sampleTypeDomainFields, noStorageSamples, selection, getConvertedStorageUpdateData } =
-            this.props;
-        if (storageRows.length === 0 || !getConvertedStorageUpdateData) return null;
+        const { sampleItems,  noStorageSamples, selection } = this.props;
+        if (storageRows.length === 0 ) return null;
 
-        const sampleTypeUnit = sampleTypeDomainFields.metricUnit;
-
-        // the current implementation of getConvertedStorageUpdateData uses @labkey/freezermanager, so it cannot be moved to ui-components
-        return getConvertedStorageUpdateData(storageRows, sampleItems, sampleTypeUnit, noStorageSamples, selection);
+        return getStorageItemUpdateData(storageRows, sampleItems, noStorageSamples, selection);
     }
 
     onGridEditComplete = (): void => {
@@ -384,11 +425,20 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     getSamplesUpdateColumns = (tabInd: number): List<QueryColumn> => {
+
         if (this.getCurrentTab(tabInd) !== UpdateGridTab.Samples) return undefined;
 
-        const { displayQueryModel, sampleTypeDomainFields } = this.props;
+        const { displayQueryModel, sampleTypeDomainFields, user } = this.props;
         const allColumns = displayQueryModel.queryInfo.getUpdateColumns(this.getReadOnlyColumns());
 
+        if (!user.canUpdate && userCanEditStorageData(user)) {
+            let updatedColumns = List<QueryColumn>();
+            allColumns.forEach(col => {
+                if (['name', 'storedamount', 'units'].indexOf(col.fieldKey.toLowerCase()) !== -1)
+                    updatedColumns = updatedColumns.push(col);
+            });
+            return updatedColumns;
+        }
         // remove aliquot specific fields if all selected are samples
         const keepAliquotFields = this.hasAliquots();
         if (keepAliquotFields) return allColumns;
@@ -603,22 +653,8 @@ class StorageEditableGridLoaderFromSelection implements IEditableGridLoader {
             return getSelectedData(schemaName, queryName, selectedIds, columnString, sorts, queryParameters, viewName)
                 .then(response => {
                     const { data, dataIds, totalRows } = response;
-                    let convertedData = OrderedMap<string, any>();
-                    data.forEach((d, key) => {
-                        let updatedRow = d;
-                        if (d) {
-                            const storedAmount = d.getIn(['StoredAmount', 'value']);
-                            if (storedAmount != null) {
-                                updatedRow = updatedRow.set(
-                                    'StoredAmount',
-                                    d.get('StoredAmount').set('value', storedAmount)
-                                );
-                            }
-                            convertedData = convertedData.set(key, updatedRow);
-                        }
-                    });
                     resolve({
-                        data: EditorModel.convertQueryDataToEditorData(convertedData),
+                        data: EditorModel.convertQueryDataToEditorData(data),
                         dataIds,
                         totalRows,
                     });

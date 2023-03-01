@@ -7,7 +7,7 @@ import { Container } from '../internal/components/base/models/Container';
 
 import { getSampleStatusType, isSampleOperationPermitted } from '../internal/components/samples/utils';
 import { ALIQUOT_FILTER_MODE, SampleOperation } from '../internal/components/samples/constants';
-import { isELNEnabled } from '../internal/app/utils';
+import { isELNEnabled, userCanReadNotebooks } from '../internal/app/utils';
 import { getContainerFilterForLookups } from '../internal/query/api';
 
 import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
@@ -116,7 +116,7 @@ export const SampleOverviewPanel: FC<Props> = memo(props => {
                             />
                         </div>
                     )}
-                    {isELNEnabled(moduleContext) && ReferencingNotebooksComponent && (
+                    {isELNEnabled(moduleContext) && ReferencingNotebooksComponent && userCanReadNotebooks(user) && (
                         <div className="col-xs-12 col-md-4">
                             <ReferencingNotebooksComponent
                                 label={sampleName}
@@ -144,7 +144,7 @@ export const SampleOverviewPanel: FC<Props> = memo(props => {
                         sampleSet={sampleType}
                     />
                 </div>
-                {isMedia && isELNEnabled(moduleContext) && ReferencingNotebooksComponent && (
+                {isMedia && isELNEnabled(moduleContext) && ReferencingNotebooksComponent && userCanReadNotebooks(user) && (
                     <div className="col-md-5">
                         <ReferencingNotebooksComponent
                             label={sampleName}

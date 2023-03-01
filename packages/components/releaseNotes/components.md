@@ -1,6 +1,16 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.303.0
+*Released*: 1 March 2023
+* Migrate inventory.item.volume to exp.materials.storedAmount and inventory.item.volumeUnits to exp.materials.Units
+  * Update `SamplesEditableGrid` for move of amount and units from inventory.item to exp.materials
+  * Move measurement- and sample amount-related methods and models from ui-premium to here
+  * Relabel "Stored Amount" to "Amount"
+  * Separate editing of Stored Amount and Freeze/Thaw count on
+  * Account for storedAmount and Units fields now on samples grids
+  * Don't display amount and units in details display
+
 ### version 2.302.0
 *Released*: 28 February 2023
 - SampleStatusTag to query for status type if not provided
@@ -14,7 +24,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.300.1
 *Released*: 28 February 2023
 - Add a `focusSeed` method to the `VisGraph` component which fits the graph to the seed node and then zooms in to an appropriate level.
-- Revise `fitGraph` to take determine whether or not the graph should be focused on the seed.
+- Revise `fitGraph` to take determine whether the graph should be focused on the seed.
 
 ### version 2.300.0
 *Released*: 28 February 2023

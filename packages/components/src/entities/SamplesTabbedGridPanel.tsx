@@ -20,7 +20,6 @@ import { SchemaQuery } from '../public/SchemaQuery';
 import { updateRows } from '../internal/query/api';
 import { invalidateLineageResults } from '../internal/components/lineage/actions';
 import { SampleTypeDataType } from '../internal/components/entities/constants';
-import { resolveErrorMessage } from '../internal/util/messaging';
 
 import { ALIQUOT_FILTER_MODE, IS_ALIQUOT_COL } from '../internal/components/samples/constants';
 import { SampleGridButtonProps } from '../internal/components/samples/models';
@@ -258,19 +257,8 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
 
                     const noun = rows.length === 1 ? SampleTypeDataType.nounSingular : SampleTypeDataType.nounPlural;
                     createNotification('Successfully updated ' + result.rows.length + ' ' + noun + '.', true);
-                })
-                .catch(reason => {
-                    dismissNotifications(); // get rid of any error notifications that have already been created
-                    createNotification({
-                        alertClass: 'danger',
-                        message: resolveErrorMessage(
-                            reason,
-                            SampleTypeDataType.nounSingular,
-                            SampleTypeDataType.nounPlural,
-                            'update'
-                        ),
-                    });
                 });
+            // catch block intentionally absent to callers can handle the errors appropriately
         },
         [createNotification, dismissNotifications, getSampleAuditBehaviorType]
     );
@@ -323,7 +311,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             {isEditing || selectionData ? (
                 <SamplesEditableGrid
                     {...editableGridProps}
-                    determineSampleData={user.canUpdate}
+                    determineSampleData={user.canUpdate || userCanEditStorageData(user)}
                     determineLineage={user.canUpdate && !isMedia}
                     determineStorage={userCanEditStorageData(user) && !isMedia}
                     displayQueryModel={activeModel}
@@ -336,6 +324,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     sampleSet={activeModel?.schemaQuery.queryName}
                     selection={selection}
                     selectionData={selectionData}
+                    user={user}
                 />
             ) : (
                 <TabbedGridPanel

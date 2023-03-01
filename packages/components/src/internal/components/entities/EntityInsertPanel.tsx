@@ -34,7 +34,7 @@ import { getCurrentProductName, isSampleManagerEnabled, sampleManagerIsPrimaryAp
 
 import { fetchDomainDetails, getDomainNamePreviews } from '../domainproperties/actions';
 
-import { SAMPLE_STATE_COLUMN_NAME, SELECTION_KEY_TYPE } from '../samples/constants';
+import { SAMPLE_STATE_COLUMN_NAME, SAMPLE_UNITS_COLUMN_NAME, SELECTION_KEY_TYPE } from '../samples/constants';
 
 import { loadNameExpressionOptions } from '../settings/actions';
 
@@ -92,9 +92,10 @@ import {
     IEntityTypeOption,
     IParentOption,
 } from './models';
+import { getAltUnitKeys } from '../../util/measurement';
 
 const ENTITY_GRID_ID = 'entity-insert-grid-data';
-const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'description', 'samplestate'];
+const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'materialexpdate', 'description', 'samplestate', 'storedamount', 'units'];
 const ALIQUOT_NOUN_SINGULAR = 'Aliquot';
 const ALIQUOT_NOUN_PLURAL = 'Aliquots';
 
@@ -199,6 +200,7 @@ interface StateProps {
     previewAliquotName: string;
     previewName: string;
     useAsync: boolean;
+    metricUnit: string;
 }
 
 enum EntityInsertPanelTabs {
@@ -247,6 +249,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             previewAliquotName: undefined,
             dataModel: undefined,
             editorModel: undefined,
+            metricUnit: undefined,
         };
     }
 
@@ -391,7 +394,10 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             // only query for the importAliases for Sample Types (i.e. not sources)
             if (insertModel.entityDataType.insertColumnNamePrefix === SampleTypeDataType.insertColumnNamePrefix) {
                 getSampleTypeDetails(schemaQuery).then(domainDetails => {
-                    this.setState(() => ({ importAliases: domainDetails.options?.get('importAliases') }));
+                    this.setState(() => ({
+                        importAliases: domainDetails.options?.get('importAliases'),
+                        metricUnit: domainDetails.options?.get('metricUnit'),
+                    }));
                 });
             }
 
@@ -977,7 +983,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     getColumnMetadata(): Map<string, EditableColumnMetadata> {
         const { entityDataType, nounSingular, nounPlural } = this.props;
-        const { creationType, previewName, previewAliquotName } = this.state;
+        const { creationType, previewName, previewAliquotName, metricUnit } = this.state;
         let columnMetadata = getUniqueIdColumnMetadata(this.getGridQueryInfo());
         if (creationType === SampleCreationType.Aliquots) {
             let toolTip =
@@ -1017,6 +1023,13 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             toolTip: <SampleStatusLegend />,
             popoverClassName: 'label-help-arrow-left',
         });
+
+        if (metricUnit) {
+            columnMetadata = columnMetadata.set(SAMPLE_UNITS_COLUMN_NAME, {
+                linkedColInd: 0,
+                filteredLookupKeys: List<string>(getAltUnitKeys(metricUnit)),
+            });
+        }
 
         return columnMetadata;
     }

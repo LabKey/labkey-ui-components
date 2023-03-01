@@ -46,6 +46,7 @@ export const SampleCreatePage: FC<SampleCreatePageProps> = memo(props => {
         useSampleTypeAppContext();
     const [getIsDirty, setIsDirty] = useRouteLeave(router, routes);
     const auditBehavior = getSampleAuditBehaviorType();
+
     const fileImportParameters = useMemo(
         () => ({
             auditBehavior,
@@ -125,7 +126,11 @@ export const SampleCreatePage: FC<SampleCreatePageProps> = memo(props => {
         [combineParentTypes]
     );
 
-    if (!user.hasInsertPermission()) {
+    if (mode?.toLowerCase() === 'update' && !user.hasUpdatePermission()) {
+        return <InsufficientPermissionsPage title={SUBTITLE_UPDATE} />;
+    }
+
+    if (mode?.toLowerCase() !== 'update' && !user.hasInsertPermission()) {
         return <InsufficientPermissionsPage title={SUBTITLE} />;
     }
 

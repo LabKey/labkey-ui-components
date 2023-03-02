@@ -368,8 +368,6 @@ export function addSourcesSectionConfig(
     user: User,
     sectionConfigs: List<Map<string, MenuSectionConfig>>
 ): List<Map<string, MenuSectionConfig>> {
-    if (!userCanReadSources(user)) return sectionConfigs;
-
     let sourcesMenuConfig = new MenuSectionConfig({
         emptyText: 'No source types have been defined',
         iconURL: imageURL('_images', 'source_type.svg'),
@@ -407,8 +405,6 @@ export function addAssaysSectionConfig(
     sectionConfigs: List<Map<string, MenuSectionConfig>>,
     standardAssayOnly: boolean
 ): List<Map<string, MenuSectionConfig>> {
-    if (!userCanReadAssays(user)) return sectionConfigs;
-
     let assaysMenuConfig = new MenuSectionConfig({
         emptyText: 'No assays have been defined',
         iconURL: imageURL('_images', 'assay.svg'),
@@ -465,13 +461,9 @@ function getBioWorkflowNotebookMediaConfigs(user: User): Map<string, MenuSection
     let configs = Map({
         [WORKFLOW_KEY]: getWorkflowSectionConfig(),
     });
-    if (userCanReadMedia(user)) {
-        configs = configs.set(MEDIA_KEY, getMediaSectionConfig());
-    }
+    configs = configs.set(MEDIA_KEY, getMediaSectionConfig());
     configs = configs.set(PICKLIST_KEY, getPicklistsSectionConfig());
-    if (userCanReadNotebooks(user)) {
-        configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig());
-    }
+    configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig());
     return configs;
 }
 
@@ -491,9 +483,7 @@ export function getMenuSectionConfigs(
     if (inSMApp) {
         sectionConfigs = addSourcesSectionConfig(user, sectionConfigs);
     } else if (isBioPrimary) {
-        if (userCanReadDataClasses(user)) {
-            sectionConfigs = sectionConfigs.push(Map({ [REGISTRY_KEY]: getRegistrySectionConfig() }));
-        }
+        sectionConfigs = sectionConfigs.push(Map({ [REGISTRY_KEY]: getRegistrySectionConfig() }));
     }
     if (isBioOrSM) {
         sectionConfigs = addSamplesSectionConfig(user, sectionConfigs);
@@ -513,10 +503,7 @@ export function getMenuSectionConfigs(
             configs = configs.set(WORKFLOW_KEY, getWorkflowSectionConfig());
         }
         configs = configs.set(PICKLIST_KEY, getPicklistsSectionConfig());
-
-        if (userCanReadNotebooks(user) && isELNEnabled(moduleContext)) {
-            configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig());
-        }
+        configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig());
         sectionConfigs = sectionConfigs.push(configs);
     } else if (isBioPrimary) {
         if (isAssayRequestsEnabled(moduleContext)) {

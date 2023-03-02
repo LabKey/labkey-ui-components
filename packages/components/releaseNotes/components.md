@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD March 2023
+* Issue 47391: LKFM user menu items should match primary application
+* Issue 47352: Product/Mega-menu has extra white space when sections are not displayed for permissions or product configuration reasons
+
 ### version 2.304.0
 *Released*: 1 March 2023
 * Refactor all reducers declared by this package to no longer utilize `handleActions`.

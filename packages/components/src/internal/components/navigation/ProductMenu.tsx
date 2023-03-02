@@ -243,8 +243,18 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
         return !isProductProjectsEnabled(moduleContext); // or if subfolder where Projects are not enable
     }, [menuModel, moduleContext]);
 
+    const sectionConfigCounts = sectionConfigs.reduce((counts, sectionConfig) => {
+        // count of how many sections in a given column/config have info
+        counts.push(Object.keys(sectionConfig.toJS()).filter(key => getSectionModel(key) !== undefined).length);
+        return counts;
+    }, []);
+    const colsWithSectionCount = sectionConfigCounts.filter(count => count > 0).length;
+
     return (
-        <div className={classNames('product-menu-content', className)} onClick={onClick} ref={contentRef}>
+        <div className={classNames('product-menu-content', className, {
+            'with-section-count-3': colsWithSectionCount === 3,
+            'with-section-count-4': colsWithSectionCount === 4,
+        })} onClick={onClick} ref={contentRef}>
             <div className="navbar-connector" />
             {error && <Alert>{error}</Alert>}
             {showFolderMenu && (
@@ -262,26 +272,31 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
                     </div>
                 )}
                 {menuModel.isLoaded &&
-                    sectionConfigs.map((sectionConfig, i) => (
-                        // eslint-disable-next-line react/no-array-index-key
-                        <div key={i} className="menu-section col-product-section">
-                            {sectionConfig.entrySeq().map(([key, menuConfig], j) => {
-                                const isLast = i === sectionConfigs.size - 1 && j === sectionConfig.size - 1;
+                    sectionConfigs.map((sectionConfig, i) => {
+                        // this can happen if a user has different perm in different project folders
+                        if (sectionConfigCounts[i] === 0) return null;
 
-                                return (
-                                    <ProductMenuSection
-                                        key={key}
-                                        section={getSectionModel(key)}
-                                        config={menuConfig}
-                                        containerPath={menuModel.containerPath}
-                                        hideEmptyUrl={!showEmptyActionUrl}
-                                        currentProductId={menuModel.currentProductId}
-                                        dashboardImgURL={isLast && dashboardURL}
-                                    />
-                                );
-                            })}
-                        </div>
-                    ))}
+                        return (
+                            // eslint-disable-next-line react/no-array-index-key
+                            <div key={i} className="menu-section col-product-section">
+                                {sectionConfig.entrySeq().map(([key, menuConfig], j) => {
+                                    const isLast = i === sectionConfigs.size - 1 && j === sectionConfig.size - 1;
+
+                                    return (
+                                        <ProductMenuSection
+                                            key={key}
+                                            section={getSectionModel(key)}
+                                            config={menuConfig}
+                                            containerPath={menuModel.containerPath}
+                                            hideEmptyUrl={!showEmptyActionUrl}
+                                            currentProductId={menuModel.currentProductId}
+                                            dashboardImgURL={isLast && dashboardURL}
+                                        />
+                                    );
+                                })}
+                            </div>
+                        );
+                    })}
             </div>
         </div>
     );

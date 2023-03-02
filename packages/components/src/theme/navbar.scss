@@ -235,12 +235,24 @@
       .col-product-section {
           width: 15%;
       }
+      &.with-section-count-4 .col-product-section {
+          width: 18%;
+      }
+      &.with-section-count-3 .col-product-section {
+          width: 25%;
+      }
   }
   &:not(.with-col-folders) {
       padding-left: 8px;
 
       .col-product-section {
           width: 20%;
+      }
+      &.with-section-count-4 .col-product-section {
+          width: 25%;
+      }
+      &.with-section-count-3 .col-product-section {
+          width: 33%;
       }
   }
 

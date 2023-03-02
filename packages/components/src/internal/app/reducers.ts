@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { Map } from 'immutable';
-import { handleActions } from 'redux-actions';
+
 import { User } from '../components/base/models/User';
 
 import { ProductMenuModel } from '../components/navigation/model';
@@ -32,105 +32,81 @@ import {
 
 export type AppReducerState = AppModel;
 
-export const AppReducers = handleActions<AppReducerState, any>(
-    {
-        [SET_RELOAD_REQUIRED]: (state: AppReducerState) => state.set('reloadRequired', true),
-
-        [UPDATE_USER]: (state: AppReducerState, action: any) => {
+export function AppReducers(state = new AppModel(), action): AppReducerState {
+    switch (action.type) {
+        case SET_RELOAD_REQUIRED:
+            return state.set('reloadRequired', true) as AppModel;
+        case UPDATE_USER:
+            return state.merge({ user: new User({ ...state.user, ...action.userProps }) }) as AppModel;
+        case UPDATE_USER_DISPLAY_NAME:
+            return state.merge({ user: new User({ ...state.user, displayName: action.displayName }) }) as AppModel;
+        case SECURITY_LOGOUT:
             return state.merge({
-                user: new User({ ...state.user, ...action.userProps }),
-            });
-        },
-
-        [UPDATE_USER_DISPLAY_NAME]: (state: AppReducerState, action: any) => {
-            return state.merge({
-                user: new User({ ...state.user, displayName: action.displayName }),
-            });
-        },
-
-        [SECURITY_LOGOUT]: (state: AppReducerState) => {
-            return state.merge({
-                reloadRequired: true,
                 logoutReason: LogoutReason.SERVER_LOGOUT,
-            });
-        },
-
-        [SECURITY_SESSION_TIMEOUT]: (state: AppReducerState) => {
-            return state.merge({
                 reloadRequired: true,
+            }) as AppModel;
+        case SECURITY_SESSION_TIMEOUT:
+            return state.merge({
                 logoutReason: LogoutReason.SESSION_EXPIRED,
-            });
-        },
-
-        [SECURITY_SERVER_UNAVAILABLE]: (state: AppReducerState) => {
-            return state.merge({
                 reloadRequired: true,
+            }) as AppModel;
+        case SECURITY_SERVER_UNAVAILABLE:
+            return state.merge({
                 logoutReason: LogoutReason.SERVER_UNAVAILABLE,
-            });
-        },
-    },
-    new AppModel()
-);
+                reloadRequired: true,
+            }) as AppModel;
+        default:
+            return state;
+    }
+}
 
 export type RoutingTableState = Map<string, string | boolean>;
 
-export const RoutingTableReducers = handleActions<RoutingTableState, any>(
-    {
-        [ADD_TABLE_ROUTE]: (state: any, action: any) => {
-            const { fromRoute, toRoute } = action;
-
-            return state.set(fromRoute, toRoute) as RoutingTableState;
-        },
-    },
-    Map<string, string | boolean>()
-);
+export function RoutingTableReducers(state = Map<string, string | boolean>(), action): RoutingTableState {
+    switch (action.type) {
+        case ADD_TABLE_ROUTE:
+            return state.set(action.fromRoute, action.toRoute) as RoutingTableState;
+        default:
+            return state;
+    }
+}
 
 export type ProductMenuState = ProductMenuModel;
 
-export const ProductMenuReducers = handleActions<ProductMenuState, any>(
-    {
-        [MENU_INVALIDATE]: () => new ProductMenuModel(),
-
-        [MENU_RELOAD]: (state: ProductMenuState) => state.setNeedsReload(),
-
-        [MENU_LOADING_START]: (state: ProductMenuState, action: any) => {
-            const { currentProductId,  productIds } = action;
-
+export function ProductMenuReducers(state = new ProductMenuModel(), action): ProductMenuState {
+    switch (action.type) {
+        case MENU_INVALIDATE:
+            return new ProductMenuModel();
+        case MENU_RELOAD:
+            return state.setNeedsReload();
+        case MENU_LOADING_START:
             return state.merge({
-                currentProductId,
-                productIds,
+                currentProductId: action.currentProductId,
                 isLoading: true,
-            });
-        },
-
-        [MENU_LOADING_ERROR]: (state: ProductMenuState, action: any) => {
+                productIds: action.productIds,
+            }) as ProductMenuModel;
+        case MENU_LOADING_ERROR:
             return state.setError(action.message);
-        },
-
-        [MENU_LOADING_END]: (state: ProductMenuState, action: any) => {
+        case MENU_LOADING_END:
             return state.setLoadedSections(action.sections);
-        },
-    },
-    new ProductMenuModel()
-);
+        default:
+            return state;
+    }
+}
 
 export type ServerNotificationState = ServerNotificationModel;
 
-export const ServerNotificationReducers = handleActions<ServerNotificationState, any>(
-    {
-        [SERVER_NOTIFICATIONS_INVALIDATE]: () => new ServerNotificationModel(),
-
-        [SERVER_NOTIFICATIONS_LOADING_START]: (state: ServerNotificationState) => {
+export function ServerNotificationReducers(state = new ServerNotificationModel(), action): ServerNotificationState {
+    switch (action.type) {
+        case SERVER_NOTIFICATIONS_INVALIDATE:
+            return new ServerNotificationModel();
+        case SERVER_NOTIFICATIONS_LOADING_START:
             return state.setLoadingStart();
-        },
-
-        [SERVER_NOTIFICATIONS_LOADING_END]: (state: ServerNotificationState, action: any) => {
+        case SERVER_NOTIFICATIONS_LOADING_END:
             return state.setLoadingComplete(action.serverActivity);
-        },
-
-        [SERVER_NOTIFICATIONS_LOADING_ERROR]: (state: ServerNotificationState, action: any) => {
+        case SERVER_NOTIFICATIONS_LOADING_ERROR:
             return state.setError(action.message);
-        },
-    },
-    new ServerNotificationModel()
-);
+        default:
+            return state;
+    }
+}

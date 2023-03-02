@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.302.1
+*Released*: 02 March 2023
+- Issue 47202: Options to reduce payload of getContainers.api response
+  - Field editor only needs the base set of container info for lookups so use new props to reduce response object size (includeWorkbookChildren and includeStandardProperties)
+
 ### version 2.302.0
 *Released*: 28 February 2023
 - SampleStatusTag to query for status type if not provided

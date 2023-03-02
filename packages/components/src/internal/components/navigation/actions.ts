@@ -26,8 +26,11 @@ export function signIn(): void {
     window.location.href = buildURL('login', 'login');
 }
 
-
-export function getUserMenuSection(productId: string, container: string): Promise<MenuSectionModel> {
+export function getUserMenuSection(
+    currentProductId: string,
+    productId: string,
+    container: string
+): Promise<MenuSectionModel> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: buildURL('product', 'userMenuSection.api', undefined, {
@@ -38,9 +41,8 @@ export function getUserMenuSection(productId: string, container: string): Promis
             }),
             success: Utils.getCallbackWrapper(response => {
                 if (response) {
-                    resolve(MenuSectionModel.create(response, productId, container));
-                }
-                else {
+                    resolve(MenuSectionModel.create(response, currentProductId, container));
+                } else {
                     console.warn("No user menu section returned");
                     resolve(undefined);
                 }

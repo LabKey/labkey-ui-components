@@ -950,6 +950,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           "getDeletionSummaries": [Function],
           "getGroupMemberships": [Function],
           "getUserLimitSettings": [Function],
+          "getUserPermissions": [Function],
           "removeGroupMembers": [Function],
         },
       }

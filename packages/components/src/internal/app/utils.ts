@@ -228,15 +228,27 @@ export function isSampleStatusEnabled(moduleContext?: ModuleContext): boolean {
 export function getCurrentAppProperties(): AppProperties {
     const lcController = ActionURL.getController().toLowerCase();
     if (!lcController) return undefined;
-    if (lcController === SAMPLE_MANAGER_APP_PROPERTIES.controllerName.toLowerCase())
+    if (lcController === SAMPLE_MANAGER_APP_PROPERTIES.controllerName.toLowerCase()) {
         return SAMPLE_MANAGER_APP_PROPERTIES;
-    if (lcController === BIOLOGICS_APP_PROPERTIES.controllerName.toLowerCase()) return BIOLOGICS_APP_PROPERTIES;
-    if (lcController === FREEZER_MANAGER_APP_PROPERTIES.controllerName.toLowerCase())
+    } else if (lcController === BIOLOGICS_APP_PROPERTIES.controllerName.toLowerCase()) {
+        return BIOLOGICS_APP_PROPERTIES;
+    } else if (lcController === FREEZER_MANAGER_APP_PROPERTIES.controllerName.toLowerCase()) {
         return FREEZER_MANAGER_APP_PROPERTIES;
+    }
     return undefined;
 }
 
 export function getPrimaryAppProperties(moduleContext?: ModuleContext): AppProperties {
+    // Issue 47390: when URL is in the LKB or LKSM controller, then that should be considered the primary app
+    //              it is the LKFM app case when we want to determine the primary app based on enabled modules
+    const currentAppProperties = getCurrentAppProperties();
+    if (
+        currentAppProperties?.productId === BIOLOGICS_APP_PROPERTIES.productId ||
+        currentAppProperties?.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId
+    ) {
+        return currentAppProperties;
+    }
+
     if (isBiologicsEnabled(moduleContext)) {
         return BIOLOGICS_APP_PROPERTIES;
     } else if (isSampleManagerEnabled(moduleContext)) {

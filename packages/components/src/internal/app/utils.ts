@@ -503,7 +503,9 @@ export function getMenuSectionConfigs(
             configs = configs.set(WORKFLOW_KEY, getWorkflowSectionConfig());
         }
         configs = configs.set(PICKLIST_KEY, getPicklistsSectionConfig());
-        configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig());
+        if (isELNEnabled(moduleContext)) {
+            configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig());
+        }
         sectionConfigs = sectionConfigs.push(configs);
     } else if (isBioPrimary) {
         if (isAssayRequestsEnabled(moduleContext)) {

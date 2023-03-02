@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD March 2023
+* Issue 47084: App Sample type grids issue the query for the grid twice
+
 ### version 2.304.0
 *Released*: 1 March 2023
 * Refactor all reducers declared by this package to no longer utilize `handleActions`.

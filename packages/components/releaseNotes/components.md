@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.304.0
+*Released*: 1 March 2023
+* Refactor all reducers declared by this package to no longer utilize `handleActions`.
+* Remove `redux-actions` as a dependency.
+
 ### version 2.303.0
 *Released*: 1 March 2023
 * Migrate inventory.item.volume to exp.materials.storedAmount and inventory.item.volumeUnits to exp.materials.Units

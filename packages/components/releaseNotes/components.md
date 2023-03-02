@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - Issue 47306: Resolve Permissions page error by skipping no-resolvable users.
+- Resolve bug in redirection location upon project deletion
 
 ### version 2.302.1
 *Released*: 02 March 2023

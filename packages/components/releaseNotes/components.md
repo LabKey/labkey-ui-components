@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.X
+*Released*: X March 2023
+* Issue 47422: LKSM: Renaming Sample Type results in Not Found error
+
+
 ### version 2.304.0
 *Released*: 1 March 2023
 * Refactor all reducers declared by this package to no longer utilize `handleActions`.

@@ -110,6 +110,13 @@ export namespace URLService {
     export function registerURLMappers(...mappers: URLMapper[]): void {
         urlMappers = urlMappers.concat(mappers) as List<URLMapper>;
     }
+
+    export function clearCache(cacheKey?: string): void {
+        resolvers.forEach(resolver => {
+            if (!cacheKey || resolver.cacheName === cacheKey)
+                resolver.clearCache?.();
+        });
+    }
 }
 
 export class ActionMapper implements URLMapper {

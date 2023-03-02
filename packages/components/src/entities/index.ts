@@ -2,7 +2,9 @@ import {
     getSampleTypes,
     getOriginalParentsFromLineage,
     loadSampleTypes,
+    onDataClassRename,
     onSampleChange,
+    onSampleTypeRename,
     onSampleTypeChange,
 } from './actions';
 import {
@@ -78,7 +80,9 @@ export {
     SamplesImportSuccessMessage,
     isFindByIdsSchema,
     loadSampleTypes,
+    onDataClassRename,
     onSampleChange,
+    onSampleTypeRename,
     onSampleTypeChange,
     processSampleBulkAdd,
     useSampleTypeAppContext,

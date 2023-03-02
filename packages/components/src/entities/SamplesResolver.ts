@@ -9,17 +9,30 @@ import { SCHEMAS } from '../internal/schemas';
 
 import { caseInsensitive } from '../internal/util/utils';
 import { getQueryDetails } from '../internal/query/api';
-import { MEDIA_KEY } from '../internal/app/constants';
+import { MEDIA_KEY, SAMPLE_TYPE_KEY } from '../internal/app/constants';
 
 /**
  * Resolves sample routes dynamically
  * /rd/samples/14/... -> /samples/sampleSetByName/14/... || /media/batches/14
  */
 export class SamplesResolver implements AppRouteResolver {
+    cacheName = SAMPLE_TYPE_KEY;
+
     samples: Map<number, List<string>>; // Map<SampleRowId, List<'samples' | 'media', sampleSetName | 'batches'>>
+    initSamples: Map<number, List<string>>;
 
     constructor(samples?: Map<number, List<string>>) {
-        this.samples = samples !== undefined ? samples : Map<number, List<string>>();
+        this.init(samples);
+        this.initSamples = samples;
+    }
+
+    init(samples?: Map<number, List<string>>): void {
+        const initSamples = samples ?? this.initSamples;
+        this.samples = initSamples !== undefined ? initSamples : Map<number, List<string>>();
+    }
+
+    clearCache() : void {
+        this.init();
     }
 
     matches(route: string): boolean {

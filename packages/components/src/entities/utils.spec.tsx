@@ -961,7 +961,6 @@ describe('getSamplesAssayGridQueryConfigs', () => {
         queries: { key: QueryInfo.create({ schemaName: 'exp', name: 'AssayRunsPerSample' }) },
         models: undefined,
         orderedModels: undefined,
-        totalRows: 0,
     };
 
     test('default props', async () => {

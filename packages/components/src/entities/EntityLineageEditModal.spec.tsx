@@ -35,7 +35,6 @@ const LINEAGE_DATA_WITHOUT_ALIQUOTS = {
     },
     orderedModels: List(['schema/query']),
     queries: { 'schema/query': undefined },
-    totalRows: 3,
 };
 const LINEAGE_DATA_WITH_ALIQUOTS = {
     key: 'schema/query',
@@ -48,7 +47,6 @@ const LINEAGE_DATA_WITH_ALIQUOTS = {
     },
     orderedModels: List(['schema/query']),
     queries: { 'schema/query': undefined },
-    totalRows: 3,
 };
 const LINEAGE_DATA_ALL_ALIQUOTS = {
     key: 'schema/query',
@@ -61,7 +59,6 @@ const LINEAGE_DATA_ALL_ALIQUOTS = {
     },
     orderedModels: List(['schema/query']),
     queries: { 'schema/query': undefined },
-    totalRows: 3,
 };
 
 const DEFAULT_PROPS = {

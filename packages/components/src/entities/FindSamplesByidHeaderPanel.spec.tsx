@@ -113,7 +113,8 @@ describe('FindSamplesByIdHeaderPanel', () => {
     });
 
     test('no ids', () => {
-        const queryModel = makeTestQueryModel(new SchemaQuery('test', 'query'), new QueryInfo(), {}, [], 0);
+        let queryModel = makeTestQueryModel(new SchemaQuery('test', 'query'), new QueryInfo(), {}, [], 0);
+        queryModel = queryModel.mutate({ totalRows: 0 });
 
         const wrapper = mount(
             <FindSamplesByIdHeaderPanel
@@ -134,7 +135,8 @@ describe('FindSamplesByIdHeaderPanel', () => {
     });
 
     test('with error', () => {
-        const queryModel = makeTestQueryModel(new SchemaQuery('test', 'query'), new QueryInfo(), {}, [], 0);
+        let queryModel = makeTestQueryModel(new SchemaQuery('test', 'query'), new QueryInfo(), {}, [], 0);
+        queryModel = queryModel.mutate({ totalRows: 0 });
 
         const wrapper = mount(
             <FindSamplesByIdHeaderPanel
@@ -157,13 +159,14 @@ describe('FindSamplesByIdHeaderPanel', () => {
     });
 
     test('found multiple samples', () => {
-        const queryModel = makeTestQueryModel(
+        let queryModel = makeTestQueryModel(
             new SchemaQuery('test', 'query'),
             new QueryInfo(),
             { 1: {}, 2: {} },
             ['1', '2'],
             2
         );
+        queryModel = queryModel.mutate({ totalRows: 2 });
         const wrapper = mount(
             <FindSamplesByIdHeaderPanel
                 loadingState={LoadingState.LOADED}
@@ -193,13 +196,14 @@ describe('FindSamplesByIdHeaderPanel', () => {
     });
 
     test('custom workWithSamplesMsg', () => {
-        const queryModel = makeTestQueryModel(
+        let queryModel = makeTestQueryModel(
             new SchemaQuery('test', 'query'),
             new QueryInfo(),
             { 1: {}, 2: {} },
             ['1', '2'],
             2
         );
+        queryModel = queryModel.mutate({ totalRows: 2 });
         const msg = 'Work with your samples here';
         const wrapper = mount(
             <FindSamplesByIdHeaderPanel

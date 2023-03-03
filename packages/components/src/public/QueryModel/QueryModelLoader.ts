@@ -49,6 +49,7 @@ export interface RowsResponse {
     messages: GridMessage[];
     orderedRows: string[];
     rowCount: number;
+    totalRows?: number;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     rows: { [key: string]: any };
 }
@@ -130,13 +131,14 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
             includeUpdateColumn: model.includeUpdateColumn,
             includeTotalCount: model.includeTotalCount,
         });
-        const { key, models, orderedModels, totalRows, messages } = result;
+        const { key, models, orderedModels, rowCount, totalRows, messages } = result;
 
         return {
             messages: messages.toJS(),
             rows: models[key],
             orderedRows: orderedModels[key].toArray(),
-            rowCount: model.includeTotalCount ? totalRows : undefined, // rename to match what the server returns
+            rowCount,
+            totalRows,
         };
     },
     // The selection related methods may seem like overly simple passthroughs, but by putting them on QueryModelLoader,

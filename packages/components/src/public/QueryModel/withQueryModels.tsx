@@ -91,6 +91,7 @@ const resetRowsState = (model: Draft<QueryModel>): void => {
     model.rows = undefined;
     model.rowCount = undefined;
     model.rowsLoadingState = LoadingState.INITIALIZED;
+    model.totalRows = undefined;
 };
 
 /**
@@ -490,7 +491,7 @@ export function withQueryModels<Props>(
 
             try {
                 const result = await loadRows(this.state.queryModels[id]);
-                const {messages, rows, orderedRows, rowCount} = result;
+                const { messages, rows, orderedRows, rowCount, totalRows } = result;
 
                 this.setState(
                     produce<State>(draft => {
@@ -501,6 +502,7 @@ export function withQueryModels<Props>(
                         model.rowCount = rowCount;
                         model.rowsLoadingState = LoadingState.LOADED;
                         model.rowsError = undefined;
+                        model.totalRows = totalRows;
                     })
                 );
             } catch (error) {

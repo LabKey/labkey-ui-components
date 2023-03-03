@@ -364,7 +364,8 @@ export interface ISelectRowsResult {
     queries: {
         [key: string]: QueryInfo;
     };
-    totalRows: number;
+    rowCount: number;
+    totalRows?: number; // will only be set if request includeTotalCount was true
 }
 
 /**
@@ -400,7 +401,8 @@ export function selectRowsDeprecated(userConfig, caller?): Promise<ISelectRowsRe
                             queries: {
                                 [key]: details,
                             },
-                            totalRows: result.rowCount, // TODO: Why do we rename rowCount to totalRows? Seems unnecessary.
+                            rowCount: result.rowCount,
+                            totalRows: userConfig.includeTotalCount ? result.rowCount : undefined,
                             messages: result.messages,
                             caller,
                         }
@@ -465,6 +467,7 @@ export function selectRowsDeprecated(userConfig, caller?): Promise<ISelectRowsRe
                     // put on this another parameter!
                     columns: userConfig.columns ? userConfig.columns : '*',
                     containerFilter: userConfig.containerFilter ?? getContainerFilter(userConfig.containerPath),
+                    includeTotalCount: userConfig.includeTotalCount ?? false, // default to false to improve performance
                     success: json => {
                         result = handleSelectRowsResponse(json);
                         hasResults = true;

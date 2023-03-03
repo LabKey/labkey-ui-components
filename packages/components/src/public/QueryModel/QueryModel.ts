@@ -320,9 +320,13 @@ export class QueryModel {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     readonly rows?: { [key: string]: any };
     /**
-     * The total count of rows for the given QueryModel.
+     * The count of rows returned from the query for the given QueryModel.
      */
     readonly rowCount?: number;
+    /**
+     * The total row count for the query for the given QueryModel. This will only be populated if includeTotalCount=true.
+     */
+    readonly totalRows?: number;
     /**
      * Error message from API call to load the data rows.
      */

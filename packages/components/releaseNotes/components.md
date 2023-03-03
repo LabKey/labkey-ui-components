@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD March 2023
+* selectRows/selectRowsDeprecated switch to default to includeTotalCount false
+
 ### version 2.304.1
 *Released*: 3 March 2023
 * Issue 47084: App Sample type grids issue the query for the grid twice

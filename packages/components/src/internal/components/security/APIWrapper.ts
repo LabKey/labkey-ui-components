@@ -51,6 +51,7 @@ export interface SecurityAPIWrapper {
     getDeletionSummaries: () => Promise<Summary[]>;
     getGroupMemberships: () => Promise<Row[]>;
     getUserLimitSettings: () => Promise<UserLimitSettings>;
+    getUserPermissions: (options: Security.GetUserPermissionsOptions) => Promise<string[]>;
     removeGroupMembers: (
         groupId: number,
         principalIds: number[],
@@ -215,6 +216,22 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
 
     getUserLimitSettings = getUserLimitSettings;
 
+    getUserPermissions = (options: Security.GetUserPermissionsOptions): Promise<string[]> => {
+        return new Promise((resolve, reject) => {
+            Security.getUserPermissions({
+                containerPath: options.containerPath,
+                success: response => {
+                    const { container } = response;
+                    resolve(container.effectivePermissions);
+                },
+                failure: error => {
+                    console.error('Failed to fetch user permissions', error);
+                    reject(error);
+                },
+            });
+        });
+    };
+
     removeGroupMembers = (
         groupId: number,
         principalIds: number[],
@@ -263,6 +280,7 @@ export function getSecurityTestAPIWrapper(
         getDeletionSummaries: mockFn(),
         getGroupMemberships: mockFn(),
         getUserLimitSettings: mockFn(),
+        getUserPermissions: mockFn(),
         removeGroupMembers: mockFn(),
         ...overrides,
     };

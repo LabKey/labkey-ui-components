@@ -49,9 +49,7 @@ export class SelectionMenuItem extends PureComponent<Props> {
     }
 
     get disabled(): boolean {
-        const { queryModel } = this.props;
-        const totalRows = queryModel?.rowCount;
-        return totalRows === undefined || this.tooFewSelected || this.tooManySelected;
+        return this.tooFewSelected || this.tooManySelected;
     }
 
     render() {

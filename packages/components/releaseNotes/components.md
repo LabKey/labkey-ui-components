@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.302.2
+*Released*: 03 March 2023
 - Issue 47306: Resolve Permissions page error by skipping no-resolvable users.
 - Resolve bug in redirection location upon project deletion
 

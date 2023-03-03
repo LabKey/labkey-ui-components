@@ -4,7 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.X
 *Released*: X March 2023
 * Issue 47422: LKSM: Renaming Sample Type results in Not Found error
-
+* Issue 47407: Sample Manager: Update from file for Storage Editor without Edit Perm shoulnd't be available
 
 ### verstion 2.304.2
 *Released*: 3 March 2023

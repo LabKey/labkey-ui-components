@@ -4,14 +4,13 @@
  */
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { MenuItem } from 'react-bootstrap';
-import { fromJS, List } from 'immutable';
 import { WithRouterProps } from 'react-router';
 import { Filter, PermissionTypes, Query } from '@labkey/api';
 
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { Actions, InjectedQueryModels, withQueryModels } from '../public/QueryModel/withQueryModels';
 import { SchemaQuery } from '../public/SchemaQuery';
-import { isLoading } from '../public/LoadingState';
+import { QueryInfo } from '../public/QueryInfo';
 import { SHARED_CONTAINER_PATH } from '../internal/constants';
 import { User } from '../internal/components/base/models/User';
 import { AppURL } from '../internal/url/AppURL';
@@ -38,6 +37,7 @@ import { SAMPLE_DATA_EXPORT_CONFIG, SAMPLE_STATUS_REQUIRED_COLUMNS } from '../in
 import { PrintLabelsModal } from '../internal/components/labels/PrintLabelsModal';
 import { resolveErrorMessage } from '../internal/util/messaging';
 import { Alert } from '../internal/components/base/Alert';
+import { useAppContext } from '../internal/AppContext';
 
 import { SamplesCreatedSuccessMessage } from './SamplesCreatedSuccessMessage';
 import { SampleTypeInsightsPanel } from './SampleTypeInsightsPanel';
@@ -127,6 +127,7 @@ export type SampleListingPageBodyProps = CommonPageProps &
 // exported for jest testing
 export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
     const { menuInit, navigate, queryModels, actions, sampleListModelId, menu, setIsDirty, getIsDirty } = props;
+    const { api } = useAppContext();
     const { sampleType } = props.params;
     const { canPrintLabels, printServiceUrl } = useLabelPrintingContext();
     const { createNotification, dismissNotifications } = useNotificationsContext();
@@ -137,6 +138,7 @@ export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
         AddSamplesToStorageModalComponent,
         SampleGridButtonComponent,
     } = useSampleTypeAppContext();
+    const [sampleTypeQueryInfo, setSampleTypeQueryInfo] = useState<QueryInfo>();
     const [showPrintDialog, setShowPrintDialog] = useState(false);
     const [showAddToStorage, setShowAddToStorage] = useState(false);
     const [showConfirmDeleteSampleType, setShowConfirmDeleteSampleType] = useState(false);
@@ -148,13 +150,25 @@ export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
     const { error, isLoaded, user } = useContainerUser(detailsModel?.getRowValue('Folder/Path'));
 
     useEffect(() => {
-        getUserSharedContainerPermissions()
-            .then(permissions => {
-                setSharedContainerPermissions(permissions);
-            })
-            .catch(reason => {
+        (async () => {
+            try {
+                const queryInfo = await api.query.getQueryDetails({
+                    schemaName: listModel.schemaName,
+                    queryName: listModel.queryName,
+                });
+                setSampleTypeQueryInfo(queryInfo);
+            } catch (reason) {
                 console.error(reason);
-            });
+                setSampleTypeQueryInfo(new QueryInfo());
+            }
+
+            try {
+                const permissions = await getUserSharedContainerPermissions();
+                setSharedContainerPermissions(permissions);
+            } catch (reason) {
+                console.error(reason);
+            }
+        })();
     }, []);
 
     useEffect(() => {
@@ -215,12 +229,12 @@ export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
     }, [props.location?.query?.addToStorageCount]);
 
     useEffect(() => {
-        if (!detailsModel && !isLoading(listModel.queryInfoLoadingState)) {
+        if (!detailsModel && sampleTypeQueryInfo) {
             actions.addModel(
                 {
                     id: DETAIL_GRID_ID,
                     schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS_DETAILS,
-                    baseFilters: [Filter.create('name', listModel.queryInfo?.name || sampleType)],
+                    baseFilters: [Filter.create('name', sampleTypeQueryInfo.name || sampleType)],
                     requiredColumns: ['Folder/Path'],
                     omittedColumns: ['Name', 'LSID', 'MaterialLSIDPrefix'],
                     containerFilter: Query.containerFilter.currentPlusProjectAndShared,
@@ -228,7 +242,7 @@ export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
                 true
             );
         }
-    }, [detailsModel, listModel.queryInfoLoadingState, sampleType]);
+    }, [sampleTypeQueryInfo]);
 
     const isSharedSampleType = useMemo(() => {
         if (detailsModel && !detailsModel.isLoading) return getIsSharedModel(detailsModel);
@@ -256,8 +270,8 @@ export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
 
     const beforeDeleteSampleType = useCallback(() => {
         // call onSampleTypeChange so that the QueryDetails get invalidated
-        onSampleTypeChange(listModel.schemaQuery, listModel.queryInfo?.domainContainerPath);
-    }, [listModel.queryInfo?.domainContainerPath, listModel.schemaQuery]);
+        onSampleTypeChange(listModel.schemaQuery, sampleTypeQueryInfo?.domainContainerPath);
+    }, [sampleTypeQueryInfo?.domainContainerPath, listModel.schemaQuery]);
 
     const onDeleteSampleTypeComplete = useCallback(
         (success: boolean) => {
@@ -329,7 +343,7 @@ export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
         [createNotification]
     );
 
-    const title = listModel.queryInfo?.title ?? listModel.queryInfo?.name ?? 'Sample Type - Overview';
+    const title = sampleTypeQueryInfo?.title ?? sampleTypeQueryInfo?.name ?? 'Sample Type - Overview';
 
     if (listModel.hasLoadErrors || detailsModel?.hasLoadErrors || error) {
         return <NotFound title={title} />;
@@ -373,7 +387,7 @@ export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
     return (
         <SampleTypeBasePage
             title={title}
-            hasActiveJob={hasActivePipelineJob(menu, SAMPLES_KEY, listModel.queryInfo?.name)}
+            hasActiveJob={hasActivePipelineJob(menu, SAMPLES_KEY, sampleTypeQueryInfo?.name)}
             description={colorIcon}
             buttons={headerButtons}
             onTemplateDownload={onDownloadTemplate}
@@ -425,7 +439,7 @@ export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
                     <SampleSetDeleteModal
                         afterDelete={onDeleteSampleTypeComplete}
                         beforeDelete={beforeDeleteSampleType}
-                        containerPath={listModel.queryInfo?.domainContainerPath}
+                        containerPath={sampleTypeQueryInfo?.domainContainerPath}
                         numSamples={listModel.rowCount}
                         onCancel={onClearDeleteSampleType}
                         rowId={detailsModel.getRowValue('RowId')}
@@ -485,7 +499,7 @@ export const SampleListingPage: FC<CommonPageProps & WithRouterProps> = props =>
             sampleListModelId={sampleListModelId}
             queryConfigs={queryConfigs}
             key={key}
-            autoLoad
+            autoLoad={false} // GridPanel will load via loadOnMount
         />
     );
 };

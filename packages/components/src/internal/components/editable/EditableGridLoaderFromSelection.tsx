@@ -62,7 +62,7 @@ export class EditableGridLoaderFromSelection implements IEditableGridLoader {
 
             return getSelectedData(schemaName, queryName, [...selections], gridModel.getRequestColumnsString(this.requiredColumns, this.omittedColumns, true), sortString, queryParameters, viewName)
                 .then(response => {
-                    const { data, dataIds, totalRows } = response;
+                    const { data, dataIds } = response;
                     resolve({
                         data: EditorModel.convertQueryDataToEditorData(
                             data,
@@ -71,7 +71,6 @@ export class EditableGridLoaderFromSelection implements IEditableGridLoader {
                             this.fieldsNotToUpdate
                         ),
                         dataIds,
-                        totalRows,
                     });
                 })
                 .catch(error => {

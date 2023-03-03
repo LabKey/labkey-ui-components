@@ -652,11 +652,10 @@ class StorageEditableGridLoaderFromSelection implements IEditableGridLoader {
             const selectedIds = [...queryModel.selections];
             return getSelectedData(schemaName, queryName, selectedIds, columnString, sorts, queryParameters, viewName)
                 .then(response => {
-                    const { data, dataIds, totalRows } = response;
+                    const { data, dataIds } = response;
                     resolve({
                         data: EditorModel.convertQueryDataToEditorData(data),
                         dataIds,
-                        totalRows,
                     });
                 })
                 .catch(error => {

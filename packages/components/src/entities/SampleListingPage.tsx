@@ -440,7 +440,7 @@ export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
                         afterDelete={onDeleteSampleTypeComplete}
                         beforeDelete={beforeDeleteSampleType}
                         containerPath={sampleTypeQueryInfo?.domainContainerPath}
-                        numSamples={listModel.rowCount}
+                        numSamples={listModel.totalRows}
                         onCancel={onClearDeleteSampleType}
                         rowId={detailsModel.getRowValue('RowId')}
                     />

@@ -71,6 +71,7 @@ export function getRunningPipelineJobStatuses(filters?: Filter.IFilter[]): Promi
             queryName: 'job',
             filterArray: [statusFilter].concat(filters ?? []),
             sort: 'Created',
+            includeTotalCount: true,
         })
             .then(response => {
                 const model = response.models[response.key];

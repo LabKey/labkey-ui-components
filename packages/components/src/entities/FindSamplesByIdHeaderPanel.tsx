@@ -97,7 +97,7 @@ export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo(props => {
             <div className="bottom-spacing">
                 <i className="fa fa-check-circle find-samples-success" />{' '}
                 <span id="found-samples-message">
-                    Found {Utils.pluralize(listModel.rowCount || 0, 'sample', 'samples')} matching {numIdsMsg}.
+                    Found {Utils.pluralize(listModel.totalRows || 0, 'sample', 'samples')} matching {numIdsMsg}.
                 </span>
             </div>
         );
@@ -111,7 +111,7 @@ export const FindSamplesByIdHeaderPanel: FC<HeaderPanelProps> = memo(props => {
         );
     }
 
-    const hasSamples = !listModel?.isLoading && listModel?.rowCount > 0;
+    const hasSamples = !listModel?.isLoading && listModel?.totalRows > 0;
 
     return (
         <Section title={title} panelClassName={panelClassName}>

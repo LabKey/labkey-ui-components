@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback, useState } from 'react';
-import { Checkbox, Label, Modal } from 'react-bootstrap';
+import { Checkbox, Modal } from 'react-bootstrap';
 
 import { QueryModelMap } from '../../../public/QueryModel/withQueryModels';
 
@@ -18,7 +18,7 @@ export const ExportModal: FC<ExportModalProperties> = memo(props => {
     const [selected, setSelected] = useState<Set<string>>(() => {
         let selected = new Set<string>();
         tabOrder.forEach(modelId => {
-            if (queryModels[modelId].rowCount > 0) selected = selected.add(modelId);
+            if (queryModels[modelId].totalRows > 0) selected = selected.add(modelId);
         });
         return selected;
     });
@@ -74,7 +74,7 @@ export const ExportModal: FC<ExportModalProperties> = memo(props => {
                                             {model.title}
                                         </Checkbox>
                                     </td>
-                                    <td className="pull-right">{model.rowCount}</td>
+                                    <td className="pull-right">{model.totalRows}</td>
                                     <td className="view-name">
                                         {model.viewName || 'Default'} {model.currentView.session && <span className="text-muted">(edited)</span>}
                                     </td>

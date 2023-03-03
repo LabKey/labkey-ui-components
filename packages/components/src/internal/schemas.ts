@@ -88,6 +88,8 @@ export const INVENTORY = {
         'StorageLocation',
         'StorageRow',
         'StorageCol',
+        'StoredAmount',
+        'Units',
         'FreezeThawCount',
         'EnteredStorage',
         'CheckedOut',

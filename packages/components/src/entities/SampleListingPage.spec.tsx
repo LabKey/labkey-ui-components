@@ -2,7 +2,6 @@ import React from 'react';
 import { MenuItem } from 'react-bootstrap';
 import { ReactWrapper } from 'enzyme';
 import { PermissionTypes } from '@labkey/api';
-import { List } from 'immutable';
 
 import { makeTestActions, makeTestQueryModel } from '../public/QueryModel/testUtils';
 import { QueryInfo } from '../public/QueryInfo';
@@ -38,6 +37,8 @@ import { PrintLabelsModal } from '../internal/components/labels/PrintLabelsModal
 import { ColorIcon } from '../internal/components/base/ColorIcon';
 
 import { SampleTypeAppContext } from '../internal/AppContext';
+
+import { getQueryTestAPIWrapper } from '../internal/query/APIWrapper';
 
 import { SampleTypeBasePage } from './SampleTypeBasePage';
 import {
@@ -93,47 +94,34 @@ describe('hasPermissions', () => {
         expect(hasPermissions(TEST_USER_EDITOR, [PermissionTypes.Insert, PermissionTypes.Update])).toBeTruthy();
         expect(hasPermissions(TEST_USER_EDITOR, [PermissionTypes.Insert, PermissionTypes.Update], false)).toBeTruthy();
         expect(
-            hasPermissions(
-                TEST_USER_EDITOR,
-                [PermissionTypes.Insert, PermissionTypes.Update],
-                false,
-                [PermissionTypes.Insert]
-            )
+            hasPermissions(TEST_USER_EDITOR, [PermissionTypes.Insert, PermissionTypes.Update], false, [
+                PermissionTypes.Insert,
+            ])
         ).toBeTruthy();
     });
 
     test('shared container', () => {
         expect(
-            hasPermissions(
-                TEST_USER_AUTHOR,
-                [PermissionTypes.Insert, PermissionTypes.Update],
-                true,
-                [PermissionTypes.Insert]
-            )
+            hasPermissions(TEST_USER_AUTHOR, [PermissionTypes.Insert, PermissionTypes.Update], true, [
+                PermissionTypes.Insert,
+            ])
         ).toBeFalsy();
         expect(
-            hasPermissions(
-                TEST_USER_AUTHOR,
-                [PermissionTypes.Insert, PermissionTypes.Update],
-                true,
-                [PermissionTypes.Insert, PermissionTypes.Update]
-            )
+            hasPermissions(TEST_USER_AUTHOR, [PermissionTypes.Insert, PermissionTypes.Update], true, [
+                PermissionTypes.Insert,
+                PermissionTypes.Update,
+            ])
         ).toBeTruthy();
         expect(
-            hasPermissions(
-                TEST_USER_EDITOR,
-                [PermissionTypes.Insert, PermissionTypes.Update],
-                true,
-                [PermissionTypes.Insert]
-            )
+            hasPermissions(TEST_USER_EDITOR, [PermissionTypes.Insert, PermissionTypes.Update], true, [
+                PermissionTypes.Insert,
+            ])
         ).toBeFalsy();
         expect(
-            hasPermissions(
-                TEST_USER_EDITOR,
-                [PermissionTypes.Insert, PermissionTypes.Update],
-                true,
-                [PermissionTypes.Insert, PermissionTypes.Update]
-            )
+            hasPermissions(TEST_USER_EDITOR, [PermissionTypes.Insert, PermissionTypes.Update], true, [
+                PermissionTypes.Insert,
+                PermissionTypes.Update,
+            ])
         ).toBeTruthy();
         expect(hasPermissions(TEST_USER_EDITOR, [PermissionTypes.Insert, PermissionTypes.Update], true)).toBeFalsy();
     });
@@ -216,7 +204,15 @@ describe('SampleListingPageBody', () => {
                 {...getDefaultProps()}
                 queryModels={{ 'samples-listing': queryModel, 'samples-details': QUERY_MODEL }}
             />,
-            { api: API_APP_CONTEXT, sampleType: SAMPLE_TYPE_APP_CONTEXT },
+            {
+                api: {
+                    ...API_APP_CONTEXT,
+                    query: getQueryTestAPIWrapper(jest.fn, {
+                        getQueryDetails: () => Promise.resolve(new QueryInfo({ title: 'Test title' })),
+                    }),
+                },
+                sampleType: SAMPLE_TYPE_APP_CONTEXT,
+            },
             DEFAULT_CONTEXT
         );
         await waitForLifecycle(wrapper, 100);

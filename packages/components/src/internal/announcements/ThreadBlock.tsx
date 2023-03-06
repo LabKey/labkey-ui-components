@@ -45,16 +45,43 @@ const DeleteThreadModal: FC<DeleteThreadModalProps> = ({ cancel, onDelete }) => 
     </Modal>
 );
 
+const DeleteReplyModal: FC<DeleteThreadModalProps> = ({ cancel, onDelete }) => (
+    <Modal show onHide={cancel} className="delete-thread-modal">
+        <Modal.Header>
+            <Modal.Title>Delete This Reply?</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+            Are you sure you want to delete this reply?
+        </Modal.Body>
+
+        <Modal.Footer>
+            <div className="pull-left">
+                <button className="btn btn-default" onClick={cancel}>
+                    Cancel
+                </button>
+            </div>
+
+            <div className="pull-right">
+                <button className="btn btn-danger delete-thread-modal__confirm" onClick={onDelete}>
+                    Yes, Delete Reply
+                </button>
+            </div>
+        </Modal.Footer>
+    </Modal>
+);
+
 interface ThreadBlockHeaderProps {
     author: User;
     created: number | string;
     modified: number | string;
+    isThread?: boolean;
     onDelete?: () => void;
     onEdit?: () => void;
 }
 
 const ThreadBlockHeader: FC<ThreadBlockHeaderProps> = props => {
-    const { created, modified, onDelete, onEdit, author } = props;
+    const { created, modified, onDelete, onEdit, author, isThread } = props;
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const formattedCreate = useMemo(() => moment(created).fromNow(), [created]);
@@ -88,19 +115,20 @@ const ThreadBlockHeader: FC<ThreadBlockHeaderProps> = props => {
                         <Dropdown.Menu className="pull-right">
                             {onEdit !== undefined && (
                                 <MenuItem className="thread-block-header__menu-edit" onClick={onEdit}>
-                                    Edit comment
+                                    Edit Comment
                                 </MenuItem>
                             )}
                             {onDelete !== undefined && (
                                 <MenuItem className="thread-block-header__menu-delete" onClick={onShowDelete}>
-                                    Delete thread
+                                    Delete {isThread ? 'Thread' : 'Reply'}
                                 </MenuItem>
                             )}
                         </Dropdown.Menu>
                     </Dropdown>
                 )}
             </div>
-            {showDeleteModal && <DeleteThreadModal cancel={onCancelDelete} onDelete={onDelete} />}
+            {showDeleteModal && isThread && <DeleteThreadModal cancel={onCancelDelete} onDelete={onDelete} />}
+            {showDeleteModal && !isThread && <DeleteReplyModal cancel={onCancelDelete} onDelete={onDelete} />}
         </div>
     );
 };
@@ -198,6 +226,7 @@ export const ThreadBlock: FC<ThreadBlockProps> = props => {
                             onDelete={allowDelete ? onDeleteThread : undefined}
                             onEdit={allowUpdate ? onEdit : undefined}
                             author={thread.author}
+                            isThread={!thread.parent}
                         />
                         {error !== undefined && <Alert>{error}</Alert>}
                         <div className="thread-block-body__content" dangerouslySetInnerHTML={threadBody} />

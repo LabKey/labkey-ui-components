@@ -1383,7 +1383,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         if (showAsTab) {
             const bulkDisabled = selected.size === 0;
-            const gridDisabled = editorModel.rowCount > maxRows;
+            // const gridDisabled = editorModel.rowCount > maxRows;
+            const gridDisabled = true;
 
             return (
                 <>
@@ -1397,9 +1398,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                                         Edit in Bulk
                                     </NavItem>
                                 )}
-                                <NavItem disabled={gridDisabled} eventKey={EditableGridTabs.Grid}>
-                                    Edit Individually
-                                </NavItem>
+                                {!gridDisabled && (
+                                    <NavItem eventKey={EditableGridTabs.Grid}>
+                                        Edit Individually
+                                    </NavItem>
+                                )}
                             </Nav>
                             <Alert>{error}</Alert>
                             <Tab.Content className="top-spacing">

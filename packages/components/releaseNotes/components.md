@@ -6,6 +6,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 47422: LKSM: Renaming Sample Type results in Not Found error
 * Issue 47407: Sample Manager: Update from file for Storage Editor without Edit Perm shoulnd't be available
 
+### verstion 2.305.0
+*Released*: 6 March 2023
+* Issue 47391: LKFM user menu items should match primary application
+* Issue 47352: Product/Mega-menu has extra white space when sections are not displayed for permissions or product configuration reasons
+* Issue 47390: Primary application should take into account the current URL controller for LKB and LKSM case
+
 ### verstion 2.304.2
 *Released*: 3 March 2023
 * Issue 47224: Refactor `SamplesDeriveButton` to reduce redundant calls and not make unnecessary, expensive calls

@@ -228,15 +228,27 @@ export function isSampleStatusEnabled(moduleContext?: ModuleContext): boolean {
 export function getCurrentAppProperties(): AppProperties {
     const lcController = ActionURL.getController().toLowerCase();
     if (!lcController) return undefined;
-    if (lcController === SAMPLE_MANAGER_APP_PROPERTIES.controllerName.toLowerCase())
+    if (lcController === SAMPLE_MANAGER_APP_PROPERTIES.controllerName.toLowerCase()) {
         return SAMPLE_MANAGER_APP_PROPERTIES;
-    if (lcController === BIOLOGICS_APP_PROPERTIES.controllerName.toLowerCase()) return BIOLOGICS_APP_PROPERTIES;
-    if (lcController === FREEZER_MANAGER_APP_PROPERTIES.controllerName.toLowerCase())
+    } else if (lcController === BIOLOGICS_APP_PROPERTIES.controllerName.toLowerCase()) {
+        return BIOLOGICS_APP_PROPERTIES;
+    } else if (lcController === FREEZER_MANAGER_APP_PROPERTIES.controllerName.toLowerCase()) {
         return FREEZER_MANAGER_APP_PROPERTIES;
+    }
     return undefined;
 }
 
 export function getPrimaryAppProperties(moduleContext?: ModuleContext): AppProperties {
+    // Issue 47390: when URL is in the LKB or LKSM controller, then that should be considered the primary app
+    //              it is the LKFM app case when we want to determine the primary app based on enabled modules
+    const currentAppProperties = getCurrentAppProperties();
+    if (
+        currentAppProperties?.productId === BIOLOGICS_APP_PROPERTIES.productId ||
+        currentAppProperties?.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId
+    ) {
+        return currentAppProperties;
+    }
+
     if (isBiologicsEnabled(moduleContext)) {
         return BIOLOGICS_APP_PROPERTIES;
     } else if (isSampleManagerEnabled(moduleContext)) {
@@ -368,8 +380,6 @@ export function addSourcesSectionConfig(
     user: User,
     sectionConfigs: List<Map<string, MenuSectionConfig>>
 ): List<Map<string, MenuSectionConfig>> {
-    if (!userCanReadSources(user)) return sectionConfigs;
-
     let sourcesMenuConfig = new MenuSectionConfig({
         emptyText: 'No source types have been defined',
         iconURL: imageURL('_images', 'source_type.svg'),
@@ -407,8 +417,6 @@ export function addAssaysSectionConfig(
     sectionConfigs: List<Map<string, MenuSectionConfig>>,
     standardAssayOnly: boolean
 ): List<Map<string, MenuSectionConfig>> {
-    if (!userCanReadAssays(user)) return sectionConfigs;
-
     let assaysMenuConfig = new MenuSectionConfig({
         emptyText: 'No assays have been defined',
         iconURL: imageURL('_images', 'assay.svg'),
@@ -465,13 +473,9 @@ function getBioWorkflowNotebookMediaConfigs(user: User): Map<string, MenuSection
     let configs = Map({
         [WORKFLOW_KEY]: getWorkflowSectionConfig(),
     });
-    if (userCanReadMedia(user)) {
-        configs = configs.set(MEDIA_KEY, getMediaSectionConfig());
-    }
+    configs = configs.set(MEDIA_KEY, getMediaSectionConfig());
     configs = configs.set(PICKLIST_KEY, getPicklistsSectionConfig());
-    if (userCanReadNotebooks(user)) {
-        configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig());
-    }
+    configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig());
     return configs;
 }
 
@@ -491,9 +495,7 @@ export function getMenuSectionConfigs(
     if (inSMApp) {
         sectionConfigs = addSourcesSectionConfig(user, sectionConfigs);
     } else if (isBioPrimary) {
-        if (userCanReadDataClasses(user)) {
-            sectionConfigs = sectionConfigs.push(Map({ [REGISTRY_KEY]: getRegistrySectionConfig() }));
-        }
+        sectionConfigs = sectionConfigs.push(Map({ [REGISTRY_KEY]: getRegistrySectionConfig() }));
     }
     if (isBioOrSM) {
         sectionConfigs = addSamplesSectionConfig(user, sectionConfigs);
@@ -513,8 +515,7 @@ export function getMenuSectionConfigs(
             configs = configs.set(WORKFLOW_KEY, getWorkflowSectionConfig());
         }
         configs = configs.set(PICKLIST_KEY, getPicklistsSectionConfig());
-
-        if (userCanReadNotebooks(user) && isELNEnabled(moduleContext)) {
+        if (isELNEnabled(moduleContext)) {
             configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig());
         }
         sectionConfigs = sectionConfigs.push(configs);

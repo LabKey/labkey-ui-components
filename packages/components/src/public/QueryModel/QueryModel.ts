@@ -324,10 +324,6 @@ export class QueryModel {
      */
     readonly rowCount?: number;
     /**
-     * The total row count for the query for the given QueryModel. This will only be populated if includeTotalCount=true.
-     */
-    readonly totalRows?: number;
-    /**
      * Error message from API call to load the data rows.
      */
     readonly rowsError?: string;

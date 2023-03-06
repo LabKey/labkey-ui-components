@@ -4,9 +4,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD March 2023
 * selectRows and selectRowsDeprecated update to default to includeTotalCount false when not provided by usage config
-  * remove some usages of totalRows that weren't needed and switch to rowCount were applicable
-  * response to always include rowCount but conditionally include totalRows prop
-  * SelectionMenuItem shouldn't actually care about totalRows when deciding if it is disabled
+  * switch usages of totalRows to rowCount were applicable
+  * SelectionMenuItem shouldn't actually care about rowCount when deciding if it is disabled
 
 ### verstion 2.305.0
 *Released*: 6 March 2023

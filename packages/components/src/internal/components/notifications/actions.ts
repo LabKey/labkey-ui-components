@@ -89,9 +89,9 @@ export function getRunningPipelineJobStatuses(filters?: Filter.IFilter[]): Promi
                 });
                 resolve({
                     data: activities,
-                    totalRows: response.totalRows,
+                    totalRows: response.rowCount,
                     unreadCount: 0, // these are always considered to be read since they aren't actually notifications
-                    inProgressCount: response.totalRows,
+                    inProgressCount: response.rowCount,
                 });
             })
             .catch(reason => {

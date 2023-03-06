@@ -365,7 +365,6 @@ export interface ISelectRowsResult {
         [key: string]: QueryInfo;
     };
     rowCount: number;
-    totalRows?: number; // will only be set if request includeTotalCount was true
 }
 
 /**
@@ -402,7 +401,6 @@ export function selectRowsDeprecated(userConfig, caller?): Promise<ISelectRowsRe
                                 [key]: details,
                             },
                             rowCount: result.rowCount,
-                            totalRows: userConfig.includeTotalCount ? result.rowCount : undefined,
                             messages: result.messages,
                             caller,
                         }
@@ -646,11 +644,11 @@ export function searchRows(
                 const [queryResults, exactResults] = allResults;
 
                 let finalResults: ISelectRowsResult;
-                if (exactResults && exactResults.totalRows > 0) {
+                if (exactResults && exactResults.rowCount > 0) {
                     finalResults = exactResults;
 
-                    // TODO: This can cause the "totalRows" to be incorrect. Ideally, keep track of changes to give accurate count
-                    if (finalResults.totalRows < maxRows) {
+                    // TODO: This can cause the "rowCount" to be incorrect. Ideally, keep track of changes to give accurate count
+                    if (finalResults.rowCount < maxRows) {
                         const { key } = finalResults;
                         const finalKeySet = finalResults.orderedModels[key].toOrderedSet().asMutable();
 

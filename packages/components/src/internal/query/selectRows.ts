@@ -22,7 +22,6 @@ export interface SelectRowsResponse {
     messages: Array<Record<string, string>>;
     queryInfo: QueryInfo;
     rowCount: number;
-    totalRows?: number;
     rows: Row[];
     schemaQuery: SchemaQuery;
 }
@@ -72,7 +71,6 @@ export async function selectRows(options: SelectRowsOptions): Promise<SelectRows
         queryInfo,
         rows: resolved.rows,
         rowCount: resolved.rowCount,
-        totalRows: includeTotalCount ? resolved.rowCount : undefined,
         schemaQuery,
     };
 }

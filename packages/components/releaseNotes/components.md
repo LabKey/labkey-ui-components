@@ -1,7 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### verstion 2.304.2
+### version TBD
+*Released*: TBD
+* Issue 47127: Update wording for delete reply menu item and use title casing
+* Issue 47333: When editing items individually is not possible, remove that tab
+* Remove extraneous columns from inventory columns
+* add `smaller-font` utility class
+
+### version 2.304.2
 *Released*: 3 March 2023
 * Issue 47224: Refactor `SamplesDeriveButton` to reduce redundant calls and not make unnecessary, expensive calls
 

@@ -1383,7 +1383,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         if (showAsTab) {
             const bulkDisabled = selected.size === 0;
-            const showGrid = editorModel.rowCount > maxRows;
+            const showGrid = editorModel.rowCount <= maxRows;
 
             return (
                 <>
@@ -1397,7 +1397,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                                         Edit in Bulk
                                     </NavItem>
                                 )}
-                                {!showGrid && (
+                                {showGrid && (
                                     <NavItem eventKey={EditableGridTabs.Grid}>
                                         Edit Individually
                                     </NavItem>

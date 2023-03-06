@@ -243,12 +243,12 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
         return !isProductProjectsEnabled(moduleContext); // or if subfolder where Projects are not enable
     }, [menuModel, moduleContext]);
 
-    const sectionConfigCounts = sectionConfigs.reduce((counts, sectionConfig) => {
-        // count of how many sections in a given column/config have info
-        counts.push(Object.keys(sectionConfig.toJS()).filter(key => getSectionModel(key) !== undefined).length);
-        return counts;
+    const sectionConfigKeysWithInfo = sectionConfigs.reduce((keysWithInfo, sectionConfig) => {
+        // get the keys for the sections in a given column/config that have info/items
+        keysWithInfo.push(Object.keys(sectionConfig.toJS()).filter(key => getSectionModel(key) !== undefined));
+        return keysWithInfo;
     }, []);
-    const colsWithSectionCount = sectionConfigCounts.filter(count => count > 0).length;
+    const colsWithSectionCount = sectionConfigKeysWithInfo.filter(keysWithInfo => keysWithInfo.length > 0).length;
 
     return (
         <div className={classNames('product-menu-content', className, {
@@ -274,13 +274,16 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
                 {menuModel.isLoaded &&
                     sectionConfigs.map((sectionConfig, i) => {
                         // this can happen if a user has different perm in different project folders
-                        if (sectionConfigCounts[i] === 0) return null;
+                        if (sectionConfigKeysWithInfo[i].length === 0) return null;
 
                         return (
                             // eslint-disable-next-line react/no-array-index-key
                             <div key={i} className="menu-section col-product-section">
                                 {sectionConfig.entrySeq().map(([key, menuConfig], j) => {
-                                    const isLast = i === sectionConfigs.size - 1 && j === sectionConfig.size - 1;
+                                    const isLast =
+                                        i === sectionConfigs.size - 1 &&
+                                        sectionConfigKeysWithInfo[i].indexOf(key) ===
+                                            sectionConfigKeysWithInfo[i].length - 1;
 
                                     return (
                                         <ProductMenuSection

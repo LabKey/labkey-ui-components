@@ -251,10 +251,14 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
     const colsWithSectionCount = sectionConfigKeysWithInfo.filter(keysWithInfo => keysWithInfo.length > 0).length;
 
     return (
-        <div className={classNames('product-menu-content', className, {
-            'with-section-count-3': colsWithSectionCount === 3,
-            'with-section-count-4': colsWithSectionCount === 4,
-        })} onClick={onClick} ref={contentRef}>
+        <div
+            className={classNames('product-menu-content', className, {
+                'with-section-count-3': colsWithSectionCount === 3,
+                'with-section-count-4': colsWithSectionCount === 4,
+            })}
+            onClick={onClick}
+            ref={contentRef}
+        >
             <div className="navbar-connector" />
             {error && <Alert>{error}</Alert>}
             {showFolderMenu && (

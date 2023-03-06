@@ -1,6 +1,7 @@
 import { Ajax, Utils, ActionURL } from '@labkey/api';
 
 import { buildURL } from '../../url/AppURL';
+
 import { MenuSectionModel } from './model';
 
 export function signOut(navigateUrl?: string): void {
@@ -43,14 +44,14 @@ export function getUserMenuSection(
                 if (response) {
                     resolve(MenuSectionModel.create(response, currentProductId, container));
                 } else {
-                    console.warn("No user menu section returned");
+                    console.warn('No user menu section returned');
                     resolve(undefined);
                 }
             }),
             failure: Utils.getCallbackWrapper(response => {
                 console.error(response);
                 reject(response);
-            })
-        })
-    })
+            }),
+        });
+    });
 }

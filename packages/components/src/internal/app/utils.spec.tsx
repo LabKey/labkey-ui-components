@@ -343,25 +343,36 @@ describe('getMenuSectionConfigs', () => {
         const configs = getMenuSectionConfigs(TEST_USER_STORAGE_EDITOR, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
             ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
         });
-        expect(configs.size).toBe(3);
-        expect(configs.hasIn([0, SAMPLES_KEY])).toBeTruthy();
-        expect(configs.getIn([0, SAMPLES_KEY, 'headerURLPart'])).toEqual(undefined);
-        expect(configs.getIn([0, SAMPLES_KEY, 'emptyAppURL'])).toEqual(undefined);
+        expect(configs.size).toBe(5);
+        expect(configs.hasIn([0, SOURCES_KEY])).toBeTruthy();
+        expect(configs.getIn([0, SOURCES_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([0, SOURCES_KEY, 'emptyAppURL'])).toEqual(undefined);
 
-        expect(configs.hasIn([1, FREEZERS_KEY])).toBeTruthy();
-        expect(configs.getIn([1, FREEZERS_KEY, 'headerURLPart'])).toEqual('home');
-        expect(configs.getIn([1, FREEZERS_KEY, 'emptyAppURL'])).toEqual(undefined);
+        expect(configs.hasIn([1, SAMPLES_KEY])).toBeTruthy();
+        expect(configs.getIn([1, SAMPLES_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([1, SAMPLES_KEY, 'emptyAppURL'])).toEqual(undefined);
 
-        expect(configs.hasIn([2, WORKFLOW_KEY])).toBeTruthy();
-        expect(configs.getIn([2, WORKFLOW_KEY, 'headerURLPart'])).toEqual(undefined);
-        expect(configs.getIn([2, WORKFLOW_KEY, 'emptyAppURL'])).toEqual(undefined);
+        expect(configs.hasIn([2, ASSAYS_KEY])).toBeTruthy();
+        expect(configs.getIn([2, ASSAYS_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([2, ASSAYS_KEY, 'emptyAppURL'])).toEqual(undefined);
 
-        expect(configs.hasIn([2, PICKLIST_KEY])).toBeTruthy();
-        expect(configs.getIn([2, PICKLIST_KEY, 'headerURLPart'])).toEqual(undefined);
-        expect(configs.getIn([2, PICKLIST_KEY, 'emptyAppURL'])).toEqual(undefined);
+        expect(configs.hasIn([3, FREEZERS_KEY])).toBeTruthy();
+        expect(configs.getIn([3, FREEZERS_KEY, 'headerURLPart'])).toEqual('home');
+        expect(configs.getIn([3, FREEZERS_KEY, 'emptyAppURL'])).toEqual(undefined);
 
-        expect(configs.hasIn([2, NOTEBOOKS_KEY])).toBeFalsy();
-        expect(configs.hasIn([2, 'user'])).toBeFalsy();
+        expect(configs.hasIn([4, WORKFLOW_KEY])).toBeTruthy();
+        expect(configs.getIn([4, WORKFLOW_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([4, WORKFLOW_KEY, 'emptyAppURL'])).toEqual(undefined);
+
+        expect(configs.hasIn([4, PICKLIST_KEY])).toBeTruthy();
+        expect(configs.getIn([4, PICKLIST_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([4, PICKLIST_KEY, 'emptyAppURL'])).toEqual(undefined);
+
+        expect(configs.hasIn([4, NOTEBOOKS_KEY])).toBeTruthy();
+        expect(configs.getIn([4, NOTEBOOKS_KEY, 'headerURLPart'])).toEqual(undefined);
+        expect(configs.getIn([4, NOTEBOOKS_KEY, 'emptyAppURL'])).toEqual(undefined);
+
+        expect(configs.hasIn([4, 'user'])).toBeFalsy();
     });
 
     test('SM professional, SM current app, reader', () => {
@@ -979,17 +990,26 @@ describe('getStorageSectionConfig', () => {
 });
 
 describe('addSourcesSectionConfig', () => {
+    function validate(sectionConfig: MenuSectionConfig, canDesign = false) {
+        expect(sectionConfig.emptyText).toBe('No source types have been defined');
+        expect(sectionConfig.showActiveJobIcon).toBeTruthy();
+        expect(sectionConfig.iconURL).toBe('/labkey/_images/source_type.svg');
+        expect(sectionConfig.headerURLPart).toBe(undefined);
+        expect(sectionConfig.headerText).toBe(undefined);
+        if (canDesign) {
+            expect(sectionConfig.emptyAppURL?.toHref()).toBe('#/sourceType/new');
+            expect(sectionConfig.emptyURLText).toBe('Create a source type');
+        } else {
+            expect(sectionConfig.emptyAppURL).toBe(undefined);
+        }
+    }
+
     test('reader', () => {
         let configs = List<Map<string, MenuSectionConfig>>();
         configs = addSourcesSectionConfig(TEST_USER_READER, configs);
         expect(configs.size).toBe(1);
         const sectionConfig = configs.get(0).get(SOURCES_KEY);
-        expect(sectionConfig.emptyText).toBe('No source types have been defined');
-        expect(sectionConfig.emptyAppURL).toBe(undefined);
-        expect(sectionConfig.showActiveJobIcon).toBeTruthy();
-        expect(sectionConfig.iconURL).toBe('/labkey/_images/source_type.svg');
-        expect(sectionConfig.headerURLPart).toBe(undefined);
-        expect(sectionConfig.headerText).toBe(undefined);
+        validate(sectionConfig);
     });
 
     test('admin', () => {
@@ -997,21 +1017,23 @@ describe('addSourcesSectionConfig', () => {
         configs = addSourcesSectionConfig(TEST_USER_FOLDER_ADMIN, configs);
         expect(configs.size).toBe(1);
         const sectionConfig = configs.get(0).get(SOURCES_KEY);
-        expect(sectionConfig.emptyText).toBe('No source types have been defined');
-        expect(sectionConfig.emptyAppURL?.toHref()).toBe('#/sourceType/new');
-        expect(sectionConfig.emptyURLText).toBe('Create a source type');
+        validate(sectionConfig, true);
     });
 
     test('storage editor', () => {
         let configs = List<Map<string, MenuSectionConfig>>();
-        configs = addSourcesSectionConfig(TEST_USER_STORAGE_EDITOR, configs);
-        expect(configs.size).toBe(0);
+        configs = addSourcesSectionConfig(TEST_USER_READER, configs);
+        expect(configs.size).toBe(1);
+        const sectionConfig = configs.get(0).get(SOURCES_KEY);
+        validate(sectionConfig);
     });
 
     test('storage designer', () => {
         let configs = List<Map<string, MenuSectionConfig>>();
-        configs = addSourcesSectionConfig(TEST_USER_STORAGE_DESIGNER, configs);
-        expect(configs.size).toBe(0);
+        configs = addSourcesSectionConfig(TEST_USER_READER, configs);
+        expect(configs.size).toBe(1);
+        const sectionConfig = configs.get(0).get(SOURCES_KEY);
+        validate(sectionConfig);
     });
 });
 

@@ -258,7 +258,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     const noun = rows.length === 1 ? SampleTypeDataType.nounSingular : SampleTypeDataType.nounPlural;
                     createNotification('Successfully updated ' + result.rows.length + ' ' + noun + '.', true);
                 });
-            // catch block intentionally absent to callers can handle the errors appropriately
+            // catch block intentionally absent so callers can handle the errors appropriately
         },
         [createNotification, dismissNotifications, getSampleAuditBehaviorType]
     );

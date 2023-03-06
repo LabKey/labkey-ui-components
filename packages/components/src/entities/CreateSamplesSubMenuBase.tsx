@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 import { List } from 'immutable';
 import { withRouter, WithRouterProps } from 'react-router';
 
@@ -9,7 +9,9 @@ import { AppURL } from '../internal/url/AppURL';
 import { SOURCES_KEY } from '../internal/app/constants';
 import { SCHEMAS } from '../internal/schemas';
 import { getCrossFolderSelectionResult } from '../internal/components/entities/actions';
-import { EntityCrossProjectSelectionConfirmModal } from '../internal/components/entities/EntityCrossProjectSelectionConfirmModal';
+import {
+    EntityCrossProjectSelectionConfirmModal
+} from '../internal/components/entities/EntityCrossProjectSelectionConfirmModal';
 import { isSamplesSchema } from '../internal/components/samples/utils';
 import {
     ALIQUOT_CREATION,
@@ -21,7 +23,7 @@ import {
 } from '../internal/components/samples/models';
 import { MAX_EDITABLE_GRID_ROWS } from '../internal/constants';
 
-import { getSelectedData, setSnapshotSelections } from '../internal/actions';
+import { setSnapshotSelections } from '../internal/actions';
 import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 import { caseInsensitive } from '../internal/util/utils';
 
@@ -50,6 +52,8 @@ export interface CreateSamplesSubMenuBaseProps {
     selectionNounPlural?: string;
     skipCrossFolderCheck?: boolean;
     targetProductId?: string;
+    selectionData?: Map<any, any>;
+    useSelectionData?: boolean;
 }
 
 const CreateSamplesSubMenuBaseImpl: FC<CreateSamplesSubMenuBaseProps & WithRouterProps> = memo(props => {
@@ -72,13 +76,14 @@ const CreateSamplesSubMenuBaseImpl: FC<CreateSamplesSubMenuBaseProps & WithRoute
         selectionNounPlural,
         skipCrossFolderCheck,
         router,
+        selectionData,
+        useSelectionData,
     } = props;
 
     const [sampleCreationURL, setSampleCreationURL] = useState<string | AppURL>();
     const [selectedOption, setSelectedOption] = useState<string>();
     const [crossFolderSelectionResult, setCrossFolderSelectionResult] = useState<CrossFolderSelectionResult>();
-    const [selectionsAreSet, setSelectionsAreSet] = useState<boolean>(false);
-    const [selectionData, setSelectionData] = useState<Map<any, any>>();
+    const selectionsAreSet = !useSelectionData || selectionData;
     const allowCrossFolderDerive = !isProjectContainer(); // Issue 46853: LKSM/LKB Projects: should allow derivation of samples within projects when parent/source is in Home
     const useSnapshotSelection = useMemo(() => {
         return parentQueryModel?.filterArray.length > 0;
@@ -90,42 +95,6 @@ const CreateSamplesSubMenuBaseImpl: FC<CreateSamplesSubMenuBaseProps & WithRoute
         return parentQueryModel.selectionKey;
     }, [parentQueryModel?.hasSelections, parentQueryModel?.selectionKey]);
 
-    useEffect(() => {
-        (async () => {
-            if (parentQueryModel?.filterArray.length) {
-                if (!parentQueryModel.isLoadingSelections) {
-                    try {
-                        const { data } = await getSelectedData(
-                            parentQueryModel.schemaName,
-                            parentQueryModel.queryName,
-                            [...parentQueryModel.selections],
-                            parentQueryModel.getRequestColumnsString(),
-                            undefined
-                        );
-                        setSelectionData(data.toJS());
-                        setSelectionsAreSet(true);
-                    } catch (reason) {
-                        console.error(
-                            'There was a problem loading the filtered selection data. Your actions will not obey these filters.',
-                            reason
-                        );
-                        setSelectionsAreSet(true);
-                    }
-                }
-            } else {
-                setSelectionsAreSet(true);
-            }
-        })();
-    }, [
-        selectionsAreSet,
-        parentQueryModel?.isLoadingSelections,
-        parentQueryModel?.schemaName,
-        parentQueryModel?.queryName,
-        parentQueryModel?.selections,
-        parentQueryModel?.selectionKey,
-        parentQueryModel?.filterArray,
-        useSnapshotSelection,
-    ]);
     const selectedQuantity = parentQueryModel ? parentQueryModel.selections?.size ?? 0 : 1;
     const schemaQuery = parentQueryModel?.schemaQuery;
 
@@ -309,7 +278,7 @@ const CreateSamplesSubMenuBaseImpl: FC<CreateSamplesSubMenuBaseProps & WithRoute
                     options={parentType === SOURCES_KEY ? [CHILD_SAMPLE_CREATION] : sampleOptions}
                     onCancel={onCancel}
                     onSubmit={onSampleCreationSubmit}
-                    selectionKey={selectionData ? undefined : selectionKey}
+                    selectionKey={useSelectionData ? undefined : selectionKey}
                     selectionData={selectionData}
                     noun={noun}
                     nounPlural={nounPlural}

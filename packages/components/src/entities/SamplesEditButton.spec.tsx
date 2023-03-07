@@ -102,7 +102,7 @@ describe('SamplesEditButton', () => {
         const wrapper = mountWithServerContext(<SamplesEditButton {...DEFAULT_PROPS} />, {
             user: TEST_USER_STORAGE_EDITOR,
         });
-        validate(wrapper, true, 0, 1, 2, 0);
+        validate(wrapper, true, 0, 1, 1, 0);
     });
 
     test('reader', () => {

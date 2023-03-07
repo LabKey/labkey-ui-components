@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD March 2023
+### version  2.307.0
+*Released*: 7 March 2023
 * selectRows and selectRowsDeprecated update to default to includeTotalCount false when not provided by usage config
   * switch usages of totalRows to rowCount were applicable
   * SelectionMenuItem shouldn't actually care about rowCount when deciding if it is disabled

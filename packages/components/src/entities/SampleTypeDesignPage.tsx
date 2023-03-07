@@ -202,8 +202,7 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
 
             const newName = domain.name;
             const hasNameChange = newName !== schemaQuery.queryName;
-            if (hasNameChange)
-                onSampleTypeRename();
+            if (hasNameChange) onSampleTypeRename();
 
             goToSampleType(hasNameChange ? newName : undefined);
 
@@ -300,8 +299,7 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
                             includeMetricUnitProperty: includeStorageOptions,
                             metricUnitLabel: 'Amount Display Units',
                             metricUnitRequired: includeStorageOptions && (!isUpdate || metricUnit != null), // allow existing sample types without unit to continue to have blank unit
-                            metricUnitHelpMsg:
-                                'Sample amount will be displayed using the selected metric unit.',
+                            metricUnitHelpMsg: 'Sample amount will be displayed using the selected metric unit.',
                             metricUnitOptions: getMetricUnitOptions(),
                         }}
                         aliquotNamePatternProps={{

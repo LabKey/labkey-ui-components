@@ -11,9 +11,10 @@ import { QueryInfo } from '../public/QueryInfo';
 import { invalidateLineageResults } from '../internal/components/lineage/actions';
 import { SchemaQuery } from '../public/SchemaQuery';
 
+import { URLService } from '../internal/url/URLResolver';
+import { SAMPLE_TYPE_KEY } from '../internal/app/constants';
+
 import { filterMediaSampleTypes } from './utils';
-import { URLService } from "../internal/url/URLResolver";
-import { SAMPLE_TYPE_KEY } from "../internal/app/constants";
 
 // TODO: this file is temporary as we move things into an @labkey/components/entities subpackage. Instead of adding
 // anything to this file, we should create an API wrapper to be used for any new actions in this subpackage.

@@ -31,7 +31,7 @@ export class SamplesResolver implements AppRouteResolver {
         this.samples = initSamples !== undefined ? initSamples : Map<number, List<string>>();
     }
 
-    clearCache() : void {
+    clearCache(): void {
         this.init();
     }
 

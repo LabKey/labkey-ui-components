@@ -113,8 +113,7 @@ export namespace URLService {
 
     export function clearCache(cacheKey?: string): void {
         resolvers.forEach(resolver => {
-            if (!cacheKey || resolver.cacheName === cacheKey)
-                resolver.clearCache?.();
+            if (!cacheKey || resolver.cacheName === cacheKey) resolver.clearCache?.();
         });
     }
 }

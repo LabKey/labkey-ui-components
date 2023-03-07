@@ -18,7 +18,7 @@ import { SAMPLE_STATE_COLUMN_NAME, SAMPLE_UNITS_COLUMN_NAME } from '../internal/
 import { GroupedSampleFields } from '../internal/components/samples/models';
 import { SampleStatusLegend } from '../internal/components/samples/SampleStatusLegend';
 import { getAltUnitKeys } from '../internal/util/measurement';
-import {getCurrentProductName} from "../internal/app/utils";
+import { getCurrentProductName } from '../internal/app/utils';
 
 const extraExportColumns = [
     {
@@ -93,7 +93,6 @@ export class SamplesEditableGridPanelForUpdate extends React.Component<Props> {
             return undefined;
         }
     };
-
 
     getSamplesColumnMetadata = (tabInd: number): Map<string, EditableColumnMetadata> => {
         if (this.getCurrentTab(tabInd) !== UpdateGridTab.Samples) {

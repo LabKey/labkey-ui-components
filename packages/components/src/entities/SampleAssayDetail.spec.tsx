@@ -313,7 +313,6 @@ describe('SampleAssayDetailImpl', () => {
         queries: { key: QueryInfo.create({ schemaName: 'exp', name: 'AssayRunsPerSample' }) },
         models: undefined,
         orderedModels: undefined,
-        totalRows: 0,
     };
 
     test('sampleAssayResultViewConfigs - none', async () => {

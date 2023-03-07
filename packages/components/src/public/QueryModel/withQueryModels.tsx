@@ -21,20 +21,20 @@ import { QueryConfig, QueryModel } from './QueryModel';
 export interface Actions {
     addModel: (queryConfig: QueryConfig, load?: boolean, loadSelections?: boolean) => void;
     clearSelections: (id: string) => void;
-    loadModel: (id: string, loadSelections?: boolean) => void;
     loadAllModels: (loadSelections?: boolean) => void;
-    loadRows: (id: string) => void;
-    loadNextPage: (id: string) => void;
-    loadPreviousPage: (id: string) => void;
+    loadCharts: (id: string) => void;
     loadFirstPage: (id: string) => void;
     loadLastPage: (id: string) => void;
-    loadCharts: (id: string) => void;
+    loadModel: (id: string, loadSelections?: boolean) => void;
+    loadNextPage: (id: string) => void;
+    loadPreviousPage: (id: string) => void;
+    loadRows: (id: string) => void;
     replaceSelections: (id: string, selections: string[]) => void;
     selectAllRows: (id: string) => void;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    selectRow: (id: string, checked, row: { [key: string]: any }) => void;
     selectPage: (id: string, checked) => void;
     selectReport: (id: string, reportId: string) => void;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    selectRow: (id: string, checked, row: { [key: string]: any }) => void;
     setFilters: (id: string, filters: Filter.IFilter[], loadSelections?: boolean) => void;
     setMaxRows: (id: string, maxRows: number) => void;
     setOffset: (id: string, offset: number) => void;
@@ -479,8 +479,7 @@ export function withQueryModels<Props>(
         loadRows = async (id: string): Promise<void> => {
             const { loadRows } = this.props.modelLoader;
 
-            if (isLoading(this.state.queryModels[id].queryInfoLoadingState))
-                return;
+            if (isLoading(this.state.queryModels[id].queryInfoLoadingState)) return;
 
             this.setState(
                 produce<State>(draft => {
@@ -490,7 +489,7 @@ export function withQueryModels<Props>(
 
             try {
                 const result = await loadRows(this.state.queryModels[id]);
-                const {messages, rows, orderedRows, rowCount} = result;
+                const { messages, rows, orderedRows, rowCount } = result;
 
                 this.setState(
                     produce<State>(draft => {

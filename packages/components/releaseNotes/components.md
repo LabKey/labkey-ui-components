@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version  2.306.0
+*Released*: 7 March 2023
 * Issue 47127: Update wording for delete reply menu item and use title casing
 * Issue 47333: When editing items individually is not possible, remove that tab
 * Remove extraneous columns from inventory columns

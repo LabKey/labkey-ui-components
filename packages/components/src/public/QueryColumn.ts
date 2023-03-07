@@ -166,7 +166,7 @@ export class QueryColumn {
     declare columnRenderer: string;
     declare detailRenderer: string;
     declare helpTipRenderer: string;
-    declare inputRenderer: string;
+    declare inputRenderer: any;
     declare sorts: '+' | '-';
     declare removeFromViews: boolean; // strips this column from all ViewInfo definitions
     declare units: string;

@@ -16,7 +16,7 @@
 import { Query } from '@labkey/api';
 import classNames from 'classnames';
 import { List, Map, OrderedMap, Set } from 'immutable';
-import React, { ChangeEvent, MouseEvent, PureComponent, ReactNode, SyntheticEvent } from 'react';
+import React, {ChangeEvent, MouseEvent, PureComponent, ReactElement, ReactNode, SyntheticEvent} from 'react';
 import { Button, Nav, NavItem, OverlayTrigger, Popover, Tab, TabContainer } from 'react-bootstrap';
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
@@ -221,6 +221,7 @@ export interface SharedEditableGridProps {
     columnMetadata?: Map<string, EditableColumnMetadata>;
     condensed?: boolean;
     containerFilter?: Query.ContainerFilter;
+    customTopButtons?: () => ReactNode,
     disabled?: boolean;
     emptyGridMsg?: string;
     exportColFilter?: (col: QueryColumn) => boolean;
@@ -1134,6 +1135,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             bulkAddText,
             bulkRemoveText,
             bulkUpdateText,
+            customTopButtons,
             data,
             isSubmitting,
             maxRows,
@@ -1153,8 +1155,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         return (
             <div className="row QueryGrid-bottom-spacing">
-                {showAddOnTop && <div className="col-sm-3">{this.renderAddRowsControl('top')}</div>}
-                <div className={showAddOnTop ? 'col-sm-9' : 'col-sm-12'}>
+                {showAddOnTop && <div className="col-sm-1">{this.renderAddRowsControl('top')}</div>}
+                <div className={showAddOnTop ? 'col-sm-11' : 'col-sm-12'}>
                     {!showAsTab && allowBulkAdd && (
                         <span className="control-right">
                             <Button title={addTitle} disabled={!canAddRows} onClick={this.toggleBulkAdd}>
@@ -1175,6 +1177,9 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                                 {bulkRemoveText}
                             </Button>
                         </span>
+                    )}
+                    {customTopButtons && (
+                        customTopButtons()
                     )}
                     {allowExport && (
                         <span className="control-right pull-right">

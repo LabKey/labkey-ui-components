@@ -17,6 +17,7 @@ import { EditorModel, EditorModelProps } from './models';
 import { EditableGrid, SharedEditableGridPanelProps } from './EditableGrid';
 
 import { exportEditedData, getEditorExportData } from './utils';
+import {useDynamicComponentContext} from "./DynamicComponentContextProvider";
 
 interface Props extends SharedEditableGridPanelProps {
     editorModel: EditorModel | EditorModel[];
@@ -96,6 +97,10 @@ export const EditableGridPanel: FC<Props> = memo(props => {
     const activeEditorModel = editorModels[activeTab];
     const hasTabs = models.length > 1;
     let wasDirty = false;
+
+    const { hooks } = useDynamicComponentContext();
+    console.log('hooks loaded:');
+    console.log(Object.keys(hooks));
 
     const _onChange = useCallback(
         (editorModelChanges: Partial<EditorModelProps>, dataKeys?: List<any>, data?: Map<any, Map<string, any>>) =>
@@ -192,6 +197,7 @@ export const EditableGridPanel: FC<Props> = memo(props => {
     return (
         <div className={`panel ${bsStyle === 'info' ? 'panel-info' : 'panel-default'} ${className}`}>
             <div className="panel-heading">{title}</div>
+            {/*{React.createElement(hooks['customEHRFormButtons'])}*/}
             <div className="panel-body table-responsive">
                 {hasTabs && (
                     <ul className="nav nav-tabs">

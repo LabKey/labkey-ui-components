@@ -233,6 +233,7 @@ import { ExperimentRunResolver, ListResolver } from './internal/url/AppURLResolv
 import { loadEditorModelData } from './internal/components/editable/utils';
 import { EditableGridTabs } from './internal/components/editable/EditableGrid';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
+import { DynamicComponentContextProvider, useDynamicComponentContext } from './internal/components/editable/DynamicComponentContextProvider';
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
 import {
     EditableGridPanelForUpdateWithLineage,
@@ -901,6 +902,8 @@ export {
     MAX_EDITABLE_GRID_ROWS,
     EditableGridLoaderFromSelection,
     EditableGridPanel,
+    DynamicComponentContextProvider,
+    useDynamicComponentContext,
     EditableGridPanelForUpdate,
     EditableGridPanelForUpdateWithLineage,
     EditableGridTabs,
@@ -1572,3 +1575,5 @@ export type {
 } from './internal/components/labels/LabelPrintingContextProvider';
 export type { SamplesEditableGridProps } from './internal/sampleModels';
 export type { MeasurementUnit } from './internal/util/measurement';
+export type { ComponentKeys } from './internal/components/editable/DynamicComponentContextProvider';
+export type { InputRendererProps } from './internal/components/forms/input/types';

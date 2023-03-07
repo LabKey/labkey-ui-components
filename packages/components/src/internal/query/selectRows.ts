@@ -1,9 +1,10 @@
 import { Query } from '@labkey/api';
 
-import { getContainerFilter, getQueryDetails } from './api';
 import { SchemaQuery } from '../../public/SchemaQuery';
 import { QueryInfo } from '../../public/QueryInfo';
 import { URLResolver } from '../url/URLResolver';
+
+import { getContainerFilter, getQueryDetails } from './api';
 
 export interface SelectRowsOptions
     extends Omit<Query.SelectRowsOptions, 'queryName' | 'requiredVersion' | 'schemaName' | 'scope'> {

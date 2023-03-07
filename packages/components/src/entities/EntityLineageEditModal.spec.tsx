@@ -14,10 +14,12 @@ import { Progress } from '../internal/components/base/Progress';
 
 import { getSamplesTestAPIWrapper } from '../internal/components/samples/APIWrapper';
 
-import { EntityLineageEditModal } from './EntityLineageEditModal';
 import { DataClassDataType, SampleTypeDataType } from '../internal/components/entities/constants';
-import { ParentEntityEditPanel } from './ParentEntityEditPanel';
+
 import { OperationConfirmationData } from '../internal/components/entities/models';
+
+import { EntityLineageEditModal } from './EntityLineageEditModal';
+import { ParentEntityEditPanel } from './ParentEntityEditPanel';
 
 const SQ = new SchemaQuery('schema', 'query');
 const MODEL = makeTestQueryModel(SQ).mutate({

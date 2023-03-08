@@ -4,6 +4,7 @@ import { ButtonGroup } from 'react-bootstrap';
 import { PaginationButton } from './PaginationButton';
 import { PageMenu } from './PageMenu';
 import { PaginationInfo } from './PaginationInfo';
+import {LoadingState} from "../../../public/LoadingState";
 
 export interface PaginationData {
     currentPage: number;
@@ -15,6 +16,7 @@ export interface PaginationData {
     pageCount: number;
     pageSize: number;
     rowCount: number;
+    totalCountLoadingState?: LoadingState;
 }
 
 export interface PaginationProps extends PaginationData {
@@ -49,13 +51,19 @@ export class Pagination extends PureComponent<PaginationProps> {
             pageSizes,
             rowCount,
             setPageSize,
+            totalCountLoadingState,
         } = this.props;
         const showPaginationButtons = rowCount > pageSizes[0];
 
         // Use lk-pagination so we don't conflict with bootstrap pagination class.
         return (
             <div className="lk-pagination">
-                <PaginationInfo offset={offset} pageSize={pageSize} rowCount={rowCount} />
+                <PaginationInfo
+                    offset={offset}
+                    pageSize={pageSize}
+                    rowCount={rowCount}
+                    totalCountLoadingState={totalCountLoadingState}
+                />
 
                 {showPaginationButtons && (
                     <ButtonGroup className="pagination-button-group">

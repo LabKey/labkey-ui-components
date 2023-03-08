@@ -6253,6 +6253,8 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
               "selectionsLoadingState": "INITIALIZED",
               "sorts": [],
               "title": undefined,
+              "totalCountError": undefined,
+              "totalCountLoadingState": "INITIALIZED",
               "urlPrefix": "query",
               Symbol(immer-draftable): true,
             },
@@ -6391,6 +6393,8 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                 "selectionsLoadingState": "INITIALIZED",
                 "sorts": [],
                 "title": undefined,
+                "totalCountError": undefined,
+                "totalCountLoadingState": "INITIALIZED",
                 "urlPrefix": "query",
                 Symbol(immer-draftable): true,
               }
@@ -6510,6 +6514,8 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                     "selectionsLoadingState": "INITIALIZED",
                     "sorts": [],
                     "title": undefined,
+                    "totalCountError": undefined,
+                    "totalCountLoadingState": "INITIALIZED",
                     "urlPrefix": "query",
                     Symbol(immer-draftable): true,
                   }

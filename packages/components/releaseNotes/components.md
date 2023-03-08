@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.307.1
+*Released*: 8 March 2023
+* Merge release23.2-SNAPSHOT to develop:
+    * includes changes from 2.302.1 and 2.302.2
+
 ### version 2.307.0
 *Released*: 7 March 2023
 * selectRows and selectRowsDeprecated update to default to includeTotalCount false when not provided by usage config

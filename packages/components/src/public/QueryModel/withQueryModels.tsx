@@ -14,6 +14,8 @@ import { isLoading, LoadingState } from '../LoadingState';
 import { naturalSort } from '../sort';
 import { resolveErrorMessage } from '../../internal/util/messaging';
 
+import { selectRows } from '../../internal/query/selectRows';
+
 import { filterArraysEqual, sortArraysEqual } from './utils';
 import { DefaultQueryModelLoader, QueryModelLoader } from './QueryModelLoader';
 import { QueryConfig, QueryModel } from './QueryModel';
@@ -84,13 +86,15 @@ const resetQueryInfoState = (model: Draft<QueryModel>): void => {
  * @param model: Draft<QueryModel> the model to reset selection state on.
  */
 const resetRowsState = (model: Draft<QueryModel>): void => {
-    model.rowsError = undefined;
     model.messages = undefined;
     model.offset = 0;
     model.orderedRows = undefined;
+    model.rowsError = undefined;
     model.rows = undefined;
     model.rowCount = undefined;
     model.rowsLoadingState = LoadingState.INITIALIZED;
+    model.totalCountError = undefined;
+    model.totalCountLoadingState = LoadingState.INITIALIZED;
 };
 
 /**
@@ -476,10 +480,13 @@ export function withQueryModels<Props>(
             );
         };
 
-        loadRows = async (id: string): Promise<void> => {
+        loadRows = async (id: string, loadSelections = false): Promise<void> => {
             const { loadRows } = this.props.modelLoader;
+            const currentModel = this.state.queryModels[id];
 
-            if (isLoading(this.state.queryModels[id].queryInfoLoadingState)) return;
+            if (isLoading(currentModel.queryInfoLoadingState)) {
+                return;
+            }
 
             this.setState(
                 produce<State>(draft => {
@@ -488,7 +495,7 @@ export function withQueryModels<Props>(
             );
 
             try {
-                const result = await loadRows(this.state.queryModels[id]);
+                const result = await loadRows(currentModel);
                 const { messages, rows, orderedRows, rowCount } = result;
 
                 this.setState(
@@ -497,10 +504,11 @@ export function withQueryModels<Props>(
                         model.messages = messages;
                         model.rows = rows;
                         model.orderedRows = orderedRows;
-                        model.rowCount = rowCount;
+                        model.rowCount = !currentModel.includeTotalCount ? rowCount : model.rowCount; // only update the rowCount on the model if we aren't loading the totalCount
                         model.rowsLoadingState = LoadingState.LOADED;
                         model.rowsError = undefined;
-                    })
+                    }),
+                    () => this.maybeLoad(id, false, false, loadSelections)
                 );
             } catch (error) {
                 this.setState(
@@ -515,6 +523,73 @@ export function withQueryModels<Props>(
                         console.error(`Error loading rows for model ${id}: `, rowsError);
                         model.rowsLoadingState = LoadingState.LOADED;
                         model.rowsError = rowsError;
+                    })
+                );
+            }
+        };
+
+        loadTotalCount = async (id: string): Promise<void> => {
+            const currentModel = this.state.queryModels[id];
+
+            if (isLoading(currentModel.queryInfoLoadingState)) {
+                return;
+            }
+
+            // if we've already loaded the totalCount, no need to load it again
+            if (currentModel.totalCountLoadingState === LoadingState.LOADED) {
+                return;
+            }
+
+            // if usage didn't request loading the totalCount, skip it
+            if (!currentModel.includeTotalCount) {
+                this.setState(
+                    produce<State>(draft => {
+                        draft.queryModels[id].totalCountLoadingState = LoadingState.LOADED;
+                    })
+                );
+                return;
+            }
+
+            this.setState(
+                produce<State>(draft => {
+                    draft.queryModels[id].totalCountLoadingState = LoadingState.LOADING;
+                })
+            );
+
+            try {
+                const { rowCount } = await selectRows({
+                    ...currentModel.loadRowsConfig,
+                    sort: undefined,
+                    columns: currentModel.keyColumns.map(col => col.fieldKey).join(','),
+                    maxRows: 1,
+                    offset: 0,
+                    includeDetailsColumn: false,
+                    includeUpdateColumn: false,
+                    // includeMetadata: false, // TODO don't require metadata in selectRows response processing
+                    includeTotalCount: true,
+                });
+
+                this.setState(
+                    produce<State>(draft => {
+                        const model = draft.queryModels[id];
+                        model.rowCount = rowCount;
+                        model.totalCountLoadingState = LoadingState.LOADED;
+                        model.totalCountError = undefined;
+                    })
+                );
+            } catch (error) {
+                this.setState(
+                    produce<State>(draft => {
+                        const model = draft.queryModels[id];
+                        let rowsError = resolveErrorMessage(error);
+
+                        if (rowsError === undefined) {
+                            rowsError = `Error while loading total count for SchemaQuery: ${model.schemaQuery.toString()}`;
+                        }
+
+                        console.error(`Error loading rows for model ${id}: `, rowsError);
+                        model.totalCountLoadingState = LoadingState.LOADED;
+                        model.totalCountError = rowsError;
                     })
                 );
             }
@@ -571,13 +646,13 @@ export function withQueryModels<Props>(
                 // Postpone loading any rows or selections if we're loading the QueryInfo.
                 this.loadQueryInfo(id, loadRows, loadSelections);
             } else {
-                // It's safe to load selections and rows in parallel.
-
                 if (loadRows) {
-                    this.loadRows(id);
-                }
+                    this.loadRows(id, loadSelections);
 
-                if (loadSelections) {
+                    if (this.state.queryModels[id].includeTotalCount) {
+                        this.loadTotalCount(id);
+                    }
+                } else if (loadSelections) {
                     this.loadSelections(id);
                 }
             }

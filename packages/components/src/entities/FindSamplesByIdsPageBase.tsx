@@ -203,8 +203,14 @@ const FindSamplesByIdsPageBaseImpl: FC<Props> = memo(props => {
         if (!sampleListModelId) return;
 
         const model = queryModels[sampleListModelId];
-        if (model && !model.isLoading && model.rowCount > 0) actions.selectAllRows(sampleListModelId);
-    }, [sampleListModelId, queryModels[sampleListModelId]?.isLoading]);
+        if (model && !model.isLoading && !model.isLoadingTotalCount && model.rowCount > 0) {
+            actions.selectAllRows(sampleListModelId);
+        }
+    }, [
+        sampleListModelId,
+        queryModels[sampleListModelId]?.isLoading,
+        queryModels[sampleListModelId]?.isLoadingTotalCount,
+    ]);
 
     const listModel = useMemo(() => {
         if (sampleListModelId) {

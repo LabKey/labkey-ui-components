@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.307.1
+*Released*: 8 March 2023
+* Merge release23.2-SNAPSHOT to develop:
+    * includes changes from 2.302.1 and 2.302.2
+
 ### version 2.307.0
 *Released*: 7 March 2023
 * selectRows and selectRowsDeprecated update to default to includeTotalCount false when not provided by usage config
@@ -42,6 +47,16 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Separate editing of Stored Amount and Freeze/Thaw count on
   * Account for storedAmount and Units fields now on samples grids
   * Don't display amount and units in details display
+
+### version 2.302.2
+*Released*: 03 March 2023
+- Issue 47306: Resolve Permissions page error by skipping no-resolvable users.
+- Resolve bug in redirection location upon project deletion
+
+### version 2.302.1
+*Released*: 02 March 2023
+- Issue 47202: Options to reduce payload of getContainers.api response
+    - Field editor only needs the base set of container info for lookups so use new props to reduce response object size (includeWorkbookChildren and includeStandardProperties)
 
 ### version 2.302.0
 *Released*: 28 February 2023

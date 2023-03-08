@@ -115,9 +115,17 @@ export const getGroupMembership = (groups: FetchedGroup[], groupMemberships): Gr
         const userDisplayName = curr['UserId/DisplayName'];
         const userDisplayValue = `${curr['UserId/Email']} (${userDisplayName})`;
         const memberIsGroup = !userDisplayName;
+        const foundGroup = groups.find(group => group.id === curr.UserId);
 
+        // Issue47306: When a member is not resolvable, do not accumulate the member into any groups.
+        // For example, if you are a Project Admin, a groupMembership row associating a site group with a user possessing no
+        // permissions in the project will result in your inability to resolve data on the permission-less user.
+        // That user will not be visible to you, and so should be excluded from the GroupMembership return value.
+        if (memberIsGroup && !foundGroup) {
+            return prev;
+        }
         const member = {
-            name: memberIsGroup ? groups.find(group => group.id === curr.UserId).name : userDisplayValue,
+            name: memberIsGroup ? foundGroup.name : userDisplayValue,
             id: curr.UserId,
             type: memberIsGroup ? MemberType.group : MemberType.user,
         };

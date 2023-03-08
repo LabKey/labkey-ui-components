@@ -112,4 +112,35 @@ describe('<GroupDetailsPanel/>', () => {
 
         component.unmount();
     });
+
+    test("as site group, don't display counts", () => {
+        const component = mountWithServerContext(
+            <GroupDetailsPanel
+                principal={GROUP}
+                policy={POLICY}
+                rolesByUniqueName={ROLES_BY_NAME}
+                members={[
+                    { id: 1, name: 'user1', type: MemberType.user },
+                    { id: 3, name: 'group1', type: MemberType.group },
+                ]}
+                isSiteGroup={true}
+                getAuditLogData={jest.fn()}
+                displayCounts={false}
+            />,
+            { user: TEST_USER_APP_ADMIN }
+        );
+
+        expect(component.find('.panel-heading').text()).toBe(GROUP.name);
+
+        expect(component.find(UserProperties)).toHaveLength(2);
+        expect(component.find(UserProperties).at(0).text()).toBe('Created');
+        expect(component.find(UserProperties).at(1).text()).toBe('Site Grouptrue');
+
+        expect(component.find('.principal-detail-li')).toHaveLength(3);
+        expect(component.find('.principal-detail-li').at(0).text()).toBe('Editor');
+        expect(component.find('.principal-detail-li').at(1).text()).toBe('user1');
+        expect(component.find('.principal-detail-li').at(2).text()).toBe('group1');
+
+        component.unmount();
+    });
 });

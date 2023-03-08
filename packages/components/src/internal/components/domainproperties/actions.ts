@@ -112,6 +112,8 @@ export function fetchContainers(): Promise<List<Container>> {
                     containerPath: '/',
                     includeSubfolders: true,
                     includeEffectivePermissions: false,
+                    includeWorkbookChildren: false,
+                    includeStandardProperties: false,
                     success,
                 });
             })

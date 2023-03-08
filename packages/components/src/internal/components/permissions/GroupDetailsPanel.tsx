@@ -19,6 +19,7 @@ import { Principal, SecurityPolicy, SecurityRole } from './models';
 import { MembersList } from './MembersList';
 
 interface Props {
+    displayCounts?: boolean;
     getAuditLogData: (columns: string, filterCol: string, filterVal: string | number) => Promise<string>;
     isSiteGroup: boolean;
     members?: Member[];
@@ -29,7 +30,14 @@ interface Props {
 }
 
 export const GroupDetailsPanel: FC<Props> = memo(props => {
-    const { getAuditLogData, principal, members, isSiteGroup, showPermissionListLinks = true } = props;
+    const {
+        getAuditLogData,
+        principal,
+        members,
+        isSiteGroup,
+        displayCounts = true,
+        showPermissionListLinks = true,
+    } = props;
     const [created, setCreated] = useState<string>('');
     const { user } = useServerContext();
 
@@ -60,10 +68,14 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
             <Panel.Body>
                 {principal ? (
                     <>
-                        <UserProperties prop={usersCount.toString()} title="User Count" />
-                        <UserProperties prop={groupsCount} title="Group Count" />
+                        {displayCounts && (
+                            <>
+                                <UserProperties prop={usersCount.toString()} title="User Count" />
+                                <UserProperties prop={groupsCount} title="Group Count" />
+                                <hr className="principal-hr" />
+                            </>
+                        )}
 
-                        <hr className="principal-hr" />
                         <UserProperties prop={created} title="Created" />
                         {isSiteGroup && <UserProperties prop="true" title="Site Group" />}
 

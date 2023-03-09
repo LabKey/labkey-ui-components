@@ -216,7 +216,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     const _afterSampleActionComplete = useCallback(
         (hasDelete?: boolean) => {
             dismissNotifications();
-            actions.loadModel(activeModelId, true);
+            actions.loadModel(activeModelId, true, hasDelete);
             afterSampleActionComplete?.(hasDelete);
             resetState();
         },

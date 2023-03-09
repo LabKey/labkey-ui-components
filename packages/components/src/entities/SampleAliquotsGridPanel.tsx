@@ -65,7 +65,7 @@ export const SampleAliquotsGridPanelImpl: FC<Props & InjectedQueryModels> = memo
 
         resetState();
         onSampleChangeInvalidate(queryModel.schemaQuery);
-        actions.loadModel(queryModel.id, true);
+        actions.loadModel(queryModel.id, true, true);
     }, [actions, props, queryModel.id, queryModel.schemaQuery, resetState]);
 
     const afterPrint = useCallback(

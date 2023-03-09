@@ -185,7 +185,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
     };
 
     reloadUsersModel(): void {
-        this.props.actions.loadModel(this.getUsersModelId(), true);
+        this.props.actions.loadModel(this.getUsersModelId(), true, true);
     }
 
     onUsersStateChangeComplete = (response: any, resetSelection = true): void => {

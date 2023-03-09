@@ -316,7 +316,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
         } catch (error) {
             setErrorMsg(error);
         }
-        await actions.loadModel(model.id, allowSelections);
+        await actions.loadModel(model.id, allowSelections, true);
         onRevertView?.();
     }, [model, onRevertView, actions, allowSelections]);
 

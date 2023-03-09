@@ -6,7 +6,6 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { HelpLink } from '../../util/helpLinks';
 import { QuerySelect } from '../forms/QuerySelect';
-import { LabelHelpTip } from '../base/LabelHelpTip';
 import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
@@ -55,11 +54,11 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
         }
 
         this.state = {
-            submitting: false,
             error: undefined,
+            labelTemplate: props.defaultLabel,
             numCopies: 1,
-            labelTemplate: undefined,
             sampleCount: props.sampleIds.length,
+            submitting: false,
         };
     }
 
@@ -75,8 +74,6 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
             true,
             true
         );
-
-        this.setState(() => ({ labelTemplate: this.props.defaultLabel}));
     }
 
     componentDidUpdate(prevProps, prevState) {

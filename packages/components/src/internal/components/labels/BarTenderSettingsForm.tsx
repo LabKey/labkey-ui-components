@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Col, Panel, FormControl, Row, Button } from 'react-bootstrap';
 
 import { Alert } from '../base/Alert';
@@ -104,14 +104,14 @@ const btTestConnectionTemplate = (label: string): string => {
             </Command>
         </XMLScript>`;
 };
-
+const apiWrapper = getDefaultAPIWrapper();
 // exported for jest testing
 export const BarTenderSettingsFormImpl: FC<Props> = memo(props => {
-    const { api = getDefaultAPIWrapper(), title = BARTENDER_CONFIGURATION_TITLE, onChange, onSuccess } = props;
+    const { api = apiWrapper, title = BARTENDER_CONFIGURATION_TITLE, onChange, onSuccess } = props;
     const [btServiceURL, setBtServiceURL] = useState<string>();
     const [defaultLabel, setDefaultLabel] = useState<number>();
-    const [dirty, setDirty] = useState<boolean>();
-    const [submitting, setSubmitting] = useState<boolean>();
+    const [dirty, setDirty] = useState<boolean>(false);
+    const [submitting, setSubmitting] = useState<boolean>(false);
     const [testing, setTesting] = useState<boolean>();
     const [connectionValidated, setConnectionValidated] = useState<boolean>();
     const [failureMessage, setFailureMessage] = useState<string>();
@@ -121,8 +121,6 @@ export const BarTenderSettingsFormImpl: FC<Props> = memo(props => {
         api.labelprinting.fetchBarTenderConfiguration().then(btConfiguration => {
             setBtServiceURL(btConfiguration.serviceURL);
             setDefaultLabel(btConfiguration.defaultLabel);
-            setDirty(false);
-            setSubmitting(false);
             setLoading(false);
         });
     }, [api?.labelprinting]);
@@ -139,13 +137,13 @@ export const BarTenderSettingsFormImpl: FC<Props> = memo(props => {
 
     const onSave = useCallback((): void => {
         setSubmitting(true);
+        setFailureMessage(undefined); //Will update with new message if still needed.
         const config = new BarTenderConfiguration({ serviceURL: btServiceURL });
 
         api.labelprinting
             .saveBarTenderURLConfiguration(config)
             .then((btConfig: BarTenderConfiguration): void => {
                 setBtServiceURL(btConfig.serviceURL);
-                setDefaultLabel(btConfig.defaultLabel);
                 setDirty(false);
                 setSubmitting(false);
 

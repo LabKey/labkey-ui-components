@@ -58,7 +58,7 @@ export const LabelTemplatesList: FC<LabelTemplatesListProps> = memo(props => {
     const { onSelect, defaultLabel, selected, templates } = props;
     const isDefault = useCallback(
         (rowId: number) => {
-            return rowId === defaultLabel ? <i className="fa fa-check-circle pull-right" /> : undefined;
+            return rowId === defaultLabel ? <div className="badge">default</div> : undefined;
         },
         [defaultLabel]
     );
@@ -99,6 +99,7 @@ const normalizeValues = (template: LabelTemplate): LabelTemplate => {
 export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props => {
     const { api, template, isNew, onChange, onActionCompleted, defaultLabel, onDefaultChanged } = props;
     const [updatedTemplate, setUpdateTemplate] = useState<LabelTemplate>();
+    // TODO is this need since the Dirty state is tracked in the parent component?
     const [dirty, setDirty] = useState<boolean>();
     const [saving, setSaving] = useState<boolean>();
     const [error, setError] = useState<string>();
@@ -108,6 +109,11 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
     useEffect(() => {
         setIsDefault(!!defaultLabel && defaultLabel === template?.rowId);
     }, [defaultLabel, template?.rowId]);
+
+    // Clear error if Template changes
+    useEffect(() => {
+        setError(undefined);
+    }, [template]);
 
     useEffect(() => {
         if (isNew) {
@@ -128,8 +134,9 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
         switchVal => {
             setDirty(dirty || switchVal !== isDefault);
             setIsDefault(switchVal);
+            onChange?.();
         },
-        [dirty, isDefault]
+        [dirty, isDefault, onChange]
     );
 
     const onToggleDeleteConfirm = useCallback(() => setShowDeleteConfirm(!showDeleteConfirm), [showDeleteConfirm]);
@@ -157,6 +164,7 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
             const { name, value } = evt.target;
             setUpdateTemplate(updatedTemplate.set(name, value));
             setDirty(true);
+            setError(undefined); // clear error if form changes
             onChange();
         },
         [updatedTemplate, onChange]
@@ -172,6 +180,7 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
         try {
             if (rowId) {
                 await updateRows({
+                    // TODO need a container filter so you can update child folder's templates
                     schemaQuery: LABEL_TEMPLATE_SQ,
                     rows: [templateToSave],
                 });
@@ -198,7 +207,7 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
             setDirty(false);
             onActionCompleted(rowId);
         } catch (reason) {
-            setError(resolveErrorMessage(reason, 'template', 'templates', 'updating'));
+            setError(resolveErrorMessage(reason, 'template', 'templates', 'update'));
             setSaving(false);
         }
     }, [api?.labelprinting, defaultLabel, isDefault, onActionCompleted, onDefaultChanged, updatedTemplate]);
@@ -350,9 +359,14 @@ export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props
         queryLabelTemplates();
     }, [queryLabelTemplates]);
 
-    const onSetSelected = useCallback((index: number) => {
-        setSelected(index);
-    }, []);
+    const onSetSelected = useCallback(
+        (index: number) => {
+            // Clear dirty state since we are clearing any changes on selection
+            if (index !== selected) setIsDirty(false);
+            setSelected(index);
+        },
+        [selected, setIsDirty]
+    );
 
     const onAddLabel = useCallback(() => {
         setSelected(NEW_LABEL_INDEX);

@@ -13,26 +13,15 @@ export const PaginationInfo: FC<PaginationInfoProps> = memo(props => {
     const { offset, pageSize, rowCount, totalCountLoadingState } = props;
     const loading = isLoading(totalCountLoadingState);
     const min = offset !== rowCount ? offset + 1 : offset;
-    let max = offset + pageSize;
-
-    let text = `${min} - `;
-
-    if (max > rowCount) {
-        max = rowCount;
-    }
-
-    text += `${max}`;
+    const max = offset + pageSize;
+    const text = `${min} - `;
 
     return (
         <span className="pagination-info" data-min={min} data-max={max} data-total={rowCount}>
             {text}
-            {loading && (
-                <>
-                    {' of '}
-                    <LoadingSpinner msg="" />
-                </>
-            )}
-            {!loading && max !== rowCount && <>{` of ${rowCount}`}</>}
+            {loading && <LoadingSpinner msg="" />}
+            {!loading && (max > rowCount ? rowCount : max)}
+            {!loading && rowCount > max && <>{` of ${rowCount}`}</>}
         </span>
     );
 });

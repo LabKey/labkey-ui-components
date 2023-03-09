@@ -31,9 +31,7 @@ import { QueryColumn } from '../public/QueryColumn';
 import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 import { EditableGridLoaderFromSelection } from '../internal/components/editable/EditableGridLoaderFromSelection';
 import { QueryInfo } from '../public/QueryInfo';
-import {
-    LineageEditableGridLoaderFromSelection
-} from '../internal/components/editable/LineageEditableGridLoaderFromSelection';
+import { LineageEditableGridLoaderFromSelection } from '../internal/components/editable/LineageEditableGridLoaderFromSelection';
 import { getSelectedData } from '../internal/actions';
 
 import { SampleStateType } from '../internal/components/samples/constants';
@@ -42,12 +40,13 @@ import { getUpdatedLineageRows, updateSampleStorageData } from '../internal/comp
 
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from '../internal/components/samples/models';
 
+import { getStorageItemUpdateData } from '../internal/components/samples/utils';
+
 import { SamplesEditableGridPanelForUpdate } from './SamplesEditableGridPanelForUpdate';
 import { DiscardConsumedSamplesModal } from './DiscardConsumedSamplesModal';
 import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
 
 import { getOriginalParentsFromLineage } from './actions';
-import { getStorageItemUpdateData } from '../internal/components/samples/utils';
 
 type Props = SamplesEditableGridProps &
     SamplesSelectionProviderProps &
@@ -211,14 +210,15 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                 sampleRows = data.updatedRows;
                 sampleSchemaQuery = data.schemaQuery;
                 sampleRows.forEach(row => {
-                   const amount = caseInsensitive(row, 'StoredAmount');
-                   if (amount !== undefined) {
-                       const units = caseInsensitive(row, 'Units');
-                       if (units == undefined) { // have an amount but have not updated the units; use the display units
-                           const rowId = caseInsensitive(row, 'RowId');
-                           row.Units = data.originalRows[rowId].Units?.[0].displayValue;
-                       }
-                   }
+                    const amount = caseInsensitive(row, 'StoredAmount');
+                    if (amount !== undefined) {
+                        const units = caseInsensitive(row, 'Units');
+                        if (units == undefined) {
+                            // have an amount but have not updated the units; use the display units
+                            const rowId = caseInsensitive(row, 'RowId');
+                            row.Units = data.originalRows[rowId].Units?.[0].displayValue;
+                        }
+                    }
                 });
                 if (sampleItems) {
                     sampleRows.forEach(row => {
@@ -308,7 +308,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                         materialId: parseInt(sampleId),
                         rowId: storageItemData.rowId,
                         freezeThawCount: storageItemData.freezeThawCount,
-                    }
+                    };
                 });
             }
             sampleRows.forEach(row => {
@@ -316,8 +316,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                 const storageSampleRow = rowsMap[sampleId] ?? {
                     materialId: sampleId,
                 };
-                Object.assign(storageSampleRow,
-                {
+                Object.assign(storageSampleRow, {
                     StoredAmount: caseInsensitive(row, 'StoredAmount'),
                     Units: caseInsensitive(row, 'Units'),
                 });
@@ -326,8 +325,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
             });
 
             return updateSampleStorageData(Object.values(rowsMap));
-        }
-        else {
+        } else {
             const commands = [];
             if (sampleRows.length > 0) {
                 commands.push({
@@ -369,8 +367,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                                     discardStorageRows.length +
                                     (discardStorageRows.length > 1 ? ' samples' : ' sample') +
                                     ' from storage';
-                            }
-                            catch (error) {
+                            } catch (error) {
                                 console.error(error);
                                 this._hasError = true;
                                 this.props.dismissNotifications();
@@ -409,8 +406,8 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     getStorageUpdateData(storageRows: any[]) {
-        const { sampleItems,  noStorageSamples, selection } = this.props;
-        if (storageRows.length === 0 ) return null;
+        const { sampleItems, noStorageSamples, selection } = this.props;
+        if (storageRows.length === 0) return null;
 
         return getStorageItemUpdateData(storageRows, sampleItems, noStorageSamples, selection);
     }
@@ -425,7 +422,6 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     getSamplesUpdateColumns = (tabInd: number): List<QueryColumn> => {
-
         if (this.getCurrentTab(tabInd) !== UpdateGridTab.Samples) return undefined;
 
         const { displayQueryModel, sampleTypeDomainFields, user } = this.props;
@@ -652,11 +648,10 @@ class StorageEditableGridLoaderFromSelection implements IEditableGridLoader {
             const selectedIds = [...queryModel.selections];
             return getSelectedData(schemaName, queryName, selectedIds, columnString, sorts, queryParameters, viewName)
                 .then(response => {
-                    const { data, dataIds, totalRows } = response;
+                    const { data, dataIds } = response;
                     resolve({
                         data: EditorModel.convertQueryDataToEditorData(data),
                         dataIds,
-                        totalRows,
                     });
                 })
                 .catch(error => {

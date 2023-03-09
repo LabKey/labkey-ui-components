@@ -14,10 +14,12 @@ import { Progress } from '../internal/components/base/Progress';
 
 import { getSamplesTestAPIWrapper } from '../internal/components/samples/APIWrapper';
 
-import { EntityLineageEditModal } from './EntityLineageEditModal';
 import { DataClassDataType, SampleTypeDataType } from '../internal/components/entities/constants';
-import { ParentEntityEditPanel } from './ParentEntityEditPanel';
+
 import { OperationConfirmationData } from '../internal/components/entities/models';
+
+import { EntityLineageEditModal } from './EntityLineageEditModal';
+import { ParentEntityEditPanel } from './ParentEntityEditPanel';
 
 const SQ = new SchemaQuery('schema', 'query');
 const MODEL = makeTestQueryModel(SQ).mutate({
@@ -35,7 +37,6 @@ const LINEAGE_DATA_WITHOUT_ALIQUOTS = {
     },
     orderedModels: List(['schema/query']),
     queries: { 'schema/query': undefined },
-    totalRows: 3,
 };
 const LINEAGE_DATA_WITH_ALIQUOTS = {
     key: 'schema/query',
@@ -48,7 +49,6 @@ const LINEAGE_DATA_WITH_ALIQUOTS = {
     },
     orderedModels: List(['schema/query']),
     queries: { 'schema/query': undefined },
-    totalRows: 3,
 };
 const LINEAGE_DATA_ALL_ALIQUOTS = {
     key: 'schema/query',
@@ -61,7 +61,6 @@ const LINEAGE_DATA_ALL_ALIQUOTS = {
     },
     orderedModels: List(['schema/query']),
     queries: { 'schema/query': undefined },
-    totalRows: 3,
 };
 
 const DEFAULT_PROPS = {

@@ -147,7 +147,6 @@ describe('api', () => {
             },
             orderedModels: List([1, 2, 3, 4, 5]),
             queries: {},
-            totalRows: 5,
         };
         test('encode', () => {
             expect(quoteValueColumnWithDelimiters(results, 'Name', ',')).toStrictEqual({
@@ -175,7 +174,6 @@ describe('api', () => {
                 },
                 orderedModels: List([1, 2, 3, 4, 5]),
                 queries: {},
-                totalRows: 5,
             });
         });
     });

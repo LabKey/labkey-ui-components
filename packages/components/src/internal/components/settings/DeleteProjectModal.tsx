@@ -1,5 +1,6 @@
 import React, { ChangeEventHandler, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
+import { PermissionTypes } from '@labkey/api';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
@@ -7,7 +8,7 @@ import { Progress } from '../base/Progress';
 
 import { useServerContext } from '../base/ServerContext';
 import { AppURL, createProductUrl } from '../../url/AppURL';
-import { getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
+import { getCurrentAppProperties, getPrimaryAppProperties, getProjectPath } from '../../app/utils';
 
 import { resolveErrorMessage } from '../../util/messaging';
 
@@ -130,7 +131,7 @@ export const DeleteProjectModal: FC<Props> = memo(props => {
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
     const { api } = useAppContext();
-    const { container, user } = useServerContext();
+    const { container } = useServerContext();
 
     useEffect(() => {
         (async () => {
@@ -174,11 +175,19 @@ export const DeleteProjectModal: FC<Props> = memo(props => {
                 container.parentPath
             ).toString();
 
-            window.location.href = user.isRootAdmin ? adminProjectsHref : homeHref;
+            try {
+                // 'Project' in below var names refers to the top-level folder
+                const projectPerms = await api.security.getUserPermissions({ containerPath: getProjectPath() });
+                const isProjectAdmin = projectPerms.includes(PermissionTypes.Admin);
+                window.location.href = isProjectAdmin ? adminProjectsHref : homeHref;
+            } catch (e) {
+                // If something goes wrong with retrieving user permissions but deletion was successful, we opt to send user to project home
+                window.location.href = homeHref;
+            }
         } catch (e) {
             onError(resolveErrorMessage(e) ?? `${projectName} could not be deleted. Please try again.`);
         }
-    }, [api.security, comment, container.parentPath, onError, projectName, user.isRootAdmin]);
+    }, [api.security, comment, container.parentPath, onError, projectName]);
 
     const totalCountFromSummaries = useMemo(
         () =>

@@ -9,12 +9,31 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 47474: LKSM: Setting a field as required when editable on Samples & Aliquots errors
 
 ### verstion 2.305.0
+### version 2.307.1
+*Released*: 8 March 2023
+* Merge release23.2-SNAPSHOT to develop:
+    * includes changes from 2.302.1 and 2.302.2
+
+### version 2.307.0
+*Released*: 7 March 2023
+* selectRows and selectRowsDeprecated update to default to includeTotalCount false when not provided by usage config
+  * switch usages of totalRows to rowCount were applicable
+  * SelectionMenuItem shouldn't actually care about rowCount when deciding if it is disabled
+
+### version 2.306.0
+*Released*: 7 March 2023
+* Issue 47127: Update wording for delete reply menu item and use title casing
+* Issue 47333: When editing items individually is not possible, remove that tab
+* Remove extraneous columns from inventory columns
+* add `smaller-font` utility class
+
+### version 2.305.0
 *Released*: 6 March 2023
 * Issue 47391: LKFM user menu items should match primary application
 * Issue 47352: Product/Mega-menu has extra white space when sections are not displayed for permissions or product configuration reasons
 * Issue 47390: Primary application should take into account the current URL controller for LKB and LKSM case
 
-### verstion 2.304.2
+### version 2.304.2
 *Released*: 3 March 2023
 * Issue 47224: Refactor `SamplesDeriveButton` to reduce redundant calls and not make unnecessary, expensive calls
 
@@ -36,6 +55,16 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Separate editing of Stored Amount and Freeze/Thaw count on
   * Account for storedAmount and Units fields now on samples grids
   * Don't display amount and units in details display
+
+### version 2.302.2
+*Released*: 03 March 2023
+- Issue 47306: Resolve Permissions page error by skipping no-resolvable users.
+- Resolve bug in redirection location upon project deletion
+
+### version 2.302.1
+*Released*: 02 March 2023
+- Issue 47202: Options to reduce payload of getContainers.api response
+    - Field editor only needs the base set of container info for lookups so use new props to reduce response object size (includeWorkbookChildren and includeStandardProperties)
 
 ### version 2.302.0
 *Released*: 28 February 2023

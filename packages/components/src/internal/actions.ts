@@ -629,12 +629,11 @@ export function getSelectedData(
             offset: 0,
         })
             .then(response => {
-                const { models, orderedModels, totalRows } = response;
+                const { models, orderedModels } = response;
                 const dataKey = resolveKey(schemaName, queryName);
                 resolve({
                     data: fromJS(models[dataKey]),
                     dataIds: List(orderedModels[dataKey]),
-                    totalRows,
                 });
             })
             .catch(reason => {

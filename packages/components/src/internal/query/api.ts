@@ -364,7 +364,7 @@ export interface ISelectRowsResult {
     queries: {
         [key: string]: QueryInfo;
     };
-    totalRows: number;
+    rowCount: number;
 }
 
 /**
@@ -400,7 +400,7 @@ export function selectRowsDeprecated(userConfig, caller?): Promise<ISelectRowsRe
                             queries: {
                                 [key]: details,
                             },
-                            totalRows: result.rowCount, // TODO: Why do we rename rowCount to totalRows? Seems unnecessary.
+                            rowCount: result.rowCount,
                             messages: result.messages,
                             caller,
                         }
@@ -465,6 +465,7 @@ export function selectRowsDeprecated(userConfig, caller?): Promise<ISelectRowsRe
                     // put on this another parameter!
                     columns: userConfig.columns ? userConfig.columns : '*',
                     containerFilter: userConfig.containerFilter ?? getContainerFilter(userConfig.containerPath),
+                    includeTotalCount: userConfig.includeTotalCount ?? false, // default to false to improve performance
                     success: json => {
                         result = handleSelectRowsResponse(json);
                         hasResults = true;
@@ -643,11 +644,11 @@ export function searchRows(
                 const [queryResults, exactResults] = allResults;
 
                 let finalResults: ISelectRowsResult;
-                if (exactResults && exactResults.totalRows > 0) {
+                if (exactResults && exactResults.rowCount > 0) {
                     finalResults = exactResults;
 
-                    // TODO: This can cause the "totalRows" to be incorrect. Ideally, keep track of changes to give accurate count
-                    if (finalResults.totalRows < maxRows) {
+                    // TODO: This can cause the "rowCount" to be incorrect. Ideally, keep track of changes to give accurate count
+                    if (finalResults.rowCount < maxRows) {
                         const { key } = finalResults;
                         const finalKeySet = finalResults.orderedModels[key].toOrderedSet().asMutable();
 

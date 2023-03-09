@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback, useState } from 'react';
-import { Checkbox, Label, Modal } from 'react-bootstrap';
+import { Checkbox, Modal } from 'react-bootstrap';
 
 import { QueryModelMap } from '../../../public/QueryModel/withQueryModels';
 
@@ -76,7 +76,8 @@ export const ExportModal: FC<ExportModalProperties> = memo(props => {
                                     </td>
                                     <td className="pull-right">{model.rowCount}</td>
                                     <td className="view-name">
-                                        {model.viewName || 'Default'} {model.currentView.session && <span className="text-muted">(edited)</span>}
+                                        {model.viewName || 'Default'}{' '}
+                                        {model.currentView.session && <span className="text-muted">(edited)</span>}
                                     </td>
                                 </tr>
                             );

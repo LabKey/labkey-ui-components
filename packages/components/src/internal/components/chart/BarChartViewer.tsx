@@ -36,7 +36,7 @@ async function fetchItemCount(schemaQuery: SchemaQuery, filterArray: Filter.IFil
             schemaQuery,
             containerFilter: Query.ContainerFilter.currentPlusProjectAndShared, // Issue 46098
         });
-        return response.rowCount;
+        return response.rows.length;
     } catch (error) {
         console.error('Failed to fetch item count for charts', error);
     }
@@ -164,7 +164,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
         const hasSectionItems = itemCounts[currentGroup] > 0;
         const response = responses[currentGroup];
         const isLoading = !response;
-        const hasData = response?.totalRows > 0;
+        const hasData = response?.rowCount > 0;
 
         let body;
         if (hasError) {

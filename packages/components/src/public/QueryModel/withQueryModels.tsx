@@ -560,7 +560,6 @@ export function withQueryModels<Props>(
                 const { rowCount } = await selectRows({
                     ...currentModel.loadRowsConfig,
                     sort: undefined,
-                    columns: currentModel.keyColumns.map(col => col.fieldKey).join(','),
                     maxRows: 1,
                     offset: 0,
                     includeDetailsColumn: false,

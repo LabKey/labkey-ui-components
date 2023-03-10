@@ -12,7 +12,7 @@ import { invalidateLineageResults } from '../internal/components/lineage/actions
 import { SchemaQuery } from '../public/SchemaQuery';
 
 import { URLService } from '../internal/url/URLResolver';
-import { SAMPLE_TYPE_KEY } from '../internal/app/constants';
+import { DATA_CLASS_KEY, SAMPLE_TYPE_KEY } from '../internal/app/constants';
 
 import { filterMediaSampleTypes } from './utils';
 
@@ -125,5 +125,5 @@ export function onSampleTypeRename(): void {
 }
 
 export function onDataClassRename(): void {
-    URLService.clearCache('dataclass');
+    URLService.clearCache(DATA_CLASS_KEY);
 }

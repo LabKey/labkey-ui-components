@@ -56,6 +56,7 @@ import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 import { createGridModelId } from '../../models';
 
 import {
+    AMOUNT_AND_UNITS_COLUMNS_LC,
     IS_ALIQUOT_COL,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
     SAMPLE_STORAGE_COLUMNS_LC,
@@ -592,7 +593,8 @@ export function getGroupedSampleDisplayColumns(
     allDisplayColumns: QueryColumn[],
     allUpdateColumns: QueryColumn[],
     sampleTypeDomainFields: GroupedSampleFields,
-    isAliquot: boolean
+    isAliquot: boolean,
+    canBeInStorage: boolean
 ): GroupedSampleDisplayColumns {
     const editColumns = [];
     const displayColumns = [];
@@ -600,8 +602,12 @@ export function getGroupedSampleDisplayColumns(
 
     allDisplayColumns.forEach(col => {
         const colName = col.name.toLowerCase();
-        if (SAMPLE_STORAGE_COLUMNS_LC.indexOf(colName) > -1)
-            return;
+        if (SAMPLE_STORAGE_COLUMNS_LC.indexOf(colName) > -1) {
+            if (canBeInStorage)
+                return;
+            if (AMOUNT_AND_UNITS_COLUMNS_LC.indexOf(colName) === -1)
+                return;
+        }
         if (isAliquot) {
             // barcodes belong to the individual sample or aliquot (but not both)
             if (col.conceptURI === STORAGE_UNIQUE_ID_CONCEPT_URI) {
@@ -623,8 +629,12 @@ export function getGroupedSampleDisplayColumns(
 
     allUpdateColumns.forEach(col => {
         const colName = col.name.toLowerCase();
-        if (SAMPLE_STORAGE_COLUMNS_LC.indexOf(colName) > -1)
-            return;
+        if (SAMPLE_STORAGE_COLUMNS_LC.indexOf(colName) > -1) {
+            if (canBeInStorage)
+                return;
+            if (AMOUNT_AND_UNITS_COLUMNS_LC.indexOf(colName) === -1)
+                return;
+        }
         if (sampleTypeDomainFields.independentFields.indexOf(colName) > -1) {
             editColumns.push(col);
             return;

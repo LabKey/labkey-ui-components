@@ -34,7 +34,7 @@ import { getSampleDomainDefaultSystemFields } from '../internal/components/sampl
 
 import { SampleTypeBasePage } from './SampleTypeBasePage';
 import { useSampleTypeAppContext } from './useSampleTypeAppContext';
-import { onSampleTypeChange } from './actions';
+import { onSampleTypeChange, onSampleTypeRename } from './actions';
 
 const DESIGNER_HEADER =
     'Sample types help you organize samples in your lab and allow you to add properties for easy tracking of data.';
@@ -202,6 +202,8 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
 
             const newName = domain.name;
             const hasNameChange = newName !== schemaQuery.queryName;
+            if (hasNameChange) onSampleTypeRename();
+
             goToSampleType(hasNameChange ? newName : undefined);
 
             // wait a bit for the invalidation to take
@@ -297,8 +299,7 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
                             includeMetricUnitProperty: includeStorageOptions,
                             metricUnitLabel: 'Amount Display Units',
                             metricUnitRequired: includeStorageOptions && (!isUpdate || metricUnit != null), // allow existing sample types without unit to continue to have blank unit
-                            metricUnitHelpMsg:
-                                'Sample amount will be displayed using the selected metric unit.',
+                            metricUnitHelpMsg: 'Sample amount will be displayed using the selected metric unit.',
                             metricUnitOptions: getMetricUnitOptions(),
                         }}
                         aliquotNamePatternProps={{

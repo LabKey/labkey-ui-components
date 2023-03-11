@@ -34,6 +34,7 @@ export const SAMPLES_KEY = 'samples';
 export const SAMPLE_TYPE_KEY = 'sampleType';
 export const SEARCH_KEY = 'search';
 export const SOURCES_KEY = 'sources';
+export const DATA_CLASS_KEY = 'dataclass';
 export const SOURCE_TYPE_KEY = 'sourceType';
 export const WORKFLOW_KEY = 'workflow';
 export const FREEZERS_KEY = 'freezers';

@@ -5,6 +5,8 @@ import ReactBootstrapToggle from 'react-bootstrap-toggle';
 
 import { List } from 'immutable';
 
+import { getServerContext } from '@labkey/api';
+
 import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
 import { ComponentsAPIWrapper } from '../../APIWrapper';
 import { Alert } from '../base/Alert';
@@ -47,6 +49,7 @@ interface LabelTemplatesListProps {
 interface LabelTemplateDetailsProps {
     api?: ComponentsAPIWrapper;
     defaultLabel?: number;
+    isDefaultable: boolean;
     isNew: boolean;
     onActionCompleted: (newLabel?: number, isDelete?: boolean) => void;
     onChange: () => void;
@@ -93,13 +96,23 @@ const normalizeValues = (template: LabelTemplate): LabelTemplate => {
         description: template.description,
         path: template.path?.trim(),
         rowId: template.rowId,
+        container: template.container,
     });
 };
 
+const canBeDefault = (template: LabelTemplate): boolean => {
+    const currentContainer = getServerContext().container;
+    return (
+        !template || // New template
+        currentContainer.parentId === template.container || // Template is from the project level
+        currentContainer.id === template?.container // Template is from this project
+    );
+};
+
 export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props => {
-    const { api, template, isNew, onChange, onActionCompleted, defaultLabel, onDefaultChanged } = props;
+    const { api, template, isNew, onChange, onActionCompleted, defaultLabel, onDefaultChanged, isDefaultable } = props;
     const [updatedTemplate, setUpdateTemplate] = useState<LabelTemplate>();
-    // TODO is this need since the Dirty state is tracked in the parent component?
+    // TODO is this needed since the Dirty state is tracked in the parent component?
     const [dirty, setDirty] = useState<boolean>();
     const [saving, setSaving] = useState<boolean>();
     const [error, setError] = useState<string>();
@@ -145,6 +158,7 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
             deleteRows({
                 schemaQuery: LABEL_TEMPLATE_SQ,
                 rows: [updatedTemplate],
+                containerPath: updatedTemplate.container,
             })
                 .then(() => {
                     onToggleDeleteConfirm();
@@ -180,9 +194,9 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
         try {
             if (rowId) {
                 await updateRows({
-                    // TODO need a container filter so you can update child folder's templates
                     schemaQuery: LABEL_TEMPLATE_SQ,
                     rows: [templateToSave],
+                    containerPath: templateToSave.container,
                 });
             } else {
                 const response = await insertRows({
@@ -272,19 +286,21 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                             />
                         </div>
                     </FormGroup>
-                    <FormGroup>
-                        <div className="col-sm-4">
-                            <DomainFieldLabel label="Set as Default" />
-                        </div>
-                        <div className="col-sm-8">
-                            <ReactBootstrapToggle
-                                active={isDefault}
-                                on="Default"
-                                off="Selectable"
-                                onClick={defaultToggleHandler}
-                            />
-                        </div>
-                    </FormGroup>
+                    {isDefaultable && (
+                        <FormGroup>
+                            <div className="col-sm-4">
+                                <DomainFieldLabel label="Set as Default" />
+                            </div>
+                            <div className="col-sm-8">
+                                <ReactBootstrapToggle
+                                    active={isDefault}
+                                    on="Default"
+                                    off="Selectable"
+                                    onClick={defaultToggleHandler}
+                                />
+                            </div>
+                        </FormGroup>
+                    )}
                     <div>
                         {!isNew && (
                             <DisableableButton
@@ -418,6 +434,7 @@ export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props
                                 defaultLabel={newDefaultLabel}
                                 api={api}
                                 onDefaultChanged={onDefaultChanged}
+                                isDefaultable={canBeDefault(template)}
                             />
                         </div>
                     </div>

@@ -117,6 +117,7 @@ export class LabelTemplate {
     readonly rowId: number;
     readonly name: string;
     readonly path: string;
+    readonly container: string;
 
     constructor(values: { [k: string]: any }) {
         Object.assign(this, values);
@@ -140,6 +141,7 @@ export class LabelTemplate {
             rowId: fieldValues.rowId,
             name: fieldValues.name,
             description: fieldValues.description,
+            container: fieldValues.container,
         });
     }
 }

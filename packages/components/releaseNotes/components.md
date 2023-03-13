@@ -7,6 +7,13 @@ Components, models, actions, and utility functions for LabKey applications and p
   * loadRows query to always use includeTotalCount false and then conditionally make a second query with includeTotalCount true
   * update Pagination and SelectionStatus to wait for new totalCountLoadingState
 
+### version 2.307.2
+*Released*: 10 March 2023
+* Issue 47422: LKSM: Renaming Sample Type results in Not Found error
+* Issue 47407: Sample Manager: Update from file for Storage Editor without Edit Perm shoulnd't be available
+* Issue 47406: Sample Manager: "Sample Id" column should be readonly on Edit Samples Grid / Storage Details tab
+* Issue 47474: LKSM: Setting a field as required when editable on Samples & Aliquots errors
+
 ### version 2.307.1
 *Released*: 8 March 2023
 * Merge release23.2-SNAPSHOT to develop:

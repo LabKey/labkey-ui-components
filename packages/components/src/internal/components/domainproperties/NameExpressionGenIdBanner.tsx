@@ -90,7 +90,8 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
             setShowEditDialog(false);
         } catch (reason) {
             console.error(reason);
-            setError(resolveErrorMessage(reason, 'genId', 'genId', 'edit'));
+            const error = reason?.error ?? reason;
+            setError(resolveErrorMessage(error, 'genId', 'genId', 'edit'));
         }
     }, [rowId, kindName, newGenId, _createNotification]);
 

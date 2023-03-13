@@ -343,7 +343,7 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
             const newFilters = finderSessionData.filters;
             if (!newFilters) return;
 
-            updateFilters(filterChangeCounter + 1, newFilters, false, view.isSession);
+            updateFilters(filterChangeCounter + (view.isSession ? 1 : 0), newFilters, false, view.isSession);
             setShowSaveViewDialog(false);
             setCurrentView(view);
         },

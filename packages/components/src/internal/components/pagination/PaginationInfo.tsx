@@ -3,7 +3,7 @@ import React, { FC, memo } from 'react';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 
-interface PaginationInfoProps {
+export interface PaginationInfoProps {
     offset: number;
     pageSize: number;
     rowCount: number;

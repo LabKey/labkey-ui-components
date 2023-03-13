@@ -10,7 +10,6 @@ import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 import { incrementClientSideMetricCount } from '../../actions';
 import { buildURL } from '../../url/AppURL';
 import { URLResolver } from '../../url/URLResolver';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { resolveErrorMessage } from '../../util/messaging';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { loadReports } from '../../query/reports';
@@ -18,9 +17,10 @@ import { IDataViewInfo } from '../../DataViewInfo';
 import { selectRows } from '../../query/selectRows';
 import { caseInsensitive } from '../../util/utils';
 
-import { SAMPLE_FINDER_VIEW_NAME } from './utils';
+import {getFinderViewColumnsConfig, SAMPLE_FINDER_VIEW_NAME} from './utils';
 import { FinderReport, SearchIdData, SearchResultCardData } from './models';
 import { SearchScope } from './constants';
+import {getQueryDetails} from "../../query/api";
 
 type GetCardDataFn = (data: Map<any, any>, category?: string) => SearchResultCardData;
 
@@ -200,41 +200,30 @@ export function getProcessedSearchHits(
         }));
 }
 
-export function removeFinderGridView(model: QueryModel): Promise<boolean> {
+export function saveFinderGridView(schemaQuery: SchemaQuery, columnDisplayNames: { [key: string]: string }, requiredColumns?: string[]): Promise<SchemaQuery> {
     return new Promise((resolve, reject) => {
-        if (!model.isLoading) {
-            Query.deleteQueryView({
-                schemaName: model.schemaQuery.schemaName,
-                queryName: model.schemaQuery.queryName,
-                viewName: SAMPLE_FINDER_VIEW_NAME,
-                revert: true,
+        getQueryDetails({
+            queryName: schemaQuery.queryName,
+            schemaName: schemaQuery.schemaName,
+        }).then(queryInfo => {
+            const columns = getFinderViewColumnsConfig(queryInfo, columnDisplayNames, requiredColumns);
+            Query.saveQueryViews({
+                schemaName: schemaQuery.schemaName,
+                queryName: schemaQuery.queryName,
+                // Mark the view as hidden, so it doesn't show up in LKS and in the grid view menus
+                views: [{ name: SAMPLE_FINDER_VIEW_NAME, columns, hidden: true }],
                 success: () => {
-                    resolve(true);
+                    resolve(schemaQuery);
                 },
-                failure: error => {
-                    console.error('There was a problem deleting the Sample Finder view.', error);
-                    reject(resolveErrorMessage(error));
+                failure: response => {
+                    console.error(response);
+                    reject('There was a problem creating the view for the data grid. ' + resolveErrorMessage(response));
                 },
             });
-        }
-    });
-}
-
-export function saveFinderGridView(schemaQuery: SchemaQuery, columns: any): Promise<SchemaQuery> {
-    return new Promise((resolve, reject) => {
-        Query.saveQueryViews({
-            schemaName: schemaQuery.schemaName,
-            queryName: schemaQuery.queryName,
-            // Mark the view as hidden, so it doesn't show up in LKS and in the grid view menus
-            views: [{ name: SAMPLE_FINDER_VIEW_NAME, columns, hidden: true }],
-            success: () => {
-                resolve(schemaQuery);
-            },
-            failure: response => {
-                console.error(response);
-                reject('There was a problem creating the view for the data grid. ' + resolveErrorMessage(response));
-            },
-        });
+        }).catch(error => {
+            console.error(error);
+            reject('There was a problem creating the view for the data grid. ' + resolveErrorMessage(error));
+        })
     });
 }
 

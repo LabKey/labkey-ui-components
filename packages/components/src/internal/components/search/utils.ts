@@ -73,10 +73,11 @@ export function getFilterCardColumnName(
 const FIRST_COLUMNS_IN_VIEW = ['Name', 'SampleSet'];
 
 export function getFinderViewColumnsConfig(
-    queryModel: QueryModel,
-    columnDisplayNames: { [key: string]: string }
-): { columns: any; hasUpdates: boolean } {
-    const defaultDisplayColumns = queryModel.queryInfo?.getDisplayColumns().toArray();
+    queryInfo: QueryInfo,
+    columnDisplayNames: { [key: string]: string },
+    requiredColumns?: string[]
+): { fieldKey: string; title: string }[] {
+    const defaultDisplayColumns = queryInfo?.getDisplayColumns().toArray();
     const displayColumnKeys = defaultDisplayColumns.map(col => col.fieldKey.toLowerCase());
     const columnKeys = [];
     FIRST_COLUMNS_IN_VIEW.forEach(fieldKey => {
@@ -85,9 +86,10 @@ export function getFinderViewColumnsConfig(
             columnKeys.push(fieldKey);
         }
     });
-    queryModel.requiredColumns.forEach(fieldKey => {
+
+    requiredColumns?.forEach(fieldKey => {
         const lcFieldKey = fieldKey.toLowerCase();
-        if (displayColumnKeys.indexOf(lcFieldKey) == -1 && SAMPLE_STATUS_REQUIRED_COLUMNS.indexOf(fieldKey) === -1) {
+        if (displayColumnKeys.indexOf(lcFieldKey) === -1 && SAMPLE_STATUS_REQUIRED_COLUMNS.indexOf(fieldKey) === -1) {
             columnKeys.push(fieldKey);
         }
     });
@@ -96,15 +98,7 @@ export function getFinderViewColumnsConfig(
             .filter(col => FIRST_COLUMNS_IN_VIEW.indexOf(col.fieldKey) === -1)
             .map(col => col.fieldKey)
     );
-    const viewDisplayFieldKeys = queryModel.queryInfo
-        ?.getDisplayColumns(queryModel.viewName)
-        .map(column => column.fieldKey)
-        .toArray()
-        .sort();
-    return {
-        hasUpdates: viewDisplayFieldKeys.join(',') !== [...columnKeys].sort().join(','),
-        columns: columnKeys.map(fieldKey => ({ fieldKey, title: columnDisplayNames[fieldKey] })),
-    };
+    return columnKeys.map(fieldKey => ({ fieldKey, title: columnDisplayNames[fieldKey] }));
 }
 
 export const SAMPLE_FINDER_VIEW_NAME = '~~samplefinder~~';

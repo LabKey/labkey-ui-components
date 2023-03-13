@@ -155,109 +155,88 @@ describe('getFinderViewColumnsConfig', () => {
             },
         }),
     });
-    const model = makeTestQueryModel(
-        new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Test', SAMPLE_FINDER_VIEW_NAME),
-        queryInfo,
-        {},
-        [],
-        0,
-        'test-samples'
-    );
     test('no required columns', () => {
-        expect(getFinderViewColumnsConfig(model, {})).toStrictEqual({
-            hasUpdates: false,
-            columns: [{ fieldKey: 'Name', title: undefined }],
-        });
+        expect(getFinderViewColumnsConfig(queryInfo, {})).toStrictEqual(
+            [{ fieldKey: 'Name', title: undefined }]
+        );
     });
 
     test('no new required columns', () => {
-        const modelUpdate = model.mutate({ requiredColumns: ['Name'] });
-        expect(getFinderViewColumnsConfig(modelUpdate, {})).toStrictEqual({
-            hasUpdates: false,
-            columns: [{ fieldKey: 'Name', title: undefined }],
-        });
+        const requiredColumns = ['Name'];
+        expect(getFinderViewColumnsConfig(queryInfo, {}, requiredColumns)).toStrictEqual(
+            [{ fieldKey: 'Name', title: undefined }]
+        );
     });
 
     test('with new required columns', () => {
-        const modelUpdate = model.mutate({ requiredColumns: ['Name', 'ExtraField', 'SampleState'] });
-        expect(getFinderViewColumnsConfig(modelUpdate, { ExtraField: 'Extra Field Display' })).toStrictEqual({
-            hasUpdates: true,
-            columns: [
-                { fieldKey: 'Name', title: undefined },
-                { fieldKey: 'ExtraField', title: 'Extra Field Display' },
-            ],
-        });
+        const requiredColumns = ['Name', 'ExtraField', 'SampleState'];
+        expect(getFinderViewColumnsConfig(queryInfo, {ExtraField: 'Extra Field Display'}, requiredColumns)).toStrictEqual(
+            [
+                {fieldKey: 'Name', title: undefined},
+                {fieldKey: 'ExtraField', title: 'Extra Field Display'},
+            ]
+        );
     });
 
     test('view has all updates', () => {
-        const queryInfo = new QueryInfo({
-            showInsertNewButton: true,
-            importUrl: 'https://some/import',
-            importUrlDisabled: false,
-            appEditableTable: true,
-            pkCols: List(['RowId']),
-            columns: fromJS({
-                rowid: new QueryColumn({ caption: 'Row Id', fieldKey: 'RowId', inputType: 'number' }),
-                description: new QueryColumn({
-                    caption: 'Description',
-                    fieldKey: 'Description',
-                    inputType: 'textarea',
+            const queryInfo = new QueryInfo({
+                showInsertNewButton: true,
+                importUrl: 'https://some/import',
+                importUrlDisabled: false,
+                appEditableTable: true,
+                pkCols: List(['RowId']),
+                columns: fromJS({
+                    rowid: new QueryColumn({caption: 'Row Id', fieldKey: 'RowId', inputType: 'number'}),
+                    description: new QueryColumn({
+                        caption: 'Description',
+                        fieldKey: 'Description',
+                        inputType: 'textarea',
+                    }),
+                    samplestate: new QueryColumn({caption: 'SampleState', fieldKey: 'SampleState', inputType: 'text'}),
+                    name: new QueryColumn({caption: 'Name', fieldKey: 'Name', inputType: 'text'}),
+                    extrafield: new QueryColumn({caption: 'Extra', fieldKey: 'ExtraField', inputType: 'text'}),
                 }),
-                samplestate: new QueryColumn({ caption: 'SampleState', fieldKey: 'SampleState', inputType: 'text' }),
-                name: new QueryColumn({ caption: 'Name', fieldKey: 'Name', inputType: 'text' }),
-                extrafield: new QueryColumn({ caption: 'Extra', fieldKey: 'ExtraField', inputType: 'text' }),
-            }),
-            views: Map({
-                '~~default~~': {
-                    name: '',
-                    label: 'default',
-                    default: true,
-                    columns: [
-                        {
-                            name: 'Name',
-                            key: 'Name',
-                            fieldKey: 'Name',
-                        },
-                    ],
-                },
-                [SAMPLE_FINDER_VIEW_NAME.toLowerCase()]: {
-                    name: SAMPLE_FINDER_VIEW_NAME,
-                    label: SAMPLE_FINDER_VIEW_NAME,
-                    default: false,
-                    columns: [
-                        {
-                            name: 'Name',
-                            key: 'Name',
-                            fieldKey: 'Name',
-                        },
-                        {
-                            name: 'Extra',
-                            fieldKey: 'ExtraField',
-                            key: 'Extra',
-                        },
-                    ],
-                },
-            }),
+                views: Map({
+                    '~~default~~': {
+                        name: '',
+                        label: 'default',
+                        default: true,
+                        columns: [
+                            {
+                                name: 'Name',
+                                key: 'Name',
+                                fieldKey: 'Name',
+                            },
+                        ],
+                    },
+                    [SAMPLE_FINDER_VIEW_NAME.toLowerCase()]: {
+                        name: SAMPLE_FINDER_VIEW_NAME,
+                        label: SAMPLE_FINDER_VIEW_NAME,
+                        default: false,
+                        columns: [
+                            {
+                                name: 'Name',
+                                key: 'Name',
+                                fieldKey: 'Name',
+                            },
+                            {
+                                name: 'Extra',
+                                fieldKey: 'ExtraField',
+                                key: 'Extra',
+                            },
+                        ],
+                    },
+                }),
+            });
+
+            const requiredColumns = ['Name', 'ExtraField'];
+            expect(getFinderViewColumnsConfig(queryInfo, {ExtraField: 'Extra Field Display'}, requiredColumns)).toStrictEqual(
+                [
+                    {fieldKey: 'Name', title: undefined},
+                    {fieldKey: 'ExtraField', title: 'Extra Field Display'},
+                ]
+            );
         });
-        const model = makeTestQueryModel(
-            new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Test', SAMPLE_FINDER_VIEW_NAME),
-            queryInfo,
-            {},
-            [],
-            0,
-            'test-samples'
-        );
-        const modelUpdate = model.mutate({
-            requiredColumns: ['Name', 'ExtraField'],
-        });
-        expect(getFinderViewColumnsConfig(modelUpdate, { ExtraField: 'Extra Field Display' })).toStrictEqual({
-            hasUpdates: false,
-            columns: [
-                { fieldKey: 'Name', title: undefined },
-                { fieldKey: 'ExtraField', title: 'Extra Field Display' },
-            ],
-        });
-    });
 });
 
 const assay1 = 'assay1';

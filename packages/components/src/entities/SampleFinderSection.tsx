@@ -16,7 +16,6 @@ import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 
 import { Alert } from '../internal/components/base/Alert';
 import { SampleGridButtonProps } from '../internal/components/samples/models';
-import { invalidateQueryDetailsCache } from '../internal/query/api';
 
 import { getAllEntityTypeOptions } from '../internal/components/entities/actions';
 
@@ -41,7 +40,6 @@ import { AssayResultDataType } from '../internal/components/entities/constants';
 
 import {
     loadFinderSearch,
-    removeFinderGridView,
     saveFinderGridView,
     saveFinderSearch,
 } from '../internal/components/search/actions';
@@ -49,8 +47,8 @@ import { FilterCards } from '../internal/components/search/FilterCards';
 
 import {
     getFinderStartText,
-    getFinderViewColumnsConfig,
     getSampleFinderColumnNames,
+    getSampleFinderCommonConfigs,
     getSampleFinderQueryConfigs,
     getSearchFilterObjs,
     SAMPLE_FILTER_METRIC_AREA,
@@ -77,7 +75,6 @@ import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 
 interface SampleFinderSamplesGridProps {
-    columnDisplayNames?: { [key: string]: string };
     getIsDirty?: () => boolean;
     getSampleAuditBehaviorType: () => AuditBehaviorTypes;
     gridButtonProps?: SampleGridButtonProps;
@@ -508,53 +505,7 @@ interface SampleFinderSamplesProps extends SampleFinderSamplesGridProps {
 }
 
 const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & InjectedQueryModels> = memo(props => {
-    const { actions, columnDisplayNames, queryModels, gridButtons, gridButtonProps } = props;
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-
-    useEffect(() => {
-        const allModelsLoaded = Object.values(queryModels).filter(model => model.isLoading).length == 0;
-        if (allModelsLoaded && isLoading) {
-            const promises = [];
-            Object.values(queryModels).forEach(queryModel => {
-                const { hasUpdates, columns } = getFinderViewColumnsConfig(queryModel, columnDisplayNames);
-                if (hasUpdates) {
-                    promises.push(saveFinderGridView(queryModel.schemaQuery, columns));
-                }
-            });
-            try {
-                Promise.all(promises)
-                    .then(schemaQueries => {
-                        // since we have updated views, we need to invalidate the details cache so we pick up the new views
-                        schemaQueries.forEach(schemaQuery => {
-                            invalidateQueryDetailsCache(schemaQuery);
-                        });
-                        setIsLoading(false);
-                    })
-                    .catch(reason => {
-                        console.error('Error saving all finder views.', reason);
-                        setIsLoading(false);
-                    });
-            } catch (error) {
-                // ignore: already logged
-            }
-        }
-    }, [queryModels]);
-
-    useEffect(() => {
-        return () => {
-            if (queryModels) {
-                for (const queryModel of Object.values(queryModels)) {
-                    (async () => {
-                        try {
-                            await removeFinderGridView(queryModel);
-                        } catch (error) {
-                            // ignore; already logged
-                        }
-                    })();
-                }
-            }
-        };
-    }, []);
+    const { actions, queryModels, gridButtons, gridButtonProps } = props;
 
     const afterSampleActionComplete = useCallback((): void => {
         actions.loadAllModels();
@@ -573,8 +524,6 @@ const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & InjectedQueryMo
         },
         [queryModels]
     );
-
-    if (isLoading) return <LoadingSpinner />;
 
     return (
         <>
@@ -617,8 +566,10 @@ const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
         setQueryConfigs(undefined);
         const configs = getSampleFinderQueryConfigs(user, sampleTypeNames, cards, selectionKeyPrefix);
         const promises = [];
+        const columnLabel = getSampleFinderColumnNames(cards);
+        getSampleFinderCommonConfigs(cards, false);
         for (const config of Object.values(configs)) {
-            promises.push(saveFinderGridView(config.schemaQuery, [{ fieldKey: 'Name' }]));
+            promises.push(saveFinderGridView(config.schemaQuery, columnLabel, config.requiredColumns));
         }
         Promise.all(promises)
             .then(() => {
@@ -635,7 +586,6 @@ const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
 
     return (
         <SampleFinderSamplesWithQueryModels
-            columnDisplayNames={getSampleFinderColumnNames(cards)}
             sampleTypeNames={sampleTypeNames}
             key={selectionKeyPrefix}
             user={user}

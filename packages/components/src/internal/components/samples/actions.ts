@@ -603,10 +603,10 @@ export function getGroupedSampleDisplayColumns(
     allDisplayColumns.forEach(col => {
         const colName = col.name.toLowerCase();
         if (SAMPLE_STORAGE_COLUMNS_LC.indexOf(colName) > -1) {
-            if (canBeInStorage)
-                return;
-            if (AMOUNT_AND_UNITS_COLUMNS_LC.indexOf(colName) === -1)
-                return;
+            return;
+        }
+        if (AMOUNT_AND_UNITS_COLUMNS_LC.indexOf(colName) > -1 && canBeInStorage) {
+            return;
         }
         if (isAliquot) {
             // barcodes belong to the individual sample or aliquot (but not both)
@@ -630,10 +630,10 @@ export function getGroupedSampleDisplayColumns(
     allUpdateColumns.forEach(col => {
         const colName = col.name.toLowerCase();
         if (SAMPLE_STORAGE_COLUMNS_LC.indexOf(colName) > -1) {
-            if (canBeInStorage)
-                return;
-            if (AMOUNT_AND_UNITS_COLUMNS_LC.indexOf(colName) === -1)
-                return;
+            return;
+        }
+        if (AMOUNT_AND_UNITS_COLUMNS_LC.indexOf(colName) > -1 && canBeInStorage) {
+            return;
         }
         if (sampleTypeDomainFields.independentFields.indexOf(colName) > -1) {
             editColumns.push(col);

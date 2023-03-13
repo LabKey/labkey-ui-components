@@ -177,9 +177,7 @@ export const AMOUNT_AND_UNITS_COLUMNS = [
 
 export const AMOUNT_AND_UNITS_COLUMNS_LC = AMOUNT_AND_UNITS_COLUMNS.map(col => col.toLowerCase());
 
-
 export const SAMPLE_STORAGE_COLUMNS = [
-    ...AMOUNT_AND_UNITS_COLUMNS,
     'StorageLocation',
     'StorageRow',
     'StorageCol',
@@ -205,7 +203,7 @@ export const SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR = [
     'CheckedOut',
 ];
 
-export const SAMPLE_INSERT_EXTRA_COLUMNS = [...SAMPLE_STORAGE_COLUMNS, ALIQUOTED_FROM_COL];
+export const SAMPLE_INSERT_EXTRA_COLUMNS = [...AMOUNT_AND_UNITS_COLUMNS, ...SAMPLE_STORAGE_COLUMNS, ALIQUOTED_FROM_COL];
 
 export const SAMPLE_EXPORT_CONFIG = {
     'exportAlias.name': DEFAULT_SAMPLE_FIELD_CONFIG.label,

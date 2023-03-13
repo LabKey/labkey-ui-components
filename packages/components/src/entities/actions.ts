@@ -11,6 +11,9 @@ import { QueryInfo } from '../public/QueryInfo';
 import { invalidateLineageResults } from '../internal/components/lineage/actions';
 import { SchemaQuery } from '../public/SchemaQuery';
 
+import { URLService } from '../internal/url/URLResolver';
+import { DATA_CLASS_KEY, SAMPLE_TYPE_KEY } from '../internal/app/constants';
+
 import { filterMediaSampleTypes } from './utils';
 
 // TODO: this file is temporary as we move things into an @labkey/components/entities subpackage. Instead of adding
@@ -115,4 +118,12 @@ export function onSampleChange(): void {
 export function onSampleTypeChange(schemaQuery: SchemaQuery, containerPath: string): void {
     invalidateQueryDetailsCache(schemaQuery, containerPath);
     invalidateLineageResults();
+}
+
+export function onSampleTypeRename(): void {
+    URLService.clearCache(SAMPLE_TYPE_KEY);
+}
+
+export function onDataClassRename(): void {
+    URLService.clearCache(DATA_CLASS_KEY);
 }

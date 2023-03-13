@@ -3,7 +3,7 @@ import { List } from 'immutable';
 import { FormControl } from 'react-bootstrap';
 
 import { decodeLookup, encodeLookup } from '../models';
-import { PropDescType } from '../PropDescType';
+import { LOOKUP_TYPE, PropDescType } from '../PropDescType';
 
 import { createFormInputName } from '../utils';
 import { DOMAIN_FIELD_LOOKUP_CONTAINER, DOMAIN_FIELD_LOOKUP_QUERY, DOMAIN_FIELD_LOOKUP_SCHEMA } from '../constants';
@@ -103,7 +103,6 @@ interface ITargetTableSelectProps {
     lookupURI?: string;
     onChange: (any) => any;
     schemaName: string;
-    shouldDisableNonExists?: boolean;
     value?: any;
 }
 
@@ -129,15 +128,14 @@ export interface ITargetTableSelectImplState {
     prevPath?: string;
     prevSchemaName?: string;
     queries?: List<{ name: string; type: PropDescType }>;
+    missingQueryName?: string;
+    isInvalidLookup?: boolean;
+
 }
 
 export type TargetTableSelectProps = ITargetTableSelectProps & ILookupProps;
 
 class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITargetTableSelectImplState> {
-    static defaultProps = {
-        shouldDisableNonExists: true,
-    };
-
     constructor(props) {
         super(props);
 
@@ -184,7 +182,7 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
     }
 
     loadData(): void {
-        const { containerPath, context, schemaName } = this.props;
+        const { containerPath, context, schemaName, value } = this.props;
 
         this.setState({
             loading: true,
@@ -202,34 +200,40 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
                 if (q.isIncludedForLookups) infos = infos.concat(q.getLookupInfo(this.props.lookupURI)).toList();
             });
 
+            const queryName = value ? decodeLookup(value).queryName : undefined;
+            const queryNameOptionExists =
+                queryName && queries?.size > 0 ? queries.find(query => query.name === queryName) !== undefined : true; // default to true without a selected queryName
+
+            if (!queryNameOptionExists)
+                infos = infos.unshift({name: queryName, type: LOOKUP_TYPE}).toList();
+
             this.setState({
                 loading: false,
                 queries: infos,
+                missingQueryName: queryName,
+                isInvalidLookup: !queryNameOptionExists
             });
         });
     }
 
     render() {
-        const { id, onChange, value, name, disabled, shouldDisableNonExists } = this.props;
-        const { loading, queries } = this.state;
+        const { id, onChange, value, name, disabled } = this.props;
+        const { loading, queries, missingQueryName, isInvalidLookup } = this.state;
 
         const isEmpty = queries.size === 0;
         const hasValue = !!value;
         const blankOption = !hasValue && !isEmpty;
-        const queryName = value ? decodeLookup(value).queryName : undefined;
-        const queryNameOptionExists =
-            queryName && queries?.size > 0 ? queries.find(query => query.name === queryName) !== undefined : true; // default to true without a selected queryName
 
         return (
             <FormControl
                 componentClass="select"
-                disabled={loading || disabled || (shouldDisableNonExists && !queryNameOptionExists)}
+                disabled={loading || disabled}
                 value={value}
                 id={id}
                 name={name}
                 onChange={onChange}
             >
-                {value && (disabled || !queryNameOptionExists) && (
+                {value && disabled && (
                     <option key="_disabled" value={value}>
                         {decodeLookup(value).queryName}
                     </option>
@@ -244,8 +248,16 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
                     .map(q => {
                         const encoded = encodeLookup(q.name, q.type);
                         return (
-                            <option key={encoded} value={encoded}>
-                                {q.name} ({q.type.shortDisplay || q.type.display})
+                            <option key={encoded}
+                                    value={encoded}
+                                    disabled={
+                                        // Disable if it is an invalid lookup query and not the value initially selected
+                                        isInvalidLookup && q.name === missingQueryName
+                                        && decodeLookup(value).queryName !== q.name}
+                            >
+                                {q.name} (
+                                    {isInvalidLookup && q.name === missingQueryName ? 'Unknown' : q.type.shortDisplay || q.type.display}
+                                )
                             </option>
                         );
                     })

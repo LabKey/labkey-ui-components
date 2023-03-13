@@ -110,7 +110,6 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                             onChange={this.onFieldChange}
                             schemaName={lookupSchema}
                             value={lookupQueryValue}
-                            shouldDisableNonExists={!wrappedColumnName}
                         />
                     </Col>
                     <Col xs={6}>

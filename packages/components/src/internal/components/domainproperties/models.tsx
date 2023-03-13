@@ -504,6 +504,7 @@ export enum FieldErrors {
     MISSING_FIELD_NAME = 'Please provide a name for each field.',
     MISSING_ONTOLOGY_PROPERTIES = 'Missing required ontology source or label field property.',
     MISSING_SCHEMA_QUERY = 'Missing required lookup target schema or table property.',
+    INVALID_LOOKUP = 'Lookup target table does not exist.',
     NONE = '',
 }
 
@@ -789,6 +790,7 @@ export class DomainField
         lookupQuery: undefined,
         lookupSchema: undefined,
         lookupValidator: undefined,
+        lookupIsValid: undefined,
         measure: undefined,
         mvEnabled: false,
         name: undefined,
@@ -846,6 +848,7 @@ export class DomainField
     declare lookupQuery?: string;
     declare lookupSchema?: string;
     declare lookupValidator?: PropertyValidator;
+    declare lookupIsValid?: boolean;
     declare measure?: boolean;
     declare mvEnabled?: boolean;
     declare name: string;
@@ -1068,6 +1071,7 @@ export class DomainField
         delete json.disablePhiLevel;
         delete json.lockExistingField;
         delete json.selected;
+        delete json.lookupIsValid;
 
         return json;
     }
@@ -1075,6 +1079,10 @@ export class DomainField
     getErrors(): FieldErrors {
         if (this.dataType.isLookup() && (!this.lookupSchema || !this.lookupQuery)) {
             return FieldErrors.MISSING_SCHEMA_QUERY;
+        }
+
+        if (this.dataType.isLookup() && !this.lookupIsValid) {
+            return FieldErrors.INVALID_LOOKUP;
         }
 
         if (!(this.dataType && (this.dataType.rangeURI || this.rangeURI))) {

@@ -342,6 +342,8 @@ function getInContainsClauseLabKeySql(filter: Filter.IFilter, jsonType: JsonType
  * @return labkey sql fragment
  */
 export function getFilterLabKeySql(filter: Filter.IFilter, jsonType: JsonType): string {
+    if (!filter) return null;
+
     const filterType = filter.getFilterType();
 
     const columnNameSelect = getLegalIdentifier(filter.getColumnName());

@@ -6,7 +6,6 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { HelpLink } from '../../util/helpLinks';
 import { QuerySelect } from '../forms/QuerySelect';
-import { LabelHelpTip } from '../base/LabelHelpTip';
 import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
@@ -30,6 +29,7 @@ export interface PrintModalProps {
 interface State {
     error: any;
     labelTemplate: string;
+    loadingSelections: boolean;
     numCopies: number;
     sampleCount: number;
     submitting: boolean;
@@ -57,6 +57,7 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
             submitting: false,
             error: undefined,
             numCopies: 1,
+            loadingSelections: true,
             labelTemplate: undefined,
             sampleCount: props.sampleIds.length,
         };
@@ -77,7 +78,9 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (!this.getModel().isLoading && prevProps.queryModels[this._modelId].isLoading) {
+        // only set initial model selections once after the loadingSelections state changes to LOADED
+        if (this.state.loadingSelections && !this.getModel().isLoadingSelections) {
+            this.setState(() => ({ loadingSelections: false }));
             this.props.actions.setSelections(this._modelId, true, this.props.sampleIds);
         }
     }

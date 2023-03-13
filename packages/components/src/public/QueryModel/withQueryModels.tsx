@@ -32,6 +32,7 @@ export interface Actions {
     loadPreviousPage: (id: string) => void;
     loadRows: (id: string) => void;
     replaceSelections: (id: string, selections: string[]) => void;
+    resetTotalCountState: () => void;
     selectAllRows: (id: string) => void;
     selectPage: (id: string, checked) => void;
     selectReport: (id: string, reportId: string) => void;
@@ -189,6 +190,7 @@ export function withQueryModels<Props>(
                 loadLastPage: this.loadLastPage,
                 loadCharts: this.loadCharts,
                 replaceSelections: this.replaceSelections,
+                resetTotalCountState: this.resetTotalCountState,
                 selectAllRows: this.selectAllRows,
                 selectRow: this.selectRow,
                 selectPage: this.selectPage,
@@ -851,6 +853,21 @@ export function withQueryModels<Props>(
                 }),
                 () => this.maybeLoad(id, false, shouldLoad, shouldLoad && loadSelections)
             );
+        };
+
+        /**
+         * Reset the totalCount state for all models so that the next time loadModel or loadAllModels() is called,
+         * it will also call the loadTotalCount().
+         */
+        resetTotalCountState = (): void => {
+            Object.keys(this.state.queryModels).forEach(id => {
+                this.setState(
+                    produce<State>(draft => {
+                        const model = draft.queryModels[id];
+                        resetTotalCountState(model);
+                    })
+                );
+            });
         };
 
         setSchemaQuery = (id: string, schemaQuery: SchemaQuery, loadSelections = false): void => {

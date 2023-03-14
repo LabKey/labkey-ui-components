@@ -73,6 +73,8 @@ import { SCHEMAS } from '../../schemas';
 import { isSamplesSchema } from '../samples/utils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
+import { getAltUnitKeys } from '../../util/measurement';
+
 import { ENTITY_CREATION_METRIC, SampleTypeDataType } from './constants';
 import {
     addEntityParentType,
@@ -92,10 +94,17 @@ import {
     IEntityTypeOption,
     IParentOption,
 } from './models';
-import { getAltUnitKeys } from '../../util/measurement';
 
 const ENTITY_GRID_ID = 'entity-insert-grid-data';
-const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'materialexpdate', 'description', 'samplestate', 'storedamount', 'units'];
+const ALIQUOT_FIELD_COLS = [
+    'aliquotedfrom',
+    'name',
+    'materialexpdate',
+    'description',
+    'samplestate',
+    'storedamount',
+    'units',
+];
 const ALIQUOT_NOUN_SINGULAR = 'Aliquot';
 const ALIQUOT_NOUN_PLURAL = 'Aliquots';
 
@@ -196,11 +205,11 @@ interface StateProps {
     insertModel: EntityIdCreationModel;
     isMerge: boolean;
     isSubmitting: boolean;
+    metricUnit: string;
     originalQueryInfo: QueryInfo;
     previewAliquotName: string;
     previewName: string;
     useAsync: boolean;
-    metricUnit: string;
 }
 
 enum EntityInsertPanelTabs {

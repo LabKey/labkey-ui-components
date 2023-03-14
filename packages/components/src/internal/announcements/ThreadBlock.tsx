@@ -51,9 +51,7 @@ const DeleteReplyModal: FC<DeleteThreadModalProps> = ({ cancel, onDelete }) => (
             <Modal.Title>Delete This Reply?</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
-            Are you sure you want to delete this reply?
-        </Modal.Body>
+        <Modal.Body>Are you sure you want to delete this reply?</Modal.Body>
 
         <Modal.Footer>
             <div className="pull-left">
@@ -74,8 +72,8 @@ const DeleteReplyModal: FC<DeleteThreadModalProps> = ({ cancel, onDelete }) => (
 interface ThreadBlockHeaderProps {
     author: User;
     created: number | string;
-    modified: number | string;
     isThread?: boolean;
+    modified: number | string;
     onDelete?: () => void;
     onEdit?: () => void;
 }

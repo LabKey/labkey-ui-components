@@ -18,7 +18,7 @@ import { BarTenderConfiguration, BarTenderResponse, LabelTemplate } from './mode
 function handleBarTenderConfigurationResponse(response: any): BarTenderConfiguration {
     // Separate the BarTender configuration object from the success response
     const { btConfiguration } = response;
-    return new BarTenderConfiguration(btConfiguration);
+    return BarTenderConfiguration.create(btConfiguration);
 }
 
 function createLabelTemplateList(): Promise<LabelTemplate[]> {
@@ -33,7 +33,7 @@ function createLabelTemplateList(): Promise<LabelTemplate[]> {
             },
             failure: reason => {
                 reject(reason);
-            }
+            },
         });
     });
 }
@@ -49,7 +49,8 @@ export interface LabelPrintingAPIWrapper {
         numCopies: number,
         serverURL: string
     ) => Promise<BarTenderResponse>;
-    saveBarTenderConfiguration: (btConfig: BarTenderConfiguration) => Promise<BarTenderConfiguration>;
+    saveBarTenderURLConfiguration: (btConfig: { serviceURL: string }) => Promise<BarTenderConfiguration>;
+    saveDefaultLabelConfiguration: (btConfig: { defaultLabel: number }) => Promise<BarTenderConfiguration>;
 }
 
 export class LabelPrintingServerAPIWrapper implements LabelPrintingAPIWrapper {
@@ -140,18 +141,41 @@ export class LabelPrintingServerAPIWrapper implements LabelPrintingAPIWrapper {
     /**
      * Save the BarTender configuration to server properties
      */
-    saveBarTenderConfiguration = (btConfig: BarTenderConfiguration): Promise<BarTenderConfiguration> => {
+    saveBarTenderURLConfiguration = (btConfig: { serviceURL: string }): Promise<BarTenderConfiguration> => {
         return new Promise((resolve, reject) => {
-            const params = { serviceURL: btConfig.serviceURL, defaultLabel: btConfig.defaultLabel };
+            const params = { serviceURL: btConfig.serviceURL };
 
             Ajax.request({
-                url: ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'saveBarTenderConfiguration.api'),
+                url: ActionURL.buildURL(
+                    SAMPLE_MANAGER_APP_PROPERTIES.controllerName,
+                    'saveBarTenderURLConfiguration.api'
+                ),
                 method: 'POST',
                 jsonData: params,
                 success: Utils.getCallbackWrapper(response => resolve(handleBarTenderConfigurationResponse(response))),
                 failure: Utils.getCallbackWrapper(resp => {
                     console.error(resp);
-                    reject('Error saving BarTender configuration');
+                    reject('Error saving BarTender service URL');
+                }),
+            });
+        });
+    };
+
+    saveDefaultLabelConfiguration = (btConfig: { defaultLabel: number }): Promise<BarTenderConfiguration> => {
+        return new Promise((resolve, reject) => {
+            const params = { defaultLabel: btConfig.defaultLabel };
+
+            Ajax.request({
+                url: ActionURL.buildURL(
+                    SAMPLE_MANAGER_APP_PROPERTIES.controllerName,
+                    'saveDefaultLabelConfiguration.api'
+                ),
+                method: 'POST',
+                jsonData: params,
+                success: Utils.getCallbackWrapper(response => resolve(handleBarTenderConfigurationResponse(response))),
+                failure: Utils.getCallbackWrapper(resp => {
+                    console.error(resp);
+                    reject('Error saving the Default Label selection');
                 }),
             });
         });
@@ -217,7 +241,8 @@ export function getLabelPrintingTestAPIWrapper(
         getLabelTemplates: () => Promise.resolve([]),
         printBarTenderLabels: mockFn(),
         printGridLabels: mockFn(),
-        saveBarTenderConfiguration: mockFn(),
+        saveBarTenderURLConfiguration: mockFn(),
+        saveDefaultLabelConfiguration: mockFn(),
         ...overrides,
     };
 }

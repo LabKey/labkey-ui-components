@@ -1,15 +1,15 @@
 import React, { FC, memo, ReactNode } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 
-import { AuditBehaviorTypes, Query } from '@labkey/api';
+import { AuditBehaviorTypes, Filter, Query } from '@labkey/api';
 
 import { OperationConfirmationData } from '../internal/components/entities/models';
 
 import { userCanEditStorageData } from '../internal/app/utils';
 
 import {
-    withNotificationsContext,
     NotificationsContextProps,
+    withNotificationsContext,
 } from '../internal/components/notifications/NotificationsContext';
 
 import { QueryModel } from '../public/QueryModel/QueryModel';
@@ -34,6 +34,7 @@ import {
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from '../internal/components/samples/models';
 
 import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
+import { getAltUnitKeys } from '../internal/util/measurement';
 
 interface OwnProps {
     containerFilter?: Query.ContainerFilter;
@@ -107,6 +108,14 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
         const allAliquots = aliquots && aliquots.length > 0 && aliquots.length === this.getGridSelectionSize();
         return allAliquots ? 'aliquot' : 'sample';
     };
+
+    getQueryFilters(): Record<string, List<Filter.IFilter>> {
+        const { sampleTypeDomainFields } = this.props;
+        const { metricUnit } = sampleTypeDomainFields;
+        return {
+            Units: List<Filter.IFilter>([Filter.create('value', getAltUnitKeys(metricUnit), Filter.Types.IN)])
+        }
+    }
 
     getQueryInfo(): QueryInfo {
         const { aliquots, queryModel, sampleTypeDomainFields } = this.props;
@@ -220,6 +229,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
                 singularNoun={selectedNoun}
                 pluralNoun={`${selectedNoun}s`}
                 itemLabel={sampleSetLabel}
+                queryFilters={this.getQueryFilters()}
                 queryInfo={this.getQueryInfo()}
                 selectedIds={queryModel.selections}
                 viewName={queryModel.viewName}

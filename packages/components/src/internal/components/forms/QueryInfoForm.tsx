@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 import React, { PureComponent, ReactNode } from 'react';
-import { OrderedMap } from 'immutable';
+import { List, OrderedMap } from 'immutable';
 import { Alert, Button, Modal } from 'react-bootstrap';
 import Formsy from 'formsy-react';
-import { Utils } from '@labkey/api';
+import { Filter, Utils } from '@labkey/api';
 import { Operation } from '../../../public/QueryColumn';
 
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
@@ -62,6 +62,7 @@ export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFields
     pluralNoun?: string;
     // required by QueryInfoForm
     queryInfo: QueryInfo;
+    queryFilters?: Record<string, List<Filter.IFilter>>; // for filtering lookup values in the form
     showErrorsAtBottom?: boolean;
     singularNoun?: string;
     submitForEditText?: string;

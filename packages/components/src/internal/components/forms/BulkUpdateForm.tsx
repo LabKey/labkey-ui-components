@@ -1,4 +1,4 @@
-import { Query, Utils } from '@labkey/api';
+import { Filter, Query, Utils } from '@labkey/api';
 import { List, Map, OrderedMap } from 'immutable';
 import React, { PureComponent, ReactNode } from 'react';
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
@@ -28,6 +28,7 @@ interface Props {
         dataIdsForSelection: List<any>
     ) => any;
     pluralNoun?: string;
+    queryFilters?: Record<string, List<Filter.IFilter>>;
     queryInfo: QueryInfo;
     readOnlyColumns?: List<string>;
     requiredColumns?: string[];
@@ -172,6 +173,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
             onCancel,
             onComplete,
             pluralNoun,
+            queryFilters,
             queryInfo,
             onAdditionalFormDataChange,
         } = this.props;
@@ -200,6 +202,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
                 onSuccess={onComplete}
                 renderFileInputs
                 queryInfo={queryInfo}
+                queryFilters={queryFilters}
                 showLabelAsterisk
                 submitForEditText="Edit with Grid"
                 submitText={`Update ${capitalizeFirstChar(pluralNoun)}`}

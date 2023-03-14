@@ -112,6 +112,9 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
     getQueryFilters(): Record<string, List<Filter.IFilter>> {
         const { sampleTypeDomainFields } = this.props;
         const { metricUnit } = sampleTypeDomainFields;
+        if (!metricUnit)
+            return undefined;
+
         return {
             Units: List<Filter.IFilter>([Filter.create('value', getAltUnitKeys(metricUnit), Filter.Types.IN)])
         }

@@ -2,6 +2,7 @@ import React, { FC, memo, useCallback, useState } from 'react';
 import { Checkbox, Modal } from 'react-bootstrap';
 
 import { QueryModelMap } from '../../../public/QueryModel/withQueryModels';
+import {LoadingState} from "../../../public/LoadingState";
 
 interface ExportModalProperties {
     canExport: boolean;
@@ -10,11 +11,12 @@ interface ExportModalProperties {
     queryModels: QueryModelMap;
     tabOrder: string[];
     title?: string;
+    tabRowCounts?: {[key: string]: number};
 }
 const DEFAULT_TITLE = 'Select the Tabs to Export';
 
 export const ExportModal: FC<ExportModalProperties> = memo(props => {
-    const { queryModels, tabOrder, onClose, onExport, canExport, title = DEFAULT_TITLE } = props;
+    const { queryModels, tabOrder, onClose, onExport, canExport, tabRowCounts, title = DEFAULT_TITLE } = props;
     const [selected, setSelected] = useState<Set<string>>(() => {
         let selected = new Set<string>();
         tabOrder.forEach(modelId => {
@@ -62,6 +64,10 @@ export const ExportModal: FC<ExportModalProperties> = memo(props => {
                         </tr>
                         {tabOrder.map(modelId => {
                             const model = queryModels[modelId];
+                            let rowCountDisplay = model.rowCount;
+                            if (rowCountDisplay === undefined && !(model.rowsLoadingState === LoadingState.LOADING))
+                                rowCountDisplay = tabRowCounts?.[modelId];
+
                             return (
                                 <tr>
                                     <td>
@@ -74,10 +80,10 @@ export const ExportModal: FC<ExportModalProperties> = memo(props => {
                                             {model.title}
                                         </Checkbox>
                                     </td>
-                                    <td className="pull-right">{model.rowCount}</td>
+                                    <td className="pull-right">{rowCountDisplay}</td>
                                     <td className="view-name">
                                         {model.viewName || 'Default'}{' '}
-                                        {model.currentView.session && <span className="text-muted">(edited)</span>}
+                                        {model.currentView?.session && <span className="text-muted">(edited)</span>}
                                     </td>
                                 </tr>
                             );

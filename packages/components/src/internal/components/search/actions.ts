@@ -17,10 +17,12 @@ import { IDataViewInfo } from '../../DataViewInfo';
 import { selectRows } from '../../query/selectRows';
 import { caseInsensitive } from '../../util/utils';
 
-import {getFinderViewColumnsConfig, SAMPLE_FINDER_VIEW_NAME} from './utils';
+import {getFinderViewColumnsConfig, getTabRowCountSql, SAMPLE_FINDER_VIEW_NAME} from './utils';
 import { FinderReport, SearchIdData, SearchResultCardData } from './models';
 import { SearchScope } from './constants';
-import {getQueryDetails} from "../../query/api";
+import {getContainerFilter, getQueryDetails} from "../../query/api";
+import {QueryModel} from "../../../public/QueryModel/QueryModel";
+import {EXP_TABLES, SCHEMAS} from "../../schemas";
 
 type GetCardDataFn = (data: Map<any, any>, category?: string) => SearchResultCardData;
 
@@ -317,3 +319,73 @@ export function getSampleTypesFromFindByIdQuery(
             });
     });
 }
+
+export function getSampleFinderTabRowCounts(queryModels: { [key: string]: QueryModel }): Promise<{[key: string]: number}> {
+    const modelIds = Object.keys(queryModels);
+    const sampleTypeGridIds = {};
+    let allSamplesModel = null;
+    const tabCounts = {};
+    modelIds.forEach(modelId => {
+       const model = queryModels[modelId];
+       if (model.schemaQuery.schemaName === SCHEMAS.SAMPLE_SETS.SCHEMA) {
+           sampleTypeGridIds[model.schemaQuery.queryName.toLowerCase()] = modelId;
+       }
+       else if (model.schemaQuery.schemaName === EXP_TABLES.MATERIALS.schemaName) {
+           allSamplesModel = model;
+       }
+        tabCounts[modelId] = 0;
+    });
+
+    return new Promise((resolve, reject) => {
+        Query.executeSql({
+            containerFilter: getContainerFilter(),
+            schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
+            sql: getTabRowCountSql(allSamplesModel),
+            success: result => {
+                const typeCounts = {};
+                result.rows?.forEach(row => {
+                    const type = caseInsensitive(row, 'SampleTypeName');
+                    typeCounts[type] = caseInsensitive(row, 'RowCount');
+                });
+
+                let totalCount = 0;
+                Object.keys(typeCounts).forEach(type => {
+                    const count = typeCounts[type];
+                    totalCount += count;
+                    const sampleGridId = sampleTypeGridIds[type.toLowerCase()];
+                    tabCounts[sampleGridId] = count;
+                });
+                tabCounts[allSamplesModel.id] = totalCount;
+                resolve(tabCounts);
+            },
+            failure: error => {
+                console.error(error);
+                reject(error);
+            },
+        });
+    });
+}
+
+export function getSampleTypeRowCount(queryModel: QueryModel): Promise<{[key: string]: number}> {
+
+    return new Promise((resolve, reject) => {
+        Query.executeSql({
+            containerFilter: getContainerFilter(),
+            schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
+            sql: getTabRowCountSql(queryModel),
+            success: result => {
+                const typeRowCount = {};
+                result.rows?.forEach(row => {
+                    const type = caseInsensitive(row, 'SampleTypeName');
+                    typeRowCount[type] = caseInsensitive(row, 'RowCount');
+                });
+                resolve(typeRowCount);
+            },
+            failure: error => {
+                console.error(error);
+                reject(error);
+            },
+        });
+    });
+}
+

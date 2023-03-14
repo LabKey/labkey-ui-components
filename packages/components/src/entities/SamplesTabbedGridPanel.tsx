@@ -58,6 +58,7 @@ interface Props extends InjectedQueryModels {
     tabbedGridPanelProps?: Partial<TabbedGridPanelProps>;
     user: User;
     withTitle?: boolean;
+    tabRowCounts?: {[key: string]: number};
 }
 
 export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
@@ -83,6 +84,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         tabbedGridPanelProps,
         withTitle,
         showLabelOption,
+        tabRowCounts,
         isAllSamplesTab = isAllSamplesSchema,
     } = props;
     const { dismissNotifications, createNotification } = useNotificationsContext();
@@ -342,6 +344,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     supportedExportTypes={showPrintOption ? EXPORT_TYPES_WITH_LABEL : undefined}
                     onExport={showPrintOption ? onLabelExport : undefined}
                     showRowCountOnTabs
+                    tabRowCounts={tabRowCounts}
                 />
             )}
             {showBulkUpdate && (

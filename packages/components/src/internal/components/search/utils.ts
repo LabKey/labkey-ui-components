@@ -268,7 +268,7 @@ export function getSampleFinderCommonConfigs(
     return {
         requiredColumns,
         baseFilters,
-        includeTotalCount: true,
+        includeTotalCount: true, //
     };
 }
 
@@ -1037,4 +1037,37 @@ export function getSearchScopeFromContainerFilter(cf: Query.ContainerFilter): Se
         default:
             return SearchScope.FolderAndSubfolders;
     }
+}
+
+export function getTabRowCountSql(queryModel: QueryModel) : string {
+    const filters = queryModel.baseFilters;
+    const wheres = [];
+    filters.forEach(filter => {
+        let clause = '';
+        if (filter.getFilterType().getURLSuffix() === COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix()) {
+            clause = "RowId NOT IN ("
+                + filter.getValue() +
+                ")"
+        }
+        else if (filter.getFilterType().getURLSuffix() === COLUMN_IN_FILTER_TYPE.getURLSuffix()) {
+            clause = "RowId IN ("
+                + filter.getValue() +
+            ")";
+        }
+        else if (filter.getFilterType().getURLSuffix() === IN_EXP_DESCENDANTS_OF_FILTER_TYPE.getURLSuffix()) {
+            clause = "expObject() IN EXPDESCENDANTSOF ("
+                + filter.getValue() +
+                ")";
+        }
+        else {
+            console.error("Bad filter");
+        }
+        wheres.push("m." + clause);
+    });
+
+    const rowCountSql = "SELECT s.name as SampleTypeName, COUNT(*) AS RowCount " +
+        "FROM exp.Materials m JOIN exp.SampleSets s ON m.SampleSet = s.lsid " +
+        "WHERE " + wheres.join(" AND ") +
+        " GROUP by s.name";
+    return rowCountSql;
 }

@@ -39,6 +39,7 @@ import { isLoading } from '../public/LoadingState';
 import { AssayResultDataType } from '../internal/components/entities/constants';
 
 import {
+    getSampleFinderTabRowCounts,
     loadFinderSearch,
     saveFinderGridView,
     saveFinderSearch,
@@ -506,6 +507,19 @@ interface SampleFinderSamplesProps extends SampleFinderSamplesGridProps {
 
 const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & InjectedQueryModels> = memo(props => {
     const { actions, queryModels, gridButtons, gridButtonProps } = props;
+    const [tabRowCounts, setTabRowCounts] = useState<{[key: string]: number}>(undefined);
+    useEffect(() => {
+        if (Object.keys(queryModels).length <= 2)
+            return;
+
+        getSampleFinderTabRowCounts(queryModels)
+            .then(counts => {
+                setTabRowCounts(counts);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }, []);
 
     const afterSampleActionComplete = useCallback((): void => {
         actions.loadAllModels();
@@ -550,6 +564,7 @@ const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & InjectedQueryMo
                     showViewMenu: false,
                 }}
                 showLabelOption
+                tabRowCounts={tabRowCounts}
             />
         </>
     );
@@ -590,7 +605,7 @@ const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
             key={selectionKeyPrefix}
             user={user}
             {...gridProps}
-            autoLoad
+            autoLoad={sampleTypeNames?.length <= 1} // if only a single sample type, then just auto load instead of relying on custom row count query
             queryConfigs={queryConfigs}
         />
     );

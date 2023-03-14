@@ -268,7 +268,7 @@ export function getSampleFinderCommonConfigs(
     return {
         requiredColumns,
         baseFilters,
-        includeTotalCount: true, //
+        includeTotalCount: true,
     };
 }
 
@@ -1039,7 +1039,7 @@ export function getSearchScopeFromContainerFilter(cf: Query.ContainerFilter): Se
     }
 }
 
-export function getTabRowCountSql(queryModel: QueryModel): string {
+export function getSampleFinderTabRowCountSql(queryModel: QueryModel): string {
     const filters = queryModel.baseFilters;
     const wheres = [];
     filters.forEach(filter => {

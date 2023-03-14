@@ -23,7 +23,7 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { EXP_TABLES, SCHEMAS } from '../../schemas';
 
-import { getFinderViewColumnsConfig, getTabRowCountSql, SAMPLE_FINDER_VIEW_NAME } from './utils';
+import { getFinderViewColumnsConfig, getSampleFinderTabRowCountSql, SAMPLE_FINDER_VIEW_NAME } from './utils';
 import { FinderReport, SearchIdData, SearchResultCardData } from './models';
 import { SearchScope } from './constants';
 
@@ -352,7 +352,7 @@ export function getSampleFinderTabRowCounts(queryModels: {
         Query.executeSql({
             containerFilter: getContainerFilter(),
             schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
-            sql: getTabRowCountSql(allSamplesModel),
+            sql: getSampleFinderTabRowCountSql(allSamplesModel),
             success: result => {
                 const typeCounts = {};
                 result.rows?.forEach(row => {
@@ -369,28 +369,6 @@ export function getSampleFinderTabRowCounts(queryModels: {
                 });
                 tabCounts[allSamplesModel.id] = totalCount;
                 resolve(tabCounts);
-            },
-            failure: error => {
-                console.error(error);
-                reject(error);
-            },
-        });
-    });
-}
-
-export function getSampleTypeRowCount(queryModel: QueryModel): Promise<{ [key: string]: number }> {
-    return new Promise((resolve, reject) => {
-        Query.executeSql({
-            containerFilter: getContainerFilter(),
-            schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
-            sql: getTabRowCountSql(queryModel),
-            success: result => {
-                const typeRowCount = {};
-                result.rows?.forEach(row => {
-                    const type = caseInsensitive(row, 'SampleTypeName');
-                    typeRowCount[type] = caseInsensitive(row, 'RowCount');
-                });
-                resolve(typeRowCount);
             },
             failure: error => {
                 console.error(error);

@@ -67,7 +67,7 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
 
     render() {
         const { index, label, lookupContainer, lockType, domainIndex, field } = this.props;
-        const { lookupSchema, lookupQueryValue, lookupValidator, original, wrappedColumnName } = field;
+        const { lookupSchema, lookupQueryValue, lookupValidator, original, lookupIsValid } = field;
         const disabled = lockType === DOMAIN_FIELD_PARTIALLY_LOCKED || lockType === DOMAIN_FIELD_FULLY_LOCKED;
 
         return (
@@ -110,6 +110,7 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                             onChange={this.onFieldChange}
                             schemaName={lookupSchema}
                             value={lookupQueryValue}
+                            lookupIsValid={lookupIsValid}
                         />
                     </Col>
                     <Col xs={6}>

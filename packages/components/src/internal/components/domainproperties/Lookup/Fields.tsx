@@ -100,6 +100,7 @@ interface ITargetTableSelectProps {
     containerPath: string;
     disabled?: boolean;
     id: string;
+    lookupIsValid?: boolean;
     lookupURI?: string;
     onChange: (any) => any;
     schemaName: string;
@@ -128,8 +129,7 @@ export interface ITargetTableSelectImplState {
     prevPath?: string;
     prevSchemaName?: string;
     queries?: List<{ name: string; type: PropDescType }>;
-    missingQueryName?: string;
-    isInvalidLookup?: boolean;
+    initialQueryName?: string;
 
 }
 
@@ -182,7 +182,7 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
     }
 
     loadData(): void {
-        const { containerPath, context, schemaName, value } = this.props;
+        const { containerPath, context, schemaName, value, lookupIsValid } = this.props;
 
         this.setState({
             loading: true,
@@ -200,25 +200,22 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
                 if (q.isIncludedForLookups) infos = infos.concat(q.getLookupInfo(this.props.lookupURI)).toList();
             });
 
-            const queryName = value ? decodeLookup(value).queryName : undefined;
-            const queryNameOptionExists =
-                queryName && queries?.size > 0 ? queries.find(query => query.name === queryName) !== undefined : true; // default to true without a selected queryName
+            const initialQueryName = value ? decodeLookup(value).queryName : undefined;
 
-            if (!queryNameOptionExists)
-                infos = infos.unshift({name: queryName, type: LOOKUP_TYPE}).toList();
+            if (!lookupIsValid)
+                infos = infos.unshift({name: initialQueryName, type: LOOKUP_TYPE}).toList();
 
             this.setState({
                 loading: false,
                 queries: infos,
-                missingQueryName: queryName,
-                isInvalidLookup: !queryNameOptionExists
+                initialQueryName,
             });
         });
     }
 
     render() {
-        const { id, onChange, value, name, disabled } = this.props;
-        const { loading, queries, missingQueryName, isInvalidLookup } = this.state;
+        const { id, onChange, value, name, disabled, lookupIsValid } = this.props;
+        const { loading, queries, initialQueryName } = this.state;
 
         const isEmpty = queries.size === 0;
         const hasValue = !!value;
@@ -251,12 +248,13 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
                             <option key={encoded}
                                     value={encoded}
                                     disabled={
-                                        // Disable if it is an invalid lookup query and not the value initially selected
-                                        isInvalidLookup && q.name === missingQueryName
+                                        // Disable if it is an invalid lookup query saved on the property descriptor and
+                                        // not the selected value
+                                        !lookupIsValid && q.name === initialQueryName
                                         && decodeLookup(value).queryName !== q.name}
                             >
                                 {q.name} (
-                                    {isInvalidLookup && q.name === missingQueryName ? 'Unknown' : q.type.shortDisplay || q.type.display}
+                                    {!lookupIsValid && q.name === initialQueryName ? 'Unknown' : q.type.shortDisplay || q.type.display}
                                 )
                             </option>
                         );

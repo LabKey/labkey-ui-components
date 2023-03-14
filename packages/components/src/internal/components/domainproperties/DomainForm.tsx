@@ -219,7 +219,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     componentDidMount = async (): Promise<void> => {
-        const { domain, maxPhiLevel, useTheme } = this.props;
+        const { domain, maxPhiLevel, useTheme, onChange } = this.props;
 
         if (!maxPhiLevel) {
             try {
@@ -238,6 +238,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             } catch (error) {
                 console.error('Failed to retrieve available types for Ontology.', error);
             }
+        }
+
+        if (onChange) {
+            onChange(this.validateDomain(domain), false);
         }
 
         // TODO since this is called in componentDidUpdate, can it be removed here?

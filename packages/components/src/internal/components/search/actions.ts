@@ -17,12 +17,15 @@ import { IDataViewInfo } from '../../DataViewInfo';
 import { selectRows } from '../../query/selectRows';
 import { caseInsensitive } from '../../util/utils';
 
-import {getFinderViewColumnsConfig, getTabRowCountSql, SAMPLE_FINDER_VIEW_NAME} from './utils';
+import { getContainerFilter, getQueryDetails } from '../../query/api';
+
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+
+import { EXP_TABLES, SCHEMAS } from '../../schemas';
+
+import { getFinderViewColumnsConfig, getTabRowCountSql, SAMPLE_FINDER_VIEW_NAME } from './utils';
 import { FinderReport, SearchIdData, SearchResultCardData } from './models';
 import { SearchScope } from './constants';
-import {getContainerFilter, getQueryDetails} from "../../query/api";
-import {QueryModel} from "../../../public/QueryModel/QueryModel";
-import {EXP_TABLES, SCHEMAS} from "../../schemas";
 
 type GetCardDataFn = (data: Map<any, any>, category?: string) => SearchResultCardData;
 
@@ -202,30 +205,38 @@ export function getProcessedSearchHits(
         }));
 }
 
-export function saveFinderGridView(schemaQuery: SchemaQuery, columnDisplayNames: { [key: string]: string }, requiredColumns?: string[]): Promise<SchemaQuery> {
+export function saveFinderGridView(
+    schemaQuery: SchemaQuery,
+    columnDisplayNames: { [key: string]: string },
+    requiredColumns?: string[]
+): Promise<SchemaQuery> {
     return new Promise((resolve, reject) => {
         getQueryDetails({
             queryName: schemaQuery.queryName,
             schemaName: schemaQuery.schemaName,
-        }).then(queryInfo => {
-            const columns = getFinderViewColumnsConfig(queryInfo, columnDisplayNames, requiredColumns);
-            Query.saveQueryViews({
-                schemaName: schemaQuery.schemaName,
-                queryName: schemaQuery.queryName,
-                // Mark the view as hidden, so it doesn't show up in LKS and in the grid view menus
-                views: [{ name: SAMPLE_FINDER_VIEW_NAME, columns, hidden: true }],
-                success: () => {
-                    resolve(schemaQuery);
-                },
-                failure: response => {
-                    console.error(response);
-                    reject('There was a problem creating the view for the data grid. ' + resolveErrorMessage(response));
-                },
-            });
-        }).catch(error => {
-            console.error(error);
-            reject('There was a problem creating the view for the data grid. ' + resolveErrorMessage(error));
         })
+            .then(queryInfo => {
+                const columns = getFinderViewColumnsConfig(queryInfo, columnDisplayNames, requiredColumns);
+                Query.saveQueryViews({
+                    schemaName: schemaQuery.schemaName,
+                    queryName: schemaQuery.queryName,
+                    // Mark the view as hidden, so it doesn't show up in LKS and in the grid view menus
+                    views: [{ name: SAMPLE_FINDER_VIEW_NAME, columns, hidden: true }],
+                    success: () => {
+                        resolve(schemaQuery);
+                    },
+                    failure: response => {
+                        console.error(response);
+                        reject(
+                            'There was a problem creating the view for the data grid. ' + resolveErrorMessage(response)
+                        );
+                    },
+                });
+            })
+            .catch(error => {
+                console.error(error);
+                reject('There was a problem creating the view for the data grid. ' + resolveErrorMessage(error));
+            });
     });
 }
 
@@ -320,19 +331,20 @@ export function getSampleTypesFromFindByIdQuery(
     });
 }
 
-export function getSampleFinderTabRowCounts(queryModels: { [key: string]: QueryModel }): Promise<{[key: string]: number}> {
+export function getSampleFinderTabRowCounts(queryModels: {
+    [key: string]: QueryModel;
+}): Promise<{ [key: string]: number }> {
     const modelIds = Object.keys(queryModels);
     const sampleTypeGridIds = {};
     let allSamplesModel = null;
     const tabCounts = {};
     modelIds.forEach(modelId => {
-       const model = queryModels[modelId];
-       if (model.schemaQuery.schemaName === SCHEMAS.SAMPLE_SETS.SCHEMA) {
-           sampleTypeGridIds[model.schemaQuery.queryName.toLowerCase()] = modelId;
-       }
-       else if (model.schemaQuery.schemaName === EXP_TABLES.MATERIALS.schemaName) {
-           allSamplesModel = model;
-       }
+        const model = queryModels[modelId];
+        if (model.schemaQuery.schemaName === SCHEMAS.SAMPLE_SETS.SCHEMA) {
+            sampleTypeGridIds[model.schemaQuery.queryName.toLowerCase()] = modelId;
+        } else if (model.schemaQuery.schemaName === EXP_TABLES.MATERIALS.schemaName) {
+            allSamplesModel = model;
+        }
         tabCounts[modelId] = 0;
     });
 
@@ -366,8 +378,7 @@ export function getSampleFinderTabRowCounts(queryModels: { [key: string]: QueryM
     });
 }
 
-export function getSampleTypeRowCount(queryModel: QueryModel): Promise<{[key: string]: number}> {
-
+export function getSampleTypeRowCount(queryModel: QueryModel): Promise<{ [key: string]: number }> {
     return new Promise((resolve, reject) => {
         Query.executeSql({
             containerFilter: getContainerFilter(),
@@ -388,4 +399,3 @@ export function getSampleTypeRowCount(queryModel: QueryModel): Promise<{[key: st
         });
     });
 }
-

@@ -2,7 +2,7 @@ import React, { FC, memo, useCallback, useState } from 'react';
 import { Checkbox, Modal } from 'react-bootstrap';
 
 import { QueryModelMap } from '../../../public/QueryModel/withQueryModels';
-import {LoadingState} from "../../../public/LoadingState";
+import { LoadingState } from '../../../public/LoadingState';
 
 interface ExportModalProperties {
     canExport: boolean;
@@ -10,8 +10,8 @@ interface ExportModalProperties {
     onExport: (tabs: Set<string>) => Promise<void>;
     queryModels: QueryModelMap;
     tabOrder: string[];
+    tabRowCounts?: { [key: string]: number };
     title?: string;
-    tabRowCounts?: {[key: string]: number};
 }
 const DEFAULT_TITLE = 'Select the Tabs to Export';
 

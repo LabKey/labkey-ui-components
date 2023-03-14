@@ -507,9 +507,10 @@ interface SampleFinderSamplesProps extends SampleFinderSamplesGridProps {
 
 const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & InjectedQueryModels> = memo(props => {
     const { actions, queryModels, gridButtons, gridButtonProps } = props;
-    const [tabRowCounts, setTabRowCounts] = useState<{[key: string]: number}>(undefined);
+    const [tabRowCounts, setTabRowCounts] = useState<{ [key: string]: number }>(undefined);
     useEffect(() => {
-        if (Object.keys(queryModels).length <= 2) // if 1 All samples + 1 type, rely on autoload count
+        if (Object.keys(queryModels).length <= 2)
+            // if 1 All samples + 1 type, rely on autoload count
             return;
 
         getSampleFinderTabRowCounts(queryModels)

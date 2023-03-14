@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, {FC, memo, useCallback, useMemo, useState} from 'react';
+import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 import classNames from 'classnames';
 
 import { ExportModal } from '../../internal/components/gridbar/ExportModal';
@@ -22,11 +22,12 @@ import { exportTabsXlsx } from '../../internal/actions';
 
 import { useNotificationsContext } from '../../internal/components/notifications/NotificationsContext';
 
+import { LoadingState } from '../LoadingState';
+
 import { GridPanel, GridPanelProps } from './GridPanel';
 import { InjectedQueryModels } from './withQueryModels';
 import { QueryModel } from './QueryModel';
 import { getQueryModelExportParams } from './utils';
-import {LoadingState} from "../LoadingState";
 
 interface GridTabProps {
     isActive: boolean;
@@ -47,8 +48,7 @@ const GridTab: FC<GridTabProps> = memo(({ isActive, model, onSelect, pullRight, 
     const onClick = useCallback(() => onSelect(id), [id, onSelect]);
 
     const rowCountDisplay = useMemo(() => {
-        if (rowCount === undefined && !(model.rowsLoadingState === LoadingState.LOADING))
-            return tabRowCount;
+        if (rowCount === undefined && !(model.rowsLoadingState === LoadingState.LOADING)) return tabRowCount;
         return rowCount;
     }, [rowCount, tabRowCount, model]);
 
@@ -126,12 +126,12 @@ export interface TabbedGridPanelProps<T = {}> extends GridPanelProps<T> {
      */
     tabOrder: string[];
 
+    tabRowCounts?: { [key: string]: number };
+
     /**
      * The title to render, only used if asPanel is true.
      */
     title?: string;
-
-    tabRowCounts?: {[key: string]: number};
 }
 
 export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = memo(props => {

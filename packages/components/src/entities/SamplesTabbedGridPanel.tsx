@@ -55,10 +55,10 @@ interface Props extends InjectedQueryModels {
     samplesEditableGridProps?: Partial<SamplesEditableGridProps>;
     setIsDirty?: (isDirty: boolean) => void;
     showLabelOption?: boolean;
+    tabRowCounts?: { [key: string]: number };
     tabbedGridPanelProps?: Partial<TabbedGridPanelProps>;
     user: User;
     withTitle?: boolean;
-    tabRowCounts?: {[key: string]: number};
 }
 
 export const SamplesTabbedGridPanel: FC<Props> = memo(props => {

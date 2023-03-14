@@ -76,7 +76,7 @@ export function getFinderViewColumnsConfig(
     queryInfo: QueryInfo,
     columnDisplayNames: { [key: string]: string },
     requiredColumns?: string[]
-): { fieldKey: string; title: string }[] {
+): Array<{ fieldKey: string; title: string }> {
     const defaultDisplayColumns = queryInfo?.getDisplayColumns().toArray();
     const displayColumnKeys = defaultDisplayColumns.map(col => col.fieldKey.toLowerCase());
     const columnKeys = [];
@@ -1039,35 +1039,28 @@ export function getSearchScopeFromContainerFilter(cf: Query.ContainerFilter): Se
     }
 }
 
-export function getTabRowCountSql(queryModel: QueryModel) : string {
+export function getTabRowCountSql(queryModel: QueryModel): string {
     const filters = queryModel.baseFilters;
     const wheres = [];
     filters.forEach(filter => {
         let clause = '';
         if (filter.getFilterType().getURLSuffix() === COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix()) {
-            clause = "RowId NOT IN ("
-                + filter.getValue() +
-                ")"
+            clause = 'RowId NOT IN (' + filter.getValue() + ')';
+        } else if (filter.getFilterType().getURLSuffix() === COLUMN_IN_FILTER_TYPE.getURLSuffix()) {
+            clause = 'RowId IN (' + filter.getValue() + ')';
+        } else if (filter.getFilterType().getURLSuffix() === IN_EXP_DESCENDANTS_OF_FILTER_TYPE.getURLSuffix()) {
+            clause = 'expObject() IN EXPDESCENDANTSOF (' + filter.getValue() + ')';
+        } else {
+            console.error('Bad filter');
         }
-        else if (filter.getFilterType().getURLSuffix() === COLUMN_IN_FILTER_TYPE.getURLSuffix()) {
-            clause = "RowId IN ("
-                + filter.getValue() +
-            ")";
-        }
-        else if (filter.getFilterType().getURLSuffix() === IN_EXP_DESCENDANTS_OF_FILTER_TYPE.getURLSuffix()) {
-            clause = "expObject() IN EXPDESCENDANTSOF ("
-                + filter.getValue() +
-                ")";
-        }
-        else {
-            console.error("Bad filter");
-        }
-        wheres.push("m." + clause);
+        wheres.push('m.' + clause);
     });
 
-    const rowCountSql = "SELECT s.name as SampleTypeName, COUNT(*) AS RowCount " +
-        "FROM exp.Materials m JOIN exp.SampleSets s ON m.SampleSet = s.lsid " +
-        "WHERE " + wheres.join(" AND ") +
-        " GROUP by s.name";
+    const rowCountSql =
+        'SELECT s.name as SampleTypeName, COUNT(*) AS RowCount ' +
+        'FROM exp.Materials m JOIN exp.SampleSets s ON m.SampleSet = s.lsid ' +
+        'WHERE ' +
+        wheres.join(' AND ') +
+        ' GROUP by s.name';
     return rowCountSql;
 }

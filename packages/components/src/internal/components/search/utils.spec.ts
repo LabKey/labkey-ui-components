@@ -156,87 +156,85 @@ describe('getFinderViewColumnsConfig', () => {
         }),
     });
     test('no required columns', () => {
-        expect(getFinderViewColumnsConfig(queryInfo, {})).toStrictEqual(
-            [{ fieldKey: 'Name', title: undefined }]
-        );
+        expect(getFinderViewColumnsConfig(queryInfo, {})).toStrictEqual([{ fieldKey: 'Name', title: undefined }]);
     });
 
     test('no new required columns', () => {
         const requiredColumns = ['Name'];
-        expect(getFinderViewColumnsConfig(queryInfo, {}, requiredColumns)).toStrictEqual(
-            [{ fieldKey: 'Name', title: undefined }]
-        );
+        expect(getFinderViewColumnsConfig(queryInfo, {}, requiredColumns)).toStrictEqual([
+            { fieldKey: 'Name', title: undefined },
+        ]);
     });
 
     test('with new required columns', () => {
         const requiredColumns = ['Name', 'ExtraField', 'SampleState'];
-        expect(getFinderViewColumnsConfig(queryInfo, {ExtraField: 'Extra Field Display'}, requiredColumns)).toStrictEqual(
-            [
-                {fieldKey: 'Name', title: undefined},
-                {fieldKey: 'ExtraField', title: 'Extra Field Display'},
-            ]
-        );
+        expect(
+            getFinderViewColumnsConfig(queryInfo, { ExtraField: 'Extra Field Display' }, requiredColumns)
+        ).toStrictEqual([
+            { fieldKey: 'Name', title: undefined },
+            { fieldKey: 'ExtraField', title: 'Extra Field Display' },
+        ]);
     });
 
     test('view has all updates', () => {
-            const queryInfo = new QueryInfo({
-                showInsertNewButton: true,
-                importUrl: 'https://some/import',
-                importUrlDisabled: false,
-                appEditableTable: true,
-                pkCols: List(['RowId']),
-                columns: fromJS({
-                    rowid: new QueryColumn({caption: 'Row Id', fieldKey: 'RowId', inputType: 'number'}),
-                    description: new QueryColumn({
-                        caption: 'Description',
-                        fieldKey: 'Description',
-                        inputType: 'textarea',
-                    }),
-                    samplestate: new QueryColumn({caption: 'SampleState', fieldKey: 'SampleState', inputType: 'text'}),
-                    name: new QueryColumn({caption: 'Name', fieldKey: 'Name', inputType: 'text'}),
-                    extrafield: new QueryColumn({caption: 'Extra', fieldKey: 'ExtraField', inputType: 'text'}),
+        const queryInfo = new QueryInfo({
+            showInsertNewButton: true,
+            importUrl: 'https://some/import',
+            importUrlDisabled: false,
+            appEditableTable: true,
+            pkCols: List(['RowId']),
+            columns: fromJS({
+                rowid: new QueryColumn({ caption: 'Row Id', fieldKey: 'RowId', inputType: 'number' }),
+                description: new QueryColumn({
+                    caption: 'Description',
+                    fieldKey: 'Description',
+                    inputType: 'textarea',
                 }),
-                views: Map({
-                    '~~default~~': {
-                        name: '',
-                        label: 'default',
-                        default: true,
-                        columns: [
-                            {
-                                name: 'Name',
-                                key: 'Name',
-                                fieldKey: 'Name',
-                            },
-                        ],
-                    },
-                    [SAMPLE_FINDER_VIEW_NAME.toLowerCase()]: {
-                        name: SAMPLE_FINDER_VIEW_NAME,
-                        label: SAMPLE_FINDER_VIEW_NAME,
-                        default: false,
-                        columns: [
-                            {
-                                name: 'Name',
-                                key: 'Name',
-                                fieldKey: 'Name',
-                            },
-                            {
-                                name: 'Extra',
-                                fieldKey: 'ExtraField',
-                                key: 'Extra',
-                            },
-                        ],
-                    },
-                }),
-            });
-
-            const requiredColumns = ['Name', 'ExtraField'];
-            expect(getFinderViewColumnsConfig(queryInfo, {ExtraField: 'Extra Field Display'}, requiredColumns)).toStrictEqual(
-                [
-                    {fieldKey: 'Name', title: undefined},
-                    {fieldKey: 'ExtraField', title: 'Extra Field Display'},
-                ]
-            );
+                samplestate: new QueryColumn({ caption: 'SampleState', fieldKey: 'SampleState', inputType: 'text' }),
+                name: new QueryColumn({ caption: 'Name', fieldKey: 'Name', inputType: 'text' }),
+                extrafield: new QueryColumn({ caption: 'Extra', fieldKey: 'ExtraField', inputType: 'text' }),
+            }),
+            views: Map({
+                '~~default~~': {
+                    name: '',
+                    label: 'default',
+                    default: true,
+                    columns: [
+                        {
+                            name: 'Name',
+                            key: 'Name',
+                            fieldKey: 'Name',
+                        },
+                    ],
+                },
+                [SAMPLE_FINDER_VIEW_NAME.toLowerCase()]: {
+                    name: SAMPLE_FINDER_VIEW_NAME,
+                    label: SAMPLE_FINDER_VIEW_NAME,
+                    default: false,
+                    columns: [
+                        {
+                            name: 'Name',
+                            key: 'Name',
+                            fieldKey: 'Name',
+                        },
+                        {
+                            name: 'Extra',
+                            fieldKey: 'ExtraField',
+                            key: 'Extra',
+                        },
+                    ],
+                },
+            }),
         });
+
+        const requiredColumns = ['Name', 'ExtraField'];
+        expect(
+            getFinderViewColumnsConfig(queryInfo, { ExtraField: 'Extra Field Display' }, requiredColumns)
+        ).toStrictEqual([
+            { fieldKey: 'Name', title: undefined },
+            { fieldKey: 'ExtraField', title: 'Extra Field Display' },
+        ]);
+    });
 });
 
 const assay1 = 'assay1';

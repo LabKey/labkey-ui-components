@@ -106,7 +106,7 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
 
     onConfirmPrint = (): void => {
         this.setState(() => ({ error: undefined, submitting: true }));
-        const {labelTemplate} = this.state;
+        const { labelTemplate } = this.state;
         this.props.api.labelprinting
             .printGridLabels(this.getModel(), '' + labelTemplate, this.state.numCopies, this.props.printServiceUrl)
             .then((btResponse: BarTenderResponse): void => {

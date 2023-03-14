@@ -33,7 +33,7 @@ function createLabelTemplateList(): Promise<LabelTemplate[]> {
             },
             failure: reason => {
                 reject(reason);
-            }
+            },
         });
     });
 }
@@ -146,7 +146,10 @@ export class LabelPrintingServerAPIWrapper implements LabelPrintingAPIWrapper {
             const params = { serviceURL: btConfig.serviceURL };
 
             Ajax.request({
-                url: ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'saveBarTenderURLConfiguration.api'),
+                url: ActionURL.buildURL(
+                    SAMPLE_MANAGER_APP_PROPERTIES.controllerName,
+                    'saveBarTenderURLConfiguration.api'
+                ),
                 method: 'POST',
                 jsonData: params,
                 success: Utils.getCallbackWrapper(response => resolve(handleBarTenderConfigurationResponse(response))),
@@ -158,12 +161,15 @@ export class LabelPrintingServerAPIWrapper implements LabelPrintingAPIWrapper {
         });
     };
 
-    saveDefaultLabelConfiguration = (btConfig: {defaultLabel: number} ): Promise<BarTenderConfiguration> => {
+    saveDefaultLabelConfiguration = (btConfig: { defaultLabel: number }): Promise<BarTenderConfiguration> => {
         return new Promise((resolve, reject) => {
             const params = { defaultLabel: btConfig.defaultLabel };
 
             Ajax.request({
-                url: ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'saveDefaultLabelConfiguration.api'),
+                url: ActionURL.buildURL(
+                    SAMPLE_MANAGER_APP_PROPERTIES.controllerName,
+                    'saveDefaultLabelConfiguration.api'
+                ),
                 method: 'POST',
                 jsonData: params,
                 success: Utils.getCallbackWrapper(response => resolve(handleBarTenderConfigurationResponse(response))),

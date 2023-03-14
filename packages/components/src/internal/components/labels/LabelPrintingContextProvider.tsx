@@ -11,6 +11,7 @@ import { BarTenderConfiguration, LabelTemplate } from './models';
 
 export interface LabelPrintingProviderProps {
     canPrintLabels: boolean;
+    defaultLabel: number;
     printServiceUrl: string;
 }
 
@@ -33,6 +34,7 @@ export const LabelPrintingProvider: FC<OwnProps> = memo(({ children, initialCont
     const { fetchBarTenderConfiguration, ensureLabelTemplatesList } = api.labelprinting;
     const [canPrintLabels, setCanPrintLabels] = useState<boolean>(() => userCanPrintLabels(user));
     const [printServiceUrl, setPrintServiceUrl] = useState<string>(initialContext?.printServiceUrl);
+    const [defaultLabel, setDefaultLabel] = useState<number>(initialContext?.defaultLabel);
 
     useEffect(() => {
         if (userCanPrintLabels(user) && isSampleManagerEnabled()) {
@@ -41,14 +43,15 @@ export const LabelPrintingProvider: FC<OwnProps> = memo(({ children, initialCont
                     const [btConfiguration, templates] = responses;
                     setCanPrintLabels(!!btConfiguration.serviceURL && templates?.length > 0);
                     setPrintServiceUrl(btConfiguration.serviceURL);
+                    setDefaultLabel(btConfiguration.defaultLabel);
                 }
             );
         }
     }, [fetchBarTenderConfiguration, ensureLabelTemplatesList, user]);
 
     const labelContext = useMemo<LabelPrintingProviderProps>(
-        () => ({ printServiceUrl, canPrintLabels }),
-        [printServiceUrl, canPrintLabels]
+        () => ({ printServiceUrl, canPrintLabels, defaultLabel }),
+        [printServiceUrl, canPrintLabels, defaultLabel]
     );
 
     return <LabelPrintingContext.Provider value={labelContext}>{children}</LabelPrintingContext.Provider>;

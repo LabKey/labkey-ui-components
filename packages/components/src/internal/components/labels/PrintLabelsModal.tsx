@@ -6,7 +6,6 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { HelpLink } from '../../util/helpLinks';
 import { QuerySelect } from '../forms/QuerySelect';
-import { LabelHelpTip } from '../base/LabelHelpTip';
 import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
@@ -19,6 +18,7 @@ import { BAR_TENDER_TOPIC, LABEL_NOT_FOUND_ERROR, LABEL_TEMPLATE_SQ } from './co
 export interface PrintModalProps {
     afterPrint?: (numSamples: number, numLabels: number) => void;
     api?: ComponentsAPIWrapper;
+    defaultLabel: number;
     model: QueryModel;
     onCancel?: (any) => void;
     printServiceUrl: string;
@@ -29,7 +29,7 @@ export interface PrintModalProps {
 
 interface State {
     error: any;
-    labelTemplate: string;
+    labelTemplate: number;
     numCopies: number;
     sampleCount: number;
     submitting: boolean;
@@ -54,11 +54,11 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
         }
 
         this.state = {
-            submitting: false,
             error: undefined,
+            labelTemplate: props.defaultLabel,
             numCopies: 1,
-            labelTemplate: undefined,
             sampleCount: props.sampleIds.length,
+            submitting: false,
         };
     }
 
@@ -106,13 +106,13 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
 
     onConfirmPrint = (): void => {
         this.setState(() => ({ error: undefined, submitting: true }));
-        const labelTemplate = this.state.labelTemplate.trim();
+        const { labelTemplate } = this.state;
         this.props.api.labelprinting
-            .printGridLabels(this.getModel(), labelTemplate, this.state.numCopies, this.props.printServiceUrl)
+            .printGridLabels(this.getModel(), '' + labelTemplate, this.state.numCopies, this.props.printServiceUrl)
             .then((btResponse: BarTenderResponse): void => {
                 if (btResponse.ranToCompletion()) {
                     this.onLabelPrintSuccess();
-                } else if (btResponse.faulted() && btResponse.isLabelUnavailableError(labelTemplate)) {
+                } else if (btResponse.faulted() && btResponse.isLabelUnavailableError()) {
                     this.onLabelPrintError(btResponse.getFaultMessage(), LABEL_NOT_FOUND_ERROR);
                 } else {
                     this.onLabelPrintError(btResponse.getFaultMessage());
@@ -157,7 +157,7 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
         this.props.actions.replaceSelections(this._modelId, sampleIds);
     };
 
-    changeTemplateSelection = (name: string, value: string): void => {
+    changeTemplateSelection = (name: string, value: number): void => {
         this.setState(() => ({ labelTemplate: value }));
     };
 
@@ -165,7 +165,7 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
         const { labelTemplate, numCopies } = this.state;
         return (
             labelTemplate !== undefined &&
-            labelTemplate.trim().length > 0 &&
+            labelTemplate >= 0 &&
             numCopies !== undefined &&
             numCopies > 0 &&
             this.getSampleCount() > 0
@@ -244,7 +244,7 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
                             required={true}
                             schemaQuery={LABEL_TEMPLATE_SQ}
                             displayColumn="name"
-                            valueColumn="path"
+                            valueColumn="rowId"
                             value={labelTemplate}
                         />
                     </div>

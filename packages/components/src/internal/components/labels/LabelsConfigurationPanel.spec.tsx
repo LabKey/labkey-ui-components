@@ -56,6 +56,7 @@ describe('LabelTemplatesList', () => {
 
         expect(wrapper.find('.choices-list__empty-message')).toHaveLength(1);
         expect(wrapper.find(ChoicesListItem)).toHaveLength(0);
+        expect(wrapper.find('.badge')).toHaveLength(0);
         wrapper.unmount();
     });
 
@@ -75,6 +76,7 @@ describe('LabelTemplatesList', () => {
 
         expect(wrapper.find('.choices-list__empty-message')).toHaveLength(0);
         expect(wrapper.find(ChoicesListItem)).toHaveLength(1);
+        expect(wrapper.find('.badge')).toHaveLength(0);
         wrapper.unmount();
     });
 
@@ -99,6 +101,7 @@ describe('LabelTemplatesList', () => {
 
         expect(wrapper.find('.choices-list__empty-message')).toHaveLength(0);
         expect(wrapper.find(ChoicesListItem)).toHaveLength(2);
+        expect(wrapper.find('.badge')).toHaveLength(0);
         wrapper.unmount();
     });
 

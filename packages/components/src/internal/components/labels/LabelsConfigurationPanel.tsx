@@ -16,7 +16,7 @@ import { AddEntityButton } from '../buttons/AddEntityButton';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
-import { deleteRows, insertRows, updateRows } from '../../query/api';
+import { deleteRows, insertRows, InsertRowsResponse, updateRows } from '../../query/api';
 import { resolveErrorMessage } from '../../util/messaging';
 import { DisableableButton } from '../buttons/DisableableButton';
 
@@ -105,7 +105,7 @@ const canBeDefault = (template: LabelTemplate): boolean => {
     return (
         !template || // New template
         currentContainer.parentId === template.container || // Template is from the project level
-        currentContainer.id === template?.container // Template is from this project
+        currentContainer.id === template.container // Template is from this project
     );
 };
 
@@ -116,8 +116,8 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
     const [dirty, setDirty] = useState<boolean>();
     const [saving, setSaving] = useState<boolean>();
     const [error, setError] = useState<string>();
-    const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>();
-    const [isDefault, setIsDefault] = useState<boolean>();
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
+    const [isDefault, setIsDefault] = useState<boolean>(false);
 
     useEffect(() => {
         setIsDefault(!!defaultLabel && defaultLabel === template?.rowId);
@@ -165,7 +165,7 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                     onActionCompleted(undefined, true);
                 })
                 .catch(reason => {
-                    setError(resolveErrorMessage(reason, 'template', 'templates', 'deleting'));
+                    setError(resolveErrorMessage(reason.get('error'), 'template', 'templates', 'deleting'));
                     onToggleDeleteConfirm();
                 });
         } else {
@@ -217,11 +217,13 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                 }
             }
 
-            setSaving(false);
             setDirty(false);
             onActionCompleted(rowId);
         } catch (reason) {
-            setError(resolveErrorMessage(reason, 'template', 'templates', 'update'));
+            // The InsertRowsResponse object uses an Immutable map so try to pull out the error object so it can be parsed.
+            const exception = reason instanceof InsertRowsResponse ? reason.get('error') : reason;
+            setError(resolveErrorMessage(exception, 'template', 'templates', 'update'));
+        } finally {
             setSaving(false);
         }
     }, [api?.labelprinting, defaultLabel, isDefault, onActionCompleted, onDefaultChanged, updatedTemplate]);

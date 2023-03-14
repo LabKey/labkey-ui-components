@@ -230,7 +230,6 @@ export function getLabelPrintingTestAPIWrapper(
             Promise.resolve(
                 new BarTenderConfiguration({
                     serviceURL: '',
-                    defaultLabel: undefined,
                 })
             ),
         getLabelTemplates: () => Promise.resolve([]),

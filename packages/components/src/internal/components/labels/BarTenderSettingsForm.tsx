@@ -118,11 +118,16 @@ export const BarTenderSettingsFormImpl: FC<Props> = memo(props => {
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        api.labelprinting.fetchBarTenderConfiguration().then(btConfiguration => {
-            setBtServiceURL(btConfiguration.serviceURL);
-            setDefaultLabel(btConfiguration.defaultLabel);
-            setLoading(false);
-        });
+        api.labelprinting
+            .fetchBarTenderConfiguration()
+            .then(btConfiguration => {
+                setBtServiceURL(btConfiguration.serviceURL);
+                setDefaultLabel(btConfiguration.defaultLabel);
+                setLoading(false);
+            })
+            .catch(reason => {
+                setFailureMessage(reason);
+            });
     }, [api?.labelprinting]);
 
     const onChangeHandler = useCallback(
@@ -137,7 +142,7 @@ export const BarTenderSettingsFormImpl: FC<Props> = memo(props => {
 
     const onSave = useCallback((): void => {
         setSubmitting(true);
-        setFailureMessage(undefined); //Will update with new message if still needed.
+        setFailureMessage(undefined); // Will update with new message if still needed.
         const config = new BarTenderConfiguration({ serviceURL: btServiceURL });
 
         api.labelprinting

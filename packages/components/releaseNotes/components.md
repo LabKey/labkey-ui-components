@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.308.0
+*Released*: 14 March 2023
 * Issue #47326: Allow setting a default BarTender label
 
 ### version 2.307.2

@@ -121,7 +121,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     );
 
     const [printDialogModel, setPrintDialogModel] = useState<QueryModel>();
-    const { canPrintLabels, printServiceUrl } = useLabelPrintingContext();
+    const { canPrintLabels, printServiceUrl, defaultLabel } = useLabelPrintingContext();
 
     const onEditSelectionInGrid = useCallback(
         (
@@ -252,14 +252,13 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                 schemaQuery,
                 rows,
                 auditBehavior: getSampleAuditBehaviorType(),
-            })
-                .then(result => {
-                    invalidateLineageResults();
-                    dismissNotifications(); // get rid of any error notifications that have already been created
+            }).then(result => {
+                invalidateLineageResults();
+                dismissNotifications(); // get rid of any error notifications that have already been created
 
-                    const noun = rows.length === 1 ? SampleTypeDataType.nounSingular : SampleTypeDataType.nounPlural;
-                    createNotification('Successfully updated ' + result.rows.length + ' ' + noun + '.', true);
-                });
+                const noun = rows.length === 1 ? SampleTypeDataType.nounSingular : SampleTypeDataType.nounPlural;
+                createNotification('Successfully updated ' + result.rows.length + ' ' + noun + '.', true);
+            });
             // catch block intentionally absent so callers can handle the errors appropriately
         },
         [createNotification, dismissNotifications, getSampleAuditBehaviorType]
@@ -370,6 +369,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                 <PrintLabelsModal
                     afterPrint={afterPrint}
                     printServiceUrl={printServiceUrl}
+                    defaultLabel={defaultLabel}
                     onCancel={onCancelPrint}
                     model={printDialogModel}
                     sampleIds={[...printDialogModel.selections]}

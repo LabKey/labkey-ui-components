@@ -3,7 +3,7 @@ import { Draft, immerable, produce } from 'immer';
 import { flattenValuesFromRow } from '../../../public/QueryModel/QueryModel';
 
 export interface BarTenderConfigurationModel {
-    defaultLabel?: string;
+    defaultLabel?: number;
     serviceURL?: string;
 }
 
@@ -11,10 +11,17 @@ export class BarTenderConfiguration implements BarTenderConfigurationModel {
     [immerable] = true;
 
     readonly serviceURL: string;
-    readonly defaultLabel: string;
+    readonly defaultLabel: number;
 
     constructor(values?: Partial<BarTenderConfigurationModel>) {
         Object.assign(this, values);
+    }
+
+    static create(config?: { defaultLabel: string; serviceURL: string }): BarTenderConfiguration {
+        return new BarTenderConfiguration({
+            serviceURL: config.serviceURL,
+            defaultLabel: parseInt(config.defaultLabel, 10),
+        });
     }
 
     isConfigured(): boolean {
@@ -95,7 +102,7 @@ export class BarTenderResponse implements BarTenderResponseModel {
         return this.Messages.map(msg => msg.Text).join('\n');
     }
 
-    isLabelUnavailableError(label: string): boolean {
+    isLabelUnavailableError(): boolean {
         // best we can do is to look in the error message as this doesn't have a specific property to indicate this error
         const message = this.getFaultMessage();
         return message.indexOf(BarTenderResponse.LABEL_NOT_FOUND_MSG) >= 0;
@@ -110,6 +117,7 @@ export class LabelTemplate {
     readonly rowId: number;
     readonly name: string;
     readonly path: string;
+    readonly container: string;
 
     constructor(values: { [k: string]: any }) {
         Object.assign(this, values);
@@ -133,6 +141,7 @@ export class LabelTemplate {
             rowId: fieldValues.rowId,
             name: fieldValues.name,
             description: fieldValues.description,
+            container: fieldValues.container,
         });
     }
 }

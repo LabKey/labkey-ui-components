@@ -51,7 +51,7 @@ export const SampleAliquotsGridPanelImpl: FC<Props & InjectedQueryModels> = memo
     } = props;
     const [showPrintDialog, setShowPrintDialog] = useState<boolean>(false);
     const { createNotification } = useNotificationsContext();
-    const { canPrintLabels, printServiceUrl } = useLabelPrintingContext();
+    const { canPrintLabels, printServiceUrl, defaultLabel } = useLabelPrintingContext();
     const queryModel = queryModels[queryModelId];
 
     const { getSamplesEditableGridProps, SampleGridButtonComponent } = useSampleTypeAppContext();
@@ -117,6 +117,7 @@ export const SampleAliquotsGridPanelImpl: FC<Props & InjectedQueryModels> = memo
                 <PrintLabelsModal
                     afterPrint={afterPrint}
                     printServiceUrl={printServiceUrl}
+                    defaultLabel={defaultLabel}
                     model={queryModel}
                     onCancel={resetState}
                     sampleIds={[...queryModel.selections]}

@@ -493,9 +493,8 @@ export function withQueryModels<Props>(
 
         loadRows = async (id: string, loadSelections = false): Promise<void> => {
             const { loadRows } = this.props.modelLoader;
-            const currentModel = this.state.queryModels[id];
 
-            if (isLoading(currentModel.queryInfoLoadingState)) {
+            if (isLoading(this.state.queryModels[id].queryInfoLoadingState)) {
                 return;
             }
 
@@ -506,7 +505,7 @@ export function withQueryModels<Props>(
             );
 
             try {
-                const result = await loadRows(currentModel);
+                const result = await loadRows(this.state.queryModels[id]);
                 const { messages, rows, orderedRows, rowCount } = result;
 
                 this.setState(
@@ -515,7 +514,7 @@ export function withQueryModels<Props>(
                         model.messages = messages;
                         model.rows = rows;
                         model.orderedRows = orderedRows;
-                        model.rowCount = !currentModel.includeTotalCount ? rowCount : model.rowCount; // only update the rowCount on the model if we aren't loading the totalCount
+                        model.rowCount = !model.includeTotalCount ? rowCount : model.rowCount; // only update the rowCount on the model if we aren't loading the totalCount
                         model.rowsLoadingState = LoadingState.LOADED;
                         model.rowsError = undefined;
                     }),
@@ -540,19 +539,17 @@ export function withQueryModels<Props>(
         };
 
         loadTotalCount = async (id: string, reloadTotalCount = false): Promise<void> => {
-            const currentModel = this.state.queryModels[id];
-
-            if (isLoading(currentModel.queryInfoLoadingState)) {
+            if (isLoading(this.state.queryModels[id].queryInfoLoadingState)) {
                 return;
             }
 
             // if we've already loaded the totalCount, no need to load it again
-            if (!reloadTotalCount && currentModel.totalCountLoadingState === LoadingState.LOADED) {
+            if (!reloadTotalCount && this.state.queryModels[id].totalCountLoadingState === LoadingState.LOADED) {
                 return;
             }
 
             // if usage didn't request loading the totalCount, skip it
-            if (!currentModel.includeTotalCount) {
+            if (!this.state.queryModels[id].includeTotalCount) {
                 this.setState(
                     produce<State>(draft => {
                         draft.queryModels[id].totalCountLoadingState = LoadingState.LOADED;
@@ -569,7 +566,7 @@ export function withQueryModels<Props>(
 
             try {
                 const { rowCount } = await selectRows({
-                    ...currentModel.loadRowsConfig,
+                    ...this.state.queryModels[id].loadRowsConfig,
                     sort: undefined,
                     maxRows: 1,
                     offset: 0,
@@ -860,14 +857,14 @@ export function withQueryModels<Props>(
          * it will also call the loadTotalCount().
          */
         resetTotalCountState = (): void => {
-            Object.keys(this.state.queryModels).forEach(id => {
-                this.setState(
-                    produce<State>(draft => {
+            this.setState(
+                produce<State>(draft => {
+                    Object.keys(this.state.queryModels).forEach(id => {
                         const model = draft.queryModels[id];
                         resetTotalCountState(model);
-                    })
-                );
-            });
+                    });
+                })
+            );
         };
 
         setSchemaQuery = (id: string, schemaQuery: SchemaQuery, loadSelections = false): void => {

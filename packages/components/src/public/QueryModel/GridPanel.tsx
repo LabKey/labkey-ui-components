@@ -784,7 +784,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const { model, actions, allowSelections } = this.props;
 
         if (hasChange) {
-            actions.loadModel(model.id, allowSelections);
+            actions.loadModel(model.id, allowSelections, true);
             if (reselectViewName !== undefined) {
                 // don't reselect if reselectViewName is undefined
                 this.onViewSelect(reselectViewName);

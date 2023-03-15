@@ -11,6 +11,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * add option to reloadTotalCount via loadModel() and loadAllModels()
   * QueryModel action to resetTotalCountState for all models
 
+### version 2.308.0
+*Released*: 14 March 2023
+* Issue #47326: Allow setting a default BarTender label
+
 ### version 2.307.2
 *Released*: 10 March 2023
 * Issue 47422: LKSM: Renaming Sample Type results in Not Found error

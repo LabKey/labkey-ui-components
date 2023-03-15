@@ -1359,7 +1359,7 @@ describe('getLabKeySql', () => {
 
 const schemaQuery = new SchemaQuery('Test', 'SampleA');
 const schemaQueryWithSpace = new SchemaQuery('Test', 'Sample Type A');
-const schemaQuerySpecial = new SchemaQuery('Test', "><&/%\\' \"1äöüÅ");
+const schemaQuerySpecial = new SchemaQuery('Test', '><&/%\\\' "1äöüÅ');
 
 describe('getExpDescendantOfSelectClause', () => {
     test('empty', () => {
@@ -1393,7 +1393,7 @@ describe('getExpDescendantOfSelectClause', () => {
 
     test('special character sample type name', () => {
         expect(getExpDescendantOfSelectClause(schemaQuerySpecial, [intEqFilter])).toEqual(
-            "SELECT \"><&\".\"%\\' \"\"1äöüÅ\".expObject() FROM Test.\"><&\".\"%\\' \"\"1äöüÅ\" WHERE \"intField\" = 1"
+            'SELECT "><&"."%\\\' ""1äöüÅ".expObject() FROM Test."><&"."%\\\' ""1äöüÅ" WHERE "intField" = 1'
         );
     });
 

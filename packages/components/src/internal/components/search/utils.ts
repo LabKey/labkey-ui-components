@@ -76,7 +76,7 @@ export function getFinderViewColumnsConfig(
     queryInfo: QueryInfo,
     columnDisplayNames: { [key: string]: string },
     requiredColumns?: string[]
-): Array<{ fieldKey: string; title: string }> {
+): { columns: Array<{ fieldKey: string; title: string }>; hasUpdates: boolean } {
     const defaultDisplayColumns = queryInfo?.getDisplayColumns().toArray();
     const displayColumnKeys = defaultDisplayColumns.map(col => col.fieldKey.toLowerCase());
     const columnKeys = [];
@@ -98,7 +98,20 @@ export function getFinderViewColumnsConfig(
             .filter(col => FIRST_COLUMNS_IN_VIEW.indexOf(col.fieldKey) === -1)
             .map(col => col.fieldKey)
     );
-    return columnKeys.map(fieldKey => ({ fieldKey, title: columnDisplayNames[fieldKey] }));
+
+    const viewDisplayFieldKeys = queryInfo
+        ?.getDisplayColumns(SAMPLE_FINDER_VIEW_NAME)
+        .map(column => column.fieldKey)
+        .toArray()
+        .sort();
+    const hasUpdates = viewDisplayFieldKeys.join(',') !== [...columnKeys].sort().join(',');
+
+    const columns = columnKeys.map(fieldKey => ({ fieldKey, title: columnDisplayNames[fieldKey] }));
+
+    return {
+        hasUpdates,
+        columns,
+    };
 }
 
 export const SAMPLE_FINDER_VIEW_NAME = '~~samplefinder~~';

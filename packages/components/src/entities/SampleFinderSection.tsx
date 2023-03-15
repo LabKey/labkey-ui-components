@@ -341,7 +341,7 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
             const newFilters = finderSessionData.filters;
             if (!newFilters) return;
 
-            updateFilters(filterChangeCounter + (view.isSession ? 1 : 0), newFilters, false, view.isSession);
+            updateFilters(filterChangeCounter, newFilters, false, view.isSession);
             setShowSaveViewDialog(false);
             setCurrentView(view);
         },
@@ -583,7 +583,6 @@ const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
         const configs = getSampleFinderQueryConfigs(user, sampleTypeNames, cards, selectionKeyPrefix);
         const promises = [];
         const columnLabel = getSampleFinderColumnNames(cards);
-        getSampleFinderCommonConfigs(cards, false);
         for (const config of Object.values(configs)) {
             promises.push(saveFinderGridView(config.schemaQuery, columnLabel, config.requiredColumns));
         }

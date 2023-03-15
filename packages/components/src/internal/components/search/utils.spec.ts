@@ -156,24 +156,31 @@ describe('getFinderViewColumnsConfig', () => {
         }),
     });
     test('no required columns', () => {
-        expect(getFinderViewColumnsConfig(queryInfo, {})).toStrictEqual([{ fieldKey: 'Name', title: undefined }]);
+        expect(getFinderViewColumnsConfig(queryInfo, {})).toStrictEqual({
+            hasUpdates: false,
+            columns: [{ fieldKey: 'Name', title: undefined }],
+        });
     });
 
     test('no new required columns', () => {
         const requiredColumns = ['Name'];
-        expect(getFinderViewColumnsConfig(queryInfo, {}, requiredColumns)).toStrictEqual([
-            { fieldKey: 'Name', title: undefined },
-        ]);
+        expect(getFinderViewColumnsConfig(queryInfo, {}, requiredColumns)).toStrictEqual({
+            hasUpdates: false,
+            columns: [{ fieldKey: 'Name', title: undefined }],
+        });
     });
 
     test('with new required columns', () => {
         const requiredColumns = ['Name', 'ExtraField', 'SampleState'];
         expect(
             getFinderViewColumnsConfig(queryInfo, { ExtraField: 'Extra Field Display' }, requiredColumns)
-        ).toStrictEqual([
-            { fieldKey: 'Name', title: undefined },
-            { fieldKey: 'ExtraField', title: 'Extra Field Display' },
-        ]);
+        ).toStrictEqual({
+            hasUpdates: true,
+            columns: [
+                { fieldKey: 'Name', title: undefined },
+                { fieldKey: 'ExtraField', title: 'Extra Field Display' },
+            ],
+        });
     });
 
     test('view has all updates', () => {
@@ -230,10 +237,13 @@ describe('getFinderViewColumnsConfig', () => {
         const requiredColumns = ['Name', 'ExtraField'];
         expect(
             getFinderViewColumnsConfig(queryInfo, { ExtraField: 'Extra Field Display' }, requiredColumns)
-        ).toStrictEqual([
-            { fieldKey: 'Name', title: undefined },
-            { fieldKey: 'ExtraField', title: 'Extra Field Display' },
-        ]);
+        ).toStrictEqual({
+            hasUpdates: false,
+            columns: [
+                { fieldKey: 'Name', title: undefined },
+                { fieldKey: 'ExtraField', title: 'Extra Field Display' },
+            ],
+        });
     });
 });
 

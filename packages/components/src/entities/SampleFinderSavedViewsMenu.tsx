@@ -68,7 +68,8 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
 
     const onLoadSessionSearch = useCallback(() => {
         loadSearch({ isSession: true, reportName: sessionViewName });
-    }, [loadSearch, sessionViewName]);
+        onToggle();
+    }, [loadSearch, sessionViewName, onToggle]);
 
     const onSaveCurrentView = useCallback(() => {
         saveSearch(true);

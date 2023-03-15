@@ -17,7 +17,7 @@ import { IDataViewInfo } from '../../DataViewInfo';
 import { selectRows } from '../../query/selectRows';
 import { caseInsensitive } from '../../util/utils';
 
-import { getContainerFilter, getQueryDetails } from '../../query/api';
+import { getContainerFilter, getQueryDetails, invalidateQueryDetailsCache } from '../../query/api';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
@@ -216,13 +216,18 @@ export function saveFinderGridView(
             schemaName: schemaQuery.schemaName,
         })
             .then(queryInfo => {
-                const columns = getFinderViewColumnsConfig(queryInfo, columnDisplayNames, requiredColumns);
+                const { columns, hasUpdates } = getFinderViewColumnsConfig(queryInfo, columnDisplayNames, requiredColumns);
+                if (!hasUpdates) {
+                    resolve(schemaQuery);
+                    return;
+                }
                 Query.saveQueryViews({
                     schemaName: schemaQuery.schemaName,
                     queryName: schemaQuery.queryName,
                     // Mark the view as hidden, so it doesn't show up in LKS and in the grid view menus
                     views: [{ name: SAMPLE_FINDER_VIEW_NAME, columns, hidden: true }],
                     success: () => {
+                        invalidateQueryDetailsCache(schemaQuery);
                         resolve(schemaQuery);
                     },
                     failure: response => {

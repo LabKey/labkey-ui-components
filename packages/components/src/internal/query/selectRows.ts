@@ -1,9 +1,10 @@
 import { Query } from '@labkey/api';
 
-import { getContainerFilter, getQueryDetails } from './api';
 import { SchemaQuery } from '../../public/SchemaQuery';
 import { QueryInfo } from '../../public/QueryInfo';
 import { URLResolver } from '../url/URLResolver';
+
+import { getContainerFilter, getQueryDetails } from './api';
 
 export interface SelectRowsOptions
     extends Omit<Query.SelectRowsOptions, 'queryName' | 'requiredVersion' | 'schemaName' | 'scope'> {
@@ -30,6 +31,7 @@ export async function selectRows(options: SelectRowsOptions): Promise<SelectRows
     const {
         containerFilter = getContainerFilter(options.containerPath),
         columns = '*',
+        includeTotalCount = false, // default to false to improve performance
         method = 'POST',
         schemaQuery,
         ...selectRowsOptions
@@ -43,6 +45,7 @@ export async function selectRows(options: SelectRowsOptions): Promise<SelectRows
                 ...selectRowsOptions,
                 columns,
                 containerFilter,
+                includeTotalCount,
                 method,
                 queryName,
                 requiredVersion: 17.1,

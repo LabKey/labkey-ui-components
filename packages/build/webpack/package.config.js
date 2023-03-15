@@ -131,7 +131,6 @@ module.exports = {
         'react-test-renderer',
         'react-treebeard',
         'redux',
-        'redux-actions',
         'remirror',
         '@remirror',
         '@remirror/core',

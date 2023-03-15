@@ -906,7 +906,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           "getLabelTemplates": [Function],
           "printBarTenderLabels": [Function],
           "printGridLabels": [Function],
-          "saveBarTenderConfiguration": [Function],
+          "saveBarTenderURLConfiguration": [Function],
+          "saveDefaultLabelConfiguration": [Function],
         },
         "navigation": ServerNavigationAPIWrapper {
           "initMenuModel": [Function],
@@ -950,6 +951,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           "getDeletionSummaries": [Function],
           "getGroupMemberships": [Function],
           "getUserLimitSettings": [Function],
+          "getUserPermissions": [Function],
           "removeGroupMembers": [Function],
         },
       }

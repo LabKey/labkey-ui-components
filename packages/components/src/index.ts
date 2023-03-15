@@ -239,9 +239,7 @@ import {
     EditableGridPanelForUpdateWithLineage,
     UpdateGridTab,
 } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
-import {
-    LineageEditableGridLoaderFromSelection
-} from './internal/components/editable/LineageEditableGridLoaderFromSelection';
+import { LineageEditableGridLoaderFromSelection } from './internal/components/editable/LineageEditableGridLoaderFromSelection';
 
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
 
@@ -328,7 +326,6 @@ import {
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SampleAmountEditModal } from './internal/components/samples/SampleAmountEditModal';
 import { StorageAmountInput } from './internal/components/samples/StorageAmountInput';
-
 
 import { AppContextProvider, useAppContext } from './internal/AppContext';
 import { AppContexts } from './internal/AppContexts';
@@ -429,9 +426,7 @@ import {
 } from './internal/components/entities/constants';
 import { getUniqueIdColumnMetadata } from './internal/components/entities/utils';
 import { EntityInsertPanel } from './internal/components/entities/EntityInsertPanel';
-import {
-    EntityCrossProjectSelectionConfirmModal
-} from './internal/components/entities/EntityCrossProjectSelectionConfirmModal';
+import { EntityCrossProjectSelectionConfirmModal } from './internal/components/entities/EntityCrossProjectSelectionConfirmModal';
 import { EntityDeleteConfirmModal } from './internal/components/entities/EntityDeleteConfirmModal';
 import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
 
@@ -661,6 +656,7 @@ import {
     AUDIT_KEY,
     BIOLOGICS_APP_PROPERTIES,
     BOXES_KEY,
+    DATA_CLASS_KEY,
     ELN_KEY,
     EXPERIMENTAL_REQUESTS_MENU,
     FIND_SAMPLES_BY_FILTER_HREF,
@@ -727,7 +723,7 @@ import {
     getStoredAmountDisplay,
     isValuePrecisionValid,
     MEASUREMENT_UNITS,
-    UnitModel
+    UnitModel,
 } from './internal/util/measurement';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
@@ -809,6 +805,7 @@ const App = {
     SAMPLES_KEY,
     SAMPLE_TYPE_KEY,
     SEARCH_KEY,
+    DATA_CLASS_KEY,
     SOURCES_KEY,
     SOURCE_TYPE_KEY,
     WORKFLOW_KEY,

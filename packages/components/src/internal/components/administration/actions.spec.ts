@@ -110,6 +110,13 @@ describe('Administration actions', () => {
                 UserId: 1066,
                 GroupId: 1064,
             },
+            {
+                'UserId/Email': null,
+                'UserId/DisplayName': null,
+                'GroupId/Name': 'group1',
+                UserId: 1000,
+                GroupId: 1064,
+            },
         ];
 
         const expected = {

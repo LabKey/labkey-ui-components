@@ -23,7 +23,7 @@ import { User } from '../base/models/User';
 import { devToolsActive, toggleDevTools } from '../../util/utils';
 
 import { useServerContext } from '../base/ServerContext';
-import { getCurrentAppProperties } from '../../app/utils';
+import { getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
 import { AppProperties } from '../../app/models';
 
 import { AppContext, useAppContext } from '../../AppContext';
@@ -117,18 +117,20 @@ export const UserMenuImpl: FC<UserMenuProps & ImplProps> = props => {
 };
 
 export const UserMenu: FC<UserMenuProps> = props => {
-    const { appProperties = getCurrentAppProperties() } = props;
     const { api } = useAppContext<AppContext>();
     const { container, moduleContext } = useServerContext();
+    const { appProperties = getPrimaryAppProperties(moduleContext) } = props;
+    const productId = getCurrentAppProperties()?.productId ?? appProperties.productId;
+
     const [model, setModel] = useState<MenuSectionModel>();
 
     useEffect(() => {
         (async () => {
             // no try/catch as the loadUserMenu will catch errors and return undefined
-            const sectionModel = await api.navigation.loadUserMenu(appProperties, moduleContext);
+            const sectionModel = await api.navigation.loadUserMenu(productId, appProperties, moduleContext);
             setModel(sectionModel);
         })();
-    }, [api.navigation, appProperties, container.path, moduleContext]);
+    }, [api.navigation, appProperties, container.path, moduleContext, productId]);
 
     return <UserMenuImpl {...props} model={model} />;
 };

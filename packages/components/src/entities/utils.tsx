@@ -186,7 +186,7 @@ export const getDataClassTemplateUrl = (
 
     // Issue 46593: if the table XML metadata override specifies a custom importTemplate, use it
     if (queryInfo.importTemplates?.[0]?.url.toLowerCase().indexOf('exportexceltemplate.view') === -1) {
-        return queryInfo.importTemplates?.[0].url;
+        return queryInfo.importTemplates[0].url;
     }
 
     return ActionURL.buildURL('query', 'ExportExcelTemplate', null, {
@@ -198,7 +198,7 @@ export const getDataClassTemplateUrl = (
             ? excludeColumns.concat(queryInfo.getFileColumnFieldKeys())
             : queryInfo.getFileColumnFieldKeys(),
         filenamePrefix: schemaQuery.queryName,
-    }).toString();
+    });
 }
 
 export const getSampleTypeTemplateUrl = (

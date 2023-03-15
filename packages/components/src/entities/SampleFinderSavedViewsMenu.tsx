@@ -54,8 +54,8 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
     }, [savedSearches, sessionViewName]);
 
     const onToggle = useCallback(() => {
-        setOpen(!open);
-    }, [open]);
+        setOpen(_open => !_open);
+    }, []);
 
     const onLoadSavedSearch = useCallback(
         e => {

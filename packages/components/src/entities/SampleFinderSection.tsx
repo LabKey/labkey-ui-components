@@ -517,9 +517,6 @@ const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & InjectedQueryMo
             .then(counts => {
                 setTabRowCounts(counts);
             })
-            .catch(error => {
-                console.error(error);
-            });
     }, []);
 
     const afterSampleActionComplete = useCallback((): void => {

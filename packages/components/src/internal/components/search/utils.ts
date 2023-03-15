@@ -174,7 +174,7 @@ export function getExpDescendantOfSelectClause(
     if (!selectClauseWhere) return null;
 
     const { queryName, schemaName } = schemaQuery;
-    const from = getLegalIdentifier(schemaName) + '.' + getLegalIdentifier(queryName);
+    const from = schemaName + '.' + getLegalIdentifier(queryName);
     const cfClause = cf ? `[ContainerFilter='${cf}']` : '';
 
     return `SELECT ${getLegalIdentifier(queryName)}.expObject() FROM ${from}${cfClause} ${selectClauseWhere}`;

@@ -41,11 +41,11 @@ export const FilterValueDisplay: FC<FilterValueDisplayProps> = memo(props => {
     const { filter, onFilterValueExpand, noValueInQueryFilterMsg } = props;
 
     const exclude = useMemo(() => {
-        return NEGATE_FILTERS.indexOf(filter?.getFilterType().getURLSuffix()) > -1;
+        return NEGATE_FILTERS.indexOf(filter.getFilterType().getURLSuffix()) > -1;
     }, [filter]);
 
     const filterTypeLabel = useMemo(() => {
-        const filterType = filter?.getFilterType();
+        const filterType = filter.getFilterType();
         const filterUrlSuffix = filterType.getURLSuffix();
 
         if (SAMPLE_SEARCH_FILTER_TYPES_SKIP_TITLE.indexOf(filterUrlSuffix) === -1)

@@ -126,6 +126,10 @@ export interface TabbedGridPanelProps<T = {}> extends GridPanelProps<T> {
      */
     tabOrder: string[];
 
+    /**
+     * Provide the initial/default grid row count display for the QueryModel.id.
+     * This count will only be displayed when queryModel.rowCount === undefined and !queryModel.isLoadingTotalCount
+     */
     tabRowCounts?: { [key: string]: number };
 
     /**

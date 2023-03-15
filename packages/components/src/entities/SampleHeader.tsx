@@ -73,6 +73,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
     const {
         assayProviderType,
         canPrintLabels,
+        defaultLabel,
         entityDataType,
         iconSrc = 'samples',
         hasActiveJob,
@@ -340,6 +341,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                     model={sampleModel}
                     sampleIds={sampleIds}
                     printServiceUrl={printServiceUrl}
+                    defaultLabel={defaultLabel}
                 />
             )}
         </>

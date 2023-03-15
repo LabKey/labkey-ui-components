@@ -1058,9 +1058,9 @@ export function getSampleFinderTabRowCountSql(queryModel: QueryModel): string {
     filters.forEach(filter => {
         let clause = '';
         if (filter.getFilterType().getURLSuffix() === COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix()) {
-            clause = 'RowId NOT IN (' + filter.getValue() + ')';
+            clause = filter.getColumnName() + ' NOT IN (' + filter.getValue() + ')';
         } else if (filter.getFilterType().getURLSuffix() === COLUMN_IN_FILTER_TYPE.getURLSuffix()) {
-            clause = 'RowId IN (' + filter.getValue() + ')';
+            clause = filter.getColumnName() + ' IN (' + filter.getValue() + ')';
         } else if (filter.getFilterType().getURLSuffix() === IN_EXP_DESCENDANTS_OF_FILTER_TYPE.getURLSuffix()) {
             clause = 'expObject() IN EXPDESCENDANTSOF (' + filter.getValue() + ')';
         } else {

@@ -510,13 +510,11 @@ const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & InjectedQueryMo
     const [tabRowCounts, setTabRowCounts] = useState<{ [key: string]: number }>(undefined);
     useEffect(() => {
         // if 1 All samples + 1 type, rely on autoload count
-        if (sampleTypeNames?.length <= 1)
-            return;
+        if (sampleTypeNames?.length <= 1) return;
 
-        getSampleFinderTabRowCounts(queryModels)
-            .then(counts => {
-                setTabRowCounts(counts);
-            })
+        getSampleFinderTabRowCounts(queryModels).then(counts => {
+            setTabRowCounts(counts);
+        });
     }, []);
 
     const afterSampleActionComplete = useCallback((): void => {

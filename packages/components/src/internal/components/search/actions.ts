@@ -216,7 +216,11 @@ export function saveFinderGridView(
             schemaName: schemaQuery.schemaName,
         })
             .then(queryInfo => {
-                const { columns, hasUpdates } = getFinderViewColumnsConfig(queryInfo, columnDisplayNames, requiredColumns);
+                const { columns, hasUpdates } = getFinderViewColumnsConfig(
+                    queryInfo,
+                    columnDisplayNames,
+                    requiredColumns
+                );
                 if (!hasUpdates) {
                     resolve(schemaQuery);
                     return;

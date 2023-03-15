@@ -18,6 +18,7 @@ import classNames from 'classnames';
 import { List, Map, OrderedMap, Set } from 'immutable';
 import React, { ChangeEvent, MouseEvent, PureComponent, ReactNode, SyntheticEvent } from 'react';
 import { Button, Nav, NavItem, OverlayTrigger, Popover, Tab, TabContainer } from 'react-bootstrap';
+
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
 
@@ -57,6 +58,7 @@ import { GridColumn } from '../base/models/GridColumn';
 
 import { BulkAddUpdateForm } from '../forms/BulkAddUpdateForm';
 import { QueryInfoForm, QueryInfoFormProps } from '../forms/QueryInfoForm';
+
 import { Cell } from './Cell';
 
 import { CellActions, EDITABLE_GRID_CONTAINER_CLS } from './constants';
@@ -1313,7 +1315,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     renderBulkUpdate = (): ReactNode => {
-        const { addControlProps, bulkUpdateProps, data, dataKeys, editorModel, forUpdate, queryInfo, showAsTab } = this.props;
+        const { addControlProps, bulkUpdateProps, data, dataKeys, editorModel, forUpdate, queryInfo, showAsTab } =
+            this.props;
 
         return (
             <BulkAddUpdateForm
@@ -1397,11 +1400,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                                         Edit in Bulk
                                     </NavItem>
                                 )}
-                                {showGrid && (
-                                    <NavItem eventKey={EditableGridTabs.Grid}>
-                                        Edit Individually
-                                    </NavItem>
-                                )}
+                                {showGrid && <NavItem eventKey={EditableGridTabs.Grid}>Edit Individually</NavItem>}
                             </Nav>
                             <Alert>{error}</Alert>
                             <Tab.Content className="top-spacing">

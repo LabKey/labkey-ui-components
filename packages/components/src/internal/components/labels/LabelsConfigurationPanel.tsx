@@ -1,8 +1,11 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Button, FormGroup } from 'react-bootstrap';
+import ReactBootstrapToggle from 'react-bootstrap-toggle';
 
 import { List } from 'immutable';
+
+import { getServerContext } from '@labkey/api';
 
 import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
 import { ComponentsAPIWrapper } from '../../APIWrapper';
@@ -13,7 +16,7 @@ import { AddEntityButton } from '../buttons/AddEntityButton';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
-import { deleteRows, insertRows, updateRows } from '../../query/api';
+import { deleteRows, insertRows, InsertRowsResponse, updateRows } from '../../query/api';
 import { resolveErrorMessage } from '../../util/messaging';
 import { DisableableButton } from '../buttons/DisableableButton';
 
@@ -33,23 +36,36 @@ const SAVING_LOCKED_TITLE = 'Saving';
 
 interface LabelTemplatesPanelProps extends InjectedRouteLeaveProps {
     api?: ComponentsAPIWrapper;
+    defaultLabel?: number;
 }
 
 interface LabelTemplatesListProps {
+    defaultLabel?: number;
     onSelect: (index: number) => void;
     selected: number;
     templates: LabelTemplate[];
 }
 
 interface LabelTemplateDetailsProps {
+    api?: ComponentsAPIWrapper;
+    defaultLabel?: number;
+    isDefaultable: boolean;
     isNew: boolean;
     onActionCompleted: (newLabel?: number, isDelete?: boolean) => void;
     onChange: () => void;
+    onDefaultChanged: (newDefault: number) => void;
     template: LabelTemplate;
 }
 
 export const LabelTemplatesList: FC<LabelTemplatesListProps> = memo(props => {
-    const { onSelect, selected, templates } = props;
+    const { onSelect, defaultLabel, selected, templates } = props;
+    const isDefault = useCallback(
+        (rowId: number) => {
+            return rowId === defaultLabel ? <div className="badge">default</div> : undefined;
+        },
+        [defaultLabel]
+    );
+
     if (!templates || templates.length === 0)
         return <div className="choices-list__empty-message">No label templates registered.</div>;
 
@@ -64,6 +80,7 @@ export const LabelTemplatesList: FC<LabelTemplatesListProps> = memo(props => {
                         key={template.rowId}
                         label={template.name}
                         onSelect={onSelect}
+                        componentRight={isDefault(template.rowId)}
                     />
                 ))}
             </div>
@@ -79,16 +96,37 @@ const normalizeValues = (template: LabelTemplate): LabelTemplate => {
         description: template.description,
         path: template.path?.trim(),
         rowId: template.rowId,
+        container: template.container,
     });
 };
 
+const canBeDefault = (template: LabelTemplate): boolean => {
+    const currentContainer = getServerContext().container;
+    return (
+        !template || // New template
+        currentContainer.parentId === template.container || // Template is from the project level
+        currentContainer.id === template.container // Template is from this project
+    );
+};
+
 export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props => {
-    const { template, isNew, onChange, onActionCompleted } = props;
+    const { api, template, isNew, onChange, onActionCompleted, defaultLabel, onDefaultChanged, isDefaultable } = props;
     const [updatedTemplate, setUpdateTemplate] = useState<LabelTemplate>();
+    // TODO is this needed since the Dirty state is tracked in the parent component?
     const [dirty, setDirty] = useState<boolean>();
     const [saving, setSaving] = useState<boolean>();
     const [error, setError] = useState<string>();
-    const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>();
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
+    const [isDefault, setIsDefault] = useState<boolean>(false);
+
+    useEffect(() => {
+        setIsDefault(!!defaultLabel && defaultLabel === template?.rowId);
+    }, [defaultLabel, template?.rowId]);
+
+    // Clear error if Template changes
+    useEffect(() => {
+        setError(undefined);
+    }, [template]);
 
     useEffect(() => {
         if (isNew) {
@@ -105,19 +143,29 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
         onActionCompleted(undefined, true);
     }, [onActionCompleted]);
 
+    const defaultToggleHandler = useCallback(
+        switchVal => {
+            setDirty(dirty || switchVal !== isDefault);
+            setIsDefault(switchVal);
+            onChange?.();
+        },
+        [dirty, isDefault, onChange]
+    );
+
     const onToggleDeleteConfirm = useCallback(() => setShowDeleteConfirm(!showDeleteConfirm), [showDeleteConfirm]);
     const onConfirmDelete = useCallback(() => {
         if (updatedTemplate.rowId) {
             deleteRows({
                 schemaQuery: LABEL_TEMPLATE_SQ,
                 rows: [updatedTemplate],
+                containerPath: updatedTemplate.container,
             })
                 .then(() => {
                     onToggleDeleteConfirm();
                     onActionCompleted(undefined, true);
                 })
                 .catch(reason => {
-                    setError(resolveErrorMessage(reason, 'template', 'templates', 'deleting'));
+                    setError(resolveErrorMessage(reason.get('error'), 'template', 'templates', 'deleting'));
                     onToggleDeleteConfirm();
                 });
         } else {
@@ -130,47 +178,55 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
             const { name, value } = evt.target;
             setUpdateTemplate(updatedTemplate.set(name, value));
             setDirty(true);
+            setError(undefined); // clear error if form changes
             onChange();
         },
         [updatedTemplate, onChange]
     );
 
-    const onSave = useCallback((): void => {
+    const onSave = useCallback(async (): Promise<void> => {
         setError(undefined);
         setSaving(true);
 
         const templateToSave = normalizeValues(updatedTemplate);
 
-        if (templateToSave.rowId) {
-            updateRows({
-                schemaQuery: LABEL_TEMPLATE_SQ,
-                rows: [templateToSave],
-            })
-                .then(() => {
-                    setSaving(false);
-                    setDirty(false);
-                    onActionCompleted(templateToSave.rowId);
-                })
-                .catch(reason => {
-                    setError(resolveErrorMessage(reason, 'template', 'templates', 'updating'));
-                    setSaving(false);
+        let rowId = templateToSave?.rowId;
+        try {
+            if (rowId) {
+                await updateRows({
+                    schemaQuery: LABEL_TEMPLATE_SQ,
+                    rows: [templateToSave],
+                    containerPath: templateToSave.container,
                 });
-        } else {
-            insertRows({
-                schemaQuery: LABEL_TEMPLATE_SQ,
-                rows: List([templateToSave]),
-            })
-                .then(response => {
-                    setDirty(false);
-                    setSaving(false);
-                    onActionCompleted(response?.rows[0]?.rowId);
-                })
-                .catch(response => {
-                    setError(resolveErrorMessage(response.get('error'), 'template', 'templates', 'inserting'));
-                    setSaving(false);
+            } else {
+                const response = await insertRows({
+                    schemaQuery: LABEL_TEMPLATE_SQ,
+                    rows: List([templateToSave]),
                 });
+
+                rowId = response?.rows[0]?.rowId;
+            }
+
+            if ((isDefault && defaultLabel !== rowId) || (defaultLabel === rowId && !isDefault)) {
+                const newBtConfig = await api?.labelprinting.saveDefaultLabelConfiguration({
+                    defaultLabel: isDefault ? rowId : undefined,
+                });
+
+                if (defaultLabel !== newBtConfig.defaultLabel) {
+                    onDefaultChanged?.(isNaN(newBtConfig.defaultLabel) ? undefined : newBtConfig.defaultLabel);
+                }
+            }
+
+            setDirty(false);
+            onActionCompleted(rowId);
+        } catch (reason) {
+            // The InsertRowsResponse object uses an Immutable map so try to pull out the error object so it can be parsed.
+            const exception = reason instanceof InsertRowsResponse ? reason.get('error') : reason;
+            setError(resolveErrorMessage(exception, 'template', 'templates', 'update'));
+        } finally {
+            setSaving(false);
         }
-    }, [onActionCompleted, updatedTemplate]);
+    }, [api?.labelprinting, defaultLabel, isDefault, onActionCompleted, onDefaultChanged, updatedTemplate]);
 
     return (
         <>
@@ -232,6 +288,21 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                             />
                         </div>
                     </FormGroup>
+                    {isDefaultable && (
+                        <FormGroup>
+                            <div className="col-sm-4">
+                                <DomainFieldLabel label="Set as Default" />
+                            </div>
+                            <div className="col-sm-8">
+                                <ReactBootstrapToggle
+                                    active={isDefault}
+                                    on="Default"
+                                    off="Selectable"
+                                    onClick={defaultToggleHandler}
+                                />
+                            </div>
+                        </FormGroup>
+                    )}
                     <div>
                         {!isNew && (
                             <DisableableButton
@@ -274,29 +345,31 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
 });
 
 export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props => {
-    const { api, setIsDirty } = props;
+    const { api, setIsDirty, defaultLabel } = props;
     const { user } = useServerContext();
     const [templates, setTemplates] = useState<LabelTemplate[]>([]);
     const [error, setError] = useState<string>();
     const [selected, setSelected] = useState<number>();
+    const [newDefaultLabel, setNewDefaultLabel] = useState<number>(defaultLabel);
     const addNew = useMemo(() => selected === NEW_LABEL_INDEX, [selected]);
 
     const queryLabelTemplates = useCallback(
         (newLabelTemplate?: number) => {
             setError(undefined);
 
-            api.labelprinting
+            api?.labelprinting
                 .ensureLabelTemplatesList(user)
                 .then(labelTemplates => {
                     setTemplates(labelTemplates ?? []);
-                    if (newLabelTemplate)
+                    if (newLabelTemplate) {
                         setSelected(labelTemplates.findIndex(template => template.rowId === newLabelTemplate));
+                    }
                 })
                 .catch(() => {
                     setError('Error: Unable to load label templates.');
                 });
         },
-        [api.labelprinting, user]
+        [api?.labelprinting, user]
     );
 
     // Load template list
@@ -304,9 +377,14 @@ export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props
         queryLabelTemplates();
     }, [queryLabelTemplates]);
 
-    const onSetSelected = useCallback((index: number) => {
-        setSelected(index);
-    }, []);
+    const onSetSelected = useCallback(
+        (index: number) => {
+            // Clear dirty state since we are clearing any changes on selection
+            if (index !== selected) setIsDirty(false);
+            setSelected(index);
+        },
+        [selected, setIsDirty]
+    );
 
     const onAddLabel = useCallback(() => {
         setSelected(NEW_LABEL_INDEX);
@@ -315,6 +393,10 @@ export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props
     const onChange = useCallback(() => {
         setIsDirty(true);
     }, [setIsDirty]);
+
+    const onDefaultChanged = useCallback((newDefault: number) => {
+        setNewDefaultLabel(newDefault);
+    }, []);
 
     const onActionCompleted = useCallback(
         (newLabelTemplate?: number, isDelete = false): void => {
@@ -336,7 +418,12 @@ export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props
                 {templates && !error && (
                     <div className="row choices-container">
                         <div className="col-lg-4 col-md-6 choices-container-left-panel">
-                            <LabelTemplatesList templates={templates} selected={selected} onSelect={onSetSelected} />
+                            <LabelTemplatesList
+                                templates={templates}
+                                selected={selected}
+                                onSelect={onSetSelected}
+                                defaultLabel={newDefaultLabel}
+                            />
                             <AddEntityButton onClick={onAddLabel} entity="New Label Template" disabled={addNew} />
                         </div>
                         <div className="col-lg-8 col-md-6">
@@ -346,6 +433,10 @@ export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props
                                 isNew={addNew}
                                 onActionCompleted={onActionCompleted}
                                 onChange={onChange}
+                                defaultLabel={newDefaultLabel}
+                                api={api}
+                                onDefaultChanged={onDefaultChanged}
+                                isDefaultable={canBeDefault(template)}
                             />
                         </div>
                     </div>

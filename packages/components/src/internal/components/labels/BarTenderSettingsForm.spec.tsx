@@ -32,8 +32,9 @@ describe('BarTenderSettingsForm', () => {
         expect(wrapper.find(Button)).toHaveLength(2);
     }
 
-    test('default props', () => {
+    test('default props', async () => {
         const wrapper = mountWithAppServerContext(<BarTenderSettingsFormImpl {...DEFAULT_PROPS} />);
+        await waitForLifecycle(wrapper);
         validate(wrapper);
         expect(wrapper.find(FormControl).first().prop('type')).toBe('url');
         expect(wrapper.find(Button).first().text()).toBe('Save');

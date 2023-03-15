@@ -24,6 +24,7 @@ describe('<PrintLabelsModal/>', () => {
 
     const DEFAULT_PROPS = (): PrintModalProps & InjectedQueryModels => {
         return {
+            defaultLabel: undefined,
             api: getTestAPIWrapper(),
             show: true,
             sampleIds: [],
@@ -65,7 +66,7 @@ describe('<PrintLabelsModal/>', () => {
 
     test('single sample with selection', async () => {
         const wrapper = mount(<PrintLabelsModalImpl {...DEFAULT_PROPS()} sampleIds={['1']} />);
-        wrapper.setState({ labelTemplate: 'alpha' });
+        wrapper.setState({ labelTemplate: 0 });
         await waitForLifecycle(wrapper);
 
         expect(wrapper.find(ModalTitle).text()).toBe('Print Labels for 1 Sample with BarTender');
@@ -81,7 +82,7 @@ describe('<PrintLabelsModal/>', () => {
     test('single sample without selection', async () => {
         const wrapper = mount(<PrintLabelsModalImpl {...DEFAULT_PROPS()} sampleIds={['1']} showSelection={false} />);
 
-        wrapper.setState({ labelTemplate: 'alpha' });
+        wrapper.setState({ labelTemplate: 0 });
         await waitForLifecycle(wrapper);
 
         expect(wrapper.find(ModalTitle).text()).toBe('Print Labels for 1 Sample with BarTender');
@@ -97,7 +98,7 @@ describe('<PrintLabelsModal/>', () => {
     test('multiple labels', async () => {
         const wrapper = mount(<PrintLabelsModalImpl {...DEFAULT_PROPS()} sampleIds={['1', '2', '3']} />);
 
-        wrapper.setState({ labelTemplate: 'alpha' });
+        wrapper.setState({ labelTemplate: 0 });
         await waitForLifecycle(wrapper);
 
         expect(wrapper.find(ModalTitle).text()).toBe('Print Labels for 3 Samples with BarTender');

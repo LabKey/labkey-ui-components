@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.309.0
+*Released*: 16 March 2023
 * Fix sample field partitioning to account for media not in storage
 
 ### version 2.308.0

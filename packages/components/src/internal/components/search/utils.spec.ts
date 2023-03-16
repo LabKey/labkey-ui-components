@@ -1393,7 +1393,7 @@ describe('getExpDescendantOfSelectClause', () => {
 
     test('special character sample type name', () => {
         expect(getExpDescendantOfSelectClause(schemaQuerySpecial, [intEqFilter])).toEqual(
-            'SELECT "><&"."%\\\' ""1äöüÅ".expObject() FROM Test."><&"."%\\\' ""1äöüÅ" WHERE "intField" = 1'
+            "SELECT \"><&/%\\' \"\"1äöüÅ\".expObject() FROM Test.\"><&/%\\' \"\"1äöüÅ\" WHERE \"intField\" = 1"
         );
     });
 

@@ -104,6 +104,7 @@ interface ITargetTableSelectProps {
     lookupURI?: string;
     onChange: (any) => any;
     schemaName: string;
+    shouldDisableNonExists?: boolean;
     value?: any;
 }
 
@@ -130,12 +131,17 @@ export interface ITargetTableSelectImplState {
     prevSchemaName?: string;
     queries?: List<{ name: string; type: PropDescType }>;
     initialQueryName?: string;
+    queryNameOptionExists?: boolean;
 
 }
 
 export type TargetTableSelectProps = ITargetTableSelectProps & ILookupProps;
 
 class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITargetTableSelectImplState> {
+    static defaultProps = {
+        shouldDisableNonExists: true,
+    }
+
     constructor(props) {
         super(props);
 
@@ -205,32 +211,37 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
             if (!lookupIsValid)
                 infos = infos.unshift({name: initialQueryName, type: LOOKUP_TYPE}).toList();
 
+            const queryNameOptionExists =
+                initialQueryName && queries?.size > 0 ? queries.find(query => query.name === initialQueryName) !== undefined : true; // default to true without a selected queryName
+
             this.setState({
                 loading: false,
                 queries: infos,
                 initialQueryName,
+                queryNameOptionExists
             });
         });
     }
 
     render() {
-        const { id, onChange, value, name, disabled, lookupIsValid } = this.props;
-        const { loading, queries, initialQueryName } = this.state;
+        const { id, onChange, value, name, disabled, lookupIsValid, shouldDisableNonExists } = this.props;
+        const { loading, queries, initialQueryName, queryNameOptionExists } = this.state;
 
         const isEmpty = queries.size === 0;
         const hasValue = !!value;
         const blankOption = !hasValue && !isEmpty;
+        const disabledField = disabled || (shouldDisableNonExists && !queryNameOptionExists);
 
         return (
             <FormControl
                 componentClass="select"
-                disabled={loading || disabled}
+                disabled={loading || disabledField}
                 value={value}
                 id={id}
                 name={name}
                 onChange={onChange}
             >
-                {value && disabled && (
+                {value && disabledField && (
                     <option key="_disabled" value={value}>
                         {decodeLookup(value).queryName}
                     </option>

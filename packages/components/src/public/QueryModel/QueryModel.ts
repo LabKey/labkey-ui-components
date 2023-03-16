@@ -15,7 +15,7 @@ import { QueryColumn } from '../QueryColumn';
 import { caseInsensitive } from '../../internal/util/utils';
 import { naturalSort } from '../sort';
 import { PaginationData } from '../../internal/components/pagination/Pagination';
-import {SelectRowsOptions} from "../../internal/query/selectRows";
+import { SelectRowsOptions } from '../../internal/query/selectRows';
 
 export function flattenValuesFromRow(row: any, keys: string[]): { [key: string]: any } {
     const values = {};

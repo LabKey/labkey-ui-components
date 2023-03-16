@@ -602,7 +602,12 @@ export function withQueryModels<Props>(
             }
         };
 
-        loadQueryInfo = async (id: string, loadRows = false, loadSelections = false, reloadTotalCount = false): Promise<void> => {
+        loadQueryInfo = async (
+            id: string,
+            loadRows = false,
+            loadSelections = false,
+            reloadTotalCount = false
+        ): Promise<void> => {
             const { loadQueryInfo } = this.props.modelLoader;
 
             this.setState(

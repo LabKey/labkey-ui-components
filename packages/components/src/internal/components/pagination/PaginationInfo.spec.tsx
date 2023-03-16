@@ -3,8 +3,9 @@ import { mount } from 'enzyme';
 
 import { LoadingState } from '../../../public/LoadingState';
 
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
 import { PaginationInfo, PaginationInfoProps } from './PaginationInfo';
-import {LoadingSpinner} from "../base/LoadingSpinner";
 
 describe('PaginationInfo', () => {
     function getDefaultProps(): PaginationInfoProps {

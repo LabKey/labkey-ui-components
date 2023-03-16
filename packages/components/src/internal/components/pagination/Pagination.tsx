@@ -1,10 +1,11 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { ButtonGroup } from 'react-bootstrap';
 
+import { LoadingState } from '../../../public/LoadingState';
+
 import { PaginationButton } from './PaginationButton';
 import { PageMenu } from './PageMenu';
 import { PaginationInfo } from './PaginationInfo';
-import {LoadingState} from "../../../public/LoadingState";
 
 export interface PaginationData {
     currentPage: number;

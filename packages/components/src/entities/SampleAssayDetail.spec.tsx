@@ -51,7 +51,11 @@ const modelLoadedWithRow = makeTestQueryModel(
     { 1: { RowId: { value: 1 }, Name: { value: 'Name1' } } },
     ['1'],
     1
-).mutate({ queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADED, totalCountLoadingState: LoadingState.LOADED });
+).mutate({
+    queryInfoLoadingState: LoadingState.LOADED,
+    rowsLoadingState: LoadingState.LOADED,
+    totalCountLoadingState: LoadingState.LOADED,
+});
 const modelLoading = makeTestQueryModel(SQ).mutate({
     queryInfoLoadingState: LoadingState.LOADED,
     rowsLoadingState: LoadingState.LOADING,

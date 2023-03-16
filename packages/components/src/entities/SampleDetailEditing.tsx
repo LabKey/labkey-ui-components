@@ -32,6 +32,7 @@ interface Props extends EditableDetailPanelProps {
     api?: ComponentsAPIWrapper;
     noun?: string;
     sampleSet: string;
+    canBeInStorage?: boolean;
 }
 
 interface State {
@@ -95,7 +96,7 @@ class SampleDetailEditingImpl extends PureComponent<Props & NotificationsContext
             model: { detailColumns, updateColumns },
         } = this.props;
         const { sampleTypeDomainFields } = this.state;
-        return getGroupedSampleDisplayColumns(detailColumns, updateColumns, sampleTypeDomainFields, isAliquot);
+        return getGroupedSampleDisplayColumns(detailColumns, updateColumns, sampleTypeDomainFields, isAliquot, this.props.canBeInStorage);
     };
 
     getAliquotRootSampleQueryConfig = (): QueryConfig => {

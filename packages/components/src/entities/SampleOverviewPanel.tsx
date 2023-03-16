@@ -142,6 +142,7 @@ export const SampleOverviewPanel: FC<Props> = memo(props => {
                         model={sampleModel}
                         noun={noun}
                         sampleSet={sampleType}
+                        canBeInStorage={!isMedia}
                     />
                 </div>
                 {isMedia && isELNEnabled(moduleContext) && ReferencingNotebooksComponent && userCanReadNotebooks(user) && (

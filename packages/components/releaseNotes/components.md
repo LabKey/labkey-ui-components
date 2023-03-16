@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Issue 47408: Filter units in bulk update to match sample type display units
 
+### version 2.309.0
+*Released*: 16 March 2023
+* Fix sample field partitioning to account for media not in storage
+
 ### version 2.308.0
 *Released*: 14 March 2023
 * Issue #47326: Allow setting a default BarTender label

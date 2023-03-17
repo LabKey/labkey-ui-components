@@ -26955,12 +26955,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                                   value="http://www.w3.org/2001/XMLSchema#string|NIMHDemographics"
                                                                                                 >
                                                                                                   <option
-                                                                                                    key="_disabled"
-                                                                                                    value="http://www.w3.org/2001/XMLSchema#string|NIMHDemographics"
-                                                                                                  >
-                                                                                                    NIMHDemographics
-                                                                                                  </option>
-                                                                                                  <option
                                                                                                     disabled={true}
                                                                                                     key="_loading"
                                                                                                     value="http://www.w3.org/2001/XMLSchema#string|NIMHDemographics"
@@ -29276,12 +29270,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                                   onChange={[Function]}
                                                                                                   value="http://www.w3.org/2001/XMLSchema#string|NIMHDemographics"
                                                                                                 >
-                                                                                                  <option
-                                                                                                    key="_disabled"
-                                                                                                    value="http://www.w3.org/2001/XMLSchema#string|NIMHDemographics"
-                                                                                                  >
-                                                                                                    NIMHDemographics
-                                                                                                  </option>
                                                                                                   <option
                                                                                                     disabled={true}
                                                                                                     key="_loading"
@@ -35308,12 +35296,6 @@ exports[`ListDesignerPanel existing list 1`] = `
                                                                                                   onChange={[Function]}
                                                                                                   value="http://www.w3.org/2001/XMLSchema#string|LookUpToSampleset2"
                                                                                                 >
-                                                                                                  <option
-                                                                                                    key="_disabled"
-                                                                                                    value="http://www.w3.org/2001/XMLSchema#string|LookUpToSampleset2"
-                                                                                                  >
-                                                                                                    LookUpToSampleset2
-                                                                                                  </option>
                                                                                                   <option
                                                                                                     disabled={true}
                                                                                                     key="_loading"

@@ -513,10 +513,6 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                       value="Data"
                     >
                       <option
-                        key="_disabled"
-                        value="Data"
-                      />
-                      <option
                         disabled={true}
                         key="_loading"
                         value="Data"

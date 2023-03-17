@@ -41,6 +41,7 @@ export const GroupedFilterValues: FC<GroupedFilterProps> = memo(props => {
                                 filter={fieldFilter.filter}
                                 onFilterValueExpand={() => onFilterValueExpand(cardIndex, fieldFilter)}
                                 noValueInQueryFilterMsg={noValueInQueryFilterMsg}
+                                jsonType={fieldFilter.jsonType}
                             />
                         </td>
                     </tr>

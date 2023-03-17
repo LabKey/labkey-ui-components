@@ -11,6 +11,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * add option to reloadTotalCount via loadModel() and loadAllModels()
   * QueryModel action to resetTotalCountState for all models
 
+### version 2.309.0
+*Released*: 16 March 2023
+* Fix sample field partitioning to account for media not in storage
+
 ### version 2.308.0
 *Released*: 14 March 2023
 * Issue #47326: Allow setting a default BarTender label

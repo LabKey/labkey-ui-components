@@ -176,6 +176,31 @@ export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: bool
     return deleteMsg;
 }
 
+export const getDataClassTemplateUrl = (
+    queryInfo: QueryInfo,
+    exportConfig: any = {},
+    excludeColumns: string[] = ['flag', 'alias', 'lsid', 'Ancestors'],
+): string => {
+    const schemaQuery = queryInfo.schemaQuery;
+    if (!schemaQuery) return undefined;
+
+    // Issue 46593: if the table XML metadata override specifies a custom importTemplate, use it
+    if (queryInfo.importTemplates?.[0]?.url.toLowerCase().indexOf('exportexceltemplate.view') === -1) {
+        return queryInfo.importTemplates[0].url;
+    }
+
+    return ActionURL.buildURL('query', 'ExportExcelTemplate', null, {
+        ...exportConfig,
+        schemaName: schemaQuery.schemaName,
+        'query.queryName': schemaQuery.queryName,
+        headerType: 'DisplayFieldKey',
+        excludeColumn:  excludeColumns
+            ? excludeColumns.concat(queryInfo.getFileColumnFieldKeys())
+            : queryInfo.getFileColumnFieldKeys(),
+        filenamePrefix: schemaQuery.queryName,
+    });
+}
+
 export const getSampleTypeTemplateUrl = (
     queryInfo: QueryInfo,
     importAliases: Record<string, string>,
@@ -185,6 +210,11 @@ export const getSampleTypeTemplateUrl = (
     const { schemaQuery } = queryInfo;
     if (!schemaQuery) return undefined;
 
+    // Issue 46593: if the table XML metadata override specifies a custom importTemplate, use it
+    if (queryInfo.importTemplates?.[0]?.url.toLowerCase().indexOf('exportexceltemplate.view') === -1) {
+        return queryInfo.importTemplates[0].url;
+    }
+
     const disabledSysFields = [];
     queryInfo.disabledSystemFields?.forEach(field => {
         disabledSysFields.push(field.toLowerCase());
@@ -193,11 +223,6 @@ export const getSampleTypeTemplateUrl = (
     const extraColumns = SAMPLE_INSERT_EXTRA_COLUMNS.concat(Object.keys(importAliases || {})).filter(col => {
         return excludeColumns.indexOf(col) === -1 && disabledSysFields.indexOf(col.toLowerCase()) === -1;
     });
-
-    // Issue 46593: if the table XML metadata override specifies a custom importTemplate, use it
-    if (queryInfo.importTemplates?.[0]?.url.toLowerCase().indexOf('exportexceltemplate.view') === -1) {
-        return queryInfo.importTemplates[0].url;
-    }
 
     return ActionURL.buildURL('query', 'ExportExcelTemplate', null, {
         ...exportConfig,

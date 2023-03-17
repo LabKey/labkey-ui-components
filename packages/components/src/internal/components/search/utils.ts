@@ -245,6 +245,8 @@ export function getSampleFinderCommonConfigs(
         if (card.filterArray?.length) {
             card.filterArray.forEach(f => {
                 const filter = f.filter;
+                if (!filter) return;
+
                 const columnName = filter.getColumnName();
 
                 // The 'Name' field is redundant since we always add a column for the parent type ID
@@ -440,10 +442,13 @@ export function getFilterTypePlaceHolder(suffix: string, jsonType: string): stri
 }
 
 export function isChooseValuesFilter(filter: Filter.IFilter): boolean {
+    if (!filter) return;
+
     return CHOOSE_VALUE_FILTERS.indexOf(filter.getFilterType().getURLSuffix()) >= 0;
 }
 
 export function filterToJson(filter: Filter.IFilter): string {
+    if (!filter) return;
     return encodeURIComponent(filter.getURLParameterName()) + '=' + encodeURIComponent(filter.getURLParameterValue());
 }
 

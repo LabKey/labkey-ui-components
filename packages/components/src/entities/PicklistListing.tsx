@@ -96,7 +96,7 @@ const PicklistGridImpl: FC<PicklistGridProps & InjectedQueryModels> = memo(props
         deletePicklists(listsToDelete)
             .then(() => {
                 setShowDeleteModal(false);
-                actions.loadModel(queryModels[activeTabId].id, true);
+                actions.loadModel(queryModels[activeTabId].id, true, true);
                 createNotification('Successfully deleted ' + listsToDelete.length + ' pick' + noun + '.');
             })
             .catch(() => {

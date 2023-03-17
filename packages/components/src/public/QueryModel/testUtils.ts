@@ -81,6 +81,7 @@ export const makeTestActions = (mockFn = (): any => () => {}, overrides: Partial
         setView: mockFn(),
         setSelections: mockFn(),
         replaceSelections: mockFn(),
+        resetTotalCountState: mockFn(),
     };
     return Object.assign(defaultActions, overrides);
 };

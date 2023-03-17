@@ -28,22 +28,24 @@ export const GroupedFilterValues: FC<GroupedFilterProps> = memo(props => {
     const rows = [];
     Object.keys(groupedFilters).forEach((key, ind) => {
         groupedFilters[key].forEach((fieldFilter, index) => {
-            rows.push(
-                <tr
-                    key={key + '-' + index}
-                    className={classNames('filter-display__row', { 'filter-row-divider': ind > 0 })}
-                >
-                    {index === 0 && <td className="filter-display__field-label">{fieldFilter.fieldCaption}</td>}
-                    {index !== 0 && <td className="filter-display__field-boolean">and</td>}
-                    <td className="filter-display__filter-content">
-                        <FilterValueDisplay
-                            filter={fieldFilter.filter}
-                            onFilterValueExpand={() => onFilterValueExpand(cardIndex, fieldFilter)}
-                            noValueInQueryFilterMsg={noValueInQueryFilterMsg}
-                        />
-                    </td>
-                </tr>
-            );
+            if (fieldFilter.filter) {
+                rows.push(
+                    <tr
+                        key={key + '-' + index}
+                        className={classNames('filter-display__row', {'filter-row-divider': ind > 0})}
+                    >
+                        {index === 0 && <td className="filter-display__field-label">{fieldFilter.fieldCaption}</td>}
+                        {index !== 0 && <td className="filter-display__field-boolean">and</td>}
+                        <td className="filter-display__filter-content">
+                            <FilterValueDisplay
+                                filter={fieldFilter.filter}
+                                onFilterValueExpand={() => onFilterValueExpand(cardIndex, fieldFilter)}
+                                noValueInQueryFilterMsg={noValueInQueryFilterMsg}
+                            />
+                        </td>
+                    </tr>
+                );
+            }
         });
     });
     return <>{rows}</>;

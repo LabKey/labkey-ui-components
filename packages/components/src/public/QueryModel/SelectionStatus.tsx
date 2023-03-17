@@ -2,6 +2,8 @@ import React, { PureComponent, ReactNode } from 'react';
 
 import { Button } from 'react-bootstrap';
 
+import { LoadingSpinner } from '../../internal/components/base/LoadingSpinner';
+
 import { RequiresModelAndActions } from './withQueryModels';
 
 export class SelectionStatus extends PureComponent<RequiresModelAndActions> {
@@ -28,7 +30,7 @@ export class SelectionStatus extends PureComponent<RequiresModelAndActions> {
 
     render(): ReactNode {
         const { model } = this.props;
-        const { isLoading, isLoadingSelections, maxRows, rowCount, selections } = model;
+        const { isLoading, isLoadingSelections, isLoadingTotalCount, maxRows, rowCount, selections } = model;
 
         if (isLoading || isLoadingSelections || !selections) {
             return null;
@@ -42,7 +44,7 @@ export class SelectionStatus extends PureComponent<RequiresModelAndActions> {
         if (selectionSize > 0) {
             selectionCount = (
                 <span className="selection-status__count">
-                    {selectionSize} of {rowCount} selected
+                    {selectionSize} of {isLoadingTotalCount ? <LoadingSpinner msg="" /> : rowCount} selected
                 </span>
             );
 
@@ -59,7 +61,7 @@ export class SelectionStatus extends PureComponent<RequiresModelAndActions> {
             selectAllButton = (
                 <span className="selection-status__select-all">
                     <Button bsSize="xsmall" onClick={this.selectAll}>
-                        Select all {rowCount}
+                        Select all {!isLoadingTotalCount ? rowCount : ''}
                     </Button>
                 </span>
             );

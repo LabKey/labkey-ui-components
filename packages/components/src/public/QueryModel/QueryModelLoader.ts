@@ -115,20 +115,10 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
     },
     async loadRows(model) {
         const result = await selectRowsDeprecated({
+            ...model.loadRowsConfig,
             schemaName: model.schemaName,
             queryName: model.queryName,
-            viewName: model.viewName,
-            containerPath: model.containerPath,
-            containerFilter: model.containerFilter,
-            filterArray: model.filters,
-            sort: model.sortString,
-            columns: model.columnString,
-            maxRows: model.maxRows,
-            offset: model.offset,
-            parameters: model.queryParameters,
-            includeDetailsColumn: model.includeDetailsColumn,
-            includeUpdateColumn: model.includeUpdateColumn,
-            includeTotalCount: model.includeTotalCount,
+            includeTotalCount: false, // if requesting to includeTotalCount, it will be loaded separately via loadTotalCount
         });
         const { key, models, orderedModels, rowCount, messages } = result;
 

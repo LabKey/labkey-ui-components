@@ -118,7 +118,8 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
         this.setLastSelectedId();
         if (this.state.usersView !== prevState.usersView) {
             this.initQueryModel(this.state.usersView);
-        } else if (this.props.policy !== prevProps.policy) {
+        } else if (prevProps.policy !== undefined && this.props.policy !== prevProps.policy) {
+            // if we had a policy and it changed (ex. user was deactivated or deleted from detail panel), then load model
             this.reloadUsersModel();
         }
     }
@@ -131,7 +132,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
     }
 
     initQueryModel(usersView: string) {
-        const { actions, user } = this.props;
+        const { actions } = this.props;
         const baseFilters = usersView === 'all' ? [] : [Filter.create('active', usersView === 'active')];
 
         actions.addModel(
@@ -185,7 +186,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
     };
 
     reloadUsersModel(): void {
-        this.props.actions.loadModel(this.getUsersModelId(), true);
+        this.props.actions.loadModel(this.getUsersModelId(), true, true);
     }
 
     onUsersStateChangeComplete = (response: any, resetSelection = true): void => {

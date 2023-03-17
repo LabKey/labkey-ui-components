@@ -126,13 +126,12 @@ export class TargetTableSelect extends React.PureComponent<ITargetTableSelectPro
 
 export interface ITargetTableSelectImplState {
     containerPath?: string;
+    initialQueryName?: string;
     loading?: boolean;
     prevPath?: string;
     prevSchemaName?: string;
     queries?: List<{ name: string; type: PropDescType }>;
-    initialQueryName?: string;
     queryNameOptionExists?: boolean;
-
 }
 
 export type TargetTableSelectProps = ITargetTableSelectProps & ILookupProps;
@@ -140,7 +139,7 @@ export type TargetTableSelectProps = ITargetTableSelectProps & ILookupProps;
 class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITargetTableSelectImplState> {
     static defaultProps = {
         shouldDisableNonExists: true,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -208,17 +207,18 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
 
             const initialQueryName = value ? decodeLookup(value).queryName : undefined;
 
-            if (!lookupIsValid)
-                infos = infos.unshift({name: initialQueryName, type: LOOKUP_TYPE}).toList();
+            if (!lookupIsValid) infos = infos.unshift({ name: initialQueryName, type: LOOKUP_TYPE }).toList();
 
             const queryNameOptionExists =
-                initialQueryName && queries?.size > 0 ? queries.find(query => query.name === initialQueryName) !== undefined : true; // default to true without a selected queryName
+                initialQueryName && queries?.size > 0
+                    ? queries.find(query => query.name === initialQueryName) !== undefined
+                    : true; // default to true without a selected queryName
 
             this.setState({
                 loading: false,
                 queries: infos,
                 initialQueryName,
-                queryNameOptionExists
+                queryNameOptionExists,
             });
         });
     }
@@ -256,16 +256,21 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
                     .map(q => {
                         const encoded = encodeLookup(q.name, q.type);
                         return (
-                            <option key={encoded}
-                                    value={encoded}
-                                    disabled={
-                                        // Disable if it is an invalid lookup query saved on the property descriptor and
-                                        // not the selected value
-                                        !lookupIsValid && q.name === initialQueryName
-                                        && decodeLookup(value).queryName !== q.name}
+                            <option
+                                key={encoded}
+                                value={encoded}
+                                disabled={
+                                    // Disable if it is an invalid lookup query saved on the property descriptor and
+                                    // not the selected value
+                                    !lookupIsValid &&
+                                    q.name === initialQueryName &&
+                                    decodeLookup(value).queryName !== q.name
+                                }
                             >
                                 {q.name} (
-                                    {!lookupIsValid && q.name === initialQueryName ? 'Unknown' : q.type.shortDisplay || q.type.display}
+                                {!lookupIsValid && q.name === initialQueryName
+                                    ? 'Unknown'
+                                    : q.type.shortDisplay || q.type.display}
                                 )
                             </option>
                         );

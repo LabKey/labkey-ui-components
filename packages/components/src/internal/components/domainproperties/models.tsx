@@ -500,11 +500,11 @@ export class DomainIndex
 
 export enum FieldErrors {
     ALIQUOT_ONLY_REQUIRED = "Fields that are 'Editable for aliquots only' cannot be 'Required'.",
+    INVALID_LOOKUP = 'Lookup target table does not exist.',
     MISSING_DATA_TYPE = 'Please provide a data type for each field.',
     MISSING_FIELD_NAME = 'Please provide a name for each field.',
     MISSING_ONTOLOGY_PROPERTIES = 'Missing required ontology source or label field property.',
     MISSING_SCHEMA_QUERY = 'Missing required lookup target schema or table property.',
-    INVALID_LOOKUP = 'Lookup target table does not exist.',
     NONE = '',
 }
 

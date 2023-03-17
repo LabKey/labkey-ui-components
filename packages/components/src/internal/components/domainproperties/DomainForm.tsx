@@ -120,21 +120,28 @@ interface IDomainFormInput {
     headerTitle?: string;
     helpNoun?: string;
     helpTopic?: string;
-    index?: number; // Used in AssayDesignerPanels for distinguishing FileAttachmentForms
+    // Used in AssayDesignerPanels for distinguishing FileAttachmentForms
+    index?: number;
+    initCollapsed?: boolean;
     isNew?: boolean;
-    maxPhiLevel?: string; // Just for testing, only affects display
-    modelDomains?: List<DomainDesign>; // Set of domains that encompass the full protocol, that may impact validation or alerts
-    newFieldConfig?: Partial<IDomainField>; // used to initialize newly added fields
+    // Just for testing, only affects display
+    maxPhiLevel?: string;
+    // Set of domains that encompass the full protocol, that may impact validation or alerts
+    modelDomains?: List<DomainDesign>;
+    // used to initialize newly added fields
+    newFieldConfig?: Partial<IDomainField>;
     onChange: (newDomain: DomainDesign, dirty: boolean, rowIndexChange?: DomainFieldIndexChange[]) => any;
     onToggle?: (collapsed: boolean, callback?: () => any) => any;
     panelStatus?: DomainPanelStatus;
-    queryName?: string; // the queryName to use for text choice distinct value query, overrides schema/query on domain prop
-    schemaName?: string; // the schemaName to use for text choice distinct value query, overrides schema/query on domain prop
-    setFileImportData?: (file: File, shouldImportData: boolean) => any; // having this prop set is also an indicator that you want to show the file preview grid with the import data option
+    // the queryName to use for text choice distinct value query, overrides schema/query on domain prop
+    queryName?: string;
+    // the schemaName to use for text choice distinct value query, overrides schema/query on domain prop
+    schemaName?: string;
     showHeader?: boolean;
     successBsStyle?: string;
     systemFields?: SystemField[];
-    initCollapsed?: boolean;
+    // having this prop set is also an indicator that you want to show the file preview grid with the import data option
+    setFileImportData?: (file: File, shouldImportData: boolean) => any;
     testMode?: boolean;
     todoIconHelpMsg?: string;
     useTheme?: boolean;

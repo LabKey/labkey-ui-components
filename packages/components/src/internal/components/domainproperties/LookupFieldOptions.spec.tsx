@@ -102,7 +102,7 @@ describe('LookupFieldOptions', () => {
                             original: field,
                             lookupSchema: _schema,
                             lookupQueryValue: _query,
-                            lookupIsValid: true
+                            lookupIsValid: true,
                         })
                     }
                     lookupContainer={_container}
@@ -300,7 +300,7 @@ describe('LookupFieldOptions', () => {
                                     original: field,
                                     lookupSchema: _schema2,
                                     lookupQueryValue: '',
-                                    lookupIsValid: true
+                                    lookupIsValid: true,
                                 })
                             }
                             lookupContainer={_container}
@@ -353,7 +353,7 @@ describe('LookupFieldOptions', () => {
                             original: field,
                             lookupSchema: _schema1,
                             lookupQueryValue: _query1,
-                            lookupIsValid: true
+                            lookupIsValid: true,
                         })
                     }
                     lookupContainer={_container1}
@@ -381,7 +381,7 @@ describe('LookupFieldOptions', () => {
                                 original: field,
                                 lookupSchema: '',
                                 lookupQueryValue: '',
-                                lookupIsValid: true
+                                lookupIsValid: true,
                             })
                         }
                         lookupContainer={_container2}
@@ -462,15 +462,15 @@ describe('LookupFieldOptions', () => {
                             original: field,
                             lookupSchema: 'exp',
                             lookupQueryValue: _invalidLookup,
-                            lookupIsValid: false
+                            lookupIsValid: false,
                         })
                     }
-                    lookupContainer={'/StudyVerifyProject'}
+                    lookupContainer="/StudyVerifyProject"
                     onChange={jest.fn()}
                     onMultiChange={jest.fn()}
                     index={_index}
                     domainIndex={_domainIndex}
-                    label={'Lookup Field Options'}
+                    label="Lookup Field Options"
                     lockType={DOMAIN_FIELD_NOT_LOCKED}
                 />
             </MockLookupProvider>

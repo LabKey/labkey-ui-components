@@ -237,7 +237,6 @@ export function getCommonDataValues(data: Map<any, any>): any {
     let fieldsInConflict = ImmutableSet<string>();
     let emptyFields = ImmutableSet<string>(); // those fields that are empty
     data.map((rowData, id) => {
-        // const rowData = data.get(id);
         if (rowData) {
             rowData.forEach((data, key) => {
                 if (!fieldsInConflict.has(key)) {

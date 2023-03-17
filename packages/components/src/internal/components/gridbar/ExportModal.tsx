@@ -65,7 +65,7 @@ export const ExportModal: FC<ExportModalProperties> = memo(props => {
                         {tabOrder.map(modelId => {
                             const model = queryModels[modelId];
                             let rowCountDisplay = model.rowCount;
-                            if (rowCountDisplay === undefined && !(model.rowsLoadingState === LoadingState.LOADING))
+                            if (rowCountDisplay === undefined && !model.isLoadingTotalCount)
                                 rowCountDisplay = tabRowCounts?.[modelId];
 
                             return (

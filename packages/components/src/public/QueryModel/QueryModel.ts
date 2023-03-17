@@ -927,6 +927,13 @@ export class QueryModel {
     }
 
     /**
+     * True if the QueryModel is actively loading its total count, or if it's loading rows (which might include total count).
+     */
+    get isActivelyLoadingTotalCount(): boolean {
+        return this.rowsLoadingState === LoadingState.LOADING || this.totalCountLoadingState === LoadingState.LOADING;
+    }
+
+    /**
      * True if the current page is the last page for the given QueryModel rows.
      */
     get isLastPage(): boolean {

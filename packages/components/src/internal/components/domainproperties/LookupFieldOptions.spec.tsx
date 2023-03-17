@@ -441,4 +441,49 @@ describe('LookupFieldOptions', () => {
         validateDisabled(DOMAIN_FIELD_PARTIALLY_LOCKED, true);
         validateDisabled(DOMAIN_FIELD_FULLY_LOCKED, true);
     });
+
+    test('Invalid lookup', () => {
+        const _index = 1;
+        const _domainIndex = 1;
+        const _invalidLookup = 'rangeURI|InvalidLookup';
+
+        const field = DomainField.create({
+            name: 'key',
+            rangeURI: INT_RANGE_URI,
+            propertyId: 1,
+            propertyURI: 'test',
+        });
+
+        const lookupField = mount(
+            <MockLookupProvider>
+                <LookupFieldOptions
+                    field={
+                        new DomainField({
+                            original: field,
+                            lookupSchema: 'exp',
+                            lookupQueryValue: _invalidLookup,
+                            lookupIsValid: false
+                        })
+                    }
+                    lookupContainer={'/StudyVerifyProject'}
+                    onChange={jest.fn()}
+                    onMultiChange={jest.fn()}
+                    index={_index}
+                    domainIndex={_domainIndex}
+                    label={'Lookup Field Options'}
+                    lockType={DOMAIN_FIELD_NOT_LOCKED}
+                />
+            </MockLookupProvider>
+        );
+
+        // Query
+        const queryField = queryFieldSelector(lookupField, _domainIndex, _index);
+
+        return waitForLoad(queryField).then(() => {
+            // Verify query field
+            expect(queryField.state().queries.size).toEqual(4); // exp queries plus unknown query
+            expect(queryField.props().value).toEqual(_invalidLookup);
+            lookupField.unmount();
+        });
+    });
 });

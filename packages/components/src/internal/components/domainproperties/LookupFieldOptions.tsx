@@ -111,7 +111,7 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                             schemaName={lookupSchema}
                             value={lookupQueryValue}
                             lookupIsValid={lookupIsValid}
-                            shouldDisableNonExists={!wrappedColumnName}
+                            shouldDisableNonExists={!wrappedColumnName && lookupIsValid} // Only disable non-wrapped fields with valid lookup value if the value is not in the query list
                         />
                     </Col>
                     <Col xs={6}>

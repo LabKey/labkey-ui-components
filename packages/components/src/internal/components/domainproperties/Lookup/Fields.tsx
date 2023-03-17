@@ -104,7 +104,7 @@ interface ITargetTableSelectProps {
     lookupURI?: string;
     onChange: (any) => any;
     schemaName: string;
-    shouldDisableNonExists?: boolean;
+    shouldDisableNonExists?: boolean; // Only certain fields should be disabled if the lookup value does not exist in the options
     value?: any;
 }
 

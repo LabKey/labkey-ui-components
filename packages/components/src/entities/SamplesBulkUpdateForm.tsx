@@ -229,6 +229,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
         return (
             <BulkUpdateForm
                 containerFilter={containerFilter}
+                displayValueFields={['StoredAmount', 'Units']}
                 singularNoun={selectedNoun}
                 pluralNoun={`${selectedNoun}s`}
                 itemLabel={sampleSetLabel}

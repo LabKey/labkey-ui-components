@@ -16,6 +16,7 @@ import { QueryInfoForm } from './QueryInfoForm';
 interface Props {
     canSubmitForEdit: boolean;
     containerFilter?: Query.ContainerFilter;
+    displayValueFields?: string[];
     header?: ReactNode;
     itemLabel?: string;
     onAdditionalFormDataChange?: (name: string, value: any) => any;
@@ -44,7 +45,9 @@ interface Props {
 }
 
 interface State {
+    originalDataForSelection: Map<string, any>;
     dataForSelection: Map<string, any>;
+    displayFieldUpdates: any;
     dataIdsForSelection: List<any>;
     errorMsg: string;
     isLoadingDataForSelection: boolean;
@@ -60,7 +63,9 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
         super(props);
 
         this.state = {
+            originalDataForSelection: undefined,
             dataForSelection: undefined,
+            displayFieldUpdates: {},
             dataIdsForSelection: undefined,
             errorMsg: undefined,
             isLoadingDataForSelection: true,
@@ -99,8 +104,11 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
                 undefined,
                 viewName
             );
+            const mappedData = this.mapDataForDisplayFields(data);
             this.setState({
-                dataForSelection: data,
+                originalDataForSelection: data,
+                dataForSelection: mappedData.data,
+                displayFieldUpdates: mappedData.bulkUpdates,
                 dataIdsForSelection: dataIds,
                 isLoadingDataForSelection: false,
             });
@@ -110,6 +118,32 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
             onCancel();
         }
     };
+
+    mapDataForDisplayFields(data: Map<string, any>): {data: Map<string, any>, bulkUpdates:OrderedMap<string, any>} {
+        const { displayValueFields } = this.props;
+        let updates = Map<string, any>();
+        let bulkUpdates = OrderedMap<string, any>();
+        if (!displayValueFields)
+            return { data, bulkUpdates };
+
+        data.forEach((rowData, id) => {
+            if (rowData) {
+                let updatedRow = Map<string, any>();
+                rowData.forEach((field, key) => {
+                    if (displayValueFields.includes(key) && field.has('displayValue') && field.get('value') !== field.get('displayValue')) {
+                        bulkUpdates = bulkUpdates.set(key, field.get('displayValue'));
+                        field = field.set('value', field.get('displayValue'));
+                        updatedRow = updatedRow.set(key, field);
+                    }
+                });
+                if (!updatedRow.isEmpty())
+                    updates = updates.set(id, updatedRow);
+            }
+        });
+        if (!updates.isEmpty())
+            return {data: data.merge(updates), bulkUpdates};
+        return {data, bulkUpdates};
+    }
 
     getSelectionCount(): number {
         return this.props.selectedIds.size;
@@ -131,10 +165,12 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
         return col.isUpdateColumn && (!lcUniqueFieldKey || col.name.toLowerCase() !== lcUniqueFieldKey);
     };
 
-    onSubmit = (data): Promise<any> => {
+    onSubmit = (data: any): Promise<any> => {
         const { queryInfo, updateRows } = this.props;
+        const { displayFieldUpdates } = this.state;
+        const updateData = displayFieldUpdates.merge(data);
         const rows = !Utils.isEmptyObj(data)
-            ? getUpdatedData(this.state.dataForSelection, data, queryInfo.pkCols, queryInfo.altUpdateKeys)
+            ? getUpdatedData(this.state.originalDataForSelection, updateData, queryInfo.pkCols, queryInfo.altUpdateKeys)
             : [];
 
         return updateRows(queryInfo.schemaQuery, rows);

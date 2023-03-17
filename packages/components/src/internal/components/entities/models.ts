@@ -512,6 +512,7 @@ export interface IEntityTypeDetails extends IEntityDetails {
  *     typeListingSchemaQuery: SchemaQuery; // The schema query used to get the listing of all of the data type instances (e.g., all the data classes) available
  */
 export interface EntityDataType {
+    allRelativeDateFilter?: boolean;
     ancestorColumnName?: string;
     appUrlPrefixParts?: string[];
     containerFilter?: Query.ContainerFilter;

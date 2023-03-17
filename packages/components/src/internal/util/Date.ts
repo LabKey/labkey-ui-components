@@ -225,3 +225,14 @@ export function filterDate(date: Date, start: Date, end: Date) {
 
     return dateOnly >= start && dateOnly <= end;
 }
+
+const RELATIVE_DAYS_REGEX = /^[+-]?\d+d$/;
+export function isRelativeDateFilterValue(val: string) : boolean{
+    if (!val == null)
+        return false;
+
+    if (typeof val !== 'string')
+        return false;
+
+    return RELATIVE_DAYS_REGEX.test(val);
+}

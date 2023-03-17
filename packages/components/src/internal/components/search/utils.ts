@@ -451,8 +451,9 @@ export function getSearchFilterObjs(filterProps: FilterProps[]): any[] {
     const filterPropsObj = [];
 
     filterProps.forEach(filterProp => {
-        const filterPropsEntityDataType = { ...filterProp.entityDataType };
-        const filterPropObj = { ...filterProp, entityDataType: filterPropsEntityDataType };
+        const filterPropObj = { ...filterProp };
+        delete filterPropObj['entityDataType'];
+        filterPropObj['entityTypeNoun'] = filterProp.entityDataType.nounAsParentSingular;
 
         const filterArrayObjs = [];
         [...filterPropObj.filterArray].forEach(field => {
@@ -464,15 +465,6 @@ export function getSearchFilterObjs(filterProps: FilterProps[]): any[] {
             });
         });
         filterPropObj.filterArray = filterArrayObjs;
-
-        const entityDataFilterArrayObjs = [];
-        if (filterPropObj.entityDataType.filterArray?.length > 0) {
-            [...filterPropObj.entityDataType.filterArray].forEach(filter => {
-                entityDataFilterArrayObjs.push(filterToJson(filter));
-            });
-
-            filterPropObj.entityDataType.filterArray = entityDataFilterArrayObjs;
-        }
 
         filterPropsObj.push(filterPropObj);
     });
@@ -495,8 +487,13 @@ export function searchFiltersToJson(
 
 export function getSearchFiltersFromObjs(
     filterPropsObj: any[],
+    entityTypes: EntityDataType[],
     assaySampleCols?: { [key: string]: AssaySampleColumnProp }
 ): FilterProps[] {
+    const entityTypeMap = {};
+    entityTypes?.forEach(entityType => {
+        entityTypeMap[entityType.nounAsParentSingular] = entityType;
+    })
     const filters: FilterProps[] = [];
     filterPropsObj.forEach(filterPropObj => {
         const filterArray = [];
@@ -510,19 +507,17 @@ export function getSearchFiltersFromObjs(
         });
         filterPropObj.filterArray = filterArray;
 
-        if (filterPropObj.entityDataType?.filterArray) {
-            const filterArray = [];
-            filterPropObj.entityDataType?.filterArray?.forEach(filter => {
-                filterArray.push(filterFromJson(filter));
-            });
+        const entityNounAsParentSingular = filterPropObj['entityTypeNoun'] ?? filterPropObj.entityDataType?.nounAsParentSingular;
 
-            filterPropObj.entityDataType.filterArray = filterArray;
-        }
+        delete filterPropObj['entityDataType'];
+        delete filterPropObj['entityTypeNoun'];
 
-        if (filterPropObj.entityDataType?.descriptionSingular === AssayResultDataType.descriptionSingular) {
-            filterPropObj.entityDataType.getInstanceSchemaQuery = AssayResultDataType.getInstanceSchemaQuery;
-            filterPropObj.entityDataType.getInstanceDataType = AssayResultDataType.getInstanceDataType;
+        const entityDataType = entityTypeMap[entityNounAsParentSingular];
 
+        filterPropObj['entityDataType'] = entityDataType;
+
+        const isAssayResult = filterPropObj.entityDataType.nounAsParentSingular === AssayResultDataType.nounAsParentSingular;
+        if (isAssayResult) {
             // when Finding from assays grid, the json lacks certain properties
             if (!filterPropObj.selectColumnFieldKey && assaySampleCols) {
                 const assayDesign = AssayResultDataType.getInstanceDataType(filterPropObj.schemaQuery);
@@ -543,6 +538,7 @@ export function getSearchFiltersFromObjs(
 
 export function searchFiltersFromJson(
     filterPropsStr: string,
+    entityTypes: EntityDataType[],
     assaySampleCols?: { [key: string]: AssaySampleColumnProp }
 ): SearchSessionStorageProps {
     const obj = JSON.parse(filterPropsStr);
@@ -551,7 +547,7 @@ export function searchFiltersFromJson(
     const filterTimestamp: string = obj.filterTimestamp;
 
     return {
-        filters: getSearchFiltersFromObjs(filterPropsObj, assaySampleCols),
+        filters: getSearchFiltersFromObjs(filterPropsObj, entityTypes, assaySampleCols),
         filterChangeCounter,
         filterTimestamp,
     };

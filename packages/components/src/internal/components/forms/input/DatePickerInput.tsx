@@ -18,7 +18,13 @@ import { withFormsy } from 'formsy-react';
 import DatePicker from 'react-datepicker';
 
 import { FieldLabel } from '../FieldLabel';
-import { getColDateFormat, getJsonDateTimeFormatString, isDateTimeCol, parseDate } from '../../../util/Date';
+import {
+    getColDateFormat,
+    getJsonDateTimeFormatString,
+    isDateTimeCol,
+    isRelativeDateFilterValue,
+    parseDate
+} from '../../../util/Date';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
 import { WithFormsyProps } from '../constants';
@@ -40,7 +46,7 @@ export interface DatePickerInputProps extends DisableableInputProps, WithFormsyP
     label?: any;
     labelClassName?: string;
     name?: string;
-    onChange?: (newDate?: Date) => void;
+    onChange?: (newDate?: Date | string) => void;
     onKeyDown?: (event: React.KeyboardEvent<HTMLElement>) => void;
     placeholderText?: string;
     queryColumn: QueryColumn;
@@ -48,11 +54,13 @@ export interface DatePickerInputProps extends DisableableInputProps, WithFormsyP
     showLabel?: boolean;
     value?: any;
     wrapperClassName?: string;
+    allowRelativeInput?: boolean;
 }
 
 interface DatePickerInputState extends DisableableInputState {
     invalid: boolean;
     selectedDate: any;
+    relativeInputValue?: string;
 }
 
 // export for jest testing
@@ -91,6 +99,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
             isDisabled: props.initiallyDisabled,
             selectedDate: initDate,
             invalid,
+            relativeInputValue: undefined
         };
     }
 
@@ -111,17 +120,31 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
         // to parseDate when getting the initial value.
         const dateFormat = props.initValueFormatted ? this.getDateFormat() : undefined;
 
+        if (props.allowRelativeInput && isRelativeDateFilterValue(props.value))
+            return undefined;
+
         return props.value ? parseDate(props.value, dateFormat) : undefined;
     }
 
     onChange = (date: Date): void => {
         this.setState({ selectedDate: date, invalid: false });
 
-        this.props.onChange?.(date);
+        this.props.onChange?.(this.state.relativeInputValue ? this.state.relativeInputValue : date);
 
         // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
         if (this.props.formsy) {
             this.props.setValue?.(getJsonDateTimeFormatString(date));
+        }
+    };
+
+    onChangeRaw = (event?: any) : void => {
+        const value = event?.target?.value;
+        const isRelativeDateInput = isRelativeDateFilterValue(event?.target?.value);
+        if (isRelativeDateInput) {
+            this.setState({ relativeInputValue: value });
+            this.props.onChange?.(value);
+        } else {
+            this.setState({ relativeInputValue: undefined });
         }
     };
 
@@ -153,9 +176,13 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
             autoFocus,
             isFormInput,
             onKeyDown,
+            value,
+            allowRelativeInput
         } = this.props;
 
         const { isDisabled, selectedDate, invalid } = this.state;
+
+        const initVal = allowRelativeInput && isRelativeDateFilterValue(value) ? value: undefined;
 
         const picker = (
             <DatePicker
@@ -168,11 +195,13 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
                 disabled={isDisabled || invalid}
                 selected={selectedDate}
                 onChange={this.onChange}
+                onChangeRaw={allowRelativeInput ? this.onChangeRaw : undefined}
                 showTimeSelect={this.shouldShowTime()}
                 placeholderText={placeholderText ?? `Select ${queryColumn.caption.toLowerCase()}`}
                 dateFormat={this.getDateFormat()}
                 autoFocus={autoFocus}
                 onKeyDown={onKeyDown}
+                value={initVal}
             />
         );
 

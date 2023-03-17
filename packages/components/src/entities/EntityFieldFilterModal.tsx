@@ -70,6 +70,7 @@ export const EntityFieldFilterModal: FC<EntityFieldFilterModalProps> = memo(prop
         metricFeatureArea,
     } = props;
 
+    const allRelativeDateFilter = entityDataType.allRelativeDateFilter;
     const capParentNoun = capitalizeFirstChar(entityDataType.nounAsParentSingular);
     const [activeQuery, setActiveQuery] = useState<string>();
     const [activeQueryInfo, setActiveQueryInfo] = useState<QueryInfo>();
@@ -288,6 +289,7 @@ export const EntityFieldFilterModal: FC<EntityFieldFilterModalProps> = memo(prop
                         </div>
                     </Col>
                     <QueryFilterPanel
+                        allRelativeDateFilter={allRelativeDateFilter}
                         api={api}
                         emptyMsg={fieldsEmptyMsg}
                         entityDataType={entityDataType}

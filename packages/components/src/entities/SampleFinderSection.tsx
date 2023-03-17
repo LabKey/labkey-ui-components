@@ -175,7 +175,7 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
 
         const finderSessionDataStr = sessionStorage.getItem(getSampleFinderLocalStorageKey());
         if (finderSessionDataStr) {
-            const finderSessionData = searchFiltersFromJson(finderSessionDataStr, assaySampleCols);
+            const finderSessionData = searchFiltersFromJson(finderSessionDataStr, parentEntityDataTypes, assaySampleCols);
             if (finderSessionData?.filters?.length > 0 && finderSessionData?.filterTimestamp) {
                 setUnsavedSessionViewName(finderSessionData.filterTimestamp);
             }
@@ -339,7 +339,7 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
             }
             if (!cardJson) return;
 
-            const finderSessionData = searchFiltersFromJson(cardJson, assaySampleIdCols);
+            const finderSessionData = searchFiltersFromJson(cardJson, parentEntityDataTypes, assaySampleIdCols);
             const newFilters = finderSessionData.filters;
             if (!newFilters) return;
 
@@ -347,7 +347,7 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
             setShowSaveViewDialog(false);
             setCurrentView(view);
         },
-        [createNotification, filterChangeCounter, updateFilters, assaySampleIdCols]
+        [createNotification, filterChangeCounter, updateFilters, assaySampleIdCols, parentEntityDataTypes]
     );
 
     const onSaveComplete = useCallback((view: FinderReport) => {

@@ -30,6 +30,7 @@ const DEFAULT_VIEW_NAME = ''; // always use default view for selection, if none 
 const CHOOSE_VALUES_TAB_KEY = 'Choose values';
 
 interface Props {
+    allRelativeDateFilter?: boolean;
     api?: ComponentsAPIWrapper;
     asRow?: boolean;
     emptyMsg?: string;
@@ -51,6 +52,7 @@ interface Props {
 
 export const QueryFilterPanel: FC<Props> = memo(props => {
     const {
+        allRelativeDateFilter,
         hasNotInQueryFilter,
         asRow,
         api,
@@ -286,6 +288,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                         </div>
                                         {activeTab === FieldFilterTabs.Filter && (
                                             <FilterExpressionView
+                                                allRelativeDateFilter={allRelativeDateFilter}
                                                 key={activeFieldKey}
                                                 field={activeField}
                                                 fieldFilters={currentFieldFilters?.map(filter => filter.filter)}

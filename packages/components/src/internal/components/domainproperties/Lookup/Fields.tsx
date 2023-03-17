@@ -126,12 +126,12 @@ export class TargetTableSelect extends React.PureComponent<ITargetTableSelectPro
 
 export interface ITargetTableSelectImplState {
     containerPath?: string;
+    initialQueryInvalid?: boolean;
     initialQueryName?: string;
     loading?: boolean;
     prevPath?: string;
     prevSchemaName?: string;
     queries?: List<{ name: string; type: PropDescType }>;
-    queryNameOptionExists?: boolean;
 }
 
 export type TargetTableSelectProps = ITargetTableSelectProps & ILookupProps;
@@ -209,28 +209,30 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
 
             if (!lookupIsValid) infos = infos.unshift({ name: initialQueryName, type: LOOKUP_TYPE }).toList();
 
-            const queryNameOptionExists =
-                initialQueryName && queries?.size > 0
-                    ? queries.find(query => query.name === initialQueryName) !== undefined
-                    : true; // default to true without a selected queryName
-
             this.setState({
                 loading: false,
                 queries: infos,
                 initialQueryName,
-                queryNameOptionExists,
+                initialQueryInvalid: !lookupIsValid
             });
         });
     }
 
     render() {
         const { id, onChange, value, name, disabled, lookupIsValid, shouldDisableNonExists } = this.props;
-        const { loading, queries, initialQueryName, queryNameOptionExists } = this.state;
+        const { loading, queries, initialQueryName, initialQueryInvalid } = this.state;
 
         const isEmpty = queries.size === 0;
         const hasValue = !!value;
         const blankOption = !hasValue && !isEmpty;
-        const disabledField = disabled || (shouldDisableNonExists && !queryNameOptionExists);
+
+        const queryNameOptionExists =
+            initialQueryName && queries?.size > 0
+                ? queries.find(query => query.name === initialQueryName) !== undefined
+                : true; // default to true without a selected queryName
+
+        // Certain cases disable the lookup field for a valid query that is not in the list of queries
+        const disabledField = disabled || (shouldDisableNonExists && !queryNameOptionExists && lookupIsValid);
 
         return (
             <FormControl
@@ -260,9 +262,8 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
                                 key={encoded}
                                 value={encoded}
                                 disabled={
-                                    // Disable if it is an invalid lookup query saved on the property descriptor and
-                                    // not the selected value
-                                    !lookupIsValid &&
+                                    // Disable if it is the initial query and it is an invalid lookup
+                                    initialQueryInvalid &&
                                     q.name === initialQueryName &&
                                     decodeLookup(value).queryName !== q.name
                                 }

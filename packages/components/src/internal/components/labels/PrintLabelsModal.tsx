@@ -30,6 +30,7 @@ export interface PrintModalProps {
 interface State {
     error: any;
     labelTemplate: number;
+    loadingSelections: boolean;
     numCopies: number;
     sampleCount: number;
     submitting: boolean;
@@ -56,6 +57,7 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
         this.state = {
             error: undefined,
             labelTemplate: props.defaultLabel,
+            loadingSelections: true,
             numCopies: 1,
             sampleCount: props.sampleIds.length,
             submitting: false,
@@ -77,7 +79,9 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (!this.getModel().isLoading && prevProps.queryModels[this._modelId].isLoading) {
+        // only set initial model selections once after the loadingSelections state changes to LOADED
+        if (this.state.loadingSelections && !this.getModel().isLoadingSelections) {
+            this.setState(() => ({ loadingSelections: false }));
             this.props.actions.setSelections(this._modelId, true, this.props.sampleIds);
         }
     }

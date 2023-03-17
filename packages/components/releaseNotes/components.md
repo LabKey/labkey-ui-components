@@ -1,6 +1,16 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.310.0
+*Released*: 17 March 2023
+* withQueryModels to separate query to get the totalCount from the query to get the model data rows
+  * loadRows query to always use includeTotalCount false and then conditionally make a second query with includeTotalCount true
+  * update Pagination and SelectionStatus to wait for new totalCountLoadingState
+  * PaginationInfo update to include loading check for max/rowCount text display
+  * reset totalCountLoadingState when filters change on a QueryModel since we need to reload totalRowCount
+  * add option to reloadTotalCount via loadModel() and loadAllModels()
+  * QueryModel action to resetTotalCountState for all models
+
 ### version 2.309.0
 *Released*: 16 March 2023
 * Fix sample field partitioning to account for media not in storage
@@ -19,7 +29,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.307.1
 *Released*: 8 March 2023
 * Merge release23.2-SNAPSHOT to develop:
-    * includes changes from 2.302.1 and 2.302.2
+  * includes changes from 2.302.1 and 2.302.2
 
 ### version 2.307.0
 *Released*: 7 March 2023

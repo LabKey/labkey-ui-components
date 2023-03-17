@@ -203,8 +203,16 @@ const FindSamplesByIdsPageBaseImpl: FC<Props> = memo(props => {
         if (!sampleListModelId) return;
 
         const model = queryModels[sampleListModelId];
-        if (model && !model.isLoading && model.rowCount > 0) actions.selectAllRows(sampleListModelId);
-    }, [sampleListModelId, queryModels[sampleListModelId]?.isLoading]);
+        if (model && !model.isLoading && !model.isLoadingTotalCount && model.rowCount > 0) {
+            actions.selectAllRows(sampleListModelId);
+        }
+    }, [
+        // execute the useEffect when the loading state is done so that after the totalRowCount is finished loading
+        // we call selectAllRows just one time
+        sampleListModelId,
+        queryModels[sampleListModelId]?.isLoading,
+        queryModels[sampleListModelId]?.isLoadingTotalCount,
+    ]);
 
     const listModel = useMemo(() => {
         if (sampleListModelId) {

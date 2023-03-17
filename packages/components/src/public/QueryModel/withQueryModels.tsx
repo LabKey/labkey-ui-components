@@ -14,6 +14,8 @@ import { isLoading, LoadingState } from '../LoadingState';
 import { naturalSort } from '../sort';
 import { resolveErrorMessage } from '../../internal/util/messaging';
 
+import { selectRows } from '../../internal/query/selectRows';
+
 import { filterArraysEqual, sortArraysEqual } from './utils';
 import { DefaultQueryModelLoader, QueryModelLoader } from './QueryModelLoader';
 import { QueryConfig, QueryModel } from './QueryModel';
@@ -21,15 +23,16 @@ import { QueryConfig, QueryModel } from './QueryModel';
 export interface Actions {
     addModel: (queryConfig: QueryConfig, load?: boolean, loadSelections?: boolean) => void;
     clearSelections: (id: string) => void;
-    loadAllModels: (loadSelections?: boolean) => void;
+    loadAllModels: (loadSelections?: boolean, reloadTotalCount?: boolean) => void;
     loadCharts: (id: string) => void;
     loadFirstPage: (id: string) => void;
     loadLastPage: (id: string) => void;
-    loadModel: (id: string, loadSelections?: boolean) => void;
+    loadModel: (id: string, loadSelections?: boolean, reloadTotalCount?: boolean) => void;
     loadNextPage: (id: string) => void;
     loadPreviousPage: (id: string) => void;
     loadRows: (id: string) => void;
     replaceSelections: (id: string, selections: string[]) => void;
+    resetTotalCountState: () => void;
     selectAllRows: (id: string) => void;
     selectPage: (id: string, checked) => void;
     selectReport: (id: string, reportId: string) => void;
@@ -79,15 +82,26 @@ const resetQueryInfoState = (model: Draft<QueryModel>): void => {
 };
 
 /**
+ * Resets totalCount state to initialized state. Use this when you need to load/reload QueryInfo.
+ * Note: This method intentionally has side effects, it is only to be used inside of an Immer produce() callback.
+ * @param model: Draft<QueryModel> the model to reset queryInfo state on.
+ */
+const resetTotalCountState = (model: Draft<QueryModel>): void => {
+    model.rowCount = undefined;
+    model.totalCountError = undefined;
+    model.totalCountLoadingState = LoadingState.INITIALIZED;
+};
+
+/**
  * Resets rows state to initialized state. Use this when you need to load/reload selections.
  * Note: This method intentionally has side effects, it is only to be used inside of an Immer produce() callback.
  * @param model: Draft<QueryModel> the model to reset selection state on.
  */
 const resetRowsState = (model: Draft<QueryModel>): void => {
-    model.rowsError = undefined;
     model.messages = undefined;
     model.offset = 0;
     model.orderedRows = undefined;
+    model.rowsError = undefined;
     model.rows = undefined;
     model.rowCount = undefined;
     model.rowsLoadingState = LoadingState.INITIALIZED;
@@ -176,6 +190,7 @@ export function withQueryModels<Props>(
                 loadLastPage: this.loadLastPage,
                 loadCharts: this.loadCharts,
                 replaceSelections: this.replaceSelections,
+                resetTotalCountState: this.resetTotalCountState,
                 selectAllRows: this.selectAllRows,
                 selectRow: this.selectRow,
                 selectPage: this.selectPage,
@@ -476,10 +491,12 @@ export function withQueryModels<Props>(
             );
         };
 
-        loadRows = async (id: string): Promise<void> => {
+        loadRows = async (id: string, loadSelections = false): Promise<void> => {
             const { loadRows } = this.props.modelLoader;
 
-            if (isLoading(this.state.queryModels[id].queryInfoLoadingState)) return;
+            if (isLoading(this.state.queryModels[id].queryInfoLoadingState)) {
+                return;
+            }
 
             this.setState(
                 produce<State>(draft => {
@@ -497,10 +514,11 @@ export function withQueryModels<Props>(
                         model.messages = messages;
                         model.rows = rows;
                         model.orderedRows = orderedRows;
-                        model.rowCount = rowCount;
+                        model.rowCount = !model.includeTotalCount ? rowCount : model.rowCount; // only update the rowCount on the model if we aren't loading the totalCount
                         model.rowsLoadingState = LoadingState.LOADED;
                         model.rowsError = undefined;
-                    })
+                    }),
+                    () => this.maybeLoad(id, false, false, loadSelections)
                 );
             } catch (error) {
                 this.setState(
@@ -520,7 +538,76 @@ export function withQueryModels<Props>(
             }
         };
 
-        loadQueryInfo = async (id: string, loadRows = false, loadSelections = false): Promise<void> => {
+        loadTotalCount = async (id: string, reloadTotalCount = false): Promise<void> => {
+            if (isLoading(this.state.queryModels[id].queryInfoLoadingState)) {
+                return;
+            }
+
+            // if we've already loaded the totalCount, no need to load it again
+            if (!reloadTotalCount && this.state.queryModels[id].totalCountLoadingState === LoadingState.LOADED) {
+                return;
+            }
+
+            // if usage didn't request loading the totalCount, skip it
+            if (!this.state.queryModels[id].includeTotalCount) {
+                this.setState(
+                    produce<State>(draft => {
+                        draft.queryModels[id].totalCountLoadingState = LoadingState.LOADED;
+                    })
+                );
+                return;
+            }
+
+            this.setState(
+                produce<State>(draft => {
+                    draft.queryModels[id].totalCountLoadingState = LoadingState.LOADING;
+                })
+            );
+
+            try {
+                const { rowCount } = await selectRows({
+                    ...this.state.queryModels[id].loadRowsConfig,
+                    sort: undefined,
+                    maxRows: 1,
+                    offset: 0,
+                    includeDetailsColumn: false,
+                    includeUpdateColumn: false,
+                    // includeMetadata: false, // TODO don't require metadata in selectRows response processing
+                    includeTotalCount: true,
+                });
+
+                this.setState(
+                    produce<State>(draft => {
+                        const model = draft.queryModels[id];
+                        model.rowCount = rowCount;
+                        model.totalCountLoadingState = LoadingState.LOADED;
+                        model.totalCountError = undefined;
+                    })
+                );
+            } catch (error) {
+                this.setState(
+                    produce<State>(draft => {
+                        const model = draft.queryModels[id];
+                        let rowsError = resolveErrorMessage(error);
+
+                        if (rowsError === undefined) {
+                            rowsError = `Error while loading total count for SchemaQuery: ${model.schemaQuery.toString()}`;
+                        }
+
+                        console.error(`Error loading rows for model ${id}: `, rowsError);
+                        model.totalCountLoadingState = LoadingState.LOADED;
+                        model.totalCountError = rowsError;
+                    })
+                );
+            }
+        };
+
+        loadQueryInfo = async (
+            id: string,
+            loadRows = false,
+            loadSelections = false,
+            reloadTotalCount = false
+        ): Promise<void> => {
             const { loadQueryInfo } = this.props.modelLoader;
 
             this.setState(
@@ -538,7 +625,7 @@ export function withQueryModels<Props>(
                         model.queryInfoLoadingState = LoadingState.LOADED;
                         model.queryInfoError = undefined;
                     }),
-                    () => this.maybeLoad(id, false, loadRows, loadSelections)
+                    () => this.maybeLoad(id, false, loadRows, loadSelections, reloadTotalCount)
                 );
             } catch (error) {
                 this.setState(
@@ -565,19 +652,26 @@ export function withQueryModels<Props>(
          * @param loadQueryInfo: boolean, if true will load the QueryInfo before loading the model's rows.
          * @param loadRows: boolean, if true will load the model's rows.
          * @param loadSelections: boolean, if true will load selections after loading QueryInfo.
+         * @param reloadTotalCount: boolean, if true will reload totalCount after loading QueryInfo.
          */
-        maybeLoad = (id: string, loadQueryInfo = false, loadRows = false, loadSelections = false): void => {
+        maybeLoad = (
+            id: string,
+            loadQueryInfo = false,
+            loadRows = false,
+            loadSelections = false,
+            reloadTotalCount = false
+        ): void => {
             if (loadQueryInfo) {
                 // Postpone loading any rows or selections if we're loading the QueryInfo.
                 this.loadQueryInfo(id, loadRows, loadSelections);
             } else {
-                // It's safe to load selections and rows in parallel.
-
                 if (loadRows) {
-                    this.loadRows(id);
-                }
+                    this.loadRows(id, loadSelections);
 
-                if (loadSelections) {
+                    if (this.state.queryModels[id].includeTotalCount) {
+                        this.loadTotalCount(id, reloadTotalCount);
+                    }
+                } else if (loadSelections) {
                     this.loadSelections(id);
                 }
             }
@@ -587,12 +681,12 @@ export function withQueryModels<Props>(
             }
         };
 
-        loadModel = (id: string, loadSelections = false): void => {
-            this.loadQueryInfo(id, true, loadSelections);
+        loadModel = (id: string, loadSelections = false, reloadTotalCount = false): void => {
+            this.loadQueryInfo(id, true, loadSelections, reloadTotalCount);
         };
 
-        loadAllModels = (loadSelections = false): void => {
-            Object.keys(this.state.queryModels).forEach(id => this.loadModel(id, loadSelections));
+        loadAllModels = (loadSelections = false, reloadTotalCount = true): void => {
+            Object.keys(this.state.queryModels).forEach(id => this.loadModel(id, loadSelections, reloadTotalCount));
         };
 
         loadNextPage = (id: string): void => {
@@ -755,10 +849,26 @@ export function withQueryModels<Props>(
                         // We need to reset all data for the model because changing the view will change things such as
                         // columns and rowCount. If we don't do this we'll render a grid with empty rows/columns.
                         resetRowsState(model);
+                        resetTotalCountState(model);
                         resetSelectionState(model);
                     }
                 }),
                 () => this.maybeLoad(id, false, shouldLoad, shouldLoad && loadSelections)
+            );
+        };
+
+        /**
+         * Reset the totalCount state for all models so that the next time loadModel or loadAllModels() is called,
+         * it will also call the loadTotalCount().
+         */
+        resetTotalCountState = (): void => {
+            this.setState(
+                produce<State>(draft => {
+                    Object.keys(this.state.queryModels).forEach(id => {
+                        const model = draft.queryModels[id];
+                        resetTotalCountState(model);
+                    });
+                })
             );
         };
 
@@ -775,6 +885,7 @@ export function withQueryModels<Props>(
                         model.schemaQuery = schemaQuery;
                         resetQueryInfoState(model);
                         resetRowsState(model);
+                        resetTotalCountState(model);
                         resetSelectionState(model);
                     }
                 }),
@@ -793,6 +904,7 @@ export function withQueryModels<Props>(
                         // Changing filters affects row count so we need to reset the offset or pagination can get into
                         // an impossible state (e.g. page 3 on a grid with one row of data).
                         model.offset = 0;
+                        model.totalCountLoadingState = LoadingState.INITIALIZED;
                         if (shouldLoad && loadSelections) {
                             model.selectionsLoadingState = LoadingState.INITIALIZED;
                         }

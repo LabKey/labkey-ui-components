@@ -930,7 +930,7 @@ export class QueryModel {
      * True if the QueryModel is actively loading its total count, or if it's loading rows (which might include total count).
      */
     get isActivelyLoadingTotalCount(): boolean {
-        return this.rowsLoadingState === LoadingState.LOADING || this.totalCountLoadingState === LoadingState.LOADING;
+        return (this.rowsLoadingState === LoadingState.LOADING && !this.includeTotalCount ) || this.totalCountLoadingState === LoadingState.LOADING;
     }
 
     /**

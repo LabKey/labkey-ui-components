@@ -65,6 +65,7 @@ export interface FieldFilter {
 
 export interface FilterProps {
     dataTypeDisplayName?: string;
+    dataTypeLsid?: string;
     disabled?: boolean;
     entityDataType: EntityDataType;
     // the filters to be used in conjunction with the schemaQuery

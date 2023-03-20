@@ -37,7 +37,7 @@ import { InjectedAssayModel, withAssayModels } from '../internal/components/assa
 
 import { isLoading } from '../public/LoadingState';
 
-import { AssayResultDataType } from '../internal/components/entities/constants';
+import {AssayResultDataType, SamplePropertyDataType} from '../internal/components/entities/constants';
 
 import {
     loadFinderSearch,
@@ -60,7 +60,7 @@ import {
 } from '../internal/components/search/utils';
 
 import { FieldFilter, FilterProps, FinderReport } from '../internal/components/search/models';
-import { SAMPLE_FINDER_SESSION_PREFIX } from '../internal/components/search/constants';
+import {SAMPLE_FINDER_SESSION_PREFIX, SAMPLE_PROPERTY_ALL_SAMPLE_TYPE} from '../internal/components/search/constants';
 import { AssayStateModel } from '../internal/components/assay/models';
 import { AssayDomainTypes } from '../internal/AssayDefinitionModel';
 import { AssaySampleColumnProp, SamplesEditableGridProps } from '../internal/sampleModels';
@@ -212,7 +212,7 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
 
             let queryName = selectedCard.schemaQuery.queryName;
             if (selectedCard.entityDataType.getInstanceDataType)
-                queryName = selectedCard.entityDataType.getInstanceDataType(selectedCard.schemaQuery);
+                queryName = selectedCard.entityDataType.getInstanceDataType(selectedCard.schemaQuery, selectedCard.dataTypeDisplayName);
 
             setChosenQueryName(queryName);
         },
@@ -252,7 +252,8 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
         (
             entityDataType: EntityDataType,
             dataTypeFilters: { [key: string]: FieldFilter[] },
-            queryLabels: { [key: string]: string }
+            queryLabels: { [key: string]: string },
+            queryLsids?: { [key: string]: string }
         ) => {
             if (!cardDirty) {
                 onFilterClose();
@@ -280,6 +281,8 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
                     );
                 }
 
+                const isSampleProperties = chosenEntityType.nounAsParentSingular === SamplePropertyDataType.nounAsParentSingular;
+                const isSampleTypeSampleProp = isSampleProperties && queryName !== SAMPLE_PROPERTY_ALL_SAMPLE_TYPE.query;
                 newFilterCards.push({
                     schemaQuery: isAssay
                         ? entityDataType.getInstanceSchemaQuery(queryName)
@@ -287,6 +290,7 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
                     filterArray: dataTypeFilters[queryName],
                     entityDataType: chosenEntityType,
                     dataTypeDisplayName: queryLabels[queryName],
+                    dataTypeLsid: isSampleTypeSampleProp ? queryLsids?.[queryName] : undefined,
                     selectColumnFieldKey: isAssay ? assaySampleIdCols[queryName]?.lookupFieldKey : undefined,
                     targetColumnFieldKey: isAssay ? assaySampleIdCols[queryName]?.fieldKey : undefined,
                 });

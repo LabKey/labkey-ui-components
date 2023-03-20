@@ -64,6 +64,33 @@ export const AssayResultDataType: EntityDataType = {
     filterCardHeaderClass: 'filter-card__header-purple',
 };
 
+export const SamplePropertyDataType: EntityDataType = {
+    allowSingleParentTypeFilter: true,
+    allowRelativeDateFilter: true,
+    typeListingSchemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
+    listingSchemaQuery: undefined,
+    instanceSchemaName: undefined,
+    getInstanceSchemaQuery: () => {
+        return SCHEMAS.EXP_TABLES.MATERIALS; // TODO include available custom query
+    },
+    getInstanceDataType: (schemaQuery: SchemaQuery, queryDisplayName?: string) => {
+        return queryDisplayName ?? schemaQuery.queryName;
+    },
+    operationConfirmationControllerName: 'experiment',
+    operationConfirmationActionName: undefined,
+    nounSingular: 'sample',
+    nounPlural: 'samples',
+    nounAsParentSingular: 'Sample',
+    nounAsParentPlural: 'Samples',
+    typeNounSingular: 'Sample Type',
+    typeNounAsParentSingular: 'Sample Type',
+    descriptionSingular: 'sample type',
+    descriptionPlural: 'sample types',
+    uniqueFieldKey: 'Name',
+    dependencyText: undefined,
+    deleteHelpLinkTopic: DELETE_SAMPLES_TOPIC,
+    filterCardHeaderClass: 'filter-card__header-orange',
+};
 
 export const SampleTypeDataType: EntityDataType = {
     typeListingSchemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,

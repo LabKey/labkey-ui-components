@@ -19,7 +19,7 @@ interface Props {
     model: QueryModel;
     onApply: (filters: Filter.IFilter[]) => void;
     onCancel: () => void;
-    selectDistinctOptions?: Query.SelectDistinctOptions;
+    selectDistinctOptions?: Partial<Query.SelectDistinctOptions>;
     skipDefaultViewCheck?: boolean; // for jest tests only due to lack of views from QueryInfo.fromJSON. check all fields, instead of only columns from default view
 }
 

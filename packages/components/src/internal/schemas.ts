@@ -110,6 +110,7 @@ export const SAMPLE_SETS = {
 const SAMPLE_MANAGEMENT_SCHEMA = 'samplemanagement';
 export const SAMPLE_MANAGEMENT = {
     SCHEMA: SAMPLE_MANAGEMENT_SCHEMA,
+    SAMPLE_SETS_EXTENDED: new SchemaQuery(SAMPLE_MANAGEMENT_SCHEMA, 'SampleFinderExtendedSampleSets'),
     SAMPLE_TYPE_INSIGHTS: new SchemaQuery(SAMPLE_MANAGEMENT_SCHEMA, 'SampleTypeInsights'),
     SAMPLE_STATUS_COUNTS: new SchemaQuery(SAMPLE_MANAGEMENT_SCHEMA, 'SampleStatusCounts'),
     SOURCE_SAMPLES: new SchemaQuery(SAMPLE_MANAGEMENT_SCHEMA, 'SourceSamples'),

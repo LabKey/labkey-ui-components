@@ -24,7 +24,7 @@ import {
 import { FieldFilterOption, FilterSelection } from './models';
 
 interface Props {
-    allRelativeDateFilter?: boolean;
+    allowRelativeDateFilter?: boolean;
     disabled?: boolean;
     field: QueryColumn;
     fieldFilters: Filter.IFilter[];
@@ -32,7 +32,7 @@ interface Props {
 }
 
 export const FilterExpressionView: FC<Props> = memo(props => {
-    const { allRelativeDateFilter, field, fieldFilters, onFieldFilterUpdate, disabled } = props;
+    const { allowRelativeDateFilter, field, fieldFilters, onFieldFilterUpdate, disabled } = props;
 
     const [fieldFilterOptions, setFieldFilterOptions] = useState<FieldFilterOption[]>(undefined);
     const [activeFilters, setActiveFilters] = useState<FilterSelection[]>([]);
@@ -214,7 +214,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             if (jsonType === 'date') {
                 return (
                     <DatePickerInput
-                        allowRelativeInput={allRelativeDateFilter}
+                        allowRelativeInput={allowRelativeDateFilter}
                         formsy={false}
                         inputClassName="form-control filter-expression__input"
                         wrapperClassName="form-group col-sm-12 filter-expression__input-wrapper"

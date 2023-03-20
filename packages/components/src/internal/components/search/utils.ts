@@ -33,13 +33,13 @@ import { formatDateTime } from '../../util/Date';
 
 import { getContainerFilter } from '../../query/api';
 
-import { AssayResultDataType } from '../entities/constants';
+import {AssayResultDataType, SamplePropertyDataType} from '../entities/constants';
 
 import { AssaySampleColumnProp } from '../../sampleModels';
 
 import { caseInsensitive } from '../../util/utils';
 
-import { SearchScope, SAMPLE_FINDER_SESSION_PREFIX } from './constants';
+import {SearchScope, SAMPLE_FINDER_SESSION_PREFIX,} from './constants';
 import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSessionStorageProps } from './models';
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
@@ -183,6 +183,22 @@ export function getExpDescendantOfFilter(
     return Filter.create('*', selectClause, IN_EXP_DESCENDANTS_OF_FILTER_TYPE);
 }
 
+export function getSamplePropertyFilters(card: FilterProps): Filter.IFilter[] {
+    const { filterArray, dataTypeLsid } = card;
+
+    const filters = [];
+    filterArray.forEach(fieldFilter => {
+        filters.push(fieldFilter.filter);
+    });
+
+    if (!dataTypeLsid) {
+        return filters;
+    }
+
+    filters.push(Filter.create('SampleSet', dataTypeLsid));
+    return filters;
+}
+
 export function getAssayFilter(card: FilterProps, cf?: Query.ContainerFilter): Filter.IFilter {
     const { schemaQuery, filterArray, selectColumnFieldKey, targetColumnFieldKey } = card;
     const { schemaName, queryName } = schemaQuery;
@@ -223,6 +239,13 @@ export function getSampleFinderCommonConfigs(
     const baseFilters = [];
     const requiredColumns = [...SAMPLE_STATUS_REQUIRED_COLUMNS];
     cards.forEach(card => {
+        // if card is property
+        if (card.entityDataType.nounAsParentSingular === SamplePropertyDataType.nounAsParentSingular) {
+            const samplePropFilters = getSamplePropertyFilters(card);
+            if (samplePropFilters) baseFilters.push(...samplePropFilters);
+            return;
+        }
+
         if (card.entityDataType.nounAsParentSingular === AssayResultDataType.nounAsParentSingular) {
             const assayFilter = getAssayFilter(card, cf);
             if (assayFilter) baseFilters.push(assayFilter);
@@ -326,7 +349,8 @@ export function getSampleFinderQueryConfigs(
 export function getSampleFinderColumnNames(cards: FilterProps[]): { [key: string]: string } {
     const columnNames = {};
     cards?.forEach(card => {
-        if (card.entityDataType.nounAsParentSingular === AssayResultDataType.nounAsParentSingular) {
+        const cardKey = card.entityDataType.nounAsParentSingular;
+        if (cardKey === AssayResultDataType.nounAsParentSingular || cardKey === SamplePropertyDataType.nounAsParentSingular) {
             return;
         }
 
@@ -862,7 +886,8 @@ export function getUpdatedDataTypeFilters(
     dataTypeFilters: { [p: string]: FieldFilter[] },
     activeQuery: string,
     activeField: QueryColumn,
-    newFilters: Filter.IFilter[]
+    newFilters: Filter.IFilter[],
+    allowSingleParentTypeFilter?: boolean,
 ): { [p: string]: FieldFilter[] } {
     const lcActiveQuery = activeQuery.toLowerCase();
     const dataTypeFiltersUpdated = { ...dataTypeFilters };
@@ -883,6 +908,18 @@ export function getUpdatedDataTypeFilters(
                     jsonType: activeField.getDisplayFieldJsonType(),
                 } as FieldFilter;
             }) ?? [];
+
+    if (allowSingleParentTypeFilter) {
+        if (otherFieldFilters.length + thisFieldFilters.length > 0) {
+            return {
+                [lcActiveQuery] : [...otherFieldFilters, ...thisFieldFilters]
+            }
+        }
+        else {
+            return {};
+        }
+
+    }
 
     if (otherFieldFilters.length + thisFieldFilters.length > 0) {
         dataTypeFiltersUpdated[lcActiveQuery] = [...otherFieldFilters, ...thisFieldFilters];

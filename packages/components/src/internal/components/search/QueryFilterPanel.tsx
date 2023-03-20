@@ -30,7 +30,7 @@ const DEFAULT_VIEW_NAME = ''; // always use default view for selection, if none 
 const CHOOSE_VALUES_TAB_KEY = 'Choose values';
 
 interface Props {
-    allRelativeDateFilter?: boolean;
+    allowRelativeDateFilter?: boolean;
     api?: ComponentsAPIWrapper;
     asRow?: boolean;
     emptyMsg?: string;
@@ -44,15 +44,16 @@ interface Props {
     onFilterUpdate: (field: QueryColumn, newFilters: Filter.IFilter[], index: number) => void;
     onHasNoValueInQueryChange?: (check: boolean) => void;
     queryInfo: QueryInfo;
-    selectDistinctOptions?: Query.SelectDistinctOptions;
+    selectDistinctOptions?: Partial<Query.SelectDistinctOptions>;
     skipDefaultViewCheck?: boolean;
     validFilterField?: (field: QueryColumn, queryInfo: QueryInfo, exprColumnsWithSubSelect?: string[]) => boolean;
     viewName?: string;
+    altQueryName?: string;
 }
 
 export const QueryFilterPanel: FC<Props> = memo(props => {
     const {
-        allRelativeDateFilter,
+        allowRelativeDateFilter,
         hasNotInQueryFilter,
         asRow,
         api,
@@ -69,6 +70,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         selectDistinctOptions,
         onHasNoValueInQueryChange,
         hasNotInQueryFilterLabel,
+        altQueryName,
     } = props;
     const [queryFields, setQueryFields] = useState<List<QueryColumn>>(undefined);
     const [activeField, setActiveField] = useState<QueryColumn>(undefined);
@@ -79,9 +81,9 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
     // for sample finder, assay data filters uses assay design name (part of schema key) instead of "data" (the query name) as query key
     const filterQueryKey = useMemo(() => {
         if (entityDataType && entityDataType.getInstanceDataType && queryInfo?.schemaQuery)
-            return entityDataType.getInstanceDataType(queryInfo.schemaQuery)?.toLowerCase();
+            return entityDataType.getInstanceDataType(queryInfo.schemaQuery, altQueryName)?.toLowerCase();
         return queryName;
-    }, [queryInfo, entityDataType, queryName]);
+    }, [queryInfo, entityDataType, queryName, altQueryName]);
 
     const viewName = useMemo(() => props.viewName ?? DEFAULT_VIEW_NAME, [props.viewName]);
     const allowFaceting = (col: QueryColumn): boolean => {
@@ -288,7 +290,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                         </div>
                                         {activeTab === FieldFilterTabs.Filter && (
                                             <FilterExpressionView
-                                                allRelativeDateFilter={allRelativeDateFilter}
+                                                allowRelativeDateFilter={allowRelativeDateFilter}
                                                 key={activeFieldKey}
                                                 field={activeField}
                                                 fieldFilters={currentFieldFilters?.map(filter => filter.filter)}

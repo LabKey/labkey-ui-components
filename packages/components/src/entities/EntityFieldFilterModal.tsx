@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Col, Modal, Row } from 'react-bootstrap';
 
-import { Filter } from '@labkey/api';
+import {Filter, Query} from '@labkey/api';
 
 import { EntityDataType, IEntityTypeOption } from '../internal/components/entities/models';
 import { capitalizeFirstChar } from '../internal/util/utils';
@@ -20,7 +20,7 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../internal/APIWrapp
 
 import { NOT_ANY_FILTER_TYPE } from '../internal/url/NotAnyFilterType';
 
-import { AssayResultDataType } from '../internal/components/entities/constants';
+import {AssayResultDataType, SamplePropertyDataType} from '../internal/components/entities/constants';
 
 import { COLUMN_NOT_IN_FILTER_TYPE } from '../internal/query/filter';
 
@@ -35,6 +35,7 @@ import { QueryFilterPanel } from '../internal/components/search/QueryFilterPanel
 
 import { AssaySampleColumnProp } from '../internal/sampleModels';
 import { isLoading, LoadingState } from '../public/LoadingState';
+import {SAMPLE_PROPERTY_ALL_SAMPLE_TYPE} from "../internal/components/search/constants";
 
 export interface EntityFieldFilterModalProps {
     api?: ComponentsAPIWrapper;
@@ -47,7 +48,8 @@ export interface EntityFieldFilterModalProps {
     onFind: (
         entityDataType: EntityDataType,
         dataTypeFilters: { [key: string]: FieldFilter[] },
-        queryLabels: { [key: string]: string }
+        queryLabels: { [key: string]: string },
+        queryLsids?: { [key: string]: string },
     ) => void;
     queryName?: string;
     setCardDirty?: (dirty: boolean) => void;
@@ -70,7 +72,7 @@ export const EntityFieldFilterModal: FC<EntityFieldFilterModalProps> = memo(prop
         metricFeatureArea,
     } = props;
 
-    const allRelativeDateFilter = entityDataType.allRelativeDateFilter;
+    const allowRelativeDateFilter = entityDataType.allowRelativeDateFilter;
     const capParentNoun = capitalizeFirstChar(entityDataType.nounAsParentSingular);
     const [activeQuery, setActiveQuery] = useState<string>();
     const [activeQueryInfo, setActiveQueryInfo] = useState<QueryInfo>();
@@ -114,8 +116,11 @@ export const EntityFieldFilterModal: FC<EntityFieldFilterModalProps> = memo(prop
             cards?.forEach(card => {
                 if (card.entityDataType.instanceSchemaName !== entityDataType.instanceSchemaName) return;
                 let parent = card.schemaQuery.queryName.toLowerCase(); // if is assay, change to datatype
-                if (card.entityDataType.getInstanceDataType)
-                    parent = card.entityDataType.getInstanceDataType(card.schemaQuery).toLowerCase();
+                if (card.entityDataType.getInstanceDataType) {
+                    parent = card.entityDataType.getInstanceDataType(card.schemaQuery, card.dataTypeDisplayName).toLowerCase();
+                    if (card.entityDataType.nounAsParentSingular === SamplePropertyDataType.nounAsParentSingular)
+                        setActiveQuery(card.dataTypeDisplayName);
+                }
                 activeDataTypeFilters[parent] = card.filterArray;
             });
 
@@ -139,7 +144,11 @@ export const EntityFieldFilterModal: FC<EntityFieldFilterModalProps> = memo(prop
                         });
                     }
                 });
-                setEntityQueries(parents.sort(naturalSortByProperty('label')));
+                parents.sort(naturalSortByProperty('label'));
+                if (entityDataType.nounAsParentSingular === SamplePropertyDataType.nounAsParentSingular) {
+                    parents.unshift(SAMPLE_PROPERTY_ALL_SAMPLE_TYPE);
+                }
+                setEntityQueries(parents);
                 if (queryName) {
                     onEntityClick(queryName);
                 }
@@ -181,14 +190,17 @@ export const EntityFieldFilterModal: FC<EntityFieldFilterModalProps> = memo(prop
 
     const _onFind = useCallback(() => {
         const queryLabels = {};
+        const queryLsids = {};
         entityQueries.forEach(parent => {
             const label = parent.label ?? parent.get?.('label');
+            const lsid = parent.lsid ?? parent.get?.('lsid');
             const parentValue = parent.value ?? parent.get?.('value');
             queryLabels[parentValue] = label;
+            queryLsids[parentValue] = lsid;
         });
         const filterErrors = getFieldFiltersValidationResult(validDataTypeFilters, queryLabels);
         if (!filterErrors) {
-            onFind(entityDataType, validDataTypeFilters, queryLabels);
+            onFind(entityDataType, validDataTypeFilters, queryLabels, queryLsids);
         } else {
             setFilterError(filterErrors);
             api.query.incrementClientSideMetricCount(metricFeatureArea, 'filterModalError');
@@ -199,9 +211,9 @@ export const EntityFieldFilterModal: FC<EntityFieldFilterModalProps> = memo(prop
         (field: QueryColumn, newFilters: Filter.IFilter[]) => {
             setCardDirty?.(true);
             setFilterError(undefined);
-            setDataTypeFilters(getUpdatedDataTypeFilters(dataTypeFilters, activeQuery, field, newFilters));
+            setDataTypeFilters(getUpdatedDataTypeFilters(dataTypeFilters, activeQuery, field, newFilters, entityDataType.allowSingleParentTypeFilter));
         },
-        [setCardDirty, dataTypeFilters, activeQuery]
+        [setCardDirty, dataTypeFilters, activeQuery, entityDataType]
     );
 
     const onHasNoValueInQueryChange = useCallback(
@@ -248,6 +260,19 @@ export const EntityFieldFilterModal: FC<EntityFieldFilterModalProps> = memo(prop
         return entityQueries.find(query => query?.value?.toLowerCase() === activeQuery.toLowerCase())?.label;
     }, [entityQueries, activeQuery]);
 
+    const selectDistinctOptions = useMemo(() : Partial<Query.SelectDistinctOptions> => {
+        if (!activeQuery || activeQuery === SAMPLE_PROPERTY_ALL_SAMPLE_TYPE.query)
+            return null;
+
+        if (entityDataType.nounAsParentSingular !== SamplePropertyDataType.nounAsParentSingular)
+            return null;
+
+        const sampleTypeLsid = entityQueries.find(query => query?.value?.toLowerCase() === activeQuery.toLowerCase())?.lsid;
+        return {
+            filterArray: [Filter.create('SampleSet', sampleTypeLsid)]
+        };
+    }, [entityDataType, activeQuery, entityQueries]);
+
     return (
         <Modal show bsSize="lg" onHide={closeModal}>
             <Modal.Header closeButton>
@@ -289,7 +314,7 @@ export const EntityFieldFilterModal: FC<EntityFieldFilterModalProps> = memo(prop
                         </div>
                     </Col>
                     <QueryFilterPanel
-                        allRelativeDateFilter={allRelativeDateFilter}
+                        allowRelativeDateFilter={allowRelativeDateFilter}
                         api={api}
                         emptyMsg={fieldsEmptyMsg}
                         entityDataType={entityDataType}
@@ -303,6 +328,9 @@ export const EntityFieldFilterModal: FC<EntityFieldFilterModalProps> = memo(prop
                         skipDefaultViewCheck={skipDefaultViewCheck}
                         validFilterField={isValidFilterFieldExcludeLookups}
                         hasNotInQueryFilterLabel={`Find Samples without ${activeQueryLabel} results`}
+                        selectDistinctOptions={selectDistinctOptions}
+                        key={activeQuery}
+                        altQueryName={activeQuery}
                     />
                 </Row>
             </Modal.Body>

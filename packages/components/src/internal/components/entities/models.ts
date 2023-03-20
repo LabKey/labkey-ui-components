@@ -490,6 +490,8 @@ export interface IEntityTypeDetails extends IEntityDetails {
  *  Avoid inline comment or above line comments for properties due to es-lint's limitation on moving comments:
  *  https://github.com/import-js/eslint-plugin-import/issues/1723
  *
+ *     allowSingleParentTypeFilter?: boolean; // Can filter by max of one parent of this type
+ *     allowRelativeDateFilter?: boolean; // if filtering by +-Xd is allowed
  *     ancestorColumnName: string; // used for extracting or querying for the ancestores of this type
  *     appUrlPrefixParts?: string[]; // the prefix used for creating links to this type in the application
  *     deleteHelpLinkTopic: string; // help topic for finding out more about dependencies and deletion
@@ -512,7 +514,8 @@ export interface IEntityTypeDetails extends IEntityDetails {
  *     typeListingSchemaQuery: SchemaQuery; // The schema query used to get the listing of all of the data type instances (e.g., all the data classes) available
  */
 export interface EntityDataType {
-    allRelativeDateFilter?: boolean;
+    allowSingleParentTypeFilter?: boolean;
+    allowRelativeDateFilter?: boolean;
     ancestorColumnName?: string;
     appUrlPrefixParts?: string[];
     containerFilter?: Query.ContainerFilter;
@@ -524,7 +527,7 @@ export interface EntityDataType {
     exprColumnsWithSubSelect?: string[];
     filterArray?: Filter.IFilter[];
     filterCardHeaderClass?: string;
-    getInstanceDataType?: (schemaQuery: SchemaQuery) => string;
+    getInstanceDataType?: (schemaQuery: SchemaQuery, queryDisplayName?: string) => string;
     getInstanceSchemaQuery?: (datatype?: string) => SchemaQuery;
     importFileAction?: string;
     importFileController?: string;

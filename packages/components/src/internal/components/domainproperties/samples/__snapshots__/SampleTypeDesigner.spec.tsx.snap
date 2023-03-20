@@ -928,6 +928,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         },
         "samples": SamplesServerAPIWrapper {
           "createSessionAssayRunSummaryQuery": [Function],
+          "getDistinctAssaysPerSample": [Function],
           "getFieldLookupFromSelection": [Function],
           "getSampleAliquotRows": [Function],
           "getSampleAssayResultViewConfigs": [Function],

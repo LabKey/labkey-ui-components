@@ -1,4 +1,4 @@
-import React, { FC, memo, useMemo } from 'react';
+import React, { FC, memo, useEffect, useMemo, useState } from 'react';
 
 import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 import { SchemaQuery } from '../public/SchemaQuery';
@@ -8,11 +8,12 @@ import { InjectedAssayModel, withAssayModels } from '../internal/components/assa
 import { InjectedQueryModels, withQueryModels } from '../public/QueryModel/withQueryModels';
 
 import { getSampleAssayQueryConfigs } from '../internal/components/samples/actions';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../internal/APIWrapper';
 
 const SampleAliquotAssaysCountBodyImpl: FC<InjectedQueryModels> = memo(props => {
     const { queryModels } = props;
     const allModels = Object.values(queryModels);
-    const allLoaded = allModels.every(model => !model.isLoading);
+    const allLoaded = allModels.every(model => !model.isLoadingTotalCount);
 
     const totalCount = useMemo(() => {
         let count = 0;
@@ -20,12 +21,12 @@ const SampleAliquotAssaysCountBodyImpl: FC<InjectedQueryModels> = memo(props => 
             count += model.rowCount;
         });
         return count;
-    }, [allLoaded, queryModels]);
+    }, [allModels]);
 
     if (allModels.length === 0) return <>0</>;
 
     if (!allLoaded) {
-        return <LoadingSpinner />;
+        return <LoadingSpinner msg="" />;
     }
 
     return <>{totalCount}</>;
@@ -35,17 +36,26 @@ const SampleAliquotAssaysCountBody = withQueryModels<any>(SampleAliquotAssaysCou
 
 interface Props {
     aliquotIds: number[];
+    api?: ComponentsAPIWrapper;
     sampleId: string;
     sampleSchemaQuery: SchemaQuery;
 }
 
 const SampleAliquotAssaysCountImpl: FC<Props & InjectedAssayModel> = props => {
-    const { assayModel, sampleId, sampleSchemaQuery, aliquotIds } = props;
+    const { assayModel, sampleId, sampleSchemaQuery, aliquotIds, api } = props;
+    const [distinctAssays, setDistinctAssays] = useState<string[]>();
     const loadingDefinitions = isLoading(assayModel.definitionsLoadingState);
 
+    useEffect(() => {
+        (async () => {
+            const distinctAssays_ = await api.samples.getDistinctAssaysPerSample(aliquotIds);
+            setDistinctAssays(distinctAssays_);
+        })();
+    }, [aliquotIds, api.samples]);
+
     const queryConfigs = useMemo(() => {
-        if (loadingDefinitions) {
-            return {};
+        if (loadingDefinitions || !distinctAssays) {
+            return;
         }
 
         const _configs = getSampleAssayQueryConfigs(
@@ -54,18 +64,19 @@ const SampleAliquotAssaysCountImpl: FC<Props & InjectedAssayModel> = props => {
             sampleId + '',
             'aliquot-assay',
             true,
-            sampleSchemaQuery
+            sampleSchemaQuery,
+            distinctAssays
         );
 
-        return _configs.reduce((_configs, config) => {
+        return _configs.reduce((configs, config) => {
             const modelId = config.id;
-            _configs[modelId] = config;
-            return _configs;
+            configs[modelId] = config;
+            return configs;
         }, {});
-    }, [assayModel.definitions, loadingDefinitions, sampleSchemaQuery, sampleId, aliquotIds]);
+    }, [loadingDefinitions, aliquotIds, assayModel, sampleId, sampleSchemaQuery, distinctAssays]);
 
-    if (loadingDefinitions) {
-        return <LoadingSpinner />;
+    if (loadingDefinitions || !queryConfigs) {
+        return <LoadingSpinner msg="" />;
     }
 
     return (
@@ -73,9 +84,13 @@ const SampleAliquotAssaysCountImpl: FC<Props & InjectedAssayModel> = props => {
             {...props}
             key={'aliquot-assay-stats-' + sampleId}
             queryConfigs={queryConfigs}
-            autoLoad={true}
+            autoLoad
         />
     );
+};
+
+SampleAliquotAssaysCountImpl.defaultProps = {
+    api: getDefaultAPIWrapper(),
 };
 
 export const SampleAliquotAssaysCount = withAssayModels(SampleAliquotAssaysCountImpl);

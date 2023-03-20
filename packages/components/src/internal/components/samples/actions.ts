@@ -37,6 +37,7 @@ import {
     getContainerFilter,
     invalidateFullQueryDetailsCache,
     ISelectRowsResult,
+    selectDistinctRows,
     selectRowsDeprecated,
 } from '../../query/api';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -756,15 +757,13 @@ export function getSampleAssayQueryConfigs(
     gridSuffix: string,
     gridPrefix: string,
     omitSampleCols?: boolean,
-    sampleSchemaQuery?: SchemaQuery
+    sampleSchemaQuery?: SchemaQuery,
+    assayNamesToFilter?: string[]
 ): QueryConfig[] {
     return assayModel.definitions
         .slice() // need to make a copy of the array before sorting
-        .filter(assay => {
-            if (!sampleSchemaQuery) return true;
-
-            return assay.hasLookup(sampleSchemaQuery);
-        })
+        .filter(assay => !sampleSchemaQuery || assay.hasLookup(sampleSchemaQuery))
+        .filter(assay => !assayNamesToFilter || assayNamesToFilter.indexOf(assay.name.toLowerCase()) > -1)
         .sort(naturalSortByProperty('name'))
         .reduce((_configs, assay) => {
             const _queryConfig = createQueryConfigFilteredBySample(
@@ -883,6 +882,27 @@ export async function createSessionAssayRunSummaryQuery(sampleIds: number[]): Pr
             'PIVOT RunCount BY Assay',
         maxRows: 0, // we don't need any data back here, we just need to get the temp session schema/query
     });
+}
+
+export async function getDistinctAssaysPerSample(sampleIds: number[]): Promise<string[]> {
+    let assayRunsQuery = 'AssayRunsPerSample';
+    if (isProductProjectsEnabled() && !isProjectContainer()) {
+        assayRunsQuery = 'AssayRunsPerSampleChildProject';
+    }
+
+    try {
+        const results = await selectDistinctRows({
+            schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
+            queryName: assayRunsQuery,
+            column: 'Assay',
+            filterArray: [Filter.create('RowId', sampleIds, Filter.Types.IN)],
+        });
+
+        return results.values.filter(v => v !== null).map(v => v.toLowerCase());
+    } catch (e) {
+        // console.error already happens in failure case of selectDistinctRows
+        return undefined;
+    }
 }
 
 export function getSampleStatuses(includeInUse = false): Promise<SampleState[]> {

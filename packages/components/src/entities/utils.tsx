@@ -344,13 +344,16 @@ export async function getSamplesAssayGridQueryConfigs(
     const sampleIds = sampleRows.map(row => caseInsensitive(row, 'RowId').value);
     const allSampleIds = allSampleRows_.map(row => caseInsensitive(row, 'RowId').value);
 
+    const distinctAssays = await api.getDistinctAssaysPerSample(allSampleIds);
+
     const _configs = getSampleAssayQueryConfigs(
         assayModel,
         sampleIds,
         gridSuffix,
         gridPrefix,
         false,
-        sampleSchemaQuery
+        sampleSchemaQuery,
+        distinctAssays
     );
 
     // since we want to remove empty assay run columns from the Assay Run Summary grid, we need to inject the WHERE

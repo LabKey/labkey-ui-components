@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.312.0
+*Released*: 21 March 2023
 * Sample assay grid and aliquot summary to only query for data from assays that have data for that sample/aliquot ID set
   * previously was just querying for all assay designs with a sample lookup
   * getDistinctAssaysPerSample() to query for the distinct set of assay design names with data for given sample rowIDs

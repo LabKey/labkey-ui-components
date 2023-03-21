@@ -628,6 +628,7 @@ export function updateDomainField(domain: DomainDesign, change: IFieldChange): D
                     lookupQueryValue: change.value,
                     lookupType: newField.lookupType.set('rangeURI', rangeURI),
                     rangeURI,
+                    lookupIsValid: true,
                 }) as DomainField;
                 break;
             case DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT:
@@ -694,6 +695,7 @@ function updateLookup(field: DomainField, lookupContainer?: string, lookupSchema
         lookupQuery: undefined,
         lookupQueryValue: undefined,
         lookupSchema,
+        lookupIsValid: true,
     }) as DomainField;
 }
 

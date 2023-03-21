@@ -751,6 +751,10 @@ export function createQueryConfigFilteredBySample(
     };
 }
 
+export function getSampleTypeAssayDesigns(assayModel: AssayStateModel, sampleSchemaQuery?: SchemaQuery) {
+    return assayModel.definitions.filter(assay => !sampleSchemaQuery || assay.hasLookup(sampleSchemaQuery));
+}
+
 export function getSampleAssayQueryConfigs(
     assayModel: AssayStateModel,
     sampleIds: Array<string | number>,
@@ -760,9 +764,8 @@ export function getSampleAssayQueryConfigs(
     sampleSchemaQuery?: SchemaQuery,
     assayNamesToFilter?: string[]
 ): QueryConfig[] {
-    return assayModel.definitions
+    return getSampleTypeAssayDesigns(assayModel, sampleSchemaQuery)
         .slice() // need to make a copy of the array before sorting
-        .filter(assay => !sampleSchemaQuery || assay.hasLookup(sampleSchemaQuery))
         .filter(assay => !assayNamesToFilter || assayNamesToFilter.indexOf(assay.name.toLowerCase()) > -1)
         .sort(naturalSortByProperty('name'))
         .reduce((_configs, assay) => {

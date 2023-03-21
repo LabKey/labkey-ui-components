@@ -204,7 +204,9 @@ describe('SampleAssayDetailBodyImpl', () => {
     }
 
     test('no assay models', () => {
-        const wrapper = mountWithAppServerContext(<SampleAssayDetailBodyImpl {...IMPL_PROPS} hasSampleTypeAssayDesigns={false} />);
+        const wrapper = mountWithAppServerContext(
+            <SampleAssayDetailBodyImpl {...IMPL_PROPS} hasSampleTypeAssayDesigns={false} />
+        );
         validate(wrapper, true, 'There are no assay designs defined that reference this sample type');
         wrapper.unmount();
     });

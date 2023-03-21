@@ -56,6 +56,8 @@ import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 
 import { createGridModelId } from '../../models';
 
+import { buildURL } from '../../url/AppURL';
+
 import {
     AMOUNT_AND_UNITS_COLUMNS_LC,
     IS_ALIQUOT_COL,
@@ -65,7 +67,6 @@ import {
     STORED_AMOUNT_FIELDS,
 } from './constants';
 import { FindField, GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
-import { buildURL } from '../../url/AppURL';
 
 export function initSampleSetSelects(
     isUpdate: boolean,
@@ -1030,25 +1031,28 @@ export function getTimelineEvents(sampleId: number, timezone?: string): Promise<
 }
 
 interface SampleStorageData {
-    itemId?: number,
-    materialId: number,
-    storedAmount?: number,
-    units?: string,
-    freezeThawCount?: number,
+    freezeThawCount?: number;
+    itemId?: number;
+    materialId: number;
+    storedAmount?: number;
+    units?: string;
 }
 
-export function updateSampleStorageData(sampleStorageData: SampleStorageData[], containerPath?: string, userComment?: string): Promise<any> {
+export function updateSampleStorageData(
+    sampleStorageData: SampleStorageData[],
+    containerPath?: string,
+    userComment?: string
+): Promise<any> {
     if (sampleStorageData.length == 0) {
         return Promise.resolve();
     }
 
     return new Promise<any>((resolve, reject) => {
-
         return Ajax.request({
-            url: buildURL('inventory', 'UpdateSampleStorageData.api', undefined, {container: containerPath}),
+            url: buildURL('inventory', 'UpdateSampleStorageData.api', undefined, { container: containerPath }),
             jsonData: {
                 sampleRows: sampleStorageData,
-                [STORED_AMOUNT_FIELDS.AUDIT_COMMENT]: userComment
+                [STORED_AMOUNT_FIELDS.AUDIT_COMMENT]: userComment,
             },
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);

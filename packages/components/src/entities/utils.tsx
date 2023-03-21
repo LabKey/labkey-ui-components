@@ -179,7 +179,7 @@ export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: bool
 export const getDataClassTemplateUrl = (
     queryInfo: QueryInfo,
     exportConfig: any = {},
-    excludeColumns: string[] = ['flag', 'alias', 'lsid', 'Ancestors'],
+    excludeColumns: string[] = ['flag', 'alias', 'lsid', 'Ancestors']
 ): string => {
     const schemaQuery = queryInfo.schemaQuery;
     if (!schemaQuery) return undefined;
@@ -194,12 +194,12 @@ export const getDataClassTemplateUrl = (
         schemaName: schemaQuery.schemaName,
         'query.queryName': schemaQuery.queryName,
         headerType: 'DisplayFieldKey',
-        excludeColumn:  excludeColumns
+        excludeColumn: excludeColumns
             ? excludeColumns.concat(queryInfo.getFileColumnFieldKeys())
             : queryInfo.getFileColumnFieldKeys(),
         filenamePrefix: schemaQuery.queryName,
     });
-}
+};
 
 export const getSampleTypeTemplateUrl = (
     queryInfo: QueryInfo,

@@ -119,10 +119,16 @@ export interface QueryConfig {
      */
     includeDetailsColumn?: boolean;
     /**
-     * Include the total count in the query response. If true, this can slow down the query performance as the server
-     * will need to do a second query to get that count for all rows in the query. Defaults to false.
+     * Include the total count in the query model via a second query to the server for this value.
+     * This second query will be made in parallel with the initial query to get the model data.
      */
     includeTotalCount?: boolean;
+    /**
+     * Include the total count in the query model via a second query to the server for this value.
+     * This second query will be made after the initial query to get the model data. This should be used for special
+     * cases where the server might result in deadlocks or other DB issues if they are done in parallel.
+     */
+    includeTotalCountSync?: boolean;
     /**
      * Include the Update (or edit) link column in the set of columns (defaults to false). If included, the column
      * will have the name "\~\~Update\~\~". The underlying table/query must support update links or the column
@@ -238,10 +244,16 @@ export class QueryModel {
      */
     readonly includeUpdateColumn: boolean;
     /**
-     * Include the total count in the query response. If true, this can slow down the query performance as the server
-     * will need to do a second query to get that count for all rows in the query.
+     * Include the total count in the query model via a second query to the server for this value.
+     * This second query will be made in parallel with the initial query to get the model data.
      */
     readonly includeTotalCount: boolean;
+    /**
+     * Include the total count in the query model via a second query to the server for this value.
+     * This second query will be made after the initial query to get the model data. This should be used for special
+     * cases where the server might result in deadlocks or other DB issues if they are done in parallel.
+     */
+    readonly includeTotalCountSync: boolean;
     /**
      * Primary key value, used when loading/rendering details pages to get a single row of data in a QueryModel.
      */
@@ -404,6 +416,7 @@ export class QueryModel {
         this.includeDetailsColumn = queryConfig.includeDetailsColumn ?? false;
         this.includeUpdateColumn = queryConfig.includeUpdateColumn ?? false;
         this.includeTotalCount = queryConfig.includeTotalCount ?? false;
+        this.includeTotalCountSync = queryConfig.includeTotalCountSync ?? false;
         this.keyValue = queryConfig.keyValue;
         this.maxRows = queryConfig.maxRows ?? DEFAULT_MAX_ROWS;
         this.offset = queryConfig.offset ?? DEFAULT_OFFSET;

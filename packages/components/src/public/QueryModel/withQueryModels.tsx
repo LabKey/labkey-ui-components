@@ -514,19 +514,11 @@ export function withQueryModels<Props>(
                         model.messages = messages;
                         model.rows = rows;
                         model.orderedRows = orderedRows;
+                        model.rowCount = !model.includeTotalCount ? rowCount : model.rowCount; // only update the rowCount on the model if we aren't loading the totalCount
                         model.rowsLoadingState = LoadingState.LOADED;
                         model.rowsError = undefined;
-
-                        // only update the rowCount on the model if we aren't loading the totalCount
-                        model.rowCount = !model.includeTotalCount && !model.includeTotalCountSync ? rowCount : model.rowCount;
                     }),
-                    () => {
-                        if (this.state.queryModels[id].includeTotalCountSync) {
-                            this.loadTotalCount(id);
-                        }
-
-                        this.maybeLoad(id, false, false, loadSelections);
-                    }
+                    () => this.maybeLoad(id, false, false, loadSelections)
                 );
             } catch (error) {
                 this.setState(
@@ -557,7 +549,7 @@ export function withQueryModels<Props>(
             }
 
             // if usage didn't request loading the totalCount, skip it
-            if (!this.state.queryModels[id].includeTotalCount && !this.state.queryModels[id].includeTotalCountSync) {
+            if (!this.state.queryModels[id].includeTotalCount) {
                 this.setState(
                     produce<State>(draft => {
                         draft.queryModels[id].totalCountLoadingState = LoadingState.LOADED;

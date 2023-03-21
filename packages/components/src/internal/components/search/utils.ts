@@ -276,7 +276,7 @@ export function getSampleFinderCommonConfigs(
     return {
         requiredColumns,
         baseFilters,
-        includeTotalCountSync: true, // race condition with the closure table creation, that resulted in 2 versions of the closure tables, so use the synchronous version
+        includeTotalCount: true,
     };
 }
 

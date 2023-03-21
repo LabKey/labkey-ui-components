@@ -322,7 +322,7 @@ describe('getSampleFinderCommonConfigs', () => {
         expect(getSampleFinderCommonConfigs([], true)).toStrictEqual({
             baseFilters: [],
             requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
-            includeTotalCountSync: true,
+            includeTotalCount: true,
         });
     });
 
@@ -346,7 +346,7 @@ describe('getSampleFinderCommonConfigs', () => {
                 ),
             ],
             requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Inputs/Materials/TestQuery'],
-            includeTotalCountSync: true,
+            includeTotalCount: true,
         });
     });
 
@@ -364,7 +364,7 @@ describe('getSampleFinderCommonConfigs', () => {
         ).toStrictEqual({
             baseFilters: [],
             requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS],
-            includeTotalCountSync: true,
+            includeTotalCount: true,
         });
     });
 
@@ -388,7 +388,7 @@ describe('getSampleFinderCommonConfigs', () => {
                 ),
             ],
             requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Ancestors/Samples/TestQuery'],
-            includeTotalCountSync: true,
+            includeTotalCount: true,
         });
     });
 
@@ -435,7 +435,7 @@ describe('getSampleFinderCommonConfigs', () => {
                 'Inputs/Materials/TestQuery2',
                 'Inputs/Materials/TestQuery2/TestColumn',
             ],
-            includeTotalCountSync: true,
+            includeTotalCount: true,
         });
     });
 
@@ -462,7 +462,7 @@ describe('getSampleFinderCommonConfigs', () => {
         ).toStrictEqual({
             baseFilters: [AssayColumnInFilter],
             requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS],
-            includeTotalCountSync: true,
+            includeTotalCount: true,
         });
     });
 
@@ -481,7 +481,7 @@ describe('getSampleFinderCommonConfigs', () => {
         ).toStrictEqual({
             baseFilters: [AssayNotInFilter],
             requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS],
-            includeTotalCountSync: true,
+            includeTotalCount: true,
         });
     });
 });
@@ -506,7 +506,7 @@ describe('getSampleFinderQueryConfigs', () => {
                 omittedColumns: ['Run'],
                 baseFilters: [],
                 requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
-                includeTotalCountSync: true,
+                includeTotalCount: true,
             },
         });
     });
@@ -542,7 +542,7 @@ describe('getSampleFinderQueryConfigs', () => {
                     ),
                 ],
                 requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Inputs/Materials/TestQuery'],
-                includeTotalCountSync: true,
+                includeTotalCount: true,
             },
         });
     });
@@ -562,7 +562,7 @@ describe('getSampleFinderQueryConfigs', () => {
                 omittedColumns: ['checkedOutBy', 'Run'],
                 baseFilters: [],
                 requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
-                includeTotalCountSync: true,
+                includeTotalCount: true,
             },
             'uuid-1-testId|samples/Sample Type 1': {
                 id: 'uuid-1-testId|samples/Sample Type 1',
@@ -571,7 +571,7 @@ describe('getSampleFinderQueryConfigs', () => {
                 omittedColumns: ['checkedOutBy'],
                 baseFilters: [],
                 requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
-                includeTotalCountSync: true,
+                includeTotalCount: true,
             },
             'uuid-1-testId|samples/Sample Type 2': {
                 id: 'uuid-1-testId|samples/Sample Type 2',
@@ -580,7 +580,7 @@ describe('getSampleFinderQueryConfigs', () => {
                 omittedColumns: ['checkedOutBy'],
                 baseFilters: [],
                 requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
-                includeTotalCountSync: true,
+                includeTotalCount: true,
             },
         });
     });
@@ -612,7 +612,7 @@ describe('getSampleFinderQueryConfigs', () => {
                     ),
                 ],
                 requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Inputs/Materials/TestQuery'],
-                includeTotalCountSync: true,
+                includeTotalCount: true,
             },
             'uuid-1-testId|samples/Sample Type 1': {
                 id: 'uuid-1-testId|samples/Sample Type 1',
@@ -627,7 +627,7 @@ describe('getSampleFinderQueryConfigs', () => {
                     ),
                 ],
                 requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Ancestors/Samples/TestQuery'],
-                includeTotalCountSync: true,
+                includeTotalCount: true,
             },
             'uuid-1-testId|samples/Sample Type 2': {
                 id: 'uuid-1-testId|samples/Sample Type 2',
@@ -642,7 +642,7 @@ describe('getSampleFinderQueryConfigs', () => {
                     ),
                 ],
                 requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Ancestors/Samples/TestQuery'],
-                includeTotalCountSync: true,
+                includeTotalCount: true,
             },
         });
     });

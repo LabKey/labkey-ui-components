@@ -10,6 +10,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * use a single query to get row counts for all sample finder result grids
   * add tabRowCounts as a prop for TabbedGridPanel
 
+### version 2.311.0
+*Released*: 21 March 2023
+* Issue 43559: Domain designer throws error on invalid lookup
+
 ### version 2.310.0
 *Released*: 17 March 2023
 * withQueryModels to separate query to get the totalCount from the query to get the model data rows

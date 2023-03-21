@@ -23,6 +23,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
         "lookupQuery": undefined,
         "lookupSchema": "exp",
         "lookupValidator": undefined,
+        "lookupIsValid": true,
         "measure": undefined,
         "mvEnabled": false,
         "name": undefined,
@@ -63,6 +64,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
           "lookupQuery": undefined,
           "lookupSchema": undefined,
           "lookupValidator": undefined,
+          "lookupIsValid": undefined,
           "measure": undefined,
           "mvEnabled": false,
           "name": "key",
@@ -444,6 +446,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                 disabled={false}
                 id="domainpropertiesrow-lookupQueryValue-1-1"
                 key="domainpropertiesrow-lookupQueryValue-1-1"
+                lookupIsValid={true}
                 lookupURI="http://www.w3.org/2001/XMLSchema#int"
                 onChange={[Function]}
                 schemaName="exp"
@@ -484,6 +487,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                   }
                   disabled={false}
                   id="domainpropertiesrow-lookupQueryValue-1-1"
+                  lookupIsValid={true}
                   lookupURI="http://www.w3.org/2001/XMLSchema#int"
                   name="domainpropertiesrow-lookupQueryValue"
                   onChange={[Function]}
@@ -626,6 +630,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
         "lookupQuery": undefined,
         "lookupSchema": "",
         "lookupValidator": undefined,
+        "lookupIsValid": true,
         "measure": undefined,
         "mvEnabled": false,
         "name": undefined,
@@ -666,6 +671,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
           "lookupQuery": undefined,
           "lookupSchema": undefined,
           "lookupValidator": undefined,
+          "lookupIsValid": undefined,
           "measure": undefined,
           "mvEnabled": false,
           "name": "key",
@@ -1085,6 +1091,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                 disabled={false}
                 id="domainpropertiesrow-lookupQueryValue-1-1"
                 key="domainpropertiesrow-lookupQueryValue-1-1"
+                lookupIsValid={true}
                 lookupURI="http://www.w3.org/2001/XMLSchema#int"
                 onChange={[Function]}
                 schemaName=""
@@ -1125,6 +1132,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                   }
                   disabled={false}
                   id="domainpropertiesrow-lookupQueryValue-1-1"
+                  lookupIsValid={true}
                   lookupURI="http://www.w3.org/2001/XMLSchema#int"
                   name="domainpropertiesrow-lookupQueryValue"
                   onChange={[Function]}
@@ -1153,6 +1161,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                         key="_default"
                       />
                       <option
+                        disabled={false}
                         key="http://www.w3.org/2001/XMLSchema#int|Data"
                         value="http://www.w3.org/2001/XMLSchema#int|Data"
                       >
@@ -1162,6 +1171,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                         )
                       </option>
                       <option
+                        disabled={false}
                         key="http://www.w3.org/2001/XMLSchema#int|DataInputs"
                         value="http://www.w3.org/2001/XMLSchema#int|DataInputs"
                       >
@@ -1171,6 +1181,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                         )
                       </option>
                       <option
+                        disabled={false}
                         key="http://www.w3.org/2001/XMLSchema#int|Runs"
                         value="http://www.w3.org/2001/XMLSchema#int|Runs"
                       >
@@ -1308,6 +1319,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
         "lookupQuery": undefined,
         "lookupSchema": "",
         "lookupValidator": undefined,
+        "lookupIsValid": undefined,
         "measure": undefined,
         "mvEnabled": false,
         "name": undefined,
@@ -1348,6 +1360,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
           "lookupQuery": undefined,
           "lookupSchema": undefined,
           "lookupValidator": undefined,
+          "lookupIsValid": undefined,
           "measure": undefined,
           "mvEnabled": false,
           "name": "key",
@@ -1770,7 +1783,6 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                 lookupURI="http://www.w3.org/2001/XMLSchema#int"
                 onChange={[Function]}
                 schemaName=""
-                shouldDisableNonExists={true}
                 value=""
               >
                 <TargetTableSelectImpl
@@ -1835,6 +1847,14 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                         key="_default"
                       />
                       <option
+                        disabled={false}
+                      >
+                         (
+                        Unknown
+                        )
+                      </option>
+                      <option
+                        disabled={false}
                         key="http://www.w3.org/2001/XMLSchema#int|Data"
                         value="http://www.w3.org/2001/XMLSchema#int|Data"
                       >
@@ -1844,6 +1864,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                         )
                       </option>
                       <option
+                        disabled={false}
                         key="http://www.w3.org/2001/XMLSchema#int|DataInputs"
                         value="http://www.w3.org/2001/XMLSchema#int|DataInputs"
                       >
@@ -1853,6 +1874,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                         )
                       </option>
                       <option
+                        disabled={false}
                         key="http://www.w3.org/2001/XMLSchema#int|Runs"
                         value="http://www.w3.org/2001/XMLSchema#int|Runs"
                       >
@@ -1990,6 +2012,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
         "lookupQuery": undefined,
         "lookupSchema": "study",
         "lookupValidator": undefined,
+        "lookupIsValid": true,
         "measure": undefined,
         "mvEnabled": false,
         "name": undefined,
@@ -2030,6 +2053,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
           "lookupQuery": undefined,
           "lookupSchema": undefined,
           "lookupValidator": undefined,
+          "lookupIsValid": undefined,
           "measure": undefined,
           "mvEnabled": false,
           "name": "key",
@@ -2446,6 +2470,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                 disabled={false}
                 id="domainpropertiesrow-lookupQueryValue-1-1"
                 key="domainpropertiesrow-lookupQueryValue-1-1"
+                lookupIsValid={true}
                 lookupURI="http://www.w3.org/2001/XMLSchema#int"
                 onChange={[Function]}
                 schemaName="study"
@@ -2486,6 +2511,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                   }
                   disabled={false}
                   id="domainpropertiesrow-lookupQueryValue-1-1"
+                  lookupIsValid={true}
                   lookupURI="http://www.w3.org/2001/XMLSchema#int"
                   name="domainpropertiesrow-lookupQueryValue"
                   onChange={[Function]}
@@ -2514,6 +2540,14 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                         key="_default"
                       />
                       <option
+                        disabled={false}
+                      >
+                         (
+                        Lookup
+                        )
+                      </option>
+                      <option
+                        disabled={false}
                         key="http://www.w3.org/2001/XMLSchema#int|Data"
                         value="http://www.w3.org/2001/XMLSchema#int|Data"
                       >
@@ -2523,6 +2557,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                         )
                       </option>
                       <option
+                        disabled={false}
                         key="http://www.w3.org/2001/XMLSchema#int|DataInputs"
                         value="http://www.w3.org/2001/XMLSchema#int|DataInputs"
                       >
@@ -2532,6 +2567,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                         )
                       </option>
                       <option
+                        disabled={false}
                         key="http://www.w3.org/2001/XMLSchema#int|Runs"
                         value="http://www.w3.org/2001/XMLSchema#int|Runs"
                       >

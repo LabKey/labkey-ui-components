@@ -23,6 +23,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
       "lookupQuery": undefined,
       "lookupSchema": undefined,
       "lookupValidator": undefined,
+      "lookupIsValid": undefined,
       "measure": undefined,
       "mvEnabled": false,
       "name": "key",

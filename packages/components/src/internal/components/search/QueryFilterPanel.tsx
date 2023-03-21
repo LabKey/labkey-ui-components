@@ -49,6 +49,7 @@ interface Props {
     validFilterField?: (field: QueryColumn, queryInfo: QueryInfo, exprColumnsWithSubSelect?: string[]) => boolean;
     viewName?: string;
     altQueryName?: string;
+    fields?: List<QueryColumn>;
 }
 
 export const QueryFilterPanel: FC<Props> = memo(props => {
@@ -71,6 +72,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         onHasNoValueInQueryChange,
         hasNotInQueryFilterLabel,
         altQueryName,
+        fields,
     } = props;
     const [queryFields, setQueryFields] = useState<List<QueryColumn>>(undefined);
     const [activeField, setActiveField] = useState<QueryColumn>(undefined);
@@ -140,9 +142,9 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         setActiveField(undefined);
         if (!queryInfo) return;
 
-        const fields = skipDefaultViewCheck ? queryInfo.getAllColumns(viewName) : queryInfo.getDisplayColumns(viewName);
+        const qFields = fields ? fields : (skipDefaultViewCheck ? queryInfo.getAllColumns(viewName) : queryInfo.getDisplayColumns(viewName));
         const qF = fromJS(
-            fields.filter(
+            qFields.filter(
                 field => field.filterable && (
                     !validFilterField ||
                     validFilterField(field, queryInfo, entityDataType?.exprColumnsWithSubSelect)
@@ -151,7 +153,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         );
         setQueryFields(qF);
         if (fieldKey) {
-            const field = fields.find(f => f.getDisplayFieldKey() === fieldKey);
+            const field = qFields.find(f => f.getDisplayFieldKey() === fieldKey);
             setActiveField(field);
         }
     }, [
@@ -161,6 +163,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         entityDataType?.exprColumnsWithSubSelect,
         fieldKey,
         viewName,
+        fields
     ]);
 
     useEffect(() => {

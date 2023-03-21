@@ -12,6 +12,7 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { EntityDataType } from './models';
 import { sampleDeleteDependencyText } from './utils';
+import {SAMPLE_PROPERTY_ALL_SAMPLE_TYPE} from "../search/constants";
 
 export const DATA_OPERATION_CONFIRMATION_ACTION = 'getDataOperationConfirmationData.api';
 export const SAMPLE_OPERATION_CONFIRMATION_ACTION = 'getMaterialOperationConfirmationData.api';
@@ -70,8 +71,10 @@ export const SamplePropertyDataType: EntityDataType = {
     typeListingSchemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
     listingSchemaQuery: undefined,
     instanceSchemaName: undefined,
-    getInstanceSchemaQuery: () => {
-        return SCHEMAS.EXP_TABLES.MATERIALS; // TODO include available custom query
+    getInstanceSchemaQuery: (queryName: string) => {
+        if (queryName === SAMPLE_PROPERTY_ALL_SAMPLE_TYPE.query)
+            return SCHEMAS.EXP_TABLES.MATERIALS;
+        return new SchemaQuery("samples", queryName);
     },
     getInstanceDataType: (schemaQuery: SchemaQuery, queryDisplayName?: string) => {
         return queryDisplayName ?? schemaQuery.queryName;

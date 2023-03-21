@@ -1,5 +1,6 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Col, Modal, Row } from 'react-bootstrap';
+import {List} from "immutable";
 
 import {Filter, Query} from '@labkey/api';
 
@@ -36,6 +37,7 @@ import { QueryFilterPanel } from '../internal/components/search/QueryFilterPanel
 import { AssaySampleColumnProp } from '../internal/sampleModels';
 import { isLoading, LoadingState } from '../public/LoadingState';
 import {SAMPLE_PROPERTY_ALL_SAMPLE_TYPE} from "../internal/components/search/constants";
+import {getSamplePropertyFields} from "./utils";
 
 export interface EntityFieldFilterModalProps {
     api?: ComponentsAPIWrapper;
@@ -273,6 +275,16 @@ export const EntityFieldFilterModal: FC<EntityFieldFilterModalProps> = memo(prop
         };
     }, [entityDataType, activeQuery, entityQueries]);
 
+    const entityTypeFields = useMemo(() : List<QueryColumn> => {
+        if (!activeQueryInfo)
+            return undefined;
+
+        if (entityDataType.nounAsParentSingular !== SamplePropertyDataType.nounAsParentSingular)
+            return undefined;
+
+        return getSamplePropertyFields(activeQueryInfo, skipDefaultViewCheck);
+    }, [activeQueryInfo, skipDefaultViewCheck]);
+
     return (
         <Modal show bsSize="lg" onHide={closeModal}>
             <Modal.Header closeButton>
@@ -331,6 +343,7 @@ export const EntityFieldFilterModal: FC<EntityFieldFilterModalProps> = memo(prop
                         selectDistinctOptions={selectDistinctOptions}
                         key={activeQuery}
                         altQueryName={activeQuery}
+                        fields={entityTypeFields}
                     />
                 </Row>
             </Modal.Body>

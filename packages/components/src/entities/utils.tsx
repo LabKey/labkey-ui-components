@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { List, OrderedMap, Set } from 'immutable';
+import {fromJS, List, OrderedMap, Set} from 'immutable';
 import { ActionURL, AuditBehaviorTypes, Filter, getServerContext, Utils } from '@labkey/api';
 
 import {
@@ -40,6 +40,7 @@ import { BulkAddData } from '../internal/components/editable/EditableGrid';
 import { SampleCreationType } from '../internal/components/samples/models';
 import { DataClassDataType, SampleTypeDataType } from '../internal/components/entities/constants';
 import { sampleDeleteDependencyText } from '../internal/components/entities/utils';
+import {QueryColumn} from "../public/QueryColumn";
 
 export function getCrossFolderSelectionMsg(
     crossFolderSelectionCount: number,
@@ -600,3 +601,34 @@ export const processSampleBulkAdd = (data: OrderedMap<string, any>, combineParen
     if (totalItems === 0) totalItems = numItems;
     return { pivotKey, pivotValues, totalItems };
 };
+
+const ALLOWED_FINDER_SAMPLE_PROPERTIES = [
+    'name', 'materialexpdate', 'storedamount', 'aliquotcount', 'aliquotvolume', 'availablealiquotcount',
+    'freezethawcount', 'storagestatus', 'storagerow', 'storagecol', 'created'
+];
+
+export const getSamplePropertyFields = (queryInfo: QueryInfo, skipDefaultViewCheck?: boolean): List<QueryColumn> => {
+    const defaultColumns = skipDefaultViewCheck ? queryInfo.getAllColumns() : queryInfo.getDisplayColumns();
+    const defaultFields = [];
+    defaultColumns.forEach(col => {
+        defaultFields.push(col.fieldKey.toLowerCase());
+    });
+    const allFieldsMap = queryInfo.columns.toJS();
+
+    const isAllSamplesQuery = queryInfo.schemaQuery.schemaName === 'exp';
+    const fields = [];
+    ALLOWED_FINDER_SAMPLE_PROPERTIES.forEach(fieldName => {
+        let include = false;
+        if (isAllSamplesQuery)
+            include = true;
+        else if (fieldName === 'availablealiquotcount') {
+            include = true;
+        }
+        else {
+            include = defaultFields.indexOf(fieldName) > -1;
+        }
+        if (include)
+            fields.push(allFieldsMap[fieldName]);
+    });
+    return fromJS(fields);
+}

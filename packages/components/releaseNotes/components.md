@@ -7,6 +7,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * previously was just querying for all assay designs with a sample lookup
   * getDistinctAssaysPerSample() to query for the distinct set of assay design names with data for given sample rowIDs
 
+### version 2.311.0
+*Released*: 21 March 2023
+* Issue 43559: Domain designer throws error on invalid lookup
+
 ### version 2.310.0
 *Released*: 17 March 2023
 * withQueryModels to separate query to get the totalCount from the query to get the model data rows

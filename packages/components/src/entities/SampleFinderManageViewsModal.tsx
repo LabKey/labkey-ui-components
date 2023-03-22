@@ -31,7 +31,7 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
     useEffect(() => {
         (async () => {
             try {
-                const views = await api.samples.loadFinderSearches();
+                const views = await api.samples.loadFinderSearches(true);
                 setSavedSearches(views);
             } catch (error) {
                 setErrorMessage(resolveErrorMessage(error));

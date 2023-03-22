@@ -75,6 +75,7 @@ import { SampleFinderSaveViewModal } from './SampleFinderSaveViewModal';
 import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
 
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
+import {useServerContext} from "../internal/components/base/ServerContext";
 
 interface SampleFinderSamplesGridProps {
     columnDisplayNames?: { [key: string]: string };
@@ -142,6 +143,7 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
     const [assaySampleIdCols, setAssaySampleIdCols] = useState<{ [key: string]: AssaySampleColumnProp }>(undefined);
 
     const { api } = useAppContext();
+    const { user } = useServerContext();
     const { createNotification } = useNotificationsContext();
 
     useEffect(() => {
@@ -175,12 +177,12 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
 
         const finderSessionDataStr = sessionStorage.getItem(getSampleFinderLocalStorageKey());
         if (finderSessionDataStr) {
-            const finderSessionData = searchFiltersFromJson(finderSessionDataStr, parentEntityDataTypes, assaySampleCols);
+            const finderSessionData = searchFiltersFromJson(finderSessionDataStr, parentEntityDataTypes, assaySampleCols, user.id);
             if (finderSessionData?.filters?.length > 0 && finderSessionData?.filterTimestamp) {
                 setUnsavedSessionViewName(finderSessionData.filterTimestamp);
             }
         }
-    }, [assayModel.definitionsLoadingState, assayModel.definitions, parentEntityDataTypes, clearSessionView]);
+    }, [assayModel.definitionsLoadingState, assayModel.definitions, parentEntityDataTypes, clearSessionView, user]);
 
     const updateFilters = useCallback(
         (changeCounter: number, filterProps: FilterProps[], updateSession: boolean, isViewDirty: boolean) => {
@@ -343,7 +345,7 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
             }
             if (!cardJson) return;
 
-            const finderSessionData = searchFiltersFromJson(cardJson, parentEntityDataTypes, assaySampleIdCols);
+            const finderSessionData = searchFiltersFromJson(cardJson, parentEntityDataTypes, assaySampleIdCols, user.id);
             const newFilters = finderSessionData.filters;
             if (!newFilters) return;
 
@@ -351,7 +353,7 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
             setShowSaveViewDialog(false);
             setCurrentView(view);
         },
-        [createNotification, filterChangeCounter, updateFilters, assaySampleIdCols, parentEntityDataTypes]
+        [createNotification, filterChangeCounter, updateFilters, assaySampleIdCols, parentEntityDataTypes, user]
     );
 
     const onSaveComplete = useCallback((view: FinderReport) => {

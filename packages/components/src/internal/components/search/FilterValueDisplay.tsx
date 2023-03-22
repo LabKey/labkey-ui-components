@@ -70,7 +70,10 @@ export const FilterValueDisplay: FC<FilterValueDisplayProps> = memo(props => {
                 .replace('-', '')
                 .replace('+', '')
                 .replace('d', '');
-            const plural = parseInt(days) > 1 ? 's' : '';
+            const dayInt = parseInt(days);
+            if (dayInt === 0)
+                return 'today';
+            const plural = dayInt > 1 ? 's' : '';
             return days + ' day' + plural + (positive ? ' from now' : ' ago');
         }
 

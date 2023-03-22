@@ -512,7 +512,8 @@ export function searchFiltersToJson(
 export function getSearchFiltersFromObjs(
     filterPropsObj: any[],
     entityTypes: EntityDataType[],
-    assaySampleCols?: { [key: string]: AssaySampleColumnProp }
+    assaySampleCols?: { [key: string]: AssaySampleColumnProp },
+    currentUserId?: number
 ): FilterProps[] {
     const entityTypeMap = {};
     entityTypes?.forEach(entityType => {
@@ -522,10 +523,12 @@ export function getSearchFiltersFromObjs(
     filterPropsObj.forEach(filterPropObj => {
         const filterArray = [];
         filterPropObj.filterArray?.forEach(field => {
+            const filterStr = field.filter.replace('${LABKEY.USERID}', currentUserId + '');
+
             filterArray.push({
                 fieldKey: field.fieldKey,
                 fieldCaption: field.fieldCaption,
-                filter: filterFromJson(field.filter),
+                filter: filterFromJson(filterStr),
                 jsonType: field.jsonType,
             });
         });
@@ -563,7 +566,8 @@ export function getSearchFiltersFromObjs(
 export function searchFiltersFromJson(
     filterPropsStr: string,
     entityTypes: EntityDataType[],
-    assaySampleCols?: { [key: string]: AssaySampleColumnProp }
+    assaySampleCols?: { [key: string]: AssaySampleColumnProp },
+    currentUserId?: number
 ): SearchSessionStorageProps {
     const obj = JSON.parse(filterPropsStr);
     const filterPropsObj: any[] = obj.filters;
@@ -571,7 +575,7 @@ export function searchFiltersFromJson(
     const filterTimestamp: string = obj.filterTimestamp;
 
     return {
-        filters: getSearchFiltersFromObjs(filterPropsObj, entityTypes, assaySampleCols),
+        filters: getSearchFiltersFromObjs(filterPropsObj, entityTypes, assaySampleCols, currentUserId),
         filterChangeCounter,
         filterTimestamp,
     };

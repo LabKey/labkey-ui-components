@@ -607,7 +607,7 @@ export const processSampleBulkAdd = (data: OrderedMap<string, any>, combineParen
 
 const ALLOWED_FINDER_SAMPLE_PROPERTIES = [
     'name', 'materialexpdate', 'storedamount', 'aliquotcount', 'aliquotvolume', 'availablealiquotcount',
-    'freezethawcount', 'storagestatus', 'storagerow', 'storagecol', 'created'
+    'freezethawcount', 'storagestatus', 'storagerow', 'storagecol', 'created', 'createdby'
 ];
 
 export const getSamplePropertyFields = (queryInfo: QueryInfo, skipDefaultViewCheck?: boolean): List<QueryColumn> => {
@@ -624,7 +624,7 @@ export const getSamplePropertyFields = (queryInfo: QueryInfo, skipDefaultViewChe
         let include = false;
         if (isAllSamplesQuery)
             include = true;
-        else if (fieldName === 'availablealiquotcount') {
+        else if (fieldName === 'availablealiquotcount' || fieldName === 'createdby') {
             include = true;
         }
         else {

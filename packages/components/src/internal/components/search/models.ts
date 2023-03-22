@@ -102,4 +102,5 @@ export interface FinderReport {
     isSession?: boolean;
     reportId?: string;
     reportName?: string;
+    isModuleReport?: boolean;
 }

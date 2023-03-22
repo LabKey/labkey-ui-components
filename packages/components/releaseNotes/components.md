@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Issue 47408: Filter units in bulk update to match sample type display units
+* Issue 47408: Coalesce and check for updates using the display values for amounts and units
 
 ### version 2.312.0
 *Released*: 21 March 2023

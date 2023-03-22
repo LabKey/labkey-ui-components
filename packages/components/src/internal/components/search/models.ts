@@ -74,6 +74,7 @@ export interface FilterProps {
     schemaQuery?: SchemaQuery;
     selectColumnFieldKey?: string;
     targetColumnFieldKey?: string;
+    altQueryName?: string;
 }
 
 export interface SearchSessionStorageProps {

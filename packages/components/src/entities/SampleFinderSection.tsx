@@ -214,7 +214,7 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
 
             let queryName = selectedCard.schemaQuery.queryName;
             if (selectedCard.entityDataType.getInstanceDataType)
-                queryName = selectedCard.entityDataType.getInstanceDataType(selectedCard.schemaQuery, selectedCard.dataTypeDisplayName);
+                queryName = selectedCard.entityDataType.getInstanceDataType(selectedCard.schemaQuery, selectedCard.altQueryName);
 
             setChosenQueryName(queryName);
         },
@@ -292,6 +292,7 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
                     filterArray: dataTypeFilters[queryName],
                     entityDataType: chosenEntityType,
                     dataTypeDisplayName: queryLabels[queryName],
+                    altQueryName: isSampleProperties && !isSampleTypeSampleProp ? SAMPLE_PROPERTY_ALL_SAMPLE_TYPE.query : undefined,
                     dataTypeLsid: isSampleTypeSampleProp ? queryLsids?.[queryName] : undefined,
                     selectColumnFieldKey: isAssay ? assaySampleIdCols[queryName]?.lookupFieldKey : undefined,
                     targetColumnFieldKey: isAssay ? assaySampleIdCols[queryName]?.fieldKey : undefined,

@@ -76,8 +76,8 @@ export const SamplePropertyDataType: EntityDataType = {
             return SCHEMAS.EXP_TABLES.MATERIALS;
         return new SchemaQuery("samples", queryName);
     },
-    getInstanceDataType: (schemaQuery: SchemaQuery, queryDisplayName?: string) => {
-        return queryDisplayName ?? schemaQuery.queryName;
+    getInstanceDataType: (schemaQuery: SchemaQuery, altQueryName?: string) => {
+        return altQueryName ?? schemaQuery.queryName;
     },
     operationConfirmationControllerName: 'experiment',
     operationConfirmationActionName: undefined,

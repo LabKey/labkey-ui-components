@@ -119,7 +119,7 @@ export const EntityFieldFilterModal: FC<EntityFieldFilterModalProps> = memo(prop
                 if (card.entityDataType.instanceSchemaName !== entityDataType.instanceSchemaName) return;
                 let parent = card.schemaQuery.queryName.toLowerCase(); // if is assay, change to datatype
                 if (card.entityDataType.getInstanceDataType) {
-                    parent = card.entityDataType.getInstanceDataType(card.schemaQuery, card.dataTypeDisplayName).toLowerCase();
+                    parent = card.entityDataType.getInstanceDataType(card.schemaQuery, card.altQueryName).toLowerCase();
                     if (card.entityDataType.nounAsParentSingular === SamplePropertyDataType.nounAsParentSingular)
                         setActiveQuery(card.dataTypeDisplayName);
                 }
@@ -167,7 +167,7 @@ export const EntityFieldFilterModal: FC<EntityFieldFilterModalProps> = memo(prop
                 setLoadingState(LoadingState.LOADED);
             }
         })();
-    }, [entityDataType]); // don't add cards or queryName to deps, only init DataTypeFilters once per entityDataType
+    }, [entityDataType, queryName]); // don't add cards or queryName to deps, only init DataTypeFilters once per entityDataType
 
     const closeModal = useCallback(() => {
         onCancel();

@@ -17,6 +17,12 @@ export const AliasSelectInput: FC<Props> = memo(props => {
     const { col, data, ...selectProps } = props;
     const generatedId = useMemo(() => generateId(), []);
 
+    const isValidNewOption = useCallback((inputValue: string) => {
+        const isEmpty = inputValue?.trim().length === 0;
+        // Empty string is considered invalid. This matches default react-select behavior.
+        return !!inputValue && !isEmpty;
+    }, []);
+
     // AliasInput supplies its own formValue resolution
     // - The value is mapped from the "label"
     // - When empty the server expects an empty Array and not undefined/null
@@ -38,8 +44,10 @@ export const AliasSelectInput: FC<Props> = memo(props => {
         <SelectInput
             description={col.description}
             id={generatedId}
+            isValidNewOption={isValidNewOption}
             label={col.caption}
             name={col.fieldKey}
+            noResultsText="Enter alias name(s)"
             required={col.required}
             {...selectProps}
             resolveFormValue={resolveFormValue}

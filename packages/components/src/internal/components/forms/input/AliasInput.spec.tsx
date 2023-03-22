@@ -39,4 +39,18 @@ describe('AliasInput', () => {
         expect(resolveFormValue([])).toEqual([]);
         expect(resolveFormValue([{ value: 'x', label: 'y' }])).toEqual(['y']);
     });
+
+    test('isValidNewOption', () => {
+        const wrapper = shallow(<AliasSelectInput col={aliasColumn} />);
+        const isValidNewOption = wrapper.find(SelectInput).prop('isValidNewOption');
+
+        expect(isValidNewOption(undefined)).toBe(false);
+        expect(isValidNewOption('')).toBe(false);
+        expect(isValidNewOption(' ')).toBe(false);
+        expect(isValidNewOption('a')).toBe(true);
+        expect(isValidNewOption('a ')).toBe(true);
+        expect(isValidNewOption('a b')).toBe(true);
+        expect(isValidNewOption('a,b')).toBe(true);
+        expect(isValidNewOption(' a, b')).toBe(true);
+    });
 });

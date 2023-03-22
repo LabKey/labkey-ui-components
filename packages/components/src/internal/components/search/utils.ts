@@ -543,7 +543,7 @@ export function getSearchFiltersFromObjs(
 
         filterPropObj['entityDataType'] = entityDataType;
 
-        const isAssayResult = filterPropObj.entityDataType.nounAsParentSingular === AssayResultDataType.nounAsParentSingular;
+        const isAssayResult = filterPropObj.entityDataType?.nounAsParentSingular === AssayResultDataType.nounAsParentSingular || filterPropObj['entityTypeNoun'] === AssayResultDataType.nounAsParentSingular;
         if (isAssayResult) {
             // when Finding from assays grid, the json lacks certain properties
             if (!filterPropObj.selectColumnFieldKey && assaySampleCols) {

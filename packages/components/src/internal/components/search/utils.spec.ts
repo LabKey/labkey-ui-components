@@ -719,14 +719,7 @@ const card = {
 };
 
 const cardJSON =
-    '{"filters":[{"entityDataType":{"typeListingSchemaQuery":{"schemaName":"TestListing","queryName":"query"},"listingSchemaQuery":{"schemaName":"Test","queryName":"query"},' +
-    '"instanceSchemaName":"TestSchema","operationConfirmationControllerName":"controller","operationConfirmationActionName":"test-delete-confirmation.api",' +
-    '"nounSingular":"test","nounPlural":"tests","nounAsParentSingular":"test Parent",' +
-    '"nounAsParentPlural":"test Parents","typeNounSingular":"Test Type","typeNounAsParentSingular":"Test Parent Type","descriptionSingular":"parent test type","descriptionPlural":"parent test types","uniqueFieldKey":"Name",' +
-    '"dependencyText":"test data dependencies","deleteHelpLinkTopic":"viewSampleSets#delete","inputColumnName":"Inputs/Materials/First","ancestorColumnName":"Ancestors/Samples","inputTypeValueField":"lsid",' +
-    '"insertColumnNamePrefix":"MaterialInputs/","editTypeAppUrlPrefix":"Test","importFileAction":"importSamples","filterCardHeaderClass":"filter-card__header-success"},' +
-    '"filterArray":[{"fieldKey":"textField","fieldCaption":"textField","filter":"query.textField~=","jsonType":"string"},{"fieldKey":"strField","fieldCaption":"strField",' +
-    '"filter":"query.strField~between=1%2C5","jsonType":"string"}],"schemaQuery":{"schemaName":"TestSchema","queryName":"samples1"},"index":1}],"filterChangeCounter":5,"filterTimestamp":"Searched 2020-08-06 14:44"}';
+    "{\"filters\":[{\"filterArray\":[{\"fieldKey\":\"textField\",\"fieldCaption\":\"textField\",\"filter\":\"query.textField~=\",\"jsonType\":\"string\"},{\"fieldKey\":\"strField\",\"fieldCaption\":\"strField\",\"filter\":\"query.strField~between=1%2C5\",\"jsonType\":\"string\"}],\"schemaQuery\":{\"schemaName\":\"TestSchema\",\"queryName\":\"samples1\"},\"index\":1,\"entityTypeNoun\":\"test Parent\"}],\"filterChangeCounter\":5,\"filterTimestamp\":\"Searched 2020-08-06 14:44\"}";
 
 const cardWithEntityTypeFilter = {
     entityDataType: TestTypeDataTypeWithEntityFilter,
@@ -735,15 +728,11 @@ const cardWithEntityTypeFilter = {
     index: 1,
 };
 
-const cardWithEntityTypeFilterJSON =
-    '{"filters":[{"entityDataType":{"typeListingSchemaQuery":{"schemaName":"TestListing","queryName":"query"},"listingSchemaQuery":{"schemaName":"Test","queryName":"query"},' +
-    '"instanceSchemaName":"TestSchema","operationConfirmationControllerName":"controller","operationConfirmationActionName":"test-delete-confirmation.api",' +
-    '"nounSingular":"test","nounPlural":"tests","nounAsParentSingular":"test Parent","nounAsParentPlural":"test Parents",' +
-    '"typeNounSingular":"Test Type","typeNounAsParentSingular":"Test Parent Type","descriptionSingular":"parent test type","descriptionPlural":"parent test types","uniqueFieldKey":"Name","dependencyText":"test data dependencies",' +
-    '"deleteHelpLinkTopic":"viewSampleSets#delete","inputColumnName":"Inputs/Materials/First","ancestorColumnName":"Ancestors/Samples","inputTypeValueField":"lsid","insertColumnNamePrefix":"MaterialInputs/","editTypeAppUrlPrefix":"Test",' +
-    '"importFileAction":"importSamples","filterCardHeaderClass":"filter-card__header-success","filterArray":["query.Category~eq=Source"]},"filterArray":[{"fieldKey":"textField",' +
-    '"fieldCaption":"textField","filter":"query.textField~=","jsonType":"string"},{"fieldKey":"strField","fieldCaption":"strField","filter":"query.strField~between=1%2C5","jsonType":"string"}],"schemaQuery":{"schemaName":"TestSchema",' +
-    '"queryName":"samples1"},"index":1}],"filterChangeCounter":5,"filterTimestamp":"Searched 2020-08-06 14:44"}';
+const cardWithEntityTypeFilterJSON = cardJSON;
+
+const cardWithCurrentUserFilterJSON =
+    "{\"filters\":[{\"filterArray\":[{\"fieldKey\":\"userId\",\"fieldCaption\":\"userId\",\"filter\":\"query.userId~eq=${LABKEY.USERID}\",\"jsonType\":\"int\"}],\"schemaQuery\":{\"schemaName\":\"TestSchema\",\"queryName\":\"samples1\"},\"index\":1,\"entityTypeNoun\":\"test Parent\"}],\"filterChangeCounter\":5,\"filterTimestamp\":\"Searched 2020-08-06 14:44\"}";
+
 
 describe('searchFiltersToJson', () => {
     test('searchFiltersToJson', () => {
@@ -756,7 +745,7 @@ describe('searchFiltersToJson', () => {
 
 describe('searchFiltersFromJson', () => {
     test('searchFiltersFromJson', () => {
-        const deserializedCard = searchFiltersFromJson(cardJSON);
+        const deserializedCard = searchFiltersFromJson(cardJSON, [TestTypeDataType]);
         expect(deserializedCard['filterChangeCounter']).toEqual(5);
         const cards = deserializedCard['filters'];
         expect(cards.length).toEqual(1);
@@ -766,10 +755,14 @@ describe('searchFiltersFromJson', () => {
         const textFilter = fieldFilters[1]['filter'];
         expect(textFilter).toStrictEqual(stringBetweenFilter.filter);
 
-        const deserializedCardWithEntityFilter = searchFiltersFromJson(cardWithEntityTypeFilterJSON);
+        const deserializedCardWithEntityFilter = searchFiltersFromJson(cardWithEntityTypeFilterJSON, [TestTypeDataTypeWithEntityFilter]);
         const entityTypeFilters = deserializedCardWithEntityFilter['filters'][0].entityDataType.filterArray;
         expect(entityTypeFilters.length).toEqual(1);
         expect(entityTypeFilters[0]).toStrictEqual(Filter.create('Category', 'Source'));
+
+        const deserializedCardWithCurrentUserFilter = searchFiltersFromJson(cardWithCurrentUserFilterJSON, [TestTypeDataTypeWithEntityFilter], undefined, 1005);
+        const userFilter = deserializedCardWithCurrentUserFilter['filters'][0].filterArray[0].filter;
+        expect(userFilter).toStrictEqual(Filter.create('userId', '1005'));
     });
 });
 

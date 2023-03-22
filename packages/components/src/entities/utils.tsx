@@ -179,7 +179,7 @@ export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: bool
 export const getDataClassTemplateUrl = (
     queryInfo: QueryInfo,
     exportConfig: any = {},
-    excludeColumns: string[] = ['flag', 'alias', 'lsid', 'Ancestors'],
+    excludeColumns: string[] = ['flag', 'alias', 'lsid', 'Ancestors']
 ): string => {
     const schemaQuery = queryInfo.schemaQuery;
     if (!schemaQuery) return undefined;
@@ -194,12 +194,12 @@ export const getDataClassTemplateUrl = (
         schemaName: schemaQuery.schemaName,
         'query.queryName': schemaQuery.queryName,
         headerType: 'DisplayFieldKey',
-        excludeColumn:  excludeColumns
+        excludeColumn: excludeColumns
             ? excludeColumns.concat(queryInfo.getFileColumnFieldKeys())
             : queryInfo.getFileColumnFieldKeys(),
         filenamePrefix: schemaQuery.queryName,
     });
-}
+};
 
 export const getSampleTypeTemplateUrl = (
     queryInfo: QueryInfo,
@@ -344,13 +344,16 @@ export async function getSamplesAssayGridQueryConfigs(
     const sampleIds = sampleRows.map(row => caseInsensitive(row, 'RowId').value);
     const allSampleIds = allSampleRows_.map(row => caseInsensitive(row, 'RowId').value);
 
+    const distinctAssays = await api.getDistinctAssaysPerSample(allSampleIds);
+
     const _configs = getSampleAssayQueryConfigs(
         assayModel,
         sampleIds,
         gridSuffix,
         gridPrefix,
         false,
-        sampleSchemaQuery
+        sampleSchemaQuery,
+        distinctAssays
     );
 
     // since we want to remove empty assay run columns from the Assay Run Summary grid, we need to inject the WHERE

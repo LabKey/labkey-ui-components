@@ -119,8 +119,8 @@ export interface QueryConfig {
      */
     includeDetailsColumn?: boolean;
     /**
-     * Include the total count in the query response. If true, this can slow down the query performance as the server
-     * will need to do a second query to get that count for all rows in the query. Defaults to false.
+     * Include the total count in the query model via a second query to the server for this value.
+     * This second query will be made in parallel with the initial query to get the model data.
      */
     includeTotalCount?: boolean;
     /**
@@ -238,8 +238,8 @@ export class QueryModel {
      */
     readonly includeUpdateColumn: boolean;
     /**
-     * Include the total count in the query response. If true, this can slow down the query performance as the server
-     * will need to do a second query to get that count for all rows in the query.
+     * Include the total count in the query model via a second query to the server for this value.
+     * This second query will be made in parallel with the initial query to get the model data.
      */
     readonly includeTotalCount: boolean;
     /**

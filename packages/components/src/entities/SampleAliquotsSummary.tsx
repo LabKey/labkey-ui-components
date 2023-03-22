@@ -118,7 +118,7 @@ const SampleAliquotsSummaryPanel: FC<OwnProps & PanelProps & InjectedQueryModels
     const { actions, aliquotsModelId, jobsModelId, queryModels, ...ownProps } = props;
     const aliquotsModel = queryModels[aliquotsModelId];
     const jobsModel = queryModels[jobsModelId];
-    const isLoading = aliquotsModel.isLoading || !jobsModel || jobsModel.isLoading;
+    const isLoading = aliquotsModel.isLoadingTotalCount || !jobsModel || jobsModel.isLoadingTotalCount;
 
     return (
         <div className="panel panel-default">

@@ -144,6 +144,7 @@ describe('GridPanel', () => {
             orderedRows: orderedRows.slice(0, 20),
             rowCount,
             rowsLoadingState: LoadingState.LOADED,
+            totalCountLoadingState: LoadingState.LOADED,
             charts: [],
             chartsLoadingState: LoadingState.LOADED,
         });
@@ -426,6 +427,7 @@ describe('GridPanel', () => {
         const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows.slice(0, 20), rowCount).mutate({
             selections: new Set(),
             selectionsLoadingState: LoadingState.LOADED,
+            totalCountLoadingState: LoadingState.LOADED,
         });
         const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
 

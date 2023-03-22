@@ -27,12 +27,15 @@ import {
     getSampleTypeDetails,
     SampleAssayResultViewConfig,
     createSessionAssayRunSummaryQuery,
+    getDistinctAssaysPerSample,
 } from './actions';
 import { SampleState } from './models';
 import { SampleOperation } from './constants';
 
 export interface SamplesAPIWrapper {
     createSessionAssayRunSummaryQuery: (sampleIds: number[]) => Promise<ISelectRowsResult>;
+
+    getDistinctAssaysPerSample: (sampleIds: number[]) => Promise<string[]>;
 
     getFieldLookupFromSelection: (
         schemaName: string,
@@ -88,6 +91,7 @@ export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
     loadFinderSearches = loadFinderSearches;
     getTimelineEvents = getTimelineEvents;
     getSampleTypeDetails = getSampleTypeDetails;
+    getDistinctAssaysPerSample = getDistinctAssaysPerSample;
 }
 
 /**
@@ -109,6 +113,7 @@ export function getSamplesTestAPIWrapper(
         loadFinderSearches: mockFn(),
         getTimelineEvents: mockFn(),
         getSampleTypeDetails: mockFn(),
+        getDistinctAssaysPerSample: mockFn(),
         ...overrides,
     };
 }

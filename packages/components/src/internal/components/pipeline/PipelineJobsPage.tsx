@@ -53,6 +53,7 @@ export class PipelineJobsPageImpl extends React.PureComponent<Props & InjectedQu
             baseFilters,
             sorts: [new QuerySort({ fieldKey: 'Created', dir: '-' })],
             requiredColumns: ['Provider'],
+            includeTotalCount: true,
         };
         actions.addModel(queryConfig, true);
     }

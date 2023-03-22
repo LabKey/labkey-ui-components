@@ -37,6 +37,7 @@ import {
     getContainerFilter,
     invalidateFullQueryDetailsCache,
     ISelectRowsResult,
+    selectDistinctRows,
     selectRowsDeprecated,
 } from '../../query/api';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -55,6 +56,8 @@ import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 
 import { createGridModelId } from '../../models';
 
+import { buildURL } from '../../url/AppURL';
+
 import {
     AMOUNT_AND_UNITS_COLUMNS_LC,
     IS_ALIQUOT_COL,
@@ -64,7 +67,6 @@ import {
     STORED_AMOUNT_FIELDS,
 } from './constants';
 import { FindField, GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
-import { buildURL } from '../../url/AppURL';
 
 export function initSampleSetSelects(
     isUpdate: boolean,
@@ -750,21 +752,22 @@ export function createQueryConfigFilteredBySample(
     };
 }
 
+export function getSampleTypeAssayDesigns(assayModel: AssayStateModel, sampleSchemaQuery?: SchemaQuery) {
+    return assayModel.definitions.filter(assay => !sampleSchemaQuery || assay.hasLookup(sampleSchemaQuery));
+}
+
 export function getSampleAssayQueryConfigs(
     assayModel: AssayStateModel,
     sampleIds: Array<string | number>,
     gridSuffix: string,
     gridPrefix: string,
     omitSampleCols?: boolean,
-    sampleSchemaQuery?: SchemaQuery
+    sampleSchemaQuery?: SchemaQuery,
+    assayNamesToFilter?: string[]
 ): QueryConfig[] {
-    return assayModel.definitions
+    return getSampleTypeAssayDesigns(assayModel, sampleSchemaQuery)
         .slice() // need to make a copy of the array before sorting
-        .filter(assay => {
-            if (!sampleSchemaQuery) return true;
-
-            return assay.hasLookup(sampleSchemaQuery);
-        })
+        .filter(assay => !assayNamesToFilter || assayNamesToFilter.indexOf(assay.name.toLowerCase()) > -1)
         .sort(naturalSortByProperty('name'))
         .reduce((_configs, assay) => {
             const _queryConfig = createQueryConfigFilteredBySample(
@@ -883,6 +886,27 @@ export async function createSessionAssayRunSummaryQuery(sampleIds: number[]): Pr
             'PIVOT RunCount BY Assay',
         maxRows: 0, // we don't need any data back here, we just need to get the temp session schema/query
     });
+}
+
+export async function getDistinctAssaysPerSample(sampleIds: number[]): Promise<string[]> {
+    let assayRunsQuery = 'AssayRunsPerSample';
+    if (isProductProjectsEnabled() && !isProjectContainer()) {
+        assayRunsQuery = 'AssayRunsPerSampleChildProject';
+    }
+
+    try {
+        const results = await selectDistinctRows({
+            schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
+            queryName: assayRunsQuery,
+            column: 'Assay',
+            filterArray: [Filter.create('RowId', sampleIds, Filter.Types.IN)],
+        });
+
+        return results.values.filter(v => v !== null).map(v => v.toLowerCase());
+    } catch (e) {
+        // console.error already happens in failure case of selectDistinctRows
+        return undefined;
+    }
 }
 
 export function getSampleStatuses(includeInUse = false): Promise<SampleState[]> {
@@ -1007,25 +1031,28 @@ export function getTimelineEvents(sampleId: number, timezone?: string): Promise<
 }
 
 interface SampleStorageData {
-    itemId?: number,
-    materialId: number,
-    storedAmount?: number,
-    units?: string,
-    freezeThawCount?: number,
+    freezeThawCount?: number;
+    itemId?: number;
+    materialId: number;
+    storedAmount?: number;
+    units?: string;
 }
 
-export function updateSampleStorageData(sampleStorageData: SampleStorageData[], containerPath?: string, userComment?: string): Promise<any> {
+export function updateSampleStorageData(
+    sampleStorageData: SampleStorageData[],
+    containerPath?: string,
+    userComment?: string
+): Promise<any> {
     if (sampleStorageData.length == 0) {
         return Promise.resolve();
     }
 
     return new Promise<any>((resolve, reject) => {
-
         return Ajax.request({
-            url: buildURL('inventory', 'UpdateSampleStorageData.api', undefined, {container: containerPath}),
+            url: buildURL('inventory', 'UpdateSampleStorageData.api', undefined, { container: containerPath }),
             jsonData: {
                 sampleRows: sampleStorageData,
-                [STORED_AMOUNT_FIELDS.AUDIT_COMMENT]: userComment
+                [STORED_AMOUNT_FIELDS.AUDIT_COMMENT]: userComment,
             },
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);

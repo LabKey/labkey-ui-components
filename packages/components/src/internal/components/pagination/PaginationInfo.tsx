@@ -1,29 +1,27 @@
 import React, { FC, memo } from 'react';
 
-interface PaginationInfoProps {
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { isLoading, LoadingState } from '../../../public/LoadingState';
+
+export interface PaginationInfoProps {
     offset: number;
     pageSize: number;
     rowCount: number;
+    totalCountLoadingState?: LoadingState;
 }
-export const PaginationInfo: FC<PaginationInfoProps> = memo(({ offset, pageSize, rowCount }) => {
+export const PaginationInfo: FC<PaginationInfoProps> = memo(props => {
+    const { offset, pageSize, rowCount, totalCountLoadingState } = props;
+    const loading = isLoading(totalCountLoadingState);
     const min = offset !== rowCount ? offset + 1 : offset;
-    let max = offset + pageSize;
-
-    let text = `${min} - `;
-
-    if (max > rowCount) {
-        max = rowCount;
-    }
-
-    text += `${max}`;
-
-    if (max !== rowCount) {
-        text += ` of ${rowCount}`;
-    }
+    const max = offset + pageSize;
+    const text = `${min} - `;
 
     return (
         <span className="pagination-info" data-min={min} data-max={max} data-total={rowCount}>
             {text}
+            {loading && <LoadingSpinner msg="" />}
+            {!loading && (max > rowCount ? rowCount : max)}
+            {!loading && rowCount > max && <>{` of ${rowCount}`}</>}
         </span>
     );
 });

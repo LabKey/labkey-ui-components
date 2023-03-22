@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.309.1-bulkUpdateUpdates.3",
+  "version": "2.312.1-bulkUpdateUpdates.4",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

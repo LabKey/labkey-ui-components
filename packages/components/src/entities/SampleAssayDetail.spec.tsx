@@ -43,6 +43,7 @@ const SQ = new SchemaQuery('schema', 'query');
 const modelLoadedNoRows = makeTestQueryModel(SQ, new QueryInfo(), {}, [], 0).mutate({
     queryInfoLoadingState: LoadingState.LOADED,
     rowsLoadingState: LoadingState.LOADED,
+    totalCountLoadingState: LoadingState.LOADED,
 });
 const modelLoadedWithRow = makeTestQueryModel(
     SQ,
@@ -50,10 +51,15 @@ const modelLoadedWithRow = makeTestQueryModel(
     { 1: { RowId: { value: 1 }, Name: { value: 'Name1' } } },
     ['1'],
     1
-).mutate({ queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADED });
+).mutate({
+    queryInfoLoadingState: LoadingState.LOADED,
+    rowsLoadingState: LoadingState.LOADED,
+    totalCountLoadingState: LoadingState.LOADED,
+});
 const modelLoading = makeTestQueryModel(SQ).mutate({
     queryInfoLoadingState: LoadingState.LOADED,
     rowsLoadingState: LoadingState.LOADING,
+    totalCountLoadingState: LoadingState.LOADED,
 });
 const sampleModel = makeTestQueryModel(SQ);
 const model = makeTestQueryModel(SQ).mutate({ title: 'First Assay' });
@@ -171,6 +177,7 @@ const SUMMARY_GRID_MODEL = makeTestQueryModel(
     id: SUMMARY_GRID_ID,
     queryInfoLoadingState: LoadingState.LOADED,
     rowsLoadingState: LoadingState.LOADED,
+    totalCountLoadingState: LoadingState.LOADED,
 });
 
 const IMPL_PROPS = {
@@ -183,6 +190,7 @@ const IMPL_PROPS = {
     actions: makeTestActions(),
     queryModels: { [SUMMARY_GRID_ID]: SUMMARY_GRID_MODEL },
     user: TEST_USER_READER,
+    hasSampleTypeAssayDesigns: true,
 };
 
 describe('SampleAssayDetailBodyImpl', () => {
@@ -196,7 +204,9 @@ describe('SampleAssayDetailBodyImpl', () => {
     }
 
     test('no assay models', () => {
-        const wrapper = mountWithAppServerContext(<SampleAssayDetailBodyImpl {...IMPL_PROPS} />);
+        const wrapper = mountWithAppServerContext(
+            <SampleAssayDetailBodyImpl {...IMPL_PROPS} hasSampleTypeAssayDesigns={false} />
+        );
         validate(wrapper, true, 'There are no assay designs defined that reference this sample type');
         wrapper.unmount();
     });
@@ -205,6 +215,7 @@ describe('SampleAssayDetailBodyImpl', () => {
         const wrapper = mountWithAppServerContext(
             <SampleAssayDetailBodyImpl
                 {...IMPL_PROPS}
+                hasSampleTypeAssayDesigns={false}
                 emptyAssayDefDisplay={
                     <AssayResultPanel>
                         <Alert>emptyAssayDefDisplay</Alert>

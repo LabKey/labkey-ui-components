@@ -15,6 +15,7 @@ import { QueryColumn } from '../QueryColumn';
 import { caseInsensitive } from '../../internal/util/utils';
 import { naturalSort } from '../sort';
 import { PaginationData } from '../../internal/components/pagination/Pagination';
+import { SelectRowsOptions } from '../../internal/query/selectRows';
 
 export function flattenValuesFromRow(row: any, keys: string[]): { [key: string]: any } {
     const values = {};
@@ -118,8 +119,8 @@ export interface QueryConfig {
      */
     includeDetailsColumn?: boolean;
     /**
-     * Include the total count in the query response. If true, this can slow down the query performance as the server
-     * will need to do a second query to get that count for all rows in the query. Defaults to false.
+     * Include the total count in the query model via a second query to the server for this value.
+     * This second query will be made in parallel with the initial query to get the model data.
      */
     includeTotalCount?: boolean;
     /**
@@ -237,8 +238,8 @@ export class QueryModel {
      */
     readonly includeUpdateColumn: boolean;
     /**
-     * Include the total count in the query response. If true, this can slow down the query performance as the server
-     * will need to do a second query to get that count for all rows in the query.
+     * Include the total count in the query model via a second query to the server for this value.
+     * This second query will be made in parallel with the initial query to get the model data.
      */
     readonly includeTotalCount: boolean;
     /**
@@ -349,6 +350,14 @@ export class QueryModel {
      */
     readonly selectionsLoadingState: LoadingState;
     /**
+     * Error message from API call to load the total count.
+     */
+    readonly totalCountError?: string;
+    /**
+     * [[LoadingState]] for the API call to load the total count.
+     */
+    readonly totalCountLoadingState: LoadingState;
+    /**
      * Array of [[DataViewInfo]] objects that define the charts attached to the given QueryModel.
      */
     readonly charts: DataViewInfo[];
@@ -417,6 +426,8 @@ export class QueryModel {
         this.selectionsError = undefined;
         this.selectionsLoadingState = LoadingState.INITIALIZED;
         this.title = queryConfig.title;
+        this.totalCountError = undefined;
+        this.totalCountLoadingState = LoadingState.INITIALIZED;
         this.urlPrefix = queryConfig.urlPrefix ?? 'query'; // match Data Region defaults
         this.charts = undefined;
         this.chartsError = undefined;
@@ -909,6 +920,13 @@ export class QueryModel {
     }
 
     /**
+     * True if the QueryModel is loading its total count.
+     */
+    get isLoadingTotalCount(): boolean {
+        return isLoading(this.totalCountLoadingState);
+    }
+
+    /**
      * True if the current page is the last page for the given QueryModel rows.
      */
     get isLastPage(): boolean {
@@ -936,6 +954,7 @@ export class QueryModel {
             pageCount: this.pageCount,
             pageSize: this.maxRows,
             rowCount: this.rowCount,
+            totalCountLoadingState: this.totalCountLoadingState,
         };
     }
 
@@ -980,6 +999,23 @@ export class QueryModel {
             sorts: this.sorts,
             title: this.title,
             urlPrefix: this.urlPrefix,
+        };
+    }
+
+    get loadRowsConfig(): SelectRowsOptions {
+        return {
+            schemaQuery: this.schemaQuery,
+            viewName: this.viewName,
+            containerPath: this.containerPath,
+            containerFilter: this.containerFilter,
+            filterArray: this.filters,
+            sort: this.sortString,
+            columns: this.columnString,
+            parameters: this.queryParameters,
+            maxRows: this.maxRows,
+            offset: this.offset,
+            includeDetailsColumn: this.includeDetailsColumn,
+            includeUpdateColumn: this.includeUpdateColumn,
         };
     }
 

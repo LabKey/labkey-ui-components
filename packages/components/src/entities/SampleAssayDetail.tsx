@@ -27,6 +27,8 @@ import { ALIQUOT_FILTER_MODE, SampleOperation } from '../internal/components/sam
 
 import { getSampleStatusType, isSampleOperationPermitted } from '../internal/components/samples/utils';
 
+import { getSampleTypeAssayDesigns } from '../internal/components/samples/actions';
+
 import { ASSAY_RUNS_GRID_ID, getSamplesAssayGridQueryConfigs, getImportItemsForAssayDefinitions } from './utils';
 import { SampleAliquotViewSelector } from './SampleAliquotViewSelector';
 
@@ -158,6 +160,7 @@ export const getSampleAssayDetailEmptyText = (
 interface OwnProps {
     activeSampleAliquotType?: ALIQUOT_FILTER_MODE;
     activeTabId?: string;
+    hasSampleTypeAssayDesigns: boolean;
     isSourceSampleAssayGrid?: boolean;
     onSampleAliquotTypeChange?: (mode: ALIQUOT_FILTER_MODE) => void;
     onTabChange: (tabId: string) => void;
@@ -189,6 +192,7 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
         exportPrefix,
         sampleId,
         sourceId,
+        hasSampleTypeAssayDesigns,
     } = props;
     const [queryModelsWithData, setQueryModelsWithData] = useState<Record<string, QueryModel>>();
     const [tabOrder, setTabOrder] = useState<string[]>();
@@ -268,7 +272,7 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
     );
 
     // always contains the summary grid model, so consider empty if we only have 1
-    if (allModels.length === 1) {
+    if (!hasSampleTypeAssayDesigns) {
         if (emptyAssayDefDisplay) return <>{emptyAssayDefDisplay}</>;
 
         return (
@@ -381,6 +385,7 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
             });
     }, [api, createNotification, sampleId, showAliquotViewSelector]);
 
+    const [hasSampleTypeAssayDesigns, setHasSampleTypeAssayDesigns] = useState<boolean>();
     const [queryConfigs, setQueryConfigs] = useState<QueryConfigMap>();
 
     const loadingDefinitions = isLoading(assayModel.definitionsLoadingState);
@@ -451,6 +456,7 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
         (async () => {
             const queryGridSuffix = (sampleId ?? sourceId + '-source') + '';
             const sampleSchemaQuery = isSourceSampleAssayGrid ? undefined : sampleModel.queryInfo.schemaQuery;
+            setHasSampleTypeAssayDesigns(getSampleTypeAssayDesigns(assayModel, sampleSchemaQuery).length > 0);
 
             // handling try/catch within getSamplesAssayGridQueryConfigs
             const queryConfigs_ = await getSamplesAssayGridQueryConfigs(
@@ -503,6 +509,7 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
             isSourceSampleAssayGrid={isSourceSampleAssayGrid}
             onTabChange={onTabChange}
             activeTabId={activeTabId}
+            hasSampleTypeAssayDesigns={hasSampleTypeAssayDesigns}
         />
     );
 };

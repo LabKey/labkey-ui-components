@@ -1,4 +1,4 @@
-import { Query, Utils } from '@labkey/api';
+import { Filter, Query, Utils } from '@labkey/api';
 import { List, Map, OrderedMap } from 'immutable';
 import React, { PureComponent, ReactNode } from 'react';
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
@@ -16,6 +16,7 @@ import { QueryInfoForm } from './QueryInfoForm';
 interface Props {
     canSubmitForEdit: boolean;
     containerFilter?: Query.ContainerFilter;
+    displayValueFields?: string[];
     header?: ReactNode;
     itemLabel?: string;
     onAdditionalFormDataChange?: (name: string, value: any) => any;
@@ -28,6 +29,7 @@ interface Props {
         dataIdsForSelection: List<any>
     ) => any;
     pluralNoun?: string;
+    queryFilters?: Record<string, List<Filter.IFilter>>;
     queryInfo: QueryInfo;
     readOnlyColumns?: List<string>;
     requiredColumns?: string[];
@@ -43,7 +45,9 @@ interface Props {
 }
 
 interface State {
+    originalDataForSelection: Map<string, any>;
     dataForSelection: Map<string, any>;
+    displayFieldUpdates: any;
     dataIdsForSelection: List<any>;
     errorMsg: string;
     isLoadingDataForSelection: boolean;
@@ -59,7 +63,9 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
         super(props);
 
         this.state = {
+            originalDataForSelection: undefined,
             dataForSelection: undefined,
+            displayFieldUpdates: {},
             dataIdsForSelection: undefined,
             errorMsg: undefined,
             isLoadingDataForSelection: true,
@@ -98,8 +104,11 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
                 undefined,
                 viewName
             );
+            const mappedData = this.mapDataForDisplayFields(data);
             this.setState({
-                dataForSelection: data,
+                originalDataForSelection: data,
+                dataForSelection: mappedData.data,
+                displayFieldUpdates: mappedData.bulkUpdates,
                 dataIdsForSelection: dataIds,
                 isLoadingDataForSelection: false,
             });
@@ -109,6 +118,45 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
             onCancel();
         }
     };
+
+    mapDataForDisplayFields(data: Map<string, any>): {data: Map<string, any>, bulkUpdates: OrderedMap<string, any>} {
+        const { displayValueFields } = this.props;
+        let updates = Map<string, any>();
+        let bulkUpdates = OrderedMap<string, any>();
+
+        if (!displayValueFields)
+            return { data, bulkUpdates };
+
+        let conflictKeys = new Set<string>();
+        data.forEach((rowData, id) => {
+            if (rowData) {
+                let updatedRow = Map<string, any>();
+                rowData.forEach((field, key) => {
+                    if (displayValueFields.includes(key) ) {
+                        const valuesDiffer = field.has('displayValue') && field.get('value') !== field.get('displayValue');
+                        const comparisonValue = field.get('displayValue') ?? field.get('value');
+                        if (!conflictKeys.has(key)) {
+                            if (!bulkUpdates.has(key)) {
+                                bulkUpdates = bulkUpdates.set(key, comparisonValue);
+                            } else if (bulkUpdates.get(key) !== comparisonValue) {
+                                bulkUpdates = bulkUpdates.remove(key);
+                                conflictKeys = conflictKeys.add(key);
+                            }
+                        }
+                        if (valuesDiffer) {
+                            field = field.set('value', comparisonValue);
+                            updatedRow = updatedRow.set(key, field);
+                        }
+                    }
+                });
+                if (!updatedRow.isEmpty())
+                    updates = updates.set(id, updatedRow);
+            }
+        });
+        if (!updates.isEmpty())
+            return {data: data.merge(updates), bulkUpdates};
+        return {data, bulkUpdates};
+    }
 
     getSelectionCount(): number {
         return this.props.selectedIds.size;
@@ -130,10 +178,12 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
         return col.isUpdateColumn && (!lcUniqueFieldKey || col.name.toLowerCase() !== lcUniqueFieldKey);
     };
 
-    onSubmit = (data): Promise<any> => {
+    onSubmit = (data: any): Promise<any> => {
         const { queryInfo, updateRows } = this.props;
+        const { displayFieldUpdates } = this.state;
+        const updateData = displayFieldUpdates.merge(data);
         const rows = !Utils.isEmptyObj(data)
-            ? getUpdatedData(this.state.dataForSelection, data, queryInfo.pkCols, queryInfo.altUpdateKeys)
+            ? getUpdatedData(this.state.originalDataForSelection, updateData, queryInfo.pkCols, queryInfo.altUpdateKeys)
             : [];
 
         return updateRows(queryInfo.schemaQuery, rows);
@@ -172,6 +222,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
             onCancel,
             onComplete,
             pluralNoun,
+            queryFilters,
             queryInfo,
             onAdditionalFormDataChange,
         } = this.props;
@@ -200,6 +251,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
                 onSuccess={onComplete}
                 renderFileInputs
                 queryInfo={queryInfo}
+                queryFilters={queryFilters}
                 showLabelAsterisk
                 submitForEditText="Edit with Grid"
                 submitText={`Update ${capitalizeFirstChar(pluralNoun)}`}

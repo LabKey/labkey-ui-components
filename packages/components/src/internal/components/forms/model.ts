@@ -225,8 +225,9 @@ function initDisplayColumn(queryInfo: QueryInfo, valueColumn: string, column?: s
 }
 
 export async function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel> {
-    const { containerFilter, containerPath, schemaQuery } = props;
+    const { containerFilter, containerPath, schemaQuery, queryFilters } = props;
     const { queryName, schemaName, viewName } = schemaQuery;
+    const filters = queryFilters ? queryFilters.toArray() : [];
 
     const queryInfo = await getQueryDetails({ schemaName, queryName, containerPath });
 
@@ -261,12 +262,13 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<QuerySelec
         if (!filter) {
             filter = Filter.create(valueColumn, props.value);
         }
+        filters.push(filter);
 
         const data = await selectRowsDeprecated({
             columns: model.getQueryColumnNames(),
             containerFilter,
             containerPath,
-            filterArray: [filter],
+            filterArray: filters,
             queryName,
             schemaName,
             viewName,

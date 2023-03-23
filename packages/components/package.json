@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.313.0-fb-sampleFinderPerf.2",
+  "version": "2.313.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

@@ -17,6 +17,9 @@ import { ALIQUOT_FILTER_MODE } from '../internal/components/samples/constants';
 import { SampleAliquotsStats } from '../internal/components/samples/models';
 import { getSampleAliquotsQueryConfig, getSampleAliquotsStats } from '../internal/components/samples/actions';
 
+import { isAssayEnabled } from '../internal/app/utils';
+import { useServerContext } from '../internal/components/base/ServerContext';
+
 import { SampleAliquotAssaysCount } from './SampleAliquotAssaysCount';
 
 interface OwnProps {
@@ -35,8 +38,9 @@ export interface SampleAliquotsSummaryWithModelsProps extends OwnProps {
 // exported for jest testing
 export const SampleAliquotsSummaryWithModels: FC<SampleAliquotsSummaryWithModelsProps> = memo(props => {
     const { aliquotsModel, jobsModel, sampleSchemaQuery, sampleSet, sampleId, sampleRow } = props;
-    let stats: SampleAliquotsStats;
+    const { moduleContext } = useServerContext();
 
+    let stats: SampleAliquotsStats;
     if (aliquotsModel.rowCount > 0) {
         stats = getSampleAliquotsStats(aliquotsModel.rows);
         if (jobsModel) {
@@ -89,18 +93,20 @@ export const SampleAliquotsSummaryWithModels: FC<SampleAliquotsSummaryWithModels
                                 <a href={jobUrl}>{stats.jobsCount}</a>
                             </td>
                         </tr>
-                        <tr>
-                            <td>Assay Data with Aliquots</td>
-                            <td className="aliquot-stats-value">
-                                <a href={assayDataUrl}>
-                                    <SampleAliquotAssaysCount
-                                        aliquotIds={stats.aliquotIds}
-                                        sampleSchemaQuery={sampleSchemaQuery}
-                                        sampleId={sampleId}
-                                    />
-                                </a>
-                            </td>
-                        </tr>
+                        {isAssayEnabled(moduleContext) && (
+                            <tr>
+                                <td>Assay Data with Aliquots</td>
+                                <td className="aliquot-stats-value">
+                                    <a href={assayDataUrl}>
+                                        <SampleAliquotAssaysCount
+                                            aliquotIds={stats.aliquotIds}
+                                            sampleSchemaQuery={sampleSchemaQuery}
+                                            sampleId={sampleId}
+                                        />
+                                    </a>
+                                </td>
+                            </tr>
+                        )}
                     </tbody>
                 </table>
             )}

@@ -44,17 +44,22 @@ interface Props {
 const SampleAliquotAssaysCountImpl: FC<Props & InjectedAssayModel> = props => {
     const { assayModel, sampleId, sampleSchemaQuery, aliquotIds, api } = props;
     const [distinctAssays, setDistinctAssays] = useState<string[]>();
+    const [loadingDistinctAssays, setLoadingDistinctAssays] = useState<boolean>(true);
     const loadingDefinitions = isLoading(assayModel.definitionsLoadingState);
 
     useEffect(() => {
         (async () => {
-            const distinctAssays_ = await api.samples.getDistinctAssaysPerSample(aliquotIds);
-            setDistinctAssays(distinctAssays_);
+            try {
+                const distinctAssays_ = await api.samples.getDistinctAssaysPerSample(aliquotIds);
+                setDistinctAssays(distinctAssays_);
+            } finally {
+                setLoadingDistinctAssays(false);
+            }
         })();
     }, [aliquotIds, api.samples]);
 
     const queryConfigs = useMemo(() => {
-        if (loadingDefinitions || !distinctAssays) {
+        if (loadingDefinitions || loadingDistinctAssays) {
             return;
         }
 
@@ -73,9 +78,17 @@ const SampleAliquotAssaysCountImpl: FC<Props & InjectedAssayModel> = props => {
             configs[modelId] = config;
             return configs;
         }, {});
-    }, [loadingDefinitions, aliquotIds, assayModel, sampleId, sampleSchemaQuery, distinctAssays]);
+    }, [
+        loadingDefinitions,
+        loadingDistinctAssays,
+        assayModel,
+        aliquotIds,
+        sampleId,
+        sampleSchemaQuery,
+        distinctAssays,
+    ]);
 
-    if (loadingDefinitions || !queryConfigs) {
+    if (loadingDefinitions || loadingDistinctAssays) {
         return <LoadingSpinner msg="" />;
     }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { ReactWrapper } from 'enzyme';
 
 import { makeTestQueryModel } from '../public/QueryModel/testUtils';
 import { SchemaQuery } from '../public/SchemaQuery';
@@ -8,7 +8,11 @@ import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 
 import { QueryModel } from '../public/QueryModel/QueryModel';
 
+import { mountWithServerContext } from '../internal/testHelpers';
+import { TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT, TEST_LKSM_STARTER_MODULE_CONTEXT } from '../internal/productFixtures';
+
 import { SampleAliquotsSummaryWithModels, SampleAliquotsSummaryWithModelsProps } from './SampleAliquotsSummary';
+import { SampleAliquotAssaysCount } from './SampleAliquotAssaysCount';
 
 const noAliquotVolume = {
     AliquotVolume: {
@@ -52,7 +56,7 @@ describe('SampleAliquotsSummaryWithModels', () => {
     }
 
     function validateStats(
-        wrapper: ShallowWrapper,
+        wrapper: ReactWrapper,
         loading = false,
         empty?: boolean,
         totalAliquots?: number,
@@ -67,7 +71,7 @@ describe('SampleAliquotsSummaryWithModels', () => {
         if (empty) return;
 
         const stats = wrapper.find('.aliquot-stats-value');
-        expect(stats).toHaveLength(5);
+        expect(stats).toHaveLength(4);
         expect(stats.at(0).text()).toBe(totalAliquots + '');
         expect(stats.at(1).text()).toBe(availableCount + '/' + totalAliquots);
         expect(stats.at(2).text()).toBe(totalVolume);
@@ -75,14 +79,17 @@ describe('SampleAliquotsSummaryWithModels', () => {
     }
 
     test('no aliquots present', () => {
-        const wrapper = shallow(<SampleAliquotsSummaryWithModels {...defaultProps()} sampleRow={noAliquotVolume} />);
+        const wrapper = mountWithServerContext(
+            <SampleAliquotsSummaryWithModels {...defaultProps()} sampleRow={noAliquotVolume} />,
+            { moduleContext: TEST_LKSM_STARTER_MODULE_CONTEXT }
+        );
 
         validateStats(wrapper, false, true);
         wrapper.unmount();
     });
 
     test('has single aliquot, not in storage, not added to job', () => {
-        const wrapper = shallow(
+        const wrapper = mountWithServerContext(
             <SampleAliquotsSummaryWithModels
                 {...defaultProps()}
                 sampleRow={zeroAliquotVolume}
@@ -93,7 +100,8 @@ describe('SampleAliquotsSummaryWithModels', () => {
                         Units: { value: null },
                     },
                 })}
-            />
+            />,
+            { moduleContext: TEST_LKSM_STARTER_MODULE_CONTEXT }
         );
 
         validateStats(wrapper, false, false, 1, 0, '0', 0);
@@ -101,7 +109,7 @@ describe('SampleAliquotsSummaryWithModels', () => {
     });
 
     test('has single aliquot, in storage, no volume, added to job', () => {
-        const wrapper = shallow(
+        const wrapper = mountWithServerContext(
             <SampleAliquotsSummaryWithModels
                 {...defaultProps()}
                 sampleRow={zeroAliquotVolume}
@@ -113,7 +121,8 @@ describe('SampleAliquotsSummaryWithModels', () => {
                     },
                 })}
                 jobsModel={getQueryModelFromRows({ 1: { RowId: { value: 1 } } })}
-            />
+            />,
+            { moduleContext: TEST_LKSM_STARTER_MODULE_CONTEXT }
         );
 
         validateStats(wrapper, false, false, 1, 1, '0', 1);
@@ -121,7 +130,7 @@ describe('SampleAliquotsSummaryWithModels', () => {
     });
 
     test('has single aliquot, in storage, without amount, but with unit', () => {
-        const wrapper = shallow(
+        const wrapper = mountWithServerContext(
             <SampleAliquotsSummaryWithModels
                 {...defaultProps()}
                 sampleRow={{
@@ -140,7 +149,8 @@ describe('SampleAliquotsSummaryWithModels', () => {
                     },
                 })}
                 jobsModel={getQueryModelFromRows({ 1: { RowId: { value: 1 } } })}
-            />
+            />,
+            { moduleContext: TEST_LKSM_STARTER_MODULE_CONTEXT }
         );
 
         validateStats(wrapper, false, false, 1, 1, '0 g', 1);
@@ -148,7 +158,7 @@ describe('SampleAliquotsSummaryWithModels', () => {
     });
 
     test('has single aliquot, in storage, with amount, but without unit', () => {
-        const wrapper = shallow(
+        const wrapper = mountWithServerContext(
             <SampleAliquotsSummaryWithModels
                 {...defaultProps()}
                 sampleRow={{
@@ -167,7 +177,8 @@ describe('SampleAliquotsSummaryWithModels', () => {
                     },
                 })}
                 jobsModel={getQueryModelFromRows({ 1: { RowId: { value: 1 } } })}
-            />
+            />,
+            { moduleContext: TEST_LKSM_STARTER_MODULE_CONTEXT }
         );
 
         validateStats(wrapper, false, false, 1, 1, '100.1', 1);
@@ -175,7 +186,7 @@ describe('SampleAliquotsSummaryWithModels', () => {
     });
 
     test('has multiple aliquots, some storage, without unit, some has jobs', () => {
-        const wrapper = shallow(
+        const wrapper = mountWithServerContext(
             <SampleAliquotsSummaryWithModels
                 {...defaultProps()}
                 sampleRow={{
@@ -211,7 +222,8 @@ describe('SampleAliquotsSummaryWithModels', () => {
                         RowId: { value: 3 },
                     },
                 })}
-            />
+            />,
+            { moduleContext: TEST_LKSM_STARTER_MODULE_CONTEXT }
         );
 
         validateStats(wrapper, false, false, 3, 2, '150.6', 2);
@@ -219,7 +231,7 @@ describe('SampleAliquotsSummaryWithModels', () => {
     });
 
     test('has multiple aliquots, some storage, with same unit', () => {
-        const wrapper = shallow(
+        const wrapper = mountWithServerContext(
             <SampleAliquotsSummaryWithModels
                 {...defaultProps()}
                 sampleRow={{
@@ -247,7 +259,8 @@ describe('SampleAliquotsSummaryWithModels', () => {
                         Units: { value: 'mL' },
                     },
                 })}
-            />
+            />,
+            { moduleContext: TEST_LKSM_STARTER_MODULE_CONTEXT }
         );
 
         validateStats(wrapper, false, false, 3, 2, '150.6 mL', 0);
@@ -255,7 +268,7 @@ describe('SampleAliquotsSummaryWithModels', () => {
     });
 
     test('has multiple aliquots, some storage, with different unit', () => {
-        const wrapper = shallow(
+        const wrapper = mountWithServerContext(
             <SampleAliquotsSummaryWithModels
                 {...defaultProps()}
                 sampleRow={{
@@ -283,7 +296,8 @@ describe('SampleAliquotsSummaryWithModels', () => {
                         Units: { value: 'L' },
                     },
                 })}
-            />
+            />,
+            { moduleContext: TEST_LKSM_STARTER_MODULE_CONTEXT }
         );
 
         validateStats(wrapper, false, false, 3, 2, '50,600.1 mL', 0);
@@ -291,7 +305,7 @@ describe('SampleAliquotsSummaryWithModels', () => {
     });
 
     test('has multiple aliquots, all in storage, but some are checked out', () => {
-        const wrapper = shallow(
+        const wrapper = mountWithServerContext(
             <SampleAliquotsSummaryWithModels
                 {...defaultProps()}
                 sampleRow={{
@@ -327,10 +341,43 @@ describe('SampleAliquotsSummaryWithModels', () => {
                         RowId: { value: 3 },
                     },
                 })}
-            />
+            />,
+            { moduleContext: TEST_LKSM_STARTER_MODULE_CONTEXT }
         );
 
         validateStats(wrapper, false, false, 3, 2, '1,100.1 mL', 2);
+        wrapper.unmount();
+    });
+
+    test('LKSM professional should show assay count', () => {
+        const wrapper = mountWithServerContext(
+            <SampleAliquotsSummaryWithModels
+                {...defaultProps()}
+                sampleRow={zeroAliquotVolume}
+                aliquotsModel={getQueryModelFromRows({
+                    1: {
+                        StorageStatus: { value: 'Not in storage' },
+                        StoredAmount: { value: null },
+                        Units: { value: null },
+                    },
+                })}
+            />,
+            { moduleContext: TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT }
+        );
+
+        expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
+        expect(wrapper.find('.sample-aliquots-stats-empty')).toHaveLength(0);
+        expect(wrapper.find('.sample-aliquots-stats-table')).toHaveLength(1);
+        expect(wrapper.find(SampleAliquotAssaysCount)).toHaveLength(1);
+
+        const tableRows = wrapper.find('.sample-aliquots-stats-table tr');
+        expect(tableRows).toHaveLength(5);
+        expect(tableRows.at(4).text()).toBe('Assay Data with Aliquots ');
+
+        expect(wrapper.find('.aliquot-stats-value a').last().prop('href')).toBe(
+            '#/samples/dirt/86873/Assays?sampleAliquotType=aliquots'
+        );
+
         wrapper.unmount();
     });
 });

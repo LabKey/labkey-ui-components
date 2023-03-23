@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.314.0
+*Released*: 23 March 2023
 * Issue 47408: Filter units in bulk update to match sample type display units
 * Issue 47408: Coalesce and check for updates using the display values for amounts and units
 * Issue 47517: Update Label for Name field for SM Source typ in Default System Fields

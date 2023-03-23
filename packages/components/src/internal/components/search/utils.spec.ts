@@ -308,9 +308,9 @@ describe('getSamplePropertyFilters', () => {
     } as FieldFilter;
 
     const sampleTypeFilter = {
-        fieldKey: 'SampleType',
-        fieldCaption: 'SampleType',
-        filter: Filter.create('SampleType', 'lsid:01:02'),
+        fieldKey: 'SampleSet',
+        fieldCaption: 'SampleSet',
+        filter: Filter.create('SampleSet', 'lsid:01:02'),
         jsonType: 'string',
     } as FieldFilter;
 
@@ -329,7 +329,7 @@ describe('getSamplePropertyFilters', () => {
                 filterArray: [nameFilter],
             })
         ).toStrictEqual({
-            filters: [nameFilter],
+            filters: [nameFilter.filter],
             extraColumns: [],
         });
     });
@@ -343,7 +343,7 @@ describe('getSamplePropertyFilters', () => {
                 dataTypeLsid: 'lsid:01:02',
             })
         ).toStrictEqual({
-            filters: [nameFilter, sampleTypeFilter],
+            filters: [nameFilter.filter, sampleTypeFilter.filter],
             extraColumns: [],
         });
     });
@@ -356,7 +356,7 @@ describe('getSamplePropertyFilters', () => {
                 filterArray: [availableAliquotCountFilter],
             })
         ).toStrictEqual({
-            filters: [availableAliquotCountFilter],
+            filters: [availableAliquotCountFilter.filter],
             extraColumns: ['AvailableAliquotCount'],
         });
     });

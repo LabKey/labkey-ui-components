@@ -50,7 +50,7 @@ describe('AliasInput', () => {
         expect(isValidNewOption('a')).toBe(true);
         expect(isValidNewOption('a ')).toBe(true);
         expect(isValidNewOption('a b')).toBe(true);
-        expect(isValidNewOption('a,b')).toBe(false);
-        expect(isValidNewOption(' a, b')).toBe(false);
+        expect(isValidNewOption('a,b')).toBe(true);
+        expect(isValidNewOption(' a, b')).toBe(true);
     });
 });

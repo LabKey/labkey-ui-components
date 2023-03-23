@@ -134,30 +134,14 @@ describe('FilterValueDisplay', () => {
     });
 
     test('relative date filter: negative', () => {
-        const wrapper = mount(
-            <FilterValueDisplay
-                filter={Filter.create(
-                    'DateField',
-                    '-1d',
-                    Filter.Types.Equals
-                )}
-            />
-        );
+        const wrapper = mount(<FilterValueDisplay filter={Filter.create('DateField', '-1d', Filter.Types.Equals)} />);
         validate(wrapper, null, '1 day ago');
 
         wrapper.unmount();
     });
 
     test('relative date filter: positive', () => {
-        const wrapper = mount(
-            <FilterValueDisplay
-                filter={Filter.create(
-                    'DateField',
-                    '+3d',
-                    Filter.Types.Equals
-                )}
-            />
-        );
+        const wrapper = mount(<FilterValueDisplay filter={Filter.create('DateField', '+3d', Filter.Types.Equals)} />);
         validate(wrapper, null, '3 days from now');
 
         wrapper.unmount();

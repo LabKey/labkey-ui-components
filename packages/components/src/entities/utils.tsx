@@ -41,7 +41,7 @@ import { SampleCreationType } from '../internal/components/samples/models';
 import { DataClassDataType, SampleTypeDataType } from '../internal/components/entities/constants';
 import { sampleDeleteDependencyText } from '../internal/components/entities/utils';
 import { QueryColumn } from '../public/QueryColumn';
-import {ALLOWED_FINDER_SAMPLE_PROPERTIES} from "../internal/components/search/constants";
+import { ALLOWED_FINDER_SAMPLE_PROPERTIES } from '../internal/components/search/constants';
 
 export function getCrossFolderSelectionMsg(
     crossFolderSelectionCount: number,
@@ -605,7 +605,6 @@ export const processSampleBulkAdd = (data: OrderedMap<string, any>, combineParen
     if (totalItems === 0) totalItems = numItems;
     return { pivotKey, pivotValues, totalItems };
 };
-
 
 export const getSamplePropertyFields = (queryInfo: QueryInfo, skipDefaultViewCheck?: boolean): List<QueryColumn> => {
     const defaultColumns = skipDefaultViewCheck ? queryInfo.getAllColumns() : queryInfo.getDisplayColumns();

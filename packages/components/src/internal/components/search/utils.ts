@@ -39,7 +39,7 @@ import { AssaySampleColumnProp } from '../../sampleModels';
 
 import { caseInsensitive } from '../../util/utils';
 
-import {SearchScope, SAMPLE_FINDER_SESSION_PREFIX, ALLOWED_FINDER_SAMPLE_PROPERTY_MAP} from './constants';
+import { SearchScope, SAMPLE_FINDER_SESSION_PREFIX, ALLOWED_FINDER_SAMPLE_PROPERTY_MAP } from './constants';
 import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSessionStorageProps } from './models';
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
@@ -192,29 +192,28 @@ export function getExpDescendantOfFilter(
     return Filter.create('*', selectClause, IN_EXP_DESCENDANTS_OF_FILTER_TYPE);
 }
 
-export function getSamplePropertyFilters(card: FilterProps): {filters: Filter.IFilter[], extraColumns?: string[]} {
+export function getSamplePropertyFilters(card: FilterProps): { extraColumns?: string[]; filters: Filter.IFilter[] } {
     const { filterArray, dataTypeLsid } = card;
 
     const filters = [];
     const extraColumns = [];
     filterArray.forEach(fieldFilter => {
         filters.push(fieldFilter.filter);
-        if (fieldFilter.fieldKey.toLowerCase() === 'availablealiquotcount')
-            extraColumns.push(fieldFilter.fieldKey);
+        if (fieldFilter.fieldKey.toLowerCase() === 'availablealiquotcount') extraColumns.push(fieldFilter.fieldKey);
     });
 
     if (!dataTypeLsid) {
         return {
             filters,
-            extraColumns
+            extraColumns,
         };
     }
 
     filters.push(Filter.create('SampleSet', dataTypeLsid));
     return {
         filters,
-        extraColumns
-    };;
+        extraColumns,
+    };
 }
 
 export function getAssayFilter(card: FilterProps, cf?: Query.ContainerFilter): Filter.IFilter {
@@ -259,10 +258,9 @@ export function getSampleFinderCommonConfigs(
     cards.forEach(card => {
         // if card is property
         if (card.entityDataType.nounAsParentSingular === SamplePropertyDataType.nounAsParentSingular) {
-            const {filters, extraColumns} = getSamplePropertyFilters(card);
+            const { filters, extraColumns } = getSamplePropertyFilters(card);
             if (filters) baseFilters.push(...filters);
-            if (extraColumns?.length > 0)
-                requiredColumns.push(...extraColumns);
+            if (extraColumns?.length > 0) requiredColumns.push(...extraColumns);
             return;
         }
 

@@ -8,7 +8,7 @@ import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { COLUMN_NOT_IN_FILTER_TYPE } from '../../query/filter';
 
 import { JsonType } from '../domainproperties/PropDescType';
-import {getParsedRelativeDateStr, isRelativeDateFilterValue} from '../../util/Date';
+import { getParsedRelativeDateStr, isRelativeDateFilterValue } from '../../util/Date';
 
 import { getFilterValuesAsArray, NEGATE_FILTERS, SAMPLE_SEARCH_FILTER_TYPES_SKIP_TITLE } from './utils';
 

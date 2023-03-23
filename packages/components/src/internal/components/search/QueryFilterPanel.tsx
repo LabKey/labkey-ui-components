@@ -42,6 +42,8 @@ interface Props {
     filters: { [key: string]: FieldFilter[] };
     fullWidth?: boolean;
     hasNotInQueryFilter?: boolean;
+    hasNotInQueryFilterLabel?: string;
+    metricFeatureArea?: string;
     onFilterUpdate: (field: QueryColumn, newFilters: Filter.IFilter[], index: number) => void;
     onHasNoValueInQueryChange?: (check: boolean) => void;
     queryInfo: QueryInfo;
@@ -49,8 +51,6 @@ interface Props {
     skipDefaultViewCheck?: boolean;
     validFilterField?: (field: QueryColumn, queryInfo: QueryInfo, exprColumnsWithSubSelect?: string[]) => boolean;
     viewName?: string;
-    metricFeatureArea?: string;
-    hasNotInQueryFilterLabel?: string;
 }
 
 export const QueryFilterPanel: FC<Props> = memo(props => {

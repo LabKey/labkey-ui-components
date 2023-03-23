@@ -17,7 +17,12 @@ import { List } from 'immutable';
 import { Filter } from '@labkey/api';
 
 import { JsonType } from '../components/domainproperties/PropDescType';
-import {getNDaysStrFromToday, getNextDateStr, getParsedRelativeDateStr, isRelativeDateFilterValue} from '../util/Date';
+import {
+    getNDaysStrFromToday,
+    getNextDateStr,
+    getParsedRelativeDateStr,
+    isRelativeDateFilterValue,
+} from '../util/Date';
 
 const QUERY_KEY_CHAR_DECODED = ['$', '/', '&', '}', '~', ',', '.'];
 const QUERY_KEY_CHAR_ENCODED = ['$D', '$S', '$A', '$B', '$T', '$C', '$P'];
@@ -121,8 +126,7 @@ function getDateStrRange(dateStr: string): string[] {
 export function getDateFieldLabKeySql(filter: Filter.IFilter, tableAlias?: string): string {
     const filterType = filter.getFilterType();
     let columnNameSelect = getLegalIdentifier(filter.getColumnName());
-    if (tableAlias)
-        columnNameSelect = tableAlias + "." + columnNameSelect;
+    if (tableAlias) columnNameSelect = tableAlias + '.' + columnNameSelect;
 
     let startDateStart, startDateEnd, endDateStart, endDateEnd: string;
     const urlSuffix = filterType.getURLSuffix();
@@ -352,8 +356,7 @@ export function getFilterLabKeySql(filter: Filter.IFilter, jsonType: JsonType, t
     const filterType = filter.getFilterType();
 
     let columnNameSelect = getLegalIdentifier(filter.getColumnName());
-    if (tableAlias)
-        columnNameSelect = tableAlias + "." + columnNameSelect;
+    if (tableAlias) columnNameSelect = tableAlias + '.' + columnNameSelect;
 
     let operatorSql = null;
 

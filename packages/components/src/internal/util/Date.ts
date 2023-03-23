@@ -242,9 +242,8 @@ export function isRelativeDateFilterValue(val: string): boolean {
     return RELATIVE_DAYS_REGEX.test(val);
 }
 
-export function getParsedRelativeDateStr(dateVal: string): { positive: boolean, days: number } {
-    if (!isRelativeDateFilterValue(dateVal))
-        return null;
+export function getParsedRelativeDateStr(dateVal: string): { days: number; positive: boolean } {
+    if (!isRelativeDateFilterValue(dateVal)) return null;
 
     let positive = true;
     if (dateVal.indexOf('-') === 0) positive = false;
@@ -252,6 +251,6 @@ export function getParsedRelativeDateStr(dateVal: string): { positive: boolean, 
     const days = parseInt(daysStr);
     return {
         positive,
-        days
+        days,
     };
 }

@@ -24,7 +24,10 @@ import {
     generateNameWithTimestamp,
     getColDateFormat,
     getColFormattedDateFilterValue,
-    getJsonDateTimeFormatString, getNextDateStr, getParsedRelativeDateStr, isRelativeDateFilterValue,
+    getJsonDateTimeFormatString,
+    getNextDateStr,
+    getParsedRelativeDateStr,
+    isRelativeDateFilterValue,
     parseDate,
 } from './Date';
 
@@ -235,22 +238,22 @@ describe('Date Utilities', () => {
 
     describe('getNextDateStr', () => {
         test('default days', () => {
-            expect(getNextDateStr("2022-02-02")).toEqual("2022-02-03");
-            expect(getNextDateStr("2022-02-02 01:02")).toEqual("2022-02-03");
+            expect(getNextDateStr('2022-02-02')).toEqual('2022-02-03');
+            expect(getNextDateStr('2022-02-02 01:02')).toEqual('2022-02-03');
         });
 
         test('n positive days', () => {
-            expect(getNextDateStr("2022-02-02", 3)).toEqual("2022-02-05");
-            expect(getNextDateStr("2022-02-02 01:02", 3)).toEqual("2022-02-05");
-            expect(getNextDateStr("2022-02-27", 3)).toEqual("2022-03-02");
-            expect(getNextDateStr("2022-02-27 01:02", 3)).toEqual("2022-03-02");
+            expect(getNextDateStr('2022-02-02', 3)).toEqual('2022-02-05');
+            expect(getNextDateStr('2022-02-02 01:02', 3)).toEqual('2022-02-05');
+            expect(getNextDateStr('2022-02-27', 3)).toEqual('2022-03-02');
+            expect(getNextDateStr('2022-02-27 01:02', 3)).toEqual('2022-03-02');
         });
 
         test('n negative days', () => {
-            expect(getNextDateStr("2022-02-02", -3)).toEqual("2022-01-30");
-            expect(getNextDateStr("2022-02-02 01:02", -3)).toEqual("2022-01-30");
-            expect(getNextDateStr("2022-02-27", -3)).toEqual("2022-02-24");
-            expect(getNextDateStr("2022-02-27 01:02", -3)).toEqual("2022-02-24");
+            expect(getNextDateStr('2022-02-02', -3)).toEqual('2022-01-30');
+            expect(getNextDateStr('2022-02-02 01:02', -3)).toEqual('2022-01-30');
+            expect(getNextDateStr('2022-02-27', -3)).toEqual('2022-02-24');
+            expect(getNextDateStr('2022-02-27 01:02', -3)).toEqual('2022-02-24');
         });
     });
 
@@ -288,19 +291,19 @@ describe('Date Utilities', () => {
         test('getParsedRelativeDateStr', () => {
             expect(getParsedRelativeDateStr('+3d')).toStrictEqual({
                 positive: true,
-                days: 3
+                days: 3,
             });
             expect(getParsedRelativeDateStr('+300d')).toStrictEqual({
                 positive: true,
-                days: 300
+                days: 300,
             });
             expect(getParsedRelativeDateStr('-3d')).toStrictEqual({
                 positive: false,
-                days: 3
+                days: 3,
             });
             expect(getParsedRelativeDateStr('-0d')).toStrictEqual({
                 positive: false,
-                days: 0
+                days: 0,
             });
         });
     });

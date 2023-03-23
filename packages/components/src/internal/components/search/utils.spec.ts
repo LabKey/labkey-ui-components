@@ -20,7 +20,7 @@ import { IN_EXP_DESCENDANTS_OF_FILTER_TYPE } from '../../url/InExpDescendantsOfF
 
 import { formatDate } from '../../util/Date';
 
-import {AssayResultDataType, SamplePropertyDataType, SampleTypeDataType} from '../entities/constants';
+import { AssayResultDataType, SamplePropertyDataType, SampleTypeDataType } from '../entities/constants';
 
 import { COLUMN_IN_FILTER_TYPE, COLUMN_NOT_IN_FILTER_TYPE } from '../../query/filter';
 
@@ -40,7 +40,8 @@ import {
     getLabKeySqlWhere,
     getSampleFinderColumnNames,
     getSampleFinderCommonConfigs,
-    getSampleFinderQueryConfigs, getSamplePropertyFilters,
+    getSampleFinderQueryConfigs,
+    getSamplePropertyFilters,
     getUpdatedCheckedValues,
     getUpdatedChooseValuesFilter,
     getUpdatedDataTypeFilters,
@@ -321,7 +322,6 @@ describe('getSamplePropertyFilters', () => {
     } as FieldFilter;
 
     test('with filter on All Sample Type', () => {
-
         expect(
             getSamplePropertyFilters({
                 entityDataType: SamplePropertyDataType,
@@ -330,7 +330,7 @@ describe('getSamplePropertyFilters', () => {
             })
         ).toStrictEqual({
             filters: [nameFilter],
-            extraColumns: []
+            extraColumns: [],
         });
     });
 
@@ -344,7 +344,7 @@ describe('getSamplePropertyFilters', () => {
             })
         ).toStrictEqual({
             filters: [nameFilter, sampleTypeFilter],
-            extraColumns: []
+            extraColumns: [],
         });
     });
 
@@ -357,7 +357,7 @@ describe('getSamplePropertyFilters', () => {
             })
         ).toStrictEqual({
             filters: [availableAliquotCountFilter],
-            extraColumns: ['AvailableAliquotCount']
+            extraColumns: ['AvailableAliquotCount'],
         });
     });
 });

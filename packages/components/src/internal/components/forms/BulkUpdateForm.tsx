@@ -119,21 +119,34 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
         }
     };
 
-    mapDataForDisplayFields(data: Map<string, any>): {data: Map<string, any>, bulkUpdates:OrderedMap<string, any>} {
+    mapDataForDisplayFields(data: Map<string, any>): {data: Map<string, any>, bulkUpdates: OrderedMap<string, any>} {
         const { displayValueFields } = this.props;
         let updates = Map<string, any>();
         let bulkUpdates = OrderedMap<string, any>();
+
         if (!displayValueFields)
             return { data, bulkUpdates };
 
+        let conflictKeys = new Set<string>();
         data.forEach((rowData, id) => {
             if (rowData) {
                 let updatedRow = Map<string, any>();
                 rowData.forEach((field, key) => {
-                    if (displayValueFields.includes(key) && field.has('displayValue') && field.get('value') !== field.get('displayValue')) {
-                        bulkUpdates = bulkUpdates.set(key, field.get('displayValue'));
-                        field = field.set('value', field.get('displayValue'));
-                        updatedRow = updatedRow.set(key, field);
+                    if (displayValueFields.includes(key) ) {
+                        const valuesDiffer = field.has('displayValue') && field.get('value') !== field.get('displayValue');
+                        const comparisonValue = field.get('displayValue') ?? field.get('value');
+                        if (!conflictKeys.has(key)) {
+                            if (!bulkUpdates.has(key)) {
+                                bulkUpdates = bulkUpdates.set(key, comparisonValue);
+                            } else if (bulkUpdates.get(key) !== comparisonValue) {
+                                bulkUpdates = bulkUpdates.remove(key);
+                                conflictKeys = conflictKeys.add(key);
+                            }
+                        }
+                        if (valuesDiffer) {
+                            field = field.set('value', comparisonValue);
+                            updatedRow = updatedRow.set(key, field);
+                        }
                     }
                 });
                 if (!updatedRow.isEmpty())

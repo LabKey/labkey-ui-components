@@ -1,6 +1,6 @@
 import { Filter } from '@labkey/api';
 
-import { formatDate } from '../util/Date';
+import {formatDate, getNDaysStrFromToday} from '../util/Date';
 
 import { COLUMN_NOT_IN_FILTER_TYPE, getFilterLabKeySql } from './filter';
 
@@ -291,9 +291,29 @@ describe('getFilterLabKeySql', () => {
         );
     });
 
+    test('with tableAlias', () => {
+        expect(getFilterLabKeySql(Filter.create('DateField', dateStr, Filter.Types.DATE_EQUAL), 'date', 'alias')).toEqual(
+            '(alias."DateField" >= \'2020-08-06\' AND alias."DateField" < \'2020-08-07\')'
+        );
+    });
+
     test('date filter, eq', () => {
         expect(getFilterLabKeySql(Filter.create('DateField', dateStr, Filter.Types.DATE_EQUAL), 'date')).toEqual(
             '("DateField" >= \'2020-08-06\' AND "DateField" < \'2020-08-07\')'
+        );
+    });
+
+    test('date filter, eq, relative date', () => {
+        const futureDay = getNDaysStrFromToday(3);
+        const futureDayPlus1 = getNDaysStrFromToday(4);
+        expect(getFilterLabKeySql(Filter.create('DateField', '+3d', Filter.Types.DATE_EQUAL), 'date')).toEqual(
+            '("DateField" >= \'' + futureDay + '\' AND "DateField" < \'' + futureDayPlus1 + '\')'
+        );
+
+        const pastDay = getNDaysStrFromToday(-3);
+        const pastDayPlus1 = getNDaysStrFromToday(-2);
+        expect(getFilterLabKeySql(Filter.create('DateField', '-3d', Filter.Types.DATE_EQUAL), 'date')).toEqual(
+            '("DateField" >= \'' + pastDay + '\' AND "DateField" < \'' + pastDayPlus1 + '\')'
         );
     });
 

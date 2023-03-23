@@ -41,6 +41,7 @@ import { SampleCreationType } from '../internal/components/samples/models';
 import { DataClassDataType, SampleTypeDataType } from '../internal/components/entities/constants';
 import { sampleDeleteDependencyText } from '../internal/components/entities/utils';
 import { QueryColumn } from '../public/QueryColumn';
+import {ALLOWED_FINDER_SAMPLE_PROPERTIES} from "../internal/components/search/constants";
 
 export function getCrossFolderSelectionMsg(
     crossFolderSelectionCount: number,
@@ -605,20 +606,6 @@ export const processSampleBulkAdd = (data: OrderedMap<string, any>, combineParen
     return { pivotKey, pivotValues, totalItems };
 };
 
-const ALLOWED_FINDER_SAMPLE_PROPERTIES = [
-    'name',
-    'materialexpdate',
-    'storedamount',
-    'aliquotcount',
-    'aliquotvolume',
-    'availablealiquotcount',
-    'freezethawcount',
-    'storagestatus',
-    'storagerow',
-    'storagecol',
-    'created',
-    'createdby',
-];
 
 export const getSamplePropertyFields = (queryInfo: QueryInfo, skipDefaultViewCheck?: boolean): List<QueryColumn> => {
     const defaultColumns = skipDefaultViewCheck ? queryInfo.getAllColumns() : queryInfo.getDisplayColumns();
@@ -633,7 +620,7 @@ export const getSamplePropertyFields = (queryInfo: QueryInfo, skipDefaultViewChe
     ALLOWED_FINDER_SAMPLE_PROPERTIES.forEach(fieldName => {
         let include = false;
         if (isAllSamplesQuery) include = true;
-        else if (fieldName === 'availablealiquotcount' || fieldName === 'createdby') {
+        else if (fieldName === 'availablealiquotcount') {
             include = true;
         } else {
             include = defaultFields.indexOf(fieldName) > -1;

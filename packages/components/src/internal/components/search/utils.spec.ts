@@ -20,7 +20,7 @@ import { IN_EXP_DESCENDANTS_OF_FILTER_TYPE } from '../../url/InExpDescendantsOfF
 
 import { formatDate } from '../../util/Date';
 
-import { AssayResultDataType, SampleTypeDataType } from '../entities/constants';
+import {AssayResultDataType, SamplePropertyDataType, SampleTypeDataType} from '../entities/constants';
 
 import { COLUMN_IN_FILTER_TYPE, COLUMN_NOT_IN_FILTER_TYPE } from '../../query/filter';
 
@@ -40,7 +40,7 @@ import {
     getLabKeySqlWhere,
     getSampleFinderColumnNames,
     getSampleFinderCommonConfigs,
-    getSampleFinderQueryConfigs,
+    getSampleFinderQueryConfigs, getSamplePropertyFilters,
     getUpdatedCheckedValues,
     getUpdatedChooseValuesFilter,
     getUpdatedDataTypeFilters,
@@ -288,12 +288,6 @@ describe('getAssayFilter', () => {
     });
 
     test('Assay card with not in assay filter', () => {
-        const cardFilter = {
-            fieldKey: 'TestColumn',
-            fieldCaption: 'TestColumn',
-            filter: Filter.create('TestColumn', 'value'),
-            jsonType: 'string',
-        } as FieldFilter;
         expect(
             getAssayFilter({
                 entityDataType: AssayResultDataType,
@@ -301,6 +295,70 @@ describe('getAssayFilter', () => {
                 filterArray: [AssayNotInFilterField],
             })
         ).toEqual(AssayNotInFilter);
+    });
+});
+
+describe('getSamplePropertyFilters', () => {
+    const nameFilter = {
+        fieldKey: 'Name',
+        fieldCaption: 'Name',
+        filter: Filter.create('Name', 'S-1'),
+        jsonType: 'string',
+    } as FieldFilter;
+
+    const sampleTypeFilter = {
+        fieldKey: 'SampleType',
+        fieldCaption: 'SampleType',
+        filter: Filter.create('SampleType', 'lsid:01:02'),
+        jsonType: 'string',
+    } as FieldFilter;
+
+    const availableAliquotCountFilter = {
+        fieldKey: 'AvailableAliquotCount',
+        fieldCaption: 'AvailableAliquotCount',
+        filter: Filter.create('AvailableAliquotCount', 5),
+        jsonType: 'int',
+    } as FieldFilter;
+
+    test('with filter on All Sample Type', () => {
+
+        expect(
+            getSamplePropertyFilters({
+                entityDataType: SamplePropertyDataType,
+                schemaQuery: SCHEMAS.EXP_TABLES.MATERIALS,
+                filterArray: [nameFilter],
+            })
+        ).toStrictEqual({
+            filters: [nameFilter],
+            extraColumns: []
+        });
+    });
+
+    test('with filter on a specific sample type', () => {
+        expect(
+            getSamplePropertyFilters({
+                entityDataType: SamplePropertyDataType,
+                schemaQuery: SCHEMAS.EXP_TABLES.MATERIALS,
+                filterArray: [nameFilter],
+                dataTypeLsid: 'lsid:01:02',
+            })
+        ).toStrictEqual({
+            filters: [nameFilter, sampleTypeFilter],
+            extraColumns: []
+        });
+    });
+
+    test('with filter on AvailableAliquotCount', () => {
+        expect(
+            getSamplePropertyFilters({
+                entityDataType: SamplePropertyDataType,
+                schemaQuery: SCHEMAS.EXP_TABLES.MATERIALS,
+                filterArray: [availableAliquotCountFilter],
+            })
+        ).toStrictEqual({
+            filters: [availableAliquotCountFilter],
+            extraColumns: ['AvailableAliquotCount']
+        });
     });
 });
 

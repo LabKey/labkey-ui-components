@@ -133,6 +133,36 @@ describe('FilterValueDisplay', () => {
         wrapper.unmount();
     });
 
+    test('relative date filter: negative', () => {
+        const wrapper = mount(
+            <FilterValueDisplay
+                filter={Filter.create(
+                    'DateField',
+                    '-1d',
+                    Filter.Types.Equals
+                )}
+            />
+        );
+        validate(wrapper, null, '1 day ago');
+
+        wrapper.unmount();
+    });
+
+    test('relative date filter: positive', () => {
+        const wrapper = mount(
+            <FilterValueDisplay
+                filter={Filter.create(
+                    'DateField',
+                    '+3d',
+                    Filter.Types.Equals
+                )}
+            />
+        );
+        validate(wrapper, null, '3 days from now');
+
+        wrapper.unmount();
+    });
+
     test('columnnotin filter', () => {
         const wrapper = mount(<FilterValueDisplay filter={Filter.create('RowId', '', COLUMN_NOT_IN_FILTER_TYPE)} />);
         validate(wrapper, null, 'Without data from this type');

@@ -39,7 +39,7 @@ import { AssaySampleColumnProp } from '../../sampleModels';
 
 import { caseInsensitive } from '../../util/utils';
 
-import { SearchScope, SAMPLE_FINDER_SESSION_PREFIX } from './constants';
+import {SearchScope, SAMPLE_FINDER_SESSION_PREFIX, ALLOWED_FINDER_SAMPLE_PROPERTY_MAP} from './constants';
 import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSessionStorageProps } from './models';
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
@@ -192,20 +192,29 @@ export function getExpDescendantOfFilter(
     return Filter.create('*', selectClause, IN_EXP_DESCENDANTS_OF_FILTER_TYPE);
 }
 
-export function getSamplePropertyFilters(card: FilterProps): Filter.IFilter[] {
+export function getSamplePropertyFilters(card: FilterProps): {filters: Filter.IFilter[], extraColumns?: string[]} {
     const { filterArray, dataTypeLsid } = card;
 
     const filters = [];
+    const extraColumns = [];
     filterArray.forEach(fieldFilter => {
         filters.push(fieldFilter.filter);
+        if (fieldFilter.fieldKey.toLowerCase() === 'availablealiquotcount')
+            extraColumns.push(fieldFilter.fieldKey);
     });
 
     if (!dataTypeLsid) {
-        return filters;
+        return {
+            filters,
+            extraColumns
+        };
     }
 
     filters.push(Filter.create('SampleSet', dataTypeLsid));
-    return filters;
+    return {
+        filters,
+        extraColumns
+    };;
 }
 
 export function getAssayFilter(card: FilterProps, cf?: Query.ContainerFilter): Filter.IFilter {
@@ -250,8 +259,10 @@ export function getSampleFinderCommonConfigs(
     cards.forEach(card => {
         // if card is property
         if (card.entityDataType.nounAsParentSingular === SamplePropertyDataType.nounAsParentSingular) {
-            const samplePropFilters = getSamplePropertyFilters(card);
-            if (samplePropFilters) baseFilters.push(...samplePropFilters);
+            const {filters, extraColumns} = getSamplePropertyFilters(card);
+            if (filters) baseFilters.push(...filters);
+            if (extraColumns?.length > 0)
+                requiredColumns.push(...extraColumns);
             return;
         }
 
@@ -1106,15 +1117,17 @@ export function getSampleFinderTabRowCountSql(queryModel: QueryModel): string {
     filters.forEach(filter => {
         let clause = '';
         if (filter.getFilterType().getURLSuffix() === COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix()) {
-            clause = filter.getColumnName() + ' NOT IN (' + filter.getValue() + ')';
+            clause = 'm.' + filter.getColumnName() + ' NOT IN (' + filter.getValue() + ')';
         } else if (filter.getFilterType().getURLSuffix() === COLUMN_IN_FILTER_TYPE.getURLSuffix()) {
-            clause = filter.getColumnName() + ' IN (' + filter.getValue() + ')';
+            clause = 'm.' + filter.getColumnName() + ' IN (' + filter.getValue() + ')';
         } else if (filter.getFilterType().getURLSuffix() === IN_EXP_DESCENDANTS_OF_FILTER_TYPE.getURLSuffix()) {
-            clause = 'expObject() IN EXPDESCENDANTSOF (' + filter.getValue() + ')';
+            clause = 'm.expObject() IN EXPDESCENDANTSOF (' + filter.getValue() + ')';
         } else {
-            console.error('Bad filter');
+            const fieldName = filter.getColumnName();
+            const jsonType = ALLOWED_FINDER_SAMPLE_PROPERTY_MAP[fieldName.toLowerCase()];
+            clause = getFilterLabKeySql(filter, jsonType, 'm');
         }
-        wheres.push('m.' + clause);
+        wheres.push(clause);
     });
 
     const rowCountSql =

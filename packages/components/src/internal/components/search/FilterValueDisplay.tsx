@@ -8,7 +8,7 @@ import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { COLUMN_NOT_IN_FILTER_TYPE } from '../../query/filter';
 
 import { JsonType } from '../domainproperties/PropDescType';
-import { isRelativeDateFilterValue } from '../../util/Date';
+import {getParsedRelativeDateStr, isRelativeDateFilterValue} from '../../util/Date';
 
 import { getFilterValuesAsArray, NEGATE_FILTERS, SAMPLE_SEARCH_FILTER_TYPES_SKIP_TITLE } from './utils';
 
@@ -64,12 +64,9 @@ export const FilterValueDisplay: FC<FilterValueDisplayProps> = memo(props => {
             if (!isDateField) return rawValue;
 
             if (isRelativeDateFilterValue(rawValue)) {
-                let positive = true;
-                if (rawValue.indexOf('-') === 0) positive = false;
-                const days = rawValue.replace('-', '').replace('+', '').replace('d', '');
-                const dayInt = parseInt(days);
-                if (dayInt === 0) return 'today';
-                const plural = dayInt > 1 ? 's' : '';
+                const { positive, days } = getParsedRelativeDateStr(rawValue);
+                if (days === 0) return 'today';
+                const plural = days > 1 ? 's' : '';
                 return days + ' day' + plural + (positive ? ' from now' : ' ago');
             }
 

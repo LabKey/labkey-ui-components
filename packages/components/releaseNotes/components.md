@@ -3,6 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 2.XX
 *Released*: XX March 2023
+* Issue 47520: LKB: Sample Finder shows no samples when Assay does not have sample ID populated
 * Sample Finder: Sample Properties & Built in reports
   *
 

@@ -970,7 +970,7 @@ export function getDataTypeFiltersWithNotInQueryUpdate(
     if (noDataInTypeChecked) {
         const noDataFilter = Filter.create(
             selectQueryFilterKey,
-            getLabKeySql(targetQueryFilterKey, schemaQuery.schemaName, schemaQuery.queryName, null, cf),
+            getNotInLabKeySql(schemaQuery, targetQueryFilterKey, cf),
             COLUMN_NOT_IN_FILTER_TYPE
         );
 
@@ -986,6 +986,15 @@ export function getDataTypeFiltersWithNotInQueryUpdate(
         delete dataTypeFiltersUpdated[lcActiveQuery];
     }
     return dataTypeFiltersUpdated;
+}
+
+function getNotInLabKeySql(
+    schemaQuery: SchemaQuery,
+    targetQueryFilterKey: string,
+    cf?: Query.ContainerFilter
+): string {
+    const selectSql = getLabKeySql(targetQueryFilterKey, schemaQuery.schemaName, schemaQuery.queryName, null, cf);
+    return selectSql + ' WHERE ' + getLegalIdentifier(targetQueryFilterKey) + " IS NOT NULL";
 }
 
 export function getFilterSelections(

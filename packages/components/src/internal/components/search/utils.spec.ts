@@ -259,7 +259,7 @@ const AssayColumnInFilter = Filter.create(
 
 const AssayNotInFilter = Filter.create(
     'RowId',
-    'SELECT "strField" FROM "assay.general.assay1"."data"',
+    'SELECT "strField" FROM "assay.general.assay1"."data" WHERE "strField" IS NOT NULL',
     COLUMN_NOT_IN_FILTER_TYPE
 );
 const AssayNotInFilterField = {

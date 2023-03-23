@@ -290,7 +290,7 @@ export const EntityFieldFilterModal: FC<EntityFieldFilterModalProps> = memo(prop
         if (entityDataType.nounAsParentSingular !== SamplePropertyDataType.nounAsParentSingular) return undefined;
 
         return getSamplePropertyFields(activeQueryInfo, skipDefaultViewCheck);
-    }, [activeQueryInfo, skipDefaultViewCheck]);
+    }, [activeQueryInfo, skipDefaultViewCheck, entityDataType]);
 
     return (
         <Modal show bsSize="lg" onHide={closeModal}>
@@ -348,7 +348,6 @@ export const EntityFieldFilterModal: FC<EntityFieldFilterModalProps> = memo(prop
                         validFilterField={isValidFilterFieldExcludeLookups}
                         hasNotInQueryFilterLabel={`Find Samples without ${activeQueryLabel} results`}
                         selectDistinctOptions={selectDistinctOptions}
-                        key={activeQuery}
                         altQueryName={activeQuery}
                         fields={entityTypeFields}
                     />

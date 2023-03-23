@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.XX
+*Released*: XX March 2023
+* Sample Finder: Sample Properties & Built in reports
+  *
+
 ### version 2.312.0
 *Released*: 21 March 2023
 * Sample assay grid and aliquot summary to only query for data from assays that have data for that sample/aliquot ID set

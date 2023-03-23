@@ -11,15 +11,17 @@ import { saveFinderSearch } from '../internal/components/search/actions';
 
 interface Props {
     cardsJson: string;
+    currentView?: FinderReport;
     onCancel: () => void;
     onSuccess: (savedView: FinderReport) => void;
-    currentView?: FinderReport;
 }
 
 export const SampleFinderSaveViewModal: FC<Props> = memo(props => {
     const { cardsJson, currentView, onCancel, onSuccess } = props;
 
-    const [viewName, setViewName] = useState<string>(currentView?.isSession || currentView?.isModuleReport ? '' : currentView?.reportName);
+    const [viewName, setViewName] = useState<string>(
+        currentView?.isSession || currentView?.isModuleReport ? '' : currentView?.reportName
+    );
     const [errorMessage, setErrorMessage] = useState<string>();
     const [isSubmitting, setIsSubmitting] = useState<boolean>();
 

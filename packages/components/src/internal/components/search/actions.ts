@@ -274,19 +274,18 @@ export function loadFinderSearches(excludeModuleReport?: boolean): Promise<Finde
                 const views = reports
                     .filter(report => {
                         if (excludeModuleReport) {
-                            if (report.reportId?.indexOf("module:SampleManagement") === 0)
-                                return false;
+                            if (report.reportId?.indexOf('module:SampleManagement') === 0) return false;
                         }
                         return report.type === DataViewInfoTypes.SampleFinderSavedSearch;
                     })
                     .map(report => {
-                        const isModuleReport = report.reportId?.indexOf("module:SampleManagement") === 0;
+                        const isModuleReport = report.reportId?.indexOf('module:SampleManagement') === 0;
                         return {
                             reportId: report.reportId,
                             reportName: report.name,
                             entityId: report.id,
                             isSession: false,
-                            isModuleReport: isModuleReport
+                            isModuleReport,
                         };
                     });
                 resolve(views.sort((a, b) => a.reportName.localeCompare(b.reportName)));

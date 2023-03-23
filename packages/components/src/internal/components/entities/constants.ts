@@ -10,9 +10,10 @@ import { SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR } from '../samples/constants
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
+import { SAMPLE_PROPERTY_ALL_SAMPLE_TYPE } from '../search/constants';
+
 import { EntityDataType } from './models';
 import { sampleDeleteDependencyText } from './utils';
-import {SAMPLE_PROPERTY_ALL_SAMPLE_TYPE} from "../search/constants";
 
 export const DATA_OPERATION_CONFIRMATION_ACTION = 'getDataOperationConfirmationData.api';
 export const SAMPLE_OPERATION_CONFIRMATION_ACTION = 'getMaterialOperationConfirmationData.api';
@@ -72,9 +73,8 @@ export const SamplePropertyDataType: EntityDataType = {
     listingSchemaQuery: undefined,
     instanceSchemaName: undefined,
     getInstanceSchemaQuery: (queryName: string) => {
-        if (queryName === SAMPLE_PROPERTY_ALL_SAMPLE_TYPE.query)
-            return SCHEMAS.EXP_TABLES.MATERIALS;
-        return new SchemaQuery("samples", queryName);
+        if (queryName === SAMPLE_PROPERTY_ALL_SAMPLE_TYPE.query) return SCHEMAS.EXP_TABLES.MATERIALS;
+        return new SchemaQuery('samples', queryName);
     },
     getInstanceDataType: (schemaQuery: SchemaQuery, altQueryName?: string) => {
         return altQueryName ?? schemaQuery.queryName;

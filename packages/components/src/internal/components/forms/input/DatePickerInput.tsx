@@ -23,7 +23,7 @@ import {
     getJsonDateTimeFormatString,
     isDateTimeCol,
     isRelativeDateFilterValue,
-    parseDate
+    parseDate,
 } from '../../../util/Date';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
@@ -33,6 +33,7 @@ import { DisableableInput, DisableableInputProps, DisableableInputState } from '
 
 export interface DatePickerInputProps extends DisableableInputProps, WithFormsyProps {
     addLabelAsterisk?: boolean;
+    allowRelativeInput?: boolean;
     autoFocus?: boolean;
     dateFormat?: string;
     disabled?: boolean;
@@ -42,7 +43,6 @@ export interface DatePickerInputProps extends DisableableInputProps, WithFormsyP
     inputClassName?: string;
     inputWrapperClassName?: string;
     isClearable?: boolean;
-    isFormInput?: boolean;
     label?: any;
     labelClassName?: string;
     name?: string;
@@ -54,13 +54,13 @@ export interface DatePickerInputProps extends DisableableInputProps, WithFormsyP
     showLabel?: boolean;
     value?: any;
     wrapperClassName?: string;
-    allowRelativeInput?: boolean;
+    isFormInput?: boolean;
 }
 
 interface DatePickerInputState extends DisableableInputState {
     invalid: boolean;
-    selectedDate: any;
     relativeInputValue?: string;
+    selectedDate: any;
 }
 
 // export for jest testing
@@ -103,7 +103,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
             isDisabled: props.initiallyDisabled,
             selectedDate: initDate,
             invalid,
-            relativeInputValue: undefined
+            relativeInputValue: undefined,
         };
     }
 
@@ -124,8 +124,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
         // to parseDate when getting the initial value.
         const dateFormat = props.initValueFormatted ? this.getDateFormat() : undefined;
 
-        if (props.allowRelativeInput && isRelativeDateFilterValue(props.value))
-            return undefined;
+        if (props.allowRelativeInput && isRelativeDateFilterValue(props.value)) return undefined;
 
         return props.value ? parseDate(props.value, dateFormat) : undefined;
     }
@@ -141,7 +140,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
         }
     };
 
-    onChangeRaw = (event?: any) : void => {
+    onChangeRaw = (event?: any): void => {
         const value = event?.target?.value;
         const isRelativeDateInput = isRelativeDateFilterValue(event?.target?.value);
         if (isRelativeDateInput) {
@@ -181,12 +180,12 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
             isFormInput,
             onKeyDown,
             value,
-            allowRelativeInput
+            allowRelativeInput,
         } = this.props;
 
         const { isDisabled, selectedDate, invalid } = this.state;
 
-        const initVal = allowRelativeInput && isRelativeDateFilterValue(value) ? value: undefined;
+        const initVal = allowRelativeInput && isRelativeDateFilterValue(value) ? value : undefined;
 
         const picker = (
             <DatePicker

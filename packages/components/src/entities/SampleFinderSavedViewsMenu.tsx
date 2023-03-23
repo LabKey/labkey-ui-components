@@ -31,10 +31,8 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
                 const userViews = [];
                 const moduleViews = [];
                 views.forEach(view => {
-                    if (view.isModuleReport)
-                        moduleViews.push(view);
-                    else
-                        userViews.push(view);
+                    if (view.isModuleReport) moduleViews.push(view);
+                    else userViews.push(view);
                 });
                 setSavedSearches(userViews);
                 setModuleSearches(moduleViews);

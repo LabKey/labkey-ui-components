@@ -33,13 +33,13 @@ import { formatDateTime } from '../../util/Date';
 
 import { getContainerFilter } from '../../query/api';
 
-import {AssayResultDataType, SamplePropertyDataType} from '../entities/constants';
+import { AssayResultDataType, SamplePropertyDataType } from '../entities/constants';
 
 import { AssaySampleColumnProp } from '../../sampleModels';
 
 import { caseInsensitive } from '../../util/utils';
 
-import {SearchScope, SAMPLE_FINDER_SESSION_PREFIX,} from './constants';
+import { SearchScope, SAMPLE_FINDER_SESSION_PREFIX } from './constants';
 import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSessionStorageProps } from './models';
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
@@ -350,7 +350,10 @@ export function getSampleFinderColumnNames(cards: FilterProps[]): { [key: string
     const columnNames = {};
     cards?.forEach(card => {
         const cardKey = card.entityDataType.nounAsParentSingular;
-        if (cardKey === AssayResultDataType.nounAsParentSingular || cardKey === SamplePropertyDataType.nounAsParentSingular) {
+        if (
+            cardKey === AssayResultDataType.nounAsParentSingular ||
+            cardKey === SamplePropertyDataType.nounAsParentSingular
+        ) {
             return;
         }
 
@@ -518,7 +521,7 @@ export function getSearchFiltersFromObjs(
     const entityTypeMap = {};
     entityTypes?.forEach(entityType => {
         entityTypeMap[entityType.nounAsParentSingular] = entityType;
-    })
+    });
     const filters: FilterProps[] = [];
     filterPropsObj.forEach(filterPropObj => {
         const filterArray = [];
@@ -534,7 +537,8 @@ export function getSearchFiltersFromObjs(
         });
         filterPropObj.filterArray = filterArray;
 
-        const entityNounAsParentSingular = filterPropObj['entityTypeNoun'] ?? filterPropObj.entityDataType?.nounAsParentSingular;
+        const entityNounAsParentSingular =
+            filterPropObj['entityTypeNoun'] ?? filterPropObj.entityDataType?.nounAsParentSingular;
 
         delete filterPropObj['entityDataType'];
         delete filterPropObj['entityTypeNoun'];
@@ -543,7 +547,9 @@ export function getSearchFiltersFromObjs(
 
         filterPropObj['entityDataType'] = entityDataType;
 
-        const isAssayResult = filterPropObj.entityDataType?.nounAsParentSingular === AssayResultDataType.nounAsParentSingular || filterPropObj['entityTypeNoun'] === AssayResultDataType.nounAsParentSingular;
+        const isAssayResult =
+            filterPropObj.entityDataType?.nounAsParentSingular === AssayResultDataType.nounAsParentSingular ||
+            filterPropObj['entityTypeNoun'] === AssayResultDataType.nounAsParentSingular;
         if (isAssayResult) {
             // when Finding from assays grid, the json lacks certain properties
             if (!filterPropObj.selectColumnFieldKey && assaySampleCols) {
@@ -891,7 +897,7 @@ export function getUpdatedDataTypeFilters(
     activeQuery: string,
     activeField: QueryColumn,
     newFilters: Filter.IFilter[],
-    allowSingleParentTypeFilter?: boolean,
+    allowSingleParentTypeFilter?: boolean
 ): { [p: string]: FieldFilter[] } {
     const lcActiveQuery = activeQuery.toLowerCase();
     const dataTypeFiltersUpdated = { ...dataTypeFilters };
@@ -916,13 +922,11 @@ export function getUpdatedDataTypeFilters(
     if (allowSingleParentTypeFilter) {
         if (otherFieldFilters.length + thisFieldFilters.length > 0) {
             return {
-                [lcActiveQuery] : [...otherFieldFilters, ...thisFieldFilters]
-            }
-        }
-        else {
+                [lcActiveQuery]: [...otherFieldFilters, ...thisFieldFilters],
+            };
+        } else {
             return {};
         }
-
     }
 
     if (otherFieldFilters.length + thisFieldFilters.length > 0) {

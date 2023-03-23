@@ -719,7 +719,7 @@ const card = {
 };
 
 const cardJSON =
-    "{\"filters\":[{\"filterArray\":[{\"fieldKey\":\"textField\",\"fieldCaption\":\"textField\",\"filter\":\"query.textField~=\",\"jsonType\":\"string\"},{\"fieldKey\":\"strField\",\"fieldCaption\":\"strField\",\"filter\":\"query.strField~between=1%2C5\",\"jsonType\":\"string\"}],\"schemaQuery\":{\"schemaName\":\"TestSchema\",\"queryName\":\"samples1\"},\"index\":1,\"entityTypeNoun\":\"test Parent\"}],\"filterChangeCounter\":5,\"filterTimestamp\":\"Searched 2020-08-06 14:44\"}";
+    '{"filters":[{"filterArray":[{"fieldKey":"textField","fieldCaption":"textField","filter":"query.textField~=","jsonType":"string"},{"fieldKey":"strField","fieldCaption":"strField","filter":"query.strField~between=1%2C5","jsonType":"string"}],"schemaQuery":{"schemaName":"TestSchema","queryName":"samples1"},"index":1,"entityTypeNoun":"test Parent"}],"filterChangeCounter":5,"filterTimestamp":"Searched 2020-08-06 14:44"}';
 
 const cardWithEntityTypeFilter = {
     entityDataType: TestTypeDataTypeWithEntityFilter,
@@ -731,8 +731,7 @@ const cardWithEntityTypeFilter = {
 const cardWithEntityTypeFilterJSON = cardJSON;
 
 const cardWithCurrentUserFilterJSON =
-    "{\"filters\":[{\"filterArray\":[{\"fieldKey\":\"userId\",\"fieldCaption\":\"userId\",\"filter\":\"query.userId~eq=${LABKEY.USERID}\",\"jsonType\":\"int\"}],\"schemaQuery\":{\"schemaName\":\"TestSchema\",\"queryName\":\"samples1\"},\"index\":1,\"entityTypeNoun\":\"test Parent\"}],\"filterChangeCounter\":5,\"filterTimestamp\":\"Searched 2020-08-06 14:44\"}";
-
+    '{"filters":[{"filterArray":[{"fieldKey":"userId","fieldCaption":"userId","filter":"query.userId~eq=${LABKEY.USERID}","jsonType":"int"}],"schemaQuery":{"schemaName":"TestSchema","queryName":"samples1"},"index":1,"entityTypeNoun":"test Parent"}],"filterChangeCounter":5,"filterTimestamp":"Searched 2020-08-06 14:44"}';
 
 describe('searchFiltersToJson', () => {
     test('searchFiltersToJson', () => {
@@ -755,12 +754,19 @@ describe('searchFiltersFromJson', () => {
         const textFilter = fieldFilters[1]['filter'];
         expect(textFilter).toStrictEqual(stringBetweenFilter.filter);
 
-        const deserializedCardWithEntityFilter = searchFiltersFromJson(cardWithEntityTypeFilterJSON, [TestTypeDataTypeWithEntityFilter]);
+        const deserializedCardWithEntityFilter = searchFiltersFromJson(cardWithEntityTypeFilterJSON, [
+            TestTypeDataTypeWithEntityFilter,
+        ]);
         const entityTypeFilters = deserializedCardWithEntityFilter['filters'][0].entityDataType.filterArray;
         expect(entityTypeFilters.length).toEqual(1);
         expect(entityTypeFilters[0]).toStrictEqual(Filter.create('Category', 'Source'));
 
-        const deserializedCardWithCurrentUserFilter = searchFiltersFromJson(cardWithCurrentUserFilterJSON, [TestTypeDataTypeWithEntityFilter], undefined, 1005);
+        const deserializedCardWithCurrentUserFilter = searchFiltersFromJson(
+            cardWithCurrentUserFilterJSON,
+            [TestTypeDataTypeWithEntityFilter],
+            undefined,
+            1005
+        );
         const userFilter = deserializedCardWithCurrentUserFilter['filters'][0].filterArray[0].filter;
         expect(userFilter).toStrictEqual(Filter.create('userId', '1005'));
     });

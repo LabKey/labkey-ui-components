@@ -1,4 +1,4 @@
-import React, {FC, memo, useCallback, useMemo} from 'react';
+import React, { FC, memo, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 
 import { Filter } from '@labkey/api';
@@ -7,15 +7,16 @@ import { OverlayTrigger, Popover } from 'react-bootstrap';
 
 import { COLUMN_NOT_IN_FILTER_TYPE } from '../../query/filter';
 
+import { JsonType } from '../domainproperties/PropDescType';
+import { isRelativeDateFilterValue } from '../../util/Date';
+
 import { getFilterValuesAsArray, NEGATE_FILTERS, SAMPLE_SEARCH_FILTER_TYPES_SKIP_TITLE } from './utils';
-import {JsonType} from "../domainproperties/PropDescType";
-import {isRelativeDateFilterValue} from "../../util/Date";
 
 interface FilterValueDisplayProps {
     filter: Filter.IFilter;
+    jsonType?: JsonType;
     noValueInQueryFilterMsg?: string;
     onFilterValueExpand?: () => void;
-    jsonType?: JsonType;
 }
 
 function getShortFilterTypeDisplay(filterType: Filter.IFilterType) {
@@ -57,28 +58,25 @@ export const FilterValueDisplay: FC<FilterValueDisplayProps> = memo(props => {
         return null;
     }, [filter]);
 
-    const getValueDisplay = useCallback((rawValue: any) => {
-        const isDateField = jsonType === 'date';
-        if (!isDateField)
+    const getValueDisplay = useCallback(
+        (rawValue: any) => {
+            const isDateField = jsonType === 'date';
+            if (!isDateField) return rawValue;
+
+            if (isRelativeDateFilterValue(rawValue)) {
+                let positive = true;
+                if (rawValue.indexOf('-') === 0) positive = false;
+                const days = rawValue.replace('-', '').replace('+', '').replace('d', '');
+                const dayInt = parseInt(days);
+                if (dayInt === 0) return 'today';
+                const plural = dayInt > 1 ? 's' : '';
+                return days + ' day' + plural + (positive ? ' from now' : ' ago');
+            }
+
             return rawValue;
-
-        if (isRelativeDateFilterValue(rawValue)) {
-            let positive = true;
-            if (rawValue.indexOf('-') === 0)
-                positive = false;
-            const days = rawValue
-                .replace('-', '')
-                .replace('+', '')
-                .replace('d', '');
-            const dayInt = parseInt(days);
-            if (dayInt === 0)
-                return 'today';
-            const plural = dayInt > 1 ? 's' : '';
-            return days + ' day' + plural + (positive ? ' from now' : ' ago');
-        }
-
-        return rawValue;
-    }, [jsonType]);
+        },
+        [jsonType]
+    );
 
     const filterValueDisplay = useMemo(() => {
         const filterType = filter.getFilterType();

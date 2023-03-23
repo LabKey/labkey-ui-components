@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import {fromJS, List, OrderedMap, Set} from 'immutable';
+import { fromJS, List, OrderedMap, Set } from 'immutable';
 import { ActionURL, AuditBehaviorTypes, Filter, getServerContext, Utils } from '@labkey/api';
 
 import {
@@ -40,7 +40,7 @@ import { BulkAddData } from '../internal/components/editable/EditableGrid';
 import { SampleCreationType } from '../internal/components/samples/models';
 import { DataClassDataType, SampleTypeDataType } from '../internal/components/entities/constants';
 import { sampleDeleteDependencyText } from '../internal/components/entities/utils';
-import {QueryColumn} from "../public/QueryColumn";
+import { QueryColumn } from '../public/QueryColumn';
 
 export function getCrossFolderSelectionMsg(
     crossFolderSelectionCount: number,
@@ -606,8 +606,18 @@ export const processSampleBulkAdd = (data: OrderedMap<string, any>, combineParen
 };
 
 const ALLOWED_FINDER_SAMPLE_PROPERTIES = [
-    'name', 'materialexpdate', 'storedamount', 'aliquotcount', 'aliquotvolume', 'availablealiquotcount',
-    'freezethawcount', 'storagestatus', 'storagerow', 'storagecol', 'created', 'createdby'
+    'name',
+    'materialexpdate',
+    'storedamount',
+    'aliquotcount',
+    'aliquotvolume',
+    'availablealiquotcount',
+    'freezethawcount',
+    'storagestatus',
+    'storagerow',
+    'storagecol',
+    'created',
+    'createdby',
 ];
 
 export const getSamplePropertyFields = (queryInfo: QueryInfo, skipDefaultViewCheck?: boolean): List<QueryColumn> => {
@@ -622,16 +632,13 @@ export const getSamplePropertyFields = (queryInfo: QueryInfo, skipDefaultViewChe
     const fields = [];
     ALLOWED_FINDER_SAMPLE_PROPERTIES.forEach(fieldName => {
         let include = false;
-        if (isAllSamplesQuery)
-            include = true;
+        if (isAllSamplesQuery) include = true;
         else if (fieldName === 'availablealiquotcount' || fieldName === 'createdby') {
             include = true;
-        }
-        else {
+        } else {
             include = defaultFields.indexOf(fieldName) > -1;
         }
-        if (include)
-            fields.push(allFieldsMap[fieldName]);
+        if (include) fields.push(allFieldsMap[fieldName]);
     });
     return fromJS(fields);
-}
+};

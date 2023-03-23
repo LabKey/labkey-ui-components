@@ -514,13 +514,13 @@ export interface IEntityTypeDetails extends IEntityDetails {
  *     typeListingSchemaQuery: SchemaQuery; // The schema query used to get the listing of all of the data type instances (e.g., all the data classes) available
  */
 export interface EntityDataType {
-    allowSingleParentTypeFilter?: boolean;
     allowRelativeDateFilter?: boolean;
+    allowSingleParentTypeFilter?: boolean;
     ancestorColumnName?: string;
     appUrlPrefixParts?: string[];
     containerFilter?: Query.ContainerFilter;
     deleteHelpLinkTopic: string;
-    dependencyText: Function | string ;
+    dependencyText: Function | string;
     descriptionPlural: string;
     descriptionSingular: string;
     editTypeAppUrlPrefix?: string;
@@ -544,10 +544,10 @@ export interface EntityDataType {
     operationConfirmationActionName: string;
     operationConfirmationControllerName: string;
     supportHasNoValueInQuery?: boolean;
+    typeIcon?: string;
     typeListingSchemaQuery: SchemaQuery;
     typeNounAsParentSingular: string;
     typeNounSingular: string;
-    typeIcon?: string;
     uniqueFieldKey: string;
 }
 

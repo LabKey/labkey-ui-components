@@ -1,8 +1,8 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Col, Modal, Row } from 'react-bootstrap';
-import {List} from "immutable";
+import { List } from 'immutable';
 
-import {Filter, Query} from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { EntityDataType, IEntityTypeOption } from '../internal/components/entities/models';
 import { capitalizeFirstChar } from '../internal/util/utils';
@@ -21,7 +21,7 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../internal/APIWrapp
 
 import { NOT_ANY_FILTER_TYPE } from '../internal/url/NotAnyFilterType';
 
-import {AssayResultDataType, SamplePropertyDataType} from '../internal/components/entities/constants';
+import { AssayResultDataType, SamplePropertyDataType } from '../internal/components/entities/constants';
 
 import { COLUMN_NOT_IN_FILTER_TYPE } from '../internal/query/filter';
 
@@ -36,8 +36,9 @@ import { QueryFilterPanel } from '../internal/components/search/QueryFilterPanel
 
 import { AssaySampleColumnProp } from '../internal/sampleModels';
 import { isLoading, LoadingState } from '../public/LoadingState';
-import {SAMPLE_PROPERTY_ALL_SAMPLE_TYPE} from "../internal/components/search/constants";
-import {getSamplePropertyFields} from "./utils";
+import { SAMPLE_PROPERTY_ALL_SAMPLE_TYPE } from '../internal/components/search/constants';
+
+import { getSamplePropertyFields } from './utils';
 
 export interface EntityFieldFilterModalProps {
     api?: ComponentsAPIWrapper;
@@ -51,7 +52,7 @@ export interface EntityFieldFilterModalProps {
         entityDataType: EntityDataType,
         dataTypeFilters: { [key: string]: FieldFilter[] },
         queryLabels: { [key: string]: string },
-        queryLsids?: { [key: string]: string },
+        queryLsids?: { [key: string]: string }
     ) => void;
     queryName?: string;
     setCardDirty?: (dirty: boolean) => void;
@@ -213,7 +214,15 @@ export const EntityFieldFilterModal: FC<EntityFieldFilterModalProps> = memo(prop
         (field: QueryColumn, newFilters: Filter.IFilter[]) => {
             setCardDirty?.(true);
             setFilterError(undefined);
-            setDataTypeFilters(getUpdatedDataTypeFilters(dataTypeFilters, activeQuery, field, newFilters, entityDataType.allowSingleParentTypeFilter));
+            setDataTypeFilters(
+                getUpdatedDataTypeFilters(
+                    dataTypeFilters,
+                    activeQuery,
+                    field,
+                    newFilters,
+                    entityDataType.allowSingleParentTypeFilter
+                )
+            );
         },
         [setCardDirty, dataTypeFilters, activeQuery, entityDataType]
     );
@@ -262,25 +271,23 @@ export const EntityFieldFilterModal: FC<EntityFieldFilterModalProps> = memo(prop
         return entityQueries.find(query => query?.value?.toLowerCase() === activeQuery.toLowerCase())?.label;
     }, [entityQueries, activeQuery]);
 
-    const selectDistinctOptions = useMemo(() : Partial<Query.SelectDistinctOptions> => {
-        if (!activeQuery || activeQuery === SAMPLE_PROPERTY_ALL_SAMPLE_TYPE.query)
-            return null;
+    const selectDistinctOptions = useMemo((): Partial<Query.SelectDistinctOptions> => {
+        if (!activeQuery || activeQuery === SAMPLE_PROPERTY_ALL_SAMPLE_TYPE.query) return null;
 
-        if (entityDataType.nounAsParentSingular !== SamplePropertyDataType.nounAsParentSingular)
-            return null;
+        if (entityDataType.nounAsParentSingular !== SamplePropertyDataType.nounAsParentSingular) return null;
 
-        const sampleTypeLsid = entityQueries.find(query => query?.value?.toLowerCase() === activeQuery.toLowerCase())?.lsid;
+        const sampleTypeLsid = entityQueries.find(
+            query => query?.value?.toLowerCase() === activeQuery.toLowerCase()
+        )?.lsid;
         return {
-            filterArray: [Filter.create('SampleSet', sampleTypeLsid)]
+            filterArray: [Filter.create('SampleSet', sampleTypeLsid)],
         };
     }, [entityDataType, activeQuery, entityQueries]);
 
-    const entityTypeFields = useMemo(() : List<QueryColumn> => {
-        if (!activeQueryInfo)
-            return undefined;
+    const entityTypeFields = useMemo((): List<QueryColumn> => {
+        if (!activeQueryInfo) return undefined;
 
-        if (entityDataType.nounAsParentSingular !== SamplePropertyDataType.nounAsParentSingular)
-            return undefined;
+        if (entityDataType.nounAsParentSingular !== SamplePropertyDataType.nounAsParentSingular) return undefined;
 
         return getSamplePropertyFields(activeQueryInfo, skipDefaultViewCheck);
     }, [activeQueryInfo, skipDefaultViewCheck]);

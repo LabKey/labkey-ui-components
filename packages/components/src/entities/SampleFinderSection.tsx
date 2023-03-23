@@ -37,7 +37,7 @@ import { InjectedAssayModel, withAssayModels } from '../internal/components/assa
 
 import { isLoading } from '../public/LoadingState';
 
-import {AssayResultDataType, SamplePropertyDataType} from '../internal/components/entities/constants';
+import { AssayResultDataType, SamplePropertyDataType } from '../internal/components/entities/constants';
 
 import {
     loadFinderSearch,
@@ -60,12 +60,14 @@ import {
 } from '../internal/components/search/utils';
 
 import { FieldFilter, FilterProps, FinderReport } from '../internal/components/search/models';
-import {SAMPLE_FINDER_SESSION_PREFIX, SAMPLE_PROPERTY_ALL_SAMPLE_TYPE} from '../internal/components/search/constants';
+import { SAMPLE_FINDER_SESSION_PREFIX, SAMPLE_PROPERTY_ALL_SAMPLE_TYPE } from '../internal/components/search/constants';
 import { AssayStateModel } from '../internal/components/assay/models';
 import { AssayDomainTypes } from '../internal/AssayDefinitionModel';
 import { AssaySampleColumnProp, SamplesEditableGridProps } from '../internal/sampleModels';
 
 import { COLUMN_NOT_IN_FILTER_TYPE } from '../internal/query/filter';
+
+import { useServerContext } from '../internal/components/base/ServerContext';
 
 import { getSampleFinderLocalStorageKey } from './utils';
 import { EntityFieldFilterModal } from './EntityFieldFilterModal';
@@ -75,7 +77,6 @@ import { SampleFinderSaveViewModal } from './SampleFinderSaveViewModal';
 import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
 
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
-import {useServerContext} from "../internal/components/base/ServerContext";
 
 interface SampleFinderSamplesGridProps {
     columnDisplayNames?: { [key: string]: string };
@@ -177,7 +178,12 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
 
         const finderSessionDataStr = sessionStorage.getItem(getSampleFinderLocalStorageKey());
         if (finderSessionDataStr) {
-            const finderSessionData = searchFiltersFromJson(finderSessionDataStr, parentEntityDataTypes, assaySampleCols, user.id);
+            const finderSessionData = searchFiltersFromJson(
+                finderSessionDataStr,
+                parentEntityDataTypes,
+                assaySampleCols,
+                user.id
+            );
             if (finderSessionData?.filters?.length > 0 && finderSessionData?.filterTimestamp) {
                 setUnsavedSessionViewName(finderSessionData.filterTimestamp);
             }
@@ -214,7 +220,10 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
 
             let queryName = selectedCard.schemaQuery.queryName;
             if (selectedCard.entityDataType.getInstanceDataType)
-                queryName = selectedCard.entityDataType.getInstanceDataType(selectedCard.schemaQuery, selectedCard.altQueryName);
+                queryName = selectedCard.entityDataType.getInstanceDataType(
+                    selectedCard.schemaQuery,
+                    selectedCard.altQueryName
+                );
 
             setChosenQueryName(queryName);
         },
@@ -283,8 +292,10 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
                     );
                 }
 
-                const isSampleProperties = chosenEntityType.nounAsParentSingular === SamplePropertyDataType.nounAsParentSingular;
-                const isSampleTypeSampleProp = isSampleProperties && queryName !== SAMPLE_PROPERTY_ALL_SAMPLE_TYPE.query;
+                const isSampleProperties =
+                    chosenEntityType.nounAsParentSingular === SamplePropertyDataType.nounAsParentSingular;
+                const isSampleTypeSampleProp =
+                    isSampleProperties && queryName !== SAMPLE_PROPERTY_ALL_SAMPLE_TYPE.query;
                 newFilterCards.push({
                     schemaQuery: isAssay
                         ? entityDataType.getInstanceSchemaQuery(queryName)
@@ -292,7 +303,10 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
                     filterArray: dataTypeFilters[queryName],
                     entityDataType: chosenEntityType,
                     dataTypeDisplayName: queryLabels[queryName],
-                    altQueryName: isSampleProperties && !isSampleTypeSampleProp ? SAMPLE_PROPERTY_ALL_SAMPLE_TYPE.query : undefined,
+                    altQueryName:
+                        isSampleProperties && !isSampleTypeSampleProp
+                            ? SAMPLE_PROPERTY_ALL_SAMPLE_TYPE.query
+                            : undefined,
                     dataTypeLsid: isSampleTypeSampleProp ? queryLsids?.[queryName] : undefined,
                     selectColumnFieldKey: isAssay ? assaySampleIdCols[queryName]?.lookupFieldKey : undefined,
                     targetColumnFieldKey: isAssay ? assaySampleIdCols[queryName]?.fieldKey : undefined,
@@ -346,7 +360,12 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
             }
             if (!cardJson) return;
 
-            const finderSessionData = searchFiltersFromJson(cardJson, parentEntityDataTypes, assaySampleIdCols, user.id);
+            const finderSessionData = searchFiltersFromJson(
+                cardJson,
+                parentEntityDataTypes,
+                assaySampleIdCols,
+                user.id
+            );
             const newFilters = finderSessionData.filters;
             if (!newFilters) return;
 

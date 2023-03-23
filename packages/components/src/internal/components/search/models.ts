@@ -64,6 +64,7 @@ export interface FieldFilter {
 }
 
 export interface FilterProps {
+    altQueryName?: string;
     dataTypeDisplayName?: string;
     dataTypeLsid?: string;
     disabled?: boolean;
@@ -74,7 +75,6 @@ export interface FilterProps {
     schemaQuery?: SchemaQuery;
     selectColumnFieldKey?: string;
     targetColumnFieldKey?: string;
-    altQueryName?: string;
 }
 
 export interface SearchSessionStorageProps {
@@ -100,8 +100,8 @@ export interface FilterSelection {
 
 export interface FinderReport {
     entityId?: string;
+    isModuleReport?: boolean;
     isSession?: boolean;
     reportId?: string;
     reportName?: string;
-    isModuleReport?: boolean;
 }

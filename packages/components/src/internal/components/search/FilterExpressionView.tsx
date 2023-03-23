@@ -227,12 +227,10 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         hideTime={true} // always filter by date only, without timepicker
                         disabled={disabled}
                         onChange={newDate => {
-                                let dateStr = newDate;
-                               if (typeof newDate !== 'string')
-                                    dateStr =  getJsonDateFormatString(newDate);
-                                updateDateFilterFieldValue(filterIndex, dateStr, isSecondInput)
-                            }
-                        }
+                            let dateStr = newDate;
+                            if (typeof newDate !== 'string') dateStr = getJsonDateFormatString(newDate);
+                            updateDateFilterFieldValue(filterIndex, dateStr, isSecondInput);
+                        }}
                     />
                 );
             } else if (jsonType === 'boolean') {

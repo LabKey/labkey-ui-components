@@ -31,16 +31,17 @@ const CHOOSE_VALUES_TAB_KEY = 'Choose values';
 
 interface Props {
     allowRelativeDateFilter?: boolean;
+    altQueryName?: string;
     api?: ComponentsAPIWrapper;
     asRow?: boolean;
     emptyMsg?: string;
-    entityDataType?: EntityDataType; // used for Sample Finder use case
+    entityDataType?: EntityDataType;
+    // used for Sample Finder use case
     fieldKey?: string;
+    fields?: List<QueryColumn>;
     filters: { [key: string]: FieldFilter[] };
     fullWidth?: boolean;
     hasNotInQueryFilter?: boolean;
-    hasNotInQueryFilterLabel?: string;
-    metricFeatureArea?: string;
     onFilterUpdate: (field: QueryColumn, newFilters: Filter.IFilter[], index: number) => void;
     onHasNoValueInQueryChange?: (check: boolean) => void;
     queryInfo: QueryInfo;
@@ -48,8 +49,8 @@ interface Props {
     skipDefaultViewCheck?: boolean;
     validFilterField?: (field: QueryColumn, queryInfo: QueryInfo, exprColumnsWithSubSelect?: string[]) => boolean;
     viewName?: string;
-    altQueryName?: string;
-    fields?: List<QueryColumn>;
+    metricFeatureArea?: string;
+    hasNotInQueryFilterLabel?: string;
 }
 
 export const QueryFilterPanel: FC<Props> = memo(props => {
@@ -142,13 +143,16 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         setActiveField(undefined);
         if (!queryInfo) return;
 
-        const qFields = fields ? fields : (skipDefaultViewCheck ? queryInfo.getAllColumns(viewName) : queryInfo.getDisplayColumns(viewName));
+        const qFields = fields
+            ? fields
+            : skipDefaultViewCheck
+            ? queryInfo.getAllColumns(viewName)
+            : queryInfo.getDisplayColumns(viewName);
         const qF = fromJS(
             qFields.filter(
-                field => field.filterable && (
-                    !validFilterField ||
-                    validFilterField(field, queryInfo, entityDataType?.exprColumnsWithSubSelect)
-                )
+                field =>
+                    field.filterable &&
+                    (!validFilterField || validFilterField(field, queryInfo, entityDataType?.exprColumnsWithSubSelect))
             )
         );
         setQueryFields(qF);
@@ -163,7 +167,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         entityDataType?.exprColumnsWithSubSelect,
         fieldKey,
         viewName,
-        fields
+        fields,
     ]);
 
     useEffect(() => {

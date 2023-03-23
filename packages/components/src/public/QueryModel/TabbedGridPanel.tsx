@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, memo, useCallback, useState } from 'react';
+import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 import classNames from 'classnames';
 
 import { ExportModal } from '../../internal/components/gridbar/ExportModal';
@@ -21,6 +21,8 @@ import { EXPORT_TYPES } from '../../internal/constants';
 import { exportTabsXlsx } from '../../internal/actions';
 
 import { useNotificationsContext } from '../../internal/components/notifications/NotificationsContext';
+
+import { LoadingState } from '../LoadingState';
 
 import { GridPanel, GridPanelProps } from './GridPanel';
 import { InjectedQueryModels } from './withQueryModels';
@@ -33,9 +35,10 @@ interface GridTabProps {
     onSelect: (id: string) => void;
     pullRight: boolean;
     showRowCount: boolean;
+    tabRowCount?: number;
 }
 
-const GridTab: FC<GridTabProps> = memo(({ isActive, model, onSelect, pullRight, showRowCount }) => {
+const GridTab: FC<GridTabProps> = memo(({ isActive, model, onSelect, pullRight, showRowCount, tabRowCount }) => {
     const { id, queryInfo, rowCount, title } = model;
     const className = classNames({
         active: isActive,
@@ -44,11 +47,16 @@ const GridTab: FC<GridTabProps> = memo(({ isActive, model, onSelect, pullRight, 
     });
     const onClick = useCallback(() => onSelect(id), [id, onSelect]);
 
+    const rowCountDisplay = useMemo(() => {
+        if (rowCount === undefined && !model.isActivelyLoadingTotalCount) return tabRowCount;
+        return rowCount;
+    }, [rowCount, tabRowCount, model]);
+
     return (
         <li className={className}>
             <a onClick={onClick}>
                 {title || queryInfo?.queryLabel || queryInfo?.name}
-                {showRowCount && rowCount !== undefined && <> ({rowCount})</>}
+                {showRowCount && rowCountDisplay !== undefined && <> ({rowCountDisplay})</>}
             </a>
         </li>
     );
@@ -119,6 +127,12 @@ export interface TabbedGridPanelProps<T = {}> extends GridPanelProps<T> {
     tabOrder: string[];
 
     /**
+     * Provide the initial/default grid row count display for the QueryModel.id.
+     * This count will only be displayed when queryModel.rowCount === undefined and !queryModel.isLoadingTotalCount
+     */
+    tabRowCounts?: { [key: string]: number };
+
+    /**
      * The title to render, only used if asPanel is true.
      */
     title?: string;
@@ -144,6 +158,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         getGridPanelDisplay,
         showViewMenu,
         getShowViewMenu,
+        tabRowCounts,
         ...rest
     } = props;
     const [internalActiveId, setInternalActiveId] = useState<string>(activeModelId ?? tabOrder[0]);
@@ -269,6 +284,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                                             onSelect={onSelect}
                                             pullRight={rightTabs.indexOf(modelId) > -1}
                                             showRowCount={showRowCountOnTabs}
+                                            tabRowCount={tabRowCounts?.[modelId]}
                                         />
                                     );
                                 } else {
@@ -288,6 +304,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                     onClose={closeExportModal}
                     onExport={exportTabs}
                     canExport={canExport}
+                    tabRowCounts={tabRowCounts}
                 />
             )}
         </>

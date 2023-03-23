@@ -21,6 +21,7 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
 
     const [savedSearches, setSavedSearches] = useState<FinderReport[]>(undefined);
     const [moduleSearches, setModuleSearches] = useState<FinderReport[]>(undefined);
+    const [open, setOpen] = useState<boolean>(false);
 
     const { api } = useAppContext();
 
@@ -60,12 +61,17 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
         return savedSearches?.length > 0 || !!sessionViewName;
     }, [savedSearches, sessionViewName]);
 
+    const onToggle = useCallback(() => {
+        setOpen(_open => !_open);
+    }, []);
+
     const onLoadSavedSearch = useCallback(
         e => {
             const view = savedSearches.find(search => search.reportId === e.target.name);
             loadSearch(view);
+            onToggle();
         },
-        [loadSearch, savedSearches]
+        [loadSearch, savedSearches, onToggle]
     );
 
     const onLoadModuleSearch = useCallback(
@@ -78,7 +84,8 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
 
     const onLoadSessionSearch = useCallback(() => {
         loadSearch({ isSession: true, reportName: sessionViewName });
-    }, [loadSearch, sessionViewName]);
+        onToggle();
+    }, [loadSearch, sessionViewName, onToggle]);
 
     const onSaveCurrentView = useCallback(() => {
         saveSearch(true);
@@ -101,6 +108,8 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
                 title={menuTitle}
                 className="button-right-spacing"
                 disabled={!hasViews}
+                onToggle={onToggle}
+                open={open}
             >
                 {sessionViewName && (
                     <>

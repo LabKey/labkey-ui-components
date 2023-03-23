@@ -73,10 +73,11 @@ export function getFilterCardColumnName(
 const FIRST_COLUMNS_IN_VIEW = ['Name', 'SampleSet'];
 
 export function getFinderViewColumnsConfig(
-    queryModel: QueryModel,
-    columnDisplayNames: { [key: string]: string }
-): { columns: any; hasUpdates: boolean } {
-    const defaultDisplayColumns = queryModel.queryInfo?.getDisplayColumns().toArray();
+    queryInfo: QueryInfo,
+    columnDisplayNames: { [key: string]: string },
+    requiredColumns?: string[]
+): { columns: Array<{ fieldKey: string; title: string }>; hasUpdates: boolean } {
+    const defaultDisplayColumns = queryInfo?.getDisplayColumns().toArray();
     const displayColumnKeys = defaultDisplayColumns.map(col => col.fieldKey.toLowerCase());
     const columnKeys = [];
     FIRST_COLUMNS_IN_VIEW.forEach(fieldKey => {
@@ -85,9 +86,10 @@ export function getFinderViewColumnsConfig(
             columnKeys.push(fieldKey);
         }
     });
-    queryModel.requiredColumns.forEach(fieldKey => {
+
+    requiredColumns?.forEach(fieldKey => {
         const lcFieldKey = fieldKey.toLowerCase();
-        if (displayColumnKeys.indexOf(lcFieldKey) == -1 && SAMPLE_STATUS_REQUIRED_COLUMNS.indexOf(fieldKey) === -1) {
+        if (displayColumnKeys.indexOf(lcFieldKey) === -1 && SAMPLE_STATUS_REQUIRED_COLUMNS.indexOf(fieldKey) === -1) {
             columnKeys.push(fieldKey);
         }
     });
@@ -96,14 +98,19 @@ export function getFinderViewColumnsConfig(
             .filter(col => FIRST_COLUMNS_IN_VIEW.indexOf(col.fieldKey) === -1)
             .map(col => col.fieldKey)
     );
-    const viewDisplayFieldKeys = queryModel.queryInfo
-        ?.getDisplayColumns(queryModel.viewName)
+
+    const viewDisplayFieldKeys = queryInfo
+        ?.getDisplayColumns(SAMPLE_FINDER_VIEW_NAME)
         .map(column => column.fieldKey)
         .toArray()
         .sort();
+    const hasUpdates = viewDisplayFieldKeys.join(',') !== [...columnKeys].sort().join(',');
+
+    const columns = columnKeys.map(fieldKey => ({ fieldKey, title: columnDisplayNames[fieldKey] }));
+
     return {
-        hasUpdates: viewDisplayFieldKeys.join(',') !== [...columnKeys].sort().join(','),
-        columns: columnKeys.map(fieldKey => ({ fieldKey, title: columnDisplayNames[fieldKey] })),
+        hasUpdates,
+        columns,
     };
 }
 
@@ -167,9 +174,11 @@ export function getExpDescendantOfSelectClause(
     if (!selectClauseWhere) return null;
 
     const { queryName, schemaName } = schemaQuery;
+    const quoteEncodedQueryName = '"' + queryName.replace(/"/g, '""') + '"';
+    const from = schemaName + '.' + quoteEncodedQueryName;
     const cfClause = cf ? `[ContainerFilter='${cf}']` : '';
 
-    return `SELECT "${queryName}".expObject() FROM ${schemaName}."${queryName}"${cfClause} ${selectClauseWhere}`;
+    return `SELECT ${quoteEncodedQueryName}.expObject() FROM ${from}${cfClause} ${selectClauseWhere}`;
 }
 
 export function getExpDescendantOfFilter(
@@ -1089,4 +1098,30 @@ export function getSearchScopeFromContainerFilter(cf: Query.ContainerFilter): Se
         default:
             return SearchScope.FolderAndSubfolders;
     }
+}
+
+export function getSampleFinderTabRowCountSql(queryModel: QueryModel): string {
+    const filters = queryModel.baseFilters;
+    const wheres = [];
+    filters.forEach(filter => {
+        let clause = '';
+        if (filter.getFilterType().getURLSuffix() === COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix()) {
+            clause = filter.getColumnName() + ' NOT IN (' + filter.getValue() + ')';
+        } else if (filter.getFilterType().getURLSuffix() === COLUMN_IN_FILTER_TYPE.getURLSuffix()) {
+            clause = filter.getColumnName() + ' IN (' + filter.getValue() + ')';
+        } else if (filter.getFilterType().getURLSuffix() === IN_EXP_DESCENDANTS_OF_FILTER_TYPE.getURLSuffix()) {
+            clause = 'expObject() IN EXPDESCENDANTSOF (' + filter.getValue() + ')';
+        } else {
+            console.error('Bad filter');
+        }
+        wheres.push('m.' + clause);
+    });
+
+    const rowCountSql =
+        'SELECT s.name as SampleTypeName, COUNT(*) AS RowCount ' +
+        'FROM exp.Materials m JOIN exp.SampleSets s ON m.SampleSet = s.lsid ' +
+        'WHERE ' +
+        wheres.join(' AND ') +
+        ' GROUP by s.name';
+    return rowCountSql;
 }

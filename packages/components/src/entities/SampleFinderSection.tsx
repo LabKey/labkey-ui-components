@@ -16,7 +16,6 @@ import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 
 import { Alert } from '../internal/components/base/Alert';
 import { SampleGridButtonProps } from '../internal/components/samples/models';
-import { invalidateQueryDetailsCache } from '../internal/query/api';
 
 import { getAllEntityTypeOptions } from '../internal/components/entities/actions';
 
@@ -40,8 +39,8 @@ import { isLoading } from '../public/LoadingState';
 import { AssayResultDataType, SamplePropertyDataType } from '../internal/components/entities/constants';
 
 import {
+    getSampleFinderTabRowCounts,
     loadFinderSearch,
-    removeFinderGridView,
     saveFinderGridView,
     saveFinderSearch,
 } from '../internal/components/search/actions';
@@ -49,8 +48,8 @@ import { FilterCards } from '../internal/components/search/FilterCards';
 
 import {
     getFinderStartText,
-    getFinderViewColumnsConfig,
     getSampleFinderColumnNames,
+    getSampleFinderCommonConfigs,
     getSampleFinderQueryConfigs,
     getSearchFilterObjs,
     SAMPLE_FILTER_METRIC_AREA,
@@ -79,7 +78,6 @@ import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 
 interface SampleFinderSamplesGridProps {
-    columnDisplayNames?: { [key: string]: string };
     getIsDirty?: () => boolean;
     getSampleAuditBehaviorType: () => AuditBehaviorTypes;
     gridButtonProps?: SampleGridButtonProps;
@@ -369,7 +367,7 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
             const newFilters = finderSessionData.filters;
             if (!newFilters) return;
 
-            updateFilters(filterChangeCounter + 1, newFilters, false, view.isSession);
+            updateFilters(filterChangeCounter, newFilters, false, view.isSession);
             setShowSaveViewDialog(false);
             setCurrentView(view);
         },
@@ -534,52 +532,15 @@ interface SampleFinderSamplesProps extends SampleFinderSamplesGridProps {
 }
 
 const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & InjectedQueryModels> = memo(props => {
-    const { actions, columnDisplayNames, queryModels, gridButtons, gridButtonProps } = props;
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-
+    const { actions, queryModels, gridButtons, gridButtonProps, sampleTypeNames } = props;
+    const [tabRowCounts, setTabRowCounts] = useState<{ [key: string]: number }>(undefined);
     useEffect(() => {
-        const allModelsLoaded = Object.values(queryModels).filter(model => model.isLoading).length == 0;
-        if (allModelsLoaded && isLoading) {
-            const promises = [];
-            Object.values(queryModels).forEach(queryModel => {
-                const { hasUpdates, columns } = getFinderViewColumnsConfig(queryModel, columnDisplayNames);
-                if (hasUpdates) {
-                    promises.push(saveFinderGridView(queryModel.schemaQuery, columns));
-                }
-            });
-            try {
-                Promise.all(promises)
-                    .then(schemaQueries => {
-                        // since we have updated views, we need to invalidate the details cache so we pick up the new views
-                        schemaQueries.forEach(schemaQuery => {
-                            invalidateQueryDetailsCache(schemaQuery);
-                        });
-                        setIsLoading(false);
-                    })
-                    .catch(reason => {
-                        console.error('Error saving all finder views.', reason);
-                        setIsLoading(false);
-                    });
-            } catch (error) {
-                // ignore: already logged
-            }
-        }
-    }, [queryModels]);
+        // if 1 All samples + 1 type, rely on autoload count
+        if (sampleTypeNames?.length <= 1) return;
 
-    useEffect(() => {
-        return () => {
-            if (queryModels) {
-                for (const queryModel of Object.values(queryModels)) {
-                    (async () => {
-                        try {
-                            await removeFinderGridView(queryModel);
-                        } catch (error) {
-                            // ignore; already logged
-                        }
-                    })();
-                }
-            }
-        };
+        getSampleFinderTabRowCounts(queryModels).then(counts => {
+            setTabRowCounts(counts);
+        });
     }, []);
 
     const afterSampleActionComplete = useCallback((): void => {
@@ -599,8 +560,6 @@ const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & InjectedQueryMo
         },
         [queryModels]
     );
-
-    if (isLoading) return <LoadingSpinner />;
 
     return (
         <>
@@ -627,6 +586,7 @@ const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & InjectedQueryMo
                     showViewMenu: false,
                 }}
                 showLabelOption
+                tabRowCounts={tabRowCounts}
             />
         </>
     );
@@ -643,8 +603,9 @@ const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
         setQueryConfigs(undefined);
         const configs = getSampleFinderQueryConfigs(user, sampleTypeNames, cards, selectionKeyPrefix);
         const promises = [];
+        const columnLabel = getSampleFinderColumnNames(cards);
         for (const config of Object.values(configs)) {
-            promises.push(saveFinderGridView(config.schemaQuery, [{ fieldKey: 'Name' }]));
+            promises.push(saveFinderGridView(config.schemaQuery, columnLabel, config.requiredColumns));
         }
         Promise.all(promises)
             .then(() => {
@@ -661,12 +622,11 @@ const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
 
     return (
         <SampleFinderSamplesWithQueryModels
-            columnDisplayNames={getSampleFinderColumnNames(cards)}
             sampleTypeNames={sampleTypeNames}
             key={selectionKeyPrefix}
             user={user}
             {...gridProps}
-            autoLoad
+            autoLoad={sampleTypeNames?.length <= 1} // if only a single sample type, then just auto load instead of relying on custom row count query
             queryConfigs={queryConfigs}
         />
     );

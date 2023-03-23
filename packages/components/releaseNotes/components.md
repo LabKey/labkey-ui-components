@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.XX
-*Released*: XXMarch 2023
+### version 2.313.0
+*Released*: 23 March 2023
 * Issue 47503: Sample Manager: Sample Finder not working for sample type with double quotes in name
 * Issue 47077: Sample Finder taking a really long time to load results
   * skip autoload for sample finder result grids

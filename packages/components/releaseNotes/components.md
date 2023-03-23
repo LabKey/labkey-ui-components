@@ -1,6 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.313.0
+*Released*: 23 March 2023
+* Issue 47503: Sample Manager: Sample Finder not working for sample type with double quotes in name
+* Issue 47077: Sample Finder taking a really long time to load results
+  * skip autoload for sample finder result grids
+  * improve sample finder hidden custom view handling
+  * use a single query to get row counts for all sample finder result grids
+  * add tabRowCounts as a prop for TabbedGridPanel
+
 ### version 2.312.0
 *Released*: 21 March 2023
 * Sample assay grid and aliquot summary to only query for data from assays that have data for that sample/aliquot ID set

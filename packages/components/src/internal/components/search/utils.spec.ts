@@ -155,32 +155,26 @@ describe('getFinderViewColumnsConfig', () => {
             },
         }),
     });
-    const model = makeTestQueryModel(
-        new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Test', SAMPLE_FINDER_VIEW_NAME),
-        queryInfo,
-        {},
-        [],
-        0,
-        'test-samples'
-    );
     test('no required columns', () => {
-        expect(getFinderViewColumnsConfig(model, {})).toStrictEqual({
+        expect(getFinderViewColumnsConfig(queryInfo, {})).toStrictEqual({
             hasUpdates: false,
             columns: [{ fieldKey: 'Name', title: undefined }],
         });
     });
 
     test('no new required columns', () => {
-        const modelUpdate = model.mutate({ requiredColumns: ['Name'] });
-        expect(getFinderViewColumnsConfig(modelUpdate, {})).toStrictEqual({
+        const requiredColumns = ['Name'];
+        expect(getFinderViewColumnsConfig(queryInfo, {}, requiredColumns)).toStrictEqual({
             hasUpdates: false,
             columns: [{ fieldKey: 'Name', title: undefined }],
         });
     });
 
     test('with new required columns', () => {
-        const modelUpdate = model.mutate({ requiredColumns: ['Name', 'ExtraField', 'SampleState'] });
-        expect(getFinderViewColumnsConfig(modelUpdate, { ExtraField: 'Extra Field Display' })).toStrictEqual({
+        const requiredColumns = ['Name', 'ExtraField', 'SampleState'];
+        expect(
+            getFinderViewColumnsConfig(queryInfo, { ExtraField: 'Extra Field Display' }, requiredColumns)
+        ).toStrictEqual({
             hasUpdates: true,
             columns: [
                 { fieldKey: 'Name', title: undefined },
@@ -239,18 +233,11 @@ describe('getFinderViewColumnsConfig', () => {
                 },
             }),
         });
-        const model = makeTestQueryModel(
-            new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Test', SAMPLE_FINDER_VIEW_NAME),
-            queryInfo,
-            {},
-            [],
-            0,
-            'test-samples'
-        );
-        const modelUpdate = model.mutate({
-            requiredColumns: ['Name', 'ExtraField'],
-        });
-        expect(getFinderViewColumnsConfig(modelUpdate, { ExtraField: 'Extra Field Display' })).toStrictEqual({
+
+        const requiredColumns = ['Name', 'ExtraField'];
+        expect(
+            getFinderViewColumnsConfig(queryInfo, { ExtraField: 'Extra Field Display' }, requiredColumns)
+        ).toStrictEqual({
             hasUpdates: false,
             columns: [
                 { fieldKey: 'Name', title: undefined },
@@ -1372,6 +1359,7 @@ describe('getLabKeySql', () => {
 
 const schemaQuery = new SchemaQuery('Test', 'SampleA');
 const schemaQueryWithSpace = new SchemaQuery('Test', 'Sample Type A');
+const schemaQuerySpecial = new SchemaQuery('Test', '><&/%\\\' "1äöüÅ');
 
 describe('getExpDescendantOfSelectClause', () => {
     test('empty', () => {
@@ -1400,6 +1388,12 @@ describe('getExpDescendantOfSelectClause', () => {
     test('eq filter', () => {
         expect(getExpDescendantOfSelectClause(schemaQueryWithSpace, [intEqFilter])).toEqual(
             'SELECT "Sample Type A".expObject() FROM Test."Sample Type A" WHERE "intField" = 1'
+        );
+    });
+
+    test('special character sample type name', () => {
+        expect(getExpDescendantOfSelectClause(schemaQuerySpecial, [intEqFilter])).toEqual(
+            'SELECT "><&/%\\\' ""1äöüÅ".expObject() FROM Test."><&/%\\\' ""1äöüÅ" WHERE "intField" = 1'
         );
     });
 

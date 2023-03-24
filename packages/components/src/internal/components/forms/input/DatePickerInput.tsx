@@ -53,8 +53,8 @@ export interface DatePickerInputProps extends DisableableInputProps, WithFormsyP
     queryColumn: QueryColumn;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     showLabel?: boolean;
-    wrapperClassName?: string;
     value?: any;
+    wrapperClassName?: string;
 }
 
 interface DatePickerInputState extends DisableableInputState {

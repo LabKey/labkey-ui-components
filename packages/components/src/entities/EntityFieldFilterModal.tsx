@@ -148,7 +148,7 @@ export const EntityFieldFilterModal: FC<EntityFieldFilterModalProps> = memo(prop
                     }
                 });
                 parents.sort(naturalSortByProperty('label'));
-                if (entityDataType.sampleFinderCardType === "sampleproperty") {
+                if (entityDataType.sampleFinderCardType === 'sampleproperty') {
                     parents.unshift(SAMPLE_PROPERTY_ALL_SAMPLE_TYPE);
                 }
                 setEntityQueries(parents);
@@ -274,7 +274,7 @@ export const EntityFieldFilterModal: FC<EntityFieldFilterModalProps> = memo(prop
     const selectDistinctOptions = useMemo((): Partial<Query.SelectDistinctOptions> => {
         if (!activeQuery || activeQuery === SAMPLE_PROPERTY_ALL_SAMPLE_TYPE.query) return null;
 
-        if (entityDataType.sampleFinderCardType !== "sampleproperty") return null;
+        if (entityDataType.sampleFinderCardType !== 'sampleproperty') return null;
 
         const sampleTypeLsid = entityQueries.find(
             query => query?.value?.toLowerCase() === activeQuery.toLowerCase()
@@ -287,14 +287,13 @@ export const EntityFieldFilterModal: FC<EntityFieldFilterModalProps> = memo(prop
     const entityTypeFields = useMemo((): List<QueryColumn> => {
         if (!activeQueryInfo) return undefined;
 
-        if (entityDataType.sampleFinderCardType !== "sampleproperty") return undefined;
+        if (entityDataType.sampleFinderCardType !== 'sampleproperty') return undefined;
 
         return getSamplePropertyFields(activeQueryInfo, skipDefaultViewCheck);
     }, [activeQueryInfo, skipDefaultViewCheck, entityDataType]);
 
     const title = useMemo(() => {
-        if (capParentNoun.toLowerCase() === 'sample')
-            return 'Sample';
+        if (capParentNoun.toLowerCase() === 'sample') return 'Sample';
 
         return 'Sample ' + capParentNoun;
     }, [capParentNoun]);

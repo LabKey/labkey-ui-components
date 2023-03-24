@@ -257,14 +257,14 @@ export function getSampleFinderCommonConfigs(
     const requiredColumns = [...SAMPLE_STATUS_REQUIRED_COLUMNS];
     cards.forEach(card => {
         // if card is property
-        if (card.entityDataType.sampleFinderCardType === "sampleproperty") {
+        if (card.entityDataType.sampleFinderCardType === 'sampleproperty') {
             const { filters, extraColumns } = getSamplePropertyFilters(card);
             if (filters) baseFilters.push(...filters);
             if (extraColumns?.length > 0) requiredColumns.push(...extraColumns);
             return;
         }
 
-        if (card.entityDataType.sampleFinderCardType === "assaydata") {
+        if (card.entityDataType.sampleFinderCardType === 'assaydata') {
             const assayFilter = getAssayFilter(card, cf);
             if (assayFilter) baseFilters.push(assayFilter);
             return;
@@ -368,10 +368,7 @@ export function getSampleFinderColumnNames(cards: FilterProps[]): { [key: string
     const columnNames = {};
     cards?.forEach(card => {
         const cardKey = card.entityDataType.sampleFinderCardType;
-        if (
-            cardKey === "assaydata" ||
-            cardKey === "sampleproperty"
-        ) {
+        if (cardKey === 'assaydata' || cardKey === 'sampleproperty') {
             return;
         }
 
@@ -584,20 +581,16 @@ export function getSearchFiltersFromObjs(
     return filters;
 }
 
-function getSampleFinderCardType(filterPropObj: any) : string {
-    const sampleFinderCardType = filterPropObj['sampleFinderCardType'] ?? filterPropObj.entityDataType?.sampleFinderCardType;
-    if (sampleFinderCardType)
-        return sampleFinderCardType;
+function getSampleFinderCardType(filterPropObj: any): string {
+    const sampleFinderCardType =
+        filterPropObj['sampleFinderCardType'] ?? filterPropObj.entityDataType?.sampleFinderCardType;
+    if (sampleFinderCardType) return sampleFinderCardType;
 
     // legacy saved reports, prior to sample properties card is introduced
     const parentNoun = filterPropObj.entityDataType?.nounAsParentSingular;
-    if (parentNoun === 'Parent' || parentNoun === 'Sample Parent')
-        return 'sampleparent';
-    else if (parentNoun === 'Assay')
-        return 'assaydata';
-    else
-        return 'dataclassparent';
-
+    if (parentNoun === 'Parent' || parentNoun === 'Sample Parent') return 'sampleparent';
+    else if (parentNoun === 'Assay') return 'assaydata';
+    else return 'dataclassparent';
 }
 
 export function searchFiltersFromJson(
@@ -1001,13 +994,9 @@ export function getDataTypeFiltersWithNotInQueryUpdate(
     return dataTypeFiltersUpdated;
 }
 
-function getNotInLabKeySql(
-    schemaQuery: SchemaQuery,
-    targetQueryFilterKey: string,
-    cf?: Query.ContainerFilter
-): string {
+function getNotInLabKeySql(schemaQuery: SchemaQuery, targetQueryFilterKey: string, cf?: Query.ContainerFilter): string {
     const selectSql = getLabKeySql(targetQueryFilterKey, schemaQuery.schemaName, schemaQuery.queryName, null, cf);
-    return selectSql + ' WHERE ' + getLegalIdentifier(targetQueryFilterKey) + " IS NOT NULL";
+    return selectSql + ' WHERE ' + getLegalIdentifier(targetQueryFilterKey) + ' IS NOT NULL';
 }
 
 export function getFilterSelections(

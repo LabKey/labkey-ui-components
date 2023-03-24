@@ -764,7 +764,7 @@ const card = {
 };
 
 const cardJSON =
-    '{"filters":[{"filterArray":[{"fieldKey":"textField","fieldCaption":"textField","filter":"query.textField~=","jsonType":"string"},{"fieldKey":"strField","fieldCaption":"strField","filter":"query.strField~between=1%2C5","jsonType":"string"}],"schemaQuery":{"schemaName":"TestSchema","queryName":"samples1"},"index":1,"entityTypeNoun":"test Parent"}],"filterChangeCounter":5,"filterTimestamp":"Searched 2020-08-06 14:44"}';
+    '{"filters":[{"filterArray":[{"fieldKey":"textField","fieldCaption":"textField","filter":"query.textField~=","jsonType":"string"},{"fieldKey":"strField","fieldCaption":"strField","filter":"query.strField~between=1%2C5","jsonType":"string"}],"schemaQuery":{"schemaName":"TestSchema","queryName":"samples1"},"index":1,"sampleFinderCardType":"sampleparent"}],"filterChangeCounter":5,"filterTimestamp":"Searched 2020-08-06 14:44"}';
 
 const cardWithEntityTypeFilter = {
     entityDataType: TestTypeDataTypeWithEntityFilter,

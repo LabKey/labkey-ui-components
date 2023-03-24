@@ -545,13 +545,13 @@ export interface EntityDataType {
     nounSingular: string;
     operationConfirmationActionName: string;
     operationConfirmationControllerName: string;
+    sampleFinderCardType?: SampleFinderCardType;
     supportHasNoValueInQuery?: boolean;
     typeIcon?: string;
     typeListingSchemaQuery: SchemaQuery;
     typeNounAsParentSingular: string;
     typeNounSingular: string;
     uniqueFieldKey: string;
-    sampleFinderCardType?: SampleFinderCardType;
 }
 
 export class OperationConfirmationData {

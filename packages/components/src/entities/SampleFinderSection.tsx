@@ -290,7 +290,7 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
                     );
                 }
 
-                const isSampleProperties = chosenEntityType.sampleFinderCardType === "sampleproperty";
+                const isSampleProperties = chosenEntityType.sampleFinderCardType === 'sampleproperty';
                 const isSampleTypeSampleProp =
                     isSampleProperties && queryName !== SAMPLE_PROPERTY_ALL_SAMPLE_TYPE.query;
                 newFilterCards.push({

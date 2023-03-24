@@ -4,6 +4,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Update sample statuses to inherit from the parent and no longer support creation in subfolders
+* Update `ManageSampleStatusesPanel`
+  * Display statuses from higher up the hierarchy as locked statuses
+  * Don't allow adding new statuses when in sub-folders
 
 ### version 2.314.1
 *Released*: 24 March 2023

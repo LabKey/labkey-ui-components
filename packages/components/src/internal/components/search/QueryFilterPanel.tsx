@@ -144,16 +144,16 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         if (!queryInfo) return;
 
         let validFields;
-        if (fields)
-            validFields = fields;
+        if (fields) validFields = fields;
         else {
             const qFields = skipDefaultViewCheck
-                    ? queryInfo.getAllColumns(viewName)
-                    : queryInfo.getDisplayColumns(viewName);
+                ? queryInfo.getAllColumns(viewName)
+                : queryInfo.getDisplayColumns(viewName);
             validFields = qFields.filter(
                 field =>
                     field.filterable &&
-                    (!validFilterField || validFilterField(field, queryInfo, entityDataType?.exprColumnsWithSubSelect)));
+                    (!validFilterField || validFilterField(field, queryInfo, entityDataType?.exprColumnsWithSubSelect))
+            );
         }
 
         const qF = fromJS(validFields);

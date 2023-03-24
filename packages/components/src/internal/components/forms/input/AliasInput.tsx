@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useMemo, useState } from 'react';
+import React, { FC, memo, useCallback, useMemo } from 'react';
 import { Map } from 'immutable';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
@@ -15,26 +15,13 @@ interface Props extends Omit<SelectInputProps, 'loadOptions' | 'options' | 'reso
 
 export const AliasSelectInput: FC<Props> = memo(props => {
     const { col, data, ...selectProps } = props;
-    const [containsCommas, setContainsComma] = useState<boolean>();
     const generatedId = useMemo(() => generateId(), []);
 
-    // Issue 45729: Inform user that commas are not supported for values in the alias field.
     const isValidNewOption = useCallback((inputValue: string) => {
         const isEmpty = inputValue?.trim().length === 0;
-        const _containsComma = inputValue?.indexOf(',') > -1;
-        setContainsComma(_containsComma);
-
         // Empty string is considered invalid. This matches default react-select behavior.
-        return !!inputValue && !isEmpty && !_containsComma;
+        return !!inputValue && !isEmpty;
     }, []);
-
-    // Here we utilize the noResultsText to display a validation message.
-    const noResultsText = useMemo(() => {
-        if (containsCommas) {
-            return <span className="has-error">Aliases cannot include the "," character</span>;
-        }
-        return 'Enter alias name(s)';
-    }, [containsCommas]);
 
     // AliasInput supplies its own formValue resolution
     // - The value is mapped from the "label"
@@ -60,7 +47,7 @@ export const AliasSelectInput: FC<Props> = memo(props => {
             isValidNewOption={isValidNewOption}
             label={col.caption}
             name={col.fieldKey}
-            noResultsText={noResultsText}
+            noResultsText="Enter alias name(s)"
             required={col.required}
             {...selectProps}
             resolveFormValue={resolveFormValue}
@@ -80,7 +67,7 @@ AliasSelectInput.defaultProps = {
     showLabel: true,
 };
 
-AliasSelectInput.displayName = 'AliasInput';
+AliasSelectInput.displayName = 'AliasSelectInput';
 
 export const AliasInput: FC<InputRendererProps> = memo(props => {
     const {
@@ -107,3 +94,5 @@ export const AliasInput: FC<InputRendererProps> = memo(props => {
         />
     );
 });
+
+AliasInput.displayName = 'AliasInput';

@@ -18,7 +18,7 @@ import { Map, fromJS } from 'immutable';
 
 import {DomainDesign, IDomainField, SystemField} from '../models';
 
-import { DATACLASS_DOMAIN_SYSTEM_FIELDS } from './constants';
+import { DATACLASS_DOMAIN_SYSTEM_FIELDS, SOURCE_DOMAIN_SYSTEM_FIELDS } from './constants';
 
 interface DataClassOptionsConfig {
     category: string;
@@ -68,7 +68,7 @@ export class DataClassModel implements DataClassModelConfig {
             if (raw.options && model.sampleSet === null) {
                 draft.sampleSet = undefined;
             }
-            draft.systemFields = DATACLASS_DOMAIN_SYSTEM_FIELDS;
+            draft.systemFields = model.category === "sources" ? SOURCE_DOMAIN_SYSTEM_FIELDS : DATACLASS_DOMAIN_SYSTEM_FIELDS;
         });
     }
 

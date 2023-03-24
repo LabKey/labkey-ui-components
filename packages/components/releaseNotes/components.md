@@ -5,6 +5,16 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Update sample statuses to inherit from the parent and no longer support creation in subfolders
 
+### version 2.314.0
+*Released*: 23 March 2023
+* Issue 47408: Filter units in bulk update to match sample type display units
+* Issue 47408: Coalesce and check for updates using the display values for amounts and units
+* Issue 47517: Update Label for Name field for SM Source typ in Default System Fields
+
+### version 2.313.1
+*Released*: 23 March 2023
+* Issue 47229: Support all characters within aliases
+
 ### version 2.313.0
 *Released*: 23 March 2023
 * Issue 47503: Sample Manager: Sample Finder not working for sample type with double quotes in name

@@ -410,86 +410,85 @@ describe('getConvertedSampleStorageUpdateData1', () => {
 
 describe("getSampleStatusLockedMsg", () => {
     test("no state", () => {
-        expect(getSampleStatusLockedMessage(
-           undefined, false, "Test Project")).toBeUndefined();
+        expect(getSampleStatusLockedMessage(undefined, false)).toBeUndefined();
     });
 
    test("not locked", () => {
-       expect(getSampleStatusLockedMessage(
-           new SampleState({
-               rowId: 1,
-               label: 'Available',
-               stateType: SampleStateType.Available,
-               inUse: false,
-               isLocal: true
-           }), false, "Test Project")).toBeUndefined();
+       expect(getSampleStatusLockedMessage(new SampleState({
+           rowId: 1,
+           label: 'Available',
+           stateType: SampleStateType.Available,
+           inUse: false,
+           containerPath: "/Test Project",
+           isLocal: true
+       }), false)).toBeUndefined();
    });
 
    test("saving but not in use", () => {
-       expect(getSampleStatusLockedMessage(
-           new SampleState({
-               rowId: 1,
-               label: 'Available',
-               stateType: SampleStateType.Available,
-               inUse: false,
-               isLocal: true
-           }), true, "Test Project")).toBe("This sample status cannot change status type or be deleted because it is in use.");
+       expect(getSampleStatusLockedMessage(new SampleState({
+           rowId: 1,
+           label: 'Available',
+           stateType: SampleStateType.Available,
+           inUse: false,
+           containerPath: "/Test Project",
+           isLocal: true
+       }), true)).toBe("This sample status cannot change status type or be deleted because it is in use.");
    });
 
    test("in use", () => {
-       expect(getSampleStatusLockedMessage(
-           new SampleState({
-               rowId: 1,
-               label: 'Available',
-               stateType: SampleStateType.Available,
-               inUse: true,
-               isLocal: true
-           }), false, "Test Project")).toBe("This sample status cannot change status type or be deleted because it is in use.");
+       expect(getSampleStatusLockedMessage(new SampleState({
+           rowId: 1,
+           label: 'Available',
+           stateType: SampleStateType.Available,
+           inUse: true,
+           containerPath: "/Test Project",
+           isLocal: true
+       }), false)).toBe("This sample status cannot change status type or be deleted because it is in use.");
 
    });
 
     test("in use and saving", () => {
-        expect(getSampleStatusLockedMessage(
-            new SampleState({
-                rowId: 1,
-                label: 'Available',
-                stateType: SampleStateType.Available,
-                inUse: true,
-                isLocal: true
-            }), true, "Test Project")).toBe("This sample status cannot change status type or be deleted because it is in use.");
+        expect(getSampleStatusLockedMessage(new SampleState({
+            rowId: 1,
+            label: 'Available',
+            stateType: SampleStateType.Available,
+            inUse: true,
+            containerPath: "/Test Project",
+            isLocal: true
+        }), true)).toBe("This sample status cannot change status type or be deleted because it is in use.");
     });
 
    test("not in use, not local", () => {
-       expect(getSampleStatusLockedMessage(
-           new SampleState({
-               rowId: 1,
-               label: 'Available',
-               stateType: SampleStateType.Available,
-               inUse: false,
-               isLocal: false
-           }), false, "Test Project")).toBe("This sample status can be changed only in the home project (Test Project).");
+       expect(getSampleStatusLockedMessage(new SampleState({
+           rowId: 1,
+           label: 'Available',
+           stateType: SampleStateType.Available,
+           inUse: false,
+           containerPath: "/Test Project",
+           isLocal: false
+       }), false)).toBe("This sample status can be changed only in the home project (Test Project).");
 
    });
 
    test("in use and not local", () => {
-       expect(getSampleStatusLockedMessage(
-           new SampleState({
-               rowId: 1,
-               label: 'Available',
-               stateType: SampleStateType.Available,
-               inUse: true,
-               isLocal: false
-           }), false, "Test Project")).toBe("This sample status cannot change status type or be deleted because it is in use and can be changed only in the home project (Test Project).");
+       expect(getSampleStatusLockedMessage(new SampleState({
+           rowId: 1,
+           label: 'Available',
+           stateType: SampleStateType.Available,
+           inUse: true,
+           containerPath: "/Test Project",
+           isLocal: false
+       }), false)).toBe("This sample status cannot change status type or be deleted because it is in use and can be changed only in the home project (Test Project).");
    });
 
     test("in use, saving, and not local", () => {
-        expect(getSampleStatusLockedMessage(
-            new SampleState({
-                rowId: 1,
-                label: 'Available',
-                stateType: SampleStateType.Available,
-                inUse: true,
-                isLocal: false
-            }), true, "Test Project")).toBe("This sample status cannot change status type or be deleted because it is in use and can be changed only in the home project (Test Project).");
+        expect(getSampleStatusLockedMessage(new SampleState({
+            rowId: 1,
+            label: 'Available',
+            stateType: SampleStateType.Available,
+            inUse: true,
+            containerPath: "/Test Project",
+            isLocal: false
+        }), true)).toBe("This sample status cannot change status type or be deleted because it is in use and can be changed only in the home project (Test Project).");
     });
 });

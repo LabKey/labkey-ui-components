@@ -168,7 +168,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
     }, [updatedState, onActionComplete]);
 
     const disabledMsg = useMemo( () => {
-        return getSampleStatusLockedMessage(updatedState, saving, project.name);
+        return getSampleStatusLockedMessage(updatedState, saving);
     }, [updatedState, saving, project.name]);
 
     return (
@@ -298,7 +298,7 @@ export const SampleStatusesList: FC<SampleStatusesListProps> = memo(props => {
                         (state.inUse || !state.isLocal) && (
                             <LockIcon
                                 iconCls="pull-right choices-list__locked"
-                                body={getSampleStatusLockedMessage(state, false, project.name)}
+                                body={getSampleStatusLockedMessage(state, false)}
                                 id="sample-state-lock-icon"
                                 title={SAMPLE_STATUS_LOCKED_TITLE}
                             />
@@ -322,8 +322,6 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
     const [error, setError] = useState<string>();
     const [selected, setSelected] = useState<number>();
     const addNew = useMemo(() => selected === NEW_STATUS_INDEX, [selected]);
-    const { container } = useServerContext();
-    const showAdd = container.isProject || !isProductProjectsEnabled();
 
     const querySampleStatuses = useCallback(
         (newStatusLabel?: string) => {
@@ -378,7 +376,7 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
                     <div className="row choices-container">
                         <div className="col-lg-4 col-md-6 choices-container-left-panel">
                             <SampleStatusesList states={states} selected={selected} onSelect={onSetSelected} />
-                            {showAdd && <AddEntityButton onClick={onAddState} entity="New Status" disabled={addNew} />}
+                            <AddEntityButton onClick={onAddState} entity="New Status" disabled={addNew} />
                         </div>
                         <div className="col-lg-8 col-md-6">
                             <SampleStatusDetail

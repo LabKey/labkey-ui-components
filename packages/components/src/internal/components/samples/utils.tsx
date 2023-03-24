@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Filter } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { User } from '../base/models/User';
 
@@ -297,14 +297,17 @@ export function getStorageItemUpdateData(
     };
 }
 
-export const getSampleStatusLockedMessage = (state: SampleState, saving: boolean, projectName: string) => {
+export function getSampleStatusLockedMessage(state: SampleState, saving: boolean) : string {
     let msgs = [];
     if (state?.inUse || saving)
         msgs.push('cannot change status type or be deleted because it is in use');
     if (state && !state.isLocal)
-        msgs.push('can be changed only in the home project (' + projectName + ')');
+        msgs.push('can be changed only in the ' + state.containerPath.substring(1) + ' project');
     if (msgs.length > 0)
         return 'This sample status ' + msgs.join(' and ') + '.'
     return undefined;
-};
+}
 
+export function getSampleStatusContainerFilter() : Query.ContainerFilter {
+    return Query.containerFilter.currentPlusProjectAndShared;
+}

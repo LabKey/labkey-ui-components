@@ -408,7 +408,7 @@ describe('getConvertedSampleStorageUpdateData1', () => {
     });
 });
 
-describe("getSampleStatusLockedMsg", () => {
+describe("getSampleStatusLockedMessage", () => {
     test("no state", () => {
         expect(getSampleStatusLockedMessage(undefined, false)).toBeUndefined();
     });

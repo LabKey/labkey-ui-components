@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.314.1
+*Released*: 24 March 2023
+* Sample aliquots panel should not show "Assay Data with Aliquots" when isAssayEnabled false
+
 ### version 2.314.0
 *Released*: 23 March 2023
 * Issue 47408: Filter units in bulk update to match sample type display units

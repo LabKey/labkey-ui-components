@@ -7,6 +7,16 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Sample Finder: Sample Properties & Built in reports
   *
 
+### version 2.314.1
+*Released*: 24 March 2023
+* Sample aliquots panel should not show "Assay Data with Aliquots" when isAssayEnabled false
+
+### version 2.314.0
+*Released*: 23 March 2023
+* Issue 47408: Filter units in bulk update to match sample type display units
+* Issue 47408: Coalesce and check for updates using the display values for amounts and units
+* Issue 47517: Update Label for Name field for SM Source typ in Default System Fields
+
 ### version 2.313.1
 *Released*: 23 March 2023
 * Issue 47229: Support all characters within aliases

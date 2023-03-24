@@ -150,7 +150,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
     render() {
         const {
             columnFilter,
-            componentKey,
             containerFilter,
             fieldValues,
             fireQSChangeOnInit,

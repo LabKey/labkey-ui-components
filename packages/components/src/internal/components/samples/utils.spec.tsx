@@ -466,7 +466,7 @@ describe("getSampleStatusLockedMsg", () => {
            inUse: false,
            containerPath: "/Test Project",
            isLocal: false
-       }), false)).toBe("This sample status can be changed only in the home project (Test Project).");
+       }), false)).toBe("This sample status can be changed only in the Test Project project.");
 
    });
 
@@ -478,7 +478,7 @@ describe("getSampleStatusLockedMsg", () => {
            inUse: true,
            containerPath: "/Test Project",
            isLocal: false
-       }), false)).toBe("This sample status cannot change status type or be deleted because it is in use and can be changed only in the home project (Test Project).");
+       }), false)).toBe("This sample status cannot change status type or be deleted because it is in use and can be changed only in the Test Project project.");
    });
 
     test("in use, saving, and not local", () => {
@@ -489,6 +489,6 @@ describe("getSampleStatusLockedMsg", () => {
             inUse: true,
             containerPath: "/Test Project",
             isLocal: false
-        }), true)).toBe("This sample status cannot change status type or be deleted because it is in use and can be changed only in the home project (Test Project).");
+        }), true)).toBe("This sample status cannot change status type or be deleted because it is in use and can be changed only in the Test Project project.");
     });
 });

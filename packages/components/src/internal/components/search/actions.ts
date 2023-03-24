@@ -10,7 +10,6 @@ import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 import { incrementClientSideMetricCount } from '../../actions';
 import { buildURL } from '../../url/AppURL';
 import { URLResolver } from '../../url/URLResolver';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { resolveErrorMessage } from '../../util/messaging';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { loadReports } from '../../query/reports';
@@ -18,7 +17,13 @@ import { IDataViewInfo } from '../../DataViewInfo';
 import { selectRows } from '../../query/selectRows';
 import { caseInsensitive } from '../../util/utils';
 
-import { SAMPLE_FINDER_VIEW_NAME } from './utils';
+import { getContainerFilter, getQueryDetails, invalidateQueryDetailsCache } from '../../query/api';
+
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+
+import { EXP_TABLES, SCHEMAS } from '../../schemas';
+
+import { getFinderViewColumnsConfig, getSampleFinderTabRowCountSql, SAMPLE_FINDER_VIEW_NAME } from './utils';
 import { FinderReport, SearchIdData, SearchResultCardData } from './models';
 import { SearchScope } from './constants';
 
@@ -200,41 +205,47 @@ export function getProcessedSearchHits(
         }));
 }
 
-export function removeFinderGridView(model: QueryModel): Promise<boolean> {
+export function saveFinderGridView(
+    schemaQuery: SchemaQuery,
+    columnDisplayNames: { [key: string]: string },
+    requiredColumns?: string[]
+): Promise<SchemaQuery> {
     return new Promise((resolve, reject) => {
-        if (!model.isLoading) {
-            Query.deleteQueryView({
-                schemaName: model.schemaQuery.schemaName,
-                queryName: model.schemaQuery.queryName,
-                viewName: SAMPLE_FINDER_VIEW_NAME,
-                revert: true,
-                success: () => {
-                    resolve(true);
-                },
-                failure: error => {
-                    console.error('There was a problem deleting the Sample Finder view.', error);
-                    reject(resolveErrorMessage(error));
-                },
-            });
-        }
-    });
-}
-
-export function saveFinderGridView(schemaQuery: SchemaQuery, columns: any): Promise<SchemaQuery> {
-    return new Promise((resolve, reject) => {
-        Query.saveQueryViews({
-            schemaName: schemaQuery.schemaName,
+        getQueryDetails({
             queryName: schemaQuery.queryName,
-            // Mark the view as hidden, so it doesn't show up in LKS and in the grid view menus
-            views: [{ name: SAMPLE_FINDER_VIEW_NAME, columns, hidden: true }],
-            success: () => {
-                resolve(schemaQuery);
-            },
-            failure: response => {
-                console.error(response);
-                reject('There was a problem creating the view for the data grid. ' + resolveErrorMessage(response));
-            },
-        });
+            schemaName: schemaQuery.schemaName,
+        })
+            .then(queryInfo => {
+                const { columns, hasUpdates } = getFinderViewColumnsConfig(
+                    queryInfo,
+                    columnDisplayNames,
+                    requiredColumns
+                );
+                if (!hasUpdates) {
+                    resolve(schemaQuery);
+                    return;
+                }
+                Query.saveQueryViews({
+                    schemaName: schemaQuery.schemaName,
+                    queryName: schemaQuery.queryName,
+                    // Mark the view as hidden, so it doesn't show up in LKS and in the grid view menus
+                    views: [{ name: SAMPLE_FINDER_VIEW_NAME, columns, hidden: true }],
+                    success: () => {
+                        invalidateQueryDetailsCache(schemaQuery);
+                        resolve(schemaQuery);
+                    },
+                    failure: response => {
+                        console.error(response);
+                        reject(
+                            'There was a problem creating the view for the data grid. ' + resolveErrorMessage(response)
+                        );
+                    },
+                });
+            })
+            .catch(error => {
+                console.error(error);
+                reject('There was a problem creating the view for the data grid. ' + resolveErrorMessage(error));
+            });
     });
 }
 
@@ -326,5 +337,52 @@ export function getSampleTypesFromFindByIdQuery(
                 console.error(reason);
                 reject(resolveErrorMessage(reason));
             });
+    });
+}
+
+export function getSampleFinderTabRowCounts(queryModels: {
+    [key: string]: QueryModel;
+}): Promise<{ [key: string]: number }> {
+    const modelIds = Object.keys(queryModels);
+    const sampleTypeGridIds = {};
+    let allSamplesModel = null;
+    const tabCounts = {};
+    modelIds.forEach(modelId => {
+        const model = queryModels[modelId];
+        if (model.schemaQuery.schemaName === SCHEMAS.SAMPLE_SETS.SCHEMA) {
+            sampleTypeGridIds[model.schemaQuery.queryName.toLowerCase()] = modelId;
+        } else if (model.schemaQuery.schemaName === EXP_TABLES.MATERIALS.schemaName) {
+            allSamplesModel = model;
+        }
+        tabCounts[modelId] = 0;
+    });
+
+    return new Promise((resolve, reject) => {
+        Query.executeSql({
+            containerFilter: getContainerFilter(),
+            schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
+            sql: getSampleFinderTabRowCountSql(allSamplesModel),
+            success: result => {
+                const typeCounts = {};
+                result.rows?.forEach(row => {
+                    const type = caseInsensitive(row, 'SampleTypeName');
+                    typeCounts[type] = caseInsensitive(row, 'RowCount');
+                });
+
+                let totalCount = 0;
+                Object.keys(typeCounts).forEach(type => {
+                    const count = typeCounts[type];
+                    totalCount += count;
+                    const sampleGridId = sampleTypeGridIds[type.toLowerCase()];
+                    tabCounts[sampleGridId] = count;
+                });
+                tabCounts[allSamplesModel.id] = totalCount;
+                resolve(tabCounts);
+            },
+            failure: error => {
+                console.error(error);
+                reject(error);
+            },
+        });
     });
 }

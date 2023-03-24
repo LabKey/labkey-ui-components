@@ -64,7 +64,7 @@ export const SampleStatusLegend: FC<OwnProps> = () => {
         model: {
             id: 'sample-statuses-model',
             schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_STATUS,
-            containerFilter: getSampleStatusContainerFilter(),
+            containerFilter: getSampleStatusContainerFilter(true),
             maxRows: -1,
             sorts: [new QuerySort({ fieldKey: 'StatusType' }), new QuerySort({ fieldKey: 'Label' })],
         },

@@ -4,7 +4,12 @@ import { Filter, Query } from '@labkey/api';
 
 import { User } from '../base/models/User';
 
-import { isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/utils';
+import {
+    isFreezerManagementEnabled,
+    isProductProjectsEnabled,
+    isProjectContainer,
+    isSampleStatusEnabled
+} from '../../app/utils';
 
 import { OperationConfirmationData } from '../entities/models';
 
@@ -308,6 +313,18 @@ export function getSampleStatusLockedMessage(state: SampleState, saving: boolean
     return undefined;
 }
 
-export function getSampleStatusContainerFilter() : Query.ContainerFilter {
-    return Query.containerFilter.currentPlusProjectAndShared;
+export function getSampleStatusContainerFilter(forLegend?: boolean, containerPath?: string, moduleContext?: ModuleContext) : Query.ContainerFilter {
+    // Check to see if product projects support is enabled.
+    if (!isProductProjectsEnabled(moduleContext)) {
+        return undefined;
+    }
+
+    // The legend should show statuses for all the samples that can be seen in the project.
+    if (forLegend && isProjectContainer(containerPath)) {
+        return Query.ContainerFilter.currentAndSubfoldersPlusShared;
+    }
+
+    // When requesting data from a sub-folder context the ContainerFilter filters
+    // "up" the folder hierarchy for data.
+    return Query.ContainerFilter.currentPlusProjectAndShared;
 }

@@ -813,7 +813,7 @@ describe('searchFiltersFromJson', () => {
             'admin'
         );
         const userFilter = deserializedCardWithCurrentUserFilter['filters'][0].filterArray[0].filter;
-        expect(userFilter).toStrictEqual(Filter.create('userId', '1005'));
+        expect(userFilter).toStrictEqual(Filter.create('userId', 'admin'));
     });
 });
 

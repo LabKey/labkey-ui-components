@@ -27,14 +27,13 @@ import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
 import { SampleState } from './models';
 import { useServerContext } from '../base/ServerContext';
 import { isProductProjectsEnabled } from '../../app/utils';
+import { getSampleStatusLockedMessage } from './utils';
 
 const TITLE = 'Manage Sample Statuses';
 const STATE_TYPE_SQ = new SchemaQuery('exp', 'SampleStateType');
 const DEFAULT_TYPE_OPTIONS = [{ value: 'Available' }, { value: 'Consumed' }, { value: 'Locked' }];
 const NEW_STATUS_INDEX = -1;
 const SAMPLE_STATUS_LOCKED_TITLE = 'Sample Status Locked';
-const SAMPLE_STATUS_NOT_LOCAL_LOCKED_TIP = 'This sample status can be changed only in the home project ';
-const SAMPLE_STATUS_LOCKED_TIP = 'This sample status cannot change status type or be deleted because it is in use.';
 
 interface SampleStatusDetailProps {
     addNew: boolean;
@@ -43,13 +42,6 @@ interface SampleStatusDetailProps {
     state: SampleState;
 }
 
-const getDisabledMsg = (state: SampleState, saving: boolean, projectName: string) => {
-    if (state?.inUse || saving)
-        return SAMPLE_STATUS_LOCKED_TIP;
-    if (!state?.isLocal)
-        return SAMPLE_STATUS_NOT_LOCAL_LOCKED_TIP + "(" + projectName + "). ";
-    return undefined;
-};
 
 // exported for jest testing
 export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
@@ -176,7 +168,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
     }, [updatedState, onActionComplete]);
 
     const disabledMsg = useMemo( () => {
-        return getDisabledMsg(updatedState, saving, project.name);
+        return getSampleStatusLockedMessage(updatedState, saving, project.name);
     }, [updatedState, saving, project.name]);
 
     return (
@@ -306,7 +298,7 @@ export const SampleStatusesList: FC<SampleStatusesListProps> = memo(props => {
                         (state.inUse || !state.isLocal) && (
                             <LockIcon
                                 iconCls="pull-right choices-list__locked"
-                                body={getDisabledMsg(state, false, project.name)}
+                                body={getSampleStatusLockedMessage(state, false, project.name)}
                                 id="sample-state-lock-icon"
                                 title={SAMPLE_STATUS_LOCKED_TITLE}
                             />

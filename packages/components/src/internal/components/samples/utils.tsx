@@ -20,7 +20,7 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { SystemField } from '../domainproperties/models';
 
-import { SampleStatus } from './models';
+import { SampleState, SampleStatus } from './models';
 
 import {
     operationRestrictionMessage,
@@ -296,4 +296,15 @@ export function getStorageItemUpdateData(
         errors: errors.length > 0 ? errors : undefined,
     };
 }
+
+export const getSampleStatusLockedMessage = (state: SampleState, saving: boolean, projectName: string) => {
+    let msgs = [];
+    if (state?.inUse || saving)
+        msgs.push('cannot change status type or be deleted because it is in use');
+    if (state && !state.isLocal)
+        msgs.push('can be changed only in the home project (' + projectName + ')');
+    if (msgs.length > 0)
+        return 'This sample status ' + msgs.join(' and ') + '.'
+    return undefined;
+};
 

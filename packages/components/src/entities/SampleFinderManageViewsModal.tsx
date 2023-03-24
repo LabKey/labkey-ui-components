@@ -46,7 +46,7 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
 
         try {
             await deleteReport(entityId);
-            setSavedSearches(await api.samples.loadFinderSearches());
+            setSavedSearches(await api.samples.loadFinderSearches(true));
         } catch (error) {
             setErrorMessage(resolveErrorMessage(error));
         } finally {
@@ -85,7 +85,7 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
 
         try {
             await renameReport(selectedSearch.entityId, newNameTrimmed);
-            setSavedSearches(await api.samples.loadFinderSearches());
+            setSavedSearches(await api.samples.loadFinderSearches(true));
             setSelectedSearch(undefined);
         } catch (error) {
             setErrorMessage(resolveErrorMessage(error));

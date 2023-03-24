@@ -257,14 +257,14 @@ export function getSampleFinderCommonConfigs(
     const requiredColumns = [...SAMPLE_STATUS_REQUIRED_COLUMNS];
     cards.forEach(card => {
         // if card is property
-        if (card.entityDataType.nounAsParentSingular === SamplePropertyDataType.nounAsParentSingular) {
+        if (card.entityDataType.sampleFinderCardType === "sampleproperty") {
             const { filters, extraColumns } = getSamplePropertyFilters(card);
             if (filters) baseFilters.push(...filters);
             if (extraColumns?.length > 0) requiredColumns.push(...extraColumns);
             return;
         }
 
-        if (card.entityDataType.nounAsParentSingular === AssayResultDataType.nounAsParentSingular) {
+        if (card.entityDataType.sampleFinderCardType === "assaydata") {
             const assayFilter = getAssayFilter(card, cf);
             if (assayFilter) baseFilters.push(assayFilter);
             return;
@@ -367,10 +367,10 @@ export function getSampleFinderQueryConfigs(
 export function getSampleFinderColumnNames(cards: FilterProps[]): { [key: string]: string } {
     const columnNames = {};
     cards?.forEach(card => {
-        const cardKey = card.entityDataType.nounAsParentSingular;
+        const cardKey = card.entityDataType.sampleFinderCardType;
         if (
-            cardKey === AssayResultDataType.nounAsParentSingular ||
-            cardKey === SamplePropertyDataType.nounAsParentSingular
+            cardKey === "assaydata" ||
+            cardKey === "sampleproperty"
         ) {
             return;
         }
@@ -498,7 +498,8 @@ export function getSearchFilterObjs(filterProps: FilterProps[]): any[] {
     filterProps.forEach(filterProp => {
         const filterPropObj = { ...filterProp };
         delete filterPropObj['entityDataType'];
-        filterPropObj['entityTypeNoun'] = filterProp.entityDataType.nounAsParentSingular;
+        // don't persist the entire entitydatatype
+        filterPropObj['sampleFinderCardType'] = filterProp.entityDataType.sampleFinderCardType;
 
         const filterArrayObjs = [];
         [...filterPropObj.filterArray].forEach(field => {
@@ -538,7 +539,7 @@ export function getSearchFiltersFromObjs(
 ): FilterProps[] {
     const entityTypeMap = {};
     entityTypes?.forEach(entityType => {
-        entityTypeMap[entityType.nounAsParentSingular] = entityType;
+        entityTypeMap[entityType.sampleFinderCardType] = entityType;
     });
     const filters: FilterProps[] = [];
     filterPropsObj.forEach(filterPropObj => {
@@ -555,20 +556,16 @@ export function getSearchFiltersFromObjs(
         });
         filterPropObj.filterArray = filterArray;
 
-        const entityNounAsParentSingular =
-            filterPropObj['entityTypeNoun'] ?? filterPropObj.entityDataType?.nounAsParentSingular;
+        const sampleFinderCardType = getSampleFinderCardType(filterPropObj);
 
         delete filterPropObj['entityDataType'];
-        delete filterPropObj['entityTypeNoun'];
+        delete filterPropObj['sampleFinderCardType'];
 
-        const entityDataType = entityTypeMap[entityNounAsParentSingular];
+        const entityDataType = entityTypeMap[sampleFinderCardType];
 
         filterPropObj['entityDataType'] = entityDataType;
 
-        const isAssayResult =
-            filterPropObj.entityDataType?.nounAsParentSingular === AssayResultDataType.nounAsParentSingular ||
-            filterPropObj['entityTypeNoun'] === AssayResultDataType.nounAsParentSingular;
-        if (isAssayResult) {
+        if (sampleFinderCardType === 'Assay') {
             // when Finding from assays grid, the json lacks certain properties
             if (!filterPropObj.selectColumnFieldKey && assaySampleCols) {
                 const assayDesign = AssayResultDataType.getInstanceDataType(filterPropObj.schemaQuery);
@@ -585,6 +582,22 @@ export function getSearchFiltersFromObjs(
     });
 
     return filters;
+}
+
+function getSampleFinderCardType(filterPropObj: any) : string {
+    const sampleFinderCardType = filterPropObj['sampleFinderCardType'] ?? filterPropObj.entityDataType?.sampleFinderCardType;
+    if (sampleFinderCardType)
+        return sampleFinderCardType;
+
+    // legacy saved reports, prior to sample properties card is introduced
+    const parentNoun = filterPropObj.entityDataType?.nounAsParentSingular;
+    if (parentNoun === 'Parent' || parentNoun === 'Sample Parent')
+        return 'sampleparent';
+    else if (parentNoun === 'Assay')
+        return 'assaydata';
+    else
+        return 'dataclassparent';
+
 }
 
 export function searchFiltersFromJson(

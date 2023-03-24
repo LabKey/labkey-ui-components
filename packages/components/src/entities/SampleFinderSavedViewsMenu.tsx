@@ -154,7 +154,7 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
                                     onClick={onLoadModuleSearch}
                                     name={moduleReport.reportId}
                                     active={moduleReport.reportId === currentView?.reportId}
-                                    className="saved-finder-view"
+                                    className="built-in-finder-view"
                                 >
                                     {moduleReport.reportName}
                                 </MenuItem>

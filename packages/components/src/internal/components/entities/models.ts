@@ -486,6 +486,8 @@ export interface IEntityTypeDetails extends IEntityDetails {
     importAliasValues?: string[];
 }
 
+export type SampleFinderCardType = 'sampleproperty' | 'sampleparent' | 'dataclassparent' | 'assaydata';
+
 /**
  *  Avoid inline comment or above line comments for properties due to es-lint's limitation on moving comments:
  *  https://github.com/import-js/eslint-plugin-import/issues/1723
@@ -549,6 +551,7 @@ export interface EntityDataType {
     typeNounAsParentSingular: string;
     typeNounSingular: string;
     uniqueFieldKey: string;
+    sampleFinderCardType?: SampleFinderCardType;
 }
 
 export class OperationConfirmationData {

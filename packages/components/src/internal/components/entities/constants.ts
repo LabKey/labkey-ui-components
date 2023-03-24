@@ -64,6 +64,7 @@ export const AssayResultDataType: EntityDataType = {
     uniqueFieldKey: 'RowId',
     dependencyText: undefined,
     filterCardHeaderClass: 'filter-card__header-purple',
+    sampleFinderCardType: 'assaydata',
 };
 
 export const SamplePropertyDataType: EntityDataType = {
@@ -93,6 +94,7 @@ export const SamplePropertyDataType: EntityDataType = {
     dependencyText: undefined,
     deleteHelpLinkTopic: DELETE_SAMPLES_TOPIC,
     filterCardHeaderClass: 'filter-card__header-orange',
+    sampleFinderCardType: 'sampleproperty',
 };
 
 export const SampleTypeDataType: EntityDataType = {
@@ -122,6 +124,7 @@ export const SampleTypeDataType: EntityDataType = {
     filterCardHeaderClass: 'filter-card__header-success',
     exprColumnsWithSubSelect: SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR,
     typeIcon: 'sample_set',
+    sampleFinderCardType: 'sampleparent',
 };
 
 export const DataClassDataType: EntityDataType = {
@@ -148,6 +151,7 @@ export const DataClassDataType: EntityDataType = {
     importFileAction: 'importData',
     filterCardHeaderClass: 'filter-card__header-primary',
     typeIcon: 'source_type',
+    sampleFinderCardType: 'dataclassparent',
 };
 
 export const ParentEntityLineageColumns = List.of('Inputs/Materials/First', 'Inputs/Data/First');

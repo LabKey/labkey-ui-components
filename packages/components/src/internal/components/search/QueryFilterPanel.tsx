@@ -143,21 +143,23 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         setActiveField(undefined);
         if (!queryInfo) return;
 
-        const qFields = fields
-            ? fields
-            : skipDefaultViewCheck
-            ? queryInfo.getAllColumns(viewName)
-            : queryInfo.getDisplayColumns(viewName);
-        const qF = fromJS(
-            qFields.filter(
+        let validFields;
+        if (fields)
+            validFields = fields;
+        else {
+            const qFields = skipDefaultViewCheck
+                    ? queryInfo.getAllColumns(viewName)
+                    : queryInfo.getDisplayColumns(viewName);
+            validFields = qFields.filter(
                 field =>
                     field.filterable &&
-                    (!validFilterField || validFilterField(field, queryInfo, entityDataType?.exprColumnsWithSubSelect))
-            )
-        );
+                    (!validFilterField || validFilterField(field, queryInfo, entityDataType?.exprColumnsWithSubSelect)));
+        }
+
+        const qF = fromJS(validFields);
         setQueryFields(qF);
         if (fieldKey) {
-            const field = qFields.find(f => f.getDisplayFieldKey() === fieldKey);
+            const field = validFields.find(f => f.getDisplayFieldKey() === fieldKey);
             setActiveField(field);
         }
     }, [

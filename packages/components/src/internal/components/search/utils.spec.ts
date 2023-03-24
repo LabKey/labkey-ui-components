@@ -776,7 +776,7 @@ const cardWithEntityTypeFilter = {
 const cardWithEntityTypeFilterJSON = cardJSON;
 
 const cardWithCurrentUserFilterJSON =
-    '{"filters":[{"filterArray":[{"fieldKey":"userId","fieldCaption":"userId","filter":"query.userId~eq=${LABKEY.USERID}","jsonType":"int"}],"schemaQuery":{"schemaName":"TestSchema","queryName":"samples1"},"index":1,"entityTypeNoun":"test Parent"}],"filterChangeCounter":5,"filterTimestamp":"Searched 2020-08-06 14:44"}';
+    '{"filters":[{"filterArray":[{"fieldKey":"userId","fieldCaption":"userId","filter":"query.userId~eq=${LABKEY.USER}","jsonType":"string"}],"schemaQuery":{"schemaName":"TestSchema","queryName":"samples1"},"index":1,"entityTypeNoun":"test Parent"}],"filterChangeCounter":5,"filterTimestamp":"Searched 2020-08-06 14:44"}';
 
 describe('searchFiltersToJson', () => {
     test('searchFiltersToJson', () => {
@@ -810,7 +810,7 @@ describe('searchFiltersFromJson', () => {
             cardWithCurrentUserFilterJSON,
             [TestTypeDataTypeWithEntityFilter],
             undefined,
-            1005
+            'admin'
         );
         const userFilter = deserializedCardWithCurrentUserFilter['filters'][0].filterArray[0].filter;
         expect(userFilter).toStrictEqual(Filter.create('userId', '1005'));

@@ -619,7 +619,7 @@ export const getSamplePropertyFields = (queryInfo: QueryInfo, skipDefaultViewChe
     ALLOWED_FINDER_SAMPLE_PROPERTIES.forEach(fieldName => {
         let include = false;
         if (isAllSamplesQuery) include = true;
-        else if (fieldName === 'availablealiquotcount') {
+        else if (fieldName === 'availablealiquotcount' || fieldName === 'createdby') {
             include = true;
         } else {
             include = defaultFields.indexOf(fieldName) > -1;

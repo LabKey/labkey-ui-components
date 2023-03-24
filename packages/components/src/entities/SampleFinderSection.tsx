@@ -180,7 +180,7 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
                 finderSessionDataStr,
                 parentEntityDataTypes,
                 assaySampleCols,
-                user.id
+                user.displayName
             );
             if (finderSessionData?.filters?.length > 0 && finderSessionData?.filterTimestamp) {
                 setUnsavedSessionViewName(finderSessionData.filterTimestamp);
@@ -361,7 +361,7 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
                 cardJson,
                 parentEntityDataTypes,
                 assaySampleIdCols,
-                user.id
+                user.displayName
             );
             const newFilters = finderSessionData.filters;
             if (!newFilters) return;

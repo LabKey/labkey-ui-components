@@ -532,7 +532,7 @@ export function getSearchFiltersFromObjs(
     filterPropsObj: any[],
     entityTypes: EntityDataType[],
     assaySampleCols?: { [key: string]: AssaySampleColumnProp },
-    currentUserId?: number
+    currentUseDisplayName?: string
 ): FilterProps[] {
     const entityTypeMap = {};
     entityTypes?.forEach(entityType => {
@@ -542,7 +542,7 @@ export function getSearchFiltersFromObjs(
     filterPropsObj.forEach(filterPropObj => {
         const filterArray = [];
         filterPropObj.filterArray?.forEach(field => {
-            const filterStr = field.filter.replace('${LABKEY.USERID}', currentUserId + '');
+            const filterStr = field.filter.replace('${LABKEY.USER}', currentUseDisplayName + '');
 
             filterArray.push({
                 fieldKey: field.fieldKey,
@@ -597,7 +597,7 @@ export function searchFiltersFromJson(
     filterPropsStr: string,
     entityTypes: EntityDataType[],
     assaySampleCols?: { [key: string]: AssaySampleColumnProp },
-    currentUserId?: number
+    currentUserDisplayName?: string
 ): SearchSessionStorageProps {
     const obj = JSON.parse(filterPropsStr);
     const filterPropsObj: any[] = obj.filters;
@@ -605,7 +605,7 @@ export function searchFiltersFromJson(
     const filterTimestamp: string = obj.filterTimestamp;
 
     return {
-        filters: getSearchFiltersFromObjs(filterPropsObj, entityTypes, assaySampleCols, currentUserId),
+        filters: getSearchFiltersFromObjs(filterPropsObj, entityTypes, assaySampleCols, currentUserDisplayName),
         filterChangeCounter,
         filterTimestamp,
     };
@@ -926,7 +926,7 @@ export function getUpdatedDataTypeFilters(
     const lcActiveQuery = activeQuery.toLowerCase();
     const dataTypeFiltersUpdated = { ...dataTypeFilters };
     const activeParentFilters: FieldFilter[] = dataTypeFiltersUpdated[lcActiveQuery];
-    const activeFieldKey = activeField.fieldKey;
+    const activeFieldKey = activeField.resolveFieldKey();
     // the filters on the parent type that aren't associated with this field.
     const otherFieldFilters = activeParentFilters?.filter(filter => filter.fieldKey !== activeFieldKey) ?? [];
 
@@ -1133,7 +1133,7 @@ export function getSampleFinderTabRowCountSql(queryModel: QueryModel): string {
             clause = 'm.expObject() IN EXPDESCENDANTSOF (' + filter.getValue() + ')';
         } else {
             const fieldName = filter.getColumnName();
-            const jsonType = ALLOWED_FINDER_SAMPLE_PROPERTY_MAP[fieldName.toLowerCase()];
+            const jsonType = ALLOWED_FINDER_SAMPLE_PROPERTY_MAP[fieldName.toLowerCase()] ?? 'string';
             clause = getFilterLabKeySql(filter, jsonType, 'm');
         }
         wheres.push(clause);

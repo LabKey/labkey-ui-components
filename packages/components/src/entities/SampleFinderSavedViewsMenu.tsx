@@ -78,6 +78,7 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
         e => {
             const view = moduleSearches.find(search => search.reportId === e.target.name);
             loadSearch(view);
+            onToggle();
         },
         [loadSearch, moduleSearches]
     );

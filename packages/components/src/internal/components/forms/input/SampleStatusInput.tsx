@@ -18,6 +18,7 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper'
 import { LOOKUP_DEFAULT_SIZE } from '../../../constants';
 
 import { InputRendererProps } from './types';
+import { getContainerFilterForLookups } from '../../../query/api';
 
 interface SampleStatusInputProps extends Omit<QuerySelectOwnProps, 'schemaQuery' | 'valueColumn'> {
     api?: ComponentsAPIWrapper;
@@ -112,7 +113,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
         <>
             {renderLabelField?.(col)}
             <QuerySelect
-                containerFilter={col.lookup.containerFilter}
+                containerFilter={getContainerFilterForLookups()}
                 containerPath={col.lookup.containerPath}
                 description={col.description}
                 displayColumn={col.lookup.displayColumn}

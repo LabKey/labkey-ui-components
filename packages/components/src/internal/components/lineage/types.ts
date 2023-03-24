@@ -27,14 +27,14 @@ export enum LINEAGE_GROUPING_GENERATIONS {
  * to combine multiple nodes together.
  */
 export interface LineageGroupingOptions {
-    /** Determines when to stop traversing generations of nodes. */
-    generations?: LINEAGE_GROUPING_GENERATIONS;
-    /** When {@link generations} is {@link LINEAGE_GROUPING_GENERATIONS.Specific}, include this many generations along the parent axis. */
-    parentDepth?: number;
     /** When {@link generations} is {@link LINEAGE_GROUPING_GENERATIONS.Specific}, include this many generations along the child axis. */
     childDepth?: number;
     /** When the number of parent or children edges is greater than or equal to this threshold, create a combined node. */
     combineSize?: number;
+    /** Determines when to stop traversing generations of nodes. */
+    generations?: LINEAGE_GROUPING_GENERATIONS;
+    /** When {@link generations} is {@link LINEAGE_GROUPING_GENERATIONS.Specific}, include this many generations along the parent axis. */
+    parentDepth?: number;
 }
 
 export class LineageFilter {
@@ -55,12 +55,12 @@ export enum LineageURLResolvers {
 export interface LineageOptions {
     filterIn?: boolean;
     filters?: LineageFilter[];
-    grouping?: LineageGroupingOptions;
     // the Map<string, string> should be keyed off of the queryName for the group title suffix being modified
     groupTitles?: Map<LINEAGE_DIRECTIONS, Map<string, string>>;
+    grouping?: LineageGroupingOptions;
     request?: Experiment.ExperimentJSONConverterOptions;
-    urlResolver?: LineageURLResolvers;
     runProtocolLsid?: string;
+    urlResolver?: LineageURLResolvers;
 }
 
 export interface LineageIconMetadata {

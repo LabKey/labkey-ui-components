@@ -8,6 +8,7 @@ const ZOOM_INCREMENT = 0.05;
 interface GraphControlsProps {
     getNetwork: () => Network;
     onReset: (selectSeed: boolean) => void;
+    onToggleSettings: () => void;
 }
 
 export class VisGraphControls extends PureComponent<GraphControlsProps> {
@@ -55,6 +56,9 @@ export class VisGraphControls extends PureComponent<GraphControlsProps> {
             <div className="lineage-visgraph-controls">
                 <div className="lineage-visgraph-control-settings">
                     <div className="btn-group">
+                        <Button onClick={this.props.onToggleSettings}>
+                            <i className="fa fa-gear" />
+                        </Button>
                         <DropdownButton id="graph-control-dd" title={<i className="fa fa-undo" />} pullRight>
                             <MenuItem onClick={this.resetSelect}>Reset view and select seed</MenuItem>
                             <MenuItem onClick={this.reset}>Reset view</MenuItem>

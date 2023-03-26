@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { Draft, immerable, produce } from 'immer';
-import { List, Map, Record } from 'immutable';
+import { List, Map, Record as ImmutableRecord } from 'immutable';
 import { Experiment, Utils } from '@labkey/api';
 import { DataSet, Edge, Node } from 'vis-network';
 
@@ -76,7 +76,7 @@ export function applyLineageOptions(options?: LineageOptions): LineageOptions {
     return _options;
 }
 
-export class LineageNodeMetadata extends Record({
+export class LineageNodeMetadata extends ImmutableRecord({
     date: undefined,
     description: undefined,
     aliases: undefined,
@@ -112,7 +112,7 @@ export class LineageNodeMetadata extends Record({
     }
 }
 
-export class LineageLink extends Record({
+export class LineageLink extends ImmutableRecord({
     lsid: undefined,
 }) {
     declare lsid: string;
@@ -248,7 +248,7 @@ interface LineageNodeConfig
 }
 
 export class LineageNode
-    extends Record({
+    extends ImmutableRecord({
         absolutePath: undefined,
         children: undefined,
         container: undefined,
@@ -351,7 +351,7 @@ export class LineageNode
     }
 }
 
-export class LineageResult extends Record({
+export class LineageResult extends ImmutableRecord({
     mergedIn: undefined,
     nodes: undefined,
     seed: undefined,
@@ -722,7 +722,7 @@ interface IVisGraphOptions {
     edges: DataSet<Edge>;
     initialSelection: string[];
     nodes: DataSet<VisGraphNode | VisGraphCombinedNode>;
-    options: { [key: string]: any };
+    options: Record<string, any>;
 }
 
 export class VisGraphOptions implements IVisGraphOptions {
@@ -731,7 +731,7 @@ export class VisGraphOptions implements IVisGraphOptions {
     readonly edges: DataSet<Edge>;
     readonly initialSelection: string[];
     readonly nodes: DataSet<VisGraphNode | VisGraphCombinedNode>;
-    readonly options: { [key: string]: any };
+    readonly options: Record<string, any>;
 
     constructor(config?: Partial<IVisGraphOptions>) {
         Object.assign(this, config);
@@ -748,7 +748,7 @@ function makeEdgeId(fromId, toId): string {
     return fromId + EDGE_ID_SEPARATOR + toId;
 }
 
-type EdgeMap = { [key: string]: Edge };
+type EdgeMap = Record<string, Edge>;
 
 /**
  * Create an edge between fromId -> toId when dir === Child.

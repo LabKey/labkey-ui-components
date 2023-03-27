@@ -169,7 +169,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
 
     const disabledMsg = useMemo( () => {
         return getSampleStatusLockedMessage(updatedState, saving);
-    }, [updatedState, saving, project.name]);
+    }, [updatedState, saving]);
 
     return (
         <>

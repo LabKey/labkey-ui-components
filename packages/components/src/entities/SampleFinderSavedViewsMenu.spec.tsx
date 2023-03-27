@@ -7,8 +7,9 @@ import { getTestAPIWrapper } from '../internal/APIWrapper';
 
 import { getSamplesTestAPIWrapper } from '../internal/components/samples/APIWrapper';
 
-import { SAVED_VIEW1, SAVED_VIEW2 } from './SampleFinderManageViewsModal.spec';
 import { FinderReport } from '../internal/components/search/models';
+
+import { SAVED_VIEW1, SAVED_VIEW2 } from './SampleFinderManageViewsModal.spec';
 import { SampleFinderSavedViewsMenu } from './SampleFinderSavedViewsMenu';
 
 const DEFAULT_PROPS = {
@@ -41,7 +42,7 @@ describe('SampleFinderSavedViewsMenu', () => {
         sessionView?: string,
         isManageEnabled?: boolean,
         isSaveEnabled?: boolean,
-        moduleViews?: string[],
+        moduleViews?: string[]
     ): void {
         const dropdown = wrapper.find('DropdownButton');
         const menuOptions = dropdown.at(0).find('MenuItem');
@@ -281,7 +282,6 @@ describe('SampleFinderSavedViewsMenu', () => {
 
         wrapper.unmount();
     });
-
 
     test('current view is saved view, with edit', async () => {
         const wrapper = mountWithAppServerContext(

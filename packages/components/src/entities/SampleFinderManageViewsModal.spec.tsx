@@ -7,8 +7,9 @@ import { getTestAPIWrapper } from '../internal/APIWrapper';
 
 import { getSamplesTestAPIWrapper } from '../internal/components/samples/APIWrapper';
 
-import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
 import { FinderReport } from '../internal/components/search/models';
+
+import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
 
 export const SAVED_VIEW1: FinderReport = {
     reportId: 'db:292',
@@ -23,7 +24,6 @@ export const SAVED_VIEW2: FinderReport = {
     entityId: 'bb03cc46-b76e-103a-a843-0cff0bac6533',
     isSession: false,
 };
-
 
 export const getSampleFinderAPI = (savedViews: FinderReport[]) => {
     return getTestAPIWrapper(jest.fn, {

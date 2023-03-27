@@ -1,4 +1,4 @@
-import React, { FC, memo, ReactNode, useCallback, useEffect, useState, useMemo } from 'react';
+import React, { FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
     DISCARD_CONSUMED_CHECKBOX_FIELD,
@@ -18,6 +18,7 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper'
 import { LOOKUP_DEFAULT_SIZE } from '../../../constants';
 
 import { InputRendererProps } from './types';
+import { getSampleStatusContainerFilter } from '../../samples/utils';
 
 interface SampleStatusInputProps extends Omit<QuerySelectOwnProps, 'schemaQuery' | 'valueColumn'> {
     api?: ComponentsAPIWrapper;
@@ -112,7 +113,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
         <>
             {renderLabelField?.(col)}
             <QuerySelect
-                containerFilter={col.lookup.containerFilter}
+                containerFilter={getSampleStatusContainerFilter()}
                 containerPath={col.lookup.containerPath}
                 description={col.description}
                 displayColumn={col.lookup.displayColumn}

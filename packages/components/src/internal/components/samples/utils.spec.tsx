@@ -17,17 +17,19 @@ import { QueryInfo } from '../../../public/QueryInfo';
 
 import { SAMPLE_STATE_TYPE_COLUMN_NAME, SampleOperation, SampleStateType } from './constants';
 import {
-    getStorageItemUpdateData,
     getFilterForSampleOperation,
     getOmittedSampleTypeColumns,
     getOperationNotPermittedMessage,
     getSampleStatus,
+    getSampleStatusLockedMessage,
     getSampleStatusType,
+    getStorageItemUpdateData,
     getURLParamsForSampleSelectionKey,
     isSampleOperationPermitted,
     isSamplesSchema,
 } from './utils';
 import { List } from 'immutable';
+import { SampleState } from './models';
 
 const CHECKED_OUT_BY_FIELD = SCHEMAS.INVENTORY.CHECKED_OUT_BY_FIELD;
 const INVENTORY_COLS = SCHEMAS.INVENTORY.INVENTORY_COLS;
@@ -403,5 +405,90 @@ describe('getConvertedSampleStorageUpdateData1', () => {
         const result = getStorageItemUpdateData(storageRow, sampleItems, [], selection);
         const expected = [{ freezeThawCount: undefined, rowId: 73 }];
         verifyResult(result, undefined, expected);
+    });
+});
+
+describe("getSampleStatusLockedMessage", () => {
+    test("no state", () => {
+        expect(getSampleStatusLockedMessage(undefined, false)).toBeUndefined();
+    });
+
+   test("not locked", () => {
+       expect(getSampleStatusLockedMessage(new SampleState({
+           rowId: 1,
+           label: 'Available',
+           stateType: SampleStateType.Available,
+           inUse: false,
+           containerPath: "/Test Project",
+           isLocal: true
+       }), false)).toBeUndefined();
+   });
+
+   test("saving but not in use", () => {
+       expect(getSampleStatusLockedMessage(new SampleState({
+           rowId: 1,
+           label: 'Available',
+           stateType: SampleStateType.Available,
+           inUse: false,
+           containerPath: "/Test Project",
+           isLocal: true
+       }), true)).toBe("This sample status cannot change status type or be deleted because it is in use.");
+   });
+
+   test("in use", () => {
+       expect(getSampleStatusLockedMessage(new SampleState({
+           rowId: 1,
+           label: 'Available',
+           stateType: SampleStateType.Available,
+           inUse: true,
+           containerPath: "/Test Project",
+           isLocal: true
+       }), false)).toBe("This sample status cannot change status type or be deleted because it is in use.");
+
+   });
+
+    test("in use and saving", () => {
+        expect(getSampleStatusLockedMessage(new SampleState({
+            rowId: 1,
+            label: 'Available',
+            stateType: SampleStateType.Available,
+            inUse: true,
+            containerPath: "/Test Project",
+            isLocal: true
+        }), true)).toBe("This sample status cannot change status type or be deleted because it is in use.");
+    });
+
+   test("not in use, not local", () => {
+       expect(getSampleStatusLockedMessage(new SampleState({
+           rowId: 1,
+           label: 'Available',
+           stateType: SampleStateType.Available,
+           inUse: false,
+           containerPath: "/Test Project",
+           isLocal: false
+       }), false)).toBe("This sample status can be changed only in the Test Project project.");
+
+   });
+
+   test("in use and not local", () => {
+       expect(getSampleStatusLockedMessage(new SampleState({
+           rowId: 1,
+           label: 'Available',
+           stateType: SampleStateType.Available,
+           inUse: true,
+           containerPath: "/Test Project",
+           isLocal: false
+       }), false)).toBe("This sample status cannot change status type or be deleted because it is in use and can be changed only in the Test Project project.");
+   });
+
+    test("in use, saving, and not local", () => {
+        expect(getSampleStatusLockedMessage(new SampleState({
+            rowId: 1,
+            label: 'Available',
+            stateType: SampleStateType.Available,
+            inUse: true,
+            containerPath: "/Test Project",
+            isLocal: false
+        }), true)).toBe("This sample status cannot change status type or be deleted because it is in use and can be changed only in the Test Project project.");
     });
 });

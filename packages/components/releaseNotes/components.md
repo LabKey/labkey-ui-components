@@ -13,6 +13,13 @@ Components, models, actions, and utility functions for LabKey applications and p
   * modify QueryFilterPanel to allow provided list of fields
   * update card/json util to no longer persist full entityDataType object
 
+### version 2.315.0
+*Released*: 27 March 2023
+* Update sample statuses to inherit from the parent and no longer support creation in subfolders
+* Update `ManageSampleStatusesPanel`
+  * Display statuses from higher up the hierarchy as locked statuses
+  * Don't allow adding new statuses when in sub-folders
+
 ### version 2.314.1
 *Released*: 24 March 2023
 * Sample aliquots panel should not show "Assay Data with Aliquots" when isAssayEnabled false

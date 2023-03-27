@@ -25,13 +25,15 @@ import { DisableableButton } from '../buttons/DisableableButton';
 import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
 
 import { SampleState } from './models';
+import { useServerContext } from '../base/ServerContext';
+import { isProductProjectsEnabled } from '../../app/utils';
+import { getSampleStatusLockedMessage } from './utils';
 
 const TITLE = 'Manage Sample Statuses';
 const STATE_TYPE_SQ = new SchemaQuery('exp', 'SampleStateType');
 const DEFAULT_TYPE_OPTIONS = [{ value: 'Available' }, { value: 'Consumed' }, { value: 'Locked' }];
 const NEW_STATUS_INDEX = -1;
 const SAMPLE_STATUS_LOCKED_TITLE = 'Sample Status Locked';
-const SAMPLE_STATUS_LOCKED_TIP = 'This sample status cannot change status type or be deleted because it is in use.';
 
 interface SampleStatusDetailProps {
     addNew: boolean;
@@ -39,6 +41,7 @@ interface SampleStatusDetailProps {
     onChange: () => void;
     state: SampleState;
 }
+
 
 // exported for jest testing
 export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
@@ -49,6 +52,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
     const [saving, setSaving] = useState<boolean>();
     const [error, setError] = useState<string>();
     const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>();
+    const { project } = useServerContext();
 
     useEffect(() => {
         selectRowsDeprecated({
@@ -78,7 +82,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
 
     useEffect(() => {
         if (addNew) {
-            setUpdatedState(new SampleState({ stateType: typeOptions?.[0]?.value }));
+            setUpdatedState(new SampleState({ stateType: typeOptions?.[0]?.value, isLocal: true }));
         } else {
             setUpdatedState(state);
         }
@@ -163,6 +167,10 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
         }
     }, [updatedState, onActionComplete]);
 
+    const disabledMsg = useMemo( () => {
+        return getSampleStatusLockedMessage(updatedState, saving);
+    }, [updatedState, saving]);
+
     return (
         <>
             {/* using null for state value to indicate that we don't want to show the empty message*/}
@@ -181,7 +189,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                                 className="form-control"
                                 name="label"
                                 onChange={onFormChange}
-                                disabled={saving}
+                                disabled={saving || !updatedState.isLocal}
                                 placeholder="Enter status label"
                                 type="text"
                                 value={updatedState.label ?? ''}
@@ -197,7 +205,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                                 className="form-control"
                                 name="description"
                                 onChange={onFormChange}
-                                disabled={saving}
+                                disabled={saving || !updatedState.isLocal}
                                 value={updatedState.description ?? ''}
                             />
                         </div>
@@ -213,17 +221,17 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                                 labelKey="value"
                                 clearable={false}
                                 onChange={onSelectChange}
-                                disabled={updatedState.inUse || saving}
+                                disabled={updatedState.inUse || !updatedState.isLocal || saving}
                                 options={typeOptions}
                                 value={updatedState.stateType}
                             />
                         </div>
                     </FormGroup>
                     <div>
-                        {!addNew && (
+                        {!addNew && updatedState.isLocal && (
                             <DisableableButton
                                 bsStyle="default"
-                                disabledMsg={updatedState.inUse || saving ? SAMPLE_STATUS_LOCKED_TIP : undefined}
+                                disabledMsg={disabledMsg}
                                 onClick={onToggleDeleteConfirm}
                                 title={SAMPLE_STATUS_LOCKED_TITLE}
                             >
@@ -236,9 +244,11 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                                 Cancel
                             </Button>
                         )}
-                        <Button bsStyle="success" className="pull-right" disabled={!dirty || saving} onClick={onSave}>
-                            {saving ? 'Saving...' : 'Save'}
-                        </Button>
+                        {updatedState.isLocal && (
+                            <Button bsStyle="success" className="pull-right" disabled={!dirty || saving} onClick={onSave}>
+                                {saving ? 'Saving...' : 'Save'}
+                            </Button>
+                        )}
                     </div>
                 </form>
             )}
@@ -284,10 +294,10 @@ export const SampleStatusesList: FC<SampleStatusesListProps> = memo(props => {
                     label={state.label}
                     onSelect={onSelect}
                     componentRight={
-                        state.inUse && (
+                        (state.inUse || !state.isLocal) && (
                             <LockIcon
                                 iconCls="pull-right choices-list__locked"
-                                body={SAMPLE_STATUS_LOCKED_TIP}
+                                body={getSampleStatusLockedMessage(state, false)}
                                 id="sample-state-lock-icon"
                                 title={SAMPLE_STATUS_LOCKED_TITLE}
                             />
@@ -311,6 +321,8 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
     const [error, setError] = useState<string>();
     const [selected, setSelected] = useState<number>();
     const addNew = useMemo(() => selected === NEW_STATUS_INDEX, [selected]);
+    const { container } = useServerContext();
+    const showAdd = container.isProject || !isProductProjectsEnabled();
 
     const querySampleStatuses = useCallback(
         (newStatusLabel?: string) => {
@@ -365,7 +377,7 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
                     <div className="row choices-container">
                         <div className="col-lg-4 col-md-6 choices-container-left-panel">
                             <SampleStatusesList states={states} selected={selected} onSelect={onSetSelected} />
-                            <AddEntityButton onClick={onAddState} entity="New Status" disabled={addNew} />
+                            {showAdd && <AddEntityButton onClick={onAddState} entity="New Status" disabled={addNew} />}
                         </div>
                         <div className="col-lg-8 col-md-6">
                             <SampleStatusDetail

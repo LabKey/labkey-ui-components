@@ -179,6 +179,8 @@ export class SampleState {
     readonly stateType: string;
     readonly publicData: boolean;
     readonly inUse: boolean;
+    readonly isLocal: boolean;
+    readonly containerPath: string;
 
     constructor(values?: Partial<SampleState>) {
         Object.assign(this, values);

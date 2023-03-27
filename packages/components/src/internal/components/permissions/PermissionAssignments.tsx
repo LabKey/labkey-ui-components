@@ -5,7 +5,7 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Button, Checkbox, Col, Row } from 'react-bootstrap';
 import { List } from 'immutable';
-import { Security } from '@labkey/api';
+import { getServerContext, Security } from '@labkey/api';
 
 import { UserDetailsPanel } from '../user/UserDetailsPanel';
 
@@ -72,6 +72,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
     const [groupMembership, setGroupMembership] = useState<GroupMembership>();
     const [error, setError] = useState<string>();
     const [submitting, setSubmitting] = useState<boolean>(false);
+    const canInherit = getServerContext().project.rootId !== containerId;
 
     const { api } = useAppContext<AppContext>();
     const { container, project, user } = useServerContext();
@@ -245,7 +246,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                             </Alert>
                         )}
 
-                        {isSubfolder && (
+                        {isSubfolder && canInherit && (
                             <div>
                                 <form>
                                     <Checkbox

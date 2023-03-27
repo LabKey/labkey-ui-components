@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Issue 47569: Remove setting for inheriting permissions for the Site Roles and Assignments
+
 ### version 2.302.2
 *Released*: 03 March 2023
 - Issue 47306: Resolve Permissions page error by skipping no-resolvable users.

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.302.3
+*Released*: 27 March 2023
 - Issue 47569: Remove setting for inheriting permissions for the Site Roles and Assignments
 
 ### version 2.302.2
@@ -28,7 +28,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.300.1
 *Released*: 28 February 2023
 - Add a `focusSeed` method to the `VisGraph` component which fits the graph to the seed node and then zooms in to an appropriate level.
-- Revise `fitGraph` to take determine whether or not the graph should be focused on the seed.
+- Revise `fitGraph` to take determine whether the graph should be focused on the seed.
 
 ### version 2.300.0
 *Released*: 28 February 2023

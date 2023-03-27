@@ -2,8 +2,8 @@
  * Copyright (c) 2016-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, memo, PureComponent, useEffect, useState } from 'react';
-import { Experiment } from '@labkey/api';
+import React, { FC, memo, PureComponent, useState } from 'react';
+import { ActionURL, Experiment } from '@labkey/api';
 
 import { Alert } from '../base/Alert';
 
@@ -53,6 +53,10 @@ class LineageGraphDisplay extends PureComponent<Props, Partial<State>> {
             },
             showSettings: false,
         };
+    }
+
+    get allowSettings(): boolean {
+        return !!ActionURL.getParameter('lineageSettings');
     }
 
     clearHover = (): void => {
@@ -129,7 +133,7 @@ class LineageGraphDisplay extends PureComponent<Props, Partial<State>> {
                                 onNodeDeselect={this.onNodeSelectionChange}
                                 onNodeHover={this.updateHover}
                                 onNodeBlur={this.clearHover}
-                                onToggleSettings={this.onToggleSettings}
+                                onToggleSettings={this.allowSettings ? this.onToggleSettings : undefined}
                                 options={visGraphOptions}
                                 seed={lsid}
                             />

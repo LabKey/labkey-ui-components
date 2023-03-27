@@ -24,6 +24,7 @@ export const SAVED_VIEW2: FinderReport = {
     isSession: false,
 };
 
+
 export const getSampleFinderAPI = (savedViews: FinderReport[]) => {
     return getTestAPIWrapper(jest.fn, {
         samples: getSamplesTestAPIWrapper(jest.fn, {

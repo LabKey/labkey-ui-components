@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.315.0
+*Released*: 27 March 2023
 * Update sample statuses to inherit from the parent and no longer support creation in subfolders
 * Update `ManageSampleStatusesPanel`
   * Display statuses from higher up the hierarchy as locked statuses

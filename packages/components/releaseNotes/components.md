@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 47570: Remove admin pages for Users in subfolders
+
 ### version 2.315.0
 *Released*: 27 March 2023
 * Update sample statuses to inherit from the parent and no longer support creation in subfolders

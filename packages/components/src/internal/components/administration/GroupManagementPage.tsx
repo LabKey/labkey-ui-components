@@ -35,6 +35,7 @@ import { GroupAssignments } from './GroupAssignments';
 import { showPremiumFeatures } from './utils';
 import { GroupMembership, MemberType } from './models';
 import { fetchGroupMembership } from './actions';
+import { NotFound } from '../base/NotFound';
 
 export type GroupManagementPageProps = InjectedRouteLeaveProps & InjectedPermissionsPage;
 
@@ -250,6 +251,9 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
     const description = useMemo(() => {
         return showPremiumFeatures(moduleContext) ? container.path : undefined;
     }, [container, moduleContext]);
+
+    if (!container.isProject)
+        return <NotFound />;
 
     return (
         <BasePermissionsCheckPage

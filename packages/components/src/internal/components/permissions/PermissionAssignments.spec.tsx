@@ -179,7 +179,24 @@ describe('PermissionAssignments', () => {
         wrapper.unmount();
     });
 
-    test('respects rolesToShow', async () => {
+    test('cannot inherit', () => {
+        const defaultProps = getDefaultProps();
+
+        // permission assignments for the root project from a subfolder
+        const wrapper = mountWithAppServerContext(
+            <PermissionAssignments {...defaultProps} containerId={TEST_PROJECT.rootId} />,
+            getDefaultAppContext(),
+            getDefaultServerContext({ container: TEST_FOLDER_CONTAINER })
+        );
+
+        // Does not display inherit checkbox
+        expect(wrapper.find('.permissions-assignment-inherit').exists()).toEqual(false);
+        expect(wrapper.find(PermissionsRole).length).toEqual(defaultProps.policy.relevantRoles.size);
+
+        wrapper.unmount();
+    });
+
+    test('respects rolesToShow', () => {
         const defaultProps = getDefaultProps();
         const rolesToShow = List<string>([SECURITY_ROLE_EDITOR, SECURITY_ROLE_READER]);
 

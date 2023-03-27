@@ -5,7 +5,7 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Button, Checkbox, Col, Row } from 'react-bootstrap';
 import { List } from 'immutable';
-import { Security } from '@labkey/api';
+import { getServerContext, Security } from '@labkey/api';
 
 import { UserDetailsPanel } from '../user/UserDetailsPanel';
 
@@ -75,6 +75,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
 
     const { api } = useAppContext<AppContext>();
     const { container, project, user } = useServerContext();
+    const canInherit = project.rootId !== containerId;
 
     const selectedPrincipal = principalsById?.get(selectedUserId);
     const initExpandedRole = getLocation().query?.get('expand')
@@ -245,7 +246,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                             </Alert>
                         )}
 
-                        {isSubfolder && (
+                        {isSubfolder && canInherit && (
                             <div>
                                 <form>
                                     <Checkbox

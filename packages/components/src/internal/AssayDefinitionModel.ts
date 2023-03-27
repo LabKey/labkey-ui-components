@@ -261,29 +261,21 @@ export class AssayDefinitionModel extends Record({
         return List(sampleCols.map(this.sampleColumnFieldKey));
     }
 
-    createSampleFilter(
-        sampleColumns: List<string>,
-        value,
-        singleFilter: Filter.IFilterType,
-        whereClausePart: (fieldKey, value) => string,
-        useLsid?: boolean,
-        singleFilterValue?: any
-    ) {
-        const keyCol = useLsid ? '/LSID' : '/RowId';
-        if (sampleColumns.size == 1) {
+    createSampleFilter(sampleColumns: List<string>, value, singleFilter: Filter.IFilterType, singleFilterValue?: any) {
+        if (sampleColumns.size === 1) {
             // generate simple equals filter
             const sampleColumn = sampleColumns.get(0);
-            return Filter.create(sampleColumn + keyCol, singleFilterValue ? singleFilterValue : value, singleFilter);
+            return Filter.create(sampleColumn, singleFilterValue ? singleFilterValue : value, singleFilter);
         } else {
-            // generate an OR filter to include all sample columns
+            // generate a where clause filter to include all sample columns via a UNION (issue 47346)
             const whereClause =
-                '(' +
+                'RowId IN (' +
                 sampleColumns
                     .map(sampleCol => {
-                        const fieldKey = (sampleCol + keyCol).replace(/\//g, '.');
-                        return whereClausePart(fieldKey, value);
+                        const fieldKey = sampleCol.replace(/\//g, '.');
+                        return `SELECT RowId FROM Data WHERE ${fieldKey} IN (${value.join(',')})`;
                     })
-                    .join(' OR ') +
+                    .join(' UNION ') +
                 ')';
             return Filter.create('*', whereClause, WHERE_FILTER_TYPE);
         }

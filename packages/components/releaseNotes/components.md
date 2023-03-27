@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 47346: App Sample details Assay data tab loading slowly
+  * AssayDefinitionModel.createSampleFilter change to generate a where clause that uses a "RowId IN (<UNION Query>)" instead of "OR clause"
+
 ### version 2.314.1
 *Released*: 24 March 2023
 * Sample aliquots panel should not show "Assay Data with Aliquots" when isAssayEnabled false

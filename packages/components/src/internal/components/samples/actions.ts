@@ -722,15 +722,12 @@ export function getSampleAliquotRows(sampleId: number | string): Promise<Array<R
  * Create a QueryConfig for this assay's Data grid, filtered to samples for the provided `value`
  * if the assay design has one or more sample lookup columns.
  *
- * The `value` may be a sample id or a labook id and the `singleFilter` or `whereClausePart` should
- * provide a filter for the sample column or columns defined in the assay design.
+ * The `value` may be a sample id or a labook id.
  */
 export function createQueryConfigFilteredBySample(
     model: AssayDefinitionModel,
     value,
     singleFilter: Filter.IFilterType,
-    whereClausePart: (fieldKey, value) => string,
-    useLsid?: boolean,
     omitSampleCols?: boolean,
     singleFilterValue?: any
 ): QueryConfig {
@@ -741,9 +738,7 @@ export function createQueryConfigFilteredBySample(
     }
 
     return {
-        baseFilters: [
-            model.createSampleFilter(sampleColumns, value, singleFilter, whereClausePart, useLsid, singleFilterValue),
-        ],
+        baseFilters: [model.createSampleFilter(sampleColumns, value, singleFilter, singleFilterValue)],
         omittedColumns: omitSampleCols ? sampleColumns.toArray() : undefined,
         schemaQuery: new SchemaQuery(model.protocolSchemaName, 'Data'),
         title: model.name,
@@ -774,8 +769,6 @@ export function getSampleAssayQueryConfigs(
                 assay,
                 sampleIds && sampleIds.length > 0 ? sampleIds : [-1],
                 Filter.Types.IN,
-                (fieldKey, sampleIds) => `${fieldKey} IN (${sampleIds.join(',')})`,
-                false,
                 omitSampleCols
             );
 

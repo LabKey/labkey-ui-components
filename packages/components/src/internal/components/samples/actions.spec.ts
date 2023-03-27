@@ -162,29 +162,11 @@ describe('createQueryConfigFilteredBySample', () => {
         const result = createQueryConfigFilteredBySample(
             modelWithSampleId,
             1,
-            Filter.Types.EQUALS,
-            () => 'whereclause'
+            Filter.Types.EQUALS
         );
         expect(result).toBeDefined();
         expect(result.baseFilters[0].getURLParameterValue()).toBe(1);
-        expect(result.baseFilters[0].getURLParameterName()).toBe('query.SampleID/RowId~eq');
-        expect(result.omittedColumns).toBeUndefined();
-        expect(result.schemaQuery.getKey()).toBe('assay$pgeneral$pgpat 1/data');
-        expect(result.title).toBe('GPAT 1');
-        expect(result.urlPrefix).toBe('GPAT 1');
-    });
-
-    test('useLsid', () => {
-        const result = createQueryConfigFilteredBySample(
-            modelWithSampleId,
-            1,
-            Filter.Types.EQUALS,
-            () => 'whereclause',
-            true
-        );
-        expect(result).toBeDefined();
-        expect(result.baseFilters[0].getURLParameterValue()).toBe(1);
-        expect(result.baseFilters[0].getURLParameterName()).toBe('query.SampleID/LSID~eq');
+        expect(result.baseFilters[0].getURLParameterName()).toBe('query.SampleID~eq');
         expect(result.omittedColumns).toBeUndefined();
         expect(result.schemaQuery.getKey()).toBe('assay$pgeneral$pgpat 1/data');
         expect(result.title).toBe('GPAT 1');
@@ -196,13 +178,11 @@ describe('createQueryConfigFilteredBySample', () => {
             modelWithSampleId,
             1,
             Filter.Types.EQUALS,
-            () => 'whereclause',
-            false,
             true
         );
         expect(result).toBeDefined();
         expect(result.baseFilters[0].getURLParameterValue()).toBe(1);
-        expect(result.baseFilters[0].getURLParameterName()).toBe('query.SampleID/RowId~eq');
+        expect(result.baseFilters[0].getURLParameterName()).toBe('query.SampleID~eq');
         expect(result.omittedColumns).toStrictEqual(['SampleID']);
         expect(result.schemaQuery.getKey()).toBe('assay$pgeneral$pgpat 1/data');
         expect(result.title).toBe('GPAT 1');

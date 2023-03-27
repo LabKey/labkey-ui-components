@@ -72,10 +72,10 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
     const [groupMembership, setGroupMembership] = useState<GroupMembership>();
     const [error, setError] = useState<string>();
     const [submitting, setSubmitting] = useState<boolean>(false);
-    const canInherit = getServerContext().project.rootId !== containerId;
 
     const { api } = useAppContext<AppContext>();
     const { container, project, user } = useServerContext();
+    const canInherit = project.rootId !== containerId;
 
     const selectedPrincipal = principalsById?.get(selectedUserId);
     const initExpandedRole = getLocation().query?.get('expand')

@@ -525,18 +525,7 @@ export class LineageResult extends ImmutableRecord({
     }
 }
 
-export interface ILineage {
-    error?: string;
-    result: LineageResult;
-    resultLoadingState?: LoadingState;
-    sampleStats: List<Map<string, any>>;
-    seed: string;
-    seedResult: LineageResult;
-    seedResultError?: string;
-    seedResultLoadingState?: LoadingState;
-}
-
-export class Lineage implements ILineage {
+export class Lineage {
     [immerable] = true;
 
     readonly error?: string;
@@ -548,7 +537,7 @@ export class Lineage implements ILineage {
     readonly seedResultError?: string;
     readonly seedResultLoadingState: LoadingState = LoadingState.INITIALIZED;
 
-    constructor(values?: Partial<ILineage>) {
+    constructor(values?: Partial<Lineage>) {
         Object.assign(this, values);
     }
 
@@ -619,30 +608,14 @@ export class Lineage implements ILineage {
      * returns this.
      * @param props
      */
-    mutate(props: Partial<ILineage>): Lineage {
+    mutate(props: Partial<Lineage>): Lineage {
         return produce(this, (draft: Draft<Lineage>) => {
             Object.assign(draft, props);
         });
     }
 }
 
-interface ILineageGridModel {
-    columns: List<string | GridColumn>;
-    data: List<LineageNode>;
-    distance: number;
-    isError: boolean;
-    isLoaded: boolean;
-    isLoading: boolean;
-    maxRows: number;
-    members: LINEAGE_DIRECTIONS;
-    message: string;
-    nodeCounts: Map<string, number>;
-    pageNumber: number;
-    seedNode: LineageNode;
-    totalRows: number;
-}
-
-export class LineageGridModel implements ILineageGridModel {
+export class LineageGridModel {
     [immerable] = true;
 
     readonly columns: List<string | GridColumn> = LINEAGE_GRID_COLUMNS;
@@ -659,7 +632,7 @@ export class LineageGridModel implements ILineageGridModel {
     readonly seedNode: LineageNode;
     readonly totalRows: number = 0;
 
-    constructor(config?: Partial<ILineageGridModel>) {
+    constructor(config?: Partial<LineageGridModel>) {
         Object.assign(this, { ...config });
     }
 
@@ -748,7 +721,9 @@ function makeEdgeId(fromId, toId): string {
     return fromId + EDGE_ID_SEPARATOR + toId;
 }
 
+type CombinedNodeMap = Record<string, VisGraphCombinedNode>;
 type EdgeMap = Record<string, Edge>;
+type NodeMap = Record<string, VisGraphNode | VisGraphCombinedNode>;
 
 /**
  * Create an edge between fromId -> toId when dir === Child.
@@ -847,7 +822,7 @@ function randId(): string {
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 }
 
-export type LineageNodeCollectionByType = { [nodeType: string]: LineageNodeCollection };
+export type LineageNodeCollectionByType = Record<string, LineageNodeCollection>;
 
 // group the array of nodes into collections by type
 export function createLineageNodeCollections(
@@ -898,10 +873,13 @@ function createCombinedVisNode(
     const containedNodes = containedNodeIds.map(n => nodes.get(n));
     const containedNodesByType = createLineageNodeCollections(containedNodes, options);
     const types = Object.keys(containedNodesByType).sort();
+
     if (types.length === 1) {
         typeLabel = containedNodesByType[types[0]].displayType;
         commonNode = containedNodesByType[types[0]].nodes[0];
-        if (containedNodesByType[types[0]].materialLineageType === 'Aliquot') typeLabel = 'aliquots';
+        if (containedNodesByType[types[0]].materialLineageType === 'Aliquot') {
+            typeLabel = 'aliquots';
+        }
     } else {
         typeLabel = 'of different types';
     }
@@ -975,6 +953,240 @@ export function isAliquotNodeCollection(node: LineageNodeCollection | LineageNod
     return node.materialLineageType === 'Aliquot';
 }
 
+function processCombinedNode(
+    lsid: string,
+    edge: LineageLink,
+    combinedNode,
+    visEdges: EdgeMap,
+    visNodes: NodeMap,
+    nodesInCombinedNode: { [key: string]: string[] }
+): void {
+    if (!combinedNode) return;
+
+    // remove the basic node from the graph if it exists
+    if (visNodes[edge.lsid]) {
+        if (visNodes[edge.lsid].kind !== 'node') {
+            console.error('Edge in raw graph should only connect basic nodes: ' + lsid + ' -> ' + edge.lsid);
+        }
+        delete visNodes[edge.lsid];
+    }
+
+    // Find existing edges in either direction to the edge target node being added to the combined node.
+    // The existing edges will be deleted and re-added to the new combined node.
+    const existingEdges = findConnectedNodes(Object.values(visEdges), edge.lsid);
+    // console.log("  ".repeat(depth) + "existing edges for '" + e.lsid + "': " + existingEdges.map(e => e.id));
+    for (const existingEdge of existingEdges) {
+        // remove existing edge
+        // console.log("  ".repeat(depth) + "deleting existing edge: " + existingEdge.id);
+        delete visEdges[existingEdge.id];
+
+        if (existingEdge.from === edge.lsid) {
+            // create a new edge to the combined node from the existing basic node
+            const edgeId = makeEdgeId(combinedNode.id, existingEdge.to);
+            // console.log("  ".repeat(depth) + "from matches. creating new edge: " + edgeId);
+            visEdges[edgeId] = {
+                id: edgeId,
+                from: combinedNode.id,
+                to: existingEdge.to,
+            };
+        } else if (existingEdge.to === edge.lsid) {
+            // create a new edge from the combined node from the existing basic node
+            const edgeId = makeEdgeId(existingEdge.from, combinedNode.id);
+            // console.log("  ".repeat(depth) + "to matches. creating new edge: " + edgeId);
+            visEdges[edgeId] = {
+                id: edgeId,
+                from: existingEdge.from,
+                to: combinedNode.id,
+            };
+        }
+    }
+
+    // Find existing edges in either direction to any combined nodes the target node belong to.
+    // These edges won't be deleted, but new edges will be added to the existing combined nodes.
+    if (nodesInCombinedNode[edge.lsid]) {
+        for (const existingCombinedId of nodesInCombinedNode[edge.lsid]) {
+            const existingEdgesForNodeWithinCombinedNode = findConnectedNodes(
+                Object.values(visEdges),
+                existingCombinedId
+            );
+            // console.log("  ".repeat(depth) + "existing edges for combined node '" + existingCombinedId + "' of which '" + e.lsid + "' is a member: " + existingEdgesForNodeWithinCombinedNode.map(e => e.id));
+
+            for (const existingEdge of existingEdgesForNodeWithinCombinedNode) {
+                if (existingEdge.from === existingCombinedId) {
+                    // create a new edge to the combined node from the existing basic node
+                    const edgeId = makeEdgeId(combinedNode.id, existingEdge.to);
+                    // console.log("  ".repeat(depth) + "from matches. creating new edge: " + edgeId);
+                    visEdges[edgeId] = {
+                        id: edgeId,
+                        from: combinedNode.id,
+                        to: existingEdge.to,
+                    };
+                } else if (existingEdge.to === existingCombinedId) {
+                    // create a new edge from the combined node from the existing basic node
+                    const edgeId = makeEdgeId(existingEdge.from, combinedNode.id);
+                    // console.log("  ".repeat(depth) + "to matches. creating new edge: " + edgeId);
+                    visEdges[edgeId] = {
+                        id: edgeId,
+                        from: existingEdge.from,
+                        to: combinedNode.id,
+                    };
+                }
+            }
+        }
+    }
+
+    // create association from the node within the combined node to the combined node
+    if (!nodesInCombinedNode.hasOwnProperty(edge.lsid)) {
+        nodesInCombinedNode[edge.lsid] = [];
+    }
+    nodesInCombinedNode[edge.lsid].push(combinedNode.id);
+}
+
+/** Applies the {@link LineageGroupingOptions#combineSize} logic to the graph. */
+function applyCombineSize(
+    lsid: string,
+    edges: List<LineageLink>,
+    nodes: Map<string, LineageNode>,
+    options: LineageOptions,
+    dir: LINEAGE_DIRECTIONS,
+    visEdges: EdgeMap,
+    visNodes: NodeMap,
+    combinedNodes: CombinedNodeMap,
+    nodesInCombinedNode: { [key: string]: string[] }
+): void {
+    let combineAliquotNode: VisGraphCombinedNode;
+    let combineNonAliquotNode: VisGraphCombinedNode;
+
+    const node = nodes.get(lsid);
+    const aliquotEdges = edges.filter(e => nodes.get(e.lsid).materialLineageType === 'Aliquot');
+    const nonAliquotEdges = edges.filter(e => nodes.get(e.lsid).materialLineageType !== 'Aliquot');
+    const aliquotNodes = aliquotEdges.map(e => e.lsid).toArray();
+
+    if (aliquotNodes.length > 1) {
+        combineAliquotNode = createCombinedVisNode(nodes, aliquotNodes, options, node.name);
+        visNodes[combineAliquotNode.id] = combineAliquotNode;
+        combinedNodes[combineAliquotNode.id] = combineAliquotNode;
+
+        // create a VisGraph Edge from the current node to the new combined node
+        // as well as an edge for each of the combined nodes that one of the edge target nodes may belong to.
+        addEdges(lsid, combineAliquotNode.id, visEdges, aliquotEdges.toList(), nodesInCombinedNode, dir);
+    }
+
+    if (edges.size - aliquotNodes.length >= options.grouping.combineSize) {
+        const nonAliquotNodes = nonAliquotEdges.map(e => e.lsid).toArray();
+
+        combineNonAliquotNode = createCombinedVisNode(nodes, nonAliquotNodes, options, node.name);
+        visNodes[combineNonAliquotNode.id] = combineNonAliquotNode;
+        combinedNodes[combineNonAliquotNode.id] = combineNonAliquotNode;
+
+        // create a VisGraph Edge from the current node to the new combined node
+        // as well as an edge for each of the combined nodes that one of the edge target nodes may belong to.
+        addEdges(lsid, combineNonAliquotNode.id, visEdges, nonAliquotEdges.toList(), nodesInCombinedNode, dir);
+    } else {
+        // create a VisGraph Edge from the current node to the edge's target for each edge
+        if (nonAliquotEdges.size > 0) {
+            addEdges(lsid, null, visEdges, nonAliquotEdges.toList(), nodesInCombinedNode, dir);
+        }
+    }
+
+    edges.forEach(e => {
+        const isAliquot = isAliquotNodeCollection(nodes.get(e.lsid));
+        const combinedNode = isAliquot ? combineAliquotNode : combineNonAliquotNode;
+        processCombinedNode(lsid, e, combinedNode, visEdges, visNodes, nodesInCombinedNode);
+    });
+}
+
+/**
+ * Groups edges by node.type. Returns the edges grouped by type and an array of all remaining ungrouped edges.
+ * If a group size does not exceed the combineTypeSize then the edges of that type will not be grouped and those
+ * edges will be returned as part of the ungrouped edges.
+ */
+function groupEdgesByType(
+    edges: List<LineageLink>,
+    nodes: Map<string, LineageNode>,
+    combineTypeSize: number
+): {
+    groups: Record<string, LineageLink[]>;
+    ungroupedEdges: LineageLink[];
+} {
+    if (!combineTypeSize) {
+        return { groups: {}, ungroupedEdges: edges.toArray() };
+    }
+
+    const groups: Record<string, LineageLink[]> = {};
+    const ungroupedEdges: LineageLink[] = [];
+
+    edges.forEach(edge => {
+        const node = nodes.get(edge.lsid);
+        if (node?.type) {
+            if (!groups.hasOwnProperty(node.type)) {
+                groups[node.type] = [];
+            }
+
+            groups[node.type].push(edge);
+        } else {
+            ungroupedEdges.push(edge);
+        }
+    });
+
+    Object.keys(groups).forEach(type => {
+        if (groups[type].length < combineTypeSize) {
+            groups[type].forEach(edge => {
+                ungroupedEdges.push(edge);
+            });
+            delete groups[type];
+        }
+    });
+
+    return { groups, ungroupedEdges };
+}
+
+/** Applies the {@link LineageGroupingOptions#combineTypeSize} logic to the graph. */
+function applyCombineTypeSize(
+    lsid: string,
+    edges: List<LineageLink>,
+    nodes: Map<string, LineageNode>,
+    options: LineageOptions,
+    dir: LINEAGE_DIRECTIONS,
+    visEdges: EdgeMap,
+    visNodes: NodeMap,
+    combinedNodes: CombinedNodeMap,
+    nodesInCombinedNode: { [key: string]: string[] }
+): void {
+    const node = nodes.get(lsid);
+    const edgesByType = groupEdgesByType(edges, nodes, options.grouping.combineTypeSize);
+    const types = Object.keys(edgesByType.groups);
+
+    if (types.length > 0) {
+        // For each grouping created a combined node and add the edges
+        types.forEach(type => {
+            const groupedEdges = edgesByType.groups[type];
+            const combineByTypeNode = createCombinedVisNode(
+                nodes,
+                groupedEdges.map(e => e.lsid),
+                options,
+                node.name
+            );
+            visNodes[combineByTypeNode.id] = combineByTypeNode;
+            combinedNodes[combineByTypeNode.id] = combineByTypeNode;
+
+            addEdges(lsid, combineByTypeNode.id, visEdges, List(groupedEdges), nodesInCombinedNode, dir);
+
+            groupedEdges.forEach(e => {
+                processCombinedNode(lsid, e, combineByTypeNode, visEdges, visNodes, nodesInCombinedNode);
+            });
+        });
+
+        // Process all ungrouped edges
+        if (edgesByType.ungroupedEdges.length > 0) {
+            addEdges(lsid, null, visEdges, List(edgesByType.ungroupedEdges), nodesInCombinedNode, dir);
+        }
+    } else {
+        // create a VisGraph Edge from the current node to the edge's target for each edge
+        addEdges(lsid, null, visEdges, edges, nodesInCombinedNode, dir);
+    }
+}
+
 function _processNodes(
     seed: string,
     lsid: string,
@@ -982,13 +1194,13 @@ function _processNodes(
     options: LineageOptions,
     dir: LINEAGE_DIRECTIONS,
     visEdges: EdgeMap,
-    visNodes: { [key: string]: VisGraphNode | VisGraphCombinedNode },
-    combinedNodes: { [key: string]: VisGraphCombinedNode },
+    visNodes: NodeMap,
+    combinedNodes: CombinedNodeMap,
     nodesInCombinedNode: { [key: string]: string[] },
-    depth: number,
-    processed: { [key: string]: boolean },
-    depthSets: Array<{ [key: string]: string }>
-) {
+    depth = 0,
+    processed: { [key: string]: boolean } = {},
+    depthSets: Array<{ [key: string]: string }> = []
+): void {
     if (processed[lsid] === true) {
         return;
     }
@@ -1028,10 +1240,12 @@ function _processNodes(
         }
 
         // Multi will stop when we hit a depth with multiple nodes.
-        // NOTE: this checks the previous depth so any basic nodes at this depth will be created but it's edges won' be traversed.
+        // NOTE: this checks the previous depth so any basic nodes at this depth will be created but it's edges won't be traversed.
         if (grouping.generations === LINEAGE_GROUPING_GENERATIONS.Multi) {
             let currentDepthSize = 0;
-            if (depth > 0 && depthSets.length >= depth) currentDepthSize = Object.keys(depthSets[depth - 1]).length;
+            if (depth > 0 && depthSets.length >= depth) {
+                currentDepthSize = Object.keys(depthSets[depth - 1]).length;
+            }
             if (currentDepthSize > 1) {
                 // console.log("  ".repeat(depth) + "multi. stop");
                 return;
@@ -1041,169 +1255,57 @@ function _processNodes(
 
     // examine the edges of the node in the desired direction
     const edges = dir === LINEAGE_DIRECTIONS.Parent ? node.parents : node.children;
-    if (edges.size > 0) {
-        // depthSets contains a list of cousin nodes at each depth
-        let depthSet;
-        if (depth + 1 > depthSets.length) {
-            depthSet = {};
-            depthSets.push(depthSet);
-        } else {
-            depthSet = depthSets[depth];
+    if (edges.size === 0) {
+        return;
+    }
+
+    // depthSets contains a list of cousin nodes at each depth
+    let depthSet;
+    if (depth + 1 > depthSets.length) {
+        depthSet = {};
+        depthSets.push(depthSet);
+    } else {
+        depthSet = depthSets[depth];
+    }
+
+    const queue: string[] = [];
+    edges.forEach(e => {
+        // queue up nodes we haven't seen at this depth for recursion
+        if (depthSet[e.lsid] === undefined) {
+            depthSet[e.lsid] = e.lsid;
+            queue.push(e.lsid);
         }
+    });
 
-        const queue: string[] = [];
-        edges.forEach(e => {
-            // queue up nodes we haven't seen at this depth for recursion
-            if (depthSet[e.lsid] === undefined) {
-                depthSet[e.lsid] = e.lsid;
-                queue.push(e.lsid);
-            }
-        });
+    if (grouping.combineSize === 1) {
+        throw new Error('combineSize must be >1 or disabled (0 or undefined)');
+    }
 
-        if (grouping.combineSize === 1) {
-            throw new Error('combineSize must be >1 or disabled (0 or undefined)');
-        }
+    if (grouping.combineSize && edges.size >= grouping.combineSize) {
+        applyCombineSize(lsid, edges, nodes, options, dir, visEdges, visNodes, combinedNodes, nodesInCombinedNode);
+    } else if (grouping.combineTypeSize && edges.size >= grouping.combineTypeSize) {
+        applyCombineTypeSize(lsid, edges, nodes, options, dir, visEdges, visNodes, combinedNodes, nodesInCombinedNode);
+    } else {
+        // create a VisGraph Edge from the current node to the edge's target for each edge
+        addEdges(lsid, null, visEdges, edges, nodesInCombinedNode, dir);
+    }
 
-        if (grouping.combineSize && edges.size >= grouping.combineSize) {
-            let combineAliquotNode: VisGraphCombinedNode;
-            let combineNonAliquotNode: VisGraphCombinedNode;
-
-            const aliquotEdges = edges.filter(e => nodes.get(e.lsid).materialLineageType === 'Aliquot');
-            const nonAliquotEdges = edges.filter(e => nodes.get(e.lsid).materialLineageType !== 'Aliquot');
-            const aliquotNodes = aliquotEdges.map(e => e.lsid).toArray();
-
-            if (aliquotNodes.length > 1) {
-                combineAliquotNode = createCombinedVisNode(nodes, aliquotNodes, options, node.name);
-                visNodes[combineAliquotNode.id] = combineAliquotNode;
-                combinedNodes[combineAliquotNode.id] = combineAliquotNode;
-
-                // create a VisGraph Edge from the current node to the new combined node
-                // as well as an edge for each of the combined nodes that one of the edge target nodes may belong to.
-                addEdges(lsid, combineAliquotNode.id, visEdges, aliquotEdges.toList(), nodesInCombinedNode, dir);
-            }
-
-            if (edges.size - aliquotNodes.length >= grouping.combineSize) {
-                const nonAliquotNodes = nonAliquotEdges.map(e => e.lsid).toArray();
-
-                combineNonAliquotNode = createCombinedVisNode(nodes, nonAliquotNodes, options, node.name);
-                visNodes[combineNonAliquotNode.id] = combineNonAliquotNode;
-                combinedNodes[combineNonAliquotNode.id] = combineNonAliquotNode;
-
-                // create a VisGraph Edge from the current node to the new combined node
-                // as well as an edge for each of the combined nodes that one of the edge target nodes may belong to.
-                addEdges(lsid, combineNonAliquotNode.id, visEdges, nonAliquotEdges.toList(), nodesInCombinedNode, dir);
-            } else {
-                // create a VisGraph Edge from the current node to the edge's target for each edge
-                if (nonAliquotEdges.size > 0) {
-                    addEdges(lsid, null, visEdges, nonAliquotEdges.toList(), nodesInCombinedNode, dir);
-                }
-            }
-
-            edges.forEach(e => {
-                const isAliquot = isAliquotNodeCollection(nodes.get(e.lsid));
-                const combinedNode = isAliquot ? combineAliquotNode : combineNonAliquotNode;
-
-                if (!combinedNode) return;
-
-                // remove the basic node from the graph if it exists
-                if (visNodes[e.lsid]) {
-                    if (visNodes[e.lsid].kind !== 'node') {
-                        console.error('Edge in raw graph should only connect basic nodes: ' + lsid + ' -> ' + e.lsid);
-                    }
-                    delete visNodes[e.lsid];
-                }
-
-                // Find existing edges in either direction to the edge target node being added to the combined node.
-                // The existing edges will be deleted and re-added to the new combined node.
-                const existingEdges = findConnectedNodes(Object.values(visEdges), e.lsid);
-                // console.log("  ".repeat(depth) + "existing edges for '" + e.lsid + "': " + existingEdges.map(e => e.id));
-                for (const existingEdge of existingEdges) {
-                    // remove existing edge
-                    // console.log("  ".repeat(depth) + "deleting existing edge: " + existingEdge.id);
-                    delete visEdges[existingEdge.id];
-
-                    if (existingEdge.from === e.lsid) {
-                        // create a new edge to the combined node from the existing basic node
-                        const edgeId = makeEdgeId(combinedNode.id, existingEdge.to);
-                        // console.log("  ".repeat(depth) + "from matches. creating new edge: " + edgeId);
-                        visEdges[edgeId] = {
-                            id: edgeId,
-                            from: combinedNode.id,
-                            to: existingEdge.to,
-                        };
-                    } else if (existingEdge.to === e.lsid) {
-                        // create a new edge from the combined node from the existing basic node
-                        const edgeId = makeEdgeId(existingEdge.from, combinedNode.id);
-                        // console.log("  ".repeat(depth) + "to matches. creating new edge: " + edgeId);
-                        visEdges[edgeId] = {
-                            id: edgeId,
-                            from: existingEdge.from,
-                            to: combinedNode.id,
-                        };
-                    }
-                }
-
-                // Find existing edges in either direction to any combined nodes the target node belong to.
-                // These edges won't be deleted, but new edges will be added to the existing combined nodes.
-                if (nodesInCombinedNode[e.lsid]) {
-                    for (const existingCombinedId of nodesInCombinedNode[e.lsid]) {
-                        const existingEdgesForNodeWithinCombinedNode = findConnectedNodes(
-                            Object.values(visEdges),
-                            existingCombinedId
-                        );
-                        // console.log("  ".repeat(depth) + "existing edges for combined node '" + existingCombinedId + "' of which '" + e.lsid + "' is a member: " + existingEdgesForNodeWithinCombinedNode.map(e => e.id));
-
-                        for (const existingEdge of existingEdgesForNodeWithinCombinedNode) {
-                            if (existingEdge.from === existingCombinedId) {
-                                // create a new edge to the combined node from the existing basic node
-                                const edgeId = makeEdgeId(combinedNode.id, existingEdge.to);
-                                // console.log("  ".repeat(depth) + "from matches. creating new edge: " + edgeId);
-                                visEdges[edgeId] = {
-                                    id: edgeId,
-                                    from: combinedNode.id,
-                                    to: existingEdge.to,
-                                };
-                            } else if (existingEdge.to === existingCombinedId) {
-                                // create a new edge from the combined node from the existing basic node
-                                const edgeId = makeEdgeId(existingEdge.from, combinedNode.id);
-                                // console.log("  ".repeat(depth) + "to matches. creating new edge: " + edgeId);
-                                visEdges[edgeId] = {
-                                    id: edgeId,
-                                    from: existingEdge.from,
-                                    to: combinedNode.id,
-                                };
-                            }
-                        }
-                    }
-                }
-
-                // create association from the node within the combined node to the combined node
-                let existingCombinedNodes = nodesInCombinedNode[e.lsid];
-                if (existingCombinedNodes === undefined) existingCombinedNodes = nodesInCombinedNode[e.lsid] = [];
-                existingCombinedNodes.push(combinedNode.id);
-            });
-        } else {
-            // create a VisGraph Edge from the current node to the edge's target for each edge
-            addEdges(lsid, null, visEdges, edges, nodesInCombinedNode, dir);
-        }
-
-        // recurse for other nodes not yet processed at this depth
-        for (let i = 0; i < queue.length; i++) {
-            _processNodes(
-                seed,
-                queue[i],
-                nodes,
-                options,
-                dir,
-                visEdges,
-                visNodes,
-                combinedNodes,
-                nodesInCombinedNode,
-                depth + 1,
-                processed,
-                depthSets
-            );
-        }
+    // recurse for other nodes not yet processed at this depth
+    for (let i = 0; i < queue.length; i++) {
+        _processNodes(
+            seed,
+            queue[i],
+            nodes,
+            options,
+            dir,
+            visEdges,
+            visNodes,
+            combinedNodes,
+            nodesInCombinedNode,
+            depth + 1,
+            processed,
+            depthSets
+        );
     }
 }
 
@@ -1244,30 +1346,12 @@ function processNodes(
     nodes: Map<string, LineageNode>,
     options: LineageOptions,
     dir: LINEAGE_DIRECTIONS,
-    visEdges: { [p: string]: Edge },
-    visNodes: { [p: string]: VisGraphNode | VisGraphCombinedNode },
-    combinedNodes: { [key: string]: VisGraphCombinedNode },
+    visEdges: EdgeMap,
+    visNodes: NodeMap,
+    combinedNodes: CombinedNodeMap,
     nodesInCombinedNode: { [key: string]: string[] }
-) {
-    const processed: { [key: string]: boolean } = {};
-
-    // group nodes by depth from the seed in the direction, regardless of the lineage
-    const depthSets: Array<{ [key: string]: string }> = [];
-
-    _processNodes(
-        seed,
-        startLisd,
-        nodes,
-        options,
-        dir,
-        visEdges,
-        visNodes,
-        combinedNodes,
-        nodesInCombinedNode,
-        0,
-        processed,
-        depthSets
-    );
+): void {
+    _processNodes(seed, startLisd, nodes, options, dir, visEdges, visNodes, combinedNodes, nodesInCombinedNode);
 }
 
 const DEFAULT_EDGE_PROPS = {
@@ -1337,7 +1421,7 @@ export function generate(result: LineageResult, options?: LineageOptions): VisGr
 
     // The primary output of this function: the node objects to be consumed by vis.js
     // lsid -> VisGraphNode or VisGraphCombinedNode
-    const visNodes: { [key: string]: VisGraphNode | VisGraphCombinedNode } = {};
+    const visNodes: NodeMap = {};
 
     // The primary output of this function: the edge objects to be consumed by vis.js
     // fromLsid + '||' + toLsid -> Edge
@@ -1345,7 +1429,7 @@ export function generate(result: LineageResult, options?: LineageOptions): VisGr
 
     // Intermediate state used by processNodes
     // combined id -> VisGraphCombinedNode
-    const combinedNodes: { [key: string]: VisGraphCombinedNode } = {};
+    const combinedNodes: CombinedNodeMap = {};
 
     // Intermediate state used by processNodes
     // lsid -> Array of combined id nodes

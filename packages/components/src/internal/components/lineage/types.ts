@@ -29,8 +29,16 @@ export enum LINEAGE_GROUPING_GENERATIONS {
 export interface LineageGroupingOptions {
     /** When {@link generations} is {@link LINEAGE_GROUPING_GENERATIONS.Specific}, include this many generations along the child axis. */
     childDepth?: number;
-    /** When the number of parent or children edges is greater than or equal to this threshold, create a combined node. */
+    /**
+     * When the number of parent or children edges, for each depth,
+     * is greater than or equal to this threshold, create a combined node.
+     */
     combineSize?: number;
+    /**
+     * When the number of parent or children edges of a common type, for each depth,
+     * is greater than or equal to this threshold, create a combined node.
+     */
+    combineTypeSize?: number;
     /** Determines when to stop traversing generations of nodes. */
     generations?: LINEAGE_GROUPING_GENERATIONS;
     /** When {@link generations} is {@link LINEAGE_GROUPING_GENERATIONS.Specific}, include this many generations along the parent axis. */

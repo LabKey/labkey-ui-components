@@ -109,11 +109,11 @@ export const LineageSettings: FC<Props> = memo(props => {
                     value={options.grouping?.generations ?? DEFAULT_GROUPING_OPTIONS.generations}
                 />
 
-                <PanelFieldLabel>Child Depth (0-5)</PanelFieldLabel>
+                <PanelFieldLabel>Child Depth (0-10)</PanelFieldLabel>
                 <input
                     defaultValue={options.grouping?.childDepth ?? DEFAULT_GROUPING_OPTIONS.childDepth}
                     className="form-control"
-                    max={5}
+                    max={10}
                     min={0}
                     name="childDepth"
                     onChange={onGroupingChange}
@@ -121,11 +121,11 @@ export const LineageSettings: FC<Props> = memo(props => {
                     type="number"
                 />
 
-                <PanelFieldLabel>Parent Depth (0-5)</PanelFieldLabel>
+                <PanelFieldLabel>Parent Depth (0-10)</PanelFieldLabel>
                 <input
                     defaultValue={options.grouping?.parentDepth ?? DEFAULT_GROUPING_OPTIONS.childDepth}
                     className="form-control"
-                    max={5}
+                    max={10}
                     min={0}
                     name="parentDepth"
                     onChange={onGroupingChange}
@@ -133,12 +133,23 @@ export const LineageSettings: FC<Props> = memo(props => {
                     type="number"
                 />
 
-                <PanelFieldLabel>Combine Edges Threshold</PanelFieldLabel>
+                <PanelFieldLabel>Combine Depth Threshold (2+)</PanelFieldLabel>
                 <input
                     defaultValue={options.grouping?.combineSize ?? DEFAULT_GROUPING_OPTIONS.combineSize}
                     className="form-control"
-                    min={0}
+                    min={2}
                     name="combineSize"
+                    onChange={onGroupingChange}
+                    style={{ marginBottom: '16px', maxWidth: '100px' }}
+                    type="number"
+                />
+
+                <PanelFieldLabel>Combine Type Threshold (2+)</PanelFieldLabel>
+                <input
+                    defaultValue={options.grouping?.combineTypeSize ?? DEFAULT_GROUPING_OPTIONS.combineTypeSize}
+                    className="form-control"
+                    min={2}
+                    name="combineTypeSize"
                     onChange={onGroupingChange}
                     style={{ marginBottom: '16px', maxWidth: '100px' }}
                     type="number"
@@ -148,16 +159,14 @@ export const LineageSettings: FC<Props> = memo(props => {
             <div className="job-overview__section">
                 <div className="job-overview__section-header">Filters</div>
 
-                {options.originalFilters?.map(filter => {
-                    return (
-                        <div key={filter.field}>
-                            <input defaultChecked onChange={onFilterChange} name={filter.field} type="checkbox" />
-                            <span style={{ marginLeft: '5px' }}>
-                                {filter.field} = {filter.value.join(' OR ')}
-                            </span>
-                        </div>
-                    );
-                })}
+                {options.originalFilters?.map(filter => (
+                    <div key={filter.field}>
+                        <input defaultChecked onChange={onFilterChange} name={filter.field} type="checkbox" />
+                        <span style={{ marginLeft: '5px' }}>
+                            {filter.field} = {filter.value.join(' OR ')}
+                        </span>
+                    </div>
+                ))}
             </div>
         </div>
     );

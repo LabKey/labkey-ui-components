@@ -168,7 +168,7 @@ export const EntityFieldFilterModal: FC<EntityFieldFilterModalProps> = memo(prop
                 setLoadingState(LoadingState.LOADED);
             }
         })();
-    }, [entityDataType, queryName]); // don't add cards or queryName to deps, only init DataTypeFilters once per entityDataType
+    }, [entityDataType]); // don't add cards or queryName to deps, only init DataTypeFilters once per entityDataType
 
     const closeModal = useCallback(() => {
         onCancel();
@@ -279,6 +279,10 @@ export const EntityFieldFilterModal: FC<EntityFieldFilterModalProps> = memo(prop
         const sampleTypeLsid = entityQueries.find(
             query => query?.value?.toLowerCase() === activeQuery.toLowerCase()
         )?.lsid;
+
+        if (!sampleTypeLsid)
+            return null;
+
         return {
             filterArray: [Filter.create('SampleSet', sampleTypeLsid)],
         };

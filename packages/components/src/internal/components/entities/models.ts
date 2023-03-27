@@ -503,7 +503,7 @@ export type SampleFinderCardType = 'sampleproperty' | 'sampleparent' | 'dataclas
  *     exprColumnsWithSubSelect?: string[]; // A list of fields that are backed by ExprColumn and the ExprColumn's sql contain sub select clauses
  *     filterArray?: Filter.IFilter[]; // A list of filters to use when selecting the set of values
  *     filterCardHeaderClass?: string; // css class to use for styling the header in the display of cards for Sample Finder
- *     getInstanceDataType?: (schemaQuery: SchemaQuery) => string; // used for data type with non-standard type name. for example, get assay design name from assay schemaQuery
+ *     getInstanceDataType?: (schemaQuery: SchemaQuery, altQueryName?: string) => string; // used for data type with non-standard type name. for example, get assay design name from assay schemaQuery, or use altQueryName for special queries such as ~~allsampletypes~~
  *     getInstanceSchemaQuery?: (datatype?: string) => SchemaQuery; // used for data type with non-standard type name. for example, get assay schemaQuery from assay design name
  *     importFileAction: string; // the action in the 'experiment' controller to use for file import for the given data type
  *     importFileController?: string; // the controller to use for file import for the given data type. 'experiment' if not provided
@@ -529,7 +529,7 @@ export interface EntityDataType {
     exprColumnsWithSubSelect?: string[];
     filterArray?: Filter.IFilter[];
     filterCardHeaderClass?: string;
-    getInstanceDataType?: (schemaQuery: SchemaQuery, queryDisplayName?: string) => string;
+    getInstanceDataType?: (schemaQuery: SchemaQuery, altQueryName?: string) => string;
     getInstanceSchemaQuery?: (datatype?: string) => SchemaQuery;
     importFileAction?: string;
     importFileController?: string;

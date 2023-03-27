@@ -532,7 +532,7 @@ export function getSearchFiltersFromObjs(
     filterPropsObj: any[],
     entityTypes: EntityDataType[],
     assaySampleCols?: { [key: string]: AssaySampleColumnProp },
-    currentUseDisplayName?: string
+    currentUserDisplayName?: string
 ): FilterProps[] {
     const entityTypeMap = {};
     entityTypes?.forEach(entityType => {
@@ -542,7 +542,7 @@ export function getSearchFiltersFromObjs(
     filterPropsObj.forEach(filterPropObj => {
         const filterArray = [];
         filterPropObj.filterArray?.forEach(field => {
-            const filterStr = field.filter.replace('${LABKEY.USER}', currentUseDisplayName + '');
+            const filterStr = field.filter.replace('${LABKEY.USER}', currentUserDisplayName + '');
 
             filterArray.push({
                 fieldKey: field.fieldKey,
@@ -562,7 +562,7 @@ export function getSearchFiltersFromObjs(
 
         filterPropObj['entityDataType'] = entityDataType;
 
-        if (sampleFinderCardType === 'Assay') {
+        if (sampleFinderCardType === 'assaydata') {
             // when Finding from assays grid, the json lacks certain properties
             if (!filterPropObj.selectColumnFieldKey && assaySampleCols) {
                 const assayDesign = AssayResultDataType.getInstanceDataType(filterPropObj.schemaQuery);
@@ -976,7 +976,7 @@ export function getDataTypeFiltersWithNotInQueryUpdate(
     if (noDataInTypeChecked) {
         const noDataFilter = Filter.create(
             selectQueryFilterKey,
-            getNotInLabKeySql(schemaQuery, targetQueryFilterKey, cf),
+            getNotNullLabKeySql(schemaQuery, targetQueryFilterKey, cf),
             COLUMN_NOT_IN_FILTER_TYPE
         );
 
@@ -994,9 +994,9 @@ export function getDataTypeFiltersWithNotInQueryUpdate(
     return dataTypeFiltersUpdated;
 }
 
-function getNotInLabKeySql(schemaQuery: SchemaQuery, targetQueryFilterKey: string, cf?: Query.ContainerFilter): string {
-    const selectSql = getLabKeySql(targetQueryFilterKey, schemaQuery.schemaName, schemaQuery.queryName, null, cf);
-    return selectSql + ' WHERE ' + getLegalIdentifier(targetQueryFilterKey) + ' IS NOT NULL';
+function getNotNullLabKeySql(schemaQuery: SchemaQuery, targetQueryFilterKey: string, cf?: Query.ContainerFilter): string {
+    const selectNotInSql = getLabKeySql(targetQueryFilterKey, schemaQuery.schemaName, schemaQuery.queryName, null, cf);
+    return selectNotInSql + ' WHERE ' + getLegalIdentifier(targetQueryFilterKey) + ' IS NOT NULL';
 }
 
 export function getFilterSelections(

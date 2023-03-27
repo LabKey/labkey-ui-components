@@ -242,6 +242,10 @@ describe('Date Utilities', () => {
             expect(getNextDateStr('2022-02-02 01:02')).toEqual('2022-02-03');
         });
 
+        test('0 day', () => {
+            expect(getNextDateStr('2022-02-02', 0)).toEqual('2022-02-02');
+        });
+
         test('n positive days', () => {
             expect(getNextDateStr('2022-02-02', 3)).toEqual('2022-02-05');
             expect(getNextDateStr('2022-02-02 01:02', 3)).toEqual('2022-02-05');

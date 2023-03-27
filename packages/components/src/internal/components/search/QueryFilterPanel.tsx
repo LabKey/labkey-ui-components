@@ -35,8 +35,8 @@ interface Props {
     api?: ComponentsAPIWrapper;
     asRow?: boolean;
     emptyMsg?: string;
-    entityDataType?: EntityDataType;
     // used for Sample Finder use case
+    entityDataType?: EntityDataType;
     fieldKey?: string;
     fields?: List<QueryColumn>;
     filters: { [key: string]: FieldFilter[] };

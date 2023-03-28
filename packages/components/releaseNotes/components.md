@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Issue 47570: Remove admin pages for Users in subfolders
+* Issue 47570: Remove admin pages for Users and Groups in subfolders
 
 ### version 2.315.1
 *Released*: 28 March 2023

@@ -721,7 +721,6 @@ function makeEdgeId(fromId: IdType, toId: IdType): string {
     return fromId + EDGE_ID_SEPARATOR + toId;
 }
 
-type CombinedNodeMap = Record<string, VisGraphCombinedNode>;
 type EdgeMap = Record<string, Edge>;
 type LineageNodeMap = Record<string, LineageNode>;
 type VisNodeMap = Record<string, VisGraphNode | VisGraphCombinedNode>;
@@ -1053,7 +1052,6 @@ function applyCombineSize(
     dir: LINEAGE_DIRECTIONS,
     visEdges: EdgeMap,
     visNodes: VisNodeMap,
-    combinedNodes: CombinedNodeMap,
     nodesInCombinedNode: { [key: string]: string[] }
 ): LineageNode {
     let combinedLineageNode: LineageNode;
@@ -1078,7 +1076,6 @@ function applyCombineSize(
 
         combinedAliquotNode = createCombinedVisNode(aliquotNodes, options, node.name);
         visNodes[combinedAliquotNode.id] = combinedAliquotNode;
-        combinedNodes[combinedAliquotNode.id] = combinedAliquotNode;
 
         // create a VisGraph Edge from the current node to the new combined node
         // as well as an edge for each of the combined nodes that one of the edge target nodes may belong to.
@@ -1090,7 +1087,6 @@ function applyCombineSize(
 
         combinedNonAliquotNode = createCombinedVisNode(nonAliquotNodes, options, node.name);
         visNodes[combinedNonAliquotNode.id] = combinedNonAliquotNode;
-        combinedNodes[combinedNonAliquotNode.id] = combinedNonAliquotNode;
         combinedLineageNode = new LineageNode({
             children: nonAliquotNodes.reduce((children, n) => {
                 return children.concat(n.children) as List<LineageLink>;
@@ -1174,7 +1170,6 @@ function applyCombineTypeSize(
     dir: LINEAGE_DIRECTIONS,
     visEdges: EdgeMap,
     visNodes: VisNodeMap,
-    combinedNodes: CombinedNodeMap,
     nodesInCombinedNode: { [key: string]: string[] }
 ): void {
     const node = nodes[lsid];
@@ -1191,7 +1186,6 @@ function applyCombineTypeSize(
                 node.name
             );
             visNodes[combineByTypeNode.id] = combineByTypeNode;
-            combinedNodes[combineByTypeNode.id] = combineByTypeNode;
 
             addEdges(lsid, combineByTypeNode.id, visEdges, List(groupedEdges), nodesInCombinedNode, dir);
 
@@ -1249,7 +1243,6 @@ function processNodes(
     dir: LINEAGE_DIRECTIONS,
     visEdges: EdgeMap,
     visNodes: VisNodeMap,
-    combinedNodes: CombinedNodeMap,
     nodesInCombinedNode: { [key: string]: string[] },
     depth = 0,
     processed: { [key: string]: boolean } = {},
@@ -1343,7 +1336,6 @@ function processNodes(
             dir,
             visEdges,
             visNodes,
-            combinedNodes,
             nodesInCombinedNode
         );
         if (combinedLineageNode) {
@@ -1354,7 +1346,7 @@ function processNodes(
             queue = [combinedLineageNode.lsid];
         }
     } else if (grouping.combineTypeSize && edges.size >= grouping.combineTypeSize) {
-        applyCombineTypeSize(lsid, edges, nodes, options, dir, visEdges, visNodes, combinedNodes, nodesInCombinedNode);
+        applyCombineTypeSize(lsid, edges, nodes, options, dir, visEdges, visNodes, nodesInCombinedNode);
     } else {
         // create a VisGraph Edge from the current node to the edge's target for each edge
         addEdges(lsid, null, visEdges, edges, nodesInCombinedNode, dir);
@@ -1370,7 +1362,6 @@ function processNodes(
             dir,
             visEdges,
             visNodes,
-            combinedNodes,
             nodesInCombinedNode,
             depth + 1,
             processed,
@@ -1455,10 +1446,6 @@ export function generate(result: LineageResult, options?: LineageOptions): VisGr
     const visEdges: EdgeMap = {};
 
     // Intermediate state used by processNodes
-    // combined id -> VisGraphCombinedNode
-    const combinedNodes: CombinedNodeMap = {};
-
-    // Intermediate state used by processNodes
     // lsid -> Array of combined id nodes
     const nodesInCombinedNode: { [key: string]: string[] } = {};
 
@@ -1472,7 +1459,6 @@ export function generate(result: LineageResult, options?: LineageOptions): VisGr
             LINEAGE_DIRECTIONS.Parent,
             visEdges,
             visNodes,
-            combinedNodes,
             nodesInCombinedNode
         );
 
@@ -1485,7 +1471,6 @@ export function generate(result: LineageResult, options?: LineageOptions): VisGr
             LINEAGE_DIRECTIONS.Children,
             visEdges,
             visNodes,
-            combinedNodes,
             nodesInCombinedNode
         );
     });

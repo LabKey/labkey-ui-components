@@ -261,7 +261,7 @@ export class AssayDefinitionModel extends Record({
         return List(sampleCols.map(this.sampleColumnFieldKey));
     }
 
-    createSampleFilter(sampleColumns: List<string>, value, singleFilter: Filter.IFilterType) {
+    createSampleFilter(sampleColumns: List<string>, value: Array<string | number>, singleFilter: Filter.IFilterType) {
         const keyCol = '/RowId';
         if (sampleColumns.size === 1) {
             // generate simple equals filter

@@ -726,7 +726,7 @@ export function getSampleAliquotRows(sampleId: number | string): Promise<Array<R
  */
 export function createQueryConfigFilteredBySample(
     model: AssayDefinitionModel,
-    value,
+    value: Array<string | number>,
     singleFilter: Filter.IFilterType,
     omitSampleCols?: boolean
 ): QueryConfig {
@@ -735,9 +735,10 @@ export function createQueryConfigFilteredBySample(
     if (sampleColumns.isEmpty()) {
         return undefined;
     }
+    const sampleFilter = model.createSampleFilter(sampleColumns, value, singleFilter);
 
     return {
-        baseFilters: [model.createSampleFilter(sampleColumns, value, singleFilter)],
+        baseFilters: sampleFilter ? [sampleFilter] : undefined,
         omittedColumns: omitSampleCols ? sampleColumns.toArray() : undefined,
         schemaQuery: new SchemaQuery(model.protocolSchemaName, 'Data'),
         title: model.name,

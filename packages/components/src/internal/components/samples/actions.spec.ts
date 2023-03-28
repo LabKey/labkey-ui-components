@@ -153,9 +153,7 @@ describe('createQueryConfigFilteredBySample', () => {
     const modelWithoutSampleId = AssayDefinitionModel.create(assayDefNoSampleIdJSON);
 
     test('no sample column', () => {
-        expect(
-            createQueryConfigFilteredBySample(modelWithoutSampleId, 1, Filter.Types.EQUALS, () => 'whereclause')
-        ).toBeUndefined();
+        expect(createQueryConfigFilteredBySample(modelWithoutSampleId, 1, Filter.Types.EQUALS)).toBeUndefined();
     });
 
     test('with sample column', () => {
@@ -166,7 +164,7 @@ describe('createQueryConfigFilteredBySample', () => {
         );
         expect(result).toBeDefined();
         expect(result.baseFilters[0].getURLParameterValue()).toBe(1);
-        expect(result.baseFilters[0].getURLParameterName()).toBe('query.SampleID~eq');
+        expect(result.baseFilters[0].getURLParameterName()).toBe('query.SampleID/RowId~eq');
         expect(result.omittedColumns).toBeUndefined();
         expect(result.schemaQuery.getKey()).toBe('assay$pgeneral$pgpat 1/data');
         expect(result.title).toBe('GPAT 1');
@@ -182,7 +180,7 @@ describe('createQueryConfigFilteredBySample', () => {
         );
         expect(result).toBeDefined();
         expect(result.baseFilters[0].getURLParameterValue()).toBe(1);
-        expect(result.baseFilters[0].getURLParameterName()).toBe('query.SampleID~eq');
+        expect(result.baseFilters[0].getURLParameterName()).toBe('query.SampleID/RowId~eq');
         expect(result.omittedColumns).toStrictEqual(['SampleID']);
         expect(result.schemaQuery.getKey()).toBe('assay$pgeneral$pgpat 1/data');
         expect(result.title).toBe('GPAT 1');

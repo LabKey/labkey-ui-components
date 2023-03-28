@@ -2099,7 +2099,7 @@ export function getGridViews(
             success: response => {
                 const views = [];
                 response.views?.forEach(view => {
-                    if (includeHidden || view['hidden'] !== true) views.push(ViewInfo.create(view));
+                    if (includeHidden || view['hidden'] !== true) views.push(new ViewInfo(view));
                 });
                 if (sort) {
                     views.sort((a, b) => {

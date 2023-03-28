@@ -7,85 +7,85 @@ import { ViewInfo } from './ViewInfo';
 
 describe('ViewInfo', () => {
     test('create', () => {
-        let view = ViewInfo.create({ name: 'test', label: 'Testing' });
+        let view = new ViewInfo({ name: 'test', label: 'Testing' });
         expect(view.name).toBe('test');
         expect(view.label).toBe('Testing');
 
-        view = ViewInfo.create({ name: 'test', label: 'Testing', default: true });
+        view = new ViewInfo({ name: 'test', label: 'Testing', default: true });
         expect(view.name).toBe(ViewInfo.DEFAULT_NAME);
         expect(view.label).toBe('Default');
 
-        view = ViewInfo.create({ default: true });
+        view = new ViewInfo({ default: true });
         expect(view.name).toBe(ViewInfo.DEFAULT_NAME);
         expect(view.label).toBe('Default');
     });
 
     test('serialize', () => {
-        let view = ViewInfo.create({ name: 'test' });
+        let view = new ViewInfo({ name: 'test' });
         expect(ViewInfo.serialize(view).name).toBe('test');
-        view = ViewInfo.create({ name: ViewInfo.DEFAULT_NAME });
+        view = new ViewInfo({ name: ViewInfo.DEFAULT_NAME });
         expect(ViewInfo.serialize(view).name).toBe('');
 
         const filterObj = { fieldKey: 'test', value: 'val', op: 'contains' };
-        view = ViewInfo.create({ filter: [filterObj] });
-        expect(ViewInfo.serialize(view).filters).toBe(undefined);
+        view = new ViewInfo({ filter: [filterObj] });
+        expect((ViewInfo.serialize(view) as any).filters).toBe(undefined);
         expect(ViewInfo.serialize(view).filter).toStrictEqual(List([filterObj]));
 
         const sortObj = { fieldKey: 'test', dir: '+' };
-        view = ViewInfo.create({ sort: [sortObj] });
-        expect(ViewInfo.serialize(view).sorts).toBe(undefined);
+        view = new ViewInfo({ sort: [sortObj] });
+        expect((ViewInfo.serialize(view) as any).sorts).toBe(undefined);
         expect(ViewInfo.serialize(view).sort).toStrictEqual(List([sortObj]));
     });
 
     test('isVisible', () => {
-        let view = ViewInfo.create({ default: false, hidden: false, name: 'test' });
+        let view = new ViewInfo({ default: false, hidden: false, name: 'test' });
         expect(view.isVisible).toBeTruthy();
-        view = ViewInfo.create({ default: true, hidden: false, name: 'test' });
+        view = new ViewInfo({ default: true, hidden: false, name: 'test' });
         expect(view.isVisible).toBeFalsy();
-        view = ViewInfo.create({ default: false, hidden: true, name: 'test' });
+        view = new ViewInfo({ default: false, hidden: true, name: 'test' });
         expect(view.isVisible).toBeFalsy();
-        view = ViewInfo.create({ default: false, hidden: false, name: '~~DETAILS~~' });
+        view = new ViewInfo({ default: false, hidden: false, name: '~~DETAILS~~' });
         expect(view.isVisible).toBeFalsy();
-        view = ViewInfo.create({ default: false, hidden: false, name: ViewInfo.BIO_DETAIL_NAME });
+        view = new ViewInfo({ default: false, hidden: false, name: ViewInfo.BIO_DETAIL_NAME });
         expect(view.isVisible).toBeFalsy();
     });
 
     test('isSaved', () => {
-        expect(ViewInfo.create({}).isSaved).toBeFalsy();
-        expect(ViewInfo.create({ saved: undefined }).isSaved).toBeFalsy();
-        expect(ViewInfo.create({ saved: false }).isSaved).toBeFalsy();
-        expect(ViewInfo.create({ saved: true }).isSaved).toBeTruthy();
+        expect(new ViewInfo({}).isSaved).toBeFalsy();
+        expect(new ViewInfo({ saved: undefined }).isSaved).toBeFalsy();
+        expect(new ViewInfo({ saved: false }).isSaved).toBeFalsy();
+        expect(new ViewInfo({ saved: true }).isSaved).toBeTruthy();
     });
 
     test('isSystemView', () => {
-        expect(ViewInfo.create({}).isSystemView).toBeFalsy();
-        expect(ViewInfo.create({ name: 'testing' }).isSystemView).toBeFalsy();
-        expect(ViewInfo.create({ name: ViewInfo.BIO_DETAIL_NAME }).isSystemView).toBeFalsy();
-        expect(ViewInfo.create({ name: ViewInfo.DEFAULT_NAME }).isSystemView).toBeTruthy();
-        expect(ViewInfo.create({ name: ViewInfo.DETAIL_NAME }).isSystemView).toBeTruthy();
-        expect(ViewInfo.create({ name: ViewInfo.UPDATE_NAME }).isSystemView).toBeTruthy();
+        expect(new ViewInfo({}).isSystemView).toBeFalsy();
+        expect(new ViewInfo({ name: 'testing' }).isSystemView).toBeFalsy();
+        expect(new ViewInfo({ name: ViewInfo.BIO_DETAIL_NAME }).isSystemView).toBeFalsy();
+        expect(new ViewInfo({ name: ViewInfo.DEFAULT_NAME }).isSystemView).toBeTruthy();
+        expect(new ViewInfo({ name: ViewInfo.DETAIL_NAME }).isSystemView).toBeTruthy();
+        expect(new ViewInfo({ name: ViewInfo.UPDATE_NAME }).isSystemView).toBeTruthy();
     });
 
     test('modifiers', () => {
-        let view = ViewInfo.create({ session: true });
+        let view = new ViewInfo({ session: true });
         expect(view.modifiers).toStrictEqual(['edited']);
-        view = ViewInfo.create({ session: true, shared: true });
+        view = new ViewInfo({ session: true, shared: true });
         expect(view.modifiers).toStrictEqual(['edited']);
-        view = ViewInfo.create({ session: true, inherit: true });
+        view = new ViewInfo({ session: true, inherit: true });
         expect(view.modifiers).toStrictEqual(['edited']);
-        view = ViewInfo.create({ session: true, shared: true, inherit: true });
+        view = new ViewInfo({ session: true, shared: true, inherit: true });
         expect(view.modifiers).toStrictEqual(['edited']);
-        view = ViewInfo.create({ shared: true });
+        view = new ViewInfo({ shared: true });
         expect(view.modifiers).toStrictEqual(['shared']);
 
-        view = ViewInfo.create({ inherit: true });
+        view = new ViewInfo({ inherit: true });
         expect(view.modifiers).toStrictEqual(['inherited']);
-        view = ViewInfo.create({ shared: true, inherit: true });
+        view = new ViewInfo({ shared: true, inherit: true });
         expect(view.modifiers).toStrictEqual(['inherited', 'shared']);
     });
 
     test('addSystemViewColumns, default view', () => {
-        let view = ViewInfo.create({
+        let view = new ViewInfo({
             default: true,
             columns: [
                 {
@@ -120,7 +120,7 @@ describe('ViewInfo', () => {
             }),
         });
         view = view.addSystemViewColumns(queryInfo);
-        expect(view.columns.toJS()).toStrictEqual([
+        expect(view.columns).toStrictEqual([
             {
                 fieldKey: 'col1',
                 key: 'col1',
@@ -142,7 +142,7 @@ describe('ViewInfo', () => {
     });
 
     test('addSystemViewColumns, default session view', () => {
-        let view = ViewInfo.create({
+        let view = new ViewInfo({
             default: true,
             session: true,
             columns: [
@@ -169,7 +169,7 @@ describe('ViewInfo', () => {
         });
         view = view.addSystemViewColumns(queryInfo);
         // if it's a session view, no additional columns should be added
-        expect(view.columns.toJS()).toStrictEqual([
+        expect(view.columns).toStrictEqual([
             {
                 fieldKey: 'col1',
                 key: 'col1',
@@ -179,7 +179,7 @@ describe('ViewInfo', () => {
     });
 
     test('addSystemViewColumns, not default view', () => {
-        let view = ViewInfo.create({
+        let view = new ViewInfo({
             default: false,
             name: 'Not Default',
             session: true,
@@ -207,7 +207,7 @@ describe('ViewInfo', () => {
         });
         view = view.addSystemViewColumns(queryInfo);
         // if it's not the default view, no additional columns shoulb be added
-        expect(view.columns.toJS()).toStrictEqual([
+        expect(view.columns).toStrictEqual([
             {
                 fieldKey: 'col1',
                 key: 'col1',
@@ -217,7 +217,7 @@ describe('ViewInfo', () => {
     });
 
     test('addSystemViewColumns, default view, with disabledSysFields', () => {
-        let view = ViewInfo.create({
+        let view = new ViewInfo({
             default: true,
             columns: [
                 {
@@ -253,7 +253,7 @@ describe('ViewInfo', () => {
             disabledSystemFields: ['Other'],
         });
         view = view.addSystemViewColumns(queryInfo);
-        expect(view.columns.toJS()).toStrictEqual([
+        expect(view.columns).toStrictEqual([
             {
                 fieldKey: 'col1',
                 key: 'col1',

@@ -277,10 +277,10 @@ describe('QueryInfo', () => {
     describe('getView', () => {
         let queryInfo = QueryInfo.create({
             views: fromJS({
-                [ViewInfo.DEFAULT_NAME.toLowerCase()]: ViewInfo.create({ name: 'default' }),
-                [ViewInfo.DETAIL_NAME.toLowerCase()]: ViewInfo.create({ name: 'detail' }),
-                view1: ViewInfo.create({ name: 'view1' }),
-                view2: ViewInfo.create({ name: 'view2' }),
+                [ViewInfo.DEFAULT_NAME.toLowerCase()]: new ViewInfo({ name: 'default' }),
+                [ViewInfo.DETAIL_NAME.toLowerCase()]: new ViewInfo({ name: 'detail' }),
+                view1: new ViewInfo({ name: 'view1' }),
+                view2: new ViewInfo({ name: 'view2' }),
             }),
         });
 
@@ -305,9 +305,9 @@ describe('QueryInfo', () => {
 
         queryInfo = QueryInfo.create({
             views: fromJS({
-                [ViewInfo.DEFAULT_NAME.toLowerCase()]: ViewInfo.create({ name: 'default' }),
-                [ViewInfo.DETAIL_NAME.toLowerCase()]: ViewInfo.create({ name: 'detail' }),
-                [ViewInfo.BIO_DETAIL_NAME.toLowerCase()]: ViewInfo.create({ name: 'LKB detail' }),
+                [ViewInfo.DEFAULT_NAME.toLowerCase()]: new ViewInfo({ name: 'default' }),
+                [ViewInfo.DETAIL_NAME.toLowerCase()]: new ViewInfo({ name: 'detail' }),
+                [ViewInfo.BIO_DETAIL_NAME.toLowerCase()]: new ViewInfo({ name: 'LKB detail' }),
             }),
         });
         expect(queryInfo.getView(ViewInfo.BIO_DETAIL_NAME)?.name).toBe('LKB detail');

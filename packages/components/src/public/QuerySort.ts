@@ -1,4 +1,9 @@
-export class QuerySort {
+export interface QuerySortJson {
+    dir: string;
+    fieldKey: string;
+}
+
+export class QuerySort implements QuerySortJson {
     declare dir: string;
     declare fieldKey: string;
 

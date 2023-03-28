@@ -294,7 +294,7 @@ describe('GridPanel', () => {
         const nameSort = { fieldKey: 'Name', dir: '+' };
         const nameFilter = { fieldKey: 'Name', value: 'DMXP', op: 'eq' };
         const expirFilter = { fieldKey: 'expirationTime', value: '1', op: 'eq' };
-        const view = ViewInfo.create({
+        const view = new ViewInfo({
             name: ViewInfo.DEFAULT_NAME.toLowerCase(),
             filter: [nameFilter, expirFilter],
             sort: [nameSort],

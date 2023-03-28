@@ -267,7 +267,7 @@ export class AssayDefinitionModel extends Record({
             // generate simple equals filter
             const sampleColumn = sampleColumns.get(0);
             return Filter.create(sampleColumn + keyCol, value, singleFilter);
-        } else {
+        } else if (sampleColumns.size > 1) {
             // generate a where clause filter to include all sample columns via a UNION (issue 47346)
             const whereClause =
                 'RowId IN (' +

@@ -288,9 +288,11 @@ export class QueryInfo extends Record({
         }, this.getDisplayColumns(viewName, omittedColumns));
     }
 
-    getInsertColumns(): List<QueryColumn> {
+    // @param isIncludedColumn can be used to filter out columns that should not be designate as insertColumns
+    // (e.g., if creating samples that are not aliquots, the aliquot-only fields should never be included)
+    getInsertColumns(isIncludedColumn?: (col: QueryColumn) => boolean): List<QueryColumn> {
         // CONSIDER: use the columns in ~~INSERT~~ view to determine this set
-        return this.columns.filter(col => insertColumnFilter(col, false)).toList();
+        return this.columns.filter(col => insertColumnFilter(col, false, isIncludedColumn)).toList();
     }
 
     getInsertColumnIndex(fieldKey: string): number {

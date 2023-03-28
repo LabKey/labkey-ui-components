@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 47575: Populating editable grid from bulk update doesn't account for aliquot- or sample-only fields
+
 ### version 2.315.1
 *Released*: 28 March 2023
 * Merge release23.2-SNAPSHOT to develop:

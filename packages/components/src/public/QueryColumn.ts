@@ -383,7 +383,7 @@ export class QueryColumn {
     }
 }
 
-export function insertColumnFilter(col: QueryColumn, includeFileInputs = true): boolean {
+export function insertColumnFilter(col: QueryColumn, includeFileInputs = true, isIncludedColumn?: (col: QueryColumn) => boolean): boolean {
     return (
         col &&
         col.removeFromViews !== true &&
@@ -391,6 +391,7 @@ export function insertColumnFilter(col: QueryColumn, includeFileInputs = true): 
         !col.readOnly &&
         col.userEditable &&
         col.fieldKeyArray.length === 1 &&
-        (includeFileInputs || !col.isFileInput)
+        (includeFileInputs || !col.isFileInput) &&
+        (!isIncludedColumn || isIncludedColumn(col))
     );
 }

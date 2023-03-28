@@ -106,12 +106,14 @@ export class ViewInfo {
         if (isDefault) {
             name = ViewInfo.DEFAULT_NAME;
             label = 'Default';
+        } else if (json.name === undefined || json.name === '') {
+            name = ViewInfo.DEFAULT_NAME;
         } else {
-            name = json.name === '' || json.name === undefined ? ViewInfo.DEFAULT_NAME : json.name;
+            name = json.name;
         }
 
         Object.assign(this, VIEW_INFO_DEFAULTS, json, {
-            columns: [...json.columns],
+            columns: json.columns !== undefined ? [...json.columns] : [],
             filters: getFiltersFromView(json),
             isDefault,
             label,

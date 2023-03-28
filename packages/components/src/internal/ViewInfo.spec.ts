@@ -29,12 +29,12 @@ describe('ViewInfo', () => {
         const filterObj = { fieldKey: 'test', value: 'val', op: 'contains' };
         view = new ViewInfo({ filter: [filterObj] });
         expect((ViewInfo.serialize(view) as any).filters).toBe(undefined);
-        expect(ViewInfo.serialize(view).filter).toStrictEqual(List([filterObj]));
+        expect(ViewInfo.serialize(view).filter).toStrictEqual([filterObj]);
 
         const sortObj = { fieldKey: 'test', dir: '+' };
         view = new ViewInfo({ sort: [sortObj] });
         expect((ViewInfo.serialize(view) as any).sorts).toBe(undefined);
-        expect(ViewInfo.serialize(view).sort).toStrictEqual(List([sortObj]));
+        expect(ViewInfo.serialize(view).sort).toStrictEqual([sortObj]);
     });
 
     test('isVisible', () => {
@@ -58,7 +58,8 @@ describe('ViewInfo', () => {
     });
 
     test('isSystemView', () => {
-        expect(new ViewInfo({}).isSystemView).toBeFalsy();
+        expect(new ViewInfo({}).isSystemView).toBeTruthy();
+        expect(new ViewInfo({ name: '' }).isSystemView).toBeTruthy();
         expect(new ViewInfo({ name: 'testing' }).isSystemView).toBeFalsy();
         expect(new ViewInfo({ name: ViewInfo.BIO_DETAIL_NAME }).isSystemView).toBeFalsy();
         expect(new ViewInfo({ name: ViewInfo.DEFAULT_NAME }).isSystemView).toBeTruthy();

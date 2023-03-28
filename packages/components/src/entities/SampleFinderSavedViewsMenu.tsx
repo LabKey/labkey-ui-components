@@ -58,8 +58,8 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
     }, [currentView, hasUnsavedChanges]);
 
     const hasViews = useMemo(() => {
-        return savedSearches?.length > 0 || !!sessionViewName;
-    }, [savedSearches, sessionViewName]);
+        return savedSearches?.length > 0 || moduleSearches?.length > 0 || !!sessionViewName;
+    }, [savedSearches, sessionViewName, moduleSearches]);
 
     const onToggle = useCallback(() => {
         setOpen(_open => !_open);

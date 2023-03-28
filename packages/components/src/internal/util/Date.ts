@@ -202,7 +202,7 @@ function twoDigit(num: number): string {
 // example, from "2022-02-02", get next -1 day, return "2022-02-01"
 export function getNextDateStr(currentDateStr: string, ndays?: number): string {
     const numberOfDays = ndays ?? 1;
-    const seedDate = currentDateStr ? new Date(currentDateStr) : new Date();
+    const seedDate = new Date(currentDateStr);
     let nextDate = new Date(seedDate.getTime() + 60 * 60 * 24 * 1000 * numberOfDays); // add N*24 hours
 
     const userTimezoneOffset = nextDate.getTimezoneOffset() * 60 * 1000;
@@ -216,7 +216,12 @@ export function getNextDateStr(currentDateStr: string, ndays?: number): string {
 }
 
 export function getNDaysStrFromToday(ndays?: number): string {
-    return getNextDateStr(null, ndays);
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+    const todayStr = '' + year + '-' + twoDigit(month) + '-' + twoDigit(day);
+    return getNextDateStr(todayStr, ndays);
 }
 
 // TODO add jest

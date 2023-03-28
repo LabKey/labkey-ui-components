@@ -794,9 +794,9 @@ export function getSampleAliquotsStats(rows: Record<string, any>): SampleAliquot
         aliquotIds = [];
     for (const ind in rows) {
         const row = rows[ind];
-        const storageStatus = caseInsensitive(row, 'StoredAmount')?.value;
+        const amount = caseInsensitive(row, 'StoredAmount')?.value;
 
-        const isAvailable = storageStatus && storageStatus > 0;
+        const isAvailable = amount && amount > 0;
         availableCount += isAvailable ? 1 : 0;
         aliquotCount++;
 

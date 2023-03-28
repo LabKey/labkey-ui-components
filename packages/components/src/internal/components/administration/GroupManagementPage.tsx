@@ -17,7 +17,7 @@ import { Principal, SecurityPolicy } from '../permissions/models';
 
 import { InjectedPermissionsPage, withPermissionsPage } from '../permissions/withPermissionsPage';
 
-import { getProjectPath } from '../../app/utils';
+import { getProjectPath, isProductProjectsEnabled } from '../../app/utils';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 import { CreatedModified } from '../base/CreatedModified';
@@ -252,7 +252,7 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
         return showPremiumFeatures(moduleContext) ? container.path : undefined;
     }, [container, moduleContext]);
 
-    if (!container.isProject)
+    if (isProductProjectsEnabled() && !container.isProject)
         return <NotFound />;
 
     return (

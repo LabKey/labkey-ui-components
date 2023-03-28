@@ -38,6 +38,7 @@ import { getUserGridFilterURL, updateSecurityPolicy } from './actions';
 import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from './constants';
 import { useAdminAppContext } from './useAdminAppContext';
 import { NotFound } from '../base/NotFound';
+import { isProductProjectsEnabled } from '../../app/utils';
 
 export function getNewUserRoles(
     user: User,
@@ -311,7 +312,7 @@ export const UserManagementPageImpl: FC<InjectedPermissionsPage & NotificationsC
     const { container, moduleContext, project, user } = useServerContext();
     const { extraPermissionRoles } = useAdminAppContext();
 
-    if (!container.isProject)
+    if (isProductProjectsEnabled() && !container.isProject)
         return <NotFound />;
 
     return (

@@ -174,3 +174,44 @@
         border-top: solid 1px $gray-border;
     }
 }
+
+.lineage-settings-heading {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 16px;
+}
+
+.lineage-settings__section {
+    margin-bottom: 32px;
+}
+
+.lineage-settings__section-header {
+    color: #555555;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.lineage-settings__section .form-control {
+    margin-bottom: 16px;
+    max-width: 100px;
+}
+
+.lineage-settings__section label {
+    font-weight: normal;
+}
+
+.lineage-settings__filter-label {
+    margin-left: 5px;
+}
+
+.lineage-settings__tip-body {
+    max-width: 350px;
+}
+
+.lineage-settings__tip-list {
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+}

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, memo, useCallback, useRef, useState } from 'react';
+import React, { ChangeEvent, FC, memo, useCallback, useMemo, useRef, useState } from 'react';
 
 import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
 
@@ -6,23 +6,6 @@ import { LabelHelpTip } from '../base/LabelHelpTip';
 
 import { LINEAGE_GROUPING_GENERATIONS, LineageFilter, LineageOptions } from './types';
 import { DEFAULT_GROUPING_OPTIONS } from './constants';
-
-const generations: SelectInputOption[] = [
-    { label: 'All', value: LINEAGE_GROUPING_GENERATIONS.All },
-    { label: 'Multi', value: LINEAGE_GROUPING_GENERATIONS.Multi },
-    { label: 'Nearest', value: LINEAGE_GROUPING_GENERATIONS.Nearest },
-    { label: 'Specific', value: LINEAGE_GROUPING_GENERATIONS.Specific },
-];
-
-interface PanelFieldLabelProps {
-    className?: string;
-}
-
-export const PanelFieldLabel: FC<PanelFieldLabelProps> = memo(({ children, className }) => (
-    <div className="panel-field-label">
-        <label className={className}>{children}</label>
-    </div>
-));
 
 interface LineageSettingsOptions extends LineageOptions {
     originalFilters?: LineageFilter[];
@@ -39,6 +22,14 @@ export const LineageSettings: FC<Props> = memo(props => {
         if (props.options) return props.options;
         return { filters: props.filters, grouping: props.grouping, originalFilters: props.filters };
     });
+    const generations = useMemo<SelectInputOption[]>(() => {
+        const generations_ = [];
+        // eslint-disable-next-line guard-for-in
+        for (const value in LINEAGE_GROUPING_GENERATIONS) {
+            generations_.push({ label: value, value: LINEAGE_GROUPING_GENERATIONS[value] });
+        }
+        return generations_;
+    }, []);
     const changeRef = useRef(undefined);
 
     const applyOptions = useCallback(
@@ -99,47 +90,44 @@ export const LineageSettings: FC<Props> = memo(props => {
     );
 
     return (
-        <div>
-            <div style={{ fontSize: 18, fontWeight: 500, marginBottom: '15px' }}>Graph Options</div>
-            <div className="job-overview__section">
-                <div className="job-overview__section-header">Grouping</div>
+        <div className="lineage-settings">
+            <div className="lineage-settings-heading">Graph Options</div>
+            <div className="lineage-settings__section">
+                <div className="lineage-settings__section-header">Grouping</div>
 
-                <PanelFieldLabel>
+                <label>
                     Generations
-                    <LabelHelpTip placement="bottom" title="Generations">
-                        <ul style={{ listStyle: 'none', marginLeft: 0, paddingLeft: 0 }}>
+                    <LabelHelpTip placement="top" title="Generations">
+                        <ul className="lineage-settings__tip-list">
                             <li>
-                                <span style={{ fontWeight: 'bold' }}>All</span> - Include all nodes from the seed
-                                available in the lineage response.
+                                <b>All</b> - Include all nodes from the seed available in the lineage response.
                             </li>
                             <li>
-                                <span style={{ fontWeight: 'bold' }}>Multi</span> - Include all nodes from the seed
-                                until a depth is found that contains multiple nodes..
+                                <b>Multi</b> - Include all nodes from the seed until a depth is found that contains
+                                multiple nodes..
                             </li>
                             <li>
-                                <span style={{ fontWeight: 'bold' }}>Nearest</span> - Include only the immediately
-                                connected nodes from the seed.
+                                <b>Nearest</b> - Include only the immediately connected nodes from the seed.
                             </li>
                             <li>
-                                <span style={{ fontWeight: 'bold' }}>Specific</span> - Include all nodes from the seed
-                                up to the "Parent Generations" or "Child Generations" specified.
+                                <b>Specific</b> - Include all nodes from the seed up to the "Parent Generations" or
+                                "Child Generations" specified.
                             </li>
                         </ul>
                     </LabelHelpTip>
-                </PanelFieldLabel>
+                </label>
                 <SelectInput
                     clearable={false}
                     name="generations"
                     onChange={onGenerationChange}
                     options={generations}
-                    customStyles={{ marginBottom: '16px' }}
                     value={options.grouping?.generations ?? DEFAULT_GROUPING_OPTIONS.generations}
                 />
 
-                <PanelFieldLabel>
+                <label>
                     Child Generations
-                    <LabelHelpTip placement="bottom" title="Child Generations">
-                        <div style={{ maxWidth: '350px' }}>
+                    <LabelHelpTip placement="top" title="Child Generations">
+                        <div className="lineage-settings__tip-body">
                             The number of descendant generations to render from the seed node. Only applies when
                             Generations is set to "Specific".
                             <div>
@@ -148,7 +136,7 @@ export const LineageSettings: FC<Props> = memo(props => {
                             </div>
                         </div>
                     </LabelHelpTip>
-                </PanelFieldLabel>
+                </label>
                 <input
                     defaultValue={options.grouping?.childDepth ?? DEFAULT_GROUPING_OPTIONS.childDepth}
                     className="form-control"
@@ -156,14 +144,13 @@ export const LineageSettings: FC<Props> = memo(props => {
                     min={0}
                     name="childDepth"
                     onChange={onGroupingChange}
-                    style={{ marginBottom: '16px', maxWidth: '100px' }}
                     type="number"
                 />
 
-                <PanelFieldLabel>
+                <label>
                     Parent Generations
-                    <LabelHelpTip placement="bottom" title="Parent Generations">
-                        <div style={{ maxWidth: '350px' }}>
+                    <LabelHelpTip placement="top" title="Parent Generations">
+                        <div className="lineage-settings__tip-body">
                             The number of ancestor generations to render from the seed node. Only applies when
                             Generations is set to "Specific".
                             <div>
@@ -172,7 +159,7 @@ export const LineageSettings: FC<Props> = memo(props => {
                             </div>
                         </div>
                     </LabelHelpTip>
-                </PanelFieldLabel>
+                </label>
                 <input
                     defaultValue={options.grouping?.parentDepth ?? DEFAULT_GROUPING_OPTIONS.parentDepth}
                     className="form-control"
@@ -180,35 +167,33 @@ export const LineageSettings: FC<Props> = memo(props => {
                     min={0}
                     name="parentDepth"
                     onChange={onGroupingChange}
-                    style={{ marginBottom: '16px', maxWidth: '100px' }}
                     type="number"
                 />
 
-                <PanelFieldLabel>
+                <label>
                     Combine Generation Threshold
-                    <LabelHelpTip placement="bottom" title="Combine Generation Threshold">
-                        <div style={{ maxWidth: '350px' }}>
+                    <LabelHelpTip placement="top" title="Combine Generation Threshold">
+                        <div className="lineage-settings__tip-body">
                             If the number of nodes in a generation is greater than or equal to this threshold, then all
                             the nodes in this generation will be combined into a single node.
                         </div>
                     </LabelHelpTip>
-                </PanelFieldLabel>
+                </label>
                 <input
                     defaultValue={options.grouping?.combineSize ?? DEFAULT_GROUPING_OPTIONS.combineSize}
                     className="form-control"
                     min={2}
                     name="combineSize"
                     onChange={onGroupingChange}
-                    style={{ marginBottom: '16px', maxWidth: '100px' }}
                     type="number"
                 />
             </div>
 
-            <div className="job-overview__section">
-                <div className="job-overview__section-header">
+            <div className="lineage-settings__section">
+                <div className="lineage-settings__section-header">
                     Filters
-                    <LabelHelpTip placement="bottom" title="Filters">
-                        <div style={{ maxWidth: '350px' }}>
+                    <LabelHelpTip placement="top" title="Filters">
+                        <div className="lineage-settings__tip-body">
                             Some lineage views provide default filters specified by the application. Toggle filters to
                             change which nodes are displayed in the graph.
                         </div>
@@ -218,7 +203,7 @@ export const LineageSettings: FC<Props> = memo(props => {
                 {options.originalFilters?.map(filter => (
                     <div key={filter.field}>
                         <input defaultChecked onChange={onFilterChange} name={filter.field} type="checkbox" />
-                        <span style={{ marginLeft: '5px' }}>
+                        <span className="lineage-settings__filter-label">
                             {filter.field} = {filter.value.join(' OR ')}
                         </span>
                     </div>

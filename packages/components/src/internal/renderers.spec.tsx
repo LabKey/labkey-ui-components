@@ -292,7 +292,7 @@ describe('HeaderCellDropdown', () => {
 
     test('isSortAsc via view sort', () => {
         const sortObj = { fieldKey: 'column', dir: '+' };
-        const view = new ViewInfo({ name: '', sort: [sortObj] });
+        const view = new ViewInfo({ sort: [sortObj] });
         const queryInfo = QueryInfo.create({ views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }) });
 
         const model = makeTestQueryModel(new SchemaQuery('schema', 'query'), queryInfo).mutate({

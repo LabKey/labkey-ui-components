@@ -35,7 +35,7 @@ export interface LineageGroupingOptions {
      */
     combineSize?: number;
     /**
-     * When the number of parent or children edges of a common type, for each depth,
+     * (DISABLED) When the number of parent or children edges of a common type, for each depth,
      * is greater than or equal to this threshold, create a combined node.
      */
     combineTypeSize?: number;

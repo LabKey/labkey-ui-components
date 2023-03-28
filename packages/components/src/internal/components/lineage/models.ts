@@ -1345,7 +1345,8 @@ function processNodes(
             });
             queue = [combinedLineageNode.lsid];
         }
-    } else if (grouping.combineTypeSize && edges.size >= grouping.combineTypeSize) {
+        // eslint-disable-next-line no-constant-condition
+    } else if (false /* disabled for now */ && grouping.combineTypeSize && edges.size >= grouping.combineTypeSize) {
         applyCombineTypeSize(lsid, edges, nodes, options, dir, visEdges, visNodes, nodesInCombinedNode);
     } else {
         // create a VisGraph Edge from the current node to the edge's target for each edge

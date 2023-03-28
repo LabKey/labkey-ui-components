@@ -860,6 +860,19 @@ export function createLineageNodeCollections(
     return nodesByType;
 }
 
+function createCombinedLineageNode(combinedVisNode: VisGraphCombinedNode): LineageNode {
+    const { children, parents } = combinedVisNode.containedNodes.reduce(
+        (acc, node) => {
+            acc.children = acc.children.concat(node.children) as List<LineageLink>;
+            acc.parents = acc.parents.concat(node.parents) as List<LineageLink>;
+            return acc;
+        },
+        { children: List<LineageLink>(), parents: List<LineageLink>() }
+    );
+
+    return new LineageNode({ children, lsid: combinedVisNode.id, parents });
+}
+
 function createCombinedVisNode(
     containedNodes: LineageNode[],
     options: LineageOptions,
@@ -1053,8 +1066,8 @@ function applyCombineSize(
     visEdges: EdgeMap,
     visNodes: VisNodeMap,
     nodesInCombinedNode: { [key: string]: string[] }
-): LineageNode {
-    let combinedLineageNode: LineageNode;
+): LineageNode[] {
+    const combinedLineageNodes: LineageNode[] = [];
     let combinedAliquotNode: VisGraphCombinedNode;
     let combinedNonAliquotNode: VisGraphCombinedNode;
 
@@ -1076,6 +1089,7 @@ function applyCombineSize(
 
         combinedAliquotNode = createCombinedVisNode(aliquotNodes, options, node.name);
         visNodes[combinedAliquotNode.id] = combinedAliquotNode;
+        combinedLineageNodes.push(createCombinedLineageNode(combinedAliquotNode));
 
         // create a VisGraph Edge from the current node to the new combined node
         // as well as an edge for each of the combined nodes that one of the edge target nodes may belong to.
@@ -1087,15 +1101,7 @@ function applyCombineSize(
 
         combinedNonAliquotNode = createCombinedVisNode(nonAliquotNodes, options, node.name);
         visNodes[combinedNonAliquotNode.id] = combinedNonAliquotNode;
-        combinedLineageNode = new LineageNode({
-            children: nonAliquotNodes.reduce((children, n) => {
-                return children.concat(n.children) as List<LineageLink>;
-            }, List<LineageLink>()),
-            lsid: combinedNonAliquotNode.id,
-            parents: nonAliquotNodes.reduce((parents, n) => {
-                return parents.concat(n.parents) as List<LineageLink>;
-            }, List<LineageLink>()),
-        });
+        combinedLineageNodes.push(createCombinedLineageNode(combinedNonAliquotNode));
 
         // create a VisGraph Edge from the current node to the new combined node
         // as well as an edge for each of the combined nodes that one of the edge target nodes may belong to.
@@ -1113,7 +1119,7 @@ function applyCombineSize(
         processCombinedNode(lsid, e, combinedNode, visEdges, visNodes, nodesInCombinedNode);
     });
 
-    return combinedLineageNode;
+    return combinedLineageNodes;
 }
 
 /**
@@ -1240,7 +1246,7 @@ function processNodes(
     }
 
     if (grouping.combineSize && edges.size >= grouping.combineSize) {
-        const combinedLineageNode = applyCombineSize(
+        const combinedLineageNodes = applyCombineSize(
             lsid,
             edges,
             nodes,
@@ -1250,12 +1256,17 @@ function processNodes(
             visNodes,
             nodesInCombinedNode
         );
-        if (combinedLineageNode) {
-            nodes[combinedLineageNode.lsid] = combinedLineageNode;
-            edges.forEach(e => {
-                processed[e.lsid] = true;
+
+        if (combinedLineageNodes.length > 0) {
+            queue = [];
+
+            combinedLineageNodes.forEach(cln => {
+                nodes[cln.lsid] = cln;
+                edges.forEach(e => {
+                    processed[e.lsid] = true;
+                });
+                queue.push(cln.lsid);
             });
-            queue = [combinedLineageNode.lsid];
         }
     } else {
         // create a VisGraph Edge from the current node to the edge's target for each edge

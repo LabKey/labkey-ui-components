@@ -1,5 +1,4 @@
 import React from 'react';
-import { ReactWrapper } from 'enzyme';
 
 import { Filter } from '@labkey/api';
 

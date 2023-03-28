@@ -96,14 +96,13 @@ describe('ViewLabel', () => {
     test('shared view, edited', () => {
         const wrapper = mount(
             <ViewLabel
-                view={new ViewInfo({
-                    columns: [],
-                    filters: [],
-                    default: false,
-                    label: 'View 3',
-                    name: 'View3',
-                    session: true,
-                })}
+                view={
+                    new ViewInfo({
+                        label: 'View 3',
+                        name: 'View3',
+                        session: true,
+                    })
+                }
             />
         );
         expect(wrapper.text()).toBe('View 3 (edited)');
@@ -113,15 +112,14 @@ describe('ViewLabel', () => {
     test('inherited view', () => {
         const wrapper = mount(
             <ViewLabel
-                view={new ViewInfo({
-                    columns: [],
-                    filers: [],
-                    default: false,
-                    label: 'View 4',
-                    name: 'View4',
-                    shared: false,
-                    inherit: true,
-                })}
+                view={
+                    new ViewInfo({
+                        label: 'View 4',
+                        name: 'View4',
+                        shared: false,
+                        inherit: true,
+                    })
+                }
             />
         );
         expect(wrapper.text()).toBe('View 4 (inherited)');
@@ -131,16 +129,15 @@ describe('ViewLabel', () => {
     test('inherited view, edited', () => {
         const wrapper = mount(
             <ViewLabel
-                view={new ViewInfo({
-                    columns: [],
-                    filers: [],
-                    default: false,
-                    label: 'View 4',
-                    name: 'View4',
-                    shared: false,
-                    inherit: true,
-                    session: true,
-                })}
+                view={
+                    new ViewInfo({
+                        label: 'View 4',
+                        name: 'View4',
+                        shared: false,
+                        inherit: true,
+                        session: true,
+                    })
+                }
             />
         );
         expect(wrapper.text()).toBe('View 4 (edited)');
@@ -150,15 +147,14 @@ describe('ViewLabel', () => {
     test('shared, inherited view', () => {
         const wrapper = mount(
             <ViewLabel
-                view={new ViewInfo({
-                    columns: [],
-                    filers: [],
-                    default: false,
-                    label: 'View 5',
-                    name: 'View5',
-                    shared: true,
-                    inherit: true,
-                })}
+                view={
+                    new ViewInfo({
+                        label: 'View 5',
+                        name: 'View5',
+                        shared: true,
+                        inherit: true,
+                    })
+                }
             />
         );
         expect(wrapper.text()).toBe('View 5 (inherited, shared)');
@@ -168,16 +164,15 @@ describe('ViewLabel', () => {
     test('edited, shared, inherited view', () => {
         const wrapper = mount(
             <ViewLabel
-                view={new ViewInfo({
-                    columns: [],
-                    filers: [],
-                    default: false,
-                    label: 'View 5',
-                    name: 'View5',
-                    shared: true,
-                    inherit: true,
-                    session: true,
-                })}
+                view={
+                    new ViewInfo({
+                        label: 'View 5',
+                        name: 'View5',
+                        shared: true,
+                        inherit: true,
+                        session: true,
+                    })
+                }
             />
         );
         expect(wrapper.text()).toBe('View 5 (edited)');

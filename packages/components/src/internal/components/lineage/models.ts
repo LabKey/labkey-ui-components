@@ -1187,7 +1187,38 @@ function applyCombineTypeSize(
     }
 }
 
-function _processNodes(
+/**
+ * Recursively walks the node list in the direction indicated creating clusters as it goes.
+ * The LabKey lineage in `nodes` is processed by this algorithm to populate the
+ * `visEdges` collection with {@link Edge} object and the `visNodes` collections with
+ * either {@link VisGraphNode} or {@link VisGraphCombinedNode} objects.
+ * These collections will be fed into the vis.js {@link Network} to perform the graph layout.
+ *
+ * If a node has an edge count greater than {@link LineageGroupingOptions.combineSize},
+ * a {@link VisGraphCombinedNode} node will be created to hold the collection of {@link LineageNode}
+ * objects. We opted to create our own combined nodes rather than use vis.js's cluster node due
+ * to vis.js performance issues when laying out large graph sizes with clustered nodes.
+ *
+ * The algorithm will stop traversing the graph when the conditions specified
+ * by {@link LineageGroupingOptions.generations} have been met.
+ *
+ * The general approach is:
+ *  starting from 'mergedIn' nodes (including the original seed)
+ *  - if a node has been seen, skip
+ *  - create a VisGraphNode and add it to the graph (if it hasn't already been added within a combined node)
+ *  - check for stop conditions in `options.generations`:
+ *      - if Immediate and depth exceeds depth 1, stop
+ *      - if Specific an depth exceeds the desired depth, stop
+ *      - if 'Multi' and there are >1 edges at the previous depth, stop
+ *  - if there are more than {combineSize} edges, create a combined node
+ *     - mark all included nodes and edges on the combined node: {containedNodes: [...]}
+ *     - fixup any existing edges to the nodes that are now included in the combined node
+ *     - add any additional edges needed for other combined nodes the edge target might belong to
+ *     - create edge from the node to the new combined node
+ *   - if there are less than {combineSize} edges, create a basic node
+ *     - create edges from the node to all of edge targets
+ */
+function processNodes(
     seed: string,
     lsid: string,
     nodes: Map<string, LineageNode>,
@@ -1215,8 +1246,7 @@ function _processNodes(
     }
 
     // if node hasn't already been added to a cluster and hasn't been created as a normal node yet, add it now
-    const currentNodeIsNotInCombinedNode = nodesInCombinedNode[lsid] === undefined;
-    if (currentNodeIsNotInCombinedNode && visNodes[lsid] === undefined) {
+    if (nodesInCombinedNode[lsid] === undefined && visNodes[lsid] === undefined) {
         // console.log("  ".repeat(depth) + "created basic node");
         visNodes[lsid] = createVisNode(node, lsid, lsid === seed);
     }
@@ -1292,7 +1322,7 @@ function _processNodes(
 
     // recurse for other nodes not yet processed at this depth
     for (let i = 0; i < queue.length; i++) {
-        _processNodes(
+        processNodes(
             seed,
             queue[i],
             nodes,
@@ -1307,51 +1337,6 @@ function _processNodes(
             depthSets
         );
     }
-}
-
-/**
- * Recursively walks the node list in the direction indicated creating clusters as it goes.
- * The LabKey lineage in `nodes` is processed by this algorithm to populate the
- * `visEdges` collection with {@link Edge} object and the `visNodes` collections with
- * either {@link VisGraphNode} or {@link VisGraphCombinedNode} objects.
- * These collections will be fed into the vis.js {@link Network} to perform the graph layout.
- *
- * If a node has an edge count greater than {@link LineageGroupingOptions.combineSize},
- * a {@link VisGraphCombinedNode} node will be created to hold the collection of {@link LineageNode}
- * objects. We opted to create our own combined nodes rather than use vis.js's cluster node due
- * to vis.js performance issues when laying out large graph sizes with clustered nodes.
- *
- * The algorithm will stop traversing the graph when the conditions specified
- * by {@link LineageGroupingOptions.generations} have been met.
- *
- * The general approach is:
- *  starting from 'mergedIn' nodes (including the original seed)
- *  - if a node has been seen, skip
- *  - create a VisGraphNode and add it to the graph (if it hasn't already been added within a combined node)
- *  - check for stop conditions in `options.generations`:
- *      - if Immediate and depth exceeds depth 1, stop
- *      - if Specific an depth exceeds the desired depth, stop
- *      - if 'Multi' and there are >1 edges at the previous depth, stop
- *  - if there are more than 5 edges, create a combined node
- *     - mark all included nodes and edges on the combined node: {containedNodes: [...]}
- *     - fixup any existing edges to the nodes that are now included in the combined node
- *     - add any additional edges needed for other combined nodes the edge target might belong to
- *     - create edge from the node to the new combined node
- *   - if there are less than 5 edges, create a basic node
- *     - create edges from the node to all of edge targets
- */
-function processNodes(
-    seed: string,
-    startLisd: string,
-    nodes: Map<string, LineageNode>,
-    options: LineageOptions,
-    dir: LINEAGE_DIRECTIONS,
-    visEdges: EdgeMap,
-    visNodes: NodeMap,
-    combinedNodes: CombinedNodeMap,
-    nodesInCombinedNode: { [key: string]: string[] }
-): void {
-    _processNodes(seed, startLisd, nodes, options, dir, visEdges, visNodes, combinedNodes, nodesInCombinedNode);
 }
 
 const DEFAULT_EDGE_PROPS = {

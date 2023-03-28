@@ -1,10 +1,15 @@
 import React from 'react';
 
-import { Filter } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { User } from '../base/models/User';
 
-import { isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/utils';
+import {
+    isFreezerManagementEnabled,
+    isProductProjectsEnabled,
+    isProjectContainer,
+    isSampleStatusEnabled
+} from '../../app/utils';
 
 import { OperationConfirmationData } from '../entities/models';
 
@@ -20,7 +25,7 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { SystemField } from '../domainproperties/models';
 
-import { SampleStatus } from './models';
+import { SampleState, SampleStatus } from './models';
 
 import {
     operationRestrictionMessage,
@@ -297,3 +302,29 @@ export function getStorageItemUpdateData(
     };
 }
 
+export function getSampleStatusLockedMessage(state: SampleState, saving: boolean) : string {
+    let msgs = [];
+    if (state?.inUse || saving)
+        msgs.push('cannot change status type or be deleted because it is in use');
+    if (state && !state.isLocal)
+        msgs.push('can be changed only in the ' + state.containerPath.substring(1) + ' project');
+    if (msgs.length > 0)
+        return 'This sample status ' + msgs.join(' and ') + '.'
+    return undefined;
+}
+
+export function getSampleStatusContainerFilter(forLegend?: boolean, containerPath?: string, moduleContext?: ModuleContext) : Query.ContainerFilter {
+    // Check to see if product projects support is enabled.
+    if (!isProductProjectsEnabled(moduleContext)) {
+        return undefined;
+    }
+
+    // The legend should show statuses for all the samples that can be seen in the project.
+    if (forLegend && isProjectContainer(containerPath)) {
+        return Query.ContainerFilter.currentAndSubfoldersPlusShared;
+    }
+
+    // When requesting data from a sub-folder context the ContainerFilter filters
+    // "up" the folder hierarchy for data.
+    return Query.ContainerFilter.currentPlusProjectAndShared;
+}

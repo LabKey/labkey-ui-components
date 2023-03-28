@@ -6,6 +6,18 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 47346: App Sample details Assay data tab loading slowly
   * AssayDefinitionModel.createSampleFilter change to generate a where clause that uses a "RowId IN (<UNION Query>)" instead of "OR clause"
 
+### version 2.315.1
+*Released*: 28 March 2023
+* Merge release23.2-SNAPSHOT to develop:
+    * includes changes from 2.302.3
+
+### version 2.315.0
+*Released*: 27 March 2023
+* Update sample statuses to inherit from the parent and no longer support creation in subfolders
+* Update `ManageSampleStatusesPanel`
+  * Display statuses from higher up the hierarchy as locked statuses
+  * Don't allow adding new statuses when in sub-folders
+
 ### version 2.314.1
 *Released*: 24 March 2023
 * Sample aliquots panel should not show "Assay Data with Aliquots" when isAssayEnabled false
@@ -111,6 +123,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Account for storedAmount and Units fields now on samples grids
   * Don't display amount and units in details display
 
+### version 2.302.3
+*Released*: 27 March 2023
+- Issue 47569: Remove setting for inheriting permissions for the Site Roles and Assignments
+
 ### version 2.302.2
 *Released*: 03 March 2023
 - Issue 47306: Resolve Permissions page error by skipping no-resolvable users.
@@ -119,7 +135,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.302.1
 *Released*: 02 March 2023
 - Issue 47202: Options to reduce payload of getContainers.api response
-    - Field editor only needs the base set of container info for lookups so use new props to reduce response object size (includeWorkbookChildren and includeStandardProperties)
+  - Field editor only needs the base set of container info for lookups so use new props to reduce response object size (includeWorkbookChildren and includeStandardProperties)
 
 ### version 2.302.0
 *Released*: 28 February 2023

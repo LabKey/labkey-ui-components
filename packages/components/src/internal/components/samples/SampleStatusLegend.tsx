@@ -1,5 +1,4 @@
 import React, { FC, memo } from 'react';
-import { Query } from '@labkey/api';
 
 import { QuerySort } from '../../../public/QuerySort';
 import { isLoading } from '../../../public/LoadingState';
@@ -11,7 +10,7 @@ import { SCHEMAS } from '../../schemas';
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
 import { SampleStatusTag } from './SampleStatusTag';
-import { getSampleStatus } from './utils';
+import { getSampleStatus, getSampleStatusContainerFilter } from './utils';
 
 export const SAMPLE_STATUS_LEGEND = 'SampleStatusLegend';
 
@@ -65,7 +64,7 @@ export const SampleStatusLegend: FC<OwnProps> = () => {
         model: {
             id: 'sample-statuses-model',
             schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_STATUS,
-            containerFilter: Query.ContainerFilter.current, // only get statuses for the current container
+            containerFilter: getSampleStatusContainerFilter(true),
             maxRows: -1,
             sorts: [new QuerySort({ fieldKey: 'StatusType' }), new QuerySort({ fieldKey: 'Label' })],
         },

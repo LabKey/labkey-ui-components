@@ -23,7 +23,6 @@ export const DEFAULT_LINEAGE_DIRECTION = LINEAGE_DIRECTIONS.Children;
 export const DEFAULT_GROUPING_OPTIONS: LineageGroupingOptions = {
     childDepth: DEFAULT_LINEAGE_DISTANCE,
     combineSize: 6,
-    combineTypeSize: 6,
     generations: LINEAGE_GROUPING_GENERATIONS.All,
     parentDepth: DEFAULT_LINEAGE_DISTANCE + 1,
 };

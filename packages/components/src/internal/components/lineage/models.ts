@@ -1117,94 +1117,6 @@ function applyCombineSize(
 }
 
 /**
- * Groups edges by node.type. Returns the edges grouped by type and an array of all remaining ungrouped edges.
- * If a group size does not exceed the combineTypeSize then the edges of that type will not be grouped and those
- * edges will be returned as part of the ungrouped edges.
- */
-function groupEdgesByType(
-    edges: List<LineageLink>,
-    nodes: LineageNodeMap,
-    combineTypeSize: number
-): {
-    groups: Record<string, LineageLink[]>;
-    ungroupedEdges: LineageLink[];
-} {
-    if (!combineTypeSize) {
-        return { groups: {}, ungroupedEdges: edges.toArray() };
-    }
-
-    const groups: Record<string, LineageLink[]> = {};
-    const ungroupedEdges: LineageLink[] = [];
-
-    edges.forEach(edge => {
-        const node = nodes[edge.lsid];
-        if (node?.type) {
-            if (!groups.hasOwnProperty(node.type)) {
-                groups[node.type] = [];
-            }
-
-            groups[node.type].push(edge);
-        } else {
-            ungroupedEdges.push(edge);
-        }
-    });
-
-    Object.keys(groups).forEach(type => {
-        if (groups[type].length < combineTypeSize) {
-            groups[type].forEach(edge => {
-                ungroupedEdges.push(edge);
-            });
-            delete groups[type];
-        }
-    });
-
-    return { groups, ungroupedEdges };
-}
-
-/** Applies the {@link LineageGroupingOptions#combineTypeSize} logic to the graph. */
-function applyCombineTypeSize(
-    lsid: string,
-    edges: List<LineageLink>,
-    nodes: LineageNodeMap,
-    options: LineageOptions,
-    dir: LINEAGE_DIRECTIONS,
-    visEdges: EdgeMap,
-    visNodes: VisNodeMap,
-    nodesInCombinedNode: { [key: string]: string[] }
-): void {
-    const node = nodes[lsid];
-    const edgesByType = groupEdgesByType(edges, nodes, options.grouping.combineTypeSize);
-    const types = Object.keys(edgesByType.groups);
-
-    if (types.length > 0) {
-        // For each grouping created a combined node and add the edges
-        types.forEach(type => {
-            const groupedEdges = edgesByType.groups[type];
-            const combineByTypeNode = createCombinedVisNode(
-                groupedEdges.map(e => nodes[e.lsid]),
-                options,
-                node.name
-            );
-            visNodes[combineByTypeNode.id] = combineByTypeNode;
-
-            addEdges(lsid, combineByTypeNode.id, visEdges, List(groupedEdges), nodesInCombinedNode, dir);
-
-            groupedEdges.forEach(e => {
-                processCombinedNode(lsid, e, combineByTypeNode, visEdges, visNodes, nodesInCombinedNode);
-            });
-        });
-
-        // Process all ungrouped edges
-        if (edgesByType.ungroupedEdges.length > 0) {
-            addEdges(lsid, null, visEdges, List(edgesByType.ungroupedEdges), nodesInCombinedNode, dir);
-        }
-    } else {
-        // create a VisGraph Edge from the current node to the edge's target for each edge
-        addEdges(lsid, null, visEdges, edges, nodesInCombinedNode, dir);
-    }
-}
-
-/**
  * Recursively walks the node list in the direction indicated creating clusters as it goes.
  * The LabKey lineage in `nodes` is processed by this algorithm to populate the
  * `visEdges` collection with {@link Edge} object and the `visNodes` collections with
@@ -1345,9 +1257,6 @@ function processNodes(
             });
             queue = [combinedLineageNode.lsid];
         }
-        // eslint-disable-next-line no-constant-condition
-    } else if (false /* disabled for now */ && grouping.combineTypeSize && edges.size >= grouping.combineTypeSize) {
-        applyCombineTypeSize(lsid, edges, nodes, options, dir, visEdges, visNodes, nodesInCombinedNode);
     } else {
         // create a VisGraph Edge from the current node to the edge's target for each edge
         addEdges(lsid, null, visEdges, edges, nodesInCombinedNode, dir);

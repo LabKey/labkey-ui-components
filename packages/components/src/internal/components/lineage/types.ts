@@ -34,11 +34,6 @@ export interface LineageGroupingOptions {
      * is greater than or equal to this threshold, create a combined node.
      */
     combineSize?: number;
-    /**
-     * (DISABLED) When the number of parent or children edges of a common type, for each depth,
-     * is greater than or equal to this threshold, create a combined node.
-     */
-    combineTypeSize?: number;
     /** Determines when to stop traversing generations of nodes. */
     generations?: LINEAGE_GROUPING_GENERATIONS;
     /** When {@link generations} is {@link LINEAGE_GROUPING_GENERATIONS.Specific}, include this many generations along the parent axis. */

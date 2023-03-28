@@ -202,26 +202,6 @@ export const LineageSettings: FC<Props> = memo(props => {
                     style={{ marginBottom: '16px', maxWidth: '100px' }}
                     type="number"
                 />
-
-                {/*<PanelFieldLabel>*/}
-                {/*    Combine Type Threshold*/}
-                {/*    <LabelHelpTip placement="bottom" title="Combine Type Threshold">*/}
-                {/*        <div style={{ maxWidth: '350px' }}>*/}
-                {/*            If the number of nodes of a common type in a generation is greater than or equal to this*/}
-                {/*            threshold, then all the nodes of a common type in a generation will be combined into a*/}
-                {/*            single node.*/}
-                {/*        </div>*/}
-                {/*    </LabelHelpTip>*/}
-                {/*</PanelFieldLabel>*/}
-                {/*<input*/}
-                {/*    defaultValue={options.grouping?.combineTypeSize ?? DEFAULT_GROUPING_OPTIONS.combineTypeSize}*/}
-                {/*    className="form-control"*/}
-                {/*    min={2}*/}
-                {/*    name="combineTypeSize"*/}
-                {/*    onChange={onGroupingChange}*/}
-                {/*    style={{ marginBottom: '16px', maxWidth: '100px' }}*/}
-                {/*    type="number"*/}
-                {/*/>*/}
             </div>
 
             <div className="job-overview__section">

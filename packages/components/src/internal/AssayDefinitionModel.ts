@@ -261,12 +261,12 @@ export class AssayDefinitionModel extends Record({
         return List(sampleCols.map(this.sampleColumnFieldKey));
     }
 
-    createSampleFilter(sampleColumns: List<string>, value, singleFilter: Filter.IFilterType, singleFilterValue?: any) {
+    createSampleFilter(sampleColumns: List<string>, value, singleFilter: Filter.IFilterType) {
         const keyCol = '/RowId';
         if (sampleColumns.size === 1) {
             // generate simple equals filter
             const sampleColumn = sampleColumns.get(0);
-            return Filter.create(sampleColumn + keyCol, singleFilterValue ? singleFilterValue : value, singleFilter);
+            return Filter.create(sampleColumn + keyCol, value, singleFilter);
         } else {
             // generate a where clause filter to include all sample columns via a UNION (issue 47346)
             const whereClause =

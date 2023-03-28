@@ -728,8 +728,7 @@ export function createQueryConfigFilteredBySample(
     model: AssayDefinitionModel,
     value,
     singleFilter: Filter.IFilterType,
-    omitSampleCols?: boolean,
-    singleFilterValue?: any
+    omitSampleCols?: boolean
 ): QueryConfig {
     const sampleColumns = model.getSampleColumnFieldKeys();
 
@@ -738,7 +737,7 @@ export function createQueryConfigFilteredBySample(
     }
 
     return {
-        baseFilters: [model.createSampleFilter(sampleColumns, value, singleFilter, singleFilterValue)],
+        baseFilters: [model.createSampleFilter(sampleColumns, value, singleFilter)],
         omittedColumns: omitSampleCols ? sampleColumns.toArray() : undefined,
         schemaQuery: new SchemaQuery(model.protocolSchemaName, 'Data'),
         title: model.name,

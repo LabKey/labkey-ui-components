@@ -84,7 +84,7 @@ export class SearchResultsPanel extends React.Component<Props, any> {
                     {!hideHeader && <h3 className="no-margin-top search-results__amount">{headerMsg}</h3>}
                     {data.size > 0 &&
                         data.map((item, i) => (
-                            <div key={i} className="col-md-6 col-sm-12 search-results__margin-top">
+                            <div key={i} className="col-md-12 col-sm-12 search-results__margin-top">
                                 <SearchResultCard
                                     summary={item.get('summary')}
                                     url={item.get('url')}

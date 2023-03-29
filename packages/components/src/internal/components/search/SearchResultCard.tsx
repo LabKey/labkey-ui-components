@@ -50,7 +50,7 @@ export const SearchResultCard: FC<SearchResultProps> = memo(({ cardData, iconUrl
     return (
         <a href={url}>
             <div className="row search-result__card-container">
-                <div className="col-sm-2 hidden-xs search-result__card-icon__container">
+                <div className="hidden-xs search-result__card-icon__container">
                     {iconUrl && <img className="search-result__card-icon" src={iconUrl} />}
                     {!iconUrl && (
                         <SVGIcon
@@ -61,17 +61,13 @@ export const SearchResultCard: FC<SearchResultProps> = memo(({ cardData, iconUrl
                         />
                     )}
                 </div>
-
-                <div className="col-sm-10">
-                    <div>
+                <div className="col-sm-12">
+                    <div className="col-sm-12 search-result__title">
                         <h4 className="text-capitalize">{title}</h4>
+                        {category && <div className="search-result__category-badge">{category}</div>}
+                        {typeName && <div className="search-result__type-badge">{typeName}</div>}
                     </div>
-
-                    {category && <CardDetail label="Category" value={category} />}
-
-                    {typeName && <CardDetail label="Type" value={typeName} />}
-
-                    <CardDetail label="Summary" title="Summary" value={summaryText} />
+                    <div className="search-result__summary">{summaryText}</div>
                 </div>
             </div>
         </a>

@@ -11,3 +11,7 @@ export enum SearchScope {
 }
 
 export const SAMPLE_FINDER_SESSION_PREFIX = 'Searched ';
+
+export const SEARCH_HELP_TOPIC = 'luceneSearch';
+
+export const SEARCH_PAGE_DEFAULT = 20;

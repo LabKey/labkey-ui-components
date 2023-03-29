@@ -1,9 +1,9 @@
 type KeyType = string | number | symbol;
 type MapType<K extends KeyType, V> = Record<K, V> | Map<K, V>;
-type Mapper<K extends KeyType, V, T> = (key: K, value: V, original: ExtendedMap<K, V>) => T;
+type Mapper<K extends KeyType, V, T> = (value: V, key: K, original: ExtendedMap<K, V>) => T;
 type ArrayMapper<V, T> = (value: V, index: number, array: V[]) => T;
-type FilterFn<K extends KeyType, V> = (key: K, value: V, original: ExtendedMap<K, V>) => boolean;
-type Reducer<K extends KeyType, V, T> = (result: T, key: K, value: V, original: ExtendedMap<K, V>) => T;
+type FilterFn<K extends KeyType, V> = (value: V, key: K, original: ExtendedMap<K, V>) => boolean;
+type Reducer<K extends KeyType, V, T> = (result: T, value: V, key: K, original: ExtendedMap<K, V>) => T;
 
 /**
  * ExtendedMap is an extended version of the built in Map class. It has an improved constructor (that takes Records,
@@ -53,7 +53,7 @@ export class ExtendedMap<K extends KeyType, V> extends Map {
         const newMap = new ExtendedMap<K, T>();
 
         for (const [key, value] of this) {
-            newMap.set(key, mapper(key, value, this));
+            newMap.set(key, mapper(value, key, this));
         }
 
         return newMap;
@@ -69,7 +69,7 @@ export class ExtendedMap<K extends KeyType, V> extends Map {
         let result = initialReduction === undefined ? new ExtendedMap() : initialReduction;
 
         for (const [key, value] of this) {
-            result = reducer(result as T, key, value, this);
+            result = reducer(result as T, value, key, this);
         }
 
         return result as T;
@@ -84,7 +84,7 @@ export class ExtendedMap<K extends KeyType, V> extends Map {
     filter(filterFn: FilterFn<K, V>): ExtendedMap<K, V> {
         const newMap = new ExtendedMap<K, V>();
         for (const [key, value] of this) {
-            if (filterFn(key, value, this)) newMap.set(key, value);
+            if (filterFn(value, key, this)) newMap.set(key, value);
         }
         return newMap;
     }

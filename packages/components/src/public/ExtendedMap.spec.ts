@@ -86,14 +86,14 @@ describe('ExtendedMap', () => {
     });
 
     test('map', () => {
-        const mappedEm: ExtendedMap<string, string> = ORDERED_ONE.map((key, value, original) => {
+        const mappedEm: ExtendedMap<string, string> = ORDERED_ONE.map((value, key, original) => {
             return (value * original.size).toString(10);
         });
         expectOrder(mappedEm, KEYS_ONE, ['3', '6', '9']);
     });
 
     test('reduce', () => {
-        const reducer = (result, key, value): ExtendedMap<string, number> => {
+        const reducer = (result, value, key): ExtendedMap<string, number> => {
             if (value % 2 === 0) {
                 result.set(key, value);
             }
@@ -106,14 +106,14 @@ describe('ExtendedMap', () => {
         expectValues(reducedWithInitial, ['four', 'five', 'six', 'two'], [4, 5, 6, 2]);
 
         const reducedWithAlternateInitial = ORDERED_ONE.reduce(
-            (result, key, value, original) => result + value * original.size,
+            (result, value, key, original) => result + value * original.size,
             ''
         );
         expect(reducedWithAlternateInitial).toEqual('369');
     });
 
     test('filter', () => {
-        const filtered = ORDERED_ONE.filter((key, value, original) => value % original.size === 0);
+        const filtered = ORDERED_ONE.filter((value, key, original) => value % original.size === 0);
         expectValues(filtered, ['three'], [3]);
     });
 

@@ -1092,7 +1092,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             queryInfo,
             updatedData,
             selectedIndices,
-            bulkUpdateProps?.excludeRowIdx
+            bulkUpdateProps?.excludeRowIdx,
+            bulkUpdateProps?.isIncludedColumn
         );
         onChange(editorModelChanges);
         // The result of this promise is used by toggleBulkUpdate, which doesn't expect anything to be passed

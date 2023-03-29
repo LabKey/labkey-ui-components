@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.317.0
+*Released*: 29 March 2023
+* Convert Immutable classes to plain JS classes
+    - ViewInfo
+    - DataViewInfo
+    - LastActionStatus
+
 ### version 2.316.0
 *Released*: 29 March 2023
 * Issue 47520: LKB: Sample Finder shows no samples when Assay does not have sample ID populated
@@ -40,7 +47,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 47229: Support all characters within aliases
 
 ### version 2.313.0
-*Released*: 23 March 2023
+*Released*: 23 March 2023O
 * Issue 47503: Sample Manager: Sample Finder not working for sample type with double quotes in name
 * Issue 47077: Sample Finder taking a really long time to load results
   * skip autoload for sample finder result grids

@@ -66,7 +66,7 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
             return;
         }
 
-        const existingViews = await api.samples.loadFinderSearches();
+        const existingViews = await api.samples.loadFinderSearches(true);
         let duplicate = false;
         existingViews.forEach(v => {
             if (v.reportName.toLowerCase() === newNameTrimmed.toLowerCase()) {

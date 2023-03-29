@@ -423,6 +423,7 @@ import {
     DataOperation,
     ParentEntityRequiredColumns,
     SampleTypeDataType,
+    SamplePropertyDataType,
 } from './internal/components/entities/constants';
 import { getUniqueIdColumnMetadata } from './internal/components/entities/utils';
 import { EntityInsertPanel } from './internal/components/entities/EntityInsertPanel';
@@ -1056,6 +1057,7 @@ export {
     EntityCrossProjectSelectionConfirmModal,
     EntityDeleteConfirmModal,
     SampleTypeDataType,
+    SamplePropertyDataType,
     DataClassDataType,
     AssayResultDataType,
     AssayRunDataType,

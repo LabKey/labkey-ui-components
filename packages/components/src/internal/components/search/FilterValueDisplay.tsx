@@ -1,4 +1,4 @@
-import React, { FC, memo, useMemo } from 'react';
+import React, { FC, memo, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 
 import { Filter } from '@labkey/api';
@@ -7,10 +7,14 @@ import { OverlayTrigger, Popover } from 'react-bootstrap';
 
 import { COLUMN_NOT_IN_FILTER_TYPE } from '../../query/filter';
 
+import { JsonType } from '../domainproperties/PropDescType';
+import { getParsedRelativeDateStr, isRelativeDateFilterValue } from '../../util/Date';
+
 import { getFilterValuesAsArray, NEGATE_FILTERS, SAMPLE_SEARCH_FILTER_TYPES_SKIP_TITLE } from './utils';
 
 interface FilterValueDisplayProps {
     filter: Filter.IFilter;
+    jsonType?: JsonType;
     noValueInQueryFilterMsg?: string;
     onFilterValueExpand?: () => void;
 }
@@ -38,7 +42,7 @@ function getShortFilterTypeDisplay(filterType: Filter.IFilterType) {
 }
 
 export const FilterValueDisplay: FC<FilterValueDisplayProps> = memo(props => {
-    const { filter, onFilterValueExpand, noValueInQueryFilterMsg } = props;
+    const { filter, onFilterValueExpand, noValueInQueryFilterMsg, jsonType } = props;
 
     const exclude = useMemo(() => {
         return NEGATE_FILTERS.indexOf(filter.getFilterType().getURLSuffix()) > -1;
@@ -53,6 +57,23 @@ export const FilterValueDisplay: FC<FilterValueDisplayProps> = memo(props => {
 
         return null;
     }, [filter]);
+
+    const getValueDisplay = useCallback(
+        (rawValue: any) => {
+            const isDateField = jsonType === 'date';
+            if (!isDateField) return rawValue;
+
+            if (isRelativeDateFilterValue(rawValue)) {
+                const { positive, days } = getParsedRelativeDateStr(rawValue);
+                if (days === 0) return 'today';
+                const plural = days > 1 ? 's' : '';
+                return days + ' day' + plural + (positive ? ' from now' : ' ago');
+            }
+
+            return rawValue;
+        },
+        [jsonType]
+    );
 
     const filterValueDisplay = useMemo(() => {
         const filterType = filter.getFilterType();
@@ -106,10 +127,10 @@ export const FilterValueDisplay: FC<FilterValueDisplayProps> = memo(props => {
             filterUrlSuffix === Filter.Types.NOT_BETWEEN.getURLSuffix()
         ) {
             const values = filter.getValue();
-            filterValueDisplay = values[0] + ' - ' + values[1];
+            filterValueDisplay = getValueDisplay(values[0]) + ' - ' + getValueDisplay(values[1]);
         } else {
             if (filterType.isDataValueRequired()) {
-                filterValueDisplay = filter.getValue();
+                filterValueDisplay = getValueDisplay(filter.getValue());
             }
         }
 

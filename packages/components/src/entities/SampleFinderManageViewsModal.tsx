@@ -31,7 +31,7 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
     useEffect(() => {
         (async () => {
             try {
-                const views = await api.samples.loadFinderSearches();
+                const views = await api.samples.loadFinderSearches(true);
                 setSavedSearches(views);
             } catch (error) {
                 setErrorMessage(resolveErrorMessage(error));
@@ -46,7 +46,7 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
 
         try {
             await deleteReport(entityId);
-            setSavedSearches(await api.samples.loadFinderSearches());
+            setSavedSearches(await api.samples.loadFinderSearches(true));
         } catch (error) {
             setErrorMessage(resolveErrorMessage(error));
         } finally {
@@ -66,7 +66,7 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
             return;
         }
 
-        const existingViews = await api.samples.loadFinderSearches();
+        const existingViews = await api.samples.loadFinderSearches(true);
         let duplicate = false;
         existingViews.forEach(v => {
             if (v.reportName.toLowerCase() === newNameTrimmed.toLowerCase()) {
@@ -85,7 +85,7 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
 
         try {
             await renameReport(selectedSearch.entityId, newNameTrimmed);
-            setSavedSearches(await api.samples.loadFinderSearches());
+            setSavedSearches(await api.samples.loadFinderSearches(true));
             setSelectedSearch(undefined);
         } catch (error) {
             setErrorMessage(resolveErrorMessage(error));

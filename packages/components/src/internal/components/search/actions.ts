@@ -279,18 +279,25 @@ export function saveFinderSearch(report: FinderReport, cardsJson: string, replac
     });
 }
 
-export function loadFinderSearches(): Promise<FinderReport[]> {
+export function loadFinderSearches(excludeModuleReport?: boolean): Promise<FinderReport[]> {
     return new Promise((resolve, reject) => {
         loadReports()
             .then((reports: IDataViewInfo[]) => {
                 const views = reports
-                    .filter(report => report.type === DataViewInfoTypes.SampleFinderSavedSearch)
+                    .filter(report => {
+                        if (excludeModuleReport) {
+                            if (report.reportId?.indexOf('module:SampleManagement') === 0) return false;
+                        }
+                        return report.type === DataViewInfoTypes.SampleFinderSavedSearch;
+                    })
                     .map(report => {
+                        const isModuleReport = report.reportId?.indexOf('module:SampleManagement') === 0;
                         return {
                             reportId: report.reportId,
                             reportName: report.name,
                             entityId: report.id,
                             isSession: false,
+                            isModuleReport,
                         };
                     });
                 resolve(views.sort((a, b) => a.reportName.localeCompare(b.reportName)));

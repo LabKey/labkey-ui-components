@@ -52,4 +52,23 @@ describe('SampleFinderSaveViewModal', () => {
 
         wrapper.unmount();
     });
+
+    test('with module view', async () => {
+        const wrapper = mount(
+            <SampleFinderSaveViewModal
+                cardsJson=""
+                onCancel={jest.fn()}
+                onSuccess={jest.fn()}
+                currentView={{
+                    reportName: 'a built in report',
+                    isModuleReport: true,
+                }}
+            />
+        );
+
+        expect(wrapper.find('ModalTitle').text()).toBe('Save Custom Search');
+        expect(wrapper.find('input').prop('value')).toBe('');
+
+        wrapper.unmount();
+    });
 });

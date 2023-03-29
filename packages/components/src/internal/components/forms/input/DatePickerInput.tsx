@@ -18,7 +18,13 @@ import { withFormsy } from 'formsy-react';
 import DatePicker from 'react-datepicker';
 
 import { FieldLabel } from '../FieldLabel';
-import { getColDateFormat, getJsonDateTimeFormatString, isDateTimeCol, parseDate } from '../../../util/Date';
+import {
+    getColDateFormat,
+    getJsonDateTimeFormatString,
+    isDateTimeCol,
+    isRelativeDateFilterValue,
+    parseDate,
+} from '../../../util/Date';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
 import { WithFormsyProps } from '../constants';
@@ -27,6 +33,7 @@ import { DisableableInput, DisableableInputProps, DisableableInputState } from '
 
 export interface DatePickerInputProps extends DisableableInputProps, WithFormsyProps {
     addLabelAsterisk?: boolean;
+    allowRelativeInput?: boolean;
     autoFocus?: boolean;
     dateFormat?: string;
     disabled?: boolean;
@@ -40,7 +47,7 @@ export interface DatePickerInputProps extends DisableableInputProps, WithFormsyP
     label?: any;
     labelClassName?: string;
     name?: string;
-    onChange?: (newDate?: Date) => void;
+    onChange?: (newDate?: Date | string) => void;
     onKeyDown?: (event: React.KeyboardEvent<HTMLElement>) => void;
     placeholderText?: string;
     queryColumn: QueryColumn;
@@ -52,6 +59,7 @@ export interface DatePickerInputProps extends DisableableInputProps, WithFormsyP
 
 interface DatePickerInputState extends DisableableInputState {
     invalid: boolean;
+    relativeInputValue?: string;
     selectedDate: any;
 }
 
@@ -85,12 +93,17 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
 
         // Issue 46767: DatePicker valid dates start at year 1000 (i.e. new Date('1000-01-01'))
         const dateFormat = props.initValueFormatted ? this.getDateFormat() : undefined;
-        const invalid = props.value ? parseDate(props.value, dateFormat, new Date('1000-01-01')) === null : false;
+        let invalid = false;
+        if (props.value) {
+            if (!isRelativeDateFilterValue(props.value))
+                invalid = parseDate(props.value, dateFormat, new Date('1000-01-01')) === null;
+        }
 
         this.state = {
             isDisabled: props.initiallyDisabled,
             selectedDate: initDate,
             invalid,
+            relativeInputValue: undefined,
         };
     }
 
@@ -111,17 +124,30 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
         // to parseDate when getting the initial value.
         const dateFormat = props.initValueFormatted ? this.getDateFormat() : undefined;
 
+        if (props.allowRelativeInput && isRelativeDateFilterValue(props.value)) return undefined;
+
         return props.value ? parseDate(props.value, dateFormat) : undefined;
     }
 
     onChange = (date: Date): void => {
         this.setState({ selectedDate: date, invalid: false });
 
-        this.props.onChange?.(date);
+        this.props.onChange?.(this.state.relativeInputValue ? this.state.relativeInputValue : date);
 
         // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
         if (this.props.formsy) {
             this.props.setValue?.(getJsonDateTimeFormatString(date));
+        }
+    };
+
+    onChangeRaw = (event?: any): void => {
+        const value = event?.target?.value;
+        const isRelativeDateInput = isRelativeDateFilterValue(event?.target?.value);
+        if (isRelativeDateInput) {
+            this.setState({ relativeInputValue: value });
+            this.props.onChange?.(value);
+        } else {
+            this.setState({ relativeInputValue: undefined });
         }
     };
 
@@ -153,9 +179,13 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
             autoFocus,
             isFormInput,
             onKeyDown,
+            value,
+            allowRelativeInput,
         } = this.props;
 
         const { isDisabled, selectedDate, invalid } = this.state;
+
+        const initVal = allowRelativeInput && isRelativeDateFilterValue(value) ? value : undefined;
 
         const picker = (
             <DatePicker
@@ -168,11 +198,13 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
                 disabled={isDisabled || invalid}
                 selected={selectedDate}
                 onChange={this.onChange}
+                onChangeRaw={allowRelativeInput ? this.onChangeRaw : undefined}
                 showTimeSelect={this.shouldShowTime()}
                 placeholderText={placeholderText ?? `Select ${queryColumn.caption.toLowerCase()}`}
                 dateFormat={this.getDateFormat()}
                 autoFocus={autoFocus}
                 onKeyDown={onKeyDown}
+                value={initVal}
             />
         );
 

@@ -789,15 +789,15 @@ export function getSampleAssayQueryConfigs(
 }
 
 export function getSampleAliquotsStats(rows: Record<string, any>): SampleAliquotsStats {
-    let inStorageCount = 0,
+    let availableCount = 0,
         aliquotCount = 0,
         aliquotIds = [];
     for (const ind in rows) {
         const row = rows[ind];
-        const storageStatus = caseInsensitive(row, 'StorageStatus')?.value;
+        const amount = caseInsensitive(row, 'StoredAmount')?.value;
 
-        const inStorage = storageStatus === 'In storage';
-        inStorageCount += inStorage ? 1 : 0;
+        const isAvailable = amount && amount > 0;
+        availableCount += isAvailable ? 1 : 0;
         aliquotCount++;
 
         aliquotIds.push(caseInsensitive(row, 'RowId')?.value);
@@ -805,7 +805,7 @@ export function getSampleAliquotsStats(rows: Record<string, any>): SampleAliquot
 
     return {
         aliquotCount,
-        inStorageCount,
+        availableCount,
         aliquotIds,
     };
 }
@@ -826,7 +826,7 @@ export function getSampleAliquotsQueryConfig(
         bindURL: forGridView,
         maxRows: forGridView ? undefined : -1,
         omittedColumns: omitCols ? [...omitCols, omitCol] : [omitCol],
-        requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'StorageStatus'],
+        requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS],
         baseFilters: [
             Filter.create('RootMaterialLSID', aliquotRootLsid ?? sampleLsid),
             Filter.create('Lsid', sampleLsid, Filter.Types.EXP_CHILD_OF),

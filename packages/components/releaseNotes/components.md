@@ -1,6 +1,30 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.316.0
+*Released*: 29 March 2023
+* Issue 47520: LKB: Sample Finder shows no samples when Assay does not have sample ID populated
+  * modify filtering on AssayNotInFilter to exclude null result
+* Sample Finder: Sample Properties & Built in reports
+  * new SamplePropertyDataType EntityDataType
+  * add built-in report section to SampleFinderSavedViewsMenu
+  * support relative date filter value in DatePickerInput
+  * add parsing, display and labkey sql util for relative date filter
+  * modify QueryFilterPanel to allow provided list of fields
+  * update card/json util to no longer persist full entityDataType object
+
+### version 2.315.1
+*Released*: 28 March 2023
+* Merge release23.2-SNAPSHOT to develop:
+    * includes changes from 2.302.3
+
+### version 2.315.0
+*Released*: 27 March 2023
+* Update sample statuses to inherit from the parent and no longer support creation in subfolders
+* Update `ManageSampleStatusesPanel`
+  * Display statuses from higher up the hierarchy as locked statuses
+  * Don't allow adding new statuses when in sub-folders
+
 ### version 2.314.1
 *Released*: 24 March 2023
 * Sample aliquots panel should not show "Assay Data with Aliquots" when isAssayEnabled false
@@ -106,6 +130,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Account for storedAmount and Units fields now on samples grids
   * Don't display amount and units in details display
 
+### version 2.302.3
+*Released*: 27 March 2023
+- Issue 47569: Remove setting for inheriting permissions for the Site Roles and Assignments
+
 ### version 2.302.2
 *Released*: 03 March 2023
 - Issue 47306: Resolve Permissions page error by skipping no-resolvable users.
@@ -114,7 +142,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.302.1
 *Released*: 02 March 2023
 - Issue 47202: Options to reduce payload of getContainers.api response
-    - Field editor only needs the base set of container info for lookups so use new props to reduce response object size (includeWorkbookChildren and includeStandardProperties)
+  - Field editor only needs the base set of container info for lookups so use new props to reduce response object size (includeWorkbookChildren and includeStandardProperties)
 
 ### version 2.302.0
 *Released*: 28 February 2023

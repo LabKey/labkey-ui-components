@@ -396,7 +396,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
 
     // using filterArray to indicate user-defined filters only and concatenating with any view filters
     let colFilters = model?.filterArray.filter(filter => isFilterColumnNameMatch(filter, queryColumn));
-    const viewColFilters = view?.filters.toArray().filter(filter => isFilterColumnNameMatch(filter, queryColumn));
+    const viewColFilters = view?.filters.filter(filter => isFilterColumnNameMatch(filter, queryColumn));
     if (viewColFilters?.length) colFilters = colFilters.concat(viewColFilters);
     // first check the model users (user-defined) and then fall back to the view sorts
     const colQuerySortDir =

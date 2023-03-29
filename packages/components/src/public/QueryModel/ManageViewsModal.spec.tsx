@@ -21,59 +21,41 @@ export const getQueryAPI = (views: ViewInfo[]) => {
     });
 };
 
-const SYSTEM_DEFAULT_VIEW = ViewInfo.create({
-    columns: [],
-    filters: [],
+const SYSTEM_DEFAULT_VIEW = ViewInfo.fromJson({
     default: true,
     saved: false, // cannot be reverted
-    name: '',
 });
 
-const SYSTEM_DETAIL_VIEW = ViewInfo.create({
-    columns: [],
-    filters: [],
-    default: false,
+const SYSTEM_DETAIL_VIEW = ViewInfo.fromJson({
     saved: false, // cannot be reverted
     name: ViewInfo.DETAIL_NAME,
 });
 
-const SHARED_DEFAULT_VIEW = ViewInfo.create({
-    columns: [],
-    filters: [],
+const SHARED_DEFAULT_VIEW = ViewInfo.fromJson({
     default: true,
     saved: true, // can be reverted
     shared: true,
-    name: '',
 });
 
-const MY_DEFAULT_VIEW = ViewInfo.create({
-    columns: [],
-    filters: [],
+const MY_DEFAULT_VIEW = ViewInfo.fromJson({
     default: true,
     saved: true, // can be reverted
-    name: '',
 });
 
-const VIEW_1 = ViewInfo.create({
-    columns: [],
-    filters: [],
+const VIEW_1 = ViewInfo.fromJson({
     default: false,
     label: 'View 1',
     name: 'View1',
 });
 
-const SESSION_VIEW = ViewInfo.create({
-    columns: [],
-    filters: [],
+const SESSION_VIEW = ViewInfo.fromJson({
     default: false,
     label: 'View 2',
     name: 'View2',
     session: true,
 });
 
-const SHARED_VIEW = ViewInfo.create({
-    columns: [],
-    filters: [],
+const SHARED_VIEW = ViewInfo.fromJson({
     default: false,
     label: 'View 3',
     name: 'View3',
@@ -100,7 +82,7 @@ describe('ViewLabel', () => {
     });
 
     test('default view, edited', () => {
-        const wrapper = mount(<ViewLabel view={ViewInfo.create({ default: true, session: true })} />);
+        const wrapper = mount(<ViewLabel view={ViewInfo.fromJson({ default: true, session: true })} />);
         expect(wrapper.text()).toBe('Default View (edited)');
         wrapper.unmount();
     });
@@ -114,14 +96,13 @@ describe('ViewLabel', () => {
     test('shared view, edited', () => {
         const wrapper = mount(
             <ViewLabel
-                view={ViewInfo.create({
-                    columns: [],
-                    filters: [],
-                    default: false,
-                    label: 'View 3',
-                    name: 'View3',
-                    session: true,
-                })}
+                view={
+                    ViewInfo.fromJson({
+                        label: 'View 3',
+                        name: 'View3',
+                        session: true,
+                    })
+                }
             />
         );
         expect(wrapper.text()).toBe('View 3 (edited)');
@@ -131,15 +112,14 @@ describe('ViewLabel', () => {
     test('inherited view', () => {
         const wrapper = mount(
             <ViewLabel
-                view={ViewInfo.create({
-                    columns: [],
-                    filers: [],
-                    default: false,
-                    label: 'View 4',
-                    name: 'View4',
-                    shared: false,
-                    inherit: true,
-                })}
+                view={
+                    ViewInfo.fromJson({
+                        label: 'View 4',
+                        name: 'View4',
+                        shared: false,
+                        inherit: true,
+                    })
+                }
             />
         );
         expect(wrapper.text()).toBe('View 4 (inherited)');
@@ -149,16 +129,15 @@ describe('ViewLabel', () => {
     test('inherited view, edited', () => {
         const wrapper = mount(
             <ViewLabel
-                view={ViewInfo.create({
-                    columns: [],
-                    filers: [],
-                    default: false,
-                    label: 'View 4',
-                    name: 'View4',
-                    shared: false,
-                    inherit: true,
-                    session: true,
-                })}
+                view={
+                    ViewInfo.fromJson({
+                        label: 'View 4',
+                        name: 'View4',
+                        shared: false,
+                        inherit: true,
+                        session: true,
+                    })
+                }
             />
         );
         expect(wrapper.text()).toBe('View 4 (edited)');
@@ -168,15 +147,14 @@ describe('ViewLabel', () => {
     test('shared, inherited view', () => {
         const wrapper = mount(
             <ViewLabel
-                view={ViewInfo.create({
-                    columns: [],
-                    filers: [],
-                    default: false,
-                    label: 'View 5',
-                    name: 'View5',
-                    shared: true,
-                    inherit: true,
-                })}
+                view={
+                    ViewInfo.fromJson({
+                        label: 'View 5',
+                        name: 'View5',
+                        shared: true,
+                        inherit: true,
+                    })
+                }
             />
         );
         expect(wrapper.text()).toBe('View 5 (inherited, shared)');
@@ -186,16 +164,15 @@ describe('ViewLabel', () => {
     test('edited, shared, inherited view', () => {
         const wrapper = mount(
             <ViewLabel
-                view={ViewInfo.create({
-                    columns: [],
-                    filers: [],
-                    default: false,
-                    label: 'View 5',
-                    name: 'View5',
-                    shared: true,
-                    inherit: true,
-                    session: true,
-                })}
+                view={
+                    ViewInfo.fromJson({
+                        label: 'View 5',
+                        name: 'View5',
+                        shared: true,
+                        inherit: true,
+                        session: true,
+                    })
+                }
             />
         );
         expect(wrapper.text()).toBe('View 5 (edited)');

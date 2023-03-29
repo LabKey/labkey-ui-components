@@ -1,6 +1,5 @@
 // Consider having this implement Query.QueryColumn from @labkey/api
 // commented out attributes are not used in app
-import { Record as ImmutableRecord } from 'immutable';
 import { Filter, Query } from '@labkey/api';
 
 import {

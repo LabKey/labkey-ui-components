@@ -2,103 +2,104 @@
 // Search fields.
 
 .search-result__card-icon {
-  max-width: 42px;
-  max-height: 42px;
+    max-width: 42px;
+    max-height: 42px;
 
 }
 
 .search-result__card-icon--small {
-  max-width: 42px;
-  max-height: 42px;
-  margin-left: 10px;
+    max-width: 42px;
+    max-height: 42px;
+    margin-left: 10px;
 }
 
 .search-result__card-icon__container {
-  padding: 5px 8px;
-  line-height: 79px;
+    padding: 5px 8px;
+    line-height: 79px;
 }
 
 .search-result__title {
-  display: flex;
-  align-items: center;
-  padding: 0;
-  .text-capitalize {
-    float: left;
-  }
+    display: flex;
+    align-items: center;
+    padding: 0;
 
-  .search-result__category-badge {
-    @extend .badge;
-    float: left;
-    margin-left: 5px;
-  }
+    .text-capitalize {
+        float: left;
+    }
 
-  .search-result__type-badge {
-    @extend .badge;
-    float: left;
-    margin-left: 5px;
-  }
+    .search-result__category-badge {
+        @extend .badge;
+        float: left;
+        margin-left: 5px;
+    }
+
+    .search-result__type-badge {
+        @extend .badge;
+        float: left;
+        margin-left: 5px;
+    }
 }
 
 .search-result__card-container {
-  border: {
-    bottom: 2px #eee;
-    left: 0;
-    right: 0;
-    top: 0;
-    style: solid;
-  }
-  display: flex;
-  margin: 0;
-  padding: 0;
-  color: #333333;
-  align-items: center;
+    border: {
+        bottom: 2px #eee;
+        left: 0;
+        right: 0;
+        top: 0;
+        style: solid;
+    }
+    display: flex;
+    margin: 0;
+    padding: 0;
+    color: #333333;
+    align-items: center;
 }
 
 .search-result__container {
-  box-sizing: border-box;
-  margin-bottom: 10px;
-  padding: 5px;
-  overflow: hidden;
-  word-wrap: break-word;
-  cursor: pointer;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    padding: 5px;
+    overflow: hidden;
+    word-wrap: break-word;
+    cursor: pointer;
 }
 
 .search-results__margin-top {
-  margin-top: 0px;
+    margin-top: 0px;
 }
 
 .search-form {
-  height: 34px;
-  display: flex;
-  align-items: center;
+    height: 34px;
+    display: flex;
+    align-items: center;
 
-  .search-icon {
-    position: relative;
-    float: left;
-    left: 1px;
-    top: 23px;
-    margin-left: 5px;
-    color: $gray-light;
-  }
+    .search-icon {
+        position: relative;
+        float: left;
+        left: 1px;
+        top: 23px;
+        margin-left: 5px;
+        color: $gray-light;
+    }
 
-  .search-input {
-    padding: 7px 4px 7px 22px;
-    border-radius: 4px;
-  }
+    .search-input {
+        padding: 7px 4px 7px 22px;
+        border-radius: 4px;
+    }
 
-  .submit-button {
-    float: left;
-    background: #67AB58;
-    color: white;
-  }
+    .submit-button {
+        float: left;
+        background: #67AB58;
+        color: white;
+    }
 
-  .page-buttons {
-    float: right;
-  }
+    .page-buttons {
+        float: right;
+    }
 }
 
 .search-form__help-icon {
-  padding-right: 3px;
+    padding-right: 3px;
 }
 
 li.saved-finder-menu-action-item a:focus {

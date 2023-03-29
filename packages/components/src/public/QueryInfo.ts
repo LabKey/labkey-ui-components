@@ -157,7 +157,7 @@ export class QueryInfo extends Record({
         let views = Map<string, ViewInfo>();
         if (includeViews) {
             queryInfoJson.views.forEach(view => {
-                const viewInfo = new ViewInfo(view);
+                const viewInfo = ViewInfo.fromJson(view);
                 views = views.set(viewInfo.name.toLowerCase(), viewInfo);
             });
         }

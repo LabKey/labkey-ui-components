@@ -3,9 +3,9 @@ import { Filter } from '@labkey/api';
 import { QuerySort, QuerySortJson } from '../public/QuerySort';
 import { QueryInfo } from '../public/QueryInfo';
 
-function getFiltersFromView(rawViewInfo: ViewInfoJson): Filter.IFilter[] {
-    if (rawViewInfo && rawViewInfo.filter) {
-        return rawViewInfo.filter.map(filter =>
+function getFiltersFromView(filters: ViewInfoFilter[]): Filter.IFilter[] {
+    if (filters) {
+        return filters.map(filter =>
             Filter.create(filter.fieldKey, filter.value, Filter.getFilterTypeForURLSuffix(filter.op))
         );
     }
@@ -13,9 +13,9 @@ function getFiltersFromView(rawViewInfo: ViewInfoJson): Filter.IFilter[] {
     return [];
 }
 
-function getSortsFromView(rawViewInfo: ViewInfoJson): QuerySort[] {
-    if (rawViewInfo && rawViewInfo.sort && rawViewInfo.sort.length > 0) {
-        return rawViewInfo.sort.map(sort => new QuerySort(sort));
+function getSortsFromView(sorts: QuerySortJson[]): QuerySort[] {
+    if (sorts) {
+        return sorts.map(sort => new QuerySort(sort));
     }
 
     return [];
@@ -97,28 +97,33 @@ export class ViewInfo {
     //  to define the override detail name.
     static BIO_DETAIL_NAME = 'BiologicsDetails';
 
-    constructor(json: ViewInfoJson) {
+    constructor(partial: Partial<ViewInfo>) {
         // prepare name and isDefault
-        let label = json.label;
-        let name = '';
-        const isDefault = json.default === true;
+        let { label, name } = partial;
 
-        if (isDefault) {
+        if (partial.isDefault) {
             name = ViewInfo.DEFAULT_NAME;
             label = 'Default';
-        } else if (json.name === undefined || json.name === '') {
+        } else if (name === undefined || name === '') {
             name = ViewInfo.DEFAULT_NAME;
         } else {
-            name = json.name;
+            name = partial.name;
         }
 
-        Object.assign(this, VIEW_INFO_DEFAULTS, json, {
-            columns: json.columns !== undefined ? [...json.columns] : [],
-            filters: getFiltersFromView(json),
+        Object.assign(this, VIEW_INFO_DEFAULTS, partial, { name, label });
+    }
+
+    static fromJson(json: ViewInfoJson) {
+        const { columns, filter, sort, ...rest } = json;
+        const isDefault = rest.default === true;
+        delete rest.default;
+
+        return new ViewInfo({
+            columns: columns !== undefined ? [...columns] : [],
+            filters: getFiltersFromView(filter),
             isDefault,
-            label,
-            name,
-            sorts: getSortsFromView(json),
+            sorts: getSortsFromView(sort),
+            ...rest,
         });
     }
 
@@ -208,8 +213,9 @@ export class ViewInfo {
     }
 
     mutate(updates: Partial<ViewInfo>) {
+        // TODO: this needs to be new ViewInfo, revert  the change from replaceALl
         return new ViewInfo({
-            ...ViewInfo.serialize(this),
+            ...this,
             ...updates,
         });
     }

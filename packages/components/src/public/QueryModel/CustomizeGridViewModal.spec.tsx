@@ -314,7 +314,7 @@ describe('CustomizeGridViewModal', () => {
     const QUERY_NAME = 'queryTest';
 
     test('With title, no view', () => {
-        const view = new ViewInfo({ name: 'default' });
+        const view = ViewInfo.fromJson({ name: 'default' });
         const queryInfo = QueryInfo.create({
             views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
             columns,
@@ -328,7 +328,7 @@ describe('CustomizeGridViewModal', () => {
 
     test('Without title, with view name', () => {
         const viewName = 'viewForTesting';
-        const view = new ViewInfo({ name: viewName });
+        const view = ViewInfo.fromJson({ name: viewName });
         const queryInfo = QueryInfo.create({
             views: fromJS({ [viewName.toLowerCase()]: view }),
             columns,
@@ -340,7 +340,7 @@ describe('CustomizeGridViewModal', () => {
     });
 
     test('Columns in View and All Fields,', () => {
-        const view = new ViewInfo({
+        const view = ViewInfo.fromJson({
             name: ViewInfo.DEFAULT_NAME,
             columns: [FIELD_1_COL, FIELD_2_COL],
         });
@@ -401,7 +401,7 @@ describe('CustomizeGridViewModal', () => {
     });
 
     test('with selectedColumn', () => {
-        const view = new ViewInfo({
+        const view = ViewInfo.fromJson({
             name: ViewInfo.DEFAULT_NAME,
             columns: [FIELD_1_COL, FIELD_2_COL],
         });

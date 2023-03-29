@@ -292,7 +292,7 @@ describe('HeaderCellDropdown', () => {
 
     test('isSortAsc via view sort', () => {
         const sortObj = { fieldKey: 'column', dir: '+' };
-        const view = new ViewInfo({ sort: [sortObj] });
+        const view = ViewInfo.fromJson({ sort: [sortObj] });
         const queryInfo = QueryInfo.create({ views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }) });
 
         const model = makeTestQueryModel(new SchemaQuery('schema', 'query'), queryInfo).mutate({
@@ -338,7 +338,7 @@ describe('HeaderCellDropdown', () => {
 
     test('isSortDesc via view sort', () => {
         const sortObj = { fieldKey: 'column', dir: '-' };
-        const view = new ViewInfo({ sort: [sortObj] });
+        const view = ViewInfo.fromJson({ sort: [sortObj] });
         const queryInfo = QueryInfo.create({ views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }) });
 
         const model = makeTestQueryModel(new SchemaQuery('schema', 'query'), queryInfo).mutate({
@@ -378,7 +378,7 @@ describe('HeaderCellDropdown', () => {
 
     test('view filter', () => {
         const filterObj = { fieldKey: 'column', value: 'val', op: 'contains' };
-        const view = new ViewInfo({ filter: [filterObj] });
+        const view = ViewInfo.fromJson({ filter: [filterObj] });
         const queryInfo = QueryInfo.create({ views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }) });
 
         const model = makeTestQueryModel(new SchemaQuery('schema', 'query'), queryInfo).mutate({
@@ -397,7 +397,7 @@ describe('HeaderCellDropdown', () => {
 
     test('multiple colFilters, one being a view filter', () => {
         const filterObj = { fieldKey: 'column', value: 'val', op: 'contains' };
-        const view = new ViewInfo({ filter: [filterObj] });
+        const view = ViewInfo.fromJson({ filter: [filterObj] });
         const queryInfo = QueryInfo.create({ views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }) });
 
         const model = makeTestQueryModel(new SchemaQuery('schema', 'query'), queryInfo).mutate({

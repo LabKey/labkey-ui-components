@@ -150,7 +150,7 @@ export function applyQueryMetadata(rawQueryInfo: any, schemaName?: string, query
                 .toMap();
 
             rawQueryInfo.views.forEach(rawViewInfo => {
-                let viewInfo = new ViewInfo(rawViewInfo);
+                let viewInfo = ViewInfo.fromJson(rawViewInfo);
 
                 if (removedViewColumns.size) {
                     viewInfo = viewInfo.mutate({

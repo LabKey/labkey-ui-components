@@ -16,7 +16,7 @@ import { DisableableMenuItem } from '../samples/DisableableMenuItem';
 import { FindDerivativesMenuItem, getFieldFilter, getSessionSearchFilterProps } from './FindDerivativesButton';
 
 const VIEW_NAME = 'TEST_VIEW';
-const VIEW = new ViewInfo({
+const VIEW = ViewInfo.fromJson({
     name: VIEW_NAME,
     filter: [{ fieldKey: 'c', value: 'testing', op: 'eq' }],
 });

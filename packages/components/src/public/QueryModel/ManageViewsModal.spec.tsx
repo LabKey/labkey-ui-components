@@ -21,41 +21,41 @@ export const getQueryAPI = (views: ViewInfo[]) => {
     });
 };
 
-const SYSTEM_DEFAULT_VIEW = new ViewInfo({
+const SYSTEM_DEFAULT_VIEW = ViewInfo.fromJson({
     default: true,
     saved: false, // cannot be reverted
 });
 
-const SYSTEM_DETAIL_VIEW = new ViewInfo({
+const SYSTEM_DETAIL_VIEW = ViewInfo.fromJson({
     saved: false, // cannot be reverted
     name: ViewInfo.DETAIL_NAME,
 });
 
-const SHARED_DEFAULT_VIEW = new ViewInfo({
+const SHARED_DEFAULT_VIEW = ViewInfo.fromJson({
     default: true,
     saved: true, // can be reverted
     shared: true,
 });
 
-const MY_DEFAULT_VIEW = new ViewInfo({
+const MY_DEFAULT_VIEW = ViewInfo.fromJson({
     default: true,
     saved: true, // can be reverted
 });
 
-const VIEW_1 = new ViewInfo({
+const VIEW_1 = ViewInfo.fromJson({
     default: false,
     label: 'View 1',
     name: 'View1',
 });
 
-const SESSION_VIEW = new ViewInfo({
+const SESSION_VIEW = ViewInfo.fromJson({
     default: false,
     label: 'View 2',
     name: 'View2',
     session: true,
 });
 
-const SHARED_VIEW = new ViewInfo({
+const SHARED_VIEW = ViewInfo.fromJson({
     default: false,
     label: 'View 3',
     name: 'View3',
@@ -82,7 +82,7 @@ describe('ViewLabel', () => {
     });
 
     test('default view, edited', () => {
-        const wrapper = mount(<ViewLabel view={new ViewInfo({ default: true, session: true })} />);
+        const wrapper = mount(<ViewLabel view={ViewInfo.fromJson({ default: true, session: true })} />);
         expect(wrapper.text()).toBe('Default View (edited)');
         wrapper.unmount();
     });
@@ -97,7 +97,7 @@ describe('ViewLabel', () => {
         const wrapper = mount(
             <ViewLabel
                 view={
-                    new ViewInfo({
+                    ViewInfo.fromJson({
                         label: 'View 3',
                         name: 'View3',
                         session: true,
@@ -113,7 +113,7 @@ describe('ViewLabel', () => {
         const wrapper = mount(
             <ViewLabel
                 view={
-                    new ViewInfo({
+                    ViewInfo.fromJson({
                         label: 'View 4',
                         name: 'View4',
                         shared: false,
@@ -130,7 +130,7 @@ describe('ViewLabel', () => {
         const wrapper = mount(
             <ViewLabel
                 view={
-                    new ViewInfo({
+                    ViewInfo.fromJson({
                         label: 'View 4',
                         name: 'View4',
                         shared: false,
@@ -148,7 +148,7 @@ describe('ViewLabel', () => {
         const wrapper = mount(
             <ViewLabel
                 view={
-                    new ViewInfo({
+                    ViewInfo.fromJson({
                         label: 'View 5',
                         name: 'View5',
                         shared: true,
@@ -165,7 +165,7 @@ describe('ViewLabel', () => {
         const wrapper = mount(
             <ViewLabel
                 view={
-                    new ViewInfo({
+                    ViewInfo.fromJson({
                         label: 'View 5',
                         name: 'View5',
                         shared: true,

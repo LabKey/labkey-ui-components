@@ -18,18 +18,18 @@ describe('SaveViewModal', () => {
         onConfirmSave: jest.fn(),
     };
 
-    const DEFAULT_VIEW = new ViewInfo({
+    const DEFAULT_VIEW = ViewInfo.fromJson({
         default: true,
         inherit: true,
     });
 
-    const VIEW_1 = new ViewInfo({
+    const VIEW_1 = ViewInfo.fromJson({
         label: 'View 1',
         name: 'View1',
         inherit: false,
     });
 
-    const VIEW_2 = new ViewInfo({
+    const VIEW_2 = ViewInfo.fromJson({
         label: 'View 2',
         name: 'View2',
         inherit: true,
@@ -96,7 +96,7 @@ describe('SaveViewModal', () => {
 describe('ViewNameInput', () => {
     test('default view', () => {
         const wrapper = mount(
-            <ViewNameInput view={new ViewInfo({ default: true, name: 'default' })} onBlur={jest.fn()} />
+            <ViewNameInput view={ViewInfo.fromJson({ default: true, name: 'default' })} onBlur={jest.fn()} />
         );
         const input = wrapper.find('input');
         expect(input.prop('value')).toBe('');
@@ -107,7 +107,7 @@ describe('ViewNameInput', () => {
     test('hidden view', () => {
         const wrapper = mount(
             <ViewNameInput
-                view={new ViewInfo({ default: false, name: 'Sample Finder', hidden: true })}
+                view={ViewInfo.fromJson({ default: false, name: 'Sample Finder', hidden: true })}
                 onBlur={jest.fn()}
             />
         );
@@ -119,7 +119,7 @@ describe('ViewNameInput', () => {
 
     test('valid named view', () => {
         const wrapper = mount(
-            <ViewNameInput view={new ViewInfo({ default: false, name: 'Save Me' })} onBlur={jest.fn()} />
+            <ViewNameInput view={ViewInfo.fromJson({ default: false, name: 'Save Me' })} onBlur={jest.fn()} />
         );
         const input = wrapper.find('input');
         expect(input.prop('value')).toBe('Save Me');
@@ -135,7 +135,7 @@ describe('ViewNameInput', () => {
     test('invalid named view', () => {
         const wrapper = mount(
             <ViewNameInput
-                view={new ViewInfo({ default: false, name: 'Save Me' })}
+                view={ViewInfo.fromJson({ default: false, name: 'Save Me' })}
                 onBlur={jest.fn()}
                 maxLength={10}
             />

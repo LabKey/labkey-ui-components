@@ -846,9 +846,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                         this.setState({ errorMsg });
                     });
             } else {
-                const finalViewInfo = updatedViewInfo.mutate({
-                    name: newName,
-                });
+                const finalViewInfo = updatedViewInfo.mutate({ name: newName });
 
                 saveGridView(model.schemaQuery, model.containerPath, finalViewInfo, replace, false, inherit, shared)
                     .then(response => {

@@ -7,86 +7,86 @@ import { ViewInfo } from './ViewInfo';
 
 describe('ViewInfo', () => {
     test('create', () => {
-        let view = new ViewInfo({ name: 'test', label: 'Testing' });
+        let view = ViewInfo.fromJson({ name: 'test', label: 'Testing' });
         expect(view.name).toBe('test');
         expect(view.label).toBe('Testing');
 
-        view = new ViewInfo({ name: 'test', label: 'Testing', default: true });
+        view = ViewInfo.fromJson({ name: 'test', label: 'Testing', default: true });
         expect(view.name).toBe(ViewInfo.DEFAULT_NAME);
         expect(view.label).toBe('Default');
 
-        view = new ViewInfo({ default: true });
+        view = ViewInfo.fromJson({ default: true });
         expect(view.name).toBe(ViewInfo.DEFAULT_NAME);
         expect(view.label).toBe('Default');
     });
 
     test('serialize', () => {
-        let view = new ViewInfo({ name: 'test' });
+        let view = ViewInfo.fromJson({ name: 'test' });
         expect(ViewInfo.serialize(view).name).toBe('test');
-        view = new ViewInfo({ name: ViewInfo.DEFAULT_NAME });
+        view = ViewInfo.fromJson({ name: ViewInfo.DEFAULT_NAME });
         expect(ViewInfo.serialize(view).name).toBe('');
 
         const filterObj = { fieldKey: 'test', value: 'val', op: 'contains' };
-        view = new ViewInfo({ filter: [filterObj] });
+        view = ViewInfo.fromJson({ filter: [filterObj] });
         expect((ViewInfo.serialize(view) as any).filters).toBe(undefined);
         expect(ViewInfo.serialize(view).filter).toStrictEqual([filterObj]);
 
         const sortObj = { fieldKey: 'test', dir: '+' };
-        view = new ViewInfo({ sort: [sortObj] });
+        view = ViewInfo.fromJson({ sort: [sortObj] });
         expect((ViewInfo.serialize(view) as any).sorts).toBe(undefined);
         expect(ViewInfo.serialize(view).sort).toStrictEqual([sortObj]);
     });
 
     test('isVisible', () => {
-        let view = new ViewInfo({ default: false, hidden: false, name: 'test' });
+        let view = ViewInfo.fromJson({ default: false, hidden: false, name: 'test' });
         expect(view.isVisible).toBeTruthy();
-        view = new ViewInfo({ default: true, hidden: false, name: 'test' });
+        view = ViewInfo.fromJson({ default: true, hidden: false, name: 'test' });
         expect(view.isVisible).toBeFalsy();
-        view = new ViewInfo({ default: false, hidden: true, name: 'test' });
+        view = ViewInfo.fromJson({ default: false, hidden: true, name: 'test' });
         expect(view.isVisible).toBeFalsy();
-        view = new ViewInfo({ default: false, hidden: false, name: '~~DETAILS~~' });
+        view = ViewInfo.fromJson({ default: false, hidden: false, name: '~~DETAILS~~' });
         expect(view.isVisible).toBeFalsy();
-        view = new ViewInfo({ default: false, hidden: false, name: ViewInfo.BIO_DETAIL_NAME });
+        view = ViewInfo.fromJson({ default: false, hidden: false, name: ViewInfo.BIO_DETAIL_NAME });
         expect(view.isVisible).toBeFalsy();
     });
 
     test('isSaved', () => {
-        expect(new ViewInfo({}).isSaved).toBeFalsy();
-        expect(new ViewInfo({ saved: undefined }).isSaved).toBeFalsy();
-        expect(new ViewInfo({ saved: false }).isSaved).toBeFalsy();
-        expect(new ViewInfo({ saved: true }).isSaved).toBeTruthy();
+        expect(ViewInfo.fromJson({}).isSaved).toBeFalsy();
+        expect(ViewInfo.fromJson({ saved: undefined }).isSaved).toBeFalsy();
+        expect(ViewInfo.fromJson({ saved: false }).isSaved).toBeFalsy();
+        expect(ViewInfo.fromJson({ saved: true }).isSaved).toBeTruthy();
     });
 
     test('isSystemView', () => {
-        expect(new ViewInfo({}).isSystemView).toBeTruthy();
-        expect(new ViewInfo({ name: '' }).isSystemView).toBeTruthy();
-        expect(new ViewInfo({ name: 'testing' }).isSystemView).toBeFalsy();
-        expect(new ViewInfo({ name: ViewInfo.BIO_DETAIL_NAME }).isSystemView).toBeFalsy();
-        expect(new ViewInfo({ name: ViewInfo.DEFAULT_NAME }).isSystemView).toBeTruthy();
-        expect(new ViewInfo({ name: ViewInfo.DETAIL_NAME }).isSystemView).toBeTruthy();
-        expect(new ViewInfo({ name: ViewInfo.UPDATE_NAME }).isSystemView).toBeTruthy();
+        expect(ViewInfo.fromJson({}).isSystemView).toBeTruthy();
+        expect(ViewInfo.fromJson({ name: '' }).isSystemView).toBeTruthy();
+        expect(ViewInfo.fromJson({ name: 'testing' }).isSystemView).toBeFalsy();
+        expect(ViewInfo.fromJson({ name: ViewInfo.BIO_DETAIL_NAME }).isSystemView).toBeFalsy();
+        expect(ViewInfo.fromJson({ name: ViewInfo.DEFAULT_NAME }).isSystemView).toBeTruthy();
+        expect(ViewInfo.fromJson({ name: ViewInfo.DETAIL_NAME }).isSystemView).toBeTruthy();
+        expect(ViewInfo.fromJson({ name: ViewInfo.UPDATE_NAME }).isSystemView).toBeTruthy();
     });
 
     test('modifiers', () => {
-        let view = new ViewInfo({ session: true });
+        let view = ViewInfo.fromJson({ session: true });
         expect(view.modifiers).toStrictEqual(['edited']);
-        view = new ViewInfo({ session: true, shared: true });
+        view = ViewInfo.fromJson({ session: true, shared: true });
         expect(view.modifiers).toStrictEqual(['edited']);
-        view = new ViewInfo({ session: true, inherit: true });
+        view = ViewInfo.fromJson({ session: true, inherit: true });
         expect(view.modifiers).toStrictEqual(['edited']);
-        view = new ViewInfo({ session: true, shared: true, inherit: true });
+        view = ViewInfo.fromJson({ session: true, shared: true, inherit: true });
         expect(view.modifiers).toStrictEqual(['edited']);
-        view = new ViewInfo({ shared: true });
+        view = ViewInfo.fromJson({ shared: true });
         expect(view.modifiers).toStrictEqual(['shared']);
 
-        view = new ViewInfo({ inherit: true });
+        view = ViewInfo.fromJson({ inherit: true });
         expect(view.modifiers).toStrictEqual(['inherited']);
-        view = new ViewInfo({ shared: true, inherit: true });
+        view = ViewInfo.fromJson({ shared: true, inherit: true });
         expect(view.modifiers).toStrictEqual(['inherited', 'shared']);
     });
 
     test('addSystemViewColumns, default view', () => {
-        let view = new ViewInfo({
+        let view = ViewInfo.fromJson({
             default: true,
             columns: [
                 {
@@ -143,7 +143,7 @@ describe('ViewInfo', () => {
     });
 
     test('addSystemViewColumns, default session view', () => {
-        let view = new ViewInfo({
+        let view = ViewInfo.fromJson({
             default: true,
             session: true,
             columns: [
@@ -180,7 +180,7 @@ describe('ViewInfo', () => {
     });
 
     test('addSystemViewColumns, not default view', () => {
-        let view = new ViewInfo({
+        let view = ViewInfo.fromJson({
             default: false,
             name: 'Not Default',
             session: true,
@@ -218,7 +218,7 @@ describe('ViewInfo', () => {
     });
 
     test('addSystemViewColumns, default view, with disabledSysFields', () => {
-        let view = new ViewInfo({
+        let view = ViewInfo.fromJson({
             default: true,
             columns: [
                 {

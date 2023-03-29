@@ -30,12 +30,13 @@ interface Props {
     hidePanelFrame?: boolean;
     iconUrl?: string;
     model: SearchResultsModel;
-    offset: number;
+    offset?: number;
 }
 
 export class SearchResultsPanel extends React.Component<Props, any> {
     static defaultProps = {
         maxHitSize: 1000,
+        offset: 0,
     };
 
     isLoading(): boolean {

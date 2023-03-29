@@ -30,11 +30,15 @@ const DEFAULT_VIEW_NAME = ''; // always use default view for selection, if none 
 const CHOOSE_VALUES_TAB_KEY = 'Choose values';
 
 interface Props {
+    allowRelativeDateFilter?: boolean;
+    altQueryName?: string;
     api?: ComponentsAPIWrapper;
     asRow?: boolean;
     emptyMsg?: string;
-    entityDataType?: EntityDataType; // used for Sample Finder use case
+    // used for Sample Finder use case
+    entityDataType?: EntityDataType;
     fieldKey?: string;
+    fields?: List<QueryColumn>;
     filters: { [key: string]: FieldFilter[] };
     fullWidth?: boolean;
     hasNotInQueryFilter?: boolean;
@@ -43,7 +47,7 @@ interface Props {
     onFilterUpdate: (field: QueryColumn, newFilters: Filter.IFilter[], index: number) => void;
     onHasNoValueInQueryChange?: (check: boolean) => void;
     queryInfo: QueryInfo;
-    selectDistinctOptions?: Query.SelectDistinctOptions;
+    selectDistinctOptions?: Partial<Query.SelectDistinctOptions>;
     skipDefaultViewCheck?: boolean;
     validFilterField?: (field: QueryColumn, queryInfo: QueryInfo, exprColumnsWithSubSelect?: string[]) => boolean;
     viewName?: string;
@@ -51,6 +55,7 @@ interface Props {
 
 export const QueryFilterPanel: FC<Props> = memo(props => {
     const {
+        allowRelativeDateFilter,
         hasNotInQueryFilter,
         asRow,
         api,
@@ -67,6 +72,8 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         selectDistinctOptions,
         onHasNoValueInQueryChange,
         hasNotInQueryFilterLabel,
+        altQueryName,
+        fields,
     } = props;
     const [queryFields, setQueryFields] = useState<List<QueryColumn>>(undefined);
     const [activeField, setActiveField] = useState<QueryColumn>(undefined);
@@ -77,9 +84,9 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
     // for sample finder, assay data filters uses assay design name (part of schema key) instead of "data" (the query name) as query key
     const filterQueryKey = useMemo(() => {
         if (entityDataType && entityDataType.getInstanceDataType && queryInfo?.schemaQuery)
-            return entityDataType.getInstanceDataType(queryInfo.schemaQuery)?.toLowerCase();
+            return entityDataType.getInstanceDataType(queryInfo.schemaQuery, altQueryName)?.toLowerCase();
         return queryName;
-    }, [queryInfo, entityDataType, queryName]);
+    }, [queryInfo, entityDataType, queryName, altQueryName]);
 
     const viewName = useMemo(() => props.viewName ?? DEFAULT_VIEW_NAME, [props.viewName]);
     const allowFaceting = (col: QueryColumn): boolean => {
@@ -136,18 +143,23 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         setActiveField(undefined);
         if (!queryInfo) return;
 
-        const fields = skipDefaultViewCheck ? queryInfo.getAllColumns(viewName) : queryInfo.getDisplayColumns(viewName);
-        const qF = fromJS(
-            fields.filter(
-                field => field.filterable && (
-                    !validFilterField ||
-                    validFilterField(field, queryInfo, entityDataType?.exprColumnsWithSubSelect)
-                )
-            )
-        );
+        let validFields;
+        if (fields) validFields = fields;
+        else {
+            const qFields = skipDefaultViewCheck
+                ? queryInfo.getAllColumns(viewName)
+                : queryInfo.getDisplayColumns(viewName);
+            validFields = qFields.filter(
+                field =>
+                    field.filterable &&
+                    (!validFilterField || validFilterField(field, queryInfo, entityDataType?.exprColumnsWithSubSelect))
+            );
+        }
+
+        const qF = fromJS(validFields);
         setQueryFields(qF);
         if (fieldKey) {
-            const field = fields.find(f => f.getDisplayFieldKey() === fieldKey);
+            const field = validFields.find(f => f.getDisplayFieldKey() === fieldKey);
             setActiveField(field);
         }
     }, [
@@ -157,6 +169,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         entityDataType?.exprColumnsWithSubSelect,
         fieldKey,
         viewName,
+        fields,
     ]);
 
     useEffect(() => {
@@ -286,6 +299,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                         </div>
                                         {activeTab === FieldFilterTabs.Filter && (
                                             <FilterExpressionView
+                                                allowRelativeDateFilter={allowRelativeDateFilter}
                                                 key={activeFieldKey}
                                                 field={activeField}
                                                 fieldFilters={currentFieldFilters?.map(filter => filter.filter)}

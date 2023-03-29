@@ -7,8 +7,9 @@ import { getTestAPIWrapper } from '../internal/APIWrapper';
 
 import { getSamplesTestAPIWrapper } from '../internal/components/samples/APIWrapper';
 
-import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
 import { FinderReport } from '../internal/components/search/models';
+
+import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
 
 export const SAVED_VIEW1: FinderReport = {
     reportId: 'db:292',

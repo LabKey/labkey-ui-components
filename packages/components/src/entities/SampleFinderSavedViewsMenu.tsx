@@ -20,6 +20,7 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
     const { loadSearch, manageSearches, saveSearch, currentView, hasUnsavedChanges, sessionViewName } = props;
 
     const [savedSearches, setSavedSearches] = useState<FinderReport[]>(undefined);
+    const [moduleSearches, setModuleSearches] = useState<FinderReport[]>(undefined);
     const [open, setOpen] = useState<boolean>(false);
 
     const { api } = useAppContext();
@@ -28,7 +29,14 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
         (async () => {
             try {
                 const views = await api.samples.loadFinderSearches();
-                setSavedSearches(views);
+                const userViews = [];
+                const moduleViews = [];
+                views.forEach(view => {
+                    if (view.isModuleReport) moduleViews.push(view);
+                    else userViews.push(view);
+                });
+                setSavedSearches(userViews);
+                setModuleSearches(moduleViews);
             } catch (error) {
                 // do nothing, already logged
             }
@@ -50,8 +58,8 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
     }, [currentView, hasUnsavedChanges]);
 
     const hasViews = useMemo(() => {
-        return savedSearches?.length > 0 || !!sessionViewName;
-    }, [savedSearches, sessionViewName]);
+        return savedSearches?.length > 0 || moduleSearches?.length > 0 || !!sessionViewName;
+    }, [savedSearches, sessionViewName, moduleSearches]);
 
     const onToggle = useCallback(() => {
         setOpen(_open => !_open);
@@ -64,6 +72,15 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
             onToggle();
         },
         [loadSearch, savedSearches, onToggle]
+    );
+
+    const onLoadModuleSearch = useCallback(
+        e => {
+            const view = moduleSearches.find(search => search.reportId === e.target.name);
+            loadSearch(view);
+            onToggle();
+        },
+        [loadSearch, moduleSearches]
     );
 
     const onLoadSessionSearch = useCallback(() => {
@@ -128,6 +145,25 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
                 )}
                 {savedSearches?.length === 0 && <MenuItem header>No Saved Search</MenuItem>}
                 <MenuItem divider />
+                {moduleSearches?.length > 0 && (
+                    <>
+                        <MenuItem header>Other Reports</MenuItem>
+                        {moduleSearches.map((moduleReport, ind) => {
+                            return (
+                                <MenuItem
+                                    key={ind + 'mod'}
+                                    onClick={onLoadModuleSearch}
+                                    name={moduleReport.reportId}
+                                    active={moduleReport.reportId === currentView?.reportId}
+                                    className="built-in-finder-view"
+                                >
+                                    {moduleReport.reportName}
+                                </MenuItem>
+                            );
+                        })}
+                        <MenuItem divider />
+                    </>
+                )}
                 <MenuItem onClick={onManageView} disabled={!hasSavedView} className="saved-finder-menu-action-item">
                     Manage saved searches
                 </MenuItem>
@@ -139,7 +175,7 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
                     Save as custom search
                 </MenuItem>
             </DropdownButton>
-            {hasUnsavedChanges && currentView?.reportId && (
+            {hasUnsavedChanges && currentView?.reportId && !currentView?.isModuleReport && (
                 <SplitButton
                     id="save-finderview-dropdown"
                     bsStyle="success"
@@ -151,7 +187,7 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
                     </MenuItem>
                 </SplitButton>
             )}
-            {hasUnsavedChanges && !currentView?.reportId && (
+            {hasUnsavedChanges && (!currentView?.reportId || currentView?.isModuleReport) && (
                 <Button bsStyle="success" onClick={onSaveNewView} className="margin-left">
                     Save Search
                 </Button>

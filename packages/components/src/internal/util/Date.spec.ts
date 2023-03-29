@@ -25,6 +25,9 @@ import {
     getColDateFormat,
     getColFormattedDateFilterValue,
     getJsonDateTimeFormatString,
+    getNextDateStr,
+    getParsedRelativeDateStr,
+    isRelativeDateFilterValue,
     parseDate,
 } from './Date';
 
@@ -230,6 +233,82 @@ describe('Date Utilities', () => {
             expect(parseDate('0218-11-18', undefined, new Date('1000-01-01'))).toBe(null);
             expect(parseDate('0218-11-18 00:00', 'yyyy-MM-dd HH:ss').toString()).toContain('0218');
             expect(parseDate('0218-11-18 00:00', 'yyyy-MM-dd HH:ss', new Date('1000-01-01'))).toBe(null);
+        });
+    });
+
+    describe('getNextDateStr', () => {
+        test('default days', () => {
+            expect(getNextDateStr('2022-02-02')).toEqual('2022-02-03');
+            expect(getNextDateStr('2022-02-02 01:02')).toEqual('2022-02-03');
+        });
+
+        test('0 day', () => {
+            expect(getNextDateStr('2022-02-02', 0)).toEqual('2022-02-02');
+        });
+
+        test('n positive days', () => {
+            expect(getNextDateStr('2022-02-02', 3)).toEqual('2022-02-05');
+            expect(getNextDateStr('2022-02-02 01:02', 3)).toEqual('2022-02-05');
+            expect(getNextDateStr('2022-02-27', 3)).toEqual('2022-03-02');
+            expect(getNextDateStr('2022-02-27 01:02', 3)).toEqual('2022-03-02');
+        });
+
+        test('n negative days', () => {
+            expect(getNextDateStr('2022-02-02', -3)).toEqual('2022-01-30');
+            expect(getNextDateStr('2022-02-02 01:02', -3)).toEqual('2022-01-30');
+            expect(getNextDateStr('2022-02-27', -3)).toEqual('2022-02-24');
+            expect(getNextDateStr('2022-02-27 01:02', -3)).toEqual('2022-02-24');
+        });
+    });
+
+    describe('isRelativeDateFilterValue', () => {
+        test('empty value', () => {
+            expect(isRelativeDateFilterValue(undefined)).toBeFalsy();
+            expect(isRelativeDateFilterValue(null)).toBeFalsy();
+            expect(isRelativeDateFilterValue('')).toBeFalsy();
+        });
+
+        test('date value', () => {
+            expect(isRelativeDateFilterValue('2022-04-19 01:02')).toBeFalsy();
+            expect(isRelativeDateFilterValue('2022-04-19')).toBeFalsy();
+        });
+
+        test('incomplete value', () => {
+            expect(isRelativeDateFilterValue('3d')).toBeFalsy();
+            expect(isRelativeDateFilterValue('d')).toBeFalsy();
+            expect(isRelativeDateFilterValue('3')).toBeFalsy();
+            expect(isRelativeDateFilterValue('0d')).toBeFalsy();
+            expect(isRelativeDateFilterValue('+d')).toBeFalsy();
+            expect(isRelativeDateFilterValue('+3')).toBeFalsy();
+            expect(isRelativeDateFilterValue('++3d')).toBeFalsy();
+        });
+
+        test('valid', () => {
+            expect(isRelativeDateFilterValue('+3d')).toBeTruthy();
+            expect(isRelativeDateFilterValue('+300d')).toBeTruthy();
+            expect(isRelativeDateFilterValue('-3d')).toBeTruthy();
+            expect(isRelativeDateFilterValue('-0d')).toBeTruthy();
+        });
+    });
+
+    describe('getParsedRelativeDateStr', () => {
+        test('getParsedRelativeDateStr', () => {
+            expect(getParsedRelativeDateStr('+3d')).toStrictEqual({
+                positive: true,
+                days: 3,
+            });
+            expect(getParsedRelativeDateStr('+300d')).toStrictEqual({
+                positive: true,
+                days: 300,
+            });
+            expect(getParsedRelativeDateStr('-3d')).toStrictEqual({
+                positive: false,
+                days: 3,
+            });
+            expect(getParsedRelativeDateStr('-0d')).toStrictEqual({
+                positive: false,
+                days: 0,
+            });
         });
     });
 });

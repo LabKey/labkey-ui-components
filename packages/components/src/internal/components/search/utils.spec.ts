@@ -20,7 +20,7 @@ import { IN_EXP_DESCENDANTS_OF_FILTER_TYPE } from '../../url/InExpDescendantsOfF
 
 import { formatDate } from '../../util/Date';
 
-import { AssayResultDataType, SampleTypeDataType } from '../entities/constants';
+import { AssayResultDataType, SamplePropertyDataType, SampleTypeDataType } from '../entities/constants';
 
 import { COLUMN_IN_FILTER_TYPE, COLUMN_NOT_IN_FILTER_TYPE } from '../../query/filter';
 
@@ -41,6 +41,7 @@ import {
     getSampleFinderColumnNames,
     getSampleFinderCommonConfigs,
     getSampleFinderQueryConfigs,
+    getSamplePropertyFilters,
     getUpdatedCheckedValues,
     getUpdatedChooseValuesFilter,
     getUpdatedDataTypeFilters,
@@ -258,7 +259,7 @@ const AssayColumnInFilter = Filter.create(
 
 const AssayNotInFilter = Filter.create(
     'RowId',
-    'SELECT "strField" FROM "assay.general.assay1"."data"',
+    'SELECT "strField" FROM "assay.general.assay1"."data" WHERE "strField" IS NOT NULL',
     COLUMN_NOT_IN_FILTER_TYPE
 );
 const AssayNotInFilterField = {
@@ -288,12 +289,6 @@ describe('getAssayFilter', () => {
     });
 
     test('Assay card with not in assay filter', () => {
-        const cardFilter = {
-            fieldKey: 'TestColumn',
-            fieldCaption: 'TestColumn',
-            filter: Filter.create('TestColumn', 'value'),
-            jsonType: 'string',
-        } as FieldFilter;
         expect(
             getAssayFilter({
                 entityDataType: AssayResultDataType,
@@ -301,6 +296,69 @@ describe('getAssayFilter', () => {
                 filterArray: [AssayNotInFilterField],
             })
         ).toEqual(AssayNotInFilter);
+    });
+});
+
+describe('getSamplePropertyFilters', () => {
+    const nameFilter = {
+        fieldKey: 'Name',
+        fieldCaption: 'Name',
+        filter: Filter.create('Name', 'S-1'),
+        jsonType: 'string',
+    } as FieldFilter;
+
+    const sampleTypeFilter = {
+        fieldKey: 'SampleSet',
+        fieldCaption: 'SampleSet',
+        filter: Filter.create('SampleSet', 'lsid:01:02'),
+        jsonType: 'string',
+    } as FieldFilter;
+
+    const availableAliquotCountFilter = {
+        fieldKey: 'AvailableAliquotCount',
+        fieldCaption: 'AvailableAliquotCount',
+        filter: Filter.create('AvailableAliquotCount', 5),
+        jsonType: 'int',
+    } as FieldFilter;
+
+    test('with filter on All Sample Type', () => {
+        expect(
+            getSamplePropertyFilters({
+                entityDataType: SamplePropertyDataType,
+                schemaQuery: SCHEMAS.EXP_TABLES.MATERIALS,
+                filterArray: [nameFilter],
+            })
+        ).toStrictEqual({
+            filters: [nameFilter.filter],
+            extraColumns: [],
+        });
+    });
+
+    test('with filter on a specific sample type', () => {
+        expect(
+            getSamplePropertyFilters({
+                entityDataType: SamplePropertyDataType,
+                schemaQuery: SCHEMAS.EXP_TABLES.MATERIALS,
+                filterArray: [nameFilter],
+                dataTypeLsid: 'lsid:01:02',
+            })
+        ).toStrictEqual({
+            filters: [nameFilter.filter, sampleTypeFilter.filter],
+            extraColumns: [],
+        });
+    });
+
+    test('with filter on AvailableAliquotCount', () => {
+        expect(
+            getSamplePropertyFilters({
+                entityDataType: SamplePropertyDataType,
+                schemaQuery: SCHEMAS.EXP_TABLES.MATERIALS,
+                filterArray: [availableAliquotCountFilter],
+            })
+        ).toStrictEqual({
+            filters: [availableAliquotCountFilter.filter],
+            extraColumns: ['AvailableAliquotCount'],
+        });
     });
 });
 
@@ -706,14 +764,7 @@ const card = {
 };
 
 const cardJSON =
-    '{"filters":[{"entityDataType":{"typeListingSchemaQuery":{"schemaName":"TestListing","queryName":"query"},"listingSchemaQuery":{"schemaName":"Test","queryName":"query"},' +
-    '"instanceSchemaName":"TestSchema","operationConfirmationControllerName":"controller","operationConfirmationActionName":"test-delete-confirmation.api",' +
-    '"nounSingular":"test","nounPlural":"tests","nounAsParentSingular":"test Parent",' +
-    '"nounAsParentPlural":"test Parents","typeNounSingular":"Test Type","typeNounAsParentSingular":"Test Parent Type","descriptionSingular":"parent test type","descriptionPlural":"parent test types","uniqueFieldKey":"Name",' +
-    '"dependencyText":"test data dependencies","deleteHelpLinkTopic":"viewSampleSets#delete","inputColumnName":"Inputs/Materials/First","ancestorColumnName":"Ancestors/Samples","inputTypeValueField":"lsid",' +
-    '"insertColumnNamePrefix":"MaterialInputs/","editTypeAppUrlPrefix":"Test","importFileAction":"importSamples","filterCardHeaderClass":"filter-card__header-success"},' +
-    '"filterArray":[{"fieldKey":"textField","fieldCaption":"textField","filter":"query.textField~=","jsonType":"string"},{"fieldKey":"strField","fieldCaption":"strField",' +
-    '"filter":"query.strField~between=1%2C5","jsonType":"string"}],"schemaQuery":{"schemaName":"TestSchema","queryName":"samples1"},"index":1}],"filterChangeCounter":5,"filterTimestamp":"Searched 2020-08-06 14:44"}';
+    '{"filters":[{"filterArray":[{"fieldKey":"textField","fieldCaption":"textField","filter":"query.textField~=","jsonType":"string"},{"fieldKey":"strField","fieldCaption":"strField","filter":"query.strField~between=1%2C5","jsonType":"string"}],"schemaQuery":{"schemaName":"TestSchema","queryName":"samples1"},"index":1,"sampleFinderCardType":"sampleparent"}],"filterChangeCounter":5,"filterTimestamp":"Searched 2020-08-06 14:44"}';
 
 const cardWithEntityTypeFilter = {
     entityDataType: TestTypeDataTypeWithEntityFilter,
@@ -722,15 +773,10 @@ const cardWithEntityTypeFilter = {
     index: 1,
 };
 
-const cardWithEntityTypeFilterJSON =
-    '{"filters":[{"entityDataType":{"typeListingSchemaQuery":{"schemaName":"TestListing","queryName":"query"},"listingSchemaQuery":{"schemaName":"Test","queryName":"query"},' +
-    '"instanceSchemaName":"TestSchema","operationConfirmationControllerName":"controller","operationConfirmationActionName":"test-delete-confirmation.api",' +
-    '"nounSingular":"test","nounPlural":"tests","nounAsParentSingular":"test Parent","nounAsParentPlural":"test Parents",' +
-    '"typeNounSingular":"Test Type","typeNounAsParentSingular":"Test Parent Type","descriptionSingular":"parent test type","descriptionPlural":"parent test types","uniqueFieldKey":"Name","dependencyText":"test data dependencies",' +
-    '"deleteHelpLinkTopic":"viewSampleSets#delete","inputColumnName":"Inputs/Materials/First","ancestorColumnName":"Ancestors/Samples","inputTypeValueField":"lsid","insertColumnNamePrefix":"MaterialInputs/","editTypeAppUrlPrefix":"Test",' +
-    '"importFileAction":"importSamples","filterCardHeaderClass":"filter-card__header-success","filterArray":["query.Category~eq=Source"]},"filterArray":[{"fieldKey":"textField",' +
-    '"fieldCaption":"textField","filter":"query.textField~=","jsonType":"string"},{"fieldKey":"strField","fieldCaption":"strField","filter":"query.strField~between=1%2C5","jsonType":"string"}],"schemaQuery":{"schemaName":"TestSchema",' +
-    '"queryName":"samples1"},"index":1}],"filterChangeCounter":5,"filterTimestamp":"Searched 2020-08-06 14:44"}';
+const cardWithEntityTypeFilterJSON = cardJSON;
+
+const cardWithCurrentUserFilterJSON =
+    '{"filters":[{"filterArray":[{"fieldKey":"userId","fieldCaption":"userId","filter":"query.userId~eq=${LABKEY.USER}","jsonType":"string"}],"schemaQuery":{"schemaName":"TestSchema","queryName":"samples1"},"index":1,"entityTypeNoun":"test Parent"}],"filterChangeCounter":5,"filterTimestamp":"Searched 2020-08-06 14:44"}';
 
 describe('searchFiltersToJson', () => {
     test('searchFiltersToJson', () => {
@@ -743,7 +789,7 @@ describe('searchFiltersToJson', () => {
 
 describe('searchFiltersFromJson', () => {
     test('searchFiltersFromJson', () => {
-        const deserializedCard = searchFiltersFromJson(cardJSON);
+        const deserializedCard = searchFiltersFromJson(cardJSON, [TestTypeDataType]);
         expect(deserializedCard['filterChangeCounter']).toEqual(5);
         const cards = deserializedCard['filters'];
         expect(cards.length).toEqual(1);
@@ -753,10 +799,21 @@ describe('searchFiltersFromJson', () => {
         const textFilter = fieldFilters[1]['filter'];
         expect(textFilter).toStrictEqual(stringBetweenFilter.filter);
 
-        const deserializedCardWithEntityFilter = searchFiltersFromJson(cardWithEntityTypeFilterJSON);
+        const deserializedCardWithEntityFilter = searchFiltersFromJson(cardWithEntityTypeFilterJSON, [
+            TestTypeDataTypeWithEntityFilter,
+        ]);
         const entityTypeFilters = deserializedCardWithEntityFilter['filters'][0].entityDataType.filterArray;
         expect(entityTypeFilters.length).toEqual(1);
         expect(entityTypeFilters[0]).toStrictEqual(Filter.create('Category', 'Source'));
+
+        const deserializedCardWithCurrentUserFilter = searchFiltersFromJson(
+            cardWithCurrentUserFilterJSON,
+            [TestTypeDataTypeWithEntityFilter],
+            undefined,
+            'admin'
+        );
+        const userFilter = deserializedCardWithCurrentUserFilter['filters'][0].filterArray[0].filter;
+        expect(userFilter).toStrictEqual(Filter.create('userId', 'admin'));
     });
 });
 

@@ -14,12 +14,13 @@ import { PaginationButtons } from '../buttons/PaginationButtons';
 import { SearchResultsPanel } from './SearchResultsPanel';
 
 import { SearchResultsModel } from './models';
-import { SEARCH_HELP_TOPIC, SEARCH_PAGE_DEFAULT, SearchScope } from './constants';
+import { SEARCH_HELP_TOPIC, SEARCH_PAGE_DEFAULT_SIZE, SearchScope } from './constants';
 import { GetCardDataFn, searchUsingIndex } from './actions';
 
 interface Props {
     appName: string;
     currentPage: number;
+    offset: number;
     onPage: (direction: number) => void;
     pageSize?: number;
     search: (form: any) => void;
@@ -28,7 +29,7 @@ interface Props {
 }
 
 export const SearchPanelImpl: FC<Props> = memo(props => {
-    const { appName, searchTerm, searchResultsModel, search, onPage, currentPage = 1, pageSize } = props;
+    const { appName, searchTerm, searchResultsModel, search, onPage, currentPage = 1, pageSize, offset } = props;
     const [searchQuery, setSearchQuery] = useState<string>(searchTerm);
 
     const title = useMemo(() => (searchTerm ? 'Search Results' : 'Search'), [searchTerm]);
@@ -118,8 +119,8 @@ export const SearchPanelImpl: FC<Props> = memo(props => {
                     <SearchResultsPanel
                         model={searchResultsModel}
                         hidePanelFrame={true}
-                        hideHeader={true}
                         emptyResultDisplay={emptyTextMessage}
+                        offset={offset}
                     />
                 )}
             </Section>
@@ -136,7 +137,7 @@ interface SearchPanelProps {
 }
 
 export const SearchPanel: FC<SearchPanelProps> = memo(props => {
-    const { searchTerm, getCardDataFn, search, pageSize = SEARCH_PAGE_DEFAULT, offset = 0 } = props;
+    const { searchTerm, getCardDataFn, search, pageSize = SEARCH_PAGE_DEFAULT_SIZE, offset = 0 } = props;
     const [searchQuery, setSearchQuery] = useState<string>(searchTerm);
     const [model, setModel] = useState<SearchResultsModel>(SearchResultsModel.create({ isLoading: true }));
 
@@ -206,6 +207,7 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
             appName="Labkey Sample Manager"
             onPage={onPage}
             currentPage={currentPage}
+            offset={offset}
         />
     );
 });

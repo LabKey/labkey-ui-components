@@ -27,11 +27,10 @@ import { SearchResultsModel } from './models';
 
 interface Props {
     emptyResultDisplay?: React.ReactNode;
-    hideHeader?: boolean;
     hidePanelFrame?: boolean;
     iconUrl?: string;
-    maxHitSize?: number;
     model: SearchResultsModel;
+    offset: number;
 }
 
 export class SearchResultsPanel extends React.Component<Props, any> {
@@ -67,21 +66,16 @@ export class SearchResultsPanel extends React.Component<Props, any> {
     }
 
     renderResults() {
-        const { model, iconUrl, emptyResultDisplay, hideHeader, maxHitSize } = this.props;
+        const { model, iconUrl, emptyResultDisplay, offset } = this.props;
 
         if (this.isLoading()) return;
 
         const data = model ? model.getIn(['entities', 'hits']) : undefined;
 
         if (data && data.size > 0) {
-            const totalHit = model.getIn(['entities', 'totalHits']);
-            const msg = data.size.toLocaleString() + ' Result' + (data.size !== 1 ? 's' : '');
-            const headerMsg =
-                totalHit > maxHitSize ? `${data.size.toLocaleString()} of ${totalHit.toLocaleString()} Results` : msg;
 
             return (
                 <div>
-                    {!hideHeader && <h3 className="no-margin-top search-results__amount">{headerMsg}</h3>}
                     {data.size > 0 &&
                         data.map((item, i) => (
                             <div key={i} className="col-md-12 col-sm-12 search-results__margin-top">
@@ -90,6 +84,7 @@ export class SearchResultsPanel extends React.Component<Props, any> {
                                     url={item.get('url')}
                                     iconUrl={iconUrl}
                                     cardData={item.get('cardData').toJS()}
+                                    isTopResult={offset === 0 && i === 0}
                                 />
                             </div>
                         ))}

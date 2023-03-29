@@ -13,42 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useCallback } from 'react';
 
 import { SVGIcon } from '../base/SVGIcon';
 
 import { SearchResultCardData } from './models';
+import { incrementClientSideMetricCount } from '../../actions';
+import { getCurrentAppProperties } from '../../app/utils';
 
 interface SearchResultProps {
     cardData: SearchResultCardData;
     iconUrl?: string;
+    isTopResult: boolean;
     summary: string;
     url: string;
 }
 
-interface DetailProps {
-    label: string;
-    title?: string;
-    value: string;
-}
-
-const CardDetail: FC<DetailProps> = memo(({ label, title, value }) => (
-    <div className="search-result__card-detail" title={title}>
-        <strong>{label}: </strong>
-        {value}
-    </div>
-));
-
-export const SearchResultCard: FC<SearchResultProps> = memo(({ cardData, iconUrl, summary, url }) => {
+export const SearchResultCard: FC<SearchResultProps> = memo(({ cardData, iconUrl, isTopResult, summary, url }) => {
     const { altText, category, iconDir, iconSrc, title, typeName } = cardData;
+    const { productId } = getCurrentAppProperties();
     let summaryText = 'No summary provided';
+
+    const onClick = useCallback(() => {
+        if (isTopResult) incrementClientSideMetricCount(productId + 'Search', 'firstResultClicked');
+    }, [isTopResult, productId]);
 
     if (summary.length) {
         summaryText = summary.length <= 35 ? summary : summary.substr(0, 35);
     }
 
     return (
-        <a href={url}>
+        <a href={url} onClick={onClick}>
             <div className="row search-result__card-container">
                 <div className="hidden-xs search-result__card-icon__container">
                     {iconUrl && <img className="search-result__card-icon" src={iconUrl} />}

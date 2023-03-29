@@ -38,4 +38,4 @@ export const ALLOWED_FINDER_SAMPLE_PROPERTIES = Object.keys(ALLOWED_FINDER_SAMPL
 
 export const SEARCH_HELP_TOPIC = 'luceneSearch';
 
-export const SEARCH_PAGE_DEFAULT = 20;
+export const SEARCH_PAGE_DEFAULT_SIZE = 20;

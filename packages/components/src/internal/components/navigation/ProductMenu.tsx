@@ -24,7 +24,12 @@ import { blurActiveElement } from '../../util/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { useServerContext } from '../base/ServerContext';
 import { AppProperties } from '../../app/models';
-import { getCurrentAppProperties, isProductProjectsEnabled, isProjectContainer } from '../../app/utils';
+import {
+    getCurrentAppProperties,
+    isProductProjectsEnabled,
+    isProjectContainer,
+    isAppHomeFolder,
+} from '../../app/utils';
 
 import { Alert } from '../base/Alert';
 
@@ -73,7 +78,7 @@ const ProductMenuButtonImpl: FC<ProductMenuButtonProps & WithRouterProps> = memo
     const hasError = !!error;
     const isLoaded = !isLoading(loading);
     const { api } = useAppContext<AppContext>();
-    const { container } = useServerContext();
+    const { container, moduleContext } = useServerContext();
 
     useEffect(() => {
         setLoading(LoadingState.LOADING);
@@ -82,9 +87,8 @@ const ProductMenuButtonImpl: FC<ProductMenuButtonProps & WithRouterProps> = memo
         (async () => {
             try {
                 let folders = await api.security.fetchContainers({
-                    // Container metadata does not always provide "type" so inspecting the
-                    // "parentPath" to determine top-level folder vs subfolder.
-                    containerPath: container.parentPath === '/' ? container.path : container.parentPath,
+                    // Issue 47502: use the current path if in Home Project (which could be a LK Project or a subfolder)
+                    containerPath: isAppHomeFolder(container, moduleContext) ? container.path : container.parentPath,
                 });
 
                 // if user doesn't have permissions to the parent/project, the response will come back with an empty Container object
@@ -109,7 +113,7 @@ const ProductMenuButtonImpl: FC<ProductMenuButtonProps & WithRouterProps> = memo
 
             setLoading(LoadingState.LOADED);
         })();
-    }, [api, container, appProperties?.controllerName]);
+    }, [api, container, moduleContext, appProperties?.controllerName]);
 
     const toggleMenu = useCallback(() => {
         setMenuOpen(!menuOpen);

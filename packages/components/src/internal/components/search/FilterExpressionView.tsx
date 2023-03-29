@@ -24,6 +24,7 @@ import {
 import { FieldFilterOption, FilterSelection } from './models';
 
 interface Props {
+    allowRelativeDateFilter?: boolean;
     disabled?: boolean;
     field: QueryColumn;
     fieldFilters: Filter.IFilter[];
@@ -31,7 +32,7 @@ interface Props {
 }
 
 export const FilterExpressionView: FC<Props> = memo(props => {
-    const { field, fieldFilters, onFieldFilterUpdate, disabled } = props;
+    const { allowRelativeDateFilter, field, fieldFilters, onFieldFilterUpdate, disabled } = props;
 
     const [fieldFilterOptions, setFieldFilterOptions] = useState<FieldFilterOption[]>(undefined);
     const [activeFilters, setActiveFilters] = useState<FilterSelection[]>([]);
@@ -213,6 +214,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             if (jsonType === 'date') {
                 return (
                     <DatePickerInput
+                        allowRelativeInput={allowRelativeDateFilter}
                         formsy={false}
                         inputClassName="form-control filter-expression__input"
                         wrapperClassName="form-group col-sm-12 filter-expression__input-wrapper"
@@ -224,9 +226,11 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         isClearable
                         hideTime={true} // always filter by date only, without timepicker
                         disabled={disabled}
-                        onChange={newDate =>
-                            updateDateFilterFieldValue(filterIndex, getJsonDateFormatString(newDate), isSecondInput)
-                        }
+                        onChange={newDate => {
+                            let dateStr = newDate;
+                            if (typeof newDate !== 'string') dateStr = getJsonDateFormatString(newDate);
+                            updateDateFilterFieldValue(filterIndex, dateStr, isSecondInput);
+                        }}
                     />
                 );
             } else if (jsonType === 'boolean') {

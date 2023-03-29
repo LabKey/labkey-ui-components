@@ -76,7 +76,7 @@ export interface SamplesAPIWrapper {
 
     getTimelineEvents: (sampleId: number, timezone?: string) => Promise<TimelineEventModel[]>;
 
-    loadFinderSearches: () => Promise<FinderReport[]>;
+    loadFinderSearches: (excludeModuleReport?: boolean) => Promise<FinderReport[]>;
 }
 
 export class SamplesServerAPIWrapper implements SamplesAPIWrapper {

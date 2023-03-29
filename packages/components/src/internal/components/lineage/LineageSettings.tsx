@@ -131,8 +131,7 @@ export const LineageSettings: FC<Props> = memo(props => {
                             The number of descendant generations to render from the seed node. Only applies when
                             Generations is set to "Specific".
                             <div>
-                                <b>Note:</b> A maximum of {DEFAULT_GROUPING_OPTIONS.childDepth * 2} generations are
-                                requested from the server.
+                                <b>Note:</b> This does not affect the number of generations requested from the server.
                             </div>
                         </div>
                     </LabelHelpTip>
@@ -154,8 +153,7 @@ export const LineageSettings: FC<Props> = memo(props => {
                             The number of ancestor generations to render from the seed node. Only applies when
                             Generations is set to "Specific".
                             <div>
-                                <b>Note:</b> A maximum of {DEFAULT_GROUPING_OPTIONS.childDepth * 2} generations are
-                                requested from the server.
+                                <b>Note:</b> This does not affect the number of generations requested from the server.
                             </div>
                         </div>
                     </LabelHelpTip>

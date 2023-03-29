@@ -104,7 +104,7 @@ export const LineageSettings: FC<Props> = memo(props => {
                             </li>
                             <li>
                                 <b>Multi</b> - Include all nodes from the seed until a depth is found that contains
-                                multiple nodes..
+                                multiple nodes.
                             </li>
                             <li>
                                 <b>Nearest</b> - Include only the immediately connected nodes from the seed.
@@ -176,6 +176,9 @@ export const LineageSettings: FC<Props> = memo(props => {
                         <div className="lineage-settings__tip-body">
                             If the number of nodes in a generation is greater than or equal to this threshold, then all
                             the nodes in this generation will be combined into a single node.
+                            <div>
+                                <b>Note:</b> Aliquots are combined separately and may appear as a single combined node
+                            </div>
                         </div>
                     </LabelHelpTip>
                 </label>

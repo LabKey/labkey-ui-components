@@ -9,7 +9,7 @@ import { List } from 'immutable';
 import { LineageSummary } from '../LineageSummary';
 import {
     createLineageNodeCollections,
-    isAliquotNodeCollection,
+    isAliquotNode,
     LineageNodeCollectionByType,
     LineageIOWithMetadata,
     LineageNode,
@@ -121,7 +121,7 @@ interface ClusterNodeDetailProps {
 export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
     static getGroupDisplayName(nodesByType, groupName, parentNodeName?) {
         const group = nodesByType[groupName];
-        const isAliquot = isAliquotNodeCollection(group);
+        const isAliquot = isAliquotNode(group);
         const aliquotDisplayName = (parentNodeName ? parentNodeName + ' ' : '') + 'Aliquots';
         return isAliquot ? aliquotDisplayName : group.displayType;
     }

@@ -1,5 +1,6 @@
 import { List, fromJS } from 'immutable';
 import { Filter } from '@labkey/api';
+
 import { QueryInfo } from '../../../public/QueryInfo';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -10,11 +11,7 @@ import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 import assayDefNoSampleIdJSON from '../../../test/data/assayDefinitionModelNoSampleId.json';
 import assayDefJSON from '../../../test/data/assayDefinitionModel.json';
 
-import {
-    getUpdatedLineageRows,
-    getRowIdsFromSelection,
-    createQueryConfigFilteredBySample,
-} from './actions';
+import { getUpdatedLineageRows, getRowIdsFromSelection, createQueryConfigFilteredBySample } from './actions';
 
 let DATA = fromJS({
     '1': {

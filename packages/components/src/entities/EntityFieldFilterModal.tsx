@@ -280,8 +280,7 @@ export const EntityFieldFilterModal: FC<EntityFieldFilterModalProps> = memo(prop
             query => query?.value?.toLowerCase() === activeQuery.toLowerCase()
         )?.lsid;
 
-        if (!sampleTypeLsid)
-            return null;
+        if (!sampleTypeLsid) return null;
 
         return {
             filterArray: [Filter.create('SampleSet', sampleTypeLsid)],

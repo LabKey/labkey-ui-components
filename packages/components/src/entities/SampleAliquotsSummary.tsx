@@ -76,7 +76,11 @@ export const SampleAliquotsSummaryWithModels: FC<SampleAliquotsSummaryWithModels
                         <tr>
                             <td>Available Aliquots</td>
                             <td className="aliquot-stats-value">
-                                <a href={aliquotUrl.addFilters(Filter.create('StoredAmount', 0, Filter.Types.GT)).toHref()}>
+                                <a
+                                    href={aliquotUrl
+                                        .addFilters(Filter.create('StoredAmount', 0, Filter.Types.GT))
+                                        .toHref()}
+                                >
                                     {stats.availableCount + '/' + stats.aliquotCount}
                                 </a>
                             </td>

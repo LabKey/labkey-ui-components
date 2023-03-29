@@ -994,7 +994,11 @@ export function getDataTypeFiltersWithNotInQueryUpdate(
     return dataTypeFiltersUpdated;
 }
 
-function getNotNullLabKeySql(schemaQuery: SchemaQuery, targetQueryFilterKey: string, cf?: Query.ContainerFilter): string {
+function getNotNullLabKeySql(
+    schemaQuery: SchemaQuery,
+    targetQueryFilterKey: string,
+    cf?: Query.ContainerFilter
+): string {
     const selectNotInSql = getLabKeySql(targetQueryFilterKey, schemaQuery.schemaName, schemaQuery.queryName, null, cf);
     return selectNotInSql + ' WHERE ' + getLegalIdentifier(targetQueryFilterKey) + ' IS NOT NULL';
 }

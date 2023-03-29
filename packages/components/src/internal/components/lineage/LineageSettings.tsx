@@ -19,8 +19,10 @@ interface Props extends LineageOptions {
 export const LineageSettings: FC<Props> = memo(props => {
     const { onSettingsChange } = props;
     const [options, setOptions] = useState<LineageSettingsOptions>(() => {
-        if (props.options) return props.options;
-        return { filters: props.filters, grouping: props.grouping, originalFilters: props.filters };
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-shadow
+        const { onSettingsChange, options, ...optionProps } = props;
+        if (options) return options;
+        return { ...optionProps, originalFilters: optionProps.filters ? [...optionProps.filters] : [] };
     });
     const generations = useMemo<SelectInputOption[]>(() => {
         const generations_ = [];
@@ -42,6 +44,7 @@ export const LineageSettings: FC<Props> = memo(props => {
                 changeRef.current = undefined;
             }
 
+            // Debounce here for user input to skip possibly costly graph renders
             changeRef.current = setTimeout(() => {
                 onSettingsChange(options_);
             }, 500);
@@ -57,9 +60,11 @@ export const LineageSettings: FC<Props> = memo(props => {
                 let { filters } = options_;
 
                 if (checked) {
-                    const filter = originalFilters.find(f => f.field === name);
-                    if (filter) {
-                        filters.push(filter);
+                    if (!filters.find(f => f.field === name)) {
+                        const filter = originalFilters.find(f => f.field === name);
+                        if (filter) {
+                            filters.push(filter);
+                        }
                     }
                 } else {
                     filters = filters.filter(f => f.field !== name);
@@ -201,7 +206,7 @@ export const LineageSettings: FC<Props> = memo(props => {
                     </LabelHelpTip>
                 </div>
 
-                {options.originalFilters?.map(filter => (
+                {options.originalFilters.map(filter => (
                     <div key={filter.field}>
                         <input defaultChecked onChange={onFilterChange} name={filter.field} type="checkbox" />
                         <span className="lineage-settings__filter-label">

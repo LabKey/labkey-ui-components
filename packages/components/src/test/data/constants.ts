@@ -451,6 +451,7 @@ export const TestTypeDataType: EntityDataType = {
     editTypeAppUrlPrefix: 'Test',
     importFileAction: 'importSamples',
     filterCardHeaderClass: 'filter-card__header-success',
+    sampleFinderCardType: 'sampleparent',
 };
 
 export const TestTypeDataTypeWithEntityFilter: EntityDataType = {

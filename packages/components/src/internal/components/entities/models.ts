@@ -486,10 +486,14 @@ export interface IEntityTypeDetails extends IEntityDetails {
     importAliasValues?: string[];
 }
 
+export type SampleFinderCardType = 'sampleproperty' | 'sampleparent' | 'dataclassparent' | 'assaydata';
+
 /**
  *  Avoid inline comment or above line comments for properties due to es-lint's limitation on moving comments:
  *  https://github.com/import-js/eslint-plugin-import/issues/1723
  *
+ *     allowSingleParentTypeFilter?: boolean; // Can filter by max of one parent of this type
+ *     allowRelativeDateFilter?: boolean; // if filtering by +-Xd is allowed
  *     ancestorColumnName: string; // used for extracting or querying for the ancestores of this type
  *     appUrlPrefixParts?: string[]; // the prefix used for creating links to this type in the application
  *     deleteHelpLinkTopic: string; // help topic for finding out more about dependencies and deletion
@@ -499,7 +503,7 @@ export interface IEntityTypeDetails extends IEntityDetails {
  *     exprColumnsWithSubSelect?: string[]; // A list of fields that are backed by ExprColumn and the ExprColumn's sql contain sub select clauses
  *     filterArray?: Filter.IFilter[]; // A list of filters to use when selecting the set of values
  *     filterCardHeaderClass?: string; // css class to use for styling the header in the display of cards for Sample Finder
- *     getInstanceDataType?: (schemaQuery: SchemaQuery) => string; // used for data type with non-standard type name. for example, get assay design name from assay schemaQuery
+ *     getInstanceDataType?: (schemaQuery: SchemaQuery, altQueryName?: string) => string; // used for data type with non-standard type name. for example, get assay design name from assay schemaQuery, or use altQueryName for special queries such as ~~allsampletypes~~
  *     getInstanceSchemaQuery?: (datatype?: string) => SchemaQuery; // used for data type with non-standard type name. for example, get assay schemaQuery from assay design name
  *     importFileAction: string; // the action in the 'experiment' controller to use for file import for the given data type
  *     importFileController?: string; // the controller to use for file import for the given data type. 'experiment' if not provided
@@ -512,18 +516,20 @@ export interface IEntityTypeDetails extends IEntityDetails {
  *     typeListingSchemaQuery: SchemaQuery; // The schema query used to get the listing of all of the data type instances (e.g., all the data classes) available
  */
 export interface EntityDataType {
+    allowRelativeDateFilter?: boolean;
+    allowSingleParentTypeFilter?: boolean;
     ancestorColumnName?: string;
     appUrlPrefixParts?: string[];
     containerFilter?: Query.ContainerFilter;
     deleteHelpLinkTopic: string;
-    dependencyText: Function | string ;
+    dependencyText: Function | string;
     descriptionPlural: string;
     descriptionSingular: string;
     editTypeAppUrlPrefix?: string;
     exprColumnsWithSubSelect?: string[];
     filterArray?: Filter.IFilter[];
     filterCardHeaderClass?: string;
-    getInstanceDataType?: (schemaQuery: SchemaQuery) => string;
+    getInstanceDataType?: (schemaQuery: SchemaQuery, altQueryName?: string) => string;
     getInstanceSchemaQuery?: (datatype?: string) => SchemaQuery;
     importFileAction?: string;
     importFileController?: string;
@@ -539,11 +545,12 @@ export interface EntityDataType {
     nounSingular: string;
     operationConfirmationActionName: string;
     operationConfirmationControllerName: string;
+    sampleFinderCardType?: SampleFinderCardType;
     supportHasNoValueInQuery?: boolean;
+    typeIcon?: string;
     typeListingSchemaQuery: SchemaQuery;
     typeNounAsParentSingular: string;
     typeNounSingular: string;
-    typeIcon?: string;
     uniqueFieldKey: string;
 }
 

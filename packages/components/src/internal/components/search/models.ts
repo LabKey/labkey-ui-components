@@ -64,7 +64,9 @@ export interface FieldFilter {
 }
 
 export interface FilterProps {
+    altQueryName?: string;
     dataTypeDisplayName?: string;
+    dataTypeLsid?: string;
     disabled?: boolean;
     entityDataType: EntityDataType;
     // the filters to be used in conjunction with the schemaQuery
@@ -98,6 +100,7 @@ export interface FilterSelection {
 
 export interface FinderReport {
     entityId?: string;
+    isModuleReport?: boolean;
     isSession?: boolean;
     reportId?: string;
     reportName?: string;

@@ -7,8 +7,9 @@ import { getTestAPIWrapper } from '../internal/APIWrapper';
 
 import { getSamplesTestAPIWrapper } from '../internal/components/samples/APIWrapper';
 
-import { SAVED_VIEW1, SAVED_VIEW2 } from './SampleFinderManageViewsModal.spec';
 import { FinderReport } from '../internal/components/search/models';
+
+import { SAVED_VIEW1, SAVED_VIEW2 } from './SampleFinderManageViewsModal.spec';
 import { SampleFinderSavedViewsMenu } from './SampleFinderSavedViewsMenu';
 
 const DEFAULT_PROPS = {
@@ -16,6 +17,14 @@ const DEFAULT_PROPS = {
     saveSearch: jest.fn(),
     manageSearches: jest.fn(),
     key: 'search-1',
+};
+
+const MODULE_VIEW: FinderReport = {
+    reportId: 'module:SampleManagement:builtin',
+    reportName: 'builtin',
+    entityId: 'bb03cc46-b76e-103a-a843-0cff0bac6533',
+    isSession: false,
+    isModuleReport: true,
 };
 
 export const getSampleFinderAPI = (savedViews: FinderReport[]) => {
@@ -32,7 +41,8 @@ describe('SampleFinderSavedViewsMenu', () => {
         savedViews: string[],
         sessionView?: string,
         isManageEnabled?: boolean,
-        isSaveEnabled?: boolean
+        isSaveEnabled?: boolean,
+        moduleViews?: string[]
     ): void {
         const dropdown = wrapper.find('DropdownButton');
         const menuOptions = dropdown.at(0).find('MenuItem');
@@ -55,6 +65,14 @@ describe('SampleFinderSavedViewsMenu', () => {
 
         menuCount++; // include divider
 
+        if (moduleViews?.length > 0) {
+            menuCount++; // include 'Other Reports' header
+            moduleViews.forEach(moduleView => {
+                expect(menuOptions.at(menuCount++).text()).toBe(moduleView);
+            });
+            menuCount++; // include divider
+        }
+
         const manageViewOption = menuOptions.at(menuCount++);
         expect(manageViewOption.text()).toBe('Manage saved searches');
         if (!isManageEnabled) expect(manageViewOption.props().disabled).toBeTruthy();
@@ -74,7 +92,7 @@ describe('SampleFinderSavedViewsMenu', () => {
         }
     }
 
-    test('without session view, without saved view', async () => {
+    test('without session view, without saved view, without built-in views', async () => {
         const wrapper = mountWithAppServerContext(<SampleFinderSavedViewsMenu {...DEFAULT_PROPS} />, {
             api: getSampleFinderAPI([]),
         });
@@ -90,7 +108,23 @@ describe('SampleFinderSavedViewsMenu', () => {
         wrapper.unmount();
     });
 
-    test('without view, without saved view', async () => {
+    test('without session view, without saved view, with built-in views', async () => {
+        const wrapper = mountWithAppServerContext(<SampleFinderSavedViewsMenu {...DEFAULT_PROPS} />, {
+            api: getSampleFinderAPI([MODULE_VIEW]),
+        });
+
+        expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
+        await waitForLifecycle(wrapper);
+        expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
+
+        verifyMenu(wrapper, [], null, true, false, ['builtin']);
+
+        verifySaveBtn(wrapper, false, false);
+
+        wrapper.unmount();
+    });
+
+    test('with session view, without saved view', async () => {
         const wrapper = mountWithAppServerContext(
             <SampleFinderSavedViewsMenu {...DEFAULT_PROPS} sessionViewName="Searched today" />,
             {
@@ -103,6 +137,24 @@ describe('SampleFinderSavedViewsMenu', () => {
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
 
         verifyMenu(wrapper, [], 'Searched today', false, false);
+        verifySaveBtn(wrapper, false, false);
+
+        wrapper.unmount();
+    });
+
+    test('with session view, without saved view, with module view', async () => {
+        const wrapper = mountWithAppServerContext(
+            <SampleFinderSavedViewsMenu {...DEFAULT_PROPS} sessionViewName="Searched today" />,
+            {
+                api: getSampleFinderAPI([MODULE_VIEW]),
+            }
+        );
+
+        expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
+        await waitForLifecycle(wrapper);
+        expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
+
+        verifyMenu(wrapper, [], 'Searched today', false, false, ['builtin']);
         verifySaveBtn(wrapper, false, false);
 
         wrapper.unmount();
@@ -136,6 +188,24 @@ describe('SampleFinderSavedViewsMenu', () => {
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
 
         verifyMenu(wrapper, ['Text1', 'source2'], 'Searched today', true, false);
+        verifySaveBtn(wrapper, false, false);
+
+        wrapper.unmount();
+    });
+
+    test('with session view, with saved views, with built-in view', async () => {
+        const wrapper = mountWithAppServerContext(
+            <SampleFinderSavedViewsMenu {...DEFAULT_PROPS} sessionViewName="Searched today" />,
+            {
+                api: getSampleFinderAPI([SAVED_VIEW1, SAVED_VIEW2, MODULE_VIEW]),
+            }
+        );
+
+        expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
+        await waitForLifecycle(wrapper);
+        expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
+
+        verifyMenu(wrapper, ['Text1', 'source2'], 'Searched today', true, false, ['builtin']);
         verifySaveBtn(wrapper, false, false);
 
         wrapper.unmount();
@@ -190,6 +260,29 @@ describe('SampleFinderSavedViewsMenu', () => {
         wrapper.unmount();
     });
 
+    test('current view is built-in view, without edit', async () => {
+        const wrapper = mountWithAppServerContext(
+            <SampleFinderSavedViewsMenu
+                {...DEFAULT_PROPS}
+                sessionViewName="Searched today"
+                currentView={MODULE_VIEW}
+                hasUnsavedChanges={false}
+            />,
+            {
+                api: getSampleFinderAPI([SAVED_VIEW1, SAVED_VIEW2, MODULE_VIEW]),
+            }
+        );
+
+        expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
+        await waitForLifecycle(wrapper);
+        expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
+
+        verifyMenu(wrapper, ['Text1', 'source2'], 'Searched today', true, true, ['builtin']);
+        verifySaveBtn(wrapper, false, false);
+
+        wrapper.unmount();
+    });
+
     test('current view is saved view, with edit', async () => {
         const wrapper = mountWithAppServerContext(
             <SampleFinderSavedViewsMenu
@@ -209,6 +302,29 @@ describe('SampleFinderSavedViewsMenu', () => {
 
         verifyMenu(wrapper, ['Text1', 'source2'], 'Searched today', true, true);
         verifySaveBtn(wrapper, true, true);
+
+        wrapper.unmount();
+    });
+
+    test('current view is built-in view, with edit', async () => {
+        const wrapper = mountWithAppServerContext(
+            <SampleFinderSavedViewsMenu
+                {...DEFAULT_PROPS}
+                sessionViewName="Searched today"
+                currentView={MODULE_VIEW}
+                hasUnsavedChanges={true}
+            />,
+            {
+                api: getSampleFinderAPI([SAVED_VIEW1, SAVED_VIEW2, MODULE_VIEW]),
+            }
+        );
+
+        expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
+        await waitForLifecycle(wrapper);
+        expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
+
+        verifyMenu(wrapper, ['Text1', 'source2'], 'Searched today', true, true, ['builtin']);
+        verifySaveBtn(wrapper, true, false);
 
         wrapper.unmount();
     });

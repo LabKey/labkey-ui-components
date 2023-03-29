@@ -11,12 +11,7 @@ import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 import assayDefNoSampleIdJSON from '../../../test/data/assayDefinitionModelNoSampleId.json';
 import assayDefJSON from '../../../test/data/assayDefinitionModel.json';
 
-import {
-    getLineageEditorUpdateColumns,
-    getUpdatedLineageRows,
-    getRowIdsFromSelection,
-    createQueryConfigFilteredBySample,
-} from './actions';
+import { getUpdatedLineageRows, getRowIdsFromSelection, createQueryConfigFilteredBySample } from './actions';
 
 let DATA = fromJS({
     '1': {

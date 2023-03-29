@@ -33,13 +33,13 @@ import { formatDateTime } from '../../util/Date';
 
 import { getContainerFilter } from '../../query/api';
 
-import { AssayResultDataType } from '../entities/constants';
+import { AssayResultDataType, SamplePropertyDataType } from '../entities/constants';
 
 import { AssaySampleColumnProp } from '../../sampleModels';
 
 import { caseInsensitive } from '../../util/utils';
 
-import { SearchScope, SAMPLE_FINDER_SESSION_PREFIX } from './constants';
+import { SearchScope, SAMPLE_FINDER_SESSION_PREFIX, ALLOWED_FINDER_SAMPLE_PROPERTY_MAP } from './constants';
 import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSessionStorageProps } from './models';
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
@@ -192,6 +192,30 @@ export function getExpDescendantOfFilter(
     return Filter.create('*', selectClause, IN_EXP_DESCENDANTS_OF_FILTER_TYPE);
 }
 
+export function getSamplePropertyFilters(card: FilterProps): { extraColumns?: string[]; filters: Filter.IFilter[] } {
+    const { filterArray, dataTypeLsid } = card;
+
+    const filters = [];
+    const extraColumns = [];
+    filterArray.forEach(fieldFilter => {
+        filters.push(fieldFilter.filter);
+        if (fieldFilter.fieldKey.toLowerCase() === 'availablealiquotcount') extraColumns.push(fieldFilter.fieldKey);
+    });
+
+    if (!dataTypeLsid) {
+        return {
+            filters,
+            extraColumns,
+        };
+    }
+
+    filters.push(Filter.create('SampleSet', dataTypeLsid));
+    return {
+        filters,
+        extraColumns,
+    };
+}
+
 export function getAssayFilter(card: FilterProps, cf?: Query.ContainerFilter): Filter.IFilter {
     const { schemaQuery, filterArray, selectColumnFieldKey, targetColumnFieldKey } = card;
     const { schemaName, queryName } = schemaQuery;
@@ -232,7 +256,15 @@ export function getSampleFinderCommonConfigs(
     const baseFilters = [];
     const requiredColumns = [...SAMPLE_STATUS_REQUIRED_COLUMNS];
     cards.forEach(card => {
-        if (card.entityDataType.nounAsParentSingular === AssayResultDataType.nounAsParentSingular) {
+        // if card is property
+        if (card.entityDataType.sampleFinderCardType === 'sampleproperty') {
+            const { filters, extraColumns } = getSamplePropertyFilters(card);
+            if (filters) baseFilters.push(...filters);
+            if (extraColumns?.length > 0) requiredColumns.push(...extraColumns);
+            return;
+        }
+
+        if (card.entityDataType.sampleFinderCardType === 'assaydata') {
             const assayFilter = getAssayFilter(card, cf);
             if (assayFilter) baseFilters.push(assayFilter);
             return;
@@ -335,7 +367,8 @@ export function getSampleFinderQueryConfigs(
 export function getSampleFinderColumnNames(cards: FilterProps[]): { [key: string]: string } {
     const columnNames = {};
     cards?.forEach(card => {
-        if (card.entityDataType.nounAsParentSingular === AssayResultDataType.nounAsParentSingular) {
+        const cardKey = card.entityDataType.sampleFinderCardType;
+        if (cardKey === 'assaydata' || cardKey === 'sampleproperty') {
             return;
         }
 
@@ -460,8 +493,10 @@ export function getSearchFilterObjs(filterProps: FilterProps[]): any[] {
     const filterPropsObj = [];
 
     filterProps.forEach(filterProp => {
-        const filterPropsEntityDataType = { ...filterProp.entityDataType };
-        const filterPropObj = { ...filterProp, entityDataType: filterPropsEntityDataType };
+        const filterPropObj = { ...filterProp };
+        delete filterPropObj['entityDataType'];
+        // don't persist the entire entitydatatype
+        filterPropObj['sampleFinderCardType'] = filterProp.entityDataType.sampleFinderCardType;
 
         const filterArrayObjs = [];
         [...filterPropObj.filterArray].forEach(field => {
@@ -473,15 +508,6 @@ export function getSearchFilterObjs(filterProps: FilterProps[]): any[] {
             });
         });
         filterPropObj.filterArray = filterArrayObjs;
-
-        const entityDataFilterArrayObjs = [];
-        if (filterPropObj.entityDataType.filterArray?.length > 0) {
-            [...filterPropObj.entityDataType.filterArray].forEach(filter => {
-                entityDataFilterArrayObjs.push(filterToJson(filter));
-            });
-
-            filterPropObj.entityDataType.filterArray = entityDataFilterArrayObjs;
-        }
 
         filterPropsObj.push(filterPropObj);
     });
@@ -504,34 +530,39 @@ export function searchFiltersToJson(
 
 export function getSearchFiltersFromObjs(
     filterPropsObj: any[],
-    assaySampleCols?: { [key: string]: AssaySampleColumnProp }
+    entityTypes: EntityDataType[],
+    assaySampleCols?: { [key: string]: AssaySampleColumnProp },
+    currentUserDisplayName?: string
 ): FilterProps[] {
+    const entityTypeMap = {};
+    entityTypes?.forEach(entityType => {
+        entityTypeMap[entityType.sampleFinderCardType] = entityType;
+    });
     const filters: FilterProps[] = [];
     filterPropsObj.forEach(filterPropObj => {
         const filterArray = [];
         filterPropObj.filterArray?.forEach(field => {
+            const filterStr = field.filter.replace('${LABKEY.USER}', currentUserDisplayName + '');
+
             filterArray.push({
                 fieldKey: field.fieldKey,
                 fieldCaption: field.fieldCaption,
-                filter: filterFromJson(field.filter),
+                filter: filterFromJson(filterStr),
                 jsonType: field.jsonType,
             });
         });
         filterPropObj.filterArray = filterArray;
 
-        if (filterPropObj.entityDataType?.filterArray) {
-            const filterArray = [];
-            filterPropObj.entityDataType?.filterArray?.forEach(filter => {
-                filterArray.push(filterFromJson(filter));
-            });
+        const sampleFinderCardType = getSampleFinderCardType(filterPropObj);
 
-            filterPropObj.entityDataType.filterArray = filterArray;
-        }
+        delete filterPropObj['entityDataType'];
+        delete filterPropObj['sampleFinderCardType'];
 
-        if (filterPropObj.entityDataType?.descriptionSingular === AssayResultDataType.descriptionSingular) {
-            filterPropObj.entityDataType.getInstanceSchemaQuery = AssayResultDataType.getInstanceSchemaQuery;
-            filterPropObj.entityDataType.getInstanceDataType = AssayResultDataType.getInstanceDataType;
+        const entityDataType = entityTypeMap[sampleFinderCardType];
 
+        filterPropObj['entityDataType'] = entityDataType;
+
+        if (sampleFinderCardType === 'assaydata') {
             // when Finding from assays grid, the json lacks certain properties
             if (!filterPropObj.selectColumnFieldKey && assaySampleCols) {
                 const assayDesign = AssayResultDataType.getInstanceDataType(filterPropObj.schemaQuery);
@@ -550,9 +581,23 @@ export function getSearchFiltersFromObjs(
     return filters;
 }
 
+function getSampleFinderCardType(filterPropObj: any): string {
+    const sampleFinderCardType =
+        filterPropObj['sampleFinderCardType'] ?? filterPropObj.entityDataType?.sampleFinderCardType;
+    if (sampleFinderCardType) return sampleFinderCardType;
+
+    // legacy saved reports, prior to sample properties card is introduced
+    const parentNoun = filterPropObj.entityDataType?.nounAsParentSingular;
+    if (parentNoun === 'Parent' || parentNoun === 'Sample Parent') return 'sampleparent';
+    else if (parentNoun === 'Assay') return 'assaydata';
+    else return 'dataclassparent';
+}
+
 export function searchFiltersFromJson(
     filterPropsStr: string,
-    assaySampleCols?: { [key: string]: AssaySampleColumnProp }
+    entityTypes: EntityDataType[],
+    assaySampleCols?: { [key: string]: AssaySampleColumnProp },
+    currentUserDisplayName?: string
 ): SearchSessionStorageProps {
     const obj = JSON.parse(filterPropsStr);
     const filterPropsObj: any[] = obj.filters;
@@ -560,7 +605,7 @@ export function searchFiltersFromJson(
     const filterTimestamp: string = obj.filterTimestamp;
 
     return {
-        filters: getSearchFiltersFromObjs(filterPropsObj, assaySampleCols),
+        filters: getSearchFiltersFromObjs(filterPropsObj, entityTypes, assaySampleCols, currentUserDisplayName),
         filterChangeCounter,
         filterTimestamp,
     };
@@ -875,12 +920,13 @@ export function getUpdatedDataTypeFilters(
     dataTypeFilters: { [p: string]: FieldFilter[] },
     activeQuery: string,
     activeField: QueryColumn,
-    newFilters: Filter.IFilter[]
+    newFilters: Filter.IFilter[],
+    allowSingleParentTypeFilter?: boolean
 ): { [p: string]: FieldFilter[] } {
     const lcActiveQuery = activeQuery.toLowerCase();
     const dataTypeFiltersUpdated = { ...dataTypeFilters };
     const activeParentFilters: FieldFilter[] = dataTypeFiltersUpdated[lcActiveQuery];
-    const activeFieldKey = activeField.fieldKey;
+    const activeFieldKey = activeField.resolveFieldKey();
     // the filters on the parent type that aren't associated with this field.
     const otherFieldFilters = activeParentFilters?.filter(filter => filter.fieldKey !== activeFieldKey) ?? [];
 
@@ -896,6 +942,16 @@ export function getUpdatedDataTypeFilters(
                     jsonType: activeField.getDisplayFieldJsonType(),
                 } as FieldFilter;
             }) ?? [];
+
+    if (allowSingleParentTypeFilter) {
+        if (otherFieldFilters.length + thisFieldFilters.length > 0) {
+            return {
+                [lcActiveQuery]: [...otherFieldFilters, ...thisFieldFilters],
+            };
+        } else {
+            return {};
+        }
+    }
 
     if (otherFieldFilters.length + thisFieldFilters.length > 0) {
         dataTypeFiltersUpdated[lcActiveQuery] = [...otherFieldFilters, ...thisFieldFilters];
@@ -920,7 +976,7 @@ export function getDataTypeFiltersWithNotInQueryUpdate(
     if (noDataInTypeChecked) {
         const noDataFilter = Filter.create(
             selectQueryFilterKey,
-            getLabKeySql(targetQueryFilterKey, schemaQuery.schemaName, schemaQuery.queryName, null, cf),
+            getNotNullLabKeySql(schemaQuery, targetQueryFilterKey, cf),
             COLUMN_NOT_IN_FILTER_TYPE
         );
 
@@ -936,6 +992,15 @@ export function getDataTypeFiltersWithNotInQueryUpdate(
         delete dataTypeFiltersUpdated[lcActiveQuery];
     }
     return dataTypeFiltersUpdated;
+}
+
+function getNotNullLabKeySql(
+    schemaQuery: SchemaQuery,
+    targetQueryFilterKey: string,
+    cf?: Query.ContainerFilter
+): string {
+    const selectNotInSql = getLabKeySql(targetQueryFilterKey, schemaQuery.schemaName, schemaQuery.queryName, null, cf);
+    return selectNotInSql + ' WHERE ' + getLegalIdentifier(targetQueryFilterKey) + ' IS NOT NULL';
 }
 
 export function getFilterSelections(
@@ -1065,15 +1130,17 @@ export function getSampleFinderTabRowCountSql(queryModel: QueryModel): string {
     filters.forEach(filter => {
         let clause = '';
         if (filter.getFilterType().getURLSuffix() === COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix()) {
-            clause = filter.getColumnName() + ' NOT IN (' + filter.getValue() + ')';
+            clause = 'm.' + filter.getColumnName() + ' NOT IN (' + filter.getValue() + ')';
         } else if (filter.getFilterType().getURLSuffix() === COLUMN_IN_FILTER_TYPE.getURLSuffix()) {
-            clause = filter.getColumnName() + ' IN (' + filter.getValue() + ')';
+            clause = 'm.' + filter.getColumnName() + ' IN (' + filter.getValue() + ')';
         } else if (filter.getFilterType().getURLSuffix() === IN_EXP_DESCENDANTS_OF_FILTER_TYPE.getURLSuffix()) {
-            clause = 'expObject() IN EXPDESCENDANTSOF (' + filter.getValue() + ')';
+            clause = 'm.expObject() IN EXPDESCENDANTSOF (' + filter.getValue() + ')';
         } else {
-            console.error('Bad filter');
+            const fieldName = filter.getColumnName();
+            const jsonType = ALLOWED_FINDER_SAMPLE_PROPERTY_MAP[fieldName.toLowerCase()] ?? 'string';
+            clause = getFilterLabKeySql(filter, jsonType, 'm');
         }
-        wheres.push('m.' + clause);
+        wheres.push(clause);
     });
 
     const rowCountSql =

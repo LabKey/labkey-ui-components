@@ -107,7 +107,7 @@ export interface FindField {
 export interface SampleAliquotsStats {
     aliquotCount: number;
     aliquotIds?: number[];
-    inStorageCount: number;
+    availableCount: number;
     jobsCount?: number;
 }
 

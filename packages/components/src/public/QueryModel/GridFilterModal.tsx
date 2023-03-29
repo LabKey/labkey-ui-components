@@ -4,13 +4,15 @@ import { Filter, Query } from '@labkey/api';
 
 import { FieldFilter } from '../../internal/components/search/models';
 import { QueryColumn } from '../QueryColumn';
-import { QueryModel } from './QueryModel';
+
 import { Alert } from '../../internal/components/base/Alert';
 import { QueryFilterPanel } from '../../internal/components/search/QueryFilterPanel';
 import { NOT_ANY_FILTER_TYPE } from '../../internal/url/NotAnyFilterType';
 import { getFieldFiltersValidationResult, isValidFilterField } from '../../internal/components/search/utils';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../internal/APIWrapper';
+
+import { QueryModel } from './QueryModel';
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -19,7 +21,7 @@ interface Props {
     model: QueryModel;
     onApply: (filters: Filter.IFilter[]) => void;
     onCancel: () => void;
-    selectDistinctOptions?: Query.SelectDistinctOptions;
+    selectDistinctOptions?: Partial<Query.SelectDistinctOptions>;
     skipDefaultViewCheck?: boolean; // for jest tests only due to lack of views from QueryInfo.fromJSON. check all fields, instead of only columns from default view
 }
 

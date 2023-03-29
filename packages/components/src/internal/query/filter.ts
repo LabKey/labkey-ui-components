@@ -17,7 +17,12 @@ import { List } from 'immutable';
 import { Filter } from '@labkey/api';
 
 import { JsonType } from '../components/domainproperties/PropDescType';
-import { getNextDateStr } from '../util/Date';
+import {
+    getNDaysStrFromToday,
+    getNextDateStr,
+    getParsedRelativeDateStr,
+    isRelativeDateFilterValue,
+} from '../util/Date';
 
 const QUERY_KEY_CHAR_DECODED = ['$', '/', '&', '}', '~', ',', '.'];
 const QUERY_KEY_CHAR_ENCODED = ['$D', '$S', '$A', '$B', '$T', '$C', '$P'];
@@ -107,17 +112,21 @@ function getDateStrRange(dateStr: string): string[] {
         datePart = dateStr;
     } else if (dateStr.match(/^\s*(\d\d\d\d)-(\d\d)-(\d\d)\s*(\d\d):(\d\d)\s*$/)) {
         datePart = dateStr.split('s')[0];
+    } else if (isRelativeDateFilterValue(dateStr)) {
+        const { days, positive } = getParsedRelativeDateStr(dateStr);
+        datePart = getNDaysStrFromToday(days * (positive ? 1 : -1));
     }
 
     if (!datePart) return [dateStr, dateStr];
 
-    return ["'" + dateStr + "'", "'" + getNextDateStr(dateStr) + "'"];
+    return ["'" + datePart + "'", "'" + getNextDateStr(datePart) + "'"];
 }
 
 // for date (not datetime) field, ignore the time portion and do date only comparison
-export function getDateFieldLabKeySql(filter: Filter.IFilter): string {
+export function getDateFieldLabKeySql(filter: Filter.IFilter, tableAlias?: string): string {
     const filterType = filter.getFilterType();
-    const columnNameSelect = getLegalIdentifier(filter.getColumnName());
+    let columnNameSelect = getLegalIdentifier(filter.getColumnName());
+    if (tableAlias) columnNameSelect = tableAlias + '.' + columnNameSelect;
 
     let startDateStart, startDateEnd, endDateStart, endDateEnd: string;
     const urlSuffix = filterType.getURLSuffix();
@@ -341,12 +350,13 @@ function getInContainsClauseLabKeySql(filter: Filter.IFilter, jsonType: JsonType
  * @param jsonType The json type ("string", "int", "float", "date", or "boolean") of the field
  * @return labkey sql fragment
  */
-export function getFilterLabKeySql(filter: Filter.IFilter, jsonType: JsonType): string {
+export function getFilterLabKeySql(filter: Filter.IFilter, jsonType: JsonType, tableAlias?: string): string {
     if (!filter) return null;
 
     const filterType = filter.getFilterType();
 
-    const columnNameSelect = getLegalIdentifier(filter.getColumnName());
+    let columnNameSelect = getLegalIdentifier(filter.getColumnName());
+    if (tableAlias) columnNameSelect = tableAlias + '.' + columnNameSelect;
 
     let operatorSql = null;
 
@@ -367,9 +377,9 @@ export function getFilterLabKeySql(filter: Filter.IFilter, jsonType: JsonType): 
             dateValue = filter.getValue();
         }
 
-        if (dateValue?.match(/^\s*(\d\d\d\d)-(\d\d)-(\d\d)\s*$/)) {
+        if (isRelativeDateFilterValue(dateValue) || dateValue?.match(/^\s*(\d\d\d\d)-(\d\d)-(\d\d)\s*$/)) {
             // for date (not datetime) field, ignore the time portion and do date only comparison
-            return getDateFieldLabKeySql(filter);
+            return getDateFieldLabKeySql(filter, tableAlias);
         }
     }
 

@@ -10,6 +10,8 @@ import { SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR } from '../samples/constants
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
+import { SAMPLE_PROPERTY_ALL_SAMPLE_TYPE } from '../search/constants';
+
 import { EntityDataType } from './models';
 import { sampleDeleteDependencyText } from './utils';
 
@@ -62,8 +64,38 @@ export const AssayResultDataType: EntityDataType = {
     uniqueFieldKey: 'RowId',
     dependencyText: undefined,
     filterCardHeaderClass: 'filter-card__header-purple',
+    sampleFinderCardType: 'assaydata',
 };
 
+export const SamplePropertyDataType: EntityDataType = {
+    allowSingleParentTypeFilter: true,
+    allowRelativeDateFilter: true,
+    typeListingSchemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
+    listingSchemaQuery: undefined,
+    instanceSchemaName: undefined,
+    getInstanceSchemaQuery: (queryName: string) => {
+        if (queryName === SAMPLE_PROPERTY_ALL_SAMPLE_TYPE.query) return SCHEMAS.EXP_TABLES.MATERIALS;
+        return new SchemaQuery('samples', queryName);
+    },
+    getInstanceDataType: (schemaQuery: SchemaQuery, altQueryName?: string) => {
+        return altQueryName ?? schemaQuery.queryName;
+    },
+    operationConfirmationControllerName: 'experiment',
+    operationConfirmationActionName: undefined,
+    nounSingular: 'sample',
+    nounPlural: 'samples',
+    nounAsParentSingular: 'Sample',
+    nounAsParentPlural: 'Samples',
+    typeNounSingular: 'Sample Type',
+    typeNounAsParentSingular: 'Sample Type',
+    descriptionSingular: 'sample type',
+    descriptionPlural: 'sample types',
+    uniqueFieldKey: 'Name',
+    dependencyText: undefined,
+    deleteHelpLinkTopic: DELETE_SAMPLES_TOPIC,
+    filterCardHeaderClass: 'filter-card__header-orange',
+    sampleFinderCardType: 'sampleproperty',
+};
 
 export const SampleTypeDataType: EntityDataType = {
     typeListingSchemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
@@ -92,6 +124,7 @@ export const SampleTypeDataType: EntityDataType = {
     filterCardHeaderClass: 'filter-card__header-success',
     exprColumnsWithSubSelect: SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR,
     typeIcon: 'sample_set',
+    sampleFinderCardType: 'sampleparent',
 };
 
 export const DataClassDataType: EntityDataType = {
@@ -118,6 +151,7 @@ export const DataClassDataType: EntityDataType = {
     importFileAction: 'importData',
     filterCardHeaderClass: 'filter-card__header-primary',
     typeIcon: 'source_type',
+    sampleFinderCardType: 'dataclassparent',
 };
 
 export const ParentEntityLineageColumns = List.of('Inputs/Materials/First', 'Inputs/Data/First');

@@ -119,20 +119,6 @@ export const DomainParentAliases: FC<Props> = memo(props => {
         onAddParentAlias(newId, newParentAlias);
     }, [idPrefix, onAddParentAlias, schema]);
 
-    // getAddEntityHelper = (parentageLabel?: string): any => {
-    //     const msg = parentageLabel
-    //         ? PARENT_ALIAS_HELPER_TEXT.replace('parentage', parentageLabel)
-    //         : PARENT_ALIAS_HELPER_TEXT;
-    //     return (
-    //         <>
-    //             <p>{msg}</p>
-    //             <p>
-    //                 <HelpLink topic={DERIVE_SAMPLES_ALIAS_TOPIC}>More info</HelpLink>
-    //             </p>
-    //         </>
-    //     );
-    // };
-
     return (<>
         {filteredParentAliases?.map((alias) => (
             <ParentAliasRow

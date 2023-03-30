@@ -156,7 +156,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 this.setState({ loadingError: 'There was a problem retrieving the Naming Pattern prefix.' });
             }
         }
-    }; //
+    };
 
     updateValidStatus = (newModel?: SampleTypeModel): void => {
         const { model, updateModel, metricUnitProps } = this.props;

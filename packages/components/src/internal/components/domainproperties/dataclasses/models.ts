@@ -38,7 +38,6 @@ export interface DataClassModelConfig extends DataClassOptionsConfig {
     exception: string;
 }
 
-//
 export class DataClassModel implements DataClassModelConfig {
     [immerable] = true;
 

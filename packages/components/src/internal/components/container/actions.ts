@@ -44,6 +44,7 @@ export interface UseContainerUser extends ContainerUser {
 /**
  * React hook that supplies the container, user, and the container-relative permissions for the user.
  * @param containerIdOrPath The container id or container path to request.
+ * @param includeSubfolders Whether to include subfolders of the requested container.
  * Example:
  * ```tsx
  * const SeeUserPermissions: React.FC = () => {
@@ -75,7 +76,7 @@ export interface UseContainerUser extends ContainerUser {
  * };
  * ```
  */
-export function useContainerUser(containerIdOrPath: string): UseContainerUser {
+export function useContainerUser(containerIdOrPath: string, includeSubfolders = false): UseContainerUser {
     const [container, setContainer] = useState<Container>();
     const [containerUsers, setContainerUsers] = useState<Record<string, ContainerUser>>({});
     const [error, setError] = useState<string>();
@@ -92,7 +93,10 @@ export function useContainerUser(containerIdOrPath: string): UseContainerUser {
             setLoadingState(LoadingState.LOADING);
 
             try {
-                const containers = await api.security.fetchContainers({ containerPath: containerIdOrPath });
+                const containers = await api.security.fetchContainers({
+                    containerPath: containerIdOrPath,
+                    includeSubfolders,
+                });
                 let container_, contextUser_;
 
                 const containerUsers_: Record<string, ContainerUser> = containers.reduce((cu, ct, i) => {
@@ -117,7 +121,7 @@ export function useContainerUser(containerIdOrPath: string): UseContainerUser {
 
             setLoadingState(LoadingState.LOADED);
         })();
-    }, [api, containerIdOrPath, user]);
+    }, [api, containerIdOrPath, includeSubfolders, user]);
 
     return { container, containerUsers, error, isLoaded: !isLoading(loadingState), user: contextUser };
 }

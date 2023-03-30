@@ -1593,6 +1593,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           onParentAliasChange={[Function]}
           onRemoveParentAlias={[Function]}
           panelStatus="NONE"
+          parentAliasHelpText="Column headings used during import to set a sample's parentage."
           sampleAliasCaption="Sample Alias"
           sampleTypeCaption="Sample Type"
           showLinkToStudy={false}
@@ -1768,6 +1769,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             onParentAliasChange={[Function]}
             onRemoveParentAlias={[Function]}
             panelStatus="NONE"
+            parentAliasHelpText="Column headings used during import to set a sample's parentage."
             sampleAliasCaption="Sample Alias"
             sampleTypeCaption="Sample Type"
             showLinkToStudy={false}
@@ -2346,6 +2348,199 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                     </form>
                                   </Form>
                                 </EntityDetailsForm>
+                                <Memo()
+                                  addEntityHelp={
+                                    <React.Fragment>
+                                      <p>
+                                        Column headings used during import to set a sample's parentage.
+                                      </p>
+                                      <p>
+                                        <HelpLink
+                                          topic="deriveSamples#alias"
+                                        >
+                                          More info
+                                        </HelpLink>
+                                      </p>
+                                    </React.Fragment>
+                                  }
+                                  appPropertiesOnly={true}
+                                  collapsed={false}
+                                  controlledCollapse={true}
+                                  dataClassAliasCaption="Data Class Alias"
+                                  dataClassParentageLabel="data class"
+                                  dataClassTypeCaption="Data Class"
+                                  helpTopic="createSampleType"
+                                  idPrefix="sampletype-parent-import-alias-"
+                                  includeDataClass={false}
+                                  includeDataClasses={false}
+                                  includeSampleSet={true}
+                                  metricUnitProps={
+                                    {
+                                      "metricUnitHelpMsg": "The unit of measurement used for the sample type.",
+                                      "metricUnitLabel": "Metric Unit",
+                                    }
+                                  }
+                                  model={
+                                    Immutable.Record {
+                                      "rowId": undefined,
+                                      "name": "Test Name",
+                                      "nameReadOnly": true,
+                                      "nameExpression": undefined,
+                                      "aliquotNameExpression": "",
+                                      "description": undefined,
+                                      "labelColor": undefined,
+                                      "metricUnit": undefined,
+                                      "parentAliases": undefined,
+                                      "importAliases": Immutable.Map {},
+                                      "domainId": undefined,
+                                      "domain": Immutable.Record {
+                                        "name": "Test Name",
+                                        "container": undefined,
+                                        "description": undefined,
+                                        "domainURI": undefined,
+                                        "domainId": null,
+                                        "allowFileLinkProperties": false,
+                                        "allowAttachmentProperties": false,
+                                        "allowFlagProperties": true,
+                                        "allowSampleSubjectProperties": true,
+                                        "allowTextChoiceProperties": true,
+                                        "allowTimepointProperties": false,
+                                        "showDefaultValueSettings": false,
+                                        "defaultDefaultValueType": undefined,
+                                        "defaultValueOptions": Immutable.List [],
+                                        "fields": Immutable.List [
+                                          Immutable.Record {
+                                            "conceptURI": undefined,
+                                            "conditionalFormats": Immutable.List [],
+                                            "defaultScale": undefined,
+                                            "defaultValueType": undefined,
+                                            "defaultValue": undefined,
+                                            "defaultDisplayValue": undefined,
+                                            "description": undefined,
+                                            "dimension": undefined,
+                                            "excludeFromShifting": false,
+                                            "format": undefined,
+                                            "hidden": false,
+                                            "importAliases": undefined,
+                                            "label": undefined,
+                                            "lookupContainer": undefined,
+                                            "lookupQuery": undefined,
+                                            "lookupSchema": undefined,
+                                            "lookupValidator": undefined,
+                                            "lookupIsValid": undefined,
+                                            "measure": undefined,
+                                            "mvEnabled": false,
+                                            "name": "testfield",
+                                            "PHI": undefined,
+                                            "propertyId": undefined,
+                                            "propertyURI": undefined,
+                                            "propertyValidators": Immutable.List [],
+                                            "rangeValidators": Immutable.List [],
+                                            "rangeURI": undefined,
+                                            "regexValidators": Immutable.List [],
+                                            "textChoiceValidator": undefined,
+                                            "recommendedVariable": false,
+                                            "required": false,
+                                            "scale": 4000,
+                                            "URL": undefined,
+                                            "shownInDetailsView": true,
+                                            "shownInInsertView": true,
+                                            "shownInUpdateView": true,
+                                            "visible": true,
+                                            "dataType": Immutable.Record {
+                                              "conceptURI": undefined,
+                                              "display": "Text",
+                                              "name": "string",
+                                              "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                              "alternateRangeURI": "xsd:string",
+                                              "shortDisplay": "String",
+                                              "lookupSchema": undefined,
+                                              "lookupQuery": undefined,
+                                            },
+                                            "lookupQueryValue": undefined,
+                                            "lookupType": Immutable.Record {
+                                              "conceptURI": undefined,
+                                              "display": "Lookup",
+                                              "name": "lookup",
+                                              "rangeURI": undefined,
+                                              "alternateRangeURI": undefined,
+                                              "shortDisplay": undefined,
+                                              "lookupSchema": undefined,
+                                              "lookupQuery": undefined,
+                                            },
+                                            "original": {
+                                              "conceptURI": undefined,
+                                              "dataType": Immutable.Record {
+                                                "conceptURI": undefined,
+                                                "display": "Text",
+                                                "name": "string",
+                                                "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                "alternateRangeURI": "xsd:string",
+                                                "shortDisplay": "String",
+                                                "lookupSchema": undefined,
+                                                "lookupQuery": undefined,
+                                              },
+                                              "name": "testfield",
+                                              "rangeURI": undefined,
+                                            },
+                                            "updatedField": false,
+                                            "isPrimaryKey": false,
+                                            "lockType": "NotLocked",
+                                            "wrappedColumnName": undefined,
+                                            "disablePhiLevel": false,
+                                            "lockExistingField": false,
+                                            "sourceOntology": undefined,
+                                            "conceptSubtree": undefined,
+                                            "conceptLabelColumn": undefined,
+                                            "conceptImportColumn": undefined,
+                                            "principalConceptCode": undefined,
+                                            "derivationDataScope": undefined,
+                                            "selected": false,
+                                            "scannable": false,
+                                          },
+                                        ],
+                                        "indices": Immutable.List [],
+                                        "domainException": undefined,
+                                        "mandatoryFieldNames": Immutable.List [],
+                                        "reservedFieldNames": Immutable.List [
+                                          "sampleid",
+                                        ],
+                                        "newDesignFields": undefined,
+                                        "instructions": undefined,
+                                        "domainKindName": undefined,
+                                        "schemaName": undefined,
+                                        "queryName": undefined,
+                                        "disabledSystemFields": undefined,
+                                      },
+                                      "autoLinkTargetContainerId": undefined,
+                                      "autoLinkCategory": undefined,
+                                      "exception": undefined,
+                                    }
+                                  }
+                                  nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=sampleIDs#patterns"
+                                  nameExpressionPlaceholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
+                                  namePreviewsLoading={false}
+                                  nounPlural="Sample Types"
+                                  nounSingular="Sample Type"
+                                  onAddParentAlias={[Function]}
+                                  onAddUniqueIdField={[Function]}
+                                  onNameFieldHover={[Function]}
+                                  onParentAliasChange={[Function]}
+                                  onRemoveParentAlias={[Function]}
+                                  panelStatus="NONE"
+                                  parentAliasHelpText="Column headings used during import to set a sample's parentage."
+                                  sampleAliasCaption="Sample Alias"
+                                  sampleTypeCaption="Sample Type"
+                                  schema="samples"
+                                  showAddBtn={false}
+                                  showLinkToStudy={false}
+                                  togglePanel={[Function]}
+                                  updateDupeParentAliases={[Function]}
+                                  updateModel={[Function]}
+                                  useSeparateDataClassesAliasMenu={false}
+                                  useTheme={false}
+                                  validate={false}
+                                />
                                 <SectionHeading
                                   cls="top-spacing"
                                   title="Storage Settings"

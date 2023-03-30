@@ -173,7 +173,6 @@ exports[`<SampleTypePropertiesPanel/> appPropertiesOnly 1`] = `
                   className="fa fa-plus-circle container--addition-icon"
                 />
                  Add 
-                Parent Alias
               </span>
               <span
                 className="label-help-target"
@@ -411,7 +410,6 @@ exports[`<SampleTypePropertiesPanel/> default props 1`] = `
                   className="fa fa-plus-circle container--addition-icon"
                 />
                  Add 
-                Parent Alias
               </span>
               <span
                 className="label-help-target"
@@ -599,7 +597,6 @@ exports[`<SampleTypePropertiesPanel/> include dataclass and use custom labels 1`
                   className="fa fa-plus-circle container--addition-icon"
                 />
                  Add 
-                Parent Alias
               </span>
               <span
                 className="label-help-target"
@@ -637,7 +634,6 @@ exports[`<SampleTypePropertiesPanel/> include dataclass and use custom labels 1`
                   className="fa fa-plus-circle container--addition-icon"
                 />
                  Add 
-                Source Alias
               </span>
               <span
                 className="label-help-target"
@@ -830,7 +826,6 @@ exports[`<SampleTypePropertiesPanel/> includeMetricUnitProperty 1`] = `
                   className="fa fa-plus-circle container--addition-icon"
                 />
                  Add 
-                Parent Alias
               </span>
               <span
                 className="label-help-target"
@@ -1108,7 +1103,6 @@ exports[`<SampleTypePropertiesPanel/> metricUnitOptions 1`] = `
                   className="fa fa-plus-circle container--addition-icon"
                 />
                  Add 
-                Parent Alias
               </span>
               <span
                 className="label-help-target"
@@ -1487,7 +1481,6 @@ exports[`<SampleTypePropertiesPanel/> nameExpressionInfoUrl 1`] = `
                   className="fa fa-plus-circle container--addition-icon"
                 />
                  Add 
-                Parent Alias
               </span>
               <span
                 className="label-help-target"
@@ -1658,6 +1651,7 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
     onParentAliasChange={[Function]}
     onRemoveParentAlias={[Function]}
     panelStatus="NONE"
+    parentAliasHelpText="Column headings used during import to set a sample's parentage."
     parentOptions={[]}
     sampleAliasCaption="Sample Alias"
     sampleTypeCaption="Sample Type"
@@ -1748,6 +1742,7 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
       onParentAliasChange={[Function]}
       onRemoveParentAlias={[Function]}
       panelStatus="NONE"
+      parentAliasHelpText="Column headings used during import to set a sample's parentage."
       parentOptions={[]}
       sampleAliasCaption="Sample Alias"
       sampleTypeCaption="Sample Type"
@@ -2296,51 +2291,139 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                       </Col>
                     </div>
                   </Row>
-                  <Row
-                    bsClass="row"
-                    componentClass="div"
+                  <Memo()
+                    addEntityHelp={
+                      <React.Fragment>
+                        <p>
+                          Column headings used during import to set a sample's parentage.
+                        </p>
+                        <p>
+                          <HelpLink
+                            topic="deriveSamples#alias"
+                          >
+                            More info
+                          </HelpLink>
+                        </p>
+                      </React.Fragment>
+                    }
+                    aliquotNamePatternProps={
+                      {
+                        "showAliquotNameExpression": true,
+                      }
+                    }
+                    appPropertiesOnly={false}
+                    collapsed={false}
+                    controlledCollapse={false}
+                    dataClassAliasCaption="Data Class Alias"
+                    dataClassParentageLabel="data class"
+                    dataClassTypeCaption="Data Class"
+                    helpTopic="createSampleSet"
+                    idPrefix="sampletype-parent-import-alias-"
+                    includeSampleSet={true}
+                    metricUnitProps={
+                      {
+                        "metricUnitHelpMsg": "The unit of measurement used for the sample type.",
+                        "metricUnitLabel": "Metric Unit",
+                      }
+                    }
+                    model={
+                      Immutable.Record {
+                        "rowId": 1,
+                        "name": undefined,
+                        "nameReadOnly": undefined,
+                        "nameExpression": undefined,
+                        "aliquotNameExpression": "S-\${\${AliquotedFrom.:withCounter}}",
+                        "description": undefined,
+                        "labelColor": undefined,
+                        "metricUnit": undefined,
+                        "parentAliases": undefined,
+                        "importAliases": Immutable.Map {},
+                        "domainId": undefined,
+                        "domain": Immutable.Record {
+                          "name": undefined,
+                          "container": undefined,
+                          "description": undefined,
+                          "domainURI": undefined,
+                          "domainId": null,
+                          "allowFileLinkProperties": false,
+                          "allowAttachmentProperties": false,
+                          "allowFlagProperties": true,
+                          "allowSampleSubjectProperties": true,
+                          "allowTextChoiceProperties": true,
+                          "allowTimepointProperties": false,
+                          "showDefaultValueSettings": false,
+                          "defaultDefaultValueType": undefined,
+                          "defaultValueOptions": Immutable.List [],
+                          "fields": Immutable.List [],
+                          "indices": Immutable.List [],
+                          "domainException": undefined,
+                          "mandatoryFieldNames": Immutable.List [],
+                          "reservedFieldNames": Immutable.List [],
+                          "newDesignFields": undefined,
+                          "instructions": undefined,
+                          "domainKindName": undefined,
+                          "schemaName": undefined,
+                          "queryName": undefined,
+                          "disabledSystemFields": undefined,
+                        },
+                        "autoLinkTargetContainerId": undefined,
+                        "autoLinkCategory": undefined,
+                        "exception": undefined,
+                      }
+                    }
+                    nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=sampleIDs"
+                    nameExpressionPlaceholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
+                    namePreviews={
+                      [
+                        null,
+                        "S-parentSample-1",
+                      ]
+                    }
+                    nounPlural="Sample Types"
+                    nounSingular="Sample Type"
+                    onAddParentAlias={[Function]}
+                    onAddUniqueIdField={[Function]}
+                    onParentAliasChange={[Function]}
+                    onRemoveParentAlias={[Function]}
+                    panelStatus="NONE"
+                    parentAliasHelpText="Column headings used during import to set a sample's parentage."
+                    parentOptions={[]}
+                    sampleAliasCaption="Sample Alias"
+                    sampleTypeCaption="Sample Type"
+                    schema="samples"
+                    showAddBtn={true}
+                    showLinkToStudy={true}
+                    togglePanel={[Function]}
+                    updateModel={[Function]}
+                    useTheme={false}
+                    validate={false}
                   >
-                    <div
-                      className="row"
+                    <Row
+                      bsClass="row"
+                      componentClass="div"
                     >
-                      <Col
-                        bsClass="col"
-                        componentClass="div"
-                        xs={2}
+                      <div
+                        className="row"
                       >
-                        <div
-                          className="col-xs-2"
-                        />
-                      </Col>
-                      <Col
-                        bsClass="col"
-                        componentClass="div"
-                        xs={10}
-                      >
-                        <div
-                          className="col-xs-10"
+                        <Col
+                          bsClass="col"
+                          componentClass="div"
+                          xs={2}
                         >
-                          <span>
-                            <AddEntityButton
-                              entity="Parent Alias"
-                              helperBody={
-                                <React.Fragment>
-                                  <p>
-                                    Column headings used during import to set a sample's parentage.
-                                  </p>
-                                  <p>
-                                    <HelpLink
-                                      topic="deriveSamples#alias"
-                                    >
-                                      More info
-                                    </HelpLink>
-                                  </p>
-                                </React.Fragment>
-                              }
-                              onClick={[Function]}
-                            >
-                              <ActionButton
-                                containerClass="form-group"
+                          <div
+                            className="col-xs-2"
+                          />
+                        </Col>
+                        <Col
+                          bsClass="col"
+                          componentClass="div"
+                          xs={10}
+                        >
+                          <div
+                            className="col-xs-10"
+                          >
+                            <span>
+                              <AddEntityButton
                                 helperBody={
                                   <React.Fragment>
                                     <p>
@@ -2355,59 +2438,77 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                                     </p>
                                   </React.Fragment>
                                 }
-                                helperTitle="More Info"
                                 onClick={[Function]}
                               >
-                                <div
-                                  className="form-group"
+                                <ActionButton
+                                  containerClass="form-group"
+                                  helperBody={
+                                    <React.Fragment>
+                                      <p>
+                                        Column headings used during import to set a sample's parentage.
+                                      </p>
+                                      <p>
+                                        <HelpLink
+                                          topic="deriveSamples#alias"
+                                        >
+                                          More info
+                                        </HelpLink>
+                                      </p>
+                                    </React.Fragment>
+                                  }
+                                  helperTitle="More Info"
+                                  onClick={[Function]}
                                 >
-                                  <div>
-                                    <span
-                                      className="container--action-button btn btn-default"
-                                      onClick={[Function]}
-                                    >
-                                      <i
-                                        className="fa fa-plus-circle container--addition-icon"
-                                      />
-                                       Add 
-                                      Parent Alias
-                                    </span>
-                                    <Component
-                                      id="tooltip"
-                                      title="More Info"
-                                    >
+                                  <div
+                                    className="form-group"
+                                  >
+                                    <div>
                                       <span
-                                        className="label-help-target"
-                                        onMouseOut={[Function]}
-                                        onMouseOver={[Function]}
+                                        className="container--action-button btn btn-default"
+                                        onClick={[Function]}
+                                      >
+                                        <i
+                                          className="fa fa-plus-circle container--addition-icon"
+                                        />
+                                         Add 
+                                      </span>
+                                      <Component
+                                        id="tooltip"
+                                        title="More Info"
                                       >
                                         <span
-                                          className="label-help-icon fa fa-question-circle"
-                                        />
-                                        <Overlay
-                                          animation={[Function]}
-                                          placement="right"
-                                          rootClose={false}
-                                          show={false}
+                                          className="label-help-target"
+                                          onMouseOut={[Function]}
+                                          onMouseOver={[Function]}
                                         >
+                                          <span
+                                            className="label-help-icon fa fa-question-circle"
+                                          />
                                           <Overlay
+                                            animation={[Function]}
                                             placement="right"
                                             rootClose={false}
                                             show={false}
-                                            transition={[Function]}
-                                          />
-                                        </Overlay>
-                                      </span>
-                                    </Component>
+                                          >
+                                            <Overlay
+                                              placement="right"
+                                              rootClose={false}
+                                              show={false}
+                                              transition={[Function]}
+                                            />
+                                          </Overlay>
+                                        </span>
+                                      </Component>
+                                    </div>
                                   </div>
-                                </div>
-                              </ActionButton>
-                            </AddEntityButton>
-                          </span>
-                        </div>
-                      </Col>
-                    </div>
-                  </Row>
+                                </ActionButton>
+                              </AddEntityButton>
+                            </span>
+                          </div>
+                        </Col>
+                      </div>
+                    </Row>
+                  </Memo()>
                   <SectionHeading
                     cls="top-spacing"
                     title="Storage Settings"

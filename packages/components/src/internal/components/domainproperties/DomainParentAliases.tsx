@@ -31,6 +31,7 @@ interface Props {
     schema: string;
     showAddBtn?: boolean;
     updateDupeParentAliases?: (id: string) => void;
+    useSeparateDataClassesAliasMenu?: boolean;
 }
 
 const sampleSetAliasFilterFn = (alias: IParentAlias): boolean => {
@@ -69,6 +70,7 @@ export const DomainParentAliases: FC<Props> = memo(props => {
         schema,
         addEntityHelp,
         parentAliasHelpText,
+        useSeparateDataClassesAliasMenu,
     } = props;
 
     const [aliasCaption, setAliasCaption] = useState<string>(undefined);
@@ -105,6 +107,9 @@ export const DomainParentAliases: FC<Props> = memo(props => {
                 dataClassParentageLabel ? dataClassParentageLabel : 'parentage'
             );
         }
+        if (!(includeDataClass && useSeparateDataClassesAliasMenu))
+            aliasCaption = 'Parent Alias';
+
         setAliasCaption(aliasCaption);
         setParentTypeCaption(parentTypeCaption);
         setHelpMsg(helpMsg);

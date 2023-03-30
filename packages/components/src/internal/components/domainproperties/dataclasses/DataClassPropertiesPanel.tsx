@@ -54,16 +54,16 @@ interface OwnProps extends BasePropertiesPanelProps {
     nameExpressionPlaceholder?: string;
     namePreviewsLoading?: boolean;
     nounPlural?: string;
+    nounSingular?: string;
     onAddParentAlias: (id: string, newAlias: IParentAlias) => void;
     onChange: (model: DataClassModel) => void;
-    previewName?: string;
+    onNameFieldHover?: () => any;
     onParentAliasChange: (id: string, field: string, newValue: any) => void;
     onRemoveParentAlias: (id: string) => void;
-    updateDupeParentAliases?: (id: string) => void;
-    onNameFieldHover?: () => any;
-    parentOptions: IParentOption[];
-    nounSingular?: string;
     parentAliasHelpText?: string;
+    parentOptions: IParentOption[];
+    previewName?: string;
+    updateDupeParentAliases?: (id: string) => void;
 }
 
 type Props = OwnProps & InjectedDomainPropertiesPanelCollapseProps;

@@ -25,9 +25,10 @@ import { IParentAlias, IParentOption } from '../../entities/models';
 import { SCHEMAS } from '../../../schemas';
 import { initParentOptionsSelects } from '../../../../entities/actions';
 
+import { DATA_CLASS_IMPORT_PREFIX } from '../../../../entities/constants';
+
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 import { DataClassModel, DataClassModelConfig } from './models';
-import {DATA_CLASS_IMPORT_PREFIX} from "../../../../entities/constants";
 
 interface Props {
     api?: ComponentsAPIWrapper;

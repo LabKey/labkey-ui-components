@@ -29,7 +29,7 @@ import { naturalSortByProperty } from '../public/sort';
 import { generateId } from '../internal/util/utils';
 
 import { filterMediaSampleTypes } from './utils';
-import {DATA_CLASS_IMPORT_PREFIX, SAMPLE_SET_IMPORT_PREFIX} from "./constants";
+import { DATA_CLASS_IMPORT_PREFIX, SAMPLE_SET_IMPORT_PREFIX } from './constants';
 
 // TODO: this file is temporary as we move things into an @labkey/components/entities subpackage. Instead of adding
 // anything to this file, we should create an API wrapper to be used for any new actions in this subpackage.

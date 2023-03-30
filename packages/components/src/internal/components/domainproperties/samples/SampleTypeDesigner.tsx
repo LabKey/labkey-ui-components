@@ -36,10 +36,11 @@ import { Alert } from '../../base/Alert';
 
 import { initParentOptionsSelects } from '../../../../entities/actions';
 
+import { SAMPLE_SET_IMPORT_PREFIX } from '../../../../entities/constants';
+
 import { UniqueIdBanner } from './UniqueIdBanner';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { AliquotNamePatternProps, MetricUnitProps, SampleTypeModel } from './models';
-import {SAMPLE_SET_IMPORT_PREFIX} from "../../../../entities/constants";
 
 const NEW_SAMPLE_SET_OPTION: IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,

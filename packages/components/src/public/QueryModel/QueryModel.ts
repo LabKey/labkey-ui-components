@@ -545,7 +545,7 @@ export class QueryModel {
             throw new Error('Cannot get filters, no QueryInfo available');
         }
 
-        return [...queryInfo.getFilters(viewName).toArray()];
+        return [...queryInfo.getFilters(viewName)];
     }
 
     /**
@@ -637,7 +637,7 @@ export class QueryModel {
         }
 
         let sortStrings = sorts.map(sortStringMapper);
-        const viewSorts = queryInfo.getSorts(viewName).map(sortStringMapper).toArray();
+        const viewSorts = queryInfo.getSorts(viewName).map(sortStringMapper);
 
         if (viewSorts.length > 0) {
             sortStrings = sortStrings.concat(viewSorts);
@@ -984,7 +984,7 @@ export class QueryModel {
         return (
             this.baseFilters?.length > 0 ||
             this.filterArray?.length > 0 ||
-            this.queryInfo?.getFilters(this.schemaQuery.viewName)?.size > 0
+            this.queryInfo?.getFilters(this.schemaQuery.viewName)?.length > 0
         );
     }
 

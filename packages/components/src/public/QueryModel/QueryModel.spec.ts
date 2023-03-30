@@ -238,9 +238,9 @@ describe('QueryModel', () => {
 
     test('filters', () => {
         const viewName = 'TEST_VIEW';
-        const view = ViewInfo.create({
+        const view = ViewInfo.fromJson({
             name: viewName,
-            filter: [{ fieldKey: 'c', value: 'testing' }],
+            filter: [{ fieldKey: 'c', value: 'testing', op: 'eq' }],
         });
         const queryInfo = QueryInfo.create({
             views: fromJS({ [viewName.toLowerCase()]: view }),

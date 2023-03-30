@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.316.0-fb-searchImps.5",
+  "version": "2.319.1-fb-searchImps.5",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

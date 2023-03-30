@@ -1920,12 +1920,13 @@ export async function updateGridFromBulkForm(
     queryInfo: QueryInfo,
     rowData: OrderedMap<string, any>,
     dataRowIndexes: List<number>,
-    lockedOrReadonlyRows?: number[]
+    lockedOrReadonlyRows?: number[],
+    isIncludedColumn?: (col: QueryColumn) => boolean
 ): Promise<Partial<EditorModel>> {
     let cellMessages = editorModel.cellMessages;
     let cellValues = editorModel.cellValues;
 
-    const preparedData = await prepareUpdateRowDataFromBulkForm(queryInfo, rowData);
+    const preparedData = await prepareUpdateRowDataFromBulkForm(queryInfo, rowData, isIncludedColumn);
     const { values, messages } = preparedData; // {3: 'x', 4: 'z}
 
     dataRowIndexes.forEach(rowIdx => {
@@ -1943,9 +1944,10 @@ export async function updateGridFromBulkForm(
 
 async function prepareUpdateRowDataFromBulkForm(
     queryInfo: QueryInfo,
-    rowData: OrderedMap<string, any>
+    rowData: OrderedMap<string, any>,
+    isIncludedColumn?: (col: QueryColumn) => boolean
 ): Promise<{ messages: OrderedMap<number, CellMessage>; values: OrderedMap<number, List<ValueDescriptor>> }> {
-    const columns = queryInfo.getInsertColumns();
+    const columns = queryInfo.getInsertColumns(isIncludedColumn);
     let values = OrderedMap<number, List<ValueDescriptor>>();
     let messages = OrderedMap<number, CellMessage>();
 
@@ -2099,7 +2101,7 @@ export function getGridViews(
             success: response => {
                 const views = [];
                 response.views?.forEach(view => {
-                    if (includeHidden || view['hidden'] !== true) views.push(ViewInfo.create(view));
+                    if (includeHidden || view['hidden'] !== true) views.push(ViewInfo.fromJson(view));
                 });
                 if (sort) {
                     views.sort((a, b) => {

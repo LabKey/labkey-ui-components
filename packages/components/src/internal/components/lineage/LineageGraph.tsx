@@ -2,8 +2,8 @@
  * Copyright (c) 2016-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, memo, PureComponent } from 'react';
-import { Experiment } from '@labkey/api';
+import React, { FC, memo, PureComponent, useState } from 'react';
+import { ActionURL, Experiment } from '@labkey/api';
 
 import { Alert } from '../base/Alert';
 
@@ -16,6 +16,7 @@ import { isBasicNode, VisGraphOptions, VisGraphNode, VisGraphNodeType } from './
 import { VisGraph } from './vis/VisGraph';
 import { LineageNodeDetailFactory } from './node/LineageNodeDetailFactory';
 import { DEFAULT_LINEAGE_DISTANCE } from './constants';
+import { LineageSettings } from './LineageSettings';
 
 interface LineageGraphOwnProps {
     members?: LINEAGE_DIRECTIONS;
@@ -23,6 +24,8 @@ interface LineageGraphOwnProps {
 }
 
 interface LineageGraphDisplayOwnProps {
+    options?: LineageOptions;
+    setOptions: (options: LineageOptions) => void;
     visGraphOptions: VisGraphOptions;
 }
 
@@ -30,6 +33,7 @@ interface State {
     hoverNode: string;
     nodeInteractions: WithNodeInteraction;
     selectedNodes: VisGraphNodeType[];
+    showSettings: boolean;
 }
 
 type Props = InjectedLineage & LineageGraphDisplayOwnProps & WithLineageOptions & LineageGraphOwnProps & LineageOptions;
@@ -47,7 +51,12 @@ class LineageGraphDisplay extends PureComponent<Props, Partial<State>> {
                 onNodeMouseOut: this.onSummaryNodeMouseOut,
                 onNodeClick: this.onSummaryNodeClick,
             },
+            showSettings: false,
         };
+    }
+
+    get allowSettings(): boolean {
+        return !!ActionURL.getParameter('lineageSettings');
     }
 
     clearHover = (): void => {
@@ -79,13 +88,19 @@ class LineageGraphDisplay extends PureComponent<Props, Partial<State>> {
     };
 
     onVisGraphNodeDoubleClick = (visNode: VisGraphNode): void => {
-        if (this.props.navigate) {
-            this.props.navigate(visNode);
-        }
+        this.props.navigate?.(visNode);
     };
 
     onNodeSelectionChange = (selectedNodes: VisGraphNodeType[]): void => {
         this.setState({ selectedNodes });
+    };
+
+    onOptionsChange = (options: LineageOptions): void => {
+        this.props.setOptions?.(options);
+    };
+
+    onToggleSettings = (): void => {
+        this.setState(state => ({ showSettings: !state.showSettings }));
     };
 
     updateHover = (node: VisGraphNodeType): void => {
@@ -99,8 +114,8 @@ class LineageGraphDisplay extends PureComponent<Props, Partial<State>> {
     };
 
     render() {
-        const { lineage, lsid, visGraphOptions } = this.props;
-        const { hoverNode, selectedNodes } = this.state;
+        const { lineage, lsid, options, visGraphOptions } = this.props;
+        const { hoverNode, selectedNodes, showSettings } = this.state;
 
         if (lineage?.error) {
             return <Alert>{lineage.error}</Alert>;
@@ -118,6 +133,7 @@ class LineageGraphDisplay extends PureComponent<Props, Partial<State>> {
                                 onNodeDeselect={this.onNodeSelectionChange}
                                 onNodeHover={this.updateHover}
                                 onNodeBlur={this.clearHover}
+                                onToggleSettings={this.allowSettings ? this.onToggleSettings : undefined}
                                 options={visGraphOptions}
                                 seed={lsid}
                             />
@@ -126,12 +142,21 @@ class LineageGraphDisplay extends PureComponent<Props, Partial<State>> {
                         )}
                     </div>
                     <div className="col-md-4 lineage-node-detail-container">
-                        <LineageNodeDetailFactory
-                            highlightNode={hoverNode}
-                            lineage={lineage}
-                            lineageOptions={this.props}
-                            selectedNodes={selectedNodes}
-                        />
+                        {!showSettings && (
+                            <LineageNodeDetailFactory
+                                highlightNode={hoverNode}
+                                lineage={lineage}
+                                lineageOptions={this.props}
+                                selectedNodes={selectedNodes}
+                            />
+                        )}
+                        {showSettings && (
+                            <LineageSettings
+                                {...this.props}
+                                options={options}
+                                onSettingsChange={this.onOptionsChange}
+                            />
+                        )}
                     </div>
                 </div>
             </NodeInteractionProvider>
@@ -140,6 +165,8 @@ class LineageGraphDisplay extends PureComponent<Props, Partial<State>> {
 }
 
 export const LineageGraph = withLineage<LineageGraphOwnProps>((props: Props) => {
+    const [options, setOptions] = useState<LineageOptions>();
+
     // Optimization: This FunctionComponent allows for "generateGraph" to only be called
     // when the lineage is updated. If it is called in the render loop of <LineageGraphDisplay/>
     // it is run each time a user interacts with the graph (e.g. hovers a node, clicks a node, etc).
@@ -147,7 +174,14 @@ export const LineageGraph = withLineage<LineageGraphOwnProps>((props: Props) => 
         return <Alert>{props.lineage.error}</Alert>;
     }
 
-    return <LineageGraphDisplay {...props} visGraphOptions={props.lineage?.generateGraph(props)} />;
+    return (
+        <LineageGraphDisplay
+            {...props}
+            options={options}
+            setOptions={setOptions}
+            visGraphOptions={props.lineage?.generateGraph({ ...props, ...options })}
+        />
+    );
 });
 
 interface LineageDepthLimitProps {

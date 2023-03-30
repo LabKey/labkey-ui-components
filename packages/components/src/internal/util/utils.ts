@@ -18,11 +18,7 @@ import { getServerContext, Utils } from '@labkey/api';
 import { ChangeEvent } from 'react';
 
 import { hasParameter, toggleParameter } from '../url/ActionURL';
-import { QueryInfo } from '../../public/QueryInfo';
-
 import { encodePart } from '../../public/SchemaQuery';
-
-import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from './Date';
 
 const emptyList = List<string>();
 
@@ -363,96 +359,6 @@ export function getUpdatedData(
         .filter(rowData => rowData.size > pkColsLc.size)
         .map(rowData => rowData.toJS())
         .toArray();
-}
-
-/**
- * Constructs an array of objects (suitable for the rows parameter of updateRows), where each object contains the
- * values in editorRows that are different from the ones in originalGridData
- *
- * @param originalGridData a map from an id field to a Map from fieldKeys to values
- * @param editorRows An array of Maps from field keys to values
- * @param idField the fieldKey in the editorRow objects that is the id field that is the key for originalGridData
- * @param queryInfo the query info behind this editable grid
- */
-export function getUpdatedDataFromGrid(
-    originalGridData: Map<string, Map<string, any>>,
-    editorRows: Array<Map<string, any>>,
-    idField: string,
-    queryInfo: QueryInfo
-): any[] {
-    const updatedRows = [];
-    const altIdFields = queryInfo.altUpdateKeys;
-    editorRows.forEach(editedRow => {
-        const id = editedRow.get(idField);
-        const altIds = {};
-        altIdFields?.forEach(altIdField => {
-            altIds[altIdField] = altIdField ? editedRow.get(altIdField) : undefined;
-        });
-        const originalRow = originalGridData.get(id.toString());
-        if (originalRow) {
-            const row = editedRow.reduce((row, value, key) => {
-                // We can skip the idField for the diff check, that will be added to the updated rows later
-                if (key === idField) return row;
-
-                let originalValue = originalRow.has(key) ? originalRow.get(key) : undefined;
-                const col = queryInfo.getColumn(key);
-                const isDate = col?.jsonType === 'date';
-                // Convert empty cell to null
-                if (value === '') value = null;
-
-                // Lookup columns store a list but grid only holds a single value
-                if (List.isList(originalValue) && !Array.isArray(value)) {
-                    originalValue = Map.isMap(originalValue.get(0))
-                        ? originalValue.get(0).get('value')
-                        : originalValue.get(0).value;
-                }
-
-                // EditableGrid passes in strings for single values. Attempt this conversion here to help check for
-                // updated values. This is not the final type check.
-                if (typeof originalValue === 'number' || typeof originalValue === 'boolean') {
-                    try {
-                        value = JSON.parse(value);
-                    } catch (e) {
-                        // Incorrect types are handled by API and user feedback created from that response. Don't need
-                        // to handle that here.
-                    }
-                } else if (Iterable.isIterable(originalValue) && !List.isList(originalValue)) {
-                    originalValue = originalValue.get('value');
-                }
-
-                // If col is a multi-value column, compare all values for changes
-                if ((List.isList(originalValue) || originalValue === undefined) && Array.isArray(value)) {
-                    if (
-                        (originalValue?.size ?? 0) !== value.length ||
-                        (originalValue &&
-                            originalValue?.findIndex(
-                                o => value.indexOf(o.value) === -1 && value.indexOf(o.displayValue) === -1
-                            ) !== -1)
-                    ) {
-                        row[key] = value;
-                    }
-                } else if (!(originalValue == undefined && value == undefined) && originalValue !== value) {
-                    // - only update if the value has changed
-                    // - if the value is 'undefined', it will be removed from the update rows, so in order to
-                    // erase an existing value we set the value to null in our update data
-
-                    // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
-                    // Issue 45140: use QueryColumn date format for parseDate()
-                    row[key] =
-                        (isDate ? getJsonDateTimeFormatString(parseDate(value, getColDateFormat(col))) : value) ?? null;
-                }
-                return row;
-            }, {});
-            if (!Utils.isEmptyObj(row)) {
-                row[idField] = id;
-                Object.assign(row, altIds);
-                updatedRows.push(row);
-            }
-        } else {
-            console.error('Unable to find original row for id ' + id);
-        }
-    });
-    return updatedRows;
 }
 
 /**

@@ -1,6 +1,5 @@
 // Consider having this implement Query.QueryColumn from @labkey/api
 // commented out attributes are not used in app
-import { Record as ImmutableRecord } from 'immutable';
 import { Filter, Query } from '@labkey/api';
 
 import {
@@ -383,7 +382,7 @@ export class QueryColumn {
     }
 }
 
-export function insertColumnFilter(col: QueryColumn, includeFileInputs = true): boolean {
+export function insertColumnFilter(col: QueryColumn, includeFileInputs = true, isIncludedColumn?: (col: QueryColumn) => boolean): boolean {
     return (
         col &&
         col.removeFromViews !== true &&
@@ -391,6 +390,7 @@ export function insertColumnFilter(col: QueryColumn, includeFileInputs = true): 
         !col.readOnly &&
         col.userEditable &&
         col.fieldKeyArray.length === 1 &&
-        (includeFileInputs || !col.isFileInput)
+        (includeFileInputs || !col.isFileInput) &&
+        (!isIncludedColumn || isIncludedColumn(col))
     );
 }

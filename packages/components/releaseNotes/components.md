@@ -9,6 +9,32 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Added paging to search results
   * Removed advanced filtering options
 
+### version 2.319.0
+*Released*: 30 March 2023
+- Graph Options
+    - Add `LineageSettings` component that allows for manipulation of settings for the graph.
+    - Expose graph options "gear" icon via `LineageGraph` component.
+- Combine Nodes
+    - Create a `LineageNode` instance that replaces all combined nodes in processing.
+    - Factor out `applyCombineSize` method to encapsulate `combineSize` logic.
+    - Factor our `processCombinedNode` method to encapsulate construction of edges from a combined node.
+
+### version 2.318.1
+*Released*: 30 March 2023
+* Issue 47575: Populating editable grid from bulk update doesn't account for aliquot- or sample-only fields
+
+### version 2.318.0
+*Released*: 30 March 2023
+* Issue 47346: App Sample details Assay data tab loading slowly
+  * AssayDefinitionModel.createSampleFilter change to generate a where clause that uses a "RowId IN (<UNION Query>)" instead of "OR clause"
+
+### version 2.317.0
+*Released*: 29 March 2023
+* Convert Immutable classes to plain JS classes
+    - ViewInfo
+    - DataViewInfo
+    - LastActionStatus
+
 ### version 2.316.0
 *Released*: 29 March 2023
 * Issue 47520: LKB: Sample Finder shows no samples when Assay does not have sample ID populated

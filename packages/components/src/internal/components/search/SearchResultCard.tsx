@@ -42,6 +42,11 @@ export const SearchResultCard: FC<SearchResultProps> = memo(({ cardData, iconUrl
         summaryText = summary.length <= 35 ? summary : summary.substr(0, 35);
     }
 
+    const textParts = [];
+    if (category)
+        textParts.push(category);
+    if (typeName)
+        textParts.push(typeName);
     return (
         <a href={url} onClick={onClick}>
             <div className="row search-result__card-container">
@@ -59,7 +64,7 @@ export const SearchResultCard: FC<SearchResultProps> = memo(({ cardData, iconUrl
                 <div className="col-sm-12">
                     <div className="col-sm-12 search-result__title">
                         <h4 className="text-capitalize">{title}</h4>
-                        {category && <div className="margin-left status-pill muted">{category}{typeName && <span>: {typeName}</span>}</div>}
+                        {textParts.length > 0 && <div className="margin-left status-pill muted">{textParts.join(": ")}</div>}
                     </div>
                     <div className="search-result__summary">{summaryText}</div>
                 </div>

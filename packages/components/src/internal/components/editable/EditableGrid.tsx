@@ -1020,7 +1020,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     restoreBulkInsertData = (data: Map<string, any>): Map<string, any> => {
         const allInsertCols = OrderedMap<string, any>().asMutable();
-        this.props.queryInfo.getInsertColumns().forEach(col => allInsertCols.set(col.name, undefined));
+        this.props.queryInfo.getInsertColumns(this.props.bulkAddProps.isIncludedColumn).forEach(col => allInsertCols.set(col.name, undefined));
         return allInsertCols.merge(data).asImmutable();
     };
 
@@ -1092,7 +1092,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             queryInfo,
             updatedData,
             selectedIndices,
-            bulkUpdateProps?.excludeRowIdx
+            bulkUpdateProps?.excludeRowIdx,
+            bulkUpdateProps?.isIncludedColumn
         );
         onChange(editorModelChanges);
         // The result of this promise is used by toggleBulkUpdate, which doesn't expect anything to be passed

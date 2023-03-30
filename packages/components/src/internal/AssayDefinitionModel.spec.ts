@@ -1,3 +1,6 @@
+import { List } from 'immutable';
+import { Filter } from '@labkey/api';
+
 import assayDefJSON from '../test/data/assayDefinitionModel.json';
 import assayDefNoSampleIdJSON from '../test/data/assayDefinitionModelNoSampleId.json';
 
@@ -62,5 +65,27 @@ describe('AssayDefinitionModel', () => {
         expect(dataColumns.size).toBe(4);
         expect(dataColumns.has('Date')).toBeFalsy();
         expect(dataColumns.has('date')).toBeTruthy();
+    });
+
+    test('createSampleFilter, no columns', () => {
+        const model = new AssayDefinitionModel();
+        const filter = model.createSampleFilter(List.of(), [1, 2], Filter.Types.IN);
+        expect(filter).toBeUndefined();
+    });
+
+    test('createSampleFilter, single column', () => {
+        const model = new AssayDefinitionModel();
+        const filter = model.createSampleFilter(List.of('a'), [1, 2], Filter.Types.IN);
+        expect(filter.getURLParameterName()).toBe('query.a/RowId~in');
+        expect(filter.getURLParameterValue()).toBe('1;2');
+    });
+
+    test('createSampleFilter, multiple columns', () => {
+        const model = new AssayDefinitionModel();
+        const filter = model.createSampleFilter(List.of('a', 'b'), [1, 2], Filter.Types.IN);
+        expect(filter.getURLParameterName()).toBe('query.*~where');
+        expect(filter.getURLParameterValue()).toBe(
+            'RowId IN (SELECT RowId FROM Data WHERE a.RowId IN (1,2) UNION SELECT RowId FROM Data WHERE b.RowId IN (1,2))'
+        );
     });
 });

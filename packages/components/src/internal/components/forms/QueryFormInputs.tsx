@@ -42,6 +42,8 @@ export interface QueryFormInputsProps {
     // (e.g., if you want to generate a set of samples with common properties but need to provide the individual, unique ids)
     checkRequiredFields?: boolean;
     columnFilter?: (col?: QueryColumn) => boolean;
+    // this can be used when you want to keep certain columns always filtered out (e.g., aliquot- or sample-only columns)
+    isIncludedColumn?: (col: QueryColumn) => boolean;
     componentKey?: string; // unique key to add to QuerySelect to avoid duplication w/ transpose
     /** A container filter that will be applied to all query-based inputs in this form */
     containerFilter?: Query.ContainerFilter;

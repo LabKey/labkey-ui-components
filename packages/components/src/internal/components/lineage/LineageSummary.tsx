@@ -8,7 +8,7 @@ import { List, Map } from 'immutable';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { LINEAGE_DIRECTIONS, LineageOptions } from './types';
-import { createLineageNodeCollections, isAliquotNodeCollection, LineageLink, LineageResult } from './models';
+import { createLineageNodeCollections, isAliquotNode, LineageLink, LineageResult } from './models';
 import { DetailsListNodes } from './node/DetailsList';
 import { InjectedLineage, withLineage } from './withLineage';
 
@@ -39,24 +39,14 @@ class LineageSummaryImpl extends PureComponent<InjectedLineage & LineageSummaryO
 
         return groups.map(groupName => {
             const group = nodesByType[groupName];
-            const groupDisplayName = group.displayType;
-            const isAliquot = isAliquotNodeCollection(group);
             const title =
-                isAliquot && group.nodes.length > 1
+                isAliquotNode(group) && group.nodes.length > 1
                     ? nodeName + ' Aliquots'
-                    : groupDisplayName +
+                    : group.displayType +
                       ' ' +
-                      (suffixes.has(nodesByType[groupName].queryName)
-                          ? suffixes.get(nodesByType[groupName].queryName)
-                          : defaultTitleSuffix);
-            return (
-                <DetailsListNodes
-                    key={groupName}
-                    title={title}
-                    nodes={nodesByType[groupName]}
-                    highlightNode={highlightNode}
-                />
-            );
+                      (suffixes.has(group.queryName) ? suffixes.get(group.queryName) : defaultTitleSuffix);
+
+            return <DetailsListNodes key={groupName} title={title} nodes={group} highlightNode={highlightNode} />;
         });
     };
 

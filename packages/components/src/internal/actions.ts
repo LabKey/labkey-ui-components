@@ -15,6 +15,7 @@
  */
 import { fromJS, List, Map, OrderedMap, Set } from 'immutable';
 import { ActionURL, Ajax, Filter, getServerContext, Query, Utils } from '@labkey/api';
+import { ExtendedMap } from '../public/ExtendedMap';
 
 import { QueryColumn } from '../public/QueryColumn';
 
@@ -1474,7 +1475,9 @@ export function removeColumn(
             cellValues: newCellValues,
         },
         data,
-        queryInfo: queryInfo.merge({ columns: queryInfo.columns.remove(fieldKey.toLowerCase()) }) as QueryInfo,
+        queryInfo: queryInfo.merge({
+            columns: queryInfo.columns.filter(col => col.fieldKey.toLowerCase() !== fieldKey.toLowerCase()),
+        }) as QueryInfo,
     };
 }
 
@@ -1499,7 +1502,7 @@ export function addColumns(
     editorModel: EditorModel,
     queryInfo: QueryInfo,
     originalData: Map<any, Map<string, any>>,
-    queryColumns: OrderedMap<string, QueryColumn>,
+    queryColumns: ExtendedMap<string, QueryColumn>,
     fieldKey?: string
 ): EditorModelUpdates {
     if (queryColumns.size === 0) return {};
@@ -1551,9 +1554,9 @@ export function addColumns(
 
     let { columns } = editorModel;
     if (columns.size < editorColIndex) {
-        columns = columns.concat(queryColumns.valueSeq().map(col => col.fieldKey)).toList();
+        columns = columns.concat(queryColumns.mapValues(col => col.fieldKey)).toList();
     } else {
-        queryColumns.valueSeq().forEach((col, i) => {
+        queryColumns.valueArray.forEach((col, i) => {
             columns = columns.insert(i + editorColIndex, col.fieldKey);
         });
         columns = columns.toList();
@@ -1571,7 +1574,7 @@ export function addColumns(
             cellValues: newCellValues,
         },
         data,
-        queryInfo: queryInfo.merge({ columns: queryInfo.insertColumns(queryColIndex, queryColumns) }) as QueryInfo,
+        queryInfo: queryInfo.merge({ columns: queryInfo.columns.mergeAt(queryColIndex, queryColumns) }) as QueryInfo,
     };
 }
 

@@ -19,6 +19,7 @@ import { List, Map, OrderedMap, fromJS } from 'immutable';
 import { Query, Utils } from '@labkey/api';
 
 import { Link } from 'react-router';
+import { ExtendedMap } from '../../../public/ExtendedMap';
 
 import { MAX_EDITABLE_GRID_ROWS } from '../internal/constants';
 
@@ -626,21 +627,17 @@ class EntityInsertPanelImpl extends Component<Props, State> {
         );
     };
 
-    getAliquotCreationColumns = (allColumns: OrderedMap<string, QueryColumn>): OrderedMap<string, QueryColumn> => {
-        const columns = OrderedMap<string, QueryColumn>().asMutable();
-
-        allColumns.forEach((column, key) => {
+    getAliquotCreationColumns = (allColumns: ExtendedMap<string, QueryColumn>): ExtendedMap<string, QueryColumn> => {
+        return allColumns.reduce((result: ExtendedMap<string, QueryColumn>, column, key) => {
             if (this.isAliquotField(column)) {
                 let col = column;
                 // Aliquot name can be auto generated, regardless of sample name expression config
-                if (column.fieldKey.toLowerCase() === 'name') {
-                    col = col.mutate({ required: false });
-                }
-                columns.set(key, col);
+                if (column.fieldKey.toLowerCase() === 'name') col = col.mutate({ required: false });
+                result.set(key, col);
             }
-        });
 
-        return columns.asImmutable();
+            return result;
+        });
     };
 
     getGridQueryInfo = (): QueryInfo => {
@@ -650,11 +647,9 @@ class EntityInsertPanelImpl extends Component<Props, State> {
         if (originalQueryInfo) {
             const nameIndex = Math.max(
                 0,
-                originalQueryInfo.columns
-                    .toList()
-                    .findIndex(column => column.fieldKey === entityDataType.uniqueFieldKey)
+                originalQueryInfo.columns.valueArray.findIndex(col => col.fieldKey === entityDataType.uniqueFieldKey)
             );
-            let columns = originalQueryInfo.insertColumns(
+            let columns = originalQueryInfo.columns.mergeAt(
                 nameIndex + insertModel.getParentCount(),
                 insertModel.getParentColumns(entityDataType.uniqueFieldKey)
             );

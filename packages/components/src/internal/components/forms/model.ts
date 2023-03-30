@@ -390,7 +390,7 @@ export class QuerySelectModel
 
     getQueryColumnNames(): string[] {
         const { displayColumn, queryInfo, requiredColumns, valueColumn } = this;
-        const queryColumns = queryInfo.pkCols.concat([displayColumn, valueColumn].concat(requiredColumns)).toArray();
+        const queryColumns = queryInfo.pkCols.concat([displayColumn, valueColumn].concat(requiredColumns));
         const lookupViewColumns = queryInfo.getLookupViewColumns();
 
         if (lookupViewColumns.length > 0) {

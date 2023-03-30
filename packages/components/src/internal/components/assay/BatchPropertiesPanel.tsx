@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useMemo } from 'react';
 import Formsy from 'formsy-react';
+import { ExtendedMap } from '../../../public/ExtendedMap';
+import { QueryColumn } from '../../../public/QueryColumn';
 
 import { QueryFormInputs } from '../forms/QueryFormInputs';
 
@@ -26,6 +28,12 @@ export const BatchPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(({ model
     if (model.batchColumns.size === 0) {
         return null;
     }
+
+    // FIXME: Update the AssayWizardModel to use ExtendedMap for batchColumns so we don't need to do this conversion.
+    const queryColumns = useMemo(
+        () => new ExtendedMap<string, QueryColumn>(model.batchColumns.toJS()),
+        [model.batchColumns]
+    );
 
     const disabled = model.batchId !== undefined;
 
@@ -39,7 +47,7 @@ export const BatchPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(({ model
                         containerFilter={getContainerFilterForLookups()}
                         fieldValues={model.batchProperties.toObject()}
                         operation={operation}
-                        queryColumns={model.batchColumns}
+                        queryColumns={queryColumns}
                         renderFileInputs
                     />
                 </Formsy>

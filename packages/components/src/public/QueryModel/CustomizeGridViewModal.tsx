@@ -181,8 +181,7 @@ export const ColumnChoiceGroup: FC<ColumnChoiceLookupProps> = memo(props => {
 
     let childElements = [];
     if (isLookupExpanded) {
-        childElements = expandedColumns[column.index].columns
-            .valueSeq()
+        childElements = expandedColumns[column.index].columns.valueArray
             .filter(fkCol => includedColumnsForCustomizationFilter(fkCol, showAllColumns))
             .map(fkCol => (
                 <ColumnChoiceGroup
@@ -197,8 +196,7 @@ export const ColumnChoiceGroup: FC<ColumnChoiceLookupProps> = memo(props => {
                     columnsInView={columnsInView}
                     showAllColumns={showAllColumns}
                 />
-            ))
-            .toArray();
+            ));
     }
 
     return (
@@ -458,8 +456,7 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
                             Available Fields
                         </div>
                         <div key="field-list" className="list-group field-modal__col-content">
-                            {model.queryInfo.columns
-                                .valueSeq()
+                            {model.queryInfo.columns.valueArray
                                 .filter(column => includedColumnsForCustomizationFilter(column, showAllColumns))
                                 .filter(column => column.fieldKeyArray.length === 1) // here at the top level we don't want to include lookup fields
                                 .map(column => (

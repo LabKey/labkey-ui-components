@@ -17,6 +17,7 @@ import React, { ReactNode } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 import { Input } from 'formsy-react-components';
 import { Filter, Query } from '@labkey/api';
+import { ExtendedMap } from '../../../public/ExtendedMap';
 
 import { insertColumnFilter, Operation, QueryColumn } from '../../../public/QueryColumn';
 
@@ -57,7 +58,7 @@ export interface QueryFormInputsProps {
     onFieldsEnabledChange?: (numEnabled: number) => void;
     operation?: Operation;
     onSelectChange?: SelectInputChange;
-    queryColumns?: OrderedMap<string, QueryColumn>;
+    queryColumns?: ExtendedMap<string, QueryColumn>;
     queryFilters?: Record<string, List<Filter.IFilter>>;
     queryInfo?: QueryInfo;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
@@ -176,9 +177,8 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         // CONSIDER: separately establishing the set of columns and allow
         // QueryFormInputs to be a rendering factory for the columns that are in the set.
         if (columns) {
-            return columns
+            return columns.valueArray
                 .filter(col => filter(col))
-                .valueSeq()
                 .map((col, i) => {
                     const shouldDisableField =
                         initiallyDisableFields || disabledFields.contains(col.name.toLowerCase());
@@ -358,8 +358,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 />
                             );
                     }
-                })
-                .toArray();
+                });
         }
     }
 }

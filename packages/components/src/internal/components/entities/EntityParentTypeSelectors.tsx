@@ -1,6 +1,7 @@
 import React, { FC, memo, useCallback, useMemo } from 'react';
 import { fromJS, List, Map, OrderedMap } from 'immutable';
 import { Utils } from '@labkey/api';
+import { ExtendedMap } from '../../../public/ExtendedMap';
 
 import { AddEntityButton } from '../buttons/AddEntityButton';
 import { capitalizeFirstChar } from '../../util/utils';
@@ -135,7 +136,7 @@ export const changeEntityParentType = (
                     column
                 );
             } else {
-                const columnMap = OrderedMap<string, QueryColumn>();
+                const columnMap = new ExtendedMap<string, QueryColumn>({ [column.fieldKey.toLowerCase()]: column });
                 let fieldKey;
                 if (existingParent.index === 1) {
                     fieldKey = entityDataType.uniqueFieldKey;
@@ -156,7 +157,7 @@ export const changeEntityParentType = (
                     editorModel,
                     dataModel.queryInfo,
                     fromJS(dataModel.rows),
-                    columnMap.set(column.fieldKey.toLowerCase(), column),
+                    columnMap,
                     fieldKey
                 );
             }

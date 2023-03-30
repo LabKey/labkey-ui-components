@@ -308,7 +308,7 @@ function isSameWithStringCompare(value1: any, value2: any): boolean {
 export function getUpdatedData(
     originalData: Map<string, any>,
     updatedValues: any,
-    primaryKeys: List<string>,
+    primaryKeys: string[],
     additionalPkCols?: Set<string>
 ): any[] {
     const updateValuesMap = Map<any, any>(updatedValues);

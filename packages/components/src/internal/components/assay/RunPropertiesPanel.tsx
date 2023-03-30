@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useMemo } from 'react';
 import Formsy from 'formsy-react';
 import { Input, Textarea } from 'formsy-react-components';
+import { ExtendedMap } from '../../../public/ExtendedMap';
+import { QueryColumn } from '../../../public/QueryColumn';
 
 import { AssayTaskInput } from '../forms/input/AssayTaskInput';
 
@@ -43,6 +45,11 @@ const COMMENT_LABEL = (
 
 export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(({ model, onChange, operation }) => {
     const { moduleContext } = useServerContext();
+    // FIXME: Update the AssayWizardModel to use ExtendedMap for runColumns so we don't need to do this conversion.
+    const queryColumns = useMemo(
+        () => new ExtendedMap<string, QueryColumn>(model.runColumns.toJS()),
+        [model.runColumns]
+    );
 
     return (
         <div className="panel panel-default">
@@ -82,7 +89,7 @@ export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(({ model, 
                             containerFilter={getContainerFilterForLookups()}
                             fieldValues={model.runProperties.toObject()}
                             operation={operation}
-                            queryColumns={model.runColumns}
+                            queryColumns={queryColumns}
                             renderFileInputs
                         />
                     )}

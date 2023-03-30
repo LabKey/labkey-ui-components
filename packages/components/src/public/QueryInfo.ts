@@ -1,5 +1,5 @@
 // commented out attributes are not used in app
-import { List, Map, OrderedMap, Record } from 'immutable';
+import { List, Record } from 'immutable';
 
 import { Filter } from '@labkey/api';
 
@@ -8,10 +8,12 @@ import { toLowerSafe } from '../internal/util/utils';
 import { ViewInfo } from '../internal/ViewInfo';
 import { LastActionStatus } from '../internal/LastActionStatus';
 
+import { ExtendedMap } from './ExtendedMap';
+
 import { insertColumnFilter, QueryColumn } from './QueryColumn';
 import { SchemaQuery } from './SchemaQuery';
 import { QuerySort } from './QuerySort';
-import { naturalSort } from './sort';
+import { naturalSortByProperty } from './sort';
 
 export enum QueryInfoStatus {
     ok,
@@ -24,11 +26,11 @@ export class QueryInfo extends Record({
     disabledSystemFields: undefined,
     // canEdit: false,
     // canEditSharedViews: false,
-    columns: OrderedMap<string, QueryColumn>(),
+    columns: new ExtendedMap<string, QueryColumn>(),
     description: undefined,
     domainContainerPath: undefined,
     // editDefinitionUrl: undefined,
-    importTemplates: List<any>(),
+    importTemplates: [],
     // indices: Map<string, any>(),
     // isInherited: false,
 
@@ -39,14 +41,14 @@ export class QueryInfo extends Record({
     lastAction: undefined,
     // lastUpdate: undefined,
     name: undefined,
-    pkCols: List<string>(),
+    pkCols: [],
     schemaName: undefined,
     status: QueryInfoStatus.unknown,
     // targetContainers: List<any>(),
     title: undefined, // DEPRECATED: Use queryLabel
     titleColumn: undefined,
     // viewDataUrl: undefined,
-    views: Map<string, ViewInfo>(),
+    views: new ExtendedMap<string, ViewInfo>(),
     importUrlDisabled: undefined,
     importUrl: undefined,
     insertUrlDisabled: undefined,
@@ -71,12 +73,12 @@ export class QueryInfo extends Record({
     declare disabledSystemFields: Set<string>;
     // declare canEdit: boolean;
     // declare canEditSharedViews: boolean;
-    declare columns: OrderedMap<string, QueryColumn>;
+    declare columns: ExtendedMap<string, QueryColumn>;
     declare description: string;
     declare domainContainerPath: string;
     // declare editDefinitionUrl: string;
     declare iconURL: string;
-    declare importTemplates: List<any>;
+    declare importTemplates: any[];
     // declare indices: Map<string, any>;
     // declare isInherited: boolean;
     declare isLoading: boolean;
@@ -87,7 +89,7 @@ export class QueryInfo extends Record({
     declare lastAction: LastActionStatus;
     // declare lastUpdate: Date;
     declare name: string;
-    declare pkCols: List<string>;
+    declare pkCols: string[];
     declare plural: string;
     declare queryLabel: string;
     declare schemaName: string;
@@ -100,7 +102,7 @@ export class QueryInfo extends Record({
     declare title: string;
     declare titleColumn: string;
     // declare viewDataUrl: string;
-    declare views: Map<string, ViewInfo>;
+    declare views: ExtendedMap<string, ViewInfo>;
     declare schemaLabel: string;
     declare showInsertNewButton: boolean;
     declare importUrlDisabled: boolean;
@@ -134,10 +136,10 @@ export class QueryInfo extends Record({
         if (queryInfoJson.schemaName && queryInfoJson.name) {
             schemaQuery = new SchemaQuery(queryInfoJson.schemaName, queryInfoJson.name);
         }
-        let columns = OrderedMap<string, QueryColumn>();
+        const columns = new ExtendedMap<string, QueryColumn>();
         Object.keys(queryInfoJson.columns).forEach(columnKey => {
             const rawColumn = queryInfoJson.columns[columnKey];
-            columns = columns.set(rawColumn.fieldKey.toLowerCase(), new QueryColumn(rawColumn));
+            columns.set(rawColumn.fieldKey.toLowerCase(), new QueryColumn(rawColumn));
         });
 
         const disabledSystemFields = new Set<string>();
@@ -154,11 +156,11 @@ export class QueryInfo extends Record({
             });
         }
 
-        let views = Map<string, ViewInfo>();
+        const views = new ExtendedMap<string, ViewInfo>();
         if (includeViews) {
             queryInfoJson.views.forEach(view => {
                 const viewInfo = ViewInfo.fromJson(view);
-                views = views.set(viewInfo.name.toLowerCase(), viewInfo);
+                views.set(viewInfo.name.toLowerCase(), viewInfo);
             });
         }
 
@@ -266,13 +268,10 @@ export class QueryInfo extends Record({
         return List<QueryColumn>();
     }
 
-    // Note: Yes, all of the other QueryInfo methods return Immutable lists or related types, but all usages of this
-    // method need arrays, and doing that computation in one area is ideal.
     getLookupViewColumns(omittedColumns?: string[]): QueryColumn[] {
         const lcCols = omittedColumns ? omittedColumns.map(c => c.toLowerCase()) : [];
-        return this.columns
-            .filter(col => col.shownInLookupView && lcCols.indexOf(col.fieldKey.toLowerCase()) === -1)
-            .toArray();
+        return this.columns.filter(col => col.shownInLookupView && lcCols.indexOf(col.fieldKey.toLowerCase()) === -1)
+            .valueArray;
     }
 
     getAllColumns(viewName?: string, omittedColumns?: List<string>): List<QueryColumn> {
@@ -292,7 +291,7 @@ export class QueryInfo extends Record({
     // (e.g., if creating samples that are not aliquots, the aliquot-only fields should never be included)
     getInsertColumns(isIncludedColumn?: (col: QueryColumn) => boolean): List<QueryColumn> {
         // CONSIDER: use the columns in ~~INSERT~~ view to determine this set
-        return this.columns.filter(col => insertColumnFilter(col, false, isIncludedColumn)).toList();
+        return List(this.columns.filter(col => insertColumnFilter(col, false, isIncludedColumn)));
     }
 
     getInsertColumnIndex(fieldKey: string): number {
@@ -306,7 +305,7 @@ export class QueryInfo extends Record({
         const lowerReadOnlyColumnsList = readOnlyColumns?.reduce((lowerReadOnlyColumnsList, value) => {
             return lowerReadOnlyColumnsList.push(value.toLowerCase());
         }, List<string>());
-        return this.columns
+        const columns = this.columns
             .filter(column => {
                 return (
                     column.isUpdateColumn ||
@@ -319,8 +318,8 @@ export class QueryInfo extends Record({
                 } else {
                     return column;
                 }
-            })
-            .toList();
+            });
+        return List(columns);
     }
 
     getUpdateDisplayColumns(view?: string, omittedColumns?: List<string>): List<QueryColumn> {
@@ -357,7 +356,7 @@ export class QueryInfo extends Record({
     }
 
     getUniqueIdColumns(): List<QueryColumn> {
-        return this.columns.filter(column => column.isUniqueIdColumn).toList();
+        return List(this.columns.filter(column => column.isUniqueIdColumn));
     }
 
     getSorts(view?: string): QuerySort[] {
@@ -379,10 +378,7 @@ export class QueryInfo extends Record({
      * array will be sorted by view label.
      */
     getVisibleViews(): ViewInfo[] {
-        return this.views
-            .filter(view => view.isVisible)
-            .sortBy(v => v.label, naturalSort)
-            .toArray();
+        return this.views.filter(view => view.isVisible).valueArray.sort(naturalSortByProperty('label'));
     }
 
     getView(viewName: string, defaultToDefault = false): ViewInfo {
@@ -405,34 +401,6 @@ export class QueryInfo extends Record({
         return defaultToDefault ? this.views.get(ViewInfo.DEFAULT_NAME.toLowerCase()) : undefined;
     }
 
-    /**
-     * Insert a set of columns into this queryInfo's columns at a designated index.  If the given column index
-     * is outside the range of the existing columns, this queryInfo's columns will be returned.  An index that is equal to the
-     * current number of columns will cause the given queryColumns to be appended to the existing ones.
-     * @param colIndex the index at which the new columns should start
-     * @param queryColumns the (ordered) set of columns
-     * @returns a new set of columns when the given columns inserted
-     */
-    insertColumns(colIndex: number, queryColumns: OrderedMap<string, QueryColumn>): OrderedMap<string, QueryColumn> {
-        if (colIndex < 0 || colIndex > this.columns.size) return this.columns;
-
-        // put them at the end
-        if (colIndex === this.columns.size) return this.columns.merge(queryColumns);
-
-        let columns = OrderedMap<string, QueryColumn>();
-        let index = 0;
-
-        this.columns.forEach((column, key) => {
-            if (index === colIndex) {
-                columns = columns.merge(queryColumns);
-                index = index + queryColumns.size;
-            }
-            columns = columns.set(key, column);
-            index++;
-        });
-        return columns;
-    }
-
     getIconURL(): string {
         return this.iconURL;
     }
@@ -446,8 +414,7 @@ export class QueryInfo extends Record({
         if (this.columns) {
             return this.columns
                 .filter((col, key) => !keys || keys.indexOf(key) > -1)
-                .map(col => col.fieldKey)
-                .toArray();
+                .valueArray.map(col => col.fieldKey);
         }
 
         return [];
@@ -457,7 +424,7 @@ export class QueryInfo extends Record({
         if (!fieldKey) return -1;
 
         const lcFieldKey = fieldKey.toLowerCase();
-        return this.columns.keySeq().findIndex(column => column.toLowerCase() === lcFieldKey);
+        return this.columns.keyArray.findIndex((column: string) => column.toLowerCase() === lcFieldKey);
     }
 
     getShowImportDataButton(): boolean {
@@ -474,9 +441,6 @@ export class QueryInfo extends Record({
     }
 
     getFileColumnFieldKeys(): string[] {
-        return this.columns
-            .filter(col => col.isFileInput)
-            .map(col => col.fieldKey)
-            .toArray();
+        return this.columns.filter(col => col.isFileInput).valueArray.map(col => col.fieldKey);
     }
 }

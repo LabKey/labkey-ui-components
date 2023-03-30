@@ -39,6 +39,7 @@ import { initParentOptionsSelects } from '../../../../entities/actions';
 import { UniqueIdBanner } from './UniqueIdBanner';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { AliquotNamePatternProps, MetricUnitProps, SampleTypeModel } from './models';
+import {SAMPLE_SET_IMPORT_PREFIX} from "../../../../entities/constants";
 
 const NEW_SAMPLE_SET_OPTION: IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,
@@ -49,9 +50,6 @@ const NEW_SAMPLE_SET_OPTION: IParentOption = {
 const PROPERTIES_PANEL_INDEX = 0;
 const DOMAIN_PANEL_INDEX = 1;
 
-export const SAMPLE_SET_IMPORT_PREFIX = 'materialInputs/';
-export const DATA_CLASS_IMPORT_PREFIX = 'dataInputs/';
-const DATA_CLASS_SCHEMA_KEY = 'exp/dataclasses';
 const SAMPLE_TYPE_NAME_EXPRESSION_TOPIC = 'sampleIDs#patterns';
 const SAMPLE_TYPE_NAME_EXPRESSION_PLACEHOLDER = 'Enter a naming pattern (e.g., S-${now:date}-${dailySampleCount})';
 const SAMPLE_TYPE_HELP_TOPIC = 'createSampleType';

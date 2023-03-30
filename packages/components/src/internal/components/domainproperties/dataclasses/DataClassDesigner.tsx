@@ -22,14 +22,12 @@ import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS } from '../constants';
 import { resolveErrorMessage } from '../../../util/messaging';
 
 import { IParentAlias, IParentOption } from '../../entities/models';
-import { SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';
 import { SCHEMAS } from '../../../schemas';
 import { initParentOptionsSelects } from '../../../../entities/actions';
-import { SampleTypeModel } from '../samples/models';
-import { DATA_CLASS_IMPORT_PREFIX, SAMPLE_SET_IMPORT_PREFIX } from '../samples/SampleTypeDesigner';
 
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 import { DataClassModel, DataClassModelConfig } from './models';
+import {DATA_CLASS_IMPORT_PREFIX} from "../../../../entities/constants";
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -132,12 +130,11 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         }
     };
 
-    formatLabel = (name: string, prefix: string, isDataClass?: boolean, containerPath?: string): string => {
-        const { showParentLabelPrefix } = this.props;
+    formatLabel = (name: string): string => {
         const { model } = this.state;
         if (name === model?.name) return NEW_DATA_CLASS_OPTION.label;
 
-        return showParentLabelPrefix ? `${prefix}: ${name} (${containerPath})` : name;
+        return name;
     };
 
     onFinish = (): void => {

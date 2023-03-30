@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.XX
+*Released*: XX March 2023
+* Enable lineage relationship between custom data classes in apps
+  * Extract parent alias handling code from SampleTypeDesigner and SampleTypePropertiesPanel to DomianParentAliases and utils
+  * Support parent alias for DataClassDesigner
+
 ### version 2.319.0
 *Released*: 30 March 2023
 - Graph Options

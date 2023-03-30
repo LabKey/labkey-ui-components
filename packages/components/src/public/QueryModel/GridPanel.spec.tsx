@@ -294,7 +294,7 @@ describe('GridPanel', () => {
         const nameSort = { fieldKey: 'Name', dir: '+' };
         const nameFilter = { fieldKey: 'Name', value: 'DMXP', op: 'eq' };
         const expirFilter = { fieldKey: 'expirationTime', value: '1', op: 'eq' };
-        const view = ViewInfo.create({
+        const view = ViewInfo.fromJson({
             name: ViewInfo.DEFAULT_NAME.toLowerCase(),
             filter: [nameFilter, expirFilter],
             sort: [nameSort],
@@ -539,10 +539,14 @@ describe('GridTitle', () => {
     });
 
     test('updated default view, with title', () => {
-        const sessionQueryInfo = QUERY_INFO.setIn(['views', '~~default~~', 'session'], true).setIn(
-            ['views', '~~default~~', 'revertable'],
-            true
-        ) as QueryInfo;
+        const sessionQueryInfo = QUERY_INFO.merge({
+            views: QUERY_INFO.views.merge({
+                '~~default~~': QUERY_INFO.views.get('~~default~~').mutate({
+                    revertable: true,
+                    session: true,
+                }),
+            }),
+        }) as QueryInfo;
         const model = makeTestQueryModel(SCHEMA_QUERY, sessionQueryInfo);
         const wrapper = mountWithServerContext(
             <GridTitle {...GRID_TITLE_PROPS} model={model} allowViewCustomization />,
@@ -553,10 +557,14 @@ describe('GridTitle', () => {
     });
 
     test('updated default view, with title, not customizable', () => {
-        const sessionQueryInfo = QUERY_INFO.setIn(['views', '~~default~~', 'session'], true).setIn(
-            ['views', '~~default~~', 'revertable'],
-            true
-        ) as QueryInfo;
+        const sessionQueryInfo = QUERY_INFO.merge({
+            views: QUERY_INFO.views.merge({
+                '~~default~~': QUERY_INFO.views.get('~~default~~').mutate({
+                    revertable: true,
+                    session: true,
+                }),
+            }),
+        }) as QueryInfo;
         const model = makeTestQueryModel(SCHEMA_QUERY, sessionQueryInfo);
 
         const wrapper = mountWithServerContext(
@@ -569,10 +577,14 @@ describe('GridTitle', () => {
 
     test('updated named view, no title, customizable', () => {
         const viewSchemaQuery = new SchemaQuery('exp.data', 'mixtures', 'noExtraColumn');
-        const sessionQueryInfo = QUERY_INFO.setIn(['views', 'noextracolumn', 'session'], true).setIn(
-            ['views', 'noextracolumn', 'revertable'],
-            true
-        ) as QueryInfo;
+        const sessionQueryInfo = QUERY_INFO.merge({
+            views: QUERY_INFO.views.merge({
+                noextracolumn: QUERY_INFO.views.get('noextracolumn').mutate({
+                    revertable: true,
+                    session: true,
+                }),
+            }),
+        }) as QueryInfo;
         const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
         const wrapper = mountWithServerContext(
             <GridTitle {...GRID_TITLE_PROPS} model={model} allowViewCustomization />,
@@ -584,10 +596,14 @@ describe('GridTitle', () => {
 
     test('updated named view with title', () => {
         const viewSchemaQuery = new SchemaQuery('exp.data', 'mixtures', 'noExtraColumn');
-        const sessionQueryInfo = QUERY_INFO.setIn(['views', 'noextracolumn', 'session'], true).setIn(
-            ['views', 'noextracolumn', 'revertable'],
-            true
-        ) as QueryInfo;
+        const sessionQueryInfo = QUERY_INFO.merge({
+            views: QUERY_INFO.views.merge({
+                noextracolumn: QUERY_INFO.views.get('noextracolumn').mutate({
+                    revertable: true,
+                    session: true,
+                }),
+            }),
+        }) as QueryInfo;
         const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
         const wrapper = mountWithServerContext(
             <GridTitle {...GRID_TITLE_PROPS} model={model} allowViewCustomization />,
@@ -599,9 +615,15 @@ describe('GridTitle', () => {
 
     test('hidden view, edited', () => {
         const viewSchemaQuery = new SchemaQuery('exp.data', 'mixtures', 'noExtraColumn');
-        const sessionQueryInfo = QUERY_INFO.setIn(['views', 'noextracolumn', 'session'], true)
-            .setIn(['views', 'noextracolumn', 'revertable'], true)
-            .setIn(['views', 'noextracolumn', 'hidden'], true) as QueryInfo;
+        const sessionQueryInfo = QUERY_INFO.merge({
+            views: QUERY_INFO.views.merge({
+                noextracolumn: QUERY_INFO.views.get('noextracolumn').mutate({
+                    hidden: true,
+                    revertable: true,
+                    session: true,
+                }),
+            }),
+        }) as QueryInfo;
         const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
         const wrapper = mountWithServerContext(
             <GridTitle {...GRID_TITLE_PROPS} model={model} allowViewCustomization />,
@@ -613,9 +635,15 @@ describe('GridTitle', () => {
 
     test('hidden view, edited, no title', () => {
         const viewSchemaQuery = new SchemaQuery('exp.data', 'mixtures', 'noExtraColumn');
-        const sessionQueryInfo = QUERY_INFO.setIn(['views', 'noextracolumn', 'session'], true)
-            .setIn(['views', 'noextracolumn', 'revertable'], true)
-            .setIn(['views', 'noextracolumn', 'hidden'], true) as QueryInfo;
+        const sessionQueryInfo = QUERY_INFO.merge({
+            views: QUERY_INFO.views.merge({
+                noextracolumn: QUERY_INFO.views.get('noextracolumn').mutate({
+                    hidden: true,
+                    revertable: true,
+                    session: true,
+                }),
+            }),
+        }) as QueryInfo;
         const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
         const wrapper = mountWithServerContext(
             <GridTitle actions={actions} allowSelections model={model} allowViewCustomization />,
@@ -627,7 +655,11 @@ describe('GridTitle', () => {
 
     test('hidden view, not edited, no title', () => {
         const viewSchemaQuery = new SchemaQuery('exp.data', 'mixtures', 'noExtraColumn');
-        const sessionQueryInfo = QUERY_INFO.setIn(['views', 'noextracolumn', 'hidden'], true) as QueryInfo;
+        const sessionQueryInfo = QUERY_INFO.merge({
+            views: QUERY_INFO.views.merge({
+                noextracolumn: QUERY_INFO.views.get('noextracolumn').mutate({ hidden: true }),
+            }),
+        }) as QueryInfo;
         const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
         const wrapper = mountWithServerContext(
             <GridTitle model={model} actions={actions} allowSelections allowViewCustomization={false} />

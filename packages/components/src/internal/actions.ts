@@ -2101,7 +2101,7 @@ export function getGridViews(
             success: response => {
                 const views = [];
                 response.views?.forEach(view => {
-                    if (includeHidden || view['hidden'] !== true) views.push(ViewInfo.create(view));
+                    if (includeHidden || view['hidden'] !== true) views.push(ViewInfo.fromJson(view));
                 });
                 if (sort) {
                     views.sort((a, b) => {

@@ -5,6 +5,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Issue 47575: Populating editable grid from bulk update doesn't account for aliquot- or sample-only fields
 
+### version 2.317.0
+*Released*: 29 March 2023
+* Convert Immutable classes to plain JS classes
+    - ViewInfo
+    - DataViewInfo
+    - LastActionStatus
+
 ### version 2.316.0
 *Released*: 29 March 2023
 * Issue 47520: LKB: Sample Finder shows no samples when Assay does not have sample ID populated

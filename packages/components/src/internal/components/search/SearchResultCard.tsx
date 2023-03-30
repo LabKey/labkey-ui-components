@@ -32,7 +32,7 @@ interface SearchResultProps {
 export const SearchResultCard: FC<SearchResultProps> = memo(({ cardData, iconUrl, isTopResult, summary, url }) => {
     const { altText, category, iconDir, iconSrc, title, typeName } = cardData;
     const productId = getCurrentAppProperties()?.productId;
-    let summaryText =  summary ?? 'No summary provided' ;
+    const summaryText =  summary?.length ? summary : 'No summary provided';
 
     const onClick = useCallback(() => {
         if (isTopResult) incrementClientSideMetricCount(productId + 'Search', 'firstResultClicked');

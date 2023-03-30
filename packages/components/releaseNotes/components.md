@@ -1,6 +1,16 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.319.0
+*Released*: 30 March 2023
+- Graph Options
+    - Add `LineageSettings` component that allows for manipulation of settings for the graph.
+    - Expose graph options "gear" icon via `LineageGraph` component.
+- Combine Nodes
+    - Create a `LineageNode` instance that replaces all combined nodes in processing.
+    - Factor out `applyCombineSize` method to encapsulate `combineSize` logic.
+    - Factor our `processCombinedNode` method to encapsulate construction of edges from a combined node.
+
 ### version 2.318.1
 *Released*: 30 March 2023
 * Issue 47575: Populating editable grid from bulk update doesn't account for aliquot- or sample-only fields

@@ -37,7 +37,7 @@ export const SearchPanelImpl: FC<Props> = memo(props => {
 
     const emptyTextMessage = useMemo((): ReactNode => {
         return (
-            <div className="search-panel__no-results">
+            <div className="search-panel__no-results top-spacing">
                 <div className="font-large">No Results Found</div>
                 <hr />
                 <div>
@@ -91,8 +91,8 @@ export const SearchPanelImpl: FC<Props> = memo(props => {
         <Page hasHeader={false} title={title}>
             <Section panelClassName="test-loc-search-panel" title={title} context={helpLink}>
                 <div className="search-form">
-                    <form className="col-md-8" onSubmit={onSubmit}>
-                        {/* <i className="fa fa-search search-icon" />  // TODO can't get this to layout correctly*/}
+                    <form onSubmit={onSubmit}>
+                        <i className="hidden-xs fa fa-search search-icon" />
                         <input
                             className="form-control search-input"
                             onChange={onSearchChange}
@@ -106,7 +106,7 @@ export const SearchPanelImpl: FC<Props> = memo(props => {
                         Search
                     </Button>
                     {hasPages && (
-                        <div className="page-buttons col-md-3">
+                        <div className="page-buttons">
                             <PaginationButtons
                                 total={totalHits}
                                 currentPage={currentPage}

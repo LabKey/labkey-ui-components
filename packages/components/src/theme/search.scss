@@ -76,8 +76,8 @@
     .search-icon {
         position: relative;
         float: left;
-        left: 1px;
-        top: 23px;
+        left: 20px;
+        top: 10px;
         margin-left: 5px;
         color: $gray-light;
     }
@@ -85,6 +85,7 @@
     .search-input {
         padding: 7px 4px 7px 22px;
         border-radius: 4px;
+        width: 400px;
     }
 
     .submit-button {
@@ -94,7 +95,7 @@
     }
 
     .page-buttons {
-        float: right;
+        margin-left: auto;
     }
 }
 

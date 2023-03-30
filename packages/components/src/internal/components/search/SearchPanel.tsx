@@ -19,18 +19,22 @@ import { GetCardDataFn, searchUsingIndex } from './actions';
 import { getSearchScopeFromContainerFilter } from './utils';
 import { getContainerFilter } from '../../query/api';
 
-interface Props {
+interface SearchPanelProps {
     appName: string;
-    offset: number;
-    onPage: (direction: number) => void;
-    pageSize?: number;
-    search: (form: any) => void;
-    searchResultsModel: SearchResultsModel;
+    getCardDataFn: GetCardDataFn;
+    offset?: number; // Result number to start from
+    pageSize?: number; // number of results to return/display
+    search: (form: any) => any;
     searchTerm: string;
 }
 
+interface Props extends Omit<SearchPanelProps, 'getCardDataFn'> {
+    onPageChange: (direction: number) => void;
+    searchResultsModel: SearchResultsModel;
+}
+
 export const SearchPanelImpl: FC<Props> = memo(props => {
-    const { appName, searchTerm, searchResultsModel, search, onPage, pageSize, offset } = props;
+    const { appName = "Labkey", searchTerm, searchResultsModel, search, onPageChange, pageSize, offset } = props;
     const [searchQuery, setSearchQuery] = useState<string>(searchTerm);
 
     const title = useMemo(() => (searchTerm ? 'Search Results' : 'Search'), [searchTerm]);
@@ -54,12 +58,12 @@ export const SearchPanelImpl: FC<Props> = memo(props => {
     }, [appName]);
 
     const pageBack = useCallback(() => {
-        onPage(-1);
-    }, [onPage]);
+        onPageChange(-1);
+    }, [onPageChange]);
 
     const pageForward = useCallback(() => {
-        onPage(1);
-    }, [onPage]);
+        onPageChange(1);
+    }, [onPageChange]);
 
     const onSearchChange = useCallback(
         (evt: ChangeEvent<HTMLInputElement>) => {
@@ -136,14 +140,6 @@ export const SearchPanelImpl: FC<Props> = memo(props => {
     );
 });
 
-interface SearchPanelProps {
-    getCardDataFn: GetCardDataFn;
-    offset?: number; // Result number to start from
-    pageSize?: number; // number of results to return/display
-    search: (form: any) => any;
-    searchTerm: string;
-}
-
 export const SearchPanel: FC<SearchPanelProps> = memo(props => {
     const { searchTerm, getCardDataFn, search, pageSize = SEARCH_PAGE_DEFAULT_SIZE, offset = 0 } = props;
     const [searchQuery, setSearchQuery] = useState<string>(searchTerm);
@@ -210,8 +206,7 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
             search={onSearch}
             searchResultsModel={model}
             searchTerm={searchQuery}
-            appName="Labkey Sample Manager"
-            onPage={onPage}
+            onPageChange={onPage}
             offset={offset}
         />
     );

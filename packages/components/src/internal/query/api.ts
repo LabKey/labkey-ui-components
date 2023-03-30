@@ -150,13 +150,13 @@ export function applyQueryMetadata(rawQueryInfo: any, schemaName?: string, query
                 .toMap();
 
             rawQueryInfo.views.forEach(rawViewInfo => {
-                let viewInfo = ViewInfo.create(rawViewInfo);
+                let viewInfo = ViewInfo.fromJson(rawViewInfo);
 
                 if (removedViewColumns.size) {
-                    viewInfo = viewInfo.merge({
-                        columns: viewInfo.columns
-                            .filter(vc => removedViewColumns.get(vc.fieldKey.toLowerCase()) === undefined)
-                            .toList(),
+                    viewInfo = viewInfo.mutate({
+                        columns: viewInfo.columns.filter(
+                            vc => removedViewColumns.get(vc.fieldKey.toLowerCase()) === undefined
+                        ),
                     }) as ViewInfo;
                 }
 

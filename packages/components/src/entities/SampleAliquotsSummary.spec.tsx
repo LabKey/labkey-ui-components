@@ -88,16 +88,14 @@ describe('SampleAliquotsSummaryWithModels', () => {
         wrapper.unmount();
     });
 
-    test('has single aliquot, not in storage, not added to job', () => {
+    test('has single aliquot, no stored amount, not added to job', () => {
         const wrapper = mountWithServerContext(
             <SampleAliquotsSummaryWithModels
                 {...defaultProps()}
                 sampleRow={zeroAliquotVolume}
                 aliquotsModel={getQueryModelFromRows({
                     1: {
-                        StorageStatus: { value: 'Not in storage' },
                         StoredAmount: { value: null },
-                        Units: { value: null },
                     },
                 })}
             />,
@@ -108,16 +106,14 @@ describe('SampleAliquotsSummaryWithModels', () => {
         wrapper.unmount();
     });
 
-    test('has single aliquot, in storage, no volume, added to job', () => {
+    test('has single aliquot, 0 stored amount, added to job', () => {
         const wrapper = mountWithServerContext(
             <SampleAliquotsSummaryWithModels
                 {...defaultProps()}
                 sampleRow={zeroAliquotVolume}
                 aliquotsModel={getQueryModelFromRows({
                     1: {
-                        StorageStatus: { value: 'In storage' },
-                        StoredAmount: { value: null },
-                        Units: { value: null },
+                        StoredAmount: { value: 0 },
                     },
                 })}
                 jobsModel={getQueryModelFromRows({ 1: { RowId: { value: 1 } } })}
@@ -125,11 +121,11 @@ describe('SampleAliquotsSummaryWithModels', () => {
             { moduleContext: TEST_LKSM_STARTER_MODULE_CONTEXT }
         );
 
-        validateStats(wrapper, false, false, 1, 1, '0', 1);
+        validateStats(wrapper, false, false, 1, 0, '0', 1);
         wrapper.unmount();
     });
 
-    test('has single aliquot, in storage, without amount, but with unit', () => {
+    test('has single aliquot, 0 stored amount, but with unit', () => {
         const wrapper = mountWithServerContext(
             <SampleAliquotsSummaryWithModels
                 {...defaultProps()}
@@ -143,7 +139,6 @@ describe('SampleAliquotsSummaryWithModels', () => {
                 }}
                 aliquotsModel={getQueryModelFromRows({
                     1: {
-                        StorageStatus: { value: 'In storage' },
                         StoredAmount: { value: null },
                         Units: { value: 'g' },
                     },
@@ -153,11 +148,11 @@ describe('SampleAliquotsSummaryWithModels', () => {
             { moduleContext: TEST_LKSM_STARTER_MODULE_CONTEXT }
         );
 
-        validateStats(wrapper, false, false, 1, 1, '0 g', 1);
+        validateStats(wrapper, false, false, 1, 0, '0 g', 1);
         wrapper.unmount();
     });
 
-    test('has single aliquot, in storage, with amount, but without unit', () => {
+    test('has single aliquot, with amount, but without unit', () => {
         const wrapper = mountWithServerContext(
             <SampleAliquotsSummaryWithModels
                 {...defaultProps()}
@@ -171,7 +166,6 @@ describe('SampleAliquotsSummaryWithModels', () => {
                 }}
                 aliquotsModel={getQueryModelFromRows({
                     1: {
-                        StorageStatus: { value: 'In storage' },
                         StoredAmount: { value: '100.1' },
                         Units: { value: null },
                     },
@@ -185,7 +179,7 @@ describe('SampleAliquotsSummaryWithModels', () => {
         wrapper.unmount();
     });
 
-    test('has multiple aliquots, some storage, without unit, some has jobs', () => {
+    test('has multiple aliquots, some with amount, without unit, some has jobs', () => {
         const wrapper = mountWithServerContext(
             <SampleAliquotsSummaryWithModels
                 {...defaultProps()}
@@ -199,17 +193,14 @@ describe('SampleAliquotsSummaryWithModels', () => {
                 }}
                 aliquotsModel={getQueryModelFromRows({
                     1: {
-                        StorageStatus: { value: 'In storage' },
                         StoredAmount: { value: '100.1' },
                         Units: { value: null },
                     },
                     2: {
-                        StorageStatus: { value: 'Not in storage' },
                         StoredAmount: { value: null },
                         Units: { value: null },
                     },
                     3: {
-                        StorageStatus: { value: 'In storage' },
                         StoredAmount: { value: '50.5' },
                         Units: { value: null },
                     },
@@ -230,7 +221,7 @@ describe('SampleAliquotsSummaryWithModels', () => {
         wrapper.unmount();
     });
 
-    test('has multiple aliquots, some storage, with same unit', () => {
+    test('has multiple aliquots, some with amount, with same unit', () => {
         const wrapper = mountWithServerContext(
             <SampleAliquotsSummaryWithModels
                 {...defaultProps()}
@@ -244,17 +235,14 @@ describe('SampleAliquotsSummaryWithModels', () => {
                 }}
                 aliquotsModel={getQueryModelFromRows({
                     1: {
-                        StorageStatus: { value: 'In storage' },
                         StoredAmount: { value: '100.1' },
                         Units: { value: 'mL' },
                     },
                     2: {
-                        StorageStatus: { value: 'Not in storage' },
                         StoredAmount: { value: null },
                         Units: { value: null },
                     },
                     3: {
-                        StorageStatus: { value: 'In storage' },
                         StoredAmount: { value: '50.5' },
                         Units: { value: 'mL' },
                     },
@@ -267,7 +255,7 @@ describe('SampleAliquotsSummaryWithModels', () => {
         wrapper.unmount();
     });
 
-    test('has multiple aliquots, some storage, with different unit', () => {
+    test('has multiple aliquots, some with amount, with different unit', () => {
         const wrapper = mountWithServerContext(
             <SampleAliquotsSummaryWithModels
                 {...defaultProps()}
@@ -281,17 +269,14 @@ describe('SampleAliquotsSummaryWithModels', () => {
                 }}
                 aliquotsModel={getQueryModelFromRows({
                     1: {
-                        StorageStatus: { value: 'In storage' },
                         StoredAmount: { value: '100.1' },
                         Units: { value: 'mL' },
                     },
                     2: {
-                        StorageStatus: { value: 'Not in storage' },
                         StoredAmount: { value: null },
                         Units: { value: null },
                     },
                     3: {
-                        StorageStatus: { value: 'In storage' },
                         StoredAmount: { value: '50.5' },
                         Units: { value: 'L' },
                     },
@@ -304,7 +289,7 @@ describe('SampleAliquotsSummaryWithModels', () => {
         wrapper.unmount();
     });
 
-    test('has multiple aliquots, all in storage, but some are checked out', () => {
+    test('has multiple aliquots, all with amount, but some are checked out', () => {
         const wrapper = mountWithServerContext(
             <SampleAliquotsSummaryWithModels
                 {...defaultProps()}
@@ -356,7 +341,6 @@ describe('SampleAliquotsSummaryWithModels', () => {
                 sampleRow={zeroAliquotVolume}
                 aliquotsModel={getQueryModelFromRows({
                     1: {
-                        StorageStatus: { value: 'Not in storage' },
                         StoredAmount: { value: null },
                         Units: { value: null },
                     },

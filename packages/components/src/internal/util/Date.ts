@@ -197,10 +197,13 @@ function twoDigit(num: number): string {
     return '' + num;
 }
 
-// From a current date string, get the next date string
-// example, from "2022-02-02", return "2022-02-03"
-export function getNextDateStr(currentDateStr: string): string {
-    let nextDate = new Date(new Date(currentDateStr).getTime() + 60 * 60 * 24 * 1000); // add 24 hours
+// From a current date string, get the next N date string
+// example, from "2022-02-02", get next 1 day, return "2022-02-03"
+// example, from "2022-02-02", get next -1 day, return "2022-02-01"
+export function getNextDateStr(currentDateStr: string, ndays?: number): string {
+    const numberOfDays = ndays ?? 1;
+    const seedDate = new Date(currentDateStr);
+    let nextDate = new Date(seedDate.getTime() + 60 * 60 * 24 * 1000 * numberOfDays); // add N*24 hours
 
     const userTimezoneOffset = nextDate.getTimezoneOffset() * 60 * 1000;
     nextDate = new Date(nextDate.getTime() + userTimezoneOffset);
@@ -210,6 +213,15 @@ export function getNextDateStr(currentDateStr: string): string {
     const day = nextDate.getDate();
 
     return '' + year + '-' + twoDigit(month) + '-' + twoDigit(day);
+}
+
+export function getNDaysStrFromToday(ndays?: number): string {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+    const todayStr = '' + year + '-' + twoDigit(month) + '-' + twoDigit(day);
+    return getNextDateStr(todayStr, ndays);
 }
 
 // TODO add jest
@@ -224,4 +236,26 @@ export function filterDate(date: Date, start: Date, end: Date) {
     if (start == null && end != null) return dateOnly <= end;
 
     return dateOnly >= start && dateOnly <= end;
+}
+
+const RELATIVE_DAYS_REGEX = /^[+-]\d+d$/;
+export function isRelativeDateFilterValue(val: string): boolean {
+    if (!val == null) return false;
+
+    if (typeof val !== 'string') return false;
+
+    return RELATIVE_DAYS_REGEX.test(val);
+}
+
+export function getParsedRelativeDateStr(dateVal: string): { days: number; positive: boolean } {
+    if (!isRelativeDateFilterValue(dateVal)) return null;
+
+    let positive = true;
+    if (dateVal.indexOf('-') === 0) positive = false;
+    const daysStr = dateVal.replace('-', '').replace('+', '').replace('d', '');
+    const days = parseInt(daysStr);
+    return {
+        positive,
+        days,
+    };
 }

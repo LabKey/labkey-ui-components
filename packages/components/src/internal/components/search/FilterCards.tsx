@@ -32,7 +32,7 @@ export const GroupedFilterValues: FC<GroupedFilterProps> = memo(props => {
                 rows.push(
                     <tr
                         key={key + '-' + index}
-                        className={classNames('filter-display__row', {'filter-row-divider': ind > 0})}
+                        className={classNames('filter-display__row', { 'filter-row-divider': ind > 0 })}
                     >
                         {index === 0 && <td className="filter-display__field-label">{fieldFilter.fieldCaption}</td>}
                         {index !== 0 && <td className="filter-display__field-boolean">and</td>}
@@ -41,6 +41,7 @@ export const GroupedFilterValues: FC<GroupedFilterProps> = memo(props => {
                                 filter={fieldFilter.filter}
                                 onFilterValueExpand={() => onFilterValueExpand(cardIndex, fieldFilter)}
                                 noValueInQueryFilterMsg={noValueInQueryFilterMsg}
+                                jsonType={fieldFilter.jsonType}
                             />
                         </td>
                     </tr>

@@ -1,56 +1,62 @@
-import { List, Record } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { QuerySort } from '../public/QuerySort';
+import { QuerySort, QuerySortJson } from '../public/QuerySort';
 import { QueryInfo } from '../public/QueryInfo';
 
-function getFiltersFromView(rawViewInfo): List<Filter.IFilter> {
-    const filters = List<Filter.IFilter>().asMutable();
-
-    // notice, in the raw version it is raw.filter (no s)
-    if (rawViewInfo && rawViewInfo.filter) {
-        const rawFilters: Array<{
-            fieldKey: string;
-            op: string;
-            value: any;
-        }> = rawViewInfo.filter;
-
-        for (let i = 0; i < rawFilters.length; i++) {
-            const filter = rawFilters[i];
-            filters.push(Filter.create(filter.fieldKey, filter.value, Filter.getFilterTypeForURLSuffix(filter.op)));
-        }
+function getFiltersFromView(filters: ViewInfoFilter[]): Filter.IFilter[] {
+    if (filters) {
+        return filters.map(filter =>
+            Filter.create(filter.fieldKey, filter.value, Filter.getFilterTypeForURLSuffix(filter.op))
+        );
     }
 
-    return filters.asImmutable();
+    return [];
 }
 
-function getSortsFromView(rawViewInfo): List<QuerySort> {
-    if (rawViewInfo && rawViewInfo.sort && rawViewInfo.sort.length > 0) {
-        const sorts = List<QuerySort>().asMutable();
-        rawViewInfo.sort.forEach(sort => {
-            sorts.push(new QuerySort(sort));
-        });
-        return sorts.asImmutable();
+function getSortsFromView(sorts: QuerySortJson[]): QuerySort[] {
+    if (sorts) {
+        return sorts.map(sort => new QuerySort(sort));
     }
 
-    return List<QuerySort>();
+    return [];
 }
 
-interface IViewInfoColumn {
+interface ViewInfoColumn {
     fieldKey: string;
-    key: string;
-    name: string;
+    key?: string;
+    name?: string;
     title?: string;
 }
 
-// commented out attributes are not used in app
-export class ViewInfo extends Record({
-    // aggregates: List(),
-    // analyticsProviders: List(),
-    columns: List<IViewInfoColumn>(),
-    // deletable: false,
-    // editable: false,
-    filters: List<Filter.IFilter>(),
+interface ViewInfoFilter {
+    fieldKey: string;
+    op: string;
+    value: string | number | boolean;
+}
+
+interface ViewInfoJson {
+    // aggregates: any[];
+    // analyticsProviders: any[];
+    columns?: ViewInfoColumn[];
+    default?: boolean;
+    // deletable: boolean;
+    // editable: boolean;
+    filter?: ViewInfoFilter[];
+    hidden?: boolean;
+    inherit?: boolean;
+    label?: string;
+    name?: string;
+    revertable?: boolean;
+    savable?: boolean;
+    saved?: boolean;
+    session?: boolean;
+    shared?: boolean;
+    sort?: QuerySortJson[];
+}
+
+const VIEW_INFO_DEFAULTS = {
+    columns: [],
+    filters: [],
     hidden: false,
     inherit: false,
     isDefault: false,
@@ -61,14 +67,17 @@ export class ViewInfo extends Record({
     saved: false,
     session: false,
     shared: false,
-    sorts: List<QuerySort>(),
-}) {
-    // declare aggregates: List<any>;
-    // declare analyticsProviders: List<any>;
-    declare columns: List<IViewInfoColumn>;
+    sorts: [],
+};
+
+// commented out attributes are not used in app
+export class ViewInfo {
+    // declare aggregates: any[];
+    // declare analyticsProviders: any[];
+    declare columns: ViewInfoColumn[];
     // declare deletable: boolean;
     // declare editable: boolean;
-    declare filters: List<Filter.IFilter>;
+    declare filters: Filter.IFilter[];
     declare hidden: boolean;
     declare inherit: boolean;
     declare isDefault: boolean; // 'default' is a JavaScript keyword
@@ -79,7 +88,7 @@ export class ViewInfo extends Record({
     declare saved: boolean;
     declare session: boolean;
     declare shared: boolean;
-    declare sorts: List<QuerySort>;
+    declare sorts: QuerySort[];
 
     static DEFAULT_NAME = '~~DEFAULT~~';
     static DETAIL_NAME = '~~DETAILS~~';
@@ -88,53 +97,57 @@ export class ViewInfo extends Record({
     //  to define the override detail name.
     static BIO_DETAIL_NAME = 'BiologicsDetails';
 
-    static create(rawViewInfo): ViewInfo {
+    constructor(partial: Partial<ViewInfo>) {
         // prepare name and isDefault
-        let label = rawViewInfo.label;
-        let name = '';
-        const isDefault = rawViewInfo['default'] === true;
-        if (isDefault) {
+        let { label, name } = partial;
+
+        if (partial.isDefault) {
             name = ViewInfo.DEFAULT_NAME;
             label = 'Default';
+        } else if (name === undefined || name === '') {
+            name = ViewInfo.DEFAULT_NAME;
         } else {
-            name = rawViewInfo.name;
+            name = partial.name;
         }
 
-        return new ViewInfo(
-            Object.assign({}, rawViewInfo, {
-                columns: List<IViewInfoColumn>(rawViewInfo.columns),
-                filters: getFiltersFromView(rawViewInfo),
-                isDefault,
-                label,
-                name,
-                sorts: getSortsFromView(rawViewInfo),
-            })
-        );
+        Object.assign(this, VIEW_INFO_DEFAULTS, partial, { name, label });
     }
 
-    static serialize(viewInfo: ViewInfo): any {
-        const json = viewInfo.toJS();
+    static fromJson(json: ViewInfoJson) {
+        const { columns, filter, sort, ...rest } = json;
+        const isDefault = rest.default === true;
+        delete rest.default;
+
+        return new ViewInfo({
+            columns: columns !== undefined ? [...columns] : [],
+            filters: getFiltersFromView(filter),
+            isDefault,
+            sorts: getSortsFromView(sort),
+            ...rest,
+        });
+    }
+
+    static serialize(viewInfo: ViewInfo): ViewInfoJson {
+        const { columns, filters, isDefault, sorts, ...rest } = viewInfo;
+        const json = rest as unknown as ViewInfoJson;
+
+        json.columns = [...columns];
+        json.default = isDefault;
 
         if (json.name === this.DEFAULT_NAME) {
             json.name = '';
         }
 
-        json.filter = viewInfo.filters.map(filter => {
-            return {
-                fieldKey: filter.getColumnName(),
-                value: filter.getURLParameterValue(),
-                op: filter.getFilterType().getURLSuffix(),
-            };
-        });
-        delete json.filters;
+        json.filter = filters.map(filter => ({
+            fieldKey: filter.getColumnName(),
+            value: filter.getURLParameterValue(),
+            op: filter.getFilterType().getURLSuffix(),
+        }));
 
-        json.sort = viewInfo.sorts.map(sort => {
-            return {
-                fieldKey: sort.fieldKey,
-                dir: sort.dir,
-            };
-        });
-        delete json.sorts;
+        json.sort = sorts.map(sort => ({
+            fieldKey: sort.fieldKey,
+            dir: sort.dir,
+        }));
 
         return json;
     }
@@ -172,17 +185,11 @@ export class ViewInfo extends Record({
 
     addSystemViewColumns(queryInfo: QueryInfo) {
         if (this.isDefault && !this.session) {
-            let columns = this.columns;
-            const columnFieldKeys = this.columns
-                .map(col => {
-                    return col.fieldKey.toLowerCase();
-                })
-                .toArray();
-
-            const disabledSysFields = [];
-            queryInfo.disabledSystemFields?.forEach(field => {
-                disabledSysFields.push(field.toLowerCase());
-            });
+            const columns = [...this.columns];
+            const columnFieldKeys = columns.map(col => col.fieldKey.toLowerCase());
+            const disabledSysFields = Array.from(queryInfo.disabledSystemFields ?? []).map(field =>
+                field.toLowerCase()
+            );
 
             queryInfo.columns.forEach(queryCol => {
                 const fieldKey = queryCol.fieldKey?.toLowerCase();
@@ -192,7 +199,7 @@ export class ViewInfo extends Record({
                     columnFieldKeys.indexOf(fieldKey) === -1 &&
                     disabledSysFields.indexOf(fieldKey) === -1
                 ) {
-                    columns = columns.push({
+                    columns.push({
                         fieldKey: queryCol.fieldKey,
                         key: queryCol.fieldKey,
                         name: queryCol.name,
@@ -206,8 +213,9 @@ export class ViewInfo extends Record({
     }
 
     mutate(updates: Partial<ViewInfo>) {
+        // TODO: this needs to be new ViewInfo, revert  the change from replaceALl
         return new ViewInfo({
-            ...this.toJS(),
+            ...this,
             ...updates,
         });
     }

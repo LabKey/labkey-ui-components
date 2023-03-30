@@ -17,7 +17,7 @@ import { SearchResultsModel } from './models';
 import { SEARCH_HELP_TOPIC, SEARCH_PAGE_DEFAULT_SIZE, SearchScope } from './constants';
 import { GetCardDataFn, searchUsingIndex } from './actions';
 
-interface SearchPanelProps extends Props {
+interface SearchPanelProps {
     appName: string;
     getCardDataFn: GetCardDataFn;
     offset?: number; // Result number to start from

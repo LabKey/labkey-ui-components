@@ -12,7 +12,7 @@ import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 
 import { InjectedQueryModels, withQueryModels } from '../public/QueryModel/withQueryModels';
 
-import { ALIQUOT_FILTER_MODE } from '../internal/components/samples/constants';
+import { ALIQUOT_FILTER_MODE, SAMPLE_STORAGE_COLUMNS } from '../internal/components/samples/constants';
 
 import { SampleAliquotsStats } from '../internal/components/samples/models';
 import { getSampleAliquotsQueryConfig, getSampleAliquotsStats } from '../internal/components/samples/actions';
@@ -128,7 +128,7 @@ const SampleAliquotsSummaryPanel: FC<OwnProps & PanelProps & InjectedQueryModels
     const { actions, aliquotsModelId, jobsModelId, queryModels, ...ownProps } = props;
     const aliquotsModel = queryModels[aliquotsModelId];
     const jobsModel = queryModels[jobsModelId];
-    const isLoading = aliquotsModel.isLoadingTotalCount || !jobsModel || jobsModel.isLoadingTotalCount;
+    const isLoading = aliquotsModel.isLoading || !jobsModel || jobsModel.isLoadingTotalCount;
 
     return (
         <div className="panel panel-default">
@@ -157,7 +157,7 @@ export const SampleAliquotsSummary: FC<SampleAliquotsSummaryProps> = memo(props 
     const { aliquotJobsQueryConfig, ...ownProps } = props;
     const { sampleId, sampleSet, sampleLsid } = ownProps;
     const aliquotsQueryConfig = useMemo(
-        () => getSampleAliquotsQueryConfig(sampleSet, sampleLsid, false),
+        () => getSampleAliquotsQueryConfig(sampleSet, sampleLsid, false, undefined, SAMPLE_STORAGE_COLUMNS),
         [sampleLsid, sampleSet]
     );
     const queryConfigs = { [aliquotsQueryConfig.id]: aliquotsQueryConfig };

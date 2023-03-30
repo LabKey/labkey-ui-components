@@ -182,10 +182,10 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                 includeDataClasses,
                 model.containerPath,
                 isValidParentOptionFn,
-                NEW_SAMPLE_SET_OPTION,
+                model.isNew() ? NEW_SAMPLE_SET_OPTION : null,
                 model.importAliases,
                 'sampleset-parent-import-alias-',
-                this.formatLabel
+                this.formatLabel,
             );
             this.setState({
                 model: model.merge({ parentAliases }) as SampleTypeModel,
@@ -201,7 +201,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     formatLabel = (name: string, prefix: string, isDataClass?: boolean, containerPath?: string): string => {
         const { includeDataClasses, useSeparateDataClassesAliasMenu, showParentLabelPrefix } = this.props;
         const { model } = this.state;
-        if (model?.name && !isDataClass) return NEW_SAMPLE_SET_OPTION.label;
+        if (name === model?.name && !isDataClass) return NEW_SAMPLE_SET_OPTION.label;
 
         return includeDataClasses && !useSeparateDataClassesAliasMenu && showParentLabelPrefix
             ? `${prefix}: ${name} (${containerPath})`

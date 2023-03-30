@@ -62,6 +62,8 @@ interface OwnProps extends BasePropertiesPanelProps {
     updateDupeParentAliases?: (id: string) => void;
     onNameFieldHover?: () => any;
     parentOptions: IParentOption[];
+    dataClassAliasCaption?: string;
+    parentAliasHelpText?: string;
 }
 
 type Props = OwnProps & InjectedDomainPropertiesPanelCollapseProps;
@@ -81,6 +83,8 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
         nameExpressionInfoUrl: getHelpLink(DATA_CLASS_NAME_EXPRESSION_TOPIC),
         nameExpressionPlaceholder: 'Enter a naming pattern (e.g., DC-${now:date}-${genId})',
         appPropertiesOnly: false,
+        dataClassAliasCaption: 'Parent Alias',
+        parentAliasHelpText: `Column headings used during import to set a data's parentage.`
     };
 
     state: Readonly<State> = { isValid: true, prefix: undefined, loadingError: undefined };
@@ -125,7 +129,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
     renderAddEntityHelper = (noun?: string): any => {
         return (
             <>
-                <p>Column headings used during import to set a {noun}'s parentage.</p>
+                <p>Column headings used during import to set a {noun.toLowerCase()}'s parentage.</p>
                 <p>
                     <HelpLink topic={DATACLASS_ALIAS_TOPIC}>More info</HelpLink>
                 </p>

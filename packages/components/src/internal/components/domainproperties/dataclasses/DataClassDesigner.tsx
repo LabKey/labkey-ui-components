@@ -68,7 +68,7 @@ interface State {
 }
 
 const NEW_DATA_CLASS_OPTION: IParentOption = {
-    label: '(Current Data Class})',
+    label: '(Current Data Class)',
     value: '{{this_data_class}}',
     schema: SCHEMAS.DATA_CLASSES.SCHEMA,
 } as IParentOption;
@@ -105,9 +105,10 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
             true,
             model.containerPath,
             null,
-            NEW_DATA_CLASS_OPTION,
+            !model.rowId ? NEW_DATA_CLASS_OPTION : null,
             model.importAliases,
-            'dataclass-parent-import-alias-'
+            'dataclass-parent-import-alias-',
+            this.formatLabel
         );
 
         this.setState(
@@ -120,14 +121,27 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         if (this.state.model.isNew && isSampleManagerEnabled()) {
             const response = await this.props.loadNameExpressionOptions(this.state.model.containerPath);
 
-            this.setState(
-                produce((draft: Draft<State>) => {
-                    draft.model.nameExpression =
-                        response.prefix + (draft.model.nameExpression ? draft.model.nameExpression : '');
-                })
-            );
+            if (response.prefix) {
+                this.setState(
+                    produce((draft: Draft<State>) => {
+                        draft.model.nameExpression =
+                            response.prefix + (draft.model.nameExpression ? draft.model.nameExpression : '');
+                    })
+                );
+            }
         }
     };
+
+    formatLabel = (name: string, prefix: string, isDataClass?: boolean, containerPath?: string): string => {
+        const { showParentLabelPrefix } = this.props;
+        const { model } = this.state;
+        if (name === model?.name) return NEW_DATA_CLASS_OPTION.label;
+
+        return showParentLabelPrefix
+            ? `${prefix}: ${name} (${containerPath})`
+            : name;
+    };
+
 
     onFinish = (): void => {
         const { defaultNameFieldConfig, setSubmitting, nounSingular } = this.props;
@@ -466,13 +480,11 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                             : undefined
                     }
                     parentOptions={parentOptions}
-                    // dataClassAliasCaption={dataClassAliasCaption}
-                    // dataClassTypeCaption={dataClassTypeCaption}
-                    // dataClassParentageLabel={dataClassParentageLabel}
                     onParentAliasChange={this.parentAliasChange}
                     onAddParentAlias={this.addParentAlias}
                     onRemoveParentAlias={this.removeParentAlias}
                     updateDupeParentAliases={this.updateDupes}
+                    parentAliasHelpText={`Column headings used during import to set a ${nounSingular.toLowerCase()}'s parentage.`}
                 />
                 <DomainForm
                     key={model.domain.domainId || 0}

@@ -88,7 +88,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
         // Get all shownInUpdateView and required columns or undefined
         const columns =
             getUpdateColumnsOnly || requiredColumns
-                ? (queryInfo.getPkCols().concat(queryInfo.getUpdateColumns(readOnlyColumns)) as List<QueryColumn>)
+                ? (queryInfo.getPkCols().concat(queryInfo.getUpdateColumns(readOnlyColumns.toArray())))
                 : undefined;
         let columnString = columns?.map(c => c.fieldKey).join(',');
         if (requiredColumns) columnString = `${columnString ? columnString + ',' : ''}${requiredColumns.join(',')}`;

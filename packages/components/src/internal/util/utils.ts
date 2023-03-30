@@ -108,15 +108,12 @@ export function withTransformedKeys(obj: Record<string, any>, keyTransformFn: (v
  * Returns a copy of List<string> and ensures that in copy all values are lower case strings.
  * @param a
  */
-export function toLowerSafe(a: List<string>): List<string> {
+export function toLowerSafe(a: string[]): string[] {
     if (a) {
-        return a
-            .filter(v => typeof v === 'string')
-            .map(v => v.toLowerCase())
-            .toList();
+        return a.filter(v => typeof v === 'string').map(v => v.toLowerCase());
     }
 
-    return emptyList;
+    return [];
 }
 
 function toLowerReducer(s: ImmutableSet<string>, v: string): ImmutableSet<string> {

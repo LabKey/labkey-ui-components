@@ -1022,8 +1022,8 @@ export function checkCellReadStatus(
 ): { isLockedRow: boolean; isReadonlyCell: boolean; isReadonlyRow: boolean } {
     if (readonlyRows || columnMetadata?.isReadOnlyCell || lockedRows) {
         const keyCols = queryInfo.getPkCols();
-        if (keyCols.size === 1) {
-            let key = caseInsensitive(row.toJS(), keyCols.get(0).fieldKey);
+        if (keyCols.length === 1) {
+            let key = caseInsensitive(row.toJS(), keyCols[0].fieldKey);
             if (Array.isArray(key)) key = key[0];
             if (typeof key === 'object') key = key.value;
 
@@ -1034,7 +1034,7 @@ export function checkCellReadStatus(
             };
         } else {
             console.warn(
-                'Setting readonly rows or cells for models with ' + keyCols.size + ' keys is not currently supported.'
+                'Setting readonly rows or cells for models with ' + keyCols.length + ' keys is not currently supported.'
             );
         }
     }
@@ -1731,7 +1731,7 @@ function pasteCellLoad(
     if (editorModel.hasMultipleSelection()) {
         editorModel.selectionCells.forEach(cellKey => {
             const { colIdx } = parseCellKey(cellKey);
-            const col = columns.get(colIdx);
+            const col = columns[colIdx];
 
             pastedData.forEach(row => {
                 row.forEach(value => {
@@ -1788,7 +1788,7 @@ function pasteCellLoad(
 
             row.forEach((value, cn) => {
                 const colIdx = colMin + cn;
-                const col = columns.get(colIdx);
+                const col = columns[colIdx];
                 const cellKey = genCellKey(colIdx, rowIdx);
                 let cv: List<ValueDescriptor>;
                 let msg: CellMessage;
@@ -1832,9 +1832,9 @@ function pasteCellLoad(
     };
 }
 
-function isReadonlyRow(row: Map<string, any>, pkCols: List<QueryColumn>, readonlyRows: List<string>) {
-    if (pkCols.size === 1 && row) {
-        const pkValue = caseInsensitive(row.toJS(), pkCols.get(0).fieldKey);
+function isReadonlyRow(row: Map<string, any>, pkCols: QueryColumn[], readonlyRows: List<string>) {
+    if (pkCols.length === 1 && row) {
+        const pkValue = caseInsensitive(row.toJS(), pkCols[0].fieldKey);
         return readonlyRows.contains(pkValue);
     }
 
@@ -1852,7 +1852,7 @@ function getReadonlyRowCount(
     const pkCols = queryInfo.getPkCols();
 
     // Rows with multiple PKs are always read-only
-    if (pkCols.size !== 1) {
+    if (pkCols.length !== 1) {
         return rowCount - startRowInd;
     }
 
@@ -1957,14 +1957,7 @@ async function prepareUpdateRowDataFromBulkForm(
     for (const colKey of rowData.keySeq().toArray()) {
         const data = rowData.get(colKey);
         let colIdx = -1;
-        columns.forEach((col, ind) => {
-            if (col.fieldKey === colKey) {
-                colIdx = ind;
-            }
-        });
-
-        const col = columns.get(colIdx);
-
+        const col = columns.find(col => col.fieldKey === colKey);
         let cv: List<ValueDescriptor>;
 
         if (data && col && col.isLookup()) {

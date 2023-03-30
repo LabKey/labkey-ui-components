@@ -159,7 +159,7 @@ export class EditorModel
         let columns;
 
         if (forUpdate) {
-            columns = updateColumns ?? queryInfo.getUpdateColumns(readOnlyColumns);
+            columns = updateColumns ?? queryInfo.getUpdateColumns(readOnlyColumns.toArray());
         } else {
             columns = insertColumns ?? queryInfo.getInsertColumns();
         }

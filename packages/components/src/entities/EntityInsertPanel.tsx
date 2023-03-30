@@ -19,7 +19,6 @@ import { List, Map, OrderedMap, fromJS } from 'immutable';
 import { Query, Utils } from '@labkey/api';
 
 import { Link } from 'react-router';
-import { ExtendedMap } from '../../../public/ExtendedMap';
 
 import { MAX_EDITABLE_GRID_ROWS } from '../internal/constants';
 
@@ -52,6 +51,7 @@ import {
     IEditableGridLoader,
     IGridResponse,
 } from '../internal/components/editable/models';
+import { ExtendedMap } from '../public/ExtendedMap';
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { SampleCreationType } from '../internal/components/samples/models';
 import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from '../internal/components/forms/FormStep';
@@ -1103,13 +1103,12 @@ class EntityInsertPanelImpl extends Component<Props, State> {
 
     getInsertColumns = (): List<QueryColumn> => {
         const { queryInfo } = this.state.dataModel;
-        return (
+        return List(
             queryInfo
                 .getInsertColumns()
                 .filter(this.isIncludedColumn)
                 // Add the UniqueId columns which will be displayed as read-only fields
                 .concat(queryInfo.getUniqueIdColumns())
-                .toList()
         );
     };
 

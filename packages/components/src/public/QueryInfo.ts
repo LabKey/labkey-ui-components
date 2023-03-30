@@ -1,5 +1,5 @@
 // commented out attributes are not used in app
-import { List, Record } from 'immutable';
+import { Record as ImmutableRecord } from 'immutable';
 
 import { Filter } from '@labkey/api';
 
@@ -21,7 +21,7 @@ export enum QueryInfoStatus {
     unknown,
 }
 
-export class QueryInfo extends Record({
+export class QueryInfo extends ImmutableRecord({
     altUpdateKeys: undefined,
     disabledSystemFields: undefined,
     // canEdit: false,
@@ -31,7 +31,7 @@ export class QueryInfo extends Record({
     domainContainerPath: undefined,
     // editDefinitionUrl: undefined,
     importTemplates: [],
-    // indices: Map<string, any>(),
+    // indices: {},
     // isInherited: false,
 
     iconURL: 'default',
@@ -44,7 +44,7 @@ export class QueryInfo extends Record({
     pkCols: [],
     schemaName: undefined,
     status: QueryInfoStatus.unknown,
-    // targetContainers: List<any>(),
+    // targetContainers:[],
     title: undefined, // DEPRECATED: Use queryLabel
     titleColumn: undefined,
     // viewDataUrl: undefined,
@@ -79,7 +79,7 @@ export class QueryInfo extends Record({
     // declare editDefinitionUrl: string;
     declare iconURL: string;
     declare importTemplates: any[];
-    // declare indices: Map<string, any>;
+    // declare indices: Record<string, any>;
     // declare isInherited: boolean;
     declare isLoading: boolean;
     declare isMedia: boolean;
@@ -98,7 +98,7 @@ export class QueryInfo extends Record({
     declare status: QueryInfoStatus;
     declare supportGroupConcatSubSelect: boolean;
     declare supportMerge: boolean;
-    // declare targetContainers: List<any>;
+    // declare targetContainers: any[];
     declare title: string;
     declare titleColumn: string;
     // declare viewDataUrl: string;
@@ -176,7 +176,7 @@ export class QueryInfo extends Record({
     }
 
     isAppEditable(): boolean {
-        return this.appEditableTable && this.getPkCols().size > 0;
+        return this.appEditableTable && this.getPkCols().length > 0;
     }
 
     getColumn(fieldKey: string): QueryColumn {
@@ -192,13 +192,11 @@ export class QueryInfo extends Record({
         return column ? column.required : false;
     }
 
-    getDetailDisplayColumns(view?: string, omittedColumns?: List<string>): List<QueryColumn> {
-        return this.getDisplayColumns(view, omittedColumns)
-            .filter(col => col.isDetailColumn)
-            .toList();
+    getDetailDisplayColumns(view?: string, omittedColumns?: string[]): QueryColumn[] {
+        return this.getDisplayColumns(view, omittedColumns).filter(col => col.isDetailColumn);
     }
 
-    getDisplayColumns(view?: string, omittedColumns?: List<string>): List<QueryColumn> {
+    getDisplayColumns(view?: string, omittedColumns?: string[]): QueryColumn[] {
         if (!view) {
             view = ViewInfo.DEFAULT_NAME;
         }
@@ -206,7 +204,7 @@ export class QueryInfo extends Record({
         let lowerOmit;
         if (omittedColumns) lowerOmit = toLowerSafe(omittedColumns);
 
-        const colFilter = c => {
+        const colFilter = (c): boolean => {
             if (lowerOmit && lowerOmit.size > 0) {
                 return c && c.fieldKey && !lowerOmit.includes(c.fieldKey.toLowerCase());
             }
@@ -214,9 +212,8 @@ export class QueryInfo extends Record({
         };
 
         const viewInfo = this.getView(view);
-        let displayColumns = List<QueryColumn>();
         if (viewInfo) {
-            displayColumns = viewInfo.columns.filter(colFilter).reduce((list, col) => {
+            const displayColumns = viewInfo.columns.filter(colFilter).reduce((result, col) => {
                 let c = this.getColumn(col.fieldKey);
 
                 if (c !== undefined) {
@@ -227,20 +224,22 @@ export class QueryInfo extends Record({
                         });
                     }
 
-                    return list.push(c);
+                    result.push(c);
+                } else {
+                    console.warn(
+                        `Unable to resolve column '${col.fieldKey}' on view '${viewInfo.name}' (${this.schemaName}.${this.name})`
+                    );
                 }
 
-                console.warn(
-                    `Unable to resolve column '${col.fieldKey}' on view '${viewInfo.name}' (${this.schemaName}.${this.name})`
-                );
-                return list;
-            }, List<QueryColumn>());
+                return result;
+            }, []);
 
             // add addToSystemView columns to unsaved system view (i.e. the default-default view, details view, or update view)
             if ((viewInfo.isDefault || viewInfo.isSystemView) && !viewInfo.isSaved && !viewInfo.session) {
-                const columnFieldKeys = viewInfo.columns.reduce((list, col) => {
-                    return list.push(col.fieldKey.toLowerCase());
-                }, List<string>());
+                const columnFieldKeys = viewInfo.columns.reduce((result, col) => {
+                    result.add(col.fieldKey.toLowerCase());
+                    return result;
+                }, new Set());
 
                 const disabledSysFields = [];
                 this.disabledSystemFields?.forEach(field => {
@@ -252,11 +251,11 @@ export class QueryInfo extends Record({
                     if (
                         fieldKey &&
                         col.addToSystemView &&
-                        !columnFieldKeys.includes(fieldKey) &&
+                        !columnFieldKeys.has(fieldKey) &&
                         disabledSysFields.indexOf(fieldKey) === -1
                     ) {
                         if (!lowerOmit || !lowerOmit.includes(col.fieldKey.toLowerCase()))
-                            displayColumns = displayColumns.push(col);
+                            displayColumns.push(col);
                     }
                 });
             }
@@ -265,7 +264,7 @@ export class QueryInfo extends Record({
         }
 
         console.warn('Unable to find columns on view:', view, '(' + this.schemaName + '.' + this.name + ')');
-        return List<QueryColumn>();
+        return [];
     }
 
     getLookupViewColumns(omittedColumns?: string[]): QueryColumn[] {
@@ -274,13 +273,13 @@ export class QueryInfo extends Record({
             .valueArray;
     }
 
-    getAllColumns(viewName?: string, omittedColumns?: List<string>): List<QueryColumn> {
+    getAllColumns(viewName?: string, omittedColumns?: string[]): QueryColumn[] {
         // initialReduction is getDisplayColumns() because they include custom metadata from the view, like alternate
         // column display names (e.g. the Experiment grid overrides Title to "Experiment Title"). See Issue 38186 for
         // additional context.
-        return List<QueryColumn>(this.columns.values()).reduce((result, rawColumn) => {
+        return this.columns.reduce((result, rawColumn) => {
             if (!result.find(displayColumn => displayColumn.name === rawColumn.name)) {
-                return result.push(rawColumn);
+                result.push(rawColumn);
             }
 
             return result;
@@ -289,9 +288,9 @@ export class QueryInfo extends Record({
 
     // @param isIncludedColumn can be used to filter out columns that should not be designate as insertColumns
     // (e.g., if creating samples that are not aliquots, the aliquot-only fields should never be included)
-    getInsertColumns(isIncludedColumn?: (col: QueryColumn) => boolean): List<QueryColumn> {
+    getInsertColumns(isIncludedColumn?: (col: QueryColumn) => boolean): QueryColumn[] {
         // CONSIDER: use the columns in ~~INSERT~~ view to determine this set
-        return List(this.columns.filter(col => insertColumnFilter(col, false, isIncludedColumn)));
+        return this.columns.valueArray.filter(col => insertColumnFilter(col, false, isIncludedColumn));
     }
 
     getInsertColumnIndex(fieldKey: string): number {
@@ -301,31 +300,30 @@ export class QueryInfo extends Record({
         return this.getInsertColumns().findIndex(column => column.fieldKey.toLowerCase() === lcFieldKey);
     }
 
-    getUpdateColumns(readOnlyColumns?: List<string>): List<QueryColumn> {
-        const lowerReadOnlyColumnsList = readOnlyColumns?.reduce((lowerReadOnlyColumnsList, value) => {
-            return lowerReadOnlyColumnsList.push(value.toLowerCase());
-        }, List<string>());
-        const columns = this.columns
+    getUpdateColumns(readOnlyColumns?: string[]): QueryColumn[] {
+        const lowerReadOnlyColumnsSet = readOnlyColumns?.reduce((result, value) => {
+            result.add(value.toLowerCase());
+            return result;
+        }, new Set());
+        const columns = this.columns.valueArray
             .filter(column => {
                 return (
                     column.isUpdateColumn ||
-                    (lowerReadOnlyColumnsList && lowerReadOnlyColumnsList.indexOf(column.fieldKey.toLowerCase()) > -1)
+                    (lowerReadOnlyColumnsSet && lowerReadOnlyColumnsSet.has(column.fieldKey.toLowerCase()))
                 );
             })
             .map(column => {
-                if (lowerReadOnlyColumnsList && lowerReadOnlyColumnsList.indexOf(column.fieldKey.toLowerCase()) > -1) {
+                if (lowerReadOnlyColumnsSet && lowerReadOnlyColumnsSet.has(column.fieldKey.toLowerCase())) {
                     return column.mutate({ readOnly: true });
                 } else {
                     return column;
                 }
             });
-        return List(columns);
+        return columns;
     }
 
-    getUpdateDisplayColumns(view?: string, omittedColumns?: List<string>): List<QueryColumn> {
-        return this.getDisplayColumns(view, omittedColumns)
-            .filter(col => col.isUpdateColumn)
-            .toList();
+    getUpdateDisplayColumns(view?: string, omittedColumns?: string[]): QueryColumn[] {
+        return this.getDisplayColumns(view, omittedColumns).filter(col => col.isUpdateColumn);
     }
 
     getFilters(view?: string): Filter.IFilter[] {
@@ -342,21 +340,22 @@ export class QueryInfo extends Record({
         return [];
     }
 
-    getPkCols(): List<QueryColumn> {
+    getPkCols(): QueryColumn[] {
         return this.pkCols.reduce((list, pkFieldKey) => {
             const pkCol = this.getColumn(pkFieldKey);
 
             if (pkCol) {
-                return list.push(pkCol);
+                list.push(pkCol);
+            } else {
+                console.warn(`Unable to resolve pkCol '${pkFieldKey}' on (${this.schemaName}.${this.name})`);
             }
 
-            console.warn(`Unable to resolve pkCol '${pkFieldKey}' on (${this.schemaName}.${this.name})`);
             return list;
-        }, List<QueryColumn>());
+        }, []);
     }
 
-    getUniqueIdColumns(): List<QueryColumn> {
-        return List(this.columns.filter(column => column.isUniqueIdColumn));
+    getUniqueIdColumns(): QueryColumn[] {
+        return this.columns.valueArray.filter(column => column.isUniqueIdColumn);
     }
 
     getSorts(view?: string): QuerySort[] {

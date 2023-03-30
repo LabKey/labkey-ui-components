@@ -183,9 +183,9 @@ function initValueColumn(queryInfo: QueryInfo, column?: string): string {
     } else {
         const pkCols = queryInfo.getPkCols();
 
-        if (pkCols.size === 1) {
-            valueColumn = pkCols.get(0).fieldKey;
-        } else if (pkCols.size > 0) {
+        if (pkCols.length === 1) {
+            valueColumn = pkCols[0].fieldKey;
+        } else if (pkCols.length > 0) {
             throw (
                 `Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}). Set "valueColumn" explicitly to any of ` +
                 pkCols.map(col => col.fieldKey).join(', ')

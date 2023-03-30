@@ -455,7 +455,7 @@ export class QueryModel {
      * in omittedColumns.
      */
     get detailColumns(): QueryColumn[] {
-        return this.queryInfo?.getDetailDisplayColumns(ViewInfo.DETAIL_NAME, List(this.omittedColumns)).toArray();
+        return this.queryInfo?.getDetailDisplayColumns(ViewInfo.DETAIL_NAME, this.omittedColumns);
     }
 
     /**
@@ -463,7 +463,7 @@ export class QueryModel {
      * in omittedColumns.
      */
     get displayColumns(): QueryColumn[] {
-        return this.queryInfo?.getDisplayColumns(this.viewName, List(this.omittedColumns)).toArray();
+        return this.queryInfo?.getDisplayColumns(this.viewName, this.omittedColumns);
     }
 
     /**
@@ -471,7 +471,7 @@ export class QueryModel {
      * in omittedColumns.
      */
     get allColumns(): QueryColumn[] {
-        return this.queryInfo?.getAllColumns(this.viewName, List(this.omittedColumns)).toArray();
+        return this.queryInfo?.getAllColumns(this.viewName, this.omittedColumns);
     }
 
     /**
@@ -479,14 +479,14 @@ export class QueryModel {
      * in omittedColumns.
      */
     get updateColumns(): QueryColumn[] {
-        return this.queryInfo?.getUpdateDisplayColumns(ViewInfo.UPDATE_NAME, List(this.omittedColumns)).toArray();
+        return this.queryInfo?.getUpdateDisplayColumns(ViewInfo.UPDATE_NAME, this.omittedColumns);
     }
 
     /**
      * Array of primary key [[QueryColumn]] objects from the [[QueryInfo]].
      */
     get keyColumns(): QueryColumn[] {
-        return this.queryInfo?.getPkCols().toArray();
+        return this.queryInfo?.getPkCols();
     }
 
     get uniqueIdColumns(): QueryColumn[] {

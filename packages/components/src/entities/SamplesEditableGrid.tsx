@@ -150,8 +150,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                 'Name',
                 ...displayQueryModel.queryInfo
                     .getUniqueIdColumns()
-                    .map(column => column.fieldKey)
-                    .toArray(),
+                    .map(column => column.fieldKey),
             ]);
         }
         return this.readOnlyColumns;
@@ -163,8 +162,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
             ...samplesGridRequiredColumns,
             ...displayQueryModel.queryInfo
                 .getUniqueIdColumns()
-                .map(column => column.fieldKey)
-                .toArray(),
+                .map(column => column.fieldKey),
         ];
     }
 
@@ -425,7 +423,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         if (this.getCurrentTab(tabInd) !== UpdateGridTab.Samples) return undefined;
 
         const { displayQueryModel, sampleTypeDomainFields, user } = this.props;
-        const allColumns = displayQueryModel.queryInfo.getUpdateColumns(this.getReadOnlyColumns());
+        const allColumns = displayQueryModel.queryInfo.getUpdateColumns(this.getReadOnlyColumns().toArray());
 
         if (!user.canUpdate && userCanEditStorageData(user)) {
             let updatedColumns = List<QueryColumn>();
@@ -437,7 +435,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         }
         // remove aliquot specific fields if all selected are samples
         const keepAliquotFields = this.hasAliquots();
-        if (keepAliquotFields) return allColumns;
+        if (keepAliquotFields) return List(allColumns);
 
         let updatedColumns = List<QueryColumn>();
         allColumns.forEach(col => {

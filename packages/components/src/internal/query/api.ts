@@ -1104,14 +1104,10 @@ export async function loadQueriesFromTable(
     const queryNameField = info.getColumn(tableFieldKey);
 
     if (queryNameField) {
+        const columns = new Set(info.getPkCols().map(col => col.fieldKey)).add(queryNameField.name);
         const { key, models } = await selectRowsDeprecated({
             containerFilter,
-            columns: info
-                .getPkCols()
-                .map(col => col.fieldKey)
-                .toSet()
-                .add(queryNameField.name)
-                .join(','),
+            columns: Array.from(columns).join(','),
             filterArray: filters,
             queryName,
             schemaName,

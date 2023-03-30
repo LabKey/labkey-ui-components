@@ -146,11 +146,7 @@ describe('createQueryConfigFilteredBySample', () => {
     });
 
     test('with sample column', () => {
-        const result = createQueryConfigFilteredBySample(
-            modelWithSampleId,
-            1,
-            Filter.Types.EQUALS
-        );
+        const result = createQueryConfigFilteredBySample(modelWithSampleId, 1, Filter.Types.EQUALS);
         expect(result).toBeDefined();
         expect(result.baseFilters[0].getURLParameterValue()).toBe(1);
         expect(result.baseFilters[0].getURLParameterName()).toBe('query.SampleID/RowId~eq');
@@ -161,12 +157,7 @@ describe('createQueryConfigFilteredBySample', () => {
     });
 
     test('omitSampleCols', () => {
-        const result = createQueryConfigFilteredBySample(
-            modelWithSampleId,
-            1,
-            Filter.Types.EQUALS,
-            true
-        );
+        const result = createQueryConfigFilteredBySample(modelWithSampleId, 1, Filter.Types.EQUALS, true);
         expect(result).toBeDefined();
         expect(result.baseFilters[0].getURLParameterValue()).toBe(1);
         expect(result.baseFilters[0].getURLParameterName()).toBe('query.SampleID/RowId~eq');

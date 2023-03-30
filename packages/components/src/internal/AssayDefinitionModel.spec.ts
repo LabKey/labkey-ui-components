@@ -84,6 +84,8 @@ describe('AssayDefinitionModel', () => {
         const model = new AssayDefinitionModel();
         const filter = model.createSampleFilter(List.of('a', 'b'), [1, 2], Filter.Types.IN);
         expect(filter.getURLParameterName()).toBe('query.*~where');
-        expect(filter.getURLParameterValue()).toBe('RowId IN (SELECT RowId FROM Data WHERE a.RowId IN (1,2) UNION SELECT RowId FROM Data WHERE b.RowId IN (1,2))');
+        expect(filter.getURLParameterValue()).toBe(
+            'RowId IN (SELECT RowId FROM Data WHERE a.RowId IN (1,2) UNION SELECT RowId FROM Data WHERE b.RowId IN (1,2))'
+        );
     });
 });

@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<SampleSetParentAliasRow/> With parent value not an option in select 1`] = `
+exports[`<ParentAliasRow/> With parent value not an option in select 1`] = `
 <div
   className="row"
 >
   <div
     className="col-xs-2"
   >
-    Parent 
+    Parent
     <span
       className="domain-no-wrap"
     >
@@ -184,21 +184,21 @@ exports[`<SampleSetParentAliasRow/> With parent value not an option in select 1`
         <i
           className="fa fa-times container--removal-icon"
         />
-        
+
       </span>
     </div>
   </div>
 </div>
 `;
 
-exports[`<SampleSetParentAliasRow/> With values 1`] = `
+exports[`<ParentAliasRow/> With values 1`] = `
 <div
   className="row"
 >
   <div
     className="col-xs-2"
   >
-    Parent 
+    Parent
     <span
       className="domain-no-wrap"
     >
@@ -375,7 +375,7 @@ exports[`<SampleSetParentAliasRow/> With values 1`] = `
         <i
           className="fa fa-times container--removal-icon"
         />
-        
+
       </span>
     </div>
   </div>

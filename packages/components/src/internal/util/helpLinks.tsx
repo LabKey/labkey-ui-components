@@ -30,6 +30,8 @@ export const DELETE_SAMPLES_TOPIC = 'viewSampleSets#delete';
 export const DERIVE_SAMPLES_TOPIC = 'deriveSamples';
 export const DERIVE_SAMPLES_ALIAS_TOPIC = DERIVE_SAMPLES_TOPIC + '#alias';
 
+export const DATACLASS_ALIAS_TOPIC = 'dataclassalias';
+
 export const URL_ENCODING_TOPIC = 'urlEncoding';
 
 export const SEARCH_SYNTAX_TOPIC = 'luceneSearch';

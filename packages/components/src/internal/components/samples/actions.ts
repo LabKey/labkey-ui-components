@@ -68,39 +68,6 @@ import {
 } from './constants';
 import { FindField, GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
 
-export function initSampleSetSelects(
-    isUpdate: boolean,
-    includeDataClasses: boolean,
-    containerPath: string
-): Promise<ISelectRowsResult[]> {
-    const promises: Array<Promise<ISelectRowsResult>> = [];
-
-    // Get Sample Types
-    promises.push(
-        selectRowsDeprecated({
-            containerPath,
-            schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
-            queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
-            columns: 'LSID, Name, RowId, Folder',
-            containerFilter: Query.containerFilter.currentPlusProjectAndShared,
-        })
-    );
-
-    // Get Data Classes
-    if (includeDataClasses) {
-        promises.push(
-            selectRowsDeprecated({
-                containerPath,
-                schemaName: SCHEMAS.EXP_TABLES.DATA_CLASSES.schemaName,
-                queryName: SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName,
-                columns: 'LSID, Name, RowId, Folder, Category',
-                containerFilter: Query.containerFilter.currentPlusProjectAndShared,
-            })
-        );
-    }
-
-    return Promise.all(promises);
-}
 
 export function getSampleSet(config: IEntityTypeDetails): Promise<any> {
     return new Promise<any>((resolve, reject) => {

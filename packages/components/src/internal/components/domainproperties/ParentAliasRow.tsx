@@ -5,12 +5,10 @@ import { Col, FormControl, FormControlProps, Row } from 'react-bootstrap';
 
 import classNames from 'classnames';
 
-import { IParentAlias } from '../domainproperties/samples/models';
-
 import { PARENT_ALIAS_HELPER_TEXT } from '../../constants';
 
 import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
-import { IParentOption } from '../entities/models';
+import {IParentAlias, IParentOption} from '../entities/models';
 import { SelectInput } from '../forms/input/SelectInput';
 import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
 
@@ -26,7 +24,7 @@ interface IParentAliasRow {
     updateDupeParentAliases?: (id: string) => void;
 }
 
-export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
+export class ParentAliasRow extends React.Component<IParentAliasRow> {
     private nameInput: React.RefObject<FormControl>;
 
     static defaultProps = {

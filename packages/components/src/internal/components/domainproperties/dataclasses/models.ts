@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 import { Draft, immerable, produce } from 'immer';
-import { Map, fromJS } from 'immutable';
+import {Map, fromJS, OrderedMap, Set} from 'immutable';
 
 import {DomainDesign, IDomainField, SystemField} from '../models';
 
 import { DATACLASS_DOMAIN_SYSTEM_FIELDS, SOURCE_DOMAIN_SYSTEM_FIELDS } from './constants';
+import {IParentAlias} from "../../entities/models";
 
 interface DataClassOptionsConfig {
     category: string;
@@ -28,6 +29,8 @@ interface DataClassOptionsConfig {
     rowId: number;
     sampleSet: number;
     systemFields?: SystemField[];
+    parentAliases?: OrderedMap<string, IParentAlias>;
+    importAliases?: Map<string, string>;
 }
 
 export interface DataClassModelConfig extends DataClassOptionsConfig {
@@ -35,6 +38,7 @@ export interface DataClassModelConfig extends DataClassOptionsConfig {
     exception: string;
 }
 
+//
 export class DataClassModel implements DataClassModelConfig {
     [immerable] = true;
 
@@ -47,6 +51,8 @@ export class DataClassModel implements DataClassModelConfig {
     readonly rowId: number;
     readonly sampleSet: number;
     readonly systemFields: SystemField[];
+    readonly parentAliases?: OrderedMap<string, IParentAlias>;
+    readonly importAliases?: Map<string, string>;
     readonly isBuiltIn?: boolean;
 
     constructor(values?: Partial<DataClassModelConfig>) {
@@ -68,6 +74,10 @@ export class DataClassModel implements DataClassModelConfig {
             if (raw.options && model.sampleSet === null) {
                 draft.sampleSet = undefined;
             }
+
+            const aliases = raw.options?.importAliases || {};
+            draft.importAliases = Map<string, string>(fromJS(aliases));
+
             draft.systemFields = model.category === "sources" ? SOURCE_DOMAIN_SYSTEM_FIELDS : DATACLASS_DOMAIN_SYSTEM_FIELDS;
         });
     }
@@ -88,8 +98,40 @@ export class DataClassModel implements DataClassModelConfig {
         );
     }
 
+    parentAliasInvalid(alias: Partial<IParentAlias>): boolean {
+        if (!alias) return true;
+
+        const aliasValueInvalid = !alias.alias || alias.alias.trim() === '';
+        const parentValueInvalid = !alias.parentValue || !alias.parentValue.value;
+
+        return !!(aliasValueInvalid || parentValueInvalid || alias.isDupe);
+    }
+
+    getDuplicateAlias(returnAliases = false): Set<string> {
+        const { parentAliases } = this;
+        let uniqueAliases = Set<string>();
+        let dupeAliases = Set<string>();
+        let dupeIds = Set<string>();
+
+        if (parentAliases) {
+            parentAliases.forEach((alias: IParentAlias) => {
+                if (uniqueAliases.has(alias.alias)) {
+                    dupeIds = dupeIds.add(alias.id);
+                    dupeAliases = dupeAliases.add(alias.alias);
+                } else {
+                    uniqueAliases = uniqueAliases.add(alias.alias);
+                }
+            });
+        }
+
+        return returnAliases ? dupeAliases : dupeIds;
+    }
+
     get hasValidProperties(): boolean {
-        return this.name !== undefined && this.name !== null && this.name.trim().length > 0;
+        const hasInvalidAliases =
+            this.parentAliases && this.parentAliases.size > 0 && this.parentAliases.find(this.parentAliasInvalid) !== undefined;
+
+        return this.name !== undefined && this.name !== null && this.name.trim().length > 0 && !hasInvalidAliases;
     }
 
     hasInvalidNameField(defaultNameFieldConfig: Partial<IDomainField>): boolean {

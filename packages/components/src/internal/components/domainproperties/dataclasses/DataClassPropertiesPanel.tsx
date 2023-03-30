@@ -2,7 +2,12 @@ import React, { PureComponent, ReactNode } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 import { EntityDetailsForm } from '../entities/EntityDetailsForm';
-import { DEFINE_DATA_CLASS_TOPIC, DATA_CLASS_NAME_EXPRESSION_TOPIC, getHelpLink } from '../../../util/helpLinks';
+import {
+    DEFINE_DATA_CLASS_TOPIC,
+    DATA_CLASS_NAME_EXPRESSION_TOPIC,
+    getHelpLink,
+    HelpLink, DERIVE_SAMPLES_ALIAS_TOPIC, DATACLASS_ALIAS_TOPIC
+} from '../../../util/helpLinks';
 import { ENTITY_FORM_ID_PREFIX } from '../entities/constants';
 import { getFormNameFromId } from '../entities/actions';
 
@@ -26,6 +31,10 @@ import { QuerySelect } from '../../forms/QuerySelect';
 import { SCHEMAS } from '../../../schemas';
 
 import { DataClassModel } from './models';
+import {DomainParentAliases} from "../DomainParentAliases";
+import {PARENT_ALIAS_HELPER_TEXT} from "../../../constants";
+import {IParentAlias, IParentOption} from "../../entities/models";
+import {initParentOptionsSelects} from "../../../../entities/actions";
 
 const PROPERTIES_HEADER_ID = 'dataclass-properties-hdr';
 const FORM_IDS = {
@@ -47,6 +56,13 @@ interface OwnProps extends BasePropertiesPanelProps {
     onChange: (model: DataClassModel) => void;
     onNameFieldHover?: () => any;
     previewName?: string;
+    hideParentAlias?: boolean;
+    parentOptions: IParentOption[];
+    onAddParentAlias: (id: string, newAlias: IParentAlias) => void;
+    updateDupeParentAliases?: (id: string) => void;
+    onRemoveParentAlias: (id: string) => void;
+    onParentAliasChange: (id: string, field: string, newValue: any) => void;
+
 }
 
 type Props = OwnProps & InjectedDomainPropertiesPanelCollapseProps;
@@ -107,6 +123,17 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
         this.updateValidStatus(this.props.model.mutate({ [getFormNameFromId(id)]: value }));
     };
 
+    renderAddEntityHelper = (noun?: string): any => {
+        return (
+            <>
+                <p>Column headings used during import to set a {noun}'s parentage.</p>
+                <p>
+                    <HelpLink topic={DATACLASS_ALIAS_TOPIC}>More info</HelpLink>
+                </p>
+            </>
+        );
+    };
+
     render(): ReactNode {
         const {
             model,
@@ -121,6 +148,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
             previewName,
             onNameFieldHover,
             nameExpressionGenIdProps,
+            hideParentAlias
         } = this.props;
         const { isValid, prefix, loadingError } = this.state;
 
@@ -169,6 +197,18 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                     nameExpressionGenIdProps={nameExpressionGenIdProps}
                     nameReadOnly={model.isBuiltIn}
                 />
+                {!hideParentAlias &&
+                    <DomainParentAliases
+                        {...this.props}
+                        parentAliases={model.parentAliases}
+                        idPrefix={'dataclass-parent-import-alias-'}
+                        schema={SCHEMAS.DATA_CLASSES.SCHEMA}
+                        addEntityHelp={this.renderAddEntityHelper(nounSingular)}
+                        includeSampleSet={false}
+                        includeDataClass={true}
+                        showAddBtn={true}
+                    />
+                }
                 {!appPropertiesOnly && (
                     <Row>
                         <Col xs={2}>

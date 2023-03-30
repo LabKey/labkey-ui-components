@@ -15,7 +15,6 @@ import {
     HelpLink,
     getHelpLink,
 } from '../../../util/helpLinks';
-import { SampleSetParentAliasRow } from '../../samples/SampleSetParentAliasRow';
 import {
     InjectedDomainPropertiesPanelCollapseProps,
     withDomainPropertiesPanelCollapse,
@@ -42,16 +41,15 @@ import { NameExpressionPreview } from '../NameExpressionPreview';
 import { NameExpressionGenIdProps } from '../NameExpressionGenIdBanner';
 
 import { SCHEMAS } from '../../../schemas';
-import { IParentOption } from '../../entities/models';
+import {IParentAlias, IParentOption} from '../../entities/models';
 import { Container } from '../../base/models/Container';
 import { IDomainField } from '../models';
-import { generateId } from '../../../util/utils';
-import { AddEntityButton } from '../../buttons/AddEntityButton';
 import { ColorPickerInput } from '../../forms/input/ColorPickerInput';
 import { SelectInput, SelectInputOption } from '../../forms/input/SelectInput';
 
 import { UniqueIdBanner } from './UniqueIdBanner';
-import { AliquotNamePatternProps, IParentAlias, MetricUnitProps, SampleTypeModel } from './models';
+import { AliquotNamePatternProps, MetricUnitProps, SampleTypeModel } from './models';
+import {dataClassOptionFilterFn, DomainParentAliases} from "../DomainParentAliases";
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 const ALIQUOT_HELP_LINK = getHelpLink('aliquotIDs');
@@ -103,22 +101,6 @@ interface State {
 }
 
 type Props = OwnProps & EntityProps & BasePropertiesPanelProps;
-
-const sampleSetAliasFilterFn = (alias: IParentAlias): boolean => {
-    return alias.parentValue?.schema === SCHEMAS.SAMPLE_SETS.SCHEMA;
-};
-
-const sampleSetOptionFilterFn = (option: IParentOption): boolean => {
-    return option?.schema === SCHEMAS.SAMPLE_SETS.SCHEMA;
-};
-
-const dataClassAliasFilterFn = (alias: IParentAlias): boolean => {
-    return alias.parentValue?.schema === SCHEMAS.DATA_CLASSES.SCHEMA;
-};
-
-const dataClassOptionFilterFn = (option: IParentOption): boolean => {
-    return option?.schema === SCHEMAS.DATA_CLASSES.SCHEMA;
-};
 
 class SampleTypePropertiesPanelImpl extends React.PureComponent<
     Props & InjectedDomainPropertiesPanelCollapseProps,
@@ -174,7 +156,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 this.setState({ loadingError: 'There was a problem retrieving the Naming Pattern prefix.' });
             }
         }
-    };
+    }; //
 
     updateValidStatus = (newModel?: SampleTypeModel): void => {
         const { model, updateModel, metricUnitProps } = this.props;
@@ -206,22 +188,6 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
         this.updateValidStatus(newModel);
     };
 
-    addParentAlias = (schema: string): void => {
-        // Generates a temporary id for add/delete of the import aliases
-        const newId = generateId('sampletype-parent-import-alias-');
-
-        const newParentAlias = {
-            id: newId,
-            alias: '',
-            parentValue: { schema },
-            ignoreAliasError: true,
-            ignoreSelectError: true,
-            isDupe: false,
-        };
-
-        this.props.onAddParentAlias(newId, newParentAlias);
-    };
-
     renderAddEntityHelper = (parentageLabel?: string): any => {
         const msg = parentageLabel
             ? PARENT_ALIAS_HELPER_TEXT.replace('parentage', parentageLabel)
@@ -234,65 +200,6 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 </p>
             </>
         );
-    };
-
-    renderParentAliases = (includeSampleSet: boolean, includeDataClass: boolean) => {
-        const {
-            model,
-            parentOptions,
-            updateDupeParentAliases,
-            sampleAliasCaption,
-            sampleTypeCaption,
-            dataClassAliasCaption,
-            dataClassTypeCaption,
-            dataClassParentageLabel,
-            onParentAliasChange,
-            onRemoveParentAlias,
-        } = this.props;
-        const { parentAliases } = model;
-
-        if (!parentAliases || !parentOptions) return [];
-
-        let filteredParentAliases = OrderedMap<string, IParentAlias>();
-        let filteredParentOptions = Array<IParentOption>();
-        let aliasCaption;
-        let parentTypeCaption;
-
-        let helpMsg;
-        if (includeSampleSet && includeDataClass) {
-            filteredParentAliases = parentAliases;
-            filteredParentOptions = parentOptions;
-        } else if (includeSampleSet) {
-            filteredParentAliases = parentAliases.filter(sampleSetAliasFilterFn) as OrderedMap<string, IParentAlias>;
-            filteredParentOptions = parentOptions.filter(sampleSetOptionFilterFn);
-            aliasCaption = sampleAliasCaption;
-            parentTypeCaption = sampleTypeCaption;
-        } else if (includeDataClass) {
-            filteredParentAliases = parentAliases.filter(dataClassAliasFilterFn) as OrderedMap<string, IParentAlias>;
-            filteredParentOptions = parentOptions.filter(dataClassOptionFilterFn);
-            aliasCaption = dataClassAliasCaption;
-            parentTypeCaption = dataClassTypeCaption;
-
-            helpMsg = PARENT_ALIAS_HELPER_TEXT.replace('parentage', dataClassParentageLabel);
-        }
-
-        return filteredParentAliases
-            .valueSeq()
-            .map(alias => (
-                <SampleSetParentAliasRow
-                    key={alias.id}
-                    id={alias.id}
-                    parentAlias={alias}
-                    parentOptions={filteredParentOptions}
-                    onAliasChange={onParentAliasChange}
-                    onRemove={onRemoveParentAlias}
-                    updateDupeParentAliases={updateDupeParentAliases}
-                    aliasCaption={aliasCaption}
-                    parentTypeCaption={parentTypeCaption}
-                    helpMsg={helpMsg}
-                />
-            ))
-            .toArray();
     };
 
     containsDataClassOptions(): boolean {
@@ -325,8 +232,6 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             helpTopic,
             includeDataClasses,
             useSeparateDataClassesAliasMenu,
-            dataClassAliasCaption,
-            sampleAliasCaption,
             dataClassParentageLabel,
             appPropertiesOnly,
             showLinkToStudy,
@@ -484,41 +389,28 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                         </Col>
                     </Row>
                 )}
-                {this.renderParentAliases(true, includeDataClasses && !useSeparateDataClassesAliasMenu)}
-                {parentOptions && (
-                    <Row>
-                        <Col xs={2} />
-                        <Col xs={10}>
-                            <span>
-                                <AddEntityButton
-                                    entity={
-                                        includeDataClasses && useSeparateDataClassesAliasMenu
-                                            ? sampleAliasCaption
-                                            : 'Parent Alias'
-                                    }
-                                    onClick={() => this.addParentAlias(SCHEMAS.SAMPLE_SETS.SCHEMA)}
-                                    helperBody={this.renderAddEntityHelper()}
-                                />
-                            </span>
-                        </Col>
-                    </Row>
-                )}
-                {showDataClass && this.renderParentAliases(false, true)}
-                {showDataClass && (
-                    <Row>
-                        <Col xs={2} />
-                        <Col xs={10}>
-                            <span>
-                                <AddEntityButton
-                                    entity={dataClassAliasCaption}
-                                    onClick={() => this.addParentAlias(SCHEMAS.DATA_CLASSES.SCHEMA)}
-                                    helperBody={this.renderAddEntityHelper(dataClassParentageLabel)}
-                                />
-                            </span>
-                        </Col>
-                    </Row>
-                )}
-
+                <DomainParentAliases
+                    {...this.props}
+                    parentAliases={model.parentAliases}
+                    idPrefix={'sampletype-parent-import-alias-'}
+                    schema={SCHEMAS.SAMPLE_SETS.SCHEMA}
+                    addEntityHelp={this.renderAddEntityHelper()}
+                    includeSampleSet={true}
+                    includeDataClass={includeDataClasses && !useSeparateDataClassesAliasMenu}
+                    showAddBtn={!!parentOptions}
+                />
+                {showDataClass &&
+                    <DomainParentAliases
+                        {...this.props}
+                        parentAliases={model.parentAliases}
+                        idPrefix={'sampletype-parent-import-alias-'}
+                        schema={SCHEMAS.DATA_CLASSES.SCHEMA}
+                        addEntityHelp={this.renderAddEntityHelper(dataClassParentageLabel)}
+                        includeSampleSet={false}
+                        includeDataClass={true}
+                        showAddBtn={true}
+                    />
+                }
                 {allowTimepointProperties && showLinkToStudy && (
                     <>
                         <Row className="margin-top">

@@ -2,15 +2,13 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
-import { IParentAlias } from '../domainproperties/samples/models';
-
 import { SELECT_INPUT_CONTROL_SELECTOR } from '../forms/input/SelectInputTestUtils';
 
-import { IParentOption } from '../entities/models';
+import {IParentAlias, IParentOption} from '../entities/models';
 
-import { SampleSetParentAliasRow } from './SampleSetParentAliasRow';
+import { ParentAliasRow } from './ParentAliasRow';
 
-describe('<SampleSetParentAliasRow/>', () => {
+describe('<ParentAliasRow/>', () => {
     test('Ignore empty values', () => {
         const parentAlias: IParentAlias = {
             alias: '',
@@ -21,7 +19,7 @@ describe('<SampleSetParentAliasRow/>', () => {
         };
 
         const component = (
-            <SampleSetParentAliasRow
+            <ParentAliasRow
                 id={parentAlias.id}
                 onAliasChange={jest.fn()}
                 onRemove={jest.fn()}
@@ -46,7 +44,7 @@ describe('<SampleSetParentAliasRow/>', () => {
         };
 
         const component = (
-            <SampleSetParentAliasRow
+            <ParentAliasRow
                 id={parentAlias.id}
                 onAliasChange={jest.fn()}
                 onRemove={jest.fn()}
@@ -79,7 +77,7 @@ describe('<SampleSetParentAliasRow/>', () => {
         };
 
         const component = (
-            <SampleSetParentAliasRow
+            <ParentAliasRow
                 id={parentAlias.id}
                 onAliasChange={jest.fn()}
                 onRemove={jest.fn()}
@@ -113,7 +111,7 @@ describe('<SampleSetParentAliasRow/>', () => {
         };
 
         const component = (
-            <SampleSetParentAliasRow
+            <ParentAliasRow
                 id={parentAlias.id}
                 onAliasChange={jest.fn()}
                 onRemove={jest.fn()}
@@ -154,7 +152,7 @@ describe('<SampleSetParentAliasRow/>', () => {
         const mockRemove = jest.fn();
 
         const component = (
-            <SampleSetParentAliasRow
+            <ParentAliasRow
                 id={parentAlias.id}
                 onAliasChange={jest.fn()}
                 onRemove={mockRemove}
@@ -197,7 +195,7 @@ describe('<SampleSetParentAliasRow/>', () => {
         const mockChange = jest.fn();
 
         const component = (
-            <SampleSetParentAliasRow
+            <ParentAliasRow
                 id={parentAlias.id}
                 onAliasChange={mockChange}
                 onRemove={jest.fn()}

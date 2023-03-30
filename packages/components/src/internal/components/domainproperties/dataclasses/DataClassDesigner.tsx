@@ -1,6 +1,6 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { Draft, produce } from 'immer';
-import { List } from 'immutable';
+import {List, Map, OrderedMap} from 'immutable';
 
 import { Domain } from '@labkey/api';
 
@@ -23,6 +23,12 @@ import { resolveErrorMessage } from '../../../util/messaging';
 
 import { DataClassModel, DataClassModelConfig } from './models';
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
+import {IParentAlias, IParentOption} from "../../entities/models";
+import {SAMPLE_SET_DISPLAY_TEXT} from "../../../constants";
+import {SCHEMAS} from "../../../schemas";
+import {initParentOptionsSelects} from "../../../../entities/actions";
+import {SampleTypeModel} from "../samples/models";
+import {DATA_CLASS_IMPORT_PREFIX, SAMPLE_SET_IMPORT_PREFIX} from "../samples/SampleTypeDesigner";
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -57,7 +63,14 @@ interface State {
     nameExpressionWarnings: string[];
     namePreviews: string[];
     namePreviewsLoading: boolean;
+    parentOptions: IParentOption[];
 }
+
+const NEW_DATA_CLASS_OPTION: IParentOption = {
+    label: `(Current Data Class})`,
+    value: '{{this_data_class}}',
+    schema: SCHEMAS.DATA_CLASSES.SCHEMA,
+} as IParentOption;
 
 class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
     static defaultProps = {
@@ -78,23 +91,33 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                 nameExpressionWarnings: undefined,
                 namePreviews: undefined,
                 namePreviewsLoading: false,
+                parentOptions: undefined,
             },
             () => {}
         );
     }
 
     componentDidMount = async (): Promise<void> => {
+        const { model } = this.state;
+        const { parentOptions, parentAliases } = await initParentOptionsSelects(false, true,
+            model.containerPath, null, NEW_DATA_CLASS_OPTION, model.importAliases, 'dataclass-parent-import-alias-');
+
+        this.setState(
+            produce((draft: Draft<State>) => {
+                draft.model.parentAliases = parentAliases;
+                draft.parentOptions = parentOptions;
+            })
+        );
+
         if (this.state.model.isNew && isSampleManagerEnabled()) {
             const response = await this.props.loadNameExpressionOptions(this.state.model.containerPath);
 
-            if (response.prefix) {
-                this.setState(
-                    produce((draft: Draft<State>) => {
-                        draft.model.nameExpression =
-                            response.prefix + (draft.model.nameExpression ? draft.model.nameExpression : '');
-                    })
-                );
-            }
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    draft.model.nameExpression =
+                        response.prefix + (draft.model.nameExpression ? draft.model.nameExpression : '');
+                })
+            );
         }
     };
 
@@ -123,6 +146,26 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         }
     };
 
+    getImportAliasesAsMap(model: DataClassModel): Map<string, string> {
+        const { name, parentAliases } = model;
+        const aliases = {};
+
+        if (parentAliases) {
+            parentAliases.forEach((alias: IParentAlias) => {
+                const { parentValue } = alias;
+
+                let value = parentValue && parentValue.value ? (parentValue.value as string) : '';
+                if (parentValue === NEW_DATA_CLASS_OPTION) {
+                    value = DATA_CLASS_IMPORT_PREFIX + name;
+                }
+
+                aliases[alias.alias] = value;
+            });
+        }
+
+        return Map<string, string>(aliases);
+    }
+
     saveDomain = async (hasConfirmedNameExpression?: boolean): Promise<void> => {
         const { api, beforeFinish, onComplete, setSubmitting, validateNameExpressions } = this.props;
         const { model } = this.state;
@@ -135,7 +178,9 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         }) as DomainDesign;
 
         // Remove display-only option field
-        const { systemFields, ...options } = model.options;
+        const { systemFields, ...otherOptions } = model.options;
+        let options = {...otherOptions};
+        options.importAliases = this.getImportAliasesAsMap(model);
 
         if (validateNameExpressions && !hasConfirmedNameExpression) {
             try {
@@ -262,6 +307,83 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         }
     };
 
+    updateAliasValue = (id: string, field: string, newValue: any): IParentAlias => {
+        const { model } = this.state;
+        const { parentAliases } = model;
+        return {
+            ...parentAliases.get(id),
+            isDupe: false, // Clear error because of change
+            [field]: newValue,
+        } as IParentAlias;
+    };
+
+    parentAliasChange = (id: string, field: string, newValue: any): void => {
+        const { model } = this.state;
+        const { parentAliases } = model;
+        const changedAlias = this.updateAliasValue(id, field, newValue);
+
+        const newAliases = parentAliases.set(id, changedAlias);
+        const newModel = {
+            ...model,
+            parentAliases: newAliases
+        };
+        this.saveModel(newModel);
+    };
+
+    updateDupes = (id: string): void => {
+        const { model } = this.state;
+        if (!model) {
+            return;
+        }
+
+        const { parentAliases } = model;
+        const dupes = model.getDuplicateAlias();
+        let newAliases = OrderedMap<string, IParentAlias>();
+        parentAliases.forEach((alias: IParentAlias) => {
+            const isDupe = dupes && dupes.has(alias.id);
+            let changedAlias = alias;
+            if (isDupe !== alias.isDupe) {
+                changedAlias = this.updateAliasValue(alias.id, 'isDupe', isDupe);
+            }
+
+            if (alias.id === id) {
+                changedAlias = {
+                    ...changedAlias,
+                    ignoreAliasError: false,
+                    ignoreSelectError: false,
+                };
+            }
+
+            newAliases = newAliases.set(alias.id, changedAlias);
+        });
+
+        const newModel = {
+            ...model,
+            parentAliases: newAliases
+        };
+        this.saveModel(newModel);
+    };
+
+    addParentAlias = (id: string, newAlias: IParentAlias): void => {
+        const { model } = this.state;
+        const { parentAliases } = model;
+        const newModel = {
+            ...model,
+            parentAliases: parentAliases.set(id, newAlias)
+        };
+        this.saveModel(newModel);
+    };
+
+    removeParentAlias = (id: string): void => {
+        const { model } = this.state;
+        const { parentAliases } = model;
+        const aliases = parentAliases.delete(id);
+        const newModel = {
+            ...model,
+            parentAliases: aliases
+        };
+        this.saveModel(newModel);
+    };
     render(): ReactNode {
         const {
             onCancel,
@@ -285,7 +407,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
             domainFormDisplayOptions,
             showGenIdBanner,
         } = this.props;
-        const { model, nameExpressionWarnings, namePreviews, namePreviewsLoading } = this.state;
+        const { model, nameExpressionWarnings, namePreviews, namePreviewsLoading, parentOptions } = this.state;
 
         const hasGenIdInExpression = model.nameExpression?.indexOf(GENID_SYNTAX_STRING) > -1;
 
@@ -335,6 +457,14 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                               }
                             : undefined
                     }
+                    parentOptions={parentOptions}
+                    // dataClassAliasCaption={dataClassAliasCaption}
+                    // dataClassTypeCaption={dataClassTypeCaption}
+                    // dataClassParentageLabel={dataClassParentageLabel}
+                    onParentAliasChange={this.parentAliasChange}
+                    onAddParentAlias={this.addParentAlias}
+                    onRemoveParentAlias={this.removeParentAlias}
+                    updateDupeParentAliases={this.updateDupes}
                 />
                 <DomainForm
                     key={model.domain.domainId || 0}

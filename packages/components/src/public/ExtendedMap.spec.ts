@@ -1,3 +1,4 @@
+import { OrderedMap } from 'immutable';
 import { ExtendedMap } from './ExtendedMap';
 
 const KEYS_ONE = ['one', 'two', 'three'];
@@ -83,6 +84,19 @@ describe('ExtendedMap', () => {
             KEYS_ONE.concat(KEYS_TWO).concat(['seven', 'eight', 'nine']),
             VALUES_ONE.concat(VALUES_TWO).concat([7, 8, 9])
         );
+    });
+
+    test('Constructor - from OrderedMap', () => {
+        // In the long run we are trying to replace all usages of OrderedMap and Map with ExtendedMap, this test is here
+        // to verify we can serialize OrderedMaps to JS then pass that to ExtendedMap as a stopgap while we convert
+        // usages
+        const om = OrderedMap({
+            one: 1,
+            two: 2,
+            three: 3,
+        });
+        const em = new ExtendedMap(om.toJS());
+        expectValues(em, KEYS_ONE, VALUES_ONE);
     });
 
     test('map', () => {

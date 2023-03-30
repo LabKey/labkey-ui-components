@@ -46,7 +46,11 @@ export class SearchResultsPanel extends React.Component<Props, any> {
 
     renderLoading() {
         if (this.isLoading()) {
-            return <LoadingSpinner wrapperClassName="search-results__margin-top" />;
+            return (
+                <div className="panel-body">
+                    <LoadingSpinner />
+                </div>
+            );
         }
     }
 

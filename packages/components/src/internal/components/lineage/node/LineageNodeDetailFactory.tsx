@@ -1,8 +1,7 @@
 import React, { PureComponent, ReactNode } from 'react';
 
 import { LineageOptions } from '../types';
-import { Lineage } from '../models';
-import { isBasicNode, isClusterNode, isCombinedNode, VisGraphNodeType } from '../models';
+import { isBasicNode, isClusterNode, isCombinedNode, Lineage, VisGraphNodeType } from '../models';
 
 import { LoadingSpinner } from '../../base/LoadingSpinner';
 
@@ -21,7 +20,9 @@ export class LineageNodeDetailFactory extends PureComponent<LineageNodeDetailFac
 
         if (!lineage || lineage.error) {
             return null;
-        } else if (!lineage.isLoaded()) {
+        }
+
+        if (!lineage.isLoaded()) {
             // Render selected node if seed has been pre-fetched
             if (lineage.isSeedLoaded()) {
                 return (
@@ -35,11 +36,11 @@ export class LineageNodeDetailFactory extends PureComponent<LineageNodeDetailFac
             return <LoadingSpinner msg="Loading details..." />;
         }
 
-        const seed = lineage.seed;
-
-        if (!selectedNodes || selectedNodes.length == 0) {
+        if (!selectedNodes || selectedNodes.length === 0) {
             return <em>Select a node from the graph to view the details.</em>;
-        } else if (selectedNodes.length === 1) {
+        }
+
+        if (selectedNodes.length === 1) {
             const node = selectedNodes[0];
 
             if (isBasicNode(node)) {
@@ -48,7 +49,7 @@ export class LineageNodeDetailFactory extends PureComponent<LineageNodeDetailFac
                         highlightNode={highlightNode}
                         lineageOptions={lineageOptions}
                         node={node.lineageNode}
-                        seed={seed}
+                        seed={lineage.seed}
                     />
                 );
             } else if (isCombinedNode(node)) {
@@ -73,8 +74,8 @@ export class LineageNodeDetailFactory extends PureComponent<LineageNodeDetailFac
             }
 
             throw new Error('unknown node kind');
-        } else {
-            return <div>Multiple selected nodes</div>;
         }
+
+        return <div>Multiple selected nodes</div>;
     }
 }

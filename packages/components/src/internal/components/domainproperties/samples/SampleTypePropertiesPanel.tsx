@@ -41,15 +41,16 @@ import { NameExpressionPreview } from '../NameExpressionPreview';
 import { NameExpressionGenIdProps } from '../NameExpressionGenIdBanner';
 
 import { SCHEMAS } from '../../../schemas';
-import {IParentAlias, IParentOption} from '../../entities/models';
+import { IParentAlias, IParentOption } from '../../entities/models';
 import { Container } from '../../base/models/Container';
 import { IDomainField } from '../models';
 import { ColorPickerInput } from '../../forms/input/ColorPickerInput';
 import { SelectInput, SelectInputOption } from '../../forms/input/SelectInput';
 
+import { dataClassOptionFilterFn, DomainParentAliases } from '../DomainParentAliases';
+
 import { UniqueIdBanner } from './UniqueIdBanner';
 import { AliquotNamePatternProps, MetricUnitProps, SampleTypeModel } from './models';
-import {dataClassOptionFilterFn, DomainParentAliases} from "../DomainParentAliases";
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 const ALIQUOT_HELP_LINK = getHelpLink('aliquotIDs');
@@ -392,25 +393,25 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 <DomainParentAliases
                     {...this.props}
                     parentAliases={model.parentAliases}
-                    idPrefix={'sampletype-parent-import-alias-'}
+                    idPrefix="sampletype-parent-import-alias-"
                     schema={SCHEMAS.SAMPLE_SETS.SCHEMA}
                     addEntityHelp={this.renderAddEntityHelper()}
                     includeSampleSet={true}
                     includeDataClass={includeDataClasses && !useSeparateDataClassesAliasMenu}
                     showAddBtn={!!parentOptions}
                 />
-                {showDataClass &&
+                {showDataClass && (
                     <DomainParentAliases
                         {...this.props}
                         parentAliases={model.parentAliases}
-                        idPrefix={'sampletype-parent-import-alias-'}
+                        idPrefix="sampletype-parent-import-alias-"
                         schema={SCHEMAS.DATA_CLASSES.SCHEMA}
                         addEntityHelp={this.renderAddEntityHelper(dataClassParentageLabel)}
                         includeSampleSet={false}
                         includeDataClass={true}
                         showAddBtn={true}
                     />
-                }
+                )}
                 {allowTimepointProperties && showLinkToStudy && (
                     <>
                         <Row className="margin-top">

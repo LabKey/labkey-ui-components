@@ -75,7 +75,9 @@ describe('HeaderCellDropdown', () => {
         expect(wrapper.find('.grid-panel__col-header-icon')).toHaveLength(gridColHeaderIcons);
         expect(wrapper.find(LabelHelpTip)).toHaveLength(0);
         expect(wrapper.find('.dropdown-menu')).toHaveLength(menuItemCount > 0 ? 1 : 0);
-        expect(wrapper.find('.grid-panel__menu-toggle .fa-chevron-circle-down')).toHaveLength(menuItemCount > 0 ? 1 : 0);
+        expect(wrapper.find('.grid-panel__menu-toggle .fa-chevron-circle-down')).toHaveLength(
+            menuItemCount > 0 ? 1 : 0
+        );
         expect(wrapper.find(MenuItem)).toHaveLength(menuItemCount);
     }
 

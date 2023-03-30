@@ -1,31 +1,35 @@
-import React, {FC, memo, ReactNode, useCallback, useEffect, useMemo, useState} from "react";
-import {ParentAliasRow} from "./ParentAliasRow";
-import {Map, OrderedMap} from "immutable";
-import {IParentAlias, IParentOption} from "../entities/models";
-import {PARENT_ALIAS_HELPER_TEXT} from "../../constants";
-import {SCHEMAS} from "../../schemas";
-import {Col, Row} from "react-bootstrap";
-import {AddEntityButton} from "../buttons/AddEntityButton";
-import {generateId} from "../../util/utils";
+import React, { FC, memo, ReactNode, useCallback, useEffect, useState } from 'react';
+
+import { OrderedMap } from 'immutable';
+
+import { Col, Row } from 'react-bootstrap';
+
+import { IParentAlias, IParentOption } from '../entities/models';
+import { PARENT_ALIAS_HELPER_TEXT } from '../../constants';
+import { SCHEMAS } from '../../schemas';
+import { AddEntityButton } from '../buttons/AddEntityButton';
+import { generateId } from '../../util/utils';
+
+import { ParentAliasRow } from './ParentAliasRow';
 
 interface Props {
-    parentAliases?: OrderedMap<string, IParentAlias>,
-    parentOptions: IParentOption[];
-    updateDupeParentAliases?: (id: string) => void;
-    sampleAliasCaption?: string;
-    sampleTypeCaption?: string;
+    addEntityHelp: ReactNode;
     dataClassAliasCaption?: string;
-    dataClassTypeCaption?: string;
     dataClassParentageLabel?: string;
+    dataClassTypeCaption?: string;
+    idPrefix: string;
+    includeDataClass?: boolean;
+    includeSampleSet?: boolean;
+    onAddParentAlias: (id: string, newAlias: IParentAlias) => void;
     onParentAliasChange: (id: string, field: string, newValue: any) => void;
     onRemoveParentAlias: (id: string) => void;
-    includeSampleSet?: boolean;
-    includeDataClass?: boolean;
-    showAddBtn?: boolean;
-    idPrefix: string;
-    onAddParentAlias: (id: string, newAlias: IParentAlias) => void;
+    parentAliases?: OrderedMap<string, IParentAlias>;
+    parentOptions: IParentOption[];
+    sampleAliasCaption?: string;
+    sampleTypeCaption?: string;
     schema: string;
-    addEntityHelp: ReactNode;
+    showAddBtn?: boolean;
+    updateDupeParentAliases?: (id: string) => void;
 }
 
 const sampleSetAliasFilterFn = (alias: IParentAlias): boolean => {
@@ -62,7 +66,7 @@ export const DomainParentAliases: FC<Props> = memo(props => {
         idPrefix,
         onAddParentAlias,
         schema,
-        addEntityHelp
+        addEntityHelp,
     } = props;
 
     const [aliasCaption, setAliasCaption] = useState<string>(undefined);
@@ -119,34 +123,36 @@ export const DomainParentAliases: FC<Props> = memo(props => {
         onAddParentAlias(newId, newParentAlias);
     }, [idPrefix, onAddParentAlias, schema]);
 
-    return (<>
-        {filteredParentAliases?.map((alias) => (
-            <ParentAliasRow
-                key={alias.id}
-                id={alias.id}
-                parentAlias={alias}
-                parentOptions={filteredParentOptions}
-                onAliasChange={onParentAliasChange}
-                onRemove={onRemoveParentAlias}
-                updateDupeParentAliases={updateDupeParentAliases}
-                aliasCaption={aliasCaption}
-                parentTypeCaption={parentTypeCaption}
-                helpMsg={helpMsg}
-            />
-        ))}
-        {showAddBtn && (
-            <Row>
-                <Col xs={2} />
-                <Col xs={10}>
-                            <span>
-                                <AddEntityButton
-                                    entity={aliasCaption}
-                                    onClick={() => addParentAlias()}
-                                    helperBody={addEntityHelp}
-                                />
-                            </span>
-                </Col>
-            </Row>
-        )}
-    </>);
+    return (
+        <>
+            {filteredParentAliases?.map(alias => (
+                <ParentAliasRow
+                    key={alias.id}
+                    id={alias.id}
+                    parentAlias={alias}
+                    parentOptions={filteredParentOptions}
+                    onAliasChange={onParentAliasChange}
+                    onRemove={onRemoveParentAlias}
+                    updateDupeParentAliases={updateDupeParentAliases}
+                    aliasCaption={aliasCaption}
+                    parentTypeCaption={parentTypeCaption}
+                    helpMsg={helpMsg}
+                />
+            ))}
+            {showAddBtn && (
+                <Row>
+                    <Col xs={2} />
+                    <Col xs={10}>
+                        <span>
+                            <AddEntityButton
+                                entity={aliasCaption}
+                                onClick={() => addParentAlias()}
+                                helperBody={addEntityHelp}
+                            />
+                        </span>
+                    </Col>
+                </Row>
+            )}
+        </>
+    );
 });

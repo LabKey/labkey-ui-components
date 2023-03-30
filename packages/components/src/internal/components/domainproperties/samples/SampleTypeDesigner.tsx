@@ -21,26 +21,24 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper'
 
 import { GENID_SYNTAX_STRING } from '../NameExpressionGenIdBanner';
 
-import {IParentAlias, IParentOption} from '../../entities/models';
+import { IParentAlias, IParentOption } from '../../entities/models';
 import { SCHEMAS } from '../../../schemas';
 import {
     getHelpLink,
     HelpLink,
     LKS_SAMPLE_ALIQUOT_FIELDS_TOPIC,
-    SAMPLE_ALIQUOT_FIELDS_TOPIC
+    SAMPLE_ALIQUOT_FIELDS_TOPIC,
 } from '../../../util/helpLinks';
 import { initQueryGridState } from '../../../global';
 import { resolveErrorMessage } from '../../../util/messaging';
-import { ISelectRowsResult } from '../../../query/api';
-import { naturalSortByProperty } from '../../../../public/sort';
-import { generateId } from '../../../util/utils';
 import { ConfirmModal } from '../../base/ConfirmModal';
 import { Alert } from '../../base/Alert';
+
+import { initParentOptionsSelects } from '../../../../entities/actions';
 
 import { UniqueIdBanner } from './UniqueIdBanner';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { AliquotNamePatternProps, MetricUnitProps, SampleTypeModel } from './models';
-import {initParentOptionsSelects} from "../../../../entities/actions";
 
 const NEW_SAMPLE_SET_OPTION: IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,
@@ -58,7 +56,7 @@ const SAMPLE_TYPE_NAME_EXPRESSION_TOPIC = 'sampleIDs#patterns';
 const SAMPLE_TYPE_NAME_EXPRESSION_PLACEHOLDER = 'Enter a naming pattern (e.g., S-${now:date}-${dailySampleCount})';
 const SAMPLE_TYPE_HELP_TOPIC = 'createSampleType';
 
-const AliquotOptionsHelp: FC<{helpTopic: string}> = memo(({helpTopic}) => {
+const AliquotOptionsHelp: FC<{ helpTopic: string }> = memo(({ helpTopic }) => {
     return (
         <div>
             <p>
@@ -77,7 +75,7 @@ const AliquotOptionsHelp: FC<{helpTopic: string}> = memo(({helpTopic}) => {
                 Learn more about <HelpLink topic={helpTopic}>Sample Aliquots</HelpLink>.
             </p>
         </div>
-    )
+    );
 });
 
 interface Props {
@@ -179,8 +177,16 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         const { model } = this.state;
 
         try {
-            const { parentOptions, parentAliases } = await initParentOptionsSelects(true, includeDataClasses,
-                model.containerPath, isValidParentOptionFn, NEW_SAMPLE_SET_OPTION, model.importAliases, 'sampleset-parent-import-alias-', this.formatLabel);
+            const { parentOptions, parentAliases } = await initParentOptionsSelects(
+                true,
+                includeDataClasses,
+                model.containerPath,
+                isValidParentOptionFn,
+                NEW_SAMPLE_SET_OPTION,
+                model.importAliases,
+                'sampleset-parent-import-alias-',
+                this.formatLabel
+            );
             this.setState({
                 model: model.merge({ parentAliases }) as SampleTypeModel,
                 parentOptions,
@@ -195,8 +201,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     formatLabel = (name: string, prefix: string, isDataClass?: boolean, containerPath?: string): string => {
         const { includeDataClasses, useSeparateDataClassesAliasMenu, showParentLabelPrefix } = this.props;
         const { model } = this.state;
-        if (model?.name && !isDataClass)
-            return NEW_SAMPLE_SET_OPTION.label;
+        if (model?.name && !isDataClass) return NEW_SAMPLE_SET_OPTION.label;
 
         return includeDataClasses && !useSeparateDataClassesAliasMenu && showParentLabelPrefix
             ? `${prefix}: ${name} (${containerPath})`
@@ -749,7 +754,15 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                             labelAll: 'Separately editable for samples and aliquots',
                             labelChild: 'Editable for aliquots only',
                             labelParent: 'Editable for samples only (default)',
-                            helpLinkNode: <AliquotOptionsHelp helpTopic={biologicsIsPrimaryApp() ? LKS_SAMPLE_ALIQUOT_FIELDS_TOPIC: SAMPLE_ALIQUOT_FIELDS_TOPIC}/>,
+                            helpLinkNode: (
+                                <AliquotOptionsHelp
+                                    helpTopic={
+                                        biologicsIsPrimaryApp()
+                                            ? LKS_SAMPLE_ALIQUOT_FIELDS_TOPIC
+                                            : SAMPLE_ALIQUOT_FIELDS_TOPIC
+                                    }
+                                />
+                            ),
                             scopeChangeWarning:
                                 "Updating a 'Samples Only' field to be 'Samples and Aliquots' will blank out the field values for all aliquots. This action cannot be undone. ",
                         },

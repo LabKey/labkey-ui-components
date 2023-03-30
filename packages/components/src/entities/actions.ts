@@ -1,11 +1,11 @@
-import {fromJS, List, Map, OrderedMap} from 'immutable';
+import { fromJS, List, Map, OrderedMap } from 'immutable';
 import { Query } from '@labkey/api';
 
 import {
     invalidateQueryDetailsCache,
     ISelectRowsResult,
     loadQueriesFromTable,
-    selectRowsDeprecated
+    selectRowsDeprecated,
 } from '../internal/query/api';
 import { SCHEMAS } from '../internal/schemas';
 import { resolveErrorMessage } from '../internal/util/messaging';
@@ -14,7 +14,7 @@ import {
     EntityDataType,
     IEntityTypeOption,
     IParentAlias,
-    IParentOption
+    IParentOption,
 } from '../internal/components/entities/models';
 import { getParentTypeDataForLineage } from '../internal/components/samples/actions';
 import { getInitialParentChoices } from '../internal/components/entities/utils';
@@ -25,13 +25,14 @@ import { SchemaQuery } from '../public/SchemaQuery';
 import { URLService } from '../internal/url/URLResolver';
 import { DATA_CLASS_KEY, SAMPLE_TYPE_KEY } from '../internal/app/constants';
 
-import { filterMediaSampleTypes } from './utils';
 import {
     DATA_CLASS_IMPORT_PREFIX,
-    SAMPLE_SET_IMPORT_PREFIX
-} from "../internal/components/domainproperties/samples/SampleTypeDesigner";
-import {naturalSortByProperty} from "../public/sort";
-import {generateId} from "../internal/util/utils";
+    SAMPLE_SET_IMPORT_PREFIX,
+} from '../internal/components/domainproperties/samples/SampleTypeDesigner';
+import { naturalSortByProperty } from '../public/sort';
+import { generateId } from '../internal/util/utils';
+
+import { filterMediaSampleTypes } from './utils';
 
 // TODO: this file is temporary as we move things into an @labkey/components/entities subpackage. Instead of adding
 // anything to this file, we should create an API wrapper to be used for any new actions in this subpackage.
@@ -153,10 +154,10 @@ export function initParentOptionsSelects(
     newTypeOption?: any,
     importAliases?: Map<string, string>,
     idPrefix?: string,
-    formatLabel?: (name: string, prefix: string, isDataClass?: boolean, containerPath?: string) => string,
+    formatLabel?: (name: string, prefix: string, isDataClass?: boolean, containerPath?: string) => string
 ): Promise<{
-    parentOptions: IParentOption[],
-    parentAliases: Map<string, IParentAlias>,
+    parentAliases: Map<string, IParentAlias>;
+    parentOptions: IParentOption[];
 }> {
     const promises: Array<Promise<ISelectRowsResult>> = [];
 
@@ -243,11 +244,11 @@ export function initParentOptionsSelects(
                     resolve({
                         parentOptions,
                         parentAliases,
-                    })
+                    });
                 });
             })
             .catch(error => {
-                reject(error)
+                reject(error);
             });
     });
 }

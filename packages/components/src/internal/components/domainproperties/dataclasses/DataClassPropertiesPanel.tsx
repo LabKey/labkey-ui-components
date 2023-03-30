@@ -6,7 +6,8 @@ import {
     DEFINE_DATA_CLASS_TOPIC,
     DATA_CLASS_NAME_EXPRESSION_TOPIC,
     getHelpLink,
-    HelpLink, DERIVE_SAMPLES_ALIAS_TOPIC, DATACLASS_ALIAS_TOPIC
+    HelpLink,
+    DATACLASS_ALIAS_TOPIC,
 } from '../../../util/helpLinks';
 import { ENTITY_FORM_ID_PREFIX } from '../entities/constants';
 import { getFormNameFromId } from '../entities/actions';
@@ -30,11 +31,10 @@ import { NameExpressionGenIdProps } from '../NameExpressionGenIdBanner';
 import { QuerySelect } from '../../forms/QuerySelect';
 import { SCHEMAS } from '../../../schemas';
 
+import { DomainParentAliases } from '../DomainParentAliases';
+import { IParentAlias, IParentOption } from '../../entities/models';
+
 import { DataClassModel } from './models';
-import {DomainParentAliases} from "../DomainParentAliases";
-import {PARENT_ALIAS_HELPER_TEXT} from "../../../constants";
-import {IParentAlias, IParentOption} from "../../entities/models";
-import {initParentOptionsSelects} from "../../../../entities/actions";
 
 const PROPERTIES_HEADER_ID = 'dataclass-properties-hdr';
 const FORM_IDS = {
@@ -46,6 +46,7 @@ interface OwnProps extends BasePropertiesPanelProps {
     appPropertiesOnly?: boolean;
     headerText?: string;
     helpTopic?: string;
+    hideParentAlias?: boolean;
     model: DataClassModel;
     nameExpressionGenIdProps?: NameExpressionGenIdProps;
     nameExpressionInfoUrl?: string;
@@ -53,16 +54,14 @@ interface OwnProps extends BasePropertiesPanelProps {
     namePreviewsLoading?: boolean;
     nounPlural?: string;
     nounSingular?: string;
-    onChange: (model: DataClassModel) => void;
-    onNameFieldHover?: () => any;
-    previewName?: string;
-    hideParentAlias?: boolean;
-    parentOptions: IParentOption[];
     onAddParentAlias: (id: string, newAlias: IParentAlias) => void;
-    updateDupeParentAliases?: (id: string) => void;
-    onRemoveParentAlias: (id: string) => void;
+    onChange: (model: DataClassModel) => void;
+    previewName?: string;
     onParentAliasChange: (id: string, field: string, newValue: any) => void;
-
+    onRemoveParentAlias: (id: string) => void;
+    updateDupeParentAliases?: (id: string) => void;
+    onNameFieldHover?: () => any;
+    parentOptions: IParentOption[];
 }
 
 type Props = OwnProps & InjectedDomainPropertiesPanelCollapseProps;
@@ -148,7 +147,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
             previewName,
             onNameFieldHover,
             nameExpressionGenIdProps,
-            hideParentAlias
+            hideParentAlias,
         } = this.props;
         const { isValid, prefix, loadingError } = this.state;
 
@@ -197,18 +196,18 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                     nameExpressionGenIdProps={nameExpressionGenIdProps}
                     nameReadOnly={model.isBuiltIn}
                 />
-                {!hideParentAlias &&
+                {!hideParentAlias && (
                     <DomainParentAliases
                         {...this.props}
                         parentAliases={model.parentAliases}
-                        idPrefix={'dataclass-parent-import-alias-'}
+                        idPrefix="dataclass-parent-import-alias-"
                         schema={SCHEMAS.DATA_CLASSES.SCHEMA}
                         addEntityHelp={this.renderAddEntityHelper(nounSingular)}
                         includeSampleSet={false}
                         includeDataClass={true}
                         showAddBtn={true}
                     />
-                }
+                )}
                 {!appPropertiesOnly && (
                     <Row>
                         <Col xs={2}>

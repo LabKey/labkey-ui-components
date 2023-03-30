@@ -68,7 +68,6 @@ import {
 } from './constants';
 import { FindField, GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
 
-
 export function getSampleSet(config: IEntityTypeDetails): Promise<any> {
     return new Promise<any>((resolve, reject) => {
         return Ajax.request({

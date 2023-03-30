@@ -14,23 +14,24 @@
  * limitations under the License.
  */
 import { Draft, immerable, produce } from 'immer';
-import {Map, fromJS, OrderedMap, Set} from 'immutable';
+import { Map, fromJS, OrderedMap, Set } from 'immutable';
 
-import {DomainDesign, IDomainField, SystemField} from '../models';
+import { DomainDesign, IDomainField, SystemField } from '../models';
+
+import { IParentAlias } from '../../entities/models';
 
 import { DATACLASS_DOMAIN_SYSTEM_FIELDS, SOURCE_DOMAIN_SYSTEM_FIELDS } from './constants';
-import {IParentAlias} from "../../entities/models";
 
 interface DataClassOptionsConfig {
     category: string;
     description: string;
+    importAliases?: Map<string, string>;
     name: string;
     nameExpression: string;
+    parentAliases?: OrderedMap<string, IParentAlias>;
     rowId: number;
     sampleSet: number;
     systemFields?: SystemField[];
-    parentAliases?: OrderedMap<string, IParentAlias>;
-    importAliases?: Map<string, string>;
 }
 
 export interface DataClassModelConfig extends DataClassOptionsConfig {
@@ -77,7 +78,8 @@ export class DataClassModel implements DataClassModelConfig {
             const aliases = raw.options?.importAliases || {};
             draft.importAliases = Map<string, string>(fromJS(aliases));
 
-            draft.systemFields = model.category === "sources" ? SOURCE_DOMAIN_SYSTEM_FIELDS : DATACLASS_DOMAIN_SYSTEM_FIELDS;
+            draft.systemFields =
+                model.category === 'sources' ? SOURCE_DOMAIN_SYSTEM_FIELDS : DATACLASS_DOMAIN_SYSTEM_FIELDS;
         });
     }
 
@@ -128,7 +130,9 @@ export class DataClassModel implements DataClassModelConfig {
 
     get hasValidProperties(): boolean {
         const hasInvalidAliases =
-            this.parentAliases && this.parentAliases.size > 0 && this.parentAliases.find(this.parentAliasInvalid) !== undefined;
+            this.parentAliases &&
+            this.parentAliases.size > 0 &&
+            this.parentAliases.find(this.parentAliasInvalid) !== undefined;
 
         return this.name !== undefined && this.name !== null && this.name.trim().length > 0 && !hasInvalidAliases;
     }

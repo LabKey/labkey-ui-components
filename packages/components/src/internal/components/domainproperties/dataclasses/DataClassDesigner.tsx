@@ -1,6 +1,6 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { Draft, produce } from 'immer';
-import {List, Map, OrderedMap} from 'immutable';
+import { List, Map, OrderedMap } from 'immutable';
 
 import { Domain } from '@labkey/api';
 
@@ -21,41 +21,42 @@ import { loadNameExpressionOptions } from '../../settings/actions';
 import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS } from '../constants';
 import { resolveErrorMessage } from '../../../util/messaging';
 
-import { DataClassModel, DataClassModelConfig } from './models';
+import { IParentAlias, IParentOption } from '../../entities/models';
+import { SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';
+import { SCHEMAS } from '../../../schemas';
+import { initParentOptionsSelects } from '../../../../entities/actions';
+import { SampleTypeModel } from '../samples/models';
+import { DATA_CLASS_IMPORT_PREFIX, SAMPLE_SET_IMPORT_PREFIX } from '../samples/SampleTypeDesigner';
+
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
-import {IParentAlias, IParentOption} from "../../entities/models";
-import {SAMPLE_SET_DISPLAY_TEXT} from "../../../constants";
-import {SCHEMAS} from "../../../schemas";
-import {initParentOptionsSelects} from "../../../../entities/actions";
-import {SampleTypeModel} from "../samples/models";
-import {DATA_CLASS_IMPORT_PREFIX, SAMPLE_SET_IMPORT_PREFIX} from "../samples/SampleTypeDesigner";
+import { DataClassModel, DataClassModelConfig } from './models';
 
 interface Props {
     api?: ComponentsAPIWrapper;
-    nounSingular?: string;
-    nounPlural?: string;
-    nameExpressionInfoUrl?: string;
-    nameExpressionPlaceholder?: string;
+    appPropertiesOnly?: boolean;
+    beforeFinish?: (model: DataClassModel) => void;
+    defaultNameFieldConfig?: Partial<IDomainField>;
+    domainFormDisplayOptions?: IDomainFormDisplayOptions;
     headerText?: string;
     helpTopic?: string;
-    defaultNameFieldConfig?: Partial<IDomainField>;
     initModel?: DataClassModel;
-    onChange?: (model: DataClassModel) => void;
-    onCancel: () => void;
-    onComplete: (model: DataClassModel) => void;
-    beforeFinish?: (model: DataClassModel) => void;
-    useTheme?: boolean;
-    appPropertiesOnly?: boolean;
-    successBsStyle?: string;
-    saveBtnText?: string;
-    testMode?: boolean;
-    domainFormDisplayOptions?: IDomainFormDisplayOptions;
     // loadNameExpressionOptions is a prop for testing purposes only, see default implementation below
     loadNameExpressionOptions?: (
         containerPath?: string
-    ) => Promise<{ prefix: string; allowUserSpecifiedNames: boolean }>;
-    validateNameExpressions?: boolean;
+    ) => Promise<{ allowUserSpecifiedNames: boolean; prefix: string }>;
+    nameExpressionInfoUrl?: string;
+    nameExpressionPlaceholder?: string;
+    nounPlural?: string;
+    nounSingular?: string;
+    onCancel: () => void;
+    onChange?: (model: DataClassModel) => void;
+    successBsStyle?: string;
+    saveBtnText?: string;
     showGenIdBanner?: boolean;
+    useTheme?: boolean;
+    testMode?: boolean;
+    validateNameExpressions?: boolean;
+    onComplete: (model: DataClassModel) => void;
 }
 
 interface State {
@@ -67,7 +68,7 @@ interface State {
 }
 
 const NEW_DATA_CLASS_OPTION: IParentOption = {
-    label: `(Current Data Class})`,
+    label: '(Current Data Class})',
     value: '{{this_data_class}}',
     schema: SCHEMAS.DATA_CLASSES.SCHEMA,
 } as IParentOption;
@@ -99,8 +100,15 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
 
     componentDidMount = async (): Promise<void> => {
         const { model } = this.state;
-        const { parentOptions, parentAliases } = await initParentOptionsSelects(false, true,
-            model.containerPath, null, NEW_DATA_CLASS_OPTION, model.importAliases, 'dataclass-parent-import-alias-');
+        const { parentOptions, parentAliases } = await initParentOptionsSelects(
+            false,
+            true,
+            model.containerPath,
+            null,
+            NEW_DATA_CLASS_OPTION,
+            model.importAliases,
+            'dataclass-parent-import-alias-'
+        );
 
         this.setState(
             produce((draft: Draft<State>) => {
@@ -179,7 +187,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
 
         // Remove display-only option field
         const { systemFields, ...otherOptions } = model.options;
-        let options = {...otherOptions};
+        const options = { ...otherOptions };
         options.importAliases = this.getImportAliasesAsMap(model);
 
         if (validateNameExpressions && !hasConfirmedNameExpression) {
@@ -325,7 +333,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         const newAliases = parentAliases.set(id, changedAlias);
         const newModel = {
             ...model,
-            parentAliases: newAliases
+            parentAliases: newAliases,
         };
         this.saveModel(newModel);
     };
@@ -359,7 +367,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
 
         const newModel = {
             ...model,
-            parentAliases: newAliases
+            parentAliases: newAliases,
         };
         this.saveModel(newModel);
     };
@@ -369,7 +377,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         const { parentAliases } = model;
         const newModel = {
             ...model,
-            parentAliases: parentAliases.set(id, newAlias)
+            parentAliases: parentAliases.set(id, newAlias),
         };
         this.saveModel(newModel);
     };
@@ -380,7 +388,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         const aliases = parentAliases.delete(id);
         const newModel = {
             ...model,
-            parentAliases: aliases
+            parentAliases: aliases,
         };
         this.saveModel(newModel);
     };

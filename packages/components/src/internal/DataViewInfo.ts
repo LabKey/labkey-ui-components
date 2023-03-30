@@ -82,7 +82,7 @@ const DataViewInfoDefaultValues = {
 };
 
 // commented out attributes are not used in app
-export class DataViewInfo extends Record(DataViewInfoDefaultValues) {
+export class DataViewInfo {
     declare name: string;
     declare description?: string;
     declare detailsUrl: string;
@@ -108,4 +108,8 @@ export class DataViewInfo extends Record(DataViewInfoDefaultValues) {
     declare isLoading: boolean;
     declare isLoaded: boolean;
     declare error: string;
+
+    constructor(data: Partial<DataViewInfo>) {
+        Object.assign(this, DataViewInfoDefaultValues, data);
+    }
 }

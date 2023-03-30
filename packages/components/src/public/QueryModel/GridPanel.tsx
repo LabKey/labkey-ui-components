@@ -442,7 +442,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const view = model.currentView;
         const actionValues = [];
 
-        const _sorts = view ? sorts.concat(view.sorts.toArray()) : sorts;
+        const _sorts = view ? sorts.concat(view.sorts) : sorts;
         _sorts.forEach((sort): void => {
             const column = model.getColumn(sort.fieldKey);
             if (column) {
@@ -451,7 +451,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         });
 
         // handle the view's saved filters (which will be shown as read only)
-        if (view && view.filters.size) {
+        if (view && view.filters.length) {
             view.filters.forEach((filter): void => {
                 const column = model.getColumn(filter.getColumnName());
                 if (column) {
@@ -544,20 +544,20 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 // first check if we are removing a filter from the saved view
                 const viewFilterIndex = view?.filters.findIndex(filter => filtersEqual(filter, value)) ?? -1;
                 if (viewFilterIndex > -1) {
-                    this.saveAsSessionView({ filters: view.filters.remove(viewFilterIndex) });
+                    this.saveAsSessionView({ filters: view.filters.filter((f, i) => viewFilterIndex !== i) });
                     return;
                 }
 
                 newFilters = newFilters.filter(filter => !filtersEqual(filter, value));
             } else if (column) {
                 newFilters = newFilters.filter(filter => !isFilterColumnNameMatch(filter, column));
-                if (view?.filters.size) {
+                if (view?.filters.length) {
                     viewUpdates = { filters: view.filters.filter(filter => !isFilterColumnNameMatch(filter, column)) };
                 }
             } else {
                 // remove all filters, but keep the search
                 newFilters = newFilters.filter(filter => filter.getFilterType() === Filter.Types.Q);
-                if (view?.filters.size) {
+                if (view?.filters.length) {
                     viewUpdates = { filters: view.filters.filter(filter => filter.getFilterType() === Filter.Types.Q) };
                 }
             }
@@ -592,7 +592,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             // first check if we are removing a sort from the saved view
             const viewSortIndex = view?.sorts.findIndex(sort => sortsEqual(sort, value)) ?? -1;
             if (viewSortIndex > -1) {
-                this.saveAsSessionView({ sorts: view.sorts.remove(viewSortIndex) });
+                this.saveAsSessionView({ sorts: view.sorts.filter((s, i) => viewSortIndex !== i) });
                 return;
             }
 
@@ -601,8 +601,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             // first check if we are changing a sort from the saved view
             const viewSortIndex = view?.sorts.findIndex(sort => sort.fieldKey === newQuerySort.fieldKey) ?? -1;
             if (viewSortIndex > -1) {
-                let newViewSorts = view.sorts.remove(viewSortIndex);
-                newViewSorts = newViewSorts.push(newQuerySort);
+                const newViewSorts = view.sorts.filter((s, i) => viewSortIndex !== i);
+                newViewSorts.push(newQuerySort);
                 this.saveAsSessionView({ sorts: newViewSorts });
                 return;
             }
@@ -742,7 +742,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         this.setState({ disableColumnDrag: false });
     };
 
-    saveAsSessionView = (updates: Record<string, any>): void => {
+    saveAsSessionView = (updates: Partial<ViewInfo>): void => {
         const { model } = this.props;
         const { schemaQuery, containerPath } = model;
         const viewInfo = model.currentView.mutate(updates);
@@ -816,8 +816,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             let updatedViewInfo = view.addSystemViewColumns(queryInfo);
             updatedViewInfo = updatedViewInfo.mutate({
                 // update/set sorts and filters to combine view and user-defined items
-                filters: List(model.filterArray.concat(view.filters.toArray())),
-                sorts: List(model.sorts.concat(view.sorts.toArray())),
+                filters: model.filterArray.concat(view.filters),
+                sorts: model.sorts.concat(view.sorts),
             });
 
             if (view.session) {
@@ -846,9 +846,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                         this.setState({ errorMsg });
                     });
             } else {
-                const finalViewInfo = updatedViewInfo.mutate({
-                    name: newName,
-                });
+                const finalViewInfo = updatedViewInfo.mutate({ name: newName });
 
                 saveGridView(model.schemaQuery, model.containerPath, finalViewInfo, replace, false, inherit, shared)
                     .then(response => {

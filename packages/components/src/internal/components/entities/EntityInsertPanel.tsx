@@ -985,9 +985,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     columnFilter = (col: QueryColumn): boolean => {
         return (
-            insertColumnFilter(col, false) &&
-            col.fieldKey !== this.props.entityDataType.uniqueFieldKey &&
-            this.isIncludedColumn(col)
+            insertColumnFilter(col, false, this.isIncludedColumn) &&
+            col.fieldKey !== this.props.entityDataType.uniqueFieldKey
         );
     };
 
@@ -1095,11 +1094,15 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                     title: `Bulk Creation of ${gridNounPluralCap}`,
                                     header: `Add a batch of ${gridNounPlural} that will share the properties set below.`,
                                     columnFilter: this.columnFilter,
+                                    isIncludedColumn: this.isIncludedColumn,
                                     fieldValues: this.getBulkAddFormValues(),
                                     creationTypeOptions: bulkCreationTypeOptions,
                                     countText: `New ${gridNounPlural}`,
                                 }}
-                                bulkUpdateProps={{ columnFilter: this.columnFilter }}
+                                bulkUpdateProps={{
+                                    columnFilter: this.columnFilter,
+                                    isIncludedColumn: this.isIncludedColumn,
+                                }}
                                 bulkRemoveText={'Remove ' + gridNounPluralCap}
                                 columnMetadata={columnMetadata}
                                 containerFilter={containerFilter}

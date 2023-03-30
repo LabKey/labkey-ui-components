@@ -157,8 +157,8 @@ export class QueryInfo extends Record({
         let views = Map<string, ViewInfo>();
         if (includeViews) {
             queryInfoJson.views.forEach(view => {
-                const name = view.name === '' ? ViewInfo.DEFAULT_NAME.toLowerCase() : view.name.toLowerCase();
-                views = views.set(name, ViewInfo.create(view));
+                const viewInfo = ViewInfo.fromJson(view);
+                views = views.set(viewInfo.name.toLowerCase(), viewInfo);
             });
         }
 
@@ -288,9 +288,11 @@ export class QueryInfo extends Record({
         }, this.getDisplayColumns(viewName, omittedColumns));
     }
 
-    getInsertColumns(): List<QueryColumn> {
+    // @param isIncludedColumn can be used to filter out columns that should not be designate as insertColumns
+    // (e.g., if creating samples that are not aliquots, the aliquot-only fields should never be included)
+    getInsertColumns(isIncludedColumn?: (col: QueryColumn) => boolean): List<QueryColumn> {
         // CONSIDER: use the columns in ~~INSERT~~ view to determine this set
-        return this.columns.filter(col => insertColumnFilter(col, false)).toList();
+        return this.columns.filter(col => insertColumnFilter(col, false, isIncludedColumn)).toList();
     }
 
     getInsertColumnIndex(fieldKey: string): number {
@@ -327,7 +329,7 @@ export class QueryInfo extends Record({
             .toList();
     }
 
-    getFilters(view?: string): List<Filter.IFilter> {
+    getFilters(view?: string): Filter.IFilter[] {
         if (view) {
             const viewInfo = this.getView(view);
 
@@ -338,7 +340,7 @@ export class QueryInfo extends Record({
             console.warn('Unable to find view:', view, '(' + this.schemaName + '.' + this.name + ')');
         }
 
-        return List<Filter.IFilter>();
+        return [];
     }
 
     getPkCols(): List<QueryColumn> {
@@ -358,7 +360,7 @@ export class QueryInfo extends Record({
         return this.columns.filter(column => column.isUniqueIdColumn).toList();
     }
 
-    getSorts(view?: string): List<QuerySort> {
+    getSorts(view?: string): QuerySort[] {
         if (view) {
             const viewInfo = this.getView(view);
 
@@ -369,7 +371,7 @@ export class QueryInfo extends Record({
             console.warn('Unable to find view:', view, '(' + this.schemaName + '.' + this.name + ')');
         }
 
-        return List<QuerySort>();
+        return [];
     }
 
     /**

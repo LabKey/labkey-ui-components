@@ -218,34 +218,33 @@ export function initParentOptionsSelects(
                         )
                             sets.push(newTypeOption);
                     }
+                });
 
-                    const parentOptions = sets.sort(naturalSortByProperty('label'));
+                const parentOptions = sets.sort(naturalSortByProperty('label'));
 
-                    let parentAliases = Map<string, IParentAlias>();
+                let parentAliases = Map<string, IParentAlias>();
 
-                    if (importAliases) {
-                        const initialAlias = Map<string, string>(importAliases);
-                        initialAlias.forEach((val, key) => {
-                            const newId = generateId(idPrefix);
-                            const parentValue = parentOptions.find(opt => opt.value === val);
-                            if (!parentValue)
-                                // parent option might have been filtered out by isValidParentOptionFn
-                                return;
+                if (importAliases) {
+                    const initialAlias = Map<string, string>(importAliases);
+                    initialAlias.forEach((val, key) => {
+                        const newId = generateId(idPrefix);
+                        const parentValue = parentOptions.find(opt => opt.value === val);
+                        if (!parentValue)
+                            // parent option might have been filtered out by isValidParentOptionFn
+                            return;
 
-                            parentAliases = parentAliases.set(newId, {
-                                id: newId,
-                                alias: key,
-                                parentValue,
-                                ignoreAliasError: false,
-                                ignoreSelectError: false,
-                            } as IParentAlias);
-                        });
-                    }
-
-                    resolve({
-                        parentOptions,
-                        parentAliases,
+                        parentAliases = parentAliases.set(newId, {
+                            id: newId,
+                            alias: key,
+                            parentValue,
+                            ignoreAliasError: false,
+                            ignoreSelectError: false,
+                        } as IParentAlias);
                     });
+                }
+                resolve({
+                    parentOptions,
+                    parentAliases,
                 });
             })
             .catch(error => {

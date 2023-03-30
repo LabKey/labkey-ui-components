@@ -321,6 +321,7 @@ import {
     getSampleTypeDetails,
     getSelectedSampleIdsFromSelectionKey,
     getSelectionLineageData,
+    getParentTypeDataForLineage,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SampleAmountEditModal } from './internal/components/samples/SampleAmountEditModal';
@@ -1051,6 +1052,7 @@ export {
     getSampleTypeDetails,
     getFieldLookupFromSelection,
     getSelectionLineageData,
+    getParentTypeDataForLineage,
     getSelectedSampleIdsFromSelectionKey,
     EntityInsertPanel,
     EntityCrossProjectSelectionConfirmModal,

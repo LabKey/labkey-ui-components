@@ -32,7 +32,6 @@ import { ViewInfo } from '../internal/ViewInfo';
 import { isSampleEntity } from '../internal/components/entities/utils';
 import { EntityDataType, IEntityTypeOption } from '../internal/components/entities/models';
 import { getContainerFilterForLookups } from '../internal/query/api';
-import {ParentSelection} from "./ParentSelection";
 
 interface OwnProps {
     chosenType: IEntityTypeOption;
@@ -94,6 +93,91 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
         this.props.onInitialParentValue?.(chosenValue, selectedValues, this.props.index);
     };
 
+    renderParentSelection = (model: QueryModel): ReactNode => {
+        const { chosenType, chosenValue, containerPath, parentLSIDs, parentTypeOptions, parentDataType, index } =
+            this.props;
+
+        if (model?.rowsError || model?.queryInfoError) {
+            return <Alert>{model.rowsError || model.queryInfoError}</Alert>;
+        }
+
+        let parentSchemaQuery;
+        if (chosenType && parentTypeOptions) {
+            // use the detail view, so we get all parents, even if the default view has been filtered
+            parentSchemaQuery = new SchemaQuery(chosenType.schema, chosenType.query, ViewInfo.DETAIL_NAME);
+        }
+
+        let value = chosenValue ?? undefined;
+        if (!value && model?.hasData && parentLSIDs?.length > 0) {
+            value = Object.values(model.rows)
+                .map(row => quoteValueWithDelimiters(caseInsensitive(row, 'Name').value, DELIMITER))
+                .join(DELIMITER);
+        }
+        let queryFilters = List<Filter.IFilter>();
+        if (isSampleStatusEnabled() && isSampleEntity(parentDataType)) {
+            queryFilters = queryFilters.push(getFilterForSampleOperation(SampleOperation.EditLineage));
+        }
+        const labelClasses = 'col-sm-3 col-xs-12';
+        return (
+            <div className="bottom-spacing" key={'parent-selections-' + index}>
+                <div className="form-group row">
+                    <SelectInput
+                        containerClass=""
+                        inputClass="col-sm-6"
+                        label={parentDataType.typeNounAsParentSingular + ' ' + (index + 1)}
+                        labelClass="col-sm-3 col-xs-12 entity-insert--parent-label entity-insert--type-select"
+                        name={'entityType' + index}
+                        placeholder={'Select a ' + parentDataType.typeNounAsParentSingular + ' ...'}
+                        onChange={this.onChangeParentType}
+                        options={parentTypeOptions?.toArray()}
+                        required
+                        value={chosenType}
+                    />
+
+                    {this.props.onRemoveParentType && (
+                        <RemoveEntityButton
+                            labelClass="entity-insert--remove-parent"
+                            entity={parentDataType.typeNounAsParentSingular}
+                            index={index + 1}
+                            onClick={() => this.props.onRemoveParentType(index)}
+                        />
+                    )}
+                </div>
+                {chosenType && (
+                    <>
+                        <QuerySelect
+                            key={'parentEntityValue_' + chosenType.label} // important that this key off of the schemaQuery or it won't update when the SelectInput changes
+                            containerClass="row"
+                            containerFilter={getContainerFilterForLookups()}
+                            containerPath={containerPath}
+                            inputClass="col-sm-6"
+                            label={capitalizeFirstChar(parentDataType.nounSingular) + ' IDs'}
+                            labelClass={labelClasses + ' entity-insert--parent-label entity-insert--parent-select'}
+                            multiple
+                            name={'parentEntityValue_' + chosenType.label}
+                            onInitValue={this.onInitValue}
+                            onQSChange={this.onChangeParentValue}
+                            schemaQuery={parentSchemaQuery}
+                            queryFilters={queryFilters}
+                            showLoading
+                            value={value}
+                            valueColumn="Name"
+                        />
+                        {!chosenValue && (
+                            <div className="row top-spacing edit-parent-danger">
+                                <div className={labelClasses} />
+                                <div className="col-sm-9 col-xs-12">
+                                    Leaving this selection blank will remove any current {chosenType.label}{' '}
+                                    {parentDataType.nounSingular} values.
+                                </div>
+                            </div>
+                        )}
+                    </>
+                )}
+            </div>
+        );
+    };
+
     renderParentHeader() {
         const { childNounSingular, chosenType, editing, parentDataType } = this.props;
 
@@ -146,14 +230,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
         const { model } = queryModels;
 
         if (editing) {
-            return (
-                <ParentSelection
-                    {...this.props}
-                    onChangeParentValue={this.onChangeParentValue}
-                    onChangeParentType={this.onChangeParentType}
-                    model={model}
-                    onInitValue={this.onInitValue}
-                />);
+            return this.renderParentSelection(model);
         }
 
         return (

@@ -19,7 +19,6 @@ import { GetCardDataFn, searchUsingIndex } from './actions';
 
 interface Props {
     appName: string;
-    currentPage: number;
     offset: number;
     onPage: (direction: number) => void;
     pageSize?: number;

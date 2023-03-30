@@ -60,7 +60,6 @@ export const SearchResultCard: FC<SearchResultProps> = memo(({ cardData, iconUrl
                     <div className="col-sm-12 search-result__title">
                         <h4 className="text-capitalize">{title}</h4>
                         {category && <div className="margin-left status-pill muted">{category}{typeName && <span>: {typeName}</span>}</div>}
-                        {/*{typeName && <div >{typeName}</div>}*/}
                     </div>
                     <div className="search-result__summary">{summaryText}</div>
                 </div>

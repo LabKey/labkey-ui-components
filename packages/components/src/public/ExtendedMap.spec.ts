@@ -138,6 +138,17 @@ describe('ExtendedMap', () => {
         expect(mappedValues).toStrictEqual(['3', '6', '9']);
     });
 
+    test('find', () => {
+        const em = new ExtendedMap({
+            'one': { name: 'one', value: 1 },
+            'two': { name: 'two', value: 2 },
+            'three': { name: 'three', value: 3 },
+        });
+
+        expect(em.find(obj => obj.name === 'two')).toStrictEqual({ name: 'two', value: 2 });
+        expect(em.find(obj => obj.name === 'four')).toStrictEqual(undefined);
+    });
+
     test('merge', () => {
         const em3 = ORDERED_ONE.merge(ORDERED_TWO);
         expectOrder(em3, KEYS_ONE.concat(KEYS_TWO), VALUES_ONE.concat(VALUES_TWO));

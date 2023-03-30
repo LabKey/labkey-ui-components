@@ -31,7 +31,7 @@ interface SearchResultProps {
 
 export const SearchResultCard: FC<SearchResultProps> = memo(({ cardData, iconUrl, isTopResult, summary, url }) => {
     const { altText, category, iconDir, iconSrc, title, typeName } = cardData;
-    const { productId } = getCurrentAppProperties();
+    const productId = getCurrentAppProperties()?.productId;
     let summaryText = 'No summary provided';
 
     const onClick = useCallback(() => {

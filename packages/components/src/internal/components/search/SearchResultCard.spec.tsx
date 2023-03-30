@@ -26,13 +26,15 @@ describe('<SearchResultCard/>', () => {
             title: 'my title',
             iconSrc: 'testsource',
         };
-        const wrapper = mount(<SearchResultCard cardData={cardData} summary="Card Summary" url="#card" />);
+        const wrapper = mount(
+            <SearchResultCard cardData={cardData} summary="Card Summary" url="#card" isTopResult={false} />
+        );
 
         // When there is no category or typeName the first card detail will be the summary
-        expect(wrapper.find('.search-result__card-detail').at(0).text()).toEqual('Summary: ' + summary);
+        expect(wrapper.find('.search-result__summary').at(0).text()).toEqual(summary);
 
         wrapper.setProps({ cardData: { ...cardData, category } });
-        expect(wrapper.find('.search-result__card-detail').at(0).text()).toEqual('Category: ' + category);
+        expect(wrapper.find('.search-result__category-badge').at(0).text()).toEqual(category);
     });
 
     test('typeName', () => {
@@ -42,13 +44,15 @@ describe('<SearchResultCard/>', () => {
             title: 'my title',
             iconSrc: 'testsource',
         };
-        const wrapper = mount(<SearchResultCard cardData={cardData} summary="Card Summary" url="#card" />);
+        const wrapper = mount(
+            <SearchResultCard cardData={cardData} summary="Card Summary" url="#card" isTopResult={false} />
+        );
 
         // When there is no category or typeName the first card detail will be the summary
-        expect(wrapper.find('.search-result__card-detail').at(0).text()).toEqual('Summary: ' + summary);
+        expect(wrapper.find('.search-result__summary').at(0).text()).toEqual(summary);
 
         wrapper.setProps({ cardData: { ...cardData, typeName } });
-        expect(wrapper.find('.search-result__card-detail').at(0).text()).toEqual('Type: ' + typeName);
+        expect(wrapper.find('.search-result__type-badge').at(0).text()).toEqual(typeName);
     });
 
     test('icon', () => {
@@ -57,7 +61,9 @@ describe('<SearchResultCard/>', () => {
             title: 'my title',
             iconSrc: 'testsource',
         };
-        const wrapper = mount(<SearchResultCard cardData={cardData} summary="Card Summary" url="#card" />);
+        const wrapper = mount(
+            <SearchResultCard cardData={cardData} summary="Card Summary" url="#card" isTopResult={false} />
+        );
         expect(wrapper.find('img').getDOMNode().getAttribute('src')).toBe('/labkey/_images/testsource.svg');
 
         // The iconDir prop should override the _images/ default
@@ -72,16 +78,16 @@ describe('<SearchResultCard/>', () => {
     test('summary', () => {
         const shortSummary = 'Short summary';
         const longSummary = 'This is a very long summary it should get truncated at some point';
-        const expectedLongSummary = longSummary.substr(0, 35);
-        const wrapper = mount(<SearchResultCard cardData={{}} summary="" url="#card" />);
+        const expectedLongSummary = longSummary.substring(0, 35);
+        const wrapper = mount(<SearchResultCard cardData={{}} summary="" url="#card" isTopResult={false} />);
 
-        expect(wrapper.find('.search-result__card-detail').at(0).text()).toEqual('Summary: No summary provided');
+        expect(wrapper.find('.search-result__summary').at(0).text()).toEqual("No summary provided");
 
         wrapper.setProps({ summary: shortSummary });
-        expect(wrapper.find('.search-result__card-detail').at(0).text()).toEqual('Summary: ' + shortSummary);
+        expect(wrapper.find('.search-result__summary').at(0).text()).toEqual(shortSummary);
 
         // Long summary should get truncated
         wrapper.setProps({ summary: longSummary });
-        expect(wrapper.find('.search-result__card-detail').at(0).text()).toEqual('Summary: ' + expectedLongSummary);
+        expect(wrapper.find('.search-result__summary').at(0).text()).toEqual(expectedLongSummary);
     });
 });

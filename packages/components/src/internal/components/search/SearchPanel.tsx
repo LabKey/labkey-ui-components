@@ -29,14 +29,16 @@ interface Props {
 }
 
 export const SearchPanelImpl: FC<Props> = memo(props => {
-    const { appName, searchTerm, searchResultsModel, search, onPage, currentPage = 1, pageSize, offset } = props;
+    const { appName, searchTerm, searchResultsModel, search, onPage, pageSize, offset } = props;
     const [searchQuery, setSearchQuery] = useState<string>(searchTerm);
 
     const title = useMemo(() => (searchTerm ? 'Search Results' : 'Search'), [searchTerm]);
     const totalHits = useMemo(() => searchResultsModel?.getIn(['entities', 'totalHits']), [searchResultsModel]);
+    const currentPage = offset / pageSize ? offset / pageSize : 0;
+
     const emptyTextMessage = useMemo((): ReactNode => {
         return (
-            <div>
+            <div className="search-panel__no-results">
                 <div className="font-large">No Results Found</div>
                 <hr />
                 <div>
@@ -80,7 +82,7 @@ export const SearchPanelImpl: FC<Props> = memo(props => {
     const hasPages = totalHits > pageSize;
 
     const helpLink = (
-        <HelpLink topic={SEARCH_HELP_TOPIC}>
+        <HelpLink topic={SEARCH_HELP_TOPIC} className="search-form__help-link">
             <i className="fa fa-question-circle search-form__help-icon" />
             Help with search
         </HelpLink>
@@ -91,7 +93,7 @@ export const SearchPanelImpl: FC<Props> = memo(props => {
             <Section panelClassName="test-loc-search-panel" title={title} context={helpLink}>
                 <div className="search-form">
                     <form className="col-md-8" onSubmit={onSubmit}>
-                        {/*<i className="fa fa-search search-icon" />  // TODO can't get this to layout correctly*/}
+                        {/* <i className="fa fa-search search-icon" />  // TODO can't get this to layout correctly*/}
                         <input
                             className="form-control search-input"
                             onChange={onSearchChange}
@@ -104,7 +106,8 @@ export const SearchPanelImpl: FC<Props> = memo(props => {
                     <Button type="submit" className="margin-left success submit-button" onClick={onSearchClick}>
                         Search
                     </Button>
-                    {hasPages && (<div className="page-buttons col-md-3">
+                    {hasPages && (
+                        <div className="page-buttons col-md-3">
                             <PaginationButtons
                                 total={totalHits}
                                 currentPage={currentPage}
@@ -196,8 +199,6 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
         [search, searchTerm, pageSize, offset]
     );
 
-    const currentPage = offset / pageSize;
-
     return (
         <SearchPanelImpl
             {...props}
@@ -206,7 +207,6 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
             searchTerm={searchQuery}
             appName="Labkey Sample Manager"
             onPage={onPage}
-            currentPage={currentPage}
             offset={offset}
         />
     );

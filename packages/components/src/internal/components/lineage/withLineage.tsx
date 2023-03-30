@@ -4,7 +4,7 @@ import { produce } from 'immer';
 import { LoadingState } from '../../../public/LoadingState';
 
 import { loadLineageResult, loadSampleStats, loadSeedResult } from './actions';
-import { ILineage, Lineage } from './models';
+import { Lineage } from './models';
 import { LineageOptions } from './types';
 import { DEFAULT_LINEAGE_DISTANCE } from './constants';
 
@@ -108,7 +108,7 @@ export function withLineage<Props>(
          * Throws an error if called prior to the state's lineage having been initialized.
          * @param lineageProps The lineage properties to update. Properties not specified will be left unchanged.
          */
-        updateLineage = async (lineageProps: Partial<ILineage>): Promise<void> => {
+        updateLineage = async (lineageProps: Partial<Lineage>): Promise<void> => {
             if (!this.state.lineage) {
                 throw new Error('withLineage: Called "updateLineage" prior to setting lineage.');
             }

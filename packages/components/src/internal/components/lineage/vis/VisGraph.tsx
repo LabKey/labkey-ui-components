@@ -88,6 +88,7 @@ interface VisGraphProps {
     onNodeDoubleClick?: (clickedNode: VisGraphNodeType) => void;
     onNodeHover?: (node: VisGraphNodeType, coords: HoverNodeCoords) => void;
     onNodeSelect?: (selectedNodes: VisGraphNodeType[]) => void;
+    onToggleSettings: () => void;
     options: VisGraphOptions;
     seed?: string;
 }
@@ -440,7 +441,11 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
         return (
             <div className="lineage-visgraph-ct">
                 <div ref="visgraph" style={{ height: graphHeight }} />
-                <VisGraphControls getNetwork={this.getNetwork} onReset={this.onReset} />
+                <VisGraphControls
+                    getNetwork={this.getNetwork}
+                    onReset={this.onReset}
+                    onToggleSettings={this.props.onToggleSettings}
+                />
             </div>
         );
     }

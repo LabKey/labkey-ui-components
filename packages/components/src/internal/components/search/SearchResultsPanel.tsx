@@ -16,7 +16,7 @@
 import React from 'react';
 import { Panel } from 'react-bootstrap';
 
-import { helpLinkNode, SEARCH_SYNTAX_TOPIC } from '../../util/helpLinks';
+import { HelpLink, SEARCH_SYNTAX_TOPIC } from '../../util/helpLinks';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
@@ -54,17 +54,31 @@ export class SearchResultsPanel extends React.Component<Props, any> {
         }
     }
 
+    decodeErrorMessage = (msg: string) : string => {
+        let decodedMsg = msg
+            .replace(/&amp;/g, '&')
+            .replace(/&lt;/g, '<')
+            .replace(/&gt;/g, '>')
+            .replace(/&quot;/g, '"')
+            .replace(/&#039;/g, "'");
+        if (decodedMsg.charAt(msg.length-1) != ".")
+            decodedMsg += '.';
+        return decodedMsg;
+    }
+
     renderError() {
         const { model } = this.props;
         const error = model ? model.get('error') : undefined;
 
         if (!this.isLoading() && error) {
-            console.error(error);
             return (
                 <div className="panel-body">
                     <Alert>
-                        There was an error with your search term(s). See the{' '}
-                        {helpLinkNode(SEARCH_SYNTAX_TOPIC, 'LabKey Search Documentation')} page for more information on
+                        There was an error with your search term(s). {this.decodeErrorMessage(error)}
+                        <br/><br/>
+                        See the{' '}
+                        <HelpLink topic={SEARCH_SYNTAX_TOPIC}>LabKey Search Documentation</HelpLink>
+                         page for more information on
                         search terms and operators.
                     </Alert>
                 </div>
@@ -82,7 +96,7 @@ export class SearchResultsPanel extends React.Component<Props, any> {
         if (data && data.size > 0) {
 
             return (
-                <div>
+                <div className="top-spacing">
                     {data.size > 0 &&
                         data.map((item, i) => (
                             <div key={i} className="col-md-12 col-sm-12 search-results__margin-top">

@@ -16,6 +16,8 @@ import { SearchResultsPanel } from './SearchResultsPanel';
 import { SearchResultsModel } from './models';
 import { SEARCH_HELP_TOPIC, SEARCH_PAGE_DEFAULT_SIZE, SearchScope } from './constants';
 import { GetCardDataFn, searchUsingIndex } from './actions';
+import { getSearchScopeFromContainerFilter } from './utils';
+import { getContainerFilter } from '../../query/api';
 
 interface Props {
     appName: string;
@@ -156,7 +158,7 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
                         experimentalCustomJson: true, // will return extra info about entity types and material results
                         normalizeUrls: true, // this flag will remove the containerID from the returned URL
                         q: searchQuery,
-                        scope: SearchScope.Folder, // TODO should this be a parameter/prop?   // only using folder for this application
+                        scope: getSearchScopeFromContainerFilter(getContainerFilter()),
                         limit: pageSize,
                         offset,
                     },

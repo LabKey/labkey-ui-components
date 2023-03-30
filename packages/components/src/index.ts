@@ -314,6 +314,7 @@ import { AccountSettingsPage } from './internal/components/administration/Accoun
 import { SearchPanel } from './internal/components/search/SearchPanel';
 import { searchUsingIndex } from './internal/components/search/actions';
 import { SearchResultsModel } from './internal/components/search/models';
+import { getSearchResultCardData } from './internal/components/search/utils';
 import {
     deleteSampleSet,
     fetchSamples,
@@ -1105,6 +1106,7 @@ export {
     searchUsingIndex,
     SearchScope,
     getSearchScopeFromContainerFilter,
+    getSearchResultCardData,
     // administration
     AccountSettingsPage,
     AdministrationSubNav,

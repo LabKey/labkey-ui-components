@@ -40,7 +40,15 @@ import { AssaySampleColumnProp } from '../../sampleModels';
 import { caseInsensitive } from '../../util/utils';
 
 import { SearchScope, SAMPLE_FINDER_SESSION_PREFIX, ALLOWED_FINDER_SAMPLE_PROPERTY_MAP } from './constants';
-import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSessionStorageProps } from './models';
+import {
+    FieldFilter,
+    FieldFilterOption,
+    FilterProps,
+    FilterSelection,
+    SearchResultCardData,
+    SearchSessionStorageProps
+} from './models';
+import { REGISTRY_KEY } from '../../app/constants';
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
 export const FIND_SAMPLE_BY_ID_METRIC_AREA = 'findSamplesById';
@@ -1151,3 +1159,75 @@ export function getSampleFinderTabRowCountSql(queryModel: QueryModel): string {
         ' GROUP by s.name';
     return rowCountSql;
 }
+
+
+export function getSearchResultCardData(data, category, queryMetadata?: any): SearchResultCardData  {
+    if (data) {
+        const dataName = data.name;
+        if (data.dataClass?.name) {
+            if (data.dataClass.category === 'sources') {
+                return {
+                    iconSrc: 'sources',
+                    category: 'Registry Sources',
+                    title: dataName,
+                };
+            }
+        } else if (data.type) {
+            const type = data.type;
+            if (type === 'sampleSet') {
+                return {
+                    iconSrc:
+                        queryMetadata.getIn([
+                            'schema',
+                            SCHEMAS.SAMPLE_SETS.SCHEMA,
+                            'query',
+                            data['name'].toLowerCase(),
+                            'iconURL',
+                        ]) || 'sample_set',
+                    altText: 'sample_type-icon',
+                    category: 'Sample Type',
+                    title: dataName,
+                };
+            } else if (type.indexOf('dataClass') === 0) {
+                const parts = type.split(':');
+                if (parts.length == 1 || (parts.length > 1 && parts[1].toLowerCase() !== REGISTRY_KEY)) {
+                    return {
+                        altText: 'source_type-icon',
+                        iconSrc: 'source_type',
+                        category: 'Source Type',
+                        title: dataName,
+                    };
+                }
+                else {
+                    return {
+                        iconSrc: data['name'].toLowerCase(),
+                    };
+                }
+            }
+        } else if (data.sampleSet?.name) {
+            const sampleSetName = data.sampleSet.name.toLowerCase();
+
+            return {
+                iconSrc:
+                    queryMetadata.getIn(['schema', SCHEMAS.SAMPLE_SETS.SCHEMA, 'query', sampleSetName, 'iconURL']) ||
+                    'samples',
+                altText: 'sample_type-icon',
+                category: 'Sample Type',
+                title: dataName
+            };
+        } else if (category === 'material') {
+            return {
+                category: 'Sample',
+                title: dataName,
+            };
+        }
+    } else {
+        if (category === 'workflowJob') {
+            return { category: 'Job'}
+        }
+    }
+
+    return {};
+}
+
+

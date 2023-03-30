@@ -57,11 +57,13 @@ export class SearchResultsPanel extends React.Component<Props, any> {
         if (!this.isLoading() && error) {
             console.error(error);
             return (
-                <Alert>
-                    There was an error with your search term(s). See the{' '}
-                    {helpLinkNode(SEARCH_SYNTAX_TOPIC, 'LabKey Search Documentation')} page for more information on
-                    search terms and operators.
-                </Alert>
+                <div className="panel-body">
+                    <Alert>
+                        There was an error with your search term(s). See the{' '}
+                        {helpLinkNode(SEARCH_SYNTAX_TOPIC, 'LabKey Search Documentation')} page for more information on
+                        search terms and operators.
+                    </Alert>
+                </div>
             );
         }
     }

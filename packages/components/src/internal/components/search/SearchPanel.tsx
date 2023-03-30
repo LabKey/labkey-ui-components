@@ -37,7 +37,7 @@ export const SearchPanelImpl: FC<Props> = memo(props => {
 
     const emptyTextMessage = useMemo((): ReactNode => {
         return (
-            <div className="search-panel__no-results top-spacing">
+            <div className="search-panel__no-results panel-body">
                 <div className="font-large">No Results Found</div>
                 <hr />
                 <div>
@@ -90,17 +90,21 @@ export const SearchPanelImpl: FC<Props> = memo(props => {
     return (
         <Page hasHeader={false} title={title}>
             <Section panelClassName="test-loc-search-panel" title={title} context={helpLink}>
-                <div className="search-form">
+                <div className="search-form panel-body">
                     <form onSubmit={onSubmit}>
-                        <i className="hidden-xs fa fa-search search-icon" />
-                        <input
-                            className="form-control search-input"
-                            onChange={onSearchChange}
-                            placeholder="Search"
-                            size={34}
-                            type="text"
-                            value={searchQuery}
-                        />
+                        <span className="input-group">
+                            <span className="input-group-addon clickable" onClick={onSearchClick}>
+                                <i className="fa fa-search search-icon" />
+                            </span>
+                            <input
+                                className="form-control search-input"
+                                onChange={onSearchChange}
+                                placeholder="Search"
+                                size={34}
+                                type="text"
+                                value={searchQuery}
+                            />
+                        </span>
                     </form>
                     <Button type="submit" className="margin-left success submit-button" onClick={onSearchClick}>
                         Search

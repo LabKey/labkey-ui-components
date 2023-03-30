@@ -53,6 +53,10 @@
     padding: 0;
     color: #333333;
     align-items: center;
+
+    &:hover {
+        background-color: #f9f9f9;
+    }
 }
 
 .search-result__container {
@@ -65,7 +69,7 @@
 }
 
 .search-results__margin-top {
-    margin-top: 0px;
+    margin-top: 0;
 }
 
 .search-form {
@@ -73,19 +77,18 @@
     display: flex;
     align-items: center;
 
-    .search-icon {
-        position: relative;
-        float: left;
-        left: 20px;
-        top: 10px;
-        margin-left: 5px;
-        color: $gray-light;
+    .input-group-addon {
+        background-color: inherit;
+
+        &:hover {
+            cursor: pointer;
+            background-color: $light-gray;
+        }
     }
 
     .search-input {
         padding: 7px 4px 7px 22px;
         border-radius: 4px;
-        width: 400px;
     }
 
     .submit-button {

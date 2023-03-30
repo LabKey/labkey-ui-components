@@ -56,6 +56,7 @@ interface Props {
     testMode?: boolean;
     useTheme?: boolean;
     validateNameExpressions?: boolean;
+    allowParentAlias?: boolean;
 }
 
 interface State {
@@ -99,23 +100,26 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
 
     componentDidMount = async (): Promise<void> => {
         const { model } = this.state;
-        const { parentOptions, parentAliases } = await initParentOptionsSelects(
-            false,
-            true,
-            model.containerPath,
-            null,
-            !model.rowId ? NEW_DATA_CLASS_OPTION : null,
-            model.importAliases,
-            'dataclass-parent-import-alias-',
-            this.formatLabel
-        );
 
-        this.setState(
-            produce((draft: Draft<State>) => {
-                draft.model.parentAliases = parentAliases;
-                draft.parentOptions = parentOptions;
-            })
-        );
+        if (this.props.allowParentAlias) {
+            const { parentOptions, parentAliases } = await initParentOptionsSelects(
+                false,
+                true,
+                model.containerPath,
+                null,
+                !model.rowId ? NEW_DATA_CLASS_OPTION : null,
+                model.importAliases,
+                'dataclass-parent-import-alias-',
+                this.formatLabel
+            );
+
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    draft.model.parentAliases = parentAliases;
+                    draft.parentOptions = parentOptions;
+                })
+            );
+        }
 
         if (this.state.model.isNew && isSampleManagerEnabled()) {
             const response = await this.props.loadNameExpressionOptions(this.state.model.containerPath);
@@ -423,6 +427,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
             testMode,
             domainFormDisplayOptions,
             showGenIdBanner,
+            allowParentAlias,
         } = this.props;
         const { model, nameExpressionWarnings, namePreviews, namePreviewsLoading, parentOptions } = this.state;
 
@@ -474,6 +479,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                               }
                             : undefined
                     }
+                    allowParentAlias={allowParentAlias}
                     parentOptions={parentOptions}
                     onParentAliasChange={this.parentAliasChange}
                     onAddParentAlias={this.addParentAlias}

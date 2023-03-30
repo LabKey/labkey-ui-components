@@ -47,7 +47,7 @@ interface OwnProps extends BasePropertiesPanelProps {
     dataClassAliasCaption?: string;
     headerText?: string;
     helpTopic?: string;
-    hideParentAlias?: boolean;
+    allowParentAlias?: boolean;
     model: DataClassModel;
     nameExpressionGenIdProps?: NameExpressionGenIdProps;
     nameExpressionInfoUrl?: string;
@@ -151,7 +151,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
             previewName,
             onNameFieldHover,
             nameExpressionGenIdProps,
-            hideParentAlias,
+            allowParentAlias,
         } = this.props;
         const { isValid, prefix, loadingError } = this.state;
 
@@ -200,7 +200,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                     nameExpressionGenIdProps={nameExpressionGenIdProps}
                     nameReadOnly={model.isBuiltIn}
                 />
-                {!hideParentAlias && (
+                {allowParentAlias && (
                     <DomainParentAliases
                         {...this.props}
                         parentAliases={model.parentAliases}

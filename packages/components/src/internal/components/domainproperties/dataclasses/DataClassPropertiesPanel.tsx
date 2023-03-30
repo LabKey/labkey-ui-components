@@ -44,6 +44,7 @@ const FORM_IDS = {
 
 interface OwnProps extends BasePropertiesPanelProps {
     appPropertiesOnly?: boolean;
+    dataClassAliasCaption?: string;
     headerText?: string;
     helpTopic?: string;
     hideParentAlias?: boolean;
@@ -53,7 +54,6 @@ interface OwnProps extends BasePropertiesPanelProps {
     nameExpressionPlaceholder?: string;
     namePreviewsLoading?: boolean;
     nounPlural?: string;
-    nounSingular?: string;
     onAddParentAlias: (id: string, newAlias: IParentAlias) => void;
     onChange: (model: DataClassModel) => void;
     previewName?: string;
@@ -62,7 +62,7 @@ interface OwnProps extends BasePropertiesPanelProps {
     updateDupeParentAliases?: (id: string) => void;
     onNameFieldHover?: () => any;
     parentOptions: IParentOption[];
-    dataClassAliasCaption?: string;
+    nounSingular?: string;
     parentAliasHelpText?: string;
 }
 
@@ -84,7 +84,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
         nameExpressionPlaceholder: 'Enter a naming pattern (e.g., DC-${now:date}-${genId})',
         appPropertiesOnly: false,
         dataClassAliasCaption: 'Parent Alias',
-        parentAliasHelpText: `Column headings used during import to set a data's parentage.`
+        parentAliasHelpText: "Column headings used during import to set a data's parentage.",
     };
 
     state: Readonly<State> = { isValid: true, prefix: undefined, loadingError: undefined };

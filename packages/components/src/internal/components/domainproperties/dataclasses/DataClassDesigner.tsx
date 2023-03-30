@@ -50,13 +50,13 @@ interface Props {
     nounSingular?: string;
     onCancel: () => void;
     onChange?: (model: DataClassModel) => void;
-    successBsStyle?: string;
+    onComplete: (model: DataClassModel) => void;
     saveBtnText?: string;
     showGenIdBanner?: boolean;
-    useTheme?: boolean;
+    successBsStyle?: string;
     testMode?: boolean;
+    useTheme?: boolean;
     validateNameExpressions?: boolean;
-    onComplete: (model: DataClassModel) => void;
 }
 
 interface State {
@@ -137,11 +137,8 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         const { model } = this.state;
         if (name === model?.name) return NEW_DATA_CLASS_OPTION.label;
 
-        return showParentLabelPrefix
-            ? `${prefix}: ${name} (${containerPath})`
-            : name;
+        return showParentLabelPrefix ? `${prefix}: ${name} (${containerPath})` : name;
     };
-
 
     onFinish = (): void => {
         const { defaultNameFieldConfig, setSubmitting, nounSingular } = this.props;

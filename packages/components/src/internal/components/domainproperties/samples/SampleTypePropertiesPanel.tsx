@@ -77,6 +77,7 @@ interface OwnProps {
     onNameFieldHover?: () => any;
     onParentAliasChange: (id: string, field: string, newValue: any) => void;
     onRemoveParentAlias: (id: string) => void;
+    parentAliasHelpText?: string;
     parentOptions: IParentOption[];
     sampleAliasCaption?: string;
     sampleTypeCaption?: string;
@@ -84,7 +85,6 @@ interface OwnProps {
     updateDupeParentAliases?: (id: string) => void;
     updateModel: (newModel: SampleTypeModel) => void;
     useSeparateDataClassesAliasMenu?: boolean;
-    parentAliasHelpText?: string;
 }
 
 // Splitting these out to clarify where they end-up
@@ -126,7 +126,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             metricUnitLabel: 'Metric Unit',
             metricUnitHelpMsg: 'The unit of measurement used for the sample type.',
         },
-        parentAliasHelpText: PARENT_ALIAS_HELPER_TEXT
+        parentAliasHelpText: PARENT_ALIAS_HELPER_TEXT,
     };
 
     constructor(props) {

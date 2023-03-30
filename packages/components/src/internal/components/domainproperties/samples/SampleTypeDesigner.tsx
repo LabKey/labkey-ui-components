@@ -185,7 +185,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                 model.isNew() ? NEW_SAMPLE_SET_OPTION : null,
                 model.importAliases,
                 'sampleset-parent-import-alias-',
-                this.formatLabel,
+                this.formatLabel
             );
             this.setState({
                 model: model.merge({ parentAliases }) as SampleTypeModel,

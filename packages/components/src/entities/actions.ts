@@ -154,7 +154,7 @@ export function initParentOptionsSelects(
     newTypeOption?: any,
     importAliases?: Map<string, string>,
     idPrefix?: string,
-    formatLabel?: (name: string, prefix: string, isDataClass?: boolean, containerPath?: string) => string,
+    formatLabel?: (name: string, prefix: string, isDataClass?: boolean, containerPath?: string) => string
 ): Promise<{
     parentAliases: Map<string, IParentAlias>;
     parentOptions: IParentOption[];
@@ -215,7 +215,10 @@ export function initParentOptionsSelects(
                     });
 
                     if (newTypeOption) {
-                        if ((!isDataClass && newTypeOption.schema === SCHEMAS.SAMPLE_SETS.SCHEMA) || (isDataClass && newTypeOption.schema !== SCHEMAS.SAMPLE_SETS.SCHEMA))
+                        if (
+                            (!isDataClass && newTypeOption.schema === SCHEMAS.SAMPLE_SETS.SCHEMA) ||
+                            (isDataClass && newTypeOption.schema !== SCHEMAS.SAMPLE_SETS.SCHEMA)
+                        )
                             sets.push(newTypeOption);
                     }
 

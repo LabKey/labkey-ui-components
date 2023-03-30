@@ -622,5 +622,5 @@ export interface IParentAlias {
     ignoreAliasError: boolean;
     ignoreSelectError: boolean;
     isDupe?: boolean;
-     parentValue: IParentOption;
+    parentValue: IParentOption;
 }

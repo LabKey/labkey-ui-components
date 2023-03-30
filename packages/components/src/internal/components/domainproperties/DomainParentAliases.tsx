@@ -23,6 +23,7 @@ interface Props {
     onAddParentAlias: (id: string, newAlias: IParentAlias) => void;
     onParentAliasChange: (id: string, field: string, newValue: any) => void;
     onRemoveParentAlias: (id: string) => void;
+    parentAliasHelpText?: string;
     parentAliases?: OrderedMap<string, IParentAlias>;
     parentOptions: IParentOption[];
     sampleAliasCaption?: string;
@@ -30,7 +31,6 @@ interface Props {
     schema: string;
     showAddBtn?: boolean;
     updateDupeParentAliases?: (id: string) => void;
-    parentAliasHelpText?: string;
 }
 
 const sampleSetAliasFilterFn = (alias: IParentAlias): boolean => {
@@ -68,7 +68,7 @@ export const DomainParentAliases: FC<Props> = memo(props => {
         onAddParentAlias,
         schema,
         addEntityHelp,
-        parentAliasHelpText
+        parentAliasHelpText,
     } = props;
 
     const [aliasCaption, setAliasCaption] = useState<string>(undefined);
@@ -100,7 +100,10 @@ export const DomainParentAliases: FC<Props> = memo(props => {
             aliasCaption = dataClassAliasCaption;
             parentTypeCaption = dataClassTypeCaption;
 
-            helpMsg = parentAliasHelpText.replace('parentage', dataClassParentageLabel ? dataClassParentageLabel : 'parentage');
+            helpMsg = parentAliasHelpText.replace(
+                'parentage',
+                dataClassParentageLabel ? dataClassParentageLabel : 'parentage'
+            );
         }
         setAliasCaption(aliasCaption);
         setParentTypeCaption(parentTypeCaption);

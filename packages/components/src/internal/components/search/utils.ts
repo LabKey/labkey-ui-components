@@ -1213,7 +1213,7 @@ export function getSearchResultCardData(data, category, queryMetadata?: any): Se
 
             return {
                 iconSrc:
-                    queryMetadata.getIn(['schema', SCHEMAS.SAMPLE_SETS.SCHEMA, 'query', sampleSetName, 'iconURL']) ||
+                    queryMetadata?.getIn(['schema', SCHEMAS.SAMPLE_SETS.SCHEMA, 'query', sampleSetName, 'iconURL']) ||
                     'samples',
                 altText: 'sample_type-icon',
                 category: 'Sample Type',

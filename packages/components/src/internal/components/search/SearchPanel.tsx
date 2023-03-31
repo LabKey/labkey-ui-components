@@ -41,6 +41,10 @@ export const SearchPanelImpl: FC<Props> = memo(props => {
     const totalHits = useMemo(() => searchResultsModel?.getIn(['entities', 'totalHits']), [searchResultsModel]);
     const currentPage = offset / pageSize ? offset / pageSize : 0;
 
+    useEffect(() => {
+        setSearchQuery(searchTerm);
+    }, [searchTerm]);
+
     const emptyTextMessage = useMemo((): ReactNode => {
         return (
             <div className="search-panel__no-results panel-body">
@@ -142,18 +146,17 @@ export const SearchPanelImpl: FC<Props> = memo(props => {
 
 export const SearchPanel: FC<SearchPanelProps> = memo(props => {
     const { searchTerm, getCardDataFn, search, pageSize = SEARCH_PAGE_DEFAULT_SIZE, offset = 0 } = props;
-    const [searchQuery, setSearchQuery] = useState<string>(searchTerm);
     const [model, setModel] = useState<SearchResultsModel>(SearchResultsModel.create({ isLoading: true }));
 
     const loadSearchResults = useCallback(async () => {
-        if (searchQuery) {
+        if (searchTerm) {
             setModel(SearchResultsModel.create({ isLoading: true }));
             try {
                 const entities = await searchUsingIndex(
                     {
                         experimentalCustomJson: true, // will return extra info about entity types and material results
                         normalizeUrls: true, // this flag will remove the containerID from the returned URL
-                        q: searchQuery,
+                        q: searchTerm,
                         scope: getSearchScopeFromContainerFilter(getContainerFilter()),
                         limit: pageSize,
                         offset,
@@ -176,18 +179,17 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
                 );
             }
         }
-    }, [getCardDataFn, offset, pageSize, searchQuery]);
+    }, [getCardDataFn, offset, pageSize, searchTerm]);
 
     useEffect(() => {
         (async () => {
             await loadSearchResults();
         })();
-    }, [loadSearchResults, searchQuery, searchTerm]);
+    }, [loadSearchResults, searchTerm]);
 
     const onSearch = useCallback(
         (form: any): void => {
             search(form);
-            setSearchQuery(form.searchTerm);
         },
         [search]
     );
@@ -205,7 +207,6 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
             {...props}
             search={onSearch}
             searchResultsModel={model}
-            searchTerm={searchQuery}
             onPageChange={onPage}
             offset={offset}
         />

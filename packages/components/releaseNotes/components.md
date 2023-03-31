@@ -9,6 +9,11 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Added paging to search results
   * Removed advanced filtering options
 
+### version 2.321.0
+*Released*: 31 March 2023
+- Allow for specifying other options on requests made by `useContainerUser`.
+- Consolidate usage of `SampleStorageLocationComponentProps` and `SampleStorageMenuComponentProps` types by exporting for external reference.
+
 ### version 2.320.1
 *Released*: 31 March 2023
 - Aliquot panel perf improvements by removing the unnecessary call to get the total row count and extra storage related columns

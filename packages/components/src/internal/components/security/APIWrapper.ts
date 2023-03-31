@@ -129,6 +129,16 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
     };
 
     fetchContainers = (options: FetchContainerOptions): Promise<Container[]> => {
+        // NK: By default the server processes "includeSubfolders=false" as setting the
+        // depth to 1. When the depth is set to 1 the results will include the first level of
+        // subfolders negating the desire to not include subfolders. This endpoint wrapper
+        // works around this by altering requests for "includeSubfolders=false" to be
+        // "includeSubfolders=true&depth=0" so that subfolders are not included.
+        if (options?.includeSubfolders === false && options.depth === undefined) {
+            options.includeSubfolders = true;
+            options.depth = 0;
+        }
+
         return new Promise((resolve, reject) => {
             Security.getContainers({
                 ...options,
@@ -255,7 +265,7 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
 }
 
 function recurseContainerHierarchy(data: Security.ContainerHierarchy, container: Container): Container[] {
-    return data.children.reduce(
+    return (data.children ?? []).reduce(
         (containers, c) => containers.concat(recurseContainerHierarchy(c, new Container(c))),
         [container]
     );

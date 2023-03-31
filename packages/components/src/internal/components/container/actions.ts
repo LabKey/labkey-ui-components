@@ -7,6 +7,7 @@ import { useServerContext } from '../base/ServerContext';
 import { Container } from '../base/models/Container';
 import { User } from '../base/models/User';
 import { resolveErrorMessage } from '../../util/messaging';
+import { FetchContainerOptions } from '../security/APIWrapper';
 
 /**
  * Applies the permissions on the container to the user. Only permission related User fields are mutated.
@@ -41,9 +42,13 @@ export interface UseContainerUser extends ContainerUser {
     isLoaded: boolean;
 }
 
+export type UseContainerUserOptions = Omit<FetchContainerOptions, 'containerPath'>;
+
 /**
  * React hook that supplies the container, user, and the container-relative permissions for the user.
  * @param containerIdOrPath The container id or container path to request.
+ * @param options Supply different request options for fetch containers endpoint.
+ * Requests default to includeSubfolders=false and includeStandardProperties=false.
  * Example:
  * ```tsx
  * const SeeUserPermissions: React.FC = () => {
@@ -75,11 +80,9 @@ export interface UseContainerUser extends ContainerUser {
  * };
  * ```
  */
-export function useContainerUser(containerIdOrPath: string): UseContainerUser {
-    const [container, setContainer] = useState<Container>();
+export function useContainerUser(containerIdOrPath: string, options?: UseContainerUserOptions): UseContainerUser {
     const [containerUsers, setContainerUsers] = useState<Record<string, ContainerUser>>({});
     const [error, setError] = useState<string>();
-    const [contextUser, setContextUser] = useState<User>();
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const { api } = useAppContext();
     const { user } = useServerContext();
@@ -92,24 +95,24 @@ export function useContainerUser(containerIdOrPath: string): UseContainerUser {
             setLoadingState(LoadingState.LOADING);
 
             try {
-                const containers = await api.security.fetchContainers({ containerPath: containerIdOrPath });
-                let container_, contextUser_;
+                const containers = await api.security.fetchContainers({
+                    includeStandardProperties: false,
+                    includeSubfolders: false,
+                    ...options,
+                    containerPath: containerIdOrPath,
+                });
 
-                const containerUsers_: Record<string, ContainerUser> = containers.reduce((cu, ct, i) => {
-                    const c = ct;
+                const containerUsers_ = containers.reduce<Record<string, ContainerUser>>((cu, c, i) => {
                     const u = applyPermissions(c, user);
 
                     if (i === 0) {
-                        container_ = c;
-                        contextUser_ = u;
+                        cu[containerIdOrPath] = { container: c, user: u };
                     }
 
                     cu[c.path] = { container: c, user: u };
                     return cu;
                 }, {});
 
-                setContainer(container_);
-                setContextUser(contextUser_);
                 setContainerUsers(containerUsers_);
             } catch (e) {
                 setError(resolveErrorMessage(e));
@@ -117,7 +120,14 @@ export function useContainerUser(containerIdOrPath: string): UseContainerUser {
 
             setLoadingState(LoadingState.LOADED);
         })();
+        // eslint-disable-next-line react-hooks/exhaustive-deps -- ignore options
     }, [api, containerIdOrPath, user]);
 
-    return { container, containerUsers, error, isLoaded: !isLoading(loadingState), user: contextUser };
+    return {
+        container: containerUsers[containerIdOrPath]?.container,
+        containerUsers,
+        error,
+        isLoaded: !isLoading(loadingState),
+        user: containerUsers[containerIdOrPath]?.user,
+    };
 }

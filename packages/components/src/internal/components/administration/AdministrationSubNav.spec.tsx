@@ -38,4 +38,23 @@ describe('AdministrationSubNavImpl', () => {
         wrapper.setProps({ inProjectContainer: true, projectsEnabled: true });
         expect(wrapper.prop('tabs').findIndex(t => t.text === 'Projects')).toBe(3);
     });
+    test('display of Users or Groups', () => {
+        const wrapper = shallow(
+            <AdministrationSubNavImpl
+                inProjectContainer={false}
+                projectsEnabled={false}
+                user={TEST_USER_PROJECT_ADMIN}
+            />
+        );
+        expect(wrapper.prop('tabs').findIndex(t => t.text === 'Projects')).toBe(-1);
+        expect(wrapper.prop('tabs').findIndex(t => t.text === 'Users')).toBe(4);
+        expect(wrapper.prop('tabs').findIndex(t => t.text === 'Groups')).toBe(1);
+        wrapper.setProps({ inProjectContainer: false, projectsEnabled: true });
+        expect(wrapper.prop('tabs').findIndex(t => t.text === 'Users')).toBe(-1);
+        expect(wrapper.prop('tabs').findIndex(t => t.text === 'Groups')).toBe(-1);
+        expect(wrapper.prop('tabs').findIndex(t => t.text === 'Projects')).toBe(-1);
+        wrapper.setProps({ inProjectContainer: true, projectsEnabled: true });
+        expect(wrapper.prop('tabs').findIndex(t => t.text === 'Projects')).toBe(3);
+
+    });
 });

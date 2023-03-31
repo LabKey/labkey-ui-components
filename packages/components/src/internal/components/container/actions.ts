@@ -7,6 +7,7 @@ import { useServerContext } from '../base/ServerContext';
 import { Container } from '../base/models/Container';
 import { User } from '../base/models/User';
 import { resolveErrorMessage } from '../../util/messaging';
+import { FetchContainerOptions } from '../security/APIWrapper';
 
 /**
  * Applies the permissions on the container to the user. Only permission related User fields are mutated.
@@ -41,10 +42,13 @@ export interface UseContainerUser extends ContainerUser {
     isLoaded: boolean;
 }
 
+export type UseContainerUserOptions = Omit<FetchContainerOptions, 'containerPath'>;
+
 /**
  * React hook that supplies the container, user, and the container-relative permissions for the user.
  * @param containerIdOrPath The container id or container path to request.
- * @param includeSubfolders Whether to include subfolders of the requested container.
+ * @param options Supply different request options for fetch containers endpoint.
+ * Requests default to includeSubfolders=false and includeStandardProperties=false.
  * Example:
  * ```tsx
  * const SeeUserPermissions: React.FC = () => {
@@ -76,7 +80,7 @@ export interface UseContainerUser extends ContainerUser {
  * };
  * ```
  */
-export function useContainerUser(containerIdOrPath: string, includeSubfolders = false): UseContainerUser {
+export function useContainerUser(containerIdOrPath: string, options?: UseContainerUserOptions): UseContainerUser {
     const [containerUsers, setContainerUsers] = useState<Record<string, ContainerUser>>({});
     const [error, setError] = useState<string>();
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
@@ -92,8 +96,10 @@ export function useContainerUser(containerIdOrPath: string, includeSubfolders = 
 
             try {
                 const containers = await api.security.fetchContainers({
+                    includeStandardProperties: false,
+                    includeSubfolders: false,
+                    ...options,
                     containerPath: containerIdOrPath,
-                    includeSubfolders,
                 });
 
                 const containerUsers_ = containers.reduce<Record<string, ContainerUser>>((cu, c, i) => {
@@ -114,7 +120,8 @@ export function useContainerUser(containerIdOrPath: string, includeSubfolders = 
 
             setLoadingState(LoadingState.LOADED);
         })();
-    }, [api, containerIdOrPath, includeSubfolders, user]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps -- ignore options
+    }, [api, containerIdOrPath, user]);
 
     return {
         container: containerUsers[containerIdOrPath]?.container,

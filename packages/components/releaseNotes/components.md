@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.320.1
+*Released*: 31 March 2023
 - Aliquot panel perf improvements by removing the unnecessary call to get the total row count and extra storage related columns
 
 ### version 2.320.0

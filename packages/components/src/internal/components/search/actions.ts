@@ -194,7 +194,7 @@ function getCardData(
 export function getProcessedSearchHits(
     hits: any[],
     getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData,
-    filterCategories = ['data', 'material', 'workflowJob', 'file', 'file workflowJob', 'notebook', 'notebookTemplate']
+    filterCategories = ['assay', 'data', 'material', 'workflowJob', 'file', 'file workflowJob', 'notebook', 'notebookTemplate']
 ): any[] {
     return hits
         ?.filter(result => {

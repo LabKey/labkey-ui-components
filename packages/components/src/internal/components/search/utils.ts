@@ -1168,7 +1168,7 @@ export function getSearchResultCardData(data, category, queryMetadata?: any): Se
             if (data.dataClass.category === 'sources') {
                 return {
                     iconSrc: 'sources',
-                    category: 'Registry Sources',
+                    category: 'Sources',
                     title: dataName,
                 };
             }
@@ -1177,7 +1177,7 @@ export function getSearchResultCardData(data, category, queryMetadata?: any): Se
             if (type === 'sampleSet') {
                 return {
                     iconSrc:
-                        queryMetadata.getIn([
+                        queryMetadata?.getIn([
                             'schema',
                             SCHEMAS.SAMPLE_SETS.SCHEMA,
                             'query',
@@ -1200,9 +1200,13 @@ export function getSearchResultCardData(data, category, queryMetadata?: any): Se
                 }
                 else {
                     return {
-                        iconSrc: data['name'].toLowerCase(),
+                        altText: 'source_type-icon',
+                        iconSrc: data.name.toLowerCase(),
+                        category: 'Registry Source Type',
                     };
                 }
+            } else if (type === 'assay') {
+                return { category: 'Assay'}
             }
         } else if (data.sampleSet?.name) {
             const sampleSetName = data.sampleSet.name.toLowerCase();
@@ -1224,6 +1228,8 @@ export function getSearchResultCardData(data, category, queryMetadata?: any): Se
     } else {
         if (category === 'workflowJob') {
             return { category: 'Job'}
+        } else if (category === 'assay') {
+            return { category: 'Assay'}
         }
     }
 
@@ -1231,13 +1237,16 @@ export function getSearchResultCardData(data, category, queryMetadata?: any): Se
 }
 
 export const decodeErrorMessage = (msg: string) : string => {
+    if (!msg)
+        return msg;
+
     let decodedMsg = msg
         .replace(/&amp;/g, '&')
         .replace(/&lt;/g, '<')
         .replace(/&gt;/g, '>')
         .replace(/&quot;/g, '"')
         .replace(/&#039;/g, "'");
-    if (decodedMsg.charAt(msg.length-1) != ".")
+    if (decodedMsg.charAt(decodedMsg.length-1) != ".")
         decodedMsg += '.';
     return decodedMsg;
 }

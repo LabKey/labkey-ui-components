@@ -36,7 +36,6 @@ interface Props {
 
 export class SearchResultsPanel extends React.Component<Props, any> {
     static defaultProps = {
-        maxHitSize: 1000,
         offset: 0,
     };
 

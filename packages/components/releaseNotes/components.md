@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Aliquot panel perf improvements by removing the unnecessary call to get the total row count and extra storage related columns
 
+### version 2.320.0
+*Released*: 30 March 2023
+* Issue 47570: Remove admin pages for Users and Groups in subfolders
+
 ### version 2.319.0
 *Released*: 30 March 2023
 - Graph Options

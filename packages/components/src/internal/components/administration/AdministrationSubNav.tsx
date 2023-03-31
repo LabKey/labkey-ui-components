@@ -32,12 +32,17 @@ export const AdministrationSubNavImpl: FC<Props> = memo(props => {
         const tabs_ = [];
 
         if (user.isAdmin) {
-            tabs_.push('Audit Logs', 'Groups',  'Permissions');
+            tabs_.push('Audit Logs');
 
+            if (!projectsEnabled || inProjectContainer)
+                tabs_.push('Groups');
+            tabs_.push('Permissions');
             if (projectsEnabled && inProjectContainer) {
                 tabs_.push('Projects');
             }
-            tabs_.push('Settings', 'Users');
+            tabs_.push('Settings');
+            if (!projectsEnabled || inProjectContainer)
+                tabs_.push('Users');
         }
 
         return List(

@@ -17,7 +17,7 @@ import { Principal, SecurityPolicy } from '../permissions/models';
 
 import { InjectedPermissionsPage, withPermissionsPage } from '../permissions/withPermissionsPage';
 
-import { getProjectPath } from '../../app/utils';
+import { getProjectPath, isProductProjectsEnabled } from '../../app/utils';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 import { CreatedModified } from '../base/CreatedModified';
@@ -35,6 +35,7 @@ import { GroupAssignments } from './GroupAssignments';
 import { showPremiumFeatures } from './utils';
 import { GroupMembership, MemberType } from './models';
 import { fetchGroupMembership } from './actions';
+import { NotFound } from '../base/NotFound';
 
 export type GroupManagementPageProps = InjectedRouteLeaveProps & InjectedPermissionsPage;
 
@@ -250,6 +251,9 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
     const description = useMemo(() => {
         return showPremiumFeatures(moduleContext) ? container.path : undefined;
     }, [container, moduleContext]);
+
+    if (isProductProjectsEnabled() && !container.isProject)
+        return <NotFound />;
 
     return (
         <BasePermissionsCheckPage

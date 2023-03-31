@@ -2,7 +2,7 @@ import { fromJS, Map, OrderedMap, Record, Set } from 'immutable';
 
 import { DomainDesign, DomainDetails, IDomainField } from '../models';
 import { IParentAlias } from '../../entities/models';
-import {getDuplicateAlias, parentAliasInvalid} from "../utils";
+import { getDuplicateAlias, parentAliasInvalid } from '../utils';
 
 export class SampleTypeModel extends Record({
     rowId: undefined,

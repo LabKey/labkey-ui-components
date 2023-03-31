@@ -75,6 +75,8 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { getAltUnitKeys } from '../../util/measurement';
 
+import { getDataClassDetails } from '../domainproperties/dataclasses/actions';
+
 import { ENTITY_CREATION_METRIC, SampleTypeDataType } from './constants';
 import {
     addEntityParentType,
@@ -94,7 +96,6 @@ import {
     IEntityTypeOption,
     IParentOption,
 } from './models';
-import {getDataClassDetails} from "../domainproperties/dataclasses/actions";
 
 const ENTITY_GRID_ID = 'entity-insert-grid-data';
 const ALIQUOT_FIELD_COLS = [
@@ -411,8 +412,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                         metricUnit: domainDetails.options?.get('metricUnit'),
                     }));
                 });
-            }
-            else if (shouldGetParentAlias?.(schemaQuery)) {
+            } else if (shouldGetParentAlias?.(schemaQuery)) {
                 getDataClassDetails(schemaQuery).then(domainDetails => {
                     this.setState(() => ({
                         importAliases: domainDetails.options?.get('importAliases'),

@@ -1,4 +1,4 @@
-import {SampleTypeModel} from "./samples/models";
+import { SampleTypeModel } from './samples/models';
 
 describe('domain property utils', () => {
     test('parentAliasInvalid', () => {
@@ -48,6 +48,4 @@ describe('domain property utils', () => {
             })
         ).toBeFalsy();
     });
-
 });
-

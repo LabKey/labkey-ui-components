@@ -20,8 +20,9 @@ import { DomainDesign, IDomainField, SystemField } from '../models';
 
 import { IParentAlias } from '../../entities/models';
 
+import { getDuplicateAlias, parentAliasInvalid } from '../utils';
+
 import { DATACLASS_DOMAIN_SYSTEM_FIELDS, SOURCE_DOMAIN_SYSTEM_FIELDS } from './constants';
-import {getDuplicateAlias, parentAliasInvalid} from "../utils";
 
 interface DataClassOptionsConfig {
     category: string;

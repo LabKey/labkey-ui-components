@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Map} from "immutable";
+import { Map } from 'immutable';
 import { ActionURL, Ajax, Domain, Utils } from '@labkey/api';
 
 import { SCHEMAS } from '../../../schemas';
 import { deleteEntityType } from '../../entities/actions';
 
+import { SchemaQuery } from '../../../../public/SchemaQuery';
+import { DomainDetails } from '../models';
+
 import { DataClassModel } from './models';
-import {SchemaQuery} from "../../../../public/SchemaQuery";
-import {DomainDetails} from "../models";
 
 export function fetchDataClass(queryName?: string, rowId?: number, containerPath?: string): Promise<DataClassModel> {
     if (rowId) {

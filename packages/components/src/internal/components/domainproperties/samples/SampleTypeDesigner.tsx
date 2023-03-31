@@ -38,10 +38,11 @@ import { initParentOptionsSelects } from '../../../../entities/actions';
 
 import { SAMPLE_SET_IMPORT_PREFIX } from '../../../../entities/constants';
 
+import { getDuplicateAlias, getParentAliasChangeResult, getParentAliasUpdateDupesResults } from '../utils';
+
 import { UniqueIdBanner } from './UniqueIdBanner';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { AliquotNamePatternProps, MetricUnitProps, SampleTypeModel } from './models';
-import { getDuplicateAlias, getParentAliasChangeResult, getParentAliasUpdateDupesResults } from "../utils";
 
 const NEW_SAMPLE_SET_OPTION: IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,
@@ -359,7 +360,8 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     defaultSampleFieldConfig.name +
                     ' field name is reserved for imported or generated sample ids.';
             } else if (getDuplicateAlias(model.parentAliases, true).size > 0) {
-                exception = 'Duplicate parent alias header found: ' + getDuplicateAlias(model.parentAliases,true).join(', ');
+                exception =
+                    'Duplicate parent alias header found: ' + getDuplicateAlias(model.parentAliases, true).join(', ');
             } else if (!model.isMetricUnitValid(metricUnitRequired)) {
                 exception = metricUnitLabel + ' field is required.';
             } else {

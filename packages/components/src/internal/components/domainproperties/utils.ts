@@ -1,6 +1,8 @@
+import { OrderedMap, Set } from 'immutable';
+
+import { IParentAlias } from '../entities/models';
+
 import { DOMAIN_FIELD_PREFIX } from './constants';
-import {IParentAlias} from "../entities/models";
-import {OrderedMap, Set} from "immutable";
 
 export function createFormInputName(name: string): string {
     return [DOMAIN_FIELD_PREFIX, name].join('-');
@@ -29,7 +31,12 @@ export function getIndexFromId(id: string): number {
     return -1;
 }
 
-function updateAliasValue(parentAliases: OrderedMap<string, IParentAlias>, id: string, field: string, newValue: any): IParentAlias {
+function updateAliasValue(
+    parentAliases: OrderedMap<string, IParentAlias>,
+    id: string,
+    field: string,
+    newValue: any
+): IParentAlias {
     return {
         ...parentAliases.get(id),
         isDupe: false, // Clear error because of change
@@ -37,7 +44,12 @@ function updateAliasValue(parentAliases: OrderedMap<string, IParentAlias>, id: s
     } as IParentAlias;
 }
 
-export function getParentAliasChangeResult(parentAliases: OrderedMap<string, IParentAlias>, id: string, field: string, newValue: any): OrderedMap<string, IParentAlias> {
+export function getParentAliasChangeResult(
+    parentAliases: OrderedMap<string, IParentAlias>,
+    id: string,
+    field: string,
+    newValue: any
+): OrderedMap<string, IParentAlias> {
     const changedAlias = updateAliasValue(parentAliases, id, field, newValue);
     return parentAliases.set(id, changedAlias);
 }
@@ -64,7 +76,10 @@ export function getDuplicateAlias(parentAliases: OrderedMap<string, IParentAlias
     return returnAliases ? dupeAliases : dupeIds;
 }
 
-export function getParentAliasUpdateDupesResults(parentAliases: OrderedMap<string, IParentAlias>, id: string): OrderedMap<string, IParentAlias> {
+export function getParentAliasUpdateDupesResults(
+    parentAliases: OrderedMap<string, IParentAlias>,
+    id: string
+): OrderedMap<string, IParentAlias> {
     if (!parentAliases) {
         return null;
     }

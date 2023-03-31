@@ -27,11 +27,13 @@ import { initParentOptionsSelects } from '../../../../entities/actions';
 
 import { DATA_CLASS_IMPORT_PREFIX } from '../../../../entities/constants';
 
+import { getDuplicateAlias, getParentAliasChangeResult, getParentAliasUpdateDupesResults } from '../utils';
+
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 import { DataClassModel, DataClassModelConfig } from './models';
-import {getDuplicateAlias, getParentAliasChangeResult, getParentAliasUpdateDupesResults} from "../utils";
 
 interface Props {
+    allowParentAlias?: boolean;
     api?: ComponentsAPIWrapper;
     appPropertiesOnly?: boolean;
     beforeFinish?: (model: DataClassModel) => void;
@@ -44,7 +46,6 @@ interface Props {
     loadNameExpressionOptions?: (
         containerPath?: string
     ) => Promise<{ allowUserSpecifiedNames: boolean; prefix: string }>;
-    nameExpressionInfoUrl?: string;
     nameExpressionPlaceholder?: string;
     nounPlural?: string;
     nounSingular?: string;
@@ -57,7 +58,7 @@ interface Props {
     testMode?: boolean;
     useTheme?: boolean;
     validateNameExpressions?: boolean;
-    allowParentAlias?: boolean;
+    nameExpressionInfoUrl?: string;
 }
 
 interface State {
@@ -161,7 +162,8 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                     nounSingular +
                     ' ids.';
             } else if (getDuplicateAlias(model.parentAliases, true).size > 0) {
-                exception = 'Duplicate parent alias header found: ' + getDuplicateAlias(model.parentAliases,true).join(', ');
+                exception =
+                    'Duplicate parent alias header found: ' + getDuplicateAlias(model.parentAliases, true).join(', ');
             }
 
             setSubmitting(false, () => {

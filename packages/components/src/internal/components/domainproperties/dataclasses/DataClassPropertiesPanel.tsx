@@ -43,11 +43,11 @@ const FORM_IDS = {
 };
 
 interface OwnProps extends BasePropertiesPanelProps {
+    allowParentAlias?: boolean;
     appPropertiesOnly?: boolean;
     dataClassAliasCaption?: string;
     headerText?: string;
     helpTopic?: string;
-    allowParentAlias?: boolean;
     model: DataClassModel;
     nameExpressionGenIdProps?: NameExpressionGenIdProps;
     nameExpressionInfoUrl?: string;

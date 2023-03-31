@@ -94,6 +94,7 @@ import {
     IEntityTypeOption,
     IParentOption,
 } from './models';
+import {getDataClassDetails} from "../domainproperties/dataclasses/actions";
 
 const ENTITY_GRID_ID = 'entity-insert-grid-data';
 const ALIQUOT_FIELD_COLS = [
@@ -175,6 +176,7 @@ interface OwnProps {
     // selectedTarget allows controlling target from a parent component
     selectedTarget?: string;
     setIsDirty?: (isDirty: boolean) => void;
+    shouldGetParentAlias?: (schemaQuery: SchemaQuery) => boolean;
 }
 
 interface FromLocationProps {
@@ -398,6 +400,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     gridInit = (insertModel: EntityIdCreationModel): void => {
+        const { shouldGetParentAlias } = this.props;
         const schemaQuery = insertModel.getSchemaQuery();
         if (schemaQuery) {
             // only query for the importAliases for Sample Types (i.e. not sources)
@@ -406,6 +409,13 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                     this.setState(() => ({
                         importAliases: domainDetails.options?.get('importAliases'),
                         metricUnit: domainDetails.options?.get('metricUnit'),
+                    }));
+                });
+            }
+            else if (shouldGetParentAlias?.(schemaQuery)) {
+                getDataClassDetails(schemaQuery).then(domainDetails => {
+                    this.setState(() => ({
+                        importAliases: domainDetails.options?.get('importAliases'),
                     }));
                 });
             }

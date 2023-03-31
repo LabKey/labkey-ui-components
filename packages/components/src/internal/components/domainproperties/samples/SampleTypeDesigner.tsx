@@ -41,6 +41,7 @@ import { SAMPLE_SET_IMPORT_PREFIX } from '../../../../entities/constants';
 import { UniqueIdBanner } from './UniqueIdBanner';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { AliquotNamePatternProps, MetricUnitProps, SampleTypeModel } from './models';
+import { getDuplicateAlias, getParentAliasChangeResult, getParentAliasUpdateDupesResults } from "../utils";
 
 const NEW_SAMPLE_SET_OPTION: IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,
@@ -248,22 +249,9 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         this.props.onTogglePanel(DOMAIN_PANEL_INDEX, collapsed, callback);
     };
 
-    updateAliasValue = (id: string, field: string, newValue: any): IParentAlias => {
-        const { model } = this.state;
-        const { parentAliases } = model;
-        return {
-            ...parentAliases.get(id),
-            isDupe: false, // Clear error because of change
-            [field]: newValue,
-        } as IParentAlias;
-    };
-
     parentAliasChange = (id: string, field: string, newValue: any): void => {
         const { model } = this.state;
-        const { parentAliases } = model;
-        const changedAlias = this.updateAliasValue(id, field, newValue);
-
-        const newAliases = parentAliases.set(id, changedAlias);
+        const newAliases = getParentAliasChangeResult(model.parentAliases, id, field, newValue);
         const newModel = model.merge({ parentAliases: newAliases }) as SampleTypeModel;
         this.onFieldChange(newModel);
     };
@@ -273,28 +261,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         if (!model) {
             return;
         }
-
-        const { parentAliases } = model;
-        const dupes = model.getDuplicateAlias();
-        let newAliases = OrderedMap<string, IParentAlias>();
-        parentAliases.forEach((alias: IParentAlias) => {
-            const isDupe = dupes && dupes.has(alias.id);
-            let changedAlias = alias;
-            if (isDupe !== alias.isDupe) {
-                changedAlias = this.updateAliasValue(alias.id, 'isDupe', isDupe);
-            }
-
-            if (alias.id === id) {
-                changedAlias = {
-                    ...changedAlias,
-                    ignoreAliasError: false,
-                    ignoreSelectError: false,
-                };
-            }
-
-            newAliases = newAliases.set(alias.id, changedAlias);
-        });
-
+        const newAliases = getParentAliasUpdateDupesResults(model.parentAliases, id);
         const newModel = model.merge({ parentAliases: newAliases }) as SampleTypeModel;
         this.onFieldChange(newModel);
     };
@@ -391,8 +358,8 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     'The ' +
                     defaultSampleFieldConfig.name +
                     ' field name is reserved for imported or generated sample ids.';
-            } else if (model.getDuplicateAlias(true).size > 0) {
-                exception = 'Duplicate parent alias header found: ' + model.getDuplicateAlias(true).join(', ');
+            } else if (getDuplicateAlias(model.parentAliases, true).size > 0) {
+                exception = 'Duplicate parent alias header found: ' + getDuplicateAlias(model.parentAliases,true).join(', ');
             } else if (!model.isMetricUnitValid(metricUnitRequired)) {
                 exception = metricUnitLabel + ' field is required.';
             } else {

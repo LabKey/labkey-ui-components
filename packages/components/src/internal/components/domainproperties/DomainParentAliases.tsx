@@ -5,7 +5,6 @@ import { OrderedMap } from 'immutable';
 import { Col, Row } from 'react-bootstrap';
 
 import { IParentAlias, IParentOption } from '../entities/models';
-import { PARENT_ALIAS_HELPER_TEXT } from '../../constants';
 import { SCHEMAS } from '../../schemas';
 import { AddEntityButton } from '../buttons/AddEntityButton';
 import { generateId } from '../../util/utils';

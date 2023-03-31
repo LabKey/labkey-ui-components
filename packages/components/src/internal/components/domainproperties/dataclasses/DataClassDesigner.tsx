@@ -29,6 +29,7 @@ import { DATA_CLASS_IMPORT_PREFIX } from '../../../../entities/constants';
 
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 import { DataClassModel, DataClassModelConfig } from './models';
+import {getDuplicateAlias, getParentAliasChangeResult, getParentAliasUpdateDupesResults} from "../utils";
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -159,6 +160,8 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                     ' field name is reserved for imported or generated ' +
                     nounSingular +
                     ' ids.';
+            } else if (getDuplicateAlias(model.parentAliases, true).size > 0) {
+                exception = 'Duplicate parent alias header found: ' + getDuplicateAlias(model.parentAliases,true).join(', ');
             }
 
             setSubmitting(false, () => {
@@ -328,22 +331,9 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         }
     };
 
-    updateAliasValue = (id: string, field: string, newValue: any): IParentAlias => {
-        const { model } = this.state;
-        const { parentAliases } = model;
-        return {
-            ...parentAliases.get(id),
-            isDupe: false, // Clear error because of change
-            [field]: newValue,
-        } as IParentAlias;
-    };
-
     parentAliasChange = (id: string, field: string, newValue: any): void => {
         const { model } = this.state;
-        const { parentAliases } = model;
-        const changedAlias = this.updateAliasValue(id, field, newValue);
-
-        const newAliases = parentAliases.set(id, changedAlias);
+        const newAliases = getParentAliasChangeResult(model.parentAliases, id, field, newValue);
         const newModel = {
             ...model,
             parentAliases: newAliases,
@@ -357,30 +347,9 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
             return;
         }
 
-        const { parentAliases } = model;
-        const dupes = model.getDuplicateAlias();
-        let newAliases = OrderedMap<string, IParentAlias>();
-        parentAliases.forEach((alias: IParentAlias) => {
-            const isDupe = dupes && dupes.has(alias.id);
-            let changedAlias = alias;
-            if (isDupe !== alias.isDupe) {
-                changedAlias = this.updateAliasValue(alias.id, 'isDupe', isDupe);
-            }
-
-            if (alias.id === id) {
-                changedAlias = {
-                    ...changedAlias,
-                    ignoreAliasError: false,
-                    ignoreSelectError: false,
-                };
-            }
-
-            newAliases = newAliases.set(alias.id, changedAlias);
-        });
-
         const newModel = {
             ...model,
-            parentAliases: newAliases,
+            parentAliases: getParentAliasUpdateDupesResults(model.parentAliases, id),
         };
         this.saveModel(newModel);
     };

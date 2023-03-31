@@ -21,6 +21,7 @@ import { DomainDesign, IDomainField, SystemField } from '../models';
 import { IParentAlias } from '../../entities/models';
 
 import { DATACLASS_DOMAIN_SYSTEM_FIELDS, SOURCE_DOMAIN_SYSTEM_FIELDS } from './constants';
+import {getDuplicateAlias, parentAliasInvalid} from "../utils";
 
 interface DataClassOptionsConfig {
     category: string;
@@ -95,44 +96,16 @@ export class DataClassModel implements DataClassModelConfig {
         return (
             this.hasValidProperties &&
             !this.hasInvalidNameField(defaultNameFieldConfig) &&
+            getDuplicateAlias(this.parentAliases, true).size === 0 &&
             !this.domain.hasInvalidFields()
         );
-    }
-
-    parentAliasInvalid(alias: Partial<IParentAlias>): boolean {
-        if (!alias) return true;
-
-        const aliasValueInvalid = !alias.alias || alias.alias.trim() === '';
-        const parentValueInvalid = !alias.parentValue || !alias.parentValue.value;
-
-        return !!(aliasValueInvalid || parentValueInvalid || alias.isDupe);
-    }
-
-    getDuplicateAlias(returnAliases = false): Set<string> {
-        const { parentAliases } = this;
-        let uniqueAliases = Set<string>();
-        let dupeAliases = Set<string>();
-        let dupeIds = Set<string>();
-
-        if (parentAliases) {
-            parentAliases.forEach((alias: IParentAlias) => {
-                if (uniqueAliases.has(alias.alias)) {
-                    dupeIds = dupeIds.add(alias.id);
-                    dupeAliases = dupeAliases.add(alias.alias);
-                } else {
-                    uniqueAliases = uniqueAliases.add(alias.alias);
-                }
-            });
-        }
-
-        return returnAliases ? dupeAliases : dupeIds;
     }
 
     get hasValidProperties(): boolean {
         const hasInvalidAliases =
             this.parentAliases &&
             this.parentAliases.size > 0 &&
-            this.parentAliases.find(this.parentAliasInvalid) !== undefined;
+            this.parentAliases.find(parentAliasInvalid) !== undefined;
 
         return this.name !== undefined && this.name !== null && this.name.trim().length > 0 && !hasInvalidAliases;
     }

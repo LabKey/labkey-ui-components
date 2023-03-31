@@ -24,6 +24,7 @@ import { Alert } from '../base/Alert';
 
 import { SearchResultCard } from './SearchResultCard';
 import { SearchResultsModel } from './models';
+import { decodeErrorMessage } from './utils';
 
 interface Props {
     emptyResultDisplay?: React.ReactNode;
@@ -54,18 +55,6 @@ export class SearchResultsPanel extends React.Component<Props, any> {
         }
     }
 
-    decodeErrorMessage = (msg: string) : string => {
-        let decodedMsg = msg
-            .replace(/&amp;/g, '&')
-            .replace(/&lt;/g, '<')
-            .replace(/&gt;/g, '>')
-            .replace(/&quot;/g, '"')
-            .replace(/&#039;/g, "'");
-        if (decodedMsg.charAt(msg.length-1) != ".")
-            decodedMsg += '.';
-        return decodedMsg;
-    }
-
     renderError() {
         const { model } = this.props;
         const error = model ? model.get('error') : undefined;
@@ -74,11 +63,11 @@ export class SearchResultsPanel extends React.Component<Props, any> {
             return (
                 <div className="panel-body">
                     <Alert>
-                        There was an error with your search term(s). {this.decodeErrorMessage(error)}
+                        There was an error with your search term(s). {decodeErrorMessage(error)}
                         <br/><br/>
                         See the{' '}
                         <HelpLink topic={SEARCH_SYNTAX_TOPIC}>LabKey Search Documentation</HelpLink>
-                         page for more information on
+                        {' '} page for more information on
                         search terms and operators.
                     </Alert>
                 </div>
@@ -121,13 +110,14 @@ export class SearchResultsPanel extends React.Component<Props, any> {
     }
 
     render() {
-        const { hidePanelFrame } = this.props;
+        const { hidePanelFrame, model } = this.props;
+        const error = model ? model.get('error') : undefined;
 
         const body = (
             <>
                 {this.renderLoading()}
                 {this.renderError()}
-                {this.renderResults()}
+                {!error && this.renderResults()}
             </>
         );
 

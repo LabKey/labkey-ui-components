@@ -1230,4 +1230,15 @@ export function getSearchResultCardData(data, category, queryMetadata?: any): Se
     return {};
 }
 
+export const decodeErrorMessage = (msg: string) : string => {
+    let decodedMsg = msg
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&#039;/g, "'");
+    if (decodedMsg.charAt(msg.length-1) != ".")
+        decodedMsg += '.';
+    return decodedMsg;
+}
 

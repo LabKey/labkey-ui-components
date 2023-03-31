@@ -32,6 +32,7 @@ function applyPermissions(container: Container, user: User): User {
 
 export interface ContainerUser {
     container: Container;
+    containerUsers?: { [key: string]: ContainerUser };
     user: User;
 }
 
@@ -43,6 +44,7 @@ export interface UseContainerUser extends ContainerUser {
 /**
  * React hook that supplies the container, user, and the container-relative permissions for the user.
  * @param containerIdOrPath The container id or container path to request.
+ * @param includeSubfolders Whether to include subfolders of the requested container.
  * Example:
  * ```tsx
  * const SeeUserPermissions: React.FC = () => {
@@ -74,8 +76,8 @@ export interface UseContainerUser extends ContainerUser {
  * };
  * ```
  */
-export function useContainerUser(containerIdOrPath: string): UseContainerUser {
-    const [containerUser, setContainerUser] = useState<ContainerUser>();
+export function useContainerUser(containerIdOrPath: string, includeSubfolders = false): UseContainerUser {
+    const [containerUsers, setContainerUsers] = useState<Record<string, ContainerUser>>({});
     const [error, setError] = useState<string>();
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const { api } = useAppContext();
@@ -91,27 +93,34 @@ export function useContainerUser(containerIdOrPath: string): UseContainerUser {
             try {
                 const containers = await api.security.fetchContainers({
                     containerPath: containerIdOrPath,
-                    includeSubfolders: false,
+                    includeSubfolders,
                 });
 
-                if (containers.length === 0) {
-                    setError(`Failed to resolve container for path: "${containerIdOrPath}"`);
-                } else {
-                    const [container] = containers;
-                    setContainerUser({ container, user: applyPermissions(container, user) });
-                }
+                const containerUsers_ = containers.reduce<Record<string, ContainerUser>>((cu, c, i) => {
+                    const u = applyPermissions(c, user);
+
+                    if (i === 0) {
+                        cu[containerIdOrPath] = { container: c, user: u };
+                    }
+
+                    cu[c.path] = { container: c, user: u };
+                    return cu;
+                }, {});
+
+                setContainerUsers(containerUsers_);
             } catch (e) {
                 setError(resolveErrorMessage(e));
             }
 
             setLoadingState(LoadingState.LOADED);
         })();
-    }, [api, containerIdOrPath, user]);
+    }, [api, containerIdOrPath, includeSubfolders, user]);
 
     return {
-        container: containerUser?.container,
+        container: containerUsers[containerIdOrPath]?.container,
+        containerUsers,
         error,
         isLoaded: !isLoading(loadingState),
-        user: containerUser?.user,
+        user: containerUsers[containerIdOrPath]?.user,
     };
 }

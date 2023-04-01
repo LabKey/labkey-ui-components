@@ -311,8 +311,10 @@ import { ProjectManagementPage } from './internal/components/administration/Proj
 import { GroupManagementPage } from './internal/components/administration/GroupManagementPage';
 import { PermissionManagementPage } from './internal/components/administration/PermissionManagementPage';
 import { AccountSettingsPage } from './internal/components/administration/AccountSettingsPage';
+import { SearchPanel } from './internal/components/search/SearchPanel';
 import { searchUsingIndex } from './internal/components/search/actions';
 import { SearchResultsModel } from './internal/components/search/models';
+import { getSearchResultCardData } from './internal/components/search/utils';
 import {
     deleteSampleSet,
     fetchSamples,
@@ -1097,12 +1099,14 @@ export {
     FindDerivativesMenuItem,
     FindDerivativesButton,
     FIND_SAMPLE_BY_ID_METRIC_AREA,
+    SearchPanel,
     SearchResultsModel,
     SearchResultCard,
     SearchResultsPanel,
     searchUsingIndex,
     SearchScope,
     getSearchScopeFromContainerFilter,
+    getSearchResultCardData,
     // administration
     AccountSettingsPage,
     AdministrationSubNav,

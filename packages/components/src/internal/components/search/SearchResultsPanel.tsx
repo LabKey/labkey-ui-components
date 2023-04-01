@@ -16,7 +16,7 @@
 import React from 'react';
 import { Panel } from 'react-bootstrap';
 
-import { helpLinkNode, SEARCH_SYNTAX_TOPIC } from '../../util/helpLinks';
+import { HelpLink, SEARCH_SYNTAX_TOPIC } from '../../util/helpLinks';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
@@ -24,19 +24,19 @@ import { Alert } from '../base/Alert';
 
 import { SearchResultCard } from './SearchResultCard';
 import { SearchResultsModel } from './models';
+import { decodeErrorMessage } from './utils';
 
 interface Props {
     emptyResultDisplay?: React.ReactNode;
-    hideHeader?: boolean;
     hidePanelFrame?: boolean;
     iconUrl?: string;
-    maxHitSize?: number;
     model: SearchResultsModel;
+    offset?: number;
 }
 
 export class SearchResultsPanel extends React.Component<Props, any> {
     static defaultProps = {
-        maxHitSize: 1000,
+        offset: 0,
     };
 
     isLoading(): boolean {
@@ -46,7 +46,11 @@ export class SearchResultsPanel extends React.Component<Props, any> {
 
     renderLoading() {
         if (this.isLoading()) {
-            return <LoadingSpinner wrapperClassName="search-results__margin-top" />;
+            return (
+                <div className="panel-body">
+                    <LoadingSpinner />
+                </div>
+            );
         }
     }
 
@@ -55,41 +59,41 @@ export class SearchResultsPanel extends React.Component<Props, any> {
         const error = model ? model.get('error') : undefined;
 
         if (!this.isLoading() && error) {
-            console.error(error);
             return (
-                <Alert>
-                    There was an error with your search term(s). See the{' '}
-                    {helpLinkNode(SEARCH_SYNTAX_TOPIC, 'LabKey Search Documentation')} page for more information on
-                    search terms and operators.
-                </Alert>
+                <div className="panel-body">
+                    <Alert>
+                        There was an error with your search term(s). {decodeErrorMessage(error)}
+                        <br/><br/>
+                        See the{' '}
+                        <HelpLink topic={SEARCH_SYNTAX_TOPIC}>LabKey Search Documentation</HelpLink>
+                        {' '} page for more information on
+                        search terms and operators.
+                    </Alert>
+                </div>
             );
         }
     }
 
     renderResults() {
-        const { model, iconUrl, emptyResultDisplay, hideHeader, maxHitSize } = this.props;
+        const { model, iconUrl, emptyResultDisplay, offset } = this.props;
 
         if (this.isLoading()) return;
 
         const data = model ? model.getIn(['entities', 'hits']) : undefined;
 
         if (data && data.size > 0) {
-            const totalHit = model.getIn(['entities', 'totalHits']);
-            const msg = data.size.toLocaleString() + ' Result' + (data.size !== 1 ? 's' : '');
-            const headerMsg =
-                totalHit > maxHitSize ? `${data.size.toLocaleString()} of ${totalHit.toLocaleString()} Results` : msg;
 
             return (
-                <div>
-                    {!hideHeader && <h3 className="no-margin-top search-results__amount">{headerMsg}</h3>}
+                <div className="top-spacing">
                     {data.size > 0 &&
                         data.map((item, i) => (
-                            <div key={i} className="col-md-6 col-sm-12 search-results__margin-top">
+                            <div key={i} className="col-md-12 col-sm-12 search-results__margin-top">
                                 <SearchResultCard
                                     summary={item.get('summary')}
                                     url={item.get('url')}
                                     iconUrl={iconUrl}
                                     cardData={item.get('cardData').toJS()}
+                                    isTopResult={offset === 0 && i === 0}
                                 />
                             </div>
                         ))}
@@ -105,13 +109,14 @@ export class SearchResultsPanel extends React.Component<Props, any> {
     }
 
     render() {
-        const { hidePanelFrame } = this.props;
+        const { hidePanelFrame, model } = this.props;
+        const error = model ? model.get('error') : undefined;
 
         const body = (
             <>
                 {this.renderLoading()}
                 {this.renderError()}
-                {this.renderResults()}
+                {!error && this.renderResults()}
             </>
         );
 

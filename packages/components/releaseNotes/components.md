@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.322.0
+*Released*: 31 March 2023
 * Search behavior improvements
   * Added a SearchPanel component to be shared between Apps
   * Cleaned up some styling and layout items

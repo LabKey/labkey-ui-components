@@ -44,6 +44,7 @@ interface Props {
     chosenValue?: string | any[];
     containerPath?: string;
     editing?: boolean;
+    hideBlankSelectionWarning?: boolean;
     index: number;
     onChangeParentType?: (fieldName: string, formValue: any, selectedOption: IEntityTypeOption, index: number) => void;
     onChangeParentValue?: (name: string, value: string | any[], index: number) => void;
@@ -94,8 +95,16 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
     };
 
     renderParentSelection = (model: QueryModel): ReactNode => {
-        const { chosenType, chosenValue, containerPath, parentLSIDs, parentTypeOptions, parentDataType, index } =
-            this.props;
+        const {
+            chosenType,
+            chosenValue,
+            containerPath,
+            parentLSIDs,
+            parentTypeOptions,
+            parentDataType,
+            index,
+            hideBlankSelectionWarning,
+        } = this.props;
 
         if (model?.rowsError || model?.queryInfoError) {
             return <Alert>{model.rowsError || model.queryInfoError}</Alert>;
@@ -163,7 +172,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                             value={value}
                             valueColumn="Name"
                         />
-                        {!chosenValue && (
+                        {!chosenValue && !hideBlankSelectionWarning && (
                             <div className="row top-spacing edit-parent-danger">
                                 <div className={labelClasses} />
                                 <div className="col-sm-9 col-xs-12">

@@ -13,10 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { Map } from 'immutable';
 import { ActionURL, Ajax, Domain, Utils } from '@labkey/api';
 
 import { SCHEMAS } from '../../../schemas';
 import { deleteEntityType } from '../../entities/actions';
+
+import { SchemaQuery } from '../../../../public/SchemaQuery';
+import { DomainDetails } from '../models';
 
 import { DataClassModel } from './models';
 
@@ -54,6 +58,29 @@ function _fetchDataClass(queryName?: string, domainId?: number, containerPath?: 
             },
             failure: error => {
                 reject(error);
+            },
+        });
+    });
+}
+
+export function getDataClassDetails(
+    query?: SchemaQuery,
+    domainId?: number,
+    containerPath?: string
+): Promise<DomainDetails> {
+    return new Promise((resolve, reject) => {
+        return Domain.getDomainDetails({
+            containerPath,
+            domainId,
+            queryName: query ? query.queryName : undefined,
+            schemaName: query ? query.schemaName : undefined,
+            domainKind: query === undefined && domainId === undefined ? 'DataClass' : undefined,
+            success: response => {
+                resolve(DomainDetails.create(Map(response)));
+            },
+            failure: response => {
+                console.error(response);
+                reject(response);
             },
         });
     });

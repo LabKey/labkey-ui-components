@@ -181,7 +181,8 @@ export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: bool
 export const getDataClassTemplateUrl = (
     queryInfo: QueryInfo,
     exportConfig: any = {},
-    excludeColumns: string[] = ['flag', 'alias', 'lsid', 'Ancestors']
+    excludeColumns: string[] = ['flag', 'alias', 'lsid', 'Ancestors'],
+    importAliases?: Record<string, string>
 ): string => {
     const schemaQuery = queryInfo.schemaQuery;
     if (!schemaQuery) return undefined;
@@ -190,6 +191,11 @@ export const getDataClassTemplateUrl = (
     if (queryInfo.importTemplates?.[0]?.url.toLowerCase().indexOf('exportexceltemplate.view') === -1) {
         return queryInfo.importTemplates[0].url;
     }
+
+    const extraColumns = Object.keys(importAliases || {}).filter(col => {
+        if (excludeColumns) return excludeColumns?.indexOf(col) === -1;
+        return true;
+    });
 
     return ActionURL.buildURL('query', 'ExportExcelTemplate', null, {
         ...exportConfig,
@@ -200,6 +206,7 @@ export const getDataClassTemplateUrl = (
             ? excludeColumns.concat(queryInfo.getFileColumnFieldKeys())
             : queryInfo.getFileColumnFieldKeys(),
         filenamePrefix: schemaQuery.queryName,
+        includeColumn: extraColumns,
     });
 };
 

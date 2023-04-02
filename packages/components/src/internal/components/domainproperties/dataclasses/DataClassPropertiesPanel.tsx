@@ -2,7 +2,13 @@ import React, { PureComponent, ReactNode } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 import { EntityDetailsForm } from '../entities/EntityDetailsForm';
-import { DEFINE_DATA_CLASS_TOPIC, DATA_CLASS_NAME_EXPRESSION_TOPIC, getHelpLink } from '../../../util/helpLinks';
+import {
+    DEFINE_DATA_CLASS_TOPIC,
+    DATA_CLASS_NAME_EXPRESSION_TOPIC,
+    getHelpLink,
+    HelpLink,
+    DATACLASS_ALIAS_TOPIC,
+} from '../../../util/helpLinks';
 import { ENTITY_FORM_ID_PREFIX } from '../entities/constants';
 import { getFormNameFromId } from '../entities/actions';
 
@@ -25,6 +31,9 @@ import { NameExpressionGenIdProps } from '../NameExpressionGenIdBanner';
 import { QuerySelect } from '../../forms/QuerySelect';
 import { SCHEMAS } from '../../../schemas';
 
+import { DomainParentAliases } from '../DomainParentAliases';
+import { IParentAlias, IParentOption } from '../../entities/models';
+
 import { DataClassModel } from './models';
 
 const PROPERTIES_HEADER_ID = 'dataclass-properties-hdr';
@@ -34,7 +43,9 @@ const FORM_IDS = {
 };
 
 interface OwnProps extends BasePropertiesPanelProps {
+    allowParentAlias?: boolean;
     appPropertiesOnly?: boolean;
+    dataClassAliasCaption?: string;
     headerText?: string;
     helpTopic?: string;
     model: DataClassModel;
@@ -44,9 +55,15 @@ interface OwnProps extends BasePropertiesPanelProps {
     namePreviewsLoading?: boolean;
     nounPlural?: string;
     nounSingular?: string;
+    onAddParentAlias: (id: string, newAlias: IParentAlias) => void;
     onChange: (model: DataClassModel) => void;
     onNameFieldHover?: () => any;
+    onParentAliasChange: (id: string, field: string, newValue: any) => void;
+    onRemoveParentAlias: (id: string) => void;
+    parentAliasHelpText?: string;
+    parentOptions: IParentOption[];
     previewName?: string;
+    updateDupeParentAliases?: (id: string) => void;
 }
 
 type Props = OwnProps & InjectedDomainPropertiesPanelCollapseProps;
@@ -66,6 +83,8 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
         nameExpressionInfoUrl: getHelpLink(DATA_CLASS_NAME_EXPRESSION_TOPIC),
         nameExpressionPlaceholder: 'Enter a naming pattern (e.g., DC-${now:date}-${genId})',
         appPropertiesOnly: false,
+        dataClassAliasCaption: 'Parent Alias',
+        parentAliasHelpText: "Column headings used during import to set a data's parentage.",
     };
 
     state: Readonly<State> = { isValid: true, prefix: undefined, loadingError: undefined };
@@ -107,6 +126,17 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
         this.updateValidStatus(this.props.model.mutate({ [getFormNameFromId(id)]: value }));
     };
 
+    renderAddEntityHelper = (noun?: string): any => {
+        return (
+            <>
+                <p>Column headings used during import to set a {noun.toLowerCase()}'s parentage.</p>
+                <p>
+                    <HelpLink topic={DATACLASS_ALIAS_TOPIC}>More info</HelpLink>
+                </p>
+            </>
+        );
+    };
+
     render(): ReactNode {
         const {
             model,
@@ -121,6 +151,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
             previewName,
             onNameFieldHover,
             nameExpressionGenIdProps,
+            allowParentAlias,
         } = this.props;
         const { isValid, prefix, loadingError } = this.state;
 
@@ -169,6 +200,18 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                     nameExpressionGenIdProps={nameExpressionGenIdProps}
                     nameReadOnly={model.isBuiltIn}
                 />
+                {allowParentAlias && (
+                    <DomainParentAliases
+                        {...this.props}
+                        parentAliases={model.parentAliases}
+                        idPrefix="dataclass-parent-import-alias-"
+                        schema={SCHEMAS.DATA_CLASSES.SCHEMA}
+                        addEntityHelp={this.renderAddEntityHelper(nounSingular)}
+                        includeSampleSet={false}
+                        includeDataClass={true}
+                        showAddBtn={true}
+                    />
+                )}
                 {!appPropertiesOnly && (
                     <Row>
                         <Col xs={2}>

@@ -7,7 +7,6 @@ import DomainForm from '../DomainForm';
 
 import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, DERIVATION_DATA_SCOPES } from '../constants';
 import { addDomainField, getDomainPanelStatus, saveDomain } from '../actions';
-import { initSampleSetSelects } from '../../samples/actions';
 import { DEFAULT_SAMPLE_FIELD_CONFIG } from '../../samples/constants';
 import { SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
@@ -22,25 +21,28 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper'
 
 import { GENID_SYNTAX_STRING } from '../NameExpressionGenIdBanner';
 
-import { IParentOption } from '../../entities/models';
+import { IParentAlias, IParentOption } from '../../entities/models';
 import { SCHEMAS } from '../../../schemas';
 import {
     getHelpLink,
     HelpLink,
     LKS_SAMPLE_ALIQUOT_FIELDS_TOPIC,
-    SAMPLE_ALIQUOT_FIELDS_TOPIC
+    SAMPLE_ALIQUOT_FIELDS_TOPIC,
 } from '../../../util/helpLinks';
 import { initQueryGridState } from '../../../global';
 import { resolveErrorMessage } from '../../../util/messaging';
-import { ISelectRowsResult } from '../../../query/api';
-import { naturalSortByProperty } from '../../../../public/sort';
-import { generateId } from '../../../util/utils';
 import { ConfirmModal } from '../../base/ConfirmModal';
 import { Alert } from '../../base/Alert';
 
+import { initParentOptionsSelects } from '../../../../entities/actions';
+
+import { SAMPLE_SET_IMPORT_PREFIX } from '../../../../entities/constants';
+
+import { getDuplicateAlias, getParentAliasChangeResult, getParentAliasUpdateDupesResults } from '../utils';
+
 import { UniqueIdBanner } from './UniqueIdBanner';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
-import { AliquotNamePatternProps, IParentAlias, MetricUnitProps, SampleTypeModel } from './models';
+import { AliquotNamePatternProps, MetricUnitProps, SampleTypeModel } from './models';
 
 const NEW_SAMPLE_SET_OPTION: IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,
@@ -51,14 +53,11 @@ const NEW_SAMPLE_SET_OPTION: IParentOption = {
 const PROPERTIES_PANEL_INDEX = 0;
 const DOMAIN_PANEL_INDEX = 1;
 
-export const SAMPLE_SET_IMPORT_PREFIX = 'materialInputs/';
-export const DATA_CLASS_IMPORT_PREFIX = 'dataInputs/';
-const DATA_CLASS_SCHEMA_KEY = 'exp/dataclasses';
 const SAMPLE_TYPE_NAME_EXPRESSION_TOPIC = 'sampleIDs#patterns';
 const SAMPLE_TYPE_NAME_EXPRESSION_PLACEHOLDER = 'Enter a naming pattern (e.g., S-${now:date}-${dailySampleCount})';
 const SAMPLE_TYPE_HELP_TOPIC = 'createSampleType';
 
-const AliquotOptionsHelp: FC<{helpTopic: string}> = memo(({helpTopic}) => {
+const AliquotOptionsHelp: FC<{ helpTopic: string }> = memo(({ helpTopic }) => {
     return (
         <div>
             <p>
@@ -77,7 +76,7 @@ const AliquotOptionsHelp: FC<{helpTopic: string}> = memo(({helpTopic}) => {
                 Learn more about <HelpLink topic={helpTopic}>Sample Aliquots</HelpLink>.
             </p>
         </div>
-    )
+    );
 });
 
 interface Props {
@@ -175,12 +174,24 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     }
 
     componentDidMount = async (): Promise<void> => {
-        const { includeDataClasses, setSubmitting } = this.props;
+        const { includeDataClasses, setSubmitting, isValidParentOptionFn } = this.props;
         const { model } = this.state;
 
         try {
-            const results = await initSampleSetSelects(!model.isNew(), includeDataClasses, model.containerPath);
-            this.initParentOptions(results);
+            const { parentOptions, parentAliases } = await initParentOptionsSelects(
+                true,
+                includeDataClasses,
+                model.containerPath,
+                isValidParentOptionFn,
+                model.isNew() ? NEW_SAMPLE_SET_OPTION : null,
+                model.importAliases,
+                'sampleset-parent-import-alias-',
+                this.formatLabel
+            );
+            this.setState({
+                model: model.merge({ parentAliases }) as SampleTypeModel,
+                parentOptions,
+            });
         } catch (error) {
             setSubmitting(false, () => {
                 this.setState({ error: resolveErrorMessage(error) });
@@ -188,76 +199,14 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         }
     };
 
-    formatLabel = (name: string, prefix: string, containerPath?: string): string => {
+    formatLabel = (name: string, prefix: string, isDataClass?: boolean, containerPath?: string): string => {
         const { includeDataClasses, useSeparateDataClassesAliasMenu, showParentLabelPrefix } = this.props;
+        const { model } = this.state;
+        if (name === model?.name && !isDataClass) return NEW_SAMPLE_SET_OPTION.label;
+
         return includeDataClasses && !useSeparateDataClassesAliasMenu && showParentLabelPrefix
             ? `${prefix}: ${name} (${containerPath})`
             : name;
-    };
-
-    initParentOptions = (responses: ISelectRowsResult[]): void => {
-        const { isValidParentOptionFn } = this.props;
-        const { model } = this.state;
-        const sets: IParentOption[] = [];
-
-        responses.forEach(result => {
-            const domain = fromJS(result.models[result.key]);
-
-            const isDataClass = result.key === DATA_CLASS_SCHEMA_KEY;
-
-            const prefix = isDataClass ? DATA_CLASS_IMPORT_PREFIX : SAMPLE_SET_IMPORT_PREFIX;
-            const labelPrefix = isDataClass ? 'Data Class' : 'Sample Type';
-
-            domain.forEach(row => {
-                if (isValidParentOptionFn) {
-                    if (!isValidParentOptionFn(row, isDataClass)) return;
-                }
-                const name = row.getIn(['Name', 'value']);
-                const containerPath = row.getIn(['Folder', 'displayValue']);
-                const label =
-                    name === model.name && !isDataClass
-                        ? NEW_SAMPLE_SET_OPTION.label
-                        : this.formatLabel(name, labelPrefix, containerPath);
-                sets.push({
-                    value: prefix + name,
-                    label,
-                    schema: isDataClass ? SCHEMAS.DATA_CLASSES.SCHEMA : SCHEMAS.SAMPLE_SETS.SCHEMA,
-                    query: name, // Issue 33653: query name is case-sensitive for some data inputs (sample parents)
-                });
-            });
-        });
-
-        if (model.isNew()) {
-            sets.push(NEW_SAMPLE_SET_OPTION);
-        }
-
-        const parentOptions = sets.sort(naturalSortByProperty('label'));
-
-        let parentAliases = Map<string, IParentAlias>();
-
-        if (model?.importAliases) {
-            const initialAlias = Map<string, string>(model.importAliases);
-            initialAlias.forEach((val, key) => {
-                const newId = generateId('sampleset-parent-import-alias-');
-                const parentValue = parentOptions.find(opt => opt.value === val);
-                if (!parentValue)
-                    // parent option might have been filtered out by isValidParentOptionFn
-                    return;
-
-                parentAliases = parentAliases.set(newId, {
-                    id: newId,
-                    alias: key,
-                    parentValue,
-                    ignoreAliasError: false,
-                    ignoreSelectError: false,
-                } as IParentAlias);
-            });
-        }
-
-        this.setState({
-            model: model.merge({ parentAliases }) as SampleTypeModel,
-            parentOptions,
-        });
     };
 
     getImportAliasesAsMap(model: SampleTypeModel): Map<string, string> {
@@ -301,22 +250,9 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         this.props.onTogglePanel(DOMAIN_PANEL_INDEX, collapsed, callback);
     };
 
-    updateAliasValue = (id: string, field: string, newValue: any): IParentAlias => {
-        const { model } = this.state;
-        const { parentAliases } = model;
-        return {
-            ...parentAliases.get(id),
-            isDupe: false, // Clear error because of change
-            [field]: newValue,
-        } as IParentAlias;
-    };
-
     parentAliasChange = (id: string, field: string, newValue: any): void => {
         const { model } = this.state;
-        const { parentAliases } = model;
-        const changedAlias = this.updateAliasValue(id, field, newValue);
-
-        const newAliases = parentAliases.set(id, changedAlias);
+        const newAliases = getParentAliasChangeResult(model.parentAliases, id, field, newValue);
         const newModel = model.merge({ parentAliases: newAliases }) as SampleTypeModel;
         this.onFieldChange(newModel);
     };
@@ -326,28 +262,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         if (!model) {
             return;
         }
-
-        const { parentAliases } = model;
-        const dupes = model.getDuplicateAlias();
-        let newAliases = OrderedMap<string, IParentAlias>();
-        parentAliases.forEach((alias: IParentAlias) => {
-            const isDupe = dupes && dupes.has(alias.id);
-            let changedAlias = alias;
-            if (isDupe !== alias.isDupe) {
-                changedAlias = this.updateAliasValue(alias.id, 'isDupe', isDupe);
-            }
-
-            if (alias.id === id) {
-                changedAlias = {
-                    ...changedAlias,
-                    ignoreAliasError: false,
-                    ignoreSelectError: false,
-                };
-            }
-
-            newAliases = newAliases.set(alias.id, changedAlias);
-        });
-
+        const newAliases = getParentAliasUpdateDupesResults(model.parentAliases, id);
         const newModel = model.merge({ parentAliases: newAliases }) as SampleTypeModel;
         this.onFieldChange(newModel);
     };
@@ -444,8 +359,9 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     'The ' +
                     defaultSampleFieldConfig.name +
                     ' field name is reserved for imported or generated sample ids.';
-            } else if (model.getDuplicateAlias(true).size > 0) {
-                exception = 'Duplicate parent alias header found: ' + model.getDuplicateAlias(true).join(', ');
+            } else if (getDuplicateAlias(model.parentAliases, true).size > 0) {
+                exception =
+                    'Duplicate parent alias header found: ' + getDuplicateAlias(model.parentAliases, true).join(', ');
             } else if (!model.isMetricUnitValid(metricUnitRequired)) {
                 exception = metricUnitLabel + ' field is required.';
             } else {
@@ -806,7 +722,15 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                             labelAll: 'Separately editable for samples and aliquots',
                             labelChild: 'Editable for aliquots only',
                             labelParent: 'Editable for samples only (default)',
-                            helpLinkNode: <AliquotOptionsHelp helpTopic={biologicsIsPrimaryApp() ? LKS_SAMPLE_ALIQUOT_FIELDS_TOPIC: SAMPLE_ALIQUOT_FIELDS_TOPIC}/>,
+                            helpLinkNode: (
+                                <AliquotOptionsHelp
+                                    helpTopic={
+                                        biologicsIsPrimaryApp()
+                                            ? LKS_SAMPLE_ALIQUOT_FIELDS_TOPIC
+                                            : SAMPLE_ALIQUOT_FIELDS_TOPIC
+                                    }
+                                />
+                            ),
                             scopeChangeWarning:
                                 "Updating a 'Samples Only' field to be 'Samples and Aliquots' will blank out the field values for all aliquots. This action cannot be undone. ",
                         },

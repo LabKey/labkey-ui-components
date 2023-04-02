@@ -53,6 +53,7 @@ import { SamplesResolver } from './SamplesResolver';
 import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
 import { useSampleTypeAppContext } from './useSampleTypeAppContext';
 import { SampleTypeDesignPage } from './SampleTypeDesignPage';
+import { SingleParentEntityPanel } from './SingleParentEntityPanel';
 
 import { AssayResultsForSamplesPage, AssayResultsForSamplesSubNav } from './AssayResultsForSamplesPage';
 import { SampleOverviewPanel } from './SampleOverviewPanel';
@@ -134,6 +135,7 @@ export {
     SamplesDeriveButton,
     SamplesEditButton,
     SamplesTabbedGridPanel,
+    SingleParentEntityPanel,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require

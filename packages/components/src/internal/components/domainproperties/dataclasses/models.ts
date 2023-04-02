@@ -14,17 +14,23 @@
  * limitations under the License.
  */
 import { Draft, immerable, produce } from 'immer';
-import { Map, fromJS } from 'immutable';
+import { Map, fromJS, OrderedMap, Set } from 'immutable';
 
-import {DomainDesign, IDomainField, SystemField} from '../models';
+import { DomainDesign, IDomainField, SystemField } from '../models';
+
+import { IParentAlias } from '../../entities/models';
+
+import { getDuplicateAlias, parentAliasInvalid } from '../utils';
 
 import { DATACLASS_DOMAIN_SYSTEM_FIELDS, SOURCE_DOMAIN_SYSTEM_FIELDS } from './constants';
 
 interface DataClassOptionsConfig {
     category: string;
     description: string;
+    importAliases?: Map<string, string>;
     name: string;
     nameExpression: string;
+    parentAliases?: OrderedMap<string, IParentAlias>;
     rowId: number;
     sampleSet: number;
     systemFields?: SystemField[];
@@ -47,6 +53,8 @@ export class DataClassModel implements DataClassModelConfig {
     readonly rowId: number;
     readonly sampleSet: number;
     readonly systemFields: SystemField[];
+    readonly parentAliases?: OrderedMap<string, IParentAlias>;
+    readonly importAliases?: Map<string, string>;
     readonly isBuiltIn?: boolean;
 
     constructor(values?: Partial<DataClassModelConfig>) {
@@ -68,7 +76,12 @@ export class DataClassModel implements DataClassModelConfig {
             if (raw.options && model.sampleSet === null) {
                 draft.sampleSet = undefined;
             }
-            draft.systemFields = model.category === "sources" ? SOURCE_DOMAIN_SYSTEM_FIELDS : DATACLASS_DOMAIN_SYSTEM_FIELDS;
+
+            const aliases = raw.options?.importAliases || {};
+            draft.importAliases = Map<string, string>(fromJS(aliases));
+
+            draft.systemFields =
+                model.category === 'sources' ? SOURCE_DOMAIN_SYSTEM_FIELDS : DATACLASS_DOMAIN_SYSTEM_FIELDS;
         });
     }
 
@@ -84,12 +97,18 @@ export class DataClassModel implements DataClassModelConfig {
         return (
             this.hasValidProperties &&
             !this.hasInvalidNameField(defaultNameFieldConfig) &&
+            getDuplicateAlias(this.parentAliases, true).size === 0 &&
             !this.domain.hasInvalidFields()
         );
     }
 
     get hasValidProperties(): boolean {
-        return this.name !== undefined && this.name !== null && this.name.trim().length > 0;
+        const hasInvalidAliases =
+            this.parentAliases &&
+            this.parentAliases.size > 0 &&
+            this.parentAliases.find(parentAliasInvalid) !== undefined;
+
+        return this.name !== undefined && this.name !== null && this.name.trim().length > 0 && !hasInvalidAliases;
     }
 
     hasInvalidNameField(defaultNameFieldConfig: Partial<IDomainField>): boolean {

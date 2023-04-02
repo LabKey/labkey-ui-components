@@ -4,7 +4,6 @@ import { Filter } from '@labkey/api';
 
 import { fromJS } from 'immutable';
 
-import { DataClassDataType, SampleTypeDataType } from './constants';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { mountWithAppServerContext } from '../../testHelpers';
@@ -12,6 +11,8 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { ViewInfo } from '../../ViewInfo';
 
 import { DisableableMenuItem } from '../samples/DisableableMenuItem';
+
+import { DataClassDataType, SampleTypeDataType } from './constants';
 
 import { FindDerivativesMenuItem, getFieldFilter, getSessionSearchFilterProps } from './FindDerivativesButton';
 

@@ -30,6 +30,8 @@ export const DELETE_SAMPLES_TOPIC = 'viewSampleSets#delete';
 export const DERIVE_SAMPLES_TOPIC = 'deriveSamples';
 export const DERIVE_SAMPLES_ALIAS_TOPIC = DERIVE_SAMPLES_TOPIC + '#alias';
 
+export const DATACLASS_ALIAS_TOPIC = 'dataclassalias';
+
 export const URL_ENCODING_TOPIC = 'urlEncoding';
 
 export const SEARCH_SYNTAX_TOPIC = 'luceneSearch';
@@ -53,10 +55,10 @@ export enum HELP_LINK_REFERRER {
 }
 
 export function getHelpLink(topic: string, referrer = HELP_LINK_REFERRER.IN_PAGE): string {
-    let prefix = getServerContext().helpLinkPrefix;
+    const prefix = getServerContext().helpLinkPrefix;
     if (prefix)
         // putting referrer= at the end causes links that go to anchors in the page not to work.
-        return prefix.replace("name=", "referrer=" + referrer + "&name=" + topic);
+        return prefix.replace('name=', 'referrer=' + referrer + '&name=' + topic);
     return undefined;
 }
 

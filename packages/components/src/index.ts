@@ -323,6 +323,7 @@ import {
     getSampleTypeDetails,
     getSelectedSampleIdsFromSelectionKey,
     getSelectionLineageData,
+    getParentTypeDataForLineage,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SampleAmountEditModal } from './internal/components/samples/SampleAmountEditModal';
@@ -491,7 +492,11 @@ import { SampleTypeDesigner } from './internal/components/domainproperties/sampl
 import { ListDesignerPanels } from './internal/components/domainproperties/list/ListDesignerPanels';
 import { DataClassDesigner } from './internal/components/domainproperties/dataclasses/DataClassDesigner';
 import { DataClassModel } from './internal/components/domainproperties/dataclasses/models';
-import { deleteDataClass, fetchDataClass } from './internal/components/domainproperties/dataclasses/actions';
+import {
+    deleteDataClass,
+    fetchDataClass,
+    getDataClassDetails,
+} from './internal/components/domainproperties/dataclasses/actions';
 import { DesignerDetailPanel } from './internal/components/domainproperties/DesignerDetailPanel';
 import { DomainFieldLabel } from './internal/components/domainproperties/DomainFieldLabel';
 import { RangeValidationOptionsModal } from './internal/components/domainproperties/validation/RangeValidationOptions';
@@ -1023,6 +1028,7 @@ export {
     ALIQUOT_FILTER_MODE,
     DataClassModel,
     deleteDataClass,
+    getDataClassDetails,
     fetchDataClass,
     isSampleOperationPermitted,
     isSamplesSchema,
@@ -1053,6 +1059,7 @@ export {
     getSampleTypeDetails,
     getFieldLookupFromSelection,
     getSelectionLineageData,
+    getParentTypeDataForLineage,
     getSelectedSampleIdsFromSelectionKey,
     EntityInsertPanel,
     EntityCrossProjectSelectionConfirmModal,

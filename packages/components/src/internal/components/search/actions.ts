@@ -27,13 +27,14 @@ import { getFinderViewColumnsConfig, getSampleFinderTabRowCountSql, SAMPLE_FINDE
 import { FinderReport, SearchIdData, SearchResultCardData } from './models';
 import { SearchScope } from './constants';
 
-type GetCardDataFn = (data: Map<any, any>, category?: string) => SearchResultCardData;
+export type GetCardDataFn = (data: Map<any, any>, category?: string) => SearchResultCardData;
 
 export interface SearchOptions {
     category?: string;
     experimentalCustomJson?: boolean;
     limit?: number;
     normalizeUrls?: boolean;
+    offset?: number;
     q: any;
     scope?: SearchScope;
 }
@@ -193,7 +194,7 @@ function getCardData(
 export function getProcessedSearchHits(
     hits: any[],
     getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData,
-    filterCategories = ['data', 'material', 'workflowJob', 'file workflowJob', 'notebook', 'notebookTemplate']
+    filterCategories = ['assay', 'data', 'material', 'workflowJob', 'file', 'file workflowJob', 'notebook', 'notebookTemplate']
 ): any[] {
     return hits
         ?.filter(result => {

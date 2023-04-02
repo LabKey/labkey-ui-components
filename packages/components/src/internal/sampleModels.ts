@@ -1,8 +1,10 @@
 import { List, Map, OrderedMap } from 'immutable';
 import { ComponentType } from 'react';
+
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { RequiresModelAndActions } from '../public/QueryModel/withQueryModels';
 import { SchemaQuery } from '../public/SchemaQuery';
+
 import { ComponentsAPIWrapper } from './APIWrapper';
 import { User } from './components/base/models/User';
 import { EntityDataType } from './components/entities/models';
@@ -13,8 +15,7 @@ export interface AssaySampleColumnProp {
     lookupFieldKey: string;
 }
 
-// Note: this should stay in sync with the freezermanager/src/components/SampleStorageLocation.tsx props
-interface SampleStorageLocationComponentProps {
+export interface SampleStorageLocationComponentProps {
     actionChangeCount?: number;
     currentProductId?: string;
     onUpdate?: () => void;
@@ -25,10 +26,10 @@ interface SampleStorageLocationComponentProps {
 
 export type SampleStorageLocation = ComponentType<SampleStorageLocationComponentProps>;
 
-// Note: this should stay in sync with the freezermanager/src/components/SampleStorageMenu.tsx props
-interface SampleStorageMenuComponentProps {
+export interface SampleStorageMenuComponentProps {
     onUpdate?: (skipChangeCount?: boolean) => void;
     sampleModel: QueryModel;
+    sampleUser: User;
 }
 
 export type SampleStorageMenu = ComponentType<SampleStorageMenuComponentProps>;

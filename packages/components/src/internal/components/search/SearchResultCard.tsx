@@ -13,44 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useCallback } from 'react';
 
 import { SVGIcon } from '../base/SVGIcon';
 
 import { SearchResultCardData } from './models';
+import { incrementClientSideMetricCount } from '../../actions';
+import { getCurrentAppProperties } from '../../app/utils';
 
 interface SearchResultProps {
     cardData: SearchResultCardData;
     iconUrl?: string;
+    isTopResult: boolean;
     summary: string;
     url: string;
 }
 
-interface DetailProps {
-    label: string;
-    title?: string;
-    value: string;
-}
-
-const CardDetail: FC<DetailProps> = memo(({ label, title, value }) => (
-    <div className="search-result__card-detail" title={title}>
-        <strong>{label}: </strong>
-        {value}
-    </div>
-));
-
-export const SearchResultCard: FC<SearchResultProps> = memo(({ cardData, iconUrl, summary, url }) => {
+export const SearchResultCard: FC<SearchResultProps> = memo(({ cardData, iconUrl, isTopResult, summary, url }) => {
     const { altText, category, iconDir, iconSrc, title, typeName } = cardData;
-    let summaryText = 'No summary provided';
+    const productId = getCurrentAppProperties()?.productId;
+    const summaryText =  summary?.length ? summary : 'No summary provided';
 
-    if (summary.length) {
-        summaryText = summary.length <= 35 ? summary : summary.substr(0, 35);
-    }
+    const onClick = useCallback(() => {
+        if (isTopResult) incrementClientSideMetricCount(productId + 'Search', 'firstResultClicked');
+    }, [isTopResult, productId]);
 
+    const textParts = [];
+    if (category)
+        textParts.push(category);
+    if (typeName)
+        textParts.push(typeName);
     return (
-        <a href={url}>
+        <a href={url} onClick={onClick}>
             <div className="row search-result__card-container">
-                <div className="col-sm-2 hidden-xs search-result__card-icon__container">
+                <div className="hidden-xs search-result__card-icon__container">
                     {iconUrl && <img className="search-result__card-icon" src={iconUrl} />}
                     {!iconUrl && (
                         <SVGIcon
@@ -61,17 +57,12 @@ export const SearchResultCard: FC<SearchResultProps> = memo(({ cardData, iconUrl
                         />
                     )}
                 </div>
-
-                <div className="col-sm-10">
-                    <div>
-                        <h4 className="text-capitalize">{title}</h4>
+                <div className="col-sm-12">
+                    <div className="col-sm-12 search-result__title">
+                        <h4>{title}</h4>
+                        {textParts.length > 0 && <div className="margin-left status-pill muted">{textParts.join(": ")}</div>}
                     </div>
-
-                    {category && <CardDetail label="Category" value={category} />}
-
-                    {typeName && <CardDetail label="Type" value={typeName} />}
-
-                    <CardDetail label="Summary" title="Summary" value={summaryText} />
+                    <div className="search-result__summary">{summaryText}</div>
                 </div>
             </div>
         </a>

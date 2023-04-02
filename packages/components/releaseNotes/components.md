@@ -1,11 +1,24 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.XX
-*Released*: XX March 2023
+### version 2.323.0
+*Released*: 1 April 2023
 * Enable lineage relationship between custom data classes in apps
   * Extract parent alias handling code from SampleTypeDesigner and SampleTypePropertiesPanel to DomianParentAliases and utils
   * Support parent alias for DataClassDesigner
+
+### version 2.322.0
+*Released*: 31 March 2023
+* Search behavior improvements
+  * Added a SearchPanel component to be shared between Apps
+  * Cleaned up some styling and layout items
+  * Added paging to search results
+  * Removed advanced filtering options
+
+### version 2.321.0
+*Released*: 31 March 2023
+- Allow for specifying other options on requests made by `useContainerUser`.
+- Consolidate usage of `SampleStorageLocationComponentProps` and `SampleStorageMenuComponentProps` types by exporting for external reference.
 
 ### version 2.320.1
 *Released*: 31 March 2023

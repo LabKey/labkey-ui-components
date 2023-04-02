@@ -1,6 +1,6 @@
 import React, { ComponentType, FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { MenuItem } from 'react-bootstrap';
-import { Container, PermissionTypes, User } from '@labkey/api';
+import { Container, PermissionTypes } from '@labkey/api';
 
 import { EntityDataType } from '../internal/components/entities/models';
 import { QueryModel } from '../public/QueryModel/QueryModel';
@@ -38,19 +38,18 @@ import { invalidateLineageResults } from '../internal/components/lineage/actions
 
 import { isAssayEnabled, isWorkflowEnabled } from '../internal/app/utils';
 
+import { User } from '../internal/components/base/models/User';
+
+import { SampleStorageMenuComponentProps } from '../internal/sampleModels';
+
 import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
 import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
 import { EntityDeleteModal } from './EntityDeleteModal';
 import { createEntityParentKey, getJobCreationHref, getSampleAuditBehaviorType, getSampleDeleteMessage } from './utils';
 import { onSampleChange } from './actions';
 
-interface StorageMenuProps {
-    onUpdate?: (skipChangeCount?: boolean) => any;
-    sampleModel: QueryModel;
-}
-
 interface HeaderProps {
-    StorageMenu?: ComponentType<StorageMenuProps>;
+    StorageMenu?: ComponentType<SampleStorageMenuComponentProps>;
     assayProviderType?: string;
     canDerive?: boolean;
     entityDataType?: EntityDataType;
@@ -87,6 +86,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
         title,
         subtitle,
         StorageMenu,
+        user,
     } = props;
     const { queryInfo } = sampleModel;
     const { createNotification } = useNotificationsContext();
@@ -96,7 +96,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
     const [showPrintDialog, setShowPrintDialog] = useState<boolean>(false);
     const sampleId = useMemo(() => sampleModel.getRowValue('RowId'), [sampleModel]);
     const sampleIds = useMemo(() => [sampleId], [sampleId]);
-    const { moduleContext, user } = useServerContext();
+    const { moduleContext } = useServerContext();
 
     const isMedia = queryInfo?.isMedia;
 
@@ -119,7 +119,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                 setError(true);
             }
         })();
-    }, [sampleIds]);
+    }, [sampleIds, user]);
 
     const onAfterDelete = useCallback((): void => {
         invalidateLineageResults();
@@ -287,7 +287,9 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                                 </RequiresPermission>
                             )}
 
-                            {!isMedia && !!StorageMenu && <StorageMenu onUpdate={onUpdate} sampleModel={sampleModel} />}
+                            {!isMedia && !!StorageMenu && (
+                                <StorageMenu onUpdate={onUpdate} sampleModel={sampleModel} sampleUser={user} />
+                            )}
 
                             {canPrintLabels && <MenuItem onClick={onPrintLabel}>Print Labels</MenuItem>}
 

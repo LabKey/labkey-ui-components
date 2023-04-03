@@ -98,30 +98,27 @@ export class ViewInfo {
     static BIO_DETAIL_NAME = 'BiologicsDetails';
 
     constructor(partial: Partial<ViewInfo>) {
-        // prepare name and isDefault
-        let { label, name } = partial;
-
-        if (partial.isDefault) {
-            name = ViewInfo.DEFAULT_NAME;
-            label = 'Default';
-        } else if (name === undefined || name === '') {
-            name = ViewInfo.DEFAULT_NAME;
-        } else {
-            name = partial.name;
-        }
-
-        Object.assign(this, VIEW_INFO_DEFAULTS, partial, { name, label });
+        Object.assign(this, VIEW_INFO_DEFAULTS, partial);
     }
 
     static fromJson(json: ViewInfoJson) {
-        const { columns, filter, sort, ...rest } = json;
+        const { columns, filter, label, name, sort, ...rest } = json;
         const isDefault = rest.default === true;
         delete rest.default;
+        let label_ = label;
+        let name_ = name;
+
+        if (isDefault || name === undefined || name === '') {
+            name_ = ViewInfo.DEFAULT_NAME;
+            label_ = 'Default';
+        }
 
         return new ViewInfo({
             columns: columns !== undefined ? [...columns] : [],
             filters: getFiltersFromView(filter),
             isDefault,
+            label: label_,
+            name: name_,
             sorts: getSortsFromView(sort),
             ...rest,
         });
@@ -213,7 +210,6 @@ export class ViewInfo {
     }
 
     mutate(updates: Partial<ViewInfo>) {
-        // TODO: this needs to be new ViewInfo, revert  the change from replaceALl
         return new ViewInfo({
             ...this,
             ...updates,

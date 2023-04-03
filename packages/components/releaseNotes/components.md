@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 47544: Don't show [blank] filter option if all distinct values are returned and none is blank.
 * Issue 47532: For the UserProfile form, make sure columns marked as readOnly remain readOnly, regardless of the setting for isUserEditable.
 * Issue 47100: Update documentation link for sample ID lookup fields.
+* Issue 47464: Update documentation link for ontology integration from LKSM.
 
 ### version 2.323.0
 *Released*: 1 April 2023

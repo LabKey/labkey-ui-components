@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 47571: Make sure project settings panel shows up even when the premium module is not available.
+
 ### version 2.323.0
 *Released*: 1 April 2023
 * Enable lineage relationship between custom data classes in apps

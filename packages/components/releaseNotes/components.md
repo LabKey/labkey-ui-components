@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD April 2023
+* UserDetailsPanel fix for currentProductId vs targetProductId in URL generation
+
 ### version 2.323.0
 *Released*: 1 April 2023
 * Enable lineage relationship between custom data classes in apps

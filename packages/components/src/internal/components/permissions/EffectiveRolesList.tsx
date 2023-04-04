@@ -8,7 +8,9 @@ import { Map, List } from 'immutable';
 import { Col, Row } from 'react-bootstrap';
 
 import { User } from '../base/models/User';
-import { AppURL } from '../../url/AppURL';
+import { AppURL, createProductUrlFromParts } from '../../url/AppURL';
+
+import { getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
 
 import { SecurityAssignment, SecurityPolicy, SecurityRole } from './models';
 
@@ -24,6 +26,9 @@ interface Props {
 export class EffectiveRolesList extends React.PureComponent<Props> {
     render() {
         const { userId, policy, rootPolicy, rolesByUniqueName, currentUser, showLinks = true } = this.props;
+        const currentProductId = getCurrentAppProperties()?.productId;
+        const targetProductId = getPrimaryAppProperties()?.productId;
+
         let assignments =
             policy && rolesByUniqueName
                 ? policy.assignments.filter(assignment => assignment.userId === userId).toList()
@@ -51,16 +56,18 @@ export class EffectiveRolesList extends React.PureComponent<Props> {
                             {assignments.map(assignment => {
                                 const role = rolesByUniqueName.get(assignment.role);
                                 const roleDisplay = role ? role.displayName : assignment.role;
+                                const url = createProductUrlFromParts(
+                                    targetProductId,
+                                    currentProductId,
+                                    { expand: roleDisplay },
+                                    'admin',
+                                    'permissions'
+                                );
+
                                 return (
                                     <li key={assignment.role} className="principal-detail-li">
                                         {currentUser.isAdmin && showLinks ? (
-                                            <a
-                                                href={AppURL.create('admin', 'permissions')
-                                                    .addParam('expand', roleDisplay)
-                                                    .toHref()}
-                                            >
-                                                {roleDisplay}
-                                            </a>
+                                            <a href={url instanceof AppURL ? url.toHref() : url}>{roleDisplay}</a>
                                         ) : (
                                             roleDisplay
                                         )}

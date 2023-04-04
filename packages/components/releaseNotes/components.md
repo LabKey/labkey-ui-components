@@ -9,6 +9,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 47100: Update documentation link for sample ID lookup fields.
 * Issue 47464: Update documentation link for ontology integration from LKSM.
 
+### version 2.323.2
+*Released*: 4 April 2023
+* UserDetailsPanel fix for currentProductId vs targetProductId in URL generation
+* SampleAssayDetails fix to check for both hasSampleTypeAssayDesigns and hasAssayResults when displaying empty msg
+
 ### version 2.323.1
 *Released*: 4 April 2023
 * Merge release23.3-SNAPSHOT to develop:

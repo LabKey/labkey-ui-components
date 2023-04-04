@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.323.1
+*Released*: 4 April 2023
+* Merge release23.3-SNAPSHOT to develop:
+    * includes changes from 2.302.4
+
 ### version 2.323.0
 *Released*: 1 April 2023
 * Enable lineage relationship between custom data classes in apps
@@ -68,7 +73,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 2.315.1
 *Released*: 28 March 2023
-* Merge release23.2-SNAPSHOT to develop:
+* Merge release23.3-SNAPSHOT to develop:
     * includes changes from 2.302.3
 
 ### version 2.315.0
@@ -138,7 +143,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 2.307.1
 *Released*: 8 March 2023
-* Merge release23.2-SNAPSHOT to develop:
+* Merge release23.3-SNAPSHOT to develop:
   * includes changes from 2.302.1 and 2.302.2
 
 ### version 2.307.0
@@ -182,6 +187,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Separate editing of Stored Amount and Freeze/Thaw count on
   * Account for storedAmount and Units fields now on samples grids
   * Don't display amount and units in details display
+
+### version 2.302.4
+*Released*: 30 March 2023
+- Issue 47502: ProductMenu should use isAppHomeFolder to determine containerPath for fetchContainers call
 
 ### version 2.302.3
 *Released*: 27 March 2023

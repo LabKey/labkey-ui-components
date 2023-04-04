@@ -78,7 +78,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                     hasBlank = true;
                     distinctValues.splice(distinctValues.indexOf(EMPTY_VALUE_DISPLAY), 1);
                 }
-                if (toShow.length > 0 && (hasBlank || canBeBlank && result.values.length > MAX_DISTINCT_FILTER_OPTIONS)) {
+                if (toShow.length > 0 && (hasBlank || (canBeBlank && result.values.length > MAX_DISTINCT_FILTER_OPTIONS))) {
                     distinctValues.unshift(EMPTY_VALUE_DISPLAY);
                 }
 

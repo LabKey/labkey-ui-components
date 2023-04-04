@@ -1,12 +1,6 @@
-import React, { ReactNode, FC, memo, useCallback } from 'react';
+import React, { FC, memo, ReactNode, useCallback } from 'react';
 
-import {
-    ADVANCED_FIELD_EDITOR_TOPIC,
-    HelpLink,
-    helpLinkNode,
-    ONTOLOGY_CONCEPT_TOPIC,
-    ONTOLOGY_LOOKUP_TOPIC
-} from '../../util/helpLinks';
+import { ADVANCED_FIELD_EDITOR_TOPIC, HelpLink, ONTOLOGY_LOOKUP_TOPIC } from '../../util/helpLinks';
 
 import { DomainField } from '../domainproperties/models';
 

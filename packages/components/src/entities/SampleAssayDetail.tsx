@@ -271,8 +271,18 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
         [activeSampleAliquotType, emptyAliquotViewMsg, emptySampleViewMsg]
     );
 
+    if (!allLoaded || queryModelsWithData === undefined) {
+        return (
+            <AssayResultPanel>
+                <LoadingSpinner />
+            </AssayResultPanel>
+        );
+    }
+
     // always contains the summary grid model, so consider empty if we only have 1
-    if (!hasSampleTypeAssayDesigns) {
+    const hasAssayResults = Object.keys(queryModelsWithData).length > 1;
+
+    if (!hasSampleTypeAssayDesigns && !hasAssayResults) {
         if (emptyAssayDefDisplay) return <>{emptyAssayDefDisplay}</>;
 
         return (
@@ -285,16 +295,7 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
         );
     }
 
-    if (!allLoaded || queryModelsWithData === undefined) {
-        return (
-            <AssayResultPanel>
-                <LoadingSpinner />
-            </AssayResultPanel>
-        );
-    }
-
-    // always contains the summary grid model, so consider empty if we only have 1
-    if (Object.keys(queryModelsWithData).length === 1) {
+    if (!hasAssayResults) {
         if (emptyAssayResultDisplay) return <>{emptyAssayResultDisplay}</>;
 
         return (

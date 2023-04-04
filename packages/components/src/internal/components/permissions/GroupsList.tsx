@@ -1,12 +1,13 @@
 import React, { FC, memo, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
-import { AppURL } from '../../url/AppURL';
+import { AppURL, createProductUrlFromParts } from '../../url/AppURL';
 import { User } from '../base/models/User';
 import { fetchGroupMembership } from '../administration/actions';
 import { useAppContext } from '../../AppContext';
 import { useServerContext } from '../base/ServerContext';
 import { GroupMembership, MemberType } from '../administration/models';
+import { getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
 
 interface Props {
     asRow?: boolean;
@@ -20,6 +21,8 @@ export const GroupsList: FC<Props> = memo(props => {
     const [groupMembership, setGroupMembership] = useState<GroupMembership>();
     const { api } = useAppContext();
     const { container } = useServerContext();
+    const currentProductId = getCurrentAppProperties()?.productId;
+    const targetProductId = getPrimaryAppProperties()?.productId;
 
     useEffect(() => {
         (async () => {
@@ -35,19 +38,27 @@ export const GroupsList: FC<Props> = memo(props => {
     const body = (
         <ul className="principal-detail-ul">
             {groups.length > 0 ? (
-                groups.map(group => (
-                    <li key={group.value} className="principal-detail-li">
-                        {currentUser.isAdmin &&
-                        showLinks &&
-                        groupMembership?.[group.value].type !== MemberType.siteGroup ? (
-                            <a href={AppURL.create('admin', 'groups').addParam('expand', group.value).toHref()}>
-                                {group.displayValue}
-                            </a>
-                        ) : (
-                            group.displayValue
-                        )}
-                    </li>
-                ))
+                groups.map(group => {
+                    const url = createProductUrlFromParts(
+                        targetProductId,
+                        currentProductId,
+                        { expand: group.value },
+                        'admin',
+                        'groups'
+                    );
+
+                    return (
+                        <li key={group.value} className="principal-detail-li">
+                            {currentUser.isAdmin &&
+                            showLinks &&
+                            groupMembership?.[group.value].type !== MemberType.siteGroup ? (
+                                <a href={url instanceof AppURL ? url.toHref() : url}>{group.displayValue}</a>
+                            ) : (
+                                group.displayValue
+                            )}
+                        </li>
+                    );
+                })
             ) : (
                 <li className="principal-detail-li">None</li>
             )}

@@ -20,12 +20,14 @@ import { SCHEMAS } from '../../schemas';
 import { flattenValuesFromRow } from '../../../public/QueryModel/QueryModel';
 
 import { GroupsList } from '../permissions/GroupsList';
-import { AppURL } from '../../url/AppURL';
+import { AppURL, createProductUrlFromParts } from '../../url/AppURL';
 import { User } from '../base/models/User';
 import { getDefaultAPIWrapper } from '../../APIWrapper';
 import { SecurityAPIWrapper } from '../security/APIWrapper';
 import { Container } from '../base/models/Container';
 import { getRolesByUniqueName, processGetRolesResponse } from '../permissions/actions';
+
+import { getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
 
 import { UserResetPasswordConfirmModal } from './UserResetPasswordConfirmModal';
 import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
@@ -333,9 +335,15 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         const { showDialog, userProperties } = this.state;
         const { user } = getServerContext();
         const isSelf = userId === user.id;
-        const manageUrl = AppURL.create('admin', 'users')
-            .addParam('usersView', 'all')
-            .addParam('all.UserId~eq', userId);
+        const currentProductId = getCurrentAppProperties()?.productId;
+        const targetProductId = getPrimaryAppProperties()?.productId;
+        const manageUrl = createProductUrlFromParts(
+            targetProductId,
+            currentProductId,
+            { usersView: 'all', 'all.UserId~eq': userId },
+            'admin',
+            'users'
+        );
 
         if (toggleDetailsModal) {
             return (
@@ -346,7 +354,10 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                     <Modal.Body>{this.renderBody()}</Modal.Body>
                     {user.isAdmin && (
                         <Modal.Footer>
-                            <Button className="pull-right" href={manageUrl.toHref()}>
+                            <Button
+                                className="pull-right"
+                                href={manageUrl instanceof AppURL ? manageUrl.toHref() : manageUrl}
+                            >
                                 Manage
                             </Button>
                         </Modal.Footer>

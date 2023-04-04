@@ -101,7 +101,7 @@ export class UserProfile extends PureComponent<Props, State> {
         // make sure all columns are set as shownInInsertView and those that are marked as editable are not also readOnly.
         // It can happen with more frequency than you might think that a column is marked as readOnly but also userEditable.
         // Here, at least, we want to treat both of these settings as an indication that the column is readOnly. But we let
-        // the email field through so it can be displayed but disabled. Silly hack.
+        // the email field through so it can be displayed but disabled. Silly hack. Issue 47532
         const _col = col.mutate({ shownInInsertView: true, readOnly: (col.readOnly && (col.name !== 'Email')) || !col.userEditable  });
         return insertColumnFilter(_col) && !FIELDS_TO_EXCLUDE.contains(_col.fieldKey.toLowerCase());
     };

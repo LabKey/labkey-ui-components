@@ -78,6 +78,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                     hasBlank = true;
                     distinctValues.splice(distinctValues.indexOf(EMPTY_VALUE_DISPLAY), 1);
                 }
+                // Issue 47544: don't show 'blank' if we have all the values and none are blank
                 if (toShow.length > 0 && (hasBlank || (canBeBlank && result.values.length > MAX_DISTINCT_FILTER_OPTIONS))) {
                     distinctValues.unshift(EMPTY_VALUE_DISPLAY);
                 }

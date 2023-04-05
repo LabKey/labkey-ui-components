@@ -1,6 +1,6 @@
-import React, { ReactNode, FC, memo, useCallback } from 'react';
+import React, { FC, memo, ReactNode, useCallback } from 'react';
 
-import { helpLinkNode, ONTOLOGY_CONCEPT_TOPIC } from '../../util/helpLinks';
+import { ADVANCED_FIELD_EDITOR_TOPIC, HelpLink, ONTOLOGY_LOOKUP_TOPIC } from '../../util/helpLinks';
 
 import { DomainField } from '../domainproperties/models';
 
@@ -8,6 +8,7 @@ import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
 
 import { ConceptModel, PathModel } from './models';
 import { OntologyConceptSelectButton } from './OntologyConceptSelectButton';
+import { sampleManagerIsPrimaryApp } from '../../app/utils';
 
 interface OntologyConceptAnnotationProps {
     field: DomainField;
@@ -46,7 +47,7 @@ function getOntologyConceptAnnotationHelpTipBody(): ReactNode {
     return (
         <>
             <p>Select an ontology concept to use as an annotation for this field.</p>
-            <p>Learn more about {helpLinkNode(ONTOLOGY_CONCEPT_TOPIC, 'ontology integration')} in LabKey.</p>
+            <p>Learn more about{' '}<HelpLink topic={sampleManagerIsPrimaryApp() ? ADVANCED_FIELD_EDITOR_TOPIC : ONTOLOGY_LOOKUP_TOPIC}>ontology integration</HelpLink>{' '}in LabKey.</p>
         </>
     );
 }

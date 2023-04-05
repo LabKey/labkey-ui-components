@@ -1,12 +1,11 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import renderer from 'react-test-renderer';
 
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 import getDomainDetailsJSON from '../../../../test/data/dataclass-getDomainDetails.json';
 import DomainForm from '../DomainForm';
 
-import { sleep } from '../../../testHelpers';
+import { waitForLifecycle } from '../../../testHelpers';
 import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { FileAttachmentForm } from '../../../../public/files/FileAttachmentForm';
@@ -31,14 +30,17 @@ beforeAll(() => {
 });
 
 describe('DataClassDesigner', () => {
-    test('default properties', () => {
+    test('default properties', async () => {
         const form = <DataClassDesigner {...BASE_PROPS} />;
 
-        const tree = renderer.create(form);
+        const tree = mount(form);
+
+        await waitForLifecycle(tree);
+
         expect(tree).toMatchSnapshot();
     });
 
-    test('custom properties', () => {
+    test('custom properties', async () => {
         const form = (
             <DataClassDesigner
                 {...BASE_PROPS}
@@ -54,14 +56,17 @@ describe('DataClassDesigner', () => {
             />
         );
 
-        const tree = renderer.create(form);
+        const tree = mount(form);
+
+        await waitForLifecycle(tree);
+
         expect(tree).toMatchSnapshot();
     });
 
     test('initModel', async () => {
         const form = <DataClassDesigner {...BASE_PROPS} initModel={DataClassModel.create(getDomainDetailsJSON)} />;
         const wrapped = mount(form);
-        await sleep();
+        await waitForLifecycle(wrapped);
 
         expect(wrapped.find(DataClassPropertiesPanel)).toHaveLength(1);
         expect(wrapped.find(DomainForm)).toHaveLength(1);
@@ -72,7 +77,7 @@ describe('DataClassDesigner', () => {
 
     test('open fields panel', async () => {
         const wrapped = mount(<DataClassDesigner {...BASE_PROPS} />);
-        await sleep();
+        await waitForLifecycle(wrapped);
 
         const panelHeader = wrapped.find('div#domain-header');
         expect(wrapped.find('#domain-header').at(2).hasClass('domain-panel-header-collapsed')).toBeTruthy();

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import renderer from 'react-test-renderer';
 import React from 'react';
 import { mount } from 'enzyme';
 
@@ -29,6 +28,7 @@ import { Alert } from '../../base/Alert';
 import { DatasetDesignerPanels } from './DatasetDesignerPanels';
 
 import { DatasetModel } from './models';
+import { waitForLifecycle } from "../../../testHelpers";
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -38,8 +38,8 @@ describe('Dataset Designer', () => {
     const newDatasetModel = DatasetModel.create(NEW_DATASET_MODEL_WITHOUT_DATASPACE, undefined);
     const populatedDatasetModel = DatasetModel.create(null, getDatasetDesign);
 
-    test('New dataset', () => {
-        const designerPanels = renderer.create(
+    test('New dataset', async () => {
+        const designerPanels = mount(
             <DatasetDesignerPanels
                 initModel={newDatasetModel}
                 useTheme={true}
@@ -49,11 +49,13 @@ describe('Dataset Designer', () => {
             />
         );
 
+        await waitForLifecycle(designerPanels);
+
         expect(designerPanels).toMatchSnapshot();
         designerPanels.unmount();
     });
 
-    test('Edit existing dataset', () => {
+    test('Edit existing dataset', async () => {
         const designerPanels = mount(
             <DatasetDesignerPanels
                 initModel={populatedDatasetModel}
@@ -64,11 +66,13 @@ describe('Dataset Designer', () => {
             />
         );
 
+        await waitForLifecycle(designerPanels);
+
         expect(designerPanels).toMatchSnapshot();
         designerPanels.unmount();
     });
 
-    test('for alert/message', () => {
+    test('for alert/message', async () => {
         const wrapped = mount(
             <DatasetDesignerPanels
                 initModel={newDatasetModel}
@@ -78,6 +82,8 @@ describe('Dataset Designer', () => {
                 testMode={true}
             />
         );
+
+        await waitForLifecycle(wrapped);
 
         const datasetHeader = wrapped.find('div#dataset-header-id');
         expect(wrapped.find('#dataset-header-id').at(2).hasClass('domain-panel-header-expanded')).toBeTruthy();

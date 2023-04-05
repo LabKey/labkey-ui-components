@@ -1,6 +1,5 @@
 import React from 'react';
 import { Alert } from 'react-bootstrap';
-import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
 import { DEFAULT_LIST_SETTINGS } from '../../../../test/data/constants';
@@ -9,7 +8,7 @@ import DomainForm from '../DomainForm';
 
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
-import { sleep } from '../../../testHelpers';
+import { waitForLifecycle } from '../../../testHelpers';
 import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { ListPropertiesPanel } from './ListPropertiesPanel';
@@ -32,10 +31,13 @@ describe('ListDesignerPanel', () => {
         };
     }
 
-    test('new list', () => {
+    test('new list', async () => {
         const listDesignerPanels = <ListDesignerPanels {...getDefaultProps()} />;
 
-        const tree = renderer.create(listDesignerPanels);
+        const tree = mount(listDesignerPanels);
+
+        await waitForLifecycle(tree);
+
         expect(tree).toMatchSnapshot();
     });
 
@@ -45,7 +47,7 @@ describe('ListDesignerPanel', () => {
         const listDesignerPanels = mount(
             <ListDesignerPanels {...getDefaultProps()} initModel={populatedExistingModel} />
         );
-        await sleep();
+        await waitForLifecycle(listDesignerPanels);
 
         expect(listDesignerPanels).toMatchSnapshot();
         listDesignerPanels.unmount();
@@ -53,7 +55,7 @@ describe('ListDesignerPanel', () => {
 
     test('visible properties', async () => {
         const listDesignerPanels = mount(<ListDesignerPanels {...getDefaultProps()} />);
-        await sleep();
+        await waitForLifecycle(listDesignerPanels);
 
         expect(listDesignerPanels.find(ListPropertiesPanel)).toHaveLength(1);
         expect(listDesignerPanels.find(DomainForm)).toHaveLength(1);
@@ -62,7 +64,7 @@ describe('ListDesignerPanel', () => {
 
     test('open fields panel', async () => {
         const listDesignerPanels = mount(<ListDesignerPanels {...getDefaultProps()} />);
-        await sleep();
+        await waitForLifecycle(listDesignerPanels);
 
         const panelHeader = listDesignerPanels.find('div#domain-header');
 

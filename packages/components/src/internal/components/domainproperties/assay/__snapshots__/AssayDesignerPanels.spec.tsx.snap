@@ -11218,7 +11218,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                 >
                                   <ErrorBoundary>
                                     <App
-                                      contextId="2"
+                                      contextId="5"
                                       dragHandleUsageInstructions="
   Press space bar to start a drag.
   When dragging you can use the arrow keys to move the item around and escape to cancel.
@@ -11446,7 +11446,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                             useClone={null}
                                           >
                                             <div
-                                              data-rbd-droppable-context-id="2"
+                                              data-rbd-droppable-context-id="5"
                                               data-rbd-droppable-id="domain-form-droppable"
                                             >
                                               <Form
@@ -11755,7 +11755,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                           >
                                                             <div
                                                               className="domain-field-row domain-row-border-default"
-                                                              data-rbd-draggable-context-id="2"
+                                                              data-rbd-draggable-context-id="5"
                                                               data-rbd-draggable-id="domainpropertiesrow-domaindrag-1-0"
                                                               onTransitionEnd={null}
                                                               style={
@@ -11948,9 +11948,9 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                     </Modal>
                                                                   </AdvancedSettings>
                                                                   <div
-                                                                    aria-describedby="rbd-hidden-text-2-hidden-text-10"
+                                                                    aria-describedby="rbd-hidden-text-5-hidden-text-25"
                                                                     className="domain-row-handle"
-                                                                    data-rbd-drag-handle-context-id="2"
+                                                                    data-rbd-drag-handle-context-id="5"
                                                                     data-rbd-drag-handle-draggable-id="domainpropertiesrow-domaindrag-1-0"
                                                                     draggable={false}
                                                                     onDragStart={[Function]}
@@ -12898,29 +12898,11 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                                       placement="right"
                                                                                                       rootClose={false}
                                                                                                       show={false}
-                                                                                                      target={
-                                                                                                        <span
-                                                                                                          class="label-help-target"
-                                                                                                        >
-                                                                                                          <span
-                                                                                                            class="label-help-icon fa fa-question-circle"
-                                                                                                          />
-                                                                                                        </span>
-                                                                                                      }
                                                                                                     >
                                                                                                       <Overlay
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                         transition={[Function]}
                                                                                                       />
                                                                                                     </Overlay>
@@ -13000,29 +12982,11 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                                       placement="right"
                                                                                                       rootClose={false}
                                                                                                       show={false}
-                                                                                                      target={
-                                                                                                        <span
-                                                                                                          class="label-help-target"
-                                                                                                        >
-                                                                                                          <span
-                                                                                                            class="label-help-icon fa fa-question-circle"
-                                                                                                          />
-                                                                                                        </span>
-                                                                                                      }
                                                                                                     >
                                                                                                       <Overlay
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                         transition={[Function]}
                                                                                                       />
                                                                                                     </Overlay>
@@ -13251,29 +13215,11 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                       >
                                                                                                         <Overlay
                                                                                                           placement="right"
                                                                                                           rootClose={false}
                                                                                                           show={false}
-                                                                                                          target={
-                                                                                                            <span
-                                                                                                              class="label-help-target"
-                                                                                                            >
-                                                                                                              <span
-                                                                                                                class="label-help-icon fa fa-question-circle"
-                                                                                                              />
-                                                                                                            </span>
-                                                                                                          }
                                                                                                           transition={[Function]}
                                                                                                         />
                                                                                                       </Overlay>
@@ -13344,29 +13290,11 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                       >
                                                                                                         <Overlay
                                                                                                           placement="right"
                                                                                                           rootClose={false}
                                                                                                           show={false}
-                                                                                                          target={
-                                                                                                            <span
-                                                                                                              class="label-help-target"
-                                                                                                            >
-                                                                                                              <span
-                                                                                                                class="label-help-icon fa fa-question-circle"
-                                                                                                              />
-                                                                                                            </span>
-                                                                                                          }
                                                                                                           transition={[Function]}
                                                                                                         />
                                                                                                       </Overlay>
@@ -13721,7 +13649,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                           >
                                                             <div
                                                               className="domain-field-row domain-row-border-default"
-                                                              data-rbd-draggable-context-id="2"
+                                                              data-rbd-draggable-context-id="5"
                                                               data-rbd-draggable-id="domainpropertiesrow-domaindrag-1-1"
                                                               onTransitionEnd={null}
                                                               style={
@@ -13914,9 +13842,9 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                     </Modal>
                                                                   </AdvancedSettings>
                                                                   <div
-                                                                    aria-describedby="rbd-hidden-text-2-hidden-text-10"
+                                                                    aria-describedby="rbd-hidden-text-5-hidden-text-25"
                                                                     className="domain-row-handle"
-                                                                    data-rbd-drag-handle-context-id="2"
+                                                                    data-rbd-drag-handle-context-id="5"
                                                                     data-rbd-drag-handle-draggable-id="domainpropertiesrow-domaindrag-1-1"
                                                                     draggable={false}
                                                                     onDragStart={[Function]}
@@ -14841,29 +14769,11 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                                       placement="right"
                                                                                                       rootClose={false}
                                                                                                       show={false}
-                                                                                                      target={
-                                                                                                        <span
-                                                                                                          class="label-help-target"
-                                                                                                        >
-                                                                                                          <span
-                                                                                                            class="label-help-icon fa fa-question-circle"
-                                                                                                          />
-                                                                                                        </span>
-                                                                                                      }
                                                                                                     >
                                                                                                       <Overlay
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                         transition={[Function]}
                                                                                                       />
                                                                                                     </Overlay>
@@ -14943,29 +14853,11 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                                       placement="right"
                                                                                                       rootClose={false}
                                                                                                       show={false}
-                                                                                                      target={
-                                                                                                        <span
-                                                                                                          class="label-help-target"
-                                                                                                        >
-                                                                                                          <span
-                                                                                                            class="label-help-icon fa fa-question-circle"
-                                                                                                          />
-                                                                                                        </span>
-                                                                                                      }
                                                                                                     >
                                                                                                       <Overlay
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                         transition={[Function]}
                                                                                                       />
                                                                                                     </Overlay>
@@ -15194,29 +15086,11 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                       >
                                                                                                         <Overlay
                                                                                                           placement="right"
                                                                                                           rootClose={false}
                                                                                                           show={false}
-                                                                                                          target={
-                                                                                                            <span
-                                                                                                              class="label-help-target"
-                                                                                                            >
-                                                                                                              <span
-                                                                                                                class="label-help-icon fa fa-question-circle"
-                                                                                                              />
-                                                                                                            </span>
-                                                                                                          }
                                                                                                           transition={[Function]}
                                                                                                         />
                                                                                                       </Overlay>
@@ -15287,29 +15161,11 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                       >
                                                                                                         <Overlay
                                                                                                           placement="right"
                                                                                                           rootClose={false}
                                                                                                           show={false}
-                                                                                                          target={
-                                                                                                            <span
-                                                                                                              class="label-help-target"
-                                                                                                            >
-                                                                                                              <span
-                                                                                                                class="label-help-icon fa fa-question-circle"
-                                                                                                              />
-                                                                                                            </span>
-                                                                                                          }
                                                                                                           transition={[Function]}
                                                                                                         />
                                                                                                       </Overlay>
@@ -15664,7 +15520,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                           >
                                                             <div
                                                               className="domain-field-row domain-row-border-default"
-                                                              data-rbd-draggable-context-id="2"
+                                                              data-rbd-draggable-context-id="5"
                                                               data-rbd-draggable-id="domainpropertiesrow-domaindrag-1-2"
                                                               onTransitionEnd={null}
                                                               style={
@@ -15857,9 +15713,9 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                     </Modal>
                                                                   </AdvancedSettings>
                                                                   <div
-                                                                    aria-describedby="rbd-hidden-text-2-hidden-text-10"
+                                                                    aria-describedby="rbd-hidden-text-5-hidden-text-25"
                                                                     className="domain-row-handle"
-                                                                    data-rbd-drag-handle-context-id="2"
+                                                                    data-rbd-drag-handle-context-id="5"
                                                                     data-rbd-drag-handle-draggable-id="domainpropertiesrow-domaindrag-1-2"
                                                                     draggable={false}
                                                                     onDragStart={[Function]}
@@ -16738,29 +16594,11 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                                       placement="right"
                                                                                                       rootClose={false}
                                                                                                       show={false}
-                                                                                                      target={
-                                                                                                        <span
-                                                                                                          class="label-help-target"
-                                                                                                        >
-                                                                                                          <span
-                                                                                                            class="label-help-icon fa fa-question-circle"
-                                                                                                          />
-                                                                                                        </span>
-                                                                                                      }
                                                                                                     >
                                                                                                       <Overlay
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                         transition={[Function]}
                                                                                                       />
                                                                                                     </Overlay>
@@ -16840,29 +16678,11 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                                       placement="right"
                                                                                                       rootClose={false}
                                                                                                       show={false}
-                                                                                                      target={
-                                                                                                        <span
-                                                                                                          class="label-help-target"
-                                                                                                        >
-                                                                                                          <span
-                                                                                                            class="label-help-icon fa fa-question-circle"
-                                                                                                          />
-                                                                                                        </span>
-                                                                                                      }
                                                                                                     >
                                                                                                       <Overlay
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                         transition={[Function]}
                                                                                                       />
                                                                                                     </Overlay>
@@ -17091,29 +16911,11 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                       >
                                                                                                         <Overlay
                                                                                                           placement="right"
                                                                                                           rootClose={false}
                                                                                                           show={false}
-                                                                                                          target={
-                                                                                                            <span
-                                                                                                              class="label-help-target"
-                                                                                                            >
-                                                                                                              <span
-                                                                                                                class="label-help-icon fa fa-question-circle"
-                                                                                                              />
-                                                                                                            </span>
-                                                                                                          }
                                                                                                           transition={[Function]}
                                                                                                         />
                                                                                                       </Overlay>
@@ -17184,29 +16986,11 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                       >
                                                                                                         <Overlay
                                                                                                           placement="right"
                                                                                                           rootClose={false}
                                                                                                           show={false}
-                                                                                                          target={
-                                                                                                            <span
-                                                                                                              class="label-help-target"
-                                                                                                            >
-                                                                                                              <span
-                                                                                                                class="label-help-icon fa fa-question-circle"
-                                                                                                              />
-                                                                                                            </span>
-                                                                                                          }
                                                                                                           transition={[Function]}
                                                                                                         />
                                                                                                       </Overlay>
@@ -31211,7 +30995,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                 >
                                   <ErrorBoundary>
                                     <App
-                                      contextId="1"
+                                      contextId="3"
                                       dragHandleUsageInstructions="
   Press space bar to start a drag.
   When dragging you can use the arrow keys to move the item around and escape to cancel.
@@ -31439,7 +31223,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                             useClone={null}
                                           >
                                             <div
-                                              data-rbd-droppable-context-id="1"
+                                              data-rbd-droppable-context-id="3"
                                               data-rbd-droppable-id="domain-form-droppable"
                                             >
                                               <Form
@@ -31748,7 +31532,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                           >
                                                             <div
                                                               className="domain-field-row domain-row-border-default"
-                                                              data-rbd-draggable-context-id="1"
+                                                              data-rbd-draggable-context-id="3"
                                                               data-rbd-draggable-id="domainpropertiesrow-domaindrag-1-0"
                                                               onTransitionEnd={null}
                                                               style={
@@ -31941,9 +31725,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                     </Modal>
                                                                   </AdvancedSettings>
                                                                   <div
-                                                                    aria-describedby="rbd-hidden-text-1-hidden-text-5"
+                                                                    aria-describedby="rbd-hidden-text-3-hidden-text-15"
                                                                     className="domain-row-handle"
-                                                                    data-rbd-drag-handle-context-id="1"
+                                                                    data-rbd-drag-handle-context-id="3"
                                                                     data-rbd-drag-handle-draggable-id="domainpropertiesrow-domaindrag-1-0"
                                                                     draggable={false}
                                                                     onDragStart={[Function]}
@@ -32903,29 +32687,11 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                       placement="right"
                                                                                                       rootClose={false}
                                                                                                       show={false}
-                                                                                                      target={
-                                                                                                        <span
-                                                                                                          class="label-help-target"
-                                                                                                        >
-                                                                                                          <span
-                                                                                                            class="label-help-icon fa fa-question-circle"
-                                                                                                          />
-                                                                                                        </span>
-                                                                                                      }
                                                                                                     >
                                                                                                       <Overlay
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                         transition={[Function]}
                                                                                                       />
                                                                                                     </Overlay>
@@ -33005,29 +32771,11 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                       placement="right"
                                                                                                       rootClose={false}
                                                                                                       show={false}
-                                                                                                      target={
-                                                                                                        <span
-                                                                                                          class="label-help-target"
-                                                                                                        >
-                                                                                                          <span
-                                                                                                            class="label-help-icon fa fa-question-circle"
-                                                                                                          />
-                                                                                                        </span>
-                                                                                                      }
                                                                                                     >
                                                                                                       <Overlay
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                         transition={[Function]}
                                                                                                       />
                                                                                                     </Overlay>
@@ -33256,29 +33004,11 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                       >
                                                                                                         <Overlay
                                                                                                           placement="right"
                                                                                                           rootClose={false}
                                                                                                           show={false}
-                                                                                                          target={
-                                                                                                            <span
-                                                                                                              class="label-help-target"
-                                                                                                            >
-                                                                                                              <span
-                                                                                                                class="label-help-icon fa fa-question-circle"
-                                                                                                              />
-                                                                                                            </span>
-                                                                                                          }
                                                                                                           transition={[Function]}
                                                                                                         />
                                                                                                       </Overlay>
@@ -33349,29 +33079,11 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                       >
                                                                                                         <Overlay
                                                                                                           placement="right"
                                                                                                           rootClose={false}
                                                                                                           show={false}
-                                                                                                          target={
-                                                                                                            <span
-                                                                                                              class="label-help-target"
-                                                                                                            >
-                                                                                                              <span
-                                                                                                                class="label-help-icon fa fa-question-circle"
-                                                                                                              />
-                                                                                                            </span>
-                                                                                                          }
                                                                                                           transition={[Function]}
                                                                                                         />
                                                                                                       </Overlay>
@@ -33726,7 +33438,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                           >
                                                             <div
                                                               className="domain-field-row domain-row-border-default"
-                                                              data-rbd-draggable-context-id="1"
+                                                              data-rbd-draggable-context-id="3"
                                                               data-rbd-draggable-id="domainpropertiesrow-domaindrag-1-1"
                                                               onTransitionEnd={null}
                                                               style={
@@ -33919,9 +33631,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                     </Modal>
                                                                   </AdvancedSettings>
                                                                   <div
-                                                                    aria-describedby="rbd-hidden-text-1-hidden-text-5"
+                                                                    aria-describedby="rbd-hidden-text-3-hidden-text-15"
                                                                     className="domain-row-handle"
-                                                                    data-rbd-drag-handle-context-id="1"
+                                                                    data-rbd-drag-handle-context-id="3"
                                                                     data-rbd-drag-handle-draggable-id="domainpropertiesrow-domaindrag-1-1"
                                                                     draggable={false}
                                                                     onDragStart={[Function]}
@@ -34858,29 +34570,11 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                       placement="right"
                                                                                                       rootClose={false}
                                                                                                       show={false}
-                                                                                                      target={
-                                                                                                        <span
-                                                                                                          class="label-help-target"
-                                                                                                        >
-                                                                                                          <span
-                                                                                                            class="label-help-icon fa fa-question-circle"
-                                                                                                          />
-                                                                                                        </span>
-                                                                                                      }
                                                                                                     >
                                                                                                       <Overlay
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                         transition={[Function]}
                                                                                                       />
                                                                                                     </Overlay>
@@ -34960,29 +34654,11 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                       placement="right"
                                                                                                       rootClose={false}
                                                                                                       show={false}
-                                                                                                      target={
-                                                                                                        <span
-                                                                                                          class="label-help-target"
-                                                                                                        >
-                                                                                                          <span
-                                                                                                            class="label-help-icon fa fa-question-circle"
-                                                                                                          />
-                                                                                                        </span>
-                                                                                                      }
                                                                                                     >
                                                                                                       <Overlay
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                         transition={[Function]}
                                                                                                       />
                                                                                                     </Overlay>
@@ -35211,29 +34887,11 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                       >
                                                                                                         <Overlay
                                                                                                           placement="right"
                                                                                                           rootClose={false}
                                                                                                           show={false}
-                                                                                                          target={
-                                                                                                            <span
-                                                                                                              class="label-help-target"
-                                                                                                            >
-                                                                                                              <span
-                                                                                                                class="label-help-icon fa fa-question-circle"
-                                                                                                              />
-                                                                                                            </span>
-                                                                                                          }
                                                                                                           transition={[Function]}
                                                                                                         />
                                                                                                       </Overlay>
@@ -35304,29 +34962,11 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                       >
                                                                                                         <Overlay
                                                                                                           placement="right"
                                                                                                           rootClose={false}
                                                                                                           show={false}
-                                                                                                          target={
-                                                                                                            <span
-                                                                                                              class="label-help-target"
-                                                                                                            >
-                                                                                                              <span
-                                                                                                                class="label-help-icon fa fa-question-circle"
-                                                                                                              />
-                                                                                                            </span>
-                                                                                                          }
                                                                                                           transition={[Function]}
                                                                                                         />
                                                                                                       </Overlay>
@@ -35681,7 +35321,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                           >
                                                             <div
                                                               className="domain-field-row domain-row-border-default"
-                                                              data-rbd-draggable-context-id="1"
+                                                              data-rbd-draggable-context-id="3"
                                                               data-rbd-draggable-id="domainpropertiesrow-domaindrag-1-2"
                                                               onTransitionEnd={null}
                                                               style={
@@ -35874,9 +35514,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                     </Modal>
                                                                   </AdvancedSettings>
                                                                   <div
-                                                                    aria-describedby="rbd-hidden-text-1-hidden-text-5"
+                                                                    aria-describedby="rbd-hidden-text-3-hidden-text-15"
                                                                     className="domain-row-handle"
-                                                                    data-rbd-drag-handle-context-id="1"
+                                                                    data-rbd-drag-handle-context-id="3"
                                                                     data-rbd-drag-handle-draggable-id="domainpropertiesrow-domaindrag-1-2"
                                                                     draggable={false}
                                                                     onDragStart={[Function]}
@@ -36767,29 +36407,11 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                       placement="right"
                                                                                                       rootClose={false}
                                                                                                       show={false}
-                                                                                                      target={
-                                                                                                        <span
-                                                                                                          class="label-help-target"
-                                                                                                        >
-                                                                                                          <span
-                                                                                                            class="label-help-icon fa fa-question-circle"
-                                                                                                          />
-                                                                                                        </span>
-                                                                                                      }
                                                                                                     >
                                                                                                       <Overlay
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                         transition={[Function]}
                                                                                                       />
                                                                                                     </Overlay>
@@ -36869,29 +36491,11 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                       placement="right"
                                                                                                       rootClose={false}
                                                                                                       show={false}
-                                                                                                      target={
-                                                                                                        <span
-                                                                                                          class="label-help-target"
-                                                                                                        >
-                                                                                                          <span
-                                                                                                            class="label-help-icon fa fa-question-circle"
-                                                                                                          />
-                                                                                                        </span>
-                                                                                                      }
                                                                                                     >
                                                                                                       <Overlay
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                         transition={[Function]}
                                                                                                       />
                                                                                                     </Overlay>
@@ -37120,29 +36724,11 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                       >
                                                                                                         <Overlay
                                                                                                           placement="right"
                                                                                                           rootClose={false}
                                                                                                           show={false}
-                                                                                                          target={
-                                                                                                            <span
-                                                                                                              class="label-help-target"
-                                                                                                            >
-                                                                                                              <span
-                                                                                                                class="label-help-icon fa fa-question-circle"
-                                                                                                              />
-                                                                                                            </span>
-                                                                                                          }
                                                                                                           transition={[Function]}
                                                                                                         />
                                                                                                       </Overlay>
@@ -37213,29 +36799,11 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                       >
                                                                                                         <Overlay
                                                                                                           placement="right"
                                                                                                           rootClose={false}
                                                                                                           show={false}
-                                                                                                          target={
-                                                                                                            <span
-                                                                                                              class="label-help-target"
-                                                                                                            >
-                                                                                                              <span
-                                                                                                                class="label-help-icon fa fa-question-circle"
-                                                                                                              />
-                                                                                                            </span>
-                                                                                                          }
                                                                                                           transition={[Function]}
                                                                                                         />
                                                                                                       </Overlay>
@@ -45278,7 +44846,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                 >
                                   <ErrorBoundary>
                                     <App
-                                      contextId="0"
+                                      contextId="1"
                                       dragHandleUsageInstructions="
   Press space bar to start a drag.
   When dragging you can use the arrow keys to move the item around and escape to cancel.
@@ -45506,7 +45074,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                             useClone={null}
                                           >
                                             <div
-                                              data-rbd-droppable-context-id="0"
+                                              data-rbd-droppable-context-id="1"
                                               data-rbd-droppable-id="domain-form-droppable"
                                             >
                                               <Form
@@ -45815,7 +45383,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                           >
                                                             <div
                                                               className="domain-field-row domain-row-border-default"
-                                                              data-rbd-draggable-context-id="0"
+                                                              data-rbd-draggable-context-id="1"
                                                               data-rbd-draggable-id="domainpropertiesrow-domaindrag-1-0"
                                                               onTransitionEnd={null}
                                                               style={
@@ -46008,9 +45576,9 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                     </Modal>
                                                                   </AdvancedSettings>
                                                                   <div
-                                                                    aria-describedby="rbd-hidden-text-0-hidden-text-0"
+                                                                    aria-describedby="rbd-hidden-text-1-hidden-text-5"
                                                                     className="domain-row-handle"
-                                                                    data-rbd-drag-handle-context-id="0"
+                                                                    data-rbd-drag-handle-context-id="1"
                                                                     data-rbd-drag-handle-draggable-id="domainpropertiesrow-domaindrag-1-0"
                                                                     draggable={false}
                                                                     onDragStart={[Function]}
@@ -46970,29 +46538,11 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                       placement="right"
                                                                                                       rootClose={false}
                                                                                                       show={false}
-                                                                                                      target={
-                                                                                                        <span
-                                                                                                          class="label-help-target"
-                                                                                                        >
-                                                                                                          <span
-                                                                                                            class="label-help-icon fa fa-question-circle"
-                                                                                                          />
-                                                                                                        </span>
-                                                                                                      }
                                                                                                     >
                                                                                                       <Overlay
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                         transition={[Function]}
                                                                                                       />
                                                                                                     </Overlay>
@@ -47072,29 +46622,11 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                       placement="right"
                                                                                                       rootClose={false}
                                                                                                       show={false}
-                                                                                                      target={
-                                                                                                        <span
-                                                                                                          class="label-help-target"
-                                                                                                        >
-                                                                                                          <span
-                                                                                                            class="label-help-icon fa fa-question-circle"
-                                                                                                          />
-                                                                                                        </span>
-                                                                                                      }
                                                                                                     >
                                                                                                       <Overlay
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                         transition={[Function]}
                                                                                                       />
                                                                                                     </Overlay>
@@ -47323,29 +46855,11 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                       >
                                                                                                         <Overlay
                                                                                                           placement="right"
                                                                                                           rootClose={false}
                                                                                                           show={false}
-                                                                                                          target={
-                                                                                                            <span
-                                                                                                              class="label-help-target"
-                                                                                                            >
-                                                                                                              <span
-                                                                                                                class="label-help-icon fa fa-question-circle"
-                                                                                                              />
-                                                                                                            </span>
-                                                                                                          }
                                                                                                           transition={[Function]}
                                                                                                         />
                                                                                                       </Overlay>
@@ -47416,29 +46930,11 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                       >
                                                                                                         <Overlay
                                                                                                           placement="right"
                                                                                                           rootClose={false}
                                                                                                           show={false}
-                                                                                                          target={
-                                                                                                            <span
-                                                                                                              class="label-help-target"
-                                                                                                            >
-                                                                                                              <span
-                                                                                                                class="label-help-icon fa fa-question-circle"
-                                                                                                              />
-                                                                                                            </span>
-                                                                                                          }
                                                                                                           transition={[Function]}
                                                                                                         />
                                                                                                       </Overlay>
@@ -47793,7 +47289,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                           >
                                                             <div
                                                               className="domain-field-row domain-row-border-default"
-                                                              data-rbd-draggable-context-id="0"
+                                                              data-rbd-draggable-context-id="1"
                                                               data-rbd-draggable-id="domainpropertiesrow-domaindrag-1-1"
                                                               onTransitionEnd={null}
                                                               style={
@@ -47986,9 +47482,9 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                     </Modal>
                                                                   </AdvancedSettings>
                                                                   <div
-                                                                    aria-describedby="rbd-hidden-text-0-hidden-text-0"
+                                                                    aria-describedby="rbd-hidden-text-1-hidden-text-5"
                                                                     className="domain-row-handle"
-                                                                    data-rbd-drag-handle-context-id="0"
+                                                                    data-rbd-drag-handle-context-id="1"
                                                                     data-rbd-drag-handle-draggable-id="domainpropertiesrow-domaindrag-1-1"
                                                                     draggable={false}
                                                                     onDragStart={[Function]}
@@ -48925,29 +48421,11 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                       placement="right"
                                                                                                       rootClose={false}
                                                                                                       show={false}
-                                                                                                      target={
-                                                                                                        <span
-                                                                                                          class="label-help-target"
-                                                                                                        >
-                                                                                                          <span
-                                                                                                            class="label-help-icon fa fa-question-circle"
-                                                                                                          />
-                                                                                                        </span>
-                                                                                                      }
                                                                                                     >
                                                                                                       <Overlay
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                         transition={[Function]}
                                                                                                       />
                                                                                                     </Overlay>
@@ -49027,29 +48505,11 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                       placement="right"
                                                                                                       rootClose={false}
                                                                                                       show={false}
-                                                                                                      target={
-                                                                                                        <span
-                                                                                                          class="label-help-target"
-                                                                                                        >
-                                                                                                          <span
-                                                                                                            class="label-help-icon fa fa-question-circle"
-                                                                                                          />
-                                                                                                        </span>
-                                                                                                      }
                                                                                                     >
                                                                                                       <Overlay
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                         transition={[Function]}
                                                                                                       />
                                                                                                     </Overlay>
@@ -49278,29 +48738,11 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                       >
                                                                                                         <Overlay
                                                                                                           placement="right"
                                                                                                           rootClose={false}
                                                                                                           show={false}
-                                                                                                          target={
-                                                                                                            <span
-                                                                                                              class="label-help-target"
-                                                                                                            >
-                                                                                                              <span
-                                                                                                                class="label-help-icon fa fa-question-circle"
-                                                                                                              />
-                                                                                                            </span>
-                                                                                                          }
                                                                                                           transition={[Function]}
                                                                                                         />
                                                                                                       </Overlay>
@@ -49371,29 +48813,11 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                       >
                                                                                                         <Overlay
                                                                                                           placement="right"
                                                                                                           rootClose={false}
                                                                                                           show={false}
-                                                                                                          target={
-                                                                                                            <span
-                                                                                                              class="label-help-target"
-                                                                                                            >
-                                                                                                              <span
-                                                                                                                class="label-help-icon fa fa-question-circle"
-                                                                                                              />
-                                                                                                            </span>
-                                                                                                          }
                                                                                                           transition={[Function]}
                                                                                                         />
                                                                                                       </Overlay>
@@ -49748,7 +49172,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                           >
                                                             <div
                                                               className="domain-field-row domain-row-border-default"
-                                                              data-rbd-draggable-context-id="0"
+                                                              data-rbd-draggable-context-id="1"
                                                               data-rbd-draggable-id="domainpropertiesrow-domaindrag-1-2"
                                                               onTransitionEnd={null}
                                                               style={
@@ -49941,9 +49365,9 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                     </Modal>
                                                                   </AdvancedSettings>
                                                                   <div
-                                                                    aria-describedby="rbd-hidden-text-0-hidden-text-0"
+                                                                    aria-describedby="rbd-hidden-text-1-hidden-text-5"
                                                                     className="domain-row-handle"
-                                                                    data-rbd-drag-handle-context-id="0"
+                                                                    data-rbd-drag-handle-context-id="1"
                                                                     data-rbd-drag-handle-draggable-id="domainpropertiesrow-domaindrag-1-2"
                                                                     draggable={false}
                                                                     onDragStart={[Function]}
@@ -50834,29 +50258,11 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                       placement="right"
                                                                                                       rootClose={false}
                                                                                                       show={false}
-                                                                                                      target={
-                                                                                                        <span
-                                                                                                          class="label-help-target"
-                                                                                                        >
-                                                                                                          <span
-                                                                                                            class="label-help-icon fa fa-question-circle"
-                                                                                                          />
-                                                                                                        </span>
-                                                                                                      }
                                                                                                     >
                                                                                                       <Overlay
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                         transition={[Function]}
                                                                                                       />
                                                                                                     </Overlay>
@@ -50936,29 +50342,11 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                       placement="right"
                                                                                                       rootClose={false}
                                                                                                       show={false}
-                                                                                                      target={
-                                                                                                        <span
-                                                                                                          class="label-help-target"
-                                                                                                        >
-                                                                                                          <span
-                                                                                                            class="label-help-icon fa fa-question-circle"
-                                                                                                          />
-                                                                                                        </span>
-                                                                                                      }
                                                                                                     >
                                                                                                       <Overlay
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                         transition={[Function]}
                                                                                                       />
                                                                                                     </Overlay>
@@ -51187,29 +50575,11 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                       >
                                                                                                         <Overlay
                                                                                                           placement="right"
                                                                                                           rootClose={false}
                                                                                                           show={false}
-                                                                                                          target={
-                                                                                                            <span
-                                                                                                              class="label-help-target"
-                                                                                                            >
-                                                                                                              <span
-                                                                                                                class="label-help-icon fa fa-question-circle"
-                                                                                                              />
-                                                                                                            </span>
-                                                                                                          }
                                                                                                           transition={[Function]}
                                                                                                         />
                                                                                                       </Overlay>
@@ -51280,29 +50650,11 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                         placement="right"
                                                                                                         rootClose={false}
                                                                                                         show={false}
-                                                                                                        target={
-                                                                                                          <span
-                                                                                                            class="label-help-target"
-                                                                                                          >
-                                                                                                            <span
-                                                                                                              class="label-help-icon fa fa-question-circle"
-                                                                                                            />
-                                                                                                          </span>
-                                                                                                        }
                                                                                                       >
                                                                                                         <Overlay
                                                                                                           placement="right"
                                                                                                           rootClose={false}
                                                                                                           show={false}
-                                                                                                          target={
-                                                                                                            <span
-                                                                                                              class="label-help-target"
-                                                                                                            >
-                                                                                                              <span
-                                                                                                                class="label-help-icon fa fa-question-circle"
-                                                                                                              />
-                                                                                                            </span>
-                                                                                                          }
                                                                                                           transition={[Function]}
                                                                                                         />
                                                                                                       </Overlay>

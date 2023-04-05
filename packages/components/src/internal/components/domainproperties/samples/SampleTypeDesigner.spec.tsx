@@ -1,14 +1,13 @@
 import React from 'react';
 import { Map } from 'immutable';
 import { mount } from 'enzyme';
-import renderer from 'react-test-renderer';
 
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 import DomainForm from '../DomainForm';
 
 import { DomainDetails } from '../models';
 
-import { sleep } from '../../../testHelpers';
+import { waitForLifecycle } from '../../../testHelpers';
 import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { FileAttachmentForm } from '../../../../public/files/FileAttachmentForm';
@@ -31,14 +30,17 @@ beforeAll(() => {
 });
 
 describe('SampleTypeDesigner', () => {
-    test('default properties', () => {
+    test('default properties', async () => {
         const form = <SampleTypeDesigner {...BASE_PROPS} />;
 
-        const tree = renderer.create(form).toJSON();
+        const tree = mount(form);
+
+        await waitForLifecycle(tree);
+
         expect(tree).toMatchSnapshot();
     });
 
-    test('custom properties', () => {
+    test('custom properties', async () => {
         const form = (
             <SampleTypeDesigner
                 {...BASE_PROPS}
@@ -54,7 +56,10 @@ describe('SampleTypeDesigner', () => {
             />
         );
 
-        const tree = renderer.create(form).toJSON();
+        const tree = mount(form);
+
+        await waitForLifecycle(tree);
+
         expect(tree).toMatchSnapshot();
     });
 
@@ -77,7 +82,7 @@ describe('SampleTypeDesigner', () => {
             />
         );
         const wrapped = mount(form);
-        await sleep();
+        await waitForLifecycle(wrapped);
 
         expect(wrapped.find(SampleTypePropertiesPanel)).toHaveLength(1);
         expect(wrapped.find(DomainForm)).toHaveLength(1);
@@ -88,7 +93,7 @@ describe('SampleTypeDesigner', () => {
 
     test('open fields panel', async () => {
         const wrapped = mount(<SampleTypeDesigner {...BASE_PROPS} />);
-        await sleep();
+        await waitForLifecycle(wrapped);
 
         const panelHeader = wrapped.find('div#domain-header');
         expect(wrapped.find('#domain-header').at(2).hasClass('domain-panel-header-collapsed')).toBeTruthy();
@@ -106,7 +111,7 @@ describe('SampleTypeDesigner', () => {
     test('open fields panel, with barcodes', async () => {
         LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement', 'api', 'core', 'premium'] } };
         const wrapped = mount(<SampleTypeDesigner {...BASE_PROPS} />);
-        await sleep();
+        await waitForLifecycle(wrapped);
 
         const panelHeader = wrapped.find('div#domain-header');
         panelHeader.simulate('click');

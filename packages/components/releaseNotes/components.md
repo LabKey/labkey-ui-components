@@ -1,11 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.323.3
+*Released*: 5 April 2023
 * Issue 47571: Make sure project settings panel shows up even when the premium module is not available.
 * Issue 47544: Don't show [blank] filter option if all distinct values are returned and none is blank.
-* Issue 47532: For the UserProfile form, make sure columns marked as readOnly remain readOnly, regardless of the setting for isUserEditable.
+* Issue 47532: For the UserProfile form, exclude lastActivity column explicitly
 * Issue 47100: Update documentation link for sample ID lookup fields.
 * Issue 47464: Update documentation link for ontology integration from LKSM.
 

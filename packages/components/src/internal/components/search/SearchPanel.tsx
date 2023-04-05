@@ -79,7 +79,7 @@ export const SearchPanelImpl: FC<Props> = memo(props => {
     const onSubmit = useCallback(
         (evt: FormEvent<HTMLFormElement> | undefined) => {
             evt?.preventDefault();
-            search({ searchTerm: searchQuery });
+            search({ q: searchQuery });
         },
         [search, searchQuery]
     );

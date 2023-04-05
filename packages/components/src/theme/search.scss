@@ -4,7 +4,6 @@
 .search-result__card-icon {
     max-width: 42px;
     max-height: 42px;
-
 }
 
 .search-result__card-icon--small {
@@ -29,12 +28,14 @@
 
     .search-result__category-badge {
         @extend .badge;
+
         float: left;
         margin-left: 5px;
     }
 
     .search-result__type-badge {
         @extend .badge;
+
         float: left;
         margin-left: 5px;
     }
@@ -42,20 +43,19 @@
 
 .search-result__card-container {
     border: {
-        bottom: 2px #eee;
-        left: 0;
-        right: 0;
-        top: 0;
+        color: #eee;
+        width: 0 0 2px 0;
         style: solid;
     }
+
     display: flex;
     margin: 0;
     padding: 0;
-    color: #333333;
+    color: #333;
     align-items: center;
 
     &:hover {
-        background-color: #f9f9f9;
+        background-color: $light-gray;
     }
 }
 
@@ -93,7 +93,7 @@
 
     .submit-button {
         float: left;
-        background: #67AB58;
+        background: #67ab58;
         color: white;
     }
 

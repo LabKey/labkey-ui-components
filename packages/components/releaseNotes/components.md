@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.323.4
+*Released*: 5 April 2023
+* Add loading state to domain designer initialization.
+
 ### version 2.323.3
 *Released*: 5 April 2023
 * Issue 47571: Make sure project settings panel shows up even when the premium module is not available.

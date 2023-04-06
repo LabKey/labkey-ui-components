@@ -212,6 +212,14 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
         return color ? <ColorIcon label={labelDisplay} useSmall value={color} /> : sampleType;
     }, [hasActiveJob, row, subtitle]);
 
+    const isRawMaterialsOrBatches =
+        queryInfo.name === SCHEMAS.SAMPLE_SETS.RAW_MATERIALS.queryName ||
+        queryInfo.name === SCHEMAS.SAMPLE_SETS.MIXTURE_BATCHES.queryName;
+    const createText = isRawMaterialsOrBatches ? 'Sample' : entityDataType?.nounPlural ?? queryInfo.name;
+    const deleteText = isRawMaterialsOrBatches ? 'Sample' : entityDataType?.nounSingular ?? 'Sample';
+    // TODO: Alternative conditional
+    // const deleteText = isRawMaterialsOrBatches || !entityDataType ? 'Sample' : entityDataType.nounSingular ?? 'Sample';
+
     return (
         <>
             <PageDetailHeader
@@ -238,11 +246,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                         <ManageDropdownButton id="sampledetail" pullRight collapsed>
                             {canDerive && (
                                 <RequiresPermission user={user} perms={PermissionTypes.Insert}>
-                                    {isMedia && (
-                                        <MenuItem href={insertURL}>
-                                            Create {entityDataType?.nounPlural ?? queryInfo.name}
-                                        </MenuItem>
-                                    )}
+                                    {isMedia && <MenuItem href={insertURL}>Create {createText}</MenuItem>}
                                     {!isMedia && (
                                         <CreateSamplesSubMenu
                                             disabled={!canCreateSamples}
@@ -265,7 +269,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                                 </RequiresPermission>
                             )}
 
-                            {!isMedia && (
+                            {(!isMedia || isRawMaterialsOrBatches) && (
                                 <RequiresPermission user={user} perms={PermissionTypes.ManagePicklists}>
                                     <AddToPicklistMenuItem user={user} queryModel={sampleModel} sampleIds={sampleIds} />
                                     <PicklistCreationMenuItem
@@ -293,14 +297,14 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
 
                             {canPrintLabels && <MenuItem onClick={onPrintLabel}>Print Labels</MenuItem>}
 
-                            {!isMedia && (
+                            {(!isMedia || isRawMaterialsOrBatches) && (
                                 <RequiresPermission user={user} perms={PermissionTypes.Delete}>
                                     <DisableableMenuItem
                                         disabledMessage={getSampleDeleteMessage(canDelete, error)}
                                         onClick={onDeleteSample}
                                         operationPermitted={canDelete}
                                     >
-                                        Delete {entityDataType?.nounSingular ?? 'Sample'}
+                                        Delete {deleteText}
                                     </DisableableMenuItem>
                                 </RequiresPermission>
                             )}

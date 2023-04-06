@@ -15,7 +15,7 @@
  */
 
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 
 import getDatasetDesign from '../../../../test/data/dataset-getDatasetDesign.json';
 import { NEW_DATASET_MODEL_WITHOUT_DATASPACE } from '../../../../test/data/constants';
@@ -25,10 +25,11 @@ import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { Alert } from '../../base/Alert';
 
-import { DatasetDesignerPanels } from './DatasetDesignerPanels';
+import { DatasetDesignerPanelImpl, DatasetDesignerPanels } from './DatasetDesignerPanels';
 
 import { DatasetModel } from './models';
 import { waitForLifecycle } from "../../../testHelpers";
+import { List } from "immutable";
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -39,13 +40,21 @@ describe('Dataset Designer', () => {
     const populatedDatasetModel = DatasetModel.create(null, getDatasetDesign);
 
     test('New dataset', async () => {
-        const designerPanels = mount(
-            <DatasetDesignerPanels
+        const designerPanels = shallow(
+            <DatasetDesignerPanelImpl
                 initModel={newDatasetModel}
                 useTheme={true}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
                 testMode={true}
+                currentPanelIndex={0}
+                firstState={true}
+                onFinish={jest.fn()}
+                onTogglePanel={jest.fn()}
+                setSubmitting={jest.fn()}
+                submitting={false}
+                validatePanel={0}
+                visitedPanels={List()}
             />
         );
 
@@ -56,13 +65,21 @@ describe('Dataset Designer', () => {
     });
 
     test('Edit existing dataset', async () => {
-        const designerPanels = mount(
+        const designerPanels = shallow(
             <DatasetDesignerPanels
                 initModel={populatedDatasetModel}
                 useTheme={true}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
                 testMode={true}
+                currentPanelIndex={0}
+                firstState={true}
+                onFinish={jest.fn()}
+                onTogglePanel={jest.fn()}
+                setSubmitting={jest.fn()}
+                submitting={false}
+                validatePanel={0}
+                visitedPanels={List()}
             />
         );
 

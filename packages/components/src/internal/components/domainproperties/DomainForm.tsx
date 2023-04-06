@@ -105,7 +105,7 @@ import {
 } from './propertiesUtil';
 import { DomainPropertiesGrid } from './DomainPropertiesGrid';
 import { SystemFields } from './SystemFields';
-import {LoadingSpinner} from "../base/LoadingSpinner";
+import { LoadingSpinner } from "../base/LoadingSpinner";
 
 interface IDomainFormInput {
     appDomainHeaderRenderer?: HeaderRenderer;

@@ -2,7 +2,7 @@ import React, { FC, ReactElement, useMemo } from 'react';
 import { act } from 'react-dom/test-utils';
 import { Map } from 'immutable';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { mount, MountRendererProps, ReactWrapper, ShallowWrapper } from 'enzyme';
+import {mount, MountRendererProps, ReactWrapper, shallow, ShallowWrapper} from 'enzyme';
 import { LabKey, Query } from '@labkey/api';
 
 import { RowsResponse, bindColumnRenderers } from '../public/QueryModel/QueryModelLoader';
@@ -228,6 +228,17 @@ export const mountWithServerContext = (
     options?: MountRendererProps
 ): ReactWrapper => {
     return mount(node, mountWithServerContextOptions(initialContext, options));
+};
+
+/**
+ * Shallow version of mountWithServerContext.
+ */
+export const shallowWithServerContext = (
+    node: ReactElement,
+    initialContext?: any,
+    options?: MountRendererProps
+): ShallowWrapper<any, React.Component["state"], React.Component> => {
+    return shallow(node, mountWithServerContextOptions(initialContext, options));
 };
 
 /**

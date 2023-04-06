@@ -1,6 +1,6 @@
 import React from 'react';
-import { Map } from 'immutable';
-import { mount } from 'enzyme';
+import { List, Map } from 'immutable';
+import { mount, shallow } from 'enzyme';
 
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 import DomainForm from '../DomainForm';
@@ -15,7 +15,7 @@ import { FileAttachmentForm } from '../../../../public/files/FileAttachmentForm'
 import { Alert } from '../../base/Alert';
 
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
-import { SampleTypeDesigner } from './SampleTypeDesigner';
+import { SampleTypeDesigner, SampleTypeDesignerImpl } from './SampleTypeDesigner';
 
 const BASE_PROPS = {
     appPropertiesOnly: true,
@@ -31,9 +31,19 @@ beforeAll(() => {
 
 describe('SampleTypeDesigner', () => {
     test('default properties', async () => {
-        const form = <SampleTypeDesigner {...BASE_PROPS} />;
+        const form = <SampleTypeDesignerImpl
+            {...BASE_PROPS}
+            currentPanelIndex={0}
+            firstState={true}
+            onFinish={jest.fn()}
+            onTogglePanel={jest.fn()}
+            setSubmitting={jest.fn()}
+            submitting={false}
+            validatePanel={0}
+            visitedPanels={List()}
+        />;
 
-        const tree = mount(form);
+        const tree = shallow(form);
 
         await waitForLifecycle(tree);
 
@@ -42,7 +52,7 @@ describe('SampleTypeDesigner', () => {
 
     test('custom properties', async () => {
         const form = (
-            <SampleTypeDesigner
+            <SampleTypeDesignerImpl
                 {...BASE_PROPS}
                 nounSingular="Some Sample"
                 nounPlural="Some Samples"
@@ -53,10 +63,18 @@ describe('SampleTypeDesigner', () => {
                 appPropertiesOnly={false}
                 successBsStyle="primary"
                 saveBtnText="Finish it up"
+                currentPanelIndex={0}
+                firstState={true}
+                onFinish={jest.fn()}
+                onTogglePanel={jest.fn()}
+                setSubmitting={jest.fn()}
+                submitting={false}
+                validatePanel={0}
+                visitedPanels={List()}
             />
         );
 
-        const tree = mount(form);
+        const tree = shallow(form);
 
         await waitForLifecycle(tree);
 
@@ -65,7 +83,7 @@ describe('SampleTypeDesigner', () => {
 
     test('initModel with name URL props', async () => {
         const form = (
-            <SampleTypeDesigner
+            <SampleTypeDesignerImpl
                 {...BASE_PROPS}
                 domainFormDisplayOptions={{
                     hideConditionalFormatting: true,
@@ -79,9 +97,17 @@ describe('SampleTypeDesigner', () => {
                         nameReadOnly: true,
                     })
                 )}
+                currentPanelIndex={0}
+                firstState={true}
+                onFinish={jest.fn()}
+                onTogglePanel={jest.fn()}
+                setSubmitting={jest.fn()}
+                submitting={false}
+                validatePanel={0}
+                visitedPanels={List()}
             />
         );
-        const wrapped = mount(form);
+        const wrapped = shallow(form);
         await waitForLifecycle(wrapped);
 
         expect(wrapped.find(SampleTypePropertiesPanel)).toHaveLength(1);

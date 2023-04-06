@@ -127,8 +127,8 @@ interface State {
     showUniqueIdConfirmation: boolean;
     uniqueIdsConfirmed: boolean;
 }
-
-class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
+// Exported for testing
+export class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
     static defaultProps = {
         api: getDefaultAPIWrapper(),
         defaultSampleFieldConfig: DEFAULT_SAMPLE_FIELD_CONFIG,

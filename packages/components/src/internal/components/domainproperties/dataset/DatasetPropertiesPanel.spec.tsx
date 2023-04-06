@@ -34,8 +34,6 @@ import { DatasetModel } from './models';
 
 import { DatasetPropertiesPanel, DatasetPropertiesPanelImpl } from './DatasetPropertiesPanel';
 
-import { DatasetDesignerPanelImpl } from './DatasetDesignerPanels';
-
 import { BasicPropertiesFields } from './DatasetPropertiesPanelFormElements';
 
 describe('Dataset Properties Panel', () => {

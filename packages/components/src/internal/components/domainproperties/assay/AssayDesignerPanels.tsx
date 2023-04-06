@@ -40,7 +40,8 @@ interface State {
     protocolModel: AssayProtocolModel;
 }
 
-class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
+// Exported for testing
+export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
     panelCount = 1; // start at 1 for the AssayPropertiesPanel, will updated count after domains are defined in constructor
 
     static defaultProps = {

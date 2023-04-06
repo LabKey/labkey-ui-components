@@ -1,6 +1,6 @@
 import React from 'react';
 import { Alert } from 'react-bootstrap';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 
 import { DEFAULT_LIST_SETTINGS } from '../../../../test/data/constants';
 import getDomainDetailsJSON from '../../../../test/data/list-getDomainDetails.json';
@@ -13,7 +13,8 @@ import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { ListPropertiesPanel } from './ListPropertiesPanel';
 import { ListModel } from './models';
-import { ListDesignerPanels } from './ListDesignerPanels';
+import { ListDesignerPanels, ListDesignerPanelsImpl } from './ListDesignerPanels';
+import { List } from "immutable";
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -32,9 +33,19 @@ describe('ListDesignerPanel', () => {
     }
 
     test('new list', async () => {
-        const listDesignerPanels = <ListDesignerPanels {...getDefaultProps()} />;
+        const listDesignerPanels = <ListDesignerPanelsImpl
+            {...getDefaultProps()}
+            currentPanelIndex={0}
+            firstState={true}
+            onFinish={jest.fn()}
+            onTogglePanel={jest.fn()}
+            setSubmitting={jest.fn()}
+            submitting={false}
+            validatePanel={0}
+            visitedPanels={List()}
+        />;
 
-        const tree = mount(listDesignerPanels);
+        const tree = shallow(listDesignerPanels);
 
         await waitForLifecycle(tree);
 
@@ -44,8 +55,19 @@ describe('ListDesignerPanel', () => {
     test('existing list', async () => {
         const populatedExistingModel = ListModel.create(getDomainDetailsJSON);
 
-        const listDesignerPanels = mount(
-            <ListDesignerPanels {...getDefaultProps()} initModel={populatedExistingModel} />
+        const listDesignerPanels = shallow(
+            <ListDesignerPanelsImpl
+                {...getDefaultProps()}
+                initModel={populatedExistingModel}
+                currentPanelIndex={0}
+                firstState={true}
+                onFinish={jest.fn()}
+                onTogglePanel={jest.fn()}
+                setSubmitting={jest.fn()}
+                submitting={false}
+                validatePanel={0}
+                visitedPanels={List()}
+            />
         );
         await waitForLifecycle(listDesignerPanels);
 

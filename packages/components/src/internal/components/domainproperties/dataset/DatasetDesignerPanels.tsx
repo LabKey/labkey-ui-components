@@ -72,6 +72,7 @@ interface State {
     visitDatePropertyIndex?: number;
 }
 
+// Exported for testing
 export class DatasetDesignerPanelImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
     private _participantId: string;
     private _sequenceNum: string;

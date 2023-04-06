@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 
 import DomainForm from '../DomainForm';
 
@@ -11,9 +11,10 @@ import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 import { Alert } from '../../base/Alert';
 
 import { IssuesListDefPropertiesPanel } from './IssuesListDefPropertiesPanel';
-import { IssuesListDefDesignerPanels } from './IssuesListDefDesignerPanels';
+import { IssuesDesignerPanelsImpl, IssuesListDefDesignerPanels } from './IssuesListDefDesignerPanels';
 import { IssuesListDefModel } from './models';
 import { waitForLifecycle } from "../../../testHelpers";
+import { List } from "immutable";
 
 const emptyNewModel = IssuesListDefModel.create(null, { issueDefName: 'Issues List For Jest' });
 
@@ -29,9 +30,19 @@ beforeAll(() => {
 
 describe('IssuesListDefDesignerPanel', () => {
     test('new Issue List Definition', async () => {
-        const issuesDesignerPanels = mount(<IssuesListDefDesignerPanels {...BASE_PROPS} initModel={emptyNewModel} />);
-
-        // const tree = renderer.create(issuesDesignerPanels);
+        const issuesDesignerPanels = shallow(
+            <IssuesDesignerPanelsImpl
+                {...BASE_PROPS}
+                initModel={emptyNewModel}
+                currentPanelIndex={0}
+                firstState={true}
+                onFinish={jest.fn()}
+                onTogglePanel={jest.fn()}
+                setSubmitting={jest.fn()}
+                submitting={false}
+                validatePanel={0}
+                visitedPanels={List()}
+            />);
 
         await waitForLifecycle(issuesDesignerPanels);
 

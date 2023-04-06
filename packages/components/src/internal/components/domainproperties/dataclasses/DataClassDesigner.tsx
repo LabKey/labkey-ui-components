@@ -75,7 +75,8 @@ const NEW_DATA_CLASS_OPTION: IParentOption = {
     schema: SCHEMAS.DATA_CLASSES.SCHEMA,
 } as IParentOption;
 
-class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
+// Exported for testing
+export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
     static defaultProps = {
         api: getDefaultAPIWrapper(),
         nounSingular: 'Data Class',

@@ -66,7 +66,6 @@ describe('<SearchPanelImpl />', () => {
 
         // No search term set, so no result message or results
         expect(wrapper.find('.search-panel__no-results')).toHaveLength(0);
-        // entitiesJSON.totalHits = 49, while hits has 47 items in the array
         expect(wrapper.find(SearchResultCard)).toHaveLength(47);
         expect(wrapper.find(PaginationButtons)).toHaveLength(0);
     });
@@ -96,7 +95,6 @@ describe('<SearchPanelImpl />', () => {
         expect(wrapper.find('.search-panel__no-results')).toHaveLength(0);
         expect(wrapper.find(SearchResultCard)).toHaveLength(4);
         expect(wrapper.find(PaginationButtons)).toHaveLength(1);
-        // entitiesJSON.totalHits = 49, while hits has 47 items in the array
         expect(wrapper.find('.pagination-buttons__info').text()).toBe('5 - 8 of 47');
     });
 
@@ -120,11 +118,11 @@ describe('<SearchPanelImpl />', () => {
         expect(wrapper.find('.search-form')).toHaveLength(1);
         expect(wrapper.find('HelpLink.search-form__help-link')).toHaveLength(1);
 
-        // No search term set, so no result message or results
+        // Search term set, so no "no-result" message
         expect(wrapper.find('.search-panel__no-results')).toHaveLength(0);
         expect(wrapper.find(SearchResultCard)).toHaveLength(47);
+        // All results fit on the page, so no pagination buttons
         expect(wrapper.find(PaginationButtons)).toHaveLength(0);
-        // entitiesJSON.totalHits = 49, while hits has 47 items in the array
     });
 
     test('Last page', () => {
@@ -149,11 +147,10 @@ describe('<SearchPanelImpl />', () => {
         expect(wrapper.find('.search-form')).toHaveLength(1);
         expect(wrapper.find('HelpLink.search-form__help-link')).toHaveLength(1);
 
-        // No search term set, so no result message or results
+        // Search term set, so no "no-results" message
         expect(wrapper.find('.search-panel__no-results')).toHaveLength(0);
         expect(wrapper.find(SearchResultCard)).toHaveLength(7);
         expect(wrapper.find(PaginationButtons)).toHaveLength(1);
-        // entitiesJSON.totalHits = 49, while hits has 47 items in the array
         expect(wrapper.find('.pagination-buttons__info').text()).toBe('41 - 47 of 47');
     });
 });

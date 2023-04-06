@@ -22,6 +22,8 @@ import { deleteEntityType } from '../../entities/actions';
 import { SchemaQuery } from '../../../../public/SchemaQuery';
 import { DomainDetails } from '../models';
 
+import { handleRequestFailure } from '../../../util/utils';
+
 import { DataClassModel } from './models';
 
 export function fetchDataClass(queryName?: string, rowId?: number, containerPath?: string): Promise<DataClassModel> {
@@ -95,9 +97,7 @@ function fetchDataClassProperties(rowId: number, containerPath?: string): Promis
             success: Utils.getCallbackWrapper(data => {
                 resolve(data);
             }),
-            failure: Utils.getCallbackWrapper(error => {
-                reject(error);
-            }),
+            failure: handleRequestFailure(reject, 'Failed to get data class properties'),
         });
     });
 }

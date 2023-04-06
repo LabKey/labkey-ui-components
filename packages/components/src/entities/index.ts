@@ -1,6 +1,5 @@
 import {
     getSampleTypes,
-    getOriginalParentsFromLineage,
     loadSampleTypes,
     onDataClassRename,
     onSampleChange,
@@ -74,7 +73,6 @@ export {
     filterSampleRowsForOperation,
     getDataClassTemplateUrl,
     getJobCreationHref,
-    getOriginalParentsFromLineage,
     getSampleSetMenuItem,
     getSampleDeleteMessage,
     getSampleTypeTemplateUrl,

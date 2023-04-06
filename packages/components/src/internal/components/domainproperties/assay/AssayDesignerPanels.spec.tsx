@@ -4,7 +4,7 @@ import { Panel } from 'react-bootstrap';
 
 import { DomainDesign } from '../models';
 
-import { mountWithServerContext, waitForLifecycle } from '../../../testHelpers';
+import { mountWithServerContext, shallowWithServerContext, waitForLifecycle } from '../../../testHelpers';
 import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { FileAttachmentForm } from '../../../../public/files/FileAttachmentForm';
@@ -15,7 +15,7 @@ import DomainForm from '../DomainForm';
 
 import { AssayProtocolModel } from './models';
 import { DescriptionInput, NameInput } from './AssayPropertiesInput';
-import { AssayDesignerPanels, AssayDesignerPanelsProps } from './AssayDesignerPanels';
+import { AssayDesignerPanels, AssayDesignerPanelsImpl, AssayDesignerPanelsProps } from './AssayDesignerPanels';
 
 const SERVER_CONTEXT = {
     moduleContext: { api: { moduleNames: ['assay', 'study'] }, core: { productFeatures: [ProductFeature.AssayQC] } },
@@ -90,15 +90,37 @@ describe('AssayDesignerPanels', () => {
     }
 
     test('default properties', async () => {
-        const wrapper = mountWithServerContext(<AssayDesignerPanels {...getDefaultProps()} />, SERVER_CONTEXT);
+        const wrapper = shallowWithServerContext(
+            <AssayDesignerPanelsImpl
+                {...getDefaultProps()}
+                currentPanelIndex={0}
+                firstState={true}
+                onFinish={jest.fn()}
+                onTogglePanel={jest.fn()}
+                setSubmitting={jest.fn()}
+                submitting={false}
+                validatePanel={0}
+                visitedPanels={List()}
+        />, SERVER_CONTEXT);
         await waitForLifecycle(wrapper);
         expect(wrapper).toMatchSnapshot();
         wrapper.unmount();
     });
 
     test('initModel', async () => {
-        const wrapper = mountWithServerContext(
-            <AssayDesignerPanels {...getDefaultProps()} initModel={EXISTING_MODEL} />,
+        const wrapper = shallowWithServerContext(
+            <AssayDesignerPanelsImpl
+                {...getDefaultProps()}
+                initModel={EXISTING_MODEL}
+                currentPanelIndex={0}
+                firstState={true}
+                onFinish={jest.fn()}
+                onTogglePanel={jest.fn()}
+                setSubmitting={jest.fn()}
+                submitting={false}
+                validatePanel={0}
+                visitedPanels={List()}
+            />,
             SERVER_CONTEXT
         );
         await waitForLifecycle(wrapper);
@@ -107,8 +129,19 @@ describe('AssayDesignerPanels', () => {
     });
 
     test('hideEmptyBatchDomain for new assay', async () => {
-        const wrapper = mountWithServerContext(
-            <AssayDesignerPanels {...getDefaultProps()} hideEmptyBatchDomain />,
+        const wrapper = shallowWithServerContext(
+            <AssayDesignerPanelsImpl
+                {...getDefaultProps()}
+                hideEmptyBatchDomain
+                currentPanelIndex={0}
+                firstState={true}
+                onFinish={jest.fn()}
+                onTogglePanel={jest.fn()}
+                setSubmitting={jest.fn()}
+                submitting={false}
+                validatePanel={0}
+                visitedPanels={List()}
+            />,
             SERVER_CONTEXT
         );
         await waitForLifecycle(wrapper);
@@ -117,8 +150,20 @@ describe('AssayDesignerPanels', () => {
     });
 
     test('hideEmptyBatchDomain with initModel', async () => {
-        const wrapper = mountWithServerContext(
-            <AssayDesignerPanels {...getDefaultProps()} initModel={EXISTING_MODEL} hideEmptyBatchDomain />,
+        const wrapper = shallowWithServerContext(
+            <AssayDesignerPanelsImpl
+                {...getDefaultProps()}
+                initModel={EXISTING_MODEL}
+                hideEmptyBatchDomain
+                currentPanelIndex={0}
+                firstState={true}
+                onFinish={jest.fn()}
+                onTogglePanel={jest.fn()}
+                setSubmitting={jest.fn()}
+                submitting={false}
+                validatePanel={0}
+                visitedPanels={List()}
+            />,
             SERVER_CONTEXT
         );
         await waitForLifecycle(wrapper);
@@ -127,15 +172,42 @@ describe('AssayDesignerPanels', () => {
     });
 
     test('appPropertiesOnly for new assay', async () => {
-        const wrapper = mountWithServerContext(<AssayDesignerPanels {...getDefaultProps()} appPropertiesOnly />);
+        const wrapper = shallowWithServerContext(
+            <AssayDesignerPanelsImpl
+                {...getDefaultProps()}
+                appPropertiesOnly
+                currentPanelIndex={0}
+                firstState={true}
+                onFinish={jest.fn()}
+                onTogglePanel={jest.fn()}
+                setSubmitting={jest.fn()}
+                submitting={false}
+                validatePanel={0}
+                visitedPanels={List()}
+            />,
+            SERVER_CONTEXT
+        );
         await waitForLifecycle(wrapper);
         expect(wrapper).toMatchSnapshot();
         wrapper.unmount();
     });
 
     test('appPropertiesOnly with initModel', async () => {
-        const wrapper = mountWithServerContext(
-            <AssayDesignerPanels {...getDefaultProps()} initModel={EXISTING_MODEL} appPropertiesOnly />
+        const wrapper = shallowWithServerContext(
+            <AssayDesignerPanelsImpl
+                {...getDefaultProps()}
+                initModel={EXISTING_MODEL}
+                appPropertiesOnly
+                currentPanelIndex={0}
+                firstState={true}
+                onFinish={jest.fn()}
+                onTogglePanel={jest.fn()}
+                setSubmitting={jest.fn()}
+                submitting={false}
+                validatePanel={0}
+                visitedPanels={List()}
+            />,
+            SERVER_CONTEXT
         );
         await waitForLifecycle(wrapper);
         expect(wrapper).toMatchSnapshot();
@@ -150,9 +222,23 @@ describe('AssayDesignerPanels', () => {
                 hideFilePropertyType: true,
             },
         };
-        const wrapper = mountWithServerContext(
-            <AssayDesignerPanels {...props} initModel={EXISTING_MODEL} appPropertiesOnly />
+        const wrapper = shallowWithServerContext(
+            <AssayDesignerPanelsImpl
+                {...props}
+                initModel={EXISTING_MODEL}
+                appPropertiesOnly
+                currentPanelIndex={0}
+                firstState={true}
+                onFinish={jest.fn()}
+                onTogglePanel={jest.fn()}
+                setSubmitting={jest.fn()}
+                submitting={false}
+                validatePanel={0}
+                visitedPanels={List()}
+            />,
+            SERVER_CONTEXT
         );
+
         await waitForLifecycle(wrapper);
         const forms = wrapper.find(DomainForm);
         expect(forms).toHaveLength(2);

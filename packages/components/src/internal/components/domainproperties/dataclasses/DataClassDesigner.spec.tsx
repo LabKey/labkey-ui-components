@@ -1,12 +1,11 @@
 import React from 'react';
-import { mount } from 'enzyme';
-import renderer from 'react-test-renderer';
+import { mount, shallow } from 'enzyme';
 
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 import getDomainDetailsJSON from '../../../../test/data/dataclass-getDomainDetails.json';
 import DomainForm from '../DomainForm';
 
-import { sleep } from '../../../testHelpers';
+import { waitForLifecycle } from '../../../testHelpers';
 import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { FileAttachmentForm } from '../../../../public/files/FileAttachmentForm';
@@ -17,7 +16,8 @@ import { SystemFields } from '../SystemFields';
 
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 import { DataClassModel } from './models';
-import { DataClassDesigner } from './DataClassDesigner';
+import { DataClassDesigner, DataClassDesignerImpl } from './DataClassDesigner';
+import { List } from "immutable";
 
 const BASE_PROPS = {
     onComplete: jest.fn(),
@@ -31,16 +31,29 @@ beforeAll(() => {
 });
 
 describe('DataClassDesigner', () => {
-    test('default properties', () => {
-        const form = <DataClassDesigner {...BASE_PROPS} />;
+    test('default properties', async () => {
+        const form = <DataClassDesignerImpl
+            {...BASE_PROPS}
+            currentPanelIndex={0}
+            firstState={true}
+            onFinish={jest.fn()}
+            onTogglePanel={jest.fn()}
+            setSubmitting={jest.fn()}
+            submitting={false}
+            validatePanel={0}
+            visitedPanels={List()}
+        />;
 
-        const tree = renderer.create(form);
+        const tree = shallow(form);
+
+        await waitForLifecycle(tree);
+
         expect(tree).toMatchSnapshot();
     });
 
-    test('custom properties', () => {
+    test('custom properties', async () => {
         const form = (
-            <DataClassDesigner
+            <DataClassDesignerImpl
                 {...BASE_PROPS}
                 nounSingular="Source"
                 nounPlural="Sources"
@@ -51,17 +64,39 @@ describe('DataClassDesigner', () => {
                 appPropertiesOnly={true}
                 successBsStyle="primary"
                 saveBtnText="Finish it up"
+                currentPanelIndex={0}
+                firstState={true}
+                onFinish={jest.fn()}
+                onTogglePanel={jest.fn()}
+                setSubmitting={jest.fn()}
+                submitting={false}
+                validatePanel={0}
+                visitedPanels={List()}
             />
         );
 
-        const tree = renderer.create(form);
+        const tree = shallow(form);
+
+        await waitForLifecycle(tree);
+
         expect(tree).toMatchSnapshot();
     });
 
     test('initModel', async () => {
-        const form = <DataClassDesigner {...BASE_PROPS} initModel={DataClassModel.create(getDomainDetailsJSON)} />;
-        const wrapped = mount(form);
-        await sleep();
+        const form = <DataClassDesignerImpl
+            {...BASE_PROPS}
+            initModel={DataClassModel.create(getDomainDetailsJSON)}
+            currentPanelIndex={0}
+            firstState={true}
+            onFinish={jest.fn()}
+            onTogglePanel={jest.fn()}
+            setSubmitting={jest.fn()}
+            submitting={false}
+            validatePanel={0}
+            visitedPanels={List()}
+        />;
+        const wrapped = shallow(form);
+        await waitForLifecycle(wrapped);
 
         expect(wrapped.find(DataClassPropertiesPanel)).toHaveLength(1);
         expect(wrapped.find(DomainForm)).toHaveLength(1);
@@ -72,7 +107,7 @@ describe('DataClassDesigner', () => {
 
     test('open fields panel', async () => {
         const wrapped = mount(<DataClassDesigner {...BASE_PROPS} />);
-        await sleep();
+        await waitForLifecycle(wrapped);
 
         const panelHeader = wrapped.find('div#domain-header');
         expect(wrapped.find('#domain-header').at(2).hasClass('domain-panel-header-collapsed')).toBeTruthy();

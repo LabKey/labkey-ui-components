@@ -18,7 +18,7 @@ import { mount } from 'enzyme';
 
 import { ActionButton } from '../buttons/ActionButton';
 
-import { sleep } from '../../testHelpers';
+import {sleep, waitForLifecycle} from '../../testHelpers';
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
 import { Alert } from '../base/Alert';
@@ -103,7 +103,7 @@ describe('DomainForm', () => {
                 testMode={true}
             />
         );
-        await sleep();
+        await waitForLifecycle(form);
 
         // Empty panel
         const emptyHdrMsg = form.find({ className: 'domain-form-no-field-panel panel panel-default' });
@@ -131,7 +131,7 @@ describe('DomainForm', () => {
         form.unmount();
     });
 
-    test('with reservedFieldsMsg', () => {
+    test('with reservedFieldsMsg', async () => {
         const fields = [];
         fields.push({
             name: 'key',
@@ -157,6 +157,9 @@ describe('DomainForm', () => {
 
         const message = 'There are reserved fields';
         form.setState({ reservedFieldsMsg: message });
+
+        await waitForLifecycle(form);
+
         expect(form.find(Alert).text()).toBe(message);
         form.unmount();
     });
@@ -176,7 +179,7 @@ describe('DomainForm', () => {
                 testMode={true}
             />
         );
-        await sleep();
+        await waitForLifecycle(form);
 
         expect(form).toMatchSnapshot();
         form.unmount();
@@ -199,7 +202,7 @@ describe('DomainForm', () => {
                 testMode={true}
             />
         );
-        await sleep();
+        await waitForLifecycle(form);
 
         expect(form).toMatchSnapshot();
         form.unmount();
@@ -286,7 +289,7 @@ describe('DomainForm', () => {
             indices: [],
         });
         const form = mount(<DomainForm domain={domain} onChange={jest.fn()} testMode={true} />);
-        await sleep();
+        await waitForLifecycle(form);
 
         expect(form).toMatchSnapshot();
         form.unmount();
@@ -335,7 +338,7 @@ describe('DomainForm', () => {
         domain = updateDomainField(domain, { id: createFormInputId(DOMAIN_FIELD_TYPE, 0, 3), value: 'attachment' });
 
         const form = mount(<DomainForm domain={domain} onChange={jest.fn()} testMode={true} />);
-        await sleep();
+        await waitForLifecycle(form);
 
         expect(form).toMatchSnapshot();
         form.unmount();
@@ -364,7 +367,7 @@ describe('DomainForm', () => {
         domain = clearFieldDetails(domain);
 
         const form = mount(<DomainForm domain={domain} key="domainForm" onChange={jest.fn()} testMode={true} />);
-        await sleep();
+        await waitForLifecycle(form);
 
         expect(form).toMatchSnapshot();
         form.unmount();
@@ -397,7 +400,7 @@ describe('DomainForm', () => {
         };
 
         const form = mount(<DomainForm domain={domain} onChange={changeHandler} testMode={true} />);
-        await sleep();
+        await waitForLifecycle(form);
 
         // Add new row
         const findButton = form.find({ className: 'domain-form-add-btn' }).childAt(0);
@@ -459,7 +462,7 @@ describe('DomainForm', () => {
         const form = mount(
             <DomainForm domain={domain} collapsible={false} initCollapsed={true} onChange={jest.fn()} testMode={true} />
         );
-        await sleep();
+        await waitForLifecycle(form);
 
         expect(form).toMatchSnapshot();
         form.unmount();
@@ -487,7 +490,7 @@ describe('DomainForm', () => {
         const form = mount(
             <DomainForm domain={domain} collapsible={false} initCollapsed={true} onChange={jest.fn()} testMode={true} />
         );
-        await sleep();
+        await waitForLifecycle(form);
 
         expect(form).toMatchSnapshot();
         form.unmount();
@@ -509,7 +512,7 @@ describe('DomainForm', () => {
                 testMode={true}
             />
         );
-        await sleep();
+        await waitForLifecycle(form);
 
         expect(form).toMatchSnapshot();
         form.unmount();
@@ -525,7 +528,7 @@ describe('DomainForm', () => {
                 testMode={true}
             />
         );
-        await sleep();
+        await waitForLifecycle(form);
 
         expect(form).toMatchSnapshot();
         form.unmount();
@@ -534,7 +537,7 @@ describe('DomainForm', () => {
     test('hideInferFromFile false click domain-form-manual-btn', async () => {
         const component = <DomainFormContainer hideInferFromFile={false} testMode={true} />;
         const wrapper = mount(component);
-        await sleep();
+        await waitForLifecycle(wrapper);
 
         expect(wrapper.find(FileAttachmentForm)).toHaveLength(1);
         expect(wrapper.find('.domain-form-manual-btn')).toHaveLength(1);
@@ -593,7 +596,7 @@ describe('DomainForm', () => {
         const form = mount(
             <DomainForm helpTopic={helpTopic} domain={domain} onChange={changeHandler} testMode={true} />
         );
-        await sleep();
+        await waitForLifecycle(form);
 
         // Check help link
         const helpLink = form.find('a.domain-field-float-right');
@@ -653,7 +656,7 @@ describe('DomainForm', () => {
                 testMode={true}
             />
         );
-        await sleep();
+        await waitForLifecycle(form);
 
         // Add new row
         const findButton = form.find({ className: 'domain-form-add-btn' }).childAt(0);
@@ -700,7 +703,7 @@ describe('DomainForm', () => {
                 testMode={true}
             />
         );
-        await sleep();
+        await waitForLifecycle(wrapper);
 
         expect(wrapper.find('.domain-panel-header-expanded').hostNodes()).toHaveLength(1);
         expect(wrapper.find('.domain-panel-header-collapsed').hostNodes()).toHaveLength(0);
@@ -753,7 +756,7 @@ describe('DomainForm', () => {
                 testMode={true}
             />
         );
-        await sleep();
+        await waitForLifecycle(wrapper);
 
         expect(wrapper.find(DomainRow)).toHaveLength(1);
         expect(wrapper.find('#' + _headerId).text()).toBe(_headerText);
@@ -788,7 +791,7 @@ describe('DomainForm', () => {
                 testMode={true}
             />
         );
-        await sleep();
+        await waitForLifecycle(form);
 
         expect(form).toMatchSnapshot();
         form.unmount();
@@ -808,7 +811,7 @@ describe('DomainForm', () => {
                 testMode={true}
             />
         );
-        await sleep();
+        await waitForLifecycle(form);
 
         // Add button
         const findButton = form.find({ className: 'domain-form-add-btn' });
@@ -818,10 +821,12 @@ describe('DomainForm', () => {
         form.unmount();
     });
 
-    test('using default false for hideImportExport', () => {
+    test('using default false for hideImportExport', async () => {
         const domain = DomainDesign.create({});
 
         const form = mount(<DomainForm domain={domain} onChange={jest.fn()} testMode={true} />);
+
+        await waitForLifecycle(form);
 
         expect(form.find('.domain-form-manual-section').length).toEqual(1);
         expect(form.find('.file-form-formats').text()).toContain('.json');
@@ -831,7 +836,7 @@ describe('DomainForm', () => {
         form.unmount();
     });
 
-    test('using hideImportExport', () => {
+    test('using hideImportExport', async () => {
         const domain = DomainDesign.create({});
 
         const form = mount(
@@ -846,6 +851,8 @@ describe('DomainForm', () => {
             />
         );
 
+        await waitForLifecycle(form);
+
         expect(form.find('.domain-form-manual-section').length).toEqual(0);
         expect(form.find('.file-form-formats').length).toEqual(0);
         expect(form.find('.domain-toolbar-export-btn').length).toEqual(0);
@@ -854,7 +861,7 @@ describe('DomainForm', () => {
         form.unmount();
     });
 
-    test('using default for hideImportExport, field view', () => {
+    test('using default for hideImportExport, field view', async () => {
         const fields = [];
         fields.push({
             name: 'key',
@@ -883,6 +890,8 @@ describe('DomainForm', () => {
             />
         );
 
+        await waitForLifecycle(form);
+
         expect(form.find('.domain-toolbar-export-btn').length).toEqual(1);
         expect(form.find('.domain-field-top-noBuffer').length).toEqual(2);
 
@@ -893,7 +902,7 @@ describe('DomainForm', () => {
         form.unmount();
     });
 
-    test('using hideImportExport, field view', () => {
+    test('using hideImportExport, field view', async () => {
         const fields = [];
         fields.push({
             name: 'key',
@@ -923,6 +932,8 @@ describe('DomainForm', () => {
             />
         );
 
+        await waitForLifecycle(form);
+
         expect(form.find('.domain-toolbar-export-btn').length).toEqual(0);
         expect(form.find('.domain-field-top-noBuffer').length).toEqual(2);
 
@@ -932,13 +943,15 @@ describe('DomainForm', () => {
         form.unmount();
     });
 
-    test('with bulkDeleteConfirmInfo', () => {
+    test('with bulkDeleteConfirmInfo', async () => {
         const fields = [];
         fields.push({ name: 'UndeletableField' });
         fields.push({ name: 'DeletableField1' });
         fields.push({ name: 'DeletableField2' });
         const domain = DomainDesign.create({ fields });
         const form = mount(<DomainFormImpl domain={domain} onChange={jest.fn()} testMode={true} />);
+
+        await waitForLifecycle(form);
 
         expect(form.find('.modal-title').length).toEqual(0);
         form.setState({ bulkDeleteConfirmInfo: { deletableSelectedFields: [1, 2], undeletableFields: [0] } });
@@ -958,7 +971,7 @@ describe('DomainForm', () => {
         form.unmount();
     });
 
-    test('with visibleFieldsCount and visibleSelection', () => {
+    test('with visibleFieldsCount and visibleSelection', async () => {
         const fields = [];
         fields.push({ name: 'Field1' });
         fields.push({ name: 'Field2' });
@@ -967,6 +980,8 @@ describe('DomainForm', () => {
 
         const visibleSelection = new Set();
         visibleSelection.add(0).add(1);
+
+        await waitForLifecycle(form);
 
         form.setState({ visibleFieldsCount: 2, visibleSelection });
         expect(form.find('.domain-panel-header-clear-all').get(0).props.disabled).toBeFalsy();
@@ -991,7 +1006,7 @@ describe('DomainForm', () => {
         form.unmount();
     });
 
-    test('with summaryViewMode', () => {
+    test('with summaryViewMode', async () => {
         const fields = [];
         fields.push({ name: 'Field0' });
         fields.push({ name: 'Field1' });
@@ -999,6 +1014,8 @@ describe('DomainForm', () => {
 
         const domain = DomainDesign.create({ fields });
         const form = mount(<DomainFormImpl domain={domain} onChange={jest.fn()} testMode={true} />);
+
+        await waitForLifecycle(form);
 
         expect(form.find('.domain-field-row').length).toEqual(4);
         expect(form.find('.table-responsive').length).toEqual(0);
@@ -1013,7 +1030,7 @@ describe('DomainForm', () => {
     });
 
     // 'Is Primary Key' column should only render on List domains
-    test('with summaryViewMode isPrimaryKey column, VarList', () => {
+    test('with summaryViewMode isPrimaryKey column, VarList', async () => {
         const fields = [];
         fields.push({ name: 'Field0' });
         fields.push({ name: 'Field1' });
@@ -1021,12 +1038,15 @@ describe('DomainForm', () => {
 
         const domain = DomainDesign.create({ fields, domainKindName: 'VarList' });
         const form = mount(<DomainFormImpl domain={domain} onChange={jest.fn()} testMode={true} />);
+
+        await waitForLifecycle(form);
+
         form.setState({ summaryViewMode: true });
 
         expect(form.text()).toContain('Is Primary Key');
     });
 
-    test('with summaryViewMode isPrimaryKey column, IntList', () => {
+    test('with summaryViewMode isPrimaryKey column, IntList', async () => {
         const fields = [];
         fields.push({ name: 'Field0' });
         fields.push({ name: 'Field1' });
@@ -1034,12 +1054,15 @@ describe('DomainForm', () => {
 
         const domain = DomainDesign.create({ fields, domainKindName: INT_LIST });
         const form = mount(<DomainFormImpl domain={domain} onChange={jest.fn()} testMode={true} />);
+
+        await waitForLifecycle(form);
+
         form.setState({ summaryViewMode: true });
 
         expect(form.text()).toContain('Is Primary Key');
     });
 
-    test('with systemFields', () => {
+    test('with systemFields', async () => {
         const domain = DomainDesign.create({});
         const form = mount(
             <DomainFormImpl
@@ -1049,6 +1072,8 @@ describe('DomainForm', () => {
                 testMode={true}
             />
         );
+
+        await waitForLifecycle(form);
 
         expect(form.find(SystemFields)).toHaveLength(1);
     });

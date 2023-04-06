@@ -1,7 +1,6 @@
 import React from 'react';
 import { Alert } from 'react-bootstrap';
-import renderer from 'react-test-renderer';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 
 import { DEFAULT_LIST_SETTINGS } from '../../../../test/data/constants';
 import getDomainDetailsJSON from '../../../../test/data/list-getDomainDetails.json';
@@ -9,12 +8,13 @@ import DomainForm from '../DomainForm';
 
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
-import { sleep } from '../../../testHelpers';
+import { waitForLifecycle } from '../../../testHelpers';
 import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { ListPropertiesPanel } from './ListPropertiesPanel';
 import { ListModel } from './models';
-import { ListDesignerPanels } from './ListDesignerPanels';
+import { ListDesignerPanels, ListDesignerPanelsImpl } from './ListDesignerPanels';
+import { List } from "immutable";
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -32,20 +32,44 @@ describe('ListDesignerPanel', () => {
         };
     }
 
-    test('new list', () => {
-        const listDesignerPanels = <ListDesignerPanels {...getDefaultProps()} />;
+    test('new list', async () => {
+        const listDesignerPanels = <ListDesignerPanelsImpl
+            {...getDefaultProps()}
+            currentPanelIndex={0}
+            firstState={true}
+            onFinish={jest.fn()}
+            onTogglePanel={jest.fn()}
+            setSubmitting={jest.fn()}
+            submitting={false}
+            validatePanel={0}
+            visitedPanels={List()}
+        />;
 
-        const tree = renderer.create(listDesignerPanels);
+        const tree = shallow(listDesignerPanels);
+
+        await waitForLifecycle(tree);
+
         expect(tree).toMatchSnapshot();
     });
 
     test('existing list', async () => {
         const populatedExistingModel = ListModel.create(getDomainDetailsJSON);
 
-        const listDesignerPanels = mount(
-            <ListDesignerPanels {...getDefaultProps()} initModel={populatedExistingModel} />
+        const listDesignerPanels = shallow(
+            <ListDesignerPanelsImpl
+                {...getDefaultProps()}
+                initModel={populatedExistingModel}
+                currentPanelIndex={0}
+                firstState={true}
+                onFinish={jest.fn()}
+                onTogglePanel={jest.fn()}
+                setSubmitting={jest.fn()}
+                submitting={false}
+                validatePanel={0}
+                visitedPanels={List()}
+            />
         );
-        await sleep();
+        await waitForLifecycle(listDesignerPanels);
 
         expect(listDesignerPanels).toMatchSnapshot();
         listDesignerPanels.unmount();
@@ -53,7 +77,7 @@ describe('ListDesignerPanel', () => {
 
     test('visible properties', async () => {
         const listDesignerPanels = mount(<ListDesignerPanels {...getDefaultProps()} />);
-        await sleep();
+        await waitForLifecycle(listDesignerPanels);
 
         expect(listDesignerPanels.find(ListPropertiesPanel)).toHaveLength(1);
         expect(listDesignerPanels.find(DomainForm)).toHaveLength(1);
@@ -62,7 +86,7 @@ describe('ListDesignerPanel', () => {
 
     test('open fields panel', async () => {
         const listDesignerPanels = mount(<ListDesignerPanels {...getDefaultProps()} />);
-        await sleep();
+        await waitForLifecycle(listDesignerPanels);
 
         const panelHeader = listDesignerPanels.find('div#domain-header');
 

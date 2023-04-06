@@ -27,8 +27,8 @@ interface Props {
 interface State {
     model: IssuesListDefModel;
 }
-
-class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
+// exported for testing
+export class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
     constructor(props: Props & InjectedBaseDomainDesignerProps) {
         super(props);
         this.state = produce(

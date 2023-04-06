@@ -40,7 +40,8 @@ interface State {
     shouldImportData: boolean;
 }
 
-class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
+// export for testing
+export class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
     constructor(props: Props & InjectedBaseDomainDesignerProps) {
         super(props);
 

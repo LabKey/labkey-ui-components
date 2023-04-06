@@ -105,6 +105,7 @@ import {
 } from './propertiesUtil';
 import { DomainPropertiesGrid } from './DomainPropertiesGrid';
 import { SystemFields } from './SystemFields';
+import { LoadingSpinner } from "../base/LoadingSpinner";
 
 interface IDomainFormInput {
     appDomainHeaderRenderer?: HeaderRenderer;
@@ -161,6 +162,7 @@ interface IDomainFormState {
     file: File;
     filePreviewData: InferDomainResponse;
     filePreviewMsg: string;
+    isLoading?: boolean;
     maxPhiLevel: string;
     reservedFieldsMsg: ReactNode;
     search: string;
@@ -228,6 +230,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     componentDidMount = async (): Promise<void> => {
         const { domain, maxPhiLevel, useTheme, onChange } = this.props;
 
+        this.setState(() => ({ isLoading: true }));
+
         if (!maxPhiLevel) {
             try {
                 const nextMaxPhiLevel = await getMaxPhiLevel(domain.container);
@@ -253,6 +257,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         // TODO since this is called in componentDidUpdate, can it be removed here?
         updateDomainPanelClassList(useTheme, domain);
+
+        this.setState(() => ({ isLoading: false }));
     };
 
     componentDidUpdate(prevProps: Readonly<IDomainFormInput>): void {
@@ -1316,13 +1322,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     renderForm(): ReactNode {
         const { domain, appDomainHeaderRenderer, appPropertiesOnly, systemFields } = this.props;
-        const { summaryViewMode, search, selectAll } = this.state;
+        const { summaryViewMode, search, selectAll, isLoading } = this.state;
         const hasFields = domain.fields.size > 0;
         const actions = {
             toggleSelectAll: this.toggleSelectAll,
             scrollFunction: this.scrollFunction,
             onFieldsChange: this.onFieldsChange,
         };
+
+        if (isLoading)
+            return <LoadingSpinner />;
 
         return (
             <>

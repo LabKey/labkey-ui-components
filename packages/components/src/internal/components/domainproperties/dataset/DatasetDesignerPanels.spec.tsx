@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-import renderer from 'react-test-renderer';
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 
 import getDatasetDesign from '../../../../test/data/dataset-getDatasetDesign.json';
 import { NEW_DATASET_MODEL_WITHOUT_DATASPACE } from '../../../../test/data/constants';
@@ -26,9 +25,11 @@ import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { Alert } from '../../base/Alert';
 
-import { DatasetDesignerPanels } from './DatasetDesignerPanels';
+import { DatasetDesignerPanelImpl, DatasetDesignerPanels } from './DatasetDesignerPanels';
 
 import { DatasetModel } from './models';
+import { waitForLifecycle } from "../../../testHelpers";
+import { List } from "immutable";
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -38,37 +39,57 @@ describe('Dataset Designer', () => {
     const newDatasetModel = DatasetModel.create(NEW_DATASET_MODEL_WITHOUT_DATASPACE, undefined);
     const populatedDatasetModel = DatasetModel.create(null, getDatasetDesign);
 
-    test('New dataset', () => {
-        const designerPanels = renderer.create(
-            <DatasetDesignerPanels
+    test('New dataset', async () => {
+        const designerPanels = shallow(
+            <DatasetDesignerPanelImpl
                 initModel={newDatasetModel}
                 useTheme={true}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
                 testMode={true}
+                currentPanelIndex={0}
+                firstState={true}
+                onFinish={jest.fn()}
+                onTogglePanel={jest.fn()}
+                setSubmitting={jest.fn()}
+                submitting={false}
+                validatePanel={0}
+                visitedPanels={List()}
             />
         );
+
+        await waitForLifecycle(designerPanels);
 
         expect(designerPanels).toMatchSnapshot();
         designerPanels.unmount();
     });
 
-    test('Edit existing dataset', () => {
-        const designerPanels = mount(
+    test('Edit existing dataset', async () => {
+        const designerPanels = shallow(
             <DatasetDesignerPanels
                 initModel={populatedDatasetModel}
                 useTheme={true}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
                 testMode={true}
+                currentPanelIndex={0}
+                firstState={true}
+                onFinish={jest.fn()}
+                onTogglePanel={jest.fn()}
+                setSubmitting={jest.fn()}
+                submitting={false}
+                validatePanel={0}
+                visitedPanels={List()}
             />
         );
+
+        await waitForLifecycle(designerPanels);
 
         expect(designerPanels).toMatchSnapshot();
         designerPanels.unmount();
     });
 
-    test('for alert/message', () => {
+    test('for alert/message', async () => {
         const wrapped = mount(
             <DatasetDesignerPanels
                 initModel={newDatasetModel}
@@ -78,6 +99,8 @@ describe('Dataset Designer', () => {
                 testMode={true}
             />
         );
+
+        await waitForLifecycle(wrapped);
 
         const datasetHeader = wrapped.find('div#dataset-header-id');
         expect(wrapped.find('#dataset-header-id').at(2).hasClass('domain-panel-header-expanded')).toBeTruthy();

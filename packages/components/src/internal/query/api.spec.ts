@@ -14,6 +14,7 @@ import {
     getContainerFilter,
     getContainerFilterForFolder,
     getContainerFilterForLookups,
+    ISelectRowsResult,
     quoteValueColumnWithDelimiters,
     Renderers,
 } from './api';
@@ -115,7 +116,7 @@ describe('api', () => {
                 )
             ).toEqual(Query.ContainerFilter.allInProjectPlusShared);
             expect(getContainerFilterForFolder(topFolderPath, moduleContext({ projectDataScoped: true }))).toEqual(
-                Query.ContainerFilter.currentPlusProjectAndShared
+                Query.ContainerFilter.currentAndSubfoldersPlusShared
             );
             expect(getContainerFilterForFolder(subFolderPath, moduleContext({ projectDataScoped: true }))).toEqual(
                 Query.ContainerFilter.current
@@ -134,7 +135,7 @@ describe('api', () => {
     });
 
     describe('quoteValueColumnWithDelimiters', () => {
-        const results = {
+        const results: ISelectRowsResult = {
             key: 'test',
             models: {
                 test: {
@@ -147,6 +148,7 @@ describe('api', () => {
             },
             orderedModels: List([1, 2, 3, 4, 5]),
             queries: {},
+            rowCount: 5,
         };
         test('encode', () => {
             expect(quoteValueColumnWithDelimiters(results, 'Name', ',')).toStrictEqual({
@@ -174,6 +176,7 @@ describe('api', () => {
                 },
                 orderedModels: List([1, 2, 3, 4, 5]),
                 queries: {},
+                rowCount: 5,
             });
         });
     });

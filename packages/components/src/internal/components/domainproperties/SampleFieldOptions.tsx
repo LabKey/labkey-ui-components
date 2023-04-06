@@ -87,7 +87,7 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
                                 </p>
                                 <p>
                                     Learn more about using{' '}
-                                    {helpLinkNode(FIELD_EDITOR_SAMPLE_TYPES_TOPIC, 'sample types')} in LabKey.
+                                    {helpLinkNode(FIELD_EDITOR_SAMPLE_TYPES_TOPIC, 'sample fields')} in LabKey.
                                 </p>{' '}
                                 {/* TODO: contextualize help link based on app (SM, LKS, etc.)*/}
                             </LabelHelpTip>

@@ -2,7 +2,7 @@ import React, { PureComponent, ReactNode, FC, memo } from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 
-import { helpLinkNode, ONTOLOGY_LOOKUP_TOPIC } from '../../util/helpLinks';
+import { ADVANCED_FIELD_EDITOR_TOPIC, HelpLink, helpLinkNode, ONTOLOGY_LOOKUP_TOPIC } from '../../util/helpLinks';
 
 import { isFieldFullyLocked } from '../domainproperties/propertiesUtil';
 import { fetchOntologies } from '../domainproperties/actions';
@@ -23,8 +23,9 @@ import { LabelHelpTip } from '../base/LabelHelpTip';
 import { OntologyModel, PathModel } from './models';
 import { OntologyConceptSelectButton } from './OntologyConceptSelectButton';
 import { fetchParentPaths, getParentsConceptCodePath } from './actions';
+import { isOntologyEnabled, sampleManagerIsPrimaryApp } from '../../app/utils';
 
-const LEARN_MORE = <p>Learn more about {helpLinkNode(ONTOLOGY_LOOKUP_TOPIC, 'ontology integration')} in LabKey.</p>;
+const LEARN_MORE = <p>Learn more about{' '}<HelpLink topic={sampleManagerIsPrimaryApp() ? ADVANCED_FIELD_EDITOR_TOPIC : ONTOLOGY_LOOKUP_TOPIC}>ontology integration</HelpLink>{' '}in LabKey.</p>;
 
 interface Props extends ITypeDependentProps {
     domainContainerPath: string;

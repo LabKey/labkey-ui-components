@@ -60,6 +60,21 @@ const distinctValuesRespSearch = {
     queryName: 'sampleType1',
 };
 
+const distinctValuesWithoutBlankResp = {
+    values: ['ed', 'ned', 'ted', 'red', 'bed'],
+    schemaName: 'samples',
+    queryName: 'sampleType1',
+};
+
+const largeValues = Array(251).fill('x');
+const largeValuesDisplay = ['[blank]', ...largeValues.slice(1)];
+
+const largeValuesWithoutBlankResp = {
+    values: largeValues, // not distinct, but not required to be for the usage
+    schemaName: 'samples',
+    queryName: 'sampleType1',
+};
+
 const DEFAULT_PROPS = {
     api: getTestAPIWrapper(jest.fn, {
         query: getQueryTestAPIWrapper(jest.fn, {
@@ -141,13 +156,38 @@ describe('FilterFacetedSelector', () => {
     });
 
     test('with no initial filter, not blank', async () => {
-        const wrapper = mount(<FilterFacetedSelector {...{ ...DEFAULT_PROPS, canBeBlank: false }} />);
+        const wrapper = mount(<FilterFacetedSelector {...{ ...DEFAULT_PROPS,
+            api: getTestAPIWrapper(jest.fn, {
+                query: getQueryTestAPIWrapper(jest.fn, {
+                    selectDistinctRows: () => Promise.resolve(distinctValuesWithoutBlankResp),
+                }),
+            }),
+            canBeBlank: false
+        }} />);
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
 
         validate(wrapper, allWithoutBlankDisplayValuesShort, [], allWithoutBlankDisplayValuesShort, false);
+
+        wrapper.unmount();
+    });
+
+    test('with no initial filter, many values, can be blank', async () => {
+        const wrapper = mount(<FilterFacetedSelector {...{ ...DEFAULT_PROPS,
+            api: getTestAPIWrapper(jest.fn, {
+                query: getQueryTestAPIWrapper(jest.fn, {
+                    selectDistinctRows: () => Promise.resolve(largeValuesWithoutBlankResp),
+                }),
+            }),
+        }} />);
+
+        expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
+        await waitForLifecycle(wrapper);
+        expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
+
+        validate(wrapper, [], [], largeValuesDisplay, true);
 
         wrapper.unmount();
     });

@@ -109,7 +109,7 @@ export const BodyDeleting: FC<BodyDeletingProps> = memo(({ totalCountFromSummari
     return (
         <Modal.Body>
             <div className="deleting-project-modal-text">
-                Please don't close this page until until deletion is complete.
+                Please don't close this page until deletion is complete.
             </div>
             <Progress delay={0} estimate={totalCountFromSummaries * 15} toggle={toggle} />
         </Modal.Body>

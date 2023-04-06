@@ -72,11 +72,16 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                     return val;
                 });
 
+                let hasBlank = false;
                 // move [blank] to first
                 if (distinctValues.indexOf(EMPTY_VALUE_DISPLAY) >= 0) {
+                    hasBlank = true;
                     distinctValues.splice(distinctValues.indexOf(EMPTY_VALUE_DISPLAY), 1);
                 }
-                if (canBeBlank && toShow.length > 0) distinctValues.unshift(EMPTY_VALUE_DISPLAY);
+                // Issue 47544: don't show 'blank' if we have all the values and none are blank
+                if (toShow.length > 0 && (hasBlank || (canBeBlank && result.values.length > MAX_DISTINCT_FILTER_OPTIONS))) {
+                    distinctValues.unshift(EMPTY_VALUE_DISPLAY);
+                }
 
                 // add [All] to first if the total distinct values is < 250
                 const hasAllValues = !searchStr && result.values.length <= MAX_DISTINCT_FILTER_OPTIONS;

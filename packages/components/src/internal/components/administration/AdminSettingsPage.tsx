@@ -81,6 +81,9 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
                 lkVersion={lkVersion}
             >
                 <ActiveUserLimit />
+                {isProductProjectsEnabled(moduleContext) && (
+                    <ProjectSettings onChange={onSettingsChange} onSuccess={onSettingsSuccess} onPageError={onError} />
+                )}
                 <BarTenderSettingsForm
                     onChange={onSettingsChange}
                     onSuccess={onBarTenderSuccess}

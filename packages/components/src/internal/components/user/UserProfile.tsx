@@ -33,6 +33,7 @@ const FIELDS_TO_EXCLUDE = List<string>([
     'owner',
     'groups',
     'lastlogin',
+    'lastactivity',
     'haspassword',
     'phone',
     'mobile',
@@ -98,8 +99,9 @@ export class UserProfile extends PureComponent<Props, State> {
     };
 
     columnFilter = (col: QueryColumn): boolean => {
-        // make sure all columns are set as shownInInsertView and those that are marked as editable are not also readOnly
-        const _col = col.mutate({ shownInInsertView: true, readOnly: !col.userEditable });
+        // make sure all columns are set as shownInInsertView and those that are marked as editable are not also readOnly.
+        // Issue 47532 We want users to be able to update the fields on their own profile page, even if only readers
+        const _col = col.mutate({ shownInInsertView: true, readOnly: !col.userEditable  });
         return insertColumnFilter(_col) && !FIELDS_TO_EXCLUDE.contains(_col.fieldKey.toLowerCase());
     };
 

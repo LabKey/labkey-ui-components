@@ -10,14 +10,13 @@ interface ResponsiveMenuItem {
 
 interface Props {
     asSubMenu?: boolean;
-    disabled?: boolean;
     items: ResponsiveMenuItem[];
     subMenuWidth?: number;
     user: User;
 }
 
 export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
-    const { items, user, subMenuWidth = 1600, asSubMenu = true, disabled = false } = props;
+    const { items, user, subMenuWidth = 1600, asSubMenu = true } = props;
     const [width, setWidth] = useState<number>(window.innerWidth);
     useEffect(() => {
         function handleResize() {
@@ -38,12 +37,7 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
         <>
             {!_asSubMenu && buttons}
             {_asSubMenu && (
-                <DropdownButton
-                    id="responsive-menu-button-group"
-                    title="More"
-                    className="responsive-menu"
-                    disabled={disabled}
-                >
+                <DropdownButton id="responsive-menu-button-group" title="More" className="responsive-menu">
                     {buttons.map((item, index) => {
                         return (
                             <React.Fragment key={index}>

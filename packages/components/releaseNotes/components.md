@@ -4,7 +4,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD April 2023
 * Issue 47647: App permissions page needs to check for project container perm when loading group memberships
-* ResponsiveMenuButtonGroup add disabled prop, defaults to false
 
 ### version 2.323.4
 *Released*: 5 April 2023

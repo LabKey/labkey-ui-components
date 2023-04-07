@@ -5,7 +5,7 @@ import { Button, OverlayTrigger } from 'react-bootstrap';
 
 import { DisableableButton } from './DisableableButton';
 
-describe('<DisableableButton />', () => {
+describe('DisableableButton', () => {
     test('No disabled message', () => {
         const wrapper = shallow(<DisableableButton bsStyle="primary" onClick={jest.fn()} />);
 

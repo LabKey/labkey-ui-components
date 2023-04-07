@@ -230,7 +230,6 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                     <div>
                         {!addNew && updatedState.isLocal && (
                             <DisableableButton
-                                bsStyle="default"
                                 disabledMsg={disabledMsg}
                                 onClick={onToggleDeleteConfirm}
                                 title={SAMPLE_STATUS_LOCKED_TITLE}

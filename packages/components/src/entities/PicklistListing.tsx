@@ -49,16 +49,11 @@ interface ButtonProps {
 const PicklistGridButtons: FC<ButtonProps & RequiresModelAndActions> = memo(props => {
     const { onDelete, model } = props;
 
-    const onClickDelete = useCallback(() => {
-        onDelete();
-    }, [onDelete]);
-
     return (
         <RequiresPermission perms={PermissionTypes.ManagePicklists}>
             <DisableableButton
-                bsStyle="default"
-                onClick={onClickDelete}
                 disabledMsg={!model.hasSelections ? 'Select one or more picklists.' : undefined}
+                onClick={onDelete}
             >
                 <span className="fa fa-trash" />
                 <span>&nbsp;Delete</span>

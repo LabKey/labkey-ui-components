@@ -306,7 +306,6 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                     <div>
                         {!isNew && (
                             <DisableableButton
-                                bsStyle="default"
                                 disabledMsg={saving ? SAVING_LOCKED_TIP : undefined}
                                 onClick={onToggleDeleteConfirm}
                                 title={SAVING_LOCKED_TITLE}

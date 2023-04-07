@@ -2,10 +2,10 @@ import React, { memo, FC } from 'react';
 import { Button, OverlayTrigger, Popover } from 'react-bootstrap';
 
 interface Props {
-    bsStyle: string;
+    bsStyle?: string;
     className?: string;
     disabledMsg?: string;
-    onClick: () => void;
+    onClick?: () => void;
     title?: string;
 }
 

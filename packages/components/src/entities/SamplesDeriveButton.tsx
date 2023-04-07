@@ -54,10 +54,8 @@ export const SamplesDeriveButton: FC<SamplesDeriveButtonProps> = memo(props => {
         return (
             <RequiresPermission permissionCheck="any" perms={PermissionTypes.Insert}>
                 <DisableableButton
-                    bsStyle="default"
                     className="responsive-menu"
-                    disabledMsg={'At most ' + MAX_EDITABLE_GRID_ROWS + ' samples can be selected.'}
-                    onClick={undefined}
+                    disabledMsg={`At most ${MAX_EDITABLE_GRID_ROWS} samples can be selected.`}
                 >
                     Derive
                 </DisableableButton>

@@ -111,7 +111,7 @@ describe('SampleTypeDesignPage', () => {
             { sampleType: SAMPLE_TYPE_APP_CONTEXT, api: API },
             { user: TEST_USER_FOLDER_ADMIN, container: TEST_PROJECT_CONTAINER }
         );
-        await waitForLifecycle(wrapper, 1000);
+        await waitForLifecycle(wrapper);
         validate(wrapper);
         expect(wrapper.find('.alert-warning')).toHaveLength(0);
         wrapper.unmount();
@@ -123,7 +123,7 @@ describe('SampleTypeDesignPage', () => {
             { sampleType: SAMPLE_TYPE_APP_CONTEXT, api: API },
             { user: TEST_USER_FOLDER_ADMIN, container: TEST_PROJECT_CONTAINER }
         );
-        await waitForLifecycle(wrapper, 1000);
+        await waitForLifecycle(wrapper);
         validate(wrapper, true, false);
         wrapper.unmount();
     });
@@ -138,7 +138,7 @@ describe('SampleTypeDesignPage', () => {
             { sampleType: SAMPLE_TYPE_APP_CONTEXT, api: API },
             { user: TEST_USER_FOLDER_ADMIN, container: TEST_PROJECT_CONTAINER }
         );
-        await waitForLifecycle(wrapper, 1000);
+        await waitForLifecycle(wrapper);
         validate(wrapper, true, true, true, true);
         wrapper.unmount();
     });
@@ -163,7 +163,7 @@ describe('SampleTypeDesignPage', () => {
             },
             { user: TEST_USER_FOLDER_ADMIN, container: TEST_PROJECT_CONTAINER }
         );
-        await waitForLifecycle(wrapper, 1000);
+        await waitForLifecycle(wrapper);
         validate(wrapper, false);
         wrapper.unmount();
     });
@@ -180,7 +180,7 @@ describe('SampleTypeDesignPage', () => {
             },
             { user: TEST_USER_FOLDER_ADMIN, container: TEST_PROJECT_CONTAINER }
         );
-        await waitForLifecycle(wrapper, 1000);
+        await waitForLifecycle(wrapper);
         validate(wrapper, true, true, false);
         wrapper.unmount();
     });
@@ -197,7 +197,7 @@ describe('SampleTypeDesignPage', () => {
             },
             { user: TEST_USER_FOLDER_ADMIN, container: TEST_PROJECT_CONTAINER }
         );
-        await waitForLifecycle(wrapper, 1000);
+        await waitForLifecycle(wrapper);
         validate(wrapper, true, true, true, false, true);
         wrapper.unmount();
     });
@@ -214,7 +214,7 @@ describe('SampleTypeDesignPage', () => {
             },
             { user: TEST_USER_FOLDER_ADMIN, container: TEST_PROJECT_CONTAINER }
         );
-        await waitForLifecycle(wrapper, 1000);
+        await waitForLifecycle(wrapper);
         validate(wrapper, true, true, true, false, false, true);
         wrapper.unmount();
     });
@@ -225,7 +225,7 @@ describe('SampleTypeDesignPage', () => {
             { sampleType: SAMPLE_TYPE_APP_CONTEXT, api: API },
             { user: TEST_USER_FOLDER_ADMIN, container: TEST_FOLDER_CONTAINER }
         );
-        await waitForLifecycle(wrapper, 1000);
+        await waitForLifecycle(wrapper);
         validate(wrapper);
         expect(wrapper.find('.alert-warning')).toHaveLength(1);
         expect(wrapper.find('.alert-warning').text()).toContain('This is a shared sample type');

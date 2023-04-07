@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD April 2023
+* Issue 47647: App permissions page needs to check for project container perm when loading group memberships
+
 ### version 2.323.4
 *Released*: 5 April 2023
 * Add loading state to domain designer initialization.

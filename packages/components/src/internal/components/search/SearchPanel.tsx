@@ -196,8 +196,9 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
 
     const onPage = useCallback(
         direction => {
-            const newOffset = offset + direction * pageSize;
-            search({ searchTerm, pageSize, offset: newOffset });
+            // because JS is dumb and treats offset as a string...
+            const newOffset = direction * pageSize + offset * 1;
+            search({ q: searchTerm, pageSize, offset: newOffset });
         },
         [search, searchTerm, pageSize, offset]
     );

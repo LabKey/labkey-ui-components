@@ -311,10 +311,9 @@ import { ProjectManagementPage } from './internal/components/administration/Proj
 import { GroupManagementPage } from './internal/components/administration/GroupManagementPage';
 import { PermissionManagementPage } from './internal/components/administration/PermissionManagementPage';
 import { AccountSettingsPage } from './internal/components/administration/AccountSettingsPage';
-import { SearchPanel } from './internal/components/search/SearchPanel';
+import { BaseSearchPage } from './internal/components/search/BaseSearchPage';
 import { searchUsingIndex } from './internal/components/search/actions';
 import { SearchResultsModel } from './internal/components/search/models';
-import { getSearchResultCardData } from './internal/components/search/utils';
 import {
     deleteSampleSet,
     fetchSamples,
@@ -1106,14 +1105,14 @@ export {
     FindDerivativesMenuItem,
     FindDerivativesButton,
     FIND_SAMPLE_BY_ID_METRIC_AREA,
-    SearchPanel,
+    BaseSearchPage,
     SearchResultsModel,
     SearchResultCard,
     SearchResultsPanel,
     searchUsingIndex,
     SearchScope,
     getSearchScopeFromContainerFilter,
-    getSearchResultCardData,
+    // getSearchResultCardData,
     // administration
     AccountSettingsPage,
     AdministrationSubNav,
@@ -1583,3 +1582,4 @@ export type {
 export type { SamplesEditableGridProps } from './internal/sampleModels';
 export type { MeasurementUnit } from './internal/util/measurement';
 export type { SampleStorageLocationComponentProps, SampleStorageMenuComponentProps } from './internal/sampleModels';
+export type { SearchForm } from './internal/components/search/BaseSearchPage'

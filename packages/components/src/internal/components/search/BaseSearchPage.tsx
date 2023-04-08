@@ -11,8 +11,8 @@ export interface SearchForm {
     offset?: number;
     pageSize?: number;
     q: string;
-    searchMetadata?: any;
     search: (form: Partial<SearchForm>) => any;
+    searchMetadata?: any;
 }
 
 export const BaseSearchPage: FC<SearchForm> = memo(props => {

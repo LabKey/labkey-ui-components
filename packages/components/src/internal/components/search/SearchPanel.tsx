@@ -11,13 +11,14 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { PaginationButtons } from '../buttons/PaginationButtons';
 
+import { getContainerFilter } from '../../query/api';
+
 import { SearchResultsPanel } from './SearchResultsPanel';
 
 import { SearchResultsModel } from './models';
 import { SEARCH_HELP_TOPIC, SEARCH_PAGE_DEFAULT_SIZE, SearchScope } from './constants';
 import { GetCardDataFn, searchUsingIndex } from './actions';
 import { getSearchScopeFromContainerFilter } from './utils';
-import { getContainerFilter } from '../../query/api';
 
 interface SearchPanelProps {
     appName: string;
@@ -34,7 +35,7 @@ interface Props extends Omit<SearchPanelProps, 'getCardDataFn'> {
 }
 
 export const SearchPanelImpl: FC<Props> = memo(props => {
-    const { appName = "Labkey", searchTerm, searchResultsModel, search, onPageChange, pageSize, offset } = props;
+    const { appName = 'Labkey', searchTerm, searchResultsModel, search, onPageChange, pageSize, offset } = props;
     const [searchQuery, setSearchQuery] = useState<string>(searchTerm);
 
     const title = useMemo(() => (searchTerm ? 'Search Results' : 'Search'), [searchTerm]);

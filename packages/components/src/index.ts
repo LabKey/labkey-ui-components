@@ -1582,4 +1582,4 @@ export type {
 export type { SamplesEditableGridProps } from './internal/sampleModels';
 export type { MeasurementUnit } from './internal/util/measurement';
 export type { SampleStorageLocationComponentProps, SampleStorageMenuComponentProps } from './internal/sampleModels';
-export type { SearchForm } from './internal/components/search/BaseSearchPage'
+export type { SearchForm } from './internal/components/search/BaseSearchPage';

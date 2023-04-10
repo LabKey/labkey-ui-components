@@ -291,6 +291,9 @@ export function withQueryModels<Props>(
                     // If we have selections or previously attempted to load them we'll want to reload them when the
                     // model is updated from the URL because it can affect selections.
                     loadSelections = !!model.selections || !!model.selectionsError;
+
+                    // since URL param changes could change the filterArray, need to reload the totalCount (issue 47660)
+                    model.totalCountLoadingState = LoadingState.INITIALIZED;
                 }),
                 () => {
                     this.maybeLoad(id, false, true, loadSelections);

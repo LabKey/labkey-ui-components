@@ -5,11 +5,11 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Button, Checkbox, Col, Row } from 'react-bootstrap';
 import { List } from 'immutable';
-import { getServerContext, Security } from '@labkey/api';
+import { Security } from '@labkey/api';
 
 import { UserDetailsPanel } from '../user/UserDetailsPanel';
 
-import { isProjectContainer } from '../../app/utils';
+import { getProjectPath, isProjectContainer, isProductProjectsEnabled, userCanReadGroupDetails } from '../../app/utils';
 
 import { useServerContext } from '../base/ServerContext';
 
@@ -25,6 +25,8 @@ import { GroupMembership, MemberType } from '../administration/models';
 import { fetchGroupMembership } from '../administration/actions';
 
 import { getLocation } from '../../util/URL';
+
+import { useContainerUser } from '../container/actions';
 
 import { Principal, SecurityPolicy, SecurityRole } from './models';
 import { PermissionsRole } from './PermissionsRole';
@@ -74,8 +76,9 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
     const [submitting, setSubmitting] = useState<boolean>(false);
 
     const { api } = useAppContext<AppContext>();
-    const { container, project, user } = useServerContext();
+    const { container, project, user, moduleContext } = useServerContext();
     const canInherit = project.rootId !== containerId;
+    const projectUser = useContainerUser(getProjectPath(container.path));
 
     const selectedPrincipal = principalsById?.get(selectedUserId);
     const initExpandedRole = getLocation().query?.get('expand')
@@ -83,19 +86,24 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         : undefined;
 
     const loadGroupMembership = useCallback(async () => {
+        // Issue 47641: since groups are defined at the project container level,
+        // check permissions there before requesting group membership info
+        if (projectUser.error || !userCanReadGroupDetails(projectUser?.user)) return;
+
         try {
             const groupMembershipState = await fetchGroupMembership(container, api.security);
             setGroupMembership(groupMembershipState);
         } catch (e) {
             setError(resolveErrorMessage(e) ?? 'Failed to load group membership data.');
         }
-    }, [api.security, container]);
+    }, [api.security, container, projectUser.error, projectUser?.user]);
 
     useEffect(() => {
         (async () => {
+            if (!projectUser.isLoaded) return;
             await loadGroupMembership();
         })();
-    }, [loadGroupMembership]);
+    }, [loadGroupMembership, projectUser.isLoaded]);
 
     useEffect(() => {
         if (containerId !== project.rootId && user.isRootAdmin) {
@@ -222,6 +230,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
     // fall back to show all of the relevant roles for the policy, if the rolesToShow prop is undefined
     const visibleRoles = SecurityRole.filter(roles, policy, rolesToShow);
     const isSubfolder = !isProjectContainer(container.path);
+    const projectsEnabled = isProductProjectsEnabled(moduleContext);
 
     const saveButton = (
         <Button
@@ -284,7 +293,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
             </Col>
             {showDetailsPanel && (
                 <Col xs={12} md={4}>
-                    {selectedPrincipal?.type === MemberType.group ? (
+                    {selectedPrincipal?.type === MemberType.group && groupMembership ? (
                         <GroupDetailsPanel
                             principal={selectedPrincipal}
                             policy={policy}
@@ -302,6 +311,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                             rootPolicy={rootPolicy}
                             rolesByUniqueName={rolesByUniqueName}
                             showPermissionListLinks={false}
+                            showGroupListLinks={!projectsEnabled || !isSubfolder}
                         />
                     )}
                 </Col>

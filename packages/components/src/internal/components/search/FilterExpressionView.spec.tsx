@@ -142,7 +142,7 @@ describe('FilterExpressionView', () => {
         const options = selectInput.props()['options'];
         const selectedFilter = selectInput.props()['value'];
         if (selectedOp) expect(selectedFilter).toEqual(selectedOp);
-        else expect(selectedFilter == null).toBeTruthy();
+        else expect(selectedFilter).toEqual("contains");
 
         const ops = [];
         options.map(op => ops.push(op['value']));

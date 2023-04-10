@@ -25,13 +25,16 @@ export const SamplesDeriveButton: FC<SamplesDeriveButtonProps> = memo(props => {
     const { model, asSubMenu, ...createSampleMenuProps } = props;
     const { filterArray, isLoadingSelections, schemaQuery, selections } = model;
     const [selectionData, setSelectionData] = useState<Record<any, any>>();
-    const selectedCount = useMemo(() => selections?.size ?? -1, [selections]);
-    const requestColumns = useMemo(() => model.getRequestColumnsString(), [model]);
+    const selectedCount = useMemo<number>(() => selections?.size ?? -1, [selections]);
+    const requestColumns = useMemo<string>(() => {
+        if (!model.queryInfo) return undefined;
+        return model.getRequestColumnsString();
+    }, [model]);
     const useSelectionData = filterArray.length > 0 && selectedCount > 0 && selectedCount <= MAX_EDITABLE_GRID_ROWS;
 
     useEffect(() => {
         (async () => {
-            if (useSelectionData && !isLoadingSelections) {
+            if (useSelectionData && !isLoadingSelections && requestColumns) {
                 try {
                     const { data } = await getSelectedData(
                         schemaQuery.schemaName,

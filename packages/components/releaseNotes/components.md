@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Issue 47648: Make "Conatins" the default filter
+* Issue 47648: Make "Contains" the default filter
 
 ### version 2.323.7
 *Released*: 10 April 2023

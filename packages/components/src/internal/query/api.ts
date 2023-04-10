@@ -1007,7 +1007,7 @@ export function getContainerFilterForFolder(
             if (isAllProductFoldersFilteringEnabled(moduleContext)) {
                 return Query.ContainerFilter.allInProjectPlusShared;
             }
-            return Query.ContainerFilter.currentPlusProjectAndShared;
+            return Query.ContainerFilter.currentAndSubfoldersPlusShared;
         }
 
         // When listing data in a folder scope returned data to the current

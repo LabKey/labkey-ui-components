@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 47648: Make "Conatins" the default filter
+
 ### version 2.323.7
 *Released*: 10 April 2023
 * Issue 47647: App permissions page needs to check for project container perm when loading group memberships

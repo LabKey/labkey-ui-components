@@ -11,13 +11,14 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { PaginationButtons } from '../buttons/PaginationButtons';
 
+import { getContainerFilter } from '../../query/api';
+
 import { SearchResultsPanel } from './SearchResultsPanel';
 
 import { SearchResultsModel } from './models';
 import { SEARCH_HELP_TOPIC, SEARCH_PAGE_DEFAULT_SIZE, SearchScope } from './constants';
 import { GetCardDataFn, searchUsingIndex } from './actions';
 import { getSearchScopeFromContainerFilter } from './utils';
-import { getContainerFilter } from '../../query/api';
 
 interface SearchPanelProps {
     appName: string;
@@ -34,7 +35,7 @@ interface Props extends Omit<SearchPanelProps, 'getCardDataFn'> {
 }
 
 export const SearchPanelImpl: FC<Props> = memo(props => {
-    const { appName = "Labkey", searchTerm, searchResultsModel, search, onPageChange, pageSize, offset } = props;
+    const { appName = 'Labkey', searchTerm, searchResultsModel, search, onPageChange, pageSize, offset } = props;
     const [searchQuery, setSearchQuery] = useState<string>(searchTerm);
 
     const title = useMemo(() => (searchTerm ? 'Search Results' : 'Search'), [searchTerm]);
@@ -79,7 +80,7 @@ export const SearchPanelImpl: FC<Props> = memo(props => {
     const onSubmit = useCallback(
         (evt: FormEvent<HTMLFormElement> | undefined) => {
             evt?.preventDefault();
-            search({ searchTerm: searchQuery });
+            search({ q: searchQuery });
         },
         [search, searchQuery]
     );
@@ -196,8 +197,9 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
 
     const onPage = useCallback(
         direction => {
-            const newOffset = offset + direction * pageSize;
-            search({ searchTerm, pageSize, offset: newOffset });
+            // because JS is dumb and treats offset as a string...
+            const newOffset = direction * pageSize + offset * 1;
+            search({ q: searchTerm, pageSize, offset: newOffset });
         },
         [search, searchTerm, pageSize, offset]
     );

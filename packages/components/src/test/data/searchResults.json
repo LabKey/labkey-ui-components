@@ -1301,6 +1301,6 @@
     "root" : "hits"
   },
   "q" : "m-1",
-  "totalHits" : 49,
+  "totalHits" : 47,
   "success" : true
 }

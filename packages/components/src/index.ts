@@ -1112,7 +1112,6 @@ export {
     searchUsingIndex,
     SearchScope,
     getSearchScopeFromContainerFilter,
-    // getSearchResultCardData,
     // administration
     AccountSettingsPage,
     AdministrationSubNav,

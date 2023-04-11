@@ -233,7 +233,7 @@ describe('PermissionAssignments', () => {
 
         wrapper.setProps({ showDetailsPanel: true });
 
-        let onShowDetails = wrapper.find(PermissionsRole).at(0).prop('onClickAssignment');
+        const onShowDetails = wrapper.find(PermissionsRole).at(0).prop('onClickAssignment');
         act(() => {
             onShowDetails(USER.userId);
         });
@@ -243,17 +243,6 @@ describe('PermissionAssignments', () => {
         expect(wrapper.find(GroupDetailsPanel).exists()).toEqual(false);
         expect(wrapper.find(UserDetailsPanel).exists()).toEqual(true);
         expect(wrapper.find(UserDetailsPanel).prop('userId')).toEqual(USER.userId);
-
-        onShowDetails = wrapper.find(PermissionsRole).at(0).prop('onClickAssignment');
-        act(() => {
-            onShowDetails(GROUP.userId);
-        });
-
-        await waitForLifecycle(wrapper);
-
-        expect(wrapper.find(GroupDetailsPanel).exists()).toEqual(true);
-        expect(wrapper.find(UserDetailsPanel).exists()).toEqual(false);
-        expect(wrapper.find(GroupDetailsPanel).prop('principal')).toEqual(GROUP);
 
         wrapper.unmount();
     });

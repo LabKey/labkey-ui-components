@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.324.0
+*Released*: 10 April 2023
 * Issue 47648: Make "Contains" the default filter
 
 ### version 2.323.7

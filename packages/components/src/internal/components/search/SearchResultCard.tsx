@@ -17,9 +17,10 @@ import React, { FC, memo, useCallback } from 'react';
 
 import { SVGIcon } from '../base/SVGIcon';
 
-import { SearchResultCardData } from './models';
 import { incrementClientSideMetricCount } from '../../actions';
 import { getCurrentAppProperties } from '../../app/utils';
+
+import { SearchResultCardData } from './models';
 
 interface SearchResultProps {
     cardData: SearchResultCardData;
@@ -32,22 +33,21 @@ interface SearchResultProps {
 export const SearchResultCard: FC<SearchResultProps> = memo(({ cardData, iconUrl, isTopResult, summary, url }) => {
     const { altText, category, iconDir, iconSrc, title, typeName } = cardData;
     const productId = getCurrentAppProperties()?.productId;
-    const summaryText =  summary?.length ? summary : 'No summary provided';
+    const summaryText = summary?.length ? summary : 'No summary provided';
 
     const onClick = useCallback(() => {
         if (isTopResult) incrementClientSideMetricCount(productId + 'Search', 'firstResultClicked');
+        incrementClientSideMetricCount(productId + 'Search', 'resultClicked');
     }, [isTopResult, productId]);
 
     const textParts = [];
-    if (category)
-        textParts.push(category);
-    if (typeName)
-        textParts.push(typeName);
+    if (category) textParts.push(category);
+    if (typeName) textParts.push(typeName);
     return (
         <a href={url} onClick={onClick}>
             <div className="row search-result__card-container">
                 <div className="hidden-xs search-result__card-icon__container">
-                    {iconUrl && <img className="search-result__card-icon" src={iconUrl} />}
+                    {iconUrl && <img className="search-result__card-icon" src={iconUrl} alt={altText} />}
                     {!iconUrl && (
                         <SVGIcon
                             iconDir={iconDir}
@@ -60,7 +60,9 @@ export const SearchResultCard: FC<SearchResultProps> = memo(({ cardData, iconUrl
                 <div className="col-sm-12">
                     <div className="col-sm-12 search-result__title">
                         <h4>{title}</h4>
-                        {textParts.length > 0 && <div className="margin-left status-pill muted">{textParts.join(": ")}</div>}
+                        {textParts.length > 0 && (
+                            <div className="margin-left status-pill muted">{textParts.join(': ')}</div>
+                        )}
                     </div>
                     <div className="search-result__summary">{summaryText}</div>
                 </div>

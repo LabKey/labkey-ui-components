@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.324.0
+*Released*: 10 April 2023
+* Issue 47648: Make "Contains" the default filter
+
 ### version 2.323.7
 *Released*: 10 April 2023
 * Issue 47647: App permissions page needs to check for project container perm when loading group memberships

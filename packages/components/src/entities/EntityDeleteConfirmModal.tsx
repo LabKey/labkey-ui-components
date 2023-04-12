@@ -15,19 +15,22 @@
  */
 import React, { PureComponent } from 'react';
 
-import { ConfirmModal } from '../base/ConfirmModal';
+import { ConfirmModal } from '../internal/components/base/ConfirmModal';
 
-import { LoadingSpinner } from '../base/LoadingSpinner';
+import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 
-import { Alert } from '../base/Alert';
+import { Alert } from '../internal/components/base/Alert';
 
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { QueryModel } from '../public/QueryModel/QueryModel';
 
-import { setSnapshotSelections } from '../../actions';
+import { setSnapshotSelections } from '../internal/actions';
 
-import { EntityDeleteConfirmHandler, EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
-import { getDeleteConfirmationData } from './actions';
-import { EntityDataType, OperationConfirmationData } from './models';
+import {
+    EntityDeleteConfirmHandler,
+    EntityDeleteConfirmModalDisplay,
+} from '../internal/components/entities/EntityDeleteConfirmModalDisplay';
+import { getDeleteConfirmationData } from '../internal/components/entities/actions';
+import { EntityDataType, OperationConfirmationData } from '../internal/components/entities/models';
 
 interface Props {
     entityDataType: EntityDataType;

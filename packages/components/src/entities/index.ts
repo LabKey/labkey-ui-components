@@ -57,6 +57,7 @@ import { SingleParentEntityPanel } from './SingleParentEntityPanel';
 import { AssayResultsForSamplesButton, AssayResultsForSamplesMenuItem } from './AssayResultsForSamplesButton';
 import { AssayResultsForSamplesPage, AssayResultsForSamplesSubNav } from './AssayResultsForSamplesPage';
 import { EntityCrossProjectSelectionConfirmModal } from './EntityCrossProjectSelectionConfirmModal';
+import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
 import { SampleOverviewPanel } from './SampleOverviewPanel';
 import { SampleDetailContextConsumer, SampleDetailPage } from './SampleDetailPage';
 import { SampleAssaysPage } from './SampleAssaysPage';
@@ -75,6 +76,7 @@ export {
     createEntityParentKey,
     downloadSampleTypeTemplate,
     EntityCrossProjectSelectionConfirmModal,
+    EntityDeleteConfirmModal,
     filterMediaSampleTypes,
     filterSampleRowsForOperation,
     FindDerivativesButton,

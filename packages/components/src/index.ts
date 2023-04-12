@@ -503,10 +503,6 @@ import { RangeValidationOptionsModal } from './internal/components/domainpropert
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 import { AssayDesignEmptyAlert } from './internal/components/assay/AssayDesignEmptyAlert';
 import {
-    AssayResultsForSamplesButton,
-    AssayResultsForSamplesMenuItem,
-} from './internal/components/entities/AssayResultsForSamplesButton';
-import {
     makeQueryInfo,
     mountWithAppServerContext,
     mountWithAppServerContextOptions,
@@ -1133,8 +1129,6 @@ export {
     AssayDomainTypes,
     AssayLink,
     AssayDesignEmptyAlert,
-    AssayResultsForSamplesButton,
-    AssayResultsForSamplesMenuItem,
     allowReimportAssayRun,
     clearAssayDefinitionCache,
     fetchAllAssays,

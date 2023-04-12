@@ -54,6 +54,7 @@ import { useSampleTypeAppContext } from './useSampleTypeAppContext';
 import { SampleTypeDesignPage } from './SampleTypeDesignPage';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
 
+import { AssayResultsForSamplesButton, AssayResultsForSamplesMenuItem } from './AssayResultsForSamplesButton';
 import { AssayResultsForSamplesPage, AssayResultsForSamplesSubNav } from './AssayResultsForSamplesPage';
 import { SampleOverviewPanel } from './SampleOverviewPanel';
 import { SampleDetailContextConsumer, SampleDetailPage } from './SampleDetailPage';
@@ -68,6 +69,8 @@ import { DeleteConfirmationModal } from './DeleteConfirmationModal';
 import { FindDerivativesButton, FindDerivativesMenuItem } from './FindDerivativesButton';
 
 export {
+    AssayResultsForSamplesButton,
+    AssayResultsForSamplesMenuItem,
     createEntityParentKey,
     downloadSampleTypeTemplate,
     filterMediaSampleTypes,

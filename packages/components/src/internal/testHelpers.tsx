@@ -73,7 +73,7 @@ export function registerDefaultURLMappers(): void {
  */
 export const makeQueryInfo = (getQueryDetailsResponse): QueryInfo => {
     const queryInfo = applyQueryMetadata(getQueryDetailsResponse);
-    return queryInfo.merge({ columns: bindColumnRenderers(queryInfo.columns) }) as QueryInfo;
+    return queryInfo.mutate({ columns: bindColumnRenderers(queryInfo.columns) });
 };
 
 /**

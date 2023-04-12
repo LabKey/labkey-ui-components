@@ -54,7 +54,7 @@ describe('SamplesBulkUpdateForm', () => {
         userEditable: true,
     });
 
-    const QUERY_INFO = QueryInfo.fromJSON({
+    const QUERY_INFO = QueryInfo.fromJsonForTests({
         name: 'test',
         schemaName: 'schema',
         columns: {

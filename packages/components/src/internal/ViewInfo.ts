@@ -1,4 +1,5 @@
 import { Filter } from '@labkey/api';
+import { IQueryColumn } from '../public/QueryColumn';
 
 import { QuerySort, QuerySortJson } from '../public/QuerySort';
 import { QueryInfo } from '../public/QueryInfo';
@@ -34,13 +35,14 @@ interface ViewInfoFilter {
     value: string | number | boolean;
 }
 
-interface ViewInfoJson {
+export interface ViewInfoJson {
     // aggregates: any[];
     // analyticsProviders: any[];
     columns?: ViewInfoColumn[];
     default?: boolean;
     // deletable: boolean;
     // editable: boolean;
+    fields?: IQueryColumn[];
     filter?: ViewInfoFilter[];
     hidden?: boolean;
     inherit?: boolean;

@@ -350,19 +350,19 @@ describe('getSampleTypeTemplateUrl', () => {
     });
 
     test('without importAliases', () => {
-        const qInfo = QueryInfo.fromJSON({ schemaName: 'schema', name: 'query', columns: {} });
+        const qInfo = QueryInfo.fromJsonForTests({ schemaName: 'schema', name: 'query', columns: {} });
         expect(getSampleTypeTemplateUrl(qInfo, undefined)).toBe(BASE_URL);
     });
 
     test('with importAliases', () => {
-        const qInfo = QueryInfo.fromJSON({ schemaName: 'schema', name: 'query', columns: {} });
+        const qInfo = QueryInfo.fromJsonForTests({ schemaName: 'schema', name: 'query', columns: {} });
         expect(
             getSampleTypeTemplateUrl(qInfo, { a: '1', b: '2' }).indexOf('&includeColumn=a&includeColumn=b') > -1
         ).toBeTruthy();
     });
 
     test('with columns to exclude', () => {
-        const qInfo = QueryInfo.fromJSON({
+        const qInfo = QueryInfo.fromJsonForTests({
             schemaName: 'schema',
             name: 'query',
             columns: {
@@ -374,14 +374,14 @@ describe('getSampleTypeTemplateUrl', () => {
     });
 
     test('with extra excluded columns', () => {
-        const qInfo = QueryInfo.fromJSON({ schemaName: 'schema', name: 'query', columns: {} });
+        const qInfo = QueryInfo.fromJsonForTests({ schemaName: 'schema', name: 'query', columns: {} });
         const url = getSampleTypeTemplateUrl(qInfo, { a: '1', b: '2' }, ['flag', 'alias']);
         expect(url.indexOf('&includeColumn=a&includeColumn=b') > 1).toBeTruthy();
         expect(url.indexOf('&excludeColumn=flag&excludeColumn=alias') > -1).toBeTruthy();
     });
 
     test('with no exportConfig, exclude storage', () => {
-        const qInfo = QueryInfo.fromJSON({ schemaName: 'schema', name: 'query', columns: {} });
+        const qInfo = QueryInfo.fromJsonForTests({ schemaName: 'schema', name: 'query', columns: {} });
         const url = getSampleTypeTemplateUrl(qInfo, undefined, SAMPLE_STORAGE_COLUMNS, {});
         expect(url.indexOf('exportAlias.name=SampleID')).toBe(-1);
         expect(url.indexOf('exportAlias.aliquotedFromLSID=AliquotedFrom')).toBe(-1);
@@ -392,7 +392,7 @@ describe('getSampleTypeTemplateUrl', () => {
     });
 
     test('with queryInfo importTemplates', () => {
-        const qInfo = QueryInfo.fromJSON({
+        const qInfo = QueryInfo.fromJsonForTests({
             schemaName: 'schema',
             name: 'query',
             columns: {},

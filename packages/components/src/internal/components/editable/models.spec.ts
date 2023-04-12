@@ -67,7 +67,7 @@ const COLUMN_FILE_INPUT = new QueryColumn({
     readOnly: false,
     inputType: 'file',
 });
-const QUERY_INFO = QueryInfo.fromJSON({
+const QUERY_INFO = QueryInfo.fromJsonForTests({
     columns: {
         both: COLUMN_CAN_INSERT_AND_UPDATE,
         insert: COLUMN_CAN_INSERT,
@@ -78,7 +78,7 @@ const QUERY_INFO = QueryInfo.fromJSON({
 });
 
 describe('EditorModel', () => {
-    const queryInfo = QueryInfo.fromJSON(sampleSet2QueryInfo);
+    const queryInfo = QueryInfo.fromJsonForTests(sampleSet2QueryInfo);
 
     describe('data validation', () => {
         test('no data', () => {

@@ -36,7 +36,7 @@ describe('EntityInsertGridRequiredFieldAlert', () => {
         const wrapper = mount(
             <EntityInsertGridRequiredFieldAlert
                 {...DEFAULT_PROPS}
-                queryInfo={QueryInfo.fromJSON({
+                queryInfo={QueryInfo.fromJsonForTests({
                     columns: [
                         {
                             fieldKey: 'a',
@@ -60,7 +60,7 @@ describe('EntityInsertGridRequiredFieldAlert', () => {
         const wrapper = mount(
             <EntityInsertGridRequiredFieldAlert
                 {...DEFAULT_PROPS}
-                queryInfo={QueryInfo.fromJSON({
+                queryInfo={QueryInfo.fromJsonForTests({
                     columns: [
                         {
                             fieldKey: 'a',

@@ -96,7 +96,81 @@ const defaultQueryColumn = {
     removeFromViews: false,
 };
 
-export class QueryColumn {
+export interface IQueryColumn {
+    align: string;
+    // autoIncrement: boolean;
+    // calculated: boolean;
+    caption: string;
+    conceptURI: string;
+    // defaultScale: string;
+    displayField?: string;
+    displayFieldSqlType?: string;
+    displayFieldJsonType?: string;
+    defaultValue: any;
+    description: string;
+    dimension: boolean;
+    displayAsLookup: boolean;
+    // excludeFromShifting: boolean;
+    // ext: any;
+    facetingBehaviorType: string;
+    fieldKey: string;
+    fieldKeyArray: string[];
+    fieldKeyPath: string;
+    filterable: boolean;
+    format: string;
+    // friendlyType: string;
+    hasSortKey: boolean;
+    hidden: boolean;
+    inputType: string;
+    // isAutoIncrement: boolean; // DUPLICATE
+    // isHidden: boolean; // DUPLICATE
+    isKeyField: boolean;
+    // isMvEnabled: boolean;
+    // isNullable: boolean;
+    // isReadOnly: boolean;
+    // isSelectable: boolean; // DUPLICATE
+    // isUserEditable: boolean; // DUPLICATE
+    // isVersionField: boolean;
+    jsonType: string;
+    // keyField: boolean;
+    lookup: Record<string, any>;
+    measure: boolean;
+    multiValue: boolean;
+    // mvEnabled: boolean;
+    name: string;
+    nameExpression: string;
+    // nullable: boolean;
+    phiProtected: boolean;
+    'protected': boolean;
+    rangeURI: string;
+    readOnly: boolean;
+    // recommendedVariable: boolean;
+    required: boolean;
+    selectable: boolean;
+    shortCaption: string;
+    addToSystemView: boolean;
+    removeFromViewCustomization: boolean;
+    shownInDetailsView: boolean;
+    shownInInsertView: boolean;
+    shownInLookupView: boolean;
+    shownInUpdateView: boolean;
+    sortable: boolean;
+    // sqlType: string;
+    type: string;
+    userEditable: boolean;
+    validValues: string[];
+    // versionField: boolean;
+
+    sorts: '+' | '-';
+    removeFromViews: boolean; // strips this column from all ViewInfo definitions
+    units: string;
+    derivationDataScope: string;
+
+    sourceOntology: string;
+    conceptSubtree: string;
+}
+
+export class QueryColumn implements IQueryColumn {
     declare align: string;
     // declare autoIncrement: boolean;
     // declare calculated: boolean;

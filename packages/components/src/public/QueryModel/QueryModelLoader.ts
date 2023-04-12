@@ -111,7 +111,7 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
     async loadQueryInfo(model) {
         const { containerPath, schemaName, queryName, viewName } = model;
         const queryInfo = await getQueryDetails({ containerPath, schemaName, queryName, viewName });
-        return queryInfo.merge({ columns: bindColumnRenderers(queryInfo.columns) }) as QueryInfo;
+        return queryInfo.mutate({ columns: bindColumnRenderers(queryInfo.columns) });
     },
     async loadRows(model) {
         const result = await selectRowsDeprecated({

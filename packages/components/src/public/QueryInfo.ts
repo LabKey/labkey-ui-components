@@ -21,7 +21,7 @@ export enum QueryInfoStatus {
     unknown,
 }
 
-export class QueryInfo extends ImmutableRecord({
+const QUERY_INFO_DEFAULTS = {
     altUpdateKeys: undefined,
     disabledSystemFields: undefined,
     // canEdit: false,
@@ -67,7 +67,9 @@ export class QueryInfo extends ImmutableRecord({
     showInsertNewButton: true, // opt out
     singular: undefined, // defaults to value of queryLabel
     plural: undefined, // defaults to value of queryLabel
-}) {
+};
+
+export class QueryInfo {
     private declare appEditableTable: boolean; // use isAppEditable()
     declare altUpdateKeys: Set<string>;
     declare disabledSystemFields: Set<string>;
@@ -108,36 +110,41 @@ export class QueryInfo extends ImmutableRecord({
     declare importUrlDisabled: boolean;
     declare importUrl: string;
     declare insertUrlDisabled: boolean;
-    declare insertUrl: boolean;
+    declare insertUrl: string;
 
-    static create(rawQueryInfo: any): QueryInfo {
-        let schemaQuery: SchemaQuery;
+    /**
+     * This constructor merges a Partial<QueryInfo> with QUERY_INFO_DEFAULTS to create a QueryInfo object. You should
+     * almost never call this constructor yourself. The vast majority of the time the constructor should be passed the
+     * result of the applyQueryMetadata method, however for some simpler test cases we can use the fromJsonForTests
+     * static method to instantiate a new QueryInfo.
+     * @param data the Partial<QueryInfo> object to merge with QUERY_INFO_DEFAULTS when creating a QueryInfo.
+     */
+    constructor(data: Partial<QueryInfo>) {
+        Object.assign(this, QUERY_INFO_DEFAULTS, data);
+    }
 
-        if (rawQueryInfo.schemaName && rawQueryInfo.name) {
-            schemaQuery = new SchemaQuery(rawQueryInfo.schemaName, rawQueryInfo.name);
-        }
-
-        return new QueryInfo(
-            Object.assign({}, rawQueryInfo, {
-                schemaQuery,
-            })
-        );
+    mutate(changes: Partial<QueryInfo>): QueryInfo {
+        return new QueryInfo({ ...this, ...changes });
     }
 
     /**
-     * Use this method for creating a basic QueryInfo object with a proper schemaQuery object
-     * and columns map from a JSON object.
+     * Use this method for creating a basic QueryInfo object with a proper schemaQuery object and columns map from a
+     * JSON object. This should only be used in tests. If you're adding more logic to this you should probably also be
+     * adding that same logic to applyQueryMetadata. In the long run this method shouldn't exist and all tests should
+     * use makeQueryInfo so we are testing with QueryInfos that are instantiated with the same logic as our apps are.
      *
-     * @param queryInfoJson
+     * @param queryInfoJson: The JSON representation of the QueryInfo from LabKey Server
+     * @param includeViews boolean, if true this method parses the views from the JSON object and converts them to
+     * ViewInfo objects. Defaults to false.
      */
-    static fromJSON(queryInfoJson: any, includeViews = false): QueryInfo {
+    static fromJsonForTests(queryInfoJson: any, includeViews = false): QueryInfo {
         let schemaQuery: SchemaQuery;
 
         if (queryInfoJson.schemaName && queryInfoJson.name) {
             schemaQuery = new SchemaQuery(queryInfoJson.schemaName, queryInfoJson.name);
         }
         const columns = new ExtendedMap<string, QueryColumn>();
-        Object.keys(queryInfoJson.columns).forEach(columnKey => {
+        Object.keys(queryInfoJson.columns ?? {}).forEach(columnKey => {
             const rawColumn = queryInfoJson.columns[columnKey];
             columns.set(rawColumn.fieldKey.toLowerCase(), new QueryColumn(rawColumn));
         });
@@ -164,7 +171,7 @@ export class QueryInfo extends ImmutableRecord({
             });
         }
 
-        return QueryInfo.create(
+        return new QueryInfo(
             Object.assign({}, queryInfoJson, {
                 altUpdateKeys,
                 disabledSystemFields,
@@ -434,9 +441,9 @@ export class QueryInfo extends ImmutableRecord({
         return !!(this.showInsertNewButton && this.insertUrl && !this.insertUrlDisabled);
     }
 
+    // Note: Why does this method exist? Couldn't consumers use getInsertColumns to get the columns they want?
     getInsertQueryInfo(): QueryInfo {
-        const updateColumns = this.columns.filter(column => column.shownInInsertView && !column.isFileInput);
-        return this.set('columns', updateColumns) as QueryInfo;
+        return this.mutate({ columns: this.columns.filter(column => column.shownInInsertView && !column.isFileInput) });
     }
 
     getFileColumnFieldKeys(): string[] {

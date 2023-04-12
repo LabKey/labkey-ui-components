@@ -657,7 +657,7 @@ class EntityInsertPanelImpl extends Component<Props, State> {
                 columns = this.getAliquotCreationColumns(columns);
             }
 
-            return originalQueryInfo.merge({ columns }) as QueryInfo;
+            return originalQueryInfo.mutate({ columns });
         }
 
         return undefined;

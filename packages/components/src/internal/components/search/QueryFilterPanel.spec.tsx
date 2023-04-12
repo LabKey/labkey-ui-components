@@ -23,7 +23,7 @@ describe('QueryFilterPanel', () => {
     const DEFAULT_PROPS = {
         api: getTestAPIWrapper(jest.fn, {}),
         filters: {},
-        queryInfo: QueryInfo.fromJSON(sampleSetAllFieldTypesQueryInfo, true),
+        queryInfo: QueryInfo.fromJsonForTests(sampleSetAllFieldTypesQueryInfo, true),
         onFilterUpdate: jest.fn,
     };
 

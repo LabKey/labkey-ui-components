@@ -36,7 +36,7 @@ import {
 import { EXPORT_TYPES } from './constants';
 
 describe('column mutation actions', () => {
-    const queryInfo = QueryInfo.fromJSON(sampleSet2QueryInfo);
+    const queryInfo = QueryInfo.fromJsonForTests(sampleSet2QueryInfo);
 
     const insertColumnFieldKeys = queryInfo
         .getInsertColumns()

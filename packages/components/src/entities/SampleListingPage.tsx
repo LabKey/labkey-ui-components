@@ -159,7 +159,7 @@ export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
                 setSampleTypeQueryInfo(queryInfo);
             } catch (reason) {
                 console.error(reason);
-                setSampleTypeQueryInfo(new QueryInfo());
+                setSampleTypeQueryInfo(new QueryInfo({}));
             }
 
             try {

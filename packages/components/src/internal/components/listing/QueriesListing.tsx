@@ -15,7 +15,7 @@
  */
 import React, { Component, ReactNode } from 'react';
 import { Link } from 'react-router';
-import { List } from 'immutable';
+import { fromJS, List } from 'immutable';
 import { Query } from '@labkey/api';
 
 import { GridColumn } from '../base/models/GridColumn';
@@ -27,6 +27,13 @@ import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { SchemaListing } from './SchemaListing';
+
+// This should extend GetQueryResponse from @labkey/api but we don't export that type at the moment.
+interface QueryData {
+    description: string;
+    name: string;
+    schemaName: string;
+}
 
 const columns = List([
     new GridColumn({
@@ -45,16 +52,16 @@ const columns = List([
     }),
 ]);
 
-function fetchGetQueries(schemaName: string): Promise<List<QueryInfo>> {
+function fetchQueryInfos(schemaName: string): Promise<QueryData[]> {
     return new Promise((resolve, reject) => {
         Query.getQueries({
             schemaName,
             success: data => {
                 const queries = data.queries
-                    .map(result => QueryInfo.create({ ...result, schemaName }))
+                    .map(result => ({ ...result, schemaName }))
                     .sort(naturalSortByProperty('name'));
 
-                resolve(List(queries));
+                resolve(queries);
             },
             failure: error => {
                 console.error(error);
@@ -73,7 +80,7 @@ interface QueriesListingProps {
 
 interface QueriesListingState {
     error: string;
-    queries: List<QueryInfo>;
+    queries: QueryData[];
 }
 
 export class QueriesListing extends Component<QueriesListingProps, QueriesListingState> {
@@ -102,7 +109,7 @@ export class QueriesListing extends Component<QueriesListingProps, QueriesListin
 
     loadQueries = (): void => {
         const { schemaName } = this.props;
-        fetchGetQueries(schemaName)
+        fetchQueryInfos(schemaName)
             .then(queries => {
                 this.setState({ queries });
             })
@@ -119,15 +126,15 @@ export class QueriesListing extends Component<QueriesListingProps, QueriesListin
             return (
                 <>
                     <SchemaListing schemaName={schemaName} hideEmpty={true} asPanel={true} title="Nested Schemas" />
-                    {hideEmpty && queries.count() === 0 ? null : asPanel ? (
+                    {hideEmpty && queries.length === 0 ? null : asPanel ? (
                         <div className="panel panel-default">
                             <div className="panel-heading">{title}</div>
                             <div className="panel-body">
-                                <Grid data={queries} columns={columns} />
+                                <Grid data={fromJS(queries)} columns={columns} />
                             </div>
                         </div>
                     ) : (
-                        <Grid data={queries} columns={columns} />
+                        <Grid data={fromJS(queries)} columns={columns} />
                     )}
                 </>
             );

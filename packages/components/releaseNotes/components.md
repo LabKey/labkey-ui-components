@@ -150,6 +150,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Merge release23.3-SNAPSHOT to develop:
     * includes changes from 2.302.4
 
+### version 2.3??.0
+*Released*: ?? April 2023
+* Add ExtendedMap
+* Convert QueryInfo to plain JS  class
+* ViewInfo: Remove logic from constructor
+    - All transformation logic moved to fromJson
+
 ### version 2.323.0
 *Released*: 1 April 2023
 * Enable lineage relationship between custom data classes in apps

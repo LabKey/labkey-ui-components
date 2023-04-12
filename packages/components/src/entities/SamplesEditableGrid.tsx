@@ -13,6 +13,7 @@ import { EditorMode, EditorModel, IEditableGridLoader, IGridResponse } from '../
 
 import { isFreezerManagementEnabled, userCanEditStorageData } from '../internal/app/utils';
 import { SamplesEditableGridProps } from '../internal/sampleModels';
+import { ExtendedMap } from '../public/ExtendedMap';
 
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { SchemaQuery } from '../public/SchemaQuery';
@@ -530,25 +531,23 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
 
         if (determineStorage) {
             let updateColumns = List<QueryColumn>();
-            let queryInfoCols = OrderedMap<string, QueryColumn>();
+            const queryInfoCols = new ExtendedMap<string, QueryColumn>();
             displayQueryModel.queryInfo.columns.forEach((column, key) => {
                 if (key?.toLowerCase() === 'rowid') {
-                    queryInfoCols = queryInfoCols.set(key, column);
+                    queryInfoCols.set(key, column);
                 } else if (key?.toLowerCase() === 'name') {
-                    queryInfoCols = queryInfoCols.set(key, column);
+                    queryInfoCols.set(key, column);
                     updateColumns = updateColumns.push(column);
                 } else if (STORAGE_UPDATE_FIELDS.indexOf(column.fieldKey) > -1) {
                     const updatedCol = column.mutate({
                         shownInUpdateView: true,
                         userEditable: true,
                     });
-                    queryInfoCols = queryInfoCols.set(key, updatedCol);
+                    queryInfoCols.set(key, updatedCol);
                     updateColumns = updateColumns.push(updatedCol);
                 }
             });
-            const storageQueryInfo = displayQueryModel.queryInfo
-                .merge({ columns: queryInfoCols })
-                .asImmutable() as QueryInfo;
+            const storageQueryInfo = displayQueryModel.queryInfo.mutate({ columns: queryInfoCols });
 
             loaders.push(
                 new StorageEditableGridLoaderFromSelection(

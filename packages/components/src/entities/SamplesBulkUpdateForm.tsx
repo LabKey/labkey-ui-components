@@ -11,6 +11,7 @@ import {
     NotificationsContextProps,
     withNotificationsContext,
 } from '../internal/components/notifications/NotificationsContext';
+import { ExtendedMap } from '../public/ExtendedMap';
 
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { SchemaQuery } from '../public/SchemaQuery';
@@ -123,8 +124,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
     getQueryInfo(): QueryInfo {
         const { aliquots, queryModel, sampleTypeDomainFields } = this.props;
         const originalQueryInfo = queryModel.queryInfo;
-
-        let columns = OrderedMap<string, QueryColumn>();
+        const columns = new ExtendedMap<string, QueryColumn>();
 
         // if the selection includes any aliquots, only show pk, aliquot specific and description/samplestate columns
         if (aliquots?.length > 0) {
@@ -132,22 +132,22 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
                 const colLc = column.fieldKey.toLowerCase();
                 const isAliquotField = sampleTypeDomainFields.aliquotFields.indexOf(colLc) > -1;
                 const isIndependentField = sampleTypeDomainFields.independentFields.indexOf(colLc) > -1;
-                if (COMMON_SYSTEM_FIELDS_FOR_UPDATE.indexOf(colLc) >= 0 || isAliquotField || isIndependentField)
-                    columns = columns.set(key, column);
+                if (COMMON_SYSTEM_FIELDS_FOR_UPDATE.indexOf(colLc) >=0 || isAliquotField || isIndependentField)
+                    columns.set(key, column);
             });
             originalQueryInfo.getPkCols().forEach(column => {
-                columns = columns.set(column.fieldKey.toLowerCase(), column);
+                columns.set(column.fieldKey.toLowerCase(), column);
             });
         } else {
             // if contains samples, skip aliquot fields
             originalQueryInfo.columns.forEach((column, key) => {
                 const fieldKey = column.fieldKey.toLowerCase();
                 if (sampleTypeDomainFields.aliquotFields.indexOf(fieldKey) === -1 && fieldKey !== 'name')
-                    columns = columns.set(key, column);
+                    columns.set(key, column);
             });
         }
 
-        return originalQueryInfo.merge({ columns }) as QueryInfo;
+        return originalQueryInfo.mutate({ columns });
     }
 
     onComplete = (data: any, submitForEdit: boolean): void => {

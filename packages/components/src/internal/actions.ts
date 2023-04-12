@@ -1390,12 +1390,12 @@ export function changeColumn(
         })
         .toMap();
 
-    let columns = OrderedMap<string, QueryColumn>();
+    const columns = new ExtendedMap<string, QueryColumn>();
     queryInfo.columns.forEach((column, key) => {
         if (column.fieldKey === currentCol.fieldKey) {
-            columns = columns.set(newQueryColumn.fieldKey.toLowerCase(), newQueryColumn);
+            columns.set(newQueryColumn.fieldKey.toLowerCase(), newQueryColumn);
         } else {
-            columns = columns.set(key, column);
+            columns.set(key, column);
         }
     });
 
@@ -1417,7 +1417,7 @@ export function changeColumn(
             cellValues: newCellValues,
         },
         data,
-        queryInfo: queryInfo.merge({ columns }) as QueryInfo,
+        queryInfo: queryInfo.mutate({ columns }),
     };
 }
 
@@ -1475,7 +1475,7 @@ export function removeColumn(
             cellValues: newCellValues,
         },
         data,
-        queryInfo: queryInfo.merge({
+        queryInfo: queryInfo.mutate({
             columns: queryInfo.columns.filter(col => col.fieldKey.toLowerCase() !== fieldKey.toLowerCase()),
         }) as QueryInfo,
     };
@@ -1574,7 +1574,7 @@ export function addColumns(
             cellValues: newCellValues,
         },
         data,
-        queryInfo: queryInfo.merge({ columns: queryInfo.columns.mergeAt(queryColIndex, queryColumns) }) as QueryInfo,
+        queryInfo: queryInfo.mutate({ columns: queryInfo.columns.mergeAt(queryColIndex, queryColumns) }),
     };
 }
 

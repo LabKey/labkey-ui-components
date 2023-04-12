@@ -30,7 +30,7 @@ const COLUMN_FILE_INPUT = new QueryColumn({
     userEditable: true,
     inputType: 'file',
 });
-const QUERY_INFO = QueryInfo.fromJSON({
+const QUERY_INFO = QueryInfo.fromJsonForTests({
     name: 'test',
     schemaName: 'schema',
     columns: {

@@ -322,7 +322,6 @@ import {
     getSampleTypeDetails,
     getSelectedSampleIdsFromSelectionKey,
     getSelectionLineageData,
-    getParentTypeDataForLineage,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SampleAmountEditModal } from './internal/components/samples/SampleAmountEditModal';
@@ -415,6 +414,7 @@ import {
     getDataDeleteConfirmationData,
     getDataOperationConfirmationData,
     getOperationConfirmationData,
+    getParentTypeDataForLineage,
     getSampleOperationConfirmationData,
 } from './internal/components/entities/actions';
 import {

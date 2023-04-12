@@ -2,8 +2,6 @@ import { List, Map } from 'immutable';
 
 import { getCurrentProductName, isAssayEnabled, isELNEnabled, isWorkflowEnabled } from '../../app/utils';
 
-import { ParentIdData } from '../samples/actions';
-
 import { naturalSort } from '../../../public/sort';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { EditableColumnMetadata } from '../editable/EditableGrid';
@@ -16,6 +14,8 @@ import {
     POOLED_SAMPLE_CREATION,
     SampleCreationTypeModel,
 } from '../samples/models';
+
+import { ParentIdData } from './actions';
 
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
 

@@ -373,38 +373,6 @@ export function getSelectionLineageData(
     });
 }
 
-export type GetParentTypeDataForLineage = (
-    parentDataType: EntityDataType,
-    data: any[],
-    containerPath?: string,
-    containerFilter?: Query.ContainerFilter
-) => Promise<{
-    parentIdData: Record<string, ParentIdData>;
-    parentTypeOptions: List<IEntityTypeOption>;
-}>;
-
-export const getParentTypeDataForLineage: GetParentTypeDataForLineage = async (
-    parentDataType,
-    data,
-    containerPath,
-    containerFilter
-) => {
-    let parentTypeOptions = List<IEntityTypeOption>();
-    let parentIdData: Record<string, ParentIdData>;
-    if (parentDataType) {
-        const options = await getEntityTypeOptions(parentDataType, containerPath, containerFilter);
-        parentTypeOptions = List<IEntityTypeOption>(options.get(parentDataType.typeListingSchemaQuery.queryName));
-
-        // get the set of parent row LSIDs so that we can query for the RowId and SampleSet/DataClass for that row
-        const parentIDs = [];
-        data.forEach(datum => {
-            parentIDs.push(...datum[parentDataType.inputColumnName].map(row => row.value));
-        });
-        parentIdData = await getParentRowIdAndDataType(parentDataType, parentIDs, containerPath);
-    }
-    return { parentTypeOptions, parentIdData };
-};
-
 export function getUpdatedLineageRows(
     lineageRows: Array<Record<string, any>>,
     originalRows: Array<Record<string, any>>,
@@ -445,46 +413,6 @@ export function getUpdatedLineageRows(
     });
 
     return updatedLineageRows;
-}
-
-export type ParentIdData = {
-    parentId: string | number;
-    rowId: number;
-};
-
-export function getParentRowIdAndDataType(
-    parentDataType: EntityDataType,
-    parentIDs: string[],
-    containerPath?: string
-): Promise<Record<string, ParentIdData>> {
-    return new Promise((resolve, reject) => {
-        selectRowsDeprecated({
-            containerPath,
-            schemaName: parentDataType.listingSchemaQuery.schemaName,
-            queryName: parentDataType.listingSchemaQuery.queryName,
-            viewName: ViewInfo.DETAIL_NAME, // use this to avoid filters on the default view
-            columns: 'LSID, RowId, DataClass, SampleSet', // only one of DataClass or SampleSet will exist
-            filterArray: [Filter.create('LSID', parentIDs, Filter.Types.IN)],
-        })
-            .then(response => {
-                const { key, models } = response;
-                const filteredParentItems = {};
-                Object.keys(models[key]).forEach(row => {
-                    const item = models[key][row];
-                    const lsid = caseInsensitive(item, 'LSID').value;
-                    filteredParentItems[lsid] = {
-                        rowId: caseInsensitive(item, 'RowId').value,
-                        parentId:
-                            caseInsensitive(item, 'DataClass')?.value ?? caseInsensitive(item, 'SampleSet')?.value,
-                    };
-                });
-                resolve(filteredParentItems);
-            })
-            .catch(reason => {
-                console.error(reason);
-                reject(resolveErrorMessage(reason));
-            });
-    });
 }
 
 // exported for jest testing

@@ -5,7 +5,7 @@ import { buildURL } from '../../url/AppURL';
 import { SampleOperation } from '../samples/constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { getFilterForSampleOperation, isSamplesSchema } from '../samples/utils';
-import { importData, InsertOptions } from '../../query/api';
+import { importData, InsertOptions, selectRowsDeprecated } from '../../query/api';
 import { caseInsensitive, handleRequestFailure } from '../../util/utils';
 import { SampleCreationType } from '../samples/models';
 import { getSelected, getSelectedData } from '../../actions';
@@ -16,7 +16,9 @@ import { SCHEMAS } from '../../schemas';
 
 import { Row, selectRows, SelectRowsResponse } from '../../query/selectRows';
 
-import { getParentTypeDataForLineage } from '../samples/actions';
+import { ViewInfo } from '../../ViewInfo';
+
+import { resolveErrorMessage } from '../../util/messaging';
 
 import { getInitialParentChoices, isDataClassEntity, isSampleEntity } from './utils';
 import { DataClassDataType, DataOperation, SampleTypeDataType } from './constants';
@@ -596,6 +598,78 @@ export function getCrossFolderSelectionResult(
         });
     });
 }
+
+export type ParentIdData = {
+    parentId: string | number;
+    rowId: number;
+};
+
+function getParentRowIdAndDataType(
+    parentDataType: EntityDataType,
+    parentIDs: string[],
+    containerPath?: string
+): Promise<Record<string, ParentIdData>> {
+    return new Promise((resolve, reject) => {
+        selectRowsDeprecated({
+            containerPath,
+            schemaName: parentDataType.listingSchemaQuery.schemaName,
+            queryName: parentDataType.listingSchemaQuery.queryName,
+            viewName: ViewInfo.DETAIL_NAME, // use this to avoid filters on the default view
+            columns: 'LSID, RowId, DataClass, SampleSet', // only one of DataClass or SampleSet will exist
+            filterArray: [Filter.create('LSID', parentIDs, Filter.Types.IN)],
+        })
+            .then(response => {
+                const { key, models } = response;
+                const filteredParentItems = {};
+                Object.keys(models[key]).forEach(row => {
+                    const item = models[key][row];
+                    const lsid = caseInsensitive(item, 'LSID').value;
+                    filteredParentItems[lsid] = {
+                        rowId: caseInsensitive(item, 'RowId').value,
+                        parentId:
+                            caseInsensitive(item, 'DataClass')?.value ?? caseInsensitive(item, 'SampleSet')?.value,
+                    };
+                });
+                resolve(filteredParentItems);
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject(resolveErrorMessage(reason));
+            });
+    });
+}
+
+export type GetParentTypeDataForLineage = (
+    parentDataType: EntityDataType,
+    data: any[],
+    containerPath?: string,
+    containerFilter?: Query.ContainerFilter
+) => Promise<{
+    parentIdData: Record<string, ParentIdData>;
+    parentTypeOptions: List<IEntityTypeOption>;
+}>;
+
+export const getParentTypeDataForLineage: GetParentTypeDataForLineage = async (
+    parentDataType,
+    data,
+    containerPath,
+    containerFilter
+) => {
+    let parentTypeOptions = List<IEntityTypeOption>();
+    let parentIdData: Record<string, ParentIdData>;
+    if (parentDataType) {
+        const options = await getEntityTypeOptions(parentDataType, containerPath, containerFilter);
+        parentTypeOptions = List<IEntityTypeOption>(options.get(parentDataType.typeListingSchemaQuery.queryName));
+
+        // get the set of parent row LSIDs so that we can query for the RowId and SampleSet/DataClass for that row
+        const parentIDs = [];
+        data.forEach(datum => {
+            parentIDs.push(...datum[parentDataType.inputColumnName].map(row => row.value));
+        });
+        parentIdData = await getParentRowIdAndDataType(parentDataType, parentIDs, containerPath);
+    }
+    return { parentTypeOptions, parentIdData };
+};
 
 export const getOriginalParentsFromLineage = async (
     lineage: Record<string, any>,

@@ -1565,7 +1565,7 @@ describe('getSampleFinderColumnNames', () => {
 describe('isValidFilterField', () => {
     test('lookup field', () => {
         const field = new QueryColumn({ name: 'test', lookup: { isPublic: true } });
-        const queryInfo = QueryInfo.create({
+        const queryInfo = QueryInfo.fromJsonForTests({
             schemaName: 'test',
             name: 'query',
             supportGroupConcatSubSelect: true,
@@ -1581,7 +1581,7 @@ describe('isValidFilterField', () => {
 
     test('mult-value lookup field', () => {
         const field = new QueryColumn({ name: 'test', lookup: { isPublic: true }, multiValue: true });
-        const queryInfo = QueryInfo.create({
+        const queryInfo = QueryInfo.fromJsonForTests({
             schemaName: 'test',
             name: 'query',
             supportGroupConcatSubSelect: true,
@@ -1597,7 +1597,7 @@ describe('isValidFilterField', () => {
 
     test('mult-value lookup field and not supportGroupConcatSubSelect', () => {
         const field = new QueryColumn({ name: 'test', lookup: { isPublic: true }, multiValue: true });
-        const queryInfo = QueryInfo.create({
+        const queryInfo = QueryInfo.fromJsonForTests({
             schemaName: 'test',
             name: 'query',
             supportGroupConcatSubSelect: false,
@@ -1613,7 +1613,7 @@ describe('isValidFilterField', () => {
 
     test('Units field', () => {
         const field = new QueryColumn({ name: 'Units', fieldKey: 'Units' });
-        const queryInfo = QueryInfo.create({
+        const queryInfo = QueryInfo.fromJsonForTests({
             schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
             name: 'test',
             supportGroupConcatSubSelect: true,
@@ -1629,7 +1629,7 @@ describe('isValidFilterField', () => {
 
     test('group concat field not supported', () => {
         const field = new QueryColumn({ name: 'StorageStatus', fieldKey: 'StorageStatus' });
-        const queryInfo = QueryInfo.create({
+        const queryInfo = QueryInfo.fromJsonForTests({
             schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
             name: 'test',
             supportGroupConcatSubSelect: false,
@@ -1645,7 +1645,7 @@ describe('isValidFilterField', () => {
 
     test('group concat field not supported, regular field', () => {
         const field = new QueryColumn({ name: 'RowId', fieldKey: 'RowId' });
-        const queryInfo = QueryInfo.create({
+        const queryInfo = QueryInfo.fromJsonForTests({
             schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
             name: 'test',
             supportGroupConcatSubSelect: false,
@@ -1661,7 +1661,7 @@ describe('isValidFilterField', () => {
 
     test('group concat field not supported, no group concat fields', () => {
         const field = new QueryColumn({ name: 'RowId', fieldKey: 'RowId' });
-        const queryInfo = QueryInfo.create({
+        const queryInfo = QueryInfo.fromJsonForTests({
             schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
             name: 'test',
             supportGroupConcatSubSelect: false,
@@ -1673,7 +1673,7 @@ describe('isValidFilterField', () => {
 
     test('group concat field is supported', () => {
         const field = new QueryColumn({ name: 'StorageStatus', fieldKey: 'StorageStatus' });
-        const queryInfo = QueryInfo.create({
+        const queryInfo = QueryInfo.fromJsonForTests({
             schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
             name: 'test',
             supportGroupConcatSubSelect: true,
@@ -1689,7 +1689,7 @@ describe('isValidFilterField', () => {
 
     test('regular field', () => {
         const field = new QueryColumn({ name: 'Regular', fieldKey: 'Regular' });
-        const queryInfo = QueryInfo.create({
+        const queryInfo = QueryInfo.fromJsonForTests({
             schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
             name: 'test',
             supportGroupConcatSubSelect: false,

@@ -1,4 +1,5 @@
 import { List } from 'immutable';
+import { ExtendedMap } from '../../../public/ExtendedMap';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
@@ -78,10 +79,9 @@ describe('getLineageEditorUpdateColumns', () => {
     // Regression coverage to ensure the "name" column is included in the lineage
     // update columns ONLY when the "name" column is a part of the update columns for the underlying QueryInfo.
     test('without updatable "name" column', () => {
-        const queryInfo = MODEL.queryInfo.setIn(
-            ['columns', 'name'],
-            new QueryColumn({ fieldKey: 'name' })
-        ) as QueryInfo;
+        const columns = new ExtendedMap<string, QueryColumn>(MODEL.queryInfo.columns);
+        columns.set('name', new QueryColumn({ fieldKey: 'name' }));
+        const queryInfo = MODEL.queryInfo.mutate({ columns });
         const model = MODEL.mutate({ queryInfo });
         const cols = getLineageEditorUpdateColumns(model, {});
 

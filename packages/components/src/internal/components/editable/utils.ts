@@ -30,7 +30,7 @@ export const loadEditorModelData = async (
     editorColumns?: List<QueryColumn>
 ): Promise<Partial<EditorModel>> => {
     const { orderedRows, rows, queryInfo } = queryModelData;
-    const columns = editorColumns.toArray() ?? queryInfo.getInsertColumns();
+    const columns = editorColumns?.toArray() ?? queryInfo.getInsertColumns();
     const lookupValueDescriptors = await getLookupValueDescriptors(columns, fromJS(rows), fromJS(orderedRows));
     let cellValues = Map<string, List<ValueDescriptor>>();
 

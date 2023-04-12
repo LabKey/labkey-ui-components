@@ -149,20 +149,8 @@ export class QueryInfo {
             columns.set(rawColumn.fieldKey.toLowerCase(), new QueryColumn(rawColumn));
         });
 
-        const disabledSystemFields = new Set<string>();
-        if (queryInfoJson.disabledSystemFields?.length > 0) {
-            queryInfoJson.disabledSystemFields?.forEach(field => {
-                disabledSystemFields.add(field);
-            });
-        }
-
-        const altUpdateKeys = new Set<string>();
-        if (queryInfoJson.altUpdateKeys?.length > 0) {
-            queryInfoJson.altUpdateKeys?.forEach(key => {
-                altUpdateKeys.add(key);
-            });
-        }
-
+        const disabledSystemFields = new Set<string>(queryInfoJson.disabledSystemFields ?? []);
+        const altUpdateKeys = new Set<string>(queryInfoJson.altUpdateKeys ?? []);
         const views = new ExtendedMap<string, ViewInfo>();
         if (includeViews) {
             queryInfoJson.views.forEach(view => {

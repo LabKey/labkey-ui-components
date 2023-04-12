@@ -25,7 +25,7 @@ import { SampleTypeBasePage } from './SampleTypeBasePage';
 import { SampleTypeDesignPage } from './SampleTypeDesignPage';
 
 describe('SampleTypeDesignPage', () => {
-    const QUERY_INFO = QueryInfo.create({ domainContainerPath: TEST_PROJECT_CONTAINER.path });
+    const QUERY_INFO = new QueryInfo({ domainContainerPath: TEST_PROJECT_CONTAINER.path });
 
     const API = getTestAPIWrapper(jest.fn, {
         entity: getEntityTestAPIWrapper(jest.fn, {

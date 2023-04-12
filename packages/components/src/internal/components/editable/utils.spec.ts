@@ -1,4 +1,5 @@
 import { fromJS, List, Map } from 'immutable';
+import { ExtendedMap } from '../../../public/ExtendedMap';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { LoadingState } from '../../../public/LoadingState';
@@ -119,11 +120,7 @@ describe('Editable Grids Utils', () => {
         test('defaults to insert columns', async () => {
             const loader = new MockEditableGridLoader(queryInfo);
             const editorModel = new EditorModel({});
-            const expectedInsertColumns = queryInfo
-                .getInsertColumns()
-                .map(col => col.fieldKey)
-                .toArray();
-
+            const expectedInsertColumns = queryInfo.getInsertColumns().map(col => col.fieldKey);
             const models = await initEditableGridModel(dataModel, editorModel, loader, dataModel);
             expect(models.dataModel.queryInfoLoadingState).toEqual(LoadingState.LOADED);
             expect(models.dataModel.rowsLoadingState).toEqual(LoadingState.LOADED);
@@ -134,11 +131,7 @@ describe('Editable Grids Utils', () => {
         test('respects loader mode for columns', async () => {
             const loader = new MockEditableGridLoader(queryInfo, { mode: EditorMode.Update });
             const editorModel = new EditorModel({});
-            const expectedUpdateColumns = queryInfo
-                .getUpdateColumns()
-                .map(col => col.fieldKey)
-                .toArray();
-
+            const expectedUpdateColumns = queryInfo.getUpdateColumns().map(col => col.fieldKey);
             const models = await initEditableGridModel(dataModel, editorModel, loader, dataModel);
             expect(models.editorModel.columns.toArray()).toEqual(expectedUpdateColumns);
         });
@@ -155,7 +148,7 @@ describe('Editable Grids Utils', () => {
 });
 
 describe('getUpdatedDataFromGrid', () => {
-    const cols = Map<string, QueryColumn>({
+    const cols = new ExtendedMap<string, QueryColumn>({
         rowid: new QueryColumn({ name: 'RowId', rangeURI: INTEGER_TYPE.rangeURI }),
         value: new QueryColumn({ name: 'Value', rangeURI: INTEGER_TYPE.rangeURI }),
         data: new QueryColumn({ name: 'Data', rangeURI: TEXT_TYPE.rangeURI }),
@@ -166,10 +159,10 @@ describe('getUpdatedDataFromGrid', () => {
         int: new QueryColumn({ name: 'Int', rangeURI: INTEGER_TYPE.rangeURI }),
         date: new QueryColumn({ name: 'Date', rangeURI: DATE_TYPE.rangeURI }),
     });
-    const queryInfo = QueryInfo.create({
+    const queryInfo = new QueryInfo({
         columns: cols,
     });
-    const queryInfoWithAltPK = QueryInfo.create({
+    const queryInfoWithAltPK = new QueryInfo({
         columns: cols,
         altUpdateKeys: new Set<string>(['Data']),
     });

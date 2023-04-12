@@ -3,6 +3,7 @@ import { Filter } from '@labkey/api';
 
 import { initUnitTests, makeQueryInfo } from '../../internal/testHelpers';
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
+import { ExtendedMap } from '../ExtendedMap';
 
 import { SchemaQuery } from '../SchemaQuery';
 import { QueryInfo } from '../QueryInfo';
@@ -242,9 +243,7 @@ describe('QueryModel', () => {
             name: viewName,
             filter: [{ fieldKey: 'c', value: 'testing', op: 'eq' }],
         });
-        const queryInfo = QueryInfo.create({
-            views: fromJS({ [viewName.toLowerCase()]: view }),
-        });
+        const queryInfo = new QueryInfo({ views: new ExtendedMap({ [viewName.toLowerCase()]: view }) });
         const sq = new SchemaQuery('exp.data', 'mixtures', viewName);
 
         const model = makeTestQueryModel(sq, queryInfo).mutate({

@@ -22,7 +22,7 @@ describe('GridFilterModal', () => {
         initFilters: [],
         model: makeTestQueryModel(
             new SchemaQuery('schema', 'query', 'view'),
-            QueryInfo.create({ name: 'Query', title: 'Query Title' })
+            QueryInfo.fromJsonForTests({ name: 'Query', schema: 'schema', title: 'Query Title' })
         ),
         onApply: jest.fn,
         onCancel: jest.fn,

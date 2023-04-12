@@ -25,7 +25,7 @@ describe('SamplesAssayButton', () => {
         assayProtocol: undefined,
         model: makeTestQueryModel(
             SCHEMAS.SAMPLE_SETS.SAMPLES,
-            QueryInfo.create({ importUrl: 'testimporturl', insertUrl: 'testinserturl' })
+            new QueryInfo({ importUrl: 'testimporturl', insertUrl: 'testinserturl' })
         ).mutate({ selections: new Set(['1']) }),
     };
 
@@ -56,7 +56,7 @@ describe('SamplesAssayButton', () => {
     test('not isSamplesSchema', () => {
         const model = makeTestQueryModel(
             new SchemaQuery('schema', 'query'),
-            QueryInfo.create({ importUrl: 'testimporturl', insertUrl: 'testinserturl' })
+            new QueryInfo({ importUrl: 'testimporturl', insertUrl: 'testinserturl' })
         ).mutate({ selections: new Set(['1']) });
         const wrapper = mountWithServerContext(<SamplesAssayButtonImpl {...DEFAULT_PROPS} model={model} />, {
             user: TEST_USER_EDITOR,

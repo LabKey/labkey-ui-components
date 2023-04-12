@@ -159,9 +159,9 @@ export class EditorModel
         let columns;
 
         if (forUpdate) {
-            columns = updateColumns ?? queryInfo.getUpdateColumns(readOnlyColumns.toArray());
+            columns = updateColumns ?? List(queryInfo.getUpdateColumns(readOnlyColumns?.toArray()));
         } else {
-            columns = insertColumns ?? queryInfo.getInsertColumns();
+            columns = insertColumns ?? List(queryInfo.getInsertColumns());
         }
 
         if (colFilter) columns = columns.filter(colFilter);

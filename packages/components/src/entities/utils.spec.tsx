@@ -346,7 +346,7 @@ describe('getSampleTypeTemplateUrl', () => {
         '&filenamePrefix=query';
 
     test('no schemaQuery', () => {
-        expect(getSampleTypeTemplateUrl(QueryInfo.create({}), undefined)).toBe(undefined);
+        expect(getSampleTypeTemplateUrl(new QueryInfo({}), undefined)).toBe(undefined);
     });
 
     test('without importAliases', () => {
@@ -932,7 +932,7 @@ describe('getImportItemsForAssayDefinitions', () => {
 
     test('with expected match', () => {
         const assayStateModel = new AssayStateModel({ definitions: [ASSAY_DEFINITION_MODEL] });
-        let queryInfo = QueryInfo.create(sampleSet2QueryInfo);
+        let queryInfo = QueryInfo.fromJsonForTests(sampleSet2QueryInfo);
 
         // with a query name that DOES NOT match the assay def sampleColumn lookup
         queryInfo = queryInfo.set('schemaQuery', new SchemaQuery('samples', 'Sample set 1')) as QueryInfo;
@@ -966,7 +966,7 @@ describe('getSamplesAssayGridQueryConfigs', () => {
     });
     const sessionQueryResponse = {
         key: 'key',
-        queries: { key: QueryInfo.create({ schemaName: 'exp', name: 'AssayRunsPerSample' }) },
+        queries: { key: QueryInfo.fromJsonForTests({ schemaName: 'exp', name: 'AssayRunsPerSample' }) },
         models: undefined,
         orderedModels: undefined,
     };

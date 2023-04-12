@@ -26,7 +26,7 @@ describe('EntityInsertGridRequiredFieldAlert', () => {
 
     test('queryInfo isLoading', () => {
         const wrapper = mount(
-            <EntityInsertGridRequiredFieldAlert {...DEFAULT_PROPS} queryInfo={QueryInfo.create({ isLoading: true })} />
+            <EntityInsertGridRequiredFieldAlert {...DEFAULT_PROPS} queryInfo={new QueryInfo({ isLoading: true })} />
         );
         validate(wrapper);
         wrapper.unmount();

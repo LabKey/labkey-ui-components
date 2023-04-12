@@ -16,7 +16,7 @@ describe('SamplesAddButton', () => {
     const DEFAULT_PROPS = {
         model: makeTestQueryModel(
             new SchemaQuery('schema', 'query'),
-            QueryInfo.create({ importUrl: 'testimporturl', insertUrl: 'testinserturl' })
+            new QueryInfo({ importUrl: 'testimporturl', insertUrl: 'testinserturl' })
         ),
     };
 
@@ -82,7 +82,7 @@ describe('SamplesAddButton', () => {
     test('not showInsertNewButton on queryInfo', () => {
         const model = makeTestQueryModel(
             new SchemaQuery('schema', 'query'),
-            QueryInfo.create({ importUrl: 'testimporturl', insertUrl: 'testinserturl', showInsertNewButton: false })
+            new QueryInfo({ importUrl: 'testimporturl', insertUrl: 'testinserturl', showInsertNewButton: false })
         );
         const wrapper = mountWithServerContext(<SamplesAddButton {...DEFAULT_PROPS} model={model} />, {
             user: TEST_USER_EDITOR,
@@ -94,7 +94,7 @@ describe('SamplesAddButton', () => {
     test('no importUrl on queryInfo', () => {
         const model = makeTestQueryModel(
             new SchemaQuery('schema', 'query'),
-            QueryInfo.create({ importUrl: undefined, insertUrl: 'testinserturl' })
+            new QueryInfo({ importUrl: undefined, insertUrl: 'testinserturl' })
         );
         const wrapper = mountWithServerContext(<SamplesAddButton {...DEFAULT_PROPS} model={model} />, {
             user: TEST_USER_EDITOR,
@@ -106,7 +106,7 @@ describe('SamplesAddButton', () => {
     test('asSubMenu', () => {
         const model = makeTestQueryModel(
             new SchemaQuery('schema', 'query'),
-            QueryInfo.create({ importUrl: undefined, insertUrl: 'testinserturl' })
+            new QueryInfo({ importUrl: undefined, insertUrl: 'testinserturl' })
         );
         const wrapper = mountWithServerContext(<SamplesAddButton {...DEFAULT_PROPS} model={model} asSubMenu />, {
             user: TEST_USER_EDITOR,

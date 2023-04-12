@@ -164,27 +164,14 @@ export function applyQueryMetadata(rawQueryInfo: any, schemaName?: string, query
         }
 
         const queryLabel = rawQueryInfo.title || _queryName;
-
-        const disabledSystemFields = new Set<string>();
-        if (rawQueryInfo.disabledSystemFields?.length > 0) {
-            rawQueryInfo.disabledSystemFields?.forEach(field => {
-                disabledSystemFields.add(field);
-            });
-        }
-
+        const disabledSystemFields = new Set<string>(rawQueryInfo.disabledSystemFields ?? []);
+        const altUpdateKeys = new Set<string>(rawQueryInfo.altUpdateKeys ?? []);
         const defaultQueryMeta = {
             queryLabel,
             plural: queryLabel,
             schemaLabel: _schemaName,
             singular: queryLabel,
         };
-
-        const altUpdateKeys = new Set<string>();
-        if (rawQueryInfo.altUpdateKeys?.length > 0) {
-            rawQueryInfo.altUpdateKeys?.forEach(key => {
-                altUpdateKeys.add(key);
-            });
-        }
 
         queryInfo = Object.assign({}, rawQueryInfo, schemaMeta, defaultQueryMeta, queryMeta, {
             altUpdateKeys,

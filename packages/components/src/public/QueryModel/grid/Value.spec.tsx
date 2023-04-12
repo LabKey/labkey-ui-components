@@ -13,7 +13,7 @@ const filterAction = {
     action: new FilterAction(
         'query',
         () => List(),
-        () => QueryInfo.create({})
+        () => new QueryInfo({})
     ),
     value: 'test',
     valueObject: Filter.create('A', 'test', Filter.Types.EQUAL),
@@ -22,7 +22,7 @@ const readOnlyAction = {
     action: new FilterAction(
         'query',
         () => List(),
-        () => QueryInfo.create({})
+        () => new QueryInfo({})
     ),
     value: 'test',
     valueObject: Filter.create('A', 'test', Filter.Types.EQUAL),
@@ -32,7 +32,7 @@ const nonRemovableAction = {
     action: new FilterAction(
         'query',
         () => List(),
-        () => QueryInfo.create({})
+        () => new QueryInfo({})
     ),
     value: 'test',
     valueObject: Filter.create('A', 'test', Filter.Types.EQUAL),
@@ -42,7 +42,7 @@ const viewAction = {
     action: new ViewAction(
         'query',
         () => List(),
-        () => QueryInfo.create({})
+        () => new QueryInfo({})
     ),
     value: 'view',
 };

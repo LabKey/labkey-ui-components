@@ -1,4 +1,5 @@
 import { fromJS, List } from 'immutable';
+import { ExtendedMap } from '../public/ExtendedMap';
 
 import { QueryInfo } from '../public/QueryInfo';
 import { QueryColumn } from '../public/QueryColumn';
@@ -96,8 +97,8 @@ describe('ViewInfo', () => {
                 },
             ],
         });
-        const queryInfo = QueryInfo.create({
-            columns: fromJS({
+        const queryInfo = new QueryInfo({
+            columns: new ExtendedMap({
                 hideMe: new QueryColumn({
                     name: 'Hide Me',
                     fieldKey: 'hideMe',
@@ -154,8 +155,8 @@ describe('ViewInfo', () => {
                 },
             ],
         });
-        const queryInfo = QueryInfo.create({
-            columns: fromJS({
+        const queryInfo = new QueryInfo({
+            columns: new ExtendedMap<string, QueryColumn>({
                 hideMe: new QueryColumn({
                     name: 'Hide Me',
                     hidden: true,
@@ -192,8 +193,8 @@ describe('ViewInfo', () => {
                 },
             ],
         });
-        const queryInfo = QueryInfo.create({
-            columns: fromJS({
+        const queryInfo = new QueryInfo({
+            columns: new ExtendedMap({
                 hideMe: new QueryColumn({
                     name: 'Hide Me',
                     hidden: true,
@@ -228,8 +229,8 @@ describe('ViewInfo', () => {
                 },
             ],
         });
-        const queryInfo = QueryInfo.create({
-            columns: fromJS({
+        const queryInfo = new QueryInfo({
+            columns: new ExtendedMap({
                 hideMe: new QueryColumn({
                     name: 'Hide Me',
                     fieldKey: 'hideMe',
@@ -251,7 +252,7 @@ describe('ViewInfo', () => {
                     caption: 'Other Column',
                 }),
             }),
-            disabledSystemFields: ['Other'],
+            disabledSystemFields: new Set(['Other']),
         });
         view = view.addSystemViewColumns(queryInfo);
         expect(view.columns).toStrictEqual([

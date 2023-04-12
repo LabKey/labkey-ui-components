@@ -16,7 +16,7 @@ import { Progress } from '../internal/components/base/Progress';
 import { getEntityNoun } from '../internal/components/entities/utils';
 import { EntityDataType } from '../internal/components/entities/models';
 
-import { EntityDeleteConfirmHandler } from '../internal/components/entities/EntityDeleteConfirmModalDisplay';
+import { EntityDeleteConfirmHandler } from './EntityDeleteConfirmModalDisplay';
 
 import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
 

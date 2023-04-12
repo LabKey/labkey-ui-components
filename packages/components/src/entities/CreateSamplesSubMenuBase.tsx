@@ -9,9 +9,7 @@ import { AppURL } from '../internal/url/AppURL';
 import { SOURCES_KEY } from '../internal/app/constants';
 import { SCHEMAS } from '../internal/schemas';
 import { getCrossFolderSelectionResult } from '../internal/components/entities/actions';
-import {
-    EntityCrossProjectSelectionConfirmModal
-} from '../internal/components/entities/EntityCrossProjectSelectionConfirmModal';
+import { EntityCrossProjectSelectionConfirmModal } from '../internal/components/entities/EntityCrossProjectSelectionConfirmModal';
 import { isSamplesSchema } from '../internal/components/samples/utils';
 import {
     ALIQUOT_CREATION,
@@ -48,11 +46,11 @@ export interface CreateSamplesSubMenuBaseProps {
     parentType?: string;
     sampleWizardURL?: SampleTypeWizardURLResolver;
     selectedType?: SampleCreationType;
+    selectionData?: Record<any, any>;
     selectionNoun?: string;
     selectionNounPlural?: string;
     skipCrossFolderCheck?: boolean;
     targetProductId?: string;
-    selectionData?: Map<any, any>;
     useSelectionData?: boolean;
 }
 

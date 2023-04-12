@@ -10,13 +10,15 @@ import { TEST_USER_EDITOR, TEST_USER_READER } from '../internal/userFixtures';
 
 import { DisableableButton } from '../internal/components/buttons/DisableableButton';
 
+import { QueryInfo } from '../public/QueryInfo';
+
 import { SamplesDeriveButton, SamplesDeriveButtonProps } from './SamplesDeriveButton';
 import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
 
 describe('SamplesDeriveButton', () => {
     function defaultProps(): SamplesDeriveButtonProps {
         return {
-            model: makeTestQueryModel(new SchemaQuery('schema', 'query')),
+            model: makeTestQueryModel(new SchemaQuery('schema', 'query'), new QueryInfo()),
             isSelectingSamples: jest.fn().mockReturnValue(true),
         };
     }
@@ -55,10 +57,11 @@ describe('SamplesDeriveButton', () => {
     });
 
     test('over max selections', () => {
-        const model = makeTestQueryModel(new SchemaQuery('schema', 'query')).mutate({
+        const props = defaultProps();
+        const model = props.model.mutate({
             selections: new Set(Array.from(Array(1001).keys()).map(key => key + '')),
         });
-        const wrapper = mountWithServerContext(<SamplesDeriveButton {...defaultProps()} model={model} />, {
+        const wrapper = mountWithServerContext(<SamplesDeriveButton {...props} model={model} />, {
             user: TEST_USER_EDITOR,
         });
         validate(wrapper, false, false, true);

@@ -65,7 +65,6 @@ export const RemoveFromPicklistButton: FC<Props> = memo(props => {
         <RequiresPermission perms={PermissionTypes.ManagePicklists}>
             {picklist.canRemoveItems(user) && (
                 <DisableableButton
-                    bsStyle="default"
                     onClick={onRemoveFromPicklist}
                     disabledMsg={
                         !model.hasSelections ? 'Select one or more ' + SampleTypeDataType.nounPlural + '.' : undefined

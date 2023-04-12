@@ -8,8 +8,9 @@ import { SampleCreationType } from '../internal/components/samples/models';
 import { MAX_EDITABLE_GRID_ROWS } from '../internal/constants';
 import { DisableableButton } from '../internal/components/buttons/DisableableButton';
 
-import { CreateSamplesSubMenu, CreateSamplesSubMenuProps } from './CreateSamplesSubMenu';
 import { getSelectedData } from '../internal/actions';
+
+import { CreateSamplesSubMenu, CreateSamplesSubMenuProps } from './CreateSamplesSubMenu';
 
 export interface SamplesDeriveButtonProps
     extends Omit<
@@ -22,57 +23,42 @@ export interface SamplesDeriveButtonProps
 
 export const SamplesDeriveButton: FC<SamplesDeriveButtonProps> = memo(props => {
     const { model, asSubMenu, ...createSampleMenuProps } = props;
-    const [selectionsAreSet, setSelectionsAreSet] = useState<boolean>(false);
-    const [selectionData, setSelectionData] = useState<Map<any, any>>();
-    const selectedCount = useMemo(() => model?.selections?.size ?? -1, [model?.selections]);
-    const useSelectionData = useMemo(() => model?.filterArray.length > 0 && selectedCount <= MAX_EDITABLE_GRID_ROWS , [model?.filterArray]);
+    const { filterArray, isLoadingSelections, schemaQuery, selections } = model;
+    const [selectionData, setSelectionData] = useState<Record<any, any>>();
+    const selectedCount = useMemo<number>(() => selections?.size ?? -1, [selections]);
+    const requestColumns = useMemo<string>(() => {
+        if (!model.queryInfo) return undefined;
+        return model.getRequestColumnsString();
+    }, [model]);
+    const useSelectionData = filterArray.length > 0 && selectedCount > 0 && selectedCount <= MAX_EDITABLE_GRID_ROWS;
 
     useEffect(() => {
         (async () => {
-            if (useSelectionData) {
-                if (!model.isLoadingSelections) {
-                    try {
-                        const { data } = await getSelectedData(
-                            model.schemaName,
-                            model.queryName,
-                            [...model.selections],
-                            model.getRequestColumnsString(),
-                            undefined
-                        );
-                        setSelectionData(data.toJS());
-                        setSelectionsAreSet(true);
-                    } catch (reason) {
-                        console.error(
-                            'There was a problem loading the filtered selection data. Your actions will not obey these filters.',
-                            reason
-                        );
-                        setSelectionsAreSet(true);
-                    }
+            if (useSelectionData && !isLoadingSelections && requestColumns) {
+                try {
+                    const { data } = await getSelectedData(
+                        schemaQuery.schemaName,
+                        schemaQuery.queryName,
+                        [...selections],
+                        requestColumns
+                    );
+                    setSelectionData(data.toJS());
+                } catch (reason) {
+                    console.error(
+                        'There was a problem loading the filtered selection data. Your actions will not obey these filters.',
+                        reason
+                    );
                 }
-            } else {
-                setSelectionsAreSet(true);
             }
         })();
-    }, [
-        useSelectionData,
-        selectionsAreSet,
-        model?.isLoadingSelections,
-        model?.schemaName,
-        model?.queryName,
-        model?.selections,
-        model?.selectionKey,
-        model?.filterArray,
-    ]);
-
+    }, [useSelectionData, isLoadingSelections, schemaQuery, selections, requestColumns]);
 
     if (!asSubMenu && selectedCount > MAX_EDITABLE_GRID_ROWS) {
         return (
             <RequiresPermission permissionCheck="any" perms={PermissionTypes.Insert}>
                 <DisableableButton
-                    bsStyle="default"
                     className="responsive-menu"
-                    disabledMsg={'At most ' + MAX_EDITABLE_GRID_ROWS + ' samples can be selected.'}
-                    onClick={undefined}
+                    disabledMsg={`At most ${MAX_EDITABLE_GRID_ROWS} samples can be selected.`}
                 >
                     Derive
                 </DisableableButton>

@@ -25,12 +25,10 @@ import { QueryModel } from '../public/QueryModel/QueryModel';
 
 import { setSnapshotSelections } from '../internal/actions';
 
-import {
-    EntityDeleteConfirmHandler,
-    EntityDeleteConfirmModalDisplay,
-} from '../internal/components/entities/EntityDeleteConfirmModalDisplay';
 import { getDeleteConfirmationData } from '../internal/components/entities/actions';
 import { EntityDataType, OperationConfirmationData } from '../internal/components/entities/models';
+
+import { EntityDeleteConfirmHandler, EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
 
 interface Props {
     entityDataType: EntityDataType;

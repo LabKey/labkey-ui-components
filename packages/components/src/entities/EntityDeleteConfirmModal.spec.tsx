@@ -21,10 +21,10 @@ import { sleep } from '../internal/testHelpers';
 
 import { ConfirmModal } from '../internal/components/base/ConfirmModal';
 
-import { EntityDeleteConfirmModalDisplay } from '../internal/components/entities/EntityDeleteConfirmModalDisplay';
 import { SampleTypeDataType } from '../internal/components/entities/constants';
 
 import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
+import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
 
 beforeAll(() => {
     mock.setup();

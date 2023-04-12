@@ -428,7 +428,6 @@ import {
 } from './internal/components/entities/constants';
 import { getUniqueIdColumnMetadata } from './internal/components/entities/utils';
 import { EntityInsertPanel } from './internal/components/entities/EntityInsertPanel';
-import { EntityCrossProjectSelectionConfirmModal } from './internal/components/entities/EntityCrossProjectSelectionConfirmModal';
 import { EntityDeleteConfirmModal } from './internal/components/entities/EntityDeleteConfirmModal';
 import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
 
@@ -1056,7 +1055,6 @@ export {
     getParentTypeDataForLineage,
     getSelectedSampleIdsFromSelectionKey,
     EntityInsertPanel,
-    EntityCrossProjectSelectionConfirmModal,
     EntityDeleteConfirmModal,
     SampleTypeDataType,
     SamplePropertyDataType,

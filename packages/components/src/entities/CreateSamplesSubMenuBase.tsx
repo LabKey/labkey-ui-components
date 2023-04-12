@@ -9,7 +9,7 @@ import { AppURL } from '../internal/url/AppURL';
 import { SOURCES_KEY } from '../internal/app/constants';
 import { SCHEMAS } from '../internal/schemas';
 import { getCrossFolderSelectionResult } from '../internal/components/entities/actions';
-import { EntityCrossProjectSelectionConfirmModal } from '../internal/components/entities/EntityCrossProjectSelectionConfirmModal';
+
 import { isSamplesSchema } from '../internal/components/samples/utils';
 import {
     ALIQUOT_CREATION,
@@ -28,6 +28,8 @@ import { caseInsensitive } from '../internal/util/utils';
 import { isProjectContainer } from '../internal/app/utils';
 
 import { CrossFolderSelectionResult } from '../internal/components/entities/models';
+
+import { EntityCrossProjectSelectionConfirmModal } from './EntityCrossProjectSelectionConfirmModal';
 
 import { SampleCreationTypeModal } from './SampleCreationTypeModal';
 import { getSampleWizardURL, SampleTypeWizardURLResolver } from './utils';

@@ -65,12 +65,15 @@ import { SamplesCreatedSuccessMessage } from './SamplesCreatedSuccessMessage';
 import { SampleListingPage, SamplesImportSuccessMessage } from './SampleListingPage';
 import { SampleCreatePage } from './SampleCreatePage';
 import { DeleteConfirmationModal } from './DeleteConfirmationModal';
+import { FindDerivativesButton, FindDerivativesMenuItem } from './FindDerivativesButton';
 
 export {
     createEntityParentKey,
     downloadSampleTypeTemplate,
     filterMediaSampleTypes,
     filterSampleRowsForOperation,
+    FindDerivativesButton,
+    FindDerivativesMenuItem,
     getDataClassTemplateUrl,
     getJobCreationHref,
     getSampleSetMenuItem,

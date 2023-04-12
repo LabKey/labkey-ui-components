@@ -506,7 +506,6 @@ import {
     AssayResultsForSamplesButton,
     AssayResultsForSamplesMenuItem,
 } from './internal/components/entities/AssayResultsForSamplesButton';
-import { FindDerivativesButton, FindDerivativesMenuItem } from './internal/components/entities/FindDerivativesButton';
 import {
     makeQueryInfo,
     mountWithAppServerContext,
@@ -1102,8 +1101,6 @@ export {
     getStoredAmountDisplay,
     isValuePrecisionValid,
     // search related items
-    FindDerivativesMenuItem,
-    FindDerivativesButton,
     FIND_SAMPLE_BY_ID_METRIC_AREA,
     BaseSearchPage,
     SearchResultsModel,

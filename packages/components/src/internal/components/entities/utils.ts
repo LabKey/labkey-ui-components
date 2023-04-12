@@ -19,18 +19,17 @@ import {
 
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
 
-export function sampleDeleteDependencyText() {
+export function sampleDeleteDependencyText(): string {
     let deleteMsg = '';
     if (isWorkflowEnabled()) {
         if (isAssayEnabled()) {
-            deleteMsg += 'either derived sample, job, or assay data dependencies, '
-        }
-        else {
-            deleteMsg += 'either derived sample or job dependencies, '
+            deleteMsg += 'either derived sample, job, or assay data dependencies, ';
+        } else {
+            deleteMsg += 'either derived sample or job dependencies, ';
         }
     } else {
         if (isAssayEnabled()) {
-            deleteMsg += 'either derived sample or assay data dependencies, '
+            deleteMsg += 'either derived sample or assay data dependencies, ';
         } else {
             deleteMsg += 'derived sample dependencies ';
         }
@@ -41,7 +40,6 @@ export function sampleDeleteDependencyText() {
         deleteMsg += 'or status that prevents deletion';
     }
     return deleteMsg;
-
 }
 
 export function getInitialParentChoices(
@@ -114,11 +112,11 @@ export function getEntityDescription(entityDataType: EntityDataType, quantity: n
     return quantity === 1 ? entityDataType.descriptionSingular : entityDataType.descriptionPlural;
 }
 
-export function isSampleEntity(dataType: EntityDataType) {
+export function isSampleEntity(dataType: EntityDataType): boolean {
     return dataType.instanceSchemaName === SCHEMAS.SAMPLE_SETS.SCHEMA;
 }
 
-export function isDataClassEntity(dataType: EntityDataType) {
+export function isDataClassEntity(dataType: EntityDataType): boolean {
     return dataType.instanceSchemaName === SCHEMAS.DATA_CLASSES.SCHEMA;
 }
 

@@ -277,7 +277,6 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                                 </div>
                                 <div className="domain-field-padding-bottom">
                                     <DisableableButton
-                                        bsStyle="default"
                                         disabledMsg={currentLocked ? LOCKED_TIP : currentInUse ? IN_USE_TIP : undefined}
                                         onClick={onDelete}
                                         title={currentLocked ? LOCKED_TITLE : IN_USE_TITLE}

@@ -45,19 +45,13 @@ export const SamplesAssayButtonImpl: FC<Props & InjectedAssayModel> = memo(props
         if (disabledMsg) {
             return (
                 <RequiresPermission permissionCheck="any" perms={PermissionTypes.Insert}>
-                    <DisableableButton
-                        bsStyle="default"
-                        className="responsive-menu"
-                        disabledMsg={disabledMsg}
-                        onClick={undefined}
-                    >
+                    <DisableableButton className="responsive-menu" disabledMsg={disabledMsg}>
                         Assay
                     </DisableableButton>
                 </RequiresPermission>
             );
         }
     }
-
 
     let items = (
         <AssayImportSubMenuItem
@@ -75,7 +69,6 @@ export const SamplesAssayButtonImpl: FC<Props & InjectedAssayModel> = memo(props
     if (!isLoading(assayModel?.definitionsLoadingState) && assayModel.definitions.length === 0) {
         items = <MenuItem disabled>No assays defined</MenuItem>;
     }
-
 
     return (
         <RequiresPermission permissionCheck="any" perms={PermissionTypes.Insert}>

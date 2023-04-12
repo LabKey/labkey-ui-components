@@ -24,9 +24,10 @@ import { DisableableButton } from '../buttons/DisableableButton';
 
 import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
 
-import { SampleState } from './models';
 import { useServerContext } from '../base/ServerContext';
 import { isProductProjectsEnabled } from '../../app/utils';
+
+import { SampleState } from './models';
 import { getSampleStatusLockedMessage } from './utils';
 
 const TITLE = 'Manage Sample Statuses';
@@ -41,7 +42,6 @@ interface SampleStatusDetailProps {
     onChange: () => void;
     state: SampleState;
 }
-
 
 // exported for jest testing
 export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
@@ -167,7 +167,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
         }
     }, [updatedState, onActionComplete]);
 
-    const disabledMsg = useMemo( () => {
+    const disabledMsg = useMemo(() => {
         return getSampleStatusLockedMessage(updatedState, saving);
     }, [updatedState, saving]);
 
@@ -230,7 +230,6 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                     <div>
                         {!addNew && updatedState.isLocal && (
                             <DisableableButton
-                                bsStyle="default"
                                 disabledMsg={disabledMsg}
                                 onClick={onToggleDeleteConfirm}
                                 title={SAMPLE_STATUS_LOCKED_TITLE}
@@ -245,7 +244,12 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                             </Button>
                         )}
                         {updatedState.isLocal && (
-                            <Button bsStyle="success" className="pull-right" disabled={!dirty || saving} onClick={onSave}>
+                            <Button
+                                bsStyle="success"
+                                className="pull-right"
+                                disabled={!dirty || saving}
+                                onClick={onSave}
+                            >
                                 {saving ? 'Saving...' : 'Save'}
                             </Button>
                         )}

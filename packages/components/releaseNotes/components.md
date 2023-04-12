@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Media consistency improvements
 
+### version 2.325.1
+*Released*: 12 April 2023
+- Sample Derivation: limit selected data requests
+
 ### version 2.325.0
 *Released*: 10 April 2023
 * Follow up consolidation of search pages to a shared component

@@ -27,7 +27,7 @@ interface Props {
     onSubmit: (creationType: SampleCreationType, numPerParent?: number) => void;
     options: SampleCreationTypeModel[];
     parentCount: number;
-    selectionData?: Map<any, any>;
+    selectionData?: Record<any, any>;
     selectionKey?: string;
     show: boolean;
     showIcons: boolean;

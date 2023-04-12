@@ -5,7 +5,7 @@ import { buildURL } from '../../url/AppURL';
 import { SampleOperation } from '../samples/constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { getFilterForSampleOperation, isSamplesSchema } from '../samples/utils';
-import { importData, InsertOptions, selectRowsDeprecated } from '../../query/api';
+import { importData, InsertOptions } from '../../query/api';
 import { caseInsensitive, handleRequestFailure } from '../../util/utils';
 import { SampleCreationType } from '../samples/models';
 import { getSelected, getSelectedData } from '../../actions';
@@ -17,8 +17,6 @@ import { SCHEMAS } from '../../schemas';
 import { Row, selectRows, SelectRowsResponse } from '../../query/selectRows';
 
 import { ViewInfo } from '../../ViewInfo';
-
-import { resolveErrorMessage } from '../../util/messaging';
 
 import { getInitialParentChoices, isDataClassEntity, isSampleEntity } from './utils';
 import { DataClassDataType, DataOperation, SampleTypeDataType } from './constants';
@@ -604,39 +602,29 @@ export type ParentIdData = {
     rowId: number;
 };
 
-function getParentRowIdAndDataType(
+async function getParentRowIdAndDataType(
     parentDataType: EntityDataType,
     parentIDs: string[],
     containerPath?: string
 ): Promise<Record<string, ParentIdData>> {
-    return new Promise((resolve, reject) => {
-        selectRowsDeprecated({
-            containerPath,
-            schemaName: parentDataType.listingSchemaQuery.schemaName,
-            queryName: parentDataType.listingSchemaQuery.queryName,
-            viewName: ViewInfo.DETAIL_NAME, // use this to avoid filters on the default view
-            columns: 'LSID, RowId, DataClass, SampleSet', // only one of DataClass or SampleSet will exist
-            filterArray: [Filter.create('LSID', parentIDs, Filter.Types.IN)],
-        })
-            .then(response => {
-                const { key, models } = response;
-                const filteredParentItems = {};
-                Object.keys(models[key]).forEach(row => {
-                    const item = models[key][row];
-                    const lsid = caseInsensitive(item, 'LSID').value;
-                    filteredParentItems[lsid] = {
-                        rowId: caseInsensitive(item, 'RowId').value,
-                        parentId:
-                            caseInsensitive(item, 'DataClass')?.value ?? caseInsensitive(item, 'SampleSet')?.value,
-                    };
-                });
-                resolve(filteredParentItems);
-            })
-            .catch(reason => {
-                console.error(reason);
-                reject(resolveErrorMessage(reason));
-            });
+    const response = await selectRows({
+        containerPath,
+        schemaQuery: parentDataType.listingSchemaQuery,
+        viewName: ViewInfo.DETAIL_NAME, // use this to avoid filters on the default view
+        columns: 'LSID, RowId, DataClass, SampleSet', // only one of DataClass or SampleSet will exist
+        filterArray: [Filter.create('LSID', parentIDs, Filter.Types.IN)],
     });
+
+    const filteredParentItems = {};
+    response.rows.forEach(row => {
+        const lsid = caseInsensitive(row, 'LSID').value;
+        filteredParentItems[lsid] = {
+            rowId: caseInsensitive(row, 'RowId').value,
+            parentId: caseInsensitive(row, 'DataClass')?.value ?? caseInsensitive(row, 'SampleSet')?.value,
+        };
+    });
+
+    return filteredParentItems;
 }
 
 export type GetParentTypeDataForLineage = (

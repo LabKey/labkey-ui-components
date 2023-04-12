@@ -16,8 +16,8 @@
 import { List, Map, OrderedMap } from 'immutable';
 import { ActionURL, Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
 
-import { EntityDataType, IEntityTypeDetails, IEntityTypeOption } from '../entities/models';
-import { deleteEntityType, getEntityTypeOptions, getSelectedItemSamples } from '../entities/actions';
+import { IEntityTypeDetails } from '../entities/models';
+import { deleteEntityType, getSelectedItemSamples } from '../entities/actions';
 
 import { Location } from '../../util/URL';
 import { getSelectedData, getSelection, getSnapshotSelections } from '../../actions';
@@ -49,8 +49,6 @@ import { QueryConfig } from '../../../public/QueryModel/QueryModel';
 import { naturalSort, naturalSortByProperty } from '../../../public/sort';
 import { AssayStateModel } from '../assay/models';
 import { TimelineEventModel } from '../auditlog/models';
-
-import { ViewInfo } from '../../ViewInfo';
 
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 

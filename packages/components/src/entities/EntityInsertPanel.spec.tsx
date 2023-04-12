@@ -3,10 +3,10 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { List, Map, OrderedMap } from 'immutable';
 
-import { QueryColumn } from '../../../public/QueryColumn';
-import { DomainDetails } from '../domainproperties/models';
-import { InferDomainResponse } from '../../../public/InferDomainResponse';
-import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
+import { QueryColumn } from '../public/QueryColumn';
+import { DomainDetails } from '../internal/components/domainproperties/models';
+import { InferDomainResponse } from '../public/InferDomainResponse';
+import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../internal/components/domainproperties/constants';
 
 import { getInferredFieldWarnings, getNoUpdateFieldWarnings, WarningFieldList } from './EntityInsertPanel';
 

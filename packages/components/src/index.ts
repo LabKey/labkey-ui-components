@@ -427,7 +427,6 @@ import {
     SamplePropertyDataType,
 } from './internal/components/entities/constants';
 import { getUniqueIdColumnMetadata } from './internal/components/entities/utils';
-import { EntityInsertPanel } from './internal/components/entities/EntityInsertPanel';
 import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
 
 import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';
@@ -1053,7 +1052,6 @@ export {
     getSelectionLineageData,
     getParentTypeDataForLineage,
     getSelectedSampleIdsFromSelectionKey,
-    EntityInsertPanel,
     SampleTypeDataType,
     SamplePropertyDataType,
     DataClassDataType,

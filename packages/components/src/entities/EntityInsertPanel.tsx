@@ -20,68 +20,78 @@ import { AuditBehaviorTypes, Query, Utils } from '@labkey/api';
 
 import { Link } from 'react-router';
 
-import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
+import { MAX_EDITABLE_GRID_ROWS } from '../internal/constants';
 
-import { PlacementType } from '../editable/Controls';
+import { PlacementType } from '../internal/components/editable/Controls';
 
-import { DATA_IMPORT_TOPIC, HelpLink } from '../../util/helpLinks';
+import { DATA_IMPORT_TOPIC, HelpLink } from '../internal/util/helpLinks';
 
-import { BulkAddData, EditableColumnMetadata } from '../editable/EditableGrid';
+import { BulkAddData, EditableColumnMetadata } from '../internal/components/editable/EditableGrid';
 
-import { DERIVATION_DATA_SCOPES } from '../domainproperties/constants';
+import { DERIVATION_DATA_SCOPES } from '../internal/components/domainproperties/constants';
 
-import { getCurrentProductName, isSampleManagerEnabled, sampleManagerIsPrimaryApp } from '../../app/utils';
+import { getCurrentProductName, isSampleManagerEnabled, sampleManagerIsPrimaryApp } from '../internal/app/utils';
 
-import { SAMPLE_STATE_COLUMN_NAME, SAMPLE_UNITS_COLUMN_NAME, SELECTION_KEY_TYPE } from '../samples/constants';
+import {
+    SAMPLE_STATE_COLUMN_NAME,
+    SAMPLE_UNITS_COLUMN_NAME,
+    SELECTION_KEY_TYPE,
+} from '../internal/components/samples/constants';
 
-import { SampleStatusLegend } from '../samples/SampleStatusLegend';
+import { SampleStatusLegend } from '../internal/components/samples/SampleStatusLegend';
 
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../internal/APIWrapper';
 
-import { applyEditableGridChangesToModels, initEditableGridModel } from '../editable/utils';
+import { applyEditableGridChangesToModels, initEditableGridModel } from '../internal/components/editable/utils';
 
-import { EditorMode, EditorModel, EditorModelProps, IEditableGridLoader, IGridResponse } from '../editable/models';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { SampleCreationType } from '../samples/models';
-import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from '../forms/FormStep';
-import { User } from '../base/models/User';
-import { QueryInfo } from '../../../public/QueryInfo';
-import { FileSizeLimitProps } from '../../../public/files/models';
-import { capitalizeFirstChar } from '../../util/utils';
-import { getActionErrorMessage, resolveErrorMessage } from '../../util/messaging';
-import { InsertOptions } from '../../query/api';
-import { insertColumnFilter, QueryColumn } from '../../../public/QueryColumn';
-import { SelectInput } from '../forms/input/SelectInput';
-import { Alert } from '../base/Alert';
-import { EditableGridPanel } from '../editable/EditableGridPanel';
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import { Progress } from '../base/Progress';
-import { InferDomainResponse } from '../../../public/InferDomainResponse';
-import { DomainDetails } from '../domainproperties/models';
-import { AppURL } from '../../url/AppURL';
-import { LabelHelpTip } from '../base/LabelHelpTip';
-import { FileAttachmentForm } from '../../../public/files/FileAttachmentForm';
-import { WizardNavButtons } from '../buttons/WizardNavButtons';
-import { useServerContext } from '../base/ServerContext';
-import { getLocation, Location } from '../../util/URL';
-import { SCHEMAS } from '../../schemas';
-import { isSamplesSchema } from '../samples/utils';
-import { SchemaQuery } from '../../../public/SchemaQuery';
+import {
+    EditorMode,
+    EditorModel,
+    EditorModelProps,
+    IEditableGridLoader,
+    IGridResponse,
+} from '../internal/components/editable/models';
+import { QueryModel } from '../public/QueryModel/QueryModel';
+import { SampleCreationType } from '../internal/components/samples/models';
+import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from '../internal/components/forms/FormStep';
+import { User } from '../internal/components/base/models/User';
+import { QueryInfo } from '../public/QueryInfo';
+import { FileSizeLimitProps } from '../public/files/models';
+import { capitalizeFirstChar } from '../internal/util/utils';
+import { getActionErrorMessage, resolveErrorMessage } from '../internal/util/messaging';
+import { InsertOptions } from '../internal/query/api';
+import { insertColumnFilter, QueryColumn } from '../public/QueryColumn';
+import { SelectInput } from '../internal/components/forms/input/SelectInput';
+import { Alert } from '../internal/components/base/Alert';
+import { EditableGridPanel } from '../internal/components/editable/EditableGridPanel';
+import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
+import { Progress } from '../internal/components/base/Progress';
+import { InferDomainResponse } from '../public/InferDomainResponse';
+import { DomainDetails } from '../internal/components/domainproperties/models';
+import { AppURL } from '../internal/url/AppURL';
+import { LabelHelpTip } from '../internal/components/base/LabelHelpTip';
+import { FileAttachmentForm } from '../public/files/FileAttachmentForm';
+import { WizardNavButtons } from '../internal/components/buttons/WizardNavButtons';
+import { useServerContext } from '../internal/components/base/ServerContext';
+import { getLocation, Location } from '../internal/util/URL';
+import { SCHEMAS } from '../internal/schemas';
+import { isSamplesSchema } from '../internal/components/samples/utils';
+import { SchemaQuery } from '../public/SchemaQuery';
 
-import { getAltUnitKeys } from '../../util/measurement';
+import { getAltUnitKeys } from '../internal/util/measurement';
 
-import { getDataClassDetails } from '../domainproperties/dataclasses/actions';
+import { getDataClassDetails } from '../internal/components/domainproperties/dataclasses/actions';
 
-import { ENTITY_CREATION_METRIC, SampleTypeDataType } from './constants';
+import { ENTITY_CREATION_METRIC, SampleTypeDataType } from '../internal/components/entities/constants';
 import {
     addEntityParentType,
     removeEntityParentType,
     EntityParentTypeSelectors,
     changeEntityParentType,
     EditorModelUpdatesWithParents,
-} from './EntityParentTypeSelectors';
-import { EntityInsertGridRequiredFieldAlert } from './EntityInsertGridRequiredFieldAlert';
-import { getBulkCreationTypeOptions, getUniqueIdColumnMetadata } from './utils';
+} from '../internal/components/entities/EntityParentTypeSelectors';
+
+import { getBulkCreationTypeOptions, getUniqueIdColumnMetadata } from '../internal/components/entities/utils';
 import {
     EntityDataType,
     EntityIdCreationModel,
@@ -89,7 +99,9 @@ import {
     EntityTypeOption,
     IEntityTypeOption,
     IParentOption,
-} from './models';
+} from '../internal/components/entities/models';
+
+import { EntityInsertGridRequiredFieldAlert } from './EntityInsertGridRequiredFieldAlert';
 
 const ENTITY_GRID_ID = 'entity-insert-grid-data';
 const ALIQUOT_FIELD_COLS = [

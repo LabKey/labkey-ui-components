@@ -159,7 +159,6 @@ export class AssayWizardModel
             batchId,
             batchProperties,
             comment,
-            dataText,
             assayDef,
             runProperties,
             runId,
@@ -199,6 +198,12 @@ export class AssayWizardModel
                     const filesIndex = url.indexOf('@files');
                     // get past the @files and the trailing slash
                     assayData.runFilePath = url.substring(filesIndex + 7);
+
+                    if (assayData.runFilePath.toLowerCase().endsWith('.tmp')) {
+                        // Issue 47509: if the original run was imported via the editable grid,
+                        // the sample Ids will be rowIds so set allowLookupByAlternateKey to false
+                        assayData.allowLookupByAlternateKey = false;
+                    }
                 }
             }
         } else if (this.isGridTab(currentStep)) {
@@ -210,7 +215,7 @@ export class AssayWizardModel
                 .toList()
                 .toJS();
 
-            // Issue 47509: ...TODO for re-import run case when we have a .tmp file need to set false then as well
+            // Issue 47509: the editable grid will always use key values (i.e. RowIds) for lookups, so set allowLookupByAlternateKey to false
             assayData.allowLookupByAlternateKey = false;
         } else {
             throw new Error('Unsupported upload step! Current step: "' + currentStep + '"');

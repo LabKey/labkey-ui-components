@@ -209,6 +209,9 @@ export class AssayWizardModel
                 .map(row => row.filter(v => v !== undefined && v !== null && ('' + v).trim() !== ''))
                 .toList()
                 .toJS();
+
+            // Issue 47509: ...TODO for re-import run case when we have a .tmp file need to set false then as well
+            assayData.allowLookupByAlternateKey = false;
         } else {
             throw new Error('Unsupported upload step! Current step: "' + currentStep + '"');
         }

@@ -190,18 +190,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
         );
     }, [title, sampleName, sampleStatus]);
 
-    let insertURL: string;
-    let parent: string;
-    if (isMedia) {
-        // preset the insert wizard to target Raw Materials with a parent of DataClass/Ingredients
-        parent = createEntityParentKey(SCHEMAS.DATA_CLASSES.INGREDIENTS);
-        insertURL = AppURL.create(MEDIA_KEY, queryInfo.name, 'new')
-            .addParam('target', SCHEMAS.SAMPLE_SETS.RAW_MATERIALS.queryName)
-            .addParam('parent', parent)
-            .toHref();
-    } else {
-        parent = createEntityParentKey(sampleModel.schemaQuery, sampleId);
-    }
+    const parent = createEntityParentKey(sampleModel.schemaQuery, sampleId);
 
     const subTitle = useMemo(() => {
         if (subtitle) return subtitle;

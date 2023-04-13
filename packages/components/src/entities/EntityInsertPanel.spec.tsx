@@ -3,7 +3,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { List, Map, OrderedMap } from 'immutable';
 
-import { QueryColumn } from '../public/QueryColumn';
+import { QueryColumn, QueryLookup } from '../public/QueryColumn';
 import { DomainDetails } from '../internal/components/domainproperties/models';
 import { InferDomainResponse } from '../public/InferDomainResponse';
 import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../internal/components/domainproperties/constants';
@@ -34,7 +34,12 @@ describe('EntityInsertPanel', () => {
     });
 
     describe('getInferredFieldWarnings', () => {
-        const lookup = { containerPath: '/Look', keyColumn: 'Name', displayColumn: 'Name', query: 'LookHere' };
+        const lookup = new QueryLookup({
+            containerPath: '/Look',
+            displayColumn: 'Name',
+            keyColumn: 'Name',
+            query: 'LookHere',
+        });
         const knownColumn = new QueryColumn({
             name: 'known',
         });
@@ -273,7 +278,12 @@ describe('EntityInsertPanel', () => {
     });
 
     describe('getNoUpdateFieldWarnings', () => {
-        const lookup = { containerPath: '/Look', keyColumn: 'Name', displayColumn: 'Name', query: 'LookHere' };
+        const lookup = new QueryLookup({
+            containerPath: '/Look',
+            displayColumn: 'Name',
+            keyColumn: 'Name',
+            query: 'LookHere',
+        });
 
         test('with disallowedUpdateFields', () => {
             const wrapper = mount(

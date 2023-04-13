@@ -1558,7 +1558,6 @@ const EntityInsertPanelFormSteps = withFormSteps(EntityInsertPanelImpl, {
     hasDependentSteps: false,
 });
 
-// ideally this would move to the /entities subpackage, but it is used in the core-components.view page
 export const EntityInsertPanel: FC<{ location?: Location } & OwnProps> = memo(props => {
     const { location, ...entityInsertPanelProps } = props;
     const { user } = useServerContext();

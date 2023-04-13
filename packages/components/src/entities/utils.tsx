@@ -9,7 +9,7 @@ import {
     SamplesEditButtonSections,
 } from '../internal/components/samples/utils';
 import { MenuItemModel, ProductMenuModel } from '../internal/components/navigation/model';
-import { SAMPLES_KEY, WORKFLOW_KEY } from '../internal/app/constants';
+import { MEDIA_KEY, SAMPLES_KEY, WORKFLOW_KEY } from '../internal/app/constants';
 import { AppURL, createProductUrlFromParts } from '../internal/url/AppURL';
 import { SchemaQuery } from '../public/SchemaQuery';
 import { SCHEMAS } from '../internal/schemas';
@@ -128,6 +128,7 @@ export function isFindByIdsSchema(schemaQuery: SchemaQuery): boolean {
  * @param useSnapshotSelection? - whether the selection key is a snapshot selection key or not
  * @param currentProductId?
  * @param targetProductId?
+ * @param mediaOptions? - Used to determine whether to route to media sample derivation url
  */
 export type SampleTypeWizardURLResolver = (
     targetSampleType?: string,
@@ -135,7 +136,8 @@ export type SampleTypeWizardURLResolver = (
     selectionKey?: string,
     useSnapshotSelection?: boolean,
     currentProductId?: string,
-    targetProductId?: string
+    targetProductId?: string,
+    mediaOptions?: string[]
 ) => string | AppURL;
 
 export const getSampleWizardURL: SampleTypeWizardURLResolver = (
@@ -144,7 +146,8 @@ export const getSampleWizardURL: SampleTypeWizardURLResolver = (
     selectionKey,
     useSnapshotSelection,
     currentProductId,
-    targetProductId
+    targetProductId,
+    mediaOptions = null
 ): string | AppURL => {
     const params = {};
 
@@ -159,7 +162,19 @@ export const getSampleWizardURL: SampleTypeWizardURLResolver = (
     if (selectionKey) params['selectionKey'] = selectionKey;
     if (useSnapshotSelection) params['selectionKeyType'] = SELECTION_KEY_TYPE.snapshot;
 
-    return createProductUrlFromParts(targetProductId, currentProductId, params, SAMPLES_KEY, 'new');
+    let url = createProductUrlFromParts(targetProductId, currentProductId, params, SAMPLES_KEY, 'new');
+    if (targetSampleSet === mediaOptions?.[0]) {
+        url = createProductUrlFromParts(
+            targetProductId,
+            currentProductId,
+            params,
+            MEDIA_KEY,
+            mediaOptions[0],
+            'derive'
+        );
+    }
+
+    return url;
 };
 
 export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: boolean): ReactNode {

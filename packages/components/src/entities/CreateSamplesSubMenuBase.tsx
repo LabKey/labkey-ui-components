@@ -39,6 +39,7 @@ export interface CreateSamplesSubMenuBaseProps {
     inlineItemsCount?: number;
     isSelectingSamples?: (schemaQuery: SchemaQuery) => boolean;
     maxParentPerSample: number;
+    mediaOptions?: string[];
     menuCurrentChoice?: string;
     menuText?: string;
     parentKey?: string;
@@ -76,6 +77,7 @@ const CreateSamplesSubMenuBaseImpl: FC<CreateSamplesSubMenuBaseProps & WithRoute
         router,
         selectionData,
         useSelectionData,
+        mediaOptions,
     } = props;
 
     const [sampleCreationURL, setSampleCreationURL] = useState<string | AppURL>();
@@ -127,7 +129,8 @@ const CreateSamplesSubMenuBaseImpl: FC<CreateSamplesSubMenuBaseProps & WithRoute
                 selectionKey,
                 useSnapshotSelection,
                 currentProductId,
-                targetProductId
+                targetProductId,
+                mediaOptions
             );
 
             if (useOnClick) {
@@ -137,7 +140,16 @@ const CreateSamplesSubMenuBaseImpl: FC<CreateSamplesSubMenuBaseProps & WithRoute
                 return appURL;
             }
         },
-        [sampleWizardURL, useOnClick, parentKey, currentProductId, targetProductId, selectionKey, useSnapshotSelection]
+        [
+            sampleWizardURL,
+            parentKey,
+            selectionKey,
+            useSnapshotSelection,
+            currentProductId,
+            targetProductId,
+            mediaOptions,
+            useOnClick,
+        ]
     );
 
     const onSampleCreationMenuSelectOnClick = useCallback(

@@ -228,6 +228,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                             {canDerive && (
                                 <RequiresPermission user={user} perms={PermissionTypes.Insert}>
                                     <CreateSamplesSubMenu
+                                        mediaOptions={isMedia && [queryInfo.name]}
                                         disabled={!canCreateSamples}
                                         selectedQueryInfo={sampleModel.queryInfo}
                                         parentType={SAMPLES_KEY}

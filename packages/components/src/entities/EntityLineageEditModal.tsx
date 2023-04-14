@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 
 import { AuditBehaviorTypes, Utils } from '@labkey/api';
 
@@ -172,7 +172,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
         } catch (e) {
             setSubmitting(false);
             setErrorMessage(
-                'There was a fetching parent data for the ' + lcParentNounPlural + '.' + resolveErrorMessage(e)
+                'There was a problem fetching parent data for the ' + lcParentNounPlural + '.' + resolveErrorMessage(e)
             );
             return;
         }

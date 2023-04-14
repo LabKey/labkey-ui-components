@@ -252,6 +252,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                 schemaQuery,
                 rows,
                 auditBehavior: getSampleAuditBehaviorType(),
+                skipReselectRows: true,
             }).then(result => {
                 invalidateLineageResults();
                 dismissNotifications(); // get rid of any error notifications that have already been created

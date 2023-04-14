@@ -374,6 +374,7 @@ export class EntityIdCreationModel extends Record({
 
         return insertRows({
             auditBehavior: this.auditBehavior,
+            skipReselectRows: true,
             fillEmptyFields: true,
             rows,
             schemaQuery: this.getSchemaQuery(),

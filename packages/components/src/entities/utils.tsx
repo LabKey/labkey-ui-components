@@ -163,7 +163,7 @@ export const getSampleWizardURL: SampleTypeWizardURLResolver = (
     if (useSnapshotSelection) params['selectionKeyType'] = SELECTION_KEY_TYPE.snapshot;
 
     let url = createProductUrlFromParts(targetProductId, currentProductId, params, SAMPLES_KEY, 'new');
-    if (targetSampleSet === mediaOptions?.[0]) {
+    if (mediaOptions?.length && targetSampleSet === mediaOptions[0]) {
         url = createProductUrlFromParts(
             targetProductId,
             currentProductId,

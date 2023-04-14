@@ -1,5 +1,10 @@
 # @labkey/build
 
+### version 6.10.0
+*Released*: 14 April 2023
+* Exclude `.ispec.tsx?` files from compilation
+* Remove `redux-actions` from externals dependencies
+
 ### version 6.9.0
 *Released*: 6 January 2022
 * Package updates

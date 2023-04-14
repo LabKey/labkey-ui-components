@@ -21,13 +21,18 @@ import { Alert } from '../internal/components/base/Alert';
 import { Progress } from '../internal/components/base/Progress';
 
 import { DataOperation, ParentEntityLineageColumns } from '../internal/components/entities/constants';
-import { ParentEntityEditPanel } from './ParentEntityEditPanel';
+
 import { getEntityNoun, isSampleEntity } from '../internal/components/entities/utils';
 import { EntityChoice, EntityDataType, OperationConfirmationData } from '../internal/components/entities/models';
+
+import { setSnapshotSelections } from '../internal/actions';
+
+import { isLoading, LoadingState } from '../public/LoadingState';
+
 import { getUpdatedLineageRowsForBulkEdit } from './utils';
 import { getOriginalParentsFromLineage } from './actions';
-import { setSnapshotSelections } from '../internal/actions';
-import { isLoading, LoadingState } from '../public/LoadingState';
+
+import { ParentEntityEditPanel } from './ParentEntityEditPanel';
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -93,7 +98,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                         await setSnapshotSelections(queryModel.id, [...queryModel.selections]);
                         setSelectionsLoading(LoadingState.LOADED);
                     }
-                } else  {
+                } else {
                     setSelectionsLoading(LoadingState.LOADED);
                 }
                 if (!isLoading(selectionsLoading)) {
@@ -113,7 +118,6 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                         );
                     }
 
-
                     // This API will retrieve lineage data for samples or dataclasses
                     const lineageData = await api.samples.getSelectionLineageData(
                         List.of(...queryModel.selections),
@@ -123,7 +127,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                         List.of('RowId', 'Name', 'LSID', IS_ALIQUOT_COL).concat(ParentEntityLineageColumns).toArray()
                     );
 
-                    const {key, models} = lineageData;
+                    const { key, models } = lineageData;
                     const allowedForUpdate = {};
                     const aIds = [];
                     Object.keys(models[key]).forEach(id => {

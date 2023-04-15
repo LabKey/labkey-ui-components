@@ -33,6 +33,8 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { SCHEMAS } from '../../schemas';
 
+import { handleRequestFailure } from '../../util/utils';
+
 import {
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
     DOMAIN_FIELD_LOOKUP_CONTAINER,
@@ -219,7 +221,7 @@ export function fetchQueries(containerPath: string, schemaName: string): Promise
 }
 
 // This looks hacky, but it's actually the recommended way to download a file using raw JS
-export function downloadJsonFile(content: string, fileName: string) {
+export function downloadJsonFile(content: string, fileName: string): void {
     const downloadLink = document.createElement('a');
     downloadLink.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(content);
     downloadLink.download = fileName;
@@ -340,9 +342,7 @@ export function getMaxPhiLevel(containerPath?: string): Promise<string> {
             success: Utils.getCallbackWrapper(response => {
                 resolve(response.maxPhiLevel);
             }),
-            failure: Utils.getCallbackWrapper(error => {
-                reject(error);
-            }),
+            failure: handleRequestFailure(reject),
         });
     });
 }
@@ -1133,6 +1133,7 @@ export function getDomainNamePreviews(
                 resolve(response['previews']);
             },
             failure: response => {
+                console.error('Failed to retrieve name expression previews', response);
                 reject(response);
             },
         });

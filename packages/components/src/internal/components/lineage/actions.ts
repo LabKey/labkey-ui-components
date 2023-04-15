@@ -10,12 +10,13 @@ import { Experiment, Filter, getServerContext, Query } from '@labkey/api';
 import { SAMPLES_KEY } from '../../app/constants';
 
 import { ISelectRowsResult, selectRowsDeprecated } from '../../query/api';
-import { SchemaQuery } from '../../../public/SchemaQuery';
 import { SCHEMAS } from '../../schemas';
 import { caseInsensitive } from '../../util/utils';
 import { AppURL } from '../../url/AppURL';
 import { naturalSort } from '../../../public/sort';
 import { Location } from '../../util/URL';
+
+import { ViewInfo } from '../../ViewInfo';
 
 import { getURLResolver, LineageURLResolver } from './LineageURLResolvers';
 import { getLineageDepthFirstNodeList, resolveIconAndShapeForNode } from './utils';
@@ -32,7 +33,6 @@ import {
     LineageResult,
     LineageRunStep,
 } from './models';
-import { ViewInfo } from '../../ViewInfo';
 
 const LINEAGE_METADATA_COLUMNS = OrderedSet<string>(['LSID', 'Name', 'Description', 'Alias', 'RowId', 'Created']);
 

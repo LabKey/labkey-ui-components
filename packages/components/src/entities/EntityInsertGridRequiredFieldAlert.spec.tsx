@@ -2,9 +2,9 @@ import React from 'react';
 import { List } from 'immutable';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { QueryColumn } from '../../../public/QueryColumn';
-import { QueryInfo } from '../../../public/QueryInfo';
-import { Alert } from '../base/Alert';
+import { QueryColumn } from '../public/QueryColumn';
+import { QueryInfo } from '../public/QueryInfo';
+import { Alert } from '../internal/components/base/Alert';
 
 import { EntityInsertGridRequiredFieldAlert, getFieldKeysOfRequiredCols } from './EntityInsertGridRequiredFieldAlert';
 

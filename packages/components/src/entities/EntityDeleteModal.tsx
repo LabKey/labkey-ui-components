@@ -15,8 +15,10 @@ import { Progress } from '../internal/components/base/Progress';
 
 import { getEntityNoun } from '../internal/components/entities/utils';
 import { EntityDataType } from '../internal/components/entities/models';
-import { EntityDeleteConfirmModal } from '../internal/components/entities/EntityDeleteConfirmModal';
-import { EntityDeleteConfirmHandler } from '../internal/components/entities/EntityDeleteConfirmModalDisplay';
+
+import { EntityDeleteConfirmHandler } from './EntityDeleteConfirmModalDisplay';
+
+import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
 
 interface Props {
     afterDelete: (rowsToKeep?: any[]) => void;

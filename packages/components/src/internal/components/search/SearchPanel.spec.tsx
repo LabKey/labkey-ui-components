@@ -8,25 +8,27 @@ import { PaginationButtons } from '../buttons/PaginationButtons';
 
 import entitiesJSON from '../../../test/data/searchResults.json';
 
-import { SearchPanelImpl } from './SearchPanel';
+import { SearchPanelImpl, SearchPanelImplProps } from './SearchPanel';
 
 import { SearchResultCard } from './SearchResultCard';
 
 import { SearchResultsModel } from './models';
 import { getProcessedSearchHits } from './actions';
 
-const DEFAULT_PROPS = {
-    appName: 'test',
-    offset: undefined,
-    onPageChange: jest.fn(),
-    search: jest.fn(),
-    searchResultsModel: undefined,
-    searchTerm: undefined,
-};
+describe('SearchPanelImpl', () => {
+    function defaultProps(): SearchPanelImplProps {
+        return {
+            appName: 'test',
+            model: undefined,
+            offset: undefined,
+            onPageChange: jest.fn(),
+            search: jest.fn(),
+            searchTerm: undefined,
+        };
+    }
 
-describe('<SearchPanelImpl />', () => {
     test('default', () => {
-        const wrapper = mountWithAppServerContext(<SearchPanelImpl {...DEFAULT_PROPS} />);
+        const wrapper = mountWithAppServerContext(<SearchPanelImpl {...defaultProps()} />);
 
         expect(wrapper.find('.search-form')).toHaveLength(1);
         expect(wrapper.find('HelpLink.search-form__help-link')).toHaveLength(1);
@@ -39,7 +41,7 @@ describe('<SearchPanelImpl />', () => {
 
     test('No Results', () => {
         const wrapper = mountWithAppServerContext(
-            <SearchPanelImpl {...DEFAULT_PROPS} searchTerm="Nothing to see here" />
+            <SearchPanelImpl {...defaultProps()} searchTerm="Nothing to see here" />
         );
 
         expect(wrapper.find('.search-form')).toHaveLength(1);
@@ -52,13 +54,13 @@ describe('<SearchPanelImpl />', () => {
     });
 
     test('No paging', () => {
-        const hits = getProcessedSearchHits(entitiesJSON['hits']);
+        const hits = getProcessedSearchHits(entitiesJSON.hits);
         const model = SearchResultsModel.create({
             entities: Map(fromJS({ ...entitiesJSON, hits })),
         });
 
         const wrapper = mountWithAppServerContext(
-            <SearchPanelImpl {...DEFAULT_PROPS} searchTerm="see here" searchResultsModel={model} />
+            <SearchPanelImpl {...defaultProps()} searchTerm="see here" model={model} />
         );
 
         expect(wrapper.find('.search-form')).toHaveLength(1);
@@ -71,7 +73,7 @@ describe('<SearchPanelImpl />', () => {
     });
 
     test('paging set', () => {
-        const hits = getProcessedSearchHits(entitiesJSON['hits']);
+        const hits = getProcessedSearchHits(entitiesJSON.hits);
         const pageSize = 4;
         const page2 = hits.slice(pageSize, pageSize * 2);
         const model = SearchResultsModel.create({
@@ -80,9 +82,9 @@ describe('<SearchPanelImpl />', () => {
 
         const wrapper = mountWithAppServerContext(
             <SearchPanelImpl
-                {...DEFAULT_PROPS}
+                {...defaultProps()}
                 searchTerm="see here"
-                searchResultsModel={model}
+                model={model}
                 pageSize={pageSize}
                 offset={pageSize}
             />
@@ -99,7 +101,7 @@ describe('<SearchPanelImpl />', () => {
     });
 
     test('results fit on one page', () => {
-        const hits = getProcessedSearchHits(entitiesJSON['hits']);
+        const hits = getProcessedSearchHits(entitiesJSON.hits);
         const pageSize = 50;
         const model = SearchResultsModel.create({
             entities: Map(fromJS({ ...entitiesJSON, hits })),
@@ -107,9 +109,9 @@ describe('<SearchPanelImpl />', () => {
 
         const wrapper = mountWithAppServerContext(
             <SearchPanelImpl
-                {...DEFAULT_PROPS}
+                {...defaultProps()}
                 searchTerm="see here"
-                searchResultsModel={model}
+                model={model}
                 pageSize={pageSize}
                 offset={0}
             />
@@ -126,7 +128,7 @@ describe('<SearchPanelImpl />', () => {
     });
 
     test('Last page', () => {
-        const hits = getProcessedSearchHits(entitiesJSON['hits']);
+        const hits = getProcessedSearchHits(entitiesJSON.hits);
         const pageSize = 20;
         const offset = pageSize * 2;
         const page3 = hits.slice(offset, offset + pageSize);
@@ -136,9 +138,9 @@ describe('<SearchPanelImpl />', () => {
 
         const wrapper = mountWithAppServerContext(
             <SearchPanelImpl
-                {...DEFAULT_PROPS}
+                {...defaultProps()}
                 searchTerm="see here"
-                searchResultsModel={model}
+                model={model}
                 pageSize={pageSize}
                 offset={offset}
             />

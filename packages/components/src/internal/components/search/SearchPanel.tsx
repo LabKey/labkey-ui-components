@@ -18,7 +18,7 @@ import { biologicsIsPrimaryApp } from '../../app/utils';
 import { SearchResultsPanel } from './SearchResultsPanel';
 
 import { SearchResultsModel } from './models';
-import { SEARCH_HELP_TOPIC, SEARCH_PAGE_DEFAULT_SIZE, SearchScope } from './constants';
+import { SEARCH_HELP_TOPIC, SEARCH_PAGE_DEFAULT_SIZE } from './constants';
 import { GetCardDataFn, searchUsingIndex } from './actions';
 import { getSearchScopeFromContainerFilter } from './utils';
 
@@ -31,17 +31,17 @@ interface SearchPanelProps {
     searchTerm: string;
 }
 
-interface Props extends Omit<SearchPanelProps, 'getCardDataFn'> {
+export interface SearchPanelImplProps extends Omit<SearchPanelProps, 'getCardDataFn'> {
+    model: SearchResultsModel;
     onPageChange: (direction: number) => void;
-    searchResultsModel: SearchResultsModel;
 }
 
-export const SearchPanelImpl: FC<Props> = memo(props => {
-    const { appName = 'Labkey', searchTerm, searchResultsModel, search, onPageChange, pageSize, offset } = props;
+export const SearchPanelImpl: FC<SearchPanelImplProps> = memo(props => {
+    const { appName = 'Labkey', searchTerm, model, search, onPageChange, pageSize, offset } = props;
     const [searchQuery, setSearchQuery] = useState<string>(searchTerm);
 
     const title = useMemo(() => (searchTerm ? 'Search Results' : 'Search'), [searchTerm]);
-    const totalHits = useMemo(() => searchResultsModel?.getIn(['entities', 'totalHits']), [searchResultsModel]);
+    const totalHits = useMemo(() => model?.getIn(['entities', 'totalHits']), [model]);
     const currentPage = offset / pageSize ? offset / pageSize : 0;
 
     useEffect(() => {
@@ -136,7 +136,7 @@ export const SearchPanelImpl: FC<Props> = memo(props => {
                 </div>
                 {searchTerm && (
                     <SearchResultsPanel
-                        model={searchResultsModel}
+                        model={model}
                         hidePanelFrame={true}
                         emptyResultDisplay={emptyTextMessage}
                         offset={offset}
@@ -163,7 +163,7 @@ const MEDIA_SEARCH_CATEGORIES = ['media'];
 
 export const SearchPanel: FC<SearchPanelProps> = memo(props => {
     const { searchTerm, getCardDataFn, search, pageSize = SEARCH_PAGE_DEFAULT_SIZE, offset = 0 } = props;
-    const [model, setModel] = useState<SearchResultsModel>(SearchResultsModel.create({ isLoading: true }));
+    const [model, setModel] = useState<SearchResultsModel>(() => SearchResultsModel.create({ isLoading: true }));
     const categories = biologicsIsPrimaryApp() ? [...SEARCH_CATEGORIES, ...MEDIA_SEARCH_CATEGORIES] : SEARCH_CATEGORIES;
 
     const loadSearchResults = useCallback(async () => {
@@ -206,13 +206,6 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
         })();
     }, [loadSearchResults, searchTerm]);
 
-    const onSearch = useCallback(
-        (form: any): void => {
-            search(form);
-        },
-        [search]
-    );
-
     const onPage = useCallback(
         direction => {
             // because JS is dumb and treats offset as a string...
@@ -222,13 +215,5 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
         [search, searchTerm, pageSize, offset]
     );
 
-    return (
-        <SearchPanelImpl
-            {...props}
-            search={onSearch}
-            searchResultsModel={model}
-            onPageChange={onPage}
-            offset={offset}
-        />
-    );
+    return <SearchPanelImpl {...props} search={search} model={model} onPageChange={onPage} offset={offset} />;
 });

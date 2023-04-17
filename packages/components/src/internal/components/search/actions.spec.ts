@@ -137,34 +137,40 @@ describe('getSearchResultCardData', () => {
 describe('getProcessedSearchHits', () => {
     const SEARCH_RESULTS = [
         {
-            id: 1,
+            id: 'a:1',
             title: 'Test data',
             category: 'data',
+            container: 'abc61d95-73d3-103b-845e-877a77afc840',
         },
         {
-            id: 2,
+            id: 'a:2',
             title: 'Test material',
             category: 'material',
+            container: 'abc61d95-73d3-103b-845e-877a77afc840',
         },
         {
-            id: 3,
+            id: 'a:3',
             title: 'Test workflowJob',
             category: 'workflowJob',
+            container: 'abc61d95-73d3-103b-845e-877a77afc840',
         },
         {
-            id: 4,
+            id: 'a:4',
             title: 'Test file workflowJob',
             category: 'fileWorkflowJob',
+            container: 'abc61d95-73d3-103b-845e-877a77afc840',
         },
         {
-            id: 5,
+            id: 'a:5',
             title: 'Test other',
             category: 'other',
+            container: 'abc61d95-73d3-103b-845e-877a77afc840',
         },
         {
-            id: 6,
+            id: 'a:6',
             title: 'Test has data',
             category: 'always included',
+            container: 'abc61d95-73d3-103b-845e-877a77afc840',
             data: { test: 123 },
         },
     ];

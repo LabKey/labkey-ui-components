@@ -10,3 +10,8 @@ export const ISSUES_LIST_USER_ASSIGN_TIP =
     'In some workflows it is useful to have a default user to whom all issues are assigned, such as for initial triage and balancing assignments across a group. If left blank, no user will be assigned by default.';
 export const ISSUES_LIST_RELATED_FOLDER_TIP =
     'A related issue can be created in any issue list that the user can insert into. This setting controls the default folder selection in the related issue dialog box.';
+export const ISSUES_LIST_RESTRICTED_TRACKER_TIP =
+    'A restricted issue list will limit viewing and updating of all issues in the list. When the checkbox is selected only users who are either assigned to the issue or on the notify list ' +
+    'will have access to an issue. An additional group can optionally be configured to provide access to any members of that group.';
+export const ISSUES_LIST_RESTRICTED_GROUP_TIP =
+    'An optional project or site group that can give members of the group access to the issues in a restricted issue list.';

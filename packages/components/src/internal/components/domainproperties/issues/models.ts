@@ -28,6 +28,8 @@ export interface IssuesListDefOptionsConfig {
     assignedToGroup: number;
     assignedToUser: number;
     relatedFolderName: string;
+    restrictedIssueList: boolean;
+    restrictedIssueListGroup: number;
 }
 
 interface IssuesListDefModelConfig extends IssuesListDefOptionsConfig {
@@ -52,6 +54,8 @@ export class IssuesListDefModel implements IssuesListDefModelConfig {
     readonly assignedToUser: number;
     readonly domainKindName: string;
     readonly relatedFolderName: string;
+    readonly restrictedIssueList: boolean;
+    readonly restrictedIssueListGroup: number;
 
     constructor(values?: Partial<IssuesListDefModelConfig>) {
         Object.assign(this, values);
@@ -89,6 +93,8 @@ export class IssuesListDefModel implements IssuesListDefModelConfig {
             assignedToGroup: this.assignedToGroup,
             assignedToUser: this.assignedToUser,
             relatedFolderName: this.relatedFolderName,
+            restrictedIssueList: this.restrictedIssueList,
+            restrictedIssueListGroup: this.restrictedIssueListGroup,
         };
     }
 }

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { FC, memo, useCallback } from 'react';
 import { Map } from 'immutable';
 
 import { SchemaQuery } from '../public/SchemaQuery';
@@ -12,26 +12,6 @@ import { getSampleTypeDetails } from '../internal/components/samples/actions';
 import { downloadAttachment } from '../internal/util/utils';
 
 import { getSampleTypeTemplateUrl } from './utils';
-
-interface Props {
-    excludeColumns?: string[];
-    row?: Map<any, any>;
-}
-
-export class SampleTypeTemplateDownloadRenderer extends React.PureComponent<Props> {
-    onDownload = () => {
-        const { row, excludeColumns } = this.props;
-        const schemaQuery = new SchemaQuery(
-            SCHEMAS.SAMPLE_SETS.SCHEMA,
-            row.getIn(['Name', 'value']) ?? row.getIn(['name', 'value'])
-        );
-        downloadSampleTypeTemplate(schemaQuery, getSampleTypeTemplateUrl, excludeColumns);
-    };
-
-    render(): ReactNode {
-        return <TemplateDownloadButton onClick={this.onDownload} text="Download" className="button-small-padding" />;
-    }
-}
 
 export const downloadSampleTypeTemplate = (
     schemaQuery: SchemaQuery,
@@ -55,3 +35,20 @@ export const downloadSampleTypeTemplate = (
             console.error('Unable to download sample type template', reason);
         });
 };
+
+interface Props {
+    excludeColumns?: string[];
+    row?: Map<any, any>;
+}
+
+export const SampleTypeTemplateDownloadRenderer: FC<Props> = memo(({ excludeColumns, row }) => {
+    const onClick = useCallback(() => {
+        const schemaQuery = new SchemaQuery(
+            SCHEMAS.SAMPLE_SETS.SCHEMA,
+            row.getIn(['Name', 'value']) ?? row.getIn(['name', 'value'])
+        );
+        downloadSampleTypeTemplate(schemaQuery, getSampleTypeTemplateUrl, excludeColumns);
+    }, [excludeColumns, row]);
+
+    return <TemplateDownloadButton className="button-small-padding" onClick={onClick} text="Download" />;
+});

@@ -322,7 +322,6 @@ import {
     getSampleTypeDetails,
     getSelectedSampleIdsFromSelectionKey,
     getSelectionLineageData,
-    getParentTypeDataForLineage,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SampleAmountEditModal } from './internal/components/samples/SampleAmountEditModal';
@@ -415,6 +414,7 @@ import {
     getDataDeleteConfirmationData,
     getDataOperationConfirmationData,
     getOperationConfirmationData,
+    getParentTypeDataForLineage,
     getSampleOperationConfirmationData,
 } from './internal/components/entities/actions';
 import {
@@ -427,9 +427,6 @@ import {
     SamplePropertyDataType,
 } from './internal/components/entities/constants';
 import { getUniqueIdColumnMetadata } from './internal/components/entities/utils';
-import { EntityInsertPanel } from './internal/components/entities/EntityInsertPanel';
-import { EntityCrossProjectSelectionConfirmModal } from './internal/components/entities/EntityCrossProjectSelectionConfirmModal';
-import { EntityDeleteConfirmModal } from './internal/components/entities/EntityDeleteConfirmModal';
 import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
 
 import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';
@@ -502,11 +499,6 @@ import { RangeValidationOptionsModal } from './internal/components/domainpropert
 
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 import { AssayDesignEmptyAlert } from './internal/components/assay/AssayDesignEmptyAlert';
-import {
-    AssayResultsForSamplesButton,
-    AssayResultsForSamplesMenuItem,
-} from './internal/components/entities/AssayResultsForSamplesButton';
-import { FindDerivativesButton, FindDerivativesMenuItem } from './internal/components/entities/FindDerivativesButton';
 import {
     makeQueryInfo,
     mountWithAppServerContext,
@@ -1060,9 +1052,6 @@ export {
     getSelectionLineageData,
     getParentTypeDataForLineage,
     getSelectedSampleIdsFromSelectionKey,
-    EntityInsertPanel,
-    EntityCrossProjectSelectionConfirmModal,
-    EntityDeleteConfirmModal,
     SampleTypeDataType,
     SamplePropertyDataType,
     DataClassDataType,
@@ -1102,8 +1091,6 @@ export {
     getStoredAmountDisplay,
     isValuePrecisionValid,
     // search related items
-    FindDerivativesMenuItem,
-    FindDerivativesButton,
     FIND_SAMPLE_BY_ID_METRIC_AREA,
     BaseSearchPage,
     SearchResultsModel,
@@ -1136,8 +1123,6 @@ export {
     AssayDomainTypes,
     AssayLink,
     AssayDesignEmptyAlert,
-    AssayResultsForSamplesButton,
-    AssayResultsForSamplesMenuItem,
     allowReimportAssayRun,
     clearAssayDefinitionCache,
     fetchAllAssays,

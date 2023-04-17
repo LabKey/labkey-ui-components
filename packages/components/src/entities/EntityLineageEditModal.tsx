@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 
 import { AuditBehaviorTypes, Utils } from '@labkey/api';
 
@@ -30,7 +30,6 @@ import { setSnapshotSelections } from '../internal/actions';
 import { isLoading, LoadingState } from '../public/LoadingState';
 
 import { getUpdatedLineageRowsForBulkEdit } from './utils';
-import { getOriginalParentsFromLineage } from './actions';
 
 import { ParentEntityEditPanel } from './ParentEntityEditPanel';
 
@@ -74,15 +73,15 @@ const restrictedDataOperationMsg = (
 export const EntityLineageEditModal: FC<Props> = memo(props => {
     const { api, auditBehavior, queryModel, onCancel, childEntityDataType, onSuccess, parentEntityDataTypes } = props;
     const [submitting, setSubmitting] = useState(false);
-    const [allowedForUpdate, setAllowedForUpdate] = useState<Record<string, any>>(undefined);
-    const [aliquotIds, setAliquotIds] = useState<number[]>(undefined);
-    const [errorMessage, setErrorMessage] = useState<string>(undefined);
+    const [allowedForUpdate, setAllowedForUpdate] = useState<Record<string, any>>();
+    const [aliquotIds, setAliquotIds] = useState<number[]>();
+    const [errorMessage, setErrorMessage] = useState<string>();
     const [hasParentUpdates, setHasParentUpdates] = useState<boolean>(false);
     const parentNounPlural = parentEntityDataTypes[0].nounPlural;
     const parentNounSingular = parentEntityDataTypes[0].nounSingular;
     const lcParentNounPlural = parentNounPlural.toLowerCase();
     const [selectedParents, setSelectedParents] = useState<List<EntityChoice>>(List<EntityChoice>());
-    const [statusData, setStatusData] = useState<OperationConfirmationData>(undefined);
+    const [statusData, setStatusData] = useState<OperationConfirmationData>();
     const [selectionsLoading, setSelectionsLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
     const { createNotification } = useNotificationsContext();
     const useSnapshotSelection = queryModel?.filterArray.length > 0;
@@ -160,13 +159,23 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
     const onConfirm = async (): Promise<void> => {
         setSubmitting(true);
 
-        const { originalParents } = await getOriginalParentsFromLineage(allowedForUpdate, parentEntityDataTypes);
-        const rows = getUpdatedLineageRowsForBulkEdit(
-            allowedForUpdate,
-            selectedParents,
-            originalParents,
-            queryModel.queryInfo
-        );
+        let rows: any[];
+
+        try {
+            const parentData = await api.entity.getOriginalParentsFromLineage(allowedForUpdate, parentEntityDataTypes);
+            rows = getUpdatedLineageRowsForBulkEdit(
+                allowedForUpdate,
+                selectedParents,
+                parentData.originalParents,
+                queryModel.queryInfo
+            );
+        } catch (e) {
+            setSubmitting(false);
+            setErrorMessage(
+                'There was a problem fetching parent data for the ' + lcParentNounPlural + '.' + resolveErrorMessage(e)
+            );
+            return;
+        }
 
         if (rows.length > 0) {
             try {

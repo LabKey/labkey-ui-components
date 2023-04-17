@@ -6,9 +6,9 @@ import { makeTestQueryModel } from '../public/QueryModel/testUtils';
 import { SchemaQuery } from '../public/SchemaQuery';
 import { SelectionMenuItem } from '../internal/components/menus/SelectionMenuItem';
 
-import { EntityDeleteConfirmModal } from '../internal/components/entities/EntityDeleteConfirmModal';
-
 import { mountWithAppServerContext } from '../internal/testHelpers';
+
+import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
 
 import { SampleDeleteMenuItem } from './SampleDeleteMenuItem';
 

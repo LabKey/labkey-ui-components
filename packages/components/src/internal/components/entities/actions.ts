@@ -6,7 +6,7 @@ import { SampleOperation } from '../samples/constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { getFilterForSampleOperation, isSamplesSchema } from '../samples/utils';
 import { importData, InsertOptions } from '../../query/api';
-import { caseInsensitive } from '../../util/utils';
+import { caseInsensitive, handleRequestFailure } from '../../util/utils';
 import { SampleCreationType } from '../samples/models';
 import { getSelected, getSelectedData } from '../../actions';
 import { SHARED_CONTAINER_PATH } from '../../constants';
@@ -16,11 +16,14 @@ import { SCHEMAS } from '../../schemas';
 
 import { Row, selectRows, SelectRowsResponse } from '../../query/selectRows';
 
-import { isDataClassEntity, isSampleEntity } from './utils';
+import { ViewInfo } from '../../ViewInfo';
+
+import { getInitialParentChoices, isDataClassEntity, isSampleEntity } from './utils';
 import { DataClassDataType, DataOperation, SampleTypeDataType } from './constants';
 import {
     CrossFolderSelectionResult,
     DisplayObject,
+    EntityChoice,
     EntityDataType,
     EntityIdCreationModel,
     EntityParentType,
@@ -490,9 +493,7 @@ export function deleteEntityType(
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
-            failure: Utils.getCallbackWrapper(response => {
-                reject(response);
-            }),
+            failure: handleRequestFailure(reject, 'Failed to delete entity type.'),
         });
     });
 }
@@ -595,3 +596,123 @@ export function getCrossFolderSelectionResult(
         });
     });
 }
+
+export type ParentIdData = {
+    parentId: string | number;
+    rowId: number;
+};
+
+async function getParentRowIdAndDataType(
+    parentDataType: EntityDataType,
+    parentIDs: string[],
+    containerPath?: string
+): Promise<Record<string, ParentIdData>> {
+    const response = await selectRows({
+        containerPath,
+        schemaQuery: parentDataType.listingSchemaQuery,
+        viewName: ViewInfo.DETAIL_NAME, // use this to avoid filters on the default view
+        columns: 'LSID, RowId, DataClass, SampleSet', // only one of DataClass or SampleSet will exist
+        filterArray: [Filter.create('LSID', parentIDs, Filter.Types.IN)],
+    });
+
+    const filteredParentItems = {};
+    response.rows.forEach(row => {
+        const lsid = caseInsensitive(row, 'LSID').value;
+        filteredParentItems[lsid] = {
+            rowId: caseInsensitive(row, 'RowId').value,
+            parentId: caseInsensitive(row, 'DataClass')?.value ?? caseInsensitive(row, 'SampleSet')?.value,
+        };
+    });
+
+    return filteredParentItems;
+}
+
+export type GetParentTypeDataForLineage = (
+    parentDataType: EntityDataType,
+    data: any[],
+    containerPath?: string,
+    containerFilter?: Query.ContainerFilter
+) => Promise<{
+    parentIdData: Record<string, ParentIdData>;
+    parentTypeOptions: List<IEntityTypeOption>;
+}>;
+
+export const getParentTypeDataForLineage: GetParentTypeDataForLineage = async (
+    parentDataType,
+    data,
+    containerPath,
+    containerFilter
+) => {
+    let parentTypeOptions = List<IEntityTypeOption>();
+    let parentIdData: Record<string, ParentIdData>;
+    if (parentDataType) {
+        const options = await getEntityTypeOptions(parentDataType, containerPath, containerFilter);
+        parentTypeOptions = List<IEntityTypeOption>(options.get(parentDataType.typeListingSchemaQuery.queryName));
+
+        // get the set of parent row LSIDs so that we can query for the RowId and SampleSet/DataClass for that row
+        const parentIDs = [];
+        data.forEach(datum => {
+            parentIDs.push(...datum[parentDataType.inputColumnName].map(row => row.value));
+        });
+        parentIdData = await getParentRowIdAndDataType(parentDataType, parentIDs, containerPath);
+    }
+    return { parentTypeOptions, parentIdData };
+};
+
+export const getOriginalParentsFromLineage = async (
+    lineage: Record<string, any>,
+    parentDataTypes: EntityDataType[],
+    containerPath?: string
+): Promise<{
+    originalParents: Record<string, List<EntityChoice>>;
+    parentTypeOptions: Map<string, List<IEntityTypeOption>>;
+}> => {
+    const originalParents = {};
+    let parentTypeOptions = Map<string, List<IEntityTypeOption>>();
+    const dataClassTypeData = await getParentTypeDataForLineage(
+        parentDataTypes.filter(
+            dataType => dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName
+        )[0],
+        Object.values(lineage),
+        containerPath
+    );
+    const sampleTypeData = await getParentTypeDataForLineage(
+        parentDataTypes.filter(
+            dataType => dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName
+        )[0],
+        Object.values(lineage),
+        containerPath
+    );
+
+    // iterate through both Data Classes and Sample Types for finding sample parents
+    parentDataTypes.forEach(dataType => {
+        const dataTypeOptions =
+            dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName
+                ? dataClassTypeData.parentTypeOptions
+                : sampleTypeData.parentTypeOptions;
+
+        const parentIdData =
+            dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName
+                ? dataClassTypeData.parentIdData
+                : sampleTypeData.parentIdData;
+        Object.keys(lineage).forEach(sampleId => {
+            if (!originalParents[sampleId]) originalParents[sampleId] = List<EntityChoice>();
+
+            originalParents[sampleId] = originalParents[sampleId].concat(
+                getInitialParentChoices(dataTypeOptions, dataType, lineage[sampleId], parentIdData)
+            );
+        });
+
+        // filter out the current parent types from the dataTypeOptions
+        const originalParentTypeLsids = [];
+        Object.values(originalParents).forEach((parentTypes: List<EntityChoice>) => {
+            originalParentTypeLsids.push(...parentTypes.map(parentType => parentType.type.lsid).toArray());
+        });
+        parentTypeOptions = parentTypeOptions.set(
+            dataType.typeListingSchemaQuery.queryName,
+            dataTypeOptions.filter(option => originalParentTypeLsids.indexOf(option.lsid) === -1).toList()
+        );
+    });
+
+    return { originalParents, parentTypeOptions };
+};

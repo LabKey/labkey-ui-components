@@ -19,8 +19,6 @@ import { SampleTypeDataType } from '../internal/components/entities/constants';
 
 import { getCrossFolderSelectionResult } from '../internal/components/entities/actions';
 
-import { EntityCrossProjectSelectionConfirmModal } from '../internal/components/entities/EntityCrossProjectSelectionConfirmModal';
-
 import { SamplesEditButtonSections } from '../internal/components/samples/utils';
 
 import { getSampleTypeRowId } from '../internal/components/samples/actions';
@@ -28,6 +26,8 @@ import { SampleGridButtonProps } from '../internal/components/samples/models';
 import { NEW_SAMPLES_HREF, SAMPLES_KEY } from '../internal/app/constants';
 
 import { setSnapshotSelections } from '../internal/actions';
+
+import { EntityCrossProjectSelectionConfirmModal } from './EntityCrossProjectSelectionConfirmModal';
 
 import { shouldIncludeMenuItem } from './utils';
 import { SampleDeleteMenuItem } from './SampleDeleteMenuItem';

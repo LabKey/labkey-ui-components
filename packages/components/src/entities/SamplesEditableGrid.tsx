@@ -46,8 +46,6 @@ import { SamplesEditableGridPanelForUpdate } from './SamplesEditableGridPanelFor
 import { DiscardConsumedSamplesModal } from './DiscardConsumedSamplesModal';
 import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
 
-import { getOriginalParentsFromLineage } from './actions';
-
 type Props = SamplesEditableGridProps &
     SamplesSelectionProviderProps &
     SamplesSelectionResultProps &
@@ -175,13 +173,13 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     initLineageEditableGrid = async (): Promise<void> => {
-        const { determineLineage, parentDataTypes } = this.props;
+        const { api, determineLineage, parentDataTypes, sampleLineage } = this.props;
         if (determineLineage && this.hasParentDataTypes()) {
-            const { originalParents, parentTypeOptions } = await getOriginalParentsFromLineage(
-                this.props.sampleLineage,
+            const { originalParents, parentTypeOptions } = await api.entity.getOriginalParentsFromLineage(
+                sampleLineage,
                 parentDataTypes.toArray()
             );
-            this.setState(() => ({ originalParents, parentTypeOptions }));
+            this.setState({ originalParents, parentTypeOptions });
         }
     };
 

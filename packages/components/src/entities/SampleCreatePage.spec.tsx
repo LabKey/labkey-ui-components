@@ -2,7 +2,6 @@ import React from 'react';
 import { ReactWrapper } from 'enzyme';
 
 import { InsufficientPermissionsPage } from '../internal/components/permissions/InsufficientPermissionsPage';
-import { EntityInsertPanel } from '../internal/components/entities/EntityInsertPanel';
 import { mountWithAppServerContext, waitForLifecycle } from '../internal/testHelpers';
 import { TEST_USER_APP_ADMIN, TEST_USER_AUTHOR, TEST_USER_EDITOR, TEST_USER_READER } from '../internal/userFixtures';
 import { createMockWithRouterProps } from '../internal/mockUtils';
@@ -11,6 +10,7 @@ import { BACKGROUND_IMPORT_MIN_FILE_SIZE } from '../internal/components/pipeline
 
 import { SampleTypeAppContext } from '../internal/AppContext';
 
+import { EntityInsertPanel } from './EntityInsertPanel';
 import { SampleCreatePage, SampleCreatePageProps } from './SampleCreatePage';
 import { SampleTypeBasePage } from './SampleTypeBasePage';
 

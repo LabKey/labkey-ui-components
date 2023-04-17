@@ -8,10 +8,40 @@ import { getPrimaryAppProperties, getProjectPath, isAllProductFoldersFilteringEn
 import { incrementClientSideMetricCount } from '../../actions';
 import { buildURL } from '../../url/AppURL';
 import { URLResolver } from '../../url/URLResolver';
+import { handleRequestFailure } from '../../util/utils';
+
+import { ModuleContext } from '../base/ServerContext';
+
 import { SearchIdData, SearchResultCardData } from './models';
 import { SearchScope } from './constants';
 
 export type GetCardDataFn = (data: Map<any, any>, category?: string) => SearchResultCardData;
+
+export interface SearchHit {
+    category?: string;
+    container: string;
+    data?: any;
+    id: string;
+    identifiers?: string;
+    score?: number;
+    summary?: string;
+    title: string;
+    url?: string;
+}
+
+export interface SearchMetadata {
+    idProperty: string;
+    root: string;
+    successProperty: string;
+}
+
+export interface SearchResult {
+    hits: SearchHit[];
+    metaData: SearchMetadata;
+    q: string;
+    success: boolean;
+    totalHits: number;
+}
 
 export interface SearchOptions {
     category?: string;
@@ -19,27 +49,17 @@ export interface SearchOptions {
     limit?: number;
     normalizeUrls?: boolean;
     offset?: number;
-    q: any;
+    q: string;
     scope?: SearchScope;
 }
 
-export function searchUsingIndex(
-    options: SearchOptions,
-    getCardDataFn?: GetCardDataFn,
-    filterCategories?: string[]
-): Promise<Record<string, any>> {
-    const appProps = getPrimaryAppProperties();
-    if (appProps?.productId) {
-        incrementClientSideMetricCount(appProps.productId + 'Search', 'count');
-    }
+export type Search = (options: SearchOptions, moduleContext?: ModuleContext) => Promise<SearchResult>;
 
+export const search: Search = (options, moduleContext) => {
     let containerPath: string;
-    if (isAllProductFoldersFilteringEnabled()) {
+    if (isAllProductFoldersFilteringEnabled(moduleContext)) {
         containerPath = getProjectPath();
         options.scope = SearchScope.FolderAndSubfoldersAndShared;
-    }
-    if (filterCategories) {
-        options.category = filterCategories?.join('+');
     }
 
     return new Promise((resolve, reject) => {
@@ -50,22 +70,42 @@ export function searchUsingIndex(
             params: options,
             success: Utils.getCallbackWrapper(json => {
                 addDataObjects(json);
-                const results = new URLResolver().resolveSearchUsingIndex(json);
-                const hits = getProcessedSearchHits(results['hits'], getCardDataFn);
-                resolve({ ...results, hits });
+                resolve(new URLResolver().resolveSearchUsingIndex(json));
             }),
-            failure: Utils.getCallbackWrapper(json => reject(json), null, false),
+            failure: handleRequestFailure(reject, 'Failed search query'),
         });
     });
+};
+
+export interface SearchHitWithCardData extends SearchHit {
+    cardData: SearchResultCardData;
+}
+
+export interface SearchResultWithCardData extends Omit<SearchResult, 'hits'> {
+    hits: SearchHitWithCardData[];
+}
+
+export async function searchUsingIndex(
+    options: SearchOptions,
+    getCardDataFn?: GetCardDataFn,
+    filterCategories?: string[]
+): Promise<SearchResultWithCardData> {
+    const appProps = getPrimaryAppProperties();
+    if (appProps?.productId) {
+        incrementClientSideMetricCount(appProps.productId + 'Search', 'count');
+    }
+
+    const result = await search(options);
+    return { ...result, hits: getProcessedSearchHits(result.hits, getCardDataFn, filterCategories) };
 }
 
 // Some search results will not have a data object.  Much of the display logic
 // relies on this, so for such results that we want to show the user, we add a
 // data element
-function addDataObjects(jsonResults) {
-    jsonResults.hits.forEach(hit => {
+function addDataObjects(result: SearchResult): void {
+    result.hits.forEach(hit => {
         if (hit.data === undefined || !hit.data.id) {
-            const data = parseSearchIdToData(hit.id);
+            const data = parseSearchHitToData(hit);
             if (data.type && RELEVANT_SEARCH_RESULT_TYPES.indexOf(data.type) >= 0) {
                 if (!hit.data) hit.data = data;
                 else hit.data = { ...data, ...hit.data };
@@ -76,10 +116,10 @@ function addDataObjects(jsonResults) {
 
 // Create a data object from the search id, which is assumed to be of the form:
 //      [group:][type:]rowId
-function parseSearchIdToData(idString): SearchIdData {
+function parseSearchHitToData(hit: SearchHit): SearchIdData {
     const idData = new SearchIdData();
-    if (idString) {
-        const idParts = idString.split(':');
+    if (hit.id) {
+        const idParts = hit.id.split(':');
 
         idData.id = idParts[idParts.length - 1];
         if (idParts.length > 1) idData.type = idParts[idParts.length - 2];
@@ -89,7 +129,7 @@ function parseSearchIdToData(idString): SearchIdData {
 }
 
 // exported for jest testing
-export function resolveTypeName(data: any, category: string) {
+export function resolveTypeName(data: any, category: string): string {
     let typeName;
     if (data) {
         if (data.dataClass?.name) {
@@ -164,22 +204,17 @@ export function getSearchResultCardData(data: any, category: string, title: stri
     };
 }
 
-function getCardData(
-    category: string,
-    data: any,
-    title: string,
-    getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData
-): SearchResultCardData {
-    let cardData = getSearchResultCardData(data, category, title);
+function getCardData(category: string, data: any, title: string, getCardDataFn?: GetCardDataFn): SearchResultCardData {
+    const cardData = getSearchResultCardData(data, category, title);
     if (getCardDataFn) {
-        cardData = { ...cardData, ...getCardDataFn(data, category) };
+        return { ...cardData, ...getCardDataFn(data, category) };
     }
     return cardData;
 }
 
 export function getProcessedSearchHits(
-    hits: any[],
-    getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData
+    hits: SearchHit[],
+    getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData,
 ): any[] {
     return hits?.map(result => ({
         ...result,

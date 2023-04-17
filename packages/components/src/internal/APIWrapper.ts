@@ -30,6 +30,7 @@ import {
     NavigationAPIWrapper,
     ServerNavigationAPIWrapper,
 } from './components/navigation/NavigationAPIWrapper';
+import { getSearchTestAPIWrapper, SearchAPIWrapper, SearchServerAPIWrapper } from './components/search/APIWrapper';
 
 export interface ComponentsAPIWrapper {
     domain: DomainPropertiesAPIWrapper;
@@ -40,6 +41,7 @@ export interface ComponentsAPIWrapper {
     picklist: PicklistAPIWrapper;
     query: QueryAPIWrapper;
     samples: SamplesAPIWrapper;
+    search: SearchAPIWrapper;
     security: SecurityAPIWrapper;
 }
 
@@ -56,6 +58,7 @@ export function getDefaultAPIWrapper(): ComponentsAPIWrapper {
             navigation: new ServerNavigationAPIWrapper(),
             picklist: new PicklistServerAPIWrapper(),
             samples: new SamplesServerAPIWrapper(),
+            search: new SearchServerAPIWrapper(),
             security: new ServerSecurityAPIWrapper(),
         };
     }
@@ -79,6 +82,7 @@ export function getTestAPIWrapper(
         navigation: getNavigationTestAPIWrapper(mockFn, overrides.navigation),
         picklist: getPicklistTestAPIWrapper(mockFn, overrides.picklist),
         samples: getSamplesTestAPIWrapper(mockFn, overrides.samples),
+        search: getSearchTestAPIWrapper(mockFn, overrides.search),
         security: getSecurityTestAPIWrapper(mockFn, overrides.security),
         ...overrides,
     };

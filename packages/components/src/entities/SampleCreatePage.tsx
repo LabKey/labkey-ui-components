@@ -16,7 +16,7 @@ import { SampleTypeDataType } from '../internal/components/entities/constants';
 import { QueryInfo } from '../public/QueryInfo';
 import { BulkAddData } from '../internal/components/editable/EditableGrid';
 import { InsufficientPermissionsPage } from '../internal/components/permissions/InsufficientPermissionsPage';
-import { EntityInsertPanel } from '../internal/components/entities/EntityInsertPanel';
+
 import { ALIQUOTED_FROM_COL, SAMPLE_INSERT_EXTRA_COLUMNS } from '../internal/components/samples/constants';
 import {
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
@@ -25,6 +25,8 @@ import {
 import { HelpLink } from '../internal/util/helpLinks';
 import { CommonPageProps } from '../internal/models';
 import { MAX_EDITABLE_GRID_ROWS } from '../internal/constants';
+
+import { EntityInsertPanel } from './EntityInsertPanel';
 
 import { SampleTypeBasePage } from './SampleTypeBasePage';
 import { onSampleChange } from './actions';

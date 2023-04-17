@@ -43,18 +43,24 @@ export interface ComponentsAPIWrapper {
     security: SecurityAPIWrapper;
 }
 
+let DEFAULT_WRAPPER: ComponentsAPIWrapper;
+
 export function getDefaultAPIWrapper(): ComponentsAPIWrapper {
-    return {
-        domain: new DomainPropertiesAPIWrapper(),
-        entity: new EntityServerAPIWrapper(),
-        folder: new ServerFolderAPIWrapper(),
-        query: new QueryServerAPIWrapper(),
-        labelprinting: new LabelPrintingServerAPIWrapper(),
-        navigation: new ServerNavigationAPIWrapper(),
-        picklist: new PicklistServerAPIWrapper(),
-        samples: new SamplesServerAPIWrapper(),
-        security: new ServerSecurityAPIWrapper(),
-    };
+    if (!DEFAULT_WRAPPER) {
+        DEFAULT_WRAPPER = {
+            domain: new DomainPropertiesAPIWrapper(),
+            entity: new EntityServerAPIWrapper(),
+            folder: new ServerFolderAPIWrapper(),
+            query: new QueryServerAPIWrapper(),
+            labelprinting: new LabelPrintingServerAPIWrapper(),
+            navigation: new ServerNavigationAPIWrapper(),
+            picklist: new PicklistServerAPIWrapper(),
+            samples: new SamplesServerAPIWrapper(),
+            security: new ServerSecurityAPIWrapper(),
+        };
+    }
+
+    return DEFAULT_WRAPPER;
 }
 
 /**

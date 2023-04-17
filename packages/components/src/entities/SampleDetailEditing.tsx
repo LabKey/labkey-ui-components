@@ -8,7 +8,10 @@ import { EditableDetailPanel, EditableDetailPanelProps } from '../public/QueryMo
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../internal/APIWrapper';
 
-import { withNotificationsContext, NotificationsContextProps } from '../internal/components/notifications/NotificationsContext';
+import {
+    withNotificationsContext,
+    NotificationsContextProps,
+} from '../internal/components/notifications/NotificationsContext';
 
 import { QueryConfig } from '../public/QueryModel/QueryModel';
 import { SchemaQuery } from '../public/SchemaQuery';
@@ -21,18 +24,22 @@ import { caseInsensitive } from '../internal/util/utils';
 import { DefaultRenderer } from '../internal/renderers/DefaultRenderer';
 import { DetailPanelWithModel } from '../public/QueryModel/DetailPanel';
 
-import { SampleAliquotDetailHeader } from './SampleAliquotDetailHeader';
-import { DISCARD_CONSUMED_CHECKBOX_FIELD, DISCARD_CONSUMED_COMMENT_FIELD } from '../internal/components/samples/DiscardConsumedSamplesPanel';
+import {
+    DISCARD_CONSUMED_CHECKBOX_FIELD,
+    DISCARD_CONSUMED_COMMENT_FIELD,
+} from '../internal/components/samples/DiscardConsumedSamplesPanel';
 import { IS_ALIQUOT_COL, SAMPLE_STATUS_REQUIRED_COLUMNS } from '../internal/components/samples/constants';
-import { getGroupedSampleDisplayColumns, getGroupedSampleDomainFields, GroupedSampleDisplayColumns } from '../internal/components/samples/actions';
+import { getGroupedSampleDisplayColumns, GroupedSampleDisplayColumns } from '../internal/components/samples/actions';
 import { GroupedSampleFields } from '../internal/components/samples/models';
 import { ViewInfo } from '../internal/ViewInfo';
 
+import { SampleAliquotDetailHeader } from './SampleAliquotDetailHeader';
+
 interface Props extends EditableDetailPanelProps {
     api?: ComponentsAPIWrapper;
+    canBeInStorage?: boolean;
     noun?: string;
     sampleSet: string;
-    canBeInStorage?: boolean;
 }
 
 interface State {
@@ -63,13 +70,8 @@ class SampleDetailEditingImpl extends PureComponent<Props & NotificationsContext
     componentDidUpdate(prevProps: Props): void {
         if (this.props.sampleSet !== prevProps.sampleSet) {
             this.setState(
-                () => ({
-                    sampleTypeDomainFields: undefined,
-                    hasError: false,
-                }),
-                () => {
-                    this.init();
-                }
+                { hasError: false, sampleStorageItemId: undefined, sampleTypeDomainFields: undefined },
+                this.init
             );
         }
     }
@@ -78,7 +80,7 @@ class SampleDetailEditingImpl extends PureComponent<Props & NotificationsContext
         const { sampleSet, api, model } = this.props;
 
         try {
-            const sampleTypeDomainFields = await getGroupedSampleDomainFields(sampleSet);
+            const sampleTypeDomainFields = await api.samples.getGroupedSampleDomainFields(sampleSet);
             const sampleStorageItemId = await api.samples.getSampleStorageId(model.getRowValue('RowId'));
 
             this.setState({ sampleTypeDomainFields, sampleStorageItemId, hasError: false });
@@ -96,22 +98,26 @@ class SampleDetailEditingImpl extends PureComponent<Props & NotificationsContext
             model: { detailColumns, updateColumns },
         } = this.props;
         const { sampleTypeDomainFields } = this.state;
-        return getGroupedSampleDisplayColumns(detailColumns, updateColumns, sampleTypeDomainFields, isAliquot, this.props.canBeInStorage);
+        return getGroupedSampleDisplayColumns(
+            detailColumns,
+            updateColumns,
+            sampleTypeDomainFields,
+            isAliquot,
+            this.props.canBeInStorage
+        );
     };
 
     getAliquotRootSampleQueryConfig = (): QueryConfig => {
         const { model, sampleSet } = this.props;
-        const rootLsid = model.getRowValue('RootMaterialLSID');
-
         return {
             schemaQuery: new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet, ViewInfo.DETAIL_NAME),
-            baseFilters: [Filter.create('lsid', rootLsid)],
+            baseFilters: [Filter.create('lsid', model.getRowValue('RootMaterialLSID'))],
             requiredColumns: ['Name', 'Description', ...SAMPLE_STATUS_REQUIRED_COLUMNS],
             omittedColumns: [IS_ALIQUOT_COL],
         };
     };
 
-    handleSave = async () => {
+    handleSave = async (): Promise<void> => {
         const { createNotification } = this.props;
         const { shouldDiscard, discardComment, sampleStorageItemId } = this.state;
 
@@ -133,7 +139,7 @@ class SampleDetailEditingImpl extends PureComponent<Props & NotificationsContext
         }
     };
 
-    onDiscardConsumedPanelChange = (field: string, value: any) => {
+    onDiscardConsumedPanelChange = (field: string, value: any): boolean => {
         const { sampleStorageItemId } = this.state;
 
         if (!sampleStorageItemId || sampleStorageItemId <= 0) return false; // if sample is not in storage, skip showing discard panel

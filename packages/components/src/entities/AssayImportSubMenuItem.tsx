@@ -14,9 +14,10 @@ import { InjectedAssayModel, withAssayModels } from '../internal/components/assa
 import { getCrossFolderSelectionResult } from '../internal/components/entities/actions';
 import { MenuOption, SubMenu } from '../internal/components/menus/SubMenu';
 import { isProjectContainer } from '../internal/app/utils';
-import { EntityCrossProjectSelectionConfirmModal } from '../internal/components/entities/EntityCrossProjectSelectionConfirmModal';
 
 import { setSnapshotSelections } from '../internal/actions';
+
+import { EntityCrossProjectSelectionConfirmModal } from './EntityCrossProjectSelectionConfirmModal';
 
 import { getImportItemsForAssayDefinitions } from './utils';
 

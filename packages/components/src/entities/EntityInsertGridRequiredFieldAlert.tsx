@@ -1,9 +1,9 @@
 import React, { FC, memo, useMemo } from 'react';
 import { List } from 'immutable';
 
-import { QueryInfo } from '../../../public/QueryInfo';
-import { QueryColumn } from '../../../public/QueryColumn';
-import { Alert } from '../base/Alert';
+import { QueryInfo } from '../public/QueryInfo';
+import { QueryColumn } from '../public/QueryColumn';
+import { Alert } from '../internal/components/base/Alert';
 
 interface Props {
     queryInfo: QueryInfo;

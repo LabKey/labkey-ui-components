@@ -19,6 +19,7 @@ import {
     getSelectionLineageData,
 } from '../internal/components/samples/actions';
 import { SampleOperation } from '../internal/components/samples/constants';
+import { resolveErrorMessage } from '../internal/util/messaging';
 
 const Context = React.createContext<SamplesSelectionResultProps>(undefined);
 const SamplesSelectionContextProvider = Context.Provider;
@@ -66,7 +67,9 @@ export function SamplesSelectionProvider<T>(
                     });
                 })
                 .catch(reason => {
-                    this.setState({ selectionInfoError: reason });
+                    this.setState({
+                        selectionInfoError: resolveErrorMessage(reason) ?? 'Failed to load sample type domain',
+                    });
                 });
         }
 
@@ -100,7 +103,7 @@ export function SamplesSelectionProvider<T>(
                     .catch(error => {
                         this.setState({
                             aliquots: undefined,
-                            selectionInfoError: error,
+                            selectionInfoError: resolveErrorMessage(error) ?? 'Failed to load aliquot data',
                         });
                     });
             }
@@ -118,19 +121,18 @@ export function SamplesSelectionProvider<T>(
                     .catch(error => {
                         this.setState({
                             noStorageSamples: undefined,
-                            selectionInfoError: error,
+                            selectionInfoError: resolveErrorMessage(error) ?? 'Failed to load no storage samples',
                         });
                     });
                 getSampleSelectionStorageData(selection)
                     .then(sampleItems => {
-                        this.setState(() => ({
-                            sampleItems,
-                        }));
+                        this.setState({ sampleItems });
                     })
                     .catch(error => {
                         this.setState({
                             sampleItems: undefined,
-                            selectionInfoError: error,
+                            selectionInfoError:
+                                resolveErrorMessage(error) ?? 'Failed to load sample selection storage data',
                         });
                     });
             }
@@ -151,7 +153,7 @@ export function SamplesSelectionProvider<T>(
                         this.setState({
                             sampleLineageKeys: undefined,
                             sampleLineage: undefined,
-                            selectionInfoError: error,
+                            selectionInfoError: resolveErrorMessage(error) ?? 'Failed to load lineage data',
                         });
                     });
             }

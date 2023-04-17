@@ -17,6 +17,7 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 import { DomainDetails } from '../domainproperties/models';
 
 import {
+    getGroupedSampleDomainFields,
     getSampleAliquotRows,
     getSampleAssayResultViewConfigs,
     getFieldLookupFromSelection,
@@ -29,7 +30,7 @@ import {
     createSessionAssayRunSummaryQuery,
     getDistinctAssaysPerSample,
 } from './actions';
-import { SampleState } from './models';
+import { GroupedSampleFields, SampleState } from './models';
 import { SampleOperation } from './constants';
 
 export interface SamplesAPIWrapper {
@@ -43,6 +44,8 @@ export interface SamplesAPIWrapper {
         selected: any[],
         fieldKey: string
     ) => Promise<string[]>;
+
+    getGroupedSampleDomainFields: (sampleType: string) => Promise<GroupedSampleFields>;
 
     getSampleAliquotRows: (sampleId: number | string) => Promise<Array<Record<string, any>>>;
 
@@ -81,6 +84,7 @@ export interface SamplesAPIWrapper {
 
 export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
     createSessionAssayRunSummaryQuery = createSessionAssayRunSummaryQuery;
+    getGroupedSampleDomainFields = getGroupedSampleDomainFields;
     getSampleAliquotRows = getSampleAliquotRows;
     getSampleAssayResultViewConfigs = getSampleAssayResultViewConfigs;
     getSelectionLineageData = getSelectionLineageData;
@@ -103,6 +107,7 @@ export function getSamplesTestAPIWrapper(
 ): SamplesAPIWrapper {
     return {
         createSessionAssayRunSummaryQuery: mockFn(),
+        getGroupedSampleDomainFields: mockFn(),
         getSampleAliquotRows: mockFn(),
         getSampleAssayResultViewConfigs: mockFn(),
         getSelectionLineageData: mockFn(),

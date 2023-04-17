@@ -78,6 +78,7 @@ const INVENTORY_SCHEMA = 'inventory';
 export const INVENTORY = {
     SCHEMA: INVENTORY_SCHEMA,
     ITEMS: new SchemaQuery(INVENTORY_SCHEMA, 'Item'),
+    ITEM_SAMPLES: new SchemaQuery(INVENTORY_SCHEMA, 'ItemSamples'),
     SAMPLE_ITEMS: new SchemaQuery(INVENTORY_SCHEMA, 'SampleItems'),
     CHECKED_OUT_BY_FIELD: 'checkedOutBy',
     INVENTORY_COLS: [

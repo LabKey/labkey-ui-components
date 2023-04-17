@@ -7,7 +7,7 @@ import { AuditBehaviorTypes, Filter } from '@labkey/api';
 
 import { DetailPanelHeader } from '../internal/components/forms/detail/DetailPanelHeader';
 
-import { getParentTypeDataForLineage, GetParentTypeDataForLineage } from '../internal/components/samples/actions';
+import { getParentTypeDataForLineage, GetParentTypeDataForLineage } from '../internal/components/entities/actions';
 
 import { DELIMITER } from '../internal/components/forms/constants';
 

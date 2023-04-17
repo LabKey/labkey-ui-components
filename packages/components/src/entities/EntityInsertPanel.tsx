@@ -20,74 +20,78 @@ import { AuditBehaviorTypes, Query, Utils } from '@labkey/api';
 
 import { Link } from 'react-router';
 
-import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
+import { MAX_EDITABLE_GRID_ROWS } from '../internal/constants';
 
-import { PlacementType } from '../editable/Controls';
+import { PlacementType } from '../internal/components/editable/Controls';
 
-import { DATA_IMPORT_TOPIC, helpLinkNode } from '../../util/helpLinks';
+import { DATA_IMPORT_TOPIC, HelpLink } from '../internal/util/helpLinks';
 
-import { BulkAddData, EditableColumnMetadata } from '../editable/EditableGrid';
+import { BulkAddData, EditableColumnMetadata } from '../internal/components/editable/EditableGrid';
 
-import { DERIVATION_DATA_SCOPES } from '../domainproperties/constants';
+import { DERIVATION_DATA_SCOPES } from '../internal/components/domainproperties/constants';
 
-import { getCurrentProductName, isSampleManagerEnabled, sampleManagerIsPrimaryApp } from '../../app/utils';
+import { getCurrentProductName, isSampleManagerEnabled, sampleManagerIsPrimaryApp } from '../internal/app/utils';
 
-import { fetchDomainDetails, getDomainNamePreviews } from '../domainproperties/actions';
+import {
+    SAMPLE_STATE_COLUMN_NAME,
+    SAMPLE_UNITS_COLUMN_NAME,
+    SELECTION_KEY_TYPE,
+} from '../internal/components/samples/constants';
 
-import { SAMPLE_STATE_COLUMN_NAME, SAMPLE_UNITS_COLUMN_NAME, SELECTION_KEY_TYPE } from '../samples/constants';
+import { SampleStatusLegend } from '../internal/components/samples/SampleStatusLegend';
 
-import { loadNameExpressionOptions } from '../settings/actions';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../internal/APIWrapper';
 
-import { SampleStatusLegend } from '../samples/SampleStatusLegend';
+import { applyEditableGridChangesToModels, initEditableGridModel } from '../internal/components/editable/utils';
 
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+import {
+    EditorMode,
+    EditorModel,
+    EditorModelProps,
+    IEditableGridLoader,
+    IGridResponse,
+} from '../internal/components/editable/models';
+import { QueryModel } from '../public/QueryModel/QueryModel';
+import { SampleCreationType } from '../internal/components/samples/models';
+import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from '../internal/components/forms/FormStep';
+import { User } from '../internal/components/base/models/User';
+import { QueryInfo } from '../public/QueryInfo';
+import { FileSizeLimitProps } from '../public/files/models';
+import { capitalizeFirstChar } from '../internal/util/utils';
+import { getActionErrorMessage, resolveErrorMessage } from '../internal/util/messaging';
+import { InsertOptions } from '../internal/query/api';
+import { insertColumnFilter, QueryColumn } from '../public/QueryColumn';
+import { SelectInput } from '../internal/components/forms/input/SelectInput';
+import { Alert } from '../internal/components/base/Alert';
+import { EditableGridPanel } from '../internal/components/editable/EditableGridPanel';
+import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
+import { Progress } from '../internal/components/base/Progress';
+import { InferDomainResponse } from '../public/InferDomainResponse';
+import { DomainDetails } from '../internal/components/domainproperties/models';
+import { AppURL } from '../internal/url/AppURL';
+import { LabelHelpTip } from '../internal/components/base/LabelHelpTip';
+import { FileAttachmentForm } from '../public/files/FileAttachmentForm';
+import { WizardNavButtons } from '../internal/components/buttons/WizardNavButtons';
+import { useServerContext } from '../internal/components/base/ServerContext';
+import { getLocation, Location } from '../internal/util/URL';
+import { SCHEMAS } from '../internal/schemas';
+import { isSamplesSchema } from '../internal/components/samples/utils';
+import { SchemaQuery } from '../public/SchemaQuery';
 
-import { applyEditableGridChangesToModels, initEditableGridModel } from '../editable/utils';
+import { getAltUnitKeys } from '../internal/util/measurement';
 
-import { EditorMode, EditorModel, EditorModelProps, IEditableGridLoader, IGridResponse } from '../editable/models';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { SampleCreationType } from '../samples/models';
-import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from '../forms/FormStep';
-import { User } from '../base/models/User';
-import { QueryInfo } from '../../../public/QueryInfo';
-import { FileSizeLimitProps } from '../../../public/files/models';
-import { capitalizeFirstChar } from '../../util/utils';
-import { getActionErrorMessage, resolveErrorMessage } from '../../util/messaging';
-import { getQueryDetails, InsertOptions } from '../../query/api';
-import { getSampleTypeDetails } from '../samples/actions';
-import { insertColumnFilter, QueryColumn } from '../../../public/QueryColumn';
-import { SelectInput } from '../forms/input/SelectInput';
-import { Alert } from '../base/Alert';
-import { EditableGridPanel } from '../editable/EditableGridPanel';
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import { Progress } from '../base/Progress';
-import { InferDomainResponse } from '../../../public/InferDomainResponse';
-import { DomainDetails } from '../domainproperties/models';
-import { AppURL } from '../../url/AppURL';
-import { LabelHelpTip } from '../base/LabelHelpTip';
-import { FileAttachmentForm } from '../../../public/files/FileAttachmentForm';
-import { WizardNavButtons } from '../buttons/WizardNavButtons';
-import { useServerContext } from '../base/ServerContext';
-import { getLocation, Location } from '../../util/URL';
-import { SCHEMAS } from '../../schemas';
-import { isSamplesSchema } from '../samples/utils';
-import { SchemaQuery } from '../../../public/SchemaQuery';
+import { getDataClassDetails } from '../internal/components/domainproperties/dataclasses/actions';
 
-import { getAltUnitKeys } from '../../util/measurement';
-
-import { getDataClassDetails } from '../domainproperties/dataclasses/actions';
-
-import { ENTITY_CREATION_METRIC, SampleTypeDataType } from './constants';
+import { ENTITY_CREATION_METRIC, SampleTypeDataType } from '../internal/components/entities/constants';
 import {
     addEntityParentType,
     removeEntityParentType,
     EntityParentTypeSelectors,
     changeEntityParentType,
     EditorModelUpdatesWithParents,
-} from './EntityParentTypeSelectors';
-import { EntityInsertGridRequiredFieldAlert } from './EntityInsertGridRequiredFieldAlert';
-import { getBulkCreationTypeOptions, getUniqueIdColumnMetadata } from './utils';
-import { getEntityTypeData, handleEntityFileImport } from './actions';
+} from '../internal/components/entities/EntityParentTypeSelectors';
+
+import { getBulkCreationTypeOptions, getUniqueIdColumnMetadata } from '../internal/components/entities/utils';
 import {
     EntityDataType,
     EntityIdCreationModel,
@@ -95,7 +99,9 @@ import {
     EntityTypeOption,
     IEntityTypeOption,
     IParentOption,
-} from './models';
+} from '../internal/components/entities/models';
+
+import { EntityInsertGridRequiredFieldAlert } from './EntityInsertGridRequiredFieldAlert';
 
 const ENTITY_GRID_ID = 'entity-insert-grid-data';
 const ALIQUOT_FIELD_COLS = [
@@ -109,6 +115,129 @@ const ALIQUOT_FIELD_COLS = [
 ];
 const ALIQUOT_NOUN_SINGULAR = 'Aliquot';
 const ALIQUOT_NOUN_PLURAL = 'Aliquots';
+
+interface WarningFieldListProps {
+    names: string[];
+}
+
+// exported for unit tests
+export const WarningFieldList: FC<WarningFieldListProps> = memo(props => {
+    const { names } = props;
+    if (!names || names.length === 0) {
+        return null;
+    }
+
+    const oxfordComma = names.length > 2 ? ',' : '';
+
+    return (
+        <>
+            {names.map((name, index) => (
+                <span key={name}>
+                    <b>{name}</b>
+                    {index === names.length - 2 ? oxfordComma + ' and ' : index < names.length - 2 ? ', ' : ''}
+                </span>
+            ))}
+        </>
+    );
+});
+
+// exported for unit tests
+export function getInferredFieldWarnings(
+    inferred: InferDomainResponse,
+    domainDetails: DomainDetails,
+    columns: OrderedMap<string, QueryColumn>,
+    otherAllowedFields?: string[]
+): ReactNode[] {
+    const uniqueIdFields = [];
+    const unknownFields = [];
+    const { domainDesign } = domainDetails;
+    let allowedFields = [];
+    if (domainDetails.options.has('importAliases')) {
+        allowedFields = Object.keys(domainDetails.options.get('importAliases')).map(key => key.toLowerCase());
+    }
+    if (otherAllowedFields) {
+        allowedFields = allowedFields.concat(otherAllowedFields.map(field => field.toLowerCase()));
+    }
+
+    inferred.fields.forEach(field => {
+        const lcName = field.name.toLowerCase();
+
+        if (!field.isExpInput(false) && allowedFields.indexOf(lcName) < 0) {
+            const aliasField = domainDesign.fields.find(
+                domainField => domainField.importAliases?.toLowerCase().indexOf(lcName) >= 0
+            );
+            const columnName = aliasField ? aliasField.name : field.name;
+            const column = columns.find(c => c.isImportColumn(columnName));
+
+            if (!column) {
+                if (unknownFields.indexOf(field.name) < 0) {
+                    unknownFields.push(field.name);
+                }
+            } else if (column.isUniqueIdColumn) {
+                if (uniqueIdFields.indexOf(field.name) < 0) {
+                    // duplicate fields are handled as errors during import; we do not issue warnings about that here.
+                    uniqueIdFields.push(field.name);
+                }
+            }
+        }
+    });
+
+    const msg = [];
+
+    if (unknownFields.length > 0) {
+        msg.push(
+            <p key="unknownFields">
+                <WarningFieldList names={unknownFields} />
+                {(unknownFields.length === 1 ? ' is an unknown field' : ' are unknown fields') +
+                    ' and will be ignored.'}
+            </p>
+        );
+    }
+    if (uniqueIdFields.length > 0) {
+        msg.push(
+            <p key="uniqueIdFields">
+                <WarningFieldList names={uniqueIdFields} />
+                {(uniqueIdFields.length === 1 ? ' is a unique ID field. It' : ' are unique ID fields. They') +
+                    ' will not be imported and will be managed by ' +
+                    getCurrentProductName() +
+                    '.'}
+            </p>
+        );
+    }
+    return msg;
+}
+
+// exported for unit tests
+export function getNoUpdateFieldWarnings(
+    inferred: InferDomainResponse,
+    disallowedUpdateFields?: string[]
+): ReactNode[] {
+    const noUpdateFields = [];
+    let lcDisallowedUdateFields = [];
+    if (disallowedUpdateFields) {
+        lcDisallowedUdateFields = disallowedUpdateFields.map(field => field.toLowerCase());
+    }
+
+    inferred.fields.forEach(field => {
+        const lcName = field.name.toLowerCase();
+
+        if (lcDisallowedUdateFields.indexOf(lcName) >= 0) {
+            noUpdateFields.push(field.name);
+        }
+    });
+
+    const msg = [];
+    if (noUpdateFields.length > 0) {
+        msg.push(
+            <p key="noUpdateFields">
+                <WarningFieldList names={noUpdateFields} />
+                {' cannot be updated and and will be ignored.'}
+            </p>
+        );
+    }
+
+    return msg;
+}
 
 class EntityGridLoader implements IEditableGridLoader {
     id: string;
@@ -137,12 +266,10 @@ interface OwnProps {
     afterEntityCreation?: (entityTypeName, filter, entityCount, actionStr, transactionAuditId?, response?) => void;
     allowedNonDomainFields?: string[];
     api?: ComponentsAPIWrapper;
-    asyncSize?: number;
-    // the file size cutoff to enable async import. If undefined, async is not supported
+    asyncSize?: number; // the file size cutoff to enable async import. If undefined, async is not supported
     auditBehavior?: AuditBehaviorTypes;
     canEditEntityTypeDetails?: boolean;
-    combineParentTypes?: boolean;
-    // Puts all parent types in one parent button. Name on the button will be the first parent type listed
+    combineParentTypes?: boolean; // Puts all parent types in one parent button. Name on the button will be the first parent type listed
     containerFilter?: Query.ContainerFilter;
     disableMerge?: boolean;
     disallowedUpdateFields?: string[];
@@ -195,7 +322,7 @@ interface FromLocationProps {
 
 type Props = FromLocationProps & OwnProps & WithFormStepsProps;
 
-interface StateProps {
+interface State {
     allowUserSpecifiedNames: boolean;
     creationType: SampleCreationType;
     dataModel: QueryModel;
@@ -220,7 +347,7 @@ enum EntityInsertPanelTabs {
     Second = 2,
 }
 
-export class EntityInsertPanelImpl extends Component<Props, StateProps> {
+export class EntityInsertPanelImpl extends Component<Props, State> {
     static defaultProps = {
         numPerParent: 1,
         tab: EntityInsertPanelTabs.First,
@@ -284,8 +411,9 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             this.init();
         }
 
-        if ((this.props.importOnly || this.props.gridInsertOnly) && this.props.tab !== EntityInsertPanelTabs.First)
+        if ((this.props.importOnly || this.props.gridInsertOnly) && this.props.tab !== EntityInsertPanelTabs.First) {
             this.props.selectStep(EntityInsertPanelTabs.First);
+        }
     }
 
     allowParents = (): boolean => {
@@ -295,7 +423,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     getTabs = (): string[] => {
         const { isEditMode, importOnly, gridInsertOnly } = this.props;
         const importTabTitle = (isEditMode ? 'Update' : 'Import') + ' ' + this.capNounPlural + ' from File';
-        const gridTabTitle = 'Create ' + this.capNounPlural + ' from Grid';
+        const gridTabTitle = `Create ${this.capNounPlural} from Grid`;
 
         if (importOnly || isEditMode) {
             return [importTabTitle];
@@ -310,6 +438,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     init = async (): Promise<void> => {
         const {
+            api,
             auditBehavior,
             entityDataType,
             numPerParent,
@@ -334,7 +463,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
         if (isSampleManagerEnabled()) {
             try {
-                const nameIdSettings = await loadNameExpressionOptions();
+                const nameIdSettings = await api.entity.loadNameExpressionOptions();
                 this.setState({ allowUserSpecifiedNames: nameIdSettings.allowUserSpecifiedNames });
             } catch (error) {
                 this.setState({
@@ -377,7 +506,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         });
 
         try {
-            const partialModel = await getEntityTypeData(
+            const partialModel = await api.entity.getEntityTypeData(
                 insertModel,
                 entityDataType,
                 parentSchemaQueries,
@@ -387,7 +516,9 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 combineParentTypes
             );
 
-            if (selectedParents) partialModel['entityParents'] = selectedParents;
+            if (selectedParents) {
+                partialModel.entityParents = selectedParents;
+            }
 
             this.gridInit(insertModel.merge(partialModel) as EntityIdCreationModel);
         } catch {
@@ -400,81 +531,97 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         }
     };
 
-    gridInit = (insertModel: EntityIdCreationModel): void => {
-        const { shouldGetParentAlias } = this.props;
+    gridInit = async (insertModel: EntityIdCreationModel): Promise<void> => {
+        const { api } = this.props;
         const schemaQuery = insertModel.getSchemaQuery();
+
         if (schemaQuery) {
-            // only query for the importAliases for Sample Types (i.e. not sources)
-            if (insertModel.entityDataType.insertColumnNamePrefix === SampleTypeDataType.insertColumnNamePrefix) {
-                getSampleTypeDetails(schemaQuery).then(domainDetails => {
-                    this.setState(() => ({
-                        importAliases: domainDetails.options?.get('importAliases'),
-                        metricUnit: domainDetails.options?.get('metricUnit'),
-                    }));
-                });
-            } else if (shouldGetParentAlias?.(schemaQuery)) {
-                getDataClassDetails(schemaQuery).then(domainDetails => {
-                    this.setState(() => ({
-                        importAliases: domainDetails.options?.get('importAliases'),
-                    }));
+            this.initImportAliases(insertModel);
+            this.initNameExpressionPreviews(schemaQuery);
+
+            try {
+                const originalQueryInfo = await api.query.getQueryDetails(schemaQuery);
+                this.setState({ insertModel, originalQueryInfo }, this.gridInitModel);
+            } catch (e) {
+                this.setState({
+                    insertModel: insertModel.merge({
+                        isError: true,
+                        errors: `Problem retrieving data for ${
+                            this.typeTextSingular
+                        } '${insertModel.getTargetEntityTypeLabel()}'.`,
+                    }) as EntityIdCreationModel,
                 });
             }
-
-            getQueryDetails(schemaQuery)
-                .then(originalQueryInfo => {
-                    this.setState(
-                        () => ({ insertModel, originalQueryInfo }),
-                        async () => {
-                            getDomainNamePreviews(schemaQuery)
-                                .then(previews => {
-                                    if (previews?.length > 0) {
-                                        this.setState(() => ({
-                                            previewName: previews[0],
-                                            previewAliquotName: previews.length > 1 ? previews[1] : null,
-                                        }));
-                                    }
-                                })
-                                .catch(errors => {
-                                    console.error('Unable to retrieve name expression previews ', errors);
-                                    this.setState(() => ({
-                                        previewName: null,
-                                        previewAliquotName: null,
-                                    }));
-                                });
-
-                            const queryModel = new QueryModel({ id: ENTITY_GRID_ID, schemaQuery }).mutate({
-                                queryInfo: this.getGridQueryInfo(),
-                            });
-                            const { dataModel, editorModel } = await initEditableGridModel(
-                                queryModel,
-                                new EditorModel({ id: ENTITY_GRID_ID }),
-                                new EntityGridLoader(insertModel, queryModel.queryInfo),
-                                queryModel,
-                                this.isIncludedColumn
-                            );
-                            this.setState({ dataModel, editorModel });
-                        }
-                    );
-                })
-                .catch(() => {
-                    this.setState({
-                        insertModel: insertModel.merge({
-                            isError: true,
-                            errors:
-                                'Problem retrieving data for ' +
-                                this.typeTextSingular +
-                                " '" +
-                                insertModel.getTargetEntityTypeLabel() +
-                                "'.",
-                        }) as EntityIdCreationModel,
-                    });
-                });
         } else {
-            this.setState(() => ({ insertModel, dataModel: undefined, editorModel: undefined }));
+            this.setState({ insertModel, dataModel: undefined, editorModel: undefined });
         }
     };
 
-    isAliquotField = (column): boolean => {
+    gridInitModel = async (): Promise<void> => {
+        const { insertModel } = this.state;
+        const schemaQuery = insertModel.getSchemaQuery();
+        const queryModel = new QueryModel({ id: ENTITY_GRID_ID, schemaQuery }).mutate({
+            queryInfo: this.getGridQueryInfo(),
+        });
+        const { dataModel, editorModel } = await initEditableGridModel(
+            queryModel,
+            new EditorModel({ id: ENTITY_GRID_ID }),
+            new EntityGridLoader(insertModel, queryModel.queryInfo),
+            queryModel,
+            this.isIncludedColumn
+        );
+        this.setState({ dataModel, editorModel });
+    };
+
+    initImportAliases = async (insertModel: EntityIdCreationModel): Promise<void> => {
+        const { api, shouldGetParentAlias } = this.props;
+        const schemaQuery = insertModel.getSchemaQuery();
+
+        // only query for the importAliases for Sample Types (i.e. not sources)
+        if (insertModel.entityDataType.insertColumnNamePrefix === SampleTypeDataType.insertColumnNamePrefix) {
+            try {
+                const domainDetails = await api.samples.getSampleTypeDetails(schemaQuery);
+
+                this.setState({
+                    importAliases: domainDetails.options?.get('importAliases'),
+                    metricUnit: domainDetails.options?.get('metricUnit'),
+                });
+            } catch (e) {
+                this.setState({ importAliases: undefined, metricUnit: undefined });
+            }
+        } else if (shouldGetParentAlias?.(schemaQuery)) {
+            try {
+                const domainDetails = await getDataClassDetails(schemaQuery);
+                this.setState({
+                    importAliases: domainDetails.options?.get('importAliases'),
+                    metricUnit: undefined,
+                });
+            } catch (e) {
+                this.setState({ importAliases: undefined, metricUnit: undefined });
+            }
+        } else {
+            this.setState({ importAliases: undefined, metricUnit: undefined });
+        }
+    };
+
+    initNameExpressionPreviews = async (schemaQuery: SchemaQuery): Promise<void> => {
+        try {
+            const previews = await this.props.api.domain.getDomainNamePreviews(schemaQuery);
+
+            if (previews?.length > 0) {
+                this.setState({
+                    previewAliquotName: previews.length > 1 ? previews[1] : undefined,
+                    previewName: previews[0],
+                });
+            } else {
+                this.setState({ previewAliquotName: undefined, previewName: undefined });
+            }
+        } catch (errors) {
+            this.setState({ previewAliquotName: undefined, previewName: undefined });
+        }
+    };
+
+    isAliquotField = (column: QueryColumn): boolean => {
         return (
             ALIQUOT_FIELD_COLS.indexOf(column.fieldKey.toLowerCase()) > -1 ||
             column.derivationDataScope === DERIVATION_DATA_SCOPES.CHILD_ONLY ||
@@ -483,17 +630,20 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     getAliquotCreationColumns = (allColumns: OrderedMap<string, QueryColumn>): OrderedMap<string, QueryColumn> => {
-        let columns = OrderedMap<string, QueryColumn>();
+        const columns = OrderedMap<string, QueryColumn>().asMutable();
 
         allColumns.forEach((column, key) => {
             if (this.isAliquotField(column)) {
                 let col = column;
                 // Aliquot name can be auto generated, regardless of sample name expression config
-                if (column.fieldKey.toLowerCase() === 'name') col = col.mutate({ required: false });
-                columns = columns.set(key, col);
+                if (column.fieldKey.toLowerCase() === 'name') {
+                    col = col.mutate({ required: false });
+                }
+                columns.set(key, col);
             }
         });
-        return columns;
+
+        return columns.asImmutable();
     };
 
     getGridQueryInfo = (): QueryInfo => {
@@ -507,21 +657,23 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                     .toList()
                     .findIndex(column => column.fieldKey === entityDataType.uniqueFieldKey)
             );
-            const newColumnIndex = nameIndex + insertModel.getParentCount();
             let columns = originalQueryInfo.insertColumns(
-                newColumnIndex,
+                nameIndex + insertModel.getParentCount(),
                 insertModel.getParentColumns(entityDataType.uniqueFieldKey)
             );
-            if (creationType === SampleCreationType.Aliquots) columns = this.getAliquotCreationColumns(columns);
+            if (creationType === SampleCreationType.Aliquots) {
+                columns = this.getAliquotCreationColumns(columns);
+            }
 
             return originalQueryInfo.merge({ columns }) as QueryInfo;
         }
+
         return undefined;
     };
 
     changeTargetEntityType = (fieldName: string, formValue: any, selectedOption: IEntityTypeOption): void => {
         const { setIsDirty, navigate } = this.props;
-        const { insertModel, creationType } = this.state;
+        const { creationType } = this.state;
 
         // if creating aliquots and we change the targetEntityType, update params to get the component to re-render
         if (creationType === SampleCreationType.Aliquots && navigate) {
@@ -535,30 +687,32 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             return;
         }
 
-        let updatedModel = insertModel.merge({
-            targetEntityType: new EntityTypeOption(selectedOption),
-            isError: false,
-            errors: undefined,
-        }) as EntityIdCreationModel;
-
-        if (!selectedOption) {
-            updatedModel = updatedModel.merge({
-                entityParents: insertModel.getClearedEntityParents(),
-            }) as EntityIdCreationModel;
-        }
-
         this.setState(
-            () => ({
-                originalQueryInfo: undefined,
-                importAliases: undefined,
-                insertModel: updatedModel,
-            }),
+            state => {
+                const { insertModel } = state;
+                let updatedModel = insertModel.merge({
+                    targetEntityType: new EntityTypeOption(selectedOption),
+                    isError: false,
+                    errors: undefined,
+                }) as EntityIdCreationModel;
+
+                if (!selectedOption) {
+                    updatedModel = updatedModel.merge({
+                        entityParents: insertModel.getClearedEntityParents(),
+                    }) as EntityIdCreationModel;
+                }
+
+                return {
+                    importAliases: undefined,
+                    insertModel: updatedModel,
+                    originalQueryInfo: undefined,
+                };
+            },
             () => {
-                this.gridInit(updatedModel);
+                this.gridInit(this.state.insertModel);
+                this.props.onTargetChange?.(selectedOption?.value);
             }
         );
-
-        this.props.onTargetChange?.(selectedOption?.value);
     };
 
     addParent = (queryName: string): void => {
@@ -636,36 +790,9 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         );
     }
 
-    renderParentTypesAndButtons = (): ReactNode => {
-        const { insertModel } = this.state;
-        const { parentDataTypes, combineParentTypes, hideParentEntityButtons } = this.props;
-
-        if (insertModel) {
-            const { isInit, targetEntityType } = insertModel;
-
-            if (!hideParentEntityButtons && isInit && targetEntityType && parentDataTypes) {
-                return (
-                    <EntityParentTypeSelectors
-                        parentDataTypes={parentDataTypes}
-                        parentOptionsMap={insertModel.parentOptions}
-                        entityParentsMap={insertModel.entityParents}
-                        combineParentTypes={combineParentTypes}
-                        onAdd={this.addParent}
-                        onChange={this.changeParent}
-                        onRemove={this.removeParent}
-                    />
-                );
-            }
-        }
-
-        return null;
-    };
-
-    renderMergeOption = (isGrid: boolean): ReactNode => {
+    renderMergeOption = (): ReactNode => {
         const { disableMerge, user, nounPlural, isEditMode } = this.props;
         const { insertModel, allowUserSpecifiedNames, isMerge, originalQueryInfo } = this.state;
-
-        if (isGrid) return null;
 
         const allowMerge =
             isEditMode &&
@@ -674,21 +801,28 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             allowUserSpecifiedNames &&
             originalQueryInfo?.supportMerge;
 
-        const entityTypeName = insertModel.getTargetEntityTypeLabel();
-        if (!allowMerge || !entityTypeName) return null;
-
-        const mergeMsg = `Allow new ${nounPlural}`;
+        if (!allowMerge || !insertModel.getTargetEntityTypeLabel()) {
+            return null;
+        }
 
         return (
             <div className="col-sm-3">
                 <div className="pull-right">
                     <input type="checkbox" checked={isMerge} onChange={this.toggleInsertOptionChange} />
                     <span className="entity-mergeoption-checkbox" onClick={this.toggleInsertOptionChange}>
-                        {mergeMsg}
+                        Allow new {nounPlural}
                     </span>
                     &nbsp;
                     <LabelHelpTip title="Import Options" placement="top">
-                        {this.renderUpdateTooltipText()}
+                        <p>
+                            By default, import will update existing {nounPlural} based on the file provided. The
+                            operation will fail if there are new {this.capIdsText} being imported.
+                        </p>
+                        <p>
+                            When the "Allow new {nounPlural}" checkbox is checked, data will be updated for matching{' '}
+                            {this.capIdsText}, and new {nounPlural} will be created for any new {this.capIdsText}{' '}
+                            provided. Data will not be changed for any columns not in the imported file.
+                        </p>
                         <p>
                             For more information on import options for {nounPlural}, see the{' '}
                             {this.props.importHelpLinkNode} documentation page.
@@ -699,29 +833,9 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         );
     };
 
-    renderTargetEntitySelect = (): ReactNode => {
-        const { insertModel } = this.state;
-        const hasTargetEntityType = insertModel?.hasTargetEntityType();
-
-        return (
-            <SelectInput
-                autoValue={false}
-                inputClass="col-sm-5"
-                label={this.capTypeTextSingular}
-                labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"
-                name="targetEntityType"
-                placeholder={'Select a ' + this.capTypeTextSingular + '...'}
-                onChange={this.changeTargetEntityType}
-                options={insertModel.entityTypeOptions.toArray()}
-                required
-                selectedOptions={hasTargetEntityType ? insertModel?.targetEntityType : undefined}
-            />
-        );
-    };
-
     renderHeader = (isGrid: boolean): ReactNode => {
+        const { parentDataTypes, combineParentTypes, hideParentEntityButtons } = this.props;
         const { insertModel, creationType } = this.state;
-
         if (!insertModel) return null;
 
         const hasTargetEntityType = insertModel.hasTargetEntityType();
@@ -730,8 +844,21 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             <>
                 {insertModel.isInit && (
                     <div className="row">
-                        <div className={isGrid ? 'col-sm-12' : 'col-sm-9'}>{this.renderTargetEntitySelect()}</div>
-                        {this.renderMergeOption(isGrid)}
+                        <div className={isGrid ? 'col-sm-12' : 'col-sm-9'}>
+                            <SelectInput
+                                autoValue={false}
+                                inputClass="col-sm-5"
+                                label={this.capTypeTextSingular}
+                                labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"
+                                name="targetEntityType"
+                                placeholder={`Select a ${this.capTypeTextSingular}...`}
+                                onChange={this.changeTargetEntityType}
+                                options={insertModel.entityTypeOptions.toArray()}
+                                required
+                                selectedOptions={hasTargetEntityType ? insertModel.targetEntityType : undefined}
+                            />
+                        </div>
+                        {!isGrid && this.renderMergeOption()}
                     </div>
                 )}
                 {insertModel.isError && (
@@ -741,39 +868,40 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                     </Alert>
                 )}
                 {!insertModel.isError &&
+                    insertModel.isInit &&
+                    !hideParentEntityButtons &&
                     isGrid &&
                     hasTargetEntityType &&
                     creationType !== SampleCreationType.Aliquots &&
-                    this.renderParentTypesAndButtons()}
-                {!insertModel.isError &&
-                    isGrid &&
-                    creationType === SampleCreationType.Aliquots &&
-                    this.renderAliquotResetMsg()}
+                    parentDataTypes && (
+                        <EntityParentTypeSelectors
+                            parentDataTypes={parentDataTypes}
+                            parentOptionsMap={insertModel.parentOptions}
+                            entityParentsMap={insertModel.entityParents}
+                            combineParentTypes={combineParentTypes}
+                            onAdd={this.addParent}
+                            onChange={this.changeParent}
+                            onRemove={this.removeParent}
+                        />
+                    )}
+                {!insertModel.isError && isGrid && creationType === SampleCreationType.Aliquots && (
+                    <Alert bsStyle="info" className="notification-container">
+                        Parent {sampleManagerIsPrimaryApp() ? 'and source' : ''} types cannot be changed when creating
+                        aliquots.{' '}
+                        <a className="pull-right" onClick={this.resetCreationType}>
+                            Clear Aliquots and Reset.
+                        </a>
+                    </Alert>
+                )}
             </>
         );
     };
 
     resetCreationType = (): void => {
-        this.setState(
-            () => ({
-                creationType: SampleCreationType.Independents,
-            }),
-            () => {
-                this.changeTargetEntityType(null, null, null);
-                this.props.setIsDirty?.(false);
-            }
-        );
-    };
-
-    renderAliquotResetMsg = (): ReactNode => {
-        return (
-            <Alert bsStyle="info" className="notification-container">
-                Parent {sampleManagerIsPrimaryApp() ? 'and source' : ''} types cannot be changed when creating aliquots.{' '}
-                <a className="pull-right" onClick={this.resetCreationType}>
-                    Clear Aliquots and Reset.
-                </a>
-            </Alert>
-        );
+        this.setState({ creationType: SampleCreationType.Independents }, () => {
+            this.changeTargetEntityType(null, null, null);
+            this.props.setIsDirty?.(false);
+        });
     };
 
     onGridChange = (
@@ -914,34 +1042,30 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     renderGridButtons = (): ReactNode => {
         const { insertModel, isSubmitting, creationType, editorModel } = this.state;
-        if (insertModel?.isInit) {
-            const isAliquotCreation = creationType === SampleCreationType.Aliquots;
+        const isAliquotCreation = creationType === SampleCreationType.Aliquots;
+        const nounSingle = isAliquotCreation ? capitalizeFirstChar(ALIQUOT_NOUN_SINGULAR) : this.capNounSingular;
+        const nounPlural = isAliquotCreation ? capitalizeFirstChar(ALIQUOT_NOUN_PLURAL) : this.capNounPlural;
+        const noun = insertModel.entityCount === 1 ? nounSingle : nounPlural;
 
-            const nounSingle = isAliquotCreation ? capitalizeFirstChar(ALIQUOT_NOUN_SINGULAR) : this.capNounSingular;
-            const nounPlural = isAliquotCreation ? capitalizeFirstChar(ALIQUOT_NOUN_PLURAL) : this.capNounPlural;
-            const noun = insertModel.entityCount === 1 ? nounSingle : nounPlural;
-
-            return (
-                <div className="form-group no-margin-bottom">
-                    <div className="pull-left">
-                        <Button className="test-loc-cancel-button" onClick={this.onCancel}>
-                            Cancel
-                        </Button>
-                    </div>
-                    <div className="btn-group pull-right">
-                        <Button
-                            className="test-loc-submit-button"
-                            bsStyle="success"
-                            disabled={isSubmitting || insertModel.entityCount === 0 || !editorModel}
-                            onClick={this.insertRowsFromGrid}
-                        >
-                            {isSubmitting ? 'Creating...' : 'Finish Creating ' + insertModel.entityCount + ' ' + noun}
-                        </Button>
-                    </div>
+        return (
+            <div className="form-group no-margin-bottom">
+                <div className="pull-left">
+                    <Button className="test-loc-cancel-button" onClick={this.onCancel}>
+                        Cancel
+                    </Button>
                 </div>
-            );
-        }
-        return null;
+                <div className="btn-group pull-right">
+                    <Button
+                        className="test-loc-submit-button"
+                        bsStyle="success"
+                        disabled={isSubmitting || insertModel.entityCount === 0 || !editorModel}
+                        onClick={this.insertRowsFromGrid}
+                    >
+                        {isSubmitting ? 'Creating...' : 'Finish Creating ' + insertModel.entityCount + ' ' + noun}
+                    </Button>
+                </div>
+            </div>
+        );
     };
 
     getBulkAddFormValues = (): Record<string, any> | null => {
@@ -979,18 +1103,22 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     isIncludedColumn = (column: QueryColumn): boolean => {
-        const { creationType } = this.state;
-
-        if (creationType === SampleCreationType.Aliquots) return this.isAliquotField(column);
+        if (this.state.creationType === SampleCreationType.Aliquots) {
+            return this.isAliquotField(column);
+        }
         return column.derivationDataScope !== DERIVATION_DATA_SCOPES.CHILD_ONLY;
     };
 
     getInsertColumns = (): List<QueryColumn> => {
         const { queryInfo } = this.state.dataModel;
-        let columns: List<QueryColumn> = queryInfo.getInsertColumns().filter(this.isIncludedColumn).toList();
-        // we add the UniqueId columns, which will be displayed as read-only fields
-        columns = columns.concat(queryInfo.getUniqueIdColumns()).toList();
-        return columns;
+        return (
+            queryInfo
+                .getInsertColumns()
+                .filter(this.isIncludedColumn)
+                // Add the UniqueId columns which will be displayed as read-only fields
+                .concat(queryInfo.getUniqueIdColumns())
+                .toList()
+        );
     };
 
     columnFilter = (col: QueryColumn): boolean => {
@@ -1003,7 +1131,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     getColumnMetadata(): Map<string, EditableColumnMetadata> {
         const { entityDataType, nounSingular, nounPlural } = this.props;
         const { creationType, previewName, previewAliquotName, metricUnit } = this.state;
-        let columnMetadata = getUniqueIdColumnMetadata(this.getGridQueryInfo());
+        const columnMetadata = getUniqueIdColumnMetadata(this.getGridQueryInfo()).asMutable();
         if (creationType === SampleCreationType.Aliquots) {
             let toolTip =
                 "A generated Aliquot ID will be provided for Aliquots that don't have a user-provided ID in the grid.";
@@ -1014,7 +1142,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 toolTip +=
                     ' For example, if the original sample is S1, aliquots of that sample will be named S1-1, S1-2, etc.';
 
-            columnMetadata = columnMetadata.set(entityDataType.uniqueFieldKey, {
+            columnMetadata.set(entityDataType.uniqueFieldKey, {
                 caption: 'Aliquot ID',
                 readOnly: false,
                 placeholder: '[generated id]',
@@ -1024,39 +1152,38 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         } else if (!this.isNameRequired()) {
             let toolTip = `A generated ${nounSingular} ID will be provided for ${nounPlural} that don't have a user-provided ID in the grid.`;
             if (previewName) toolTip += ' Example name that will be generated from the current pattern: ' + previewName;
-            columnMetadata = columnMetadata.set(entityDataType.uniqueFieldKey, {
+            columnMetadata.set(entityDataType.uniqueFieldKey, {
                 readOnly: false,
                 placeholder: '[generated id]',
                 toolTip,
                 hideTitleTooltip: true,
             });
         } else {
-            columnMetadata = columnMetadata.set(entityDataType.uniqueFieldKey, {
+            columnMetadata.set(entityDataType.uniqueFieldKey, {
                 hideTitleTooltip: true,
                 toolTip: `A ${nounSingular} ID is required for each ${nounSingular} since this ${this.typeTextSingular} has no naming pattern. You can provide a naming pattern by editing the ${this.typeTextSingular} design.`,
             });
         }
 
-        columnMetadata = columnMetadata.set(SAMPLE_STATE_COLUMN_NAME, {
+        columnMetadata.set(SAMPLE_STATE_COLUMN_NAME, {
             hideTitleTooltip: true,
             toolTip: <SampleStatusLegend />,
             popoverClassName: 'label-help-arrow-left',
         });
 
         if (metricUnit) {
-            columnMetadata = columnMetadata.set(SAMPLE_UNITS_COLUMN_NAME, {
+            columnMetadata.set(SAMPLE_UNITS_COLUMN_NAME, {
                 linkedColInd: 0,
                 filteredLookupKeys: List<string>(getAltUnitKeys(metricUnit)),
             });
         }
 
-        return columnMetadata;
+        return columnMetadata.asImmutable();
     }
 
     renderCreateFromGrid = (): ReactNode => {
         const { insertModel, creationType, dataModel, editorModel } = this.state;
         const { containerFilter, maxEntities, nounPlural, onBulkAdd, getIsDirty, setIsDirty } = this.props;
-        const columnMetadata = this.getColumnMetadata();
         const isLoaded = (dataModel && !dataModel?.isLoading) ?? false;
 
         const isAliquotCreation = creationType === SampleCreationType.Aliquots;
@@ -1114,7 +1241,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                     isIncludedColumn: this.isIncludedColumn,
                                 }}
                                 bulkRemoveText={'Remove ' + gridNounPluralCap}
-                                columnMetadata={columnMetadata}
+                                columnMetadata={this.getColumnMetadata()}
                                 containerFilter={containerFilter}
                                 editorModel={editorModel}
                                 emptyGridMsg={`Start by adding the quantity of ${gridNounPlural} you want to create.`}
@@ -1134,65 +1261,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         );
     };
 
-    renderUpdateTooltipTextDeprecated = (): ReactNode => {
-        const { nounPlural } = this.props;
-        const { allowUserSpecifiedNames } = this.state;
-
-        if (nounPlural === 'Samples' && !allowUserSpecifiedNames) {
-            return (
-                <>
-                    <p>
-                        When "Update data for existing samples during this file import" is unchecked, import will insert
-                        new samples based on the file provided. This Sample Type has been configured to not accept
-                        user-defined Sample IDs or Names. Providing a Sample ID or Name column in your file will result
-                        in an error.
-                    </p>
-                    <p>
-                        When "Update data for existing samples during this file import" is checked, the Sample ID or
-                        Name column must be provided. All Sample IDs or Names provided must already exist in the system.
-                        Encountering a new Sample ID or Name will result in an error.
-                    </p>
-                </>
-            );
-        }
-
-        return (
-            <>
-                <p>
-                    By default, import will insert new {nounPlural} based on the file provided. The operation will fail
-                    if there are existing {this.capIdsText} that match those being imported.
-                </p>
-                <p>
-                    When update is selected, data will be updated for matching {this.capIdsText}, and new {nounPlural}{' '}
-                    will be created for any new {this.capIdsText} provided. Data will not be changed for any columns not
-                    in the imported file.
-                </p>
-            </>
-        );
-    };
-
-    renderUpdateTooltipText = (): ReactNode => {
-        const { nounPlural } = this.props;
-
-        return (
-            <>
-                <p>
-                    By default, import will update existing {nounPlural} based on the file provided. The operation will
-                    fail if there are new {this.capIdsText} being imported.
-                </p>
-                <p>
-                    When the "Allow new {nounPlural}" checkbox is checked, data will be updated for matching{' '}
-                    {this.capIdsText}, and new {nounPlural} will be created for any new {this.capIdsText} provided. Data
-                    will not be changed for any columns not in the imported file.
-                </p>
-            </>
-        );
-    };
-
     toggleInsertOptionChange = (): void => {
-        const { onChangeInsertOption } = this.props;
-
-        if (onChangeInsertOption) onChangeInsertOption(!this.state.isMerge);
+        this.props.onChangeInsertOption?.(!this.state.isMerge);
 
         this.setState(state => ({ isMerge: !state.isMerge }));
     };
@@ -1245,7 +1315,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const importOption = isEditMode ? (isMerge ? InsertOptions.MERGE : InsertOptions.UPDATE) : InsertOptions.IMPORT;
 
         try {
-            const response = await handleEntityFileImport(
+            const response = await api.entity.handleEntityFileImport(
                 entityDataType.importFileAction,
                 originalQueryInfo,
                 file,
@@ -1302,180 +1372,47 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             : undefined;
     };
 
-    isGridStep = (): boolean => {
-        return (
-            this.props.currentStep === EntityInsertPanelTabs.First && !this.props.importOnly && !this.props.isEditMode
-        );
-    };
-
-    renderProgress = (): ReactNode => {
-        const { insertModel, isSubmitting, file } = this.state;
-
-        return this.isGridStep() ? (
-            <Progress
-                estimate={insertModel.entityCount * 20}
-                modal
-                title={'Generating ' + this.props.nounPlural}
-                toggle={isSubmitting}
-            />
-        ) : (
-            <Progress
-                estimate={file ? file.size * 0.1 : undefined}
-                modal
-                title={'Importing ' + this.props.nounPlural + ' from file'}
-                toggle={isSubmitting}
-            />
-        );
-    };
-
-    static getWarningFieldList(names: string[]): ReactNode {
-        const oxfordComma = names.length > 2 ? ',' : '';
-        return names.map((name, index) => (
-            <span key={name}>
-                <b>{name}</b>
-                {index === names.length - 2 ? oxfordComma + ' and ' : index < names.length - 2 ? ', ' : ''}
-            </span>
-        ));
-    }
-
-    static getInferredFieldWarnings(
-        inferred: InferDomainResponse,
-        domainDetails: DomainDetails,
-        columns: OrderedMap<string, QueryColumn>,
-        otherAllowedFields?: string[]
-    ): React.ReactNode[] {
-        const uniqueIdFields = [];
-        const unknownFields = [];
-        const { domainDesign } = domainDetails;
-        let allowedFields = [];
-        if (domainDetails.options.has('importAliases')) {
-            allowedFields = Object.keys(domainDetails.options.get('importAliases')).map(key => key.toLowerCase());
-        }
-        if (otherAllowedFields) {
-            allowedFields = allowedFields.concat(otherAllowedFields.map(field => field.toLowerCase()));
-        }
-
-        inferred.fields.forEach(field => {
-            const lcName = field.name.toLowerCase();
-
-            if (!field.isExpInput(false) && allowedFields.indexOf(lcName) < 0) {
-                const aliasField = domainDesign.fields.find(
-                    domainField => domainField.importAliases?.toLowerCase().indexOf(lcName) >= 0
-                );
-                const columnName = aliasField ? aliasField.name : field.name;
-                const column = columns.find(column => column.isImportColumn(columnName));
-
-                if (!column) {
-                    if (unknownFields.indexOf(field.name) < 0) {
-                        unknownFields.push(field.name);
-                    }
-                } else if (column.isUniqueIdColumn) {
-                    if (uniqueIdFields.indexOf(field.name) < 0) {
-                        // duplicate fields are handled as errors during import; we do not issue warnings about that here.
-                        uniqueIdFields.push(field.name);
-                    }
-                }
-            }
-        });
-
-        const msg = [];
-
-        if (unknownFields.length > 0) {
-            msg.push(
-                <p key="unknownFields">
-                    {EntityInsertPanelImpl.getWarningFieldList(unknownFields)}
-                    {(unknownFields.length === 1 ? ' is an unknown field' : ' are unknown fields') +
-                        ' and will be ignored.'}
-                </p>
-            );
-        }
-        if (uniqueIdFields.length > 0) {
-            msg.push(
-                <p key="uniqueIdFields">
-                    {EntityInsertPanelImpl.getWarningFieldList(uniqueIdFields)}
-                    {(uniqueIdFields.length === 1 ? ' is a unique ID field. It' : ' are unique ID fields. They') +
-                        ' will not be imported and will be managed by ' +
-                        getCurrentProductName() +
-                        '.'}
-                </p>
-            );
-        }
-        return msg;
-    }
-
-    static getNoUpdateFieldWarnings(
-        inferred: InferDomainResponse,
-        disallowedUpdateFields?: string[]
-    ): React.ReactNode[] {
-        const noUpdateFields = [];
-        let lcDisallowedUdateFields = [];
-        if (disallowedUpdateFields) {
-            lcDisallowedUdateFields = disallowedUpdateFields.map(field => field.toLowerCase());
-        }
-
-        inferred.fields.forEach(field => {
-            const lcName = field.name.toLowerCase();
-
-            if (lcDisallowedUdateFields.indexOf(lcName) >= 0) {
-                noUpdateFields.push(field.name);
-            }
-        });
-
-        const msg = [];
-        if (noUpdateFields.length > 0) {
-            msg.push(
-                <p key="noUpdateFields">
-                    {EntityInsertPanelImpl.getWarningFieldList(noUpdateFields)}
-                    {' cannot be updated and and will be ignored.'}
-                </p>
-            );
-        }
-
-        return msg;
-    }
-
-    onPreviewLoad = (inferred: InferDomainResponse): any => {
-        const { allowedNonDomainFields, disallowedUpdateFields, isEditMode } = this.props;
+    onPreviewLoad = async (inferred: InferDomainResponse): Promise<void> => {
+        const { allowedNonDomainFields, api, disallowedUpdateFields, isEditMode } = this.props;
         const { insertModel, originalQueryInfo } = this.state;
-        fetchDomainDetails(undefined, insertModel.getSchemaQuery().schemaName, insertModel.getSchemaQuery().queryName)
-            .then(domainDetails => {
-                const msg = EntityInsertPanelImpl.getInferredFieldWarnings(
-                    inferred,
-                    domainDetails,
-                    originalQueryInfo.columns,
-                    allowedNonDomainFields
-                );
+        const { schemaName, queryName } = insertModel.getSchemaQuery();
 
-                let updateMsg: React.ReactNode[] = null;
-                if (isEditMode) {
-                    updateMsg = EntityInsertPanelImpl.getNoUpdateFieldWarnings(inferred, disallowedUpdateFields);
-                }
+        try {
+            const domainDetails = await api.domain.fetchDomainDetails(undefined, schemaName, queryName);
 
-                this.setState({
-                    fieldsWarningMsg: msg?.length > 0 ? <>{msg}</> : undefined,
-                    fieldsUpdateWarningMsg: updateMsg?.length > 0 ? <>{updateMsg}</> : undefined,
-                });
-            })
-            .catch(reason => {
-                console.error('Unable to retrieve domain ', reason);
+            const msg = getInferredFieldWarnings(
+                inferred,
+                domainDetails,
+                originalQueryInfo.columns,
+                allowedNonDomainFields
+            );
+
+            let updateMsg: React.ReactNode[] = null;
+            if (isEditMode) {
+                updateMsg = getNoUpdateFieldWarnings(inferred, disallowedUpdateFields);
+            }
+
+            this.setState({
+                fieldsWarningMsg: msg?.length > 0 ? <>{msg}</> : undefined,
+                fieldsUpdateWarningMsg: updateMsg?.length > 0 ? <>{updateMsg}</> : undefined,
             });
-    };
-
-    shouldShowGrid = (): boolean => {
-        const { importOnly, isEditMode } = this.props;
-
-        return !importOnly && !isEditMode;
+        } catch (e) {
+            console.error('Unable to retrieve domain ', e);
+        }
     };
 
     render() {
         const {
             acceptedFormats,
             canEditEntityTypeDetails,
+            currentStep,
             fileSizeLimits,
             entityDataType,
             filePreviewFormats,
             gridInsertOnly,
+            importOnly,
             isEditMode,
+            nounPlural,
         } = this.props;
         const {
             error,
@@ -1491,21 +1428,19 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         if (!insertModel) {
             if (error) {
                 return <Alert>{error}</Alert>;
-            } else {
-                return <LoadingSpinner wrapperClassName="loading-data-message" />;
             }
+
+            return <LoadingSpinner wrapperClassName="loading-data-message" />;
         }
 
-        const isGridStep = this.isGridStep();
+        const showGrid = !importOnly && !isEditMode;
+        const isGridStep = currentStep === EntityInsertPanelTabs.First && showGrid;
         const entityTypeName = insertModel.getTargetEntityTypeLabel();
         const isFromSharedContainer = insertModel.isFromSharedContainer();
-
         const editEntityTypeDetailsLink =
             entityTypeName && entityDataType?.editTypeAppUrlPrefix && !isFromSharedContainer
                 ? AppURL.create(entityDataType.editTypeAppUrlPrefix, entityTypeName)
                 : undefined;
-
-        const showGrid = this.shouldShowGrid();
 
         let filePreviewWarningMsg;
         if (!!fieldsWarningMsg || (isEditMode && !isMerge && !!fieldsUpdateWarningMsg)) {
@@ -1570,8 +1505,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                                     <>
                                                         We recommend dividing your data into smaller files that meet
                                                         this limit. See our{' '}
-                                                        {helpLinkNode(DATA_IMPORT_TOPIC, 'help article')} for best
-                                                        practices on data import.
+                                                        <HelpLink topic={DATA_IMPORT_TOPIC}>help article</HelpLink> for
+                                                        best practices on data import.
                                                     </>
                                                 }
                                             />
@@ -1596,7 +1531,22 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                         isFinishingText="Importing..."
                     />
                 )}
-                {this.renderProgress()}
+                {isGridStep && (
+                    <Progress
+                        estimate={insertModel.entityCount * 20}
+                        modal
+                        title={`Generating ${nounPlural}`}
+                        toggle={isSubmitting}
+                    />
+                )}
+                {!isGridStep && (
+                    <Progress
+                        estimate={file ? file.size * 0.1 : undefined}
+                        modal
+                        title={`Importing ${nounPlural} from file`}
+                        toggle={isSubmitting}
+                    />
+                )}
             </>
         );
     }
@@ -1608,7 +1558,6 @@ const EntityInsertPanelFormSteps = withFormSteps(EntityInsertPanelImpl, {
     hasDependentSteps: false,
 });
 
-// ideally this would move to the /entities subpackage, but it is used in the core-components.view page
 export const EntityInsertPanel: FC<{ location?: Location } & OwnProps> = memo(props => {
     const { location, ...entityInsertPanelProps } = props;
     const { user } = useServerContext();

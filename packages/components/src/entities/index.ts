@@ -1,6 +1,5 @@
 import {
     getSampleTypes,
-    getOriginalParentsFromLineage,
     loadSampleTypes,
     onDataClassRename,
     onSampleChange,
@@ -55,7 +54,11 @@ import { useSampleTypeAppContext } from './useSampleTypeAppContext';
 import { SampleTypeDesignPage } from './SampleTypeDesignPage';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
 
+import { AssayResultsForSamplesButton, AssayResultsForSamplesMenuItem } from './AssayResultsForSamplesButton';
 import { AssayResultsForSamplesPage, AssayResultsForSamplesSubNav } from './AssayResultsForSamplesPage';
+import { EntityCrossProjectSelectionConfirmModal } from './EntityCrossProjectSelectionConfirmModal';
+import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
+import { EntityInsertPanel } from './EntityInsertPanel';
 import { SampleOverviewPanel } from './SampleOverviewPanel';
 import { SampleDetailContextConsumer, SampleDetailPage } from './SampleDetailPage';
 import { SampleAssaysPage } from './SampleAssaysPage';
@@ -66,15 +69,22 @@ import { SamplesCreatedSuccessMessage } from './SamplesCreatedSuccessMessage';
 import { SampleListingPage, SamplesImportSuccessMessage } from './SampleListingPage';
 import { SampleCreatePage } from './SampleCreatePage';
 import { DeleteConfirmationModal } from './DeleteConfirmationModal';
+import { FindDerivativesButton, FindDerivativesMenuItem } from './FindDerivativesButton';
 
 export {
+    AssayResultsForSamplesButton,
+    AssayResultsForSamplesMenuItem,
     createEntityParentKey,
     downloadSampleTypeTemplate,
+    EntityCrossProjectSelectionConfirmModal,
+    EntityDeleteConfirmModal,
+    EntityInsertPanel,
     filterMediaSampleTypes,
     filterSampleRowsForOperation,
+    FindDerivativesButton,
+    FindDerivativesMenuItem,
     getDataClassTemplateUrl,
     getJobCreationHref,
-    getOriginalParentsFromLineage,
     getSampleSetMenuItem,
     getSampleDeleteMessage,
     getSampleTypeTemplateUrl,

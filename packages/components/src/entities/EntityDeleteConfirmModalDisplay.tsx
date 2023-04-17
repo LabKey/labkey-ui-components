@@ -16,14 +16,14 @@
 import React, { PureComponent } from 'react';
 import { Utils } from '@labkey/api';
 
-import { isELNEnabled } from '../../app/utils';
+import { isELNEnabled } from '../internal/app/utils';
 
-import { capitalizeFirstChar } from '../../util/utils';
-import { HelpLink } from '../../util/helpLinks';
+import { capitalizeFirstChar } from '../internal/util/utils';
+import { HelpLink } from '../internal/util/helpLinks';
 
-import { DeleteConfirmationModal } from '../../../entities/DeleteConfirmationModal';
+import { DeleteConfirmationModal } from './DeleteConfirmationModal';
 
-import { EntityDataType, OperationConfirmationData } from './models';
+import { EntityDataType, OperationConfirmationData } from '../internal/components/entities/models';
 
 export type EntityDeleteConfirmHandler = (rowsToDelete: any[], rowsToKeep: any[], userComment: string) => void;
 

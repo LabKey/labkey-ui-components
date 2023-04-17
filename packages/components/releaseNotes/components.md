@@ -5,6 +5,24 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Media consistency improvements
 
+### version 2.326.0
+*Released*: 15 April 2023
+- Entities subpackage migration
+    - Moved `AssayResultsForSamplesButton`, `EntityCrossProjectSelectionConfirmModal`, `EntityDeleteConfirmModal`, `EntityInsertPanel` and `FindDerivativesButton` to subpackage.
+    - Moved `getOriginalParentsFromLineage` to `@labkey/components` to align endpoint wrappers for use in `EntityAPIWrapper`.
+- `EntityInsertPanel`:
+    - Refactor initialization to separate concerns for initializing import aliases, name expression previews, `insertModel` and editable grid models.
+    - Defer construction of column metadata until after load. Previously results were just thrown away.
+    - Update all direct calls to endpoints to utilize `ComponentAPIWrapper` provided implementations.
+    - `getInferredFieldWarnings` and `getNoUpdateFieldWarnings` are no longer static methods as this served no purpose
+    - Refactored `getWarningFieldList` into `WarningFieldList` component
+    - Remove superfluous render wrapping
+- `ComponentAPIWrapper`:
+    - Add `getEntityTypeData`, `getOriginalParentsFromLineage` and `handleEntityFileImport` to `EntityAPIWrapper`. Update associated usages where possible to use API wrapper.
+    - Add `fetchDomainDetails` to `DomainPropertiesAPIWrapper`
+    - Update `getDefaultAPIWrapper()` for `ComponentAPIWrapper` to instantiate wrappers once. Makes `api` easier for reuse in components to prevent redundant render cycles.
+- Streamline some sample action implementations to use `async/await` and remove redundant error handling wrapping.
+
 ### version 2.325.1
 *Released*: 12 April 2023
 - Sample Derivation: limit selected data requests

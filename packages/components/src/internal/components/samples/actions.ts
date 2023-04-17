@@ -16,13 +16,13 @@
 import { List, Map, OrderedMap } from 'immutable';
 import { ActionURL, Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
 
-import { EntityDataType, IEntityTypeDetails, IEntityTypeOption } from '../entities/models';
-import { deleteEntityType, getEntityTypeOptions, getSelectedItemSamples } from '../entities/actions';
+import { IEntityTypeDetails } from '../entities/models';
+import { deleteEntityType, getSelectedItemSamples } from '../entities/actions';
 
 import { Location } from '../../util/URL';
 import { getSelectedData, getSelection, getSnapshotSelections } from '../../actions';
 
-import { caseInsensitive, quoteValueWithDelimiters } from '../../util/utils';
+import { caseInsensitive, handleRequestFailure, quoteValueWithDelimiters } from '../../util/utils';
 
 import { ParentEntityLineageColumns } from '../entities/constants';
 
@@ -50,13 +50,13 @@ import { naturalSort, naturalSortByProperty } from '../../../public/sort';
 import { AssayStateModel } from '../assay/models';
 import { TimelineEventModel } from '../auditlog/models';
 
-import { ViewInfo } from '../../ViewInfo';
-
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 
 import { createGridModelId } from '../../models';
 
 import { buildURL } from '../../url/AppURL';
+
+import { selectRows } from '../../query/selectRows';
 
 import {
     AMOUNT_AND_UNITS_COLUMNS_LC,
@@ -76,10 +76,7 @@ export function getSampleSet(config: IEntityTypeDetails): Promise<any> {
             success: Utils.getCallbackWrapper(response => {
                 resolve(Map(response));
             }),
-            failure: Utils.getCallbackWrapper(response => {
-                console.error(response);
-                reject(response);
-            }),
+            failure: handleRequestFailure(reject, 'Failed to fetch sample type'),
         });
     });
 }
@@ -120,38 +117,38 @@ export function deleteSampleSet(rowId: number, containerPath?: string, auditUser
  * @param displayValueKey Column name containing grid display value of Sample Type
  * @param valueKey Column name containing grid value of Sample Type
  */
-export function fetchSamples(
+export async function fetchSamples(
     schemaQuery: SchemaQuery,
     sampleColumn: QueryColumn,
     filterArray: Filter.IFilter[],
     displayValueKey: string,
     valueKey: string
 ): Promise<OrderedMap<any, any>> {
-    return selectRowsDeprecated({
+    const response = await selectRowsDeprecated({
         schemaName: schemaQuery.schemaName,
         queryName: schemaQuery.queryName,
         viewName: schemaQuery.viewName,
         columns: ['RowId', displayValueKey, valueKey],
         filterArray,
-    }).then(response => {
-        const { key, models, orderedModels } = response;
-        const rows = models[key];
-        let data = OrderedMap<any, any>();
-
-        orderedModels[key].forEach(id => {
-            data = data.setIn(
-                [id, sampleColumn.fieldKey],
-                List([
-                    {
-                        displayValue: caseInsensitive(rows[id], displayValueKey)?.value,
-                        value: caseInsensitive(rows[id], valueKey)?.value,
-                    },
-                ])
-            );
-        });
-
-        return data;
     });
+
+    const { key, models, orderedModels } = response;
+    const rows = models[key];
+    const data = OrderedMap<any, any>().asMutable();
+
+    orderedModels[key].forEach(id => {
+        data.setIn(
+            [id, sampleColumn.fieldKey],
+            List([
+                {
+                    displayValue: caseInsensitive(rows[id], displayValueKey)?.value,
+                    value: caseInsensitive(rows[id], valueKey)?.value,
+                },
+            ])
+        );
+    });
+
+    return data.asImmutable();
 }
 
 /**
@@ -160,7 +157,10 @@ export function fetchSamples(
  * @param location The location to search for the selectionKey on
  * @param sampleColumn A QueryColumn used to map data in [[fetchSamples]]
  */
-export function loadSelectedSamples(location: Location, sampleColumn: QueryColumn): Promise<OrderedMap<any, any>> {
+export async function loadSelectedSamples(
+    location: Location,
+    sampleColumn: QueryColumn
+): Promise<OrderedMap<any, any>> {
     // If the "workflowJobId" URL parameter is specified, then fetch the samples associated with the workflow job.
     if (location?.query?.workflowJobId) {
         return fetchSamples(
@@ -176,32 +176,29 @@ export function loadSelectedSamples(location: Location, sampleColumn: QueryColum
     }
 
     // Otherwise, load the samples from the selection.
-    return getSelection(location).then(async selection => {
-        if (selection.resolved && selection.schemaQuery && selection.selected.length) {
-            const isPicklist = location?.query?.isPicklist === 'true';
-            let sampleIdNums = selection.selected;
-            if (isPicklist)
-                sampleIdNums = await getSelectedPicklistSamples(
-                    selection.schemaQuery.queryName,
-                    selection.selected,
-                    false
-                );
+    const selection = await getSelection(location);
 
-            const sampleSchemaQuery =
-                isPicklist || selection.schemaQuery.isEqual(SCHEMAS.SAMPLE_MANAGEMENT.INPUT_SAMPLES_SQ)
-                    ? EXP_TABLES.MATERIALS
-                    : selection.schemaQuery;
-            return fetchSamples(
-                sampleSchemaQuery,
-                sampleColumn,
-                [Filter.create('RowId', sampleIdNums, Filter.Types.IN)],
-                sampleColumn.lookup.displayColumn,
-                sampleColumn.lookup.keyColumn
-            );
+    if (selection.resolved && selection.schemaQuery && selection.selected.length) {
+        const isPicklist = location?.query?.isPicklist === 'true';
+        let sampleIdNums = selection.selected;
+        if (isPicklist) {
+            sampleIdNums = await getSelectedPicklistSamples(selection.schemaQuery.queryName, selection.selected, false);
         }
 
-        return OrderedMap();
-    });
+        const sampleSchemaQuery =
+            isPicklist || selection.schemaQuery.isEqual(SCHEMAS.SAMPLE_MANAGEMENT.INPUT_SAMPLES_SQ)
+                ? EXP_TABLES.MATERIALS
+                : selection.schemaQuery;
+        return fetchSamples(
+            sampleSchemaQuery,
+            sampleColumn,
+            [Filter.create('RowId', sampleIdNums, Filter.Types.IN)],
+            sampleColumn.lookup.displayColumn,
+            sampleColumn.lookup.keyColumn
+        );
+    }
+
+    return OrderedMap();
 }
 
 function getLocationQueryVal(location: Location, key: string): string {
@@ -252,37 +249,29 @@ export async function getSelectedSampleIdsFromSelectionKey(location: Location): 
     return sampleIds;
 }
 
-export function getGroupedSampleDomainFields(sampleType: string): Promise<GroupedSampleFields> {
-    return new Promise((resolve, reject) => {
-        getSampleTypeDetails(new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType))
-            .then(sampleTypeDomain => {
-                const metaFields = [],
-                    independentFields = [],
-                    aliquotFields = [];
-                const metricUnit = sampleTypeDomain.get('options').get('metricUnit');
+export async function getGroupedSampleDomainFields(sampleType: string): Promise<GroupedSampleFields> {
+    const metaFields = [];
+    const independentFields = [];
+    const aliquotFields = [];
 
-                sampleTypeDomain.domainDesign.fields.forEach(field => {
-                    if (field.derivationDataScope === DERIVATION_DATA_SCOPES.CHILD_ONLY) {
-                        aliquotFields.push(field.name.toLowerCase());
-                    } else if (field.derivationDataScope === DERIVATION_DATA_SCOPES.ALL) {
-                        independentFields.push(field.name.toLowerCase());
-                    } else {
-                        metaFields.push(field.name.toLowerCase());
-                    }
-                });
+    const sampleTypeDomain = await getSampleTypeDetails(new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType));
 
-                resolve({
-                    aliquotFields,
-                    independentFields,
-                    metaFields,
-                    metricUnit,
-                });
-            })
-            .catch(reason => {
-                console.error(reason);
-                reject(resolveErrorMessage(reason));
-            });
+    sampleTypeDomain.domainDesign.fields.forEach(field => {
+        if (field.derivationDataScope === DERIVATION_DATA_SCOPES.CHILD_ONLY) {
+            aliquotFields.push(field.name.toLowerCase());
+        } else if (field.derivationDataScope === DERIVATION_DATA_SCOPES.ALL) {
+            independentFields.push(field.name.toLowerCase());
+        } else {
+            metaFields.push(field.name.toLowerCase());
+        }
     });
+
+    return {
+        aliquotFields,
+        independentFields,
+        metaFields,
+        metricUnit: sampleTypeDomain.options.get('metricUnit'),
+    };
 }
 
 export function getAliquotSampleIds(selection: List<any>, sampleType: string, viewName: string): Promise<any[]> {
@@ -295,7 +284,7 @@ export function getNotInStorageSampleIds(selection: List<any>, sampleType: strin
     ]);
 }
 
-function getFilteredSampleSelection(
+async function getFilteredSampleSelection(
     selection: List<any>,
     sampleType: string,
     viewName: string,
@@ -303,89 +292,61 @@ function getFilteredSampleSelection(
 ): Promise<any[]> {
     const sampleRowIds = getRowIdsFromSelection(selection);
     if (sampleRowIds.length === 0) {
-        return new Promise((resolve, reject) => {
-            reject('No data is selected');
-        });
+        throw new Error('No data is selected');
     }
 
-    return new Promise((resolve, reject) => {
-        selectRowsDeprecated({
-            schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
-            queryName: sampleType,
-            viewName,
-            columns: 'RowId',
-            filterArray: [Filter.create('RowId', sampleRowIds, Filter.Types.IN), ...filters],
-        })
-            .then(response => {
-                const { key, models } = response;
-                const filteredSamples = [];
-                Object.keys(models[key]).forEach(row => {
-                    const sample = models[key][row];
-                    filteredSamples.push(sample.RowId.value);
-                });
-                resolve(filteredSamples);
-            })
-            .catch(reason => {
-                console.error(reason);
-                reject(resolveErrorMessage(reason));
-            });
+    const result = await selectRows({
+        columns: 'RowId',
+        filterArray: [Filter.create('RowId', sampleRowIds, Filter.Types.IN), ...filters],
+        schemaQuery: new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType),
+        viewName,
     });
+
+    const filteredSamples = [];
+    result.rows.forEach(row => {
+        filteredSamples.push(caseInsensitive(row, 'RowId').value);
+    });
+
+    return filteredSamples;
 }
 
-export function getSampleSelectionStorageData(selection: List<any>): Promise<Record<string, any>> {
+export async function getSampleSelectionStorageData(selection: List<any>): Promise<Record<string, any>> {
     const sampleRowIds = getRowIdsFromSelection(selection);
     if (sampleRowIds.length === 0) {
-        return new Promise((resolve, reject) => {
-            reject('No data is selected');
-        });
+        throw new Error('No data is selected');
     }
 
-    return new Promise((resolve, reject) => {
-        selectRowsDeprecated({
-            schemaName: 'inventory',
-            queryName: 'ItemSamples',
-            columns: 'RowId, SampleId, StoredAmount',
-            filterArray: [Filter.create('SampleId', sampleRowIds, Filter.Types.IN)],
-        })
-            .then(response => {
-                const { key, models } = response;
-                const filteredSampleItems = {};
-                Object.keys(models[key]).forEach(row => {
-                    const item = models[key][row];
-                    const rowId = item.RowId.value;
-                    const storedAmount = item.StoredAmount.value;
-                    filteredSampleItems[item.SampleId.value] = {
-                        rowId,
-                        storedAmount,
-                    };
-                });
-                resolve(filteredSampleItems);
-            })
-            .catch(reason => {
-                console.error(reason);
-                reject(resolveErrorMessage(reason));
-            });
+    const result = await selectRows({
+        columns: 'RowId, SampleId, StoredAmount',
+        filterArray: [Filter.create('SampleId', sampleRowIds, Filter.Types.IN)],
+        schemaQuery: SCHEMAS.INVENTORY.ITEM_SAMPLES,
     });
+
+    const filteredSampleItems = {};
+
+    result.rows.forEach(row => {
+        filteredSampleItems[caseInsensitive(row, 'SampleId').value] = {
+            rowId: caseInsensitive(row, 'RowId').value,
+            storedAmount: caseInsensitive(row, 'StoredAmount').value,
+        };
+    });
+
+    return filteredSampleItems;
 }
 
-export function getSampleStorageId(sampleRowId: number): Promise<number> {
-    return new Promise((resolve, reject) => {
-        selectRowsDeprecated({
-            schemaName: 'inventory',
-            queryName: 'ItemSamples',
-            columns: 'RowId, SampleId',
-            filterArray: [Filter.create('SampleId', sampleRowId)],
-        })
-            .then(response => {
-                const { key } = response;
-                const rowId = response.orderedModels[key]?.get(0);
-                resolve(rowId); // allow rowId to be undefined, which means sample is not in storage
-            })
-            .catch(reason => {
-                console.error(reason);
-                reject(resolveErrorMessage(reason));
-            });
+export async function getSampleStorageId(sampleRowId: number): Promise<number> {
+    const result = await selectRows({
+        columns: 'RowId, SampleId',
+        filterArray: [Filter.create('SampleId', sampleRowId)],
+        schemaQuery: SCHEMAS.INVENTORY.ITEM_SAMPLES,
     });
+
+    // allow rowId to be undefined, which means sample is not in storage
+    if (result.rows.length === 0) {
+        return undefined;
+    }
+
+    return caseInsensitive(result.rows[0], 'RowId').value;
 }
 
 // Used for samples and dataclasses
@@ -401,55 +362,14 @@ export function getSelectionLineageData(
         return Promise.reject('No data is selected');
     }
 
-    return new Promise((resolve, reject) => {
-        selectRowsDeprecated({
-            schemaName: schema,
-            queryName: query,
-            viewName,
-            columns: columns ?? List.of('RowId', 'Name', 'LSID').concat(ParentEntityLineageColumns).toArray(),
-            filterArray: [Filter.create('RowId', rowIds, Filter.Types.IN)],
-        })
-            .then(response => {
-                resolve(response);
-            })
-            .catch(reason => {
-                console.error(reason);
-                reject(resolveErrorMessage(reason));
-            });
+    return selectRowsDeprecated({
+        schemaName: schema,
+        queryName: query,
+        viewName,
+        columns: columns ?? List.of('RowId', 'Name', 'LSID').concat(ParentEntityLineageColumns).toArray(),
+        filterArray: [Filter.create('RowId', rowIds, Filter.Types.IN)],
     });
 }
-
-export type GetParentTypeDataForLineage = (
-    parentDataType: EntityDataType,
-    data: any[],
-    containerPath?: string,
-    containerFilter?: Query.ContainerFilter
-) => Promise<{
-    parentIdData: Record<string, ParentIdData>;
-    parentTypeOptions: List<IEntityTypeOption>;
-}>;
-
-export const getParentTypeDataForLineage: GetParentTypeDataForLineage = async (
-    parentDataType,
-    data,
-    containerPath,
-    containerFilter
-) => {
-    let parentTypeOptions = List<IEntityTypeOption>();
-    let parentIdData: Record<string, ParentIdData>;
-    if (parentDataType) {
-        const options = await getEntityTypeOptions(parentDataType, containerPath, containerFilter);
-        parentTypeOptions = List<IEntityTypeOption>(options.get(parentDataType.typeListingSchemaQuery.queryName));
-
-        // get the set of parent row LSIDs so that we can query for the RowId and SampleSet/DataClass for that row
-        const parentIDs = [];
-        data.forEach(datum => {
-            parentIDs.push(...datum[parentDataType.inputColumnName].map(row => row.value));
-        });
-        parentIdData = await getParentRowIdAndDataType(parentDataType, parentIDs, containerPath);
-    }
-    return { parentTypeOptions, parentIdData };
-};
 
 export function getUpdatedLineageRows(
     lineageRows: Array<Record<string, any>>,
@@ -491,46 +411,6 @@ export function getUpdatedLineageRows(
     });
 
     return updatedLineageRows;
-}
-
-export type ParentIdData = {
-    parentId: string | number;
-    rowId: number;
-};
-
-export function getParentRowIdAndDataType(
-    parentDataType: EntityDataType,
-    parentIDs: string[],
-    containerPath?: string
-): Promise<Record<string, ParentIdData>> {
-    return new Promise((resolve, reject) => {
-        selectRowsDeprecated({
-            containerPath,
-            schemaName: parentDataType.listingSchemaQuery.schemaName,
-            queryName: parentDataType.listingSchemaQuery.queryName,
-            viewName: ViewInfo.DETAIL_NAME, // use this to avoid filters on the default view
-            columns: 'LSID, RowId, DataClass, SampleSet', // only one of DataClass or SampleSet will exist
-            filterArray: [Filter.create('LSID', parentIDs, Filter.Types.IN)],
-        })
-            .then(response => {
-                const { key, models } = response;
-                const filteredParentItems = {};
-                Object.keys(models[key]).forEach(row => {
-                    const item = models[key][row];
-                    const lsid = caseInsensitive(item, 'LSID').value;
-                    filteredParentItems[lsid] = {
-                        rowId: caseInsensitive(item, 'RowId').value,
-                        parentId:
-                            caseInsensitive(item, 'DataClass')?.value ?? caseInsensitive(item, 'SampleSet')?.value,
-                    };
-                });
-                resolve(filteredParentItems);
-            })
-            .catch(reason => {
-                console.error(reason);
-                reject(resolveErrorMessage(reason));
-            });
-    });
 }
 
 // exported for jest testing
@@ -809,7 +689,6 @@ export function getSampleAssayResultViewConfigs(): Promise<SampleAssayResultView
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getSampleAssayResultsViewConfigs.api'),
-            method: 'GET',
             success: Utils.getCallbackWrapper(response => {
                 resolve(response.configs ?? []);
             }),
@@ -872,7 +751,6 @@ export function getSampleStatuses(includeInUse = false): Promise<SampleState[]> 
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getSampleStatuses.api', { includeInUse }),
-            method: 'GET',
             success: Utils.getCallbackWrapper(response => {
                 resolve(response.statuses?.map(state => new SampleState(state)) ?? []);
             }),
@@ -963,7 +841,6 @@ export function getTimelineEvents(sampleId: number, timezone?: string): Promise<
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getTimeline.api'),
-            method: 'GET',
             params: { sampleId },
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {

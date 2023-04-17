@@ -16,13 +16,14 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT } from '../../productFixtures';
+import { TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT } from '../internal/productFixtures';
+
+import { AssayRunDataType, SampleTypeDataType } from '../internal/components/entities/constants';
+import { OperationConfirmationData } from '../internal/components/entities/models';
 
 import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
-import { AssayRunDataType, SampleTypeDataType } from './constants';
-import { OperationConfirmationData } from './models';
 
-describe('<EntityDeleteConfirmModal/>', () => {
+describe('EntityDeleteConfirmModal', () => {
     test('Can delete 1', () => {
         const component = (
             <EntityDeleteConfirmModalDisplay

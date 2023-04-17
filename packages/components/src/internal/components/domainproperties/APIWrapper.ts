@@ -6,38 +6,46 @@ import {
     getGenId,
     setGenId,
     hasExistingDomainData,
+    fetchDomainDetails,
 } from './actions';
-import { DomainDesign, NameExpressionsValidationResults } from './models';
+import { DomainDesign, DomainDetails, NameExpressionsValidationResults } from './models';
 
 export interface DomainPropertiesAPIWrapper {
+    fetchDomainDetails: (
+        domainId: number,
+        schemaName: string,
+        queryName: string,
+        domainKind?: string
+    ) => Promise<DomainDetails>;
     getDomainNamePreviews: (schemaQuery?: SchemaQuery, domainId?: number, containerPath?: string) => Promise<string[]>;
-    validateDomainNameExpressions: (
-        domain: DomainDesign,
-        kind?: string,
-        options?: any,
-        includeNamePreview?: boolean
-    ) => Promise<NameExpressionsValidationResults>;
     getGenId: (rowId: number, kindName: 'SampleSet' | 'DataClass', containerPath?: string) => Promise<number>;
-    setGenId: (
-        rowId: number,
-        kindName: 'SampleSet' | 'DataClass',
-        genId: number,
-        containerPath?: string
-    ) => Promise<any>;
     hasExistingDomainData: (
         kindName: 'SampleSet' | 'DataClass',
         dataTypeLSID?: string,
         rowId?: number,
         containerPath?: string
     ) => Promise<boolean>;
+    setGenId: (
+        rowId: number,
+        kindName: 'SampleSet' | 'DataClass',
+        genId: number,
+        containerPath?: string
+    ) => Promise<any>;
+    validateDomainNameExpressions: (
+        domain: DomainDesign,
+        kind?: string,
+        options?: any,
+        includeNamePreview?: boolean
+    ) => Promise<NameExpressionsValidationResults>;
 }
 
 export class DomainPropertiesAPIWrapper implements DomainPropertiesAPIWrapper {
+    fetchDomainDetails = fetchDomainDetails;
     getDomainNamePreviews = getDomainNamePreviews;
-    validateDomainNameExpressions = validateDomainNameExpressions;
     getGenId = getGenId;
-    setGenId = setGenId;
     hasExistingDomainData = hasExistingDomainData;
+    setGenId = setGenId;
+    validateDomainNameExpressions = validateDomainNameExpressions;
 }
 
 /**
@@ -48,11 +56,12 @@ export function getDomainPropertiesTestAPIWrapper(
     overrides: Partial<DomainPropertiesAPIWrapper> = {}
 ): DomainPropertiesAPIWrapper {
     return {
+        fetchDomainDetails: mockFn(),
         getDomainNamePreviews: mockFn(),
-        validateDomainNameExpressions: mockFn(),
         getGenId: mockFn(),
-        setGenId: mockFn(),
         hasExistingDomainData: mockFn(),
+        setGenId: mockFn(),
+        validateDomainNameExpressions: mockFn(),
         ...overrides,
     };
 }

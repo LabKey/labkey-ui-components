@@ -1,9 +1,9 @@
 import React, { FC, memo } from 'react';
 
-import { ConfirmModal } from '../base/ConfirmModal';
-import { capitalizeFirstChar } from '../../util/utils';
+import { ConfirmModal } from '../internal/components/base/ConfirmModal';
+import { capitalizeFirstChar } from '../internal/util/utils';
 
-import { getCrossFolderSelectionMsg } from '../../../entities/utils';
+import { getCrossFolderSelectionMsg } from './utils';
 
 interface Props {
     crossFolderSelectionCount: number;
@@ -38,3 +38,5 @@ export const EntityCrossProjectSelectionConfirmModal: FC<Props> = memo(props => 
         </ConfirmModal>
     );
 });
+
+EntityCrossProjectSelectionConfirmModal.displayName = 'EntityCrossProjectSelectionConfirmModal';

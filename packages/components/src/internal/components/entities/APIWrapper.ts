@@ -1,8 +1,25 @@
+import { List, Map } from 'immutable';
+
 import { GetNameExpressionOptionsResponse, loadNameExpressionOptions } from '../settings/actions';
 
-import { getDataOperationConfirmationData } from './actions';
+import { QueryInfo } from '../../../public/QueryInfo';
+
+import { InsertOptions } from '../../query/api';
+
+import {
+    getDataOperationConfirmationData,
+    getEntityTypeData,
+    getOriginalParentsFromLineage,
+    handleEntityFileImport,
+} from './actions';
 import { DataOperation } from './constants';
-import { OperationConfirmationData } from './models';
+import {
+    EntityChoice,
+    EntityDataType,
+    EntityIdCreationModel,
+    IEntityTypeOption,
+    OperationConfirmationData,
+} from './models';
 
 export interface EntityAPIWrapper {
     getDataOperationConfirmationData: (
@@ -11,12 +28,41 @@ export interface EntityAPIWrapper {
         selectionKey?: string,
         useSnapshotSelection?: boolean
     ) => Promise<OperationConfirmationData>;
-
+    getEntityTypeData: (
+        model: EntityIdCreationModel,
+        entityDataType: EntityDataType,
+        parentSchemaQueries: Map<string, EntityDataType>,
+        targetQueryName: string,
+        allowParents: boolean,
+        isItemSamples: boolean,
+        combineParentTypes: boolean
+    ) => Promise<Partial<EntityIdCreationModel>>;
+    getOriginalParentsFromLineage: (
+        lineage: Record<string, any>,
+        parentDataTypes: EntityDataType[],
+        containerPath?: string
+    ) => Promise<{
+        originalParents: Record<string, List<EntityChoice>>;
+        parentTypeOptions: Map<string, List<IEntityTypeOption>>;
+    }>;
+    handleEntityFileImport: (
+        importAction: string,
+        queryInfo: QueryInfo,
+        file: File,
+        insertOption: InsertOptions,
+        useAsync: boolean,
+        importParameters?: Record<string, any>,
+        importFileController?: string,
+        saveToPipeline?: boolean
+    ) => Promise<any>;
     loadNameExpressionOptions: (containerPath?: string) => Promise<GetNameExpressionOptionsResponse>;
 }
 
 export class EntityServerAPIWrapper implements EntityAPIWrapper {
     getDataOperationConfirmationData = getDataOperationConfirmationData;
+    getEntityTypeData = getEntityTypeData;
+    getOriginalParentsFromLineage = getOriginalParentsFromLineage;
+    handleEntityFileImport = handleEntityFileImport;
     loadNameExpressionOptions = loadNameExpressionOptions;
 }
 
@@ -29,6 +75,9 @@ export function getEntityTestAPIWrapper(
 ): EntityAPIWrapper {
     return {
         getDataOperationConfirmationData: mockFn(),
+        getEntityTypeData: mockFn(),
+        getOriginalParentsFromLineage: mockFn(),
+        handleEntityFileImport: mockFn(),
         loadNameExpressionOptions: mockFn(),
         ...overrides,
     };

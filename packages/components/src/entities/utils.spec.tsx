@@ -256,6 +256,14 @@ describe('getSampleWizardURL', () => {
             '#/samples/new?target=target1&parent=parent1&selectionKey=grid-1%7Csamples%7Ctype1&selectionKeyType=snapshot'
         );
     });
+
+    test('use media options', () => {
+        expect(
+            getSampleWizardURL('RawMaterials', 'samples:rawmaterials:5220', null, false, undefined, undefined, [
+                'RawMaterials',
+            ]).toHref()
+        ).toBe('#/media/RawMaterials/derive?target=RawMaterials&parent=samples%3Arawmaterials%3A5220');
+    });
 });
 
 describe('getSampleDeleteMessage', () => {

@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Performance Evaluation for Data at Scale - Improve Insert/UpdateRows calls
   * add skipReselectRows param to insertRows/updateRows calls when detailed rows in response is not needed
 
+### version 2.327.0
+*Released*: 18 April 2023
+* Media consistency improvements
+
 ### version 2.326.0
 *Released*: 15 April 2023
 - Entities subpackage migration

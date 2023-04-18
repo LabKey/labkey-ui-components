@@ -183,7 +183,6 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                     schemaQuery: queryModel.schemaQuery,
                     rows,
                     auditBehavior,
-                    skipReselectRows: true,
                 });
                 onSuccess();
                 createNotification(

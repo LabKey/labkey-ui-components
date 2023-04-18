@@ -118,7 +118,6 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
                 containerPath,
                 rows: [updatedValues],
                 schemaQuery: queryInfo.schemaQuery,
-                skipReselectRows: true,
             });
 
             this.setState({ editing: false }, () => {

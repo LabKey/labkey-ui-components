@@ -21,9 +21,10 @@ import { isELNEnabled } from '../internal/app/utils';
 import { capitalizeFirstChar } from '../internal/util/utils';
 import { HelpLink } from '../internal/util/helpLinks';
 
-import { DeleteConfirmationModal } from './DeleteConfirmationModal';
-
 import { EntityDataType, OperationConfirmationData } from '../internal/components/entities/models';
+import { Alert } from '../internal/components/base/Alert';
+
+import { DeleteConfirmationModal } from './DeleteConfirmationModal';
 
 export type EntityDeleteConfirmHandler = (rowsToDelete: any[], rowsToKeep: any[], userComment: string) => void;
 
@@ -121,15 +122,17 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props, State>
                     </React.Fragment>
                 );
         }
-        const message = (
-            <>
+        const message = numCannotDelete ? (
+            <Alert bsStyle="warning">
                 {text}
                 {numCannotDelete > 0 && deleteHelpLinkTopic && (
                     <>
                         &nbsp;(<HelpLink topic={deleteHelpLinkTopic}>more info</HelpLink>)
                     </>
                 )}
-            </>
+            </Alert>
+        ) : (
+            <>{text}</>
         );
 
         return {

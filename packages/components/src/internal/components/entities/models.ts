@@ -624,3 +624,8 @@ export interface IParentAlias {
     isDupe?: boolean;
     parentValue: IParentOption;
 }
+
+export interface MoveSamplesResult {
+    containerPath: string;
+    updateCounts: Record<string, number>;
+}

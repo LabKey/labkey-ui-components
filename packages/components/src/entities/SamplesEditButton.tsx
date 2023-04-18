@@ -6,7 +6,7 @@ import { CrossFolderSelectionResult, EntityDataType } from '../internal/componen
 
 import { RequiresModelAndActions } from '../public/QueryModel/withQueryModels';
 
-import { hasModule } from '../internal/app/utils';
+import { hasModule, hasProductProjects } from '../internal/app/utils';
 
 import { useServerContext } from '../internal/components/base/ServerContext';
 import { buildURL, createProductUrlFromParts } from '../internal/url/AppURL';
@@ -32,6 +32,7 @@ import { EntityCrossProjectSelectionConfirmModal } from './EntityCrossProjectSel
 import { shouldIncludeMenuItem } from './utils';
 import { SampleDeleteMenuItem } from './SampleDeleteMenuItem';
 import { EntityLineageEditMenuItem } from './EntityLineageEditMenuItem';
+import { SampleMoveMenuItem } from './SampleMoveMenuItem';
 
 interface OwnProps {
     combineParentTypes?: boolean;
@@ -43,6 +44,7 @@ interface OwnProps {
 
 export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresModelAndActions> = memo(props => {
     const {
+        actions,
         afterSampleDelete,
         afterSampleActionComplete,
         showBulkUpdate,
@@ -124,6 +126,10 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
     const showEditParent =
         shouldIncludeMenuItem(SamplesEditButtonSections.EDIT_PARENT, excludedMenuKeys) &&
         hasAnyPermissions(user, [PermissionTypes.Update]);
+    const showMoveToProject =
+        shouldIncludeMenuItem(SamplesEditButtonSections.MOVETOPROJECT, excludedMenuKeys) &&
+        hasAnyPermissions(user, [PermissionTypes.Update]) &&
+        hasProductProjects(moduleContext);
     const showDelete =
         shouldIncludeMenuItem(SamplesEditButtonSections.DELETE, excludedMenuKeys) &&
         hasAnyPermissions(user, [PermissionTypes.Delete]);
@@ -197,7 +203,10 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
                         )}
                     </RequiresPermission>
                 )}
-                {showEdit && (showDelete || showStudy) && <MenuItem divider />}
+                {showEdit && (showMoveToProject || showDelete || showStudy) && <MenuItem divider />}
+                {showMoveToProject && (
+                    <SampleMoveMenuItem actions={actions} queryModel={model} handleClick={handleMenuClick} />
+                )}
                 {showDelete && (
                     <RequiresPermission perms={PermissionTypes.Delete}>
                         <SampleDeleteMenuItem

@@ -1,4 +1,4 @@
-import { ActionURL, Ajax, Filter, Query, Utils } from '@labkey/api';
+import {ActionURL, Ajax, AuditBehaviorTypes, Filter, Query, Utils} from '@labkey/api';
 import { List, Map } from 'immutable';
 
 import { buildURL } from '../../url/AppURL';
@@ -29,7 +29,7 @@ import {
     EntityParentType,
     EntityTypeOption,
     IEntityTypeOption,
-    IParentOption,
+    IParentOption, MoveSamplesResult,
     OperationConfirmationData,
 } from './models';
 
@@ -716,3 +716,55 @@ export const getOriginalParentsFromLineage = async (
 
     return { originalParents, parentTypeOptions };
 };
+
+export function getMoveConfirmationData(
+    dataType: EntityDataType,
+    rowIds: string[] | number[],
+    selectionKey?: string,
+    useSnapshotSelection?: boolean
+): Promise<OperationConfirmationData> {
+    if (isSampleEntity(dataType)) {
+        return getSampleOperationConfirmationData(SampleOperation.Move, rowIds, selectionKey, useSnapshotSelection);
+    }
+    return getOperationConfirmationData(
+        dataType,
+        rowIds,
+        selectionKey,
+        useSnapshotSelection,
+        isDataClassEntity(dataType)
+            ? {
+                dataOperation: DataOperation.Move,
+            }
+            : undefined
+    );
+}
+
+export function moveSamples(
+    targetContainer: string,
+    rowIds: number[],
+    selectionKey: string,
+    userComment: string
+): Promise<MoveSamplesResult> {
+    return new Promise((resolve, reject) => {
+        const params = {
+            auditBehavior: AuditBehaviorTypes.DETAILED,
+            targetContainer,
+            userComment,
+        };
+        if (rowIds) params['rowIds'] = rowIds;
+        else if (selectionKey) params['dataRegionSelectionKey'] = selectionKey;
+
+        return Ajax.request({
+            url: buildURL('experiment', 'moveSamples.api'),
+            method: 'POST',
+            params,
+            success: Utils.getCallbackWrapper(response => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper(response => {
+                console.error('Error moving samples', response);
+                reject(response?.exception ?? 'Unknown error moving samples.');
+            }),
+        });
+    });
+}

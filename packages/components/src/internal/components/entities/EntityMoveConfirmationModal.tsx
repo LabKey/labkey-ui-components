@@ -1,0 +1,141 @@
+import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import { Security } from '@labkey/api';
+
+import { ConfirmModalProps, ConfirmModal } from '../base/ConfirmModal';
+import { resolveErrorMessage } from '../../util/messaging';
+import { isLoading, LoadingState } from '../../../public/LoadingState';
+import { isAppHomeFolder } from '../../app/utils';
+import { AppContext, useAppContext } from '../../AppContext';
+import { useServerContext } from '../base/ServerContext';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { Alert } from '../base/Alert';
+import { SelectInput } from '../forms/input/SelectInput';
+
+interface ContainerOption {
+    label: string;
+    value: string;
+}
+
+interface Props extends Omit<ConfirmModalProps, 'onConfirm'> {
+    onConfirm: (targetContainer: string, userComment: string) => void;
+}
+
+export const EntityMoveConfirmationModal: FC<Props> = memo(props => {
+    const { children, onConfirm, ...confirmModalProps } = props;
+    const [error, setError] = useState<string>();
+    const [loading, setLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
+    const [containerOptions, setContainerOptions] = useState<ContainerOption[]>();
+    const [targetContainer, setTargetContainer] = useState<string>();
+    const [auditUserComment, setAuditUserComment] = useState<string>();
+    const { api } = useAppContext<AppContext>();
+    const { container, moduleContext } = useServerContext();
+
+    useEffect(
+        () => {
+            (async () => {
+                setLoading(LoadingState.LOADING);
+                setError(undefined);
+
+                try {
+                    let folders = await api.security.fetchContainers({
+                        containerPath: isAppHomeFolder(container, moduleContext)
+                            ? container.path
+                            : container.parentPath,
+                        includeEffectivePermissions: true,
+                        includeStandardProperties: true, // needed to get the container title
+                        includeWorkbookChildren: false,
+                        includeSubfolders: true,
+                        depth: 1,
+                    });
+
+                    // if user doesn't have permissions to the parent/project, the response will come back with an empty Container object
+                    folders = folders.filter(c => c !== undefined && c.id !== '');
+
+                    // filter to folders that the user has InsertPermissions
+                    folders = folders.filter(c => c.effectivePermissions.indexOf(Security.PermissionTypes.Insert));
+
+                    // filter out the current container
+                    folders = folders.filter(c => c.id !== container.id);
+
+                    setContainerOptions(
+                        folders.map(f => ({
+                            label: f.title,
+                            value: f.path,
+                        }))
+                    );
+                } catch (e) {
+                    setError(`Error: ${resolveErrorMessage(e)}`);
+                } finally {
+                    setLoading(LoadingState.LOADED);
+                }
+            })();
+        },
+        [/* on mount only */]
+    );
+
+    const onConfirmCallback = useCallback(() => {
+        if (targetContainer) {
+            onConfirm(targetContainer, auditUserComment);
+        }
+    }, [onConfirm, targetContainer, auditUserComment]);
+
+    const onContainerChange = useCallback((fieldName: string, chosenType: string) => {
+        setTargetContainer(chosenType);
+    }, []);
+
+    const onCommentChange = useCallback(evt => {
+        setAuditUserComment(evt.target.value);
+    }, []);
+
+    if (isLoading(loading)) {
+        return (
+            <ConfirmModal
+                title={confirmModalProps.title}
+                onCancel={confirmModalProps.onCancel}
+                cancelButtonText="Cancel"
+            >
+                <LoadingSpinner msg="Loading target projects..." />
+            </ConfirmModal>
+        );
+    }
+
+    if (error) {
+        return (
+            <ConfirmModal
+                title={confirmModalProps.title}
+                onCancel={confirmModalProps.onCancel}
+                cancelButtonText="Dismiss"
+            >
+                <Alert>{error}</Alert>
+            </ConfirmModal>
+        );
+    }
+
+    return (
+        <ConfirmModal confirmVariant="success" {...confirmModalProps} onConfirm={onConfirmCallback} canConfirm={targetContainer !== undefined}>
+            {children}
+            <div className="top-spacing">
+                <SelectInput
+                    helpTipRenderer="NONE"
+                    label="Move to Project"
+                    onChange={onContainerChange}
+                    options={containerOptions}
+                    required
+                />
+            </div>
+            <div className="top-spacing">
+                <div className="bottom-spacing">
+                    <strong>Reason(s) for moving</strong>
+                </div>
+                <div>
+                    <textarea
+                        className="form-control"
+                        placeholder="Enter comments (optional)"
+                        onChange={onCommentChange}
+                        rows={5}
+                    />
+                </div>
+            </div>
+        </ConfirmModal>
+    );
+});

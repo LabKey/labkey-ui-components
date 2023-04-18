@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Move samples between projects UI updates
+  * add new SampleMoveMenuItem and EntityMoveModal to be used by the SamplesEditButton
+  * add getMoveConfirmationData and moveSamples API action calls
+
 ### version 2.327.0
 *Released*: 18 April 2023
 * Media consistency improvements

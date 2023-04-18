@@ -66,6 +66,7 @@ export enum SampleOperation {
     AddAssayData,
     LinkToStudy,
     RecallFromStudy,
+    Move,
 }
 
 export enum SampleStateType {

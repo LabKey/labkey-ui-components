@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.327.0
+*Released*: 18 April 2023
+* Media consistency improvements
+
 ### version 2.326.0
 *Released*: 15 April 2023
 - Entities subpackage migration

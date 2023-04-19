@@ -190,18 +190,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
         );
     }, [title, sampleName, sampleStatus]);
 
-    let insertURL: string;
-    let parent: string;
-    if (isMedia) {
-        // preset the insert wizard to target Raw Materials with a parent of DataClass/Ingredients
-        parent = createEntityParentKey(SCHEMAS.DATA_CLASSES.INGREDIENTS);
-        insertURL = AppURL.create(MEDIA_KEY, queryInfo.name, 'new')
-            .addParam('target', SCHEMAS.SAMPLE_SETS.RAW_MATERIALS.queryName)
-            .addParam('parent', parent)
-            .toHref();
-    } else {
-        parent = createEntityParentKey(sampleModel.schemaQuery, sampleId);
-    }
+    const parent = createEntityParentKey(sampleModel.schemaQuery, sampleId);
 
     const subTitle = useMemo(() => {
         if (subtitle) return subtitle;
@@ -238,19 +227,13 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                         <ManageDropdownButton id="sampledetail" pullRight collapsed>
                             {canDerive && (
                                 <RequiresPermission user={user} perms={PermissionTypes.Insert}>
-                                    {isMedia && (
-                                        <MenuItem href={insertURL}>
-                                            Create {entityDataType?.nounPlural ?? queryInfo.name}
-                                        </MenuItem>
-                                    )}
-                                    {!isMedia && (
-                                        <CreateSamplesSubMenu
-                                            disabled={!canCreateSamples}
-                                            selectedQueryInfo={sampleModel.queryInfo}
-                                            parentType={SAMPLES_KEY}
-                                            parentKey={parent}
-                                        />
-                                    )}
+                                    <CreateSamplesSubMenu
+                                        mediaOptions={isMedia && [queryInfo.name]}
+                                        disabled={!canCreateSamples}
+                                        selectedQueryInfo={sampleModel.queryInfo}
+                                        parentType={SAMPLES_KEY}
+                                        parentKey={parent}
+                                    />
                                 </RequiresPermission>
                             )}
 
@@ -265,17 +248,11 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                                 </RequiresPermission>
                             )}
 
-                            {!isMedia && (
-                                <RequiresPermission user={user} perms={PermissionTypes.ManagePicklists}>
-                                    <AddToPicklistMenuItem user={user} queryModel={sampleModel} sampleIds={sampleIds} />
-                                    <PicklistCreationMenuItem
-                                        user={user}
-                                        sampleIds={sampleIds}
-                                        key="picklist"
-                                        asMenuItem
-                                    />
-                                </RequiresPermission>
-                            )}
+                            <RequiresPermission user={user} perms={PermissionTypes.ManagePicklists}>
+                                <AddToPicklistMenuItem user={user} queryModel={sampleModel} sampleIds={sampleIds} />
+                                <PicklistCreationMenuItem user={user} sampleIds={sampleIds} key="picklist" asMenuItem />
+                            </RequiresPermission>
+
                             {isWorkflowEnabled(moduleContext) && (
                                 <RequiresPermission user={user} perms={PermissionTypes.ManageSampleWorkflows}>
                                     <DisableableMenuItem
@@ -293,17 +270,15 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
 
                             {canPrintLabels && <MenuItem onClick={onPrintLabel}>Print Labels</MenuItem>}
 
-                            {!isMedia && (
-                                <RequiresPermission user={user} perms={PermissionTypes.Delete}>
-                                    <DisableableMenuItem
-                                        disabledMessage={getSampleDeleteMessage(canDelete, error)}
-                                        onClick={onDeleteSample}
-                                        operationPermitted={canDelete}
-                                    >
-                                        Delete {entityDataType?.nounSingular ?? 'Sample'}
-                                    </DisableableMenuItem>
-                                </RequiresPermission>
-                            )}
+                            <RequiresPermission user={user} perms={PermissionTypes.Delete}>
+                                <DisableableMenuItem
+                                    disabledMessage={getSampleDeleteMessage(canDelete, error)}
+                                    onClick={onDeleteSample}
+                                    operationPermitted={canDelete}
+                                >
+                                    Delete Sample
+                                </DisableableMenuItem>
+                            </RequiresPermission>
 
                             <RequiresPermission perms={PermissionTypes.CanSeeAuditLog}>
                                 <MenuItem

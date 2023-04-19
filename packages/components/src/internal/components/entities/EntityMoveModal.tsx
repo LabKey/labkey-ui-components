@@ -1,5 +1,7 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 
+import { ActionURL } from '@labkey/api';
+
 import { Progress } from '../base/Progress';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { LoadingSpinner } from '../base/LoadingSpinner';
@@ -15,13 +17,14 @@ import { HelpLink, MOVE_SAMPLES_TOPIC } from '../../util/helpLinks';
 
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 
+import { AppURL, buildURL } from '../../url/AppURL';
+
+import { getCurrentAppProperties } from '../../app/utils';
+
 import { getMoveConfirmationData } from './actions';
 import { EntityDataType, OperationConfirmationData } from './models';
 import { getEntityNoun } from './utils';
 import { EntityMoveConfirmationModal } from './EntityMoveConfirmationModal';
-import {buildURL} from "../../url/AppURL";
-import {ActionURL} from "@labkey/api";
-import {getCurrentAppProperties} from "../../app/utils";
 
 interface Props {
     actions: Actions;
@@ -36,11 +39,12 @@ interface Props {
     ) => void;
     onCancel: () => void;
     queryModel: QueryModel;
+    targetAppURL?: AppURL;
     useSelected: boolean;
 }
 
 export const EntityMoveModal: FC<Props> = memo(props => {
-    const { actions, queryModel, onCancel, useSelected, entityDataType, maxSelected, moveFn } = props;
+    const { actions, queryModel, onCancel, useSelected, entityDataType, maxSelected, moveFn, targetAppURL } = props;
     const { nounPlural } = entityDataType;
     const { createNotification } = useNotificationsContext();
     const [confirmationData, setConfirmationData] = useState<OperationConfirmationData>();
@@ -82,11 +86,13 @@ export const EntityMoveModal: FC<Props> = memo(props => {
                 }
             })();
         },
-        [/* on mount only */]
+        [
+            /* on mount only */
+        ]
     );
 
     const onConfirm = useCallback(
-        async (targetContainer: string, auditUserComment: string) => {
+        async (targetContainer: string, targetName: string, auditUserComment: string) => {
             const movingAll = confirmationData.notAllowed.length === 0;
             const count = confirmationData.allowed.length;
             const noun = getEntityNoun(entityDataType, count);
@@ -102,20 +108,21 @@ export const EntityMoveModal: FC<Props> = memo(props => {
                     auditUserComment
                 );
 
-                const projectUrl = buildURL(
+                let projectUrl = buildURL(
                     getCurrentAppProperties().controllerName,
                     `${ActionURL.getAction() || 'app'}.view`,
                     undefined,
                     { container: targetContainer, returnUrl: false }
                 );
+                if (targetAppURL) {
+                    projectUrl = projectUrl + targetAppURL.toHref();
+                }
 
                 createNotification({
                     message: (
                         <>
-                             Successfully moved {count} {noun}.
-                             Go to <a href={projectUrl}>target project</a>.
-                            {/*TODO go to sample type page, that likely means we need to move this to the SampleMoveMenuItem */}
-                         </>
+                            Successfully moved {count} {noun} to <a href={projectUrl}>{targetName}</a>.
+                        </>
                     ),
                     alertClass: 'success',
                 });
@@ -195,7 +202,7 @@ export const EntityMoveModal: FC<Props> = memo(props => {
             )}
             <Progress
                 modal={true}
-                estimate={numConfirmed * 10} // TODO update estimate accordingly
+                estimate={numConfirmed * 10}
                 title={`Moving ${numConfirmed} ${getEntityNoun(entityDataType, numConfirmed)}`}
                 toggle={showProgress}
             />

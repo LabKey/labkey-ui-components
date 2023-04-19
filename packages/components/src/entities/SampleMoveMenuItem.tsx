@@ -8,6 +8,8 @@ import { SelectionMenuItem } from '../internal/components/menus/SelectionMenuIte
 import { SampleTypeDataType } from '../internal/components/entities/constants';
 import { EntityMoveModal } from '../internal/components/entities/EntityMoveModal';
 import { useAppContext } from '../internal/AppContext';
+import { AppURL } from '../internal/url/AppURL';
+import { SAMPLES_KEY } from '../internal/app/constants';
 
 const ITEM_TEXT = 'Move to Project';
 
@@ -56,6 +58,7 @@ export const SampleMoveMenuItem: FC<Props> = memo(props => {
                     maxSelected={maxSelected}
                     entityDataType={SampleTypeDataType}
                     moveFn={api.entity.moveSamples}
+                    targetAppURL={AppURL.create(SAMPLES_KEY, queryModel.queryInfo.name)}
                 />
             )}
         </>

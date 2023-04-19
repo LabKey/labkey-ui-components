@@ -9,23 +9,18 @@ import { AppContext, useAppContext } from '../../AppContext';
 import { useServerContext } from '../base/ServerContext';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
-import { SelectInput } from '../forms/input/SelectInput';
-
-interface ContainerOption {
-    label: string;
-    value: string;
-}
+import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
 
 interface Props extends Omit<ConfirmModalProps, 'onConfirm'> {
-    onConfirm: (targetContainer: string, userComment: string) => void;
+    onConfirm: (targetContainer: string, targetName: string, userComment: string) => void;
 }
 
 export const EntityMoveConfirmationModal: FC<Props> = memo(props => {
     const { children, onConfirm, ...confirmModalProps } = props;
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
-    const [containerOptions, setContainerOptions] = useState<ContainerOption[]>();
-    const [targetContainer, setTargetContainer] = useState<string>();
+    const [containerOptions, setContainerOptions] = useState<SelectInputOption[]>();
+    const [selectedContainerOption, setSelectedContainerOption] = useState<SelectInputOption>();
     const [auditUserComment, setAuditUserComment] = useState<string>();
     const { api } = useAppContext<AppContext>();
     const { container, moduleContext } = useServerContext();
@@ -61,6 +56,7 @@ export const EntityMoveConfirmationModal: FC<Props> = memo(props => {
                         folders.map(f => ({
                             label: f.title,
                             value: f.path,
+                            data: f,
                         }))
                     );
                 } catch (e) {
@@ -70,18 +66,23 @@ export const EntityMoveConfirmationModal: FC<Props> = memo(props => {
                 }
             })();
         },
-        [/* on mount only */]
+        [
+            /* on mount only */
+        ]
     );
 
     const onConfirmCallback = useCallback(() => {
-        if (targetContainer) {
-            onConfirm(targetContainer, auditUserComment);
+        if (selectedContainerOption) {
+            onConfirm(selectedContainerOption.value, selectedContainerOption.label, auditUserComment);
         }
-    }, [onConfirm, targetContainer, auditUserComment]);
+    }, [onConfirm, selectedContainerOption, auditUserComment]);
 
-    const onContainerChange = useCallback((fieldName: string, chosenType: string) => {
-        setTargetContainer(chosenType);
-    }, []);
+    const onContainerChange = useCallback(
+        (fieldName: string, chosenType: string, selectedOption: SelectInputOption) => {
+            setSelectedContainerOption(selectedOption);
+        },
+        []
+    );
 
     const onCommentChange = useCallback(evt => {
         setAuditUserComment(evt.target.value);
@@ -112,7 +113,12 @@ export const EntityMoveConfirmationModal: FC<Props> = memo(props => {
     }
 
     return (
-        <ConfirmModal confirmVariant="success" {...confirmModalProps} onConfirm={onConfirmCallback} canConfirm={targetContainer !== undefined}>
+        <ConfirmModal
+            confirmVariant="success"
+            {...confirmModalProps}
+            onConfirm={onConfirmCallback}
+            canConfirm={!!selectedContainerOption}
+        >
             {children}
             <div className="top-spacing">
                 <SelectInput

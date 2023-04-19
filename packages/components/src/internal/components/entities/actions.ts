@@ -743,6 +743,7 @@ export function moveSamples(
     targetContainer: string,
     rowIds: number[],
     selectionKey: string,
+    useSnapshotSelection: boolean,
     userComment: string
 ): Promise<MoveSamplesResult> {
     return new Promise((resolve, reject) => {
@@ -751,8 +752,13 @@ export function moveSamples(
             targetContainer,
             userComment,
         };
-        if (rowIds) params['rowIds'] = rowIds;
-        else if (selectionKey) params['dataRegionSelectionKey'] = selectionKey;
+        if (rowIds) {
+            params['rowIds'] = rowIds;
+        }
+        if (selectionKey) {
+            params['dataRegionSelectionKey'] = selectionKey;
+            params['useSnapshotSelection'] = useSnapshotSelection;
+        }
 
         return Ajax.request({
             url: buildURL('experiment', 'moveSamples.api'),

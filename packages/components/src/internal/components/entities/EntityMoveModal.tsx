@@ -27,7 +27,13 @@ interface Props {
     actions: Actions;
     entityDataType: EntityDataType;
     maxSelected: number;
-    moveFn: (targetContainer: string, rowIds: number[], selectionKey: string, auditUserComment: string) => void;
+    moveFn: (
+        targetContainer: string,
+        rowIds: number[],
+        selectionKey: string,
+        useSnapshotSelection: boolean,
+        auditUserComment: string
+    ) => void;
     onCancel: () => void;
     queryModel: QueryModel;
     useSelected: boolean;
@@ -91,7 +97,8 @@ export const EntityMoveModal: FC<Props> = memo(props => {
                 await moveFn(
                     targetContainer,
                     !movingAll ? confirmationData.allowed.map(a => a.RowId) : undefined,
-                    movingAll ? selectionKey : undefined, // TODO need useSnapshotSelection?
+                    selectionKey,
+                    movingAll && queryModel.filterArray.length > 0, // useSnapshotSelection if grid has filters
                     auditUserComment
                 );
 

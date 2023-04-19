@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Move samples between projects UI updates
   * add new SampleMoveMenuItem and EntityMoveModal to be used by the SamplesEditButton
   * add getMoveConfirmationData and moveSamples API action calls
+  * handle selectionKey for useSnapshotSelection case
 
 ### version 2.328.0
 *Released*: 19 April 2023

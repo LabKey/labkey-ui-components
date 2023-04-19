@@ -7,6 +7,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - the editable grid will always use key values (i.e. RowIds) for lookups, so set allowLookupByAlternateKey to false
   - on re-import run if the original run was imported via editable grid, the sample Ids will be rowIds so set allowLookupByAlternateKey to false
 
+### version 2.327.0
+*Released*: 18 April 2023
+* Media consistency improvements
+
 ### version 2.326.0
 *Released*: 15 April 2023
 - Entities subpackage migration

@@ -7,6 +7,12 @@ Components, models, actions, and utility functions for LabKey applications and p
   * add new SampleMoveMenuItem and EntityMoveModal to be used by the SamplesEditButton
   * add getMoveConfirmationData and moveSamples API action calls
 
+### version 2.328.0
+*Released*: 19 April 2023
+- Issue 47509: Better handling of samples with numeric names on assay import
+  - the editable grid will always use key values (i.e. RowIds) for lookups, so set allowLookupByAlternateKey to false
+  - on re-import run if the original run was imported via editable grid, the sample Ids will be rowIds so set allowLookupByAlternateKey to false
+
 ### version 2.327.0
 *Released*: 18 April 2023
 * Media consistency improvements

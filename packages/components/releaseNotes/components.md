@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD April 2023
+### version 2.328.0
+*Released*: 19 April 2023
 - Issue 47509: Better handling of samples with numeric names on assay import
   - the editable grid will always use key values (i.e. RowIds) for lookups, so set allowLookupByAlternateKey to false
   - on re-import run if the original run was imported via editable grid, the sample Ids will be rowIds so set allowLookupByAlternateKey to false

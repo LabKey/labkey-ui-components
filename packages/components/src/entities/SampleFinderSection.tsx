@@ -274,7 +274,7 @@ const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
             let assayDesignCount = 0;
             let hasWithoutAssayResultFilter = false;
             const newFilterCards = [...filters].filter(filter => {
-                return filter.entityDataType.instanceSchemaName !== chosenEntityType.instanceSchemaName;
+                return filter.entityDataType.sampleFinderCardType !== chosenEntityType.sampleFinderCardType;
             });
             Object.keys(dataTypeFilters).forEach(queryName => {
                 if (isAssay) {

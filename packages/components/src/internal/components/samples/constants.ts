@@ -171,10 +171,7 @@ export const DEFAULT_SAMPLE_FIELD_CONFIG = {
 export const ALIQUOTED_FROM_COL = 'AliquotedFrom';
 const STATUS_COL = 'Status';
 
-export const AMOUNT_AND_UNITS_COLUMNS = [
-    'StoredAmount',
-    'Units'
-];
+export const AMOUNT_AND_UNITS_COLUMNS = ['StoredAmount', 'Units'];
 
 export const AMOUNT_AND_UNITS_COLUMNS_LC = AMOUNT_AND_UNITS_COLUMNS.map(col => col.toLowerCase());
 

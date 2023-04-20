@@ -1,4 +1,4 @@
-import {ActionURL, Ajax, AuditBehaviorTypes, Filter, Query, Utils} from '@labkey/api';
+import { ActionURL, Ajax, AuditBehaviorTypes, Filter, Query, Utils } from '@labkey/api';
 import { List, Map } from 'immutable';
 
 import { buildURL } from '../../url/AppURL';
@@ -18,6 +18,8 @@ import { Row, selectRows, SelectRowsResponse } from '../../query/selectRows';
 
 import { ViewInfo } from '../../ViewInfo';
 
+import { Container } from '../base/models/Container';
+
 import { getInitialParentChoices, isDataClassEntity, isSampleEntity } from './utils';
 import { DataClassDataType, DataOperation, SampleTypeDataType } from './constants';
 import {
@@ -29,10 +31,10 @@ import {
     EntityParentType,
     EntityTypeOption,
     IEntityTypeOption,
-    IParentOption, MoveSamplesResult,
+    IParentOption,
+    MoveSamplesResult,
     OperationConfirmationData,
 } from './models';
-import {Container} from "../base/models/Container";
 
 export function getOperationConfirmationData(
     dataType: EntityDataType,
@@ -734,8 +736,8 @@ export function getMoveConfirmationData(
         useSnapshotSelection,
         isDataClassEntity(dataType)
             ? {
-                dataOperation: DataOperation.Move,
-            }
+                  dataOperation: DataOperation.Move,
+              }
             : undefined
     );
 }

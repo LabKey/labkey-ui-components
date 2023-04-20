@@ -12,7 +12,7 @@ import { isAppHomeFolder } from '../../app/utils';
 import { AppContext, useAppContext } from '../../AppContext';
 import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
 import { HOME_PATH, HOME_TITLE } from '../navigation/constants';
-import {Container} from "../base/models/Container";
+import { Container } from '../base/models/Container';
 
 interface Props extends Omit<ConfirmModalProps, 'onConfirm'> {
     nounPlural: string;

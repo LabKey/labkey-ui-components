@@ -6,6 +6,8 @@ import { QueryInfo } from '../../../public/QueryInfo';
 
 import { InsertOptions } from '../../query/api';
 
+import { Container } from '../base/models/Container';
+
 import {
     getDataOperationConfirmationData,
     getEntityTypeData,
@@ -22,7 +24,6 @@ import {
     MoveSamplesResult,
     OperationConfirmationData,
 } from './models';
-import {Container} from "../base/models/Container";
 
 export interface EntityAPIWrapper {
     getDataOperationConfirmationData: (

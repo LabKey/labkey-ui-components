@@ -107,7 +107,7 @@ export const EntityMoveModal: FC<Props> = memo(props => {
         async (targetContainerPath: string, targetName: string, auditUserComment: string) => {
             const movingAll = confirmationData.notAllowed.length === 0;
             const count = confirmationData.allowed.length;
-            const noun = getEntityNoun(entityDataType, count);
+            const noun = getEntityNoun(entityDataType, count)?.toLowerCase();
             setNumConfirmed(count);
             setShowProgress(true);
 
@@ -179,8 +179,8 @@ export const EntityMoveModal: FC<Props> = memo(props => {
                 onCancel={onCancel}
                 cancelButtonText="Dismiss"
             >
-                You cannot move more than {maxSelected} individual {nounPlural} at a time. Please select fewer{' '}
-                {nounPlural} and try again.
+                You cannot move more than {maxSelected} individual {nounPlural.toLowerCase()} at a time. Please select
+                fewer {nounPlural.toLowerCase()} and try again.
             </ConfirmModal>
         );
     }

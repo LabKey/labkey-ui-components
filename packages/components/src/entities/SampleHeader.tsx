@@ -77,7 +77,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
         assayProviderType,
         canPrintLabels,
         defaultLabel,
-        entityDataType,
+        entityDataType = SampleTypeDataType,
         iconSrc = 'samples',
         hasActiveJob,
         navigate,
@@ -332,7 +332,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                     onAfterMove={onAfterMove}
                     onCancel={onHideModals}
                     maxSelected={1}
-                    entityDataType={SampleTypeDataType}
+                    entityDataType={entityDataType}
                     moveFn={api.entity.moveSamples}
                     sourceContainer={sampleContainer}
                     targetAppURL={AppURL.create(isMedia ? MEDIA_KEY : SAMPLES_KEY, sampleModel.queryName)}
@@ -345,7 +345,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                     beforeDelete={onBeforeDelete}
                     afterDelete={onAfterDelete}
                     onCancel={onHideModals}
-                    entityDataType={entityDataType ?? SampleTypeDataType}
+                    entityDataType={entityDataType}
                     auditBehavior={getSampleAuditBehaviorType()}
                     verb="deleted and removed from storage"
                     containerPath={sampleContainer?.path}

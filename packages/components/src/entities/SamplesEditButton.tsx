@@ -37,6 +37,7 @@ import { SampleMoveMenuItem } from './SampleMoveMenuItem';
 interface OwnProps {
     combineParentTypes?: boolean;
     currentProductId?: string;
+    entityDataType?: EntityDataType;
     parentEntityDataTypes: EntityDataType[];
     showLinkToStudy?: boolean;
     targetProductId?: string;
@@ -57,6 +58,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
         metricFeatureArea,
         currentProductId,
         targetProductId,
+        entityDataType,
     } = props;
     const [crossFolderSelectionResult, setCrossFolderSelectionResult] = useState<CrossFolderSelectionResult>();
     const { user, moduleContext } = useServerContext();
@@ -205,7 +207,12 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
                 )}
                 {showEdit && (showMoveToProject || showDelete || showStudy) && <MenuItem divider />}
                 {showMoveToProject && (
-                    <SampleMoveMenuItem actions={actions} queryModel={model} handleClick={handleMenuClick} />
+                    <SampleMoveMenuItem
+                        actions={actions}
+                        entityDataType={entityDataType}
+                        queryModel={model}
+                        handleClick={handleMenuClick}
+                    />
                 )}
                 {showDelete && (
                     <RequiresPermission perms={PermissionTypes.Delete}>

@@ -114,9 +114,9 @@ export class QueryInfo {
 
     /**
      * This constructor merges a Partial<QueryInfo> with QUERY_INFO_DEFAULTS to create a QueryInfo object. You should
-     * almost never call this constructor yourself. The vast majority of the time the constructor should be passed the
-     * result of the applyQueryMetadata method, however for some simpler test cases we can use the fromJsonForTests
-     * static method to instantiate a new QueryInfo.
+     * almost never call this constructor yourself. The vast majority of the time you should be using the
+     * applyQueryMetadata method to instantiate a QueryInfo, however for some simpler test cases we can use the
+     * fromJsonForTests static method to instantiate a new QueryInfo.
      * @param data the Partial<QueryInfo> object to merge with QUERY_INFO_DEFAULTS when creating a QueryInfo.
      */
     constructor(data: Partial<QueryInfo>) {

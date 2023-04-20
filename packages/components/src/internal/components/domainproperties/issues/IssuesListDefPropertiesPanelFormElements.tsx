@@ -370,7 +370,6 @@ export class RestrictedIssueInput extends PureComponent<RestrictedOptionsProps> 
                     <DomainFieldLabel
                         label="Restrict Issue List"
                         helpTipBody={ISSUES_LIST_RESTRICTED_TRACKER_TIP}
-                        required={false}
                     />
                 </Col>
                 <Col xs={9} lg={8}>
@@ -386,7 +385,7 @@ export class RestrictedIssueInput extends PureComponent<RestrictedOptionsProps> 
     }
 }
 
-export class RestrictedIssueGroupInput extends PureComponent<RestrictedOptionsProps, any> {
+export class RestrictedIssueGroupInput extends PureComponent<RestrictedOptionsProps> {
     onChange = (name: string, formValue: any, selected: Principal, ref: any): void => {
         const groupId = selected ? selected.userId : undefined;
         this.props.onSelect(name, groupId);
@@ -401,7 +400,6 @@ export class RestrictedIssueGroupInput extends PureComponent<RestrictedOptionsPr
                     <DomainFieldLabel
                         label="Additional Group with Access"
                         helpTipBody={ISSUES_LIST_RESTRICTED_GROUP_TIP}
-                        required={false}
                     />
                 </Col>
                 <Col xs={9} lg={8}>
@@ -416,7 +414,7 @@ export class RestrictedIssueGroupInput extends PureComponent<RestrictedOptionsPr
                             valueKey="userId"
                             labelKey="displayName"
                             onChange={this.onChange}
-                            value={model.restrictedIssueListGroup ? model.restrictedIssueListGroup : undefined}
+                            value={model.restrictedIssueListGroup}
                             disabled={!model.restrictedIssueList}
                         />
                     )}

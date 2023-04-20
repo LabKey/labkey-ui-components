@@ -94,7 +94,7 @@ export class IssuesListDefPropertiesPanelImpl extends React.PureComponent<
         }
     };
 
-    onCheckChange = e => {
+    onRestrictedListCheckChange = e => {
         const name = e.target.name;
         let value = e.target.checked;
 
@@ -137,7 +137,7 @@ export class IssuesListDefPropertiesPanelImpl extends React.PureComponent<
                             <div className="domain-field-padding-bottom">
                                 <RestrictedOptions
                                     model={model}
-                                    onCheckChange={this.onCheckChange}
+                                    onCheckChange={this.onRestrictedListCheckChange}
                                     onSelect={this.onSelectChange}
                                 />
                             </div>

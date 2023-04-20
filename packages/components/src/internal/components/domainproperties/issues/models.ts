@@ -20,23 +20,23 @@ import { Record } from 'immutable';
 import { DomainDesign } from '../models';
 
 export interface IssuesListDefOptionsConfig {
-    entityId?: string;
-    issueDefName: string;
-    singularItemName: string;
-    pluralItemName: string;
-    commentSortDirection: string;
     assignedToGroup: number;
     assignedToUser: number;
+    commentSortDirection: string;
+    entityId?: string;
+    issueDefName: string;
+    pluralItemName: string;
     relatedFolderName: string;
     restrictedIssueList: boolean;
     restrictedIssueListGroup: number;
+    singularItemName: string;
 }
 
 interface IssuesListDefModelConfig extends IssuesListDefOptionsConfig {
-    exception: string;
     domain: DomainDesign;
     domainId: number;
     domainKindName: string;
+    exception: string;
 }
 
 export class IssuesListDefModel implements IssuesListDefModelConfig {

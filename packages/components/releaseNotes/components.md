@@ -1,15 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.328.1
-*Released*: TBD
+### version 2.329.1
+*Released*: 20 April 2023
 - Support for restricted issue lists
     - Adds configuration to the issue list admin page to enable/disable restricted issue lists.
     - Optional site and project group selection to allow group members to access restricted issues.
     - This feature is controlled via a module property.
 
-### version TBD
-*Released*: TBD
+### version 2.329.0
+*Released*: 20 April 2023
 * Issue 47656: Add metrics for pagination usage and page sizing
 * Issue 47657: Remove adding BarTender templates from within subfolder Projects
 

@@ -125,22 +125,14 @@ export class AssignmentOptions extends PureComponent<AssignmentOptionsProps, Ass
 }
 
 export class RestrictedOptions extends PureComponent<RestrictedOptionsProps> {
-
     render() {
         const { model, onCheckChange, onSelect } = this.props;
 
         return (
             <div>
                 <SectionHeading title="Restricted List Options" />
-                <RestrictedIssueInput
-                    model={model}
-                    onCheckChange={onCheckChange}
-                    onSelect={onSelect}
-                />
-                <RestrictedIssueGroupInput
-                    model={model}
-                    onSelect={onSelect}
-                />
+                <RestrictedIssueInput model={model} onCheckChange={onCheckChange} onSelect={onSelect} />
+                <RestrictedIssueGroupInput model={model} onSelect={onSelect} />
             </div>
         );
     }
@@ -349,15 +341,12 @@ export class DefaultRelatedFolderInput extends PureComponent<AssignmentOptionsIn
 
 export class RestrictedIssueInput extends PureComponent<RestrictedOptionsProps> {
     render() {
-        const { model, onCheckChange} = this.props;
+        const { model, onCheckChange } = this.props;
 
         return (
             <Row className="margin-top">
                 <Col xs={3} lg={4}>
-                    <DomainFieldLabel
-                        label="Restrict Issue List"
-                        helpTipBody={ISSUES_LIST_RESTRICTED_TRACKER_TIP}
-                    />
+                    <DomainFieldLabel label="Restrict Issue List" helpTipBody={ISSUES_LIST_RESTRICTED_TRACKER_TIP} />
                 </Col>
                 <Col xs={9} lg={8}>
                     <input
@@ -373,7 +362,7 @@ export class RestrictedIssueInput extends PureComponent<RestrictedOptionsProps> 
 }
 
 export class RestrictedIssueGroupInput extends PureComponent<RestrictedOptionsProps> {
-    state: Readonly<RestrictedOptionsState> = {coreGroups: undefined,};
+    state: Readonly<RestrictedOptionsState> = { coreGroups: undefined };
 
     componentDidMount = async (): Promise<void> => {
         try {

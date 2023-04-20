@@ -16,9 +16,14 @@ import { HelpTopicURL } from '../HelpTopicURL';
 
 import { DEFINE_ISSUES_LIST_TOPIC } from '../../../util/helpLinks';
 
-import { AssignmentOptions, BasicPropertiesFields, RestrictedOptions } from './IssuesListDefPropertiesPanelFormElements';
-import { IssuesListDefModel } from './models';
 import { isRestrictedIssueListSupported } from '../../../app/utils';
+
+import {
+    AssignmentOptions,
+    BasicPropertiesFields,
+    RestrictedOptions,
+} from './IssuesListDefPropertiesPanelFormElements';
+import { IssuesListDefModel } from './models';
 
 const PROPERTIES_HEADER_ID = 'issues-properties-hdr';
 
@@ -96,13 +101,12 @@ export class IssuesListDefPropertiesPanelImpl extends React.PureComponent<
 
     onRestrictedListCheckChange = e => {
         const name = e.target.name;
-        let value = e.target.checked;
+        const value = e.target.checked;
 
         if (!value) {
             // clear out the group dropdown
             this.onChange(name, value, 'restrictedIssueListGroup');
-        }
-        else {
+        } else {
             this.onChange(name, value);
         }
     };

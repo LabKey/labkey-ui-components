@@ -53,7 +53,6 @@ interface AssignmentOptionsInputProps {
 }
 
 interface RestrictedOptionsProps {
-    coreGroups?: List<Principal>;
     model: IssuesListDefModel;
     onCheckChange?: (any) => void;
     onSelect: (name: string, value: any) => any;
@@ -125,21 +124,10 @@ export class AssignmentOptions extends PureComponent<AssignmentOptionsProps, Ass
     }
 }
 
-export class RestrictedOptions extends PureComponent<RestrictedOptionsProps, RestrictedOptionsState> {
-    state: Readonly<RestrictedOptionsState> = {coreGroups: undefined,};
-
-    componentDidMount = async (): Promise<void> => {
-        try {
-            const coreGroups = await getProjectGroups();
-            this.setState({ coreGroups });
-        } catch (e) {
-            console.error('RestrictedOptions: failed to load initialize project groups', e);
-        }
-    };
+export class RestrictedOptions extends PureComponent<RestrictedOptionsProps> {
 
     render() {
         const { model, onCheckChange, onSelect } = this.props;
-        const { coreGroups } = this.state;
 
         return (
             <div>
@@ -151,7 +139,6 @@ export class RestrictedOptions extends PureComponent<RestrictedOptionsProps, Res
                 />
                 <RestrictedIssueGroupInput
                     model={model}
-                    coreGroups={coreGroups}
                     onSelect={onSelect}
                 />
             </div>
@@ -386,13 +373,25 @@ export class RestrictedIssueInput extends PureComponent<RestrictedOptionsProps> 
 }
 
 export class RestrictedIssueGroupInput extends PureComponent<RestrictedOptionsProps> {
+    state: Readonly<RestrictedOptionsState> = {coreGroups: undefined,};
+
+    componentDidMount = async (): Promise<void> => {
+        try {
+            const coreGroups = await getProjectGroups();
+            this.setState({ coreGroups });
+        } catch (e) {
+            console.error('RestrictedOptions: failed to load initialize project groups', e);
+        }
+    };
+
     onChange = (name: string, formValue: any, selected: Principal, ref: any): void => {
         const groupId = selected ? selected.userId : undefined;
         this.props.onSelect(name, groupId);
     };
 
     render() {
-        const { model, coreGroups } = this.props;
+        const { model } = this.props;
+        const { coreGroups } = this.state;
 
         return (
             <Row className="margin-top">

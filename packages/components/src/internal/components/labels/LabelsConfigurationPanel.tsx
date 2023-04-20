@@ -28,7 +28,7 @@ import { LabelHelpTip } from '../base/LabelHelpTip';
 
 import { LabelTemplate } from './models';
 import { LABEL_TEMPLATE_SQ } from './constants';
-import { isProductProjectsEnabled } from '../../app/utils';
+import { isAppHomeFolder } from '../../app/utils';
 
 const TITLE = 'Manage Label Templates';
 const NEW_LABEL_INDEX = -1;
@@ -346,13 +346,13 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
 
 export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props => {
     const { api, setIsDirty, defaultLabel } = props;
-    const { user, container } = useServerContext();
+    const { user, container, moduleContext } = useServerContext();
     const [templates, setTemplates] = useState<LabelTemplate[]>([]);
     const [error, setError] = useState<string>();
     const [selected, setSelected] = useState<number>();
     const [newDefaultLabel, setNewDefaultLabel] = useState<number>(defaultLabel);
     const addNew = useMemo(() => selected === NEW_LABEL_INDEX, [selected]);
-    const showAdd = container.isProject || !isProductProjectsEnabled();
+    const showAdd = isAppHomeFolder(container, moduleContext);
 
     const queryLabelTemplates = useCallback(
         (newLabelTemplate?: number) => {

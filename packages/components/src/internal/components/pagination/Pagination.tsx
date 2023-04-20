@@ -6,6 +6,7 @@ import { LoadingState } from '../../../public/LoadingState';
 import { PaginationButton } from './PaginationButton';
 import { PageMenu } from './PageMenu';
 import { PaginationInfo } from './PaginationInfo';
+import { incrementClientSideMetricCount } from '../../actions';
 
 export interface PaginationData {
     currentPage: number;
@@ -30,10 +31,37 @@ export interface PaginationProps extends PaginationData {
     setPageSize: (pageSize) => void;
 }
 
+const PAGINATION_METRIC_AREA = "pagination";
+
 export class Pagination extends PureComponent<PaginationProps> {
     static defaultProps = {
         pageSizes: [20, 40, 100, 250, 400],
     };
+
+    onLoadFirstPage = () => {
+        incrementClientSideMetricCount(PAGINATION_METRIC_AREA, "loadFirstPage");
+        this.props.loadFirstPage();
+    }
+
+    onLoadLastPage = () => {
+        incrementClientSideMetricCount(PAGINATION_METRIC_AREA, "loadLastPage");
+        this.props.loadLastPage();
+    }
+
+    onLoadPreviousPage = () => {
+        incrementClientSideMetricCount(PAGINATION_METRIC_AREA, "loadPreviousPage");
+        this.props.loadPreviousPage();
+    }
+
+    onLoadNextPage = () => {
+        incrementClientSideMetricCount(PAGINATION_METRIC_AREA, "loadNextPage");
+        this.props.loadNextPage();
+    }
+
+    onSetPageSize = (pageSize: number) => {
+        incrementClientSideMetricCount(PAGINATION_METRIC_AREA, "setPageSize" + pageSize);
+        this.props.setPageSize(pageSize);
+    }
 
     render(): ReactNode {
         const {
@@ -42,16 +70,11 @@ export class Pagination extends PureComponent<PaginationProps> {
             id,
             isFirstPage,
             isLastPage,
-            loadFirstPage,
-            loadLastPage,
-            loadPreviousPage,
-            loadNextPage,
             offset,
             pageSize,
             pageCount,
             pageSizes,
             rowCount,
-            setPageSize,
             totalCountLoadingState,
         } = this.props;
         const showPaginationButtons = rowCount > pageSizes[0];
@@ -73,7 +96,7 @@ export class Pagination extends PureComponent<PaginationProps> {
                             disabled={disabled || isFirstPage}
                             iconClass="fa-chevron-left"
                             tooltip="Previous Page"
-                            onClick={loadPreviousPage}
+                            onClick={this.onLoadPreviousPage}
                         />
 
                         <PageMenu
@@ -83,11 +106,11 @@ export class Pagination extends PureComponent<PaginationProps> {
                             isFirstPage={isFirstPage}
                             isLastPage={isLastPage}
                             pageCount={pageCount}
-                            loadFirstPage={loadFirstPage}
-                            loadLastPage={loadLastPage}
+                            loadFirstPage={this.onLoadFirstPage}
+                            loadLastPage={this.onLoadLastPage}
                             pageSize={pageSize}
                             pageSizes={pageSizes}
-                            setPageSize={setPageSize}
+                            setPageSize={this.onSetPageSize}
                         />
 
                         <PaginationButton
@@ -95,7 +118,7 @@ export class Pagination extends PureComponent<PaginationProps> {
                             disabled={disabled || isLastPage}
                             iconClass="fa-chevron-right"
                             tooltip="Next Page"
-                            onClick={loadNextPage}
+                            onClick={this.onLoadNextPage}
                         />
                     </ButtonGroup>
                 )}

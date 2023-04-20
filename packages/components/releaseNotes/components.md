@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 47656: Add metrics for pagination usage and page sizing
+* Issue 47657: Remove adding BarTender templates from within subfolder Projects
+
 ### version 2.328.1
 *Released*: 20 April 2023
 * Issue 47743: Sample Finder mis-renders data cards in queries with both "All Sample Types" and Assay cards

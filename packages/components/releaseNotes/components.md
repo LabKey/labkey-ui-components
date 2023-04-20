@@ -8,6 +8,15 @@ Components, models, actions, and utility functions for LabKey applications and p
     - Optional site and project group selection to allow group members to access restricted issues.
     - This feature is controlled via a module property.
 
+### version TBD
+*Released*: TBD
+* Issue 47656: Add metrics for pagination usage and page sizing
+* Issue 47657: Remove adding BarTender templates from within subfolder Projects
+
+### version 2.328.1
+*Released*: 20 April 2023
+* Issue 47743: Sample Finder mis-renders data cards in queries with both "All Sample Types" and Assay cards
+
 ### version 2.328.0
 *Released*: 19 April 2023
 - Issue 47509: Better handling of samples with numeric names on assay import

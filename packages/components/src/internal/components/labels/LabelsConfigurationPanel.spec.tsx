@@ -13,6 +13,8 @@ import { ChoicesListItem } from '../base/ChoicesListItem';
 import { getLabelPrintingTestAPIWrapper } from './APIWrapper';
 import { LabelsConfigurationPanel, LabelTemplateDetails, LabelTemplatesList } from './LabelsConfigurationPanel';
 import { LabelTemplate } from './models';
+import { Container } from '../base/models/Container';
+import { AddEntityButton } from '../buttons/AddEntityButton';
 
 jest.mock('react-bootstrap-toggle', () => {
     return props => {
@@ -31,15 +33,54 @@ describe('LabelsConfigurationPanel', () => {
             labelprinting: getLabelPrintingTestAPIWrapper(jest.fn),
         }),
         defaultLabel: undefined,
+        getIsDirty: jest.fn(),
+        setIsDirty: jest.fn(),
     };
 
-    test('default props', async () => {
-        const wrapper = mountWithAppServerContext(<LabelsConfigurationPanel {...DEFAULT_PROPS} />);
+    test('default props, home project', async () => {
+        const wrapper = mountWithAppServerContext(<LabelsConfigurationPanel {...DEFAULT_PROPS} />,
+            undefined,
+            {
+                 container: new Container({ path: '/Test' }) ,
+            });
 
         await waitForLifecycle(wrapper);
 
         expect(wrapper.find(LabelTemplatesList)).toHaveLength(1);
         expect(wrapper.find(LabelTemplateDetails)).toHaveLength(1);
+        expect(wrapper.find(AddEntityButton)).toHaveLength(1);
+        wrapper.unmount();
+    });
+
+    test('default props, product project', async () => {
+        const wrapper = mountWithAppServerContext(<LabelsConfigurationPanel {...DEFAULT_PROPS} />,
+            undefined,
+            {
+                container: new Container({ path: '/Test/Folder', type: 'folder' }) ,
+                moduleContext: { query: { isProductProjectsEnabled: true } }
+            });
+
+        await waitForLifecycle(wrapper);
+
+        expect(wrapper.find(LabelTemplatesList)).toHaveLength(1);
+        expect(wrapper.find(LabelTemplateDetails)).toHaveLength(1);
+        expect(wrapper.find(AddEntityButton)).toHaveLength(0);
+        wrapper.unmount();
+    });
+
+    test('default props, subfolder without projects', async () => {
+        const wrapper = mountWithAppServerContext(<LabelsConfigurationPanel {...DEFAULT_PROPS} />,
+            undefined,
+            {
+                container: new Container({ path: '/Test/Folder', type: 'folder' }) ,
+                moduleContext: { query: { isProductProjectsEnabled: false } }
+            });
+
+        await waitForLifecycle(wrapper);
+
+        expect(wrapper.find(LabelTemplatesList)).toHaveLength(1);
+        expect(wrapper.find(LabelTemplateDetails)).toHaveLength(1);
+        expect(wrapper.find(AddEntityButton)).toHaveLength(1);
         wrapper.unmount();
     });
 });

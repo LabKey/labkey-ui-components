@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.X
+*Released*: X April 2023
+* Issue 47743: Sample Finder mis-renders data cards in queries with both "All Sample Types" and Assay cards
+
 ### version 2.328.0
 *Released*: 19 April 2023
 - Issue 47509: Better handling of samples with numeric names on assay import

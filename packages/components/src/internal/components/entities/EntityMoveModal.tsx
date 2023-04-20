@@ -193,6 +193,7 @@ export const EntityMoveModal: FC<Props> = memo(props => {
                 <EntityMoveConfirmationModal
                     cancelButtonText="Cancel"
                     confirmButtonText="Move"
+                    nounPlural={nounPlural}
                     onCancel={onCancel}
                     onConfirm={onConfirm}
                     title={title}

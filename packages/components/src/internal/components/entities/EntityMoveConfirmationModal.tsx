@@ -12,11 +12,12 @@ import { Alert } from '../base/Alert';
 import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
 
 interface Props extends Omit<ConfirmModalProps, 'onConfirm'> {
+    nounPlural: string;
     onConfirm: (targetContainer: string, targetName: string, userComment: string) => void;
 }
 
 export const EntityMoveConfirmationModal: FC<Props> = memo(props => {
-    const { children, onConfirm, ...confirmModalProps } = props;
+    const { children, onConfirm, nounPlural, ...confirmModalProps } = props;
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [containerOptions, setContainerOptions] = useState<SelectInputOption[]>();
@@ -47,7 +48,7 @@ export const EntityMoveConfirmationModal: FC<Props> = memo(props => {
                     folders = folders.filter(c => c !== undefined && c.id !== '');
 
                     // filter to folders that the user has InsertPermissions
-                    folders = folders.filter(c => c.effectivePermissions.indexOf(Security.PermissionTypes.Insert));
+                    folders = folders.filter(c => c.effectivePermissions.indexOf(Security.PermissionTypes.Insert) > -1);
 
                     // filter out the current container
                     folders = folders.filter(c => c.id !== container.id);
@@ -108,6 +109,18 @@ export const EntityMoveConfirmationModal: FC<Props> = memo(props => {
                 cancelButtonText="Dismiss"
             >
                 <Alert>{error}</Alert>
+            </ConfirmModal>
+        );
+    }
+
+    if (containerOptions?.length === 0) {
+        return (
+            <ConfirmModal
+                title={confirmModalProps.title}
+                onCancel={confirmModalProps.onCancel}
+                cancelButtonText="Dismiss"
+            >
+                You do not have permission to move {nounPlural} to any of the available projects.
             </ConfirmModal>
         );
     }

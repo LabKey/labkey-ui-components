@@ -6,9 +6,9 @@ import { Progress } from '../base/Progress';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
+import { Container } from '../base/models/Container';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { Actions } from '../../../public/QueryModel/withQueryModels';
 
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 import { capitalizeFirstChar } from '../../util/utils';
@@ -27,24 +27,36 @@ import { getEntityNoun } from './utils';
 import { EntityMoveConfirmationModal } from './EntityMoveConfirmationModal';
 
 interface Props {
-    actions: Actions;
     entityDataType: EntityDataType;
     maxSelected: number;
     moveFn: (
-        targetContainer: string,
+        sourceContainer: Container,
+        targetContainerPath: string,
         rowIds: number[],
         selectionKey: string,
         useSnapshotSelection: boolean,
         auditUserComment: string
     ) => void;
+    onAfterMove: () => void;
     onCancel: () => void;
     queryModel: QueryModel;
+    sourceContainer?: Container; // used in the single move case when the item is not in the current container
     targetAppURL?: AppURL;
     useSelected: boolean;
 }
 
 export const EntityMoveModal: FC<Props> = memo(props => {
-    const { actions, queryModel, onCancel, useSelected, entityDataType, maxSelected, moveFn, targetAppURL } = props;
+    const {
+        onAfterMove,
+        sourceContainer,
+        queryModel,
+        onCancel,
+        useSelected,
+        entityDataType,
+        maxSelected,
+        moveFn,
+        targetAppURL,
+    } = props;
     const { nounPlural } = entityDataType;
     const { createNotification } = useNotificationsContext();
     const [confirmationData, setConfirmationData] = useState<OperationConfirmationData>();
@@ -92,19 +104,23 @@ export const EntityMoveModal: FC<Props> = memo(props => {
     );
 
     const onConfirm = useCallback(
-        async (targetContainer: string, targetName: string, auditUserComment: string) => {
+        async (targetContainerPath: string, targetName: string, auditUserComment: string) => {
             const movingAll = confirmationData.notAllowed.length === 0;
             const count = confirmationData.allowed.length;
             const noun = getEntityNoun(entityDataType, count);
             setNumConfirmed(count);
             setShowProgress(true);
 
+            const rowIds_ = !useSelected || !movingAll ? confirmationData.allowed.map(a => a.RowId) : undefined;
+            const useSnapshotSelection = useSelected && movingAll && queryModel.filterArray.length > 0;
+
             try {
                 await moveFn(
-                    targetContainer,
-                    !movingAll ? confirmationData.allowed.map(a => a.RowId) : undefined,
+                    sourceContainer,
+                    targetContainerPath,
+                    rowIds_,
                     selectionKey,
-                    movingAll && queryModel.filterArray.length > 0, // useSnapshotSelection if grid has filters
+                    useSnapshotSelection,
                     auditUserComment
                 );
 
@@ -112,32 +128,48 @@ export const EntityMoveModal: FC<Props> = memo(props => {
                     getCurrentAppProperties().controllerName,
                     `${ActionURL.getAction() || 'app'}.view`,
                     undefined,
-                    { container: targetContainer, returnUrl: false }
+                    { container: targetContainerPath, returnUrl: false }
                 );
                 if (targetAppURL) {
                     projectUrl = projectUrl + targetAppURL.toHref();
                 }
 
-                createNotification({
-                    message: (
-                        <>
-                            Successfully moved {count} {noun} to <a href={projectUrl}>{targetName}</a>.
-                        </>
-                    ),
-                    alertClass: 'success',
-                });
+                createNotification(
+                    {
+                        message: (
+                            <>
+                                Successfully moved {count} {noun} to <a href={projectUrl}>{targetName}</a>.
+                            </>
+                        ),
+                        alertClass: 'success',
+                    },
+                    true
+                );
+                onAfterMove();
             } catch (message) {
                 setShowProgress(false);
-                createNotification({
-                    alertClass: 'danger',
-                    message: 'There was a problem moving the ' + noun + '. ' + message,
-                });
+                createNotification(
+                    { alertClass: 'danger', message: 'There was a problem moving the ' + noun + '. ' + message },
+                    true
+                );
+                if (useSelected) onAfterMove();
             } finally {
-                actions.loadModel(queryModel.id, true, true);
                 onCancel();
             }
         },
-        [actions, confirmationData, createNotification, entityDataType, moveFn, onCancel, queryModel.id, selectionKey]
+        [
+            sourceContainer,
+            confirmationData,
+            entityDataType,
+            useSelected,
+            queryModel.filterArray.length,
+            moveFn,
+            selectionKey,
+            targetAppURL,
+            createNotification,
+            onAfterMove,
+            onCancel,
+        ]
     );
 
     if (useSelected && maxSelected && numSelected > maxSelected) {
@@ -196,6 +228,7 @@ export const EntityMoveModal: FC<Props> = memo(props => {
                     nounPlural={nounPlural}
                     onCancel={onCancel}
                     onConfirm={onConfirm}
+                    sourceContainer={sourceContainer}
                     title={title}
                 >
                     {message}

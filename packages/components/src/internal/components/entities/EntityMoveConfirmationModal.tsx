@@ -12,14 +12,16 @@ import { isAppHomeFolder } from '../../app/utils';
 import { AppContext, useAppContext } from '../../AppContext';
 import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
 import { HOME_PATH, HOME_TITLE } from '../navigation/constants';
+import {Container} from "../base/models/Container";
 
 interface Props extends Omit<ConfirmModalProps, 'onConfirm'> {
     nounPlural: string;
     onConfirm: (targetContainer: string, targetName: string, userComment: string) => void;
+    sourceContainer?: Container;
 }
 
 export const EntityMoveConfirmationModal: FC<Props> = memo(props => {
-    const { children, onConfirm, nounPlural, ...confirmModalProps } = props;
+    const { children, onConfirm, nounPlural, sourceContainer, ...confirmModalProps } = props;
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [containerOptions, setContainerOptions] = useState<SelectInputOption[]>();
@@ -27,6 +29,7 @@ export const EntityMoveConfirmationModal: FC<Props> = memo(props => {
     const [auditUserComment, setAuditUserComment] = useState<string>();
     const { api } = useAppContext<AppContext>();
     const { container, moduleContext } = useServerContext();
+    const container_ = sourceContainer ?? container;
 
     useEffect(
         () => {
@@ -36,9 +39,9 @@ export const EntityMoveConfirmationModal: FC<Props> = memo(props => {
 
                 try {
                     let folders = await api.security.fetchContainers({
-                        containerPath: isAppHomeFolder(container, moduleContext)
-                            ? container.path
-                            : container.parentPath,
+                        containerPath: isAppHomeFolder(container_, moduleContext)
+                            ? container_.path
+                            : container_.parentPath,
                         includeEffectivePermissions: true,
                         includeStandardProperties: true, // needed to get the container title
                         includeWorkbookChildren: false,
@@ -53,7 +56,7 @@ export const EntityMoveConfirmationModal: FC<Props> = memo(props => {
                     folders = folders.filter(c => c.effectivePermissions.indexOf(Security.PermissionTypes.Insert) > -1);
 
                     // filter out the current container
-                    folders = folders.filter(c => c.id !== container.id);
+                    folders = folders.filter(c => c.id !== container_.id);
 
                     setContainerOptions(
                         folders.map(f => ({

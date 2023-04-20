@@ -22,6 +22,7 @@ import {
     MoveSamplesResult,
     OperationConfirmationData,
 } from './models';
+import {Container} from "../base/models/Container";
 
 export interface EntityAPIWrapper {
     getDataOperationConfirmationData: (
@@ -59,6 +60,7 @@ export interface EntityAPIWrapper {
     ) => Promise<any>;
     loadNameExpressionOptions: (containerPath?: string) => Promise<GetNameExpressionOptionsResponse>;
     moveSamples: (
+        sourceContainer: Container,
         targetContainer: string,
         rowIds: number[],
         selectionKey: string,

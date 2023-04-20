@@ -32,6 +32,7 @@ import {
     IParentOption, MoveSamplesResult,
     OperationConfirmationData,
 } from './models';
+import {Container} from "../base/models/Container";
 
 export function getOperationConfirmationData(
     dataType: EntityDataType,
@@ -740,6 +741,7 @@ export function getMoveConfirmationData(
 }
 
 export function moveSamples(
+    sourceContainer: Container,
     targetContainer: string,
     rowIds: number[],
     selectionKey: string,
@@ -761,7 +763,7 @@ export function moveSamples(
         }
 
         return Ajax.request({
-            url: buildURL('experiment', 'moveSamples.api'),
+            url: buildURL('experiment', 'moveSamples.api', undefined, { container: sourceContainer?.path }),
             method: 'POST',
             params,
             success: Utils.getCallbackWrapper(response => {

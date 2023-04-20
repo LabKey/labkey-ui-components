@@ -35,6 +35,10 @@ export const SampleMoveMenuItem: FC<Props> = memo(props => {
         }
     }, [handleClick, queryModel]);
 
+    const onAfterMove = useCallback(() => {
+        actions.loadModel(queryModel.id, true, true);
+    }, [actions, queryModel.id]);
+
     const onClose = useCallback(() => {
         setShowMoveSamplesModal(false);
     }, []);
@@ -51,9 +55,9 @@ export const SampleMoveMenuItem: FC<Props> = memo(props => {
             />
             {showMoveSamplesModal && (
                 <EntityMoveModal
-                    actions={actions}
                     queryModel={queryModel}
                     useSelected
+                    onAfterMove={onAfterMove}
                     onCancel={onClose}
                     maxSelected={maxSelected}
                     entityDataType={SampleTypeDataType}

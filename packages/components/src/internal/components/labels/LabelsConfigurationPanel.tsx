@@ -28,6 +28,7 @@ import { LabelHelpTip } from '../base/LabelHelpTip';
 
 import { LabelTemplate } from './models';
 import { LABEL_TEMPLATE_SQ } from './constants';
+import { isProductProjectsEnabled } from '../../app/utils';
 
 const TITLE = 'Manage Label Templates';
 const NEW_LABEL_INDEX = -1;
@@ -345,12 +346,13 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
 
 export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props => {
     const { api, setIsDirty, defaultLabel } = props;
-    const { user } = useServerContext();
+    const { user, container } = useServerContext();
     const [templates, setTemplates] = useState<LabelTemplate[]>([]);
     const [error, setError] = useState<string>();
     const [selected, setSelected] = useState<number>();
     const [newDefaultLabel, setNewDefaultLabel] = useState<number>(defaultLabel);
     const addNew = useMemo(() => selected === NEW_LABEL_INDEX, [selected]);
+    const showAdd = container.isProject || !isProductProjectsEnabled();
 
     const queryLabelTemplates = useCallback(
         (newLabelTemplate?: number) => {
@@ -423,7 +425,7 @@ export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props
                                 onSelect={onSetSelected}
                                 defaultLabel={newDefaultLabel}
                             />
-                            <AddEntityButton onClick={onAddLabel} entity="New Label Template" disabled={addNew} />
+                            {showAdd && <AddEntityButton onClick={onAddLabel} entity="New Label Template" disabled={addNew} />}
                         </div>
                         <div className="col-lg-8 col-md-6">
                             <LabelTemplateDetails

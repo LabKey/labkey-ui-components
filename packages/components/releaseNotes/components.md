@@ -6,6 +6,21 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Performance Evaluation for Data at Scale - Improve Insert/UpdateRows calls
   * add skipReselectRows param to insertRows/updateRows calls when detailed rows in response is not needed
 
+### version 2.329.0
+*Released*: 20 April 2023
+* Issue 47656: Add metrics for pagination usage and page sizing
+* Issue 47657: Remove adding BarTender templates from within subfolder Projects
+
+### version 2.328.1
+*Released*: 20 April 2023
+* Issue 47743: Sample Finder mis-renders data cards in queries with both "All Sample Types" and Assay cards
+
+### version 2.328.0
+*Released*: 19 April 2023
+- Issue 47509: Better handling of samples with numeric names on assay import
+  - the editable grid will always use key values (i.e. RowIds) for lookups, so set allowLookupByAlternateKey to false
+  - on re-import run if the original run was imported via editable grid, the sample Ids will be rowIds so set allowLookupByAlternateKey to false
+
 ### version 2.327.0
 *Released*: 18 April 2023
 * Media consistency improvements

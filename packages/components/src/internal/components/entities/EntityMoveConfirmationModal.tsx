@@ -2,14 +2,16 @@ import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Security } from '@labkey/api';
 
 import { ConfirmModalProps, ConfirmModal } from '../base/ConfirmModal';
+import { Alert } from '../base/Alert';
+import { useServerContext } from '../base/ServerContext';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
 import { resolveErrorMessage } from '../../util/messaging';
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 import { isAppHomeFolder } from '../../app/utils';
 import { AppContext, useAppContext } from '../../AppContext';
-import { useServerContext } from '../base/ServerContext';
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import { Alert } from '../base/Alert';
 import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
+import { HOME_PATH, HOME_TITLE } from '../navigation/constants';
 
 interface Props extends Omit<ConfirmModalProps, 'onConfirm'> {
     nounPlural: string;
@@ -55,7 +57,7 @@ export const EntityMoveConfirmationModal: FC<Props> = memo(props => {
 
                     setContainerOptions(
                         folders.map(f => ({
-                            label: f.title,
+                            label: f.path === HOME_PATH ? HOME_TITLE : f.title,
                             value: f.path,
                             data: f,
                         }))

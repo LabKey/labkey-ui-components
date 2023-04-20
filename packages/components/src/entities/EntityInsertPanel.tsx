@@ -146,7 +146,7 @@ export const WarningFieldList: FC<WarningFieldListProps> = memo(props => {
 export function getInferredFieldWarnings(
     inferred: InferDomainResponse,
     domainDetails: DomainDetails,
-    columns: OrderedMap<string, QueryColumn>,
+    columns: ExtendedMap<string, QueryColumn>,
     otherAllowedFields?: string[]
 ): ReactNode[] {
     const uniqueIdFields = [];

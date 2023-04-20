@@ -156,7 +156,7 @@ export const EntityMoveModal: FC<Props> = memo(props => {
     if (isLoading(loading)) {
         return (
             <ConfirmModal title="Move to Project" onCancel={onCancel} cancelButtonText="Cancel">
-                <LoadingSpinner msg="Loading confirmation data" />
+                <LoadingSpinner msg="Loading confirmation data..." />
             </ConfirmModal>
         );
     }
@@ -182,7 +182,7 @@ export const EntityMoveModal: FC<Props> = memo(props => {
                 onCancel={onCancel}
                 cancelButtonText="Dismiss"
             >
-                <Alert>{message}</Alert>
+                {message}
             </ConfirmModal>
         );
     }

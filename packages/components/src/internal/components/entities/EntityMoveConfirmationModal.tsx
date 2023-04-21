@@ -141,7 +141,7 @@ export const EntityMoveConfirmationModal: FC<Props> = memo(props => {
             <div className="top-spacing">
                 <SelectInput
                     helpTipRenderer="NONE"
-                    label="Move to Project"
+                    label="Move to"
                     onChange={onContainerChange}
                     options={containerOptions}
                     required

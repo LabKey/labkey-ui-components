@@ -11,6 +11,7 @@ import { useAppContext } from '../internal/AppContext';
 import { AppURL } from '../internal/url/AppURL';
 import { MEDIA_KEY, SAMPLES_KEY } from '../internal/app/constants';
 import { EntityDataType } from '../internal/components/entities/models';
+import {capitalizeFirstChar} from "../internal/util/utils";
 
 const ITEM_TEXT = 'Move to Project';
 
@@ -31,7 +32,10 @@ export const SampleMoveMenuItem: FC<Props> = memo(props => {
     const onClick = useCallback(() => {
         if (queryModel.hasSelections) {
             if (handleClick) {
-                handleClick(() => setShowMoveSamplesModal(true), 'Cannot Move ' + entityDataType.nounPlural);
+                handleClick(
+                    () => setShowMoveSamplesModal(true),
+                    'Cannot Move ' + capitalizeFirstChar(entityDataType.nounPlural)
+                );
             } else {
                 setShowMoveSamplesModal(true);
             }

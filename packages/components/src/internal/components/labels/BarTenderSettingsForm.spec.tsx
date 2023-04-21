@@ -10,6 +10,7 @@ import { getLabelPrintingTestAPIWrapper } from './APIWrapper';
 import { BarTenderSettingsFormImpl } from './BarTenderSettingsForm';
 import { BarTenderConfiguration } from './models';
 import { LabelsConfigurationPanel } from './LabelsConfigurationPanel';
+import { Container } from '../base/models/Container';
 
 describe('BarTenderSettingsForm', () => {
     const DEFAULT_PROPS = {
@@ -22,6 +23,7 @@ describe('BarTenderSettingsForm', () => {
         onSuccess: jest.fn(),
         getIsDirty: jest.fn(),
         setIsDirty: jest.fn(),
+        defaultLabel: 1,
     };
 
     function validate(wrapper: ReactWrapper, withHeading = true): void {
@@ -33,7 +35,11 @@ describe('BarTenderSettingsForm', () => {
     }
 
     test('default props', async () => {
-        const wrapper = mountWithAppServerContext(<BarTenderSettingsFormImpl {...DEFAULT_PROPS} />);
+        const wrapper = mountWithAppServerContext(<BarTenderSettingsFormImpl {...DEFAULT_PROPS} />,
+            undefined,
+            {
+                container: new Container({ path: '/Test' }) ,
+            });
         await waitForLifecycle(wrapper);
         validate(wrapper);
         expect(wrapper.find(FormControl).first().prop('type')).toBe('url');
@@ -58,7 +64,11 @@ describe('BarTenderSettingsForm', () => {
                             ),
                     }),
                 })}
-            />
+            />,
+            undefined,
+            {
+                container: new Container({ path: '/Test' }) ,
+            }
         );
         await waitForLifecycle(wrapper);
         validate(wrapper);

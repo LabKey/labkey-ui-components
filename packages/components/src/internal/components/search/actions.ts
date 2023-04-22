@@ -58,7 +58,7 @@ export interface SearchResult {
 }
 
 export interface SearchOptions {
-    category?: string;
+    category?: string | string[];
     experimentalCustomJson?: boolean;
     limit?: number;
     normalizeUrls?: boolean;
@@ -67,13 +67,21 @@ export interface SearchOptions {
     scope?: SearchScope;
 }
 
-export type Search = (options: SearchOptions, moduleContext?: ModuleContext) => Promise<SearchResult>;
+export type Search = (
+    options: SearchOptions,
+    moduleContext?: ModuleContext,
+    applyURLResolver?: boolean
+) => Promise<SearchResult>;
 
-export const search: Search = (options, moduleContext) => {
+export const search: Search = (options, moduleContext, applyURLResolver = true) => {
     let containerPath: string;
     if (isAllProductFoldersFilteringEnabled(moduleContext)) {
         containerPath = getProjectPath();
         options.scope = SearchScope.FolderAndSubfoldersAndShared;
+    }
+
+    if (Array.isArray(options.category)) {
+        options.category = options.category.join('+');
     }
 
     return new Promise((resolve, reject) => {
@@ -83,8 +91,11 @@ export const search: Search = (options, moduleContext) => {
             }),
             params: options,
             success: Utils.getCallbackWrapper(json => {
-                addDataObjects(json);
-                resolve(new URLResolver().resolveSearchUsingIndex(json));
+                if (applyURLResolver) {
+                    resolve(new URLResolver().resolveSearchUsingIndex(json));
+                } else {
+                    resolve(json);
+                }
             }),
             failure: handleRequestFailure(reject, 'Failed search query'),
         });
@@ -109,7 +120,10 @@ export async function searchUsingIndex(
         incrementClientSideMetricCount(appProps.productId + 'Search', 'count');
     }
 
-    const result = await search(options);
+    let result = await search(options, undefined, false);
+    addDataObjects(result);
+    result = new URLResolver().resolveSearchUsingIndex(result);
+
     return { ...result, hits: getProcessedSearchHits(result.hits, getCardDataFn, filterCategories) };
 }
 

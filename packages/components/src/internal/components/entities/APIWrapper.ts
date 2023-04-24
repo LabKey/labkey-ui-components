@@ -63,10 +63,10 @@ export interface EntityAPIWrapper {
     moveSamples: (
         sourceContainer: Container,
         targetContainer: string,
-        rowIds: number[],
-        selectionKey: string,
-        useSnapshotSelection: boolean,
-        auditUserComment: string
+        rowIds?: number[],
+        selectionKey?: string,
+        useSnapshotSelection?: boolean,
+        auditUserComment?: string
     ) => Promise<MoveSamplesResult>;
 }
 

@@ -32,10 +32,10 @@ interface Props {
     moveFn: (
         sourceContainer: Container,
         targetContainerPath: string,
-        rowIds: number[],
-        selectionKey: string,
-        useSnapshotSelection: boolean,
-        auditUserComment: string
+        rowIds?: number[],
+        selectionKey?: string,
+        useSnapshotSelection?: boolean,
+        auditUserComment?: string
     ) => void;
     onAfterMove: () => void;
     onCancel: () => void;
@@ -293,11 +293,9 @@ const getMoveConfirmationProperties = (
         message = (
             <Alert bsStyle="warning">
                 {text}
-                {numCannotMove > 0 && (
-                    <>
-                        &nbsp;(<HelpLink topic={MOVE_SAMPLES_TOPIC}>more info</HelpLink>)
-                    </>
-                )}
+                <>
+                    &nbsp;(<HelpLink topic={MOVE_SAMPLES_TOPIC}>more info</HelpLink>)
+                </>
             </Alert>
         );
     }

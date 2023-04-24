@@ -155,7 +155,7 @@ describe('SamplesEditButton', () => {
                     SamplesEditButtonSections.IMPORT,
                     SamplesEditButtonSections.DELETE,
                     SamplesEditButtonSections.EDIT,
-                    SamplesEditButtonSections.LINKTOSTUDY,
+                    SamplesEditButtonSections.LINK_TO_STUDY,
                 ]}
             />,
             { user: TEST_USER_EDITOR }

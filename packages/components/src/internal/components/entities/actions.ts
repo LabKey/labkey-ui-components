@@ -745,10 +745,10 @@ export function getMoveConfirmationData(
 export function moveSamples(
     sourceContainer: Container,
     targetContainer: string,
-    rowIds: number[],
-    selectionKey: string,
-    useSnapshotSelection: boolean,
-    userComment: string
+    rowIds?: number[],
+    selectionKey?: string,
+    useSnapshotSelection?: boolean,
+    userComment?: string
 ): Promise<MoveSamplesResult> {
     return new Promise((resolve, reject) => {
         const params = {

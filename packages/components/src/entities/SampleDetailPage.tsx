@@ -108,7 +108,7 @@ export const SampleDetailPageBody: FC<SampleDetailPageBodyProps> = memo(props =>
     const sampleType_ = sampleType ?? params?.sampleType;
 
     const containerUser = useContainerUser(sampleModel.getRowValue('Folder'), {
-        includeStandardProperties: true, // need so we get the parentPath to use in EntityMoveConfirmationModal
+        includeStandardProperties: true, // this is needed to get the parentPath to use in EntityMoveConfirmationModal
     });
     const containerUserError = containerUser.error;
     const sampleContainer = containerUser.container;

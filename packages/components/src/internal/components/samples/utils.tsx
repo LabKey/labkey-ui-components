@@ -182,8 +182,8 @@ export enum SamplesEditButtonSections {
     EDIT_PARENT = 'editparent',
     FIND_DERIVATIVES = 'findderivatives',
     IMPORT = 'import',
-    LINKTOSTUDY = 'linktostudy',
-    MOVETOPROJECT = 'movetoproject',
+    LINK_TO_STUDY = 'linktostudy',
+    MOVE_TO_PROJECT = 'movetoproject',
 }
 
 export function isSamplesSchema(schemaQuery: SchemaQuery): boolean {

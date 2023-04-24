@@ -129,7 +129,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
         shouldIncludeMenuItem(SamplesEditButtonSections.EDIT_PARENT, excludedMenuKeys) &&
         hasAnyPermissions(user, [PermissionTypes.Update]);
     const showMoveToProject =
-        shouldIncludeMenuItem(SamplesEditButtonSections.MOVETOPROJECT, excludedMenuKeys) &&
+        shouldIncludeMenuItem(SamplesEditButtonSections.MOVE_TO_PROJECT, excludedMenuKeys) &&
         hasAnyPermissions(user, [PermissionTypes.Update]) &&
         hasProductProjects(moduleContext);
     const showDelete =
@@ -138,7 +138,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
     const showStudy =
         showLinkToStudy &&
         hasModule('study', moduleContext) &&
-        shouldIncludeMenuItem(SamplesEditButtonSections.LINKTOSTUDY, excludedMenuKeys) &&
+        shouldIncludeMenuItem(SamplesEditButtonSections.LINK_TO_STUDY, excludedMenuKeys) &&
         hasAnyPermissions(user, [PermissionTypes.Insert]);
 
     return (

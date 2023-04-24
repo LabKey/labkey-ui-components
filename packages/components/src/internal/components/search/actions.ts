@@ -45,11 +45,13 @@ export interface SearchResult {
 
 export interface SearchOptions {
     category?: string | string[];
+    containerPath?: string;
     experimentalCustomJson?: boolean;
     limit?: number;
     normalizeUrls?: boolean;
     offset?: number;
     q: string;
+    requestHandler?: (request: XMLHttpRequest) => void;
     scope?: SearchScope;
 }
 
@@ -60,22 +62,25 @@ export type Search = (
 ) => Promise<SearchResult>;
 
 export const search: Search = (options, moduleContext, applyURLResolver = true) => {
-    let containerPath: string;
+    // eslint-disable-next-line prefer-const
+    let { containerPath, requestHandler, ...params } = options;
+
     if (isAllProductFoldersFilteringEnabled(moduleContext)) {
         containerPath = getProjectPath();
-        options.scope = SearchScope.FolderAndSubfoldersAndShared;
+        params.scope = SearchScope.FolderAndSubfoldersAndShared;
     }
 
-    if (Array.isArray(options.category)) {
-        options.category = options.category.join('+');
+    if (Array.isArray(params.category)) {
+        params.category = params.category.join('+');
     }
 
     return new Promise((resolve, reject) => {
-        Ajax.request({
+        const request = Ajax.request({
             url: buildURL('search', 'json.api', undefined, {
                 container: containerPath,
             }),
-            params: options,
+            method: 'POST',
+            params,
             success: Utils.getCallbackWrapper(json => {
                 if (applyURLResolver) {
                     resolve(new URLResolver().resolveSearchUsingIndex(json));
@@ -85,6 +90,7 @@ export const search: Search = (options, moduleContext, applyURLResolver = true) 
             }),
             failure: handleRequestFailure(reject, 'Failed search query'),
         });
+        requestHandler?.(request);
     });
 };
 

@@ -125,7 +125,7 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props, State>
         const message = numCannotDelete ? (
             <Alert bsStyle="warning">
                 {text}
-                {numCannotDelete > 0 && deleteHelpLinkTopic && (
+                {deleteHelpLinkTopic && (
                     <>
                         &nbsp;(<HelpLink topic={deleteHelpLinkTopic}>more info</HelpLink>)
                     </>

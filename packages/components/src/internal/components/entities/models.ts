@@ -627,5 +627,6 @@ export interface IParentAlias {
 
 export interface MoveSamplesResult {
     containerPath: string;
+    success: boolean;
     updateCounts: Record<string, number>;
 }

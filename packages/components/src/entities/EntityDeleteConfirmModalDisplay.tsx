@@ -122,18 +122,20 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props, State>
                     </React.Fragment>
                 );
         }
-        const message = numCannotDelete ? (
-            <Alert bsStyle="warning">
+
+        let message = (
+            <>
                 {text}
-                {deleteHelpLinkTopic && (
+                {numCannotDelete > 0 && deleteHelpLinkTopic && (
                     <>
                         &nbsp;(<HelpLink topic={deleteHelpLinkTopic}>more info</HelpLink>)
                     </>
                 )}
-            </Alert>
-        ) : (
-            <>{text}</>
+            </>
         );
+        if (numCanDelete > 0 && numCannotDelete > 0) {
+            message = <Alert bsStyle="warning">{message}</Alert>;
+        }
 
         return {
             message,

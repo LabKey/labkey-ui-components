@@ -291,13 +291,16 @@ const getMoveConfirmationProperties = (
     let message;
     if (numCannotMove > 0) {
         message = (
-            <Alert bsStyle="warning">
+            <>
                 {text}
                 <>
                     &nbsp;(<HelpLink topic={MOVE_SAMPLES_TOPIC}>more info</HelpLink>)
                 </>
-            </Alert>
+            </>
         );
+    }
+    if (numCanMove > 0 && numCannotMove > 0) {
+        message = <Alert bsStyle="warning">{message}</Alert>;
     }
 
     return {

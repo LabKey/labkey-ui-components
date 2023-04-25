@@ -10,6 +10,7 @@ import { Container } from '../base/models/Container';
 
 import {
     getDataOperationConfirmationData,
+    getMoveConfirmationData,
     getEntityTypeData,
     getOriginalParentsFromLineage,
     handleEntityFileImport,
@@ -28,6 +29,12 @@ import {
 export interface EntityAPIWrapper {
     getDataOperationConfirmationData: (
         operation: DataOperation,
+        rowIds: string[] | number[],
+        selectionKey?: string,
+        useSnapshotSelection?: boolean
+    ) => Promise<OperationConfirmationData>;
+    getMoveConfirmationData: (
+        dataType: EntityDataType,
         rowIds: string[] | number[],
         selectionKey?: string,
         useSnapshotSelection?: boolean
@@ -72,6 +79,7 @@ export interface EntityAPIWrapper {
 
 export class EntityServerAPIWrapper implements EntityAPIWrapper {
     getDataOperationConfirmationData = getDataOperationConfirmationData;
+    getMoveConfirmationData = getMoveConfirmationData;
     getEntityTypeData = getEntityTypeData;
     getOriginalParentsFromLineage = getOriginalParentsFromLineage;
     handleEntityFileImport = handleEntityFileImport;
@@ -88,6 +96,7 @@ export function getEntityTestAPIWrapper(
 ): EntityAPIWrapper {
     return {
         getDataOperationConfirmationData: mockFn(),
+        getMoveConfirmationData: mockFn(),
         getEntityTypeData: mockFn(),
         getOriginalParentsFromLineage: mockFn(),
         handleEntityFileImport: mockFn(),

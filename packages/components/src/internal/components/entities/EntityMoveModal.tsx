@@ -21,12 +21,13 @@ import { AppURL, buildURL } from '../../url/AppURL';
 
 import { getCurrentAppProperties } from '../../app/utils';
 
-import { getMoveConfirmationData } from './actions';
 import { EntityDataType, OperationConfirmationData } from './models';
 import { getEntityNoun } from './utils';
 import { EntityMoveConfirmationModal } from './EntityMoveConfirmationModal';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
-interface Props {
+export interface EntityMoveModalProps {
+    api?: ComponentsAPIWrapper;
     entityDataType: EntityDataType;
     maxSelected: number;
     moveFn: (
@@ -45,8 +46,9 @@ interface Props {
     useSelected: boolean;
 }
 
-export const EntityMoveModal: FC<Props> = memo(props => {
+export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
     const {
+        api = getDefaultAPIWrapper(),
         onAfterMove,
         sourceContainer,
         queryModel,
@@ -83,7 +85,7 @@ export const EntityMoveModal: FC<Props> = memo(props => {
                 try {
                     const useSnapshotSelection = queryModel?.filterArray.length > 0;
                     if (useSnapshotSelection) await setSnapshotSelections(selectionKey, [...queryModel.selections]);
-                    const confirmationData_ = await getMoveConfirmationData(
+                    const confirmationData_ = await api.entity.getMoveConfirmationData(
                         entityDataType,
                         rowIds,
                         selectionKey,
@@ -244,7 +246,8 @@ export const EntityMoveModal: FC<Props> = memo(props => {
     );
 });
 
-const getMoveConfirmationProperties = (
+// exported for jest testing
+export const getMoveConfirmationProperties = (
     confirmationData: OperationConfirmationData,
     nounSingular: string,
     nounPlural: string

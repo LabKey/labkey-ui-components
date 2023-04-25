@@ -559,7 +559,7 @@ export class OperationConfirmationData {
 
     readonly allowed: any[];
     readonly notAllowed: any[];
-    readonly idMap: { isAllowed: boolean; key: number };
+    readonly idMap: Record<number, boolean>;
 
     constructor(values?: Partial<OperationConfirmationData>) {
         Object.assign(this, values);

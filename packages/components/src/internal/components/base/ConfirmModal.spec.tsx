@@ -50,4 +50,19 @@ describe('<ConfirmModal/>', () => {
         expect(modal.find('.btn-danger')).toHaveLength(1);
         expect(modal.find('.btn-danger').prop('disabled')).toBe(true);
     });
+
+    test('canConfirm', () => {
+        const msg = 'testing of canConfirm prop set to false';
+        const modal = mount(
+            <ConfirmModal onConfirm={jest.fn()} onCancel={jest.fn()} canConfirm={false}>
+                {msg}
+            </ConfirmModal>
+        );
+
+        expect(modal.find(Modal)).toHaveLength(1);
+        expect(modal.find('.close')).toHaveLength(1);
+        expect(modal.find('.btn')).toHaveLength(2);
+        expect(modal.find('.btn-danger')).toHaveLength(1);
+        expect(modal.find('.btn-danger').prop('disabled')).toBe(true);
+    });
 });

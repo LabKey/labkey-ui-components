@@ -125,11 +125,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                     setCanDelete(confirmationData.allowed.length === 1);
                 }
 
-                if (
-                    showMoveItem &&
-                    user.hasUpdatePermission() &&
-                    isSampleOperationPermitted(sampleStatusType, SampleOperation.Move)
-                ) {
+                if (user.hasUpdatePermission() && isSampleOperationPermitted(sampleStatusType, SampleOperation.Move)) {
                     const confirmationData = await getSampleOperationConfirmationData(SampleOperation.Move, sampleIds);
                     setCanMove(confirmationData.allowed.length === 1);
                 }
@@ -305,11 +301,13 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
 
                             {canPrintLabels && <MenuItem onClick={onPrintLabel}>Print Labels</MenuItem>}
 
-                            <RequiresPermission user={user} perms={PermissionTypes.Update}>
-                                <DisableableMenuItem onClick={onMoveSample} operationPermitted={canMove}>
-                                    Move to Project
-                                </DisableableMenuItem>
-                            </RequiresPermission>
+                            {showMoveItem && (
+                                <RequiresPermission user={user} perms={PermissionTypes.Update}>
+                                    <DisableableMenuItem onClick={onMoveSample} operationPermitted={canMove}>
+                                        Move to Project
+                                    </DisableableMenuItem>
+                                </RequiresPermission>
+                            )}
 
                             <RequiresPermission user={user} perms={PermissionTypes.Delete}>
                                 <DisableableMenuItem

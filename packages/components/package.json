@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.329.1-fb-moveSamplesUI.4",
+  "version": "2.329.1-fb-moveSamplesUI.5",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

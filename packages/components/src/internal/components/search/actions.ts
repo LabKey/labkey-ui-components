@@ -25,7 +25,12 @@ import { EXP_TABLES, SCHEMAS } from '../../schemas';
 
 import { ModuleContext } from '../base/ServerContext';
 
-import { getFinderViewColumnsConfig, getSampleFinderTabRowCountSql, SAMPLE_FINDER_VIEW_NAME } from './utils';
+import {
+    getFinderViewColumnsConfig,
+    getSampleFinderTabRowCountSql,
+    getSearchScopeFromContainerFilter,
+    SAMPLE_FINDER_VIEW_NAME,
+} from './utils';
 import { FinderReport, SearchIdData, SearchResultCardData } from './models';
 import { SearchScope } from './constants';
 
@@ -79,9 +84,26 @@ export const search: Search = (options, moduleContext, applyURLResolver = true) 
     // eslint-disable-next-line prefer-const
     let { containerPath, requestHandler, ...params } = options;
 
+    let containerPath_: string;
     if (isAllProductFoldersFilteringEnabled(moduleContext)) {
-        containerPath = getProjectPath();
+        containerPath_ = getProjectPath();
         params.scope = SearchScope.FolderAndSubfoldersAndShared;
+    } else if (containerPath) {
+        containerPath_ = containerPath;
+    }
+
+    // Return extra info about entity types and material results
+    if (params.experimentalCustomJson === undefined) {
+        params.experimentalCustomJson = true;
+    }
+
+    // Remove the containerID from the returned URL
+    if (params.normalizeUrls === undefined) {
+        params.normalizeUrls = true;
+    }
+
+    if (!params.scope) {
+        params.scope = getSearchScopeFromContainerFilter(getContainerFilter(containerPath_));
     }
 
     if (Array.isArray(params.category)) {
@@ -91,7 +113,7 @@ export const search: Search = (options, moduleContext, applyURLResolver = true) 
     return new Promise((resolve, reject) => {
         const request = Ajax.request({
             url: buildURL('search', 'json.api', undefined, {
-                container: containerPath,
+                container: containerPath_,
             }),
             method: 'POST',
             params,

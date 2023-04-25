@@ -35,7 +35,7 @@ import { PrintLabelsModal } from '../internal/components/labels/PrintLabelsModal
 
 import { invalidateLineageResults } from '../internal/components/lineage/actions';
 
-import { isAssayEnabled, isWorkflowEnabled } from '../internal/app/utils';
+import {isAllProductFoldersFilteringEnabled, isAssayEnabled, isWorkflowEnabled} from '../internal/app/utils';
 
 import { User } from '../internal/components/base/models/User';
 import { Container } from '../internal/components/base/models/Container';
@@ -64,6 +64,7 @@ interface HeaderProps {
     sampleContainer?: Container;
     sampleModel: QueryModel;
     showDescription?: boolean;
+    showMoveItem?: boolean;
     subtitle?: ReactNode;
     title?: string;
     user?: User;
@@ -91,6 +92,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
         subtitle,
         StorageMenu,
         user,
+        showMoveItem = true,
     } = props;
     const { queryInfo } = sampleModel;
     const { createNotification } = useNotificationsContext();
@@ -123,7 +125,11 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                     setCanDelete(confirmationData.allowed.length === 1);
                 }
 
-                if (user.hasUpdatePermission() && isSampleOperationPermitted(sampleStatusType, SampleOperation.Move)) {
+                if (
+                    showMoveItem &&
+                    user.hasUpdatePermission() &&
+                    isSampleOperationPermitted(sampleStatusType, SampleOperation.Move)
+                ) {
                     const confirmationData = await getSampleOperationConfirmationData(SampleOperation.Move, sampleIds);
                     setCanMove(confirmationData.allowed.length === 1);
                 }
@@ -140,9 +146,15 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
     }, [navigate, isMedia, sampleModel]);
 
     const onAfterMove = useCallback((): void => {
-        onUpdate(); // this will reload the sample model
-        setShowConfirmMove(false);
-    }, [onUpdate]);
+        if (isAllProductFoldersFilteringEnabled()) {
+            onUpdate(); // this will reload the sample model
+            setShowConfirmMove(false);
+        } else {
+            // we will no longer be able to resolve the sample in the current container now that it has moved,
+            // so we'll navigate to the sample type grid in the current container
+            navigate(AppURL.create(isMedia ? MEDIA_KEY : SAMPLES_KEY, sampleModel.queryName));
+        }
+    }, [isMedia, navigate, onUpdate, sampleModel.queryName]);
 
     const onAfterPrint = useCallback(
         (numSamples: number, numLabels: number): void => {

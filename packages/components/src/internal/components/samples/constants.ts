@@ -92,6 +92,7 @@ export const permittedOps = {
         SampleOperation.AddAssayData,
         SampleOperation.LinkToStudy,
         SampleOperation.RecallFromStudy,
+        SampleOperation.Move,
     ]),
     [SampleStateType.Locked]: new Set([SampleOperation.AddToPicklist]),
 };

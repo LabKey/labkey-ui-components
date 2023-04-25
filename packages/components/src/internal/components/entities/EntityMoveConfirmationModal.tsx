@@ -14,13 +14,13 @@ import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
 import { HOME_PATH, HOME_TITLE } from '../navigation/constants';
 import { Container } from '../base/models/Container';
 
-interface Props extends Omit<ConfirmModalProps, 'onConfirm'> {
+export interface EntityMoveConfirmationModalProps extends Omit<ConfirmModalProps, 'onConfirm'> {
     nounPlural: string;
     onConfirm: (targetContainer: string, targetName: string, userComment: string) => void;
     sourceContainer?: Container;
 }
 
-export const EntityMoveConfirmationModal: FC<Props> = memo(props => {
+export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> = memo(props => {
     const { children, onConfirm, nounPlural, sourceContainer, ...confirmModalProps } = props;
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<LoadingState>(LoadingState.INITIALIZED);

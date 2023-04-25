@@ -9,7 +9,7 @@ import {
     TEST_USER_READER,
     TEST_USER_STORAGE_EDITOR,
 } from '../internal/userFixtures';
-import { mountWithServerContext } from '../internal/testHelpers';
+import { mountWithAppServerContext, mountWithServerContext } from '../internal/testHelpers';
 
 import { QueryInfo } from '../public/QueryInfo';
 import { SchemaQuery } from '../public/SchemaQuery';
@@ -24,6 +24,7 @@ import { SamplesEditButtonSections } from '../internal/components/samples/utils'
 import { SampleDeleteMenuItem } from './SampleDeleteMenuItem';
 import { SamplesEditButton } from './SamplesEditButton';
 import { EntityLineageEditMenuItem } from './EntityLineageEditMenuItem';
+import { SampleMoveMenuItem } from './SampleMoveMenuItem';
 
 describe('SamplesEditButton', () => {
     const queryInfo = new QueryInfo({
@@ -39,13 +40,15 @@ describe('SamplesEditButton', () => {
         parentEntityItemCount = 2,
         selMenuItemCount = 5,
         menuItemCount = 8,
-        deleteItemCount = 1
+        deleteItemCount = 1,
+        moveItemCount = 0
     ): void {
         expect(wrapper.find(ManageDropdownButton)).toHaveLength(show ? 1 : 0);
         if (show) {
             expect(wrapper.find(EntityLineageEditMenuItem)).toHaveLength(parentEntityItemCount);
             expect(wrapper.find(SelectionMenuItem)).toHaveLength(selMenuItemCount);
             expect(wrapper.find(SampleDeleteMenuItem)).toHaveLength(deleteItemCount);
+            expect(wrapper.find(SampleMoveMenuItem)).toHaveLength(moveItemCount);
             expect(wrapper.find(MenuItem)).toHaveLength(menuItemCount);
         }
     }
@@ -159,6 +162,32 @@ describe('SamplesEditButton', () => {
                 ]}
             />,
             { user: TEST_USER_EDITOR }
+        );
+        validate(wrapper, true, 0, 0, 0, 0);
+        wrapper.unmount();
+    });
+
+    test('hasProductProjects as editor, includes move', () => {
+        const wrapper = mountWithAppServerContext(
+            <SamplesEditButton {...DEFAULT_PROPS} />,
+            {},
+            {
+                user: TEST_USER_EDITOR,
+                moduleContext: { query: { hasProductProjects: true } },
+            }
+        );
+        validate(wrapper, true, 2, 6, 9, 1, 1);
+        wrapper.unmount();
+    });
+
+    test('hasProductProjects as author', () => {
+        const wrapper = mountWithAppServerContext(
+            <SamplesEditButton {...DEFAULT_PROPS} />,
+            {},
+            {
+                user: TEST_USER_AUTHOR,
+                moduleContext: { query: { hasProductProjects: true } },
+            }
         );
         validate(wrapper, true, 0, 0, 0, 0);
         wrapper.unmount();

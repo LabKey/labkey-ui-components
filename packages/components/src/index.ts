@@ -307,7 +307,7 @@ import {
     OperationConfirmationData,
 } from './internal/components/entities/models';
 import { EntityMoveModal } from './internal/components/entities/EntityMoveModal';
-import { SearchScope } from './internal/components/search/constants';
+import { SearchCategory, SearchScope } from './internal/components/search/constants';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';
 import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
 import { FIND_SAMPLE_BY_ID_METRIC_AREA, getSearchScopeFromContainerFilter } from './internal/components/search/utils';
@@ -319,7 +319,6 @@ import { GroupManagementPage } from './internal/components/administration/GroupM
 import { PermissionManagementPage } from './internal/components/administration/PermissionManagementPage';
 import { AccountSettingsPage } from './internal/components/administration/AccountSettingsPage';
 import { BaseSearchPage } from './internal/components/search/BaseSearchPage';
-import {SearchOptions, searchUsingIndex} from './internal/components/search/actions';
 import { SearchResultsModel } from './internal/components/search/models';
 import {
     deleteSampleSet,
@@ -1109,7 +1108,7 @@ export {
     SearchResultsModel,
     SearchResultCard,
     SearchResultsPanel,
-    searchUsingIndex,
+    SearchCategory,
     SearchScope,
     getSearchScopeFromContainerFilter,
     // administration

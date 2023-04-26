@@ -32,12 +32,12 @@ import {
     SAMPLE_FINDER_VIEW_NAME,
 } from './utils';
 import { FinderReport, SearchIdData, SearchResultCardData } from './models';
-import { SearchScope } from './constants';
+import { SearchCategory, SearchScope } from './constants';
 
 export type GetCardDataFn = (data: Map<any, any>, category?: string) => SearchResultCardData;
 
 export interface SearchHit {
-    category?: string;
+    category?: SearchCategory;
     container: string;
     data?: any;
     id: string;
@@ -63,7 +63,7 @@ export interface SearchResult {
 }
 
 export interface SearchOptions {
-    category?: string | string[];
+    category?: SearchCategory | SearchCategory[];
     containerPath?: string;
     experimentalCustomJson?: boolean;
     limit?: number;
@@ -107,7 +107,7 @@ export const search: Search = (options, moduleContext, applyURLResolver = true) 
     }
 
     if (Array.isArray(params.category)) {
-        params.category = params.category.join('+');
+        (params as any).category = params.category.join('+');
     }
 
     return new Promise((resolve, reject) => {
@@ -141,7 +141,7 @@ export interface SearchResultWithCardData extends Omit<SearchResult, 'hits'> {
 export async function searchUsingIndex(
     options: SearchOptions,
     getCardDataFn?: GetCardDataFn,
-    filterCategories?: string[]
+    filterCategories?: SearchCategory[]
 ): Promise<SearchResultWithCardData> {
     const appProps = getPrimaryAppProperties();
     if (appProps?.productId) {

@@ -145,7 +145,7 @@ export const SearchPanelImpl: FC<Props> = memo(props => {
     );
 });
 
-const SEARCH_CATEGORIES = ['assay', 'data', 'material', 'workflowJob', 'file', 'file workflowJob', 'notebook', 'notebookTemplate'];
+const SEARCH_CATEGORIES = ['assay', 'data', 'material', 'fileWorkflowJob', 'workflowJob', 'file', 'notebook', 'notebookTemplate'];
 
 export const SearchPanel: FC<SearchPanelProps> = memo(props => {
     const { searchTerm, getCardDataFn, search, pageSize = SEARCH_PAGE_DEFAULT_SIZE, offset = 0 } = props;

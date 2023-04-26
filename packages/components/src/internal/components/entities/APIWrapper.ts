@@ -33,12 +33,6 @@ export interface EntityAPIWrapper {
         selectionKey?: string,
         useSnapshotSelection?: boolean
     ) => Promise<OperationConfirmationData>;
-    getMoveConfirmationData: (
-        dataType: EntityDataType,
-        rowIds: string[] | number[],
-        selectionKey?: string,
-        useSnapshotSelection?: boolean
-    ) => Promise<OperationConfirmationData>;
     getEntityTypeData: (
         model: EntityIdCreationModel,
         entityDataType: EntityDataType,
@@ -48,6 +42,12 @@ export interface EntityAPIWrapper {
         isItemSamples: boolean,
         combineParentTypes: boolean
     ) => Promise<Partial<EntityIdCreationModel>>;
+    getMoveConfirmationData: (
+        dataType: EntityDataType,
+        rowIds: string[] | number[],
+        selectionKey?: string,
+        useSnapshotSelection?: boolean
+    ) => Promise<OperationConfirmationData>;
     getOriginalParentsFromLineage: (
         lineage: Record<string, any>,
         parentDataTypes: EntityDataType[],

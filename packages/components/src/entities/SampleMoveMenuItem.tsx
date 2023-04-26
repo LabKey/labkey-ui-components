@@ -11,7 +11,7 @@ import { useAppContext } from '../internal/AppContext';
 import { AppURL } from '../internal/url/AppURL';
 import { MEDIA_KEY, SAMPLES_KEY } from '../internal/app/constants';
 import { EntityDataType } from '../internal/components/entities/models';
-import {capitalizeFirstChar} from "../internal/util/utils";
+import { capitalizeFirstChar } from '../internal/util/utils';
 
 const ITEM_TEXT = 'Move to Project';
 

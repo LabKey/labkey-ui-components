@@ -10,8 +10,9 @@ import { mountWithAppServerContext } from '../internal/testHelpers';
 
 import { EntityMoveModal } from '../internal/components/entities/EntityMoveModal';
 
+import { QueryInfo } from '../public/QueryInfo';
+
 import { SampleMoveMenuItem } from './SampleMoveMenuItem';
-import {QueryInfo} from "../public/QueryInfo";
 
 describe('SampleMoveMenuItem', () => {
     const ACTIONS = makeTestActions();

@@ -21,10 +21,11 @@ import { AppURL, buildURL } from '../../url/AppURL';
 
 import { getCurrentAppProperties } from '../../app/utils';
 
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
 import { EntityDataType, OperationConfirmationData } from './models';
 import { getEntityNoun } from './utils';
 import { EntityMoveConfirmationModal } from './EntityMoveConfirmationModal';
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 export interface EntityMoveModalProps {
     api?: ComponentsAPIWrapper;

@@ -145,6 +145,8 @@ export const SearchPanelImpl: FC<Props> = memo(props => {
     );
 });
 
+const SEARCH_CATEGORIES = ['assay', 'data', 'material', 'workflowJob', 'file', 'file workflowJob', 'notebook', 'notebookTemplate'];
+
 export const SearchPanel: FC<SearchPanelProps> = memo(props => {
     const { searchTerm, getCardDataFn, search, pageSize = SEARCH_PAGE_DEFAULT_SIZE, offset = 0 } = props;
     const [model, setModel] = useState<SearchResultsModel>(SearchResultsModel.create({ isLoading: true }));
@@ -159,7 +161,7 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
                         normalizeUrls: true, // this flag will remove the containerID from the returned URL
                         q: searchTerm,
                         scope: getSearchScopeFromContainerFilter(getContainerFilter()),
-                        category: ['assay', 'data', 'material', 'workflowJob', 'file', 'file workflowJob', 'notebook', 'notebookTemplate'].join("+"),
+                        category: SEARCH_CATEGORIES.join("+"),
                         limit: pageSize,
                         offset,
                     },

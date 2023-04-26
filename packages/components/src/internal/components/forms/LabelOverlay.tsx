@@ -114,8 +114,11 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
     }
 
     getOverlay() {
-        const { column, placement, canMouseOverTooltip } = this.props;
+        const { column, placement, canMouseOverTooltip, helpTipRenderer } = this.props;
         const label = this.props.label ? this.props.label : column ? column.caption : null;
+
+        if (helpTipRenderer === 'NONE') return null;
+
         return !canMouseOverTooltip ? (
             <OverlayTrigger placement={placement} overlay={this.overlayContent()}>
                 <i className="fa fa-question-circle" />

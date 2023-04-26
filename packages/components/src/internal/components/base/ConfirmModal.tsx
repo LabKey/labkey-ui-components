@@ -19,6 +19,7 @@ import classNames from 'classnames';
 
 export interface ConfirmModalProps {
     backdrop?: string;
+    canConfirm?: boolean;
     cancelButtonText?: string;
     confirmButtonText?: string;
     confirmVariant?: string;
@@ -35,6 +36,7 @@ export class ConfirmModal extends React.PureComponent<ConfirmModalProps> {
         show: true,
         title: 'Confirm',
         confirmButtonText: 'Yes',
+        canConfirm: true,
         cancelButtonText: 'No', // TODO: 100% of usages override this value, 90% of usages have this set to "Cancel", change the default.
         confirmVariant: 'danger',
     };
@@ -52,6 +54,7 @@ export class ConfirmModal extends React.PureComponent<ConfirmModalProps> {
             confirmVariant,
             size,
             submitting,
+            canConfirm,
         } = this.props;
         const cancelBtnClass = classNames({ 'pull-left': onConfirm !== undefined });
         return (
@@ -69,7 +72,7 @@ export class ConfirmModal extends React.PureComponent<ConfirmModalProps> {
                         </Button>
                     )}
                     {onConfirm && (
-                        <Button bsStyle={confirmVariant} onClick={onConfirm} disabled={submitting}>
+                        <Button bsStyle={confirmVariant} onClick={onConfirm} disabled={!canConfirm || submitting}>
                             {confirmButtonText}
                         </Button>
                     )}

@@ -5,6 +5,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Issue 47756: Use categories to filter search results server-side instead of client-side
 
+### version 2.330.0
+*Released*: 26 April 2023
+* Move samples between projects UI updates
+  * add new SampleMoveMenuItem and EntityMoveModal to be used by the SamplesEditButton
+  * add getMoveConfirmationData and moveSamples API action calls
+  * handle selectionKey for useSnapshotSelection case
+  * add move menu item to sample overview page and usage of EntityMoveModal
+
 ### version 2.329.1
 *Released*: 20 April 2023
 - Support for restricted issue lists

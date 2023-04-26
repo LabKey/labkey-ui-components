@@ -20,21 +20,23 @@ import { Record } from 'immutable';
 import { DomainDesign } from '../models';
 
 export interface IssuesListDefOptionsConfig {
-    entityId?: string;
-    issueDefName: string;
-    singularItemName: string;
-    pluralItemName: string;
-    commentSortDirection: string;
     assignedToGroup: number;
     assignedToUser: number;
+    commentSortDirection: string;
+    entityId?: string;
+    issueDefName: string;
+    pluralItemName: string;
     relatedFolderName: string;
+    restrictedIssueList: boolean;
+    restrictedIssueListGroup: number;
+    singularItemName: string;
 }
 
 interface IssuesListDefModelConfig extends IssuesListDefOptionsConfig {
-    exception: string;
     domain: DomainDesign;
     domainId: number;
     domainKindName: string;
+    exception: string;
 }
 
 export class IssuesListDefModel implements IssuesListDefModelConfig {
@@ -52,6 +54,8 @@ export class IssuesListDefModel implements IssuesListDefModelConfig {
     readonly assignedToUser: number;
     readonly domainKindName: string;
     readonly relatedFolderName: string;
+    readonly restrictedIssueList: boolean;
+    readonly restrictedIssueListGroup: number;
 
     constructor(values?: Partial<IssuesListDefModelConfig>) {
         Object.assign(this, values);
@@ -89,6 +93,8 @@ export class IssuesListDefModel implements IssuesListDefModelConfig {
             assignedToGroup: this.assignedToGroup,
             assignedToUser: this.assignedToUser,
             relatedFolderName: this.relatedFolderName,
+            restrictedIssueList: this.restrictedIssueList,
+            restrictedIssueListGroup: this.restrictedIssueListGroup,
         };
     }
 }

@@ -6,11 +6,15 @@ import { QueryInfo } from '../../../public/QueryInfo';
 
 import { InsertOptions } from '../../query/api';
 
+import { Container } from '../base/models/Container';
+
 import {
     getDataOperationConfirmationData,
+    getMoveConfirmationData,
     getEntityTypeData,
     getOriginalParentsFromLineage,
     handleEntityFileImport,
+    moveSamples,
 } from './actions';
 import { DataOperation } from './constants';
 import {
@@ -18,6 +22,7 @@ import {
     EntityDataType,
     EntityIdCreationModel,
     IEntityTypeOption,
+    MoveSamplesResult,
     OperationConfirmationData,
 } from './models';
 
@@ -37,6 +42,12 @@ export interface EntityAPIWrapper {
         isItemSamples: boolean,
         combineParentTypes: boolean
     ) => Promise<Partial<EntityIdCreationModel>>;
+    getMoveConfirmationData: (
+        dataType: EntityDataType,
+        rowIds: string[] | number[],
+        selectionKey?: string,
+        useSnapshotSelection?: boolean
+    ) => Promise<OperationConfirmationData>;
     getOriginalParentsFromLineage: (
         lineage: Record<string, any>,
         parentDataTypes: EntityDataType[],
@@ -56,14 +67,24 @@ export interface EntityAPIWrapper {
         saveToPipeline?: boolean
     ) => Promise<any>;
     loadNameExpressionOptions: (containerPath?: string) => Promise<GetNameExpressionOptionsResponse>;
+    moveSamples: (
+        sourceContainer: Container,
+        targetContainer: string,
+        rowIds?: number[],
+        selectionKey?: string,
+        useSnapshotSelection?: boolean,
+        auditUserComment?: string
+    ) => Promise<MoveSamplesResult>;
 }
 
 export class EntityServerAPIWrapper implements EntityAPIWrapper {
     getDataOperationConfirmationData = getDataOperationConfirmationData;
+    getMoveConfirmationData = getMoveConfirmationData;
     getEntityTypeData = getEntityTypeData;
     getOriginalParentsFromLineage = getOriginalParentsFromLineage;
     handleEntityFileImport = handleEntityFileImport;
     loadNameExpressionOptions = loadNameExpressionOptions;
+    moveSamples = moveSamples;
 }
 
 /**
@@ -75,10 +96,12 @@ export function getEntityTestAPIWrapper(
 ): EntityAPIWrapper {
     return {
         getDataOperationConfirmationData: mockFn(),
+        getMoveConfirmationData: mockFn(),
         getEntityTypeData: mockFn(),
         getOriginalParentsFromLineage: mockFn(),
         handleEntityFileImport: mockFn(),
         loadNameExpressionOptions: mockFn(),
+        moveSamples: mockFn(),
         ...overrides,
     };
 }

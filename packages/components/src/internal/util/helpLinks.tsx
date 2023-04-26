@@ -27,6 +27,7 @@ export const DEFINE_ISSUES_LIST_TOPIC = 'adminIssues';
 export const DEFINE_DATASET_TOPIC = 'createDataset';
 export const DATASET_PROPERTIES_TOPIC = 'datasetProperties#advanced';
 
+export const MOVE_SAMPLES_TOPIC = 'viewSampleSets#move';
 export const DELETE_SAMPLES_TOPIC = 'viewSampleSets#delete';
 export const DERIVE_SAMPLES_TOPIC = 'deriveSamples';
 export const DERIVE_SAMPLES_ALIAS_TOPIC = DERIVE_SAMPLES_TOPIC + '#alias';

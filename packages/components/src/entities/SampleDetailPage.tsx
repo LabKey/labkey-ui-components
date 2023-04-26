@@ -107,10 +107,13 @@ export const SampleDetailPageBody: FC<SampleDetailPageBodyProps> = memo(props =>
     const sampleModel = queryModels[modelId];
     const sampleType_ = sampleType ?? params?.sampleType;
 
-    const containerUser = useContainerUser(sampleModel.getRowValue('Folder'));
+    const containerUser = useContainerUser(sampleModel.getRowValue('Folder'), {
+        includeStandardProperties: true, // this is needed to get the parentPath to use in EntityMoveConfirmationModal
+    });
     const containerUserError = containerUser.error;
     const sampleContainer = containerUser.container;
     const user = containerUser.user;
+    const containerUserLoading = !containerUser.isLoaded || (user === undefined && containerUserError === undefined);
     const { container } = useServerContext();
     const { SampleStorageMenuComponent, SampleStorageLocationComponent, assayProviderType } = useSampleTypeAppContext();
 
@@ -149,7 +152,7 @@ export const SampleDetailPageBody: FC<SampleDetailPageBodyProps> = memo(props =>
         [sampleContainer, sampleModel, sampleType_, location, user, onDetailUpdate]
     );
 
-    if (!sampleModel || sampleModel.isLoading || (sampleModel.getRow() && !containerUser.isLoaded)) {
+    if (!sampleModel || sampleModel.isLoading || (sampleModel.getRow() && containerUserLoading)) {
         if (sampleModel?.queryInfoError || sampleModel?.rowsError || containerUserError) {
             return <NotFound />;
         }

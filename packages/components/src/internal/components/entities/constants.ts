@@ -171,4 +171,5 @@ export const ParentEntityRequiredColumns = SCHEMAS.CBMB.concat(
 export enum DataOperation {
     EditLineage,
     Delete,
+    Move,
 }

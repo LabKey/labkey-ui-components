@@ -6,6 +6,21 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Performance Evaluation for Data at Scale - Improve Insert/UpdateRows calls
   * add skipReselectRows param to insertRows/updateRows calls when detailed rows in response is not needed
 
+### version 2.330.0
+*Released*: 26 April 2023
+* Move samples between projects UI updates
+  * add new SampleMoveMenuItem and EntityMoveModal to be used by the SamplesEditButton
+  * add getMoveConfirmationData and moveSamples API action calls
+  * handle selectionKey for useSnapshotSelection case
+  * add move menu item to sample overview page and usage of EntityMoveModal
+
+### version 2.329.1
+*Released*: 20 April 2023
+- Support for restricted issue lists
+    - Adds configuration to the issue list admin page to enable/disable restricted issue lists.
+    - Optional site and project group selection to allow group members to access restricted issues.
+    - This feature is controlled via a module property.
+
 ### version 2.329.0
 *Released*: 20 April 2023
 * Issue 47656: Add metrics for pagination usage and page sizing

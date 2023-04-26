@@ -2,13 +2,15 @@ import React from 'react';
 
 import { Filter, Query } from '@labkey/api';
 
+import { List } from 'immutable';
+
 import { User } from '../base/models/User';
 
 import {
     isFreezerManagementEnabled,
     isProductProjectsEnabled,
     isProjectContainer,
-    isSampleStatusEnabled
+    isSampleStatusEnabled,
 } from '../../app/utils';
 
 import { OperationConfirmationData } from '../entities/models';
@@ -38,7 +40,6 @@ import {
     SampleOperation,
     SampleStateType,
 } from './constants';
-import { List } from 'immutable';
 
 export function getOmittedSampleTypeColumns(user: User, moduleContext?: ModuleContext): string[] {
     let cols: string[] = [];
@@ -181,7 +182,8 @@ export enum SamplesEditButtonSections {
     EDIT_PARENT = 'editparent',
     FIND_DERIVATIVES = 'findderivatives',
     IMPORT = 'import',
-    LINKTOSTUDY = 'linktostudy',
+    LINK_TO_STUDY = 'linktostudy',
+    MOVE_TO_PROJECT = 'movetoproject',
 }
 
 export function isSamplesSchema(schemaQuery: SchemaQuery): boolean {
@@ -259,7 +261,6 @@ export function getSampleDomainDefaultSystemFields(moduleContext?: ModuleContext
         : SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS;
 }
 
-
 export function getStorageItemUpdateData(
     storageRows: any[],
     sampleItems: {},
@@ -302,18 +303,20 @@ export function getStorageItemUpdateData(
     };
 }
 
-export function getSampleStatusLockedMessage(state: SampleState, saving: boolean) : string {
-    let msgs = [];
-    if (state?.inUse || saving)
-        msgs.push('cannot change status type or be deleted because it is in use');
+export function getSampleStatusLockedMessage(state: SampleState, saving: boolean): string {
+    const msgs = [];
+    if (state?.inUse || saving) msgs.push('cannot change status type or be deleted because it is in use');
     if (state && !state.isLocal)
         msgs.push('can be changed only in the ' + state.containerPath.substring(1) + ' project');
-    if (msgs.length > 0)
-        return 'This sample status ' + msgs.join(' and ') + '.'
+    if (msgs.length > 0) return 'This sample status ' + msgs.join(' and ') + '.';
     return undefined;
 }
 
-export function getSampleStatusContainerFilter(forLegend?: boolean, containerPath?: string, moduleContext?: ModuleContext) : Query.ContainerFilter {
+export function getSampleStatusContainerFilter(
+    forLegend?: boolean,
+    containerPath?: string,
+    moduleContext?: ModuleContext
+): Query.ContainerFilter {
     // Check to see if product projects support is enabled.
     if (!isProductProjectsEnabled(moduleContext)) {
         return undefined;

@@ -1,3 +1,16 @@
+export enum SearchCategory {
+    Assay = 'assay',
+    Concept = 'concept',
+    Data = 'data',
+    File = 'file',
+    FileWorkflowJob = 'file workflowJob',
+    Material = 'material',
+    MediaData = 'mediaData',
+    Notebook = 'notebook',
+    NotebookTemplate = 'notebookTemplate',
+    WorkflowJob = 'workflowJob',
+}
+
 export enum SearchScope {
     All = 'All',
     Folder = 'Folder',

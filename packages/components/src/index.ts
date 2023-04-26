@@ -342,7 +342,7 @@ import {
     searchFiltersToJson,
     getSampleFinderLocalStorageKey,
 } from './internal/components/entities/FindDerivativesButton';
-import { SAMPLE_PROPERTY_ALL_SAMPLE_TYPE, SearchScope } from './internal/components/search/constants';
+import { SAMPLE_PROPERTY_ALL_SAMPLE_TYPE, SearchCategory, SearchScope } from './internal/components/search/constants';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';
 import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
 import {
@@ -360,7 +360,6 @@ import { GroupManagementPage } from './internal/components/administration/GroupM
 import { PermissionManagementPage } from './internal/components/administration/PermissionManagementPage';
 import { AccountSettingsPage } from './internal/components/administration/AccountSettingsPage';
 import { BaseSearchPage } from './internal/components/search/BaseSearchPage';
-import {SearchOptions, searchUsingIndex} from './internal/components/search/actions';
 import { SearchResultsModel } from './internal/components/search/models';
 import {
     deleteSampleSet,
@@ -1277,7 +1276,7 @@ export {
     SearchResultsModel,
     SearchResultCard,
     SearchResultsPanel,
-    searchUsingIndex,
+    SearchCategory,
     SearchScope,
     getSearchScopeFromContainerFilter,
     isValidFilterField,

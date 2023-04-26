@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Issue 47756: Use categories to filter search results server-side instead of client-side
+
 ### version 2.329.1
 *Released*: 20 April 2023
 - Support for restricted issue lists

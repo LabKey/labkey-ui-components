@@ -159,6 +159,7 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
                         normalizeUrls: true, // this flag will remove the containerID from the returned URL
                         q: searchTerm,
                         scope: getSearchScopeFromContainerFilter(getContainerFilter()),
+                        category: ['assay', 'data', 'material', 'workflowJob', 'file', 'file workflowJob', 'notebook', 'notebookTemplate'].join("+"),
                         limit: pageSize,
                         offset,
                     },

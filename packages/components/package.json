@@ -52,7 +52,7 @@
   },
   "homepage": "https://github.com/LabKey/labkey-ui-components#readme",
   "dependencies": {
-    "@labkey/api": "1.19.2-fb-skipQueryReselect.1",
+    "@labkey/api": "1.19.2",
     "bootstrap": "~3.4.1",
     "classnames": "~2.3.2",
     "enzyme": "~3.11.0",

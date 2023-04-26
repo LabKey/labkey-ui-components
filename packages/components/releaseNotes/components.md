@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.X
-*Released*: X April 2023
+### version 2.331.0
+*Released*: 26 April 2023
 * Performance Evaluation for Data at Scale - Improve Insert/UpdateRows calls
   * add skipReselectRows param to insertRows/updateRows calls when detailed rows in response is not needed
 

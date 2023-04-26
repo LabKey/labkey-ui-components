@@ -28,6 +28,8 @@ import { setSnapshotSelections } from '../internal/actions';
 import { getDeleteConfirmationData } from '../internal/components/entities/actions';
 import { EntityDataType, OperationConfirmationData } from '../internal/components/entities/models';
 
+import { capitalizeFirstChar } from '../internal/util/utils';
+
 import { EntityDeleteConfirmHandler, EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
 
 interface Props {
@@ -108,8 +110,12 @@ export class EntityDeleteConfirmModal extends PureComponent<Props, State> {
 
         if (this.state.isLoading) {
             return (
-                <ConfirmModal title="Loading confirmation data" onCancel={onCancel} cancelButtonText="Cancel">
-                    <LoadingSpinner />
+                <ConfirmModal
+                    title={'Delete ' + capitalizeFirstChar(entityDataType.nounPlural)}
+                    onCancel={onCancel}
+                    cancelButtonText="Cancel"
+                >
+                    <LoadingSpinner msg="Loading confirmation data..." />
                 </ConfirmModal>
             );
         }

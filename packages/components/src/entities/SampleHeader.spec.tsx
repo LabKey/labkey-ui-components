@@ -5,7 +5,9 @@ import { SCHEMAS } from '../internal/schemas';
 import { makeTestQueryModel } from '../public/QueryModel/testUtils';
 import { LoadingState } from '../public/LoadingState';
 import { mountWithAppServerContext } from '../internal/testHelpers';
-import { TEST_USER_AUTHOR, TEST_USER_READER } from '../internal/userFixtures';
+import { TEST_USER_AUTHOR, TEST_USER_EDITOR, TEST_USER_READER } from '../internal/userFixtures';
+
+import { DisableableMenuItem } from '../internal/components/samples/DisableableMenuItem';
 
 import { SampleHeaderImpl } from './SampleHeader';
 import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
@@ -119,7 +121,7 @@ describe('SampleHeader', () => {
 
     test('CreateSamplesSubMenu permissions', () => {
         let wrapper = mountWithAppServerContext(
-            <SampleHeaderImpl {...DEFAULT_PROPS} user={TEST_USER_READER} sampleModel={DATA_MODEL} canDerive={true}/>,
+            <SampleHeaderImpl {...DEFAULT_PROPS} user={TEST_USER_READER} sampleModel={DATA_MODEL} canDerive={true} />,
             {},
             { user: TEST_USER_READER }
         );
@@ -127,7 +129,7 @@ describe('SampleHeader', () => {
         wrapper.unmount();
 
         wrapper = mountWithAppServerContext(
-            <SampleHeaderImpl {...DEFAULT_PROPS} user={TEST_USER_AUTHOR} sampleModel={DATA_MODEL} canDerive={true}/>,
+            <SampleHeaderImpl {...DEFAULT_PROPS} user={TEST_USER_AUTHOR} sampleModel={DATA_MODEL} canDerive={true} />,
             {},
             { user: TEST_USER_AUTHOR }
         );
@@ -137,12 +139,62 @@ describe('SampleHeader', () => {
 
     test('CreateSamplesSubMenu props', () => {
         const wrapper = mountWithAppServerContext(
-            <SampleHeaderImpl {...DEFAULT_PROPS} user={TEST_USER_AUTHOR} sampleModel={DATA_MODEL} canDerive={true}/>,
+            <SampleHeaderImpl {...DEFAULT_PROPS} user={TEST_USER_AUTHOR} sampleModel={DATA_MODEL} canDerive={true} />,
             {},
             { user: TEST_USER_AUTHOR }
         );
         expect(wrapper.find(CreateSamplesSubMenu).prop('parentType')).toBe('samples');
         expect(wrapper.find(CreateSamplesSubMenu).prop('parentKey')).toBe('samples:testsampletype:123');
+        wrapper.unmount();
+    });
+
+    test('showMoveItem false', () => {
+        const wrapper = mountWithAppServerContext(
+            <SampleHeaderImpl
+                {...DEFAULT_PROPS}
+                user={TEST_USER_EDITOR}
+                sampleModel={DATA_MODEL}
+                showMoveItem={false}
+            />,
+            {},
+            { user: TEST_USER_EDITOR }
+        );
+        expect(wrapper.find(DisableableMenuItem)).toHaveLength(2);
+        expect(wrapper.find(DisableableMenuItem).at(0).text()).toBe('Add to Picklist');
+        expect(wrapper.find(DisableableMenuItem).at(1).text()).toBe('Delete Sample');
+        wrapper.unmount();
+    });
+
+    test('showMoveItem with update perm', () => {
+        const wrapper = mountWithAppServerContext(
+            <SampleHeaderImpl
+                {...DEFAULT_PROPS}
+                user={TEST_USER_EDITOR}
+                sampleModel={DATA_MODEL}
+                showMoveItem={true}
+            />,
+            {},
+            { user: TEST_USER_EDITOR }
+        );
+        expect(wrapper.find(DisableableMenuItem)).toHaveLength(3);
+        expect(wrapper.find(DisableableMenuItem).at(0).text()).toBe('Add to Picklist');
+        expect(wrapper.find(DisableableMenuItem).at(1).text()).toBe('Move to Project');
+        expect(wrapper.find(DisableableMenuItem).at(2).text()).toBe('Delete Sample');
+        wrapper.unmount();
+    });
+
+    test('showMoveItem without update perm', () => {
+        const wrapper = mountWithAppServerContext(
+            <SampleHeaderImpl
+                {...DEFAULT_PROPS}
+                user={TEST_USER_AUTHOR}
+                sampleModel={DATA_MODEL}
+                showMoveItem={true}
+            />,
+            {},
+            { user: TEST_USER_AUTHOR }
+        );
+        expect(wrapper.find(DisableableMenuItem)).toHaveLength(0);
         wrapper.unmount();
     });
 });

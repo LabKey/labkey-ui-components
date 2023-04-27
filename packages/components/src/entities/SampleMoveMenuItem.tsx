@@ -20,11 +20,12 @@ interface Props {
     entityDataType?: EntityDataType;
     handleClick?: (cb: () => void, errorMsg?: string) => void;
     maxSelected?: number;
+    onSuccess?: () => void;
     queryModel: QueryModel;
 }
 
 export const SampleMoveMenuItem: FC<Props> = memo(props => {
-    const { handleClick, maxSelected, queryModel, actions, entityDataType = SampleTypeDataType } = props;
+    const { handleClick, maxSelected, queryModel, actions, onSuccess, entityDataType = SampleTypeDataType } = props;
     const [showMoveSamplesModal, setShowMoveSamplesModal] = useState<boolean>(false);
     const { api } = useAppContext();
     const isMedia = queryModel.queryInfo?.isMedia;
@@ -44,7 +45,8 @@ export const SampleMoveMenuItem: FC<Props> = memo(props => {
 
     const onAfterMove = useCallback(() => {
         actions.loadModel(queryModel.id, true, true);
-    }, [actions, queryModel.id]);
+        onSuccess?.();
+    }, [actions, queryModel.id, onSuccess]);
 
     const onClose = useCallback(() => {
         setShowMoveSamplesModal(false);

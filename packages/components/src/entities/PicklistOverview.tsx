@@ -1,5 +1,5 @@
 import React, { ComponentType, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Checkbox, MenuItem } from 'react-bootstrap';
+import { MenuItem } from 'react-bootstrap';
 import { AuditBehaviorTypes, Filter, Utils } from '@labkey/api';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../internal/APIWrapper';
@@ -34,7 +34,11 @@ import {
 import { PicklistEditModal } from '../internal/components/picklist/PicklistEditModal';
 
 import { Picklist, PICKLIST_SAMPLES_FILTER } from '../internal/components/picklist/models';
-import { deletePicklists, updatePicklist } from '../internal/components/picklist/actions';
+import {
+    deletePicklists,
+    getPicklistLookupContainerFilter,
+    updatePicklist,
+} from '../internal/components/picklist/actions';
 import { SamplesEditableGridProps } from '../internal/sampleModels';
 
 import { hasProductProjects } from '../internal/app/utils';
@@ -313,6 +317,9 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
                 ],
                 omittedColumns,
                 includeTotalCount: true,
+                // filter out any samples that don't resolve because the user doesn't have permission to the project
+                baseFilters: [Filter.create('SampleID/Name', undefined, Filter.Types.NONBLANK)],
+                containerFilter: getPicklistLookupContainerFilter(),
             };
 
             // add a queryConfig for each distinct sample type of the picklist samples, with a filter clause
@@ -329,6 +336,7 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
                     omittedColumns,
                     baseFilters: [Filter.create('RowId', picklist.name, PICKLIST_SAMPLES_FILTER)],
                     includeTotalCount: true,
+                    containerFilter: getPicklistLookupContainerFilter(),
                 };
             });
         }

@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD April 2023
 * Issue 47749: Assay re-import run from tmp file to use TSV loader for file preview
+* Issue 47576: AssayImportPanels change so that if there are wrapped columns that are marked as userEditable and shownInInsertView, include them in the form / UI
 
 ### version 2.331.0
 *Released*: 26 April 2023

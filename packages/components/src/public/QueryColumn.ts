@@ -160,6 +160,7 @@ export class QueryColumn {
     declare userEditable: boolean;
     declare validValues: string[];
     // declare versionField: boolean;
+    declare wrappedColumnName: string;
 
     declare cell: Function;
     declare columnRenderer: string;

@@ -226,7 +226,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         );
     };
 
-    initModel = (): void => {
+    initModel = async (): Promise<void> => {
         const { assayDefinition, location, runId } = this.props;
         const { schemaQuery } = this.state;
         let workflowTask;
@@ -236,28 +236,31 @@ class AssayImportPanelsBody extends Component<Props, State> {
             workflowTask = isNaN(_workflowTask) ? undefined : _workflowTask;
         }
 
-        getQueryDetails(schemaQuery).then(queryInfo => {
-            const sampleColumnData = assayDefinition.getSampleColumn();
-            this.setState(
-                () => ({
-                    model: new AssayWizardModel({
-                        // Initialization is done if the assay does not have a sample column and we aren't getting the
-                        // run properties to show for reimport
-                        isInit: sampleColumnData === undefined && this.runAndBatchPropsLoaded(),
-                        assayDef: assayDefinition,
-                        batchColumns: assayDefinition.getDomainColumns(AssayDomainTypes.BATCH),
-                        runColumns: assayDefinition.getDomainColumns(AssayDomainTypes.RUN),
-                        runId,
-                        usePreviousRunFile: this.isReimport(),
-                        batchProperties: this.getBatchPropertiesMap(),
-                        runProperties: this.getRunPropertiesMap(),
-                        queryInfo,
-                        workflowTask,
-                    }),
+        const batchQueryInfo = await getQueryDetails(new SchemaQuery(assayDefinition.protocolSchemaName, 'Batches'));
+        const runQueryInfo = await getQueryDetails(new SchemaQuery(assayDefinition.protocolSchemaName, 'Runs'));
+        const dataQueryInfo = await getQueryDetails(schemaQuery);
+
+        const sampleColumnData = assayDefinition.getSampleColumn();
+
+        this.setState(
+            () => ({
+                model: new AssayWizardModel({
+                    // Initialization is done if the assay does not have a sample column and we aren't getting the
+                    // run properties to show for reimport
+                    isInit: sampleColumnData === undefined && this.runAndBatchPropsLoaded(),
+                    assayDef: assayDefinition,
+                    batchColumns: assayDefinition.getDomainColumns(AssayDomainTypes.BATCH, batchQueryInfo),
+                    runColumns: assayDefinition.getDomainColumns(AssayDomainTypes.RUN, runQueryInfo),
+                    runId,
+                    usePreviousRunFile: this.isReimport(),
+                    batchProperties: this.getBatchPropertiesMap(),
+                    runProperties: this.getRunPropertiesMap(),
+                    queryInfo: dataQueryInfo,
+                    workflowTask,
                 }),
-                this.onGetQueryDetailsComplete
-            );
-        });
+            }),
+            this.onGetQueryDetailsComplete
+        );
     };
 
     ensureRunAndBatchProperties = (): void => {

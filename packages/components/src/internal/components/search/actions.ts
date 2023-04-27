@@ -124,8 +124,7 @@ export interface SearchResultWithCardData extends Omit<SearchResult, 'hits'> {
 
 export async function searchUsingIndex(
     options: SearchOptions,
-    getCardDataFn?: GetCardDataFn,
-    filterCategories?: SearchCategory[]
+    getCardDataFn?: GetCardDataFn
 ): Promise<SearchResultWithCardData> {
     const appProps = getPrimaryAppProperties();
     if (appProps?.productId) {
@@ -136,7 +135,7 @@ export async function searchUsingIndex(
     addDataObjects(result);
     result = new URLResolver().resolveSearchUsingIndex(result);
 
-    return { ...result, hits: getProcessedSearchHits(result.hits, getCardDataFn, filterCategories) };
+    return { ...result, hits: getProcessedSearchHits(result.hits, getCardDataFn) };
 }
 
 // Some search results will not have a data object.  Much of the display logic
@@ -254,10 +253,10 @@ function getCardData(category: string, data: any, title: string, getCardDataFn?:
 
 export function getProcessedSearchHits(
     hits: SearchHit[],
-    getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData,
-): any[] {
-    return hits?.map(result => ({
-        ...result,
-        cardData: getCardData(result.category, result.data, result.title, getCardDataFn),
+    getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData
+): SearchHitWithCardData[] {
+    return hits?.map(hit => ({
+        ...hit,
+        cardData: getCardData(hit.category, hit.data, hit.title, getCardDataFn),
     }));
 }

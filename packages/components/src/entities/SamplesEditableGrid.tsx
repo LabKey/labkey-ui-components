@@ -332,6 +332,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                     queryName: sampleSchemaQuery.queryName,
                     rows: sampleRows,
                     auditBehavior: AuditBehaviorTypes.DETAILED,
+                    skipReselectRows: true,
                 });
             }
             if (convertedStorageData && Object.values(convertedStorageData?.normalizedRowsMap).length > 0) {
@@ -341,6 +342,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                     queryName: INVENTORY_ITEM_QS.queryName,
                     rows: Object.values(convertedStorageData.normalizedRowsMap),
                     auditBehavior: AuditBehaviorTypes.DETAILED,
+                    skipReselectRows: true,
                 });
             }
 

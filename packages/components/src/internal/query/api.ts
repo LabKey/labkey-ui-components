@@ -751,6 +751,7 @@ export function insertRows(options: InsertRowsOptions): Promise<InsertRowsRespon
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
             rows: _rows.toArray(),
+            skipReselectRows: (options.skipReselectRows === null || options.skipReselectRows === undefined) ? true : options.skipReselectRows,
             apiVersion: 13.2,
             success: (response, request) => {
                 if (processRequest(response, request, reject)) return;
@@ -833,6 +834,7 @@ export function updateRows(options: UpdateRowsOptions): Promise<UpdateRowsRespon
             ...updateRowOptions,
             queryName: schemaQuery.queryName,
             schemaName: schemaQuery.schemaName,
+            skipReselectRows: (options.skipReselectRows === null || options.skipReselectRows === undefined) ? true : options.skipReselectRows,
             success: (response, request) => {
                 if (processRequest(response, request, reject)) return;
 

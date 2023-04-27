@@ -19,6 +19,7 @@ import { SearchResultsModel } from './models';
 import { SEARCH_HELP_TOPIC, SEARCH_PAGE_DEFAULT_SIZE, SearchScope } from './constants';
 import { GetCardDataFn, searchUsingIndex } from './actions';
 import { getSearchScopeFromContainerFilter } from './utils';
+import { biologicsIsPrimaryApp } from '../../app/utils';
 
 interface SearchPanelProps {
     appName: string;
@@ -145,11 +146,13 @@ export const SearchPanelImpl: FC<Props> = memo(props => {
     );
 });
 
-const SEARCH_CATEGORIES = ['assay', 'data', 'material', 'fileWorkflowJob', 'workflowJob', 'file', 'notebook', 'notebookTemplate'];
+const SEARCH_CATEGORIES = ['assay', 'data', 'material', 'fileWorkflowJob', 'workflowJob', 'file', 'notebook', 'notebookTemplate', 'materialSource', 'dataClass'];
+const MEDIA_SEARCH_CATEGORIES = ['media'];
 
 export const SearchPanel: FC<SearchPanelProps> = memo(props => {
     const { searchTerm, getCardDataFn, search, pageSize = SEARCH_PAGE_DEFAULT_SIZE, offset = 0 } = props;
     const [model, setModel] = useState<SearchResultsModel>(SearchResultsModel.create({ isLoading: true }));
+    const categories = biologicsIsPrimaryApp() ? [...SEARCH_CATEGORIES, ...MEDIA_SEARCH_CATEGORIES] : SEARCH_CATEGORIES;
 
     const loadSearchResults = useCallback(async () => {
         if (searchTerm) {
@@ -161,7 +164,7 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
                         normalizeUrls: true, // this flag will remove the containerID from the returned URL
                         q: searchTerm,
                         scope: getSearchScopeFromContainerFilter(getContainerFilter()),
-                        category: SEARCH_CATEGORIES.join("+"),
+                        category: categories.join("+"),
                         limit: pageSize,
                         offset,
                     },

@@ -64,15 +64,11 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
 
         if (searchTerm) {
             const timeOutId = setTimeout(() => {
-                searchUsingIndex(
-                    {
-                        q: getOntologySearchTerm(ontology, searchTerm),
-                        category: SearchCategory.Concept,
-                        limit: SEARCH_LIMIT,
-                    },
-                    undefined,
-                    [SearchCategory.Concept]
-                )
+                searchUsingIndex({
+                    q: getOntologySearchTerm(ontology, searchTerm),
+                    category: SearchCategory.Concept,
+                    limit: SEARCH_LIMIT,
+                })
                     .then(response => {
                         setSearchHits(
                             response.hits.map(hit => {

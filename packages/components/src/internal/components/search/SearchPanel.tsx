@@ -11,12 +11,15 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { PaginationButtons } from '../buttons/PaginationButtons';
 
+import { biologicsIsPrimaryApp } from '../../app/utils';
+
+import { useServerContext } from '../base/ServerContext';
+
 import { SearchResultsPanel } from './SearchResultsPanel';
 
 import { SearchResultsModel } from './models';
-import { SEARCH_HELP_TOPIC, SEARCH_PAGE_DEFAULT_SIZE } from './constants';
+import { SearchCategory, SEARCH_HELP_TOPIC, SEARCH_PAGE_DEFAULT_SIZE } from './constants';
 import { GetCardDataFn, searchUsingIndex } from './actions';
-import { biologicsIsPrimaryApp } from '../../app/utils';
 
 interface SearchPanelProps {
     appName: string;
@@ -144,34 +147,42 @@ export const SearchPanelImpl: FC<SearchPanelImplProps> = memo(props => {
 });
 
 const SEARCH_CATEGORIES = [
-    'assay',
-    'data',
-    'material',
-    'fileWorkflowJob',
-    'workflowJob',
-    'file',
-    'notebook',
-    'notebookTemplate',
-    'materialSource',
-    'dataClass',
+    SearchCategory.Assay,
+    SearchCategory.Data,
+    SearchCategory.DataClass,
+    SearchCategory.File,
+    SearchCategory.FileWorkflowJob,
+    SearchCategory.Material,
+    SearchCategory.MaterialSource,
+    SearchCategory.Notebook,
+    SearchCategory.NotebookTemplate,
+    SearchCategory.WorkflowJob,
 ];
-const MEDIA_SEARCH_CATEGORIES = ['media'];
+const MEDIA_SEARCH_CATEGORIES = [SearchCategory.Media];
 
 export const SearchPanel: FC<SearchPanelProps> = memo(props => {
     const { searchTerm, getCardDataFn, search, pageSize = SEARCH_PAGE_DEFAULT_SIZE, offset = 0 } = props;
     const [model, setModel] = useState<SearchResultsModel>(() => SearchResultsModel.create({ isLoading: true }));
-    const categories = biologicsIsPrimaryApp() ? [...SEARCH_CATEGORIES, ...MEDIA_SEARCH_CATEGORIES] : SEARCH_CATEGORIES;
+    const { moduleContext } = useServerContext();
+    const isBiologics = biologicsIsPrimaryApp(moduleContext);
+    const category = useMemo(
+        () => (isBiologics ? [...SEARCH_CATEGORIES, ...MEDIA_SEARCH_CATEGORIES] : SEARCH_CATEGORIES),
+        [isBiologics]
+    );
 
     const loadSearchResults = useCallback(async () => {
         if (searchTerm) {
             setModel(SearchResultsModel.create({ isLoading: true }));
             try {
-                const entities = await searchUsingIndex({
-                    category: categories,
-                    q: searchTerm,
-                    limit: pageSize,
-                    offset,
-                }, getCardDataFn);
+                const entities = await searchUsingIndex(
+                    {
+                        category,
+                        q: searchTerm,
+                        limit: pageSize,
+                        offset,
+                    },
+                    getCardDataFn
+                );
                 setModel(SearchResultsModel.create({ entities, isLoaded: true }));
             } catch (response) {
                 console.error(response);
@@ -183,7 +194,7 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
                 );
             }
         }
-    }, [getCardDataFn, offset, pageSize, searchTerm]);
+    }, [category, getCardDataFn, offset, pageSize, searchTerm]);
 
     useEffect(() => {
         (async () => {

@@ -132,7 +132,7 @@ export class RunDataPanel extends PureComponent<Props, State> {
                     const outputs = runPropertiesRow['DataOutputs'];
                     this.setState(() => ({ previousRunData: { isLoading: true, isLoaded: false } }));
 
-                    getServerFilePreview(outputs[0].value, PREVIEW_ROW_COUNT)
+                    getServerFilePreview(outputs[0].value, outputs[0].displayValue, PREVIEW_ROW_COUNT)
                         .then(response => {
                             this.setState(() => ({
                                 previousRunData: {

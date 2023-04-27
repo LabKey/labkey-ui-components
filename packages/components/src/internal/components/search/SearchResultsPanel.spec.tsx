@@ -73,7 +73,7 @@ describe('<SearchResultsPanel/>', () => {
         const wrapper = mount(component);
         expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
         expect(wrapper.find(Alert)).toHaveLength(0);
-        expect(wrapper.find(SearchResultCard)).toHaveLength(47);
+        expect(wrapper.find(SearchResultCard)).toHaveLength(49);
         wrapper.unmount();
     });
 });

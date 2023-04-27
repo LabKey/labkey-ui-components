@@ -231,7 +231,7 @@ export function getNoUpdateFieldWarnings(
         msg.push(
             <p key="noUpdateFields">
                 <WarningFieldList names={noUpdateFields} />
-                {' cannot be updated and and will be ignored.'}
+                {' cannot be updated and will be ignored.'}
             </p>
         );
     }

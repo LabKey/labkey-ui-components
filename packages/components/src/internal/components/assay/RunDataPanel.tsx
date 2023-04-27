@@ -15,6 +15,7 @@
  */
 import React, { PureComponent, ReactNode } from 'react';
 import { List, Map } from 'immutable';
+
 import { Operation } from '../../../public/QueryColumn';
 
 import { AssayUploadTabs } from '../../constants';
@@ -59,8 +60,8 @@ interface Props {
         dataKeys?: List<any>,
         data?: Map<any, Map<string, any>>
     ) => void;
-    operation: Operation;
     onTextChange: (value: any) => any;
+    operation: Operation;
     queryModel: QueryModel;
     runPropertiesRow?: Record<string, any>;
     setIsDirty?: (isDirty: boolean) => void;
@@ -294,8 +295,8 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                                     <>
                                                         We recommend dividing your data into smaller files that meet
                                                         this limit. See our{' '}
-                                                        <HelpLink topic={DATA_IMPORT_TOPIC}>help document</HelpLink> for best
-                                                        practices on data import.
+                                                        <HelpLink topic={DATA_IMPORT_TOPIC}>help document</HelpLink> for
+                                                        best practices on data import.
                                                     </>
                                                 }
                                             />

@@ -193,17 +193,12 @@ function getCardData(
     return cardData;
 }
 
-// TODO: is the result['data'] check still required?
 export function getProcessedSearchHits(
     hits: any[],
     getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData,
-    filterCategories?: string[]
 ): any[] {
     return hits
-        ?.filter(result => {
-            return filterCategories?.indexOf(result.category) > -1 || result.data;
-        })
-        .map(result => ({
+        ?.map(result => ({
             ...result,
             cardData: getCardData(result.category, result.data, result.title, getCardDataFn),
         }));

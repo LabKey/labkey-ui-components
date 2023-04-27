@@ -251,11 +251,10 @@ function getCardData(category: string, data: any, title: string, getCardDataFn?:
     return cardData;
 }
 
-export function getProcessedSearchHits(
-    hits: SearchHit[],
-    getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData
-): SearchHitWithCardData[] {
-    return hits?.map(hit => ({
+export function getProcessedSearchHits(hits: SearchHit[], getCardDataFn?: GetCardDataFn): SearchHitWithCardData[] {
+    if (!hits) return [];
+
+    return hits.map(hit => ({
         ...hit,
         cardData: getCardData(hit.category, hit.data, hit.title, getCardDataFn),
     }));

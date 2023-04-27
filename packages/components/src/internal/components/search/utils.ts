@@ -39,6 +39,8 @@ import { AssaySampleColumnProp } from '../../sampleModels';
 
 import { caseInsensitive } from '../../util/utils';
 
+import { REGISTRY_KEY } from '../../app/constants';
+
 import { SearchScope, SAMPLE_FINDER_SESSION_PREFIX, ALLOWED_FINDER_SAMPLE_PROPERTY_MAP } from './constants';
 import {
     FieldFilter,
@@ -46,9 +48,8 @@ import {
     FilterProps,
     FilterSelection,
     SearchResultCardData,
-    SearchSessionStorageProps
+    SearchSessionStorageProps,
 } from './models';
-import { REGISTRY_KEY } from '../../app/constants';
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
 export const FIND_SAMPLE_BY_ID_METRIC_AREA = 'findSamplesById';
@@ -1169,8 +1170,7 @@ export function getSampleFinderTabRowCountSql(queryModel: QueryModel): string {
     return rowCountSql;
 }
 
-
-export function getSearchResultCardData(data, category, queryMetadata?: any): SearchResultCardData  {
+export function getSearchResultCardData(data: any, category: string, queryMetadata?: any): SearchResultCardData {
     if (data) {
         const dataName = data.name;
         if (data.dataClass?.name) {
@@ -1206,8 +1206,7 @@ export function getSearchResultCardData(data, category, queryMetadata?: any): Se
                         category: 'Source Type',
                         title: dataName,
                     };
-                }
-                else {
+                } else {
                     return {
                         altText: 'source_type-icon',
                         iconSrc: data.name.toLowerCase(),
@@ -1215,7 +1214,7 @@ export function getSearchResultCardData(data, category, queryMetadata?: any): Se
                     };
                 }
             } else if (type === 'assay') {
-                return { category: 'Assay'}
+                return { category: 'Assay' };
             }
         } else if (data.sampleSet?.name) {
             const sampleSetName = data.sampleSet.name.toLowerCase();
@@ -1226,7 +1225,7 @@ export function getSearchResultCardData(data, category, queryMetadata?: any): Se
                     'samples',
                 altText: 'sample_type-icon',
                 category: 'Sample Type',
-                title: dataName
+                title: dataName,
             };
         } else if (category === 'material') {
             return {
@@ -1236,18 +1235,17 @@ export function getSearchResultCardData(data, category, queryMetadata?: any): Se
         }
     } else {
         if (category === 'workflowJob') {
-            return { category: 'Job'}
+            return { category: 'Job' };
         } else if (category === 'assay') {
-            return { category: 'Assay'}
+            return { category: 'Assay' };
         }
     }
 
     return {};
 }
 
-export const decodeErrorMessage = (msg: string) : string => {
-    if (!msg)
-        return msg;
+export const decodeErrorMessage = (msg: string): string => {
+    if (!msg) return msg;
 
     let decodedMsg = msg
         .replace(/&amp;/g, '&')
@@ -1255,8 +1253,6 @@ export const decodeErrorMessage = (msg: string) : string => {
         .replace(/&gt;/g, '>')
         .replace(/&quot;/g, '"')
         .replace(/&#039;/g, "'");
-    if (decodedMsg.charAt(decodedMsg.length-1) != ".")
-        decodedMsg += '.';
+    if (decodedMsg.charAt(decodedMsg.length - 1) != '.') decodedMsg += '.';
     return decodedMsg;
-}
-
+};

@@ -3,9 +3,9 @@ import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { getCurrentAppProperties } from '../../app/utils';
 
 import { getSearchResultCardData } from './utils';
-import { SearchResultCardData } from './models';
 import { SEARCH_PAGE_DEFAULT_SIZE } from './constants';
 import { SearchPanel } from './SearchPanel';
+import { GetCardDataFn } from './actions';
 
 export interface SearchForm {
     offset?: number;
@@ -36,10 +36,8 @@ export const BaseSearchPage: FC<SearchForm> = memo(props => {
         setPageSize(newPageSize);
     }, [queryPageSize]);
 
-    const handleCardData = useCallback(
-        (data, category): SearchResultCardData => {
-            return getSearchResultCardData(data, category, searchMetadata);
-        },
+    const handleCardData = useCallback<GetCardDataFn>(
+        (data, category) => getSearchResultCardData(data, category, searchMetadata),
         [searchMetadata]
     );
 

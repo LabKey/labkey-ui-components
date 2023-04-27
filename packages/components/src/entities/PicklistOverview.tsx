@@ -336,7 +336,6 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
                     omittedColumns,
                     baseFilters: [Filter.create('RowId', picklist.name, PICKLIST_SAMPLES_FILTER)],
                     includeTotalCount: true,
-                    containerFilter: getPicklistLookupContainerFilter(),
                 };
             });
         }

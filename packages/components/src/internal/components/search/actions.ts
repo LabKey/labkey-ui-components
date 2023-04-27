@@ -54,6 +54,9 @@ export function searchUsingIndex(
         containerPath = getProjectPath();
         options.scope = SearchScope.FolderAndSubfoldersAndShared;
     }
+    if (filterCategories) {
+        options.category = filterCategories?.join("+");
+    }
 
     return new Promise((resolve, reject) => {
         Ajax.request({
@@ -64,7 +67,7 @@ export function searchUsingIndex(
             success: Utils.getCallbackWrapper(json => {
                 addDataObjects(json);
                 const results = new URLResolver().resolveSearchUsingIndex(json);
-                const hits = getProcessedSearchHits(results['hits'], getCardDataFn, filterCategories);
+                const hits = getProcessedSearchHits(results['hits'], getCardDataFn);
                 resolve({ ...results, hits });
             }),
             failure: Utils.getCallbackWrapper(json => reject(json), null, false),
@@ -190,17 +193,12 @@ function getCardData(
     return cardData;
 }
 
-// TODO: add categories for other search results so the result['data'] check could be removed.
 export function getProcessedSearchHits(
     hits: any[],
     getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData,
-    filterCategories = ['assay', 'data', 'material', 'workflowJob', 'file', 'file workflowJob', 'notebook', 'notebookTemplate']
 ): any[] {
     return hits
-        ?.filter(result => {
-            return filterCategories?.indexOf(result.category) > -1 || result.data;
-        })
-        .map(result => ({
+        ?.map(result => ({
             ...result,
             cardData: getCardData(result.category, result.data, result.title, getCardDataFn),
         }));

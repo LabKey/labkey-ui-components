@@ -17,9 +17,9 @@ import { HelpLink, MOVE_SAMPLES_TOPIC } from '../../util/helpLinks';
 
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 
-import {AppURL, buildURL} from '../../url/AppURL';
+import { AppURL, buildURL } from '../../url/AppURL';
 
-import {getPrimaryAppProperties} from '../../app/utils';
+import { getPrimaryAppProperties } from '../../app/utils';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 

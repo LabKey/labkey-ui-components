@@ -5,8 +5,6 @@ import { QueryColumn } from '../public/QueryColumn';
 
 import { SchemaQuery } from '../public/SchemaQuery';
 
-import { QueryInfo } from '../public/QueryInfo';
-
 import { AssayUploadTabs } from './constants';
 
 import { AppURL, createProductUrlFromParts } from './url/AppURL';
@@ -284,7 +282,7 @@ export class AssayDefinitionModel extends Record({
         }
     }
 
-    getDomainColumns(type: AssayDomainTypes, queryInfo?: QueryInfo): OrderedMap<string, QueryColumn> {
+    getDomainColumns(type: AssayDomainTypes): OrderedMap<string, QueryColumn> {
         const columns = OrderedMap<string, QueryColumn>().asMutable();
 
         if (this.domains && this.domains.size) {
@@ -296,12 +294,6 @@ export class AssayDefinitionModel extends Record({
                 });
             }
         }
-
-        // Issue 47576: if there are wrapped columns that are marked as userEditable and shownInInsertView, include them in the form / UI
-        queryInfo?.columns.forEach(c => {
-            const shouldInclude = c.wrappedColumnName && c.userEditable && c.shownInInsertView;
-            if (shouldInclude) columns.set(c.fieldKey.toLowerCase(), c);
-        });
 
         return columns.asImmutable();
     }

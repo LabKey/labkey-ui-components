@@ -22,6 +22,7 @@ import { FileSizeLimitProps } from '../../../public/files/models';
 import { LoadingState } from '../../../public/LoadingState';
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { QueryInfo } from '../../../public/QueryInfo';
 
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -250,8 +251,8 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     // run properties to show for reimport
                     isInit: sampleColumnData === undefined && this.runAndBatchPropsLoaded(),
                     assayDef: assayDefinition,
-                    batchColumns: assayDefinition.getDomainColumns(AssayDomainTypes.BATCH, batchQueryInfo),
-                    runColumns: assayDefinition.getDomainColumns(AssayDomainTypes.RUN, runQueryInfo),
+                    batchColumns: this.getDomainColumns(AssayDomainTypes.BATCH, batchQueryInfo),
+                    runColumns: this.getDomainColumns(AssayDomainTypes.RUN, runQueryInfo),
                     runId,
                     usePreviousRunFile: this.isReimport(),
                     batchProperties: this.getBatchPropertiesMap(),
@@ -262,6 +263,17 @@ class AssayImportPanelsBody extends Component<Props, State> {
             }),
             this.onGetQueryDetailsComplete
         );
+    };
+
+    getDomainColumns = (domainType: AssayDomainTypes, queryInfo: QueryInfo): OrderedMap<string, QueryColumn> => {
+        // Issue 47576: if there are wrapped columns that are marked as userEditable and shownInInsertView, include them in the form / UI
+        const { assayDefinition } = this.props;
+        let columns = assayDefinition.getDomainColumns(domainType);
+        queryInfo?.columns.forEach(c => {
+            const shouldInclude = c.wrappedColumnName && c.userEditable && c.shownInInsertView;
+            if (shouldInclude) columns = columns.set(c.fieldKey.toLowerCase(), c);
+        });
+        return columns;
     };
 
     ensureRunAndBatchProperties = (): void => {

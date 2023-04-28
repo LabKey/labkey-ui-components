@@ -25,8 +25,10 @@ import {
     getColDateFormat,
     getColFormattedDateFilterValue,
     getJsonDateTimeFormatString,
+    getNDaysStrFromToday,
     getNextDateStr,
     getParsedRelativeDateStr,
+    isDateInPast,
     isRelativeDateFilterValue,
     parseDate,
 } from './Date';
@@ -311,4 +313,29 @@ describe('Date Utilities', () => {
             });
         });
     });
+
+    describe('isDateInPast', () => {
+        test('empty', () => {
+            expect(isDateInPast(null)).toBeFalsy();
+            expect(isDateInPast('')).toBeFalsy();
+        });
+
+        test('past', () => {
+            expect(isDateInPast('2022-02-02')).toBeTruthy();
+            expect(isDateInPast('2022-02-02 01:02')).toBeTruthy();
+        });
+
+        test('today', () => {
+            const today = getNDaysStrFromToday(0);
+            expect(isDateInPast(today)).toBeFalsy();
+            expect(isDateInPast(todayWithTime)).toBeFalsy();
+        });
+
+        test('futurama', () => {
+            expect(isDateInPast('3000-01-01')).toBeFalsy();
+            expect(isDateInPast('3000-01-01 00:01')).toBeFalsy();
+        });
+
+    });
+
 });

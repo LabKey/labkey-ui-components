@@ -35,7 +35,7 @@ const WITH_SAME_COLOR_LABELS = [
     { circleColor: 'none', backgroundColor: 'FFFFFF', legendLabel: 'Empty location' },
 ];
 
-const WITH_SELECTION = [
+const WITH_MIXED = [
     {
         circleColor: '#fe9200',
         backgroundColor: 'none',
@@ -63,6 +63,18 @@ const WITH_SELECTION = [
         backgroundColor: '#F5D4D3',
         legendLabel: 'Checked out/Reserved',
     },
+    {
+        circleColor: 'none',
+        backgroundColor: 'none',
+        legendLabel: 'Restricted',
+        locked: true,
+    },
+    {
+        circleColor: '#009ce0',
+        backgroundColor: 'none',
+        legendLabel: 'Sample expired',
+        expired: true
+    },
     { circleColor: 'none', backgroundColor: 'FFFFFF', legendLabel: 'Empty location' },
 ];
 
@@ -89,9 +101,10 @@ describe('<ItemsLegend/>', () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test('with selection', () => {
-        const component = <ItemsLegend legendData={WITH_SELECTION} />;
+    test('with selection, locked and expired', () => {
+        const component = <ItemsLegend legendData={WITH_MIXED} />;
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();
     });
+
 });

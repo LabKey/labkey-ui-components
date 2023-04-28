@@ -361,6 +361,16 @@ describe('resolveDetailRenderer', () => {
         wrapper.unmount();
     });
 
+    test('expirationdatecolumnrenderer', () => {
+        const wrapper = mount(
+            <div>
+                {resolveDetailRenderer(new QueryColumn({ detailRenderer: 'ExpirationDateColumnRenderer' }))(Map())}
+            </div>
+        );
+        validate(wrapper, { expirationdatecolumnrenderer: 1 });
+        wrapper.unmount();
+    });
+
     test('bogus renderer', () => {
         expect(resolveDetailRenderer(new QueryColumn({ detailRenderer: 'BogusRenderer' }))).toBeUndefined();
     });

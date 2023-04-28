@@ -47,6 +47,7 @@ export class ItemsLegend extends React.PureComponent<Props> {
                             className={classNames('cell-legend-icon', {
                                 'cell-legend-icon-spacing': legend.locked,
                                 'cell-legend-icon-border': hasBackground,
+                                'expired-form-field': legend.expired
                             })}
                             style={{ backgroundColor: hasBackground ? legend.backgroundColor : emptyColor }}
                         >

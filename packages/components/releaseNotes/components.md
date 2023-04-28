@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.332.1
+*Released*: 28 April 202
+* Issue 47749: Assay re-import run from tmp file to use TSV loader for file preview
+* Issue 47576: AssayImportPanels change so that if there are wrapped columns that are marked as userEditable and shownInInsertView, include them in the form / UI
+
 ### version 2.332.0
 *Released*: 27 April 202
 - Issue 47756: Use categories to filter search results server-side instead of client-side

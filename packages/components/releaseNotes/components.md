@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### Version TBD
+#Released*: TBD
+- Issue 46747: Update lookup resolver to go to LKS when lookup is defined outside the app
+
 ### version 2.332.0
 *Released*: 27 April 202
 - Issue 47756: Use categories to filter search results server-side instead of client-side

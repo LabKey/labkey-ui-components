@@ -169,11 +169,12 @@ class LookupMapper implements URLMapper {
         this.lookupResolvers = lookupResolvers;
     }
 
-    resolve(url, row, column, schema, query): AppURL {
+    resolve(url, row, column): AppURL {
         if (column.has('lookup')) {
             var lookup = column.get('lookup'),
                 schema = lookup.get('schemaName'),
                 query = lookup.get('queryName'),
+                lookupContainerPath = lookup.get('containerPath'),
                 queryKey = [schema, query].join('-').toLowerCase(),
                 schemaKey = schema.toLowerCase();
 
@@ -185,6 +186,10 @@ class LookupMapper implements URLMapper {
                     return this.lookupResolvers[schemaKey](row, column, schema, query);
                 }
             }
+
+            const containerPath = ActionURL.getContainer();
+            if (lookupContainerPath && lookupContainerPath !== containerPath)
+                return undefined;
 
             const parts = [
                 this.defaultPrefix,

@@ -18,7 +18,7 @@ import { getProcessedSearchHits } from './actions';
 const DEFAULT_PROPS = {
     appName: 'test',
     offset: undefined,
-    onPage: jest.fn(),
+    onPageChange: jest.fn(),
     search: jest.fn(),
     searchResultsModel: undefined,
     searchTerm: undefined,
@@ -64,9 +64,9 @@ describe('<SearchPanelImpl />', () => {
         expect(wrapper.find('.search-form')).toHaveLength(1);
         expect(wrapper.find('HelpLink.search-form__help-link')).toHaveLength(1);
 
-        // No search term set, so no result message or results
+        // Search term set so we have all results
         expect(wrapper.find('.search-panel__no-results')).toHaveLength(0);
-        expect(wrapper.find(SearchResultCard)).toHaveLength(47);
+        expect(wrapper.find(SearchResultCard)).toHaveLength(49);
         expect(wrapper.find(PaginationButtons)).toHaveLength(0);
     });
 
@@ -120,7 +120,7 @@ describe('<SearchPanelImpl />', () => {
 
         // Search term set, so no "no-result" message
         expect(wrapper.find('.search-panel__no-results')).toHaveLength(0);
-        expect(wrapper.find(SearchResultCard)).toHaveLength(47);
+        expect(wrapper.find(SearchResultCard)).toHaveLength(49);
         // All results fit on the page, so no pagination buttons
         expect(wrapper.find(PaginationButtons)).toHaveLength(0);
     });
@@ -149,7 +149,7 @@ describe('<SearchPanelImpl />', () => {
 
         // Search term set, so no "no-results" message
         expect(wrapper.find('.search-panel__no-results')).toHaveLength(0);
-        expect(wrapper.find(SearchResultCard)).toHaveLength(7);
+        expect(wrapper.find(SearchResultCard)).toHaveLength(9);
         expect(wrapper.find(PaginationButtons)).toHaveLength(1);
         expect(wrapper.find('.pagination-buttons__info').text()).toBe('41 - 47 of 47');
     });

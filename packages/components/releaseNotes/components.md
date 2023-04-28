@@ -8,6 +8,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Picklist All Samples grid update to filter out unresolved samples, for the "user doesn't have permission" case
   * SampleMoveMenuItem update to provide an onSuccess callback, to allow the LKFM grid to reload models accordingly
 
+### version 2.332.0
+*Released*: 27 April 202
+- Issue 47756: Use categories to filter search results server-side instead of client-side
+
 ### version 2.331.0
 *Released*: 26 April 2023
 * Performance Evaluation for Data at Scale - Improve Insert/UpdateRows calls

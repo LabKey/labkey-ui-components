@@ -303,7 +303,7 @@ describe('EntityInsertPanel', () => {
                     )}
                 </div>
             );
-            expect(wrapper.text()).toContain('alsoAllowed cannot be updated and and will be ignored.');
+            expect(wrapper.text()).toContain('alsoAllowed cannot be updated and will be ignored.');
             wrapper.unmount();
         });
     });

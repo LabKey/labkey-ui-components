@@ -262,13 +262,11 @@ export function getParsedRelativeDateStr(dateVal: string): { days: number; posit
 
 // return true if the dateStr has a date that's before today
 export function isDateInPast(dateStr: string): boolean {
-    if (!dateStr)
-        return false;
+    if (!dateStr) return false;
 
     const currentDate = new Date();
     const currentDateStart = currentDate.setUTCHours(0, 0, 0, 0);
 
     const date = new Date(dateStr);
     return date.getTime() < currentDateStart;
-
 }

@@ -6,8 +6,8 @@ import { HorizontalBarLegendData } from './utils';
 const CELL_EMPTY_COLOR = 'FFFFFF';
 
 interface Props {
-    legendData: HorizontalBarLegendData[];
     emptyColor?: string;
+    legendData: HorizontalBarLegendData[];
 }
 
 export class ItemsLegend extends React.PureComponent<Props> {
@@ -32,10 +32,10 @@ export class ItemsLegend extends React.PureComponent<Props> {
                 );
             } else if (legend.locked) {
                 icon = (
-                    <span className={'cell-lock'}>
+                    <span className="cell-lock">
                         <span className="fa fa-lock" />
                     </span>
-                )
+                );
             }
 
             const key = 'cell-legend-' + index;
@@ -47,7 +47,7 @@ export class ItemsLegend extends React.PureComponent<Props> {
                             className={classNames('cell-legend-icon', {
                                 'cell-legend-icon-spacing': legend.locked,
                                 'cell-legend-icon-border': hasBackground,
-                                'expired-form-field': legend.expired
+                                'expired-form-field': legend.expired,
                             })}
                             style={{ backgroundColor: hasBackground ? legend.backgroundColor : emptyColor }}
                         >

@@ -10,8 +10,9 @@ import { UserDetailsRenderer } from '../internal/renderers/UserDetailsRenderer';
 import { SampleStatusTag } from '../internal/components/samples/SampleStatusTag';
 import { TEST_LKSM_STARTER_MODULE_CONTEXT } from '../internal/productFixtures';
 
+import { ExpirationDateColumnRenderer } from '../internal/renderers/ExpirationDateColumnRenderer';
+
 import { SampleAliquotDetailHeader } from './SampleAliquotDetailHeader';
-import {ExpirationDateColumnRenderer} from "../internal/renderers/ExpirationDateColumnRenderer";
 
 describe('<SampleAliquotDetailHeader/>', () => {
     const COLUMN_ALIQUOT = new QueryColumn({
@@ -43,7 +44,7 @@ describe('<SampleAliquotDetailHeader/>', () => {
             displayValue: 'sampletype1',
         },
         links: null,
-        MaterialExpDate: {value: '2022-02-12 11:58:54.385', formattedValue: '2022-02-12' },
+        MaterialExpDate: { value: '2022-02-12 11:58:54.385', formattedValue: '2022-02-12' },
         SampleState: { value: 1, displayValue: 'Available' },
         AliquotSpecific: { value: 'ali-1-1 - child4' },
         Description: { value: 'this is a sub-aliquot - 3' },

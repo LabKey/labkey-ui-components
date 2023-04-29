@@ -335,7 +335,5 @@ describe('Date Utilities', () => {
             expect(isDateInPast('3000-01-01')).toBeFalsy();
             expect(isDateInPast('3000-01-01 00:01')).toBeFalsy();
         });
-
     });
-
 });

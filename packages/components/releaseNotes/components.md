@@ -3,6 +3,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 2.332.1
 *Released*: 28 April 202
+* Add expired sample indicator in UI
+  * add new ExpirationDateColumnRenderer and wire up to grid cell and DetailDisplay
+  * modify SampleAiquotDetailHeader to show expired icon for aliquot parent expiration date field
+  * modify ItemsLegends to be able to display expired icon
+
+### version 2.332.1
+*Released*: 28 April 202
 * Issue 47749: Assay re-import run from tmp file to use TSV loader for file preview
 * Issue 47576: AssayImportPanels change so that if there are wrapped columns that are marked as userEditable and shownInInsertView, include them in the form / UI
 

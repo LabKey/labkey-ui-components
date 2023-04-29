@@ -73,7 +73,7 @@ const WITH_MIXED = [
         circleColor: '#009ce0',
         backgroundColor: 'none',
         legendLabel: 'Sample expired',
-        expired: true
+        expired: true,
     },
     { circleColor: 'none', backgroundColor: 'FFFFFF', legendLabel: 'Empty location' },
 ];
@@ -106,5 +106,4 @@ describe('<ItemsLegend/>', () => {
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();
     });
-
 });

@@ -10,7 +10,7 @@ import { SAMPLE_STATE_COLUMN_NAME } from '../internal/components/samples/constan
 import { SampleStatusTag } from '../internal/components/samples/SampleStatusTag';
 import { getSampleStatus } from '../internal/components/samples/utils';
 import { UserDetailsRenderer } from '../internal/renderers/UserDetailsRenderer';
-import {ExpirationDateColumnRenderer} from "../internal/renderers/ExpirationDateColumnRenderer";
+import { ExpirationDateColumnRenderer } from '../internal/renderers/ExpirationDateColumnRenderer';
 
 interface SampleAliquotDetailHeaderProps {
     aliquotHeaderDisplayColumns: List<QueryColumn>;
@@ -24,7 +24,7 @@ export class SampleAliquotDetailHeader extends PureComponent<SampleAliquotDetail
                 <td>{label}</td>
                 <td>
                     {userLookup && <UserDetailsRenderer data={data} />}
-                    {(!userLookup && !isExpDate) && <DefaultRenderer data={data} />}
+                    {!userLookup && !isExpDate && <DefaultRenderer data={data} />}
                     {isExpDate && <ExpirationDateColumnRenderer data={data} tableCell={false} />}
                 </td>
             </tr>

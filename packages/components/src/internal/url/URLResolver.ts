@@ -187,6 +187,7 @@ class LookupMapper implements URLMapper {
                 }
             }
 
+            // Issue 46747: When the lookup goes to a different container, don't rewrite the URL
             const containerPath = ActionURL.getContainer();
             if (lookupContainerPath && lookupContainerPath !== containerPath)
                 return undefined;

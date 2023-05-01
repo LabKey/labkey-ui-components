@@ -270,3 +270,10 @@ export function isDateInPast(dateStr: string): boolean {
     const date = new Date(dateStr);
     return date.getTime() < currentDateStart;
 }
+
+// return true if the dateTimeStr has a timestamp that's before now
+export function isDateTimeInPast(dateTimeStr: string): boolean {
+    if (!dateTimeStr) return false;
+
+    return (new Date(dateTimeStr)).getTime() < (new Date()).getTime();
+}

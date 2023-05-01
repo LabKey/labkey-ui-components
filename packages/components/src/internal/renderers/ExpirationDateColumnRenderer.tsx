@@ -4,7 +4,7 @@ import { Iterable, Map } from 'immutable';
 import classNames from 'classnames';
 
 import { QueryColumn } from '../../public/QueryColumn';
-import { isDateInPast } from '../util/Date';
+import { isDateTimeInPast } from '../util/Date';
 
 export interface ExpirationDateColumnRendererProps {
     col?: QueryColumn;
@@ -30,7 +30,7 @@ export const ExpirationDateColumnRenderer: FC<ExpirationDateColumnRendererProps>
             displayValue = displayValue ?? value;
         }
 
-        if (value) expired = isDateInPast(value);
+        if (value) expired = isDateTimeInPast(value);
 
         if (tableCell) {
             return (

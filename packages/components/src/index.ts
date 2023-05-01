@@ -146,6 +146,7 @@ import {
     getDateFormat,
     getDateTimeFormat,
     isDateInPast,
+    isDateTimeInPast,
     parseDate,
 } from './internal/util/Date';
 import { SVGIcon, Theme } from './internal/components/base/SVGIcon';
@@ -1255,6 +1256,7 @@ export {
     formatDateTime,
     parseDate,
     isDateInPast,
+    isDateTimeInPast,
     blurActiveElement,
     caseInsensitive,
     capitalizeFirstChar,

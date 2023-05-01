@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD May 2023
+* Adjust usages of auditBehavior to always use AuditBehaviorTypes.DETAILED
+  * remove auditBehavior optional props since they were always passed in as DETAILED
+  * remove getSampleAuditBehavior() since it was always using DETAILED
+
 ### version 2.332.3
 *Released*: 1 May 2023
 * Move samples between project updates and containerFilter changes

@@ -36,7 +36,6 @@ import { SingleParentEntityPanel } from './SingleParentEntityPanel';
 import { parentValuesDiffer, getUpdatedRowForParentChanges } from './utils';
 
 export interface ParentEntityEditPanelProps {
-    auditBehavior?: AuditBehaviorTypes;
     canUpdate: boolean;
     cancelText?: string;
     childContainerPath?: string;
@@ -259,7 +258,7 @@ export class ParentEntityEditPanel extends Component<ParentEntityEditPanelProps,
 
         this.setState({ submitting: true });
 
-        const { auditBehavior, childContainerPath, onUpdate } = this.props;
+        const { childContainerPath, onUpdate } = this.props;
         const { childData, childQueryInfo, currentParents, originalParents } = this.state;
 
         const schemaQuery = childQueryInfo.schemaQuery;
@@ -268,7 +267,7 @@ export class ParentEntityEditPanel extends Component<ParentEntityEditPanelProps,
             containerPath: childContainerPath,
             schemaQuery,
             rows: [getUpdatedRowForParentChanges(originalParents, currentParents, childData, childQueryInfo)],
-            auditBehavior,
+            auditBehavior: AuditBehaviorTypes.DETAILED,
         })
             .then(() => {
                 this.setState(

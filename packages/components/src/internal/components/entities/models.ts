@@ -208,7 +208,6 @@ export class EntityIdCreationModel extends Record({
     targetEntityType: undefined,
     entityCount: 0,
     entityDataType: undefined,
-    auditBehavior: undefined,
     creationType: undefined,
     numPerParent: 1,
 }) {
@@ -225,7 +224,6 @@ export class EntityIdCreationModel extends Record({
     declare targetEntityType: EntityTypeOption; // the target entity Type
     declare entityCount: number; // how many rows are in the grid
     declare entityDataType: EntityDataType; // target entity data type
-    declare auditBehavior: AuditBehaviorTypes;
     declare creationType: SampleCreationType;
     declare numPerParent: number;
 
@@ -373,7 +371,7 @@ export class EntityIdCreationModel extends Record({
             }, List<Map<string, any>>());
 
         return insertRows({
-            auditBehavior: this.auditBehavior,
+            auditBehavior: AuditBehaviorTypes.DETAILED,
             fillEmptyFields: true,
             rows,
             schemaQuery: this.getSchemaQuery(),

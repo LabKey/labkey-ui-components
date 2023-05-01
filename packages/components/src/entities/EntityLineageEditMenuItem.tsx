@@ -1,8 +1,6 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import { MenuItem } from 'react-bootstrap';
 
-import { AuditBehaviorTypes } from '@labkey/api';
-
 import { QueryModel } from '../public/QueryModel/QueryModel';
 
 import { SelectionMenuItem } from '../internal/components/menus/SelectionMenuItem';
@@ -11,7 +9,6 @@ import { EntityDataType } from '../internal/components/entities/models';
 import { EntityLineageEditModal } from './EntityLineageEditModal';
 
 interface Props {
-    auditBehavior?: AuditBehaviorTypes;
     childEntityDataType: EntityDataType;
     handleClick?: (cb: () => void, errorMsg?: string) => void;
     onSuccess?: () => void;
@@ -20,7 +17,7 @@ interface Props {
 }
 
 export const EntityLineageEditMenuItem: FC<Props> = memo(props => {
-    const { childEntityDataType, parentEntityDataTypes, queryModel, auditBehavior, onSuccess, handleClick } = props;
+    const { childEntityDataType, parentEntityDataTypes, queryModel, onSuccess, handleClick } = props;
     const parentNounPlural = parentEntityDataTypes[0].nounPlural;
     const itemText = 'Edit ' + parentNounPlural;
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
@@ -61,7 +58,6 @@ export const EntityLineageEditMenuItem: FC<Props> = memo(props => {
                     queryModel={queryModel}
                     onCancel={onCancel}
                     childEntityDataType={childEntityDataType}
-                    auditBehavior={auditBehavior}
                     parentEntityDataTypes={parentEntityDataTypes}
                     onSuccess={_onSuccess}
                 />
@@ -69,7 +65,3 @@ export const EntityLineageEditMenuItem: FC<Props> = memo(props => {
         </>
     );
 });
-
-EntityLineageEditMenuItem.defaultProps = {
-    auditBehavior: AuditBehaviorTypes.DETAILED,
-};

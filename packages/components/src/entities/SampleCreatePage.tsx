@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback, useMemo } from 'react';
 import { WithRouterProps } from 'react-router';
 import { OrderedMap } from 'immutable';
-import { Filter } from '@labkey/api';
+import { AuditBehaviorTypes, Filter } from '@labkey/api';
 
 import { InjectedRouteLeaveProps, useRouteLeave } from '../internal/util/RouteLeave';
 import { useServerContext } from '../internal/components/base/ServerContext';
@@ -30,7 +30,7 @@ import { EntityInsertPanel } from './EntityInsertPanel';
 
 import { SampleTypeBasePage } from './SampleTypeBasePage';
 import { onSampleChange } from './actions';
-import { getSampleAuditBehaviorType, getSampleTypeTemplateUrl, processSampleBulkAdd } from './utils';
+import { getSampleTypeTemplateUrl, processSampleBulkAdd } from './utils';
 import { useSampleTypeAppContext } from './useSampleTypeAppContext';
 
 const TITLE = 'Sample Type';
@@ -47,15 +47,14 @@ export const SampleCreatePage: FC<SampleCreatePageProps> = memo(props => {
     const { combineParentTypes, controllerName, downloadTemplateExcludeColumns, importHelpLinkTopic, parentDataTypes } =
         useSampleTypeAppContext();
     const [getIsDirty, setIsDirty] = useRouteLeave(router, routes);
-    const auditBehavior = getSampleAuditBehaviorType();
 
     const fileImportParameters = useMemo(
         () => ({
-            auditBehavior,
+            auditBehavior: AuditBehaviorTypes.DETAILED,
             pipelineProvider: 'Samples Import',
             pipelineNotificationProvider: controllerName,
         }),
-        [auditBehavior, controllerName]
+        [controllerName]
     );
 
     const entityDataType = useMemo(() => {
@@ -147,7 +146,6 @@ export const SampleCreatePage: FC<SampleCreatePageProps> = memo(props => {
                 allowedNonDomainFields={SAMPLE_INSERT_EXTRA_COLUMNS}
                 disallowedUpdateFields={[ALIQUOTED_FROM_COL]}
                 asyncSize={useAsync === 'true' ? 1 : BACKGROUND_IMPORT_MIN_FILE_SIZE}
-                auditBehavior={auditBehavior}
                 combineParentTypes={combineParentTypes}
                 containerFilter={getContainerFilterForLookups()}
                 entityDataType={entityDataType}

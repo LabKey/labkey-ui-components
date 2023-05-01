@@ -22,7 +22,6 @@ import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
 
 interface Props {
     afterDelete: (rowsToKeep?: any[]) => void;
-    auditBehavior?: AuditBehaviorTypes;
     beforeDelete?: () => void;
     containerPath?: string;
     entityDataType: EntityDataType;
@@ -35,7 +34,6 @@ interface Props {
 
 export const EntityDeleteModal: FC<Props> = memo(props => {
     const {
-        auditBehavior,
         containerPath,
         queryModel,
         onCancel,
@@ -69,7 +67,7 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
 
             try {
                 await deleteRows({
-                    auditBehavior,
+                    auditBehavior: AuditBehaviorTypes.DETAILED,
                     auditUserComment,
                     containerPath,
                     rows: rowsToDelete,
@@ -86,16 +84,7 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
                 onCancel(); // close the modal so the error notification is more apparent.
             }
         },
-        [
-            afterDelete,
-            auditBehavior,
-            beforeDelete,
-            containerPath,
-            createNotification,
-            entityDataType,
-            onCancel,
-            queryModel.schemaQuery,
-        ]
+        [afterDelete, beforeDelete, containerPath, createNotification, entityDataType, onCancel, queryModel.schemaQuery]
     );
 
     if (useSelected && maxSelected && numSelected > maxSelected) {
@@ -135,6 +124,5 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
 });
 
 EntityDeleteModal.defaultProps = {
-    auditBehavior: AuditBehaviorTypes.DETAILED,
     maxSelected: MAX_SELECTED_SAMPLES,
 };

@@ -35,7 +35,6 @@ import { ParentEntityEditPanel } from './ParentEntityEditPanel';
 
 interface Props {
     api?: ComponentsAPIWrapper;
-    auditBehavior?: AuditBehaviorTypes;
     childEntityDataType: EntityDataType;
     onCancel: () => void;
     onSuccess: () => void;
@@ -71,7 +70,7 @@ const restrictedDataOperationMsg = (
 };
 
 export const EntityLineageEditModal: FC<Props> = memo(props => {
-    const { api, auditBehavior, queryModel, onCancel, childEntityDataType, onSuccess, parentEntityDataTypes } = props;
+    const { api, queryModel, onCancel, childEntityDataType, onSuccess, parentEntityDataTypes } = props;
     const [submitting, setSubmitting] = useState(false);
     const [allowedForUpdate, setAllowedForUpdate] = useState<Record<string, any>>();
     const [aliquotIds, setAliquotIds] = useState<number[]>();
@@ -182,7 +181,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                 await updateRows({
                     schemaQuery: queryModel.schemaQuery,
                     rows,
-                    auditBehavior,
+                    auditBehavior: AuditBehaviorTypes.DETAILED,
                 });
                 onSuccess();
                 createNotification(
@@ -288,7 +287,6 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
 
                         <Progress modal={false} estimate={numAllowed * 10} toggle={submitting} />
                         <ParentEntityEditPanel
-                            auditBehavior={auditBehavior}
                             canUpdate={true}
                             childSchemaQuery={queryModel.schemaQuery}
                             parentDataTypes={parentEntityDataTypes}

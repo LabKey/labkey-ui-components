@@ -283,18 +283,18 @@ export class AssayDefinitionModel extends Record({
     }
 
     getDomainColumns(type: AssayDomainTypes): OrderedMap<string, QueryColumn> {
-        let columns = OrderedMap<string, QueryColumn>();
+        const columns = OrderedMap<string, QueryColumn>().asMutable();
 
         if (this.domains && this.domains.size) {
             const domainColumns = this.getDomainByType(type);
 
             if (domainColumns && domainColumns.size) {
                 domainColumns.forEach(dc => {
-                    columns = columns.set(dc.fieldKey.toLowerCase(), dc);
+                    columns.set(dc.fieldKey.toLowerCase(), dc);
                 });
             }
         }
 
-        return columns;
+        return columns.asImmutable();
     }
 }

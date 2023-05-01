@@ -5,8 +5,17 @@ Components, models, actions, and utility functions for LabKey applications and p
 #Released*: TBD
 - Issue 46747: Update lookup resolver to go to LKS when lookup is defined outside the app
 
+### version 2.332.2
+*Released*: 1 May 2023
+* Issue 47822: export getSampleStatusContainerFilter
+
+### version 2.332.1
+*Released*: 28 April 2023
+* Issue 47749: Assay re-import run from tmp file to use TSV loader for file preview
+* Issue 47576: AssayImportPanels change so that if there are wrapped columns that are marked as userEditable and shownInInsertView, include them in the form / UI
+
 ### version 2.332.0
-*Released*: 27 April 202
+*Released*: 27 April 2023
 - Issue 47756: Use categories to filter search results server-side instead of client-side
 
 ### version 2.331.0

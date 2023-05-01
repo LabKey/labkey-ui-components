@@ -22,6 +22,7 @@ import { FileSizeLimitProps } from '../../../public/files/models';
 import { LoadingState } from '../../../public/LoadingState';
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { QueryInfo } from '../../../public/QueryInfo';
 
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -59,6 +60,7 @@ import { loadSelectedSamples } from '../samples/actions';
 
 import { SampleOperation, STATUS_DATA_RETRIEVAL_ERROR } from '../samples/constants';
 import { getOperationNotPermittedMessage } from '../samples/utils';
+
 import {
     allowReimportAssayRun,
     checkForDuplicateAssayFiles,
@@ -226,7 +228,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         );
     };
 
-    initModel = (): void => {
+    initModel = async (): Promise<void> => {
         const { assayDefinition, location, runId } = this.props;
         const { schemaQuery } = this.state;
         let workflowTask;
@@ -236,28 +238,42 @@ class AssayImportPanelsBody extends Component<Props, State> {
             workflowTask = isNaN(_workflowTask) ? undefined : _workflowTask;
         }
 
-        getQueryDetails(schemaQuery).then(queryInfo => {
-            const sampleColumnData = assayDefinition.getSampleColumn();
-            this.setState(
-                () => ({
-                    model: new AssayWizardModel({
-                        // Initialization is done if the assay does not have a sample column and we aren't getting the
-                        // run properties to show for reimport
-                        isInit: sampleColumnData === undefined && this.runAndBatchPropsLoaded(),
-                        assayDef: assayDefinition,
-                        batchColumns: assayDefinition.getDomainColumns(AssayDomainTypes.BATCH),
-                        runColumns: assayDefinition.getDomainColumns(AssayDomainTypes.RUN),
-                        runId,
-                        usePreviousRunFile: this.isReimport(),
-                        batchProperties: this.getBatchPropertiesMap(),
-                        runProperties: this.getRunPropertiesMap(),
-                        queryInfo,
-                        workflowTask,
-                    }),
+        const batchQueryInfo = await getQueryDetails(new SchemaQuery(assayDefinition.protocolSchemaName, 'Batches'));
+        const runQueryInfo = await getQueryDetails(new SchemaQuery(assayDefinition.protocolSchemaName, 'Runs'));
+        const dataQueryInfo = await getQueryDetails(schemaQuery);
+
+        const sampleColumnData = assayDefinition.getSampleColumn();
+
+        this.setState(
+            () => ({
+                model: new AssayWizardModel({
+                    // Initialization is done if the assay does not have a sample column and we aren't getting the
+                    // run properties to show for reimport
+                    isInit: sampleColumnData === undefined && this.runAndBatchPropsLoaded(),
+                    assayDef: assayDefinition,
+                    batchColumns: this.getDomainColumns(AssayDomainTypes.BATCH, batchQueryInfo),
+                    runColumns: this.getDomainColumns(AssayDomainTypes.RUN, runQueryInfo),
+                    runId,
+                    usePreviousRunFile: this.isReimport(),
+                    batchProperties: this.getBatchPropertiesMap(),
+                    runProperties: this.getRunPropertiesMap(),
+                    queryInfo: dataQueryInfo,
+                    workflowTask,
                 }),
-                this.onGetQueryDetailsComplete
-            );
+            }),
+            this.onGetQueryDetailsComplete
+        );
+    };
+
+    getDomainColumns = (domainType: AssayDomainTypes, queryInfo: QueryInfo): OrderedMap<string, QueryColumn> => {
+        // Issue 47576: if there are wrapped columns that are marked as userEditable and shownInInsertView, include them in the form / UI
+        const { assayDefinition } = this.props;
+        let columns = assayDefinition.getDomainColumns(domainType);
+        queryInfo?.columns.forEach(c => {
+            const shouldInclude = c.wrappedColumnName && c.userEditable && c.shownInInsertView;
+            if (shouldInclude) columns = columns.set(c.fieldKey.toLowerCase(), c);
         });
+        return columns;
     };
 
     ensureRunAndBatchProperties = (): void => {

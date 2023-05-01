@@ -160,6 +160,7 @@ export class QueryColumn {
     declare userEditable: boolean;
     declare validValues: string[];
     // declare versionField: boolean;
+    declare wrappedColumnName: string;
 
     declare cell: Function;
     declare columnRenderer: string;
@@ -382,7 +383,11 @@ export class QueryColumn {
     }
 }
 
-export function insertColumnFilter(col: QueryColumn, includeFileInputs = true, isIncludedColumn?: (col: QueryColumn) => boolean): boolean {
+export function insertColumnFilter(
+    col: QueryColumn,
+    includeFileInputs = true,
+    isIncludedColumn?: (col: QueryColumn) => boolean
+): boolean {
     return (
         col &&
         col.removeFromViews !== true &&

@@ -145,7 +145,6 @@ import {
     formatDateTime,
     getDateFormat,
     getDateTimeFormat,
-    isDateInPast,
     isDateTimeInPast,
     parseDate,
 } from './internal/util/Date';
@@ -1257,7 +1256,6 @@ export {
     formatDate,
     formatDateTime,
     parseDate,
-    isDateInPast,
     isDateTimeInPast,
     blurActiveElement,
     caseInsensitive,

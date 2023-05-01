@@ -324,6 +324,7 @@ describe('Date Utilities', () => {
         test('past', () => {
             expect(isDateInPast('2022-02-02')).toBeTruthy();
             expect(isDateInPast('2022-02-02 01:02')).toBeTruthy();
+            expect(isDateInPast('2022-02-02 01:02:03.123')).toBeTruthy();
         });
 
         test('today', () => {
@@ -336,6 +337,7 @@ describe('Date Utilities', () => {
         test('futurama', () => {
             expect(isDateInPast('3000-01-01')).toBeFalsy();
             expect(isDateInPast('3000-01-01 00:01')).toBeFalsy();
+            expect(isDateInPast('3000-01-01 00:00:00.001')).toBeFalsy();
         });
     });
 
@@ -348,6 +350,7 @@ describe('Date Utilities', () => {
         test('past', () => {
             expect(isDateTimeInPast('2022-02-02')).toBeTruthy();
             expect(isDateTimeInPast('2022-02-02 01:02')).toBeTruthy();
+            expect(isDateInPast('2022-02-02 01:02:03.123')).toBeTruthy();
         });
 
         test('today midnight', () => {
@@ -367,6 +370,7 @@ describe('Date Utilities', () => {
         test('futurama', () => {
             expect(isDateTimeInPast('3000-01-01')).toBeFalsy();
             expect(isDateTimeInPast('3000-01-01 00:01')).toBeFalsy();
+            expect(isDateInPast('3000-01-01 00:00:00.001')).toBeFalsy();
         });
     });
 });

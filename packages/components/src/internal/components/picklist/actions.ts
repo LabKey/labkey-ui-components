@@ -4,12 +4,7 @@ import { List } from 'immutable';
 
 import { deleteRows, insertRows, InsertRowsResponse, selectRowsDeprecated } from '../../query/api';
 import { resolveKey, SchemaQuery } from '../../../public/SchemaQuery';
-import {
-    getOrderedSelectedMappedKeys,
-    getSelected,
-    getSelectedData,
-    setSnapshotSelections,
-} from '../../actions';
+import { getOrderedSelectedMappedKeys, getSelected, getSelectedData, setSnapshotSelections } from '../../actions';
 import { PICKLIST } from '../domainproperties/list/constants';
 import { saveDomain } from '../domainproperties/actions';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
@@ -460,7 +455,6 @@ export const getPicklistFromId = async (listId: number, loadSampleTypes = true):
         const listSampleTypeData = await selectRowsDeprecated({
             schemaName: SCHEMAS.PICKLIST_TABLES.SCHEMA,
             sql: `SELECT DISTINCT SampleID.SampleSet, SampleID.SampleSet.Category FROM "${picklist.name}" WHERE SampleID.SampleSet IS NOT NULL`,
-            containerFilter: getPicklistLookupContainerFilter(),
         });
 
         picklist = picklist.mutate({
@@ -480,10 +474,4 @@ export const getPicklistFromId = async (listId: number, loadSampleTypes = true):
 
 export function getPicklistListingContainerFilter(): Query.ContainerFilter {
     return isProductProjectsEnabled() ? Query.ContainerFilter.current : undefined;
-}
-
-// since samples can move project after being added to a picklist, we don't want to show empty rows in the picklist
-// grid for samples that the user actual does have permissions to view
-export function getPicklistLookupContainerFilter(): Query.ContainerFilter {
-    return isProductProjectsEnabled() ? Query.ContainerFilter.allInProjectPlusShared : undefined;
 }

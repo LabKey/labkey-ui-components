@@ -20,7 +20,7 @@ interface Props {
     entityDataType?: EntityDataType;
     handleClick?: (cb: () => void, errorMsg?: string) => void;
     maxSelected?: number;
-    onSuccess?: () => void;
+    onSuccess?: (requiresModelReload: boolean) => void;
     queryModel: QueryModel;
 }
 
@@ -45,7 +45,7 @@ export const SampleMoveMenuItem: FC<Props> = memo(props => {
 
     const onAfterMove = useCallback(() => {
         actions.loadModel(queryModel.id, true, true);
-        onSuccess?.();
+        onSuccess?.(true);
     }, [actions, queryModel.id, onSuccess]);
 
     const onClose = useCallback(() => {

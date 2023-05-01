@@ -18,7 +18,7 @@ interface SampleAliquotDetailHeaderProps {
 }
 
 export class SampleAliquotDetailHeader extends PureComponent<SampleAliquotDetailHeaderProps> {
-    renderDetailRow(label: string, data: any, key: any, userLookup = false, isExpDate?: boolean) {
+    renderDetailRow(label: string, data: any, key: any, userLookup = false, isExpDate = false) {
         return (
             <tr key={key}>
                 <td>{label}</td>

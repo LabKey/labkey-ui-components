@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 47822: export getSampleStatusContainerFilter
+
 ### version 2.332.1
 *Released*: 28 April 202
 * Issue 47749: Assay re-import run from tmp file to use TSV loader for file preview

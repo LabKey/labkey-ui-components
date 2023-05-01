@@ -935,13 +935,13 @@ describe('getImportItemsForAssayDefinitions', () => {
         let queryInfo = QueryInfo.fromJsonForTests(sampleSet2QueryInfo);
 
         // with a query name that DOES NOT match the assay def sampleColumn lookup
-        queryInfo = queryInfo.set('schemaQuery', new SchemaQuery('samples', 'Sample set 1')) as QueryInfo;
+        queryInfo = queryInfo.mutate({ schemaQuery: new SchemaQuery('samples', 'Sample set 1') });
         let sampleModel = makeTestQueryModel(queryInfo.schemaQuery, queryInfo);
         let items = getImportItemsForAssayDefinitions(assayStateModel, sampleModel);
         expect(items.size).toBe(0);
 
         // with a query name that DOES match the assay def sampleColumn lookup
-        queryInfo = queryInfo.set('schemaQuery', new SchemaQuery('samples', 'Sample set 10')) as QueryInfo;
+        queryInfo = queryInfo.mutate({ schemaQuery: new SchemaQuery('samples', 'Sample set 10') });
         sampleModel = makeTestQueryModel(queryInfo.schemaQuery, queryInfo);
         items = getImportItemsForAssayDefinitions(assayStateModel, sampleModel);
         expect(items.size).toBe(1);

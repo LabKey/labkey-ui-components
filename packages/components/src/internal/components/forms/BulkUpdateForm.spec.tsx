@@ -59,7 +59,7 @@ describe('BulkUpdateForm', () => {
             const columnFilter = wrapper.find(QueryInfoForm).prop('columnFilter');
 
             // Act
-            const filteredColumns = QUERY_INFO.columns.filter(c => columnFilter(c)).toMap();
+            const filteredColumns = QUERY_INFO.columns.filter(c => columnFilter(c));
 
             // Assert
             expect(filteredColumns.size).toEqual(2);
@@ -73,7 +73,7 @@ describe('BulkUpdateForm', () => {
             const columnFilter = wrapper.find(QueryInfoForm).prop('columnFilter');
 
             // Act
-            const filteredColumns = QUERY_INFO.columns.filter(c => columnFilter(c)).toMap();
+            const filteredColumns = QUERY_INFO.columns.filter(c => columnFilter(c));
 
             // Assert
             expect(filteredColumns.size).toEqual(1);

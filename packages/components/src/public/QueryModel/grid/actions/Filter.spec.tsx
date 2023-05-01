@@ -13,35 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import mixturesWithAliasesQueryInfo from '../../../../test/data/mixturesWithAliases-getQueryDetails.json';
-import { initUnitTests, makeQueryInfo } from '../../../../internal/testHelpers';
-
 import { QueryColumn } from '../../../QueryColumn';
-
-import { QueryInfo } from '../../../QueryInfo';
 
 import { FilterAction } from './Filter';
 import { ActionValue } from './Action';
 
-let queryInfo: QueryInfo;
-let getColumns: () => List<QueryColumn>;
-
-beforeAll(() => {
-    initUnitTests();
-    queryInfo = makeQueryInfo(mixturesWithAliasesQueryInfo);
-});
-
 describe('FilterAction::actionValueFromFilter', () => {
-    let action;
-    const urlPrefix = undefined;
-
-    beforeEach(() => {
-        // needs to be in beforeEach so it gets instantiated after beforeAll
-        action = new FilterAction(urlPrefix, getColumns);
-    });
+    const action = new FilterAction();
 
     // TODO add tests for various value options
     test('no label, unencoded column', () => {

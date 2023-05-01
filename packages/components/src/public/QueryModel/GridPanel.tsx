@@ -356,6 +356,8 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
 });
 
 interface State {
+    // TODO: replace actionValues with individual properties tracking searches, sorts, filters, and views separately.
+    //  actionValues is a vestigal structure left behind from OmniBox which required us to store everything together.
     actionValues: ActionValue[];
     disableColumnDrag: boolean;
     errorMsg: React.ReactNode;
@@ -394,13 +396,14 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
     constructor(props) {
         super(props);
-        const { id } = props.model;
 
+        // TODO: gridActions is a vestigal structure left behind from the days of Omnibox, which we have since removed.
+        //  We should remove gridActions and the related classes.
         this.gridActions = {
-            filter: new FilterAction(id, this.getColumns, null, props.getFilterDisplayValue),
-            search: new SearchAction(id),
-            sort: new SortAction(id, this.getColumns),
-            view: new ViewAction(id, this.getColumns, this.getQueryInfo),
+            filter: new FilterAction(props.getFilterDisplayValue),
+            search: new SearchAction(),
+            sort: new SortAction(),
+            view: new ViewAction(),
         };
 
         this.state = {
@@ -506,9 +509,9 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         actions.selectPage(model.id, checked);
     };
 
-    getColumns = (all = false): List<QueryColumn> => {
+    getColumns = (all = false): QueryColumn[] => {
         const { model } = this.props;
-        return all ? List(model.allColumns) : List(model.displayColumns);
+        return all ? model.allColumns : model.displayColumns;
     };
 
     getQueryInfo = (): QueryInfo => {

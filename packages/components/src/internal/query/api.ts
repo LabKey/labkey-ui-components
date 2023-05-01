@@ -179,6 +179,7 @@ export function applyQueryMetadata(rawQueryInfo: any, schemaName?: string, query
             // derived fields
             columns,
             pkCols: columns.filter(col => col.isKeyField).valueArray.map(col => col.fieldKey),
+            schemaQuery,
             status: QueryInfoStatus.ok, // seems a little weird to be saying we are OK here
             views,
         });

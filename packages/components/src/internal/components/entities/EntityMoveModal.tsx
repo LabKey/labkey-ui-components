@@ -19,7 +19,7 @@ import { isLoading, LoadingState } from '../../../public/LoadingState';
 
 import { AppURL, buildURL } from '../../url/AppURL';
 
-import { getCurrentAppProperties } from '../../app/utils';
+import { getPrimaryAppProperties } from '../../app/utils';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
@@ -128,7 +128,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                 );
 
                 let projectUrl = buildURL(
-                    getCurrentAppProperties().controllerName,
+                    getPrimaryAppProperties()?.productId,
                     `${ActionURL.getAction() || 'app'}.view`,
                     undefined,
                     { container: targetContainerPath, returnUrl: false }

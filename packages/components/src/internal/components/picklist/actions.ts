@@ -4,7 +4,7 @@ import { List } from 'immutable';
 
 import { deleteRows, insertRows, InsertRowsResponse, selectRowsDeprecated } from '../../query/api';
 import { resolveKey, SchemaQuery } from '../../../public/SchemaQuery';
-import { getOrderedSelectedMappedKeys, getSelected, getSelectedData, getSnapshotSelections, setSnapshotSelections } from '../../actions';
+import { getOrderedSelectedMappedKeys, getSelected, getSelectedData, setSnapshotSelections } from '../../actions';
 import { PICKLIST } from '../domainproperties/list/constants';
 import { saveDomain } from '../domainproperties/actions';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
@@ -57,7 +57,8 @@ export function createPicklist(
     statusData: OperationConfirmationData,
     selectionKey: string,
     useSnapshotSelection: boolean,
-    sampleIds: string[]): Promise<Picklist> {
+    sampleIds: string[]
+): Promise<Picklist> {
     return new Promise((resolve, reject) => {
         Domain.create({
             domainDesign: {
@@ -159,6 +160,7 @@ export function getPicklistCountsBySampleType(listName: string): Promise<SampleT
                     'SampleId.SampleSet.Name AS SampleType,',
                     'SampleId.LabelColor',
                     `FROM ${SCHEMAS.PICKLIST_TABLES.SCHEMA}."${listName}"`,
+                    'WHERE SampleId.Name IS NOT NULL',
                     'GROUP BY SampleId.SampleSet.Name, SampleId.LabelColor',
                     'ORDER BY SampleId.SampleSet.Name',
                 ].join('\n'),
@@ -248,12 +250,17 @@ export function getSelectedPicklistSamples(
     });
 }
 
-export async function getSamplesNotInList(listName: string, selectionKey?: string, useSnapshotSelection?: boolean, sampleIds?: string[]): Promise<string[]> {
-    const existingSamples = await getPicklistSamples(listName)
+export async function getSamplesNotInList(
+    listName: string,
+    selectionKey?: string,
+    useSnapshotSelection?: boolean,
+    sampleIds?: string[]
+): Promise<string[]> {
+    const existingSamples = await getPicklistSamples(listName);
     if (sampleIds) {
         return sampleIds.filter(id => !existingSamples.has(id.toString()));
     } else if (selectionKey) {
-        const response = await getSelected(selectionKey, useSnapshotSelection)
+        const response = await getSelected(selectionKey, useSnapshotSelection);
         return response.selected.filter(id => !existingSamples.has(id.toString()));
     }
     return [];
@@ -264,7 +271,8 @@ export function addSamplesToPicklist(
     statusData: OperationConfirmationData,
     useSnapshotSelection?: boolean,
     selectionKey?: string,
-    sampleIds?: string[]): Promise<InsertRowsResponse> {
+    sampleIds?: string[]
+): Promise<InsertRowsResponse> {
     return new Promise((resolve, reject) => {
         return getSamplesNotInList(listName, selectionKey, useSnapshotSelection, sampleIds)
             .then(sampleIdsToAdd => {

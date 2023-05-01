@@ -35,7 +35,7 @@ import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
 import { GridAliquotViewSelector } from './GridAliquotViewSelector';
 
 interface Props extends InjectedQueryModels {
-    afterSampleActionComplete?: (hasDelete?: boolean) => void;
+    afterSampleActionComplete?: (requiresModelReload?: boolean) => void;
     asPanel?: boolean;
     containerFilter?: Query.ContainerFilter;
     createBtnParentKey?: string;
@@ -216,10 +216,10 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     }, [afterSampleActionComplete, resetState]);
 
     const _afterSampleActionComplete = useCallback(
-        (hasDelete?: boolean) => {
+        (requiresModelReload?: boolean) => {
             dismissNotifications();
-            actions.loadModel(activeModelId, true, hasDelete);
-            afterSampleActionComplete?.(hasDelete);
+            actions.loadModel(activeModelId, true, requiresModelReload);
+            afterSampleActionComplete?.(requiresModelReload);
             resetState();
         },
         [actions, activeModelId, afterSampleActionComplete, dismissNotifications, resetState]

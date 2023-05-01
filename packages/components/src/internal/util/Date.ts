@@ -275,5 +275,5 @@ export function isDateInPast(dateStr: string): boolean {
 export function isDateTimeInPast(dateTimeStr: string): boolean {
     if (!dateTimeStr) return false;
 
-    return (new Date(dateTimeStr)).getTime() < (new Date()).getTime();
+    return (new Date(dateTimeStr)).getTime() <= (new Date()).getTime();
 }

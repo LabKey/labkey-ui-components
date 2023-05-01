@@ -160,6 +160,7 @@ export function getPicklistCountsBySampleType(listName: string): Promise<SampleT
                     'SampleId.SampleSet.Name AS SampleType,',
                     'SampleId.LabelColor',
                     `FROM ${SCHEMAS.PICKLIST_TABLES.SCHEMA}."${listName}"`,
+                    'WHERE SampleId.Name IS NOT NULL',
                     'GROUP BY SampleId.SampleSet.Name, SampleId.LabelColor',
                     'ORDER BY SampleId.SampleSet.Name',
                 ].join('\n'),

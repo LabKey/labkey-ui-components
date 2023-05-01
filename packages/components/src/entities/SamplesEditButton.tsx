@@ -212,6 +212,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
                         entityDataType={entityDataType}
                         queryModel={model}
                         handleClick={handleMenuClick}
+                        onSuccess={afterSampleActionComplete}
                     />
                 )}
                 {showDelete && (

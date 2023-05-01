@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.332.3
+*Released*: 1 May 2023
+* Move samples between project updates and containerFilter changes
+  * Picklist All Samples grid update to filter out unresolved samples
+  * SampleMoveMenuItem update to provide an onSuccess callback, to allow the LKFM grid to reload models accordingly
+
 ### version 2.332.2
 *Released*: 1 May 2023
 * Issue 47822: export getSampleStatusContainerFilter

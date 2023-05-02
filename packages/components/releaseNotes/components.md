@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.332.4
+*Released*: 2 May 2023
+* Update @labkey/api package version
+
 ### version 2.332.3
 *Released*: 1 May 2023
 * Move samples between project updates and containerFilter changes

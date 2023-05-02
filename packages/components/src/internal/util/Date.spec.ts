@@ -362,7 +362,7 @@ describe('Date Utilities', () => {
             const nowDate = new Date();
             const now = getJsonDateTimeFormatString(nowDate);
             expect(isDateTimeInPast(now)).toBeTruthy();
-            const in10SecondsDate = new Date(nowDate.getTime() + 10*6000);
+            const in10SecondsDate = new Date(nowDate.getTime() + 10 * 6000);
             const in10Seconds = getJsonDateTimeFormatString(in10SecondsDate);
             expect(isDateTimeInPast(in10Seconds)).toBeFalsy();
         });

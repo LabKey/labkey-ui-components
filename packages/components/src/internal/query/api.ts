@@ -153,7 +153,7 @@ export function applyQueryMetadata(rawQueryInfo: any, schemaName?: string, query
                 if (removedViewColumns.length) {
                     viewInfo = viewInfo.mutate({
                         columns: viewInfo.columns.filter(
-                            vc => removedViewColumns.indexOf(vc.fieldKey.toLowerCase()) > -1
+                            vc => removedViewColumns.indexOf(vc.fieldKey.toLowerCase()) === -1
                         ),
                     }) as ViewInfo;
                 }

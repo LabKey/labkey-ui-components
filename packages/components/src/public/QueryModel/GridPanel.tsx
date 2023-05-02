@@ -509,15 +509,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         actions.selectPage(model.id, checked);
     };
 
-    getColumns = (all = false): QueryColumn[] => {
-        const { model } = this.props;
-        return all ? model.allColumns : model.displayColumns;
-    };
-
-    getQueryInfo = (): QueryInfo => {
-        return this.props.model.queryInfo;
-    };
-
     getSelectDistinctOptions = (): Query.SelectDistinctOptions => {
         const { model } = this.props;
         return {

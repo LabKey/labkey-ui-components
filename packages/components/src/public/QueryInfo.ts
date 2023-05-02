@@ -1,6 +1,3 @@
-// commented out attributes are not used in app
-import { Record as ImmutableRecord } from 'immutable';
-
 import { Filter } from '@labkey/api';
 
 import { toLowerSafe } from '../internal/util/utils';
@@ -9,7 +6,6 @@ import { ViewInfo } from '../internal/ViewInfo';
 import { LastActionStatus } from '../internal/LastActionStatus';
 
 import { ExtendedMap } from './ExtendedMap';
-
 import { insertColumnFilter, QueryColumn } from './QueryColumn';
 import { SchemaQuery } from './SchemaQuery';
 import { QuerySort } from './QuerySort';
@@ -69,6 +65,7 @@ const QUERY_INFO_DEFAULTS = {
     plural: undefined, // defaults to value of queryLabel
 };
 
+// Commented out attributes are not used in app, but are returned by the server
 export class QueryInfo {
     private declare appEditableTable: boolean; // use isAppEditable()
     declare altUpdateKeys: Set<string>;
@@ -196,27 +193,20 @@ export class QueryInfo {
             view = ViewInfo.DEFAULT_NAME;
         }
 
-        let lowerOmit;
-        if (omittedColumns) lowerOmit = toLowerSafe(omittedColumns);
-
-        const colFilter = (c): boolean => {
-            if (lowerOmit && lowerOmit.size > 0) {
-                return c && c.fieldKey && !lowerOmit.includes(c.fieldKey.toLowerCase());
-            }
-            return true;
-        };
-
+        const lowerOmit = toLowerSafe(omittedColumns ?? []);
         const viewInfo = this.getView(view);
+
         if (viewInfo) {
-            const displayColumns = viewInfo.columns.filter(colFilter).reduce((result, col) => {
+            const displayColumns = viewInfo.columns.reduce((result, col) => {
+                if (col.fieldKey && lowerOmit.includes(col.fieldKey.toLowerCase())) {
+                    return result;
+                }
+
                 let c = this.getColumn(col.fieldKey);
 
                 if (c !== undefined) {
                     if (col.title !== undefined) {
-                        c = c.mutate({
-                            caption: col.title,
-                            shortCaption: col.title,
-                        });
+                        c = c.mutate({ caption: col.title, shortCaption: col.title });
                     }
 
                     result.push(c);
@@ -242,7 +232,7 @@ export class QueryInfo {
                 });
 
                 this.columns.forEach(col => {
-                    const fieldKey = col.fieldKey?.toLowerCase();
+                    const fieldKey = col.fieldKey.toLowerCase();
                     if (
                         fieldKey &&
                         col.addToSystemView &&

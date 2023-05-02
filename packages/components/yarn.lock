@@ -1506,10 +1506,10 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@labkey/api@1.19.2-fb-renamecontainerapi.1":
-  version "1.19.2-fb-renamecontainerapi.1"
-  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.19.2-fb-renamecontainerapi.1.tgz#bb70cd44981f0ee417034b15a60280ac8057bd5e"
-  integrity sha512-r1ZhwrM7wUTz/gT+CgtFkpg17yszRwHGt8z7bkFsA2YPSa59vHbGqD31ES6iLAvJOK/eHk1iNxRxPTpLzyvhog==
+"@labkey/api@1.20.0":
+  version "1.20.0"
+  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.20.0.tgz#f576326b7957eb252bada85c2f75f2a7b62147f9"
+  integrity sha512-a1Mh0awRKqw8M3OyV0LtWWU+IzDz2IPVJamZvH+D0RLkpWZN35BbFURNUcVIuIL1vrp82jUqmC3EDYqyRDOYwg==
 
 "@labkey/build@6.9.0":
   version "6.9.0"

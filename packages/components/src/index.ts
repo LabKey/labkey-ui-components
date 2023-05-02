@@ -33,7 +33,7 @@ import { insertColumnFilter, Operation, QueryColumn, QueryLookup } from './publi
 import { QuerySort } from './public/QuerySort';
 import { LastActionStatus, MessageLevel } from './internal/LastActionStatus';
 import { InferDomainResponse } from './public/InferDomainResponse';
-import { getServerFilePreview, inferDomainFromFile } from './internal/components/assay/utils';
+import { inferDomainFromFile } from './internal/components/assay/utils';
 import { ViewInfo } from './internal/ViewInfo';
 import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
 import { SchemaDetails } from './internal/SchemaDetails';
@@ -337,6 +337,7 @@ import {
     getOperationNotPermittedMessage,
     getSampleDomainDefaultSystemFields,
     getSampleStatus,
+    getSampleStatusContainerFilter,
     getSampleStatusType,
     getURLParamsForSampleSelectionKey,
     isAllSamplesSchema,
@@ -1027,6 +1028,7 @@ export {
     getFilterForSampleOperation,
     getSampleDomainDefaultSystemFields,
     getSampleStatus,
+    getSampleStatusContainerFilter,
     getSampleStatusType,
     getURLParamsForSampleSelectionKey,
     DisableableMenuItem,
@@ -1205,7 +1207,6 @@ export {
     DOMAIN_RANGE_VALIDATOR,
     DomainDetails,
     inferDomainFromFile,
-    getServerFilePreview,
     InferDomainResponse,
     BasePropertiesPanel,
     AssayDesignerPanels,

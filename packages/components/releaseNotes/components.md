@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### Version 2.333.2
+#Released*: 3 May 2023
+- Issue 46747: Update lookup resolver to go to LKS when lookup is defined outside the app
+
 ### version 2.333.1
 *Released*: 3 May 2023
 * Adjust usages of auditBehavior to always use AuditBehaviorTypes.DETAILED

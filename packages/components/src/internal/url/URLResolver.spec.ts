@@ -8,7 +8,8 @@ import { registerDefaultURLMappers } from '../testHelpers';
 
 import { initUnitTestMocks } from '../../test/testHelperMocks';
 
-import { URLResolver } from './URLResolver';
+import { LookupMapper, URLResolver } from './URLResolver';
+import { AppURL } from './AppURL';
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -25,6 +26,26 @@ describe('resolveSearchUsingIndex', () => {
         expect(resolved).toHaveProperty(['hits', 0]);
         expect(resolved).toHaveProperty(['hits', 0, 'url'], '#/samples/Molecule');
         expect(resolved).toHaveProperty(['hits', 0, 'data', 'name'], 'Molecule'); // not sure if this is best place to check this...
+    });
+});
+
+describe("LookupMapper", () => {
+    test('resolve without lookup container', () => {
+        const mapper = new LookupMapper('test', undefined);
+        const resolved = mapper.resolve("#/list/a", fromJS({value: 1}), fromJS({lookup: {schemaName: "list", queryName: "testing"}}));
+        expect(resolved).toStrictEqual(AppURL.create('test', "list", "testing", 1))
+    });
+
+    test('resolve with lookup container same as current', () => {
+        const mapper = new LookupMapper('test', undefined);
+        const resolved = mapper.resolve("#/list/a", fromJS({value: 1}), fromJS({lookup: {schemaName: "list", queryName: "testing", containerPath: LABKEY.container.path}}));
+        expect(resolved).toStrictEqual(AppURL.create('test', "list", "testing", 1))
+    });
+
+    test('resolve with different lookup container', () => {
+        const mapper = new LookupMapper('test', undefined);
+        const resolved = mapper.resolve("#/list/a", fromJS({value: 1}), fromJS({lookup: {schemaName: "list", queryName: "testing", containerPath: "/other/path"}}));
+        expect(resolved).toBeUndefined();
     });
 });
 

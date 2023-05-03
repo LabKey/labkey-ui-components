@@ -1,6 +1,7 @@
 import { Filter, Query, Utils } from '@labkey/api';
 import { List, Map, OrderedMap } from 'immutable';
 import React, { PureComponent, ReactNode } from 'react';
+
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
 
 import { QueryInfo } from '../../../public/QueryInfo';
@@ -16,6 +17,7 @@ import { QueryInfoForm } from './QueryInfoForm';
 interface Props {
     containerFilter?: Query.ContainerFilter;
     displayValueFields?: string[];
+    getUpdateColumnsOnly?: boolean;
     header?: ReactNode;
     itemLabel?: string;
     onAdditionalFormDataChange?: (name: string, value: any) => any;
@@ -29,11 +31,10 @@ interface Props {
     ) => any;
     pluralNoun?: string;
     queryFilters?: Record<string, List<Filter.IFilter>>;
-    queryInfo: QueryInfo;
     readOnlyColumns?: List<string>;
     requiredColumns?: string[];
     selectedIds: Set<string>;
-    getUpdateColumnsOnly?: boolean;
+    queryInfo: QueryInfo;
     singularNoun?: string;
     // sortString is used so we render editable grids with the proper sorts when using onSubmitForEdit
     sortString?: string;
@@ -44,12 +45,12 @@ interface Props {
 }
 
 interface State {
-    originalDataForSelection: Map<string, any>;
     dataForSelection: Map<string, any>;
-    displayFieldUpdates: any;
     dataIdsForSelection: List<any>;
+    displayFieldUpdates: any;
     errorMsg: string;
     isLoadingDataForSelection: boolean;
+    originalDataForSelection: Map<string, any>;
 }
 
 export class BulkUpdateForm extends PureComponent<Props, State> {
@@ -119,21 +120,21 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
         }
     };
 
-    mapDataForDisplayFields(data: Map<string, any>): {data: Map<string, any>, bulkUpdates: OrderedMap<string, any>} {
+    mapDataForDisplayFields(data: Map<string, any>): { bulkUpdates: OrderedMap<string, any>; data: Map<string, any> } {
         const { displayValueFields } = this.props;
         let updates = Map<string, any>();
         let bulkUpdates = OrderedMap<string, any>();
 
-        if (!displayValueFields)
-            return { data, bulkUpdates };
+        if (!displayValueFields) return { data, bulkUpdates };
 
         let conflictKeys = new Set<string>();
         data.forEach((rowData, id) => {
             if (rowData) {
                 let updatedRow = Map<string, any>();
                 rowData.forEach((field, key) => {
-                    if (displayValueFields.includes(key) ) {
-                        const valuesDiffer = field.has('displayValue') && field.get('value') !== field.get('displayValue');
+                    if (displayValueFields.includes(key)) {
+                        const valuesDiffer =
+                            field.has('displayValue') && field.get('value') !== field.get('displayValue');
                         const comparisonValue = field.get('displayValue') ?? field.get('value');
                         if (!conflictKeys.has(key)) {
                             if (!bulkUpdates.has(key)) {
@@ -149,13 +150,11 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
                         }
                     }
                 });
-                if (!updatedRow.isEmpty())
-                    updates = updates.set(id, updatedRow);
+                if (!updatedRow.isEmpty()) updates = updates.set(id, updatedRow);
             }
         });
-        if (!updates.isEmpty())
-            return {data: data.merge(updates), bulkUpdates};
-        return {data, bulkUpdates};
+        if (!updates.isEmpty()) return { data: data.merge(updates), bulkUpdates };
+        return { data, bulkUpdates };
     }
 
     getSelectionCount(): number {

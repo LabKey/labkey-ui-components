@@ -577,11 +577,7 @@ export class QueryModel {
         return this.getRequestColumnsString();
     }
 
-    getRequestColumnsString(
-        requiredColumns?: string[],
-        omittedColumns?: string[],
-        isForUpdate?: boolean
-    ): string {
+    getRequestColumnsString(requiredColumns?: string[], omittedColumns?: string[], isForUpdate?: boolean): string {
         const _requiredColumns = requiredColumns ?? this.requiredColumns;
         const _omittedColumns = omittedColumns ?? this.omittedColumns;
 
@@ -594,8 +590,7 @@ export class QueryModel {
         // Issue 46478: Include update columns in requested columns to ensure values are available
         if (isForUpdate) {
             this.updateColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
-        }
-        else {
+        } else {
             this.displayColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
         }
 

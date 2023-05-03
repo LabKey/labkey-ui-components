@@ -14,11 +14,11 @@ import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 
 import { useServerContext } from '../internal/components/base/ServerContext';
 
+import { SampleStorageLocation } from '../internal/sampleModels';
+
 import { SampleAliquotsSummary } from './SampleAliquotsSummary';
 import { SampleDetailEditing } from './SampleDetailEditing';
 
-import { getSampleAuditBehaviorType } from './utils';
-import { SampleStorageLocation } from '../internal/sampleModels';
 import { useSampleTypeAppContext } from './useSampleTypeAppContext';
 
 interface Props {
@@ -52,7 +52,6 @@ export const SampleOverviewPanel: FC<Props> = memo(props => {
         return !sampleModel.isLoading ? sampleModel.getRow() : undefined;
     }, [sampleModel]);
 
-    const auditBehavior = getSampleAuditBehaviorType();
     const sampleStatusType = getSampleStatusType(row);
     const _canUpdate = !isEditing && canUpdate;
     const aliquotedFrom = sampleModel.getRowValue('AliquotedFromLSID/Name');
@@ -132,7 +131,6 @@ export const SampleOverviewPanel: FC<Props> = memo(props => {
                 <div className={`col-md-${isMedia ? '7' : '12'}`}>
                     <SampleDetailEditing
                         actions={actions}
-                        auditBehavior={auditBehavior}
                         canUpdate={_canUpdate}
                         containerFilter={getContainerFilterForLookups()}
                         containerPath={sampleContainer.path}

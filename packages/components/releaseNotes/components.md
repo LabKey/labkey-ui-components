@@ -5,6 +5,29 @@ Components, models, actions, and utility functions for LabKey applications and p
 #Released*: TBD
 - Issue 46747: Update lookup resolver to go to LKS when lookup is defined outside the app
 
+### version 2.333.1
+*Released*: 3 May 2023
+* Adjust usages of auditBehavior to always use AuditBehaviorTypes.DETAILED
+  * remove auditBehavior optional props since they were always passed in as DETAILED
+  * remove getSampleAuditBehavior() since it was always using DETAILED
+
+### version 2.333.0
+*Released*: 2 May 2023
+* Add expired sample indicator in UI
+  * add new ExpirationDateColumnRenderer and wire up to grid cell and DetailDisplay
+  * modify SampleAiquotDetailHeader to show expired icon for aliquot parent expiration date field
+  * modify ItemsLegends to be able to display expired icon
+
+### version 2.332.4
+*Released*: 2 May 2023
+* Update @labkey/api package version
+
+### version 2.332.3
+*Released*: 1 May 2023
+* Move samples between project updates and containerFilter changes
+  * Picklist All Samples grid update to filter out unresolved samples
+  * SampleMoveMenuItem update to provide an onSuccess callback, to allow the LKFM grid to reload models accordingly
+
 ### version 2.332.2
 *Released*: 1 May 2023
 * Issue 47822: export getSampleStatusContainerFilter

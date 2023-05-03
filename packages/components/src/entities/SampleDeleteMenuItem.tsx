@@ -1,8 +1,6 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import { MenuItem } from 'react-bootstrap';
 
-import { AuditBehaviorTypes } from '@labkey/api';
-
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../internal/APIWrapper';
 
 import { QueryModel } from '../public/QueryModel/QueryModel';
@@ -17,7 +15,6 @@ import { EntityDeleteModal } from './EntityDeleteModal';
 interface Props {
     afterSampleDelete?: (rowsToKeep?: any[]) => void;
     api?: ComponentsAPIWrapper;
-    auditBehavior?: AuditBehaviorTypes;
     beforeSampleDelete?: () => void;
     handleClick?: (cb: () => void, errorMsg?: string) => void;
     itemText?: string;
@@ -35,7 +32,6 @@ export const SampleDeleteMenuItem: FC<Props> = memo(props => {
         verb,
         beforeSampleDelete,
         afterSampleDelete,
-        auditBehavior,
         maxDeleteRows,
         selectionMenuId,
         metricFeatureArea,
@@ -88,7 +84,6 @@ export const SampleDeleteMenuItem: FC<Props> = memo(props => {
                     onCancel={onClose}
                     maxSelected={maxDeleteRows}
                     entityDataType={SampleTypeDataType}
-                    auditBehavior={auditBehavior}
                     verb={verb}
                 />
             )}
@@ -98,7 +93,6 @@ export const SampleDeleteMenuItem: FC<Props> = memo(props => {
 
 SampleDeleteMenuItem.defaultProps = {
     api: getDefaultAPIWrapper(),
-    auditBehavior: AuditBehaviorTypes.DETAILED,
     itemText: 'Delete',
     maxDeleteRows: MAX_SELECTED_SAMPLES,
     selectionMenuId: 'delete-samples-menu-item',

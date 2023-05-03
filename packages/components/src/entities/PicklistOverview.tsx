@@ -1,6 +1,6 @@
 import React, { ComponentType, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Checkbox, MenuItem } from 'react-bootstrap';
-import { AuditBehaviorTypes, Filter, Utils } from '@labkey/api';
+import { MenuItem } from 'react-bootstrap';
+import { Filter, Utils } from '@labkey/api';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../internal/APIWrapper';
 
@@ -176,8 +176,6 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
         loadPicklist(true);
     }, [loadPicklist]);
 
-    const getSampleAuditBehaviorType = useCallback(() => AuditBehaviorTypes.DETAILED, []);
-
     const gridButtonProps = {
         user,
         picklist,
@@ -219,7 +217,6 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
                 gridButtonProps={gridButtonProps}
                 getIsDirty={getIsDirty}
                 setIsDirty={setIsDirty}
-                getSampleAuditBehaviorType={getSampleAuditBehaviorType}
                 afterSampleActionComplete={afterSampleActionComplete}
                 samplesEditableGridProps={samplesEditableGridProps}
                 tabbedGridPanelProps={{
@@ -313,6 +310,8 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
                 ],
                 omittedColumns,
                 includeTotalCount: true,
+                // filter out any samples that don't resolve because the user doesn't have permission to the project
+                baseFilters: [Filter.create('SampleID/Name', undefined, Filter.Types.NONBLANK)],
             };
 
             // add a queryConfig for each distinct sample type of the picklist samples, with a filter clause

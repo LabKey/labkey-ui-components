@@ -1,7 +1,5 @@
 import React, { ComponentType, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 
-import { AuditBehaviorTypes } from '@labkey/api';
-
 import { Location } from '../internal/util/URL';
 import { capitalizeFirstChar } from '../internal/util/utils';
 import { EntityDataType } from '../internal/components/entities/models';
@@ -36,7 +34,7 @@ import { InjectedAssayModel, withAssayModels } from '../internal/components/assa
 
 import { isLoading } from '../public/LoadingState';
 
-import { AssayResultDataType, SamplePropertyDataType } from '../internal/components/entities/constants';
+import { AssayResultDataType } from '../internal/components/entities/constants';
 
 import {
     getSampleFinderTabRowCounts,
@@ -49,7 +47,6 @@ import { FilterCards } from '../internal/components/search/FilterCards';
 import {
     getFinderStartText,
     getSampleFinderColumnNames,
-    getSampleFinderCommonConfigs,
     getSampleFinderQueryConfigs,
     getSearchFilterObjs,
     SAMPLE_FILTER_METRIC_AREA,
@@ -79,7 +76,6 @@ import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 
 interface SampleFinderSamplesGridProps {
     getIsDirty?: () => boolean;
-    getSampleAuditBehaviorType: () => AuditBehaviorTypes;
     gridButtonProps?: SampleGridButtonProps;
     gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     sampleTypeNames: string[];

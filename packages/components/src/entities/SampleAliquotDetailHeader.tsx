@@ -10,6 +10,7 @@ import { SAMPLE_STATE_COLUMN_NAME } from '../internal/components/samples/constan
 import { SampleStatusTag } from '../internal/components/samples/SampleStatusTag';
 import { getSampleStatus } from '../internal/components/samples/utils';
 import { UserDetailsRenderer } from '../internal/renderers/UserDetailsRenderer';
+import { ExpirationDateColumnRenderer } from '../internal/renderers/ExpirationDateColumnRenderer';
 
 interface SampleAliquotDetailHeaderProps {
     aliquotHeaderDisplayColumns: List<QueryColumn>;
@@ -17,13 +18,14 @@ interface SampleAliquotDetailHeaderProps {
 }
 
 export class SampleAliquotDetailHeader extends PureComponent<SampleAliquotDetailHeaderProps> {
-    renderDetailRow(label: string, data: any, key: any, userLookup = false) {
+    renderDetailRow(label: string, data: any, key: any, userLookup = false, isExpDate = false) {
         return (
             <tr key={key}>
                 <td>{label}</td>
                 <td>
                     {userLookup && <UserDetailsRenderer data={data} />}
-                    {!userLookup && <DefaultRenderer data={data} />}
+                    {!userLookup && !isExpDate && <DefaultRenderer data={data} />}
+                    {isExpDate && <ExpirationDateColumnRenderer data={data} tableCell={false} />}
                 </td>
             </tr>
         );
@@ -49,7 +51,7 @@ export class SampleAliquotDetailHeader extends PureComponent<SampleAliquotDetail
                         {this.renderDetailRow(QueryColumn.ALIQUOTED_FROM_CAPTION, parent, 'aliquotedfrom')}
                         {this.renderDetailRow('Aliquoted By', createdBy, 'aliquotedby', true)}
                         {this.renderDetailRow('Aliquot Date', created, 'aliquoteddate')}
-                        {this.renderDetailRow('Aliquot Expiration Date', expDate, 'aliquotedexpdate')}
+                        {this.renderDetailRow('Aliquot Expiration Date', expDate, 'aliquotedexpdate', false, true)}
                         {this.renderDetailRow('Aliquot Description', description, 'aliquoteddescription')}
                         {isSampleStatusEnabled() && status !== undefined && (
                             <tr key="aliquotedstatus">

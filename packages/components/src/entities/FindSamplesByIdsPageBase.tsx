@@ -1,6 +1,6 @@
 import React, { ComponentType, FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { WithRouterProps } from 'react-router';
-import { ActionURL, Ajax, AuditBehaviorTypes, Filter, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Filter, Utils } from '@labkey/api';
 
 import {
     FIND_BY_IDS_QUERY_PARAM,
@@ -63,8 +63,6 @@ const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> = memo(p
         actions.loadAllModels(true);
     }, [actions]);
 
-    const getSampleAuditBehaviorType = useCallback(() => AuditBehaviorTypes.DETAILED, []);
-
     const getAdvancedExportOptions = useCallback((tabId: string): { [key: string]: any } => {
         return SAMPLE_DATA_EXPORT_CONFIG;
     }, []);
@@ -94,7 +92,6 @@ const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> = memo(p
                 withTitle={false}
                 afterSampleActionComplete={afterSampleActionComplete}
                 actions={actions}
-                getSampleAuditBehaviorType={getSampleAuditBehaviorType}
                 samplesEditableGridProps={samplesEditableGridProps}
                 gridButtons={gridButtons}
                 gridButtonProps={{

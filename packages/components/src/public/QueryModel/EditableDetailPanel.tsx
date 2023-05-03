@@ -20,7 +20,6 @@ import { DetailPanel, DetailPanelWithModel } from './DetailPanel';
 export interface EditableDetailPanelProps extends RequiresModelAndActions {
     appEditable?: boolean;
     asSubPanel?: boolean;
-    auditBehavior?: AuditBehaviorTypes;
     canUpdate: boolean;
     cancelText?: string;
     containerFilter?: Query.ContainerFilter;
@@ -86,7 +85,7 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     handleSubmit = async (values: Record<string, any>): Promise<void> => {
-        const { auditBehavior, containerPath, model, onEditToggle, onUpdate } = this.props;
+        const { containerPath, model, onEditToggle, onUpdate } = this.props;
         const { queryInfo } = model;
         const row = model.getRow();
         const updatedValues = extractChanges(queryInfo, fromJS(model.getRow()), values);
@@ -114,7 +113,7 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
 
         try {
             await updateRows({
-                auditBehavior,
+                auditBehavior: AuditBehaviorTypes.DETAILED,
                 containerPath,
                 rows: [updatedValues],
                 schemaQuery: queryInfo.schemaQuery,

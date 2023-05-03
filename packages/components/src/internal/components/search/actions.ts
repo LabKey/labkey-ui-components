@@ -55,7 +55,7 @@ export function searchUsingIndex(
         options.scope = SearchScope.FolderAndSubfoldersAndShared;
     }
     if (filterCategories) {
-        options.category = filterCategories?.join("+");
+        options.category = filterCategories?.join('+');
     }
 
     return new Promise((resolve, reject) => {
@@ -195,13 +195,12 @@ function getCardData(
 
 export function getProcessedSearchHits(
     hits: any[],
-    getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData,
+    getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData
 ): any[] {
-    return hits
-        ?.map(result => ({
-            ...result,
-            cardData: getCardData(result.category, result.data, result.title, getCardDataFn),
-        }));
+    return hits?.map(result => ({
+        ...result,
+        cardData: getCardData(result.category, result.data, result.title, getCardDataFn),
+    }));
 }
 
 export function saveFinderGridView(

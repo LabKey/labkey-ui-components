@@ -7,6 +7,17 @@ Components, models, actions, and utility functions for LabKey applications and p
   * remove auditBehavior optional props since they were always passed in as DETAILED
   * remove getSampleAuditBehavior() since it was always using DETAILED
 
+### version 2.333.0
+*Released*: 2 May 2023
+* Add expired sample indicator in UI
+  * add new ExpirationDateColumnRenderer and wire up to grid cell and DetailDisplay
+  * modify SampleAiquotDetailHeader to show expired icon for aliquot parent expiration date field
+  * modify ItemsLegends to be able to display expired icon
+
+### version 2.332.4
+*Released*: 2 May 2023
+* Update @labkey/api package version
+
 ### version 2.332.3
 *Released*: 1 May 2023
 * Move samples between project updates and containerFilter changes

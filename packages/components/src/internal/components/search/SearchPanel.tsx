@@ -13,13 +13,14 @@ import { PaginationButtons } from '../buttons/PaginationButtons';
 
 import { getContainerFilter } from '../../query/api';
 
+import { biologicsIsPrimaryApp } from '../../app/utils';
+
 import { SearchResultsPanel } from './SearchResultsPanel';
 
 import { SearchResultsModel } from './models';
 import { SEARCH_HELP_TOPIC, SEARCH_PAGE_DEFAULT_SIZE, SearchScope } from './constants';
 import { GetCardDataFn, searchUsingIndex } from './actions';
 import { getSearchScopeFromContainerFilter } from './utils';
-import { biologicsIsPrimaryApp } from '../../app/utils';
 
 interface SearchPanelProps {
     appName: string;
@@ -146,7 +147,18 @@ export const SearchPanelImpl: FC<Props> = memo(props => {
     );
 });
 
-const SEARCH_CATEGORIES = ['assay', 'data', 'material', 'fileWorkflowJob', 'workflowJob', 'file', 'notebook', 'notebookTemplate', 'materialSource', 'dataClass'];
+const SEARCH_CATEGORIES = [
+    'assay',
+    'data',
+    'material',
+    'fileWorkflowJob',
+    'workflowJob',
+    'file',
+    'notebook',
+    'notebookTemplate',
+    'materialSource',
+    'dataClass',
+];
 const MEDIA_SEARCH_CATEGORIES = ['media'];
 
 export const SearchPanel: FC<SearchPanelProps> = memo(props => {
@@ -164,7 +176,7 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
                         normalizeUrls: true, // this flag will remove the containerID from the returned URL
                         q: searchTerm,
                         scope: getSearchScopeFromContainerFilter(getContainerFilter()),
-                        category: categories.join("+"),
+                        category: categories.join('+'),
                         limit: pageSize,
                         offset,
                     },

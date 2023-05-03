@@ -145,6 +145,7 @@ import {
     formatDateTime,
     getDateFormat,
     getDateTimeFormat,
+    isDateTimeInPast,
     parseDate,
 } from './internal/util/Date';
 import { SVGIcon, Theme } from './internal/components/base/SVGIcon';
@@ -247,6 +248,7 @@ import { AliasRenderer } from './internal/renderers/AliasRenderer';
 import { ANCESTOR_LOOKUP_CONCEPT_URI, AncestorRenderer } from './internal/renderers/AncestorRenderer';
 import { StorageStatusRenderer } from './internal/renderers/StorageStatusRenderer';
 import { SampleStatusRenderer } from './internal/renderers/SampleStatusRenderer';
+import { ExpirationDateColumnRenderer } from './internal/renderers/ExpirationDateColumnRenderer';
 import { AppendUnits } from './internal/renderers/AppendUnits';
 import { AttachmentCard } from './internal/renderers/AttachmentCard';
 import { DefaultRenderer } from './internal/renderers/DefaultRenderer';
@@ -940,6 +942,7 @@ export {
     LabelColorRenderer,
     MultiValueRenderer,
     NoLinkRenderer,
+    ExpirationDateColumnRenderer,
     StorageStatusRenderer,
     SampleStatusRenderer,
     ImportAliasRenderer,
@@ -1253,6 +1256,7 @@ export {
     formatDate,
     formatDateTime,
     parseDate,
+    isDateTimeInPast,
     blurActiveElement,
     caseInsensitive,
     capitalizeFirstChar,

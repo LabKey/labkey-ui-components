@@ -37,6 +37,7 @@ import { TextInput } from '../input/TextInput';
 import { CheckboxInput } from '../input/CheckboxInput';
 import { NoLinkRenderer } from '../../../renderers/NoLinkRenderer';
 import { UserDetailsRenderer } from '../../../renderers/UserDetailsRenderer';
+import { ExpirationDateColumnRenderer } from '../../../renderers/ExpirationDateColumnRenderer';
 
 export type Renderer = (data: any, row?: any) => ReactNode;
 
@@ -461,6 +462,9 @@ export function resolveDetailRenderer(column: QueryColumn): Renderer {
                 break;
             case 'userdetailsrenderer':
                 renderer = d => <UserDetailsRenderer data={d} />;
+                break;
+            case 'expirationdatecolumnrenderer':
+                renderer = d => <ExpirationDateColumnRenderer data={d} col={column} tableCell={false} />;
                 break;
             default:
                 break;

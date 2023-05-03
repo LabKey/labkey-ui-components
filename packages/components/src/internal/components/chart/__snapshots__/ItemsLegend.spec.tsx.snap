@@ -318,7 +318,7 @@ exports[`<ItemsLegend/> multiple sample types with same color label 1`] = `
 </div>
 `;
 
-exports[`<ItemsLegend/> with selection 1`] = `
+exports[`<ItemsLegend/> with selection, locked and expired 1`] = `
 <div
   className="box-viewer-legend"
 >
@@ -513,6 +513,65 @@ exports[`<ItemsLegend/> with selection 1`] = `
             className="cell-legend-label"
           >
             Checked out/Reserved
+          </span>
+        </td>
+      </tr>
+      <tr
+        className="cell-legend-row"
+      >
+        <td>
+          <span
+            className="cell-legend-icon cell-legend-icon-spacing"
+            style={
+              {
+                "backgroundColor": "FFFFFF",
+              }
+            }
+          >
+            <span
+              className="cell-lock"
+            >
+              <span
+                className="fa fa-lock"
+              />
+            </span>
+          </span>
+        </td>
+        <td>
+          <span
+            className="cell-legend-label"
+          >
+            Restricted
+          </span>
+        </td>
+      </tr>
+      <tr
+        className="cell-legend-row"
+      >
+        <td>
+          <span
+            className="cell-legend-icon expired-form-field"
+            style={
+              {
+                "backgroundColor": "FFFFFF",
+              }
+            }
+          >
+            <i
+              className="color-icon__circle cell-legend-circle"
+              style={
+                {
+                  "backgroundColor": "#009ce0",
+                }
+              }
+            />
+          </span>
+        </td>
+        <td>
+          <span
+            className="cell-legend-label"
+          >
+            Sample expired
           </span>
         </td>
       </tr>

@@ -25,8 +25,11 @@ import {
     getColDateFormat,
     getColFormattedDateFilterValue,
     getJsonDateTimeFormatString,
+    getNDaysStrFromToday,
     getNextDateStr,
     getParsedRelativeDateStr,
+    isDateInPast,
+    isDateTimeInPast,
     isRelativeDateFilterValue,
     parseDate,
 } from './Date';
@@ -309,6 +312,65 @@ describe('Date Utilities', () => {
                 positive: false,
                 days: 0,
             });
+        });
+    });
+
+    describe('isDateInPast', () => {
+        test('empty', () => {
+            expect(isDateInPast(null)).toBeFalsy();
+            expect(isDateInPast('')).toBeFalsy();
+        });
+
+        test('past', () => {
+            expect(isDateInPast('2022-02-02')).toBeTruthy();
+            expect(isDateInPast('2022-02-02 01:02')).toBeTruthy();
+            expect(isDateInPast('2022-02-02 01:02:03.123')).toBeTruthy();
+        });
+
+        test('today', () => {
+            const today = getNDaysStrFromToday(0);
+            const todayWithTime = today + '  01:02';
+            expect(isDateInPast(today)).toBeFalsy();
+            expect(isDateInPast(todayWithTime)).toBeFalsy();
+        });
+
+        test('futurama', () => {
+            expect(isDateInPast('3000-01-01')).toBeFalsy();
+            expect(isDateInPast('3000-01-01 00:01')).toBeFalsy();
+            expect(isDateInPast('3000-01-01 00:00:00.001')).toBeFalsy();
+        });
+    });
+
+    describe('isDateTimeInPast', () => {
+        test('empty', () => {
+            expect(isDateTimeInPast(null)).toBeFalsy();
+            expect(isDateTimeInPast('')).toBeFalsy();
+        });
+
+        test('past', () => {
+            expect(isDateTimeInPast('2022-02-02')).toBeTruthy();
+            expect(isDateTimeInPast('2022-02-02 01:02')).toBeTruthy();
+            expect(isDateInPast('2022-02-02 01:02:03.123')).toBeTruthy();
+        });
+
+        test('today midnight', () => {
+            const today = getNDaysStrFromToday(0);
+            expect(isDateTimeInPast(today)).toBeTruthy();
+        });
+
+        test('now', () => {
+            const nowDate = new Date();
+            const now = getJsonDateTimeFormatString(nowDate);
+            expect(isDateTimeInPast(now)).toBeTruthy();
+            const in10SecondsDate = new Date(nowDate.getTime() + 10 * 6000);
+            const in10Seconds = getJsonDateTimeFormatString(in10SecondsDate);
+            expect(isDateTimeInPast(in10Seconds)).toBeFalsy();
+        });
+
+        test('futurama', () => {
+            expect(isDateTimeInPast('3000-01-01')).toBeFalsy();
+            expect(isDateTimeInPast('3000-01-01 00:01')).toBeFalsy();
+            expect(isDateInPast('3000-01-01 00:00:00.001')).toBeFalsy();
         });
     });
 });

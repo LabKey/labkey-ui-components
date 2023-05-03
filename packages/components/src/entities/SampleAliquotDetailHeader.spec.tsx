@@ -10,6 +10,8 @@ import { UserDetailsRenderer } from '../internal/renderers/UserDetailsRenderer';
 import { SampleStatusTag } from '../internal/components/samples/SampleStatusTag';
 import { TEST_LKSM_STARTER_MODULE_CONTEXT } from '../internal/productFixtures';
 
+import { ExpirationDateColumnRenderer } from '../internal/renderers/ExpirationDateColumnRenderer';
+
 import { SampleAliquotDetailHeader } from './SampleAliquotDetailHeader';
 
 describe('<SampleAliquotDetailHeader/>', () => {
@@ -42,6 +44,7 @@ describe('<SampleAliquotDetailHeader/>', () => {
             displayValue: 'sampletype1',
         },
         links: null,
+        MaterialExpDate: { value: '2022-02-12 11:58:54.385', formattedValue: '2022-02-12' },
         SampleState: { value: 1, displayValue: 'Available' },
         AliquotSpecific: { value: 'ali-1-1 - child4' },
         Description: { value: 'this is a sub-aliquot - 3' },
@@ -53,8 +56,9 @@ describe('<SampleAliquotDetailHeader/>', () => {
         const component = shallow(
             <SampleAliquotDetailHeader row={dataRow} aliquotHeaderDisplayColumns={aliquotCols} />
         );
-        expect(component.find(DefaultRenderer)).toHaveLength(5);
+        expect(component.find(DefaultRenderer)).toHaveLength(4);
         expect(component.find(UserDetailsRenderer)).toHaveLength(1);
+        expect(component.find(ExpirationDateColumnRenderer)).toHaveLength(1);
         expect(component.find(SampleStatusTag)).toHaveLength(0);
     });
 
@@ -64,8 +68,9 @@ describe('<SampleAliquotDetailHeader/>', () => {
         const component = shallow(
             <SampleAliquotDetailHeader row={dataRow} aliquotHeaderDisplayColumns={aliquotCols} />
         );
-        expect(component.find(DefaultRenderer)).toHaveLength(5);
+        expect(component.find(DefaultRenderer)).toHaveLength(4);
         expect(component.find(UserDetailsRenderer)).toHaveLength(1);
+        expect(component.find(ExpirationDateColumnRenderer)).toHaveLength(1);
         expect(component.find(SampleStatusTag)).toHaveLength(1);
     });
 });

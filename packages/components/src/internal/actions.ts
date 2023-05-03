@@ -1956,8 +1956,8 @@ async function prepareUpdateRowDataFromBulkForm(
 
     for (const colKey of rowData.keySeq().toArray()) {
         const data = rowData.get(colKey);
-        let colIdx = -1;
-        const col = columns.find(col => col.fieldKey === colKey);
+        const colIdx = columns.findIndex(col => col.fieldKey === colKey);
+        const col = columns[colIdx];
         let cv: List<ValueDescriptor>;
 
         if (data && col && col.isLookup()) {

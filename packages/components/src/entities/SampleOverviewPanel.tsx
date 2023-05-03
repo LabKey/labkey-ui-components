@@ -14,10 +14,11 @@ import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 
 import { useServerContext } from '../internal/components/base/ServerContext';
 
+import { SampleStorageLocation } from '../internal/sampleModels';
+
 import { SampleAliquotsSummary } from './SampleAliquotsSummary';
 import { SampleDetailEditing } from './SampleDetailEditing';
 
-import { SampleStorageLocation } from '../internal/sampleModels';
 import { useSampleTypeAppContext } from './useSampleTypeAppContext';
 
 interface Props {

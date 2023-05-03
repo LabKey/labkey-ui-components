@@ -33,16 +33,8 @@ interface Props {
 }
 
 export const EntityDeleteModal: FC<Props> = memo(props => {
-    const {
-        containerPath,
-        queryModel,
-        onCancel,
-        afterDelete,
-        beforeDelete,
-        useSelected,
-        entityDataType,
-        maxSelected,
-    } = props;
+    const { containerPath, queryModel, onCancel, afterDelete, beforeDelete, useSelected, entityDataType, maxSelected } =
+        props;
     const { nounPlural } = entityDataType;
     const { createNotification } = useNotificationsContext();
     const [showProgress, setShowProgress] = useState<boolean>(false);

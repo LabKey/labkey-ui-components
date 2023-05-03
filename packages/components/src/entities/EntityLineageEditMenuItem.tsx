@@ -6,6 +6,7 @@ import { QueryModel } from '../public/QueryModel/QueryModel';
 import { SelectionMenuItem } from '../internal/components/menus/SelectionMenuItem';
 
 import { EntityDataType } from '../internal/components/entities/models';
+
 import { EntityLineageEditModal } from './EntityLineageEditModal';
 
 interface Props {

@@ -580,7 +580,7 @@ export class QueryModel {
     getRequestColumnsString(
         requiredColumns?: string[],
         omittedColumns?: string[],
-        requestUpdateColumns?: boolean
+        isForUpdate?: boolean
     ): string {
         const _requiredColumns = requiredColumns ?? this.requiredColumns;
         const _omittedColumns = omittedColumns ?? this.omittedColumns;
@@ -588,12 +588,15 @@ export class QueryModel {
         // Note: ES6 Set is being used here, not Immutable Set
         const uniqueFieldKeys = new Set(_requiredColumns);
         this.keyColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
-        this.displayColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
+
         this.uniqueIdColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
 
         // Issue 46478: Include update columns in requested columns to ensure values are available
-        if (requestUpdateColumns) {
+        if (isForUpdate) {
             this.updateColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
+        }
+        else {
+            this.displayColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
         }
 
         let fieldKeys = Array.from(uniqueFieldKeys);

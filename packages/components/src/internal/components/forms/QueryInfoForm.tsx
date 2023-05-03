@@ -34,7 +34,6 @@ import { getFieldEnabledFieldName } from './utils';
 
 export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFieldsEnabledChange'> {
     asModal?: boolean;
-    canSubmitForEdit?: boolean;
     canSubmitNotDirty?: boolean;
     cancelText?: string;
     countText?: string;
@@ -86,7 +85,6 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
     formRef: React.RefObject<Formsy>;
 
     static defaultProps: Partial<QueryInfoFormProps> = {
-        canSubmitForEdit: true,
         canSubmitNotDirty: true,
         includeCountField: true,
         countText: 'Quantity',
@@ -266,7 +264,6 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         const {
             cancelText,
             canSubmitNotDirty,
-            canSubmitForEdit,
             disableSubmitForEditMsg,
             submitForEditText,
             submitText,
@@ -293,14 +290,14 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
                 <Button
                     className="test-loc-submit-for-edit-button"
                     bsStyle={onSubmit ? 'default' : 'success'}
-                    disabled={isSubmitting || !canSubmitForEdit || !canSubmit || count === 0}
+                    disabled={isSubmitting || !canSubmit || count === 0}
                     onClick={this.setSubmittingForEdit}
                     type="submit"
                 >
                     {submitForEdit && inProgressText ? inProgressText : submitForEditText}
                 </Button>
             );
-            if (!canSubmitForEdit && disableSubmitForEditMsg) {
+            if (disableSubmitForEditMsg) {
                 submitForEditBtn = (
                     <Tip caption={disableSubmitForEditMsg}>
                         <div className="disabled-button-with-tooltip">{btnContent}</div>
@@ -349,7 +346,6 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         // Include all props to support extraction of queryFormInputProps
         const {
             asModal,
-            canSubmitForEdit,
             canSubmitNotDirty,
             cancelText,
             countText,

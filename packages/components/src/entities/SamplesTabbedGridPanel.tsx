@@ -168,11 +168,11 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     );
 
     const onShowBulkUpdate = useCallback(() => {
-        if (hasSelections) {
+        if (hasSelections && hasValidMaxSelection) {
             dismissNotifications();
             setShowBulkUpdate(true);
         }
-    }, [dismissNotifications, hasSelections]);
+    }, [dismissNotifications, hasSelections, hasValidMaxSelection]);
 
     const onBulkUpdateError = useCallback(
         (message: string) => {

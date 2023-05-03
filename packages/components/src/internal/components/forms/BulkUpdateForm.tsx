@@ -14,7 +14,6 @@ import { capitalizeFirstChar, getCommonDataValues, getUpdatedData } from '../../
 import { QueryInfoForm } from './QueryInfoForm';
 
 interface Props {
-    canSubmitForEdit: boolean;
     containerFilter?: Query.ContainerFilter;
     displayValueFields?: string[];
     header?: ReactNode;
@@ -34,7 +33,7 @@ interface Props {
     readOnlyColumns?: List<string>;
     requiredColumns?: string[];
     selectedIds: Set<string>;
-    shownInUpdateColumns?: boolean;
+    getUpdateColumnsOnly?: boolean;
     singularNoun?: string;
     // sortString is used so we render editable grids with the proper sorts when using onSubmitForEdit
     sortString?: string;
@@ -57,6 +56,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
     static defaultProps = {
         pluralNoun: 'rows',
         singularNoun: 'row',
+        getUpdateColumnsOnly: true,
     };
 
     constructor(props) {
@@ -79,14 +79,14 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
             queryInfo,
             readOnlyColumns,
             selectedIds,
-            shownInUpdateColumns,
+            getUpdateColumnsOnly,
             sortString,
             viewName,
             requiredColumns,
         } = this.props;
         // Get all shownInUpdateView and required columns or undefined
         const columns =
-            shownInUpdateColumns || requiredColumns
+            getUpdateColumnsOnly || requiredColumns
                 ? (queryInfo.getPkCols().concat(queryInfo.getUpdateColumns(readOnlyColumns)) as List<QueryColumn>)
                 : undefined;
         let columnString = columns?.map(c => c.fieldKey).join(',');
@@ -217,7 +217,6 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
     render() {
         const { isLoadingDataForSelection, dataForSelection } = this.state;
         const {
-            canSubmitForEdit,
             containerFilter,
             onCancel,
             onComplete,
@@ -233,7 +232,6 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
             <QueryInfoForm
                 allowFieldDisable
                 asModal
-                canSubmitForEdit={canSubmitForEdit}
                 checkRequiredFields={false}
                 columnFilter={this.columnFilter}
                 containerFilter={containerFilter}

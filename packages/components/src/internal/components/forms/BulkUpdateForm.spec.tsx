@@ -41,7 +41,6 @@ const QUERY_INFO = QueryInfo.fromJSON({
 });
 
 const DEFAULT_PROPS = {
-    canSubmitForEdit: false,
     onComplete: jest.fn,
     onCancel: jest.fn,
     onSubmitForEdit: jest.fn,

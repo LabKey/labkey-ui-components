@@ -171,6 +171,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
                                 text="Edit in Bulk"
                                 onClick={onShowBulkUpdate}
                                 queryModel={model}
+                                maxSelection={MAX_EDITABLE_GRID_ROWS}
                                 nounPlural={SampleTypeDataType.nounPlural}
                             />
                         )}

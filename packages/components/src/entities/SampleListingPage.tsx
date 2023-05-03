@@ -47,7 +47,7 @@ import { SampleTypeBasePage } from './SampleTypeBasePage';
 import { downloadSampleTypeTemplate } from './SampleTypeTemplateDownloadRenderer';
 import { useSampleTypeAppContext } from './useSampleTypeAppContext';
 import { onSampleChange, onSampleTypeChange } from './actions';
-import { getSampleAuditBehaviorType, getSampleTypeTemplateUrl } from './utils';
+import { getSampleTypeTemplateUrl } from './utils';
 
 const DETAIL_GRID_ID = 'samples-details';
 const SAMPLES_LISTING_GRID_ID = 'samples-listing';
@@ -416,7 +416,6 @@ export const SampleListingPageBody: FC<SampleListingPageBodyProps> = props => {
                     afterSampleActionComplete={afterSampleActionComplete}
                     containerFilter={containerFilter}
                     getIsDirty={getIsDirty}
-                    getSampleAuditBehaviorType={getSampleAuditBehaviorType}
                     gridButtonProps={{
                         metricFeatureArea: 'sampleListingGrid',
                         subMenuWidth: SUB_MENU_WIDTH,

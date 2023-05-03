@@ -16,7 +16,7 @@
 import React, { Component, FC, memo, ReactNode, useMemo } from 'react';
 import { Button } from 'react-bootstrap';
 import { List, Map, OrderedMap, fromJS } from 'immutable';
-import { AuditBehaviorTypes, Query, Utils } from '@labkey/api';
+import { Query, Utils } from '@labkey/api';
 
 import { Link } from 'react-router';
 
@@ -267,7 +267,6 @@ interface OwnProps {
     allowedNonDomainFields?: string[];
     api?: ComponentsAPIWrapper;
     asyncSize?: number; // the file size cutoff to enable async import. If undefined, async is not supported
-    auditBehavior?: AuditBehaviorTypes;
     canEditEntityTypeDetails?: boolean;
     combineParentTypes?: boolean; // Puts all parent types in one parent button. Name on the button will be the first parent type listed
     containerFilter?: Query.ContainerFilter;
@@ -347,7 +346,7 @@ enum EntityInsertPanelTabs {
     Second = 2,
 }
 
-export class EntityInsertPanelImpl extends Component<Props, State> {
+class EntityInsertPanelImpl extends Component<Props, State> {
     static defaultProps = {
         numPerParent: 1,
         tab: EntityInsertPanelTabs.First,
@@ -439,7 +438,6 @@ export class EntityInsertPanelImpl extends Component<Props, State> {
     init = async (): Promise<void> => {
         const {
             api,
-            auditBehavior,
             entityDataType,
             numPerParent,
             parentDataTypes,
@@ -489,7 +487,6 @@ export class EntityInsertPanelImpl extends Component<Props, State> {
         }
 
         insertModel = new EntityIdCreationModel({
-            auditBehavior,
             creationType,
             entityCount: 0,
             entityDataType,

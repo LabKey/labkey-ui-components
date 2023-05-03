@@ -49,7 +49,7 @@ import { useAppContext } from '../internal/AppContext';
 import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
 import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
 import { EntityDeleteModal } from './EntityDeleteModal';
-import { createEntityParentKey, getJobCreationHref, getSampleAuditBehaviorType, getSampleDeleteMessage } from './utils';
+import { createEntityParentKey, getJobCreationHref, getSampleDeleteMessage } from './utils';
 import { onSampleChange } from './actions';
 
 interface HeaderProps {
@@ -356,7 +356,6 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                     afterDelete={onAfterDelete}
                     onCancel={onHideModals}
                     entityDataType={entityDataType}
-                    auditBehavior={getSampleAuditBehaviorType()}
                     verb="deleted and removed from storage"
                     containerPath={sampleContainer?.path}
                 />

@@ -1,6 +1,6 @@
 import React, { ComponentType, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { MenuItem } from 'react-bootstrap';
-import { AuditBehaviorTypes, Filter, Utils } from '@labkey/api';
+import { Filter, Utils } from '@labkey/api';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../internal/APIWrapper';
 
@@ -176,8 +176,6 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
         loadPicklist(true);
     }, [loadPicklist]);
 
-    const getSampleAuditBehaviorType = useCallback(() => AuditBehaviorTypes.DETAILED, []);
-
     const gridButtonProps = {
         user,
         picklist,
@@ -219,7 +217,6 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
                 gridButtonProps={gridButtonProps}
                 getIsDirty={getIsDirty}
                 setIsDirty={setIsDirty}
-                getSampleAuditBehaviorType={getSampleAuditBehaviorType}
                 afterSampleActionComplete={afterSampleActionComplete}
                 samplesEditableGridProps={samplesEditableGridProps}
                 tabbedGridPanelProps={{

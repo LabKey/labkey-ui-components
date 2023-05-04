@@ -234,7 +234,6 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
                 checkRequiredFields={false}
                 columnFilter={this.columnFilter}
                 containerFilter={containerFilter}
-                disableSubmitForEditMsg={'At most ' + MAX_EDITABLE_GRID_ROWS + ' can be edited with the grid.'}
                 fieldValues={fieldValues}
                 header={this.renderBulkUpdateHeader()}
                 includeCountField={false}

@@ -39,7 +39,6 @@ export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFields
     cancelText?: string;
     countText?: string;
     creationTypeOptions?: SampleCreationTypeModel[];
-    disableSubmitForEditMsg?: string;
     errorCallback?: (error: any) => void;
     errorMessagePrefix?: string;
     footer?: ReactNode;
@@ -265,7 +264,6 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         const {
             cancelText,
             canSubmitNotDirty,
-            disableSubmitForEditMsg,
             submitForEditText,
             submitText,
             isSubmittedText,
@@ -287,7 +285,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         let submitForEditBtn;
 
         if (onSubmitForEdit && submitForEditText) {
-            const btnContent = (
+            submitForEditBtn = (
                 <Button
                     className="test-loc-submit-for-edit-button"
                     bsStyle={onSubmit ? 'default' : 'success'}
@@ -298,15 +296,6 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
                     {submitForEdit && inProgressText ? inProgressText : submitForEditText}
                 </Button>
             );
-            if (disableSubmitForEditMsg) {
-                submitForEditBtn = (
-                    <Tip caption={disableSubmitForEditMsg}>
-                        <div className="disabled-button-with-tooltip">{btnContent}</div>
-                    </Tip>
-                );
-            } else {
-                submitForEditBtn = btnContent;
-            }
         }
 
         return (
@@ -351,7 +340,6 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
             cancelText,
             countText,
             creationTypeOptions,
-            disableSubmitForEditMsg,
             errorCallback,
             footer,
             header,

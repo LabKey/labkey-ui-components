@@ -160,7 +160,8 @@ interface MapURLOptions {
     url: string;
 }
 
-class LookupMapper implements URLMapper {
+// exported for jest tests
+export class LookupMapper implements URLMapper {
     defaultPrefix: string;
     lookupResolvers: any;
 
@@ -169,11 +170,12 @@ class LookupMapper implements URLMapper {
         this.lookupResolvers = lookupResolvers;
     }
 
-    resolve(url, row, column, schema, query): AppURL {
+    resolve(url, row, column): AppURL {
         if (column.has('lookup')) {
             var lookup = column.get('lookup'),
                 schema = lookup.get('schemaName'),
                 query = lookup.get('queryName'),
+                lookupContainerPath = lookup.get('containerPath'),
                 queryKey = [schema, query].join('-').toLowerCase(),
                 schemaKey = schema.toLowerCase();
 
@@ -185,6 +187,11 @@ class LookupMapper implements URLMapper {
                     return this.lookupResolvers[schemaKey](row, column, schema, query);
                 }
             }
+
+            // Issue 46747: When the lookup goes to a different container, don't rewrite the URL
+            const containerPath = getServerContext().container.path;
+            if (lookupContainerPath && lookupContainerPath !== containerPath)
+                return undefined;
 
             const parts = [
                 this.defaultPrefix,

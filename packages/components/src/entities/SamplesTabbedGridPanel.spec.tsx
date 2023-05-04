@@ -2,7 +2,6 @@ import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { fromJS } from 'immutable';
 import { ReactWrapper } from 'enzyme';
-import { AuditBehaviorTypes } from '@labkey/api';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../internal/testHelpers';
 
@@ -32,7 +31,6 @@ const DEFAULT_PROPS = {
     actions: makeTestActions(),
     samplesEditableGridProps: {},
     gridButtons: undefined,
-    getSampleAuditBehaviorType: () => AuditBehaviorTypes.DETAILED,
     isAllSamplesTab: () => false,
 };
 
@@ -44,7 +42,6 @@ const SINGLE_TAB_PROPS = {
     actions: makeTestActions(),
     samplesEditableGridProps: {},
     gridButtons: undefined,
-    getSampleAuditBehaviorType: () => AuditBehaviorTypes.DETAILED,
 };
 
 describe('SamplesTabbedGridPanel', () => {

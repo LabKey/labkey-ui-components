@@ -41,7 +41,6 @@ interface Props extends InjectedQueryModels {
     createBtnParentKey?: string;
     createBtnParentType?: string;
     getIsDirty?: () => boolean;
-    getSampleAuditBehaviorType: () => AuditBehaviorTypes;
     gridButtonProps?: any;
     gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     // use if you have multiple tabs but want to start on something other than the first one
@@ -77,7 +76,6 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         samplesEditableGridProps = {},
         gridButtons,
         gridButtonProps,
-        getSampleAuditBehaviorType,
         getIsDirty,
         onSampleTabSelect,
         setIsDirty,
@@ -251,7 +249,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             return updateRows({
                 schemaQuery,
                 rows,
-                auditBehavior: getSampleAuditBehaviorType(),
+                auditBehavior: AuditBehaviorTypes.DETAILED,
             }).then(result => {
                 invalidateLineageResults();
                 dismissNotifications(); // get rid of any error notifications that have already been created
@@ -261,7 +259,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             });
             // catch block intentionally absent so callers can handle the errors appropriately
         },
-        [createNotification, dismissNotifications, getSampleAuditBehaviorType]
+        [createNotification, dismissNotifications]
     );
 
     const onPrintLabel = useCallback(

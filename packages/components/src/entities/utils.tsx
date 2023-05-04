@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { fromJS, List, OrderedMap, Set } from 'immutable';
-import { ActionURL, AuditBehaviorTypes, Filter, getServerContext, Utils } from '@labkey/api';
+import { ActionURL, Filter, getServerContext, Utils } from '@labkey/api';
 
 import {
     getOperationNotPermittedMessage,
@@ -561,10 +561,6 @@ export function getImportItemsForAssayDefinitions(
             );
             return items.set(assay, href);
         }, OrderedMap<AssayDefinitionModel, string>());
-}
-
-export function getSampleAuditBehaviorType() {
-    return AuditBehaviorTypes.DETAILED;
 }
 
 export function getJobCreationHref(

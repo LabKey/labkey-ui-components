@@ -18,7 +18,6 @@ import { SAMPLE_DATA_EXPORT_CONFIG } from '../internal/components/samples/consta
 import { getContainerFilterForLookups } from '../internal/query/api';
 
 import { useSampleTypeAppContext } from './useSampleTypeAppContext';
-import { getSampleAuditBehaviorType } from './utils';
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 
 // We are only looking at single model here
@@ -91,7 +90,6 @@ export const SampleAliquotsGridPanelImpl: FC<Props & InjectedQueryModels> = memo
                 afterSampleActionComplete={afterAction}
                 containerFilter={containerFilter}
                 getIsDirty={getIsDirty}
-                getSampleAuditBehaviorType={getSampleAuditBehaviorType}
                 gridButtonProps={{
                     metricFeatureArea,
                     subMenuWidth: SUB_MENU_WIDTH,

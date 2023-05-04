@@ -7,6 +7,16 @@ Components, models, actions, and utility functions for LabKey applications and p
   * limit the number of items that can be edited in Bulk to 1000
   * only select key columns and columns that are editable for bulk edit and edit in grid
 
+### Version 2.333.2
+#Released*: 3 May 2023
+- Issue 46747: Update lookup resolver to go to LKS when lookup is defined outside the app
+
+### version 2.333.1
+*Released*: 3 May 2023
+* Adjust usages of auditBehavior to always use AuditBehaviorTypes.DETAILED
+  * remove auditBehavior optional props since they were always passed in as DETAILED
+  * remove getSampleAuditBehavior() since it was always using DETAILED
+
 ### version 2.333.0
 *Released*: 2 May 2023
 * Add expired sample indicator in UI

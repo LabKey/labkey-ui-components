@@ -136,7 +136,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
                     columns = columns.set(key, column);
             });
             originalQueryInfo.getPkCols().forEach(column => {
-                columns = columns.set(column.fieldKey, column);
+                columns = columns.set(column.fieldKey.toLowerCase(), column);
             });
         } else {
             // if contains samples, skip aliquot fields
@@ -237,6 +237,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
                 onError={onBulkUpdateError}
                 onComplete={this.onComplete}
                 onSubmitForEdit={editSelectionInGrid}
+                requiredColumns={['lsid']}
                 sortString={queryModel.sorts.join(',')}
                 updateRows={updateRows}
                 header={

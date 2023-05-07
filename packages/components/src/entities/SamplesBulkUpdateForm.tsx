@@ -33,8 +33,9 @@ import {
 
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from '../internal/components/samples/models';
 
-import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
 import { getAltUnitKeys } from '../internal/util/measurement';
+
+import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
 
 interface OwnProps {
     containerFilter?: Query.ContainerFilter;
@@ -112,12 +113,11 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
     getQueryFilters(): Record<string, List<Filter.IFilter>> {
         const { sampleTypeDomainFields } = this.props;
         const { metricUnit } = sampleTypeDomainFields;
-        if (!metricUnit)
-            return undefined;
+        if (!metricUnit) return undefined;
 
         return {
-            Units: List<Filter.IFilter>([Filter.create('value', getAltUnitKeys(metricUnit), Filter.Types.IN)])
-        }
+            Units: List<Filter.IFilter>([Filter.create('value', getAltUnitKeys(metricUnit), Filter.Types.IN)]),
+        };
     }
 
     getQueryInfo(): QueryInfo {
@@ -132,15 +132,11 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
                 const colLc = column.fieldKey.toLowerCase();
                 const isAliquotField = sampleTypeDomainFields.aliquotFields.indexOf(colLc) > -1;
                 const isIndependentField = sampleTypeDomainFields.independentFields.indexOf(colLc) > -1;
-                if (
-                    COMMON_SYSTEM_FIELDS_FOR_UPDATE.indexOf(colLc) >=0 ||
-                    isAliquotField ||
-                    isIndependentField
-                )
+                if (COMMON_SYSTEM_FIELDS_FOR_UPDATE.indexOf(colLc) >= 0 || isAliquotField || isIndependentField)
                     columns = columns.set(key, column);
             });
             originalQueryInfo.getPkCols().forEach(column => {
-                columns = columns.set(column.fieldKey, column);
+                columns = columns.set(column.fieldKey.toLowerCase(), column);
             });
         } else {
             // if contains samples, skip aliquot fields
@@ -237,11 +233,11 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
                 queryInfo={this.getQueryInfo()}
                 selectedIds={queryModel.selections}
                 viewName={queryModel.viewName}
-                canSubmitForEdit={hasValidMaxSelection}
                 onCancel={onCancel}
                 onError={onBulkUpdateError}
                 onComplete={this.onComplete}
                 onSubmitForEdit={editSelectionInGrid}
+                requiredColumns={['lsid']}
                 sortString={queryModel.sorts.join(',')}
                 updateRows={updateRows}
                 header={

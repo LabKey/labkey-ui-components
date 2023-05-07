@@ -18,6 +18,7 @@ import { List, OrderedMap } from 'immutable';
 import { Alert, Button, Modal } from 'react-bootstrap';
 import Formsy from 'formsy-react';
 import { Filter, Utils } from '@labkey/api';
+
 import { Operation } from '../../../public/QueryColumn';
 
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
@@ -34,12 +35,10 @@ import { getFieldEnabledFieldName } from './utils';
 
 export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFieldsEnabledChange'> {
     asModal?: boolean;
-    canSubmitForEdit?: boolean;
     canSubmitNotDirty?: boolean;
     cancelText?: string;
     countText?: string;
     creationTypeOptions?: SampleCreationTypeModel[];
-    disableSubmitForEditMsg?: string;
     errorCallback?: (error: any) => void;
     errorMessagePrefix?: string;
     footer?: ReactNode;
@@ -55,14 +54,14 @@ export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFields
     // allow passing of full form data, compare with onFormChange
     onFormChangeWithData?: (formData?: any) => void;
     onHide?: () => void;
-    operation?: Operation;
     onSubmit?: (data: OrderedMap<string, any>) => Promise<any>;
     onSubmitForEdit?: (data: OrderedMap<string, any>) => Promise<any>;
     onSuccess?: (data: any, submitForEdit: boolean) => void;
+    operation?: Operation;
     pluralNoun?: string;
+    queryFilters?: Record<string, List<Filter.IFilter>>;
     // required by QueryInfoForm
-    queryInfo: QueryInfo;
-    queryFilters?: Record<string, List<Filter.IFilter>>; // for filtering lookup values in the form
+    queryInfo: QueryInfo; // for filtering lookup values in the form
     showErrorsAtBottom?: boolean;
     singularNoun?: string;
     submitForEditText?: string;
@@ -86,7 +85,6 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
     formRef: React.RefObject<Formsy>;
 
     static defaultProps: Partial<QueryInfoFormProps> = {
-        canSubmitForEdit: true,
         canSubmitNotDirty: true,
         includeCountField: true,
         countText: 'Quantity',
@@ -266,8 +264,6 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         const {
             cancelText,
             canSubmitNotDirty,
-            canSubmitForEdit,
-            disableSubmitForEditMsg,
             submitForEditText,
             submitText,
             isSubmittedText,
@@ -289,26 +285,17 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         let submitForEditBtn;
 
         if (onSubmitForEdit && submitForEditText) {
-            const btnContent = (
+            submitForEditBtn = (
                 <Button
                     className="test-loc-submit-for-edit-button"
                     bsStyle={onSubmit ? 'default' : 'success'}
-                    disabled={isSubmitting || !canSubmitForEdit || !canSubmit || count === 0}
+                    disabled={isSubmitting || !canSubmit || count === 0}
                     onClick={this.setSubmittingForEdit}
                     type="submit"
                 >
                     {submitForEdit && inProgressText ? inProgressText : submitForEditText}
                 </Button>
             );
-            if (!canSubmitForEdit && disableSubmitForEditMsg) {
-                submitForEditBtn = (
-                    <Tip caption={disableSubmitForEditMsg}>
-                        <div className="disabled-button-with-tooltip">{btnContent}</div>
-                    </Tip>
-                );
-            } else {
-                submitForEditBtn = btnContent;
-            }
         }
 
         return (
@@ -349,12 +336,10 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         // Include all props to support extraction of queryFormInputProps
         const {
             asModal,
-            canSubmitForEdit,
             canSubmitNotDirty,
             cancelText,
             countText,
             creationTypeOptions,
-            disableSubmitForEditMsg,
             errorCallback,
             footer,
             header,

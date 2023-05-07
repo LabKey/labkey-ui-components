@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.333.3
+*Released*: 7 May 2023
+* Bulk edit improvement
+  * limit the number of items that can be edited in Bulk to 1000
+  * only select key columns and columns that are editable for bulk edit and edit in grid
+
 ### Version 2.333.2
 #Released*: 3 May 2023
 - Issue 46747: Update lookup resolver to go to LKS when lookup is defined outside the app

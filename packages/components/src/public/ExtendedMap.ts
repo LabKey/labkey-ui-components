@@ -4,9 +4,7 @@ type Mapper<K extends KeyType, V, T> = (value: V, key: K, original: ExtendedMap<
 type ArrayMapper<V, T> = (value: V, index: number, array: V[]) => T;
 type FilterFn<K extends KeyType, V> = (value: V, key: K, original: ExtendedMap<K, V>) => boolean;
 type Reducer<K extends KeyType, V, T> = (result: T, value: V, key: K, original: ExtendedMap<K, V>) => T;
-// TODO: convert the QueryInfo columns and views to use BetterMap, then find all the areas we are mapping or iterating
-//  over their values and replace them with usages of map, reduce, etc. from here.
-//  Most notably insertColumns should use mergeAt.
+
 /**
  * ExtendedMap is an extended version of the built in Map class. It has an improved constructor (that takes Records,
  * Map, or ExtendedMap objects), as well as several convenience methods for mapping, reducing, and filtering the map or
@@ -17,6 +15,8 @@ export class ExtendedMap<K extends KeyType, V> extends Map {
         super();
 
         for (const dataObject of data) {
+            if (dataObject === null || dataObject === undefined) continue;
+
             if (dataObject instanceof Map) {
                 for (const [key, value] of dataObject) {
                     this.set(key, value);
@@ -126,6 +126,9 @@ export class ExtendedMap<K extends KeyType, V> extends Map {
 
         // Append
         if (index === this.size) return new ExtendedMap<K, V>(this, otherMap);
+
+        // Prepend
+        if (index === 0) return new ExtendedMap<K, V>(otherMap, this);
 
         const before = new Map();
         const after = new Map();

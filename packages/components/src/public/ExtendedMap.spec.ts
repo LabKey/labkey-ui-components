@@ -46,10 +46,23 @@ describe('ExtendedMap', () => {
         em.set('two', 2);
         em.set('three', 3);
         expectOrder(em, KEYS_ONE, VALUES_ONE);
+        em.set('one', 'one');
+        expectOrder(em, KEYS_ONE, ['one', 2, 3]);
+        em.delete('one');
+        em.set('one', 1);
+        expectOrder(em, ['two', 'three', 'one'], [2, 3, 1]);
     });
 
     test('Constructor - Record', () => {
         expectValues(UNORDERED, KEYS_ONE, VALUES_ONE);
+    });
+
+    test('Constructor - null/undefined', () => {
+        const emNull = new ExtendedMap(null);
+        expectValues(emNull, [], []);
+
+        const emUndefined = new ExtendedMap(undefined);
+        expectValues(emUndefined, [], []);
     });
 
     test('Constructor - Map', () => {

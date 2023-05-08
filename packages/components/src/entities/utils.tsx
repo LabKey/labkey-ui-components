@@ -630,8 +630,6 @@ export const getSamplePropertyFields = (queryInfo: QueryInfo, skipDefaultViewChe
     defaultColumns.forEach(col => {
         defaultFields.push(col.fieldKey.toLowerCase());
     });
-    const allFieldsMap = queryInfo.columns.toJS();
-
     const isAllSamplesQuery = queryInfo.schemaQuery.schemaName === 'exp';
     const fields = [];
     ALLOWED_FINDER_SAMPLE_PROPERTIES.forEach(fieldName => {
@@ -642,7 +640,7 @@ export const getSamplePropertyFields = (queryInfo: QueryInfo, skipDefaultViewChe
         } else {
             include = defaultFields.indexOf(fieldName) > -1;
         }
-        if (include) fields.push(allFieldsMap[fieldName]);
+        if (include) fields.push(queryInfo.columns.get(fieldName));
     });
     return fromJS(fields);
 };

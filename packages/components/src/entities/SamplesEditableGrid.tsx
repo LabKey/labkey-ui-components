@@ -13,6 +13,7 @@ import { EditorMode, EditorModel, IEditableGridLoader, IGridResponse } from '../
 
 import { isFreezerManagementEnabled, userCanEditStorageData } from '../internal/app/utils';
 import { SamplesEditableGridProps } from '../internal/sampleModels';
+import { ExtendedMap } from '../public/ExtendedMap';
 
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { SchemaQuery } from '../public/SchemaQuery';
@@ -150,8 +151,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                 'Name',
                 ...displayQueryModel.queryInfo
                     .getUniqueIdColumns()
-                    .map(column => column.fieldKey)
-                    .toArray(),
+                    .map(column => column.fieldKey),
             ]);
         }
         return this.readOnlyColumns;
@@ -163,8 +163,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
             ...samplesGridRequiredColumns,
             ...displayQueryModel.queryInfo
                 .getUniqueIdColumns()
-                .map(column => column.fieldKey)
-                .toArray(),
+                .map(column => column.fieldKey),
         ];
     }
 
@@ -425,7 +424,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         if (this.getCurrentTab(tabInd) !== UpdateGridTab.Samples) return undefined;
 
         const { displayQueryModel, sampleTypeDomainFields, user } = this.props;
-        const allColumns = displayQueryModel.queryInfo.getUpdateColumns(this.getReadOnlyColumns());
+        const allColumns = displayQueryModel.queryInfo.getUpdateColumns(this.getReadOnlyColumns().toArray());
 
         if (!user.canUpdate && userCanEditStorageData(user)) {
             let updatedColumns = List<QueryColumn>();
@@ -437,7 +436,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         }
         // remove aliquot specific fields if all selected are samples
         const keepAliquotFields = this.hasAliquots();
-        if (keepAliquotFields) return allColumns;
+        if (keepAliquotFields) return List(allColumns);
 
         let updatedColumns = List<QueryColumn>();
         allColumns.forEach(col => {
@@ -532,25 +531,23 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
 
         if (determineStorage) {
             let updateColumns = List<QueryColumn>();
-            let queryInfoCols = OrderedMap<string, QueryColumn>();
+            const queryInfoCols = new ExtendedMap<string, QueryColumn>();
             displayQueryModel.queryInfo.columns.forEach((column, key) => {
                 if (key?.toLowerCase() === 'rowid') {
-                    queryInfoCols = queryInfoCols.set(key, column);
+                    queryInfoCols.set(key, column);
                 } else if (key?.toLowerCase() === 'name') {
-                    queryInfoCols = queryInfoCols.set(key, column);
+                    queryInfoCols.set(key, column);
                     updateColumns = updateColumns.push(column);
                 } else if (STORAGE_UPDATE_FIELDS.indexOf(column.fieldKey) > -1) {
                     const updatedCol = column.mutate({
                         shownInUpdateView: true,
                         userEditable: true,
                     });
-                    queryInfoCols = queryInfoCols.set(key, updatedCol);
+                    queryInfoCols.set(key, updatedCol);
                     updateColumns = updateColumns.push(updatedCol);
                 }
             });
-            const storageQueryInfo = displayQueryModel.queryInfo
-                .merge({ columns: queryInfoCols })
-                .asImmutable() as QueryInfo;
+            const storageQueryInfo = displayQueryModel.queryInfo.mutate({ columns: queryInfoCols });
 
             loaders.push(
                 new StorageEditableGridLoaderFromSelection(

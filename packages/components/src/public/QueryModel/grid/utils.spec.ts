@@ -12,7 +12,7 @@ const filterAction = {
     action: new FilterAction(
         'query',
         () => List(),
-        () => QueryInfo.create({})
+        () => new QueryInfo({})
     ),
     value: 'test',
     valueObject: Filter.create('A', 'test', Filter.Types.EQUAL),

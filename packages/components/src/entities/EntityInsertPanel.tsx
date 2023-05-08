@@ -51,6 +51,7 @@ import {
     IEditableGridLoader,
     IGridResponse,
 } from '../internal/components/editable/models';
+import { ExtendedMap } from '../public/ExtendedMap';
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { SampleCreationType } from '../internal/components/samples/models';
 import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from '../internal/components/forms/FormStep';
@@ -145,7 +146,7 @@ export const WarningFieldList: FC<WarningFieldListProps> = memo(props => {
 export function getInferredFieldWarnings(
     inferred: InferDomainResponse,
     domainDetails: DomainDetails,
-    columns: OrderedMap<string, QueryColumn>,
+    columns: ExtendedMap<string, QueryColumn>,
     otherAllowedFields?: string[]
 ): ReactNode[] {
     const uniqueIdFields = [];
@@ -626,21 +627,17 @@ class EntityInsertPanelImpl extends Component<Props, State> {
         );
     };
 
-    getAliquotCreationColumns = (allColumns: OrderedMap<string, QueryColumn>): OrderedMap<string, QueryColumn> => {
-        const columns = OrderedMap<string, QueryColumn>().asMutable();
-
-        allColumns.forEach((column, key) => {
+    getAliquotCreationColumns = (allColumns: ExtendedMap<string, QueryColumn>): ExtendedMap<string, QueryColumn> => {
+        return allColumns.reduce((result: ExtendedMap<string, QueryColumn>, column, key) => {
             if (this.isAliquotField(column)) {
                 let col = column;
                 // Aliquot name can be auto generated, regardless of sample name expression config
-                if (column.fieldKey.toLowerCase() === 'name') {
-                    col = col.mutate({ required: false });
-                }
-                columns.set(key, col);
+                if (column.fieldKey.toLowerCase() === 'name') col = col.mutate({ required: false });
+                result.set(key, col);
             }
-        });
 
-        return columns.asImmutable();
+            return result;
+        });
     };
 
     getGridQueryInfo = (): QueryInfo => {
@@ -650,11 +647,9 @@ class EntityInsertPanelImpl extends Component<Props, State> {
         if (originalQueryInfo) {
             const nameIndex = Math.max(
                 0,
-                originalQueryInfo.columns
-                    .toList()
-                    .findIndex(column => column.fieldKey === entityDataType.uniqueFieldKey)
+                originalQueryInfo.columns.valueArray.findIndex(col => col.fieldKey === entityDataType.uniqueFieldKey)
             );
-            let columns = originalQueryInfo.insertColumns(
+            let columns = originalQueryInfo.columns.mergeAt(
                 nameIndex + insertModel.getParentCount(),
                 insertModel.getParentColumns(entityDataType.uniqueFieldKey)
             );
@@ -662,7 +657,7 @@ class EntityInsertPanelImpl extends Component<Props, State> {
                 columns = this.getAliquotCreationColumns(columns);
             }
 
-            return originalQueryInfo.merge({ columns }) as QueryInfo;
+            return originalQueryInfo.mutate({ columns });
         }
 
         return undefined;
@@ -1108,13 +1103,12 @@ class EntityInsertPanelImpl extends Component<Props, State> {
 
     getInsertColumns = (): List<QueryColumn> => {
         const { queryInfo } = this.state.dataModel;
-        return (
+        return List(
             queryInfo
                 .getInsertColumns()
                 .filter(this.isIncludedColumn)
                 // Add the UniqueId columns which will be displayed as read-only fields
                 .concat(queryInfo.getUniqueIdColumns())
-                .toList()
         );
     };
 

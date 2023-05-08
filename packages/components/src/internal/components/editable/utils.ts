@@ -30,12 +30,8 @@ export const loadEditorModelData = async (
     editorColumns?: List<QueryColumn>
 ): Promise<Partial<EditorModel>> => {
     const { orderedRows, rows, queryInfo } = queryModelData;
-    const columns = editorColumns ?? queryInfo.getInsertColumns();
-    const lookupValueDescriptors = await getLookupValueDescriptors(
-        columns.toArray(),
-        fromJS(rows),
-        fromJS(orderedRows)
-    );
+    const columns = editorColumns?.toArray() ?? queryInfo.getInsertColumns();
+    const lookupValueDescriptors = await getLookupValueDescriptors(columns, fromJS(rows), fromJS(orderedRows));
     let cellValues = Map<string, List<ValueDescriptor>>();
 
     // data is initialized in column order
@@ -89,7 +85,7 @@ export const loadEditorModelData = async (
 
     return {
         cellValues,
-        columns: columns.map(col => col.fieldKey).toList(),
+        columns: List(columns.map(col => col.fieldKey)),
         deletedIds: Set<any>(),
         rowCount: orderedRows.length,
     };

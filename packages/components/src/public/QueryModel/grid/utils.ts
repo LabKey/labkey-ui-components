@@ -13,28 +13,26 @@ import { Change, ChangeType } from './model';
  * @param columnName
  * @returns {List<QueryColumn>}
  */
-export function parseColumns(columns: List<QueryColumn>, columnName: string): List<QueryColumn> {
+export function parseColumns(columns: QueryColumn[], columnName: string): QueryColumn[] {
     const _columnName = columnName ? columnName.toLowerCase() : '';
 
     // First, attempt to match by column name/lookup
-    const nameMatches = columns
-        .filter(c => {
-            if (_columnName.indexOf('/') > -1) {
-                if (c.isLookup()) {
-                    const name = _columnName.split('/')[0];
-                    return c.name.toLowerCase() === name;
-                }
-
-                return false;
+    const nameMatches = columns.filter(c => {
+        if (_columnName.indexOf('/') > -1) {
+            if (c.isLookup()) {
+                const name = _columnName.split('/')[0];
+                return c.name.toLowerCase() === name;
             }
 
-            return c.name.toLowerCase() === _columnName;
-        })
-        .toList();
+            return false;
+        }
+
+        return c.name.toLowerCase() === _columnName;
+    });
 
     // Second, if there are no matches by column name/lookup, attempt to match by column shortCaption
-    if (nameMatches.size === 0) {
-        return columns.filter(c => c.shortCaption.toLowerCase() === _columnName).toList();
+    if (nameMatches.length === 0) {
+        return columns.filter(c => c.shortCaption.toLowerCase() === _columnName);
     }
 
     return nameMatches;

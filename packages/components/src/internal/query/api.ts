@@ -16,6 +16,7 @@
 import { fromJS, List, Map, OrderedMap, Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
 import { normalize, schema } from 'normalizr';
 import { Filter, Query, QueryDOM } from '@labkey/api';
+import { ExtendedMap } from '../../public/ExtendedMap';
 
 import { getQueryMetadata } from '../global';
 import { resolveKeyFromJson, SchemaQuery } from '../../public/SchemaQuery';
@@ -29,7 +30,7 @@ import {
 import { caseInsensitive, quoteValueWithDelimiters } from '../util/utils';
 import { QueryInfo, QueryInfoStatus } from '../../public/QueryInfo';
 import { QueryColumn, QueryLookup } from '../../public/QueryColumn';
-import { ViewInfo } from '../ViewInfo';
+import { ViewInfo, ViewInfoJson } from '../ViewInfo';
 import { URLResolver } from '../url/URLResolver';
 import { ModuleContext } from '../components/base/ServerContext';
 
@@ -119,9 +120,9 @@ export function applyQueryMetadata(rawQueryInfo: any, schemaName?: string, query
     if (rawQueryInfo && _schemaName && _queryName) {
         const schemaQuery = new SchemaQuery(_schemaName, _queryName);
 
-        let columns = OrderedMap<string, QueryColumn>();
+        let columns = new ExtendedMap<string, QueryColumn>();
         rawQueryInfo.columns.forEach(rawColumn => {
-            columns = columns.set(rawColumn.fieldKey.toLowerCase(), applyColumnMetadata(schemaQuery, rawColumn));
+            columns.set(rawColumn.fieldKey.toLowerCase(), applyColumnMetadata(schemaQuery, rawColumn));
         });
 
         let schemaMeta = metadata.getIn(['schema', _schemaName.toLowerCase(), 'queryDefaults']);
@@ -139,36 +140,32 @@ export function applyQueryMetadata(rawQueryInfo: any, schemaName?: string, query
             queryMeta = queryMeta.toJS();
         }
 
-        let views = Map<string, ViewInfo>();
+        const views = new ExtendedMap<string, ViewInfo>();
 
         if (rawQueryInfo.views) {
-            views = views.asMutable();
-
             const removedViewColumns = columns
                 .filter(c => c.removeFromViews === true)
-                .map(c => c.fieldKey.toLowerCase())
-                .toMap();
+                .valueArray.map(c => c.fieldKey.toLowerCase());
 
             rawQueryInfo.views.forEach(rawViewInfo => {
                 let viewInfo = ViewInfo.fromJson(rawViewInfo);
 
-                if (removedViewColumns.size) {
+                if (removedViewColumns.length) {
                     viewInfo = viewInfo.mutate({
                         columns: viewInfo.columns.filter(
-                            vc => removedViewColumns.get(vc.fieldKey.toLowerCase()) === undefined
+                            vc => removedViewColumns.indexOf(vc.fieldKey.toLowerCase()) === -1
                         ),
                     }) as ViewInfo;
                 }
 
-                columns = applyViewColumns(columns, schemaQuery, rawViewInfo);
-
+                applyViewColumns(columns, schemaQuery, rawViewInfo);
                 views.set(viewInfo.name.toLowerCase(), viewInfo);
             });
-            views = views.asImmutable();
         }
 
         const queryLabel = rawQueryInfo.title || _queryName;
-
+        const disabledSystemFields = new Set<string>(rawQueryInfo.disabledSystemFields ?? []);
+        const altUpdateKeys = new Set<string>(rawQueryInfo.altUpdateKeys ?? []);
         const defaultQueryMeta = {
             queryLabel,
             plural: queryLabel,
@@ -176,21 +173,13 @@ export function applyQueryMetadata(rawQueryInfo: any, schemaName?: string, query
             singular: queryLabel,
         };
 
-        const altUpdateKeys = new Set<string>();
-        if (rawQueryInfo.altUpdateKeys?.length > 0) {
-            rawQueryInfo.altUpdateKeys?.forEach(key => {
-                altUpdateKeys.add(key);
-            });
-        }
-
         queryInfo = Object.assign({}, rawQueryInfo, schemaMeta, defaultQueryMeta, queryMeta, {
             altUpdateKeys,
+            disabledSystemFields,
             // derived fields
             columns,
-            pkCols: columns
-                .filter(col => col.isKeyField)
-                .map(col => col.fieldKey)
-                .toList(),
+            pkCols: columns.filter(col => col.isKeyField).valueArray.map(col => col.fieldKey),
+            schemaQuery,
             status: QueryInfoStatus.ok, // seems a little weird to be saying we are OK here
             views,
         });
@@ -199,7 +188,7 @@ export function applyQueryMetadata(rawQueryInfo: any, schemaName?: string, query
         queryInfo = rawQueryInfo;
     }
 
-    return QueryInfo.create(queryInfo);
+    return new QueryInfo(queryInfo);
 }
 
 const DEFAULT_PROCESS_PARAMETER_DOMAIN_KEY = 'defaultprocessparameterdomain';
@@ -274,20 +263,18 @@ function applyColumnMetadata(schemaQuery: SchemaQuery, rawColumn: any): QueryCol
 // As of r57235 some column info's are only found on the views "fields" property that were previously
 // available in the query info's "columns" property.
 function applyViewColumns(
-    columns: OrderedMap<string, QueryColumn>,
+    columns: ExtendedMap<string, QueryColumn>,
     schemaQuery: SchemaQuery,
-    rawViewInfo: any
-): OrderedMap<string, QueryColumn> {
+    rawViewInfo: ViewInfoJson
+) {
     if (rawViewInfo && rawViewInfo.fields) {
         rawViewInfo.fields.forEach(rawColumn => {
             const fk = rawColumn.fieldKey.toLowerCase();
             if (!columns.has(fk)) {
-                columns = columns.set(fk, applyColumnMetadata(schemaQuery, rawColumn));
+                columns.set(fk, applyColumnMetadata(schemaQuery, rawColumn));
             }
         });
     }
-
-    return columns;
 }
 
 export class Renderers {
@@ -1104,14 +1091,10 @@ export async function loadQueriesFromTable(
     const queryNameField = info.getColumn(tableFieldKey);
 
     if (queryNameField) {
+        const columns = new Set(info.getPkCols().map(col => col.fieldKey)).add(queryNameField.name);
         const { key, models } = await selectRowsDeprecated({
             containerFilter,
-            columns: info
-                .getPkCols()
-                .map(col => col.fieldKey)
-                .toSet()
-                .add(queryNameField.name)
-                .join(','),
+            columns: Array.from(columns).join(','),
             filterArray: filters,
             queryName,
             schemaName,

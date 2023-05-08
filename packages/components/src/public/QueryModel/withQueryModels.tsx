@@ -461,8 +461,8 @@ export function withQueryModels<Props>(
             const model = this.state.queryModels[id];
             const pkCols = model.queryInfo.getPkCols();
 
-            if (pkCols.size === 1) {
-                const pkValue = row[pkCols.first().name]?.value?.toString();
+            if (pkCols.length === 1) {
+                const pkValue = row[pkCols[0].name]?.value?.toString();
 
                 if (!pkValue) {
                     console.warn(`Unable to resolve PK value for model ${id} row`, row);
@@ -472,7 +472,7 @@ export function withQueryModels<Props>(
                 this.setSelections(id, checked, [pkValue]);
             } else {
                 const msg = `Cannot set row selection for model ${id}. The model has multiple PK Columns.`;
-                console.warn(msg, pkCols.toJS());
+                console.warn(msg, pkCols);
             }
         };
 

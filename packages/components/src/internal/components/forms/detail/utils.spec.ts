@@ -26,7 +26,7 @@ const COLUMN_FILE_INPUT = new QueryColumn({
     inputType: 'file',
     jsonType: 'string',
 });
-const QUERY_INFO = QueryInfo.fromJSON({
+const QUERY_INFO = QueryInfo.fromJsonForTests({
     name: 'test',
     schemaName: 'schema',
     columns: {

@@ -13,7 +13,7 @@ import { QueryInfo } from '../QueryInfo';
 import { ViewInfo } from '../../internal/ViewInfo';
 import { QueryColumn } from '../QueryColumn';
 import { caseInsensitive } from '../../internal/util/utils';
-import { naturalSort } from '../sort';
+import { naturalSort, naturalSortByProperty } from '../sort';
 import { PaginationData } from '../../internal/components/pagination/Pagination';
 import { SelectRowsOptions } from '../../internal/query/selectRows';
 
@@ -455,7 +455,7 @@ export class QueryModel {
      * in omittedColumns.
      */
     get detailColumns(): QueryColumn[] {
-        return this.queryInfo?.getDetailDisplayColumns(ViewInfo.DETAIL_NAME, List(this.omittedColumns)).toArray();
+        return this.queryInfo?.getDetailDisplayColumns(ViewInfo.DETAIL_NAME, this.omittedColumns);
     }
 
     /**
@@ -463,7 +463,7 @@ export class QueryModel {
      * in omittedColumns.
      */
     get displayColumns(): QueryColumn[] {
-        return this.queryInfo?.getDisplayColumns(this.viewName, List(this.omittedColumns)).toArray();
+        return this.queryInfo?.getDisplayColumns(this.viewName, this.omittedColumns);
     }
 
     /**
@@ -471,7 +471,7 @@ export class QueryModel {
      * in omittedColumns.
      */
     get allColumns(): QueryColumn[] {
-        return this.queryInfo?.getAllColumns(this.viewName, List(this.omittedColumns)).toArray();
+        return this.queryInfo?.getAllColumns(this.viewName, this.omittedColumns);
     }
 
     /**
@@ -479,14 +479,14 @@ export class QueryModel {
      * in omittedColumns.
      */
     get updateColumns(): QueryColumn[] {
-        return this.queryInfo?.getUpdateDisplayColumns(ViewInfo.UPDATE_NAME, List(this.omittedColumns)).toArray();
+        return this.queryInfo?.getUpdateDisplayColumns(ViewInfo.UPDATE_NAME, this.omittedColumns);
     }
 
     /**
      * Array of primary key [[QueryColumn]] objects from the [[QueryInfo]].
      */
     get keyColumns(): QueryColumn[] {
-        return this.queryInfo?.getPkCols().toArray();
+        return this.queryInfo?.getPkCols();
     }
 
     get uniqueIdColumns(): QueryColumn[] {
@@ -522,13 +522,13 @@ export class QueryModel {
         if (this.keyValue !== undefined) {
             const pkFilter = [];
 
-            if (queryInfo.pkCols.size === 1) {
-                pkFilter.push(Filter.create(queryInfo.pkCols.first(), keyValue));
+            if (queryInfo.pkCols.length === 1) {
+                pkFilter.push(Filter.create(queryInfo.pkCols[0], keyValue));
             } else {
                 // Note: This behavior of not throwing an error, and continuing despite not having a single PK column is
                 // inherited from QueryGridModel, we may want to rethink this before widely adopting this API.
                 const warning = 'Too many keys. Unable to filter for specific keyValue.';
-                console.warn(warning, queryInfo.pkCols.toJS());
+                console.warn(warning, queryInfo.pkCols);
             }
 
             return [...pkFilter, ...this.detailFilters];
@@ -807,7 +807,7 @@ export class QueryModel {
      * will be sorted by view label.
      */
     get views(): ViewInfo[] {
-        return this.queryInfo?.views.sortBy(v => v.label, naturalSort).toArray() || [];
+        return this.queryInfo?.views.valueArray.sort(naturalSortByProperty('label')) || [];
     }
 
     /**

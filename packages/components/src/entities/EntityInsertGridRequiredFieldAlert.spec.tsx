@@ -26,7 +26,7 @@ describe('EntityInsertGridRequiredFieldAlert', () => {
 
     test('queryInfo isLoading', () => {
         const wrapper = mount(
-            <EntityInsertGridRequiredFieldAlert {...DEFAULT_PROPS} queryInfo={QueryInfo.create({ isLoading: true })} />
+            <EntityInsertGridRequiredFieldAlert {...DEFAULT_PROPS} queryInfo={new QueryInfo({ isLoading: true })} />
         );
         validate(wrapper);
         wrapper.unmount();
@@ -36,7 +36,7 @@ describe('EntityInsertGridRequiredFieldAlert', () => {
         const wrapper = mount(
             <EntityInsertGridRequiredFieldAlert
                 {...DEFAULT_PROPS}
-                queryInfo={QueryInfo.fromJSON({
+                queryInfo={QueryInfo.fromJsonForTests({
                     columns: [
                         {
                             fieldKey: 'a',
@@ -60,7 +60,7 @@ describe('EntityInsertGridRequiredFieldAlert', () => {
         const wrapper = mount(
             <EntityInsertGridRequiredFieldAlert
                 {...DEFAULT_PROPS}
-                queryInfo={QueryInfo.fromJSON({
+                queryInfo={QueryInfo.fromJsonForTests({
                     columns: [
                         {
                             fieldKey: 'a',
@@ -87,101 +87,89 @@ describe('EntityInsertGridRequiredFieldAlert', () => {
 describe('getFieldKeysOfRequiredCols', () => {
     test('editable and required', () => {
         expect(
-            getFieldKeysOfRequiredCols(
-                List.of(
-                    new QueryColumn({
-                        fieldKey: 'col1',
-                        fieldKeyArray: ['col1'],
-                        readOnly: false,
-                        userEditable: true,
-                        shownInUpdateView: true,
-                        required: true,
-                    })
-                )
-            ).length
+            getFieldKeysOfRequiredCols([
+                new QueryColumn({
+                    fieldKey: 'col1',
+                    fieldKeyArray: ['col1'],
+                    readOnly: false,
+                    userEditable: true,
+                    shownInUpdateView: true,
+                    required: true,
+                }),
+            ]).length
         ).toBe(1);
 
         expect(
-            getFieldKeysOfRequiredCols(
-                List.of(
-                    new QueryColumn({
-                        fieldKey: 'col1',
-                        fieldKeyArray: ['col1'],
-                        readOnly: false,
-                        userEditable: true,
-                        shownInUpdateView: true,
-                        required: true,
-                    })
-                )
-            )[0]
+            getFieldKeysOfRequiredCols([
+                new QueryColumn({
+                    fieldKey: 'col1',
+                    fieldKeyArray: ['col1'],
+                    readOnly: false,
+                    userEditable: true,
+                    shownInUpdateView: true,
+                    required: true,
+                }),
+            ])[0]
         ).toBe('col1');
     });
 
     test('editable and not required', () => {
         expect(
-            getFieldKeysOfRequiredCols(
-                List.of(
-                    new QueryColumn({
-                        fieldKey: 'col1',
-                        fieldKeyArray: ['col1'],
-                        readOnly: false,
-                        userEditable: true,
-                        shownInUpdateView: true,
-                        required: false,
-                    })
-                )
-            ).length
+            getFieldKeysOfRequiredCols([
+                new QueryColumn({
+                    fieldKey: 'col1',
+                    fieldKeyArray: ['col1'],
+                    readOnly: false,
+                    userEditable: true,
+                    shownInUpdateView: true,
+                    required: false,
+                }),
+            ]).length
         ).toBe(0);
     });
 
     test('not editable and required', () => {
         expect(
-            getFieldKeysOfRequiredCols(
-                List.of(
-                    new QueryColumn({
-                        fieldKey: 'col1',
-                        fieldKeyArray: ['col1'],
-                        readOnly: false,
-                        userEditable: false,
-                        shownInUpdateView: true,
-                        required: true,
-                    })
-                )
-            ).length
+            getFieldKeysOfRequiredCols([
+                new QueryColumn({
+                    fieldKey: 'col1',
+                    fieldKeyArray: ['col1'],
+                    readOnly: false,
+                    userEditable: false,
+                    shownInUpdateView: true,
+                    required: true,
+                }),
+            ]).length
         ).toBe(0);
     });
 
     test('not editable and not required', () => {
         expect(
-            getFieldKeysOfRequiredCols(
-                List.of(
-                    new QueryColumn({
-                        fieldKey: 'col1',
-                        fieldKeyArray: ['col1'],
-                        readOnly: false,
-                        userEditable: false,
-                        shownInUpdateView: true,
-                        required: false,
-                    })
-                )
-            ).length
+            getFieldKeysOfRequiredCols([
+                new QueryColumn({
+                    fieldKey: 'col1',
+                    fieldKeyArray: ['col1'],
+                    readOnly: false,
+                    userEditable: false,
+                    shownInUpdateView: true,
+                    required: false,
+                }),
+            ]).length
         ).toBe(0);
     });
 
     test('editable, required lookup field', () => {
         expect(
-            getFieldKeysOfRequiredCols(
-                List.of(
-                    new QueryColumn({
-                        fieldKey: 'lookup/col1',
-                        fieldKeyArray: ['lookup', 'col1'],
-                        readOnly: false,
-                        userEditable: true,
-                        shownInUpdateView: true,
-                        required: true,
-                    })
-                )
-            ).length
+            getFieldKeysOfRequiredCols([
+                new QueryColumn({
+                    fieldKey: 'lookup/col1',
+                    fieldKeyArray: ['lookup', 'col1'],
+                    readOnly: false,
+                    userEditable: true,
+                    shownInUpdateView: true,
+                    required: true,
+                }),
+            ]).length
         ).toBe(0);
     });
 });

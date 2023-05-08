@@ -13,27 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, OrderedMap } from 'immutable';
+import { fromJS, List } from 'immutable';
 
 import sampleSetQueryInfo from '../test/data/sampleSet-getQueryDetails.json';
 import sampleSet3QueryColumn from '../test/data/SampleSet3Parent-QueryColumn.json';
 import nameExpSetQueryColumn from '../test/data/NameExprParent-QueryColumn.json';
 
 import { ViewInfo } from '../internal/ViewInfo';
+import { ExtendedMap } from './ExtendedMap';
 
 import { QueryInfo } from './QueryInfo';
-import { QueryColumn } from './QueryColumn';
 
 describe('getColumnFieldKeys', () => {
     test('missing params', () => {
-        const queryInfo = QueryInfo.create({});
+        const queryInfo = new QueryInfo({});
 
         expect(JSON.stringify(queryInfo.getColumnFieldKeys(undefined))).toBe('[]');
         expect(JSON.stringify(queryInfo.getColumnFieldKeys(['test']))).toBe('[]');
     });
 
     test('queryInfo with columns', () => {
-        const queryInfo = QueryInfo.fromJSON({
+        const queryInfo = QueryInfo.fromJsonForTests({
             columns: [{ fieldKey: 'test1' }, { fieldKey: 'test2' }, { fieldKey: 'test3' }],
         });
 
@@ -46,85 +46,27 @@ describe('getColumnFieldKeys', () => {
 });
 
 describe('QueryInfo', () => {
-    const FIRST_COL_KEY = 'Sample Set 3 Parents';
-    const SECOND_COL_KEY = 'NameExpr Parents';
-
-    const queryInfo = QueryInfo.fromJSON(sampleSetQueryInfo);
-    let newColumns = OrderedMap<string, QueryColumn>();
-    newColumns = newColumns.set(FIRST_COL_KEY, new QueryColumn(sampleSet3QueryColumn));
-    newColumns = newColumns.set(SECOND_COL_KEY, new QueryColumn(nameExpSetQueryColumn));
-
-    describe('insertColumns', () => {
-        test('negative columnIndex', () => {
-            const columns = queryInfo.insertColumns(-1, newColumns);
-            expect(columns).toBe(queryInfo.columns);
-        });
-
-        test('columnIndex just too large', () => {
-            const columns = queryInfo.insertColumns(queryInfo.columns.size + 1, newColumns);
-            expect(columns).toBe(queryInfo.columns);
-        });
-
-        test('as first column', () => {
-            const columns = queryInfo.insertColumns(0, newColumns);
-            const firstColKey = queryInfo.columns.keySeq().first();
-            expect(columns.keySeq().indexOf(FIRST_COL_KEY)).toBe(0);
-            expect(columns.keySeq().indexOf(SECOND_COL_KEY)).toBe(1);
-            expect(columns.keySeq().indexOf(firstColKey)).toBe(2);
-            expect(columns.size).toBe(queryInfo.columns.size + newColumns.size);
-        });
-
-        test('as last column', () => {
-            const columns = queryInfo.insertColumns(queryInfo.columns.size, newColumns);
-            const firstColKey = queryInfo.columns.keySeq().first();
-            expect(columns.size).toBe(queryInfo.columns.size + newColumns.size);
-            expect(columns.keySeq().indexOf(firstColKey)).toBe(0);
-            expect(columns.keySeq().indexOf(FIRST_COL_KEY)).toBe(queryInfo.columns.size);
-            expect(columns.keySeq().indexOf(SECOND_COL_KEY)).toBe(queryInfo.columns.size + 1);
-        });
-
-        test('in middle', () => {
-            const nameIndex = queryInfo.columns.keySeq().findIndex(key => key.toLowerCase() === 'name');
-            const columns = queryInfo.insertColumns(nameIndex + 1, newColumns);
-            expect(columns.size).toBe(queryInfo.columns.size + newColumns.size);
-            expect(columns.keySeq().get(nameIndex).toLowerCase()).toBe('name');
-            expect(columns.keySeq().indexOf(FIRST_COL_KEY)).toBe(nameIndex + 1);
-            expect(columns.keySeq().indexOf(SECOND_COL_KEY)).toBe(nameIndex + 2);
-        });
-
-        test('single column', () => {
-            const nameIndex = queryInfo.columns.keySeq().findIndex(key => key.toLowerCase() === 'name');
-            const columns = queryInfo.insertColumns(
-                nameIndex + 1,
-                newColumns
-                    .filter(queryColumn => queryColumn.caption.toLowerCase() === FIRST_COL_KEY.toLowerCase())
-                    .toOrderedMap()
-            );
-            expect(columns.size).toBe(queryInfo.columns.size + 1);
-            expect(columns.keySeq().get(nameIndex).toLowerCase()).toBe('name');
-            expect(columns.keySeq().indexOf(FIRST_COL_KEY)).toBe(nameIndex + 1);
-        });
-    });
+    const queryInfo = QueryInfo.fromJsonForTests(sampleSetQueryInfo);
 
     describe('getUpdateColumns', () => {
         test('without readOnly columns', () => {
             const columns = queryInfo.getUpdateColumns();
-            expect(columns.size).toBe(2);
-            expect(columns.get(0).fieldKey).toBe('Description');
-            expect(columns.get(1).fieldKey).toBe('New');
+            expect(columns.length).toBe(2);
+            expect(columns[0].fieldKey).toBe('Description');
+            expect(columns[1].fieldKey).toBe('New');
         });
 
         test('with readOnly columns', () => {
-            const columns = queryInfo.getUpdateColumns(List<string>(['Name']));
-            expect(columns.size).toBe(3);
-            expect(columns.get(0).fieldKey).toBe('Name');
-            expect(columns.get(1).fieldKey).toBe('Description');
-            expect(columns.get(2).fieldKey).toBe('New');
+            const columns = queryInfo.getUpdateColumns(['Name']);
+            expect(columns.length).toBe(3);
+            expect(columns[0].fieldKey).toBe('Name');
+            expect(columns[1].fieldKey).toBe('Description');
+            expect(columns[2].fieldKey).toBe('New');
         });
     });
 
     describe('getDisplayColumns', () => {
-        const queryInfoWithViews = QueryInfo.fromJSON(
+        const queryInfoWithViews = QueryInfo.fromJsonForTests(
             {
                 columns: [
                     { fieldKey: 'test1' },
@@ -138,19 +80,19 @@ describe('QueryInfo', () => {
 
         test('system default view with addToSystemView', () => {
             const columns = queryInfoWithViews.getDisplayColumns();
-            expect(columns.size).toBe(2);
-            expect(columns.get(0).fieldKey).toBe('test2');
-            expect(columns.get(1).fieldKey).toBe('test3');
+            expect(columns.length).toBe(2);
+            expect(columns[0].fieldKey).toBe('test2');
+            expect(columns[1].fieldKey).toBe('test3');
         });
 
         test('system default view with omittedColumns', () => {
-            const columns = queryInfoWithViews.getDisplayColumns('', List.of('test2'));
-            expect(columns.size).toBe(1);
-            expect(columns.get(0).fieldKey).toBe('test3');
+            const columns = queryInfoWithViews.getDisplayColumns('', ['test2']);
+            expect(columns.length).toBe(1);
+            expect(columns[0].fieldKey).toBe('test3');
         });
 
         test('saved default view should not include addToSystemView', () => {
-            const qv = QueryInfo.fromJSON(
+            const qv = QueryInfo.fromJsonForTests(
                 {
                     columns: [
                         { fieldKey: 'test1' },
@@ -162,25 +104,25 @@ describe('QueryInfo', () => {
                 true
             );
             const columns = qv.getDisplayColumns();
-            expect(columns.size).toBe(0);
+            expect(columns.length).toBe(0);
         });
     });
 
     describe('getIconURL', () => {
         test('default', () => {
-            const queryInfo = QueryInfo.create({ schemaName: 'test', name: 'test' });
+            const queryInfo = QueryInfo.fromJsonForTests({ schemaName: 'test', name: 'test' });
             expect(queryInfo.getIconURL()).toBe('default');
         });
 
         test('with custom iconURL', () => {
-            const queryInfo = QueryInfo.create({ schemaName: 'samples', name: 'test', iconURL: 'other' });
+            const queryInfo = QueryInfo.fromJsonForTests({ schemaName: 'samples', name: 'test', iconURL: 'other' });
             expect(queryInfo.getIconURL()).toBe('other');
         });
     });
 
     describe('getInsertQueryInfo', () => {
         test('shownInInsertView', () => {
-            const queryInfo = QueryInfo.fromJSON({
+            const queryInfo = QueryInfo.fromJsonForTests({
                 columns: [
                     { fieldKey: 'test1', shownInInsertView: true },
                     { fieldKey: 'test2', shownInInsertView: false },
@@ -192,7 +134,7 @@ describe('QueryInfo', () => {
         });
 
         test('isFileInput', () => {
-            const queryInfo = QueryInfo.fromJSON({
+            const queryInfo = QueryInfo.fromJsonForTests({
                 columns: [
                     { fieldKey: 'test1', shownInInsertView: true, inputType: 'text' },
                     { fieldKey: 'test2', shownInInsertView: true, inputType: 'file' },
@@ -206,7 +148,7 @@ describe('QueryInfo', () => {
 
     describe('getInsertColumns', () => {
         test('includeFileInputs false', () => {
-            const insertCol1 = QueryInfo.fromJSON({
+            const insertCol1 = QueryInfo.fromJsonForTests({
                 columns: [
                     {
                         fieldKey: 'test1',
@@ -226,14 +168,14 @@ describe('QueryInfo', () => {
                     },
                 ],
             }).getInsertColumns();
-            expect(insertCol1.size).toBe(1);
-            expect(insertCol1.get(0).fieldKey).toBe('test1');
+            expect(insertCol1.length).toBe(1);
+            expect(insertCol1[0].fieldKey).toBe('test1');
         });
     });
 
     describe('getFileColumnFieldKeys', () => {
         test('default', () => {
-            const fieldKeys = QueryInfo.fromJSON({
+            const fieldKeys = QueryInfo.fromJsonForTests({
                 columns: [
                     { fieldKey: 'test1', shownInInsertView: true, inputType: 'text' },
                     { fieldKey: 'test2', shownInInsertView: false, inputType: 'text' },
@@ -246,72 +188,74 @@ describe('QueryInfo', () => {
 
     describe('getShowImportDataButton', () => {
         test('respects settings', () => {
-            const qi = QueryInfo.create({
+            const qi = new QueryInfo({
                 importUrl: '#/importUrl',
                 importUrlDisabled: false,
                 showInsertNewButton: true, // yes, "getShowImportDataButton()" respects the "showInsertNewButton" flag
             });
 
             expect(qi.getShowImportDataButton()).toBe(true);
-            expect((qi.set('importUrl', undefined) as QueryInfo).getShowImportDataButton()).toBe(false);
-            expect((qi.set('importUrlDisabled', true) as QueryInfo).getShowImportDataButton()).toBe(false);
-            expect((qi.set('showInsertNewButton', false) as QueryInfo).getShowImportDataButton()).toBe(false);
+            expect(qi.mutate({ importUrl: undefined }).getShowImportDataButton()).toBe(false);
+            expect(qi.mutate({ importUrlDisabled: true }).getShowImportDataButton()).toBe(false);
+            expect(qi.mutate({ showInsertNewButton: false }).getShowImportDataButton()).toBe(false);
         });
     });
 
     describe('getShowInsertNewButton', () => {
         test('respects settings', () => {
-            const qi = QueryInfo.create({
+            const qi = new QueryInfo({
                 insertUrl: '#/insertUrl',
                 insertUrlDisabled: false,
                 showInsertNewButton: true,
             });
 
             expect(qi.getShowInsertNewButton()).toBe(true);
-            expect((qi.set('insertUrl', undefined) as QueryInfo).getShowInsertNewButton()).toBe(false);
-            expect((qi.set('insertUrlDisabled', true) as QueryInfo).getShowInsertNewButton()).toBe(false);
-            expect((qi.set('showInsertNewButton', false) as QueryInfo).getShowInsertNewButton()).toBe(false);
+            expect(qi.mutate({ insertUrl: undefined }).getShowInsertNewButton()).toBe(false);
+            expect(qi.mutate({ insertUrlDisabled: true }).getShowInsertNewButton()).toBe(false);
+            expect(qi.mutate({ showInsertNewButton: false }).getShowInsertNewButton()).toBe(false);
         });
     });
 
     describe('getView', () => {
-        let queryInfo = QueryInfo.create({
-            views: fromJS({
-                [ViewInfo.DEFAULT_NAME.toLowerCase()]: ViewInfo.fromJson({ name: 'default' }),
-                [ViewInfo.DETAIL_NAME.toLowerCase()]: ViewInfo.fromJson({ name: 'detail' }),
-                view1: ViewInfo.fromJson({ name: 'view1' }),
-                view2: ViewInfo.fromJson({ name: 'view2' }),
-            }),
+        test('getView works as expected', () => {
+            let queryInfo = new QueryInfo({
+                views: new ExtendedMap({
+                    [ViewInfo.DEFAULT_NAME.toLowerCase()]: ViewInfo.fromJson({ name: 'default' }),
+                    [ViewInfo.DETAIL_NAME.toLowerCase()]: ViewInfo.fromJson({ name: 'detail' }),
+                    view1: ViewInfo.fromJson({ name: 'view1' }),
+                    view2: ViewInfo.fromJson({ name: 'view2' }),
+                }),
+            });
+
+            expect(queryInfo.getView(undefined)?.name).toBe(undefined);
+            expect(queryInfo.getView(undefined, true)?.name).toBe('default');
+            expect(queryInfo.getView('')?.name).toBe('default');
+            expect(queryInfo.getView('', true)?.name).toBe('default');
+
+            expect(queryInfo.getView('bogus')?.name).toBe(undefined);
+            expect(queryInfo.getView('bogus', false)?.name).toBe(undefined);
+            expect(queryInfo.getView('bogus', true)?.name).toBe('default');
+
+            expect(queryInfo.getView('view1')?.name).toBe('view1');
+            expect(queryInfo.getView('view2')?.name).toBe('view2');
+            expect(queryInfo.getView('view2', true)?.name).toBe('view2');
+
+            expect(queryInfo.getView(ViewInfo.DEFAULT_NAME)?.name).toBe('default');
+            expect(queryInfo.getView('~~default~~')?.name).toBe('default');
+
+            expect(queryInfo.getView(ViewInfo.DETAIL_NAME)?.name).toBe('detail');
+            expect(queryInfo.getView('~~details~~')?.name).toBe('detail');
+
+            queryInfo = new QueryInfo({
+                views: fromJS({
+                    [ViewInfo.DEFAULT_NAME.toLowerCase()]: ViewInfo.fromJson({ name: 'default' }),
+                    [ViewInfo.DETAIL_NAME.toLowerCase()]: ViewInfo.fromJson({ name: 'detail' }),
+                    [ViewInfo.BIO_DETAIL_NAME.toLowerCase()]: ViewInfo.fromJson({ name: 'LKB detail' }),
+                }),
+            });
+            expect(queryInfo.getView(ViewInfo.BIO_DETAIL_NAME)?.name).toBe('LKB detail');
+            expect(queryInfo.getView(ViewInfo.DETAIL_NAME)?.name).toBe('LKB detail');
+            expect(queryInfo.getView('~~details~~')?.name).toBe('LKB detail');
         });
-
-        expect(queryInfo.getView(undefined)?.name).toBe(undefined);
-        expect(queryInfo.getView(undefined, true)?.name).toBe('default');
-        expect(queryInfo.getView('')?.name).toBe('default');
-        expect(queryInfo.getView('', true)?.name).toBe('default');
-
-        expect(queryInfo.getView('bogus')?.name).toBe(undefined);
-        expect(queryInfo.getView('bogus', false)?.name).toBe(undefined);
-        expect(queryInfo.getView('bogus', true)?.name).toBe('default');
-
-        expect(queryInfo.getView('view1')?.name).toBe('view1');
-        expect(queryInfo.getView('view2')?.name).toBe('view2');
-        expect(queryInfo.getView('view2', true)?.name).toBe('view2');
-
-        expect(queryInfo.getView(ViewInfo.DEFAULT_NAME)?.name).toBe('default');
-        expect(queryInfo.getView('~~default~~')?.name).toBe('default');
-
-        expect(queryInfo.getView(ViewInfo.DETAIL_NAME)?.name).toBe('detail');
-        expect(queryInfo.getView('~~details~~')?.name).toBe('detail');
-
-        queryInfo = QueryInfo.create({
-            views: fromJS({
-                [ViewInfo.DEFAULT_NAME.toLowerCase()]: ViewInfo.fromJson({ name: 'default' }),
-                [ViewInfo.DETAIL_NAME.toLowerCase()]: ViewInfo.fromJson({ name: 'detail' }),
-                [ViewInfo.BIO_DETAIL_NAME.toLowerCase()]: ViewInfo.fromJson({ name: 'LKB detail' }),
-            }),
-        });
-        expect(queryInfo.getView(ViewInfo.BIO_DETAIL_NAME)?.name).toBe('LKB detail');
-        expect(queryInfo.getView(ViewInfo.DETAIL_NAME)?.name).toBe('LKB detail');
-        expect(queryInfo.getView('~~details~~')?.name).toBe('LKB detail');
     });
 });

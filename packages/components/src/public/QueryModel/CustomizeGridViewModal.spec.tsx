@@ -7,6 +7,7 @@ import { Modal, OverlayTrigger } from 'react-bootstrap';
 import { fromJS } from 'immutable';
 
 import { Draggable } from 'react-beautiful-dnd';
+import { ExtendedMap } from '../ExtendedMap';
 
 import { SchemaQuery } from '../SchemaQuery';
 import { QueryInfo } from '../QueryInfo';
@@ -303,7 +304,7 @@ describe('CustomizeGridViewModal', () => {
         selectable: true,
         hidden: true,
     });
-    const columns = fromJS({
+    const columns = new ExtendedMap<string, QueryColumn>({
         field$s1: FIELD_1_COL,
         'field+2': FIELD_2_COL,
         field3: FIELD_3_COL,
@@ -315,8 +316,8 @@ describe('CustomizeGridViewModal', () => {
 
     test('With title, no view', () => {
         const view = ViewInfo.fromJson({ name: 'default' });
-        const queryInfo = QueryInfo.create({
-            views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
+        const queryInfo = new QueryInfo({
+            views: new ExtendedMap({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
             columns,
         });
         let model = makeTestQueryModel(new SchemaQuery('test', QUERY_NAME), queryInfo);
@@ -329,8 +330,8 @@ describe('CustomizeGridViewModal', () => {
     test('Without title, with view name', () => {
         const viewName = 'viewForTesting';
         const view = ViewInfo.fromJson({ name: viewName });
-        const queryInfo = QueryInfo.create({
-            views: fromJS({ [viewName.toLowerCase()]: view }),
+        const queryInfo = new QueryInfo({
+            views: new ExtendedMap({ [viewName.toLowerCase()]: view }),
             columns,
         });
         const model = makeTestQueryModel(new SchemaQuery('test', QUERY_NAME, viewName), queryInfo);
@@ -344,8 +345,8 @@ describe('CustomizeGridViewModal', () => {
             name: ViewInfo.DEFAULT_NAME,
             columns: [FIELD_1_COL, FIELD_2_COL],
         });
-        const queryInfo = QueryInfo.create({
-            views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
+        const queryInfo = new QueryInfo({
+            views: new ExtendedMap({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
             columns,
         });
         const model = makeTestQueryModel(new SchemaQuery('test', QUERY_NAME), queryInfo);
@@ -405,8 +406,8 @@ describe('CustomizeGridViewModal', () => {
             name: ViewInfo.DEFAULT_NAME,
             columns: [FIELD_1_COL, FIELD_2_COL],
         });
-        const queryInfo = QueryInfo.create({
-            views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
+        const queryInfo = new QueryInfo({
+            views: new ExtendedMap({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
             columns,
         });
         const model = makeTestQueryModel(new SchemaQuery('test', QUERY_NAME), queryInfo);
@@ -514,7 +515,7 @@ describe('ColumnChoiceGroup', () => {
             <ColumnChoiceGroup
                 {...DEFAULT_PROPS}
                 column={QUERY_COL_LOOKUP}
-                expandedColumns={{ [QUERY_COL_LOOKUP.index]: QueryInfo.create({}) }}
+                expandedColumns={{ [QUERY_COL_LOOKUP.index]: new QueryInfo({}) }}
                 columnsInView={[QUERY_COL_LOOKUP]}
             />
         );
@@ -523,7 +524,7 @@ describe('ColumnChoiceGroup', () => {
     });
 
     test('lookup column with children, child not in view', () => {
-        const queryInfo = QueryInfo.create({ columns: fromJS({ [QUERY_COL.fieldKey]: QUERY_COL }) });
+        const queryInfo = new QueryInfo({ columns: new ExtendedMap({ [QUERY_COL.fieldKey]: QUERY_COL }) });
         const wrapper = mount(
             <ColumnChoiceGroup
                 {...DEFAULT_PROPS}
@@ -539,7 +540,7 @@ describe('ColumnChoiceGroup', () => {
     });
 
     test('lookup column with children, child in view', () => {
-        const queryInfo = QueryInfo.create({ columns: fromJS({ [QUERY_COL.fieldKey]: QUERY_COL }) });
+        const queryInfo = new QueryInfo({ columns: new ExtendedMap({ [QUERY_COL.fieldKey]: QUERY_COL }) });
         const wrapper = mount(
             <ColumnChoiceGroup
                 {...DEFAULT_PROPS}
@@ -556,7 +557,7 @@ describe('ColumnChoiceGroup', () => {
 
     test('lookup column with children, child hidden', () => {
         const colHidden = new QueryColumn({ ...QUERY_COL, hidden: true });
-        const queryInfo = QueryInfo.create({ columns: fromJS({ [colHidden.fieldKey]: colHidden }) });
+        const queryInfo = new QueryInfo({ columns: new ExtendedMap({ [colHidden.fieldKey]: colHidden }) });
         const wrapper = mount(
             <ColumnChoiceGroup
                 {...DEFAULT_PROPS}
@@ -571,7 +572,7 @@ describe('ColumnChoiceGroup', () => {
 
     test('lookup column with children, child hidden with showAllColumns', () => {
         const colHidden = new QueryColumn({ ...QUERY_COL, hidden: true });
-        const queryInfo = QueryInfo.create({ columns: fromJS({ [colHidden.fieldKey]: colHidden }) });
+        const queryInfo = new QueryInfo({ columns: new ExtendedMap({ [colHidden.fieldKey]: colHidden }) });
         const wrapper = mount(
             <ColumnChoiceGroup
                 {...DEFAULT_PROPS}
@@ -589,7 +590,7 @@ describe('ColumnChoiceGroup', () => {
 
     test('lookup column with children, child removeFromViews', () => {
         const colHidden = new QueryColumn({ ...QUERY_COL, removeFromViews: true });
-        const queryInfo = QueryInfo.create({ columns: fromJS({ [colHidden.fieldKey]: colHidden }) });
+        const queryInfo = new QueryInfo({ columns: new ExtendedMap({ [colHidden.fieldKey]: colHidden }) });
         const wrapper = mount(
             <ColumnChoiceGroup
                 {...DEFAULT_PROPS}
@@ -603,8 +604,8 @@ describe('ColumnChoiceGroup', () => {
     });
 
     test('lookup column, ancestor expanded', () => {
-        const queryInfo = QueryInfo.create({
-            columns: fromJS({
+        const queryInfo = new QueryInfo({
+            columns: new ExtendedMap({
                 [QUERY_COL_LOOKUP_ANCESTOR_STANDARD.fieldKey]: QUERY_COL_LOOKUP_ANCESTOR_STANDARD,
                 [QUERY_COL_LOOKUP_ANCESTOR_MULTIVALUED.fieldKey]: QUERY_COL_LOOKUP_ANCESTOR_MULTIVALUED,
             }),

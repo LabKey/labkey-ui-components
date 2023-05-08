@@ -146,20 +146,9 @@ function resolveSymbol(filterType: Filter.IFilterType): string {
 export class FilterAction implements Action {
     iconCls = 'filter';
     keyword = 'filter';
-    getColumns: (all?: boolean) => List<QueryColumn>;
-    urlPrefix: string;
     getFilterDisplayValue: (columnName: string, rawValue: string) => string;
 
-    // todo, define an interface for Action constructor param and use a single object as param
-    constructor(
-        urlPrefix: string,
-        getColumns: () => List<QueryColumn>,
-        getQueryInfo?: () => QueryInfo,
-        getFilterDisplayValue?: (columnName: string, rawValue: string) => string
-    ) {
-        this.getColumns = getColumns;
-        this.urlPrefix = urlPrefix;
-        // getQueryInfo is not used by Filter currently, but needs to be in params since it's used by View Action, see URLBox new urlAction(urlPrefix, this.getColumns, this.getQueryInfo)
+    constructor(getFilterDisplayValue?: (columnName: string, rawValue: string) => string) {
         this.getFilterDisplayValue = getFilterDisplayValue;
     }
 
@@ -216,7 +205,7 @@ export class FilterAction implements Action {
         return { displayValue: displayParts.join(' '), inputValue };
     }
 
-    actionValueFromFilter(filter: Filter.IFilter, column: QueryColumn, isReadOnly?: string): ActionValue {
+    actionValueFromFilter(filter: Filter.IFilter, column?: QueryColumn, isReadOnly?: string): ActionValue {
         const label = column?.shortCaption;
         const columnName = filter.getColumnName();
         const filterType = filter.getFilterType();

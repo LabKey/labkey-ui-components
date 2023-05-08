@@ -2,6 +2,7 @@ import React from 'react';
 import { Col, NavItem } from 'react-bootstrap';
 import { mount, ReactWrapper } from 'enzyme';
 import { Filter } from '@labkey/api';
+import { ExtendedMap } from '../../../public/ExtendedMap';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 import { ChoicesListItem } from '../base/ChoicesListItem';
@@ -23,7 +24,7 @@ describe('QueryFilterPanel', () => {
     const DEFAULT_PROPS = {
         api: getTestAPIWrapper(jest.fn, {}),
         filters: {},
-        queryInfo: QueryInfo.fromJSON(sampleSetAllFieldTypesQueryInfo, true),
+        queryInfo: QueryInfo.fromJsonForTests(sampleSetAllFieldTypesQueryInfo, true),
         onFilterUpdate: jest.fn,
     };
 
@@ -97,16 +98,16 @@ describe('QueryFilterPanel', () => {
     });
 
     test('one field not filterable', () => {
-        const props = {...DEFAULT_PROPS};
+        const props = { ...DEFAULT_PROPS };
         let queryInfo = props.queryInfo;
         let col: QueryColumn = queryInfo.getDisplayColumns().find(field => field.jsonType === 'string');
         col = col.mutate({ filterable: false });
-        queryInfo = queryInfo.setIn(['columns', col.fieldKey.toLowerCase()], col) as QueryInfo;
+        const columns = new ExtendedMap<string, QueryColumn>(queryInfo.columns);
+        columns.set(col.fieldKey.toLowerCase(), col);
+        queryInfo = queryInfo.mutate({ columns });
         props.queryInfo = queryInfo;
         const wrapper = mount(
-            <QueryFilterPanel
-                {...props}
-                 validFilterField={(field, queryInfo) => field.jsonType === 'string'} />
+            <QueryFilterPanel {...props} validFilterField={(field, queryInfo) => field.jsonType === 'string'} />
         );
         validate(wrapper, 5);
     });

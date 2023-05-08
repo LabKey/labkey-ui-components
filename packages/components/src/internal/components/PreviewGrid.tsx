@@ -35,7 +35,7 @@ export class StatelessPreviewGrid extends PureComponent<StatelessPreviewGridProp
         if (loading === false && data !== null) {
             const { viewName } = schemaQuery;
             const allColumns = queryInfo.getDisplayColumns(viewName);
-            const columns = allColumns.slice(0, numCols).toList();
+            const columns = allColumns.slice(0, numCols);
             const slicedData = data.slice(0, numRows).toList();
             let rowStats = '';
 
@@ -45,11 +45,11 @@ export class StatelessPreviewGrid extends PureComponent<StatelessPreviewGridProp
                 rowStats = ` first ${slicedData.size} rows and`;
             }
 
-            const stats = `Previewing${rowStats} ${columns.size} of ${allColumns.size} columns.`;
+            const stats = `Previewing${rowStats} ${columns.length} of ${allColumns.length} columns.`;
             body = (
                 <>
                     <p>{stats}</p>
-                    <Grid bordered={true} columns={columns} data={slicedData} />
+                    <Grid bordered={true} columns={List(columns)} data={slicedData} />
                 </>
             );
         } else if (loading === false && error !== null) {

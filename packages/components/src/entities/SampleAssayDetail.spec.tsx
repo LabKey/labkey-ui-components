@@ -321,7 +321,7 @@ describe('SampleAssayDetailImpl', () => {
 
     const sessionQueryResponse = {
         key: 'key',
-        queries: { key: QueryInfo.create({ schemaName: 'exp', name: 'AssayRunsPerSample' }) },
+        queries: { key: QueryInfo.fromJsonForTests({ schemaName: 'exp', name: 'AssayRunsPerSample' }) },
         models: undefined,
         orderedModels: undefined,
     };

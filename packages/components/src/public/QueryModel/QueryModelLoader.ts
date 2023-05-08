@@ -1,5 +1,4 @@
 import React from 'react';
-import { OrderedMap } from 'immutable';
 
 import {
     clearSelected,
@@ -13,6 +12,7 @@ import {
 import { VISUALIZATION_REPORTS } from '../../internal/constants';
 
 import { DataViewInfo, IDataViewInfo } from '../../internal/DataViewInfo';
+import { ExtendedMap } from '../ExtendedMap';
 
 import { QueryInfo } from '../QueryInfo';
 import { getQueryDetails, selectRowsDeprecated } from '../../internal/query/api';
@@ -23,7 +23,7 @@ import { DefaultRenderer } from '../../internal/renderers/DefaultRenderer';
 
 import { GridMessage, QueryModel } from './QueryModel';
 
-export function bindColumnRenderers(columns: OrderedMap<string, QueryColumn>): OrderedMap<string, QueryColumn> {
+export function bindColumnRenderers(columns: ExtendedMap<string, QueryColumn>): ExtendedMap<string, QueryColumn> {
     if (columns) {
         const columnRenderers = getQueryColumnRenderers();
 
@@ -39,7 +39,7 @@ export function bindColumnRenderers(columns: OrderedMap<string, QueryColumn>): O
                     return React.createElement(node, { data, row, col: queryCol, rowIndex, columnIndex });
                 },
             });
-        }) as OrderedMap<string, QueryColumn>;
+        });
     }
 
     return columns;
@@ -111,7 +111,7 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
     async loadQueryInfo(model) {
         const { containerPath, schemaName, queryName, viewName } = model;
         const queryInfo = await getQueryDetails({ containerPath, schemaName, queryName, viewName });
-        return queryInfo.merge({ columns: bindColumnRenderers(queryInfo.columns) }) as QueryInfo;
+        return queryInfo.mutate({ columns: bindColumnRenderers(queryInfo.columns) });
     },
     async loadRows(model) {
         const result = await selectRowsDeprecated({

@@ -702,11 +702,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     width: 45,
                     cell: (d, row: Map<string, any>, c, rn) => {
                         const keyCols = queryInfo.getPkCols();
-                        const size = keyCols.size;
+                        const size = keyCols.length;
                         let canDelete = true;
 
                         if (size === 1) {
-                            const key = caseInsensitive(row.toJS(), keyCols.get(0).fieldKey);
+                            const key = caseInsensitive(row.toJS(), keyCols[0].fieldKey);
                             canDelete = !key || !this.props.notDeletable.contains(key);
                         } else {
                             console.warn(
@@ -792,7 +792,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     onCopy = (event: ClipboardEvent): void => {
         const { editorModel, queryInfo } = this.props;
         if (!this.props.disabled) {
-            copyEvent(editorModel, queryInfo.getInsertColumns().toArray(), event);
+            copyEvent(editorModel, queryInfo.getInsertColumns(), event);
         }
     };
 
@@ -1059,7 +1059,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 editorModel,
                 dataKeys,
                 data,
-                queryInfo.getInsertColumns(),
+                List(queryInfo.getInsertColumns()),
                 numItems,
                 pivotKey,
                 pivotValues,
@@ -1071,7 +1071,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 editorModel,
                 dataKeys,
                 data,
-                queryInfo.getInsertColumns(),
+                List(queryInfo.getInsertColumns()),
                 numItems,
                 bulkData
             );
@@ -1102,7 +1102,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     addRows = async (count: number): Promise<void> => {
         const { data, dataKeys, editorModel, onChange, queryInfo } = this.props;
-        const changes = await addRows(editorModel, dataKeys, data, queryInfo.getInsertColumns(), count);
+        const changes = await addRows(editorModel, dataKeys, data, List(queryInfo.getInsertColumns()), count);
         onChange(changes.editorModel, changes.dataKeys, changes.data);
     };
 

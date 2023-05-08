@@ -33,7 +33,7 @@ import { formatDateTime } from '../../util/Date';
 
 import { getContainerFilter } from '../../query/api';
 
-import { AssayResultDataType, SamplePropertyDataType } from '../entities/constants';
+import { AssayResultDataType } from '../entities/constants';
 
 import { AssaySampleColumnProp } from '../../sampleModels';
 
@@ -85,7 +85,7 @@ export function getFinderViewColumnsConfig(
     columnDisplayNames: { [key: string]: string },
     requiredColumns?: string[]
 ): { columns: Array<{ fieldKey: string; title: string }>; hasUpdates: boolean } {
-    const defaultDisplayColumns = queryInfo?.getDisplayColumns().toArray();
+    const defaultDisplayColumns = queryInfo?.getDisplayColumns();
     const displayColumnKeys = defaultDisplayColumns.map(col => col.fieldKey.toLowerCase());
     const columnKeys = [];
     FIRST_COLUMNS_IN_VIEW.forEach(fieldKey => {
@@ -110,7 +110,6 @@ export function getFinderViewColumnsConfig(
     const viewDisplayFieldKeys = queryInfo
         ?.getDisplayColumns(SAMPLE_FINDER_VIEW_NAME)
         .map(column => column.fieldKey)
-        .toArray()
         .sort();
     const hasUpdates = viewDisplayFieldKeys.join(',') !== [...columnKeys].sort().join(',');
 

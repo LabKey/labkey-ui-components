@@ -21,7 +21,7 @@ const VIEW = ViewInfo.fromJson({
     name: VIEW_NAME,
     filter: [{ fieldKey: 'c', value: 'testing', op: 'eq' }],
 });
-const QUERY_INFO = QueryInfo.fromJSON({
+const QUERY_INFO = QueryInfo.fromJsonForTests({
     views: fromJS({ [VIEW_NAME.toLowerCase()]: VIEW }),
     columns: [
         {

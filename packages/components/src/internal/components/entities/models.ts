@@ -17,6 +17,7 @@ import { AuditBehaviorTypes, Filter, Query, Utils } from '@labkey/api';
 import { List, Map, OrderedMap, Record } from 'immutable';
 
 import { immerable } from 'immer';
+import { ExtendedMap } from '../../../public/ExtendedMap';
 
 import { decodePart, encodePart, SchemaQuery } from '../../../public/SchemaQuery';
 import { IEntityDetails } from '../domainproperties/entities/models';
@@ -263,8 +264,8 @@ export class EntityIdCreationModel extends Record({
         }, Map<string, List<EntityParentType>>());
     }
 
-    getParentColumns(uniqueFieldKey: string): OrderedMap<string, QueryColumn> {
-        let columns = OrderedMap<string, QueryColumn>();
+    getParentColumns(uniqueFieldKey: string): ExtendedMap<string, QueryColumn> {
+        let columns = new ExtendedMap<string, QueryColumn>();
         const targetSchema = this.getSchemaQuery().schemaName;
         this.entityParents.forEach(parentList => {
             parentList.forEach(parent => {

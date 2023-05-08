@@ -27,7 +27,7 @@ describe('FilterStatus', () => {
         action: new FilterAction(
             'query',
             () => List(),
-            () => QueryInfo.create({})
+            () => new QueryInfo({})
         ),
         value: 'test1',
         valueObject: Filter.create('A', 'test1', Filter.Types.EQUAL),
@@ -36,7 +36,7 @@ describe('FilterStatus', () => {
         action: new FilterAction(
             'query',
             () => List(),
-            () => QueryInfo.create({})
+            () => new QueryInfo({})
         ),
         value: 'test2',
         valueObject: Filter.create('A', undefined, Filter.Types.NONBLANK),
@@ -50,7 +50,7 @@ describe('FilterStatus', () => {
         action: new ViewAction(
             'query',
             () => List(),
-            () => QueryInfo.create({})
+            () => new QueryInfo({})
         ),
         value: 'view',
     };

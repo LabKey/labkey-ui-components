@@ -72,7 +72,7 @@ describe('EntityFieldFilterModal', () => {
             api: getTestAPIWrapper(jest.fn, {
                 query: getQueryTestAPIWrapper(jest.fn, {
                     getEntityTypeOptions: jest.fn().mockResolvedValue(sampleTypes),
-                    getQueryDetails: jest.fn().mockResolvedValue(QueryInfo.fromJSON(sampleSetAllFieldTypesQueryInfo)),
+                    getQueryDetails: jest.fn().mockResolvedValue(QueryInfo.fromJsonForTests(sampleSetAllFieldTypesQueryInfo)),
                 }),
             }),
             entityDataType: TestTypeDataType,

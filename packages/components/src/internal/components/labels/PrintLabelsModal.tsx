@@ -184,7 +184,7 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
 
         let displayColumn = 'Name';
         let valueColumn = 'RowId';
-        if (model?.queryInfo.pkCols?.first() === 'rowId') {
+        if (model?.queryInfo.pkCols?.[0] === 'rowId') {
             displayColumn = 'name';
             valueColumn = 'rowId';
         }

@@ -1,6 +1,3 @@
-// commented out attributes are not used in app
-import { List, Map, OrderedMap, Record } from 'immutable';
-
 import { Filter } from '@labkey/api';
 
 import { toLowerSafe } from '../internal/util/utils';
@@ -8,10 +5,11 @@ import { toLowerSafe } from '../internal/util/utils';
 import { ViewInfo } from '../internal/ViewInfo';
 import { LastActionStatus } from '../internal/LastActionStatus';
 
+import { ExtendedMap } from './ExtendedMap';
 import { insertColumnFilter, QueryColumn } from './QueryColumn';
 import { SchemaQuery } from './SchemaQuery';
 import { QuerySort } from './QuerySort';
-import { naturalSort } from './sort';
+import { naturalSortByProperty } from './sort';
 
 export enum QueryInfoStatus {
     ok,
@@ -19,17 +17,17 @@ export enum QueryInfoStatus {
     unknown,
 }
 
-export class QueryInfo extends Record({
+const QUERY_INFO_DEFAULTS = {
     altUpdateKeys: undefined,
     disabledSystemFields: undefined,
     // canEdit: false,
     // canEditSharedViews: false,
-    columns: OrderedMap<string, QueryColumn>(),
+    columns: new ExtendedMap<string, QueryColumn>(),
     description: undefined,
     domainContainerPath: undefined,
     // editDefinitionUrl: undefined,
-    importTemplates: List<any>(),
-    // indices: Map<string, any>(),
+    importTemplates: [],
+    // indices: {},
     // isInherited: false,
 
     iconURL: 'default',
@@ -39,14 +37,14 @@ export class QueryInfo extends Record({
     lastAction: undefined,
     // lastUpdate: undefined,
     name: undefined,
-    pkCols: List<string>(),
+    pkCols: [],
     schemaName: undefined,
     status: QueryInfoStatus.unknown,
-    // targetContainers: List<any>(),
+    // targetContainers:[],
     title: undefined, // DEPRECATED: Use queryLabel
     titleColumn: undefined,
     // viewDataUrl: undefined,
-    views: Map<string, ViewInfo>(),
+    views: new ExtendedMap<string, ViewInfo>(),
     importUrlDisabled: undefined,
     importUrl: undefined,
     insertUrlDisabled: undefined,
@@ -65,19 +63,22 @@ export class QueryInfo extends Record({
     showInsertNewButton: true, // opt out
     singular: undefined, // defaults to value of queryLabel
     plural: undefined, // defaults to value of queryLabel
-}) {
+};
+
+// Commented out attributes are not used in app, but are returned by the server
+export class QueryInfo {
     private declare appEditableTable: boolean; // use isAppEditable()
     declare altUpdateKeys: Set<string>;
     declare disabledSystemFields: Set<string>;
     // declare canEdit: boolean;
     // declare canEditSharedViews: boolean;
-    declare columns: OrderedMap<string, QueryColumn>;
+    declare columns: ExtendedMap<string, QueryColumn>;
     declare description: string;
     declare domainContainerPath: string;
     // declare editDefinitionUrl: string;
     declare iconURL: string;
-    declare importTemplates: List<any>;
-    // declare indices: Map<string, any>;
+    declare importTemplates: any[];
+    // declare indices: Record<string, any>;
     // declare isInherited: boolean;
     declare isLoading: boolean;
     declare isMedia: boolean;
@@ -87,7 +88,7 @@ export class QueryInfo extends Record({
     declare lastAction: LastActionStatus;
     // declare lastUpdate: Date;
     declare name: string;
-    declare pkCols: List<string>;
+    declare pkCols: string[];
     declare plural: string;
     declare queryLabel: string;
     declare schemaName: string;
@@ -96,73 +97,66 @@ export class QueryInfo extends Record({
     declare status: QueryInfoStatus;
     declare supportGroupConcatSubSelect: boolean;
     declare supportMerge: boolean;
-    // declare targetContainers: List<any>;
+    // declare targetContainers: any[];
     declare title: string;
     declare titleColumn: string;
     // declare viewDataUrl: string;
-    declare views: Map<string, ViewInfo>;
+    declare views: ExtendedMap<string, ViewInfo>;
     declare schemaLabel: string;
     declare showInsertNewButton: boolean;
     declare importUrlDisabled: boolean;
     declare importUrl: string;
     declare insertUrlDisabled: boolean;
-    declare insertUrl: boolean;
+    declare insertUrl: string;
 
-    static create(rawQueryInfo: any): QueryInfo {
-        let schemaQuery: SchemaQuery;
+    /**
+     * This constructor merges a Partial<QueryInfo> with QUERY_INFO_DEFAULTS to create a QueryInfo object. You should
+     * almost never call this constructor yourself. The vast majority of the time you should be using the
+     * applyQueryMetadata method to instantiate a QueryInfo, however for some simpler test cases we can use the
+     * fromJsonForTests static method to instantiate a new QueryInfo.
+     * @param data the Partial<QueryInfo> object to merge with QUERY_INFO_DEFAULTS when creating a QueryInfo.
+     */
+    constructor(data: Partial<QueryInfo>) {
+        Object.assign(this, QUERY_INFO_DEFAULTS, data);
+    }
 
-        if (rawQueryInfo.schemaName && rawQueryInfo.name) {
-            schemaQuery = new SchemaQuery(rawQueryInfo.schemaName, rawQueryInfo.name);
-        }
-
-        return new QueryInfo(
-            Object.assign({}, rawQueryInfo, {
-                schemaQuery,
-            })
-        );
+    mutate(changes: Partial<QueryInfo>): QueryInfo {
+        return new QueryInfo({ ...this, ...changes });
     }
 
     /**
-     * Use this method for creating a basic QueryInfo object with a proper schemaQuery object
-     * and columns map from a JSON object.
+     * Use this method for creating a basic QueryInfo object with a proper schemaQuery object and columns map from a
+     * JSON object. This should only be used in tests. If you're adding more logic to this you should probably also be
+     * adding that same logic to applyQueryMetadata. In the long run this method shouldn't exist and all tests should
+     * use makeQueryInfo so we are testing with QueryInfos that are instantiated with the same logic as our apps are.
      *
-     * @param queryInfoJson
+     * @param queryInfoJson: The JSON representation of the QueryInfo from LabKey Server
+     * @param includeViews boolean, if true this method parses the views from the JSON object and converts them to
+     * ViewInfo objects. Defaults to false.
      */
-    static fromJSON(queryInfoJson: any, includeViews = false): QueryInfo {
+    static fromJsonForTests(queryInfoJson: any, includeViews = false): QueryInfo {
         let schemaQuery: SchemaQuery;
 
         if (queryInfoJson.schemaName && queryInfoJson.name) {
             schemaQuery = new SchemaQuery(queryInfoJson.schemaName, queryInfoJson.name);
         }
-        let columns = OrderedMap<string, QueryColumn>();
-        Object.keys(queryInfoJson.columns).forEach(columnKey => {
+        const columns = new ExtendedMap<string, QueryColumn>();
+        Object.keys(queryInfoJson.columns ?? {}).forEach(columnKey => {
             const rawColumn = queryInfoJson.columns[columnKey];
-            columns = columns.set(rawColumn.fieldKey.toLowerCase(), new QueryColumn(rawColumn));
+            columns.set(rawColumn.fieldKey.toLowerCase(), new QueryColumn(rawColumn));
         });
 
-        const disabledSystemFields = new Set<string>();
-        if (queryInfoJson.disabledSystemFields?.length > 0) {
-            queryInfoJson.disabledSystemFields?.forEach(field => {
-                disabledSystemFields.add(field);
-            });
-        }
-
-        const altUpdateKeys = new Set<string>();
-        if (queryInfoJson.altUpdateKeys?.length > 0) {
-            queryInfoJson.altUpdateKeys?.forEach(key => {
-                altUpdateKeys.add(key);
-            });
-        }
-
-        let views = Map<string, ViewInfo>();
+        const disabledSystemFields = new Set<string>(queryInfoJson.disabledSystemFields ?? []);
+        const altUpdateKeys = new Set<string>(queryInfoJson.altUpdateKeys ?? []);
+        const views = new ExtendedMap<string, ViewInfo>();
         if (includeViews) {
             queryInfoJson.views.forEach(view => {
                 const viewInfo = ViewInfo.fromJson(view);
-                views = views.set(viewInfo.name.toLowerCase(), viewInfo);
+                views.set(viewInfo.name.toLowerCase(), viewInfo);
             });
         }
 
-        return QueryInfo.create(
+        return new QueryInfo(
             Object.assign({}, queryInfoJson, {
                 altUpdateKeys,
                 disabledSystemFields,
@@ -174,7 +168,7 @@ export class QueryInfo extends Record({
     }
 
     isAppEditable(): boolean {
-        return this.appEditableTable && this.getPkCols().size > 0;
+        return this.appEditableTable && this.getPkCols().length > 0;
     }
 
     getColumn(fieldKey: string): QueryColumn {
@@ -190,55 +184,47 @@ export class QueryInfo extends Record({
         return column ? column.required : false;
     }
 
-    getDetailDisplayColumns(view?: string, omittedColumns?: List<string>): List<QueryColumn> {
-        return this.getDisplayColumns(view, omittedColumns)
-            .filter(col => col.isDetailColumn)
-            .toList();
+    getDetailDisplayColumns(view?: string, omittedColumns?: string[]): QueryColumn[] {
+        return this.getDisplayColumns(view, omittedColumns).filter(col => col.isDetailColumn);
     }
 
-    getDisplayColumns(view?: string, omittedColumns?: List<string>): List<QueryColumn> {
+    getDisplayColumns(view?: string, omittedColumns?: string[]): QueryColumn[] {
         if (!view) {
             view = ViewInfo.DEFAULT_NAME;
         }
 
-        let lowerOmit;
-        if (omittedColumns) lowerOmit = toLowerSafe(omittedColumns);
-
-        const colFilter = c => {
-            if (lowerOmit && lowerOmit.size > 0) {
-                return c && c.fieldKey && !lowerOmit.includes(c.fieldKey.toLowerCase());
-            }
-            return true;
-        };
-
+        const lowerOmit = toLowerSafe(omittedColumns ?? []);
         const viewInfo = this.getView(view);
-        let displayColumns = List<QueryColumn>();
+
         if (viewInfo) {
-            displayColumns = viewInfo.columns.filter(colFilter).reduce((list, col) => {
+            const displayColumns = viewInfo.columns.reduce((result, col) => {
+                if (col.fieldKey && lowerOmit.includes(col.fieldKey.toLowerCase())) {
+                    return result;
+                }
+
                 let c = this.getColumn(col.fieldKey);
 
                 if (c !== undefined) {
                     if (col.title !== undefined) {
-                        c = c.mutate({
-                            caption: col.title,
-                            shortCaption: col.title,
-                        });
+                        c = c.mutate({ caption: col.title, shortCaption: col.title });
                     }
 
-                    return list.push(c);
+                    result.push(c);
+                } else {
+                    console.warn(
+                        `Unable to resolve column '${col.fieldKey}' on view '${viewInfo.name}' (${this.schemaName}.${this.name})`
+                    );
                 }
 
-                console.warn(
-                    `Unable to resolve column '${col.fieldKey}' on view '${viewInfo.name}' (${this.schemaName}.${this.name})`
-                );
-                return list;
-            }, List<QueryColumn>());
+                return result;
+            }, []);
 
             // add addToSystemView columns to unsaved system view (i.e. the default-default view, details view, or update view)
             if ((viewInfo.isDefault || viewInfo.isSystemView) && !viewInfo.isSaved && !viewInfo.session) {
-                const columnFieldKeys = viewInfo.columns.reduce((list, col) => {
-                    return list.push(col.fieldKey.toLowerCase());
-                }, List<string>());
+                const columnFieldKeys = viewInfo.columns.reduce((result, col) => {
+                    result.add(col.fieldKey.toLowerCase());
+                    return result;
+                }, new Set());
 
                 const disabledSysFields = [];
                 this.disabledSystemFields?.forEach(field => {
@@ -246,15 +232,15 @@ export class QueryInfo extends Record({
                 });
 
                 this.columns.forEach(col => {
-                    const fieldKey = col.fieldKey?.toLowerCase();
+                    const fieldKey = col.fieldKey.toLowerCase();
                     if (
                         fieldKey &&
                         col.addToSystemView &&
-                        !columnFieldKeys.includes(fieldKey) &&
+                        !columnFieldKeys.has(fieldKey) &&
                         disabledSysFields.indexOf(fieldKey) === -1
                     ) {
                         if (!lowerOmit || !lowerOmit.includes(col.fieldKey.toLowerCase()))
-                            displayColumns = displayColumns.push(col);
+                            displayColumns.push(col);
                     }
                 });
             }
@@ -263,25 +249,22 @@ export class QueryInfo extends Record({
         }
 
         console.warn('Unable to find columns on view:', view, '(' + this.schemaName + '.' + this.name + ')');
-        return List<QueryColumn>();
+        return [];
     }
 
-    // Note: Yes, all of the other QueryInfo methods return Immutable lists or related types, but all usages of this
-    // method need arrays, and doing that computation in one area is ideal.
     getLookupViewColumns(omittedColumns?: string[]): QueryColumn[] {
         const lcCols = omittedColumns ? omittedColumns.map(c => c.toLowerCase()) : [];
-        return this.columns
-            .filter(col => col.shownInLookupView && lcCols.indexOf(col.fieldKey.toLowerCase()) === -1)
-            .toArray();
+        return this.columns.filter(col => col.shownInLookupView && lcCols.indexOf(col.fieldKey.toLowerCase()) === -1)
+            .valueArray;
     }
 
-    getAllColumns(viewName?: string, omittedColumns?: List<string>): List<QueryColumn> {
+    getAllColumns(viewName?: string, omittedColumns?: string[]): QueryColumn[] {
         // initialReduction is getDisplayColumns() because they include custom metadata from the view, like alternate
         // column display names (e.g. the Experiment grid overrides Title to "Experiment Title"). See Issue 38186 for
         // additional context.
-        return List<QueryColumn>(this.columns.values()).reduce((result, rawColumn) => {
+        return this.columns.reduce((result, rawColumn) => {
             if (!result.find(displayColumn => displayColumn.name === rawColumn.name)) {
-                return result.push(rawColumn);
+                result.push(rawColumn);
             }
 
             return result;
@@ -290,9 +273,9 @@ export class QueryInfo extends Record({
 
     // @param isIncludedColumn can be used to filter out columns that should not be designate as insertColumns
     // (e.g., if creating samples that are not aliquots, the aliquot-only fields should never be included)
-    getInsertColumns(isIncludedColumn?: (col: QueryColumn) => boolean): List<QueryColumn> {
+    getInsertColumns(isIncludedColumn?: (col: QueryColumn) => boolean): QueryColumn[] {
         // CONSIDER: use the columns in ~~INSERT~~ view to determine this set
-        return this.columns.filter(col => insertColumnFilter(col, false, isIncludedColumn)).toList();
+        return this.columns.valueArray.filter(col => insertColumnFilter(col, false, isIncludedColumn));
     }
 
     getInsertColumnIndex(fieldKey: string): number {
@@ -302,31 +285,30 @@ export class QueryInfo extends Record({
         return this.getInsertColumns().findIndex(column => column.fieldKey.toLowerCase() === lcFieldKey);
     }
 
-    getUpdateColumns(readOnlyColumns?: List<string>): List<QueryColumn> {
-        const lowerReadOnlyColumnsList = readOnlyColumns?.reduce((lowerReadOnlyColumnsList, value) => {
-            return lowerReadOnlyColumnsList.push(value.toLowerCase());
-        }, List<string>());
-        return this.columns
+    getUpdateColumns(readOnlyColumns?: string[]): QueryColumn[] {
+        const lowerReadOnlyColumnsSet = readOnlyColumns?.reduce((result, value) => {
+            result.add(value.toLowerCase());
+            return result;
+        }, new Set());
+        const columns = this.columns.valueArray
             .filter(column => {
                 return (
                     column.isUpdateColumn ||
-                    (lowerReadOnlyColumnsList && lowerReadOnlyColumnsList.indexOf(column.fieldKey.toLowerCase()) > -1)
+                    (lowerReadOnlyColumnsSet && lowerReadOnlyColumnsSet.has(column.fieldKey.toLowerCase()))
                 );
             })
             .map(column => {
-                if (lowerReadOnlyColumnsList && lowerReadOnlyColumnsList.indexOf(column.fieldKey.toLowerCase()) > -1) {
+                if (lowerReadOnlyColumnsSet && lowerReadOnlyColumnsSet.has(column.fieldKey.toLowerCase())) {
                     return column.mutate({ readOnly: true });
                 } else {
                     return column;
                 }
-            })
-            .toList();
+            });
+        return columns;
     }
 
-    getUpdateDisplayColumns(view?: string, omittedColumns?: List<string>): List<QueryColumn> {
-        return this.getDisplayColumns(view, omittedColumns)
-            .filter(col => col.isUpdateColumn)
-            .toList();
+    getUpdateDisplayColumns(view?: string, omittedColumns?: string[]): QueryColumn[] {
+        return this.getDisplayColumns(view, omittedColumns).filter(col => col.isUpdateColumn);
     }
 
     getFilters(view?: string): Filter.IFilter[] {
@@ -343,21 +325,22 @@ export class QueryInfo extends Record({
         return [];
     }
 
-    getPkCols(): List<QueryColumn> {
+    getPkCols(): QueryColumn[] {
         return this.pkCols.reduce((list, pkFieldKey) => {
             const pkCol = this.getColumn(pkFieldKey);
 
             if (pkCol) {
-                return list.push(pkCol);
+                list.push(pkCol);
+            } else {
+                console.warn(`Unable to resolve pkCol '${pkFieldKey}' on (${this.schemaName}.${this.name})`);
             }
 
-            console.warn(`Unable to resolve pkCol '${pkFieldKey}' on (${this.schemaName}.${this.name})`);
             return list;
-        }, List<QueryColumn>());
+        }, []);
     }
 
-    getUniqueIdColumns(): List<QueryColumn> {
-        return this.columns.filter(column => column.isUniqueIdColumn).toList();
+    getUniqueIdColumns(): QueryColumn[] {
+        return this.columns.valueArray.filter(column => column.isUniqueIdColumn);
     }
 
     getSorts(view?: string): QuerySort[] {
@@ -379,10 +362,7 @@ export class QueryInfo extends Record({
      * array will be sorted by view label.
      */
     getVisibleViews(): ViewInfo[] {
-        return this.views
-            .filter(view => view.isVisible)
-            .sortBy(v => v.label, naturalSort)
-            .toArray();
+        return this.views.filter(view => view.isVisible).valueArray.sort(naturalSortByProperty('label'));
     }
 
     getView(viewName: string, defaultToDefault = false): ViewInfo {
@@ -405,34 +385,6 @@ export class QueryInfo extends Record({
         return defaultToDefault ? this.views.get(ViewInfo.DEFAULT_NAME.toLowerCase()) : undefined;
     }
 
-    /**
-     * Insert a set of columns into this queryInfo's columns at a designated index.  If the given column index
-     * is outside the range of the existing columns, this queryInfo's columns will be returned.  An index that is equal to the
-     * current number of columns will cause the given queryColumns to be appended to the existing ones.
-     * @param colIndex the index at which the new columns should start
-     * @param queryColumns the (ordered) set of columns
-     * @returns a new set of columns when the given columns inserted
-     */
-    insertColumns(colIndex: number, queryColumns: OrderedMap<string, QueryColumn>): OrderedMap<string, QueryColumn> {
-        if (colIndex < 0 || colIndex > this.columns.size) return this.columns;
-
-        // put them at the end
-        if (colIndex === this.columns.size) return this.columns.merge(queryColumns);
-
-        let columns = OrderedMap<string, QueryColumn>();
-        let index = 0;
-
-        this.columns.forEach((column, key) => {
-            if (index === colIndex) {
-                columns = columns.merge(queryColumns);
-                index = index + queryColumns.size;
-            }
-            columns = columns.set(key, column);
-            index++;
-        });
-        return columns;
-    }
-
     getIconURL(): string {
         return this.iconURL;
     }
@@ -446,8 +398,7 @@ export class QueryInfo extends Record({
         if (this.columns) {
             return this.columns
                 .filter((col, key) => !keys || keys.indexOf(key) > -1)
-                .map(col => col.fieldKey)
-                .toArray();
+                .valueArray.map(col => col.fieldKey);
         }
 
         return [];
@@ -457,7 +408,7 @@ export class QueryInfo extends Record({
         if (!fieldKey) return -1;
 
         const lcFieldKey = fieldKey.toLowerCase();
-        return this.columns.keySeq().findIndex(column => column.toLowerCase() === lcFieldKey);
+        return this.columns.keyArray.findIndex((column: string) => column.toLowerCase() === lcFieldKey);
     }
 
     getShowImportDataButton(): boolean {
@@ -468,15 +419,12 @@ export class QueryInfo extends Record({
         return !!(this.showInsertNewButton && this.insertUrl && !this.insertUrlDisabled);
     }
 
+    // Note: Why does this method exist? Couldn't consumers use getInsertColumns to get the columns they want?
     getInsertQueryInfo(): QueryInfo {
-        const updateColumns = this.columns.filter(column => column.shownInInsertView && !column.isFileInput);
-        return this.set('columns', updateColumns) as QueryInfo;
+        return this.mutate({ columns: this.columns.filter(column => column.shownInInsertView && !column.isFileInput) });
     }
 
     getFileColumnFieldKeys(): string[] {
-        return this.columns
-            .filter(col => col.isFileInput)
-            .map(col => col.fieldKey)
-            .toArray();
+        return this.columns.filter(col => col.isFileInput).valueArray.map(col => col.fieldKey);
     }
 }

@@ -9,6 +9,7 @@ import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../../test/data/mixtures-getQueryPaging.json';
 
 import { TEST_USER_EDITOR, TEST_USER_PROJECT_ADMIN, TEST_USER_READER } from '../../internal/userFixtures';
+import { ExtendedMap } from '../ExtendedMap';
 
 import { SchemaQuery } from '../SchemaQuery';
 import { QueryInfo } from '../QueryInfo';
@@ -299,9 +300,9 @@ describe('GridPanel', () => {
             filter: [nameFilter, expirFilter],
             sort: [nameSort],
         });
-        const queryInfo = QueryInfo.create({
+        const queryInfo = new QueryInfo({
             columns: QUERY_INFO.columns,
-            views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
+            views: new ExtendedMap({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
         });
         const model = makeTestQueryModel(SCHEMA_QUERY, queryInfo, {}, [], 0);
         const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
@@ -539,14 +540,14 @@ describe('GridTitle', () => {
     });
 
     test('updated default view, with title', () => {
-        const sessionQueryInfo = QUERY_INFO.merge({
+        const sessionQueryInfo = QUERY_INFO.mutate({
             views: QUERY_INFO.views.merge({
                 '~~default~~': QUERY_INFO.views.get('~~default~~').mutate({
                     revertable: true,
                     session: true,
                 }),
             }),
-        }) as QueryInfo;
+        });
         const model = makeTestQueryModel(SCHEMA_QUERY, sessionQueryInfo);
         const wrapper = mountWithServerContext(
             <GridTitle {...GRID_TITLE_PROPS} model={model} allowViewCustomization />,
@@ -557,14 +558,14 @@ describe('GridTitle', () => {
     });
 
     test('updated default view, with title, not customizable', () => {
-        const sessionQueryInfo = QUERY_INFO.merge({
+        const sessionQueryInfo = QUERY_INFO.mutate({
             views: QUERY_INFO.views.merge({
                 '~~default~~': QUERY_INFO.views.get('~~default~~').mutate({
                     revertable: true,
                     session: true,
                 }),
             }),
-        }) as QueryInfo;
+        });
         const model = makeTestQueryModel(SCHEMA_QUERY, sessionQueryInfo);
 
         const wrapper = mountWithServerContext(
@@ -577,14 +578,14 @@ describe('GridTitle', () => {
 
     test('updated named view, no title, customizable', () => {
         const viewSchemaQuery = new SchemaQuery('exp.data', 'mixtures', 'noExtraColumn');
-        const sessionQueryInfo = QUERY_INFO.merge({
+        const sessionQueryInfo = QUERY_INFO.mutate({
             views: QUERY_INFO.views.merge({
                 noextracolumn: QUERY_INFO.views.get('noextracolumn').mutate({
                     revertable: true,
                     session: true,
                 }),
             }),
-        }) as QueryInfo;
+        });
         const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
         const wrapper = mountWithServerContext(
             <GridTitle {...GRID_TITLE_PROPS} model={model} allowViewCustomization />,
@@ -596,14 +597,14 @@ describe('GridTitle', () => {
 
     test('updated named view with title', () => {
         const viewSchemaQuery = new SchemaQuery('exp.data', 'mixtures', 'noExtraColumn');
-        const sessionQueryInfo = QUERY_INFO.merge({
+        const sessionQueryInfo = QUERY_INFO.mutate({
             views: QUERY_INFO.views.merge({
                 noextracolumn: QUERY_INFO.views.get('noextracolumn').mutate({
                     revertable: true,
                     session: true,
                 }),
             }),
-        }) as QueryInfo;
+        });
         const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
         const wrapper = mountWithServerContext(
             <GridTitle {...GRID_TITLE_PROPS} model={model} allowViewCustomization />,
@@ -615,7 +616,7 @@ describe('GridTitle', () => {
 
     test('hidden view, edited', () => {
         const viewSchemaQuery = new SchemaQuery('exp.data', 'mixtures', 'noExtraColumn');
-        const sessionQueryInfo = QUERY_INFO.merge({
+        const sessionQueryInfo = QUERY_INFO.mutate({
             views: QUERY_INFO.views.merge({
                 noextracolumn: QUERY_INFO.views.get('noextracolumn').mutate({
                     hidden: true,
@@ -623,7 +624,7 @@ describe('GridTitle', () => {
                     session: true,
                 }),
             }),
-        }) as QueryInfo;
+        });
         const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
         const wrapper = mountWithServerContext(
             <GridTitle {...GRID_TITLE_PROPS} model={model} allowViewCustomization />,
@@ -635,7 +636,7 @@ describe('GridTitle', () => {
 
     test('hidden view, edited, no title', () => {
         const viewSchemaQuery = new SchemaQuery('exp.data', 'mixtures', 'noExtraColumn');
-        const sessionQueryInfo = QUERY_INFO.merge({
+        const sessionQueryInfo = QUERY_INFO.mutate({
             views: QUERY_INFO.views.merge({
                 noextracolumn: QUERY_INFO.views.get('noextracolumn').mutate({
                     hidden: true,
@@ -643,7 +644,7 @@ describe('GridTitle', () => {
                     session: true,
                 }),
             }),
-        }) as QueryInfo;
+        });
         const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
         const wrapper = mountWithServerContext(
             <GridTitle actions={actions} allowSelections model={model} allowViewCustomization />,
@@ -655,11 +656,11 @@ describe('GridTitle', () => {
 
     test('hidden view, not edited, no title', () => {
         const viewSchemaQuery = new SchemaQuery('exp.data', 'mixtures', 'noExtraColumn');
-        const sessionQueryInfo = QUERY_INFO.merge({
+        const sessionQueryInfo = QUERY_INFO.mutate({
             views: QUERY_INFO.views.merge({
                 noextracolumn: QUERY_INFO.views.get('noextracolumn').mutate({ hidden: true }),
             }),
-        }) as QueryInfo;
+        });
         const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
         const wrapper = mountWithServerContext(
             <GridTitle model={model} actions={actions} allowSelections allowViewCustomization={false} />

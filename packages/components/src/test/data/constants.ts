@@ -39,7 +39,7 @@ export const ASSAY_WIZARD_MODEL = new AssayWizardModel({
     assayDef: ASSAY_DEFINITION_MODEL,
     batchColumns: ASSAY_DEFINITION_MODEL.getDomainColumns(AssayDomainTypes.BATCH),
     runColumns: ASSAY_DEFINITION_MODEL.getDomainColumns(AssayDomainTypes.RUN),
-    queryInfo: QueryInfo.fromJSON(assayWizardJSON.queryInfo),
+    queryInfo: QueryInfo.fromJsonForTests(assayWizardJSON.queryInfo),
 });
 
 export const FILES_DATA = List<IFile>([

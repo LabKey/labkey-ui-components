@@ -15,6 +15,7 @@
  */
 import { fromJS, List, Map, OrderedMap, Set } from 'immutable';
 import { ActionURL, Ajax, Filter, getServerContext, Query, Utils } from '@labkey/api';
+import { ExtendedMap } from '../public/ExtendedMap';
 
 import { QueryColumn } from '../public/QueryColumn';
 
@@ -1021,8 +1022,8 @@ export function checkCellReadStatus(
 ): { isLockedRow: boolean; isReadonlyCell: boolean; isReadonlyRow: boolean } {
     if (readonlyRows || columnMetadata?.isReadOnlyCell || lockedRows) {
         const keyCols = queryInfo.getPkCols();
-        if (keyCols.size === 1) {
-            let key = caseInsensitive(row.toJS(), keyCols.get(0).fieldKey);
+        if (keyCols.length === 1) {
+            let key = caseInsensitive(row.toJS(), keyCols[0].fieldKey);
             if (Array.isArray(key)) key = key[0];
             if (typeof key === 'object') key = key.value;
 
@@ -1033,7 +1034,7 @@ export function checkCellReadStatus(
             };
         } else {
             console.warn(
-                'Setting readonly rows or cells for models with ' + keyCols.size + ' keys is not currently supported.'
+                'Setting readonly rows or cells for models with ' + keyCols.length + ' keys is not currently supported.'
             );
         }
     }
@@ -1389,12 +1390,12 @@ export function changeColumn(
         })
         .toMap();
 
-    let columns = OrderedMap<string, QueryColumn>();
+    const columns = new ExtendedMap<string, QueryColumn>();
     queryInfo.columns.forEach((column, key) => {
         if (column.fieldKey === currentCol.fieldKey) {
-            columns = columns.set(newQueryColumn.fieldKey.toLowerCase(), newQueryColumn);
+            columns.set(newQueryColumn.fieldKey.toLowerCase(), newQueryColumn);
         } else {
-            columns = columns.set(key, column);
+            columns.set(key, column);
         }
     });
 
@@ -1416,7 +1417,7 @@ export function changeColumn(
             cellValues: newCellValues,
         },
         data,
-        queryInfo: queryInfo.merge({ columns }) as QueryInfo,
+        queryInfo: queryInfo.mutate({ columns }),
     };
 }
 
@@ -1474,7 +1475,9 @@ export function removeColumn(
             cellValues: newCellValues,
         },
         data,
-        queryInfo: queryInfo.merge({ columns: queryInfo.columns.remove(fieldKey.toLowerCase()) }) as QueryInfo,
+        queryInfo: queryInfo.mutate({
+            columns: queryInfo.columns.filter(col => col.fieldKey.toLowerCase() !== fieldKey.toLowerCase()),
+        }) as QueryInfo,
     };
 }
 
@@ -1499,7 +1502,7 @@ export function addColumns(
     editorModel: EditorModel,
     queryInfo: QueryInfo,
     originalData: Map<any, Map<string, any>>,
-    queryColumns: OrderedMap<string, QueryColumn>,
+    queryColumns: ExtendedMap<string, QueryColumn>,
     fieldKey?: string
 ): EditorModelUpdates {
     if (queryColumns.size === 0) return {};
@@ -1551,9 +1554,9 @@ export function addColumns(
 
     let { columns } = editorModel;
     if (columns.size < editorColIndex) {
-        columns = columns.concat(queryColumns.valueSeq().map(col => col.fieldKey)).toList();
+        columns = columns.concat(queryColumns.mapValues(col => col.fieldKey)).toList();
     } else {
-        queryColumns.valueSeq().forEach((col, i) => {
+        queryColumns.valueArray.forEach((col, i) => {
             columns = columns.insert(i + editorColIndex, col.fieldKey);
         });
         columns = columns.toList();
@@ -1571,7 +1574,7 @@ export function addColumns(
             cellValues: newCellValues,
         },
         data,
-        queryInfo: queryInfo.merge({ columns: queryInfo.insertColumns(queryColIndex, queryColumns) }) as QueryInfo,
+        queryInfo: queryInfo.mutate({ columns: queryInfo.columns.mergeAt(queryColIndex, queryColumns) }),
     };
 }
 
@@ -1728,7 +1731,7 @@ function pasteCellLoad(
     if (editorModel.hasMultipleSelection()) {
         editorModel.selectionCells.forEach(cellKey => {
             const { colIdx } = parseCellKey(cellKey);
-            const col = columns.get(colIdx);
+            const col = columns[colIdx];
 
             pastedData.forEach(row => {
                 row.forEach(value => {
@@ -1785,7 +1788,7 @@ function pasteCellLoad(
 
             row.forEach((value, cn) => {
                 const colIdx = colMin + cn;
-                const col = columns.get(colIdx);
+                const col = columns[colIdx];
                 const cellKey = genCellKey(colIdx, rowIdx);
                 let cv: List<ValueDescriptor>;
                 let msg: CellMessage;
@@ -1829,9 +1832,9 @@ function pasteCellLoad(
     };
 }
 
-function isReadonlyRow(row: Map<string, any>, pkCols: List<QueryColumn>, readonlyRows: List<string>) {
-    if (pkCols.size === 1 && row) {
-        const pkValue = caseInsensitive(row.toJS(), pkCols.get(0).fieldKey);
+function isReadonlyRow(row: Map<string, any>, pkCols: QueryColumn[], readonlyRows: List<string>) {
+    if (pkCols.length === 1 && row) {
+        const pkValue = caseInsensitive(row.toJS(), pkCols[0].fieldKey);
         return readonlyRows.contains(pkValue);
     }
 
@@ -1849,7 +1852,7 @@ function getReadonlyRowCount(
     const pkCols = queryInfo.getPkCols();
 
     // Rows with multiple PKs are always read-only
-    if (pkCols.size !== 1) {
+    if (pkCols.length !== 1) {
         return rowCount - startRowInd;
     }
 
@@ -1953,15 +1956,8 @@ async function prepareUpdateRowDataFromBulkForm(
 
     for (const colKey of rowData.keySeq().toArray()) {
         const data = rowData.get(colKey);
-        let colIdx = -1;
-        columns.forEach((col, ind) => {
-            if (col.fieldKey === colKey) {
-                colIdx = ind;
-            }
-        });
-
-        const col = columns.get(colIdx);
-
+        const colIdx = columns.findIndex(col => col.fieldKey === colKey);
+        const col = columns[colIdx];
         let cv: List<ValueDescriptor>;
 
         if (data && col && col.isLookup()) {

@@ -39,6 +39,7 @@ import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
 import { SchemaDetails } from './internal/SchemaDetails';
 import { SCHEMAS } from './internal/schemas';
 import { isLoading, LoadingState } from './public/LoadingState';
+import { ExtendedMap } from './public/ExtendedMap';
 
 import {
     ServerContextConsumer,
@@ -1462,6 +1463,7 @@ export {
     withLabelPrintingContext,
     useLabelPrintingContext,
     usePortalRef,
+    ExtendedMap,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require

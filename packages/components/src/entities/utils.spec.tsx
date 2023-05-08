@@ -346,23 +346,23 @@ describe('getSampleTypeTemplateUrl', () => {
         '&filenamePrefix=query';
 
     test('no schemaQuery', () => {
-        expect(getSampleTypeTemplateUrl(QueryInfo.create({}), undefined)).toBe(undefined);
+        expect(getSampleTypeTemplateUrl(new QueryInfo({}), undefined)).toBe(undefined);
     });
 
     test('without importAliases', () => {
-        const qInfo = QueryInfo.fromJSON({ schemaName: 'schema', name: 'query', columns: {} });
+        const qInfo = QueryInfo.fromJsonForTests({ schemaName: 'schema', name: 'query', columns: {} });
         expect(getSampleTypeTemplateUrl(qInfo, undefined)).toBe(BASE_URL);
     });
 
     test('with importAliases', () => {
-        const qInfo = QueryInfo.fromJSON({ schemaName: 'schema', name: 'query', columns: {} });
+        const qInfo = QueryInfo.fromJsonForTests({ schemaName: 'schema', name: 'query', columns: {} });
         expect(
             getSampleTypeTemplateUrl(qInfo, { a: '1', b: '2' }).indexOf('&includeColumn=a&includeColumn=b') > -1
         ).toBeTruthy();
     });
 
     test('with columns to exclude', () => {
-        const qInfo = QueryInfo.fromJSON({
+        const qInfo = QueryInfo.fromJsonForTests({
             schemaName: 'schema',
             name: 'query',
             columns: {
@@ -374,14 +374,14 @@ describe('getSampleTypeTemplateUrl', () => {
     });
 
     test('with extra excluded columns', () => {
-        const qInfo = QueryInfo.fromJSON({ schemaName: 'schema', name: 'query', columns: {} });
+        const qInfo = QueryInfo.fromJsonForTests({ schemaName: 'schema', name: 'query', columns: {} });
         const url = getSampleTypeTemplateUrl(qInfo, { a: '1', b: '2' }, ['flag', 'alias']);
         expect(url.indexOf('&includeColumn=a&includeColumn=b') > 1).toBeTruthy();
         expect(url.indexOf('&excludeColumn=flag&excludeColumn=alias') > -1).toBeTruthy();
     });
 
     test('with no exportConfig, exclude storage', () => {
-        const qInfo = QueryInfo.fromJSON({ schemaName: 'schema', name: 'query', columns: {} });
+        const qInfo = QueryInfo.fromJsonForTests({ schemaName: 'schema', name: 'query', columns: {} });
         const url = getSampleTypeTemplateUrl(qInfo, undefined, SAMPLE_STORAGE_COLUMNS, {});
         expect(url.indexOf('exportAlias.name=SampleID')).toBe(-1);
         expect(url.indexOf('exportAlias.aliquotedFromLSID=AliquotedFrom')).toBe(-1);
@@ -392,7 +392,7 @@ describe('getSampleTypeTemplateUrl', () => {
     });
 
     test('with queryInfo importTemplates', () => {
-        const qInfo = QueryInfo.fromJSON({
+        const qInfo = QueryInfo.fromJsonForTests({
             schemaName: 'schema',
             name: 'query',
             columns: {},
@@ -932,16 +932,16 @@ describe('getImportItemsForAssayDefinitions', () => {
 
     test('with expected match', () => {
         const assayStateModel = new AssayStateModel({ definitions: [ASSAY_DEFINITION_MODEL] });
-        let queryInfo = QueryInfo.create(sampleSet2QueryInfo);
+        let queryInfo = QueryInfo.fromJsonForTests(sampleSet2QueryInfo);
 
         // with a query name that DOES NOT match the assay def sampleColumn lookup
-        queryInfo = queryInfo.set('schemaQuery', new SchemaQuery('samples', 'Sample set 1')) as QueryInfo;
+        queryInfo = queryInfo.mutate({ schemaQuery: new SchemaQuery('samples', 'Sample set 1') });
         let sampleModel = makeTestQueryModel(queryInfo.schemaQuery, queryInfo);
         let items = getImportItemsForAssayDefinitions(assayStateModel, sampleModel);
         expect(items.size).toBe(0);
 
         // with a query name that DOES match the assay def sampleColumn lookup
-        queryInfo = queryInfo.set('schemaQuery', new SchemaQuery('samples', 'Sample set 10')) as QueryInfo;
+        queryInfo = queryInfo.mutate({ schemaQuery: new SchemaQuery('samples', 'Sample set 10') });
         sampleModel = makeTestQueryModel(queryInfo.schemaQuery, queryInfo);
         items = getImportItemsForAssayDefinitions(assayStateModel, sampleModel);
         expect(items.size).toBe(1);
@@ -966,7 +966,7 @@ describe('getSamplesAssayGridQueryConfigs', () => {
     });
     const sessionQueryResponse = {
         key: 'key',
-        queries: { key: QueryInfo.create({ schemaName: 'exp', name: 'AssayRunsPerSample' }) },
+        queries: { key: QueryInfo.fromJsonForTests({ schemaName: 'exp', name: 'AssayRunsPerSample' }) },
         models: undefined,
         orderedModels: undefined,
     };

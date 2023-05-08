@@ -44,9 +44,8 @@ export const EntityInsertGridRequiredFieldAlert: FC<Props> = memo(props => {
 });
 
 // exported for jest testing
-export function getFieldKeysOfRequiredCols(cols: List<QueryColumn>): string[] {
+export function getFieldKeysOfRequiredCols(cols: QueryColumn[]): string[] {
     return cols
         .filter(col => col.isEditable() && col.required && col.fieldKeyArray.length === 1)
-        .map(col => col.fieldKey)
-        .toArray();
+        .map(col => col.fieldKey);
 }

@@ -16,13 +16,14 @@
 import { fromJS, List, Map, OrderedMap, Set } from 'immutable';
 
 import { Filter, Query } from '@labkey/api';
+import { ExtendedMap } from '../public/ExtendedMap';
 
 import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
 
 import { SchemaQuery } from '../public/SchemaQuery';
 import { makeTestQueryModel } from '../public/QueryModel/testUtils';
 import { QueryInfo } from '../public/QueryInfo';
-import { QueryColumn } from '../public/QueryColumn';
+import { QueryColumn, QueryLookup } from '../public/QueryColumn';
 
 import { CellMessage, CellValues, EditorModel, ValueDescriptor } from './components/editable/models';
 import {
@@ -36,12 +37,9 @@ import {
 import { EXPORT_TYPES } from './constants';
 
 describe('column mutation actions', () => {
-    const queryInfo = QueryInfo.fromJSON(sampleSet2QueryInfo);
+    const queryInfo = QueryInfo.fromJsonForTests(sampleSet2QueryInfo);
 
-    const insertColumnFieldKeys = queryInfo
-        .getInsertColumns()
-        .map(col => col.fieldKey)
-        .toList();
+    const insertColumnFieldKeys = List(queryInfo.getInsertColumns().map(col => col.fieldKey));
 
     const editorModel = new EditorModel({
         cellMessages: Map<string, CellMessage>({
@@ -137,8 +135,7 @@ describe('column mutation actions', () => {
             multiValued: 'junction',
             queryName: 'Sample set 3',
             schemaName: 'samples',
-            table: 'MaterialInputs',
-        },
+        } as QueryLookup,
         multiValue: false,
         name: 'MaterialInputs/Sample set 3',
         required: false,
@@ -155,7 +152,7 @@ describe('column mutation actions', () => {
                 editorModel,
                 queryModel.queryInfo,
                 fromJS(queryModel.rows),
-                OrderedMap<string, QueryColumn>()
+                new ExtendedMap<string, QueryColumn>()
             );
             expect(updates.editorModelChanges).toBe(undefined);
         });
@@ -165,7 +162,7 @@ describe('column mutation actions', () => {
                 editorModel,
                 queryModel.queryInfo,
                 fromJS(queryModel.rows),
-                OrderedMap<string, QueryColumn>([[queryColumn.fieldKey, queryColumn]])
+                new ExtendedMap<string, QueryColumn>({ [queryColumn.fieldKey]: queryColumn })
             );
             expect(updates.editorModelChanges.cellMessages.size).toBe(1);
             expect(updates.editorModelChanges.cellMessages.has('2-0')).toBe(true);
@@ -184,12 +181,13 @@ describe('column mutation actions', () => {
         });
 
         test('add at end', () => {
-            const lastInsertColKey = queryModel.queryInfo.getInsertColumns().last().fieldKey;
+            const insertCols = queryModel.queryInfo.getInsertColumns();
+            const lastInsertColKey = insertCols[insertCols.length - 1].fieldKey;
             const updates = addColumns(
                 editorModel,
                 queryModel.queryInfo,
                 fromJS(queryModel.rows),
-                OrderedMap<string, QueryColumn>([[queryColumn.fieldKey, queryColumn]]),
+                new ExtendedMap<string, QueryColumn>({ [queryColumn.fieldKey]: queryColumn }),
                 lastInsertColKey
             );
             expect(updates.editorModelChanges.cellMessages.size).toBe(1);
@@ -217,7 +215,7 @@ describe('column mutation actions', () => {
                 editorModel,
                 queryModel.queryInfo,
                 fromJS(queryModel.rows),
-                OrderedMap<string, QueryColumn>([[queryColumn.fieldKey, queryColumn]]),
+                new ExtendedMap<string, QueryColumn>({ [queryColumn.fieldKey]: queryColumn }),
                 'Name'
             );
 
@@ -272,12 +270,12 @@ describe('column mutation actions', () => {
                 editorModel.columns.findIndex(fieldKey => fieldKey === 'Description')
             );
 
-            const colIndex = queryModel.queryInfo.columns.keySeq().findIndex(column => column === 'description');
+            const colIndex = queryModel.queryInfo.columns.keyArray.findIndex(column => column === 'description');
             expect(updates.queryInfo.getColumn('Description')).toBeFalsy();
             expect(updates.queryInfo.getColumn(queryColumn.fieldKey)).toBeTruthy();
-            const newColIndex = updates.queryInfo.columns
-                .keySeq()
-                .findIndex(column => column === queryColumn.fieldKey.toLowerCase());
+            const newColIndex = updates.queryInfo.columns.keyArray.findIndex(
+                column => column === queryColumn.fieldKey.toLowerCase()
+            );
             expect(newColIndex).toBe(colIndex);
             expect(updates.data.findEntry(rowValues => rowValues.has('Description)'))).toBeFalsy();
             expect(updates.data.findEntry(rowValues => rowValues.has(queryColumn.fieldKey))).toBeTruthy();
@@ -291,7 +289,7 @@ describe('column mutation actions', () => {
         });
 
         test('first column', () => {
-            const firstInputColumn = queryModel.queryInfo.getInsertColumns().first();
+            const firstInputColumn = queryModel.queryInfo.getInsertColumns()[0];
             const updates = removeColumn(
                 editorModel,
                 queryModel.queryInfo,
@@ -310,7 +308,8 @@ describe('column mutation actions', () => {
         });
 
         test('last column', () => {
-            const lastInputColumn = queryModel.queryInfo.getInsertColumns().last();
+            const insertCols = queryModel.queryInfo.getInsertColumns();
+            const lastInputColumn = insertCols[insertCols.length - 1];
             const updates = removeColumn(
                 editorModel,
                 queryModel.queryInfo,

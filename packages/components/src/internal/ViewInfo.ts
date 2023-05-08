@@ -107,13 +107,8 @@ export class ViewInfo {
         const { columns, filter, label, name, sort, ...rest } = json;
         const isDefault = rest.default === true;
         delete rest.default;
-        let label_ = label;
-        let name_ = name;
-
-        if (isDefault || name === undefined || name === '') {
-            name_ = ViewInfo.DEFAULT_NAME;
-            label_ = 'Default';
-        }
+        const label_ = isDefault ? 'Default' : label;
+        const name_ = isDefault || name === undefined || name === '' ? ViewInfo.DEFAULT_NAME : name;
 
         return new ViewInfo({
             columns: columns !== undefined ? [...columns] : [],

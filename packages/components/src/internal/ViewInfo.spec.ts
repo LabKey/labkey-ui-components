@@ -156,7 +156,7 @@ describe('ViewInfo', () => {
             ],
         });
         const queryInfo = new QueryInfo({
-            columns: new ExtendedMap<string, QueryColumn>({
+            columns: new ExtendedMap({
                 hideMe: new QueryColumn({
                     name: 'Hide Me',
                     hidden: true,

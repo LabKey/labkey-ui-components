@@ -24,7 +24,7 @@ import { SamplesEditButtonSections } from '../internal/components/samples/utils'
 import { SampleDeleteMenuItem } from './SampleDeleteMenuItem';
 import { SamplesEditButton } from './SamplesEditButton';
 import { EntityLineageEditMenuItem } from './EntityLineageEditMenuItem';
-import { SampleMoveMenuItem } from './SampleMoveMenuItem';
+import { EntityMoveMenuItem } from './EntityMoveMenuItem';
 
 describe('SamplesEditButton', () => {
     const queryInfo = new QueryInfo({
@@ -48,7 +48,7 @@ describe('SamplesEditButton', () => {
             expect(wrapper.find(EntityLineageEditMenuItem)).toHaveLength(parentEntityItemCount);
             expect(wrapper.find(SelectionMenuItem)).toHaveLength(selMenuItemCount);
             expect(wrapper.find(SampleDeleteMenuItem)).toHaveLength(deleteItemCount);
-            expect(wrapper.find(SampleMoveMenuItem)).toHaveLength(moveItemCount);
+            expect(wrapper.find(EntityMoveMenuItem)).toHaveLength(moveItemCount);
             expect(wrapper.find(MenuItem)).toHaveLength(menuItemCount);
         }
     }

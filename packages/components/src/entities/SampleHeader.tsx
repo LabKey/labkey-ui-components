@@ -35,7 +35,12 @@ import { PrintLabelsModal } from '../internal/components/labels/PrintLabelsModal
 
 import { invalidateLineageResults } from '../internal/components/lineage/actions';
 
-import { isAllProductFoldersFilteringEnabled, isAssayEnabled, isWorkflowEnabled } from '../internal/app/utils';
+import {
+    hasProductProjects,
+    isAllProductFoldersFilteringEnabled,
+    isAssayEnabled,
+    isWorkflowEnabled
+} from '../internal/app/utils';
 
 import { User } from '../internal/components/base/models/User';
 import { Container } from '../internal/components/base/models/Container';
@@ -343,9 +348,8 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                     onCancel={onHideModals}
                     maxSelected={1}
                     entityDataType={entityDataType}
-                    moveFn={api.entity.moveSamples}
-                    sourceContainer={sampleContainer}
-                    targetAppURL={AppURL.create(isMedia ? MEDIA_KEY : SAMPLES_KEY, sampleModel.queryName)}
+                    currentContainer={sampleContainer}
+                    targetAppURL={AppURL.create(entityDataType.instanceKey, sampleModel.queryName)}
                 />
             )}
             {showConfirmDelete && (

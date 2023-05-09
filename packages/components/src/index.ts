@@ -303,6 +303,7 @@ import {
     EntityParentType,
     OperationConfirmationData,
 } from './internal/components/entities/models';
+import { EntityMoveModal } from './internal/components/entities/EntityMoveModal';
 import { SearchScope } from './internal/components/search/constants';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';
 import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
@@ -594,6 +595,7 @@ import {
     hasModule,
     hasPremiumModule,
     hasProductProjects,
+    isAllProductFoldersFilteringEnabled,
     isAppHomeFolder,
     isAssayDesignExportEnabled,
     isAssayEnabled,
@@ -758,6 +760,7 @@ const App = {
     sampleManagerIsPrimaryApp,
     isSampleStatusEnabled,
     isProductProjectsEnabled,
+    isAllProductFoldersFilteringEnabled,
     getPrimaryAppProperties,
     getProjectPath,
     hasPremiumModule,
@@ -1075,6 +1078,7 @@ export {
     getOperationNotPermittedMessage,
     ManageSampleStatusesPanel,
     EntityIdCreationModel,
+    EntityMoveModal,
     EntityParentType,
     OperationConfirmationData,
     AddEntityButton,

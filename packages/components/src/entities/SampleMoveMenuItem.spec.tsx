@@ -12,7 +12,7 @@ import { EntityMoveModal } from '../internal/components/entities/EntityMoveModal
 
 import { QueryInfo } from '../public/QueryInfo';
 
-import { SampleMoveMenuItem } from './SampleMoveMenuItem';
+import { EntityMoveMenuItem } from './EntityMoveMenuItem';
 
 describe('SampleMoveMenuItem', () => {
     const ACTIONS = makeTestActions();
@@ -32,7 +32,7 @@ describe('SampleMoveMenuItem', () => {
 
     test('click menu item with no selection', () => {
         const queryModel = makeTestQueryModel(new SchemaQuery('test', 'query'));
-        const wrapper = mountWithAppServerContext(<SampleMoveMenuItem actions={ACTIONS} queryModel={queryModel} />);
+        const wrapper = mountWithAppServerContext(<EntityMoveMenuItem actions={ACTIONS} queryModel={queryModel} />);
         validate(wrapper);
         wrapper.unmount();
     });
@@ -40,7 +40,7 @@ describe('SampleMoveMenuItem', () => {
     test('click menu item', () => {
         let queryModel = makeTestQueryModel(new SchemaQuery('test', 'query'));
         queryModel = queryModel.mutate({ rowCount: 2, selections: new Set(['1', '2']) });
-        const wrapper = mountWithAppServerContext(<SampleMoveMenuItem actions={ACTIONS} queryModel={queryModel} />);
+        const wrapper = mountWithAppServerContext(<EntityMoveMenuItem actions={ACTIONS} queryModel={queryModel} />);
         validate(wrapper, 1);
         expect(wrapper.find(EntityMoveModal).prop('targetAppURL').toHref()).toBe('#/samples/query');
         wrapper.unmount();
@@ -49,7 +49,7 @@ describe('SampleMoveMenuItem', () => {
     test('isMedia', () => {
         let queryModel = makeTestQueryModel(new SchemaQuery('test', 'query'), new QueryInfo({ isMedia: true }));
         queryModel = queryModel.mutate({ rowCount: 2, selections: new Set(['1', '2']) });
-        const wrapper = mountWithAppServerContext(<SampleMoveMenuItem actions={ACTIONS} queryModel={queryModel} />);
+        const wrapper = mountWithAppServerContext(<EntityMoveMenuItem actions={ACTIONS} queryModel={queryModel} />);
         validate(wrapper, 1);
         expect(wrapper.find(EntityMoveModal).prop('targetAppURL').toHref()).toBe('#/media/query');
         wrapper.unmount();

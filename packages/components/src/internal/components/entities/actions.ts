@@ -32,7 +32,7 @@ import {
     EntityTypeOption,
     IEntityTypeOption,
     IParentOption,
-    MoveSamplesResult,
+    MoveEntitiesResult,
     OperationConfirmationData,
 } from './models';
 
@@ -742,14 +742,15 @@ export function getMoveConfirmationData(
     );
 }
 
-export function moveSamples(
+export function moveEntities(
     sourceContainer: Container,
     targetContainer: string,
+    entityDataType: EntityDataType,
     rowIds?: number[],
     selectionKey?: string,
     useSnapshotSelection?: boolean,
     userComment?: string
-): Promise<MoveSamplesResult> {
+): Promise<MoveEntitiesResult> {
     return new Promise((resolve, reject) => {
         const params = {
             auditBehavior: AuditBehaviorTypes.DETAILED,
@@ -765,16 +766,18 @@ export function moveSamples(
         }
 
         return Ajax.request({
-            url: buildURL('experiment', 'moveSamples.api', undefined, { container: sourceContainer?.path }),
+            url: buildURL(entityDataType.moveControllerName, entityDataType.moveActionName, undefined, { container: sourceContainer?.path }),
             method: 'POST',
             params,
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
             failure: Utils.getCallbackWrapper(response => {
-                console.error('Error moving samples', response);
-                reject(response?.exception ?? 'Unknown error moving samples.');
+                console.error('Error moving ' + entityDataType.nounPlural, response);
+                reject(response?.exception ?? 'Unknown error moving ' + entityDataType.nounPlural + '.');
             }),
         });
     });
 }
+
+

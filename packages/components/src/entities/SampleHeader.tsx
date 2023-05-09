@@ -35,7 +35,12 @@ import { PrintLabelsModal } from '../internal/components/labels/PrintLabelsModal
 
 import { invalidateLineageResults } from '../internal/components/lineage/actions';
 
-import { isAllProductFoldersFilteringEnabled, isAssayEnabled, isWorkflowEnabled } from '../internal/app/utils';
+import {
+    hasProductProjects,
+    isAllProductFoldersFilteringEnabled,
+    isAssayEnabled,
+    isWorkflowEnabled
+} from '../internal/app/utils';
 
 import { User } from '../internal/components/base/models/User';
 import { Container } from '../internal/components/base/models/Container';
@@ -299,11 +304,13 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
 
                             {canPrintLabels && <MenuItem onClick={onPrintLabel}>Print Labels</MenuItem>}
 
-                            <RequiresPermission user={user} perms={PermissionTypes.Update}>
-                                <DisableableMenuItem onClick={onMoveSample} operationPermitted={canMove}>
-                                    Move to Project
-                                </DisableableMenuItem>
-                            </RequiresPermission>
+                            {hasProductProjects() && (
+                                <RequiresPermission user={user} perms={PermissionTypes.Update}>
+                                    <DisableableMenuItem onClick={onMoveSample} operationPermitted={canMove}>
+                                        Move to Project
+                                    </DisableableMenuItem>
+                                </RequiresPermission>
+                            )}
 
                             <RequiresPermission user={user} perms={PermissionTypes.Delete}>
                                 <DisableableMenuItem

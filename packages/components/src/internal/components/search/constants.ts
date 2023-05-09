@@ -8,6 +8,7 @@ export enum SearchCategory {
     Material = 'material',
     MaterialSource = 'materialSource',
     Media = 'media',
+    MediaData = 'mediaData',
     Notebook = 'notebook',
     NotebookTemplate = 'notebookTemplate',
     WorkflowJob = 'workflowJob',

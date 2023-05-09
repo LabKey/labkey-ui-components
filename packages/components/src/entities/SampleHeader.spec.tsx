@@ -64,6 +64,7 @@ describe('SampleHeader', () => {
         labelTemplate: undefined,
         printServiceUrl: undefined,
         canPrintLabels: undefined,
+        defaultLabel: undefined,
         onUpdate: jest.fn(),
         navigate: jest.fn(),
     };
@@ -148,30 +149,12 @@ describe('SampleHeader', () => {
         wrapper.unmount();
     });
 
-    test('showMoveItem false', () => {
+    test('with update perm', () => {
         const wrapper = mountWithAppServerContext(
             <SampleHeaderImpl
                 {...DEFAULT_PROPS}
                 user={TEST_USER_EDITOR}
                 sampleModel={DATA_MODEL}
-                showMoveItem={false}
-            />,
-            {},
-            { user: TEST_USER_EDITOR }
-        );
-        expect(wrapper.find(DisableableMenuItem)).toHaveLength(2);
-        expect(wrapper.find(DisableableMenuItem).at(0).text()).toBe('Add to Picklist');
-        expect(wrapper.find(DisableableMenuItem).at(1).text()).toBe('Delete Sample');
-        wrapper.unmount();
-    });
-
-    test('showMoveItem with update perm', () => {
-        const wrapper = mountWithAppServerContext(
-            <SampleHeaderImpl
-                {...DEFAULT_PROPS}
-                user={TEST_USER_EDITOR}
-                sampleModel={DATA_MODEL}
-                showMoveItem={true}
             />,
             {},
             { user: TEST_USER_EDITOR }
@@ -183,13 +166,12 @@ describe('SampleHeader', () => {
         wrapper.unmount();
     });
 
-    test('showMoveItem without update perm', () => {
+    test('without update perm', () => {
         const wrapper = mountWithAppServerContext(
             <SampleHeaderImpl
                 {...DEFAULT_PROPS}
                 user={TEST_USER_AUTHOR}
                 sampleModel={DATA_MODEL}
-                showMoveItem={true}
             />,
             {},
             { user: TEST_USER_AUTHOR }

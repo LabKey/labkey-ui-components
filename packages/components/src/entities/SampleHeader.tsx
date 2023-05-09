@@ -35,12 +35,7 @@ import { PrintLabelsModal } from '../internal/components/labels/PrintLabelsModal
 
 import { invalidateLineageResults } from '../internal/components/lineage/actions';
 
-import {
-    hasProductProjects,
-    isAllProductFoldersFilteringEnabled,
-    isAssayEnabled,
-    isWorkflowEnabled
-} from '../internal/app/utils';
+import { isAllProductFoldersFilteringEnabled, isAssayEnabled, isWorkflowEnabled } from '../internal/app/utils';
 
 import { User } from '../internal/components/base/models/User';
 import { Container } from '../internal/components/base/models/Container';

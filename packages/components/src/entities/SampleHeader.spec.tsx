@@ -4,13 +4,16 @@ import { SchemaQuery } from '../public/SchemaQuery';
 import { SCHEMAS } from '../internal/schemas';
 import { makeTestQueryModel } from '../public/QueryModel/testUtils';
 import { LoadingState } from '../public/LoadingState';
-import { mountWithAppServerContext } from '../internal/testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../internal/testHelpers';
 import { TEST_USER_AUTHOR, TEST_USER_EDITOR, TEST_USER_READER } from '../internal/userFixtures';
 
 import { DisableableMenuItem } from '../internal/components/samples/DisableableMenuItem';
 
 import { SampleHeaderImpl } from './SampleHeader';
 import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
+import { getTestAPIWrapper } from '../internal/APIWrapper';
+import { getSamplesTestAPIWrapper } from '../internal/components/samples/APIWrapper';
+import { OperationConfirmationData } from '../internal/components/entities/models';
 
 describe('SampleHeader', () => {
     const SQ = new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, 'TestSampleType');
@@ -149,7 +152,7 @@ describe('SampleHeader', () => {
         wrapper.unmount();
     });
 
-    test('with update perm', () => {
+    test('no subfolders, with update perm', () => {
         const wrapper = mountWithAppServerContext(
             <SampleHeaderImpl
                 {...DEFAULT_PROPS}
@@ -159,10 +162,37 @@ describe('SampleHeader', () => {
             {},
             { user: TEST_USER_EDITOR }
         );
-        expect(wrapper.find(DisableableMenuItem)).toHaveLength(3);
+        expect(wrapper.find(DisableableMenuItem)).toHaveLength(2);
         expect(wrapper.find(DisableableMenuItem).at(0).text()).toBe('Add to Picklist');
-        expect(wrapper.find(DisableableMenuItem).at(1).text()).toBe('Move to Project');
-        expect(wrapper.find(DisableableMenuItem).at(2).text()).toBe('Delete Sample');
+        expect(wrapper.find(DisableableMenuItem).at(1).text()).toBe('Delete Sample');
+        wrapper.unmount();
+    });
+
+    test('with subfolders and update perm', async () => {
+        const wrapper = mountWithAppServerContext(
+            <SampleHeaderImpl
+                {...DEFAULT_PROPS}
+                user={TEST_USER_EDITOR}
+                sampleModel={DATA_MODEL}
+            />,
+            {
+                api: getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
+                        getSampleOperationConfirmationData: () =>
+                            Promise.resolve(new OperationConfirmationData({allowed: [1]})),
+                    }),
+                })
+            },
+            { user: TEST_USER_EDITOR, moduleContext: { query: { hasProductProjects: true } } }
+        );
+
+        await waitForLifecycle(wrapper);
+
+        const items = wrapper.find(DisableableMenuItem);
+        expect(items).toHaveLength(3);
+        expect(items.at(0).text()).toBe('Add to Picklist');
+        expect(items.at(1).text()).toBe('Move to Project');
+        expect(items.at(2).text()).toBe('Delete Sample');
         wrapper.unmount();
     });
 

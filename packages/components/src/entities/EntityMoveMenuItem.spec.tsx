@@ -13,8 +13,10 @@ import { EntityMoveModal } from '../internal/components/entities/EntityMoveModal
 import { QueryInfo } from '../public/QueryInfo';
 
 import { EntityMoveMenuItem } from './EntityMoveMenuItem';
+import { SampleTypeDataType } from '../internal/components/entities/constants';
+import { MEDIA_KEY } from '../internal/app/constants';
 
-describe('SampleMoveMenuItem', () => {
+describe('EntityMoveMenuItem', () => {
     const ACTIONS = makeTestActions();
 
     function validate(wrapper: ReactWrapper, moveModalCount = 0) {
@@ -49,7 +51,7 @@ describe('SampleMoveMenuItem', () => {
     test('isMedia', () => {
         let queryModel = makeTestQueryModel(new SchemaQuery('test', 'query'), new QueryInfo({ isMedia: true }));
         queryModel = queryModel.mutate({ rowCount: 2, selections: new Set(['1', '2']) });
-        const wrapper = mountWithAppServerContext(<EntityMoveMenuItem actions={ACTIONS} queryModel={queryModel} />);
+        const wrapper = mountWithAppServerContext(<EntityMoveMenuItem actions={ACTIONS} queryModel={queryModel} entityDataType={{...SampleTypeDataType, instanceKey: MEDIA_KEY}}/>);
         validate(wrapper, 1);
         expect(wrapper.find(EntityMoveModal).prop('targetAppURL').toHref()).toBe('#/media/query');
         wrapper.unmount();

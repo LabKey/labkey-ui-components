@@ -12,7 +12,7 @@ import { ActiveUserLimit } from '../settings/ActiveUserLimit';
 import { NameIdSettings } from '../settings/NameIdSettings';
 import { ManageSampleStatusesPanel } from '../samples/ManageSampleStatusesPanel';
 import { biologicsIsPrimaryApp, isELNEnabled, isProductProjectsEnabled, isSampleStatusEnabled } from '../../app/utils';
-import { ProjectSettings } from '../settings/ProjectSettings';
+import { ProjectSettings } from '../project/ProjectSettings';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 
 import { BarTenderSettingsForm } from '../labels/BarTenderSettingsForm';

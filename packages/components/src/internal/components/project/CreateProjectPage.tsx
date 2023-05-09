@@ -12,22 +12,35 @@ import { useNotificationsContext } from '../notifications/NotificationsContext';
 import { Container } from '../base/models/Container';
 import { AppURL } from '../../url/AppURL';
 
-import { getCurrentAppProperties, hasProductProjects, setProductProjects } from '../../app/utils';
+import {
+    getCurrentAppProperties,
+    hasProductProjects,
+    isProductProjectDataTypeSelectionEnabled,
+    setProductProjects
+} from '../../app/utils';
 
 import { useFolderMenuContext } from '../navigation/hooks';
 
 import { invalidateFullQueryDetailsCache } from '../../query/api';
 
+import { useAdminAppContext } from '../administration/useAdminAppContext';
+
 import { ProjectProperties } from './ProjectProperties';
+import { ProjectDataTypeSelections } from './ProjectDataTypeSelections';
 
 export interface CreateProjectContainerProps {
     api: FolderAPIWrapper;
     onCancel: () => void;
     onCreated: (project: Container) => void;
 }
-
+//
 export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(props => {
     const { api, onCancel, onCreated } = props;
+    const {
+        projectDataTypes,
+        // ProjectFreezerSelectionComponent,
+    } = useAdminAppContext();
+
     const [error, setError] = useState<string>();
     const [isSaving, setIsSaving] = useState<boolean>(false);
 
@@ -62,12 +75,12 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
     return (
         <div className="create-project-container">
             <form className="create-project-form" onSubmit={onSubmit}>
+                {!!error && <Alert>{error}</Alert>}
+
                 <div className="panel panel-default">
                     <div className="panel-body">
-                        {!!error && <Alert>{error}</Alert>}
-
                         <div className="form-horizontal">
-                            <div className="form-subtitle">Project Properties</div>
+                            <div className="form-subtitle">Name of Project</div>
 
                             <ProjectProperties autoFocus />
 
@@ -76,6 +89,34 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
                         </div>
                     </div>
                 </div>
+
+                {isProductProjectDataTypeSelectionEnabled() && (
+                    <div className="panel panel-default">
+                        <div className="panel-body">
+                            <div className="form-horizontal">
+                                <div className="form-subtitle">Data in Project</div>
+
+                                <ProjectDataTypeSelections
+                                    entityDataTypes={projectDataTypes}
+                                    showWarning={true}
+                                    isNewProject={true}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {isProductProjectDataTypeSelectionEnabled() && (
+                    <div className="panel panel-default">
+                        <div className="panel-body">
+                            <div className="form-horizontal">
+                                <div className="form-subtitle">Project Storage</div>
+
+                                {/* <ProjectFreezerSelectionComponent />*/}
+                            </div>
+                        </div>
+                    </div>
+                )}
 
                 <div className="form-group no-margin-bottom">
                     <div className="pull-left">

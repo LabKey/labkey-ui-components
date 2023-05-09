@@ -65,6 +65,7 @@ export const AssayResultDataType: EntityDataType = {
     dependencyText: undefined,
     filterCardHeaderClass: 'filter-card__header-purple',
     sampleFinderCardType: 'assaydata',
+    projectConfigurableDataType: 'assaydesign',
 };
 
 export const SamplePropertyDataType: EntityDataType = {
@@ -125,6 +126,7 @@ export const SampleTypeDataType: EntityDataType = {
     exprColumnsWithSubSelect: SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR,
     typeIcon: 'sample_set',
     sampleFinderCardType: 'sampleparent',
+    projectConfigurableDataType: 'sampletype',
 };
 
 export const DataClassDataType: EntityDataType = {
@@ -152,6 +154,7 @@ export const DataClassDataType: EntityDataType = {
     filterCardHeaderClass: 'filter-card__header-primary',
     typeIcon: 'source_type',
     sampleFinderCardType: 'dataclassparent',
+    projectConfigurableDataType: 'dataclass',
 };
 
 export const ParentEntityLineageColumns = List.of('Inputs/Materials/First', 'Inputs/Data/First');

@@ -70,3 +70,10 @@ export type ReferencingNotebooks = ComponentType<ReferencingNotebooksComponentPr
 export type NotebookNotificationSettings = ComponentType;
 export type NotebookProjectSettings = ComponentType;
 export type WorkflowNotificationSettings = ComponentType;
+
+
+interface ProjectFreezerSelectionProps {
+    onChange?: () => void;
+}
+
+export type ProjectFreezerSelection = ComponentType<ProjectFreezerSelectionProps>;

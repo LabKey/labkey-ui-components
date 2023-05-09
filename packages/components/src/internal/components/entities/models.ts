@@ -486,6 +486,7 @@ export interface IEntityTypeDetails extends IEntityDetails {
 }
 
 export type SampleFinderCardType = 'sampleproperty' | 'sampleparent' | 'dataclassparent' | 'assaydata';
+export type ProjectConfigurableDataType = 'sampletype' | 'dataclass' | 'assaydesign' | 'storagelocation';
 
 /**
  *  Avoid inline comment or above line comments for properties due to es-lint's limitation on moving comments:
@@ -513,6 +514,7 @@ export type SampleFinderCardType = 'sampleproperty' | 'sampleparent' | 'dataclas
  *     listingSchemaQuery: SchemaQuery; // The schema query used to get the listing of all of the data instances (e.g., all the data class rows) available
  *     operationConfirmationActionName: string; // action in ExperimentController used to get the confirmation data for performing operations on entities
  *     typeListingSchemaQuery: SchemaQuery; // The schema query used to get the listing of all of the data type instances (e.g., all the data classes) available
+ *     projectConfigurableDataType?: string; // the DataTypeExclusion type
  */
 export interface EntityDataType {
     allowRelativeDateFilter?: boolean;
@@ -545,6 +547,7 @@ export interface EntityDataType {
     operationConfirmationActionName: string;
     operationConfirmationControllerName: string;
     sampleFinderCardType?: SampleFinderCardType;
+    projectConfigurableDataType?: ProjectConfigurableDataType;
     supportHasNoValueInQuery?: boolean;
     typeIcon?: string;
     typeListingSchemaQuery: SchemaQuery;
@@ -628,4 +631,12 @@ export interface MoveSamplesResult {
     containerPath: string;
     success: boolean;
     updateCounts: Record<string, number>;
+}
+
+export interface DataTypeEntity {
+    rowId: number;
+    type: ProjectConfigurableDataType;
+    label: string;
+    description?: string;
+    lsid: string;
 }

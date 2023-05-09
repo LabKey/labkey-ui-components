@@ -8,7 +8,7 @@ import { TEST_USER_APP_ADMIN, TEST_USER_EDITOR } from '../../userFixtures';
 
 import { ServerContext } from '../base/ServerContext';
 
-import { ProjectProperties } from '../administration/ProjectProperties';
+import { ProjectProperties } from '../project/ProjectProperties';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { getFolderTestAPIWrapper } from '../container/FolderAPIWrapper';

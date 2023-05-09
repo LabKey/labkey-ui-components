@@ -309,8 +309,8 @@ import { SearchResultsPanel } from './internal/components/search/SearchResultsPa
 import { FIND_SAMPLE_BY_ID_METRIC_AREA, getSearchScopeFromContainerFilter } from './internal/components/search/utils';
 import { AdministrationSubNav } from './internal/components/administration/AdministrationSubNav';
 import { UserManagementPage } from './internal/components/administration/UserManagement';
-import { CreateProjectPage } from './internal/components/administration/CreateProjectPage';
-import { ProjectManagementPage } from './internal/components/administration/ProjectManagementPage';
+import { CreateProjectPage } from './internal/components/project/CreateProjectPage';
+import { ProjectManagementPage } from './internal/components/project/ProjectManagementPage';
 import { GroupManagementPage } from './internal/components/administration/GroupManagementPage';
 import { PermissionManagementPage } from './internal/components/administration/PermissionManagementPage';
 import { AccountSettingsPage } from './internal/components/administration/AccountSettingsPage';

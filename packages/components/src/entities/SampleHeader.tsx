@@ -69,7 +69,6 @@ interface HeaderProps {
     sampleContainer?: Container;
     sampleModel: QueryModel;
     showDescription?: boolean;
-    showMoveItem?: boolean;
     subtitle?: ReactNode;
     title?: string;
     user?: User;
@@ -97,7 +96,6 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
         subtitle,
         StorageMenu,
         user,
-        showMoveItem = true,
     } = props;
     const { queryInfo } = sampleModel;
     const { createNotification } = useNotificationsContext();
@@ -306,13 +304,11 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
 
                             {canPrintLabels && <MenuItem onClick={onPrintLabel}>Print Labels</MenuItem>}
 
-                            {showMoveItem && (
-                                <RequiresPermission user={user} perms={PermissionTypes.Update}>
-                                    <DisableableMenuItem onClick={onMoveSample} operationPermitted={canMove}>
-                                        Move to Project
-                                    </DisableableMenuItem>
-                                </RequiresPermission>
-                            )}
+                            <RequiresPermission user={user} perms={PermissionTypes.Update}>
+                                <DisableableMenuItem onClick={onMoveSample} operationPermitted={canMove}>
+                                    Move to Project
+                                </DisableableMenuItem>
+                            </RequiresPermission>
 
                             <RequiresPermission user={user} perms={PermissionTypes.Delete}>
                                 <DisableableMenuItem

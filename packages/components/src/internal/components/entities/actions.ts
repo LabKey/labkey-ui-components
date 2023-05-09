@@ -770,7 +770,12 @@ export function moveEntities(
             method: 'POST',
             params,
             success: Utils.getCallbackWrapper(response => {
-                resolve(response);
+                if (response.success) {
+                    resolve(response);
+                } else {
+                    console.error('Error moving ' + entityDataType.nounPlural, response);
+                    reject(response?.error ?? 'Unknown error moving ' + entityDataType.nounPlural + '.');
+                }
             }),
             failure: Utils.getCallbackWrapper(response => {
                 console.error('Error moving ' + entityDataType.nounPlural, response);

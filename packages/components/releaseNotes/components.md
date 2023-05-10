@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD May 2023
+* Issue 47024: WindowFocusCheckExpiredSessionto add tab focus window listener to check for expired session in apps
+
 ### version 2.333.3
 *Released*: 7 May 2023
 * Bulk edit improvement

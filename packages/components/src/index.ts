@@ -82,6 +82,7 @@ import {
     getUserSharedContainerPermissions,
 } from './internal/components/user/actions';
 import { BeforeUnload } from './internal/util/BeforeUnload';
+import { WindowFocusCheckExpiredSession } from './internal/util/WindowFocusCheckExpiredSession';
 import {
     deleteErrorMessage,
     deleteSuccessMessage,
@@ -1328,6 +1329,7 @@ export {
     QueryDetailPage,
     Theme,
     SVGIcon,
+    WindowFocusCheckExpiredSession,
     // general components
     Alert,
     ExpandableContainer,

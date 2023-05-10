@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 47784: When there is ony one sample type in a tabbed grid, default to that type's tab instead of "All Samples"
+
 ### version 2.333.3
 *Released*: 7 May 2023
 * Bulk edit improvement

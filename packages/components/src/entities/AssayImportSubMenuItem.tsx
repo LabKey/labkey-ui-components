@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useMemo, useState } from 'react';
-import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
+import { MenuItem } from 'react-bootstrap';
 
 import { List } from 'immutable';
 
@@ -85,30 +85,6 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
         setCrossFolderSelectionResult(undefined);
     }, []);
 
-    const items: List<MenuOption> = useMemo(() => {
-        if (!isLoaded) {
-            return List();
-        }
-
-        return getImportItemsForAssayDefinitions(
-            assayModel,
-            queryModel,
-            providerType,
-            !!picklistName,
-            currentProductId,
-            targetProductId,
-            ignoreFilter
-        ).reduce((subItems, href, assay) => {
-            subItems = subItems.push({
-                href: isProjectContainer() ? undefined : href,
-                onClick: disabled || !isProjectContainer() ? undefined : () => onImportDataMenuSelectOnClick(href),
-                name: assay.name,
-                key: assay.name,
-            });
-            return subItems;
-        }, List());
-    }, [assayModel, isLoaded, providerType, queryModel, currentProductId, targetProductId, ignoreFilter]);
-
     const overlayMessage = useMemo(() => {
         if (!requireSelection) return '';
 
@@ -121,6 +97,45 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
             return '';
         }
     }, [requireSelection, queryModel?.selections, nounPlural]);
+
+    const items: List<MenuOption> = useMemo(() => {
+        if (!isLoaded) {
+            return List();
+        }
+
+        const disabled_ = disabled || overlayMessage.length > 0;
+        return getImportItemsForAssayDefinitions(
+            assayModel,
+            queryModel,
+            providerType,
+            !!picklistName,
+            currentProductId,
+            targetProductId,
+            ignoreFilter
+        ).reduce((subItems, href, assay) => {
+            subItems = subItems.push({
+                href: isProjectContainer() ? undefined : href,
+                onClick: disabled_ || !isProjectContainer() ? undefined : () => onImportDataMenuSelectOnClick(href),
+                name: assay.name,
+                key: assay.name,
+                disabled: disabled_,
+                disabledMsg: overlayMessage,
+            });
+            return subItems;
+        }, List());
+    }, [
+        isLoaded,
+        assayModel,
+        queryModel,
+        providerType,
+        picklistName,
+        currentProductId,
+        targetProductId,
+        ignoreFilter,
+        disabled,
+        overlayMessage,
+        onImportDataMenuSelectOnClick,
+    ]);
 
     if (disabled) {
         return <DisableableMenuItem operationPermitted={false}>{text}</DisableableMenuItem>;
@@ -138,24 +153,12 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
         return null;
     }
 
-    const badSelection = overlayMessage.length > 0;
     const menuProps = Object.assign({}, props, {
-        disabled: badSelection,
         options: items,
         queryModel: undefined,
         text,
         inline: text === null,
     });
-
-    if (menuProps.disabled) {
-        const overlay = <Popover id="assay-submenu-warning">{overlayMessage}</Popover>;
-
-        return (
-            <OverlayTrigger overlay={overlay} placement="right">
-                <MenuItem disabled>{menuProps.text}</MenuItem>
-            </OverlayTrigger>
-        );
-    }
 
     return (
         <>

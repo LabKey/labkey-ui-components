@@ -49,7 +49,6 @@ import { SampleTypeTemplateDownloadRenderer, downloadSampleTypeTemplate } from '
 import { SampleTypeListingPage } from './SampleTypeListingPage';
 import { SampleIndexNav, SampleTypeIndexNav } from './SampleNav';
 import { SamplesResolver } from './SamplesResolver';
-import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
 import { useSampleTypeAppContext } from './useSampleTypeAppContext';
 import { SampleTypeDesignPage } from './SampleTypeDesignPage';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
@@ -99,7 +98,6 @@ export {
     onSampleTypeChange,
     processSampleBulkAdd,
     useSampleTypeAppContext,
-    AssayImportSubMenuItem,
     AssayResultsForSamplesPage,
     AssayResultsForSamplesSubNav,
     CreateSamplesSubMenu,

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD May 2023
+* Issue 47794: App sample type assay button to show assay submenu items in disabled state
+
 ### version 2.333.3
 *Released*: 7 May 2023
 * Bulk edit improvement

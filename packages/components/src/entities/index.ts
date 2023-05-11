@@ -58,6 +58,7 @@ import { AssayResultsForSamplesButton, AssayResultsForSamplesMenuItem } from './
 import { AssayResultsForSamplesPage, AssayResultsForSamplesSubNav } from './AssayResultsForSamplesPage';
 import { EntityCrossProjectSelectionConfirmModal } from './EntityCrossProjectSelectionConfirmModal';
 import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
+import { EntityMoveMenuItem} from './EntityMoveMenuItem';
 import { EntityInsertPanel } from './EntityInsertPanel';
 import { SampleOverviewPanel } from './SampleOverviewPanel';
 import { SampleDetailContextConsumer, SampleDetailPage } from './SampleDetailPage';
@@ -106,6 +107,7 @@ export {
     DeleteConfirmationModal,
     EntityDeleteModal,
     EntityLineageEditMenuItem,
+    EntityMoveMenuItem,
     EntityTypeDeleteConfirmModal,
     FindSamplesByIdHeaderPanel,
     FindSamplesByIdsPageBase,

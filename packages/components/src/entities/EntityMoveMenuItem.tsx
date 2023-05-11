@@ -7,9 +7,7 @@ import { MAX_EDITABLE_GRID_ROWS } from '../internal/constants';
 import { SelectionMenuItem } from '../internal/components/menus/SelectionMenuItem';
 import { SampleTypeDataType } from '../internal/components/entities/constants';
 import { EntityMoveModal } from '../internal/components/entities/EntityMoveModal';
-import { useAppContext } from '../internal/AppContext';
 import { AppURL } from '../internal/url/AppURL';
-import { MEDIA_KEY, SAMPLES_KEY } from '../internal/app/constants';
 import { EntityDataType } from '../internal/components/entities/models';
 import { capitalizeFirstChar } from '../internal/util/utils';
 
@@ -24,21 +22,19 @@ interface Props {
     queryModel: QueryModel;
 }
 
-export const SampleMoveMenuItem: FC<Props> = memo(props => {
+export const EntityMoveMenuItem: FC<Props> = memo(props => {
     const { handleClick, maxSelected, queryModel, actions, onSuccess, entityDataType = SampleTypeDataType } = props;
-    const [showMoveSamplesModal, setShowMoveSamplesModal] = useState<boolean>(false);
-    const { api } = useAppContext();
-    const isMedia = queryModel.queryInfo?.isMedia;
+    const [showModal, setShowModal] = useState<boolean>(false);
 
     const onClick = useCallback(() => {
         if (queryModel.hasSelections) {
             if (handleClick) {
                 handleClick(
-                    () => setShowMoveSamplesModal(true),
+                    () => setShowModal(true),
                     'Cannot Move ' + capitalizeFirstChar(entityDataType.nounPlural)
                 );
             } else {
-                setShowMoveSamplesModal(true);
+                setShowModal(true);
             }
         }
     }, [entityDataType, handleClick, queryModel]);
@@ -49,7 +45,7 @@ export const SampleMoveMenuItem: FC<Props> = memo(props => {
     }, [actions, queryModel.id, onSuccess]);
 
     const onClose = useCallback(() => {
-        setShowMoveSamplesModal(false);
+        setShowModal(false);
     }, []);
 
     return (
@@ -62,7 +58,7 @@ export const SampleMoveMenuItem: FC<Props> = memo(props => {
                 maxSelection={maxSelected}
                 nounPlural={entityDataType.nounPlural.toLowerCase()}
             />
-            {showMoveSamplesModal && (
+            {showModal && (
                 <EntityMoveModal
                     queryModel={queryModel}
                     useSelected
@@ -70,14 +66,13 @@ export const SampleMoveMenuItem: FC<Props> = memo(props => {
                     onCancel={onClose}
                     maxSelected={maxSelected}
                     entityDataType={entityDataType}
-                    moveFn={api.entity.moveSamples}
-                    targetAppURL={AppURL.create(isMedia ? MEDIA_KEY : SAMPLES_KEY, queryModel.queryName)}
+                    targetAppURL={AppURL.create(entityDataType.instanceKey, queryModel.queryName)}
                 />
             )}
         </>
     );
 });
 
-SampleMoveMenuItem.defaultProps = {
+EntityMoveMenuItem.defaultProps = {
     maxSelected: MAX_EDITABLE_GRID_ROWS,
 };

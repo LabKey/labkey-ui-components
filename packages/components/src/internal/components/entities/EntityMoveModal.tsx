@@ -31,18 +31,10 @@ export interface EntityMoveModalProps {
     api?: ComponentsAPIWrapper;
     entityDataType: EntityDataType;
     maxSelected: number;
-    moveFn: (
-        sourceContainer: Container,
-        targetContainerPath: string,
-        rowIds?: number[],
-        selectionKey?: string,
-        useSnapshotSelection?: boolean,
-        auditUserComment?: string
-    ) => void;
     onAfterMove: () => void;
     onCancel: () => void;
     queryModel: QueryModel;
-    sourceContainer?: Container; // used in the single move case when the item is not in the current container
+    currentContainer?: Container; // used in the single move case when the item is not in the current container
     targetAppURL?: AppURL;
     useSelected: boolean;
 }
@@ -51,13 +43,12 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
     const {
         api = getDefaultAPIWrapper(),
         onAfterMove,
-        sourceContainer,
+        currentContainer,
         queryModel,
         onCancel,
         useSelected,
         entityDataType,
         maxSelected,
-        moveFn,
         targetAppURL,
     } = props;
     const { nounPlural } = entityDataType;
@@ -118,9 +109,10 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
             const useSnapshotSelection = useSelected && movingAll && queryModel.filterArray.length > 0;
 
             try {
-                await moveFn(
-                    sourceContainer,
+                await api.entity.moveEntities(
+                    currentContainer,
                     targetContainerPath,
+                    entityDataType,
                     rowIds_,
                     selectionKey,
                     useSnapshotSelection,
@@ -161,12 +153,11 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
             }
         },
         [
-            sourceContainer,
+            currentContainer,
             confirmationData,
             entityDataType,
             useSelected,
             queryModel.filterArray.length,
-            moveFn,
             selectionKey,
             targetAppURL,
             createNotification,
@@ -231,7 +222,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                     nounPlural={nounPlural}
                     onCancel={onCancel}
                     onConfirm={onConfirm}
-                    sourceContainer={sourceContainer}
+                    currentContainer={currentContainer}
                     title={title}
                 >
                     {message}

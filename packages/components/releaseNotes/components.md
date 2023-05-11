@@ -5,6 +5,22 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Issue 47784: When there is ony one sample type in a tabbed grid, default to that type's tab instead of "All Samples"
 
+### version 2.335.0
+*Released* : 11 May 2023
+- Add support for moving sources (data classes)
+  - Refactor components for samples
+  - Add properties to EntityDataType
+
+### version 2.334.0
+*Released*: 8 May 2023
+* Add ExtendedMap
+* Convert QueryInfo to plain JS  class
+    * Convert all Immutable properties to JS based types or ExtendedMap
+    * Convert all usages of QueryInfo to expect updated types
+    * Remove insertColumns in favor of ExtendedMap.mergeAt
+* ViewInfo: Remove logic from constructor
+    - All transformation logic moved to fromJsonForTests
+
 ### version 2.333.3
 *Released*: 7 May 2023
 * Bulk edit improvement

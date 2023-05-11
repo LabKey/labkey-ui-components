@@ -17,7 +17,7 @@ describe('EntityMoveConfirmationModal', () => {
         return {
             nounPlural: 'samples',
             onConfirm: jest.fn(),
-            sourceContainer: TEST_FOLDER_CONTAINER,
+            currentContainer: TEST_FOLDER_CONTAINER,
         };
     }
 

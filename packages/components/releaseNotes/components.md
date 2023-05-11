@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released* : TBD
+### version 2.335.0
+*Released* : 11 May 2023
 - Add support for moving sources (data classes)
   - Refactor components for samples
   - Add properties to EntityDataType

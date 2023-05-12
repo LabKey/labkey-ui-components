@@ -10,7 +10,7 @@ export const WindowFocusCheckExpiredSession: FC = () => {
         // Note the extra second (1s in this case) for the timeout before we query whoami, this
         // is to allow time for the server login from the other tab to take hold.
         setTimeout(() => {
-            onTabFocus();
+            onTabFocus?.();
         }, 1000);
     };
 

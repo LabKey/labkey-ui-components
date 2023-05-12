@@ -11,6 +11,8 @@ import { SchemaQuery } from '../public/SchemaQuery';
 
 import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/constants';
 
+import { DisableableMenuItem } from '../internal/components/samples/DisableableMenuItem';
+
 import { AssayImportSubMenuItemImpl } from './AssayImportSubMenuItem';
 
 const DEFAULT_PROPS = {
@@ -26,10 +28,23 @@ describe('AssayImportSubMenuItem', () => {
     test('loading', () => {
         const wrapper = mount(<AssayImportSubMenuItemImpl {...DEFAULT_PROPS} isLoaded={false} />);
 
+        expect(wrapper.find(SubMenuItem)).toHaveLength(0);
+        expect(wrapper.find(DisableableMenuItem)).toHaveLength(0);
+
         expect(wrapper.find('.fa-spinner')).toHaveLength(1);
         expect(wrapper.find(MenuItem)).toHaveLength(1);
+        expect(wrapper.find(MenuItem).text()).toBe(' Loading assays...');
+
+        wrapper.unmount();
+    });
+
+    test('disabled', () => {
+        const wrapper = mount(<AssayImportSubMenuItemImpl {...DEFAULT_PROPS} disabled />);
+
+        expect(wrapper.find('.fa-spinner')).toHaveLength(0);
         expect(wrapper.find(SubMenuItem)).toHaveLength(0);
-        expect(wrapper.find(OverlayTrigger)).toHaveLength(0);
+        expect(wrapper.find(MenuItem)).toHaveLength(1);
+        expect(wrapper.find(DisableableMenuItem)).toHaveLength(1);
 
         wrapper.unmount();
     });
@@ -41,8 +56,16 @@ describe('AssayImportSubMenuItem', () => {
 
         expect(wrapper.find('.fa-spinner')).toHaveLength(0);
         expect(wrapper.find(MenuItem)).toHaveLength(0);
-        expect(wrapper.find(SubMenuItem)).toHaveLength(1);
-        expect(wrapper.find(OverlayTrigger)).toHaveLength(0);
+        expect(wrapper.find(DisableableMenuItem)).toHaveLength(0);
+
+        const submenuitem = wrapper.find(SubMenuItem);
+        expect(submenuitem).toHaveLength(1);
+        expect(submenuitem.text()).toBe('Import Assay Data');
+        expect(submenuitem.prop('disabled')).toBeFalsy();
+
+        const assayitems = submenuitem.prop('items');
+        expect(assayitems.length).toBe(2);
+        expect(assayitems[0].disabled).toBeFalsy();
 
         wrapper.unmount();
     });
@@ -53,7 +76,7 @@ describe('AssayImportSubMenuItem', () => {
         expect(wrapper.find('.fa-spinner')).toHaveLength(0);
         expect(wrapper.find(MenuItem)).toHaveLength(0);
         expect(wrapper.find(SubMenuItem)).toHaveLength(0);
-        expect(wrapper.find(OverlayTrigger)).toHaveLength(0);
+        expect(wrapper.find(DisableableMenuItem)).toHaveLength(0);
 
         wrapper.unmount();
     });
@@ -65,14 +88,18 @@ describe('AssayImportSubMenuItem', () => {
         );
 
         expect(wrapper.find('.fa-spinner')).toHaveLength(0);
-        expect(wrapper.find(SubMenuItem)).toHaveLength(0);
+        expect(wrapper.find(MenuItem)).toHaveLength(0);
+        expect(wrapper.find(DisableableMenuItem)).toHaveLength(0);
 
-        const menuitem = wrapper.find(MenuItem);
-        expect(menuitem).toHaveLength(1);
-        expect(menuitem.text()).toBe('Import Assay Data');
-        expect(menuitem.props().disabled).toBeTruthy();
-        const trigger = wrapper.find(OverlayTrigger);
-        expect(trigger).toHaveLength(1);
+        const submenuitem = wrapper.find(SubMenuItem);
+        expect(submenuitem).toHaveLength(1);
+        expect(submenuitem.text()).toBe('Import Assay Data');
+        expect(submenuitem.prop('disabled')).toBeFalsy();
+
+        const assayitems = submenuitem.prop('items');
+        expect(assayitems.length).toBe(5);
+        expect(assayitems[0].disabled).toBeTruthy();
+        expect(assayitems[0].disabledMsg).toBe('Select one or more items.');
 
         wrapper.unmount();
     });
@@ -92,12 +119,16 @@ describe('AssayImportSubMenuItem', () => {
 
         expect(wrapper.find('.fa-spinner')).toHaveLength(0);
         expect(wrapper.find(MenuItem)).toHaveLength(0);
-        expect(wrapper.find(OverlayTrigger)).toHaveLength(0);
+        expect(wrapper.find(DisableableMenuItem)).toHaveLength(0);
 
-        const submenu = wrapper.find(SubMenuItem);
-        expect(submenu).toHaveLength(1);
-        expect(submenu.text()).toBe('Test Assay Import');
-        expect(submenu.props().disabled).toBeFalsy();
+        const submenuitem = wrapper.find(SubMenuItem);
+        expect(submenuitem).toHaveLength(1);
+        expect(submenuitem.text()).toBe('Test Assay Import');
+        expect(submenuitem.prop('disabled')).toBeFalsy();
+
+        const assayitems = submenuitem.prop('items');
+        expect(assayitems.length).toBe(5);
+        expect(assayitems[0].disabled).toBeFalsy();
 
         wrapper.unmount();
     });

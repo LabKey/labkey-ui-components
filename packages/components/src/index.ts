@@ -1522,7 +1522,7 @@ export type {
     IEntityTypeOption,
     IParentOption,
     EntityChoice,
-    DataTypeEntity
+    DataTypeEntity,
 } from './internal/components/entities/models';
 export type {
     SelectInputChange,

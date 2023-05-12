@@ -9,7 +9,7 @@ import { ComponentType } from 'react';
 
 import { Container } from '../components/base/models/Container';
 import { User } from '../components/base/models/User';
-import {ProjectConfigurableDataType} from "../components/entities/models";
+import { ProjectConfigurableDataType } from '../components/entities/models';
 
 const user = new User({
     ...getServerContext().user,
@@ -72,13 +72,12 @@ export type NotebookNotificationSettings = ComponentType;
 export type NotebookProjectSettings = ComponentType;
 export type WorkflowNotificationSettings = ComponentType;
 
-
 interface ProjectFreezerSelectionProps {
+    disabledTypesMap?: { [key: string]: number[] };
+    onSuccess?: () => void;
     projectId?: string;
     showWarning?: boolean;
     updateDataTypeExclusions?: (dataType: any, exclusions: number[]) => void;
-    onSuccess?: () => void;
-    disabledTypesMap?: { [key: string]: number[] };
 }
 
 export type ProjectFreezerSelection = ComponentType<ProjectFreezerSelectionProps>;

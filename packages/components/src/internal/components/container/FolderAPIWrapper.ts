@@ -6,14 +6,14 @@ import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
 export interface ProjectSettingsOptions {
     allowUserSpecifiedNames?: boolean;
+    disabledAssayDesigns?: number[];
+    disabledDataClasses?: number[];
+    disabledSampleTypes?: number[];
+    disabledStorages?: number[];
     name?: string;
     nameAsTitle?: boolean;
     prefix?: string;
     title?: string;
-    disabledSampleTypes?: number[];
-    disabledDataClasses?: number[];
-    disabledAssayDesigns?: number[];
-    disabledStorages?: number[];
 }
 
 export interface FolderAPIWrapper {

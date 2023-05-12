@@ -9,7 +9,7 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { getDataTypeDataCount } from '../project/actions';
 
-import {DataTypeEntity, EntityDataType, ProjectConfigurableDataType} from './models';
+import { DataTypeEntity, EntityDataType, ProjectConfigurableDataType } from './models';
 
 interface Props {
     allDataCounts?: { [key: string]: number };
@@ -52,7 +52,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
         if (allDataCounts) setDataCounts(allDataCounts);
 
         if (allDataTypes) setDataTypes(allDataTypes);
-        else if (!!entityDataType) loadDataTypes(); // use entitydatatype
+        else if (entityDataType) loadDataTypes(); // use entitydatatype
 
         setDataType(entityDataType?.projectConfigurableDataType);
 
@@ -77,8 +77,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
     }, [api.query, entityDataType, allDataTypes]);
 
     const ensureCount = useCallback(async () => {
-        if (!showWarning)
-            return;
+        if (!showWarning) return;
 
         if (dataCounts) return;
 
@@ -139,8 +138,8 @@ export const DataTypeSelector: FC<Props> = memo(props => {
                 const dataCount = dataCounts[rowId + ''];
                 return (
                     <Alert bsStyle="warning" className="left-margin">
-                        {dataCount} {entityDataType?.nounPlural ?? 'sample(s)'} will no longer be visible in this project. They won't be
-                        deleted and lineage relationships won't change.{' '}
+                        {dataCount} {entityDataType?.nounPlural ?? 'sample(s)'} will no longer be visible in this
+                        project. They won't be deleted and lineage relationships won't change.{' '}
                     </Alert>
                 );
             }
@@ -187,7 +186,9 @@ export const DataTypeSelector: FC<Props> = memo(props => {
                                                     className="form-check-input filter-faceted__checkbox"
                                                     type="checkbox"
                                                     name={'field-value-' + index}
-                                                    onChange={event => onChange(dataType.rowId, false, event.target.checked)}
+                                                    onChange={event =>
+                                                        onChange(dataType.rowId, false, event.target.checked)
+                                                    }
                                                     checked={uncheckedEntities?.indexOf(dataType.rowId) < 0}
                                                     disabled={disabled}
                                                 />
@@ -207,9 +208,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
                                 })}
                             </ul>
                         )}
-                        {(!loading && dataTypes.length === 0) && (
-                            <div className="help-block">No {headerLabel}</div>
-                        )}
+                        {!loading && dataTypes.length === 0 && <div className="help-block">No {headerLabel}</div>}
                     </Col>
                 </Row>
             </div>

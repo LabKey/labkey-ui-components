@@ -1,10 +1,10 @@
-import {ActionURL, Ajax, Query, Utils} from '@labkey/api';
+import { ActionURL, Ajax, Query, Utils } from '@labkey/api';
 
-import {caseInsensitive, handleRequestFailure} from '../../util/utils';
+import { caseInsensitive, handleRequestFailure } from '../../util/utils';
 import { DataTypeEntity, ProjectConfigurableDataType } from '../entities/models';
 import { getContainerFilter } from '../../query/api';
 import { SCHEMAS } from '../../schemas';
-import {SAMPLE_MANAGER_APP_PROPERTIES} from "../../app/constants";
+import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
 export async function getProjectExcludedDataTypes(excludedContainer: string): Promise<{ [key: string]: number[] }> {
     return new Promise((resolve, reject) => {

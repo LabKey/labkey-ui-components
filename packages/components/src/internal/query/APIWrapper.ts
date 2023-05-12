@@ -2,7 +2,7 @@ import { List, Map } from 'immutable';
 import { Query } from '@labkey/api';
 
 import { QueryInfo } from '../../public/QueryInfo';
-import {DataTypeEntity, EntityDataType, IEntityTypeOption} from '../components/entities/models';
+import { DataTypeEntity, EntityDataType, IEntityTypeOption } from '../components/entities/models';
 import { getEntityTypeOptions, getProjectConfigurableEntityTypeOptions } from '../components/entities/actions';
 
 import { getGridViews, incrementClientSideMetricCount } from '../actions';
@@ -26,14 +26,14 @@ export interface QueryAPIWrapper {
         excludeSessionView?: boolean,
         includeHidden?: boolean
     ) => Promise<ViewInfo[]>;
-    getQueryDetails: (options: GetQueryDetailsOptions) => Promise<QueryInfo>;
-    incrementClientSideMetricCount: (featureArea: string, metricName: string) => void;
-    selectDistinctRows: (selectDistinctOptions: Query.SelectDistinctOptions) => Promise<Query.SelectDistinctResponse>;
-    selectRows: (options: SelectRowsOptions) => Promise<SelectRowsResponse>;
     getProjectConfigurableEntityTypeOptions: (
         entityDataType: EntityDataType,
         containerPath?: string
     ) => Promise<DataTypeEntity[]>;
+    getQueryDetails: (options: GetQueryDetailsOptions) => Promise<QueryInfo>;
+    incrementClientSideMetricCount: (featureArea: string, metricName: string) => void;
+    selectDistinctRows: (selectDistinctOptions: Query.SelectDistinctOptions) => Promise<Query.SelectDistinctResponse>;
+    selectRows: (options: SelectRowsOptions) => Promise<SelectRowsResponse>;
 }
 
 export class QueryServerAPIWrapper implements QueryAPIWrapper {

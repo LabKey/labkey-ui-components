@@ -17,6 +17,7 @@ import { AuditBehaviorTypes, Filter, Query, Utils } from '@labkey/api';
 import { List, Map, OrderedMap, Record } from 'immutable';
 
 import { immerable } from 'immer';
+
 import { ExtendedMap } from '../../../public/ExtendedMap';
 
 import { decodePart, encodePart, SchemaQuery } from '../../../public/SchemaQuery';
@@ -534,10 +535,10 @@ export interface EntityDataType {
     getInstanceSchemaQuery?: (datatype?: string) => SchemaQuery;
     importFileAction?: string;
     importFileController?: string;
-    instanceKey?: string;
     inputColumnName?: string;
     inputTypeValueField?: string;
     insertColumnNamePrefix?: string;
+    instanceKey?: string;
     instanceSchemaName: string;
     isFromSharedContainer?: boolean;
     listingSchemaQuery: SchemaQuery;
@@ -549,8 +550,8 @@ export interface EntityDataType {
     nounSingular: string;
     operationConfirmationActionName: string;
     operationConfirmationControllerName: string;
-    sampleFinderCardType?: SampleFinderCardType;
     projectConfigurableDataType?: ProjectConfigurableDataType;
+    sampleFinderCardType?: SampleFinderCardType;
     supportHasNoValueInQuery?: boolean;
     typeIcon?: string;
     typeListingSchemaQuery: SchemaQuery;
@@ -637,9 +638,9 @@ export interface MoveEntitiesResult {
 }
 
 export interface DataTypeEntity {
+    description?: string;
+    label: string;
+    lsid?: string;
     rowId: number;
     type: ProjectConfigurableDataType;
-    label: string;
-    description?: string;
-    lsid?: string;
 }

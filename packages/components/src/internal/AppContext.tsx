@@ -25,9 +25,8 @@ import {
     NotebookNotificationSettings,
     NotebookProjectSettings,
     ProjectFreezerSelection,
-    WorkflowNotificationSettings
-} from './app/models';
-import { ReferencingNotebooks } from './app/models';
+    WorkflowNotificationSettings,
+, ReferencingNotebooks } from './app/models';
 import { User } from './components/base/models/User';
 import { DomainDetails } from './components/domainproperties/models';
 import { EntityDataType } from './components/entities/models';

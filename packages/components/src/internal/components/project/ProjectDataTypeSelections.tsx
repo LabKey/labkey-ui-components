@@ -1,26 +1,27 @@
 import React, { FC, memo, useCallback, useState } from 'react';
-import {Button, Col, Row} from 'react-bootstrap';
+import { Button, Col, Row } from 'react-bootstrap';
 
 import { resolveErrorMessage } from '../../util/messaging';
 import { Alert } from '../base/Alert';
-import {EntityDataType, ProjectConfigurableDataType} from '../entities/models';
+import { EntityDataType, ProjectConfigurableDataType } from '../entities/models';
 
 import { DataTypeSelector } from '../entities/DataTypeSelector';
 
-import {FolderAPIWrapper, ProjectSettingsOptions} from "../container/FolderAPIWrapper";
+import { FolderAPIWrapper, ProjectSettingsOptions } from '../container/FolderAPIWrapper';
 
 interface Props {
+    api?: FolderAPIWrapper;
+    disabledTypesMap?: { [key: string]: number[] };
     entityDataTypes?: EntityDataType[];
+    onSuccess?: () => void;
     projectId?: string;
     showWarning?: boolean;
     updateDataTypeExclusions: (dataType: ProjectConfigurableDataType, exclusions: number[]) => void;
-    onSuccess?: () => void;
-    api?: FolderAPIWrapper;
-    disabledTypesMap?: { [key: string]: number[] };
 }
 
 export const ProjectDataTypeSelections: FC<Props> = memo(props => {
-    const { api, entityDataTypes, showWarning, projectId, updateDataTypeExclusions, onSuccess, disabledTypesMap } = props;
+    const { api, entityDataTypes, showWarning, projectId, updateDataTypeExclusions, onSuccess, disabledTypesMap } =
+        props;
 
     const [dirty, setDirty] = useState<boolean>(false);
     const [error, setError] = useState<string>();
@@ -30,8 +31,7 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
 
     const updateDataTypeExclusions_ = useCallback(
         (dataType: ProjectConfigurableDataType, exclusions: number[]) => {
-            if (updateDataTypeExclusions)
-                updateDataTypeExclusions(dataType, exclusions);
+            if (updateDataTypeExclusions) updateDataTypeExclusions(dataType, exclusions);
 
             if (projectId) {
                 setDataTypeExclusion(prev => {
@@ -65,7 +65,6 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
         } finally {
             setIsSaving(false);
         }
-
     }, [isSaving, onSuccess, projectId, dataTypeExclusion]);
 
     return (
@@ -83,7 +82,9 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
                                         showWarning={showWarning}
                                         entityDataType={entityDataType}
                                         updateUncheckedTypes={updateDataTypeExclusions_}
-                                        uncheckedEntitiesDB={disabledTypesMap?.[entityDataType.projectConfigurableDataType]}
+                                        uncheckedEntitiesDB={
+                                            disabledTypesMap?.[entityDataType.projectConfigurableDataType]
+                                        }
                                     />
                                 </Col>
                             );
@@ -107,4 +108,3 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
         </div>
     );
 });
-

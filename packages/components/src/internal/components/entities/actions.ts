@@ -803,7 +803,9 @@ export function moveEntities(
         }
 
         return Ajax.request({
-            url: buildURL(entityDataType.moveControllerName, entityDataType.moveActionName, undefined, { container: sourceContainer?.path }),
+            url: buildURL(entityDataType.moveControllerName, entityDataType.moveActionName, undefined, {
+                container: sourceContainer?.path,
+            }),
             method: 'POST',
             params,
             success: Utils.getCallbackWrapper(response => {
@@ -821,5 +823,3 @@ export function moveEntities(
         });
     });
 }
-
-

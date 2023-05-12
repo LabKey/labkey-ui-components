@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { getServerContext } from '@labkey/api';
 
 import classNames from 'classnames';
@@ -16,7 +16,7 @@ import {
     isELNEnabled,
     isProductProjectDataTypeSelectionEnabled,
     isProductProjectsEnabled,
-    isSampleStatusEnabled
+    isSampleStatusEnabled,
 } from '../../app/utils';
 import { ProjectSettings } from '../project/ProjectSettings';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
@@ -25,15 +25,16 @@ import { BarTenderSettingsForm } from '../labels/BarTenderSettingsForm';
 
 import { Alert } from '../base/Alert';
 
-import { SITE_SECURITY_ROLES } from './constants';
-import { BasePermissions } from './BasePermissions';
-import { showPremiumFeatures } from './utils';
+import { ProjectDataTypeSelections } from '../project/ProjectDataTypeSelections';
+import { AppContext, useAppContext } from '../../AppContext';
+import { resolveErrorMessage } from '../../util/messaging';
+import { getProjectExcludedDataTypes } from '../project/actions';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
 import { useAdminAppContext } from './useAdminAppContext';
-import {ProjectDataTypeSelections} from "../project/ProjectDataTypeSelections";
-import {AppContext, useAppContext} from "../../AppContext";
-import {resolveErrorMessage} from "../../util/messaging";
-import {getProjectExcludedDataTypes} from "../project/actions";
-import {LoadingSpinner} from "../base/LoadingSpinner";
+import { showPremiumFeatures } from './utils';
+import { BasePermissions } from './BasePermissions';
+import { SITE_SECURITY_ROLES } from './constants';
 
 const TITLE = 'Settings';
 
@@ -44,7 +45,8 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
     const [loadingExclusions, setLoadingExclusions] = useState<boolean>(false);
     const { moduleContext, user, project, container } = useServerContext();
     const { createNotification, dismissNotifications } = useNotificationsContext();
-    const { NotebookProjectSettingsComponent, projectDataTypes, ProjectFreezerSelectionComponent } = useAdminAppContext();
+    const { NotebookProjectSettingsComponent, projectDataTypes, ProjectFreezerSelectionComponent } =
+        useAdminAppContext();
     const [disabledTypesMap, setDisabledTypesMap] = useState<{ [key: string]: number[] }>(undefined);
     const { api } = useAppContext<AppContext>();
 
@@ -97,9 +99,8 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
         );
     }, [moduleContext]);
 
-    const projectSettings = useMemo(() : React.ReactNode => {
-        if (!isProductProjectsEnabled(moduleContext))
-            return null;
+    const projectSettings = useMemo((): React.ReactNode => {
+        if (!isProductProjectsEnabled(moduleContext)) return null;
 
         return (
             <>
@@ -126,7 +127,7 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
                 )}
                 {isProductProjectDataTypeSelectionEnabled() && loadingExclusions && <LoadingSpinner />}
             </>
-        )
+        );
     }, []);
 
     if (!user.isAdmin) {

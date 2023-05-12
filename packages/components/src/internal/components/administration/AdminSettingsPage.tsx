@@ -109,7 +109,6 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
                     <>
                         <ProjectDataTypeSelections
                             entityDataTypes={projectDataTypes}
-                            showWarning={true}
                             projectId={container.id}
                             key={container.id}
                             updateDataTypeExclusions={onSettingsChange}

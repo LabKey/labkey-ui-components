@@ -558,6 +558,7 @@ export interface EntityDataType {
     typeNounAsParentSingular: string;
     typeNounSingular: string;
     uniqueFieldKey: string;
+    labelColorCol?: string;
 }
 
 export class OperationConfirmationData {
@@ -640,6 +641,8 @@ export interface MoveEntitiesResult {
 export interface DataTypeEntity {
     description?: string;
     label: string;
+    labelcolor?: string;
+    sublabel?: string;
     lsid?: string;
     rowId: number;
     type: ProjectConfigurableDataType;

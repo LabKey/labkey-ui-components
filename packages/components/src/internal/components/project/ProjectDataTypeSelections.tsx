@@ -15,12 +15,11 @@ interface Props {
     entityDataTypes?: EntityDataType[];
     onSuccess?: () => void;
     projectId?: string;
-    showWarning?: boolean;
     updateDataTypeExclusions: (dataType: ProjectConfigurableDataType, exclusions: number[]) => void;
 }
 
 export const ProjectDataTypeSelections: FC<Props> = memo(props => {
-    const { api, entityDataTypes, showWarning, projectId, updateDataTypeExclusions, onSuccess, disabledTypesMap } =
+    const { api, entityDataTypes, projectId, updateDataTypeExclusions, onSuccess, disabledTypesMap } =
         props;
 
     const [dirty, setDirty] = useState<boolean>(false);
@@ -79,7 +78,6 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
                             return (
                                 <Col key={index} xs={12} md={4} className="bottom-spacing">
                                     <DataTypeSelector
-                                        showWarning={showWarning}
                                         entityDataType={entityDataType}
                                         updateUncheckedTypes={updateDataTypeExclusions_}
                                         uncheckedEntitiesDB={

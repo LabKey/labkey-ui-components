@@ -48,16 +48,11 @@ export function getDataTypeDataCount(
     allDataTypes?: DataTypeEntity[]
 ): Promise<{ [key: string]: number }> {
     return new Promise((resolve, reject) => {
-        const byLsid = dataType === 'sampletype';
-        const byLabel = dataType === 'assaydesign';
+        const byLsid = dataType === 'sampletype' || dataType === 'assaydesign';
         const lookup = {};
         if (byLsid && allDataTypes) {
             allDataTypes.forEach(type => {
                 lookup[type.lsid] = type.rowId;
-            });
-        } else if (byLabel && allDataTypes) {
-            allDataTypes.forEach(type => {
-                lookup[type.label.toLowerCase()] = type.rowId;
             });
         }
         Query.executeSql({
@@ -69,8 +64,7 @@ export function getDataTypeDataCount(
                 result.rows?.forEach(row => {
                     const type = caseInsensitive(row, 'Type');
                     const count = caseInsensitive(row, 'DataCount');
-                    if (byLsid) typeCounts[lookup[type]] = count;
-                    else if (byLabel) typeCounts[lookup[type.toLowerCase()]] = count;
+                    if (byLsid) typeCounts[lookup[type] + ''] = count;
                     else typeCounts[type] = count;
                 });
                 resolve(typeCounts);

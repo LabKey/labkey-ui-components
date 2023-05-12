@@ -37,6 +37,7 @@ export const AssayRunDataType: EntityDataType = {
     descriptionPlural: 'assay runs',
     uniqueFieldKey: 'RowId',
     dependencyText: undefined,
+    projectConfigurableDataType: 'assaydesign',
 };
 
 export const AssayResultDataType: EntityDataType = {
@@ -65,7 +66,6 @@ export const AssayResultDataType: EntityDataType = {
     dependencyText: undefined,
     filterCardHeaderClass: 'filter-card__header-purple',
     sampleFinderCardType: 'assaydata',
-    projectConfigurableDataType: 'assaydesign',
 };
 
 export const SamplePropertyDataType: EntityDataType = {
@@ -130,6 +130,7 @@ export const SampleTypeDataType: EntityDataType = {
     typeIcon: 'sample_set',
     sampleFinderCardType: 'sampleparent',
     projectConfigurableDataType: 'sampletype',
+    labelColorCol: 'labelcolor',
 };
 
 export const DataClassDataType: EntityDataType = {

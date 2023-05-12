@@ -28,7 +28,8 @@ export interface QueryAPIWrapper {
     ) => Promise<ViewInfo[]>;
     getProjectConfigurableEntityTypeOptions: (
         entityDataType: EntityDataType,
-        containerPath?: string
+        containerPath?: string,
+        containerFilter?: Query.ContainerFilter
     ) => Promise<DataTypeEntity[]>;
     getQueryDetails: (options: GetQueryDetailsOptions) => Promise<QueryInfo>;
     incrementClientSideMetricCount: (featureArea: string, metricName: string) => void;

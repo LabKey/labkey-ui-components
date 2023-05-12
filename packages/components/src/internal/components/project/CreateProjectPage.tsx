@@ -49,9 +49,11 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
 
     const updateDataTypeExclusions = useCallback(
         (dataType: ProjectConfigurableDataType, exclusions: number[]) => {
-            const uncheckedUpdates = { ...dataTypeExclusion };
-            uncheckedUpdates[dataType] = exclusions;
-            setDataTypeExclusion(uncheckedUpdates);
+            setDataTypeExclusion((prevState) => {
+                const uncheckedUpdates = { ...prevState };
+                uncheckedUpdates[dataType] = exclusions;
+                return uncheckedUpdates;
+            });
         },
         [dataTypeExclusion]
     );
@@ -110,7 +112,6 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
                     <>
                         <ProjectDataTypeSelections
                             entityDataTypes={projectDataTypes}
-                            showWarning={true}
                             projectId={null}
                             updateDataTypeExclusions={updateDataTypeExclusions}
                         />

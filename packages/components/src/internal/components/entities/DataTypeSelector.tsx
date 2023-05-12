@@ -10,6 +10,8 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 import { getDataTypeDataCount } from '../project/actions';
 
 import { DataTypeEntity, EntityDataType, ProjectConfigurableDataType } from './models';
+import {ColorIcon} from "../base/ColorIcon";
+import {Tip} from "../base/Tip";
 
 interface Props {
     allDataCounts?: { [key: string]: number };
@@ -19,8 +21,8 @@ interface Props {
     dataTypeLabel?: string;
     disabled?: boolean;
     entityDataType?: EntityDataType;
-    showWarning?: boolean;
     toggleSelectAll?: boolean;
+    columns?: number; // partition list to N columns
 
     uncheckedEntitiesDB: number[];
 
@@ -35,10 +37,10 @@ export const DataTypeSelector: FC<Props> = memo(props => {
         entityDataType,
         allDataTypes,
         dataTypeLabel,
-        showWarning,
         uncheckedEntitiesDB,
         allDataCounts,
         updateUncheckedTypes,
+        columns,
     } = props;
 
     const [dataTypes, setDataTypes] = useState<DataTypeEntity[]>(undefined);
@@ -77,13 +79,11 @@ export const DataTypeSelector: FC<Props> = memo(props => {
     }, [api.query, entityDataType, allDataTypes]);
 
     const ensureCount = useCallback(async () => {
-        if (!showWarning) return;
-
         if (dataCounts) return;
 
         const results = await getDataTypeDataCount(entityDataType.projectConfigurableDataType, dataTypes);
         setDataCounts(results);
-    }, [dataCounts, showWarning, dataTypes, entityDataType, allDataTypes]);
+    }, [dataCounts, dataTypes, entityDataType, allDataTypes]);
 
     const onChange = useCallback(
         (entityRowId: number, toggle: boolean, check?: boolean) => {
@@ -126,8 +126,6 @@ export const DataTypeSelector: FC<Props> = memo(props => {
 
     const getUncheckedEntityWarning = useCallback(
         (rowId: number): React.ReactNode => {
-            if (!showWarning) return null;
-
             if (uncheckedEntitiesDB?.indexOf(rowId) > -1) return null;
 
             if (uncheckedEntities?.indexOf(rowId) > -1) {
@@ -136,9 +134,11 @@ export const DataTypeSelector: FC<Props> = memo(props => {
                 if (!dataCounts[rowId + '']) return null;
 
                 const dataCount = dataCounts[rowId + ''];
+                const nounPlural = entityDataType?.nounPlural?.toLowerCase() ?? 'samples';
+                const nounSingular = entityDataType?.nounSingular?.toLowerCase() ?? 'sample';
                 return (
                     <Alert bsStyle="warning" className="left-margin">
-                        {dataCount} {entityDataType?.nounPlural ?? 'sample(s)'} will no longer be visible in this
+                        {dataCount} {dataCount > 1 ? nounPlural : nounSingular} will no longer be visible in this
                         project. They won't be deleted and lineage relationships won't change.{' '}
                     </Alert>
                 );
@@ -146,7 +146,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
 
             return null;
         },
-        [uncheckedEntities, uncheckedEntitiesDB, showWarning, dataCounts, entityDataType]
+        [uncheckedEntities, uncheckedEntitiesDB, dataCounts, entityDataType, dataTypes]
     );
 
     const headerLabel = useMemo(() => {
@@ -156,6 +156,79 @@ export const DataTypeSelector: FC<Props> = memo(props => {
 
         return null;
     }, [dataTypeLabel, entityDataType]);
+
+    const getEntitiesSubList = useCallback(
+        (dataTypeEntities: DataTypeEntity[]): React.ReactNode => {
+            return (
+                <ul className="nav nav-stacked labkey-wizard-pills">
+                    {dataTypeEntities?.map((dataType, index) => {
+                        return (
+                            <li key={dataType.rowId} className="project-faceted__li">
+                                <div className="form-check">
+                                    <input
+                                        className="form-check-input filter-faceted__checkbox"
+                                        type="checkbox"
+                                        name={'field-value-' + index}
+                                        onChange={event =>
+                                            onChange(dataType.rowId, false, event.target.checked)
+                                        }
+                                        checked={uncheckedEntities?.indexOf(dataType.rowId) < 0}
+                                        disabled={disabled}
+                                    />
+                                    <div
+                                        className="left-margin project-datatype-faceted__value"
+                                        onClick={() => onChange(dataType.rowId, true)}
+                                    >
+                                        {dataType.labelcolor && <ColorIcon cls="label_color color-icon__circle-small" value={dataType.labelcolor} />}
+                                        {dataType.label}
+                                    </div>
+                                </div>
+                                {!!dataType.sublabel && (
+                                    <div className="help-block left-margin">{dataType.sublabel}</div>
+                                )}
+                                {!!dataType.description && (
+                                    <Tip caption={dataType.description}>
+                                        <div className="help-block left-margin short_description">{dataType.description}</div>
+                                    </Tip>
+                                )}
+                                {getUncheckedEntityWarning(dataType.rowId)}
+                            </li>
+                        );
+                    })}
+                </ul>
+            )
+        }, [uncheckedEntities, uncheckedEntitiesDB, dataCounts, entityDataType, dataTypes]
+    );
+
+    const getEntitiesList = useCallback(
+        (): React.ReactNode => {
+            if (!columns || columns === 1) {
+                return (
+                    <Col xs={12}>
+                        {getEntitiesSubList(dataTypes)}
+                    </Col>
+                )
+            };
+
+            const lists = [];
+            const colWidth = 12 / columns;
+            const subSize = Math.ceil(dataTypes.length / columns);
+            for (let i = 0 ; i < columns; i++) {
+                const maxInd = Math.min(dataTypes.length, (i + 1) * subSize);
+                const subList = dataTypes.slice(i*subSize, maxInd);
+                lists.push(
+                    <Col xs={12} md={colWidth} key={i}>
+                        {getEntitiesSubList(subList)}
+                    </Col>
+                )
+            }
+            return (
+                <>
+                    {lists}
+                </>
+            );
+        }, [uncheckedEntities, uncheckedEntitiesDB, dataCounts, entityDataType, dataTypes, columns]
+    );
 
     if (!dataTypes || loading) return <LoadingSpinner />;
 
@@ -174,42 +247,9 @@ export const DataTypeSelector: FC<Props> = memo(props => {
                     </Row>
                 )}
                 <Row>
-                    <Col xs={12}>
-                        {loading && <LoadingSpinner />}
-                        {!loading && (
-                            <ul className="nav nav-stacked labkey-wizard-pills">
-                                {dataTypes?.map((dataType, index) => {
-                                    return (
-                                        <li key={index} className="filter-faceted__li">
-                                            <div className="form-check">
-                                                <input
-                                                    className="form-check-input filter-faceted__checkbox"
-                                                    type="checkbox"
-                                                    name={'field-value-' + index}
-                                                    onChange={event =>
-                                                        onChange(dataType.rowId, false, event.target.checked)
-                                                    }
-                                                    checked={uncheckedEntities?.indexOf(dataType.rowId) < 0}
-                                                    disabled={disabled}
-                                                />
-                                                <div
-                                                    className="left-margin project-datatype-faceted__value"
-                                                    onClick={() => onChange(dataType.rowId, true)}
-                                                >
-                                                    {dataType.label}
-                                                </div>
-                                            </div>
-                                            {!!dataType.description && (
-                                                <div className="help-block left-margin">{dataType.description}</div>
-                                            )}
-                                            {getUncheckedEntityWarning(dataType.rowId)}
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        )}
-                        {!loading && dataTypes.length === 0 && <div className="help-block">No {headerLabel}</div>}
-                    </Col>
+                    {loading && <LoadingSpinner/>}
+                    {!loading && getEntitiesList()}
+                    {!loading && dataTypes.length === 0 && <div className="help-block">No {headerLabel}</div>}
                 </Row>
             </div>
         </>

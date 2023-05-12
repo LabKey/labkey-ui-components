@@ -76,7 +76,6 @@ interface ProjectFreezerSelectionProps {
     disabledTypesMap?: { [key: string]: number[] };
     onSuccess?: () => void;
     projectId?: string;
-    showWarning?: boolean;
     updateDataTypeExclusions?: (dataType: any, exclusions: number[]) => void;
 }
 

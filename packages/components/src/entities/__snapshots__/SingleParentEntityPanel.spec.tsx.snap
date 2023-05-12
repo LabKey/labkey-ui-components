@@ -31,6 +31,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
       "nounSingular": "data",
       "operationConfirmationActionName": "getDataOperationConfirmationData.api",
       "operationConfirmationControllerName": "experiment",
+      "projectConfigurableDataType": "dataclass",
       "sampleFinderCardType": "dataclassparent",
       "typeIcon": "source_type",
       "typeListingSchemaQuery": SchemaQuery {
@@ -104,6 +105,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
         "nounSingular": "data",
         "operationConfirmationActionName": "getDataOperationConfirmationData.api",
         "operationConfirmationControllerName": "experiment",
+        "projectConfigurableDataType": "dataclass",
         "sampleFinderCardType": "dataclassparent",
         "typeIcon": "source_type",
         "typeListingSchemaQuery": SchemaQuery {
@@ -191,6 +193,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
           "nounSingular": "data",
           "operationConfirmationActionName": "getDataOperationConfirmationData.api",
           "operationConfirmationControllerName": "experiment",
+          "projectConfigurableDataType": "dataclass",
           "sampleFinderCardType": "dataclassparent",
           "typeIcon": "source_type",
           "typeListingSchemaQuery": SchemaQuery {
@@ -293,6 +296,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
             "nounSingular": "data",
             "operationConfirmationActionName": "getDataOperationConfirmationData.api",
             "operationConfirmationControllerName": "experiment",
+            "projectConfigurableDataType": "dataclass",
             "sampleFinderCardType": "dataclassparent",
             "typeIcon": "source_type",
             "typeListingSchemaQuery": SchemaQuery {
@@ -5336,6 +5340,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
       "nounSingular": "data",
       "operationConfirmationActionName": "getDataOperationConfirmationData.api",
       "operationConfirmationControllerName": "experiment",
+      "projectConfigurableDataType": "dataclass",
       "sampleFinderCardType": "dataclassparent",
       "typeIcon": "source_type",
       "typeListingSchemaQuery": SchemaQuery {
@@ -5409,6 +5414,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
         "nounSingular": "data",
         "operationConfirmationActionName": "getDataOperationConfirmationData.api",
         "operationConfirmationControllerName": "experiment",
+        "projectConfigurableDataType": "dataclass",
         "sampleFinderCardType": "dataclassparent",
         "typeIcon": "source_type",
         "typeListingSchemaQuery": SchemaQuery {
@@ -5496,6 +5502,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
           "nounSingular": "data",
           "operationConfirmationActionName": "getDataOperationConfirmationData.api",
           "operationConfirmationControllerName": "experiment",
+          "projectConfigurableDataType": "dataclass",
           "sampleFinderCardType": "dataclassparent",
           "typeIcon": "source_type",
           "typeListingSchemaQuery": SchemaQuery {
@@ -5598,6 +5605,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
             "nounSingular": "data",
             "operationConfirmationActionName": "getDataOperationConfirmationData.api",
             "operationConfirmationControllerName": "experiment",
+            "projectConfigurableDataType": "dataclass",
             "sampleFinderCardType": "dataclassparent",
             "typeIcon": "source_type",
             "typeListingSchemaQuery": SchemaQuery {
@@ -5721,6 +5729,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
       "nounSingular": "data",
       "operationConfirmationActionName": "getDataOperationConfirmationData.api",
       "operationConfirmationControllerName": "experiment",
+      "projectConfigurableDataType": "dataclass",
       "sampleFinderCardType": "dataclassparent",
       "typeIcon": "source_type",
       "typeListingSchemaQuery": SchemaQuery {
@@ -5823,6 +5832,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
         "nounSingular": "data",
         "operationConfirmationActionName": "getDataOperationConfirmationData.api",
         "operationConfirmationControllerName": "experiment",
+        "projectConfigurableDataType": "dataclass",
         "sampleFinderCardType": "dataclassparent",
         "typeIcon": "source_type",
         "typeListingSchemaQuery": SchemaQuery {
@@ -5986,6 +5996,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
           "nounSingular": "data",
           "operationConfirmationActionName": "getDataOperationConfirmationData.api",
           "operationConfirmationControllerName": "experiment",
+          "projectConfigurableDataType": "dataclass",
           "sampleFinderCardType": "dataclassparent",
           "typeIcon": "source_type",
           "typeListingSchemaQuery": SchemaQuery {
@@ -6164,6 +6175,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             "nounSingular": "data",
             "operationConfirmationActionName": "getDataOperationConfirmationData.api",
             "operationConfirmationControllerName": "experiment",
+            "projectConfigurableDataType": "dataclass",
             "sampleFinderCardType": "dataclassparent",
             "typeIcon": "source_type",
             "typeListingSchemaQuery": SchemaQuery {

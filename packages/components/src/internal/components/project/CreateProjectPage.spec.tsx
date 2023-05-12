@@ -16,6 +16,8 @@ import { AppURL } from '../../url/AppURL';
 import { TEST_LIMS_STARTER_MODULE_CONTEXT } from '../../productFixtures';
 
 import { CreateProjectContainer, CreateProjectContainerProps, CreateProjectPage } from './CreateProjectPage';
+import {AdminAppContext, AppContext} from "../../AppContext";
+import {getTestAPIWrapper} from "../../APIWrapper";
 
 describe('CreateProjectPage', () => {
     function getDefaultProps(overrides?: Partial<FolderAPIWrapper>): CreateProjectContainerProps {
@@ -23,6 +25,13 @@ describe('CreateProjectPage', () => {
             api: getFolderTestAPIWrapper(jest.fn, overrides),
             onCancel: jest.fn(),
             onCreated: jest.fn(),
+        };
+    }
+
+    function getDefaultAppContext(admin = {}): Partial<AppContext> {
+        return {
+            admin: admin as AdminAppContext,
+            api: getTestAPIWrapper(),
         };
     }
 
@@ -43,8 +52,9 @@ describe('CreateProjectPage', () => {
         const onCreated = jest.fn();
 
         // Act
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <CreateProjectContainer {...getDefaultProps({ createProject })} onCreated={onCreated} />,
+            getDefaultAppContext(),
             { moduleContext: TEST_LIMS_STARTER_MODULE_CONTEXT }
         );
 
@@ -76,7 +86,7 @@ describe('CreateProjectPage', () => {
         const replace = jest.fn();
         const wrapper = mountWithAppServerContext(
             <CreateProjectPage {...createMockWithRouterProps(jest.fn, { replace })} />,
-            undefined,
+            getDefaultAppContext(),
             { moduleContext: TEST_LIMS_STARTER_MODULE_CONTEXT, user: TEST_USER_APP_ADMIN }
         );
 

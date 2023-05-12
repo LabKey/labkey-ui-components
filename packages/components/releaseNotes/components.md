@@ -5,6 +5,22 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD May 2023
 * Issue 47794: App sample type assay button to show assay submenu items in disabled state
 
+### version 2.335.0
+*Released* : 11 May 2023
+- Add support for moving sources (data classes)
+  - Refactor components for samples
+  - Add properties to EntityDataType
+
+### version 2.334.0
+*Released*: 8 May 2023
+* Add ExtendedMap
+* Convert QueryInfo to plain JS  class
+    * Convert all Immutable properties to JS based types or ExtendedMap
+    * Convert all usages of QueryInfo to expect updated types
+    * Remove insertColumns in favor of ExtendedMap.mergeAt
+* ViewInfo: Remove logic from constructor
+    - All transformation logic moved to fromJsonForTests
+
 ### version 2.333.3
 *Released*: 7 May 2023
 * Bulk edit improvement
@@ -153,16 +169,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 4 April 2023
 * Merge release23.3-SNAPSHOT to develop:
     * includes changes from 2.302.4
-
-### version 2.334.0
-*Released*: 8 May 2023
-* Add ExtendedMap
-* Convert QueryInfo to plain JS  class
-  * Convert all Immutable properties to JS based types or ExtendedMap
-  * Convert all usages of QueryInfo to expect updated types
-  * Remove insertColumns in favor of ExtendedMap.mergeAt
-* ViewInfo: Remove logic from constructor
-    - All transformation logic moved to fromJsonForTests
 
 ### version 2.323.0
 *Released*: 1 April 2023

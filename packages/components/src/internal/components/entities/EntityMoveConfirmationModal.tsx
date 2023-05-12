@@ -17,11 +17,11 @@ import { Container } from '../base/models/Container';
 export interface EntityMoveConfirmationModalProps extends Omit<ConfirmModalProps, 'onConfirm'> {
     nounPlural: string;
     onConfirm: (targetContainer: string, targetName: string, userComment: string) => void;
-    sourceContainer?: Container;
+    currentContainer?: Container;
 }
 
 export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> = memo(props => {
-    const { children, onConfirm, nounPlural, sourceContainer, ...confirmModalProps } = props;
+    const { children, onConfirm, nounPlural, currentContainer, ...confirmModalProps } = props;
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [containerOptions, setContainerOptions] = useState<SelectInputOption[]>();
@@ -29,7 +29,7 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
     const [auditUserComment, setAuditUserComment] = useState<string>();
     const { api } = useAppContext<AppContext>();
     const { container, moduleContext } = useServerContext();
-    const container_ = sourceContainer ?? container;
+    const container_ = currentContainer ?? container;
 
     useEffect(
         () => {

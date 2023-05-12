@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.336.1
+*Released* : 12 May 2023
+* Issue 47794: App sample type assay button to show assay submenu items in disabled state
+
 ### version 2.336.0
 *Released* : 12 May 2023
 * Issue 47024: WindowFocusCheckExpiredSession to add tab focus window listener to check for expired session in apps

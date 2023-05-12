@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.335.1-defaultSamplesTab.1",
+  "version": "2.336.2-defaultSamplesTab.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

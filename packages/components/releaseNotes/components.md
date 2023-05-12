@@ -5,6 +5,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Issue 47784: When there is ony one sample type in a tabbed grid, default to that type's tab instead of "All Samples"
 
+### version 2.336.1
+*Released* : 12 May 2023
+* Issue 47794: App sample type assay button to show assay submenu items in disabled state
+
+### version 2.336.0
+*Released* : 12 May 2023
+* Issue 47024: WindowFocusCheckExpiredSession to add tab focus window listener to check for expired session in apps
+
 ### version 2.335.0
 *Released* : 11 May 2023
 - Add support for moving sources (data classes)
@@ -169,16 +177,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 4 April 2023
 * Merge release23.3-SNAPSHOT to develop:
     * includes changes from 2.302.4
-
-### version 2.334.0
-*Released*: 8 May 2023
-* Add ExtendedMap
-* Convert QueryInfo to plain JS  class
-  * Convert all Immutable properties to JS based types or ExtendedMap
-  * Convert all usages of QueryInfo to expect updated types
-  * Remove insertColumns in favor of ExtendedMap.mergeAt
-* ViewInfo: Remove logic from constructor
-    - All transformation logic moved to fromJsonForTests
 
 ### version 2.323.0
 *Released*: 1 April 2023

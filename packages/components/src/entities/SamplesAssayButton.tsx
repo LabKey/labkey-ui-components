@@ -11,8 +11,6 @@ import { RequiresPermission } from '../internal/components/base/Permissions';
 import { ResponsiveMenuButton } from '../internal/components/buttons/ResponsiveMenuButton';
 
 import { isSamplesSchema } from '../internal/components/samples/utils';
-import { MAX_EDITABLE_GRID_ROWS } from '../internal/constants';
-import { DisableableButton } from '../internal/components/buttons/DisableableButton';
 
 import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
 
@@ -33,25 +31,6 @@ export const SamplesAssayButtonImpl: FC<Props & InjectedAssayModel> = memo(props
     if (!isSamplesSchema(model?.schemaQuery) && !isPicklist) return null;
 
     const picklistName = isPicklist ? model.queryName : undefined;
-
-    const selectedCount = model?.selections?.size;
-    if (!asSubMenu) {
-        let disabledMsg;
-        if (selectedCount > MAX_EDITABLE_GRID_ROWS) {
-            disabledMsg = 'At most ' + MAX_EDITABLE_GRID_ROWS + ' samples can be selected.';
-        } else if (!selectedCount) {
-            disabledMsg = 'Select one or more samples.';
-        }
-        if (disabledMsg) {
-            return (
-                <RequiresPermission permissionCheck="any" perms={PermissionTypes.Insert}>
-                    <DisableableButton className="responsive-menu" disabledMsg={disabledMsg}>
-                        Assay
-                    </DisableableButton>
-                </RequiresPermission>
-            );
-        }
-    }
 
     let items = (
         <AssayImportSubMenuItem

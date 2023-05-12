@@ -4,7 +4,7 @@ import { SCHEMAS } from '../../schemas';
 
 import { DELETE_ASSAY_RUNS_TOPIC, DELETE_SAMPLES_TOPIC } from '../../util/helpLinks';
 
-import { SAMPLE_TYPE_KEY } from '../../app/constants';
+import { SAMPLE_TYPE_KEY, SAMPLES_KEY } from '../../app/constants';
 
 import { SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR } from '../samples/constants';
 
@@ -101,10 +101,13 @@ export const SamplePropertyDataType: EntityDataType = {
 export const SampleTypeDataType: EntityDataType = {
     typeListingSchemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
     listingSchemaQuery: SCHEMAS.EXP_TABLES.MATERIALS,
+    instanceKey: SAMPLES_KEY,
     instanceSchemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
     appUrlPrefixParts: ['samples'],
     operationConfirmationControllerName: 'experiment',
     operationConfirmationActionName: SAMPLE_OPERATION_CONFIRMATION_ACTION,
+    moveActionName: 'moveSamples.api',
+    moveControllerName: 'experiment',
     nounSingular: 'sample',
     nounPlural: 'samples',
     nounAsParentSingular: 'Parent',
@@ -133,6 +136,8 @@ export const DataClassDataType: EntityDataType = {
     typeListingSchemaQuery: SCHEMAS.EXP_TABLES.DATA_CLASSES,
     listingSchemaQuery: SCHEMAS.EXP_TABLES.DATA,
     instanceSchemaName: SCHEMAS.DATA_CLASSES.SCHEMA,
+    moveActionName: 'moveSources.api',
+    moveControllerName: 'experiment',
     operationConfirmationControllerName: 'experiment',
     operationConfirmationActionName: DATA_OPERATION_CONFIRMATION_ACTION,
     nounSingular: 'data',

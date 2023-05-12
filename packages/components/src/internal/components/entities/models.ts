@@ -534,12 +534,15 @@ export interface EntityDataType {
     getInstanceSchemaQuery?: (datatype?: string) => SchemaQuery;
     importFileAction?: string;
     importFileController?: string;
+    instanceKey?: string;
     inputColumnName?: string;
     inputTypeValueField?: string;
     insertColumnNamePrefix?: string;
     instanceSchemaName: string;
     isFromSharedContainer?: boolean;
     listingSchemaQuery: SchemaQuery;
+    moveActionName?: string;
+    moveControllerName?: string;
     nounAsParentPlural: string;
     nounAsParentSingular: string;
     nounPlural: string;
@@ -627,7 +630,7 @@ export interface IParentAlias {
     parentValue: IParentOption;
 }
 
-export interface MoveSamplesResult {
+export interface MoveEntitiesResult {
     containerPath: string;
     success: boolean;
     updateCounts: Record<string, number>;

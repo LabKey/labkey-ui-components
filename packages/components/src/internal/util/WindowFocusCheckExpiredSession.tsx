@@ -1,8 +1,8 @@
-import React, { FC, useEffect } from 'react';
+import React, { ComponentType, FC, useEffect } from 'react';
 
 import { useServerContext } from '../components/base/ServerContext';
 
-export const WindowFocusCheckExpiredSession: FC = () => {
+const useWindowFocusCheckExpiredSession = (): void => {
     const { WebSocket } = useServerContext();
     const onTabFocus = WebSocket?.checkForExpiredSession;
 
@@ -30,3 +30,12 @@ export const WindowFocusCheckExpiredSession: FC = () => {
 
     return null;
 };
+
+export function withWindowFocusCheckExpiredSession<T>(Component: ComponentType<T>): ComponentType<T> {
+    const wrapped: FC<T> = props => {
+        useWindowFocusCheckExpiredSession();
+        return <Component {...(props as T)} />;
+    };
+
+    return wrapped as FC<T>;
+}

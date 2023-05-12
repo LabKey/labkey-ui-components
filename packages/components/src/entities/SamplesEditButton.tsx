@@ -32,7 +32,7 @@ import { EntityCrossProjectSelectionConfirmModal } from './EntityCrossProjectSel
 import { shouldIncludeMenuItem } from './utils';
 import { SampleDeleteMenuItem } from './SampleDeleteMenuItem';
 import { EntityLineageEditMenuItem } from './EntityLineageEditMenuItem';
-import { SampleMoveMenuItem } from './SampleMoveMenuItem';
+import { EntityMoveMenuItem } from './EntityMoveMenuItem';
 
 interface OwnProps {
     combineParentTypes?: boolean;
@@ -208,7 +208,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
                 )}
                 {showEdit && (showMoveToProject || showDelete || showStudy) && <MenuItem divider />}
                 {showMoveToProject && (
-                    <SampleMoveMenuItem
+                    <EntityMoveMenuItem
                         actions={actions}
                         entityDataType={entityDataType}
                         queryModel={model}

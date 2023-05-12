@@ -14,7 +14,7 @@ import {
     getEntityTypeData,
     getOriginalParentsFromLineage,
     handleEntityFileImport,
-    moveSamples,
+    moveEntities,
 } from './actions';
 import { DataOperation } from './constants';
 import {
@@ -22,7 +22,7 @@ import {
     EntityDataType,
     EntityIdCreationModel,
     IEntityTypeOption,
-    MoveSamplesResult,
+    MoveEntitiesResult,
     OperationConfirmationData,
 } from './models';
 
@@ -67,14 +67,15 @@ export interface EntityAPIWrapper {
         saveToPipeline?: boolean
     ) => Promise<any>;
     loadNameExpressionOptions: (containerPath?: string) => Promise<GetNameExpressionOptionsResponse>;
-    moveSamples: (
+    moveEntities: (
         sourceContainer: Container,
         targetContainer: string,
+        entityDataType: EntityDataType,
         rowIds?: number[],
         selectionKey?: string,
         useSnapshotSelection?: boolean,
         auditUserComment?: string
-    ) => Promise<MoveSamplesResult>;
+    ) => Promise<MoveEntitiesResult>;
 }
 
 export class EntityServerAPIWrapper implements EntityAPIWrapper {
@@ -84,7 +85,7 @@ export class EntityServerAPIWrapper implements EntityAPIWrapper {
     getOriginalParentsFromLineage = getOriginalParentsFromLineage;
     handleEntityFileImport = handleEntityFileImport;
     loadNameExpressionOptions = loadNameExpressionOptions;
-    moveSamples = moveSamples;
+    moveEntities = moveEntities;
 }
 
 /**
@@ -101,7 +102,7 @@ export function getEntityTestAPIWrapper(
         getOriginalParentsFromLineage: mockFn(),
         handleEntityFileImport: mockFn(),
         loadNameExpressionOptions: mockFn(),
-        moveSamples: mockFn(),
+        moveEntities: mockFn(),
         ...overrides,
     };
 }

@@ -9,20 +9,21 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { getDataTypeDataCount } from '../project/actions';
 
+import { ColorIcon } from '../base/ColorIcon';
+import { Tip } from '../base/Tip';
+
 import { DataTypeEntity, EntityDataType, ProjectConfigurableDataType } from './models';
-import {ColorIcon} from "../base/ColorIcon";
-import {Tip} from "../base/Tip";
 
 interface Props {
     allDataCounts?: { [key: string]: number };
     allDataTypes?: DataTypeEntity[]; // either use allDataTypes to pass in dataTypes, or specify entityDataType to query dataTypes
     api?: ComponentsAPIWrapper;
+    columns?: number;
     dataTypeKey?: string;
     dataTypeLabel?: string;
     disabled?: boolean;
     entityDataType?: EntityDataType;
-    toggleSelectAll?: boolean;
-    columns?: number; // partition list to N columns
+    toggleSelectAll?: boolean; // partition list to N columns
 
     uncheckedEntitiesDB: number[];
 
@@ -169,9 +170,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
                                         className="form-check-input filter-faceted__checkbox"
                                         type="checkbox"
                                         name={'field-value-' + index}
-                                        onChange={event =>
-                                            onChange(dataType.rowId, false, event.target.checked)
-                                        }
+                                        onChange={event => onChange(dataType.rowId, false, event.target.checked)}
                                         checked={uncheckedEntities?.indexOf(dataType.rowId) < 0}
                                         disabled={disabled}
                                     />
@@ -179,7 +178,12 @@ export const DataTypeSelector: FC<Props> = memo(props => {
                                         className="left-margin project-datatype-faceted__value"
                                         onClick={() => onChange(dataType.rowId, true)}
                                     >
-                                        {dataType.labelcolor && <ColorIcon cls="label_color color-icon__circle-small" value={dataType.labelcolor} />}
+                                        {dataType.labelcolor && (
+                                            <ColorIcon
+                                                cls="label_color color-icon__circle-small"
+                                                value={dataType.labelcolor}
+                                            />
+                                        )}
                                         {dataType.label}
                                     </div>
                                 </div>
@@ -188,7 +192,9 @@ export const DataTypeSelector: FC<Props> = memo(props => {
                                 )}
                                 {!!dataType.description && (
                                     <Tip caption={dataType.description}>
-                                        <div className="help-block left-margin short_description">{dataType.description}</div>
+                                        <div className="help-block left-margin short_description">
+                                            {dataType.description}
+                                        </div>
                                     </Tip>
                                 )}
                                 {getUncheckedEntityWarning(dataType.rowId)}
@@ -196,39 +202,30 @@ export const DataTypeSelector: FC<Props> = memo(props => {
                         );
                     })}
                 </ul>
-            )
-        }, [uncheckedEntities, uncheckedEntitiesDB, dataCounts, entityDataType, dataTypes]
-    );
-
-    const getEntitiesList = useCallback(
-        (): React.ReactNode => {
-            if (!columns || columns === 1) {
-                return (
-                    <Col xs={12}>
-                        {getEntitiesSubList(dataTypes)}
-                    </Col>
-                )
-            };
-
-            const lists = [];
-            const colWidth = 12 / columns;
-            const subSize = Math.ceil(dataTypes.length / columns);
-            for (let i = 0 ; i < columns; i++) {
-                const maxInd = Math.min(dataTypes.length, (i + 1) * subSize);
-                const subList = dataTypes.slice(i*subSize, maxInd);
-                lists.push(
-                    <Col xs={12} md={colWidth} key={i}>
-                        {getEntitiesSubList(subList)}
-                    </Col>
-                )
-            }
-            return (
-                <>
-                    {lists}
-                </>
             );
-        }, [uncheckedEntities, uncheckedEntitiesDB, dataCounts, entityDataType, dataTypes, columns]
+        },
+        [uncheckedEntities, uncheckedEntitiesDB, dataCounts, entityDataType, dataTypes]
     );
+
+    const getEntitiesList = useCallback((): React.ReactNode => {
+        if (!columns || columns === 1) {
+            return <Col xs={12}>{getEntitiesSubList(dataTypes)}</Col>;
+        }
+
+        const lists = [];
+        const colWidth = 12 / columns;
+        const subSize = Math.ceil(dataTypes.length / columns);
+        for (let i = 0; i < columns; i++) {
+            const maxInd = Math.min(dataTypes.length, (i + 1) * subSize);
+            const subList = dataTypes.slice(i * subSize, maxInd);
+            lists.push(
+                <Col xs={12} md={colWidth} key={i}>
+                    {getEntitiesSubList(subList)}
+                </Col>
+            );
+        }
+        return <>{lists}</>;
+    }, [uncheckedEntities, uncheckedEntitiesDB, dataCounts, entityDataType, dataTypes, columns]);
 
     if (!dataTypes || loading) return <LoadingSpinner />;
 
@@ -247,7 +244,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
                     </Row>
                 )}
                 <Row>
-                    {loading && <LoadingSpinner/>}
+                    {loading && <LoadingSpinner />}
                     {!loading && getEntitiesList()}
                     {!loading && dataTypes.length === 0 && <div className="help-block">No {headerLabel}</div>}
                 </Row>

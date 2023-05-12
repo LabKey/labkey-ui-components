@@ -420,7 +420,8 @@ export async function getProjectConfigurableEntityTypeOptions(
     const { typeListingSchemaQuery, filterArray } = entityDataType;
 
     const result = await selectRows({
-        columns: 'LSID,Name,RowId,Description' + (entityDataType.labelColorCol ? (',' + entityDataType.labelColorCol) : ''),
+        columns:
+            'LSID,Name,RowId,Description' + (entityDataType.labelColorCol ? ',' + entityDataType.labelColorCol : ''),
         containerFilter:
             containerFilter ?? entityDataType.containerFilter ?? Query.containerFilter.currentPlusProjectAndShared,
         containerPath,
@@ -434,7 +435,9 @@ export async function getProjectConfigurableEntityTypeOptions(
             row =>
                 ({
                     label: caseInsensitive(row, 'Name').value,
-                    labelcolor: entityDataType.labelColorCol ? caseInsensitive(row, entityDataType.labelColorCol).value : undefined,
+                    labelcolor: entityDataType.labelColorCol
+                        ? caseInsensitive(row, entityDataType.labelColorCol).value
+                        : undefined,
                     rowId: caseInsensitive(row, 'RowId').value,
                     description: caseInsensitive(row, 'Description').value,
                     type: entityDataType.projectConfigurableDataType as ProjectConfigurableDataType,

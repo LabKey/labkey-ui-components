@@ -19,8 +19,7 @@ interface Props {
 }
 
 export const ProjectDataTypeSelections: FC<Props> = memo(props => {
-    const { api, entityDataTypes, projectId, updateDataTypeExclusions, onSuccess, disabledTypesMap } =
-        props;
+    const { api, entityDataTypes, projectId, updateDataTypeExclusions, onSuccess, disabledTypesMap } = props;
 
     const [dirty, setDirty] = useState<boolean>(false);
     const [error, setError] = useState<string>();

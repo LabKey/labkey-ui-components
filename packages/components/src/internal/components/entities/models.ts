@@ -541,6 +541,7 @@ export interface EntityDataType {
     instanceKey?: string;
     instanceSchemaName: string;
     isFromSharedContainer?: boolean;
+    labelColorCol?: string;
     listingSchemaQuery: SchemaQuery;
     moveActionName?: string;
     moveControllerName?: string;
@@ -550,7 +551,6 @@ export interface EntityDataType {
     nounSingular: string;
     operationConfirmationActionName: string;
     operationConfirmationControllerName: string;
-    projectConfigurableDataType?: ProjectConfigurableDataType;
     sampleFinderCardType?: SampleFinderCardType;
     supportHasNoValueInQuery?: boolean;
     typeIcon?: string;
@@ -558,7 +558,7 @@ export interface EntityDataType {
     typeNounAsParentSingular: string;
     typeNounSingular: string;
     uniqueFieldKey: string;
-    labelColorCol?: string;
+    projectConfigurableDataType?: ProjectConfigurableDataType;
 }
 
 export class OperationConfirmationData {
@@ -642,8 +642,8 @@ export interface DataTypeEntity {
     description?: string;
     label: string;
     labelcolor?: string;
-    sublabel?: string;
     lsid?: string;
     rowId: number;
+    sublabel?: string;
     type: ProjectConfigurableDataType;
 }

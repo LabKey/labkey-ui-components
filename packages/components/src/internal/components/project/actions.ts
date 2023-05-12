@@ -1,30 +1,25 @@
-import { Query } from '@labkey/api';
+import {ActionURL, Ajax, Query, Utils} from '@labkey/api';
 
-import { selectRows } from '../../query/selectRows';
-import { SchemaQuery } from '../../../public/SchemaQuery';
-import { caseInsensitive } from '../../util/utils';
+import {caseInsensitive, handleRequestFailure} from '../../util/utils';
 import { DataTypeEntity, ProjectConfigurableDataType } from '../entities/models';
 import { getContainerFilter } from '../../query/api';
 import { SCHEMAS } from '../../schemas';
+import {SAMPLE_MANAGER_APP_PROPERTIES} from "../../app/constants";
 
-export async function getProjectConfigurableEntityTypeOptions(): Promise<{ [key: string]: number[] }> {
-    const result = await selectRows({
-        columns: 'RowId, Type',
-        containerFilter: Query.containerFilter.current, // current folder only
-        schemaQuery: new SchemaQuery('exp', 'DataTypeExclusion'),
+export async function getProjectExcludedDataTypes(excludedContainer: string): Promise<{ [key: string]: number[] }> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getDataTypeExclusion.api'),
+            method: 'GET',
+            params: {
+                excludedContainer,
+            },
+            success: Utils.getCallbackWrapper(response => {
+                resolve(response['excludedDataTypes']);
+            }),
+            failure: handleRequestFailure(reject, 'Failed to get project exclusion data'),
+        });
     });
-
-    const typeExclusions = {};
-
-    result.rows.forEach(row => {
-        const rowId = caseInsensitive(row, 'RowId').value;
-        const type = caseInsensitive(row, 'Type').value;
-
-        if (!typeExclusions[type]) typeExclusions[type] = [];
-        typeExclusions[type].push(rowId);
-    });
-
-    return typeExclusions;
 }
 
 export function getProjectDataTypeDataCountSql(dataType: ProjectConfigurableDataType): string {

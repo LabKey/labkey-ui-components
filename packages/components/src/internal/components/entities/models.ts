@@ -638,5 +638,5 @@ export interface DataTypeEntity {
     type: ProjectConfigurableDataType;
     label: string;
     description?: string;
-    lsid: string;
+    lsid?: string;
 }

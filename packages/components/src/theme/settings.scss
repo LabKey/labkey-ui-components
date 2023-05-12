@@ -73,3 +73,18 @@
 .progress {
     margin-bottom: 10px;
 }
+
+.left-margin {
+    margin-left: 20px;
+}
+
+.project-datatype-faceted__value {
+    display: inline-block;
+    padding-right: 5px;
+    word-break: break-all;
+    color: $text-color;
+
+    &:hover {
+        cursor: pointer;
+    }
+}

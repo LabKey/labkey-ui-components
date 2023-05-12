@@ -171,6 +171,8 @@ import { Cards } from './internal/components/base/Cards';
 import { Setting } from './internal/components/base/Setting';
 import { ValueList } from './internal/components/base/ValueList';
 
+import { DataTypeSelector } from './internal/components/entities/DataTypeSelector';
+
 import { EditorModel } from './internal/components/editable/models';
 import {
     clearSelected,
@@ -1351,6 +1353,7 @@ export {
     ExpandableFilterToggle,
     Setting,
     ValueList,
+    DataTypeSelector,
     // base models, enums, constants
     Container,
     User,
@@ -1515,6 +1518,7 @@ export type {
     IEntityTypeOption,
     IParentOption,
     EntityChoice,
+    DataTypeEntity
 } from './internal/components/entities/models';
 export type {
     SelectInputChange,

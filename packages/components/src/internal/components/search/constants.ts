@@ -16,6 +16,16 @@ export enum SearchCategory {
     WorkflowJob = 'workflowJob',
 }
 
+export enum SearchField {
+    Body = 'body',
+    IdentifiersHi = 'identifiersHi',
+    IdentifiersMed = 'identifiersMed',
+    IdentifiersLo = 'identifiersLo',
+    KeywordsHi = 'keywordsHi',
+    KeywordsMed = 'keywordsMed',
+    KeywordsLo = 'keywordsLo',
+}
+
 export enum SearchScope {
     All = 'All',
     Folder = 'Folder',

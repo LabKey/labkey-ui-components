@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.337.0-fb-projectDataSelection.1",
+  "version": "2.337.0-fb-projectDataSelection.2",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

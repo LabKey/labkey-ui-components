@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Issue 47784: When there is ony one sample type in a tabbed grid, default to that type's tab instead of "All Samples"
 
+### version 2.336.2
+*Released* : 15 May 2023
+* Update shouldShowProductNavigation() to include check for LKB app instead of just hasPremiumModule
+
 ### version 2.336.1
 *Released* : 12 May 2023
 * Issue 47794: App sample type assay button to show assay submenu items in disabled state

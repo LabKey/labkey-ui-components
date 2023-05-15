@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released* : TBD May 2023
+### version 2.336.2
+*Released* : 15 May 2023
 * Update shouldShowProductNavigation() to include check for LKB app instead of just hasPremiumModule
 
 ### version 2.336.1

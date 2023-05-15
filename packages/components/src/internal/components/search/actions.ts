@@ -62,10 +62,11 @@ export interface SearchOptions {
 export type Search = (
     options: SearchOptions,
     moduleContext?: ModuleContext,
-    applyURLResolver?: boolean
+    applyURLResolver?: boolean,
+    request?: (config: Ajax.RequestOptions) => XMLHttpRequest
 ) => Promise<SearchResult>;
 
-export const search: Search = (options, moduleContext, applyURLResolver = true) => {
+export const search: Search = (options, moduleContext, applyURLResolver = true, request = Ajax.request) => {
     // eslint-disable-next-line prefer-const
     let { containerPath, requestHandler, ...params } = options;
 
@@ -96,7 +97,7 @@ export const search: Search = (options, moduleContext, applyURLResolver = true) 
     }
 
     return new Promise((resolve, reject) => {
-        const request = Ajax.request({
+        const request_ = request({
             url: buildURL('search', 'json.api', undefined, {
                 container: containerPath_,
             }),
@@ -111,7 +112,7 @@ export const search: Search = (options, moduleContext, applyURLResolver = true) 
             }),
             failure: handleRequestFailure(reject, 'Failed search query'),
         });
-        requestHandler?.(request);
+        requestHandler?.(request_);
     });
 };
 
@@ -123,6 +124,7 @@ export interface SearchResultWithCardData extends Omit<SearchResult, 'hits'> {
     hits: SearchHitWithCardData[];
 }
 
+/** @deprecated Use search() instead */
 export async function searchUsingIndex(
     options: SearchOptions,
     getCardDataFn?: GetCardDataFn
@@ -132,6 +134,7 @@ export async function searchUsingIndex(
         incrementClientSideMetricCount(appProps.productId + 'Search', 'count');
     }
 
+    // Don't apply the URL Resolver until the data objects have been resolved
     let result = await search(options, undefined, false);
     addDataObjects(result);
     result = new URLResolver().resolveSearchUsingIndex(result);

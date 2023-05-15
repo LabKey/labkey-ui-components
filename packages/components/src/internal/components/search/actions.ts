@@ -32,7 +32,7 @@ import {
     SAMPLE_FINDER_VIEW_NAME,
 } from './utils';
 import { FinderReport, SearchIdData, SearchResultCardData } from './models';
-import { SearchCategory, SearchScope } from './constants';
+import { SearchCategory, SearchField, SearchScope } from './constants';
 
 export type GetCardDataFn = (data: Map<any, any>, category?: string) => SearchResultCardData;
 
@@ -66,6 +66,7 @@ export interface SearchOptions {
     category?: SearchCategory | SearchCategory[];
     containerPath?: string;
     experimentalCustomJson?: boolean;
+    fields?: SearchField[];
     limit?: number;
     normalizeUrls?: boolean;
     offset?: number;

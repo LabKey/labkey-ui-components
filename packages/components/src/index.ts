@@ -307,7 +307,7 @@ import {
     OperationConfirmationData,
 } from './internal/components/entities/models';
 import { EntityMoveModal } from './internal/components/entities/EntityMoveModal';
-import { SearchCategory, SearchScope } from './internal/components/search/constants';
+import { SearchCategory, SearchField, SearchScope } from './internal/components/search/constants';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';
 import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
 import { FIND_SAMPLE_BY_ID_METRIC_AREA, getSearchScopeFromContainerFilter } from './internal/components/search/utils';
@@ -1109,6 +1109,7 @@ export {
     SearchResultCard,
     SearchResultsPanel,
     SearchCategory,
+    SearchField,
     SearchScope,
     getSearchScopeFromContainerFilter,
     // administration

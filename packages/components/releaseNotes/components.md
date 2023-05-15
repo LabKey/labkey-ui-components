@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Project level data type configuration schema and UI
   * TODO
 
+### version 2.336.2
+*Released* : 15 May 2023
+* Update shouldShowProductNavigation() to include check for LKB app instead of just hasPremiumModule
+
 ### version 2.336.1
 *Released* : 12 May 2023
 * Issue 47794: App sample type assay button to show assay submenu items in disabled state

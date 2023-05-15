@@ -148,6 +148,7 @@ export const SearchPanelImpl: FC<SearchPanelImplProps> = memo(props => {
 
 const SEARCH_CATEGORIES = [
     SearchCategory.Assay,
+    SearchCategory.AssayBatch,
     SearchCategory.AssayRun,
     SearchCategory.Data,
     SearchCategory.DataClass,

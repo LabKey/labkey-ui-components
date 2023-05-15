@@ -1,5 +1,6 @@
 export enum SearchCategory {
     Assay = 'assay',
+    AssayBatch = 'assayBatch',
     AssayRun = 'assayRun',
     Concept = 'concept',
     Data = 'data',

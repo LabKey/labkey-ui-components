@@ -13,6 +13,7 @@ import { NameIdSettings } from '../settings/NameIdSettings';
 import { ManageSampleStatusesPanel } from '../samples/ManageSampleStatusesPanel';
 import {
     biologicsIsPrimaryApp,
+    isAppHomeFolder,
     isELNEnabled,
     isProductProjectDataTypeSelectionEnabled,
     isProductProjectsEnabled,
@@ -105,7 +106,7 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
         return (
             <>
                 <ProjectSettings onChange={onSettingsChange} onSuccess={onSettingsSuccess} onPageError={onError} />
-                {isProductProjectDataTypeSelectionEnabled() && !loadingExclusions && (
+                {isProductProjectDataTypeSelectionEnabled() && !loadingExclusions && !isAppHomeFolder() && (
                     <>
                         <ProjectDataTypeSelections
                             entityDataTypes={projectDataTypes}

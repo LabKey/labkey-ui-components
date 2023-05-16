@@ -65,7 +65,7 @@ export function getDataTypeDataCount(
                 result.rows?.forEach(row => {
                     const type = caseInsensitive(row, 'Type');
                     const count = caseInsensitive(row, 'DataCount');
-                    if (byLsid) typeCounts[lookup[type] + ''] = count;
+                    if (byLsid && allDataTypes) typeCounts[lookup[type] + ''] = count;
                     else typeCounts[type] = count;
                 });
                 resolve(typeCounts);

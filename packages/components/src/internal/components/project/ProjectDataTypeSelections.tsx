@@ -71,7 +71,7 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
                 <div className="form-horizontal">
                     <div className="form-subtitle">Data in Project</div>
                     {error && <Alert>{error}</Alert>}
-                    <div className="bottom-spacing">Select what types of data will be used in this project.</div>
+                    <div className="bottom-spacing">Select the types of data that will be used in this project.</div>
                     <Row>
                         {entityDataTypes?.map((entityDataType, index) => {
                             return (

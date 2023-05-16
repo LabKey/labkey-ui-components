@@ -90,7 +90,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     const tabs = useMemo(() => {
         return modelId ? [modelId] : Object.keys(queryModels);
     }, [modelId, queryModels]);
-    const [activeTabId, setActiveTabId] = useState<string>(initialTabId ?? tabs[0]);
+    const [activeTabId, setActiveTabId] = useState<string>(initialTabId ?? (tabs.length === 2 ? tabs[1] : tabs[0]));
     const onTabSelect = useCallback(
         (tab: string) => {
             setActiveTabId(tab);

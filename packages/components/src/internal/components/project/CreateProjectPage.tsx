@@ -69,10 +69,10 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
                 name: formData.get('name') as string,
                 nameAsTitle: !!formData.get('nameAsTitle'),
                 title: formData.get('title') as string,
-                disabledSampleTypes: dataTypeExclusion?.['sampletype'],
-                disabledDataClasses: dataTypeExclusion?.['dataclass'],
-                disabledAssayDesigns: dataTypeExclusion?.['assaydesign'],
-                disabledStorageLocations: dataTypeExclusion?.['storagelocation']
+                disabledSampleTypes: dataTypeExclusion?.['SampleType'],
+                disabledDataClasses: dataTypeExclusion?.['DataClass'],
+                disabledAssayDesigns: dataTypeExclusion?.['AssayDesign'],
+                disabledStorageLocations: dataTypeExclusion?.['StorageLocation']
             };
 
             let project: Container;

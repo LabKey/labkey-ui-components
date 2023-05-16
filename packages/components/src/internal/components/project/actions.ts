@@ -27,11 +27,11 @@ export function getProjectDataTypeDataCountSql(dataType: ProjectConfigurableData
     let from = 'exp.materials ';
     let where = '';
 
-    if (dataType === 'dataclass') {
+    if (dataType === 'DataClass') {
         typeField = 'dataclass';
         from = 'exp.data ';
         where = 'WHERE DataClass IS NOT NULL ';
-    } else if (dataType === 'assaydesign') {
+    } else if (dataType === 'AssayDesign') {
         typeField = 'protocol';
         from = 'exp.AssayRuns ';
     }
@@ -49,7 +49,7 @@ export function getDataTypeDataCount(
 ): Promise<{ [key: string]: number }> {
     return new Promise((resolve, reject) => {
         // samples and assay runs reference their data type by lsid, but dataclass data reference by rowid
-        const byLsid = dataType === 'sampletype' || dataType === 'assaydesign';
+        const byLsid = dataType === 'SampleType' || dataType === 'AssayDesign';
         const lookup = {};
         if (byLsid && allDataTypes) {
             allDataTypes.forEach(type => {

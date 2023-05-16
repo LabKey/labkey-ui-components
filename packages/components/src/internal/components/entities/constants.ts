@@ -37,7 +37,7 @@ export const AssayRunDataType: EntityDataType = {
     descriptionPlural: 'assay runs',
     uniqueFieldKey: 'RowId',
     dependencyText: undefined,
-    projectConfigurableDataType: 'assaydesign',
+    projectConfigurableDataType: 'AssayDesign',
 };
 
 export const AssayResultDataType: EntityDataType = {
@@ -129,7 +129,7 @@ export const SampleTypeDataType: EntityDataType = {
     exprColumnsWithSubSelect: SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR,
     typeIcon: 'sample_set',
     sampleFinderCardType: 'sampleparent',
-    projectConfigurableDataType: 'sampletype',
+    projectConfigurableDataType: 'SampleType',
     labelColorCol: 'labelcolor',
 };
 
@@ -160,7 +160,7 @@ export const DataClassDataType: EntityDataType = {
     filterCardHeaderClass: 'filter-card__header-primary',
     typeIcon: 'source_type',
     sampleFinderCardType: 'dataclassparent',
-    projectConfigurableDataType: 'dataclass',
+    projectConfigurableDataType: 'DataClass',
 };
 
 export const ParentEntityLineageColumns = List.of('Inputs/Materials/First', 'Inputs/Data/First');

@@ -49,9 +49,9 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
 
         try {
             const options: ProjectSettingsOptions = {
-                disabledSampleTypes: dataTypeExclusion?.['sampletype'],
-                disabledDataClasses: dataTypeExclusion?.['dataclass'],
-                disabledAssayDesigns: dataTypeExclusion?.['assaydesign'],
+                disabledSampleTypes: dataTypeExclusion?.['SampleType'],
+                disabledDataClasses: dataTypeExclusion?.['DataClass'],
+                disabledAssayDesigns: dataTypeExclusion?.['AssayDesign'],
             };
 
             await api.updateProjectDataExclusions(options);

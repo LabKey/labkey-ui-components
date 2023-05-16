@@ -487,7 +487,7 @@ export interface IEntityTypeDetails extends IEntityDetails {
 }
 
 export type SampleFinderCardType = 'sampleproperty' | 'sampleparent' | 'dataclassparent' | 'assaydata';
-export type ProjectConfigurableDataType = 'sampletype' | 'dataclass' | 'assaydesign' | 'storagelocation';
+export type ProjectConfigurableDataType = 'SampleType' | 'DataClass' | 'AssayDesign' | 'StorageLocation';
 
 /**
  *  Avoid inline comment or above line comments for properties due to es-lint's limitation on moving comments:

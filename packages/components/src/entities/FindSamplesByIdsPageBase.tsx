@@ -93,6 +93,7 @@ const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> = memo(p
                 afterSampleActionComplete={afterSampleActionComplete}
                 actions={actions}
                 samplesEditableGridProps={samplesEditableGridProps}
+                initialTabId={allSamplesModel.id} // Default to All Samples tab here since this includes the Provided Id column
                 gridButtons={gridButtons}
                 gridButtonProps={{
                     ...gridButtonProps,

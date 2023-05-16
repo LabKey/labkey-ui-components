@@ -2,7 +2,7 @@ import { ActionURL, Ajax, Query, Utils } from '@labkey/api';
 
 import { caseInsensitive, handleRequestFailure } from '../../util/utils';
 import { DataTypeEntity, ProjectConfigurableDataType } from '../entities/models';
-import { getContainerFilter } from '../../query/api';
+import { getContainerFilterForFolder } from '../../query/api';
 import { SCHEMAS } from '../../schemas';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
@@ -57,7 +57,7 @@ export function getDataTypeDataCount(
             });
         }
         Query.executeSql({
-            containerFilter: getContainerFilter(),
+            containerFilter: getContainerFilterForFolder(),
             schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
             sql: getProjectDataTypeDataCountSql(dataType),
             success: result => {

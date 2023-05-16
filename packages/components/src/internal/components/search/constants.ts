@@ -6,7 +6,7 @@ export enum SearchCategory {
     Data = 'data',
     DataClass = 'dataClass',
     File = 'file',
-    FileWorkflowJob = 'file workflowJob',
+    FileWorkflowJob = 'fileWorkflowJob',
     Material = 'material',
     MaterialSource = 'materialSource',
     Media = 'media',

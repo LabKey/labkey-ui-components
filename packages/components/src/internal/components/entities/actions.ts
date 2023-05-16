@@ -435,7 +435,7 @@ export async function getProjectConfigurableEntityTypeOptions(
             row =>
                 ({
                     label: caseInsensitive(row, 'Name').value,
-                    labelcolor: entityDataType.labelColorCol
+                    labelColor: entityDataType.labelColorCol
                         ? caseInsensitive(row, entityDataType.labelColorCol).value
                         : undefined,
                     rowId: caseInsensitive(row, 'RowId').value,

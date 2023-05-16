@@ -28,6 +28,8 @@ interface Props {
     uncheckedEntitiesDB: number[];
 
     updateUncheckedTypes: (dataType: string, unchecked: number[]) => void;
+
+    noHeader?: boolean;
 }
 
 export const DataTypeSelector: FC<Props> = memo(props => {
@@ -42,13 +44,14 @@ export const DataTypeSelector: FC<Props> = memo(props => {
         allDataCounts,
         updateUncheckedTypes,
         columns,
+        noHeader,
     } = props;
 
     const [dataTypes, setDataTypes] = useState<DataTypeEntity[]>(undefined);
     const [dataType, setDataType] = useState<ProjectConfigurableDataType>(undefined);
     const [error, setError] = useState<string>(undefined);
     const [loading, setLoading] = useState<boolean>(false);
-    const [dataCounts, setDataCounts] = useState<{ [key: string]: number }>(null);
+    const [dataCounts, setDataCounts] = useState<{ [key: string]: number }>(undefined);
     const [uncheckedEntities, setUncheckedEntities] = useState<number[]>(undefined);
 
     useEffect(() => {
@@ -60,7 +63,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
         setDataType(entityDataType?.projectConfigurableDataType);
 
         setUncheckedEntities(uncheckedEntitiesDB ?? []);
-    }, [api.query, dataType, entityDataType, allDataTypes, allDataCounts, uncheckedEntitiesDB]);
+    }, [entityDataType, allDataTypes, allDataCounts, uncheckedEntitiesDB]); // include transitive dependency
 
     const loadDataTypes = useCallback(async () => {
         try {
@@ -69,15 +72,13 @@ export const DataTypeSelector: FC<Props> = memo(props => {
 
             const results = await api.query.getProjectConfigurableEntityTypeOptions(entityDataType);
             setDataTypes(results);
-
-            // set uncheckedEntitiesDB
         } catch (e) {
             console.error(e);
             setError(resolveErrorMessage(e));
         } finally {
             setLoading(false);
         }
-    }, [api.query, entityDataType, allDataTypes]);
+    }, [entityDataType]);
 
     const ensureCount = useCallback(async () => {
         if (dataCounts) return;
@@ -106,7 +107,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
             updateUncheckedTypes(dataType, updated);
             setUncheckedEntities(updated);
         },
-        [disabled, uncheckedEntities, dataType, uncheckedEntitiesDB, dataTypes, dataCounts]
+        [disabled, uncheckedEntities, dataType, ensureCount]
     );
 
     const allSelected = useMemo(() => {
@@ -123,7 +124,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
             updateUncheckedTypes(dataType, []);
             setUncheckedEntities([]);
         }
-    }, [allSelected, dataTypes, updateUncheckedTypes, dataType, dataCounts]);
+    }, [allSelected, dataTypes, updateUncheckedTypes, dataType, ensureCount]);
 
     const getUncheckedEntityWarning = useCallback(
         (rowId: number): React.ReactNode => {
@@ -138,7 +139,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
                 const nounPlural = entityDataType?.nounPlural?.toLowerCase() ?? 'samples';
                 const nounSingular = entityDataType?.nounSingular?.toLowerCase() ?? 'sample';
                 return (
-                    <Alert bsStyle="warning" className="left-margin">
+                    <Alert bsStyle="warning" className="margin-left-more">
                         {dataCount} {dataCount > 1 ? nounPlural : nounSingular} will no longer be visible in this
                         project. They won't be deleted and lineage relationships won't change.{' '}
                     </Alert>
@@ -147,7 +148,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
 
             return null;
         },
-        [uncheckedEntities, uncheckedEntitiesDB, dataCounts, entityDataType, dataTypes]
+        [uncheckedEntities, uncheckedEntitiesDB, dataCounts, entityDataType]
     );
 
     const headerLabel = useMemo(() => {
@@ -175,24 +176,24 @@ export const DataTypeSelector: FC<Props> = memo(props => {
                                         disabled={disabled}
                                     />
                                     <div
-                                        className="left-margin project-datatype-faceted__value"
+                                        className="margin-left-more project-datatype-faceted__value"
                                         onClick={() => onChange(dataType.rowId, true)}
                                     >
-                                        {dataType.labelcolor && (
+                                        {dataType.labelColor && (
                                             <ColorIcon
                                                 cls="label_color color-icon__circle-small"
-                                                value={dataType.labelcolor}
+                                                value={dataType.labelColor}
                                             />
                                         )}
                                         {dataType.label}
                                     </div>
                                 </div>
                                 {!!dataType.sublabel && (
-                                    <div className="help-block left-margin">{dataType.sublabel}</div>
+                                    <div className="help-block margin-left-more">{dataType.sublabel}</div>
                                 )}
                                 {!!dataType.description && (
                                     <Tip caption={dataType.description}>
-                                        <div className="help-block left-margin short_description">
+                                        <div className="help-block margin-left-more short_description">
                                             {dataType.description}
                                         </div>
                                     </Tip>
@@ -204,7 +205,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
                 </ul>
             );
         },
-        [uncheckedEntities, uncheckedEntitiesDB, dataCounts, entityDataType, dataTypes]
+        [uncheckedEntities, onChange, disabled, getUncheckedEntityWarning]
     );
 
     const getEntitiesList = useCallback((): React.ReactNode => {
@@ -225,19 +226,19 @@ export const DataTypeSelector: FC<Props> = memo(props => {
             );
         }
         return <>{lists}</>;
-    }, [uncheckedEntities, uncheckedEntitiesDB, dataCounts, entityDataType, dataTypes, columns]);
+    }, [dataTypes, columns, getEntitiesSubList]);
 
     if (!dataTypes || loading) return <LoadingSpinner />;
 
     return (
         <>
-            {error && <Alert>{error}</Alert>}
+            <Alert>{error}</Alert>
             <div className="">
-                {headerLabel && <div className="bottom-spacing content-group-label">{headerLabel}</div>}
+                {headerLabel && !noHeader && <div className="bottom-spacing content-group-label">{headerLabel}</div>}
                 {toggleSelectAll && !disabled && dataTypes?.length > 0 && (
                     <Row>
                         <Col xs={12} className="bottom-spacing">
-                            <div className="filter-clear-all" onClick={onSelectAll}>
+                            <div className="clickable-text" onClick={onSelectAll}>
                                 {allSelected ? 'Deselect All' : 'Select All'}
                             </div>
                         </Col>
@@ -246,7 +247,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
                 <Row>
                     {loading && <LoadingSpinner />}
                     {!loading && getEntitiesList()}
-                    {!loading && dataTypes.length === 0 && <div className="help-block">No {headerLabel}</div>}
+                    {!loading && dataTypes.length === 0 && <div className="help-block margin-left-more">No {headerLabel}</div>}
                 </Row>
             </div>
         </>

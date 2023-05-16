@@ -54,7 +54,7 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
                 disabledAssayDesigns: dataTypeExclusion?.['assaydesign'],
             };
 
-            await api.updateProjectDataType(options);
+            await api.updateProjectDataExclusions(options);
 
             setDirty(false);
             onSuccess();

@@ -68,10 +68,6 @@ export function filterMediaSampleTypes(includeMedia?: boolean): Filter.IFilter[]
     return includeMedia ? [] : [Filter.create('category', 'media', Filter.Types.NEQ_OR_NULL)];
 }
 
-export function filterRegistries(onlyCustom?: boolean): Filter.IFilter[] {
-    return onlyCustom ? [Filter.create('category', null, Filter.Types.IS_EMPTY)] : [];
-}
-
 export function filterSampleRowsForOperation(
     rows: Record<any, any>,
     operation: SampleOperation,

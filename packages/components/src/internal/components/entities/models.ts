@@ -641,7 +641,7 @@ export interface MoveEntitiesResult {
 export interface DataTypeEntity {
     description?: string;
     label: string;
-    labelcolor?: string;
+    labelColor?: string;
     lsid?: string;
     rowId: number;
     sublabel?: string;

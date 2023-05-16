@@ -128,7 +128,7 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
                 {isProductProjectDataTypeSelectionEnabled() && loadingExclusions && <LoadingSpinner />}
             </>
         );
-    }, []);
+    }, [moduleContext, loadingExclusions, projectDataTypes, disabledTypesMap, container]);
 
     if (!user.isAdmin) {
         return <InsufficientPermissionsPage title={TITLE} />;

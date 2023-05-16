@@ -11,23 +11,19 @@ import { Alert } from '../base/Alert';
 import { Container } from '../base/models/Container';
 
 import { DeleteProjectModal } from './DeleteProjectModal';
-import { useAdminAppContext } from "../administration/useAdminAppContext";
 
 export interface ProjectSettingsProps {
     onChange: () => void;
     onPageError: (e: string) => void;
     onSuccess: () => void;
 }
-//
+
 export const ProjectSettings: FC<ProjectSettingsProps> = memo(({ onChange, onSuccess, onPageError }) => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const [dirty, setDirty] = useState<boolean>(false);
     const [error, setError] = useState<string>();
     const [isSaving, setIsSaving] = useState<boolean>(false);
     const { api } = useAppContext();
-    const {
-        ProjectFreezerSelectionComponent,
-    } = useAdminAppContext();
     const { container, user } = useServerContext();
     const dispatch = useServerContextDispatch();
 

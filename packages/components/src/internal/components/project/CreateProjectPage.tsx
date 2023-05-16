@@ -35,7 +35,7 @@ export interface CreateProjectContainerProps {
     onCancel: () => void;
     onCreated: (project: Container) => void;
 }
-//
+
 export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(props => {
     const { api, onCancel, onCreated } = props;
     const {
@@ -72,7 +72,7 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
                 disabledSampleTypes: dataTypeExclusion?.['sampletype'],
                 disabledDataClasses: dataTypeExclusion?.['dataclass'],
                 disabledAssayDesigns: dataTypeExclusion?.['assaydesign'],
-                disabledStorages: dataTypeExclusion?.['storagelocation']
+                disabledStorageLocations: dataTypeExclusion?.['storagelocation']
             };
 
             let project: Container;

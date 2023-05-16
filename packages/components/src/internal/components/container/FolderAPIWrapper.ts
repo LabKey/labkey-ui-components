@@ -9,7 +9,7 @@ export interface ProjectSettingsOptions {
     disabledAssayDesigns?: number[];
     disabledDataClasses?: number[];
     disabledSampleTypes?: number[];
-    disabledStorages?: number[];
+    disabledStorageLocations?: number[];
     name?: string;
     nameAsTitle?: boolean;
     prefix?: string;
@@ -19,7 +19,7 @@ export interface ProjectSettingsOptions {
 export interface FolderAPIWrapper {
     createProject: (options: ProjectSettingsOptions) => Promise<Container>;
     renameProject: (options: ProjectSettingsOptions) => Promise<Container>;
-    updateProjectDataType: (options: ProjectSettingsOptions) => Promise<void>;
+    updateProjectDataExclusions: (options: ProjectSettingsOptions) => Promise<void>;
 }
 
 export class ServerFolderAPIWrapper implements FolderAPIWrapper {
@@ -51,7 +51,7 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
         });
     };
 
-    updateProjectDataType = (options: ProjectSettingsOptions): Promise<void> => {
+    updateProjectDataExclusions = (options: ProjectSettingsOptions): Promise<void> => {
         return new Promise((resolve, reject) => {
             Ajax.request({
                 url: ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'updateProjectDataExclusion.api'),
@@ -76,7 +76,7 @@ export function getFolderTestAPIWrapper(
     return {
         createProject: mockFn(),
         renameProject: mockFn(),
-        updateProjectDataType: mockFn(),
+        updateProjectDataExclusions: mockFn(),
         ...overrides,
     };
 }

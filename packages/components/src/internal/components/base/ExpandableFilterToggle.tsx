@@ -29,7 +29,7 @@ export class ExpandableFilterToggle extends PureComponent<Props> {
                     />
                 </div>
                 {hasFilter && (
-                    <span className="filter-clear-all" onClick={resetFilter}>
+                    <span className="clickable-text" onClick={resetFilter}>
                         Clear All
                     </span>
                 )}

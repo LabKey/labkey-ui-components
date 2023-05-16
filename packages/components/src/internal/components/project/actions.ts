@@ -48,6 +48,7 @@ export function getDataTypeDataCount(
     allDataTypes?: DataTypeEntity[]
 ): Promise<{ [key: string]: number }> {
     return new Promise((resolve, reject) => {
+        // samples and assay runs reference their data type by lsid, but dataclass data reference by rowid
         const byLsid = dataType === 'sampletype' || dataType === 'assaydesign';
         const lookup = {};
         if (byLsid && allDataTypes) {

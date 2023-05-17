@@ -4,7 +4,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.X
 *Released* : X May 2023
 * Project level data type configuration schema and UI
-  * TODO
+  * Added DataTypeSelector and ProjectDataTypeSelections components
+  * Modified CreateProjectPage and AdminSettingsPage to include project data selection panels
+  * Added ProjectFreezerSelectionComponent and projectDataTypes to AdminAppContext
+  * Added utils to get, update and add project data exclusion settings
 
 ### version 2.337.0
 *Released*: 15 May 2023

@@ -12,7 +12,7 @@ exports[`<ExpandableFilterToggle/> custom properties with filters 1`] = `
     />
   </div>,
   <span
-    className="filter-clear-all"
+    className="clickable-text"
     onClick={[MockFunction]}
   >
     Clear All

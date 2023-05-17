@@ -23,6 +23,9 @@ export async function getProjectExcludedDataTypes(excludedContainer: string): Pr
 }
 
 export function getProjectDataTypeDataCountSql(dataType: ProjectConfigurableDataType): string {
+    if (!dataType)
+        return null;
+
     let typeField = 'SampleSet';
     let from = 'exp.materials ';
     let where = '';

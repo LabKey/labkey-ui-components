@@ -410,8 +410,6 @@ export async function getEntityTypeOptions(
     return Map({ [typeListingSchemaQuery.queryName]: List(options) });
 }
 
-// get back a map from the typeListQueryName (e.g., 'SampleSet') and the list of options for that query
-// where the schema field for those options is the typeSchemaName (e.g., 'samples')
 export async function getProjectConfigurableEntityTypeOptions(
     entityDataType: EntityDataType,
     containerPath?: string,
@@ -426,8 +424,7 @@ export async function getProjectConfigurableEntityTypeOptions(
             containerFilter ?? entityDataType.containerFilter ?? Query.containerFilter.currentPlusProjectAndShared,
         containerPath,
         filterArray,
-        // Use of default view here is ok. Assumed that view is overridden only if there is desire to hide types.
-        schemaQuery: new SchemaQuery(typeListingSchemaQuery.schemaName, typeListingSchemaQuery.queryName),
+        schemaQuery: typeListingSchemaQuery,
     });
 
     const entities: DataTypeEntity[] = result.rows

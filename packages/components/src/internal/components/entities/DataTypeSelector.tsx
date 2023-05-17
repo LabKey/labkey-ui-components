@@ -18,12 +18,12 @@ interface Props {
     allDataCounts?: { [key: string]: number };
     allDataTypes?: DataTypeEntity[]; // either use allDataTypes to pass in dataTypes, or specify entityDataType to query dataTypes
     api?: ComponentsAPIWrapper;
-    columns?: number;
+    columns?: number; // partition list to N columns
     dataTypeKey?: string;
     dataTypeLabel?: string;
     disabled?: boolean;
     entityDataType?: EntityDataType;
-    toggleSelectAll?: boolean; // partition list to N columns
+    toggleSelectAll?: boolean;
 
     uncheckedEntitiesDB: number[];
 
@@ -31,6 +31,28 @@ interface Props {
 
     noHeader?: boolean;
 }
+
+export const getUncheckedEntityWarning = (uncheckedEntities: number[], uncheckedEntitiesDB: number[], dataCounts: { [key: string]: number }, entityDataType: EntityDataType, rowId: number) : React.ReactNode => {
+    if (uncheckedEntitiesDB?.indexOf(rowId) > -1) return null;
+
+    if (uncheckedEntities?.indexOf(rowId) > -1) {
+        if (!dataCounts) return <LoadingSpinner />;
+
+        if (!dataCounts[rowId + '']) return null;
+
+        const dataCount = dataCounts[rowId + ''];
+        const nounPlural = entityDataType?.nounPlural?.toLowerCase() ?? 'samples';
+        const nounSingular = entityDataType?.nounSingular?.toLowerCase() ?? 'sample';
+        return (
+            <Alert bsStyle="warning" className="margin-left-more">
+                {dataCount} {dataCount > 1 ? nounPlural : nounSingular} will no longer be visible in this
+                project. They won't be deleted and lineage relationships won't change.{' '}
+            </Alert>
+        );
+    }
+
+    return null;
+};
 
 export const DataTypeSelector: FC<Props> = memo(props => {
     const {
@@ -126,27 +148,9 @@ export const DataTypeSelector: FC<Props> = memo(props => {
         }
     }, [allSelected, dataTypes, updateUncheckedTypes, dataType, ensureCount]);
 
-    const getUncheckedEntityWarning = useCallback(
+    const _getUncheckedEntityWarning = useCallback(
         (rowId: number): React.ReactNode => {
-            if (uncheckedEntitiesDB?.indexOf(rowId) > -1) return null;
-
-            if (uncheckedEntities?.indexOf(rowId) > -1) {
-                if (!dataCounts) return <LoadingSpinner />;
-
-                if (!dataCounts[rowId + '']) return null;
-
-                const dataCount = dataCounts[rowId + ''];
-                const nounPlural = entityDataType?.nounPlural?.toLowerCase() ?? 'samples';
-                const nounSingular = entityDataType?.nounSingular?.toLowerCase() ?? 'sample';
-                return (
-                    <Alert bsStyle="warning" className="margin-left-more">
-                        {dataCount} {dataCount > 1 ? nounPlural : nounSingular} will no longer be visible in this
-                        project. They won't be deleted and lineage relationships won't change.{' '}
-                    </Alert>
-                );
-            }
-
-            return null;
+            return getUncheckedEntityWarning(uncheckedEntities, uncheckedEntitiesDB, dataCounts, entityDataType, rowId);
         },
         [uncheckedEntities, uncheckedEntitiesDB, dataCounts, entityDataType]
     );
@@ -198,14 +202,14 @@ export const DataTypeSelector: FC<Props> = memo(props => {
                                         </div>
                                     </Tip>
                                 )}
-                                {getUncheckedEntityWarning(dataType.rowId)}
+                                {_getUncheckedEntityWarning(dataType.rowId)}
                             </li>
                         );
                     })}
                 </ul>
             );
         },
-        [uncheckedEntities, onChange, disabled, getUncheckedEntityWarning]
+        [uncheckedEntities, onChange, disabled, _getUncheckedEntityWarning]
     );
 
     const getEntitiesList = useCallback((): React.ReactNode => {

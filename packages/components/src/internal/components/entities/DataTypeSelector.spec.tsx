@@ -109,7 +109,7 @@ describe('DataTypeSelector', () => {
             getProjectConfigurableEntityTypeOptions: jest.fn().mockResolvedValue([]),
         }),
     });
-    //
+
     test('loading', async () => {
         const wrapper = mountWithAppServerContext(
             <DataTypeSelector entityDataType={SampleTypeDataType} api={apiWithNoResults} />

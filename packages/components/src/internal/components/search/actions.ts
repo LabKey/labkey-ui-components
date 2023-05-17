@@ -42,6 +42,7 @@ export interface SearchHit {
     data?: any;
     id: string;
     identifiers?: string;
+    jsonData?: Record<string, any>;
     score?: number;
     summary?: string;
     title: string;

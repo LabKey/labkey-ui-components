@@ -551,6 +551,7 @@ export interface EntityDataType {
     nounSingular: string;
     operationConfirmationActionName: string;
     operationConfirmationControllerName: string;
+    projectConfigurableDataType?: ProjectConfigurableDataType;
     sampleFinderCardType?: SampleFinderCardType;
     supportHasNoValueInQuery?: boolean;
     typeIcon?: string;
@@ -558,7 +559,6 @@ export interface EntityDataType {
     typeNounAsParentSingular: string;
     typeNounSingular: string;
     uniqueFieldKey: string;
-    projectConfigurableDataType?: ProjectConfigurableDataType;
 }
 
 export class OperationConfirmationData {

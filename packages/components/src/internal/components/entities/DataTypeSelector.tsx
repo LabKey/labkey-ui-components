@@ -23,16 +23,22 @@ interface Props {
     dataTypeLabel?: string;
     disabled?: boolean;
     entityDataType?: EntityDataType;
+    noHeader?: boolean;
+
     toggleSelectAll?: boolean;
 
     uncheckedEntitiesDB: number[];
 
     updateUncheckedTypes: (dataType: string, unchecked: number[]) => void;
-
-    noHeader?: boolean;
 }
 
-export const getUncheckedEntityWarning = (uncheckedEntities: number[], uncheckedEntitiesDB: number[], dataCounts: { [key: string]: number }, entityDataType: EntityDataType, rowId: number) : React.ReactNode => {
+export const getUncheckedEntityWarning = (
+    uncheckedEntities: number[],
+    uncheckedEntitiesDB: number[],
+    dataCounts: { [key: string]: number },
+    entityDataType: EntityDataType,
+    rowId: number
+): React.ReactNode => {
     if (uncheckedEntitiesDB?.indexOf(rowId) > -1) return null;
 
     if (uncheckedEntities?.indexOf(rowId) > -1) {
@@ -45,8 +51,8 @@ export const getUncheckedEntityWarning = (uncheckedEntities: number[], unchecked
         const nounSingular = entityDataType?.nounSingular?.toLowerCase() ?? 'sample';
         return (
             <Alert bsStyle="warning" className="margin-left-more">
-                {dataCount} {dataCount > 1 ? nounPlural : nounSingular} will no longer be visible in this
-                project. They won't be deleted and lineage relationships won't change.{' '}
+                {dataCount} {dataCount > 1 ? nounPlural : nounSingular} will no longer be visible in this project. They
+                won't be deleted and lineage relationships won't change.{' '}
             </Alert>
         );
     }
@@ -251,7 +257,9 @@ export const DataTypeSelector: FC<Props> = memo(props => {
                 <Row>
                     {loading && <LoadingSpinner />}
                     {!loading && getEntitiesList()}
-                    {!loading && dataTypes.length === 0 && <div className="help-block margin-left-more">No {headerLabel}</div>}
+                    {!loading && dataTypes.length === 0 && (
+                        <div className="help-block margin-left-more">No {headerLabel}</div>
+                    )}
                 </Row>
             </div>
         </>

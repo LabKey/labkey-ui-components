@@ -4,9 +4,9 @@ import classNames from 'classnames';
 interface Props {
     filterExpanded: boolean;
     hasFilter: boolean;
-    toggleFilterPanel: () => void;
-    resetFilter: () => void;
     panelCls?: string;
+    resetFilter: () => void;
+    toggleFilterPanel: () => void;
 }
 
 export class ExpandableFilterToggle extends PureComponent<Props> {

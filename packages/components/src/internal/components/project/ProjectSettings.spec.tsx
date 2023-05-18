@@ -8,18 +8,26 @@ import { TEST_USER_APP_ADMIN, TEST_USER_EDITOR } from '../../userFixtures';
 
 import { ServerContext } from '../base/ServerContext';
 
-import { ProjectProperties } from '../administration/ProjectProperties';
+import { ProjectProperties } from '../project/ProjectProperties';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { getFolderTestAPIWrapper } from '../container/FolderAPIWrapper';
 
 import { ProjectSettings, ProjectSettingsProps } from './ProjectSettings';
+import {AdminAppContext, AppContext} from "../../AppContext";
 
 describe('ProjectSettings', () => {
     function getDefaultProps(): ProjectSettingsProps {
         return {
             onChange: jest.fn(),
             onSuccess: jest.fn(),
+        };
+    }
+
+    function getDefaultAppContext(admin = {}): Partial<AppContext> {
+        return {
+            admin: admin as AdminAppContext,
+            api: getTestAPIWrapper(),
         };
     }
 
@@ -31,7 +39,7 @@ describe('ProjectSettings', () => {
     }
 
     test('permission/type checks', () => {
-        let wrapper = mountWithAppServerContext(<ProjectSettings {...getDefaultProps()} />, undefined, {
+        let wrapper = mountWithAppServerContext(<ProjectSettings {...getDefaultProps()} />, getDefaultAppContext(), {
             container: TEST_PROJECT_CONTAINER,
             user: TEST_USER_APP_ADMIN,
         });
@@ -40,7 +48,7 @@ describe('ProjectSettings', () => {
         expect(wrapper.find('.delete-project-button').exists()).toBe(false);
         wrapper.unmount();
 
-        wrapper = mountWithAppServerContext(<ProjectSettings {...getDefaultProps()} />, undefined, {
+        wrapper = mountWithAppServerContext(<ProjectSettings {...getDefaultProps()} />, getDefaultAppContext(), {
             container: TEST_FOLDER_CONTAINER,
             user: TEST_USER_EDITOR,
         });
@@ -49,7 +57,7 @@ describe('ProjectSettings', () => {
         expect(wrapper.find('.delete-project-button').exists()).toBe(false);
         wrapper.unmount();
 
-        wrapper = mountWithAppServerContext(<ProjectSettings {...getDefaultProps()} />, undefined, getServerContext());
+        wrapper = mountWithAppServerContext(<ProjectSettings {...getDefaultProps()} />, getDefaultAppContext(), getServerContext());
 
         expect(wrapper.find('.project-settings').exists()).toBe(true);
         expect(wrapper.find('.delete-project-button').exists()).toBe(true);
@@ -63,6 +71,7 @@ describe('ProjectSettings', () => {
         const wrapper = mountWithAppServerContext(
             <ProjectSettings {...getDefaultProps()} />,
             {
+                admin: {} as AdminAppContext,
                 api: getTestAPIWrapper(jest.fn, {
                     folder: getFolderTestAPIWrapper(jest.fn, {
                         renameProject,

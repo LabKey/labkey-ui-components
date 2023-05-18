@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useState } from 'react';
+import React, {FC, memo, useCallback, useEffect, useState} from 'react';
 import { WithRouterProps } from 'react-router';
 import { ActionURL } from '@labkey/api';
 
@@ -12,13 +12,23 @@ import { useNotificationsContext } from '../notifications/NotificationsContext';
 import { Container } from '../base/models/Container';
 import { AppURL } from '../../url/AppURL';
 
-import { getCurrentAppProperties, hasProductProjects, setProductProjects } from '../../app/utils';
+import {
+    getCurrentAppProperties,
+    hasProductProjects,
+    isProductProjectDataTypeSelectionEnabled,
+    setProductProjects,
+} from '../../app/utils';
 
 import { useFolderMenuContext } from '../navigation/hooks';
 
 import { invalidateFullQueryDetailsCache } from '../../query/api';
 
+import { useAdminAppContext } from '../administration/useAdminAppContext';
+
 import { ProjectProperties } from './ProjectProperties';
+import { ProjectDataTypeSelections } from './ProjectDataTypeSelections';
+import {ProjectConfigurableDataType} from "../entities/models";
+
 
 export interface CreateProjectContainerProps {
     api: FolderAPIWrapper;
@@ -28,8 +38,25 @@ export interface CreateProjectContainerProps {
 
 export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(props => {
     const { api, onCancel, onCreated } = props;
+    const {
+        projectDataTypes,
+        ProjectFreezerSelectionComponent,
+    } = useAdminAppContext();
+
     const [error, setError] = useState<string>();
     const [isSaving, setIsSaving] = useState<boolean>(false);
+    const [dataTypeExclusion, setDataTypeExclusion] = useState<{ [key: string]: number[] }>({});
+
+    const updateDataTypeExclusions = useCallback(
+        (dataType: ProjectConfigurableDataType, exclusions: number[]) => {
+            setDataTypeExclusion((prevState) => {
+                const uncheckedUpdates = { ...prevState };
+                uncheckedUpdates[dataType] = exclusions;
+                return uncheckedUpdates;
+            });
+        },
+        [dataTypeExclusion]
+    );
 
     const onSubmit = useCallback(
         async evt => {
@@ -42,6 +69,10 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
                 name: formData.get('name') as string,
                 nameAsTitle: !!formData.get('nameAsTitle'),
                 title: formData.get('title') as string,
+                disabledSampleTypes: dataTypeExclusion?.['SampleType'],
+                disabledDataClasses: dataTypeExclusion?.['DataClass'],
+                disabledAssayDesigns: dataTypeExclusion?.['AssayDesign'],
+                disabledStorageLocations: dataTypeExclusion?.['StorageLocation']
             };
 
             let project: Container;
@@ -56,18 +87,18 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
             setIsSaving(false);
             onCreated(project);
         },
-        [api, onCreated]
+        [api, onCreated, dataTypeExclusion]
     );
 
     return (
         <div className="create-project-container">
             <form className="create-project-form" onSubmit={onSubmit}>
+                {!!error && <Alert>{error}</Alert>}
+
                 <div className="panel panel-default">
                     <div className="panel-body">
-                        {!!error && <Alert>{error}</Alert>}
-
                         <div className="form-horizontal">
-                            <div className="form-subtitle">Project Properties</div>
+                            <div className="form-subtitle">Name of Project</div>
 
                             <ProjectProperties autoFocus />
 
@@ -76,6 +107,19 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
                         </div>
                     </div>
                 </div>
+
+                {isProductProjectDataTypeSelectionEnabled() && (
+                    <>
+                        <ProjectDataTypeSelections
+                            entityDataTypes={projectDataTypes}
+                            projectId={null}
+                            updateDataTypeExclusions={updateDataTypeExclusions}
+                        />
+                        <ProjectFreezerSelectionComponent
+                            updateDataTypeExclusions={updateDataTypeExclusions}
+                        />
+                    </>
+                )}
 
                 <div className="form-group no-margin-bottom">
                     <div className="pull-left">

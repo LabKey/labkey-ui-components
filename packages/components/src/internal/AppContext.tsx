@@ -21,8 +21,13 @@ import { QueryConfigMap } from '../public/QueryModel/withQueryModels';
 import { SchemaQuery } from '../public/SchemaQuery';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from './APIWrapper';
-import { NotebookNotificationSettings, NotebookProjectSettings, WorkflowNotificationSettings } from './app/models';
-import { ReferencingNotebooks } from './app/models';
+import {
+    NotebookNotificationSettings,
+    NotebookProjectSettings,
+    ProjectFreezerSelection,
+    WorkflowNotificationSettings,
+    ReferencingNotebooks,
+} from './app/models';
 import { User } from './components/base/models/User';
 import { DomainDetails } from './components/domainproperties/models';
 import { EntityDataType } from './components/entities/models';
@@ -40,8 +45,10 @@ import { SampleGridButton, SamplesEditableGridProps, SampleStorageLocation, Samp
 export interface AdminAppContext {
     NotebookNotificationSettingsComponent: NotebookNotificationSettings;
     NotebookProjectSettingsComponent: NotebookProjectSettings;
+    ProjectFreezerSelectionComponent?: ProjectFreezerSelection;
     WorkflowNotificationSettingsComponent: WorkflowNotificationSettings;
     extraPermissionRoles: string[][];
+    projectDataTypes?: EntityDataType[];
 }
 
 export interface SampleTypeAppContext {

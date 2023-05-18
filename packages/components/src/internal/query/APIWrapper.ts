@@ -2,8 +2,8 @@ import { List, Map } from 'immutable';
 import { Query } from '@labkey/api';
 
 import { QueryInfo } from '../../public/QueryInfo';
-import { EntityDataType, IEntityTypeOption } from '../components/entities/models';
-import { getEntityTypeOptions } from '../components/entities/actions';
+import { DataTypeEntity, EntityDataType, IEntityTypeOption } from '../components/entities/models';
+import { getEntityTypeOptions, getProjectConfigurableEntityTypeOptions } from '../components/entities/actions';
 
 import { getGridViews, incrementClientSideMetricCount } from '../actions';
 
@@ -26,6 +26,11 @@ export interface QueryAPIWrapper {
         excludeSessionView?: boolean,
         includeHidden?: boolean
     ) => Promise<ViewInfo[]>;
+    getProjectConfigurableEntityTypeOptions: (
+        entityDataType: EntityDataType,
+        containerPath?: string,
+        containerFilter?: Query.ContainerFilter
+    ) => Promise<DataTypeEntity[]>;
     getQueryDetails: (options: GetQueryDetailsOptions) => Promise<QueryInfo>;
     incrementClientSideMetricCount: (featureArea: string, metricName: string) => void;
     selectDistinctRows: (selectDistinctOptions: Query.SelectDistinctOptions) => Promise<Query.SelectDistinctResponse>;
@@ -39,6 +44,7 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     selectRows = selectRows;
     selectDistinctRows = selectDistinctRows;
     getGridViews = getGridViews;
+    getProjectConfigurableEntityTypeOptions = getProjectConfigurableEntityTypeOptions;
 }
 
 /**
@@ -55,6 +61,7 @@ export function getQueryTestAPIWrapper(
         selectRows: mockFn(),
         selectDistinctRows: mockFn(),
         getGridViews: mockFn(),
+        getProjectConfigurableEntityTypeOptions: mockFn(),
         ...overrides,
     };
 }

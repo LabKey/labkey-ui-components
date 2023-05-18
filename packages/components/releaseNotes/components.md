@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.338.0
+*Released* : 17 May 2023
+* Project level data type configuration schema and UI
+  * Added DataTypeSelector and ProjectDataTypeSelections components
+  * Modified CreateProjectPage and AdminSettingsPage to include project data selection panels
+  * Added ProjectFreezerSelectionComponent and projectDataTypes to AdminAppContext
+  * Added utils to get, update and add project data exclusion settings
+
 ### version 2.337.0
 *Released*: 15 May 2023
 * Issue 47784: When there is ony one sample type in a tabbed grid, default to that type's tab instead of "All Samples"

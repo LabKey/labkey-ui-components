@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { getServerContext } from '@labkey/api';
 
 import classNames from 'classnames';
@@ -11,18 +11,31 @@ import { InsufficientPermissionsPage } from '../permissions/InsufficientPermissi
 import { ActiveUserLimit } from '../settings/ActiveUserLimit';
 import { NameIdSettings } from '../settings/NameIdSettings';
 import { ManageSampleStatusesPanel } from '../samples/ManageSampleStatusesPanel';
-import { biologicsIsPrimaryApp, isELNEnabled, isProductProjectsEnabled, isSampleStatusEnabled } from '../../app/utils';
-import { ProjectSettings } from '../settings/ProjectSettings';
+import {
+    biologicsIsPrimaryApp,
+    isAppHomeFolder,
+    isELNEnabled,
+    isProductProjectDataTypeSelectionEnabled,
+    isProductProjectsEnabled,
+    isSampleStatusEnabled,
+} from '../../app/utils';
+import { ProjectSettings } from '../project/ProjectSettings';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 
 import { BarTenderSettingsForm } from '../labels/BarTenderSettingsForm';
 
 import { Alert } from '../base/Alert';
 
-import { SITE_SECURITY_ROLES } from './constants';
-import { BasePermissions } from './BasePermissions';
-import { showPremiumFeatures } from './utils';
+import { ProjectDataTypeSelections } from '../project/ProjectDataTypeSelections';
+import { AppContext, useAppContext } from '../../AppContext';
+import { resolveErrorMessage } from '../../util/messaging';
+import { getProjectExcludedDataTypes } from '../project/actions';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
 import { useAdminAppContext } from './useAdminAppContext';
+import { showPremiumFeatures } from './utils';
+import { BasePermissions } from './BasePermissions';
+import { SITE_SECURITY_ROLES } from './constants';
 
 const TITLE = 'Settings';
 
@@ -30,9 +43,32 @@ const TITLE = 'Settings';
 export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
     const { setIsDirty, getIsDirty, children } = props;
     const [error, setError] = useState<string>();
-    const { moduleContext, user, project } = useServerContext();
+    const [loadingExclusions, setLoadingExclusions] = useState<boolean>(false);
+    const { moduleContext, user, project, container } = useServerContext();
     const { createNotification, dismissNotifications } = useNotificationsContext();
-    const { NotebookProjectSettingsComponent } = useAdminAppContext();
+    const { NotebookProjectSettingsComponent, projectDataTypes, ProjectFreezerSelectionComponent } =
+        useAdminAppContext();
+    const [disabledTypesMap, setDisabledTypesMap] = useState<{ [key: string]: number[] }>(undefined);
+    const { api } = useAppContext<AppContext>();
+
+    useEffect(() => {
+        if (isProductProjectsEnabled(moduleContext) && isProductProjectDataTypeSelectionEnabled(moduleContext))
+            loadConfigs();
+    }, [container.id, moduleContext]);
+
+    const loadConfigs = useCallback(async () => {
+        try {
+            setLoadingExclusions(true);
+
+            const results = await getProjectExcludedDataTypes(container.id);
+            setDisabledTypesMap(results);
+        } catch (e) {
+            console.error(e);
+            setError(resolveErrorMessage(e));
+        } finally {
+            setLoadingExclusions(false);
+        }
+    }, [container.id, moduleContext]);
 
     const onError = useCallback((e: string) => {
         setError(e);
@@ -64,6 +100,36 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
         );
     }, [moduleContext]);
 
+    const projectSettings = useMemo((): React.ReactNode => {
+        if (!isProductProjectsEnabled(moduleContext)) return null;
+
+        return (
+            <>
+                <ProjectSettings onChange={onSettingsChange} onSuccess={onSettingsSuccess} onPageError={onError} />
+                {isProductProjectDataTypeSelectionEnabled() && !loadingExclusions && !isAppHomeFolder() && (
+                    <>
+                        <ProjectDataTypeSelections
+                            entityDataTypes={projectDataTypes}
+                            projectId={container.id}
+                            key={container.id}
+                            updateDataTypeExclusions={onSettingsChange}
+                            disabledTypesMap={disabledTypesMap}
+                            api={api.folder}
+                            onSuccess={onSettingsSuccess}
+                        />
+                        <ProjectFreezerSelectionComponent
+                            projectId={container.id}
+                            updateDataTypeExclusions={onSettingsChange}
+                            disabledTypesMap={disabledTypesMap}
+                            onSuccess={onSettingsSuccess}
+                        />
+                    </>
+                )}
+                {isProductProjectDataTypeSelectionEnabled() && loadingExclusions && <LoadingSpinner />}
+            </>
+        );
+    }, [moduleContext, loadingExclusions, projectDataTypes, disabledTypesMap, container]);
+
     if (!user.isAdmin) {
         return <InsufficientPermissionsPage title={TITLE} />;
     }
@@ -81,9 +147,7 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
                 lkVersion={lkVersion}
             >
                 <ActiveUserLimit />
-                {isProductProjectsEnabled(moduleContext) && (
-                    <ProjectSettings onChange={onSettingsChange} onSuccess={onSettingsSuccess} onPageError={onError} />
-                )}
+                {projectSettings}
                 <BarTenderSettingsForm
                     onChange={onSettingsChange}
                     onSuccess={onBarTenderSuccess}
@@ -101,9 +165,7 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
             {error && <Alert className="admin-settings-error"> {error} </Alert>}
             <BasePermissionsCheckPage user={user} title={TITLE} hasPermission={user.isAdmin} renderButtons={lkVersion}>
                 <ActiveUserLimit />
-                {isProductProjectsEnabled(moduleContext) && (
-                    <ProjectSettings onChange={onSettingsChange} onSuccess={onSettingsSuccess} onPageError={onError} />
-                )}
+                {projectSettings}
                 {biologicsIsPrimaryApp(moduleContext) && isELNEnabled(moduleContext) && (
                     <NotebookProjectSettingsComponent />
                 )}

@@ -24,6 +24,7 @@ import { getInitialParentChoices, isDataClassEntity, isSampleEntity } from './ut
 import { DataClassDataType, DataOperation, SampleTypeDataType } from './constants';
 import {
     CrossFolderSelectionResult,
+    DataTypeEntity,
     DisplayObject,
     EntityChoice,
     EntityDataType,
@@ -34,6 +35,7 @@ import {
     IParentOption,
     MoveEntitiesResult,
     OperationConfirmationData,
+    ProjectConfigurableDataType,
 } from './models';
 
 export function getOperationConfirmationData(
@@ -408,6 +410,42 @@ export async function getEntityTypeOptions(
     return Map({ [typeListingSchemaQuery.queryName]: List(options) });
 }
 
+export async function getProjectConfigurableEntityTypeOptions(
+    entityDataType: EntityDataType,
+    containerPath?: string,
+    containerFilter?: Query.ContainerFilter
+): Promise<DataTypeEntity[]> {
+    const { typeListingSchemaQuery, filterArray } = entityDataType;
+
+    const result = await selectRows({
+        columns:
+            'LSID,Name,RowId,Description' + (entityDataType.labelColorCol ? ',' + entityDataType.labelColorCol : ''),
+        containerFilter:
+            containerFilter ?? entityDataType.containerFilter ?? Query.containerFilter.currentPlusProjectAndShared,
+        containerPath,
+        filterArray,
+        schemaQuery: typeListingSchemaQuery,
+    });
+
+    const entities: DataTypeEntity[] = result.rows
+        .map(
+            row =>
+                ({
+                    label: caseInsensitive(row, 'Name').value,
+                    labelColor: entityDataType.labelColorCol
+                        ? caseInsensitive(row, entityDataType.labelColorCol).value
+                        : undefined,
+                    rowId: caseInsensitive(row, 'RowId').value,
+                    description: caseInsensitive(row, 'Description').value,
+                    type: entityDataType.projectConfigurableDataType as ProjectConfigurableDataType,
+                    lsid: caseInsensitive(row, 'LSID').value,
+                } as DataTypeEntity)
+        )
+        .sort(naturalSortByProperty('label'));
+
+    return entities;
+}
+
 /**
  * @param model
  * @param entityDataType main data type to resolve
@@ -766,7 +804,9 @@ export function moveEntities(
         }
 
         return Ajax.request({
-            url: buildURL(entityDataType.moveControllerName, entityDataType.moveActionName, undefined, { container: sourceContainer?.path }),
+            url: buildURL(entityDataType.moveControllerName, entityDataType.moveActionName, undefined, {
+                container: sourceContainer?.path,
+            }),
             method: 'POST',
             params,
             success: Utils.getCallbackWrapper(response => {
@@ -784,5 +824,3 @@ export function moveEntities(
         });
     });
 }
-
-

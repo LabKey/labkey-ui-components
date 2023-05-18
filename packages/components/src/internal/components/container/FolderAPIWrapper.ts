@@ -6,7 +6,11 @@ import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
 export interface ProjectSettingsOptions {
     allowUserSpecifiedNames?: boolean;
-    name: string;
+    disabledAssayDesigns?: number[];
+    disabledDataClasses?: number[];
+    disabledSampleTypes?: number[];
+    disabledStorageLocations?: number[];
+    name?: string;
     nameAsTitle?: boolean;
     prefix?: string;
     title?: string;
@@ -15,6 +19,7 @@ export interface ProjectSettingsOptions {
 export interface FolderAPIWrapper {
     createProject: (options: ProjectSettingsOptions) => Promise<Container>;
     renameProject: (options: ProjectSettingsOptions) => Promise<Container>;
+    updateProjectDataExclusions: (options: ProjectSettingsOptions) => Promise<void>;
 }
 
 export class ServerFolderAPIWrapper implements FolderAPIWrapper {
@@ -45,6 +50,20 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
             });
         });
     };
+
+    updateProjectDataExclusions = (options: ProjectSettingsOptions): Promise<void> => {
+        return new Promise((resolve, reject) => {
+            Ajax.request({
+                url: ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'updateProjectDataExclusion.api'),
+                method: 'POST',
+                jsonData: options,
+                success: Utils.getCallbackWrapper(({ data }) => {
+                    resolve();
+                }),
+                failure: handleRequestFailure(reject, 'Failed to update project data type'),
+            });
+        });
+    };
 }
 
 /**
@@ -57,6 +76,7 @@ export function getFolderTestAPIWrapper(
     return {
         createProject: mockFn(),
         renameProject: mockFn(),
+        updateProjectDataExclusions: mockFn(),
         ...overrides,
     };
 }

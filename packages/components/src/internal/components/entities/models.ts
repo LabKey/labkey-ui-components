@@ -17,6 +17,7 @@ import { AuditBehaviorTypes, Filter, Query, Utils } from '@labkey/api';
 import { List, Map, OrderedMap, Record } from 'immutable';
 
 import { immerable } from 'immer';
+
 import { ExtendedMap } from '../../../public/ExtendedMap';
 
 import { decodePart, encodePart, SchemaQuery } from '../../../public/SchemaQuery';
@@ -486,6 +487,7 @@ export interface IEntityTypeDetails extends IEntityDetails {
 }
 
 export type SampleFinderCardType = 'sampleproperty' | 'sampleparent' | 'dataclassparent' | 'assaydata';
+export type ProjectConfigurableDataType = 'SampleType' | 'DataClass' | 'AssayDesign' | 'StorageLocation';
 
 /**
  *  Avoid inline comment or above line comments for properties due to es-lint's limitation on moving comments:
@@ -513,6 +515,7 @@ export type SampleFinderCardType = 'sampleproperty' | 'sampleparent' | 'dataclas
  *     listingSchemaQuery: SchemaQuery; // The schema query used to get the listing of all of the data instances (e.g., all the data class rows) available
  *     operationConfirmationActionName: string; // action in ExperimentController used to get the confirmation data for performing operations on entities
  *     typeListingSchemaQuery: SchemaQuery; // The schema query used to get the listing of all of the data type instances (e.g., all the data classes) available
+ *     projectConfigurableDataType?: string; // the DataTypeExclusion type
  */
 export interface EntityDataType {
     allowRelativeDateFilter?: boolean;
@@ -532,12 +535,13 @@ export interface EntityDataType {
     getInstanceSchemaQuery?: (datatype?: string) => SchemaQuery;
     importFileAction?: string;
     importFileController?: string;
-    instanceKey?: string;
     inputColumnName?: string;
     inputTypeValueField?: string;
     insertColumnNamePrefix?: string;
+    instanceKey?: string;
     instanceSchemaName: string;
     isFromSharedContainer?: boolean;
+    labelColorCol?: string;
     listingSchemaQuery: SchemaQuery;
     moveActionName?: string;
     moveControllerName?: string;
@@ -547,6 +551,7 @@ export interface EntityDataType {
     nounSingular: string;
     operationConfirmationActionName: string;
     operationConfirmationControllerName: string;
+    projectConfigurableDataType?: ProjectConfigurableDataType;
     sampleFinderCardType?: SampleFinderCardType;
     supportHasNoValueInQuery?: boolean;
     typeIcon?: string;
@@ -631,4 +636,14 @@ export interface MoveEntitiesResult {
     containerPath: string;
     success: boolean;
     updateCounts: Record<string, number>;
+}
+
+export interface DataTypeEntity {
+    description?: string;
+    label: string;
+    labelColor?: string;
+    lsid?: string;
+    rowId: number;
+    sublabel?: string;
+    type: ProjectConfigurableDataType;
 }

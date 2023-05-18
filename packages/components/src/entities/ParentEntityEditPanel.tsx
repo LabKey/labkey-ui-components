@@ -448,7 +448,7 @@ export class ParentEntityEditPanel extends Component<ParentEntityEditPanelProps,
                         {childName && (
                             <div className="bottom-spacing">
                                 <b>
-                                    {capitalizeFirstChar(parentDataType.nounPlural)} for {childName}
+                                    {capitalizeFirstChar(parentDataType.nounAsParentPlural)} for {childName}
                                 </b>
                             </div>
                         )}

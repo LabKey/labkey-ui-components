@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.X
-*Released* : X May 2023
+### version 2.338.0
+*Released* : 17 May 2023
 * Project level data type configuration schema and UI
   * Added DataTypeSelector and ProjectDataTypeSelections components
   * Modified CreateProjectPage and AdminSettingsPage to include project data selection panels

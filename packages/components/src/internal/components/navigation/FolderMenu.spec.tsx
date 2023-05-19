@@ -4,10 +4,11 @@ import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../../test/dat
 
 import { mountWithServerContext } from '../../testHelpers';
 
-import {TEST_USER_APP_ADMIN, TEST_USER_EDITOR} from '../../userFixtures';
+import { TEST_USER_APP_ADMIN, TEST_USER_EDITOR } from '../../userFixtures';
+
+import { TEST_LIMS_STARTER_MODULE_CONTEXT } from '../../productFixtures';
 
 import { FolderMenu, FolderMenuProps } from './FolderMenu';
-import {TEST_LIMS_STARTER_MODULE_CONTEXT} from "../../productFixtures";
 
 describe('FolderMenu', () => {
     function getDefaultProps(): FolderMenuProps {
@@ -19,10 +20,10 @@ describe('FolderMenu', () => {
     }
 
     it('no projects', () => {
-        const wrapper = mountWithServerContext(
-            <FolderMenu {...getDefaultProps()} />,
-            { user: TEST_USER_APP_ADMIN, moduleContext: TEST_LIMS_STARTER_MODULE_CONTEXT }
-        );
+        const wrapper = mountWithServerContext(<FolderMenu {...getDefaultProps()} />, {
+            user: TEST_USER_APP_ADMIN,
+            moduleContext: TEST_LIMS_STARTER_MODULE_CONTEXT,
+        });
 
         expect(wrapper.find('.col-folders')).toHaveLength(1);
         expect(wrapper.find('ul')).toHaveLength(1);

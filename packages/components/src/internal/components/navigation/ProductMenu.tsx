@@ -235,10 +235,6 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
         [menuModel]
     );
 
-    const dashboardURL = useMemo(() => {
-        return showFolderMenu && appProperties.logoBadgeColorImageUrl;
-    }, [appProperties.logoBadgeColorImageUrl, showFolderMenu]);
-
     const showEmptyActionUrl = useMemo(() => {
         if (isProjectContainer(menuModel.containerPath))
             // if top folder
@@ -266,7 +262,12 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
             <div className="navbar-connector" />
             {error && <Alert>{error}</Alert>}
             {showFolderMenu && (
-                <FolderMenu activeContainerId={menuModel.containerId} items={folderItems} onClick={onFolderItemClick} />
+                <FolderMenu
+                    activeContainerId={menuModel.containerId}
+                    currentProductId={menuModel.currentProductId}
+                    items={folderItems}
+                    onClick={onFolderItemClick}
+                />
             )}
             <div className="sections-content">
                 {!menuModel.isLoaded && (
@@ -287,12 +288,7 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
                         return (
                             // eslint-disable-next-line react/no-array-index-key
                             <div key={i} className="menu-section col-product-section">
-                                {sectionConfig.entrySeq().map(([key, menuConfig], j) => {
-                                    const isLast =
-                                        i === sectionConfigs.size - 1 &&
-                                        sectionConfigKeysWithInfo[i].indexOf(key) ===
-                                            sectionConfigKeysWithInfo[i].length - 1;
-
+                                {sectionConfig.entrySeq().map(([key, menuConfig]) => {
                                     return (
                                         <ProductMenuSection
                                             key={key}
@@ -301,7 +297,6 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
                                             containerPath={menuModel.containerPath}
                                             hideEmptyUrl={!showEmptyActionUrl}
                                             currentProductId={menuModel.currentProductId}
-                                            dashboardImgURL={isLast && dashboardURL}
                                         />
                                     );
                                 })}

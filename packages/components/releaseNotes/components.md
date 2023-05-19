@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released* : TBD May 2023
+* Issue 47548: App menu folder sections to include icon links to dashboard and admin pages directly
+
 ### version 2.338.0
 *Released* : 17 May 2023
 * Project level data type configuration schema and UI

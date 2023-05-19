@@ -341,22 +341,6 @@ describe('ProductMenu', () => {
         wrapper.unmount();
     });
 
-    test('dashboardImgURL', async () => {
-        const wrapper = mountWithAppServerContext(
-            <ProductMenu {...getDefaultProps()} />,
-            getDefaultAppContext(),
-            getDefaultServerContext()
-        );
-
-        await waitForLifecycle(wrapper);
-        validate(wrapper);
-        expect(wrapper.find(ProductMenuSection).first().prop('dashboardImgURL')).toBeFalsy();
-        expect(wrapper.find(ProductMenuSection).last().prop('dashboardImgURL')).toBe(
-            SAMPLE_MANAGER_APP_PROPERTIES.logoBadgeColorImageUrl
-        );
-        wrapper.unmount();
-    });
-
     test('activeContainerId', async () => {
         const wrapper = mountWithAppServerContext(
             <ProductMenu {...getDefaultProps()} />,

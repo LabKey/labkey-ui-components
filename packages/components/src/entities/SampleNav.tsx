@@ -13,7 +13,13 @@ import { getQueryDetails } from '../internal/query/api';
 import { AppURL } from '../internal/url/AppURL';
 import { SAMPLES_KEY } from '../internal/app/constants';
 import { naturalSortByProperty } from '../public/sort';
-import { isAssayEnabled, isWorkflowEnabled, userCanReadAssays, userCanReadDataClasses } from '../internal/app/utils';
+import {
+    getProjectDataExclusion,
+    isAssayEnabled,
+    isWorkflowEnabled,
+    userCanReadAssays,
+    userCanReadDataClasses
+} from '../internal/app/utils';
 
 import { SubNav } from '../internal/components/navigation/SubNav';
 
@@ -58,11 +64,13 @@ export const SampleTypeIndexNav: FC<WithRouterProps> = memo(location => {
     const [tabs, setTabs] = useState<List<ITab>>(() => List());
     const noun = useMemo(() => ({ text: 'Samples', url: AppURL.create(SAMPLES_KEY) }), []);
     const { moduleContext } = useServerContext();
+    const dataTypeExclusions = getProjectDataExclusion(moduleContext);
 
     useEffect(() => {
         (async () => {
             const allSampleTypes = await loadSampleTypes(
-                false /* don't include media here since it is showing only in the sample type landing pages */
+                false /* don't include media here since it is showing only in the sample type landing pages */,
+                dataTypeExclusions?.['SampleType']
             );
             const tabs_ = allSampleTypes
                 .sort(naturalSortByProperty('title'))

@@ -1,26 +1,9 @@
-import { ActionURL, Ajax, Query, Utils } from '@labkey/api';
+import { Query } from '@labkey/api';
 
-import { caseInsensitive, handleRequestFailure } from '../../util/utils';
+import { caseInsensitive } from '../../util/utils';
 import { DataTypeEntity, ProjectConfigurableDataType } from '../entities/models';
 import { getContainerFilterForFolder } from '../../query/api';
 import { SCHEMAS } from '../../schemas';
-import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
-
-export async function getProjectExcludedDataTypes(excludedContainer: string): Promise<{ [key: string]: number[] }> {
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getDataTypeExclusion.api'),
-            method: 'GET',
-            params: {
-                excludedContainer,
-            },
-            success: Utils.getCallbackWrapper(response => {
-                resolve(response['excludedDataTypes']);
-            }),
-            failure: handleRequestFailure(reject, 'Failed to get project exclusion data'),
-        });
-    });
-}
 
 export function getProjectDataTypeDataCountSql(dataType: ProjectConfigurableDataType): string {
     if (!dataType) return null;

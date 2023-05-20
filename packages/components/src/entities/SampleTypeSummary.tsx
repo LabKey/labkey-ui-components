@@ -1,6 +1,6 @@
 import React, { FC, memo, useMemo } from 'react';
 
-import { PermissionTypes, Query } from '@labkey/api';
+import {Filter, PermissionTypes, Query} from '@labkey/api';
 
 import { SCHEMAS } from '../internal/schemas';
 import { AppURL } from '../internal/url/AppURL';
@@ -9,6 +9,8 @@ import { GridPanelWithModel } from '../public/QueryModel/GridPanel';
 import { QuerySort } from '../public/QuerySort';
 
 import { NON_MEDIA_SAMPLE_TYPES_FILTER } from '../internal/components/samples/constants';
+import {useServerContext} from "../internal/components/base/ServerContext";
+import {getProjectDataExclusion} from "../internal/app/utils";
 
 const SAMPLE_SET_GRID_GRID_ID = 'samplesets-grid-panel';
 
@@ -27,6 +29,8 @@ interface Props {
 }
 
 export const SampleTypeSummary: FC<Props> = memo(props => {
+    const { moduleContext } = useServerContext();
+    const dataTypeExclusions = getProjectDataExclusion(moduleContext);
     const { user } = props;
 
     const canUpdate = hasAnyPermissions(user, [PermissionTypes.Insert, PermissionTypes.Update]);
@@ -39,15 +43,20 @@ export const SampleTypeSummary: FC<Props> = memo(props => {
             omittedColumns.push('lsid');
         }
 
+        const excludedSampleTypes = dataTypeExclusions?.['SampleType'];
+        const filters = [NON_MEDIA_SAMPLE_TYPES_FILTER];
+        if (excludedSampleTypes && excludedSampleTypes.length > 0)
+            filters.push(Filter.create('RowId', excludedSampleTypes, Filter.Types.NOT_IN));
+
         return {
             ...SAMPLE_QUERY_CONFIG,
-            baseFilters: [NON_MEDIA_SAMPLE_TYPES_FILTER],
+            baseFilters: filters,
             requiredColumns,
             omittedColumns,
             sorts: [new QuerySort({ fieldKey: 'Name' })],
             includeTotalCount: true,
         };
-    }, [canUpdate]);
+    }, [canUpdate, dataTypeExclusions]);
 
     return (
         <GridPanelWithModel

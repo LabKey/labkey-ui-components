@@ -33,4 +33,5 @@ export interface ChartConfig {
     showSampleButtons?: boolean;
     schemaName: string;
     sort?: string;
+    getProjectExclusionFilter?: (projectExclusions: {[key: string]: number[]}) => Filter.IFilter;
 }

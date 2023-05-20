@@ -1,5 +1,5 @@
 import { fromJS, Map } from 'immutable';
-import { Query } from '@labkey/api';
+import {Filter, Query} from '@labkey/api';
 
 import {
     invalidateQueryDetailsCache,
@@ -51,14 +51,19 @@ export function getSampleTypes(includeMedia?: boolean): Promise<Array<{ id: numb
     });
 }
 
-export const loadSampleTypes = (includeMedia: boolean): Promise<QueryInfo[]> =>
-    loadQueriesFromTable(
+export const loadSampleTypes = (includeMedia: boolean, excludedSampleTypes?: number[]): Promise<QueryInfo[]> => {
+    const filters = filterMediaSampleTypes(includeMedia);
+    if (excludedSampleTypes && excludedSampleTypes.length > 0)
+        filters.push(Filter.create('RowId', excludedSampleTypes, Filter.Types.NOT_IN));
+
+    return loadQueriesFromTable(
         SCHEMAS.EXP_TABLES.SAMPLE_SETS,
         'Name',
         SCHEMAS.SAMPLE_SETS.SCHEMA,
         Query.containerFilter.currentPlusProjectAndShared,
-        filterMediaSampleTypes(includeMedia)
+        filters
     );
+};
 
 export function onSampleChange(): void {
     invalidateLineageResults();

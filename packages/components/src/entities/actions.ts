@@ -1,5 +1,5 @@
 import { fromJS, Map } from 'immutable';
-import {Filter, Query} from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import {
     invalidateQueryDetailsCache,

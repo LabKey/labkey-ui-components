@@ -4,9 +4,10 @@ import { naturalSort } from '../../../public/sort';
 import { AppURL } from '../../url/AppURL';
 import { caseInsensitive } from '../../util/utils';
 
+import { Row } from '../../query/selectRows';
+
 import { ChartData } from './types';
 import { HorizontalBarData } from './HorizontalBarSection';
-import { Row } from "../../query/selectRows";
 
 interface ChartDataProps {
     barFillColors: Record<string, string>;

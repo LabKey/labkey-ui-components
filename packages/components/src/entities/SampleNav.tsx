@@ -18,7 +18,7 @@ import {
     isAssayEnabled,
     isWorkflowEnabled,
     userCanReadAssays,
-    userCanReadDataClasses
+    userCanReadDataClasses,
 } from '../internal/app/utils';
 
 import { SubNav } from '../internal/components/navigation/SubNav';

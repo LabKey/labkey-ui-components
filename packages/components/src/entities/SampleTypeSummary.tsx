@@ -1,6 +1,6 @@
 import React, { FC, memo, useMemo } from 'react';
 
-import {Filter, PermissionTypes, Query} from '@labkey/api';
+import { Filter, PermissionTypes, Query } from '@labkey/api';
 
 import { SCHEMAS } from '../internal/schemas';
 import { AppURL } from '../internal/url/AppURL';
@@ -9,8 +9,8 @@ import { GridPanelWithModel } from '../public/QueryModel/GridPanel';
 import { QuerySort } from '../public/QuerySort';
 
 import { NON_MEDIA_SAMPLE_TYPES_FILTER } from '../internal/components/samples/constants';
-import {useServerContext} from "../internal/components/base/ServerContext";
-import {getProjectDataExclusion} from "../internal/app/utils";
+import { useServerContext } from '../internal/components/base/ServerContext';
+import { getProjectDataExclusion } from '../internal/app/utils';
 
 const SAMPLE_SET_GRID_GRID_ID = 'samplesets-grid-panel';
 

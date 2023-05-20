@@ -39,7 +39,8 @@ import {
     NEW_STANDARD_ASSAY_DESIGN_HREF,
     NOTEBOOKS_KEY,
     PICKLIST_KEY,
-    ProductFeature, PROJECT_DATA_TYPE_EXCLUSIONS,
+    ProductFeature,
+    PROJECT_DATA_TYPE_EXCLUSIONS,
     REGISTRY_KEY,
     REQUESTS_KEY,
     SAMPLE_MANAGER_APP_PROPERTIES,
@@ -273,7 +274,7 @@ export function isProductProjectDataTypeSelectionEnabled(moduleContext?: ModuleC
     return resolveModuleContext(moduleContext)?.query?.[EXPERIMENTAL_PRODUCT_PROJECT_DATA_SELECTION] === true;
 }
 
-export function getProjectDataExclusion(moduleContext?: ModuleContext): {[key: string]: number[]} {
+export function getProjectDataExclusion(moduleContext?: ModuleContext): { [key: string]: number[] } {
     return resolveModuleContext(moduleContext)?.samplemanagement?.[PROJECT_DATA_TYPE_EXCLUSIONS];
 }
 

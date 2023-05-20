@@ -46,9 +46,9 @@ async function fetchItemCount(schemaQuery: SchemaQuery, filterArray: Filter.IFil
 interface Props {
     chartConfigs: ChartConfig[];
     containerFilter?: Query.ContainerFilter;
+    dataTypeExclusions?: { [key: string]: number[] };
     navigate: (url: string | AppURL) => any;
     user: User;
-    dataTypeExclusions?: {[key: string]: number[]};
 }
 
 interface State {
@@ -86,11 +86,9 @@ export class BarChartViewer extends PureComponent<Props, State> {
                 const { itemCountFilters, itemCountSQ, getProjectExclusionFilter } = currentConfig;
                 const projectExclusionFilter = getProjectExclusionFilter(dataTypeExclusions);
 
-                const filters : Filter.IFilter[] = [];
-                if (itemCountFilters)
-                    filters.push(...itemCountFilters);
-                if (projectExclusionFilter)
-                    filters.push(projectExclusionFilter);
+                const filters: Filter.IFilter[] = [];
+                if (itemCountFilters) filters.push(...itemCountFilters);
+                if (projectExclusionFilter) filters.push(projectExclusionFilter);
 
                 const itemCount = await fetchItemCount(itemCountSQ, filters);
 
@@ -101,7 +99,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
                     schemaQuery: new SchemaQuery(schemaName, queryName),
                     containerFilter,
                     sort,
-                    filterArray: filters
+                    filterArray: filters,
                 });
 
                 this.setState(state => ({

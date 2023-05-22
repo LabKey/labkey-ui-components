@@ -433,6 +433,8 @@ import {
     ParentEntityRequiredColumns,
     SampleTypeDataType,
     SamplePropertyDataType,
+    DATA_CLASS_IMPORT_PREFIX,
+    SAMPLE_SET_IMPORT_PREFIX,
 } from './internal/components/entities/constants';
 import { getUniqueIdColumnMetadata } from './internal/components/entities/utils';
 import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
@@ -851,6 +853,8 @@ const App = {
     MEDIA_KEY,
     REGISTRY_KEY,
     ELN_KEY,
+    DATA_CLASS_IMPORT_PREFIX,
+    SAMPLE_SET_IMPORT_PREFIX,
 };
 
 const Hooks = {

@@ -1,5 +1,5 @@
 import React, { FC, memo, ReactNode } from 'react';
-import { fromJS, List, Map, OrderedMap } from 'immutable';
+import { List, Map } from 'immutable';
 import { Domain } from '@labkey/api';
 
 import { DomainDesign, DomainDetails, IAppDomainHeader, IDomainField, IDomainFormDisplayOptions } from '../models';
@@ -34,15 +34,13 @@ import { resolveErrorMessage } from '../../../util/messaging';
 import { ConfirmModal } from '../../base/ConfirmModal';
 import { Alert } from '../../base/Alert';
 
-import { initParentOptionsSelects } from '../../../../entities/actions';
-
-import { SAMPLE_SET_IMPORT_PREFIX } from '../../../../entities/constants';
-
 import { getDuplicateAlias, getParentAliasChangeResult, getParentAliasUpdateDupesResults } from '../utils';
 
 import { UniqueIdBanner } from './UniqueIdBanner';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { AliquotNamePatternProps, MetricUnitProps, SampleTypeModel } from './models';
+import { initParentOptionsSelects } from '../../entities/actions';
+import { SAMPLE_SET_IMPORT_PREFIX } from '../../entities/constants';
 
 const NEW_SAMPLE_SET_OPTION: IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,

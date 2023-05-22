@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released* : TBD May 2023
+*  move /entities subpackage to @labkey/premium package and remove from this repo
+  * add some missing components to index.ts needed by @labkey/premium
+
 ### version 2.338.0
 *Released* : 17 May 2023
 * Project level data type configuration schema and UI

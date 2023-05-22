@@ -73,6 +73,8 @@ import {
     uncapitalizeFirstChar,
     valueIsEmpty,
     withTransformedKeys,
+    arrayEquals,
+    findMissingValues,
 } from './internal/util/utils';
 import { AutoForm } from './internal/components/AutoForm';
 import { HelpIcon } from './internal/components/HelpIcon';
@@ -149,6 +151,8 @@ import {
     getDateTimeFormat,
     isDateTimeInPast,
     parseDate,
+    isRelativeDateFilterValue,
+    getParsedRelativeDateStr,
 } from './internal/util/Date';
 import { SVGIcon, Theme } from './internal/components/base/SVGIcon';
 import { CreatedModified } from './internal/components/base/CreatedModified';
@@ -171,6 +175,7 @@ import { getMenuItemForSectionKey, getMenuItemsForSection } from './internal/com
 import { Cards } from './internal/components/base/Cards';
 import { Setting } from './internal/components/base/Setting';
 import { ValueList } from './internal/components/base/ValueList';
+import { ChoicesListItem } from './internal/components/base/ChoicesListItem';
 
 import { DataTypeSelector } from './internal/components/entities/DataTypeSelector';
 
@@ -243,14 +248,21 @@ import {
     resetParameters,
 } from './internal/util/URL';
 import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
-import { getHelpLink, HELP_LINK_REFERRER, HelpLink } from './internal/util/helpLinks';
+import { DATA_IMPORT_TOPIC, getHelpLink, HELP_LINK_REFERRER, HelpLink } from './internal/util/helpLinks';
 import { ExperimentRunResolver, ListResolver } from './internal/url/AppURLResolver';
-import { loadEditorModelData } from './internal/components/editable/utils';
+import { NOT_ANY_FILTER_TYPE } from './internal/url/NotAnyFilterType';
+import {
+    loadEditorModelData,
+    applyEditableGridChangesToModels,
+    getUpdatedDataFromEditableGrid,
+    initEditableGridModels,
+} from './internal/components/editable/utils';
 import { EditableGridTabs } from './internal/components/editable/EditableGrid';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
 
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
+import { PlacementType } from './internal/components/editable/Controls';
 
 import { ErrorBoundary } from './internal/components/error/ErrorBoundary';
 import { AliasRenderer } from './internal/renderers/AliasRenderer';
@@ -320,6 +332,7 @@ import {
     getSearchScopeFromContainerFilter,
     isValidFilterField,
     SAMPLE_FILTER_METRIC_AREA,
+    getFilterValuesAsArray,
 } from './internal/components/search/utils';
 import { AdministrationSubNav } from './internal/components/administration/AdministrationSubNav';
 import { UserManagementPage } from './internal/components/administration/UserManagement';
@@ -341,6 +354,7 @@ import {
     getSelectionLineageData,
     updateSampleStorageData,
     getGroupedSampleDomainFields,
+    getGroupedSampleDisplayColumns,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SampleAmountEditModal } from './internal/components/samples/SampleAmountEditModal';
@@ -400,6 +414,7 @@ import { SampleTypeLineageCounts } from './internal/components/lineage/SampleTyp
 import { NavigationBar } from './internal/components/navigation/NavigationBar';
 import { SEARCH_PLACEHOLDER } from './internal/components/navigation/constants';
 import { FindByIdsModal } from './internal/components/search/FindByIdsModal';
+import { QueryFilterPanel } from './internal/components/search/QueryFilterPanel';
 import { ProductNavigationMenu } from './internal/components/productnavigation/ProductNavigationMenu';
 import { useSubNavContext } from './internal/components/navigation/hooks';
 import { SubNav, SubNavWithContext } from './internal/components/navigation/SubNav';
@@ -423,6 +438,8 @@ import {
     DOMAIN_RANGE_VALIDATOR,
     RANGE_URIS,
     SAMPLE_TYPE_CONCEPT_URI,
+    DERIVATION_DATA_SCOPES,
+    STORAGE_UNIQUE_ID_CONCEPT_URI,
 } from './internal/components/domainproperties/constants';
 import { ExpandableContainer } from './internal/components/ExpandableContainer';
 import { PermissionAssignments } from './internal/components/permissions/PermissionAssignments';
@@ -437,6 +454,7 @@ import {
     getParentTypeDataForLineage,
     getSampleOperationConfirmationData,
     getEntityTypeOptions,
+    GetParentTypeDataForLineage,
 } from './internal/components/entities/actions';
 import {
     AssayResultDataType,
@@ -448,6 +466,7 @@ import {
     SamplePropertyDataType,
     DATA_CLASS_IMPORT_PREFIX,
     SAMPLE_SET_IMPORT_PREFIX,
+    ParentEntityLineageColumns,
 } from './internal/components/entities/constants';
 import {
     getUniqueIdColumnMetadata,
@@ -455,6 +474,7 @@ import {
     sampleDeleteDependencyText,
     getEntityNoun,
     getEntityDescription,
+    getInitialParentChoices,
 } from './internal/components/entities/utils';
 import {
     ALIQUOT_CREATION,
@@ -501,7 +521,7 @@ import {
     DomainField,
     PropertyValidator,
 } from './internal/components/domainproperties/models';
-import { SAMPLE_TYPE } from './internal/components/domainproperties/PropDescType';
+import { SAMPLE_TYPE, JsonType } from './internal/components/domainproperties/PropDescType';
 import DomainForm from './internal/components/domainproperties/DomainForm';
 import { BasePropertiesPanel } from './internal/components/domainproperties/BasePropertiesPanel';
 import { DomainFieldsDisplay } from './internal/components/domainproperties/DomainFieldsDisplay';
@@ -573,6 +593,7 @@ import { ManageSampleStatusesPanel } from './internal/components/samples/ManageS
 import { SampleStatusLegend } from './internal/components/samples/SampleStatusLegend';
 import {
     ALIQUOT_FILTER_MODE,
+    ALIQUOTED_FROM_COL,
     DEFAULT_SAMPLE_FIELD_CONFIG,
     FIND_BY_IDS_QUERY_PARAM,
     IS_ALIQUOT_COL,
@@ -587,6 +608,8 @@ import {
     SAMPLES_WITH_TYPES_FILTER,
     SampleStateType,
     SELECTION_KEY_TYPE,
+    SAMPLE_ID_FIND_FIELD,
+    UNIQUE_ID_FIND_FIELD,
 } from './internal/components/samples/constants';
 import { createMockWithRouteLeave, createMockWithRouterProps } from './internal/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
@@ -596,12 +619,20 @@ import { OntologyConceptOverviewPanel } from './internal/components/ontology/Con
 import { OntologyBrowserFilterPanel } from './internal/components/ontology/OntologyBrowserFilterPanel';
 import { OntologySearchInput } from './internal/components/ontology/OntologyTreeSearchContainer';
 import { AppModel, LogoutReason } from './internal/app/models';
-import { Picklist } from './internal/components/picklist/models';
+import { Picklist, PICKLIST_SAMPLES_FILTER } from './internal/components/picklist/models';
 import { PicklistCreationMenuItem } from './internal/components/picklist/PicklistCreationMenuItem';
 import { PicklistButton } from './internal/components/picklist/PicklistButton';
+import { PicklistEditModal } from './internal/components/picklist/PicklistEditModal';
 
 import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
-import { getOrderedSelectedPicklistSamples, getSelectedPicklistSamples } from './internal/components/picklist/actions';
+import {
+    getOrderedSelectedPicklistSamples,
+    getSelectedPicklistSamples,
+    getPicklistFromId,
+    getPicklistListingContainerFilter,
+    deletePicklists,
+    updatePicklist,
+} from './internal/components/picklist/actions';
 import { BarTenderSettingsForm } from './internal/components/labels/BarTenderSettingsForm';
 import { PrintLabelsModal } from './internal/components/labels/PrintLabelsModal';
 import { BarTenderConfiguration } from './internal/components/labels/models';
@@ -659,6 +690,7 @@ import {
     userCanReadNotebooks,
     userCanReadRegistry,
     userCanReadSources,
+    getCurrentProductName,
 } from './internal/app/utils';
 import {
     menuInit,
@@ -711,6 +743,8 @@ import {
     NEW_STANDARD_ASSAY_DESIGN_HREF,
     NOTIFICATION_TIMEOUT,
     PICKLIST_HOME_HREF,
+    MY_PICKLISTS_HREF,
+    TEAM_PICKLISTS_HREF,
     PICKLIST_KEY,
     REGISTRY_KEY,
     SAMPLE_MANAGER_APP_PROPERTIES,
@@ -762,7 +796,12 @@ import {
     UnitModel,
 } from './internal/util/measurement';
 import { DELIMITER, DETAIL_TABLE_CLASSES } from './internal/components/forms/constants';
-import { DISCARD_CONSUMED_CHECKBOX_FIELD, DISCARD_CONSUMED_COMMENT_FIELD } from './internal/components/samples/DiscardConsumedSamplesPanel';
+import {
+    DISCARD_CONSUMED_CHECKBOX_FIELD,
+    DISCARD_CONSUMED_COMMENT_FIELD,
+    DiscardConsumedSamplesPanel,
+} from './internal/components/samples/DiscardConsumedSamplesPanel';
+import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './internal/components/picklist/constants';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -824,6 +863,7 @@ const App = {
     userCanReadRegistry,
     userCanReadSources,
     userCanDeletePublicPicklists,
+    getCurrentProductName,
     SECURITY_LOGOUT,
     SECURITY_SERVER_UNAVAILABLE,
     SECURITY_SESSION_TIMEOUT,
@@ -861,6 +901,8 @@ const App = {
     FIND_SAMPLES_BY_FILTER_HREF,
     FIND_SAMPLES_BY_ID_HREF,
     PICKLIST_HOME_HREF,
+    MY_PICKLISTS_HREF,
+    TEAM_PICKLISTS_HREF,
     WORKFLOW_HOME_HREF,
     NOTIFICATION_TIMEOUT,
     SERVER_NOTIFICATION_MAX_ROWS,
@@ -893,6 +935,10 @@ const App = {
     DISCARD_CONSUMED_CHECKBOX_FIELD,
     DISCARD_CONSUMED_COMMENT_FIELD,
     SAMPLE_FILTER_METRIC_AREA,
+    ALIQUOTED_FROM_COL,
+    PRIVATE_PICKLIST_CATEGORY,
+    PUBLIC_PICKLIST_CATEGORY,
+    DATA_IMPORT_TOPIC,
 };
 
 const Hooks = {
@@ -953,8 +999,12 @@ export {
     loadQueriesFromTable,
     // editable grid related items
     loadEditorModelData,
+    applyEditableGridChangesToModels,
+    getUpdatedDataFromEditableGrid,
+    initEditableGridModels,
     MAX_EDITABLE_GRID_ROWS,
     EditableGridLoaderFromSelection,
+    PlacementType,
     EditableGridPanel,
     EditableGridPanelForUpdate,
     EditableGridTabs,
@@ -983,6 +1033,7 @@ export {
     imageURL,
     spliceURL,
     WHERE_FILTER_TYPE,
+    NOT_ANY_FILTER_TYPE,
     createProductUrl,
     createProductUrlFromParts,
     // renderers
@@ -1073,6 +1124,12 @@ export {
     Picklist,
     getOrderedSelectedPicklistSamples,
     getSelectedPicklistSamples,
+    getPicklistFromId,
+    getPicklistListingContainerFilter,
+    PicklistEditModal,
+    PICKLIST_SAMPLES_FILTER,
+    deletePicklists,
+    updatePicklist,
     // data class and sample type related items
     ALIQUOT_FILTER_MODE,
     DataClassModel,
@@ -1116,8 +1173,11 @@ export {
     getSelectionLineageData,
     updateSampleStorageData,
     getGroupedSampleDomainFields,
+    getGroupedSampleDisplayColumns,
     getParentTypeDataForLineage,
     getSelectedSampleIdsFromSelectionKey,
+    GetParentTypeDataForLineage,
+    ParentEntityLineageColumns,
     SampleTypeDataType,
     SamplePropertyDataType,
     DataClassDataType,
@@ -1151,6 +1211,8 @@ export {
     sampleDeleteDependencyText,
     getEntityNoun,
     getEntityDescription,
+    getInitialParentChoices,
+    DiscardConsumedSamplesPanel,
     // metric related items
     UnitModel,
     MEASUREMENT_UNITS,
@@ -1171,6 +1233,7 @@ export {
     SearchScope,
     getSearchScopeFromContainerFilter,
     isValidFilterField,
+    getFilterValuesAsArray,
     // administration
     AccountSettingsPage,
     AdministrationSubNav,
@@ -1238,6 +1301,7 @@ export {
     SEARCH_PLACEHOLDER,
     ProductNavigationMenu,
     FindByIdsModal,
+    QueryFilterPanel,
     SubNav,
     Breadcrumb,
     BreadcrumbCreate,
@@ -1283,11 +1347,14 @@ export {
     saveAssayDesign,
     fetchProtocol,
     AssayProtocolModel,
+    JsonType,
     SAMPLE_TYPE,
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE,
     RANGE_URIS,
     SAMPLE_TYPE_CONCEPT_URI,
+    DERIVATION_DATA_SCOPES,
+    STORAGE_UNIQUE_ID_CONCEPT_URI,
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     ListDesignerPanels,
     ListModel,
@@ -1323,12 +1390,16 @@ export {
     formatDate,
     formatDateTime,
     parseDate,
+    isRelativeDateFilterValue,
+    getParsedRelativeDateStr,
     isDateTimeInPast,
     blurActiveElement,
     caseInsensitive,
     capitalizeFirstChar,
     uncapitalizeFirstChar,
     withTransformedKeys,
+    arrayEquals,
+    findMissingValues,
     downloadAttachment,
     handleFileInputChange,
     handleRequestFailure,
@@ -1419,6 +1490,7 @@ export {
     Setting,
     ValueList,
     DataTypeSelector,
+    ChoicesListItem,
     // base models, enums, constants
     Container,
     User,
@@ -1448,6 +1520,8 @@ export {
     insertColumnFilter,
     EXPORT_TYPES,
     SELECTION_KEY_TYPE,
+    SAMPLE_ID_FIND_FIELD,
+    UNIQUE_ID_FIND_FIELD,
     AssayUploadTabs,
     // QueryModel
     GRID_CHECKBOX_OPTIONS,
@@ -1612,7 +1686,11 @@ export type {
 export type { MetricUnitProps } from './internal/components/domainproperties/samples/models';
 export type { AppRouteResolver } from './internal/url/models';
 export type { WithFormStepsProps } from './internal/components/forms/FormStep';
-export type { BulkAddData, EditableColumnMetadata } from './internal/components/editable/EditableGrid';
+export type {
+    BulkAddData,
+    EditableColumnMetadata,
+    SharedEditableGridPanelProps,
+} from './internal/components/editable/EditableGrid';
 export type { IImportData, ISelectRowsResult } from './internal/query/api';
 export type { Row, RowValue, SelectRowsOptions, SelectRowsResponse } from './internal/query/selectRows';
 export type { Location } from './internal/util/URL';
@@ -1654,3 +1732,7 @@ export type { SampleStorageLocationComponentProps, SampleStorageMenuComponentPro
 export type { SearchForm } from './internal/components/search/BaseSearchPage';
 export type { TabbedGridPanelProps } from './public/QueryModel/TabbedGridPanel';
 export type { EditorModelUpdates } from './internal/actions';
+export type { EditableGridModels } from './internal/components/editable/utils';
+export type { GroupedSampleDisplayColumns } from './internal/components/samples/actions';
+export type { PicklistDeletionData } from './internal/components/picklist/actions';
+export type { ConfirmModalProps } from './internal/components/base/ConfirmModal';

@@ -10,7 +10,7 @@ import { QueryColumn } from '../../../public/QueryColumn';
 
 import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 
-import { CONCEPT_COLUMN_FILTER_TYPES, getLegalIdentifier, getFilterLabKeySql } from '../../query/filter';
+import { CONCEPT_COLUMN_FILTER_TYPES } from '../../query/filter';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
@@ -380,51 +380,6 @@ export function isValidFilterField(
     }
 
     return true;
-}
-
-export function getUpdatedDataTypeFilters(
-    dataTypeFilters: { [p: string]: FieldFilter[] },
-    activeQuery: string,
-    activeField: QueryColumn,
-    newFilters: Filter.IFilter[],
-    allowSingleParentTypeFilter?: boolean
-): { [p: string]: FieldFilter[] } {
-    const lcActiveQuery = activeQuery.toLowerCase();
-    const dataTypeFiltersUpdated = { ...dataTypeFilters };
-    const activeParentFilters: FieldFilter[] = dataTypeFiltersUpdated[lcActiveQuery];
-    const activeFieldKey = activeField.resolveFieldKey();
-    // the filters on the parent type that aren't associated with this field.
-    const otherFieldFilters = activeParentFilters?.filter(filter => filter.fieldKey !== activeFieldKey) ?? [];
-
-    // the filters on the parent type associated with this field.
-    const thisFieldFilters =
-        newFilters
-            ?.filter(newFilter => newFilter !== null)
-            .map(newFilter => {
-                return {
-                    fieldKey: activeFieldKey,
-                    fieldCaption: activeField.caption,
-                    filter: newFilter,
-                    jsonType: activeField.getDisplayFieldJsonType(),
-                } as FieldFilter;
-            }) ?? [];
-
-    if (allowSingleParentTypeFilter) {
-        if (otherFieldFilters.length + thisFieldFilters.length > 0) {
-            return {
-                [lcActiveQuery]: [...otherFieldFilters, ...thisFieldFilters],
-            };
-        } else {
-            return {};
-        }
-    }
-
-    if (otherFieldFilters.length + thisFieldFilters.length > 0) {
-        dataTypeFiltersUpdated[lcActiveQuery] = [...otherFieldFilters, ...thisFieldFilters];
-    } else {
-        delete dataTypeFiltersUpdated[lcActiveQuery];
-    }
-    return dataTypeFiltersUpdated;
 }
 
 export function getFilterSelections(

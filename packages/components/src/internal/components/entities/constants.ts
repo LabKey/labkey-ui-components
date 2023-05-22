@@ -18,7 +18,6 @@ import { sampleDeleteDependencyText } from './utils';
 export const DATA_OPERATION_CONFIRMATION_ACTION = 'getDataOperationConfirmationData.api';
 export const SAMPLE_OPERATION_CONFIRMATION_ACTION = 'getMaterialOperationConfirmationData.api';
 export const ASSAY_RUN_OPERATION_CONFIRMATION_ACTION = 'getAssayRunDeletionConfirmationData.api';
-export const ENTITY_CREATION_METRIC = 'entityCreation';
 
 export const AssayRunDataType: EntityDataType = {
     deleteHelpLinkTopic: DELETE_ASSAY_RUNS_TOPIC,

@@ -572,28 +572,6 @@ export async function getFieldLookupFromSelection(
     return [...sampleIds];
 }
 
-export function exportTimelineGrid(
-    sampleId: number,
-    recentFirst = false,
-    sampleEventIds: number[],
-    assayEventIds: number[]
-): void {
-    const url = ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'ExportTimelineGrid', undefined, {
-        returnUrl: false,
-    });
-    const form = new FormData();
-    form.append('sampleId', sampleId.toString(10));
-    form.append('recentFirst', recentFirst.toString());
-    sampleEventIds?.forEach(id => form.append('sampleEventIds', id.toString(10)));
-    assayEventIds?.forEach(id => form.append('assayEventIds', id.toString(10)));
-    Ajax.request({
-        downloadFile: true,
-        form,
-        method: 'POST',
-        url: url.toString(),
-    });
-}
-
 // optional timezone param used for teamcity jest test only
 export function getTimelineEvents(sampleId: number, timezone?: string): Promise<TimelineEventModel[]> {
     return new Promise((resolve, reject) => {

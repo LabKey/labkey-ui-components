@@ -10,8 +10,6 @@ import { TEXT_TYPE } from '../domainproperties/PropDescType';
 
 import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 
-import { formatDate } from '../../util/Date';
-
 import { SampleTypeDataType } from '../entities/constants';
 
 import {
@@ -25,7 +23,6 @@ import {
     getSearchResultCardData,
     getUpdatedCheckedValues,
     getUpdatedChooseValuesFilter,
-    getUpdatedDataTypeFilters,
     getUpdatedFilters,
     getUpdatedFilterSelection,
     getUpdateFilterExpressionFilter,
@@ -650,113 +647,6 @@ describe('isValidFilterField', () => {
             supportGroupConcatSubSelect: false,
         });
         expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
-    });
-});
-
-const PARENT_WITH_FILTERS = 'parent_with_filters';
-const PARENT_WITHOUT_FILTERS = 'parent_without_filters';
-const DATA_TYPE_FILTERS = {
-    [PARENT_WITH_FILTERS]: [stringEqualFilter, stringBetweenFilter, intEqFilter],
-    [PARENT_WITHOUT_FILTERS]: [],
-};
-
-describe('getUpdatedDataTypeFilters', () => {
-    test('separate field, no new filters', () => {
-        const updatedFilters = getUpdatedDataTypeFilters(
-            DATA_TYPE_FILTERS,
-            PARENT_WITH_FILTERS,
-            new QueryColumn({
-                caption: floatBetweenFilter.fieldCaption,
-                fieldKey: floatBetweenFilter.fieldKey,
-            }),
-            undefined
-        );
-        expect(updatedFilters).toStrictEqual(DATA_TYPE_FILTERS);
-    });
-
-    test('remove all filters with undefined', () => {
-        const updatedFilters = getUpdatedDataTypeFilters(
-            DATA_TYPE_FILTERS,
-            PARENT_WITH_FILTERS,
-            new QueryColumn({
-                name: stringEqualFilter.fieldKey,
-                caption: stringEqualFilter.fieldCaption,
-                fieldKey: stringEqualFilter.fieldKey,
-            }),
-            undefined
-        );
-        expect(updatedFilters).toStrictEqual({
-            [PARENT_WITH_FILTERS]: [intEqFilter],
-            [PARENT_WITHOUT_FILTERS]: [],
-        });
-    });
-
-    test('remove all filters with empty array', () => {
-        const updatedFilters = getUpdatedDataTypeFilters(
-            DATA_TYPE_FILTERS,
-            PARENT_WITH_FILTERS,
-            new QueryColumn({
-                name: stringEqualFilter.fieldKey,
-                caption: stringEqualFilter.fieldCaption,
-                fieldKey: stringEqualFilter.fieldKey,
-            }),
-            []
-        );
-        expect(updatedFilters).toStrictEqual({
-            [PARENT_WITH_FILTERS]: [intEqFilter],
-            [PARENT_WITHOUT_FILTERS]: [],
-        });
-    });
-
-    test('remove all filters with null filter in array', () => {
-        const updatedFilters = getUpdatedDataTypeFilters(
-            DATA_TYPE_FILTERS,
-            PARENT_WITH_FILTERS,
-            new QueryColumn({
-                name: stringEqualFilter.fieldKey,
-                caption: stringEqualFilter.fieldCaption,
-                fieldKey: stringEqualFilter.fieldKey,
-            }),
-            [null]
-        );
-        expect(updatedFilters).toStrictEqual({
-            [PARENT_WITH_FILTERS]: [intEqFilter],
-            [PARENT_WITHOUT_FILTERS]: [],
-        });
-    });
-
-    test('update one filter', () => {
-        const updatedFilters = getUpdatedDataTypeFilters(
-            DATA_TYPE_FILTERS,
-            PARENT_WITH_FILTERS,
-            new QueryColumn({
-                name: stringEqualFilter.fieldKey,
-                caption: stringEqualFilter.fieldCaption,
-                fieldKey: stringEqualFilter.fieldKey,
-            }),
-            [stringEqualFilter.filter, emptyStringBetweenFilter.filter]
-        );
-        expect(updatedFilters).toStrictEqual({
-            [PARENT_WITH_FILTERS]: [intEqFilter, stringEqualFilter, emptyStringBetweenFilter],
-            [PARENT_WITHOUT_FILTERS]: [],
-        });
-    });
-
-    test('add filter where there were none', () => {
-        const updatedFilters = getUpdatedDataTypeFilters(
-            DATA_TYPE_FILTERS,
-            PARENT_WITHOUT_FILTERS,
-            new QueryColumn({
-                name: stringEqualFilter.fieldKey,
-                caption: stringEqualFilter.fieldCaption,
-                fieldKey: stringEqualFilter.fieldKey,
-            }),
-            [stringEqualFilter.filter, emptyStringBetweenFilter.filter]
-        );
-        expect(updatedFilters).toStrictEqual({
-            [PARENT_WITH_FILTERS]: [stringEqualFilter, stringBetweenFilter, intEqFilter],
-            [PARENT_WITHOUT_FILTERS]: [stringEqualFilter, emptyStringBetweenFilter],
-        });
     });
 });
 

@@ -10,16 +10,12 @@
   "module": "dist/components.js",
   "types": "dist/index.d.ts",
   "exports": {
-    ".": "./dist/components.js",
-    "./entities": "./dist/entities.js"
+    ".": "./dist/components.js"
   },
   "typesVersions": {
     "*": {
       "*": [
         "dist/index.d.ts"
-      ],
-      "entities": [
-        "dist/entities/index.d.ts"
       ]
     }
   },

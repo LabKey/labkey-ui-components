@@ -1,5 +1,10 @@
 # @labkey/build
 
+### version TBD
+*Released*: TBD
+* webpack updates for `@labkey/premium/entities` package
+  * move of `@labkey/components/entities` from ui-components repo to `@labkey/premium/entities`
+
 ### version 6.10.0
 *Released*: 14 April 2023
 * Exclude `.ispec.tsx?` files from compilation

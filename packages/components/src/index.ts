@@ -466,7 +466,7 @@ import {
 import { AuditQueriesListingPage } from './internal/components/auditlog/AuditQueriesListingPage';
 import { AuditDetails } from './internal/components/auditlog/AuditDetails';
 import { TimelineView } from './internal/components/auditlog/TimelineView';
-import { getEventDataValueDisplay } from './internal/components/auditlog/utils';
+import { getEventDataValueDisplay, getTimelineEntityUrl } from './internal/components/auditlog/utils';
 import {
     fetchDomain,
     fetchDomainDetails,
@@ -546,10 +546,10 @@ import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPag
 import { PipelineSubNav } from './internal/components/pipeline/PipelineSubNav';
 import { PipelineStatusDetailPage } from './internal/components/pipeline/PipelineStatusDetailPage';
 import { getTitleDisplay, hasActivePipelineJob } from './internal/components/pipeline/utils';
-import { SampleCreationType } from './internal/components/samples/models';
 import { DisableableMenuItem } from './internal/components/samples/DisableableMenuItem';
 import { SampleStatusTag } from './internal/components/samples/SampleStatusTag';
 import { ManageSampleStatusesPanel } from './internal/components/samples/ManageSampleStatusesPanel';
+import { SampleStatusLegend } from './internal/components/samples/SampleStatusLegend';
 import {
     ALIQUOT_FILTER_MODE,
     DEFAULT_SAMPLE_FIELD_CONFIG,
@@ -741,6 +741,7 @@ import {
     UnitModel,
 } from './internal/util/measurement';
 import { DELIMITER, DETAIL_TABLE_CLASSES } from './internal/components/forms/constants';
+import { DISCARD_CONSUMED_CHECKBOX_FIELD, DISCARD_CONSUMED_COMMENT_FIELD } from './internal/components/samples/DiscardConsumedSamplesPanel';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -868,6 +869,8 @@ const App = {
     ALLOWED_FINDER_SAMPLE_PROPERTY_MAP,
     DELIMITER,
     DETAIL_TABLE_CLASSES,
+    DISCARD_CONSUMED_CHECKBOX_FIELD,
+    DISCARD_CONSUMED_COMMENT_FIELD,
 };
 
 const Hooks = {
@@ -1091,12 +1094,12 @@ export {
     SampleAmountEditModal,
     SampleEmptyAlert,
     SampleTypeEmptyAlert,
-    SampleCreationType,
     SamplesEditButtonSections,
     StorageAmountInput,
     getOmittedSampleTypeColumns,
     getOperationNotPermittedMessage,
     ManageSampleStatusesPanel,
+    SampleStatusLegend,
     EntityIdCreationModel,
     EntityMoveModal,
     EntityParentType,
@@ -1436,6 +1439,7 @@ export {
     AuditQueriesListingPage,
     AuditDetails,
     getEventDataValueDisplay,
+    getTimelineEntityUrl,
     TimelineEventModel,
     TimelineView,
     // pipeline
@@ -1531,7 +1535,13 @@ export type { NotificationItemProps } from './internal/components/notifications/
 export type { NotificationsContextProps } from './internal/components/notifications/NotificationsContext';
 export type { VisGraphNode } from './internal/components/lineage/models';
 export type { ITab } from './internal/components/navigation/types';
-export type { EditorModelProps, IGridLoader, IGridResponse } from './internal/components/editable/models';
+export type {
+    EditorModelProps,
+    IGridLoader,
+    IGridResponse,
+    IEditableGridLoader,
+    EditorMode,
+} from './internal/components/editable/models';
 export type { IDataViewInfo } from './internal/DataViewInfo';
 export type { InjectedAssayModel, WithAssayModelProps } from './internal/components/assay/withAssayModels';
 export type { SearchResultCardData } from './internal/components/search/models';
@@ -1555,9 +1565,12 @@ export type { InjectedPermissionsPage } from './internal/components/permissions/
 export type { ISelectInitData } from './internal/components/forms/model';
 export type { QuerySelectChange, QuerySelectOwnProps } from './internal/components/forms/QuerySelect';
 export type {
+    SampleCreationType,
     SampleCreationTypeModel,
     SampleStatus,
     SampleGridButtonProps,
+    GroupedSampleFields,
+    FindField,
 } from './internal/components/samples/models';
 export type { MetricUnitProps } from './internal/components/domainproperties/samples/models';
 export type { AppRouteResolver } from './internal/url/models';
@@ -1575,7 +1588,6 @@ export type {
 export type { IAttachment } from './internal/renderers/AttachmentCard';
 export type { Field, FormSchema, Option } from './internal/components/AutoForm';
 export type { FileSizeLimitProps } from './public/files/models';
-export type { FindField } from './internal/components/samples/models';
 export type { UsersLoader } from './internal/components/forms/actions';
 export type { LineageGroupingOptions } from './internal/components/lineage/types';
 export type { AnnouncementModel, ThreadActions } from './internal/announcements/model';

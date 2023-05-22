@@ -22,7 +22,7 @@ import { deleteEntityType, getSelectedItemSamples } from '../entities/actions';
 import { Location } from '../../util/URL';
 import { getSelectedData, getSelection, getSnapshotSelections } from '../../actions';
 
-import { caseInsensitive, handleRequestFailure, quoteValueWithDelimiters } from '../../util/utils';
+import { caseInsensitive, handleRequestFailure } from '../../util/utils';
 
 import { ParentEntityLineageColumns } from '../entities/constants';
 
@@ -46,7 +46,6 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { getSelectedPicklistSamples } from '../picklist/actions';
 import { resolveErrorMessage } from '../../util/messaging';
 import { QueryConfig } from '../../../public/QueryModel/QueryModel';
-import { naturalSort } from '../../../public/sort';
 import { TimelineEventModel } from '../auditlog/models';
 
 import { createGridModelId } from '../../models';
@@ -368,48 +367,6 @@ export function getSelectionLineageData(
     });
 }
 
-export function getUpdatedLineageRows(
-    lineageRows: Array<Record<string, any>>,
-    originalRows: Array<Record<string, any>>,
-    aliquots: any[]
-): Array<Record<string, any>> {
-    const updatedLineageRows = [];
-
-    // iterate through all of the lineage rows to find the ones that have any edit from the initial data row,
-    // also remove the aliquot rows from the lineageRows array
-    lineageRows?.forEach(row => {
-        const rowId = caseInsensitive(row, 'RowId');
-        if (aliquots.indexOf(rowId) === -1) {
-            // compare each row value looking for any that are different from the original value
-            let hasUpdate = false;
-            Object.keys(row).every(key => {
-                const updatedVal = Utils.isString(row[key])
-                    ? row[key].split(', ').sort(naturalSort).join(', ')
-                    : row[key];
-                let originalVal = originalRows[rowId][key];
-                if (List.isList(originalVal) || Array.isArray(originalVal)) {
-                    originalVal = originalVal
-                        ?.map(parentRow => quoteValueWithDelimiters(parentRow.displayValue, ','))
-                        .sort(naturalSort)
-                        .join(', ');
-                } else {
-                    originalVal = quoteValueWithDelimiters(originalVal, ',');
-                }
-
-                if (originalVal !== updatedVal) {
-                    hasUpdate = true;
-                    return false;
-                }
-                return true;
-            });
-
-            if (hasUpdate) updatedLineageRows.push(row);
-        }
-    });
-
-    return updatedLineageRows;
-}
-
 // exported for jest testing
 export function getRowIdsFromSelection(selection: List<any>): number[] {
     const rowIds = [];
@@ -693,26 +650,6 @@ export function getSampleStatuses(includeInUse = false): Promise<SampleState[]> 
                 reject(response);
             }),
         });
-    });
-}
-
-export function getSampleTypeRowId(name: string): Promise<number> {
-    return new Promise((resolve, reject) => {
-        selectRowsDeprecated({
-            schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
-            queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
-            columns: 'RowId,Name',
-            filterArray: [Filter.create('Name', name)],
-        })
-            .then(response => {
-                const { models, key } = response;
-                const row = Object.values(models[key])[0];
-                resolve(caseInsensitive(row, 'RowId')?.value);
-            })
-            .catch(reason => {
-                console.error(reason);
-                reject(resolveErrorMessage(reason));
-            });
     });
 }
 

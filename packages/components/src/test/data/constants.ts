@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { List } from 'immutable';
-import { Filter, PermissionRoles, Project } from '@labkey/api';
+import { Filter, PermissionRoles } from '@labkey/api';
 
 import { AssayWizardModel } from '../../internal/components/assay/AssayWizardModel';
 
@@ -23,13 +23,8 @@ import { DELETE_SAMPLES_TOPIC } from '../../internal/util/helpLinks';
 import { AssayDefinitionModel, AssayDomainTypes } from '../../internal/AssayDefinitionModel';
 import { QueryInfo } from '../../public/QueryInfo';
 import { IFile } from '../../internal/components/files/models';
-import { LoadingState } from '../../public/LoadingState';
-import { AssayStateModel } from '../../internal/components/assay/models';
-import { Container, ContainerDateFormats } from '../../internal/components/base/models/Container';
 import { SchemaQuery } from '../../public/SchemaQuery';
 import { EntityDataType } from '../../internal/components/entities/models';
-
-import { GENERAL_ASSAY_PROVIDER_NAME } from '../../internal/components/assay/constants';
 
 import assayWizardJSON from './assayWizardModel.json';
 
@@ -373,17 +368,6 @@ export const TIMELINE_DATA = [
         },
     },
 ];
-
-export const TEST_ASSAY_STATE_MODEL = new AssayStateModel({
-    definitionsLoadingState: LoadingState.LOADED,
-    definitions: [
-        AssayDefinitionModel.create({ id: 3, name: 'NAb 1', type: 'NAb' }),
-        AssayDefinitionModel.create({ id: 1, name: 'GPAT 1', type: GENERAL_ASSAY_PROVIDER_NAME }),
-        AssayDefinitionModel.create({ id: 2, name: 'GPAT 2', type: GENERAL_ASSAY_PROVIDER_NAME }),
-        AssayDefinitionModel.create({ id: 5, name: 'Luminex', type: 'Luminex' }),
-        AssayDefinitionModel.create({ id: 4, name: 'Protein', type: 'Protein Expression Matrix' }),
-    ],
-});
 
 export const TestTypeDataType: EntityDataType = {
     typeListingSchemaQuery: new SchemaQuery('TestListing', 'query'),

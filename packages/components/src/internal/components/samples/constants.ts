@@ -45,7 +45,6 @@ export const IS_ALIQUOT_COL = 'IsAliquot';
 export const SAMPLE_STATE_COLUMN_NAME = 'SampleState';
 export const SAMPLE_STATE_TYPE_COLUMN_NAME = 'SampleState/StatusType';
 export const SAMPLE_STATE_DESCRIPTION_COLUMN_NAME = 'SampleState/Description';
-export const SAMPLE_UNITS_COLUMN_NAME = 'Units';
 
 export const SAMPLE_STATUS_REQUIRED_COLUMNS = [
     SAMPLE_STATE_COLUMN_NAME,

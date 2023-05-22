@@ -270,66 +270,6 @@ export async function getGroupedSampleDomainFields(sampleType: string): Promise<
     };
 }
 
-export function getAliquotSampleIds(selection: List<any>, sampleType: string, viewName: string): Promise<any[]> {
-    return getFilteredSampleSelection(selection, sampleType, viewName, [Filter.create(IS_ALIQUOT_COL, true)]);
-}
-
-export function getNotInStorageSampleIds(selection: List<any>, sampleType: string, viewName: string): Promise<any[]> {
-    return getFilteredSampleSelection(selection, sampleType, viewName, [
-        Filter.create('StorageStatus', 'Not in storage'),
-    ]);
-}
-
-async function getFilteredSampleSelection(
-    selection: List<any>,
-    sampleType: string,
-    viewName: string,
-    filters: Filter.IFilter[]
-): Promise<any[]> {
-    const sampleRowIds = getRowIdsFromSelection(selection);
-    if (sampleRowIds.length === 0) {
-        throw new Error('No data is selected');
-    }
-
-    const result = await selectRows({
-        columns: 'RowId',
-        filterArray: [Filter.create('RowId', sampleRowIds, Filter.Types.IN), ...filters],
-        schemaQuery: new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType),
-        viewName,
-    });
-
-    const filteredSamples = [];
-    result.rows.forEach(row => {
-        filteredSamples.push(caseInsensitive(row, 'RowId').value);
-    });
-
-    return filteredSamples;
-}
-
-export async function getSampleSelectionStorageData(selection: List<any>): Promise<Record<string, any>> {
-    const sampleRowIds = getRowIdsFromSelection(selection);
-    if (sampleRowIds.length === 0) {
-        throw new Error('No data is selected');
-    }
-
-    const result = await selectRows({
-        columns: 'RowId, SampleId, StoredAmount',
-        filterArray: [Filter.create('SampleId', sampleRowIds, Filter.Types.IN)],
-        schemaQuery: SCHEMAS.INVENTORY.ITEM_SAMPLES,
-    });
-
-    const filteredSampleItems = {};
-
-    result.rows.forEach(row => {
-        filteredSampleItems[caseInsensitive(row, 'SampleId').value] = {
-            rowId: caseInsensitive(row, 'RowId').value,
-            storedAmount: caseInsensitive(row, 'StoredAmount').value,
-        };
-    });
-
-    return filteredSampleItems;
-}
-
 export async function getSampleStorageId(sampleRowId: number): Promise<number> {
     const result = await selectRows({
         columns: 'RowId, SampleId',
@@ -343,6 +283,14 @@ export async function getSampleStorageId(sampleRowId: number): Promise<number> {
     }
 
     return caseInsensitive(result.rows[0], 'RowId').value;
+}
+
+function getRowIdsFromSelection(selection: List<any>): number[] {
+    const rowIds = [];
+    if (selection && !selection.isEmpty()) {
+        selection.forEach(sel => rowIds.push(parseInt(sel, 10)));
+    }
+    return rowIds;
 }
 
 // Used for samples and dataclasses
@@ -365,15 +313,6 @@ export function getSelectionLineageData(
         columns: columns ?? List.of('RowId', 'Name', 'LSID').concat(ParentEntityLineageColumns).toArray(),
         filterArray: [Filter.create('RowId', rowIds, Filter.Types.IN)],
     });
-}
-
-// exported for jest testing
-export function getRowIdsFromSelection(selection: List<any>): number[] {
-    const rowIds = [];
-    if (selection && !selection.isEmpty()) {
-        selection.forEach(sel => rowIds.push(parseInt(sel, 10)));
-    }
-    return rowIds;
 }
 
 export interface GroupedSampleDisplayColumns {

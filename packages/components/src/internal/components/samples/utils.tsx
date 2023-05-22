@@ -1,8 +1,5 @@
 import React from 'react';
-
 import { Filter, Query } from '@labkey/api';
-
-import { List } from 'immutable';
 
 import { User } from '../base/models/User';
 
@@ -259,48 +256,6 @@ export function getSampleDomainDefaultSystemFields(moduleContext?: ModuleContext
     return isFreezerManagementEnabled(moduleContext)
         ? SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS.concat(SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS)
         : SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS;
-}
-
-export function getStorageItemUpdateData(
-    storageRows: any[],
-    sampleItems: {},
-    noStorageSamples: any[],
-    selection: List<any>
-): any {
-    if (storageRows.length === 0) {
-        return null;
-    }
-
-    const sampleRowIds = [];
-    selection.forEach(sel => sampleRowIds.push(parseInt(sel)));
-
-    const errors: string[] = [],
-        normalizedRowsMap: any = {};
-    storageRows.forEach(row => {
-        const sampleId = caseInsensitive(row, 'RowId');
-        if (noStorageSamples.indexOf(sampleId) > -1) {
-            return;
-        }
-
-        const rowInd = sampleRowIds.indexOf(sampleId) + 1;
-
-        const existingStorageItem = sampleItems[sampleId];
-        if (!existingStorageItem) {
-            const errorMsg = `Unable to find storage data for sample for row ${rowInd}.`;
-            errors.push(errorMsg);
-            return;
-        }
-
-        normalizedRowsMap[sampleId] = {
-            rowId: existingStorageItem.rowId,
-            freezeThawCount: caseInsensitive(row, 'FreezeThawCount'),
-        };
-    });
-
-    return {
-        normalizedRowsMap,
-        errors: errors.length > 0 ? errors : undefined,
-    };
 }
 
 export function getSampleStatusLockedMessage(state: SampleState, saving: boolean): string {

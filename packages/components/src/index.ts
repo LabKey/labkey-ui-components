@@ -208,7 +208,7 @@ import {
     selectRowsDeprecated,
     updateRows,
 } from './internal/query/api';
-import { registerFilterType } from './internal/query/filter';
+import { registerFilterType, COLUMN_IN_FILTER_TYPE, COLUMN_NOT_IN_FILTER_TYPE } from './internal/query/filter';
 import { selectRows } from './internal/query/selectRows';
 import { flattenBrowseDataTreeResponse, loadReports } from './internal/query/reports';
 import {
@@ -311,7 +311,7 @@ import { EntityMoveModal } from './internal/components/entities/EntityMoveModal'
 import { ALLOWED_FINDER_SAMPLE_PROPERTY_MAP, SearchScope } from './internal/components/search/constants';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';
 import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
-import { FIND_SAMPLE_BY_ID_METRIC_AREA, getSearchScopeFromContainerFilter } from './internal/components/search/utils';
+import { getSearchScopeFromContainerFilter, isValidFilterField } from './internal/components/search/utils';
 import { AdministrationSubNav } from './internal/components/administration/AdministrationSubNav';
 import { UserManagementPage } from './internal/components/administration/UserManagement';
 import { CreateProjectPage } from './internal/components/project/CreateProjectPage';
@@ -330,6 +330,7 @@ import {
     getSampleTypeDetails,
     getSelectedSampleIdsFromSelectionKey,
     getSelectionLineageData,
+    updateSampleStorageData,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SampleAmountEditModal } from './internal/components/samples/SampleAmountEditModal';
@@ -920,6 +921,8 @@ export {
     getQueryDetails,
     invalidateQueryDetailsCache,
     registerFilterType,
+    COLUMN_IN_FILTER_TYPE,
+    COLUMN_NOT_IN_FILTER_TYPE,
     loadQueries,
     loadQueriesFromTable,
     // editable grid related items
@@ -1082,6 +1085,7 @@ export {
     getSampleTypeDetails,
     getFieldLookupFromSelection,
     getSelectionLineageData,
+    updateSampleStorageData,
     getParentTypeDataForLineage,
     getSelectedSampleIdsFromSelectionKey,
     SampleTypeDataType,
@@ -1125,7 +1129,6 @@ export {
     getStoredAmountDisplay,
     isValuePrecisionValid,
     // search related items
-    FIND_SAMPLE_BY_ID_METRIC_AREA,
     BaseSearchPage,
     SearchResultsModel,
     SearchResultCard,
@@ -1133,6 +1136,7 @@ export {
     searchUsingIndex,
     SearchScope,
     getSearchScopeFromContainerFilter,
+    isValidFilterField,
     // administration
     AccountSettingsPage,
     AdministrationSubNav,
@@ -1544,7 +1548,7 @@ export type {
 } from './internal/components/editable/models';
 export type { IDataViewInfo } from './internal/DataViewInfo';
 export type { InjectedAssayModel, WithAssayModelProps } from './internal/components/assay/withAssayModels';
-export type { SearchResultCardData } from './internal/components/search/models';
+export type { SearchResultCardData, FieldFilter } from './internal/components/search/models';
 export type { AssayPickerSelectionModel } from './internal/components/assay/AssayPicker';
 export type {
     CrossFolderSelectionResult,
@@ -1616,3 +1620,4 @@ export type { SamplesEditableGridProps } from './internal/sampleModels';
 export type { MeasurementUnit } from './internal/util/measurement';
 export type { SampleStorageLocationComponentProps, SampleStorageMenuComponentProps } from './internal/sampleModels';
 export type { SearchForm } from './internal/components/search/BaseSearchPage';
+export type { TabbedGridPanelProps } from './public/QueryModel/TabbedGridPanel';

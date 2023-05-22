@@ -1,47 +1,29 @@
-import { Filter, Query } from '@labkey/api';
+import { Filter } from '@labkey/api';
 
-import { fromJS, List, Map } from 'immutable';
+import { fromJS } from 'immutable';
 
-import { TEST_USER_EDITOR, TEST_USER_GUEST } from '../../userFixtures';
-import { FREEZER_MANAGER_APP_PROPERTIES } from '../../app/constants';
 import { QueryInfo } from '../../../public/QueryInfo';
-import { SAMPLE_STATUS_REQUIRED_COLUMNS } from '../samples/constants';
-import { TestTypeDataType, TestTypeDataTypeWithEntityFilter } from '../../../test/data/constants';
 import { QueryColumn } from '../../../public/QueryColumn';
-import { SchemaQuery } from '../../../public/SchemaQuery';
 import { SCHEMAS } from '../../schemas';
 
 import { TEXT_TYPE } from '../domainproperties/PropDescType';
 
 import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 
-import { IN_EXP_DESCENDANTS_OF_FILTER_TYPE } from '../../url/InExpDescendantsOfFilterType';
-
 import { formatDate } from '../../util/Date';
 
-import { AssayResultDataType, SamplePropertyDataType, SampleTypeDataType } from '../entities/constants';
-
-import { COLUMN_IN_FILTER_TYPE, COLUMN_NOT_IN_FILTER_TYPE } from '../../query/filter';
+import { SampleTypeDataType } from '../entities/constants';
 
 import {
     ALL_VALUE_DISPLAY,
     decodeErrorMessage,
     EMPTY_VALUE_DISPLAY,
-    getAssayFilter,
     getCheckedFilterValues,
-    getDataTypeFiltersWithNotInQueryUpdate,
-    getExpDescendantOfSelectClause,
     getFieldFiltersValidationResult,
     getFilterSelections,
     getFilterValuesAsArray,
-    getFinderStartText,
-    getFinderViewColumnsConfig,
     getLabKeySql,
     getLabKeySqlWhere,
-    getSampleFinderColumnNames,
-    getSampleFinderCommonConfigs,
-    getSampleFinderQueryConfigs,
-    getSamplePropertyFilters,
     getSearchResultCardData,
     getUpdatedCheckedValues,
     getUpdatedChooseValuesFilter,
@@ -50,11 +32,6 @@ import {
     getUpdatedFilterSelection,
     getUpdateFilterExpressionFilter,
     isValidFilterField,
-    isValidFilterFieldExcludeLookups,
-    isValidFilterFieldSampleFinder,
-    SAMPLE_FINDER_VIEW_NAME,
-    searchFiltersFromJson,
-    searchFiltersToJson,
 } from './utils';
 import { FieldFilter } from './models';
 
@@ -66,632 +43,6 @@ beforeAll(() => {
             numberFormat: null,
         },
     };
-});
-
-test('getFinderStartText', () => {
-    expect(getFinderStartText([], [])).toBeNull();
-    expect(getFinderStartText([TestTypeDataType], [])).toBeNull();
-    expect(getFinderStartText([TestTypeDataType], [TestTypeDataType.typeListingSchemaQuery.queryName])).toBe(
-        'Start by adding ' + TestTypeDataType.nounAsParentSingular + ' properties.'
-    );
-    expect(
-        getFinderStartText(
-            [
-                TestTypeDataType,
-                {
-                    ...TestTypeDataType,
-                    typeListingSchemaQuery: new SchemaQuery('TestClasses', 'query2'),
-                    nounAsParentSingular: 'Other Parents',
-                },
-            ],
-            [TestTypeDataType.typeListingSchemaQuery.queryName, 'query2']
-        )
-    ).toBe('Start by adding ' + TestTypeDataType.nounAsParentSingular + ' or Other Parents properties.');
-    expect(
-        getFinderStartText(
-            [
-                TestTypeDataType,
-                {
-                    ...TestTypeDataType,
-                    typeListingSchemaQuery: new SchemaQuery('TestClasses', 'query2'),
-                    nounAsParentSingular: 'Other Parents',
-                },
-            ],
-            [TestTypeDataType.typeListingSchemaQuery.queryName]
-        )
-    ).toBe('Start by adding ' + TestTypeDataType.nounAsParentSingular + ' properties.');
-    expect(
-        getFinderStartText(
-            [
-                TestTypeDataType,
-                { ...TestTypeDataType, nounAsParentSingular: 'Other Parents' },
-                { ...TestTypeDataType, nounAsParentSingular: 'Third Parents' },
-            ],
-            [TestTypeDataType.typeListingSchemaQuery.queryName]
-        )
-    ).toBe('Start by adding ' + TestTypeDataType.nounAsParentSingular + ', Other Parents or Third Parents properties.');
-});
-
-describe('getFinderViewColumnsConfig', () => {
-    const queryInfo = new QueryInfo({
-        showInsertNewButton: true,
-        importUrl: 'https://some/import',
-        importUrlDisabled: false,
-        appEditableTable: true,
-        pkCols: List(['RowId']),
-        columns: fromJS({
-            rowid: new QueryColumn({ caption: 'Row Id', fieldKey: 'RowId', inputType: 'number' }),
-            description: new QueryColumn({
-                caption: 'Description',
-                fieldKey: 'Description',
-                inputType: 'textarea',
-            }),
-            samplestate: new QueryColumn({ caption: 'SampleState', fieldKey: 'SampleState', inputType: 'text' }),
-            name: new QueryColumn({ caption: 'Name', fieldKey: 'Name', inputType: 'text' }),
-            extrafield: new QueryColumn({ caption: 'Extra', fieldKey: 'ExtraField', inputType: 'text' }),
-        }),
-        views: Map({
-            '~~default~~': {
-                name: '',
-                label: 'default',
-                default: true,
-                columns: [
-                    {
-                        name: 'Name',
-                        key: 'Name',
-                        fieldKey: 'Name',
-                    },
-                ],
-            },
-            [SAMPLE_FINDER_VIEW_NAME.toLowerCase()]: {
-                name: SAMPLE_FINDER_VIEW_NAME,
-                label: SAMPLE_FINDER_VIEW_NAME,
-                default: false,
-                columns: [
-                    {
-                        name: 'Name',
-                        key: 'Name',
-                        fieldKey: 'Name',
-                    },
-                ],
-            },
-        }),
-    });
-    test('no required columns', () => {
-        expect(getFinderViewColumnsConfig(queryInfo, {})).toStrictEqual({
-            hasUpdates: false,
-            columns: [{ fieldKey: 'Name', title: undefined }],
-        });
-    });
-
-    test('no new required columns', () => {
-        const requiredColumns = ['Name'];
-        expect(getFinderViewColumnsConfig(queryInfo, {}, requiredColumns)).toStrictEqual({
-            hasUpdates: false,
-            columns: [{ fieldKey: 'Name', title: undefined }],
-        });
-    });
-
-    test('with new required columns', () => {
-        const requiredColumns = ['Name', 'ExtraField', 'SampleState'];
-        expect(
-            getFinderViewColumnsConfig(queryInfo, { ExtraField: 'Extra Field Display' }, requiredColumns)
-        ).toStrictEqual({
-            hasUpdates: true,
-            columns: [
-                { fieldKey: 'Name', title: undefined },
-                { fieldKey: 'ExtraField', title: 'Extra Field Display' },
-            ],
-        });
-    });
-
-    test('view has all updates', () => {
-        const queryInfo = new QueryInfo({
-            showInsertNewButton: true,
-            importUrl: 'https://some/import',
-            importUrlDisabled: false,
-            appEditableTable: true,
-            pkCols: List(['RowId']),
-            columns: fromJS({
-                rowid: new QueryColumn({ caption: 'Row Id', fieldKey: 'RowId', inputType: 'number' }),
-                description: new QueryColumn({
-                    caption: 'Description',
-                    fieldKey: 'Description',
-                    inputType: 'textarea',
-                }),
-                samplestate: new QueryColumn({ caption: 'SampleState', fieldKey: 'SampleState', inputType: 'text' }),
-                name: new QueryColumn({ caption: 'Name', fieldKey: 'Name', inputType: 'text' }),
-                extrafield: new QueryColumn({ caption: 'Extra', fieldKey: 'ExtraField', inputType: 'text' }),
-            }),
-            views: Map({
-                '~~default~~': {
-                    name: '',
-                    label: 'default',
-                    default: true,
-                    columns: [
-                        {
-                            name: 'Name',
-                            key: 'Name',
-                            fieldKey: 'Name',
-                        },
-                    ],
-                },
-                [SAMPLE_FINDER_VIEW_NAME.toLowerCase()]: {
-                    name: SAMPLE_FINDER_VIEW_NAME,
-                    label: SAMPLE_FINDER_VIEW_NAME,
-                    default: false,
-                    columns: [
-                        {
-                            name: 'Name',
-                            key: 'Name',
-                            fieldKey: 'Name',
-                        },
-                        {
-                            name: 'Extra',
-                            fieldKey: 'ExtraField',
-                            key: 'Extra',
-                        },
-                    ],
-                },
-            }),
-        });
-
-        const requiredColumns = ['Name', 'ExtraField'];
-        expect(
-            getFinderViewColumnsConfig(queryInfo, { ExtraField: 'Extra Field Display' }, requiredColumns)
-        ).toStrictEqual({
-            hasUpdates: false,
-            columns: [
-                { fieldKey: 'Name', title: undefined },
-                { fieldKey: 'ExtraField', title: 'Extra Field Display' },
-            ],
-        });
-    });
-});
-
-const assay1 = 'assay1';
-const assay1SchemaQuery = new SchemaQuery('assay.general.' + assay1, 'data');
-
-const AssayColumnInFilter = Filter.create(
-    'RowId',
-    'SELECT "SampleId" FROM "assay.general.assay1"."data" WHERE "TestColumn" = \'value\'',
-    COLUMN_IN_FILTER_TYPE
-);
-
-const AssayNotInFilter = Filter.create(
-    'RowId',
-    'SELECT "strField" FROM "assay.general.assay1"."data" WHERE "strField" IS NOT NULL',
-    COLUMN_NOT_IN_FILTER_TYPE
-);
-const AssayNotInFilterField = {
-    fieldKey: '*',
-    fieldCaption: 'Results',
-    filter: AssayNotInFilter,
-    jsonType: undefined,
-} as FieldFilter;
-
-describe('getAssayFilter', () => {
-    test('Assay card with filters', () => {
-        const cardFilter = {
-            fieldKey: 'TestColumn',
-            fieldCaption: 'TestColumn',
-            filter: Filter.create('TestColumn', 'value'),
-            jsonType: 'string',
-        } as FieldFilter;
-        expect(
-            getAssayFilter({
-                entityDataType: AssayResultDataType,
-                schemaQuery: new SchemaQuery('assay.general.' + assay1, 'data'),
-                filterArray: [cardFilter],
-                targetColumnFieldKey: 'SampleId',
-                selectColumnFieldKey: 'RowId',
-            })
-        ).toEqual(AssayColumnInFilter);
-    });
-
-    test('Assay card with not in assay filter', () => {
-        expect(
-            getAssayFilter({
-                entityDataType: AssayResultDataType,
-                schemaQuery: new SchemaQuery('assay.general.' + assay1, 'data'),
-                filterArray: [AssayNotInFilterField],
-            })
-        ).toEqual(AssayNotInFilter);
-    });
-});
-
-describe('getSamplePropertyFilters', () => {
-    const nameFilter = {
-        fieldKey: 'Name',
-        fieldCaption: 'Name',
-        filter: Filter.create('Name', 'S-1'),
-        jsonType: 'string',
-    } as FieldFilter;
-
-    const sampleTypeFilter = {
-        fieldKey: 'SampleSet',
-        fieldCaption: 'SampleSet',
-        filter: Filter.create('SampleSet', 'lsid:01:02'),
-        jsonType: 'string',
-    } as FieldFilter;
-
-    const availableAliquotCountFilter = {
-        fieldKey: 'AvailableAliquotCount',
-        fieldCaption: 'AvailableAliquotCount',
-        filter: Filter.create('AvailableAliquotCount', 5),
-        jsonType: 'int',
-    } as FieldFilter;
-
-    test('with filter on All Sample Type', () => {
-        expect(
-            getSamplePropertyFilters({
-                entityDataType: SamplePropertyDataType,
-                schemaQuery: SCHEMAS.EXP_TABLES.MATERIALS,
-                filterArray: [nameFilter],
-            })
-        ).toStrictEqual({
-            filters: [nameFilter.filter],
-            extraColumns: [],
-        });
-    });
-
-    test('with filter on a specific sample type', () => {
-        expect(
-            getSamplePropertyFilters({
-                entityDataType: SamplePropertyDataType,
-                schemaQuery: SCHEMAS.EXP_TABLES.MATERIALS,
-                filterArray: [nameFilter],
-                dataTypeLsid: 'lsid:01:02',
-            })
-        ).toStrictEqual({
-            filters: [nameFilter.filter, sampleTypeFilter.filter],
-            extraColumns: [],
-        });
-    });
-
-    test('with filter on AvailableAliquotCount', () => {
-        expect(
-            getSamplePropertyFilters({
-                entityDataType: SamplePropertyDataType,
-                schemaQuery: SCHEMAS.EXP_TABLES.MATERIALS,
-                filterArray: [availableAliquotCountFilter],
-            })
-        ).toStrictEqual({
-            filters: [availableAliquotCountFilter.filter],
-            extraColumns: ['AvailableAliquotCount'],
-        });
-    });
-});
-
-describe('getSampleFinderCommonConfigs', () => {
-    test('No cards', () => {
-        expect(getSampleFinderCommonConfigs([], true)).toStrictEqual({
-            baseFilters: [],
-            requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
-            includeTotalCount: true,
-        });
-    });
-
-    test('Cards without filters, not ancestors', () => {
-        expect(
-            getSampleFinderCommonConfigs(
-                [
-                    {
-                        entityDataType: TestTypeDataType,
-                        schemaQuery: new SchemaQuery('Samples', 'TestQuery'),
-                    },
-                ],
-                false
-            )
-        ).toStrictEqual({
-            baseFilters: [
-                Filter.create(
-                    '*',
-                    'SELECT "TestQuery".expObject() FROM Samples."TestQuery" WHERE "Name" IS NOT NULL',
-                    IN_EXP_DESCENDANTS_OF_FILTER_TYPE
-                ),
-            ],
-            requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Inputs/Materials/TestQuery'],
-            includeTotalCount: true,
-        });
-    });
-
-    test('Assay card without filters', () => {
-        expect(
-            getSampleFinderCommonConfigs(
-                [
-                    {
-                        entityDataType: AssayResultDataType,
-                        schemaQuery: new SchemaQuery('assay.general.' + assay1, 'data'),
-                    },
-                ],
-                false
-            )
-        ).toStrictEqual({
-            baseFilters: [],
-            requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS],
-            includeTotalCount: true,
-        });
-    });
-
-    test('Cards without filters, with ancestors', () => {
-        expect(
-            getSampleFinderCommonConfigs(
-                [
-                    {
-                        entityDataType: TestTypeDataType,
-                        schemaQuery: new SchemaQuery('Samples', 'TestQuery'),
-                    },
-                ],
-                true
-            )
-        ).toStrictEqual({
-            baseFilters: [
-                Filter.create(
-                    '*',
-                    'SELECT "TestQuery".expObject() FROM Samples."TestQuery" WHERE "Name" IS NOT NULL',
-                    IN_EXP_DESCENDANTS_OF_FILTER_TYPE
-                ),
-            ],
-            requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Ancestors/Samples/TestQuery'],
-            includeTotalCount: true,
-        });
-    });
-
-    test('Cards with and without filters', () => {
-        const cardFilter = {
-            fieldKey: 'TestColumn',
-            fieldCaption: 'TestColumn',
-            filter: Filter.create('TestColumn', 'value'),
-            jsonType: 'string',
-        } as FieldFilter;
-
-        expect(
-            getSampleFinderCommonConfigs(
-                [
-                    {
-                        entityDataType: TestTypeDataType,
-                        schemaQuery: new SchemaQuery('Samples', 'TestQuery'),
-                    },
-                    {
-                        entityDataType: TestTypeDataType,
-                        schemaQuery: new SchemaQuery('Samples', 'TestQuery2'),
-                        filterArray: [cardFilter],
-                    },
-                ],
-                false,
-                Query.ContainerFilter.currentAndFirstChildren
-            )
-        ).toStrictEqual({
-            baseFilters: [
-                Filter.create(
-                    '*',
-                    'SELECT "TestQuery".expObject() FROM Samples."TestQuery"[ContainerFilter=\'CurrentAndFirstChildren\'] WHERE "Name" IS NOT NULL',
-                    IN_EXP_DESCENDANTS_OF_FILTER_TYPE
-                ),
-                Filter.create(
-                    '*',
-                    'SELECT "TestQuery2".expObject() FROM Samples."TestQuery2"[ContainerFilter=\'CurrentAndFirstChildren\'] WHERE "TestColumn" = \'value\'',
-                    IN_EXP_DESCENDANTS_OF_FILTER_TYPE
-                ),
-            ],
-            requiredColumns: [
-                ...SAMPLE_STATUS_REQUIRED_COLUMNS,
-                'Inputs/Materials/TestQuery',
-                'Inputs/Materials/TestQuery2',
-                'Inputs/Materials/TestQuery2/TestColumn',
-            ],
-            includeTotalCount: true,
-        });
-    });
-
-    test('Assay card with filters', () => {
-        const cardFilter = {
-            fieldKey: 'TestColumn',
-            fieldCaption: 'TestColumn',
-            filter: Filter.create('TestColumn', 'value'),
-            jsonType: 'string',
-        } as FieldFilter;
-        expect(
-            getSampleFinderCommonConfigs(
-                [
-                    {
-                        entityDataType: AssayResultDataType,
-                        schemaQuery: new SchemaQuery('assay.general.' + assay1, 'data'),
-                        filterArray: [cardFilter],
-                        targetColumnFieldKey: 'SampleId',
-                        selectColumnFieldKey: 'RowId',
-                    },
-                ],
-                false
-            )
-        ).toStrictEqual({
-            baseFilters: [AssayColumnInFilter],
-            requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS],
-            includeTotalCount: true,
-        });
-    });
-
-    test('Assay card with not in assay filter', () => {
-        expect(
-            getSampleFinderCommonConfigs(
-                [
-                    {
-                        entityDataType: AssayResultDataType,
-                        schemaQuery: new SchemaQuery('assay.general.' + assay1, 'data'),
-                        filterArray: [AssayNotInFilterField],
-                    },
-                ],
-                false
-            )
-        ).toStrictEqual({
-            baseFilters: [AssayNotInFilter],
-            requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS],
-            includeTotalCount: true,
-        });
-    });
-});
-
-describe('getSampleFinderQueryConfigs', () => {
-    LABKEY.moduleContext = {
-        inventory: {
-            productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
-        },
-    };
-    LABKEY.uuids = ['uuid-1', 'uuid-2', 'uuid-3'];
-    test('no sample type names, no cards', () => {
-        expect(getSampleFinderQueryConfigs(TEST_USER_EDITOR, [], [], 'testId')).toStrictEqual({
-            'uuid-1-testId|exp/materials': {
-                id: 'uuid-1-testId|exp/materials',
-                title: 'All Samples',
-                schemaQuery: new SchemaQuery(
-                    SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
-                    SCHEMAS.EXP_TABLES.MATERIALS.queryName,
-                    SAMPLE_FINDER_VIEW_NAME
-                ),
-                omittedColumns: ['Run'],
-                baseFilters: [],
-                requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
-                includeTotalCount: true,
-            },
-        });
-    });
-
-    test('no sample type names', () => {
-        expect(
-            getSampleFinderQueryConfigs(
-                TEST_USER_EDITOR,
-                [],
-                [
-                    {
-                        entityDataType: TestTypeDataType,
-                        schemaQuery: new SchemaQuery('Samples', 'TestQuery'),
-                    },
-                ],
-                'testId'
-            )
-        ).toStrictEqual({
-            'uuid-1-testId|exp/materials': {
-                id: 'uuid-1-testId|exp/materials',
-                title: 'All Samples',
-                schemaQuery: new SchemaQuery(
-                    SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
-                    SCHEMAS.EXP_TABLES.MATERIALS.queryName,
-                    SAMPLE_FINDER_VIEW_NAME
-                ),
-                omittedColumns: ['Run'],
-                baseFilters: [
-                    Filter.create(
-                        '*',
-                        'SELECT "TestQuery".expObject() FROM Samples."TestQuery" WHERE "Name" IS NOT NULL',
-                        IN_EXP_DESCENDANTS_OF_FILTER_TYPE
-                    ),
-                ],
-                requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Inputs/Materials/TestQuery'],
-                includeTotalCount: true,
-            },
-        });
-    });
-
-    test('multiple sample types, no cards', () => {
-        expect(
-            getSampleFinderQueryConfigs(TEST_USER_GUEST, ['Sample Type 1', 'Sample Type 2'], [], 'testId')
-        ).toStrictEqual({
-            'uuid-1-testId|exp/materials': {
-                id: 'uuid-1-testId|exp/materials',
-                title: 'All Samples',
-                schemaQuery: new SchemaQuery(
-                    SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
-                    SCHEMAS.EXP_TABLES.MATERIALS.queryName,
-                    SAMPLE_FINDER_VIEW_NAME
-                ),
-                omittedColumns: ['checkedOutBy', 'Run'],
-                baseFilters: [],
-                requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
-                includeTotalCount: true,
-            },
-            'uuid-1-testId|samples/Sample Type 1': {
-                id: 'uuid-1-testId|samples/Sample Type 1',
-                title: 'Sample Type 1',
-                schemaQuery: new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Sample Type 1', SAMPLE_FINDER_VIEW_NAME),
-                omittedColumns: ['checkedOutBy'],
-                baseFilters: [],
-                requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
-                includeTotalCount: true,
-            },
-            'uuid-1-testId|samples/Sample Type 2': {
-                id: 'uuid-1-testId|samples/Sample Type 2',
-                title: 'Sample Type 2',
-                schemaQuery: new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Sample Type 2', SAMPLE_FINDER_VIEW_NAME),
-                omittedColumns: ['checkedOutBy'],
-                baseFilters: [],
-                requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
-                includeTotalCount: true,
-            },
-        });
-    });
-
-    test('with names and cards', () => {
-        const cards = [
-            {
-                entityDataType: TestTypeDataType,
-                schemaQuery: new SchemaQuery('Samples', 'TestQuery'),
-            },
-        ];
-        expect(
-            getSampleFinderQueryConfigs(TEST_USER_GUEST, ['Sample Type 1', 'Sample Type 2'], cards, 'testId')
-        ).toStrictEqual({
-            'uuid-1-testId|exp/materials': {
-                id: 'uuid-1-testId|exp/materials',
-                title: 'All Samples',
-                schemaQuery: new SchemaQuery(
-                    SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
-                    SCHEMAS.EXP_TABLES.MATERIALS.queryName,
-                    SAMPLE_FINDER_VIEW_NAME
-                ),
-                omittedColumns: ['checkedOutBy', 'Run'],
-                baseFilters: [
-                    Filter.create(
-                        '*',
-                        'SELECT "TestQuery".expObject() FROM Samples."TestQuery" WHERE "Name" IS NOT NULL',
-                        IN_EXP_DESCENDANTS_OF_FILTER_TYPE
-                    ),
-                ],
-                requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Inputs/Materials/TestQuery'],
-                includeTotalCount: true,
-            },
-            'uuid-1-testId|samples/Sample Type 1': {
-                id: 'uuid-1-testId|samples/Sample Type 1',
-                title: 'Sample Type 1',
-                schemaQuery: new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Sample Type 1', SAMPLE_FINDER_VIEW_NAME),
-                omittedColumns: ['checkedOutBy'],
-                baseFilters: [
-                    Filter.create(
-                        '*',
-                        'SELECT "TestQuery".expObject() FROM Samples."TestQuery" WHERE "Name" IS NOT NULL',
-                        IN_EXP_DESCENDANTS_OF_FILTER_TYPE
-                    ),
-                ],
-                requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Ancestors/Samples/TestQuery'],
-                includeTotalCount: true,
-            },
-            'uuid-1-testId|samples/Sample Type 2': {
-                id: 'uuid-1-testId|samples/Sample Type 2',
-                title: 'Sample Type 2',
-                schemaQuery: new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Sample Type 2', SAMPLE_FINDER_VIEW_NAME),
-                omittedColumns: ['checkedOutBy'],
-                baseFilters: [
-                    Filter.create(
-                        '*',
-                        'SELECT "TestQuery".expObject() FROM Samples."TestQuery" WHERE "Name" IS NOT NULL',
-                        IN_EXP_DESCENDANTS_OF_FILTER_TYPE
-                    ),
-                ],
-                requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Ancestors/Samples/TestQuery'],
-                includeTotalCount: true,
-            },
-        });
-    });
 });
 
 const anyValueFilter = {
@@ -756,67 +107,6 @@ const badBetweenFilter = {
     filter: Filter.create('doubleField', '1', Filter.Types.BETWEEN),
     jsonType: 'float',
 } as FieldFilter;
-
-const card = {
-    entityDataType: TestTypeDataType,
-    filterArray: [anyValueFilter, stringBetweenFilter],
-    schemaQuery: new SchemaQuery('TestSchema', 'samples1'),
-    index: 1,
-};
-
-const cardJSON =
-    '{"filters":[{"filterArray":[{"fieldKey":"textField","fieldCaption":"textField","filter":"query.textField~=","jsonType":"string"},{"fieldKey":"strField","fieldCaption":"strField","filter":"query.strField~between=1%2C5","jsonType":"string"}],"schemaQuery":{"schemaName":"TestSchema","queryName":"samples1"},"index":1,"sampleFinderCardType":"sampleparent"}],"filterChangeCounter":5,"filterTimestamp":"Searched 2020-08-06 14:44"}';
-
-const cardWithEntityTypeFilter = {
-    entityDataType: TestTypeDataTypeWithEntityFilter,
-    filterArray: [anyValueFilter, stringBetweenFilter],
-    schemaQuery: new SchemaQuery('TestSchema', 'samples1'),
-    index: 1,
-};
-
-const cardWithEntityTypeFilterJSON = cardJSON;
-
-const cardWithCurrentUserFilterJSON =
-    '{"filters":[{"filterArray":[{"fieldKey":"userId","fieldCaption":"userId","filter":"query.userId~eq=${LABKEY.USER}","jsonType":"string"}],"schemaQuery":{"schemaName":"TestSchema","queryName":"samples1"},"index":1,"entityTypeNoun":"test Parent"}],"filterChangeCounter":5,"filterTimestamp":"Searched 2020-08-06 14:44"}';
-
-describe('searchFiltersToJson', () => {
-    test('searchFiltersToJson', () => {
-        expect(searchFiltersToJson([card], 5, testDate, 'America/Los_Angeles')).toEqual(cardJSON);
-        expect(searchFiltersToJson([cardWithEntityTypeFilter], 5, testDate, 'America/Los_Angeles')).toEqual(
-            cardWithEntityTypeFilterJSON
-        );
-    });
-});
-
-describe('searchFiltersFromJson', () => {
-    test('searchFiltersFromJson', () => {
-        const deserializedCard = searchFiltersFromJson(cardJSON, [TestTypeDataType]);
-        expect(deserializedCard['filterChangeCounter']).toEqual(5);
-        const cards = deserializedCard['filters'];
-        expect(cards.length).toEqual(1);
-        const fieldFilters = cards[0].filterArray;
-        expect(fieldFilters.length).toEqual(2);
-        expect(fieldFilters[0]['fieldCaption']).toEqual('textField');
-        const textFilter = fieldFilters[1]['filter'];
-        expect(textFilter).toStrictEqual(stringBetweenFilter.filter);
-
-        const deserializedCardWithEntityFilter = searchFiltersFromJson(cardWithEntityTypeFilterJSON, [
-            TestTypeDataTypeWithEntityFilter,
-        ]);
-        const entityTypeFilters = deserializedCardWithEntityFilter['filters'][0].entityDataType.filterArray;
-        expect(entityTypeFilters.length).toEqual(1);
-        expect(entityTypeFilters[0]).toStrictEqual(Filter.create('Category', 'Source'));
-
-        const deserializedCardWithCurrentUserFilter = searchFiltersFromJson(
-            cardWithCurrentUserFilterJSON,
-            [TestTypeDataTypeWithEntityFilter],
-            undefined,
-            'admin'
-        );
-        const userFilter = deserializedCardWithCurrentUserFilter['filters'][0].filterArray[0].filter;
-        expect(userFilter).toStrictEqual(Filter.create('userId', 'admin'));
-    });
-});
 
 describe('getFilterValuesAsArray', () => {
     test('array value', () => {
@@ -1415,153 +705,6 @@ describe('getLabKeySql', () => {
     });
 });
 
-const schemaQuery = new SchemaQuery('Test', 'SampleA');
-const schemaQueryWithSpace = new SchemaQuery('Test', 'Sample Type A');
-const schemaQuerySpecial = new SchemaQuery('Test', '><&/%\\\' "1äöüÅ');
-
-describe('getExpDescendantOfSelectClause', () => {
-    test('empty', () => {
-        expect(getExpDescendantOfSelectClause(schemaQuery, [])).toBeNull();
-        expect(getExpDescendantOfSelectClause(schemaQueryWithSpace, [])).toBeNull();
-    });
-
-    test('has any value', () => {
-        expect(getExpDescendantOfSelectClause(schemaQuery, [anyValueFilter])).toBeNull();
-    });
-
-    test('unsupported filters', () => {
-        expect(getExpDescendantOfSelectClause(schemaQuery, [notSupportedFilter])).toBeNull();
-    });
-
-    test('has any value and unsupported filters', () => {
-        expect(getExpDescendantOfSelectClause(schemaQuery, [anyValueFilter, notSupportedFilter])).toBeNull();
-    });
-
-    test('isBlankFilter: simple operator, no filter value', () => {
-        expect(getExpDescendantOfSelectClause(schemaQuery, [isBlankFilter])).toEqual(
-            'SELECT "SampleA".expObject() FROM Test."SampleA" WHERE "String Field" IS NULL'
-        );
-    });
-
-    test('eq filter', () => {
-        expect(getExpDescendantOfSelectClause(schemaQueryWithSpace, [intEqFilter])).toEqual(
-            'SELECT "Sample Type A".expObject() FROM Test."Sample Type A" WHERE "intField" = 1'
-        );
-    });
-
-    test('special character sample type name', () => {
-        expect(getExpDescendantOfSelectClause(schemaQuerySpecial, [intEqFilter])).toEqual(
-            'SELECT "><&/%\\\' ""1äöüÅ".expObject() FROM Test."><&/%\\\' ""1äöüÅ" WHERE "intField" = 1'
-        );
-    });
-
-    test('multiple filter types and field types filter', () => {
-        expect(getExpDescendantOfSelectClause(schemaQuery, [intEqFilter, booleanEqFilter])).toEqual(
-            'SELECT "SampleA".expObject() FROM Test."SampleA" WHERE "intField" = 1 AND "Boolean Field" = TRUE'
-        );
-        expect(getExpDescendantOfSelectClause(schemaQueryWithSpace, [intEqFilter, booleanEqFilter])).toEqual(
-            'SELECT "Sample Type A".expObject() FROM Test."Sample Type A" WHERE "intField" = 1 AND "Boolean Field" = TRUE'
-        );
-    });
-
-    test('respects container filter', () => {
-        const cf = Query.ContainerFilter.currentAndSubfoldersPlusShared;
-        expect(getExpDescendantOfSelectClause(schemaQuery, [intEqFilter], cf)).toEqual(
-            'SELECT "SampleA".expObject() FROM Test."SampleA"[ContainerFilter=\'CurrentAndSubfoldersPlusShared\'] WHERE "intField" = 1'
-        );
-    });
-});
-
-describe('getSampleFinderColumnNames', () => {
-    test('no cards', () => {
-        expect(getSampleFinderColumnNames(undefined)).toStrictEqual({});
-    });
-
-    test('empty cards', () => {
-        expect(getSampleFinderColumnNames([])).toStrictEqual({});
-    });
-
-    test('cards without dataTypeDisplayName', () => {
-        expect(
-            getSampleFinderColumnNames([
-                {
-                    entityDataType: SampleTypeDataType,
-                    schemaQuery: new SchemaQuery('test', 'query'),
-                    filterArray: [
-                        {
-                            fieldKey: 'IntValue',
-                            fieldCaption: 'Integer',
-                            filter: Filter.create('IntValue', 3, Filter.Types.GT),
-                            jsonType: 'int',
-                        },
-                    ],
-                },
-            ])
-        ).toStrictEqual({});
-    });
-
-    test('cards without filters', () => {
-        expect(
-            getSampleFinderColumnNames([
-                {
-                    entityDataType: SampleTypeDataType,
-                    schemaQuery: new SchemaQuery('test', 'query'),
-                    dataTypeDisplayName: 'Test Samples',
-                    filterArray: [],
-                },
-            ])
-        ).toStrictEqual({
-            'Inputs/Materials/query': 'Test Samples ID',
-            'Ancestors/Samples/query': 'Test Samples ID',
-        });
-    });
-
-    test('cards with filters', () => {
-        expect(
-            getSampleFinderColumnNames([
-                {
-                    entityDataType: SampleTypeDataType,
-                    schemaQuery: new SchemaQuery('test', 'query'),
-                    dataTypeDisplayName: 'Test Samples',
-                    filterArray: [
-                        {
-                            fieldKey: 'IntValue',
-                            fieldCaption: 'Integer',
-                            filter: Filter.create('IntValue', 3, Filter.Types.GT),
-                            jsonType: 'int',
-                        },
-                    ],
-                },
-            ])
-        ).toStrictEqual({
-            'Inputs/Materials/query': 'Test Samples ID',
-            'Inputs/Materials/query/IntValue': 'Test Samples Integer',
-            'Ancestors/Samples/query': 'Test Samples ID',
-            'Ancestors/Samples/query/IntValue': 'Test Samples Integer',
-        });
-    });
-
-    test('assay cards with filters', () => {
-        expect(
-            getSampleFinderColumnNames([
-                {
-                    entityDataType: AssayResultDataType,
-                    schemaQuery: new SchemaQuery('test', 'query'),
-                    dataTypeDisplayName: 'Test Assays',
-                    filterArray: [
-                        {
-                            fieldKey: 'IntValue',
-                            fieldCaption: 'Integer',
-                            filter: Filter.create('IntValue', 3, Filter.Types.GT),
-                            jsonType: 'int',
-                        },
-                    ],
-                },
-            ])
-        ).toStrictEqual({});
-    });
-});
-
 describe('isValidFilterField', () => {
     test('lookup field', () => {
         const field = new QueryColumn({ name: 'test', lookup: { isPublic: true } });
@@ -1571,12 +714,6 @@ describe('isValidFilterField', () => {
             supportGroupConcatSubSelect: true,
         });
         expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
-        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
-            false
-        );
-        expect(isValidFilterFieldSampleFinder(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
-            true
-        );
     });
 
     test('mult-value lookup field', () => {
@@ -1587,12 +724,6 @@ describe('isValidFilterField', () => {
             supportGroupConcatSubSelect: true,
         });
         expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
-        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
-            false
-        );
-        expect(isValidFilterFieldSampleFinder(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
-            false
-        );
     });
 
     test('mult-value lookup field and not supportGroupConcatSubSelect', () => {
@@ -1603,12 +734,6 @@ describe('isValidFilterField', () => {
             supportGroupConcatSubSelect: false,
         });
         expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
-        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
-            false
-        );
-        expect(isValidFilterFieldSampleFinder(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
-            false
-        );
     });
 
     test('Units field', () => {
@@ -1619,12 +744,6 @@ describe('isValidFilterField', () => {
             supportGroupConcatSubSelect: true,
         });
         expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(false);
-        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
-            false
-        );
-        expect(isValidFilterFieldSampleFinder(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
-            false
-        );
     });
 
     test('group concat field not supported', () => {
@@ -1635,12 +754,6 @@ describe('isValidFilterField', () => {
             supportGroupConcatSubSelect: false,
         });
         expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(false);
-        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
-            false
-        );
-        expect(isValidFilterFieldSampleFinder(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
-            false
-        );
     });
 
     test('group concat field not supported, regular field', () => {
@@ -1651,12 +764,6 @@ describe('isValidFilterField', () => {
             supportGroupConcatSubSelect: false,
         });
         expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
-        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
-            true
-        );
-        expect(isValidFilterFieldSampleFinder(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
-            true
-        );
     });
 
     test('group concat field not supported, no group concat fields', () => {
@@ -1667,8 +774,6 @@ describe('isValidFilterField', () => {
             supportGroupConcatSubSelect: false,
         });
         expect(isValidFilterField(field, queryInfo, undefined)).toBe(true);
-        expect(isValidFilterFieldExcludeLookups(field, queryInfo, undefined)).toBe(true);
-        expect(isValidFilterFieldSampleFinder(field, queryInfo, undefined)).toBe(true);
     });
 
     test('group concat field is supported', () => {
@@ -1679,12 +784,6 @@ describe('isValidFilterField', () => {
             supportGroupConcatSubSelect: true,
         });
         expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
-        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
-            true
-        );
-        expect(isValidFilterFieldSampleFinder(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
-            true
-        );
     });
 
     test('regular field', () => {
@@ -1695,12 +794,6 @@ describe('isValidFilterField', () => {
             supportGroupConcatSubSelect: false,
         });
         expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
-        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
-            true
-        );
-        expect(isValidFilterFieldSampleFinder(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
-            true
-        );
     });
 });
 
@@ -1808,52 +901,6 @@ describe('getUpdatedDataTypeFilters', () => {
             [PARENT_WITH_FILTERS]: [stringEqualFilter, stringBetweenFilter, intEqFilter],
             [PARENT_WITHOUT_FILTERS]: [stringEqualFilter, emptyStringBetweenFilter],
         });
-    });
-});
-
-const ASSAY_RESULT_FILTERS = {
-    [assay1]: [stringEqualFilter, stringBetweenFilter, intEqFilter],
-};
-
-const ASSAY_NO_DATA_FILTERS = {
-    [assay1]: [AssayNotInFilterField],
-};
-
-describe('getDataTypeFiltersWithNotInQueryUpdate', () => {
-    test('has no assay filters, check no data in filter', () => {
-        const updatedFilters = getDataTypeFiltersWithNotInQueryUpdate(
-            {},
-            assay1SchemaQuery,
-            assay1,
-            'RowId',
-            'strField',
-            true
-        );
-        expect(updatedFilters).toStrictEqual(ASSAY_NO_DATA_FILTERS);
-    });
-
-    test('has existing assay filters, check no data in filter', () => {
-        const updatedFilters = getDataTypeFiltersWithNotInQueryUpdate(
-            ASSAY_RESULT_FILTERS,
-            assay1SchemaQuery,
-            assay1,
-            'RowId',
-            'strField',
-            true
-        );
-        expect(updatedFilters).toStrictEqual(ASSAY_NO_DATA_FILTERS);
-    });
-
-    test('uncheck no data in filter', () => {
-        const updatedFilters = getDataTypeFiltersWithNotInQueryUpdate(
-            ASSAY_NO_DATA_FILTERS,
-            assay1SchemaQuery,
-            assay1,
-            'RowId',
-            'strField',
-            false
-        );
-        expect(updatedFilters).toStrictEqual({});
     });
 });
 

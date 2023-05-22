@@ -255,6 +255,7 @@ import {
     loadEditorModelData,
     applyEditableGridChangesToModels,
     getUpdatedDataFromEditableGrid,
+    initEditableGridModel,
     initEditableGridModels,
 } from './internal/components/editable/utils';
 import { EditableGridTabs } from './internal/components/editable/EditableGrid';
@@ -333,6 +334,7 @@ import {
     isValidFilterField,
     SAMPLE_FILTER_METRIC_AREA,
     getFilterValuesAsArray,
+    getFieldFiltersValidationResult,
 } from './internal/components/search/utils';
 import { AdministrationSubNav } from './internal/components/administration/AdministrationSubNav';
 import { UserManagementPage } from './internal/components/administration/UserManagement';
@@ -1001,6 +1003,7 @@ export {
     loadEditorModelData,
     applyEditableGridChangesToModels,
     getUpdatedDataFromEditableGrid,
+    initEditableGridModel,
     initEditableGridModels,
     MAX_EDITABLE_GRID_ROWS,
     EditableGridLoaderFromSelection,
@@ -1234,6 +1237,7 @@ export {
     getSearchScopeFromContainerFilter,
     isValidFilterField,
     getFilterValuesAsArray,
+    getFieldFiltersValidationResult,
     // administration
     AccountSettingsPage,
     AdministrationSubNav,
@@ -1736,3 +1740,4 @@ export type { EditableGridModels } from './internal/components/editable/utils';
 export type { GroupedSampleDisplayColumns } from './internal/components/samples/actions';
 export type { PicklistDeletionData } from './internal/components/picklist/actions';
 export type { ConfirmModalProps } from './internal/components/base/ConfirmModal';
+export type { EditableDetailPanelProps } from './public/QueryModel/EditableDetailPanel';

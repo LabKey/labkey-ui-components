@@ -208,7 +208,13 @@ import {
     selectRowsDeprecated,
     updateRows,
 } from './internal/query/api';
-import { registerFilterType, COLUMN_IN_FILTER_TYPE, COLUMN_NOT_IN_FILTER_TYPE } from './internal/query/filter';
+import {
+    registerFilterType,
+    COLUMN_IN_FILTER_TYPE,
+    COLUMN_NOT_IN_FILTER_TYPE,
+    getFilterLabKeySql,
+    getLegalIdentifier,
+} from './internal/query/filter';
 import { selectRows } from './internal/query/selectRows';
 import { flattenBrowseDataTreeResponse, loadReports } from './internal/query/reports';
 import {
@@ -240,11 +246,6 @@ import { loadEditorModelData } from './internal/components/editable/utils';
 import { EditableGridTabs } from './internal/components/editable/EditableGrid';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
-import {
-    EditableGridPanelForUpdateWithLineage,
-    UpdateGridTab,
-} from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
-import { LineageEditableGridLoaderFromSelection } from './internal/components/editable/LineageEditableGridLoaderFromSelection';
 
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
 
@@ -306,12 +307,17 @@ import {
     EntityIdCreationModel,
     EntityParentType,
     OperationConfirmationData,
+    EntityTypeOption,
 } from './internal/components/entities/models';
 import { EntityMoveModal } from './internal/components/entities/EntityMoveModal';
-import { ALLOWED_FINDER_SAMPLE_PROPERTY_MAP, SearchScope } from './internal/components/search/constants';
+import { SAMPLE_PROPERTY_ALL_SAMPLE_TYPE, SearchScope } from './internal/components/search/constants';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';
 import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
-import { getSearchScopeFromContainerFilter, isValidFilterField } from './internal/components/search/utils';
+import {
+    getSearchScopeFromContainerFilter,
+    isValidFilterField,
+    SAMPLE_FILTER_METRIC_AREA,
+} from './internal/components/search/utils';
 import { AdministrationSubNav } from './internal/components/administration/AdministrationSubNav';
 import { UserManagementPage } from './internal/components/administration/UserManagement';
 import { CreateProjectPage } from './internal/components/project/CreateProjectPage';
@@ -331,6 +337,7 @@ import {
     getSelectedSampleIdsFromSelectionKey,
     getSelectionLineageData,
     updateSampleStorageData,
+    getGroupedSampleDomainFields,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SampleAmountEditModal } from './internal/components/samples/SampleAmountEditModal';
@@ -426,6 +433,7 @@ import {
     getOperationConfirmationData,
     getParentTypeDataForLineage,
     getSampleOperationConfirmationData,
+    getEntityTypeOptions,
 } from './internal/components/entities/actions';
 import {
     AssayResultDataType,
@@ -441,8 +449,16 @@ import {
 import {
     getUniqueIdColumnMetadata,
     isSampleEntity,
-    sampleDeleteDependencyText
+    sampleDeleteDependencyText,
+    getEntityNoun,
+    getEntityDescription,
 } from './internal/components/entities/utils';
+import {
+    ALIQUOT_CREATION,
+    CHILD_SAMPLE_CREATION,
+    DERIVATIVE_CREATION,
+    POOLED_SAMPLE_CREATION,
+} from './internal/components/samples/models';
 import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
 
 import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';
@@ -867,11 +883,12 @@ const App = {
     ELN_KEY,
     DATA_CLASS_IMPORT_PREFIX,
     SAMPLE_SET_IMPORT_PREFIX,
-    ALLOWED_FINDER_SAMPLE_PROPERTY_MAP,
+    SAMPLE_PROPERTY_ALL_SAMPLE_TYPE,
     DELIMITER,
     DETAIL_TABLE_CLASSES,
     DISCARD_CONSUMED_CHECKBOX_FIELD,
     DISCARD_CONSUMED_COMMENT_FIELD,
+    SAMPLE_FILTER_METRIC_AREA,
 };
 
 const Hooks = {
@@ -923,6 +940,8 @@ export {
     registerFilterType,
     COLUMN_IN_FILTER_TYPE,
     COLUMN_NOT_IN_FILTER_TYPE,
+    getFilterLabKeySql,
+    getLegalIdentifier,
     loadQueries,
     loadQueriesFromTable,
     // editable grid related items
@@ -931,10 +950,7 @@ export {
     EditableGridLoaderFromSelection,
     EditableGridPanel,
     EditableGridPanelForUpdate,
-    EditableGridPanelForUpdateWithLineage,
     EditableGridTabs,
-    LineageEditableGridLoaderFromSelection,
-    UpdateGridTab,
     EditorModel,
     cancelEvent,
     // url and location related items
@@ -1078,6 +1094,10 @@ export {
     SAMPLE_EXPORT_CONFIG,
     SAMPLE_INSERT_EXTRA_COLUMNS,
     IS_ALIQUOT_COL,
+    ALIQUOT_CREATION,
+    CHILD_SAMPLE_CREATION,
+    DERIVATIVE_CREATION,
+    POOLED_SAMPLE_CREATION,
     SampleTypeModel,
     deleteSampleSet,
     fetchSamples,
@@ -1086,6 +1106,7 @@ export {
     getFieldLookupFromSelection,
     getSelectionLineageData,
     updateSampleStorageData,
+    getGroupedSampleDomainFields,
     getParentTypeDataForLineage,
     getSelectedSampleIdsFromSelectionKey,
     SampleTypeDataType,
@@ -1105,18 +1126,22 @@ export {
     ManageSampleStatusesPanel,
     SampleStatusLegend,
     EntityIdCreationModel,
+    EntityTypeOption,
     EntityMoveModal,
     EntityParentType,
     OperationConfirmationData,
     AddEntityButton,
     RemoveEntityButton,
     getSampleOperationConfirmationData,
+    getEntityTypeOptions,
     getCrossFolderSelectionResult,
     getOperationConfirmationData,
     getDataOperationConfirmationData,
     getDataDeleteConfirmationData,
     getUniqueIdColumnMetadata,
     sampleDeleteDependencyText,
+    getEntityNoun,
+    getEntityDescription,
     // metric related items
     UnitModel,
     MEASUREMENT_UNITS,
@@ -1611,7 +1636,6 @@ export type { PageDetailHeaderProps } from './internal/components/forms/PageDeta
 export type { HorizontalBarData } from './internal/components/chart/HorizontalBarSection';
 export type { HorizontalBarLegendData } from './internal/components/chart/utils';
 export type { InjectedLineage } from './internal/components/lineage/withLineage';
-export type { EditableGridPanelForUpdateWithLineageProps } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
 export type {
     LabelPrintingProviderProps,
     LabelPrintingContextProps,

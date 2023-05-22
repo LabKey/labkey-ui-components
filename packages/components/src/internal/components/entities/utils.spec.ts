@@ -1,7 +1,5 @@
 import { List } from 'immutable';
 
-import { SampleCreationType } from '../samples/models';
-
 import {
     TEST_LKS_STARTER_MODULE_CONTEXT,
     TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
@@ -10,13 +8,7 @@ import {
 } from '../../productFixtures';
 
 import { IEntityTypeOption } from './models';
-import {
-    getBulkCreationTypeOptions,
-    getEntityDescription,
-    getEntityNoun,
-    getInitialParentChoices,
-    sampleDeleteDependencyText,
-} from './utils';
+import { getEntityDescription, getEntityNoun, getInitialParentChoices, sampleDeleteDependencyText } from './utils';
 import { DataClassDataType, SampleTypeDataType } from './constants';
 
 describe('getInitialParentChoices', () => {
@@ -198,63 +190,6 @@ describe('getEntityNoun', () => {
     });
     test('multiple', () => {
         expect(getEntityNoun(SampleTypeDataType, 2)).toBe('samples');
-    });
-});
-
-describe('getBulkCreationTypeOptions', () => {
-    test('aliquot creation', () => {
-        let options = getBulkCreationTypeOptions(false, SampleCreationType.Aliquots);
-        expect(options.length).toBe(1);
-        expect(options[0].type).toBe(SampleCreationType.Aliquots);
-        expect(options[0].selected).toBe(true);
-
-        options = getBulkCreationTypeOptions(true, SampleCreationType.Aliquots);
-        expect(options.length).toBe(1);
-        expect(options[0].type).toBe(SampleCreationType.Aliquots);
-        expect(options[0].selected).toBe(true);
-    });
-
-    test('not hasParentSamples for non-aliqout creation', () => {
-        let options = getBulkCreationTypeOptions(false, SampleCreationType.Independents);
-        expect(options.length).toBe(1);
-        expect(options[0].type).toBe(SampleCreationType.Independents);
-        expect(options[0].quantityLabel).toBe('New Samples');
-        expect(options[0].selected).toBe(true);
-
-        options = getBulkCreationTypeOptions(false, SampleCreationType.Derivatives);
-        expect(options.length).toBe(1);
-        expect(options[0].type).toBe(SampleCreationType.Independents);
-        expect(options[0].quantityLabel).toBe('New Samples');
-        expect(options[0].selected).toBe(true);
-
-        options = getBulkCreationTypeOptions(false, SampleCreationType.PooledSamples);
-        expect(options.length).toBe(1);
-        expect(options[0].type).toBe(SampleCreationType.Independents);
-        expect(options[0].quantityLabel).toBe('New Samples');
-        expect(options[0].selected).toBe(true);
-    });
-
-    test('hasParentSamples for non-aliqout creation', () => {
-        let options = getBulkCreationTypeOptions(true, SampleCreationType.Independents);
-        expect(options.length).toBe(2);
-        expect(options[0].type).toBe(SampleCreationType.Derivatives);
-        expect(options[0].selected).toBe(true);
-        expect(options[1].type).toBe(SampleCreationType.PooledSamples);
-        expect(options[1].selected).toBe(false);
-
-        options = getBulkCreationTypeOptions(true, SampleCreationType.Derivatives);
-        expect(options.length).toBe(2);
-        expect(options[0].type).toBe(SampleCreationType.Derivatives);
-        expect(options[0].selected).toBe(true);
-        expect(options[1].type).toBe(SampleCreationType.PooledSamples);
-        expect(options[1].selected).toBe(false);
-
-        options = getBulkCreationTypeOptions(true, SampleCreationType.PooledSamples);
-        expect(options.length).toBe(2);
-        expect(options[0].type).toBe(SampleCreationType.Derivatives);
-        expect(options[0].selected).toBe(false);
-        expect(options[1].type).toBe(SampleCreationType.PooledSamples);
-        expect(options[1].selected).toBe(true);
     });
 });
 

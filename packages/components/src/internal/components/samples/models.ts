@@ -81,13 +81,6 @@ export interface FindField {
     storageKeyPrefix: string;
 }
 
-export interface SampleAliquotsStats {
-    aliquotCount: number;
-    aliquotIds?: number[];
-    availableCount: number;
-    jobsCount?: number;
-}
-
 export interface SampleStatus {
     description?: string;
     label: string;

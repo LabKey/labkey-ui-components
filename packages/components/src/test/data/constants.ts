@@ -24,7 +24,7 @@ import { IFile } from '../../internal/components/files/models';
 
 import assayWizardJSON from './assayWizardModel.json';
 
-export const ASSAY_DEFINITION_MODEL = AssayDefinitionModel.create(assayWizardJSON.assayDef);
+const ASSAY_DEFINITION_MODEL = AssayDefinitionModel.create(assayWizardJSON.assayDef);
 export const ASSAY_WIZARD_MODEL = new AssayWizardModel({
     isInit: true,
     assayDef: ASSAY_DEFINITION_MODEL,

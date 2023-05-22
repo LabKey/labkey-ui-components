@@ -45,10 +45,7 @@ import { DomainDetails } from '../domainproperties/models';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { getSelectedPicklistSamples } from '../picklist/actions';
 import { resolveErrorMessage } from '../../util/messaging';
-import { QueryConfig } from '../../../public/QueryModel/QueryModel';
 import { TimelineEventModel } from '../auditlog/models';
-
-import { createGridModelId } from '../../models';
 
 import { buildURL } from '../../url/AppURL';
 
@@ -56,13 +53,11 @@ import { selectRows } from '../../query/selectRows';
 
 import {
     AMOUNT_AND_UNITS_COLUMNS_LC,
-    IS_ALIQUOT_COL,
-    SAMPLE_STATUS_REQUIRED_COLUMNS,
     SAMPLE_STORAGE_COLUMNS_LC,
     SELECTION_KEY_TYPE,
     STORED_AMOUNT_FIELDS,
 } from './constants';
-import { FindField, GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
+import { FindField, GroupedSampleFields, SampleState } from './models';
 
 export function getSampleSet(config: IEntityTypeDetails): Promise<any> {
     return new Promise<any>((resolve, reject) => {
@@ -455,53 +450,6 @@ export function getSampleAliquotRows(sampleId: number | string): Promise<Array<R
             },
         });
     });
-}
-
-export function getSampleAliquotsStats(rows: Record<string, any>): SampleAliquotsStats {
-    let availableCount = 0,
-        aliquotCount = 0,
-        aliquotIds = [];
-    for (const ind in rows) {
-        const row = rows[ind];
-        const amount = caseInsensitive(row, 'StoredAmount')?.value;
-
-        const isAvailable = amount && amount > 0;
-        availableCount += isAvailable ? 1 : 0;
-        aliquotCount++;
-
-        aliquotIds.push(caseInsensitive(row, 'RowId')?.value);
-    }
-
-    return {
-        aliquotCount,
-        availableCount,
-        aliquotIds,
-    };
-}
-
-export function getSampleAliquotsQueryConfig(
-    sampleSet: string,
-    sampleLsid: string,
-    forGridView?: boolean,
-    aliquotRootLsid?: string,
-    omitCols?: string[]
-): QueryConfig {
-    const omitCol = IS_ALIQUOT_COL;
-    const schemaQuery = new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet);
-
-    return {
-        id: createGridModelId('sample-aliquots-' + sampleLsid, schemaQuery),
-        schemaQuery,
-        bindURL: forGridView,
-        maxRows: forGridView ? undefined : -1,
-        omittedColumns: omitCols ? [...omitCols, omitCol] : [omitCol],
-        requiredColumns: forGridView ? [...SAMPLE_STATUS_REQUIRED_COLUMNS] : ['RowId', 'StoredAmount'],
-        baseFilters: [
-            Filter.create('RootMaterialLSID', aliquotRootLsid ?? sampleLsid),
-            Filter.create('Lsid', sampleLsid, Filter.Types.EXP_CHILD_OF),
-        ],
-        includeTotalCount: forGridView,
-    };
 }
 
 export type SampleAssayResultViewConfig = {

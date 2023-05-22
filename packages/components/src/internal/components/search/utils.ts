@@ -22,48 +22,6 @@ import { REGISTRY_KEY } from '../../app/constants';
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
 
-/**
- * Note: this is an experimental API that may change unexpectedly in future releases.
- * From an array of FieldFilter, LabKey sql where clause
- * @param fieldFilters
- * @param skipWhere if true, don't include 'WHERE ' prefix in the returned sql fragment
- * @return labkey sql where clauses
- */
-export function getLabKeySqlWhere(fieldFilters: FieldFilter[], skipWhere?: boolean): string {
-    const clauses = [];
-    fieldFilters.forEach(fieldFilter => {
-        const clause = getFilterLabKeySql(fieldFilter.filter, fieldFilter.jsonType);
-        if (clause) clauses.push(clause);
-    });
-
-    if (clauses.length === 0) return '';
-
-    return (skipWhere ? '' : 'WHERE ') + clauses.join(' AND ');
-}
-
-/**
- * Note: this is an experimental API that may change unexpectedly in future releases.
- * generate LabKey select sql
- * @param selectColumn the column to select
- * @param schemaName
- * @param queryName
- * @param fieldFilters
- * @param cf
- * @return labkey sql
- */
-export function getLabKeySql(
-    selectColumn: string,
-    schemaName: string,
-    queryName: string,
-    fieldFilters?: FieldFilter[],
-    cf?: Query.ContainerFilter
-): string {
-    const from = getLegalIdentifier(schemaName) + '.' + getLegalIdentifier(queryName);
-    const cfClause = cf ? `[ContainerFilter='${cf}']` : '';
-    const where = fieldFilters ? ' ' + getLabKeySqlWhere(fieldFilters) : '';
-    return 'SELECT ' + getLegalIdentifier(selectColumn) + ' FROM ' + from + cfClause + where;
-}
-
 const CHOOSE_VALUE_FILTERS = [
     Filter.Types.EQUAL.getURLSuffix(),
     Filter.Types.IN.getURLSuffix(),

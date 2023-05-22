@@ -16,22 +16,6 @@ export const SAMPLE_PROPERTY_ALL_SAMPLE_TYPE = {
     label: 'All Sample Types',
 };
 
-export const ALLOWED_FINDER_SAMPLE_PROPERTY_MAP = {
-    name: 'string',
-    materialexpdate: 'date',
-    storedamount: 'float',
-    aliquotcount: 'int',
-    aliquotvolume: 'float',
-    availablealiquotcount: 'int',
-    freezethawcount: 'int',
-    storagestatus: 'string',
-    storagerow: 'string',
-    storagecol: 'string',
-    isaliquot: 'boolean',
-    created: 'date',
-    createdby: 'int',
-};
-
 export const SEARCH_HELP_TOPIC = 'luceneSearch';
 
 export const SEARCH_PAGE_DEFAULT_SIZE = 20;

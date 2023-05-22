@@ -369,25 +369,6 @@ export async function getChosenParentData(
     };
 }
 
-export function getAllEntityTypeOptions(
-    entityDataTypes: EntityDataType[]
-): Promise<{ [p: string]: IEntityTypeOption[] }> {
-    const optionMap = {};
-    return new Promise(async resolve => {
-        for (const entityType of entityDataTypes) {
-            try {
-                const entityOptions = await getEntityTypeOptions(entityType);
-                optionMap[entityType.typeListingSchemaQuery.queryName] = entityOptions
-                    .get(entityType.typeListingSchemaQuery.queryName)
-                    .toArray();
-            } catch {
-                optionMap[entityType.typeListingSchemaQuery.queryName] = [];
-            }
-        }
-        resolve(optionMap);
-    });
-}
-
 // get back a map from the typeListQueryName (e.g., 'SampleSet') and the list of options for that query
 // where the schema field for those options is the typeSchemaName (e.g., 'samples')
 export async function getEntityTypeOptions(

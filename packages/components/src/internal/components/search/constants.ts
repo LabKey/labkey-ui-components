@@ -34,8 +34,6 @@ export const ALLOWED_FINDER_SAMPLE_PROPERTY_MAP = {
     createdby: 'int',
 };
 
-export const ALLOWED_FINDER_SAMPLE_PROPERTIES = Object.keys(ALLOWED_FINDER_SAMPLE_PROPERTY_MAP);
-
 export const SEARCH_HELP_TOPIC = 'luceneSearch';
 
 export const SEARCH_PAGE_DEFAULT_SIZE = 20;

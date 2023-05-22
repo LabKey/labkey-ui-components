@@ -1,11 +1,6 @@
 import { List, fromJS } from 'immutable';
-import { Filter } from '@labkey/api';
 
-import { AssayDefinitionModel } from '../../AssayDefinitionModel';
-import assayDefNoSampleIdJSON from '../../../test/data/assayDefinitionModelNoSampleId.json';
-import assayDefJSON from '../../../test/data/assayDefinitionModel.json';
-
-import { getUpdatedLineageRows, getRowIdsFromSelection, createQueryConfigFilteredBySample } from './actions';
+import { getUpdatedLineageRows, getRowIdsFromSelection } from './actions';
 
 let DATA = fromJS({
     '1': {
@@ -134,36 +129,5 @@ describe('getSampleRowIdsFromSelection', () => {
     test('not empty', () => {
         expect(JSON.stringify(getRowIdsFromSelection(List.of('1', '2', '3')))).toBe('[1,2,3]');
         expect(JSON.stringify(getRowIdsFromSelection(List.of(1, 2, 3)))).toBe('[1,2,3]');
-    });
-});
-
-describe('createQueryConfigFilteredBySample', () => {
-    const modelWithSampleId = AssayDefinitionModel.create(assayDefJSON);
-    const modelWithoutSampleId = AssayDefinitionModel.create(assayDefNoSampleIdJSON);
-
-    test('no sample column', () => {
-        expect(createQueryConfigFilteredBySample(modelWithoutSampleId, 1, Filter.Types.EQUALS)).toBeUndefined();
-    });
-
-    test('with sample column', () => {
-        const result = createQueryConfigFilteredBySample(modelWithSampleId, 1, Filter.Types.EQUALS);
-        expect(result).toBeDefined();
-        expect(result.baseFilters[0].getURLParameterValue()).toBe(1);
-        expect(result.baseFilters[0].getURLParameterName()).toBe('query.SampleID/RowId~eq');
-        expect(result.omittedColumns).toBeUndefined();
-        expect(result.schemaQuery.getKey()).toBe('assay$pgeneral$pgpat 1/data');
-        expect(result.title).toBe('GPAT 1');
-        expect(result.urlPrefix).toBe('GPAT 1');
-    });
-
-    test('omitSampleCols', () => {
-        const result = createQueryConfigFilteredBySample(modelWithSampleId, 1, Filter.Types.EQUALS, true);
-        expect(result).toBeDefined();
-        expect(result.baseFilters[0].getURLParameterValue()).toBe(1);
-        expect(result.baseFilters[0].getURLParameterName()).toBe('query.SampleID/RowId~eq');
-        expect(result.omittedColumns).toStrictEqual(['SampleID']);
-        expect(result.schemaQuery.getKey()).toBe('assay$pgeneral$pgpat 1/data');
-        expect(result.title).toBe('GPAT 1');
-        expect(result.urlPrefix).toBe('GPAT 1');
     });
 });

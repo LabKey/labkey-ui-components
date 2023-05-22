@@ -218,7 +218,6 @@ export const SAMPLE_DATA_EXPORT_CONFIG = {
 
 // Issue 46037: Some plate-based assays (e.g., NAB) create samples with a bogus 'Material' sample type, which should get excluded everywhere in the application
 export const SAMPLES_WITH_TYPES_FILTER = Filter.create('SampleSet', 'Material', Filter.Types.NEQ);
-export const NON_MEDIA_SAMPLE_TYPES_FILTER = Filter.create('Category', 'media', Filter.Types.NEQ_OR_NULL);
 
 export const SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS = [
     {

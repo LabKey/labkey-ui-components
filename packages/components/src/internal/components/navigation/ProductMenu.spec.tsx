@@ -22,7 +22,7 @@ import { DropdownButton } from 'react-bootstrap';
 import { AppContext } from '../../AppContext';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
-import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
+import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 import { ServerContext } from '../base/ServerContext';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 

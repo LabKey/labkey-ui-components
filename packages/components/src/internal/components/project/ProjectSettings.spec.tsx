@@ -2,7 +2,7 @@ import React from 'react';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
 
-import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
+import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 
 import { TEST_USER_APP_ADMIN, TEST_USER_EDITOR } from '../../userFixtures';
 

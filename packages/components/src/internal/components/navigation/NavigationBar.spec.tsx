@@ -28,7 +28,7 @@ import { ProductNavigation } from '../productnavigation/ProductNavigation';
 
 import { SearchBox } from '../search/SearchBox';
 
-import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
+import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 
 import { getSecurityTestAPIWrapper, SecurityAPIWrapper } from '../security/APIWrapper';
 import { AppContext } from '../../AppContext';

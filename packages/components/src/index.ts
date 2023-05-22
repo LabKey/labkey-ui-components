@@ -214,6 +214,7 @@ import { flattenBrowseDataTreeResponse, loadReports } from './internal/query/rep
 import {
     DataViewInfoTypes,
     EXPORT_TYPES,
+    AssayUploadTabs,
     GRID_CHECKBOX_OPTIONS,
     IMPORT_DATA_FORM_TYPES,
     MAX_EDITABLE_GRID_ROWS,
@@ -307,7 +308,7 @@ import {
     OperationConfirmationData,
 } from './internal/components/entities/models';
 import { EntityMoveModal } from './internal/components/entities/EntityMoveModal';
-import { SearchScope } from './internal/components/search/constants';
+import { ALLOWED_FINDER_SAMPLE_PROPERTY_MAP, SearchScope } from './internal/components/search/constants';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';
 import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
 import { FIND_SAMPLE_BY_ID_METRIC_AREA, getSearchScopeFromContainerFilter } from './internal/components/search/utils';
@@ -436,7 +437,11 @@ import {
     DATA_CLASS_IMPORT_PREFIX,
     SAMPLE_SET_IMPORT_PREFIX,
 } from './internal/components/entities/constants';
-import { getUniqueIdColumnMetadata } from './internal/components/entities/utils';
+import {
+    getUniqueIdColumnMetadata,
+    isSampleEntity,
+    sampleDeleteDependencyText
+} from './internal/components/entities/utils';
 import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
 
 import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';
@@ -659,6 +664,7 @@ import {
     TEST_USER_STORAGE_EDITOR,
     TEST_USER_WORKFLOW_EDITOR,
 } from './internal/userFixtures';
+import { TEST_PROJECT_CONTAINER, TEST_FOLDER_CONTAINER } from './internal/containerFixtures';
 import {
     ASSAY_DESIGN_KEY,
     ASSAYS_KEY,
@@ -734,6 +740,7 @@ import {
     MEASUREMENT_UNITS,
     UnitModel,
 } from './internal/util/measurement';
+import { DELIMITER, DETAIL_TABLE_CLASSES } from './internal/components/forms/constants';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -766,6 +773,7 @@ const App = {
     isSampleStatusEnabled,
     isProductProjectsEnabled,
     isAllProductFoldersFilteringEnabled,
+    isSampleEntity,
     getPrimaryAppProperties,
     getProjectPath,
     hasPremiumModule,
@@ -850,11 +858,16 @@ const App = {
     TEST_LKS_STARTER_MODULE_CONTEXT,
     TEST_LKSM_STARTER_MODULE_CONTEXT,
     TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
+    TEST_PROJECT_CONTAINER,
+    TEST_FOLDER_CONTAINER,
     MEDIA_KEY,
     REGISTRY_KEY,
     ELN_KEY,
     DATA_CLASS_IMPORT_PREFIX,
     SAMPLE_SET_IMPORT_PREFIX,
+    ALLOWED_FINDER_SAMPLE_PROPERTY_MAP,
+    DELIMITER,
+    DETAIL_TABLE_CLASSES,
 };
 
 const Hooks = {
@@ -1096,6 +1109,7 @@ export {
     getDataOperationConfirmationData,
     getDataDeleteConfirmationData,
     getUniqueIdColumnMetadata,
+    sampleDeleteDependencyText,
     // metric related items
     UnitModel,
     MEASUREMENT_UNITS,
@@ -1393,6 +1407,7 @@ export {
     insertColumnFilter,
     EXPORT_TYPES,
     SELECTION_KEY_TYPE,
+    AssayUploadTabs,
     // QueryModel
     GRID_CHECKBOX_OPTIONS,
     QueryModel,
@@ -1495,7 +1510,7 @@ export type { TimelineGroupedEventInfo } from './internal/components/auditlog/mo
 export type { PaginationData } from './internal/components/pagination/Pagination';
 export type { QueryModelLoader } from './public/QueryModel/QueryModelLoader';
 export type { QueryConfig } from './public/QueryModel/QueryModel';
-export type { ServerContext } from './internal/components/base/ServerContext';
+export type { ServerContext, ModuleContext } from './internal/components/base/ServerContext';
 export type { GridProps } from './internal/components/base/Grid';
 export type { InjectedRouteLeaveProps, WrappedRouteLeaveProps } from './internal/util/RouteLeave';
 export type { PageHeaderProps } from './internal/components/base/PageHeader';
@@ -1510,6 +1525,7 @@ export type {
     IBannerMessage,
     IDomainField,
     IFieldChange,
+    SystemField,
 } from './internal/components/domainproperties/models';
 export type { NotificationItemProps } from './internal/components/notifications/model';
 export type { NotificationsContextProps } from './internal/components/notifications/NotificationsContext';

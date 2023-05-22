@@ -46,11 +46,8 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { getSelectedPicklistSamples } from '../picklist/actions';
 import { resolveErrorMessage } from '../../util/messaging';
 import { QueryConfig } from '../../../public/QueryModel/QueryModel';
-import { naturalSort, naturalSortByProperty } from '../../../public/sort';
-import { AssayStateModel } from '../assay/models';
+import { naturalSort } from '../../../public/sort';
 import { TimelineEventModel } from '../auditlog/models';
-
-import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 
 import { createGridModelId } from '../../models';
 
@@ -562,69 +559,6 @@ export function getSampleAliquotRows(sampleId: number | string): Promise<Array<R
             },
         });
     });
-}
-
-/**
- * Create a QueryConfig for this assay's Data grid, filtered to samples for the provided `value`
- * if the assay design has one or more sample lookup columns.
- *
- * The `value` may be a sample id or a labook id.
- */
-export function createQueryConfigFilteredBySample(
-    model: AssayDefinitionModel,
-    value: Array<string | number>,
-    singleFilter: Filter.IFilterType,
-    omitSampleCols?: boolean
-): QueryConfig {
-    const sampleColumns = model.getSampleColumnFieldKeys();
-
-    if (sampleColumns.isEmpty()) {
-        return undefined;
-    }
-    const sampleFilter = model.createSampleFilter(sampleColumns, value, singleFilter);
-
-    return {
-        baseFilters: sampleFilter ? [sampleFilter] : undefined,
-        omittedColumns: omitSampleCols ? sampleColumns.toArray() : undefined,
-        schemaQuery: new SchemaQuery(model.protocolSchemaName, 'Data'),
-        title: model.name,
-        urlPrefix: model.name,
-        includeTotalCount: true,
-    };
-}
-
-export function getSampleTypeAssayDesigns(assayModel: AssayStateModel, sampleSchemaQuery?: SchemaQuery) {
-    return assayModel.definitions.filter(assay => !sampleSchemaQuery || assay.hasLookup(sampleSchemaQuery));
-}
-
-export function getSampleAssayQueryConfigs(
-    assayModel: AssayStateModel,
-    sampleIds: Array<string | number>,
-    gridSuffix: string,
-    gridPrefix: string,
-    omitSampleCols?: boolean,
-    sampleSchemaQuery?: SchemaQuery,
-    assayNamesToFilter?: string[]
-): QueryConfig[] {
-    return getSampleTypeAssayDesigns(assayModel, sampleSchemaQuery)
-        .slice() // need to make a copy of the array before sorting
-        .filter(assay => !assayNamesToFilter || assayNamesToFilter.indexOf(assay.name.toLowerCase()) > -1)
-        .sort(naturalSortByProperty('name'))
-        .reduce((_configs, assay) => {
-            const _queryConfig = createQueryConfigFilteredBySample(
-                assay,
-                sampleIds && sampleIds.length > 0 ? sampleIds : [-1],
-                Filter.Types.IN,
-                omitSampleCols
-            );
-
-            if (_queryConfig) {
-                _queryConfig.id = `${gridPrefix}:${assay.id}:${gridSuffix}`;
-                _configs.push(_queryConfig);
-            }
-
-            return _configs;
-        }, []);
 }
 
 export function getSampleAliquotsStats(rows: Record<string, any>): SampleAliquotsStats {

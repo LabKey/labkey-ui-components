@@ -6,14 +6,8 @@ import policyJSON from '../../../test/data/security-getPolicy.json';
 
 import rolesJSON from '../../../test/data/security-getRoles.json';
 
-import {
-    JEST_SITE_ADMIN_USER_ID,
-    SECURITY_ROLE_EDITOR,
-    SECURITY_ROLE_READER,
-    TEST_FOLDER_CONTAINER,
-    TEST_PROJECT,
-    TEST_PROJECT_CONTAINER,
-} from '../../../test/data/constants';
+import { JEST_SITE_ADMIN_USER_ID, SECURITY_ROLE_EDITOR, SECURITY_ROLE_READER } from '../../../test/data/constants';
+import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER, TEST_PROJECT } from '../../containerFixtures';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
 import { ServerContext } from '../base/ServerContext';

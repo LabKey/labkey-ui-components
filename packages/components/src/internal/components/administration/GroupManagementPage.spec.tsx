@@ -1,7 +1,6 @@
 import React from 'react';
 import { List, Map } from 'immutable';
 
-import { TEST_PROJECT, TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
 import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
 import { createMockWithRouteLeave } from '../../mockUtils';
 import { getSecurityTestAPIWrapper, SecurityAPIWrapper } from '../security/APIWrapper';
@@ -11,6 +10,7 @@ import { SecurityPolicy } from '../permissions/models';
 import policyJSON from '../../../test/data/security-getPolicy.json';
 import { ServerContext } from '../base/ServerContext';
 import { TEST_USER_FOLDER_ADMIN } from '../../userFixtures';
+import { TEST_PROJECT, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 
 import { Alert } from '../base/Alert';
 

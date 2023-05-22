@@ -174,7 +174,7 @@ import { ValueList } from './internal/components/base/ValueList';
 
 import { DataTypeSelector } from './internal/components/entities/DataTypeSelector';
 
-import { EditorModel } from './internal/components/editable/models';
+import { EditorModel, EditorMode } from './internal/components/editable/models';
 import {
     clearSelected,
     getOrderedSelectedMappedKeys,
@@ -186,6 +186,9 @@ import {
     selectGridIdsFromTransactionId,
     setSelected,
     setSnapshotSelections,
+    addColumns,
+    changeColumn,
+    removeColumn,
 } from './internal/actions';
 import { cancelEvent } from './internal/events';
 import { createGridModelId } from './internal/models';
@@ -458,6 +461,7 @@ import {
     CHILD_SAMPLE_CREATION,
     DERIVATIVE_CREATION,
     POOLED_SAMPLE_CREATION,
+    SampleCreationType,
 } from './internal/components/samples/models';
 import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
 
@@ -924,6 +928,9 @@ export {
     setSelected,
     setSnapshotSelections,
     selectGridIdsFromTransactionId,
+    addColumns,
+    changeColumn,
+    removeColumn,
     // query related items
     InsertRowsResponse,
     InsertFormats,
@@ -952,6 +959,7 @@ export {
     EditableGridPanelForUpdate,
     EditableGridTabs,
     EditorModel,
+    EditorMode,
     cancelEvent,
     // url and location related items
     AppURL,
@@ -1094,6 +1102,7 @@ export {
     SAMPLE_EXPORT_CONFIG,
     SAMPLE_INSERT_EXTRA_COLUMNS,
     IS_ALIQUOT_COL,
+    SampleCreationType,
     ALIQUOT_CREATION,
     CHILD_SAMPLE_CREATION,
     DERIVATIVE_CREATION,
@@ -1569,7 +1578,6 @@ export type {
     IGridLoader,
     IGridResponse,
     IEditableGridLoader,
-    EditorMode,
 } from './internal/components/editable/models';
 export type { IDataViewInfo } from './internal/DataViewInfo';
 export type { InjectedAssayModel, WithAssayModelProps } from './internal/components/assay/withAssayModels';
@@ -1584,6 +1592,7 @@ export type {
     IParentOption,
     EntityChoice,
     DataTypeEntity,
+    DisplayObject,
 } from './internal/components/entities/models';
 export type {
     SelectInputChange,
@@ -1594,7 +1603,6 @@ export type { InjectedPermissionsPage } from './internal/components/permissions/
 export type { ISelectInitData } from './internal/components/forms/model';
 export type { QuerySelectChange, QuerySelectOwnProps } from './internal/components/forms/QuerySelect';
 export type {
-    SampleCreationType,
     SampleCreationTypeModel,
     SampleStatus,
     SampleGridButtonProps,
@@ -1645,3 +1653,4 @@ export type { MeasurementUnit } from './internal/util/measurement';
 export type { SampleStorageLocationComponentProps, SampleStorageMenuComponentProps } from './internal/sampleModels';
 export type { SearchForm } from './internal/components/search/BaseSearchPage';
 export type { TabbedGridPanelProps } from './public/QueryModel/TabbedGridPanel';
+export type { EditorModelUpdates } from './internal/actions';

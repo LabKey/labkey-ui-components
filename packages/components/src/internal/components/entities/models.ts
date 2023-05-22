@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AuditBehaviorTypes, Filter, Query, Utils } from '@labkey/api';
-import { List, Map, OrderedMap, Record } from 'immutable';
+import { AuditBehaviorTypes, Filter, Query } from '@labkey/api';
+import { List, Map, Record } from 'immutable';
 
 import { immerable } from 'immer';
 
@@ -432,53 +432,6 @@ export class EntityIdCreationModel extends Record({
 
         return data.toOrderedMap();
     }
-}
-
-export function getParentOptions(
-    parentOptions: Map<string, List<IParentOption>>,
-    entityParents: Map<string, List<EntityParentType>>,
-    currentSelection: string,
-    queryName: string,
-    combineParentTypes: boolean
-): any[] {
-    let allOptions = parentOptions.get(queryName);
-    if (combineParentTypes) {
-        allOptions = parentOptions.valueSeq().reduce((accum, val) => {
-            accum = accum.concat(val) as List<IParentOption>;
-            return accum;
-        }, List<IParentOption>());
-    }
-
-    // exclude options that have already been selected, except the current selection for this input
-    return allOptions
-        .filter(o =>
-            getParentEntities(entityParents, combineParentTypes, queryName).every(parent => {
-                const notParentMatch = !parent.query || !Utils.caseInsensitiveEquals(parent.query, o.value);
-                const matchesCurrent = currentSelection && Utils.caseInsensitiveEquals(currentSelection, o.value);
-                return notParentMatch || matchesCurrent;
-            })
-        )
-        .toArray();
-}
-
-export function getParentEntities(
-    entityParents: Map<string, List<EntityParentType>>,
-    combineParentTypes: boolean,
-    queryName?: string
-): List<EntityParentType> {
-    if (combineParentTypes) {
-        return entityParents.reduce((reduction, parentType) => {
-            let index = reduction.size + 1;
-            const types = parentType.map(type => {
-                return type.set('index', index++);
-            });
-            return reduction.concat(types) as List<EntityParentType>;
-        }, List<EntityParentType>());
-    } else if (queryName !== undefined) {
-        return entityParents.get(queryName);
-    }
-
-    return List<EntityParentType>();
 }
 
 export interface IEntityTypeDetails extends IEntityDetails {

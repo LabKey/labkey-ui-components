@@ -37,6 +37,7 @@ export interface EntityMoveModalProps {
     currentContainer?: Container; // used in the single move case when the item is not in the current container
     targetAppURL?: AppURL;
     useSelected: boolean;
+    fromTypeRowId?: number;
 }
 
 export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
@@ -50,6 +51,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
         entityDataType,
         maxSelected,
         targetAppURL,
+        fromTypeRowId,
     } = props;
     const { nounPlural } = entityDataType;
     const { createNotification } = useNotificationsContext();
@@ -224,6 +226,8 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                     onConfirm={onConfirm}
                     currentContainer={currentContainer}
                     title={title}
+                    dataType={entityDataType.projectConfigurableDataType}
+                    fromTypeRowId={fromTypeRowId}
                 >
                     {message}
                 </EntityMoveConfirmationModal>

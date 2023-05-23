@@ -40,6 +40,7 @@ const REQUIRED_COLUMNS = ParentEntityRequiredColumns.concat(
     'AliquotCount',
     'Folder',
     'SampleSet',
+    'SampleSet/RowId',
     'SampleSet/LabelColor',
     'StorageStatus',
     'Units',

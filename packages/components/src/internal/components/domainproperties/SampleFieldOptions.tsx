@@ -51,7 +51,6 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
                 .filter(st => st.type.isInteger()) // Remove rowId duplicates
                 .toList();
 
-            console.log(sampleTypes.toJS());
             this.setState({ loadingState: LoadingState.LOADED, sampleTypes });
         } catch (e) {
             console.error('Failed to load sample field information', e);

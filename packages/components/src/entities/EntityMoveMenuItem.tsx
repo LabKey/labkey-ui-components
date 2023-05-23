@@ -20,10 +20,11 @@ interface Props {
     maxSelected?: number;
     onSuccess?: (requiresModelReload: boolean) => void;
     queryModel: QueryModel;
+    fromTypeRowId: number;
 }
 
 export const EntityMoveMenuItem: FC<Props> = memo(props => {
-    const { handleClick, maxSelected, queryModel, actions, onSuccess, entityDataType = SampleTypeDataType } = props;
+    const { handleClick, maxSelected, queryModel, actions, onSuccess, fromTypeRowId, entityDataType = SampleTypeDataType } = props;
     const [showModal, setShowModal] = useState<boolean>(false);
 
     const onClick = useCallback(() => {
@@ -67,6 +68,7 @@ export const EntityMoveMenuItem: FC<Props> = memo(props => {
                     maxSelected={maxSelected}
                     entityDataType={entityDataType}
                     targetAppURL={AppURL.create(entityDataType.instanceKey, queryModel.queryName)}
+                    fromTypeRowId={fromTypeRowId}
                 />
             )}
         </>

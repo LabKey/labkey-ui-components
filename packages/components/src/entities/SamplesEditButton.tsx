@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useMemo, useState } from 'react';
+import React, {FC, memo, useCallback, useEffect, useMemo, useState} from 'react';
 import { MenuItem } from 'react-bootstrap';
 import { PermissionTypes } from '@labkey/api';
 
@@ -6,7 +6,7 @@ import { CrossFolderSelectionResult, EntityDataType } from '../internal/componen
 
 import { RequiresModelAndActions } from '../public/QueryModel/withQueryModels';
 
-import { hasModule, hasProductProjects } from '../internal/app/utils';
+import {hasModule, hasProductProjects, isProductProjectDataTypeSelectionEnabled} from '../internal/app/utils';
 
 import { useServerContext } from '../internal/components/base/ServerContext';
 import { buildURL, createProductUrlFromParts } from '../internal/url/AppURL';
@@ -61,7 +61,21 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
         entityDataType,
     } = props;
     const [crossFolderSelectionResult, setCrossFolderSelectionResult] = useState<CrossFolderSelectionResult>();
+    const [sampleTypeRowId, setSampleTypeRowId] = useState<number>(undefined);
     const { user, moduleContext } = useServerContext();
+
+    useEffect(() => {
+        (async () => {
+            try {
+                if (isProductProjectDataTypeSelectionEnabled()) {
+                    const sampleTypeId = await getSampleTypeRowId(model.queryInfo.name);
+                    setSampleTypeRowId(sampleTypeId);
+
+                }
+            } catch (reason) {
+            }
+        })();
+    }, [model.schemaName, model.queryName, model.queryInfo]);
 
     const handleMenuClick = useCallback(
         async (onClick: () => void, errorMsg?: string): Promise<void> => {
@@ -214,6 +228,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
                         queryModel={model}
                         handleClick={handleMenuClick}
                         onSuccess={afterSampleActionComplete}
+                        fromTypeRowId={sampleTypeRowId}
                     />
                 )}
                 {showDelete && (

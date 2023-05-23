@@ -13,15 +13,18 @@ import { AppContext, useAppContext } from '../../AppContext';
 import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
 import { HOME_PATH, HOME_TITLE } from '../navigation/constants';
 import { Container } from '../base/models/Container';
+import {ProjectConfigurableDataType} from "./models";
 
 export interface EntityMoveConfirmationModalProps extends Omit<ConfirmModalProps, 'onConfirm'> {
     nounPlural: string;
     onConfirm: (targetContainer: string, targetName: string, userComment: string) => void;
     currentContainer?: Container;
+    dataType?: ProjectConfigurableDataType;
+    fromTypeRowId?: number;
 }
 
 export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> = memo(props => {
-    const { children, onConfirm, nounPlural, currentContainer, ...confirmModalProps } = props;
+    const { children, onConfirm, nounPlural, currentContainer, dataType, fromTypeRowId, ...confirmModalProps } = props;
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [containerOptions, setContainerOptions] = useState<SelectInputOption[]>();
@@ -49,6 +52,8 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
                         depth: 1,
                     });
 
+                    const excludedFolders = await api.folder.getDataTypeExcludedProjects(dataType, fromTypeRowId);
+
                     // if user doesn't have permissions to the parent/project, the response will come back with an empty Container object
                     folders = folders.filter(c => c !== undefined && c.id !== '');
 
@@ -56,6 +61,13 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
                     folders = folders.filter(c => c.effectivePermissions.indexOf(Security.PermissionTypes.Insert) > -1);
 
                     // filter out the current container
+                    folders = folders.filter(c => c.id !== container_.id);
+
+                    // filter folder by exclusion
+                    if (excludedFolders) {
+                        folders = folders.filter(c => excludedFolders.indexOf(c.id) === -1);
+                    }
+
                     folders = folders.filter(c => c.id !== container_.id);
 
                     setContainerOptions(

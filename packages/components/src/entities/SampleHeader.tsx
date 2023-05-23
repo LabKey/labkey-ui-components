@@ -5,7 +5,6 @@ import { PermissionTypes } from '@labkey/api';
 import { EntityDataType } from '../internal/components/entities/models';
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { useNotificationsContext } from '../internal/components/notifications/NotificationsContext';
-import { getSampleOperationConfirmationData } from '../internal/components/entities/actions';
 import { SampleOperation } from '../internal/components/samples/constants';
 import { AppURL } from '../internal/url/AppURL';
 import { AUDIT_KEY, MEDIA_KEY, SAMPLES_KEY } from '../internal/app/constants';
@@ -352,6 +351,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                     entityDataType={entityDataType}
                     currentContainer={sampleContainer}
                     targetAppURL={AppURL.create(entityDataType.instanceKey, sampleModel.queryName)}
+                    fromTypeRowId={sampleModel.getRowValue('SampleSet/RowId')}
                 />
             )}
             {showConfirmDelete && (

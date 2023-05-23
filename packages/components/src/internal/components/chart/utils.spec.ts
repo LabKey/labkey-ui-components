@@ -1,6 +1,5 @@
 import AssayRunCountsRowsJson from '../../../test/data/AssayRunCounts-getQueryRows.json';
 
-import { ISelectRowsResult } from '../../query/api';
 import { AppURL } from '../../url/AppURL';
 
 import {
@@ -15,13 +14,10 @@ beforeEach(() => {
 });
 
 describe('processChartData', () => {
-    const response = {
-        key: '0',
-        models: { 0: AssayRunCountsRowsJson },
-    } as ISelectRowsResult;
+    const rows = AssayRunCountsRowsJson;
 
     test('with data', () => {
-        const { data } = processChartData(response, { countPath: ['TotalCount', 'value'] });
+        const { data } = processChartData(rows, { countPath: ['TotalCount', 'value'] });
         expect(data.length).toBe(4);
         expect(data[0].x).toBe('GPAT 1');
         expect(data[0].xSub).toBeUndefined();
@@ -32,12 +28,12 @@ describe('processChartData', () => {
     });
 
     test('without data', () => {
-        const { data } = processChartData(response, { countPath: ['TodayCount', 'value'] });
+        const { data } = processChartData(rows, { countPath: ['TodayCount', 'value'] });
         expect(data.length).toBe(0);
     });
 
     test('with alternate label field', () => {
-        const { data } = processChartData(response, {
+        const { data } = processChartData(rows, {
             countPath: ['TotalCount', 'value'],
             namePath: ['RowId', 'value'],
         });
@@ -46,12 +42,12 @@ describe('processChartData', () => {
     });
 
     test('barFillColors without colorPath', () => {
-        const { barFillColors } = processChartData(response, { countPath: ['TodayCount', 'value'] });
+        const { barFillColors } = processChartData(rows, { countPath: ['TodayCount', 'value'] });
         expect(barFillColors).toBe(undefined);
     });
 
     test('barFillColors with colorPath', () => {
-        const { barFillColors } = processChartData(response, {
+        const { barFillColors } = processChartData(rows, {
             colorPath: ['Color', 'value'],
             countPath: ['TotalCount', 'value'],
             namePath: ['Name', 'value'],
@@ -62,7 +58,7 @@ describe('processChartData', () => {
     });
 
     test('groupPath', () => {
-        const { data, barFillColors } = processChartData(response, {
+        const { data, barFillColors } = processChartData(rows, {
             countPath: ['TotalCount', 'value'],
             colorPath: ['Color', 'value'],
             groupPath: ['Color', 'value'],

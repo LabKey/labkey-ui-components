@@ -14,8 +14,44 @@ import { FileAttachmentForm } from '../../../../public/files/FileAttachmentForm'
 
 import { Alert } from '../../base/Alert';
 
+import { getTestAPIWrapper } from '../../../APIWrapper';
+
+import { getEntityTestAPIWrapper } from '../../entities/APIWrapper';
+
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { SampleTypeDesigner, SampleTypeDesignerImpl } from './SampleTypeDesigner';
+
+const PARENT_OPTIONS = [
+    {
+        label: '(Current Sample Type)',
+        schema: 'samples',
+        value: '{{this_sample_set}}',
+    },
+    {
+        label: 'Fruits',
+        query: 'Fruits',
+        schema: 'samples',
+        value: 'materialInputs/Fruits',
+    },
+    {
+        label: 'Name Expression Set',
+        query: 'Name Expression Set',
+        schema: 'samples',
+        value: 'materialInputs/Name Expression Set',
+    },
+    {
+        label: 'Sample Set 2',
+        query: 'Sample Set 2',
+        schema: 'samples',
+        value: 'materialInputs/Sample Set 2',
+    },
+    {
+        label: 'Sample Set Error',
+        query: 'Sample Set Error',
+        schema: 'samples',
+        value: 'materialInputs/Sample Set Error',
+    },
+];
 
 const BASE_PROPS = {
     appPropertiesOnly: true,
@@ -23,6 +59,15 @@ const BASE_PROPS = {
     onComplete: jest.fn(),
     onCancel: jest.fn(),
     testMode: true,
+    api: getTestAPIWrapper(jest.fn, {
+        entity: getEntityTestAPIWrapper(jest.fn, {
+            initParentOptionsSelects: () =>
+                Promise.resolve({
+                    parentOptions: PARENT_OPTIONS,
+                    parentAliases: new Map(),
+                }),
+        }),
+    }),
 };
 
 beforeAll(() => {
@@ -31,17 +76,19 @@ beforeAll(() => {
 
 describe('SampleTypeDesigner', () => {
     test('default properties', async () => {
-        const form = <SampleTypeDesignerImpl
-            {...BASE_PROPS}
-            currentPanelIndex={0}
-            firstState={true}
-            onFinish={jest.fn()}
-            onTogglePanel={jest.fn()}
-            setSubmitting={jest.fn()}
-            submitting={false}
-            validatePanel={0}
-            visitedPanels={List()}
-        />;
+        const form = (
+            <SampleTypeDesignerImpl
+                {...BASE_PROPS}
+                currentPanelIndex={0}
+                firstState={true}
+                onFinish={jest.fn()}
+                onTogglePanel={jest.fn()}
+                setSubmitting={jest.fn()}
+                submitting={false}
+                validatePanel={0}
+                visitedPanels={List()}
+            />
+        );
 
         const tree = shallow(form);
 

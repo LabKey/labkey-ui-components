@@ -4,7 +4,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.X
 *Released*: X May 2023
 * Project level data type - exclude on UI
-  * TODO
+  * Added App.getProjectDataExclusion utils to get the exclusion for the current folder context
+  * Exclude assay designs from withAssayModel
+  * Exclude data types from BarChartViewer
+  * Added FolderAPIWrapper.getDataTypeExcludedProjects util to get the list of excluded projects for a specific data type
+  * Modified EntityMoveConfirmationModal to exclude target data types from dropdowns
+  * Modified initParentOptionsSelects util to exclude data types
 
 ### version 2.339.0
 *Released* : 23 May 2023

@@ -820,7 +820,7 @@ export function moveEntities(
     });
 }
 
-export function initParentOptionsSelects(
+export const initParentOptionsSelects = (
     includeSampleTypes: boolean,
     includeDataClasses: boolean,
     containerPath: string,
@@ -832,7 +832,7 @@ export function initParentOptionsSelects(
 ): Promise<{
     parentAliases: Map<string, IParentAlias>;
     parentOptions: IParentOption[];
-}> {
+}> => {
     const promises: Array<Promise<SelectRowsResponse>> = [];
 
     const dataTypeExclusions = getProjectDataExclusion();

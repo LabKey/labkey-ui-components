@@ -39,7 +39,6 @@ import { getDuplicateAlias, getParentAliasChangeResult, getParentAliasUpdateDupe
 import { UniqueIdBanner } from './UniqueIdBanner';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { AliquotNamePatternProps, MetricUnitProps, SampleTypeModel } from './models';
-import { initParentOptionsSelects } from '../../entities/actions';
 import { SAMPLE_SET_IMPORT_PREFIX } from '../../entities/constants';
 
 const NEW_SAMPLE_SET_OPTION: IParentOption = {
@@ -172,11 +171,11 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
     }
 
     componentDidMount = async (): Promise<void> => {
-        const { includeDataClasses, setSubmitting, isValidParentOptionFn } = this.props;
+        const { api, includeDataClasses, setSubmitting, isValidParentOptionFn } = this.props;
         const { model } = this.state;
 
         try {
-            const { parentOptions, parentAliases } = await initParentOptionsSelects(
+            const { parentOptions, parentAliases } = await api.entity.initParentOptionsSelects(
                 true,
                 includeDataClasses,
                 model.containerPath,

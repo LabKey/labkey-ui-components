@@ -1511,10 +1511,10 @@
   resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.20.0.tgz#f576326b7957eb252bada85c2f75f2a7b62147f9"
   integrity sha512-a1Mh0awRKqw8M3OyV0LtWWU+IzDz2IPVJamZvH+D0RLkpWZN35BbFURNUcVIuIL1vrp82jUqmC3EDYqyRDOYwg==
 
-"@labkey/build@6.10.0-fb-migrateEntitiesToPremium.0":
-  version "6.10.0-fb-migrateEntitiesToPremium.0"
-  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/build/-/@labkey/build-6.10.0-fb-migrateEntitiesToPremium.0.tgz#928cbb278e7dd9b1d6a4d0f6b414135c128e5b27"
-  integrity sha512-7URx6vWjpN8ZAGbNMiLKUy1i78CS/HWB8e/11CzDl7vIhcqK4vZ3MqV6axYBulYkSU9hLRvFvrgstZ5McuTrHA==
+"@labkey/build@6.11.0":
+  version "6.11.0"
+  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/build/-/@labkey/build-6.11.0.tgz#e10b41a97d1d1cde557787766fbeacde26e9d9ce"
+  integrity sha512-KGHHBk8B2deU0GuDJHkBFO1qDiNiQdAPd4pHapsvDmEBW1uLbglTBgSaV+pclRXNuFRRLaC61vy/YR7YJf67ZA==
   dependencies:
     "@babel/core" "~7.20.12"
     "@babel/plugin-proposal-class-properties" "~7.18.6"

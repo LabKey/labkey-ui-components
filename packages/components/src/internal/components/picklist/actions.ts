@@ -2,7 +2,7 @@ import { Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
 
 import { List } from 'immutable';
 
-import { deleteRows, insertRows, InsertRowsResponse, selectRowsDeprecated } from '../../query/api';
+import { insertRows, InsertRowsResponse, selectRowsDeprecated } from '../../query/api';
 import { resolveKey, SchemaQuery } from '../../../public/SchemaQuery';
 import { getOrderedSelectedMappedKeys, getSelected, getSelectedData, setSnapshotSelections } from '../../actions';
 import { PICKLIST } from '../domainproperties/list/constants';
@@ -393,42 +393,6 @@ export function deletePicklists(picklists: Picklist[], selectionKey?: string): P
         });
     });
 }
-
-export const removeSamplesFromPicklist = async (picklist: Picklist, selectionModel: QueryModel): Promise<number> => {
-    const rows = [];
-    let selectedIds = selectionModel.selections;
-
-    // if the model is for the sample type, query to get the relevant list keys to delete.
-    if (selectionModel.schemaName === SCHEMAS.SAMPLE_SETS.SCHEMA) {
-        const listResponse = await selectRowsDeprecated({
-            schemaName: SCHEMAS.PICKLIST_TABLES.SCHEMA,
-            queryName: picklist.name,
-            filterArray: [Filter.create('SampleID', [...selectionModel.selections], Filter.Types.IN)],
-        });
-        selectedIds = listResponse.orderedModels[listResponse.key].toJS();
-    }
-
-    selectedIds.forEach(id => {
-        rows.push({ id });
-    });
-
-    return new Promise((resolve, reject) => {
-        if (rows.length === 0) {
-            resolve(0);
-        } else {
-            deleteRows({
-                schemaQuery: new SchemaQuery(SCHEMAS.PICKLIST_TABLES.SCHEMA, picklist.name),
-                rows,
-            })
-                .then(response => {
-                    resolve(response.rows.length);
-                })
-                .catch(reason => {
-                    reject(reason);
-                });
-        }
-    });
-};
 
 export function getPicklistUrl(listId: number, picklistProductId?: string, currentProductId?: string): string {
     let picklistUrl: string = AppURL.create(PICKLIST_KEY, listId).toHref();

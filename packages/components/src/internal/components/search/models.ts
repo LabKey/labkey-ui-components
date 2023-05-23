@@ -16,8 +16,6 @@
 import { fromJS, List, Map, Record } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { EntityDataType } from '../entities/models';
-import { SchemaQuery } from '../../../public/SchemaQuery';
 import { JsonType } from '../domainproperties/PropDescType';
 
 export class SearchResultsModel extends Record({
@@ -63,26 +61,6 @@ export interface FieldFilter {
     jsonType: JsonType;
 }
 
-export interface FilterProps {
-    altQueryName?: string;
-    dataTypeDisplayName?: string;
-    dataTypeLsid?: string;
-    disabled?: boolean;
-    entityDataType: EntityDataType;
-    // the filters to be used in conjunction with the schemaQuery
-    filterArray?: FieldFilter[];
-    index?: number;
-    schemaQuery?: SchemaQuery;
-    selectColumnFieldKey?: string;
-    targetColumnFieldKey?: string;
-}
-
-export interface SearchSessionStorageProps {
-    filterChangeCounter: number;
-    filterTimestamp: string;
-    filters: FilterProps[];
-}
-
 export interface FieldFilterOption {
     betweenOperator: boolean;
     isSoleFilter: boolean;
@@ -96,12 +74,4 @@ export interface FilterSelection {
     filterType: FieldFilterOption;
     firstFilterValue?: any;
     secondFilterValue?: any;
-}
-
-export interface FinderReport {
-    entityId?: string;
-    isModuleReport?: boolean;
-    isSession?: boolean;
-    reportId?: string;
-    reportName?: string;
 }

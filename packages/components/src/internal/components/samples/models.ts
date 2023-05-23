@@ -1,9 +1,7 @@
 import { ComponentType } from 'react';
-import { List } from 'immutable';
 import { Draft, immerable, produce } from 'immer';
 import { Filter } from '@labkey/api';
 
-import { OperationConfirmationData } from '../entities/models';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { User } from '../base/models/User';
 import { AppURL } from '../../url/AppURL';
@@ -63,27 +61,6 @@ export const ALIQUOT_CREATION: SampleCreationTypeModel = {
     quantityLabel: 'Aliquots per Parent',
 };
 
-export interface SamplesSelectionProviderProps {
-    determineLineage?: boolean;
-    determineSampleData: boolean;
-    determineStorage?: boolean;
-    sampleSet: string;
-    selection: List<any>;
-    viewName: string;
-}
-
-export interface SamplesSelectionResultProps {
-    aliquots: any[];
-    editStatusData: OperationConfirmationData; // data about which samples can and cannot be edited due to their status
-    noStorageSamples: any[];
-    sampleItems: Record<string, any>;
-    // mapping from sample rowId to sample record containing lineage
-    sampleLineage: Record<string, any>;
-    sampleLineageKeys: string[];
-    sampleTypeDomainFields: GroupedSampleFields;
-    selectionInfoError: any;
-}
-
 export interface GroupedSampleFields {
     // aliquot-specific
     aliquotFields: string[];
@@ -102,13 +79,6 @@ export interface FindField {
     nounPlural: string;
     nounSingular: string;
     storageKeyPrefix: string;
-}
-
-export interface SampleAliquotsStats {
-    aliquotCount: number;
-    aliquotIds?: number[];
-    availableCount: number;
-    jobsCount?: number;
 }
 
 export interface SampleStatus {

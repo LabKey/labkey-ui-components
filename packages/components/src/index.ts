@@ -73,6 +73,8 @@ import {
     uncapitalizeFirstChar,
     valueIsEmpty,
     withTransformedKeys,
+    arrayEquals,
+    findMissingValues,
 } from './internal/util/utils';
 import { AutoForm } from './internal/components/AutoForm';
 import { HelpIcon } from './internal/components/HelpIcon';
@@ -149,6 +151,8 @@ import {
     getDateTimeFormat,
     isDateTimeInPast,
     parseDate,
+    isRelativeDateFilterValue,
+    getParsedRelativeDateStr,
 } from './internal/util/Date';
 import { SVGIcon, Theme } from './internal/components/base/SVGIcon';
 import { CreatedModified } from './internal/components/base/CreatedModified';
@@ -171,10 +175,11 @@ import { getMenuItemForSectionKey, getMenuItemsForSection } from './internal/com
 import { Cards } from './internal/components/base/Cards';
 import { Setting } from './internal/components/base/Setting';
 import { ValueList } from './internal/components/base/ValueList';
+import { ChoicesListItem } from './internal/components/base/ChoicesListItem';
 
 import { DataTypeSelector } from './internal/components/entities/DataTypeSelector';
 
-import { EditorModel } from './internal/components/editable/models';
+import { EditorModel, EditorMode } from './internal/components/editable/models';
 import {
     clearSelected,
     getOrderedSelectedMappedKeys,
@@ -186,10 +191,14 @@ import {
     selectGridIdsFromTransactionId,
     setSelected,
     setSnapshotSelections,
+    addColumns,
+    changeColumn,
+    removeColumn,
 } from './internal/actions';
 import { cancelEvent } from './internal/events';
 import { createGridModelId } from './internal/models';
 import { initQueryGridState } from './internal/global';
+import { initBrowserHistoryState } from './internal/util/global';
 import {
     deleteRows,
     getContainerFilter,
@@ -208,12 +217,19 @@ import {
     selectRowsDeprecated,
     updateRows,
 } from './internal/query/api';
-import { registerFilterType } from './internal/query/filter';
+import {
+    registerFilterType,
+    COLUMN_IN_FILTER_TYPE,
+    COLUMN_NOT_IN_FILTER_TYPE,
+    getFilterLabKeySql,
+    getLegalIdentifier,
+} from './internal/query/filter';
 import { selectRows } from './internal/query/selectRows';
 import { flattenBrowseDataTreeResponse, loadReports } from './internal/query/reports';
 import {
     DataViewInfoTypes,
     EXPORT_TYPES,
+    AssayUploadTabs,
     GRID_CHECKBOX_OPTIONS,
     IMPORT_DATA_FORM_TYPES,
     MAX_EDITABLE_GRID_ROWS,
@@ -233,17 +249,19 @@ import {
     resetParameters,
 } from './internal/util/URL';
 import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
-import { getHelpLink, HELP_LINK_REFERRER, HelpLink } from './internal/util/helpLinks';
+import { DATA_IMPORT_TOPIC, getHelpLink, HELP_LINK_REFERRER, HelpLink } from './internal/util/helpLinks';
 import { ExperimentRunResolver, ListResolver } from './internal/url/AppURLResolver';
-import { loadEditorModelData } from './internal/components/editable/utils';
+import { NOT_ANY_FILTER_TYPE } from './internal/url/NotAnyFilterType';
+import {
+    loadEditorModelData,
+    applyEditableGridChangesToModels,
+    getUpdatedDataFromEditableGrid,
+    initEditableGridModel,
+    initEditableGridModels,
+} from './internal/components/editable/utils';
 import { EditableGridTabs } from './internal/components/editable/EditableGrid';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
-import {
-    EditableGridPanelForUpdateWithLineage,
-    UpdateGridTab,
-} from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
-import { LineageEditableGridLoaderFromSelection } from './internal/components/editable/LineageEditableGridLoaderFromSelection';
 
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
 
@@ -305,12 +323,35 @@ import {
     EntityIdCreationModel,
     EntityParentType,
     OperationConfirmationData,
+    EntityTypeOption,
 } from './internal/components/entities/models';
 import { EntityMoveModal } from './internal/components/entities/EntityMoveModal';
-import { SearchScope } from './internal/components/search/constants';
+import {
+    AssayResultsForSamplesMenuItem,
+    AssayResultsForSamplesButton,
+} from './internal/components/entities/AssayResultsForSamplesButton';
+import { DeleteConfirmationModal } from './internal/components/entities/DeleteConfirmationModal';
+import { EntityDeleteConfirmModal } from './internal/components/entities/EntityDeleteConfirmModal';
+import { SampleAliquotViewSelector } from './internal/components/entities/SampleAliquotViewSelector';
+import { GridAliquotViewSelector } from './internal/components/entities/GridAliquotViewSelector';
+import {
+    FindDerivativesMenuItem,
+    FindDerivativesButton,
+    SAMPLE_FINDER_SESSION_PREFIX,
+    getSearchFilterObjs,
+    searchFiltersToJson,
+    getSampleFinderLocalStorageKey
+} from './internal/components/entities/FindDerivativesButton';
+import { SAMPLE_PROPERTY_ALL_SAMPLE_TYPE, SearchScope } from './internal/components/search/constants';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';
 import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
-import { FIND_SAMPLE_BY_ID_METRIC_AREA, getSearchScopeFromContainerFilter } from './internal/components/search/utils';
+import {
+    getSearchScopeFromContainerFilter,
+    isValidFilterField,
+    SAMPLE_FILTER_METRIC_AREA,
+    getFilterValuesAsArray,
+    getFieldFiltersValidationResult,
+} from './internal/components/search/utils';
 import { AdministrationSubNav } from './internal/components/administration/AdministrationSubNav';
 import { UserManagementPage } from './internal/components/administration/UserManagement';
 import { CreateProjectPage } from './internal/components/project/CreateProjectPage';
@@ -329,6 +370,9 @@ import {
     getSampleTypeDetails,
     getSelectedSampleIdsFromSelectionKey,
     getSelectionLineageData,
+    updateSampleStorageData,
+    getGroupedSampleDomainFields,
+    getGroupedSampleDisplayColumns,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SampleAmountEditModal } from './internal/components/samples/SampleAmountEditModal';
@@ -388,6 +432,7 @@ import { SampleTypeLineageCounts } from './internal/components/lineage/SampleTyp
 import { NavigationBar } from './internal/components/navigation/NavigationBar';
 import { SEARCH_PLACEHOLDER } from './internal/components/navigation/constants';
 import { FindByIdsModal } from './internal/components/search/FindByIdsModal';
+import { QueryFilterPanel } from './internal/components/search/QueryFilterPanel';
 import { ProductNavigationMenu } from './internal/components/productnavigation/ProductNavigationMenu';
 import { useSubNavContext } from './internal/components/navigation/hooks';
 import { SubNav, SubNavWithContext } from './internal/components/navigation/SubNav';
@@ -411,6 +456,8 @@ import {
     DOMAIN_RANGE_VALIDATOR,
     RANGE_URIS,
     SAMPLE_TYPE_CONCEPT_URI,
+    DERIVATION_DATA_SCOPES,
+    STORAGE_UNIQUE_ID_CONCEPT_URI,
 } from './internal/components/domainproperties/constants';
 import { ExpandableContainer } from './internal/components/ExpandableContainer';
 import { PermissionAssignments } from './internal/components/permissions/PermissionAssignments';
@@ -424,6 +471,8 @@ import {
     getOperationConfirmationData,
     getParentTypeDataForLineage,
     getSampleOperationConfirmationData,
+    getDeleteConfirmationData,
+    getEntityTypeOptions,
 } from './internal/components/entities/actions';
 import {
     AssayResultDataType,
@@ -433,8 +482,26 @@ import {
     ParentEntityRequiredColumns,
     SampleTypeDataType,
     SamplePropertyDataType,
+    DATA_CLASS_IMPORT_PREFIX,
+    SAMPLE_SET_IMPORT_PREFIX,
+    ParentEntityLineageColumns,
 } from './internal/components/entities/constants';
-import { getUniqueIdColumnMetadata } from './internal/components/entities/utils';
+import {
+    getUniqueIdColumnMetadata,
+    isSampleEntity,
+    sampleDeleteDependencyText,
+    getEntityNoun,
+    getEntityDescription,
+    getInitialParentChoices,
+    getJobCreationHref,
+} from './internal/components/entities/utils';
+import {
+    ALIQUOT_CREATION,
+    CHILD_SAMPLE_CREATION,
+    DERIVATIVE_CREATION,
+    POOLED_SAMPLE_CREATION,
+    SampleCreationType,
+} from './internal/components/samples/models';
 import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
 
 import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';
@@ -459,7 +526,7 @@ import {
 import { AuditQueriesListingPage } from './internal/components/auditlog/AuditQueriesListingPage';
 import { AuditDetails } from './internal/components/auditlog/AuditDetails';
 import { TimelineView } from './internal/components/auditlog/TimelineView';
-import { getEventDataValueDisplay } from './internal/components/auditlog/utils';
+import { getEventDataValueDisplay, getTimelineEntityUrl } from './internal/components/auditlog/utils';
 import {
     fetchDomain,
     fetchDomainDetails,
@@ -539,12 +606,13 @@ import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPag
 import { PipelineSubNav } from './internal/components/pipeline/PipelineSubNav';
 import { PipelineStatusDetailPage } from './internal/components/pipeline/PipelineStatusDetailPage';
 import { getTitleDisplay, hasActivePipelineJob } from './internal/components/pipeline/utils';
-import { SampleCreationType } from './internal/components/samples/models';
 import { DisableableMenuItem } from './internal/components/samples/DisableableMenuItem';
 import { SampleStatusTag } from './internal/components/samples/SampleStatusTag';
 import { ManageSampleStatusesPanel } from './internal/components/samples/ManageSampleStatusesPanel';
+import { SampleStatusLegend } from './internal/components/samples/SampleStatusLegend';
 import {
     ALIQUOT_FILTER_MODE,
+    ALIQUOTED_FROM_COL,
     DEFAULT_SAMPLE_FIELD_CONFIG,
     FIND_BY_IDS_QUERY_PARAM,
     IS_ALIQUOT_COL,
@@ -559,6 +627,8 @@ import {
     SAMPLES_WITH_TYPES_FILTER,
     SampleStateType,
     SELECTION_KEY_TYPE,
+    SAMPLE_ID_FIND_FIELD,
+    UNIQUE_ID_FIND_FIELD,
 } from './internal/components/samples/constants';
 import { createMockWithRouteLeave, createMockWithRouterProps } from './internal/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
@@ -568,12 +638,20 @@ import { OntologyConceptOverviewPanel } from './internal/components/ontology/Con
 import { OntologyBrowserFilterPanel } from './internal/components/ontology/OntologyBrowserFilterPanel';
 import { OntologySearchInput } from './internal/components/ontology/OntologyTreeSearchContainer';
 import { AppModel, LogoutReason } from './internal/app/models';
-import { Picklist } from './internal/components/picklist/models';
+import { Picklist, PICKLIST_SAMPLES_FILTER } from './internal/components/picklist/models';
 import { PicklistCreationMenuItem } from './internal/components/picklist/PicklistCreationMenuItem';
 import { PicklistButton } from './internal/components/picklist/PicklistButton';
+import { PicklistEditModal } from './internal/components/picklist/PicklistEditModal';
 
 import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
-import { getOrderedSelectedPicklistSamples, getSelectedPicklistSamples } from './internal/components/picklist/actions';
+import {
+    getOrderedSelectedPicklistSamples,
+    getSelectedPicklistSamples,
+    getPicklistFromId,
+    getPicklistListingContainerFilter,
+    deletePicklists,
+    updatePicklist,
+} from './internal/components/picklist/actions';
 import { BarTenderSettingsForm } from './internal/components/labels/BarTenderSettingsForm';
 import { PrintLabelsModal } from './internal/components/labels/PrintLabelsModal';
 import { BarTenderConfiguration } from './internal/components/labels/models';
@@ -631,6 +709,7 @@ import {
     userCanReadNotebooks,
     userCanReadRegistry,
     userCanReadSources,
+    getCurrentProductName,
 } from './internal/app/utils';
 import {
     menuInit,
@@ -657,6 +736,7 @@ import {
     TEST_USER_STORAGE_EDITOR,
     TEST_USER_WORKFLOW_EDITOR,
 } from './internal/userFixtures';
+import { TEST_PROJECT_CONTAINER, TEST_FOLDER_CONTAINER } from './internal/containerFixtures';
 import {
     ASSAY_DESIGN_KEY,
     ASSAYS_KEY,
@@ -682,6 +762,8 @@ import {
     NEW_STANDARD_ASSAY_DESIGN_HREF,
     NOTIFICATION_TIMEOUT,
     PICKLIST_HOME_HREF,
+    MY_PICKLISTS_HREF,
+    TEAM_PICKLISTS_HREF,
     PICKLIST_KEY,
     REGISTRY_KEY,
     SAMPLE_MANAGER_APP_PROPERTIES,
@@ -716,6 +798,7 @@ import {
     TEST_LKS_STARTER_MODULE_CONTEXT,
     TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
     TEST_LKSM_STARTER_MODULE_CONTEXT,
+    TEST_LKSM_STARTER_AND_WORKFLOW_MODULE_CONTEXT,
 } from './internal/productFixtures';
 import { GENERAL_ASSAY_PROVIDER_NAME, RUN_PROPERTIES_REQUIRED_COLUMNS } from './internal/components/assay/constants';
 import { AdminSettingsPage } from './internal/components/administration/AdminSettingsPage';
@@ -732,6 +815,14 @@ import {
     MEASUREMENT_UNITS,
     UnitModel,
 } from './internal/util/measurement';
+import { DELIMITER, DETAIL_TABLE_CLASSES } from './internal/components/forms/constants';
+import {
+    DISCARD_CONSUMED_CHECKBOX_FIELD,
+    DISCARD_CONSUMED_COMMENT_FIELD,
+    DiscardConsumedSamplesPanel,
+} from './internal/components/samples/DiscardConsumedSamplesPanel';
+import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './internal/components/picklist/constants';
+import { getDefaultAPIWrapper, getTestAPIWrapper } from './internal/APIWrapper';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -764,6 +855,7 @@ const App = {
     isSampleStatusEnabled,
     isProductProjectsEnabled,
     isAllProductFoldersFilteringEnabled,
+    isSampleEntity,
     getPrimaryAppProperties,
     getProjectPath,
     hasPremiumModule,
@@ -792,6 +884,7 @@ const App = {
     userCanReadRegistry,
     userCanReadSources,
     userCanDeletePublicPicklists,
+    getCurrentProductName,
     SECURITY_LOGOUT,
     SECURITY_SERVER_UNAVAILABLE,
     SECURITY_SESSION_TIMEOUT,
@@ -829,6 +922,8 @@ const App = {
     FIND_SAMPLES_BY_FILTER_HREF,
     FIND_SAMPLES_BY_ID_HREF,
     PICKLIST_HOME_HREF,
+    MY_PICKLISTS_HREF,
+    TEAM_PICKLISTS_HREF,
     WORKFLOW_HOME_HREF,
     NOTIFICATION_TIMEOUT,
     SERVER_NOTIFICATION_MAX_ROWS,
@@ -847,10 +942,25 @@ const App = {
     TEST_USER_WORKFLOW_EDITOR,
     TEST_LKS_STARTER_MODULE_CONTEXT,
     TEST_LKSM_STARTER_MODULE_CONTEXT,
+    TEST_LKSM_STARTER_AND_WORKFLOW_MODULE_CONTEXT,
     TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
+    TEST_PROJECT_CONTAINER,
+    TEST_FOLDER_CONTAINER,
     MEDIA_KEY,
     REGISTRY_KEY,
     ELN_KEY,
+    DATA_CLASS_IMPORT_PREFIX,
+    SAMPLE_SET_IMPORT_PREFIX,
+    SAMPLE_PROPERTY_ALL_SAMPLE_TYPE,
+    DELIMITER,
+    DETAIL_TABLE_CLASSES,
+    DISCARD_CONSUMED_CHECKBOX_FIELD,
+    DISCARD_CONSUMED_COMMENT_FIELD,
+    SAMPLE_FILTER_METRIC_AREA,
+    ALIQUOTED_FROM_COL,
+    PRIVATE_PICKLIST_CATEGORY,
+    PUBLIC_PICKLIST_CATEGORY,
+    DATA_IMPORT_TOPIC,
 };
 
 const Hooks = {
@@ -869,8 +979,10 @@ export {
     AppModel,
     Hooks,
     LogoutReason,
+    getDefaultAPIWrapper,
     // global state functions
     initQueryGridState,
+    initBrowserHistoryState,
     getContainerFilter,
     getContainerFilterForFolder,
     getContainerFilterForLookups,
@@ -886,6 +998,9 @@ export {
     setSelected,
     setSnapshotSelections,
     selectGridIdsFromTransactionId,
+    addColumns,
+    changeColumn,
+    removeColumn,
     // query related items
     InsertRowsResponse,
     InsertFormats,
@@ -900,19 +1015,25 @@ export {
     getQueryDetails,
     invalidateQueryDetailsCache,
     registerFilterType,
+    COLUMN_IN_FILTER_TYPE,
+    COLUMN_NOT_IN_FILTER_TYPE,
+    getFilterLabKeySql,
+    getLegalIdentifier,
     loadQueries,
     loadQueriesFromTable,
     // editable grid related items
     loadEditorModelData,
+    applyEditableGridChangesToModels,
+    getUpdatedDataFromEditableGrid,
+    initEditableGridModel,
+    initEditableGridModels,
     MAX_EDITABLE_GRID_ROWS,
     EditableGridLoaderFromSelection,
     EditableGridPanel,
     EditableGridPanelForUpdate,
-    EditableGridPanelForUpdateWithLineage,
     EditableGridTabs,
-    LineageEditableGridLoaderFromSelection,
-    UpdateGridTab,
     EditorModel,
+    EditorMode,
     cancelEvent,
     // url and location related items
     AppURL,
@@ -936,6 +1057,7 @@ export {
     imageURL,
     spliceURL,
     WHERE_FILTER_TYPE,
+    NOT_ANY_FILTER_TYPE,
     createProductUrl,
     createProductUrlFromParts,
     // renderers
@@ -1026,6 +1148,12 @@ export {
     Picklist,
     getOrderedSelectedPicklistSamples,
     getSelectedPicklistSamples,
+    getPicklistFromId,
+    getPicklistListingContainerFilter,
+    PicklistEditModal,
+    PICKLIST_SAMPLES_FILTER,
+    deletePicklists,
+    updatePicklist,
     // data class and sample type related items
     ALIQUOT_FILTER_MODE,
     DataClassModel,
@@ -1055,6 +1183,11 @@ export {
     SAMPLE_EXPORT_CONFIG,
     SAMPLE_INSERT_EXTRA_COLUMNS,
     IS_ALIQUOT_COL,
+    SampleCreationType,
+    ALIQUOT_CREATION,
+    CHILD_SAMPLE_CREATION,
+    DERIVATIVE_CREATION,
+    POOLED_SAMPLE_CREATION,
     SampleTypeModel,
     deleteSampleSet,
     fetchSamples,
@@ -1062,8 +1195,12 @@ export {
     getSampleTypeDetails,
     getFieldLookupFromSelection,
     getSelectionLineageData,
+    updateSampleStorageData,
+    getGroupedSampleDomainFields,
+    getGroupedSampleDisplayColumns,
     getParentTypeDataForLineage,
     getSelectedSampleIdsFromSelectionKey,
+    ParentEntityLineageColumns,
     SampleTypeDataType,
     SamplePropertyDataType,
     DataClassDataType,
@@ -1074,24 +1211,45 @@ export {
     SampleAmountEditModal,
     SampleEmptyAlert,
     SampleTypeEmptyAlert,
-    SampleCreationType,
     SamplesEditButtonSections,
     StorageAmountInput,
     getOmittedSampleTypeColumns,
     getOperationNotPermittedMessage,
     ManageSampleStatusesPanel,
+    SampleStatusLegend,
     EntityIdCreationModel,
+    EntityTypeOption,
     EntityMoveModal,
     EntityParentType,
     OperationConfirmationData,
     AddEntityButton,
     RemoveEntityButton,
+    AssayResultsForSamplesMenuItem,
+    AssayResultsForSamplesButton,
+    DeleteConfirmationModal,
+    EntityDeleteConfirmModal,
+    SampleAliquotViewSelector,
+    GridAliquotViewSelector,
+    FindDerivativesMenuItem,
+    FindDerivativesButton,
+    SAMPLE_FINDER_SESSION_PREFIX,
+    getSearchFilterObjs,
+    searchFiltersToJson,
+    getSampleFinderLocalStorageKey,
     getSampleOperationConfirmationData,
+    getDeleteConfirmationData,
+    getEntityTypeOptions,
     getCrossFolderSelectionResult,
     getOperationConfirmationData,
     getDataOperationConfirmationData,
     getDataDeleteConfirmationData,
     getUniqueIdColumnMetadata,
+    sampleDeleteDependencyText,
+    getEntityNoun,
+    getEntityDescription,
+    getInitialParentChoices,
+    getJobCreationHref,
+    DiscardConsumedSamplesPanel,
     // metric related items
     UnitModel,
     MEASUREMENT_UNITS,
@@ -1104,7 +1262,6 @@ export {
     getStoredAmountDisplay,
     isValuePrecisionValid,
     // search related items
-    FIND_SAMPLE_BY_ID_METRIC_AREA,
     BaseSearchPage,
     SearchResultsModel,
     SearchResultCard,
@@ -1112,6 +1269,9 @@ export {
     searchUsingIndex,
     SearchScope,
     getSearchScopeFromContainerFilter,
+    isValidFilterField,
+    getFilterValuesAsArray,
+    getFieldFiltersValidationResult,
     // administration
     AccountSettingsPage,
     AdministrationSubNav,
@@ -1179,6 +1339,7 @@ export {
     SEARCH_PLACEHOLDER,
     ProductNavigationMenu,
     FindByIdsModal,
+    QueryFilterPanel,
     SubNav,
     Breadcrumb,
     BreadcrumbCreate,
@@ -1229,6 +1390,8 @@ export {
     DOMAIN_FIELD_TYPE,
     RANGE_URIS,
     SAMPLE_TYPE_CONCEPT_URI,
+    DERIVATION_DATA_SCOPES,
+    STORAGE_UNIQUE_ID_CONCEPT_URI,
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     ListDesignerPanels,
     ListModel,
@@ -1264,12 +1427,16 @@ export {
     formatDate,
     formatDateTime,
     parseDate,
+    isRelativeDateFilterValue,
+    getParsedRelativeDateStr,
     isDateTimeInPast,
     blurActiveElement,
     caseInsensitive,
     capitalizeFirstChar,
     uncapitalizeFirstChar,
     withTransformedKeys,
+    arrayEquals,
+    findMissingValues,
     downloadAttachment,
     handleFileInputChange,
     handleRequestFailure,
@@ -1360,6 +1527,7 @@ export {
     Setting,
     ValueList,
     DataTypeSelector,
+    ChoicesListItem,
     // base models, enums, constants
     Container,
     User,
@@ -1389,6 +1557,9 @@ export {
     insertColumnFilter,
     EXPORT_TYPES,
     SELECTION_KEY_TYPE,
+    SAMPLE_ID_FIND_FIELD,
+    UNIQUE_ID_FIND_FIELD,
+    AssayUploadTabs,
     // QueryModel
     GRID_CHECKBOX_OPTIONS,
     QueryModel,
@@ -1417,6 +1588,7 @@ export {
     AuditQueriesListingPage,
     AuditDetails,
     getEventDataValueDisplay,
+    getTimelineEntityUrl,
     TimelineEventModel,
     TimelineView,
     // pipeline
@@ -1445,6 +1617,7 @@ export {
     waitForLifecycle,
     wrapDraggable,
     selectOptionByText,
+    getTestAPIWrapper,
     // Ontology
     OntologyBrowserPage,
     OntologyConceptOverviewPanel,
@@ -1491,7 +1664,7 @@ export type { TimelineGroupedEventInfo } from './internal/components/auditlog/mo
 export type { PaginationData } from './internal/components/pagination/Pagination';
 export type { QueryModelLoader } from './public/QueryModel/QueryModelLoader';
 export type { QueryConfig } from './public/QueryModel/QueryModel';
-export type { ServerContext } from './internal/components/base/ServerContext';
+export type { ServerContext, ModuleContext } from './internal/components/base/ServerContext';
 export type { GridProps } from './internal/components/base/Grid';
 export type { InjectedRouteLeaveProps, WrappedRouteLeaveProps } from './internal/util/RouteLeave';
 export type { PageHeaderProps } from './internal/components/base/PageHeader';
@@ -1506,15 +1679,21 @@ export type {
     IBannerMessage,
     IDomainField,
     IFieldChange,
+    SystemField,
 } from './internal/components/domainproperties/models';
 export type { NotificationItemProps } from './internal/components/notifications/model';
 export type { NotificationsContextProps } from './internal/components/notifications/NotificationsContext';
 export type { VisGraphNode } from './internal/components/lineage/models';
 export type { ITab } from './internal/components/navigation/types';
-export type { EditorModelProps, IGridLoader, IGridResponse } from './internal/components/editable/models';
+export type {
+    EditorModelProps,
+    IGridLoader,
+    IGridResponse,
+    IEditableGridLoader,
+} from './internal/components/editable/models';
 export type { IDataViewInfo } from './internal/DataViewInfo';
 export type { InjectedAssayModel, WithAssayModelProps } from './internal/components/assay/withAssayModels';
-export type { SearchResultCardData } from './internal/components/search/models';
+export type { SearchResultCardData, FieldFilter } from './internal/components/search/models';
 export type { AssayPickerSelectionModel } from './internal/components/assay/AssayPicker';
 export type {
     CrossFolderSelectionResult,
@@ -1525,6 +1704,8 @@ export type {
     IParentOption,
     EntityChoice,
     DataTypeEntity,
+    DisplayObject,
+    FilterProps,
 } from './internal/components/entities/models';
 export type {
     SelectInputChange,
@@ -1538,11 +1719,17 @@ export type {
     SampleCreationTypeModel,
     SampleStatus,
     SampleGridButtonProps,
+    GroupedSampleFields,
+    FindField,
 } from './internal/components/samples/models';
 export type { MetricUnitProps } from './internal/components/domainproperties/samples/models';
 export type { AppRouteResolver } from './internal/url/models';
 export type { WithFormStepsProps } from './internal/components/forms/FormStep';
-export type { BulkAddData, EditableColumnMetadata } from './internal/components/editable/EditableGrid';
+export type {
+    BulkAddData,
+    EditableColumnMetadata,
+    SharedEditableGridPanelProps,
+} from './internal/components/editable/EditableGrid';
 export type { IImportData, ISelectRowsResult } from './internal/query/api';
 export type { Row, RowValue, SelectRowsOptions, SelectRowsResponse } from './internal/query/selectRows';
 export type { Location } from './internal/util/URL';
@@ -1555,11 +1742,8 @@ export type {
 export type { IAttachment } from './internal/renderers/AttachmentCard';
 export type { Field, FormSchema, Option } from './internal/components/AutoForm';
 export type { FileSizeLimitProps } from './public/files/models';
-export type { FindField } from './internal/components/samples/models';
 export type { UsersLoader } from './internal/components/forms/actions';
 export type { LineageGroupingOptions } from './internal/components/lineage/types';
-export type { AnnouncementModel, ThreadActions } from './internal/announcements/model';
-export type { AnnouncementsAPIWrapper } from './internal/announcements/APIWrapper';
 export type {
     AdminAppContext,
     AppContext,
@@ -1575,7 +1759,6 @@ export type { PageDetailHeaderProps } from './internal/components/forms/PageDeta
 export type { HorizontalBarData } from './internal/components/chart/HorizontalBarSection';
 export type { HorizontalBarLegendData } from './internal/components/chart/utils';
 export type { InjectedLineage } from './internal/components/lineage/withLineage';
-export type { EditableGridPanelForUpdateWithLineageProps } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
 export type {
     LabelPrintingProviderProps,
     LabelPrintingContextProps,
@@ -1584,3 +1767,14 @@ export type { SamplesEditableGridProps } from './internal/sampleModels';
 export type { MeasurementUnit } from './internal/util/measurement';
 export type { SampleStorageLocationComponentProps, SampleStorageMenuComponentProps } from './internal/sampleModels';
 export type { SearchForm } from './internal/components/search/BaseSearchPage';
+export type { TabbedGridPanelProps } from './public/QueryModel/TabbedGridPanel';
+export type { EditorModelUpdates } from './internal/actions';
+export type { EditableGridModels } from './internal/components/editable/utils';
+export type { GroupedSampleDisplayColumns } from './internal/components/samples/actions';
+export type { PicklistDeletionData } from './internal/components/picklist/actions';
+export type { ConfirmModalProps } from './internal/components/base/ConfirmModal';
+export type { EditableDetailPanelProps } from './public/QueryModel/EditableDetailPanel';
+export type { ComponentsAPIWrapper } from './internal/APIWrapper';
+export type { GetParentTypeDataForLineage } from './internal/components/entities/actions';
+export type { DeleteConfirmationModalProps } from './internal/components/entities/DeleteConfirmationModal';
+export type { EntityDeleteConfirmHandler } from './internal/components/entities/EntityDeleteConfirmModalDisplay';

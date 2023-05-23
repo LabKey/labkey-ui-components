@@ -13,19 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map } from 'immutable';
+import { List } from 'immutable';
 
 import { SCHEMAS } from '../../schemas';
 import { QueryColumn } from '../../../public/QueryColumn';
 
-import {
-    EntityIdCreationModel,
-    EntityParentType,
-    EntityTypeOption,
-    getParentEntities,
-    getParentOptions,
-    IParentOption,
-} from './models';
+import { EntityIdCreationModel, EntityParentType, EntityTypeOption } from './models';
 import { SampleTypeDataType } from './constants';
 
 describe('EntityParentType', () => {
@@ -217,129 +210,5 @@ describe('EntityIdCreationModel', () => {
         });
         expect(sq.getSchemaQuery().schemaName).toBe('samples');
         expect(sq.getSchemaQuery().queryName).toBe('a');
-    });
-});
-
-describe('getParentOptions', () => {
-    let parentOptions = Map<string, List<IParentOption>>();
-    beforeAll(() => {
-        parentOptions = parentOptions.set(
-            'query1',
-            List.of(
-                { schema: 'a', query: 'test1a', value: 'test1a' },
-                { schema: 'a', query: 'test2a', value: 'test2a' },
-                { schema: 'a', query: 'test3a', value: 'test3a' }
-            )
-        );
-        parentOptions = parentOptions.set(
-            'query2',
-            List.of(
-                { schema: 'b', query: 'test1b', value: 'test1b' },
-                { schema: 'b', query: 'test2b', value: 'test2b' },
-                { schema: 'b', query: 'test3b', value: 'test3b' }
-            )
-        );
-    });
-
-    let entityParents;
-    beforeEach(() => {
-        entityParents = Map<string, List<EntityParentType>>();
-        entityParents = entityParents.set('query1', List());
-        entityParents = entityParents.set('query2', List());
-    });
-
-    test('queryName, without current selection', () => {
-        const options = getParentOptions(parentOptions, entityParents, undefined, 'query1', false);
-        expect(options.length).toBe(3);
-        expect(options[0].query).toBe('test1a');
-        expect(options[1].query).toBe('test2a');
-        expect(options[2].query).toBe('test3a');
-    });
-
-    test('queryName, with current selection', () => {
-        entityParents = entityParents.set('query1', List.of(EntityParentType.create({ schema: 'a', query: 'test2a' })));
-
-        const options = getParentOptions(parentOptions, entityParents, 'test2a', 'query1', false);
-        expect(options.length).toBe(3);
-        expect(options[0].query).toBe('test1a');
-        expect(options[1].query).toBe('test2a');
-        expect(options[2].query).toBe('test3a');
-    });
-
-    test('queryName, with current selection, filter other selections', () => {
-        entityParents = entityParents.set(
-            'query1',
-            List.of(
-                EntityParentType.create({ schema: 'a', query: 'test1a' }),
-                EntityParentType.create({ schema: 'a', query: 'test2a' })
-            )
-        );
-
-        const options = getParentOptions(parentOptions, entityParents, 'test2a', 'query1', false);
-        expect(options.length).toBe(2);
-        expect(options[0].query).toBe('test2a');
-        expect(options[1].query).toBe('test3a');
-    });
-
-    test('combineParentTypes, with current selection, filter other selections', () => {
-        entityParents = entityParents.set(
-            'query1',
-            List.of(
-                EntityParentType.create({ schema: 'a', query: 'test1a' }),
-                EntityParentType.create({ schema: 'a', query: 'test2a' })
-            )
-        );
-        entityParents = entityParents.set('query2', List.of(EntityParentType.create({ schema: 'b', query: 'test1b' })));
-
-        const options = getParentOptions(parentOptions, entityParents, 'test2a', undefined, true);
-        expect(options.length).toBe(4);
-        expect(options[0].query).toBe('test2a');
-        expect(options[1].query).toBe('test3a');
-        expect(options[2].query).toBe('test2b');
-        expect(options[3].query).toBe('test3b');
-    });
-});
-
-describe('getParentEntities', () => {
-    let entityParents = Map<string, List<EntityParentType>>();
-    beforeEach(() => {
-        entityParents = entityParents.set(
-            'query1',
-            List.of(
-                EntityParentType.create({ schema: 'a', query: 'test1a' }),
-                EntityParentType.create({ schema: 'a', query: 'test2a' })
-            )
-        );
-        entityParents = entityParents.set(
-            'query2',
-            List.of(
-                EntityParentType.create({ schema: 'b', query: 'test1b' }),
-                EntityParentType.create({ schema: 'b', query: 'test2b' })
-            )
-        );
-    });
-
-    test('without combineParentTypes or queryName', () => {
-        expect(getParentEntities(entityParents, false, undefined).size).toBe(0);
-    });
-
-    test('queryName', () => {
-        const entities = getParentEntities(entityParents, false, 'query2');
-        expect(entities.size).toBe(2);
-        expect(entities.get(0).query).toBe('test1b');
-        expect(entities.get(1).query).toBe('test2b');
-    });
-
-    test('combineParentTypes', () => {
-        const entities = getParentEntities(entityParents, true, 'query2');
-        expect(entities.size).toBe(4);
-        expect(entities.get(0).query).toBe('test1a');
-        expect(entities.get(1).query).toBe('test2a');
-        expect(entities.get(2).query).toBe('test1b');
-        expect(entities.get(3).query).toBe('test2b');
-        expect(entities.get(0).index).toBe(1);
-        expect(entities.get(1).index).toBe(2);
-        expect(entities.get(2).index).toBe(3);
-        expect(entities.get(3).index).toBe(4);
     });
 });

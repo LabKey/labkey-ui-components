@@ -4,7 +4,7 @@ import { List, Map } from 'immutable';
 import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
 import { createMockWithRouteLeave } from '../../mockUtils';
 import { ServerContext } from '../base/ServerContext';
-import { TEST_PROJECT, TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
+import { TEST_PROJECT_CONTAINER, TEST_PROJECT } from '../../containerFixtures';
 import { TEST_USER_FOLDER_ADMIN } from '../../userFixtures';
 
 import policyJSON from '../../../test/data/security-getPolicy.json';

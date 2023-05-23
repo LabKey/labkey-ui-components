@@ -7,17 +7,14 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { EditableColumnMetadata } from '../editable/EditableGrid';
 import { SCHEMAS } from '../../schemas';
 
-import {
-    ALIQUOT_CREATION,
-    CHILD_SAMPLE_CREATION,
-    DERIVATIVE_CREATION,
-    POOLED_SAMPLE_CREATION,
-    SampleCreationTypeModel,
-} from '../samples/models';
-
-import { ParentIdData } from './actions';
+import { getURLParamsForSampleSelectionKey } from '../samples/utils';
+import { AppURL, createProductUrlFromParts } from '../../url/AppURL';
+import { WORKFLOW_KEY } from '../../app/constants';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
+
+import { ParentIdData } from './actions';
 
 export function sampleDeleteDependencyText(): string {
     let deleteMsg = '';
@@ -120,28 +117,22 @@ export function isDataClassEntity(dataType: EntityDataType): boolean {
     return dataType.instanceSchemaName === SCHEMAS.DATA_CLASSES.SCHEMA;
 }
 
-export const getBulkCreationTypeOptions = (
-    hasParentSamples: boolean,
-    creationType: string
-): SampleCreationTypeModel[] => {
-    // Issue 45483: ALIQUOT_CREATION only makes sense if creationType is Aliquots given the different shape of the editable grid columns
-    if (creationType === ALIQUOT_CREATION.type) {
-        return [{ ...ALIQUOT_CREATION, selected: creationType === ALIQUOT_CREATION.type }];
-    }
+export function getJobCreationHref(
+    model: QueryModel,
+    templateId?: string | number,
+    samplesIncluded?: boolean,
+    picklistName?: string,
+    isAssay?: boolean,
+    sampleFieldKey?: string,
+    currentProductId?: string,
+    targetProductId?: string,
+    ignoreFilter?: boolean
+): string {
+    const params = getURLParamsForSampleSelectionKey(model, picklistName, isAssay, sampleFieldKey, ignoreFilter);
 
-    if (!hasParentSamples) {
-        return [{ ...CHILD_SAMPLE_CREATION, quantityLabel: 'New Samples', selected: true }];
-    }
+    if (templateId) params['templateId'] = templateId;
+    if (!samplesIncluded) params['sampleTab'] = 2; // i.e. JOB_SAMPLE_SEARCH_TAB_ID
 
-    const types = [
-        { ...DERIVATIVE_CREATION, selected: creationType === DERIVATIVE_CREATION.type },
-        { ...POOLED_SAMPLE_CREATION, selected: creationType === POOLED_SAMPLE_CREATION.type },
-    ];
-
-    const selectedType = types.find(type => type.selected);
-    if (!selectedType) {
-        types[0] = { ...types[0], selected: true };
-    }
-
-    return types;
-};
+    const actionUrl = createProductUrlFromParts(targetProductId, currentProductId, params, WORKFLOW_KEY, 'new');
+    return actionUrl instanceof AppURL ? actionUrl.toHref() : actionUrl;
+}

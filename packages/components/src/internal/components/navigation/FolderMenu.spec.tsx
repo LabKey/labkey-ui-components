@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
+import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 
 import { mountWithServerContext } from '../../testHelpers';
 

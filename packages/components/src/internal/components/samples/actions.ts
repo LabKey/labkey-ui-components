@@ -22,7 +22,7 @@ import { deleteEntityType, getSelectedItemSamples } from '../entities/actions';
 import { Location } from '../../util/URL';
 import { getSelectedData, getSelection, getSnapshotSelections } from '../../actions';
 
-import { caseInsensitive, handleRequestFailure, quoteValueWithDelimiters } from '../../util/utils';
+import { caseInsensitive, handleRequestFailure } from '../../util/utils';
 
 import { ParentEntityLineageColumns } from '../entities/constants';
 
@@ -45,14 +45,7 @@ import { DomainDetails } from '../domainproperties/models';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { getSelectedPicklistSamples } from '../picklist/actions';
 import { resolveErrorMessage } from '../../util/messaging';
-import { QueryConfig } from '../../../public/QueryModel/QueryModel';
-import { naturalSort, naturalSortByProperty } from '../../../public/sort';
-import { AssayStateModel } from '../assay/models';
 import { TimelineEventModel } from '../auditlog/models';
-
-import { AssayDefinitionModel } from '../../AssayDefinitionModel';
-
-import { createGridModelId } from '../../models';
 
 import { buildURL } from '../../url/AppURL';
 
@@ -60,13 +53,11 @@ import { selectRows } from '../../query/selectRows';
 
 import {
     AMOUNT_AND_UNITS_COLUMNS_LC,
-    IS_ALIQUOT_COL,
-    SAMPLE_STATUS_REQUIRED_COLUMNS,
     SAMPLE_STORAGE_COLUMNS_LC,
     SELECTION_KEY_TYPE,
     STORED_AMOUNT_FIELDS,
 } from './constants';
-import { FindField, GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
+import { FindField, GroupedSampleFields, SampleState } from './models';
 
 export function getSampleSet(config: IEntityTypeDetails): Promise<any> {
     return new Promise<any>((resolve, reject) => {
@@ -274,66 +265,6 @@ export async function getGroupedSampleDomainFields(sampleType: string): Promise<
     };
 }
 
-export function getAliquotSampleIds(selection: List<any>, sampleType: string, viewName: string): Promise<any[]> {
-    return getFilteredSampleSelection(selection, sampleType, viewName, [Filter.create(IS_ALIQUOT_COL, true)]);
-}
-
-export function getNotInStorageSampleIds(selection: List<any>, sampleType: string, viewName: string): Promise<any[]> {
-    return getFilteredSampleSelection(selection, sampleType, viewName, [
-        Filter.create('StorageStatus', 'Not in storage'),
-    ]);
-}
-
-async function getFilteredSampleSelection(
-    selection: List<any>,
-    sampleType: string,
-    viewName: string,
-    filters: Filter.IFilter[]
-): Promise<any[]> {
-    const sampleRowIds = getRowIdsFromSelection(selection);
-    if (sampleRowIds.length === 0) {
-        throw new Error('No data is selected');
-    }
-
-    const result = await selectRows({
-        columns: 'RowId',
-        filterArray: [Filter.create('RowId', sampleRowIds, Filter.Types.IN), ...filters],
-        schemaQuery: new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType),
-        viewName,
-    });
-
-    const filteredSamples = [];
-    result.rows.forEach(row => {
-        filteredSamples.push(caseInsensitive(row, 'RowId').value);
-    });
-
-    return filteredSamples;
-}
-
-export async function getSampleSelectionStorageData(selection: List<any>): Promise<Record<string, any>> {
-    const sampleRowIds = getRowIdsFromSelection(selection);
-    if (sampleRowIds.length === 0) {
-        throw new Error('No data is selected');
-    }
-
-    const result = await selectRows({
-        columns: 'RowId, SampleId, StoredAmount',
-        filterArray: [Filter.create('SampleId', sampleRowIds, Filter.Types.IN)],
-        schemaQuery: SCHEMAS.INVENTORY.ITEM_SAMPLES,
-    });
-
-    const filteredSampleItems = {};
-
-    result.rows.forEach(row => {
-        filteredSampleItems[caseInsensitive(row, 'SampleId').value] = {
-            rowId: caseInsensitive(row, 'RowId').value,
-            storedAmount: caseInsensitive(row, 'StoredAmount').value,
-        };
-    });
-
-    return filteredSampleItems;
-}
-
 export async function getSampleStorageId(sampleRowId: number): Promise<number> {
     const result = await selectRows({
         columns: 'RowId, SampleId',
@@ -347,6 +278,14 @@ export async function getSampleStorageId(sampleRowId: number): Promise<number> {
     }
 
     return caseInsensitive(result.rows[0], 'RowId').value;
+}
+
+function getRowIdsFromSelection(selection: List<any>): number[] {
+    const rowIds = [];
+    if (selection && !selection.isEmpty()) {
+        selection.forEach(sel => rowIds.push(parseInt(sel, 10)));
+    }
+    return rowIds;
 }
 
 // Used for samples and dataclasses
@@ -369,57 +308,6 @@ export function getSelectionLineageData(
         columns: columns ?? List.of('RowId', 'Name', 'LSID').concat(ParentEntityLineageColumns).toArray(),
         filterArray: [Filter.create('RowId', rowIds, Filter.Types.IN)],
     });
-}
-
-export function getUpdatedLineageRows(
-    lineageRows: Array<Record<string, any>>,
-    originalRows: Array<Record<string, any>>,
-    aliquots: any[]
-): Array<Record<string, any>> {
-    const updatedLineageRows = [];
-
-    // iterate through all of the lineage rows to find the ones that have any edit from the initial data row,
-    // also remove the aliquot rows from the lineageRows array
-    lineageRows?.forEach(row => {
-        const rowId = caseInsensitive(row, 'RowId');
-        if (aliquots.indexOf(rowId) === -1) {
-            // compare each row value looking for any that are different from the original value
-            let hasUpdate = false;
-            Object.keys(row).every(key => {
-                const updatedVal = Utils.isString(row[key])
-                    ? row[key].split(', ').sort(naturalSort).join(', ')
-                    : row[key];
-                let originalVal = originalRows[rowId][key];
-                if (List.isList(originalVal) || Array.isArray(originalVal)) {
-                    originalVal = originalVal
-                        ?.map(parentRow => quoteValueWithDelimiters(parentRow.displayValue, ','))
-                        .sort(naturalSort)
-                        .join(', ');
-                } else {
-                    originalVal = quoteValueWithDelimiters(originalVal, ',');
-                }
-
-                if (originalVal !== updatedVal) {
-                    hasUpdate = true;
-                    return false;
-                }
-                return true;
-            });
-
-            if (hasUpdate) updatedLineageRows.push(row);
-        }
-    });
-
-    return updatedLineageRows;
-}
-
-// exported for jest testing
-export function getRowIdsFromSelection(selection: List<any>): number[] {
-    const rowIds = [];
-    if (selection && !selection.isEmpty()) {
-        selection.forEach(sel => rowIds.push(parseInt(sel, 10)));
-    }
-    return rowIds;
 }
 
 export interface GroupedSampleDisplayColumns {
@@ -564,116 +452,6 @@ export function getSampleAliquotRows(sampleId: number | string): Promise<Array<R
     });
 }
 
-/**
- * Create a QueryConfig for this assay's Data grid, filtered to samples for the provided `value`
- * if the assay design has one or more sample lookup columns.
- *
- * The `value` may be a sample id or a labook id.
- */
-export function createQueryConfigFilteredBySample(
-    model: AssayDefinitionModel,
-    value: Array<string | number>,
-    singleFilter: Filter.IFilterType,
-    omitSampleCols?: boolean
-): QueryConfig {
-    const sampleColumns = model.getSampleColumnFieldKeys();
-
-    if (sampleColumns.isEmpty()) {
-        return undefined;
-    }
-    const sampleFilter = model.createSampleFilter(sampleColumns, value, singleFilter);
-
-    return {
-        baseFilters: sampleFilter ? [sampleFilter] : undefined,
-        omittedColumns: omitSampleCols ? sampleColumns.toArray() : undefined,
-        schemaQuery: new SchemaQuery(model.protocolSchemaName, 'Data'),
-        title: model.name,
-        urlPrefix: model.name,
-        includeTotalCount: true,
-    };
-}
-
-export function getSampleTypeAssayDesigns(assayModel: AssayStateModel, sampleSchemaQuery?: SchemaQuery) {
-    return assayModel.definitions.filter(assay => !sampleSchemaQuery || assay.hasLookup(sampleSchemaQuery));
-}
-
-export function getSampleAssayQueryConfigs(
-    assayModel: AssayStateModel,
-    sampleIds: Array<string | number>,
-    gridSuffix: string,
-    gridPrefix: string,
-    omitSampleCols?: boolean,
-    sampleSchemaQuery?: SchemaQuery,
-    assayNamesToFilter?: string[]
-): QueryConfig[] {
-    return getSampleTypeAssayDesigns(assayModel, sampleSchemaQuery)
-        .slice() // need to make a copy of the array before sorting
-        .filter(assay => !assayNamesToFilter || assayNamesToFilter.indexOf(assay.name.toLowerCase()) > -1)
-        .sort(naturalSortByProperty('name'))
-        .reduce((_configs, assay) => {
-            const _queryConfig = createQueryConfigFilteredBySample(
-                assay,
-                sampleIds && sampleIds.length > 0 ? sampleIds : [-1],
-                Filter.Types.IN,
-                omitSampleCols
-            );
-
-            if (_queryConfig) {
-                _queryConfig.id = `${gridPrefix}:${assay.id}:${gridSuffix}`;
-                _configs.push(_queryConfig);
-            }
-
-            return _configs;
-        }, []);
-}
-
-export function getSampleAliquotsStats(rows: Record<string, any>): SampleAliquotsStats {
-    let availableCount = 0,
-        aliquotCount = 0,
-        aliquotIds = [];
-    for (const ind in rows) {
-        const row = rows[ind];
-        const amount = caseInsensitive(row, 'StoredAmount')?.value;
-
-        const isAvailable = amount && amount > 0;
-        availableCount += isAvailable ? 1 : 0;
-        aliquotCount++;
-
-        aliquotIds.push(caseInsensitive(row, 'RowId')?.value);
-    }
-
-    return {
-        aliquotCount,
-        availableCount,
-        aliquotIds,
-    };
-}
-
-export function getSampleAliquotsQueryConfig(
-    sampleSet: string,
-    sampleLsid: string,
-    forGridView?: boolean,
-    aliquotRootLsid?: string,
-    omitCols?: string[]
-): QueryConfig {
-    const omitCol = IS_ALIQUOT_COL;
-    const schemaQuery = new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet);
-
-    return {
-        id: createGridModelId('sample-aliquots-' + sampleLsid, schemaQuery),
-        schemaQuery,
-        bindURL: forGridView,
-        maxRows: forGridView ? undefined : -1,
-        omittedColumns: omitCols ? [...omitCols, omitCol] : [omitCol],
-        requiredColumns: forGridView ? [...SAMPLE_STATUS_REQUIRED_COLUMNS] : ['RowId', 'StoredAmount'],
-        baseFilters: [
-            Filter.create('RootMaterialLSID', aliquotRootLsid ?? sampleLsid),
-            Filter.create('Lsid', sampleLsid, Filter.Types.EXP_CHILD_OF),
-        ],
-        includeTotalCount: forGridView,
-    };
-}
-
 export type SampleAssayResultViewConfig = {
     containerFilter?: string; // Defaults to 'current' when value is undefined
     filterKey: string; // field key of the query/view to use for the sample filter IN clause
@@ -762,26 +540,6 @@ export function getSampleStatuses(includeInUse = false): Promise<SampleState[]> 
     });
 }
 
-export function getSampleTypeRowId(name: string): Promise<number> {
-    return new Promise((resolve, reject) => {
-        selectRowsDeprecated({
-            schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
-            queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
-            columns: 'RowId,Name',
-            filterArray: [Filter.create('Name', name)],
-        })
-            .then(response => {
-                const { models, key } = response;
-                const row = Object.values(models[key])[0];
-                resolve(caseInsensitive(row, 'RowId')?.value);
-            })
-            .catch(reason => {
-                console.error(reason);
-                reject(resolveErrorMessage(reason));
-            });
-    });
-}
-
 /**
  * Gets the Set of Ids from selected rowIds based on supplied fieldKey which should be a Lookup
  * @param schemaName of selected rows
@@ -812,28 +570,6 @@ export async function getFieldLookupFromSelection(
     }
 
     return [...sampleIds];
-}
-
-export function exportTimelineGrid(
-    sampleId: number,
-    recentFirst = false,
-    sampleEventIds: number[],
-    assayEventIds: number[]
-): void {
-    const url = ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'ExportTimelineGrid', undefined, {
-        returnUrl: false,
-    });
-    const form = new FormData();
-    form.append('sampleId', sampleId.toString(10));
-    form.append('recentFirst', recentFirst.toString());
-    sampleEventIds?.forEach(id => form.append('sampleEventIds', id.toString(10)));
-    assayEventIds?.forEach(id => form.append('assayEventIds', id.toString(10)));
-    Ajax.request({
-        downloadFile: true,
-        form,
-        method: 'POST',
-        url: url.toString(),
-    });
 }
 
 // optional timezone param used for teamcity jest test only

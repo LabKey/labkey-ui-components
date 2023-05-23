@@ -9,7 +9,7 @@ import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPag
 import { UsersGridPanel } from '../user/UsersGridPanel';
 import { SecurityPolicy } from '../permissions/models';
 
-import { TEST_FOLDER_CONTAINER, TEST_PROJECT, TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
+import { TEST_FOLDER_CONTAINER, TEST_PROJECT, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 
 import { ActiveUserLimitMessage } from '../settings/ActiveUserLimit';
 

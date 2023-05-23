@@ -18,8 +18,6 @@ export enum SELECTION_KEY_TYPE {
     snapshot = 'snapshot',
 }
 
-export const MAX_SELECTED_SAMPLES = 10000;
-
 export const FIND_BY_IDS_QUERY_PARAM = 'findByIdsKey';
 
 export const UNIQUE_ID_FIND_FIELD: FindField = {
@@ -45,7 +43,6 @@ export const IS_ALIQUOT_COL = 'IsAliquot';
 export const SAMPLE_STATE_COLUMN_NAME = 'SampleState';
 export const SAMPLE_STATE_TYPE_COLUMN_NAME = 'SampleState/StatusType';
 export const SAMPLE_STATE_DESCRIPTION_COLUMN_NAME = 'SampleState/Description';
-export const SAMPLE_UNITS_COLUMN_NAME = 'Units';
 
 export const SAMPLE_STATUS_REQUIRED_COLUMNS = [
     SAMPLE_STATE_COLUMN_NAME,
@@ -218,7 +215,6 @@ export const SAMPLE_DATA_EXPORT_CONFIG = {
 
 // Issue 46037: Some plate-based assays (e.g., NAB) create samples with a bogus 'Material' sample type, which should get excluded everywhere in the application
 export const SAMPLES_WITH_TYPES_FILTER = Filter.create('SampleSet', 'Material', Filter.Types.NEQ);
-export const NON_MEDIA_SAMPLE_TYPES_FILTER = Filter.create('Category', 'media', Filter.Types.NEQ_OR_NULL);
 
 export const SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS = [
     {

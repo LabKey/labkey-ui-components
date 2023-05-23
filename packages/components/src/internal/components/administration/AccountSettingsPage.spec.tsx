@@ -9,9 +9,8 @@ import { Page } from '../base/Page';
 import { UserDetailHeader } from '../user/UserDetailHeader';
 import { Notifications } from '../notifications/Notifications';
 
-import { TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
-
 import { AccountSettingsPage } from './AccountSettingsPage';
+import { TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 
 describe('AccountSettingsPage', () => {
     test('reader user', async () => {

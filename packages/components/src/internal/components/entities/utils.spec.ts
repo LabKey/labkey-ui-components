@@ -1,6 +1,5 @@
 import { List } from 'immutable';
-
-import { SampleCreationType } from '../samples/models';
+import { Filter } from '@labkey/api';
 
 import {
     TEST_LKS_STARTER_MODULE_CONTEXT,
@@ -9,12 +8,18 @@ import {
     TEST_LKSM_STARTER_MODULE_CONTEXT,
 } from '../../productFixtures';
 
+import { SchemaQuery } from '../../../public/SchemaQuery';
+
+import { QueryInfo } from '../../../public/QueryInfo';
+
+import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
+
 import { IEntityTypeOption } from './models';
 import {
-    getBulkCreationTypeOptions,
     getEntityDescription,
     getEntityNoun,
     getInitialParentChoices,
+    getJobCreationHref,
     sampleDeleteDependencyText,
 } from './utils';
 import { DataClassDataType, SampleTypeDataType } from './constants';
@@ -201,63 +206,6 @@ describe('getEntityNoun', () => {
     });
 });
 
-describe('getBulkCreationTypeOptions', () => {
-    test('aliquot creation', () => {
-        let options = getBulkCreationTypeOptions(false, SampleCreationType.Aliquots);
-        expect(options.length).toBe(1);
-        expect(options[0].type).toBe(SampleCreationType.Aliquots);
-        expect(options[0].selected).toBe(true);
-
-        options = getBulkCreationTypeOptions(true, SampleCreationType.Aliquots);
-        expect(options.length).toBe(1);
-        expect(options[0].type).toBe(SampleCreationType.Aliquots);
-        expect(options[0].selected).toBe(true);
-    });
-
-    test('not hasParentSamples for non-aliqout creation', () => {
-        let options = getBulkCreationTypeOptions(false, SampleCreationType.Independents);
-        expect(options.length).toBe(1);
-        expect(options[0].type).toBe(SampleCreationType.Independents);
-        expect(options[0].quantityLabel).toBe('New Samples');
-        expect(options[0].selected).toBe(true);
-
-        options = getBulkCreationTypeOptions(false, SampleCreationType.Derivatives);
-        expect(options.length).toBe(1);
-        expect(options[0].type).toBe(SampleCreationType.Independents);
-        expect(options[0].quantityLabel).toBe('New Samples');
-        expect(options[0].selected).toBe(true);
-
-        options = getBulkCreationTypeOptions(false, SampleCreationType.PooledSamples);
-        expect(options.length).toBe(1);
-        expect(options[0].type).toBe(SampleCreationType.Independents);
-        expect(options[0].quantityLabel).toBe('New Samples');
-        expect(options[0].selected).toBe(true);
-    });
-
-    test('hasParentSamples for non-aliqout creation', () => {
-        let options = getBulkCreationTypeOptions(true, SampleCreationType.Independents);
-        expect(options.length).toBe(2);
-        expect(options[0].type).toBe(SampleCreationType.Derivatives);
-        expect(options[0].selected).toBe(true);
-        expect(options[1].type).toBe(SampleCreationType.PooledSamples);
-        expect(options[1].selected).toBe(false);
-
-        options = getBulkCreationTypeOptions(true, SampleCreationType.Derivatives);
-        expect(options.length).toBe(2);
-        expect(options[0].type).toBe(SampleCreationType.Derivatives);
-        expect(options[0].selected).toBe(true);
-        expect(options[1].type).toBe(SampleCreationType.PooledSamples);
-        expect(options[1].selected).toBe(false);
-
-        options = getBulkCreationTypeOptions(true, SampleCreationType.PooledSamples);
-        expect(options.length).toBe(2);
-        expect(options[0].type).toBe(SampleCreationType.Derivatives);
-        expect(options[0].selected).toBe(false);
-        expect(options[1].type).toBe(SampleCreationType.PooledSamples);
-        expect(options[1].selected).toBe(true);
-    });
-});
-
 describe('sampleDeleteDependencyText', () => {
     test('cannot delete, professional', () => {
         LABKEY.moduleContext = { ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT };
@@ -283,5 +231,62 @@ describe('sampleDeleteDependencyText', () => {
     test('cannot delete no workflow or assay', () => {
         LABKEY.moduleContext = { ...TEST_LKSM_STARTER_MODULE_CONTEXT };
         expect(sampleDeleteDependencyText()).toBe('derived sample dependencies or status that prevents deletion');
+    });
+});
+
+describe('getJobCreationHref', () => {
+    const schemaQuery = new SchemaQuery('s', 'q');
+    const queryInfo = new QueryInfo({ pkCols: ['pk'], schemaQuery });
+    const modelId = 'id';
+    const queryModel = makeTestQueryModel(schemaQuery, queryInfo, undefined, undefined, undefined, modelId);
+
+    test('singleSelect', () => {
+        expect(getJobCreationHref(queryModel)).toContain('selectionKey=id');
+        const queryModelWithKeyValue = queryModel.mutate({ keyValue: 'key' });
+        expect(getJobCreationHref(queryModelWithKeyValue)).toContain('selectionKey=appkey%7Cs%2Fq%7Ckey');
+    });
+    test('filters', () => {
+        expect(getJobCreationHref(queryModel, undefined, true)).toBe('#/workflow/new?selectionKey=id');
+
+        const queryModelWithFilters = queryModel.mutate({ filterArray: [Filter.create('TEST COL', 'TEST VALUE')] });
+        expect(getJobCreationHref(queryModelWithFilters, undefined, true)).toBe(
+            '#/workflow/new?selectionKey=id&query.TEST%20COL~eq=TEST%20VALUE'
+        );
+    });
+    test('with filters but ignoreFilter', () => {
+        expect(getJobCreationHref(queryModel, undefined, true)).toBe('#/workflow/new?selectionKey=id');
+
+        const queryModelWithFilters = queryModel.mutate({ filterArray: [Filter.create('TEST COL', 'TEST VALUE')] });
+        expect(
+            getJobCreationHref(queryModelWithFilters, undefined, true, undefined, false, null, null, null, true)
+        ).toBe('#/workflow/new?selectionKey=id');
+    });
+    test('templateId', () => {
+        expect(getJobCreationHref(queryModel).indexOf('templateId')).toBe(-1);
+        expect(getJobCreationHref(queryModel, 1)).toContain('templateId=1');
+        expect(getJobCreationHref(queryModel, '1')).toContain('templateId=1');
+    });
+    test('samplesIncluded', () => {
+        expect(getJobCreationHref(queryModel)).toBe('#/workflow/new?selectionKey=id&sampleTab=2');
+        expect(getJobCreationHref(queryModel, undefined, true)).toBe('#/workflow/new?selectionKey=id');
+    });
+    test('picklistName', () => {
+        expect(getJobCreationHref(queryModel).indexOf('picklistName')).toBe(-1);
+        expect(getJobCreationHref(queryModel, undefined, false, 'name')).toContain('picklistName=name');
+    });
+    test('isAssay', () => {
+        expect(getJobCreationHref(queryModel).indexOf('isAssay')).toBe(-1);
+        expect(getJobCreationHref(queryModel, undefined, true, undefined, true)).toBe('#/workflow/new?selectionKey=id');
+        expect(getJobCreationHref(queryModel, undefined, true, undefined, false, 'sampleFieldKey')).toBe(
+            '#/workflow/new?selectionKey=id'
+        );
+        expect(getJobCreationHref(queryModel, undefined, true, undefined, true, 'sampleFieldKey')).toBe(
+            '#/workflow/new?selectionKey=id&assayProtocol=s&isAssay=true&sampleFieldKey=sampleFieldKey'
+        );
+    });
+    test('with product id', () => {
+        expect(getJobCreationHref(queryModel, undefined, true, undefined, false, null, 'from', 'to')).toBe(
+            '/labkey/to/app.view#/workflow/new?selectionKey=id'
+        );
     });
 });

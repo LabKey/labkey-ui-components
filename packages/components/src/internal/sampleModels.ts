@@ -10,11 +10,6 @@ import { User } from './components/base/models/User';
 import { EntityDataType } from './components/entities/models';
 import { SampleGridButtonProps } from './components/samples/models';
 
-export interface AssaySampleColumnProp {
-    fieldKey: string;
-    lookupFieldKey: string;
-}
-
 export interface SampleStorageLocationComponentProps {
     actionChangeCount?: number;
     currentProductId?: string;

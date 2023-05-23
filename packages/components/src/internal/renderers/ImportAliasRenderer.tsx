@@ -18,7 +18,7 @@ import { Map } from 'immutable';
 
 import { AppURL } from '../url/AppURL';
 import { SAMPLES_KEY, SOURCES_KEY } from '../app/constants';
-import { DATA_CLASS_IMPORT_PREFIX, SAMPLE_SET_IMPORT_PREFIX } from '../../entities/constants';
+import { DATA_CLASS_IMPORT_PREFIX, SAMPLE_SET_IMPORT_PREFIX } from '../components/entities/constants';
 
 interface Props {
     data: Map<any, any>;

@@ -17,7 +17,7 @@ import { SampleState } from './models';
 import { ManageSampleStatusesPanel, SampleStatusDetail, SampleStatusesList } from './ManageSampleStatusesPanel';
 
 import { getSamplesTestAPIWrapper } from './APIWrapper';
-import { TEST_PROJECT, TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
+import { TEST_PROJECT, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 import { LockIcon } from '../base/LockIcon';
 
 describe('ManageSampleStatusesPanel', () => {

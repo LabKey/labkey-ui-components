@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 import { List } from 'immutable';
-import { PermissionRoles } from '@labkey/api';
+import { Filter, PermissionRoles } from '@labkey/api';
 
 import { AssayWizardModel } from '../../internal/components/assay/AssayWizardModel';
 
 import { AssayDefinitionModel, AssayDomainTypes } from '../../internal/AssayDefinitionModel';
 import { QueryInfo } from '../../public/QueryInfo';
 import { IFile } from '../../internal/components/files/models';
+
+import { SchemaQuery } from '../../public/SchemaQuery';
+import { EntityDataType } from '../../internal/components/entities/models';
 
 import assayWizardJSON from './assayWizardModel.json';
 
@@ -364,3 +367,35 @@ export const TIMELINE_DATA = [
         },
     },
 ];
+
+export const TestTypeDataType: EntityDataType = {
+    typeListingSchemaQuery: new SchemaQuery('TestListing', 'query'),
+    listingSchemaQuery: new SchemaQuery('Test', 'query'),
+    instanceSchemaName: 'TestSchema',
+    operationConfirmationControllerName: 'controller',
+    operationConfirmationActionName: 'test-delete-confirmation.api',
+    nounSingular: 'test',
+    nounPlural: 'tests',
+    nounAsParentSingular: 'test Parent',
+    nounAsParentPlural: 'test Parents',
+    typeNounSingular: 'Test Type',
+    typeNounAsParentSingular: 'Test Parent Type',
+    descriptionSingular: 'parent test type',
+    descriptionPlural: 'parent test types',
+    uniqueFieldKey: 'Name',
+    dependencyText: 'test data dependencies',
+    deleteHelpLinkTopic: 'viewSampleSets#delete',
+    inputColumnName: 'Inputs/Materials/First',
+    ancestorColumnName: 'Ancestors/Samples',
+    inputTypeValueField: 'lsid',
+    insertColumnNamePrefix: 'MaterialInputs/',
+    editTypeAppUrlPrefix: 'Test',
+    importFileAction: 'importSamples',
+    filterCardHeaderClass: 'filter-card__header-success',
+    sampleFinderCardType: 'sampleparent',
+};
+
+export const TestTypeDataTypeWithEntityFilter: EntityDataType = {
+    ...TestTypeDataType,
+    filterArray: [Filter.create('Category', 'Source')],
+};

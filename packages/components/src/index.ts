@@ -326,6 +326,22 @@ import {
     EntityTypeOption,
 } from './internal/components/entities/models';
 import { EntityMoveModal } from './internal/components/entities/EntityMoveModal';
+import {
+    AssayResultsForSamplesMenuItem,
+    AssayResultsForSamplesButton,
+} from './internal/components/entities/AssayResultsForSamplesButton';
+import { DeleteConfirmationModal } from './internal/components/entities/DeleteConfirmationModal';
+import { EntityDeleteConfirmModal } from './internal/components/entities/EntityDeleteConfirmModal';
+import { SampleAliquotViewSelector } from './internal/components/entities/SampleAliquotViewSelector';
+import { GridAliquotViewSelector } from './internal/components/entities/GridAliquotViewSelector';
+import {
+    FindDerivativesMenuItem,
+    FindDerivativesButton,
+    SAMPLE_FINDER_SESSION_PREFIX,
+    getSearchFilterObjs,
+    searchFiltersToJson,
+    getSampleFinderLocalStorageKey
+} from './internal/components/entities/FindDerivativesButton';
 import { SAMPLE_PROPERTY_ALL_SAMPLE_TYPE, SearchScope } from './internal/components/search/constants';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';
 import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
@@ -477,6 +493,7 @@ import {
     getEntityNoun,
     getEntityDescription,
     getInitialParentChoices,
+    getJobCreationHref,
 } from './internal/components/entities/utils';
 import {
     ALIQUOT_CREATION,
@@ -1207,6 +1224,18 @@ export {
     OperationConfirmationData,
     AddEntityButton,
     RemoveEntityButton,
+    AssayResultsForSamplesMenuItem,
+    AssayResultsForSamplesButton,
+    DeleteConfirmationModal,
+    EntityDeleteConfirmModal,
+    SampleAliquotViewSelector,
+    GridAliquotViewSelector,
+    FindDerivativesMenuItem,
+    FindDerivativesButton,
+    SAMPLE_FINDER_SESSION_PREFIX,
+    getSearchFilterObjs,
+    searchFiltersToJson,
+    getSampleFinderLocalStorageKey,
     getSampleOperationConfirmationData,
     getDeleteConfirmationData,
     getEntityTypeOptions,
@@ -1219,6 +1248,7 @@ export {
     getEntityNoun,
     getEntityDescription,
     getInitialParentChoices,
+    getJobCreationHref,
     DiscardConsumedSamplesPanel,
     // metric related items
     UnitModel,
@@ -1675,6 +1705,7 @@ export type {
     EntityChoice,
     DataTypeEntity,
     DisplayObject,
+    FilterProps,
 } from './internal/components/entities/models';
 export type {
     SelectInputChange,
@@ -1745,3 +1776,5 @@ export type { ConfirmModalProps } from './internal/components/base/ConfirmModal'
 export type { EditableDetailPanelProps } from './public/QueryModel/EditableDetailPanel';
 export type { ComponentsAPIWrapper } from './internal/APIWrapper';
 export type { GetParentTypeDataForLineage } from './internal/components/entities/actions';
+export type { DeleteConfirmationModalProps } from './internal/components/entities/DeleteConfirmationModal';
+export type { EntityDeleteConfirmHandler } from './internal/components/entities/EntityDeleteConfirmModalDisplay';

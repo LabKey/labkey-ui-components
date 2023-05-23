@@ -7,9 +7,14 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { EditableColumnMetadata } from '../editable/EditableGrid';
 import { SCHEMAS } from '../../schemas';
 
-import { ParentIdData } from './actions';
+import { getURLParamsForSampleSelectionKey } from '../samples/utils';
+import { AppURL, createProductUrlFromParts } from '../../url/AppURL';
+import { WORKFLOW_KEY } from '../../app/constants';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
+
+import { ParentIdData } from './actions';
 
 export function sampleDeleteDependencyText(): string {
     let deleteMsg = '';
@@ -110,4 +115,24 @@ export function isSampleEntity(dataType: EntityDataType): boolean {
 
 export function isDataClassEntity(dataType: EntityDataType): boolean {
     return dataType.instanceSchemaName === SCHEMAS.DATA_CLASSES.SCHEMA;
+}
+
+export function getJobCreationHref(
+    model: QueryModel,
+    templateId?: string | number,
+    samplesIncluded?: boolean,
+    picklistName?: string,
+    isAssay?: boolean,
+    sampleFieldKey?: string,
+    currentProductId?: string,
+    targetProductId?: string,
+    ignoreFilter?: boolean
+): string {
+    const params = getURLParamsForSampleSelectionKey(model, picklistName, isAssay, sampleFieldKey, ignoreFilter);
+
+    if (templateId) params['templateId'] = templateId;
+    if (!samplesIncluded) params['sampleTab'] = 2; // i.e. JOB_SAMPLE_SEARCH_TAB_ID
+
+    const actionUrl = createProductUrlFromParts(targetProductId, currentProductId, params, WORKFLOW_KEY, 'new');
+    return actionUrl instanceof AppURL ? actionUrl.toHref() : actionUrl;
 }

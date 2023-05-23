@@ -32,6 +32,7 @@ import { EditorModel } from '../editable/models';
 import { insertRows, InsertRowsResponse } from '../../query/api';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { ViewInfo } from '../../ViewInfo';
+import { FieldFilter } from '../search/models';
 
 export interface EntityInputProps {
     role: string;
@@ -599,4 +600,18 @@ export interface DataTypeEntity {
     rowId: number;
     sublabel?: string;
     type: ProjectConfigurableDataType;
+}
+
+export interface FilterProps {
+    altQueryName?: string;
+    dataTypeDisplayName?: string;
+    dataTypeLsid?: string;
+    disabled?: boolean;
+    entityDataType: EntityDataType;
+    // the filters to be used in conjunction with the schemaQuery
+    filterArray?: FieldFilter[];
+    index?: number;
+    schemaQuery?: SchemaQuery;
+    selectColumnFieldKey?: string;
+    targetColumnFieldKey?: string;
 }

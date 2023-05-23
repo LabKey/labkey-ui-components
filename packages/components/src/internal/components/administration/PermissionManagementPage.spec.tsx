@@ -11,7 +11,8 @@ import { AdminAppContext, AppContext } from '../../AppContext';
 
 import { TEST_LKS_STARTER_MODULE_CONTEXT, TEST_LKSM_STARTER_MODULE_CONTEXT } from '../../productFixtures';
 
-import { JEST_SITE_ADMIN_USER_ID, TEST_PROJECT, TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
+import { JEST_SITE_ADMIN_USER_ID } from '../../../test/data/constants';
+import { TEST_PROJECT, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 import { getSecurityTestAPIWrapper } from '../security/APIWrapper';
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { Principal, SecurityPolicy } from '../permissions/models';

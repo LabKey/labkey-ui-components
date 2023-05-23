@@ -13,9 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { TEST_ASSAY_STATE_MODEL } from '../../../test/data/constants';
+import { LoadingState } from '../../../public/LoadingState';
+
+import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 
 import { GENERAL_ASSAY_PROVIDER_NAME } from './constants';
+import { AssayStateModel } from './models';
+
+const TEST_ASSAY_STATE_MODEL = new AssayStateModel({
+    definitionsLoadingState: LoadingState.LOADED,
+    definitions: [
+        AssayDefinitionModel.create({ id: 3, name: 'NAb 1', type: 'NAb' }),
+        AssayDefinitionModel.create({ id: 1, name: 'GPAT 1', type: GENERAL_ASSAY_PROVIDER_NAME }),
+        AssayDefinitionModel.create({ id: 2, name: 'GPAT 2', type: GENERAL_ASSAY_PROVIDER_NAME }),
+        AssayDefinitionModel.create({ id: 5, name: 'Luminex', type: 'Luminex' }),
+        AssayDefinitionModel.create({ id: 4, name: 'Protein', type: 'Protein Expression Matrix' }),
+    ],
+});
 
 describe('AssayStateModel', () => {
     test('getById', () => {

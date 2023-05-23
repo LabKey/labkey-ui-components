@@ -9,10 +9,6 @@ const baseConfig = require('./node_modules/@labkey/build/webpack/package.config'
 module.exports = merge(baseConfig, {
     entry: {
         components: './src/index.ts',
-        entities: {
-            import: './src/entities/index.ts',
-            dependOn: 'components',
-        },
     },
     output: {
         filename: '[name].js',

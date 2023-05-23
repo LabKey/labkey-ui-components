@@ -1,7 +1,7 @@
 import { List } from 'immutable';
 import { Query } from '@labkey/api';
 
-import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../test/data/constants';
+import { TEST_PROJECT_CONTAINER, TEST_FOLDER_CONTAINER } from '../containerFixtures';
 
 import {
     EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS,

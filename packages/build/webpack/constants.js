@@ -151,10 +151,10 @@ const TS_CHECKER_DEV_CONFIG = {
             compilerOptions: {
                 "paths": {
                     "@labkey/components": [labkeyUIComponentsPath],
-                    "@labkey/components/entities": [labkeyUIComponentsPath + '/entities'],
                     "@labkey/premium": [labkeyUIPremiumPath],
                     "@labkey/premium/assay": [labkeyUIPremiumPath + '/assay'],
                     "@labkey/premium/eln": [labkeyUIPremiumPath + '/eln'],
+                    "@labkey/premium/entities": [labkeyUIPremiumPath + '/entities'],
                     "@labkey/premium/workflow": [labkeyUIPremiumPath + '/workflow'],
                     "@labkey/premium/storage": [labkeyUIPremiumPath + '/storage'],
                 }
@@ -168,10 +168,10 @@ const labkeyPackagesDev = process.env.LINK
         // Note that for modules that don't have these packages, the aliases are just ignored and don't
         // seem to cause any problems.
         '@labkey/components': labkeyUIComponentsPath,
-        '@labkey/components/entities': labkeyUIComponentsPath + '/entities',
         '@labkey/premium': labkeyUIPremiumPath,
         '@labkey/premium/assay': labkeyUIPremiumPath + '/assay',
         '@labkey/premium/eln': labkeyUIPremiumPath + '/eln',
+        '@labkey/premium/entities': labkeyUIPremiumPath + '/entities',
         '@labkey/premium/workflow': labkeyUIPremiumPath + '/workflow',
         '@labkey/premium/storage': labkeyUIPremiumPath + '/storage',
     }

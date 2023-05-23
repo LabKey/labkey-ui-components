@@ -23,14 +23,13 @@ import { resolveErrorMessage } from '../../../util/messaging';
 
 import { IParentAlias, IParentOption } from '../../entities/models';
 import { SCHEMAS } from '../../../schemas';
-import { initParentOptionsSelects } from '../../../../entities/actions';
-
-import { DATA_CLASS_IMPORT_PREFIX } from '../../../../entities/constants';
 
 import { getDuplicateAlias, getParentAliasChangeResult, getParentAliasUpdateDupesResults } from '../utils';
 
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 import { DataClassModel, DataClassModelConfig } from './models';
+import { DATA_CLASS_IMPORT_PREFIX } from '../../entities/constants';
+import { initParentOptionsSelects } from '../../entities/actions';
 
 interface Props {
     allowParentAlias?: boolean;

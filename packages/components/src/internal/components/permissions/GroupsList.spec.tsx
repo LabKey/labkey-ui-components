@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
+import { TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
 import { TEST_USER_APP_ADMIN, TEST_USER_READER } from '../../userFixtures';

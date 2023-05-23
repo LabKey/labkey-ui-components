@@ -14,26 +14,20 @@
  * limitations under the License.
  */
 import { List } from 'immutable';
-import { Filter, PermissionRoles, Project } from '@labkey/api';
+import { Filter, PermissionRoles } from '@labkey/api';
 
 import { AssayWizardModel } from '../../internal/components/assay/AssayWizardModel';
-
-import { DELETE_SAMPLES_TOPIC } from '../../internal/util/helpLinks';
 
 import { AssayDefinitionModel, AssayDomainTypes } from '../../internal/AssayDefinitionModel';
 import { QueryInfo } from '../../public/QueryInfo';
 import { IFile } from '../../internal/components/files/models';
-import { LoadingState } from '../../public/LoadingState';
-import { AssayStateModel } from '../../internal/components/assay/models';
-import { Container, ContainerDateFormats } from '../../internal/components/base/models/Container';
+
 import { SchemaQuery } from '../../public/SchemaQuery';
 import { EntityDataType } from '../../internal/components/entities/models';
 
-import { GENERAL_ASSAY_PROVIDER_NAME } from '../../internal/components/assay/constants';
-
 import assayWizardJSON from './assayWizardModel.json';
 
-export const ASSAY_DEFINITION_MODEL = AssayDefinitionModel.create(assayWizardJSON.assayDef);
+const ASSAY_DEFINITION_MODEL = AssayDefinitionModel.create(assayWizardJSON.assayDef);
 export const ASSAY_WIZARD_MODEL = new AssayWizardModel({
     isInit: true,
     assayDef: ASSAY_DEFINITION_MODEL,
@@ -374,59 +368,6 @@ export const TIMELINE_DATA = [
     },
 ];
 
-export const TEST_ASSAY_STATE_MODEL = new AssayStateModel({
-    definitionsLoadingState: LoadingState.LOADED,
-    definitions: [
-        AssayDefinitionModel.create({ id: 3, name: 'NAb 1', type: 'NAb' }),
-        AssayDefinitionModel.create({ id: 1, name: 'GPAT 1', type: GENERAL_ASSAY_PROVIDER_NAME }),
-        AssayDefinitionModel.create({ id: 2, name: 'GPAT 2', type: GENERAL_ASSAY_PROVIDER_NAME }),
-        AssayDefinitionModel.create({ id: 5, name: 'Luminex', type: 'Luminex' }),
-        AssayDefinitionModel.create({ id: 4, name: 'Protein', type: 'Protein Expression Matrix' }),
-    ],
-});
-
-export const TEST_DATE_FORMATS: ContainerDateFormats = {
-    dateFormat: 'yyyy-MM-dd',
-    dateTimeFormat: 'yyyy-MM-dd HH:mm',
-    numberFormat: null,
-};
-
-export const TEST_PROJECT_CONTAINER = new Container({
-    activeModules: ['a', 'b', 'c'],
-    formats: TEST_DATE_FORMATS,
-    id: 'a685712e-0900-103a-9486-0131958dce60',
-    isContainerTab: false,
-    isWorkbook: false,
-    name: 'TestProjectContainer',
-    parentId: '785eb92a-95aa-1039-9db0-ffabf47c5c38',
-    parentPath: '/',
-    path: '/TestProjectContainer',
-    title: 'Test Project Container',
-    type: 'project',
-});
-
-export const TEST_PROJECT: Project = {
-    id: TEST_PROJECT_CONTAINER.id,
-    name: TEST_PROJECT_CONTAINER.name,
-    path: TEST_PROJECT_CONTAINER.path,
-    rootId: TEST_PROJECT_CONTAINER.parentId,
-    title: TEST_PROJECT_CONTAINER.title,
-};
-
-export const TEST_FOLDER_CONTAINER = new Container({
-    activeModules: ['a', 'b', 'c'],
-    formats: TEST_DATE_FORMATS,
-    id: 'b685712f-0800-103a-9286-0131958dcf60',
-    isContainerTab: false,
-    isWorkbook: false,
-    name: 'TestFolderContainer',
-    parentId: TEST_PROJECT_CONTAINER.id,
-    parentPath: TEST_PROJECT_CONTAINER.path,
-    path: `${TEST_PROJECT_CONTAINER.path}/TestFolderContainer`,
-    title: 'Test Folder Container',
-    type: 'folder',
-});
-
 export const TestTypeDataType: EntityDataType = {
     typeListingSchemaQuery: new SchemaQuery('TestListing', 'query'),
     listingSchemaQuery: new SchemaQuery('Test', 'query'),
@@ -443,7 +384,7 @@ export const TestTypeDataType: EntityDataType = {
     descriptionPlural: 'parent test types',
     uniqueFieldKey: 'Name',
     dependencyText: 'test data dependencies',
-    deleteHelpLinkTopic: DELETE_SAMPLES_TOPIC,
+    deleteHelpLinkTopic: 'viewSampleSets#delete',
     inputColumnName: 'Inputs/Materials/First',
     ancestorColumnName: 'Ancestors/Samples',
     inputTypeValueField: 'lsid',

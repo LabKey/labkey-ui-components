@@ -6,10 +6,6 @@ import { getSampleOperationConfirmationData } from '../entities/actions';
 
 import { OperationConfirmationData } from '../entities/models';
 
-import { FinderReport } from '../search/models';
-
-import { loadFinderSearches } from '../search/actions';
-
 import { TimelineEventModel } from '../auditlog/models';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -78,8 +74,6 @@ export interface SamplesAPIWrapper {
     ) => Promise<ISelectRowsResult>;
 
     getTimelineEvents: (sampleId: number, timezone?: string) => Promise<TimelineEventModel[]>;
-
-    loadFinderSearches: (excludeModuleReport?: boolean) => Promise<FinderReport[]>;
 }
 
 export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
@@ -92,7 +86,6 @@ export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
     getSampleOperationConfirmationData = getSampleOperationConfirmationData;
     getSampleStorageId = getSampleStorageId;
     getFieldLookupFromSelection = getFieldLookupFromSelection;
-    loadFinderSearches = loadFinderSearches;
     getTimelineEvents = getTimelineEvents;
     getSampleTypeDetails = getSampleTypeDetails;
     getDistinctAssaysPerSample = getDistinctAssaysPerSample;
@@ -115,7 +108,6 @@ export function getSamplesTestAPIWrapper(
         getSampleOperationConfirmationData: mockFn(),
         getSampleStorageId: mockFn(),
         getFieldLookupFromSelection: mockFn(),
-        loadFinderSearches: mockFn(),
         getTimelineEvents: mockFn(),
         getSampleTypeDetails: mockFn(),
         getDistinctAssaysPerSample: mockFn(),

@@ -6,7 +6,7 @@ import { SampleOperation } from '../samples/constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { getFilterForSampleOperation, isSamplesSchema } from '../samples/utils';
 import { importData, InsertOptions } from '../../query/api';
-import { caseInsensitive, handleRequestFailure } from '../../util/utils';
+import { caseInsensitive, generateId, handleRequestFailure } from '../../util/utils';
 import { SampleCreationType } from '../samples/models';
 import { getSelected, getSelectedData } from '../../actions';
 import { SHARED_CONTAINER_PATH } from '../../constants';
@@ -23,7 +23,13 @@ import { Container } from '../base/models/Container';
 import { getProjectDataExclusion } from '../../app/utils';
 
 import { getInitialParentChoices, isDataClassEntity, isSampleEntity } from './utils';
-import { DataClassDataType, DataOperation, SampleTypeDataType } from './constants';
+import {
+    DATA_CLASS_IMPORT_PREFIX,
+    DataClassDataType,
+    DataOperation,
+    SAMPLE_SET_IMPORT_PREFIX,
+    SampleTypeDataType,
+} from './constants';
 import {
     CrossFolderSelectionResult,
     DataTypeEntity,
@@ -34,6 +40,7 @@ import {
     EntityParentType,
     EntityTypeOption,
     IEntityTypeOption,
+    IParentAlias,
     IParentOption,
     MoveEntitiesResult,
     OperationConfirmationData,
@@ -362,25 +369,6 @@ export async function getChosenParentData(
         entityParents,
         entityCount: 0,
     };
-}
-
-export function getAllEntityTypeOptions(
-    entityDataTypes: EntityDataType[]
-): Promise<{ [p: string]: IEntityTypeOption[] }> {
-    const optionMap = {};
-    return new Promise(async resolve => {
-        for (const entityType of entityDataTypes) {
-            try {
-                const entityOptions = await getEntityTypeOptions(entityType);
-                optionMap[entityType.typeListingSchemaQuery.queryName] = entityOptions
-                    .get(entityType.typeListingSchemaQuery.queryName)
-                    .toArray();
-            } catch {
-                optionMap[entityType.typeListingSchemaQuery.queryName] = [];
-            }
-        }
-        resolve(optionMap);
-    });
 }
 
 // get back a map from the typeListQueryName (e.g., 'SampleSet') and the list of options for that query
@@ -829,5 +817,123 @@ export function moveEntities(
                 reject(response?.exception ?? 'Unknown error moving ' + entityDataType.nounPlural + '.');
             }),
         });
+    });
+}
+
+export function initParentOptionsSelects(
+    includeSampleTypes: boolean,
+    includeDataClasses: boolean,
+    containerPath: string,
+    isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean,
+    newTypeOption?: any,
+    importAliases?: Map<string, string>,
+    idPrefix?: string,
+    formatLabel?: (name: string, prefix: string, isDataClass?: boolean, containerPath?: string) => string
+): Promise<{
+    parentAliases: Map<string, IParentAlias>;
+    parentOptions: IParentOption[];
+}> {
+    const promises: Array<Promise<SelectRowsResponse>> = [];
+
+    const dataTypeExclusions = getProjectDataExclusion();
+
+    // Get Sample Types
+    if (includeSampleTypes) {
+        const exclusions = dataTypeExclusions?.['SampleType'];
+        promises.push(
+            selectRows({
+                containerPath,
+                schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
+                columns: 'LSID, Name, RowId, Folder',
+                containerFilter: Query.containerFilter.currentPlusProjectAndShared,
+                filterArray:
+                    exclusions && exclusions.length > 0
+                        ? [Filter.create('RowId', exclusions, Filter.Types.NOT_IN)]
+                        : null,
+            })
+        );
+    }
+
+    // Get Data Classes
+    if (includeDataClasses) {
+        const exclusions = dataTypeExclusions?.['DataClass'];
+        promises.push(
+            selectRows({
+                containerPath,
+                schemaQuery: SCHEMAS.EXP_TABLES.DATA_CLASSES,
+                columns: 'LSID, Name, RowId, Folder, Category',
+                containerFilter: Query.containerFilter.currentPlusProjectAndShared,
+                filterArray:
+                    exclusions && exclusions.length > 0
+                        ? [Filter.create('RowId', exclusions, Filter.Types.NOT_IN)]
+                        : null,
+            })
+        );
+    }
+
+    return new Promise((resolve, reject) => {
+        Promise.all(promises)
+            .then(responses => {
+                const sets: IParentOption[] = [];
+                responses.forEach(result => {
+                    const rows = result.rows;
+                    const isDataClass = result.schemaQuery?.queryName?.toLowerCase() === 'dataclass';
+                    const prefix = isDataClass ? DATA_CLASS_IMPORT_PREFIX : SAMPLE_SET_IMPORT_PREFIX;
+                    const labelPrefix = isDataClass ? 'Data Class' : 'Sample Type';
+
+                    rows.forEach(row => {
+                        if (isValidParentOptionFn) {
+                            if (!isValidParentOptionFn(row, isDataClass)) return;
+                        }
+                        const name = caseInsensitive(row, 'Name')?.value;
+                        const containerPath = caseInsensitive(row, 'Folder').displayValue;
+                        const label = formatLabel ? formatLabel(name, labelPrefix, isDataClass, containerPath) : name;
+                        sets.push({
+                            value: prefix + name,
+                            label,
+                            schema: isDataClass ? SCHEMAS.DATA_CLASSES.SCHEMA : SCHEMAS.SAMPLE_SETS.SCHEMA,
+                            query: name, // Issue 33653: query name is case-sensitive for some data inputs (sample parents)
+                        });
+                    });
+
+                    if (newTypeOption) {
+                        if (
+                            (!isDataClass && newTypeOption.schema === SCHEMAS.SAMPLE_SETS.SCHEMA) ||
+                            (isDataClass && newTypeOption.schema !== SCHEMAS.SAMPLE_SETS.SCHEMA)
+                        )
+                            sets.push(newTypeOption);
+                    }
+                });
+
+                const parentOptions = sets.sort(naturalSortByProperty('label'));
+
+                let parentAliases = Map<string, IParentAlias>();
+
+                if (importAliases) {
+                    const initialAlias = Map<string, string>(importAliases);
+                    initialAlias.forEach((val, key) => {
+                        const newId = generateId(idPrefix);
+                        const parentValue = parentOptions.find(opt => opt.value === val);
+                        if (!parentValue)
+                            // parent option might have been filtered out by isValidParentOptionFn
+                            return;
+
+                        parentAliases = parentAliases.set(newId, {
+                            id: newId,
+                            alias: key,
+                            parentValue,
+                            ignoreAliasError: false,
+                            ignoreSelectError: false,
+                        } as IParentAlias);
+                    });
+                }
+                resolve({
+                    parentOptions,
+                    parentAliases,
+                });
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
 }

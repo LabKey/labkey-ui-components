@@ -10,7 +10,7 @@ import { ActionURL, PermissionTypes } from '@labkey/api';
 import { QueryInfoForm } from '../forms/QueryInfoForm';
 
 import { QueryInfo } from '../../../public/QueryInfo';
-import { User } from '../base/models/User';
+import { hasPermissions, User } from '../base/models/User';
 import { getQueryDetails } from '../../query/api';
 import { SCHEMAS } from '../../schemas';
 import { insertColumnFilter, QueryColumn } from '../../../public/QueryColumn';
@@ -18,8 +18,6 @@ import { FileInput } from '../forms/input/FileInput';
 import { Alert } from '../base/Alert';
 import { getActionErrorMessage, resolveErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-
-import { hasPermissions } from '../../../entities/SampleListingPage';
 
 import { caseInsensitive } from '../../util/utils';
 

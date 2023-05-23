@@ -1,9 +1,9 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 
-import { mountWithAppServerContext, mountWithServerContext, waitForLifecycle } from '../../testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
 
-import { TEST_FOLDER_CONTAINER } from '../../../test/data/constants';
+import { TEST_FOLDER_CONTAINER } from '../../containerFixtures';
 
 import { TEST_USER_APP_ADMIN } from '../../userFixtures';
 

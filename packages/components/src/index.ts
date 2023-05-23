@@ -804,6 +804,7 @@ import {
     DiscardConsumedSamplesPanel,
 } from './internal/components/samples/DiscardConsumedSamplesPanel';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './internal/components/picklist/constants';
+import { getDefaultAPIWrapper, getTestAPIWrapper } from './internal/APIWrapper';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -959,6 +960,7 @@ export {
     AppModel,
     Hooks,
     LogoutReason,
+    getDefaultAPIWrapper,
     // global state functions
     initQueryGridState,
     getContainerFilter,
@@ -1584,6 +1586,7 @@ export {
     waitForLifecycle,
     wrapDraggable,
     selectOptionByText,
+    getTestAPIWrapper,
     // Ontology
     OntologyBrowserPage,
     OntologyConceptOverviewPanel,
@@ -1709,8 +1712,6 @@ export type { Field, FormSchema, Option } from './internal/components/AutoForm';
 export type { FileSizeLimitProps } from './public/files/models';
 export type { UsersLoader } from './internal/components/forms/actions';
 export type { LineageGroupingOptions } from './internal/components/lineage/types';
-export type { AnnouncementModel, ThreadActions } from './internal/announcements/model';
-export type { AnnouncementsAPIWrapper } from './internal/announcements/APIWrapper';
 export type {
     AdminAppContext,
     AppContext,
@@ -1741,3 +1742,4 @@ export type { GroupedSampleDisplayColumns } from './internal/components/samples/
 export type { PicklistDeletionData } from './internal/components/picklist/actions';
 export type { ConfirmModalProps } from './internal/components/base/ConfirmModal';
 export type { EditableDetailPanelProps } from './public/QueryModel/EditableDetailPanel';
+export type { ComponentsAPIWrapper } from './internal/APIWrapper';

@@ -1,7 +1,7 @@
 # @labkey/build
 
-### version TBD
-*Released*: TBD
+### version 6.11.0
+*Released* : 23 May 2023
 * webpack updates for `@labkey/premium/entities` package
   * move of `@labkey/components/entities` from ui-components repo to `@labkey/premium/entities`
 

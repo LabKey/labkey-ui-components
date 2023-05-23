@@ -17,7 +17,7 @@
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 
-import produce, { Draft } from 'immer';
+import { Draft, produce } from 'immer';
 
 import { List } from 'immutable';
 

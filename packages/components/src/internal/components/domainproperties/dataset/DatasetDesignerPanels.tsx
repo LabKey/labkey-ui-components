@@ -20,7 +20,7 @@ import { List } from 'immutable';
 
 import { Domain, getServerContext } from '@labkey/api';
 
-import produce, { Draft } from 'immer';
+import { Draft, produce } from 'immer';
 
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 

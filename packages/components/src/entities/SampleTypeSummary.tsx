@@ -10,7 +10,7 @@ import { QuerySort } from '../public/QuerySort';
 
 import { NON_MEDIA_SAMPLE_TYPES_FILTER } from '../internal/components/samples/constants';
 import { useServerContext } from '../internal/components/base/ServerContext';
-import { getProjectSampleTypeExclusion} from '../internal/app/utils';
+import { getProjectSampleTypeExclusion } from '../internal/app/utils';
 
 const SAMPLE_SET_GRID_GRID_ID = 'samplesets-grid-panel';
 

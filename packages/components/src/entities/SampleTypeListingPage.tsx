@@ -10,11 +10,7 @@ import { AppURL } from '../internal/url/AppURL';
 import { useServerContext } from '../internal/components/base/ServerContext';
 import { Page } from '../internal/components/base/Page';
 import { Section } from '../internal/components/base/Section';
-import {
-    getProjectSampleTypeExclusion,
-    isAppHomeFolder,
-    isSampleStatusEnabled
-} from '../internal/app/utils';
+import { getProjectSampleTypeExclusion, isAppHomeFolder, isSampleStatusEnabled } from '../internal/app/utils';
 
 import { SampleTypeEmptyAlert } from '../internal/components/samples/SampleEmptyAlert';
 

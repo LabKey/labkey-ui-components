@@ -13,7 +13,7 @@ import { ResponsiveMenuButton } from '../internal/components/buttons/ResponsiveM
 import { isSamplesSchema } from '../internal/components/samples/utils';
 
 import { useServerContext } from '../internal/components/base/ServerContext';
-import {getProjectAssayDesignExclusion} from '../internal/app/utils';
+import { getProjectAssayDesignExclusion } from '../internal/app/utils';
 
 import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
 

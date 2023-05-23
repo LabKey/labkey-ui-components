@@ -13,12 +13,7 @@ import { getQueryDetails } from '../internal/query/api';
 import { AppURL } from '../internal/url/AppURL';
 import { SAMPLES_KEY } from '../internal/app/constants';
 import { naturalSortByProperty } from '../public/sort';
-import {
-    isAssayEnabled,
-    isWorkflowEnabled,
-    userCanReadAssays,
-    userCanReadDataClasses,
-} from '../internal/app/utils';
+import { isAssayEnabled, isWorkflowEnabled, userCanReadAssays, userCanReadDataClasses } from '../internal/app/utils';
 
 import { SubNav } from '../internal/components/navigation/SubNav';
 

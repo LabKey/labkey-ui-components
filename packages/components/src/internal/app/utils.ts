@@ -278,6 +278,18 @@ export function getProjectDataExclusion(moduleContext?: ModuleContext): { [key: 
     return resolveModuleContext(moduleContext)?.samplemanagement?.[PROJECT_DATA_TYPE_EXCLUSIONS];
 }
 
+export function getProjectSampleTypeExclusion(moduleContext?: ModuleContext): number[] {
+    return getProjectDataExclusion(moduleContext)?.['SampleType'];
+}
+
+export function getProjectDataClassExclusion(moduleContext?: ModuleContext): number[] {
+    return getProjectDataExclusion(moduleContext)?.['DataClass'];
+}
+
+export function getProjectAssayDesignExclusion(moduleContext?: ModuleContext): number[] {
+    return getProjectDataExclusion(moduleContext)?.['AssayDesign'];
+}
+
 export function isAssayEnabled(moduleContext?: ModuleContext): boolean {
     return (
         hasModule('assay', moduleContext) &&

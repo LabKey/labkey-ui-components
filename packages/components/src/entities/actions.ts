@@ -15,7 +15,7 @@ import { DATA_CLASS_KEY, SAMPLE_TYPE_KEY } from '../internal/app/constants';
 import { naturalSortByProperty } from '../public/sort';
 import { caseInsensitive, generateId } from '../internal/util/utils';
 
-import { getProjectDataExclusion } from '../internal/app/utils';
+import {getProjectDataExclusion, getProjectSampleTypeExclusion} from '../internal/app/utils';
 
 import { selectRows, SelectRowsResponse } from '../internal/query/selectRows';
 
@@ -29,8 +29,7 @@ const getSampleTypeFilters = (includeMedia: boolean, skipProjectExclusion?: bool
     const filters = filterMediaSampleTypes(includeMedia);
 
     if (!skipProjectExclusion) {
-        const dataTypeExclusions = getProjectDataExclusion();
-        const excludedSampleTypes = dataTypeExclusions?.['SampleType'];
+        const excludedSampleTypes = getProjectSampleTypeExclusion();
         if (excludedSampleTypes && excludedSampleTypes.length > 0)
             filters.push(Filter.create('RowId', excludedSampleTypes, Filter.Types.NOT_IN));
     }
@@ -70,8 +69,7 @@ export const loadSampleTypes = (includeMedia: boolean, skipProjectExclusion?: bo
     const filters = filterMediaSampleTypes(includeMedia);
 
     if (!skipProjectExclusion) {
-        const dataTypeExclusions = getProjectDataExclusion();
-        const excludedSampleTypes = dataTypeExclusions?.['SampleType'];
+        const excludedSampleTypes = getProjectSampleTypeExclusion();
         if (excludedSampleTypes && excludedSampleTypes.length > 0)
             filters.push(Filter.create('RowId', excludedSampleTypes, Filter.Types.NOT_IN));
     }

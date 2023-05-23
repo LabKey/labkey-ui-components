@@ -14,7 +14,6 @@ import { AppURL } from '../internal/url/AppURL';
 import { SAMPLES_KEY } from '../internal/app/constants';
 import { naturalSortByProperty } from '../public/sort';
 import {
-    getProjectDataExclusion,
     isAssayEnabled,
     isWorkflowEnabled,
     userCanReadAssays,

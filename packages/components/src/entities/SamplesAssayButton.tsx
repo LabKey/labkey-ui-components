@@ -13,7 +13,7 @@ import { ResponsiveMenuButton } from '../internal/components/buttons/ResponsiveM
 import { isSamplesSchema } from '../internal/components/samples/utils';
 
 import { useServerContext } from '../internal/components/base/ServerContext';
-import { getProjectDataExclusion } from '../internal/app/utils';
+import {getProjectAssayDesignExclusion} from '../internal/app/utils';
 
 import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
 
@@ -32,7 +32,7 @@ export const SamplesAssayButtonImpl: FC<Props & InjectedAssayModel> = memo(props
         props;
 
     const { moduleContext } = useServerContext();
-    const dataTypeExclusions = getProjectDataExclusion(moduleContext);
+    const assayDesignExclusions = getProjectAssayDesignExclusion(moduleContext);
 
     if (!isSamplesSchema(model?.schemaQuery) && !isPicklist) return null;
 
@@ -48,7 +48,7 @@ export const SamplesAssayButtonImpl: FC<Props & InjectedAssayModel> = memo(props
             currentProductId={currentProductId}
             targetProductId={targetProductId}
             ignoreFilter={ignoreFilter}
-            excludedAssayDesigns={dataTypeExclusions?.['AssayDesgin']}
+            excludedAssayDesigns={assayDesignExclusions}
         />
     );
 

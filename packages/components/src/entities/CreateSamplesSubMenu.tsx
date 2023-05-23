@@ -7,7 +7,7 @@ import { getMenuItemForSectionKey } from '../internal/components/buttons/utils';
 import { DisableableMenuItem } from '../internal/components/samples/DisableableMenuItem';
 
 import { QueryInfo } from '../public/QueryInfo';
-import { getProjectDataExclusion, isMediaEnabled, sampleManagerIsPrimaryApp } from '../internal/app/utils';
+import { isMediaEnabled, sampleManagerIsPrimaryApp } from '../internal/app/utils';
 import { naturalSortByProperty } from '../public/sort';
 
 import { isSamplesSchema } from '../internal/components/samples/utils';

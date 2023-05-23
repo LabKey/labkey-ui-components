@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.X
+*Released*: X May 2023
+* Project level data type - exclude on UI
+  * TODO
+
 ### version 2.338.0
 *Released* : 17 May 2023
 * Project level data type configuration schema and UI

@@ -12,9 +12,10 @@ import { ResponsiveMenuButton } from '../internal/components/buttons/ResponsiveM
 
 import { isSamplesSchema } from '../internal/components/samples/utils';
 
+import { useServerContext } from '../internal/components/base/ServerContext';
+import { getProjectDataExclusion } from '../internal/app/utils';
+
 import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
-import {useServerContext} from "../internal/components/base/ServerContext";
-import {getProjectDataExclusion} from "../internal/app/utils";
 
 interface Props {
     asSubMenu?: boolean;

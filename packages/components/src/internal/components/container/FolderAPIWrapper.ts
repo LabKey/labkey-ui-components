@@ -3,7 +3,7 @@ import { ActionURL, Ajax, Utils } from '@labkey/api';
 import { Container } from '../base/models/Container';
 import { handleRequestFailure } from '../../util/utils';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
-import {ProjectConfigurableDataType} from "../entities/models";
+import { ProjectConfigurableDataType } from '../entities/models';
 
 export interface ProjectSettingsOptions {
     allowUserSpecifiedNames?: boolean;
@@ -19,9 +19,9 @@ export interface ProjectSettingsOptions {
 
 export interface FolderAPIWrapper {
     createProject: (options: ProjectSettingsOptions) => Promise<Container>;
+    getDataTypeExcludedProjects: (dataType: ProjectConfigurableDataType, dataTypeRowId: number) => Promise<string[]>;
     renameProject: (options: ProjectSettingsOptions) => Promise<Container>;
     updateProjectDataExclusions: (options: ProjectSettingsOptions) => Promise<void>;
-    getDataTypeExcludedProjects: (dataType: ProjectConfigurableDataType, dataTypeRowId: number) => Promise<string[]>;
 }
 
 export class ServerFolderAPIWrapper implements FolderAPIWrapper {
@@ -74,7 +74,7 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
                 method: 'GET',
                 params: {
                     dataType,
-                    dataTypeRowId
+                    dataTypeRowId,
                 },
                 success: Utils.getCallbackWrapper(response => {
                     resolve(response['excludedProjects']);

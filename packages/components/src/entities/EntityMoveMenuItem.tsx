@@ -16,24 +16,29 @@ const ITEM_TEXT = 'Move to Project';
 interface Props {
     actions: Actions;
     entityDataType?: EntityDataType;
+    fromTypeRowId: number;
     handleClick?: (cb: () => void, errorMsg?: string) => void;
     maxSelected?: number;
     onSuccess?: (requiresModelReload: boolean) => void;
     queryModel: QueryModel;
-    fromTypeRowId: number;
 }
 
 export const EntityMoveMenuItem: FC<Props> = memo(props => {
-    const { handleClick, maxSelected, queryModel, actions, onSuccess, fromTypeRowId, entityDataType = SampleTypeDataType } = props;
+    const {
+        handleClick,
+        maxSelected,
+        queryModel,
+        actions,
+        onSuccess,
+        fromTypeRowId,
+        entityDataType = SampleTypeDataType,
+    } = props;
     const [showModal, setShowModal] = useState<boolean>(false);
 
     const onClick = useCallback(() => {
         if (queryModel.hasSelections) {
             if (handleClick) {
-                handleClick(
-                    () => setShowModal(true),
-                    'Cannot Move ' + capitalizeFirstChar(entityDataType.nounPlural)
-                );
+                handleClick(() => setShowModal(true), 'Cannot Move ' + capitalizeFirstChar(entityDataType.nounPlural));
             } else {
                 setShowModal(true);
             }

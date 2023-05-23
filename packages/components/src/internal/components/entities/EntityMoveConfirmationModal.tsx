@@ -13,14 +13,15 @@ import { AppContext, useAppContext } from '../../AppContext';
 import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
 import { HOME_PATH, HOME_TITLE } from '../navigation/constants';
 import { Container } from '../base/models/Container';
-import {ProjectConfigurableDataType} from "./models";
+
+import { ProjectConfigurableDataType } from './models';
 
 export interface EntityMoveConfirmationModalProps extends Omit<ConfirmModalProps, 'onConfirm'> {
-    nounPlural: string;
-    onConfirm: (targetContainer: string, targetName: string, userComment: string) => void;
     currentContainer?: Container;
     dataType?: ProjectConfigurableDataType;
     fromTypeRowId?: number;
+    nounPlural: string;
+    onConfirm: (targetContainer: string, targetName: string, userComment: string) => void;
 }
 
 export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> = memo(props => {

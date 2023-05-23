@@ -20,6 +20,8 @@ import { ViewInfo } from '../../ViewInfo';
 
 import { Container } from '../base/models/Container';
 
+import { getProjectDataExclusion } from '../../app/utils';
+
 import { getInitialParentChoices, isDataClassEntity, isSampleEntity } from './utils';
 import { DataClassDataType, DataOperation, SampleTypeDataType } from './constants';
 import {
@@ -37,7 +39,6 @@ import {
     OperationConfirmationData,
     ProjectConfigurableDataType,
 } from './models';
-import {getProjectDataExclusion} from "../../app/utils";
 
 export function getOperationConfirmationData(
     dataType: EntityDataType,
@@ -393,11 +394,9 @@ export async function getEntityTypeOptions(
 
     const dataTypeExclusions = getProjectDataExclusion();
     const exclusions = dataTypeExclusions?.[entityDataType.projectConfigurableDataType];
-    let filters = [];
-    if (filterArray)
-        filters.push(...filterArray);
-    if (exclusions)
-        filters.push(Filter.create('RowId', exclusions, Filter.Types.NOT_IN));
+    const filters = [];
+    if (filterArray) filters.push(...filterArray);
+    if (exclusions) filters.push(Filter.create('RowId', exclusions, Filter.Types.NOT_IN));
     const result = await selectRows({
         columns: 'LSID,Name,RowId,Folder/Path',
         containerFilter:

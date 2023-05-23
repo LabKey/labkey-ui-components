@@ -1,11 +1,7 @@
 import { Map } from 'immutable';
 import { Filter, Query } from '@labkey/api';
 
-import {
-    invalidateQueryDetailsCache,
-    loadQueriesFromTable,
-    selectRowsDeprecated,
-} from '../internal/query/api';
+import { invalidateQueryDetailsCache, loadQueriesFromTable, selectRowsDeprecated } from '../internal/query/api';
 import { SCHEMAS } from '../internal/schemas';
 import { resolveErrorMessage } from '../internal/util/messaging';
 import { IParentAlias, IParentOption } from '../internal/components/entities/models';
@@ -17,17 +13,19 @@ import { URLService } from '../internal/url/URLResolver';
 import { DATA_CLASS_KEY, SAMPLE_TYPE_KEY } from '../internal/app/constants';
 
 import { naturalSortByProperty } from '../public/sort';
-import {caseInsensitive, generateId} from '../internal/util/utils';
+import { caseInsensitive, generateId } from '../internal/util/utils';
+
+import { getProjectDataExclusion } from '../internal/app/utils';
+
+import { selectRows, SelectRowsResponse } from '../internal/query/selectRows';
 
 import { filterMediaSampleTypes } from './utils';
 import { DATA_CLASS_IMPORT_PREFIX, SAMPLE_SET_IMPORT_PREFIX } from './constants';
-import {getProjectDataExclusion} from "../internal/app/utils";
-import {selectRows, SelectRowsResponse} from "../internal/query/selectRows";
 
 // TODO: this file is temporary as we move things into an @labkey/components/entities subpackage. Instead of adding
 // anything to this file, we should create an API wrapper to be used for any new actions in this subpackage.
 
-const getSampleTypeFilters = (includeMedia: boolean, skipProjectExclusion?: boolean) : Filter.IFilter[] => {
+const getSampleTypeFilters = (includeMedia: boolean, skipProjectExclusion?: boolean): Filter.IFilter[] => {
     const filters = filterMediaSampleTypes(includeMedia);
 
     if (!skipProjectExclusion) {
@@ -38,9 +36,12 @@ const getSampleTypeFilters = (includeMedia: boolean, skipProjectExclusion?: bool
     }
 
     return filters;
-}
+};
 
-export function getSampleTypes(includeMedia?: boolean, skipProjectExclusion?: boolean): Promise<Array<{ id: number; label: string }>> {
+export function getSampleTypes(
+    includeMedia?: boolean,
+    skipProjectExclusion?: boolean
+): Promise<Array<{ id: number; label: string }>> {
     return new Promise((resolve, reject) => {
         selectRowsDeprecated({
             schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
@@ -109,7 +110,7 @@ export function initParentOptionsSelects(
     newTypeOption?: any,
     importAliases?: Map<string, string>,
     idPrefix?: string,
-    formatLabel?: (name: string, prefix: string, isDataClass?: boolean, containerPath?: string) => string,
+    formatLabel?: (name: string, prefix: string, isDataClass?: boolean, containerPath?: string) => string
 ): Promise<{
     parentAliases: Map<string, IParentAlias>;
     parentOptions: IParentOption[];
@@ -127,7 +128,10 @@ export function initParentOptionsSelects(
                 schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
                 columns: 'LSID, Name, RowId, Folder',
                 containerFilter: Query.containerFilter.currentPlusProjectAndShared,
-                filterArray: (exclusions && exclusions.length > 0) ? [Filter.create('RowId', exclusions, Filter.Types.NOT_IN)] : null,
+                filterArray:
+                    exclusions && exclusions.length > 0
+                        ? [Filter.create('RowId', exclusions, Filter.Types.NOT_IN)]
+                        : null,
             })
         );
     }
@@ -141,7 +145,10 @@ export function initParentOptionsSelects(
                 schemaQuery: SCHEMAS.EXP_TABLES.DATA_CLASSES,
                 columns: 'LSID, Name, RowId, Folder, Category',
                 containerFilter: Query.containerFilter.currentPlusProjectAndShared,
-                filterArray: (exclusions && exclusions.length > 0) ? [Filter.create('RowId', exclusions, Filter.Types.NOT_IN)] : null,
+                filterArray:
+                    exclusions && exclusions.length > 0
+                        ? [Filter.create('RowId', exclusions, Filter.Types.NOT_IN)]
+                        : null,
             })
         );
     }

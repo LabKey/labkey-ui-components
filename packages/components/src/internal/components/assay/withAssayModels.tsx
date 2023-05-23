@@ -126,7 +126,7 @@ export function withAssayModels<Props>(
                     definitions = definitions.filter(def => excludedAssayDesigns.indexOf(def.id) === -1);
 
                 this.updateModel({
-                    definitions: definitions,
+                    definitions,
                     definitionsLoadingState: LoadingState.LOADED,
                 });
             } catch (definitionsError) {

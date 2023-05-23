@@ -39,7 +39,7 @@ import {
     hasProductProjects,
     isAllProductFoldersFilteringEnabled,
     isAssayEnabled,
-    isWorkflowEnabled
+    isWorkflowEnabled,
 } from '../internal/app/utils';
 
 import { User } from '../internal/components/base/models/User';
@@ -131,7 +131,10 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                 }
 
                 if (user.hasUpdatePermission() && isSampleOperationPermitted(sampleStatusType, SampleOperation.Move)) {
-                    const confirmationData = await api.samples.getSampleOperationConfirmationData(SampleOperation.Move, sampleIds);
+                    const confirmationData = await api.samples.getSampleOperationConfirmationData(
+                        SampleOperation.Move,
+                        sampleIds
+                    );
                     setCanMove(confirmationData.allowed.length === 1);
                 }
             } catch (e) {

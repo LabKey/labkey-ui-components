@@ -10,7 +10,7 @@ import { AppURL } from '../internal/url/AppURL';
 import { useServerContext } from '../internal/components/base/ServerContext';
 import { Page } from '../internal/components/base/Page';
 import { Section } from '../internal/components/base/Section';
-import {getProjectDataExclusion, isAppHomeFolder, isSampleStatusEnabled} from '../internal/app/utils';
+import { getProjectDataExclusion, isAppHomeFolder, isSampleStatusEnabled } from '../internal/app/utils';
 
 import { SampleTypeEmptyAlert } from '../internal/components/samples/SampleEmptyAlert';
 
@@ -64,7 +64,9 @@ export const SampleTypeListingPage: FC<CommonPageProps> = memo(props => {
                 }
             >
                 {hasSampleTypes && <SampleTypeSummary user={user} navigate={navigate} />}
-                {!hasSampleTypes && <SampleTypeEmptyAlert user={user} hasExcludedTypes={excludedSampleTypes?.length > 0}/>}
+                {!hasSampleTypes && (
+                    <SampleTypeEmptyAlert user={user} hasExcludedTypes={excludedSampleTypes?.length > 0} />
+                )}
             </Section>
         </Page>
     );

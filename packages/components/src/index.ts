@@ -198,6 +198,7 @@ import {
 import { cancelEvent } from './internal/events';
 import { createGridModelId } from './internal/models';
 import { initQueryGridState } from './internal/global';
+import { initBrowserHistoryState } from './internal/util/global';
 import {
     deleteRows,
     getContainerFilter,
@@ -963,6 +964,7 @@ export {
     getDefaultAPIWrapper,
     // global state functions
     initQueryGridState,
+    initBrowserHistoryState,
     getContainerFilter,
     getContainerFilterForFolder,
     getContainerFilterForLookups,

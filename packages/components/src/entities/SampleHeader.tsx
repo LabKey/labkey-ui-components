@@ -36,6 +36,7 @@ import { PrintLabelsModal } from '../internal/components/labels/PrintLabelsModal
 import { invalidateLineageResults } from '../internal/components/lineage/actions';
 
 import {
+    getProjectDataExclusion,
     hasProductProjects,
     isAllProductFoldersFilteringEnabled,
     isAssayEnabled,
@@ -108,6 +109,8 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
     const sampleId = useMemo(() => sampleModel.getRowValue('RowId'), [sampleModel]);
     const sampleIds = useMemo(() => [sampleId], [sampleId]);
     const { moduleContext } = useServerContext();
+    const dataTypeExclusions = getProjectDataExclusion(moduleContext);
+
     const { api } = useAppContext();
 
     const isMedia = queryInfo?.isMedia;
@@ -278,6 +281,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                                         providerType={assayProviderType}
                                         requireSelection={false}
                                         disabled={!canUploadAssayData}
+                                        excludedAssayDesigns={dataTypeExclusions?.['AssayDesign']}
                                     />
                                 </RequiresPermission>
                             )}

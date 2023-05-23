@@ -37,6 +37,7 @@ import {
     OperationConfirmationData,
     ProjectConfigurableDataType,
 } from './models';
+import {getProjectDataExclusion} from "../../app/utils";
 
 export function getOperationConfirmationData(
     dataType: EntityDataType,
@@ -390,12 +391,19 @@ export async function getEntityTypeOptions(
 ): Promise<Map<string, List<IEntityTypeOption>>> {
     const { typeListingSchemaQuery, filterArray, instanceSchemaName } = entityDataType;
 
+    const dataTypeExclusions = getProjectDataExclusion();
+    const exclusions = dataTypeExclusions?.[entityDataType.projectConfigurableDataType];
+    let filters = [];
+    if (filterArray)
+        filters.push(...filterArray);
+    if (exclusions)
+        filters.push(Filter.create('RowId', exclusions, Filter.Types.NOT_IN));
     const result = await selectRows({
         columns: 'LSID,Name,RowId,Folder/Path',
         containerFilter:
             containerFilter ?? entityDataType.containerFilter ?? Query.containerFilter.currentPlusProjectAndShared,
         containerPath,
-        filterArray,
+        filterArray: filters,
         // Use of default view here is ok. Assumed that view is overridden only if there is desire to hide types.
         schemaQuery: new SchemaQuery(typeListingSchemaQuery.schemaName, typeListingSchemaQuery.queryName),
     });

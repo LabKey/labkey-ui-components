@@ -64,13 +64,11 @@ export const SampleTypeIndexNav: FC<WithRouterProps> = memo(location => {
     const [tabs, setTabs] = useState<List<ITab>>(() => List());
     const noun = useMemo(() => ({ text: 'Samples', url: AppURL.create(SAMPLES_KEY) }), []);
     const { moduleContext } = useServerContext();
-    const dataTypeExclusions = getProjectDataExclusion(moduleContext);
 
     useEffect(() => {
         (async () => {
             const allSampleTypes = await loadSampleTypes(
-                false /* don't include media here since it is showing only in the sample type landing pages */,
-                dataTypeExclusions?.['SampleType']
+                false /* don't include media here since it is showing only in the sample type landing pages */
             );
             const tabs_ = allSampleTypes
                 .sort(naturalSortByProperty('title'))

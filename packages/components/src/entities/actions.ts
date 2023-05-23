@@ -1,9 +1,8 @@
-import { fromJS, Map } from 'immutable';
+import { Map } from 'immutable';
 import { Filter, Query } from '@labkey/api';
 
 import {
     invalidateQueryDetailsCache,
-    ISelectRowsResult,
     loadQueriesFromTable,
     selectRowsDeprecated,
 } from '../internal/query/api';
@@ -18,21 +17,36 @@ import { URLService } from '../internal/url/URLResolver';
 import { DATA_CLASS_KEY, SAMPLE_TYPE_KEY } from '../internal/app/constants';
 
 import { naturalSortByProperty } from '../public/sort';
-import { generateId } from '../internal/util/utils';
+import {caseInsensitive, generateId} from '../internal/util/utils';
 
 import { filterMediaSampleTypes } from './utils';
 import { DATA_CLASS_IMPORT_PREFIX, SAMPLE_SET_IMPORT_PREFIX } from './constants';
+import {getProjectDataExclusion} from "../internal/app/utils";
+import {selectRows, SelectRowsResponse} from "../internal/query/selectRows";
 
 // TODO: this file is temporary as we move things into an @labkey/components/entities subpackage. Instead of adding
 // anything to this file, we should create an API wrapper to be used for any new actions in this subpackage.
 
-export function getSampleTypes(includeMedia?: boolean): Promise<Array<{ id: number; label: string }>> {
+const getSampleTypeFilters = (includeMedia: boolean, skipProjectExclusion?: boolean) : Filter.IFilter[] => {
+    const filters = filterMediaSampleTypes(includeMedia);
+
+    if (!skipProjectExclusion) {
+        const dataTypeExclusions = getProjectDataExclusion();
+        const excludedSampleTypes = dataTypeExclusions?.['SampleType'];
+        if (excludedSampleTypes && excludedSampleTypes.length > 0)
+            filters.push(Filter.create('RowId', excludedSampleTypes, Filter.Types.NOT_IN));
+    }
+
+    return filters;
+}
+
+export function getSampleTypes(includeMedia?: boolean, skipProjectExclusion?: boolean): Promise<Array<{ id: number; label: string }>> {
     return new Promise((resolve, reject) => {
         selectRowsDeprecated({
             schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
             queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
             sort: 'Name',
-            filterArray: filterMediaSampleTypes(includeMedia),
+            filterArray: getSampleTypeFilters(includeMedia, skipProjectExclusion),
             containerFilter: Query.containerFilter.currentPlusProjectAndShared,
         })
             .then(response => {
@@ -51,17 +65,22 @@ export function getSampleTypes(includeMedia?: boolean): Promise<Array<{ id: numb
     });
 }
 
-export const loadSampleTypes = (includeMedia: boolean, excludedSampleTypes?: number[]): Promise<QueryInfo[]> => {
+export const loadSampleTypes = (includeMedia: boolean, skipProjectExclusion?: boolean): Promise<QueryInfo[]> => {
     const filters = filterMediaSampleTypes(includeMedia);
-    if (excludedSampleTypes && excludedSampleTypes.length > 0)
-        filters.push(Filter.create('RowId', excludedSampleTypes, Filter.Types.NOT_IN));
+
+    if (!skipProjectExclusion) {
+        const dataTypeExclusions = getProjectDataExclusion();
+        const excludedSampleTypes = dataTypeExclusions?.['SampleType'];
+        if (excludedSampleTypes && excludedSampleTypes.length > 0)
+            filters.push(Filter.create('RowId', excludedSampleTypes, Filter.Types.NOT_IN));
+    }
 
     return loadQueriesFromTable(
         SCHEMAS.EXP_TABLES.SAMPLE_SETS,
         'Name',
         SCHEMAS.SAMPLE_SETS.SCHEMA,
         Query.containerFilter.currentPlusProjectAndShared,
-        filters
+        getSampleTypeFilters(includeMedia, skipProjectExclusion)
     );
 };
 
@@ -90,35 +109,39 @@ export function initParentOptionsSelects(
     newTypeOption?: any,
     importAliases?: Map<string, string>,
     idPrefix?: string,
-    formatLabel?: (name: string, prefix: string, isDataClass?: boolean, containerPath?: string) => string
+    formatLabel?: (name: string, prefix: string, isDataClass?: boolean, containerPath?: string) => string,
 ): Promise<{
     parentAliases: Map<string, IParentAlias>;
     parentOptions: IParentOption[];
 }> {
-    const promises: Array<Promise<ISelectRowsResult>> = [];
+    const promises: Array<Promise<SelectRowsResponse>> = [];
+
+    const dataTypeExclusions = getProjectDataExclusion();
 
     // Get Sample Types
     if (includeSampleTypes) {
+        const exclusions = dataTypeExclusions?.['SampleType'];
         promises.push(
-            selectRowsDeprecated({
+            selectRows({
                 containerPath,
-                schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
-                queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
+                schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
                 columns: 'LSID, Name, RowId, Folder',
                 containerFilter: Query.containerFilter.currentPlusProjectAndShared,
+                filterArray: (exclusions && exclusions.length > 0) ? [Filter.create('RowId', exclusions, Filter.Types.NOT_IN)] : null,
             })
         );
     }
 
     // Get Data Classes
     if (includeDataClasses) {
+        const exclusions = dataTypeExclusions?.['DataClass'];
         promises.push(
-            selectRowsDeprecated({
+            selectRows({
                 containerPath,
-                schemaName: SCHEMAS.EXP_TABLES.DATA_CLASSES.schemaName,
-                queryName: SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName,
+                schemaQuery: SCHEMAS.EXP_TABLES.DATA_CLASSES,
                 columns: 'LSID, Name, RowId, Folder, Category',
                 containerFilter: Query.containerFilter.currentPlusProjectAndShared,
+                filterArray: (exclusions && exclusions.length > 0) ? [Filter.create('RowId', exclusions, Filter.Types.NOT_IN)] : null,
             })
         );
     }
@@ -128,19 +151,17 @@ export function initParentOptionsSelects(
             .then(responses => {
                 const sets: IParentOption[] = [];
                 responses.forEach(result => {
-                    const domain = fromJS(result.models[result.key]);
-
-                    const isDataClass = result.key === 'exp/dataclasses';
-
+                    const rows = result.rows;
+                    const isDataClass = result.schemaQuery?.queryName?.toLowerCase() === 'dataclass';
                     const prefix = isDataClass ? DATA_CLASS_IMPORT_PREFIX : SAMPLE_SET_IMPORT_PREFIX;
                     const labelPrefix = isDataClass ? 'Data Class' : 'Sample Type';
 
-                    domain.forEach(row => {
+                    rows.forEach(row => {
                         if (isValidParentOptionFn) {
                             if (!isValidParentOptionFn(row, isDataClass)) return;
                         }
-                        const name = row.getIn(['Name', 'value']);
-                        const containerPath = row.getIn(['Folder', 'displayValue']);
+                        const name = caseInsensitive(row, 'Name')?.value;
+                        const containerPath = caseInsensitive(row, 'Folder').displayValue;
                         const label = formatLabel ? formatLabel(name, labelPrefix, isDataClass, containerPath) : name;
                         sets.push({
                             value: prefix + name,

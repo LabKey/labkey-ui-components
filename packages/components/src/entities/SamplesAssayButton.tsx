@@ -13,6 +13,8 @@ import { ResponsiveMenuButton } from '../internal/components/buttons/ResponsiveM
 import { isSamplesSchema } from '../internal/components/samples/utils';
 
 import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
+import {useServerContext} from "../internal/components/base/ServerContext";
+import {getProjectDataExclusion} from "../internal/app/utils";
 
 interface Props {
     asSubMenu?: boolean;
@@ -28,6 +30,9 @@ export const SamplesAssayButtonImpl: FC<Props & InjectedAssayModel> = memo(props
     const { model, providerType, asSubMenu, assayModel, isPicklist, currentProductId, targetProductId, ignoreFilter } =
         props;
 
+    const { moduleContext } = useServerContext();
+    const dataTypeExclusions = getProjectDataExclusion(moduleContext);
+
     if (!isSamplesSchema(model?.schemaQuery) && !isPicklist) return null;
 
     const picklistName = isPicklist ? model.queryName : undefined;
@@ -42,6 +47,7 @@ export const SamplesAssayButtonImpl: FC<Props & InjectedAssayModel> = memo(props
             currentProductId={currentProductId}
             targetProductId={targetProductId}
             ignoreFilter={ignoreFilter}
+            excludedAssayDesigns={dataTypeExclusions?.['AssayDesgin']}
         />
     );
 

@@ -23,7 +23,7 @@ export interface CreateSamplesSubMenuProps
     > {
     disabled?: boolean;
     id?: string;
-    loadSampleTypes?: (includeMedia: boolean, excludedSamples?: number[]) => Promise<QueryInfo[]>;
+    loadSampleTypes?: (includeMedia: boolean) => Promise<QueryInfo[]>;
     mediaOptions?: string[];
     selectedQueryInfo?: QueryInfo;
     subMenuText?: string;
@@ -46,7 +46,6 @@ export const CreateSamplesSubMenu: FC<CreateSamplesSubMenuProps> = memo(props =>
     const [sampleQueryInfos, setSampleQueryInfos] = useState<QueryInfo[]>(undefined);
     const isSamples = useMemo(() => isSamplesSchema(selectedQueryInfo?.schemaQuery), [selectedQueryInfo]);
     const { moduleContext } = useServerContext();
-    const dataTypeExclusions = getProjectDataExclusion(moduleContext);
 
     useEffect(() => {
         // if we are showing this menu as a subMenu, only include the given selectedQueryInfo
@@ -54,7 +53,7 @@ export const CreateSamplesSubMenu: FC<CreateSamplesSubMenuProps> = memo(props =>
             setSampleQueryInfos([selectedQueryInfo]);
         } else {
             const includeMedia = isMediaEnabled(moduleContext);
-            loadSampleTypes(includeMedia, dataTypeExclusions?.['SampleType'])
+            loadSampleTypes(includeMedia)
                 .then(allSampleTypes => {
                     const queryInfos = allSampleTypes
                         .filter(

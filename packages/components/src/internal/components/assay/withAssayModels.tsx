@@ -30,6 +30,7 @@ export interface WithAssayModelProps {
     assayContainerPath?: string;
     assayLoader?: AssayLoader;
     assayName?: string;
+    excludedAssayDesigns?: number[];
 }
 
 export interface InjectedAssayModel extends AssayContextModel {
@@ -108,7 +109,7 @@ export function withAssayModels<Props>(
         };
 
         loadDefinitions = async (): Promise<void> => {
-            const { assayContainerPath, assayLoader } = this.props;
+            const { assayContainerPath, assayLoader, excludedAssayDesigns } = this.props;
             const { model } = this.state;
 
             if (model.definitionsLoadingState === LoadingState.LOADED) {
@@ -118,10 +119,14 @@ export function withAssayModels<Props>(
             this.updateModel({ definitionsError: undefined, definitionsLoadingState: LoadingState.LOADING });
 
             try {
-                const definitions = await assayLoader.loadDefinitions(assayContainerPath);
+                const definitionsResult = await assayLoader.loadDefinitions(assayContainerPath);
+                let definitions = definitionsResult.toArray();
+
+                if (excludedAssayDesigns && excludedAssayDesigns.length > 0)
+                    definitions = definitions.filter(def => excludedAssayDesigns.indexOf(def.id) === -1);
 
                 this.updateModel({
-                    definitions: definitions.toArray(),
+                    definitions: definitions,
                     definitionsLoadingState: LoadingState.LOADED,
                 });
             } catch (definitionsError) {

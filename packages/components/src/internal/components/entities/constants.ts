@@ -66,6 +66,7 @@ export const AssayResultDataType: EntityDataType = {
     dependencyText: undefined,
     filterCardHeaderClass: 'filter-card__header-purple',
     sampleFinderCardType: 'assaydata',
+    projectConfigurableDataType: 'AssayDesign',
 };
 
 export const SamplePropertyDataType: EntityDataType = {
@@ -96,6 +97,7 @@ export const SamplePropertyDataType: EntityDataType = {
     deleteHelpLinkTopic: DELETE_SAMPLES_TOPIC,
     filterCardHeaderClass: 'filter-card__header-orange',
     sampleFinderCardType: 'sampleproperty',
+    projectConfigurableDataType: 'SampleType',
 };
 
 export const SampleTypeDataType: EntityDataType = {

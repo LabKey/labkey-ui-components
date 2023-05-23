@@ -8,6 +8,7 @@ import { isAppHomeFolder } from '../../app/utils';
 
 interface Props extends EmptyAlertWithPermissionsProps {
     message?: string;
+    hasExcludedTypes?: boolean;
 }
 
 export const SampleEmptyAlert: FC<Props> = memo(props => {
@@ -24,13 +25,13 @@ export const SampleEmptyAlert: FC<Props> = memo(props => {
 });
 
 export const SampleTypeEmptyAlert: FC<Props> = memo(props => {
-    const { message, ...baseProps } = props;
+    const { message, hasExcludedTypes, ...baseProps } = props;
     const { container, moduleContext } = useServerContext();
     return (
         <EmptyAlertWithPermissions
             {...baseProps}
             actionURL={isAppHomeFolder(container, moduleContext) ? NEW_SAMPLE_TYPE_HREF : undefined}
-            message={message ?? 'No sample types have been created.'}
+            message={message ?? (hasExcludedTypes ? 'No sample types available.' : 'No sample types have been created.')}
             permission={PermissionTypes.DesignSampleSet}
         />
     );

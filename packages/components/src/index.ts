@@ -340,7 +340,7 @@ import {
     SAMPLE_FINDER_SESSION_PREFIX,
     getSearchFilterObjs,
     searchFiltersToJson,
-    getSampleFinderLocalStorageKey
+    getSampleFinderLocalStorageKey,
 } from './internal/components/entities/FindDerivativesButton';
 import { SAMPLE_PROPERTY_ALL_SAMPLE_TYPE, SearchScope } from './internal/components/search/constants';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';

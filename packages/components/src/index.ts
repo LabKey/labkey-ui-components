@@ -457,7 +457,6 @@ import {
     getSampleOperationConfirmationData,
     getDeleteConfirmationData,
     getEntityTypeOptions,
-    GetParentTypeDataForLineage,
 } from './internal/components/entities/actions';
 import {
     AssayResultDataType,
@@ -1184,7 +1183,6 @@ export {
     getGroupedSampleDisplayColumns,
     getParentTypeDataForLineage,
     getSelectedSampleIdsFromSelectionKey,
-    GetParentTypeDataForLineage,
     ParentEntityLineageColumns,
     SampleTypeDataType,
     SamplePropertyDataType,
@@ -1746,3 +1744,4 @@ export type { PicklistDeletionData } from './internal/components/picklist/action
 export type { ConfirmModalProps } from './internal/components/base/ConfirmModal';
 export type { EditableDetailPanelProps } from './public/QueryModel/EditableDetailPanel';
 export type { ComponentsAPIWrapper } from './internal/APIWrapper';
+export type { GetParentTypeDataForLineage } from './internal/components/entities/actions';

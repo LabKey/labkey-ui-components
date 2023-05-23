@@ -263,7 +263,6 @@ import { EditableGridPanel } from './internal/components/editable/EditableGridPa
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
 
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
-import { PlacementType } from './internal/components/editable/Controls';
 
 import { ErrorBoundary } from './internal/components/error/ErrorBoundary';
 import { AliasRenderer } from './internal/renderers/AliasRenderer';
@@ -455,6 +454,7 @@ import {
     getOperationConfirmationData,
     getParentTypeDataForLineage,
     getSampleOperationConfirmationData,
+    getDeleteConfirmationData,
     getEntityTypeOptions,
     GetParentTypeDataForLineage,
 } from './internal/components/entities/actions';
@@ -523,7 +523,7 @@ import {
     DomainField,
     PropertyValidator,
 } from './internal/components/domainproperties/models';
-import { SAMPLE_TYPE, JsonType } from './internal/components/domainproperties/PropDescType';
+import { SAMPLE_TYPE } from './internal/components/domainproperties/PropDescType';
 import DomainForm from './internal/components/domainproperties/DomainForm';
 import { BasePropertiesPanel } from './internal/components/domainproperties/BasePropertiesPanel';
 import { DomainFieldsDisplay } from './internal/components/domainproperties/DomainFieldsDisplay';
@@ -1009,7 +1009,6 @@ export {
     initEditableGridModels,
     MAX_EDITABLE_GRID_ROWS,
     EditableGridLoaderFromSelection,
-    PlacementType,
     EditableGridPanel,
     EditableGridPanelForUpdate,
     EditableGridTabs,
@@ -1207,6 +1206,7 @@ export {
     AddEntityButton,
     RemoveEntityButton,
     getSampleOperationConfirmationData,
+    getDeleteConfirmationData,
     getEntityTypeOptions,
     getCrossFolderSelectionResult,
     getOperationConfirmationData,
@@ -1353,7 +1353,6 @@ export {
     saveAssayDesign,
     fetchProtocol,
     AssayProtocolModel,
-    JsonType,
     SAMPLE_TYPE,
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE,

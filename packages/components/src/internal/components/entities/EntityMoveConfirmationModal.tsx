@@ -19,13 +19,13 @@ import { ProjectConfigurableDataType } from './models';
 export interface EntityMoveConfirmationModalProps extends Omit<ConfirmModalProps, 'onConfirm'> {
     currentContainer?: Container;
     dataType?: ProjectConfigurableDataType;
-    fromTypeRowId?: number;
+    dataTypeRowId?: number;
     nounPlural: string;
     onConfirm: (targetContainer: string, targetName: string, userComment: string) => void;
 }
 
 export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> = memo(props => {
-    const { children, onConfirm, nounPlural, currentContainer, dataType, fromTypeRowId, ...confirmModalProps } = props;
+    const { children, onConfirm, nounPlural, currentContainer, dataType, dataTypeRowId, ...confirmModalProps } = props;
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [containerOptions, setContainerOptions] = useState<SelectInputOption[]>();
@@ -53,7 +53,7 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
                         depth: 1,
                     });
 
-                    const excludedFolders = await api.folder.getDataTypeExcludedProjects(dataType, fromTypeRowId);
+                    const excludedFolders = await api.folder.getDataTypeExcludedProjects(dataType, dataTypeRowId);
 
                     // if user doesn't have permissions to the parent/project, the response will come back with an empty Container object
                     folders = folders.filter(c => c !== undefined && c.id !== '');

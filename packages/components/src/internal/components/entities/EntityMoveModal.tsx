@@ -31,7 +31,7 @@ export interface EntityMoveModalProps {
     api?: ComponentsAPIWrapper;
     currentContainer?: Container; // used in the single move case when the item is not in the current container
     entityDataType: EntityDataType;
-    fromTypeRowId?: number;
+    dataTypeRowId?: number;
     maxSelected: number;
     onAfterMove: () => void;
     onCancel: () => void;
@@ -51,7 +51,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
         entityDataType,
         maxSelected,
         targetAppURL,
-        fromTypeRowId,
+        dataTypeRowId,
     } = props;
     const { nounPlural } = entityDataType;
     const { createNotification } = useNotificationsContext();
@@ -227,7 +227,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                     currentContainer={currentContainer}
                     title={title}
                     dataType={entityDataType.projectConfigurableDataType}
-                    fromTypeRowId={fromTypeRowId}
+                    dataTypeRowId={dataTypeRowId}
                 >
                     {message}
                 </EntityMoveConfirmationModal>

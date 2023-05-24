@@ -202,11 +202,20 @@ export const DataTypeSelector: FC<Props> = memo(props => {
                                     <div className="help-block margin-left-more">{dataType.sublabel}</div>
                                 )}
                                 {!!dataType.description && (
-                                    <Tip caption={dataType.description}>
-                                        <div className="help-block margin-left-more short_description">
-                                            {dataType.description}
-                                        </div>
-                                    </Tip>
+                                    <>
+                                        {dataType.description.length > 30 && (
+                                            <Tip caption={dataType.description}>
+                                                <div className="help-block margin-left-more short_description">
+                                                    {dataType.description}
+                                                </div>
+                                            </Tip>
+                                        )}
+                                        {dataType.description.length <= 30 && (
+                                            <div className="help-block margin-left-more short_description">
+                                                {dataType.description}
+                                            </div>
+                                        )}
+                                    </>
                                 )}
                                 {_getUncheckedEntityWarning(dataType.rowId)}
                             </li>

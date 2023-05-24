@@ -877,7 +877,7 @@ export const initParentOptionsSelects = (
                 const sets: IParentOption[] = [];
                 responses.forEach(result => {
                     const rows = result.rows;
-                    const isDataClass = result.schemaQuery?.queryName?.toLowerCase() === 'dataclass';
+                    const isDataClass = result.schemaQuery?.queryName?.toLowerCase() === 'dataclasses';
                     const prefix = isDataClass ? DATA_CLASS_IMPORT_PREFIX : SAMPLE_SET_IMPORT_PREFIX;
                     const labelPrefix = isDataClass ? 'Data Class' : 'Sample Type';
 

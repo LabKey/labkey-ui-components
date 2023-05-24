@@ -1,4 +1,4 @@
-import React, { ComponentType, PureComponent, ReactNode } from 'react';
+import React, { ComponentType, ElementType, PureComponent, ReactNode } from 'react';
 import { Filter } from '@labkey/api';
 // eslint cannot find Draft for some reason, but Intellij can.
 // eslint-disable-next-line import/named
@@ -146,11 +146,11 @@ const paramsEqual = (oldParams, newParams): boolean => {
 /**
  * A wrapper for LabKey selectRows API. For in-depth documentation and examples see components/docs/QueryModel.md.
  * @param ComponentToWrap: A component that implements generic Props and InjectedQueryModels.
- * @returns A react ComponentType that implements generic Props and MakeQueryModels.
+ * @returns A react ElementType that implements generic Props and MakeQueryModels.
  */
 export function withQueryModels<Props>(
     ComponentToWrap: ComponentType<Props & InjectedQueryModels>
-): ComponentType<Props & MakeQueryModels> {
+): ElementType<Props & MakeQueryModels> {
     type WrappedProps = Props & MakeQueryModels & WithRouterProps;
 
     const initModels = (props: WrappedProps): QueryModelMap => {
@@ -952,5 +952,5 @@ export function withQueryModels<Props>(
         queryConfigs: {},
     };
 
-    return withRouter(ComponentWithQueryModels) as ComponentType<Props & MakeQueryModels>;
+    return withRouter(ComponentWithQueryModels) as ElementType<Props & MakeQueryModels>;
 }

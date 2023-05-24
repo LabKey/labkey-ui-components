@@ -1928,7 +1928,7 @@
     date-fns "^2.0.1"
     react-popper "^2.2.5"
 
-"@types/react-dom@~16.9.19":
+"@types/react-dom@~16.9.17":
   version "16.9.19"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.9.19.tgz#6a139c26b02dec533a7fa131f084561babb10a8f"
   integrity sha512-xC8D280Bf6p0zguJ8g62jcEOKZiUbx9sIe6O3tT/lKfR87A7A6g65q13z6D5QUMIa/6yFPkNhqjF5z/VVZEYqQ==
@@ -1967,7 +1967,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@>=16.9.11", "@types/react@^16", "@types/react@~16.14.41":
+"@types/react@*", "@types/react@>=16.9.11", "@types/react@^16", "@types/react@~16.14.34":
   version "16.14.41"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.14.41.tgz#55c4e7ebb736ca4e2379e97a4e0c1803150ed8d4"
   integrity sha512-h+joCKF2r5rdECoM1U8WCEIHBp5/0TSR5Nyq8gtnnYY1n2WqGuj3indYqTjMb2/b5g2rfxJV6u4jUFq95lbT6Q==

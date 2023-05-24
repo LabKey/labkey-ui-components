@@ -1530,10 +1530,10 @@
   resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.21.0.tgz#e64741a197e56c4e11889c9943da0a7ade06f6cf"
   integrity sha512-ydxt19BW7bF+DYYJNfQmmgw177xPUuS946wc6PgKFkTXJUW3CA+33AirXUB5D+waJZwdXmwLubMf41gK1qP17g==
 
-"@labkey/build@6.11.0-fb-package-updates-0623.1":
-  version "6.11.0-fb-package-updates-0623.1"
-  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/build/-/@labkey/build-6.11.0-fb-package-updates-0623.1.tgz#b8a3fc112a320b8aa0fca1de103b179ae6ff9fa8"
-  integrity sha512-32I13e0QDoL7CcrYrzzzIyn2YeB/3v5dwg5TqDHTu3YlGGC9I92LTZOJctVwSYA5wbxtaPW/51Aq3u7jcT9BlQ==
+"@labkey/build@6.11.0-fb-package-updates-0623.2":
+  version "6.11.0-fb-package-updates-0623.2"
+  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/build/-/@labkey/build-6.11.0-fb-package-updates-0623.2.tgz#98a8cecf8c9719f0c305bfc783ab6b08c901edba"
+  integrity sha512-ccvfrDbSDxdcx0ev6W1luCCLE8aGXicDRwJ8LHrXKMBPZGZpHQn930r8PUVY4KfshVcwK211HBACOruMb5htqw==
   dependencies:
     "@babel/core" "~7.21.8"
     "@babel/plugin-proposal-class-properties" "~7.18.6"
@@ -1556,7 +1556,7 @@
     sass "~1.62.1"
     sass-loader "~13.3.0"
     style-loader "~3.3.3"
-    typescript "~4.9.5"
+    typescript "~5.0.4"
     webpack "~5.84.0"
     webpack-bundle-analyzer "~4.8.0"
     webpack-cli "~5.1.1"
@@ -7784,10 +7784,10 @@ typed-array-length@^1.0.4:
     for-each "^0.3.3"
     is-typed-array "^1.1.9"
 
-typescript@~4.9.5:
-  version "4.9.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.9.5.tgz#095979f9bcc0d09da324d58d03ce8f8374cbe65a"
-  integrity sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==
+typescript@~5.0.4:
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.0.4.tgz#b217fd20119bd61a94d4011274e0ab369058da3b"
+  integrity sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==
 
 unbox-primitive@^1.0.2:
   version "1.0.2"

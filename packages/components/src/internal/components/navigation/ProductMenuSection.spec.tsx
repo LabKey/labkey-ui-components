@@ -357,33 +357,4 @@ describe('ProductMenuSection render', () => {
         expect(menuSection.find('.menu-section-header').length).toBe(1);
         expect(menuSection.find('.menu-section-header').childAt(0).prop('href')).toBe('www.labkey.org');
     });
-
-    test('dashboardImgURL', () => {
-        const section = MenuSectionModel.create({
-            label: 'Sample Sets',
-            items: List<MenuSectionModel>(),
-            key: 'samples',
-            url: 'www.labkey.org',
-        });
-
-        const menuSection = mountWithServerContext(
-            <ProductMenuSection
-                containerPath="/test/sub"
-                currentProductId="testProductHeaderUrl"
-                section={section}
-                dashboardImgURL="dashboard"
-                config={new MenuSectionConfig({})}
-            />,
-            getDefaultServerContext()
-        );
-
-        expect(menuSection.find('.menu-section-header')).toHaveLength(2);
-        expect(menuSection.find('hr')).toHaveLength(1);
-        expect(menuSection.find('ul')).toHaveLength(1);
-        expect(menuSection.find('li')).toHaveLength(3);
-        expect(menuSection.find('li').last().text()).toBe(' Dashboard');
-        expect(menuSection.find('li').last().childAt(0).prop('href')).toBe(
-            '/labkey/samplemanager/test/sub/app.view#/home'
-        );
-    });
 });

@@ -846,10 +846,7 @@ export const initParentOptionsSelects = (
                 schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
                 columns: 'LSID, Name, RowId, Folder',
                 containerFilter: Query.containerFilter.currentPlusProjectAndShared,
-                filterArray:
-                    exclusions?.length > 0
-                        ? [Filter.create('RowId', exclusions, Filter.Types.NOT_IN)]
-                        : null,
+                filterArray: exclusions?.length > 0 ? [Filter.create('RowId', exclusions, Filter.Types.NOT_IN)] : null,
             })
         );
     }
@@ -863,10 +860,7 @@ export const initParentOptionsSelects = (
                 schemaQuery: SCHEMAS.EXP_TABLES.DATA_CLASSES,
                 columns: 'LSID, Name, RowId, Folder, Category',
                 containerFilter: Query.containerFilter.currentPlusProjectAndShared,
-                filterArray:
-                    exclusions?.length > 0
-                        ? [Filter.create('RowId', exclusions, Filter.Types.NOT_IN)]
-                        : null,
+                filterArray: exclusions?.length > 0 ? [Filter.create('RowId', exclusions, Filter.Types.NOT_IN)] : null,
             })
         );
     }
@@ -936,4 +930,4 @@ export const initParentOptionsSelects = (
                 reject(error);
             });
     });
-}
+};

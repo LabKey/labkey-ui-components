@@ -69,16 +69,6 @@ export interface EntityAPIWrapper {
         importFileController?: string,
         saveToPipeline?: boolean
     ) => Promise<any>;
-    loadNameExpressionOptions: (containerPath?: string) => Promise<GetNameExpressionOptionsResponse>;
-    moveEntities: (
-        sourceContainer: Container,
-        targetContainer: string,
-        entityDataType: EntityDataType,
-        rowIds?: number[],
-        selectionKey?: string,
-        useSnapshotSelection?: boolean,
-        auditUserComment?: string
-    ) => Promise<MoveEntitiesResult>;
     initParentOptionsSelects: (
         includeSampleTypes: boolean,
         includeDataClasses: boolean,
@@ -92,6 +82,16 @@ export interface EntityAPIWrapper {
         parentAliases: Map<string, IParentAlias>;
         parentOptions: IParentOption[];
     }>;
+    loadNameExpressionOptions: (containerPath?: string) => Promise<GetNameExpressionOptionsResponse>;
+    moveEntities: (
+        sourceContainer: Container,
+        targetContainer: string,
+        entityDataType: EntityDataType,
+        rowIds?: number[],
+        selectionKey?: string,
+        useSnapshotSelection?: boolean,
+        auditUserComment?: string
+    ) => Promise<MoveEntitiesResult>;
 }
 
 export class EntityServerAPIWrapper implements EntityAPIWrapper {

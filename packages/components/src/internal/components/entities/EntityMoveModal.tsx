@@ -29,14 +29,13 @@ import { EntityMoveConfirmationModal } from './EntityMoveConfirmationModal';
 
 export interface EntityMoveModalProps {
     api?: ComponentsAPIWrapper;
-    currentContainer?: Container;
+    currentContainer?: Container; // used in the single move case when the item is not in the current container
     entityDataType: EntityDataType;
     fromTypeRowId?: number;
     maxSelected: number;
     onAfterMove: () => void;
     onCancel: () => void;
     queryModel: QueryModel;
-    // used in the single move case when the item is not in the current container
     targetAppURL?: AppURL;
     useSelected: boolean;
 }

@@ -122,7 +122,7 @@ export function withAssayModels<Props>(
                 const definitionsResult = await assayLoader.loadDefinitions(assayContainerPath);
                 let definitions = definitionsResult.toArray();
 
-                if (excludedAssayDesigns && excludedAssayDesigns.length > 0)
+                if (excludedAssayDesigns?.length > 0)
                     definitions = definitions.filter(def => excludedAssayDesigns.indexOf(def.id) === -1);
 
                 this.updateModel({

@@ -45,7 +45,9 @@ export function processChartData(rows: Row[], options?: ProcessChartOptions): Ch
             x: getChartRowData(row, namePath),
             xSub: groupPath ? getChartRowData(row, groupPath) : undefined,
         }));
-    data.sort(naturalSort);
+    data.sort((a, b) => {
+        return naturalSort(a.x, b.x);
+    });
 
     let barFillColors;
     if (colorPath) {

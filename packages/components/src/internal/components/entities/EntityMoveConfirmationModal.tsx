@@ -69,8 +69,6 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
                         folders = folders.filter(c => excludedFolders.indexOf(c.id) === -1);
                     }
 
-                    folders = folders.filter(c => c.id !== container_.id);
-
                     setContainerOptions(
                         folders.map(f => ({
                             label: f.path === HOME_PATH ? HOME_TITLE : f.title,

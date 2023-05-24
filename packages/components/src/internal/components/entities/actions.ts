@@ -847,7 +847,7 @@ export const initParentOptionsSelects = (
                 columns: 'LSID, Name, RowId, Folder',
                 containerFilter: Query.containerFilter.currentPlusProjectAndShared,
                 filterArray:
-                    exclusions && exclusions.length > 0
+                    exclusions?.length > 0
                         ? [Filter.create('RowId', exclusions, Filter.Types.NOT_IN)]
                         : null,
             })
@@ -864,7 +864,7 @@ export const initParentOptionsSelects = (
                 columns: 'LSID, Name, RowId, Folder, Category',
                 containerFilter: Query.containerFilter.currentPlusProjectAndShared,
                 filterArray:
-                    exclusions && exclusions.length > 0
+                    exclusions?.length > 0
                         ? [Filter.create('RowId', exclusions, Filter.Types.NOT_IN)]
                         : null,
             })

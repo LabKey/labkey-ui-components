@@ -46,12 +46,9 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
     const { createNotification, dismissNotifications } = useNotificationsContext();
     const { NotebookProjectSettingsComponent, projectDataTypes, ProjectFreezerSelectionComponent } =
         useAdminAppContext();
-    const [disabledTypesMap, setDisabledTypesMap] = useState<{ [key: string]: number[] }>(undefined);
     const { api } = useAppContext<AppContext>();
 
-    useEffect(() => {
-        setDisabledTypesMap(getProjectDataExclusion(moduleContext));
-    }, [moduleContext]);
+    const disabledTypesMap = getProjectDataExclusion(moduleContext);
 
     const onError = useCallback((e: string) => {
         setError(e);
@@ -108,7 +105,6 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
                         />
                     </>
                 )}
-                {isProductProjectDataTypeSelectionEnabled() && <LoadingSpinner />}
             </>
         );
     }, [moduleContext, projectDataTypes, disabledTypesMap, container]);

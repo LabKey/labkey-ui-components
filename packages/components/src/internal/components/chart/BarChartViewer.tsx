@@ -77,12 +77,12 @@ export class BarChartViewer extends PureComponent<Props, State> {
     }
 
     loadChartData = async (): Promise<void> => {
-        const { chartConfigs, containerFilter, dataTypeExclusions } = this.props;
+        const { containerFilter, dataTypeExclusions } = this.props;
         const { resultRows, currentGroup } = this.state;
 
         if (!resultRows.hasOwnProperty(currentGroup)) {
             try {
-                const currentConfig = chartConfigs[currentGroup];
+                const currentConfig = this.getSelectedChartGroup();
                 const { itemCountFilters, itemCountSQ, getProjectExclusionFilter } = currentConfig;
                 const projectExclusionFilter = getProjectExclusionFilter(dataTypeExclusions);
 

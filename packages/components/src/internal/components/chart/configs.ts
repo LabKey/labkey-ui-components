@@ -18,7 +18,7 @@ const CHART_SELECTORS: Record<string, ChartSelector> = {
 const getExclusionFilter = (dataType: string): ((projectExclusions: { [key: string]: number[] }) => Filter.IFilter) => {
     return (projectExclusions: { [key: string]: number[] }): Filter.IFilter => {
         const exclusions = projectExclusions?.[dataType];
-        if (exclusions && exclusions.length > 0) return Filter.create('RowId', exclusions, Filter.Types.NOT_IN);
+        if (exclusions?.length > 0) return Filter.create('RowId', exclusions, Filter.Types.NOT_IN);
         return null;
     };
 };

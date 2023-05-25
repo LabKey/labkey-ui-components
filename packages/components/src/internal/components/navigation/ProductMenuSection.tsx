@@ -74,6 +74,8 @@ export class ProductMenuSection extends PureComponent<MenuSectionProps> {
             emptyURL = createProductUrl(section.productId, currentProductId, config.emptyAppURL, containerPath);
         }
 
+        const visibleItems = section.items.filter(item => !item.hidden);
+
         return (
             <ul>
                 <li className="menu-section-header clickable-item">
@@ -82,9 +84,9 @@ export class ProductMenuSection extends PureComponent<MenuSectionProps> {
                 <li>
                     <hr />
                 </li>
-                {section.items.isEmpty() ? (
+                {(section.items.isEmpty() || visibleItems.isEmpty()) ? (
                     <>
-                        {config.emptyText && <li className="empty-section">{config.emptyText}</li>}
+                        {<li className="empty-section">{section.items.isEmpty() ? config.emptyText : config.filteredEmptyText}</li>}
                         {emptyURL && !hideEmptyUrl && (
                             <li className="empty-section-link">
                                 <a href={getHref(emptyURL)}>{config.emptyURLText}</a>
@@ -92,7 +94,7 @@ export class ProductMenuSection extends PureComponent<MenuSectionProps> {
                         )}
                     </>
                 ) : (
-                    section.items
+                    visibleItems
                         .sortBy(item => item.label, naturalSort)
                         .map(item => {
                             const labelDisplay =

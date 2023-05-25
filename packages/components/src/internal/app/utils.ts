@@ -387,6 +387,7 @@ export function getStorageSectionConfig(user: User, currentProductId: string, mo
     if (isFreezerManagementEnabled(moduleContext)) {
         let locationsMenuConfig = new MenuSectionConfig({
             emptyText: 'No storage has been defined',
+            filteredEmptyText: 'No storage available',
             iconURL: imageURL('_images', 'freezer_menu.svg'),
             headerURLPart: HOME_KEY,
         });
@@ -408,6 +409,7 @@ export function addSourcesSectionConfig(
 ): List<Map<string, MenuSectionConfig>> {
     let sourcesMenuConfig = new MenuSectionConfig({
         emptyText: 'No source types have been defined',
+        filteredEmptyText: 'No source types available',
         iconURL: imageURL('_images', 'source_type.svg'),
     });
     if (userCanDesignSourceTypes(user)) {
@@ -426,6 +428,7 @@ export function addSamplesSectionConfig(
 ): List<Map<string, MenuSectionConfig>> {
     let samplesMenuConfig = new MenuSectionConfig({
         emptyText: 'No sample types have been defined',
+        filteredEmptyText: 'No sample types available',
         iconURL: imageURL('_images', 'samples.svg'),
     });
     if (user.hasDesignSampleTypesPermission()) {
@@ -445,6 +448,7 @@ export function addAssaysSectionConfig(
 ): List<Map<string, MenuSectionConfig>> {
     let assaysMenuConfig = new MenuSectionConfig({
         emptyText: 'No assays have been defined',
+        filteredEmptyText: 'No assays available',
         iconURL: imageURL('_images', 'assay.svg'),
     });
     if (user.hasDesignAssaysPermission()) {

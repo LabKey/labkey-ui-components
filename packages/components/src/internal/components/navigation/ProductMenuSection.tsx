@@ -86,7 +86,7 @@ export class ProductMenuSection extends PureComponent<MenuSectionProps> {
                 </li>
                 {(section.items.isEmpty() || visibleItems.isEmpty()) ? (
                     <>
-                        {<li className="empty-section">{section.items.isEmpty() ? config.emptyText : config.filteredEmptyText}</li>}
+                        {(config.emptyText || config.filteredEmptyText) && <li className="empty-section">{section.items.isEmpty() ? config.emptyText : config.filteredEmptyText}</li>}
                         {emptyURL && !hideEmptyUrl && (
                             <li className="empty-section-link">
                                 <a href={getHref(emptyURL)}>{config.emptyURLText}</a>

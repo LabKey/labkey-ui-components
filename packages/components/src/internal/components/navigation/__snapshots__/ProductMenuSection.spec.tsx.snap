@@ -6,6 +6,7 @@ exports[`ProductMenuSection render empty section no text 1`] = `
     Immutable.Record {
       "activeJobIconCls": "fa-spinner fa-pulse",
       "emptyText": undefined,
+      "filteredEmptyText": undefined,
       "emptyAppURL": undefined,
       "emptyURLText": "Get started...",
       "headerURLPart": undefined,
@@ -61,6 +62,7 @@ exports[`ProductMenuSection render empty section with empty text and create link
     Immutable.Record {
       "activeJobIconCls": "fa-spinner fa-pulse",
       "emptyText": "Test empty text",
+      "filteredEmptyText": "Empty due to exclusion",
       "emptyAppURL": undefined,
       "emptyURLText": "Test empty link",
       "headerURLPart": undefined,
@@ -115,12 +117,99 @@ exports[`ProductMenuSection render empty section with empty text and create link
 </ProductMenuSection>
 `;
 
+exports[`ProductMenuSection render not empty, but all items hidden 1`] = `
+<ProductMenuSection
+  config={
+    Immutable.Record {
+      "activeJobIconCls": "fa-spinner fa-pulse",
+      "emptyText": "Test empty text",
+      "filteredEmptyText": "Empty due to exclusion",
+      "emptyAppURL": undefined,
+      "emptyURLText": "Test empty link",
+      "headerURLPart": undefined,
+      "headerText": undefined,
+      "iconCls": undefined,
+      "iconURL": "/testProduct/images/samples.svg",
+      "showActiveJobIcon": true,
+      "useOriginalURL": false,
+    }
+  }
+  containerPath="/test/path"
+  currentProductId="testProduct"
+  section={
+    Immutable.Record {
+      "label": "Sample Sets",
+      "url": undefined,
+      "items": Immutable.List [
+        Immutable.Record {
+          "id": 1,
+          "key": undefined,
+          "label": "Sample Set 1",
+          "url": undefined,
+          "hidden": true,
+          "orderNum": undefined,
+          "originalUrl": undefined,
+          "requiresLogin": false,
+          "hasActiveJob": false,
+          "fromSharedContainer": false,
+        },
+        Immutable.Record {
+          "id": 2,
+          "key": undefined,
+          "label": "Sample Set 2",
+          "url": undefined,
+          "hidden": true,
+          "orderNum": undefined,
+          "originalUrl": undefined,
+          "requiresLogin": false,
+          "hasActiveJob": true,
+          "fromSharedContainer": false,
+        },
+      ],
+      "totalCount": 0,
+      "key": "samples",
+      "productId": undefined,
+      "sectionKey": undefined,
+    }
+  }
+>
+  <ul>
+    <li
+      className="menu-section-header clickable-item"
+    >
+      <a
+        href="#/samples"
+      >
+        <img
+          alt="Sample Sets icon"
+          className="menu-section-image "
+          height="24px"
+          src="/testProduct/images/samples.svg"
+          width="24px"
+        />
+         
+        Sample Sets
+      </a>
+    </li>
+    <li>
+      <hr />
+    </li>
+    <li
+      className="empty-section"
+    >
+      Empty due to exclusion
+    </li>
+  </ul>
+</ProductMenuSection>
+`;
+
 exports[`ProductMenuSection render one column section 1`] = `
 <ProductMenuSection
   config={
     Immutable.Record {
       "activeJobIconCls": "fa-spinner fa-pulse",
       "emptyText": undefined,
+      "filteredEmptyText": undefined,
       "emptyAppURL": undefined,
       "emptyURLText": "Get started...",
       "headerURLPart": undefined,
@@ -143,6 +232,7 @@ exports[`ProductMenuSection render one column section 1`] = `
           "key": undefined,
           "label": "Assay 1",
           "url": undefined,
+          "hidden": false,
           "orderNum": undefined,
           "originalUrl": undefined,
           "requiresLogin": false,
@@ -154,6 +244,7 @@ exports[`ProductMenuSection render one column section 1`] = `
           "key": undefined,
           "label": "Assay 2",
           "url": undefined,
+          "hidden": false,
           "orderNum": undefined,
           "originalUrl": undefined,
           "requiresLogin": false,
@@ -165,6 +256,7 @@ exports[`ProductMenuSection render one column section 1`] = `
           "key": undefined,
           "label": "Assay 3",
           "url": undefined,
+          "hidden": false,
           "orderNum": undefined,
           "originalUrl": undefined,
           "requiresLogin": false,
@@ -176,6 +268,7 @@ exports[`ProductMenuSection render one column section 1`] = `
           "key": undefined,
           "label": "Assay 4",
           "url": undefined,
+          "hidden": false,
           "orderNum": undefined,
           "originalUrl": undefined,
           "requiresLogin": false,
@@ -187,6 +280,7 @@ exports[`ProductMenuSection render one column section 1`] = `
           "key": undefined,
           "label": "Assay 5",
           "url": undefined,
+          "hidden": false,
           "orderNum": undefined,
           "originalUrl": undefined,
           "requiresLogin": false,
@@ -257,6 +351,7 @@ exports[`ProductMenuSection render one-column section 1`] = `
     Immutable.Record {
       "activeJobIconCls": "fa-spinner fa-pulse",
       "emptyText": undefined,
+      "filteredEmptyText": undefined,
       "emptyAppURL": undefined,
       "emptyURLText": "Get started...",
       "headerURLPart": undefined,
@@ -279,6 +374,7 @@ exports[`ProductMenuSection render one-column section 1`] = `
           "key": undefined,
           "label": "Sample Set 1",
           "url": undefined,
+          "hidden": false,
           "orderNum": undefined,
           "originalUrl": undefined,
           "requiresLogin": false,
@@ -290,6 +386,7 @@ exports[`ProductMenuSection render one-column section 1`] = `
           "key": undefined,
           "label": "Sample Set 2",
           "url": undefined,
+          "hidden": false,
           "orderNum": undefined,
           "originalUrl": undefined,
           "requiresLogin": false,
@@ -301,6 +398,7 @@ exports[`ProductMenuSection render one-column section 1`] = `
           "key": undefined,
           "label": "Sample Set 3",
           "url": undefined,
+          "hidden": false,
           "orderNum": undefined,
           "originalUrl": undefined,
           "requiresLogin": false,
@@ -312,6 +410,7 @@ exports[`ProductMenuSection render one-column section 1`] = `
           "key": undefined,
           "label": "Sample Set 4",
           "url": undefined,
+          "hidden": false,
           "orderNum": undefined,
           "originalUrl": undefined,
           "requiresLogin": false,
@@ -384,6 +483,7 @@ exports[`ProductMenuSection render section with custom headerURL and headerText 
     Immutable.Record {
       "activeJobIconCls": "fa-spinner fa-pulse",
       "emptyText": undefined,
+      "filteredEmptyText": undefined,
       "emptyAppURL": undefined,
       "emptyURLText": "Get started...",
       "headerURLPart": AppURL {

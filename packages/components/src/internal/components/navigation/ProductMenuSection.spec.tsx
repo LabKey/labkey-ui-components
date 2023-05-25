@@ -46,6 +46,33 @@ describe('ProductMenuSection render', () => {
         },
     ]);
 
+    const sampleSetItemsAllHidden = List<MenuSectionModel>([
+        {
+            id: 1,
+            label: 'Sample Set 1',
+            hidden: true,
+        },
+        {
+            id: 2,
+            label: 'Sample Set 2',
+            hasActiveJob: true,
+            hidden: true,
+        }
+    ]);
+
+    const sampleSetItemsSomeHidden = List<MenuSectionModel>([
+        {
+            id: 1,
+            label: 'Sample Set 1',
+        },
+        {
+            id: 2,
+            label: 'Sample Set 2',
+            hasActiveJob: true,
+            hidden: true,
+        }
+    ]);
+
     const assayItems = List<MenuSectionModel>([
         {
             id: 11,
@@ -109,6 +136,7 @@ describe('ProductMenuSection render', () => {
     test('empty section with empty text and create link', () => {
         const config = new MenuSectionConfig({
             emptyText: 'Test empty text',
+            filteredEmptyText: 'Empty due to exclusion',
             emptyURL: AppURL.create('sample', 'new'),
             emptyURLText: 'Test empty link',
             iconURL: '/testProduct/images/samples.svg',
@@ -131,11 +159,77 @@ describe('ProductMenuSection render', () => {
 
         expect(menuSection.find('li.empty-section').length).toBe(1);
         expect(menuSection.contains('Test empty text')).toBe(true);
+        expect(menuSection.contains('Empty due to exclusion')).toBe(false);
 
         expect(menuSection.find('.menu-section-header').length).toBe(1);
         expect(menuSection.find('.menu-section-header').childAt(0).prop('href')).toBe('#/samples');
 
         expect(menuSection).toMatchSnapshot();
+    });
+
+    test('not empty, but all items hidden', () => {
+        const config = new MenuSectionConfig({
+            emptyText: 'Test empty text',
+            filteredEmptyText: 'Empty due to exclusion',
+            emptyURL: AppURL.create('sample', 'new'),
+            emptyURLText: 'Test empty link',
+            iconURL: '/testProduct/images/samples.svg',
+        });
+        const section = MenuSectionModel.create({
+            label: 'Sample Sets',
+            items: sampleSetItemsAllHidden,
+            key: 'samples',
+        });
+
+        const menuSection = mountWithServerContext(
+            <ProductMenuSection
+                config={config}
+                containerPath="/test/path"
+                currentProductId="testProduct"
+                section={section}
+            />,
+            getDefaultServerContext()
+        );
+
+        expect(menuSection.find('li.empty-section').length).toBe(1);
+        expect(menuSection.contains('Test empty text')).toBe(false);
+        expect(menuSection.contains('Empty due to exclusion')).toBe(true);
+
+        expect(menuSection.find('.menu-section-header').length).toBe(1);
+        expect(menuSection.find('.menu-section-header').childAt(0).prop('href')).toBe('#/samples');
+
+        expect(menuSection).toMatchSnapshot();
+    });
+
+    test('some items hidden', () => {
+        const config = new MenuSectionConfig({
+            emptyText: 'Test empty text',
+            filteredEmptyText: 'Empty due to exclusion',
+            emptyURL: AppURL.create('sample', 'new'),
+            emptyURLText: 'Test empty link',
+            iconURL: '/testProduct/images/samples.svg',
+        });
+        const section = MenuSectionModel.create({
+            label: 'Sample Sets',
+            items: sampleSetItemsSomeHidden,
+            key: 'samples',
+        });
+
+        const menuSection = mountWithServerContext(
+            <ProductMenuSection
+                config={config}
+                containerPath="/test/path"
+                currentProductId="testProduct"
+                section={section}
+            />,
+            getDefaultServerContext()
+        );
+
+        expect(menuSection.find('li.empty-section').length).toBe(0);
+        expect(menuSection.contains('Test empty text')).toBe(false);
+        expect(menuSection.contains('Empty due to exclusion')).toBe(false);
+        expect(menuSection.find('li').length).toBe(3);
+        menuSection.unmount();
     });
 
     test('section with custom headerURL and headerText', () => {

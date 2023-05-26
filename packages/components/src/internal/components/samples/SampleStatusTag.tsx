@@ -29,12 +29,16 @@ export const SampleStatusTag: FC<Props> = memo(props => {
         (async () => {
             // if the queryModel had the status label value but not the type, query to get it from the SampleStatus table
             if (label && !statusType) {
-                const response = await selectRows({
-                    filterArray: [Filter.create('Label', label)],
-                    schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_STATUS,
-                });
-                const statusTypeStr = caseInsensitive(response.rows[0], 'StatusType')?.value;
-                if (statusTypeStr) setQueryStatusType(SampleStateType[statusTypeStr]);
+                try {
+                    const response = await selectRows({
+                        filterArray: [Filter.create('Label', label)],
+                        schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_STATUS,
+                    });
+                    const statusTypeStr = caseInsensitive(response.rows[0], 'StatusType')?.value;
+                    if (statusTypeStr) setQueryStatusType(SampleStateType[statusTypeStr]);
+                } catch (e) {
+                    console.error(e);
+                }
             }
         })();
     }, [label, statusType]);

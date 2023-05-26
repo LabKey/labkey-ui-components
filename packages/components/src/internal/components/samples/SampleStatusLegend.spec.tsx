@@ -61,20 +61,20 @@ describe('SampleStatusLegend', () => {
         wrapper.unmount();
     });
 
-    // test('no rows', () => {
-    //     const wrapper = mount(<SampleStatusLegendImpl {...DEFAULT_PROPS} queryModels={{ model: MODEL_NO_ROWS }} />);
-    //     validate(wrapper, false);
-    //     expect(wrapper.find('td')).toHaveLength(1);
-    //     expect(wrapper.find('td').text()).toBe('No sample statuses are defined.');
-    //     wrapper.unmount();
-    // });
-    //
-    // test('with rows', () => {
-    //     const wrapper = mount(<SampleStatusLegendImpl {...DEFAULT_PROPS} queryModels={{ model: MODEL_WITH_ROWS }} />);
-    //     validate(wrapper, false, 3);
-    //     expect(wrapper.find('.sample-status-legend--description').at(0).text()).toBe('');
-    //     expect(wrapper.find('.sample-status-legend--description').at(1).text()).toBe('');
-    //     expect(wrapper.find('.sample-status-legend--description').at(2).text()).toBe('with desc');
-    //     wrapper.unmount();
-    // });
+    test('no rows', () => {
+        const wrapper = mount(<SampleStatusLegendImpl {...DEFAULT_PROPS} queryModels={{ model: MODEL_NO_ROWS }} />);
+        validate(wrapper, false);
+        expect(wrapper.find('td')).toHaveLength(1);
+        expect(wrapper.find('td').text()).toBe('No sample statuses are defined.');
+        wrapper.unmount();
+    });
+
+    test('with rows', () => {
+        const wrapper = mount(<SampleStatusLegendImpl {...DEFAULT_PROPS} queryModels={{ model: MODEL_WITH_ROWS }} />);
+        validate(wrapper, false, 3);
+        expect(wrapper.find('.sample-status-legend--description').at(0).text()).toBe('');
+        expect(wrapper.find('.sample-status-legend--description').at(1).text()).toBe('');
+        expect(wrapper.find('.sample-status-legend--description').at(2).text()).toBe('with desc');
+        wrapper.unmount();
+    });
 });

@@ -1,7 +1,7 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.341.0
+### version 2.341.1
 *Released*: 25 May 2023
 * Project level data type - exclude on UI
   * Added App.getProjectDataExclusion utils to get the exclusion for the current folder context

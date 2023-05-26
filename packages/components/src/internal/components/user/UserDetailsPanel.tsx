@@ -141,22 +141,27 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         const { policy, rolesByUniqueName, container, currentUser, api } = this.props;
 
         if (currentUser.isAdmin && !policy && !rolesByUniqueName && container) {
-            const policy_ = await api.fetchPolicy(container.id);
+            try {
+                const policy_ = await api.fetchPolicy(container.id);//
 
-            Security.getRoles({
-                success: rawRoles => {
-                    const roles = processGetRolesResponse(rawRoles);
-                    const rolesByUniqueName_ = getRolesByUniqueName(roles);
+                Security.getRoles({
+                    success: rawRoles => {
+                        const roles = processGetRolesResponse(rawRoles);
+                        const rolesByUniqueName_ = getRolesByUniqueName(roles);
 
-                    this.setState(() => ({
-                        policy: policy_,
-                        rolesByUniqueName: rolesByUniqueName_,
-                    }));
-                },
-                failure: e => {
-                    console.error('Failed to load security roles', e);
-                },
-            });
+                        this.setState(() => ({
+                            policy: policy_,
+                            rolesByUniqueName: rolesByUniqueName_,
+                        }));
+                    },
+                    failure: e => {
+                        console.error('Failed to load security roles', e);
+                    },
+                });
+            }
+            catch (e) {
+                console.error(e);
+            }
         }
     };
 

@@ -220,7 +220,12 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
             return;
         }
 
-        await exportTabs([internalActiveId]);
+        try {
+            await exportTabs([internalActiveId]);
+        }
+        catch (e) {
+            console.error(e);
+        }
     }, [tabOrder, exportTabs, internalActiveId]);
 
     const exportHandlers = { ...onExport, [EXPORT_TYPES.EXCEL]: excelExportHandler };

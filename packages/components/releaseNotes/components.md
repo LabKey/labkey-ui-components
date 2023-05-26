@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 47556: Update color for placeholder text in grids
+*
+
+
 ### version 2.341.1
 *Released*: 26 May 2023
 * Fix await without try/catch

@@ -1,4 +1,4 @@
-import React, {FC, memo, useCallback, useEffect, useState} from 'react';
+import React, { FC, memo, useCallback, useState } from 'react';
 import { WithRouterProps } from 'react-router';
 import { ActionURL } from '@labkey/api';
 
@@ -27,8 +27,10 @@ import { useAdminAppContext } from '../administration/useAdminAppContext';
 
 import { ProjectProperties } from './ProjectProperties';
 import { ProjectDataTypeSelections } from './ProjectDataTypeSelections';
-import {ProjectConfigurableDataType} from "../entities/models";
+import { ProjectConfigurableDataType } from '../entities/models';
+import { PageDetailHeader } from '../forms/PageDetailHeader';
 
+const TITLE = 'Create New Project';
 
 export interface CreateProjectContainerProps {
     api: FolderAPIWrapper;
@@ -38,10 +40,7 @@ export interface CreateProjectContainerProps {
 
 export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(props => {
     const { api, onCancel, onCreated } = props;
-    const {
-        projectDataTypes,
-        ProjectFreezerSelectionComponent,
-    } = useAdminAppContext();
+    const { projectDataTypes, ProjectFreezerSelectionComponent } = useAdminAppContext();
 
     const [error, setError] = useState<string>();
     const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -96,9 +95,9 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
                 {!!error && <Alert>{error}</Alert>}
 
                 <div className="panel panel-default">
+                    <div className="panel-heading">Name of Project</div>
                     <div className="panel-body">
                         <div className="form-horizontal">
-                            <div className="form-subtitle">Name of Project</div>
 
                             <ProjectProperties autoFocus />
 
@@ -183,7 +182,8 @@ export const CreateProjectPage: FC<WithRouterProps> = memo(({ router }) => {
     );
 
     return (
-        <Page notAuthorized={!user.isAdmin} hasHeader={false} title="Create Project">
+        <Page notAuthorized={!user.isAdmin} hasHeader title={TITLE}>
+            <PageDetailHeader title={TITLE} />
             <CreateProjectContainer api={api.folder} onCancel={router.goBack} onCreated={onCreated} />
         </Page>
     );

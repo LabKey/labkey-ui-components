@@ -67,9 +67,9 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
 
     return (
         <div className="panel panel-default">
+            <div className="panel-heading">Data in Project</div>
             <div className="panel-body">
                 <div className="form-horizontal">
-                    <div className="form-subtitle">Data in Project</div>
                     {error && <Alert>{error}</Alert>}
                     <div className="bottom-spacing">Select the types of data that will be used in this project.</div>
                     <Row>

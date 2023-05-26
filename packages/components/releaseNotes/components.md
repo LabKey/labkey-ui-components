@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Data type domain exclude projects
   * Add DataTypeProjectsPanel to show panel in field editor for selecting excluded projects for a given data type domain
+  * Misc updates to admin panel titles for consistency
 
 ### version 2.341.1
 *Released*: 26 May 2023

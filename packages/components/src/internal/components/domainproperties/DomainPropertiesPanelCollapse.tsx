@@ -29,7 +29,7 @@ export function withDomainPropertiesPanelCollapse<Props>(
             super(props);
 
             this.state = {
-                collapsed: false,
+                collapsed: props.initCollapsed,
             };
         }
 

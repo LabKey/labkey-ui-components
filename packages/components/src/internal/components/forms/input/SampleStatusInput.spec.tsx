@@ -83,11 +83,11 @@ describe('SampleStatusInput', () => {
         const component = <SampleStatusInput {...DEFAULT_PROPS} formsy={false} allowDisable />;
         const wrapper = mountWithServerContext(component, { user: TEST_USER_EDITOR });
 
-        await waitForLifecycle(wrapper); // retrieve statuses
+        await waitForLifecycle(wrapper, 5); // retrieve statuses
         act(() => {
             wrapper.find(QuerySelect).prop('onQSChange')('name', 200, [], undefined, undefined);
         });
-        await waitForLifecycle(wrapper); // update after select
+        await waitForLifecycle(wrapper, 5); // update after select
         const discardPanel = wrapper.find(DiscardConsumedSamplesPanel);
         expect(discardPanel).toHaveLength(0);
     });
@@ -96,11 +96,11 @@ describe('SampleStatusInput', () => {
         const component = <SampleStatusInput {...DEFAULT_PROPS} formsy={false} allowDisable />;
         const wrapper = mountWithServerContext(component, { user: TEST_USER_STORAGE_EDITOR });
 
-        await waitForLifecycle(wrapper);
+        await waitForLifecycle(wrapper, 5);
         act(() => {
             wrapper.find(QuerySelect).prop('onQSChange')('name', 200, [], undefined, undefined);
         });
-        await waitForLifecycle(wrapper);
+        await waitForLifecycle(wrapper, 5);
         const discardPanel = wrapper.find(DiscardConsumedSamplesPanel);
         expect(discardPanel).toHaveLength(1);
 
@@ -111,11 +111,11 @@ describe('SampleStatusInput', () => {
         const component = <SampleStatusInput {...DEFAULT_PROPS} formsy={false} />;
         const wrapper = mountWithServerContext(component, { user: TEST_USER_STORAGE_EDITOR });
 
-        await waitForLifecycle(wrapper);
+        await waitForLifecycle(wrapper, 5);
         act(() => {
             wrapper.find(QuerySelect).prop('onQSChange')('name', 200, [], undefined, undefined);
         });
-        await waitForLifecycle(wrapper);
+        await waitForLifecycle(wrapper, 5);
         const discardPanel = wrapper.find(DiscardConsumedSamplesPanel);
         expect(discardPanel).toHaveLength(1);
 
@@ -126,11 +126,11 @@ describe('SampleStatusInput', () => {
         const component = <SampleStatusInput {...DEFAULT_PROPS} formsy={false} />;
         const wrapper = mountWithServerContext(component, { user: TEST_USER_STORAGE_EDITOR });
 
-        await waitForLifecycle(wrapper);
+        await waitForLifecycle(wrapper, 5);
         act(() => {
             wrapper.find(QuerySelect).prop('onQSChange')('name', 100, [], undefined, undefined);
         });
-        await waitForLifecycle(wrapper);
+        await waitForLifecycle(wrapper, 5);
         const discardPanel = wrapper.find(DiscardConsumedSamplesPanel);
         expect(discardPanel).toHaveLength(0);
 

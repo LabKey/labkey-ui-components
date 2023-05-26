@@ -18,7 +18,7 @@ describe('LineageSettings', () => {
         input.simulate('change', { target: { checked: true, name: filter.field } });
         input.simulate('change', { target: { checked: false, name: filter.field } });
         input.simulate('change', { target: { checked: false, name: filter2.field } });
-        await waitForLifecycle(wrapper, 500);
+        await waitForLifecycle(wrapper, 500); // needs long wait
 
         expect(onSettingsChange).toHaveBeenCalledTimes(1);
         expect(onSettingsChange).toHaveBeenCalledWith({ filters: [], originalFilters: [filter, filter2] });

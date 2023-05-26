@@ -4,8 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Issue 47556: Update color for placeholder text in grids
-*
-
+* Issue 47964: Adjust `AncestorRenderer` to display field values that are negative
 
 ### version 2.341.1
 *Released*: 26 May 2023

@@ -269,7 +269,7 @@ export const sleep = (ms = 0): Promise<void> => {
 export const waitForLifecycle = (wrapper: ReactWrapper | ShallowWrapper, ms?: number): Promise<undefined> => {
     // Wrap in react-dom/utils act so we don't get errors in our test logs
     return act(async () => {
-        await sleep(ms);
+        await sleep(ms ?? 100);
         wrapper.update();
     });
 };

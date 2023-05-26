@@ -10,6 +10,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Added FolderAPIWrapper.getDataTypeExcludedProjects util to get the list of excluded projects for a specific data type
   * Modified EntityMoveConfirmationModal to exclude target data types from dropdowns
   * Modified initParentOptionsSelects util to exclude data types
+  * Fix await without try/catch
 
 ### version 2.340.0
 *Released* : 24 May 2023

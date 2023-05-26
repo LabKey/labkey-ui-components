@@ -3,6 +3,7 @@ import { ActionURL, Ajax, Utils } from '@labkey/api';
 import { Container } from '../base/models/Container';
 import { handleRequestFailure } from '../../util/utils';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
+import { ProjectConfigurableDataType } from '../entities/models';
 
 export interface ProjectSettingsOptions {
     allowUserSpecifiedNames?: boolean;
@@ -18,6 +19,7 @@ export interface ProjectSettingsOptions {
 
 export interface FolderAPIWrapper {
     createProject: (options: ProjectSettingsOptions) => Promise<Container>;
+    getDataTypeExcludedProjects: (dataType: ProjectConfigurableDataType, dataTypeRowId: number) => Promise<string[]>;
     renameProject: (options: ProjectSettingsOptions) => Promise<Container>;
     updateProjectDataExclusions: (options: ProjectSettingsOptions) => Promise<void>;
 }
@@ -64,6 +66,23 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
             });
         });
     };
+
+    getDataTypeExcludedProjects = (dataType: ProjectConfigurableDataType, dataTypeRowId: number): Promise<string[]> => {
+        return new Promise((resolve, reject) => {
+            Ajax.request({
+                url: ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getDataTypeExclusion.api'),
+                method: 'GET',
+                params: {
+                    dataType,
+                    dataTypeRowId,
+                },
+                success: Utils.getCallbackWrapper(response => {
+                    resolve(response['excludedProjects']);
+                }),
+                failure: handleRequestFailure(reject, 'Failed to get excluded projects'),
+            });
+        });
+    };
 }
 
 /**
@@ -77,6 +96,7 @@ export function getFolderTestAPIWrapper(
         createProject: mockFn(),
         renameProject: mockFn(),
         updateProjectDataExclusions: mockFn(),
+        getDataTypeExcludedProjects: mockFn(),
         ...overrides,
     };
 }

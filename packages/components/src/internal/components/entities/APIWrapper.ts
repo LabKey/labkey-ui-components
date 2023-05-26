@@ -15,6 +15,7 @@ import {
     getOriginalParentsFromLineage,
     handleEntityFileImport,
     moveEntities,
+    initParentOptionsSelects,
 } from './actions';
 import { DataOperation } from './constants';
 import {
@@ -22,6 +23,8 @@ import {
     EntityDataType,
     EntityIdCreationModel,
     IEntityTypeOption,
+    IParentAlias,
+    IParentOption,
     MoveEntitiesResult,
     OperationConfirmationData,
 } from './models';
@@ -66,6 +69,19 @@ export interface EntityAPIWrapper {
         importFileController?: string,
         saveToPipeline?: boolean
     ) => Promise<any>;
+    initParentOptionsSelects: (
+        includeSampleTypes: boolean,
+        includeDataClasses: boolean,
+        containerPath: string,
+        isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean,
+        newTypeOption?: any,
+        importAliases?: Map<string, string>,
+        idPrefix?: string,
+        formatLabel?: (name: string, prefix: string, isDataClass?: boolean, containerPath?: string) => string
+    ) => Promise<{
+        parentAliases: Map<string, IParentAlias>;
+        parentOptions: IParentOption[];
+    }>;
     loadNameExpressionOptions: (containerPath?: string) => Promise<GetNameExpressionOptionsResponse>;
     moveEntities: (
         sourceContainer: Container,
@@ -86,6 +102,7 @@ export class EntityServerAPIWrapper implements EntityAPIWrapper {
     handleEntityFileImport = handleEntityFileImport;
     loadNameExpressionOptions = loadNameExpressionOptions;
     moveEntities = moveEntities;
+    initParentOptionsSelects = initParentOptionsSelects;
 }
 
 /**
@@ -103,6 +120,7 @@ export function getEntityTestAPIWrapper(
         handleEntityFileImport: mockFn(),
         loadNameExpressionOptions: mockFn(),
         moveEntities: mockFn(),
+        initParentOptionsSelects: mockFn,
         ...overrides,
     };
 }

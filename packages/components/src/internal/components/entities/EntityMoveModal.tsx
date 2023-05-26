@@ -29,12 +29,13 @@ import { EntityMoveConfirmationModal } from './EntityMoveConfirmationModal';
 
 export interface EntityMoveModalProps {
     api?: ComponentsAPIWrapper;
+    currentContainer?: Container;// used in the single move case when the item is not in the current container
+    dataTypeRowId?: number;
     entityDataType: EntityDataType;
     maxSelected: number;
     onAfterMove: () => void;
     onCancel: () => void;
     queryModel: QueryModel;
-    currentContainer?: Container; // used in the single move case when the item is not in the current container
     targetAppURL?: AppURL;
     useSelected: boolean;
 }
@@ -50,6 +51,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
         entityDataType,
         maxSelected,
         targetAppURL,
+        dataTypeRowId,
     } = props;
     const { nounPlural } = entityDataType;
     const { createNotification } = useNotificationsContext();
@@ -224,6 +226,8 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                     onConfirm={onConfirm}
                     currentContainer={currentContainer}
                     title={title}
+                    dataType={entityDataType.projectConfigurableDataType}
+                    dataTypeRowId={dataTypeRowId}
                 >
                     {message}
                 </EntityMoveConfirmationModal>

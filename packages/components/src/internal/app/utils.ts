@@ -40,6 +40,7 @@ import {
     NOTEBOOKS_KEY,
     PICKLIST_KEY,
     ProductFeature,
+    PROJECT_DATA_TYPE_EXCLUSIONS,
     REGISTRY_KEY,
     REQUESTS_KEY,
     SAMPLE_MANAGER_APP_PROPERTIES,
@@ -273,6 +274,22 @@ export function isProductProjectDataTypeSelectionEnabled(moduleContext?: ModuleC
     return resolveModuleContext(moduleContext)?.query?.[EXPERIMENTAL_PRODUCT_PROJECT_DATA_SELECTION] === true;
 }
 
+export function getProjectDataExclusion(moduleContext?: ModuleContext): { [key: string]: number[] } {
+    return resolveModuleContext(moduleContext)?.samplemanagement?.[PROJECT_DATA_TYPE_EXCLUSIONS];
+}
+
+export function getProjectSampleTypeExclusion(moduleContext?: ModuleContext): number[] {
+    return getProjectDataExclusion(moduleContext)?.['SampleType'];
+}
+
+export function getProjectDataClassExclusion(moduleContext?: ModuleContext): number[] {
+    return getProjectDataExclusion(moduleContext)?.['DataClass'];
+}
+
+export function getProjectAssayDesignExclusion(moduleContext?: ModuleContext): number[] {
+    return getProjectDataExclusion(moduleContext)?.['AssayDesign'];
+}
+
 export function isAssayEnabled(moduleContext?: ModuleContext): boolean {
     return (
         hasModule('assay', moduleContext) &&
@@ -370,6 +387,7 @@ export function getStorageSectionConfig(user: User, currentProductId: string, mo
     if (isFreezerManagementEnabled(moduleContext)) {
         let locationsMenuConfig = new MenuSectionConfig({
             emptyText: 'No storage has been defined',
+            filteredEmptyText: 'No storage available',
             iconURL: imageURL('_images', 'freezer_menu.svg'),
             headerURLPart: HOME_KEY,
         });
@@ -391,6 +409,7 @@ export function addSourcesSectionConfig(
 ): List<Map<string, MenuSectionConfig>> {
     let sourcesMenuConfig = new MenuSectionConfig({
         emptyText: 'No source types have been defined',
+        filteredEmptyText: 'No source types available',
         iconURL: imageURL('_images', 'source_type.svg'),
     });
     if (userCanDesignSourceTypes(user)) {
@@ -409,6 +428,7 @@ export function addSamplesSectionConfig(
 ): List<Map<string, MenuSectionConfig>> {
     let samplesMenuConfig = new MenuSectionConfig({
         emptyText: 'No sample types have been defined',
+        filteredEmptyText: 'No sample types available',
         iconURL: imageURL('_images', 'samples.svg'),
     });
     if (user.hasDesignSampleTypesPermission()) {
@@ -428,6 +448,7 @@ export function addAssaysSectionConfig(
 ): List<Map<string, MenuSectionConfig>> {
     let assaysMenuConfig = new MenuSectionConfig({
         emptyText: 'No assays have been defined',
+        filteredEmptyText: 'No assays available',
         iconURL: imageURL('_images', 'assay.svg'),
     });
     if (user.hasDesignAssaysPermission()) {

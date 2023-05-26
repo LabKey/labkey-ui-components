@@ -1,10 +1,10 @@
-import { fromJS } from 'immutable';
 import { Filter, getServerContext } from '@labkey/api';
 
-import { ISelectRowsResult } from '../../query/api';
 import { naturalSort } from '../../../public/sort';
 import { AppURL } from '../../url/AppURL';
 import { caseInsensitive } from '../../util/utils';
+
+import { Row } from '../../query/selectRows';
 
 import { ChartData } from './types';
 import { HorizontalBarData } from './HorizontalBarSection';
@@ -22,31 +22,38 @@ interface ProcessChartOptions {
     namePath?: string[];
 }
 
-export function processChartData(response: ISelectRowsResult, options?: ProcessChartOptions): ChartDataProps {
+function getChartRowData(row: Row, path: string[]): any {
+    const first = caseInsensitive(row, path[0]);
+    if (path.length > 1 && !!first) {
+        return caseInsensitive(first, path[1]);
+    }
+    return first;
+}
+
+export function processChartData(rows: Row[], options?: ProcessChartOptions): ChartDataProps {
     const countPath = options?.countPath ?? ['count', 'value'];
     const colorPath = options?.colorPath;
     const idPath = options?.idPath ?? ['RowId', 'value'];
     const namePath = options?.namePath ?? ['Name', 'value'];
     const groupPath = options?.groupPath;
 
-    const rows = fromJS(response.models[response.key]);
-
     const data = rows
-        .filter(row => row.getIn(countPath) > 0)
+        .filter(row => getChartRowData(row, countPath) > 0)
         .map(row => ({
-            count: row.getIn(countPath),
-            id: row.getIn(idPath),
-            x: row.getIn(namePath),
-            xSub: groupPath ? row.getIn(groupPath) : undefined,
-        }))
-        .sortBy(row => row.x, naturalSort)
-        .toArray();
+            count: getChartRowData(row, countPath),
+            id: getChartRowData(row, idPath),
+            x: getChartRowData(row, namePath),
+            xSub: groupPath ? getChartRowData(row, groupPath) : undefined,
+        }));
+    data.sort((a, b) => {
+        return naturalSort(a.x, b.x);
+    });
 
     let barFillColors;
     if (colorPath) {
         barFillColors = {};
         rows.forEach(row => {
-            barFillColors[row.getIn(groupPath ?? namePath)] = row.getIn(colorPath);
+            barFillColors[getChartRowData(row, groupPath ?? namePath)] = getChartRowData(row, colorPath);
         });
     }
 

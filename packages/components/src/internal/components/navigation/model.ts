@@ -61,6 +61,7 @@ export class MenuItemModel extends Record({
     key: undefined,
     label: undefined,
     url: undefined,
+    hidden: false,
     orderNum: undefined,
     originalUrl: undefined,
     requiresLogin: false,
@@ -71,6 +72,7 @@ export class MenuItemModel extends Record({
     declare key: string;
     declare label: string;
     declare url: string | AppURL;
+    declare hidden: boolean;
     declare orderNum: number;
     declare originalUrl: string;
     declare requiresLogin: boolean;
@@ -216,6 +218,7 @@ export class ProductMenuModel extends Record({
 export class MenuSectionConfig extends Record({
     activeJobIconCls: 'fa-spinner fa-pulse',
     emptyText: undefined,
+    filteredEmptyText: undefined,
     emptyAppURL: undefined,
     emptyURLText: 'Get started...',
     headerURLPart: undefined,
@@ -227,6 +230,7 @@ export class MenuSectionConfig extends Record({
 }) {
     declare activeJobIconCls?: string;
     declare emptyText?: string;
+    declare filteredEmptyText?: string;
     declare emptyAppURL?: AppURL;
     declare emptyURLText: string;
     declare headerURLPart: string;

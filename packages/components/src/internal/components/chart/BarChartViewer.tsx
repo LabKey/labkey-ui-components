@@ -11,10 +11,9 @@ import { useAppContext } from '../../AppContext';
 import { SAMPLE_FILTER_METRIC_AREA } from '../search/utils';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import { selectRows } from '../../query/selectRows';
+import { Row, selectRows } from '../../query/selectRows';
 import { AppURL } from '../../url/AppURL';
 import { User } from '../base/models/User';
-import { ISelectRowsResult, selectRowsDeprecated } from '../../query/api';
 import { Alert } from '../base/Alert';
 import { getActionErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
@@ -47,6 +46,7 @@ async function fetchItemCount(schemaQuery: SchemaQuery, filterArray: Filter.IFil
 interface Props {
     chartConfigs: ChartConfig[];
     containerFilter?: Query.ContainerFilter;
+    dataTypeExclusions?: { [key: string]: number[] };
     navigate: (url: string | AppURL) => any;
     user: User;
 }
@@ -56,7 +56,7 @@ interface State {
     currentGroup: number;
     hasError: boolean;
     itemCounts: Record<number, number>;
-    responses: Record<number, ISelectRowsResult>;
+    resultRows: Record<number, Row[]>;
 }
 
 export class BarChartViewer extends PureComponent<Props, State> {
@@ -68,7 +68,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
             currentGroup: 0,
             hasError: false,
             itemCounts: {},
-            responses: {},
+            resultRows: {},
         };
     }
 
@@ -77,22 +77,34 @@ export class BarChartViewer extends PureComponent<Props, State> {
     }
 
     loadChartData = async (): Promise<void> => {
-        const { chartConfigs, containerFilter } = this.props;
-        const { responses, currentGroup } = this.state;
+        const { containerFilter, dataTypeExclusions } = this.props;
+        const { resultRows, currentGroup } = this.state;
 
-        if (!responses.hasOwnProperty(currentGroup)) {
+        if (!resultRows.hasOwnProperty(currentGroup)) {
             try {
-                const { itemCountFilters, itemCountSQ } = chartConfigs[currentGroup];
-                const itemCount = await fetchItemCount(itemCountSQ, itemCountFilters);
+                const currentConfig = this.getSelectedChartGroup();
+                const { itemCountFilters, itemCountSQ, getProjectExclusionFilter } = currentConfig;
+                const projectExclusionFilter = getProjectExclusionFilter(dataTypeExclusions);
 
-                const { queryName, schemaName, sort } = this.getSelectedChartGroup();
+                const filters: Filter.IFilter[] = [];
+                if (itemCountFilters) filters.push(...itemCountFilters);
+                if (projectExclusionFilter) filters.push(projectExclusionFilter);
+
+                const itemCount = await fetchItemCount(itemCountSQ, filters);
+
+                const { queryName, schemaName, sort } = currentConfig;
                 // default view is fine here; using custom query that is assumed not to be customized or customized
                 // to specifically affect this view.
-                const response = await selectRowsDeprecated({ containerFilter, schemaName, queryName, sort });
+                const response = await selectRows({
+                    schemaQuery: new SchemaQuery(schemaName, queryName),
+                    containerFilter,
+                    sort,
+                    filterArray: filters,
+                });
 
                 this.setState(state => ({
                     itemCounts: { ...state.itemCounts, [currentGroup]: itemCount },
-                    responses: { ...state.responses, [currentGroup]: response },
+                    resultRows: { ...state.resultRows, [currentGroup]: response.rows },
                 }));
             } catch (reason) {
                 console.error(reason);
@@ -157,21 +169,21 @@ export class BarChartViewer extends PureComponent<Props, State> {
 
     render() {
         const { chartConfigs, user } = this.props;
-        const { responses, currentGroup, currentChart, hasError, itemCounts } = this.state;
+        const { resultRows, currentGroup, currentChart, hasError, itemCounts } = this.state;
         const selectedGroup = this.getSelectedChartGroup();
         const selectedCharts = this.getSelectedChartGroupCharts();
         const currentChartOptions = selectedCharts[currentChart];
         const hasSectionItems = itemCounts[currentGroup] > 0;
-        const response = responses[currentGroup];
-        const isLoading = !response;
-        const hasData = response?.rowCount > 0;
+        const rows = resultRows[currentGroup];
+        const isLoading = !rows;
+        const hasData = rows?.length > 0;
 
         let body;
         if (hasError) {
             body = (
                 <Alert>{getActionErrorMessage('There was a problem loading the chart configurations.', 'chart')}</Alert>
             );
-        } else if (!response) {
+        } else if (isLoading) {
             body = <LoadingSpinner />;
         } else if (!hasSectionItems) {
             if (selectedGroup.key === SAMPLES_KEY) {
@@ -186,7 +198,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
                 body = <Alert bsStyle="warning">No assay runs have been imported.</Alert>;
             }
         } else {
-            const { barFillColors, data } = processChartData(response, {
+            const { barFillColors, data } = processChartData(rows, {
                 colorPath: selectedGroup.colorPath,
                 groupPath: selectedGroup.groupPath,
                 countPath: [currentChartOptions.name, 'value'],

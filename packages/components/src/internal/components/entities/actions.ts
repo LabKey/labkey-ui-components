@@ -1,11 +1,11 @@
 import { ActionURL, Ajax, AuditBehaviorTypes, Filter, Query, Utils } from '@labkey/api';
-import { List, Map, fromJS } from 'immutable';
+import { List, Map } from 'immutable';
 
 import { buildURL } from '../../url/AppURL';
 import { SampleOperation } from '../samples/constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { getFilterForSampleOperation, isSamplesSchema } from '../samples/utils';
-import { importData, InsertOptions, ISelectRowsResult, selectRowsDeprecated } from '../../query/api';
+import { importData, InsertOptions } from '../../query/api';
 import { caseInsensitive, generateId, handleRequestFailure } from '../../util/utils';
 import { SampleCreationType } from '../samples/models';
 import { getSelected, getSelectedData } from '../../actions';
@@ -19,6 +19,8 @@ import { Row, selectRows, SelectRowsResponse } from '../../query/selectRows';
 import { ViewInfo } from '../../ViewInfo';
 
 import { Container } from '../base/models/Container';
+
+import { getProjectDataExclusion } from '../../app/utils';
 
 import { getInitialParentChoices, isDataClassEntity, isSampleEntity } from './utils';
 import {
@@ -378,12 +380,17 @@ export async function getEntityTypeOptions(
 ): Promise<Map<string, List<IEntityTypeOption>>> {
     const { typeListingSchemaQuery, filterArray, instanceSchemaName } = entityDataType;
 
+    const dataTypeExclusions = getProjectDataExclusion();
+    const exclusions = dataTypeExclusions?.[entityDataType.projectConfigurableDataType];
+    const filters = [];
+    if (filterArray) filters.push(...filterArray);
+    if (exclusions) filters.push(Filter.create('RowId', exclusions, Filter.Types.NOT_IN));
     const result = await selectRows({
         columns: 'LSID,Name,RowId,Folder/Path',
         containerFilter:
             containerFilter ?? entityDataType.containerFilter ?? Query.containerFilter.currentPlusProjectAndShared,
         containerPath,
-        filterArray,
+        filterArray: filters,
         // Use of default view here is ok. Assumed that view is overridden only if there is desire to hide types.
         schemaQuery: new SchemaQuery(typeListingSchemaQuery.schemaName, typeListingSchemaQuery.queryName),
     });
@@ -813,7 +820,7 @@ export function moveEntities(
     });
 }
 
-export function initParentOptionsSelects(
+export const initParentOptionsSelects = (
     includeSampleTypes: boolean,
     includeDataClasses: boolean,
     containerPath: string,
@@ -825,31 +832,35 @@ export function initParentOptionsSelects(
 ): Promise<{
     parentAliases: Map<string, IParentAlias>;
     parentOptions: IParentOption[];
-}> {
-    const promises: Array<Promise<ISelectRowsResult>> = [];
+}> => {
+    const promises: Array<Promise<SelectRowsResponse>> = [];
+
+    const dataTypeExclusions = getProjectDataExclusion();
 
     // Get Sample Types
     if (includeSampleTypes) {
+        const exclusions = dataTypeExclusions?.['SampleType'];
         promises.push(
-            selectRowsDeprecated({
+            selectRows({
                 containerPath,
-                schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
-                queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
+                schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
                 columns: 'LSID, Name, RowId, Folder',
                 containerFilter: Query.containerFilter.currentPlusProjectAndShared,
+                filterArray: exclusions?.length > 0 ? [Filter.create('RowId', exclusions, Filter.Types.NOT_IN)] : null,
             })
         );
     }
 
     // Get Data Classes
     if (includeDataClasses) {
+        const exclusions = dataTypeExclusions?.['DataClass'];
         promises.push(
-            selectRowsDeprecated({
+            selectRows({
                 containerPath,
-                schemaName: SCHEMAS.EXP_TABLES.DATA_CLASSES.schemaName,
-                queryName: SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName,
+                schemaQuery: SCHEMAS.EXP_TABLES.DATA_CLASSES,
                 columns: 'LSID, Name, RowId, Folder, Category',
                 containerFilter: Query.containerFilter.currentPlusProjectAndShared,
+                filterArray: exclusions?.length > 0 ? [Filter.create('RowId', exclusions, Filter.Types.NOT_IN)] : null,
             })
         );
     }
@@ -859,19 +870,17 @@ export function initParentOptionsSelects(
             .then(responses => {
                 const sets: IParentOption[] = [];
                 responses.forEach(result => {
-                    const domain = fromJS(result.models[result.key]);
-
-                    const isDataClass = result.key === 'exp/dataclasses';
-
+                    const rows = result.rows;
+                    const isDataClass = result.schemaQuery?.queryName?.toLowerCase() === 'dataclasses';
                     const prefix = isDataClass ? DATA_CLASS_IMPORT_PREFIX : SAMPLE_SET_IMPORT_PREFIX;
                     const labelPrefix = isDataClass ? 'Data Class' : 'Sample Type';
 
-                    domain.forEach(row => {
+                    rows.forEach(row => {
                         if (isValidParentOptionFn) {
                             if (!isValidParentOptionFn(row, isDataClass)) return;
                         }
-                        const name = row.getIn(['Name', 'value']);
-                        const containerPath = row.getIn(['Folder', 'displayValue']);
+                        const name = caseInsensitive(row, 'Name')?.value;
+                        const containerPath = caseInsensitive(row, 'Folder').displayValue;
                         const label = formatLabel ? formatLabel(name, labelPrefix, isDataClass, containerPath) : name;
                         sets.push({
                             value: prefix + name,
@@ -921,4 +930,4 @@ export function initParentOptionsSelects(
                 reject(error);
             });
     });
-}
+};

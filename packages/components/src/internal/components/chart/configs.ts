@@ -15,6 +15,14 @@ const CHART_SELECTORS: Record<string, ChartSelector> = {
     Year: { name: 'Last365DaysCount', label: 'In the Last Year', filter: -364 },
 };
 
+const getExclusionFilter = (dataType: string): ((projectExclusions: { [key: string]: number[] }) => Filter.IFilter) => {
+    return (projectExclusions: { [key: string]: number[] }): Filter.IFilter => {
+        const exclusions = projectExclusions?.[dataType];
+        if (exclusions?.length > 0) return Filter.create('RowId', exclusions, Filter.Types.NOT_IN);
+        return null;
+    };
+};
+
 export const CHART_GROUPS: Record<string, ChartConfig> = {
     Assays: {
         charts: [
@@ -32,6 +40,7 @@ export const CHART_GROUPS: Record<string, ChartConfig> = {
         label: 'Assay Run Count by Assay',
         queryName: 'AssayRunCounts',
         schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
+        getProjectExclusionFilter: getExclusionFilter('AssayDesign'),
     },
     Samples: {
         charts: [
@@ -49,6 +58,7 @@ export const CHART_GROUPS: Record<string, ChartConfig> = {
         label: 'Sample Count by Sample Type',
         queryName: 'SampleSetCounts',
         schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
+        getProjectExclusionFilter: getExclusionFilter('SampleType'),
     },
     SampleStatuses: {
         charts: [
@@ -76,5 +86,6 @@ export const CHART_GROUPS: Record<string, ChartConfig> = {
         label: 'Sample Count by Status',
         queryName: SCHEMAS.SAMPLE_MANAGEMENT.SAMPLE_STATUS_COUNTS.queryName,
         schemaName: SCHEMAS.SAMPLE_MANAGEMENT.SAMPLE_STATUS_COUNTS.schemaName,
+        getProjectExclusionFilter: getExclusionFilter('SampleType'),
     },
 };

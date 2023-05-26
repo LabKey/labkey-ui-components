@@ -13,6 +13,7 @@ import { NameIdSettings } from '../settings/NameIdSettings';
 import { ManageSampleStatusesPanel } from '../samples/ManageSampleStatusesPanel';
 import {
     biologicsIsPrimaryApp,
+    getProjectDataExclusion,
     isAppHomeFolder,
     isELNEnabled,
     isProductProjectDataTypeSelectionEnabled,
@@ -28,8 +29,6 @@ import { Alert } from '../base/Alert';
 
 import { ProjectDataTypeSelections } from '../project/ProjectDataTypeSelections';
 import { AppContext, useAppContext } from '../../AppContext';
-import { resolveErrorMessage } from '../../util/messaging';
-import { getProjectExcludedDataTypes } from '../project/actions';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { useAdminAppContext } from './useAdminAppContext';
@@ -43,32 +42,13 @@ const TITLE = 'Settings';
 export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
     const { setIsDirty, getIsDirty, children } = props;
     const [error, setError] = useState<string>();
-    const [loadingExclusions, setLoadingExclusions] = useState<boolean>(false);
     const { moduleContext, user, project, container } = useServerContext();
     const { createNotification, dismissNotifications } = useNotificationsContext();
     const { NotebookProjectSettingsComponent, projectDataTypes, ProjectFreezerSelectionComponent } =
         useAdminAppContext();
-    const [disabledTypesMap, setDisabledTypesMap] = useState<{ [key: string]: number[] }>(undefined);
     const { api } = useAppContext<AppContext>();
 
-    useEffect(() => {
-        if (isProductProjectsEnabled(moduleContext) && isProductProjectDataTypeSelectionEnabled(moduleContext))
-            loadConfigs();
-    }, [container.id, moduleContext]);
-
-    const loadConfigs = useCallback(async () => {
-        try {
-            setLoadingExclusions(true);
-
-            const results = await getProjectExcludedDataTypes(container.id);
-            setDisabledTypesMap(results);
-        } catch (e) {
-            console.error(e);
-            setError(resolveErrorMessage(e));
-        } finally {
-            setLoadingExclusions(false);
-        }
-    }, [container.id, moduleContext]);
+    const disabledTypesMap = getProjectDataExclusion(moduleContext);
 
     const onError = useCallback((e: string) => {
         setError(e);
@@ -106,7 +86,7 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
         return (
             <>
                 <ProjectSettings onChange={onSettingsChange} onSuccess={onSettingsSuccess} onPageError={onError} />
-                {isProductProjectDataTypeSelectionEnabled() && !loadingExclusions && !isAppHomeFolder() && (
+                {isProductProjectDataTypeSelectionEnabled() && !isAppHomeFolder() && (
                     <>
                         <ProjectDataTypeSelections
                             entityDataTypes={projectDataTypes}
@@ -125,10 +105,9 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
                         />
                     </>
                 )}
-                {isProductProjectDataTypeSelectionEnabled() && loadingExclusions && <LoadingSpinner />}
             </>
         );
-    }, [moduleContext, loadingExclusions, projectDataTypes, disabledTypesMap, container]);
+    }, [moduleContext, projectDataTypes, disabledTypesMap, container]);
 
     if (!user.isAdmin) {
         return <InsufficientPermissionsPage title={TITLE} />;

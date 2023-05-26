@@ -1,6 +1,20 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.341.1
+*Released*: 26 May 2023
+* Fix await without try/catch
+
+### version 2.341.0
+*Released*: 25 May 2023
+* Project level data type - exclude on UI
+  * Added App.getProjectDataExclusion utils to get the exclusion for the current folder context
+  * Exclude assay designs from withAssayModel
+  * Exclude data types from BarChartViewer
+  * Added FolderAPIWrapper.getDataTypeExcludedProjects util to get the list of excluded projects for a specific data type
+  * Modified EntityMoveConfirmationModal to exclude target data types from dropdowns
+  * Modified initParentOptionsSelects util to exclude data types
+
 ### version 2.340.0
 *Released* : 24 May 2023
 * Issue 47548: App menu folder sections to include icon links to dashboard and admin pages directly

@@ -97,6 +97,8 @@ export const EXPERIMENTAL_REQUESTS_MENU = 'experimental-biologics-requests-menu'
 export const EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR = 'experimental-sample-aliquot-selector';
 export const EXPERIMENTAL_PRODUCT_PROJECT_DATA_SELECTION = 'queryProductProjectDataTypeSelection';
 
+export const PROJECT_DATA_TYPE_EXCLUSIONS = 'dataTypeExclusions';
+
 // The enum values here should align with the ProductFeature.java enum values (some not currently used but included for completeness)
 export enum ProductFeature {
     Assay = 'Assay',

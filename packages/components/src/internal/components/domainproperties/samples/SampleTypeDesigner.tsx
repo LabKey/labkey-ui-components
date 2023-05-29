@@ -36,12 +36,12 @@ import { Alert } from '../../base/Alert';
 
 import { getDuplicateAlias, getParentAliasChangeResult, getParentAliasUpdateDupesResults } from '../utils';
 
-import { SAMPLE_SET_IMPORT_PREFIX } from '../../entities/constants';
+import {SAMPLE_SET_IMPORT_PREFIX, SampleTypeDataType} from '../../entities/constants';
 
 import { UniqueIdBanner } from './UniqueIdBanner';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { AliquotNamePatternProps, MetricUnitProps, SampleTypeModel } from './models';
-import {DataTypeProjectsPanel} from "../DataTypeProjectsPanel";
+import { DataTypeProjectsPanel } from '../DataTypeProjectsPanel';
 
 const NEW_SAMPLE_SET_OPTION: IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,
@@ -287,9 +287,9 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         this.onFieldChange(newModel);
     };
 
-    onUpdateExcludedProjects = (excludedProjects: string[]): void => {
+    onUpdateExcludedProjects = (excludedContainerIds: string[]): void => {
         const { model } = this.state;
-        const newModel = model.set('excludedContainerIds', excludedProjects) as SampleTypeModel;
+        const newModel = model.set('excludedContainerIds', excludedContainerIds) as SampleTypeModel;
         this.onFieldChange(newModel);
     };
 
@@ -762,6 +762,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                         dataType="SampleType"
                         dataTypeRowId={model?.rowId}
                         dataTypeName={model?.name}
+                        entityDataType={SampleTypeDataType}
                         initCollapsed={currentPanelIndex !== PROJECTS_PANEL_INDEX}
                         noun={NOUN}
                         onToggle={this.projectsToggle}

@@ -27,6 +27,7 @@ import { DATACLASS_DOMAIN_SYSTEM_FIELDS, SOURCE_DOMAIN_SYSTEM_FIELDS } from './c
 interface DataClassOptionsConfig {
     category: string;
     description: string;
+    excludedContainerIds?: string[];
     importAliases?: Map<string, string>;
     name: string;
     nameExpression: string;
@@ -55,6 +56,7 @@ export class DataClassModel implements DataClassModelConfig {
     readonly systemFields: SystemField[];
     readonly parentAliases?: OrderedMap<string, IParentAlias>;
     readonly importAliases?: Map<string, string>;
+    readonly excludedContainerIds?: string[];
     readonly isBuiltIn?: boolean;
 
     constructor(values?: Partial<DataClassModelConfig>) {
@@ -129,6 +131,7 @@ export class DataClassModel implements DataClassModelConfig {
             rowId: this.rowId,
             name: this.name,
             description: this.description,
+            excludedContainerIds: this.excludedContainerIds,
             nameExpression: this.nameExpression,
             category: this.category,
             sampleSet: this.sampleSet,

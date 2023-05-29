@@ -7,15 +7,13 @@ import { useServerContext } from '../base/ServerContext';
 
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 import { AppContext, useAppContext } from '../../AppContext';
-import { DataTypeEntity, ProjectConfigurableDataType } from '../entities/models';
+import { DataTypeEntity, EntityDataType, ProjectConfigurableDataType } from '../entities/models';
 
 import { resolveErrorMessage } from '../../util/messaging';
 import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { DataTypeSelector } from '../entities/DataTypeSelector';
-
-import { SCHEMAS } from '../../schemas';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
@@ -29,6 +27,7 @@ interface OwnProps {
     dataType?: ProjectConfigurableDataType;
     dataTypeName?: string;
     dataTypeRowId?: number;
+    entityDataType: EntityDataType;
     noun: string;
     onUpdateExcludedProjects: (excludedProjects: string[]) => void;
 }
@@ -43,6 +42,7 @@ const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPanelColl
         dataTypeRowId,
         dataTypeName,
         onUpdateExcludedProjects,
+        entityDataType,
     } = props;
     const { moduleContext, container } = useServerContext();
     const { api } = useAppContext<AppContext>();
@@ -53,10 +53,10 @@ const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPanelColl
     const [allProjects, setAllProjects] = useState<DataTypeEntity[]>();
     const [excludedProjectIdsDB, setExcludedProjectIdsDB] = useState<string[]>();
     const [excludedProjectIds, setExcludedProjectIds] = useState<string[]>();
-    const schemaQuery = useMemo(() => {
-        const schema = dataType === 'SampleType' ? SCHEMAS.SAMPLE_SETS.SCHEMA : 'tbd'; // TODO other types
-        return new SchemaQuery(schema, dataTypeName);
-    }, [dataType, dataTypeName]);
+    const schemaQuery = useMemo(
+        () => new SchemaQuery(entityDataType.instanceSchemaName, dataTypeName),
+        [dataType, dataTypeName]
+    );
 
     useEffect(
         () => {
@@ -155,6 +155,7 @@ const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPanelColl
                 <Row>
                     <Col xs={12} className="bottom-spacing">
                         <DataTypeSelector
+                            entityDataType={entityDataType}
                             allDataCounts={allDataCounts}
                             allDataTypes={allProjects}
                             updateUncheckedTypes={updateExcludedProjects}

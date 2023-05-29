@@ -4,7 +4,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.X
 *Released*: X May 2023
 * Project level data type - handle lookups and remove experimental flag
-  * TODO
+  * remove isProductProjectDataTypeSelectionEnabled experimental flag and enable function
+  * filter schema and query names for Look Up fields in designer based on selected target container's data type exclusion config
+  * support user supplied lookupValueFilters for LookupCell
 
 ### version 2.341.1
 *Released*: 26 May 2023

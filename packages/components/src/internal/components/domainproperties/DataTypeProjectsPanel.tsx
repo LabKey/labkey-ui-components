@@ -142,7 +142,7 @@ const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPanelColl
             togglePanel={togglePanel}
         >
             <div className="bottom-spacing">Select which projects use this {noun.toLowerCase()}.</div>
-            {allProjects?.length === excludedProjectIds?.length && (
+            {!!allProjects && allProjects?.length === excludedProjectIds?.length && (
                 <Alert bsStyle="warning">
                     Note that this {noun.toLowerCase()} can be re-enabled in the Project Settings page for individual
                     projects.

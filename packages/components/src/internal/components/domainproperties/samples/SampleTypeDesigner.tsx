@@ -761,8 +761,8 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                         controlledCollapse
                         dataType="SampleType"
                         dataTypeRowId={model?.rowId}
+                        dataTypeName={model?.name}
                         initCollapsed={currentPanelIndex !== PROJECTS_PANEL_INDEX}
-                        isNew={model.isNew()}
                         noun={NOUN}
                         onToggle={this.projectsToggle}
                         onUpdateExcludedProjects={this.onUpdateExcludedProjects}

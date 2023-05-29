@@ -475,7 +475,6 @@ exports[`SampleTypeDesigner default properties 1`] = `
     controlledCollapse={true}
     dataType="SampleType"
     initCollapsed={true}
-    isNew={true}
     noun="Sample Type"
     onToggle={[Function]}
     onUpdateExcludedProjects={[Function]}
@@ -980,8 +979,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
   <ComponentWithDomainPropertiesPanelCollapse
     controlledCollapse={true}
     dataType="SampleType"
+    dataTypeName="Test Name"
     initCollapsed={true}
-    isNew={true}
     noun="Sample Type"
     onToggle={[Function]}
     onUpdateExcludedProjects={[Function]}

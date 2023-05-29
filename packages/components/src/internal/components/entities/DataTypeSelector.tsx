@@ -7,15 +7,13 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
-import { getDataTypeDataCount } from '../project/actions';
-
 import { ColorIcon } from '../base/ColorIcon';
 import { Tip } from '../base/Tip';
 
 import { DataTypeEntity, EntityDataType, ProjectConfigurableDataType } from './models';
 
 interface Props {
-    allDataCounts?: { [key: string]: number };
+    allDataCounts?: Record<string, number>;
     allDataTypes?: DataTypeEntity[]; // either use allDataTypes to pass in dataTypes, or specify entityDataType to query dataTypes
     api?: ComponentsAPIWrapper;
     columns?: number; // partition list to N columns
@@ -34,7 +32,7 @@ interface Props {
 export const getUncheckedEntityWarning = (
     uncheckedEntities: any[], // number[] | string[]
     uncheckedEntitiesDB: any[], // number[] | string[]
-    dataCounts: { [key: string]: number },
+    dataCounts: Record<string, number>,
     entityDataType: EntityDataType,
     rowId: number | string
 ): React.ReactNode => {
@@ -78,7 +76,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
     const [dataType, setDataType] = useState<ProjectConfigurableDataType>(undefined);
     const [error, setError] = useState<string>(undefined);
     const [loading, setLoading] = useState<boolean>(false);
-    const [dataCounts, setDataCounts] = useState<{ [key: string]: number }>(undefined);
+    const [dataCounts, setDataCounts] = useState<Record<string, number>>(undefined);
     const [uncheckedEntities, setUncheckedEntities] = useState<any[] /*number[] | string[]*/>(undefined);
 
     useEffect(() => {
@@ -105,14 +103,17 @@ export const DataTypeSelector: FC<Props> = memo(props => {
         } finally {
             setLoading(false);
         }
-    }, [entityDataType]);
+    }, [api, entityDataType]);
 
     const ensureCount = useCallback(async () => {
         if (dataCounts) return;
 
-        const results = await getDataTypeDataCount(entityDataType.projectConfigurableDataType, dataTypes);
+        const results = await api.query.getProjectDataTypeDataCount(
+            entityDataType.projectConfigurableDataType,
+            dataTypes
+        );
         setDataCounts(results);
-    }, [dataCounts, dataTypes, entityDataType, allDataTypes]);
+    }, [api, dataCounts, dataTypes, entityDataType]);
 
     const onChange = useCallback(
         (entityId: number | string, toggle: boolean, check?: boolean) => {

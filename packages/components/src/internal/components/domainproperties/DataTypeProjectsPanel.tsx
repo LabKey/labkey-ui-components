@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 import { hasProductProjects, isAppHomeFolder, isProductProjectDataTypeSelectionEnabled } from '../../app/utils';
@@ -15,6 +15,10 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { DataTypeSelector } from '../entities/DataTypeSelector';
 
+import { SCHEMAS } from '../../schemas';
+
+import { SchemaQuery } from '../../../public/SchemaQuery';
+
 import { BasePropertiesPanel } from './BasePropertiesPanel';
 import {
     InjectedDomainPropertiesPanelCollapseProps,
@@ -23,8 +27,8 @@ import {
 
 interface OwnProps {
     dataType?: ProjectConfigurableDataType;
+    dataTypeName?: string;
     dataTypeRowId?: number;
-    isNew: boolean;
     noun: string;
     onUpdateExcludedProjects: (excludedProjects: string[]) => void;
 }
@@ -34,19 +38,25 @@ const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPanelColl
         collapsed,
         togglePanel,
         controlledCollapse,
-        isNew,
         noun,
         dataType,
         dataTypeRowId,
+        dataTypeName,
         onUpdateExcludedProjects,
     } = props;
     const { moduleContext, container } = useServerContext();
     const { api } = useAppContext<AppContext>();
-    const [isValid, setIsValid] = useState<boolean>(!collapsed || !isNew);
+    const [isValid, setIsValid] = useState<boolean>(!collapsed || !!dataTypeRowId);
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
+    const [allDataCounts, setAllDataCounts] = useState<Record<string, number>>({});
     const [allProjects, setAllProjects] = useState<DataTypeEntity[]>();
+    const [excludedProjectIdsDB, setExcludedProjectIdsDB] = useState<string[]>();
     const [excludedProjectIds, setExcludedProjectIds] = useState<string[]>();
+    const schemaQuery = useMemo(() => {
+        const schema = dataType === 'SampleType' ? SCHEMAS.SAMPLE_SETS.SCHEMA : 'tbd'; // TODO other types
+        return new SchemaQuery(schema, dataTypeName);
+    }, [dataType, dataTypeName]);
 
     useEffect(
         () => {
@@ -79,7 +89,11 @@ const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPanelColl
                     setAllProjects(allProjects_);
 
                     const excludedProjectIds_ = await api.folder.getDataTypeExcludedProjects(dataType, dataTypeRowId);
+                    setExcludedProjectIdsDB(excludedProjectIds_);
                     setExcludedProjectIds(excludedProjectIds_);
+
+                    const allDataCounts_ = await api.query.getDataTypeProjectDataCount(schemaQuery);
+                    setAllDataCounts(allDataCounts_);
                 } catch (e) {
                     setError(`Error: ${resolveErrorMessage(e)}`);
                 } finally {
@@ -104,6 +118,7 @@ const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPanelColl
     const updateExcludedProjects = useCallback(
         (_: ProjectConfigurableDataType, exclusions: string[]) => {
             onUpdateExcludedProjects(exclusions);
+            setExcludedProjectIds(exclusions);
         },
         [onUpdateExcludedProjects]
     );
@@ -127,6 +142,12 @@ const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPanelColl
             togglePanel={togglePanel}
         >
             <div className="bottom-spacing">Select which projects use this {noun.toLowerCase()}.</div>
+            {allProjects?.length === excludedProjectIds?.length && (
+                <Alert bsStyle="warning">
+                    Note that this {noun.toLowerCase()} can be re-enabled in the Project Settings page for individual
+                    projects.
+                </Alert>
+            )}
             {error && <Alert>{error}</Alert>}
             {isLoading(loading) ? (
                 <LoadingSpinner />
@@ -134,10 +155,10 @@ const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPanelColl
                 <Row>
                     <Col xs={12} className="bottom-spacing">
                         <DataTypeSelector
-                            allDataCounts={{}} // TODO
+                            allDataCounts={allDataCounts}
                             allDataTypes={allProjects}
                             updateUncheckedTypes={updateExcludedProjects}
-                            uncheckedEntitiesDB={excludedProjectIds}
+                            uncheckedEntitiesDB={excludedProjectIdsDB}
                             dataTypeLabel="projects"
                             noHeader={true}
                             columns={2}

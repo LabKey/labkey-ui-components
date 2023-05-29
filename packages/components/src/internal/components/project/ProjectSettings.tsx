@@ -115,7 +115,7 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(({ onChange, onSuc
                         </Button>
 
                         <button className="btn btn-success" disabled={isSaving || !dirty} type="submit">
-                            {isSaving ? 'Saving' : 'Save'}
+                            {isSaving ? 'Saving...' : 'Save'}
                         </button>
                     </div>
                 </form>

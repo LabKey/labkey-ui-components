@@ -133,7 +133,7 @@ export interface ITargetTableSelectImplState {
     loading?: boolean;
     prevPath?: string;
     prevSchemaName?: string;
-    queries?: { name: string; type: PropDescType }[];
+    queries?: Array<{ name: string; type: PropDescType }>;
 }
 
 export type TargetTableSelectProps = ITargetTableSelectProps & ILookupProps;
@@ -201,7 +201,7 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
         const queryContainerPath = containerPath === '' ? null : containerPath;
 
         context.fetchQueries(queryContainerPath, schemaName).then(queries => {
-            let infos: Array<{ name: string; type: PropDescType }> = [];
+            const infos: Array<{ name: string; type: PropDescType }> = [];
 
             getExcludedSchemaQueryNames(schemaName.toLowerCase(), containerPath)
                 .then(excludedQueries => {
@@ -213,8 +213,7 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
 
                     const initialQueryName = value ? decodeLookup(value).queryName : undefined;
 
-                    if (!lookupIsValid)
-                        infos.unshift({ name: initialQueryName, type: LOOKUP_TYPE });
+                    if (!lookupIsValid) infos.unshift({ name: initialQueryName, type: LOOKUP_TYPE });
 
                     this.setState({
                         loading: false,

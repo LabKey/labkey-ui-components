@@ -1,4 +1,4 @@
-import React, {FC, memo, useCallback, useEffect, useState} from 'react';
+import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { WithRouterProps } from 'react-router';
 import { ActionURL } from '@labkey/api';
 
@@ -12,11 +12,7 @@ import { useNotificationsContext } from '../notifications/NotificationsContext';
 import { Container } from '../base/models/Container';
 import { AppURL } from '../../url/AppURL';
 
-import {
-    getCurrentAppProperties,
-    hasProductProjects,
-    setProductProjects,
-} from '../../app/utils';
+import { getCurrentAppProperties, hasProductProjects, setProductProjects } from '../../app/utils';
 
 import { useFolderMenuContext } from '../navigation/hooks';
 
@@ -24,10 +20,10 @@ import { invalidateFullQueryDetailsCache } from '../../query/api';
 
 import { useAdminAppContext } from '../administration/useAdminAppContext';
 
+import { ProjectConfigurableDataType } from '../entities/models';
+
 import { ProjectProperties } from './ProjectProperties';
 import { ProjectDataTypeSelections } from './ProjectDataTypeSelections';
-import {ProjectConfigurableDataType} from "../entities/models";
-
 
 export interface CreateProjectContainerProps {
     api: FolderAPIWrapper;
@@ -37,10 +33,7 @@ export interface CreateProjectContainerProps {
 
 export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(props => {
     const { api, onCancel, onCreated } = props;
-    const {
-        projectDataTypes,
-        ProjectFreezerSelectionComponent,
-    } = useAdminAppContext();
+    const { projectDataTypes, ProjectFreezerSelectionComponent } = useAdminAppContext();
 
     const [error, setError] = useState<string>();
     const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -48,7 +41,7 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
 
     const updateDataTypeExclusions = useCallback(
         (dataType: ProjectConfigurableDataType, exclusions: number[]) => {
-            setDataTypeExclusion((prevState) => {
+            setDataTypeExclusion(prevState => {
                 const uncheckedUpdates = { ...prevState };
                 uncheckedUpdates[dataType] = exclusions;
                 return uncheckedUpdates;
@@ -71,7 +64,7 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
                 disabledSampleTypes: dataTypeExclusion?.['SampleType'],
                 disabledDataClasses: dataTypeExclusion?.['DataClass'],
                 disabledAssayDesigns: dataTypeExclusion?.['AssayDesign'],
-                disabledStorageLocations: dataTypeExclusion?.['StorageLocation']
+                disabledStorageLocations: dataTypeExclusion?.['StorageLocation'],
             };
 
             let project: Container;
@@ -111,9 +104,7 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
                     projectId={null}
                     updateDataTypeExclusions={updateDataTypeExclusions}
                 />
-                <ProjectFreezerSelectionComponent
-                    updateDataTypeExclusions={updateDataTypeExclusions}
-                />
+                <ProjectFreezerSelectionComponent updateDataTypeExclusions={updateDataTypeExclusions} />
                 <div className="form-group no-margin-bottom">
                     <div className="pull-left">
                         <button className="project-cancel-button btn btn-default" onClick={onCancel} type="button">

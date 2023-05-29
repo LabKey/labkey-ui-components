@@ -9,6 +9,10 @@ import { isLoading, LoadingState } from '../../../public/LoadingState';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
+import { getExcludedDataTypeNames } from '../entities/actions';
+
+import { SCHEMAS } from '../../schemas';
+
 import { isFieldFullyLocked } from './propertiesUtil';
 import { fetchQueries } from './actions';
 import { createFormInputId, createFormInputName } from './utils';
@@ -16,8 +20,6 @@ import { ALL_SAMPLES_DISPLAY_TEXT, DOMAIN_FIELD_SAMPLE_TYPE } from './constants'
 import { encodeLookup, IDomainField, ITypeDependentProps, LookupInfo, SAMPLE_TYPE_OPTION_VALUE } from './models';
 
 import { SectionHeading } from './SectionHeading';
-import {getExcludedDataTypeNames} from "../entities/actions";
-import {SCHEMAS} from "../../schemas";
 
 interface SampleFieldProps extends ITypeDependentProps {
     container: string;

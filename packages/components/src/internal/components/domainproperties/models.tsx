@@ -1599,7 +1599,7 @@ export class QueryInfoLite
     }
 
     getLookupInfo(rangeURI?: string): LookupInfo[] {
-        const infos : LookupInfo[] = [];
+        const infos: LookupInfo[] = [];
 
         // allow for queries with only 1 primary key or with 2 primary key columns when one of them is container (see Issue 39879)
         let pkCols =

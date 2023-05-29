@@ -35,6 +35,8 @@ import { SCHEMAS } from '../../schemas';
 
 import { handleRequestFailure } from '../../util/utils';
 
+import { getExcludedDataTypeNames } from '../entities/actions';
+
 import {
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
     DOMAIN_FIELD_LOOKUP_CONTAINER,
@@ -84,7 +86,6 @@ import {
     updateSampleField,
 } from './models';
 import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId } from './utils';
-import {getExcludedDataTypeNames} from "../entities/actions";
 
 let sharedCache = Map<string, Promise<any>>();
 
@@ -238,8 +239,7 @@ export function processQueries(payload: any): QueryInfoLite[] {
         return null;
     }
 
-    return payload.queries.map(qi => QueryInfoLite.create(qi, payload.schemaName))
-        .sort(naturalSortByProperty('name'));
+    return payload.queries.map(qi => QueryInfoLite.create(qi, payload.schemaName)).sort(naturalSortByProperty('name'));
 }
 
 export function fetchSchemas(containerPath: string): Promise<SchemaDetails[]> {
@@ -270,7 +270,9 @@ export function getExcludedSchemaQueryNames(schemaName, queryContainerPath?: str
         case 'exp.data':
             return getExcludedDataTypeNames(SCHEMAS.EXP_TABLES.DATA_CLASSES, 'DataClass', queryContainerPath);
     }
-    return new Promise(resolve => {resolve([])});
+    return new Promise(resolve => {
+        resolve([]);
+    });
 }
 
 export function handleSchemas(payload: any): SchemaDetails[] {

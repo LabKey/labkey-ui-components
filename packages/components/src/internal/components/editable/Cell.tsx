@@ -17,7 +17,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { List } from 'immutable';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
-import {Filter, Query} from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { cancelEvent, isCopy, isFillDown, isPaste, isSelectAll } from '../../events';
 
@@ -46,10 +46,10 @@ interface Props {
     focused?: boolean;
     forUpdate: boolean;
     getFilteredLookupKeys?: (linkedValues: any[]) => Promise<List<any>>;
-    lookupValueFilters?: Filter.IFilter[];
     lastSelection?: boolean;
     linkedValues?: any[];
     locked?: boolean;
+    lookupValueFilters?: Filter.IFilter[];
     message?: CellMessage;
     name?: string;
     placeholder?: string;

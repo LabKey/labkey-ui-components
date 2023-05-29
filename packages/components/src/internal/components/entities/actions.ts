@@ -1,4 +1,4 @@
-import {ActionURL, Ajax, AuditBehaviorTypes, Filter, getServerContext, Query, Utils} from '@labkey/api';
+import { ActionURL, Ajax, AuditBehaviorTypes, Filter, getServerContext, Query, Utils } from '@labkey/api';
 import { List, Map } from 'immutable';
 
 import { buildURL } from '../../url/AppURL';
@@ -21,6 +21,10 @@ import { ViewInfo } from '../../ViewInfo';
 import { Container } from '../base/models/Container';
 
 import { getProjectDataExclusion } from '../../app/utils';
+
+import { resolveErrorMessage } from '../../util/messaging';
+
+import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
 import { getInitialParentChoices, isDataClassEntity, isSampleEntity } from './utils';
 import {
@@ -46,8 +50,6 @@ import {
     OperationConfirmationData,
     ProjectConfigurableDataType,
 } from './models';
-import {resolveErrorMessage} from "../../util/messaging";
-import {SAMPLE_MANAGER_APP_PROPERTIES} from "../../app/constants";
 
 export function getOperationConfirmationData(
     dataType: EntityDataType,
@@ -962,7 +964,11 @@ export const getFolderExcludedDataTypes = (dataType: string, excludedContainer?:
     });
 };
 
-export const getExcludedDataTypeNames = (listingSchemaQuery: SchemaQuery, dataType: string, excludedContainerId?: string): Promise<string[]> => {
+export const getExcludedDataTypeNames = (
+    listingSchemaQuery: SchemaQuery,
+    dataType: string,
+    excludedContainerId?: string
+): Promise<string[]> => {
     return new Promise((resolve, reject) => {
         getFolderExcludedDataTypes(dataType, excludedContainerId)
             .then(excludedRowIds => {

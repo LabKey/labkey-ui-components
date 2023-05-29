@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Filter, Query} from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 import classNames from 'classnames';
 import { List, Map, OrderedMap, Set } from 'immutable';
 import React, { ChangeEvent, MouseEvent, PureComponent, ReactNode, SyntheticEvent } from 'react';
@@ -178,13 +178,13 @@ function inputCellKey(col: QueryColumn, row: any): string {
 
 export interface EditableColumnMetadata {
     caption?: string;
-    lookupValueFilters?: Filter.IFilter[];
     filteredLookupKeys?: List<any>;
     filteredLookupValues?: List<string>;
     getFilteredLookupKeys?: (linkedValues: any[]) => Promise<List<any>>;
     hideTitleTooltip?: boolean;
     isReadOnlyCell?: (rowKey: string) => boolean;
     linkedColInd?: number;
+    lookupValueFilters?: Filter.IFilter[];
     placeholder?: string;
     popoverClassName?: string;
     readOnly?: boolean;
@@ -1022,7 +1022,9 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     restoreBulkInsertData = (data: Map<string, any>): Map<string, any> => {
         const allInsertCols = OrderedMap<string, any>().asMutable();
-        this.props.queryInfo.getInsertColumns(this.props.bulkAddProps.isIncludedColumn).forEach(col => allInsertCols.set(col.name, undefined));
+        this.props.queryInfo
+            .getInsertColumns(this.props.bulkAddProps.isIncludedColumn)
+            .forEach(col => allInsertCols.set(col.name, undefined));
         return allInsertCols.merge(data).asImmutable();
     };
 

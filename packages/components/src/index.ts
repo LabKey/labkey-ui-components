@@ -473,6 +473,7 @@ import {
     getSampleOperationConfirmationData,
     getDeleteConfirmationData,
     getEntityTypeOptions,
+    getExcludedDataTypeNames,
 } from './internal/components/entities/actions';
 import {
     AssayResultDataType,
@@ -676,7 +677,6 @@ import {
     getProjectAssayDesignExclusion,
     getProjectDataClassExclusion,
     getProjectSampleTypeExclusion,
-    isProductProjectDataTypeSelectionEnabled,
     getProjectPath,
     hasModule,
     hasPremiumModule,
@@ -866,7 +866,6 @@ const App = {
     getProjectAssayDesignExclusion,
     getProjectDataClassExclusion,
     getProjectSampleTypeExclusion,
-    isProductProjectDataTypeSelectionEnabled,
     getProjectPath,
     hasPremiumModule,
     hasProductProjects,
@@ -1250,6 +1249,7 @@ export {
     getDeleteConfirmationData,
     getEntityTypeOptions,
     getCrossFolderSelectionResult,
+    getExcludedDataTypeNames,
     getOperationConfirmationData,
     getDataOperationConfirmationData,
     getDataDeleteConfirmationData,

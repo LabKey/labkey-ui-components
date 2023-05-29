@@ -84,6 +84,7 @@ import {
     updateSampleField,
 } from './models';
 import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId } from './utils';
+import {getExcludedDataTypeNames} from "../entities/actions";
 
 let sharedCache = Map<string, Promise<any>>();
 
@@ -196,10 +197,10 @@ export function fetchDomainDetails(
     });
 }
 
-export function fetchQueries(containerPath: string, schemaName: string): Promise<List<QueryInfoLite>> {
+export function fetchQueries(containerPath: string, schemaName: string): Promise<QueryInfoLite[]> {
     const key = [containerPath, schemaName].join('|').toLowerCase();
 
-    return cache<List<QueryInfoLite>>(
+    return cache<QueryInfoLite[]>(
         'query-cache',
         key,
         () =>
@@ -214,7 +215,7 @@ export function fetchQueries(containerPath: string, schemaName: string): Promise
                         },
                     });
                 } else {
-                    resolve(List());
+                    resolve(null);
                 }
             })
     );
@@ -232,18 +233,17 @@ export function downloadJsonFile(content: string, fileName: string): void {
     document.body.removeChild(downloadLink);
 }
 
-export function processQueries(payload: any): List<QueryInfoLite> {
+export function processQueries(payload: any): QueryInfoLite[] {
     if (!payload || !payload.queries) {
-        return List();
+        return null;
     }
 
-    return List<QueryInfoLite>(payload.queries.map(qi => QueryInfoLite.create(qi, payload.schemaName)))
-        .sort(naturalSortByProperty('name'))
-        .toList();
+    return payload.queries.map(qi => QueryInfoLite.create(qi, payload.schemaName))
+        .sort(naturalSortByProperty('name'));
 }
 
-export function fetchSchemas(containerPath: string): Promise<List<SchemaDetails>> {
-    return cache<List<SchemaDetails>>(
+export function fetchSchemas(containerPath: string): Promise<SchemaDetails[]> {
+    return cache<SchemaDetails[]>(
         'schema-cache',
         containerPath,
         () =>
@@ -260,8 +260,21 @@ export function fetchSchemas(containerPath: string): Promise<List<SchemaDetails>
     );
 }
 
-export function handleSchemas(payload: any): List<SchemaDetails> {
-    return processSchemas(payload).valueSeq().sort(naturalSortByProperty('fullyQualifiedName')).toList();
+export function getExcludedSchemaQueryNames(schemaName, queryContainerPath?: string): Promise<string[]> {
+    switch (schemaName) {
+        case 'assay':
+            return getExcludedDataTypeNames(SCHEMAS.ASSAY_TABLES.ASSAY_LIST, 'AssayDesign', queryContainerPath);
+        case 'samples':
+        case 'exp.materials':
+            return getExcludedDataTypeNames(SCHEMAS.EXP_TABLES.SAMPLE_SETS, 'SampleType', queryContainerPath);
+        case 'exp.data':
+            return getExcludedDataTypeNames(SCHEMAS.EXP_TABLES.DATA_CLASSES, 'DataClass', queryContainerPath);
+    }
+    return new Promise(resolve => {resolve([])});
+}
+
+export function handleSchemas(payload: any): SchemaDetails[] {
+    return processSchemas(payload).valueSeq().sort(naturalSortByProperty('fullyQualifiedName')).toArray();
 }
 
 export function getAvailableTypes(domain: DomainDesign, ontologies = []): List<PropDescType> {

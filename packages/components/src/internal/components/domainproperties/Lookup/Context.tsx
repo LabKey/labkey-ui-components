@@ -10,8 +10,8 @@ import { SchemaDetails } from '../../../SchemaDetails';
 export interface ILookupContext {
     activeContainer: Container;
     fetchContainers: () => Promise<List<Container>>;
-    fetchQueries: (containerPath: string, schemaName: string) => Promise<List<QueryInfoLite>>;
-    fetchSchemas: (containerPath: string) => Promise<List<SchemaDetails>>;
+    fetchQueries: (containerPath: string, schemaName: string) => Promise<QueryInfoLite[]>;
+    fetchSchemas: (containerPath: string) => Promise<SchemaDetails[]>;
 }
 
 const LookupContext = React.createContext<ILookupContext>(undefined);

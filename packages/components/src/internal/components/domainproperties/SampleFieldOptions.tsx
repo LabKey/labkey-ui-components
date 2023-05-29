@@ -16,6 +16,8 @@ import { ALL_SAMPLES_DISPLAY_TEXT, DOMAIN_FIELD_SAMPLE_TYPE } from './constants'
 import { encodeLookup, IDomainField, ITypeDependentProps, LookupInfo, SAMPLE_TYPE_OPTION_VALUE } from './models';
 
 import { SectionHeading } from './SectionHeading';
+import {getExcludedDataTypeNames} from "../entities/actions";
+import {SCHEMAS} from "../../schemas";
 
 interface SampleFieldProps extends ITypeDependentProps {
     container: string;
@@ -45,10 +47,11 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
 
         try {
             const queries = await fetchQueries(undefined, 'samples');
+            const excludedQueries = await getExcludedDataTypeNames(SCHEMAS.EXP_TABLES.SAMPLE_SETS, 'SampleType'); // TODO Is this needed since data type belongs to home folder
 
             const sampleTypes = queries
                 .reduce((list, q) => list.concat(q.getLookupInfo(original.rangeURI)).toList(), List<LookupInfo>())
-                .filter(st => st.type.isInteger()) // Remove rowId duplicates
+                .filter(st => st.type.isInteger() && excludedQueries.indexOf(st.name.toLowerCase()) === -1) // Remove rowId duplicates
                 .toList();
 
             this.setState({ loadingState: LoadingState.LOADED, sampleTypes });

@@ -44,6 +44,7 @@ export interface LookupCellProps {
     rowIdx: number;
     select: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => void;
     values: List<ValueDescriptor>;
+    lookupValueFilters?: Filter.IFilter[];
 }
 
 export class LookupCell extends PureComponent<LookupCellProps> {
@@ -57,7 +58,7 @@ export class LookupCell extends PureComponent<LookupCellProps> {
     };
 
     render(): ReactNode {
-        const { col, containerFilter, disabled, filteredLookupKeys, filteredLookupValues, forUpdate, values } =
+        const { col, containerFilter, disabled, filteredLookupKeys, filteredLookupValues, forUpdate, values, lookupValueFilters } =
             this.props;
 
         const rawValues = values
@@ -82,6 +83,10 @@ export class LookupCell extends PureComponent<LookupCellProps> {
         const lookup = col.lookup;
         const isMultiple = this.isMultiValue();
         let queryFilters: List<Filter.IFilter> = List();
+
+        if (lookupValueFilters?.length > 0)
+            queryFilters = queryFilters.push(...lookupValueFilters);
+
         if (filteredLookupValues) {
             queryFilters = queryFilters.push(
                 Filter.create(lookup.displayColumn, filteredLookupValues.toArray(), Filter.Types.IN)

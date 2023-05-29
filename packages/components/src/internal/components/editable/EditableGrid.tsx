@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Query } from '@labkey/api';
+import {Filter, Query} from '@labkey/api';
 import classNames from 'classnames';
 import { List, Map, OrderedMap, Set } from 'immutable';
 import React, { ChangeEvent, MouseEvent, PureComponent, ReactNode, SyntheticEvent } from 'react';
@@ -156,6 +156,7 @@ function inputCellFactory(
                 selection={editorModel ? editorModel.inSelection(colIdx, rn) : false}
                 lastSelection={editorModel ? editorModel.lastSelection(colIdx, rn) : false}
                 values={editorModel ? editorModel.getValue(colIdx, rn) : List<ValueDescriptor>()}
+                lookupValueFilters={columnMetadata?.lookupValueFilters}
                 filteredLookupValues={columnMetadata?.filteredLookupValues}
                 filteredLookupKeys={columnMetadata?.filteredLookupKeys}
                 getFilteredLookupKeys={columnMetadata?.getFilteredLookupKeys}
@@ -177,6 +178,7 @@ function inputCellKey(col: QueryColumn, row: any): string {
 
 export interface EditableColumnMetadata {
     caption?: string;
+    lookupValueFilters?: Filter.IFilter[];
     filteredLookupKeys?: List<any>;
     filteredLookupValues?: List<string>;
     getFilteredLookupKeys?: (linkedValues: any[]) => Promise<List<any>>;

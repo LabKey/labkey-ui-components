@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.X
+*Released*: X May 2023
+* Project level data type - handle lookups and remove experimental flag
+  * TODO
+
 ### version 2.341.1
 *Released*: 26 May 2023
 * Fix await without try/catch

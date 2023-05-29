@@ -1,4 +1,4 @@
-import { ActionURL, Ajax, AuditBehaviorTypes, Filter, Query, Utils } from '@labkey/api';
+import {ActionURL, Ajax, AuditBehaviorTypes, Filter, getServerContext, Query, Utils} from '@labkey/api';
 import { List, Map } from 'immutable';
 
 import { buildURL } from '../../url/AppURL';
@@ -46,6 +46,8 @@ import {
     OperationConfirmationData,
     ProjectConfigurableDataType,
 } from './models';
+import {resolveErrorMessage} from "../../util/messaging";
+import {SAMPLE_MANAGER_APP_PROPERTIES} from "../../app/constants";
 
 export function getOperationConfirmationData(
     dataType: EntityDataType,
@@ -928,6 +930,65 @@ export const initParentOptionsSelects = (
             })
             .catch(error => {
                 reject(error);
+            });
+    });
+};
+
+export const getFolderExcludedDataTypes = (dataType: string, excludedContainer?: string): Promise<number[]> => {
+    let isCurrentContainer = true;
+    if (excludedContainer) {
+        const currentContainer = getServerContext().container;
+        if (!(excludedContainer === currentContainer.path || excludedContainer === currentContainer.id))
+            isCurrentContainer = false;
+    }
+
+    if (isCurrentContainer) {
+        const excludedDataTypeRowIds = getProjectDataExclusion()?.[dataType];
+        return new Promise(resolve => resolve(excludedDataTypeRowIds));
+    }
+
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getDataTypeExclusion.api'),
+            method: 'GET',
+            params: {
+                excludedContainer,
+            },
+            success: Utils.getCallbackWrapper(response => {
+                resolve(response['excludedDataTypes']?.[dataType]);
+            }),
+            failure: handleRequestFailure(reject, 'Failed to get excluded data types'),
+        });
+    });
+};
+
+export const getExcludedDataTypeNames = (listingSchemaQuery: SchemaQuery, dataType: string, excludedContainerId?: string): Promise<string[]> => {
+    return new Promise((resolve, reject) => {
+        getFolderExcludedDataTypes(dataType, excludedContainerId)
+            .then(excludedRowIds => {
+                if (!excludedRowIds || excludedRowIds.length === 0) {
+                    resolve([]);
+                }
+                const filterArray = [Filter.create('RowId', excludedRowIds, Filter.Types.IN)];
+                selectRows({
+                    columns: 'Name',
+                    filterArray,
+                    schemaQuery: listingSchemaQuery,
+                })
+                    .then(response => {
+                        const rows = response.rows;
+                        const namesLc = [];
+                        rows.forEach(row => namesLc.push(caseInsensitive(row, 'Name')?.value?.toLowerCase()));
+                        resolve(namesLc);
+                    })
+                    .catch(reason => {
+                        reject(resolveErrorMessage(reason));
+                        console.error(reason);
+                    });
+            })
+            .catch(reason => {
+                reject(resolveErrorMessage(reason));
+                console.error(reason);
             });
     });
 };

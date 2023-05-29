@@ -15,7 +15,6 @@ import { AppURL } from '../../url/AppURL';
 import {
     getCurrentAppProperties,
     hasProductProjects,
-    isProductProjectDataTypeSelectionEnabled,
     setProductProjects,
 } from '../../app/utils';
 
@@ -107,20 +106,14 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
                         </div>
                     </div>
                 </div>
-
-                {isProductProjectDataTypeSelectionEnabled() && (
-                    <>
-                        <ProjectDataTypeSelections
-                            entityDataTypes={projectDataTypes}
-                            projectId={null}
-                            updateDataTypeExclusions={updateDataTypeExclusions}
-                        />
-                        <ProjectFreezerSelectionComponent
-                            updateDataTypeExclusions={updateDataTypeExclusions}
-                        />
-                    </>
-                )}
-
+                <ProjectDataTypeSelections
+                    entityDataTypes={projectDataTypes}
+                    projectId={null}
+                    updateDataTypeExclusions={updateDataTypeExclusions}
+                />
+                <ProjectFreezerSelectionComponent
+                    updateDataTypeExclusions={updateDataTypeExclusions}
+                />
                 <div className="form-group no-margin-bottom">
                     <div className="pull-left">
                         <button className="project-cancel-button btn btn-default" onClick={onCancel} type="button">

@@ -1598,8 +1598,8 @@ export class QueryInfoLite
         );
     }
 
-    getLookupInfo(rangeURI?: string): List<LookupInfo> {
-        let infos = List<LookupInfo>();
+    getLookupInfo(rangeURI?: string): LookupInfo[] {
+        const infos : LookupInfo[] = [];
 
         // allow for queries with only 1 primary key or with 2 primary key columns when one of them is container (see Issue 39879)
         let pkCols =
@@ -1626,7 +1626,7 @@ export class QueryInfoLite
 
                 // if supplied, apply rangeURI matching filter
                 if (type && (rangeURI === undefined || rangeURI === type.rangeURI)) {
-                    infos = infos.push({
+                    infos.push({
                         name: this.name,
                         type,
                     });

@@ -96,7 +96,7 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
                                 disabled={isSaving || !dirty}
                                 onClick={onSave}
                             >
-                                Save
+                                {isSaving ? 'Saving' : 'Save'}
                             </Button>
                         </div>
                     )}

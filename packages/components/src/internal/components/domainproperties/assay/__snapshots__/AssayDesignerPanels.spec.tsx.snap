@@ -95,7 +95,6 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
   visitedPanels={Immutable.List []}
 >
   <ComponentWithDomainPropertiesPanelCollapse
-    appPropertiesOnly={true}
     controlledCollapse={true}
     hideStudyProperties={true}
     initCollapsed={false}
@@ -214,6 +213,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         "selectedPlateTemplate": undefined,
         "status": "Active",
         "qcEnabled": undefined,
+        "excludedContainerIds": undefined,
       }
     }
     onChange={[Function]}
@@ -222,7 +222,6 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
     validate={true}
   />
   <DomainForm
-    appPropertiesOnly={true}
     controlledCollapse={true}
     domain={
       Immutable.Record {
@@ -361,7 +360,6 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
     <div />
   </DomainForm>
   <DomainForm
-    appPropertiesOnly={true}
     controlledCollapse={true}
     domain={
       Immutable.Record {
@@ -500,7 +498,6 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
     <div />
   </DomainForm>
   <DomainForm
-    appPropertiesOnly={true}
     controlledCollapse={true}
     domain={
       Immutable.Record {
@@ -638,6 +635,42 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
   >
     <div />
   </DomainForm>
+  <ComponentWithDomainPropertiesPanelCollapse
+    controlledCollapse={true}
+    dataType="AssayDesign"
+    entityDataType={
+      {
+        "deleteHelpLinkTopic": "manageAssayData#deleteRun",
+        "dependencyText": undefined,
+        "descriptionPlural": "assay runs",
+        "descriptionSingular": "assay run",
+        "instanceSchemaName": "assay",
+        "listingSchemaQuery": SchemaQuery {
+          "queryName": "AssayRuns",
+          "schemaName": "exp",
+          "viewName": undefined,
+        },
+        "nounAsParentPlural": "Assay Runs",
+        "nounAsParentSingular": "Assay Run",
+        "nounPlural": "runs",
+        "nounSingular": "run",
+        "operationConfirmationActionName": "getAssayRunDeletionConfirmationData.api",
+        "operationConfirmationControllerName": "assay",
+        "projectConfigurableDataType": "AssayDesign",
+        "typeListingSchemaQuery": SchemaQuery {
+          "queryName": "AssayList",
+          "schemaName": "assay",
+          "viewName": undefined,
+        },
+        "typeNounAsParentSingular": "Assay Design",
+        "typeNounSingular": "Assay Design",
+        "uniqueFieldKey": "RowId",
+      }
+    }
+    initCollapsed={true}
+    onToggle={[Function]}
+    onUpdateExcludedProjects={[Function]}
+  />
 </BaseDomainDesigner>
 `;
 
@@ -978,7 +1011,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
   visitedPanels={Immutable.List []}
 >
   <ComponentWithDomainPropertiesPanelCollapse
-    appPropertiesOnly={true}
     controlledCollapse={true}
     hideStudyProperties={true}
     initCollapsed={false}
@@ -1338,6 +1370,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
         "selectedPlateTemplate": undefined,
         "status": "Active",
         "qcEnabled": undefined,
+        "excludedContainerIds": undefined,
       }
     }
     onChange={[Function]}
@@ -1346,7 +1379,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
     validate={true}
   />
   <DomainForm
-    appPropertiesOnly={true}
     controlledCollapse={true}
     domain={
       Immutable.Record {
@@ -1727,7 +1759,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
     <div />
   </DomainForm>
   <DomainForm
-    appPropertiesOnly={true}
     controlledCollapse={true}
     domain={
       Immutable.Record {
@@ -2375,6 +2406,44 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
   >
     <div />
   </DomainForm>
+  <ComponentWithDomainPropertiesPanelCollapse
+    controlledCollapse={true}
+    dataType="AssayDesign"
+    dataTypeName="Test Assay Protocol"
+    dataTypeRowId={1}
+    entityDataType={
+      {
+        "deleteHelpLinkTopic": "manageAssayData#deleteRun",
+        "dependencyText": undefined,
+        "descriptionPlural": "assay runs",
+        "descriptionSingular": "assay run",
+        "instanceSchemaName": "assay",
+        "listingSchemaQuery": SchemaQuery {
+          "queryName": "AssayRuns",
+          "schemaName": "exp",
+          "viewName": undefined,
+        },
+        "nounAsParentPlural": "Assay Runs",
+        "nounAsParentSingular": "Assay Run",
+        "nounPlural": "runs",
+        "nounSingular": "run",
+        "operationConfirmationActionName": "getAssayRunDeletionConfirmationData.api",
+        "operationConfirmationControllerName": "assay",
+        "projectConfigurableDataType": "AssayDesign",
+        "typeListingSchemaQuery": SchemaQuery {
+          "queryName": "AssayList",
+          "schemaName": "assay",
+          "viewName": undefined,
+        },
+        "typeNounAsParentSingular": "Assay Design",
+        "typeNounSingular": "Assay Design",
+        "uniqueFieldKey": "RowId",
+      }
+    }
+    initCollapsed={true}
+    onToggle={[Function]}
+    onUpdateExcludedProjects={[Function]}
+  />
 </BaseDomainDesigner>
 `;
 
@@ -2591,6 +2660,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         "selectedPlateTemplate": undefined,
         "status": "Active",
         "qcEnabled": undefined,
+        "excludedContainerIds": undefined,
       }
     }
     onChange={[Function]}
@@ -3228,6 +3298,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
         "selectedPlateTemplate": undefined,
         "status": "Active",
         "qcEnabled": undefined,
+        "excludedContainerIds": undefined,
       }
     }
     onChange={[Function]}
@@ -4210,6 +4281,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
         "selectedPlateTemplate": undefined,
         "status": "Active",
         "qcEnabled": undefined,
+        "excludedContainerIds": undefined,
       }
     }
     onChange={[Function]}
@@ -5564,6 +5636,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
         "selectedPlateTemplate": undefined,
         "status": "Active",
         "qcEnabled": undefined,
+        "excludedContainerIds": undefined,
       }
     }
     onChange={[Function]}

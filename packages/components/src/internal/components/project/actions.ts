@@ -1,10 +1,9 @@
 import { Query } from '@labkey/api';
 
 import { caseInsensitive } from '../../util/utils';
-import { DataTypeEntity, ProjectConfigurableDataType } from '../entities/models';
+import {DataTypeEntity, EntityDataType, ProjectConfigurableDataType} from '../entities/models';
 import { getContainerFilterForFolder } from '../../query/api';
 import { SCHEMAS } from '../../schemas';
-import { SchemaQuery } from '../../../public/SchemaQuery';
 
 export function getProjectDataTypeDataCountSql(dataType: ProjectConfigurableDataType): string {
     if (!dataType) return null;
@@ -63,14 +62,33 @@ export function getProjectDataTypeDataCount(
         });
     });
 }
+
 function getDataTypeProjectDataCountSql(dataTypeName: string): string {
     if (!dataTypeName) return null;
     return 'SELECT Folder AS Project, COUNT(*) as DataCount FROM "' + dataTypeName + '" GROUP BY Folder';
 }
 
-export function getDataTypeProjectDataCount(schemaQuery: SchemaQuery): Promise<Record<string, number>> {
+function getAssayRunProjectDataCountSql(queryName: string, protocolId: number): string {
+    return (
+        'SELECT Folder AS Project, COUNT(*) as DataCount FROM "' +
+        queryName +
+        '" WHERE Protocol.RowId = ' +
+        protocolId +
+        ' GROUP BY Folder'
+    );
+}
+
+export function getDataTypeProjectDataCount(
+    entityDataType: EntityDataType,
+    dataTypeRowId: number,
+    dataTypeName: string
+): Promise<Record<string, number>> {
     return new Promise((resolve, reject) => {
-        const sql = getDataTypeProjectDataCountSql(schemaQuery.queryName);
+        const isAssay = entityDataType.projectConfigurableDataType === 'AssayDesign';
+        const schemaName = isAssay ? entityDataType.listingSchemaQuery.schemaName : entityDataType.instanceSchemaName;
+        const sql = isAssay
+            ? getAssayRunProjectDataCountSql(entityDataType.listingSchemaQuery.queryName, dataTypeRowId)
+            : getDataTypeProjectDataCountSql(dataTypeName);
         if (!sql) {
             resolve({});
             return;
@@ -78,7 +96,7 @@ export function getDataTypeProjectDataCount(schemaQuery: SchemaQuery): Promise<R
 
         Query.executeSql({
             containerFilter: Query.ContainerFilter.allInProject,
-            schemaName: schemaQuery.schemaName,
+            schemaName,
             sql,
             success: result => {
                 const counts = {};

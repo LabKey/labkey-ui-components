@@ -41,7 +41,11 @@ export interface QueryAPIWrapper {
         dataType: ProjectConfigurableDataType,
         allDataTypes?: DataTypeEntity[]
     ) => Promise<Record<string, number>>;
-    getDataTypeProjectDataCount: (schemaQuery: SchemaQuery) => Promise<Record<string, number>>;
+    getDataTypeProjectDataCount: (
+        entityDataType: EntityDataType,
+        dataTypeRowId: number,
+        dataTypeName: string
+    ) => Promise<Record<string, number>>;
     getQueryDetails: (options: GetQueryDetailsOptions) => Promise<QueryInfo>;
     incrementClientSideMetricCount: (featureArea: string, metricName: string) => void;
     selectDistinctRows: (selectDistinctOptions: Query.SelectDistinctOptions) => Promise<Query.SelectDistinctResponse>;

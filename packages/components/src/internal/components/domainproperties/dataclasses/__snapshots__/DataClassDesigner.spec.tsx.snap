@@ -239,7 +239,6 @@ exports[`DataClassDesigner custom properties 1`] = `
       }
     }
     initCollapsed={true}
-    noun="Source"
     onToggle={[Function]}
     onUpdateExcludedProjects={[Function]}
   />

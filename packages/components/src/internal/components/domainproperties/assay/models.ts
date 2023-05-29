@@ -57,6 +57,7 @@ export class AssayProtocolModel extends Record({
     selectedPlateTemplate: undefined,
     status: Status.Active,
     qcEnabled: undefined,
+    excludedContainerIds: undefined,
 }) {
     declare allowBackgroundUpload: boolean;
     declare allowEditableResults: boolean;
@@ -89,6 +90,7 @@ export class AssayProtocolModel extends Record({
     declare selectedPlateTemplate: string;
     declare status: Status;
     declare qcEnabled: boolean;
+    declare excludedContainerIds: string[];
 
     static create(raw: any): AssayProtocolModel {
         let domains = raw.domains || List<DomainDesign>();

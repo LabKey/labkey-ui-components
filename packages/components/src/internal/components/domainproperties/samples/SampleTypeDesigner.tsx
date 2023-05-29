@@ -56,7 +56,6 @@ const PROJECTS_PANEL_INDEX = 2;
 const SAMPLE_TYPE_NAME_EXPRESSION_TOPIC = 'sampleIDs#patterns';
 const SAMPLE_TYPE_NAME_EXPRESSION_PLACEHOLDER = 'Enter a naming pattern (e.g., S-${now:date}-${dailySampleCount})';
 const SAMPLE_TYPE_HELP_TOPIC = 'createSampleType';
-const NOUN = 'Sample Type';
 
 const AliquotOptionsHelp: FC<{ helpTopic: string }> = memo(({ helpTopic }) => {
     return (
@@ -141,7 +140,10 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         showParentLabelPrefix: true,
         useTheme: false,
         showLinkToStudy: false,
-        domainFormDisplayOptions: { ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, domainKindDisplayName: NOUN.toLowerCase() },
+        domainFormDisplayOptions: {
+            ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
+            domainKindDisplayName: SampleTypeDataType.typeNounSingular.toLowerCase(),
+        },
         validateNameExpressions: true,
     };
 
@@ -626,7 +628,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
             ' field' +
             (numNewUniqueIdFields !== 1 ? 's' : '') +
             ' to this ' +
-            NOUN +
+            SampleTypeDataType.typeNounSingular +
             '. ' +
             'Values for ' +
             (numNewUniqueIdFields !== 1 ? 'these fields' : 'this field') +
@@ -764,7 +766,6 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                         dataTypeName={model?.name}
                         entityDataType={SampleTypeDataType}
                         initCollapsed={currentPanelIndex !== PROJECTS_PANEL_INDEX}
-                        noun={NOUN}
                         onToggle={this.projectsToggle}
                         onUpdateExcludedProjects={this.onUpdateExcludedProjects}
                     />
@@ -772,10 +773,17 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                 {error && <div className="domain-form-panel">{error && <Alert bsStyle="danger">{error}</Alert>}</div>}
                 {showUniqueIdConfirmation && (
                     <ConfirmModal
-                        title={'Updating ' + NOUN + ' with Unique ID field' + (numNewUniqueIdFields !== 1 ? 's' : '')}
+                        title={
+                            'Updating ' +
+                            SampleTypeDataType.typeNounSingular +
+                            ' with Unique ID field' +
+                            (numNewUniqueIdFields !== 1 ? 's' : '')
+                        }
                         onCancel={this.onUniqueIdCancel}
                         onConfirm={this.onUniqueIdConfirm}
-                        confirmButtonText={submitting ? 'Finishing ...' : 'Finish Updating ' + NOUN}
+                        confirmButtonText={
+                            submitting ? 'Finishing ...' : 'Finish Updating ' + SampleTypeDataType.typeNounSingular
+                        }
                         confirmVariant="success"
                         cancelButtonText="Cancel"
                         submitting={submitting}

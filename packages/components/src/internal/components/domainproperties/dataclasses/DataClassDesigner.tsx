@@ -514,7 +514,6 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
                         dataTypeName={model?.name}
                         entityDataType={DataClassDataType}
                         initCollapsed={currentPanelIndex !== PROJECTS_PANEL_INDEX}
-                        noun={nounSingular}
                         onToggle={this.projectsToggle}
                         onUpdateExcludedProjects={this.onUpdateExcludedProjects}
                     />

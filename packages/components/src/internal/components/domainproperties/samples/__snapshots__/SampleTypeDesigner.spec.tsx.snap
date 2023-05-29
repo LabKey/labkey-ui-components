@@ -530,7 +530,6 @@ exports[`SampleTypeDesigner default properties 1`] = `
       }
     }
     initCollapsed={true}
-    noun="Sample Type"
     onToggle={[Function]}
     onUpdateExcludedProjects={[Function]}
   />
@@ -1091,7 +1090,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
       }
     }
     initCollapsed={true}
-    noun="Sample Type"
     onToggle={[Function]}
     onUpdateExcludedProjects={[Function]}
   />

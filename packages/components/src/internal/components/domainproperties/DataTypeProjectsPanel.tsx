@@ -15,8 +15,6 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { DataTypeSelector } from '../entities/DataTypeSelector';
 
-import { SchemaQuery } from '../../../public/SchemaQuery';
-
 import { BasePropertiesPanel } from './BasePropertiesPanel';
 import {
     InjectedDomainPropertiesPanelCollapseProps,
@@ -28,7 +26,6 @@ interface OwnProps {
     dataTypeName?: string;
     dataTypeRowId?: number;
     entityDataType: EntityDataType;
-    noun: string;
     onUpdateExcludedProjects: (excludedProjects: string[]) => void;
 }
 
@@ -37,7 +34,6 @@ const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPanelColl
         collapsed,
         togglePanel,
         controlledCollapse,
-        noun,
         dataType,
         dataTypeRowId,
         dataTypeName,
@@ -53,10 +49,6 @@ const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPanelColl
     const [allProjects, setAllProjects] = useState<DataTypeEntity[]>();
     const [excludedProjectIdsDB, setExcludedProjectIdsDB] = useState<string[]>();
     const [excludedProjectIds, setExcludedProjectIds] = useState<string[]>();
-    const schemaQuery = useMemo(
-        () => new SchemaQuery(entityDataType.instanceSchemaName, dataTypeName),
-        [dataType, dataTypeName]
-    );
 
     useEffect(
         () => {
@@ -92,7 +84,7 @@ const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPanelColl
                     setExcludedProjectIdsDB(excludedProjectIds_);
                     setExcludedProjectIds(excludedProjectIds_);
 
-                    const allDataCounts_ = await api.query.getDataTypeProjectDataCount(schemaQuery);
+                    const allDataCounts_ = await api.query.getDataTypeProjectDataCount(entityDataType, dataTypeRowId, dataTypeName);
                     setAllDataCounts(allDataCounts_);
                 } catch (e) {
                     setError(`Error: ${resolveErrorMessage(e)}`);
@@ -137,15 +129,19 @@ const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPanelColl
             panelStatus={collapsed && isValid ? 'COMPLETE' : isValid ? 'INPROGRESS' : 'TODO'}
             updateValidStatus={updateValidStatus}
             todoIconHelpMsg={
-                'This section defines which projects use this ' + noun.toLowerCase() + '. You may want to review.'
+                'This section defines which projects use this ' +
+                entityDataType.typeNounSingular.toLowerCase() +
+                '. You may want to review.'
             }
             togglePanel={togglePanel}
         >
-            <div className="bottom-spacing">Select which projects use this {noun.toLowerCase()}.</div>
+            <div className="bottom-spacing">
+                Select which projects use this {entityDataType.typeNounSingular.toLowerCase()}.
+            </div>
             {!!allProjects && allProjects?.length === excludedProjectIds?.length && (
                 <Alert bsStyle="warning">
-                    Note that this {noun.toLowerCase()} can be re-enabled in the Project Settings page for individual
-                    projects.
+                    Note that this {entityDataType.typeNounSingular.toLowerCase()} can be re-enabled in the Project
+                    Settings page for individual projects.
                 </Alert>
             )}
             {error && <Alert>{error}</Alert>}

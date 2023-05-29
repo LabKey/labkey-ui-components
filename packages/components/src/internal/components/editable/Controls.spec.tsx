@@ -49,7 +49,7 @@ describe('Controls', () => {
         inputWrapper.simulate('change', { target: { value: 100 } });
         wrapper.update();
         expect(wrapper.find('.text-danger')).toHaveLength(1);
-        expect(wrapper.find('.text-danger').text()).toContain('1-10 rows allowed');
+        expect(wrapper.find('.text-danger').text()).toBe('At most 10 rows can be added at once (10 remaining).');
     });
 
     test('invalid row count with custom invalidCountMsg', () => {
@@ -63,5 +63,16 @@ describe('Controls', () => {
         expect(wrapper.find('.text-danger')).toHaveLength(1);
         expect(wrapper.find('.text-danger').text()).toContain('A max of 10 rows are allowed');
     });
+
+    test('invalid row count with maxTotalCount', () => {
+        const addFn = jest.fn();
+        const wrapper = shallow(<AddRowsControl initialCount={6} maxTotalCount={50} maxCount={10} onAdd={addFn} />);
+        const inputWrapper = wrapper.find('input');
+        inputWrapper.simulate('focus');
+        inputWrapper.simulate('change', { target: { value: 100 } });
+        wrapper.update();
+        expect(wrapper.find('.text-danger')).toHaveLength(1);
+        expect(wrapper.find('.text-danger').text()).toBe('At most 50 rows can be added at once (10 remaining).');
+    })
 
 });

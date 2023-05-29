@@ -147,7 +147,7 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
     }
 
     render() {
-        const { disable, minCount, maxTotalCount, nounPlural, nounSingular, placement, wrapperClass, invalidCountMsg, verbPastTense } = this.props;
+        const { disable, minCount, maxCount, maxTotalCount, nounPlural, nounSingular, placement, wrapperClass, invalidCountMsg, verbPastTense } = this.props;
         const { count } = this.state;
 
         const hasError = !disable && this.hasError();
@@ -156,7 +156,8 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
             'has-error': hasError,
         });
         const maxToAdd = this.getMaxRowsToAdd();
-        const errorMsg = `At most ${maxTotalCount} ${nounPlural.toLowerCase()} can be ${verbPastTense.toLowerCase()} at once (${maxToAdd} remaining).`;
+        const errorMsg =  `At most ${maxTotalCount ?? maxCount} ${nounPlural.toLowerCase()} can be ${verbPastTense.toLowerCase()} at once (${maxToAdd} remaining).`;
+
         return (
             <div className={wrapperClasses}>
                 <span className="input-group input-group-align">

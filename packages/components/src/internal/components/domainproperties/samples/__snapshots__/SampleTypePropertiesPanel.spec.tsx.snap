@@ -1553,6 +1553,7 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
       },
       "autoLinkTargetContainerId": undefined,
       "autoLinkCategory": undefined,
+      "excludedContainerIds": undefined,
       "exception": undefined,
     }
   }
@@ -1633,6 +1634,7 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
         },
         "autoLinkTargetContainerId": undefined,
         "autoLinkCategory": undefined,
+        "excludedContainerIds": undefined,
         "exception": undefined,
       }
     }
@@ -1724,6 +1726,7 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
           },
           "autoLinkTargetContainerId": undefined,
           "autoLinkCategory": undefined,
+          "excludedContainerIds": undefined,
           "exception": undefined,
         }
       }
@@ -1913,6 +1916,7 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                         },
                         "autoLinkTargetContainerId": undefined,
                         "autoLinkCategory": undefined,
+                        "excludedContainerIds": undefined,
                         "exception": undefined,
                       }
                     }
@@ -2368,6 +2372,7 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                         },
                         "autoLinkTargetContainerId": undefined,
                         "autoLinkCategory": undefined,
+                        "excludedContainerIds": undefined,
                         "exception": undefined,
                       }
                     }
@@ -2644,6 +2649,7 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                                 },
                                 "autoLinkTargetContainerId": undefined,
                                 "autoLinkCategory": undefined,
+                                "excludedContainerIds": undefined,
                                 "exception": undefined,
                               }
                             }

@@ -94,6 +94,7 @@ exports[`SampleTypeDesigner custom properties 1`] = `
         },
         "autoLinkTargetContainerId": undefined,
         "autoLinkCategory": undefined,
+        "excludedContainerIds": undefined,
         "exception": undefined,
       }
     }
@@ -333,6 +334,7 @@ exports[`SampleTypeDesigner default properties 1`] = `
         },
         "autoLinkTargetContainerId": undefined,
         "autoLinkCategory": undefined,
+        "excludedContainerIds": undefined,
         "exception": undefined,
       }
     }
@@ -468,6 +470,15 @@ exports[`SampleTypeDesigner default properties 1`] = `
     testMode={true}
     useTheme={false}
     validate={false}
+  />
+  <ComponentWithDomainPropertiesPanelCollapse
+    controlledCollapse={true}
+    dataType="SampleType"
+    initCollapsed={true}
+    isNew={true}
+    noun="Sample Type"
+    onToggle={[Function]}
+    onUpdateExcludedProjects={[Function]}
   />
   <NameExpressionValidationModal
     onConfirm={[Function]}
@@ -750,6 +761,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         },
         "autoLinkTargetContainerId": undefined,
         "autoLinkCategory": undefined,
+        "excludedContainerIds": undefined,
         "exception": undefined,
       }
     }
@@ -964,6 +976,15 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
     testMode={true}
     useTheme={false}
     validate={false}
+  />
+  <ComponentWithDomainPropertiesPanelCollapse
+    controlledCollapse={true}
+    dataType="SampleType"
+    initCollapsed={true}
+    isNew={true}
+    noun="Sample Type"
+    onToggle={[Function]}
+    onUpdateExcludedProjects={[Function]}
   />
   <NameExpressionValidationModal
     onConfirm={[Function]}

@@ -62,7 +62,7 @@ describe('SampleStatusInput', () => {
         const component = mountWithServerContext(<SampleStatusInput {...DEFAULT_PROPS} formsy={false} />, {
             user: TEST_USER_STORAGE_EDITOR,
         });
-        await waitForLifecycle(component);
+        await waitForLifecycle(component, 5);
 
         const discardPanel = component.find(DiscardConsumedSamplesPanel);
         expect(discardPanel).toHaveLength(0);
@@ -73,7 +73,7 @@ describe('SampleStatusInput', () => {
             <SampleStatusInput {...DEFAULT_PROPS} formsy={false} value={INIT_CONSUMED} />,
             { user: TEST_USER_STORAGE_EDITOR }
         );
-        await waitForLifecycle(component);
+        await waitForLifecycle(component, 5);
 
         const discardPanel = component.find(DiscardConsumedSamplesPanel);
         expect(discardPanel).toHaveLength(0);

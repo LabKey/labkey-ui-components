@@ -63,19 +63,9 @@ export function getProjectDataTypeDataCount(
     });
 }
 
-function getDataTypeProjectDataCountSql(dataTypeName: string): string {
-    if (!dataTypeName) return null;
-    return 'SELECT Folder AS Project, COUNT(*) as DataCount FROM "' + dataTypeName + '" GROUP BY Folder';
-}
-
-function getAssayRunProjectDataCountSql(queryName: string, protocolId: number): string {
-    return (
-        'SELECT Folder AS Project, COUNT(*) as DataCount FROM "' +
-        queryName +
-        '" WHERE Protocol.RowId = ' +
-        protocolId +
-        ' GROUP BY Folder'
-    );
+function getDataTypeProjectDataCountSql(queryName: string, whereClause: string): string {
+    if (!queryName) return null;
+    return 'SELECT Folder AS Project, COUNT(*) as DataCount FROM "' + queryName + '" ' + whereClause + ' GROUP BY Folder';
 }
 
 export function getDataTypeProjectDataCount(
@@ -85,19 +75,24 @@ export function getDataTypeProjectDataCount(
 ): Promise<Record<string, number>> {
     return new Promise((resolve, reject) => {
         const isAssay = entityDataType.projectConfigurableDataType === 'AssayDesign';
-        const schemaName = isAssay ? entityDataType.listingSchemaQuery.schemaName : entityDataType.instanceSchemaName;
-        const sql = isAssay
-            ? getAssayRunProjectDataCountSql(entityDataType.listingSchemaQuery.queryName, dataTypeRowId)
-            : getDataTypeProjectDataCountSql(dataTypeName);
+        const isStorage = entityDataType.projectConfigurableDataType === 'StorageLocation';
+        const schemaName =
+            isAssay || isStorage ? entityDataType.listingSchemaQuery.schemaName : entityDataType.instanceSchemaName;
+        const queryName = isAssay || isStorage ? entityDataType.listingSchemaQuery.queryName : dataTypeName;
+        const whereClause = isAssay ? 'WHERE Protocol.RowId = ' + dataTypeRowId : '';
+        const parameters = isStorage ? { ParentId: dataTypeRowId } : undefined;
+
+        const sql = getDataTypeProjectDataCountSql(queryName, whereClause);
         if (!sql) {
             resolve({});
             return;
         }
 
         Query.executeSql({
-            containerFilter: Query.ContainerFilter.allInProject,
+            containerFilter: Query.ContainerFilter.allInProject, // use AllInProject for all cases
             schemaName,
             sql,
+            parameters,
             success: result => {
                 const counts = {};
                 result.rows?.forEach(row => {

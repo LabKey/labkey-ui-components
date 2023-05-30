@@ -203,7 +203,7 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
         context.fetchQueries(queryContainerPath, schemaName).then(queries => {
             const infos: Array<{ name: string; type: PropDescType }> = [];
 
-            getExcludedSchemaQueryNames(schemaName.toLowerCase(), containerPath)
+            getExcludedSchemaQueryNames(schemaName?.toLowerCase(), containerPath)
                 .then(excludedQueries => {
                     queries.forEach(q => {
                         if (excludedQueries && excludedQueries?.indexOf(q.name.toLowerCase()) > -1) return;

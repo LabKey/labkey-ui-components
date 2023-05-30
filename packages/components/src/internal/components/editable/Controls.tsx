@@ -35,6 +35,7 @@ export interface AddRowsControlProps {
     placement?: PlacementType;
     wrapperClass?: string;
     invalidCountMsg?: string;
+    verbPastTense?: string;
 }
 
 interface AddRowsControlState {
@@ -51,6 +52,7 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
         nounPlural: 'rows',
         nounSingular: 'row',
         placement: 'bottom',
+        verbPastTense: 'added',
     };
 
     private addCount: React.RefObject<any>;
@@ -145,7 +147,7 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
     }
 
     render() {
-        const { disable, minCount, nounPlural, nounSingular, placement, wrapperClass, invalidCountMsg } = this.props;
+        const { disable, minCount, maxCount, maxTotalCount, nounPlural, nounSingular, placement, wrapperClass, invalidCountMsg, verbPastTense } = this.props;
         const { count } = this.state;
 
         const hasError = !disable && this.hasError();
@@ -154,7 +156,8 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
             'has-error': hasError,
         });
         const maxToAdd = this.getMaxRowsToAdd();
-        const errorMsg = minCount == maxToAdd ? `${minCount} ${nounSingular.toLowerCase()} allowed` : `${minCount}-${maxToAdd} ${nounPlural.toLowerCase()} allowed`;
+        const errorMsg =  `At most ${maxTotalCount ?? maxCount} ${nounPlural.toLowerCase()} can be ${verbPastTense.toLowerCase()} at once (${maxToAdd} remaining).`;
+
         return (
             <div className={wrapperClasses}>
                 <span className="input-group input-group-align">
@@ -173,7 +176,7 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
                     />
                     {this.renderButton()}
                 </span>
-                {hasError && (
+                {hasError && count > 0 && (
                     <span className="text-danger pull-left add-control--error-message">
                         {invalidCountMsg ? invalidCountMsg : errorMsg}
                     </span>

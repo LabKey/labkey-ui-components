@@ -539,7 +539,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             options,
             placeholder,
             ref: 'reactSelect',
-            styles: { ...customStyles, ..._customStyles },
+            styles: { ..._customStyles, ...customStyles },
             theme: customTheme || _customTheme,
             // ReactSelect only supports null for clearing the value (as opposed to undefined).
             // See https://stackoverflow.com/a/50417171.

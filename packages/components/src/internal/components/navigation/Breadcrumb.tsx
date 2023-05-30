@@ -13,23 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { FC, ReactNode } from 'react';
 import classNames from 'classnames';
 
 interface Props {
     className?: string;
 }
 
-export class Breadcrumb extends React.Component<Props, any> {
-    render() {
-        const { children, className } = this.props;
+export const Breadcrumb: FC<Props> = props => {
+    const children: ReactNode[] = [];
+    React.Children.forEach(props.children, c => {
+        if (c !== null) {
+            children.push(c);
+        }
+    });
 
-        return (
-            <ol className={classNames('breadcrumb', className)}>
-                {React.Children.map(children, child => (
-                    <li>{child}</li>
-                ))}
-            </ol>
-        );
+    if (children.length === 0) {
+        return null;
     }
-}
+
+    return (
+        <ol className={classNames('breadcrumb', props.className)}>
+            {React.Children.map(children, child => (
+                <li>{child}</li>
+            ))}
+        </ol>
+    );
+};
+
+Breadcrumb.displayName = 'Breadcrumb';

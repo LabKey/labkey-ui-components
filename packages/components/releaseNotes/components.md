@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.341.2
+*Released*: 30 May 2023
 * Issue 47556: Update color for placeholder text in grids
 * Issue 47964: Adjust `AncestorRenderer` to display field values that are negative
 * Issue 47960: Update messaging about limit on sample creation

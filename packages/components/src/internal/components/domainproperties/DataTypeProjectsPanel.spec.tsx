@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
-
 import { SampleTypeDataType } from '../entities/constants';
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { getSecurityTestAPIWrapper } from '../security/APIWrapper';

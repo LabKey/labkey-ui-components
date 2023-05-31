@@ -14,43 +14,43 @@
  * limitations under the License.
  */
 import React from 'react';
-import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
 import { AppURL } from '../../url/AppURL';
 
 import { Breadcrumb } from './Breadcrumb';
 
-describe('<Breadcrumb/>', () => {
-    test('with one link', () => {
-        const component = (
-            <Breadcrumb>
-                <a href={AppURL.create('q').toString()}>First</a>
-            </Breadcrumb>
-        );
-
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
+describe('Breadcrumb', () => {
+    test('empty render', () => {
+        expect(mount(<Breadcrumb />).isEmptyRender()).toBe(true);
+        expect(mount(<Breadcrumb>{null}</Breadcrumb>).isEmptyRender()).toBe(true);
     });
 
-    test('with multiple links', () => {
-        const component = (
+    test('with links', () => {
+        const wrapper = mount(
             <Breadcrumb>
                 <a href={AppURL.create('q').toString()}>First</a>
                 <a href={AppURL.create('q', 'two').toString()}>Second</a>
-                <a href={AppURL.create('q', 'two', 'three').toString()}>Third</a>
+                {false && <a href={AppURL.create('q', 'two', 'three').toString()}>Third</a>}
+                <a href={AppURL.create('q', 'two', 'three', 'four').toString()}>Fourth</a>
             </Breadcrumb>
         );
 
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
+        expect(wrapper.exists('ol.breadcrumb')).toBe(true);
+
+        const links = wrapper.find('a');
+        expect(links).toHaveLength(3);
+        expect(links.at(0).text()).toEqual('First');
+        expect(links.at(1).text()).toEqual('Second');
+        expect(links.at(2).text()).toEqual('Fourth');
     });
 
     test('with className prop', () => {
-        const component = <Breadcrumb className="anotherclass" />;
-
-        const wrapper = mount(component);
+        const wrapper = mount(
+            <Breadcrumb className="anotherclass">
+                <a href={AppURL.create('q').toString()}>First</a>
+            </Breadcrumb>
+        );
         expect(wrapper.find('ol').getDOMNode().getAttribute('class')).toBe('breadcrumb anotherclass');
-        wrapper.unmount();
     });
 });

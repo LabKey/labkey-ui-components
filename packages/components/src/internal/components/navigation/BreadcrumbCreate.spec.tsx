@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import React from 'react';
-import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
 import { AppURL } from '../../url/AppURL';
@@ -42,7 +41,7 @@ const createdModifiedRow = {
     },
 };
 
-describe('<BreadcrumbCreate/>', () => {
+describe('BreadcrumbCreate', () => {
     test('with created row', () => {
         const component = (
             <BreadcrumbCreate row={createdModifiedRow} useServerDate={false}>
@@ -56,12 +55,10 @@ describe('<BreadcrumbCreate/>', () => {
         const titleAttr = wrapper.find('span').getDOMNode().getAttribute('title');
         expect(titleAttr).toContain('Created by: username');
         expect(titleAttr).toContain('Modified by: username2');
-
-        wrapper.unmount();
     });
 
     test('with multiple links, no created row', () => {
-        const component = (
+        const wrapper = mount(
             <BreadcrumbCreate useServerDate={false}>
                 <a href={AppURL.create('q').toString()}>First</a>
                 <a href={AppURL.create('q', 'two').toString()}>Second</a>
@@ -69,7 +66,6 @@ describe('<BreadcrumbCreate/>', () => {
             </BreadcrumbCreate>
         );
 
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
+        expect(wrapper.find('a')).toHaveLength(3);
     });
 });

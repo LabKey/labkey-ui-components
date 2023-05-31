@@ -4,13 +4,14 @@ import { mount, ReactWrapper } from 'enzyme';
 
 import { Modal, OverlayTrigger } from 'react-bootstrap';
 
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { Draggable } from 'react-beautiful-dnd';
 import { ExtendedMap } from '../ExtendedMap';
 
 import { SchemaQuery } from '../SchemaQuery';
 import { QueryInfo } from '../QueryInfo';
 import { ViewInfo } from '../../internal/ViewInfo';
 import { QueryColumn, QueryLookup } from '../QueryColumn';
+import { wrapDraggable } from '../../internal/test/testHelpers';
 
 import { makeTestQueryModel } from './testUtils';
 
@@ -66,21 +67,6 @@ const QUERY_COL_LOOKUP_ANCESTOR_MULTIVALUED = new QueryColumn({
         multiValued: 'junction',
     },
 });
-
-const wrapDraggable = element => {
-    return (
-        <DragDropContext onDragEnd={jest.fn()}>
-            <Droppable droppableId="jest-test-droppable">
-                {provided => (
-                    <div ref={provided.innerRef} {...provided.droppableProps}>
-                        {element}
-                        {provided.placeholder}
-                    </div>
-                )}
-            </Droppable>
-        </DragDropContext>
-    );
-};
 
 describe('ColumnChoice', () => {
     test('isInView', () => {

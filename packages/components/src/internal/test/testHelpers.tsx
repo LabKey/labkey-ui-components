@@ -1,4 +1,5 @@
 import React, { FC, useMemo } from 'react';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import { AppContext, AppContextProvider } from '../AppContext';
 import { getTestAPIWrapper } from '../APIWrapper';
@@ -60,4 +61,19 @@ export const sleep = (ms = 0): Promise<void> => {
             resolve();
         }, ms);
     });
+};
+
+export const wrapDraggable = element => {
+    return (
+        <DragDropContext onDragEnd={jest.fn()}>
+            <Droppable droppableId="jest-test-droppable">
+                {provided => (
+                    <div ref={provided.innerRef} {...provided.droppableProps}>
+                        {element}
+                        {provided.placeholder}
+                    </div>
+                )}
+            </Droppable>
+        </DragDropContext>
+    );
 };

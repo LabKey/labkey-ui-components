@@ -2,7 +2,7 @@ import React from 'react';
 import { List } from 'immutable';
 import { Security } from '@labkey/api';
 
-import { fetchContainers, fetchQueries, fetchSchemas } from '../actions';
+import {fetchContainers, fetchQueries, fetchSchemas, getExcludedSchemaQueryNames} from '../actions';
 import { QueryInfoLite } from '../models';
 import { Container } from '../../base/models/Container';
 import { SchemaDetails } from '../../../SchemaDetails';
@@ -12,6 +12,7 @@ export interface ILookupContext {
     fetchContainers: () => Promise<List<Container>>;
     fetchQueries: (containerPath: string, schemaName: string) => Promise<QueryInfoLite[]>;
     fetchSchemas: (containerPath: string) => Promise<SchemaDetails[]>;
+    getExcludedSchemaQueryNames: (schemaName, queryContainerPath?: string) => Promise<string[]>;
 }
 
 const LookupContext = React.createContext<ILookupContext>(undefined);
@@ -28,6 +29,7 @@ export class LookupProvider extends React.Component<any, ILookupContext> {
             fetchContainers,
             fetchQueries,
             fetchSchemas,
+            getExcludedSchemaQueryNames
         };
     }
 

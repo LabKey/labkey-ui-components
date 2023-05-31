@@ -11,8 +11,6 @@ import { DOMAIN_FIELD_LOOKUP_CONTAINER, DOMAIN_FIELD_LOOKUP_QUERY, DOMAIN_FIELD_
 import { Container } from '../../base/models/Container';
 import { SchemaDetails } from '../../../SchemaDetails';
 
-import { getExcludedSchemaQueryNames } from '../actions';
-
 import { ILookupContext, LookupContextConsumer } from './Context';
 
 interface ILookupProps {
@@ -203,9 +201,9 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
         context.fetchQueries(queryContainerPath, schemaName).then(queries => {
             const infos: Array<{ name: string; type: PropDescType }> = [];
 
-            getExcludedSchemaQueryNames(schemaName?.toLowerCase(), containerPath)
+            context.getExcludedSchemaQueryNames(schemaName?.toLowerCase(), queryContainerPath)
                 .then(excludedQueries => {
-                    queries.forEach(q => {
+                    queries?.forEach(q => {
                         if (excludedQueries && excludedQueries?.indexOf(q.name.toLowerCase()) > -1) return;
 
                         if (q.isIncludedForLookups) infos.push(...q.getLookupInfo(this.props.lookupURI));
@@ -225,6 +223,8 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
                 .catch(error => {
                     console.error(error);
                 });
+        }).catch(e => {
+            console.error(e);
         });
     }
 
@@ -375,7 +375,7 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
 
         context.fetchSchemas(containerPath).then(allSchemas => {
             const schemas = [];
-            getExcludedSchemaQueryNames('assay', containerPath).then(excludedAssayNames => {
+            context.getExcludedSchemaQueryNames('assay', containerPath).then(excludedAssayNames => {
                 if (!excludedAssayNames || excludedAssayNames.length === 0) schemas.push(...allSchemas);
                 else {
                     allSchemas.forEach(schema => {

@@ -9,10 +9,6 @@ import { isLoading, LoadingState } from '../../../public/LoadingState';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
-import { getExcludedDataTypeNames } from '../entities/actions';
-
-import { SCHEMAS } from '../../schemas';
-
 import { isFieldFullyLocked } from './propertiesUtil';
 import { fetchQueries } from './actions';
 import { createFormInputId, createFormInputName } from './utils';
@@ -49,11 +45,10 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
 
         try {
             const queries = await fetchQueries(undefined, 'samples');
-            const excludedQueries = await getExcludedDataTypeNames(SCHEMAS.EXP_TABLES.SAMPLE_SETS, 'SampleType'); // TODO Is this needed since data type belongs to home folder
 
             const sampleTypes = queries
                 .reduce((list, q) => list.concat(q.getLookupInfo(original.rangeURI)).toList(), List<LookupInfo>())
-                .filter(st => st.type.isInteger() && excludedQueries.indexOf(st.name.toLowerCase()) === -1) // Remove rowId duplicates
+                .filter(st => st.type.isInteger()) // Remove rowId duplicates
                 .toList();
 
             this.setState({ loadingState: LoadingState.LOADED, sampleTypes });

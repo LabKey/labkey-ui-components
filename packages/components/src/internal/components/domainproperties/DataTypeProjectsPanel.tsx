@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
-import { hasProductProjects, isAppHomeFolder, isProductProjectDataTypeSelectionEnabled } from '../../app/utils';
+import { hasProductProjects, isAppHomeFolder } from '../../app/utils';
 
 import { useServerContext } from '../base/ServerContext';
 
@@ -120,7 +120,7 @@ const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPanelColl
         [onUpdateExcludedProjects]
     );
 
-    if (!isProductProjectDataTypeSelectionEnabled(moduleContext) || !hasProductProjects(moduleContext)) {
+    if (!hasProductProjects(moduleContext)) {
         return null;
     }
 

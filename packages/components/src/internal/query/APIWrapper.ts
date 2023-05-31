@@ -39,7 +39,8 @@ export interface QueryAPIWrapper {
     ) => Promise<DataTypeEntity[]>;
     getProjectDataTypeDataCount: (
         dataType: ProjectConfigurableDataType,
-        allDataTypes?: DataTypeEntity[]
+        allDataTypes?: DataTypeEntity[],
+        isNewFolder?: boolean
     ) => Promise<Record<string, number>>;
     getDataTypeProjectDataCount: (
         entityDataType: EntityDataType,

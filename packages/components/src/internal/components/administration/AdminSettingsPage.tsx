@@ -93,12 +93,14 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
                             api={api.folder}
                             onSuccess={onSettingsSuccess}
                         />
-                        <ProjectFreezerSelectionComponent
-                            projectId={container.id}
-                            updateDataTypeExclusions={onSettingsChange}
-                            disabledTypesMap={disabledTypesMap}
-                            onSuccess={onSettingsSuccess}
-                        />
+                        {!!ProjectFreezerSelectionComponent && (
+                            <ProjectFreezerSelectionComponent
+                                projectId={container.id}
+                                updateDataTypeExclusions={onSettingsChange}
+                                disabledTypesMap={disabledTypesMap}
+                                onSuccess={onSettingsSuccess}
+                            />
+                        )}
                     </>
                 )}
             </>

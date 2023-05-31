@@ -64,8 +64,8 @@ describe('CreateProjectPage', () => {
         );
 
         // Assert
-        expect(wrapper.find('.panel-heading').text()).toBe('Name of Project');
-        expect(wrapper.find(ProjectDataTypeSelections)).toHaveLength(0); // TODO change this to 1 after experimental feature is removed
+        expect(wrapper.find('.panel-heading').first().text()).toBe('Name of Project');
+        expect(wrapper.find(ProjectDataTypeSelections)).toHaveLength(1);
         const form = wrapper.find('.create-project-form');
         expect(form.exists()).toBe(true);
         form.simulate('submit');

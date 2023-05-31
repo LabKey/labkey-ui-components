@@ -21,6 +21,8 @@ interface Props {
     dataTypeLabel?: string;
     disabled?: boolean;
     entityDataType?: EntityDataType;
+    isNewFolder?: boolean;
+
     noHeader?: boolean;
 
     toggleSelectAll?: boolean;
@@ -70,6 +72,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
         updateUncheckedTypes,
         columns,
         noHeader,
+        isNewFolder,
     } = props;
 
     const [dataTypes, setDataTypes] = useState<DataTypeEntity[]>(undefined);
@@ -110,10 +113,11 @@ export const DataTypeSelector: FC<Props> = memo(props => {
 
         const results = await api.query.getProjectDataTypeDataCount(
             entityDataType.projectConfigurableDataType,
-            dataTypes
+            dataTypes,
+            isNewFolder
         );
         setDataCounts(results);
-    }, [api, dataCounts, dataTypes, entityDataType]);
+    }, [api, dataCounts, dataTypes, entityDataType, isNewFolder]);
 
     const onChange = useCallback(
         (entityId: number | string, toggle: boolean, check?: boolean) => {

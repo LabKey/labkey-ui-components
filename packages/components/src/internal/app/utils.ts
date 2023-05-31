@@ -24,7 +24,6 @@ import {
     BIOLOGICS_APP_PROPERTIES,
     EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS,
     EXPERIMENTAL_PRODUCT_PROJECT_DATA_LISTING_SCOPED,
-    EXPERIMENTAL_PRODUCT_PROJECT_DATA_SELECTION,
     EXPERIMENTAL_REQUESTS_MENU,
     EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR,
     FREEZER_MANAGER_APP_PROPERTIES,
@@ -268,10 +267,6 @@ export function isAllProductFoldersFilteringEnabled(moduleContext?: ModuleContex
 
 export function isProductProjectsDataListingScopedToProject(moduleContext?: ModuleContext): boolean {
     return resolveModuleContext(moduleContext)?.query?.[EXPERIMENTAL_PRODUCT_PROJECT_DATA_LISTING_SCOPED] === true;
-}
-
-export function isProductProjectDataTypeSelectionEnabled(moduleContext?: ModuleContext): boolean {
-    return resolveModuleContext(moduleContext)?.query?.[EXPERIMENTAL_PRODUCT_PROJECT_DATA_SELECTION] === true;
 }
 
 export function getProjectDataExclusion(moduleContext?: ModuleContext): { [key: string]: number[] } {

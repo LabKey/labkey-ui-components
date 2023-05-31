@@ -16,7 +16,6 @@ import {
     getProjectDataExclusion,
     isAppHomeFolder,
     isELNEnabled,
-    isProductProjectDataTypeSelectionEnabled,
     isProductProjectsEnabled,
     isSampleStatusEnabled,
 } from '../../app/utils';
@@ -83,7 +82,7 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
         return (
             <>
                 <ProjectSettings onChange={onSettingsChange} onSuccess={onSettingsSuccess} onPageError={onError} />
-                {isProductProjectDataTypeSelectionEnabled() && !isAppHomeFolder(container, moduleContext) && (
+                {!isAppHomeFolder(container, moduleContext) && (
                     <>
                         <ProjectDataTypeSelections
                             entityDataTypes={projectDataTypes}

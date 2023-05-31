@@ -12,12 +12,7 @@ import { useNotificationsContext } from '../notifications/NotificationsContext';
 import { Container } from '../base/models/Container';
 import { AppURL } from '../../url/AppURL';
 
-import {
-    getCurrentAppProperties,
-    hasProductProjects,
-    isProductProjectDataTypeSelectionEnabled,
-    setProductProjects,
-} from '../../app/utils';
+import { getCurrentAppProperties, hasProductProjects, setProductProjects } from '../../app/utils';
 
 import { useFolderMenuContext } from '../navigation/hooks';
 
@@ -25,9 +20,10 @@ import { invalidateFullQueryDetailsCache } from '../../query/api';
 
 import { useAdminAppContext } from '../administration/useAdminAppContext';
 
+import { ProjectConfigurableDataType } from '../entities/models';
+
 import { ProjectProperties } from './ProjectProperties';
 import { ProjectDataTypeSelections } from './ProjectDataTypeSelections';
-import { ProjectConfigurableDataType } from '../entities/models';
 import { PageDetailHeader } from '../forms/PageDetailHeader';
 
 const TITLE = 'Create New Project';
@@ -48,7 +44,7 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
 
     const updateDataTypeExclusions = useCallback(
         (dataType: ProjectConfigurableDataType, exclusions: number[]) => {
-            setDataTypeExclusion((prevState) => {
+            setDataTypeExclusion(prevState => {
                 const uncheckedUpdates = { ...prevState };
                 uncheckedUpdates[dataType] = exclusions;
                 return uncheckedUpdates;
@@ -71,7 +67,7 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
                 disabledSampleTypes: dataTypeExclusion?.['SampleType'],
                 disabledDataClasses: dataTypeExclusion?.['DataClass'],
                 disabledAssayDesigns: dataTypeExclusion?.['AssayDesign'],
-                disabledStorageLocations: dataTypeExclusion?.['StorageLocation']
+                disabledStorageLocations: dataTypeExclusion?.['StorageLocation'],
             };
 
             let project: Container;
@@ -106,20 +102,14 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
                         </div>
                     </div>
                 </div>
-
-                {isProductProjectDataTypeSelectionEnabled() && (
-                    <>
-                        <ProjectDataTypeSelections
-                            entityDataTypes={projectDataTypes}
-                            projectId={null}
-                            updateDataTypeExclusions={updateDataTypeExclusions}
-                        />
-                        <ProjectFreezerSelectionComponent
-                            updateDataTypeExclusions={updateDataTypeExclusions}
-                        />
-                    </>
+                <ProjectDataTypeSelections
+                    entityDataTypes={projectDataTypes}
+                    projectId={null}
+                    updateDataTypeExclusions={updateDataTypeExclusions}
+                />
+                {ProjectFreezerSelectionComponent && (
+                    <ProjectFreezerSelectionComponent updateDataTypeExclusions={updateDataTypeExclusions} />
                 )}
-
                 <div className="form-group no-margin-bottom">
                     <div className="pull-left">
                         <button className="project-cancel-button btn btn-default" onClick={onCancel} type="button">

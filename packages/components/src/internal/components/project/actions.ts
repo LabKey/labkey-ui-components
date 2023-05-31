@@ -4,6 +4,7 @@ import { caseInsensitive } from '../../util/utils';
 import { DataTypeEntity, EntityDataType, ProjectConfigurableDataType } from '../entities/models';
 import { getContainerFilterForFolder } from '../../query/api';
 import { SCHEMAS } from '../../schemas';
+import { isProductProjectsDataListingScopedToProject } from '../../app/utils';
 
 export function getProjectDataTypeDataCountSql(dataType: ProjectConfigurableDataType): string {
     if (!dataType) return null;
@@ -30,9 +31,15 @@ export function getProjectDataTypeDataCountSql(dataType: ProjectConfigurableData
 
 export function getProjectDataTypeDataCount(
     dataType: ProjectConfigurableDataType,
-    allDataTypes?: DataTypeEntity[]
+    allDataTypes?: DataTypeEntity[],
+    isNewFolder?: boolean
 ): Promise<Record<string, number>> {
     return new Promise((resolve, reject) => {
+        if (isProductProjectsDataListingScopedToProject() && isNewFolder) {
+            resolve({});
+            return;
+        }
+
         // samples and assay runs reference their data type by lsid, but dataclass data reference by rowid
         const byLsid = dataType === 'SampleType' || dataType === 'AssayDesign';
         const lookup = {};

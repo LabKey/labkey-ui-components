@@ -17,13 +17,11 @@ import React from 'react';
 import classNames from 'classnames';
 import { List } from 'immutable';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
-import { Query } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { cancelEvent, isCopy, isFillDown, isPaste, isSelectAll } from '../../events';
 
 import { CELL_SELECTION_HANDLE_CLASSNAME, KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
-
-import { getQueryColumnRenderers } from '../../global';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 
@@ -51,6 +49,7 @@ interface Props {
     lastSelection?: boolean;
     linkedValues?: any[];
     locked?: boolean;
+    lookupValueFilters?: Filter.IFilter[];
     message?: CellMessage;
     name?: string;
     placeholder?: string;
@@ -284,6 +283,7 @@ export class Cell extends React.PureComponent<Props, State> {
             selection,
             values,
             filteredLookupValues,
+            lookupValueFilters,
         } = this.props;
 
         const { filteredLookupKeys } = this.state;
@@ -382,6 +382,7 @@ export class Cell extends React.PureComponent<Props, State> {
                     colIdx={colIdx}
                     containerFilter={containerFilter}
                     disabled={this.isReadOnly()}
+                    lookupValueFilters={lookupValueFilters}
                     filteredLookupKeys={filteredLookupKeys}
                     filteredLookupValues={filteredLookupValues}
                     forUpdate={forUpdate}

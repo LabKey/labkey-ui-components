@@ -8,6 +8,13 @@ Components, models, actions, and utility functions for LabKey applications and p
     * implement for Sample Type designer, Data Class designer (sources and non-built in registry), Assay Designer
   * Misc updates to admin panel titles for consistency
 
+### version 2.341.3
+*Released*: 31 May 2023
+* Project level data type - handle lookups and remove experimental flag
+  * remove isProductProjectDataTypeSelectionEnabled experimental flag and enable function
+  * filter schema and query names for Look Up fields in designer based on selected target container's data type exclusion config
+  * support user supplied lookupValueFilters for LookupCell
+
 ### version 2.341.2
 *Released*: 30 May 2023
 * Issue 47556: Update color for placeholder text in grids

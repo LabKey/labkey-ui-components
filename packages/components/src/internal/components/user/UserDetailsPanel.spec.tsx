@@ -5,7 +5,7 @@ import { shallow } from 'enzyme';
 import { getRolesByUniqueName, processGetRolesResponse } from '../permissions/actions';
 import policyJSON from '../../../test/data/security-getPolicy.json';
 import rolesJSON from '../../../test/data/security-getRoles.json';
-import { sleep } from '../../testHelpers';
+import { sleep } from '../../test/testHelpers';
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
 import { JEST_SITE_ADMIN_USER_ID } from '../../../test/data/constants';
 

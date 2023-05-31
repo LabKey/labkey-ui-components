@@ -3,7 +3,8 @@ import { mount } from 'enzyme';
 import { createMemoryHistory, InjectedRouter, Route, Router } from 'react-router';
 import { Filter } from '@labkey/api';
 
-import { initUnitTests, makeQueryInfo, makeTestData, sleep } from '../../internal/testHelpers';
+import { sleep } from '../../internal/test/testHelpers';
+import { initUnitTests, makeQueryInfo, makeTestData } from '../../internal/enzymeTestHelpers';
 import { MockQueryModelLoader } from '../../test/MockQueryModelLoader';
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../../test/data/mixtures-getQueryPaging.json';

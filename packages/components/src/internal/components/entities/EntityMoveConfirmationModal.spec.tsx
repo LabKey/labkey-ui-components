@@ -2,7 +2,7 @@ import React from 'react';
 
 import { PermissionTypes } from '@labkey/api';
 
-import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../enzymeTestHelpers';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 import { getTestAPIWrapper } from '../../APIWrapper';

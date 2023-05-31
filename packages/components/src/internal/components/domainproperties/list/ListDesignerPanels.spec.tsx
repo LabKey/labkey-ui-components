@@ -8,7 +8,7 @@ import DomainForm from '../DomainForm';
 
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
-import { waitForLifecycle } from '../../../testHelpers';
+import { waitForLifecycle } from '../../../enzymeTestHelpers';
 import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { ListPropertiesPanel } from './ListPropertiesPanel';

@@ -3,7 +3,7 @@ import { mount, ReactWrapper } from 'enzyme';
 
 import { ChoicesListItem } from '../base/ChoicesListItem';
 
-import { waitForLifecycle } from '../../testHelpers';
+import { waitForLifecycle } from '../../enzymeTestHelpers';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 

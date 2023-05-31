@@ -2,7 +2,7 @@ import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { List } from 'immutable';
 
-import { sleep } from '../../testHelpers';
+import { sleep } from '../../test/testHelpers';
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
 import { SectionHeading } from '../domainproperties/SectionHeading';

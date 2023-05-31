@@ -2,7 +2,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { TemplateDownloadButton } from './TemplateDownloadButton';
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../internal/userFixtures';
-import { mountWithServerContext } from '../../internal/testHelpers';
+import { mountWithServerContext } from '../../internal/enzymeTestHelpers';
 
 describe("TemplateDownloadButton", () => {
     test("no onclick or templateUrl", () => {

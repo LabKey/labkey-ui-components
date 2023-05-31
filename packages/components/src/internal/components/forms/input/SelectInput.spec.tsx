@@ -18,7 +18,7 @@ import { mount, shallow } from 'enzyme';
 
 import { FieldLabel } from '../FieldLabel';
 
-import { waitForLifecycle } from '../../../testHelpers';
+import { waitForLifecycle } from '../../../enzymeTestHelpers';
 
 import { initOptions, SelectInputImpl, SelectInputProps } from './SelectInput';
 import { blurSelectInputInput, setSelectInputText } from './SelectInputTestUtils';

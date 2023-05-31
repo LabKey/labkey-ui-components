@@ -1,7 +1,6 @@
 import React from 'react';
-import { Dropdown, MenuItem } from 'react-bootstrap';
+import { MenuItem } from 'react-bootstrap';
 import { mount, ReactWrapper } from 'enzyme';
-import { fromJS } from 'immutable';
 import { Filter } from '@labkey/api';
 import { ExtendedMap } from '../public/ExtendedMap';
 

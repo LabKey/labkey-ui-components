@@ -8,7 +8,7 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-import { mountWithAppServerContext } from '../../testHelpers';
+import { mountWithAppServerContext } from '../../enzymeTestHelpers';
 import { DisableableMenuItem } from '../samples/DisableableMenuItem';
 
 import { TestTypeDataType, TestTypeDataTypeWithEntityFilter } from '../../../test/data/constants';

@@ -7,7 +7,7 @@ import { TEST_USER_READER } from '../../userFixtures';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-import { mountWithServerContext } from '../../testHelpers';
+import { mountWithServerContext } from '../../enzymeTestHelpers';
 
 import { SubMenuItem } from '../menus/SubMenuItem';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { waitForLifecycle } from '../../testHelpers';
+import { waitForLifecycle } from '../../enzymeTestHelpers';
 
 import { LineageFilter } from './types';
 import { LineageSettings } from './LineageSettings';

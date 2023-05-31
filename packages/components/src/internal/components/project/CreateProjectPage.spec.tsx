@@ -1,7 +1,7 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 
-import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../enzymeTestHelpers';
 
 import { TEST_FOLDER_CONTAINER } from '../../containerFixtures';
 

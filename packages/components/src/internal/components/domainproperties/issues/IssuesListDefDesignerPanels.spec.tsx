@@ -13,7 +13,7 @@ import { Alert } from '../../base/Alert';
 import { IssuesListDefPropertiesPanel } from './IssuesListDefPropertiesPanel';
 import { IssuesDesignerPanelsImpl, IssuesListDefDesignerPanels } from './IssuesListDefDesignerPanels';
 import { IssuesListDefModel } from './models';
-import { waitForLifecycle } from "../../../testHelpers";
+import { waitForLifecycle } from "../../../enzymeTestHelpers";
 import { List } from "immutable";
 
 const emptyNewModel = IssuesListDefModel.create(null, { issueDefName: 'Issues List For Jest' });

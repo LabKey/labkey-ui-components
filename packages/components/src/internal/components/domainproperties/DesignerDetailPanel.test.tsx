@@ -3,7 +3,7 @@ import { act } from 'react-dom/test-utils';
 import { screen, fireEvent } from '@testing-library/react';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import { renderWithAppContext } from '../../testUtils';
+import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { getTestAPIWrapper } from '../../APIWrapper';
 

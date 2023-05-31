@@ -26,7 +26,7 @@ import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../containerFi
 import { ServerContext } from '../base/ServerContext';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
-import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../enzymeTestHelpers';
 
 import { Alert } from '../base/Alert';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { FormControl, Button } from 'react-bootstrap';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../enzymeTestHelpers';
 import { getTestAPIWrapper } from '../../APIWrapper';
 
 import { getLabelPrintingTestAPIWrapper } from './APIWrapper';

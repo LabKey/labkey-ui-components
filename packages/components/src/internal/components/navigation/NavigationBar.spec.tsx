@@ -19,7 +19,7 @@ import { ReactWrapper } from 'enzyme';
 import { TEST_USER_APP_ADMIN, TEST_USER_GUEST, TEST_USER_READER } from '../../userFixtures';
 import { ServerNotifications } from '../notifications/ServerNotifications';
 
-import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../enzymeTestHelpers';
 import { markAllNotificationsRead } from '../../../test/data/notificationData';
 import { ServerNotificationModel } from '../notifications/model';
 

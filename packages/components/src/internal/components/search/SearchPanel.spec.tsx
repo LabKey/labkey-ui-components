@@ -2,7 +2,7 @@ import React from 'react';
 
 import { fromJS, Map } from 'immutable';
 
-import { mountWithAppServerContext } from '../../testHelpers';
+import { mountWithAppServerContext } from '../../enzymeTestHelpers';
 
 import { PaginationButtons } from '../buttons/PaginationButtons';
 

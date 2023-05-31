@@ -4,7 +4,7 @@ import { fromJS, List, Map } from 'immutable';
 
 import { ReactWrapper } from 'enzyme';
 
-import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../enzymeTestHelpers';
 
 import { TEST_USER_APP_ADMIN, TEST_USER_EDITOR } from '../../userFixtures';
 import { AdminAppContext, AppContext } from '../../AppContext';

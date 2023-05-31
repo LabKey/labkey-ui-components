@@ -8,7 +8,7 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { ChoicesListItem } from '../base/ChoicesListItem';
 import sampleSetAllFieldTypesQueryInfo from '../../../test/data/sampleSetAllFieldTypes-getQueryDetails.json';
 
-import { waitForLifecycle } from '../../testHelpers';
+import { waitForLifecycle } from '../../enzymeTestHelpers';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
 

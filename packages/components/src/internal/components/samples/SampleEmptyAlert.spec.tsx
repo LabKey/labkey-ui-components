@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 import { TEST_USER_APP_ADMIN, TEST_USER_FOLDER_ADMIN, TEST_USER_READER } from '../../userFixtures';
 import { NEW_SAMPLE_TYPE_HREF, NEW_SAMPLES_HREF } from '../../app/constants';
 
-import { mountWithAppServerContext } from '../../testHelpers';
+import { mountWithAppServerContext } from '../../enzymeTestHelpers';
 import { Container } from '../base/models/Container';
 
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './SampleEmptyAlert';

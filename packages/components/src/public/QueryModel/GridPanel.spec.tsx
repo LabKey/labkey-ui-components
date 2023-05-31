@@ -1,10 +1,8 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { mount, ReactWrapper } from 'enzyme';
-import { fromJS } from 'immutable';
 import { Filter } from '@labkey/api';
-import renderer from 'react-test-renderer';
 
-import { initUnitTests, makeQueryInfo, makeTestData, mountWithServerContext } from '../../internal/testHelpers';
+import { initUnitTests, makeQueryInfo, makeTestData, mountWithServerContext } from '../../internal/enzymeTestHelpers';
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../../test/data/mixtures-getQueryPaging.json';
 

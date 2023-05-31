@@ -4,7 +4,7 @@ import entitiesJSON from '../../test/data/sampleSetSearchResult.json';
 import lineageJSON from '../../test/data/experiment-lineage.json';
 import { LineageResult } from '../components/lineage/models';
 
-import { registerDefaultURLMappers } from '../testHelpers';
+import { registerDefaultURLMappers } from '../test/testHelpers';
 
 import { initUnitTestMocks } from '../../test/testHelperMocks';
 
@@ -29,22 +29,34 @@ describe('resolveSearchUsingIndex', () => {
     });
 });
 
-describe("LookupMapper", () => {
+describe('LookupMapper', () => {
     test('resolve without lookup container', () => {
         const mapper = new LookupMapper('test', undefined);
-        const resolved = mapper.resolve("#/list/a", fromJS({value: 1}), fromJS({lookup: {schemaName: "list", queryName: "testing"}}));
-        expect(resolved).toStrictEqual(AppURL.create('test', "list", "testing", 1))
+        const resolved = mapper.resolve(
+            '#/list/a',
+            fromJS({ value: 1 }),
+            fromJS({ lookup: { schemaName: 'list', queryName: 'testing' } })
+        );
+        expect(resolved).toStrictEqual(AppURL.create('test', 'list', 'testing', 1));
     });
 
     test('resolve with lookup container same as current', () => {
         const mapper = new LookupMapper('test', undefined);
-        const resolved = mapper.resolve("#/list/a", fromJS({value: 1}), fromJS({lookup: {schemaName: "list", queryName: "testing", containerPath: LABKEY.container.path}}));
-        expect(resolved).toStrictEqual(AppURL.create('test', "list", "testing", 1))
+        const resolved = mapper.resolve(
+            '#/list/a',
+            fromJS({ value: 1 }),
+            fromJS({ lookup: { schemaName: 'list', queryName: 'testing', containerPath: LABKEY.container.path } })
+        );
+        expect(resolved).toStrictEqual(AppURL.create('test', 'list', 'testing', 1));
     });
 
     test('resolve with different lookup container', () => {
         const mapper = new LookupMapper('test', undefined);
-        const resolved = mapper.resolve("#/list/a", fromJS({value: 1}), fromJS({lookup: {schemaName: "list", queryName: "testing", containerPath: "/other/path"}}));
+        const resolved = mapper.resolve(
+            '#/list/a',
+            fromJS({ value: 1 }),
+            fromJS({ lookup: { schemaName: 'list', queryName: 'testing', containerPath: '/other/path' } })
+        );
         expect(resolved).toBeUndefined();
     });
 });

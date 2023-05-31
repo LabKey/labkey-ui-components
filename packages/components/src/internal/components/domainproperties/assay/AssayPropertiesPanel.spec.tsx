@@ -5,7 +5,7 @@ import { DomainDesign, DomainPanelStatus } from '../models';
 
 import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
-import { mountWithServerContext } from '../../../testHelpers';
+import { mountWithServerContext } from '../../../enzymeTestHelpers';
 
 import { ProductFeature } from '../../../app/constants';
 

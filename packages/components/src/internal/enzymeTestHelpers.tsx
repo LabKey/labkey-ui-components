@@ -1,8 +1,7 @@
-import React, { FC, ReactElement, useMemo } from 'react';
+import React, { ReactElement } from 'react';
 import { act } from 'react-dom/test-utils';
 import { Map } from 'immutable';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import {mount, MountRendererProps, ReactWrapper, shallow, ShallowWrapper} from 'enzyme';
+import { mount, MountRendererProps, ReactWrapper, shallow, ShallowWrapper } from 'enzyme';
 import { LabKey, Query } from '@labkey/api';
 
 import { RowsResponse, bindColumnRenderers } from '../public/QueryModel/QueryModelLoader';
@@ -10,22 +9,13 @@ import { RowsResponse, bindColumnRenderers } from '../public/QueryModel/QueryMod
 import { QueryInfo } from '../public/QueryInfo';
 
 import { applyQueryMetadata, handleSelectRowsResponse } from './query/api';
-import { URL_MAPPERS, URLService } from './url/URLResolver';
-import { AppContext, AppContextProvider } from './AppContext';
-import { getTestAPIWrapper } from './APIWrapper';
+import { AppContext } from './AppContext';
+import { AppContextTestProvider, sleep } from './test/testHelpers';
 
-import {
-    NotificationsContextProvider,
-    NotificationsContextState,
-} from './components/notifications/NotificationsContext';
+import { NotificationsContextState } from './components/notifications/NotificationsContext';
 import { initQueryGridState } from './global';
 import { ServerContext, ServerContextProvider } from './components/base/ServerContext';
-import {
-    LabelPrintingContextProps,
-    LabelPrintingProvider,
-    LabelPrintingProviderProps,
-} from './components/labels/LabelPrintingContextProvider';
-import { GlobalStateContextProvider } from './GlobalStateContext';
+import { LabelPrintingProviderProps } from './components/labels/LabelPrintingContextProvider';
 
 declare let LABKEY: LabKey;
 
@@ -54,17 +44,7 @@ export const initUnitTests = (metadata?: Map<string, any>, columnRenderers?: Rec
     initQueryGridState(metadata, columnRenderers);
 };
 
-export function registerDefaultURLMappers(): void {
-    URLService.registerURLMappers(
-        ...URL_MAPPERS.ASSAY_MAPPERS,
-        ...URL_MAPPERS.DATA_CLASS_MAPPERS,
-        ...URL_MAPPERS.SAMPLE_TYPE_MAPPERS,
-        ...URL_MAPPERS.LIST_MAPPERS,
-        ...URL_MAPPERS.USER_DETAILS_MAPPERS,
-        URL_MAPPERS.LOOKUP_MAPPER
-    );
-}
-
+// TODO: Move these other non-enzyme methods to testHelper.tsx
 /**
  * Instantiates a QueryInfo from a captured query details response payload. Cannot be used until you've called
  * initQueryGridState, initUnitTests, or initUnitTestMocks.
@@ -94,32 +74,6 @@ export const makeTestData = (getQueryResponse): RowsResponse => {
         rowCount,
         rows: models[key],
     };
-};
-
-interface AppContextTestProviderProps {
-    appContext: Partial<AppContext>;
-    notificationContext: Partial<NotificationsContextState>;
-    printLabelsContext: Partial<LabelPrintingContextProps>;
-    serverContext: Partial<ServerContext>;
-}
-
-export const AppContextTestProvider: FC<AppContextTestProviderProps> = props => {
-    const { appContext, children, serverContext, notificationContext, printLabelsContext } = props;
-    const initialAppContext = useMemo(() => ({ api: getTestAPIWrapper(), ...appContext }), [appContext]);
-
-    return (
-        <ServerContextProvider initialContext={serverContext as ServerContext}>
-            <AppContextProvider initialContext={initialAppContext}>
-                <GlobalStateContextProvider>
-                    <NotificationsContextProvider initialContext={notificationContext as NotificationsContextState}>
-                        <LabelPrintingProvider initialContext={printLabelsContext as LabelPrintingContextProps}>
-                            {children}
-                        </LabelPrintingProvider>
-                    </NotificationsContextProvider>
-                </GlobalStateContextProvider>
-            </AppContextProvider>
-        </ServerContextProvider>
-    );
 };
 
 /**
@@ -237,21 +191,8 @@ export const shallowWithServerContext = (
     node: ReactElement,
     initialContext?: any,
     options?: MountRendererProps
-): ShallowWrapper<any, React.Component["state"], React.Component> => {
+): ShallowWrapper<any, React.Component['state'], React.Component> => {
     return shallow(node, mountWithServerContextOptions(initialContext, options));
-};
-
-/**
- * Use this to sleep in the tests. If you make your test methods async you can use "await sleep();" to put your thread
- * to sleep temporarily which will allow async actions in your component to continue.
- * @param ms: the amount of time (in ms) to sleep
- */
-export const sleep = (ms = 0): Promise<void> => {
-    return new Promise(resolve => {
-        setTimeout(() => {
-            resolve();
-        }, ms);
-    });
 };
 
 /**
@@ -272,19 +213,4 @@ export const waitForLifecycle = (wrapper: ReactWrapper | ShallowWrapper, ms?: nu
         await sleep(ms);
         wrapper.update();
     });
-};
-
-export const wrapDraggable = element => {
-    return (
-        <DragDropContext onDragEnd={jest.fn()}>
-            <Droppable droppableId="jest-test-droppable">
-                {provided => (
-                    <div ref={provided.innerRef} {...provided.droppableProps}>
-                        {element}
-                        {provided.placeholder}
-                    </div>
-                )}
-            </Droppable>
-        </DragDropContext>
-    );
 };

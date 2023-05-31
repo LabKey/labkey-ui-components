@@ -9,7 +9,7 @@ import rolesJSON from '../../../test/data/security-getRoles.json';
 import { JEST_SITE_ADMIN_USER_ID, SECURITY_ROLE_EDITOR, SECURITY_ROLE_READER } from '../../../test/data/constants';
 import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER, TEST_PROJECT } from '../../containerFixtures';
 
-import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../enzymeTestHelpers';
 import { ServerContext } from '../base/ServerContext';
 import { TEST_USER_APP_ADMIN, TEST_USER_FOLDER_ADMIN } from '../../userFixtures';
 import { getSecurityTestAPIWrapper, SecurityAPIWrapper } from '../security/APIWrapper';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ReactWrapper } from 'enzyme';
 
-import { mountWithServerContext } from '../testHelpers';
+import { mountWithServerContext } from '../enzymeTestHelpers';
 
 import { QueryColumn } from '../../public/QueryColumn';
 

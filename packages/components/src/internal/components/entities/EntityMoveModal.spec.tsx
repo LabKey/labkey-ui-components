@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../enzymeTestHelpers';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { getTestAPIWrapper } from '../../APIWrapper';

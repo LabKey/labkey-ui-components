@@ -18,7 +18,7 @@ import { List } from 'immutable';
 
 import { AppURL } from '../../url/AppURL';
 
-import { mountWithServerContext } from '../../testHelpers';
+import { mountWithServerContext } from '../../enzymeTestHelpers';
 import { TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 

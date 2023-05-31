@@ -7,7 +7,7 @@ import rolesJSON from '../../../test/data/security-getRoles.json';
 
 import { MemberType } from '../administration/models';
 
-import { mountWithServerContext } from '../../testHelpers';
+import { mountWithServerContext } from '../../enzymeTestHelpers';
 
 import { TEST_USER_APP_ADMIN } from '../../userFixtures';
 

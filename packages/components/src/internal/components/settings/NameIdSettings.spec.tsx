@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Button, Checkbox, FormControl } from 'react-bootstrap';
 
-import { mountWithServerContext, waitForLifecycle } from '../../testHelpers';
+import { mountWithServerContext, waitForLifecycle } from '../../enzymeTestHelpers';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ConfirmModal } from '../base/ConfirmModal';

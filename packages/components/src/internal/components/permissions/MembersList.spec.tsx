@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { mountWithServerContext } from '../../testHelpers';
+import { mountWithServerContext } from '../../enzymeTestHelpers';
 import { TEST_USER_APP_ADMIN } from '../../userFixtures';
 import { UserLink } from '../user/UserLink';
 

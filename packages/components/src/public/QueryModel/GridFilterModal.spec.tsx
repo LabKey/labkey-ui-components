@@ -10,7 +10,7 @@ import { Alert } from '../../internal/components/base/Alert';
 
 import { QueryFilterPanel } from '../../internal/components/search/QueryFilterPanel';
 
-import { waitForLifecycle } from '../../internal/testHelpers';
+import { waitForLifecycle } from '../../internal/enzymeTestHelpers';
 import { getTestAPIWrapper } from '../../internal/APIWrapper';
 
 import { makeTestQueryModel } from './testUtils';

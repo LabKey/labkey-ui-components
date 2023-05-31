@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 import { hasProductProjects, isAppHomeFolder, isProductProjectDataTypeSelectionEnabled } from '../../app/utils';
@@ -22,7 +22,6 @@ import {
 } from './DomainPropertiesPanelCollapse';
 
 interface OwnProps {
-    dataType?: ProjectConfigurableDataType;
     dataTypeName?: string;
     dataTypeRowId?: number;
     entityDataType: EntityDataType;
@@ -34,7 +33,6 @@ const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPanelColl
         collapsed,
         togglePanel,
         controlledCollapse,
-        dataType,
         dataTypeRowId,
         dataTypeName,
         onUpdateExcludedProjects,
@@ -80,11 +78,18 @@ const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPanelColl
 
                     setAllProjects(allProjects_);
 
-                    const excludedProjectIds_ = await api.folder.getDataTypeExcludedProjects(dataType, dataTypeRowId);
+                    const excludedProjectIds_ = await api.folder.getDataTypeExcludedProjects(
+                        entityDataType.projectConfigurableDataType,
+                        dataTypeRowId
+                    );
                     setExcludedProjectIdsDB(excludedProjectIds_);
                     setExcludedProjectIds(excludedProjectIds_);
 
-                    const allDataCounts_ = await api.query.getDataTypeProjectDataCount(entityDataType, dataTypeRowId, dataTypeName);
+                    const allDataCounts_ = await api.query.getDataTypeProjectDataCount(
+                        entityDataType,
+                        dataTypeRowId,
+                        dataTypeName
+                    );
                     setAllDataCounts(allDataCounts_);
                 } catch (e) {
                     setError(`Error: ${resolveErrorMessage(e)}`);

@@ -300,7 +300,6 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                 {appPropertiesOnly && (
                     <DataTypeProjectsPanel
                         controlledCollapse
-                        dataType="AssayDesign"
                         dataTypeRowId={protocolModel?.protocolId}
                         dataTypeName={protocolModel?.name}
                         entityDataType={AssayRunDataType}

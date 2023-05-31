@@ -761,7 +761,6 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                     // appPropertiesOnly check will prevent this panel from showing in LKS and in LKB media types
                     <DataTypeProjectsPanel
                         controlledCollapse
-                        dataType="SampleType"
                         dataTypeRowId={model?.rowId}
                         dataTypeName={model?.name}
                         entityDataType={SampleTypeDataType}

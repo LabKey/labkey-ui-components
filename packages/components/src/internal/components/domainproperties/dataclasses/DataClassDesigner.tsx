@@ -509,7 +509,6 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
                 {appPropertiesOnly && !model.isBuiltIn && (
                     <DataTypeProjectsPanel
                         controlledCollapse
-                        dataType="DataClass"
                         dataTypeRowId={model?.rowId}
                         dataTypeName={model?.name}
                         entityDataType={DataClassDataType}

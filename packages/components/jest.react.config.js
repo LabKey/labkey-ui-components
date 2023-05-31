@@ -3,11 +3,7 @@ module.exports = {
         LABKEY: {
             contextPath: '/labkey',
             container: {
-                path: '',
-                formats: {
-                    dateFormat: "yyyy-MM-dd",
-                    dateTimeFormat: "yyyy-MM-dd HH:mm"
-                }
+                path: ''
             },
             project: {
                 rootId: 'ROOTID'
@@ -32,16 +28,16 @@ module.exports = {
     moduleFileExtensions: ['ts', 'tsx', 'js'],
     roots: ['<rootDir>'],
     setupFilesAfterEnv: [
-        './src/test/jest.setup.ts'
+        './src/test/jest.setup.react.ts'
     ],
-    snapshotSerializers: [
-        'enzyme-to-json/serializer'
-    ],
+    // snapshotSerializers: [
+    //     'enzyme-to-json/serializer'
+    // ],
     testEnvironment: 'jsdom',
     testPathIgnorePatterns: [
         '/node_modules/'
     ],
-    testRegex: '(\\.(spec))\\.(ts|tsx)$',
+    testRegex: '(\\.(test))\\.(ts|tsx)$',
     testResultsProcessor: 'jest-teamcity-reporter',
     transform: {
         '^.+\\.tsx?$': [

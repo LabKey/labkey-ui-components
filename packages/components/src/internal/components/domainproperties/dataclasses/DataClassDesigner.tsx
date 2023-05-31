@@ -26,11 +26,12 @@ import { SCHEMAS } from '../../../schemas';
 
 import { getDuplicateAlias, getParentAliasChangeResult, getParentAliasUpdateDupesResults } from '../utils';
 
-import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
-import { DataClassModel, DataClassModelConfig } from './models';
-import {DATA_CLASS_IMPORT_PREFIX, DataClassDataType} from '../../entities/constants';
+import { DATA_CLASS_IMPORT_PREFIX, DataClassDataType } from '../../entities/constants';
 import { initParentOptionsSelects } from '../../entities/actions';
-import {DataTypeProjectsPanel} from "../DataTypeProjectsPanel";
+import { DataTypeProjectsPanel } from '../DataTypeProjectsPanel';
+
+import { DataClassModel, DataClassModelConfig } from './models';
+import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 
 interface Props {
     allowParentAlias?: boolean;
@@ -46,6 +47,7 @@ interface Props {
     loadNameExpressionOptions?: (
         containerPath?: string
     ) => Promise<{ allowUserSpecifiedNames: boolean; prefix: string }>;
+    nameExpressionInfoUrl?: string;
     nameExpressionPlaceholder?: string;
     nounPlural?: string;
     nounSingular?: string;
@@ -55,10 +57,9 @@ interface Props {
     saveBtnText?: string;
     showGenIdBanner?: boolean;
     successBsStyle?: string;
-    testMode?: boolean;
     useTheme?: boolean;
     validateNameExpressions?: boolean;
-    nameExpressionInfoUrl?: string;
+    testMode?: boolean;
 }
 
 interface State {
@@ -456,7 +457,9 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
                     controlledCollapse
                     initCollapsed={currentPanelIndex !== PROPERTIES_PANEL_INDEX}
                     panelStatus={
-                        model.isNew ? getDomainPanelStatus(PROPERTIES_PANEL_INDEX, currentPanelIndex, visitedPanels, firstState) : 'COMPLETE'
+                        model.isNew
+                            ? getDomainPanelStatus(PROPERTIES_PANEL_INDEX, currentPanelIndex, visitedPanels, firstState)
+                            : 'COMPLETE'
                     }
                     validate={validatePanel === PROPERTIES_PANEL_INDEX}
                     appPropertiesOnly={appPropertiesOnly}

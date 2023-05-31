@@ -22,9 +22,10 @@ import { useAdminAppContext } from '../administration/useAdminAppContext';
 
 import { ProjectConfigurableDataType } from '../entities/models';
 
+import { PageDetailHeader } from '../forms/PageDetailHeader';
+
 import { ProjectProperties } from './ProjectProperties';
 import { ProjectDataTypeSelections } from './ProjectDataTypeSelections';
-import { PageDetailHeader } from '../forms/PageDetailHeader';
 
 const TITLE = 'Create New Project';
 
@@ -94,7 +95,6 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
                     <div className="panel-heading">Name of Project</div>
                     <div className="panel-body">
                         <div className="form-horizontal">
-
                             <ProjectProperties autoFocus />
 
                             {/* Dummy submit button so browsers trigger onSubmit with enter key */}

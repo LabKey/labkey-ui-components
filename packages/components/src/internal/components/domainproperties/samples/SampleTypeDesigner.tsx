@@ -36,12 +36,13 @@ import { Alert } from '../../base/Alert';
 
 import { getDuplicateAlias, getParentAliasChangeResult, getParentAliasUpdateDupesResults } from '../utils';
 
-import {SAMPLE_SET_IMPORT_PREFIX, SampleTypeDataType} from '../../entities/constants';
+import { SAMPLE_SET_IMPORT_PREFIX, SampleTypeDataType } from '../../entities/constants';
+
+import { DataTypeProjectsPanel } from '../DataTypeProjectsPanel';
 
 import { UniqueIdBanner } from './UniqueIdBanner';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { AliquotNamePatternProps, MetricUnitProps, SampleTypeModel } from './models';
-import { DataTypeProjectsPanel } from '../DataTypeProjectsPanel';
 
 const NEW_SAMPLE_SET_OPTION: IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,

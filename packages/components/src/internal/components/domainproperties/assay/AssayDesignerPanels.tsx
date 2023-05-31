@@ -12,11 +12,13 @@ import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS } from '../constants';
 
 import { GENERAL_ASSAY_PROVIDER_NAME } from '../../assay/constants';
 
+import { DataTypeProjectsPanel } from '../DataTypeProjectsPanel';
+
+import { AssayRunDataType } from '../../entities/constants';
+
 import { saveAssayDesign } from './actions';
 import { AssayProtocolModel } from './models';
 import { AssayPropertiesPanel } from './AssayPropertiesPanel';
-import { DataTypeProjectsPanel } from '../DataTypeProjectsPanel';
-import { AssayRunDataType } from '../../entities/constants';
 
 const PROPERTIES_PANEL_INDEX = 0;
 const DOMAIN_PANEL_INDEX = 1;
@@ -269,7 +271,12 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                             validate={validatePanel === i + DOMAIN_PANEL_INDEX}
                             panelStatus={
                                 protocolModel.isNew()
-                                    ? getDomainPanelStatus(i + DOMAIN_PANEL_INDEX, currentPanelIndex, visitedPanels, firstState)
+                                    ? getDomainPanelStatus(
+                                          i + DOMAIN_PANEL_INDEX,
+                                          currentPanelIndex,
+                                          visitedPanels,
+                                          firstState
+                                      )
                                     : 'COMPLETE'
                             }
                             helpTopic={null} // null so that we don't show the "learn more about this tool" link for these domains

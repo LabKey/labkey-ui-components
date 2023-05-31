@@ -1,15 +1,15 @@
 import React, { PureComponent, ComponentType } from 'react';
 
 export interface InjectedDomainPropertiesPanelCollapseProps {
-    controlledCollapse: boolean;
-    collapsible?: boolean;
     collapsed: boolean;
+    collapsible?: boolean;
+    controlledCollapse: boolean;
     togglePanel: (collapsed?: boolean) => void;
 }
 
 export interface MakeDomainPropertiesPanelCollapseProps {
-    controlledCollapse: boolean;
     collapsible?: boolean;
+    controlledCollapse: boolean;
     initCollapsed: boolean;
     onToggle?: (collapsed: boolean, callback: () => any) => any;
 }

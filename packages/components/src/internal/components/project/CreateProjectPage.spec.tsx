@@ -19,7 +19,7 @@ import { AdminAppContext, AppContext } from '../../AppContext';
 import { getTestAPIWrapper } from '../../APIWrapper';
 
 import { CreateProjectContainer, CreateProjectContainerProps, CreateProjectPage } from './CreateProjectPage';
-import {ProjectDataTypeSelections} from "./ProjectDataTypeSelections";
+import { ProjectDataTypeSelections } from './ProjectDataTypeSelections';
 
 describe('CreateProjectPage', () => {
     function getDefaultProps(overrides?: Partial<FolderAPIWrapper>): CreateProjectContainerProps {

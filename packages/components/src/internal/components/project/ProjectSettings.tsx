@@ -2,13 +2,15 @@ import React, { FC, memo, useCallback, useState } from 'react';
 
 import { Button } from 'react-bootstrap';
 
-import { useAppContext} from '../../AppContext';
+import { useAppContext } from '../../AppContext';
 import { useServerContext, useServerContextDispatch } from '../base/ServerContext';
-import { ProjectProperties } from '../project/ProjectProperties';
+
 import { ProjectSettingsOptions } from '../container/FolderAPIWrapper';
 import { resolveErrorMessage } from '../../util/messaging';
 import { Alert } from '../base/Alert';
 import { Container } from '../base/models/Container';
+
+import { ProjectProperties } from './ProjectProperties';
 
 import { DeleteProjectModal } from './DeleteProjectModal';
 

@@ -126,7 +126,9 @@ describe('AdminSettingsPageImpl', () => {
         await waitForLifecycle(wrapper, 50);
         validatePremium(wrapper, 1);
         expect(wrapper.find(BasePermissionsCheckPage).prop('title')).toBe('Project Settings');
-        expect(wrapper.find(BasePermissionsCheckPage).prop('description')).toBe('/TestProjectContainer/TestFolderContainer');
+        expect(wrapper.find(BasePermissionsCheckPage).prop('description')).toBe(
+            '/TestProjectContainer/TestFolderContainer'
+        );
         wrapper.unmount();
     });
 

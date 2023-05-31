@@ -8,13 +8,13 @@ import { TEST_USER_APP_ADMIN, TEST_USER_EDITOR } from '../../userFixtures';
 
 import { ServerContext } from '../base/ServerContext';
 
-import { ProjectProperties } from '../project/ProjectProperties';
-
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { getFolderTestAPIWrapper } from '../container/FolderAPIWrapper';
 
+import { AdminAppContext, AppContext } from '../../AppContext';
+
+import { ProjectProperties } from './ProjectProperties';
 import { ProjectSettings, ProjectSettingsProps } from './ProjectSettings';
-import {AdminAppContext, AppContext} from "../../AppContext";
 
 describe('ProjectSettings', () => {
     function getDefaultProps(): ProjectSettingsProps {
@@ -57,7 +57,11 @@ describe('ProjectSettings', () => {
         expect(wrapper.find('.delete-project-button')).toHaveLength(0);
         wrapper.unmount();
 
-        wrapper = mountWithAppServerContext(<ProjectSettings {...getDefaultProps()} />, getDefaultAppContext(), getServerContext());
+        wrapper = mountWithAppServerContext(
+            <ProjectSettings {...getDefaultProps()} />,
+            getDefaultAppContext(),
+            getServerContext()
+        );
 
         expect(wrapper.find('.project-settings')).toHaveLength(1);
         expect(wrapper.find('.panel-heading').text()).toBe('Name of Project');

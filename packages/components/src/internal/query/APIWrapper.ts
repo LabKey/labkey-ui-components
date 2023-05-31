@@ -21,6 +21,11 @@ import { getQueryDetails, GetQueryDetailsOptions, selectDistinctRows } from './a
 import { selectRows, SelectRowsOptions, SelectRowsResponse } from './selectRows';
 
 export interface QueryAPIWrapper {
+    getDataTypeProjectDataCount: (
+        entityDataType: EntityDataType,
+        dataTypeRowId: number,
+        dataTypeName: string
+    ) => Promise<Record<string, number>>;
     getEntityTypeOptions: (
         entityDataType: EntityDataType,
         containerPath?: string
@@ -41,11 +46,6 @@ export interface QueryAPIWrapper {
         dataType: ProjectConfigurableDataType,
         allDataTypes?: DataTypeEntity[],
         isNewFolder?: boolean
-    ) => Promise<Record<string, number>>;
-    getDataTypeProjectDataCount: (
-        entityDataType: EntityDataType,
-        dataTypeRowId: number,
-        dataTypeName: string
     ) => Promise<Record<string, number>>;
     getQueryDetails: (options: GetQueryDetailsOptions) => Promise<QueryInfo>;
     incrementClientSideMetricCount: (featureArea: string, metricName: string) => void;

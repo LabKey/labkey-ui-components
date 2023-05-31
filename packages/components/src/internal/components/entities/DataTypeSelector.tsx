@@ -28,7 +28,7 @@ interface Props {
     toggleSelectAll?: boolean;
 
     uncheckedEntitiesDB: any[]; // number[] | string[]
-    updateUncheckedTypes: (dataType: string, unchecked: any[] /*number[] | string[]*/) => void;
+    updateUncheckedTypes: (dataType: string, unchecked: any[] /* number[] | string[]*/) => void;
 }
 
 export const getUncheckedEntityWarning = (
@@ -80,7 +80,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
     const [error, setError] = useState<string>(undefined);
     const [loading, setLoading] = useState<boolean>(false);
     const [dataCounts, setDataCounts] = useState<Record<string, number>>(undefined);
-    const [uncheckedEntities, setUncheckedEntities] = useState<any[] /*number[] | string[]*/>(undefined);
+    const [uncheckedEntities, setUncheckedEntities] = useState<any[] /* number[] | string[]*/>(undefined);
 
     useEffect(() => {
         if (allDataCounts) setDataCounts(allDataCounts);

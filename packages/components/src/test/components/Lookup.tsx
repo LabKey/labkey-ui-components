@@ -24,12 +24,15 @@ export class MockLookupProvider extends React.Component<any, ILookupContext> {
             fetchContainers: () => Promise.resolve<List<Container>>(processContainers(containerData)),
             fetchQueries: (containerPath: string, schemaName: string) => {
                 const data = queryData.queriesBySchema[schemaName];
-                return Promise.resolve<List<QueryInfoLite>>(processQueries(data));
+                return Promise.resolve<QueryInfoLite[]>(processQueries(data));
             },
             fetchSchemas: (containerPath: string) => {
                 const path = containerPath ? containerPath : this.state.activeContainer.path;
                 const data = schemaData.schemasByContainerPath[path];
-                return Promise.resolve<List<SchemaDetails>>(handleSchemas(data));
+                return Promise.resolve<SchemaDetails[]>(handleSchemas(data));
+            },
+            getExcludedSchemaQueryNames: () => {
+                return Promise.resolve<string[]>([]);
             },
         };
     }

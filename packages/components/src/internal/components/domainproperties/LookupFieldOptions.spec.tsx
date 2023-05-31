@@ -139,17 +139,17 @@ describe('LookupFieldOptions', () => {
 
             return waitForLoad(schemaField).then(() => {
                 expect(schemaField.props().value).toEqual(_schema);
-                expect(schemaField.state().schemas.size).toEqual(5);
-                expect(schemaField.state().schemas.get(0).schemaName).toEqual(_schema0);
-                expect(schemaField.state().schemas.get(4).schemaName).toEqual(_schema2);
+                expect(schemaField.state().schemas.length).toEqual(5);
+                expect(schemaField.state().schemas[0].schemaName).toEqual(_schema0);
+                expect(schemaField.state().schemas[4].schemaName).toEqual(_schema2);
 
                 // Query
                 const queryField = queryFieldSelector(lookupField, _domainIndex, _index);
 
                 return waitForLoad(queryField).then(() => {
                     expect(queryField.props().value).toEqual(_query);
-                    expect(queryField.state().queries.size).toEqual(3);
-                    expect(queryField.state().queries.get(1).name).toEqual(_queries1);
+                    expect(queryField.state().queries.length).toEqual(3);
+                    expect(queryField.state().queries[1].name).toEqual(_queries1);
 
                     expect(lookupField).toMatchSnapshot();
                     lookupField.unmount();
@@ -207,7 +207,7 @@ describe('LookupFieldOptions', () => {
 
             return waitForLoad(schema).then(() => {
                 expect(schema.props().value).toEqual(_schema);
-                expect(schema.state().schemas.size).toEqual(5);
+                expect(schema.state().schemas.length).toEqual(5);
 
                 lookupField.setProps({
                     children: (
@@ -230,13 +230,15 @@ describe('LookupFieldOptions', () => {
                     ),
                 });
 
-                // Wait for schema to load and verify values updated
-                return waitForLoad(schema).then(() => {
-                    expect(schema.state().schemas.size).toEqual(1);
-                    expect(schema.state().schemas.get(0).schemaName).toEqual(_newSchema);
+                return waitForLoad(container).then(() => {
+                    // Wait for schema to load and verify values updated
+                    return waitForLoad(schema).then(() => {
+                        expect(schema.state().schemas.length).toEqual(1);
+                        expect(schema.state().schemas[0].schemaName).toEqual(_newSchema);
 
-                    expect(lookupField).toMatchSnapshot();
-                    lookupField.unmount();
+                        expect(lookupField).toMatchSnapshot();
+                        lookupField.unmount();
+                    });
                 });
             });
         });
@@ -292,38 +294,44 @@ describe('LookupFieldOptions', () => {
             return waitForLoad(schemaField).then(() => {
                 expect(schemaField.props().value).toEqual(_schema1);
 
-                lookupField.setProps({
-                    children: (
-                        <LookupFieldOptions
-                            field={
-                                new DomainField({
-                                    original: field,
-                                    lookupSchema: _schema2,
-                                    lookupQueryValue: '',
-                                    lookupIsValid: true,
-                                })
-                            }
-                            lookupContainer={_container}
-                            onChange={jest.fn()}
-                            onMultiChange={jest.fn()}
-                            index={_index}
-                            domainIndex={_domainIndex}
-                            label={_label}
-                            lockType={DOMAIN_FIELD_NOT_LOCKED}
-                        />
-                    ),
-                });
-
                 // Query
-                const queryField = queryFieldSelector(lookupField, _domainIndex, _index);
-
+                let queryField = queryFieldSelector(lookupField, _domainIndex, _index);
                 return waitForLoad(queryField).then(() => {
-                    // Verify query field
-                    expect(queryField.state().queries.size).toEqual(1);
-                    expect(queryField.state().queries.get(0).name).toEqual(_query2);
+                    expect(queryField.state().queries.length).toEqual(4);
 
-                    expect(lookupField).toMatchSnapshot();
-                    lookupField.unmount();
+                    lookupField.setProps({
+                        children: (
+                            <LookupFieldOptions
+                                field={
+                                    new DomainField({
+                                        original: field,
+                                        lookupSchema: _schema2,
+                                        lookupQueryValue: '',
+                                        lookupIsValid: true,
+                                    })
+                                }
+                                lookupContainer={_container}
+                                onChange={jest.fn()}
+                                onMultiChange={jest.fn()}
+                                index={_index}
+                                domainIndex={_domainIndex}
+                                label={_label}
+                                lockType={DOMAIN_FIELD_NOT_LOCKED}
+                            />
+                        ),
+                    });
+
+                    queryField = queryFieldSelector(lookupField, _domainIndex, _index);
+                    return waitForLoad(schemaField).then(() => {
+                        return waitForLoad(queryField).then(() => {
+                            // Verify query field
+                            expect(queryField.state().queries.length).toEqual(1);
+                            expect(queryField.state().queries[0].name).toEqual(_query2);
+
+                            expect(lookupField).toMatchSnapshot();
+                            lookupField.unmount();
+                        });
+                    });
                 });
             });
         });
@@ -369,42 +377,49 @@ describe('LookupFieldOptions', () => {
 
         // Folder
         const folderField = folderFieldSelector(lookupField, _domainIndex, _index);
-
+        let queryField = queryFieldSelector(lookupField, _domainIndex, _index);
+        expect(queryField.state().queries).toBeUndefined();
         return waitForLoad(folderField).then(() => {
             expect(folderField.props().value).toEqual(_container1);
 
-            lookupField.setProps({
-                children: (
-                    <LookupFieldOptions
-                        field={
-                            new DomainField({
-                                original: field,
-                                lookupSchema: '',
-                                lookupQueryValue: '',
-                                lookupIsValid: true,
-                            })
-                        }
-                        lookupContainer={_container2}
-                        onChange={jest.fn()}
-                        onMultiChange={jest.fn()}
-                        index={_index}
-                        domainIndex={_domainIndex}
-                        label={_label}
-                        lockType={DOMAIN_FIELD_NOT_LOCKED}
-                    />
-                ),
-            });
-
-            // Query
-            const queryField = queryFieldSelector(lookupField, _domainIndex, _index);
-
             return waitForLoad(queryField).then(() => {
-                // Verify query field
-                expect(queryField.state().queries.size).toEqual(0);
-                expect(queryField.props().value).toEqual('');
+                expect(queryField.state().queries.length).toEqual(3);
 
-                expect(lookupField).toMatchSnapshot();
-                lookupField.unmount();
+                lookupField.setProps({
+                    children: (
+                        <LookupFieldOptions
+                            field={
+                                new DomainField({
+                                    original: field,
+                                    lookupSchema: '',
+                                    lookupQueryValue: '',
+                                    lookupIsValid: true,
+                                })
+                            }
+                            lookupContainer={_container2}
+                            onChange={jest.fn()}
+                            onMultiChange={jest.fn()}
+                            index={_index}
+                            domainIndex={_domainIndex}
+                            label={_label}
+                            lockType={DOMAIN_FIELD_NOT_LOCKED}
+                        />
+                    ),
+                });
+
+                return waitForLoad(folderField).then(() => {
+                    // Query
+                    queryField = queryFieldSelector(lookupField, _domainIndex, _index);
+                    return waitForLoad(queryField).then(() => {
+                        queryField = queryFieldSelector(lookupField, _domainIndex, _index);
+                        // Verify query field
+                        expect(queryField.props().value).toEqual('');
+                        expect(queryField.state().queries.length).toBe(0);
+
+                        expect(lookupField).toMatchSnapshot();
+                        lookupField.unmount();
+                    });
+                });
             });
         });
     });
@@ -476,14 +491,17 @@ describe('LookupFieldOptions', () => {
             </MockLookupProvider>
         );
 
-        // Query
-        const queryField = queryFieldSelector(lookupField, _domainIndex, _index);
+        const folderField = folderFieldSelector(lookupField, _domainIndex, _index);
+        return waitForLoad(folderField).then(() => {
+            // Query
+            const queryField = queryFieldSelector(lookupField, _domainIndex, _index);
 
-        return waitForLoad(queryField).then(() => {
-            // Verify query field
-            expect(queryField.state().queries.size).toEqual(4); // exp queries plus unknown query
-            expect(queryField.props().value).toEqual(_invalidLookup);
-            lookupField.unmount();
+            return waitForLoad(queryField).then(() => {
+                // Verify query field
+                expect(queryField.state().queries.length).toEqual(4); // exp queries plus unknown query
+                expect(queryField.props().value).toEqual(_invalidLookup);
+                lookupField.unmount();
+            });
         });
     });
 });

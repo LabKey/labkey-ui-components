@@ -131,7 +131,7 @@ export interface ITargetTableSelectImplState {
     loading?: boolean;
     prevPath?: string;
     prevSchemaName?: string;
-    queries?: List<{ name: string; type: PropDescType }>;
+    queries?: Array<{ name: string; type: PropDescType }>;
 }
 
 export type TargetTableSelectProps = ITargetTableSelectProps & ILookupProps;
@@ -149,7 +149,7 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
             loading: false,
             prevPath: null,
             prevSchemaName: undefined,
-            queries: List(),
+            queries: undefined,
         };
     }
 
@@ -198,38 +198,50 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
         // special case for Current Project/Folder which uses a value of '' (empty string)
         const queryContainerPath = containerPath === '' ? null : containerPath;
 
-        context.fetchQueries(queryContainerPath, schemaName).then(queries => {
-            let infos = List<{ name: string; type: PropDescType }>();
+        context
+            .fetchQueries(queryContainerPath, schemaName)
+            .then(queries => {
+                const infos: Array<{ name: string; type: PropDescType }> = [];
 
-            queries.forEach(q => {
-                if (q.isIncludedForLookups) infos = infos.concat(q.getLookupInfo(this.props.lookupURI)).toList();
+                context
+                    .getExcludedSchemaQueryNames(schemaName?.toLowerCase(), queryContainerPath)
+                    .then(excludedQueries => {
+                        queries?.forEach(q => {
+                            if (excludedQueries && excludedQueries?.indexOf(q.name.toLowerCase()) > -1) return;
+
+                            if (q.isIncludedForLookups) infos.push(...q.getLookupInfo(this.props.lookupURI));
+                        });
+
+                        const initialQueryName = value ? decodeLookup(value).queryName : undefined;
+
+                        if (!lookupIsValid) infos.unshift({ name: initialQueryName, type: LOOKUP_TYPE });
+
+                        this.setState({
+                            loading: false,
+                            queries: infos,
+                            initialQueryName,
+                            initialQueryInvalid: !lookupIsValid,
+                        });
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            })
+            .catch(e => {
+                console.error(e);
             });
-
-            const initialQueryName = value ? decodeLookup(value).queryName : undefined;
-
-            if (!lookupIsValid) infos = infos.unshift({ name: initialQueryName, type: LOOKUP_TYPE }).toList();
-
-            this.setState({
-                loading: false,
-                queries: infos,
-                initialQueryName,
-                initialQueryInvalid: !lookupIsValid
-            });
-        });
     }
 
     render() {
         const { id, onChange, value, name, disabled, lookupIsValid, shouldDisableNonExists } = this.props;
         const { loading, queries, initialQueryName, initialQueryInvalid } = this.state;
 
-        const isEmpty = queries.size === 0;
+        const isEmpty = queries?.length === 0;
         const hasValue = !!value;
         const blankOption = !hasValue && !isEmpty;
 
         const queryNameOptionExists =
-            initialQueryName && queries?.size > 0
-                ? queries.find(query => query.name === initialQueryName) !== undefined
-                : true; // default to true without a selected queryName
+            initialQueryName && !isEmpty ? queries.find(query => query.name === initialQueryName) !== undefined : true; // default to true without a selected queryName
 
         // Certain cases disable the lookup field for a valid query that is not in the list of queries
         const disabledField = disabled || (shouldDisableNonExists && !queryNameOptionExists && lookupIsValid);
@@ -254,29 +266,27 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
                     </option>
                 )}
                 {blankOption && <option key="_default" value={undefined} />}
-                {queries
-                    .map(q => {
-                        const encoded = encodeLookup(q.name, q.type);
-                        return (
-                            <option
-                                key={encoded}
-                                value={encoded}
-                                disabled={
-                                    // Disable if it is the initial query and it is an invalid lookup
-                                    initialQueryInvalid &&
-                                    q.name === initialQueryName &&
-                                    decodeLookup(value).queryName !== q.name
-                                }
-                            >
-                                {q.name} (
-                                {!lookupIsValid && q.name === initialQueryName
-                                    ? 'Unknown'
-                                    : q.type.shortDisplay || q.type.display}
-                                )
-                            </option>
-                        );
-                    })
-                    .toArray()}
+                {queries?.map(q => {
+                    const encoded = encodeLookup(q.name, q.type);
+                    return (
+                        <option
+                            key={encoded}
+                            value={encoded}
+                            disabled={
+                                // Disable if it is the initial query and it is an invalid lookup
+                                initialQueryInvalid &&
+                                q.name === initialQueryName &&
+                                decodeLookup(value).queryName !== q.name
+                            }
+                        >
+                            {q.name} (
+                            {!lookupIsValid && q.name === initialQueryName
+                                ? 'Unknown'
+                                : q.type.shortDisplay || q.type.display}
+                            )
+                        </option>
+                    );
+                })}
                 {!loading && isEmpty && (
                     <option disabled key="_empty" value={undefined}>
                         (No tables)
@@ -317,7 +327,7 @@ export interface ISchemaSelectImplState {
     containerPath?: string;
     loading?: boolean;
     prevPath?: string;
-    schemas?: List<SchemaDetails>;
+    schemas?: SchemaDetails[];
 }
 
 class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectImplState> {
@@ -327,7 +337,7 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
         this.state = {
             loading: false,
             prevPath: null,
-            schemas: List(),
+            schemas: undefined,
         };
     }
 
@@ -367,10 +377,26 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
             prevPath: containerPath,
         });
 
-        context.fetchSchemas(containerPath).then(schemas => {
-            this.setState({
-                loading: false,
-                schemas,
+        context.fetchSchemas(containerPath).then(allSchemas => {
+            const schemas = [];
+            context.getExcludedSchemaQueryNames('assay', containerPath).then(excludedAssayNames => {
+                if (!excludedAssayNames || excludedAssayNames.length === 0) schemas.push(...allSchemas);
+                else {
+                    allSchemas.forEach(schema => {
+                        if (
+                            !(
+                                schema.fullyQualifiedName.indexOf('assay.') === 0 &&
+                                excludedAssayNames.indexOf(schema.schemaName.toLowerCase()) > -1
+                            )
+                        )
+                            schemas.push(schema);
+                    });
+                }
+
+                this.setState({
+                    loading: false,
+                    schemas,
+                });
             });
         });
     }
@@ -379,7 +405,7 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
         const { id, onChange, value, name, disabled } = this.props;
         const { schemas, loading } = this.state;
 
-        const isEmpty = schemas.size === 0;
+        const isEmpty = schemas?.length === 0;
         const hasValue = !!value;
         const blankOption = !hasValue && !isEmpty;
 
@@ -404,13 +430,11 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
                     </option>
                 )}
                 {blankOption && <option key="_default" value={undefined} />}
-                {schemas
-                    .map(s => (
-                        <option key={s.fullyQualifiedName} value={s.fullyQualifiedName}>
-                            {s.fullyQualifiedName}
-                        </option>
-                    ))
-                    .toArray()}
+                {schemas?.map(s => (
+                    <option key={s.fullyQualifiedName} value={s.fullyQualifiedName}>
+                        {s.fullyQualifiedName}
+                    </option>
+                ))}
                 {!loading && isEmpty && (
                     <option disabled key="_empty" value={undefined}>
                         (No schemas)

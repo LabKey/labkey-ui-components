@@ -1,6 +1,6 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { Draft, produce } from 'immer';
-import { List, Map, OrderedMap } from 'immutable';
+import { List, Map } from 'immutable';
 
 import { Domain } from '@labkey/api';
 
@@ -26,10 +26,12 @@ import { SCHEMAS } from '../../../schemas';
 
 import { getDuplicateAlias, getParentAliasChangeResult, getParentAliasUpdateDupesResults } from '../utils';
 
-import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
-import { DataClassModel, DataClassModelConfig } from './models';
-import { DATA_CLASS_IMPORT_PREFIX } from '../../entities/constants';
+import { DATA_CLASS_IMPORT_PREFIX, DataClassDataType } from '../../entities/constants';
 import { initParentOptionsSelects } from '../../entities/actions';
+import { DataTypeProjectsPanel } from '../DataTypeProjectsPanel';
+
+import { DataClassModel, DataClassModelConfig } from './models';
+import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 
 interface Props {
     allowParentAlias?: boolean;
@@ -45,6 +47,7 @@ interface Props {
     loadNameExpressionOptions?: (
         containerPath?: string
     ) => Promise<{ allowUserSpecifiedNames: boolean; prefix: string }>;
+    nameExpressionInfoUrl?: string;
     nameExpressionPlaceholder?: string;
     nounPlural?: string;
     nounSingular?: string;
@@ -57,7 +60,6 @@ interface Props {
     testMode?: boolean;
     useTheme?: boolean;
     validateNameExpressions?: boolean;
-    nameExpressionInfoUrl?: string;
 }
 
 interface State {
@@ -73,6 +75,10 @@ const NEW_DATA_CLASS_OPTION: IParentOption = {
     value: '{{this_data_class}}',
     schema: SCHEMAS.DATA_CLASSES.SCHEMA,
 } as IParentOption;
+
+const PROPERTIES_PANEL_INDEX = 0;
+const DOMAIN_PANEL_INDEX = 1;
+const PROJECTS_PANEL_INDEX = 2;
 
 // Exported for testing
 export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
@@ -376,6 +382,28 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
         };
         this.saveModel(newModel);
     };
+
+    onUpdateExcludedProjects = (excludedContainerIds: string[]): void => {
+        const { model } = this.state;
+        const newModel = {
+            ...model,
+            excludedContainerIds,
+        } as DataClassModel;
+        this.onPropertiesChange(newModel);
+    };
+
+    propertiesToggle = (collapsed: boolean, callback: () => void): void => {
+        this.props.onTogglePanel(PROPERTIES_PANEL_INDEX, collapsed, callback);
+    };
+
+    formToggle = (collapsed: boolean, callback: () => void): void => {
+        this.props.onTogglePanel(DOMAIN_PANEL_INDEX, collapsed, callback);
+    };
+
+    projectsToggle = (collapsed: boolean, callback: () => void): void => {
+        this.props.onTogglePanel(PROJECTS_PANEL_INDEX, collapsed, callback);
+    };
+
     render(): ReactNode {
         const {
             onCancel,
@@ -426,16 +454,16 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
                     helpTopic={helpTopic}
                     model={model}
                     onChange={this.onPropertiesChange}
-                    controlledCollapse={true}
-                    initCollapsed={currentPanelIndex !== 0}
+                    controlledCollapse
+                    initCollapsed={currentPanelIndex !== PROPERTIES_PANEL_INDEX}
                     panelStatus={
-                        model.isNew ? getDomainPanelStatus(0, currentPanelIndex, visitedPanels, firstState) : 'COMPLETE'
+                        model.isNew
+                            ? getDomainPanelStatus(PROPERTIES_PANEL_INDEX, currentPanelIndex, visitedPanels, firstState)
+                            : 'COMPLETE'
                     }
-                    validate={validatePanel === 0}
+                    validate={validatePanel === PROPERTIES_PANEL_INDEX}
                     appPropertiesOnly={appPropertiesOnly}
-                    onToggle={(collapsed, callback) => {
-                        onTogglePanel(0, collapsed, callback);
-                    }}
+                    onToggle={this.propertiesToggle}
                     useTheme={useTheme}
                     namePreviewsLoading={namePreviewsLoading}
                     previewName={namePreviews?.[0]}
@@ -464,16 +492,16 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
                     domain={model.domain}
                     headerTitle="Fields"
                     helpTopic={null} // null so that we don't show the "learn more about this tool" link for this domains
-                    controlledCollapse={true}
-                    initCollapsed={currentPanelIndex !== 1}
-                    validate={validatePanel === 1}
+                    controlledCollapse
+                    initCollapsed={currentPanelIndex !== DOMAIN_PANEL_INDEX}
+                    validate={validatePanel === DOMAIN_PANEL_INDEX}
                     panelStatus={
-                        model.isNew ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState) : 'COMPLETE'
+                        model.isNew
+                            ? getDomainPanelStatus(DOMAIN_PANEL_INDEX, currentPanelIndex, visitedPanels, firstState)
+                            : 'COMPLETE'
                     }
                     onChange={this.onDomainChange}
-                    onToggle={(collapsed, callback) => {
-                        onTogglePanel(1, collapsed, callback);
-                    }}
+                    onToggle={this.formToggle}
                     appPropertiesOnly={appPropertiesOnly}
                     useTheme={useTheme}
                     successBsStyle={successBsStyle}
@@ -481,6 +509,17 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
                     domainFormDisplayOptions={domainFormDisplayOptions}
                     systemFields={model.options.systemFields}
                 />
+                {appPropertiesOnly && !model.isBuiltIn && (
+                    <DataTypeProjectsPanel
+                        controlledCollapse
+                        dataTypeRowId={model?.rowId}
+                        dataTypeName={model?.name}
+                        entityDataType={DataClassDataType}
+                        initCollapsed={currentPanelIndex !== PROJECTS_PANEL_INDEX}
+                        onToggle={this.projectsToggle}
+                        onUpdateExcludedProjects={this.onUpdateExcludedProjects}
+                    />
+                )}
                 <NameExpressionValidationModal
                     onHide={this.onNameExpressionWarningCancel}
                     onConfirm={this.onNameExpressionWarningConfirm}

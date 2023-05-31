@@ -28,14 +28,11 @@ import { Alert } from '../base/Alert';
 
 import { ProjectDataTypeSelections } from '../project/ProjectDataTypeSelections';
 import { AppContext, useAppContext } from '../../AppContext';
-import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { useAdminAppContext } from './useAdminAppContext';
 import { showPremiumFeatures } from './utils';
 import { BasePermissions } from './BasePermissions';
 import { SITE_SECURITY_ROLES } from './constants';
-
-const TITLE = 'Settings';
 
 // export for jest testing
 export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
@@ -85,7 +82,7 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
         return (
             <>
                 <ProjectSettings onChange={onSettingsChange} onSuccess={onSettingsSuccess} onPageError={onError} />
-                {!isAppHomeFolder() && (
+                {!isAppHomeFolder(container, moduleContext) && (
                     <>
                         <ProjectDataTypeSelections
                             entityDataTypes={projectDataTypes}
@@ -96,26 +93,30 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
                             api={api.folder}
                             onSuccess={onSettingsSuccess}
                         />
-                        <ProjectFreezerSelectionComponent
-                            projectId={container.id}
-                            updateDataTypeExclusions={onSettingsChange}
-                            disabledTypesMap={disabledTypesMap}
-                            onSuccess={onSettingsSuccess}
-                        />
+                        {!!ProjectFreezerSelectionComponent && (
+                            <ProjectFreezerSelectionComponent
+                                projectId={container.id}
+                                updateDataTypeExclusions={onSettingsChange}
+                                disabledTypesMap={disabledTypesMap}
+                                onSuccess={onSettingsSuccess}
+                            />
+                        )}
                     </>
                 )}
             </>
         );
     }, [moduleContext, projectDataTypes, disabledTypesMap, container]);
 
+    const _title = isAppHomeFolder(container, moduleContext) ? 'Settings' : 'Project Settings';
+
     if (!user.isAdmin) {
-        return <InsufficientPermissionsPage title={TITLE} />;
+        return <InsufficientPermissionsPage title={_title} />;
     }
 
     if (!showPremiumFeatures(moduleContext)) {
         return (
             <BasePermissions
-                pageTitle={TITLE}
+                pageTitle={_title}
                 panelTitle="Site Roles and Assignments"
                 containerId={project.rootId}
                 hasPermission={user.isAdmin}
@@ -141,7 +142,13 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
     return (
         <>
             {error && <Alert className="admin-settings-error"> {error} </Alert>}
-            <BasePermissionsCheckPage user={user} title={TITLE} hasPermission={user.isAdmin} renderButtons={lkVersion}>
+            <BasePermissionsCheckPage
+                user={user}
+                title={_title}
+                description={!isAppHomeFolder(container, moduleContext) ? container.path : undefined}
+                hasPermission={user.isAdmin}
+                renderButtons={lkVersion}
+            >
                 <ActiveUserLimit />
                 {projectSettings}
                 {biologicsIsPrimaryApp(moduleContext) && isELNEnabled(moduleContext) && (

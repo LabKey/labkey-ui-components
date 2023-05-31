@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.342.0
+*Released*: 31 May 2023
+* Data type domain exclude projects
+  * Add DataTypeProjectsPanel to show panel in field editor for selecting excluded projects for a given data type domain
+    * implement for Sample Type designer, Data Class designer (sources and non-built in registry), Assay Designer
+  * Misc updates to admin panel titles for consistency
+
 ### version 2.341.3
 *Released*: 31 May 2023
 * Project level data type - handle lookups and remove experimental flag

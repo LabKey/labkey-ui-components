@@ -7,15 +7,13 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
-import { getDataTypeDataCount } from '../project/actions';
-
 import { ColorIcon } from '../base/ColorIcon';
 import { Tip } from '../base/Tip';
 
 import { DataTypeEntity, EntityDataType, ProjectConfigurableDataType } from './models';
 
 interface Props {
-    allDataCounts?: { [key: string]: number };
+    allDataCounts?: Record<string, number>;
     allDataTypes?: DataTypeEntity[]; // either use allDataTypes to pass in dataTypes, or specify entityDataType to query dataTypes
     api?: ComponentsAPIWrapper;
     columns?: number; // partition list to N columns
@@ -29,17 +27,16 @@ interface Props {
 
     toggleSelectAll?: boolean;
 
-    uncheckedEntitiesDB: number[];
-
-    updateUncheckedTypes: (dataType: string, unchecked: number[]) => void;
+    uncheckedEntitiesDB: any[]; // number[] | string[]
+    updateUncheckedTypes: (dataType: string, unchecked: any[] /* number[] | string[]*/) => void;
 }
 
 export const getUncheckedEntityWarning = (
-    uncheckedEntities: number[],
-    uncheckedEntitiesDB: number[],
-    dataCounts: { [key: string]: number },
+    uncheckedEntities: any[], // number[] | string[]
+    uncheckedEntitiesDB: any[], // number[] | string[]
+    dataCounts: Record<string, number>,
     entityDataType: EntityDataType,
-    rowId: number
+    rowId: number | string
 ): React.ReactNode => {
     if (uncheckedEntitiesDB?.indexOf(rowId) > -1) return null;
 
@@ -82,8 +79,8 @@ export const DataTypeSelector: FC<Props> = memo(props => {
     const [dataType, setDataType] = useState<ProjectConfigurableDataType>(undefined);
     const [error, setError] = useState<string>(undefined);
     const [loading, setLoading] = useState<boolean>(false);
-    const [dataCounts, setDataCounts] = useState<{ [key: string]: number }>(undefined);
-    const [uncheckedEntities, setUncheckedEntities] = useState<number[]>(undefined);
+    const [dataCounts, setDataCounts] = useState<Record<string, number>>(undefined);
+    const [uncheckedEntities, setUncheckedEntities] = useState<any[] /* number[] | string[]*/>(undefined);
 
     useEffect(() => {
         if (allDataCounts) setDataCounts(allDataCounts);
@@ -109,30 +106,34 @@ export const DataTypeSelector: FC<Props> = memo(props => {
         } finally {
             setLoading(false);
         }
-    }, [entityDataType]);
+    }, [api, entityDataType]);
 
     const ensureCount = useCallback(async () => {
         if (dataCounts) return;
 
-        const results = await getDataTypeDataCount(entityDataType.projectConfigurableDataType, dataTypes, isNewFolder);
+        const results = await api.query.getProjectDataTypeDataCount(
+            entityDataType.projectConfigurableDataType,
+            dataTypes,
+            isNewFolder
+        );
         setDataCounts(results);
-    }, [dataCounts, dataTypes, entityDataType, allDataTypes, isNewFolder]);
+    }, [api, dataCounts, dataTypes, entityDataType, isNewFolder]);
 
     const onChange = useCallback(
-        (entityRowId: number, toggle: boolean, check?: boolean) => {
+        (entityId: number | string, toggle: boolean, check?: boolean) => {
             if (disabled) return;
             ensureCount();
             const updated = [...uncheckedEntities];
             let checked = check;
             if (toggle) {
-                checked = uncheckedEntities?.indexOf(entityRowId) > -1;
+                checked = uncheckedEntities?.indexOf(entityId) > -1;
             }
 
             if (checked) {
-                const ind = updated.indexOf(entityRowId);
+                const ind = updated.indexOf(entityId);
                 updated.splice(ind, 1);
             } else {
-                updated.push(entityRowId);
+                updated.push(entityId);
             }
 
             updateUncheckedTypes(dataType, updated);
@@ -148,9 +149,9 @@ export const DataTypeSelector: FC<Props> = memo(props => {
     const onSelectAll = useCallback(() => {
         if (allSelected) {
             ensureCount();
-            const rowIds = dataTypes.map(type => type.rowId);
-            updateUncheckedTypes(dataType, rowIds);
-            setUncheckedEntities(rowIds);
+            const ids = dataTypes.map(type => type.rowId ?? type.lsid);
+            updateUncheckedTypes(dataType, ids);
+            setUncheckedEntities(ids);
         } else {
             updateUncheckedTypes(dataType, []);
             setUncheckedEntities([]);
@@ -158,8 +159,8 @@ export const DataTypeSelector: FC<Props> = memo(props => {
     }, [allSelected, dataTypes, updateUncheckedTypes, dataType, ensureCount]);
 
     const _getUncheckedEntityWarning = useCallback(
-        (rowId: number): React.ReactNode => {
-            return getUncheckedEntityWarning(uncheckedEntities, uncheckedEntitiesDB, dataCounts, entityDataType, rowId);
+        (id: number | string): React.ReactNode => {
+            return getUncheckedEntityWarning(uncheckedEntities, uncheckedEntitiesDB, dataCounts, entityDataType, id);
         },
         [uncheckedEntities, uncheckedEntitiesDB, dataCounts, entityDataType]
     );
@@ -177,20 +178,21 @@ export const DataTypeSelector: FC<Props> = memo(props => {
             return (
                 <ul className="nav nav-stacked labkey-wizard-pills">
                     {dataTypeEntities?.map((dataType, index) => {
+                        const entityId = dataType.rowId ?? dataType.lsid;
                         return (
-                            <li key={dataType.rowId} className="project-faceted__li">
+                            <li key={entityId} className="project-faceted__li">
                                 <div className="form-check">
                                     <input
                                         className="form-check-input filter-faceted__checkbox"
                                         type="checkbox"
                                         name={'field-value-' + index}
-                                        onChange={event => onChange(dataType.rowId, false, event.target.checked)}
-                                        checked={uncheckedEntities?.indexOf(dataType.rowId) < 0}
+                                        onChange={event => onChange(entityId, false, event.target.checked)}
+                                        checked={uncheckedEntities?.indexOf(entityId) < 0}
                                         disabled={disabled}
                                     />
                                     <div
                                         className="margin-left-more project-datatype-faceted__value"
-                                        onClick={() => onChange(dataType.rowId, true)}
+                                        onClick={() => onChange(entityId, true)}
                                     >
                                         {dataType.labelColor && (
                                             <ColorIcon
@@ -220,7 +222,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
                                         )}
                                     </>
                                 )}
-                                {_getUncheckedEntityWarning(dataType.rowId)}
+                                {_getUncheckedEntityWarning(entityId)}
                             </li>
                         );
                     })}

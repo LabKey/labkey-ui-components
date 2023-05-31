@@ -12,9 +12,16 @@ import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS } from '../constants';
 
 import { GENERAL_ASSAY_PROVIDER_NAME } from '../../assay/constants';
 
+import { DataTypeProjectsPanel } from '../DataTypeProjectsPanel';
+
+import { AssayRunDataType } from '../../entities/constants';
+
 import { saveAssayDesign } from './actions';
 import { AssayProtocolModel } from './models';
 import { AssayPropertiesPanel } from './AssayPropertiesPanel';
+
+const PROPERTIES_PANEL_INDEX = 0;
+const DOMAIN_PANEL_INDEX = 1;
 
 export interface AssayDesignerPanelsProps {
     appDomainHeaders?: Map<string, HeaderRenderer>;
@@ -23,6 +30,7 @@ export interface AssayDesignerPanelsProps {
     beforeFinish?: (model: AssayProtocolModel) => void;
     containerTop?: number; // This sets the top of the sticky header, default is 0
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
+    hideAdvancedProperties?: boolean;
     hideEmptyBatchDomain?: boolean;
     initModel: AssayProtocolModel;
     onCancel: () => void;
@@ -174,9 +182,16 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
         return appDomainHeaders.filter((v, k) => domain.isNameSuffixMatch(k)).first();
     };
 
+    onUpdateExcludedProjects = (excludedContainerIds: string[]): void => {
+        const { protocolModel } = this.state;
+        const newModel = protocolModel.merge({ excludedContainerIds }) as AssayProtocolModel;
+        this.onAssayPropertiesChange(newModel);
+    };
+
     render() {
         const {
             appPropertiesOnly,
+            hideAdvancedProperties,
             domainFormDisplayOptions,
             useTheme,
             successBsStyle,
@@ -208,18 +223,18 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                 <AssayPropertiesPanel
                     model={protocolModel}
                     onChange={this.onAssayPropertiesChange}
-                    controlledCollapse={true}
-                    initCollapsed={currentPanelIndex !== 0}
+                    controlledCollapse
+                    initCollapsed={currentPanelIndex !== PROPERTIES_PANEL_INDEX}
                     panelStatus={
                         protocolModel.isNew()
-                            ? getDomainPanelStatus(0, currentPanelIndex, visitedPanels, firstState)
+                            ? getDomainPanelStatus(PROPERTIES_PANEL_INDEX, currentPanelIndex, visitedPanels, firstState)
                             : 'COMPLETE'
                     }
-                    validate={validatePanel === 0}
-                    appPropertiesOnly={appPropertiesOnly}
+                    validate={validatePanel === PROPERTIES_PANEL_INDEX}
+                    appPropertiesOnly={hideAdvancedProperties}
                     hideStudyProperties={!!domainFormDisplayOptions && domainFormDisplayOptions.hideStudyPropertyTypes}
                     onToggle={(collapsed, callback) => {
-                        onTogglePanel(0, collapsed, callback);
+                        onTogglePanel(PROPERTIES_PANEL_INDEX, collapsed, callback);
                     }}
                     useTheme={useTheme}
                 />
@@ -251,12 +266,17 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                             domainIndex={i}
                             domain={domain}
                             headerPrefix={protocolModel.name}
-                            controlledCollapse={true}
-                            initCollapsed={currentPanelIndex !== i + 1}
-                            validate={validatePanel === i + 1}
+                            controlledCollapse
+                            initCollapsed={currentPanelIndex !== i + DOMAIN_PANEL_INDEX}
+                            validate={validatePanel === i + DOMAIN_PANEL_INDEX}
                             panelStatus={
                                 protocolModel.isNew()
-                                    ? getDomainPanelStatus(i + 1, currentPanelIndex, visitedPanels, firstState)
+                                    ? getDomainPanelStatus(
+                                          i + DOMAIN_PANEL_INDEX,
+                                          currentPanelIndex,
+                                          visitedPanels,
+                                          firstState
+                                      )
                                     : 'COMPLETE'
                             }
                             helpTopic={null} // null so that we don't show the "learn more about this tool" link for these domains
@@ -264,12 +284,12 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                                 this.onDomainChange(i, updatedDomain, dirty);
                             }}
                             onToggle={(collapsed, callback) => {
-                                onTogglePanel(i + 1, collapsed, callback);
+                                onTogglePanel(i + DOMAIN_PANEL_INDEX, collapsed, callback);
                             }}
                             appDomainHeaderRenderer={appDomainHeaderRenderer}
                             modelDomains={protocolModel.domains}
                             useTheme={useTheme}
-                            appPropertiesOnly={appPropertiesOnly}
+                            appPropertiesOnly={hideAdvancedProperties}
                             successBsStyle={successBsStyle}
                             testMode={testMode}
                             domainFormDisplayOptions={{
@@ -284,6 +304,19 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                         </DomainForm>
                     );
                 })}
+                {appPropertiesOnly && (
+                    <DataTypeProjectsPanel
+                        controlledCollapse
+                        dataTypeRowId={protocolModel?.protocolId}
+                        dataTypeName={protocolModel?.name}
+                        entityDataType={AssayRunDataType}
+                        initCollapsed={currentPanelIndex !== protocolModel.domains.size + 1}
+                        onToggle={(collapsed, callback) => {
+                            onTogglePanel(protocolModel.domains.size + 1, collapsed, callback);
+                        }}
+                        onUpdateExcludedProjects={this.onUpdateExcludedProjects}
+                    />
+                )}
             </BaseDomainDesigner>
         );
     }

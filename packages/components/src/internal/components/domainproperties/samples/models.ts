@@ -19,6 +19,7 @@ export class SampleTypeModel extends Record({
     domain: undefined,
     autoLinkTargetContainerId: undefined,
     autoLinkCategory: undefined,
+    excludedContainerIds: undefined,
     exception: undefined,
 }) {
     declare rowId: number;
@@ -35,6 +36,7 @@ export class SampleTypeModel extends Record({
     declare domain?: DomainDesign;
     declare autoLinkTargetContainerId: string;
     declare autoLinkCategory: string;
+    declare excludedContainerIds?: string[];
     declare exception: string;
 
     static create(raw?: DomainDetails, name?: string): SampleTypeModel {

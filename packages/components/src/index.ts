@@ -572,6 +572,7 @@ import {
 import { DesignerDetailPanel } from './internal/components/domainproperties/DesignerDetailPanel';
 import { DomainFieldLabel } from './internal/components/domainproperties/DomainFieldLabel';
 import { RangeValidationOptionsModal } from './internal/components/domainproperties/validation/RangeValidationOptions';
+import { DataTypeProjectsPanel } from './internal/components/domainproperties/DataTypeProjectsPanel';
 
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 import { AssayDesignEmptyAlert } from './internal/components/assay/AssayDesignEmptyAlert';
@@ -1417,6 +1418,7 @@ export {
     IssuesListDefModel,
     IssuesListDefDesignerPanels,
     fetchIssuesListDefDesign,
+    DataTypeProjectsPanel,
     // file / webdav related items
     DEFAULT_FILE,
     FilesListing,

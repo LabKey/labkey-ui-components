@@ -25,6 +25,7 @@ interface OwnProps {
     isValid: boolean;
     title: string;
     titlePrefix?: string;
+    todoIconHelpMsg?: string;
     updateValidStatus: (model?: any) => void;
 }
 
@@ -70,6 +71,7 @@ export class BasePropertiesPanel extends React.PureComponent<Props> {
             isValid,
             children,
             warning,
+            todoIconHelpMsg,
         } = this.props;
 
         return (
@@ -86,6 +88,7 @@ export class BasePropertiesPanel extends React.PureComponent<Props> {
                         panelStatus={panelStatus}
                         isValid={isValid}
                         iconHelpMsg={PROPERTIES_PANEL_ERROR_MSG}
+                        todoIconHelpMsg={todoIconHelpMsg}
                         useTheme={useTheme}
                     />
                     <Panel.Body collapsible={collapsible || controlledCollapse}>{children}</Panel.Body>

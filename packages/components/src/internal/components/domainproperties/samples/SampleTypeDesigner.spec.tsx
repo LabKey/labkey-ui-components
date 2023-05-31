@@ -1,13 +1,13 @@
 import React from 'react';
 import { List, Map } from 'immutable';
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 import DomainForm from '../DomainForm';
 
 import { DomainDetails } from '../models';
 
-import { waitForLifecycle } from '../../../testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../../testHelpers';
 import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { FileAttachmentForm } from '../../../../public/files/FileAttachmentForm';
@@ -165,7 +165,7 @@ describe('SampleTypeDesigner', () => {
     });
 
     test('open fields panel', async () => {
-        const wrapped = mount(<SampleTypeDesigner {...BASE_PROPS} />);
+        const wrapped = mountWithAppServerContext(<SampleTypeDesigner {...BASE_PROPS} />);
         await waitForLifecycle(wrapped);
 
         const panelHeader = wrapped.find('div#domain-header');
@@ -183,7 +183,7 @@ describe('SampleTypeDesigner', () => {
 
     test('open fields panel, with barcodes', async () => {
         LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement', 'api', 'core', 'premium'] } };
-        const wrapped = mount(<SampleTypeDesigner {...BASE_PROPS} />);
+        const wrapped = mountWithAppServerContext(<SampleTypeDesigner {...BASE_PROPS} />);
         await waitForLifecycle(wrapped);
 
         const panelHeader = wrapped.find('div#domain-header');

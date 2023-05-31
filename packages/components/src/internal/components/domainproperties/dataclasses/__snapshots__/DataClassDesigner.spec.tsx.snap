@@ -196,6 +196,51 @@ exports[`DataClassDesigner custom properties 1`] = `
     useTheme={true}
     validate={false}
   />
+  <ComponentWithDomainPropertiesPanelCollapse
+    controlledCollapse={true}
+    entityDataType={
+      {
+        "ancestorColumnName": "Ancestors/OtherData",
+        "deleteHelpLinkTopic": "dataClass#prevent",
+        "dependencyText": "derived data or sample dependencies",
+        "descriptionPlural": "parent types",
+        "descriptionSingular": "parent type",
+        "filterCardHeaderClass": "filter-card__header-primary",
+        "importFileAction": "importData",
+        "inputColumnName": "Inputs/Data/First",
+        "inputTypeValueField": "rowId",
+        "insertColumnNamePrefix": "DataInputs/",
+        "instanceSchemaName": "exp.data",
+        "listingSchemaQuery": SchemaQuery {
+          "queryName": "Data",
+          "schemaName": "exp",
+          "viewName": undefined,
+        },
+        "moveActionName": "moveSources.api",
+        "moveControllerName": "experiment",
+        "nounAsParentPlural": "Data Types",
+        "nounAsParentSingular": "Parent",
+        "nounPlural": "data",
+        "nounSingular": "data",
+        "operationConfirmationActionName": "getDataOperationConfirmationData.api",
+        "operationConfirmationControllerName": "experiment",
+        "projectConfigurableDataType": "DataClass",
+        "sampleFinderCardType": "dataclassparent",
+        "typeIcon": "source_type",
+        "typeListingSchemaQuery": SchemaQuery {
+          "queryName": "DataClasses",
+          "schemaName": "exp",
+          "viewName": undefined,
+        },
+        "typeNounAsParentSingular": "Data Type",
+        "typeNounSingular": "Data Type",
+        "uniqueFieldKey": "Name",
+      }
+    }
+    initCollapsed={true}
+    onToggle={[Function]}
+    onUpdateExcludedProjects={[Function]}
+  />
   <NameExpressionValidationModal
     onConfirm={[Function]}
     onHide={[Function]}

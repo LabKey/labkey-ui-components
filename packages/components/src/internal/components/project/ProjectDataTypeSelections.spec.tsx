@@ -18,6 +18,7 @@ describe('ProjectDataTypeSelections', () => {
             <ProjectDataTypeSelections entityDataTypes={[SampleTypeDataType]} projectId="123" />
         );
         expect(wrapper.find(Button)).toHaveLength(1);
+        expect(wrapper.find(Button).text()).toBe('Save');
         expect(wrapper.find(Col)).toHaveLength(1);
     });
 
@@ -26,6 +27,7 @@ describe('ProjectDataTypeSelections', () => {
             <ProjectDataTypeSelections entityDataTypes={[SampleTypeDataType, AssayRunDataType]} projectId="123" />
         );
         expect(wrapper.find(Button)).toHaveLength(1);
+        expect(wrapper.find(Button).text()).toBe('Save');
         expect(wrapper.find(Col)).toHaveLength(2);
     });
 });

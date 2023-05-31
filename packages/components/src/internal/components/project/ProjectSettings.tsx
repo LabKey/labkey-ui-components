@@ -2,13 +2,15 @@ import React, { FC, memo, useCallback, useState } from 'react';
 
 import { Button } from 'react-bootstrap';
 
-import { useAppContext} from '../../AppContext';
+import { useAppContext } from '../../AppContext';
 import { useServerContext, useServerContextDispatch } from '../base/ServerContext';
-import { ProjectProperties } from '../project/ProjectProperties';
+
 import { ProjectSettingsOptions } from '../container/FolderAPIWrapper';
 import { resolveErrorMessage } from '../../util/messaging';
 import { Alert } from '../base/Alert';
 import { Container } from '../base/models/Container';
+
+import { ProjectProperties } from './ProjectProperties';
 
 import { DeleteProjectModal } from './DeleteProjectModal';
 
@@ -94,7 +96,7 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(({ onChange, onSuc
 
     return (
         <div className="project-settings panel panel-default">
-            <div className="panel-heading">Project Settings</div>
+            <div className="panel-heading">Name of Project</div>
             <div className="panel-body">
                 {!!error && <Alert>{error}</Alert>}
 
@@ -111,11 +113,11 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(({ onChange, onSuc
                             type="button"
                             onClick={openModalHandler}
                         >
-                            <i className="fa fa-trash" /> Delete
+                            <i className="fa fa-trash" /> Delete Project
                         </Button>
 
                         <button className="btn btn-success" disabled={isSaving || !dirty} type="submit">
-                            {isSaving ? 'Saving' : 'Save'}
+                            {isSaving ? 'Saving...' : 'Save'}
                         </button>
                     </div>
                 </form>

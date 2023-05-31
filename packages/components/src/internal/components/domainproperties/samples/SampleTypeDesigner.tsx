@@ -36,7 +36,9 @@ import { Alert } from '../../base/Alert';
 
 import { getDuplicateAlias, getParentAliasChangeResult, getParentAliasUpdateDupesResults } from '../utils';
 
-import { SAMPLE_SET_IMPORT_PREFIX } from '../../entities/constants';
+import { SAMPLE_SET_IMPORT_PREFIX, SampleTypeDataType } from '../../entities/constants';
+
+import { DataTypeProjectsPanel } from '../DataTypeProjectsPanel';
 
 import { UniqueIdBanner } from './UniqueIdBanner';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
@@ -50,6 +52,7 @@ const NEW_SAMPLE_SET_OPTION: IParentOption = {
 
 const PROPERTIES_PANEL_INDEX = 0;
 const DOMAIN_PANEL_INDEX = 1;
+const PROJECTS_PANEL_INDEX = 2;
 
 const SAMPLE_TYPE_NAME_EXPRESSION_TOPIC = 'sampleIDs#patterns';
 const SAMPLE_TYPE_NAME_EXPRESSION_PLACEHOLDER = 'Enter a naming pattern (e.g., S-${now:date}-${dailySampleCount})';
@@ -138,7 +141,10 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         showParentLabelPrefix: true,
         useTheme: false,
         showLinkToStudy: false,
-        domainFormDisplayOptions: { ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, domainKindDisplayName: 'sample type' },
+        domainFormDisplayOptions: {
+            ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
+            domainKindDisplayName: SampleTypeDataType.typeNounSingular.toLowerCase(),
+        },
         validateNameExpressions: true,
     };
 
@@ -248,6 +254,10 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         this.props.onTogglePanel(DOMAIN_PANEL_INDEX, collapsed, callback);
     };
 
+    projectsToggle = (collapsed: boolean, callback: () => void): void => {
+        this.props.onTogglePanel(PROJECTS_PANEL_INDEX, collapsed, callback);
+    };
+
     parentAliasChange = (id: string, field: string, newValue: any): void => {
         const { model } = this.state;
         const newAliases = getParentAliasChangeResult(model.parentAliases, id, field, newValue);
@@ -277,6 +287,12 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         const { parentAliases } = model;
         const aliases = parentAliases.delete(id);
         const newModel = model.set('parentAliases', aliases) as SampleTypeModel;
+        this.onFieldChange(newModel);
+    };
+
+    onUpdateExcludedProjects = (excludedContainerIds: string[]): void => {
+        const { model } = this.state;
+        const newModel = model.set('excludedContainerIds', excludedContainerIds) as SampleTypeModel;
         this.onFieldChange(newModel);
     };
 
@@ -505,6 +521,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
             metricUnit,
             autoLinkTargetContainerId,
             autoLinkCategory,
+            excludedContainerIds,
         } = model;
 
         return {
@@ -516,6 +533,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
             autoLinkTargetContainerId,
             autoLinkCategory,
             importAliases: this.getImportAliasesAsMap(model).toJS(),
+            excludedContainerIds,
         };
     };
 
@@ -610,7 +628,9 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
             UNIQUE_ID_TYPE.display +
             ' field' +
             (numNewUniqueIdFields !== 1 ? 's' : '') +
-            ' to this Sample Type. ' +
+            ' to this ' +
+            SampleTypeDataType.typeNounSingular +
+            '. ' +
             'Values for ' +
             (numNewUniqueIdFields !== 1 ? 'these fields' : 'this field') +
             ' will be created for all existing samples.';
@@ -655,7 +675,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                     onRemoveParentAlias={this.removeParentAlias}
                     updateDupeParentAliases={this.updateDupes}
                     updateModel={this.onFieldChange}
-                    controlledCollapse={true}
+                    controlledCollapse
                     initCollapsed={currentPanelIndex !== PROPERTIES_PANEL_INDEX}
                     panelStatus={
                         model.isNew()
@@ -693,7 +713,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                     domain={model.domain}
                     headerTitle="Fields"
                     helpTopic={null} // null so that we don't show the "learn more about this tool" link for this domains
-                    controlledCollapse={true}
+                    controlledCollapse
                     initCollapsed={currentPanelIndex !== DOMAIN_PANEL_INDEX}
                     validate={validatePanel === DOMAIN_PANEL_INDEX}
                     panelStatus={
@@ -738,13 +758,32 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                     }}
                     systemFields={options?.get('systemFields')}
                 />
+                {appPropertiesOnly && (
+                    // appPropertiesOnly check will prevent this panel from showing in LKS and in LKB media types
+                    <DataTypeProjectsPanel
+                        controlledCollapse
+                        dataTypeRowId={model?.rowId}
+                        dataTypeName={model?.name}
+                        entityDataType={SampleTypeDataType}
+                        initCollapsed={currentPanelIndex !== PROJECTS_PANEL_INDEX}
+                        onToggle={this.projectsToggle}
+                        onUpdateExcludedProjects={this.onUpdateExcludedProjects}
+                    />
+                )}
                 {error && <div className="domain-form-panel">{error && <Alert bsStyle="danger">{error}</Alert>}</div>}
                 {showUniqueIdConfirmation && (
                     <ConfirmModal
-                        title={'Updating Sample Type with Unique ID field' + (numNewUniqueIdFields !== 1 ? 's' : '')}
+                        title={
+                            'Updating ' +
+                            SampleTypeDataType.typeNounSingular +
+                            ' with Unique ID field' +
+                            (numNewUniqueIdFields !== 1 ? 's' : '')
+                        }
                         onCancel={this.onUniqueIdCancel}
                         onConfirm={this.onUniqueIdConfirm}
-                        confirmButtonText={submitting ? 'Finishing ...' : 'Finish Updating Sample Type'}
+                        confirmButtonText={
+                            submitting ? 'Finishing ...' : 'Finish Updating ' + SampleTypeDataType.typeNounSingular
+                        }
                         confirmVariant="success"
                         cancelButtonText="Cancel"
                         submitting={submitting}

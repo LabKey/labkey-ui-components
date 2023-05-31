@@ -19,6 +19,7 @@ import { AdminAppContext, AppContext } from '../../AppContext';
 import { getTestAPIWrapper } from '../../APIWrapper';
 
 import { CreateProjectContainer, CreateProjectContainerProps, CreateProjectPage } from './CreateProjectPage';
+import { ProjectDataTypeSelections } from './ProjectDataTypeSelections';
 
 describe('CreateProjectPage', () => {
     function getDefaultProps(overrides?: Partial<FolderAPIWrapper>): CreateProjectContainerProps {
@@ -63,6 +64,8 @@ describe('CreateProjectPage', () => {
         );
 
         // Assert
+        expect(wrapper.find('.panel-heading').first().text()).toBe('Name of Project');
+        expect(wrapper.find(ProjectDataTypeSelections)).toHaveLength(1);
         const form = wrapper.find('.create-project-form');
         expect(form.exists()).toBe(true);
         form.simulate('submit');

@@ -2,8 +2,14 @@ import { List, Map } from 'immutable';
 import { Query } from '@labkey/api';
 
 import { QueryInfo } from '../../public/QueryInfo';
-import { DataTypeEntity, EntityDataType, IEntityTypeOption } from '../components/entities/models';
+import {
+    DataTypeEntity,
+    EntityDataType,
+    IEntityTypeOption,
+    ProjectConfigurableDataType,
+} from '../components/entities/models';
 import { getEntityTypeOptions, getProjectConfigurableEntityTypeOptions } from '../components/entities/actions';
+import { getProjectDataTypeDataCount, getDataTypeProjectDataCount } from '../components/project/actions';
 
 import { getGridViews, incrementClientSideMetricCount } from '../actions';
 
@@ -15,6 +21,11 @@ import { getQueryDetails, GetQueryDetailsOptions, selectDistinctRows } from './a
 import { selectRows, SelectRowsOptions, SelectRowsResponse } from './selectRows';
 
 export interface QueryAPIWrapper {
+    getDataTypeProjectDataCount: (
+        entityDataType: EntityDataType,
+        dataTypeRowId: number,
+        dataTypeName: string
+    ) => Promise<Record<string, number>>;
     getEntityTypeOptions: (
         entityDataType: EntityDataType,
         containerPath?: string
@@ -31,6 +42,11 @@ export interface QueryAPIWrapper {
         containerPath?: string,
         containerFilter?: Query.ContainerFilter
     ) => Promise<DataTypeEntity[]>;
+    getProjectDataTypeDataCount: (
+        dataType: ProjectConfigurableDataType,
+        allDataTypes?: DataTypeEntity[],
+        isNewFolder?: boolean
+    ) => Promise<Record<string, number>>;
     getQueryDetails: (options: GetQueryDetailsOptions) => Promise<QueryInfo>;
     incrementClientSideMetricCount: (featureArea: string, metricName: string) => void;
     selectDistinctRows: (selectDistinctOptions: Query.SelectDistinctOptions) => Promise<Query.SelectDistinctResponse>;
@@ -45,6 +61,8 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     selectDistinctRows = selectDistinctRows;
     getGridViews = getGridViews;
     getProjectConfigurableEntityTypeOptions = getProjectConfigurableEntityTypeOptions;
+    getProjectDataTypeDataCount = getProjectDataTypeDataCount;
+    getDataTypeProjectDataCount = getDataTypeProjectDataCount;
 }
 
 /**
@@ -62,6 +80,8 @@ export function getQueryTestAPIWrapper(
         selectDistinctRows: mockFn(),
         getGridViews: mockFn(),
         getProjectConfigurableEntityTypeOptions: mockFn(),
+        getProjectDataTypeDataCount: mockFn(),
+        getDataTypeProjectDataCount: mockFn(),
         ...overrides,
     };
 }

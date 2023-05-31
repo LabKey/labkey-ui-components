@@ -94,6 +94,7 @@ exports[`SampleTypeDesigner custom properties 1`] = `
         },
         "autoLinkTargetContainerId": undefined,
         "autoLinkCategory": undefined,
+        "excludedContainerIds": undefined,
         "exception": undefined,
       }
     }
@@ -333,6 +334,7 @@ exports[`SampleTypeDesigner default properties 1`] = `
         },
         "autoLinkTargetContainerId": undefined,
         "autoLinkCategory": undefined,
+        "excludedContainerIds": undefined,
         "exception": undefined,
       }
     }
@@ -468,6 +470,67 @@ exports[`SampleTypeDesigner default properties 1`] = `
     testMode={true}
     useTheme={false}
     validate={false}
+  />
+  <ComponentWithDomainPropertiesPanelCollapse
+    controlledCollapse={true}
+    entityDataType={
+      {
+        "ancestorColumnName": "Ancestors/Samples",
+        "appUrlPrefixParts": [
+          "samples",
+        ],
+        "deleteHelpLinkTopic": "viewSampleSets#delete",
+        "dependencyText": [Function],
+        "descriptionPlural": "parent sample types",
+        "descriptionSingular": "parent sample type",
+        "editTypeAppUrlPrefix": "sampleType",
+        "exprColumnsWithSubSelect": [
+          "SourceProtocolLSID",
+          "StorageStatus",
+          "SampleTypeUnits",
+          "FreezeThawCount",
+          "CheckedOutBy",
+          "StorageRow",
+          "StorageCol",
+          "CheckedOut",
+        ],
+        "filterCardHeaderClass": "filter-card__header-success",
+        "importFileAction": "importSamples",
+        "inputColumnName": "Inputs/Materials/First",
+        "inputTypeValueField": "lsid",
+        "insertColumnNamePrefix": "MaterialInputs/",
+        "instanceKey": "samples",
+        "instanceSchemaName": "samples",
+        "labelColorCol": "labelcolor",
+        "listingSchemaQuery": SchemaQuery {
+          "queryName": "Materials",
+          "schemaName": "exp",
+          "viewName": undefined,
+        },
+        "moveActionName": "moveSamples.api",
+        "moveControllerName": "experiment",
+        "nounAsParentPlural": "Parents",
+        "nounAsParentSingular": "Parent",
+        "nounPlural": "samples",
+        "nounSingular": "sample",
+        "operationConfirmationActionName": "getMaterialOperationConfirmationData.api",
+        "operationConfirmationControllerName": "experiment",
+        "projectConfigurableDataType": "SampleType",
+        "sampleFinderCardType": "sampleparent",
+        "typeIcon": "sample_set",
+        "typeListingSchemaQuery": SchemaQuery {
+          "queryName": "SampleSets",
+          "schemaName": "exp",
+          "viewName": undefined,
+        },
+        "typeNounAsParentSingular": "Parent Type",
+        "typeNounSingular": "Sample Type",
+        "uniqueFieldKey": "Name",
+      }
+    }
+    initCollapsed={true}
+    onToggle={[Function]}
+    onUpdateExcludedProjects={[Function]}
   />
   <NameExpressionValidationModal
     onConfirm={[Function]}
@@ -750,6 +813,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         },
         "autoLinkTargetContainerId": undefined,
         "autoLinkCategory": undefined,
+        "excludedContainerIds": undefined,
         "exception": undefined,
       }
     }
@@ -964,6 +1028,68 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
     testMode={true}
     useTheme={false}
     validate={false}
+  />
+  <ComponentWithDomainPropertiesPanelCollapse
+    controlledCollapse={true}
+    dataTypeName="Test Name"
+    entityDataType={
+      {
+        "ancestorColumnName": "Ancestors/Samples",
+        "appUrlPrefixParts": [
+          "samples",
+        ],
+        "deleteHelpLinkTopic": "viewSampleSets#delete",
+        "dependencyText": [Function],
+        "descriptionPlural": "parent sample types",
+        "descriptionSingular": "parent sample type",
+        "editTypeAppUrlPrefix": "sampleType",
+        "exprColumnsWithSubSelect": [
+          "SourceProtocolLSID",
+          "StorageStatus",
+          "SampleTypeUnits",
+          "FreezeThawCount",
+          "CheckedOutBy",
+          "StorageRow",
+          "StorageCol",
+          "CheckedOut",
+        ],
+        "filterCardHeaderClass": "filter-card__header-success",
+        "importFileAction": "importSamples",
+        "inputColumnName": "Inputs/Materials/First",
+        "inputTypeValueField": "lsid",
+        "insertColumnNamePrefix": "MaterialInputs/",
+        "instanceKey": "samples",
+        "instanceSchemaName": "samples",
+        "labelColorCol": "labelcolor",
+        "listingSchemaQuery": SchemaQuery {
+          "queryName": "Materials",
+          "schemaName": "exp",
+          "viewName": undefined,
+        },
+        "moveActionName": "moveSamples.api",
+        "moveControllerName": "experiment",
+        "nounAsParentPlural": "Parents",
+        "nounAsParentSingular": "Parent",
+        "nounPlural": "samples",
+        "nounSingular": "sample",
+        "operationConfirmationActionName": "getMaterialOperationConfirmationData.api",
+        "operationConfirmationControllerName": "experiment",
+        "projectConfigurableDataType": "SampleType",
+        "sampleFinderCardType": "sampleparent",
+        "typeIcon": "sample_set",
+        "typeListingSchemaQuery": SchemaQuery {
+          "queryName": "SampleSets",
+          "schemaName": "exp",
+          "viewName": undefined,
+        },
+        "typeNounAsParentSingular": "Parent Type",
+        "typeNounSingular": "Sample Type",
+        "uniqueFieldKey": "Name",
+      }
+    }
+    initCollapsed={true}
+    onToggle={[Function]}
+    onUpdateExcludedProjects={[Function]}
   />
   <NameExpressionValidationModal
     onConfirm={[Function]}

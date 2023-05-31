@@ -123,6 +123,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
       "selectedPlateTemplate": undefined,
       "status": "Active",
       "qcEnabled": undefined,
+      "excludedContainerIds": undefined,
     }
   }
   onChange={[Function]}
@@ -252,6 +253,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
         "selectedPlateTemplate": undefined,
         "status": "Active",
         "qcEnabled": undefined,
+        "excludedContainerIds": undefined,
       }
     }
     onChange={[Function]}
@@ -378,6 +380,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
           "selectedPlateTemplate": undefined,
           "status": "Active",
           "qcEnabled": undefined,
+          "excludedContainerIds": undefined,
         }
       }
       onChange={[Function]}
@@ -529,6 +532,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                       "selectedPlateTemplate": undefined,
                       "status": "Active",
                       "qcEnabled": undefined,
+                      "excludedContainerIds": undefined,
                     }
                   }
                   onChange={[Function]}
@@ -759,6 +763,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                       "selectedPlateTemplate": undefined,
                       "status": "Active",
                       "qcEnabled": undefined,
+                      "excludedContainerIds": undefined,
                     }
                   }
                   onChange={[Function]}
@@ -984,6 +989,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                       "selectedPlateTemplate": undefined,
                       "status": "Active",
                       "qcEnabled": undefined,
+                      "excludedContainerIds": undefined,
                     }
                   }
                   onChange={[Function]}
@@ -1210,6 +1216,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
       "selectedPlateTemplate": undefined,
       "status": "Active",
       "qcEnabled": undefined,
+      "excludedContainerIds": undefined,
     }
   }
   onChange={[Function]}
@@ -1339,6 +1346,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
         "selectedPlateTemplate": undefined,
         "status": "Active",
         "qcEnabled": undefined,
+        "excludedContainerIds": undefined,
       }
     }
     onChange={[Function]}
@@ -1471,6 +1479,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
           "selectedPlateTemplate": undefined,
           "status": "Active",
           "qcEnabled": undefined,
+          "excludedContainerIds": undefined,
         }
       }
       onChange={[Function]}
@@ -1695,6 +1704,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                         "selectedPlateTemplate": undefined,
                         "status": "Active",
                         "qcEnabled": undefined,
+                        "excludedContainerIds": undefined,
                       }
                     }
                     onChange={[Function]}
@@ -1846,6 +1856,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                     "selectedPlateTemplate": undefined,
                                     "status": "Active",
                                     "qcEnabled": undefined,
+                                    "excludedContainerIds": undefined,
                                   }
                                 }
                                 onChange={[Function]}
@@ -2076,6 +2087,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                     "selectedPlateTemplate": undefined,
                                     "status": "Active",
                                     "qcEnabled": undefined,
+                                    "excludedContainerIds": undefined,
                                   }
                                 }
                                 onChange={[Function]}
@@ -2301,6 +2313,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                     "selectedPlateTemplate": undefined,
                                     "status": "Active",
                                     "qcEnabled": undefined,
+                                    "excludedContainerIds": undefined,
                                   }
                                 }
                                 onChange={[Function]}
@@ -2558,6 +2571,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
       "selectedPlateTemplate": undefined,
       "status": "Active",
       "qcEnabled": undefined,
+      "excludedContainerIds": undefined,
     }
   }
   onChange={[Function]}
@@ -2687,6 +2701,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
         "selectedPlateTemplate": undefined,
         "status": "Active",
         "qcEnabled": undefined,
+        "excludedContainerIds": undefined,
       }
     }
     onChange={[Function]}
@@ -2819,6 +2834,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
           "selectedPlateTemplate": undefined,
           "status": "Active",
           "qcEnabled": undefined,
+          "excludedContainerIds": undefined,
         }
       }
       onChange={[Function]}
@@ -3043,6 +3059,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                         "selectedPlateTemplate": undefined,
                         "status": "Active",
                         "qcEnabled": undefined,
+                        "excludedContainerIds": undefined,
                       }
                     }
                     onChange={[Function]}
@@ -3194,6 +3211,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                     "selectedPlateTemplate": undefined,
                                     "status": "Active",
                                     "qcEnabled": undefined,
+                                    "excludedContainerIds": undefined,
                                   }
                                 }
                                 onChange={[Function]}
@@ -3424,6 +3442,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                     "selectedPlateTemplate": undefined,
                                     "status": "Active",
                                     "qcEnabled": undefined,
+                                    "excludedContainerIds": undefined,
                                   }
                                 }
                                 onChange={[Function]}
@@ -3649,6 +3668,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                     "selectedPlateTemplate": undefined,
                                     "status": "Active",
                                     "qcEnabled": undefined,
+                                    "excludedContainerIds": undefined,
                                   }
                                 }
                                 onChange={[Function]}
@@ -3824,6 +3844,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
       "selectedPlateTemplate": undefined,
       "status": "Active",
       "qcEnabled": undefined,
+      "excludedContainerIds": undefined,
     }
   }
   onChange={[Function]}
@@ -3871,6 +3892,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
         "selectedPlateTemplate": undefined,
         "status": "Active",
         "qcEnabled": undefined,
+        "excludedContainerIds": undefined,
       }
     }
     onChange={[Function]}
@@ -3921,6 +3943,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
           "selectedPlateTemplate": undefined,
           "status": "Active",
           "qcEnabled": undefined,
+          "excludedContainerIds": undefined,
         }
       }
       onChange={[Function]}
@@ -4063,6 +4086,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                         "selectedPlateTemplate": undefined,
                         "status": "Active",
                         "qcEnabled": undefined,
+                        "excludedContainerIds": undefined,
                       }
                     }
                     onChange={[Function]}
@@ -4132,6 +4156,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                     "selectedPlateTemplate": undefined,
                                     "status": "Active",
                                     "qcEnabled": undefined,
+                                    "excludedContainerIds": undefined,
                                   }
                                 }
                                 onChange={[Function]}
@@ -4280,6 +4305,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                     "selectedPlateTemplate": undefined,
                                     "status": "Active",
                                     "qcEnabled": undefined,
+                                    "excludedContainerIds": undefined,
                                   }
                                 }
                                 onChange={[Function]}
@@ -4423,6 +4449,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                     "selectedPlateTemplate": undefined,
                                     "status": "Active",
                                     "qcEnabled": undefined,
+                                    "excludedContainerIds": undefined,
                                   }
                                 }
                                 onChange={[Function]}
@@ -4682,6 +4709,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
       "selectedPlateTemplate": undefined,
       "status": "Active",
       "qcEnabled": undefined,
+      "excludedContainerIds": undefined,
     }
   }
   onChange={[Function]}
@@ -4811,6 +4839,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
         "selectedPlateTemplate": undefined,
         "status": "Active",
         "qcEnabled": undefined,
+        "excludedContainerIds": undefined,
       }
     }
     onChange={[Function]}
@@ -4943,6 +4972,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
           "selectedPlateTemplate": undefined,
           "status": "Active",
           "qcEnabled": undefined,
+          "excludedContainerIds": undefined,
         }
       }
       onChange={[Function]}
@@ -5130,6 +5160,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                         "selectedPlateTemplate": undefined,
                         "status": "Active",
                         "qcEnabled": undefined,
+                        "excludedContainerIds": undefined,
                       }
                     }
                     onChange={[Function]}
@@ -5281,6 +5312,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                     "selectedPlateTemplate": undefined,
                                     "status": "Active",
                                     "qcEnabled": undefined,
+                                    "excludedContainerIds": undefined,
                                   }
                                 }
                                 onChange={[Function]}
@@ -5511,6 +5543,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                     "selectedPlateTemplate": undefined,
                                     "status": "Active",
                                     "qcEnabled": undefined,
+                                    "excludedContainerIds": undefined,
                                   }
                                 }
                                 onChange={[Function]}
@@ -5736,6 +5769,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                     "selectedPlateTemplate": undefined,
                                     "status": "Active",
                                     "qcEnabled": undefined,
+                                    "excludedContainerIds": undefined,
                                   }
                                 }
                                 onChange={[Function]}

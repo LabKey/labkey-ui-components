@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.X
-*Released*: X May 2023
+### version 2.341.3
+*Released*: 31 May 2023
 * Project level data type - handle lookups and remove experimental flag
   * remove isProductProjectDataTypeSelectionEnabled experimental flag and enable function
   * filter schema and query names for Look Up fields in designer based on selected target container's data type exclusion config

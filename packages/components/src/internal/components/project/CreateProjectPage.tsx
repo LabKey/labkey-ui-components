@@ -104,7 +104,9 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
                     projectId={null}
                     updateDataTypeExclusions={updateDataTypeExclusions}
                 />
-                {ProjectFreezerSelectionComponent && <ProjectFreezerSelectionComponent updateDataTypeExclusions={updateDataTypeExclusions} />}
+                {ProjectFreezerSelectionComponent && (
+                    <ProjectFreezerSelectionComponent updateDataTypeExclusions={updateDataTypeExclusions} />
+                )}
                 <div className="form-group no-margin-bottom">
                     <div className="pull-left">
                         <button className="project-cancel-button btn btn-default" onClick={onCancel} type="button">

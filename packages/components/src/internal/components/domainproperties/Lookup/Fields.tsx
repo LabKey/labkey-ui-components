@@ -198,34 +198,38 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
         // special case for Current Project/Folder which uses a value of '' (empty string)
         const queryContainerPath = containerPath === '' ? null : containerPath;
 
-        context.fetchQueries(queryContainerPath, schemaName).then(queries => {
-            const infos: Array<{ name: string; type: PropDescType }> = [];
+        context
+            .fetchQueries(queryContainerPath, schemaName)
+            .then(queries => {
+                const infos: Array<{ name: string; type: PropDescType }> = [];
 
-            context.getExcludedSchemaQueryNames(schemaName?.toLowerCase(), queryContainerPath)
-                .then(excludedQueries => {
-                    queries?.forEach(q => {
-                        if (excludedQueries && excludedQueries?.indexOf(q.name.toLowerCase()) > -1) return;
+                context
+                    .getExcludedSchemaQueryNames(schemaName?.toLowerCase(), queryContainerPath)
+                    .then(excludedQueries => {
+                        queries?.forEach(q => {
+                            if (excludedQueries && excludedQueries?.indexOf(q.name.toLowerCase()) > -1) return;
 
-                        if (q.isIncludedForLookups) infos.push(...q.getLookupInfo(this.props.lookupURI));
+                            if (q.isIncludedForLookups) infos.push(...q.getLookupInfo(this.props.lookupURI));
+                        });
+
+                        const initialQueryName = value ? decodeLookup(value).queryName : undefined;
+
+                        if (!lookupIsValid) infos.unshift({ name: initialQueryName, type: LOOKUP_TYPE });
+
+                        this.setState({
+                            loading: false,
+                            queries: infos,
+                            initialQueryName,
+                            initialQueryInvalid: !lookupIsValid,
+                        });
+                    })
+                    .catch(error => {
+                        console.error(error);
                     });
-
-                    const initialQueryName = value ? decodeLookup(value).queryName : undefined;
-
-                    if (!lookupIsValid) infos.unshift({ name: initialQueryName, type: LOOKUP_TYPE });
-
-                    this.setState({
-                        loading: false,
-                        queries: infos,
-                        initialQueryName,
-                        initialQueryInvalid: !lookupIsValid,
-                    });
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        }).catch(e => {
-            console.error(e);
-        });
+            })
+            .catch(e => {
+                console.error(e);
+            });
     }
 
     render() {

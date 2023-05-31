@@ -2,7 +2,7 @@ import React from 'react';
 import { List } from 'immutable';
 import { Security } from '@labkey/api';
 
-import {fetchContainers, fetchQueries, fetchSchemas, getExcludedSchemaQueryNames} from '../actions';
+import { fetchContainers, fetchQueries, fetchSchemas, getExcludedSchemaQueryNames } from '../actions';
 import { QueryInfoLite } from '../models';
 import { Container } from '../../base/models/Container';
 import { SchemaDetails } from '../../../SchemaDetails';
@@ -29,7 +29,7 @@ export class LookupProvider extends React.Component<any, ILookupContext> {
             fetchContainers,
             fetchQueries,
             fetchSchemas,
-            getExcludedSchemaQueryNames
+            getExcludedSchemaQueryNames,
         };
     }
 

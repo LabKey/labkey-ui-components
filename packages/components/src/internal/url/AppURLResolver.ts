@@ -141,8 +141,7 @@ export class ExperimentRunResolver implements AppRouteResolver {
                 // resolve it
                 this.jobs.add(rowId);
                 return AppURL.create('workflow', rowId);
-            }
-            else {
+            } else {
                 return AppURL.create('rd', 'assayrun', rowId);
             }
         } catch (e) {

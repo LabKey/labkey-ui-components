@@ -15,9 +15,10 @@ import { AppURL } from '../../url/AppURL';
 
 import { TEST_LIMS_STARTER_MODULE_CONTEXT } from '../../productFixtures';
 
+import { AdminAppContext, AppContext } from '../../AppContext';
+import { getTestAPIWrapper } from '../../APIWrapper';
+
 import { CreateProjectContainer, CreateProjectContainerProps, CreateProjectPage } from './CreateProjectPage';
-import {AdminAppContext, AppContext} from "../../AppContext";
-import {getTestAPIWrapper} from "../../APIWrapper";
 
 describe('CreateProjectPage', () => {
     function getDefaultProps(overrides?: Partial<FolderAPIWrapper>): CreateProjectContainerProps {

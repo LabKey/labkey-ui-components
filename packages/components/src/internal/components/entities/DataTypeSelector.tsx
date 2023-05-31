@@ -23,6 +23,8 @@ interface Props {
     dataTypeLabel?: string;
     disabled?: boolean;
     entityDataType?: EntityDataType;
+    isNewFolder?: boolean;
+
     noHeader?: boolean;
 
     toggleSelectAll?: boolean;
@@ -30,8 +32,6 @@ interface Props {
     uncheckedEntitiesDB: number[];
 
     updateUncheckedTypes: (dataType: string, unchecked: number[]) => void;
-
-    isNewFolder?: boolean;
 }
 
 export const getUncheckedEntityWarning = (

@@ -4,7 +4,7 @@ import { caseInsensitive } from '../../util/utils';
 import { DataTypeEntity, ProjectConfigurableDataType } from '../entities/models';
 import { getContainerFilterForFolder } from '../../query/api';
 import { SCHEMAS } from '../../schemas';
-import {isProductProjectsDataListingScopedToProject} from "../../app/utils";
+import { isProductProjectsDataListingScopedToProject } from '../../app/utils';
 
 export function getProjectDataTypeDataCountSql(dataType: ProjectConfigurableDataType): string {
     if (!dataType) return null;
@@ -32,9 +32,8 @@ export function getProjectDataTypeDataCountSql(dataType: ProjectConfigurableData
 export function getDataTypeDataCount(
     dataType: ProjectConfigurableDataType,
     allDataTypes?: DataTypeEntity[],
-    isNewFolder?: boolean,
+    isNewFolder?: boolean
 ): Promise<{ [key: string]: number }> {
-
     return new Promise((resolve, reject) => {
         if (isProductProjectsDataListingScopedToProject() && isNewFolder) {
             resolve({});

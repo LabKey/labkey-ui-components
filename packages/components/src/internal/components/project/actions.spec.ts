@@ -29,6 +29,10 @@ describe('getProjectDataTypeDataCountSql', () => {
 });
 
 describe('getDataTypeProjectDataCountSql', () => {
+    test('create case, no queryName', () => {
+        expect(getDataTypeProjectDataCountSql(SampleTypeDataType, undefined, undefined)).toBeNull();
+    });
+
     test('SampleType', () => {
         expect(getDataTypeProjectDataCountSql(SampleTypeDataType, 1, 'blood')).toBe(
             'SELECT Folder AS Project, COUNT(*) as DataCount FROM "blood"  GROUP BY Folder'

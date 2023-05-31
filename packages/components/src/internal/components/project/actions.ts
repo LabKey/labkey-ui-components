@@ -73,6 +73,8 @@ export function getDataTypeProjectDataCountSql(
     const isStorage = entityDataType.projectConfigurableDataType === 'StorageLocation';
     const queryName = isAssay || isStorage ? entityDataType.listingSchemaQuery.queryName : dataTypeName;
     const whereClause = isAssay ? 'WHERE Protocol.RowId = ' + dataTypeRowId : '';
+    if (!queryName) return null;
+
     return (
         'SELECT Folder AS Project, COUNT(*) as DataCount FROM "' + queryName + '" ' + whereClause + ' GROUP BY Folder'
     );

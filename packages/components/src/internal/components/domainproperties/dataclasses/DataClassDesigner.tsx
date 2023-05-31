@@ -387,8 +387,8 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
         const newModel = {
             ...model,
             excludedContainerIds,
-        };
-        this.saveModel(newModel);
+        } as DataClassModel;
+        this.onPropertiesChange(newModel);
     };
 
     propertiesToggle = (collapsed: boolean, callback: () => void): void => {

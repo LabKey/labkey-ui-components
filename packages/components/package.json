@@ -26,6 +26,7 @@
     "cleanAll": "rimraf dist && rimraf node_modules",
     "prepublishOnly": "yarn install && cross-env WEBPACK_STATS=errors-only yarn build",
     "test": "cross-env NODE_ENV=test jest --maxWorkers=6 --silent",
+    "test-react": "cross-env NODE_ENV=test jest --config jest.react.config.js",
     "test-ci": "cross-env NODE_ENV=test jest --ci --silent",
     "lint": "eslint",
     "lint-fix": "eslint --fix",
@@ -78,6 +79,8 @@
   "devDependencies": {
     "@labkey/build": "6.11.0",
     "@labkey/eslint-config-react": "~0.0.12",
+    "@testing-library/jest-dom": "~5.16.5",
+    "@testing-library/react": "~12.1.5",
     "@types/enzyme": "~3.10.12",
     "@types/history": "~4.7.9",
     "@types/jest": "~29.2.0",

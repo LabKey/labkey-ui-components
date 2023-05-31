@@ -637,7 +637,6 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
   </DomainForm>
   <ComponentWithDomainPropertiesPanelCollapse
     controlledCollapse={true}
-    dataType="AssayDesign"
     entityDataType={
       {
         "deleteHelpLinkTopic": "manageAssayData#deleteRun",
@@ -2408,7 +2407,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
   </DomainForm>
   <ComponentWithDomainPropertiesPanelCollapse
     controlledCollapse={true}
-    dataType="AssayDesign"
     dataTypeName="Test Assay Protocol"
     dataTypeRowId={1}
     entityDataType={

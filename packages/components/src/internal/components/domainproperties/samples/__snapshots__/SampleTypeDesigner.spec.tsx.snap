@@ -473,7 +473,6 @@ exports[`SampleTypeDesigner default properties 1`] = `
   />
   <ComponentWithDomainPropertiesPanelCollapse
     controlledCollapse={true}
-    dataType="SampleType"
     entityDataType={
       {
         "ancestorColumnName": "Ancestors/Samples",
@@ -1032,7 +1031,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
   />
   <ComponentWithDomainPropertiesPanelCollapse
     controlledCollapse={true}
-    dataType="SampleType"
     dataTypeName="Test Name"
     entityDataType={
       {

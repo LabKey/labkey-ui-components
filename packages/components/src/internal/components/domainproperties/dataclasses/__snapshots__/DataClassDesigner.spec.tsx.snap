@@ -198,7 +198,6 @@ exports[`DataClassDesigner custom properties 1`] = `
   />
   <ComponentWithDomainPropertiesPanelCollapse
     controlledCollapse={true}
-    dataType="DataClass"
     entityDataType={
       {
         "ancestorColumnName": "Ancestors/OtherData",

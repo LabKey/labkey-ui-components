@@ -131,7 +131,7 @@ const TS_CHECKER_CONFIG = {
         configOverwrite: {
             include: ["src/client/**/*"],
             // excluding spec files shaves time off the build
-            exclude: ["node_modules", "**/*.*spec.*", "src/test", "resources", "packages"],
+            exclude: ["node_modules", "**/*.*spec.*", "**/*.*test.*", "src/test", "resources", "packages"],
         },
         context: '.',
         diagnosticOptions: {
@@ -147,7 +147,7 @@ const TS_CHECKER_DEV_CONFIG = {
         ...TS_CHECKER_CONFIG.typescript,
         configOverwrite: {
             include: ["src/client/**/*"],
-            exclude: ["node_modules", "**/*.*spec.*", "src/test", "resources", "packages"],
+            exclude: ["node_modules", "**/*.*spec.*", "**/*.*test.*", "src/test", "resources", "packages"],
             compilerOptions: {
                 "paths": {
                     "@labkey/components": [labkeyUIComponentsPath],

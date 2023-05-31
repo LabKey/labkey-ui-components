@@ -48,7 +48,12 @@ describe('AdminSettingsPageImpl', () => {
         moduleContext: TEST_LKS_STARTER_MODULE_CONTEXT,
     };
 
-    function validatePremium(wrapper: ReactWrapper, projectSettingsCount = 0, manageSampleStatusCount = 1, projectDataTypeCount = 0): void {
+    function validatePremium(
+        wrapper: ReactWrapper,
+        projectSettingsCount = 0,
+        manageSampleStatusCount = 1,
+        projectDataTypeCount = 0
+    ): void {
         expect(wrapper.find(InsufficientPermissionsPage)).toHaveLength(0);
         expect(wrapper.find(ProjectSettings)).toHaveLength(projectSettingsCount);
         expect(wrapper.find(ProjectDataTypeSelections)).toHaveLength(projectDataTypeCount);

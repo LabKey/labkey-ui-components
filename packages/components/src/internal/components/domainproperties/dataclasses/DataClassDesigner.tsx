@@ -57,9 +57,9 @@ interface Props {
     saveBtnText?: string;
     showGenIdBanner?: boolean;
     successBsStyle?: string;
+    testMode?: boolean;
     useTheme?: boolean;
     validateNameExpressions?: boolean;
-    testMode?: boolean;
 }
 
 interface State {

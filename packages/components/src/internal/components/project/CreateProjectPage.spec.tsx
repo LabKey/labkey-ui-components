@@ -18,6 +18,7 @@ import { TEST_LIMS_STARTER_MODULE_CONTEXT } from '../../productFixtures';
 import { CreateProjectContainer, CreateProjectContainerProps, CreateProjectPage } from './CreateProjectPage';
 import {AdminAppContext, AppContext} from "../../AppContext";
 import {getTestAPIWrapper} from "../../APIWrapper";
+import {ProjectDataTypeSelections} from "./ProjectDataTypeSelections";
 
 describe('CreateProjectPage', () => {
     function getDefaultProps(overrides?: Partial<FolderAPIWrapper>): CreateProjectContainerProps {
@@ -59,6 +60,8 @@ describe('CreateProjectPage', () => {
         );
 
         // Assert
+        expect(wrapper.find('.panel-heading').text()).toBe('Name of Project');
+        expect(wrapper.find(ProjectDataTypeSelections)).toHaveLength(0); // TODO change this to 1 after experimental feature is removed
         const form = wrapper.find('.create-project-form');
         expect(form.exists()).toBe(true);
         form.simulate('submit');

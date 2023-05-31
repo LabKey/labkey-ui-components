@@ -1,7 +1,7 @@
 import { Query } from '@labkey/api';
 
 import { caseInsensitive } from '../../util/utils';
-import {DataTypeEntity, EntityDataType, ProjectConfigurableDataType} from '../entities/models';
+import { DataTypeEntity, EntityDataType, ProjectConfigurableDataType } from '../entities/models';
 import { getContainerFilterForFolder } from '../../query/api';
 import { SCHEMAS } from '../../schemas';
 
@@ -63,9 +63,19 @@ export function getProjectDataTypeDataCount(
     });
 }
 
-function getDataTypeProjectDataCountSql(queryName: string, whereClause: string): string {
-    if (!queryName) return null;
-    return 'SELECT Folder AS Project, COUNT(*) as DataCount FROM "' + queryName + '" ' + whereClause + ' GROUP BY Folder';
+// exported for jest testing
+export function getDataTypeProjectDataCountSql(
+    entityDataType: EntityDataType,
+    dataTypeRowId: number,
+    dataTypeName: string
+): string {
+    const isAssay = entityDataType.projectConfigurableDataType === 'AssayDesign';
+    const isStorage = entityDataType.projectConfigurableDataType === 'StorageLocation';
+    const queryName = isAssay || isStorage ? entityDataType.listingSchemaQuery.queryName : dataTypeName;
+    const whereClause = isAssay ? 'WHERE Protocol.RowId = ' + dataTypeRowId : '';
+    return (
+        'SELECT Folder AS Project, COUNT(*) as DataCount FROM "' + queryName + '" ' + whereClause + ' GROUP BY Folder'
+    );
 }
 
 export function getDataTypeProjectDataCount(
@@ -78,11 +88,9 @@ export function getDataTypeProjectDataCount(
         const isStorage = entityDataType.projectConfigurableDataType === 'StorageLocation';
         const schemaName =
             isAssay || isStorage ? entityDataType.listingSchemaQuery.schemaName : entityDataType.instanceSchemaName;
-        const queryName = isAssay || isStorage ? entityDataType.listingSchemaQuery.queryName : dataTypeName;
-        const whereClause = isAssay ? 'WHERE Protocol.RowId = ' + dataTypeRowId : '';
         const parameters = isStorage ? { ParentId: dataTypeRowId } : undefined;
 
-        const sql = getDataTypeProjectDataCountSql(queryName, whereClause);
+        const sql = getDataTypeProjectDataCountSql(entityDataType, dataTypeRowId, dataTypeName);
         if (!sql) {
             resolve({});
             return;

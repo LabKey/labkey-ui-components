@@ -44,8 +44,8 @@ describe('ProjectSettings', () => {
             user: TEST_USER_APP_ADMIN,
         });
 
-        expect(wrapper.find('.project-settings').exists()).toBe(false);
-        expect(wrapper.find('.delete-project-button').exists()).toBe(false);
+        expect(wrapper.find('.project-settings')).toHaveLength(0);
+        expect(wrapper.find('.delete-project-button')).toHaveLength(0);
         wrapper.unmount();
 
         wrapper = mountWithAppServerContext(<ProjectSettings {...getDefaultProps()} />, getDefaultAppContext(), {
@@ -53,14 +53,16 @@ describe('ProjectSettings', () => {
             user: TEST_USER_EDITOR,
         });
 
-        expect(wrapper.find('.project-settings').exists()).toBe(false);
-        expect(wrapper.find('.delete-project-button').exists()).toBe(false);
+        expect(wrapper.find('.project-settings')).toHaveLength(0);
+        expect(wrapper.find('.delete-project-button')).toHaveLength(0);
         wrapper.unmount();
 
         wrapper = mountWithAppServerContext(<ProjectSettings {...getDefaultProps()} />, getDefaultAppContext(), getServerContext());
 
-        expect(wrapper.find('.project-settings').exists()).toBe(true);
-        expect(wrapper.find('.delete-project-button').exists()).toBe(true);
+        expect(wrapper.find('.project-settings')).toHaveLength(1);
+        expect(wrapper.find('.panel-heading').text()).toBe('Name of Project');
+        expect(wrapper.find('.delete-project-button').hostNodes()).toHaveLength(1);
+        expect(wrapper.find('.delete-project-button').hostNodes().text()).toBe(' Delete Project');
         wrapper.unmount();
     });
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map, OrderedMap, Set } from 'immutable';
+import { fromJS, List, Map, Set } from 'immutable';
 
 import { Filter, Query } from '@labkey/api';
 import { ExtendedMap } from '../public/ExtendedMap';

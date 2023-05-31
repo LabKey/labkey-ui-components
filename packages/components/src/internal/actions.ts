@@ -26,7 +26,6 @@ import { QueryInfo } from '../public/QueryInfo';
 import { Actions } from '../public/QueryModel/withQueryModels';
 
 import { getContainerFilter, invalidateQueryDetailsCache, selectRowsDeprecated } from './query/api';
-import { Location } from './util/URL';
 import {
     BARTENDER_EXPORT_CONTROLLER,
     CELL_SELECTION_HANDLE_CLASSNAME,

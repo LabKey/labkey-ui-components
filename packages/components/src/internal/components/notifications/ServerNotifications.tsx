@@ -7,18 +7,16 @@ import { markNotificationsAsRead } from './actions';
 import { ServerNotificationsConfig } from './model';
 import { ServerActivityList } from './ServerActivityList';
 
-type Props = ServerNotificationsConfig;
-
 interface State {
     show: boolean;
 }
 
-export class ServerNotifications extends React.Component<Props, State> {
+export class ServerNotifications extends React.Component<ServerNotificationsConfig, State> {
     static defaultProps = {
         maxRows: 8,
     };
 
-    constructor(props: Props) {
+    constructor(props: ServerNotificationsConfig) {
         super(props);
 
         this.state = {

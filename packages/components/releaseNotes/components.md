@@ -8,6 +8,13 @@ Components, models, actions, and utility functions for LabKey applications and p
     * implement for Sample Type designer, Data Class designer (sources and non-built in registry), Assay Designer
   * Misc updates to admin panel titles for consistency
 
+### version 2.341.2
+*Released*: 30 May 2023
+* Issue 47556: Update color for placeholder text in grids
+* Issue 47964: Adjust `AncestorRenderer` to display field values that are negative
+* Issue 47960: Update messaging about limit on sample creation
+* Issue 47546: Update style for tabs so they don't appear disabled; update font for subnav
+
 ### version 2.341.1
 *Released*: 26 May 2023
 * Fix await without try/catch

@@ -27,7 +27,7 @@ interface Props {
 export const AncestorRenderer: FC<Props> = memo(({ data }) => {
     if (Map.isMap(data) && data.size > 0) {
         const { displayValue, value } = data.toJS();
-        if (value < 0) {
+        if (value < 0 && displayValue) {
             return (
                 <span className="text-muted" title={`There are ${-value} ancestors of this type.`}>
                     {displayValue}

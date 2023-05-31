@@ -82,6 +82,7 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
                                         uncheckedEntitiesDB={
                                             disabledTypesMap?.[entityDataType.projectConfigurableDataType]
                                         }
+                                        isNewFolder={!projectId}
                                     />
                                 </Col>
                             );

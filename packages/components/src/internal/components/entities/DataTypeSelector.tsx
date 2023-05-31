@@ -30,6 +30,8 @@ interface Props {
     uncheckedEntitiesDB: number[];
 
     updateUncheckedTypes: (dataType: string, unchecked: number[]) => void;
+
+    isNewFolder?: boolean;
 }
 
 export const getUncheckedEntityWarning = (
@@ -73,6 +75,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
         updateUncheckedTypes,
         columns,
         noHeader,
+        isNewFolder,
     } = props;
 
     const [dataTypes, setDataTypes] = useState<DataTypeEntity[]>(undefined);
@@ -111,9 +114,9 @@ export const DataTypeSelector: FC<Props> = memo(props => {
     const ensureCount = useCallback(async () => {
         if (dataCounts) return;
 
-        const results = await getDataTypeDataCount(entityDataType.projectConfigurableDataType, dataTypes);
+        const results = await getDataTypeDataCount(entityDataType.projectConfigurableDataType, dataTypes, isNewFolder);
         setDataCounts(results);
-    }, [dataCounts, dataTypes, entityDataType, allDataTypes]);
+    }, [dataCounts, dataTypes, entityDataType, allDataTypes, isNewFolder]);
 
     const onChange = useCallback(
         (entityRowId: number, toggle: boolean, check?: boolean) => {

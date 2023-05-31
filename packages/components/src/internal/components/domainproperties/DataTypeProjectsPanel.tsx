@@ -28,7 +28,8 @@ interface OwnProps {
     onUpdateExcludedProjects: (excludedProjects: string[]) => void;
 }
 
-const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPanelCollapseProps> = memo(props => {
+// export for jest testing
+export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPanelCollapseProps> = memo(props => {
     const {
         collapsed,
         togglePanel,

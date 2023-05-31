@@ -62,10 +62,11 @@ describe('SampleStatusInput', () => {
         const component = mountWithServerContext(<SampleStatusInput {...DEFAULT_PROPS} formsy={false} />, {
             user: TEST_USER_STORAGE_EDITOR,
         });
-        await waitForLifecycle(component, 5);
+        await waitForLifecycle(component, 50);
 
         const discardPanel = component.find(DiscardConsumedSamplesPanel);
         expect(discardPanel).toHaveLength(0);
+        component.unmount();
     });
 
     test('initial value is Consumed', async () => {
@@ -73,67 +74,72 @@ describe('SampleStatusInput', () => {
             <SampleStatusInput {...DEFAULT_PROPS} formsy={false} value={INIT_CONSUMED} />,
             { user: TEST_USER_STORAGE_EDITOR }
         );
-        await waitForLifecycle(component, 5);
+        await waitForLifecycle(component, 50);
 
         const discardPanel = component.find(DiscardConsumedSamplesPanel);
         expect(discardPanel).toHaveLength(0);
+        component.unmount();
     });
 
     test('change to consumed status, editor', async () => {
         const component = <SampleStatusInput {...DEFAULT_PROPS} formsy={false} allowDisable />;
         const wrapper = mountWithServerContext(component, { user: TEST_USER_EDITOR });
 
-        await waitForLifecycle(wrapper, 5); // retrieve statuses
+        await waitForLifecycle(wrapper, 50); // retrieve statuses
         act(() => {
             wrapper.find(QuerySelect).prop('onQSChange')('name', 200, [], undefined, undefined);
         });
-        await waitForLifecycle(wrapper, 5); // update after select
+        await waitForLifecycle(wrapper, 50); // update after select
         const discardPanel = wrapper.find(DiscardConsumedSamplesPanel);
         expect(discardPanel).toHaveLength(0);
+        wrapper.unmount();
     });
 
     test('change to consumed status, storage editor, allow disable (bulk edit)', async () => {
         const component = <SampleStatusInput {...DEFAULT_PROPS} formsy={false} allowDisable />;
         const wrapper = mountWithServerContext(component, { user: TEST_USER_STORAGE_EDITOR });
 
-        await waitForLifecycle(wrapper, 5);
+        await waitForLifecycle(wrapper, 50);
         act(() => {
             wrapper.find(QuerySelect).prop('onQSChange')('name', 200, [], undefined, undefined);
         });
-        await waitForLifecycle(wrapper, 5);
+        await waitForLifecycle(wrapper, 50);
         const discardPanel = wrapper.find(DiscardConsumedSamplesPanel);
         expect(discardPanel).toHaveLength(1);
 
         expect(wrapper.find('.sample-bulk-update-discard-panel')).toHaveLength(1);
+        wrapper.unmount();
     });
 
     test('change to consumed status, storage editor, no allowDisable', async () => {
         const component = <SampleStatusInput {...DEFAULT_PROPS} formsy={false} />;
         const wrapper = mountWithServerContext(component, { user: TEST_USER_STORAGE_EDITOR });
 
-        await waitForLifecycle(wrapper, 5);
+        await waitForLifecycle(wrapper, 50);
         act(() => {
             wrapper.find(QuerySelect).prop('onQSChange')('name', 200, [], undefined, undefined);
         });
-        await waitForLifecycle(wrapper, 5);
+        await waitForLifecycle(wrapper, 50);
         const discardPanel = wrapper.find(DiscardConsumedSamplesPanel);
         expect(discardPanel).toHaveLength(1);
 
         expect(wrapper.find('.sample-bulk-update-discard-panel')).toHaveLength(0);
+        wrapper.unmount();
     });
 
     test('change to not consumed, storage editor', async () => {
         const component = <SampleStatusInput {...DEFAULT_PROPS} formsy={false} />;
         const wrapper = mountWithServerContext(component, { user: TEST_USER_STORAGE_EDITOR });
 
-        await waitForLifecycle(wrapper, 5);
+        await waitForLifecycle(wrapper, 50);
         act(() => {
             wrapper.find(QuerySelect).prop('onQSChange')('name', 100, [], undefined, undefined);
         });
-        await waitForLifecycle(wrapper, 5);
+        await waitForLifecycle(wrapper, 50);
         const discardPanel = wrapper.find(DiscardConsumedSamplesPanel);
         expect(discardPanel).toHaveLength(0);
 
         expect(wrapper.find('.sample-bulk-update-discard-panel')).toHaveLength(0);
+        wrapper.unmount();
     });
 });

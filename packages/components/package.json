@@ -28,7 +28,7 @@
     "test": "npm run test-react ; npm run test-enzyme",
     "test-enzyme": "cross-env NODE_ENV=test jest --config jest.enzyme.config.js --maxWorkers=6 --silent",
     "test-react": "cross-env NODE_ENV=test jest --config jest.react.config.js --maxWorkers=6",
-    "test-ci": "cross-env NODE_ENV=test jest --config jest.enzyme.config.js --ci --silent",
+    "test-ci": "cross-env NODE_ENV=test jest --config jest.react.config.js --ci ; cross-env NODE_ENV=test jest --config jest.enzyme.config.js --ci --silent",
     "lint": "eslint",
     "lint-fix": "eslint --fix",
     "lint-precommit": "node lint.diff.mjs",

@@ -30,9 +30,6 @@ module.exports = {
     setupFilesAfterEnv: [
         './src/test/jest.setup.react.ts'
     ],
-    // snapshotSerializers: [
-    //     'enzyme-to-json/serializer'
-    // ],
     testEnvironment: 'jsdom',
     testPathIgnorePatterns: [
         '/node_modules/'

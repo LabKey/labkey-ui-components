@@ -580,9 +580,8 @@ import { DataTypeProjectsPanel } from './internal/components/domainproperties/Da
 
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 import { AssayDesignEmptyAlert } from './internal/components/assay/AssayDesignEmptyAlert';
-import { sleep, wrapDraggable } from './internal/test/testHelpers';
+import { makeQueryInfo, sleep, wrapDraggable } from './internal/test/testHelpers';
 import {
-    makeQueryInfo,
     mountWithAppServerContext,
     mountWithAppServerContextOptions,
     mountWithServerContext,

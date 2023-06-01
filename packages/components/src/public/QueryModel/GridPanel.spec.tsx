@@ -2,7 +2,8 @@ import React, { PureComponent, ReactNode } from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { Filter } from '@labkey/api';
 
-import { initUnitTests, makeQueryInfo, makeTestData, mountWithServerContext } from '../../internal/enzymeTestHelpers';
+import { initUnitTests, makeQueryInfo, makeTestData } from '../../internal/test/testHelpers';
+import { mountWithServerContext } from '../../internal/enzymeTestHelpers';
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../../test/data/mixtures-getQueryPaging.json';
 

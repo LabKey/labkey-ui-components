@@ -15,8 +15,7 @@
  */
 import { fromJS, Map } from 'immutable';
 
-import { registerDefaultURLMappers } from '../test/testHelpers';
-import { initMockServerContext } from '../enzymeTestHelpers';
+import { initMockServerContext, registerDefaultURLMappers } from '../test/testHelpers';
 
 import { initUnitTestMocks } from '../../test/testHelperMocks';
 

@@ -1,80 +1,13 @@
 import React, { ReactElement } from 'react';
 import { act } from 'react-dom/test-utils';
-import { Map } from 'immutable';
 import { mount, MountRendererProps, ReactWrapper, shallow, ShallowWrapper } from 'enzyme';
-import { LabKey, Query } from '@labkey/api';
 
-import { RowsResponse, bindColumnRenderers } from '../public/QueryModel/QueryModelLoader';
-
-import { QueryInfo } from '../public/QueryInfo';
-
-import { applyQueryMetadata, handleSelectRowsResponse } from './query/api';
 import { AppContext } from './AppContext';
 import { AppContextTestProvider, sleep } from './test/testHelpers';
 
 import { NotificationsContextState } from './components/notifications/NotificationsContext';
-import { initQueryGridState } from './global';
 import { ServerContext, ServerContextProvider } from './components/base/ServerContext';
 import { LabelPrintingProviderProps } from './components/labels/LabelPrintingContextProvider';
-
-declare let LABKEY: LabKey;
-
-export function initMockServerContext(context: Partial<LabKey>): void {
-    Object.assign(LABKEY, context);
-}
-
-/**
- * Initializes the server context and QueryGrid state which is needed in order to run most tests.
- */
-export const initUnitTests = (metadata?: Map<string, any>, columnRenderers?: Record<string, any>): void => {
-    initMockServerContext({
-        container: {
-            id: 'testContainerEntityId',
-            title: 'Test Container',
-            path: '/testContainer',
-            formats: {
-                dateFormat: 'yyyy-MM-dd',
-                dateTimeFormat: 'yyyy-MM-dd HH:mm',
-                numberFormat: null,
-            },
-            activeModules: ['Core', 'Query'], // add in the Ontology module if you want to test the Field Editor integrations
-        },
-        contextPath: '/labkey',
-    });
-    initQueryGridState(metadata, columnRenderers);
-};
-
-// TODO: Move these other non-enzyme methods to testHelper.tsx
-/**
- * Instantiates a QueryInfo from a captured query details response payload. Cannot be used until you've called
- * initQueryGridState, initUnitTests, or initUnitTestMocks.
- * @param getQueryDetailsResponse: getQueryDetails response object (e.g. imported from
- * test/data/mixtures-getQueryDetails.json)
- */
-export const makeQueryInfo = (getQueryDetailsResponse): QueryInfo => {
-    const queryInfo = applyQueryMetadata(getQueryDetailsResponse);
-    return queryInfo.mutate({ columns: bindColumnRenderers(queryInfo.columns) });
-};
-
-/**
- * Creates rows and orderedRows objects needed by the QueryModel. Returns a Promise that resolves to an object that
- * looks like: { messages: any, rows: any, orderedRows: string[], rowCount: number }
- * @param getQueryResponse: getQuery Response object (e.g. imported from test/data/mixtures-getQuery.json)
- */
-export const makeTestData = (getQueryResponse): RowsResponse => {
-    // Hack: need to stringify and parse the query response object because Query.Response modifies the object in place,
-    // which causes errors if you try to use the same response object twice.
-    const response = new Query.Response(JSON.parse(JSON.stringify(getQueryResponse)));
-
-    const { key, messages, models, orderedModels, rowCount } = handleSelectRowsResponse(response);
-
-    return {
-        messages: messages.toJS(),
-        orderedRows: orderedModels[key].toArray(),
-        rowCount,
-        rows: models[key],
-    };
-};
 
 /**
  * Use this if you're testing a component that requires a wrapping <AppContextProvider/> to provide context.

@@ -1,7 +1,7 @@
 import { Map } from 'immutable';
 import mock, { proxy } from 'xhr-mock';
 
-import { initUnitTests } from '../internal/enzymeTestHelpers';
+import { initUnitTests } from '../internal/test/testHelpers';
 
 import { initDomainPropertiesMocks, initQueryGridMocks, initUserPropsMocks } from './mock';
 

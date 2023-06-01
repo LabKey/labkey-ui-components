@@ -63,7 +63,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
               <div
                 className="col-lg-4 col-xs-3"
               >
-                Comment Sort
+                Comment Sort 
                 <span
                   className="domain-no-wrap"
                 >
@@ -77,7 +77,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                       className="label-help-icon fa fa-question-circle"
                     />
                   </span>
-
+                  
                 </span>
               </div>
               <div
@@ -202,7 +202,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
               <div
                 className="col-lg-4 col-xs-3"
               >
-                Singular Item
+                Singular Item 
                 <span
                   className="domain-no-wrap"
                 >
@@ -216,7 +216,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                       className="label-help-icon fa fa-question-circle"
                     />
                   </span>
-
+                  
                 </span>
               </div>
               <div
@@ -237,7 +237,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
               <div
                 className="col-lg-4 col-xs-3"
               >
-                Plural Items
+                Plural Items 
                 <span
                   className="domain-no-wrap"
                 >
@@ -251,7 +251,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                       className="label-help-icon fa fa-question-circle"
                     />
                   </span>
-
+                  
                 </span>
               </div>
               <div
@@ -283,7 +283,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
           <div
             className="col-lg-4 col-xs-3"
           >
-            Populate ‘Assigned To’ Field
+            Populate ‘Assigned To’ Field 
             <span
               className="domain-no-wrap"
             >
@@ -297,7 +297,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                   className="label-help-icon fa fa-question-circle"
                 />
               </span>
-
+              
             </span>
           </div>
           <div
@@ -310,7 +310,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                 aria-hidden="true"
                 className="fa fa-spinner fa-pulse"
               />
-
+               
               Loading...
             </span>
           </div>
@@ -321,7 +321,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
           <div
             className="col-lg-4 col-xs-3"
           >
-            Default User
+            Default User 
             <span
               className="domain-no-wrap"
             >
@@ -335,7 +335,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                   className="label-help-icon fa fa-question-circle"
                 />
               </span>
-
+              
             </span>
           </div>
           <div
@@ -348,7 +348,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                 aria-hidden="true"
                 className="fa fa-spinner fa-pulse"
               />
-
+               
               Loading...
             </span>
           </div>
@@ -359,7 +359,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
           <div
             className="col-lg-4 col-xs-3"
           >
-            Default Related Issue
+            Default Related Issue 
             <span
               className="domain-no-wrap"
             >
@@ -373,7 +373,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                   className="label-help-icon fa fa-question-circle"
                 />
               </span>
-
+              
             </span>
           </div>
           <div
@@ -386,7 +386,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                 aria-hidden="true"
                 className="fa fa-spinner fa-pulse"
               />
-
+               
               Loading...
             </span>
           </div>

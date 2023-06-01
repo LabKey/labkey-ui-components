@@ -49,217 +49,223 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
         className="col-md-6 col-xs-12"
       >
         <div
-          className="domain-field-section-heading"
+          className="domain-field-padding-bottom"
         >
-          Basic Properties
-        </div>
-        <div
-          className="margin-top row"
-        >
-          <div
-            className="col-lg-4 col-xs-3"
-          >
-            Comment Sort 
-            <span
-              className="domain-no-wrap"
-            >
-              Direction
-              <span
-                className="label-help-target"
-                onMouseOut={[Function]}
-                onMouseOver={[Function]}
-              >
-                <span
-                  className="label-help-icon fa fa-question-circle"
-                />
-              </span>
-              
-            </span>
-          </div>
-          <div
-            className="col-lg-8 col-xs-9"
-          >
+          <div>
             <div
-              className="select-input-container form-group row"
+              className="domain-field-section-heading"
+            >
+              Basic Properties
+            </div>
+            <div
+              className="margin-top row"
             >
               <div
-                className="col-xs-12"
+                className="col-lg-4 col-xs-3"
+              >
+                Comment Sort
+                <span
+                  className="domain-no-wrap"
+                >
+                  Direction
+                  <span
+                    className="label-help-target"
+                    onMouseOut={[Function]}
+                    onMouseOver={[Function]}
+                  >
+                    <span
+                      className="label-help-icon fa fa-question-circle"
+                    />
+                  </span>
+
+                </span>
+              </div>
+              <div
+                className="col-lg-8 col-xs-9"
               >
                 <div
-                  className="select-input css-b62m3t-container"
-                  id="selectinput-0"
-                  onKeyDown={[Function]}
+                  className="select-input-container form-group row"
                 >
-                  <span
-                    className="css-1f43avz-a11yText-A11yText"
-                    id="react-select-2-live-region"
-                  />
-                  <span
-                    aria-atomic="false"
-                    aria-live="polite"
-                    aria-relevant="additions text"
-                    className="css-1f43avz-a11yText-A11yText"
-                  />
                   <div
-                    className="select-input__control css-13cymwt-control"
-                    onMouseDown={[Function]}
-                    onTouchEnd={[Function]}
+                    className="col-xs-12"
                   >
                     <div
-                      className="select-input__value-container select-input__value-container--has-value css-1fdsijx-ValueContainer"
-                    >
-                      <div
-                        className="select-input__single-value css-1dimb5e-singleValue"
-                      >
-                        Oldest first
-                      </div>
-                      <div
-                        className="select-input__input-container css-qbdosj-Input"
-                        data-value=""
-                      >
-                        <input
-                          aria-autocomplete="list"
-                          aria-expanded={false}
-                          aria-haspopup={true}
-                          autoCapitalize="none"
-                          autoComplete="off"
-                          autoCorrect="off"
-                          className="select-input__input"
-                          disabled={false}
-                          id="react-select-2-input"
-                          onBlur={[Function]}
-                          onChange={[Function]}
-                          onFocus={[Function]}
-                          required={false}
-                          role="combobox"
-                          spellCheck="false"
-                          style={
-                            {
-                              "background": 0,
-                              "border": 0,
-                              "color": "inherit",
-                              "font": "inherit",
-                              "gridArea": "1 / 2",
-                              "label": "input",
-                              "margin": 0,
-                              "minWidth": "2px",
-                              "opacity": 1,
-                              "outline": 0,
-                              "padding": 0,
-                              "width": "100%",
-                            }
-                          }
-                          tabIndex={0}
-                          type="text"
-                          value=""
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="select-input__indicators css-1hb7zxy-IndicatorsContainer"
+                      className="select-input css-b62m3t-container"
+                      id="selectinput-0"
+                      onKeyDown={[Function]}
                     >
                       <span
-                        className="select-input__indicator-separator css-1u9des2-indicatorSeparator"
+                        className="css-1f43avz-a11yText-A11yText"
+                        id="react-select-2-live-region"
+                      />
+                      <span
+                        aria-atomic="false"
+                        aria-live="polite"
+                        aria-relevant="additions text"
+                        className="css-1f43avz-a11yText-A11yText"
                       />
                       <div
-                        aria-hidden="true"
-                        className="select-input__indicator select-input__dropdown-indicator css-1xc3v61-indicatorContainer"
+                        className="select-input__control css-13cymwt-control"
                         onMouseDown={[Function]}
                         onTouchEnd={[Function]}
                       >
-                        <svg
-                          aria-hidden="true"
-                          className="css-tj5bde-Svg"
-                          focusable="false"
-                          height={20}
-                          viewBox="0 0 20 20"
-                          width={20}
+                        <div
+                          className="select-input__value-container select-input__value-container--has-value css-1fdsijx-ValueContainer"
                         >
-                          <path
-                            d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                          <div
+                            className="select-input__single-value css-1dimb5e-singleValue"
+                          >
+                            Oldest first
+                          </div>
+                          <div
+                            className="select-input__input-container css-qbdosj-Input"
+                            data-value=""
+                          >
+                            <input
+                              aria-autocomplete="list"
+                              aria-expanded={false}
+                              aria-haspopup={true}
+                              autoCapitalize="none"
+                              autoComplete="off"
+                              autoCorrect="off"
+                              className="select-input__input"
+                              disabled={false}
+                              id="react-select-2-input"
+                              onBlur={[Function]}
+                              onChange={[Function]}
+                              onFocus={[Function]}
+                              required={false}
+                              role="combobox"
+                              spellCheck="false"
+                              style={
+                                {
+                                  "background": 0,
+                                  "border": 0,
+                                  "color": "inherit",
+                                  "font": "inherit",
+                                  "gridArea": "1 / 2",
+                                  "label": "input",
+                                  "margin": 0,
+                                  "minWidth": "2px",
+                                  "opacity": 1,
+                                  "outline": 0,
+                                  "padding": 0,
+                                  "width": "100%",
+                                }
+                              }
+                              tabIndex={0}
+                              type="text"
+                              value=""
+                            />
+                          </div>
+                        </div>
+                        <div
+                          className="select-input__indicators css-1hb7zxy-IndicatorsContainer"
+                        >
+                          <span
+                            className="select-input__indicator-separator css-1u9des2-indicatorSeparator"
                           />
-                        </svg>
+                          <div
+                            aria-hidden="true"
+                            className="select-input__indicator select-input__dropdown-indicator css-1xc3v61-indicatorContainer"
+                            onMouseDown={[Function]}
+                            onTouchEnd={[Function]}
+                          >
+                            <svg
+                              aria-hidden="true"
+                              className="css-tj5bde-Svg"
+                              focusable="false"
+                              height={20}
+                              viewBox="0 0 20 20"
+                              width={20}
+                            >
+                              <path
+                                d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                              />
+                            </svg>
+                          </div>
+                        </div>
                       </div>
+                      <input
+                        name="commentSortDirection"
+                        type="hidden"
+                        value="ASC"
+                      />
                     </div>
                   </div>
-                  <input
-                    name="commentSortDirection"
-                    type="hidden"
-                    value="ASC"
-                  />
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div
-          className="margin-top row"
-        >
-          <div
-            className="col-lg-4 col-xs-3"
-          >
-            Singular Item 
-            <span
-              className="domain-no-wrap"
+            <div
+              className="margin-top row"
             >
-              Name
-              <span
-                className="label-help-target"
-                onMouseOut={[Function]}
-                onMouseOver={[Function]}
+              <div
+                className="col-lg-4 col-xs-3"
               >
+                Singular Item
                 <span
-                  className="label-help-icon fa fa-question-circle"
+                  className="domain-no-wrap"
+                >
+                  Name
+                  <span
+                    className="label-help-target"
+                    onMouseOut={[Function]}
+                    onMouseOver={[Function]}
+                  >
+                    <span
+                      className="label-help-icon fa fa-question-circle"
+                    />
+                  </span>
+
+                </span>
+              </div>
+              <div
+                className="col-lg-8 col-xs-9"
+              >
+                <input
+                  className="form-control"
+                  id="singularItemName"
+                  onChange={[Function]}
+                  type="text"
+                  value="Issue"
                 />
-              </span>
-              
-            </span>
-          </div>
-          <div
-            className="col-lg-8 col-xs-9"
-          >
-            <input
-              className="form-control"
-              id="singularItemName"
-              onChange={[Function]}
-              type="text"
-              value="Issue"
-            />
-          </div>
-        </div>
-        <div
-          className="margin-top row"
-        >
-          <div
-            className="col-lg-4 col-xs-3"
-          >
-            Plural Items 
-            <span
-              className="domain-no-wrap"
+              </div>
+            </div>
+            <div
+              className="margin-top row"
             >
-              Name
-              <span
-                className="label-help-target"
-                onMouseOut={[Function]}
-                onMouseOver={[Function]}
+              <div
+                className="col-lg-4 col-xs-3"
               >
+                Plural Items
                 <span
-                  className="label-help-icon fa fa-question-circle"
+                  className="domain-no-wrap"
+                >
+                  Name
+                  <span
+                    className="label-help-target"
+                    onMouseOut={[Function]}
+                    onMouseOver={[Function]}
+                  >
+                    <span
+                      className="label-help-icon fa fa-question-circle"
+                    />
+                  </span>
+
+                </span>
+              </div>
+              <div
+                className="col-lg-8 col-xs-9"
+              >
+                <input
+                  className="form-control"
+                  id="pluralItemName"
+                  onChange={[Function]}
+                  type="text"
+                  value="Issues"
                 />
-              </span>
-              
-            </span>
-          </div>
-          <div
-            className="col-lg-8 col-xs-9"
-          >
-            <input
-              className="form-control"
-              id="pluralItemName"
-              onChange={[Function]}
-              type="text"
-              value="Issues"
-            />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -277,7 +283,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
           <div
             className="col-lg-4 col-xs-3"
           >
-            Populate ‘Assigned To’ Field 
+            Populate ‘Assigned To’ Field
             <span
               className="domain-no-wrap"
             >
@@ -291,7 +297,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                   className="label-help-icon fa fa-question-circle"
                 />
               </span>
-              
+
             </span>
           </div>
           <div
@@ -304,7 +310,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                 aria-hidden="true"
                 className="fa fa-spinner fa-pulse"
               />
-               
+
               Loading...
             </span>
           </div>
@@ -315,7 +321,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
           <div
             className="col-lg-4 col-xs-3"
           >
-            Default User 
+            Default User
             <span
               className="domain-no-wrap"
             >
@@ -329,7 +335,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                   className="label-help-icon fa fa-question-circle"
                 />
               </span>
-              
+
             </span>
           </div>
           <div
@@ -342,7 +348,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                 aria-hidden="true"
                 className="fa fa-spinner fa-pulse"
               />
-               
+
               Loading...
             </span>
           </div>
@@ -353,7 +359,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
           <div
             className="col-lg-4 col-xs-3"
           >
-            Default Related Issue 
+            Default Related Issue
             <span
               className="domain-no-wrap"
             >
@@ -367,7 +373,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                   className="label-help-icon fa fa-question-circle"
                 />
               </span>
-              
+
             </span>
           </div>
           <div
@@ -380,7 +386,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                 aria-hidden="true"
                 className="fa fa-spinner fa-pulse"
               />
-               
+
               Loading...
             </span>
           </div>

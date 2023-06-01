@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Migrate SCSS for /entities subpackage components that moved to @labkey/premium
+
 ### version 2.342.0
 *Released*: 31 May 2023
 * Data type domain exclude projects

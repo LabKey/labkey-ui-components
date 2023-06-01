@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 
 import { ViewInfo } from '../../internal/ViewInfo';
 
-import { mountWithAppServerContext, waitForLifecycle } from '../../internal/enzymeTestHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../internal/test/enzymeTestHelpers';
 import { LoadingSpinner } from '../../internal/components/base/LoadingSpinner';
 import { TEST_USER_PROJECT_ADMIN, TEST_USER_READER } from '../../internal/userFixtures';
 

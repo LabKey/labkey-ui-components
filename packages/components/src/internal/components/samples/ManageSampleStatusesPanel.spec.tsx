@@ -2,7 +2,7 @@ import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { Button } from 'react-bootstrap';
 
-import { mountWithServerContext, waitForLifecycle } from '../../enzymeTestHelpers';
+import { mountWithServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { AddEntityButton } from '../buttons/AddEntityButton';
 import { Alert } from '../base/Alert';

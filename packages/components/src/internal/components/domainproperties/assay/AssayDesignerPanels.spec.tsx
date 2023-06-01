@@ -4,7 +4,7 @@ import { Panel } from 'react-bootstrap';
 
 import { DomainDesign } from '../models';
 
-import { mountWithServerContext, shallowWithServerContext, waitForLifecycle } from '../../../enzymeTestHelpers';
+import { mountWithServerContext, shallowWithServerContext, waitForLifecycle } from '../../../test/enzymeTestHelpers';
 import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { FileAttachmentForm } from '../../../../public/files/FileAttachmentForm';

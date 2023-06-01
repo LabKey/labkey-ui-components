@@ -4,7 +4,7 @@ import { Filter } from '@labkey/api';
 import { mount, ReactWrapper } from 'enzyme';
 
 import { Alert } from '../base/Alert';
-import { waitForLifecycle } from '../../enzymeTestHelpers';
+import { waitForLifecycle } from '../../test/enzymeTestHelpers';
 
 import { OntologyBrowserPanel } from './OntologyBrowserPanel';
 import { OntologyBrowserFilterPanel } from './OntologyBrowserFilterPanel';

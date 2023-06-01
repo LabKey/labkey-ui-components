@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { mountWithAppServerContext } from '../../enzymeTestHelpers';
+import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 
 import { InsufficientPermissionsPage } from './InsufficientPermissionsPage';
 

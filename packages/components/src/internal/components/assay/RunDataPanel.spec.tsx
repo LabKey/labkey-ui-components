@@ -5,7 +5,7 @@ import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
 import { AssayUploadTabs } from '../../constants';
 import { EditorModel } from '../editable/models';
 
-import { mountWithServerContext } from '../../enzymeTestHelpers';
+import { mountWithServerContext } from '../../test/enzymeTestHelpers';
 import { TEST_USER_EDITOR } from '../../userFixtures';
 
 import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from '../forms/FormStep';

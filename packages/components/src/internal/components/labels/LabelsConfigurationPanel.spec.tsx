@@ -6,7 +6,7 @@ import { FormGroup } from 'react-bootstrap';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
 
-import { mountWithAppServerContext, waitForLifecycle } from '../../enzymeTestHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 
 import { ChoicesListItem } from '../base/ChoicesListItem';
 

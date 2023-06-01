@@ -5,7 +5,7 @@ import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { TEST_USER_EDITOR } from '../../userFixtures';
 
-import { mountWithServerContext } from '../../enzymeTestHelpers';
+import { mountWithServerContext } from '../../test/enzymeTestHelpers';
 
 import { SubMenuItem } from '../menus/SubMenuItem';
 

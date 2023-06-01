@@ -5,7 +5,7 @@ import { mount, shallow } from 'enzyme';
 import { Button, ModalBody, ModalTitle, NavItem } from 'react-bootstrap';
 
 import { TEST_USER_EDITOR } from '../../userFixtures';
-import { mountWithAppServerContext, waitForLifecycle } from '../../enzymeTestHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
 

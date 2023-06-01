@@ -2,7 +2,7 @@ import React from 'react';
 
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
 import { initAssayPickerOptions } from '../../../test/mock';
-import { mountWithAppServerContext, waitForLifecycle } from '../../enzymeTestHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 
 import { AssayPicker, AssayPickerTabs } from './AssayPicker';
 

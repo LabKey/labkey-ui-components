@@ -4,7 +4,7 @@ import { TEST_USER_ASSAY_DESIGNER, TEST_USER_READER } from '../../userFixtures';
 import { NEW_ASSAY_DESIGN_HREF } from '../../app/constants';
 
 import { Container } from '../base/models/Container';
-import { mountWithAppServerContext } from '../../enzymeTestHelpers';
+import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 
 import { AssayDesignEmptyAlert } from './AssayDesignEmptyAlert';
 

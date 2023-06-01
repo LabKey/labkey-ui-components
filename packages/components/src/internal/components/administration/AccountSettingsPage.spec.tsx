@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { mountWithAppServerContext, waitForLifecycle } from '../../enzymeTestHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 
 import { TEST_USER_GUEST, TEST_USER_READER } from '../../userFixtures';
 import { AdminAppContext } from '../../AppContext';

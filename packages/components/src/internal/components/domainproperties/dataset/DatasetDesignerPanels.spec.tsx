@@ -28,7 +28,7 @@ import { Alert } from '../../base/Alert';
 import { DatasetDesignerPanelImpl, DatasetDesignerPanels } from './DatasetDesignerPanels';
 
 import { DatasetModel } from './models';
-import { waitForLifecycle } from "../../../enzymeTestHelpers";
+import { waitForLifecycle } from "../../../test/enzymeTestHelpers";
 import { List } from "immutable";
 
 beforeAll(() => {

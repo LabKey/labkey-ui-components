@@ -3,7 +3,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import { Filter } from '@labkey/api';
 
 import { initUnitTests, makeQueryInfo, makeTestData } from '../../internal/test/testHelpers';
-import { mountWithServerContext } from '../../internal/enzymeTestHelpers';
+import { mountWithServerContext } from '../../internal/test/enzymeTestHelpers';
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../../test/data/mixtures-getQueryPaging.json';
 

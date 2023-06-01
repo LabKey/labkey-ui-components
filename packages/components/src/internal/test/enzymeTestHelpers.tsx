@@ -2,12 +2,12 @@ import React, { ReactElement } from 'react';
 import { act } from 'react-dom/test-utils';
 import { mount, MountRendererProps, ReactWrapper, shallow, ShallowWrapper } from 'enzyme';
 
-import { AppContext } from './AppContext';
-import { AppContextTestProvider, sleep } from './test/testHelpers';
+import { AppContext } from '../AppContext';
+import { AppContextTestProvider, sleep } from './testHelpers';
 
-import { NotificationsContextState } from './components/notifications/NotificationsContext';
-import { ServerContext, ServerContextProvider } from './components/base/ServerContext';
-import { LabelPrintingProviderProps } from './components/labels/LabelPrintingContextProvider';
+import { NotificationsContextState } from '../components/notifications/NotificationsContext';
+import { ServerContext, ServerContextProvider } from '../components/base/ServerContext';
+import { LabelPrintingProviderProps } from '../components/labels/LabelPrintingContextProvider';
 
 /**
  * Use this if you're testing a component that requires a wrapping <AppContextProvider/> to provide context.

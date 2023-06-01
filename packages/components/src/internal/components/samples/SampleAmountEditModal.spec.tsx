@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { SampleAmountEditModal } from './SampleAmountEditModal';
 import { Alert } from '../base/Alert';
-import { mountWithServerContext } from '../../enzymeTestHelpers';
+import { mountWithServerContext } from '../../test/enzymeTestHelpers';
 import { TEST_USER_EDITOR } from '../../userFixtures';
 
 describe('SampleAmountEditModal', () => {

@@ -4,7 +4,7 @@ import { Col } from 'react-bootstrap';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
-import { mountWithAppServerContext, waitForLifecycle } from '../../enzymeTestHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { getQueryTestAPIWrapper } from '../../query/APIWrapper';
 

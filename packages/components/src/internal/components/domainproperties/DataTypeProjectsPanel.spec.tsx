@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { mountWithAppServerContext, waitForLifecycle } from '../../enzymeTestHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 import { SampleTypeDataType } from '../entities/constants';
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { getSecurityTestAPIWrapper } from '../security/APIWrapper';

@@ -15,7 +15,7 @@
  */
 import React from 'react';
 
-import { mountWithAppServerContext } from '../../enzymeTestHelpers';
+import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 import { TEST_USER_READER } from '../../userFixtures';
 
 import { NotificationItemModel } from './model';

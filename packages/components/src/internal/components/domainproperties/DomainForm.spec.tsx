@@ -18,7 +18,7 @@ import { mount } from 'enzyme';
 
 import { ActionButton } from '../buttons/ActionButton';
 
-import { waitForLifecycle } from '../../enzymeTestHelpers';
+import { waitForLifecycle } from '../../test/enzymeTestHelpers';
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
 import { Alert } from '../base/Alert';

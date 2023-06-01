@@ -9,7 +9,7 @@ import { TEST_USER_FOLDER_ADMIN, TEST_USER_READER } from '../../userFixtures';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-import { mountWithServerContext } from '../../enzymeTestHelpers';
+import { mountWithServerContext } from '../../test/enzymeTestHelpers';
 
 import { ResponsiveMenuButtonGroup } from './ResponsiveMenuButtonGroup';
 

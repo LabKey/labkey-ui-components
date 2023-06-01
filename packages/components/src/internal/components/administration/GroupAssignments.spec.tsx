@@ -14,7 +14,7 @@ import { ExpandableContainer } from '../ExpandableContainer';
 
 import { Alert } from '../base/Alert';
 
-import { mountWithServerContext } from '../../enzymeTestHelpers';
+import { mountWithServerContext } from '../../test/enzymeTestHelpers';
 import { TEST_USER_APP_ADMIN } from '../../userFixtures';
 import { initBrowserHistoryState } from '../../util/global';
 

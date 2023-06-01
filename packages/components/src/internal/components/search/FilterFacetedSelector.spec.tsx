@@ -4,7 +4,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import { Filter } from '@labkey/api';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { waitForLifecycle } from '../../enzymeTestHelpers';
+import { waitForLifecycle } from '../../test/enzymeTestHelpers';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { getQueryTestAPIWrapper } from '../../query/APIWrapper';

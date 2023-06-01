@@ -5,7 +5,7 @@ import { SelectionMenuItem } from '../menus/SelectionMenuItem';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { QueryInfo } from '../../../public/QueryInfo';
-import { mountWithAppServerContext } from '../../enzymeTestHelpers';
+import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 import { TEST_USER_READER, TEST_USER_STORAGE_EDITOR } from '../../userFixtures';
 
 import { AssayResultsForSamplesMenuItem } from './AssayResultsForSamplesButton';

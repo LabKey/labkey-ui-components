@@ -8,7 +8,7 @@ import { TEST_USER_APP_ADMIN } from '../../userFixtures';
 
 import { ServerContext } from '../base/ServerContext';
 
-import { mountWithAppServerContext, waitForLifecycle } from '../../enzymeTestHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { getTestAPIWrapper } from '../../APIWrapper';

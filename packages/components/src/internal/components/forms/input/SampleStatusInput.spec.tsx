@@ -8,7 +8,7 @@ import { SampleState } from '../../samples/models';
 import { QueryColumn } from '../../../../public/QueryColumn';
 
 import { DiscardConsumedSamplesPanel } from '../../samples/DiscardConsumedSamplesPanel';
-import { mountWithServerContext, waitForLifecycle } from '../../../enzymeTestHelpers';
+import { mountWithServerContext, waitForLifecycle } from '../../../test/enzymeTestHelpers';
 
 import { getSamplesTestAPIWrapper } from '../../samples/APIWrapper';
 

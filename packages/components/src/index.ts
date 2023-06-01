@@ -587,7 +587,7 @@ import {
     mountWithServerContext,
     mountWithServerContextOptions,
     waitForLifecycle,
-} from './internal/enzymeTestHelpers';
+} from './internal/test/enzymeTestHelpers';
 import { renderWithAppContext } from './internal/test/reactTestLibraryHelpers';
 import { flattenValuesFromRow, QueryModel } from './public/QueryModel/QueryModel';
 import { withQueryModels } from './public/QueryModel/withQueryModels';

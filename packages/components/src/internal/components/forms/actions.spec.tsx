@@ -19,7 +19,7 @@ import React, { FC } from 'react';
 
 import { LoadingState } from '../../../public/LoadingState';
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
-import { waitForLifecycle } from '../../enzymeTestHelpers';
+import { waitForLifecycle } from '../../test/enzymeTestHelpers';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { UsersLoader, useUsersWithPermissions } from './actions';

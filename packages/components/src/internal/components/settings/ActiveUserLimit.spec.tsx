@@ -3,7 +3,7 @@ import { ReactWrapper } from 'enzyme';
 
 import { Alert } from '../base/Alert';
 import { UserLimitSettings } from '../permissions/actions';
-import { mountWithAppServerContext, waitForLifecycle } from '../../enzymeTestHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 import { TEST_USER_APP_ADMIN, TEST_USER_FOLDER_ADMIN, TEST_USER_PROJECT_ADMIN } from '../../userFixtures';
 import { getTestAPIWrapper } from '../../APIWrapper';
 

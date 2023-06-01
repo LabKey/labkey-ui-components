@@ -1,17 +1,24 @@
 import React, { ReactElement } from 'react';
-import { render, RenderOptions } from '@testing-library/react';
+import { render, RenderOptions, RenderResult } from '@testing-library/react';
 
 import { AppContextTestProvider, AppContextTestProviderProps } from './testHelpers';
 
-// https://github.com/testing-library/react-testing-library/issues/780
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+/**
+ * Use this if you're testing a component that requires a wrapping <AppContextProvider/> to provide context.
+ * This test method wraps React Testing Library's `render()` method utilizing the `wrapper` option to specify
+ * the React Context provider components.
+ * @param node The component under test.
+ * @param contexts The contexts to be provided to the underlying React Context providers.
+ * @param options Additional `RenderOptions` to supply to the `render()` method.
+ */
 export const renderWithAppContext = (
     node: ReactElement,
-    props?: Partial<AppContextTestProviderProps>,
+    contexts?: AppContextTestProviderProps,
     options?: Omit<RenderOptions, 'wrapper'>
-) => {
+): RenderResult => {
+    // https://github.com/testing-library/react-testing-library/issues/780
     return render(node, {
-        wrapper: _props => <AppContextTestProvider {..._props} {...(props as AppContextTestProviderProps)} />,
+        wrapper: _props => <AppContextTestProvider {..._props} {...(contexts as AppContextTestProviderProps)} />,
         ...options,
     });
 };

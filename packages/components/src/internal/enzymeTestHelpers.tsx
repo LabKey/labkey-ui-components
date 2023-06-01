@@ -31,7 +31,7 @@ export const mountWithAppServerContextOptions = (
         wrappingComponent: AppContextTestProvider,
         wrappingComponentProps: {
             appContext,
-            serverContext: serverContext ?? {},
+            serverContext,
             notificationContext,
             printLabelsContext,
         },

@@ -21,10 +21,10 @@ import { applyQueryMetadata, handleSelectRowsResponse } from '../query/api';
 import { bindColumnRenderers, RowsResponse } from '../../public/QueryModel/QueryModelLoader';
 
 export interface AppContextTestProviderProps {
-    appContext: Partial<AppContext>;
-    notificationContext: Partial<NotificationsContextState>;
-    printLabelsContext: Partial<LabelPrintingContextProps>;
-    serverContext: Partial<ServerContext>;
+    appContext?: Partial<AppContext>;
+    notificationContext?: Partial<NotificationsContextState>;
+    printLabelsContext?: Partial<LabelPrintingContextProps>;
+    serverContext?: Partial<ServerContext>;
 }
 
 export const AppContextTestProvider: FC<AppContextTestProviderProps> = props => {

@@ -3,20 +3,20 @@ import React, { ChangeEvent, FC, memo, MouseEvent, useCallback, useEffect, useMe
 import { Alert } from '../base/Alert';
 
 import { searchUsingIndex } from '../search/actions';
+import { SearchCategory } from '../search/constants';
 
 import { ConceptModel, OntologyModel, PathModel } from './models';
 import { fetchAlternatePaths, getOntologyDetails } from './actions';
 
-const CONCEPT_CATEGORY = 'concept';
 const SEARCH_LIMIT = 20;
 
 interface OntologyTreeSearchContainerProps {
-    ontology: OntologyModel;
-    inputName?: string;
-    initCode?: string;
     className?: string;
-    searchPathClickHandler: (path: PathModel, isAlternatePath?: boolean) => void;
+    initCode?: string;
+    inputName?: string;
     onChangeListener?: (val: string) => void;
+    ontology: OntologyModel;
+    searchPathClickHandler: (path: PathModel, isAlternatePath?: boolean) => void;
 }
 
 export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> = memo(props => {
@@ -36,11 +36,10 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
     const [showResults, setShowResults] = useState<boolean>(false);
 
     useEffect(() => {
-        if (searchTerm !== initCode)
-        {
+        if (searchTerm !== initCode) {
             setSearchTerm(initCode);
         }
-    }, [initCode]) // Only trigger when the initCode value is changed, this can happen when the user selects a value via the picker
+    }, [initCode]); // Only trigger when the initCode value is changed, this can happen when the user selects a value via the picker
 
     const onSearchChange = useCallback(
         (evt: ChangeEvent<HTMLInputElement>) => {
@@ -65,15 +64,11 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
 
         if (searchTerm) {
             const timeOutId = setTimeout(() => {
-                searchUsingIndex(
-                    {
-                        q: getOntologySearchTerm(ontology, searchTerm),
-                        category: CONCEPT_CATEGORY,
-                        limit: SEARCH_LIMIT,
-                    },
-                    undefined,
-                    [CONCEPT_CATEGORY]
-                )
+                searchUsingIndex({
+                    q: getOntologySearchTerm(ontology, searchTerm),
+                    category: SearchCategory.Concept,
+                    limit: SEARCH_LIMIT,
+                })
                     .then(response => {
                         setSearchHits(
                             response.hits.map(hit => {
@@ -149,11 +144,11 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
 });
 
 interface OntologySearchResultsMenuProps {
+    error: string;
+    isFocused: boolean;
+    onItemClick: (evt: MouseEvent<HTMLLIElement>, code: string) => void;
     searchHits: ConceptModel[];
     totalHits: number;
-    isFocused: boolean;
-    error: string;
-    onItemClick: (evt: MouseEvent<HTMLLIElement>, code: string) => void;
 }
 
 // exported for jest testing
@@ -217,7 +212,7 @@ interface OntologySearchInputProps
 }
 
 export const OntologySearchInput: FC<OntologySearchInputProps> = memo(props => {
-    const { ontologyId, searchPathChangeHandler,  ...rest } = props;
+    const { ontologyId, searchPathChangeHandler, ...rest } = props;
     const [ontologyModel, setOntologyModel] = useState<OntologyModel>();
     const [error, setError] = useState<string>();
 

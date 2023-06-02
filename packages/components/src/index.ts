@@ -342,7 +342,12 @@ import {
     searchFiltersToJson,
     getSampleFinderLocalStorageKey,
 } from './internal/components/entities/FindDerivativesButton';
-import { SAMPLE_PROPERTY_ALL_SAMPLE_TYPE, SearchScope } from './internal/components/search/constants';
+import {
+    SAMPLE_PROPERTY_ALL_SAMPLE_TYPE,
+    SearchCategory,
+    SearchField,
+    SearchScope,
+} from './internal/components/search/constants';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';
 import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
 import {
@@ -360,7 +365,6 @@ import { GroupManagementPage } from './internal/components/administration/GroupM
 import { PermissionManagementPage } from './internal/components/administration/PermissionManagementPage';
 import { AccountSettingsPage } from './internal/components/administration/AccountSettingsPage';
 import { BaseSearchPage } from './internal/components/search/BaseSearchPage';
-import { searchUsingIndex } from './internal/components/search/actions';
 import { SearchResultsModel } from './internal/components/search/models';
 import {
     deleteSampleSet,
@@ -1277,7 +1281,8 @@ export {
     SearchResultsModel,
     SearchResultCard,
     SearchResultsPanel,
-    searchUsingIndex,
+    SearchCategory,
+    SearchField,
     SearchScope,
     getSearchScopeFromContainerFilter,
     isValidFilterField,
@@ -1779,6 +1784,7 @@ export type { SamplesEditableGridProps } from './internal/sampleModels';
 export type { MeasurementUnit } from './internal/util/measurement';
 export type { SampleStorageLocationComponentProps, SampleStorageMenuComponentProps } from './internal/sampleModels';
 export type { SearchForm } from './internal/components/search/BaseSearchPage';
+export type { SearchHit, SearchMetadata, SearchResult, SearchOptions } from './internal/components/search/actions';
 export type { TabbedGridPanelProps } from './public/QueryModel/TabbedGridPanel';
 export type { EditorModelUpdates } from './internal/actions';
 export type { EditableGridModels } from './internal/components/editable/utils';

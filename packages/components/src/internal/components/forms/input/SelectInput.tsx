@@ -194,6 +194,7 @@ export interface SelectInputProps extends WithFormsyProps {
     onChange?: SelectInputChange;
     onFocus?: (event: FocusEvent<HTMLElement>, selectRef) => void;
     onToggleDisable?: (disabled: boolean) => void;
+    openMenuOnClick?: boolean;
     openMenuOnFocus?: boolean;
     optionRenderer?: any;
     options?: any[];
@@ -485,6 +486,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             menuPosition,
             multiple,
             name,
+            openMenuOnClick,
             openMenuOnFocus,
             optionRenderer,
             options,
@@ -532,11 +534,12 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             onBlur: this.handleBlur,
             onChange: this.handleChange,
             onFocus: this.handleFocus,
+            openMenuOnClick,
             openMenuOnFocus,
             options,
             placeholder,
             ref: 'reactSelect',
-            styles: { ...customStyles, ..._customStyles },
+            styles: { ..._customStyles, ...customStyles },
             theme: customTheme || _customTheme,
             // ReactSelect only supports null for clearing the value (as opposed to undefined).
             // See https://stackoverflow.com/a/50417171.

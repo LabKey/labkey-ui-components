@@ -1506,10 +1506,10 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@labkey/api@1.20.0":
-  version "1.20.0"
-  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.20.0.tgz#f576326b7957eb252bada85c2f75f2a7b62147f9"
-  integrity sha512-a1Mh0awRKqw8M3OyV0LtWWU+IzDz2IPVJamZvH+D0RLkpWZN35BbFURNUcVIuIL1vrp82jUqmC3EDYqyRDOYwg==
+"@labkey/api@1.21.0":
+  version "1.21.0"
+  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.21.0.tgz#e64741a197e56c4e11889c9943da0a7ade06f6cf"
+  integrity sha512-ydxt19BW7bF+DYYJNfQmmgw177xPUuS946wc6PgKFkTXJUW3CA+33AirXUB5D+waJZwdXmwLubMf41gK1qP17g==
 
 "@labkey/build@6.11.0":
   version "6.11.0"

@@ -1,3 +1,31 @@
+export enum SearchCategory {
+    Assay = 'assay',
+    AssayBatch = 'assayBatch',
+    AssayRun = 'assayRun',
+    Concept = 'concept',
+    Data = 'data',
+    DataClass = 'dataClass',
+    File = 'file',
+    FileWorkflowJob = 'fileWorkflowJob',
+    Material = 'material',
+    MaterialSource = 'materialSource',
+    Media = 'media',
+    MediaData = 'mediaData',
+    Notebook = 'notebook',
+    NotebookTemplate = 'notebookTemplate',
+    WorkflowJob = 'workflowJob',
+}
+
+export enum SearchField {
+    Body = 'body',
+    IdentifiersHi = 'identifiersHi',
+    IdentifiersLo = 'identifiersLo',
+    IdentifiersMed = 'identifiersMed',
+    KeywordsHi = 'keywordsHi',
+    KeywordsLo = 'keywordsLo',
+    KeywordsMed = 'keywordsMed',
+}
+
 export enum SearchScope {
     All = 'All',
     Folder = 'Folder',

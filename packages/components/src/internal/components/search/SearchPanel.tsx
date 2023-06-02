@@ -11,16 +11,15 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { PaginationButtons } from '../buttons/PaginationButtons';
 
-import { getContainerFilter } from '../../query/api';
-
 import { biologicsIsPrimaryApp } from '../../app/utils';
+
+import { useServerContext } from '../base/ServerContext';
 
 import { SearchResultsPanel } from './SearchResultsPanel';
 
 import { SearchResultsModel } from './models';
-import { SEARCH_HELP_TOPIC, SEARCH_PAGE_DEFAULT_SIZE, SearchScope } from './constants';
+import { SearchCategory, SEARCH_HELP_TOPIC, SEARCH_PAGE_DEFAULT_SIZE } from './constants';
 import { GetCardDataFn, searchUsingIndex } from './actions';
-import { getSearchScopeFromContainerFilter } from './utils';
 
 interface SearchPanelProps {
     appName: string;
@@ -31,17 +30,17 @@ interface SearchPanelProps {
     searchTerm: string;
 }
 
-interface Props extends Omit<SearchPanelProps, 'getCardDataFn'> {
+export interface SearchPanelImplProps extends Omit<SearchPanelProps, 'getCardDataFn'> {
+    model: SearchResultsModel;
     onPageChange: (direction: number) => void;
-    searchResultsModel: SearchResultsModel;
 }
 
-export const SearchPanelImpl: FC<Props> = memo(props => {
-    const { appName = 'Labkey', searchTerm, searchResultsModel, search, onPageChange, pageSize, offset } = props;
+export const SearchPanelImpl: FC<SearchPanelImplProps> = memo(props => {
+    const { appName = 'Labkey', searchTerm, model, search, onPageChange, pageSize, offset } = props;
     const [searchQuery, setSearchQuery] = useState<string>(searchTerm);
 
     const title = useMemo(() => (searchTerm ? 'Search Results' : 'Search'), [searchTerm]);
-    const totalHits = useMemo(() => searchResultsModel?.getIn(['entities', 'totalHits']), [searchResultsModel]);
+    const totalHits = useMemo(() => model?.getIn(['entities', 'totalHits']), [model]);
     const currentPage = offset / pageSize ? offset / pageSize : 0;
 
     useEffect(() => {
@@ -136,7 +135,7 @@ export const SearchPanelImpl: FC<Props> = memo(props => {
                 </div>
                 {searchTerm && (
                     <SearchResultsPanel
-                        model={searchResultsModel}
+                        model={model}
                         hidePanelFrame={true}
                         emptyResultDisplay={emptyTextMessage}
                         offset={offset}
@@ -148,23 +147,30 @@ export const SearchPanelImpl: FC<Props> = memo(props => {
 });
 
 const SEARCH_CATEGORIES = [
-    'assay',
-    'data',
-    'material',
-    'fileWorkflowJob',
-    'workflowJob',
-    'file',
-    'notebook',
-    'notebookTemplate',
-    'materialSource',
-    'dataClass',
+    SearchCategory.Assay,
+    SearchCategory.AssayBatch,
+    SearchCategory.AssayRun,
+    SearchCategory.Data,
+    SearchCategory.DataClass,
+    SearchCategory.File,
+    SearchCategory.FileWorkflowJob,
+    SearchCategory.Material,
+    SearchCategory.MaterialSource,
+    SearchCategory.Notebook,
+    SearchCategory.NotebookTemplate,
+    SearchCategory.WorkflowJob,
 ];
-const MEDIA_SEARCH_CATEGORIES = ['media'];
+const MEDIA_SEARCH_CATEGORIES = [SearchCategory.Media, SearchCategory.MediaData];
 
 export const SearchPanel: FC<SearchPanelProps> = memo(props => {
     const { searchTerm, getCardDataFn, search, pageSize = SEARCH_PAGE_DEFAULT_SIZE, offset = 0 } = props;
-    const [model, setModel] = useState<SearchResultsModel>(SearchResultsModel.create({ isLoading: true }));
-    const categories = biologicsIsPrimaryApp() ? [...SEARCH_CATEGORIES, ...MEDIA_SEARCH_CATEGORIES] : SEARCH_CATEGORIES;
+    const [model, setModel] = useState<SearchResultsModel>(() => SearchResultsModel.create({ isLoading: true }));
+    const { moduleContext } = useServerContext();
+    const isBiologics = biologicsIsPrimaryApp(moduleContext);
+    const category = useMemo(
+        () => (isBiologics ? [...SEARCH_CATEGORIES, ...MEDIA_SEARCH_CATEGORIES] : SEARCH_CATEGORIES),
+        [isBiologics]
+    );
 
     const loadSearchResults = useCallback(async () => {
         if (searchTerm) {
@@ -172,22 +178,14 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
             try {
                 const entities = await searchUsingIndex(
                     {
-                        experimentalCustomJson: true, // will return extra info about entity types and material results
-                        normalizeUrls: true, // this flag will remove the containerID from the returned URL
+                        category,
                         q: searchTerm,
-                        scope: getSearchScopeFromContainerFilter(getContainerFilter()),
-                        category: categories.join('+'),
                         limit: pageSize,
                         offset,
                     },
                     getCardDataFn
                 );
-                setModel(
-                    SearchResultsModel.create({
-                        isLoaded: true,
-                        entities,
-                    })
-                );
+                setModel(SearchResultsModel.create({ entities, isLoaded: true }));
             } catch (response) {
                 console.error(response);
                 setModel(
@@ -198,20 +196,13 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
                 );
             }
         }
-    }, [getCardDataFn, offset, pageSize, searchTerm]);
+    }, [category, getCardDataFn, offset, pageSize, searchTerm]);
 
     useEffect(() => {
         (async () => {
             await loadSearchResults();
         })();
     }, [loadSearchResults, searchTerm]);
-
-    const onSearch = useCallback(
-        (form: any): void => {
-            search(form);
-        },
-        [search]
-    );
 
     const onPage = useCallback(
         direction => {
@@ -222,13 +213,5 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
         [search, searchTerm, pageSize, offset]
     );
 
-    return (
-        <SearchPanelImpl
-            {...props}
-            search={onSearch}
-            searchResultsModel={model}
-            onPageChange={onPage}
-            offset={offset}
-        />
-    );
+    return <SearchPanelImpl {...props} search={search} model={model} onPageChange={onPage} offset={offset} />;
 });

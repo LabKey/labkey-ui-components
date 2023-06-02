@@ -1,6 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.343.0
+*Released*: 2 June 2023
+- Introduce enums for `SearchCategory` and new `SearchField`
+- Add `SearchAPIWrapper` to allow for component usage of the search endpoint
+- Search endpoint wrapper for applications now defaults to `experimentalCustomJson=true` and `normalizeUrls=true`.
+- Add optional `requestHandler` to allow for cancellation of promised requests
+- Refactor and deprecate `searchUsingIndex` method for resolving search results
+- SelectInput: expose `openMenuOnClick` prop
+
 ### version 2.342.1
 *Released*: 1 June 2023
 * Migrate SCSS for /entities subpackage components that moved to @labkey/premium

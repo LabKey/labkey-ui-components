@@ -16,9 +16,10 @@ import { QueryInfo } from '../../../public/QueryInfo';
 
 import { isOntologyEnabled } from '../../app/utils';
 
+import { REGISTRY_KEY } from '../../app/constants';
+
 import { SearchScope } from './constants';
 import { FieldFilter, FieldFilterOption, FilterSelection, SearchResultCardData } from './models';
-import { REGISTRY_KEY } from '../../app/constants';
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
 
@@ -513,7 +514,7 @@ export function getSearchScopeFromContainerFilter(cf: Query.ContainerFilter): Se
     }
 }
 
-export function getSearchResultCardData(data, category, queryMetadata?: any): SearchResultCardData  {
+export function getSearchResultCardData(data, category, queryMetadata?: any): SearchResultCardData {
     if (data) {
         const dataName = data.name;
         if (data.dataClass?.name) {

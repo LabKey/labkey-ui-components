@@ -108,13 +108,7 @@ describe('SearchPanelImpl', () => {
         });
 
         const wrapper = mountWithAppServerContext(
-            <SearchPanelImpl
-                {...defaultProps()}
-                searchTerm="see here"
-                model={model}
-                pageSize={pageSize}
-                offset={0}
-            />
+            <SearchPanelImpl {...defaultProps()} searchTerm="see here" model={model} pageSize={pageSize} offset={0} />
         );
 
         expect(wrapper.find('.search-form')).toHaveLength(1);

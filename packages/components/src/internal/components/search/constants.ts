@@ -19,11 +19,11 @@ export enum SearchCategory {
 export enum SearchField {
     Body = 'body',
     IdentifiersHi = 'identifiersHi',
-    IdentifiersMed = 'identifiersMed',
     IdentifiersLo = 'identifiersLo',
+    IdentifiersMed = 'identifiersMed',
     KeywordsHi = 'keywordsHi',
-    KeywordsMed = 'keywordsMed',
     KeywordsLo = 'keywordsLo',
+    KeywordsMed = 'keywordsMed',
 }
 
 export enum SearchScope {

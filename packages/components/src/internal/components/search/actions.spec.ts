@@ -291,13 +291,23 @@ describe('search actions', () => {
 
         test('category configuration', async () => {
             // Single category
-            await search({ category: SearchCategory.AssayRun, q: 'Miguel Olivo' }, undefined, undefined, mockSearchRequest);
+            await search(
+                { category: SearchCategory.AssayRun, q: 'Miguel Olivo' },
+                undefined,
+                undefined,
+                mockSearchRequest
+            );
             expect(mockSearchRequest).toHaveBeenCalledWith(
                 expect.objectContaining({ params: expect.objectContaining({ category: SearchCategory.AssayRun }) })
             );
 
             // Single category array
-            await search({ category: [SearchCategory.Assay], q: 'John Olerud' }, undefined, undefined, mockSearchRequest);
+            await search(
+                { category: [SearchCategory.Assay], q: 'John Olerud' },
+                undefined,
+                undefined,
+                mockSearchRequest
+            );
             expect(mockSearchRequest).toHaveBeenCalledWith(
                 expect.objectContaining({ params: expect.objectContaining({ category: SearchCategory.Assay }) })
             );

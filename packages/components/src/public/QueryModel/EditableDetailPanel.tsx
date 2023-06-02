@@ -10,14 +10,16 @@ import { extractChanges } from '../../internal/components/forms/detail/utils';
 
 import { QueryColumn } from '../QueryColumn';
 import { FileInput } from '../../internal/components/forms/input/FileInput';
-import { updateRows } from '../../internal/query/api';
 import { resolveErrorMessage } from '../../internal/util/messaging';
 import { Alert } from '../../internal/components/base/Alert';
+
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../internal/APIWrapper';
 
 import { RequiresModelAndActions } from './withQueryModels';
 import { DetailPanel, DetailPanelWithModel } from './DetailPanel';
 
 export interface EditableDetailPanelProps extends RequiresModelAndActions {
+    api?: ComponentsAPIWrapper;
     appEditable?: boolean;
     asSubPanel?: boolean;
     canUpdate: boolean;
@@ -46,6 +48,7 @@ interface State {
 
 export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps, State> {
     static defaultProps = {
+        api: getDefaultAPIWrapper(),
         useEditIcon: true,
         cancelText: 'Cancel',
         submitText: 'Save',
@@ -85,7 +88,7 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     handleSubmit = async (values: Record<string, any>): Promise<void> => {
-        const { containerPath, model, onEditToggle, onUpdate } = this.props;
+        const { api, containerPath, model, onEditToggle, onUpdate } = this.props;
         const { queryInfo } = model;
         const row = model.getRow();
         const updatedValues = extractChanges(queryInfo, fromJS(model.getRow()), values);
@@ -112,7 +115,7 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
         });
 
         try {
-            await updateRows({
+            await api.query.updateRows({
                 auditBehavior: AuditBehaviorTypes.DETAILED,
                 containerPath,
                 rows: [updatedValues],

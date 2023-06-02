@@ -17,10 +17,24 @@ import { SchemaQuery } from '../../public/SchemaQuery';
 
 import { ViewInfo } from '../ViewInfo';
 
-import { getQueryDetails, GetQueryDetailsOptions, selectDistinctRows } from './api';
+import {
+    deleteRows,
+    DeleteRowsOptions,
+    DeleteRowsResponse,
+    getQueryDetails,
+    GetQueryDetailsOptions,
+    insertRows,
+    InsertRowsOptions,
+    InsertRowsResponse,
+    selectDistinctRows,
+    updateRows,
+    UpdateRowsOptions,
+    UpdateRowsResponse,
+} from './api';
 import { selectRows, SelectRowsOptions, SelectRowsResponse } from './selectRows';
 
 export interface QueryAPIWrapper {
+    deleteRows: (options: DeleteRowsOptions) => Promise<DeleteRowsResponse>;
     getDataTypeProjectDataCount: (
         entityDataType: EntityDataType,
         dataTypeRowId: number,
@@ -49,20 +63,25 @@ export interface QueryAPIWrapper {
     ) => Promise<Record<string, number>>;
     getQueryDetails: (options: GetQueryDetailsOptions) => Promise<QueryInfo>;
     incrementClientSideMetricCount: (featureArea: string, metricName: string) => void;
+    insertRows: (options: InsertRowsOptions) => Promise<InsertRowsResponse>;
     selectDistinctRows: (selectDistinctOptions: Query.SelectDistinctOptions) => Promise<Query.SelectDistinctResponse>;
     selectRows: (options: SelectRowsOptions) => Promise<SelectRowsResponse>;
+    updateRows: (options: UpdateRowsOptions) => Promise<UpdateRowsResponse>;
 }
 
 export class QueryServerAPIWrapper implements QueryAPIWrapper {
+    deleteRows = deleteRows;
+    getDataTypeProjectDataCount = getDataTypeProjectDataCount;
     getEntityTypeOptions = getEntityTypeOptions;
-    getQueryDetails = getQueryDetails;
-    incrementClientSideMetricCount = incrementClientSideMetricCount;
-    selectRows = selectRows;
-    selectDistinctRows = selectDistinctRows;
     getGridViews = getGridViews;
     getProjectConfigurableEntityTypeOptions = getProjectConfigurableEntityTypeOptions;
     getProjectDataTypeDataCount = getProjectDataTypeDataCount;
-    getDataTypeProjectDataCount = getDataTypeProjectDataCount;
+    getQueryDetails = getQueryDetails;
+    incrementClientSideMetricCount = incrementClientSideMetricCount;
+    insertRows = insertRows;
+    selectRows = selectRows;
+    selectDistinctRows = selectDistinctRows;
+    updateRows = updateRows;
 }
 
 /**
@@ -73,15 +92,18 @@ export function getQueryTestAPIWrapper(
     overrides: Partial<QueryAPIWrapper> = {}
 ): QueryAPIWrapper {
     return {
+        deleteRows: mockFn(),
+        getDataTypeProjectDataCount: mockFn(),
         getEntityTypeOptions: mockFn(),
-        getQueryDetails: mockFn(),
-        incrementClientSideMetricCount: mockFn(),
-        selectRows: mockFn(),
-        selectDistinctRows: mockFn(),
         getGridViews: mockFn(),
         getProjectConfigurableEntityTypeOptions: mockFn(),
         getProjectDataTypeDataCount: mockFn(),
-        getDataTypeProjectDataCount: mockFn(),
+        getQueryDetails: mockFn(),
+        incrementClientSideMetricCount: mockFn(),
+        insertRows: mockFn(),
+        selectRows: mockFn(),
+        selectDistinctRows: mockFn(),
+        updateRows: mockFn(),
         ...overrides,
     };
 }

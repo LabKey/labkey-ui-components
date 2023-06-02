@@ -65,6 +65,7 @@ function _fetchDataClass(queryName?: string, domainId?: number, containerPath?: 
     });
 }
 
+// TODO: This should share implementation with api.samples.getSampleTypeDetails / api.domain.fetchDomainDetails
 export function getDataClassDetails(
     query?: SchemaQuery,
     domainId?: number,

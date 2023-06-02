@@ -72,6 +72,7 @@ export function getSampleSet(config: IEntityTypeDetails): Promise<any> {
     });
 }
 
+// TODO: This should share implementation with api.domain.fetchDomainDetails / api.domain.getDataClassDetails
 export function getSampleTypeDetails(
     query?: SchemaQuery,
     domainId?: number,
@@ -615,13 +616,13 @@ export function updateSampleStorageData(
     containerPath?: string,
     userComment?: string
 ): Promise<any> {
-    if (sampleStorageData.length == 0) {
+    if (sampleStorageData.length === 0) {
         return Promise.resolve();
     }
 
     return new Promise<any>((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('inventory', 'UpdateSampleStorageData.api', undefined, { container: containerPath }),
+            url: buildURL('inventory', 'updateSampleStorageData.api', undefined, { container: containerPath }),
             jsonData: {
                 sampleRows: sampleStorageData,
                 [STORED_AMOUNT_FIELDS.AUDIT_COMMENT]: userComment,

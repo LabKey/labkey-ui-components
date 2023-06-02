@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Col, Panel, FormControl, Row, Button } from 'react-bootstrap';
 
 import { Alert } from '../base/Alert';
@@ -15,7 +15,7 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { BarTenderConfiguration, BarTenderResponse } from './models';
 import { withLabelPrintingContext, LabelPrintingProviderProps } from './LabelPrintingContextProvider';
-import { BAR_TENDER_TOPIC, BARTENDER_CONFIGURATION_TITLE, LABEL_NOT_FOUND_ERROR } from './constants';
+import { BAR_TENDER_TOPIC, BARTENDER_CONFIGURATION_TITLE } from './constants';
 import { LabelsConfigurationPanel } from './LabelsConfigurationPanel';
 
 interface OwnProps extends InjectedRouteLeaveProps {
@@ -104,10 +104,10 @@ const btTestConnectionTemplate = (label: string): string => {
             </Command>
         </XMLScript>`;
 };
-const apiWrapper = getDefaultAPIWrapper();
+
 // exported for jest testing
 export const BarTenderSettingsFormImpl: FC<Props> = memo(props => {
-    const { api = apiWrapper, title = BARTENDER_CONFIGURATION_TITLE, onChange, onSuccess } = props;
+    const { api, title = BARTENDER_CONFIGURATION_TITLE, onChange, onSuccess } = props;
     const [btServiceURL, setBtServiceURL] = useState<string>();
     const [defaultLabel, setDefaultLabel] = useState<number>();
     const [dirty, setDirty] = useState<boolean>(false);
@@ -159,7 +159,7 @@ export const BarTenderSettingsFormImpl: FC<Props> = memo(props => {
                 setSubmitting(false);
                 setFailureMessage(FAILED_TO_SAVE_MESSAGE);
             });
-    }, [api?.labelprinting, btServiceURL, onSuccess]);
+    }, [api, btServiceURL, onSuccess]);
 
     const onConnectionFailure = (message: string): void => {
         setTesting(false);
@@ -186,7 +186,7 @@ export const BarTenderSettingsFormImpl: FC<Props> = memo(props => {
             .catch(() => {
                 onConnectionFailure(FAILED_NOTIFICATION_MESSAGE);
             });
-    }, [api?.labelprinting, btServiceURL]);
+    }, [api, btServiceURL]);
 
     const isBlank = !btServiceURL || btServiceURL.trim() === '';
 
@@ -241,5 +241,9 @@ export const BarTenderSettingsFormImpl: FC<Props> = memo(props => {
         </Row>
     );
 });
+
+BarTenderSettingsFormImpl.defaultProps = {
+    api: getDefaultAPIWrapper(),
+};
 
 export const BarTenderSettingsForm = withLabelPrintingContext(BarTenderSettingsFormImpl);

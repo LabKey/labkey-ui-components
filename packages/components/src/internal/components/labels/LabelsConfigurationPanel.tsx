@@ -16,7 +16,7 @@ import { AddEntityButton } from '../buttons/AddEntityButton';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
-import { deleteRows, insertRows, InsertRowsResponse, updateRows } from '../../query/api';
+import { InsertRowsResponse } from '../../query/api';
 import { resolveErrorMessage } from '../../util/messaging';
 import { DisableableButton } from '../buttons/DisableableButton';
 
@@ -156,11 +156,12 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
     const onToggleDeleteConfirm = useCallback(() => setShowDeleteConfirm(!showDeleteConfirm), [showDeleteConfirm]);
     const onConfirmDelete = useCallback(() => {
         if (updatedTemplate.rowId) {
-            deleteRows({
-                schemaQuery: LABEL_TEMPLATE_SQ,
-                rows: [updatedTemplate],
-                containerPath: updatedTemplate.container,
-            })
+            api.query
+                .deleteRows({
+                    schemaQuery: LABEL_TEMPLATE_SQ,
+                    rows: [updatedTemplate],
+                    containerPath: updatedTemplate.container,
+                })
                 .then(() => {
                     onToggleDeleteConfirm();
                     onActionCompleted(undefined, true);
@@ -172,7 +173,7 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
         } else {
             onToggleDeleteConfirm();
         }
-    }, [updatedTemplate, onActionCompleted, onToggleDeleteConfirm]);
+    }, [api, updatedTemplate, onActionCompleted, onToggleDeleteConfirm]);
 
     const onFormChange = useCallback(
         (evt): void => {
@@ -194,13 +195,13 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
         let rowId = templateToSave?.rowId;
         try {
             if (rowId) {
-                await updateRows({
+                await api.query.updateRows({
                     schemaQuery: LABEL_TEMPLATE_SQ,
                     rows: [templateToSave],
                     containerPath: templateToSave.container,
                 });
             } else {
-                const response = await insertRows({
+                const response = await api.query.insertRows({
                     schemaQuery: LABEL_TEMPLATE_SQ,
                     rows: List([templateToSave]),
                 });
@@ -209,7 +210,7 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
             }
 
             if ((isDefault && defaultLabel !== rowId) || (defaultLabel === rowId && !isDefault)) {
-                const newBtConfig = await api?.labelprinting.saveDefaultLabelConfiguration({
+                const newBtConfig = await api.labelprinting.saveDefaultLabelConfiguration({
                     defaultLabel: isDefault ? rowId : undefined,
                 });
 
@@ -227,7 +228,7 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
         } finally {
             setSaving(false);
         }
-    }, [api?.labelprinting, defaultLabel, isDefault, onActionCompleted, onDefaultChanged, updatedTemplate]);
+    }, [api, defaultLabel, isDefault, onActionCompleted, onDefaultChanged, updatedTemplate]);
 
     return (
         <>
@@ -358,7 +359,7 @@ export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props
         (newLabelTemplate?: number) => {
             setError(undefined);
 
-            api?.labelprinting
+            api.labelprinting
                 .ensureLabelTemplatesList(user)
                 .then(labelTemplates => {
                     setTemplates(labelTemplates ?? []);
@@ -370,7 +371,7 @@ export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props
                     setError('Error: Unable to load label templates.');
                 });
         },
-        [api?.labelprinting, user]
+        [api, user]
     );
 
     // Load template list

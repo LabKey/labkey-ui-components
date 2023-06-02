@@ -5,7 +5,7 @@ import { Button } from 'react-bootstrap';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { Alert } from '../base/Alert';
-import { mountWithServerContext } from '../../test/enzymeTestHelpers';
+import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 import { TEST_USER_EDITOR } from '../../userFixtures';
 
 import { SampleAmountEditModal } from './SampleAmountEditModal';
@@ -25,7 +25,7 @@ describe('SampleAmountEditModal', () => {
         canSave: boolean,
         isNegative?: boolean,
         hasLabelUnits = true
-    ) {
+    ): void {
         expect(wrapper.find('.checkin-amount-label').text()).toContain(
             'Amount' + (units && hasLabelUnits ? ' (' + units + ')' : '')
         );
@@ -40,14 +40,14 @@ describe('SampleAmountEditModal', () => {
         validateSubmitButton(wrapper, noun, canSave);
     }
 
-    function validateSubmitButton(wrapper: ReactWrapper, noun: string, canSave: boolean) {
+    function validateSubmitButton(wrapper: ReactWrapper, noun: string, canSave: boolean): void {
         const success = wrapper.find(Button).at(1);
         expect(success.text()).toBe('Update ' + noun);
         expect(success.prop('disabled')).toBe(!canSave);
     }
 
     test('minimal props', () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <SampleAmountEditModal
                 schemaQuery={testSchemaQuery}
                 row={emptyRow}
@@ -55,6 +55,7 @@ describe('SampleAmountEditModal', () => {
                 updateListener={jest.fn()}
                 onClose={jest.fn()}
             />,
+            undefined,
             { user: TEST_USER_EDITOR }
         );
 
@@ -72,7 +73,7 @@ describe('SampleAmountEditModal', () => {
             FreezeThawCount: { value: 1 },
         } as any;
 
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <SampleAmountEditModal
                 schemaQuery={testSchemaQuery}
                 row={row}
@@ -80,6 +81,7 @@ describe('SampleAmountEditModal', () => {
                 updateListener={jest.fn()}
                 onClose={jest.fn()}
             />,
+            undefined,
             { user: TEST_USER_EDITOR }
         );
 
@@ -96,7 +98,7 @@ describe('SampleAmountEditModal', () => {
             FreezeThawCount: { value: 1 },
         } as any;
 
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <SampleAmountEditModal
                 schemaQuery={testSchemaQuery}
                 row={row}
@@ -104,6 +106,7 @@ describe('SampleAmountEditModal', () => {
                 updateListener={jest.fn()}
                 onClose={jest.fn()}
             />,
+            undefined,
             { user: TEST_USER_EDITOR }
         );
 
@@ -120,7 +123,7 @@ describe('SampleAmountEditModal', () => {
             FreezeThawCount: { value: 1 },
         } as any;
 
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <SampleAmountEditModal
                 schemaQuery={testSchemaQuery}
                 row={row}
@@ -128,6 +131,7 @@ describe('SampleAmountEditModal', () => {
                 updateListener={jest.fn()}
                 onClose={jest.fn()}
             />,
+            undefined,
             { user: TEST_USER_EDITOR }
         );
 
@@ -144,7 +148,7 @@ describe('SampleAmountEditModal', () => {
             FreezeThawCount: { value: 1 },
         } as any;
 
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <SampleAmountEditModal
                 schemaQuery={testSchemaQuery}
                 row={row}
@@ -152,6 +156,7 @@ describe('SampleAmountEditModal', () => {
                 updateListener={jest.fn()}
                 onClose={jest.fn()}
             />,
+            undefined,
             { user: TEST_USER_EDITOR }
         );
 
@@ -168,7 +173,7 @@ describe('SampleAmountEditModal', () => {
             FreezeThawCount: { value: 1 },
         } as any;
 
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <SampleAmountEditModal
                 schemaQuery={testSchemaQuery}
                 row={row}
@@ -176,6 +181,7 @@ describe('SampleAmountEditModal', () => {
                 updateListener={jest.fn()}
                 onClose={jest.fn()}
             />,
+            undefined,
             { user: TEST_USER_EDITOR }
         );
 
@@ -196,7 +202,7 @@ describe('SampleAmountEditModal', () => {
             FreezeThawCount: { value: 1 },
         } as any;
 
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <SampleAmountEditModal
                 schemaQuery={testSchemaQuery}
                 row={row}
@@ -204,6 +210,7 @@ describe('SampleAmountEditModal', () => {
                 updateListener={jest.fn()}
                 onClose={jest.fn()}
             />,
+            undefined,
             { user: TEST_USER_EDITOR }
         );
 
@@ -228,7 +235,7 @@ describe('SampleAmountEditModal', () => {
             FreezeThawCount: { value: 1 },
         } as any;
 
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <SampleAmountEditModal
                 schemaQuery={testSchemaQuery}
                 row={row}
@@ -236,6 +243,7 @@ describe('SampleAmountEditModal', () => {
                 updateListener={jest.fn()}
                 onClose={jest.fn()}
             />,
+            undefined,
             { user: TEST_USER_EDITOR }
         );
 

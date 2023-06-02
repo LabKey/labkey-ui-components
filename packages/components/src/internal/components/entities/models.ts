@@ -29,10 +29,11 @@ import { SCHEMAS } from '../../schemas';
 import { SampleCreationType } from '../samples/models';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { EditorModel } from '../editable/models';
-import { insertRows, InsertRowsResponse } from '../../query/api';
+import { InsertRowsResponse } from '../../query/api';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { ViewInfo } from '../../ViewInfo';
 import { FieldFilter } from '../search/models';
+import { ComponentsAPIWrapper } from '../../APIWrapper';
 
 export interface EntityInputProps {
     role: string;
@@ -357,6 +358,7 @@ export class EntityIdCreationModel extends Record({
     }
 
     postEntityGrid(
+        api: ComponentsAPIWrapper,
         dataModel: QueryModel,
         editorModel: EditorModel,
         extraColumnsToInclude?: QueryColumn[]
@@ -373,7 +375,7 @@ export class EntityIdCreationModel extends Record({
                 return rows_;
             }, List<Map<string, any>>());
 
-        return insertRows({
+        return api.query.insertRows({
             auditBehavior: AuditBehaviorTypes.DETAILED,
             fillEmptyFields: true,
             rows,

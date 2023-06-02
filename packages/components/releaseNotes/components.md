@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.302.5
+*Released*: 2 June 2023
 - Backport Issue designer UI to support restricted issue lists to 23.3
   - see changes for v2.329.1
 

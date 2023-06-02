@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 2.343.0
-*Released*: 1 June 2023
+*Released*: 2 June 2023
 - Introduce enums for `SearchCategory` and new `SearchField`
 - Add `SearchAPIWrapper` to allow for component usage of the search endpoint
 - Search endpoint wrapper for applications now defaults to `experimentalCustomJson=true` and `normalizeUrls=true`.

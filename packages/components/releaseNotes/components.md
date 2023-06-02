@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.302.5
+*Released*: 2 June 2023
+- Backport Issue designer UI to support restricted issue lists to 23.3
+  - see changes for v2.329.1
+
 ### version 2.302.4
 *Released*: 30 March 2023
 - Issue 47502: ProductMenu should use isAppHomeFolder to determine containerPath for fetchContainers call

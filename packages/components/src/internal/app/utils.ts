@@ -323,6 +323,10 @@ export function isCommunityDistribution(moduleContext?: ModuleContext): boolean 
     return !hasModule('SampleManagement', moduleContext) && !hasPremiumModule(moduleContext);
 }
 
+export function isRestrictedIssueListSupported(moduleContext?: ModuleContext): boolean {
+    return resolveModuleContext(moduleContext)?.issues?.hasRestrictedIssueList === true;
+}
+
 export function isProjectContainer(containerPath?: string): boolean {
     return getContainerDepth(containerPath) === 1;
 }

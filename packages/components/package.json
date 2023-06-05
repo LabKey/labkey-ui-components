@@ -53,6 +53,7 @@
     "@labkey/api": "1.21.0",
     "@testing-library/jest-dom": "~5.16.5",
     "@testing-library/react": "~12.1.5",
+    "@testing-library/user-event": "~12.8.3",
     "bootstrap": "~3.4.1",
     "classnames": "~2.3.2",
     "enzyme": "~3.11.0",

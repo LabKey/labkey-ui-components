@@ -216,19 +216,23 @@ export class Cell extends React.PureComponent<Props, State> {
                     selectCell(colIdx, rowIdx, undefined, true);
                 }
                 break;
+            case KEYS.D:
+                if (isFillDown(event)) {
+                    cancelEvent(event);
+                    fillDown();
+                }
+                break;
+            case KEYS.A:
+                if (isSelectAll(event)) {
+                    cancelEvent(event);
+                    selectCell(colIdx, rowIdx, SELECTION_TYPES.ALL);
+                }
+                break;
             default:
                 // any other key
                 if (!focused && !isCopy(event) && !isPaste(event)) {
-                    if (isSelectAll(event)) {
-                        cancelEvent(event);
-                        selectCell(colIdx, rowIdx, SELECTION_TYPES.ALL);
-                    } else if (isFillDown(event)) {
-                        cancelEvent(event);
-                        fillDown();
-                    } else {
-                        // Do not cancel event here, otherwise, key capture will be lost
-                        focusCell(colIdx, rowIdx, !this.isReadOnly());
-                    }
+                    // Do not cancel event here, otherwise, key capture will be lost
+                    focusCell(colIdx, rowIdx, !this.isReadOnly());
                 }
         }
     };

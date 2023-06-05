@@ -1,6 +1,7 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
-import { screen, fireEvent } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
@@ -71,10 +72,10 @@ describe('DesignerDetailPanel', () => {
         const labelHelpTips = document.querySelectorAll('.label-help-target');
         expect(labelHelpTips).toHaveLength(2);
 
-        fireEvent.mouseOver(labelHelpTips[0]);
+        userEvent.hover(labelHelpTips[0]);
         screen.getByText(`Example name that will be generated from the current pattern: ${sampleNameExpression}`);
 
-        fireEvent.mouseOver(labelHelpTips[1]);
+        userEvent.hover(labelHelpTips[1]);
         screen.getByText(
             `Example aliquot name that will be generated from the current pattern: ${aliquotNameExpression}`
         );

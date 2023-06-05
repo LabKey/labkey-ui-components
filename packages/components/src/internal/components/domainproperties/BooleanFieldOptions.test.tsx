@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { DOMAIN_FIELD_FORMAT, DOMAIN_FIELD_NOT_LOCKED } from './constants';
 import { createFormInputId } from './utils';
@@ -40,8 +41,9 @@ describe('BooleanFieldOptions', () => {
 
     test('onChange', () => {
         const domainIndex = 1;
+        const format = 'format';
         const index = 1;
-        const expectedValue = 'Hello';
+        const expectedValue = 'X';
         const onChange = jest.fn();
 
         render(
@@ -57,7 +59,7 @@ describe('BooleanFieldOptions', () => {
 
         const elementId = createFormInputId(DOMAIN_FIELD_FORMAT, domainIndex, index);
         const formatField = document.getElementById(elementId);
-        fireEvent.change(formatField, { target: { value: expectedValue } });
-        expect(onChange).toHaveBeenCalledWith(elementId, expectedValue);
+        userEvent.type(formatField, expectedValue);
+        expect(onChange).toHaveBeenCalledWith(elementId, format + expectedValue);
     });
 });

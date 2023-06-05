@@ -774,9 +774,9 @@ describe('EditorModel', () => {
         });
 
         test('hasMultipleSelection', () => {
-            expect(new EditorModel({ selectionCells: Set([]) }).hasMultipleSelection()).toBeFalsy();
-            expect(new EditorModel({ selectionCells: Set(['0-0']) }).hasMultipleSelection()).toBeFalsy();
-            expect(new EditorModel({ selectionCells: Set(['0-0', '1-1']) }).hasMultipleSelection()).toBeTruthy();
+            expect(new EditorModel({ selectionCells: Set([]) }).isMultiSelect).toBeFalsy();
+            expect(new EditorModel({ selectionCells: Set(['0-0']) }).isMultiSelect).toBeFalsy();
+            expect(new EditorModel({ selectionCells: Set(['0-0', '1-1']) }).isMultiSelect).toBeTruthy();
         });
 
         test('hasMultipleColumnSelection', () => {

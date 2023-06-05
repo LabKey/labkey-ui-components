@@ -753,43 +753,6 @@ export function fetchCharts(schemaQuery: SchemaQuery, containerPath?: string): P
     });
 }
 
-const dragLock = Map<string, boolean>().asMutable();
-let dragHandleInitSelection; // track the initial selection state if the drag event was initiated from the corner drag handle
-
-export function beginDrag(editorModel: EditorModel, event: any): void {
-    if (handleDrag(editorModel, event)) {
-        dragLock.set(editorModel.id, true);
-
-        const isDragHandleAction = (event.target as Element).className?.indexOf(CELL_SELECTION_HANDLE_CLASSNAME) > -1;
-        if (isDragHandleAction) {
-            dragHandleInitSelection = [...editorModel.selectionCells.toArray()];
-            if (!dragHandleInitSelection.length) dragHandleInitSelection.push(editorModel.selectionKey);
-        }
-    }
-}
-
-export function endDrag(editorModel: EditorModel, event: any): string[] {
-    if (handleDrag(editorModel, event)) {
-        dragLock.remove(editorModel.id);
-
-        const _dragHandleInitSelection = dragHandleInitSelection ? [...dragHandleInitSelection] : undefined;
-        dragHandleInitSelection = undefined;
-        return _dragHandleInitSelection;
-    }
-}
-
-function handleDrag(editorModel: EditorModel, event: any): boolean {
-    if (!editorModel.hasFocus()) {
-        event.preventDefault();
-        return true;
-    }
-    return false;
-}
-
-export function inDrag(modelId: string): boolean {
-    return dragLock.get(modelId) !== undefined;
-}
-
 export function copyEvent(editorModel: EditorModel, insertColumns: QueryColumn[], event: any): void {
     if (editorModel && !editorModel.hasFocus() && editorModel.hasSelection()) {
         cancelEvent(event);
@@ -1097,7 +1060,7 @@ export function generateFillSequence(
     initSelection: string[],
     fillSelection: string[]
 ): CellValues {
-    const sortedInitSelection = getSortedCellKeys(initSelection, editorModel.rowCount);
+    const sortedInitSelection = getSortedCellKeys(initSelection);
     const initCellValues = sortedInitSelection.map(cellKey => editorModel.getValueForCellKey(cellKey));
     const initCellRawValues = initCellValues.map(cellValue => cellValue?.first()?.raw);
     const initCellDisplayValues = initCellValues.map(cellValue => cellValue?.first()?.display);
@@ -1270,7 +1233,7 @@ function validatePaste(
 
     if (
         (coordinates.colMin !== coordinates.colMax || coordinates.rowMin !== coordinates.rowMax) &&
-        model.hasMultipleSelection()
+        model.isMultiSelect
     ) {
         paste.success = false;
         paste.message = 'Unable to paste. Paste is not supported against multiple selections.';
@@ -1727,7 +1690,7 @@ function pasteCellLoad(
         updatedDataKeys = dataChanges.dataKeys;
     }
 
-    if (editorModel.hasMultipleSelection()) {
+    if (editorModel.isMultiSelect) {
         editorModel.selectionCells.forEach(cellKey => {
             const { colIdx } = parseCellKey(cellKey);
             const col = columns[colIdx];

@@ -28,23 +28,19 @@ import { Key } from '../../../public/useEnterEscape';
 import {
     addRows,
     addRowsPerPivotValue,
-    beginDrag,
     checkCellReadStatus,
     copyEvent,
     dragFillEvent,
-    endDrag,
     incrementClientSideMetricCount,
-    inDrag,
     pasteEvent,
     updateGridFromBulkForm,
 } from '../../actions';
 import {
+    CELL_SELECTION_HANDLE_CLASSNAME,
     GRID_CHECKBOX_OPTIONS,
     GRID_EDIT_INDEX,
     GRID_SELECTION_INDEX,
     MAX_EDITABLE_GRID_ROWS,
-    MODIFICATION_TYPES,
-    SELECTION_TYPES,
 } from '../../constants';
 import { cancelEvent } from '../../events';
 
@@ -62,7 +58,7 @@ import { QueryInfoForm, QueryInfoFormProps } from '../forms/QueryInfoForm';
 
 import { Cell } from './Cell';
 
-import { CellActions, EDITABLE_GRID_CONTAINER_CLS } from './constants';
+import { CellActions, EDITABLE_GRID_CONTAINER_CLS, MODIFICATION_TYPES, SELECTION_TYPES, } from './constants';
 import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 
 import { CellMessage, EditorModel, EditorModelProps, ValueDescriptor } from './models';
@@ -292,6 +288,8 @@ export interface EditableGridProps extends SharedEditableGridProps {
 
 export interface EditableGridState {
     activeEditTab?: EditableGridTabs;
+    initialSelectedState: string[];
+    inDrag: boolean;
     pendingBulkFormData?: any;
     selected: Set<number>;
     selectedState: GRID_CHECKBOX_OPTIONS;
@@ -356,12 +354,14 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         }
 
         this.state = {
+            activeEditTab: props.activeEditTab ? props.activeEditTab : EditableGridTabs.Grid,
+            inDrag: false,
+            initialSelectedState: undefined,
             selected: selectionCells,
             selectedState,
             showBulkAdd: false,
             showBulkUpdate: false,
             showMask: false,
-            activeEditTab: props.activeEditTab ? props.activeEditTab : EditableGridTabs.Grid,
         };
     }
 
@@ -795,7 +795,36 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         this.toggleMask(false);
     };
 
-    inDrag = (): boolean => inDrag(this.props.editorModel.id);
+    handleDrag = (event: MouseEvent): boolean => {
+        if (!this.props.editorModel.hasFocus()) {
+            event.preventDefault();
+            return true;
+        }
+
+        return false;
+    };
+
+    beginDrag = (event: MouseEvent): void => {
+        const { disabled, editorModel } = this.props;
+        if (this.handleDrag(event) && !disabled) {
+            this.setState({ inDrag: true });
+
+            const isDragHandleAction = (event.target as Element).className?.indexOf(CELL_SELECTION_HANDLE_CLASSNAME) > -1;
+            if (isDragHandleAction) {
+                const initialSelectedState = [...editorModel.selectionCells.toArray()];
+                if (!initialSelectedState.length) initialSelectedState.push(editorModel.selectionKey);
+                this.setState({ initialSelectedState });
+            }
+        }
+    };
+
+    inDrag = (): boolean => this.state.inDrag;
+
+    endDrag = (event: MouseEvent): void => {
+        if (this.handleDrag(event)) {
+            this.setState({ inDrag: false });
+        }
+    };
 
     onCopy = (event: ClipboardEvent): void => {
         const { editorModel, queryInfo } = this.props;
@@ -902,26 +931,21 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         }
     };
 
-    onMouseDown = (event: MouseEvent): void => {
-        if (!this.props.disabled) {
-            beginDrag(this.props.editorModel, event);
-        }
-    };
-
     onMouseUp = (event: MouseEvent): void => {
         const { editorModel, onChange, disabled, data, dataKeys, queryInfo, readonlyRows, lockedRows } = this.props;
 
         if (!disabled) {
-            const dragHandleInitSelection = endDrag(editorModel, event);
+            this.endDrag(event);
+            const initialSelectedState = this.state.initialSelectedState;
 
-            if (dragHandleInitSelection && editorModel.hasMultipleSelection()) {
+            if (initialSelectedState && editorModel.isMultiSelect) {
                 const selColFieldKey = this.generateColumns()
-                    .get(parseCellKey(dragHandleInitSelection[0]).colIdx + 2) // 0 = __selection__, 1 = __editing__
+                    .get(parseCellKey(initialSelectedState[0]).colIdx + 2) // 0 = __selection__, 1 = __editing__
                     ?.raw.fieldKey?.toLowerCase();
 
                 const changes = dragFillEvent(
                     editorModel,
-                    dragHandleInitSelection,
+                    initialSelectedState,
                     dataKeys,
                     data,
                     queryInfo,
@@ -937,7 +961,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     fillDown = (): void => {
         const { editorModel, onChange, data, dataKeys, queryInfo, readonlyRows, lockedRows } = this.props;
 
-        if (editorModel.hasMultipleSelection() && !editorModel.hasMultipleColumnSelection()) {
+        if (editorModel.isMultiSelect && !editorModel.hasMultipleColumnSelection()) {
             const initSelection = editorModel.sortedSelectionKeys.slice(0, 1);
             const selColFieldKey = this.generateColumns()
                 .get(parseCellKey(initSelection[0]).colIdx + 2) // 0 = __selection__, 1 = __editing__
@@ -1381,7 +1405,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 <div
                     className={classNames(EDITABLE_GRID_CONTAINER_CLS, { 'loading-mask': showMask })}
                     onKeyDown={this.onKeyDown}
-                    onMouseDown={this.onMouseDown}
+                    onMouseDown={this.beginDrag}
                     onMouseUp={this.onMouseUp}
                 >
                     <Grid

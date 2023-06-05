@@ -20,7 +20,7 @@ import React, { PureComponent, ReactNode } from 'react';
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-import { LOOKUP_DEFAULT_SIZE, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
+import { LOOKUP_DEFAULT_SIZE } from '../../constants';
 
 import { getContainerFilterForLookups } from '../../query/api';
 import { ViewInfo } from '../../ViewInfo';
@@ -28,6 +28,7 @@ import { SelectInputChange } from '../forms/input/SelectInput';
 import { TextChoiceInput } from '../forms/input/TextChoiceInput';
 import { QuerySelect } from '../forms/QuerySelect';
 
+import { MODIFICATION_TYPES, SELECTION_TYPES } from './constants';
 import { ValueDescriptor } from './models';
 
 import { gridCellSelectInputProps, onCellSelectChange } from './utils';

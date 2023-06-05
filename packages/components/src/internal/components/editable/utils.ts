@@ -12,13 +12,13 @@ import { LoadingState } from '../../../public/LoadingState';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { quoteValueWithDelimiters } from '../../util/utils';
 
-import { EXPORT_TYPES, MODIFICATION_TYPES } from '../../constants';
+import { EXPORT_TYPES } from '../../constants';
 
 import { SelectInputOption, SelectInputProps } from '../forms/input/SelectInput';
 
 import { EditorMode, EditorModel, EditorModelProps, IEditableGridLoader, ValueDescriptor } from './models';
 
-import { CellActions } from './constants';
+import { CellActions, MODIFICATION_TYPES } from './constants';
 
 /**
  * @deprecated Use initEditableGridModel() or initEditableGridModels() instead.

@@ -432,15 +432,15 @@ export class EditorModel
         return this.focusColIdx > -1 && this.focusRowIdx > -1;
     }
 
-    hasMultipleSelection(): boolean {
+    get isMultiSelect(): boolean {
         return this.selectionCells.size > 1;
     }
 
     hasMultipleColumnSelection(): boolean {
-        if (!this.hasMultipleSelection()) return false;
+        if (!this.isMultiSelect) return false;
 
         const firstCellColIdx = parseCellKey(this.selectionCells.first()).colIdx;
-        return !this.selectionCells.every(cellKey => parseCellKey(cellKey).colIdx === firstCellColIdx);
+        return this.selectionCells.some(cellKey => parseCellKey(cellKey).colIdx !== firstCellColIdx);
     }
 
     hasSelection(): boolean {
@@ -461,7 +461,7 @@ export class EditorModel
     }
 
     get sortedSelectionKeys(): string[] {
-        return getSortedCellKeys(this.selectionCells.toArray(), this.rowCount);
+        return getSortedCellKeys(this.selectionCells.toArray());
     }
 
     hasRawValue(descriptor: ValueDescriptor) {
@@ -544,27 +544,9 @@ export class EditorModel
         return editedRow.find((value, key) => originalQueryRow.get(key) !== value) !== undefined;
     }
 
-    isRowEmpty(editedRow: Map<string, any>): boolean {
-        return editedRow.find(value => value !== undefined) === undefined;
-    }
-
     lastSelection(colIdx: number, rowIdx: number): boolean {
-        let cellKeys = [];
-
-        // Initial implementation of drag handle fill actions only support single column selection
-        if (!this.hasMultipleColumnSelection()) {
-            if (this.hasMultipleSelection()) {
-                cellKeys = this.sortedSelectionKeys;
-            } else {
-                cellKeys = [this.selectionKey];
-            }
-        }
-
-        if (cellKeys.length === 0) {
-            return false;
-        }
-
-        return cellKeys.indexOf(genCellKey(colIdx, rowIdx)) === cellKeys.length - 1;
+        const cellKeys = this.isMultiSelect ? this.sortedSelectionKeys : [this.selectionKey];
+        return genCellKey(colIdx, rowIdx) === cellKeys[cellKeys.length - 1];
     }
 }
 

@@ -93,6 +93,7 @@ module.exports = {
         '@remirror/pm',
         '@testing-library/jest-dom',
         '@testing-library/react',
+        '@testing-library/user-event',
         'boostrap-sass',
         'classnames',
         'date-fns',

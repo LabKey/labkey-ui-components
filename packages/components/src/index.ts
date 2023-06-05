@@ -588,6 +588,7 @@ import {
     mountWithServerContextOptions,
     waitForLifecycle,
 } from './internal/test/enzymeTestHelpers';
+import { renderWithAppContext } from './internal/test/reactTestLibraryHelpers';
 import { flattenValuesFromRow, QueryModel } from './public/QueryModel/QueryModel';
 import { withQueryModels } from './public/QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
@@ -1629,6 +1630,7 @@ export {
     mountWithServerContextOptions,
     mountWithAppServerContext,
     mountWithServerContext,
+    renderWithAppContext,
     waitForLifecycle,
     wrapDraggable,
     selectOptionByText,

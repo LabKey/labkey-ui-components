@@ -5,7 +5,7 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Button, Checkbox, Col, Row } from 'react-bootstrap';
 import { List } from 'immutable';
-import { Security } from '@labkey/api';
+import { getServerContext, Security } from '@labkey/api';
 
 import { UserDetailsPanel } from '../user/UserDetailsPanel';
 

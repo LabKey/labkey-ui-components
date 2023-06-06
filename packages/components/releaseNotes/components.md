@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.343.1
+*Released*: 2 June 2023
+- Field editor fix for community usage to check for SM module during getFolderExcludedDataTypes() call
+
 ### version 2.343.0
 *Released*: 2 June 2023
 - Introduce enums for `SearchCategory` and new `SearchField`

@@ -20,7 +20,7 @@ import { ViewInfo } from '../../ViewInfo';
 
 import { Container } from '../base/models/Container';
 
-import { getProjectDataExclusion } from '../../app/utils';
+import { getProjectDataExclusion, hasModule } from '../../app/utils';
 
 import { resolveErrorMessage } from '../../util/messaging';
 
@@ -937,6 +937,10 @@ export const initParentOptionsSelects = (
 };
 
 export const getFolderExcludedDataTypes = (dataType: string, excludedContainer?: string): Promise<number[]> => {
+    if (!hasModule(SAMPLE_MANAGER_APP_PROPERTIES.moduleName)) {
+        return Promise.resolve(undefined);
+    }
+
     let isCurrentContainer = true;
     if (excludedContainer) {
         const currentContainer = getServerContext().container;

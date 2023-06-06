@@ -94,7 +94,6 @@ export class EditorModel
         focusValue: undefined,
         id: undefined,
         isPasting: false,
-        numPastedRows: 0,
         rowCount: 0,
         selectedColIdx: -1,
         selectedRowIdx: -1,
@@ -111,7 +110,6 @@ export class EditorModel
     declare focusValue: List<ValueDescriptor>;
     declare id: string;
     declare isPasting: boolean;
-    declare numPastedRows: number;
     declare rowCount: number;
     declare selectedColIdx: number;
     declare selectedRowIdx: number;

@@ -152,16 +152,16 @@ export class EditorModel
         queryInfo: QueryInfo,
         forUpdate?: boolean,
         readOnlyColumns?: List<string>,
-        insertColumns?: List<QueryColumn>,
-        updateColumns?: List<QueryColumn>,
+        insertColumns?: QueryColumn[],
+        updateColumns?: QueryColumn[],
         colFilter?: (col: QueryColumn) => boolean
-    ): List<QueryColumn> {
+    ): QueryColumn[] {
         let columns;
 
         if (forUpdate) {
-            columns = updateColumns ?? List(queryInfo.getUpdateColumns(readOnlyColumns?.toArray()));
+            columns = updateColumns ?? queryInfo.getUpdateColumns(readOnlyColumns?.toArray());
         } else {
-            columns = insertColumns ?? List(queryInfo.getInsertColumns());
+            columns = insertColumns ?? queryInfo.getInsertColumns();
         }
 
         if (colFilter) columns = columns.filter(colFilter);
@@ -556,7 +556,7 @@ export interface IGridLoader {
 }
 
 export interface IEditableGridLoader extends IGridLoader {
-    columns?: List<QueryColumn>;
+    columns?: QueryColumn[];
     id: string;
     mode: EditorMode;
     omittedColumns?: string[];

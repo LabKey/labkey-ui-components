@@ -105,8 +105,8 @@ function inputCellFactory(
     allowSelection: boolean,
     hideCountCol: boolean,
     columnMetadata: EditableColumnMetadata,
-    readonlyRows: List<any>,
-    lockedRows: List<any>,
+    readonlyRows: string[],
+    lockedRows: string[],
     cellActions: CellActions,
     containerFilter: Query.ContainerFilter,
     forUpdate: boolean
@@ -228,10 +228,10 @@ export interface SharedEditableGridProps {
     extraExportColumns?: Array<Partial<QueryColumn>>;
     forUpdate?: boolean;
     hideCountCol?: boolean;
-    insertColumns?: List<QueryColumn>;
+    insertColumns?: QueryColumn[];
     isSubmitting?: boolean;
     // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
-    lockedRows?: List<any>;
+    lockedRows?: string[];
     maxRows?: number;
     metricFeatureArea?: string;
     // list of key values that cannot be deleted.
@@ -240,7 +240,7 @@ export interface SharedEditableGridProps {
     processBulkData?: (data: OrderedMap<string, any>) => BulkAddData;
     readOnlyColumns?: List<string>;
     // list of key values for rows that are readonly.
-    readonlyRows?: List<any>;
+    readonlyRows?: string[];
     removeColumnTitle?: string;
     rowNumColumn?: GridColumn;
     // Toggle "Edit in Grid" and "Edit in Bulk" as tabs
@@ -248,7 +248,7 @@ export interface SharedEditableGridProps {
     showBulkTabOnLoad?: boolean;
     striped?: boolean;
     tabBtnProps?: EditableGridBtnProps;
-    updateColumns?: List<QueryColumn>;
+    updateColumns?: QueryColumn[];
 }
 
 export interface EditableGridBtnProps {
@@ -265,10 +265,10 @@ export interface SharedEditableGridPanelProps extends SharedEditableGridProps {
     bsStyle?: any;
     className?: string;
     getColumnMetadata?: (tabId?: number) => Map<string, EditableColumnMetadata>;
-    getReadOnlyRows?: (tabId?: number) => List<any>;
+    getReadOnlyRows?: (tabId?: number) => string[];
     getTabHeader?: (tabId?: number) => ReactNode;
     getTabTitle?: (tabId?: number) => string;
-    getUpdateColumns?: (tabId?: number) => List<QueryColumn>;
+    getUpdateColumns?: (tabId?: number) => QueryColumn[];
     title?: string;
 }
 
@@ -417,8 +417,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         });
     };
 
-    // TODO: Convert this and the related methods to arrays not Lists
-    getColumns = (): List<QueryColumn> => {
+    getColumns = (): QueryColumn[] => {
         const { editorModel, forUpdate, insertColumns, queryInfo, readOnlyColumns, updateColumns } = this.props;
         return editorModel.getColumns(queryInfo, forUpdate, readOnlyColumns, insertColumns, updateColumns);
     };
@@ -954,9 +953,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             const initialSelectedState = this.state.initialSelectedState;
             if (initialSelectedState?.length > 0 && editorModel.isMultiSelect) {
                 const loweredColumnMetadata = this.getLoweredColumnMetadata();
-                const columnMetadata = this.getColumns()
-                    .map(col => loweredColumnMetadata[col.fieldKey.toLowerCase()])
-                    .toArray();
+                const columnMetadata = this.getColumns().map(col => loweredColumnMetadata[col.fieldKey.toLowerCase()]);
                 const cellValues = dragFillEvent(
                     editorModel,
                     initialSelectedState,
@@ -978,9 +975,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         if (editorModel.isMultiSelect) {
             const loweredColumnMetadata = this.getLoweredColumnMetadata();
-            const columnMetadata = this.getColumns()
-                .map(col => loweredColumnMetadata[col.fieldKey.toLowerCase()])
-                .toArray();
+            const columnMetadata = this.getColumns().map(col => loweredColumnMetadata[col.fieldKey.toLowerCase()]);
             const sortedSelectionKeys = editorModel.sortedSelectionKeys;
             const firstRowIdx = parseCellKey(sortedSelectionKeys[0]).rowIdx;
             const firstRowCellKeys = sortedSelectionKeys.filter(

@@ -27,10 +27,10 @@ import { CellActions, MODIFICATION_TYPES } from './constants';
  */
 export const loadEditorModelData = async (
     queryModelData: Partial<QueryModel>,
-    editorColumns?: List<QueryColumn>
+    editorColumns?: QueryColumn[]
 ): Promise<Partial<EditorModel>> => {
     const { orderedRows, rows, queryInfo } = queryModelData;
-    const columns = editorColumns?.toArray() ?? queryInfo.getInsertColumns();
+    const columns = editorColumns ?? queryInfo.getInsertColumns();
     const lookupValueDescriptors = await getLookupValueDescriptors(columns, fromJS(rows), fromJS(orderedRows));
     let cellValues = Map<string, List<ValueDescriptor>>();
 
@@ -105,7 +105,7 @@ export const initEditableGridModel = async (
         queryInfo: loader.queryInfo,
     };
 
-    let columns: List<QueryColumn>;
+    let columns: QueryColumn[];
     const forUpdate = loader.mode === EditorMode.Update;
     if (loader.columns) {
         columns = editorModel.getColumns(
@@ -366,8 +366,8 @@ export const getEditorExportData = (
     editorModels: EditorModel[],
     dataModels: QueryModel[],
     readOnlyColumns?: List<string>,
-    insertColumns?: List<QueryColumn>,
-    updateColumns?: List<QueryColumn>,
+    insertColumns?: QueryColumn[],
+    updateColumns?: QueryColumn[],
     forUpdate?: boolean,
     extraColumns?: Array<Partial<QueryColumn>>,
     colFilter?: (col: QueryColumn) => boolean

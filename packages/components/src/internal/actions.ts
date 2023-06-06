@@ -986,8 +986,8 @@ export function checkCellReadStatus(
     row: any,
     queryInfo: QueryInfo,
     columnMetadata: EditableColumnMetadata,
-    readonlyRows: List<any>,
-    lockedRows: List<any>
+    readonlyRows: string[],
+    lockedRows: string[]
 ): CellReadStatus {
     if (readonlyRows || columnMetadata?.isReadOnlyCell || lockedRows) {
         const keyCols = queryInfo.getPkCols();
@@ -997,9 +997,9 @@ export function checkCellReadStatus(
             if (typeof key === 'object') key = key.value;
 
             return {
-                isReadonlyRow: readonlyRows && key ? readonlyRows.contains(key) : false,
+                isReadonlyRow: readonlyRows && key ? readonlyRows.includes(key) : false,
                 isReadonlyCell: columnMetadata?.isReadOnlyCell ? columnMetadata.isReadOnlyCell(key) : false,
-                isLockedRow: lockedRows && key ? lockedRows.contains(key) : false,
+                isLockedRow: lockedRows && key ? lockedRows.includes(key) : false,
             };
         } else {
             console.warn(
@@ -1073,12 +1073,12 @@ export function generateFillCellKeys(initialSelection: string[], finalSelection:
 export function dragFillEvent(
     editorModel: EditorModel,
     initialSelection: string[],
-    dataKeys: List<any>, // TODO: make sure you actually understand this variable and the data one
+    dataKeys: List<any>,
     data: Map<any, Map<string, any>>,
     queryInfo: QueryInfo,
     columnMetadata: EditableColumnMetadata[],
-    readonlyRows: List<any>,
-    lockedRows: List<any>
+    readonlyRows: string[],
+    lockedRows: string[]
 ): CellValues {
     const finalSelection = editorModel.sortedSelectionKeys;
     let cellValues = editorModel.cellValues;
@@ -1175,7 +1175,7 @@ export async function pasteEvent(
     queryInfo: QueryInfo,
     event: any,
     columnMetadata?: Map<string, EditableColumnMetadata>,
-    readonlyRows?: List<string>,
+    readonlyRows?: string[],
     lockRowCount?: boolean
 ): Promise<EditorModelAndGridData> {
     // If a cell has focus do not accept incoming paste events -- allow for normal paste to input
@@ -1204,7 +1204,7 @@ async function pasteCell(
     queryInfo: QueryInfo,
     value: string,
     columnMetadata?: Map<string, EditableColumnMetadata>,
-    readonlyRows?: List<string>,
+    readonlyRows?: string[],
     lockRowCount?: boolean
 ): Promise<EditorModelAndGridData> {
     const { selectedColIdx, selectedRowIdx } = editorModel;
@@ -1738,7 +1738,7 @@ function pasteCellLoad(
     paste: IPasteModel,
     lookupDescriptorMap: { [colKey: string]: ValueDescriptor[] },
     columnMetadata: Map<string, EditableColumnMetadata>,
-    readonlyRows?: List<any>,
+    readonlyRows?: string[],
     lockRowCount?: boolean
 ): EditorModelAndGridData {
     const pastedData = paste.payload.data;
@@ -1861,10 +1861,10 @@ function pasteCellLoad(
     };
 }
 
-function isReadonlyRow(row: Map<string, any>, pkCols: QueryColumn[], readonlyRows: List<string>) {
+function isReadonlyRow(row: Map<string, any>, pkCols: QueryColumn[], readonlyRows: string[]) {
     if (pkCols.length === 1 && row) {
         const pkValue = caseInsensitive(row.toJS(), pkCols[0].fieldKey);
-        return readonlyRows.contains(pkValue);
+        return readonlyRows.includes(pkValue);
     }
 
     return false;
@@ -1876,7 +1876,7 @@ function getReadonlyRowCount(
     data: Map<any, Map<string, any>>,
     queryInfo: QueryInfo,
     startRowInd: number,
-    readonlyRows: List<string>
+    readonlyRows: string[]
 ): number {
     const pkCols = queryInfo.getPkCols();
 

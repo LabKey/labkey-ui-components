@@ -15,6 +15,7 @@
  */
 import { fromJS, List, Map, OrderedMap, Set } from 'immutable';
 import { ActionURL, Ajax, Filter, getServerContext, Query, Utils } from '@labkey/api';
+
 import { ExtendedMap } from '../public/ExtendedMap';
 
 import { QueryColumn } from '../public/QueryColumn';
@@ -60,7 +61,7 @@ import { resolveErrorMessage } from './util/messaging';
 import { buildURL } from './url/AppURL';
 
 import { ViewInfo } from './ViewInfo';
-import { decimalDifference, genCellKey, getSortedCellKeys, parseCellKey } from './utils';
+import { decimalDifference, genCellKey, sortCellKeys, parseCellKey } from './utils';
 import { createGridModelId } from './models';
 
 const EMPTY_ROW = Map<string, any>();
@@ -975,13 +976,19 @@ export function parseIntIfNumber(val: any): number | string {
     return intVal === undefined || isNaN(intVal) ? val : intVal;
 }
 
+interface CellReadStatus {
+    isLockedRow: boolean;
+    isReadonlyCell: boolean;
+    isReadonlyRow: boolean;
+}
+
 export function checkCellReadStatus(
     row: any,
     queryInfo: QueryInfo,
     columnMetadata: EditableColumnMetadata,
     readonlyRows: List<any>,
     lockedRows: List<any>
-): { isLockedRow: boolean; isReadonlyCell: boolean; isReadonlyRow: boolean } {
+): CellReadStatus {
     if (readonlyRows || columnMetadata?.isReadOnlyCell || lockedRows) {
         const keyCols = queryInfo.getPkCols();
         if (keyCols.length === 1) {
@@ -1008,70 +1015,131 @@ export function checkCellReadStatus(
     };
 }
 
-export function dragFillEvent(
-    editorModel: EditorModel,
-    initSelection: string[],
-    dataKeys: List<any>,
-    data: Map<any, Map<string, any>>,
-    queryInfo: QueryInfo,
-    columnMetadata: EditableColumnMetadata,
-    readonlyRows: List<any>,
-    lockedRows: List<any>
-): EditorModelAndGridData {
-    if (initSelection?.length > 0) {
-        const initColIdx = parseCellKey(initSelection[0]).colIdx;
-        const fillCells = editorModel.sortedSelectionKeys
-            // initially we will only support fill for drag end that is within a single column
-            .filter(cellKey => parseCellKey(cellKey).colIdx === initColIdx)
-            // filter out the initial selection as we don't want to update/fill those
-            .filter(cellKey => initSelection.indexOf(cellKey) === -1)
-            // filter out readOnly/locked rows and columns
-            .filter(cellKey => {
-                const { isReadonlyCell, isReadonlyRow, isLockedRow } = checkCellReadStatus(
-                    data.get(dataKeys.get(parseCellKey(cellKey).rowIdx)),
-                    queryInfo,
-                    columnMetadata,
-                    readonlyRows,
-                    lockedRows
-                );
-                return !isReadonlyCell && !isReadonlyRow && !isLockedRow;
-            });
+/**
+ * Returns only the newly selected area given an initial selection and a final selection. These are the keys that will
+ * be filled with generated data based on the initially selected data.
+ * @param initialSelection: The area initially selected
+ * @param finalSelection: The final area selected, including the initially selected area
+ */
+export function generateFillCellKeys(initialSelection: string[], finalSelection: string[]): string[][] {
+    const firstInitial = parseCellKey(initialSelection[0]);
+    const lastInitial = parseCellKey(initialSelection[initialSelection.length - 1]);
+    const minCol = firstInitial.colIdx;
+    const maxCol = lastInitial.colIdx;
+    const initialMinRow = firstInitial.rowIdx;
+    const initialMaxRow = lastInitial.rowIdx;
+    const finalMinRow = parseCellKey(finalSelection[0]).rowIdx;
+    const finalMaxRow = parseCellKey(finalSelection[finalSelection.length - 1]).rowIdx;
+    let start;
+    let end;
 
-        return {
-            data: undefined,
-            dataKeys: undefined,
-            editorModel: {
-                cellValues: generateFillSequence(editorModel, initSelection, fillCells),
-            },
-        };
+    if (finalMaxRow > initialMaxRow) {
+        // Final selected area is below the initial selection, so we will be incrementing from the row after
+        // initialMaxRow
+        start = initialMaxRow + 1;
+        end = finalMaxRow;
+    } else {
+        // Newly selected area is above the initial selection, so we will be incrementing from finalMinRow
+        start = finalMinRow;
+        end = initialMinRow - 1;
     }
 
-    return { data: undefined, dataKeys: undefined, editorModel: undefined };
+    const fillCellKeys = [];
+
+    // Construct arrays of columns, because we're going to generate fill sequences for columns
+    for (let colIdx = minCol; colIdx <= maxCol; colIdx++) {
+        const columnKeys = [];
+
+        for (let rowIdx = start; rowIdx <= end; rowIdx++) {
+            columnKeys.push(genCellKey(colIdx, rowIdx));
+        }
+
+        fillCellKeys.push(columnKeys);
+    }
+
+    return fillCellKeys;
 }
 
 /**
- * Generate a sequence, of length fillSelection, based on the values in the initSelection of the editorModel.
- * If the initSelection is for a single cell, the fill operation will always be a copy of that value.
- * If the initSelection includes a range of cells and all values are numeric, fill via a generated sequence where the step/diff is based on the first and last value in the initSelection.
- * If the initSelection includes a range of cells and not all values are numeric, fill via a copy of all of the values in initSelection.
+ * @param editorModel
+ * @param initialSelection: The initial selection before the selection was expanded
+ * @param dataKeys: The orderedRows Object from a QueryModel
+ * @param data: The rows object from a QueryModel
+ * @param queryInfo: A QueryInfo
+ * @param columnMetadata: Array of column metadata, in the same order as the columns in the grid
+ * @param readonlyRows: A list of readonly rows
+ * @param lockedRows: A list of locked rows
  */
-export function generateFillSequence(
+export function dragFillEvent(
     editorModel: EditorModel,
-    initSelection: string[],
-    fillSelection: string[]
+    initialSelection: string[],
+    dataKeys: List<any>, // TODO: make sure you actually understand this variable and the data one
+    data: Map<any, Map<string, any>>,
+    queryInfo: QueryInfo,
+    columnMetadata: EditableColumnMetadata[],
+    readonlyRows: List<any>,
+    lockedRows: List<any>
 ): CellValues {
-    const sortedInitSelection = getSortedCellKeys(initSelection);
-    const initCellValues = sortedInitSelection.map(cellKey => editorModel.getValueForCellKey(cellKey));
-    const initCellRawValues = initCellValues.map(cellValue => cellValue?.first()?.raw);
-    const initCellDisplayValues = initCellValues.map(cellValue => cellValue?.first()?.display);
+    const finalSelection = editorModel.sortedSelectionKeys;
+    let cellValues = editorModel.cellValues;
+
+    // If the selection size hasn't changed, then the selection hasn't changed, so return the existing cellValues
+    if (finalSelection.length === initialSelection.length) return cellValues;
+
+    const fillCellKeys = generateFillCellKeys(initialSelection, finalSelection);
+
+    fillCellKeys.forEach(columnCells => {
+        const { colIdx } = parseCellKey(columnCells[0]);
+        const initialSelectionByCol = initialSelection.filter(cellKey => parseCellKey(cellKey).colIdx === colIdx);
+        const metadata = columnMetadata[colIdx];
+
+        const fillCells = columnCells.filter(cellKey => {
+            const { rowIdx } = parseCellKey(cellKey);
+            const row = data.get(dataKeys.get(rowIdx));
+            const { isReadonlyCell, isReadonlyRow, isLockedRow } = checkCellReadStatus(
+                row,
+                queryInfo,
+                metadata,
+                readonlyRows,
+                lockedRows
+            );
+            return !isReadonlyCell && !isReadonlyRow && !isLockedRow;
+        });
+        cellValues = fillColumnCells(editorModel, cellValues, initialSelectionByCol, fillCells);
+    });
+
+    return cellValues;
+}
+
+/**
+ * Fills a column of cells based on the initially selected values.
+ * If the initialCellKeys is for a single cell, the fill operation will always be a copy of that value.
+ * If the initialCellKeys includes a range of cells and all values are numeric, fill via a generated sequence where the
+ * step/diff is based on the first and last value in the initSelection.
+ * If the initialCellKeys includes a range of cells and not all values are numeric, fill via a copy of all of the values
+ * in initSelection.
+ * @param editorModel: An EditorModel object
+ * @param cellValues: The cellValues object to mutate, we cannot use the one from EditorModel because we may need to
+ * modify multiple columns of data in one event (see dragFillEvent).
+ * @param initialCellKeys: An array of sorted cell keys, all from the same column that were initially selected
+ * @param cellKeysToFill: An array of sorted cell keys, all from tehe same column, to be filled with values based on the
+ * content of initialCellKeys
+ */
+export function fillColumnCells(
+    editorModel: EditorModel,
+    cellValues: CellValues,
+    initialCellKeys: string[],
+    cellKeysToFill: string[]
+): CellValues {
+    const initialValues = initialCellKeys.map(cellKey => editorModel.getValueForCellKey(cellKey));
+    const initialRawValues = initialValues.map(value => value.get(0)?.raw);
+    const initialDisplayValues = initialValues.map(value => value.get(0)?.display);
 
     // use the display values to determine sequence type to account for lookup cell values with numeric key/raw values
-    const isFloatSeq = initCellValues.length > 1 && initCellDisplayValues.every(isFloat);
-    const isIntSeq = initCellValues.length > 1 && initCellDisplayValues.every(isInteger);
-
-    let firstCellRawVal = initCellRawValues[0];
-    let lastCellRawVal = initCellRawValues[initCellRawValues.length - 1];
-
+    const isFloatSeq = initialValues.length > 1 && initialDisplayValues.every(isFloat);
+    const isIntSeq = initialValues.length > 1 && initialDisplayValues.every(isInteger);
+    let firstCellRawVal = initialRawValues[0];
+    let lastCellRawVal = initialRawValues[initialRawValues.length - 1];
     let diff = 0;
     if (isFloatSeq || isIntSeq) {
         if (isFloatSeq) {
@@ -1084,12 +1152,11 @@ export function generateFillSequence(
 
         // diff -> last value minus first value divide by the number of steps in the initial selection
         diff = decimalDifference(lastCellRawVal, firstCellRawVal);
-        diff = initCellRawValues.length > 1 ? diff / (initCellRawValues.length - 1) : 0;
+        diff = initialRawValues.length > 1 ? diff / (initialRawValues.length - 1) : 0;
     }
 
-    let cellValues = editorModel.cellValues;
-    fillSelection.forEach((cellKey, i) => {
-        let fillValue = initCellValues[i % sortedInitSelection.length];
+    cellKeysToFill.forEach((cellKey, i) => {
+        let fillValue = initialValues[i % initialValues.length];
         if (isFloatSeq || isIntSeq) {
             const raw = decimalDifference(diff * (i + 1), lastCellRawVal, false);
             fillValue = List([{ raw, display: raw }]);

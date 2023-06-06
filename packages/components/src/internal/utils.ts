@@ -16,7 +16,7 @@ export function parseCellKey(cellKey: string): { colIdx: number; rowIdx: number 
 /**
  * Sorts cell keys left to right, top to bottom.
  */
-export function getSortedCellKeys(cellKeys: string[]): string[] {
+export function sortCellKeys(cellKeys: string[]): string[] {
     return cellKeys.sort((a, b) => {
         const aCoords = parseCellKey(a);
         const bCoords = parseCellKey(b);

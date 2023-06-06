@@ -23,7 +23,7 @@ import { QueryColumn } from '../../../public/QueryColumn';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
-import { genCellKey, getSortedCellKeys, parseCellKey } from '../../utils';
+import { genCellKey, sortCellKeys, parseCellKey } from '../../utils';
 import { getQueryColumnRenderers } from '../../global';
 import { GRID_EDIT_INDEX } from '../../constants';
 import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from '../../util/Date';
@@ -461,7 +461,7 @@ export class EditorModel
     }
 
     get sortedSelectionKeys(): string[] {
-        return getSortedCellKeys(this.selectionCells.toArray());
+        return sortCellKeys(this.selectionCells.toArray());
     }
 
     hasRawValue(descriptor: ValueDescriptor) {

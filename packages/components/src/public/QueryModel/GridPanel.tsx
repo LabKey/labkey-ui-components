@@ -25,8 +25,6 @@ import { ViewInfo } from '../../internal/ViewInfo';
 
 import { QueryColumn } from '../QueryColumn';
 
-import { QueryInfo } from '../QueryInfo';
-
 import { QuerySort } from '../QuerySort';
 
 import { GridColumn } from '../../internal/components/base/models/GridColumn';
@@ -287,7 +285,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
         isUpdated,
     } = props;
     const { viewName } = model;
-    const [errorMsg, setErrorMsg] = useState<string>(undefined);
+    const [errorMsg, setErrorMsg] = useState<string>();
 
     // TODO: unable to get jest to pass with useServerContext() due to GridPanel being Component instead of FC
     // const { user } = useServerContext();

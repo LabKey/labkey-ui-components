@@ -147,11 +147,7 @@ describe('ThreadEditor', () => {
     test('toolbar', async () => {
         const body = 'This is a test preview\n';
         const wrapper = mount(
-            <ThreadEditor
-                api={createTestAPIWrapper()}
-                nounPlural={NOUN_PLURAL}
-                nounSingular={NOUN_SINGULAR}
-            />
+            <ThreadEditor api={createTestAPIWrapper()} nounPlural={NOUN_PLURAL} nounSingular={NOUN_SINGULAR} />
         );
 
         await expectToolbarButton(wrapper, '.fa-bold', body, '****');

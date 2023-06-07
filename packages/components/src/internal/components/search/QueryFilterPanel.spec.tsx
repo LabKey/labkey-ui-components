@@ -2,6 +2,7 @@ import React from 'react';
 import { Col, NavItem } from 'react-bootstrap';
 import { mount, ReactWrapper } from 'enzyme';
 import { Filter } from '@labkey/api';
+
 import { ExtendedMap } from '../../../public/ExtendedMap';
 
 import { QueryInfo } from '../../../public/QueryInfo';
@@ -14,11 +15,12 @@ import { getTestAPIWrapper } from '../../APIWrapper';
 
 import { AssayResultDataType } from '../entities/constants';
 
+import { QueryColumn } from '../../../public/QueryColumn';
+
 import { FilterExpressionView } from './FilterExpressionView';
 import { FilterFacetedSelector } from './FilterFacetedSelector';
 import { QueryFilterPanel } from './QueryFilterPanel';
 import { FieldFilter } from './models';
-import { QueryColumn } from '../../../public/QueryColumn';
 
 describe('QueryFilterPanel', () => {
     const DEFAULT_PROPS = {

@@ -2,6 +2,8 @@ import React from 'react';
 
 import { mount, shallow } from 'enzyme';
 
+import { List } from 'immutable';
+
 import DomainForm from '../DomainForm';
 
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
@@ -10,11 +12,11 @@ import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { Alert } from '../../base/Alert';
 
+import { waitForLifecycle } from '../../../test/enzymeTestHelpers';
+
 import { IssuesListDefPropertiesPanel } from './IssuesListDefPropertiesPanel';
 import { IssuesDesignerPanelsImpl, IssuesListDefDesignerPanels } from './IssuesListDefDesignerPanels';
 import { IssuesListDefModel } from './models';
-import { waitForLifecycle } from "../../../test/enzymeTestHelpers";
-import { List } from "immutable";
 
 const emptyNewModel = IssuesListDefModel.create(null, { issueDefName: 'Issues List For Jest' });
 
@@ -42,7 +44,8 @@ describe('IssuesListDefDesignerPanel', () => {
                 submitting={false}
                 validatePanel={0}
                 visitedPanels={List()}
-            />);
+            />
+        );
 
         await waitForLifecycle(issuesDesignerPanels);
 

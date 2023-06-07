@@ -5,6 +5,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import { Modal, OverlayTrigger } from 'react-bootstrap';
 
 import { Draggable } from 'react-beautiful-dnd';
+
 import { ExtendedMap } from '../ExtendedMap';
 
 import { SchemaQuery } from '../SchemaQuery';

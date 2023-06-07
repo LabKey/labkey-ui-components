@@ -15,6 +15,8 @@ import { TestTypeDataType, TestTypeDataTypeWithEntityFilter } from '../../../tes
 
 import { FieldFilter } from '../search/models';
 
+import { SCHEMAS } from '../../schemas';
+
 import {
     FindDerivativesMenuItem,
     getFieldFilter,
@@ -23,7 +25,6 @@ import {
     isValidFilterFieldSampleFinder,
 } from './FindDerivativesButton';
 import { DataClassDataType, SampleTypeDataType } from './constants';
-import { SCHEMAS } from '../../schemas';
 
 const VIEW_NAME = 'TEST_VIEW';
 const VIEW = ViewInfo.fromJson({

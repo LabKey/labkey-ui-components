@@ -2,6 +2,7 @@ import React from 'react';
 import { MenuItem } from 'react-bootstrap';
 import { mount, ReactWrapper } from 'enzyme';
 import { Filter } from '@labkey/api';
+
 import { ExtendedMap } from '../public/ExtendedMap';
 
 import { QueryColumn } from '../public/QueryColumn';
@@ -294,7 +295,9 @@ describe('HeaderCellDropdown', () => {
     test('isSortAsc via view sort', () => {
         const sortObj = { fieldKey: 'column', dir: '+' };
         const view = ViewInfo.fromJson({ sort: [sortObj] });
-        const queryInfo = new QueryInfo({ views: new ExtendedMap<string, ViewInfo>({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }) });
+        const queryInfo = new QueryInfo({
+            views: new ExtendedMap<string, ViewInfo>({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
+        });
 
         const model = makeTestQueryModel(new SchemaQuery('schema', 'query'), queryInfo).mutate({
             sorts: [],
@@ -340,7 +343,9 @@ describe('HeaderCellDropdown', () => {
     test('isSortDesc via view sort', () => {
         const sortObj = { fieldKey: 'column', dir: '-' };
         const view = ViewInfo.fromJson({ sort: [sortObj] });
-        const queryInfo = new QueryInfo({ views: new ExtendedMap<string, ViewInfo>({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }) });
+        const queryInfo = new QueryInfo({
+            views: new ExtendedMap<string, ViewInfo>({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
+        });
 
         const model = makeTestQueryModel(new SchemaQuery('schema', 'query'), queryInfo).mutate({
             sorts: [],
@@ -380,7 +385,9 @@ describe('HeaderCellDropdown', () => {
     test('view filter', () => {
         const filterObj = { fieldKey: 'column', value: 'val', op: 'contains' };
         const view = ViewInfo.fromJson({ filter: [filterObj] });
-        const queryInfo = new QueryInfo({ views: new ExtendedMap<string, ViewInfo>({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }) });
+        const queryInfo = new QueryInfo({
+            views: new ExtendedMap<string, ViewInfo>({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
+        });
 
         const model = makeTestQueryModel(new SchemaQuery('schema', 'query'), queryInfo).mutate({
             filterArray: [],
@@ -399,7 +406,9 @@ describe('HeaderCellDropdown', () => {
     test('multiple colFilters, one being a view filter', () => {
         const filterObj = { fieldKey: 'column', value: 'val', op: 'contains' };
         const view = ViewInfo.fromJson({ filter: [filterObj] });
-        const queryInfo = new QueryInfo({ views: new ExtendedMap<string, ViewInfo>({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }) });
+        const queryInfo = new QueryInfo({
+            views: new ExtendedMap<string, ViewInfo>({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
+        });
 
         const model = makeTestQueryModel(new SchemaQuery('schema', 'query'), queryInfo).mutate({
             filterArray: [Filter.create('column', 'value', Filter.Types.EQUALS)],

@@ -7,10 +7,10 @@ import { Button, ModalBody, ModalTitle, NavItem } from 'react-bootstrap';
 import { TEST_USER_EDITOR } from '../../userFixtures';
 import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 
-import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
-
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { OperationConfirmationData } from '../entities/models';
+
+import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
 
 import {
     AddedToPicklistNotification,

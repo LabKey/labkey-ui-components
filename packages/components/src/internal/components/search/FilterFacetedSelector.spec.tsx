@@ -156,14 +156,19 @@ describe('FilterFacetedSelector', () => {
     });
 
     test('with no initial filter, not blank', async () => {
-        const wrapper = mount(<FilterFacetedSelector {...{ ...DEFAULT_PROPS,
-            api: getTestAPIWrapper(jest.fn, {
-                query: getQueryTestAPIWrapper(jest.fn, {
-                    selectDistinctRows: () => Promise.resolve(distinctValuesWithoutBlankResp),
-                }),
-            }),
-            canBeBlank: false
-        }} />);
+        const wrapper = mount(
+            <FilterFacetedSelector
+                {...{
+                    ...DEFAULT_PROPS,
+                    api: getTestAPIWrapper(jest.fn, {
+                        query: getQueryTestAPIWrapper(jest.fn, {
+                            selectDistinctRows: () => Promise.resolve(distinctValuesWithoutBlankResp),
+                        }),
+                    }),
+                    canBeBlank: false,
+                }}
+            />
+        );
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -175,13 +180,18 @@ describe('FilterFacetedSelector', () => {
     });
 
     test('with no initial filter, many values, can be blank', async () => {
-        const wrapper = mount(<FilterFacetedSelector {...{ ...DEFAULT_PROPS,
-            api: getTestAPIWrapper(jest.fn, {
-                query: getQueryTestAPIWrapper(jest.fn, {
-                    selectDistinctRows: () => Promise.resolve(largeValuesWithoutBlankResp),
-                }),
-            }),
-        }} />);
+        const wrapper = mount(
+            <FilterFacetedSelector
+                {...{
+                    ...DEFAULT_PROPS,
+                    api: getTestAPIWrapper(jest.fn, {
+                        query: getQueryTestAPIWrapper(jest.fn, {
+                            selectDistinctRows: () => Promise.resolve(largeValuesWithoutBlankResp),
+                        }),
+                    }),
+                }}
+            />
+        );
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);

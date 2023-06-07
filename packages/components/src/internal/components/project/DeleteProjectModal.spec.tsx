@@ -141,9 +141,7 @@ describe('ProjectSettings', () => {
 
         expect(wrapper.find(LoadingSpinner).length).toBe(0);
         expect(wrapper.find(Progress).length).toBe(1);
-        expect(
-            wrapper.find({ children: "Please don't close this page until deletion is complete." }).length
-        ).toBe(1);
+        expect(wrapper.find({ children: "Please don't close this page until deletion is complete." }).length).toBe(1);
         expect(wrapper.find(Button).length).toBe(0);
 
         wrapper.unmount();

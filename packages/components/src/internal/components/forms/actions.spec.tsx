@@ -28,8 +28,8 @@ import { UsersLoader, useUsersWithPermissions } from './actions';
 describe('useUsersWithPermissions', () => {
     interface TestComponentProps {
         containerPath: string;
-        permissions: string | string[];
         loader: UsersLoader;
+        permissions: string | string[];
     }
 
     const TestComponent: FC<TestComponentProps> = ({ containerPath, permissions, loader }) => {

@@ -101,7 +101,9 @@ describe('AssayDesignerPanels', () => {
                 submitting={false}
                 validatePanel={0}
                 visitedPanels={List()}
-        />, SERVER_CONTEXT);
+            />,
+            SERVER_CONTEXT
+        );
         await waitForLifecycle(wrapper);
         expect(wrapper).toMatchSnapshot();
         wrapper.unmount();

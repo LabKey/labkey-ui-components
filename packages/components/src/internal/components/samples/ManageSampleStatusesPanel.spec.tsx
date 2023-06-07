@@ -13,18 +13,20 @@ import { ChoicesListItem } from '../base/ChoicesListItem';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
 
+import { TEST_PROJECT, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
+
+import { LockIcon } from '../base/LockIcon';
+
 import { SampleState } from './models';
 import { ManageSampleStatusesPanel, SampleStatusDetail, SampleStatusesList } from './ManageSampleStatusesPanel';
 
 import { getSamplesTestAPIWrapper } from './APIWrapper';
-import { TEST_PROJECT, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
-import { LockIcon } from '../base/LockIcon';
 
 describe('ManageSampleStatusesPanel', () => {
     const DEFAULT_PROPS = {
         api: getTestAPIWrapper(jest.fn, {
             samples: getSamplesTestAPIWrapper(jest.fn, {
-                getSampleStatuses: () => Promise.resolve([new SampleState({isLocal: true, rowId: 1})]),
+                getSampleStatuses: () => Promise.resolve([new SampleState({ isLocal: true, rowId: 1 })]),
             }),
         }),
         getIsDirty: jest.fn(),
@@ -65,7 +67,8 @@ describe('ManageSampleStatusesPanel', () => {
                         getSampleStatuses: () => Promise.resolve([]),
                     }),
                 })}
-            />, {
+            />,
+            {
                 container: TEST_PROJECT_CONTAINER,
                 project: TEST_PROJECT,
             }
@@ -165,7 +168,7 @@ describe('SampleStatusesList', () => {
     });
 
     test('with states, no selection', () => {
-        const states = [new SampleState({isLocal: true}), new SampleState({isLocal: true})];
+        const states = [new SampleState({ isLocal: true }), new SampleState({ isLocal: true })];
         const wrapper = mount(<SampleStatusesList {...DEFAULT_PROPS} states={states} />);
         validate(wrapper, states.length);
         expect(wrapper.find(ChoicesListItem).first().prop('active')).toBe(false);
@@ -174,7 +177,7 @@ describe('SampleStatusesList', () => {
     });
 
     test('with states, with selection', () => {
-        const states = [new SampleState({isLocal: true}), new SampleState({isLocal: true})];
+        const states = [new SampleState({ isLocal: true }), new SampleState({ isLocal: true })];
         const wrapper = mount(<SampleStatusesList {...DEFAULT_PROPS} states={states} selected={1} />);
         validate(wrapper, states.length);
         expect(wrapper.find(ChoicesListItem).first().prop('active')).toBe(false);
@@ -184,9 +187,9 @@ describe('SampleStatusesList', () => {
 
     test('with states, in use and not local', () => {
         const states = [
-            new SampleState({inUse: false, isLocal: true, containerPath: "/Test Parent/Test Project"}),
-            new SampleState({inUse: true, isLocal: true, containerPath: "/Test Parent/Test Project"}),
-            new SampleState({inUse: true, isLocal: false, containerPath: "/Test Parent"})
+            new SampleState({ inUse: false, isLocal: true, containerPath: '/Test Parent/Test Project' }),
+            new SampleState({ inUse: true, isLocal: true, containerPath: '/Test Parent/Test Project' }),
+            new SampleState({ inUse: true, isLocal: false, containerPath: '/Test Parent' }),
         ];
         const wrapper = mount(<SampleStatusesList {...DEFAULT_PROPS} states={states} />);
         validate(wrapper, states.length);
@@ -194,12 +197,18 @@ describe('SampleStatusesList', () => {
         expect(listItems.at(0).find(LockIcon).exists()).toBe(false);
         expect(listItems.at(1).find(LockIcon).exists()).toBe(true);
         expect(listItems.at(2).find(LockIcon).exists()).toBe(true);
-
     });
 });
 
 describe('SampleStatusDetail', () => {
-    const STATE = new SampleState({ label: 'Available', description: 'desc', stateType: 'Available', inUse: false, isLocal: true, containerPath: "/Test" });
+    const STATE = new SampleState({
+        label: 'Available',
+        description: 'desc',
+        stateType: 'Available',
+        inUse: false,
+        isLocal: true,
+        containerPath: '/Test',
+    });
     const DEFAULT_PROPS = {
         addNew: false,
         state: STATE,
@@ -253,7 +262,13 @@ describe('SampleStatusDetail', () => {
     });
 
     test('in use disabled', async () => {
-        const inUseState = new SampleState({ label: 'Available', stateType: 'Available', inUse: true, isLocal: true, containerPath: "/Test" });
+        const inUseState = new SampleState({
+            label: 'Available',
+            stateType: 'Available',
+            inUse: true,
+            isLocal: true,
+            containerPath: '/Test',
+        });
         const wrapper = mountWithServerContext(<SampleStatusDetail {...DEFAULT_PROPS} state={inUseState} />, {
             project: TEST_PROJECT,
         });
@@ -271,7 +286,13 @@ describe('SampleStatusDetail', () => {
     });
 
     test('not local, disabled', async () => {
-        const inUseState = new SampleState({ label: 'Available', stateType: 'Available', inUse: true, isLocal: false, containerPath: "/Test" });
+        const inUseState = new SampleState({
+            label: 'Available',
+            stateType: 'Available',
+            inUse: true,
+            isLocal: false,
+            containerPath: '/Test',
+        });
         const wrapper = mountWithServerContext(<SampleStatusDetail {...DEFAULT_PROPS} state={inUseState} />, {
             project: TEST_PROJECT,
         });

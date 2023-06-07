@@ -57,7 +57,7 @@ describe('ProductMenuSection render', () => {
             label: 'Sample Set 2',
             hasActiveJob: true,
             hidden: true,
-        }
+        },
     ]);
 
     const sampleSetItemsSomeHidden = List<MenuSectionModel>([
@@ -70,7 +70,7 @@ describe('ProductMenuSection render', () => {
             label: 'Sample Set 2',
             hasActiveJob: true,
             hidden: true,
-        }
+        },
     ]);
 
     const assayItems = List<MenuSectionModel>([

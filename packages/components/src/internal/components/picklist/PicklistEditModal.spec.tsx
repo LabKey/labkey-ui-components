@@ -6,11 +6,12 @@ import { Button, Modal, ModalFooter, ModalTitle } from 'react-bootstrap';
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { getSamplesTestAPIWrapper } from '../samples/APIWrapper';
 import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
-import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
 
 import { OperationConfirmationData } from '../entities/models';
 
 import { Alert } from '../base/Alert';
+
+import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
 
 import { PicklistEditModal } from './PicklistEditModal';
 import { Picklist } from './models';

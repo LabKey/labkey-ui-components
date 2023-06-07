@@ -2,6 +2,8 @@ import React from 'react';
 import { Alert } from 'react-bootstrap';
 import { mount, shallow } from 'enzyme';
 
+import { List } from 'immutable';
+
 import { DEFAULT_LIST_SETTINGS } from '../../../../test/data/constants';
 import getDomainDetailsJSON from '../../../../test/data/list-getDomainDetails.json';
 import DomainForm from '../DomainForm';
@@ -14,7 +16,6 @@ import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 import { ListPropertiesPanel } from './ListPropertiesPanel';
 import { ListModel } from './models';
 import { ListDesignerPanels, ListDesignerPanelsImpl } from './ListDesignerPanels';
-import { List } from "immutable";
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -33,17 +34,19 @@ describe('ListDesignerPanel', () => {
     }
 
     test('new list', async () => {
-        const listDesignerPanels = <ListDesignerPanelsImpl
-            {...getDefaultProps()}
-            currentPanelIndex={0}
-            firstState={true}
-            onFinish={jest.fn()}
-            onTogglePanel={jest.fn()}
-            setSubmitting={jest.fn()}
-            submitting={false}
-            validatePanel={0}
-            visitedPanels={List()}
-        />;
+        const listDesignerPanels = (
+            <ListDesignerPanelsImpl
+                {...getDefaultProps()}
+                currentPanelIndex={0}
+                firstState={true}
+                onFinish={jest.fn()}
+                onTogglePanel={jest.fn()}
+                setSubmitting={jest.fn()}
+                submitting={false}
+                validatePanel={0}
+                visitedPanels={List()}
+            />
+        );
 
         const tree = shallow(listDesignerPanels);
 

@@ -142,6 +142,7 @@ export class IssuesDesignerPanelsImpl extends React.PureComponent<Props & Inject
 
     render() {
         const {
+            api,
             onCancel,
             useTheme,
             successBsStyle,
@@ -170,6 +171,7 @@ export class IssuesDesignerPanelsImpl extends React.PureComponent<Props & Inject
                 successBsStyle={successBsStyle}
             >
                 <IssuesListDefPropertiesPanel
+                    api={api}
                     model={model}
                     onChange={this.onPropertiesChange}
                     controlledCollapse={true}

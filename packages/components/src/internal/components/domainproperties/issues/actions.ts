@@ -8,6 +8,7 @@ import { Principal } from '../../permissions/models';
 import { buildURL } from '../../../url/AppURL';
 
 import { IssuesListDefModel, IssuesListDefOptionsConfig, IssuesRelatedFolder } from './models';
+import { handleRequestFailure } from '../../../util/utils';
 
 export function fetchIssuesListDefDesign(issueDefName?: string): Promise<IssuesListDefModel> {
     return new Promise((resolve, reject) => {
@@ -29,9 +30,7 @@ export function getUsersForGroup(groupId: number): Promise<List<Principal>> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: ActionURL.buildURL('issues', 'getUsersForGroup.api'),
-            method: 'GET',
             params: { groupId },
-            scope: this,
             success: Utils.getCallbackWrapper(coreUsersData => {
                 let users = List<Principal>();
                 coreUsersData.forEach(user => {
@@ -41,9 +40,7 @@ export function getUsersForGroup(groupId: number): Promise<List<Principal>> {
 
                 resolve(users);
             }),
-            failure: Utils.getCallbackWrapper(error => {
-                reject(error);
-            }),
+            failure: handleRequestFailure(reject, 'Failed to fetch users for group'),
         });
     });
 }
@@ -52,8 +49,6 @@ export function getProjectGroups(): Promise<List<Principal>> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: ActionURL.buildURL('issues', 'getProjectGroups.api'),
-            method: 'GET',
-            scope: this,
             success: Utils.getCallbackWrapper(coreGroupsData => {
                 let groups = List<Principal>();
                 coreGroupsData.forEach(principal => {
@@ -63,9 +58,7 @@ export function getProjectGroups(): Promise<List<Principal>> {
 
                 resolve(groups);
             }),
-            failure: Utils.getCallbackWrapper(error => {
-                reject(error);
-            }),
+            failure: handleRequestFailure(reject, 'Failed to fetch project groups'),
         });
     });
 }
@@ -79,10 +72,7 @@ export function saveIssueListDefOptions(options: IssuesListDefOptionsConfig): Pr
             success: Utils.getCallbackWrapper(res => {
                 resolve(res);
             }),
-            failure: Utils.getCallbackWrapper(response => {
-                console.error(response);
-                reject(response);
-            }),
+            failure: handleRequestFailure(reject, 'Failed to save issue list definition options'),
         });
     });
 }
@@ -91,9 +81,7 @@ export function getRelatedFolders(issueDefName?: string): Promise<List<IssuesRel
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: ActionURL.buildURL('issues', 'getRelatedFolder.api'),
-            method: 'GET',
             params: { issueDefName },
-            scope: this,
             success: Utils.getCallbackWrapper(res => {
                 let folders = List<IssuesRelatedFolder>();
                 res.containers.forEach(container => {
@@ -102,9 +90,7 @@ export function getRelatedFolders(issueDefName?: string): Promise<List<IssuesRel
                 });
                 resolve(folders);
             }),
-            failure: Utils.getCallbackWrapper(error => {
-                reject(error);
-            }),
+            failure: handleRequestFailure(reject, 'Failed to fetch related folders'),
         });
     });
 }

@@ -15,7 +15,7 @@
  */
 import { fromJS, Map } from 'immutable';
 
-import { initMockServerContext, registerDefaultURLMappers } from '../testHelpers';
+import { initMockServerContext, registerDefaultURLMappers } from '../test/testHelpers';
 
 import { initUnitTestMocks } from '../../test/testHelperMocks';
 
@@ -449,16 +449,12 @@ describe('App Route Resolvers', () => {
             listResolver.fetch(['q', 'lists', encodeListResolverPath('/BULLS'), 23]).then((url: AppURL) => {
                 expect(url.toString()).toBe('/q/lists/Jordan');
             }),
-            listResolver
-                .fetch(['q', 'lists', encodeListResolverPath('/lakers'), '8', 'mamba'])
-                .then((url: AppURL) => {
-                    expect(url.toString()).toBe('/q/lists/KObE/mamba');
-                }),
-            listResolver
-                .fetch(['q', 'lists', encodeListResolverPath('/JaZz'), '7', 17, '?'])
-                .then((url: AppURL) => {
-                    expect(url.toString()).toBe('/q/lists/PistolPete/17/%3F');
-                }),
+            listResolver.fetch(['q', 'lists', encodeListResolverPath('/lakers'), '8', 'mamba']).then((url: AppURL) => {
+                expect(url.toString()).toBe('/q/lists/KObE/mamba');
+            }),
+            listResolver.fetch(['q', 'lists', encodeListResolverPath('/JaZz'), '7', 17, '?']).then((url: AppURL) => {
+                expect(url.toString()).toBe('/q/lists/PistolPete/17/%3F');
+            }),
         ]);
     });
 

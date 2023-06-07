@@ -6,7 +6,7 @@ import { mount } from 'enzyme';
 
 import { ViewInfo } from '../../internal/ViewInfo';
 
-import { mountWithServerContext } from '../../internal/testHelpers';
+import { mountWithServerContext } from '../../internal/test/enzymeTestHelpers';
 import { TEST_USER_APP_ADMIN, TEST_USER_EDITOR, TEST_USER_PROJECT_ADMIN } from '../../internal/userFixtures';
 
 import { SaveViewModal, ViewNameInput } from './SaveViewModal';

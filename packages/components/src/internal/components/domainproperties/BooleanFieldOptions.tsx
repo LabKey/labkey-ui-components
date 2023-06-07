@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 
 import { createFormInputId, createFormInputName } from './utils';
@@ -8,19 +8,13 @@ import { ITypeDependentProps } from './models';
 import { SectionHeading } from './SectionHeading';
 import { DomainFieldLabel } from './DomainFieldLabel';
 
-interface BooleanFieldProps extends ITypeDependentProps {
+export interface BooleanFieldProps extends ITypeDependentProps {
     format: string;
 }
 
-export class BooleanFieldOptions extends React.PureComponent<BooleanFieldProps, any> {
-    onFieldChange = evt => {
-        const { onChange } = this.props;
-
-        const value = evt.target.value;
-
-        if (onChange) {
-            onChange(evt.target.id, value);
-        }
+export class BooleanFieldOptions extends PureComponent<BooleanFieldProps> {
+    onFieldChange = (evt): void => {
+        this.props.onChange?.(evt.target.id, evt.target.value);
     };
 
     getFormatHelpText = () => {

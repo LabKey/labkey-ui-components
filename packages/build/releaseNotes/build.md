@@ -1,5 +1,10 @@
 # @labkey/build
 
+### version 6.12.0
+*Released* : 6 June 2023
+* declare `@testing-library` as externals.
+* skip processing of `**/*.*test.*` files
+
 ### version 6.11.0
 *Released* : 23 May 2023
 * webpack updates for `@labkey/premium/entities` package

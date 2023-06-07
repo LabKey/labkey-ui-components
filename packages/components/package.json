@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.343.1-moveNotebooks.0",
+  "version": "2.344.1-moveNotebooks.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [
@@ -25,8 +25,10 @@
     "clean": "rimraf dist",
     "cleanAll": "rimraf dist && rimraf node_modules",
     "prepublishOnly": "yarn install && cross-env WEBPACK_STATS=errors-only yarn build",
-    "test": "cross-env NODE_ENV=test jest --maxWorkers=6 --silent",
-    "test-ci": "cross-env NODE_ENV=test jest --ci --silent",
+    "test": "npm run test-react ; npm run test-enzyme",
+    "test-enzyme": "cross-env NODE_ENV=test jest --maxWorkers=6 --silent",
+    "test-react": "cross-env NODE_ENV=test jest --config jest.react.config.js --maxWorkers=6",
+    "test-ci": "cross-env NODE_ENV=test jest --config jest.react.config.js --ci ; cross-env NODE_ENV=test jest --ci --silent",
     "lint": "eslint",
     "lint-fix": "eslint --fix",
     "lint-precommit": "node lint.diff.mjs",
@@ -49,6 +51,9 @@
   "homepage": "https://github.com/LabKey/labkey-ui-components#readme",
   "dependencies": {
     "@labkey/api": "1.21.0",
+    "@testing-library/jest-dom": "~5.16.5",
+    "@testing-library/react": "~12.1.5",
+    "@testing-library/user-event": "~12.8.3",
     "bootstrap": "~3.4.1",
     "classnames": "~2.3.2",
     "enzyme": "~3.11.0",
@@ -76,7 +81,7 @@
     "vis-network": "~6.5.2"
   },
   "devDependencies": {
-    "@labkey/build": "6.11.0",
+    "@labkey/build": "6.12.0",
     "@labkey/eslint-config-react": "~0.0.12",
     "@types/enzyme": "~3.10.12",
     "@types/history": "~4.7.9",

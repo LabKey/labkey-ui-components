@@ -8,11 +8,11 @@ import { RequiresModelAndActions } from '../../../public/QueryModel/withQueryMod
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { DetailPanel } from '../../../public/QueryModel/DetailPanel';
 
-interface Props extends DetailDisplaySharedProps, RequiresModelAndActions {
+export interface DesignerDetailPanelProps extends DetailDisplaySharedProps, RequiresModelAndActions {
     schemaQuery: SchemaQuery;
 }
 
-export const DesignerDetailPanel: FC<Props> = memo(props => {
+export const DesignerDetailPanel: FC<DesignerDetailPanelProps> = memo(props => {
     const { schemaQuery, ...detailDisplayProps } = props;
     const { api } = useAppContext();
     const [previews, setPreviews] = useState<Record<string, string>>();

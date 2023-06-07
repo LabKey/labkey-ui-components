@@ -8,12 +8,14 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-import { mountWithAppServerContext } from '../../testHelpers';
+import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 import { DisableableMenuItem } from '../samples/DisableableMenuItem';
 
 import { TestTypeDataType, TestTypeDataTypeWithEntityFilter } from '../../../test/data/constants';
 
 import { FieldFilter } from '../search/models';
+
+import { SCHEMAS } from '../../schemas';
 
 import {
     FindDerivativesMenuItem,
@@ -23,7 +25,6 @@ import {
     isValidFilterFieldSampleFinder,
 } from './FindDerivativesButton';
 import { DataClassDataType, SampleTypeDataType } from './constants';
-import { SCHEMAS } from '../../schemas';
 
 const VIEW_NAME = 'TEST_VIEW';
 const VIEW = ViewInfo.fromJson({

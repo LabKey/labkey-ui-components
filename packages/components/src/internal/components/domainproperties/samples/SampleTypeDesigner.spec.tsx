@@ -7,7 +7,7 @@ import DomainForm from '../DomainForm';
 
 import { DomainDetails } from '../models';
 
-import { mountWithAppServerContext, waitForLifecycle } from '../../../testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../../test/enzymeTestHelpers';
 import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { FileAttachmentForm } from '../../../../public/files/FileAttachmentForm';

@@ -4,7 +4,7 @@ import { Panel } from 'react-bootstrap';
 
 import { DomainDesign } from '../models';
 
-import { mountWithServerContext, shallowWithServerContext, waitForLifecycle } from '../../../testHelpers';
+import { mountWithServerContext, shallowWithServerContext, waitForLifecycle } from '../../../test/enzymeTestHelpers';
 import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { FileAttachmentForm } from '../../../../public/files/FileAttachmentForm';
@@ -101,7 +101,9 @@ describe('AssayDesignerPanels', () => {
                 submitting={false}
                 validatePanel={0}
                 visitedPanels={List()}
-        />, SERVER_CONTEXT);
+            />,
+            SERVER_CONTEXT
+        );
         await waitForLifecycle(wrapper);
         expect(wrapper).toMatchSnapshot();
         wrapper.unmount();

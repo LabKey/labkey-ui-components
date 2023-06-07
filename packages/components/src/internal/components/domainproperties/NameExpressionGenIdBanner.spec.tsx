@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import { sleep } from '../../testHelpers';
+import { sleep } from '../../test/testHelpers';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
 

@@ -5,7 +5,7 @@ import { shallow, mount } from 'enzyme';
 import { TIMELINE_DATA } from '../../../test/data/constants';
 
 import { TEST_USER_APP_ADMIN, TEST_USER_READER } from '../../userFixtures';
-import { mountWithServerContext } from '../../testHelpers';
+import { mountWithServerContext } from '../../test/enzymeTestHelpers';
 import { UserLink } from '../user/UserLink';
 
 import { TimelineEventModel } from './models';

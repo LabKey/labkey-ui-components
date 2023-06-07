@@ -8,7 +8,7 @@ import { TEST_USER_APP_ADMIN } from '../../userFixtures';
 
 import { ServerContext } from '../base/ServerContext';
 
-import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
@@ -141,9 +141,7 @@ describe('ProjectSettings', () => {
 
         expect(wrapper.find(LoadingSpinner).length).toBe(0);
         expect(wrapper.find(Progress).length).toBe(1);
-        expect(
-            wrapper.find({ children: "Please don't close this page until deletion is complete." }).length
-        ).toBe(1);
+        expect(wrapper.find({ children: "Please don't close this page until deletion is complete." }).length).toBe(1);
         expect(wrapper.find(Button).length).toBe(0);
 
         wrapper.unmount();

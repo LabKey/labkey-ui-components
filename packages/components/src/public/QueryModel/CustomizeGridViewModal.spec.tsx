@@ -4,16 +4,15 @@ import { mount, ReactWrapper } from 'enzyme';
 
 import { Modal, OverlayTrigger } from 'react-bootstrap';
 
-import { fromJS } from 'immutable';
-
 import { Draggable } from 'react-beautiful-dnd';
+
 import { ExtendedMap } from '../ExtendedMap';
 
 import { SchemaQuery } from '../SchemaQuery';
 import { QueryInfo } from '../QueryInfo';
 import { ViewInfo } from '../../internal/ViewInfo';
 import { QueryColumn, QueryLookup } from '../QueryColumn';
-import { wrapDraggable } from '../../internal/testHelpers';
+import { wrapDraggable } from '../../internal/test/testHelpers';
 
 import { makeTestQueryModel } from './testUtils';
 

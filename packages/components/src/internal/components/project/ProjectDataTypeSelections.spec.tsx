@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Col } from 'react-bootstrap';
 
-import { mountWithAppServerContext } from '../../testHelpers';
+import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 
 import { AssayRunDataType, SampleTypeDataType } from '../entities/constants';
 

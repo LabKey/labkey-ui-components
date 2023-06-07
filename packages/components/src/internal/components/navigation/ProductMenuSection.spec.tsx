@@ -18,7 +18,7 @@ import { List } from 'immutable';
 
 import { AppURL } from '../../url/AppURL';
 
-import { mountWithServerContext } from '../../testHelpers';
+import { mountWithServerContext } from '../../test/enzymeTestHelpers';
 import { TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
@@ -57,7 +57,7 @@ describe('ProductMenuSection render', () => {
             label: 'Sample Set 2',
             hasActiveJob: true,
             hidden: true,
-        }
+        },
     ]);
 
     const sampleSetItemsSomeHidden = List<MenuSectionModel>([
@@ -70,7 +70,7 @@ describe('ProductMenuSection render', () => {
             label: 'Sample Set 2',
             hasActiveJob: true,
             hidden: true,
-        }
+        },
     ]);
 
     const assayItems = List<MenuSectionModel>([

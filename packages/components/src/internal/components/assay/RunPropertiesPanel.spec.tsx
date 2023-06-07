@@ -13,7 +13,7 @@ import { TextInput } from '../forms/input/TextInput';
 import { DatePickerInput } from '../forms/input/DatePickerInput';
 import { SelectInput } from '../forms/input/SelectInput';
 
-import { mountWithServerContext } from '../../testHelpers';
+import { mountWithServerContext } from '../../test/enzymeTestHelpers';
 
 import { RunPropertiesPanel } from './RunPropertiesPanel';
 import { AssayWizardModel } from './AssayWizardModel';

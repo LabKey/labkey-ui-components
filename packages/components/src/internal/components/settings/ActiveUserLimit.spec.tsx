@@ -3,12 +3,13 @@ import { ReactWrapper } from 'enzyme';
 
 import { Alert } from '../base/Alert';
 import { UserLimitSettings } from '../permissions/actions';
-import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 import { TEST_USER_APP_ADMIN, TEST_USER_FOLDER_ADMIN, TEST_USER_PROJECT_ADMIN } from '../../userFixtures';
 import { getTestAPIWrapper } from '../../APIWrapper';
 
+import { getSecurityTestAPIWrapper } from '../security/APIWrapper';
+
 import { ActiveUserLimit, ActiveUserLimitMessage } from './ActiveUserLimit';
-import {getSecurityTestAPIWrapper} from "../security/APIWrapper";
 
 describe('ActiveUserLimitMessage', () => {
     test('without message', () => {

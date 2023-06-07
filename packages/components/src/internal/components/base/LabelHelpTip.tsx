@@ -17,8 +17,8 @@ export const LabelHelpTip: FC<Props> = memo(props => {
     const [show, setShow] = useState(false);
 
     const toggleShow = useCallback(() => {
-        setShow(!show);
-    }, [show]);
+        setShow(_show => !_show);
+    }, []);
 
     // Need to have both icon and overlay inside mouse handlers div so overlay stays visible when moused over
     return (

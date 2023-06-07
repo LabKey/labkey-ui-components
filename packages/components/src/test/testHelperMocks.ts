@@ -1,9 +1,9 @@
 import { Map } from 'immutable';
 import mock, { proxy } from 'xhr-mock';
 
-import { initDomainPropertiesMocks, initQueryGridMocks, initUserPropsMocks } from './mock';
+import { initUnitTests } from '../internal/test/testHelpers';
 
-import { initUnitTests } from '../internal/testHelpers';
+import { initDomainPropertiesMocks, initQueryGridMocks, initUserPropsMocks } from './mock';
 
 /**
  * Use this method in beforeAll() for your jest tests and you'll have full access

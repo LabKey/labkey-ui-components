@@ -1,9 +1,9 @@
 import React from 'react';
 import { ReactWrapper } from 'enzyme';
 
-import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 import { TEST_USER_EDITOR, TEST_USER_FOLDER_ADMIN } from '../../userFixtures';
-import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
+import { TEST_FOLDER_CONTAINER, TEST_PROJECT, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 import { ProjectSettings } from '../project/ProjectSettings';
 import { ProjectDataTypeSelections } from '../project/ProjectDataTypeSelections';
 
@@ -22,6 +22,14 @@ import { initBrowserHistoryState } from '../../util/global';
 
 import { InsufficientPermissionsPage } from '../permissions/InsufficientPermissionsPage';
 
+import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
+
+import { createMockWithRouteLeave } from '../../mockUtils';
+
+import { AdminAppContext, AppContext } from '../../AppContext';
+
+import { ServerContext } from '../base/ServerContext';
+
 import { BasePermissions } from './BasePermissions';
 import { AdminSettingsPageImpl } from './AdminSettingsPage';
 
@@ -32,8 +40,8 @@ beforeAll(() => {
 });
 
 describe('AdminSettingsPageImpl', () => {
-    const APP_CONTEXT = {
-        admin: {},
+    const APP_CONTEXT: Partial<AppContext> = {
+        admin: {} as AdminAppContext,
         api: getTestAPIWrapper(jest.fn, {
             security: getSecurityTestAPIWrapper(jest.fn, {
                 fetchPolicy: jest.fn().mockResolvedValue(TEST_POLICY),
@@ -41,9 +49,9 @@ describe('AdminSettingsPageImpl', () => {
         }),
     };
 
-    const SERVER_CONTEXT = {
+    const SERVER_CONTEXT: Partial<ServerContext> = {
         user: TEST_USER_FOLDER_ADMIN,
-        project: TEST_PROJECT_CONTAINER,
+        project: TEST_PROJECT,
         container: TEST_FOLDER_CONTAINER,
         moduleContext: TEST_LKS_STARTER_MODULE_CONTEXT,
     };
@@ -77,8 +85,16 @@ describe('AdminSettingsPageImpl', () => {
         expect(wrapper.find(ManageSampleStatusesPanel)).toHaveLength(1);
     }
 
+    function defaultProps(): InjectedRouteLeaveProps {
+        return createMockWithRouteLeave(jest.fn);
+    }
+
     test('showPremiumFeatures, isAppHomeFolder subfolder', async () => {
-        const wrapper = mountWithAppServerContext(<AdminSettingsPageImpl />, APP_CONTEXT, SERVER_CONTEXT);
+        const wrapper = mountWithAppServerContext(
+            <AdminSettingsPageImpl {...defaultProps()} />,
+            APP_CONTEXT,
+            SERVER_CONTEXT
+        );
         await waitForLifecycle(wrapper, 50);
         validatePremium(wrapper);
         expect(wrapper.find(BasePermissionsCheckPage).prop('title')).toBe('Settings');
@@ -87,7 +103,7 @@ describe('AdminSettingsPageImpl', () => {
     });
 
     test('showPremiumFeatures, isAppHomeFolder LK project', async () => {
-        const wrapper = mountWithAppServerContext(<AdminSettingsPageImpl />, APP_CONTEXT, {
+        const wrapper = mountWithAppServerContext(<AdminSettingsPageImpl {...defaultProps()} />, APP_CONTEXT, {
             ...SERVER_CONTEXT,
             container: TEST_PROJECT_CONTAINER,
         });
@@ -99,7 +115,7 @@ describe('AdminSettingsPageImpl', () => {
     });
 
     test('not showPremiumFeatures, isAppHomeFolder subfolder', async () => {
-        const wrapper = mountWithAppServerContext(<AdminSettingsPageImpl />, APP_CONTEXT, {
+        const wrapper = mountWithAppServerContext(<AdminSettingsPageImpl {...defaultProps()} />, APP_CONTEXT, {
             ...SERVER_CONTEXT,
             moduleContext: TEST_LKSM_STARTER_MODULE_CONTEXT,
         });
@@ -111,7 +127,7 @@ describe('AdminSettingsPageImpl', () => {
     });
 
     test('isProductProjectsEnabled, LK project', async () => {
-        const wrapper = mountWithAppServerContext(<AdminSettingsPageImpl />, APP_CONTEXT, {
+        const wrapper = mountWithAppServerContext(<AdminSettingsPageImpl {...defaultProps()} />, APP_CONTEXT, {
             ...SERVER_CONTEXT,
             container: TEST_PROJECT_CONTAINER,
             moduleContext: { ...TEST_LKS_STARTER_MODULE_CONTEXT, query: { isProductProjectsEnabled: true } },
@@ -124,7 +140,7 @@ describe('AdminSettingsPageImpl', () => {
     });
 
     test('isProductProjectsEnabled, subfolder', async () => {
-        const wrapper = mountWithAppServerContext(<AdminSettingsPageImpl />, APP_CONTEXT, {
+        const wrapper = mountWithAppServerContext(<AdminSettingsPageImpl {...defaultProps()} />, APP_CONTEXT, {
             ...SERVER_CONTEXT,
             moduleContext: { ...TEST_LKS_STARTER_MODULE_CONTEXT, query: { isProductProjectsEnabled: true } },
         });
@@ -138,7 +154,7 @@ describe('AdminSettingsPageImpl', () => {
     });
 
     test('not isSampleStatusEnabled', async () => {
-        const wrapper = mountWithAppServerContext(<AdminSettingsPageImpl />, APP_CONTEXT, {
+        const wrapper = mountWithAppServerContext(<AdminSettingsPageImpl {...defaultProps()} />, APP_CONTEXT, {
             ...SERVER_CONTEXT,
             moduleContext: {
                 ...TEST_LKS_STARTER_MODULE_CONTEXT,
@@ -151,7 +167,7 @@ describe('AdminSettingsPageImpl', () => {
     });
 
     test('non admin', async () => {
-        const wrapper = mountWithAppServerContext(<AdminSettingsPageImpl />, APP_CONTEXT, {
+        const wrapper = mountWithAppServerContext(<AdminSettingsPageImpl {...defaultProps()} />, APP_CONTEXT, {
             ...SERVER_CONTEXT,
             user: TEST_USER_EDITOR,
         });

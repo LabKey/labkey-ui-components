@@ -19,8 +19,8 @@ const tsCheckerConfig = {
         configOverwrite: {
             compilerOptions: { outDir: 'dist/' },
             include: ["src/**/*"],
-            // excluding spec files shaves time off the build
-            exclude: ["node_modules", "**/*.spec.*", "src/test"]
+            // excluding spec/test files shaves time off the build
+            exclude: ["node_modules", "**/*.spec.*", "**/*.test.*", "src/test"]
         }
     }
 };
@@ -91,6 +91,9 @@ module.exports = {
         '@labkey/premium/workflow',
         '@labkey/premium/storage',
         '@remirror/pm',
+        '@testing-library/jest-dom',
+        '@testing-library/react',
+        '@testing-library/user-event',
         'boostrap-sass',
         'classnames',
         'date-fns',

@@ -2,7 +2,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
-import { initUnitTests, makeQueryInfo } from '../../internal/testHelpers';
+import { initUnitTests, makeQueryInfo } from '../../internal/test/testHelpers';
 
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
 

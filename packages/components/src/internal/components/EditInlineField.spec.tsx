@@ -1,7 +1,7 @@
 import React from 'react';
 import { ReactWrapper } from 'enzyme';
 
-import { mountWithServerContext } from '../testHelpers';
+import { mountWithServerContext } from '../test/enzymeTestHelpers';
 
 import { QueryColumn } from '../../public/QueryColumn';
 
@@ -175,13 +175,15 @@ describe('EditInlineField', () => {
         const wrapper = mountWithServerContext(
             <EditInlineField
                 {...DEFAULT_PROPS}
-                column={new QueryColumn({
-                    fieldKey: 'test',
-                    readOnly: false,
-                    userEditable: true,
-                    shownInUpdateView: true,
-                    validValues: ['a', 'b'],
-                })}
+                column={
+                    new QueryColumn({
+                        fieldKey: 'test',
+                        readOnly: false,
+                        userEditable: true,
+                        shownInUpdateView: true,
+                        validValues: ['a', 'b'],
+                    })
+                }
             />,
             SERVER_CONTEXT
         );
@@ -199,17 +201,19 @@ describe('EditInlineField', () => {
         const wrapper = mountWithServerContext(
             <EditInlineField
                 {...DEFAULT_PROPS}
-                column={new QueryColumn({
-                    fieldKey: 'test',
-                    caption: 'Test',
-                    readOnly: false,
-                    userEditable: true,
-                    shownInUpdateView: true,
-                    lookup: {
-                        schemaName: 'core',
-                        queryName: 'users',
-                    },
-                })}
+                column={
+                    new QueryColumn({
+                        fieldKey: 'test',
+                        caption: 'Test',
+                        readOnly: false,
+                        userEditable: true,
+                        shownInUpdateView: true,
+                        lookup: {
+                            schemaName: 'core',
+                            queryName: 'users',
+                        },
+                    })
+                }
             />,
             SERVER_CONTEXT
         );

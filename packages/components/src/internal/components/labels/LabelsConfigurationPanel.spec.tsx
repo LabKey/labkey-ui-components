@@ -6,15 +6,17 @@ import { FormGroup } from 'react-bootstrap';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
 
-import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 
 import { ChoicesListItem } from '../base/ChoicesListItem';
+
+import { Container } from '../base/models/Container';
+
+import { AddEntityButton } from '../buttons/AddEntityButton';
 
 import { getLabelPrintingTestAPIWrapper } from './APIWrapper';
 import { LabelsConfigurationPanel, LabelTemplateDetails, LabelTemplatesList } from './LabelsConfigurationPanel';
 import { LabelTemplate } from './models';
-import { Container } from '../base/models/Container';
-import { AddEntityButton } from '../buttons/AddEntityButton';
 
 jest.mock('react-bootstrap-toggle', () => {
     return props => {
@@ -38,11 +40,9 @@ describe('LabelsConfigurationPanel', () => {
     };
 
     test('default props, home project', async () => {
-        const wrapper = mountWithAppServerContext(<LabelsConfigurationPanel {...DEFAULT_PROPS} />,
-            undefined,
-            {
-                 container: new Container({ path: '/Test' }) ,
-            });
+        const wrapper = mountWithAppServerContext(<LabelsConfigurationPanel {...DEFAULT_PROPS} />, undefined, {
+            container: new Container({ path: '/Test' }),
+        });
 
         await waitForLifecycle(wrapper);
 
@@ -53,12 +53,10 @@ describe('LabelsConfigurationPanel', () => {
     });
 
     test('default props, product project', async () => {
-        const wrapper = mountWithAppServerContext(<LabelsConfigurationPanel {...DEFAULT_PROPS} />,
-            undefined,
-            {
-                container: new Container({ path: '/Test/Folder', type: 'folder' }) ,
-                moduleContext: { query: { isProductProjectsEnabled: true } }
-            });
+        const wrapper = mountWithAppServerContext(<LabelsConfigurationPanel {...DEFAULT_PROPS} />, undefined, {
+            container: new Container({ path: '/Test/Folder', type: 'folder' }),
+            moduleContext: { query: { isProductProjectsEnabled: true } },
+        });
 
         await waitForLifecycle(wrapper);
 
@@ -69,12 +67,10 @@ describe('LabelsConfigurationPanel', () => {
     });
 
     test('default props, subfolder without projects', async () => {
-        const wrapper = mountWithAppServerContext(<LabelsConfigurationPanel {...DEFAULT_PROPS} />,
-            undefined,
-            {
-                container: new Container({ path: '/Test/Folder', type: 'folder' }) ,
-                moduleContext: { query: { isProductProjectsEnabled: false } }
-            });
+        const wrapper = mountWithAppServerContext(<LabelsConfigurationPanel {...DEFAULT_PROPS} />, undefined, {
+            container: new Container({ path: '/Test/Folder', type: 'folder' }),
+            moduleContext: { query: { isProductProjectsEnabled: false } },
+        });
 
         await waitForLifecycle(wrapper);
 

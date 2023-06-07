@@ -21,7 +21,7 @@ import { fromJS, Map } from 'immutable';
 import { ENTITY_FORM_IDS } from '../entities/constants';
 import { DomainDetails, DomainPanelStatus } from '../models';
 
-import { sleep } from '../../../testHelpers';
+import { sleep } from '../../../test/testHelpers';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
@@ -54,7 +54,7 @@ const sampleTypeModel = SampleTypeModel.create({
     domainDesign: fromJS({ allowTimepointProperties: false }),
 } as DomainDetails);
 
-describe('<SampleTypePropertiesPanel/>', () => {
+describe('SampleTypePropertiesPanel', () => {
     test('default props', () => {
         const tree = renderer.create(<SampleTypePropertiesPanel {...BASE_PROPS} model={sampleTypeModel} />);
 

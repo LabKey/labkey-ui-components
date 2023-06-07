@@ -17,6 +17,8 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 
+import { List } from 'immutable';
+
 import getDatasetDesign from '../../../../test/data/dataset-getDatasetDesign.json';
 import { NEW_DATASET_MODEL_WITHOUT_DATASPACE } from '../../../../test/data/constants';
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
@@ -25,11 +27,11 @@ import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { Alert } from '../../base/Alert';
 
+import { waitForLifecycle } from '../../../test/enzymeTestHelpers';
+
 import { DatasetDesignerPanelImpl, DatasetDesignerPanels } from './DatasetDesignerPanels';
 
 import { DatasetModel } from './models';
-import { waitForLifecycle } from "../../../testHelpers";
-import { List } from "immutable";
 
 beforeAll(() => {
     initUnitTestMocks();

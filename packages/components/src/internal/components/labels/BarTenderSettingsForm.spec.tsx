@@ -2,15 +2,16 @@ import React from 'react';
 import { FormControl, Button } from 'react-bootstrap';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 import { getTestAPIWrapper } from '../../APIWrapper';
+
+import { Container } from '../base/models/Container';
 
 import { getLabelPrintingTestAPIWrapper } from './APIWrapper';
 
 import { BarTenderSettingsFormImpl } from './BarTenderSettingsForm';
 import { BarTenderConfiguration } from './models';
 import { LabelsConfigurationPanel } from './LabelsConfigurationPanel';
-import { Container } from '../base/models/Container';
 
 describe('BarTenderSettingsForm', () => {
     const DEFAULT_PROPS = {
@@ -35,11 +36,9 @@ describe('BarTenderSettingsForm', () => {
     }
 
     test('default props', async () => {
-        const wrapper = mountWithAppServerContext(<BarTenderSettingsFormImpl {...DEFAULT_PROPS} />,
-            undefined,
-            {
-                container: new Container({ path: '/Test' }) ,
-            });
+        const wrapper = mountWithAppServerContext(<BarTenderSettingsFormImpl {...DEFAULT_PROPS} />, undefined, {
+            container: new Container({ path: '/Test' }),
+        });
         await waitForLifecycle(wrapper);
         validate(wrapper);
         expect(wrapper.find(FormControl).first().prop('type')).toBe('url');
@@ -67,7 +66,7 @@ describe('BarTenderSettingsForm', () => {
             />,
             undefined,
             {
-                container: new Container({ path: '/Test' }) ,
+                container: new Container({ path: '/Test' }),
             }
         );
         await waitForLifecycle(wrapper);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { waitForLifecycle } from '../testHelpers';
+import { waitForLifecycle } from '../test/enzymeTestHelpers';
 
 import { applyList, applyTemplate, handleBulletedListEnter, olMapper, ThreadEditor, ulMapper } from './ThreadEditor';
 import { createTestAPIWrapper } from './test/utils';
@@ -147,11 +147,7 @@ describe('ThreadEditor', () => {
     test('toolbar', async () => {
         const body = 'This is a test preview\n';
         const wrapper = mount(
-            <ThreadEditor
-                api={createTestAPIWrapper()}
-                nounPlural={NOUN_PLURAL}
-                nounSingular={NOUN_SINGULAR}
-            />
+            <ThreadEditor api={createTestAPIWrapper()} nounPlural={NOUN_PLURAL} nounSingular={NOUN_SINGULAR} />
         );
 
         await expectToolbarButton(wrapper, '.fa-bold', body, '****');

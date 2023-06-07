@@ -1523,10 +1523,10 @@
   resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.21.0.tgz#e64741a197e56c4e11889c9943da0a7ade06f6cf"
   integrity sha512-ydxt19BW7bF+DYYJNfQmmgw177xPUuS946wc6PgKFkTXJUW3CA+33AirXUB5D+waJZwdXmwLubMf41gK1qP17g==
 
-"@labkey/build@6.11.0-fb-react-test-lib.1":
-  version "6.11.0-fb-react-test-lib.1"
-  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/build/-/@labkey/build-6.11.0-fb-react-test-lib.1.tgz#052bfee7a80f8511d661a6e855425491f85820f9"
-  integrity sha512-BpLb+03U88443YpZFoSp7EqR/n681uz4/5dITz88cWHQAraZ+coHclXi6RLuLewLXk5/5YATwWIoWKgx5qIYfA==
+"@labkey/build@6.12.0":
+  version "6.12.0"
+  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/build/-/@labkey/build-6.12.0.tgz#c28acfddc6a722b35b9e85161001cba32161127a"
+  integrity sha512-ZfIYIJZuJjQaq5Ps4/mijp0KKQ+RHd7kre1q2+ansjQdG3ModxT2VsennF2610FAGBiAverlV0hMAGssl7q79g==
   dependencies:
     "@babel/core" "~7.20.12"
     "@babel/plugin-proposal-class-properties" "~7.18.6"

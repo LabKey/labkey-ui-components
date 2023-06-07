@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.344.0
+*Released*: 6 June 2023
+- Introduce React Testing Library
+- Add `test-enzyme` and `test-react` scripts. Call both via `yarn test`.
+- Declare alternative `jest.setup.react.ts` to support RTL-specific imports.
+- Declare `enzymeTestHelpers` and `reactTestLibraryHelpers` to house utilities specific to each library.
+- Add initial example tests for using RTL.
+
 ### version 2.343.1
 *Released*: 2 June 2023
 - Field editor fix for community usage to check for SM module during getFolderExcludedDataTypes() call

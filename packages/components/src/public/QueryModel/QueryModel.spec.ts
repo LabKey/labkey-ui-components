@@ -1,7 +1,6 @@
-import { fromJS } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { initUnitTests, makeQueryInfo } from '../../internal/testHelpers';
+import { initUnitTests, makeQueryInfo } from '../../internal/test/testHelpers';
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
 import { ExtendedMap } from '../ExtendedMap';
 

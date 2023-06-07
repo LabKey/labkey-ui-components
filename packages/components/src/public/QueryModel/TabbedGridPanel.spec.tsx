@@ -1,7 +1,8 @@
 import React from 'react';
 import { ReactWrapper } from 'enzyme';
 
-import { makeQueryInfo, makeTestData, mountWithAppServerContext } from '../../internal/testHelpers';
+import { makeQueryInfo, makeTestData } from '../../internal/test/testHelpers';
+import { mountWithAppServerContext } from '../../internal/test/enzymeTestHelpers';
 import aminoAcidsQuery from '../../test/data/assayAminoAcidsData-getQuery.json';
 import aminoAcidsQueryInfo from '../../test/data/assayAminoAcidsData-getQueryDetails.json';
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';

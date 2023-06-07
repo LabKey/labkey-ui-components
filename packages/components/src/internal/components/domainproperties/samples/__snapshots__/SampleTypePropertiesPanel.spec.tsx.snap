@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<SampleTypePropertiesPanel/> appPropertiesOnly 1`] = `
+exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
 <div
   className="domain-form-panel domain-panel-no-theme panel panel-default"
 >
@@ -242,7 +242,7 @@ exports[`<SampleTypePropertiesPanel/> appPropertiesOnly 1`] = `
 </div>
 `;
 
-exports[`<SampleTypePropertiesPanel/> default props 1`] = `
+exports[`SampleTypePropertiesPanel default props 1`] = `
 <div
   className="domain-form-panel domain-panel-no-theme panel panel-default"
 >
@@ -429,7 +429,7 @@ exports[`<SampleTypePropertiesPanel/> default props 1`] = `
 </div>
 `;
 
-exports[`<SampleTypePropertiesPanel/> include dataclass and use custom labels 1`] = `
+exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] = `
 <div
   className="domain-form-panel domain-panel-no-theme panel panel-default"
 >
@@ -653,7 +653,7 @@ exports[`<SampleTypePropertiesPanel/> include dataclass and use custom labels 1`
 </div>
 `;
 
-exports[`<SampleTypePropertiesPanel/> includeMetricUnitProperty 1`] = `
+exports[`SampleTypePropertiesPanel includeMetricUnitProperty 1`] = `
 <div
   className="domain-form-panel domain-panel-no-theme panel panel-default"
 >
@@ -930,7 +930,7 @@ exports[`<SampleTypePropertiesPanel/> includeMetricUnitProperty 1`] = `
 </div>
 `;
 
-exports[`<SampleTypePropertiesPanel/> metricUnitOptions 1`] = `
+exports[`SampleTypePropertiesPanel metricUnitOptions 1`] = `
 <div
   className="domain-form-panel domain-panel-no-theme panel panel-default"
 >
@@ -1313,7 +1313,7 @@ exports[`<SampleTypePropertiesPanel/> metricUnitOptions 1`] = `
 </div>
 `;
 
-exports[`<SampleTypePropertiesPanel/> nameExpressionInfoUrl 1`] = `
+exports[`SampleTypePropertiesPanel nameExpressionInfoUrl 1`] = `
 <div
   className="domain-form-panel domain-panel-no-theme panel panel-default"
 >
@@ -1500,7 +1500,7 @@ exports[`<SampleTypePropertiesPanel/> nameExpressionInfoUrl 1`] = `
 </div>
 `;
 
-exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
+exports[`SampleTypePropertiesPanel with aliquot preview name 1`] = `
 <ComponentWithDomainPropertiesPanelCollapse
   aliquotNamePatternProps={
     {

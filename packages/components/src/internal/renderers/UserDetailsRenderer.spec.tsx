@@ -2,7 +2,7 @@ import React from 'react';
 
 import { fromJS } from 'immutable';
 
-import { mountWithServerContext } from '../testHelpers';
+import { mountWithServerContext } from '../test/enzymeTestHelpers';
 
 import { TEST_USER_APP_ADMIN } from '../userFixtures';
 import { UserLink } from '../components/user/UserLink';

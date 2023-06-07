@@ -19,7 +19,7 @@ import mock, { proxy } from 'xhr-mock';
 
 import { ConfirmModal } from '../base/ConfirmModal';
 
-import { sleep } from '../../testHelpers';
+import { sleep } from '../../test/testHelpers';
 
 import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
 import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';

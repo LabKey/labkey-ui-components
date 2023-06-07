@@ -4,7 +4,7 @@ import { ReactWrapper } from 'enzyme';
 import { Modal } from 'react-bootstrap';
 
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
-import { mountWithAppServerContext } from '../../testHelpers';
+import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';

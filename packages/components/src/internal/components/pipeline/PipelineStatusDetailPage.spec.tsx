@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
 import { initPipelineStatusDetailsMocks } from '../../../test/mock';
 

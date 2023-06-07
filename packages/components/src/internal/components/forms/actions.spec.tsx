@@ -19,7 +19,7 @@ import React, { FC } from 'react';
 
 import { LoadingState } from '../../../public/LoadingState';
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
-import { waitForLifecycle } from '../../testHelpers';
+import { waitForLifecycle } from '../../test/enzymeTestHelpers';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { UsersLoader, useUsersWithPermissions } from './actions';
@@ -28,8 +28,8 @@ import { UsersLoader, useUsersWithPermissions } from './actions';
 describe('useUsersWithPermissions', () => {
     interface TestComponentProps {
         containerPath: string;
-        permissions: string | string[];
         loader: UsersLoader;
+        permissions: string | string[];
     }
 
     const TestComponent: FC<TestComponentProps> = ({ containerPath, permissions, loader }) => {

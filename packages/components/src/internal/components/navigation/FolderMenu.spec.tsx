@@ -2,7 +2,7 @@ import React from 'react';
 
 import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 
-import { mountWithServerContext } from '../../testHelpers';
+import { mountWithServerContext } from '../../test/enzymeTestHelpers';
 
 import { TEST_USER_APP_ADMIN, TEST_USER_EDITOR } from '../../userFixtures';
 

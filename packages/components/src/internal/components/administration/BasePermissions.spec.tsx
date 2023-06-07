@@ -1,7 +1,7 @@
 import React from 'react';
 import { List, Map } from 'immutable';
 
-import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 import { createMockWithRouteLeave } from '../../mockUtils';
 import { ServerContext } from '../base/ServerContext';
 import { TEST_PROJECT_CONTAINER, TEST_PROJECT } from '../../containerFixtures';

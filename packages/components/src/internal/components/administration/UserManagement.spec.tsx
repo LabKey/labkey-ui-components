@@ -4,7 +4,7 @@ import { ReactWrapper } from 'enzyme';
 import { PermissionRoles } from '@labkey/api';
 
 import { initQueryGridState } from '../../global';
-import { mountWithAppServerContext } from '../../testHelpers';
+import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 import { UsersGridPanel } from '../user/UsersGridPanel';
 import { SecurityPolicy } from '../permissions/models';

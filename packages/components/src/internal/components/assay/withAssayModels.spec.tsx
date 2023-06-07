@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import { List } from 'immutable';
 import { createMemoryHistory, InjectedRouter, Route, Router } from 'react-router';
 
-import { sleep } from '../../testHelpers';
+import { sleep } from '../../test/testHelpers';
 
 import { TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT } from '../../productFixtures';
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';

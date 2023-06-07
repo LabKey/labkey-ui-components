@@ -17,7 +17,7 @@ import React from 'react';
 import moment from 'moment';
 import { Map } from 'immutable';
 
-import { mountWithAppServerContext } from '../../testHelpers';
+import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 import { TEST_USER_APP_ADMIN, TEST_USER_READER } from '../../userFixtures';
 
 import { Container } from '../base/models/Container';

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 
 import { TEST_USER_GUEST, TEST_USER_READER } from '../../userFixtures';
 import { AdminAppContext } from '../../AppContext';
@@ -9,8 +9,9 @@ import { Page } from '../base/Page';
 import { UserDetailHeader } from '../user/UserDetailHeader';
 import { Notifications } from '../notifications/Notifications';
 
-import { AccountSettingsPage } from './AccountSettingsPage';
 import { TEST_PROJECT_CONTAINER } from '../../containerFixtures';
+
+import { AccountSettingsPage } from './AccountSettingsPage';
 
 describe('AccountSettingsPage', () => {
     test('reader user', async () => {

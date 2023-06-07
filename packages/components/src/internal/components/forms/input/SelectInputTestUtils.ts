@@ -1,4 +1,4 @@
-import { waitForLifecycle } from '../../../testHelpers';
+import { waitForLifecycle } from '../../../test/enzymeTestHelpers';
 
 export const SELECT_INPUT_CSS_PREFIX = 'select-input';
 export const SELECT_INPUT_CONTROL_SELECTOR = `div.${SELECT_INPUT_CSS_PREFIX}__control`;

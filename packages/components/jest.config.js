@@ -41,7 +41,7 @@ module.exports = {
     testPathIgnorePatterns: [
         '/node_modules/'
     ],
-    testRegex: '(\\.(test|spec))\\.(ts|tsx)$',
+    testRegex: '(\\.(spec))\\.(ts|tsx)$',
     testResultsProcessor: 'jest-teamcity-reporter',
     transform: {
         '^.+\\.tsx?$': [

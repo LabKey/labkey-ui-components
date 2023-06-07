@@ -10,7 +10,7 @@ import { Alert } from '../base/Alert';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
-import { waitForLifecycle } from '../../testHelpers';
+import { waitForLifecycle } from '../../test/enzymeTestHelpers';
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { InjectedQueryModels } from '../../../public/QueryModel/withQueryModels';
 

@@ -1,11 +1,13 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 
+import { List } from 'immutable';
+
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 import getDomainDetailsJSON from '../../../../test/data/dataclass-getDomainDetails.json';
 import DomainForm from '../DomainForm';
 
-import { waitForLifecycle } from '../../../testHelpers';
+import { waitForLifecycle } from '../../../test/enzymeTestHelpers';
 import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { FileAttachmentForm } from '../../../../public/files/FileAttachmentForm';
@@ -17,7 +19,6 @@ import { SystemFields } from '../SystemFields';
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 import { DataClassModel } from './models';
 import { DataClassDesigner, DataClassDesignerImpl } from './DataClassDesigner';
-import { List } from "immutable";
 
 const BASE_PROPS = {
     onComplete: jest.fn(),
@@ -32,17 +33,19 @@ beforeAll(() => {
 
 describe('DataClassDesigner', () => {
     test('default properties', async () => {
-        const form = <DataClassDesignerImpl
-            {...BASE_PROPS}
-            currentPanelIndex={0}
-            firstState={true}
-            onFinish={jest.fn()}
-            onTogglePanel={jest.fn()}
-            setSubmitting={jest.fn()}
-            submitting={false}
-            validatePanel={0}
-            visitedPanels={List()}
-        />;
+        const form = (
+            <DataClassDesignerImpl
+                {...BASE_PROPS}
+                currentPanelIndex={0}
+                firstState={true}
+                onFinish={jest.fn()}
+                onTogglePanel={jest.fn()}
+                setSubmitting={jest.fn()}
+                submitting={false}
+                validatePanel={0}
+                visitedPanels={List()}
+            />
+        );
 
         const tree = shallow(form);
 
@@ -83,18 +86,20 @@ describe('DataClassDesigner', () => {
     });
 
     test('initModel', async () => {
-        const form = <DataClassDesignerImpl
-            {...BASE_PROPS}
-            initModel={DataClassModel.create(getDomainDetailsJSON)}
-            currentPanelIndex={0}
-            firstState={true}
-            onFinish={jest.fn()}
-            onTogglePanel={jest.fn()}
-            setSubmitting={jest.fn()}
-            submitting={false}
-            validatePanel={0}
-            visitedPanels={List()}
-        />;
+        const form = (
+            <DataClassDesignerImpl
+                {...BASE_PROPS}
+                initModel={DataClassModel.create(getDomainDetailsJSON)}
+                currentPanelIndex={0}
+                firstState={true}
+                onFinish={jest.fn()}
+                onTogglePanel={jest.fn()}
+                setSubmitting={jest.fn()}
+                submitting={false}
+                validatePanel={0}
+                visitedPanels={List()}
+            />
+        );
         const wrapped = shallow(form);
         await waitForLifecycle(wrapped);
 

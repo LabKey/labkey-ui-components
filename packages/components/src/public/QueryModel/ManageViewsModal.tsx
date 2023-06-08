@@ -1,5 +1,7 @@
-import React, { ChangeEvent, FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { FC, Fragment, memo, useCallback, useEffect, useState } from 'react';
 import { Col, Modal, OverlayTrigger, Popover, Row } from 'react-bootstrap';
+
+import { PermissionTypes } from '@labkey/api';
 
 import { ViewInfo } from '../../internal/ViewInfo';
 import { SchemaQuery } from '../SchemaQuery';
@@ -8,7 +10,8 @@ import { Alert } from '../../internal/components/base/Alert';
 import { useServerContext } from '../../internal/components/base/ServerContext';
 import { useAppContext } from '../../internal/AppContext';
 import { resolveErrorMessage } from '../../internal/util/messaging';
-import { deleteView, renameGridView, revertViewEdit, saveGridView, saveSessionView } from '../../internal/actions';
+
+import { RequiresPermission } from '../../internal/components/base/Permissions';
 
 import { ViewNameInput } from './SaveViewModal';
 
@@ -37,16 +40,15 @@ export interface Props {
 export const ManageViewsModal: FC<Props> = memo(props => {
     const { onDone, schemaQuery, currentView, containerPath } = props;
 
-    const [views, setViews] = useState<ViewInfo[]>(undefined);
-    const [selectedView, setSelectedView] = useState<ViewInfo>(undefined);
+    const [views, setViews] = useState<ViewInfo[]>();
+    const [selectedView, setSelectedView] = useState<ViewInfo>();
     const [errorMessage, setErrorMessage] = useState<string>();
     const [isSubmitting, setIsSubmitting] = useState<boolean>();
     const [hasChange, setHasChange] = useState<boolean>();
-    const [reselectViewName, setReselectViewName] = useState<string>(undefined);
-    const [deleting, setDeleting] = useState<ViewInfo>(undefined);
+    const [reselectViewName, setReselectViewName] = useState<string>();
+    const [deleting, setDeleting] = useState<ViewInfo>();
 
     const { api } = useAppContext();
-
     const { user } = useServerContext();
 
     useEffect(() => {
@@ -79,7 +81,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                 setIsSubmitting(false);
             }
         },
-        [schemaQuery]
+        [api, schemaQuery]
     );
 
     const getActionView = useCallback(
@@ -101,9 +103,9 @@ export const ManageViewsModal: FC<Props> = memo(props => {
 
     const revertDefaultView = useCallback(() => {
         handleAction(async () => {
-            await revertViewEdit(schemaQuery, containerPath, '');
+            await api.query.deleteView(schemaQuery, containerPath, '', true);
         });
-    }, [schemaQuery, containerPath]);
+    }, [api, handleAction, schemaQuery, containerPath]);
 
     const setDefaultView = useCallback(
         event => {
@@ -111,23 +113,39 @@ export const ManageViewsModal: FC<Props> = memo(props => {
             handleAction(async () => {
                 const finalViewInfo = view.mutate({ name: '' });
                 if (view.session) {
-                    await saveSessionView(schemaQuery, containerPath, view.name, '', view.inherit, true, true);
+                    await api.query.saveSessionView(
+                        schemaQuery,
+                        containerPath,
+                        view.name,
+                        '',
+                        view.inherit,
+                        true,
+                        true
+                    );
                 } else {
-                    await saveGridView(schemaQuery, containerPath, finalViewInfo, true, false, view.inherit, true);
+                    await api.query.saveGridView(
+                        schemaQuery,
+                        containerPath,
+                        finalViewInfo,
+                        true,
+                        false,
+                        view.inherit,
+                        true
+                    );
                 }
                 if (currentView.name === view.name) setReselectViewName('');
             });
         },
-        [schemaQuery, containerPath, currentView, getActionView]
+        [api, getActionView, handleAction, currentView, schemaQuery, containerPath]
     );
 
     const deleteSavedView = useCallback(() => {
         handleAction(async () => {
             const viewName = deleting.name;
-            await deleteView(schemaQuery, containerPath, viewName, false);
+            await api.query.deleteView(schemaQuery, containerPath, viewName, false);
             if (currentView.name === viewName || reselectViewName === viewName) setReselectViewName('');
         });
-    }, [currentView, deleting, schemaQuery, containerPath, reselectViewName]);
+    }, [api, handleAction, deleting, schemaQuery, containerPath, currentView, reselectViewName]);
 
     const onDeleteView = useCallback(
         event => {
@@ -136,7 +154,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
         [getActionView]
     );
 
-    const cancelDeleteView = useCallback(event => {
+    const cancelDeleteView = useCallback(() => {
         setDeleting(undefined);
     }, []);
 
@@ -153,12 +171,12 @@ export const ManageViewsModal: FC<Props> = memo(props => {
             }
 
             await handleAction(async () => {
-                await renameGridView(schemaQuery, containerPath, selectedView.name, newName);
+                await api.query.renameGridView(schemaQuery, containerPath, selectedView.name, newName);
                 setSelectedView(undefined);
                 if (selectedView.name === currentView.name) setReselectViewName(newName);
             });
         },
-        [selectedView, currentView, schemaQuery, containerPath]
+        [api, selectedView, handleAction, schemaQuery, containerPath, currentView]
     );
 
     return (
@@ -172,30 +190,26 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                 {views &&
                     views.map((view, ind) => {
                         const { isDefault, isSystemView, shared } = view;
+
+                        // other than the default view, don't show system views
+                        if (!isDefault && isSystemView) {
+                            return null;
+                        }
+
                         const unsavedView = view.session;
                         const isRenaming = !!selectedView;
                         let canEdit = !isDefault && !isRenaming && !unsavedView && !deleting;
-                        if (shared) canEdit = canEdit && user.isAdmin;
-
-                        let revert = <span className="gray-text">Revert</span>;
-                        if (view.isSaved) {
-                            revert = (
-                                <span onClick={revertDefaultView} className="clickable-text">
-                                    Revert
-                                </span>
-                            );
+                        if (shared) {
+                            canEdit = canEdit && user.isAdmin;
                         }
 
-                        // other than the default view, don't show system views
-                        if (!isDefault && isSystemView) return null;
-
                         return (
-                            <>
-                                <Row className="small-margin-bottom" key={view.name}>
+                            <Fragment key={view.name}>
+                                <Row className="small-margin-bottom">
                                     <Col xs={8}>
                                         {selectedView && selectedView?.name === view.name ? (
                                             <ViewNameInput
-                                                autoFocus={true}
+                                                autoFocus
                                                 view={selectedView}
                                                 onBlur={renameView}
                                                 placeholder={selectedView?.name}
@@ -206,31 +220,35 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                         )}
                                     </Col>
                                     <Col xs={4}>
-                                        {user.hasAdminPermission() && (
-                                            <>
-                                                {isDefault && !isRenaming && (
-                                                    <OverlayTrigger
-                                                        placement="top"
-                                                        overlay={
-                                                            <Popover id="disabled-button-popover">
-                                                                Revert back to the system default view.
-                                                            </Popover>
-                                                        }
-                                                    >
-                                                        {revert}
-                                                    </OverlayTrigger>
-                                                )}
-                                                {!isDefault && !isRenaming && (
-                                                    <span
-                                                        onClick={setDefaultView}
-                                                        id={'setDefault-' + ind}
-                                                        className="clickable-text"
-                                                    >
-                                                        Make default
-                                                    </span>
-                                                )}
-                                            </>
-                                        )}
+                                        <RequiresPermission perms={PermissionTypes.Admin}>
+                                            {isDefault && !isRenaming && (
+                                                <OverlayTrigger
+                                                    placement="top"
+                                                    overlay={
+                                                        <Popover id="disabled-button-popover">
+                                                            Revert back to the system default view.
+                                                        </Popover>
+                                                    }
+                                                >
+                                                    {view.isSaved ? (
+                                                        <span onClick={revertDefaultView} className="clickable-text">
+                                                            Revert
+                                                        </span>
+                                                    ) : (
+                                                        <span className="gray-text">Revert</span>
+                                                    )}
+                                                </OverlayTrigger>
+                                            )}
+                                            {!isDefault && !isRenaming && (
+                                                <span
+                                                    onClick={setDefaultView}
+                                                    id={'setDefault-' + ind}
+                                                    className="clickable-text"
+                                                >
+                                                    Make default
+                                                </span>
+                                            )}
+                                        </RequiresPermission>
                                         {canEdit && (
                                             <span className="pull-right">
                                                 <span
@@ -258,6 +276,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                                         className="button-left-spacing alert-button btn btn-danger"
                                                         id={'confirm-delete-' + ind}
                                                         onClick={deleteSavedView}
+                                                        type="button"
                                                     >
                                                         Yes
                                                     </button>
@@ -265,6 +284,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                                         className="button-left-spacing alert-button btn btn-default"
                                                         id={'cancel-delete-' + ind}
                                                         onClick={cancelDeleteView}
+                                                        type="button"
                                                     >
                                                         No
                                                     </button>
@@ -273,12 +293,12 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                         </Col>
                                     </Row>
                                 )}
-                            </>
+                            </Fragment>
                         );
                     })}
             </Modal.Body>
             <Modal.Footer>
-                <button disabled={isSubmitting} onClick={onClose} className="btn btn-default pull-right">
+                <button disabled={isSubmitting} onClick={onClose} className="btn btn-default pull-right" type="button">
                     Done
                 </button>
             </Modal.Footer>

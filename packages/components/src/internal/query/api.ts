@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map, OrderedMap, Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
+import { fromJS, List, Map, Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
 import { normalize, schema } from 'normalizr';
 import { Filter, Query, QueryDOM } from '@labkey/api';
+
 import { ExtendedMap } from '../../public/ExtendedMap';
 
 import { getQueryMetadata } from '../global';
@@ -120,7 +121,7 @@ export function applyQueryMetadata(rawQueryInfo: any, schemaName?: string, query
     if (rawQueryInfo && _schemaName && _queryName) {
         const schemaQuery = new SchemaQuery(_schemaName, _queryName);
 
-        let columns = new ExtendedMap<string, QueryColumn>();
+        const columns = new ExtendedMap<string, QueryColumn>();
         rawQueryInfo.columns.forEach(rawColumn => {
             columns.set(rawColumn.fieldKey.toLowerCase(), applyColumnMetadata(schemaQuery, rawColumn));
         });
@@ -738,7 +739,10 @@ export function insertRows(options: InsertRowsOptions): Promise<InsertRowsRespon
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
             rows: _rows.toArray(),
-            skipReselectRows: (options.skipReselectRows === null || options.skipReselectRows === undefined) ? true : options.skipReselectRows,
+            skipReselectRows:
+                options.skipReselectRows === null || options.skipReselectRows === undefined
+                    ? true
+                    : options.skipReselectRows,
             apiVersion: 13.2,
             success: (response, request) => {
                 if (processRequest(response, request, reject)) return;
@@ -803,11 +807,11 @@ function ensureNullForUndefined(row: Map<string, any>): Map<string, any> {
     return row.reduce((map, v, k) => map.set(k, v === undefined ? null : v), Map<string, any>());
 }
 
-interface UpdateRowsOptions extends Omit<Query.QueryRequestOptions, 'schemaName' | 'queryName'> {
+export interface UpdateRowsOptions extends Omit<Query.QueryRequestOptions, 'schemaName' | 'queryName'> {
     schemaQuery: SchemaQuery;
 }
 
-interface UpdateRowsResponse {
+export interface UpdateRowsResponse {
     rows: any[];
     schemaQuery: SchemaQuery;
     transactionAuditId?: number;
@@ -821,7 +825,10 @@ export function updateRows(options: UpdateRowsOptions): Promise<UpdateRowsRespon
             ...updateRowOptions,
             queryName: schemaQuery.queryName,
             schemaName: schemaQuery.schemaName,
-            skipReselectRows: (options.skipReselectRows === null || options.skipReselectRows === undefined) ? true : options.skipReselectRows,
+            skipReselectRows:
+                options.skipReselectRows === null || options.skipReselectRows === undefined
+                    ? true
+                    : options.skipReselectRows,
             success: (response, request) => {
                 if (processRequest(response, request, reject)) return;
 
@@ -852,11 +859,17 @@ export function updateRows(options: UpdateRowsOptions): Promise<UpdateRowsRespon
     });
 }
 
-interface DeleteRowsOptions extends Omit<Query.QueryRequestOptions, 'schemaName' | 'queryName'> {
+export interface DeleteRowsOptions extends Omit<Query.QueryRequestOptions, 'schemaName' | 'queryName'> {
     schemaQuery: SchemaQuery;
 }
 
-export function deleteRows(options: DeleteRowsOptions): Promise<any> {
+export interface DeleteRowsResponse {
+    rows: any[];
+    schemaQuery: SchemaQuery;
+    transactionAuditId?: number;
+}
+
+export function deleteRows(options: DeleteRowsOptions): Promise<DeleteRowsResponse> {
     return new Promise((resolve, reject) => {
         const { schemaQuery, ...deleteRowsOptions } = options;
         Query.deleteRows({

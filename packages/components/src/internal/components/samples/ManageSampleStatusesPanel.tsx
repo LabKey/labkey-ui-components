@@ -13,7 +13,6 @@ import { AddEntityButton } from '../buttons/AddEntityButton';
 import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { SelectInput } from '../forms/input/SelectInput';
-import { selectRowsDeprecated, updateRows, insertRows, deleteRows } from '../../query/api';
 import { caseInsensitive } from '../../util/utils';
 import { SCHEMAS } from '../../schemas';
 import { resolveErrorMessage } from '../../util/messaging';
@@ -26,6 +25,8 @@ import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
 
 import { useServerContext } from '../base/ServerContext';
 import { isProductProjectsEnabled } from '../../app/utils';
+
+import { useAppContext } from '../../AppContext';
 
 import { SampleState } from './models';
 import { getSampleStatusLockedMessage } from './utils';
@@ -52,27 +53,23 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
     const [saving, setSaving] = useState<boolean>();
     const [error, setError] = useState<string>();
     const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>();
-    const { project } = useServerContext();
+    const { api } = useAppContext();
 
     useEffect(() => {
-        selectRowsDeprecated({
-            schemaName: STATE_TYPE_SQ.schemaName,
-            queryName: STATE_TYPE_SQ.queryName,
-            columns: 'RowId,Value',
-        })
-            .then(({ key, models, orderedModels }) => {
-                const data = orderedModels[key]
-                    .map(id => {
-                        return { value: caseInsensitive(models[key][id], 'Value').value };
-                    })
-                    .toArray();
-                setTypeOptions(data);
-            })
-            .catch(reason => {
-                console.error(reason);
+        (async () => {
+            try {
+                const response = await api.query.selectRows({ columns: 'RowId,Value', schemaQuery: STATE_TYPE_SQ });
+
+                const options = response.rows.reduce((options_, row) => {
+                    options_.push({ value: caseInsensitive(row, 'Value').value });
+                    return options_;
+                }, []);
+                setTypeOptions(options);
+            } catch (e) {
                 setTypeOptions(DEFAULT_TYPE_OPTIONS);
-            });
-    }, []);
+            }
+        })();
+    }, [api]);
 
     const resetState = useCallback(() => {
         setSaving(false);
@@ -122,10 +119,11 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
         const stateToSave = updatedState.set('label', updatedState.label?.trim());
 
         if (stateToSave.rowId) {
-            updateRows({
-                schemaQuery: SCHEMAS.CORE_TABLES.DATA_STATES,
-                rows: [stateToSave],
-            })
+            api.query
+                .updateRows({
+                    schemaQuery: SCHEMAS.CORE_TABLES.DATA_STATES,
+                    rows: [stateToSave],
+                })
                 .then(() => {
                     onActionComplete(stateToSave.label);
                 })
@@ -134,10 +132,11 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                     setSaving(false);
                 });
         } else {
-            insertRows({
-                schemaQuery: SCHEMAS.CORE_TABLES.DATA_STATES,
-                rows: List([stateToSave]),
-            })
+            api.query
+                .insertRows({
+                    schemaQuery: SCHEMAS.CORE_TABLES.DATA_STATES,
+                    rows: List([stateToSave]),
+                })
                 .then(() => {
                     onActionComplete(stateToSave.label);
                 })
@@ -146,15 +145,16 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                     setSaving(false);
                 });
         }
-    }, [updatedState, onActionComplete]);
+    }, [api, updatedState, onActionComplete]);
 
     const onToggleDeleteConfirm = useCallback(() => setShowDeleteConfirm(!showDeleteConfirm), [showDeleteConfirm]);
     const onDeleteConfirm = useCallback(() => {
         if (updatedState.rowId) {
-            deleteRows({
-                schemaQuery: SCHEMAS.CORE_TABLES.DATA_STATES,
-                rows: [updatedState],
-            })
+            api.query
+                .deleteRows({
+                    schemaQuery: SCHEMAS.CORE_TABLES.DATA_STATES,
+                    rows: [updatedState],
+                })
                 .then(() => {
                     onActionComplete(undefined, true);
                 })
@@ -165,7 +165,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
         } else {
             setShowDeleteConfirm(false);
         }
-    }, [updatedState, onActionComplete]);
+    }, [api, updatedState, onActionComplete]);
 
     const disabledMsg = useMemo(() => {
         return getSampleStatusLockedMessage(updatedState, saving);

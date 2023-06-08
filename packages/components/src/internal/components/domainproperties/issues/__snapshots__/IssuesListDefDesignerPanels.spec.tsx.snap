@@ -42,6 +42,14 @@ exports[`IssuesListDefDesignerPanel new Issue List Definition 1`] = `
   visitedPanels={Immutable.List []}
 >
   <ComponentWithDomainPropertiesPanelCollapse
+    api={
+      {
+        "getProjectGroups": [MockFunction],
+        "getRelatedFolders": [MockFunction],
+        "getUsersForGroup": [MockFunction],
+        "saveIssueListDefOptions": [MockFunction],
+      }
+    }
     controlledCollapse={true}
     initCollapsed={false}
     model={

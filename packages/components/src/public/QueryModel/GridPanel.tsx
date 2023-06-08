@@ -25,8 +25,6 @@ import { ViewInfo } from '../../internal/ViewInfo';
 
 import { QueryColumn } from '../QueryColumn';
 
-import { QueryInfo } from '../QueryInfo';
-
 import { QuerySort } from '../QuerySort';
 
 import { GridColumn } from '../../internal/components/base/models/GridColumn';
@@ -287,7 +285,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
         isUpdated,
     } = props;
     const { viewName } = model;
-    const [errorMsg, setErrorMsg] = useState<string>(undefined);
+    const [errorMsg, setErrorMsg] = useState<string>();
 
     // TODO: unable to get jest to pass with useServerContext() due to GridPanel being Component instead of FC
     // const { user } = useServerContext();
@@ -840,8 +838,11 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                         this.setState({ errorMsg });
                     });
             } else {
-                const isCustomView = !!newName && (newName !== ViewInfo.DEFAULT_NAME);
-                const finalViewInfo = updatedViewInfo.mutate({ name: newName, isDefault: isCustomView ? false : updatedViewInfo.isDefault, });
+                const isCustomView = !!newName && newName !== ViewInfo.DEFAULT_NAME;
+                const finalViewInfo = updatedViewInfo.mutate({
+                    name: newName,
+                    isDefault: isCustomView ? false : updatedViewInfo.isDefault,
+                });
 
                 saveGridView(model.schemaQuery, model.containerPath, finalViewInfo, replace, false, inherit, shared)
                     .then(response => {

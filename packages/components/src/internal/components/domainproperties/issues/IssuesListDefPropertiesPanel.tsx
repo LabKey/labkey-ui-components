@@ -24,10 +24,12 @@ import {
     RestrictedOptions,
 } from './IssuesListDefPropertiesPanelFormElements';
 import { IssuesListDefModel } from './models';
+import { getDefaultIssuesAPIWrapper, IssuesAPIWrapper } from './actions';
 
 const PROPERTIES_HEADER_ID = 'issues-properties-hdr';
 
 interface OwnProps {
+    api?: IssuesAPIWrapper;
     model: IssuesListDefModel;
     onChange: (model: IssuesListDefModel) => void;
     successBsStyle?: string;
@@ -43,6 +45,10 @@ export class IssuesListDefPropertiesPanelImpl extends React.PureComponent<
     Props & InjectedDomainPropertiesPanelCollapseProps,
     State
 > {
+    static defaultProps = {
+        api: getDefaultIssuesAPIWrapper(),
+    };
+
     constructor(props: Props & InjectedDomainPropertiesPanelCollapseProps) {
         super(props);
 
@@ -112,7 +118,7 @@ export class IssuesListDefPropertiesPanelImpl extends React.PureComponent<
     };
 
     render() {
-        const { model } = this.props;
+        const { api, model } = this.props;
         const { isValid } = this.state;
         return (
             <BasePropertiesPanel
@@ -140,6 +146,7 @@ export class IssuesListDefPropertiesPanelImpl extends React.PureComponent<
                         {isRestrictedIssueListSupported() && (
                             <div className="domain-field-padding-bottom">
                                 <RestrictedOptions
+                                    api={api}
                                     model={model}
                                     onCheckChange={this.onRestrictedListCheckChange}
                                     onSelect={this.onSelectChange}
@@ -147,7 +154,7 @@ export class IssuesListDefPropertiesPanelImpl extends React.PureComponent<
                             </div>
                         )}
                     </Col>
-                    <AssignmentOptions model={model} onSelect={this.onSelectChange} />
+                    <AssignmentOptions api={api} model={model} onSelect={this.onSelectChange} />
                 </Form>
             </BasePropertiesPanel>
         );

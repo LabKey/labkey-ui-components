@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.345.0
+*Released*: 8 June 2023
+- Revise `QueryAPIWrapper` to support a number of additional API endpoints including query view APIs.
+- Refactor a number of components to utilize the `APIWrapper` pattern and update associated tests.
+- Remove `getDataClassDetails` from top-level export as it has been added to the `DomainPropertiesAPIWrapper`.
+
 ### version 2.344.0
 *Released*: 6 June 2023
 - Introduce React Testing Library

@@ -970,7 +970,122 @@ async function prepareInsertRowDataFromBulkForm(
     };
 }
 
-// exported for jest testing
+/**
+ * This REGEX will match for any strings that are suffixed with a number, it has several capture groups to allow us to
+ * easily grab the number and the prefix. The following values should match:
+ *      ABC-123 captures as ['ABC-123', 'ABC-', '123', undefined]
+ *      ABC123 captures as ['ABC123', 'ABC', '123', undefined]
+ *      ABC-1.23 captures as ['ABC-1.23', 'ABC-', '1.23', '.23']
+ *      ABC.123 captures as ['ABC.123', 'ABC.', '123', undefined]
+ */
+const POSTFIX_REGEX = /^(.*?)(\d+(\.\d+)?)$/;
+type PrefixAndNumber = [string, string | undefined];
+
+/**
+ * Given a string it returns an array in the form of [prefix, number suffix]. If the string is not suffixed with a
+ * number the number suffix is undefined. If the entire string is a number the prefix will be undefined. This method
+ * intentionally does not parse the numbers.
+ */
+export function splitPrefixedNumber(text: string): PrefixAndNumber {
+    const matches = text.match(POSTFIX_REGEX);
+
+    if (matches === null) {
+        return [text, undefined];
+    }
+
+    return [matches[1] === '' ? undefined : matches[1], matches[2]];
+}
+
+/**
+ * Given an array of values computed by splitPrefixedNumber returns true if they all have the same prefix
+ */
+function everyValueHasSamePrefix(values: PrefixAndNumber[]): boolean {
+    if (values.length === 0) return false;
+    const prefix = values[0][0];
+    return values.every(value => value[0] === prefix);
+}
+
+enum IncrementDirection {
+    FORWARD,
+    BACKWARD,
+}
+
+enum IncrementType {
+    DATE,
+    NONE,
+    NUMBER,
+}
+
+interface SelectionIncrement {
+    direction: IncrementDirection;
+    increment?: number;
+    incrementType: IncrementType;
+    initialSelectionValues: Array<List<ValueDescriptor>>; // yes this is a very odd type, but we can clean it up when we rip out Immutable
+    prefix?: string;
+    startingValue: number;
+}
+
+function inferSelectionDirection(initialCellKeys: string[], cellKeysToFill: string[]) {
+    const initialMin = parseCellKey(initialCellKeys[0]);
+    const fillMin = parseCellKey(cellKeysToFill[0]);
+
+    if (initialMin.rowIdx < fillMin.rowIdx) return IncrementDirection.FORWARD;
+    return IncrementDirection.BACKWARD;
+}
+
+function inferSelectionIncrement(
+    editorModel: EditorModel,
+    initialCellKeys: string[],
+    cellKeysToFill: string[]
+): SelectionIncrement {
+    const direction = inferSelectionDirection(initialCellKeys, cellKeysToFill);
+    const values = initialCellKeys.map(cellKey => editorModel.getValueForCellKey(cellKey));
+    let rawValues = values.map(value => value.get(0)?.raw);
+    let displayValues = values.map(value => value.get(0)?.display);
+
+    // use the display values to determine sequence type to account for lookup cell values with numeric key/raw values
+    const splitValues = displayValues.map(splitPrefixedNumber);
+    const allPrefixed = everyValueHasSamePrefix(splitValues);
+    let prefix;
+    let incrementType = IncrementType.NONE;
+
+    if (allPrefixed) {
+        prefix = splitValues[0][0];
+        displayValues = splitValues.map(value => value[1]);
+        rawValues = rawValues.map(value => splitPrefixedNumber(value)[1]);
+    }
+
+    const isFloatSeq = values.length > 1 && displayValues.every(isFloat);
+    const isIntSeq = values.length > 1 && displayValues.every(isInteger);
+    let firstCellRawVal = rawValues[0];
+    let lastCellRawVal = rawValues[rawValues.length - 1];
+    let increment;
+
+    if (isFloatSeq) {
+        firstCellRawVal = parseFloat(firstCellRawVal);
+        lastCellRawVal = parseFloat(lastCellRawVal);
+    } else if (isIntSeq) {
+        firstCellRawVal = parseScientificInt(firstCellRawVal);
+        lastCellRawVal = parseScientificInt(lastCellRawVal);
+    }
+
+    if (isFloatSeq || isIntSeq) {
+        // increment -> last value minus first value divide by the number of steps in the initial selection
+        increment = decimalDifference(lastCellRawVal, firstCellRawVal);
+        increment = rawValues.length > 1 ? increment / (rawValues.length - 1) : 0;
+        incrementType = IncrementType.NUMBER;
+    }
+
+    return {
+        direction,
+        increment,
+        incrementType,
+        initialSelectionValues: values,
+        prefix,
+        startingValue: direction === IncrementDirection.FORWARD ? lastCellRawVal : firstCellRawVal,
+    };
+}
+
 export function parseIntIfNumber(val: any): number | string {
     const intVal = !isNaN(val) ? parseInt(val, 10) : undefined;
     return intVal === undefined || isNaN(intVal) ? val : intVal;
@@ -1067,6 +1182,7 @@ export function generateFillCellKeys(initialSelection: string[], finalSelection:
  * @param data: The rows object from a QueryModel
  * @param queryInfo: A QueryInfo
  * @param columnMetadata: Array of column metadata, in the same order as the columns in the grid
+ * TODO: Why do we need readonlyRows and lockedRows? Could they be merged into a single variable?
  * @param readonlyRows: A list of readonly rows
  * @param lockedRows: A list of locked rows
  */
@@ -1086,14 +1202,14 @@ export function dragFillEvent(
     // If the selection size hasn't changed, then the selection hasn't changed, so return the existing cellValues
     if (finalSelection.length === initialSelection.length) return cellValues;
 
-    const fillCellKeys = generateFillCellKeys(initialSelection, finalSelection);
+    const selectionToFill = generateFillCellKeys(initialSelection, finalSelection);
 
-    fillCellKeys.forEach(columnCells => {
+    selectionToFill.forEach(columnCells => {
         const { colIdx } = parseCellKey(columnCells[0]);
         const initialSelectionByCol = initialSelection.filter(cellKey => parseCellKey(cellKey).colIdx === colIdx);
         const metadata = columnMetadata[colIdx];
 
-        const fillCells = columnCells.filter(cellKey => {
+        const selectionToFillByCol = columnCells.filter(cellKey => {
             const { rowIdx } = parseCellKey(cellKey);
             const row = data.get(dataKeys.get(rowIdx));
             const { isReadonlyCell, isReadonlyRow, isLockedRow } = checkCellReadStatus(
@@ -1105,7 +1221,7 @@ export function dragFillEvent(
             );
             return !isReadonlyCell && !isReadonlyRow && !isLockedRow;
         });
-        cellValues = fillColumnCells(editorModel, cellValues, initialSelectionByCol, fillCells);
+        cellValues = fillColumnCells(editorModel, cellValues, initialSelectionByCol, selectionToFillByCol);
     });
 
     return cellValues;
@@ -1113,53 +1229,49 @@ export function dragFillEvent(
 
 /**
  * Fills a column of cells based on the initially selected values.
- * If the initialCellKeys is for a single cell, the fill operation will always be a copy of that value.
- * If the initialCellKeys includes a range of cells and all values are numeric, fill via a generated sequence where the
+ * If the initialSelection is for a single cell, the fill operation will always be a copy of that value.
+ * If the initialSelection includes a range of cells and all values are numeric, fill via a generated sequence where the
  * step/diff is based on the first and last value in the initSelection.
- * If the initialCellKeys includes a range of cells and not all values are numeric, fill via a copy of all of the values
+ * If the initialSelection includes a range of cells and not all values are numeric, fill via a copy of all of the values
  * in initSelection.
  * @param editorModel: An EditorModel object
  * @param cellValues: The cellValues object to mutate, we cannot use the one from EditorModel because we may need to
  * modify multiple columns of data in one event (see dragFillEvent).
- * @param initialCellKeys: An array of sorted cell keys, all from the same column that were initially selected
- * @param cellKeysToFill: An array of sorted cell keys, all from tehe same column, to be filled with values based on the
- * content of initialCellKeys
+ * @param initialSelection: An array of sorted cell keys, all from the same column that were initially selected
+ * @param selectionToFill: An array of sorted cell keys, all from the same column, to be filled with values based on the
+ * content of initialSelection
  */
 export function fillColumnCells(
     editorModel: EditorModel,
     cellValues: CellValues,
-    initialCellKeys: string[],
-    cellKeysToFill: string[]
+    initialSelection: string[],
+    selectionToFill: string[]
 ): CellValues {
-    const initialValues = initialCellKeys.map(cellKey => editorModel.getValueForCellKey(cellKey));
-    const initialRawValues = initialValues.map(value => value.get(0)?.raw);
-    const initialDisplayValues = initialValues.map(value => value.get(0)?.display);
+    const { direction, increment, prefix, startingValue, initialSelectionValues } = inferSelectionIncrement(
+        editorModel,
+        initialSelection,
+        selectionToFill
+    );
 
-    // use the display values to determine sequence type to account for lookup cell values with numeric key/raw values
-    const isFloatSeq = initialValues.length > 1 && initialDisplayValues.every(isFloat);
-    const isIntSeq = initialValues.length > 1 && initialDisplayValues.every(isInteger);
-    let firstCellRawVal = initialRawValues[0];
-    let lastCellRawVal = initialRawValues[initialRawValues.length - 1];
-    let diff = 0;
-    if (isFloatSeq || isIntSeq) {
-        if (isFloatSeq) {
-            firstCellRawVal = parseFloat(firstCellRawVal);
-            lastCellRawVal = parseFloat(lastCellRawVal);
-        } else if (isIntSeq) {
-            firstCellRawVal = parseScientificInt(firstCellRawVal);
-            lastCellRawVal = parseScientificInt(lastCellRawVal);
-        }
-
-        // diff -> last value minus first value divide by the number of steps in the initial selection
-        diff = decimalDifference(lastCellRawVal, firstCellRawVal);
-        diff = initialRawValues.length > 1 ? diff / (initialRawValues.length - 1) : 0;
+    if (direction === IncrementDirection.BACKWARD) {
+        selectionToFill.reverse();
     }
 
-    cellKeysToFill.forEach((cellKey, i) => {
-        let fillValue = initialValues[i % initialValues.length];
-        if (isFloatSeq || isIntSeq) {
-            const raw = decimalDifference(diff * (i + 1), lastCellRawVal, false);
-            fillValue = List([{ raw, display: raw }]);
+    selectionToFill.forEach((cellKey, i) => {
+        let fillValue = initialSelectionValues[i % initialSelectionValues.length];
+
+        if (increment !== undefined) {
+            const amount = increment * (i + 1);
+            let raw: string;
+
+            if (direction === IncrementDirection.FORWARD) {
+                raw = decimalDifference(amount, startingValue, false).toString(10);
+            } else {
+                raw = decimalDifference(startingValue, amount, true).toString(10);
+            }
+
+            if (prefix !== undefined) raw = prefix + raw;
+            fillValue = List([{ raw, display: raw.toString() }]);
         }
 
         cellValues = cellValues.set(cellKey, fillValue);

@@ -16,6 +16,7 @@
 import { fromJS, List, Map, Set } from 'immutable';
 
 import { Filter, Query } from '@labkey/api';
+
 import { ExtendedMap } from '../public/ExtendedMap';
 
 import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
@@ -31,8 +32,9 @@ import {
     changeColumn,
     removeColumn,
     getExportParams,
-    generateFillSequence,
+    fillColumnCells,
     parseIntIfNumber,
+    splitPrefixedNumber,
 } from './actions';
 import { EXPORT_TYPES } from './constants';
 
@@ -94,7 +96,6 @@ describe('column mutation actions', () => {
         isPasting: false,
         focusColIdx: 1,
         focusRowIdx: 1,
-        numPastedRows: 0,
         rowCount: 3,
         selectedColIdx: 1,
         selectedRowIdx: 1,
@@ -515,7 +516,7 @@ describe('getExportParams', () => {
     });
 });
 
-describe('generateFillSequence', () => {
+describe('fillColumnCells', () => {
     const editorModel = new EditorModel({ id: 'generate|fill|sequence' }).merge({
         cellMessages: Map<string, CellMessage>({
             '1-0': 'description 1 message',
@@ -631,7 +632,7 @@ describe('generateFillSequence', () => {
     }
 
     test('one initSelection, text', () => {
-        const fillValues = generateFillSequence(editorModel, ['0-0'], ['0-1', '0-2']);
+        const fillValues = fillColumnCells(editorModel, editorModel.cellValues, ['0-0'], ['0-1', '0-2']);
         validate(editorModel, fillValues, '0-0');
         validate(editorModel, fillValues, '0-1', editorModel.getValueForCellKey('0-0'));
         validate(editorModel, fillValues, '0-2', editorModel.getValueForCellKey('0-0'));
@@ -650,7 +651,7 @@ describe('generateFillSequence', () => {
     });
 
     test('one initSelection, int', () => {
-        const fillValues = generateFillSequence(editorModel, ['1-0'], ['1-1', '1-2']);
+        const fillValues = fillColumnCells(editorModel, editorModel.cellValues, ['1-0'], ['1-1', '1-2']);
         validate(editorModel, fillValues, '0-0');
         validate(editorModel, fillValues, '0-1');
         validate(editorModel, fillValues, '0-2');
@@ -669,7 +670,7 @@ describe('generateFillSequence', () => {
     });
 
     test('one initSelection, decimal', () => {
-        const fillValues = generateFillSequence(editorModel, ['2-0'], ['2-1', '2-2']);
+        const fillValues = fillColumnCells(editorModel, editorModel.cellValues, ['2-0'], ['2-1', '2-2']);
         validate(editorModel, fillValues, '0-0');
         validate(editorModel, fillValues, '0-1');
         validate(editorModel, fillValues, '0-2');
@@ -688,7 +689,7 @@ describe('generateFillSequence', () => {
     });
 
     test('one initSelection, lookup', () => {
-        const fillValues = generateFillSequence(editorModel, ['3-0'], ['3-1', '3-2']);
+        const fillValues = fillColumnCells(editorModel, editorModel.cellValues, ['3-0'], ['3-1', '3-2']);
         validate(editorModel, fillValues, '0-0');
         validate(editorModel, fillValues, '0-1');
         validate(editorModel, fillValues, '0-2');
@@ -707,7 +708,7 @@ describe('generateFillSequence', () => {
     });
 
     test('one initSelection, mixed', () => {
-        const fillValues = generateFillSequence(editorModel, ['4-0'], ['4-1', '4-2']);
+        const fillValues = fillColumnCells(editorModel, editorModel.cellValues, ['4-0'], ['4-1', '4-2']);
         validate(editorModel, fillValues, '0-0');
         validate(editorModel, fillValues, '0-1');
         validate(editorModel, fillValues, '0-2');
@@ -726,7 +727,12 @@ describe('generateFillSequence', () => {
     });
 
     test('multiple initSelection, text', () => {
-        const fillValues = generateFillSequence(editorModel, ['0-0', '0-1', '0-2'], ['0-3', '0-4', '0-5', '0-6']);
+        const fillValues = fillColumnCells(
+            editorModel,
+            editorModel.cellValues,
+            ['0-0', '0-1', '0-2'],
+            ['0-3', '0-4', '0-5', '0-6']
+        );
         validate(editorModel, fillValues, '0-0');
         validate(editorModel, fillValues, '0-1');
         validate(editorModel, fillValues, '0-2');
@@ -737,7 +743,12 @@ describe('generateFillSequence', () => {
     });
 
     test('multiple initSelection, int', () => {
-        const fillValues = generateFillSequence(editorModel, ['1-0', '1-1', '1-2'], ['1-3', '1-4', '1-5', '1-6']);
+        const fillValues = fillColumnCells(
+            editorModel,
+            editorModel.cellValues,
+            ['1-0', '1-1', '1-2'],
+            ['1-3', '1-4', '1-5', '1-6']
+        );
         validate(editorModel, fillValues, '1-0');
         validate(editorModel, fillValues, '1-1');
         validate(editorModel, fillValues, '1-2');
@@ -748,7 +759,12 @@ describe('generateFillSequence', () => {
     });
 
     test('multiple initSelection, decimal', () => {
-        const fillValues = generateFillSequence(editorModel, ['2-0', '2-1', '2-2'], ['2-3', '2-4', '2-5', '2-6']);
+        const fillValues = fillColumnCells(
+            editorModel,
+            editorModel.cellValues,
+            ['2-0', '2-1', '2-2'],
+            ['2-3', '2-4', '2-5', '2-6']
+        );
         validate(editorModel, fillValues, '2-0');
         validate(editorModel, fillValues, '2-1');
         validate(editorModel, fillValues, '2-2');
@@ -759,7 +775,12 @@ describe('generateFillSequence', () => {
     });
 
     test('multiple initSelection, lookup', () => {
-        const fillValues = generateFillSequence(editorModel, ['3-0', '3-1', '3-2'], ['3-3', '3-4', '3-5', '3-6']);
+        const fillValues = fillColumnCells(
+            editorModel,
+            editorModel.cellValues,
+            ['3-0', '3-1', '3-2'],
+            ['3-3', '3-4', '3-5', '3-6']
+        );
         validate(editorModel, fillValues, '3-0');
         validate(editorModel, fillValues, '3-1');
         validate(editorModel, fillValues, '3-2');
@@ -770,7 +791,12 @@ describe('generateFillSequence', () => {
     });
 
     test('multiple initSelection, mixed', () => {
-        const fillValues = generateFillSequence(editorModel, ['4-0', '4-1', '4-2'], ['4-3', '4-4', '4-5', '4-6']);
+        const fillValues = fillColumnCells(
+            editorModel,
+            editorModel.cellValues,
+            ['4-0', '4-1', '4-2'],
+            ['4-3', '4-4', '4-5', '4-6']
+        );
         validate(editorModel, fillValues, '4-0');
         validate(editorModel, fillValues, '4-1');
         validate(editorModel, fillValues, '4-2');
@@ -801,5 +827,20 @@ describe('parseIntIfNumber', () => {
         expect(parseIntIfNumber(1)).toBe(1);
         expect(parseIntIfNumber(1.2)).toBe(1);
         expect(parseIntIfNumber(1.9)).toBe(1);
+    });
+});
+
+describe('splitPrefixedNumber', () => {
+    test('parses string as expected', () => {
+        expect(splitPrefixedNumber('ABC-123')).toEqual(['ABC-', '123']);
+        expect(splitPrefixedNumber('ABC 123')).toEqual(['ABC ', '123']);
+        expect(splitPrefixedNumber('ABC-1.23')).toEqual(['ABC-', '1.23']);
+        expect(splitPrefixedNumber('ABC-1.23.4')).toEqual(['ABC-1.', '23.4']);
+        expect(splitPrefixedNumber('ABC.0')).toEqual(['ABC.', '0']);
+        expect(splitPrefixedNumber('ABC.1.2')).toEqual(['ABC.', '1.2']);
+        expect(splitPrefixedNumber('ABC')).toEqual(['ABC', undefined]);
+        expect(splitPrefixedNumber('ABC-')).toEqual(['ABC-', undefined]);
+        expect(splitPrefixedNumber('123')).toEqual([undefined, '123']);
+        expect(splitPrefixedNumber('123.45')).toEqual([undefined, '123.45']);
     });
 });

@@ -289,7 +289,7 @@ export interface EditableGridProps extends SharedEditableGridProps {
 export interface EditableGridState {
     activeEditTab?: EditableGridTabs;
     inDrag: boolean;
-    initialSelectedState: string[];
+    initialSelection: string[];
     pendingBulkFormData?: any;
     selected: Set<number>;
     selectedState: GRID_CHECKBOX_OPTIONS;
@@ -356,7 +356,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         this.state = {
             activeEditTab: props.activeEditTab ? props.activeEditTab : EditableGridTabs.Grid,
             inDrag: false,
-            initialSelectedState: undefined,
+            initialSelection: undefined,
             selected: selectionCells,
             selectedState,
             showBulkAdd: false,
@@ -452,7 +452,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     applySelection = (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES): Partial<EditorModel> => {
-        const { initialSelectedState } = this.state;
+        const { initialSelection } = this.state;
         const { editorModel } = this.props;
         const { rowCount } = editorModel;
         let selectionCells = Set<string>();
@@ -475,13 +475,13 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 if (hasSelection) {
                     let maxRowIdx = Math.max(selectedRowIdx, rowIdx);
 
-                    if (initialSelectedState !== undefined) {
-                        // If we have an initialSelectedState we want to prevent the user from changing the number of
+                    if (initialSelection !== undefined) {
+                        // If we have an initialSelection we want to prevent the user from changing the number of
                         // columns, or from shrinking the initially selected state. Functionally this means a user can
                         // only expand a selection upwards or downwards, just like in Excel/Sheets.
 
                         // Prevent changing columns
-                        const maxInitialCell = parseCellKey(initialSelectedState[initialSelectedState.length - 1]);
+                        const maxInitialCell = parseCellKey(initialSelection[initialSelection.length - 1]);
                         colIdx = maxInitialCell.colIdx;
                         // Prevent shrinking selection when selecting upward
                         maxRowIdx = Math.max(selectedRowIdx, rowIdx, maxInitialCell.rowIdx);
@@ -825,9 +825,9 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             const target = event.target as Element;
             const isDragHandleAction = target.className?.indexOf(CELL_SELECTION_HANDLE_CLASSNAME) > -1;
             if (isDragHandleAction) {
-                const initialSelectedState = editorModel.sortedSelectionKeys;
-                if (!initialSelectedState.length) initialSelectedState.push(editorModel.selectionKey);
-                this.setState({ initialSelectedState });
+                const initialSelection = editorModel.sortedSelectionKeys;
+                if (!initialSelection.length) initialSelection.push(editorModel.selectionKey);
+                this.setState({ initialSelection });
             }
         }
     };
@@ -950,13 +950,13 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         if (!disabled) {
             this.endDrag(event);
-            const initialSelectedState = this.state.initialSelectedState;
-            if (initialSelectedState?.length > 0 && editorModel.isMultiSelect) {
+            const initialSelection = this.state.initialSelection;
+            if (initialSelection?.length > 0 && editorModel.isMultiSelect) {
                 const loweredColumnMetadata = this.getLoweredColumnMetadata();
                 const columnMetadata = this.getColumns().map(col => loweredColumnMetadata[col.fieldKey.toLowerCase()]);
                 const cellValues = dragFillEvent(
                     editorModel,
-                    initialSelectedState,
+                    initialSelection,
                     dataKeys,
                     data,
                     queryInfo,
@@ -965,7 +965,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     lockedRows
                 );
                 onChange({ cellValues });
-                this.setState({ initialSelectedState: undefined });
+                this.setState({ initialSelection: undefined });
             }
         }
     };

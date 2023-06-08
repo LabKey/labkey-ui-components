@@ -7,8 +7,9 @@ import { DuplicateFilesResponse } from '../../assay/actions';
 import { Principal } from '../../permissions/models';
 import { buildURL } from '../../../url/AppURL';
 
-import { IssuesListDefModel, IssuesListDefOptionsConfig, IssuesRelatedFolder } from './models';
 import { handleRequestFailure } from '../../../util/utils';
+
+import { IssuesListDefModel, IssuesListDefOptionsConfig, IssuesRelatedFolder } from './models';
 
 export function fetchIssuesListDefDesign(issueDefName?: string): Promise<IssuesListDefModel> {
     return new Promise((resolve, reject) => {

@@ -26,9 +26,10 @@ import { useServerContext } from '../base/ServerContext';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
+import { isAppHomeFolder } from '../../app/utils';
+
 import { LabelTemplate } from './models';
 import { LABEL_TEMPLATE_SQ } from './constants';
-import { isAppHomeFolder } from '../../app/utils';
 
 const TITLE = 'Manage Label Templates';
 const NEW_LABEL_INDEX = -1;
@@ -426,7 +427,9 @@ export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props
                                 onSelect={onSetSelected}
                                 defaultLabel={newDefaultLabel}
                             />
-                            {showAdd && <AddEntityButton onClick={onAddLabel} entity="New Label Template" disabled={addNew} />}
+                            {showAdd && (
+                                <AddEntityButton onClick={onAddLabel} entity="New Label Template" disabled={addNew} />
+                            )}
                         </div>
                         <div className="col-lg-8 col-md-6">
                             <LabelTemplateDetails

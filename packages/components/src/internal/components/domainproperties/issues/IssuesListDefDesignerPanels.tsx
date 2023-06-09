@@ -11,24 +11,30 @@ import { resolveErrorMessage } from '../../../util/messaging';
 
 import { IssuesListDefPropertiesPanel } from './IssuesListDefPropertiesPanel';
 import { IssuesListDefModel } from './models';
-import { saveIssueListDefOptions } from './actions';
+import { getDefaultIssuesAPIWrapper, IssuesAPIWrapper } from './actions';
 
 interface Props {
+    api?: IssuesAPIWrapper;
     initModel?: IssuesListDefModel;
-    onChange?: (model: IssuesListDefModel) => void;
     onCancel: () => void;
+    onChange?: (model: IssuesListDefModel) => void;
     onComplete: (model: IssuesListDefModel) => void;
-    useTheme?: boolean;
-    successBsStyle?: string;
     saveBtnText?: string;
+    successBsStyle?: string;
     testMode?: boolean;
+    useTheme?: boolean;
 }
 
 interface State {
     model: IssuesListDefModel;
 }
+
 // exported for testing
 export class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
+    static defaultProps = {
+        api: getDefaultIssuesAPIWrapper(),
+    };
+
     constructor(props: Props & InjectedBaseDomainDesignerProps) {
         super(props);
         this.state = produce(
@@ -75,10 +81,10 @@ export class IssuesDesignerPanelsImpl extends React.PureComponent<Props & Inject
     };
 
     saveOptions = () => {
-        const { setSubmitting } = this.props;
+        const { api, setSubmitting } = this.props;
         const { model } = this.state;
 
-        saveIssueListDefOptions(model.getOptions())
+        api.saveIssueListDefOptions(model.getOptions())
             .then(() => this.onSaveComplete())
             .catch(response => {
                 setSubmitting(false, () => {
@@ -136,6 +142,7 @@ export class IssuesDesignerPanelsImpl extends React.PureComponent<Props & Inject
 
     render() {
         const {
+            api,
             onCancel,
             useTheme,
             successBsStyle,
@@ -164,6 +171,7 @@ export class IssuesDesignerPanelsImpl extends React.PureComponent<Props & Inject
                 successBsStyle={successBsStyle}
             >
                 <IssuesListDefPropertiesPanel
+                    api={api}
                     model={model}
                     onChange={this.onPropertiesChange}
                     controlledCollapse={true}

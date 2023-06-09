@@ -8,8 +8,6 @@ import DomainForm from '../DomainForm';
 
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
-import { initUnitTestMocks } from '../../../../test/testHelperMocks';
-
 import { Alert } from '../../base/Alert';
 
 import { waitForLifecycle } from '../../../test/enzymeTestHelpers';
@@ -17,20 +15,18 @@ import { waitForLifecycle } from '../../../test/enzymeTestHelpers';
 import { IssuesListDefPropertiesPanel } from './IssuesListDefPropertiesPanel';
 import { IssuesDesignerPanelsImpl, IssuesListDefDesignerPanels } from './IssuesListDefDesignerPanels';
 import { IssuesListDefModel } from './models';
-
-const emptyNewModel = IssuesListDefModel.create(null, { issueDefName: 'Issues List For Jest' });
-
-const BASE_PROPS = {
-    onComplete: jest.fn(),
-    onCancel: jest.fn(),
-    testMode: true,
-};
-
-beforeAll(() => {
-    initUnitTestMocks();
-});
+import { getIssuesTestAPIWrapper } from './actions';
 
 describe('IssuesListDefDesignerPanel', () => {
+    const emptyNewModel = IssuesListDefModel.create(null, { issueDefName: 'Issues List For Jest' });
+
+    const BASE_PROPS = {
+        api: getIssuesTestAPIWrapper(jest.fn),
+        onComplete: jest.fn(),
+        onCancel: jest.fn(),
+        testMode: true,
+    };
+
     test('new Issue List Definition', async () => {
         const issuesDesignerPanels = shallow(
             <IssuesDesignerPanelsImpl

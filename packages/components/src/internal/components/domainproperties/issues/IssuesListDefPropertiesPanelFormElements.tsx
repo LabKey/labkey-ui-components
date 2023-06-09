@@ -23,7 +23,7 @@ import {
     ISSUES_LIST_RESTRICTED_TRACKER_TIP,
     ISSUES_LIST_USER_ASSIGN_TIP,
 } from './constants';
-import { getProjectGroups, getRelatedFolders, getUsersForGroup } from './actions';
+import { IssuesAPIWrapper } from './actions';
 
 interface IssuesListDefBasicPropertiesInputsProps {
     model: IssuesListDefModel;
@@ -32,6 +32,7 @@ interface IssuesListDefBasicPropertiesInputsProps {
 }
 
 interface AssignmentOptionsProps {
+    api: IssuesAPIWrapper;
     model: IssuesListDefModel;
     onSelect: (name: string, value: any) => any;
 }
@@ -53,6 +54,7 @@ interface AssignmentOptionsInputProps {
 }
 
 interface RestrictedOptionsProps {
+    api: IssuesAPIWrapper;
     model: IssuesListDefModel;
     onCheckChange?: (any) => void;
     onSelect: (name: string, value: any) => any;
@@ -84,9 +86,11 @@ export class AssignmentOptions extends PureComponent<AssignmentOptionsProps, Ass
     };
 
     componentDidMount = async (): Promise<void> => {
+        const { api, model } = this.props;
+
         try {
-            const coreGroups = await getProjectGroups();
-            const relatedFolders = await getRelatedFolders(this.props.model.issueDefName);
+            const coreGroups = await api.getProjectGroups();
+            const relatedFolders = await api.getRelatedFolders(model.issueDefName);
             this.setState({ coreGroups, relatedFolders });
         } catch (e) {
             console.error('AssignmentOptions: failed to load initialize project groups and related folders.', e);
@@ -97,7 +101,7 @@ export class AssignmentOptions extends PureComponent<AssignmentOptionsProps, Ass
 
     loadUsersForGroup = async (groupId: number): Promise<void> => {
         try {
-            const coreUsers = await getUsersForGroup(groupId);
+            const coreUsers = await this.props.api.getUsersForGroup(groupId);
             this.setState({ coreUsers });
         } catch (e) {
             console.error(`AssignmentOptions: failed to load users for group ${groupId}`, e);
@@ -126,13 +130,13 @@ export class AssignmentOptions extends PureComponent<AssignmentOptionsProps, Ass
 
 export class RestrictedOptions extends PureComponent<RestrictedOptionsProps> {
     render() {
-        const { model, onCheckChange, onSelect } = this.props;
+        const { api, model, onCheckChange, onSelect } = this.props;
 
         return (
             <div>
                 <SectionHeading title="Restricted List Options" />
-                <RestrictedIssueInput model={model} onCheckChange={onCheckChange} onSelect={onSelect} />
-                <RestrictedIssueGroupInput model={model} onSelect={onSelect} />
+                <RestrictedIssueInput api={api} model={model} onCheckChange={onCheckChange} onSelect={onSelect} />
+                <RestrictedIssueGroupInput api={api} model={model} onSelect={onSelect} />
             </div>
         );
     }
@@ -366,7 +370,7 @@ export class RestrictedIssueGroupInput extends PureComponent<RestrictedOptionsPr
 
     componentDidMount = async (): Promise<void> => {
         try {
-            const coreGroups = await getProjectGroups();
+            const coreGroups = await this.props.api.getProjectGroups();
             this.setState({ coreGroups });
         } catch (e) {
             console.error('RestrictedOptions: failed to load initialize project groups', e);

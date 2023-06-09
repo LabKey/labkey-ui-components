@@ -13,7 +13,7 @@ import { getQueryTestAPIWrapper } from '../../internal/query/APIWrapper';
 
 import { ManageViewsModal, ViewLabel } from './ManageViewsModal';
 
-export const getQueryAPI = (views: ViewInfo[]) => {
+const getQueryAPI = (views: ViewInfo[]) => {
     return getTestAPIWrapper(jest.fn, {
         query: getQueryTestAPIWrapper(jest.fn, {
             getGridViews: jest.fn().mockResolvedValue(views),

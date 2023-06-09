@@ -2,7 +2,7 @@ import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { Button } from 'react-bootstrap';
 
-import { mountWithServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { AddEntityButton } from '../buttons/AddEntityButton';
 import { Alert } from '../base/Alert';
@@ -26,7 +26,7 @@ describe('ManageSampleStatusesPanel', () => {
     const DEFAULT_PROPS = {
         api: getTestAPIWrapper(jest.fn, {
             samples: getSamplesTestAPIWrapper(jest.fn, {
-                getSampleStatuses: () => Promise.resolve([new SampleState({ isLocal: true, rowId: 1 })]),
+                getSampleStatuses: jest.fn().mockResolvedValue([new SampleState({ isLocal: true, rowId: 1 })]),
             }),
         }),
         getIsDirty: jest.fn(),
@@ -48,7 +48,7 @@ describe('ManageSampleStatusesPanel', () => {
     }
 
     test('loading', async () => {
-        const wrapper = mountWithServerContext(<ManageSampleStatusesPanel {...DEFAULT_PROPS} />, {
+        const wrapper = mountWithAppServerContext(<ManageSampleStatusesPanel {...DEFAULT_PROPS} />, undefined, {
             container: TEST_PROJECT_CONTAINER,
             project: TEST_PROJECT,
         });
@@ -59,15 +59,16 @@ describe('ManageSampleStatusesPanel', () => {
     });
 
     test('no states', async () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <ManageSampleStatusesPanel
                 {...DEFAULT_PROPS}
                 api={getTestAPIWrapper(jest.fn, {
                     samples: getSamplesTestAPIWrapper(jest.fn, {
-                        getSampleStatuses: () => Promise.resolve([]),
+                        getSampleStatuses: jest.fn().mockResolvedValue([]),
                     }),
                 })}
             />,
+            undefined,
             {
                 container: TEST_PROJECT_CONTAINER,
                 project: TEST_PROJECT,
@@ -81,7 +82,7 @@ describe('ManageSampleStatusesPanel', () => {
     });
 
     test('with states and selection', async () => {
-        const wrapper = mountWithServerContext(<ManageSampleStatusesPanel {...DEFAULT_PROPS} />, {
+        const wrapper = mountWithAppServerContext(<ManageSampleStatusesPanel {...DEFAULT_PROPS} />, undefined, {
             container: TEST_PROJECT_CONTAINER,
             project: TEST_PROJECT,
         });
@@ -103,7 +104,7 @@ describe('ManageSampleStatusesPanel', () => {
     });
 
     test('error retrieving states', async () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <ManageSampleStatusesPanel
                 {...DEFAULT_PROPS}
                 api={getTestAPIWrapper(jest.fn, {
@@ -112,6 +113,7 @@ describe('ManageSampleStatusesPanel', () => {
                     }),
                 })}
             />,
+            undefined,
             {
                 container: TEST_PROJECT_CONTAINER,
                 project: TEST_PROJECT,
@@ -123,7 +125,7 @@ describe('ManageSampleStatusesPanel', () => {
     });
 
     test('add new', async () => {
-        const wrapper = mountWithServerContext(<ManageSampleStatusesPanel {...DEFAULT_PROPS} />, {
+        const wrapper = mountWithAppServerContext(<ManageSampleStatusesPanel {...DEFAULT_PROPS} />, undefined, {
             container: TEST_PROJECT_CONTAINER,
             project: TEST_PROJECT,
         });
@@ -224,16 +226,20 @@ describe('SampleStatusDetail', () => {
     }
 
     test('show select message', async () => {
-        const wrapper = mountWithServerContext(<SampleStatusDetail {...DEFAULT_PROPS} state={undefined} />, {
-            project: TEST_PROJECT,
-        });
+        const wrapper = mountWithAppServerContext(
+            <SampleStatusDetail {...DEFAULT_PROPS} state={undefined} />,
+            undefined,
+            {
+                project: TEST_PROJECT,
+            }
+        );
         await waitForLifecycle(wrapper);
         validate(wrapper, false);
         wrapper.unmount();
     });
 
     test('do not show select message', async () => {
-        const wrapper = mountWithServerContext(<SampleStatusDetail {...DEFAULT_PROPS} state={null} />, {
+        const wrapper = mountWithAppServerContext(<SampleStatusDetail {...DEFAULT_PROPS} state={null} />, undefined, {
             project: TEST_PROJECT,
         });
         await waitForLifecycle(wrapper);
@@ -242,7 +248,7 @@ describe('SampleStatusDetail', () => {
     });
 
     test('input values from state', async () => {
-        const wrapper = mountWithServerContext(<SampleStatusDetail {...DEFAULT_PROPS} />, {
+        const wrapper = mountWithAppServerContext(<SampleStatusDetail {...DEFAULT_PROPS} />, undefined, {
             project: TEST_PROJECT,
         });
         await waitForLifecycle(wrapper);
@@ -269,9 +275,13 @@ describe('SampleStatusDetail', () => {
             isLocal: true,
             containerPath: '/Test',
         });
-        const wrapper = mountWithServerContext(<SampleStatusDetail {...DEFAULT_PROPS} state={inUseState} />, {
-            project: TEST_PROJECT,
-        });
+        const wrapper = mountWithAppServerContext(
+            <SampleStatusDetail {...DEFAULT_PROPS} state={inUseState} />,
+            undefined,
+            {
+                project: TEST_PROJECT,
+            }
+        );
         await waitForLifecycle(wrapper);
         validate(wrapper, true, true, 2);
         expect(wrapper.find('input[name="label"]').prop('disabled')).toBe(false);
@@ -293,9 +303,13 @@ describe('SampleStatusDetail', () => {
             isLocal: false,
             containerPath: '/Test',
         });
-        const wrapper = mountWithServerContext(<SampleStatusDetail {...DEFAULT_PROPS} state={inUseState} />, {
-            project: TEST_PROJECT,
-        });
+        const wrapper = mountWithAppServerContext(
+            <SampleStatusDetail {...DEFAULT_PROPS} state={inUseState} />,
+            undefined,
+            {
+                project: TEST_PROJECT,
+            }
+        );
         await waitForLifecycle(wrapper);
         validate(wrapper, true, false, 2);
         expect(wrapper.find('input[name="label"]').prop('disabled')).toBe(true);
@@ -306,7 +320,7 @@ describe('SampleStatusDetail', () => {
     });
 
     test('save button disabled', async () => {
-        const wrapper = mountWithServerContext(<SampleStatusDetail {...DEFAULT_PROPS} />, {
+        const wrapper = mountWithAppServerContext(<SampleStatusDetail {...DEFAULT_PROPS} />, undefined, {
             project: TEST_PROJECT,
         });
         await waitForLifecycle(wrapper);
@@ -322,7 +336,7 @@ describe('SampleStatusDetail', () => {
     });
 
     test('add new', async () => {
-        const wrapper = mountWithServerContext(<SampleStatusDetail {...DEFAULT_PROPS} addNew />, {
+        const wrapper = mountWithAppServerContext(<SampleStatusDetail {...DEFAULT_PROPS} addNew />, undefined, {
             project: TEST_PROJECT,
         });
         await waitForLifecycle(wrapper);
@@ -334,7 +348,7 @@ describe('SampleStatusDetail', () => {
     });
 
     test('show confirm delete', async () => {
-        const wrapper = mountWithServerContext(<SampleStatusDetail {...DEFAULT_PROPS} />, {
+        const wrapper = mountWithAppServerContext(<SampleStatusDetail {...DEFAULT_PROPS} />, undefined, {
             project: TEST_PROJECT,
         });
         await waitForLifecycle(wrapper);

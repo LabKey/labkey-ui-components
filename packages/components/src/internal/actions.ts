@@ -988,6 +988,7 @@ type PrefixAndNumber = [string, string | undefined];
  * intentionally does not parse the numbers.
  */
 export function splitPrefixedNumber(text: string): PrefixAndNumber {
+    if (text === undefined) return [undefined, undefined];
     const matches = text.match(POSTFIX_REGEX);
 
     if (matches === null) {
@@ -1041,42 +1042,45 @@ function inferSelectionIncrement(
 ): SelectionIncrement {
     const direction = inferSelectionDirection(initialCellKeys, cellKeysToFill);
     const values = initialCellKeys.map(cellKey => editorModel.getValueForCellKey(cellKey));
-    let rawValues = values.map(value => value.get(0)?.raw);
     let displayValues = values.map(value => value.get(0)?.display);
     let prefix;
     let incrementType = IncrementType.NONE;
     let increment;
 
     // use the display values to determine sequence type to account for lookup cell values with numeric key/raw values
+    // TODO: If you are reviewing this code please note that I changed the behavior to compute the increment based off
+    //  of the displayValues, because that's also how we're determining the increment type. I think this change is
+    //  correct, but I want someone to vet that idea before we merge.
     const splitValues = displayValues.map(splitPrefixedNumber);
     const allPrefixed = everyValueHasSamePrefix(splitValues);
-    const isDateSeq = values.length === 1 && formatDate(parseDate(displayValues[0])) === displayValues[0];
+    let firstValue = displayValues[0];
+    const firstValueIsEmpty = firstValue === undefined || firstValue === '';
+    const isDateSeq = values.length === 1 && !firstValueIsEmpty && formatDate(parseDate(firstValue)) === firstValue;
 
     // Date sequence detection takes precedence otherwise we'd never parse dates, because we'd always consider something
     // like 2023-06-01, 6/1/2023, or 1-6-2023, to be a prefixed number string.
     if (!isDateSeq && allPrefixed) {
         prefix = splitValues[0][0];
         displayValues = splitValues.map(value => value[1]);
-        rawValues = rawValues.map(value => splitPrefixedNumber(value)[1]);
+        firstValue = displayValues[0];
     }
 
+    let lastValue = displayValues[displayValues.length - 1];
     const isFloatSeq = values.length > 1 && displayValues.every(isFloat);
     const isIntSeq = values.length > 1 && displayValues.every(isInteger);
-    let firstCellRawVal = rawValues[0];
-    let lastCellRawVal = rawValues[rawValues.length - 1];
 
     if (isFloatSeq) {
-        firstCellRawVal = parseFloat(firstCellRawVal);
-        lastCellRawVal = parseFloat(lastCellRawVal);
+        firstValue = parseFloat(firstValue);
+        lastValue = parseFloat(lastValue);
     } else if (isIntSeq) {
-        firstCellRawVal = parseScientificInt(firstCellRawVal);
-        lastCellRawVal = parseScientificInt(lastCellRawVal);
+        firstValue = parseScientificInt(firstValue);
+        lastValue = parseScientificInt(lastValue);
     }
 
     if (isFloatSeq || isIntSeq) {
         // increment -> last value minus first value divide by the number of steps in the initial selection
-        increment = decimalDifference(lastCellRawVal, firstCellRawVal);
-        increment = rawValues.length > 1 ? increment / (rawValues.length - 1) : 0;
+        increment = decimalDifference(lastValue, firstValue);
+        increment = displayValues.length > 1 ? increment / (displayValues.length - 1) : 0;
         incrementType = IncrementType.NUMBER;
     } else if (isDateSeq) {
         incrementType = IncrementType.DATE;
@@ -1089,7 +1093,7 @@ function inferSelectionIncrement(
         incrementType,
         initialSelectionValues: values,
         prefix,
-        startingValue: direction === IncrementDirection.FORWARD ? lastCellRawVal : firstCellRawVal,
+        startingValue: direction === IncrementDirection.FORWARD ? lastValue : firstValue,
     };
 }
 

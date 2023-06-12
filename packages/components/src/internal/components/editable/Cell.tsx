@@ -36,7 +36,11 @@ import { gridCellSelectInputProps, onCellSelectChange } from './utils';
 import { LookupCell } from './LookupCell';
 import { DateInputCell } from './DateInputCell';
 
+// CSS Order: top, right, bottom, left
+export type BorderMask = [boolean, boolean, boolean, boolean];
+
 interface Props {
+    borderMask: BorderMask;
     cellActions: CellActions;
     col: QueryColumn;
     colIdx: number;
@@ -272,6 +276,7 @@ export class Cell extends React.PureComponent<Props, State> {
 
     render() {
         const {
+            borderMask,
             cellActions,
             col,
             colIdx,
@@ -304,6 +309,10 @@ export class Cell extends React.PureComponent<Props, State> {
             const displayProps = {
                 autoFocus: selected,
                 className: classNames('cellular-display', {
+                    'cell-border-top': borderMask[0],
+                    'cell-border-right': borderMask[1],
+                    'cell-border-bottom': borderMask[2],
+                    'cell-border-left': borderMask[3],
                     'cell-selected': selected,
                     'cell-selection': selection,
                     'cell-warning': message !== undefined,

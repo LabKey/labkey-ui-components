@@ -56,7 +56,7 @@ import { GridColumn } from '../base/models/GridColumn';
 import { BulkAddUpdateForm } from '../forms/BulkAddUpdateForm';
 import { QueryInfoForm, QueryInfoFormProps } from '../forms/QueryInfoForm';
 
-import { Cell } from './Cell';
+import { BorderMask, Cell } from './Cell';
 
 import { CellActions, EDITABLE_GRID_CONTAINER_CLS, MODIFICATION_TYPES, SELECTION_TYPES } from './constants';
 import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
@@ -81,6 +81,25 @@ function moveRight(colIdx: number, rowIdx: number): { colIdx: number; rowIdx: nu
 
 function moveUp(colIdx: number, rowIdx: number): { colIdx: number; rowIdx: number } {
     return { colIdx, rowIdx: rowIdx - 1 };
+}
+
+function computeBorderMask(
+    minCol: number,
+    maxCol: number,
+    minRow: number,
+    maxRow: number,
+    colIdx: number,
+    rowIdx: number,
+    currentMask: BorderMask
+): BorderMask {
+    const borderMask: BorderMask = [...currentMask];
+    const betweenColumns = colIdx >= minCol && colIdx <= maxCol;
+    const betweenRows = rowIdx >= minRow && rowIdx <= maxRow;
+    if (minRow === rowIdx && betweenColumns) borderMask[0] = true;
+    if (maxCol === colIdx && betweenRows) borderMask[1] = true;
+    if (maxRow === rowIdx && betweenColumns) borderMask[2] = true;
+    if (minCol === colIdx && betweenRows) borderMask[3] = true;
+    return borderMask;
 }
 
 const COUNT_COL = new GridColumn({
@@ -109,7 +128,8 @@ function inputCellFactory(
     lockedRows: string[],
     cellActions: CellActions,
     containerFilter: Query.ContainerFilter,
-    forUpdate: boolean
+    forUpdate: boolean,
+    initialSelection: string[],
 ) {
     return (value: any, row: any, c: GridColumn, rn: number, cn: number) => {
         let colOffset = 0;
@@ -134,8 +154,26 @@ function inputCellFactory(
                 .toArray();
         }
 
+        const currentSelection = editorModel.sortedSelectionKeys;
+        let inSelection = editorModel?.inSelection(colIdx, rn);
+        let borderMask: BorderMask = [false, false, false, false];
+
+        if (currentSelection.length) {
+            const minCell = parseCellKey(currentSelection[0]);
+            const maxCell = parseCellKey(currentSelection[currentSelection.length - 1]);
+            borderMask = computeBorderMask(minCell.colIdx, maxCell.colIdx, minCell.rowIdx, maxCell.rowIdx, colIdx, rn, borderMask);
+        }
+
+        if (initialSelection?.length) {
+            const minCell = parseCellKey(initialSelection[0]);
+            const maxCell = parseCellKey(initialSelection[initialSelection.length - 1]);
+            borderMask = computeBorderMask(minCell.colIdx, maxCell.colIdx, minCell.rowIdx, maxCell.rowIdx, colIdx, rn, borderMask);
+            inSelection = initialSelection.includes(genCellKey(colIdx, rn));
+        }
+
         return (
             <Cell
+                borderMask={borderMask}
                 cellActions={cellActions}
                 col={c.raw}
                 colIdx={colIdx}
@@ -150,7 +188,7 @@ function inputCellFactory(
                 forUpdate={forUpdate}
                 message={editorModel?.getMessage(colIdx, rn)}
                 selected={editorModel ? editorModel.isSelected(colIdx, rn) : false}
-                selection={editorModel ? editorModel.inSelection(colIdx, rn) : false}
+                selection={inSelection}
                 lastSelection={editorModel ? editorModel.lastSelection(colIdx, rn) : false}
                 values={editorModel ? editorModel.getValue(colIdx, rn) : List<ValueDescriptor>()}
                 lookupValueFilters={columnMetadata?.lookupValueFilters}
@@ -707,7 +745,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         lockedRows,
                         this.cellActions,
                         containerFilter,
-                        forUpdate
+                        forUpdate,
+                        this.state.initialSelection
                     ),
                     index: qCol.fieldKey,
                     raw: qCol,

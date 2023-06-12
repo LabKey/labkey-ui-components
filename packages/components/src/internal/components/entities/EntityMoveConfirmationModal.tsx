@@ -53,7 +53,7 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
                         depth: 1,
                     });
 
-                    const excludedFolders = (!!dataType && !!dataTypeRowId) ? await api.folder.getDataTypeExcludedProjects(dataType, dataTypeRowId) : undefined;
+                    const excludedFolders = await api.folder.getDataTypeExcludedProjects(dataType, dataTypeRowId);
 
                     // if user doesn't have permissions to the parent/project, the response will come back with an empty Container object
                     folders = folders.filter(c => c !== undefined && c.id !== '');

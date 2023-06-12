@@ -15,6 +15,7 @@
  */
 import { fromJS, List, Map, OrderedMap, Set } from 'immutable';
 import { ActionURL, Ajax, Filter, getServerContext, Query, Utils } from '@labkey/api';
+import moment from 'moment';
 
 import { ExtendedMap } from '../public/ExtendedMap';
 
@@ -29,7 +30,6 @@ import { Actions } from '../public/QueryModel/withQueryModels';
 import { getContainerFilter, invalidateQueryDetailsCache, selectRowsDeprecated } from './query/api';
 import {
     BARTENDER_EXPORT_CONTROLLER,
-    CELL_SELECTION_HANDLE_CLASSNAME,
     EXPORT_TYPES,
     FASTA_EXPORT_CONTROLLER,
     GENBANK_EXPORT_CONTROLLER,
@@ -48,6 +48,7 @@ import {
 } from './components/editable/models';
 import { DataViewInfo } from './DataViewInfo';
 import { EditableColumnMetadata } from './components/editable/EditableGrid';
+import { formatDate, parseDate } from './util/Date';
 
 import {
     caseInsensitive,
@@ -61,7 +62,7 @@ import { resolveErrorMessage } from './util/messaging';
 import { buildURL } from './url/AppURL';
 
 import { ViewInfo } from './ViewInfo';
-import { decimalDifference, genCellKey, sortCellKeys, parseCellKey } from './utils';
+import { decimalDifference, genCellKey, parseCellKey } from './utils';
 import { createGridModelId } from './models';
 
 const EMPTY_ROW = Map<string, any>();
@@ -1022,7 +1023,7 @@ interface SelectionIncrement {
     incrementType: IncrementType;
     initialSelectionValues: Array<List<ValueDescriptor>>; // yes this is a very odd type, but we can clean it up when we rip out Immutable
     prefix?: string;
-    startingValue: number;
+    startingValue: number | string;
 }
 
 function inferSelectionDirection(initialCellKeys: string[], cellKeysToFill: string[]) {
@@ -1042,14 +1043,18 @@ function inferSelectionIncrement(
     const values = initialCellKeys.map(cellKey => editorModel.getValueForCellKey(cellKey));
     let rawValues = values.map(value => value.get(0)?.raw);
     let displayValues = values.map(value => value.get(0)?.display);
+    let prefix;
+    let incrementType = IncrementType.NONE;
+    let increment;
 
     // use the display values to determine sequence type to account for lookup cell values with numeric key/raw values
     const splitValues = displayValues.map(splitPrefixedNumber);
     const allPrefixed = everyValueHasSamePrefix(splitValues);
-    let prefix;
-    let incrementType = IncrementType.NONE;
+    const isDateSeq = values.length === 1 && formatDate(parseDate(displayValues[0])) === displayValues[0];
 
-    if (allPrefixed) {
+    // Date sequence detection takes precedence otherwise we'd never parse dates, because we'd always consider something
+    // like 2023-06-01, 6/1/2023, or 1-6-2023, to be a prefixed number string.
+    if (!isDateSeq && allPrefixed) {
         prefix = splitValues[0][0];
         displayValues = splitValues.map(value => value[1]);
         rawValues = rawValues.map(value => splitPrefixedNumber(value)[1]);
@@ -1059,7 +1064,6 @@ function inferSelectionIncrement(
     const isIntSeq = values.length > 1 && displayValues.every(isInteger);
     let firstCellRawVal = rawValues[0];
     let lastCellRawVal = rawValues[rawValues.length - 1];
-    let increment;
 
     if (isFloatSeq) {
         firstCellRawVal = parseFloat(firstCellRawVal);
@@ -1074,6 +1078,9 @@ function inferSelectionIncrement(
         increment = decimalDifference(lastCellRawVal, firstCellRawVal);
         increment = rawValues.length > 1 ? increment / (rawValues.length - 1) : 0;
         incrementType = IncrementType.NUMBER;
+    } else if (isDateSeq) {
+        incrementType = IncrementType.DATE;
+        increment = 1; // Right now we only increment dates by 1 day
     }
 
     return {
@@ -1247,11 +1254,8 @@ export function fillColumnCells(
     initialSelection: string[],
     selectionToFill: string[]
 ): CellValues {
-    const { direction, increment, prefix, startingValue, initialSelectionValues } = inferSelectionIncrement(
-        editorModel,
-        initialSelection,
-        selectionToFill
-    );
+    const { direction, increment, incrementType, prefix, startingValue, initialSelectionValues } =
+        inferSelectionIncrement(editorModel, initialSelection, selectionToFill);
 
     if (direction === IncrementDirection.BACKWARD) {
         selectionToFill.reverse();
@@ -1260,17 +1264,28 @@ export function fillColumnCells(
     selectionToFill.forEach((cellKey, i) => {
         let fillValue = initialSelectionValues[i % initialSelectionValues.length];
 
-        if (increment !== undefined) {
+        if (incrementType === IncrementType.NUMBER) {
             const amount = increment * (i + 1);
             let raw: string;
 
             if (direction === IncrementDirection.FORWARD) {
-                raw = decimalDifference(amount, startingValue, false).toString(10);
+                raw = decimalDifference(amount, startingValue as number, false).toString(10);
             } else {
-                raw = decimalDifference(startingValue, amount, true).toString(10);
+                raw = decimalDifference(startingValue as number, amount, true).toString(10);
             }
 
             if (prefix !== undefined) raw = prefix + raw;
+            fillValue = List([{ raw, display: raw.toString() }]);
+        } else if (incrementType === IncrementType.DATE) {
+            const dateValue = moment(parseDate(startingValue as string));
+
+            if (direction === IncrementDirection.FORWARD) {
+                dateValue.add(i + 1, 'days');
+            } else {
+                dateValue.subtract(i + 1, 'days');
+            }
+
+            const raw = formatDate(dateValue.toDate());
             fillValue = List([{ raw, display: raw.toString() }]);
         }
 

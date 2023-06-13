@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map, Set } from 'immutable';
+import { fromJS, List, Map, Set as ImmutableSet } from 'immutable';
 
 import sampleSet2QueryInfo from '../../../test/data/sampleSet2-getQueryDetails.json';
 
@@ -650,35 +650,35 @@ describe('EditorModel', () => {
 
         test('getColumns without queryInfo', () => {
             const editorModel = new EditorModel({});
-            const queryInfo = new QueryInfo();
-            expect(editorModel.getColumns(queryInfo).size).toBe(0);
-            expect(editorModel.getColumns(queryInfo, true).size).toBe(0);
+            const queryInfo = new QueryInfo({});
+            expect(editorModel.getColumns(queryInfo).length).toBe(0);
+            expect(editorModel.getColumns(queryInfo, true).length).toBe(0);
         });
 
         test('getColumns forInsert', () => {
             const editorModel = new EditorModel({});
             const columns = editorModel.getColumns(QUERY_INFO);
-            expect(columns.size).toBe(2);
-            expect(columns.get(0)).toStrictEqual(COLUMN_CAN_INSERT_AND_UPDATE);
-            expect(columns.get(1)).toStrictEqual(COLUMN_CAN_INSERT);
+            expect(columns.length).toBe(2);
+            expect(columns[0]).toStrictEqual(COLUMN_CAN_INSERT_AND_UPDATE);
+            expect(columns[1]).toStrictEqual(COLUMN_CAN_INSERT);
         });
 
         test('getColumns forUpdate', () => {
             const editorModel = new EditorModel({});
             const columns = editorModel.getColumns(QUERY_INFO, true);
-            expect(columns.size).toBe(2);
-            expect(columns.get(0)).toStrictEqual(COLUMN_CAN_INSERT_AND_UPDATE);
-            expect(columns.get(1)).toStrictEqual(COLUMN_CAN_UPDATE);
+            expect(columns.length).toBe(2);
+            expect(columns[0]).toStrictEqual(COLUMN_CAN_INSERT_AND_UPDATE);
+            expect(columns[1]).toStrictEqual(COLUMN_CAN_UPDATE);
         });
 
         test('getColumns readOnlyColumns', () => {
             const editorModel = new EditorModel({});
             const columns = editorModel.getColumns(QUERY_INFO, true, List(['neither']));
-            expect(columns.size).toBe(3);
-            expect(columns.get(0)).toStrictEqual(COLUMN_CAN_INSERT_AND_UPDATE);
-            expect(columns.get(1)).toStrictEqual(COLUMN_CAN_UPDATE);
-            expect(columns.get(2).fieldKey).toBe(COLUMN_CANNOT_INSERT_AND_UPDATE.fieldKey);
-            expect(columns.get(2).readOnly).toBe(true);
+            expect(columns.length).toBe(3);
+            expect(columns[0]).toStrictEqual(COLUMN_CAN_INSERT_AND_UPDATE);
+            expect(columns[1]).toStrictEqual(COLUMN_CAN_UPDATE);
+            expect(columns[2].fieldKey).toBe(COLUMN_CANNOT_INSERT_AND_UPDATE.fieldKey);
+            expect(columns[2].readOnly).toBe(true);
         });
 
         test('getColumns getInsertColumns', () => {
@@ -687,11 +687,11 @@ describe('EditorModel', () => {
                 QUERY_INFO,
                 false,
                 undefined,
-                List([COLUMN_CANNOT_INSERT_AND_UPDATE, COLUMN_CAN_INSERT])
+                [COLUMN_CANNOT_INSERT_AND_UPDATE, COLUMN_CAN_INSERT]
             );
-            expect(columns.size).toBe(2);
-            expect(columns.get(0)).toBe(COLUMN_CANNOT_INSERT_AND_UPDATE);
-            expect(columns.get(1)).toBe(COLUMN_CAN_INSERT);
+            expect(columns.length).toBe(2);
+            expect(columns[0]).toBe(COLUMN_CANNOT_INSERT_AND_UPDATE);
+            expect(columns[1]).toBe(COLUMN_CAN_INSERT);
         });
 
         test('getValue', () => {
@@ -770,29 +770,29 @@ describe('EditorModel', () => {
         });
 
         test('hasMultipleSelection', () => {
-            expect(new EditorModel({ selectionCells: Set([]) }).isMultiSelect).toBeFalsy();
-            expect(new EditorModel({ selectionCells: Set(['0-0']) }).isMultiSelect).toBeFalsy();
-            expect(new EditorModel({ selectionCells: Set(['0-0', '1-1']) }).isMultiSelect).toBeTruthy();
+            expect(new EditorModel({ selectionCells: ImmutableSet([]) }).isMultiSelect).toBeFalsy();
+            expect(new EditorModel({ selectionCells: ImmutableSet(['0-0']) }).isMultiSelect).toBeFalsy();
+            expect(new EditorModel({ selectionCells: ImmutableSet(['0-0', '1-1']) }).isMultiSelect).toBeTruthy();
         });
 
-        test('hasMultipleColumnSelection', () => {
-            expect(new EditorModel({ selectionCells: Set([]) }).hasMultipleColumnSelection()).toBeFalsy();
-            expect(new EditorModel({ selectionCells: Set(['0-0']) }).hasMultipleColumnSelection()).toBeFalsy();
-            expect(new EditorModel({ selectionCells: Set(['0-0', '0-1']) }).hasMultipleColumnSelection()).toBeFalsy();
-            expect(new EditorModel({ selectionCells: Set(['0-0', '1-1']) }).hasMultipleColumnSelection()).toBeTruthy();
+        test('isMultiColumnSelection', () => {
+            expect(new EditorModel({ selectionCells: ImmutableSet([]) }).isMultiColumnSelection).toBeFalsy();
+            expect(new EditorModel({ selectionCells: ImmutableSet(['0-0']) }).isMultiColumnSelection).toBeFalsy();
+            expect(new EditorModel({ selectionCells: ImmutableSet(['0-0', '0-1']) }).isMultiColumnSelection).toBeFalsy();
+            expect(new EditorModel({ selectionCells: ImmutableSet(['0-0', '1-1']) }).isMultiColumnSelection).toBeTruthy();
         });
 
         test('sortedSelectionKeys', () => {
             expect(
-                new EditorModel({ selectionCells: Set(['0-0', '0-1', '1-0', '1-1']), rowCount: 100 })
+                new EditorModel({ selectionCells: ImmutableSet(['0-0', '0-1', '1-0', '1-1']), rowCount: 100 })
                     .sortedSelectionKeys
             ).toStrictEqual(['0-0', '0-1', '1-0', '1-1']);
             expect(
-                new EditorModel({ selectionCells: Set(['1-0', '1-1', '0-1', '0-0']), rowCount: 100 })
+                new EditorModel({ selectionCells: ImmutableSet(['1-0', '1-1', '0-1', '0-0']), rowCount: 100 })
                     .sortedSelectionKeys
             ).toStrictEqual(['0-0', '0-1', '1-0', '1-1']);
             expect(
-                new EditorModel({ selectionCells: Set(['1-10', '1-1', '1-5', '1-15']), rowCount: 100 })
+                new EditorModel({ selectionCells: ImmutableSet(['1-10', '1-1', '1-5', '1-15']), rowCount: 100 })
                     .sortedSelectionKeys
             ).toStrictEqual(['1-1', '1-5', '1-10', '1-15']);
         });
@@ -800,50 +800,50 @@ describe('EditorModel', () => {
         test('lastSelection', () => {
             // multiple columns should always return false
             expect(
-                new EditorModel({ selectionCells: Set(['0-0', '0-1', '1-0', '1-1']), rowCount: 100 }).lastSelection(
+                new EditorModel({ selectionCells: ImmutableSet(['0-0', '0-1', '1-0', '1-1']), rowCount: 100 }).lastSelection(
                     0,
                     0
                 )
             ).toBeFalsy();
             expect(
-                new EditorModel({ selectionCells: Set(['0-0', '0-1', '1-0', '1-1']), rowCount: 100 }).lastSelection(
+                new EditorModel({ selectionCells: ImmutableSet(['0-0', '0-1', '1-0', '1-1']), rowCount: 100 }).lastSelection(
                     1,
                     1
                 )
             ).toBeFalsy();
             expect(
-                new EditorModel({ selectionCells: Set(['1-0', '1-1', '0-1', '0-0']), rowCount: 100 }).lastSelection(
+                new EditorModel({ selectionCells: ImmutableSet(['1-0', '1-1', '0-1', '0-0']), rowCount: 100 }).lastSelection(
                     0,
                     0
                 )
             ).toBeFalsy();
             expect(
-                new EditorModel({ selectionCells: Set(['1-0', '1-1', '0-1', '0-0']), rowCount: 100 }).lastSelection(
+                new EditorModel({ selectionCells: ImmutableSet(['1-0', '1-1', '0-1', '0-0']), rowCount: 100 }).lastSelection(
                     1,
                     1
                 )
             ).toBeFalsy();
             // single column should have a true
             expect(
-                new EditorModel({ selectionCells: Set(['1-0', '1-1', '1-2', '1-3']), rowCount: 100 }).lastSelection(
+                new EditorModel({ selectionCells: ImmutableSet(['1-0', '1-1', '1-2', '1-3']), rowCount: 100 }).lastSelection(
                     1,
                     0
                 )
             ).toBeFalsy();
             expect(
-                new EditorModel({ selectionCells: Set(['1-0', '1-1', '1-2', '1-3']), rowCount: 100 }).lastSelection(
+                new EditorModel({ selectionCells: ImmutableSet(['1-0', '1-1', '1-2', '1-3']), rowCount: 100 }).lastSelection(
                     1,
                     1
                 )
             ).toBeFalsy();
             expect(
-                new EditorModel({ selectionCells: Set(['1-0', '1-1', '1-2', '1-3']), rowCount: 100 }).lastSelection(
+                new EditorModel({ selectionCells: ImmutableSet(['1-0', '1-1', '1-2', '1-3']), rowCount: 100 }).lastSelection(
                     1,
                     2
                 )
             ).toBeFalsy();
             expect(
-                new EditorModel({ selectionCells: Set(['1-0', '1-1', '1-2', '1-3']), rowCount: 100 }).lastSelection(
+                new EditorModel({ selectionCells: ImmutableSet(['1-0', '1-1', '1-2', '1-3']), rowCount: 100 }).lastSelection(
                     1,
                     3
                 )
@@ -851,7 +851,7 @@ describe('EditorModel', () => {
             // single cell should always be true
             expect(
                 new EditorModel({
-                    selectionCells: Set(),
+                    selectionCells: ImmutableSet(),
                     selectedColIdx: 0,
                     selectedRowIdx: 0,
                     rowCount: 100,
@@ -859,7 +859,7 @@ describe('EditorModel', () => {
             ).toBeTruthy();
             expect(
                 new EditorModel({
-                    selectionCells: Set(),
+                    selectionCells: ImmutableSet(),
                     selectedColIdx: 100,
                     selectedRowIdx: 100,
                     rowCount: 100,
@@ -879,7 +879,7 @@ describe('EditorModel', () => {
         });
 
         test('inSelection', () => {
-            const model = new EditorModel({ selectionCells: Set(['0-0', '1-1']) });
+            const model = new EditorModel({ selectionCells: ImmutableSet(['0-0', '1-1']) });
             expect(model.inSelection(-1, -1)).toBeFalsy();
             expect(model.inSelection(0, -1)).toBeFalsy();
             expect(model.inSelection(-1, 0)).toBeFalsy();
@@ -928,7 +928,7 @@ describe('EditorModel', () => {
 describe('getPkData', () => {
     const config = {
         appEditableTable: true,
-        pkCols: List(['RowId']),
+        pkCols: ['RowId'],
         columns: fromJS({
             rowid: new QueryColumn({
                 caption: 'Row Id',
@@ -950,7 +950,7 @@ describe('getPkData', () => {
     const queryInfo = new QueryInfo(config);
     const queryInfoWithAltKey = new QueryInfo({
         ...config,
-        altUpdateKeys: Set<string>(['lsid']),
+        altUpdateKeys: new Set<string>(['lsid']),
     });
 
     test('as value', () => {

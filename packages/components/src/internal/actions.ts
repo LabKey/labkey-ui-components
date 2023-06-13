@@ -818,11 +818,13 @@ const resolveDisplayColumn = (column: QueryColumn): string => {
     return column.lookup.displayColumn;
 };
 
+type ColumnLoaderPromise = Promise<{ column: QueryColumn; descriptors: ValueDescriptor[] }>;
+
 const findLookupValues = async (
     column: QueryColumn,
     lookupKeyValues?: any[],
     lookupValues?: any[]
-): Promise<{ column: QueryColumn; descriptors: ValueDescriptor[] }> => {
+): ColumnLoaderPromise => {
     const lookup = column.lookup;
     const { keyColumn } = column.lookup;
     const displayColumn = resolveDisplayColumn(column);
@@ -1310,7 +1312,7 @@ export async function pasteEvent(
     if (editorModel && editorModel.hasSelection && !editorModel.hasFocus) {
         cancelEvent(event);
         const value = getPasteValue(event);
-        return await pasteCell(
+        return await validateAndInsertPastedData(
             editorModel,
             dataKeys,
             data,
@@ -1325,7 +1327,7 @@ export async function pasteEvent(
     return { data: undefined, dataKeys: undefined, editorModel: undefined };
 }
 
-async function pasteCell(
+async function validateAndInsertPastedData(
     editorModel: EditorModel,
     dataKeys: List<any>,
     data: Map<any, Map<string, any>>,
@@ -1345,7 +1347,7 @@ async function pasteCell(
     if (paste.success) {
         const byColumnValues = getPasteValuesByColumn(paste);
         // prior to load, ensure lookup column stores are loaded
-        const columnLoaders: any[] = queryInfo.getInsertColumns().reduce((arr, column, index) => {
+        const columnLoaders: ColumnLoaderPromise[] = queryInfo.getInsertColumns().reduce((arr, column, index) => {
             if (column.isPublicLookup()) {
                 const filteredLookup = getColumnFilteredLookup(column, columnMetadata);
                 if (
@@ -1375,7 +1377,7 @@ async function pasteCell(
             reduction[column.lookupKey] = descriptors;
             return reduction;
         }, {});
-        return pasteCellLoad(
+        return insertPastedData(
             dataKeys,
             data,
             queryInfo,
@@ -1396,15 +1398,62 @@ async function pasteCell(
     }
 }
 
+/**
+ * Expands the pasted data in the X and/or Y direction if the user has selected an area that is a multiple of X or Y.
+ *
+ * For example:
+ * If the user copied two rows and two columns to their clipboard, but selected four rows and two columns on the grid we
+ * would paste the contents twice across the four selected rows. If they had selected two rows and four columns we would
+ * paste the contents twice across the selected columns.
+ */
+function expandPaste(model: EditorModel, payload: ParsePastePayload): ParsePastePayload {
+    const selection = model.sortedSelectionKeys;
+    const minSelection = parseCellKey(selection[0]);
+    const maxSelection = parseCellKey(selection[selection.length - 1]);
+    const selectionColCount = maxSelection.colIdx - minSelection.colIdx + 1;
+    const selectionRowCount = maxSelection.rowIdx - minSelection.rowIdx + 1;
+    let { data, numCols, numRows } = payload;
+
+    if (selectionColCount > payload.numCols && selectionColCount % payload.numCols === 0) {
+        const colCopyMultiple = selectionColCount / payload.numCols;
+        numCols = payload.numCols * colCopyMultiple;
+        data = data.reduce((reduction, row) => {
+            let updatedRow = row;
+            for (let i = 0; i < colCopyMultiple - 1; i++) {
+                updatedRow = updatedRow.concat(row).toList();
+            }
+
+            return reduction.push(updatedRow);
+        }, List<List<string>>());
+    }
+
+    if (selectionRowCount > payload.numRows && selectionRowCount % payload.numRows === 0) {
+        const rowCopyMultiple = selectionRowCount / payload.numRows;
+        numRows = payload.numRows * rowCopyMultiple;
+        const originalRows = data;
+        for (let i = 0; i < rowCopyMultiple - 1; i++) {
+            data = data.concat(originalRows).toList();
+        }
+    }
+
+    return { data, numCols, numRows };
+}
+
 function validatePaste(
     model: EditorModel,
     colMin: number,
     rowMin: number,
     value: string,
     readOnlyRowCount?: number
-): IPasteModel {
+): PasteModel {
     const maxRowPaste = 1000;
-    const payload = parsePaste(model, value);
+    let success = true;
+    let message;
+    let payload = parsePaste(value);
+
+    if (model.isMultiSelect) {
+        payload = expandPaste(model, payload);
+    }
 
     const coordinates = {
         colMax: colMin + payload.numCols - 1,
@@ -1413,36 +1462,35 @@ function validatePaste(
         rowMin,
     };
 
-    const paste: IPasteModel = {
+    // If P = 1 then target can be 1 or M
+    // If P = M(x,y) then target can be 1 or exact M(x,y)
+    if (coordinates.colMax >= model.columns.size) {
+        success = false;
+        message = 'Unable to paste. Cannot paste columns beyond the columns found in the grid.';
+    } else if (coordinates.rowMax - coordinates.rowMin > maxRowPaste) {
+        success = false;
+        message = 'Unable to paste. Cannot paste more than ' + maxRowPaste + ' rows.';
+    }
+
+    return {
         coordinates,
+        message,
         payload,
         rowsToAdd: Math.max(
             0,
             coordinates.rowMin + payload.numRows + (readOnlyRowCount ? readOnlyRowCount : 0) - model.rowCount
         ),
-        success: true,
+        success,
     };
-
-    // If P = 1 then target can be 1 or M
-    // If P = M(x,y) then target can be 1 or exact M(x,y)
-    if (coordinates.colMax >= model.columns.size) {
-        paste.success = false;
-        paste.message = 'Unable to paste. Cannot paste columns beyond the columns found in the grid.';
-    } else if (coordinates.rowMax - coordinates.rowMin > maxRowPaste) {
-        paste.success = false;
-        paste.message = 'Unable to paste. Cannot paste more than ' + maxRowPaste + ' rows.';
-    }
-
-    return paste;
 }
 
-type IParsePastePayload = {
+type ParsePastePayload = {
     data: List<List<string>>;
     numCols: number;
     numRows: number;
 };
 
-type IPasteModel = {
+type PasteModel = {
     coordinates: {
         colMax: number;
         colMin: number;
@@ -1450,21 +1498,17 @@ type IPasteModel = {
         rowMin: number;
     };
     message?: string;
-    payload: IParsePastePayload;
+    payload: ParsePastePayload;
     rowsToAdd: number;
     success: boolean;
 };
 
-function parsePaste(model: EditorModel, value: string): IParsePastePayload {
+function parsePaste(value: string): ParsePastePayload {
     let numCols = 0;
-    let rows = List<List<string>>().asMutable();
+    let data = List<List<string>>();
 
     if (value === undefined || value === null || typeof value !== 'string') {
-        return {
-            data: rows.asImmutable(),
-            numCols,
-            numRows: rows.size,
-        };
+        return { data, numCols, numRows: 0 };
     }
 
     // remove trailing newline from pasted data to avoid creating an empty row of cells
@@ -1475,10 +1519,11 @@ function parsePaste(model: EditorModel, value: string): IParsePastePayload {
         if (numCols < columns.size) {
             numCols = columns.size;
         }
-        rows.push(columns);
+        data = data.push(columns);
     });
 
-    rows = rows
+    // Normalize the number columns in each row in case a user pasted rows with different numbers of columns in them
+    data = data
         .map(columns => {
             if (columns.size < numCols) {
                 const remainder = [];
@@ -1492,9 +1537,9 @@ function parsePaste(model: EditorModel, value: string): IParsePastePayload {
         .toList();
 
     return {
-        data: rows.asImmutable(),
+        data,
         numCols,
-        numRows: rows.size,
+        numRows: data.size,
     };
 }
 
@@ -1817,7 +1862,7 @@ export async function addRows(
 
 // Gets the non-blank values pasted for each column.  The values in the resulting lists may not align to the rows
 // pasted if there were empty cells within the paste block.
-function getPasteValuesByColumn(paste: IPasteModel): List<List<string>> {
+function getPasteValuesByColumn(paste: PasteModel): List<List<string>> {
     const { data } = paste.payload;
     const valuesByColumn = List<List<string>>().asMutable();
 
@@ -1851,12 +1896,12 @@ function getColumnFilteredLookup(
     return undefined;
 }
 
-function pasteCellLoad(
+function insertPastedData(
     dataKeys: List<any>,
     data: Map<any, Map<string, any>>,
     queryInfo: QueryInfo,
     editorModel: EditorModel,
-    paste: IPasteModel,
+    paste: PasteModel,
     lookupDescriptorMap: { [colKey: string]: ValueDescriptor[] },
     columnMetadata: Map<string, EditableColumnMetadata>,
     readonlyRows?: string[],
@@ -1864,9 +1909,9 @@ function pasteCellLoad(
 ): EditorModelAndGridData {
     const pastedData = paste.payload.data;
     const columns = queryInfo.getInsertColumns();
-    const cellMessages = editorModel.cellMessages.asMutable();
-    const cellValues = editorModel.cellValues.asMutable();
-    const selectionCells = Set<string>().asMutable();
+    let cellMessages = editorModel.cellMessages;
+    let cellValues = editorModel.cellValues;
+    let selectionCells = Set<string>();
     let rowCount = editorModel.rowCount;
     let updatedDataKeys: List<any>;
     let updatedData: Map<any, Map<string, any>>;
@@ -1878,111 +1923,66 @@ function pasteCellLoad(
         updatedDataKeys = dataChanges.dataKeys;
     }
 
-    if (editorModel.isMultiSelect) {
-        editorModel.selectionCells.forEach(cellKey => {
-            const { colIdx } = parseCellKey(cellKey);
-            const col = columns[colIdx];
+    const { colMin, rowMin } = paste.coordinates;
+    const pkCols = queryInfo.getPkCols();
+    let rowIdx = rowMin;
+    let hasReachedRowLimit = false;
+    pastedData.forEach(row => {
+        if (hasReachedRowLimit && lockRowCount) return;
 
-            pastedData.forEach(row => {
-                row.forEach(value => {
-                    let cv: List<ValueDescriptor>;
-                    let msg: CellMessage;
-
-                    if (col && col.isPublicLookup()) {
-                        const { message, values } = parsePasteCellLookup(
-                            col,
-                            lookupDescriptorMap[col.lookupKey],
-                            value
-                        );
-                        cv = values;
-
-                        if (message) {
-                            msg = message;
-                        }
-                    } else {
-                        cv = List([{ display: value, raw: value }]);
-                    }
-
-                    if (!isReadOnly(col, columnMetadata)) {
-                        if (msg) {
-                            cellMessages.set(cellKey, msg);
-                        } else {
-                            cellMessages.remove(cellKey);
-                        }
-                        cellValues.set(cellKey, cv);
-                    }
-
-                    selectionCells.add(cellKey);
-                });
-            });
-        });
-    } else {
-        const { colMin, rowMin } = paste.coordinates;
-        const pkCols = queryInfo.getPkCols();
-        let rowIdx = rowMin;
-        let hasReachedRowLimit = false;
-        pastedData.forEach(row => {
-            if (hasReachedRowLimit && lockRowCount) return;
-
-            if (readonlyRows) {
-                while (rowIdx < rowCount && isReadonlyRow(data.get(dataKeys.get(rowIdx)), pkCols, readonlyRows)) {
-                    // Skip over readonly rows
-                    rowIdx++;
-                }
-
-                if (rowIdx >= rowCount) {
-                    hasReachedRowLimit = true;
-                    return;
-                }
+        if (readonlyRows) {
+            while (rowIdx < rowCount && isReadonlyRow(data.get(dataKeys.get(rowIdx)), pkCols, readonlyRows)) {
+                // Skip over readonly rows
+                rowIdx++;
             }
 
-            row.forEach((value, cn) => {
-                const colIdx = colMin + cn;
-                const col = columns[colIdx];
-                const cellKey = genCellKey(colIdx, rowIdx);
-                let cv: List<ValueDescriptor>;
-                let msg: CellMessage;
+            if (rowIdx >= rowCount) {
+                hasReachedRowLimit = true;
+                return;
+            }
+        }
 
-                if (col && col.isPublicLookup()) {
-                    const { message, values } = parsePasteCellLookup(col, lookupDescriptorMap[col.lookupKey], value);
-                    cv = values;
+        row.forEach((value, cn) => {
+            const colIdx = colMin + cn;
+            const col = columns[colIdx];
+            const cellKey = genCellKey(colIdx, rowIdx);
+            let cv: List<ValueDescriptor>;
+            let msg: CellMessage;
 
-                    if (message) {
-                        msg = message;
-                    }
+            if (col && col.isPublicLookup()) {
+                const { message, values } = parsePastedLookup(col, lookupDescriptorMap[col.lookupKey], value);
+                cv = values;
+
+                if (message) {
+                    msg = message;
+                }
+            } else {
+                cv = List([{ display: value, raw: value }]);
+            }
+
+            if (!isReadOnly(col, columnMetadata)) {
+                if (msg) {
+                    cellMessages = cellMessages.set(cellKey, msg);
                 } else {
-                    cv = List([{ display: value, raw: value }]);
+                    cellMessages = cellMessages.remove(cellKey);
                 }
+                cellValues = cellValues.set(cellKey, cv);
+            }
 
-                if (!isReadOnly(col, columnMetadata)) {
-                    if (msg) {
-                        cellMessages.set(cellKey, msg);
-                    } else {
-                        cellMessages.remove(cellKey);
-                    }
-                    cellValues.set(cellKey, cv);
-                }
-
-                selectionCells.add(cellKey);
-            });
-
-            rowIdx++;
+            selectionCells = selectionCells.add(cellKey);
         });
-    }
+
+        rowIdx++;
+    });
 
     return {
-        editorModel: {
-            cellMessages: cellMessages.asImmutable(),
-            cellValues: cellValues.asImmutable(),
-            rowCount,
-            selectionCells: selectionCells.asImmutable(),
-        },
+        editorModel: { cellMessages, cellValues, rowCount, selectionCells },
         data: updatedData,
         dataKeys: updatedDataKeys,
     };
 }
 
-function isReadonlyRow(row: Map<string, any>, pkCols: QueryColumn[], readonlyRows: string[]) {
+function isReadonlyRow(row: Map<string, any>, pkCols: QueryColumn[], readonlyRows: string[]): boolean {
     if (pkCols.length === 1 && row) {
         const pkValue = caseInsensitive(row.toJS(), pkCols[0].fieldKey);
         return readonlyRows.includes(pkValue);
@@ -2017,7 +2017,7 @@ interface IParseLookupPayload {
     values: List<ValueDescriptor>;
 }
 
-function parsePasteCellLookup(column: QueryColumn, descriptors: ValueDescriptor[], value: string): IParseLookupPayload {
+function parsePastedLookup(column: QueryColumn, descriptors: ValueDescriptor[], value: string): IParseLookupPayload {
     if (value === undefined || value === null || typeof value !== 'string') {
         return {
             values: List([

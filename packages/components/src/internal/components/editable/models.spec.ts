@@ -906,21 +906,21 @@ describe('EditorModel', () => {
                     '0-0': List([{} as ValueDescriptor]),
                 }),
             });
-            expect(model.hasData()).toBeFalsy();
+            expect(model.hasData).toBeFalsy();
 
             model = new EditorModel({
                 cellValues: fromJS({
                     '0-0': List([{ raw: ' ' } as ValueDescriptor]),
                 }),
             });
-            expect(model.hasData()).toBeFalsy();
+            expect(model.hasData).toBeFalsy();
 
             model = new EditorModel({
                 cellValues: fromJS({
                     '0-0': List([{ raw: 'a' } as ValueDescriptor]),
                 }),
             });
-            expect(model.hasData()).toBeTruthy();
+            expect(model.hasData).toBeTruthy();
         });
     });
 });

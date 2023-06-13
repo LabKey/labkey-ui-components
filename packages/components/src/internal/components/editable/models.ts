@@ -52,7 +52,7 @@ export interface EditorModelProps {
     rowCount: number;
     selectedColIdx: number;
     selectedRowIdx: number;
-    selectionCells: ImmutableSet<string>;
+    selectionCells: ImmutableSet<string>; // TODO: convert to string[], always sort before setting
 }
 
 export function getPkData(queryInfo: QueryInfo, row: Map<string, any>): Record<string, any> {
@@ -466,7 +466,7 @@ export class EditorModel
         return descriptor && descriptor.raw != null && descriptor.raw.toString().trim() !== '';
     }
 
-    hasData(): boolean {
+    get hasData(): boolean {
         return (
             this.cellValues.find(valueList => {
                 return valueList.find(value => this.hasRawValue(value)) !== undefined;
@@ -532,14 +532,6 @@ export class EditorModel
             });
             return returnMap.merge(trimmedUpdates);
         }) as Map<any, Map<string, any>>;
-    }
-
-    getDeletedIds(): ImmutableSet<any> {
-        return this.deletedIds.filter(id => id.toString().indexOf(GRID_EDIT_INDEX) === -1).toSet();
-    }
-
-    isModified(editedRow: Map<string, any>, originalQueryRow: Map<string, any>): boolean {
-        return editedRow.find((value, key) => originalQueryRow.get(key) !== value) !== undefined;
     }
 
     lastSelection(colIdx: number, rowIdx: number): boolean {

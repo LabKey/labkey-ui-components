@@ -1,0 +1,1910 @@
+{
+  "nodes" : {
+    "urn:lsid:labkey.com:Run.Folder-5:670b9f43-e902-1039-8a73-1a365e240f90" : {
+      "container" : "96c89c58-bdac-1039-a008-fa9669ea4ab6",
+      "created" : "2021-08-26 19:26:04.774",
+      "cpasType" : "urn:lsid:labkey.org:Protocol:SampleDerivationProtocol",
+      "schemaName" : "exp",
+      "type" : "Run",
+      "url" : "/labkey/BiologicsFullTeam/experiment-showRunGraph.view?rowId=248",
+      "lsid" : "urn:lsid:labkey.com:Run.Folder-5:670b9f43-e902-1039-8a73-1a365e240f90",
+      "createdBy" : "ara@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.5.CellLineBatches:CL01185-001",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 248
+      } ],
+      "name" : "Derive 2 samples from CL01185, CL00721-003",
+      "queryName" : "Runs",
+      "modified" : "2021-08-26 19:26:04.774",
+      "expType" : "ExperimentRun",
+      "modifiedBy" : "ara@upsidefoods.com",
+      "id" : 248,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.5.CellLineBatches:CL00721-003",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Data.Folder-5:8e46c587-e749-1039-8a73-1a365e240f90",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-4:ViCELL:UCI-CL01312-MF-hpmc-220819-F1_20220822" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-22 08:34:29.014",
+      "cpasType" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-4:ViCELL",
+      "schemaName" : "assay.General.ViCELL",
+      "type" : "GeneralAssayProtocol",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showRunGraph.view?rowId=189942",
+      "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-4:ViCELL:UCI-CL01312-MF-hpmc-220819-F1_20220822",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:AssayRunTSVData.Folder-22:UCI-CL01312-MF-hpmc-220819-F1_20220822-Data",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 189942
+      } ],
+      "name" : "UCI-CL01312-MF-hpmc-220819-F1_20220822",
+      "queryName" : "Runs",
+      "modified" : "2022-08-22 08:34:29.014",
+      "expType" : "ExperimentRun",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 189942,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220819-F1",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:Data.Folder-5:d98af77b-d149-1039-8ef0-1a365e2402f0" : {
+      "container" : "96c89c58-bdac-1039-a008-fa9669ea4ab6",
+      "created" : "2021-07-27 14:16:50.498",
+      "dataFileURL" : null,
+      "cpasType" : "urn:lsid:labkey.com:DataClass.Folder-5:Ingredients",
+      "schemaName" : "exp.data",
+      "type" : "Data",
+      "url" : "/labkey/BiologicsFullTeam/experiment-showData.view?rowId=3890",
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-5:d98af77b-d149-1039-8ef0-1a365e2402f0",
+      "createdBy" : "william@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-5:3a70faaf-3c37-103a-af7c-1a365e2485be",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 3890
+      } ],
+      "name" : "CH00301",
+      "queryName" : "Ingredients",
+      "modified" : "2022-05-25 18:03:55.241",
+      "expType" : "Data",
+      "modifiedBy" : "datateam@upsidefoods.com",
+      "comment" : "urn:lsid:labkey.com:Data.Folder-6:8834a9b4-d149-1039-8ef0-1a365e2402f0",
+      "id" : 3890,
+      "parents" : [ ]
+    },
+    "urn:lsid:labkey.com:Data.Folder-5:d98af8c3-d149-1039-8ef0-1a365e2402f0" : {
+      "container" : "96c89c58-bdac-1039-a008-fa9669ea4ab6",
+      "created" : "2021-07-27 14:16:50.498",
+      "dataFileURL" : null,
+      "cpasType" : "urn:lsid:labkey.com:DataClass.Folder-5:Ingredients",
+      "schemaName" : "exp.data",
+      "type" : "Data",
+      "url" : "/labkey/BiologicsFullTeam/experiment-showData.view?rowId=4218",
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-5:d98af8c3-d149-1039-8ef0-1a365e2402f0",
+      "createdBy" : "william@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-5:3a70faaf-3c37-103a-af7c-1a365e2485be",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 4218
+      } ],
+      "name" : "CH00629",
+      "queryName" : "Ingredients",
+      "modified" : "2022-05-25 18:06:45.175",
+      "expType" : "Data",
+      "modifiedBy" : "datateam@upsidefoods.com",
+      "comment" : "urn:lsid:labkey.com:Data.Folder-6:8834aafc-d149-1039-8ef0-1a365e2402f0",
+      "id" : 4218,
+      "parents" : [ ]
+    },
+    "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220812-F1" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-12 10:03:35.508",
+      "cpasType" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run",
+      "schemaName" : "assay.General.UCI Run",
+      "type" : "GeneralAssayProtocol",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showRunGraph.view?rowId=187306",
+      "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220812-F1",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220812-F1",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 187306
+      } ],
+      "name" : "CL01312-MF-hpmc-220812-F1",
+      "queryName" : "Runs",
+      "modified" : "2022-08-15 09:59:37.160",
+      "expType" : "ExperimentRun",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 187306,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220808-F1",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220812-F1" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-12 10:03:35.541",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue",
+      "materialLineageType" : "Derivative",
+      "schemaName" : "samples",
+      "type" : "SampleSet",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showMaterial.view?rowId=34735",
+      "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220812-F1",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-4:ViCELL:UCI-CL01312-MF-hpmc-220812-F1_20220815",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220815-F1",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 34735
+      } ],
+      "name" : "UCI-CL01312-MF-hpmc-220812-F1",
+      "queryName" : "Tissue",
+      "modified" : "2022-08-12 10:03:35.541",
+      "expType" : "Material",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 34735,
+      "properties" : {
+        "name" : "UCI-CL01312-MF-hpmc-220812-F1"
+      },
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220812-F1",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:AssayRunTSVData.Folder-22:UCI-CL01312-MF-hpmc-220808-F1_20220812-Data" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-12 09:39:07.070",
+      "dataFileURL" : "file:///labkey/labkey/files/BiologicsFullTeam/UCI/@files/.labkey/UploadedXARs/ayue@upsidefoods.com/UCI-CL01312-MF-hpmc-220808-F1_20220812.xar.exploded/Data/UCI-CL01312-MF-hpmc-220808-F1_20220812.tsv",
+      "cpasType" : "Data",
+      "schemaName" : "exp",
+      "type" : "AssayRunTSVData",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showData.view?rowId=182717",
+      "lsid" : "urn:lsid:labkey.com:AssayRunTSVData.Folder-22:UCI-CL01312-MF-hpmc-220808-F1_20220812-Data",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 182717
+      } ],
+      "name" : "Analysis Results",
+      "queryName" : "Data",
+      "modified" : "2022-08-12 09:39:07.070",
+      "absolutePath" : "/labkey/labkey/files/BiologicsFullTeam/UCI/@files/.labkey/UploadedXARs/ayue@upsidefoods.com/UCI-CL01312-MF-hpmc-220808-F1_20220812.xar.exploded/Data/UCI-CL01312-MF-hpmc-220808-F1_20220812.tsv",
+      "pipelinePath" : null,
+      "expType" : "Data",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 182717,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-4:ViCELL:UCI-CL01312-MF-hpmc-220808-F1_20220812",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:Data.Folder-5:8e46c588-e749-1039-8a73-1a365e240f90" : {
+      "container" : "96c89c58-bdac-1039-a008-fa9669ea4ab6",
+      "created" : "2021-08-24 18:59:15.852",
+      "dataFileURL" : null,
+      "cpasType" : "urn:lsid:labkey.com:DataClass.Folder-5:CellLine",
+      "schemaName" : "exp.data",
+      "type" : "Data",
+      "url" : "/labkey/BiologicsFullTeam/experiment-showData.view?rowId=5065",
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-5:8e46c588-e749-1039-8a73-1a365e240f90",
+      "createdBy" : "ara@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-5:670b9f45-e902-1039-8a73-1a365e240f90",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 5065
+      } ],
+      "name" : "CL01312",
+      "queryName" : "CellLine",
+      "modified" : "2022-12-07 20:11:55.127",
+      "expType" : "Data",
+      "modifiedBy" : "datateam@upsidefoods.com",
+      "id" : 5065,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-5:8e46c595-e749-1039-8a73-1a365e240f90",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-4:ViCELL:UCI-CL01312-MF-hpmc-220812-F1_20220815" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-15 09:05:01.501",
+      "cpasType" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-4:ViCELL",
+      "schemaName" : "assay.General.ViCELL",
+      "type" : "GeneralAssayProtocol",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showRunGraph.view?rowId=187607",
+      "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-4:ViCELL:UCI-CL01312-MF-hpmc-220812-F1_20220815",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:AssayRunTSVData.Folder-22:UCI-CL01312-MF-hpmc-220812-F1_20220815-Data",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 187607
+      } ],
+      "name" : "UCI-CL01312-MF-hpmc-220812-F1_20220815",
+      "queryName" : "Runs",
+      "modified" : "2022-08-15 09:05:01.501",
+      "expType" : "ExperimentRun",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 187607,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220812-F1",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:Run.Folder-5:8e46c595-e749-1039-8a73-1a365e240f90" : {
+      "container" : "96c89c58-bdac-1039-a008-fa9669ea4ab6",
+      "created" : "2021-08-24 18:59:16.524",
+      "cpasType" : "urn:lsid:labkey.org:Protocol:SampleDerivationProtocol",
+      "schemaName" : "exp",
+      "type" : "Run",
+      "url" : "/labkey/BiologicsFullTeam/experiment-showRunGraph.view?rowId=178",
+      "lsid" : "urn:lsid:labkey.com:Run.Folder-5:8e46c595-e749-1039-8a73-1a365e240f90",
+      "createdBy" : "ara@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Data.Folder-5:8e46c588-e749-1039-8a73-1a365e240f90",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 178
+      } ],
+      "name" : "Derive data from CL01185",
+      "queryName" : "Runs",
+      "modified" : "2021-08-24 18:59:16.524",
+      "expType" : "ExperimentRun",
+      "modifiedBy" : "ara@upsidefoods.com",
+      "id" : 178,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Data.Folder-5:8e46c587-e749-1039-8a73-1a365e240f90",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:Data.Folder-5:d98af6c7-d149-1039-8ef0-1a365e2402f0" : {
+      "container" : "96c89c58-bdac-1039-a008-fa9669ea4ab6",
+      "created" : "2021-07-27 14:16:50.498",
+      "dataFileURL" : null,
+      "cpasType" : "urn:lsid:labkey.com:DataClass.Folder-5:Ingredients",
+      "schemaName" : "exp.data",
+      "type" : "Data",
+      "url" : "/labkey/BiologicsFullTeam/experiment-showData.view?rowId=3710",
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-5:d98af6c7-d149-1039-8ef0-1a365e2402f0",
+      "createdBy" : "william@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-5:3a70faaf-3c37-103a-af7c-1a365e2485be",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 3710
+      } ],
+      "name" : "CH00120",
+      "queryName" : "Ingredients",
+      "modified" : "2022-05-25 18:04:19.958",
+      "expType" : "Data",
+      "modifiedBy" : "datateam@upsidefoods.com",
+      "comment" : "urn:lsid:labkey.com:Data.Folder-6:8834a900-d149-1039-8ef0-1a365e2402f0",
+      "id" : 3710,
+      "parents" : [ ]
+    },
+    "urn:lsid:labkey.com:AssayRunTSVData.Folder-22:UCI-CL01312-MF-hpmc-220819-F1_20220822-Data" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-22 08:34:29.027",
+      "dataFileURL" : "file:///labkey/labkey/files/BiologicsFullTeam/UCI/@files/.labkey/UploadedXARs/ayue@upsidefoods.com/UCI-CL01312-MF-hpmc-220819-F1_20220822.xar.exploded/Data/UCI-CL01312-MF-hpmc-220819-F1_20220822.tsv",
+      "cpasType" : "Data",
+      "schemaName" : "exp",
+      "type" : "AssayRunTSVData",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showData.view?rowId=184981",
+      "lsid" : "urn:lsid:labkey.com:AssayRunTSVData.Folder-22:UCI-CL01312-MF-hpmc-220819-F1_20220822-Data",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 184981
+      } ],
+      "name" : "Analysis Results",
+      "queryName" : "Data",
+      "modified" : "2022-08-22 08:34:29.027",
+      "absolutePath" : "/labkey/labkey/files/BiologicsFullTeam/UCI/@files/.labkey/UploadedXARs/ayue@upsidefoods.com/UCI-CL01312-MF-hpmc-220819-F1_20220822.xar.exploded/Data/UCI-CL01312-MF-hpmc-220819-F1_20220822.tsv",
+      "pipelinePath" : null,
+      "expType" : "Data",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 184981,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-4:ViCELL:UCI-CL01312-MF-hpmc-220819-F1_20220822",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:Data.Folder-5:d98af7bc-d149-1039-8ef0-1a365e2402f0" : {
+      "container" : "96c89c58-bdac-1039-a008-fa9669ea4ab6",
+      "created" : "2021-07-27 14:16:50.498",
+      "dataFileURL" : null,
+      "cpasType" : "urn:lsid:labkey.com:DataClass.Folder-5:Ingredients",
+      "schemaName" : "exp.data",
+      "type" : "Data",
+      "url" : "/labkey/BiologicsFullTeam/experiment-showData.view?rowId=3955",
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-5:d98af7bc-d149-1039-8ef0-1a365e2402f0",
+      "createdBy" : "william@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-5:3a70faaf-3c37-103a-af7c-1a365e2485be",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 3955
+      } ],
+      "name" : "CH00366",
+      "queryName" : "Ingredients",
+      "modified" : "2022-05-25 18:05:23.320",
+      "expType" : "Data",
+      "modifiedBy" : "datateam@upsidefoods.com",
+      "comment" : "urn:lsid:labkey.com:Data.Folder-6:8834a9f5-d149-1039-8ef0-1a365e2402f0",
+      "id" : 3955,
+      "parents" : [ ]
+    },
+    "urn:lsid:labkey.com:AssayRunTSVData.Folder-22:UCI-CL01312-MF-hpmc-220812-F1_20220815-Data" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-15 09:04:28.227",
+      "dataFileURL" : "file:///labkey/labkey/files/BiologicsFullTeam/UCI/@files/.labkey/UploadedXARs/ayue@upsidefoods.com/UCI-CL01312-MF-hpmc-220812-F1_20220815.xar.exploded/Data/UCI-CL01312-MF-hpmc-220812-F1_20220815.tsv",
+      "cpasType" : "Data",
+      "schemaName" : "exp",
+      "type" : "AssayRunTSVData",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showData.view?rowId=183010",
+      "lsid" : "urn:lsid:labkey.com:AssayRunTSVData.Folder-22:UCI-CL01312-MF-hpmc-220812-F1_20220815-Data",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 183010
+      } ],
+      "name" : "Analysis Results",
+      "queryName" : "Data",
+      "modified" : "2022-08-15 09:05:01.515",
+      "absolutePath" : "/labkey/labkey/files/BiologicsFullTeam/UCI/@files/.labkey/UploadedXARs/ayue@upsidefoods.com/UCI-CL01312-MF-hpmc-220812-F1_20220815.xar.exploded/Data/UCI-CL01312-MF-hpmc-220812-F1_20220815.tsv",
+      "pipelinePath" : null,
+      "expType" : "Data",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 183010,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-4:ViCELL:UCI-CL01312-MF-hpmc-220812-F1_20220815",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:AssayRunTSVData.Folder-22:b1e43423-a649-103b-8ebf-ecf4a9ba1ae0" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2023-03-16 15:31:11.413",
+      "dataFileURL" : "file:///usr/local/labkey/labkey/files/BiologicsFullTeam/UCI/@files/BCA_UCI-CL01312-MF-hpmc-220808-F1-004.xlsx",
+      "cpasType" : "Data",
+      "schemaName" : "exp",
+      "type" : "AssayRunTSVData",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showData.view?rowId=337890",
+      "lsid" : "urn:lsid:labkey.com:AssayRunTSVData.Folder-22:b1e43423-a649-103b-8ebf-ecf4a9ba1ae0",
+      "createdBy" : "william@upsidefoods.com",
+      "children" : [ ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 337890
+      } ],
+      "name" : "BCA_UCI-CL01312-MF-hpmc-220808-F1-004.xlsx",
+      "queryName" : "Data",
+      "modified" : "2023-03-16 15:31:11.460",
+      "absolutePath" : "/usr/local/labkey/labkey/files/BiologicsFullTeam/UCI/@files/BCA_UCI-CL01312-MF-hpmc-220808-F1-004.xlsx",
+      "pipelinePath" : "BCA_UCI-CL01312-MF-hpmc-220808-F1-004.xlsx",
+      "expType" : "Data",
+      "modifiedBy" : "william@upsidefoods.com",
+      "id" : 337890,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-22:b1e43421-a649-103b-8ebf-ecf4a9ba1ae0",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:Sample.5.CellLineBatches:CL01185-001" : {
+      "container" : "96c89c58-bdac-1039-a008-fa9669ea4ab6",
+      "created" : "2021-08-26 02:07:22.129",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-5:CellLineBatches",
+      "materialLineageType" : "Derivative",
+      "schemaName" : "samples",
+      "type" : "Sample",
+      "url" : "/labkey/BiologicsFullTeam/experiment-showMaterial.view?rowId=1026",
+      "lsid" : "urn:lsid:labkey.com:Sample.5.CellLineBatches:CL01185-001",
+      "createdBy" : "ara@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-5:670b9f45-e902-1039-8a73-1a365e240f90",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 1026
+      } ],
+      "name" : "CL01185-001",
+      "queryName" : "CellLineBatches",
+      "modified" : "2023-01-05 11:24:24.836",
+      "expType" : "Material",
+      "modifiedBy" : "ktrickey@upsidefoods.com",
+      "id" : 1026,
+      "properties" : {
+        "name" : "CL01185-001"
+      },
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-5:670b9f43-e902-1039-8a73-1a365e240f90",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:Data.Folder-5:d98af6e0-d149-1039-8ef0-1a365e2402f0" : {
+      "container" : "96c89c58-bdac-1039-a008-fa9669ea4ab6",
+      "created" : "2021-07-27 14:16:50.498",
+      "dataFileURL" : null,
+      "cpasType" : "urn:lsid:labkey.com:DataClass.Folder-5:Ingredients",
+      "schemaName" : "exp.data",
+      "type" : "Data",
+      "url" : "/labkey/BiologicsFullTeam/experiment-showData.view?rowId=3735",
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-5:d98af6e0-d149-1039-8ef0-1a365e2402f0",
+      "createdBy" : "william@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-5:3a70faaf-3c37-103a-af7c-1a365e2485be",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 3735
+      } ],
+      "name" : "CH00146",
+      "queryName" : "Ingredients",
+      "modified" : "2022-05-25 18:03:47.948",
+      "expType" : "Data",
+      "modifiedBy" : "datateam@upsidefoods.com",
+      "comment" : "urn:lsid:labkey.com:Data.Folder-6:8834a919-d149-1039-8ef0-1a365e2402f0",
+      "id" : 3735,
+      "parents" : [ ]
+    },
+    "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-4:ViCELL:UCI-CL01312-MF-hpmc-220808-F1_20220812" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-12 09:39:07.053",
+      "cpasType" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-4:ViCELL",
+      "schemaName" : "assay.General.ViCELL",
+      "type" : "GeneralAssayProtocol",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showRunGraph.view?rowId=187291",
+      "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-4:ViCELL:UCI-CL01312-MF-hpmc-220808-F1_20220812",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:AssayRunTSVData.Folder-22:UCI-CL01312-MF-hpmc-220808-F1_20220812-Data",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 187291
+      } ],
+      "name" : "UCI-CL01312-MF-hpmc-220808-F1_20220812",
+      "queryName" : "Runs",
+      "modified" : "2022-08-12 09:39:07.053",
+      "expType" : "ExperimentRun",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 187291,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220808-F1",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:Run.Folder-5:3a2e596d-a5a7-103b-8ebf-ecf4a9ba1ae0" : {
+      "container" : "96c89c58-bdac-1039-a008-fa9669ea4ab6",
+      "created" : "2023-03-16 09:15:06.094",
+      "cpasType" : "urn:lsid:labkey.org:Protocol:SampleDerivationProtocol",
+      "schemaName" : "exp",
+      "type" : "Run",
+      "url" : "/labkey/BiologicsFullTeam/experiment-showRunGraph.view?rowId=358201",
+      "lsid" : "urn:lsid:labkey.com:Run.Folder-5:3a2e596d-a5a7-103b-8ebf-ecf4a9ba1ae0",
+      "createdBy" : "william@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.5.MixtureBottles:MBT00119",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 358201
+      } ],
+      "name" : "Derive sample from MS00091-20211210-001",
+      "queryName" : "Runs",
+      "modified" : "2023-03-16 09:15:06.094",
+      "expType" : "ExperimentRun",
+      "modifiedBy" : "william@upsidefoods.com",
+      "id" : 358201,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.5.MixtureBatches:MS00091-20211210-001",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:AssayRunTSVData.Folder-22:b1e43460-a649-103b-8ebf-ecf4a9ba1ae0" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2023-03-16 15:31:15.196",
+      "dataFileURL" : "file:///usr/local/labkey/labkey/files/BiologicsFullTeam/UCI/@files/BCAAssay-2023-03-16-153111-554.tsv",
+      "cpasType" : "Data",
+      "schemaName" : "exp",
+      "type" : "AssayRunTSVData",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showData.view?rowId=337893",
+      "lsid" : "urn:lsid:labkey.com:AssayRunTSVData.Folder-22:b1e43460-a649-103b-8ebf-ecf4a9ba1ae0",
+      "createdBy" : "william@upsidefoods.com",
+      "children" : [ ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 337893
+      } ],
+      "name" : "BCAAssay-2023-03-16-153111-554.tsv",
+      "queryName" : "Data",
+      "modified" : "2023-03-16 15:31:15.227",
+      "absolutePath" : "/usr/local/labkey/labkey/files/BiologicsFullTeam/UCI/@files/BCAAssay-2023-03-16-153111-554.tsv",
+      "pipelinePath" : "BCAAssay-2023-03-16-153111-554.tsv",
+      "expType" : "Data",
+      "modifiedBy" : "william@upsidefoods.com",
+      "id" : 337893,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-22:b1e43421-a649-103b-8ebf-ecf4a9ba1ae0",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:Data.Folder-5:3a70edf6-3c37-103a-af7c-1a365e2485be" : {
+      "container" : "96c89c58-bdac-1039-a008-fa9669ea4ab6",
+      "created" : "2021-12-10 15:17:08.715",
+      "dataFileURL" : null,
+      "cpasType" : "urn:lsid:labkey.com:DataClass.Folder-5:Ingredients",
+      "schemaName" : "exp.data",
+      "type" : "Data",
+      "url" : "/labkey/BiologicsFullTeam/experiment-showData.view?rowId=6997",
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-5:3a70edf6-3c37-103a-af7c-1a365e2485be",
+      "createdBy" : "william@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-5:3a70faaf-3c37-103a-af7c-1a365e2485be",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 6997
+      } ],
+      "name" : "CH03304",
+      "queryName" : "Ingredients",
+      "modified" : "2022-05-25 18:07:07.453",
+      "expType" : "Data",
+      "modifiedBy" : "datateam@upsidefoods.com",
+      "comment" : "urn:lsid:labkey.com:Data.Folder-6:3a70ed95-3c37-103a-af7c-1a365e2485be",
+      "id" : 6997,
+      "parents" : [ ]
+    },
+    "urn:lsid:labkey.com:Run.Folder-5:670b9f45-e902-1039-8a73-1a365e240f90" : {
+      "container" : "96c89c58-bdac-1039-a008-fa9669ea4ab6",
+      "created" : "2021-08-26 19:26:04.774",
+      "cpasType" : "urn:lsid:labkey.org:Protocol:SampleDerivationProtocol",
+      "schemaName" : "exp",
+      "type" : "Run",
+      "url" : "/labkey/BiologicsFullTeam/experiment-showRunGraph.view?rowId=249",
+      "lsid" : "urn:lsid:labkey.com:Run.Folder-5:670b9f45-e902-1039-8a73-1a365e240f90",
+      "createdBy" : "ara@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.5.CellLineBatches:CL01312-002",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 249
+      } ],
+      "name" : "Derive 3 samples from CL01312, CL01185-001",
+      "queryName" : "Runs",
+      "modified" : "2021-08-26 19:26:04.774",
+      "expType" : "ExperimentRun",
+      "modifiedBy" : "ara@upsidefoods.com",
+      "id" : 249,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.5.CellLineBatches:CL01185-001",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Data.Folder-5:8e46c588-e749-1039-8a73-1a365e240f90",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:Sample.Folder-5.1:269" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-10-27 14:40:21.171",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-5:1",
+      "materialLineageType" : "Derivative",
+      "schemaName" : "samples",
+      "type" : "Sample",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showMaterial.view?rowId=56733",
+      "lsid" : "urn:lsid:labkey.com:Sample.Folder-5.1:269",
+      "createdBy" : "william@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-22:b1e43421-a649-103b-8ebf-ecf4a9ba1ae0",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 56733
+      } ],
+      "name" : "UCI-CL01312-MF-hpmc-220808-F1-004",
+      "queryName" : "BiomassSamples",
+      "modified" : "2023-03-17 16:08:46.293",
+      "expType" : "Material",
+      "modifiedBy" : "william@upsidefoods.com",
+      "id" : 56733,
+      "properties" : {
+        "name" : "UCI-CL01312-MF-hpmc-220808-F1-004"
+      },
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-22:dd4682f3-a72e-103b-b5b8-85ee0eed6f84",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-4:ViCELL:UCI-CL01312-MF-hpmc-220822-F1_20220826" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-26 08:29:44.922",
+      "cpasType" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-4:ViCELL",
+      "schemaName" : "assay.General.ViCELL",
+      "type" : "GeneralAssayProtocol",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showRunGraph.view?rowId=194811",
+      "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-4:ViCELL:UCI-CL01312-MF-hpmc-220822-F1_20220826",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:AssayRunTSVData.Folder-22:UCI-CL01312-MF-hpmc-220822-F1_20220826-Data",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 194811
+      } ],
+      "name" : "UCI-CL01312-MF-hpmc-220822-F1_20220826",
+      "queryName" : "Runs",
+      "modified" : "2022-08-26 08:29:44.922",
+      "expType" : "ExperimentRun",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 194811,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220822-F1",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:Run.Folder-22:dd4682f3-a72e-103b-b5b8-85ee0eed6f84" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2023-03-17 16:08:46.367",
+      "cpasType" : "urn:lsid:labkey.org:Protocol:SampleDerivationProtocol",
+      "schemaName" : "exp",
+      "type" : "Run",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showRunGraph.view?rowId=358222",
+      "lsid" : "urn:lsid:labkey.com:Run.Folder-22:dd4682f3-a72e-103b-b5b8-85ee0eed6f84",
+      "createdBy" : "william@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.Folder-5.1:270",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.Folder-5.1:271",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.Folder-5.1:269",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 358222
+      } ],
+      "name" : "Derive 3 samples from UCI-CL01312-MF-hpmc-220808-F1",
+      "queryName" : "Runs",
+      "modified" : "2023-03-17 16:08:46.367",
+      "expType" : "ExperimentRun",
+      "modifiedBy" : "william@upsidefoods.com",
+      "id" : 358222,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220808-F1",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-4:ViCELL:UCI-CL01312-MF-hpmc-220815-F1_20220819" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-19 08:34:32.083",
+      "cpasType" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-4:ViCELL",
+      "schemaName" : "assay.General.ViCELL",
+      "type" : "GeneralAssayProtocol",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showRunGraph.view?rowId=188459",
+      "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-4:ViCELL:UCI-CL01312-MF-hpmc-220815-F1_20220819",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:AssayRunTSVData.Folder-22:UCI-CL01312-MF-hpmc-220815-F1_20220819-Data",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 188459
+      } ],
+      "name" : "UCI-CL01312-MF-hpmc-220815-F1_20220819",
+      "queryName" : "Runs",
+      "modified" : "2022-08-19 08:34:32.083",
+      "expType" : "ExperimentRun",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 188459,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220815-F1",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:RelatedFile.Folder-22:b1e4345e-a649-103b-8ebf-ecf4a9ba1ae0" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2023-03-16 15:31:15.179",
+      "dataFileURL" : "file:///usr/local/labkey/labkey/files/BiologicsFullTeam/UCI/@files/BCA_UCI-CL01312-MF-hpmc-220808-F1-004.bca_assay_debug.txt",
+      "cpasType" : "Data",
+      "schemaName" : "exp",
+      "type" : "RelatedFile",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showData.view?rowId=337891",
+      "lsid" : "urn:lsid:labkey.com:RelatedFile.Folder-22:b1e4345e-a649-103b-8ebf-ecf4a9ba1ae0",
+      "createdBy" : "william@upsidefoods.com",
+      "children" : [ ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 337891
+      } ],
+      "name" : "BCA_UCI-CL01312-MF-hpmc-220808-F1-004.bca_assay_debug.txt",
+      "queryName" : "Data",
+      "modified" : "2023-03-16 15:31:15.179",
+      "absolutePath" : "/usr/local/labkey/labkey/files/BiologicsFullTeam/UCI/@files/BCA_UCI-CL01312-MF-hpmc-220808-F1-004.bca_assay_debug.txt",
+      "pipelinePath" : "BCA_UCI-CL01312-MF-hpmc-220808-F1-004.bca_assay_debug.txt",
+      "expType" : "Data",
+      "modifiedBy" : "william@upsidefoods.com",
+      "id" : 337891,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-22:b1e43421-a649-103b-8ebf-ecf4a9ba1ae0",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:Data.Folder-5:d98af6f4-d149-1039-8ef0-1a365e2402f0" : {
+      "container" : "96c89c58-bdac-1039-a008-fa9669ea4ab6",
+      "created" : "2021-07-27 14:16:50.498",
+      "dataFileURL" : null,
+      "cpasType" : "urn:lsid:labkey.com:DataClass.Folder-5:Ingredients",
+      "schemaName" : "exp.data",
+      "type" : "Data",
+      "url" : "/labkey/BiologicsFullTeam/experiment-showData.view?rowId=3755",
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-5:d98af6f4-d149-1039-8ef0-1a365e2402f0",
+      "createdBy" : "william@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-5:3a70faaf-3c37-103a-af7c-1a365e2485be",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 3755
+      } ],
+      "name" : "CH00166",
+      "queryName" : "Ingredients",
+      "modified" : "2022-05-25 18:04:02.525",
+      "expType" : "Data",
+      "modifiedBy" : "datateam@upsidefoods.com",
+      "comment" : "urn:lsid:labkey.com:Data.Folder-6:8834a92d-d149-1039-8ef0-1a365e2402f0",
+      "id" : 3755,
+      "parents" : [ ]
+    },
+    "urn:lsid:labkey.com:Sample.5.CellLineBatches:CL01312-002" : {
+      "container" : "96c89c58-bdac-1039-a008-fa9669ea4ab6",
+      "created" : "2021-07-23 14:36:10.690",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-5:CellLineBatches",
+      "materialLineageType" : "Derivative",
+      "schemaName" : "samples",
+      "type" : "Sample",
+      "url" : "/labkey/BiologicsFullTeam/experiment-showMaterial.view?rowId=519",
+      "lsid" : "urn:lsid:labkey.com:Sample.5.CellLineBatches:CL01312-002",
+      "createdBy" : "jane@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:Thaw:CL01312-002-20220805-Thaw",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 519
+      } ],
+      "name" : "CL01312-002",
+      "queryName" : "CellLineBatches",
+      "modified" : "2022-09-15 12:01:39.227",
+      "expType" : "Material",
+      "modifiedBy" : "ktrickey@upsidefoods.com",
+      "id" : 519,
+      "properties" : {
+        "name" : "CL01312-002"
+      },
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-5:670b9f45-e902-1039-8a73-1a365e240f90",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:Data.Folder-5:e82e1749-d14d-1039-8ef0-1a365e2402f0" : {
+      "container" : "96c89c58-bdac-1039-a008-fa9669ea4ab6",
+      "created" : "2021-07-28 09:20:48.819",
+      "dataFileURL" : null,
+      "cpasType" : "urn:lsid:labkey.com:DataClass.Folder-5:Mixtures",
+      "schemaName" : "exp.data",
+      "type" : "Data",
+      "url" : "/labkey/BiologicsFullTeam/experiment-showData.view?rowId=4306",
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-5:e82e1749-d14d-1039-8ef0-1a365e2402f0",
+      "createdBy" : "william@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-5:3a70faaf-3c37-103a-af7c-1a365e2485be",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 4306
+      } ],
+      "name" : "MP00001",
+      "queryName" : "Mixtures",
+      "modified" : "2022-09-19 14:22:50.662",
+      "expType" : "Data",
+      "modifiedBy" : "william@upsidefoods.com",
+      "id" : 4306,
+      "parents" : [ ]
+    },
+    "urn:lsid:labkey.com:Sample.5.MixtureBottles:MBT00119" : {
+      "container" : "96c89c58-bdac-1039-a008-fa9669ea4ab6",
+      "created" : "2022-06-30 09:13:46.388",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-5:MixtureBottles",
+      "materialLineageType" : "Derivative",
+      "schemaName" : "samples",
+      "type" : "Sample",
+      "url" : "/labkey/BiologicsFullTeam/experiment-showMaterial.view?rowId=24953",
+      "lsid" : "urn:lsid:labkey.com:Sample.5.MixtureBottles:MBT00119",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220808-F1",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 24953
+      } ],
+      "name" : "MBT00119",
+      "queryName" : "MixtureBottles",
+      "modified" : "2023-03-16 09:15:05.916",
+      "expType" : "Material",
+      "modifiedBy" : "william@upsidefoods.com",
+      "id" : 24953,
+      "properties" : {
+        "name" : "MBT00119"
+      },
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-5:3a2e596d-a5a7-103b-8ebf-ecf4a9ba1ae0",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220808-F1" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-12 09:38:31.745",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue",
+      "materialLineageType" : "Derivative",
+      "schemaName" : "samples",
+      "type" : "SampleSet",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showMaterial.view?rowId=34732",
+      "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220808-F1",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-22:dd4682f3-a72e-103b-b5b8-85ee0eed6f84",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-22:b1e43421-a649-103b-8ebf-ecf4a9ba1ae0",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220812-F1",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-4:ViCELL:UCI-CL01312-MF-hpmc-220808-F1_20220812",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 34732
+      } ],
+      "name" : "UCI-CL01312-MF-hpmc-220808-F1",
+      "queryName" : "Tissue",
+      "modified" : "2022-08-12 09:38:31.745",
+      "expType" : "Material",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 34732,
+      "properties" : {
+        "name" : "UCI-CL01312-MF-hpmc-220808-F1"
+      },
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220808-F1",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:Data.Folder-5:8e46c587-e749-1039-8a73-1a365e240f90" : {
+      "container" : "96c89c58-bdac-1039-a008-fa9669ea4ab6",
+      "created" : "2021-08-24 18:59:15.852",
+      "dataFileURL" : null,
+      "cpasType" : "urn:lsid:labkey.com:DataClass.Folder-5:CellLine",
+      "schemaName" : "exp.data",
+      "type" : "Data",
+      "url" : "/labkey/BiologicsFullTeam/experiment-showData.view?rowId=5064",
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-5:8e46c587-e749-1039-8a73-1a365e240f90",
+      "createdBy" : "ara@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-5:8e46c595-e749-1039-8a73-1a365e240f90",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-5:670b9f43-e902-1039-8a73-1a365e240f90",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 5064
+      } ],
+      "name" : "CL01185",
+      "queryName" : "CellLine",
+      "modified" : "2022-12-07 20:11:55.194",
+      "expType" : "Data",
+      "modifiedBy" : "datateam@upsidefoods.com",
+      "id" : 5064,
+      "parents" : [ ]
+    },
+    "urn:lsid:labkey.com:Sample.5.MixtureBatches:MS00091-20211210-001" : {
+      "container" : "96c89c58-bdac-1039-a008-fa9669ea4ab6",
+      "created" : "2021-12-10 15:40:28.999",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-5:MixtureBatches",
+      "materialLineageType" : "Derivative",
+      "schemaName" : "samples",
+      "type" : "Sample",
+      "url" : "/labkey/BiologicsFullTeam/experiment-showMaterial.view?rowId=12864",
+      "lsid" : "urn:lsid:labkey.com:Sample.5.MixtureBatches:MS00091-20211210-001",
+      "createdBy" : "ktrickey@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-5:3a2e596d-a5a7-103b-8ebf-ecf4a9ba1ae0",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 12864
+      } ],
+      "name" : "MS00091-20211210-001",
+      "queryName" : "MixtureBatches",
+      "modified" : "2022-08-17 15:10:16.146",
+      "expType" : "Material",
+      "modifiedBy" : "william@upsidefoods.com",
+      "id" : 12864,
+      "properties" : {
+        "name" : "MS00091-20211210-001"
+      },
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-5:3a70faaf-3c37-103a-af7c-1a365e2485be",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:Run.Folder-5:3a70faaf-3c37-103a-af7c-1a365e2485be" : {
+      "container" : "96c89c58-bdac-1039-a008-fa9669ea4ab6",
+      "created" : "2021-12-10 15:40:28.839",
+      "cpasType" : "urn:lsid:labkey.com:Protocol.Folder-5:MS00091",
+      "schemaName" : "exp",
+      "type" : "Run",
+      "url" : "/labkey/BiologicsFullTeam/experiment-showRunGraph.view?rowId=1939",
+      "lsid" : "urn:lsid:labkey.com:Run.Folder-5:3a70faaf-3c37-103a-af7c-1a365e2485be",
+      "createdBy" : "ktrickey@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.5.MixtureBatches:MS00091-20211210-001",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 1939
+      } ],
+      "name" : "MS00091-20211210-001",
+      "queryName" : "Runs",
+      "modified" : "2021-12-10 15:40:28.839",
+      "expType" : "ExperimentRun",
+      "modifiedBy" : "ktrickey@upsidefoods.com",
+      "id" : 1939,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Data.Folder-5:d98af6f4-d149-1039-8ef0-1a365e2402f0",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Data.Folder-5:d98af6e0-d149-1039-8ef0-1a365e2402f0",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Data.Folder-5:3a70edf6-3c37-103a-af7c-1a365e2485be",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Data.Folder-5:3a70f8ec-3c37-103a-af7c-1a365e2485be",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Data.Folder-5:d98af8c3-d149-1039-8ef0-1a365e2402f0",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Data.Folder-5:e82e1749-d14d-1039-8ef0-1a365e2402f0",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Data.Folder-5:d98af6c7-d149-1039-8ef0-1a365e2402f0",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Data.Folder-5:d98af77b-d149-1039-8ef0-1a365e2402f0",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Data.Folder-5:d98af8c2-d149-1039-8ef0-1a365e2402f0",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Data.Folder-5:d98af733-d149-1039-8ef0-1a365e2402f0",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Data.Folder-5:d98af7bc-d149-1039-8ef0-1a365e2402f0",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Data.Folder-5:d98af6c6-d149-1039-8ef0-1a365e2402f0",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:AssayRunTSVData.Folder-22:UCI-CL01312-MF-hpmc-220815-F1_20220819-Data" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-19 08:34:32.111",
+      "dataFileURL" : "file:///labkey/labkey/files/BiologicsFullTeam/UCI/@files/.labkey/UploadedXARs/ayue@upsidefoods.com/UCI-CL01312-MF-hpmc-220815-F1_20220819.xar.exploded/Data/UCI-CL01312-MF-hpmc-220815-F1_20220819.tsv",
+      "cpasType" : "Data",
+      "schemaName" : "exp",
+      "type" : "AssayRunTSVData",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showData.view?rowId=183817",
+      "lsid" : "urn:lsid:labkey.com:AssayRunTSVData.Folder-22:UCI-CL01312-MF-hpmc-220815-F1_20220819-Data",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 183817
+      } ],
+      "name" : "Analysis Results",
+      "queryName" : "Data",
+      "modified" : "2022-08-19 08:34:32.111",
+      "absolutePath" : "/labkey/labkey/files/BiologicsFullTeam/UCI/@files/.labkey/UploadedXARs/ayue@upsidefoods.com/UCI-CL01312-MF-hpmc-220815-F1_20220819.xar.exploded/Data/UCI-CL01312-MF-hpmc-220815-F1_20220819.tsv",
+      "pipelinePath" : null,
+      "expType" : "Data",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 183817,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-4:ViCELL:UCI-CL01312-MF-hpmc-220815-F1_20220819",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:Data.Folder-5:d98af733-d149-1039-8ef0-1a365e2402f0" : {
+      "container" : "96c89c58-bdac-1039-a008-fa9669ea4ab6",
+      "created" : "2021-07-27 14:16:50.498",
+      "dataFileURL" : null,
+      "cpasType" : "urn:lsid:labkey.com:DataClass.Folder-5:Ingredients",
+      "schemaName" : "exp.data",
+      "type" : "Data",
+      "url" : "/labkey/BiologicsFullTeam/experiment-showData.view?rowId=3818",
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-5:d98af733-d149-1039-8ef0-1a365e2402f0",
+      "createdBy" : "william@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-5:3a70faaf-3c37-103a-af7c-1a365e2485be",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 3818
+      } ],
+      "name" : "CH00229",
+      "queryName" : "Ingredients",
+      "modified" : "2022-05-25 18:03:51.383",
+      "expType" : "Data",
+      "modifiedBy" : "datateam@upsidefoods.com",
+      "comment" : "urn:lsid:labkey.com:Data.Folder-6:8834a96c-d149-1039-8ef0-1a365e2402f0",
+      "id" : 3818,
+      "parents" : [ ]
+    },
+    "urn:lsid:labkey.com:GeneralAssayRun.Folder-22:b1e43421-a649-103b-8ebf-ecf4a9ba1ae0" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2023-03-16 15:31:11.383",
+      "cpasType" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-4:BCAAssay",
+      "schemaName" : "assay.General.BCAAssay",
+      "type" : "GeneralAssayRun",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showRunGraph.view?rowId=358221",
+      "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-22:b1e43421-a649-103b-8ebf-ecf4a9ba1ae0",
+      "createdBy" : "william@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:RelatedFile.Folder-22:b1e4345f-a649-103b-8ebf-ecf4a9ba1ae0",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:AssayRunTSVData.Folder-22:b1e43460-a649-103b-8ebf-ecf4a9ba1ae0",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:RelatedFile.Folder-22:b1e4345e-a649-103b-8ebf-ecf4a9ba1ae0",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:AssayRunTSVData.Folder-22:b1e43423-a649-103b-8ebf-ecf4a9ba1ae0",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 358221
+      } ],
+      "name" : "BCA_UCI-CL01312-MF-hpmc-220808-F1-004.xlsx",
+      "queryName" : "Runs",
+      "modified" : "2023-03-16 15:31:11.410",
+      "expType" : "ExperimentRun",
+      "modifiedBy" : "william@upsidefoods.com",
+      "id" : 358221,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.Folder-5.1:269",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220808-F1",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.Folder-5.1:271",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.Folder-5.1:270",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:Sample.5.CellLineBatches:CL00721-003" : {
+      "container" : "96c89c58-bdac-1039-a008-fa9669ea4ab6",
+      "created" : "2021-08-25 22:51:26.200",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-5:CellLineBatches",
+      "materialLineageType" : "Derivative",
+      "schemaName" : "samples",
+      "type" : "Sample",
+      "url" : "/labkey/BiologicsFullTeam/experiment-showMaterial.view?rowId=946",
+      "lsid" : "urn:lsid:labkey.com:Sample.5.CellLineBatches:CL00721-003",
+      "createdBy" : "ara@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-5:670b9f43-e902-1039-8a73-1a365e240f90",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 946
+      } ],
+      "name" : "CL00721-003",
+      "queryName" : "CellLineBatches",
+      "modified" : "2022-11-28 10:20:43.485",
+      "expType" : "Material",
+      "modifiedBy" : "ktrickey@upsidefoods.com",
+      "id" : 946,
+      "properties" : {
+        "name" : "CL00721-003"
+      },
+      "parents" : [ ]
+    },
+    "urn:lsid:labkey.com:Sample.Folder-5.1:271" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-10-27 14:40:21.171",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-5:1",
+      "materialLineageType" : "Derivative",
+      "schemaName" : "samples",
+      "type" : "Sample",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showMaterial.view?rowId=56735",
+      "lsid" : "urn:lsid:labkey.com:Sample.Folder-5.1:271",
+      "createdBy" : "william@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-22:b1e43421-a649-103b-8ebf-ecf4a9ba1ae0",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 56735
+      } ],
+      "name" : "UCI-CL01312-MF-hpmc-220808-F1-006",
+      "queryName" : "BiomassSamples",
+      "modified" : "2023-03-17 16:08:46.293",
+      "expType" : "Material",
+      "modifiedBy" : "william@upsidefoods.com",
+      "id" : 56735,
+      "properties" : {
+        "name" : "UCI-CL01312-MF-hpmc-220808-F1-006"
+      },
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-22:dd4682f3-a72e-103b-b5b8-85ee0eed6f84",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:Sample.Folder-5.1:270" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-10-27 14:40:21.171",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-5:1",
+      "materialLineageType" : "Derivative",
+      "schemaName" : "samples",
+      "type" : "Sample",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showMaterial.view?rowId=56734",
+      "lsid" : "urn:lsid:labkey.com:Sample.Folder-5.1:270",
+      "createdBy" : "william@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-22:b1e43421-a649-103b-8ebf-ecf4a9ba1ae0",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 56734
+      } ],
+      "name" : "UCI-CL01312-MF-hpmc-220808-F1-005",
+      "queryName" : "BiomassSamples",
+      "modified" : "2023-03-17 16:08:46.293",
+      "expType" : "Material",
+      "modifiedBy" : "william@upsidefoods.com",
+      "id" : 56734,
+      "properties" : {
+        "name" : "UCI-CL01312-MF-hpmc-220808-F1-005"
+      },
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-22:dd4682f3-a72e-103b-b5b8-85ee0eed6f84",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220808-F1" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-12 09:38:31.706",
+      "cpasType" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run",
+      "schemaName" : "assay.General.UCI Run",
+      "type" : "GeneralAssayProtocol",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showRunGraph.view?rowId=187290",
+      "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220808-F1",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220808-F1",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 187290
+      } ],
+      "name" : "CL01312-MF-hpmc-220808-F1",
+      "queryName" : "Runs",
+      "modified" : "2022-08-12 10:03:35.418",
+      "expType" : "ExperimentRun",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 187290,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220805-F1",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:Sample.5.MixtureBottles:MBT00119",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:Data.Folder-5:d98af8c2-d149-1039-8ef0-1a365e2402f0" : {
+      "container" : "96c89c58-bdac-1039-a008-fa9669ea4ab6",
+      "created" : "2021-07-27 14:16:50.498",
+      "dataFileURL" : null,
+      "cpasType" : "urn:lsid:labkey.com:DataClass.Folder-5:Ingredients",
+      "schemaName" : "exp.data",
+      "type" : "Data",
+      "url" : "/labkey/BiologicsFullTeam/experiment-showData.view?rowId=4217",
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-5:d98af8c2-d149-1039-8ef0-1a365e2402f0",
+      "createdBy" : "william@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-5:3a70faaf-3c37-103a-af7c-1a365e2485be",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 4217
+      } ],
+      "name" : "CH00628",
+      "queryName" : "Ingredients",
+      "modified" : "2022-05-25 18:06:44.778",
+      "expType" : "Data",
+      "modifiedBy" : "datateam@upsidefoods.com",
+      "comment" : "urn:lsid:labkey.com:Data.Folder-6:8834aafb-d149-1039-8ef0-1a365e2402f0",
+      "id" : 4217,
+      "parents" : [ ]
+    },
+    "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:CL01312-002-20220805-Thaw" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-08 11:32:23.324",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue",
+      "materialLineageType" : "Derivative",
+      "schemaName" : "samples",
+      "type" : "SampleSet",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showMaterial.view?rowId=31094",
+      "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:CL01312-002-20220805-Thaw",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220805-F1",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 31094
+      } ],
+      "name" : "CL01312-002-20220805-Thaw",
+      "queryName" : "Tissue",
+      "modified" : "2022-08-09 08:24:48.301",
+      "expType" : "Material",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 31094,
+      "properties" : {
+        "name" : "CL01312-002-20220805-Thaw"
+      },
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:Thaw:CL01312-002-20220805-Thaw",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220805-F1" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-09 08:27:01.821",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue",
+      "materialLineageType" : "Derivative",
+      "schemaName" : "samples",
+      "type" : "SampleSet",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showMaterial.view?rowId=34163",
+      "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220805-F1",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220808-F1",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 34163
+      } ],
+      "name" : "UCI-CL01312-MF-hpmc-220805-F1",
+      "queryName" : "Tissue",
+      "modified" : "2022-08-09 08:27:01.821",
+      "expType" : "Material",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 34163,
+      "properties" : {
+        "name" : "UCI-CL01312-MF-hpmc-220805-F1"
+      },
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220805-F1",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220819-F1" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-19 08:43:54.958",
+      "cpasType" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run",
+      "schemaName" : "assay.General.UCI Run",
+      "type" : "GeneralAssayProtocol",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showRunGraph.view?rowId=188565",
+      "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220819-F1",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220819-F1",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 188565
+      } ],
+      "name" : "CL01312-MF-hpmc-220819-F1",
+      "queryName" : "Runs",
+      "modified" : "2022-08-22 09:06:52.824",
+      "expType" : "ExperimentRun",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 188565,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220815-F1",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220815-F1" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-15 09:59:37.258",
+      "cpasType" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run",
+      "schemaName" : "assay.General.UCI Run",
+      "type" : "GeneralAssayProtocol",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showRunGraph.view?rowId=187654",
+      "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220815-F1",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220815-F1",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 187654
+      } ],
+      "name" : "CL01312-MF-hpmc-220815-F1",
+      "queryName" : "Runs",
+      "modified" : "2022-08-19 08:43:54.766",
+      "expType" : "ExperimentRun",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 187654,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220812-F1",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:Data.Folder-5:3a70f8ec-3c37-103a-af7c-1a365e2485be" : {
+      "container" : "96c89c58-bdac-1039-a008-fa9669ea4ab6",
+      "created" : "2021-12-10 15:34:47.983",
+      "dataFileURL" : null,
+      "cpasType" : "urn:lsid:labkey.com:DataClass.Folder-5:Mixtures",
+      "schemaName" : "exp.data",
+      "type" : "Data",
+      "url" : "/labkey/BiologicsFullTeam/experiment-showData.view?rowId=7008",
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-5:3a70f8ec-3c37-103a-af7c-1a365e2485be",
+      "createdBy" : "ktrickey@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-5:3a70faaf-3c37-103a-af7c-1a365e2485be",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 7008
+      } ],
+      "name" : "MS00091",
+      "queryName" : "Mixtures",
+      "modified" : "2022-05-26 12:03:49.858",
+      "expType" : "Data",
+      "modifiedBy" : "datateam@upsidefoods.com",
+      "id" : 7008,
+      "parents" : [ ]
+    },
+    "urn:lsid:labkey.com:RelatedFile.Folder-22:b1e4345f-a649-103b-8ebf-ecf4a9ba1ae0" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2023-03-16 15:31:15.185",
+      "dataFileURL" : "file:///usr/local/labkey/labkey/files/BiologicsFullTeam/UCI/@files/BCA_UCI-CL01312-MF-hpmc-220808-F1-004.bca_assay_debug1.txt",
+      "cpasType" : "Data",
+      "schemaName" : "exp",
+      "type" : "RelatedFile",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showData.view?rowId=337892",
+      "lsid" : "urn:lsid:labkey.com:RelatedFile.Folder-22:b1e4345f-a649-103b-8ebf-ecf4a9ba1ae0",
+      "createdBy" : "william@upsidefoods.com",
+      "children" : [ ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 337892
+      } ],
+      "name" : "BCA_UCI-CL01312-MF-hpmc-220808-F1-004.bca_assay_debug1.txt",
+      "queryName" : "Data",
+      "modified" : "2023-03-16 15:31:15.185",
+      "absolutePath" : "/usr/local/labkey/labkey/files/BiologicsFullTeam/UCI/@files/BCA_UCI-CL01312-MF-hpmc-220808-F1-004.bca_assay_debug1.txt",
+      "pipelinePath" : "BCA_UCI-CL01312-MF-hpmc-220808-F1-004.bca_assay_debug1.txt",
+      "expType" : "Data",
+      "modifiedBy" : "william@upsidefoods.com",
+      "id" : 337892,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayRun.Folder-22:b1e43421-a649-103b-8ebf-ecf4a9ba1ae0",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:Data.Folder-5:d98af6c6-d149-1039-8ef0-1a365e2402f0" : {
+      "container" : "96c89c58-bdac-1039-a008-fa9669ea4ab6",
+      "created" : "2021-07-27 14:16:50.498",
+      "dataFileURL" : null,
+      "cpasType" : "urn:lsid:labkey.com:DataClass.Folder-5:Ingredients",
+      "schemaName" : "exp.data",
+      "type" : "Data",
+      "url" : "/labkey/BiologicsFullTeam/experiment-showData.view?rowId=3709",
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-5:d98af6c6-d149-1039-8ef0-1a365e2402f0",
+      "createdBy" : "william@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-5:3a70faaf-3c37-103a-af7c-1a365e2485be",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 3709
+      } ],
+      "name" : "CH00119",
+      "queryName" : "Ingredients",
+      "modified" : "2022-05-25 18:04:19.691",
+      "expType" : "Data",
+      "modifiedBy" : "datateam@upsidefoods.com",
+      "comment" : "urn:lsid:labkey.com:Data.Folder-6:8834a8ff-d149-1039-8ef0-1a365e2402f0",
+      "id" : 3709,
+      "parents" : [ ]
+    },
+    "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220815-F1" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-15 09:59:37.288",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue",
+      "materialLineageType" : "Derivative",
+      "schemaName" : "samples",
+      "type" : "SampleSet",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showMaterial.view?rowId=34759",
+      "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220815-F1",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220819-F1",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-4:ViCELL:UCI-CL01312-MF-hpmc-220815-F1_20220819",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 34759
+      } ],
+      "name" : "UCI-CL01312-MF-hpmc-220815-F1",
+      "queryName" : "Tissue",
+      "modified" : "2022-08-15 09:59:37.288",
+      "expType" : "Material",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 34759,
+      "properties" : {
+        "name" : "UCI-CL01312-MF-hpmc-220815-F1"
+      },
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220815-F1",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220819-F1" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-19 08:43:55.024",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue",
+      "materialLineageType" : "Derivative",
+      "schemaName" : "samples",
+      "type" : "SampleSet",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showMaterial.view?rowId=35490",
+      "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220819-F1",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-4:ViCELL:UCI-CL01312-MF-hpmc-220819-F1_20220822",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220822-F1",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 35490
+      } ],
+      "name" : "UCI-CL01312-MF-hpmc-220819-F1",
+      "queryName" : "Tissue",
+      "modified" : "2022-08-19 08:43:55.024",
+      "expType" : "Material",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 35490,
+      "properties" : {
+        "name" : "UCI-CL01312-MF-hpmc-220819-F1"
+      },
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220819-F1",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220805-F1" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-09 08:27:01.788",
+      "cpasType" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run",
+      "schemaName" : "assay.General.UCI Run",
+      "type" : "GeneralAssayProtocol",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showRunGraph.view?rowId=186799",
+      "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220805-F1",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220805-F1",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 186799
+      } ],
+      "name" : "CL01312-MF-hpmc-220805-F1",
+      "queryName" : "Runs",
+      "modified" : "2022-08-12 09:38:31.611",
+      "expType" : "ExperimentRun",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 186799,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:CL01312-002-20220805-Thaw",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:AssayRunTSVData.Folder-22:UCI-CL01312-MF-hpmc-220822-F1_20220826-Data" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-26 08:29:44.940",
+      "dataFileURL" : "file:///labkey/labkey/files/BiologicsFullTeam/UCI/@files/.labkey/UploadedXARs/ayue@upsidefoods.com/UCI-CL01312-MF-hpmc-220822-F1_20220826.xar.exploded/Data/UCI-CL01312-MF-hpmc-220822-F1_20220826.tsv",
+      "cpasType" : "Data",
+      "schemaName" : "exp",
+      "type" : "AssayRunTSVData",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showData.view?rowId=186794",
+      "lsid" : "urn:lsid:labkey.com:AssayRunTSVData.Folder-22:UCI-CL01312-MF-hpmc-220822-F1_20220826-Data",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 186794
+      } ],
+      "name" : "Analysis Results",
+      "queryName" : "Data",
+      "modified" : "2022-08-26 08:29:44.940",
+      "absolutePath" : "/labkey/labkey/files/BiologicsFullTeam/UCI/@files/.labkey/UploadedXARs/ayue@upsidefoods.com/UCI-CL01312-MF-hpmc-220822-F1_20220826.xar.exploded/Data/UCI-CL01312-MF-hpmc-220822-F1_20220826.tsv",
+      "pipelinePath" : null,
+      "expType" : "Data",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 186794,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-4:ViCELL:UCI-CL01312-MF-hpmc-220822-F1_20220826",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220822-F1" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-22 09:06:53.068",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue",
+      "materialLineageType" : "Derivative",
+      "schemaName" : "samples",
+      "type" : "SampleSet",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showMaterial.view?rowId=35586",
+      "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220822-F1",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220826-F3",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220826-F2",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220826-F1",
+        "role" : "no role"
+      }, {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-4:ViCELL:UCI-CL01312-MF-hpmc-220822-F1_20220826",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 35586
+      } ],
+      "name" : "UCI-CL01312-MF-hpmc-220822-F1",
+      "queryName" : "Tissue",
+      "modified" : "2022-08-22 09:06:53.068",
+      "expType" : "Material",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 35586,
+      "properties" : {
+        "name" : "UCI-CL01312-MF-hpmc-220822-F1"
+      },
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220822-F1",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220826-F2" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-26 09:23:20.138",
+      "cpasType" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run",
+      "schemaName" : "assay.General.UCI Run",
+      "type" : "GeneralAssayProtocol",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showRunGraph.view?rowId=194832",
+      "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220826-F2",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220826-F2",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 194832
+      } ],
+      "name" : "CL01312-MF-hpmc-220826-F2",
+      "queryName" : "Runs",
+      "modified" : "2022-08-29 10:09:23.674",
+      "expType" : "ExperimentRun",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 194832,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220822-F1",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220826-F3" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-26 09:23:33.396",
+      "cpasType" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run",
+      "schemaName" : "assay.General.UCI Run",
+      "type" : "GeneralAssayProtocol",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showRunGraph.view?rowId=194833",
+      "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220826-F3",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220826-F3",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 194833
+      } ],
+      "name" : "CL01312-MF-hpmc-220826-F3",
+      "queryName" : "Runs",
+      "modified" : "2022-08-29 10:07:20.570",
+      "expType" : "ExperimentRun",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 194833,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220822-F1",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220826-F1" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-26 09:22:59.234",
+      "cpasType" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run",
+      "schemaName" : "assay.General.UCI Run",
+      "type" : "GeneralAssayProtocol",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showRunGraph.view?rowId=194831",
+      "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220826-F1",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220826-F1",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 194831
+      } ],
+      "name" : "CL01312-MF-hpmc-220826-F1",
+      "queryName" : "Runs",
+      "modified" : "2022-08-29 10:06:14.668",
+      "expType" : "ExperimentRun",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 194831,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220822-F1",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:Thaw:CL01312-002-20220805-Thaw" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-09 08:24:48.288",
+      "cpasType" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:Thaw",
+      "schemaName" : "exp",
+      "type" : "GeneralAssayProtocol",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showRunGraph.view?rowId=186798",
+      "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:Thaw:CL01312-002-20220805-Thaw",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:CL01312-002-20220805-Thaw",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 186798
+      } ],
+      "name" : "CL01312-002-20220805-Thaw",
+      "queryName" : "Runs",
+      "modified" : "2022-08-09 08:24:48.288",
+      "expType" : "ExperimentRun",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 186798,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Sample.5.CellLineBatches:CL01312-002",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220826-F2" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-26 09:23:20.175",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue",
+      "materialLineageType" : "Derivative",
+      "schemaName" : "samples",
+      "type" : "SampleSet",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showMaterial.view?rowId=35819",
+      "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220826-F2",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 35819
+      } ],
+      "name" : "UCI-CL01312-MF-hpmc-220826-F2",
+      "queryName" : "Tissue",
+      "modified" : "2022-08-26 09:23:20.175",
+      "expType" : "Material",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 35819,
+      "properties" : {
+        "name" : "UCI-CL01312-MF-hpmc-220826-F2"
+      },
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220826-F2",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220826-F1" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-26 09:22:59.276",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue",
+      "materialLineageType" : "Derivative",
+      "schemaName" : "samples",
+      "type" : "SampleSet",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showMaterial.view?rowId=35818",
+      "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220826-F1",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 35818
+      } ],
+      "name" : "UCI-CL01312-MF-hpmc-220826-F1",
+      "queryName" : "Tissue",
+      "modified" : "2022-08-26 09:22:59.276",
+      "expType" : "Material",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 35818,
+      "properties" : {
+        "name" : "UCI-CL01312-MF-hpmc-220826-F1"
+      },
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220826-F1",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220822-F1" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-22 09:06:53.025",
+      "cpasType" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run",
+      "schemaName" : "assay.General.UCI Run",
+      "type" : "GeneralAssayProtocol",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showRunGraph.view?rowId=189950",
+      "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220822-F1",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220822-F1",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 189950
+      } ],
+      "name" : "CL01312-MF-hpmc-220822-F1",
+      "queryName" : "Runs",
+      "modified" : "2022-08-26 09:23:33.292",
+      "expType" : "ExperimentRun",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 189950,
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220819-F1",
+        "role" : "no role"
+      } ]
+    },
+    "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220826-F3" : {
+      "container" : "2a1e232c-3cf3-103a-b337-1a365e24971c",
+      "created" : "2022-08-26 09:23:33.427",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue",
+      "materialLineageType" : "Derivative",
+      "schemaName" : "samples",
+      "type" : "SampleSet",
+      "url" : "/labkey/BiologicsFullTeam/UCI/experiment-showMaterial.view?rowId=35820",
+      "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220826-F3",
+      "createdBy" : "ayue@upsidefoods.com",
+      "children" : [ ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 35820
+      } ],
+      "name" : "UCI-CL01312-MF-hpmc-220826-F3",
+      "queryName" : "Tissue",
+      "modified" : "2022-08-26 09:23:33.427",
+      "expType" : "Material",
+      "modifiedBy" : "ayue@upsidefoods.com",
+      "id" : 35820,
+      "properties" : {
+        "name" : "UCI-CL01312-MF-hpmc-220826-F3"
+      },
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:GeneralAssayProtocol.Folder-22:UCI+Run:CL01312-MF-hpmc-220826-F3",
+        "role" : "no role"
+      } ]
+    }
+  },
+  "seed" : "urn:lsid:labkey.com:SampleSet.Folder-4:Tissue:UCI-CL01312-MF-hpmc-220808-F1"
+}

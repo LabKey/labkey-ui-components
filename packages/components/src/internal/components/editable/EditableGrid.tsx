@@ -494,7 +494,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const { editorModel } = this.props;
         const { rowCount } = editorModel;
         let selectionCells = Set<string>();
-        const hasSelection = editorModel.hasSelection();
+        const hasSelection = editorModel.hasSelection;
         let selectedColIdx = colIdx;
         let selectedRowIdx = rowIdx;
 
@@ -849,7 +849,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     handleDrag = (event: MouseEvent): boolean => {
-        if (!this.props.editorModel.hasFocus()) {
+        if (!this.props.editorModel.hasFocus) {
             event.preventDefault();
             return true;
         }
@@ -889,7 +889,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     onKeyDown = (event: React.KeyboardEvent<HTMLElement>): void => {
         const { disabled, editorModel } = this.props;
 
-        if (disabled || editorModel.hasFocus()) {
+        if (disabled || editorModel.hasFocus) {
             return;
         }
 

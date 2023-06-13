@@ -426,7 +426,7 @@ export class EditorModel
         return List<ValueDescriptor>();
     }
 
-    hasFocus(): boolean {
+    get hasFocus(): boolean {
         return this.focusColIdx > -1 && this.focusRowIdx > -1;
     }
 
@@ -434,19 +434,19 @@ export class EditorModel
         return this.selectionCells.size > 1;
     }
 
-    hasMultipleColumnSelection(): boolean {
+    get isMultiColumnSelection(): boolean {
         if (!this.isMultiSelect) return false;
 
         const firstCellColIdx = parseCellKey(this.selectionCells.first()).colIdx;
         return this.selectionCells.some(cellKey => parseCellKey(cellKey).colIdx !== firstCellColIdx);
     }
 
-    hasSelection(): boolean {
+    get hasSelection(): boolean {
         return this.selectedColIdx > -1 && this.selectedRowIdx > -1;
     }
 
     get selectionKey(): string {
-        if (this.hasSelection()) return genCellKey(this.selectedColIdx, this.selectedRowIdx);
+        if (this.hasSelection) return genCellKey(this.selectedColIdx, this.selectedRowIdx);
         return undefined;
     }
 

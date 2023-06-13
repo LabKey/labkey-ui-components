@@ -725,10 +725,10 @@ describe('EditorModel', () => {
         });
 
         test('hasFocus', () => {
-            expect(new EditorModel({ focusColIdx: -1, focusRowIdx: -1 }).hasFocus()).toBeFalsy();
-            expect(new EditorModel({ focusColIdx: -1, focusRowIdx: 0 }).hasFocus()).toBeFalsy();
-            expect(new EditorModel({ focusColIdx: 0, focusRowIdx: -1 }).hasFocus()).toBeFalsy();
-            expect(new EditorModel({ focusColIdx: 0, focusRowIdx: 0 }).hasFocus()).toBeTruthy();
+            expect(new EditorModel({ focusColIdx: -1, focusRowIdx: -1 }).hasFocus).toBeFalsy();
+            expect(new EditorModel({ focusColIdx: -1, focusRowIdx: 0 }).hasFocus).toBeFalsy();
+            expect(new EditorModel({ focusColIdx: 0, focusRowIdx: -1 }).hasFocus).toBeFalsy();
+            expect(new EditorModel({ focusColIdx: 0, focusRowIdx: 0 }).hasFocus).toBeTruthy();
         });
 
         test('isFocused', () => {
@@ -743,10 +743,10 @@ describe('EditorModel', () => {
         });
 
         test('hasSelection', () => {
-            expect(new EditorModel({ selectedColIdx: -1, selectedRowIdx: -1 }).hasSelection()).toBeFalsy();
-            expect(new EditorModel({ selectedColIdx: -1, selectedRowIdx: 0 }).hasSelection()).toBeFalsy();
-            expect(new EditorModel({ selectedColIdx: 0, selectedRowIdx: -1 }).hasSelection()).toBeFalsy();
-            expect(new EditorModel({ selectedColIdx: 0, selectedRowIdx: 0 }).hasSelection()).toBeTruthy();
+            expect(new EditorModel({ selectedColIdx: -1, selectedRowIdx: -1 }).hasSelection).toBeFalsy();
+            expect(new EditorModel({ selectedColIdx: -1, selectedRowIdx: 0 }).hasSelection).toBeFalsy();
+            expect(new EditorModel({ selectedColIdx: 0, selectedRowIdx: -1 }).hasSelection).toBeFalsy();
+            expect(new EditorModel({ selectedColIdx: 0, selectedRowIdx: 0 }).hasSelection).toBeTruthy();
         });
 
         test('selectionKey', () => {

@@ -756,7 +756,7 @@ export function fetchCharts(schemaQuery: SchemaQuery, containerPath?: string): P
 }
 
 export function copyEvent(editorModel: EditorModel, insertColumns: QueryColumn[], event: any): void {
-    if (editorModel && !editorModel.hasFocus() && editorModel.hasSelection()) {
+    if (editorModel && !editorModel.hasFocus && editorModel.hasSelection) {
         cancelEvent(event);
         setCopyValue(event, getCopyValue(editorModel, insertColumns));
     }
@@ -780,27 +780,24 @@ function getCellCopyValue(valueDescriptors: List<ValueDescriptor>): string {
 function getCopyValue(model: EditorModel, insertColumns: QueryColumn[]): string {
     let copyValue = '';
     const EOL = '\n';
+    const selectionCells = model.selectionCells.add(genCellKey(model.selectedColIdx, model.selectedRowIdx));
 
-    if (model && model.hasSelection() && !model.hasFocus()) {
-        const selectionCells = model.selectionCells.add(genCellKey(model.selectedColIdx, model.selectedRowIdx));
+    for (let rn = 0; rn < model.rowCount; rn++) {
+        let cellSep = '';
+        let inSelection = false;
 
-        for (let rn = 0; rn < model.rowCount; rn++) {
-            let cellSep = '';
-            let inSelection = false;
+        insertColumns.forEach((col, cn) => {
+            const cellKey = genCellKey(cn, rn);
 
-            insertColumns.forEach((col, cn) => {
-                const cellKey = genCellKey(cn, rn);
-
-                if (selectionCells.contains(cellKey)) {
-                    inSelection = true;
-                    copyValue += cellSep + getCellCopyValue(model.cellValues.get(cellKey));
-                    cellSep = '\t';
-                }
-            });
-
-            if (inSelection) {
-                copyValue += EOL;
+            if (selectionCells.contains(cellKey)) {
+                inSelection = true;
+                copyValue += cellSep + getCellCopyValue(model.cellValues.get(cellKey));
+                cellSep = '\t';
             }
+        });
+
+        if (inSelection) {
+            copyValue += EOL;
         }
     }
 
@@ -1310,7 +1307,7 @@ export async function pasteEvent(
     lockRowCount?: boolean
 ): Promise<EditorModelAndGridData> {
     // If a cell has focus do not accept incoming paste events -- allow for normal paste to input
-    if (editorModel && editorModel.hasSelection() && !editorModel.hasFocus()) {
+    if (editorModel && editorModel.hasSelection && !editorModel.hasFocus) {
         cancelEvent(event);
         const value = getPasteValue(event);
         return await pasteCell(
@@ -1407,7 +1404,7 @@ function validatePaste(
     readOnlyRowCount?: number
 ): IPasteModel {
     const maxRowPaste = 1000;
-    const payload = parsePaste(value);
+    const payload = parsePaste(model, value);
 
     const coordinates = {
         colMax: colMin + payload.numCols - 1,
@@ -1428,14 +1425,7 @@ function validatePaste(
 
     // If P = 1 then target can be 1 or M
     // If P = M(x,y) then target can be 1 or exact M(x,y)
-
-    if (
-        (coordinates.colMin !== coordinates.colMax || coordinates.rowMin !== coordinates.rowMax) &&
-        model.isMultiSelect
-    ) {
-        paste.success = false;
-        paste.message = 'Unable to paste. Paste is not supported against multiple selections.';
-    } else if (coordinates.colMax >= model.columns.size) {
+    if (coordinates.colMax >= model.columns.size) {
         paste.success = false;
         paste.message = 'Unable to paste. Cannot paste columns beyond the columns found in the grid.';
     } else if (coordinates.rowMax - coordinates.rowMin > maxRowPaste) {
@@ -1465,7 +1455,7 @@ type IPasteModel = {
     success: boolean;
 };
 
-function parsePaste(value: string): IParsePastePayload {
+function parsePaste(model: EditorModel, value: string): IParsePastePayload {
     let numCols = 0;
     let rows = List<List<string>>().asMutable();
 

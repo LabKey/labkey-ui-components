@@ -673,7 +673,7 @@ describe('EditorModel', () => {
 
         test('getColumns readOnlyColumns', () => {
             const editorModel = new EditorModel({});
-            const columns = editorModel.getColumns(QUERY_INFO, true, List(['neither']));
+            const columns = editorModel.getColumns(QUERY_INFO, true, ['neither']);
             expect(columns.length).toBe(3);
             expect(columns[0]).toStrictEqual(COLUMN_CAN_INSERT_AND_UPDATE);
             expect(columns[1]).toStrictEqual(COLUMN_CAN_UPDATE);

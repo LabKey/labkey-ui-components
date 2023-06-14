@@ -318,7 +318,7 @@ export interface SharedEditableGridProps {
     notDeletable?: List<any>;
     primaryBtnProps?: EditableGridBtnProps;
     processBulkData?: (data: OrderedMap<string, any>) => BulkAddData;
-    readOnlyColumns?: List<string>; // TODO: convert to string[]
+    readOnlyColumns?: string[];
     // list of key values for rows that are readonly.
     readonlyRows?: string[];
     removeColumnTitle?: string;

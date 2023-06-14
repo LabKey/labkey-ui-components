@@ -149,7 +149,7 @@ export class EditorModel
     getColumns(
         queryInfo: QueryInfo,
         forUpdate?: boolean,
-        readOnlyColumns?: List<string>,
+        readOnlyColumns?: string[],
         insertColumns?: QueryColumn[],
         updateColumns?: QueryColumn[],
         colFilter?: (col: QueryColumn) => boolean
@@ -157,7 +157,7 @@ export class EditorModel
         let columns;
 
         if (forUpdate) {
-            columns = updateColumns ?? queryInfo.getUpdateColumns(readOnlyColumns?.toArray());
+            columns = updateColumns ?? queryInfo.getUpdateColumns(readOnlyColumns);
         } else {
             columns = insertColumns ?? queryInfo.getInsertColumns();
         }

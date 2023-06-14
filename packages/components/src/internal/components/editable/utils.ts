@@ -365,7 +365,7 @@ export const exportEditedData = (
 export const getEditorExportData = (
     editorModels: EditorModel[],
     dataModels: QueryModel[],
-    readOnlyColumns?: List<string>,
+    readOnlyColumns?: string[],
     insertColumns?: QueryColumn[],
     updateColumns?: QueryColumn[],
     forUpdate?: boolean,

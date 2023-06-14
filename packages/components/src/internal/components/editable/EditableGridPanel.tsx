@@ -36,7 +36,7 @@ const exportHandler = (
     models: QueryModel[],
     editorModels: EditorModel[],
     activeTab: number,
-    readOnlyColumns: List<string>,
+    readOnlyColumns: string[],
     insertColumns?: QueryColumn[],
     updateColumns?: QueryColumn[],
     forUpdate?: boolean,

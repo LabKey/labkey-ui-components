@@ -20,7 +20,7 @@ import { List } from 'immutable';
 
 import { CELL_SELECTION_HANDLE_CLASSNAME } from '../../constants';
 
-import { QueryColumn } from '../../../public/QueryColumn';
+import { QueryColumn, QueryLookup } from '../../../public/QueryColumn';
 
 import { ValueDescriptor } from './models';
 
@@ -47,6 +47,10 @@ beforeAll(() => {
 });
 
 const queryColumn = new QueryColumn({ lookup: undefined, name: 'myColumn' });
+const lookupCol = new QueryColumn({ name: 'test', lookup: { isPublic: false } as QueryLookup });
+const publicLookupCol = new QueryColumn({ name: 'test', lookup: { isPublic: true } as QueryLookup });
+const validValuesCol = new QueryColumn({ name: 'test', validValues: ['a', 'b'] });
+const dateCol = new QueryColumn({ name: 'test', jsonType: 'date', caption: 'Test' });
 const DEFAULT_PROPS = { forUpdate: false, borderMask: [false, false, false, false] as BorderMask, row: undefined };
 
 describe('Cell', () => {
@@ -87,6 +91,7 @@ describe('Cell', () => {
     test('with placeholder while focused', () => {
         const cell = mount(
             <Cell
+                {...DEFAULT_PROPS}
                 cellActions={actions}
                 col={queryColumn}
                 colIdx={2}
@@ -143,7 +148,6 @@ describe('Cell', () => {
     });
 
     test('col is lookup, not public', () => {
-        const lookupCol = new QueryColumn({ name: 'test', lookup: { isPublic: false } });
         const cell = mount(<Cell {...DEFAULT_PROPS} cellActions={actions} col={lookupCol} colIdx={1} rowIdx={2} />);
         expect(cell.find('div')).toHaveLength(1);
         expect(cell.find('.cell-menu')).toHaveLength(0);
@@ -162,37 +166,58 @@ describe('Cell', () => {
     };
 
     test('col is lookup, public', () => {
-        const lookupCol = new QueryColumn({ name: 'test', lookup: { isPublic: true } });
-        const cell = mount(<Cell {...DEFAULT_PROPS} cellActions={actions} col={lookupCol} colIdx={1} rowIdx={2} />);
+        const cell = mount(
+            <Cell {...DEFAULT_PROPS} cellActions={actions} col={publicLookupCol} colIdx={1} rowIdx={2} />
+        );
         expectLookup(cell);
     });
 
     test('col is lookup, public and focused', () => {
-        const lookupCol = new QueryColumn({ name: 'test', lookup: { isPublic: true } });
         const cell = mount(
-            <Cell {...DEFAULT_PROPS} cellActions={actions} col={lookupCol} colIdx={1} rowIdx={2} focused selected />
+            <Cell
+                {...DEFAULT_PROPS}
+                cellActions={actions}
+                col={publicLookupCol}
+                colIdx={1}
+                rowIdx={2}
+                focused
+                selected
+            />
         );
         expectLookup(cell, true);
     });
 
     test('col has validValues', () => {
-        const lookupCol = new QueryColumn({ name: 'test', validValues: ['a', 'b'] });
-        const cell = mount(<Cell {...DEFAULT_PROPS} cellActions={actions} col={lookupCol} colIdx={1} rowIdx={2} />);
+        const cell = mount(
+            <Cell {...DEFAULT_PROPS} cellActions={actions} col={validValuesCol} colIdx={1} rowIdx={2} />
+        );
         expectLookup(cell);
     });
 
-    test('col is a lookup, but readonly', () => {
-        const lookupCol = new QueryColumn({ name: 'test', validValues: ['a', 'b'] });
+    test('col is a lookup with valid values, but readonly', () => {
+        const readOnlyLookup = new QueryColumn({
+            name: 'test',
+            readOnly: true,
+            lookup: { isPublic: false } as QueryLookup,
+            validValues: ['a', 'b'],
+        });
         const cell = mount(
-            <Cell {...DEFAULT_PROPS} cellActions={actions} col={lookupCol} colIdx={1} rowIdx={2} readOnly />
+            <Cell {...DEFAULT_PROPS} cellActions={actions} col={readOnlyLookup} colIdx={1} rowIdx={2} readOnly />
         );
         expectLookup(cell, false, true);
     });
 
     test('col has validValues and focused', () => {
-        const lookupCol = new QueryColumn({ name: 'test', validValues: ['a', 'b'] });
         const cell = mount(
-            <Cell {...DEFAULT_PROPS} cellActions={actions} col={lookupCol} colIdx={1} rowIdx={2} focused selected />
+            <Cell
+                {...DEFAULT_PROPS}
+                cellActions={actions}
+                col={validValuesCol}
+                colIdx={1}
+                rowIdx={2}
+                focused
+                selected
+            />
         );
         expect(cell.find('div')).toHaveLength(9);
         expect(cell.find('.cell-menu')).toHaveLength(0);
@@ -203,10 +228,16 @@ describe('Cell', () => {
         expect(cell.find(LookupCell)).toHaveLength(1);
     });
 
-    test('cell lastSelection', () => {
-        const lookupCol = new QueryColumn({ name: 'test', validValues: ['a', 'b'] });
+    test('cell renderDragHandle', () => {
         const cell = mount(
-            <Cell {...DEFAULT_PROPS} cellActions={actions} col={lookupCol} colIdx={1} rowIdx={2} lastSelection />
+            <Cell
+                {...DEFAULT_PROPS}
+                cellActions={actions}
+                col={validValuesCol}
+                colIdx={1}
+                rowIdx={2}
+                renderDragHandle
+            />
         );
         expect(cell.find('div')).toHaveLength(2);
         expect(cell.find('.cell-menu')).toHaveLength(1);
@@ -229,8 +260,7 @@ describe('Cell', () => {
     };
 
     test('col is date', () => {
-        const lookupCol = new QueryColumn({ name: 'test', jsonType: 'date' });
-        const cell = mount(<Cell {...DEFAULT_PROPS} cellActions={actions} col={lookupCol} colIdx={1} rowIdx={2} />);
+        const cell = mount(<Cell {...DEFAULT_PROPS} cellActions={actions} col={dateCol} colIdx={1} rowIdx={2} />);
         expectDate(cell);
         cell.unmount();
     });
@@ -242,18 +272,16 @@ describe('Cell', () => {
                 raw: '2022-08-05 00:00:00.000',
             },
         ]);
-        const lookupCol = new QueryColumn({ name: 'test', jsonType: 'date' });
         const cell = mount(
-            <Cell {...DEFAULT_PROPS} cellActions={actions} col={lookupCol} colIdx={1} rowIdx={2} values={values} />
+            <Cell {...DEFAULT_PROPS} cellActions={actions} col={dateCol} colIdx={1} rowIdx={2} values={values} />
         );
         expectDate(cell, false, '2022-08-05 00:00');
         cell.unmount();
     });
 
     test('col is date, focused', () => {
-        const lookupCol = new QueryColumn({ name: 'test', jsonType: 'date', caption: 'Test' });
         const cell = mount(
-            <Cell {...DEFAULT_PROPS} cellActions={actions} col={lookupCol} colIdx={1} rowIdx={2} focused selected />
+            <Cell {...DEFAULT_PROPS} cellActions={actions} col={dateCol} colIdx={1} rowIdx={2} focused selected />
         );
         expectDate(cell, true);
         cell.unmount();
@@ -266,12 +294,11 @@ describe('Cell', () => {
                 raw: '2022-08-05 00:00:00.000',
             },
         ]);
-        const lookupCol = new QueryColumn({ name: 'test', jsonType: 'date', caption: 'Test' });
         const cell = mount(
             <Cell
                 {...DEFAULT_PROPS}
                 cellActions={actions}
-                col={lookupCol}
+                col={dateCol}
                 colIdx={1}
                 rowIdx={2}
                 values={values}

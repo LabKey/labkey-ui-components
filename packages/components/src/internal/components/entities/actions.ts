@@ -598,7 +598,7 @@ export function getDataOperationConfirmationData(
 
 export function getCrossFolderSelectionResult(
     dataRegionSelectionKey: string,
-    dataType: 'sample' | 'data',
+    dataType: 'sample' | 'data' | 'assayrun',
     useSnapshotSelection?: boolean,
     rowIds?: string[] | number[],
     picklistName?: string

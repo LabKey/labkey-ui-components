@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.X
+*Released*: 8 June 2023
+* Moving entities between projects - Assay Data
+  * TODO
+
 ### version 2.345.0
 *Released*: 8 June 2023
 - Revise `QueryAPIWrapper` to support a number of additional API endpoints including query view APIs.

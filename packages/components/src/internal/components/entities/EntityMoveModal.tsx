@@ -29,7 +29,7 @@ import { EntityMoveConfirmationModal } from './EntityMoveConfirmationModal';
 
 export interface EntityMoveModalProps {
     api?: ComponentsAPIWrapper;
-    currentContainer?: Container;// used in the single move case when the item is not in the current container
+    currentContainer?: Container; // used in the single move case when the item is not in the current container
     dataTypeRowId?: number;
     entityDataType: EntityDataType;
     maxSelected: number;
@@ -107,7 +107,13 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
             setNumConfirmed(count);
             setShowProgress(true);
 
-            const rowIds_ = !useSelected || !movingAll ? confirmationData.allowed.map(a => a.RowId) : undefined;
+            const rowIds_ =
+                !useSelected || !movingAll
+                    ? confirmationData.allowed.map(a => {
+                          if (a.RowId) return a.RowId;
+                          return a;
+                      })
+                    : undefined;
             const useSnapshotSelection = useSelected && movingAll && queryModel.filterArray.length > 0;
 
             try {

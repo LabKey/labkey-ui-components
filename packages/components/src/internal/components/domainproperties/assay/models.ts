@@ -18,7 +18,7 @@ import { List, Record } from 'immutable';
 import { Utils } from '@labkey/api';
 
 import { DomainDesign, FieldErrors } from '../models';
-import {AppURL} from "../../../url/AppURL";
+import { AppURL } from '../../../url/AppURL';
 
 // See ExpProtocol.Status in 'platform' repository.
 export enum Status {
@@ -221,7 +221,7 @@ export class AssayProtocolModel extends Record({
         return this.getDomainByNameSuffix('Batch')?.fields.size > 0;
     }
 
-    getUrl() : AppURL {
+    getUrl(): AppURL {
         return AppURL.create('assays', this.providerName, this.name);
     }
 }

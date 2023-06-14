@@ -102,6 +102,46 @@ function computeBorderMask(
     return borderMask;
 }
 
+/**
+ * Returns true if the selection is sparse. A sparse selection is one where a continuous set of cells in a rectangle are
+ * not selected. It may look something like this:
+ *  0 1 1 0 0
+ *  0 0 0 1 1
+ *  0 1 1 0 0
+ * @param selection: An array of cell keys representing the selected cells, ordered left to right, top to bottom.
+ */
+function isSparseSelection(selection: string[]): boolean {
+    if (selection.length === 0) return false;
+
+    const firstCell = parseCellKey(selection[0]);
+    const lastCell = parseCellKey(selection[selection.length - 1]);
+    const minCol = firstCell.colIdx;
+    const maxCol = lastCell.colIdx;
+    const minRow = firstCell.rowIdx;
+    const maxRow = lastCell.rowIdx;
+    const expectedCellCount = (maxCol - minCol + 1) * (maxRow - minRow + 1);
+
+    // If the expected size is wrong we can short circuit and return
+    if (selection.length !== expectedCellCount) return true;
+
+    let selIdx = 0;
+
+    // If the sizes match, then we need to generate the expected cellKeys in the order we expect them, and if they don't
+    // all match we know it's a sparse selection.
+    for (let rowIdx = minRow; rowIdx <= maxRow; rowIdx++) {
+        for (let colIdx = minCol; colIdx <= maxCol; colIdx++) {
+            const expectedCellKey = genCellKey(colIdx, rowIdx);
+            const actualCellKey = selection[selIdx];
+
+            if (expectedCellKey !== actualCellKey) return true;
+
+            selIdx++;
+        }
+    }
+
+    return false;
+}
+
 const COUNT_COL = new GridColumn({
     index: GRID_EDIT_INDEX,
     tableCell: true,
@@ -129,7 +169,7 @@ function inputCellFactory(
     cellActions: CellActions,
     containerFilter: Query.ContainerFilter,
     forUpdate: boolean,
-    initialSelection: string[],
+    initialSelection: string[]
 ) {
     return (value: any, row: any, c: GridColumn, rn: number, cn: number) => {
         let colOffset = 0;
@@ -155,16 +195,18 @@ function inputCellFactory(
         }
 
         const currentSelection = editorModel.sortedSelectionKeys;
+        const isSparse = isSparseSelection(currentSelection);
+        const renderDragHandle = !isSparse && editorModel.lastSelection(colIdx, rn);
         let inSelection = editorModel?.inSelection(colIdx, rn);
         let borderMask: BorderMask = [false, false, false, false];
 
-        if (currentSelection.length) {
+        if (!isSparse && currentSelection.length) {
             const minCell = parseCellKey(currentSelection[0]);
             const maxCell = parseCellKey(currentSelection[currentSelection.length - 1]);
             borderMask = computeBorderMask(minCell.colIdx, maxCell.colIdx, minCell.rowIdx, maxCell.rowIdx, colIdx, rn, borderMask);
         }
 
-        if (initialSelection?.length) {
+        if (!isSparse && initialSelection?.length) {
             const minCell = parseCellKey(initialSelection[0]);
             const maxCell = parseCellKey(initialSelection[initialSelection.length - 1]);
             borderMask = computeBorderMask(minCell.colIdx, maxCell.colIdx, minCell.rowIdx, maxCell.rowIdx, colIdx, rn, borderMask);
@@ -189,7 +231,7 @@ function inputCellFactory(
                 message={editorModel?.getMessage(colIdx, rn)}
                 selected={editorModel ? editorModel.isSelected(colIdx, rn) : false}
                 selection={inSelection}
-                lastSelection={editorModel ? editorModel.lastSelection(colIdx, rn) : false}
+                renderDragHandle={renderDragHandle}
                 values={editorModel ? editorModel.getValue(colIdx, rn) : List<ValueDescriptor>()}
                 lookupValueFilters={columnMetadata?.lookupValueFilters}
                 filteredLookupValues={columnMetadata?.filteredLookupValues}
@@ -276,7 +318,7 @@ export interface SharedEditableGridProps {
     notDeletable?: List<any>;
     primaryBtnProps?: EditableGridBtnProps;
     processBulkData?: (data: OrderedMap<string, any>) => BulkAddData;
-    readOnlyColumns?: List<string>;
+    readOnlyColumns?: List<string>; // TODO: convert to string[]
     // list of key values for rows that are readonly.
     readonlyRows?: string[];
     removeColumnTitle?: string;
@@ -406,7 +448,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     componentDidMount(): void {
         document.addEventListener('copy', this.onCopy);
         document.addEventListener('paste', this.onPaste);
-        this.addRows(10); // FIXME: DO NOT COMMIT THIS
+        this.addRows(10); // FIXME: DO NOT COMMIT THIS!
     }
 
     componentWillUnmount(): void {
@@ -1016,6 +1058,9 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             const loweredColumnMetadata = this.getLoweredColumnMetadata();
             const columnMetadata = this.getColumns().map(col => loweredColumnMetadata[col.fieldKey.toLowerCase()]);
             const sortedSelectionKeys = editorModel.sortedSelectionKeys;
+
+            if (isSparseSelection(sortedSelectionKeys)) return;
+
             const firstRowIdx = parseCellKey(sortedSelectionKeys[0]).rowIdx;
             const firstRowCellKeys = sortedSelectionKeys.filter(
                 cellKey => parseCellKey(cellKey).rowIdx === firstRowIdx

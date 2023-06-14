@@ -1192,7 +1192,6 @@ export function generateFillCellKeys(initialSelection: string[], finalSelection:
  * @param data: The rows object from a QueryModel
  * @param queryInfo: A QueryInfo
  * @param columnMetadata: Array of column metadata, in the same order as the columns in the grid
- * TODO: Why do we need readonlyRows and lockedRows? Could they be merged into a single variable?
  * @param readonlyRows: A list of readonly rows
  * @param lockedRows: A list of locked rows
  */

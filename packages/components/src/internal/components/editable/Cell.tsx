@@ -50,7 +50,7 @@ interface Props {
     focused?: boolean;
     forUpdate: boolean;
     getFilteredLookupKeys?: (linkedValues: any[]) => Promise<List<any>>;
-    lastSelection?: boolean;
+    renderDragHandle?: boolean;
     linkedValues?: any[];
     locked?: boolean;
     lookupValueFilters?: Filter.IFilter[];
@@ -76,7 +76,7 @@ export class Cell extends React.PureComponent<Props, State> {
 
     static defaultProps = {
         focused: false,
-        lastSelection: false,
+        renderDragHandle: false,
         message: undefined,
         selected: false,
         selection: false,
@@ -283,7 +283,7 @@ export class Cell extends React.PureComponent<Props, State> {
             containerFilter,
             focused,
             forUpdate,
-            lastSelection,
+            renderDragHandle,
             message,
             placeholder,
             row,
@@ -366,7 +366,7 @@ export class Cell extends React.PureComponent<Props, State> {
             return (
                 <>
                     {cell}
-                    {lastSelection && !this.isReadOnly() && (
+                    {renderDragHandle && !this.isReadOnly() && (
                         <i className={'fa fa-square ' + CELL_SELECTION_HANDLE_CLASSNAME} />
                     )}
                 </>

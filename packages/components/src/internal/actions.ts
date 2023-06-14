@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map, OrderedMap, Set } from 'immutable';
+import { fromJS, List, Map, OrderedMap, Set as ImmutableSet } from 'immutable';
 import { ActionURL, Ajax, Filter, getServerContext, Query, Utils } from '@labkey/api';
 import moment from 'moment';
 
@@ -146,7 +146,7 @@ export async function getLookupValueDescriptors(
     // for each lookup column, find the unique values in the rows and query for those values when they look like ids
     for (let cn = 0; cn < columns.length; cn++) {
         const col = columns[cn];
-        let values = Set<number>();
+        let values = ImmutableSet<number>();
 
         if (col.isPublicLookup()) {
             ids.forEach(id => {
@@ -909,7 +909,7 @@ export async function addRowsToEditorModel(
     rowMin = 0,
     colMin = 0
 ): Promise<Partial<EditorModel>> {
-    let selectionCells = Set<string>();
+    let selectionCells = ImmutableSet<string>();
     const preparedData = await prepareInsertRowDataFromBulkForm(insertColumns, rowData, 0);
     const { values, messages } = preparedData;
 
@@ -1607,7 +1607,7 @@ export function changeColumn(
             focusRowIdx: -1,
             selectedColIdx: -1,
             selectedRowIdx: -1,
-            selectionCells: Set<string>(),
+            selectionCells: ImmutableSet<string>(),
             cellMessages: newCellMessages,
             cellValues: newCellValues,
         },
@@ -1665,7 +1665,7 @@ export function removeColumn(
             focusRowIdx: -1,
             selectedColIdx: -1,
             selectedRowIdx: -1,
-            selectionCells: Set<string>(),
+            selectionCells: ImmutableSet<string>(),
             cellMessages: newCellMessages,
             cellValues: newCellValues,
         },
@@ -1764,7 +1764,7 @@ export function addColumns(
             focusRowIdx: -1,
             selectedColIdx: -1,
             selectedRowIdx: -1,
-            selectionCells: Set<string>(),
+            selectionCells: ImmutableSet<string>(),
             cellMessages: newCellMessages,
             cellValues: newCellValues,
         },
@@ -1911,7 +1911,7 @@ function insertPastedData(
     const columns = queryInfo.getInsertColumns();
     let cellMessages = editorModel.cellMessages;
     let cellValues = editorModel.cellValues;
-    let selectionCells = Set<string>();
+    let selectionCells = ImmutableSet<string>();
     let rowCount = editorModel.rowCount;
     let updatedDataKeys: List<any>;
     let updatedData: Map<any, Map<string, any>>;

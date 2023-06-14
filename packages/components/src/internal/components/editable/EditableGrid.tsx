@@ -448,7 +448,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     componentDidMount(): void {
         document.addEventListener('copy', this.onCopy);
         document.addEventListener('paste', this.onPaste);
-        this.addRows(10); // FIXME: DO NOT COMMIT THIS!
     }
 
     componentWillUnmount(): void {

@@ -4,7 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.X
 *Released*: 8 June 2023
 * Moving entities between projects - Assay Data
-  * TODO
+  * Modified EntityMoveModal to work with assay runs
 
 ### version 2.345.0
 *Released*: 8 June 2023

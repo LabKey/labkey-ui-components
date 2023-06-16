@@ -259,6 +259,7 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                             emptyGridMsg="Start by adding the quantity of assay data rows you want to create."
                                             isSubmitting={wizardModel.isSubmitting}
                                             maxRows={this.props.maxRows}
+                                            metricFeatureArea="assayResultsEditableGrid"
                                             model={queryModel}
                                             onChange={this.props.onGridChange}
                                             striped

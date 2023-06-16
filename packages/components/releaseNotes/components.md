@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Issue 48067: Add metrics for action buttons on editable grid
+
 ### version 2.345.0
 *Released*: 8 June 2023
 - Revise `QueryAPIWrapper` to support a number of additional API endpoints including query view APIs.

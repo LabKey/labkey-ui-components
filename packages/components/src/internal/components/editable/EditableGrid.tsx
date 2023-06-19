@@ -1025,7 +1025,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         }
     };
 
-    onMouseUp = (event: MouseEvent): void => {
+    onMouseUp = async (event: MouseEvent): Promise<void> => {
         const { editorModel, onChange, disabled, data, dataKeys, queryInfo, readonlyRows, lockedRows } = this.props;
 
         if (!disabled) {
@@ -1033,29 +1033,32 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             const initialSelection = this.state.initialSelection;
             if (initialSelection?.length > 0 && editorModel.isMultiSelect) {
                 const loweredColumnMetadata = this.getLoweredColumnMetadata();
-                const columnMetadata = this.getColumns().map(col => loweredColumnMetadata[col.fieldKey.toLowerCase()]);
-                const cellValues = dragFillEvent(
+                const columns = this.getColumns();
+                const columnMetadata = columns.map(col => loweredColumnMetadata[col.fieldKey.toLowerCase()]);
+                const { cellMessages, cellValues } = await dragFillEvent(
                     editorModel,
                     initialSelection,
                     dataKeys,
                     data,
                     queryInfo,
+                    columns,
                     columnMetadata,
                     readonlyRows,
                     lockedRows
                 );
-                onChange({ cellValues });
+                onChange({ cellMessages, cellValues });
                 this.setState({ initialSelection: undefined });
             }
         }
     };
 
-    fillDown = (): void => {
+    fillDown = async (): Promise<void> => {
         const { editorModel, onChange, data, dataKeys, queryInfo, readonlyRows, lockedRows } = this.props;
 
         if (editorModel.isMultiSelect) {
             const loweredColumnMetadata = this.getLoweredColumnMetadata();
-            const columnMetadata = this.getColumns().map(col => loweredColumnMetadata[col.fieldKey.toLowerCase()]);
+            const columns = this.getColumns();
+            const columnMetadata = columns.map(col => loweredColumnMetadata[col.fieldKey.toLowerCase()]);
             const sortedSelectionKeys = editorModel.sortedSelectionKeys;
 
             if (isSparseSelection(sortedSelectionKeys)) return;
@@ -1064,17 +1067,18 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             const firstRowCellKeys = sortedSelectionKeys.filter(
                 cellKey => parseCellKey(cellKey).rowIdx === firstRowIdx
             );
-            const cellValues = dragFillEvent(
+            const { cellMessages, cellValues } = await dragFillEvent(
                 editorModel,
                 firstRowCellKeys,
                 dataKeys,
                 data,
                 queryInfo,
+                columns,
                 columnMetadata,
                 readonlyRows,
                 lockedRows
             );
-            onChange({ cellValues });
+            onChange({ cellMessages, cellValues });
         }
     };
 

@@ -1047,9 +1047,6 @@ function inferSelectionIncrement(
     let increment;
 
     // use the display values to determine sequence type to account for lookup cell values with numeric key/raw values
-    // TODO: If you are reviewing this code please note that I changed the behavior to compute the increment based off
-    //  of the displayValues, because that's also how we're determining the increment type. I think this change is
-    //  correct, but I want someone to vet that idea before we merge.
     const splitValues = displayValues.map(splitPrefixedNumber);
     const allPrefixed = everyValueHasSamePrefix(splitValues);
     let firstValue = displayValues[0];
@@ -1079,7 +1076,7 @@ function inferSelectionIncrement(
     if (isFloatSeq || isIntSeq) {
         // increment -> last value minus first value divide by the number of steps in the initial selection
         increment = decimalDifference(lastValue, firstValue);
-        increment = displayValues.length > 1 ? increment / (displayValues.length - 1) : 0;
+        increment = increment / (displayValues.length - 1);
         incrementType = IncrementType.NUMBER;
     } else if (isDateSeq) {
         incrementType = IncrementType.DATE;
@@ -1185,39 +1182,43 @@ export function generateFillCellKeys(initialSelection: string[], finalSelection:
     return fillCellKeys;
 }
 
+type CellMessagesAndValues = Pick<EditorModel, 'cellMessages' | 'cellValues'>;
+
 /**
  * @param editorModel
  * @param initialSelection: The initial selection before the selection was expanded
  * @param dataKeys: The orderedRows Object from a QueryModel
  * @param data: The rows object from a QueryModel
  * @param queryInfo: A QueryInfo
+ * @param columns
  * @param columnMetadata: Array of column metadata, in the same order as the columns in the grid
  * @param readonlyRows: A list of readonly rows
  * @param lockedRows: A list of locked rows
  */
-export function dragFillEvent(
+export async function dragFillEvent(
     editorModel: EditorModel,
     initialSelection: string[],
     dataKeys: List<any>,
     data: Map<any, Map<string, any>>,
     queryInfo: QueryInfo,
+    columns: QueryColumn[],
     columnMetadata: EditableColumnMetadata[],
     readonlyRows: string[],
     lockedRows: string[]
-): CellValues {
+): Promise<CellMessagesAndValues> {
     const finalSelection = editorModel.sortedSelectionKeys;
     let cellValues = editorModel.cellValues;
+    let cellMessages = editorModel.cellMessages;
 
     // If the selection size hasn't changed, then the selection hasn't changed, so return the existing cellValues
-    if (finalSelection.length === initialSelection.length) return cellValues;
+    if (finalSelection.length === initialSelection.length) return { cellMessages, cellValues };
 
     const selectionToFill = generateFillCellKeys(initialSelection, finalSelection);
-
-    selectionToFill.forEach(columnCells => {
+    for (const columnCells of selectionToFill) {
         const { colIdx } = parseCellKey(columnCells[0]);
         const initialSelectionByCol = initialSelection.filter(cellKey => parseCellKey(cellKey).colIdx === colIdx);
+        const column = columns[colIdx];
         const metadata = columnMetadata[colIdx];
-
         const selectionToFillByCol = columnCells.filter(cellKey => {
             const { rowIdx } = parseCellKey(cellKey);
             const row = data.get(dataKeys.get(rowIdx));
@@ -1230,32 +1231,53 @@ export function dragFillEvent(
             );
             return !isReadonlyCell && !isReadonlyRow && !isLockedRow;
         });
-        cellValues = fillColumnCells(editorModel, cellValues, initialSelectionByCol, selectionToFillByCol);
-    });
 
-    return cellValues;
+        // eslint-disable-next-line no-await-in-loop
+        const messagesAndValues = await fillColumnCells(
+            editorModel,
+            column,
+            metadata,
+            cellMessages,
+            cellValues,
+            initialSelectionByCol,
+            selectionToFillByCol
+        );
+        cellValues = messagesAndValues.cellValues;
+        cellMessages = messagesAndValues.cellMessages;
+    }
+
+    return { cellMessages, cellValues };
 }
 
 /**
  * Fills a column of cells based on the initially selected values.
  * If the initialSelection is for a single cell, the fill operation will always be a copy of that value.
- * If the initialSelection includes a range of cells and all values are numeric, fill via a generated sequence where the
- * step/diff is based on the first and last value in the initSelection.
+ * If the initialSelection includes a range of cells and all values are numeric (or numbers prefixed with the same
+ * string), fill via a generated sequence where the step/diff is based on the first and last value in the initSelection.
+ * if the initialSelection is a single row, and the value is a date (as determined by the date format set by the server)
+ * then we will fill via a generated sequence that increments the date by one day each row.
  * If the initialSelection includes a range of cells and not all values are numeric, fill via a copy of all of the values
  * in initSelection.
  * @param editorModel: An EditorModel object
- * @param cellValues: The cellValues object to mutate, we cannot use the one from EditorModel because we may need to
+ * @param column
+ * @param columnMetadata
+ * @param cellMessages: The CellMessages object to mutate, we cannot use the one from EditorModel because we may need to
+ * modify multiple columns of data in one event (see dragFillEvent).
+ * @param cellValues: The CellValues object to mutate, we cannot use the one from EditorModel because we may need to
  * modify multiple columns of data in one event (see dragFillEvent).
  * @param initialSelection: An array of sorted cell keys, all from the same column that were initially selected
  * @param selectionToFill: An array of sorted cell keys, all from the same column, to be filled with values based on the
  * content of initialSelection
  */
-export function fillColumnCells(
+export async function fillColumnCells(
     editorModel: EditorModel,
+    column: QueryColumn,
+    columnMetadata: EditableColumnMetadata,
+    cellMessages: CellMessages,
     cellValues: CellValues,
     initialSelection: string[],
     selectionToFill: string[]
-): CellValues {
+): Promise<CellMessagesAndValues> {
     const { direction, increment, incrementType, prefix, startingValue, initialSelectionValues } =
         inferSelectionIncrement(editorModel, initialSelection, selectionToFill);
 
@@ -1263,6 +1285,7 @@ export function fillColumnCells(
         selectionToFill.reverse();
     }
 
+    const displayValues = [];
     selectionToFill.forEach((cellKey, i) => {
         let fillValue = initialSelectionValues[i % initialSelectionValues.length];
 
@@ -1277,7 +1300,9 @@ export function fillColumnCells(
             }
 
             if (prefix !== undefined) raw = prefix + raw;
-            fillValue = List([{ raw, display: raw.toString() }]);
+            const display = raw.toString();
+            fillValue = List([{ raw, display }]);
+            displayValues.push(display);
         } else if (incrementType === IncrementType.DATE) {
             const dateValue = moment(parseDate(startingValue as string));
 
@@ -1288,13 +1313,27 @@ export function fillColumnCells(
             }
 
             const raw = formatDate(dateValue.toDate());
-            fillValue = List([{ raw, display: raw.toString() }]);
+            displayValues.push(raw);
+            fillValue = List([{ raw, display: raw }]);
         }
 
         cellValues = cellValues.set(cellKey, fillValue);
     });
 
-    return cellValues;
+    // If the column is a lookup, and we've generated new displayValues, then we need to query for the rowIds so we can
+    // set the correct raw values, otherwise insert will fail. This is most common for samples where we increment sample
+    // names during drag fill so S-1 becomes S-2, S-3, etc.
+    if (column.isPublicLookup() && displayValues.length) {
+        const { descriptors } = await findLookupValues(column, undefined, displayValues);
+        selectionToFill.forEach(cellKey => {
+            const display = cellValues.get(cellKey).get(0).display;
+            const { message, values } = parsePastedLookup(column, descriptors, display);
+            cellValues = cellValues.set(cellKey, values);
+            cellMessages = cellMessages.set(cellKey, message);
+        });
+    }
+
+    return { cellValues, cellMessages };
 }
 
 export async function pasteEvent(

@@ -483,7 +483,7 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
                 <Preview containerPath={containerPath} content={model.body} renderContent={api.renderContent} />
             )}
 
-            <ThreadAttachments attachments={attachments} error={attachmentError} onRemove={openRemoveModal} />
+            <ThreadAttachments attachments={attachments} error={attachmentError} onRemove={openRemoveModal} containerPath={containerPath}/>
 
             <button
                 type="button"

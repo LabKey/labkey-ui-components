@@ -33,6 +33,7 @@ import {
     copyEvent,
     dragFillEvent,
     endDrag,
+    incrementClientSideMetricCount,
     inDrag,
     pasteEvent,
     updateGridFromBulkForm,
@@ -236,6 +237,7 @@ export interface SharedEditableGridProps {
     // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
     lockedRows?: List<any>;
     maxRows?: number;
+    metricFeatureArea?: string;
     // list of key values that cannot be deleted.
     notDeletable?: List<any>;
     primaryBtnProps?: EditableGridBtnProps;
@@ -624,7 +626,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     removeSelected = (): void => {
+        const { metricFeatureArea } = this.props;
         this.removeRows(this.state.selected);
+        if (metricFeatureArea) {
+            incrementClientSideMetricCount(metricFeatureArea, 'removeRows');
+        }
     };
 
     getLoweredColumnMetadata = (): Map<string, EditableColumnMetadata> =>
@@ -1029,7 +1035,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     bulkAdd = async (bulkData: OrderedMap<string, any>): Promise<void> => {
-        const { addControlProps, bulkAddProps, editorModel, data, dataKeys, onChange, processBulkData, queryInfo } =
+        const { addControlProps, bulkAddProps, editorModel, data, dataKeys, metricFeatureArea, onChange, processBulkData, queryInfo} =
             this.props;
         const { nounPlural } = addControlProps;
         // numItems is a string because we rely on Formsy to grab the value for us (See QueryInfoForm for details). We
@@ -1082,12 +1088,15 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             onChange(changes.editorModel, changes.dataKeys, changes.data);
         }
 
+        if (metricFeatureArea) {
+            incrementClientSideMetricCount(metricFeatureArea, 'bulkAdd');
+        }
         // Result of this promise passed to toggleBulkAdd, which doesn't expect anything to be passed
         return Promise.resolve();
     };
 
     bulkUpdate = async (updatedData: OrderedMap<string, any>): Promise<Partial<EditorModelProps>> => {
-        const { editorModel, queryInfo, onChange, bulkUpdateProps } = this.props;
+        const { editorModel, queryInfo, onChange, bulkUpdateProps, metricFeatureArea } = this.props;
         if (!updatedData) return Promise.resolve(undefined);
 
         const selectedIndices = this.getSelectedRowIndices();
@@ -1100,6 +1109,10 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             bulkUpdateProps?.isIncludedColumn
         );
         onChange(editorModelChanges);
+
+        if (metricFeatureArea) {
+            incrementClientSideMetricCount(metricFeatureArea, 'bulkUpdate');
+        }
         // The result of this promise is used by toggleBulkUpdate, which doesn't expect anything to be passed
         return Promise.resolve(editorModelChanges);
     };

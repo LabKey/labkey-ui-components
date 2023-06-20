@@ -1324,10 +1324,11 @@ export async function fillColumnCells(
     // set the correct raw values, otherwise insert will fail. This is most common for samples where we increment sample
     // names during drag fill so S-1 becomes S-2, S-3, etc.
     if (column.isPublicLookup() && displayValues.length) {
+        const filteredLookupValues = columnMetadata?.filteredLookupValues?.toArray();
         const { descriptors } = await findLookupValues(column, undefined, displayValues);
         selectionToFill.forEach(cellKey => {
             const display = cellValues.get(cellKey).get(0).display;
-            const { message, values } = parsePastedLookup(column, descriptors, display);
+            const { message, values } = parsePastedLookup(column, descriptors, filteredLookupValues ?? display);
             cellValues = cellValues.set(cellKey, values);
             cellMessages = cellMessages.set(cellKey, message);
         });
@@ -1402,6 +1403,8 @@ async function validateAndInsertPastedData(
                                 : byColumnValues.get(index - paste.coordinates.colMin).toArray()
                         )
                     );
+                // TODO: It seems wrong that we're pre-emptively loading data for columns that are not in our pasted
+                //  area, should this else if be removed?
                 } else if (filteredLookup) {
                     arr.push(findLookupValues(column, undefined, filteredLookup.toArray()));
                 }

@@ -683,12 +683,10 @@ describe('EditorModel', () => {
 
         test('getColumns getInsertColumns', () => {
             const editorModel = new EditorModel({});
-            const columns = editorModel.getColumns(
-                QUERY_INFO,
-                false,
-                undefined,
-                [COLUMN_CANNOT_INSERT_AND_UPDATE, COLUMN_CAN_INSERT]
-            );
+            const columns = editorModel.getColumns(QUERY_INFO, false, undefined, [
+                COLUMN_CANNOT_INSERT_AND_UPDATE,
+                COLUMN_CAN_INSERT,
+            ]);
             expect(columns.length).toBe(2);
             expect(columns[0]).toBe(COLUMN_CANNOT_INSERT_AND_UPDATE);
             expect(columns[1]).toBe(COLUMN_CAN_INSERT);
@@ -778,19 +776,23 @@ describe('EditorModel', () => {
         test('isMultiColumnSelection', () => {
             expect(new EditorModel({ selectionCells: ImmutableSet([]) }).isMultiColumnSelection).toBeFalsy();
             expect(new EditorModel({ selectionCells: ImmutableSet(['0-0']) }).isMultiColumnSelection).toBeFalsy();
-            expect(new EditorModel({ selectionCells: ImmutableSet(['0-0', '0-1']) }).isMultiColumnSelection).toBeFalsy();
-            expect(new EditorModel({ selectionCells: ImmutableSet(['0-0', '1-1']) }).isMultiColumnSelection).toBeTruthy();
+            expect(
+                new EditorModel({ selectionCells: ImmutableSet(['0-0', '0-1']) }).isMultiColumnSelection
+            ).toBeFalsy();
+            expect(
+                new EditorModel({ selectionCells: ImmutableSet(['0-0', '1-1']) }).isMultiColumnSelection
+            ).toBeTruthy();
         });
 
         test('sortedSelectionKeys', () => {
             expect(
                 new EditorModel({ selectionCells: ImmutableSet(['0-0', '0-1', '1-0', '1-1']), rowCount: 100 })
                     .sortedSelectionKeys
-            ).toStrictEqual(['0-0', '0-1', '1-0', '1-1']);
+            ).toStrictEqual(['0-0', '1-0', '0-1', '1-1']);
             expect(
                 new EditorModel({ selectionCells: ImmutableSet(['1-0', '1-1', '0-1', '0-0']), rowCount: 100 })
                     .sortedSelectionKeys
-            ).toStrictEqual(['0-0', '0-1', '1-0', '1-1']);
+            ).toStrictEqual(['0-0', '1-0', '0-1', '1-1']);
             expect(
                 new EditorModel({ selectionCells: ImmutableSet(['1-10', '1-1', '1-5', '1-15']), rowCount: 100 })
                     .sortedSelectionKeys
@@ -800,53 +802,53 @@ describe('EditorModel', () => {
         test('lastSelection', () => {
             // multiple columns should always return false
             expect(
-                new EditorModel({ selectionCells: ImmutableSet(['0-0', '0-1', '1-0', '1-1']), rowCount: 100 }).lastSelection(
-                    0,
-                    0
-                )
+                new EditorModel({
+                    selectionCells: ImmutableSet(['0-0', '0-1', '1-0', '1-1']),
+                    rowCount: 100,
+                }).lastSelection(0, 0)
             ).toBeFalsy();
             expect(
-                new EditorModel({ selectionCells: ImmutableSet(['0-0', '0-1', '1-0', '1-1']), rowCount: 100 }).lastSelection(
-                    1,
-                    1
-                )
+                new EditorModel({
+                    selectionCells: ImmutableSet(['0-0', '0-1', '1-0', '1-1']),
+                    rowCount: 100,
+                }).lastSelection(1, 1)
+            ).toBeTruthy();
+            expect(
+                new EditorModel({
+                    selectionCells: ImmutableSet(['1-0', '1-1', '0-1', '0-0']),
+                    rowCount: 100,
+                }).lastSelection(0, 0)
             ).toBeFalsy();
             expect(
-                new EditorModel({ selectionCells: ImmutableSet(['1-0', '1-1', '0-1', '0-0']), rowCount: 100 }).lastSelection(
-                    0,
-                    0
-                )
-            ).toBeFalsy();
-            expect(
-                new EditorModel({ selectionCells: ImmutableSet(['1-0', '1-1', '0-1', '0-0']), rowCount: 100 }).lastSelection(
-                    1,
-                    1
-                )
-            ).toBeFalsy();
+                new EditorModel({
+                    selectionCells: ImmutableSet(['1-0', '1-1', '0-1', '0-0']),
+                    rowCount: 100,
+                }).lastSelection(1, 1)
+            ).toBeTruthy();
             // single column should have a true
             expect(
-                new EditorModel({ selectionCells: ImmutableSet(['1-0', '1-1', '1-2', '1-3']), rowCount: 100 }).lastSelection(
-                    1,
-                    0
-                )
+                new EditorModel({
+                    selectionCells: ImmutableSet(['1-0', '1-1', '1-2', '1-3']),
+                    rowCount: 100,
+                }).lastSelection(1, 0)
             ).toBeFalsy();
             expect(
-                new EditorModel({ selectionCells: ImmutableSet(['1-0', '1-1', '1-2', '1-3']), rowCount: 100 }).lastSelection(
-                    1,
-                    1
-                )
+                new EditorModel({
+                    selectionCells: ImmutableSet(['1-0', '1-1', '1-2', '1-3']),
+                    rowCount: 100,
+                }).lastSelection(1, 1)
             ).toBeFalsy();
             expect(
-                new EditorModel({ selectionCells: ImmutableSet(['1-0', '1-1', '1-2', '1-3']), rowCount: 100 }).lastSelection(
-                    1,
-                    2
-                )
+                new EditorModel({
+                    selectionCells: ImmutableSet(['1-0', '1-1', '1-2', '1-3']),
+                    rowCount: 100,
+                }).lastSelection(1, 2)
             ).toBeFalsy();
             expect(
-                new EditorModel({ selectionCells: ImmutableSet(['1-0', '1-1', '1-2', '1-3']), rowCount: 100 }).lastSelection(
-                    1,
-                    3
-                )
+                new EditorModel({
+                    selectionCells: ImmutableSet(['1-0', '1-1', '1-2', '1-3']),
+                    rowCount: 100,
+                }).lastSelection(1, 3)
             ).toBeTruthy();
             // single cell should always be true
             expect(

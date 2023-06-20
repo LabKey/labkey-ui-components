@@ -979,7 +979,7 @@ async function prepareInsertRowDataFromBulkForm(
  *      ABC.123 captures as ['ABC.123', 'ABC.', '123', undefined]
  */
 const POSTFIX_REGEX = /^(.*?)(\d+(\.\d+)?)$/;
-type PrefixAndNumber = [string, string | undefined];
+type PrefixAndNumber = [string | undefined, string | undefined];
 
 /**
  * Given a string it returns an array in the form of [prefix, number suffix]. If the string is not suffixed with a
@@ -1041,27 +1041,39 @@ function inferSelectionIncrement(
 ): SelectionIncrement {
     const direction = inferSelectionDirection(initialCellKeys, cellKeysToFill);
     const values = initialCellKeys.map(cellKey => editorModel.getValueForCellKey(cellKey));
-    let displayValues = values.map(value => value.get(0)?.display);
-    let prefix;
-    let incrementType = IncrementType.NONE;
-    let increment;
-
     // use the display values to determine sequence type to account for lookup cell values with numeric key/raw values
-    const splitValues = displayValues.map(splitPrefixedNumber);
-    const allPrefixed = everyValueHasSamePrefix(splitValues);
+    let displayValues = values.map(value => value.get(0)?.display);
     let firstValue = displayValues[0];
+    let lastValue = displayValues[displayValues.length - 1];
     const firstValueIsEmpty = firstValue === undefined || firstValue === '';
     const isDateSeq = values.length === 1 && !firstValueIsEmpty && formatDate(parseDate(firstValue)) === firstValue;
 
     // Date sequence detection takes precedence otherwise we'd never parse dates, because we'd always consider something
     // like 2023-06-01, 6/1/2023, or 1-6-2023, to be a prefixed number string.
-    if (!isDateSeq && allPrefixed) {
+    if (isDateSeq) {
+        return {
+            direction,
+            increment: 1, // Right now we only increment dates by 1 day
+            incrementType: IncrementType.DATE,
+            initialSelectionValues: values,
+            prefix: undefined,
+            startingValue: direction === IncrementDirection.FORWARD ? lastValue : firstValue,
+        };
+    }
+
+    let prefix;
+    let incrementType = IncrementType.NONE;
+    let increment;
+    const splitValues = displayValues.map(splitPrefixedNumber);
+    const allPrefixed = everyValueHasSamePrefix(splitValues);
+
+    if (allPrefixed && splitValues[0][0] !== undefined) {
         prefix = splitValues[0][0];
         displayValues = splitValues.map(value => value[1]);
         firstValue = displayValues[0];
+        lastValue = displayValues[displayValues.length - 1];
     }
 
-    let lastValue = displayValues[displayValues.length - 1];
     const isFloatSeq = values.length > 1 && displayValues.every(isFloat);
     const isIntSeq = values.length > 1 && displayValues.every(isInteger);
 
@@ -1078,9 +1090,6 @@ function inferSelectionIncrement(
         increment = decimalDifference(lastValue, firstValue);
         increment = increment / (displayValues.length - 1);
         incrementType = IncrementType.NUMBER;
-    } else if (isDateSeq) {
-        incrementType = IncrementType.DATE;
-        increment = 1; // Right now we only increment dates by 1 day
     }
 
     return {

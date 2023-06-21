@@ -229,7 +229,7 @@ export const ThreadBlock: FC<ThreadBlockProps> = props => {
                         {error !== undefined && <Alert>{error}</Alert>}
                         <div className="thread-block-body__content" dangerouslySetInnerHTML={threadBody} />
 
-                        <ThreadAttachments attachments={thread.attachments ?? []} />
+                        <ThreadAttachments attachments={thread.attachments ?? []} containerPath={containerPath}/>
 
                         {allowReply && (
                             <span className="clickable-text thread-block__reply" onClick={onReply}>

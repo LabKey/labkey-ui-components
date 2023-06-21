@@ -1,10 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.X
-*Released*: 8 June 2023
+### version 2.345.3
+*Released*: 21 June 2023
 * Moving entities between projects - Assay Data
   * Modified EntityMoveModal to work with assay runs
+
+### version 2.345.2
+*Released*: 21 June 2023
+- Export `EntityMoveConfirmationModal` for use with notebooks.
 
 ### version 2.345.1
 *Released*: 19 June 2023

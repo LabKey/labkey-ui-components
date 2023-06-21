@@ -326,6 +326,7 @@ import {
     EntityTypeOption,
 } from './internal/components/entities/models';
 import { EntityMoveModal } from './internal/components/entities/EntityMoveModal';
+import { EntityMoveConfirmationModal } from './internal/components/entities/EntityMoveConfirmationModal';
 import {
     AssayResultsForSamplesMenuItem,
     AssayResultsForSamplesButton,
@@ -1227,6 +1228,7 @@ export {
     SampleStatusLegend,
     EntityIdCreationModel,
     EntityTypeOption,
+    EntityMoveConfirmationModal,
     EntityMoveModal,
     EntityParentType,
     OperationConfirmationData,

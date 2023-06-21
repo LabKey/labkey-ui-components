@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Create Storage on Sample Import
+  * add StorageUnit column to SAMPLE_STORAGE_COLUMNS const
+
 ### version 2.345.3
 *Released*: 21 June 2023
 * Moving entities between projects - Assay Data

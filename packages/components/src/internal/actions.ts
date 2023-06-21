@@ -48,7 +48,7 @@ import {
 } from './components/editable/models';
 import { DataViewInfo } from './DataViewInfo';
 import { EditableColumnMetadata } from './components/editable/EditableGrid';
-import { formatDate, parseDate } from './util/Date';
+import { formatDate, formatDateTime, parseDate } from './util/Date';
 
 import {
     caseInsensitive,
@@ -1013,6 +1013,7 @@ enum IncrementDirection {
 
 enum IncrementType {
     DATE,
+    DATETIME,
     NONE,
     NUMBER,
 }
@@ -1047,14 +1048,16 @@ function inferSelectionIncrement(
     let lastValue = displayValues[displayValues.length - 1];
     const firstValueIsEmpty = firstValue === undefined || firstValue === '';
     const isDateSeq = values.length === 1 && !firstValueIsEmpty && formatDate(parseDate(firstValue)) === firstValue;
+    const isDateTimeSeq =
+        values.length === 1 && !firstValueIsEmpty && formatDateTime(parseDate(firstValue)) === firstValue;
 
     // Date sequence detection takes precedence otherwise we'd never parse dates, because we'd always consider something
     // like 2023-06-01, 6/1/2023, or 1-6-2023, to be a prefixed number string.
-    if (isDateSeq) {
+    if (isDateSeq || isDateTimeSeq) {
         return {
             direction,
             increment: 1, // Right now we only increment dates by 1 day
-            incrementType: IncrementType.DATE,
+            incrementType: isDateSeq ? IncrementType.DATE : IncrementType.DATETIME,
             initialSelectionValues: values,
             prefix: undefined,
             startingValue: direction === IncrementDirection.FORWARD ? lastValue : firstValue,
@@ -1312,7 +1315,7 @@ export async function fillColumnCells(
             const display = raw.toString();
             fillValue = List([{ raw, display }]);
             displayValues.push(display);
-        } else if (incrementType === IncrementType.DATE) {
+        } else if (incrementType === IncrementType.DATE || incrementType === IncrementType.DATETIME) {
             const dateValue = moment(parseDate(startingValue as string));
 
             if (direction === IncrementDirection.FORWARD) {
@@ -1321,7 +1324,10 @@ export async function fillColumnCells(
                 dateValue.subtract(i + 1, 'days');
             }
 
-            const raw = formatDate(dateValue.toDate());
+            const raw =
+                incrementType === IncrementType.DATE
+                    ? formatDate(dateValue.toDate())
+                    : formatDateTime(dateValue.toDate());
             displayValues.push(raw);
             fillValue = List([{ raw, display: raw }]);
         }
@@ -1412,9 +1418,9 @@ async function validateAndInsertPastedData(
                                 : byColumnValues.get(index - paste.coordinates.colMin).toArray()
                         )
                     );
-                // TODO: It seems wrong that we're pre-emptively loading data for columns that are not in our pasted
-                //  area, should this else if be removed?
                 } else if (filteredLookup) {
+                    // TODO: It seems wrong that we're pre-emptively loading data for columns that are not in our pasted
+                    //  area, should this else if be removed?
                     arr.push(findLookupValues(column, undefined, filteredLookup.toArray()));
                 }
             }

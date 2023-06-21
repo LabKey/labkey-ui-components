@@ -68,6 +68,9 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
     };
 
     getDataTypeExcludedProjects = (dataType: ProjectConfigurableDataType, dataTypeRowId: number): Promise<string[]> => {
+        if (!dataType || !dataTypeRowId) {
+            return Promise.resolve(undefined);
+        }
         return new Promise((resolve, reject) => {
             Ajax.request({
                 url: ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getDataTypeExclusion.api'),

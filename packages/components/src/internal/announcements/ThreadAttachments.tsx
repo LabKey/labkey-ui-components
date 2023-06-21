@@ -7,13 +7,14 @@ import { Attachment, getAttachmentURL } from './model';
 
 interface ThreadAttachmentProps {
     attachment: Attachment;
+    containerPath?: string;
     onRemove?: (name: string) => void;
 }
 
-const ThreadAttachment: FC<ThreadAttachmentProps> = memo(({ attachment, onRemove }) => {
+const ThreadAttachment: FC<ThreadAttachmentProps> = memo(({ attachment, containerPath, onRemove }) => {
     const _onRemove = useCallback(() => onRemove(attachment.name), [attachment, onRemove]);
     // Only generate a URL if the file has been uploaded.
-    const url = attachment.created !== undefined ? getAttachmentURL(attachment) : undefined;
+    const url = attachment.created !== undefined ? getAttachmentURL(attachment, containerPath) : undefined;
 
     return (
         <div className="thread-attachment">
@@ -39,18 +40,19 @@ const ThreadAttachment: FC<ThreadAttachmentProps> = memo(({ attachment, onRemove
 
 interface ThreadAttachmentsProps {
     attachments: Attachment[];
+    containerPath?: string;
     error?: string;
     onRemove?: (name: string) => void;
 }
 
-export const ThreadAttachments: FC<ThreadAttachmentsProps> = memo(({ attachments, error, onRemove }) => (
+export const ThreadAttachments: FC<ThreadAttachmentsProps> = memo(({ attachments, containerPath, error, onRemove }) => (
     <div className="thread-editor-attachments">
         <div className="thread-editor-attachments__error help-block">{error}</div>
 
         <div className="thread-editor-attachments__body">
             <div className="thread-editor-attachments__list">
                 {attachments.map(attachment => (
-                    <ThreadAttachment key={attachment.name} attachment={attachment} onRemove={onRemove} />
+                    <ThreadAttachment key={attachment.name} attachment={attachment} onRemove={onRemove} containerPath={containerPath} />
                 ))}
             </div>
         </div>

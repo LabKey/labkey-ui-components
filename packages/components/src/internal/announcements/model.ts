@@ -15,8 +15,8 @@ export interface Attachment {
     parent?: string;
 }
 
-export const getAttachmentURL = (attachment: Attachment): string => {
-    return ActionURL.buildURL('announcements', 'download', undefined, {
+export const getAttachmentURL = (attachment: Attachment, containerPath?: string): string => {
+    return ActionURL.buildURL('announcements', 'download', containerPath, {
         name: attachment.name,
         entityId: attachment.parent,
     });

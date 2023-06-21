@@ -37,6 +37,8 @@ export const AssayRunDataType: EntityDataType = {
     uniqueFieldKey: 'RowId',
     dependencyText: undefined,
     projectConfigurableDataType: 'AssayDesign',
+    moveControllerName: 'Assay',
+    moveActionName: 'MoveAssayRuns',
 };
 
 export const AssayResultDataType: EntityDataType = {

@@ -379,7 +379,7 @@ import {
     getGroupedSampleDomainFields,
     getGroupedSampleDisplayColumns,
 } from './internal/components/samples/actions';
-import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
+import { SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SampleAmountEditModal } from './internal/components/samples/SampleAmountEditModal';
 import { StorageAmountInput } from './internal/components/samples/StorageAmountInput';
 
@@ -1224,7 +1224,6 @@ export {
     DataOperation,
     ParentEntityRequiredColumns,
     SampleAmountEditModal,
-    SampleEmptyAlert,
     SampleTypeEmptyAlert,
     SamplesEditButtonSections,
     StorageAmountInput,

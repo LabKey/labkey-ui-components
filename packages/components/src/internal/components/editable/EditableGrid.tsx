@@ -203,13 +203,29 @@ function inputCellFactory(
         if (!isSparse && currentSelection.length) {
             const minCell = parseCellKey(currentSelection[0]);
             const maxCell = parseCellKey(currentSelection[currentSelection.length - 1]);
-            borderMask = computeBorderMask(minCell.colIdx, maxCell.colIdx, minCell.rowIdx, maxCell.rowIdx, colIdx, rn, borderMask);
+            borderMask = computeBorderMask(
+                minCell.colIdx,
+                maxCell.colIdx,
+                minCell.rowIdx,
+                maxCell.rowIdx,
+                colIdx,
+                rn,
+                borderMask
+            );
         }
 
         if (!isSparse && initialSelection?.length) {
             const minCell = parseCellKey(initialSelection[0]);
             const maxCell = parseCellKey(initialSelection[initialSelection.length - 1]);
-            borderMask = computeBorderMask(minCell.colIdx, maxCell.colIdx, minCell.rowIdx, maxCell.rowIdx, colIdx, rn, borderMask);
+            borderMask = computeBorderMask(
+                minCell.colIdx,
+                maxCell.colIdx,
+                minCell.rowIdx,
+                maxCell.rowIdx,
+                colIdx,
+                rn,
+                borderMask
+            );
             inSelection = initialSelection.includes(genCellKey(colIdx, rn));
         }
 
@@ -552,27 +568,25 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 selectedRowIdx = editorModel.selectedRowIdx;
 
                 if (hasSelection) {
+                    let minColIdx = Math.min(selectedColIdx, colIdx);
+                    let maxColIdx = Math.max(selectedColIdx, colIdx);
+                    let minRowIdx = Math.min(selectedRowIdx, rowIdx);
                     let maxRowIdx = Math.max(selectedRowIdx, rowIdx);
 
                     if (initialSelection !== undefined) {
                         // If we have an initialSelection we want to prevent the user from changing the number of
                         // columns, or from shrinking the initially selected state. Functionally this means a user can
                         // only expand a selection upwards or downwards, just like in Excel/Sheets.
-
-                        // Prevent changing columns
+                        const minInitialCell = parseCellKey(initialSelection[0]);
                         const maxInitialCell = parseCellKey(initialSelection[initialSelection.length - 1]);
-                        colIdx = maxInitialCell.colIdx;
-                        // Prevent shrinking selection when selecting upward
-                        maxRowIdx = Math.max(selectedRowIdx, rowIdx, maxInitialCell.rowIdx);
+                        minColIdx = minInitialCell.colIdx;
+                        maxColIdx = maxInitialCell.colIdx;
+                        minRowIdx = Math.min(minRowIdx, minInitialCell.rowIdx);
+                        maxRowIdx = Math.max(maxRowIdx, maxInitialCell.rowIdx);
                     }
 
-                    const upperLeft = [Math.min(selectedColIdx, colIdx), Math.min(selectedRowIdx, rowIdx)];
-                    const bottomRight = [Math.max(selectedColIdx, colIdx), maxRowIdx];
-                    const maxColumn = Math.min(bottomRight[0], editorModel.columns.size - 1);
-                    const maxRow = Math.min(bottomRight[1], rowCount - 1);
-
-                    for (let c = upperLeft[0]; c <= maxColumn; c++) {
-                        for (let r = upperLeft[1]; r <= maxRow; r++) {
+                    for (let c = minColIdx; c <= maxColIdx; c++) {
+                        for (let r = minRowIdx; r <= maxRowIdx; r++) {
                             selectionCells = selectionCells.add(genCellKey(c, r));
                         }
                     }
@@ -1160,8 +1174,17 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     bulkAdd = async (bulkData: OrderedMap<string, any>): Promise<void> => {
-        const { addControlProps, bulkAddProps, editorModel, data, dataKeys, metricFeatureArea, onChange, processBulkData, queryInfo} =
-            this.props;
+        const {
+            addControlProps,
+            bulkAddProps,
+            editorModel,
+            data,
+            dataKeys,
+            metricFeatureArea,
+            onChange,
+            processBulkData,
+            queryInfo,
+        } = this.props;
         const { nounPlural } = addControlProps;
         // numItems is a string because we rely on Formsy to grab the value for us (See QueryInfoForm for details). We
         // need to parseInt the value because we add this variable to other numbers, if it's a string we'll add more

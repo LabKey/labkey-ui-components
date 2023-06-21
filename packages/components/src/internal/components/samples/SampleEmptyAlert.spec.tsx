@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import { TEST_USER_APP_ADMIN, TEST_USER_FOLDER_ADMIN, TEST_USER_READER } from '../../userFixtures';
-import { NEW_SAMPLE_TYPE_HREF, NEW_SAMPLES_HREF } from '../../app/constants';
+import { FILE_IMPORT_SAMPLES_HREF, NEW_SAMPLE_TYPE_HREF } from '../../app/constants';
 
 import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 import { Container } from '../base/models/Container';
@@ -21,7 +21,7 @@ describe('SampleEmptyAlert', () => {
         );
 
         // Expect link to design
-        expect(wrapper.find(`${EMPTY_ALERT} a`).prop('href')).toEqual(NEW_SAMPLES_HREF.toHref());
+        expect(wrapper.find(`${EMPTY_ALERT} a`).prop('href')).toEqual(FILE_IMPORT_SAMPLES_HREF.toHref());
     });
     test('without permissions', () => {
         const expectedMessage = 'I am just a reader';

@@ -2,7 +2,7 @@ import React, { FC, memo } from 'react';
 import { PermissionTypes } from '@labkey/api';
 
 import { EmptyAlertWithPermissions, EmptyAlertWithPermissionsProps } from '../base/EmptyAlert';
-import { NEW_SAMPLE_TYPE_HREF, NEW_SAMPLES_HREF } from '../../app/constants';
+import { FILE_IMPORT_SAMPLES_HREF, NEW_SAMPLE_TYPE_HREF } from '../../app/constants';
 import { useServerContext } from '../base/ServerContext';
 import { getProjectSampleTypeExclusion, isAppHomeFolder } from '../../app/utils';
 
@@ -16,7 +16,7 @@ export const SampleEmptyAlert: FC<Props> = memo(props => {
     return (
         <EmptyAlertWithPermissions
             {...baseProps}
-            actionURL={NEW_SAMPLES_HREF}
+            actionURL={FILE_IMPORT_SAMPLES_HREF}
             message={message ?? 'No samples have been created.'}
             messageSuffix="to create samples."
             permission={PermissionTypes.Insert}

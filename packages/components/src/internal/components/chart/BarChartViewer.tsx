@@ -5,7 +5,12 @@ import { Filter, PermissionTypes, Query } from '@labkey/api';
 
 import { getDateFormat } from '../../util/Date';
 
-import { ASSAYS_KEY, FIND_SAMPLES_BY_FILTER_HREF, NEW_SAMPLES_HREF, SAMPLES_KEY } from '../../app/constants';
+import {
+    ASSAYS_KEY,
+    FIND_SAMPLES_BY_FILTER_HREF,
+    FILE_IMPORT_SAMPLES_HREF,
+    SAMPLES_KEY,
+} from '../../app/constants';
 import { useAppContext } from '../../AppContext';
 
 import { SAMPLE_FILTER_METRIC_AREA } from '../search/utils';
@@ -281,7 +286,7 @@ export const SampleButtons: FC = memo(() => {
                 Go to Sample Finder
             </Button>
             <RequiresPermission perms={PermissionTypes.Insert}>
-                <Button bsStyle="success" className="button-left-spacing" href={NEW_SAMPLES_HREF.toHref()}>
+                <Button bsStyle="success" className="button-left-spacing" href={FILE_IMPORT_SAMPLES_HREF.toHref()}>
                     Add Samples
                 </Button>
             </RequiresPermission>

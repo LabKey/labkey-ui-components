@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.345.2
+*Released*: 21 June 2023
 - Export `EntityMoveConfirmationModal` for use with notebooks.
 
 ### version 2.345.1

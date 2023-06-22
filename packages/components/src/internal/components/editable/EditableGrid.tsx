@@ -463,12 +463,13 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     componentDidMount(): void {
         document.addEventListener('copy', this.onCopy);
+        document.addEventListener('cut', this.onCut);
         document.addEventListener('paste', this.onPaste);
-        this.addRows(10); // FIXME: DO NOT COMMIT THIS!
     }
 
     componentWillUnmount(): void {
         document.removeEventListener('copy', this.onCopy);
+        document.removeEventListener('cut', this.onCut);
         document.removeEventListener('paste', this.onPaste);
     }
 
@@ -939,6 +940,19 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const { editorModel, queryInfo } = this.props;
         if (!this.props.disabled) {
             copyEvent(editorModel, queryInfo.getInsertColumns(), event);
+        }
+    };
+
+    onCut = (event: ClipboardEvent): void => {
+        const { editorModel, queryInfo } = this.props;
+        if (!this.props.disabled) {
+            copyEvent(editorModel, queryInfo.getInsertColumns(), event);
+            this.modifyCell(
+                editorModel.selectedColIdx,
+                editorModel.selectedRowIdx,
+                undefined,
+                MODIFICATION_TYPES.REMOVE_ALL
+            );
         }
     };
 

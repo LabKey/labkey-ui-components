@@ -19,7 +19,7 @@ import { List } from 'immutable';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Filter, Query } from '@labkey/api';
 
-import { cancelEvent, isCopy, isFillDown, isPaste, isSelectAll } from '../../events';
+import { cancelEvent, isCopyCutOrPaste, isFillDown, isSelectAll } from '../../events';
 
 import { CELL_SELECTION_HANDLE_CLASSNAME, KEYS } from '../../constants';
 
@@ -234,7 +234,7 @@ export class Cell extends React.PureComponent<Props, State> {
                 }
             default:
                 // any other key
-                if (!focused && !isCopy(event) && !isPaste(event)) {
+                if (!focused && !isCopyCutOrPaste(event)) {
                     // Do not cancel event here, otherwise, key capture will be lost
                     focusCell(colIdx, rowIdx, !this.isReadOnly());
                 }

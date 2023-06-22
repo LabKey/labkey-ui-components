@@ -290,7 +290,7 @@ export const SampleButtons: FC = memo(() => {
                 Go to Sample Finder
             </Button>
             <RequiresPermission perms={PermissionTypes.Insert}>
-                <DropdownButton title="Add Samples" id="samples-add-menu" bsStyle="success" >
+                <DropdownButton title="Add Samples" id="samples-add-menu" bsStyle="success">
                     <MenuItem href={GRID_INSERT_SAMPLES_HREF.toHref()}>Add Manually</MenuItem>
                     <MenuItem href={FILE_IMPORT_SAMPLES_HREF.toHref()}>Import from File</MenuItem>
                 </DropdownButton>

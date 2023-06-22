@@ -1206,6 +1206,7 @@ type CellMessagesAndValues = Pick<EditorModel, 'cellMessages' | 'cellValues'>;
  * @param columnMetadata: Array of column metadata, in the same order as the columns in the grid
  * @param readonlyRows: A list of readonly rows
  * @param lockedRows: A list of locked rows
+ * @param readOnlyColumns
  */
 export async function dragFillEvent(
     editorModel: EditorModel,
@@ -1231,6 +1232,12 @@ export async function dragFillEvent(
         const initialSelectionByCol = initialSelection.filter(cellKey => parseCellKey(cellKey).colIdx === colIdx);
         const column = columns[colIdx];
         const metadata = columnMetadata[colIdx];
+
+        // Don't manipulate any values in read only columns
+        if (column.readOnly) {
+            continue;
+        }
+
         const selectionToFillByCol = columnCells.filter(cellKey => {
             const { rowIdx } = parseCellKey(cellKey);
             const row = data.get(dataKeys.get(rowIdx));
@@ -1357,6 +1364,7 @@ export async function pasteEvent(
     dataKeys: List<any>,
     data: Map<any, Map<string, any>>,
     queryInfo: QueryInfo,
+    columns: QueryColumn[],
     event: any,
     columnMetadata?: Map<string, EditableColumnMetadata>,
     readonlyRows?: string[],
@@ -1371,6 +1379,7 @@ export async function pasteEvent(
             dataKeys,
             data,
             queryInfo,
+            columns,
             value,
             columnMetadata,
             readonlyRows,
@@ -1386,6 +1395,7 @@ async function validateAndInsertPastedData(
     dataKeys: List<any>,
     data: Map<any, Map<string, any>>,
     queryInfo: QueryInfo,
+    columns: QueryColumn[],
     value: string,
     columnMetadata?: Map<string, EditableColumnMetadata>,
     readonlyRows?: string[],
@@ -1401,8 +1411,8 @@ async function validateAndInsertPastedData(
     if (paste.success) {
         const byColumnValues = getPasteValuesByColumn(paste);
         // prior to load, ensure lookup column stores are loaded
-        const columnLoaders: ColumnLoaderPromise[] = queryInfo.getInsertColumns().reduce((arr, column, index) => {
-            if (column.isPublicLookup()) {
+        const columnLoaders: ColumnLoaderPromise[] = columns.reduce((arr, column, index) => {
+            if (column.isPublicLookup() && !column.readOnly) {
                 const filteredLookup = getColumnFilteredLookup(column, columnMetadata);
                 if (
                     index >= paste.coordinates.colMin &&
@@ -1437,6 +1447,7 @@ async function validateAndInsertPastedData(
             dataKeys,
             data,
             queryInfo,
+            columns,
             editorModel,
             paste,
             descriptorMap,
@@ -1956,6 +1967,7 @@ function insertPastedData(
     dataKeys: List<any>,
     data: Map<any, Map<string, any>>,
     queryInfo: QueryInfo,
+    columns: QueryColumn[],
     editorModel: EditorModel,
     paste: PasteModel,
     lookupDescriptorMap: { [colKey: string]: ValueDescriptor[] },
@@ -1964,7 +1976,6 @@ function insertPastedData(
     lockRowCount?: boolean
 ): EditorModelAndGridData {
     const pastedData = paste.payload.data;
-    const columns = queryInfo.getInsertColumns();
     let cellMessages = editorModel.cellMessages;
     let cellValues = editorModel.cellValues;
     let selectionCells = ImmutableSet<string>();
@@ -2016,7 +2027,7 @@ function insertPastedData(
                 cv = List([{ display: value, raw: value }]);
             }
 
-            if (!isReadOnly(col, columnMetadata)) {
+            if (!isReadOnly(col, columnMetadata) && !col.readOnly) {
                 if (msg) {
                     cellMessages = cellMessages.set(cellKey, msg);
                 } else {

@@ -224,14 +224,14 @@ export class Cell extends React.PureComponent<Props, State> {
                 if (isFillDown(event)) {
                     cancelEvent(event);
                     fillDown();
+                    break;
                 }
-                break;
             case KEYS.A:
                 if (isSelectAll(event)) {
                     cancelEvent(event);
                     selectCell(colIdx, rowIdx, SELECTION_TYPES.ALL);
+                    break;
                 }
-                break;
             default:
                 // any other key
                 if (!focused && !isCopy(event) && !isPaste(event)) {

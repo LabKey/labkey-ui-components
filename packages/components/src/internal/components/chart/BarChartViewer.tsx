@@ -32,6 +32,7 @@ import { RequiresPermission } from '../base/Permissions';
 import { ChartConfig, ChartData, ChartSelector } from './types';
 import { BaseBarChart } from './BaseBarChart';
 import { processChartData } from './utils';
+import { useServerContext } from '../base/ServerContext';
 
 async function fetchItemCount(schemaQuery: SchemaQuery, filterArray: Filter.IFilter[] = []): Promise<number> {
     try {
@@ -276,6 +277,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
 // export for jest testing
 export const SampleButtons: FC = memo(() => {
     const { api } = useAppContext();
+    const { user } = useServerContext();
 
     const onSampleFinder = useCallback(() => {
         api.query.incrementClientSideMetricCount(SAMPLE_FILTER_METRIC_AREA, 'dashboardButtonNavigation');
@@ -283,11 +285,12 @@ export const SampleButtons: FC = memo(() => {
 
     return (
         <div className="pull-right bar-chart-viewer-sample-buttons">
-            <Button bsStyle="primary" onClick={onSampleFinder} href={FIND_SAMPLES_BY_FILTER_HREF.toHref()} className="button-right-spacing">
+            <Button bsStyle="primary" onClick={onSampleFinder} href={FIND_SAMPLES_BY_FILTER_HREF.toHref()}
+                    className={user.canInsert ? 'button-right-spacing' : ''}>
                 Go to Sample Finder
             </Button>
             <RequiresPermission perms={PermissionTypes.Insert}>
-                <DropdownButton title="Add Samples" id="samples-add-menu" bsStyle="success">
+                <DropdownButton title="Add Samples" id="samples-add-menu" bsStyle="success" >
                     <MenuItem href={GRID_INSERT_SAMPLES_HREF.toHref()}>Add Manually</MenuItem>
                     <MenuItem href={FILE_IMPORT_SAMPLES_HREF.toHref()}>Import from File</MenuItem>
                 </DropdownButton>

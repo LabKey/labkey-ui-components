@@ -19,9 +19,9 @@ import { List } from 'immutable';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Filter, Query } from '@labkey/api';
 
-import { cancelEvent, isCopy, isFillDown, isPaste, isSelectAll } from '../../events';
+import { cancelEvent, isCopyCutOrPaste, isFillDown, isSelectAll } from '../../events';
 
-import { CELL_SELECTION_HANDLE_CLASSNAME, KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
+import { CELL_SELECTION_HANDLE_CLASSNAME, KEYS } from '../../constants';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 
@@ -31,12 +31,16 @@ import { SelectInputChange } from '../forms/input/SelectInput';
 
 import { CellMessage, ValueDescriptor } from './models';
 
-import { CellActions } from './constants';
+import { CellActions, MODIFICATION_TYPES, SELECTION_TYPES } from './constants';
 import { gridCellSelectInputProps, onCellSelectChange } from './utils';
 import { LookupCell } from './LookupCell';
 import { DateInputCell } from './DateInputCell';
 
+// CSS Order: top, right, bottom, left
+export type BorderMask = [boolean, boolean, boolean, boolean];
+
 interface Props {
+    borderMask: BorderMask;
     cellActions: CellActions;
     col: QueryColumn;
     colIdx: number;
@@ -46,7 +50,7 @@ interface Props {
     focused?: boolean;
     forUpdate: boolean;
     getFilteredLookupKeys?: (linkedValues: any[]) => Promise<List<any>>;
-    lastSelection?: boolean;
+    renderDragHandle?: boolean;
     linkedValues?: any[];
     locked?: boolean;
     lookupValueFilters?: Filter.IFilter[];
@@ -72,7 +76,7 @@ export class Cell extends React.PureComponent<Props, State> {
 
     static defaultProps = {
         focused: false,
-        lastSelection: false,
+        renderDragHandle: false,
         message: undefined,
         selected: false,
         selection: false,
@@ -216,19 +220,23 @@ export class Cell extends React.PureComponent<Props, State> {
                     selectCell(colIdx, rowIdx, undefined, true);
                 }
                 break;
+            case KEYS.D:
+                if (isFillDown(event)) {
+                    cancelEvent(event);
+                    fillDown();
+                    break;
+                }
+            case KEYS.A:
+                if (isSelectAll(event)) {
+                    cancelEvent(event);
+                    selectCell(colIdx, rowIdx, SELECTION_TYPES.ALL);
+                    break;
+                }
             default:
                 // any other key
-                if (!focused && !isCopy(event) && !isPaste(event)) {
-                    if (isSelectAll(event)) {
-                        cancelEvent(event);
-                        selectCell(colIdx, rowIdx, SELECTION_TYPES.ALL);
-                    } else if (isFillDown(event)) {
-                        cancelEvent(event);
-                        fillDown();
-                    } else {
-                        // Do not cancel event here, otherwise, key capture will be lost
-                        focusCell(colIdx, rowIdx, !this.isReadOnly());
-                    }
+                if (!focused && !isCopyCutOrPaste(event)) {
+                    // Do not cancel event here, otherwise, key capture will be lost
+                    focusCell(colIdx, rowIdx, !this.isReadOnly());
                 }
         }
     };
@@ -268,13 +276,14 @@ export class Cell extends React.PureComponent<Props, State> {
 
     render() {
         const {
+            borderMask,
             cellActions,
             col,
             colIdx,
             containerFilter,
             focused,
             forUpdate,
-            lastSelection,
+            renderDragHandle,
             message,
             placeholder,
             row,
@@ -300,6 +309,10 @@ export class Cell extends React.PureComponent<Props, State> {
             const displayProps = {
                 autoFocus: selected,
                 className: classNames('cellular-display', {
+                    'cell-border-top': borderMask[0],
+                    'cell-border-right': borderMask[1],
+                    'cell-border-bottom': borderMask[2],
+                    'cell-border-left': borderMask[3],
                     'cell-selected': selected,
                     'cell-selection': selection,
                     'cell-warning': message !== undefined,
@@ -353,7 +366,7 @@ export class Cell extends React.PureComponent<Props, State> {
             return (
                 <>
                     {cell}
-                    {lastSelection && !this.isReadOnly() && (
+                    {renderDragHandle && !this.isReadOnly() && (
                         <i className={'fa fa-square ' + CELL_SELECTION_HANDLE_CLASSNAME} />
                     )}
                 </>

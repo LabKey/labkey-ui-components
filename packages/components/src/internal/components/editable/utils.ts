@@ -12,13 +12,13 @@ import { LoadingState } from '../../../public/LoadingState';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { quoteValueWithDelimiters } from '../../util/utils';
 
-import { EXPORT_TYPES, MODIFICATION_TYPES } from '../../constants';
+import { EXPORT_TYPES } from '../../constants';
 
 import { SelectInputOption, SelectInputProps } from '../forms/input/SelectInput';
 
 import { EditorMode, EditorModel, EditorModelProps, IEditableGridLoader, ValueDescriptor } from './models';
 
-import { CellActions } from './constants';
+import { CellActions, MODIFICATION_TYPES } from './constants';
 
 /**
  * @deprecated Use initEditableGridModel() or initEditableGridModels() instead.
@@ -27,10 +27,10 @@ import { CellActions } from './constants';
  */
 export const loadEditorModelData = async (
     queryModelData: Partial<QueryModel>,
-    editorColumns?: List<QueryColumn>
+    editorColumns?: QueryColumn[]
 ): Promise<Partial<EditorModel>> => {
     const { orderedRows, rows, queryInfo } = queryModelData;
-    const columns = editorColumns?.toArray() ?? queryInfo.getInsertColumns();
+    const columns = editorColumns ?? queryInfo.getInsertColumns();
     const lookupValueDescriptors = await getLookupValueDescriptors(columns, fromJS(rows), fromJS(orderedRows));
     let cellValues = Map<string, List<ValueDescriptor>>();
 
@@ -105,7 +105,7 @@ export const initEditableGridModel = async (
         queryInfo: loader.queryInfo,
     };
 
-    let columns: List<QueryColumn>;
+    let columns: QueryColumn[];
     const forUpdate = loader.mode === EditorMode.Update;
     if (loader.columns) {
         columns = editorModel.getColumns(
@@ -365,9 +365,9 @@ export const exportEditedData = (
 export const getEditorExportData = (
     editorModels: EditorModel[],
     dataModels: QueryModel[],
-    readOnlyColumns?: List<string>,
-    insertColumns?: List<QueryColumn>,
-    updateColumns?: List<QueryColumn>,
+    readOnlyColumns?: string[],
+    insertColumns?: QueryColumn[],
+    updateColumns?: QueryColumn[],
     forUpdate?: boolean,
     extraColumns?: Array<Partial<QueryColumn>>,
     colFilter?: (col: QueryColumn) => boolean

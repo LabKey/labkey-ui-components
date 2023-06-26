@@ -265,16 +265,32 @@ $table-cell-selection-bg-color: #EDF3FF;
       height: 30px;
       white-space: nowrap;
 
-      &.cell-selection {
-        border: $table-cell-border-width solid $table-cell-selection-bg-color;
-        background-color: $table-cell-selection-bg-color;
-      }
+        &.cell-selection {
+            border: $table-cell-border-width solid $table-cell-selection-bg-color;
+            background-color: $table-cell-selection-bg-color;
+        }
 
-      &.cell-selected {
-        border: $table-cell-selected-border;
-        cursor: default;
-        outline: none;
-      }
+        &.cell-selected {
+            border: $table-cell-selected-border;
+            cursor: default;
+            outline: none;
+        }
+
+        &.cell-border-top {
+            border-top: $table-cell-selected-border;
+        }
+
+        &.cell-border-right {
+            border-right: $table-cell-selected-border;
+        }
+
+        &.cell-border-bottom {
+            border-bottom: $table-cell-selected-border;
+        }
+
+        &.cell-border-left {
+            border-left: $table-cell-selected-border;
+        }
     }
 
     .cell-selection-handle {

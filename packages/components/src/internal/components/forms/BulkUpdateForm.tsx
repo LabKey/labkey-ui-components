@@ -30,7 +30,7 @@ interface Props {
     ) => any;
     pluralNoun?: string;
     queryFilters?: Record<string, List<Filter.IFilter>>;
-    readOnlyColumns?: List<string>;
+    readOnlyColumns?: string[];
     requiredColumns?: string[];
     selectedIds: Set<string>;
     queryInfo: QueryInfo;
@@ -87,7 +87,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
         // Get all shownInUpdateView and required columns or undefined
         const columns =
             getUpdateColumnsOnly || requiredColumns
-                ? (queryInfo.getPkCols().concat(queryInfo.getUpdateColumns(readOnlyColumns?.toArray() ?? [])))
+                ? (queryInfo.getPkCols().concat(queryInfo.getUpdateColumns(readOnlyColumns ?? [])))
                 : undefined;
         let columnString = columns?.map(c => c.fieldKey).join(',');
         if (requiredColumns) columnString = `${columnString ? columnString + ',' : ''}${requiredColumns.join(',')}`;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map } from 'immutable';
+import { Map } from 'immutable';
 
 import { getSelectedData } from '../../actions';
 
@@ -24,7 +24,7 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { EditorMode, EditorModel, IEditableGridLoader, IGridResponse } from './models';
 
 export class EditableGridLoaderFromSelection implements IEditableGridLoader {
-    columns: List<QueryColumn>;
+    columns: QueryColumn[];
     id: string;
     idsNotToUpdate: number[];
     fieldsNotToUpdate: string[];
@@ -41,7 +41,7 @@ export class EditableGridLoaderFromSelection implements IEditableGridLoader {
         updateData,
         requiredColumns?: string[],
         omittedColumns?: string[],
-        columns?: List<QueryColumn>,
+        columns?: QueryColumn[],
         idsNotToUpdate?: any[],
         fieldsNotToUpdate?: string[]
     ) {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Draft, immerable, produce } from 'immer';
-import { Map, fromJS, OrderedMap, Set } from 'immutable';
+import { Map, fromJS, OrderedMap } from 'immutable';
 
 import { DomainDesign, IDomainField, SystemField } from '../models';
 

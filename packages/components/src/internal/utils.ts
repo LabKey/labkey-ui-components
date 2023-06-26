@@ -1,3 +1,5 @@
+// TODO: All of these methods should be moved to the editable folder.
+
 export function genCellKey(colIdx: number, rowIdx: number): string {
     return [colIdx, rowIdx].join('-');
 }
@@ -11,16 +13,15 @@ export function parseCellKey(cellKey: string): { colIdx: number; rowIdx: number 
     };
 }
 
-// exported for jest testing
-export function getCellKeySortableIndex(cellKey: string, rowCount: number): number {
-    const { rowIdx, colIdx } = parseCellKey(cellKey);
-    return colIdx * rowCount + rowIdx;
-}
-
-// exported for jest testing
-export function getSortedCellKeys(cellKeys: string[], rowCount: number): string[] {
+/**
+ * Sorts cell keys left to right, top to bottom.
+ */
+export function sortCellKeys(cellKeys: string[]): string[] {
     return cellKeys.sort((a, b) => {
-        return getCellKeySortableIndex(a, rowCount) - getCellKeySortableIndex(b, rowCount);
+        const aCoords = parseCellKey(a);
+        const bCoords = parseCellKey(b);
+        if (aCoords.rowIdx === bCoords.rowIdx) return aCoords.colIdx - bCoords.colIdx;
+        return aCoords.rowIdx - bCoords.rowIdx;
     });
 }
 

@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map, OrderedMap, Set } from 'immutable';
+import { fromJS, List, Map, Set } from 'immutable';
 
 import { Filter, Query } from '@labkey/api';
+
 import { ExtendedMap } from '../public/ExtendedMap';
 
 import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
@@ -25,14 +26,15 @@ import { makeTestQueryModel } from '../public/QueryModel/testUtils';
 import { QueryInfo } from '../public/QueryInfo';
 import { QueryColumn, QueryLookup } from '../public/QueryColumn';
 
-import { CellMessage, CellValues, EditorModel, ValueDescriptor } from './components/editable/models';
+import { CellMessage, EditorModel, ValueDescriptor } from './components/editable/models';
 import {
     addColumns,
     changeColumn,
     removeColumn,
     getExportParams,
-    generateFillSequence,
+    fillColumnCells,
     parseIntIfNumber,
+    splitPrefixedNumber,
 } from './actions';
 import { EXPORT_TYPES } from './constants';
 
@@ -94,7 +96,6 @@ describe('column mutation actions', () => {
         isPasting: false,
         focusColIdx: 1,
         focusRowIdx: 1,
-        numPastedRows: 0,
         rowCount: 3,
         selectedColIdx: 1,
         selectedRowIdx: 1,
@@ -515,7 +516,7 @@ describe('getExportParams', () => {
     });
 });
 
-describe('generateFillSequence', () => {
+describe('fillColumnCells', () => {
     const editorModel = new EditorModel({ id: 'generate|fill|sequence' }).merge({
         cellMessages: Map<string, CellMessage>({
             '1-0': 'description 1 message',
@@ -524,54 +525,54 @@ describe('generateFillSequence', () => {
             '0-0': List<ValueDescriptor>([
                 {
                     display: 'S-1',
-                    raw: 'S-1',
+                    raw: 1,
                 },
             ]),
             '0-1': List<ValueDescriptor>([
                 {
                     display: 'S-2',
-                    raw: 'S-2',
+                    raw: 2,
                 },
             ]),
             '0-2': List<ValueDescriptor>([
                 {
                     display: 'S-3',
-                    raw: 'S-3',
+                    raw: 3,
                 },
             ]),
             '1-0': List<ValueDescriptor>([
                 {
-                    display: 1,
+                    display: '1',
                     raw: 1,
                 },
             ]),
             '1-1': List<ValueDescriptor>([
                 {
-                    display: 3,
+                    display: '3',
                     raw: 3,
                 },
             ]),
             '1-2': List<ValueDescriptor>([
                 {
-                    display: 5,
+                    display: '5',
                     raw: 5,
                 },
             ]),
             '2-0': List<ValueDescriptor>([
                 {
-                    display: 3.0,
+                    display: '3.0',
                     raw: 3.0,
                 },
             ]),
             '2-1': List<ValueDescriptor>([
                 {
-                    display: 1.5,
+                    display: '1.5',
                     raw: 1.5,
                 },
             ]),
             '2-2': List<ValueDescriptor>([
                 {
-                    display: 0,
+                    display: '0',
                     raw: 0,
                 },
             ]),
@@ -611,173 +612,247 @@ describe('generateFillSequence', () => {
                     raw: 5,
                 },
             ]),
+            '5-0': List<ValueDescriptor>([
+                {
+                    display: 'qwer',
+                    raw: 'qwer',
+                },
+            ]),
+            '5-1': List<ValueDescriptor>([
+                {
+                    display: 'asdf',
+                    raw: 'asdf',
+                },
+            ]),
+            '5-2': List<ValueDescriptor>([
+                {
+                    display: 'zxcv',
+                    raw: 'zxcv',
+                },
+            ]),
+            '6-0': List<ValueDescriptor>([
+                {
+                    display: '2023-06-01',
+                    raw: '2023-06-01',
+                },
+            ]),
+            '6-1': List<ValueDescriptor>([
+                {
+                    display: '',
+                    raw: '',
+                },
+            ]),
+            '6-2': List<ValueDescriptor>([
+                {
+                    display: '2023-04-16',
+                    raw: '2023-04-16',
+                },
+            ]),
+            '7-0': List<ValueDescriptor>([
+                {
+                    display: '2023-06-01 10:42',
+                    raw: '2023-06-01 10:42',
+                },
+            ]),
+            '7-1': List<ValueDescriptor>([
+                {
+                    display: '',
+                    raw: '',
+                },
+            ]),
+            '7-2': List<ValueDescriptor>([
+                {
+                    display: '2023-04-16 11:11',
+                    raw: '2023-04-16 11:11',
+                },
+            ]),
         }),
         columns: List(['a', 'b', 'c', 'd', 'e']),
         rowCount: 10,
     }) as EditorModel;
 
-    function validate(
-        editorModel: EditorModel,
-        newValues: CellValues,
-        cellKey: string,
-        expectedValue?: List<ValueDescriptor>
-    ): void {
-        if (!expectedValue) {
-            expect(newValues.get(cellKey)).toBe(editorModel.getValueForCellKey(cellKey));
-        } else {
-            expect(newValues.get(cellKey).first().raw).toBe(expectedValue.first().raw);
-            expect(newValues.get(cellKey).first().display).toBe(expectedValue.first().display);
+    const textCol = new QueryColumn({
+        fieldKey: 'textCol',
+        lookup: undefined,
+    });
+
+    test('single initialSelection', async () => {
+        const { cellValues } = await fillColumnCells(
+            editorModel,
+            textCol,
+            undefined,
+            editorModel.cellMessages,
+            editorModel.cellValues,
+            ['0-0'],
+            ['0-1', '0-2', '0-3']
+        );
+        // Filled values should be copies of the initial selection
+        for (let i = 1; i <= 3; i++) {
+            expect(cellValues.get(`0-${i}`).get(0).display).toEqual('S-1');
+            expect(cellValues.get(`0-${i}`).get(0).raw).toEqual(1);
         }
-    }
-
-    test('one initSelection, text', () => {
-        const fillValues = generateFillSequence(editorModel, ['0-0'], ['0-1', '0-2']);
-        validate(editorModel, fillValues, '0-0');
-        validate(editorModel, fillValues, '0-1', editorModel.getValueForCellKey('0-0'));
-        validate(editorModel, fillValues, '0-2', editorModel.getValueForCellKey('0-0'));
-        validate(editorModel, fillValues, '1-0');
-        validate(editorModel, fillValues, '1-1');
-        validate(editorModel, fillValues, '1-2');
-        validate(editorModel, fillValues, '2-0');
-        validate(editorModel, fillValues, '2-1');
-        validate(editorModel, fillValues, '2-2');
-        validate(editorModel, fillValues, '3-0');
-        validate(editorModel, fillValues, '3-1');
-        validate(editorModel, fillValues, '3-2');
-        validate(editorModel, fillValues, '4-0');
-        validate(editorModel, fillValues, '4-1');
-        validate(editorModel, fillValues, '4-2');
     });
 
-    test('one initSelection, int', () => {
-        const fillValues = generateFillSequence(editorModel, ['1-0'], ['1-1', '1-2']);
-        validate(editorModel, fillValues, '0-0');
-        validate(editorModel, fillValues, '0-1');
-        validate(editorModel, fillValues, '0-2');
-        validate(editorModel, fillValues, '1-0');
-        validate(editorModel, fillValues, '1-1', editorModel.getValueForCellKey('1-0'));
-        validate(editorModel, fillValues, '1-2', editorModel.getValueForCellKey('1-0'));
-        validate(editorModel, fillValues, '2-0');
-        validate(editorModel, fillValues, '2-1');
-        validate(editorModel, fillValues, '2-2');
-        validate(editorModel, fillValues, '3-0');
-        validate(editorModel, fillValues, '3-1');
-        validate(editorModel, fillValues, '3-2');
-        validate(editorModel, fillValues, '4-0');
-        validate(editorModel, fillValues, '4-1');
-        validate(editorModel, fillValues, '4-2');
+    test('prefixed number, multi initialSelection', async () => {
+        const { cellValues } = await fillColumnCells(
+            editorModel,
+            textCol,
+            undefined,
+            editorModel.cellMessages,
+            editorModel.cellValues,
+            ['0-0', '0-1', '0-2'],
+            ['0-3', '0-4']
+        );
+        expect(cellValues.get('0-3').get(0).display).toEqual('S-4');
+        expect(cellValues.get('0-3').get(0).raw).toEqual('S-4');
+        expect(cellValues.get('0-4').get(0).display).toEqual('S-5');
+        expect(cellValues.get('0-4').get(0).raw).toEqual('S-5');
     });
 
-    test('one initSelection, decimal', () => {
-        const fillValues = generateFillSequence(editorModel, ['2-0'], ['2-1', '2-2']);
-        validate(editorModel, fillValues, '0-0');
-        validate(editorModel, fillValues, '0-1');
-        validate(editorModel, fillValues, '0-2');
-        validate(editorModel, fillValues, '1-0');
-        validate(editorModel, fillValues, '1-1');
-        validate(editorModel, fillValues, '1-2');
-        validate(editorModel, fillValues, '2-0');
-        validate(editorModel, fillValues, '2-1', editorModel.getValueForCellKey('2-0'));
-        validate(editorModel, fillValues, '2-2', editorModel.getValueForCellKey('2-0'));
-        validate(editorModel, fillValues, '3-0');
-        validate(editorModel, fillValues, '3-1');
-        validate(editorModel, fillValues, '3-2');
-        validate(editorModel, fillValues, '4-0');
-        validate(editorModel, fillValues, '4-1');
-        validate(editorModel, fillValues, '4-2');
+    test('integer, multi initialSelection, forward', async () => {
+        const { cellValues } = await fillColumnCells(
+            editorModel,
+            textCol,
+            undefined,
+            editorModel.cellMessages,
+            editorModel.cellValues,
+            ['1-0', '1-1', '1-2'],
+            ['1-3', '1-4']
+        );
+        expect(cellValues.get('1-3').get(0).display).toEqual('7');
+        expect(cellValues.get('1-3').get(0).raw).toEqual(7);
+        expect(cellValues.get('1-4').get(0).display).toEqual('9');
+        expect(cellValues.get('1-4').get(0).raw).toEqual(9);
     });
 
-    test('one initSelection, lookup', () => {
-        const fillValues = generateFillSequence(editorModel, ['3-0'], ['3-1', '3-2']);
-        validate(editorModel, fillValues, '0-0');
-        validate(editorModel, fillValues, '0-1');
-        validate(editorModel, fillValues, '0-2');
-        validate(editorModel, fillValues, '1-0');
-        validate(editorModel, fillValues, '1-1');
-        validate(editorModel, fillValues, '1-2');
-        validate(editorModel, fillValues, '2-0');
-        validate(editorModel, fillValues, '2-1');
-        validate(editorModel, fillValues, '2-2');
-        validate(editorModel, fillValues, '3-0');
-        validate(editorModel, fillValues, '3-1', editorModel.getValueForCellKey('3-0'));
-        validate(editorModel, fillValues, '3-2', editorModel.getValueForCellKey('3-0'));
-        validate(editorModel, fillValues, '4-0');
-        validate(editorModel, fillValues, '4-1');
-        validate(editorModel, fillValues, '4-2');
+    test('integer, multi initialSelection, backward', async () => {
+        const { cellValues } = await fillColumnCells(
+            editorModel,
+            textCol,
+            undefined,
+            editorModel.cellMessages,
+            editorModel.cellValues,
+            ['1-1', '1-2'],
+            ['1-0']
+        );
+        expect(cellValues.get('1-0').get(0).display).toEqual('1');
+        expect(cellValues.get('1-0').get(0).raw).toEqual(1);
     });
 
-    test('one initSelection, mixed', () => {
-        const fillValues = generateFillSequence(editorModel, ['4-0'], ['4-1', '4-2']);
-        validate(editorModel, fillValues, '0-0');
-        validate(editorModel, fillValues, '0-1');
-        validate(editorModel, fillValues, '0-2');
-        validate(editorModel, fillValues, '1-0');
-        validate(editorModel, fillValues, '1-1');
-        validate(editorModel, fillValues, '1-2');
-        validate(editorModel, fillValues, '2-0');
-        validate(editorModel, fillValues, '2-1');
-        validate(editorModel, fillValues, '2-2');
-        validate(editorModel, fillValues, '3-0');
-        validate(editorModel, fillValues, '3-1');
-        validate(editorModel, fillValues, '3-2');
-        validate(editorModel, fillValues, '4-0');
-        validate(editorModel, fillValues, '4-1', editorModel.getValueForCellKey('4-0'));
-        validate(editorModel, fillValues, '4-2', editorModel.getValueForCellKey('4-0'));
+    test('float, multi initialSelection, forward', async () => {
+        const { cellValues } = await fillColumnCells(
+            editorModel,
+            textCol,
+            undefined,
+            editorModel.cellMessages,
+            editorModel.cellValues,
+            ['2-0', '2-1', '2-2'],
+            ['2-3', '2-4']
+        );
+        expect(cellValues.get('2-3').get(0).display).toEqual('-1.5');
+        expect(cellValues.get('2-3').get(0).raw).toEqual(-1.5);
+        expect(cellValues.get('2-4').get(0).display).toEqual('-3');
+        expect(cellValues.get('2-4').get(0).raw).toEqual(-3);
     });
 
-    test('multiple initSelection, text', () => {
-        const fillValues = generateFillSequence(editorModel, ['0-0', '0-1', '0-2'], ['0-3', '0-4', '0-5', '0-6']);
-        validate(editorModel, fillValues, '0-0');
-        validate(editorModel, fillValues, '0-1');
-        validate(editorModel, fillValues, '0-2');
-        validate(editorModel, fillValues, '0-3', editorModel.getValueForCellKey('0-0'));
-        validate(editorModel, fillValues, '0-4', editorModel.getValueForCellKey('0-1'));
-        validate(editorModel, fillValues, '0-5', editorModel.getValueForCellKey('0-2'));
-        validate(editorModel, fillValues, '0-6', editorModel.getValueForCellKey('0-0'));
+    test('float, multi initialSelection, backward', async () => {
+        const { cellValues } = await fillColumnCells(
+            editorModel,
+            textCol,
+            undefined,
+            editorModel.cellMessages,
+            editorModel.cellValues,
+            ['2-1', '2-2'],
+            ['2-0']
+        );
+        expect(cellValues.get('2-0').get(0).display).toEqual('3');
+        expect(cellValues.get('2-0').get(0).raw).toEqual(3);
     });
 
-    test('multiple initSelection, int', () => {
-        const fillValues = generateFillSequence(editorModel, ['1-0', '1-1', '1-2'], ['1-3', '1-4', '1-5', '1-6']);
-        validate(editorModel, fillValues, '1-0');
-        validate(editorModel, fillValues, '1-1');
-        validate(editorModel, fillValues, '1-2');
-        validate(editorModel, fillValues, '1-3', List([{ raw: 7, display: 7 }]));
-        validate(editorModel, fillValues, '1-4', List([{ raw: 9, display: 9 }]));
-        validate(editorModel, fillValues, '1-5', List([{ raw: 11, display: 11 }]));
-        validate(editorModel, fillValues, '1-6', List([{ raw: 13, display: 13 }]));
+    test('date, single row initialSelection, forward', async () => {
+        const { cellValues } = await fillColumnCells(
+            editorModel,
+            textCol,
+            undefined,
+            editorModel.cellMessages,
+            editorModel.cellValues,
+            ['6-0'],
+            ['6-1', '6-2', '6-3']
+        );
+        // Filled values should be copies of the initial selection
+        for (let i = 1; i <= 3; i++) {
+            expect(cellValues.get(`6-${i}`).get(0).display).toEqual(`2023-06-0${i + 1}`);
+            expect(cellValues.get(`6-${i}`).get(0).raw).toEqual(`2023-06-0${i + 1}`);
+        }
     });
 
-    test('multiple initSelection, decimal', () => {
-        const fillValues = generateFillSequence(editorModel, ['2-0', '2-1', '2-2'], ['2-3', '2-4', '2-5', '2-6']);
-        validate(editorModel, fillValues, '2-0');
-        validate(editorModel, fillValues, '2-1');
-        validate(editorModel, fillValues, '2-2');
-        validate(editorModel, fillValues, '2-3', List([{ raw: -1.5, display: -1.5 }]));
-        validate(editorModel, fillValues, '2-4', List([{ raw: -3, display: -3 }]));
-        validate(editorModel, fillValues, '2-5', List([{ raw: -4.5, display: -4.5 }]));
-        validate(editorModel, fillValues, '2-6', List([{ raw: -6, display: -6 }]));
+    test('date, single row initialSelection, backward', async () => {
+        const { cellValues } = await fillColumnCells(
+            editorModel,
+            textCol,
+            undefined,
+            editorModel.cellMessages,
+            editorModel.cellValues,
+            ['6-2'],
+            ['6-0', '6-1']
+        );
+        // Filled values should be copies of the initial selection
+        for (let i = 0; i <= 2; i++) {
+            expect(cellValues.get(`6-${i}`).get(0).display).toEqual(`2023-04-${14 + i}`);
+            expect(cellValues.get(`6-${i}`).get(0).raw).toEqual(`2023-04-${14 + i}`);
+        }
     });
 
-    test('multiple initSelection, lookup', () => {
-        const fillValues = generateFillSequence(editorModel, ['3-0', '3-1', '3-2'], ['3-3', '3-4', '3-5', '3-6']);
-        validate(editorModel, fillValues, '3-0');
-        validate(editorModel, fillValues, '3-1');
-        validate(editorModel, fillValues, '3-2');
-        validate(editorModel, fillValues, '3-3', editorModel.getValueForCellKey('3-0'));
-        validate(editorModel, fillValues, '3-4', editorModel.getValueForCellKey('3-1'));
-        validate(editorModel, fillValues, '3-5', editorModel.getValueForCellKey('3-2'));
-        validate(editorModel, fillValues, '3-6', editorModel.getValueForCellKey('3-0'));
+    test('datetime, single row initialSelection, forward', async () => {
+        const { cellValues } = await fillColumnCells(
+            editorModel,
+            textCol,
+            undefined,
+            editorModel.cellMessages,
+            editorModel.cellValues,
+            ['7-0'],
+            ['7-1', '7-2', '7-3']
+        );
+        // Filled values should be copies of the initial selection
+        for (let i = 1; i <= 3; i++) {
+            expect(cellValues.get(`7-${i}`).get(0).display).toEqual(`2023-06-0${i + 1} 10:42`);
+            expect(cellValues.get(`7-${i}`).get(0).raw).toEqual(`2023-06-0${i + 1} 10:42`);
+        }
     });
 
-    test('multiple initSelection, mixed', () => {
-        const fillValues = generateFillSequence(editorModel, ['4-0', '4-1', '4-2'], ['4-3', '4-4', '4-5', '4-6']);
-        validate(editorModel, fillValues, '4-0');
-        validate(editorModel, fillValues, '4-1');
-        validate(editorModel, fillValues, '4-2');
-        validate(editorModel, fillValues, '4-3', editorModel.getValueForCellKey('4-0'));
-        validate(editorModel, fillValues, '4-4', editorModel.getValueForCellKey('4-1'));
-        validate(editorModel, fillValues, '4-5', editorModel.getValueForCellKey('4-2'));
-        validate(editorModel, fillValues, '4-6', editorModel.getValueForCellKey('4-0'));
+    test('datetime, single row initialSelection, backward', async () => {
+        const { cellValues } = await fillColumnCells(
+            editorModel,
+            textCol,
+            undefined,
+            editorModel.cellMessages,
+            editorModel.cellValues,
+            ['7-2'],
+            ['7-0', '7-1']
+        );
+        // Filled values should be copies of the initial selection
+        for (let i = 0; i <= 2; i++) {
+            expect(cellValues.get(`7-${i}`).get(0).display).toEqual(`2023-04-${14 + i} 11:11`);
+            expect(cellValues.get(`7-${i}`).get(0).raw).toEqual(`2023-04-${14 + i} 11:11`);
+        }
+    });
+
+    test('text, multi initialSelection, forward', async () => {
+        const { cellValues } = await fillColumnCells(
+            editorModel,
+            textCol,
+            undefined,
+            editorModel.cellMessages,
+            editorModel.cellValues,
+            ['5-0', '5-1', '5-2'],
+            ['5-3', '5-4', '5-5']
+        );
+        expect(cellValues.get('5-3').get(0).display).toEqual('qwer');
+        expect(cellValues.get('5-3').get(0).raw).toEqual('qwer');
+        expect(cellValues.get('5-4').get(0).display).toEqual('asdf');
+        expect(cellValues.get('5-4').get(0).raw).toEqual('asdf');
+        expect(cellValues.get('5-5').get(0).display).toEqual('zxcv');
+        expect(cellValues.get('5-5').get(0).raw).toEqual('zxcv');
     });
 });
 
@@ -801,5 +876,20 @@ describe('parseIntIfNumber', () => {
         expect(parseIntIfNumber(1)).toBe(1);
         expect(parseIntIfNumber(1.2)).toBe(1);
         expect(parseIntIfNumber(1.9)).toBe(1);
+    });
+});
+
+describe('splitPrefixedNumber', () => {
+    test('parses string as expected', () => {
+        expect(splitPrefixedNumber('ABC-123')).toEqual(['ABC-', '123']);
+        expect(splitPrefixedNumber('ABC 123')).toEqual(['ABC ', '123']);
+        expect(splitPrefixedNumber('ABC-1.23')).toEqual(['ABC-', '1.23']);
+        expect(splitPrefixedNumber('ABC-1.23.4')).toEqual(['ABC-1.', '23.4']);
+        expect(splitPrefixedNumber('ABC.0')).toEqual(['ABC.', '0']);
+        expect(splitPrefixedNumber('ABC.1.2')).toEqual(['ABC.', '1.2']);
+        expect(splitPrefixedNumber('ABC')).toEqual(['ABC', undefined]);
+        expect(splitPrefixedNumber('ABC-')).toEqual(['ABC-', undefined]);
+        expect(splitPrefixedNumber('123')).toEqual([undefined, '123']);
+        expect(splitPrefixedNumber('123.45')).toEqual([undefined, '123.45']);
     });
 });

@@ -1,6 +1,18 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.346.0
+*Released*: 26 June 2023
+- EditableGrid Improvements
+  - Improve drag fill behavior to support multiple columns, prefixed numbers, and dates
+  - Improve paste behavior to expand pasted content into selections that are a multiple of the pasted content
+  - Improve selection rendering
+  - Convert readOnlyRows, lockedRows, insertColumns, updateColumns, readOnlyColumns to non-immutable data types
+  - Move EditableGrid actions to editable folder
+  - Handle lookups when using drag fill
+  - Implement cut & paste
+  - Fix issue with paste overriding read only columns
+
 ### version 2.345.3
 *Released*: 21 June 2023
 * Moving entities between projects - Assay Data

@@ -4,7 +4,8 @@ import { List } from 'immutable';
 
 import { insertRows, InsertRowsResponse, selectRowsDeprecated } from '../../query/api';
 import { resolveKey, SchemaQuery } from '../../../public/SchemaQuery';
-import { getOrderedSelectedMappedKeys, getSelected, getSelectedData, setSnapshotSelections } from '../../actions';
+import { getSelected, setSnapshotSelections } from '../../actions';
+import { getOrderedSelectedMappedKeys, getSelectedData } from '../editable/actions';
 import { PICKLIST } from '../domainproperties/list/constants';
 import { saveDomain } from '../domainproperties/actions';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';

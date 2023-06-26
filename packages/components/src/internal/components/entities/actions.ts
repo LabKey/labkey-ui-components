@@ -1,6 +1,8 @@
 import { ActionURL, Ajax, AuditBehaviorTypes, Filter, getServerContext, Query, Utils } from '@labkey/api';
 import { List, Map } from 'immutable';
 
+import { getSelectedData } from '../editable/actions';
+
 import { buildURL } from '../../url/AppURL';
 import { SampleOperation } from '../samples/constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -8,7 +10,8 @@ import { getFilterForSampleOperation, isSamplesSchema } from '../samples/utils';
 import { importData, InsertOptions } from '../../query/api';
 import { caseInsensitive, generateId, handleRequestFailure } from '../../util/utils';
 import { SampleCreationType } from '../samples/models';
-import { getSelected, getSelectedData } from '../../actions';
+import { getSelected } from '../../actions';
+
 import { SHARED_CONTAINER_PATH } from '../../constants';
 import { naturalSortByProperty } from '../../../public/sort';
 import { QueryInfo } from '../../../public/QueryInfo';

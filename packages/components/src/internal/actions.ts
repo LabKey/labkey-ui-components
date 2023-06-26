@@ -1310,12 +1310,12 @@ export async function fillColumnCells(
 
         if (incrementType === IncrementType.NUMBER) {
             const amount = increment * (i + 1);
-            let raw: string;
+            let raw: number | string;
 
             if (direction === IncrementDirection.FORWARD) {
-                raw = decimalDifference(amount, startingValue as number, false).toString(10);
+                raw = decimalDifference(amount, startingValue as number, false);
             } else {
-                raw = decimalDifference(startingValue as number, amount, true).toString(10);
+                raw = decimalDifference(startingValue as number, amount, true);
             }
 
             if (prefix !== undefined) raw = prefix + raw;

@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.346.1
+*Released*: 26 June 2023
+* Add scope to ontology search queries
+  * add scope that includes Shared folder (where ontologies reside)
+  * switch from deprecated searchUsingIndex
+
 ### version 2.346.0
 *Released*: 26 June 2023
 - EditableGrid Improvements

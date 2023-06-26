@@ -1027,7 +1027,7 @@ interface SelectionIncrement {
     startingValue: number | string;
 }
 
-function inferSelectionDirection(initialCellKeys: string[], cellKeysToFill: string[]) {
+function inferSelectionDirection(initialCellKeys: string[], cellKeysToFill: string[]): IncrementDirection {
     const initialMin = parseCellKey(initialCellKeys[0]);
     const fillMin = parseCellKey(cellKeysToFill[0]);
 

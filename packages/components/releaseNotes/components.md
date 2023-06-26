@@ -7,6 +7,24 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Use URL to determine whether to show file upload or grid
   - export HREF constants for different creation modes
 
+### version 2.346.1
+*Released*: 26 June 2023
+* Add scope to ontology search queries
+  * add scope that includes Shared folder (where ontologies reside)
+  * switch from deprecated searchUsingIndex
+
+### version 2.346.0
+*Released*: 26 June 2023
+- EditableGrid Improvements
+  - Improve drag fill behavior to support multiple columns, prefixed numbers, and dates
+  - Improve paste behavior to expand pasted content into selections that are a multiple of the pasted content
+  - Improve selection rendering
+  - Convert readOnlyRows, lockedRows, insertColumns, updateColumns, readOnlyColumns to non-immutable data types
+  - Move EditableGrid actions to editable folder
+  - Handle lookups when using drag fill
+  - Implement cut & paste
+  - Fix issue with paste overriding read only columns
+
 ### version 2.345.3
 *Released*: 21 June 2023
 * Moving entities between projects - Assay Data

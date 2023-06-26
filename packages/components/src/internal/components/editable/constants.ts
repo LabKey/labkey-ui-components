@@ -1,8 +1,19 @@
-import { MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
-
 import { ValueDescriptor } from './models';
 
 export const EDITABLE_GRID_CONTAINER_CLS = 'editable-grid__container';
+
+export enum SELECTION_TYPES {
+    ALL,
+    AREA,
+    SINGLE,
+}
+
+export enum MODIFICATION_TYPES {
+    ADD,
+    REPLACE,
+    REMOVE,
+    REMOVE_ALL,
+}
 
 export interface CellActions {
     clearSelection: () => void;

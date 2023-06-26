@@ -1,4 +1,4 @@
-import { fromJS, Map, OrderedMap, Record, Set } from 'immutable';
+import { fromJS, Map, OrderedMap, Record } from 'immutable';
 
 import { DomainDesign, DomainDetails, IDomainField } from '../models';
 import { IParentAlias } from '../../entities/models';

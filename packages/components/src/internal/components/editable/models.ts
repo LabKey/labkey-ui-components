@@ -23,7 +23,7 @@ import { QueryColumn } from '../../../public/QueryColumn';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
-import { genCellKey, getSortedCellKeys, parseCellKey } from '../../utils';
+import { genCellKey, sortCellKeys, parseCellKey } from '../../utils';
 import { getQueryColumnRenderers } from '../../global';
 import { GRID_EDIT_INDEX } from '../../constants';
 import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from '../../util/Date';
@@ -52,7 +52,7 @@ export interface EditorModelProps {
     rowCount: number;
     selectedColIdx: number;
     selectedRowIdx: number;
-    selectionCells: ImmutableSet<string>;
+    selectionCells: ImmutableSet<string>; // TODO: convert to string[], always sort before setting
 }
 
 export function getPkData(queryInfo: QueryInfo, row: Map<string, any>): Record<string, any> {
@@ -94,7 +94,6 @@ export class EditorModel
         focusValue: undefined,
         id: undefined,
         isPasting: false,
-        numPastedRows: 0,
         rowCount: 0,
         selectedColIdx: -1,
         selectedRowIdx: -1,
@@ -111,7 +110,6 @@ export class EditorModel
     declare focusValue: List<ValueDescriptor>;
     declare id: string;
     declare isPasting: boolean;
-    declare numPastedRows: number;
     declare rowCount: number;
     declare selectedColIdx: number;
     declare selectedRowIdx: number;
@@ -151,17 +149,17 @@ export class EditorModel
     getColumns(
         queryInfo: QueryInfo,
         forUpdate?: boolean,
-        readOnlyColumns?: List<string>,
-        insertColumns?: List<QueryColumn>,
-        updateColumns?: List<QueryColumn>,
+        readOnlyColumns?: string[],
+        insertColumns?: QueryColumn[],
+        updateColumns?: QueryColumn[],
         colFilter?: (col: QueryColumn) => boolean
-    ): List<QueryColumn> {
+    ): QueryColumn[] {
         let columns;
 
         if (forUpdate) {
-            columns = updateColumns ?? List(queryInfo.getUpdateColumns(readOnlyColumns?.toArray()));
+            columns = updateColumns ?? queryInfo.getUpdateColumns(readOnlyColumns);
         } else {
-            columns = insertColumns ?? List(queryInfo.getInsertColumns());
+            columns = insertColumns ?? queryInfo.getInsertColumns();
         }
 
         if (colFilter) columns = columns.filter(colFilter);
@@ -428,27 +426,27 @@ export class EditorModel
         return List<ValueDescriptor>();
     }
 
-    hasFocus(): boolean {
+    get hasFocus(): boolean {
         return this.focusColIdx > -1 && this.focusRowIdx > -1;
     }
 
-    hasMultipleSelection(): boolean {
+    get isMultiSelect(): boolean {
         return this.selectionCells.size > 1;
     }
 
-    hasMultipleColumnSelection(): boolean {
-        if (!this.hasMultipleSelection()) return false;
+    get isMultiColumnSelection(): boolean {
+        if (!this.isMultiSelect) return false;
 
         const firstCellColIdx = parseCellKey(this.selectionCells.first()).colIdx;
-        return !this.selectionCells.every(cellKey => parseCellKey(cellKey).colIdx === firstCellColIdx);
+        return this.selectionCells.some(cellKey => parseCellKey(cellKey).colIdx !== firstCellColIdx);
     }
 
-    hasSelection(): boolean {
+    get hasSelection(): boolean {
         return this.selectedColIdx > -1 && this.selectedRowIdx > -1;
     }
 
     get selectionKey(): string {
-        if (this.hasSelection()) return genCellKey(this.selectedColIdx, this.selectedRowIdx);
+        if (this.hasSelection) return genCellKey(this.selectedColIdx, this.selectedRowIdx);
         return undefined;
     }
 
@@ -461,14 +459,14 @@ export class EditorModel
     }
 
     get sortedSelectionKeys(): string[] {
-        return getSortedCellKeys(this.selectionCells.toArray(), this.rowCount);
+        return sortCellKeys(this.selectionCells.toArray());
     }
 
     hasRawValue(descriptor: ValueDescriptor) {
         return descriptor && descriptor.raw != null && descriptor.raw.toString().trim() !== '';
     }
 
-    hasData(): boolean {
+    get hasData(): boolean {
         return (
             this.cellValues.find(valueList => {
                 return valueList.find(value => this.hasRawValue(value)) !== undefined;
@@ -536,35 +534,9 @@ export class EditorModel
         }) as Map<any, Map<string, any>>;
     }
 
-    getDeletedIds(): ImmutableSet<any> {
-        return this.deletedIds.filter(id => id.toString().indexOf(GRID_EDIT_INDEX) === -1).toSet();
-    }
-
-    isModified(editedRow: Map<string, any>, originalQueryRow: Map<string, any>): boolean {
-        return editedRow.find((value, key) => originalQueryRow.get(key) !== value) !== undefined;
-    }
-
-    isRowEmpty(editedRow: Map<string, any>): boolean {
-        return editedRow.find(value => value !== undefined) === undefined;
-    }
-
     lastSelection(colIdx: number, rowIdx: number): boolean {
-        let cellKeys = [];
-
-        // Initial implementation of drag handle fill actions only support single column selection
-        if (!this.hasMultipleColumnSelection()) {
-            if (this.hasMultipleSelection()) {
-                cellKeys = this.sortedSelectionKeys;
-            } else {
-                cellKeys = [this.selectionKey];
-            }
-        }
-
-        if (cellKeys.length === 0) {
-            return false;
-        }
-
-        return cellKeys.indexOf(genCellKey(colIdx, rowIdx)) === cellKeys.length - 1;
+        const cellKeys = this.isMultiSelect ? this.sortedSelectionKeys : [this.selectionKey];
+        return genCellKey(colIdx, rowIdx) === cellKeys[cellKeys.length - 1];
     }
 }
 
@@ -574,7 +546,7 @@ export interface IGridLoader {
 }
 
 export interface IEditableGridLoader extends IGridLoader {
-    columns?: List<QueryColumn>;
+    columns?: QueryColumn[];
     id: string;
     mode: EditorMode;
     omittedColumns?: string[];

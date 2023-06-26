@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { List, OrderedMap } from 'immutable';
+import { List } from 'immutable';
 import { Col, FormControl, FormControlProps, Row } from 'react-bootstrap';
 
 import classNames from 'classnames';

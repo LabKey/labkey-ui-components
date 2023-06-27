@@ -38,10 +38,10 @@ function isMetaKeyEvent(event: React.KeyboardEvent<any>, keyCode: number): boole
     return isEvent(event) && event.keyCode === keyCode && (event.ctrlKey || event.metaKey);
 }
 
-export const isCopy = (event: React.KeyboardEvent<any>): boolean => isMetaKeyEvent(event, KEYS.C);
 export const isFillDown = (event: React.KeyboardEvent<any>): boolean => isMetaKeyEvent(event, KEYS.D);
-export const isPaste = (event: React.KeyboardEvent<any>): boolean => isMetaKeyEvent(event, KEYS.V);
 export const isSelectAll = (event: React.KeyboardEvent<any>): boolean => isMetaKeyEvent(event, KEYS.A);
+export const isCopyCutOrPaste = (event: React.KeyboardEvent<any>): boolean =>
+    isMetaKeyEvent(event, KEYS.C) || isMetaKeyEvent(event, KEYS.X) || isMetaKeyEvent(event, KEYS.V);
 
 export function setCopyValue(event: any, value: string): boolean {
     if (isEvent(event)) {

@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map, OrderedMap, Set } from 'immutable';
+import { fromJS, List, Map, OrderedMap, Set as ImmutableSet } from 'immutable';
 import { ActionURL, Ajax, Filter, getServerContext, Query, Utils } from '@labkey/api';
+import moment from 'moment';
+
 import { ExtendedMap } from '../public/ExtendedMap';
 
 import { QueryColumn } from '../public/QueryColumn';
@@ -26,10 +28,8 @@ import { QueryInfo } from '../public/QueryInfo';
 import { Actions } from '../public/QueryModel/withQueryModels';
 
 import { getContainerFilter, invalidateQueryDetailsCache, selectRowsDeprecated } from './query/api';
-import { Location } from './util/URL';
 import {
     BARTENDER_EXPORT_CONTROLLER,
-    CELL_SELECTION_HANDLE_CLASSNAME,
     EXPORT_TYPES,
     FASTA_EXPORT_CONTROLLER,
     GENBANK_EXPORT_CONTROLLER,
@@ -48,6 +48,7 @@ import {
 } from './components/editable/models';
 import { DataViewInfo } from './DataViewInfo';
 import { EditableColumnMetadata } from './components/editable/EditableGrid';
+import { formatDate, formatDateTime, parseDate } from './util/Date';
 
 import {
     caseInsensitive,
@@ -61,7 +62,7 @@ import { resolveErrorMessage } from './util/messaging';
 import { buildURL } from './url/AppURL';
 
 import { ViewInfo } from './ViewInfo';
-import { decimalDifference, genCellKey, getSortedCellKeys, parseCellKey } from './utils';
+import { decimalDifference, genCellKey, parseCellKey } from './utils';
 import { createGridModelId } from './models';
 
 const EMPTY_ROW = Map<string, any>();
@@ -145,7 +146,7 @@ export async function getLookupValueDescriptors(
     // for each lookup column, find the unique values in the rows and query for those values when they look like ids
     for (let cn = 0; cn < columns.length; cn++) {
         const col = columns[cn];
-        let values = Set<number>();
+        let values = ImmutableSet<number>();
 
         if (col.isPublicLookup()) {
             ids.forEach(id => {
@@ -754,45 +755,8 @@ export function fetchCharts(schemaQuery: SchemaQuery, containerPath?: string): P
     });
 }
 
-const dragLock = Map<string, boolean>().asMutable();
-let dragHandleInitSelection; // track the initial selection state if the drag event was initiated from the corner drag handle
-
-export function beginDrag(editorModel: EditorModel, event: any): void {
-    if (handleDrag(editorModel, event)) {
-        dragLock.set(editorModel.id, true);
-
-        const isDragHandleAction = (event.target as Element).className?.indexOf(CELL_SELECTION_HANDLE_CLASSNAME) > -1;
-        if (isDragHandleAction) {
-            dragHandleInitSelection = [...editorModel.selectionCells.toArray()];
-            if (!dragHandleInitSelection.length) dragHandleInitSelection.push(editorModel.selectionKey);
-        }
-    }
-}
-
-export function endDrag(editorModel: EditorModel, event: any): string[] {
-    if (handleDrag(editorModel, event)) {
-        dragLock.remove(editorModel.id);
-
-        const _dragHandleInitSelection = dragHandleInitSelection ? [...dragHandleInitSelection] : undefined;
-        dragHandleInitSelection = undefined;
-        return _dragHandleInitSelection;
-    }
-}
-
-function handleDrag(editorModel: EditorModel, event: any): boolean {
-    if (!editorModel.hasFocus()) {
-        event.preventDefault();
-        return true;
-    }
-    return false;
-}
-
-export function inDrag(modelId: string): boolean {
-    return dragLock.get(modelId) !== undefined;
-}
-
 export function copyEvent(editorModel: EditorModel, insertColumns: QueryColumn[], event: any): void {
-    if (editorModel && !editorModel.hasFocus() && editorModel.hasSelection()) {
+    if (editorModel && !editorModel.hasFocus && editorModel.hasSelection) {
         cancelEvent(event);
         setCopyValue(event, getCopyValue(editorModel, insertColumns));
     }
@@ -816,27 +780,24 @@ function getCellCopyValue(valueDescriptors: List<ValueDescriptor>): string {
 function getCopyValue(model: EditorModel, insertColumns: QueryColumn[]): string {
     let copyValue = '';
     const EOL = '\n';
+    const selectionCells = model.selectionCells.add(genCellKey(model.selectedColIdx, model.selectedRowIdx));
 
-    if (model && model.hasSelection() && !model.hasFocus()) {
-        const selectionCells = model.selectionCells.add(genCellKey(model.selectedColIdx, model.selectedRowIdx));
+    for (let rn = 0; rn < model.rowCount; rn++) {
+        let cellSep = '';
+        let inSelection = false;
 
-        for (let rn = 0; rn < model.rowCount; rn++) {
-            let cellSep = '';
-            let inSelection = false;
+        insertColumns.forEach((col, cn) => {
+            const cellKey = genCellKey(cn, rn);
 
-            insertColumns.forEach((col, cn) => {
-                const cellKey = genCellKey(cn, rn);
-
-                if (selectionCells.contains(cellKey)) {
-                    inSelection = true;
-                    copyValue += cellSep + getCellCopyValue(model.cellValues.get(cellKey));
-                    cellSep = '\t';
-                }
-            });
-
-            if (inSelection) {
-                copyValue += EOL;
+            if (selectionCells.contains(cellKey)) {
+                inSelection = true;
+                copyValue += cellSep + getCellCopyValue(model.cellValues.get(cellKey));
+                cellSep = '\t';
             }
+        });
+
+        if (inSelection) {
+            copyValue += EOL;
         }
     }
 
@@ -857,11 +818,13 @@ const resolveDisplayColumn = (column: QueryColumn): string => {
     return column.lookup.displayColumn;
 };
 
+type ColumnLoaderPromise = Promise<{ column: QueryColumn; descriptors: ValueDescriptor[] }>;
+
 const findLookupValues = async (
     column: QueryColumn,
     lookupKeyValues?: any[],
     lookupValues?: any[]
-): Promise<{ column: QueryColumn; descriptors: ValueDescriptor[] }> => {
+): ColumnLoaderPromise => {
     const lookup = column.lookup;
     const { keyColumn } = column.lookup;
     const displayColumn = resolveDisplayColumn(column);
@@ -946,7 +909,7 @@ export async function addRowsToEditorModel(
     rowMin = 0,
     colMin = 0
 ): Promise<Partial<EditorModel>> {
-    let selectionCells = Set<string>();
+    let selectionCells = ImmutableSet<string>();
     const preparedData = await prepareInsertRowDataFromBulkForm(insertColumns, rowData, 0);
     const { values, messages } = preparedData;
 
@@ -1007,19 +970,159 @@ async function prepareInsertRowDataFromBulkForm(
     };
 }
 
-// exported for jest testing
+/**
+ * This REGEX will match for any strings that are suffixed with a number, it has several capture groups to allow us to
+ * easily grab the number and the prefix. The following values should match:
+ *      ABC-123 captures as ['ABC-123', 'ABC-', '123', undefined]
+ *      ABC123 captures as ['ABC123', 'ABC', '123', undefined]
+ *      ABC-1.23 captures as ['ABC-1.23', 'ABC-', '1.23', '.23']
+ *      ABC.123 captures as ['ABC.123', 'ABC.', '123', undefined]
+ */
+const POSTFIX_REGEX = /^(.*?)(\d+(\.\d+)?)$/;
+type PrefixAndNumber = [string | undefined, string | undefined];
+
+/**
+ * Given a string it returns an array in the form of [prefix, number suffix]. If the string is not suffixed with a
+ * number the number suffix is undefined. If the entire string is a number the prefix will be undefined. This method
+ * intentionally does not parse the numbers.
+ */
+export function splitPrefixedNumber(text: string): PrefixAndNumber {
+    if (text === undefined) return [undefined, undefined];
+    const matches = text.match(POSTFIX_REGEX);
+
+    if (matches === null) {
+        return [text, undefined];
+    }
+
+    return [matches[1] === '' ? undefined : matches[1], matches[2]];
+}
+
+/**
+ * Given an array of values computed by splitPrefixedNumber returns true if they all have the same prefix
+ */
+function everyValueHasSamePrefix(values: PrefixAndNumber[]): boolean {
+    if (values.length === 0) return false;
+    const prefix = values[0][0];
+    return values.every(value => value[0] === prefix);
+}
+
+enum IncrementDirection {
+    FORWARD,
+    BACKWARD,
+}
+
+enum IncrementType {
+    DATE,
+    DATETIME,
+    NONE,
+    NUMBER,
+}
+
+interface SelectionIncrement {
+    direction: IncrementDirection;
+    increment?: number;
+    incrementType: IncrementType;
+    initialSelectionValues: Array<List<ValueDescriptor>>; // yes this is a very odd type, but we can clean it up when we rip out Immutable
+    prefix?: string;
+    startingValue: number | string;
+}
+
+function inferSelectionDirection(initialCellKeys: string[], cellKeysToFill: string[]): IncrementDirection {
+    const initialMin = parseCellKey(initialCellKeys[0]);
+    const fillMin = parseCellKey(cellKeysToFill[0]);
+
+    if (initialMin.rowIdx < fillMin.rowIdx) return IncrementDirection.FORWARD;
+    return IncrementDirection.BACKWARD;
+}
+
+function inferSelectionIncrement(
+    editorModel: EditorModel,
+    initialCellKeys: string[],
+    cellKeysToFill: string[]
+): SelectionIncrement {
+    const direction = inferSelectionDirection(initialCellKeys, cellKeysToFill);
+    const values = initialCellKeys.map(cellKey => editorModel.getValueForCellKey(cellKey));
+    // use the display values to determine sequence type to account for lookup cell values with numeric key/raw values
+    let displayValues = values.map(value => value.get(0)?.display);
+    let firstValue = displayValues[0];
+    let lastValue = displayValues[displayValues.length - 1];
+    const firstValueIsEmpty = firstValue === undefined || firstValue === '';
+    const isDateSeq = values.length === 1 && !firstValueIsEmpty && formatDate(parseDate(firstValue)) === firstValue;
+    const isDateTimeSeq =
+        values.length === 1 && !firstValueIsEmpty && formatDateTime(parseDate(firstValue)) === firstValue;
+
+    // Date sequence detection takes precedence otherwise we'd never parse dates, because we'd always consider something
+    // like 2023-06-01, 6/1/2023, or 1-6-2023, to be a prefixed number string.
+    if (isDateSeq || isDateTimeSeq) {
+        return {
+            direction,
+            increment: 1, // Right now we only increment dates by 1 day
+            incrementType: isDateSeq ? IncrementType.DATE : IncrementType.DATETIME,
+            initialSelectionValues: values,
+            prefix: undefined,
+            startingValue: direction === IncrementDirection.FORWARD ? lastValue : firstValue,
+        };
+    }
+
+    let prefix;
+    let incrementType = IncrementType.NONE;
+    let increment;
+    const splitValues = displayValues.map(splitPrefixedNumber);
+    const allPrefixed = everyValueHasSamePrefix(splitValues);
+
+    if (allPrefixed && splitValues[0][0] !== undefined) {
+        prefix = splitValues[0][0];
+        displayValues = splitValues.map(value => value[1]);
+        firstValue = displayValues[0];
+        lastValue = displayValues[displayValues.length - 1];
+    }
+
+    const isFloatSeq = values.length > 1 && displayValues.every(isFloat);
+    const isIntSeq = values.length > 1 && displayValues.every(isInteger);
+
+    if (isFloatSeq) {
+        firstValue = parseFloat(firstValue);
+        lastValue = parseFloat(lastValue);
+    } else if (isIntSeq) {
+        firstValue = parseScientificInt(firstValue);
+        lastValue = parseScientificInt(lastValue);
+    }
+
+    if (isFloatSeq || isIntSeq) {
+        // increment -> last value minus first value divide by the number of steps in the initial selection
+        increment = decimalDifference(lastValue, firstValue);
+        increment = increment / (displayValues.length - 1);
+        incrementType = IncrementType.NUMBER;
+    }
+
+    return {
+        direction,
+        increment,
+        incrementType,
+        initialSelectionValues: values,
+        prefix,
+        startingValue: direction === IncrementDirection.FORWARD ? lastValue : firstValue,
+    };
+}
+
 export function parseIntIfNumber(val: any): number | string {
     const intVal = !isNaN(val) ? parseInt(val, 10) : undefined;
     return intVal === undefined || isNaN(intVal) ? val : intVal;
+}
+
+interface CellReadStatus {
+    isLockedRow: boolean;
+    isReadonlyCell: boolean;
+    isReadonlyRow: boolean;
 }
 
 export function checkCellReadStatus(
     row: any,
     queryInfo: QueryInfo,
     columnMetadata: EditableColumnMetadata,
-    readonlyRows: List<any>,
-    lockedRows: List<any>
-): { isLockedRow: boolean; isReadonlyCell: boolean; isReadonlyRow: boolean } {
+    readonlyRows: string[],
+    lockedRows: string[]
+): CellReadStatus {
     if (readonlyRows || columnMetadata?.isReadOnlyCell || lockedRows) {
         const keyCols = queryInfo.getPkCols();
         if (keyCols.length === 1) {
@@ -1028,9 +1131,9 @@ export function checkCellReadStatus(
             if (typeof key === 'object') key = key.value;
 
             return {
-                isReadonlyRow: readonlyRows && key ? readonlyRows.contains(key) : false,
+                isReadonlyRow: readonlyRows && key ? readonlyRows.includes(key) : false,
                 isReadonlyCell: columnMetadata?.isReadOnlyCell ? columnMetadata.isReadOnlyCell(key) : false,
-                isLockedRow: lockedRows && key ? lockedRows.contains(key) : false,
+                isLockedRow: lockedRows && key ? lockedRows.includes(key) : false,
             };
         } else {
             console.warn(
@@ -1046,97 +1149,214 @@ export function checkCellReadStatus(
     };
 }
 
-export function dragFillEvent(
+/**
+ * Returns only the newly selected area given an initial selection and a final selection. These are the keys that will
+ * be filled with generated data based on the initially selected data.
+ * @param initialSelection: The area initially selected
+ * @param finalSelection: The final area selected, including the initially selected area
+ */
+export function generateFillCellKeys(initialSelection: string[], finalSelection: string[]): string[][] {
+    const firstInitial = parseCellKey(initialSelection[0]);
+    const lastInitial = parseCellKey(initialSelection[initialSelection.length - 1]);
+    const minCol = firstInitial.colIdx;
+    const maxCol = lastInitial.colIdx;
+    const initialMinRow = firstInitial.rowIdx;
+    const initialMaxRow = lastInitial.rowIdx;
+    const finalMinRow = parseCellKey(finalSelection[0]).rowIdx;
+    const finalMaxRow = parseCellKey(finalSelection[finalSelection.length - 1]).rowIdx;
+    let start;
+    let end;
+
+    if (finalMaxRow > initialMaxRow) {
+        // Final selected area is below the initial selection, so we will be incrementing from the row after
+        // initialMaxRow
+        start = initialMaxRow + 1;
+        end = finalMaxRow;
+    } else {
+        // Newly selected area is above the initial selection, so we will be incrementing from finalMinRow
+        start = finalMinRow;
+        end = initialMinRow - 1;
+    }
+
+    const fillCellKeys = [];
+
+    // Construct arrays of columns, because we're going to generate fill sequences for columns
+    for (let colIdx = minCol; colIdx <= maxCol; colIdx++) {
+        const columnKeys = [];
+
+        for (let rowIdx = start; rowIdx <= end; rowIdx++) {
+            columnKeys.push(genCellKey(colIdx, rowIdx));
+        }
+
+        fillCellKeys.push(columnKeys);
+    }
+
+    return fillCellKeys;
+}
+
+type CellMessagesAndValues = Pick<EditorModel, 'cellMessages' | 'cellValues'>;
+
+/**
+ * @param editorModel
+ * @param initialSelection: The initial selection before the selection was expanded
+ * @param dataKeys: The orderedRows Object from a QueryModel
+ * @param data: The rows object from a QueryModel
+ * @param queryInfo: A QueryInfo
+ * @param columns
+ * @param columnMetadata: Array of column metadata, in the same order as the columns in the grid
+ * @param readonlyRows: A list of readonly rows
+ * @param lockedRows: A list of locked rows
+ * @param readOnlyColumns
+ */
+export async function dragFillEvent(
     editorModel: EditorModel,
-    initSelection: string[],
+    initialSelection: string[],
     dataKeys: List<any>,
     data: Map<any, Map<string, any>>,
     queryInfo: QueryInfo,
-    columnMetadata: EditableColumnMetadata,
-    readonlyRows: List<any>,
-    lockedRows: List<any>
-): EditorModelAndGridData {
-    if (initSelection?.length > 0) {
-        const initColIdx = parseCellKey(initSelection[0]).colIdx;
-        const fillCells = editorModel.sortedSelectionKeys
-            // initially we will only support fill for drag end that is within a single column
-            .filter(cellKey => parseCellKey(cellKey).colIdx === initColIdx)
-            // filter out the initial selection as we don't want to update/fill those
-            .filter(cellKey => initSelection.indexOf(cellKey) === -1)
-            // filter out readOnly/locked rows and columns
-            .filter(cellKey => {
-                const { isReadonlyCell, isReadonlyRow, isLockedRow } = checkCellReadStatus(
-                    data.get(dataKeys.get(parseCellKey(cellKey).rowIdx)),
-                    queryInfo,
-                    columnMetadata,
-                    readonlyRows,
-                    lockedRows
-                );
-                return !isReadonlyCell && !isReadonlyRow && !isLockedRow;
-            });
+    columns: QueryColumn[],
+    columnMetadata: EditableColumnMetadata[],
+    readonlyRows: string[],
+    lockedRows: string[]
+): Promise<CellMessagesAndValues> {
+    const finalSelection = editorModel.sortedSelectionKeys;
+    let cellValues = editorModel.cellValues;
+    let cellMessages = editorModel.cellMessages;
 
-        return {
-            data: undefined,
-            dataKeys: undefined,
-            editorModel: {
-                cellValues: generateFillSequence(editorModel, initSelection, fillCells),
-            },
-        };
+    // If the selection size hasn't changed, then the selection hasn't changed, so return the existing cellValues
+    if (finalSelection.length === initialSelection.length) return { cellMessages, cellValues };
+
+    const selectionToFill = generateFillCellKeys(initialSelection, finalSelection);
+    for (const columnCells of selectionToFill) {
+        const { colIdx } = parseCellKey(columnCells[0]);
+        const initialSelectionByCol = initialSelection.filter(cellKey => parseCellKey(cellKey).colIdx === colIdx);
+        const column = columns[colIdx];
+        const metadata = columnMetadata[colIdx];
+
+        // Don't manipulate any values in read only columns
+        if (column.readOnly) {
+            continue;
+        }
+
+        const selectionToFillByCol = columnCells.filter(cellKey => {
+            const { rowIdx } = parseCellKey(cellKey);
+            const row = data.get(dataKeys.get(rowIdx));
+            const { isReadonlyCell, isReadonlyRow, isLockedRow } = checkCellReadStatus(
+                row,
+                queryInfo,
+                metadata,
+                readonlyRows,
+                lockedRows
+            );
+            return !isReadonlyCell && !isReadonlyRow && !isLockedRow;
+        });
+
+        // eslint-disable-next-line no-await-in-loop
+        const messagesAndValues = await fillColumnCells(
+            editorModel,
+            column,
+            metadata,
+            cellMessages,
+            cellValues,
+            initialSelectionByCol,
+            selectionToFillByCol
+        );
+        cellValues = messagesAndValues.cellValues;
+        cellMessages = messagesAndValues.cellMessages;
     }
 
-    return { data: undefined, dataKeys: undefined, editorModel: undefined };
+    return { cellMessages, cellValues };
 }
 
 /**
- * Generate a sequence, of length fillSelection, based on the values in the initSelection of the editorModel.
- * If the initSelection is for a single cell, the fill operation will always be a copy of that value.
- * If the initSelection includes a range of cells and all values are numeric, fill via a generated sequence where the step/diff is based on the first and last value in the initSelection.
- * If the initSelection includes a range of cells and not all values are numeric, fill via a copy of all of the values in initSelection.
+ * Fills a column of cells based on the initially selected values.
+ * If the initialSelection is for a single cell, the fill operation will always be a copy of that value.
+ * If the initialSelection includes a range of cells and all values are numeric (or numbers prefixed with the same
+ * string), fill via a generated sequence where the step/diff is based on the first and last value in the initSelection.
+ * if the initialSelection is a single row, and the value is a date (as determined by the date format set by the server)
+ * then we will fill via a generated sequence that increments the date by one day each row.
+ * If the initialSelection includes a range of cells and not all values are numeric, fill via a copy of all of the values
+ * in initSelection.
+ * @param editorModel: An EditorModel object
+ * @param column
+ * @param columnMetadata
+ * @param cellMessages: The CellMessages object to mutate, we cannot use the one from EditorModel because we may need to
+ * modify multiple columns of data in one event (see dragFillEvent).
+ * @param cellValues: The CellValues object to mutate, we cannot use the one from EditorModel because we may need to
+ * modify multiple columns of data in one event (see dragFillEvent).
+ * @param initialSelection: An array of sorted cell keys, all from the same column that were initially selected
+ * @param selectionToFill: An array of sorted cell keys, all from the same column, to be filled with values based on the
+ * content of initialSelection
  */
-export function generateFillSequence(
+export async function fillColumnCells(
     editorModel: EditorModel,
-    initSelection: string[],
-    fillSelection: string[]
-): CellValues {
-    const sortedInitSelection = getSortedCellKeys(initSelection, editorModel.rowCount);
-    const initCellValues = sortedInitSelection.map(cellKey => editorModel.getValueForCellKey(cellKey));
-    const initCellRawValues = initCellValues.map(cellValue => cellValue?.first()?.raw);
-    const initCellDisplayValues = initCellValues.map(cellValue => cellValue?.first()?.display);
+    column: QueryColumn,
+    columnMetadata: EditableColumnMetadata,
+    cellMessages: CellMessages,
+    cellValues: CellValues,
+    initialSelection: string[],
+    selectionToFill: string[]
+): Promise<CellMessagesAndValues> {
+    const { direction, increment, incrementType, prefix, startingValue, initialSelectionValues } =
+        inferSelectionIncrement(editorModel, initialSelection, selectionToFill);
 
-    // use the display values to determine sequence type to account for lookup cell values with numeric key/raw values
-    const isFloatSeq = initCellValues.length > 1 && initCellDisplayValues.every(isFloat);
-    const isIntSeq = initCellValues.length > 1 && initCellDisplayValues.every(isInteger);
-
-    let firstCellRawVal = initCellRawValues[0];
-    let lastCellRawVal = initCellRawValues[initCellRawValues.length - 1];
-
-    let diff = 0;
-    if (isFloatSeq || isIntSeq) {
-        if (isFloatSeq) {
-            firstCellRawVal = parseFloat(firstCellRawVal);
-            lastCellRawVal = parseFloat(lastCellRawVal);
-        } else if (isIntSeq) {
-            firstCellRawVal = parseScientificInt(firstCellRawVal);
-            lastCellRawVal = parseScientificInt(lastCellRawVal);
-        }
-
-        // diff -> last value minus first value divide by the number of steps in the initial selection
-        diff = decimalDifference(lastCellRawVal, firstCellRawVal);
-        diff = initCellRawValues.length > 1 ? diff / (initCellRawValues.length - 1) : 0;
+    if (direction === IncrementDirection.BACKWARD) {
+        selectionToFill.reverse();
     }
 
-    let cellValues = editorModel.cellValues;
-    fillSelection.forEach((cellKey, i) => {
-        let fillValue = initCellValues[i % sortedInitSelection.length];
-        if (isFloatSeq || isIntSeq) {
-            const raw = decimalDifference(diff * (i + 1), lastCellRawVal, false);
+    const displayValues = [];
+    selectionToFill.forEach((cellKey, i) => {
+        let fillValue = initialSelectionValues[i % initialSelectionValues.length];
+
+        if (incrementType === IncrementType.NUMBER) {
+            const amount = increment * (i + 1);
+            let raw: number | string;
+
+            if (direction === IncrementDirection.FORWARD) {
+                raw = decimalDifference(amount, startingValue as number, false);
+            } else {
+                raw = decimalDifference(startingValue as number, amount, true);
+            }
+
+            if (prefix !== undefined) raw = prefix + raw;
+            const display = raw.toString();
+            fillValue = List([{ raw, display }]);
+            displayValues.push(display);
+        } else if (incrementType === IncrementType.DATE || incrementType === IncrementType.DATETIME) {
+            const dateValue = moment(parseDate(startingValue as string));
+
+            if (direction === IncrementDirection.FORWARD) {
+                dateValue.add(i + 1, 'days');
+            } else {
+                dateValue.subtract(i + 1, 'days');
+            }
+
+            const raw =
+                incrementType === IncrementType.DATE
+                    ? formatDate(dateValue.toDate())
+                    : formatDateTime(dateValue.toDate());
+            displayValues.push(raw);
             fillValue = List([{ raw, display: raw }]);
         }
 
         cellValues = cellValues.set(cellKey, fillValue);
     });
 
-    return cellValues;
+    // If the column is a lookup, and we've generated new displayValues, then we need to query for the rowIds so we can
+    // set the correct raw values, otherwise insert will fail. This is most common for samples where we increment sample
+    // names during drag fill so S-1 becomes S-2, S-3, etc.
+    if (column.isPublicLookup() && displayValues.length) {
+        const filteredLookupValues = columnMetadata?.filteredLookupValues?.toArray();
+        const { descriptors } = await findLookupValues(column, undefined, displayValues);
+        selectionToFill.forEach(cellKey => {
+            const display = cellValues.get(cellKey).get(0).display;
+            const { message, values } = parsePastedLookup(column, descriptors, filteredLookupValues ?? display);
+            cellValues = cellValues.set(cellKey, values);
+            cellMessages = cellMessages.set(cellKey, message);
+        });
+    }
+
+    return { cellValues, cellMessages };
 }
 
 export async function pasteEvent(
@@ -1144,20 +1364,22 @@ export async function pasteEvent(
     dataKeys: List<any>,
     data: Map<any, Map<string, any>>,
     queryInfo: QueryInfo,
+    columns: QueryColumn[],
     event: any,
     columnMetadata?: Map<string, EditableColumnMetadata>,
-    readonlyRows?: List<string>,
+    readonlyRows?: string[],
     lockRowCount?: boolean
 ): Promise<EditorModelAndGridData> {
     // If a cell has focus do not accept incoming paste events -- allow for normal paste to input
-    if (editorModel && editorModel.hasSelection() && !editorModel.hasFocus()) {
+    if (editorModel && editorModel.hasSelection && !editorModel.hasFocus) {
         cancelEvent(event);
         const value = getPasteValue(event);
-        return await pasteCell(
+        return await validateAndInsertPastedData(
             editorModel,
             dataKeys,
             data,
             queryInfo,
+            columns,
             value,
             columnMetadata,
             readonlyRows,
@@ -1168,14 +1390,15 @@ export async function pasteEvent(
     return { data: undefined, dataKeys: undefined, editorModel: undefined };
 }
 
-async function pasteCell(
+async function validateAndInsertPastedData(
     editorModel: EditorModel,
     dataKeys: List<any>,
     data: Map<any, Map<string, any>>,
     queryInfo: QueryInfo,
+    columns: QueryColumn[],
     value: string,
     columnMetadata?: Map<string, EditableColumnMetadata>,
-    readonlyRows?: List<string>,
+    readonlyRows?: string[],
     lockRowCount?: boolean
 ): Promise<EditorModelAndGridData> {
     const { selectedColIdx, selectedRowIdx } = editorModel;
@@ -1188,8 +1411,8 @@ async function pasteCell(
     if (paste.success) {
         const byColumnValues = getPasteValuesByColumn(paste);
         // prior to load, ensure lookup column stores are loaded
-        const columnLoaders: any[] = queryInfo.getInsertColumns().reduce((arr, column, index) => {
-            if (column.isPublicLookup()) {
+        const columnLoaders: ColumnLoaderPromise[] = columns.reduce((arr, column, index) => {
+            if (column.isPublicLookup() && !column.readOnly) {
                 const filteredLookup = getColumnFilteredLookup(column, columnMetadata);
                 if (
                     index >= paste.coordinates.colMin &&
@@ -1206,6 +1429,8 @@ async function pasteCell(
                         )
                     );
                 } else if (filteredLookup) {
+                    // TODO: It seems wrong that we're pre-emptively loading data for columns that are not in our pasted
+                    //  area, should this else if be removed?
                     arr.push(findLookupValues(column, undefined, filteredLookup.toArray()));
                 }
             }
@@ -1218,10 +1443,11 @@ async function pasteCell(
             reduction[column.lookupKey] = descriptors;
             return reduction;
         }, {});
-        return pasteCellLoad(
+        return insertPastedData(
             dataKeys,
             data,
             queryInfo,
+            columns,
             editorModel,
             paste,
             descriptorMap,
@@ -1239,15 +1465,62 @@ async function pasteCell(
     }
 }
 
+/**
+ * Expands the pasted data in the X and/or Y direction if the user has selected an area that is a multiple of X or Y.
+ *
+ * For example:
+ * If the user copied two rows and two columns to their clipboard, but selected four rows and two columns on the grid we
+ * would paste the contents twice across the four selected rows. If they had selected two rows and four columns we would
+ * paste the contents twice across the selected columns.
+ */
+function expandPaste(model: EditorModel, payload: ParsePastePayload): ParsePastePayload {
+    const selection = model.sortedSelectionKeys;
+    const minSelection = parseCellKey(selection[0]);
+    const maxSelection = parseCellKey(selection[selection.length - 1]);
+    const selectionColCount = maxSelection.colIdx - minSelection.colIdx + 1;
+    const selectionRowCount = maxSelection.rowIdx - minSelection.rowIdx + 1;
+    let { data, numCols, numRows } = payload;
+
+    if (selectionColCount > payload.numCols && selectionColCount % payload.numCols === 0) {
+        const colCopyMultiple = selectionColCount / payload.numCols;
+        numCols = payload.numCols * colCopyMultiple;
+        data = data.reduce((reduction, row) => {
+            let updatedRow = row;
+            for (let i = 0; i < colCopyMultiple - 1; i++) {
+                updatedRow = updatedRow.concat(row).toList();
+            }
+
+            return reduction.push(updatedRow);
+        }, List<List<string>>());
+    }
+
+    if (selectionRowCount > payload.numRows && selectionRowCount % payload.numRows === 0) {
+        const rowCopyMultiple = selectionRowCount / payload.numRows;
+        numRows = payload.numRows * rowCopyMultiple;
+        const originalRows = data;
+        for (let i = 0; i < rowCopyMultiple - 1; i++) {
+            data = data.concat(originalRows).toList();
+        }
+    }
+
+    return { data, numCols, numRows };
+}
+
 function validatePaste(
     model: EditorModel,
     colMin: number,
     rowMin: number,
     value: string,
     readOnlyRowCount?: number
-): IPasteModel {
+): PasteModel {
     const maxRowPaste = 1000;
-    const payload = parsePaste(value);
+    let success = true;
+    let message;
+    let payload = parsePaste(value);
+
+    if (model.isMultiSelect) {
+        payload = expandPaste(model, payload);
+    }
 
     const coordinates = {
         colMax: colMin + payload.numCols - 1,
@@ -1256,43 +1529,35 @@ function validatePaste(
         rowMin,
     };
 
-    const paste: IPasteModel = {
+    // If P = 1 then target can be 1 or M
+    // If P = M(x,y) then target can be 1 or exact M(x,y)
+    if (coordinates.colMax >= model.columns.size) {
+        success = false;
+        message = 'Unable to paste. Cannot paste columns beyond the columns found in the grid.';
+    } else if (coordinates.rowMax - coordinates.rowMin > maxRowPaste) {
+        success = false;
+        message = 'Unable to paste. Cannot paste more than ' + maxRowPaste + ' rows.';
+    }
+
+    return {
         coordinates,
+        message,
         payload,
         rowsToAdd: Math.max(
             0,
             coordinates.rowMin + payload.numRows + (readOnlyRowCount ? readOnlyRowCount : 0) - model.rowCount
         ),
-        success: true,
+        success,
     };
-
-    // If P = 1 then target can be 1 or M
-    // If P = M(x,y) then target can be 1 or exact M(x,y)
-
-    if (
-        (coordinates.colMin !== coordinates.colMax || coordinates.rowMin !== coordinates.rowMax) &&
-        model.hasMultipleSelection()
-    ) {
-        paste.success = false;
-        paste.message = 'Unable to paste. Paste is not supported against multiple selections.';
-    } else if (coordinates.colMax >= model.columns.size) {
-        paste.success = false;
-        paste.message = 'Unable to paste. Cannot paste columns beyond the columns found in the grid.';
-    } else if (coordinates.rowMax - coordinates.rowMin > maxRowPaste) {
-        paste.success = false;
-        paste.message = 'Unable to paste. Cannot paste more than ' + maxRowPaste + ' rows.';
-    }
-
-    return paste;
 }
 
-type IParsePastePayload = {
+type ParsePastePayload = {
     data: List<List<string>>;
     numCols: number;
     numRows: number;
 };
 
-type IPasteModel = {
+type PasteModel = {
     coordinates: {
         colMax: number;
         colMin: number;
@@ -1300,21 +1565,17 @@ type IPasteModel = {
         rowMin: number;
     };
     message?: string;
-    payload: IParsePastePayload;
+    payload: ParsePastePayload;
     rowsToAdd: number;
     success: boolean;
 };
 
-function parsePaste(value: string): IParsePastePayload {
+function parsePaste(value: string): ParsePastePayload {
     let numCols = 0;
-    let rows = List<List<string>>().asMutable();
+    let data = List<List<string>>();
 
     if (value === undefined || value === null || typeof value !== 'string') {
-        return {
-            data: rows.asImmutable(),
-            numCols,
-            numRows: rows.size,
-        };
+        return { data, numCols, numRows: 0 };
     }
 
     // remove trailing newline from pasted data to avoid creating an empty row of cells
@@ -1325,10 +1586,11 @@ function parsePaste(value: string): IParsePastePayload {
         if (numCols < columns.size) {
             numCols = columns.size;
         }
-        rows.push(columns);
+        data = data.push(columns);
     });
 
-    rows = rows
+    // Normalize the number columns in each row in case a user pasted rows with different numbers of columns in them
+    data = data
         .map(columns => {
             if (columns.size < numCols) {
                 const remainder = [];
@@ -1342,9 +1604,9 @@ function parsePaste(value: string): IParsePastePayload {
         .toList();
 
     return {
-        data: rows.asImmutable(),
+        data,
         numCols,
-        numRows: rows.size,
+        numRows: data.size,
     };
 }
 
@@ -1412,7 +1674,7 @@ export function changeColumn(
             focusRowIdx: -1,
             selectedColIdx: -1,
             selectedRowIdx: -1,
-            selectionCells: Set<string>(),
+            selectionCells: ImmutableSet<string>(),
             cellMessages: newCellMessages,
             cellValues: newCellValues,
         },
@@ -1470,7 +1732,7 @@ export function removeColumn(
             focusRowIdx: -1,
             selectedColIdx: -1,
             selectedRowIdx: -1,
-            selectionCells: Set<string>(),
+            selectionCells: ImmutableSet<string>(),
             cellMessages: newCellMessages,
             cellValues: newCellValues,
         },
@@ -1569,7 +1831,7 @@ export function addColumns(
             focusRowIdx: -1,
             selectedColIdx: -1,
             selectedRowIdx: -1,
-            selectionCells: Set<string>(),
+            selectionCells: ImmutableSet<string>(),
             cellMessages: newCellMessages,
             cellValues: newCellValues,
         },
@@ -1667,7 +1929,7 @@ export async function addRows(
 
 // Gets the non-blank values pasted for each column.  The values in the resulting lists may not align to the rows
 // pasted if there were empty cells within the paste block.
-function getPasteValuesByColumn(paste: IPasteModel): List<List<string>> {
+function getPasteValuesByColumn(paste: PasteModel): List<List<string>> {
     const { data } = paste.payload;
     const valuesByColumn = List<List<string>>().asMutable();
 
@@ -1701,22 +1963,22 @@ function getColumnFilteredLookup(
     return undefined;
 }
 
-function pasteCellLoad(
+function insertPastedData(
     dataKeys: List<any>,
     data: Map<any, Map<string, any>>,
     queryInfo: QueryInfo,
+    columns: QueryColumn[],
     editorModel: EditorModel,
-    paste: IPasteModel,
+    paste: PasteModel,
     lookupDescriptorMap: { [colKey: string]: ValueDescriptor[] },
     columnMetadata: Map<string, EditableColumnMetadata>,
-    readonlyRows?: List<any>,
+    readonlyRows?: string[],
     lockRowCount?: boolean
 ): EditorModelAndGridData {
     const pastedData = paste.payload.data;
-    const columns = queryInfo.getInsertColumns();
-    const cellMessages = editorModel.cellMessages.asMutable();
-    const cellValues = editorModel.cellValues.asMutable();
-    const selectionCells = Set<string>().asMutable();
+    let cellMessages = editorModel.cellMessages;
+    let cellValues = editorModel.cellValues;
+    let selectionCells = ImmutableSet<string>();
     let rowCount = editorModel.rowCount;
     let updatedDataKeys: List<any>;
     let updatedData: Map<any, Map<string, any>>;
@@ -1728,114 +1990,69 @@ function pasteCellLoad(
         updatedDataKeys = dataChanges.dataKeys;
     }
 
-    if (editorModel.hasMultipleSelection()) {
-        editorModel.selectionCells.forEach(cellKey => {
-            const { colIdx } = parseCellKey(cellKey);
-            const col = columns[colIdx];
+    const { colMin, rowMin } = paste.coordinates;
+    const pkCols = queryInfo.getPkCols();
+    let rowIdx = rowMin;
+    let hasReachedRowLimit = false;
+    pastedData.forEach(row => {
+        if (hasReachedRowLimit && lockRowCount) return;
 
-            pastedData.forEach(row => {
-                row.forEach(value => {
-                    let cv: List<ValueDescriptor>;
-                    let msg: CellMessage;
-
-                    if (col && col.isPublicLookup()) {
-                        const { message, values } = parsePasteCellLookup(
-                            col,
-                            lookupDescriptorMap[col.lookupKey],
-                            value
-                        );
-                        cv = values;
-
-                        if (message) {
-                            msg = message;
-                        }
-                    } else {
-                        cv = List([{ display: value, raw: value }]);
-                    }
-
-                    if (!isReadOnly(col, columnMetadata)) {
-                        if (msg) {
-                            cellMessages.set(cellKey, msg);
-                        } else {
-                            cellMessages.remove(cellKey);
-                        }
-                        cellValues.set(cellKey, cv);
-                    }
-
-                    selectionCells.add(cellKey);
-                });
-            });
-        });
-    } else {
-        const { colMin, rowMin } = paste.coordinates;
-        const pkCols = queryInfo.getPkCols();
-        let rowIdx = rowMin;
-        let hasReachedRowLimit = false;
-        pastedData.forEach(row => {
-            if (hasReachedRowLimit && lockRowCount) return;
-
-            if (readonlyRows) {
-                while (rowIdx < rowCount && isReadonlyRow(data.get(dataKeys.get(rowIdx)), pkCols, readonlyRows)) {
-                    // Skip over readonly rows
-                    rowIdx++;
-                }
-
-                if (rowIdx >= rowCount) {
-                    hasReachedRowLimit = true;
-                    return;
-                }
+        if (readonlyRows) {
+            while (rowIdx < rowCount && isReadonlyRow(data.get(dataKeys.get(rowIdx)), pkCols, readonlyRows)) {
+                // Skip over readonly rows
+                rowIdx++;
             }
 
-            row.forEach((value, cn) => {
-                const colIdx = colMin + cn;
-                const col = columns[colIdx];
-                const cellKey = genCellKey(colIdx, rowIdx);
-                let cv: List<ValueDescriptor>;
-                let msg: CellMessage;
+            if (rowIdx >= rowCount) {
+                hasReachedRowLimit = true;
+                return;
+            }
+        }
 
-                if (col && col.isPublicLookup()) {
-                    const { message, values } = parsePasteCellLookup(col, lookupDescriptorMap[col.lookupKey], value);
-                    cv = values;
+        row.forEach((value, cn) => {
+            const colIdx = colMin + cn;
+            const col = columns[colIdx];
+            const cellKey = genCellKey(colIdx, rowIdx);
+            let cv: List<ValueDescriptor>;
+            let msg: CellMessage;
 
-                    if (message) {
-                        msg = message;
-                    }
+            if (col && col.isPublicLookup()) {
+                const { message, values } = parsePastedLookup(col, lookupDescriptorMap[col.lookupKey], value);
+                cv = values;
+
+                if (message) {
+                    msg = message;
+                }
+            } else {
+                cv = List([{ display: value, raw: value }]);
+            }
+
+            if (!isReadOnly(col, columnMetadata) && !col.readOnly) {
+                if (msg) {
+                    cellMessages = cellMessages.set(cellKey, msg);
                 } else {
-                    cv = List([{ display: value, raw: value }]);
+                    cellMessages = cellMessages.remove(cellKey);
                 }
+                cellValues = cellValues.set(cellKey, cv);
+            }
 
-                if (!isReadOnly(col, columnMetadata)) {
-                    if (msg) {
-                        cellMessages.set(cellKey, msg);
-                    } else {
-                        cellMessages.remove(cellKey);
-                    }
-                    cellValues.set(cellKey, cv);
-                }
-
-                selectionCells.add(cellKey);
-            });
-
-            rowIdx++;
+            selectionCells = selectionCells.add(cellKey);
         });
-    }
+
+        rowIdx++;
+    });
 
     return {
-        editorModel: {
-            cellMessages: cellMessages.asImmutable(),
-            cellValues: cellValues.asImmutable(),
-            rowCount,
-            selectionCells: selectionCells.asImmutable(),
-        },
+        editorModel: { cellMessages, cellValues, rowCount, selectionCells },
         data: updatedData,
         dataKeys: updatedDataKeys,
     };
 }
 
-function isReadonlyRow(row: Map<string, any>, pkCols: QueryColumn[], readonlyRows: List<string>) {
+function isReadonlyRow(row: Map<string, any>, pkCols: QueryColumn[], readonlyRows: string[]): boolean {
     if (pkCols.length === 1 && row) {
         const pkValue = caseInsensitive(row.toJS(), pkCols[0].fieldKey);
-        return readonlyRows.contains(pkValue);
+        return readonlyRows.includes(pkValue);
     }
 
     return false;
@@ -1847,7 +2064,7 @@ function getReadonlyRowCount(
     data: Map<any, Map<string, any>>,
     queryInfo: QueryInfo,
     startRowInd: number,
-    readonlyRows: List<string>
+    readonlyRows: string[]
 ): number {
     const pkCols = queryInfo.getPkCols();
 
@@ -1867,7 +2084,7 @@ interface IParseLookupPayload {
     values: List<ValueDescriptor>;
 }
 
-function parsePasteCellLookup(column: QueryColumn, descriptors: ValueDescriptor[], value: string): IParseLookupPayload {
+function parsePastedLookup(column: QueryColumn, descriptors: ValueDescriptor[], value: string): IParseLookupPayload {
     if (value === undefined || value === null || typeof value !== 'string') {
         return {
             values: List([

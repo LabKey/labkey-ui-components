@@ -5,7 +5,13 @@ import { Filter, PermissionTypes, Query } from '@labkey/api';
 
 import { getDateFormat } from '../../util/Date';
 
-import { ASSAYS_KEY, FIND_SAMPLES_BY_FILTER_HREF, NEW_SAMPLES_HREF, SAMPLES_KEY } from '../../app/constants';
+import {
+    ASSAYS_KEY,
+    FILE_IMPORT_SAMPLES_HREF,
+    FIND_SAMPLES_BY_FILTER_HREF,
+    GRID_INSERT_SAMPLES_HREF,
+    SAMPLES_KEY,
+} from '../../app/constants';
 import { useAppContext } from '../../AppContext';
 
 import { SAMPLE_FILTER_METRIC_AREA } from '../search/utils';
@@ -17,7 +23,7 @@ import { User } from '../base/models/User';
 import { Alert } from '../base/Alert';
 import { getActionErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { SampleEmptyAlert, SampleTypeEmptyAlert } from '../samples/SampleEmptyAlert';
+import { SampleTypeEmptyAlert } from '../samples/SampleEmptyAlert';
 import { AssayDesignEmptyAlert } from '../assay/AssayDesignEmptyAlert';
 import { Section } from '../base/Section';
 import { Tip } from '../base/Tip';
@@ -26,6 +32,7 @@ import { RequiresPermission } from '../base/Permissions';
 import { ChartConfig, ChartData, ChartSelector } from './types';
 import { BaseBarChart } from './BaseBarChart';
 import { processChartData } from './utils';
+import { useServerContext } from '../base/ServerContext';
 
 async function fetchItemCount(schemaQuery: SchemaQuery, filterArray: Filter.IFilter[] = []): Promise<number> {
     try {
@@ -193,7 +200,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
             }
         } else if (!hasData) {
             if (selectedGroup.key === SAMPLES_KEY) {
-                body = <SampleEmptyAlert user={user} />;
+                body = <Alert bsStyle="warning">No samples have been created. {user.hasInsertPermission() ? "Use the 'Add Samples' menu above to create samples.": ""}</Alert>
             } else if (selectedGroup.key === ASSAYS_KEY) {
                 body = <Alert bsStyle="warning">No assay runs have been imported.</Alert>;
             }
@@ -270,6 +277,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
 // export for jest testing
 export const SampleButtons: FC = memo(() => {
     const { api } = useAppContext();
+    const { user } = useServerContext();
 
     const onSampleFinder = useCallback(() => {
         api.query.incrementClientSideMetricCount(SAMPLE_FILTER_METRIC_AREA, 'dashboardButtonNavigation');
@@ -277,13 +285,15 @@ export const SampleButtons: FC = memo(() => {
 
     return (
         <div className="pull-right bar-chart-viewer-sample-buttons">
-            <Button bsStyle="primary" onClick={onSampleFinder} href={FIND_SAMPLES_BY_FILTER_HREF.toHref()}>
+            <Button bsStyle="primary" onClick={onSampleFinder} href={FIND_SAMPLES_BY_FILTER_HREF.toHref()}
+                    className={user.canInsert ? 'button-right-spacing' : ''}>
                 Go to Sample Finder
             </Button>
             <RequiresPermission perms={PermissionTypes.Insert}>
-                <Button bsStyle="success" className="button-left-spacing" href={NEW_SAMPLES_HREF.toHref()}>
-                    Add Samples
-                </Button>
+                <DropdownButton title="Add Samples" id="samples-add-menu" bsStyle="success">
+                    <MenuItem href={GRID_INSERT_SAMPLES_HREF.toHref()}>Add Manually</MenuItem>
+                    <MenuItem href={FILE_IMPORT_SAMPLES_HREF.toHref()}>Import from File</MenuItem>
+                </DropdownButton>
             </RequiresPermission>
         </div>
     );

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.347.0
+*Released*: 27 June 2023
 - Update entity creation for sample and source creation
   - Use URL to determine whether to show file upload or grid
   - export HREF constants for different creation modes

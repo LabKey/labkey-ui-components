@@ -54,6 +54,14 @@ export class MenuSectionModel extends Record({
 
         return new MenuSectionModel();
     }
+
+    getVisibleItems(): MenuItemModel[] {
+        return this.items.filter(item => !item.hidden).toArray();
+    }
+
+    hasVisibleItems(): boolean {
+        return this.getVisibleItems().length > 0;
+    }
 }
 
 export class MenuItemModel extends Record({

@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List } from 'immutable';
+import { fromJS, List } from 'immutable';
 import { ActionURL, Ajax, Filter, getServerContext, Query, Utils } from '@labkey/api';
 
-import { SchemaQuery } from '../public/SchemaQuery';
+import { resolveKey, SchemaQuery } from '../public/SchemaQuery';
 
 import { Actions } from '../public/QueryModel/withQueryModels';
+import { GridResponse } from './components/editable/models';
 
-import { getContainerFilter, invalidateQueryDetailsCache } from './query/api';
+import { getContainerFilter, invalidateQueryDetailsCache, selectRowsDeprecated } from './query/api';
 import {
     BARTENDER_EXPORT_CONTROLLER,
     EXPORT_TYPES,
@@ -44,7 +45,7 @@ export function selectAll(
     containerPath?: string,
     queryParameters?: Record<string, any>,
     containerFilter?: Query.ContainerFilter
-): Promise<ISelectResponse> {
+): Promise<SelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: buildURL('query', 'selectAll.api', undefined, {
@@ -254,7 +255,7 @@ export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>
     });
 }
 
-interface IGetSelectedResponse {
+interface GetSelectedResponse {
     selected: any[];
 }
 
@@ -319,7 +320,7 @@ export function getSelected(
     containerPath?: string,
     queryParameters?: Record<string, any>,
     containerFilter?: Query.ContainerFilter
-): Promise<IGetSelectedResponse> {
+): Promise<GetSelectedResponse> {
     if (useSnapshotSelection) return getSnapshotSelections(key, containerPath);
 
     return new Promise((resolve, reject) => {
@@ -344,7 +345,43 @@ export function getSelected(
     });
 }
 
-export interface ISelectResponse {
+export function getSelectedData(
+    schemaName?: string,
+    queryName?: string,
+    selections?: string[],
+    columns?: string,
+    sorts?: string,
+    queryParameters?: Record<string, any>,
+    viewName?: string,
+    keyColumn = 'RowId'
+): Promise<GridResponse> {
+    return new Promise((resolve, reject) =>
+        selectRowsDeprecated({
+            schemaName,
+            queryName,
+            viewName,
+            filterArray: [Filter.create(keyColumn, selections, Filter.Types.IN)],
+            parameters: queryParameters,
+            sort: sorts,
+            columns,
+            offset: 0,
+        })
+            .then(response => {
+                const { models, orderedModels } = response;
+                const dataKey = resolveKey(schemaName, queryName);
+                resolve({
+                    data: fromJS(models[dataKey]),
+                    dataIds: List(orderedModels[dataKey]),
+                });
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject(resolveErrorMessage(reason));
+            })
+    );
+}
+
+export interface SelectResponse {
     count: number;
 }
 
@@ -355,7 +392,7 @@ export function clearSelected(
     containerPath?: string,
     queryParameters?: Record<string, any>,
     containerFilter?: Query.ContainerFilter
-): Promise<ISelectResponse> {
+): Promise<SelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: buildURL('query', 'clearSelected.api', undefined, {
@@ -403,7 +440,7 @@ export function setSelected(
     queryName?: string,
     filterList?: List<Filter.IFilter>,
     queryParameters?: Record<string, any>
-): Promise<ISelectResponse> {
+): Promise<SelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: buildURL('query', 'setSelected.api', undefined, {
@@ -434,7 +471,7 @@ export function setSelected(
  * @param ids ids to change selection for
  * @param containerPath optional path to the container for this grid.  Default is the current container path
  */
-export function replaceSelected(key: string, ids: string[] | string, containerPath?: string): Promise<ISelectResponse> {
+export function replaceSelected(key: string, ids: string[] | string, containerPath?: string): Promise<SelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: buildURL('query', 'replaceSelected.api', undefined, {
@@ -463,7 +500,7 @@ export function setSnapshotSelections(
     key: string,
     ids: string[] | string,
     containerPath?: string
-): Promise<ISelectResponse> {
+): Promise<SelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: buildURL('query', 'setSnapshotSelection.api', undefined, {
@@ -487,7 +524,7 @@ export function setSnapshotSelections(
  * @param key the selection key for the grid
  * @param containerPath optional path to the container for this grid.  Default is the current container path
  */
-export function getSnapshotSelections(key: string, containerPath?: string): Promise<IGetSelectedResponse> {
+export function getSnapshotSelections(key: string, containerPath?: string): Promise<GetSelectedResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: buildURL('query', 'getSnapshotSelection.api', undefined, {

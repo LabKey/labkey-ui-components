@@ -15,7 +15,7 @@
  */
 import { Map } from 'immutable';
 
-import { getSelectedData } from './actions';
+import { getSelectedData } from '../../actions';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { QueryInfo } from '../../../public/QueryInfo';

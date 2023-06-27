@@ -1,18 +1,19 @@
 import { Filter, Utils } from '@labkey/api';
-import { fromJS, List, Map, OrderedMap, Set as ImmutableSet } from 'immutable';
+import { List, Map, OrderedMap, Set as ImmutableSet } from 'immutable';
 import moment from 'moment';
+
 import { ExtendedMap } from '../../../public/ExtendedMap';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
-import { resolveKey } from '../../../public/SchemaQuery';
 import { GRID_EDIT_INDEX } from '../../constants';
 import { cancelEvent, getPasteValue, setCopyValue } from '../../events';
+import { GridData } from '../../models';
 import { selectRowsDeprecated } from '../../query/api';
 import { formatDate, formatDateTime, parseDate } from '../../util/Date';
-import { resolveErrorMessage } from '../../util/messaging';
 import { caseInsensitive, isFloat, isInteger, parseCsvString, parseScientificInt } from '../../util/utils';
 import { decimalDifference, genCellKey, parseCellKey } from '../../utils';
 import { ViewInfo } from '../../ViewInfo';
+
 import {
     CellMessage,
     CellMessages,
@@ -21,8 +22,6 @@ import {
     EditorModel,
     EditorModelAndGridData,
     EditorModelUpdates,
-    GridData,
-    GridResponse,
     MessageAndValue,
     ValueDescriptor,
 } from './models';
@@ -1488,115 +1487,4 @@ export function copyEvent(editorModel: EditorModel, insertColumns: QueryColumn[]
         cancelEvent(event);
         setCopyValue(event, getCopyValue(editorModel, insertColumns));
     }
-}
-
-export function getSelectedData(
-    schemaName?: string,
-    queryName?: string,
-    selections?: string[],
-    columns?: string,
-    sorts?: string,
-    queryParameters?: Record<string, any>,
-    viewName?: string,
-    keyColumn = 'RowId'
-): Promise<GridResponse> {
-    return new Promise((resolve, reject) =>
-        selectRowsDeprecated({
-            schemaName,
-            queryName,
-            viewName,
-            filterArray: [Filter.create(keyColumn, selections, Filter.Types.IN)],
-            parameters: queryParameters,
-            sort: sorts,
-            columns,
-            offset: 0,
-        })
-            .then(response => {
-                const { models, orderedModels } = response;
-                const dataKey = resolveKey(schemaName, queryName);
-                resolve({
-                    data: fromJS(models[dataKey]),
-                    dataIds: List(orderedModels[dataKey]),
-                });
-            })
-            .catch(reason => {
-                console.error(reason);
-                reject(resolveErrorMessage(reason));
-            })
-    );
-}
-
-interface RemappedKeyValues {
-    mapFromValues: any[];
-    mapToValues: any[];
-}
-
-/**
- * Get the ordered remapped key values from a QueryModel based on grid's current selection.
- * For example, picklist grid has a "ID" PK column and a "SampleId" FK column.
- * This function can be used to get the SampleIds for the currently selected IDs, in the order that respect current grid
- * filter/sort
- * @param fromColumn Key column for the current grid
- * @param toColumn Key column for the FK field, can be empty.
- * @param schemaName
- * @param queryName
- * @param selections
- * @param sortString
- * @param queryParameters
- * @param viewName
- */
-export function getOrderedSelectedMappedKeys(
-    fromColumn: string,
-    toColumn: string,
-    schemaName: string,
-    queryName: string,
-    selections: string[],
-    sortString?: string,
-    queryParameters?: Record<string, any>,
-    viewName?: string
-): Promise<RemappedKeyValues> {
-    return new Promise((resolve, reject) => {
-        getSelectedData(
-            schemaName,
-            queryName,
-            Array.of(...selections),
-            toColumn ? [fromColumn, toColumn].join(',') : fromColumn,
-            sortString,
-            queryParameters,
-            viewName,
-            fromColumn
-        )
-            .then(response => {
-                const { data, dataIds } = response;
-                const values = [];
-                data.forEach(row => {
-                    const rowData = row.toJS();
-                    const from = caseInsensitive(rowData, fromColumn)?.value;
-                    const to = toColumn ? caseInsensitive(rowData, toColumn)?.value : null;
-                    const orderNum = dataIds.indexOf(from + '');
-                    values.push({
-                        from,
-                        to,
-                        orderNum,
-                    });
-                });
-
-                const mapFromValues = [];
-                const mapToValues = [];
-                values.sort((a, b) => a.orderNum - b.orderNum);
-                values.forEach(value => {
-                    mapToValues.push(value.to);
-                    mapFromValues.push(value.from);
-                });
-
-                resolve({
-                    mapToValues,
-                    mapFromValues,
-                });
-            })
-            .catch(reason => {
-                console.error(reason);
-                reject(reason);
-            });
-    });
 }

@@ -24,6 +24,7 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { QueryColumn } from '../../../public/QueryColumn';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { GridData } from '../../models';
 
 import { genCellKey, sortCellKeys, parseCellKey } from '../../utils';
 import { getQueryColumnRenderers } from '../../global';
@@ -561,11 +562,6 @@ export interface GridResponse {
     dataIds: List<any>;
     messages?: List<Map<string, string>>;
     totalRows?: number;
-}
-
-export interface GridData {
-    data: Map<any, Map<string, any>>;
-    dataKeys: List<any>;
 }
 
 interface GridSelectionResponse {

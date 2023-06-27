@@ -18,10 +18,9 @@ import { ActionURL, Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
 
 import { IEntityTypeDetails } from '../entities/models';
 import { deleteEntityType, getSelectedItemSamples } from '../entities/actions';
-import { getSelectedData } from '../editable/actions';
 
 import { Location } from '../../util/URL';
-import { getSelection, getSnapshotSelections } from '../../actions';
+import { getSelectedData, getSelection, getSnapshotSelections } from '../../actions';
 
 import { caseInsensitive, handleRequestFailure } from '../../util/utils';
 

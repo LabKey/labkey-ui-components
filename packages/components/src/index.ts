@@ -183,6 +183,7 @@ import { EditorModel, EditorMode } from './internal/components/editable/models';
 import {
     clearSelected,
     getSelected,
+    getSelectedData,
     getSelection,
     incrementClientSideMetricCount,
     replaceSelected,
@@ -191,8 +192,6 @@ import {
     setSnapshotSelections,
 } from './internal/actions';
 import {
-    getOrderedSelectedMappedKeys,
-    getSelectedData,
     addColumns,
     changeColumn,
     removeColumn
@@ -649,6 +648,7 @@ import { PicklistEditModal } from './internal/components/picklist/PicklistEditMo
 
 import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
 import {
+    getOrderedSelectedMappedKeys,
     getOrderedSelectedPicklistSamples,
     getSelectedPicklistSamples,
     getPicklistFromId,

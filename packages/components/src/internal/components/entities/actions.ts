@@ -1,7 +1,7 @@
 import { ActionURL, Ajax, AuditBehaviorTypes, Filter, getServerContext, Query, Utils } from '@labkey/api';
 import { List, Map } from 'immutable';
 
-import { getSelectedData } from '../editable/actions';
+import { getSelectedData } from '../../actions';
 
 import { buildURL } from '../../url/AppURL';
 import { SampleOperation } from '../samples/constants';

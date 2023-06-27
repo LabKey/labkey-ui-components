@@ -7,7 +7,7 @@ import { Operation, QueryColumn } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-import { getSelectedData } from '../editable/actions';
+import { getSelectedData } from '../../actions';
 
 import { capitalizeFirstChar, getCommonDataValues, getUpdatedData } from '../../util/utils';
 

@@ -1,3 +1,4 @@
+import { List, Map } from 'immutable';
 import { SchemaQuery } from '../public/SchemaQuery';
 
 export function createGridModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
@@ -11,4 +12,9 @@ export function createGridModelId(gridId: string, schemaQuery: SchemaQuery, keyV
     }
 
     return parts.join('|').toLowerCase();
+}
+
+export interface GridData {
+    data: Map<any, Map<string, any>>;
+    dataKeys: List<any>;
 }

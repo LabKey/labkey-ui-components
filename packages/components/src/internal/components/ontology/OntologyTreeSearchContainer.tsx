@@ -2,8 +2,8 @@ import React, { ChangeEvent, FC, memo, MouseEvent, useCallback, useEffect, useMe
 
 import { Alert } from '../base/Alert';
 
-import { searchUsingIndex } from '../search/actions';
-import { SearchCategory } from '../search/constants';
+import { search } from '../search/actions';
+import { SearchCategory, SearchScope } from '../search/constants';
 
 import { ConceptModel, OntologyModel, PathModel } from './models';
 import { fetchAlternatePaths, getOntologyDetails } from './actions';
@@ -64,10 +64,11 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
 
         if (searchTerm) {
             const timeOutId = setTimeout(() => {
-                searchUsingIndex({
+                search({
                     q: getOntologySearchTerm(ontology, searchTerm),
                     category: SearchCategory.Concept,
                     limit: SEARCH_LIMIT,
+                    scope: SearchScope.FolderAndSubfoldersAndShared,
                 })
                     .then(response => {
                         setSearchHits(

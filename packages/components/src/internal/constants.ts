@@ -44,19 +44,6 @@ export enum EXPORT_TYPES {
     LABEL,
 }
 
-export enum MODIFICATION_TYPES {
-    ADD,
-    REPLACE,
-    REMOVE,
-    REMOVE_ALL,
-}
-
-export enum SELECTION_TYPES {
-    ALL,
-    AREA,
-    SINGLE,
-}
-
 export enum KEYS {
     Backspace = 8,
     Tab = 9,

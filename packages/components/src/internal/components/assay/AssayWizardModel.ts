@@ -149,7 +149,7 @@ export class AssayWizardModel
                 return true;
             }
         } else if (this.isGridTab(currentStep)) {
-            return editorModel.hasData();
+            return editorModel.hasData;
         }
         return false;
     }

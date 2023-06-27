@@ -28,23 +28,19 @@ import { Key } from '../../../public/useEnterEscape';
 import {
     addRows,
     addRowsPerPivotValue,
-    beginDrag,
     checkCellReadStatus,
     copyEvent,
     dragFillEvent,
-    endDrag,
     incrementClientSideMetricCount,
-    inDrag,
     pasteEvent,
     updateGridFromBulkForm,
 } from '../../actions';
 import {
+    CELL_SELECTION_HANDLE_CLASSNAME,
     GRID_CHECKBOX_OPTIONS,
     GRID_EDIT_INDEX,
     GRID_SELECTION_INDEX,
     MAX_EDITABLE_GRID_ROWS,
-    MODIFICATION_TYPES,
-    SELECTION_TYPES,
 } from '../../constants';
 import { cancelEvent } from '../../events';
 
@@ -60,9 +56,9 @@ import { GridColumn } from '../base/models/GridColumn';
 import { BulkAddUpdateForm } from '../forms/BulkAddUpdateForm';
 import { QueryInfoForm, QueryInfoFormProps } from '../forms/QueryInfoForm';
 
-import { Cell } from './Cell';
+import { BorderMask, Cell } from './Cell';
 
-import { CellActions, EDITABLE_GRID_CONTAINER_CLS } from './constants';
+import { CellActions, EDITABLE_GRID_CONTAINER_CLS, MODIFICATION_TYPES, SELECTION_TYPES } from './constants';
 import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 
 import { CellMessage, EditorModel, EditorModelProps, ValueDescriptor } from './models';
@@ -87,6 +83,65 @@ function moveUp(colIdx: number, rowIdx: number): { colIdx: number; rowIdx: numbe
     return { colIdx, rowIdx: rowIdx - 1 };
 }
 
+function computeBorderMask(
+    minCol: number,
+    maxCol: number,
+    minRow: number,
+    maxRow: number,
+    colIdx: number,
+    rowIdx: number,
+    currentMask: BorderMask
+): BorderMask {
+    const borderMask: BorderMask = [...currentMask];
+    const betweenColumns = colIdx >= minCol && colIdx <= maxCol;
+    const betweenRows = rowIdx >= minRow && rowIdx <= maxRow;
+    if (minRow === rowIdx && betweenColumns) borderMask[0] = true;
+    if (maxCol === colIdx && betweenRows) borderMask[1] = true;
+    if (maxRow === rowIdx && betweenColumns) borderMask[2] = true;
+    if (minCol === colIdx && betweenRows) borderMask[3] = true;
+    return borderMask;
+}
+
+/**
+ * Returns true if the selection is sparse. A sparse selection is one where a continuous set of cells in a rectangle are
+ * not selected. It may look something like this:
+ *  0 1 1 0 0
+ *  0 0 0 1 1
+ *  0 1 1 0 0
+ * @param selection: An array of cell keys representing the selected cells, ordered left to right, top to bottom.
+ */
+function isSparseSelection(selection: string[]): boolean {
+    if (selection.length === 0) return false;
+
+    const firstCell = parseCellKey(selection[0]);
+    const lastCell = parseCellKey(selection[selection.length - 1]);
+    const minCol = firstCell.colIdx;
+    const maxCol = lastCell.colIdx;
+    const minRow = firstCell.rowIdx;
+    const maxRow = lastCell.rowIdx;
+    const expectedCellCount = (maxCol - minCol + 1) * (maxRow - minRow + 1);
+
+    // If the expected size is wrong we can short circuit and return
+    if (selection.length !== expectedCellCount) return true;
+
+    let selIdx = 0;
+
+    // If the sizes match, then we need to generate the expected cellKeys in the order we expect them, and if they don't
+    // all match we know it's a sparse selection.
+    for (let rowIdx = minRow; rowIdx <= maxRow; rowIdx++) {
+        for (let colIdx = minCol; colIdx <= maxCol; colIdx++) {
+            const expectedCellKey = genCellKey(colIdx, rowIdx);
+            const actualCellKey = selection[selIdx];
+
+            if (expectedCellKey !== actualCellKey) return true;
+
+            selIdx++;
+        }
+    }
+
+    return false;
+}
+
 const COUNT_COL = new GridColumn({
     index: GRID_EDIT_INDEX,
     tableCell: true,
@@ -109,11 +164,12 @@ function inputCellFactory(
     allowSelection: boolean,
     hideCountCol: boolean,
     columnMetadata: EditableColumnMetadata,
-    readonlyRows: List<any>,
-    lockedRows: List<any>,
+    readonlyRows: string[],
+    lockedRows: string[],
     cellActions: CellActions,
     containerFilter: Query.ContainerFilter,
-    forUpdate: boolean
+    forUpdate: boolean,
+    initialSelection: string[]
 ) {
     return (value: any, row: any, c: GridColumn, rn: number, cn: number) => {
         let colOffset = 0;
@@ -138,8 +194,44 @@ function inputCellFactory(
                 .toArray();
         }
 
+        const currentSelection = editorModel.sortedSelectionKeys;
+        const isSparse = isSparseSelection(currentSelection);
+        const renderDragHandle = !isSparse && editorModel.lastSelection(colIdx, rn);
+        let inSelection = editorModel?.inSelection(colIdx, rn);
+        let borderMask: BorderMask = [false, false, false, false];
+
+        if (!isSparse && currentSelection.length) {
+            const minCell = parseCellKey(currentSelection[0]);
+            const maxCell = parseCellKey(currentSelection[currentSelection.length - 1]);
+            borderMask = computeBorderMask(
+                minCell.colIdx,
+                maxCell.colIdx,
+                minCell.rowIdx,
+                maxCell.rowIdx,
+                colIdx,
+                rn,
+                borderMask
+            );
+        }
+
+        if (!isSparse && initialSelection?.length) {
+            const minCell = parseCellKey(initialSelection[0]);
+            const maxCell = parseCellKey(initialSelection[initialSelection.length - 1]);
+            borderMask = computeBorderMask(
+                minCell.colIdx,
+                maxCell.colIdx,
+                minCell.rowIdx,
+                maxCell.rowIdx,
+                colIdx,
+                rn,
+                borderMask
+            );
+            inSelection = initialSelection.includes(genCellKey(colIdx, rn));
+        }
+
         return (
             <Cell
+                borderMask={borderMask}
                 cellActions={cellActions}
                 col={c.raw}
                 colIdx={colIdx}
@@ -154,8 +246,8 @@ function inputCellFactory(
                 forUpdate={forUpdate}
                 message={editorModel?.getMessage(colIdx, rn)}
                 selected={editorModel ? editorModel.isSelected(colIdx, rn) : false}
-                selection={editorModel ? editorModel.inSelection(colIdx, rn) : false}
-                lastSelection={editorModel ? editorModel.lastSelection(colIdx, rn) : false}
+                selection={inSelection}
+                renderDragHandle={renderDragHandle}
                 values={editorModel ? editorModel.getValue(colIdx, rn) : List<ValueDescriptor>()}
                 lookupValueFilters={columnMetadata?.lookupValueFilters}
                 filteredLookupValues={columnMetadata?.filteredLookupValues}
@@ -232,19 +324,19 @@ export interface SharedEditableGridProps {
     extraExportColumns?: Array<Partial<QueryColumn>>;
     forUpdate?: boolean;
     hideCountCol?: boolean;
-    insertColumns?: List<QueryColumn>;
+    insertColumns?: QueryColumn[];
     isSubmitting?: boolean;
     // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
-    lockedRows?: List<any>;
+    lockedRows?: string[];
     maxRows?: number;
     metricFeatureArea?: string;
     // list of key values that cannot be deleted.
     notDeletable?: List<any>;
     primaryBtnProps?: EditableGridBtnProps;
     processBulkData?: (data: OrderedMap<string, any>) => BulkAddData;
-    readOnlyColumns?: List<string>;
+    readOnlyColumns?: string[];
     // list of key values for rows that are readonly.
-    readonlyRows?: List<any>;
+    readonlyRows?: string[];
     removeColumnTitle?: string;
     rowNumColumn?: GridColumn;
     // Toggle "Edit in Grid" and "Edit in Bulk" as tabs
@@ -252,7 +344,7 @@ export interface SharedEditableGridProps {
     showBulkTabOnLoad?: boolean;
     striped?: boolean;
     tabBtnProps?: EditableGridBtnProps;
-    updateColumns?: List<QueryColumn>;
+    updateColumns?: QueryColumn[];
 }
 
 export interface EditableGridBtnProps {
@@ -269,10 +361,10 @@ export interface SharedEditableGridPanelProps extends SharedEditableGridProps {
     bsStyle?: any;
     className?: string;
     getColumnMetadata?: (tabId?: number) => Map<string, EditableColumnMetadata>;
-    getReadOnlyRows?: (tabId?: number) => List<any>;
+    getReadOnlyRows?: (tabId?: number) => string[];
     getTabHeader?: (tabId?: number) => ReactNode;
     getTabTitle?: (tabId?: number) => string;
-    getUpdateColumns?: (tabId?: number) => List<QueryColumn>;
+    getUpdateColumns?: (tabId?: number) => QueryColumn[];
     title?: string;
 }
 
@@ -292,6 +384,8 @@ export interface EditableGridProps extends SharedEditableGridProps {
 
 export interface EditableGridState {
     activeEditTab?: EditableGridTabs;
+    inDrag: boolean;
+    initialSelection: string[];
     pendingBulkFormData?: any;
     selected: Set<number>;
     selectedState: GRID_CHECKBOX_OPTIONS;
@@ -356,22 +450,26 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         }
 
         this.state = {
+            activeEditTab: props.activeEditTab ? props.activeEditTab : EditableGridTabs.Grid,
+            inDrag: false,
+            initialSelection: undefined,
             selected: selectionCells,
             selectedState,
             showBulkAdd: false,
             showBulkUpdate: false,
             showMask: false,
-            activeEditTab: props.activeEditTab ? props.activeEditTab : EditableGridTabs.Grid,
         };
     }
 
     componentDidMount(): void {
         document.addEventListener('copy', this.onCopy);
+        document.addEventListener('cut', this.onCut);
         document.addEventListener('paste', this.onPaste);
     }
 
     componentWillUnmount(): void {
         document.removeEventListener('copy', this.onCopy);
+        document.removeEventListener('cut', this.onCut);
         document.removeEventListener('paste', this.onPaste);
     }
 
@@ -416,7 +514,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         });
     };
 
-    getColumns = (): List<QueryColumn> => {
+    getColumns = (): QueryColumn[] => {
         const { editorModel, forUpdate, insertColumns, queryInfo, readOnlyColumns, updateColumns } = this.props;
         return editorModel.getColumns(queryInfo, forUpdate, readOnlyColumns, insertColumns, updateColumns);
     };
@@ -451,10 +549,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     applySelection = (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES): Partial<EditorModel> => {
+        const { initialSelection } = this.state;
         const { editorModel } = this.props;
         const { rowCount } = editorModel;
         let selectionCells = Set<string>();
-        const hasSelection = editorModel.hasSelection();
+        const hasSelection = editorModel.hasSelection;
         let selectedColIdx = colIdx;
         let selectedRowIdx = rowIdx;
 
@@ -471,13 +570,25 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 selectedRowIdx = editorModel.selectedRowIdx;
 
                 if (hasSelection) {
-                    const upperLeft = [Math.min(selectedColIdx, colIdx), Math.min(selectedRowIdx, rowIdx)];
-                    const bottomRight = [Math.max(selectedColIdx, colIdx), Math.max(selectedRowIdx, rowIdx)];
-                    const maxColumn = Math.min(bottomRight[0], editorModel.columns.size - 1);
-                    const maxRow = Math.min(bottomRight[1], rowCount - 1);
+                    let minColIdx = Math.min(selectedColIdx, colIdx);
+                    let maxColIdx = Math.max(selectedColIdx, colIdx);
+                    let minRowIdx = Math.min(selectedRowIdx, rowIdx);
+                    let maxRowIdx = Math.max(selectedRowIdx, rowIdx);
 
-                    for (let c = upperLeft[0]; c <= maxColumn; c++) {
-                        for (let r = upperLeft[1]; r <= maxRow; r++) {
+                    if (initialSelection !== undefined) {
+                        // If we have an initialSelection we want to prevent the user from changing the number of
+                        // columns, or from shrinking the initially selected state. Functionally this means a user can
+                        // only expand a selection upwards or downwards, just like in Excel/Sheets.
+                        const minInitialCell = parseCellKey(initialSelection[0]);
+                        const maxInitialCell = parseCellKey(initialSelection[initialSelection.length - 1]);
+                        minColIdx = minInitialCell.colIdx;
+                        maxColIdx = maxInitialCell.colIdx;
+                        minRowIdx = Math.min(minRowIdx, minInitialCell.rowIdx);
+                        maxRowIdx = Math.max(maxRowIdx, maxInitialCell.rowIdx);
+                    }
+
+                    for (let c = minColIdx; c <= maxColIdx; c++) {
+                        for (let r = minRowIdx; r <= maxRowIdx; r++) {
                             selectionCells = selectionCells.add(genCellKey(c, r));
                         }
                     }
@@ -633,11 +744,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         }
     };
 
-    getLoweredColumnMetadata = (): Map<string, EditableColumnMetadata> =>
-        this.props.columnMetadata?.reduce(
-            (result, value, key) => result.set(key.toLowerCase(), value),
-            Map<string, EditableColumnMetadata>()
-        );
+    getLoweredColumnMetadata = (): Record<string, EditableColumnMetadata> =>
+        this.props.columnMetadata?.reduce((result, value, key) => {
+            result[key.toLowerCase()] = value;
+            return result;
+        }, {});
 
     generateColumns = (): List<GridColumn> => {
         const {
@@ -676,7 +787,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const loweredColumnMetadata = this.getLoweredColumnMetadata();
 
         this.getColumns().forEach(qCol => {
-            const metadata = loweredColumnMetadata.get(qCol.fieldKey.toLowerCase());
+            const metadata = loweredColumnMetadata[qCol.fieldKey.toLowerCase()];
             const metaCaption = metadata?.caption;
             gridColumns = gridColumns.push(
                 new GridColumn({
@@ -691,7 +802,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         lockedRows,
                         this.cellActions,
                         containerFilter,
-                        forUpdate
+                        forUpdate,
+                        this.state.initialSelection
                     ),
                     index: qCol.fieldKey,
                     raw: qCol,
@@ -739,9 +851,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     renderColumnHeader = (col: GridColumn, metadataKey: string, required?: boolean, format?: string): ReactNode => {
         const label = col.title;
         const loweredColumnMetadata = this.getLoweredColumnMetadata();
-        const metadata = loweredColumnMetadata?.has(metadataKey.toLowerCase())
-            ? loweredColumnMetadata.get(metadataKey.toLowerCase())
-            : undefined;
+        const metadata = loweredColumnMetadata?.[metadataKey.toLowerCase()];
         const showOverlay = metadata?.toolTip || format;
         return (
             <>
@@ -795,7 +905,36 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         this.toggleMask(false);
     };
 
-    inDrag = (): boolean => inDrag(this.props.editorModel.id);
+    handleDrag = (event: MouseEvent): boolean => {
+        if (!this.props.editorModel.hasFocus) {
+            event.preventDefault();
+            return true;
+        }
+
+        return false;
+    };
+
+    beginDrag = (event: MouseEvent): void => {
+        const { disabled, editorModel } = this.props;
+        if (this.handleDrag(event) && !disabled) {
+            this.setState({ inDrag: true });
+            const target = event.target as Element;
+            const isDragHandleAction = target.className?.indexOf(CELL_SELECTION_HANDLE_CLASSNAME) > -1;
+            if (isDragHandleAction) {
+                const initialSelection = editorModel.sortedSelectionKeys;
+                if (!initialSelection.length) initialSelection.push(editorModel.selectionKey);
+                this.setState({ initialSelection });
+            }
+        }
+    };
+
+    inDrag = (): boolean => this.state.inDrag;
+
+    endDrag = (event: MouseEvent): void => {
+        if (this.handleDrag(event)) {
+            this.setState({ inDrag: false });
+        }
+    };
 
     onCopy = (event: ClipboardEvent): void => {
         const { editorModel, queryInfo } = this.props;
@@ -804,10 +943,23 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         }
     };
 
+    onCut = (event: ClipboardEvent): void => {
+        const { editorModel, queryInfo } = this.props;
+        if (!this.props.disabled) {
+            copyEvent(editorModel, queryInfo.getInsertColumns(), event);
+            this.modifyCell(
+                editorModel.selectedColIdx,
+                editorModel.selectedRowIdx,
+                undefined,
+                MODIFICATION_TYPES.REMOVE_ALL
+            );
+        }
+    };
+
     onKeyDown = (event: React.KeyboardEvent<HTMLElement>): void => {
         const { disabled, editorModel } = this.props;
 
-        if (disabled || editorModel.hasFocus()) {
+        if (disabled || editorModel.hasFocus) {
             return;
         }
 
@@ -902,64 +1054,54 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         }
     };
 
-    onMouseDown = (event: MouseEvent): void => {
-        if (!this.props.disabled) {
-            beginDrag(this.props.editorModel, event);
+    _dragFill = async (initialSelection: string[]) => {
+        const { editorModel, onChange, data, dataKeys, queryInfo, readonlyRows, lockedRows } = this.props;
+
+        if (editorModel.isMultiSelect) {
+            const loweredColumnMetadata = this.getLoweredColumnMetadata();
+            const columns = this.getColumns();
+            const columnMetadata = columns.map(col => loweredColumnMetadata[col.fieldKey.toLowerCase()]);
+            const { cellMessages, cellValues } = await dragFillEvent(
+                editorModel,
+                initialSelection,
+                dataKeys,
+                data,
+                queryInfo,
+                columns,
+                columnMetadata,
+                readonlyRows,
+                lockedRows
+            );
+            onChange({ cellMessages, cellValues });
+            this.setState({ initialSelection: undefined });
         }
     };
 
     onMouseUp = (event: MouseEvent): void => {
-        const { editorModel, onChange, disabled, data, dataKeys, queryInfo, readonlyRows, lockedRows } = this.props;
+        const { disabled } = this.props;
 
-        if (!disabled) {
-            const dragHandleInitSelection = endDrag(editorModel, event);
+        if (disabled) return;
 
-            if (dragHandleInitSelection && editorModel.hasMultipleSelection()) {
-                const selColFieldKey = this.generateColumns()
-                    .get(parseCellKey(dragHandleInitSelection[0]).colIdx + 2) // 0 = __selection__, 1 = __editing__
-                    ?.raw.fieldKey?.toLowerCase();
-
-                const changes = dragFillEvent(
-                    editorModel,
-                    dragHandleInitSelection,
-                    dataKeys,
-                    data,
-                    queryInfo,
-                    this.getLoweredColumnMetadata().get(selColFieldKey),
-                    readonlyRows,
-                    lockedRows
-                );
-                if (changes.editorModel) onChange(changes.editorModel);
-            }
-        }
+        this.endDrag(event);
+        const initialSelection = this.state.initialSelection;
+        if (initialSelection?.length > 0) this._dragFill(initialSelection);
     };
 
     fillDown = (): void => {
-        const { editorModel, onChange, data, dataKeys, queryInfo, readonlyRows, lockedRows } = this.props;
+        const { disabled, editorModel } = this.props;
+        const sortedSelectionKeys = editorModel.sortedSelectionKeys;
 
-        if (editorModel.hasMultipleSelection() && !editorModel.hasMultipleColumnSelection()) {
-            const initSelection = editorModel.sortedSelectionKeys.slice(0, 1);
-            const selColFieldKey = this.generateColumns()
-                .get(parseCellKey(initSelection[0]).colIdx + 2) // 0 = __selection__, 1 = __editing__
-                ?.raw.fieldKey?.toLowerCase();
+        if (disabled || isSparseSelection(sortedSelectionKeys)) return;
 
-            const changes = dragFillEvent(
-                editorModel,
-                initSelection,
-                dataKeys,
-                data,
-                queryInfo,
-                this.getLoweredColumnMetadata().get(selColFieldKey),
-                readonlyRows,
-                lockedRows
-            );
-            if (changes.editorModel) onChange(changes.editorModel);
-        }
+        const firstRowIdx = parseCellKey(sortedSelectionKeys[0]).rowIdx;
+        const firstRowCellKeys = sortedSelectionKeys.filter(cellKey => parseCellKey(cellKey).rowIdx === firstRowIdx);
+        this._dragFill(firstRowCellKeys);
     };
 
     onPaste = async (event: ClipboardEvent): Promise<void> => {
         const { allowAdd, columnMetadata, data, dataKeys, disabled, editorModel, onChange, queryInfo, readonlyRows } =
             this.props;
+        const columns = this.getColumns();
 
         if (!disabled) {
             this.showMask();
@@ -968,6 +1110,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 dataKeys,
                 data,
                 queryInfo,
+                columns,
                 event,
                 columnMetadata,
                 readonlyRows,
@@ -1035,8 +1178,17 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     bulkAdd = async (bulkData: OrderedMap<string, any>): Promise<void> => {
-        const { addControlProps, bulkAddProps, editorModel, data, dataKeys, metricFeatureArea, onChange, processBulkData, queryInfo} =
-            this.props;
+        const {
+            addControlProps,
+            bulkAddProps,
+            editorModel,
+            data,
+            dataKeys,
+            metricFeatureArea,
+            onChange,
+            processBulkData,
+            queryInfo,
+        } = this.props;
         const { nounPlural } = addControlProps;
         // numItems is a string because we rely on Formsy to grab the value for us (See QueryInfoForm for details). We
         // need to parseInt the value because we add this variable to other numbers, if it's a string we'll add more
@@ -1381,7 +1533,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 <div
                     className={classNames(EDITABLE_GRID_CONTAINER_CLS, { 'loading-mask': showMask })}
                     onKeyDown={this.onKeyDown}
-                    onMouseDown={this.onMouseDown}
+                    onMouseDown={this.beginDrag}
                     onMouseUp={this.onMouseUp}
                 >
                     <Grid

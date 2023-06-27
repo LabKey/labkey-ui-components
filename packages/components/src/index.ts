@@ -379,7 +379,7 @@ import {
     getGroupedSampleDomainFields,
     getGroupedSampleDisplayColumns,
 } from './internal/components/samples/actions';
-import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
+import { SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SampleAmountEditModal } from './internal/components/samples/SampleAmountEditModal';
 import { StorageAmountInput } from './internal/components/samples/StorageAmountInput';
 
@@ -750,6 +750,7 @@ import {
     BIOLOGICS_APP_PROPERTIES,
     BOXES_KEY,
     DATA_CLASS_KEY,
+    EntityCreationMode,
     ELN_KEY,
     EXPERIMENTAL_REQUESTS_MENU,
     FIND_SAMPLES_BY_FILTER_HREF,
@@ -759,11 +760,13 @@ import {
     FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
     HOME_KEY,
+    GRID_INSERT_SAMPLES_HREF,
+    FILE_IMPORT_SAMPLES_HREF,
+    FILE_UPDATE_SAMPLES_HREF,
     MEDIA_KEY,
     MINE_KEY,
     NEW_ASSAY_DESIGN_HREF,
     NEW_SAMPLE_TYPE_HREF,
-    NEW_SAMPLES_HREF,
     NEW_SOURCE_TYPE_HREF,
     NEW_STANDARD_ASSAY_DESIGN_HREF,
     NOTIFICATION_TIMEOUT,
@@ -840,6 +843,7 @@ const App = {
     RoutingTableReducers,
     ServerNotificationReducers,
     CloseEventCode,
+    EntityCreationMode,
     getCurrentAppProperties,
     registerWebSocketListeners,
     isAppHomeFolder,
@@ -924,7 +928,9 @@ const App = {
     BOXES_KEY,
     HOME_KEY,
     USER_KEY,
-    NEW_SAMPLES_HREF,
+    GRID_INSERT_SAMPLES_HREF,
+    FILE_IMPORT_SAMPLES_HREF,
+    FILE_UPDATE_SAMPLES_HREF,
     NEW_SOURCE_TYPE_HREF,
     NEW_SAMPLE_TYPE_HREF,
     NEW_ASSAY_DESIGN_HREF,
@@ -1218,7 +1224,6 @@ export {
     DataOperation,
     ParentEntityRequiredColumns,
     SampleAmountEditModal,
-    SampleEmptyAlert,
     SampleTypeEmptyAlert,
     SamplesEditButtonSections,
     StorageAmountInput,

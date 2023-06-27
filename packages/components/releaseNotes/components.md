@@ -6,6 +6,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Create Storage on Sample Import
   * add StorageUnit column to SAMPLE_STORAGE_COLUMNS const
 
+### version 2.347.0
+*Released*: 27 June 2023
+- Update entity creation for sample and source creation
+  - Use URL to determine whether to show file upload or grid
+  - export HREF constants for different creation modes
+
 ### version 2.346.1
 *Released*: 26 June 2023
 * Add scope to ontology search queries

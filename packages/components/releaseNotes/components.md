@@ -3,7 +3,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-- Add new route keep for cross-type listing pags
+- Add new route keep for cross-type listing pages
+- export method for getting sample types and rowIds from a transactionAuditId
 
 ### version 2.347.1
 *Released*: 27 June 2023

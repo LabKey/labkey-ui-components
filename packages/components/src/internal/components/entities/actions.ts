@@ -549,11 +549,9 @@ export function handleEntityFileImport(
     saveToPipeline?: boolean
 ): Promise<any> {
     return new Promise((resolve, reject) => {
-        const { schemaName, queryName } = queryInfo.schemaQuery;
-
         return importData({
-            schemaName,
-            queryName,
+            schemaName: queryInfo?.schemaQuery.schemaName,
+            queryName: queryInfo?.schemaQuery.queryName,
             file,
             importUrl: ActionURL.buildURL(importFileController ?? 'experiment', importAction, null, {
                 ...importParameters,

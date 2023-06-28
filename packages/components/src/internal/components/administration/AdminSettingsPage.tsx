@@ -54,8 +54,10 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
         setIsDirty(true);
     }, [setIsDirty]);
 
-    const onSettingsSuccess = useCallback(() => {
+    const onSettingsSuccess = useCallback((reload?: boolean) => {
         setIsDirty(false);
+        if (reload)
+            window.location.reload();
     }, [setIsDirty]);
 
     const onBarTenderSuccess = useCallback(() => {

@@ -4,7 +4,7 @@ import { List } from 'immutable';
 
 import { insertRows, InsertRowsResponse, selectRowsDeprecated } from '../../query/api';
 import { resolveKey, SchemaQuery } from '../../../public/SchemaQuery';
-import { getOrderedSelectedMappedKeys, getSelected, getSelectedData, setSnapshotSelections } from '../../actions';
+import { getSelected, getSelectedData, setSnapshotSelections } from '../../actions';
 import { PICKLIST } from '../domainproperties/list/constants';
 import { saveDomain } from '../domainproperties/actions';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
@@ -213,6 +213,81 @@ export function getOrderedSelectedPicklistSamples(queryModel: QueryModel, saveSn
         queryParameters,
         viewName
     );
+}
+
+interface RemappedKeyValues {
+    mapFromValues: any[];
+    mapToValues: any[];
+}
+
+/**
+ * Get the ordered remapped key values from a QueryModel based on grid's current selection.
+ * For example, picklist grid has a "ID" PK column and a "SampleId" FK column.
+ * This function can be used to get the SampleIds for the currently selected IDs, in the order that respect current grid
+ * filter/sort
+ * @param fromColumn Key column for the current grid
+ * @param toColumn Key column for the FK field, can be empty.
+ * @param schemaName
+ * @param queryName
+ * @param selections
+ * @param sortString
+ * @param queryParameters
+ * @param viewName
+ */
+export function getOrderedSelectedMappedKeys(
+    fromColumn: string,
+    toColumn: string,
+    schemaName: string,
+    queryName: string,
+    selections: string[],
+    sortString?: string,
+    queryParameters?: Record<string, any>,
+    viewName?: string
+): Promise<RemappedKeyValues> {
+    return new Promise((resolve, reject) => {
+        getSelectedData(
+            schemaName,
+            queryName,
+            Array.of(...selections),
+            toColumn ? [fromColumn, toColumn].join(',') : fromColumn,
+            sortString,
+            queryParameters,
+            viewName,
+            fromColumn
+        )
+            .then(response => {
+                const { data, dataIds } = response;
+                const values = [];
+                data.forEach(row => {
+                    const rowData = row.toJS();
+                    const from = caseInsensitive(rowData, fromColumn)?.value;
+                    const to = toColumn ? caseInsensitive(rowData, toColumn)?.value : null;
+                    const orderNum = dataIds.indexOf(from + '');
+                    values.push({
+                        from,
+                        to,
+                        orderNum,
+                    });
+                });
+
+                const mapFromValues = [];
+                const mapToValues = [];
+                values.sort((a, b) => a.orderNum - b.orderNum);
+                values.forEach(value => {
+                    mapToValues.push(value.to);
+                    mapFromValues.push(value.from);
+                });
+
+                resolve({
+                    mapToValues,
+                    mapFromValues,
+                });
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject(reason);
+            });
+    });
 }
 
 export function getSelectedPicklistSamples(

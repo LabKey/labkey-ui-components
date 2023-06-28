@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Filter, Query } from '@labkey/api';
+import { Query } from '@labkey/api';
 import classNames from 'classnames';
 import { List, Map, OrderedMap, Set } from 'immutable';
 import React, { ChangeEvent, MouseEvent, PureComponent, ReactNode, SyntheticEvent } from 'react';
@@ -25,16 +25,7 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { EditableGridExportMenu, ExportOption } from '../../../public/QueryModel/ExportMenu';
 import { Key } from '../../../public/useEnterEscape';
 
-import {
-    addRows,
-    addRowsPerPivotValue,
-    checkCellReadStatus,
-    copyEvent,
-    dragFillEvent,
-    incrementClientSideMetricCount,
-    pasteEvent,
-    updateGridFromBulkForm,
-} from '../../actions';
+import { incrementClientSideMetricCount } from '../../actions';
 import {
     CELL_SELECTION_HANDLE_CLASSNAME,
     GRID_CHECKBOX_OPTIONS,
@@ -55,13 +46,22 @@ import { GridColumn } from '../base/models/GridColumn';
 
 import { BulkAddUpdateForm } from '../forms/BulkAddUpdateForm';
 import { QueryInfoForm, QueryInfoFormProps } from '../forms/QueryInfoForm';
+import {
+    addRows,
+    addRowsPerPivotValue,
+    checkCellReadStatus,
+    copyEvent,
+    dragFillEvent,
+    pasteEvent,
+    updateGridFromBulkForm,
+} from './actions';
 
 import { BorderMask, Cell } from './Cell';
 
 import { CellActions, EDITABLE_GRID_CONTAINER_CLS, MODIFICATION_TYPES, SELECTION_TYPES } from './constants';
 import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 
-import { CellMessage, EditorModel, EditorModelProps, ValueDescriptor } from './models';
+import { CellMessage, EditableColumnMetadata, EditorModel, EditorModelProps, ValueDescriptor } from './models';
 
 function isCellEmpty(values: List<ValueDescriptor>): boolean {
     return !values || values.isEmpty() || values.some(v => v.raw === undefined || v.raw === null || v.raw === '');
@@ -267,21 +267,6 @@ function inputCellKey(col: QueryColumn, row: any): string {
     }
 
     return [col.fieldKey, indexKey].join('_$Cell$_');
-}
-
-export interface EditableColumnMetadata {
-    caption?: string;
-    filteredLookupKeys?: List<any>;
-    filteredLookupValues?: List<string>;
-    getFilteredLookupKeys?: (linkedValues: any[]) => Promise<List<any>>;
-    hideTitleTooltip?: boolean;
-    isReadOnlyCell?: (rowKey: string) => boolean;
-    linkedColInd?: number;
-    lookupValueFilters?: Filter.IFilter[];
-    placeholder?: string;
-    popoverClassName?: string;
-    readOnly?: boolean;
-    toolTip?: ReactNode;
 }
 
 export interface BulkAddData {

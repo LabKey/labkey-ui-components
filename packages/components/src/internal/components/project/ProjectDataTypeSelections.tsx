@@ -13,7 +13,7 @@ interface Props {
     api?: FolderAPIWrapper;
     disabledTypesMap?: { [key: string]: number[] };
     entityDataTypes?: EntityDataType[];
-    onSuccess?: () => void;
+    onSuccess?: (reload?: boolean) => void;
     projectId?: string;
     updateDataTypeExclusions: (dataType: ProjectConfigurableDataType, exclusions: number[]) => void;
 }
@@ -57,7 +57,7 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
             await api.updateProjectDataExclusions(options);
 
             setDirty(false);
-            onSuccess();
+            onSuccess(true);
         } catch (e) {
             setError(resolveErrorMessage(e) ?? 'Failed to update project settings');
         } finally {

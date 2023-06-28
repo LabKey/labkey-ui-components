@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.X
-*Released*: X June 2023
+### version 2.347.2
+*Released*: 27 June 2023
 - Project setting updates for Data in Project and Project Storage needs a manual refresh to take effect
 
 ### version 2.347.1

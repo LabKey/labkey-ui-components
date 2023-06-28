@@ -4,7 +4,7 @@ import {
     clearSelected,
     fetchCharts,
     getSelected,
-    ISelectResponse,
+    SelectResponse,
     replaceSelected,
     selectAll,
     setSelected,
@@ -58,7 +58,7 @@ export interface QueryModelLoader {
      * Clear all selected rows for a given QueryModel.
      * @param model: QueryModel
      */
-    clearSelections: (model: QueryModel) => Promise<ISelectResponse>;
+    clearSelections: (model: QueryModel) => Promise<SelectResponse>;
 
     /**
      * Loads the charts (DataViewInfos) for a given model.
@@ -90,7 +90,7 @@ export interface QueryModelLoader {
      * @param checked: boolean, the checked status of the ids
      * @param selections: A list of stringified RowIds.
      */
-    replaceSelections: (model: QueryModel, selections: string[]) => Promise<ISelectResponse>;
+    replaceSelections: (model: QueryModel, selections: string[]) => Promise<SelectResponse>;
 
     /**
      * Select all rows for a given QueryModel.
@@ -104,7 +104,7 @@ export interface QueryModelLoader {
      * @param checked: boolean, the checked status of the ids
      * @param selections: A list of stringified RowIds.
      */
-    setSelections: (model: QueryModel, checked, selections: string[]) => Promise<ISelectResponse>;
+    setSelections: (model: QueryModel, checked, selections: string[]) => Promise<SelectResponse>;
 }
 
 export const DefaultQueryModelLoader: QueryModelLoader = {

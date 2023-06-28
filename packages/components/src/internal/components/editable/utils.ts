@@ -4,7 +4,6 @@ import { Utils, UtilsDOM } from '@labkey/api';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { QueryColumn } from '../../../public/QueryColumn';
 
-import { getLookupValueDescriptors } from '../../actions';
 import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from '../../util/Date';
 import { genCellKey } from '../../utils';
 
@@ -16,7 +15,9 @@ import { EXPORT_TYPES } from '../../constants';
 
 import { SelectInputOption, SelectInputProps } from '../forms/input/SelectInput';
 
-import { EditorMode, EditorModel, EditorModelProps, IEditableGridLoader, ValueDescriptor } from './models';
+import { getLookupValueDescriptors } from './actions';
+
+import { EditorMode, EditorModel, EditorModelProps, EditableGridLoader, ValueDescriptor } from './models';
 
 import { CellActions, MODIFICATION_TYPES } from './constants';
 
@@ -94,7 +95,7 @@ export const loadEditorModelData = async (
 export const initEditableGridModel = async (
     dataModel: QueryModel,
     editorModel: EditorModel,
-    loader: IEditableGridLoader,
+    loader: EditableGridLoader,
     queryModel: QueryModel,
     colFilter?: (col: QueryColumn) => boolean
 ): Promise<{ dataModel: QueryModel; editorModel: EditorModel }> => {
@@ -140,7 +141,7 @@ export interface EditableGridModels {
 export const initEditableGridModels = async (
     dataModels: QueryModel[],
     editorModels: EditorModel[],
-    loaders: IEditableGridLoader[],
+    loaders: EditableGridLoader[],
     queryModel: QueryModel
 ): Promise<EditableGridModels> => {
     const updatedDataModels = [];

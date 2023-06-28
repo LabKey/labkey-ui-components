@@ -20,7 +20,7 @@ import { getEditorExportData, getUpdatedDataFromGrid, initEditableGridModel } fr
 const MODEL_ID_LOADED = 'loaded';
 
 class MockEditableGridLoader implements IEditableGridLoader {
-    columns: List<QueryColumn>;
+    columns: QueryColumn[];
     id: string;
     mode = EditorMode.Insert;
     queryInfo: QueryInfo;
@@ -137,12 +137,12 @@ describe('Editable Grids Utils', () => {
         });
 
         test('respects loader supplied columns', async () => {
-            const columns = List([queryInfo.getColumn('SampleID'), queryInfo.getColumn('Date')]);
+            const columns = [queryInfo.getColumn('SampleID'), queryInfo.getColumn('Date')];
             const loader = new MockEditableGridLoader(queryInfo, { columns });
             const editorModel = new EditorModel({});
 
             const models = await initEditableGridModel(dataModel, editorModel, loader, dataModel);
-            expect(models.editorModel.columns.toArray()).toEqual(columns.map(col => col.fieldKey).toArray());
+            expect(models.editorModel.columns.toArray()).toEqual(columns.map(col => col.fieldKey));
         });
     });
 });

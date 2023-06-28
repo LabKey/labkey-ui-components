@@ -1,10 +1,16 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.X
-*Released*: X June 2023
+### version 2.348.1
+*Released*: 28 June 2023
 - Issue 48165: LKSM: Cannot read properties of undefined (reading 'selected')
 - Fix tableAlias for getFilterLabKeySql
+
+### version 2.348.0
+*Released*: 28 June 2023
+- Move editable grid actions to internal/components/editable/actions.ts
+- Remove the `I` prefix on various interfaces
+    - `IGridLoader`, `IEditableGridLoader`, `IGridData`, `IGridResponse`, `IGetSelectedResponse`, `ISelectResponse`
 
 ### version 2.347.2
 *Released*: 27 June 2023

@@ -4,7 +4,7 @@ import { getCurrentProductName, isAssayEnabled, isELNEnabled, isWorkflowEnabled 
 
 import { naturalSort } from '../../../public/sort';
 import { QueryInfo } from '../../../public/QueryInfo';
-import { EditableColumnMetadata } from '../editable/EditableGrid';
+import { EditableColumnMetadata } from '../editable/models';
 import { SCHEMAS } from '../../schemas';
 
 import { getURLParamsForSampleSelectionKey } from '../samples/utils';

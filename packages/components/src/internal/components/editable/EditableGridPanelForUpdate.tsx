@@ -14,7 +14,7 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
 import { WizardNavButtons } from '../buttons/WizardNavButtons';
 
-import { EditorModel, EditorModelProps, IEditableGridLoader } from './models';
+import { EditorModel, EditorModelProps, EditableGridLoader } from './models';
 
 import { EditableGridPanel } from './EditableGridPanel';
 import { applyEditableGridChangesToModels, getUpdatedDataFromEditableGrid, initEditableGridModels } from './utils';
@@ -23,7 +23,7 @@ interface Props {
     containerFilter?: Query.ContainerFilter;
     getIsDirty?: () => boolean;
     idField: string;
-    loader: IEditableGridLoader;
+    loader: EditableGridLoader;
     onCancel: () => void;
     onComplete: () => void;
     pluralNoun?: string;
@@ -39,7 +39,7 @@ interface State {
     editorModels: EditorModel[];
     error: string;
     isSubmitting: boolean;
-    loaders: IEditableGridLoader[];
+    loaders: EditableGridLoader[];
 }
 
 export class EditableGridPanelForUpdate extends React.Component<Props, State> {

@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { Filter } from '@labkey/api';
 import { fromJS, Iterable, List, Map, OrderedMap, Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
+import { ReactNode } from 'react';
 
 import { encodePart } from '../../../public/SchemaQuery';
 
@@ -22,12 +24,27 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { QueryColumn } from '../../../public/QueryColumn';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { GridData } from '../../models';
 
 import { genCellKey, sortCellKeys, parseCellKey } from '../../utils';
 import { getQueryColumnRenderers } from '../../global';
-import { GRID_EDIT_INDEX } from '../../constants';
 import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from '../../util/Date';
 import { caseInsensitive, quoteValueWithDelimiters } from '../../util/utils';
+
+export interface EditableColumnMetadata {
+    caption?: string;
+    filteredLookupKeys?: List<any>;
+    filteredLookupValues?: List<string>;
+    getFilteredLookupKeys?: (linkedValues: any[]) => Promise<List<any>>;
+    hideTitleTooltip?: boolean;
+    isReadOnlyCell?: (rowKey: string) => boolean;
+    linkedColInd?: number;
+    lookupValueFilters?: Filter.IFilter[];
+    placeholder?: string;
+    popoverClassName?: string;
+    readOnly?: boolean;
+    toolTip?: ReactNode;
+}
 
 export interface ValueDescriptor {
     display: any;
@@ -540,12 +557,23 @@ export class EditorModel
     }
 }
 
-export interface IGridLoader {
-    fetch: (model: QueryModel) => Promise<IGridResponse>;
-    fetchSelection?: (model: QueryModel) => Promise<IGridSelectionResponse>;
+export interface GridResponse {
+    data: Map<any, any>;
+    dataIds: List<any>;
+    messages?: List<Map<string, string>>;
+    totalRows?: number;
 }
 
-export interface IEditableGridLoader extends IGridLoader {
+interface GridSelectionResponse {
+    selectedIds: List<any>;
+}
+
+export interface GridLoader {
+    fetch: (model: QueryModel) => Promise<GridResponse>;
+    fetchSelection?: (model: QueryModel) => Promise<GridSelectionResponse>;
+}
+
+export interface EditableGridLoader extends GridLoader {
     columns?: QueryColumn[];
     id: string;
     mode: EditorMode;
@@ -554,13 +582,17 @@ export interface IEditableGridLoader extends IGridLoader {
     requiredColumns?: string[];
 }
 
-export interface IGridResponse {
-    data: Map<any, any>;
-    dataIds: List<any>;
-    messages?: List<Map<string, string>>;
-    totalRows?: number;
+export interface EditorModelAndGridData extends GridData {
+    editorModel: Partial<EditorModel>;
 }
 
-interface IGridSelectionResponse {
-    selectedIds: List<any>;
+export interface EditorModelUpdates {
+    data?: Map<any, Map<string, any>>;
+    editorModelChanges?: Partial<EditorModelProps>;
+    queryInfo?: QueryInfo;
+}
+
+export interface MessageAndValue {
+    message?: CellMessage;
+    valueDescriptor: ValueDescriptor
 }

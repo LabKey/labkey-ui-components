@@ -261,7 +261,12 @@ function getStartsWithFullClause(filter: Filter.IFilter, jsonType: JsonType, tab
     return getLikeFullClause(filter, jsonType, true, tableAlias);
 }
 
-function getNotLikeFullClause(filter: Filter.IFilter, jsonType: JsonType, isStart: boolean, tableAlias?: string): string {
+function getNotLikeFullClause(
+    filter: Filter.IFilter,
+    jsonType: JsonType,
+    isStart: boolean,
+    tableAlias?: string
+): string {
     const columnNameSelect = getLegalIdentifier(filter.getColumnName(), tableAlias);
     const sqlValue = getLabKeySqlValue(filter.getValue(), jsonType, true);
     if (!sqlValue || sqlValue === '') return columnNameSelect + ' IS NOT NULL';
@@ -313,7 +318,9 @@ function getInContainsClauseLabKeySql(filter: Filter.IFilter, jsonType: JsonType
     if (values.length === 0) return '';
 
     if (values.length === 1) {
-        return negate ? getNotContainsFullClause(filter, jsonType, tableAlias) : getContainsFullClause(filter, jsonType, tableAlias);
+        return negate
+            ? getNotContainsFullClause(filter, jsonType, tableAlias)
+            : getContainsFullClause(filter, jsonType, tableAlias);
     }
 
     const includeNull = values.indexOf(null) > -1 || values.indexOf('') > -1;

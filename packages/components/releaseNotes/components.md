@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.347.3
-*Released*: 28 June 2023
+### version 2.X
+*Released*: X June 2023
 - Issue 48165: LKSM: Cannot read properties of undefined (reading 'selected')
 - Fix tableAlias for getFilterLabKeySql
 

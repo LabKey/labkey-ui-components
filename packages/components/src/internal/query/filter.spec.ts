@@ -292,6 +292,36 @@ describe('getFilterLabKeySql', () => {
     });
 
     test('with tableAlias', () => {
+        expect(getFilterLabKeySql(Filter.create('StringField', 'ABC', Filter.Types.Equals), 'string', 'a')).toEqual(
+            'a.\"StringField" = \'ABC\''
+        );
+
+        expect(getFilterLabKeySql(Filter.create('StringField', 'ABC', Filter.Types.CONTAINS), 'string', 'a')).toEqual(
+            "LOWER(a.\"StringField\") LIKE LOWER('%ABC%') ESCAPE '!'"
+        );
+
+        expect(
+            getFilterLabKeySql(Filter.create('StringField', 'ABC', Filter.Types.DOES_NOT_START_WITH), 'string', 'a')
+        ).toEqual('(a.\"StringField" IS NULL) OR (LOWER(a.\"StringField") NOT LIKE LOWER(\'ABC%\') ESCAPE \'!\')');
+
+        expect(getFilterLabKeySql(Filter.create('StringField', 'h,n', Filter.Types.BETWEEN), 'string', 'a')).toEqual(
+            "a.\"StringField\" BETWEEN 'h' AND 'n'"
+        );
+
+        expect(
+            getFilterLabKeySql(
+                Filter.create('StringField', 'value1;value2;value3', Filter.Types.CONTAINS_ONE_OF),
+                'string',
+                'a'
+            )
+        ).toEqual(
+            "((LOWER(a.\"StringField\") LIKE LOWER('%value1%') ESCAPE '!') OR (LOWER(a.\"StringField\") LIKE LOWER('%value2%') ESCAPE '!') OR (LOWER(a.\"StringField\") LIKE LOWER('%value3%') ESCAPE '!'))"
+        );
+
+        expect(
+            getFilterLabKeySql(Filter.create('StringField', 'value1', Filter.Types.CONTAINS_NONE_OF), 'string', 'a')
+        ).toEqual('(a.\"StringField" IS NULL) OR (LOWER(a.\"StringField") NOT LIKE LOWER(\'%value1%\') ESCAPE \'!\')');
+
         expect(
             getFilterLabKeySql(Filter.create('DateField', dateStr, Filter.Types.DATE_EQUAL), 'date', 'alias')
         ).toEqual('(alias."DateField" >= \'2020-08-06\' AND alias."DateField" < \'2020-08-07\')');

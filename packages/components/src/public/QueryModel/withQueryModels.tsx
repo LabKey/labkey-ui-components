@@ -329,7 +329,7 @@ export function withQueryModels<Props>(
             );
 
             try {
-                const selections = await loadSelections(this.state.queryModels[id]);
+                const selections = await loadSelections(this.state.queryModels[id]); // here
 
                 this.setState(
                     produce<State>(draft => {

@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 2.348.0
-*Released*: 27 June 2023
+*Released*: 28 June 2023
 - Move editable grid actions to internal/components/editable/actions.ts
 - Remove the `I` prefix on various interfaces
     - `IGridLoader`, `IEditableGridLoader`, `IGridData`, `IGridResponse`, `IGetSelectedResponse`, `ISelectResponse`

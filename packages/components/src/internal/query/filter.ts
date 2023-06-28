@@ -71,7 +71,7 @@ export function isEqual(first: List<Filter.IFilter>, second: List<Filter.IFilter
     return isEqual;
 }
 
-export function getLegalIdentifier(columnName: string): string {
+export function getLegalIdentifier(columnName: string, tableAlias?: string): string {
     const columnNameParts = columnName.split('/');
     const formattedParts = [];
     columnNameParts.forEach(part => {
@@ -85,7 +85,9 @@ export function getLegalIdentifier(columnName: string): string {
         }
     });
 
-    return formattedParts.join('.');
+    let columnSelect = formattedParts.join('.');
+    if (tableAlias) columnSelect = tableAlias + '.' + columnSelect;
+    return columnSelect;
 }
 
 function getLabKeySqlValue(value: any, jsonType: JsonType, suppressQuote?: boolean): any {
@@ -125,8 +127,7 @@ function getDateStrRange(dateStr: string): string[] {
 // for date (not datetime) field, ignore the time portion and do date only comparison
 export function getDateFieldLabKeySql(filter: Filter.IFilter, tableAlias?: string): string {
     const filterType = filter.getFilterType();
-    let columnNameSelect = getLegalIdentifier(filter.getColumnName());
-    if (tableAlias) columnNameSelect = tableAlias + '.' + columnNameSelect;
+    const columnNameSelect = getLegalIdentifier(filter.getColumnName(), tableAlias);
 
     let startDateStart, startDateEnd, endDateStart, endDateEnd: string;
     const urlSuffix = filterType.getURLSuffix();
@@ -191,9 +192,9 @@ export function getDateFieldLabKeySql(filter: Filter.IFilter, tableAlias?: strin
     return null;
 }
 
-function getInClauseLabKeySql(filter: Filter.IFilter, jsonType: JsonType): string {
+function getInClauseLabKeySql(filter: Filter.IFilter, jsonType: JsonType, tableAlias?: string): string {
     const filterType = filter.getFilterType();
-    const columnNameSelect = getLegalIdentifier(filter.getColumnName());
+    const columnNameSelect = getLegalIdentifier(filter.getColumnName(), tableAlias);
     let operatorSql = null;
 
     const values = filterType.parseValue(filter.getValue());
@@ -245,23 +246,28 @@ function getNotContainsClause(sqlValue): string {
     return getNotLikeClause(sqlValue, false);
 }
 
-function getLikeFullClause(filter: Filter.IFilter, jsonType: JsonType, isStart: boolean): string {
-    const columnNameSelect = getLegalIdentifier(filter.getColumnName());
+function getLikeFullClause(filter: Filter.IFilter, jsonType: JsonType, isStart: boolean, tableAlias?: string): string {
+    const columnNameSelect = getLegalIdentifier(filter.getColumnName(), tableAlias);
     const sqlValue = getLabKeySqlValue(filter.getValue(), jsonType, true);
     if (!sqlValue || sqlValue === '') return columnNameSelect + getLikeClause(sqlValue, isStart);
     return 'LOWER(' + columnNameSelect + ')' + getLikeClause(sqlValue, isStart);
 }
 
-function getContainsFullClause(filter: Filter.IFilter, jsonType: JsonType): string {
-    return getLikeFullClause(filter, jsonType, false);
+function getContainsFullClause(filter: Filter.IFilter, jsonType: JsonType, tableAlias?: string): string {
+    return getLikeFullClause(filter, jsonType, false, tableAlias);
 }
 
-function getStartsWithFullClause(filter: Filter.IFilter, jsonType: JsonType): string {
-    return getLikeFullClause(filter, jsonType, true);
+function getStartsWithFullClause(filter: Filter.IFilter, jsonType: JsonType, tableAlias?: string): string {
+    return getLikeFullClause(filter, jsonType, true, tableAlias);
 }
 
-function getNotLikeFullClause(filter: Filter.IFilter, jsonType: JsonType, isStart: boolean): string {
-    const columnNameSelect = getLegalIdentifier(filter.getColumnName());
+function getNotLikeFullClause(
+    filter: Filter.IFilter,
+    jsonType: JsonType,
+    isStart: boolean,
+    tableAlias?: string
+): string {
+    const columnNameSelect = getLegalIdentifier(filter.getColumnName(), tableAlias);
     const sqlValue = getLabKeySqlValue(filter.getValue(), jsonType, true);
     if (!sqlValue || sqlValue === '') return columnNameSelect + ' IS NOT NULL';
     return (
@@ -275,16 +281,16 @@ function getNotLikeFullClause(filter: Filter.IFilter, jsonType: JsonType, isStar
     );
 }
 
-function getNotContainsFullClause(filter: Filter.IFilter, jsonType: JsonType): string {
-    return getNotLikeFullClause(filter, jsonType, false);
+function getNotContainsFullClause(filter: Filter.IFilter, jsonType: JsonType, tableAlias?: string): string {
+    return getNotLikeFullClause(filter, jsonType, false, tableAlias);
 }
 
-function getNotStartsWithFullClause(filter: Filter.IFilter, jsonType: JsonType): string {
-    return getNotLikeFullClause(filter, jsonType, true);
+function getNotStartsWithFullClause(filter: Filter.IFilter, jsonType: JsonType, tableAlias?: string): string {
+    return getNotLikeFullClause(filter, jsonType, true, tableAlias);
 }
 
-function getInSubTreeClause(filter: Filter.IFilter, jsonType: JsonType, not?: boolean): string {
-    const columnNameSelect = getLegalIdentifier(filter.getColumnName());
+function getInSubTreeClause(filter: Filter.IFilter, jsonType: JsonType, not?: boolean, tableAlias?: string): string {
+    const columnNameSelect = getLegalIdentifier(filter.getColumnName(), tableAlias);
 
     const notFrag = not ? 'NOT ' : '';
     const pathValue = filter.getValue();
@@ -301,9 +307,9 @@ function getInSubTreeClause(filter: Filter.IFilter, jsonType: JsonType, not?: bo
     return notFrag + 'IsInSubtree(' + columnNameSelect + ', ConceptPath(' + sqlValue + '))';
 }
 
-function getInContainsClauseLabKeySql(filter: Filter.IFilter, jsonType: JsonType): string {
+function getInContainsClauseLabKeySql(filter: Filter.IFilter, jsonType: JsonType, tableAlias?: string): string {
     const filterType = filter.getFilterType();
-    const columnNameSelect = getLegalIdentifier(filter.getColumnName());
+    const columnNameSelect = getLegalIdentifier(filter.getColumnName(), tableAlias);
 
     const values = filterType.parseValue(filter.getValue());
 
@@ -312,7 +318,9 @@ function getInContainsClauseLabKeySql(filter: Filter.IFilter, jsonType: JsonType
     if (values.length === 0) return '';
 
     if (values.length === 1) {
-        return negate ? getNotContainsFullClause(filter, jsonType) : getContainsFullClause(filter, jsonType);
+        return negate
+            ? getNotContainsFullClause(filter, jsonType, tableAlias)
+            : getContainsFullClause(filter, jsonType, tableAlias);
     }
 
     const includeNull = values.indexOf(null) > -1 || values.indexOf('') > -1;
@@ -393,12 +401,12 @@ export function getFilterLabKeySql(filter: Filter.IFilter, jsonType: JsonType, t
             filterType.getURLSuffix() === Filter.Types.IN.getURLSuffix() ||
             filterType.getURLSuffix() === Filter.Types.NOT_IN.getURLSuffix()
         ) {
-            return getInClauseLabKeySql(filter, jsonType);
+            return getInClauseLabKeySql(filter, jsonType, tableAlias);
         } else if (
             filterType.getURLSuffix() === Filter.Types.CONTAINS_ONE_OF.getURLSuffix() ||
             filterType.getURLSuffix() === Filter.Types.CONTAINS_NONE_OF.getURLSuffix()
         ) {
-            return getInContainsClauseLabKeySql(filter, jsonType);
+            return getInContainsClauseLabKeySql(filter, jsonType, tableAlias);
         } else if (
             filterType.getURLSuffix() === Filter.Types.BETWEEN.getURLSuffix() ||
             filterType.getURLSuffix() === Filter.Types.NOT_BETWEEN.getURLSuffix()
@@ -429,17 +437,17 @@ export function getFilterLabKeySql(filter: Filter.IFilter, jsonType: JsonType, t
             ')'
         );
     } else if (filterType.getURLSuffix() === Filter.Types.CONTAINS.getURLSuffix()) {
-        return getContainsFullClause(filter, jsonType);
+        return getContainsFullClause(filter, jsonType, tableAlias);
     } else if (filterType.getURLSuffix() === Filter.Types.DOES_NOT_CONTAIN.getURLSuffix()) {
-        return getNotContainsFullClause(filter, jsonType);
+        return getNotContainsFullClause(filter, jsonType, tableAlias);
     } else if (filterType.getURLSuffix() === Filter.Types.STARTS_WITH.getURLSuffix()) {
-        return getStartsWithFullClause(filter, jsonType);
+        return getStartsWithFullClause(filter, jsonType, tableAlias);
     } else if (filterType.getURLSuffix() === Filter.Types.DOES_NOT_START_WITH.getURLSuffix()) {
-        return getNotStartsWithFullClause(filter, jsonType);
+        return getNotStartsWithFullClause(filter, jsonType, tableAlias);
     } else if (filterType.getURLSuffix() === Filter.Types.ONTOLOGY_IN_SUBTREE.getURLSuffix()) {
-        return getInSubTreeClause(filter, jsonType);
+        return getInSubTreeClause(filter, jsonType, false, tableAlias);
     } else if (filterType.getURLSuffix() === Filter.Types.ONTOLOGY_NOT_IN_SUBTREE.getURLSuffix()) {
-        return 'NOT ' + getInSubTreeClause(filter, jsonType);
+        return getInSubTreeClause(filter, jsonType, true, tableAlias);
     }
 
     return null;

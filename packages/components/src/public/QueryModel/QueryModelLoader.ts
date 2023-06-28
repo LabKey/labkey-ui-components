@@ -146,7 +146,7 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
             queryParameters,
             containerFilter
         );
-        return new Set(result.selected);
+        return new Set(result?.selected ?? []);
     },
     setSelections(model, checked: boolean, selections: string[]) {
         const { selectionKey, containerPath } = model;

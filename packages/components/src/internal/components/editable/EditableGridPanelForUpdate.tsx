@@ -17,7 +17,8 @@ import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { EditorModel, EditorModelProps, EditableGridLoader } from './models';
 
 import { EditableGridPanel } from './EditableGridPanel';
-import { applyEditableGridChangesToModels, getUpdatedDataFromEditableGrid, initEditableGridModels } from './utils';
+import { initEditableGridModels } from './actions';
+import { applyEditableGridChangesToModels, getUpdatedDataFromEditableGrid } from './utils';
 
 interface Props {
     containerFilter?: Query.ContainerFilter;

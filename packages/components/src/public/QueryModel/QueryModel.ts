@@ -1,4 +1,3 @@
-import { List } from 'immutable';
 import { Draft, immerable, produce } from 'immer';
 import { Filter, Query } from '@labkey/api';
 
@@ -13,7 +12,7 @@ import { QueryInfo } from '../QueryInfo';
 import { ViewInfo } from '../../internal/ViewInfo';
 import { QueryColumn } from '../QueryColumn';
 import { caseInsensitive } from '../../internal/util/utils';
-import { naturalSort, naturalSortByProperty } from '../sort';
+import { naturalSortByProperty } from '../sort';
 import { PaginationData } from '../../internal/components/pagination/Pagination';
 import { SelectRowsOptions } from '../../internal/query/selectRows';
 

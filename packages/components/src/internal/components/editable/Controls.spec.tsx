@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 import React from 'react';
-
 import { shallow } from 'enzyme';
-import { MenuItem } from 'react-bootstrap';
 
 import { AddRowsControl } from './Controls';
 

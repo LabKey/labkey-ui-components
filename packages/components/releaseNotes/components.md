@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Add new route key for cross-type listing pages
 - export method for getting sample types and rowIds from a transactionAuditId
+- Issue 48178: Fix URL resolution for sample types that start with numbers
 
 ### version 2.348.1
 *Released*: 28 June 2023

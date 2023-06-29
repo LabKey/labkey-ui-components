@@ -110,7 +110,7 @@ export async function selectGridIdsFromTransactionId(
     actions.loadModel(modelId, true);
 }
 
-export async function getSampleDataFromTransactionIds(transactionAuditId: number):Promise<{rowIds: string[], sampleTypes: string[]}> {
+export async function getSampleTypesFromTransactionIds(transactionAuditId: number):Promise<{rowIds: string[], sampleTypes: string[]}> {
     if (!transactionAuditId) {
         return;
     }

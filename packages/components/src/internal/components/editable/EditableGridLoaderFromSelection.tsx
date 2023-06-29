@@ -21,9 +21,9 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { QueryColumn } from '../../../public/QueryColumn';
 
-import { EditorMode, EditorModel, IEditableGridLoader, IGridResponse } from './models';
+import { EditorMode, EditorModel, EditableGridLoader, GridResponse } from './models';
 
-export class EditableGridLoaderFromSelection implements IEditableGridLoader {
+export class EditableGridLoaderFromSelection implements EditableGridLoader {
     columns: QueryColumn[];
     id: string;
     idsNotToUpdate: number[];
@@ -56,7 +56,7 @@ export class EditableGridLoaderFromSelection implements IEditableGridLoader {
         this.fieldsNotToUpdate = fieldsNotToUpdate || [];
     }
 
-    fetch(gridModel: QueryModel): Promise<IGridResponse> {
+    fetch(gridModel: QueryModel): Promise<GridResponse> {
         return new Promise((resolve, reject) => {
             const { queryName, queryParameters, schemaName, selections, sortString, viewName } = gridModel;
 

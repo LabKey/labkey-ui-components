@@ -1,14 +1,5 @@
+import { List, Map } from 'immutable';
 import { SchemaQuery } from '../public/SchemaQuery';
-
-import { ProductMenuModel } from './components/navigation/model';
-import { AppURL } from './url/AppURL';
-
-export interface CommonPageProps {
-    goBack?: (n?: number) => void;
-    menu: ProductMenuModel;
-    menuInit?: (invalidate?: boolean) => void;
-    navigate?: (url: string | AppURL, replace?: boolean) => void;
-}
 
 export function createGridModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
     const parts = [gridId, schemaQuery.getKey()];
@@ -21,4 +12,9 @@ export function createGridModelId(gridId: string, schemaQuery: SchemaQuery, keyV
     }
 
     return parts.join('|').toLowerCase();
+}
+
+export interface GridData {
+    data: Map<any, Map<string, any>>;
+    dataKeys: List<any>;
 }

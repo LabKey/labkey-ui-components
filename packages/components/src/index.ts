@@ -182,7 +182,6 @@ import { DataTypeSelector } from './internal/components/entities/DataTypeSelecto
 import { EditorModel, EditorMode } from './internal/components/editable/models';
 import {
     clearSelected,
-    getOrderedSelectedMappedKeys,
     getSelected,
     getSelectedData,
     getSelection,
@@ -191,10 +190,12 @@ import {
     selectGridIdsFromTransactionId,
     setSelected,
     setSnapshotSelections,
+} from './internal/actions';
+import {
     addColumns,
     changeColumn,
-    removeColumn,
-} from './internal/actions';
+    removeColumn
+} from './internal/components/editable/actions';
 import { cancelEvent } from './internal/events';
 import { createGridModelId } from './internal/models';
 import { initQueryGridState } from './internal/global';
@@ -647,6 +648,7 @@ import { PicklistEditModal } from './internal/components/picklist/PicklistEditMo
 
 import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
 import {
+    getOrderedSelectedMappedKeys,
     getOrderedSelectedPicklistSamples,
     getSelectedPicklistSamples,
     getPicklistFromId,
@@ -1705,10 +1707,12 @@ export type { NotificationsContextProps } from './internal/components/notificati
 export type { VisGraphNode } from './internal/components/lineage/models';
 export type { ITab } from './internal/components/navigation/types';
 export type {
+    EditableColumnMetadata,
+    EditableGridLoader,
     EditorModelProps,
-    IGridLoader,
-    IGridResponse,
-    IEditableGridLoader,
+    EditorModelUpdates,
+    GridLoader,
+    GridResponse,
 } from './internal/components/editable/models';
 export type { IDataViewInfo } from './internal/DataViewInfo';
 export type { InjectedAssayModel, WithAssayModelProps } from './internal/components/assay/withAssayModels';
@@ -1746,7 +1750,6 @@ export type { AppRouteResolver } from './internal/url/models';
 export type { WithFormStepsProps } from './internal/components/forms/FormStep';
 export type {
     BulkAddData,
-    EditableColumnMetadata,
     SharedEditableGridPanelProps,
 } from './internal/components/editable/EditableGrid';
 export type { IImportData, ISelectRowsResult } from './internal/query/api';
@@ -1788,7 +1791,6 @@ export type { SampleStorageLocationComponentProps, SampleStorageMenuComponentPro
 export type { SearchForm } from './internal/components/search/BaseSearchPage';
 export type { SearchHit, SearchMetadata, SearchResult, SearchOptions } from './internal/components/search/actions';
 export type { TabbedGridPanelProps } from './public/QueryModel/TabbedGridPanel';
-export type { EditorModelUpdates } from './internal/actions';
 export type { EditableGridModels } from './internal/components/editable/utils';
 export type { GroupedSampleDisplayColumns } from './internal/components/samples/actions';
 export type { PicklistDeletionData } from './internal/components/picklist/actions';

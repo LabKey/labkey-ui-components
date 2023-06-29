@@ -329,7 +329,7 @@ const SAMPLE_TYPE_MAPPERS = [
 
         if (identifier !== undefined) {
             let url: string[];
-            if (/(\d+$)/.test(identifier)) {
+            if (/^\d+$/.test(identifier)) {
                 // numeric -- assume rowId and use resolver
                 url = ['rd', 'samples', identifier];
             } else {

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.X
+*Released*: X 2023
+* Split out aliquot calculated columns by sample status
+  * Show filter action values on grid for lookup columns that's not included in the current view
+
 ### version 2.349.1
 *Released*: 30 June 2023
 * Import Samples Across Sample Types UI

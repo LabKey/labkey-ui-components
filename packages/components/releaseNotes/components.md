@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.349.1
+*Released*: 30 June 2023
 * Import Samples Across Sample Types UI
   * update handleEntityFileImport() to add null check for queryInfo param
 

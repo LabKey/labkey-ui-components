@@ -1,7 +1,7 @@
 import { ActionURL, Ajax, AuditBehaviorTypes, Filter, getServerContext, Query, Utils } from '@labkey/api';
 import { List, Map } from 'immutable';
 
-import { getSelectedData } from '../../actions';
+import { getSelectedData, getSelected } from '../../actions';
 
 import { buildURL } from '../../url/AppURL';
 import { SampleOperation } from '../samples/constants';
@@ -10,7 +10,6 @@ import { getFilterForSampleOperation, isSamplesSchema } from '../samples/utils';
 import { importData, InsertOptions } from '../../query/api';
 import { caseInsensitive, generateId, handleRequestFailure } from '../../util/utils';
 import { SampleCreationType } from '../samples/models';
-import { getSelected } from '../../actions';
 
 import { SHARED_CONTAINER_PATH } from '../../constants';
 import { naturalSortByProperty } from '../../../public/sort';
@@ -552,11 +551,9 @@ export function handleEntityFileImport(
     saveToPipeline?: boolean
 ): Promise<any> {
     return new Promise((resolve, reject) => {
-        const { schemaName, queryName } = queryInfo.schemaQuery;
-
         return importData({
-            schemaName,
-            queryName,
+            schemaName: queryInfo?.schemaQuery.schemaName,
+            queryName: queryInfo?.schemaQuery.queryName,
             file,
             importUrl: ActionURL.buildURL(importFileController ?? 'experiment', importAction, null, {
                 ...importParameters,

@@ -21,7 +21,7 @@ import { resolveKey, SchemaQuery } from '../public/SchemaQuery';
 import { Actions } from '../public/QueryModel/withQueryModels';
 import { GridResponse } from './components/editable/models';
 
-import { getContainerFilter, invalidateQueryDetailsCache, selectRowsDeprecated } from './query/api';
+import { getContainerFilter, invalidateQueryDetailsCache, selectDistinctRows, selectRowsDeprecated } from './query/api';
 import {
     BARTENDER_EXPORT_CONTROLLER,
     EXPORT_TYPES,
@@ -37,6 +37,8 @@ import { buildURL } from './url/AppURL';
 
 import { ViewInfo } from './ViewInfo';
 import { createGridModelId } from './models';
+import { SAMPLES_KEY } from './app/constants';
+import { SCHEMAS } from './schemas';
 
 export function selectAll(
     key: string,
@@ -64,18 +66,11 @@ export function selectAll(
     });
 }
 
-export function selectGridIdsFromTransactionId(
-    gridIdPrefix: string,
-    schemaQuery: SchemaQuery,
-    transactionAuditId: number,
-    dataType: string,
-    actions: Actions
-): Promise<any> {
+function getGridIdsFromTransactionId(transactionAuditId: number, dataType: string): Promise<string[]> {
     if (!transactionAuditId) {
         return;
     }
     const failureMsg = 'There was a problem retrieving the ' + dataType + ' from the last action.';
-    const modelId = createGridModelId(gridIdPrefix, schemaQuery);
 
     return new Promise((resolve, reject) => {
         Ajax.request({
@@ -83,17 +78,7 @@ export function selectGridIdsFromTransactionId(
             params: { transactionAuditId, dataType },
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {
-                    const selected = response.rowIds;
-                    setSelected(modelId, true, selected, undefined, true, schemaQuery.schemaName, schemaQuery.queryName)
-                        .then(response => {
-                            actions.replaceSelections(modelId, selected);
-                            actions.loadModel(modelId, true);
-                            resolve(selected);
-                        })
-                        .catch(reason => {
-                            console.error(reason);
-                            reject(reason);
-                        });
+                    resolve(response.rowIds);
                 } else {
                     console.error(failureMsg + ' (transactionAuditId = ' + transactionAuditId + ')', response);
                     reject(failureMsg);
@@ -105,6 +90,40 @@ export function selectGridIdsFromTransactionId(
             }),
         });
     });
+}
+
+export async function selectGridIdsFromTransactionId(
+    gridIdPrefix: string,
+    schemaQuery: SchemaQuery,
+    transactionAuditId: number,
+    dataType: string,
+    actions: Actions
+): Promise<string[]> {
+    if (!transactionAuditId) {
+        return;
+    }
+    const modelId = createGridModelId(gridIdPrefix, schemaQuery);
+    const selected = await getGridIdsFromTransactionId(transactionAuditId, dataType);
+    await actions.replaceSelections(modelId, selected);
+    actions.loadModel(modelId, true);
+    return selected;
+}
+
+export async function getSampleTypesFromTransactionIds(transactionAuditId: number):Promise<{rowIds: string[], sampleTypes: string[]}> {
+    if (!transactionAuditId) {
+        return;
+    }
+    const rowIds = await getGridIdsFromTransactionId(transactionAuditId, SAMPLES_KEY);
+    const sampleTypes = await selectDistinctRows({
+        schemaName: SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
+        queryName: SCHEMAS.EXP_TABLES.MATERIALS.queryName,
+        column: 'SampleSet/Name',
+        filterArray: [Filter.create('RowId', rowIds, Filter.Types.IN)],
+    });
+    return {
+        rowIds,
+        sampleTypes: sampleTypes.values,
+    };
 }
 
 export interface ExportOptions {

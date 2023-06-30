@@ -66,7 +66,6 @@ export function selectAll(
     });
 }
 
-
 function getGridIdsFromTransactionId(transactionAuditId: number, dataType: string): Promise<string[]> {
     if (!transactionAuditId) {
         return;
@@ -105,9 +104,9 @@ export async function selectGridIdsFromTransactionId(
     }
     const modelId = createGridModelId(gridIdPrefix, schemaQuery);
     const selected = await getGridIdsFromTransactionId(transactionAuditId, dataType);
-    await setSelected(modelId, true, selected, undefined, true, schemaQuery.schemaName, schemaQuery.queryName);
-    actions.replaceSelections(modelId, selected);
+    await actions.replaceSelections(modelId, selected);
     actions.loadModel(modelId, true);
+    return selected;
 }
 
 export async function getSampleTypesFromTransactionIds(transactionAuditId: number):Promise<{rowIds: string[], sampleTypes: string[]}> {

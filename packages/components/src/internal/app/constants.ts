@@ -49,6 +49,7 @@ export const MEDIA_KEY = 'media';
 export const NOTEBOOKS_KEY = 'notebooks';
 export const REGISTRY_KEY = 'registry';
 export const ELN_KEY = 'notebooks';
+export const CROSS_TYPE_KEY = 'crossType';
 
 export const MINE_KEY = 'mine';
 export const TEAM_KEY = 'team';

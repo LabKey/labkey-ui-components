@@ -329,13 +329,12 @@ const SAMPLE_TYPE_MAPPERS = [
 
         if (identifier !== undefined) {
             let url: string[];
-
-            if (isNaN(parseInt(identifier))) {
-                // string -- assume sample set name
-                url = ['samples', identifier];
-            } else {
+            if (/^\d+$/.test(identifier)) {
                 // numeric -- assume rowId and use resolver
                 url = ['rd', 'samples', identifier];
+            } else {
+                // string -- assume sample set name
+                url = ['samples', identifier];
             }
 
             return AppURL.create(...url);

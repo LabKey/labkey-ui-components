@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.349.2
+*Released*: 30 June 2023
+* Consolidates `internal/utils` into `editable/utils` and removes `internal/utils`.
+* Move some utilities into `editable/actions` to prevent circular dependencies.
+* Fix a usage of `useCallback` in `DateInputCell`.
+
 ### version 2.349.1
 *Released*: 30 June 2023
 * Import Samples Across Sample Types UI

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.349.3
+*Released*: 1 July 2023
+* Issue 48188: Selecting 'All non-PHI' or 'Custom template' under 'Index each item as a separate document' doesn't persist
+
 ### version 2.349.2
 *Released*: 30 June 2023
 * Consolidates `internal/utils` into `editable/utils` and removes `internal/utils`.

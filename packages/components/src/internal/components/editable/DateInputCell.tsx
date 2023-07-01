@@ -20,18 +20,20 @@ export interface DateInputCellProps {
 }
 
 export const DateInputCell: FC<DateInputCellProps> = memo(props => {
-    const { col, defaultValue, colIdx, rowIdx, disabled, onKeyDown } = props;
+    const { col, defaultValue, colIdx, rowIdx, disabled, onKeyDown, modifyCell } = props;
 
-    const onDateInputChange = useCallback((newDate: Date) => {
-        const { colIdx, modifyCell, rowIdx, col } = props;
-        let displayValue = null;
-        if (newDate) {
-            if (isDateTimeCol(col)) displayValue = formatDateTime(newDate);
-            else displayValue = formatDate(newDate);
-        }
+    const onDateInputChange = useCallback(
+        (newDate: Date) => {
+            let displayValue = null;
+            if (newDate) {
+                if (isDateTimeCol(col)) displayValue = formatDateTime(newDate);
+                else displayValue = formatDate(newDate);
+            }
 
-        modifyCell(colIdx, rowIdx, [{ raw: newDate, display: displayValue }], MODIFICATION_TYPES.REPLACE);
-    }, []);
+            modifyCell(colIdx, rowIdx, [{ raw: newDate, display: displayValue }], MODIFICATION_TYPES.REPLACE);
+        },
+        [col, colIdx, modifyCell, rowIdx]
+    );
 
     return (
         <DatePickerInput

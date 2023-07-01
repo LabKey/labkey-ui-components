@@ -1,9 +1,11 @@
 import { Filter, Utils } from '@labkey/api';
-import { List, Map, OrderedMap, Set as ImmutableSet } from 'immutable';
+import { fromJS, List, Map, OrderedMap, Set as ImmutableSet } from 'immutable';
 import moment from 'moment';
 
 import { ExtendedMap } from '../../../public/ExtendedMap';
+import { LoadingState } from '../../../public/LoadingState';
 import { QueryColumn } from '../../../public/QueryColumn';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { GRID_EDIT_INDEX } from '../../constants';
 import { cancelEvent, getPasteValue, setCopyValue } from '../../events';
@@ -11,7 +13,6 @@ import { GridData } from '../../models';
 import { selectRowsDeprecated } from '../../query/api';
 import { formatDate, formatDateTime, parseDate } from '../../util/Date';
 import { caseInsensitive, isFloat, isInteger, parseCsvString, parseScientificInt } from '../../util/utils';
-import { decimalDifference, genCellKey, parseCellKey } from '../../utils';
 import { ViewInfo } from '../../ViewInfo';
 
 import {
@@ -19,6 +20,9 @@ import {
     CellMessages,
     CellValues,
     EditableColumnMetadata,
+    EditableGridLoader,
+    EditableGridModels,
+    EditorMode,
     EditorModel,
     EditorModelAndGridData,
     EditorModelUpdates,
@@ -26,8 +30,146 @@ import {
     ValueDescriptor,
 } from './models';
 
+import { decimalDifference, genCellKey, parseCellKey } from './utils';
+
 const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;
+
+/**
+ * @deprecated Use initEditableGridModel() or initEditableGridModels() instead.
+ * This method does not make use the grid loader paradigm. Usages of this method directly
+ * is susceptible to data misalignment errors with the associated view.
+ */
+export const loadEditorModelData = async (
+    queryModelData: Partial<QueryModel>,
+    editorColumns?: QueryColumn[]
+): Promise<Partial<EditorModel>> => {
+    const { orderedRows, rows, queryInfo } = queryModelData;
+    const columns = editorColumns ?? queryInfo.getInsertColumns();
+    const lookupValueDescriptors = await getLookupValueDescriptors(columns, fromJS(rows), fromJS(orderedRows));
+    let cellValues = Map<string, List<ValueDescriptor>>();
+
+    // data is initialized in column order
+    columns.forEach((col, cn) => {
+        orderedRows.forEach((id, rn) => {
+            const row = rows[id];
+            const cellKey = genCellKey(cn, rn);
+            const value = row[col.fieldKey];
+
+            if (Array.isArray(value)) {
+                // assume to be list of {displayValue, value} objects
+                cellValues = cellValues.set(
+                    cellKey,
+                    value.reduce((list, v) => {
+                        if (col.isLookup() && Utils.isNumber(v)) {
+                            const descriptors = lookupValueDescriptors[col.lookupKey];
+                            if (descriptors) {
+                                const desc = descriptors.filter(descriptor => descriptor.raw === v);
+                                if (desc) {
+                                    return list.push(...desc);
+                                }
+                            }
+                        }
+
+                        return list.push({ display: v.displayValue ?? v, raw: v.value ?? v });
+                    }, List<ValueDescriptor>())
+                );
+            } else {
+                // assume to be a {displayValue, value} object but fall back on value not being an object
+                const raw = value?.value ?? value;
+                const display = value?.displayValue ?? raw;
+                let cellValue = List([
+                    {
+                        display: display !== null ? display : undefined,
+                        raw: raw !== null ? raw : undefined,
+                    },
+                ]);
+
+                // Issue 37833: try resolving the value for the lookup to get the displayValue to show in the grid cell
+                if (col.isLookup() && Utils.isNumber(raw)) {
+                    const descriptors = lookupValueDescriptors[col.lookupKey];
+                    if (descriptors) {
+                        cellValue = List(descriptors.filter(descriptor => descriptor.raw === raw));
+                    }
+                }
+
+                cellValues = cellValues.set(cellKey, cellValue);
+            }
+        });
+    });
+
+    return {
+        cellValues,
+        columns: List(columns.map(col => col.fieldKey)),
+        deletedIds: ImmutableSet<any>(),
+        rowCount: orderedRows.length,
+    };
+};
+
+export const initEditableGridModel = async (
+    dataModel: QueryModel,
+    editorModel: EditorModel,
+    loader: EditableGridLoader,
+    queryModel: QueryModel,
+    colFilter?: (col: QueryColumn) => boolean
+): Promise<{ dataModel: QueryModel; editorModel: EditorModel }> => {
+    const response = await loader.fetch(queryModel);
+    const gridData: Partial<QueryModel> = {
+        rows: response.data.toJS(),
+        orderedRows: response.dataIds.toArray(),
+        queryInfo: loader.queryInfo,
+    };
+
+    let columns: QueryColumn[];
+    const forUpdate = loader.mode === EditorMode.Update;
+    if (loader.columns) {
+        columns = editorModel.getColumns(
+            gridData.queryInfo,
+            forUpdate,
+            undefined,
+            loader.columns,
+            loader.columns,
+            colFilter
+        );
+    } else {
+        columns = editorModel.getColumns(gridData.queryInfo, forUpdate, undefined, undefined, undefined, colFilter);
+    }
+
+    const editorModelData = await loadEditorModelData(gridData, columns);
+
+    return {
+        dataModel: dataModel.mutate({
+            ...gridData,
+            rowsLoadingState: LoadingState.LOADED,
+            queryInfoLoadingState: LoadingState.LOADED,
+        }),
+        editorModel: editorModel.merge(editorModelData) as EditorModel,
+    };
+};
+
+export const initEditableGridModels = async (
+    dataModels: QueryModel[],
+    editorModels: EditorModel[],
+    loaders: EditableGridLoader[],
+    queryModel: QueryModel
+): Promise<EditableGridModels> => {
+    const updatedDataModels = [];
+    const updatedEditorModels = [];
+
+    const results = await Promise.all(
+        dataModels.map((dataModel, i) => initEditableGridModel(dataModels[i], editorModels[i], loaders[i], queryModel))
+    );
+
+    results.forEach(result => {
+        updatedDataModels.push(result.dataModel);
+        updatedEditorModels.push(result.editorModel);
+    });
+
+    return {
+        dataModels: updatedDataModels,
+        editorModels: updatedEditorModels,
+    };
+};
 
 export function parseIntIfNumber(val: any): number | string {
     const intVal = !isNaN(val) ? parseInt(val, 10) : undefined;
@@ -97,7 +239,7 @@ const findLookupValues = async (
     };
 };
 
-export async function getLookupValueDescriptors(
+async function getLookupValueDescriptors(
     columns: QueryColumn[],
     rows: Map<any, Map<string, any>>,
     ids: List<any>

@@ -1,13 +1,11 @@
-import { fromJS, Iterable, List, Map, OrderedMap, Set } from 'immutable';
+import { fromJS, Iterable, List, Map, OrderedMap } from 'immutable';
 import { Utils, UtilsDOM } from '@labkey/api';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { QueryColumn } from '../../../public/QueryColumn';
 
 import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from '../../util/Date';
-import { genCellKey } from '../../utils';
 
-import { LoadingState } from '../../../public/LoadingState';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { quoteValueWithDelimiters } from '../../util/utils';
 
@@ -15,152 +13,8 @@ import { EXPORT_TYPES } from '../../constants';
 
 import { SelectInputOption, SelectInputProps } from '../forms/input/SelectInput';
 
-import { getLookupValueDescriptors } from './actions';
-
-import { EditorMode, EditorModel, EditorModelProps, EditableGridLoader, ValueDescriptor } from './models';
-
+import { EditorModel, EditorModelProps, EditableGridModels } from './models';
 import { CellActions, MODIFICATION_TYPES } from './constants';
-
-/**
- * @deprecated Use initEditableGridModel() or initEditableGridModels() instead.
- * This method does not make use the grid loader paradigm. Usages of this method directly
- * is susceptible to data misalignment errors with the associated view.
- */
-export const loadEditorModelData = async (
-    queryModelData: Partial<QueryModel>,
-    editorColumns?: QueryColumn[]
-): Promise<Partial<EditorModel>> => {
-    const { orderedRows, rows, queryInfo } = queryModelData;
-    const columns = editorColumns ?? queryInfo.getInsertColumns();
-    const lookupValueDescriptors = await getLookupValueDescriptors(columns, fromJS(rows), fromJS(orderedRows));
-    let cellValues = Map<string, List<ValueDescriptor>>();
-
-    // data is initialized in column order
-    columns.forEach((col, cn) => {
-        orderedRows.forEach((id, rn) => {
-            const row = rows[id];
-            const cellKey = genCellKey(cn, rn);
-            const value = row[col.fieldKey];
-
-            if (Array.isArray(value)) {
-                // assume to be list of {displayValue, value} objects
-                cellValues = cellValues.set(
-                    cellKey,
-                    value.reduce((list, v) => {
-                        if (col.isLookup() && Utils.isNumber(v)) {
-                            const descriptors = lookupValueDescriptors[col.lookupKey];
-                            if (descriptors) {
-                                const desc = descriptors.filter(descriptor => descriptor.raw === v);
-                                if (desc) {
-                                    return list.push(...desc);
-                                }
-                            }
-                        }
-
-                        return list.push({ display: v.displayValue ?? v, raw: v.value ?? v });
-                    }, List<ValueDescriptor>())
-                );
-            } else {
-                // assume to be a {displayValue, value} object but fall back on value not being an object
-                const raw = value?.value ?? value;
-                const display = value?.displayValue ?? raw;
-                let cellValue = List([
-                    {
-                        display: display !== null ? display : undefined,
-                        raw: raw !== null ? raw : undefined,
-                    },
-                ]);
-
-                // Issue 37833: try resolving the value for the lookup to get the displayValue to show in the grid cell
-                if (col.isLookup() && Utils.isNumber(raw)) {
-                    const descriptors = lookupValueDescriptors[col.lookupKey];
-                    if (descriptors) {
-                        cellValue = List(descriptors.filter(descriptor => descriptor.raw === raw));
-                    }
-                }
-
-                cellValues = cellValues.set(cellKey, cellValue);
-            }
-        });
-    });
-
-    return {
-        cellValues,
-        columns: List(columns.map(col => col.fieldKey)),
-        deletedIds: Set<any>(),
-        rowCount: orderedRows.length,
-    };
-};
-
-export const initEditableGridModel = async (
-    dataModel: QueryModel,
-    editorModel: EditorModel,
-    loader: EditableGridLoader,
-    queryModel: QueryModel,
-    colFilter?: (col: QueryColumn) => boolean
-): Promise<{ dataModel: QueryModel; editorModel: EditorModel }> => {
-    const response = await loader.fetch(queryModel);
-    const gridData: Partial<QueryModel> = {
-        rows: response.data.toJS(),
-        orderedRows: response.dataIds.toArray(),
-        queryInfo: loader.queryInfo,
-    };
-
-    let columns: QueryColumn[];
-    const forUpdate = loader.mode === EditorMode.Update;
-    if (loader.columns) {
-        columns = editorModel.getColumns(
-            gridData.queryInfo,
-            forUpdate,
-            undefined,
-            loader.columns,
-            loader.columns,
-            colFilter
-        );
-    } else {
-        columns = editorModel.getColumns(gridData.queryInfo, forUpdate, undefined, undefined, undefined, colFilter);
-    }
-
-    const editorModelData = await loadEditorModelData(gridData, columns);
-
-    return {
-        dataModel: dataModel.mutate({
-            ...gridData,
-            rowsLoadingState: LoadingState.LOADED,
-            queryInfoLoadingState: LoadingState.LOADED,
-        }),
-        editorModel: editorModel.merge(editorModelData) as EditorModel,
-    };
-};
-
-export interface EditableGridModels {
-    dataModels: QueryModel[];
-    editorModels: EditorModel[];
-}
-
-export const initEditableGridModels = async (
-    dataModels: QueryModel[],
-    editorModels: EditorModel[],
-    loaders: EditableGridLoader[],
-    queryModel: QueryModel
-): Promise<EditableGridModels> => {
-    const updatedDataModels = [];
-    const updatedEditorModels = [];
-
-    const results = await Promise.all(
-        dataModels.map((dataModel, i) => initEditableGridModel(dataModels[i], editorModels[i], loaders[i], queryModel))
-    );
-
-    results.forEach(result => {
-        updatedDataModels.push(result.dataModel);
-        updatedEditorModels.push(result.editorModel);
-    });
-
-    return {
-        dataModels: updatedDataModels,
-        editorModels: updatedEditorModels,
-    };
-};
 
 export const applyEditableGridChangesToModels = (
     dataModels: QueryModel[],
@@ -464,6 +318,37 @@ export function onCellSelectChange(
         );
         selectCell(colIdx, rowIdx);
     }
+}
+
+export function genCellKey(colIdx: number, rowIdx: number): string {
+    return [colIdx, rowIdx].join('-');
+}
+
+export function parseCellKey(cellKey: string): { colIdx: number; rowIdx: number } {
+    const [colIdx, rowIdx] = cellKey.split('-');
+
+    return {
+        colIdx: parseInt(colIdx, 10),
+        rowIdx: parseInt(rowIdx, 10),
+    };
+}
+
+/**
+ * Sorts cell keys left to right, top to bottom.
+ */
+export function sortCellKeys(cellKeys: string[]): string[] {
+    return cellKeys.sort((a, b) => {
+        const aCoords = parseCellKey(a);
+        const bCoords = parseCellKey(b);
+        if (aCoords.rowIdx === bCoords.rowIdx) return aCoords.colIdx - bCoords.colIdx;
+        return aCoords.rowIdx - bCoords.rowIdx;
+    });
+}
+
+// https://stackoverflow.com/questions/10713878/decimal-subtraction-problems-in-javascript
+export function decimalDifference(first, second, subtract = true): number {
+    const multiplier = 10000; // this will only help/work to 4 decimal places
+    return (first * multiplier + (subtract ? -1 : 1) * second * multiplier) / multiplier;
 }
 
 export const gridCellSelectInputProps: Partial<SelectInputProps> = {

@@ -26,10 +26,11 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { GridData } from '../../models';
 
-import { genCellKey, sortCellKeys, parseCellKey } from '../../utils';
 import { getQueryColumnRenderers } from '../../global';
 import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from '../../util/Date';
 import { caseInsensitive, quoteValueWithDelimiters } from '../../util/utils';
+
+import { genCellKey, parseCellKey, sortCellKeys } from './utils';
 
 export interface EditableColumnMetadata {
     caption?: string;
@@ -479,7 +480,7 @@ export class EditorModel
         return sortCellKeys(this.selectionCells.toArray());
     }
 
-    hasRawValue(descriptor: ValueDescriptor) {
+    hasRawValue(descriptor: ValueDescriptor): boolean {
         return descriptor && descriptor.raw != null && descriptor.raw.toString().trim() !== '';
     }
 
@@ -594,5 +595,10 @@ export interface EditorModelUpdates {
 
 export interface MessageAndValue {
     message?: CellMessage;
-    valueDescriptor: ValueDescriptor
+    valueDescriptor: ValueDescriptor;
+}
+
+export interface EditableGridModels {
+    dataModels: QueryModel[];
+    editorModels: EditorModel[];
 }

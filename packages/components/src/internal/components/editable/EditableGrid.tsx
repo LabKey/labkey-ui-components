@@ -45,6 +45,7 @@ import { GridColumn } from '../base/models/GridColumn';
 
 import { BulkAddUpdateForm } from '../forms/BulkAddUpdateForm';
 import { QueryInfoForm, QueryInfoFormProps } from '../forms/QueryInfoForm';
+
 import {
     addRows,
     addRowsPerPivotValue,

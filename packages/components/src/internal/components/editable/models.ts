@@ -26,10 +26,11 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { GridData } from '../../models';
 
-import { genCellKey, parseCellKey, sortCellKeys } from './utils';
 import { getQueryColumnRenderers } from '../../global';
 import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from '../../util/Date';
 import { caseInsensitive, quoteValueWithDelimiters } from '../../util/utils';
+
+import { genCellKey, parseCellKey, sortCellKeys } from './utils';
 
 export interface EditableColumnMetadata {
     caption?: string;

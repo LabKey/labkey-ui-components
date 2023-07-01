@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import React, { KeyboardEvent, PureComponent, ReactNode } from 'react';
 import { Filter, Query } from '@labkey/api';
 import { List } from 'immutable';
-import React, { PureComponent, ReactNode } from 'react';
 
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -43,6 +43,7 @@ export interface LookupCellProps {
     forUpdate: boolean;
     lookupValueFilters?: Filter.IFilter[];
     modifyCell: (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES) => void;
+    onKeyDown?: (event: KeyboardEvent<HTMLElement>) => void;
     rowIdx: number;
     select: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => void;
     values: List<ValueDescriptor>;
@@ -66,8 +67,9 @@ export class LookupCell extends PureComponent<LookupCellProps> {
             filteredLookupKeys,
             filteredLookupValues,
             forUpdate,
-            values,
             lookupValueFilters,
+            onKeyDown,
+            values,
         } = this.props;
 
         const rawValues = values
@@ -82,6 +84,7 @@ export class LookupCell extends PureComponent<LookupCellProps> {
                     autoFocus
                     disabled={disabled}
                     onChange={this.onSelectChange}
+                    onKeyDown={onKeyDown}
                     openMenuOnFocus
                     queryColumn={col}
                     value={rawValues[0]}
@@ -120,8 +123,9 @@ export class LookupCell extends PureComponent<LookupCellProps> {
                 disabled={disabled}
                 maxRows={LOOKUP_DEFAULT_SIZE}
                 multiple={isMultiple}
+                onKeyDown={onKeyDown}
                 onQSChange={this.onSelectChange}
-                openMenuOnFocus={!isMultiple} // If set to true for the multi-select case, it's not possible to tab out of the cell.
+                openMenuOnFocus
                 preLoad
                 queryFilters={queryFilters}
                 // use detail view to assure we get values that may have been filtered out in the default view

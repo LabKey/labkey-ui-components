@@ -20,7 +20,7 @@ import { LOOKUP_DEFAULT_SIZE } from '../../../constants';
 import { InputRendererProps } from './types';
 import { getSampleStatusContainerFilter } from '../../samples/utils';
 
-interface SampleStatusInputProps extends Omit<QuerySelectOwnProps, 'schemaQuery' | 'valueColumn'> {
+interface SampleStatusInputProps extends Omit<QuerySelectOwnProps, 'containerFilter' | 'schemaQuery' | 'valueColumn'> {
     api?: ComponentsAPIWrapper;
     col: QueryColumn;
     onAdditionalFormDataChange?: (name: string, value: any) => any;
@@ -28,9 +28,8 @@ interface SampleStatusInputProps extends Omit<QuerySelectOwnProps, 'schemaQuery'
 }
 
 export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
-    const { api, col, onAdditionalFormDataChange, renderLabelField, ...selectInputProps } = props;
-    delete selectInputProps['containerFilter']; // use col.lookup.containerFilter instead
-    const { allowDisable, onQSChange, value } = selectInputProps;
+    const { api, col, onAdditionalFormDataChange, renderLabelField, ...querySelectProps } = props;
+    const { allowDisable, onQSChange, value } = querySelectProps;
     const { user } = useServerContext();
     const [consumedStatuses, setConsumedStatuses] = useState<number[]>();
     const [error, setError] = useState<string>();
@@ -113,7 +112,6 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
         <>
             {renderLabelField?.(col)}
             <QuerySelect
-                containerFilter={getSampleStatusContainerFilter()}
                 containerPath={col.lookup.containerPath}
                 description={col.description}
                 displayColumn={col.lookup.displayColumn}
@@ -125,7 +123,8 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 name={col.fieldKey}
                 openMenuOnFocus={!col.isJunctionLookup()}
                 required={col.required}
-                {...selectInputProps}
+                {...querySelectProps}
+                containerFilter={getSampleStatusContainerFilter()}
                 onQSChange={onChange}
                 schemaQuery={col.lookup.schemaQuery}
                 valueColumn={col.lookup.keyColumn}
@@ -145,7 +144,6 @@ export const SampleStatusInputRenderer: FC<InputRendererProps> = memo(props => {
     const {
         allowFieldDisable,
         col,
-        containerFilter,
         containerPath,
         formsy,
         initiallyDisabled,
@@ -164,7 +162,6 @@ export const SampleStatusInputRenderer: FC<InputRendererProps> = memo(props => {
             addLabelAsterisk={showAsteriskSymbol}
             allowDisable={allowFieldDisable}
             col={col}
-            containerFilter={containerFilter}
             containerPath={containerPath}
             formsy={formsy}
             initiallyDisabled={initiallyDisabled}

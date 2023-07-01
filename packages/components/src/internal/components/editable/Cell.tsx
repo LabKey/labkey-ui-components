@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 import { List } from 'immutable';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
@@ -50,7 +50,6 @@ interface Props {
     focused?: boolean;
     forUpdate: boolean;
     getFilteredLookupKeys?: (linkedValues: any[]) => Promise<List<any>>;
-    renderDragHandle?: boolean;
     linkedValues?: any[];
     locked?: boolean;
     lookupValueFilters?: Filter.IFilter[];
@@ -58,6 +57,7 @@ interface Props {
     name?: string;
     placeholder?: string;
     readOnly?: boolean;
+    renderDragHandle?: boolean;
     row: any;
     rowIdx: number;
     selected?: boolean;
@@ -241,6 +241,24 @@ export class Cell extends React.PureComponent<Props, State> {
         }
     };
 
+    handleDropdownKeys = (event: React.KeyboardEvent<HTMLElement>): void => {
+        const { cellActions, colIdx, rowIdx } = this.props;
+        const { selectCell } = cellActions;
+
+        switch (event.keyCode) {
+            case KEYS.Escape:
+                cancelEvent(event);
+                selectCell(colIdx, rowIdx, undefined, true);
+                break;
+            case KEYS.Tab:
+                cancelEvent(event);
+                selectCell(event.shiftKey ? colIdx - 1 : colIdx + 1, rowIdx);
+                break;
+            default:
+                break;
+        }
+    };
+
     handleMouseEnter = (event: any): void => {
         const { cellActions, colIdx, rowIdx } = this.props;
 
@@ -331,7 +349,7 @@ export class Cell extends React.PureComponent<Props, State> {
             };
 
             if (valueDisplay.length === 0 && placeholder) valueDisplay = placeholder;
-            let cell;
+            let cell: ReactNode;
 
             if (showLookup || col.inputRenderer) {
                 cell = (
@@ -381,7 +399,10 @@ export class Cell extends React.PureComponent<Props, State> {
                     data={row}
                     formsy={false}
                     onSelectChange={this.onSelectChange}
-                    selectInputProps={gridCellSelectInputProps}
+                    selectInputProps={{
+                        ...gridCellSelectInputProps,
+                        onKeyDown: this.handleDropdownKeys,
+                    }}
                     showLabel={false}
                     value={values?.get(0)?.raw}
                 />
@@ -400,6 +421,7 @@ export class Cell extends React.PureComponent<Props, State> {
                     filteredLookupValues={filteredLookupValues}
                     forUpdate={forUpdate}
                     modifyCell={cellActions.modifyCell}
+                    onKeyDown={this.handleDropdownKeys}
                     rowIdx={rowIdx}
                     select={cellActions.selectCell}
                     values={values}

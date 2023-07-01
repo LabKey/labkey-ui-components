@@ -245,6 +245,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
         saveOnBlur: false,
         showDropdownIndicator: true,
         showDropdownMenu: true,
+        showIndicatorSeparator: true,
         valueKey: 'value',
     };
 

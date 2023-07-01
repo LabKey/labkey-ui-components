@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { Component, FC, FocusEvent, ReactNode } from 'react';
+import React, { Component, FC, FocusEvent, KeyboardEvent, ReactNode } from 'react';
 import { withFormsy } from 'formsy-react';
 import ReactSelect, { components } from 'react-select';
 import AsyncSelect from 'react-select/async';
@@ -151,6 +151,8 @@ export function initOptions(props: SelectInputProps): SelectInputOption | Select
     return options;
 }
 
+const nullComponent: FC = () => null;
+
 export interface SelectInputProps extends WithFormsyProps {
     addLabelAsterisk?: boolean;
     allowCreate?: boolean;
@@ -193,6 +195,7 @@ export interface SelectInputProps extends WithFormsyProps {
     // TODO: this is getting confused with formsy on change, need to separate
     onChange?: SelectInputChange;
     onFocus?: (event: FocusEvent<HTMLElement>, selectRef) => void;
+    onKeyDown?: (event: KeyboardEvent<HTMLElement>) => void;
     onToggleDisable?: (disabled: boolean) => void;
     openMenuOnClick?: boolean;
     openMenuOnFocus?: boolean;
@@ -204,6 +207,9 @@ export interface SelectInputProps extends WithFormsyProps {
     resolveFormValue?: (selectedOptions: SelectInputOption | SelectInputOption[]) => any;
     saveOnBlur?: boolean;
     selectedOptions?: any;
+    showDropdownIndicator?: boolean;
+    showDropdownMenu?: boolean;
+    showIndicatorSeparator?: boolean;
     showLabel?: boolean;
     value?: any;
     valueKey?: string;
@@ -237,6 +243,8 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
         labelClass: 'control-label col-sm-3 text-left col-xs-12',
         openMenuOnFocus: false,
         saveOnBlur: false,
+        showDropdownIndicator: true,
+        showDropdownMenu: true,
         valueKey: 'value',
     };
 
@@ -486,16 +494,32 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             menuPosition,
             multiple,
             name,
+            onKeyDown,
             openMenuOnClick,
             openMenuOnFocus,
             optionRenderer,
             options,
             placeholder,
+            showDropdownIndicator,
+            showDropdownMenu,
+            showIndicatorSeparator,
             valueKey,
             valueRenderer,
         } = this.props;
 
         const components: any = { Input: this.Input };
+
+        if (!showDropdownIndicator) {
+            components.DropdownIndicator = nullComponent;
+        }
+
+        if (!showIndicatorSeparator) {
+            components.IndicatorSeparator = nullComponent;
+        }
+
+        if (!showDropdownMenu) {
+            components.Menu = nullComponent;
+        }
 
         if (optionRenderer) {
             components.Option = this.Option;
@@ -534,6 +558,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             onBlur: this.handleBlur,
             onChange: this.handleChange,
             onFocus: this.handleFocus,
+            onKeyDown,
             openMenuOnClick,
             openMenuOnFocus,
             options,

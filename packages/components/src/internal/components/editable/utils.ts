@@ -393,5 +393,6 @@ export const gridCellSelectInputProps: Partial<SelectInputProps> = {
     inputClass: 'select-input-cell',
     menuPosition: 'fixed',
     placeholder: '',
+    showIndicatorSeparator: false,
     showLabel: false,
 };

@@ -1,4 +1,4 @@
-import { fromJS, Map } from 'immutable';
+import { Map } from 'immutable';
 
 import { extractEntityTypeOptionFromRow, getChosenParentData } from './actions';
 import { EntityDataType, EntityIdCreationModel } from './models';

@@ -37,7 +37,6 @@ import { cancelEvent } from '../../events';
 
 import { headerSelectionCell } from '../../renderers';
 import { blurActiveElement, capitalizeFirstChar, caseInsensitive, not } from '../../util/utils';
-import { genCellKey, parseCellKey } from '../../utils';
 import { Alert } from '../base/Alert';
 import { DeleteIcon } from '../base/DeleteIcon';
 import { Grid } from '../base/Grid';
@@ -46,6 +45,7 @@ import { GridColumn } from '../base/models/GridColumn';
 
 import { BulkAddUpdateForm } from '../forms/BulkAddUpdateForm';
 import { QueryInfoForm, QueryInfoFormProps } from '../forms/QueryInfoForm';
+
 import {
     addRows,
     addRowsPerPivotValue,
@@ -55,7 +55,7 @@ import {
     pasteEvent,
     updateGridFromBulkForm,
 } from './actions';
-
+import { genCellKey, parseCellKey } from './utils';
 import { BorderMask, Cell } from './Cell';
 
 import { CellActions, EDITABLE_GRID_CONTAINER_CLS, MODIFICATION_TYPES, SELECTION_TYPES } from './constants';

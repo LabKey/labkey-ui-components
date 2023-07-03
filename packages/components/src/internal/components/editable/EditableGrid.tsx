@@ -41,7 +41,7 @@ import { Alert } from '../base/Alert';
 import { DeleteIcon } from '../base/DeleteIcon';
 import { Grid } from '../base/Grid';
 
-import { GridColumn } from '../base/models/GridColumn';
+import { GridColumn, GridColumnCellRenderer } from '../base/models/GridColumn';
 
 import { BulkAddUpdateForm } from '../forms/BulkAddUpdateForm';
 import { QueryInfoForm, QueryInfoFormProps } from '../forms/QueryInfoForm';
@@ -176,8 +176,8 @@ function inputCellFactory(
     containerFilter: Query.ContainerFilter,
     forUpdate: boolean,
     initialSelection: string[]
-) {
-    return (value: any, row: any, c: GridColumn, rn: number, cn: number) => {
+): GridColumnCellRenderer {
+    return (value, row, c, rn, cn) => {
         let colOffset = 0;
         if (allowSelection) colOffset += 1;
         if (!hideCountCol) colOffset += 1;
@@ -779,7 +779,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         this.getColumns().forEach(qCol => {
             const metadata = loweredColumnMetadata[qCol.fieldKey.toLowerCase()];
-            const metaCaption = metadata?.caption;
             gridColumns = gridColumns.push(
                 new GridColumn({
                     align: qCol.align,
@@ -798,7 +797,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     ),
                     index: qCol.fieldKey,
                     raw: qCol,
-                    title: metaCaption ?? qCol.caption,
+                    title: metadata?.caption ?? qCol.caption,
                     width: 100,
                     hideTooltip: metadata?.hideTitleTooltip,
                 })

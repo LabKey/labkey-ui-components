@@ -405,7 +405,7 @@ export class DomainDesign
             index: GRID_SELECTION_INDEX,
             title: GRID_SELECTION_INDEX,
             width: 20,
-            cell: (data: any, row: any) => {
+            cell: (data, row) => {
                 const domainIndex = row.get('domainIndex');
                 const fieldIndex = row.get('fieldIndex');
                 const selected = row.get('selected');
@@ -431,7 +431,7 @@ export class DomainDesign
             index: GRID_NAME_INDEX,
             title: GRID_NAME_INDEX,
             raw: { index: 'name', caption: 'Name', sortable: true },
-            cell: (data: any, row: any) => {
+            cell: (data, row) => {
                 const text = row.get('name');
                 const fieldIndex = row.get('fieldIndex');
 

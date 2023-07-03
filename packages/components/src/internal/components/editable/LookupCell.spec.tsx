@@ -2,32 +2,35 @@ import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { List } from 'immutable';
 
-import { QueryColumn } from '../../../public/QueryColumn';
+import { Query } from '@labkey/api';
+
+import { QueryColumn, QueryLookup } from '../../../public/QueryColumn';
 import { TextChoiceInput } from '../forms/input/TextChoiceInput';
 import { QuerySelect } from '../forms/QuerySelect';
 
 import { ValueDescriptor } from './models';
 
-import { LookupCell } from './LookupCell';
-import { Query } from '@labkey/api';
+import { LookupCell, LookupCellProps } from './LookupCell';
 
 describe('LookupCell', () => {
-    const DEFAULT_PROPS = {
-        col: new QueryColumn({
-            lookup: {
-                schemaName: 'schema',
-                queryName: 'query',
-                displayColumn: 'display',
-                keyColumn: 'key',
-            },
-        }),
-        colIdx: 0,
-        modelId: 'test-id',
-        modifyCell: jest.fn(),
-        rowIdx: 0,
-        select: jest.fn,
-        values: List.of({ raw: 'a' } as ValueDescriptor, { raw: 'b' } as ValueDescriptor, {} as ValueDescriptor),
-    };
+    function defaultProps(): LookupCellProps {
+        return {
+            col: new QueryColumn({
+                lookup: new QueryLookup({
+                    schemaName: 'schema',
+                    queryName: 'query',
+                    displayColumn: 'display',
+                    keyColumn: 'key',
+                }),
+            }),
+            colIdx: 0,
+            forUpdate: false,
+            modifyCell: jest.fn(),
+            rowIdx: 0,
+            select: jest.fn(),
+            values: List.of({ raw: 'a' } as ValueDescriptor, { raw: 'b' } as ValueDescriptor, {} as ValueDescriptor),
+        };
+    }
 
     function validate(wrapper: ReactWrapper, asTextChoice = false): void {
         expect(wrapper.find(TextChoiceInput)).toHaveLength(asTextChoice ? 1 : 0);
@@ -35,7 +38,7 @@ describe('LookupCell', () => {
     }
 
     test('QuerySelect default props', () => {
-        const wrapper = mount(<LookupCell {...DEFAULT_PROPS} />);
+        const wrapper = mount(<LookupCell {...defaultProps()} />);
         validate(wrapper);
         expect(wrapper.find(QuerySelect).prop('value')).toBe('a');
         expect(wrapper.find(QuerySelect).prop('disabled')).toBeFalsy();
@@ -46,15 +49,17 @@ describe('LookupCell', () => {
     test('QuerySelect all samples lookup', () => {
         const wrapper = mount(
             <LookupCell
-                {...DEFAULT_PROPS}
-                col={new QueryColumn({
-                    lookup: {
-                        schemaName: 'exp',
-                        queryName: 'materials',
-                        displayColumn: 'display',
-                        keyColumn: 'key',
-                    },
-                })}
+                {...defaultProps()}
+                col={
+                    new QueryColumn({
+                        lookup: new QueryLookup({
+                            schemaName: 'exp',
+                            queryName: 'materials',
+                            displayColumn: 'display',
+                            keyColumn: 'key',
+                        }),
+                    })
+                }
             />
         );
         validate(wrapper);
@@ -65,7 +70,7 @@ describe('LookupCell', () => {
     });
 
     test('QuerySelect disabled', () => {
-        const wrapper = mount(<LookupCell {...DEFAULT_PROPS} disabled />);
+        const wrapper = mount(<LookupCell {...defaultProps()} disabled />);
         validate(wrapper);
         expect(wrapper.find(QuerySelect).prop('disabled')).toBeTruthy();
         wrapper.unmount();
@@ -74,10 +79,12 @@ describe('LookupCell', () => {
     test('QuerySelect multi value', () => {
         const wrapper = mount(
             <LookupCell
-                {...DEFAULT_PROPS}
-                col={new QueryColumn({
-                    lookup: { schemaName: 'schema', queryName: 'query', multiValued: 'junction' },
-                })}
+                {...defaultProps()}
+                col={
+                    new QueryColumn({
+                        lookup: new QueryLookup({ schemaName: 'schema', queryName: 'query', multiValued: 'junction' }),
+                    })
+                }
             />
         );
         validate(wrapper);
@@ -86,7 +93,7 @@ describe('LookupCell', () => {
     });
 
     test('QuerySelect filteredLookupKeys', () => {
-        const wrapper = mount(<LookupCell {...DEFAULT_PROPS} filteredLookupKeys={List.of(1, 2)} />);
+        const wrapper = mount(<LookupCell {...defaultProps()} filteredLookupKeys={List.of(1, 2)} />);
         validate(wrapper);
         const filters = wrapper.find(QuerySelect).prop('queryFilters');
         expect(filters.size).toBe(1);
@@ -96,7 +103,7 @@ describe('LookupCell', () => {
     });
 
     test('QuerySelect filteredLookupValues', () => {
-        const wrapper = mount(<LookupCell {...DEFAULT_PROPS} filteredLookupValues={List.of('a', 'b')} />);
+        const wrapper = mount(<LookupCell {...defaultProps()} filteredLookupValues={List.of('a', 'b')} />);
         validate(wrapper);
         const filters = wrapper.find(QuerySelect).prop('queryFilters');
         expect(filters.size).toBe(1);
@@ -106,40 +113,44 @@ describe('LookupCell', () => {
     });
 
     test('QuerySelect default container filter without projects', () => {
-        const wrapper = mount(<LookupCell {...DEFAULT_PROPS} />);
+        const wrapper = mount(<LookupCell {...defaultProps()} />);
         const containerFilter = wrapper.find(QuerySelect).prop('containerFilter');
         expect(containerFilter).toBe(undefined);
     });
 
     test('QuerySelect lookup with container filter', () => {
-        const wrapper = mount(<LookupCell
-            {...DEFAULT_PROPS}
-            col={ new QueryColumn({
-                lookup: {
-                    schemaName: 'schema',
-                    queryName: 'query',
-                    displayColumn: 'display',
-                    keyColumn: 'key',
-                    containerFilter: Query.ContainerFilter.current
-                }})
-            }
-            containerFilter={Query.ContainerFilter.allFolders}
-        />);
+        const wrapper = mount(
+            <LookupCell
+                {...defaultProps()}
+                col={
+                    new QueryColumn({
+                        lookup: new QueryLookup({
+                            schemaName: 'schema',
+                            queryName: 'query',
+                            displayColumn: 'display',
+                            keyColumn: 'key',
+                            containerFilter: Query.ContainerFilter.current,
+                        }),
+                    })
+                }
+                containerFilter={Query.ContainerFilter.allFolders}
+            />
+        );
         const containerFilter = wrapper.find(QuerySelect).prop('containerFilter');
         expect(containerFilter).toBe(Query.ContainerFilter.current);
     });
 
     test('QuerySelect container filter prop', () => {
-        const wrapper = mount(<LookupCell {...DEFAULT_PROPS}  containerFilter={Query.ContainerFilter.current} />);
+        const wrapper = mount(<LookupCell {...defaultProps()} containerFilter={Query.ContainerFilter.current} />);
         const containerFilter = wrapper.find(QuerySelect).prop('containerFilter');
         expect(containerFilter).toBe(Query.ContainerFilter.current);
     });
 
     test('QuerySelect default container filter with projects', () => {
         LABKEY.moduleContext.query = {
-           isProductProjectsEnabled: true
+            isProductProjectsEnabled: true,
         };
-        const wrapper = mount(<LookupCell {...DEFAULT_PROPS} />);
+        const wrapper = mount(<LookupCell {...defaultProps()} />);
         const containerFilter = wrapper.find(QuerySelect).prop('containerFilter');
         expect(containerFilter).toBe(Query.ContainerFilter.currentPlusProjectAndShared);
     });
@@ -147,10 +158,12 @@ describe('LookupCell', () => {
     test('col with validValues', () => {
         const wrapper = mount(
             <LookupCell
-                {...DEFAULT_PROPS}
-                col={new QueryColumn({
-                    validValues: ['a', 'b'],
-                })}
+                {...defaultProps()}
+                col={
+                    new QueryColumn({
+                        validValues: ['a', 'b'],
+                    })
+                }
             />
         );
         validate(wrapper, true);

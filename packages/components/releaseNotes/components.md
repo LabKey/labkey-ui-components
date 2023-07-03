@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Add ability to customize message for useNotAuthorized hook.
+
 ### version 2.349.3
 *Released*: 1 July 2023
 * Issue 48188: Selecting 'All non-PHI' or 'Custom template' under 'Index each item as a separate document' doesn't persist

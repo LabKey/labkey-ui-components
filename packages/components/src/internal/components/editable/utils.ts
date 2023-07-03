@@ -14,7 +14,7 @@ import { EXPORT_TYPES } from '../../constants';
 import { SelectInputOption, SelectInputProps } from '../forms/input/SelectInput';
 
 import { EditorModel, EditorModelProps, EditableGridModels } from './models';
-import { CellActions, MODIFICATION_TYPES } from './constants';
+import { CellActions, CellCoordinates, MODIFICATION_TYPES } from './constants';
 
 export const applyEditableGridChangesToModels = (
     dataModels: QueryModel[],
@@ -324,7 +324,7 @@ export function genCellKey(colIdx: number, rowIdx: number): string {
     return [colIdx, rowIdx].join('-');
 }
 
-export function parseCellKey(cellKey: string): { colIdx: number; rowIdx: number } {
+export function parseCellKey(cellKey: string): CellCoordinates {
     const [colIdx, rowIdx] = cellKey.split('-');
 
     return {

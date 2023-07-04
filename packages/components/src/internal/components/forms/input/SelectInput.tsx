@@ -163,6 +163,7 @@ export interface SelectInputProps extends WithFormsyProps {
     cacheOptions?: boolean;
     clearCacheOnChange?: boolean;
     clearable?: boolean;
+    closeMenuOnSelect?: boolean;
     containerClass?: string;
     customStyles?: Record<string, any>;
     customTheme?: (theme) => Record<string, any>;
@@ -211,6 +212,7 @@ export interface SelectInputProps extends WithFormsyProps {
     showDropdownMenu?: boolean;
     showIndicatorSeparator?: boolean;
     showLabel?: boolean;
+    tabSelectsValue?: boolean;
     value?: any;
     valueKey?: string;
     valueRenderer?: any;
@@ -250,6 +252,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
     };
 
     private readonly _id: string;
+    private _isMounted: boolean;
     private CHANGE_LOCK = false;
 
     constructor(props: SelectInputProps) {
@@ -271,6 +274,10 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
         reactSelect: any;
     };
 
+    componentDidMount(): void {
+        this._isMounted = true;
+    }
+
     componentDidUpdate(prevProps: SelectInputProps): void {
         if (!this.CHANGE_LOCK && this.props.autoValue && !this.isAsync() && prevProps.value !== this.props.value) {
             // If "autoValue" is enabled and the value has changed for a non-async configuration, then we need
@@ -280,6 +287,10 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
         }
 
         this.CHANGE_LOCK = false;
+    }
+
+    componentWillUnmount(): void {
+        this._isMounted = false;
     }
 
     toggleDisabled = (): void => {
@@ -313,8 +324,8 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
         onBlur?.(event);
     };
 
-    handleChange = (selectedOptions: any): void => {
-        const { clearCacheOnChange, name, onChange } = this.props;
+    handleChange = (selectedOptions: any, context?: any): void => {
+        const { clearCacheOnChange, closeMenuOnSelect, multiple, name, onChange } = this.props;
 
         this.CHANGE_LOCK = true;
 
@@ -325,6 +336,16 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
         const formValue = this._setOptionsAndValue(selectedOptions);
 
         onChange?.(name, formValue, selectedOptions, this.props);
+
+        // ReactSelect does not currently support (or it is just broken) the configuration of
+        // isMulti={true} and closeMenuOnSelect={true}. The menu remains open.
+        if (closeMenuOnSelect && multiple && context.action === 'select-option') {
+            setTimeout(() => {
+                if (this._isMounted) {
+                    this.refs.reactSelect.onMenuClose();
+                }
+            }, 10);
+        }
     };
 
     handleFocus = (event): void => {
@@ -482,6 +503,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             backspaceRemovesValue,
             cacheOptions,
             clearable,
+            closeMenuOnSelect,
             customTheme,
             customStyles,
             defaultOptions,
@@ -504,6 +526,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             showDropdownIndicator,
             showDropdownMenu,
             showIndicatorSeparator,
+            tabSelectsValue,
             valueKey,
             valueRenderer,
         } = this.props;
@@ -540,6 +563,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             blurInputOnSelect: false,
             className: 'select-input',
             classNamePrefix: 'select-input',
+            closeMenuOnSelect,
             components,
             delimiter,
             filterOption,
@@ -566,6 +590,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             placeholder,
             ref: 'reactSelect',
             styles: { ..._customStyles, ...customStyles },
+            tabSelectsValue,
             theme: customTheme || _customTheme,
             // ReactSelect only supports null for clearing the value (as opposed to undefined).
             // See https://stackoverflow.com/a/50417171.

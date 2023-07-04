@@ -85,7 +85,6 @@ export class LookupCell extends PureComponent<LookupCellProps> {
                     disabled={disabled}
                     onChange={this.onSelectChange}
                     onKeyDown={onKeyDown}
-                    openMenuOnFocus
                     queryColumn={col}
                     value={rawValues[0]}
                 />
@@ -125,7 +124,6 @@ export class LookupCell extends PureComponent<LookupCellProps> {
                 multiple={isMultiple}
                 onKeyDown={onKeyDown}
                 onQSChange={this.onSelectChange}
-                openMenuOnFocus
                 preLoad
                 queryFilters={queryFilters}
                 // use detail view to assure we get values that may have been filtered out in the default view

@@ -37,6 +37,7 @@ import {
     NEW_SOURCE_TYPE_HREF,
     NEW_STANDARD_ASSAY_DESIGN_HREF,
     NOTEBOOKS_KEY,
+    PLATES_KEY,
     PICKLIST_KEY,
     ProductFeature,
     PROJECT_DATA_TYPE_EXCLUSIONS,
@@ -313,6 +314,11 @@ export function isAssayDesignExportEnabled(moduleContext?: ModuleContext): boole
     return hasPremiumModule(moduleContext);
 }
 
+export function isPlatesEnabled(moduleContext?: ModuleContext): boolean {
+    // TODO: Update to check against feature flag / url
+    return biologicsIsPrimaryApp(moduleContext);
+}
+
 export function isELNEnabled(moduleContext?: ModuleContext): boolean {
     return hasModule('LabBook', moduleContext) && isFeatureEnabled(ProductFeature.ELN, moduleContext);
 }
@@ -417,10 +423,7 @@ export function addSourcesSectionConfig(
 }
 
 // exported for testing
-export function addSamplesSectionConfig(
-    user: User,
-    sectionConfigs: List<Map<string, MenuSectionConfig>>
-): List<Map<string, MenuSectionConfig>> {
+export function getSamplesSectionConfig(user: User): MenuSectionConfig {
     let samplesMenuConfig = new MenuSectionConfig({
         emptyText: 'No sample types have been defined',
         filteredEmptyText: 'No sample types available',
@@ -432,7 +435,7 @@ export function addSamplesSectionConfig(
             emptyURLText: 'Create a sample type',
         }) as MenuSectionConfig;
     }
-    return sectionConfigs.push(Map<string, MenuSectionConfig>().set(SAMPLES_KEY, samplesMenuConfig));
+    return samplesMenuConfig;
 }
 
 // exported for testing
@@ -453,6 +456,12 @@ export function addAssaysSectionConfig(
         }) as MenuSectionConfig;
     }
     return sectionConfigs.push(Map<string, MenuSectionConfig>().set(ASSAYS_KEY, assaysMenuConfig));
+}
+
+export function getPlatesSectionConfig(): MenuSectionConfig {
+    return new MenuSectionConfig({
+        iconURL: imageURL('_images', 'samples.svg'),
+    });
 }
 
 function getWorkflowSectionConfig(): MenuSectionConfig {
@@ -523,7 +532,12 @@ export function getMenuSectionConfigs(
         sectionConfigs = sectionConfigs.push(Map({ [REGISTRY_KEY]: getRegistrySectionConfig() }));
     }
     if (isBioOrSM) {
-        sectionConfigs = addSamplesSectionConfig(user, sectionConfigs);
+        const configs = Map<string, MenuSectionConfig>({ [SAMPLES_KEY]: getSamplesSectionConfig(user) }).asMutable();
+        if (isPlatesEnabled(moduleContext)) {
+            configs.set(PLATES_KEY, getPlatesSectionConfig());
+        }
+        sectionConfigs = sectionConfigs.push(configs.asImmutable());
+
         if (isAssayEnabled(moduleContext)) {
             sectionConfigs = addAssaysSectionConfig(user, sectionConfigs, isSMPrimary);
         }

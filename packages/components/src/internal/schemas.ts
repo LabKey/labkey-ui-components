@@ -27,8 +27,10 @@ const ASSAY_SCHEMA = 'assay';
 export const ASSAY_TABLES = {
     ASSAY_LIST: new SchemaQuery(ASSAY_SCHEMA, 'AssayList'),
     ASSAY_DETAILS_SQ: new SchemaQuery(ASSAY_SCHEMA, 'AssayList', ViewInfo.DETAIL_NAME),
-    SCHEMA: ASSAY_SCHEMA,
+    PLATES: new SchemaQuery('lists', 'plates'),
     RESULTS_QUERYNAME: 'Data',
+    SCHEMA: ASSAY_SCHEMA,
+    WELLS: new SchemaQuery('lists', 'wells'),
 };
 
 // EXP

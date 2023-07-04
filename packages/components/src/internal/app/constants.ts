@@ -41,6 +41,7 @@ export const FREEZERS_KEY = 'freezers';
 export const BOXES_KEY = 'boxes';
 export const HOME_KEY = 'home';
 export const USER_KEY = 'user';
+export const PLATES_KEY = 'plates';
 export const PICKLIST_KEY = 'picklist';
 export const FIND_SAMPLES_BY_ID_KEY = 'samplesById';
 export const FIND_SAMPLES_BY_FILTER_KEY = 'samplesByFilter';

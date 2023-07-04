@@ -237,6 +237,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
         autoValue: true,
         clearable: true,
         clearCacheOnChange: true,
+        closeMenuOnSelect: true,
         containerClass: 'form-group row',
         defaultOptions: true,
         delimiter: DELIMITER,
@@ -248,6 +249,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
         showDropdownIndicator: true,
         showDropdownMenu: true,
         showIndicatorSeparator: true,
+        tabSelectsValue: true,
         valueKey: 'value',
     };
 
@@ -339,7 +341,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
 
         // ReactSelect does not currently support (or it is just broken) the configuration of
         // isMulti={true} and closeMenuOnSelect={true}. The menu remains open.
-        if (closeMenuOnSelect && multiple && context.action === 'select-option') {
+        if (closeMenuOnSelect && multiple && context?.action === 'select-option') {
             setTimeout(() => {
                 if (this._isMounted) {
                     this.refs.reactSelect.onMenuClose();

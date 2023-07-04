@@ -17,8 +17,9 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper'
 
 import { LOOKUP_DEFAULT_SIZE } from '../../../constants';
 
-import { InputRendererProps } from './types';
 import { getSampleStatusContainerFilter } from '../../samples/utils';
+
+import { InputRendererProps } from './types';
 
 interface SampleStatusInputProps extends Omit<QuerySelectOwnProps, 'containerFilter' | 'schemaQuery' | 'valueColumn'> {
     api?: ComponentsAPIWrapper;

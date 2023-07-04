@@ -327,7 +327,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
     };
 
     handleChange = (selectedOptions: any, context?: any): void => {
-        const { clearCacheOnChange, closeMenuOnSelect, multiple, name, onChange } = this.props;
+        const { clearCacheOnChange, closeMenuOnSelect, multiple, name, onChange, openMenuOnFocus } = this.props;
 
         this.CHANGE_LOCK = true;
 
@@ -339,9 +339,11 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
 
         onChange?.(name, formValue, selectedOptions, this.props);
 
-        // ReactSelect does not currently support (or it is just broken) the configuration of
-        // isMulti={true} and closeMenuOnSelect={true}. The menu remains open.
-        if (closeMenuOnSelect && multiple && context?.action === 'select-option') {
+        // ReactSelect does not currently support (or it is just broken) the configuration of:
+        // openMenuOnFocus={true}, closeMenuOnSelect={true} and isMulti={true}
+        // The menu remains open due to focus. This does not occur when isMulti={false}.
+        // Here we do a deferred call to the internal onMenuClose().
+        if (openMenuOnFocus && closeMenuOnSelect && multiple && context?.action === 'select-option') {
             setTimeout(() => {
                 if (this._isMounted) {
                     this.refs.reactSelect.onMenuClose();

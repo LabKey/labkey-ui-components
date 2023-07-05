@@ -1,6 +1,16 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.350.0
+*Released*: 4 July 2023
+- Add `onKeyDown` event handling for `TAB` and `ESCAPE` for dropdown cells.
+- Expose `onKeyDown` event handling prop on `SelectInput`.
+- Introduce `showDropdownIndicator`, `showIndicatorSeparator` and `showDropdownMenu` render bits on `SelectInput`.
+- Default dropdown cells to `showIndicatorSeparator=false` to better match editable grid styling.
+- Fix round-tripping values within the "Alias" column on an editable grid via an `AliasGridInput` processing component.
+- Introduce types of `CellCoordinates` and `GridColumnCellRenderer`.
+- Update `SampleStatusInput` handling of `containerFilter` to use prop override pattern instead of `delete`.
+
 ### version 2.349.3
 *Released*: 1 July 2023
 * Issue 48188: Selecting 'All non-PHI' or 'Custom template' under 'Index each item as a separate document' doesn't persist

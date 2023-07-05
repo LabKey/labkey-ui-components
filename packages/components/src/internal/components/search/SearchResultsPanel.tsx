@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
-import { Panel } from 'react-bootstrap';
+import React, { FC, memo } from 'react';
 
 import { HelpLink, SEARCH_SYNTAX_TOPIC } from '../../util/helpLinks';
 
@@ -28,62 +27,31 @@ import { decodeErrorMessage } from './utils';
 
 interface Props {
     emptyResultDisplay?: React.ReactNode;
-    hidePanelFrame?: boolean;
     iconUrl?: string;
     model: SearchResultsModel;
     offset?: number;
 }
 
-export class SearchResultsPanel extends React.Component<Props, any> {
-    static defaultProps = {
-        offset: 0,
-    };
+export const SearchResultsPanel: FC<Props> = memo(({ emptyResultDisplay, iconUrl, model, offset = 0 }) => {
+    const error = model?.error;
+    const loading = model?.isLoading ?? false;
+    const data = model?.getIn(['entities', 'hits']);
+    const hasData = data?.size > 0;
+    const empty = emptyResultDisplay ?? <div className="search-results__margin-top">No Results Found</div>;
 
-    isLoading(): boolean {
-        const { model } = this.props;
-        return model ? model.get('isLoading') : false;
-    }
-
-    renderLoading() {
-        if (this.isLoading()) {
-            return (
-                <div className="panel-body">
-                    <LoadingSpinner />
-                </div>
-            );
-        }
-    }
-
-    renderError() {
-        const { model } = this.props;
-        const error = model ? model.get('error') : undefined;
-
-        if (!this.isLoading() && error) {
-            return (
-                <div className="panel-body">
-                    <Alert>
-                        There was an error with your search term(s). {decodeErrorMessage(error)}
-                        <br/><br/>
-                        See the{' '}
-                        <HelpLink topic={SEARCH_SYNTAX_TOPIC}>LabKey Search Documentation</HelpLink>
-                        {' '} page for more information on
-                        search terms and operators.
-                    </Alert>
-                </div>
-            );
-        }
-    }
-
-    renderResults() {
-        const { model, iconUrl, emptyResultDisplay, offset } = this.props;
-
-        if (this.isLoading()) return;
-
-        const data = model ? model.getIn(['entities', 'hits']) : undefined;
-
-        if (data && data.size > 0) {
-
-            return (
+    return (
+        <div className="search-results-panel">
+            {loading && <LoadingSpinner />}
+            {!loading && error && (
+                <Alert>
+                    There was an error with your search term(s). {decodeErrorMessage(error)}
+                    <br />
+                    <br />
+                    See the <HelpLink topic={SEARCH_SYNTAX_TOPIC}>LabKey Search Documentation</HelpLink> page for more
+                    information on search terms and operators.
+                </Alert>
+            )}
+            {!loading && !error && hasData && (
                 <div className="top-spacing">
                     {data.size > 0 &&
                         data.map((item, i) => (
@@ -98,34 +66,8 @@ export class SearchResultsPanel extends React.Component<Props, any> {
                             </div>
                         ))}
                 </div>
-            );
-        } else {
-            return emptyResultDisplay ? (
-                emptyResultDisplay
-            ) : (
-                <div className="search-results__margin-top">No Results Found</div>
-            );
-        }
-    }
-
-    render() {
-        const { hidePanelFrame, model } = this.props;
-        const error = model ? model.get('error') : undefined;
-
-        const body = (
-            <>
-                {this.renderLoading()}
-                {this.renderError()}
-                {!error && this.renderResults()}
-            </>
-        );
-
-        if (hidePanelFrame) return body;
-
-        return (
-            <Panel>
-                <Panel.Body>{body}</Panel.Body>
-            </Panel>
-        );
-    }
-}
+            )}
+            {!loading && !error && !hasData && empty}
+        </div>
+    );
+});

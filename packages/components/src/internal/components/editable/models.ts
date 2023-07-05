@@ -30,6 +30,7 @@ import { getQueryColumnRenderers } from '../../global';
 import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from '../../util/Date';
 import { caseInsensitive, quoteValueWithDelimiters } from '../../util/utils';
 
+import { CellCoordinates } from './constants';
 import { genCellKey, parseCellKey, sortCellKeys } from './utils';
 
 export interface EditableColumnMetadata {
@@ -137,7 +138,7 @@ export class EditorModel
         startCol: number,
         startRow: number,
         predicate: (value: List<ValueDescriptor>, colIdx: number, rowIdx: number) => boolean,
-        advance: (colIdx: number, rowIdx: number) => { colIdx: number; rowIdx: number }
+        advance: (colIdx: number, rowIdx: number) => CellCoordinates
     ): { colIdx: number; rowIdx: number; value: List<ValueDescriptor> } {
         let colIdx = startCol,
             rowIdx = startRow;

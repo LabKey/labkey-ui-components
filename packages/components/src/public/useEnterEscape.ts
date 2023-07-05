@@ -14,6 +14,7 @@ export enum Key {
     ENTER = 'Enter',
     ESCAPE = 'Escape',
     HOME = 'Home',
+    TAB = 'Tab',
 }
 
 type KeyHandler = (evt: KeyboardEvent) => void;

@@ -1,11 +1,11 @@
-import React, { FC, memo } from 'react';
+import React, { ChangeEventHandler, FC, memo } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 interface Props {
     discardTitle?: string;
-    onCommentChange: (event) => any;
+    onCommentChange: ChangeEventHandler<HTMLTextAreaElement>;
     shouldDiscard: boolean;
-    toggleShouldDiscard: () => any;
+    toggleShouldDiscard: () => void;
 }
 
 export const DISCARD_CONSUMED_CHECKBOX_FIELD = 'discardcheckbox';
@@ -28,7 +28,7 @@ export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
                                 onChange={toggleShouldDiscard}
                                 checked={shouldDiscard}
                             />
-                            <span className="left-spacing">{discardTitle}</span>
+                            <span className="discard-consumed-title left-spacing">{discardTitle}</span>
                         </div>
                     </div>
                 </Col>

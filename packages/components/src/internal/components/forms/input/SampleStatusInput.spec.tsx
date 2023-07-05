@@ -5,7 +5,7 @@ import { fromJS } from 'immutable';
 import { SampleStateType } from '../../samples/constants';
 
 import { SampleState } from '../../samples/models';
-import { QueryColumn } from '../../../../public/QueryColumn';
+import { QueryColumn, QueryLookup } from '../../../../public/QueryColumn';
 
 import { DiscardConsumedSamplesPanel } from '../../samples/DiscardConsumedSamplesPanel';
 import { mountWithServerContext, waitForLifecycle } from '../../../test/enzymeTestHelpers';
@@ -26,7 +26,12 @@ describe('SampleStatusInput', () => {
         fieldKeyArray: ['samplestate'],
         shownInUpdateView: true,
         userEditable: true,
-        lookup: { containerPath: '/Look', keyColumn: 'RowId', displayColumn: '"Label"', query: '"SampleStatus"' },
+        lookup: new QueryLookup({
+            containerPath: '/Look',
+            keyColumn: 'RowId',
+            displayColumn: 'Label',
+            queryName: 'SampleStatus',
+        }),
     });
 
     const INIT_EMPTY = fromJS({
@@ -42,8 +47,9 @@ describe('SampleStatusInput', () => {
     const DEFAULT_PROPS = {
         api: getTestAPIWrapper(jest.fn, {
             samples: getSamplesTestAPIWrapper(jest.fn, {
-                getSampleStatuses: () =>
-                    Promise.resolve([
+                getSampleStatuses: jest
+                    .fn()
+                    .mockResolvedValue([
                         new SampleState({ rowId: 100, label: 'Available', stateType: SampleStateType.Available }),
                         new SampleState({ rowId: 200, label: 'Consumed', stateType: SampleStateType.Consumed }),
                         new SampleState({ rowId: 300, label: 'UsedUp', stateType: SampleStateType.Consumed }),
@@ -53,9 +59,7 @@ describe('SampleStatusInput', () => {
         col: COLUMN_STATUS,
         data: INIT_EMPTY,
         key: 'status-key',
-        onAdditionalFormDataChange: () => {
-            return true;
-        },
+        onAdditionalFormDataChange: jest.fn().mockReturnValue(true),
     };
 
     test('initial value is blank', async () => {

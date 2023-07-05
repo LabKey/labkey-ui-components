@@ -1,21 +1,29 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
+
+export type GridColumnCellRenderer<D = any, R = any> = (
+    data?: D,
+    row?: R,
+    col?: GridColumn,
+    rowNumber?: number,
+    colNumber?: number
+) => ReactNode;
 
 interface ColumnProps {
     align?: string;
-    cell?: (data?: any, row?: any, col?: GridColumn, rowNumber?: number, colNumber?: number) => any;
+    cell?: GridColumnCellRenderer;
     format?: string;
+    headerCls?: string;
+    helpTipRenderer?: string;
+    hideTooltip?: boolean;
     index: string;
-    showHeader?: boolean;
     raw?: any;
+    showHeader?: boolean;
     tableCell?: boolean;
     title: string;
     width?: any;
-    headerCls?: string;
-    hideTooltip?: boolean;
-    helpTipRenderer?: string;
 }
 
-const defaultCell = (d, row, col: GridColumn) => {
+const defaultCell: GridColumnCellRenderer = d => {
     let display = null;
     if (d != undefined) {
         if (typeof d === 'string' || typeof d === 'number') {
@@ -41,7 +49,7 @@ const defaultCell = (d, row, col: GridColumn) => {
 
 export class GridColumn implements ColumnProps {
     align: string;
-    cell: (data?: any, row?: any, col?: GridColumn, rowNumber?: number, colNumber?: number) => any;
+    cell: GridColumnCellRenderer;
     format: string;
     index: string;
     raw: any;

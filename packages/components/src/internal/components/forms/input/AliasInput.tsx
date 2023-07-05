@@ -96,3 +96,18 @@ export const AliasInput: FC<InputRendererProps> = memo(props => {
 });
 
 AliasInput.displayName = 'AliasInput';
+
+export const AliasGridInput: FC<InputRendererProps> = memo(props => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { data, values, ...aliasInputProps } = props;
+    const { col } = aliasInputProps;
+
+    const gridData = useMemo(() => {
+        if (!values) return undefined;
+        return { [col.fieldKey]: values.map(v => v.display).toArray() };
+    }, [col.fieldKey, values]);
+
+    return <AliasInput {...aliasInputProps} data={gridData} />;
+});
+
+AliasGridInput.displayName = 'AliasGridInput';

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 import { List } from 'immutable';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
@@ -22,6 +22,7 @@ import { Filter, Query } from '@labkey/api';
 import { cancelEvent, isCopyCutOrPaste, isFillDown, isSelectAll } from '../../events';
 
 import { CELL_SELECTION_HANDLE_CLASSNAME, KEYS } from '../../constants';
+import { Key } from '../../../public/useEnterEscape';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 
@@ -50,7 +51,6 @@ interface Props {
     focused?: boolean;
     forUpdate: boolean;
     getFilteredLookupKeys?: (linkedValues: any[]) => Promise<List<any>>;
-    renderDragHandle?: boolean;
     linkedValues?: any[];
     locked?: boolean;
     lookupValueFilters?: Filter.IFilter[];
@@ -58,6 +58,7 @@ interface Props {
     name?: string;
     placeholder?: string;
     readOnly?: boolean;
+    renderDragHandle?: boolean;
     row: any;
     rowIdx: number;
     selected?: boolean;
@@ -136,13 +137,13 @@ export class Cell extends React.PureComponent<Props, State> {
         );
     };
 
-    handleBlur = (evt: any): void => {
+    handleBlur: React.FocusEventHandler<HTMLInputElement> = (evt): void => {
         clearTimeout(this.changeTO);
         this.handleSelectionBlur();
         this.replaceCurrentCellValue(evt.target.value, evt.target.value);
     };
 
-    handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    handleChange: React.ChangeEventHandler<HTMLInputElement> = (event): void => {
         event.persist();
 
         clearTimeout(this.changeTO);
@@ -167,7 +168,7 @@ export class Cell extends React.PureComponent<Props, State> {
         cellActions.focusCell(colIdx, rowIdx);
     };
 
-    handleKeys = (event: React.KeyboardEvent<HTMLElement>): void => {
+    handleKeys: React.KeyboardEventHandler<HTMLElement> = (event): void => {
         const { cellActions, colIdx, focused, rowIdx, selected } = this.props;
         const { focusCell, modifyCell, selectCell, fillDown } = cellActions;
 
@@ -241,7 +242,26 @@ export class Cell extends React.PureComponent<Props, State> {
         }
     };
 
-    handleMouseEnter = (event: any): void => {
+    /** This handles a subset of cell navigation key bindings from within a focused dropdown cell. */
+    handleFocusedDropdownKeys: React.KeyboardEventHandler<HTMLElement> = (event): void => {
+        const { cellActions, colIdx, rowIdx } = this.props;
+        const { selectCell } = cellActions;
+
+        switch (event.key) {
+            case Key.ESCAPE:
+                cancelEvent(event);
+                selectCell(colIdx, rowIdx, undefined, true);
+                break;
+            case Key.TAB:
+                cancelEvent(event);
+                selectCell(event.shiftKey ? colIdx - 1 : colIdx + 1, rowIdx);
+                break;
+            default:
+                break;
+        }
+    };
+
+    handleMouseEnter: React.MouseEventHandler<HTMLDivElement> = (event): void => {
         const { cellActions, colIdx, rowIdx } = this.props;
 
         if (cellActions.inDrag()) {
@@ -250,7 +270,7 @@ export class Cell extends React.PureComponent<Props, State> {
         }
     };
 
-    handleSelect = (event): void => {
+    handleSelect: React.MouseEventHandler<HTMLDivElement> = (event): void => {
         const { cellActions, colIdx, rowIdx, selected } = this.props;
         const { selectCell } = cellActions;
 
@@ -260,7 +280,7 @@ export class Cell extends React.PureComponent<Props, State> {
             cancelEvent(event);
             selectCell(colIdx, rowIdx, SELECTION_TYPES.AREA);
         } else if (!selected) {
-            const isDragHandle = event.target?.className?.indexOf(CELL_SELECTION_HANDLE_CLASSNAME) > -1;
+            const isDragHandle = (event.target as any)?.className?.indexOf(CELL_SELECTION_HANDLE_CLASSNAME) > -1;
             if (isDragHandle) {
                 selectCell(colIdx, rowIdx, SELECTION_TYPES.AREA); // use AREA to keep initial selection in the range
             } else {
@@ -331,7 +351,7 @@ export class Cell extends React.PureComponent<Props, State> {
             };
 
             if (valueDisplay.length === 0 && placeholder) valueDisplay = placeholder;
-            let cell;
+            let cell: ReactNode;
 
             if (showLookup || col.inputRenderer) {
                 cell = (
@@ -381,9 +401,13 @@ export class Cell extends React.PureComponent<Props, State> {
                     data={row}
                     formsy={false}
                     onSelectChange={this.onSelectChange}
-                    selectInputProps={gridCellSelectInputProps}
+                    selectInputProps={{
+                        ...gridCellSelectInputProps,
+                        onKeyDown: this.handleFocusedDropdownKeys,
+                    }}
                     showLabel={false}
                     value={values?.get(0)?.raw}
+                    values={values}
                 />
             );
         }
@@ -400,6 +424,7 @@ export class Cell extends React.PureComponent<Props, State> {
                     filteredLookupValues={filteredLookupValues}
                     forUpdate={forUpdate}
                     modifyCell={cellActions.modifyCell}
+                    onKeyDown={this.handleFocusedDropdownKeys}
                     rowIdx={rowIdx}
                     select={cellActions.selectCell}
                     values={values}

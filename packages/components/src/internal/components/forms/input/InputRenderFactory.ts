@@ -6,7 +6,7 @@ import { InputRendererProps } from './types';
 
 import { AssayTaskInputRenderer } from './AssayTaskInput';
 
-import { AliasInput } from './AliasInput';
+import { AliasGridInput, AliasInput } from './AliasInput';
 import { SampleStatusInputRenderer } from './SampleStatusInput';
 import { AppendUnitsInput } from './AppendUnitsInput';
 
@@ -20,7 +20,7 @@ export const resolveInputRenderer: InputRendererFactory = (col, isGridInput) => 
                 if (isGridInput) return undefined;
                 return AppendUnitsInput;
             case 'experimentalias':
-                return AliasInput;
+                return isGridInput ? AliasGridInput : AliasInput;
             case 'samplestatusinput':
                 return SampleStatusInputRenderer;
             case 'workflowtask':

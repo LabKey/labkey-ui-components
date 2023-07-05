@@ -37,15 +37,15 @@ import { cancelEvent } from '../../events';
 
 import { headerSelectionCell } from '../../renderers';
 import { blurActiveElement, capitalizeFirstChar, caseInsensitive, not } from '../../util/utils';
-import { genCellKey, parseCellKey } from '../../utils';
 import { Alert } from '../base/Alert';
 import { DeleteIcon } from '../base/DeleteIcon';
 import { Grid } from '../base/Grid';
 
-import { GridColumn } from '../base/models/GridColumn';
+import { GridColumn, GridColumnCellRenderer } from '../base/models/GridColumn';
 
 import { BulkAddUpdateForm } from '../forms/BulkAddUpdateForm';
 import { QueryInfoForm, QueryInfoFormProps } from '../forms/QueryInfoForm';
+
 import {
     addRows,
     addRowsPerPivotValue,
@@ -55,10 +55,16 @@ import {
     pasteEvent,
     updateGridFromBulkForm,
 } from './actions';
-
+import { genCellKey, parseCellKey } from './utils';
 import { BorderMask, Cell } from './Cell';
 
-import { CellActions, EDITABLE_GRID_CONTAINER_CLS, MODIFICATION_TYPES, SELECTION_TYPES } from './constants';
+import {
+    CellActions,
+    CellCoordinates,
+    EDITABLE_GRID_CONTAINER_CLS,
+    MODIFICATION_TYPES,
+    SELECTION_TYPES,
+} from './constants';
 import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 
 import { CellMessage, EditableColumnMetadata, EditorModel, EditorModelProps, ValueDescriptor } from './models';
@@ -67,19 +73,19 @@ function isCellEmpty(values: List<ValueDescriptor>): boolean {
     return !values || values.isEmpty() || values.some(v => v.raw === undefined || v.raw === null || v.raw === '');
 }
 
-function moveDown(colIdx: number, rowIdx: number): { colIdx: number; rowIdx: number } {
+function moveDown(colIdx: number, rowIdx: number): CellCoordinates {
     return { colIdx, rowIdx: rowIdx + 1 };
 }
 
-function moveLeft(colIdx: number, rowIdx: number): { colIdx: number; rowIdx: number } {
+function moveLeft(colIdx: number, rowIdx: number): CellCoordinates {
     return { colIdx: colIdx - 1, rowIdx };
 }
 
-function moveRight(colIdx: number, rowIdx: number): { colIdx: number; rowIdx: number } {
+function moveRight(colIdx: number, rowIdx: number): CellCoordinates {
     return { colIdx: colIdx + 1, rowIdx };
 }
 
-function moveUp(colIdx: number, rowIdx: number): { colIdx: number; rowIdx: number } {
+function moveUp(colIdx: number, rowIdx: number): CellCoordinates {
     return { colIdx, rowIdx: rowIdx - 1 };
 }
 
@@ -170,8 +176,8 @@ function inputCellFactory(
     containerFilter: Query.ContainerFilter,
     forUpdate: boolean,
     initialSelection: string[]
-) {
-    return (value: any, row: any, c: GridColumn, rn: number, cn: number) => {
+): GridColumnCellRenderer {
+    return (value, row, c, rn, cn) => {
         let colOffset = 0;
         if (allowSelection) colOffset += 1;
         if (!hideCountCol) colOffset += 1;
@@ -197,7 +203,7 @@ function inputCellFactory(
         const currentSelection = editorModel.sortedSelectionKeys;
         const isSparse = isSparseSelection(currentSelection);
         const renderDragHandle = !isSparse && editorModel.lastSelection(colIdx, rn);
-        let inSelection = editorModel?.inSelection(colIdx, rn);
+        let inSelection = editorModel.inSelection(colIdx, rn);
         let borderMask: BorderMask = [false, false, false, false];
 
         if (!isSparse && currentSelection.length) {
@@ -238,17 +244,17 @@ function inputCellFactory(
                 row={row}
                 containerFilter={containerFilter}
                 key={inputCellKey(c.raw, row)}
-                placeholder={columnMetadata ? columnMetadata.placeholder : undefined}
+                placeholder={columnMetadata?.placeholder}
                 readOnly={isReadonlyCol || isReadonlyRow || isReadonlyCell}
                 locked={isLockedRow}
                 rowIdx={rn}
-                focused={editorModel ? editorModel.isFocused(colIdx, rn) : false}
+                focused={editorModel.isFocused(colIdx, rn)}
                 forUpdate={forUpdate}
-                message={editorModel?.getMessage(colIdx, rn)}
-                selected={editorModel ? editorModel.isSelected(colIdx, rn) : false}
+                message={editorModel.getMessage(colIdx, rn)}
+                selected={editorModel.isSelected(colIdx, rn)}
                 selection={inSelection}
                 renderDragHandle={renderDragHandle}
-                values={editorModel ? editorModel.getValue(colIdx, rn) : List<ValueDescriptor>()}
+                values={editorModel.getValue(colIdx, rn)}
                 lookupValueFilters={columnMetadata?.lookupValueFilters}
                 filteredLookupValues={columnMetadata?.filteredLookupValues}
                 filteredLookupKeys={columnMetadata?.filteredLookupKeys}
@@ -773,7 +779,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         this.getColumns().forEach(qCol => {
             const metadata = loweredColumnMetadata[qCol.fieldKey.toLowerCase()];
-            const metaCaption = metadata?.caption;
             gridColumns = gridColumns.push(
                 new GridColumn({
                     align: qCol.align,
@@ -792,7 +797,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     ),
                     index: qCol.fieldKey,
                     raw: qCol,
-                    title: metaCaption ?? qCol.caption,
+                    title: metadata?.caption ?? qCol.caption,
                     width: 100,
                     hideTooltip: metadata?.hideTitleTooltip,
                 })

@@ -195,7 +195,10 @@ import {
 import {
     addColumns,
     changeColumn,
-    removeColumn
+    initEditableGridModel,
+    initEditableGridModels,
+    loadEditorModelData,
+    removeColumn,
 } from './internal/components/editable/actions';
 import { cancelEvent } from './internal/events';
 import { createGridModelId } from './internal/models';
@@ -254,13 +257,7 @@ import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/u
 import { DATA_IMPORT_TOPIC, getHelpLink, HELP_LINK_REFERRER, HelpLink } from './internal/util/helpLinks';
 import { ExperimentRunResolver, ListResolver } from './internal/url/AppURLResolver';
 import { NOT_ANY_FILTER_TYPE } from './internal/url/NotAnyFilterType';
-import {
-    loadEditorModelData,
-    applyEditableGridChangesToModels,
-    getUpdatedDataFromEditableGrid,
-    initEditableGridModel,
-    initEditableGridModels,
-} from './internal/components/editable/utils';
+import { applyEditableGridChangesToModels, getUpdatedDataFromEditableGrid } from './internal/components/editable/utils';
 import { EditableGridTabs } from './internal/components/editable/EditableGrid';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
@@ -1713,6 +1710,7 @@ export type { ITab } from './internal/components/navigation/types';
 export type {
     EditableColumnMetadata,
     EditableGridLoader,
+    EditableGridModels,
     EditorModelProps,
     EditorModelUpdates,
     GridLoader,
@@ -1752,10 +1750,7 @@ export type {
 export type { MetricUnitProps } from './internal/components/domainproperties/samples/models';
 export type { AppRouteResolver } from './internal/url/models';
 export type { WithFormStepsProps } from './internal/components/forms/FormStep';
-export type {
-    BulkAddData,
-    SharedEditableGridPanelProps,
-} from './internal/components/editable/EditableGrid';
+export type { BulkAddData, SharedEditableGridPanelProps } from './internal/components/editable/EditableGrid';
 export type { IImportData, ISelectRowsResult } from './internal/query/api';
 export type { Row, RowValue, SelectRowsOptions, SelectRowsResponse } from './internal/query/selectRows';
 export type { Location } from './internal/util/URL';
@@ -1795,7 +1790,6 @@ export type { SampleStorageLocationComponentProps, SampleStorageMenuComponentPro
 export type { SearchForm } from './internal/components/search/BaseSearchPage';
 export type { SearchHit, SearchMetadata, SearchResult, SearchOptions } from './internal/components/search/actions';
 export type { TabbedGridPanelProps } from './public/QueryModel/TabbedGridPanel';
-export type { EditableGridModels } from './internal/components/editable/utils';
 export type { GroupedSampleDisplayColumns } from './internal/components/samples/actions';
 export type { PicklistDeletionData } from './internal/components/picklist/actions';
 export type { ConfirmModalProps } from './internal/components/base/ConfirmModal';

@@ -2,7 +2,7 @@ import { QueryColumn } from '../../../../public/QueryColumn';
 
 import { AssayTaskInputRenderer } from './AssayTaskInput';
 
-import { AliasInput } from './AliasInput';
+import { AliasGridInput, AliasInput } from './AliasInput';
 import { SampleStatusInputRenderer } from './SampleStatusInput';
 import { AppendUnitsInput } from './AppendUnitsInput';
 
@@ -15,14 +15,14 @@ describe('resolveInputRenderer', () => {
 
     test('appendunitsinput', () => {
         column.inputRenderer = 'appendunitsinput';
-        const AppendUnitsInputComponent = resolveInputRenderer(column);
-        expect(AppendUnitsInputComponent).toEqual(AppendUnitsInput);
+        expect(resolveInputRenderer(column)).toEqual(AppendUnitsInput);
+        expect(resolveInputRenderer(column, true)).toBeUndefined();
     });
 
     test('experimentalias', () => {
         column.inputRenderer = 'experimentalias';
-        const AppendUnitsInputComponent = resolveInputRenderer(column);
-        expect(AppendUnitsInputComponent).toEqual(AliasInput);
+        expect(resolveInputRenderer(column)).toEqual(AliasInput);
+        expect(resolveInputRenderer(column, true)).toEqual(AliasGridInput);
     });
 
     test('samplestatusinput', () => {

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { Component, FC, FocusEvent, ReactNode } from 'react';
+import React, { Component, FC, FocusEvent, KeyboardEvent, ReactNode } from 'react';
 import { withFormsy } from 'formsy-react';
 import ReactSelect, { components } from 'react-select';
 import AsyncSelect from 'react-select/async';
@@ -151,6 +151,8 @@ export function initOptions(props: SelectInputProps): SelectInputOption | Select
     return options;
 }
 
+const nullComponent: FC = () => null;
+
 export interface SelectInputProps extends WithFormsyProps {
     addLabelAsterisk?: boolean;
     allowCreate?: boolean;
@@ -161,6 +163,7 @@ export interface SelectInputProps extends WithFormsyProps {
     cacheOptions?: boolean;
     clearCacheOnChange?: boolean;
     clearable?: boolean;
+    closeMenuOnSelect?: boolean;
     containerClass?: string;
     customStyles?: Record<string, any>;
     customTheme?: (theme) => Record<string, any>;
@@ -193,6 +196,7 @@ export interface SelectInputProps extends WithFormsyProps {
     // TODO: this is getting confused with formsy on change, need to separate
     onChange?: SelectInputChange;
     onFocus?: (event: FocusEvent<HTMLElement>, selectRef) => void;
+    onKeyDown?: (event: KeyboardEvent<HTMLElement>) => void;
     onToggleDisable?: (disabled: boolean) => void;
     openMenuOnClick?: boolean;
     openMenuOnFocus?: boolean;
@@ -204,7 +208,11 @@ export interface SelectInputProps extends WithFormsyProps {
     resolveFormValue?: (selectedOptions: SelectInputOption | SelectInputOption[]) => any;
     saveOnBlur?: boolean;
     selectedOptions?: any;
+    showDropdownIndicator?: boolean;
+    showDropdownMenu?: boolean;
+    showIndicatorSeparator?: boolean;
     showLabel?: boolean;
+    tabSelectsValue?: boolean;
     value?: any;
     valueKey?: string;
     valueRenderer?: any;
@@ -229,6 +237,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
         autoValue: true,
         clearable: true,
         clearCacheOnChange: true,
+        closeMenuOnSelect: true,
         containerClass: 'form-group row',
         defaultOptions: true,
         delimiter: DELIMITER,
@@ -237,10 +246,15 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
         labelClass: 'control-label col-sm-3 text-left col-xs-12',
         openMenuOnFocus: false,
         saveOnBlur: false,
+        showDropdownIndicator: true,
+        showDropdownMenu: true,
+        showIndicatorSeparator: true,
+        tabSelectsValue: true,
         valueKey: 'value',
     };
 
     private readonly _id: string;
+    private _isMounted: boolean;
     private CHANGE_LOCK = false;
 
     constructor(props: SelectInputProps) {
@@ -262,6 +276,10 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
         reactSelect: any;
     };
 
+    componentDidMount(): void {
+        this._isMounted = true;
+    }
+
     componentDidUpdate(prevProps: SelectInputProps): void {
         if (!this.CHANGE_LOCK && this.props.autoValue && !this.isAsync() && prevProps.value !== this.props.value) {
             // If "autoValue" is enabled and the value has changed for a non-async configuration, then we need
@@ -271,6 +289,10 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
         }
 
         this.CHANGE_LOCK = false;
+    }
+
+    componentWillUnmount(): void {
+        this._isMounted = false;
     }
 
     toggleDisabled = (): void => {
@@ -304,8 +326,8 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
         onBlur?.(event);
     };
 
-    handleChange = (selectedOptions: any): void => {
-        const { clearCacheOnChange, name, onChange } = this.props;
+    handleChange = (selectedOptions: any, context?: any): void => {
+        const { clearCacheOnChange, closeMenuOnSelect, multiple, name, onChange, openMenuOnFocus } = this.props;
 
         this.CHANGE_LOCK = true;
 
@@ -316,6 +338,18 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
         const formValue = this._setOptionsAndValue(selectedOptions);
 
         onChange?.(name, formValue, selectedOptions, this.props);
+
+        // ReactSelect does not currently support (or it is just broken) the configuration of:
+        // openMenuOnFocus={true}, closeMenuOnSelect={true} and isMulti={true}
+        // The menu remains open due to focus. This does not occur when isMulti={false}.
+        // Here we do a deferred call to the internal onMenuClose().
+        if (openMenuOnFocus && closeMenuOnSelect && multiple && context?.action === 'select-option') {
+            setTimeout(() => {
+                if (this._isMounted) {
+                    this.refs.reactSelect.onMenuClose();
+                }
+            }, 10);
+        }
     };
 
     handleFocus = (event): void => {
@@ -473,6 +507,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             backspaceRemovesValue,
             cacheOptions,
             clearable,
+            closeMenuOnSelect,
             customTheme,
             customStyles,
             defaultOptions,
@@ -486,16 +521,33 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             menuPosition,
             multiple,
             name,
+            onKeyDown,
             openMenuOnClick,
             openMenuOnFocus,
             optionRenderer,
             options,
             placeholder,
+            showDropdownIndicator,
+            showDropdownMenu,
+            showIndicatorSeparator,
+            tabSelectsValue,
             valueKey,
             valueRenderer,
         } = this.props;
 
         const components: any = { Input: this.Input };
+
+        if (!showDropdownIndicator) {
+            components.DropdownIndicator = nullComponent;
+        }
+
+        if (!showIndicatorSeparator) {
+            components.IndicatorSeparator = nullComponent;
+        }
+
+        if (!showDropdownMenu) {
+            components.Menu = nullComponent;
+        }
 
         if (optionRenderer) {
             components.Option = this.Option;
@@ -515,6 +567,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             blurInputOnSelect: false,
             className: 'select-input',
             classNamePrefix: 'select-input',
+            closeMenuOnSelect,
             components,
             delimiter,
             filterOption,
@@ -534,12 +587,14 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             onBlur: this.handleBlur,
             onChange: this.handleChange,
             onFocus: this.handleFocus,
+            onKeyDown,
             openMenuOnClick,
             openMenuOnFocus,
             options,
             placeholder,
             ref: 'reactSelect',
             styles: { ..._customStyles, ...customStyles },
+            tabSelectsValue,
             theme: customTheme || _customTheme,
             // ReactSelect only supports null for clearing the value (as opposed to undefined).
             // See https://stackoverflow.com/a/50417171.

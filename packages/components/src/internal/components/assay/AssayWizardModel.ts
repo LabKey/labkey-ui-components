@@ -3,7 +3,7 @@ import { AssayDOM } from '@labkey/api';
 
 import { AssayUploadTabs } from '../../constants';
 import { generateNameWithTimestamp } from '../../util/Date';
-import { loadEditorModelData } from '../editable/utils';
+import { loadEditorModelData } from '../editable/actions';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { AssayDefinitionModel, AssayDomainTypes } from '../../AssayDefinitionModel';
 import { FileAttachmentFormModel } from '../files/models';

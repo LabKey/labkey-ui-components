@@ -6,6 +6,26 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Split out aliquot calculated columns by sample status
   * Show filter action values on grid for lookup columns that's not included in the current view
 
+### version 2.350.0
+*Released*: 4 July 2023
+- Add `onKeyDown` event handling for `TAB` and `ESCAPE` for dropdown cells.
+- Expose `onKeyDown` event handling prop on `SelectInput`.
+- Introduce `showDropdownIndicator`, `showIndicatorSeparator` and `showDropdownMenu` render bits on `SelectInput`.
+- Default dropdown cells to `showIndicatorSeparator=false` to better match editable grid styling.
+- Fix round-tripping values within the "Alias" column on an editable grid via an `AliasGridInput` processing component.
+- Introduce types of `CellCoordinates` and `GridColumnCellRenderer`.
+- Update `SampleStatusInput` handling of `containerFilter` to use prop override pattern instead of `delete`.
+
+### version 2.349.3
+*Released*: 1 July 2023
+* Issue 48188: Selecting 'All non-PHI' or 'Custom template' under 'Index each item as a separate document' doesn't persist
+
+### version 2.349.2
+*Released*: 30 June 2023
+* Consolidates `internal/utils` into `editable/utils` and removes `internal/utils`.
+* Move some utilities into `editable/actions` to prevent circular dependencies.
+* Fix a usage of `useCallback` in `DateInputCell`.
+
 ### version 2.349.1
 *Released*: 30 June 2023
 * Import Samples Across Sample Types UI

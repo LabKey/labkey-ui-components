@@ -24,4 +24,5 @@ export interface InputRendererProps {
     showAsteriskSymbol?: boolean;
     showLabel?: boolean;
     value: any;
+    values?: any;
 }

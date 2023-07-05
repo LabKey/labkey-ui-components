@@ -26,10 +26,12 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { GridData } from '../../models';
 
-import { genCellKey, sortCellKeys, parseCellKey } from '../../utils';
 import { getQueryColumnRenderers } from '../../global';
 import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from '../../util/Date';
 import { caseInsensitive, quoteValueWithDelimiters } from '../../util/utils';
+
+import { CellCoordinates } from './constants';
+import { genCellKey, parseCellKey, sortCellKeys } from './utils';
 
 export interface EditableColumnMetadata {
     caption?: string;
@@ -136,7 +138,7 @@ export class EditorModel
         startCol: number,
         startRow: number,
         predicate: (value: List<ValueDescriptor>, colIdx: number, rowIdx: number) => boolean,
-        advance: (colIdx: number, rowIdx: number) => { colIdx: number; rowIdx: number }
+        advance: (colIdx: number, rowIdx: number) => CellCoordinates
     ): { colIdx: number; rowIdx: number; value: List<ValueDescriptor> } {
         let colIdx = startCol,
             rowIdx = startRow;
@@ -479,7 +481,7 @@ export class EditorModel
         return sortCellKeys(this.selectionCells.toArray());
     }
 
-    hasRawValue(descriptor: ValueDescriptor) {
+    hasRawValue(descriptor: ValueDescriptor): boolean {
         return descriptor && descriptor.raw != null && descriptor.raw.toString().trim() !== '';
     }
 
@@ -594,5 +596,10 @@ export interface EditorModelUpdates {
 
 export interface MessageAndValue {
     message?: CellMessage;
-    valueDescriptor: ValueDescriptor
+    valueDescriptor: ValueDescriptor;
+}
+
+export interface EditableGridModels {
+    dataModels: QueryModel[];
+    editorModels: EditorModel[];
 }

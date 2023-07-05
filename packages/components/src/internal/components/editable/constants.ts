@@ -23,3 +23,8 @@ export interface CellActions {
     modifyCell: (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES) => void;
     selectCell: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => void;
 }
+
+export interface CellCoordinates {
+    colIdx: number;
+    rowIdx: number;
+}

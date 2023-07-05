@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD July 2023
-- Issue 47501: ELISA assay created from LKB app doesn't have required ParticipantVisitResolver field
+- Issue 47501: App specialty assay creation should not remove locked fields from Batch domain
   - add isDeletable() to DomainField
 
 ### version 2.350.0

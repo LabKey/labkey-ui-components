@@ -157,6 +157,7 @@ const TS_CHECKER_DEV_CONFIG = {
                     "@labkey/premium/entities": [labkeyUIPremiumPath + '/entities'],
                     "@labkey/premium/workflow": [labkeyUIPremiumPath + '/workflow'],
                     "@labkey/premium/storage": [labkeyUIPremiumPath + '/storage'],
+                    "@labkey/premium/search": [labkeyUIPremiumPath + '/search]'],
                 }
             }
         },
@@ -174,6 +175,7 @@ const labkeyPackagesDev = process.env.LINK
         '@labkey/premium/entities': labkeyUIPremiumPath + '/entities',
         '@labkey/premium/workflow': labkeyUIPremiumPath + '/workflow',
         '@labkey/premium/storage': labkeyUIPremiumPath + '/storage',
+        '@labkey/premium/search': labkeyUIPremiumPath + '/search',
     }
     : {};
 

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD July 2023
+- Issue 47501: ELISA assay created from LKB app doesn't have required ParticipantVisitResolver field
+  - add isDeletable() to DomainField
+
 ### version 2.350.0
 *Released*: 4 July 2023
 - Add `onKeyDown` event handling for `TAB` and `ESCAPE` for dropdown cells.

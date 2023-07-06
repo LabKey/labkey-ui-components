@@ -52,8 +52,18 @@ export const DefaultRenderer: FC<Props> = memo(({ col, data }) => {
             if (data.has('formattedValue')) {
                 display = data.get('formattedValue');
             } else {
-                const o = data.has('displayValue') ? data.get('displayValue') : data.get('value');
+                let o;
+                if (col?.isLookup()) {
+                    o = data.has('displayValue') || 'unavailable';
+                } else {
+                    o = data.has('displayValue') ? data.get('displayValue') : data.get('value');
+                }
                 display = o !== null && o !== undefined ? o.toString() : null;
+                if (o === 'unavailable') {
+                    display = <span className="data-unavailable">{o}</span>;
+                } else {
+                    display = o !== null && o !== undefined ? o.toString() : null;
+                }
             }
 
             if (data.get('url')) {

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD July 2023
+### version 2.350.1
+*Released*: 6 July 2023
 - Issue 47501: App specialty assay creation should not remove locked fields from Batch domain
   - add isDeletable() to DomainField
 

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+Released*: TBD
+- Issue 48209 and 48050: Add parsing of duplicate-key error message to try to extract the duplicate name
+- Update lookup display to show "unavailable" when there is no `displayValue`
+
 ### version 2.350.1
 *Released*: 6 July 2023
 - Issue 47501: App specialty assay creation should not remove locked fields from Batch domain

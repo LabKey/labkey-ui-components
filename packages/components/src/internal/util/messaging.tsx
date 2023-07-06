@@ -57,9 +57,14 @@ export function resolveErrorMessage(error: any, noun = 'data', nounPlural?: stri
             lcMessage.indexOf('violation of unique key constraint') >= 0 ||
             lcMessage.indexOf('cannot insert duplicate key row') >= 0
         ) {
-            return `There was a problem ${verb || 'creating'} your ${noun || 'data'}.  Check the existing ${
-                nounPlural || noun
-            } for possible duplicates and make sure any referenced ${nounPlural || noun} are still valid.`;
+            const match = errorMsg.match(/.+, (.*)\) already exists./);
+            let retMsg = `There was a problem ${verb || 'creating'} your ${noun || 'data'}.`;
+            if (match) {
+                retMsg += ` Duplicate name '${match[1]}' found.`;
+            } else {
+                retMsg += ` Check the existing ${nounPlural || noun} for possible duplicates and make sure any referenced ${nounPlural || noun} are still valid.`
+            }
+            return retMsg;
         } else if (
             lcMessage.indexOf('violates foreign key constraint') >= 0 ||
             lcMessage.indexOf('conflicted with the foreign key constraint') >= 0

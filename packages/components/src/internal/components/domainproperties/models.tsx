@@ -80,6 +80,7 @@ import {
     USERS_TYPE,
 } from './PropDescType';
 import {
+    isFieldDeletable,
     removeFalseyObjKeys,
     removeNonAppProperties,
     removeUnusedOntologyProperties,
@@ -1132,6 +1133,10 @@ export class DomainField
 
     isPHI(): boolean {
         return this.PHI !== PHILEVEL_NOT_PHI;
+    }
+
+    isDeletable(): boolean {
+        return isFieldDeletable(this);
     }
 
     static hasRangeValidation(field: DomainField): boolean {

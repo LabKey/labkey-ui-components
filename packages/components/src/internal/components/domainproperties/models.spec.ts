@@ -759,7 +759,9 @@ describe('DomainField', () => {
         expect(DomainField.create({ name: 'foo', lockExistingField: true }).isDeletable()).toBeFalsy();
         expect(DomainField.create({ name: 'foo', lockType: DOMAIN_FIELD_PARTIALLY_LOCKED }).isDeletable()).toBeFalsy();
         expect(DomainField.create({ name: 'foo', lockType: DOMAIN_FIELD_FULLY_LOCKED }).isDeletable()).toBeFalsy();
-        expect(DomainField.create({ name: 'foo', lockType: DOMAIN_FIELD_PRIMARY_KEY_LOCKED }).isDeletable()).toBeFalsy();
+        expect(
+            DomainField.create({ name: 'foo', lockType: DOMAIN_FIELD_PRIMARY_KEY_LOCKED }).isDeletable()
+        ).toBeFalsy();
         expect(DomainField.create({ name: 'foo', lockType: DOMAIN_FIELD_NOT_LOCKED }).isDeletable()).toBeTruthy();
     });
 

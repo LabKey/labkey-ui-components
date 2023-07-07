@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.349.4
+*Released*: 7 July 2023
 * Add ability to customize message for useNotAuthorized hook.
 
 ### version 2.349.3

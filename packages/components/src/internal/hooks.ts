@@ -2,16 +2,21 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 export const useNotAuthorized = (identifier?: any, initialState = false) => {
     const [notAuthorized, setNotAuthorized] = useState(initialState);
+    const [message, setMessage] = useState<string>();
 
-    const onNotAuthorized = useCallback(() => {
-        setNotAuthorized(true);
-    }, [setNotAuthorized]);
+    const onNotAuthorized = useCallback(
+        (authMessage?: string) => {
+            setMessage(authMessage);
+            setNotAuthorized(true);
+        },
+        [setNotAuthorized, setMessage]
+    );
 
     useEffect(() => {
         setNotAuthorized(initialState);
     }, [identifier, initialState]);
 
-    return { notAuthorized, onNotAuthorized };
+    return { notAuthorized, onNotAuthorized, message };
 };
 
 export const useNotFound = (identifier: any) => {

@@ -1,10 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.X
-*Released*: X 2023
+### version 2.350.2
+*Released*: 7 July 2023
 * Split out aliquot calculated columns by sample status
   * Show filter action values on grid for lookup columns that's not included in the current view
+
+### version 2.350.1
+*Released*: 6 July 2023
+- Issue 47501: App specialty assay creation should not remove locked fields from Batch domain
+  - add isDeletable() to DomainField
 
 ### version 2.350.0
 *Released*: 4 July 2023

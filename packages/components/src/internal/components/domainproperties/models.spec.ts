@@ -78,6 +78,7 @@ import {
     STRING_RANGE_URI,
     TEXT_CHOICE_CONCEPT_URI,
     DERIVATION_DATA_SCOPES,
+    DOMAIN_FIELD_PRIMARY_KEY_LOCKED,
 } from './constants';
 
 beforeAll(() => {
@@ -752,6 +753,16 @@ describe('DomainField', () => {
         expect(DomainField.create({ name: 'foo', PHI: PHILEVEL_LIMITED_PHI }).isPHI()).toBeTruthy();
         expect(DomainField.create({ name: 'foo', PHI: PHILEVEL_FULL_PHI }).isPHI()).toBeTruthy();
         expect(DomainField.create({ name: 'foo', PHI: PHILEVEL_RESTRICTED_PHI }).isPHI()).toBeTruthy();
+    });
+
+    test('isDeletable', () => {
+        expect(DomainField.create({ name: 'foo', lockExistingField: true }).isDeletable()).toBeFalsy();
+        expect(DomainField.create({ name: 'foo', lockType: DOMAIN_FIELD_PARTIALLY_LOCKED }).isDeletable()).toBeFalsy();
+        expect(DomainField.create({ name: 'foo', lockType: DOMAIN_FIELD_FULLY_LOCKED }).isDeletable()).toBeFalsy();
+        expect(
+            DomainField.create({ name: 'foo', lockType: DOMAIN_FIELD_PRIMARY_KEY_LOCKED }).isDeletable()
+        ).toBeFalsy();
+        expect(DomainField.create({ name: 'foo', lockType: DOMAIN_FIELD_NOT_LOCKED }).isDeletable()).toBeTruthy();
     });
 
     test('updateDefaultValues', () => {

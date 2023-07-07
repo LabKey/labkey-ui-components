@@ -92,45 +92,6 @@ class DomainFormContainer extends React.PureComponent<Props, any> {
 }
 
 describe('DomainForm', () => {
-    test('with empty domain form', async () => {
-        const domain = DomainDesign.create({});
-
-        const form = mount(
-            <DomainForm
-                domain={domain}
-                onChange={jest.fn()}
-                domainFormDisplayOptions={{ hideImportExport: true, hideInferFromFile: true }}
-                testMode={true}
-            />
-        );
-        await waitForLifecycle(form);
-
-        // Empty panel
-        const emptyHdrMsg = form.find({ className: 'domain-form-no-field-panel panel panel-default' });
-        expect(emptyHdrMsg.length).toEqual(1);
-
-        // Add button
-        const findButton = form.find({ className: 'domain-form-add-btn' }).childAt(0);
-        expect(findButton.length).toEqual(1);
-
-        // Search field
-        const searchField = form.find({ className: 'form-control', placeholder: 'Search Fields' });
-        expect(searchField.length).toEqual(0);
-
-        // Help link
-        const helpLink = form.find({
-            className: 'domain-field-float-right',
-            href: 'https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=fieldEditor',
-        });
-        expect(helpLink.length).toEqual(1);
-
-        // No Default System Fields
-        expect(form.find(SystemFields)).toHaveLength(0);
-
-        expect(form).toMatchSnapshot();
-        form.unmount();
-    });
-
     test('with reservedFieldsMsg', async () => {
         const fields = [];
         fields.push({

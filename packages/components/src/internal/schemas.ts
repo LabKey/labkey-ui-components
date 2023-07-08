@@ -27,10 +27,8 @@ const ASSAY_SCHEMA = 'assay';
 export const ASSAY_TABLES = {
     ASSAY_LIST: new SchemaQuery(ASSAY_SCHEMA, 'AssayList'),
     ASSAY_DETAILS_SQ: new SchemaQuery(ASSAY_SCHEMA, 'AssayList', ViewInfo.DETAIL_NAME),
-    PLATES: new SchemaQuery('lists', 'plates'),
     RESULTS_QUERYNAME: 'Data',
     SCHEMA: ASSAY_SCHEMA,
-    WELLS: new SchemaQuery('lists', 'wells'),
 };
 
 // EXP
@@ -145,6 +143,14 @@ export const AUDIT_TABLES = {
     SCHEMA: AUDIT_SCHEMA,
 };
 
+const PLATE_SCHEMA = 'plate';
+const PLATE_TABLES = {
+    PLATE: new SchemaQuery(PLATE_SCHEMA, 'Plate'),
+    SCHEMA: PLATE_SCHEMA,
+    WELL: new SchemaQuery(PLATE_SCHEMA, 'Well'),
+    WELL_GROUP: new SchemaQuery(PLATE_SCHEMA, 'WellGroup'),
+};
+
 export const SCHEMAS = {
     ASSAY_TABLES,
     AUDIT_TABLES,
@@ -157,5 +163,6 @@ export const SCHEMAS = {
     INVENTORY,
     LIST_METADATA_TABLES,
     PICKLIST_TABLES,
+    PLATE_TABLES,
     SAMPLE_MANAGEMENT,
 };

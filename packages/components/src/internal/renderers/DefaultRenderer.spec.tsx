@@ -3,6 +3,8 @@ import { fromJS } from 'immutable';
 import renderer from 'react-test-renderer';
 
 import { DefaultRenderer } from './DefaultRenderer';
+import { QueryColumn } from '../../public/QueryColumn';
+import { shallow } from 'enzyme';
 
 describe('DefaultRenderer', () => {
     test('undefined', () => {
@@ -60,5 +62,125 @@ describe('DefaultRenderer', () => {
         const component = <DefaultRenderer data={'test1\ntest2'} />;
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();
+    });
+
+    test('unavailable', () => {
+        const component = (
+            <DefaultRenderer
+                data={fromJS({ value: 1 })}
+                col={
+                    new QueryColumn({
+                        caption: 'Special Column',
+                        conceptURI: null,
+                        defaultValue: null,
+                        fieldKey: 'special_column',
+                        fieldKeyArray: ['special_column'],
+                        hidden: false,
+                        inputType: 'text',
+                        isKeyField: false,
+                        jsonType: 'string',
+                        lookup: {
+                            displayColumn: 'Name',
+                            isPublic: true,
+                            keyColumn: 'Name',
+                            queryName: 'Samples',
+                            schemaName: 'samples',
+                        },
+                    })
+                }
+            />
+        );
+        const wrapper = shallow(component);
+        expect(wrapper.text()).toBe('unavailable');
+    });
+
+    test('lookup available with displayValue', () => {
+        const component = (
+            <DefaultRenderer
+                data={fromJS({ value: 1, displayValue: "one" })}
+                col={
+                    new QueryColumn({
+                        caption: 'Special Column',
+                        conceptURI: null,
+                        defaultValue: null,
+                        fieldKey: 'special_column',
+                        fieldKeyArray: ['special_column'],
+                        hidden: false,
+                        inputType: 'text',
+                        isKeyField: false,
+                        jsonType: 'string',
+                        lookup: {
+                            displayColumn: 'Name',
+                            isPublic: true,
+                            keyColumn: 'Name',
+                            queryName: 'Samples',
+                            schemaName: 'samples',
+                        },
+                    })
+                }
+            />
+        );
+        const wrapper = shallow(component);
+        expect(wrapper.text()).toBe('one');
+    });
+
+    test('lookup available with url', () => {
+        const component = (
+            <DefaultRenderer
+                data={fromJS({ value: 1, url: "http://look.up" })}
+                col={
+                    new QueryColumn({
+                        caption: 'Special Column',
+                        conceptURI: null,
+                        defaultValue: null,
+                        fieldKey: 'special_column',
+                        fieldKeyArray: ['special_column'],
+                        hidden: false,
+                        inputType: 'text',
+                        isKeyField: false,
+                        jsonType: 'string',
+                        lookup: {
+                            displayColumn: 'Name',
+                            isPublic: true,
+                            keyColumn: 'Name',
+                            queryName: 'Samples',
+                            schemaName: 'samples',
+                        },
+                    })
+                }
+            />
+        );
+        const wrapper = shallow(component);
+        expect(wrapper.text()).toBe('1');
+    });
+
+    test('lookup with null value', () => {
+        const component = (
+            <DefaultRenderer
+                data={fromJS({ value: null, url: 'http://look.up' })}
+                col={
+                    new QueryColumn({
+                        caption: 'Special Column',
+                        conceptURI: null,
+                        defaultValue: null,
+                        fieldKey: 'special_column',
+                        fieldKeyArray: ['special_column'],
+                        hidden: false,
+                        inputType: 'text',
+                        isKeyField: false,
+                        jsonType: 'string',
+                        lookup: {
+                            displayColumn: 'Name',
+                            isPublic: true,
+                            keyColumn: 'Name',
+                            queryName: 'Samples',
+                            schemaName: 'samples',
+                        },
+                    })
+                }
+            />
+        );
+        const wrapper = shallow(component);
+        expect(wrapper.text()).toBe('');
     });
 });

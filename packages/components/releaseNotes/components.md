@@ -6,6 +6,11 @@ Released*: TBD
 - Issue 48209 and 48050: Add parsing of duplicate-key error message to try to extract the duplicate name
 - Update lookup display to show "unavailable" when there is no `displayValue`
 
+### version 2.350.2
+*Released*: 7 July 2023
+* Split out aliquot calculated columns by sample status
+  * Show filter action values on grid for lookup columns that's not included in the current view
+
 ### version 2.350.1
 *Released*: 6 July 2023
 - Issue 47501: App specialty assay creation should not remove locked fields from Batch domain

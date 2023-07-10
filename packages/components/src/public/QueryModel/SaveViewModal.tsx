@@ -162,7 +162,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
                 <form onSubmit={saveView}>
                     <div className="form-group">
                         <div className="bottom-spacing">
-                            Columns, sort order and filters will be saved. Once saved, this view will be available for
+                            Columns, sort order, and filters will be saved. Once saved, this view will be available for
                             all {gridLabel} grids throughout the application.
                         </div>
 
@@ -181,10 +181,10 @@ export const SaveViewModal: FC<Props> = memo(props => {
                                     <span className="margin-left">Save as default view for all users</span>
                                 </label>
                             </div>
-                            <div>
+                            <div className="content-form">
                                 <label className="clickable">
                                     <input
-                                        defaultChecked={!isDefaultView}
+                                        checked={!isDefaultView}
                                         name="setSaveType"
                                         id="customView"
                                         onChange={toggleDefaultView}

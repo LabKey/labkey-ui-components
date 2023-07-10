@@ -11,6 +11,7 @@ import { CUSTOM_VIEW, HelpLink } from '../../internal/util/helpLinks';
 import { RequiresPermission } from '../../internal/components/base/Permissions';
 import { isProductProjectsEnabled } from '../../internal/app/utils';
 import { useServerContext } from '../../internal/components/base/ServerContext';
+import classNames from 'classnames';
 
 const MAX_VIEW_NAME_LENGTH = 200;
 const RESERVED_VIEW_NAMES = ['default', 'my default', '~~details~~', '~~insert~~', '~~update~~', '~~samplefinder~~'];
@@ -145,7 +146,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
     }, []);
 
     const toggleDefaultView = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
-        setIsDefaultView(evt.target.checked);
+        setIsDefaultView(evt.target.id === 'defaultView');
         setNameError(false);
     }, []);
 
@@ -161,31 +162,52 @@ export const SaveViewModal: FC<Props> = memo(props => {
                 <form onSubmit={saveView}>
                     <div className="form-group">
                         <div className="bottom-spacing">
-                            Sort order and filters will be saved as part of custom grid views. Once saved, this view
-                            will be available for all {gridLabel} grids throughout the application. Learn more about{' '}
-                            <HelpLink topic={CUSTOM_VIEW}>custom grid views</HelpLink> in LabKey.
+                            Columns, sort order and filters will be saved. Once saved, this view will be available for
+                            all {gridLabel} grids throughout the application.
                         </div>
-                        <div className="bottom-spacing">
-                            <ViewNameInput
-                                onChange={onViewNameChange}
-                                onBlur={onViewNameChange}
-                                view={currentView}
-                                isDefaultView={isDefaultView}
-                            />
-                        </div>
+
                         <RequiresPermission perms={PermissionTypes.Admin}>
                             {/* Only allow admins to create custom default views in app. Note this is different from LKS*/}
-                            <div className="form-check bottom-spacing">
-                                <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    name="setDefaultView"
-                                    onChange={toggleDefaultView}
-                                    checked={isDefaultView}
-                                />
-                                <span className="margin-left">Make default view for all users</span>
+                            <div className="content-form">
+                                <label className="clickable">
+                                    <input
+                                        className="form-check-input"
+                                        type="radio"
+                                        name="setSaveType"
+                                        id="defaultView"
+                                        onChange={toggleDefaultView}
+                                        checked={isDefaultView}
+                                    />
+                                    <span className="margin-left">Save as default view for all users</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label className="clickable">
+                                    <input
+                                        defaultChecked={!isDefaultView}
+                                        name="setSaveType"
+                                        id="customView"
+                                        onChange={toggleDefaultView}
+                                        type="radio"
+                                    />
+                                    <span className="margin-left">Save as a custom view</span>
+                                </label>
                             </div>
                         </RequiresPermission>
+                        {!isDefaultView && (
+                            <div
+                                className={classNames('bottom-spacing', {
+                                    'margin-left-more': user.hasAdminPermission(),
+                                })}
+                            >
+                                <ViewNameInput
+                                    onChange={onViewNameChange}
+                                    onBlur={onViewNameChange}
+                                    view={currentView}
+                                    isDefaultView={isDefaultView}
+                                />
+                            </div>
+                        )}
                         {isProductProjectsEnabled(moduleContext) && (
                             <div className="form-check">
                                 <input
@@ -198,6 +220,9 @@ export const SaveViewModal: FC<Props> = memo(props => {
                                 <span className="margin-left">Make this grid view available in child folders</span>
                             </div>
                         )}
+                        <div className="top-spacing">
+                            Learn more about <HelpLink topic={CUSTOM_VIEW}>custom grid views</HelpLink> in LabKey.
+                        </div>
                     </div>
                 </form>
             </Modal.Body>

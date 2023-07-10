@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 Released*: TBD
 - Issue 48209 and 48050: Add parsing of duplicate-key error message to try to extract the duplicate name
 - Update lookup display to show "unavailable" when there is no `displayValue`
+- Issue 48214: Update messaging on Save Grid View modal
 
 ### version 2.350.2
 *Released*: 7 July 2023

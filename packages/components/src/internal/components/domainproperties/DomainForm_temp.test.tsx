@@ -23,8 +23,6 @@ import { ActionButton } from '../buttons/ActionButton';
 
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
-import { Alert } from '../base/Alert';
-
 import { FileAttachmentForm } from '../../../public/files/FileAttachmentForm';
 
 import { SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS } from '../samples/constants';
@@ -123,8 +121,7 @@ describe('DomainForm', () => {
         });
 
         component.debug();
-        // await waitForLifecycle(form);
-        // expect(onChange).toHaveBeenCalledTimes(1);
+        expect(onChange).toHaveBeenCalledTimes(1);
 
         // Empty panel
         const emptyHdrMsg = document.querySelectorAll('.domain-form-no-field-panel.panel.panel-default');
@@ -146,8 +143,46 @@ describe('DomainForm', () => {
         expect(helpLink[0].getAttribute('href')).toEqual(
             'https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=fieldEditor'
         );
+        expect(helpLink[0].getAttribute('rel')).toEqual('noopener noreferrer');
 
         // No Default System Fields
-        // expect(form.find(SystemFields)).toHaveLength(0);
+        const fieldRows = document.querySelectorAll('.domain-field-row');
+        expect(fieldRows.length).toEqual(0);
     });
+
+    // test('with reservedFieldsMsg', async () => {
+    //     const fields = [];
+    //     fields.push({
+    //         name: 'key',
+    //         rangeURI: INT_RANGE_URI,
+    //         propertyId: 1,
+    //         propertyURI: 'test',
+    //     });
+    //     fields.push({
+    //         name: 'string',
+    //         rangeURI: STRING_RANGE_URI,
+    //         propertyId: 2,
+    //         propertyURI: 'test',
+    //     });
+    //     const domain = DomainDesign.create({
+    //         name: 'reserved fields msg',
+    //         description: 'description',
+    //         domainURI: 'test',
+    //         domainId: 1,
+    //         reservedFieldNames: ['string'],
+    //         fields,
+    //         indices: [],
+    //     });
+    //     const form = render(<DomainFormImpl domain={domain} onChange={jest.fn()} testMode={true} />);
+    //
+    //     // eslint-disable-next-line require-await
+    //     await act(async () => {
+    //         form;
+    //     });
+    //
+    //     form.debug();
+    //
+    //     const alert = document.querySelector('.alert');
+    //     expect(alert.textContent).toContain('Fields with reserved names');
+    // });
 });

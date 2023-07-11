@@ -157,7 +157,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         };
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         const { location, selectStep } = this.props;
 
         if (location?.query?.dataTab) {

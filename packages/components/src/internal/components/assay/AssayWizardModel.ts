@@ -13,37 +13,6 @@ import { EditorModel } from '../editable/models';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { PLATE_METADATA_COLUMN } from './constants';
 
-// exported for jest testing
-export function parseDataTextToRunRows(rawData: string): any[] {
-    if (!rawData || !rawData.length) {
-        return null;
-    }
-
-    const rows = [];
-    let columns = [];
-
-    rawData
-        .split('\n')
-        .filter(row => row.trim().length > 0)
-        .forEach(row => {
-            const parts = row.split('\t');
-            if (parts.length === 0) return;
-
-            if (columns.length === 0) columns = parts;
-            else {
-                const row = {};
-                parts.forEach((part, index) => {
-                    if (part.trim() !== '') {
-                        row[columns[index]] = part;
-                    }
-                });
-                rows.push(row);
-            }
-        });
-
-    return rows.length > 0 ? rows : null;
-}
-
 export interface AssayUploadOptions extends AssayDOM.ImportRunOptions {
     dataRows?: any; // Array<any>
     maxFileSize?: number;

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import { fromJS } from 'immutable';
-import { Utils } from '@labkey/api';
 
 import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
 
@@ -24,24 +23,25 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { LoadingState } from '../../../public/LoadingState';
 import { EditorModel } from '../editable/models';
 
-import { AssayWizardModel, parseDataTextToRunRows } from './AssayWizardModel';
+import { AssayUploadOptions, AssayWizardModel } from './AssayWizardModel';
+import { PLATE_METADATA_COLUMN } from './constants';
 
 const DATA_TEXT = 'test1\ttest2\n1\t2';
 
-const { queryInfo } = ASSAY_WIZARD_MODEL;
-const queryModel = new QueryModel({
-    id: 'queryModel',
-    schemaQuery: queryInfo.schemaQuery,
-}).mutate({
-    rows: {},
-    orderedRows: [],
-    rowsLoadingState: LoadingState.LOADED,
-    queryInfoLoadingState: LoadingState.LOADED,
-    queryInfo,
-});
-const editorModel = new EditorModel({ id: 'queryModel' });
-
 describe('AssayWizardModel', () => {
+    const { queryInfo } = ASSAY_WIZARD_MODEL;
+    const queryModel = new QueryModel({
+        id: 'queryModel',
+        schemaQuery: queryInfo.schemaQuery,
+    }).mutate({
+        rows: {},
+        orderedRows: [],
+        rowsLoadingState: LoadingState.LOADED,
+        queryInfoLoadingState: LoadingState.LOADED,
+        queryInfo,
+    });
+    const editorModel = new EditorModel({ id: 'queryModel' });
+
     test('getRunName', () => {
         let model = ASSAY_WIZARD_MODEL;
 
@@ -66,7 +66,7 @@ describe('AssayWizardModel', () => {
 
         expect(data.assayId).toBe(model.assayDef.id);
         expect(data.name.indexOf(model.assayDef.name) === 0).toBeTruthy();
-        expect(Utils.isArray(data.files) && data.files.length === 0).toBeTruthy();
+        expect(Array.isArray(data.files) && data.files.length === 0).toBeTruthy();
         expect(data.dataRows === undefined).toBeTruthy();
     });
 
@@ -77,40 +77,28 @@ describe('AssayWizardModel', () => {
         expect(data.assayId).toBe(model.assayDef.id);
         expect(data.name.indexOf(model.assayDef.name) === 0).toBeTruthy();
         expect(data.files === undefined).toBeTruthy();
-        expect(Utils.isArray(data.dataRows) && data.dataRows.length === 0).toBeTruthy();
-    });
-});
-
-describe('parseDataTextToRunRows', () => {
-    test('empty', () => {
-        let rows = parseDataTextToRunRows(undefined);
-        expect(rows).toBe(null);
-        rows = parseDataTextToRunRows(null);
-        expect(rows).toBe(null);
-        rows = parseDataTextToRunRows('');
-        expect(rows).toBe(null);
+        expect(Array.isArray(data.dataRows) && data.dataRows.length === 0).toBeTruthy();
     });
 
-    test('header only', () => {
-        const rows = parseDataTextToRunRows('test1\ttest2');
-        expect(rows).toBe(null);
-    });
+    test('processPlateData', async () => {
+        const model = ASSAY_WIZARD_MODEL;
+        const plateMetadataJson = {
+            SAMPLE: {
+                Sample1: { dilution: 0.1 },
+                Sample2: { dilution: 0.2 },
+                Sample3: { dilution: 0.3 },
+            },
+        };
+        const blob = new Blob([JSON.stringify(plateMetadataJson)], { type: 'application/json' });
+        const file = new File([blob], 'plateMetadata.json');
+        let data: AssayUploadOptions = {
+            properties: {
+                [PLATE_METADATA_COLUMN]: file,
+            },
+        };
 
-    test('one row', () => {
-        const rows = parseDataTextToRunRows('test1\ttest2\n1\t2');
-        expect(Utils.isArray(rows) && rows.length === 1).toBeTruthy();
-        expect(rows[0]['test1']).toBe('1');
-        expect(rows[0]['test2']).toBe('2');
-    });
-
-    test('multiple rows', () => {
-        const rows = parseDataTextToRunRows('test1\ttest2\n1\t2\n\n3\n\t4');
-        expect(Utils.isArray(rows) && rows.length === 3).toBeTruthy();
-        expect(rows[0]['test1']).toBe('1');
-        expect(rows[0]['test2']).toBe('2');
-        expect(rows[1]['test1']).toBe('3');
-        expect(rows[1]['test2']).toBe(undefined);
-        expect(rows[2]['test1']).toBe(undefined);
-        expect(rows[2]['test2']).toBe('4');
+        data = await model.processPlateData(data);
+        expect(data.properties[PLATE_METADATA_COLUMN]).toBeUndefined();
+        expect(data.plateMetadata).toEqual(plateMetadataJson);
     });
 });

@@ -53,17 +53,7 @@ export const DefaultRenderer: FC<Props> = memo(({ col, data }) => {
                 display = data.get('formattedValue');
             } else {
                 const o = data.has('displayValue') ? data.get('displayValue') : data.get('value');
-                // lookups to data a user does not have permission to will come through as values only, not display values and without urls
-                const isUnavailable =
-                    col?.isLookup() && data.has('value') && !data.has('displayValue') && !data.has('url');
-                display =
-                    o !== null && o !== undefined ? (
-                        isUnavailable ? (
-                            <span className="data-unavailable">unavailable</span>
-                        ) : (
-                            o.toString()
-                        )
-                    ) : null;
+                display = o !== null && o !== undefined ? o.toString() : null;
             }
 
             if (data.get('url')) {

@@ -27,7 +27,7 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-import { isPremiumProductEnabled } from '../../app/utils';
+import { isPlatesEnabled, isPremiumProductEnabled } from '../../app/utils';
 
 import { AssayDefinitionModel, AssayDomainTypes } from '../../AssayDefinitionModel';
 
@@ -71,12 +71,13 @@ import {
     uploadAssayRunFiles,
 } from './actions';
 import { AssayReimportHeader } from './AssayReimportHeader';
-import { AssayWizardModel, IAssayUploadOptions } from './AssayWizardModel';
+import { AssayWizardModel, AssayUploadOptions } from './AssayWizardModel';
 import { BatchPropertiesPanel } from './BatchPropertiesPanel';
-import { RUN_PROPERTIES_REQUIRED_COLUMNS } from './constants';
+import { PLATE_METADATA_COLUMN, PLATE_TEMPLATE_COLUMN, RUN_PROPERTIES_REQUIRED_COLUMNS } from './constants';
 import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
 
 import { AssayUploadResultModel } from './models';
+import { PlatePropertiesPanel } from './PlatePropertiesPanel';
 import { RunDataPanel } from './RunDataPanel';
 import { RunPropertiesPanel } from './RunPropertiesPanel';
 
@@ -93,7 +94,7 @@ interface OwnProps {
     assayProtocol?: AssayProtocolModel;
     // assay design setting
     backgroundUpload?: boolean;
-    beforeFinish?: (data: IAssayUploadOptions) => IAssayUploadOptions;
+    beforeFinish?: (data: AssayUploadOptions) => AssayUploadOptions;
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
     getIsDirty?: () => boolean;
     jobNotificationProvider?: string;
@@ -228,13 +229,17 @@ class AssayImportPanelsBody extends Component<Props, State> {
         );
     };
 
+    get plateSupportEnabled(): boolean {
+        return isPlatesEnabled() && this.props.assayProtocol.plateMetadata === true;
+    }
+
     initModel = async (): Promise<void> => {
         const { assayDefinition, location, runId } = this.props;
         const { schemaQuery } = this.state;
-        let workflowTask;
+        let workflowTask: number;
 
         if (location?.query?.workflowTaskId) {
-            const _workflowTask = parseInt(location.query?.workflowTaskId, 10);
+            const _workflowTask = parseInt(location.query.workflowTaskId, 10);
             workflowTask = isNaN(_workflowTask) ? undefined : _workflowTask;
         }
 
@@ -242,17 +247,18 @@ class AssayImportPanelsBody extends Component<Props, State> {
         const runQueryInfo = await getQueryDetails(new SchemaQuery(assayDefinition.protocolSchemaName, 'Runs'));
         const dataQueryInfo = await getQueryDetails(schemaQuery);
 
-        const sampleColumnData = assayDefinition.getSampleColumn();
+        const { plateColumns, runColumns } = this.getRunColumns(runQueryInfo);
 
         this.setState(
-            () => ({
+            {
                 model: new AssayWizardModel({
                     // Initialization is done if the assay does not have a sample column and we aren't getting the
                     // run properties to show for reimport
-                    isInit: sampleColumnData === undefined && this.runAndBatchPropsLoaded(),
+                    isInit: assayDefinition.getSampleColumn() === undefined && this.runAndBatchPropsLoaded(),
                     assayDef: assayDefinition,
                     batchColumns: this.getDomainColumns(AssayDomainTypes.BATCH, batchQueryInfo),
-                    runColumns: this.getDomainColumns(AssayDomainTypes.RUN, runQueryInfo),
+                    plateColumns,
+                    runColumns,
                     runId,
                     usePreviousRunFile: this.isReimport(),
                     batchProperties: this.getBatchPropertiesMap(),
@@ -260,7 +266,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     queryInfo: dataQueryInfo,
                     workflowTask,
                 }),
-            }),
+            },
             this.onGetQueryDetailsComplete
         );
     };
@@ -274,6 +280,51 @@ class AssayImportPanelsBody extends Component<Props, State> {
             if (shouldInclude) columns = columns.set(c.fieldKey.toLowerCase(), c);
         });
         return columns;
+    };
+
+    getRunColumns = (
+        runQueryInfo: QueryInfo
+    ): { plateColumns: OrderedMap<string, QueryColumn>; runColumns: OrderedMap<string, QueryColumn> } => {
+        const runColumns = this.getDomainColumns(AssayDomainTypes.RUN, runQueryInfo).asMutable();
+        const plateColumns = OrderedMap<string, QueryColumn>().asMutable();
+
+        if (this.plateSupportEnabled) {
+            const plateColumnFieldKeys = [PLATE_TEMPLATE_COLUMN];
+
+            plateColumnFieldKeys
+                .map(fieldKey => fieldKey.toLowerCase())
+                .forEach(fieldKey => {
+                    if (runColumns.has(fieldKey)) {
+                        const column = runColumns.get(fieldKey);
+                        if (fieldKey === PLATE_TEMPLATE_COLUMN.toLowerCase()) {
+                            column.caption = 'Plate';
+                            column.shortCaption = 'Short Plate';
+                            column.description = 'Select a plate.';
+                        }
+                        plateColumns.set(fieldKey, runColumns.get(fieldKey));
+                        runColumns.remove(fieldKey);
+                    }
+                });
+
+            plateColumns.set(
+                PLATE_METADATA_COLUMN.toLowerCase(),
+                new QueryColumn({
+                    caption: 'Plate Metadata',
+                    fieldKey: PLATE_METADATA_COLUMN,
+                    fieldKeyArray: [PLATE_METADATA_COLUMN],
+                    inputType: 'file',
+                    name: PLATE_METADATA_COLUMN,
+                    required: true,
+                    shortCaption: 'Plate Metadata',
+                    shownInInsertView: true,
+                    shownInUpdateView: true,
+                    type: 'File',
+                    userEditable: true,
+                })
+            );
+        }
+
+        return { plateColumns: plateColumns.asImmutable(), runColumns: runColumns.asImmutable() };
     };
 
     ensureRunAndBatchProperties = (): void => {
@@ -471,11 +522,11 @@ class AssayImportPanelsBody extends Component<Props, State> {
         checkForDuplicateAssayFiles(this.state.model.attachedFiles.keySeq().toArray())
             .then(response => {
                 if (response.duplicate) {
-                    this.setState(() => ({
-                        showRenameModal: true,
+                    this.setState({
                         duplicateFileResponse: response,
                         importAgain,
-                    }));
+                        showRenameModal: true,
+                    });
                 } else {
                     this.onFinish(importAgain);
                 }
@@ -495,12 +546,12 @@ class AssayImportPanelsBody extends Component<Props, State> {
         }
     };
 
-    getBackgroundJobDescription = (options: AssayDOM.IImportRunOptions): string => {
+    getBackgroundJobDescription = (options: AssayDOM.ImportRunOptions): string => {
         const { assayDefinition } = this.props;
         return assayDefinition.name + (options.name ? ' - ' + options.name : '');
     };
 
-    onFinish = (importAgain: boolean): void => {
+    onFinish = async (importAgain: boolean): Promise<void> => {
         const {
             currentStep,
             onSave,
@@ -517,52 +568,52 @@ class AssayImportPanelsBody extends Component<Props, State> {
             data = beforeFinish(data);
         }
 
+        if (this.plateSupportEnabled) {
+            data = await model.processPlateData(data);
+        }
+
         this.setModelState(true, undefined);
         dismissNotifications();
-        const errorPrefix = 'There was a problem importing the assay results.';
-        uploadAssayRunFiles(data)
-            .then(processedData => {
-                const backgroundUpload = assayProtocol?.backgroundUpload;
-                let forceAsync = false;
-                if (!backgroundUpload && assayProtocol?.allowBackgroundUpload) {
-                    const asyncFileSize = location?.query?.useAsync === 'true' ? 1 : BACKGROUND_IMPORT_MIN_FILE_SIZE;
-                    const asyncRowSize = location?.query?.useAsync === 'true' ? 1 : BACKGROUND_IMPORT_MIN_ROW_SIZE;
-                    if (
-                        (processedData.maxFileSize && processedData.maxFileSize >= asyncFileSize) ||
-                        (processedData.maxRowCount && processedData.maxRowCount >= asyncRowSize)
-                    )
-                        forceAsync = true;
-                }
 
-                const jobDescription = this.getBackgroundJobDescription(data);
-                importAssayRun({ ...processedData, forceAsync, jobDescription, jobNotificationProvider })
-                    .then((response: AssayUploadResultModel) => {
-                        this.props.setIsDirty?.(false);
-                        if (importAgain && onSave) {
-                            this.onSuccessContinue(response, backgroundUpload || forceAsync);
-                        } else {
-                            this.onSuccessComplete(response, backgroundUpload || forceAsync);
-                        }
-                    })
-                    .catch(reason => {
-                        console.error('Problem importing assay run', reason);
-                        const message = resolveErrorMessage(reason);
-                        this.onFailure(
-                            message
-                                ? errorPrefix + ' ' + message
-                                : getActionErrorMessage(errorPrefix, 'referenced samples or assay design', false)
-                        );
-                    });
-            })
-            .catch(reason => {
-                console.error('Problem uploading assay run files', reason);
-                const message = resolveErrorMessage(reason);
-                this.onFailure(
-                    message
-                        ? errorPrefix + ' ' + message
-                        : getActionErrorMessage(errorPrefix, 'referenced samples or assay design', false)
-                );
+        try {
+            const processedData = await uploadAssayRunFiles(data);
+
+            const backgroundUpload = assayProtocol?.backgroundUpload;
+            let forceAsync = false;
+            if (!backgroundUpload && assayProtocol?.allowBackgroundUpload) {
+                const asyncFileSize = location?.query?.useAsync === 'true' ? 1 : BACKGROUND_IMPORT_MIN_FILE_SIZE;
+                const asyncRowSize = location?.query?.useAsync === 'true' ? 1 : BACKGROUND_IMPORT_MIN_ROW_SIZE;
+                if (
+                    (processedData.maxFileSize && processedData.maxFileSize >= asyncFileSize) ||
+                    (processedData.maxRowCount && processedData.maxRowCount >= asyncRowSize)
+                ) {
+                    forceAsync = true;
+                }
+            }
+
+            const response = await importAssayRun({
+                ...processedData,
+                forceAsync,
+                jobDescription: this.getBackgroundJobDescription(data),
+                jobNotificationProvider,
             });
+
+            this.props.setIsDirty?.(false);
+            if (importAgain && onSave) {
+                this.onSuccessContinue(response, backgroundUpload || forceAsync);
+            } else {
+                this.onSuccessComplete(response, backgroundUpload || forceAsync);
+            }
+        } catch (e) {
+            const message = resolveErrorMessage(e);
+            const errorPrefix = 'There was a problem importing the assay results.';
+
+            this.onFailure(
+                message
+                    ? errorPrefix + ' ' + message
+                    : getActionErrorMessage(errorPrefix, 'referenced samples or assay design', false)
+            );
+        }
     };
 
     onSuccessContinue = async (response: AssayUploadResultModel, isAsync?: boolean): Promise<void> => {
@@ -665,6 +716,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             allowBulkRemove,
             allowBulkInsert,
             allowBulkUpdate,
+            assayProtocol,
             maxRows,
             onSave,
             showUploadTabs,
@@ -722,6 +774,9 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 <Alert bsStyle="warning">{sampleStatusWarning}</Alert>
                 <BatchPropertiesPanel model={model} operation={operation} onChange={this.handleBatchChange} />
                 <RunPropertiesPanel model={model} operation={operation} onChange={this.handleRunChange} />
+                {isPlatesEnabled() && assayProtocol.plateMetadata && (
+                    <PlatePropertiesPanel model={model} operation={operation} onChange={this.handleRunChange} />
+                )}
                 <RunDataPanel
                     acceptedPreviewFileFormats={acceptedPreviewFileFormats}
                     allowBulkRemove={allowBulkRemove}

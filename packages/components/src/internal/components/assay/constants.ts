@@ -1,6 +1,10 @@
 import { SCHEMAS } from '../../schemas';
 
 export const GENERAL_ASSAY_PROVIDER_NAME = 'General';
+
+export const PLATE_METADATA_COLUMN = 'PlateMetadata';
+export const PLATE_TEMPLATE_COLUMN = 'PlateTemplate';
+
 // TODO make this an array
 export const RUN_PROPERTIES_REQUIRED_COLUMNS = SCHEMAS.CBMB.concat(
     'Name',
@@ -16,3 +20,4 @@ export const RUN_PROPERTIES_REQUIRED_COLUMNS = SCHEMAS.CBMB.concat(
     'WorkflowTask/Run',
     'Protocol/RowId'
 ).toList();
+

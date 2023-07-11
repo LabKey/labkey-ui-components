@@ -1518,10 +1518,10 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@labkey/api@1.21.0":
-  version "1.21.0"
-  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.21.0.tgz#e64741a197e56c4e11889c9943da0a7ade06f6cf"
-  integrity sha512-ydxt19BW7bF+DYYJNfQmmgw177xPUuS946wc6PgKFkTXJUW3CA+33AirXUB5D+waJZwdXmwLubMf41gK1qP17g==
+"@labkey/api@1.21.0-fb-app-plates.0":
+  version "1.21.0-fb-app-plates.0"
+  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.21.0-fb-app-plates.0.tgz#c3a4c111d0437d9497e723438aa2d421277f282c"
+  integrity sha512-PfdawCNnBkwija9IYkBDF+J7NfaPkTljVUGkm7QaGa1A8qQQj6xzcuJQehJs9nL8QbO3eFsOPyULZirfYI8bJw==
 
 "@labkey/build@6.12.0":
   version "6.12.0"

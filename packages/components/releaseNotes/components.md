@@ -1,10 +1,9 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-Released*: TBD
+### version 2.350.3
+Released*: 12 July 2023
 - Issue 48209 and 48050: Add parsing of duplicate-key error message to try to extract the duplicate name
-- Update lookup display to show "unavailable" when there is no `displayValue`
 - Issue 48214: Update messaging on Save Grid View modal
 - Issue 48224: Add 'noun' prop for empty state message
 

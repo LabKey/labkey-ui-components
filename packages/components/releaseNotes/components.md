@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.350.4
+Released*: 12 July 2023
+* Merge release23.7-SNAPSHOT to develop:
+    * includes changes from 2.349.4
+
 ### version 2.350.3
 Released*: 12 July 2023
 - Issue 48209 and 48050: Add parsing of duplicate-key error message to try to extract the duplicate name
@@ -26,6 +31,10 @@ Released*: 12 July 2023
 - Fix round-tripping values within the "Alias" column on an editable grid via an `AliasGridInput` processing component.
 - Introduce types of `CellCoordinates` and `GridColumnCellRenderer`.
 - Update `SampleStatusInput` handling of `containerFilter` to use prop override pattern instead of `delete`.
+
+### version 2.349.4
+*Released*: 7 July 2023
+* Add ability to customize message for useNotAuthorized hook.
 
 ### version 2.349.3
 *Released*: 1 July 2023

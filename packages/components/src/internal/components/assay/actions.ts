@@ -69,7 +69,6 @@ export function fetchAllAssays(type?: string, containerPath?: string): Promise<L
 type ImportAssayRunOptions = Omit<AssayDOM.ImportRunOptions, 'success' | 'failure' | 'scope'>;
 
 export function importAssayRun(config: ImportAssayRunOptions): Promise<AssayUploadResultModel> {
-    console.log('config', config);
     return new Promise((resolve, reject) => {
         AssayDOM.importRun({
             ...config,

@@ -300,6 +300,18 @@ class AssayImportPanelsBody extends Component<Props, State> {
                             column.caption = 'Plate';
                             column.shortCaption = 'Short Plate';
                             column.description = 'Select a plate.';
+                            column.lookup.filterGroups = [
+                                {
+                                    filters: [
+                                        {
+                                            column: 'template',
+                                            operator: 'equal',
+                                            value: 'false',
+                                        },
+                                    ],
+                                    operation: this.isReimport() ? Operation.update : Operation.insert,
+                                },
+                            ];
                         }
                         plateColumns.set(fieldKey, runColumns.get(fieldKey));
                         runColumns.remove(fieldKey);
@@ -716,7 +728,6 @@ class AssayImportPanelsBody extends Component<Props, State> {
             allowBulkRemove,
             allowBulkInsert,
             allowBulkUpdate,
-            assayProtocol,
             maxRows,
             onSave,
             showUploadTabs,
@@ -774,7 +785,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 <Alert bsStyle="warning">{sampleStatusWarning}</Alert>
                 <BatchPropertiesPanel model={model} operation={operation} onChange={this.handleBatchChange} />
                 <RunPropertiesPanel model={model} operation={operation} onChange={this.handleRunChange} />
-                {isPlatesEnabled() && assayProtocol.plateMetadata && (
+                {this.plateSupportEnabled && (
                     <PlatePropertiesPanel model={model} operation={operation} onChange={this.handleRunChange} />
                 )}
                 <RunDataPanel

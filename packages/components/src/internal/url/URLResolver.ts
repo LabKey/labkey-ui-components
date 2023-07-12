@@ -190,17 +190,16 @@ export class LookupMapper implements URLMapper {
 
             // Issue 46747: When the lookup goes to a different container, don't rewrite the URL
             const containerPath = getServerContext().container.path;
-            if (lookupContainerPath && lookupContainerPath !== containerPath)
+            if (lookupContainerPath && lookupContainerPath !== containerPath) {
                 return undefined;
+            }
 
-            const parts = [
-                this.defaultPrefix,
-                lookup.get('schemaName'),
-                lookup.get('queryName'),
-                row.get('value').toString(),
-            ];
+            const value = row.get('value')?.toString();
+            if (!value) {
+                return undefined;
+            }
 
-            return AppURL.create(...parts);
+            return AppURL.create(this.defaultPrefix, schema, query, value);
         }
     }
 }
@@ -553,7 +552,7 @@ export class URLResolver {
             return _url;
         }
 
-        if (_url !== false && getServerContext().devMode) {
+        if (mapper.url !== undefined && _url !== false && getServerContext().devMode) {
             console.warn('Unable to map URL:', mapper.url);
         }
 
@@ -618,7 +617,7 @@ export class URLResolver {
                 const rows = resolved.get('rows').map(row => {
                     return row.map((cell, fieldKey) => {
                         // single-value cells
-                        if (Map.isMap(cell) && cell.has('url')) {
+                        if (Map.isMap(cell)) {
                             return cell.set(
                                 'url',
                                 this.mapURL({
@@ -635,7 +634,7 @@ export class URLResolver {
                         if (List.isList(cell) && cell.size > 0) {
                             return cell
                                 .map(innerCell => {
-                                    if (Map.isMap(innerCell) && innerCell.has('url')) {
+                                    if (Map.isMap(innerCell)) {
                                         return innerCell.set(
                                             'url',
                                             this.mapURL({

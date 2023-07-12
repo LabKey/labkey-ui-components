@@ -80,35 +80,81 @@ describe('resolveErrorMessage', () => {
         );
     });
 
-    test('duplicate key violation exception - SQLServer', () => {
+    test('duplicate key violation exception source key - Postgres', () => {
         const error = {
             exception:
-                "Violation of UNIQUE KEY constraint 'UQ_Material_LSID'. Cannot insert duplicate key in object 'exp.Material'. The duplicate key value is (02dd731c-0767-103a-8c98-02a6963667d0, urn:lsid:labkey.com:SampleSet.Folder-6:Blood, B1-247).",
+                'ERROR: duplicate key value violates unique constraint "uq_data_dataclass_name"\n' +
+                '              Detail: Key (classid, name)=(46, L-40) already exists.\n' +
+                '              Where: SQL statement "INSERT INTO exp.data (lsid, name, cpastype, datafileurl, container, created, createdby, modified, modifiedby, description, classid, lastindexed, objectid)',
+            extraContext: {},
+            success: false,
+            errors: [
+                {
+                    exception:
+                        'ERROR: duplicate key value violates unique constraint "uq_data_dataclass_name"\n' +
+                        '              Detail: Key (classid, name)=(46, L-40) already exists.\n' +
+                        '              Where: SQL statement "INSERT INTO exp.data (lsid, name, cpastype, datafileurl, container, created, createdby, modified, modifiedby, description, classid, lastindexed, objectid)',
+                    rowNumber: 1,
+                    errors: [{}],
+                },
+            ],
+            errorCount: 1,
         };
-        expect(resolveErrorMessage(error, 'samples', undefined)).toBe(
-            "There was a problem creating your samples. Duplicate name 'B1-247' found."
+        expect(resolveErrorMessage(error, 'sources', undefined)).toBe(
+            "There was a problem creating your sources. Duplicate name 'L-40' found."
         );
     });
 
-    test('duplicate key violation exception with commas - SQLServer', () => {
+    test('duplicate key violation exception source key with commas - Postgres', () => {
         const error = {
             exception:
-                "Violation of UNIQUE KEY constraint 'UQ_Material_LSID'. Cannot insert duplicate key in object 'exp.Material'. The duplicate key value is (02dd731c-0767-103a-8c98-02a6963667d0, urn:lsid:labkey.com:SampleSet.Folder-6:Blood, WC-1,2,204).",
+                'ERROR: duplicate key value violates unique constraint "uq_data_dataclass_name"\n' +
+                '              Detail: Key (classid, name)=(46, L-40,1) already exists.\n' +
+                '              Where: SQL statement "INSERT INTO exp.data (lsid, name, cpastype, datafileurl, container, created, createdby, modified, modifiedby, description, classid, lastindexed, objectid)',
+            extraContext: {},
+            success: false,
+            errors: [
+                {
+                    exception:
+                        'ERROR: duplicate key value violates unique constraint "uq_data_dataclass_name"\n' +
+                        '              Detail: Key (classid, name)=(46, L-40,1) already exists.\n' +
+                        '              Where: SQL statement "INSERT INTO exp.data (lsid, name, cpastype, datafileurl, container, created, createdby, modified, modifiedby, description, classid, lastindexed, objectid)',
+                    rowNumber: 1,
+                    errors: [{}],
+                },
+            ],
+            errorCount: 1,
         };
-        expect(resolveErrorMessage(error, 'samples', undefined)).toBe(
-            "There was a problem creating your samples. Duplicate name 'WC-1,2,204' found."
+        expect(resolveErrorMessage(error, 'sources', undefined)).toBe(
+            "There was a problem creating your sources. Duplicate name 'L-40,1' found."
         );
     });
 
-    test('duplicate key violation exception with commas and spaces - SQLServer', () => {
+    test('duplicate key violation exception source key with commas and spaces - Postgres', () => {
         const error = {
             exception:
-                "Violation of UNIQUE KEY constraint 'UQ_Material_LSID'. Cannot insert duplicate key in object 'exp.Material'. The duplicate key value is (02dd731c-0767-103a-8c98-02a6963667d0, urn:lsid:labkey.com:SampleSet.Folder-6:Blood, WC-1, 2,204).",
+                'ERROR: duplicate key value violates unique constraint "uq_data_dataclass_name"\n' +
+                '              Detail: Key (classid, name)=(46, L-40, 1) already exists.\n' +
+                '              Where: SQL statement "INSERT INTO exp.data (lsid, name, cpastype, datafileurl, container, created, createdby, modified, modifiedby, description, classid, lastindexed, objectid)',
+            extraContext: {},
+            success: false,
+            errors: [
+                {
+                    exception:
+                        'ERROR: duplicate key value violates unique constraint "uq_data_dataclass_name"\n' +
+                        '              Detail: Key (classid, name)=(46, L-40, 1) already exists.\n' +
+                        '              Where: SQL statement "INSERT INTO exp.data (lsid, name, cpastype, datafileurl, container, created, createdby, modified, modifiedby, description, classid, lastindexed, objectid)',
+                    rowNumber: 1,
+                    errors: [{}],
+                },
+            ],
+            errorCount: 1,
         };
-        expect(resolveErrorMessage(error, 'samples', undefined)).toBe(
-            "There was a problem creating your samples. Duplicate name 'WC-1, 2,204' found."
+        expect(resolveErrorMessage(error, 'sources', undefined)).toBe(
+            "There was a problem creating your sources. Duplicate name 'L-40, 1' found."
         );
     });
+
     test('Existing row now found', () => {
         const error = {
             exception: 'The existing row was not found.',

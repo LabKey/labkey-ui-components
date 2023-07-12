@@ -57,17 +57,28 @@ export function resolveErrorMessage(error: any, noun = 'data', nounPlural?: stri
             lcMessage.indexOf('violation of unique key constraint') >= 0 ||
             lcMessage.indexOf('cannot insert duplicate key row') >= 0
         ) {
-            let match = errorMsg.match(/=\(.+?, .+?, (.+?)\) already exists./);
             let retMsg = `There was a problem ${verb || 'creating'} your ${noun || 'data'}.`;
-            if (match) {
-                retMsg += ` Duplicate name '${match[1]}' found.`;
-            } else {
-                match = errorMsg.match(/duplicate key value is \(.+?, .+?, (.*?)\)./);
-                if (match) {
-                    retMsg += ` Duplicate name '${match[1]}' found.`;
-                } else {
-                    retMsg += ` Check the existing ${nounPlural || noun} for possible duplicates and make sure any referenced ${nounPlural || noun} are still valid.`
+            // N.B. Issues 48050 and 48209: only for Postgres since the error message from SQL server doesn't provide a
+            // reasonable way to parse a multi-field key in the face of names that may contain commas and spaces. Seems
+            // better to show a generic message instead of an incorrectly parsed name.
+            const keyMatch = errorMsg.match(/Key \(([^)]+)\)=\(([^)]+)\) already exists./);
+            let name;
+
+            if (keyMatch) {
+                const numParts = keyMatch[1].split(', ').length;
+                let index = 0;
+                for (let i = 0; i < numParts - 1; i++) {
+                    index = keyMatch[2].indexOf(', ', index + 1);
                 }
+                if (index < keyMatch[2].length) {
+                    // one for comma and one for space
+                    name = keyMatch[2].substring(index + 2);
+                }
+            }
+            if (name) {
+                retMsg += ` Duplicate name '${name}' found.`;
+            } else {
+                retMsg += ` Check the existing ${nounPlural || noun} for possible duplicates and make sure any referenced ${nounPlural || noun} are still valid.`
             }
             return retMsg;
         } else if (

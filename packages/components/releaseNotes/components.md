@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.350.4
+Released*: 12 July 2023
+* Merge release23.7-SNAPSHOT to develop:
+    * includes changes from 2.349.4
+
 ### version 2.350.3
 Released*: 12 July 2023
 - Issue 48209 and 48050: Add parsing of duplicate-key error message to try to extract the duplicate name

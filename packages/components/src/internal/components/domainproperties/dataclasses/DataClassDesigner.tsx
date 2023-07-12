@@ -38,11 +38,13 @@ interface Props {
     api?: ComponentsAPIWrapper;
     appPropertiesOnly?: boolean;
     beforeFinish?: (model: DataClassModel) => void;
+    dataClassAliasCaption?: string;
     defaultNameFieldConfig?: Partial<IDomainField>;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
     headerText?: string;
     helpTopic?: string;
     initModel?: DataClassModel;
+    isValidParentOptionsFn?: (row: any, isDataClass: boolean) => boolean;
     // loadNameExpressionOptions is a prop for testing purposes only, see default implementation below
     loadNameExpressionOptions?: (
         containerPath?: string
@@ -108,13 +110,14 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
 
     componentDidMount = async (): Promise<void> => {
         const { model } = this.state;
+        const { isValidParentOptionsFn } = this.props;
 
         if (this.props.allowParentAlias) {
             const { parentOptions, parentAliases } = await initParentOptionsSelects(
                 false,
                 true,
                 model.containerPath,
-                null,
+                isValidParentOptionsFn,
                 !model.rowId ? NEW_DATA_CLASS_OPTION : null,
                 model.importAliases,
                 'dataclass-parent-import-alias-',
@@ -408,6 +411,7 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
         const {
             onCancel,
             appPropertiesOnly,
+            dataClassAliasCaption,
             useTheme,
             nounSingular,
             nounPlural,
@@ -481,6 +485,7 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
                     allowParentAlias={allowParentAlias}
                     parentOptions={parentOptions}
                     onParentAliasChange={this.parentAliasChange}
+                    dataClassAliasCaption={dataClassAliasCaption}
                     onAddParentAlias={this.addParentAlias}
                     onRemoveParentAlias={this.removeParentAlias}
                     updateDupeParentAliases={this.updateDupes}

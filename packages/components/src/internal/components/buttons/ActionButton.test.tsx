@@ -40,6 +40,7 @@ describe('<ActionButton />', () => {
             />
         );
 
+        // Customized attributes should all be valid click targets
         userEvent.click(document.querySelector('span'));
         userEvent.click(document.querySelector('.test-button-class span'));
         userEvent.click(document.querySelector('.test-container-class span'));
@@ -51,11 +52,7 @@ describe('<ActionButton />', () => {
         const onClick = jest.fn();
 
         render(
-            <ActionButton
-                onClick={onClick}
-                helperTitle="test-helperTitle"
-                helperBody={<p> Test Body Contents </p>}
-            />
+            <ActionButton onClick={onClick} helperTitle="test-helperTitle" helperBody={<p> Test Body Contents </p>} />
         );
 
         // content not visible

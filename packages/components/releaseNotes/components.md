@@ -27,6 +27,10 @@ Released*: 12 July 2023
 - Introduce types of `CellCoordinates` and `GridColumnCellRenderer`.
 - Update `SampleStatusInput` handling of `containerFilter` to use prop override pattern instead of `delete`.
 
+### version 2.349.4
+*Released*: 7 July 2023
+* Add ability to customize message for useNotAuthorized hook.
+
 ### version 2.349.3
 *Released*: 1 July 2023
 * Issue 48188: Selecting 'All non-PHI' or 'Custom template' under 'Index each item as a separate document' doesn't persist

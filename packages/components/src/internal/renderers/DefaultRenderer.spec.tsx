@@ -3,6 +3,8 @@ import { fromJS } from 'immutable';
 import renderer from 'react-test-renderer';
 
 import { DefaultRenderer } from './DefaultRenderer';
+import { QueryColumn } from '../../public/QueryColumn';
+import { shallow } from 'enzyme';
 
 describe('DefaultRenderer', () => {
     test('undefined', () => {

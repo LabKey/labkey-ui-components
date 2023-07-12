@@ -49,10 +49,11 @@ describe('SaveViewModal', () => {
 
         expect(wrapper.find('ModalTitle').text()).toBe('Save Grid View');
         expect(wrapper.find(ModalBody).text()).toContain(
-            'Sort order and filters will be saved as part of custom grid views. Once saved, this view will be available for all Blood Samples grids throughout the application.'
+            'Columns, sort order, and filters will be saved. Once saved, this view will be available for all Blood Samples grids throughout the application.'
         );
-        expect(wrapper.find('input[name="gridViewName"]').prop('value')).toBe('');
-        expect(wrapper.find('input[name="setDefaultView"]').prop('checked')).toBe(true);
+        expect(wrapper.find('input[name="gridViewName"]')).toHaveLength(0);
+        expect(wrapper.find('input[id="defaultView"]').prop('checked')).toBeTruthy();
+        expect(wrapper.find('input[id="customView"]').prop('checked')).toBeFalsy();
         expect(wrapper.find('input[name="setInherit"]').prop('checked')).toBe(true);
 
         wrapper.unmount();
@@ -66,10 +67,11 @@ describe('SaveViewModal', () => {
 
         expect(wrapper.find('ModalTitle').text()).toBe('Save Grid View');
         expect(wrapper.find(ModalBody).text()).toContain(
-            'Sort order and filters will be saved as part of custom grid views. Once saved, this view will be available for all Blood Samples grids throughout the application.'
+            'Columns, sort order, and filters will be saved. Once saved, this view will be available for all Blood Samples grids throughout the application.'
         );
         expect(wrapper.find('input[name="gridViewName"]').prop('value')).toBe('View1');
-        expect(wrapper.find('input[name="setDefaultView"]').prop('checked')).toBe(false);
+        expect(wrapper.find('input[id="defaultView"]').prop('checked')).toBeFalsy();
+        expect(wrapper.find('input[id="customView"]').prop('checked')).toBeTruthy();
         expect(wrapper.find('input[name="setInherit"]').prop('checked')).toBe(false);
 
         wrapper.unmount();
@@ -83,7 +85,7 @@ describe('SaveViewModal', () => {
 
         expect(wrapper.find('ModalTitle').text()).toBe('Save Grid View');
         expect(wrapper.find(ModalBody).text()).toContain(
-            'Sort order and filters will be saved as part of custom grid views. Once saved, this view will be available for all Blood Samples grids throughout the application.'
+            'Columns, sort order, and filters will be saved. Once saved, this view will be available for all Blood Samples grids throughout the application.'
         );
         expect(wrapper.find('input[name="gridViewName"]').prop('value')).toBe('View2');
         expect(wrapper.find('input[name="setDefaultView"]').length).toEqual(0);

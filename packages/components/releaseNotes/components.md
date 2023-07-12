@@ -1,6 +1,17 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.350.3
+Released*: 12 July 2023
+- Issue 48209 and 48050: Add parsing of duplicate-key error message to try to extract the duplicate name
+- Issue 48214: Update messaging on Save Grid View modal
+- Issue 48224: Add 'noun' prop for empty state message
+
+### version 2.350.2
+*Released*: 7 July 2023
+* Split out aliquot calculated columns by sample status
+  * Show filter action values on grid for lookup columns that's not included in the current view
+
 ### version 2.350.1
 *Released*: 6 July 2023
 - Issue 47501: App specialty assay creation should not remove locked fields from Batch domain

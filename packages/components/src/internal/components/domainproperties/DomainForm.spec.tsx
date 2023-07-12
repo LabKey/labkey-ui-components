@@ -92,7 +92,6 @@ class DomainFormContainer extends React.PureComponent<Props, any> {
 }
 
 describe('DomainForm', () => {
-/*
     test('with empty domain form', async () => {
         const domain = DomainDesign.create({});
 
@@ -131,7 +130,7 @@ describe('DomainForm', () => {
         expect(form).toMatchSnapshot();
         form.unmount();
     });
-*/
+
     test('with reservedFieldsMsg', async () => {
         const fields = [];
         fields.push({

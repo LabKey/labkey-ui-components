@@ -194,12 +194,14 @@ export class LookupMapper implements URLMapper {
                 return undefined;
             }
 
-            const value = row.get('value')?.toString();
-            if (!value) {
-                return undefined;
-            }
+            const parts = [
+                this.defaultPrefix,
+                lookup.get('schemaName'),
+                lookup.get('queryName'),
+                row.get('value').toString(),
+            ];
 
-            return AppURL.create(this.defaultPrefix, schema, query, value);
+            return AppURL.create(...parts);
         }
     }
 }
@@ -617,7 +619,7 @@ export class URLResolver {
                 const rows = resolved.get('rows').map(row => {
                     return row.map((cell, fieldKey) => {
                         // single-value cells
-                        if (Map.isMap(cell)) {
+                        if (Map.isMap(cell) && cell.has('url')) {
                             return cell.set(
                                 'url',
                                 this.mapURL({
@@ -634,7 +636,7 @@ export class URLResolver {
                         if (List.isList(cell) && cell.size > 0) {
                             return cell
                                 .map(innerCell => {
-                                    if (Map.isMap(innerCell)) {
+                                    if (Map.isMap(innerCell) && innerCell.has('url')) {
                                         return innerCell.set(
                                             'url',
                                             this.mapURL({

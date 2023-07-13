@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version BD
-*Released*: TBD
+### version 2.350.5
+*Released*: 13 July 2023
 * Issue 48050 and 48209: Update parsing of duplicate key error messages for Postgres
 
 ### version 2.350.4

@@ -7,6 +7,7 @@ import { MenuItem } from 'react-bootstrap';
 import { Map } from 'immutable';
 
 import { getServerContext } from '@labkey/api';
+import { WithRouterProps } from 'react-router';
 
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 import { resolveErrorMessage } from '../../util/messaging';
@@ -45,7 +46,7 @@ interface OwnProps {
 }
 
 // exported for testing
-export type BasePermissionsImplProps = OwnProps & InjectedRouteLeaveProps & InjectedPermissionsPage;
+export type BasePermissionsImplProps = OwnProps & InjectedRouteLeaveProps & InjectedPermissionsPage & WithRouterProps;
 
 // exported for testing
 export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {

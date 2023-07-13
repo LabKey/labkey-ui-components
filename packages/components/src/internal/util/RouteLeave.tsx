@@ -107,13 +107,13 @@ export const useRouteLeave = (
 };
 
 export function withRouteLeave<T>(
-    Component: ComponentType<T & InjectedRouteLeaveProps>
+    Component: ComponentType<T & InjectedRouteLeaveProps & WithRouterProps>
 ): ComponentType<T & WrappedRouteLeaveProps> {
     const wrapped: FC<T & WrappedRouteLeaveProps & WithRouterProps> = props => {
-        const { router, routes, confirmMessage, ...rest } = props;
+        const { router, routes, confirmMessage } = props;
         const [getIsDirty, setIsDirty] = useRouteLeave(router, routes, confirmMessage);
 
-        return <Component getIsDirty={getIsDirty} setIsDirty={setIsDirty} {...(rest as T)} />;
+        return <Component getIsDirty={getIsDirty} setIsDirty={setIsDirty} {...props} />;
     };
 
     return withRouter(wrapped) as FC<T & WrappedRouteLeaveProps>;

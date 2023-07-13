@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Updates to allow sources to have parent sources
 
+### version 2.350.5
+*Released*: 13 July 2023
+* Issue 48050 and 48209: Update parsing of duplicate key error messages for Postgres
+
 ### version 2.350.4
 *Released*: 12 July 2023
 * Merge release23.7-SNAPSHOT to develop:

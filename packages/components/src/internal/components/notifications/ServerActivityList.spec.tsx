@@ -150,7 +150,7 @@ describe('<ServerActivityList>', () => {
         expect(errorDetails).toHaveLength(1);
         expect(errorSubject.text()).toBe('Sample import failed from file file1.xlsx');
         expect(errorDetails.text()).toBe(
-            'There was a problem creating your data. Check the existing data for possible duplicates and make sure any referenced data are still valid.'
+            "There was a problem creating your data. Duplicate name 'L-40.1' found."
         );
         wrapper.unmount();
     });

@@ -289,4 +289,5 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
     );
 });
 
-export const GroupManagementPage = withRouteLeave<{}>(withPermissionsPage(GroupManagementPageImpl));
+// TODO: instead of using withRouteLeave use useRouteLeave in the child component
+export const GroupManagementPage = withRouteLeave(withPermissionsPage(GroupManagementPageImpl));

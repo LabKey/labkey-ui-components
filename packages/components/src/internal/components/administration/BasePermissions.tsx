@@ -167,4 +167,5 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
     );
 });
 
+// TODO: Instead of wrapping with useRouteLeave we should use useRouteLeave in the child component.
 export const BasePermissions = withRouteLeave<OwnProps>(withPermissionsPage(BasePermissionsImpl));

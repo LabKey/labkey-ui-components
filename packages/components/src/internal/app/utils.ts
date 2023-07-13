@@ -22,6 +22,7 @@ import { AppProperties } from './models';
 import {
     ASSAYS_KEY,
     BIOLOGICS_APP_PROPERTIES,
+    EXPERIMENTAL_APP_PLATE_SUPPORT,
     EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS,
     EXPERIMENTAL_PRODUCT_PROJECT_DATA_LISTING_SCOPED,
     EXPERIMENTAL_REQUESTS_MENU,
@@ -315,8 +316,10 @@ export function isAssayDesignExportEnabled(moduleContext?: ModuleContext): boole
 }
 
 export function isPlatesEnabled(moduleContext?: ModuleContext): boolean {
-    // TODO: Update to check against feature flag / url
-    return biologicsIsPrimaryApp(moduleContext);
+    return (
+        biologicsIsPrimaryApp(moduleContext) &&
+        resolveModuleContext(moduleContext)?.biologics?.[EXPERIMENTAL_APP_PLATE_SUPPORT] === true
+    );
 }
 
 export function isELNEnabled(moduleContext?: ModuleContext): boolean {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import supertest, { Response, SuperTest, Test } from 'supertest';
-import { ActionURL, Container, PermissionRoles, Security, Utils } from '@labkey/api';
+import { ActionURL, Container, PermissionRoles, Utils } from '@labkey/api';
 
 import { sleep } from './utils';
 
@@ -124,7 +124,7 @@ const addUserToRole = async (ctx: ServerContext, email: string, role: Permission
     }, { containerPath: containerPath ?? ctx.containerPath }).expect(successfulResponse);
 };
 
-const _createContainer = async (ctx: ServerContext, containerPath: string, name: string, containerOptions?: Security.CreateContainerOptions): Promise<Container> => {
+const _createContainer = async (ctx: ServerContext, containerPath: string, name: string, containerOptions?: any /* Security.CreateContainerOptions */): Promise<Container> => {
     const response = await postRequest(ctx, 'core', 'createContainer.api', {
         ...containerOptions,
         name
@@ -141,7 +141,7 @@ const createRequestContext = async (ctx: ServerContext, config: Partial<RequestC
     return requestCtx;
 };
 
-const createTestContainer = async (ctx: ServerContext, containerOptions?: Security.CreateContainerOptions): Promise<Container> => {
+const createTestContainer = async (ctx: ServerContext, containerOptions?: any /* Security.CreateContainerOptions */): Promise<Container> => {
     if (!ctx.projectPath) {
         throw new Error('Failed to create test container. Project must be initialized via init() prior to creating a test container.');
     }

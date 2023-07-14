@@ -285,40 +285,21 @@ class AssayImportPanelsBody extends Component<Props, State> {
     getRunColumns = (
         runQueryInfo: QueryInfo
     ): { plateColumns: OrderedMap<string, QueryColumn>; runColumns: OrderedMap<string, QueryColumn> } => {
-        const runColumns = this.getDomainColumns(AssayDomainTypes.RUN, runQueryInfo).asMutable();
-        const plateColumns = OrderedMap<string, QueryColumn>().asMutable();
+        let runColumns = this.getDomainColumns(AssayDomainTypes.RUN, runQueryInfo);
+        let plateColumns = OrderedMap<string, QueryColumn>();
 
         if (this.plateSupportEnabled) {
-            const plateColumnFieldKeys = [PLATE_TEMPLATE_COLUMN];
+            const plateTemplateFieldKey = PLATE_TEMPLATE_COLUMN.toLowerCase();
+            if (runColumns.has(plateTemplateFieldKey)) {
+                const column = runColumns.get(plateTemplateFieldKey);
+                column.caption = 'Plate';
+                column.shortCaption = 'Short Plate';
+                column.description = 'Select a plate.';
+                plateColumns = plateColumns.set(plateTemplateFieldKey, runColumns.get(plateTemplateFieldKey));
+                runColumns = runColumns.remove(plateTemplateFieldKey);
+            }
 
-            plateColumnFieldKeys
-                .map(fieldKey => fieldKey.toLowerCase())
-                .forEach(fieldKey => {
-                    if (runColumns.has(fieldKey)) {
-                        const column = runColumns.get(fieldKey);
-                        if (fieldKey === PLATE_TEMPLATE_COLUMN.toLowerCase()) {
-                            column.caption = 'Plate';
-                            column.shortCaption = 'Short Plate';
-                            column.description = 'Select a plate.';
-                            column.lookup.filterGroups = [
-                                {
-                                    filters: [
-                                        {
-                                            column: 'template',
-                                            operator: 'equal',
-                                            value: 'false',
-                                        },
-                                    ],
-                                    operation: this.isReimport() ? Operation.update : Operation.insert,
-                                },
-                            ];
-                        }
-                        plateColumns.set(fieldKey, runColumns.get(fieldKey));
-                        runColumns.remove(fieldKey);
-                    }
-                });
-
-            plateColumns.set(
+            plateColumns = plateColumns.set(
                 PLATE_METADATA_COLUMN.toLowerCase(),
                 new QueryColumn({
                     caption: 'Plate Metadata',
@@ -336,7 +317,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             );
         }
 
-        return { plateColumns: plateColumns.asImmutable(), runColumns: runColumns.asImmutable() };
+        return { plateColumns, runColumns };
     };
 
     ensureRunAndBatchProperties = (): void => {
@@ -580,14 +561,14 @@ class AssayImportPanelsBody extends Component<Props, State> {
             data = beforeFinish(data);
         }
 
-        if (this.plateSupportEnabled) {
-            data = await model.processPlateData(data);
-        }
-
         this.setModelState(true, undefined);
         dismissNotifications();
 
         try {
+            if (this.plateSupportEnabled) {
+                data = await model.processPlateData(data);
+            }
+
             const processedData = await uploadAssayRunFiles(data);
 
             const backgroundUpload = assayProtocol?.backgroundUpload;
@@ -617,14 +598,17 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 this.onSuccessComplete(response, backgroundUpload || forceAsync);
             }
         } catch (e) {
-            const message = resolveErrorMessage(e);
+            let error: ReactNode;
             const errorPrefix = 'There was a problem importing the assay results.';
+            const message = resolveErrorMessage(e);
 
-            this.onFailure(
-                message
-                    ? errorPrefix + ' ' + message
-                    : getActionErrorMessage(errorPrefix, 'referenced samples or assay design', false)
-            );
+            if (message) {
+                error = `${errorPrefix} ${message}`;
+            } else {
+                error = getActionErrorMessage(errorPrefix, 'referenced samples or assay design', false);
+            }
+
+            this.setModelState(false, error);
         }
     };
 
@@ -654,10 +638,6 @@ class AssayImportPanelsBody extends Component<Props, State> {
     onSuccessComplete = (response: AssayUploadResultModel, isAsync?: boolean): void => {
         this.setModelState(false, undefined);
         this.props.onComplete(response, isAsync);
-    };
-
-    onFailure = (error: any): void => {
-        this.setModelState(false, error);
     };
 
     setModelState = (isSubmitting: boolean, errorMsg: ReactNode): void => {
@@ -692,9 +672,8 @@ class AssayImportPanelsBody extends Component<Props, State> {
 
     onRenameConfirm = (): void => {
         const { importAgain } = this.state;
-        this.setState(
-            () => ({ showRenameModal: false, duplicateFileResponse: undefined, importAgain: undefined }),
-            () => this.onFinish(importAgain)
+        this.setState({ showRenameModal: false, duplicateFileResponse: undefined, importAgain: undefined }, () =>
+            this.onFinish(importAgain)
         );
     };
 

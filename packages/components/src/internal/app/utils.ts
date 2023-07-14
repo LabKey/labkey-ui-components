@@ -506,14 +506,13 @@ const REQUESTS_SECTION_CONFIG = new MenuSectionConfig({
     iconURL: imageURL('_images', 'default.svg'),
 });
 
-function getBioWorkflowNotebookMediaConfigs(user: User): Map<string, MenuSectionConfig> {
-    let configs = Map({
+function getBioWorkflowNotebookMediaConfigs(): Map<string, MenuSectionConfig> {
+    return Map({
         [WORKFLOW_KEY]: getWorkflowSectionConfig(),
+        [MEDIA_KEY]: getMediaSectionConfig(),
+        [PICKLIST_KEY]: getPicklistsSectionConfig(),
+        [NOTEBOOKS_KEY]: getNotebooksSectionConfig(),
     });
-    configs = configs.set(MEDIA_KEY, getMediaSectionConfig());
-    configs = configs.set(PICKLIST_KEY, getPicklistsSectionConfig());
-    configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig());
-    return configs;
 }
 
 // exported for testing
@@ -535,11 +534,11 @@ export function getMenuSectionConfigs(
         sectionConfigs = sectionConfigs.push(Map({ [REGISTRY_KEY]: getRegistrySectionConfig() }));
     }
     if (isBioOrSM) {
-        const configs = Map<string, MenuSectionConfig>({ [SAMPLES_KEY]: getSamplesSectionConfig(user) }).asMutable();
+        let configs = Map<string, MenuSectionConfig>({ [SAMPLES_KEY]: getSamplesSectionConfig(user) });
         if (isPlatesEnabled(moduleContext)) {
-            configs.set(PLATES_KEY, getPlatesSectionConfig());
+            configs = configs.set(PLATES_KEY, getPlatesSectionConfig());
         }
-        sectionConfigs = sectionConfigs.push(configs.asImmutable());
+        sectionConfigs = sectionConfigs.push(configs);
 
         if (isAssayEnabled(moduleContext)) {
             sectionConfigs = addAssaysSectionConfig(user, sectionConfigs, isSMPrimary);
@@ -571,13 +570,13 @@ export function getMenuSectionConfigs(
             if (storageConfig) {
                 requestsCol = requestsCol.set(FREEZERS_KEY, storageConfig);
             }
-            sectionConfigs = sectionConfigs.push(requestsCol, getBioWorkflowNotebookMediaConfigs(user));
+            sectionConfigs = sectionConfigs.push(requestsCol, getBioWorkflowNotebookMediaConfigs());
         } else {
             if (storageConfig) {
                 sectionConfigs = sectionConfigs.push(Map({ [FREEZERS_KEY]: storageConfig }));
             }
 
-            sectionConfigs = sectionConfigs.push(getBioWorkflowNotebookMediaConfigs(user));
+            sectionConfigs = sectionConfigs.push(getBioWorkflowNotebookMediaConfigs());
         }
     } else {
         if (storageConfig) {

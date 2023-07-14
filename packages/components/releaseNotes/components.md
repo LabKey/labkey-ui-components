@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.351.0
+*Released*: 14 July 2023
+- Expose `inputId` prop from `react-select` on `SelectInput`
+- Delete `parseDataTextToRunRows` as it is no longer utilized
+- Rename `IAssayUploadOptions` to `AssayUploadOptions`
+- Add devDependency on `blob-polyfill` to support `Blob` and `File interactions within tests. Only exposed in RTL tests.
+
 ### version 2.350.5
 *Released*: 13 July 2023
 * Issue 48050 and 48209: Update parsing of duplicate key error messages for Postgres

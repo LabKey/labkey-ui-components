@@ -20,4 +20,3 @@ export const RUN_PROPERTIES_REQUIRED_COLUMNS = SCHEMAS.CBMB.concat(
     'WorkflowTask/Run',
     'Protocol/RowId'
 ).toList();
-

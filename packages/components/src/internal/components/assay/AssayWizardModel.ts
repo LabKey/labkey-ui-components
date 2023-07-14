@@ -11,6 +11,7 @@ import { AppURL } from '../../url/AppURL';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { EditorModel } from '../editable/models';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
+
 import { PLATE_METADATA_COLUMN } from './constants';
 
 export interface AssayUploadOptions extends AssayDOM.ImportRunOptions {

@@ -63,9 +63,18 @@ export enum EntityCreationMode {
 
 export const FIND_SAMPLES_BY_ID_HREF = AppURL.create(SEARCH_KEY, FIND_SAMPLES_BY_ID_KEY);
 export const FIND_SAMPLES_BY_FILTER_HREF = AppURL.create(SEARCH_KEY, FIND_SAMPLES_BY_FILTER_KEY);
-export const FILE_IMPORT_SAMPLES_HREF = AppURL.create(SAMPLES_KEY, 'new').addParam('mode', EntityCreationMode.FILE_IMPORT);
-export const GRID_INSERT_SAMPLES_HREF = AppURL.create(SAMPLES_KEY, 'new').addParam('mode', EntityCreationMode.GRID_INSERT);
-export const FILE_UPDATE_SAMPLES_HREF = AppURL.create(SAMPLES_KEY, 'new').addParam('mode', EntityCreationMode.FILE_UPDATE);
+export const FILE_IMPORT_SAMPLES_HREF = AppURL.create(SAMPLES_KEY, 'new').addParam(
+    'mode',
+    EntityCreationMode.FILE_IMPORT
+);
+export const GRID_INSERT_SAMPLES_HREF = AppURL.create(SAMPLES_KEY, 'new').addParam(
+    'mode',
+    EntityCreationMode.GRID_INSERT
+);
+export const FILE_UPDATE_SAMPLES_HREF = AppURL.create(SAMPLES_KEY, 'new').addParam(
+    'mode',
+    EntityCreationMode.FILE_UPDATE
+);
 export const NEW_SOURCE_TYPE_HREF = AppURL.create(SOURCE_TYPE_KEY, 'new');
 export const NEW_SAMPLE_TYPE_HREF = AppURL.create(SAMPLE_TYPE_KEY, 'new');
 export const NEW_STANDARD_ASSAY_DESIGN_HREF = AppURL.create(ASSAY_DESIGN_KEY, GENERAL_ASSAY_PROVIDER_NAME);

@@ -23,9 +23,8 @@ export const applyEditableGridChangesToModels = (
     queryInfo?: QueryInfo,
     dataKeys?: List<any>,
     data?: Map<string, Map<string, any>>,
-    index?: number
+    tabIndex = 0
 ): EditableGridModels => {
-    const tabIndex = index ?? 0;
     const updatedEditorModels = [...editorModels];
     const editorModel = editorModels[tabIndex].merge(editorModelChanges) as EditorModel;
     updatedEditorModels.splice(tabIndex, 1, editorModel);
@@ -140,7 +139,7 @@ export const getUpdatedDataFromEditableGrid = (
     editorModels: EditorModel[],
     idField: string,
     selectionData?: Map<string, any>,
-    tabIndex?: number
+    tabIndex = 0
 ): Record<string, any> => {
     const model = dataModels[tabIndex];
     const editorModel = editorModels[tabIndex];
@@ -159,7 +158,7 @@ export const getUpdatedDataFromEditableGrid = (
     return {
         originalRows: model.rows,
         schemaQuery: model.queryInfo.schemaQuery,
-        tabIndex: tabIndex ?? 0,
+        tabIndex,
         updatedRows: getUpdatedDataFromGrid(initData, editorData, idField, model.queryInfo),
     };
 };

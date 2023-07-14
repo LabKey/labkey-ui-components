@@ -21,7 +21,7 @@ import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 import { buildURL } from '../../url/AppURL';
 import { caseInsensitive } from '../../util/utils';
 
-import { IAssayUploadOptions } from './AssayWizardModel';
+import { AssayUploadOptions } from './AssayWizardModel';
 import { AssayUploadResultModel } from './models';
 
 /**
@@ -66,22 +66,24 @@ export function fetchAllAssays(type?: string, containerPath?: string): Promise<L
     return assayDefinitionCache[key];
 }
 
-export function importAssayRun(config: Partial<AssayDOM.IImportRunOptions>): Promise<AssayUploadResultModel> {
+type ImportAssayRunOptions = Omit<AssayDOM.ImportRunOptions, 'success' | 'failure' | 'scope'>;
+
+export function importAssayRun(config: ImportAssayRunOptions): Promise<AssayUploadResultModel> {
     return new Promise((resolve, reject) => {
-        AssayDOM.importRun(
-            Object.assign({}, config, {
-                success: (rawModel: any) => {
-                    resolve(new AssayUploadResultModel(rawModel));
-                },
-                failure: error => {
-                    reject(error);
-                },
-            })
-        );
+        AssayDOM.importRun({
+            ...config,
+            success: rawModel => {
+                resolve(new AssayUploadResultModel(rawModel));
+            },
+            failure: error => {
+                console.error('Failed to import assay run', error);
+                reject(error);
+            },
+        });
     });
 }
 
-export function uploadAssayRunFiles(data: IAssayUploadOptions): Promise<IAssayUploadOptions> {
+export function uploadAssayRunFiles(data: AssayUploadOptions): Promise<AssayUploadOptions> {
     return new Promise((resolve, reject) => {
         const batchFiles = collectFiles(data.batchProperties);
         const runFiles = collectFiles(data.properties);

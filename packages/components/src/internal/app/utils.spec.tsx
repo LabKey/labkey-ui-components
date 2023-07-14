@@ -24,7 +24,7 @@ import { MenuSectionConfig } from '../components/navigation/model';
 
 import {
     addAssaysSectionConfig,
-    addSamplesSectionConfig,
+    getSamplesSectionConfig,
     addSourcesSectionConfig,
     biologicsIsPrimaryApp,
     getCurrentAppProperties,
@@ -1037,12 +1037,9 @@ describe('addSourcesSectionConfig', () => {
     });
 });
 
-describe('addSamplesSectionConfig', () => {
+describe('getSamplesSectionConfig', () => {
     test('reader', () => {
-        let configs = List<Map<string, MenuSectionConfig>>();
-        configs = addSamplesSectionConfig(TEST_USER_READER, configs);
-        expect(configs.size).toBe(1);
-        const sectionConfig = configs.get(0).get(SAMPLES_KEY);
+        const sectionConfig = getSamplesSectionConfig(TEST_USER_READER);
         expect(sectionConfig.emptyText).toBe('No sample types have been defined');
         expect(sectionConfig.emptyAppURL).toBe(undefined);
         expect(sectionConfig.showActiveJobIcon).toBeTruthy();
@@ -1052,10 +1049,7 @@ describe('addSamplesSectionConfig', () => {
     });
 
     test('admin', () => {
-        let configs = List<Map<string, MenuSectionConfig>>();
-        configs = addSamplesSectionConfig(TEST_USER_FOLDER_ADMIN, configs);
-        expect(configs.size).toBe(1);
-        const sectionConfig = configs.get(0).get(SAMPLES_KEY);
+        const sectionConfig = getSamplesSectionConfig(TEST_USER_FOLDER_ADMIN);
         expect(sectionConfig.emptyAppURL?.toHref()).toBe('#/sampleType/new');
         expect(sectionConfig.emptyURLText).toBe('Create a sample type');
     });

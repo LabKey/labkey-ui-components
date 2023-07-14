@@ -692,6 +692,7 @@ import {
     isELNEnabled,
     isFreezerManagementEnabled,
     isMediaEnabled,
+    isPlatesEnabled,
     isPremiumProductEnabled,
     isProductProjectsEnabled,
     isProjectContainer,
@@ -793,6 +794,7 @@ import {
     USER_KEY,
     WORKFLOW_HOME_HREF,
     WORKFLOW_KEY,
+    PLATES_KEY,
 } from './internal/app/constants';
 import { Key, useEnterEscape } from './public/useEnterEscape';
 import { DateInput } from './internal/components/DateInput';
@@ -856,6 +858,7 @@ const App = {
     isWorkflowEnabled,
     isELNEnabled,
     isFreezerManagementEnabled,
+    isPlatesEnabled,
     isSampleManagerEnabled,
     isBiologicsEnabled,
     isPremiumProductEnabled,
@@ -979,6 +982,7 @@ const App = {
     PRIVATE_PICKLIST_CATEGORY,
     PUBLIC_PICKLIST_CATEGORY,
     DATA_IMPORT_TOPIC,
+    PLATES_KEY,
 };
 
 const Hooks = {
@@ -1798,3 +1802,4 @@ export type { ComponentsAPIWrapper } from './internal/APIWrapper';
 export type { GetParentTypeDataForLineage } from './internal/components/entities/actions';
 export type { DeleteConfirmationModalProps } from './internal/components/entities/DeleteConfirmationModal';
 export type { EntityDeleteConfirmHandler } from './internal/components/entities/EntityDeleteConfirmModalDisplay';
+export type { URLMapper } from './internal/url/URLResolver';

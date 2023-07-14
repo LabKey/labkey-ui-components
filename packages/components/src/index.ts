@@ -253,7 +253,7 @@ import {
     replaceParameters,
     resetParameters,
 } from './internal/util/URL';
-import { ActionMapper, LookupMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
+import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
 import { DATA_IMPORT_TOPIC, getHelpLink, HELP_LINK_REFERRER, HelpLink } from './internal/util/helpLinks';
 import { ExperimentRunResolver, ListResolver } from './internal/url/AppURLResolver';
 import { NOT_ANY_FILTER_TYPE } from './internal/url/NotAnyFilterType';
@@ -1061,7 +1061,6 @@ export {
     // url and location related items
     AppURL,
     ActionMapper,
-    LookupMapper,
     URL_MAPPERS,
     URLResolver,
     URLService,

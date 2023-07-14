@@ -17,7 +17,6 @@ import {
     hookServer,
     IntegrationTestServer,
     RequestOptions,
-    SecurityRole,
     successfulResponse,
     TestUser,
 } from './integrationUtils';
@@ -27,7 +26,6 @@ export {
     hookServer,
     IntegrationTestServer,
     RequestOptions,
-    SecurityRole,
     sleep,
     successfulResponse,
     TestUser,

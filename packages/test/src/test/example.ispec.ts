@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { hookServer, RequestOptions, SecurityRole, successfulResponse } from '../integrationUtils';
+import { PermissionRoles } from '@labkey/api';
+import { hookServer, RequestOptions, successfulResponse } from '../integrationUtils';
 
 // Declare the name of the LabKey project for these tests.
 const PROJECT_NAME = 'LabKeyTestExampleProject';
@@ -62,7 +63,7 @@ describe('query-executeSql.api', () => {
         const readerUser = await server.createUser('reader@lktestuser.com', 'pwSuper2Awesome!');
 
         // Assign permissions to a user in the test container
-        await server.addUserToRole('reader@lktestuser.com', SecurityRole.Reader, testContainer.path);
+        await server.addUserToRole('reader@lktestuser.com', PermissionRoles.Reader, testContainer.path);
 
         noPermissionsUserOptions = {
             containerPath: testContainer.path,

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import supertest, { Response, SuperTest, Test } from 'supertest';
-import { ActionURL, Container, Utils } from '@labkey/api';
+import { ActionURL, Container, PermissionRoles, Security, Utils } from '@labkey/api';
 
 import { sleep } from './utils';
 
@@ -53,18 +53,6 @@ class RequestContext implements UserCredentials {
     }
 }
 
-// It is a bit odd to define this enumeration here. We could consider
-// moving it to @labkey/api (similar to Security.PermissionTypes).
-export enum SecurityRole {
-    // All enumeration values are expected to be a prefixed name of
-    // their corollary Java class role.
-    Author = 'Author',
-    Editor = 'Editor',
-    FolderAdmin = 'FolderAdmin',
-    ProjectAdmin = 'ProjectAdmin',
-    Reader = 'Reader',
-}
-
 interface ServerContext {
     agent: SuperTest<Test>;
     containerPath?: string;
@@ -84,7 +72,7 @@ export interface IntegrationTestServer {
      * Add a user (by their email address) to a permission's role in a the test container. This allows for
      * testing of users with different permissions in the test container.
      */
-    addUserToRole: (email: string, role: SecurityRole | string, containerPath?: string) => Promise<void>;
+    addUserToRole: (email: string, role: PermissionRoles | string, containerPath?: string) => Promise<void>;
     /**
      * Creates a RequestContext that can be used for subsequent server requests (e.g. get, post). This will
      * initialize the CSRF token to ensure that the server requests authenticate as expected.
@@ -129,14 +117,14 @@ export interface IntegrationTestServer {
     teardown: () => Promise<void>;
 }
 
-const addUserToRole = async (ctx: ServerContext, email: string, role: SecurityRole | string, containerPath?: string): Promise<void> => {
+const addUserToRole = async (ctx: ServerContext, email: string, role: PermissionRoles | string, containerPath?: string): Promise<void> => {
     await postRequest(ctx, 'security', 'addAssignment.api', {
         email,
-        roleClassName: SecurityRole[role] !== undefined ? `org.labkey.api.security.roles.${SecurityRole[role]}Role` : role,
+        roleClassName: role,
     }, { containerPath: containerPath ?? ctx.containerPath }).expect(successfulResponse);
 };
 
-const _createContainer = async (ctx: ServerContext, containerPath: string, name: string, containerOptions?: any /* Security.CreateContainerOptions */): Promise<Container> => {
+const _createContainer = async (ctx: ServerContext, containerPath: string, name: string, containerOptions?: Security.CreateContainerOptions): Promise<Container> => {
     const response = await postRequest(ctx, 'core', 'createContainer.api', {
         ...containerOptions,
         name
@@ -153,7 +141,7 @@ const createRequestContext = async (ctx: ServerContext, config: Partial<RequestC
     return requestCtx;
 };
 
-const createTestContainer = async (ctx: ServerContext, containerOptions?: any /* Security.CreateContainerOptions */): Promise<Container> => {
+const createTestContainer = async (ctx: ServerContext, containerOptions?: Security.CreateContainerOptions): Promise<Container> => {
     if (!ctx.projectPath) {
         throw new Error('Failed to create test container. Project must be initialized via init() prior to creating a test container.');
     }

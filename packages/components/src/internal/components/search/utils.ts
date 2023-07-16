@@ -77,18 +77,9 @@ export function isFilterUrlSuffixMatch(suffix: string, filterType: Filter.IFilte
     return suffix === filterType.getURLSuffix();
 }
 
-export function getFilterTypePlaceHolder(suffix: string, jsonType: string): string {
-    if (suffix === 'in' || suffix === 'notin') {
-        switch (jsonType) {
-            case 'float':
-                return 'Example: 1.0;2.2;3';
-            case 'int':
-                return 'Example: 1;2;3';
-            case 'string':
-                return 'Example: a;b;c';
-        }
-    } else if (suffix === 'containsoneof' || suffix === 'containsnoneof') {
-        return 'Example: a;b;c';
+export function getFilterTypePlaceHolder(suffix: string): string {
+    if (suffix === 'in' || suffix === 'notin' || suffix === 'containsoneof' || suffix === 'containsnoneof') {
+        return 'Use semicolon or new line to separate entries';
     }
 
     return null;

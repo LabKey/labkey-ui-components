@@ -1509,7 +1509,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     render(): ReactNode {
-        console.log('EditableGrid -- render');
         const {
             allowAdd,
             editorModel,

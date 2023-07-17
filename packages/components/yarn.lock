@@ -1518,10 +1518,10 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@labkey/api@1.21.0":
-  version "1.21.0"
-  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.21.0.tgz#e64741a197e56c4e11889c9943da0a7ade06f6cf"
-  integrity sha512-ydxt19BW7bF+DYYJNfQmmgw177xPUuS946wc6PgKFkTXJUW3CA+33AirXUB5D+waJZwdXmwLubMf41gK1qP17g==
+"@labkey/api@1.22.0":
+  version "1.22.0"
+  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.22.0.tgz#ebabc9aea9da7aeaf945b4872d4dfe48be785542"
+  integrity sha512-SGEV/0Z87eDhgYOKBBrysk8zI01DuuzLH3HI8tYOZi9Sab+RSDSiNwc6jAKxDjFPX+ZW5qojdDPIdcu6/N/1ow==
 
 "@labkey/build@6.12.0":
   version "6.12.0"
@@ -2785,6 +2785,11 @@ binary-extensions@^2.0.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.2.0.tgz#75f502eeaf9ffde42fc98829645be4ea76bd9e2d"
   integrity sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==
+
+blob-polyfill@7.0.20220408:
+  version "7.0.20220408"
+  resolved "https://registry.yarnpkg.com/blob-polyfill/-/blob-polyfill-7.0.20220408.tgz#38bf5e046c41a21bb13654d9d19f303233b8218c"
+  integrity sha512-oD8Ydw+5lNoqq+en24iuPt1QixdPpe/nUF8azTHnviCZYu9zUC+TwdzIp5orpblJosNlgNbVmmAb//c6d6ImUQ==
 
 body-parser@1.20.1:
   version "1.20.1"

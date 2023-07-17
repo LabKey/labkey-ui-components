@@ -190,8 +190,9 @@ export class LookupMapper implements URLMapper {
 
             // Issue 46747: When the lookup goes to a different container, don't rewrite the URL
             const containerPath = getServerContext().container.path;
-            if (lookupContainerPath && lookupContainerPath !== containerPath)
+            if (lookupContainerPath && lookupContainerPath !== containerPath) {
                 return undefined;
+            }
 
             const parts = [
                 this.defaultPrefix,
@@ -553,7 +554,7 @@ export class URLResolver {
             return _url;
         }
 
-        if (_url !== false && getServerContext().devMode) {
+        if (mapper.url !== undefined && _url !== false && getServerContext().devMode) {
             console.warn('Unable to map URL:', mapper.url);
         }
 

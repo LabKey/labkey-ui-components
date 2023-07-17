@@ -12,38 +12,9 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { EditorModel } from '../editable/models';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
-// exported for jest testing
-export function parseDataTextToRunRows(rawData: string): any[] {
-    if (!rawData || !rawData.length) {
-        return null;
-    }
+import { PLATE_METADATA_COLUMN } from './constants';
 
-    const rows = [];
-    let columns = [];
-
-    rawData
-        .split('\n')
-        .filter(row => row.trim().length > 0)
-        .forEach(row => {
-            const parts = row.split('\t');
-            if (parts.length === 0) return;
-
-            if (columns.length === 0) columns = parts;
-            else {
-                const row = {};
-                parts.forEach((part, index) => {
-                    if (part.trim() !== '') {
-                        row[columns[index]] = part;
-                    }
-                });
-                rows.push(row);
-            }
-        });
-
-    return rows.length > 0 ? rows : null;
-}
-
-export interface IAssayUploadOptions extends AssayDOM.IImportRunOptions {
+export interface AssayUploadOptions extends AssayDOM.ImportRunOptions {
     dataRows?: any; // Array<any>
     maxFileSize?: number;
     maxRowCount?: number;
@@ -64,16 +35,18 @@ export class AssayWizardModel
         attachedFiles: Map<string, File>(),
         batchColumns: OrderedMap<string, QueryColumn>(),
         batchProperties: Map<string, any>(),
-        usePreviousRunFile: false,
+        comment: undefined,
+        dataText: undefined,
+        plateColumns: OrderedMap<string, QueryColumn>(),
+        plateProperties: Map<string, any>(),
         runColumns: OrderedMap<string, QueryColumn>(),
         runId: undefined,
         runProperties: Map<string, any>(),
         runName: undefined,
-        comment: undefined,
-        dataText: undefined,
         queryInfo: undefined,
-        toDelete: undefined,
         selectedSamples: undefined,
+        toDelete: undefined,
+        usePreviousRunFile: false,
 
         jobDescription: undefined,
         jobNotificationProvider: undefined,
@@ -96,6 +69,8 @@ export class AssayWizardModel
     declare batchColumns: OrderedMap<string, QueryColumn>;
     declare batchProperties: Map<string, any>;
     declare usePreviousRunFile: boolean;
+    declare plateColumns: OrderedMap<string, QueryColumn>;
+    declare plateProperties?: Map<string, any>;
     declare runColumns: OrderedMap<string, QueryColumn>;
     declare runId?: string;
     declare runProperties?: Map<string, any>;
@@ -154,7 +129,7 @@ export class AssayWizardModel
         return false;
     }
 
-    prepareFormData(currentStep: number, editorModel: EditorModel, queryModel: QueryModel): IAssayUploadOptions {
+    prepareFormData(currentStep: number, editorModel: EditorModel, queryModel: QueryModel): AssayUploadOptions {
         const {
             batchId,
             batchProperties,
@@ -169,7 +144,7 @@ export class AssayWizardModel
             workflowTask,
         } = this;
 
-        const assayData: any = {
+        const assayData: AssayUploadOptions = {
             assayId: assayDef.id,
             batchId,
             batchProperties: batchProperties.toObject(),
@@ -247,5 +222,15 @@ export class AssayWizardModel
         const queryModelData = this.getInitialQueryModelData();
         const editorModelData = await loadEditorModelData(queryModelData);
         return { editorModel: editorModelData, queryModel: queryModelData };
+    }
+
+    async processPlateData(data: AssayUploadOptions): Promise<AssayUploadOptions> {
+        if (data.properties?.[PLATE_METADATA_COLUMN] instanceof File) {
+            const text = await data.properties[PLATE_METADATA_COLUMN].text();
+            data.plateMetadata = JSON.parse(text);
+            delete data.properties[PLATE_METADATA_COLUMN];
+        }
+
+        return data;
     }
 }

@@ -56,6 +56,7 @@ import {
     SOURCES_KEY,
     FREEZERS_KEY,
     BOXES_KEY,
+    PLATES_KEY,
 } from '../../app/constants';
 
 import { FolderMenu, FolderMenuItem } from './FolderMenu';
@@ -363,6 +364,7 @@ const HEADER_MENU_SUBTITLE_MAP = {
     [ELN_KEY]: 'Notebooks',
     [FREEZERS_KEY]: 'Storage',
     [MEDIA_KEY]: 'Media',
+    [PLATES_KEY]: 'Plates',
     [PICKLIST_KEY]: 'Picklists',
     [REGISTRY_KEY]: 'Registry',
     [SAMPLE_TYPE_KEY.toLowerCase()]: 'Sample Types',

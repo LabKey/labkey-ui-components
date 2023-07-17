@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import React, { ChangeEvent, MouseEvent, PureComponent, ReactNode, SyntheticEvent } from 'react';
 import { Query } from '@labkey/api';
 import classNames from 'classnames';
 import { List, Map, OrderedMap, Set } from 'immutable';
-import React, { ChangeEvent, MouseEvent, PureComponent, ReactNode, SyntheticEvent } from 'react';
 import { Button, Nav, NavItem, OverlayTrigger, Popover, Tab, TabContainer } from 'react-bootstrap';
 
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
@@ -235,20 +235,25 @@ function inputCellFactory(
             inSelection = initialSelection.includes(genCellKey(colIdx, rn));
         }
 
+        const focused = editorModel.isFocused(colIdx, rn);
+
         return (
             <Cell
-                borderMask={borderMask}
+                borderMaskTop={borderMask[0]}
+                borderMaskRight={borderMask[1]}
+                borderMaskBottom={borderMask[2]}
+                borderMaskLeft={borderMask[3]}
                 cellActions={cellActions}
                 col={c.raw}
                 colIdx={colIdx}
-                row={row}
+                row={focused ? row : undefined}
                 containerFilter={containerFilter}
                 key={inputCellKey(c.raw, row)}
                 placeholder={columnMetadata?.placeholder}
                 readOnly={isReadonlyCol || isReadonlyRow || isReadonlyCell}
                 locked={isLockedRow}
                 rowIdx={rn}
-                focused={editorModel.isFocused(colIdx, rn)}
+                focused={focused}
                 forUpdate={forUpdate}
                 message={editorModel.getMessage(colIdx, rn)}
                 selected={editorModel.isSelected(colIdx, rn)}
@@ -1233,6 +1238,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         if (metricFeatureArea) {
             incrementClientSideMetricCount(metricFeatureArea, 'bulkAdd');
         }
+
         // Result of this promise passed to toggleBulkAdd, which doesn't expect anything to be passed
         return Promise.resolve();
     };
@@ -1255,6 +1261,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         if (metricFeatureArea) {
             incrementClientSideMetricCount(metricFeatureArea, 'bulkUpdate');
         }
+
         // The result of this promise is used by toggleBulkUpdate, which doesn't expect anything to be passed
         return Promise.resolve(editorModelChanges);
     };
@@ -1502,6 +1509,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     render(): ReactNode {
+        console.log('EditableGrid -- render');
         const {
             allowAdd,
             editorModel,

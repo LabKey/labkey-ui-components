@@ -364,17 +364,20 @@ export interface SharedEditableGridPanelProps extends SharedEditableGridProps {
     title?: string;
 }
 
+export type EditableGridChange = (
+    editorModelChanges: Partial<EditorModelProps>,
+    dataKeys?: List<any>,
+    data?: Map<any, Map<string, any>>,
+    index?: number
+) => void;
+
 export interface EditableGridProps extends SharedEditableGridProps {
     data?: Map<any, Map<string, any>>;
     dataKeys?: List<any>;
     editorModel: EditorModel;
     error: string;
     exportHandler?: (option: ExportOption) => void;
-    onChange: (
-        editorModelChanges: Partial<EditorModelProps>,
-        dataKeys?: List<any>,
-        data?: Map<any, Map<string, any>>
-    ) => void;
+    onChange: EditableGridChange;
     queryInfo: QueryInfo;
 }
 

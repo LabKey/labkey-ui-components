@@ -1804,3 +1804,4 @@ export type { GetParentTypeDataForLineage } from './internal/components/entities
 export type { DeleteConfirmationModalProps } from './internal/components/entities/DeleteConfirmationModal';
 export type { EntityDeleteConfirmHandler } from './internal/components/entities/EntityDeleteConfirmModalDisplay';
 export type { URLMapper } from './internal/url/URLResolver';
+export type { EditableGridChange } from './internal/components/editable/EditableGrid';

@@ -26,7 +26,15 @@ export const applyEditableGridChangesToModels = (
     tabIndex = 0
 ): EditableGridModels => {
     const updatedEditorModels = [...editorModels];
-    const editorModel = editorModels[tabIndex].merge(editorModelChanges) as EditorModel;
+    let editorModel = editorModels[tabIndex].merge(editorModelChanges) as EditorModel;
+
+    // NK: The "selectionCells" property is of type string[]. When merge() is used it utilizes
+    // Immutable.fromJS() which turns the Array into a List. We want to maintain the property
+    // as an Array so here we set it explicitly.
+    if (editorModelChanges.selectionCells !== undefined) {
+        editorModel = editorModel.set('selectionCells', editorModelChanges.selectionCells) as EditorModel;
+    }
+
     updatedEditorModels.splice(tabIndex, 1, editorModel);
 
     const updatedDataModels = [...dataModels];

@@ -30,7 +30,7 @@ import {
     ValueDescriptor,
 } from './models';
 
-import { decimalDifference, genCellKey, parseCellKey } from './utils';
+import { decimalDifference, genCellKey, parseCellKey, sortCellKeys } from './utils';
 
 const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;
@@ -345,7 +345,7 @@ export async function addRowsToEditorModel(
     numToAdd: number,
     rowMin = 0
 ): Promise<Partial<EditorModel>> {
-    let selectionCells = ImmutableSet<string>();
+    const selectionCells: string[] = [];
     const preparedData = await prepareInsertRowDataFromBulkForm(insertColumns, rowData, 0);
     const { values, messages } = preparedData;
 
@@ -354,7 +354,7 @@ export async function addRowsToEditorModel(
         rowData.forEach((value, colIdx) => {
             const cellKey = genCellKey(colIdx, rowIdx);
             cellMessages = cellMessages.set(cellKey, messages.get(colIdx));
-            selectionCells = selectionCells.add(cellKey);
+            selectionCells.push(cellKey);
             cellValues = cellValues.set(cellKey, values.get(colIdx));
         });
     }
@@ -362,7 +362,7 @@ export async function addRowsToEditorModel(
     return {
         cellValues,
         cellMessages,
-        selectionCells,
+        selectionCells: sortCellKeys(selectionCells),
         rowCount: Math.max(rowMin + Number(numToAdd), rowCount),
     };
 }
@@ -494,7 +494,7 @@ export function addColumns(
             focusRowIdx: -1,
             selectedColIdx: -1,
             selectedRowIdx: -1,
-            selectionCells: ImmutableSet<string>(),
+            selectionCells: [],
             cellMessages: newCellMessages,
             cellValues: newCellValues,
         },
@@ -567,7 +567,7 @@ export function changeColumn(
             focusRowIdx: -1,
             selectedColIdx: -1,
             selectedRowIdx: -1,
-            selectionCells: ImmutableSet<string>(),
+            selectionCells: [],
             cellMessages: newCellMessages,
             cellValues: newCellValues,
         },
@@ -625,7 +625,7 @@ export function removeColumn(
             focusRowIdx: -1,
             selectedColIdx: -1,
             selectedRowIdx: -1,
-            selectionCells: ImmutableSet<string>(),
+            selectionCells: [],
             cellMessages: newCellMessages,
             cellValues: newCellValues,
         },
@@ -1070,7 +1070,7 @@ export async function dragFillEvent(
     readonlyRows: string[],
     lockedRows: string[]
 ): Promise<CellMessagesAndValues> {
-    const finalSelection = editorModel.sortedSelectionKeys;
+    const finalSelection = editorModel.selectionCells;
     let cellValues = editorModel.cellValues;
     let cellMessages = editorModel.cellMessages;
 
@@ -1128,7 +1128,7 @@ export async function dragFillEvent(
  * paste the contents twice across the selected columns.
  */
 function expandPaste(model: EditorModel, payload: ParsePastePayload): ParsePastePayload {
-    const selection = model.sortedSelectionKeys;
+    const selection = model.selectionCells;
     const minSelection = parseCellKey(selection[0]);
     const maxSelection = parseCellKey(selection[selection.length - 1]);
     const selectionColCount = maxSelection.colIdx - minSelection.colIdx + 1;
@@ -1359,7 +1359,7 @@ function insertPastedData(
     const pastedData = paste.payload.data;
     let cellMessages = editorModel.cellMessages;
     let cellValues = editorModel.cellValues;
-    let selectionCells = ImmutableSet<string>();
+    const selectionCells: string[] = [];
     let rowCount = editorModel.rowCount;
     let updatedDataKeys: List<any>;
     let updatedData: Map<any, Map<string, any>>;
@@ -1417,14 +1417,14 @@ function insertPastedData(
                 cellValues = cellValues.set(cellKey, cv);
             }
 
-            selectionCells = selectionCells.add(cellKey);
+            selectionCells.push(cellKey);
         });
 
         rowIdx++;
     });
 
     return {
-        editorModel: { cellMessages, cellValues, rowCount, selectionCells },
+        editorModel: { cellMessages, cellValues, rowCount, selectionCells: sortCellKeys(selectionCells) },
         data: updatedData,
         dataKeys: updatedDataKeys,
     };
@@ -1596,7 +1596,8 @@ function getCellCopyValue(valueDescriptors: List<ValueDescriptor>): string {
 function getCopyValue(model: EditorModel, insertColumns: QueryColumn[]): string {
     let copyValue = '';
     const EOL = '\n';
-    const selectionCells = model.selectionCells.add(genCellKey(model.selectedColIdx, model.selectedRowIdx));
+    const selectionCells = [...model.selectionCells];
+    selectionCells.push(genCellKey(model.selectedColIdx, model.selectedRowIdx));
 
     for (let rn = 0; rn < model.rowCount; rn++) {
         let cellSep = '';
@@ -1605,7 +1606,7 @@ function getCopyValue(model: EditorModel, insertColumns: QueryColumn[]): string 
         insertColumns.forEach((col, cn) => {
             const cellKey = genCellKey(cn, rn);
 
-            if (selectionCells.contains(cellKey)) {
+            if (selectionCells.find(key => key === cellKey)) {
                 inSelection = true;
                 copyValue += cellSep + getCellCopyValue(model.cellValues.get(cellKey));
                 cellSep = '\t';

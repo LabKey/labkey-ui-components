@@ -106,9 +106,6 @@ class PicklistSamplesFilter implements Filter.IFilterType {
     getMultiValueSeparator(): string {
         return null;
     }
-    getSecondaryMultiValueSeparator(): string {
-        return null;
-    }
     getOpposite(): Filter.IFilterType {
         return null;
     }

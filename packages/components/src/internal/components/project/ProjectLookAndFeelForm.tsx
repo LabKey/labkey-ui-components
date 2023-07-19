@@ -7,8 +7,8 @@ import { getDateTimeFormat } from '../../util/Date';
 import { Alert } from '../base/Alert';
 import { FolderAPIWrapper, ProjectLAFOptions } from '../container/FolderAPIWrapper';
 import { resolveErrorMessage } from '../../util/messaging';
-import {incrementClientSideMetricCount} from "../../actions";
-import {LOOK_AND_FEEL_METRIC} from "../productnavigation/constants";
+import { incrementClientSideMetricCount } from '../../actions';
+import { LOOK_AND_FEEL_METRIC } from '../productnavigation/constants';
 
 interface Props {
     api?: FolderAPIWrapper;

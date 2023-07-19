@@ -1,6 +1,11 @@
 # @labkey/test
 Utilities and configurations for running JavaScript tests with LabKey Server.
 
+### version 1.2.0
+*Released*: 17 July 2023
+* Remove `SecurityRole`. Use `PermissionRoles` provided by `@labkey/api` instead.
+* Package updates
+
 ### version 1.1.3
 *Released*: 14 April 2023
 * Package updates

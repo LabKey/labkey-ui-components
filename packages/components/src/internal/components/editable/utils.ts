@@ -32,7 +32,9 @@ export const applyEditableGridChangesToModels = (
     // Immutable.fromJS() which turns the Array into a List. We want to maintain the property
     // as an Array so here we set it explicitly.
     if (editorModelChanges.selectionCells !== undefined) {
-        editorModel = editorModel.set('selectionCells', editorModelChanges.selectionCells) as EditorModel;
+        const selectionCells = sortCellKeys(editorModelChanges.selectionCells);
+        editorModel = editorModel.set('selectionCells', selectionCells) as EditorModel;
+        editorModel = editorModel.set('isSparseSelection', isSparseSelection(selectionCells)) as EditorModel;
     }
 
     updatedEditorModels.splice(tabIndex, 1, editorModel);
@@ -356,6 +358,46 @@ export function sortCellKeys(cellKeys: string[]): string[] {
 export function decimalDifference(first, second, subtract = true): number {
     const multiplier = 10000; // this will only help/work to 4 decimal places
     return (first * multiplier + (subtract ? -1 : 1) * second * multiplier) / multiplier;
+}
+
+/**
+ * Returns true if the selection is sparse. A sparse selection is one where a continuous set of cells in a rectangle are
+ * not selected. It may look something like this:
+ *  0 1 1 0 0
+ *  0 0 0 1 1
+ *  0 1 1 0 0
+ * @param selection: An array of cell keys representing the selected cells, ordered left to right, top to bottom.
+ */
+function isSparseSelection(selection: string[]): boolean {
+    if (selection.length === 0) return false;
+
+    const firstCell = parseCellKey(selection[0]);
+    const lastCell = parseCellKey(selection[selection.length - 1]);
+    const minCol = firstCell.colIdx;
+    const maxCol = lastCell.colIdx;
+    const minRow = firstCell.rowIdx;
+    const maxRow = lastCell.rowIdx;
+    const expectedCellCount = (maxCol - minCol + 1) * (maxRow - minRow + 1);
+
+    // If the expected size is wrong we can short circuit and return
+    if (selection.length !== expectedCellCount) return true;
+
+    let selIdx = 0;
+
+    // If the sizes match, then we need to generate the expected cellKeys in the order we expect them, and if they don't
+    // all match we know it's a sparse selection.
+    for (let rowIdx = minRow; rowIdx <= maxRow; rowIdx++) {
+        for (let colIdx = minCol; colIdx <= maxCol; colIdx++) {
+            const expectedCellKey = genCellKey(colIdx, rowIdx);
+            const actualCellKey = selection[selIdx];
+
+            if (expectedCellKey !== actualCellKey) return true;
+
+            selIdx++;
+        }
+    }
+
+    return false;
 }
 
 export const gridCellSelectInputProps: Partial<SelectInputProps> = {

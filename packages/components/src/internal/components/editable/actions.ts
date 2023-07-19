@@ -30,7 +30,7 @@ import {
     ValueDescriptor,
 } from './models';
 
-import { decimalDifference, genCellKey, parseCellKey, sortCellKeys } from './utils';
+import { decimalDifference, genCellKey, parseCellKey } from './utils';
 
 const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;
@@ -362,7 +362,7 @@ export async function addRowsToEditorModel(
     return {
         cellValues,
         cellMessages,
-        selectionCells: sortCellKeys(selectionCells),
+        selectionCells,
         rowCount: Math.max(rowMin + Number(numToAdd), rowCount),
     };
 }
@@ -1424,7 +1424,7 @@ function insertPastedData(
     });
 
     return {
-        editorModel: { cellMessages, cellValues, rowCount, selectionCells: sortCellKeys(selectionCells) },
+        editorModel: { cellMessages, cellValues, rowCount, selectionCells },
         data: updatedData,
         dataKeys: updatedDataKeys,
     };

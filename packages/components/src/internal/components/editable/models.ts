@@ -113,6 +113,7 @@ export class EditorModel
         focusValue: undefined,
         id: undefined,
         isPasting: false,
+        isSparseSelection: false,
         rowCount: 0,
         selectedColIdx: -1,
         selectedRowIdx: -1,
@@ -129,6 +130,7 @@ export class EditorModel
     declare focusValue: List<ValueDescriptor>;
     declare id: string;
     declare isPasting: boolean;
+    declare isSparseSelection: boolean;
     declare rowCount: number;
     declare selectedColIdx: number;
     declare selectedRowIdx: number;
@@ -477,10 +479,6 @@ export class EditorModel
         if (colIdx < 0 || rowIdx < 0) return false;
         const cellKey = genCellKey(colIdx, rowIdx);
         return this.selectionCells.find(ck => cellKey === ck) !== undefined;
-    }
-
-    get sortedSelectionKeys(): string[] {
-        return this.selectionCells;
     }
 
     hasRawValue(descriptor: ValueDescriptor): boolean {

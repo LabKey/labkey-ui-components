@@ -55,7 +55,7 @@ import {
     pasteEvent,
     updateGridFromBulkForm,
 } from './actions';
-import { genCellKey, parseCellKey, sortCellKeys } from './utils';
+import { genCellKey, parseCellKey } from './utils';
 import { BorderMask, Cell } from './Cell';
 
 import {
@@ -108,46 +108,6 @@ function computeBorderMask(
     return borderMask;
 }
 
-/**
- * Returns true if the selection is sparse. A sparse selection is one where a continuous set of cells in a rectangle are
- * not selected. It may look something like this:
- *  0 1 1 0 0
- *  0 0 0 1 1
- *  0 1 1 0 0
- * @param selection: An array of cell keys representing the selected cells, ordered left to right, top to bottom.
- */
-function isSparseSelection(selection: string[]): boolean {
-    if (selection.length === 0) return false;
-
-    const firstCell = parseCellKey(selection[0]);
-    const lastCell = parseCellKey(selection[selection.length - 1]);
-    const minCol = firstCell.colIdx;
-    const maxCol = lastCell.colIdx;
-    const minRow = firstCell.rowIdx;
-    const maxRow = lastCell.rowIdx;
-    const expectedCellCount = (maxCol - minCol + 1) * (maxRow - minRow + 1);
-
-    // If the expected size is wrong we can short circuit and return
-    if (selection.length !== expectedCellCount) return true;
-
-    let selIdx = 0;
-
-    // If the sizes match, then we need to generate the expected cellKeys in the order we expect them, and if they don't
-    // all match we know it's a sparse selection.
-    for (let rowIdx = minRow; rowIdx <= maxRow; rowIdx++) {
-        for (let colIdx = minCol; colIdx <= maxCol; colIdx++) {
-            const expectedCellKey = genCellKey(colIdx, rowIdx);
-            const actualCellKey = selection[selIdx];
-
-            if (expectedCellKey !== actualCellKey) return true;
-
-            selIdx++;
-        }
-    }
-
-    return false;
-}
-
 const COUNT_COL = new GridColumn({
     index: GRID_EDIT_INDEX,
     tableCell: true,
@@ -175,7 +135,6 @@ function inputCellFactory(
     cellActions: CellActions,
     containerFilter: Query.ContainerFilter,
     forUpdate: boolean,
-    isSparse: boolean,
     initialSelection: string[]
 ): GridColumnCellRenderer {
     return (value, row, c, rn, cn) => {
@@ -201,12 +160,12 @@ function inputCellFactory(
                 .toArray();
         }
 
-        const { selectionCells } = editorModel;
-        const renderDragHandle = !isSparse && editorModel.lastSelection(colIdx, rn);
+        const { isSparseSelection, selectionCells } = editorModel;
+        const renderDragHandle = !isSparseSelection && editorModel.lastSelection(colIdx, rn);
         let inSelection = editorModel.inSelection(colIdx, rn);
         let borderMask: BorderMask = [false, false, false, false];
 
-        if (!isSparse && selectionCells.length) {
+        if (!isSparseSelection && selectionCells.length) {
             const minCell = parseCellKey(selectionCells[0]);
             const maxCell = parseCellKey(selectionCells[selectionCells.length - 1]);
             borderMask = computeBorderMask(
@@ -220,7 +179,7 @@ function inputCellFactory(
             );
         }
 
-        if (!isSparse && initialSelection?.length) {
+        if (!isSparseSelection && initialSelection?.length) {
             const minCell = parseCellKey(initialSelection[0]);
             const maxCell = parseCellKey(initialSelection[initialSelection.length - 1]);
             borderMask = computeBorderMask(
@@ -608,7 +567,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             }
         }
 
-        return { selectedColIdx, selectedRowIdx, selectionCells: sortCellKeys(selectionCells) };
+        return { selectedColIdx, selectedRowIdx, selectionCells };
     };
 
     selectCell = (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean): void => {
@@ -786,7 +745,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         if (!hideCountCol) gridColumns = gridColumns.push(rowNumColumn ? rowNumColumn : COUNT_COL);
 
         const loweredColumnMetadata = this.getLoweredColumnMetadata();
-        const isSparse = isSparseSelection(editorModel.selectionCells);
 
         this.getColumns().forEach(qCol => {
             const metadata = loweredColumnMetadata[qCol.fieldKey.toLowerCase()];
@@ -804,7 +762,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         this.cellActions,
                         containerFilter,
                         forUpdate,
-                        isSparse,
                         this.state.initialSelection
                     ),
                     index: qCol.fieldKey,
@@ -1105,9 +1062,9 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     fillDown = (): void => {
         const { disabled, editorModel } = this.props;
-        const { selectionCells } = editorModel;
+        const { isSparseSelection, selectionCells } = editorModel;
 
-        if (disabled || isSparseSelection(selectionCells)) return;
+        if (disabled || isSparseSelection) return;
 
         const firstRowIdx = parseCellKey(selectionCells[0]).rowIdx;
         const firstRowCellKeys = selectionCells.filter(cellKey => parseCellKey(cellKey).rowIdx === firstRowIdx);

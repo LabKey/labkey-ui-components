@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD July 2023
+- Add to Storage From Grid - add preview to select location modal
+  - ItemsLegend support for borderColor on HorizontalBarLegendData
+
 ### version 2.351.0
 *Released*: 14 July 2023
 - Expose `inputId` prop from `react-select` on `SelectInput`

@@ -17,11 +17,16 @@ export interface ProjectSettingsOptions {
     title?: string;
 }
 
+export interface ProjectLAFOptions {
+    defaultDateTimeFormat?: string;
+}
+
 export interface FolderAPIWrapper {
     createProject: (options: ProjectSettingsOptions) => Promise<Container>;
     getDataTypeExcludedProjects: (dataType: ProjectConfigurableDataType, dataTypeRowId: number) => Promise<string[]>;
     renameProject: (options: ProjectSettingsOptions) => Promise<Container>;
     updateProjectDataExclusions: (options: ProjectSettingsOptions) => Promise<void>;
+    updateProjectLookAndFeelSettings: (options: ProjectLAFOptions) => Promise<void>;
 }
 
 export class ServerFolderAPIWrapper implements FolderAPIWrapper {
@@ -67,6 +72,20 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
         });
     };
 
+    updateProjectLookAndFeelSettings = (options: ProjectLAFOptions): Promise<void> => {
+        return new Promise((resolve, reject) => {
+            Ajax.request({
+                url: ActionURL.buildURL('admin', 'updateProjectSettings.api'),
+                method: 'POST',
+                jsonData: options,
+                success: Utils.getCallbackWrapper(({ data }) => {
+                    resolve();
+                }),
+                failure: handleRequestFailure(reject, 'Failed to update project look and feel settings'),
+            });
+        });
+    };
+
     getDataTypeExcludedProjects = (dataType: ProjectConfigurableDataType, dataTypeRowId: number): Promise<string[]> => {
         if (!dataType || !dataTypeRowId) {
             return Promise.resolve(undefined);
@@ -100,6 +119,7 @@ export function getFolderTestAPIWrapper(
         renameProject: mockFn(),
         updateProjectDataExclusions: mockFn(),
         getDataTypeExcludedProjects: mockFn(),
+        updateProjectLookAndFeelSettings: mockFn(),
         ...overrides,
     };
 }

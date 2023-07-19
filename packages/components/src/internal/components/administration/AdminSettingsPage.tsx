@@ -33,6 +33,7 @@ import { useAdminAppContext } from './useAdminAppContext';
 import { showPremiumFeatures } from './utils';
 import { BasePermissions } from './BasePermissions';
 import { SITE_SECURITY_ROLES } from './constants';
+import {ProjectLookAndFeelFrom} from "../project/ProjectLookAndFeelForm";
 
 // export for jest testing
 export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
@@ -84,6 +85,7 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
         return (
             <>
                 <ProjectSettings onChange={onSettingsChange} onSuccess={onSettingsSuccess} onPageError={onError} />
+                {isAppHomeFolder(container, moduleContext) && <ProjectLookAndFeelFrom api={api.folder} onSuccess={onSettingsSuccess} />}
                 {!isAppHomeFolder(container, moduleContext) && (
                     <>
                         <ProjectDataTypeSelections

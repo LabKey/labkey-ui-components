@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-- TODO
+- Upon using a multi-value filter that is not BETWEEN, make value input a textarea
 
 ### version 2.351.0
 *Released*: 14 July 2023

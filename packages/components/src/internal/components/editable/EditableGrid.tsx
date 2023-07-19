@@ -426,6 +426,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         rowNumColumn: COUNT_COL,
     };
 
+    private dragDelay: number;
     private maskDelay: number;
 
     cellActions: CellActions;
@@ -916,14 +917,23 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     beginDrag = (event: MouseEvent): void => {
         const { disabled, editorModel } = this.props;
         if (this.handleDrag(event) && !disabled) {
-            this.setState({ inDrag: true });
+            clearTimeout(this.dragDelay);
             const target = event.target as Element;
             const isDragHandleAction = target.className?.indexOf(CELL_SELECTION_HANDLE_CLASSNAME) > -1;
-            if (isDragHandleAction) {
-                const initialSelection = [...editorModel.selectionCells];
-                if (!initialSelection.length) initialSelection.push(editorModel.selectionKey);
-                this.setState({ initialSelection });
-            }
+
+            // NK: Here we slightly delay the drag event in case the user is just clicking on the cell
+            // rather than performing a drag action. If they are simply clicking then the endDrag() will cancel
+            // this update prior to the timeout.
+            this.dragDelay = window.setTimeout(() => {
+                this.dragDelay = undefined;
+                const nextState: Partial<EditableGridState> = { inDrag: true };
+                if (isDragHandleAction) {
+                    const initialSelection = [...editorModel.selectionCells];
+                    if (!initialSelection.length) initialSelection.push(editorModel.selectionKey);
+                    nextState.initialSelection = initialSelection;
+                }
+                this.setState(nextState as EditableGridState);
+            }, 150);
         }
     };
 
@@ -931,7 +941,12 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     endDrag = (event: MouseEvent): void => {
         if (this.handleDrag(event)) {
-            this.setState({ inDrag: false });
+            if (this.dragDelay) {
+                clearTimeout(this.dragDelay);
+                this.dragDelay = undefined;
+            } else {
+                this.setState({ inDrag: false });
+            }
         }
     };
 

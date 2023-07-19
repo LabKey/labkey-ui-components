@@ -1518,10 +1518,10 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@labkey/api@1.22.0-fb-newlinesupport.2":
-  version "1.22.0-fb-newlinesupport.2"
-  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.22.0-fb-newlinesupport.2.tgz#76aede47f4453836717504489fd74febdb6b4ad3"
-  integrity sha512-BUaIkL2PtJpvsivIte1Zh5hVpLJyFYXOXQSwJm0C2CvsWrNoi2GKGecGEutg2ZxzKHKVFdqv6NjeUf9A0jQkCA==
+"@labkey/api@1.22.0-fb-newlinesupport.3":
+  version "1.22.0-fb-newlinesupport.3"
+  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.22.0-fb-newlinesupport.3.tgz#9b9c93bb1fd1134d4a1c4097f7b7972a5a7c30bb"
+  integrity sha512-PccTG9X5IFkvICWO9P4WUwLk9rFGOkkwiJ2/RnieV0tuPaXtZqTIazG2yCR4V4XGzuodaI3+BS71WxtJ4Xp3hw==
 
 "@labkey/build@6.12.0":
   version "6.12.0"

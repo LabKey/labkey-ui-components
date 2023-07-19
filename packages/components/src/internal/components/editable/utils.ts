@@ -344,7 +344,7 @@ export function parseCellKey(cellKey: string): CellCoordinates {
  * Sorts cell keys left to right, top to bottom.
  */
 export function sortCellKeys(cellKeys: string[]): string[] {
-    return cellKeys.sort((a, b) => {
+    return Array.from(new Set(cellKeys)).sort((a, b) => {
         const aCoords = parseCellKey(a);
         const bCoords = parseCellKey(b);
         if (aCoords.rowIdx === bCoords.rowIdx) return aCoords.colIdx - bCoords.colIdx;

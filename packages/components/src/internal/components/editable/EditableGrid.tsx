@@ -175,6 +175,7 @@ function inputCellFactory(
     cellActions: CellActions,
     containerFilter: Query.ContainerFilter,
     forUpdate: boolean,
+    isSparse: boolean,
     initialSelection: string[]
 ): GridColumnCellRenderer {
     return (value, row, c, rn, cn) => {
@@ -201,7 +202,6 @@ function inputCellFactory(
         }
 
         const { selectionCells } = editorModel;
-        const isSparse = isSparseSelection(selectionCells);
         const renderDragHandle = !isSparse && editorModel.lastSelection(colIdx, rn);
         let inSelection = editorModel.inSelection(colIdx, rn);
         let borderMask: BorderMask = [false, false, false, false];
@@ -786,6 +786,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         if (!hideCountCol) gridColumns = gridColumns.push(rowNumColumn ? rowNumColumn : COUNT_COL);
 
         const loweredColumnMetadata = this.getLoweredColumnMetadata();
+        const isSparse = isSparseSelection(editorModel.selectionCells);
 
         this.getColumns().forEach(qCol => {
             const metadata = loweredColumnMetadata[qCol.fieldKey.toLowerCase()];
@@ -803,6 +804,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         this.cellActions,
                         containerFilter,
                         forUpdate,
+                        isSparse,
                         this.state.initialSelection
                     ),
                     index: qCol.fieldKey,

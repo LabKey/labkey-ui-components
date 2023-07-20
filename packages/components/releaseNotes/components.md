@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 2.349.TBD
 *Released*: TBD
-* Fix Issue #48014: BarTender Test connection error
+* Fix Issue #48014: BarTender Test connection health check
 
 ### version 2.349.5
 *Released*: 10 July 2023

@@ -1,6 +1,8 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import { Button, Col, FormControl, Panel, Row } from 'react-bootstrap';
 
+import { Container } from "@labkey/api";
+
 import { DATE_FORMATS_TOPIC, HelpLink, JavaDocsLink } from '../../util/helpLinks';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import { getDateTimeFormat } from '../../util/Date';
@@ -13,6 +15,7 @@ import { LOOK_AND_FEEL_METRIC } from '../productnavigation/constants';
 interface Props {
     api?: FolderAPIWrapper;
     onSuccess?: (reload?: boolean) => void;
+    container?: Container;
 }
 
 const PROJECT_DATE_FORMAT_HELP = (
@@ -56,8 +59,8 @@ const PROJECT_DATE_FORMAT_HELP = (
 );
 
 export const ProjectLookAndFeelFrom: FC<Props> = memo(props => {
-    const { api, onSuccess } = props;
-    const [dateTimeFormat, setDateTimeFormat] = useState<string>(getDateTimeFormat());
+    const { api, onSuccess, container } = props;
+    const [dateTimeFormat, setDateTimeFormat] = useState<string>(getDateTimeFormat(container));
     const [dirty, setDirty] = useState<boolean>(false);
     const [error, setError] = useState<string>();
     const [isSaving, setIsSaving] = useState<boolean>(false);

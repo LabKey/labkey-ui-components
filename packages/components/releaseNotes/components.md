@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.352.0
+Released*: 20 July 2023
+- Convert `EditorModel.selectionCells` to a `string[]`.
+- Precompute new property `EditorModel.isSparseSelection`.
+- Add `dragDelay` to reduce redundant render cycles when clicking on cells.
+- Split out `BorderMask` properties on the `Cell` interface.
+- Add and export interface for `EditableGridChange`.
+
 ### version 2.351.1
 Released*: 20 July 2023
 * Merge release23.7-SNAPSHOT to develop:

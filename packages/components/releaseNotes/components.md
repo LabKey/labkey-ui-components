@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.349.TBD
+*Released*: TBD
+* Fix Issue #48014: BarTender Test connection error
+
 ### version 2.349.5
 *Released*: 10 July 2023
 * Remove BaseSearchPage and SearchForm

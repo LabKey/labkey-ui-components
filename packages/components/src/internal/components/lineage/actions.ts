@@ -106,7 +106,7 @@ function fetchNodeMetadata(lineage: LineageResult): Array<Promise<ISelectRowsRes
             const { fieldKey } = node.pkFilters[0];
 
             return selectRowsDeprecated({
-                containerPath: node.container,
+                containerPath: node.containerPath,
                 schemaName: node.schemaName,
                 queryName: node.queryName,
                 viewName: ViewInfo.DETAIL_NAME, // use Detail view to assure we get all data, even when default view is filtered

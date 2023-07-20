@@ -130,10 +130,14 @@ export class EditorModel
     declare focusValue: List<ValueDescriptor>;
     declare id: string;
     declare isPasting: boolean;
+    // NK: This is precomputed property that is updated whenever the selection is updated.
+    // See applyEditableGridChangesToModels().
     declare isSparseSelection: boolean;
     declare rowCount: number;
     declare selectedColIdx: number;
     declare selectedRowIdx: number;
+    // NK: This is pre-sorted array that is updated whenever the selection is updated.
+    // See applyEditableGridChangesToModels().
     declare selectionCells: string[];
 
     findNextCell(

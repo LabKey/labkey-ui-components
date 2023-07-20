@@ -90,6 +90,7 @@ module.exports = {
         '@labkey/premium/entities',
         '@labkey/premium/workflow',
         '@labkey/premium/storage',
+        '@labkey/premium/search',
         '@remirror/pm',
         '@testing-library/jest-dom',
         '@testing-library/react',

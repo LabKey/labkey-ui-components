@@ -2,7 +2,6 @@ import React, { ChangeEvent, FC, FormEvent, memo, ReactNode, useCallback, useEff
 
 import { Button } from 'react-bootstrap';
 
-import { Page } from '../base/Page';
 import { Section } from '../base/Section';
 
 import { HelpLink } from '../../util/helpLinks';
@@ -19,15 +18,17 @@ import { SearchResultsPanel } from './SearchResultsPanel';
 
 import { SearchResultsModel } from './models';
 import { SearchCategory, SEARCH_HELP_TOPIC, SEARCH_PAGE_DEFAULT_SIZE } from './constants';
-import { GetCardDataFn, searchUsingIndex } from './actions';
+import { searchUsingIndex } from './actions';
+import { getSearchResultCardData } from './utils';
 
 interface SearchPanelProps {
     appName: string;
-    getCardDataFn: GetCardDataFn;
     offset?: number; // Result number to start from
     pageSize?: number; // number of results to return/display
     search: (form: any) => any;
+    searchMetadata?: any;
     searchTerm: string;
+    title: string;
 }
 
 export interface SearchPanelImplProps extends Omit<SearchPanelProps, 'getCardDataFn'> {
@@ -36,10 +37,8 @@ export interface SearchPanelImplProps extends Omit<SearchPanelProps, 'getCardDat
 }
 
 export const SearchPanelImpl: FC<SearchPanelImplProps> = memo(props => {
-    const { appName = 'Labkey', searchTerm, model, search, onPageChange, pageSize, offset } = props;
+    const { appName = 'Labkey', searchTerm, model, search, onPageChange, pageSize, offset, title } = props;
     const [searchQuery, setSearchQuery] = useState<string>(searchTerm);
-
-    const title = useMemo(() => (searchTerm ? 'Search Results' : 'Search'), [searchTerm]);
     const totalHits = useMemo(() => model?.getIn(['entities', 'totalHits']), [model]);
     const currentPage = offset / pageSize ? offset / pageSize : 0;
 
@@ -100,49 +99,40 @@ export const SearchPanelImpl: FC<SearchPanelImplProps> = memo(props => {
     );
 
     return (
-        <Page hasHeader={false} title={title}>
-            <Section panelClassName="test-loc-search-panel" title={title} context={helpLink}>
-                <div className="search-form panel-body">
-                    <form onSubmit={onSubmit}>
-                        <span className="input-group">
-                            <span className="input-group-addon clickable" onClick={onSearchClick}>
-                                <i className="fa fa-search search-icon" />
-                            </span>
-                            <input
-                                className="form-control search-input"
-                                onChange={onSearchChange}
-                                placeholder="Search"
-                                size={34}
-                                type="text"
-                                value={searchQuery}
-                            />
+        <Section panelClassName="test-loc-search-panel" title={title} context={helpLink}>
+            <div className="search-form panel-body">
+                <form onSubmit={onSubmit}>
+                    <span className="input-group">
+                        <span className="input-group-addon clickable" onClick={onSearchClick}>
+                            <i className="fa fa-search search-icon" />
                         </span>
-                    </form>
-                    <Button type="submit" className="margin-left success submit-button" onClick={onSearchClick}>
-                        Search
-                    </Button>
-                    {hasPages && (
-                        <div className="page-buttons">
-                            <PaginationButtons
-                                total={totalHits}
-                                currentPage={currentPage}
-                                perPage={pageSize}
-                                previousPage={pageBack}
-                                nextPage={pageForward}
-                            />
-                        </div>
-                    )}
-                </div>
-                {searchTerm && (
-                    <SearchResultsPanel
-                        model={model}
-                        hidePanelFrame={true}
-                        emptyResultDisplay={emptyTextMessage}
-                        offset={offset}
-                    />
+                        <input
+                            className="form-control search-input"
+                            onChange={onSearchChange}
+                            placeholder="Search"
+                            size={34}
+                            type="text"
+                            value={searchQuery}
+                        />
+                    </span>
+                </form>
+                <Button type="submit" className="margin-left success submit-button" onClick={onSearchClick}>
+                    Search
+                </Button>
+                {hasPages && (
+                    <div className="page-buttons">
+                        <PaginationButtons
+                            total={totalHits}
+                            currentPage={currentPage}
+                            perPage={pageSize}
+                            previousPage={pageBack}
+                            nextPage={pageForward}
+                        />
+                    </div>
                 )}
-            </Section>
-        </Page>
+            </div>
+            {searchTerm && <SearchResultsPanel model={model} emptyResultDisplay={emptyTextMessage} offset={offset} />}
+        </Section>
     );
 });
 
@@ -163,7 +153,7 @@ const SEARCH_CATEGORIES = [
 const MEDIA_SEARCH_CATEGORIES = [SearchCategory.Media, SearchCategory.MediaData];
 
 export const SearchPanel: FC<SearchPanelProps> = memo(props => {
-    const { searchTerm, getCardDataFn, search, pageSize = SEARCH_PAGE_DEFAULT_SIZE, offset = 0 } = props;
+    const { offset = 0, pageSize = SEARCH_PAGE_DEFAULT_SIZE, searchTerm, search, searchMetadata } = props;
     const [model, setModel] = useState<SearchResultsModel>(() => SearchResultsModel.create({ isLoading: true }));
     const { moduleContext } = useServerContext();
     const isBiologics = biologicsIsPrimaryApp(moduleContext);
@@ -171,7 +161,10 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
         () => (isBiologics ? [...SEARCH_CATEGORIES, ...MEDIA_SEARCH_CATEGORIES] : SEARCH_CATEGORIES),
         [isBiologics]
     );
-
+    const getCardDataFn = useCallback(
+        (data, cat) => getSearchResultCardData(data, cat, searchMetadata),
+        [searchMetadata]
+    );
     const loadSearchResults = useCallback(async () => {
         if (searchTerm) {
             setModel(SearchResultsModel.create({ isLoading: true }));

@@ -19,10 +19,12 @@ describe('SearchPanelImpl', () => {
     function defaultProps(): SearchPanelImplProps {
         return {
             appName: 'test',
+            title: 'Search',
             model: undefined,
             offset: undefined,
             onPageChange: jest.fn(),
             search: jest.fn(),
+            searchMetadata: undefined,
             searchTerm: undefined,
         };
     }

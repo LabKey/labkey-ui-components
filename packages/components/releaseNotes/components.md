@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.351.1
+Released*: 20 July 2023
+* Merge release23.7-SNAPSHOT to develop:
+    * includes changes from 2.349.5
+
 ### version 2.351.0
 *Released*: 14 July 2023
 - Expose `inputId` prop from `react-select` on `SelectInput`

@@ -1,0 +1,141 @@
+import React from 'react';
+import { render } from '@testing-library/react';
+
+import { ItemsLegend } from './ItemsLegend';
+
+describe('<ItemsLegend/>', () => {
+    test('empty box', () => {
+        render(
+            <ItemsLegend
+                legendData={[{ circleColor: 'none', backgroundColor: 'FFFFFF', legendLabel: 'Empty location' }]}
+            />
+        );
+
+        expect(document.querySelector('.box-viewer-legend')).toBeInTheDocument();
+        expect(document.getElementsByClassName('cell-legend-row').length).toBe(1);
+        expect(document.getElementsByClassName('cell-legend-icon').length).toBe(1);
+        expect(document.getElementsByClassName('cell-legend-icon-border').length).toBe(1);
+        expect(document.getElementsByClassName('cell-legend-circle').length).toBe(0);
+        expect(document.getElementsByClassName('cell-legend-label').length).toBe(1);
+        expect(document.getElementsByClassName('cell-legend-label')[0].innerHTML).toBe('Empty location');
+    });
+
+    test('multiple sample types and checked out status, no selection', () => {
+        const MULTIPLE_SAMPLE_TYPES = [
+            { circleColor: '#fe9200', backgroundColor: 'none', legendLabel: 'blood' },
+            {
+                circleColor: '#009ce0',
+                backgroundColor: 'none',
+                legendLabel: 'samp18',
+            },
+            { circleColor: '#2980b9', backgroundColor: 'none', legendLabel: 'sampleB' },
+            {
+                circleColor: 'none',
+                backgroundColor: '#F5D4D3',
+                legendLabel: 'Checked out/Reserved',
+            },
+            { circleColor: 'none', backgroundColor: 'FFFFFF', legendLabel: 'Empty location' },
+        ];
+
+        render(<ItemsLegend legendData={MULTIPLE_SAMPLE_TYPES} />);
+
+        expect(document.querySelector('.box-viewer-legend')).toBeInTheDocument();
+        expect(document.getElementsByClassName('cell-legend-row').length).toBe(5);
+        expect(document.getElementsByClassName('cell-legend-icon').length).toBe(5);
+        expect(document.getElementsByClassName('cell-legend-icon-border').length).toBe(2);
+        expect(document.getElementsByClassName('cell-legend-circle').length).toBe(3);
+        expect(document.getElementsByClassName('cell-legend-label').length).toBe(5);
+        expect(document.getElementsByClassName('cell-legend-label')[0].innerHTML).toBe('blood');
+        expect(document.getElementsByClassName('cell-legend-label')[1].innerHTML).toBe('samp18');
+        expect(document.getElementsByClassName('cell-legend-label')[2].innerHTML).toBe('sampleB');
+        expect(document.getElementsByClassName('cell-legend-label')[3].innerHTML).toBe('Checked out/Reserved');
+        expect(document.getElementsByClassName('cell-legend-label')[4].innerHTML).toBe('Empty location');
+    });
+
+    test('multiple sample types with same color label', () => {
+        const WITH_SAME_COLOR_LABELS = [
+            { circleColor: '#fe9200', backgroundColor: 'none', legendLabel: 'blood' },
+            {
+                circleColor: '#009ce0',
+                backgroundColor: 'none',
+                legendLabel: 'samp18',
+            },
+            { circleColor: '#2980b9', backgroundColor: 'none', legendLabel: 'sampleB, sampleC' },
+            {
+                circleColor: 'none',
+                backgroundColor: '#F5D4D3',
+                legendLabel: 'Checked out/Reserved',
+            },
+            { circleColor: 'none', backgroundColor: 'FFFFFF', legendLabel: 'Empty location' },
+        ];
+
+        render(<ItemsLegend legendData={WITH_SAME_COLOR_LABELS} />);
+
+        expect(document.querySelector('.box-viewer-legend')).toBeInTheDocument();
+        expect(document.getElementsByClassName('cell-legend-row').length).toBe(5);
+        expect(document.getElementsByClassName('cell-legend-icon').length).toBe(5);
+        expect(document.getElementsByClassName('cell-legend-icon-border').length).toBe(2);
+        expect(document.getElementsByClassName('cell-legend-circle').length).toBe(3);
+        expect(document.getElementsByClassName('cell-legend-label').length).toBe(5);
+        expect(document.getElementsByClassName('cell-legend-label')[2].innerHTML).toBe('sampleB, sampleC');
+    });
+
+    test('with selection, locked and expired', () => {
+        const WITH_MIXED = [
+            {
+                circleColor: '#fe9200',
+                backgroundColor: 'none',
+                legendLabel: 'blood',
+            },
+            { circleColor: '#009ce0', backgroundColor: 'none', legendLabel: 'samp18' },
+            {
+                circleColor: '#fe9200',
+                backgroundColor: '#EDF3FF',
+                legendLabel: 'blood selected',
+            },
+            {
+                circleColor: '#009ce0',
+                backgroundColor: '#EDF3FF',
+                legendLabel: 'samp18 selected',
+            },
+            {
+                circleColor: '#2980b9',
+                backgroundColor: '#EDF3FF',
+                legendLabel: 'sampleB selected, sampleC selected',
+            },
+            { circleColor: 'none', backgroundColor: '#EDF3FF', legendLabel: 'Empty selected' },
+            {
+                circleColor: 'none',
+                backgroundColor: '#F5D4D3',
+                legendLabel: 'Checked out/Reserved',
+            },
+            {
+                circleColor: 'none',
+                backgroundColor: 'none',
+                legendLabel: 'Restricted',
+                locked: true,
+            },
+            {
+                circleColor: '#009ce0',
+                backgroundColor: 'none',
+                legendLabel: 'Sample expired',
+                expired: true,
+            },
+            { circleColor: 'none', backgroundColor: 'FFFFFF', legendLabel: 'Empty location' },
+        ];
+
+        render(<ItemsLegend legendData={WITH_MIXED} />);
+
+        expect(document.querySelector('.box-viewer-legend')).toBeInTheDocument();
+        expect(document.getElementsByClassName('cell-legend-row').length).toBe(10);
+        expect(document.getElementsByClassName('cell-legend-icon').length).toBe(10);
+        expect(document.getElementsByClassName('cell-legend-icon-border').length).toBe(6);
+        expect(document.getElementsByClassName('cell-legend-circle').length).toBe(6);
+        expect(document.getElementsByClassName('cell-legend-label').length).toBe(10);
+        expect(document.getElementsByClassName('cell-legend-label')[7].innerHTML).toBe('Restricted');
+        expect(document.getElementsByClassName('cell-legend-icon-spacing').length).toBe(1);
+        expect(document.getElementsByClassName('cell-lock').length).toBe(1);
+        expect(document.getElementsByClassName('cell-legend-label')[8].innerHTML).toBe('Sample expired');
+        expect(document.getElementsByClassName('expired-form-field').length).toBe(1);
+    });
+});

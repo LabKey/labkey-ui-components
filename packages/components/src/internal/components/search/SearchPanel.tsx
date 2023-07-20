@@ -10,7 +10,7 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { PaginationButtons } from '../buttons/PaginationButtons';
 
-import { biologicsIsPrimaryApp } from '../../app/utils';
+import { biologicsIsPrimaryApp, isPlatesEnabled } from '../../app/utils';
 
 import { useServerContext } from '../base/ServerContext';
 
@@ -136,31 +136,37 @@ export const SearchPanelImpl: FC<SearchPanelImplProps> = memo(props => {
     );
 });
 
-const SEARCH_CATEGORIES = [
-    SearchCategory.Assay,
-    SearchCategory.AssayBatch,
-    SearchCategory.AssayRun,
-    SearchCategory.Data,
-    SearchCategory.DataClass,
-    SearchCategory.File,
-    SearchCategory.FileWorkflowJob,
-    SearchCategory.Material,
-    SearchCategory.MaterialSource,
-    SearchCategory.Notebook,
-    SearchCategory.NotebookTemplate,
-    SearchCategory.WorkflowJob,
-];
-const MEDIA_SEARCH_CATEGORIES = [SearchCategory.Media, SearchCategory.MediaData];
-
 export const SearchPanel: FC<SearchPanelProps> = memo(props => {
     const { offset = 0, pageSize = SEARCH_PAGE_DEFAULT_SIZE, searchTerm, search, searchMetadata } = props;
     const [model, setModel] = useState<SearchResultsModel>(() => SearchResultsModel.create({ isLoading: true }));
     const { moduleContext } = useServerContext();
     const isBiologics = biologicsIsPrimaryApp(moduleContext);
-    const category = useMemo(
-        () => (isBiologics ? [...SEARCH_CATEGORIES, ...MEDIA_SEARCH_CATEGORIES] : SEARCH_CATEGORIES),
-        [isBiologics]
-    );
+    const platesEnabled = isPlatesEnabled(moduleContext);
+    const category = useMemo(() => {
+        const categories = [
+            SearchCategory.Assay,
+            SearchCategory.AssayBatch,
+            SearchCategory.AssayRun,
+            SearchCategory.Data,
+            SearchCategory.DataClass,
+            SearchCategory.File,
+            SearchCategory.FileWorkflowJob,
+            SearchCategory.Material,
+            SearchCategory.MaterialSource,
+            SearchCategory.Notebook,
+            SearchCategory.NotebookTemplate,
+            SearchCategory.WorkflowJob,
+        ];
+
+        if (isBiologics) {
+            categories.push(SearchCategory.Media, SearchCategory.MediaData);
+        }
+        if (platesEnabled) {
+            categories.push(SearchCategory.Plate);
+        }
+
+        return categories;
+    }, [isBiologics, platesEnabled]);
     const getCardDataFn = useCallback(
         (data, cat) => getSearchResultCardData(data, cat, searchMetadata),
         [searchMetadata]

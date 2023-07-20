@@ -75,3 +75,5 @@ export interface FilterSelection {
     firstFilterValue?: any;
     secondFilterValue?: any;
 }
+
+export type GetCardDataFn = (data: Map<any, any>, category?: string) => SearchResultCardData;

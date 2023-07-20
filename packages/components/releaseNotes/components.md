@@ -43,6 +43,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Introduce types of `CellCoordinates` and `GridColumnCellRenderer`.
 - Update `SampleStatusInput` handling of `containerFilter` to use prop override pattern instead of `delete`.
 
+### version 2.349.5
+*Released*: 10 July 2023
+* Remove BaseSearchPage and SearchForm
+* Export SEARCH_PAGE_DEFAULT_SIZE, SearchPanel
+
 ### version 2.349.4
 *Released*: 7 July 2023
 * Add ability to customize message for useNotAuthorized hook.

@@ -343,6 +343,7 @@ import {
     getSampleFinderLocalStorageKey,
 } from './internal/components/entities/FindDerivativesButton';
 import {
+    SEARCH_PAGE_DEFAULT_SIZE,
     SAMPLE_PROPERTY_ALL_SAMPLE_TYPE,
     SearchCategory,
     SearchField,
@@ -350,6 +351,7 @@ import {
 } from './internal/components/search/constants';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';
 import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
+import { SearchPanel } from './internal/components/search/SearchPanel';
 import {
     getSearchScopeFromContainerFilter,
     isValidFilterField,
@@ -364,7 +366,6 @@ import { ProjectManagementPage } from './internal/components/project/ProjectMana
 import { GroupManagementPage } from './internal/components/administration/GroupManagementPage';
 import { PermissionManagementPage } from './internal/components/administration/PermissionManagementPage';
 import { AccountSettingsPage } from './internal/components/administration/AccountSettingsPage';
-import { BaseSearchPage } from './internal/components/search/BaseSearchPage';
 import { SearchResultsModel } from './internal/components/search/models';
 import {
     deleteSampleSet,
@@ -973,6 +974,7 @@ const App = {
     DATA_CLASS_IMPORT_PREFIX,
     SAMPLE_SET_IMPORT_PREFIX,
     SAMPLE_PROPERTY_ALL_SAMPLE_TYPE,
+    SEARCH_PAGE_DEFAULT_SIZE,
     DELIMITER,
     DETAIL_TABLE_CLASSES,
     DISCARD_CONSUMED_CHECKBOX_FIELD,
@@ -1285,10 +1287,10 @@ export {
     getStoredAmountDisplay,
     isValuePrecisionValid,
     // search related items
-    BaseSearchPage,
     SearchResultsModel,
     SearchResultCard,
     SearchResultsPanel,
+    SearchPanel,
     SearchCategory,
     SearchField,
     SearchScope,
@@ -1791,7 +1793,6 @@ export type {
 export type { SamplesEditableGridProps } from './internal/sampleModels';
 export type { MeasurementUnit } from './internal/util/measurement';
 export type { SampleStorageLocationComponentProps, SampleStorageMenuComponentProps } from './internal/sampleModels';
-export type { SearchForm } from './internal/components/search/BaseSearchPage';
 export type { SearchHit, SearchMetadata, SearchResult, SearchOptions } from './internal/components/search/actions';
 export type { TabbedGridPanelProps } from './public/QueryModel/TabbedGridPanel';
 export type { GroupedSampleDisplayColumns } from './internal/components/samples/actions';

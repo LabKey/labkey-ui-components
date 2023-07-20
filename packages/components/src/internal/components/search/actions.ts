@@ -15,10 +15,8 @@ import { getContainerFilter } from '../../query/api';
 import { ModuleContext } from '../base/ServerContext';
 
 import { getSearchScopeFromContainerFilter } from './utils';
-import { SearchIdData, SearchResultCardData } from './models';
+import { GetCardDataFn, SearchIdData, SearchResultCardData } from './models';
 import { SearchCategory, SearchField, SearchScope } from './constants';
-
-export type GetCardDataFn = (data: Map<any, any>, category?: string) => SearchResultCardData;
 
 export interface SearchHit {
     category?: SearchCategory;

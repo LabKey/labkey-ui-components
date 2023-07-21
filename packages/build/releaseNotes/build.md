@@ -1,5 +1,9 @@
 # @labkey/build
 
+### version 6.13.0
+*Released* : XX July 2023
+* Add JSX files to loaders test.
+
 ### version 6.12.0
 *Released* : 6 June 2023
 * declare `@testing-library` as externals.

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.349.TBD
-*Released*: TBD
+### version 2.349.6
+*Released*: 21 July 2023
 * Fix Issue #48014: BarTender Test connection health check
 
 ### version 2.349.5

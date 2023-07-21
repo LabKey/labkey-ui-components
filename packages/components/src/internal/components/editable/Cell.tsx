@@ -40,8 +40,11 @@ import { DateInputCell } from './DateInputCell';
 // CSS Order: top, right, bottom, left
 export type BorderMask = [boolean, boolean, boolean, boolean];
 
-interface Props {
-    borderMask: BorderMask;
+export interface CellProps {
+    borderMaskBottom?: boolean;
+    borderMaskLeft?: boolean;
+    borderMaskRight?: boolean;
+    borderMaskTop?: boolean;
     cellActions: CellActions;
     col: QueryColumn;
     colIdx: number;
@@ -59,7 +62,7 @@ interface Props {
     placeholder?: string;
     readOnly?: boolean;
     renderDragHandle?: boolean;
-    row: any;
+    row?: any;
     rowIdx: number;
     selected?: boolean;
     selection?: boolean;
@@ -70,12 +73,16 @@ interface State {
     filteredLookupKeys?: List<any>;
 }
 
-export class Cell extends React.PureComponent<Props, State> {
+export class Cell extends React.PureComponent<CellProps, State> {
     private changeTO: number;
     private clickTO: number;
     private displayEl: React.RefObject<any>;
 
     static defaultProps = {
+        borderMaskBottom: false,
+        borderMaskLeft: false,
+        borderMaskRight: false,
+        borderMaskTop: false,
         focused: false,
         renderDragHandle: false,
         message: undefined,
@@ -84,7 +91,7 @@ export class Cell extends React.PureComponent<Props, State> {
         values: List<ValueDescriptor>(),
     };
 
-    constructor(props: Props) {
+    constructor(props: CellProps) {
         super(props);
 
         this.state = {
@@ -94,7 +101,7 @@ export class Cell extends React.PureComponent<Props, State> {
         this.displayEl = React.createRef();
     }
 
-    componentDidUpdate(prevProps: Readonly<Props>): void {
+    componentDidUpdate(prevProps: Readonly<CellProps>): void {
         if (!this.props.focused && this.props.selected) {
             this.displayEl.current.focus();
 
@@ -296,7 +303,10 @@ export class Cell extends React.PureComponent<Props, State> {
 
     render() {
         const {
-            borderMask,
+            borderMaskBottom,
+            borderMaskLeft,
+            borderMaskRight,
+            borderMaskTop,
             cellActions,
             col,
             colIdx,
@@ -329,10 +339,10 @@ export class Cell extends React.PureComponent<Props, State> {
             const displayProps = {
                 autoFocus: selected,
                 className: classNames('cellular-display', {
-                    'cell-border-top': borderMask[0],
-                    'cell-border-right': borderMask[1],
-                    'cell-border-bottom': borderMask[2],
-                    'cell-border-left': borderMask[3],
+                    'cell-border-top': borderMaskTop,
+                    'cell-border-right': borderMaskRight,
+                    'cell-border-bottom': borderMaskBottom,
+                    'cell-border-left': borderMaskLeft,
                     'cell-selected': selected,
                     'cell-selection': selection,
                     'cell-warning': message !== undefined,

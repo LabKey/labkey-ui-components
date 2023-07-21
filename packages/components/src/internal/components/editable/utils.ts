@@ -26,7 +26,17 @@ export const applyEditableGridChangesToModels = (
     tabIndex = 0
 ): EditableGridModels => {
     const updatedEditorModels = [...editorModels];
-    const editorModel = editorModels[tabIndex].merge(editorModelChanges) as EditorModel;
+    let editorModel = editorModels[tabIndex].merge(editorModelChanges) as EditorModel;
+
+    // NK: The "selectionCells" property is of type string[]. When merge() is used it utilizes
+    // Immutable.fromJS() which turns the Array into a List. We want to maintain the property
+    // as an Array so here we set it explicitly.
+    if (editorModelChanges.selectionCells !== undefined) {
+        const selectionCells = sortCellKeys(editorModelChanges.selectionCells);
+        editorModel = editorModel.set('selectionCells', selectionCells) as EditorModel;
+        editorModel = editorModel.set('isSparseSelection', isSparseSelection(selectionCells)) as EditorModel;
+    }
+
     updatedEditorModels.splice(tabIndex, 1, editorModel);
 
     const updatedDataModels = [...dataModels];
@@ -336,7 +346,7 @@ export function parseCellKey(cellKey: string): CellCoordinates {
  * Sorts cell keys left to right, top to bottom.
  */
 export function sortCellKeys(cellKeys: string[]): string[] {
-    return cellKeys.sort((a, b) => {
+    return Array.from(new Set(cellKeys)).sort((a, b) => {
         const aCoords = parseCellKey(a);
         const bCoords = parseCellKey(b);
         if (aCoords.rowIdx === bCoords.rowIdx) return aCoords.colIdx - bCoords.colIdx;
@@ -348,6 +358,46 @@ export function sortCellKeys(cellKeys: string[]): string[] {
 export function decimalDifference(first, second, subtract = true): number {
     const multiplier = 10000; // this will only help/work to 4 decimal places
     return (first * multiplier + (subtract ? -1 : 1) * second * multiplier) / multiplier;
+}
+
+/**
+ * Returns true if the selection is sparse. A sparse selection is one where a continuous set of cells in a rectangle are
+ * not selected. It may look something like this:
+ *  0 1 1 0 0
+ *  0 0 0 1 1
+ *  0 1 1 0 0
+ * @param selection: An array of cell keys representing the selected cells, ordered left to right, top to bottom.
+ */
+function isSparseSelection(selection: string[]): boolean {
+    if (selection.length === 0) return false;
+
+    const firstCell = parseCellKey(selection[0]);
+    const lastCell = parseCellKey(selection[selection.length - 1]);
+    const minCol = firstCell.colIdx;
+    const maxCol = lastCell.colIdx;
+    const minRow = firstCell.rowIdx;
+    const maxRow = lastCell.rowIdx;
+    const expectedCellCount = (maxCol - minCol + 1) * (maxRow - minRow + 1);
+
+    // If the expected size is wrong we can short circuit and return
+    if (selection.length !== expectedCellCount) return true;
+
+    let selIdx = 0;
+
+    // If the sizes match, then we need to generate the expected cellKeys in the order we expect them, and if they don't
+    // all match we know it's a sparse selection.
+    for (let rowIdx = minRow; rowIdx <= maxRow; rowIdx++) {
+        for (let colIdx = minCol; colIdx <= maxCol; colIdx++) {
+            const expectedCellKey = genCellKey(colIdx, rowIdx);
+            const actualCellKey = selection[selIdx];
+
+            if (expectedCellKey !== actualCellKey) return true;
+
+            selIdx++;
+        }
+    }
+
+    return false;
 }
 
 export const gridCellSelectInputProps: Partial<SelectInputProps> = {

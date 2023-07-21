@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import React, { ChangeEvent, MouseEvent, PureComponent, ReactNode, SyntheticEvent } from 'react';
 import { Query } from '@labkey/api';
 import classNames from 'classnames';
 import { List, Map, OrderedMap, Set } from 'immutable';
-import React, { ChangeEvent, MouseEvent, PureComponent, ReactNode, SyntheticEvent } from 'react';
 import { Button, Nav, NavItem, OverlayTrigger, Popover, Tab, TabContainer } from 'react-bootstrap';
 
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
@@ -108,46 +108,6 @@ function computeBorderMask(
     return borderMask;
 }
 
-/**
- * Returns true if the selection is sparse. A sparse selection is one where a continuous set of cells in a rectangle are
- * not selected. It may look something like this:
- *  0 1 1 0 0
- *  0 0 0 1 1
- *  0 1 1 0 0
- * @param selection: An array of cell keys representing the selected cells, ordered left to right, top to bottom.
- */
-function isSparseSelection(selection: string[]): boolean {
-    if (selection.length === 0) return false;
-
-    const firstCell = parseCellKey(selection[0]);
-    const lastCell = parseCellKey(selection[selection.length - 1]);
-    const minCol = firstCell.colIdx;
-    const maxCol = lastCell.colIdx;
-    const minRow = firstCell.rowIdx;
-    const maxRow = lastCell.rowIdx;
-    const expectedCellCount = (maxCol - minCol + 1) * (maxRow - minRow + 1);
-
-    // If the expected size is wrong we can short circuit and return
-    if (selection.length !== expectedCellCount) return true;
-
-    let selIdx = 0;
-
-    // If the sizes match, then we need to generate the expected cellKeys in the order we expect them, and if they don't
-    // all match we know it's a sparse selection.
-    for (let rowIdx = minRow; rowIdx <= maxRow; rowIdx++) {
-        for (let colIdx = minCol; colIdx <= maxCol; colIdx++) {
-            const expectedCellKey = genCellKey(colIdx, rowIdx);
-            const actualCellKey = selection[selIdx];
-
-            if (expectedCellKey !== actualCellKey) return true;
-
-            selIdx++;
-        }
-    }
-
-    return false;
-}
-
 const COUNT_COL = new GridColumn({
     index: GRID_EDIT_INDEX,
     tableCell: true,
@@ -200,15 +160,14 @@ function inputCellFactory(
                 .toArray();
         }
 
-        const currentSelection = editorModel.sortedSelectionKeys;
-        const isSparse = isSparseSelection(currentSelection);
-        const renderDragHandle = !isSparse && editorModel.lastSelection(colIdx, rn);
+        const { isSparseSelection, selectionCells } = editorModel;
+        const renderDragHandle = !isSparseSelection && editorModel.lastSelection(colIdx, rn);
         let inSelection = editorModel.inSelection(colIdx, rn);
         let borderMask: BorderMask = [false, false, false, false];
 
-        if (!isSparse && currentSelection.length) {
-            const minCell = parseCellKey(currentSelection[0]);
-            const maxCell = parseCellKey(currentSelection[currentSelection.length - 1]);
+        if (!isSparseSelection && selectionCells.length) {
+            const minCell = parseCellKey(selectionCells[0]);
+            const maxCell = parseCellKey(selectionCells[selectionCells.length - 1]);
             borderMask = computeBorderMask(
                 minCell.colIdx,
                 maxCell.colIdx,
@@ -220,7 +179,7 @@ function inputCellFactory(
             );
         }
 
-        if (!isSparse && initialSelection?.length) {
+        if (!isSparseSelection && initialSelection?.length) {
             const minCell = parseCellKey(initialSelection[0]);
             const maxCell = parseCellKey(initialSelection[initialSelection.length - 1]);
             borderMask = computeBorderMask(
@@ -235,20 +194,25 @@ function inputCellFactory(
             inSelection = initialSelection.includes(genCellKey(colIdx, rn));
         }
 
+        const focused = editorModel.isFocused(colIdx, rn);
+
         return (
             <Cell
-                borderMask={borderMask}
+                borderMaskTop={borderMask[0]}
+                borderMaskRight={borderMask[1]}
+                borderMaskBottom={borderMask[2]}
+                borderMaskLeft={borderMask[3]}
                 cellActions={cellActions}
                 col={c.raw}
                 colIdx={colIdx}
-                row={row}
+                row={focused ? row : undefined}
                 containerFilter={containerFilter}
                 key={inputCellKey(c.raw, row)}
                 placeholder={columnMetadata?.placeholder}
                 readOnly={isReadonlyCol || isReadonlyRow || isReadonlyCell}
                 locked={isLockedRow}
                 rowIdx={rn}
-                focused={editorModel.isFocused(colIdx, rn)}
+                focused={focused}
                 forUpdate={forUpdate}
                 message={editorModel.getMessage(colIdx, rn)}
                 selected={editorModel.isSelected(colIdx, rn)}
@@ -359,17 +323,20 @@ export interface SharedEditableGridPanelProps extends SharedEditableGridProps {
     title?: string;
 }
 
+export type EditableGridChange = (
+    editorModelChanges: Partial<EditorModelProps>,
+    dataKeys?: List<any>,
+    data?: Map<any, Map<string, any>>,
+    index?: number
+) => void;
+
 export interface EditableGridProps extends SharedEditableGridProps {
     data?: Map<any, Map<string, any>>;
     dataKeys?: List<any>;
     editorModel: EditorModel;
     error: string;
     exportHandler?: (option: ExportOption) => void;
-    onChange: (
-        editorModelChanges: Partial<EditorModelProps>,
-        dataKeys?: List<any>,
-        data?: Map<any, Map<string, any>>
-    ) => void;
+    onChange: EditableGridChange;
     queryInfo: QueryInfo;
 }
 
@@ -418,6 +385,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         rowNumColumn: COUNT_COL,
     };
 
+    private dragDelay: number;
     private maskDelay: number;
 
     cellActions: CellActions;
@@ -543,7 +511,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const { initialSelection } = this.state;
         const { editorModel } = this.props;
         const { rowCount } = editorModel;
-        let selectionCells = Set<string>();
+        let selectionCells: string[] = [];
         const hasSelection = editorModel.hasSelection;
         let selectedColIdx = colIdx;
         let selectedRowIdx = rowIdx;
@@ -552,7 +520,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             case SELECTION_TYPES.ALL:
                 for (let c = 0; c < editorModel.columns.size; c++) {
                     for (let r = 0; r < rowCount; r++) {
-                        selectionCells = selectionCells.add(genCellKey(c, r));
+                        selectionCells.push(genCellKey(c, r));
                     }
                 }
                 break;
@@ -580,21 +548,22 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
                     for (let c = minColIdx; c <= maxColIdx; c++) {
                         for (let r = minRowIdx; r <= maxRowIdx; r++) {
-                            selectionCells = selectionCells.add(genCellKey(c, r));
+                            selectionCells.push(genCellKey(c, r));
                         }
                     }
                 }
                 break;
             case SELECTION_TYPES.SINGLE:
-                selectionCells = editorModel.selectionCells.add(genCellKey(colIdx, rowIdx));
+                selectionCells = [...editorModel.selectionCells];
+                selectionCells.push(genCellKey(colIdx, rowIdx));
                 break;
         }
 
-        if (selectionCells.size > 0) {
+        if (selectionCells.length > 0) {
             // if a cell was previously selected and there are remaining selectionCells then mark the previously
             // selected cell as in "selection"
             if (hasSelection) {
-                selectionCells = selectionCells.add(genCellKey(editorModel.selectedColIdx, editorModel.selectedRowIdx));
+                selectionCells.push(genCellKey(editorModel.selectedColIdx, editorModel.selectedRowIdx));
             }
         }
 
@@ -661,16 +630,16 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
             changes.cellValues = cellValues.set(cellKey, values);
         } else if (mod === MODIFICATION_TYPES.REMOVE_ALL) {
-            if (editorModel.selectionCells.size > 0) {
+            if (editorModel.selectionCells.length > 0) {
                 // Remove all values and messages for the selected cells
                 changes.cellValues = editorModel.cellValues.reduce((result, value, key) => {
-                    if (editorModel.selectionCells.contains(key)) {
+                    if (editorModel.selectionCells.find(_key => _key === key)) {
                         return result.set(key, List());
                     }
                     return result.set(key, value);
                 }, Map<string, List<ValueDescriptor>>());
                 changes.cellMessages = editorModel.cellMessages.reduce((result, value, key) => {
-                    if (editorModel.selectionCells.contains(key)) {
+                    if (editorModel.selectionCells.find(_key => _key === key)) {
                         return result.remove(key);
                     }
                     return result.set(key, value);
@@ -714,7 +683,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             rowCount: editorModel.rowCount - dataIdIndexes.size,
             selectedColIdx: -1,
             selectedRowIdx: -1,
-            selectionCells: Set<string>(),
+            selectionCells: [],
             cellMessages,
             cellValues,
         };
@@ -907,14 +876,23 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     beginDrag = (event: MouseEvent): void => {
         const { disabled, editorModel } = this.props;
         if (this.handleDrag(event) && !disabled) {
-            this.setState({ inDrag: true });
+            clearTimeout(this.dragDelay);
             const target = event.target as Element;
             const isDragHandleAction = target.className?.indexOf(CELL_SELECTION_HANDLE_CLASSNAME) > -1;
-            if (isDragHandleAction) {
-                const initialSelection = editorModel.sortedSelectionKeys;
-                if (!initialSelection.length) initialSelection.push(editorModel.selectionKey);
-                this.setState({ initialSelection });
-            }
+
+            // NK: Here we slightly delay the drag event in case the user is just clicking on the cell
+            // rather than performing a drag action. If they are simply clicking then the endDrag() will cancel
+            // this update prior to the timeout.
+            this.dragDelay = window.setTimeout(() => {
+                this.dragDelay = undefined;
+                const nextState: Partial<EditableGridState> = { inDrag: true };
+                if (isDragHandleAction) {
+                    const initialSelection = [...editorModel.selectionCells];
+                    if (!initialSelection.length) initialSelection.push(editorModel.selectionKey);
+                    nextState.initialSelection = initialSelection;
+                }
+                this.setState(nextState as EditableGridState);
+            }, 150);
         }
     };
 
@@ -922,7 +900,12 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     endDrag = (event: MouseEvent): void => {
         if (this.handleDrag(event)) {
-            this.setState({ inDrag: false });
+            if (this.dragDelay) {
+                clearTimeout(this.dragDelay);
+                this.dragDelay = undefined;
+            } else {
+                this.setState({ inDrag: false });
+            }
         }
     };
 
@@ -1079,12 +1062,12 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     fillDown = (): void => {
         const { disabled, editorModel } = this.props;
-        const sortedSelectionKeys = editorModel.sortedSelectionKeys;
+        const { isSparseSelection, selectionCells } = editorModel;
 
-        if (disabled || isSparseSelection(sortedSelectionKeys)) return;
+        if (disabled || isSparseSelection) return;
 
-        const firstRowIdx = parseCellKey(sortedSelectionKeys[0]).rowIdx;
-        const firstRowCellKeys = sortedSelectionKeys.filter(cellKey => parseCellKey(cellKey).rowIdx === firstRowIdx);
+        const firstRowIdx = parseCellKey(selectionCells[0]).rowIdx;
+        const firstRowCellKeys = selectionCells.filter(cellKey => parseCellKey(cellKey).rowIdx === firstRowIdx);
         this._dragFill(firstRowCellKeys);
     };
 
@@ -1233,6 +1216,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         if (metricFeatureArea) {
             incrementClientSideMetricCount(metricFeatureArea, 'bulkAdd');
         }
+
         // Result of this promise passed to toggleBulkAdd, which doesn't expect anything to be passed
         return Promise.resolve();
     };
@@ -1255,6 +1239,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         if (metricFeatureArea) {
             incrementClientSideMetricCount(metricFeatureArea, 'bulkUpdate');
         }
+
         // The result of this promise is used by toggleBulkUpdate, which doesn't expect anything to be passed
         return Promise.resolve(editorModelChanges);
     };

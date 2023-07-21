@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import { Button, Col, FormControl, Panel, Row } from 'react-bootstrap';
 
-import { Container } from "@labkey/api";
+import { Container } from '@labkey/api';
 
 import { DATE_FORMATS_TOPIC, HelpLink, JavaDocsLink } from '../../util/helpLinks';
 import { LabelHelpTip } from '../base/LabelHelpTip';
@@ -14,9 +14,9 @@ import { LOOK_AND_FEEL_METRIC } from '../productnavigation/constants';
 
 interface Props {
     api: FolderAPIWrapper;
-    onSuccess?: (reload?: boolean) => void;
+    container?: Container;
     onChange?: () => void;
-    container?: Container; // used by react-test only
+    onSuccess?: (reload?: boolean) => void; // used by react-test only
 }
 
 const PROJECT_DATE_FORMAT_HELP = (

@@ -17,8 +17,7 @@ export interface ProjectSettingsOptions {
     title?: string;
 }
 
-export interface UpdateProjectSettingsOptions
-{
+export interface UpdateProjectSettingsOptions {
     defaultDateTimeFormat?: string;
 }
 

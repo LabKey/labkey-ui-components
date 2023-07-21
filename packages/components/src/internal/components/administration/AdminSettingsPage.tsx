@@ -89,7 +89,11 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
             <>
                 <ProjectSettings onChange={onSettingsChange} onSuccess={onSettingsSuccess} onPageError={onError} />
                 {isAppHomeFolder(container, moduleContext) && (
-                    <ProjectLookAndFeelForm api={api.folder} onChange={onSettingsChange} onSuccess={onSettingsSuccess} />
+                    <ProjectLookAndFeelForm
+                        api={api.folder}
+                        onChange={onSettingsChange}
+                        onSuccess={onSettingsSuccess}
+                    />
                 )}
                 {!isAppHomeFolder(container, moduleContext) && (
                     <>

@@ -131,6 +131,7 @@ export function createPercentageBarData(
 
 export interface HorizontalBarLegendData {
     backgroundColor: string;
+    borderColor?: string;
     circleColor: string;
     expired?: boolean;
     legendLabel: string;

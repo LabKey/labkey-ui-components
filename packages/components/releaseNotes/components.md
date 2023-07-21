@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Updates to allow sources to have parent sources
 
+### version 2.353.0
+Released*: 21 July 2023
+- Add to Storage From Grid - add preview to select location modal
+  - ItemsLegend support for borderColor on HorizontalBarLegendData
+
 ### version 2.352.0
 Released*: 20 July 2023
 - Convert `EditorModel.selectionCells` to a `string[]`.

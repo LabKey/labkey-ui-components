@@ -536,7 +536,7 @@ describe('getUpdatedDataFromGrid', () => {
     });
 
     test('getSortedCellKeys', () => {
-        expect(sortCellKeys(['0-0', '1-1', '0-1', '1-0'])).toStrictEqual(['0-0', '1-0', '0-1', '1-1']);
+        expect(sortCellKeys(['0-0', '1-1', '1-1', '0-1', '1-0'])).toStrictEqual(['0-0', '1-0', '0-1', '1-1']);
         expect(sortCellKeys(['1-1', '1-15', '0-10', '1-5'])).toStrictEqual(['1-1', '1-5', '0-10', '1-15']);
     });
 });

@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 import React, { PureComponent, ReactNode } from 'react';
-import { List, Map } from 'immutable';
+import { Map } from 'immutable';
 
 import { Operation } from '../../../public/QueryColumn';
 
 import { AssayUploadTabs } from '../../constants';
 import { InferDomainResponse } from '../../../public/InferDomainResponse';
-import { EditorModel, EditorModelProps } from '../editable/models';
+import { EditorModel } from '../editable/models';
 
 import { DATA_IMPORT_TOPIC, HelpLink } from '../../util/helpLinks';
+import { EditableGridChange } from '../editable/EditableGrid';
 import { EditableGridPanel } from '../editable/EditableGridPanel';
 
 import { FileSizeLimitProps } from '../../../public/files/models';
@@ -55,11 +56,7 @@ interface Props {
     maxRows?: number;
     onFileChange: (attachments: Map<string, File>) => any;
     onFileRemoval: (attachmentName: string) => any;
-    onGridChange: (
-        editorModelChanges: Partial<EditorModelProps>,
-        dataKeys?: List<any>,
-        data?: Map<any, Map<string, any>>
-    ) => void;
+    onGridChange: EditableGridChange;
     onTextChange: (value: any) => any;
     operation: Operation;
     queryModel: QueryModel;

@@ -31,7 +31,7 @@ import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from '../../
 import { caseInsensitive, quoteValueWithDelimiters } from '../../util/utils';
 
 import { CellCoordinates } from './constants';
-import { genCellKey, parseCellKey, sortCellKeys } from './utils';
+import { genCellKey, parseCellKey } from './utils';
 
 export interface EditableColumnMetadata {
     caption?: string;
@@ -71,7 +71,7 @@ export interface EditorModelProps {
     rowCount: number;
     selectedColIdx: number;
     selectedRowIdx: number;
-    selectionCells: ImmutableSet<string>; // TODO: convert to string[], always sort before setting
+    selectionCells: string[];
 }
 
 export function getPkData(queryInfo: QueryInfo, row: Map<string, any>): Record<string, any> {
@@ -113,10 +113,11 @@ export class EditorModel
         focusValue: undefined,
         id: undefined,
         isPasting: false,
+        isSparseSelection: false,
         rowCount: 0,
         selectedColIdx: -1,
         selectedRowIdx: -1,
-        selectionCells: ImmutableSet<string>(),
+        selectionCells: [],
     })
     implements EditorModelProps
 {
@@ -129,10 +130,15 @@ export class EditorModel
     declare focusValue: List<ValueDescriptor>;
     declare id: string;
     declare isPasting: boolean;
+    // NK: This is precomputed property that is updated whenever the selection is updated.
+    // See applyEditableGridChangesToModels().
+    declare isSparseSelection: boolean;
     declare rowCount: number;
     declare selectedColIdx: number;
     declare selectedRowIdx: number;
-    declare selectionCells: ImmutableSet<string>;
+    // NK: This is pre-sorted array that is updated whenever the selection is updated.
+    // See applyEditableGridChangesToModels().
+    declare selectionCells: string[];
 
     findNextCell(
         startCol: number,
@@ -450,13 +456,13 @@ export class EditorModel
     }
 
     get isMultiSelect(): boolean {
-        return this.selectionCells.size > 1;
+        return this.selectionCells.length > 1;
     }
 
     get isMultiColumnSelection(): boolean {
         if (!this.isMultiSelect) return false;
 
-        const firstCellColIdx = parseCellKey(this.selectionCells.first()).colIdx;
+        const firstCellColIdx = parseCellKey(this.selectionCells[0]).colIdx;
         return this.selectionCells.some(cellKey => parseCellKey(cellKey).colIdx !== firstCellColIdx);
     }
 
@@ -474,11 +480,9 @@ export class EditorModel
     }
 
     inSelection(colIdx: number, rowIdx: number): boolean {
-        return colIdx > -1 && rowIdx > -1 && this.selectionCells.get(genCellKey(colIdx, rowIdx)) !== undefined;
-    }
-
-    get sortedSelectionKeys(): string[] {
-        return sortCellKeys(this.selectionCells.toArray());
+        if (colIdx < 0 || rowIdx < 0) return false;
+        const cellKey = genCellKey(colIdx, rowIdx);
+        return this.selectionCells.find(ck => cellKey === ck) !== undefined;
     }
 
     hasRawValue(descriptor: ValueDescriptor): boolean {
@@ -554,7 +558,7 @@ export class EditorModel
     }
 
     lastSelection(colIdx: number, rowIdx: number): boolean {
-        const cellKeys = this.isMultiSelect ? this.sortedSelectionKeys : [this.selectionKey];
+        const cellKeys = this.isMultiSelect ? this.selectionCells : [this.selectionKey];
         return genCellKey(colIdx, rowIdx) === cellKeys[cellKeys.length - 1];
     }
 }

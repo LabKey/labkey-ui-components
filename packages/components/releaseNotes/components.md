@@ -5,6 +5,24 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Upon using a multi-value filter that is not BETWEEN, make value input a textarea
 
+### version 2.353.0
+Released*: 21 July 2023
+- Add to Storage From Grid - add preview to select location modal
+  - ItemsLegend support for borderColor on HorizontalBarLegendData
+
+### version 2.352.0
+Released*: 20 July 2023
+- Convert `EditorModel.selectionCells` to a `string[]`.
+- Precompute new property `EditorModel.isSparseSelection`.
+- Add `dragDelay` to reduce redundant render cycles when clicking on cells.
+- Split out `BorderMask` properties on the `Cell` interface.
+- Add and export interface for `EditableGridChange`.
+
+### version 2.351.1
+Released*: 20 July 2023
+* Merge release23.7-SNAPSHOT to develop:
+    * includes changes from 2.349.5
+
 ### version 2.351.0
 *Released*: 14 July 2023
 - Expose `inputId` prop from `react-select` on `SelectInput`
@@ -46,6 +64,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Fix round-tripping values within the "Alias" column on an editable grid via an `AliasGridInput` processing component.
 - Introduce types of `CellCoordinates` and `GridColumnCellRenderer`.
 - Update `SampleStatusInput` handling of `containerFilter` to use prop override pattern instead of `delete`.
+
+### version 2.349.5
+*Released*: 10 July 2023
+* Remove BaseSearchPage and SearchForm
+* Export SEARCH_PAGE_DEFAULT_SIZE, SearchPanel
 
 ### version 2.349.4
 *Released*: 7 July 2023

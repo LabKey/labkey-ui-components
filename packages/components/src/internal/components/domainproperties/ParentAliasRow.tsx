@@ -111,7 +111,7 @@ export class ParentAliasRow extends React.Component<IParentAliasRow> {
                 </Col>
                 <Col xs={5} className={classNames({ 'has-error': !ignoreSelectError && parentValueBlank })}>
                     <SelectInput
-                        inputClass="sampleset-insert--parent-select"
+                        inputClass="import-alias--parent-select"
                         name="parentValue"
                         onChange={this.onSelectChange}
                         options={parentOptions}

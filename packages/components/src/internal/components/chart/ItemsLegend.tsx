@@ -40,6 +40,10 @@ export class ItemsLegend extends React.PureComponent<Props> {
 
             const key = 'cell-legend-' + index;
             const hasBackground = legend.backgroundColor !== 'none';
+            const style = { backgroundColor: hasBackground ? legend.backgroundColor : emptyColor };
+            if (legend.borderColor) {
+                style['border'] = '3px solid ' + legend.borderColor;
+            }
             const legendDisplay = (
                 <tr key={key} className="cell-legend-row">
                     <td>
@@ -49,7 +53,7 @@ export class ItemsLegend extends React.PureComponent<Props> {
                                 'cell-legend-icon-border': hasBackground,
                                 'expired-form-field': legend.expired,
                             })}
-                            style={{ backgroundColor: hasBackground ? legend.backgroundColor : emptyColor }}
+                            style={style}
                         >
                             {icon}
                         </span>

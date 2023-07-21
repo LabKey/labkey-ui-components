@@ -14,7 +14,7 @@ import { ExportOption } from '../../../public/QueryModel/ExportMenu';
 
 import { EditorModel, EditorModelProps } from './models';
 
-import { EditableGrid, SharedEditableGridPanelProps } from './EditableGrid';
+import { EditableGrid, EditableGridChange, SharedEditableGridPanelProps } from './EditableGrid';
 
 import { exportEditedData, getEditorExportData } from './utils';
 
@@ -97,9 +97,8 @@ export const EditableGridPanel: FC<Props> = memo(props => {
     const hasTabs = models.length > 1;
     let wasDirty = false;
 
-    const _onChange = useCallback(
-        (editorModelChanges: Partial<EditorModelProps>, dataKeys?: List<any>, data?: Map<any, Map<string, any>>) =>
-            onChange(editorModelChanges, dataKeys, data, activeTab),
+    const _onChange = useCallback<EditableGridChange>(
+        (editorModelChanges, dataKeys, data) => onChange(editorModelChanges, dataKeys, data, activeTab),
         [activeTab, onChange]
     );
 

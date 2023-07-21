@@ -7,7 +7,14 @@ describe('<ItemsLegend/>', () => {
     test('empty box', () => {
         render(
             <ItemsLegend
-                legendData={[{ circleColor: 'none', backgroundColor: 'FFFFFF', borderColor: 'blue', legendLabel: 'Empty location' }]}
+                legendData={[
+                    {
+                        circleColor: 'none',
+                        backgroundColor: 'FFFFFF',
+                        borderColor: 'blue',
+                        legendLabel: 'Empty location',
+                    },
+                ]}
             />
         );
 

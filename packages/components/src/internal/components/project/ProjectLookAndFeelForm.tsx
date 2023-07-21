@@ -7,15 +7,16 @@ import { DATE_FORMATS_TOPIC, HelpLink, JavaDocsLink } from '../../util/helpLinks
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import { getDateTimeFormat } from '../../util/Date';
 import { Alert } from '../base/Alert';
-import { FolderAPIWrapper, ProjectLAFOptions } from '../container/FolderAPIWrapper';
+import { FolderAPIWrapper, UpdateProjectSettingsOptions } from '../container/FolderAPIWrapper';
 import { resolveErrorMessage } from '../../util/messaging';
 import { incrementClientSideMetricCount } from '../../actions';
 import { LOOK_AND_FEEL_METRIC } from '../productnavigation/constants';
 
 interface Props {
-    api?: FolderAPIWrapper;
+    api: FolderAPIWrapper;
     onSuccess?: (reload?: boolean) => void;
-    container?: Container;
+    onChange?: () => void;
+    container?: Container; // used by react-test only
 }
 
 const PROJECT_DATE_FORMAT_HELP = (
@@ -58,9 +59,9 @@ const PROJECT_DATE_FORMAT_HELP = (
     </LabelHelpTip>
 );
 
-export const ProjectLookAndFeelFrom: FC<Props> = memo(props => {
-    const { api, onSuccess, container } = props;
-    const [dateTimeFormat, setDateTimeFormat] = useState<string>(getDateTimeFormat(container));
+export const ProjectLookAndFeelForm: FC<Props> = memo(props => {
+    const { api, onSuccess, container, onChange } = props;
+    const [dateTimeFormat, setDateTimeFormat] = useState<string>(() => getDateTimeFormat(container));
     const [dirty, setDirty] = useState<boolean>(false);
     const [error, setError] = useState<string>();
     const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -68,6 +69,7 @@ export const ProjectLookAndFeelFrom: FC<Props> = memo(props => {
     const _onChange = useCallback(evt => {
         setDateTimeFormat(evt.target.value);
         setDirty(true);
+        onChange?.();
     }, []);
 
     const onSave = useCallback(async () => {
@@ -76,14 +78,14 @@ export const ProjectLookAndFeelFrom: FC<Props> = memo(props => {
         setError(undefined);
 
         try {
-            const options: ProjectLAFOptions = {
+            const options: UpdateProjectSettingsOptions = {
                 defaultDateTimeFormat: dateTimeFormat,
             };
 
             await api.updateProjectLookAndFeelSettings(options);
             incrementClientSideMetricCount(LOOK_AND_FEEL_METRIC, 'defaultDateTimeFormat');
             setDirty(false);
-            onSuccess(true);
+            onSuccess?.(true);
         } catch (e) {
             setError(resolveErrorMessage(e) ?? 'Failed to update display settings');
         } finally {
@@ -112,7 +114,7 @@ export const ProjectLookAndFeelFrom: FC<Props> = memo(props => {
                                     name="date-format-input"
                                     value={dateTimeFormat}
                                     onChange={_onChange}
-                                    placeholder="Display format for date-times"
+                                    placeholder="Enter display format for date-times"
                                 />
                             </Col>
                         </Row>

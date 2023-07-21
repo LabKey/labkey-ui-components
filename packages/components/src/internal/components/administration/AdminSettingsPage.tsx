@@ -29,7 +29,7 @@ import { Alert } from '../base/Alert';
 import { ProjectDataTypeSelections } from '../project/ProjectDataTypeSelections';
 import { AppContext, useAppContext } from '../../AppContext';
 
-import { ProjectLookAndFeelFrom } from '../project/ProjectLookAndFeelForm';
+import { ProjectLookAndFeelForm } from '../project/ProjectLookAndFeelForm';
 
 import { useAdminAppContext } from './useAdminAppContext';
 import { showPremiumFeatures } from './utils';
@@ -89,7 +89,7 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
             <>
                 <ProjectSettings onChange={onSettingsChange} onSuccess={onSettingsSuccess} onPageError={onError} />
                 {isAppHomeFolder(container, moduleContext) && (
-                    <ProjectLookAndFeelFrom api={api.folder} onSuccess={onSettingsSuccess} />
+                    <ProjectLookAndFeelForm api={api.folder} onChange={onSettingsChange} onSuccess={onSettingsSuccess} />
                 )}
                 {!isAppHomeFolder(container, moduleContext) && (
                     <>

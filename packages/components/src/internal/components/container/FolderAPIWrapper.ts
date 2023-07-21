@@ -17,7 +17,8 @@ export interface ProjectSettingsOptions {
     title?: string;
 }
 
-export interface ProjectLAFOptions {
+export interface UpdateProjectSettingsOptions
+{
     defaultDateTimeFormat?: string;
 }
 
@@ -26,7 +27,7 @@ export interface FolderAPIWrapper {
     getDataTypeExcludedProjects: (dataType: ProjectConfigurableDataType, dataTypeRowId: number) => Promise<string[]>;
     renameProject: (options: ProjectSettingsOptions) => Promise<Container>;
     updateProjectDataExclusions: (options: ProjectSettingsOptions) => Promise<void>;
-    updateProjectLookAndFeelSettings: (options: ProjectLAFOptions) => Promise<void>;
+    updateProjectLookAndFeelSettings: (options: UpdateProjectSettingsOptions) => Promise<void>;
 }
 
 export class ServerFolderAPIWrapper implements FolderAPIWrapper {
@@ -72,7 +73,7 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
         });
     };
 
-    updateProjectLookAndFeelSettings = (options: ProjectLAFOptions): Promise<void> => {
+    updateProjectLookAndFeelSettings = (options: UpdateProjectSettingsOptions): Promise<void> => {
         return new Promise((resolve, reject) => {
             Ajax.request({
                 url: ActionURL.buildURL('admin', 'updateProjectSettings.api'),

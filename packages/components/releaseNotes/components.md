@@ -4,7 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.X
 *Released*: X July 2023
 * Add Project level date/time to App Settings page
-  * Add ProjectLookAndFeelFrom
+  * Add ProjectLookAndFeelForm
 
 ### version 2.351.0
 *Released*: 14 July 2023

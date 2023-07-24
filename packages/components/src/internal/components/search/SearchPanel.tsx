@@ -16,7 +16,7 @@ import { useServerContext } from '../base/ServerContext';
 
 import { SearchResultsPanel } from './SearchResultsPanel';
 
-import { SearchResultsModel } from './models';
+import { GetCardDataFn, SearchResultsModel } from './models';
 import { SearchCategory, SEARCH_HELP_TOPIC, SEARCH_PAGE_DEFAULT_SIZE } from './constants';
 import { searchUsingIndex } from './actions';
 import { getSearchResultCardData } from './utils';
@@ -167,12 +167,14 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
 
         return categories;
     }, [isBiologics, platesEnabled]);
-    const getCardDataFn = useCallback(
+    const getCardDataFn = useCallback<GetCardDataFn>(
         (data, cat) => getSearchResultCardData(data, cat, searchMetadata),
         [searchMetadata]
     );
-    const loadSearchResults = useCallback(async () => {
-        if (searchTerm) {
+
+    useEffect(() => {
+        if (!searchTerm) return;
+        (async () => {
             setModel(SearchResultsModel.create({ isLoading: true }));
             try {
                 const entities = await searchUsingIndex(
@@ -186,22 +188,15 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
                 );
                 setModel(SearchResultsModel.create({ entities, isLoaded: true }));
             } catch (response) {
-                console.error(response);
                 setModel(
                     SearchResultsModel.create({
-                        isLoaded: true,
                         error: resolveErrorMessage(response.exception) ?? 'Unknown error getting search results.',
+                        isLoaded: true,
                     })
                 );
             }
-        }
-    }, [category, getCardDataFn, offset, pageSize, searchTerm]);
-
-    useEffect(() => {
-        (async () => {
-            await loadSearchResults();
         })();
-    }, [loadSearchResults, searchTerm]);
+    }, [category, getCardDataFn, offset, pageSize, searchTerm]);
 
     const onPage = useCallback(
         direction => {

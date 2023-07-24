@@ -29,6 +29,8 @@ import { Alert } from '../base/Alert';
 import { ProjectDataTypeSelections } from '../project/ProjectDataTypeSelections';
 import { AppContext, useAppContext } from '../../AppContext';
 
+import { ProjectLookAndFeelForm } from '../project/ProjectLookAndFeelForm';
+
 import { useAdminAppContext } from './useAdminAppContext';
 import { showPremiumFeatures } from './utils';
 import { BasePermissions } from './BasePermissions';
@@ -54,11 +56,13 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
         setIsDirty(true);
     }, [setIsDirty]);
 
-    const onSettingsSuccess = useCallback((reload?: boolean) => {
-        setIsDirty(false);
-        if (reload)
-            window.location.reload();
-    }, [setIsDirty]);
+    const onSettingsSuccess = useCallback(
+        (reload?: boolean) => {
+            setIsDirty(false);
+            if (reload) window.location.reload();
+        },
+        [setIsDirty]
+    );
 
     const onBarTenderSuccess = useCallback(() => {
         setIsDirty(false);
@@ -84,6 +88,13 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
         return (
             <>
                 <ProjectSettings onChange={onSettingsChange} onSuccess={onSettingsSuccess} onPageError={onError} />
+                {isAppHomeFolder(container, moduleContext) && (
+                    <ProjectLookAndFeelForm
+                        api={api.folder}
+                        onChange={onSettingsChange}
+                        onSuccess={onSettingsSuccess}
+                    />
+                )}
                 {!isAppHomeFolder(container, moduleContext) && (
                     <>
                         <ProjectDataTypeSelections

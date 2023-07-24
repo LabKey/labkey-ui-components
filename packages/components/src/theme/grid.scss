@@ -550,3 +550,9 @@ td > .expired-form-field {
     padding-right: 10px;
     background-image: linear-gradient(225deg, red, red 5px, transparent 5px, transparent);
 }
+
+.help-table {
+    & td, & th {
+        padding: 8px;
+    }
+}

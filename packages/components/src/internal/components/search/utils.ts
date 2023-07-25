@@ -79,7 +79,7 @@ export function isFilterUrlSuffixMatch(suffix: string, filterType: Filter.IFilte
 
 export function getFilterTypePlaceHolder(suffix: string): string {
     if (suffix === 'in' || suffix === 'notin' || suffix === 'containsoneof' || suffix === 'containsnoneof') {
-        return 'Use semicolon or new line to separate entries';
+        return 'Use new line or semicolon to separate entries';
     }
 
     return null;

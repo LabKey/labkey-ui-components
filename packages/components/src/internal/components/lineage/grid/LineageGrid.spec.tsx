@@ -8,6 +8,12 @@ import { initLineageMocks } from '../../../../test/mock';
 import { LineageGrid } from './LineageGrid';
 
 beforeAll(() => {
+    LABKEY.container = {
+        id: 'testContainerEntityId',
+        title: 'Test Container',
+        path: '/testContainer',
+    };
+
     initUnitTestMocks([initLineageMocks]);
     registerDefaultURLMappers();
 });

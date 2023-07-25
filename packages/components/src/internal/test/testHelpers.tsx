@@ -1,7 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { Map } from 'immutable';
-import { LabKey, Query } from '@labkey/api';
+import { Query } from '@labkey/api';
 
 import { AppContext, AppContextProvider } from '../AppContext';
 import { getTestAPIWrapper } from '../APIWrapper';
@@ -15,7 +14,6 @@ import { LabelPrintingContextProps, LabelPrintingProvider } from '../components/
 import { GlobalStateContextProvider } from '../GlobalStateContext';
 import { URL_MAPPERS, URLService } from '../url/URLResolver';
 
-import { initQueryGridState } from '../global';
 import { QueryInfo } from '../../public/QueryInfo';
 import { applyQueryMetadata, handleSelectRowsResponse } from '../query/api';
 import { bindColumnRenderers, RowsResponse } from '../../public/QueryModel/QueryModelLoader';
@@ -46,36 +44,9 @@ export const AppContextTestProvider: FC<AppContextTestProviderProps> = props => 
     );
 };
 
-declare let LABKEY: LabKey;
-
-export function initMockServerContext(context: Partial<LabKey>): void {
-    Object.assign(LABKEY, context);
-}
-
-/**
- * Initializes the server context and QueryGrid state which is needed in order to run most tests.
- */
-export const initUnitTests = (metadata?: Map<string, any>, columnRenderers?: Record<string, any>): void => {
-    initMockServerContext({
-        container: {
-            id: 'testContainerEntityId',
-            title: 'Test Container',
-            path: '/testContainer',
-            formats: {
-                dateFormat: 'yyyy-MM-dd',
-                dateTimeFormat: 'yyyy-MM-dd HH:mm',
-                numberFormat: null,
-            },
-            activeModules: ['Core', 'Query'], // add in the Ontology module if you want to test the Field Editor integrations
-        },
-        contextPath: '/labkey',
-    });
-    initQueryGridState(metadata, columnRenderers);
-};
-
 /**
  * Instantiates a QueryInfo from a captured query details response payload. Cannot be used until you've called
- * initQueryGridState, initUnitTests, or initUnitTestMocks.
+ * initQueryGridState or initUnitTestMocks.
  * @param getQueryDetailsResponse: getQueryDetails response object (e.g. imported from
  * test/data/mixtures-getQueryDetails.json)
  */

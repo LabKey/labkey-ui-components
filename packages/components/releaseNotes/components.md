@@ -66,6 +66,10 @@ Released*: 20 July 2023
 - Introduce types of `CellCoordinates` and `GridColumnCellRenderer`.
 - Update `SampleStatusInput` handling of `containerFilter` to use prop override pattern instead of `delete`.
 
+### version 2.349.6
+*Released*: 21 July 2023
+* Fix Issue #48014: BarTender Test connection health check
+
 ### version 2.349.5
 *Released*: 10 July 2023
 * Remove BaseSearchPage and SearchForm

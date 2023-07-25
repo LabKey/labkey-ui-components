@@ -92,15 +92,11 @@ const SettingsInput: FC<SettingsInputProps> = memo(({ children, description, lab
     );
 });
 
-const btTestConnectionTemplate = (label: string): string => {
-    // Should be able to run connection test w/o a default label set.
-    const formatNode = `<Format>${label}</Format>`;
-
+const btTestConnectionTemplate = (): string => {
+    // This will fail script validation, but will have status "RanToCompletion" which means that the server was successfully
+    // connected to. Issue #48014
     return `<XMLScript Version="2.0">
             <Command Name="Job1">
-                <FormatSetup>
-                    ${formatNode}
-                </FormatSetup>
             </Command>
         </XMLScript>`;
 };
@@ -171,7 +167,7 @@ export const BarTenderSettingsFormImpl: FC<Props> = memo(props => {
         setTesting(true);
 
         api.labelprinting
-            .printBarTenderLabels(btTestConnectionTemplate(''), btServiceURL)
+            .printBarTenderLabels(btTestConnectionTemplate(), btServiceURL)
             .then((btResponse: BarTenderResponse) => {
                 if (btResponse.ranToCompletion()) {
                     setTesting(false);

@@ -3,7 +3,7 @@ import { List, Map } from 'immutable';
 import { ReactWrapper } from 'enzyme';
 import { PermissionRoles } from '@labkey/api';
 
-import { initQueryGridState } from '../../global';
+import { initBrowserHistoryState } from '../../util/global';
 import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 import { UsersGridPanel } from '../user/UsersGridPanel';
@@ -22,7 +22,7 @@ import { AdminAppContext } from '../../AppContext';
 import { getNewUserRoles, UserManagementPageImpl } from './UserManagement';
 
 beforeAll(() => {
-    initQueryGridState();
+    initBrowserHistoryState();
 });
 
 describe('UserManagement', () => {

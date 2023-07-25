@@ -11,9 +11,9 @@ import { PARENT_ALIAS_HELPER_TEXT, SAMPLE_SET_DISPLAY_TEXT } from '../../../cons
 import {
     DEFINE_SAMPLE_TYPE_TOPIC,
     DERIVE_SAMPLES_ALIAS_TOPIC,
-    UNIQUE_IDS_TOPIC,
-    HelpLink,
     getHelpLink,
+    HelpLink,
+    UNIQUE_IDS_TOPIC,
 } from '../../../util/helpLinks';
 import {
     InjectedDomainPropertiesPanelCollapseProps,
@@ -50,12 +50,11 @@ import { SelectInput, SelectInputOption } from '../../forms/input/SelectInput';
 import { dataClassOptionFilterFn, DomainParentAliases } from '../DomainParentAliases';
 
 import { UniqueIdBanner } from './UniqueIdBanner';
-import { AliquotNamePatternProps, MetricUnitProps, SampleTypeModel } from './models';
+import { AliquotNamePatternProps, DEFAULT_ALIQUOT_NAMING_PATTERN, MetricUnitProps, SampleTypeModel } from './models';
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 const ALIQUOT_HELP_LINK = getHelpLink('aliquotIDs');
-// eslint-disable-next-line no-template-curly-in-string
-const ALIQUOT_NAME_PLACEHOLDER = 'Enter a naming pattern for aliquots (e.g., ${${AliquotedFrom}-:withCounter})';
+const ALIQUOT_NAME_PLACEHOLDER = 'Enter a naming pattern for aliquots (e.g., ' + DEFAULT_ALIQUOT_NAMING_PATTERN + ')';
 
 // Splitting these out to clarify where they end-up
 interface OwnProps {

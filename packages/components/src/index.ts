@@ -508,7 +508,7 @@ import {
     POOLED_SAMPLE_CREATION,
     SampleCreationType,
 } from './internal/components/samples/models';
-import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
+import { SampleTypeModel, DEFAULT_ALIQUOT_NAMING_PATTERN } from './internal/components/domainproperties/samples/models';
 
 import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';
 import { Pagination } from './internal/components/pagination/Pagination';
@@ -1213,6 +1213,7 @@ export {
     DERIVATIVE_CREATION,
     POOLED_SAMPLE_CREATION,
     SampleTypeModel,
+    DEFAULT_ALIQUOT_NAMING_PATTERN,
     deleteSampleSet,
     fetchSamples,
     getSampleSet,

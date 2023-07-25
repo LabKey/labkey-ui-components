@@ -41,3 +41,4 @@ export const TO_LKS_TAB_METRIC = 'toServerContainerTab';
 export const APPLICATION_SECTION_METRIC = 'toApplicationSection';
 export const BIOLOGICS_SECTION_METRIC = 'toBiologicsSection';
 export const SAMPLE_MANAGER_SECTION_METRIC = 'toSampleManagerSection';
+export const LOOK_AND_FEEL_METRIC = 'lookAndFeel';

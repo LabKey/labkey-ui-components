@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Upon using a multi-value filter that is not BETWEEN, make value input a textarea
 
+### version 2.354.0
+*Released*: 24 July 2023
+* Add Project level date/time to App Settings page
+  * Add ProjectLookAndFeelForm
+
 ### version 2.353.0
 Released*: 21 July 2023
 - Add to Storage From Grid - add preview to select location modal

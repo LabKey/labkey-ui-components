@@ -31,7 +31,7 @@ export const applyEditableGridChangesToModels = (
     // NK: The "selectionCells" property is of type string[]. When merge() is used it utilizes
     // Immutable.fromJS() which turns the Array into a List. We want to maintain the property
     // as an Array so here we set it explicitly.
-    if (editorModelChanges.selectionCells !== undefined) {
+    if (editorModelChanges?.selectionCells !== undefined) {
         const selectionCells = sortCellKeys(editorModelChanges.selectionCells);
         editorModel = editorModel.set('selectionCells', selectionCells) as EditorModel;
         editorModel = editorModel.set('isSparseSelection', isSparseSelection(selectionCells)) as EditorModel;

@@ -10,13 +10,13 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { PaginationButtons } from '../buttons/PaginationButtons';
 
-import { biologicsIsPrimaryApp } from '../../app/utils';
+import { biologicsIsPrimaryApp, isPlatesEnabled } from '../../app/utils';
 
 import { useServerContext } from '../base/ServerContext';
 
 import { SearchResultsPanel } from './SearchResultsPanel';
 
-import { SearchResultsModel } from './models';
+import { GetCardDataFn, SearchResultsModel } from './models';
 import { SearchCategory, SEARCH_HELP_TOPIC, SEARCH_PAGE_DEFAULT_SIZE } from './constants';
 import { searchUsingIndex } from './actions';
 import { getSearchResultCardData } from './utils';
@@ -136,37 +136,45 @@ export const SearchPanelImpl: FC<SearchPanelImplProps> = memo(props => {
     );
 });
 
-const SEARCH_CATEGORIES = [
-    SearchCategory.Assay,
-    SearchCategory.AssayBatch,
-    SearchCategory.AssayRun,
-    SearchCategory.Data,
-    SearchCategory.DataClass,
-    SearchCategory.File,
-    SearchCategory.FileWorkflowJob,
-    SearchCategory.Material,
-    SearchCategory.MaterialSource,
-    SearchCategory.Notebook,
-    SearchCategory.NotebookTemplate,
-    SearchCategory.WorkflowJob,
-];
-const MEDIA_SEARCH_CATEGORIES = [SearchCategory.Media, SearchCategory.MediaData];
-
 export const SearchPanel: FC<SearchPanelProps> = memo(props => {
     const { offset = 0, pageSize = SEARCH_PAGE_DEFAULT_SIZE, searchTerm, search, searchMetadata } = props;
     const [model, setModel] = useState<SearchResultsModel>(() => SearchResultsModel.create({ isLoading: true }));
     const { moduleContext } = useServerContext();
     const isBiologics = biologicsIsPrimaryApp(moduleContext);
-    const category = useMemo(
-        () => (isBiologics ? [...SEARCH_CATEGORIES, ...MEDIA_SEARCH_CATEGORIES] : SEARCH_CATEGORIES),
-        [isBiologics]
-    );
-    const getCardDataFn = useCallback(
+    const platesEnabled = isPlatesEnabled(moduleContext);
+    const category = useMemo(() => {
+        const categories = [
+            SearchCategory.Assay,
+            SearchCategory.AssayBatch,
+            SearchCategory.AssayRun,
+            SearchCategory.Data,
+            SearchCategory.DataClass,
+            SearchCategory.File,
+            SearchCategory.FileWorkflowJob,
+            SearchCategory.Material,
+            SearchCategory.MaterialSource,
+            SearchCategory.Notebook,
+            SearchCategory.NotebookTemplate,
+            SearchCategory.WorkflowJob,
+        ];
+
+        if (isBiologics) {
+            categories.push(SearchCategory.Media, SearchCategory.MediaData);
+        }
+        if (platesEnabled) {
+            categories.push(SearchCategory.Plate);
+        }
+
+        return categories;
+    }, [isBiologics, platesEnabled]);
+    const getCardDataFn = useCallback<GetCardDataFn>(
         (data, cat) => getSearchResultCardData(data, cat, searchMetadata),
         [searchMetadata]
     );
-    const loadSearchResults = useCallback(async () => {
-        if (searchTerm) {
+
+    useEffect(() => {
+        if (!searchTerm) return;
+        (async () => {
             setModel(SearchResultsModel.create({ isLoading: true }));
             try {
                 const entities = await searchUsingIndex(
@@ -180,22 +188,15 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
                 );
                 setModel(SearchResultsModel.create({ entities, isLoaded: true }));
             } catch (response) {
-                console.error(response);
                 setModel(
                     SearchResultsModel.create({
-                        isLoaded: true,
                         error: resolveErrorMessage(response.exception) ?? 'Unknown error getting search results.',
+                        isLoaded: true,
                     })
                 );
             }
-        }
-    }, [category, getCardDataFn, offset, pageSize, searchTerm]);
-
-    useEffect(() => {
-        (async () => {
-            await loadSearchResults();
         })();
-    }, [loadSearchResults, searchTerm]);
+    }, [category, getCardDataFn, offset, pageSize, searchTerm]);
 
     const onPage = useCallback(
         direction => {

@@ -463,7 +463,7 @@ export function addAssaysSectionConfig(
 
 export function getPlatesSectionConfig(): MenuSectionConfig {
     return new MenuSectionConfig({
-        iconURL: imageURL('_images', 'samples.svg'),
+        iconURL: imageURL('_images', 'plates.svg'),
     });
 }
 
@@ -590,11 +590,12 @@ export function getMenuSectionConfigs(
 export const useMenuSectionConfigs = (
     user: User,
     appProperties: AppProperties,
-    moduleContext: any
+    moduleContext?: ModuleContext
 ): List<Map<string, MenuSectionConfig>> => {
-    return useMemo(() => {
-        return getMenuSectionConfigs(user, appProperties.productId, moduleContext);
-    }, [user, moduleContext, appProperties.productId]);
+    return useMemo(
+        () => getMenuSectionConfigs(user, appProperties.productId, moduleContext),
+        [user, moduleContext, appProperties.productId]
+    );
 };
 
 // Returns the friendly name of the product, primarily for use in help text.

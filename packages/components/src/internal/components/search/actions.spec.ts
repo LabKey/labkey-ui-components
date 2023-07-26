@@ -22,7 +22,7 @@ describe('search actions', () => {
                 },
             };
 
-            const resultCardData = getSearchResultCardData(data, 'dataClass', 'my title');
+            const resultCardData = getSearchResultCardData(data, SearchCategory.DataClass, 'my title');
             expect(resultCardData).toStrictEqual({
                 title: 'my title',
                 iconDir: undefined,
@@ -39,7 +39,7 @@ describe('search actions', () => {
                 },
             };
 
-            const resultCardData = getSearchResultCardData(data, 'material', undefined);
+            const resultCardData = getSearchResultCardData(data, SearchCategory.Material, undefined);
             expect(resultCardData).toStrictEqual({
                 title: undefined,
                 iconDir: undefined,
@@ -54,7 +54,7 @@ describe('search actions', () => {
                 type: 'dataClass',
             };
 
-            const resultCardData = getSearchResultCardData(data, 'dataClass', 'my title');
+            const resultCardData = getSearchResultCardData(data, SearchCategory.DataClass, 'my title');
             expect(resultCardData).toStrictEqual({
                 title: 'my title',
                 iconDir: undefined,
@@ -69,7 +69,7 @@ describe('search actions', () => {
                 },
             };
 
-            const sourceCardData = getSearchResultCardData(sourceData, 'dataClass', 'bruno');
+            const sourceCardData = getSearchResultCardData(sourceData, SearchCategory.DataClass, 'bruno');
             expect(sourceCardData).toStrictEqual({
                 title: 'bruno',
                 iconDir: undefined,
@@ -84,7 +84,7 @@ describe('search actions', () => {
                 type: 'sampleSet',
             };
 
-            const resultCardData = getSearchResultCardData(data, 'materialSource', undefined);
+            const resultCardData = getSearchResultCardData(data, SearchCategory.MaterialSource, undefined);
             expect(resultCardData).toStrictEqual({
                 title: undefined,
                 iconDir: undefined,
@@ -101,7 +101,7 @@ describe('search actions', () => {
                 },
             };
 
-            const resultCardData = getSearchResultCardData(data, 'material', undefined);
+            const resultCardData = getSearchResultCardData(data, SearchCategory.Material, undefined);
             expect(resultCardData).toStrictEqual({
                 title: undefined,
                 iconDir: undefined,
@@ -118,7 +118,7 @@ describe('search actions', () => {
                 },
             };
 
-            const resultCardData = getSearchResultCardData(data, 'material', undefined);
+            const resultCardData = getSearchResultCardData(data, SearchCategory.Material, undefined);
             expect(resultCardData).toStrictEqual({
                 title: undefined,
                 iconDir: undefined,
@@ -130,7 +130,7 @@ describe('search actions', () => {
         test('sample icon', () => {
             const data = {};
 
-            const resultCardData = getSearchResultCardData(data, 'material', undefined);
+            const resultCardData = getSearchResultCardData(data, SearchCategory.Material, undefined);
             expect(resultCardData).toStrictEqual({
                 title: undefined,
                 iconDir: undefined,
@@ -195,9 +195,9 @@ describe('search actions', () => {
         test('data undefined', () => {
             expect(resolveTypeName(undefined, undefined)).toBeUndefined();
             expect(resolveTypeName(undefined, null)).toBeUndefined();
-            expect(resolveTypeName(undefined, 'test')).toBeUndefined();
-            expect(resolveTypeName(undefined, 'notebook')).toBe('Notebook');
-            expect(resolveTypeName(undefined, 'notebookTemplate')).toBe('Notebook Template');
+            expect(resolveTypeName(undefined, 'invalid' as SearchCategory)).toBeUndefined();
+            expect(resolveTypeName(undefined, SearchCategory.Notebook)).toBe('Notebook');
+            expect(resolveTypeName(undefined, SearchCategory.NotebookTemplate)).toBe('Notebook Template');
         });
 
         test('data defined', () => {
@@ -206,19 +206,21 @@ describe('search actions', () => {
             expect(resolveTypeName({ dataClass: { name: 'testDataClass' } }, undefined)).toBe('testDataClass');
             expect(resolveTypeName({ sampleSet: { name: undefined } }, undefined)).toBeUndefined();
             expect(resolveTypeName({ sampleSet: { name: 'testSampleSet' } }, undefined)).toBe('testSampleSet');
-            expect(resolveTypeName({ sampleSet: { name: 'testSampleSet' } }, 'notebook')).toBe('testSampleSet');
-            expect(resolveTypeName({ sampleSet: { name: undefined } }, 'notebook')).toBe('Notebook');
+            expect(resolveTypeName({ sampleSet: { name: 'testSampleSet' } }, SearchCategory.Notebook)).toBe(
+                'testSampleSet'
+            );
+            expect(resolveTypeName({ sampleSet: { name: undefined } }, SearchCategory.Notebook)).toBe('Notebook');
         });
     });
 
     describe('resolveIconSrc', () => {
         test('data undefined', () => {
             expect(resolveIconSrc(undefined, undefined)).toBeUndefined();
-            expect(resolveIconSrc(undefined, 'test')).toBeUndefined();
-            expect(resolveIconSrc(undefined, 'material')).toBe('samples');
-            expect(resolveIconSrc(undefined, 'workflowJob')).toBe('workflow');
-            expect(resolveIconSrc(undefined, 'notebook')).toBe('notebook_blue');
-            expect(resolveIconSrc(undefined, 'notebookTemplate')).toBe('notebook_blue');
+            expect(resolveIconSrc(undefined, 'invalid' as SearchCategory)).toBeUndefined();
+            expect(resolveIconSrc(undefined, SearchCategory.Material)).toBe('samples');
+            expect(resolveIconSrc(undefined, SearchCategory.WorkflowJob)).toBe('workflow');
+            expect(resolveIconSrc(undefined, SearchCategory.Notebook)).toBe('notebook_blue');
+            expect(resolveIconSrc(undefined, SearchCategory.NotebookTemplate)).toBe('notebook_blue');
         });
 
         test('data defined', () => {
@@ -240,9 +242,9 @@ describe('search actions', () => {
     describe('resolveIconDir', () => {
         test('category', () => {
             expect(resolveIconDir(undefined)).toBeUndefined();
-            expect(resolveIconDir('test')).toBeUndefined();
-            expect(resolveIconDir('notebook')).toBe('labbook/images');
-            expect(resolveIconDir('notebookTemplate')).toBe('labbook/images');
+            expect(resolveIconDir('invalid' as SearchCategory)).toBeUndefined();
+            expect(resolveIconDir(SearchCategory.Notebook)).toBe('labbook/images');
+            expect(resolveIconDir(SearchCategory.NotebookTemplate)).toBe('labbook/images');
         });
     });
 

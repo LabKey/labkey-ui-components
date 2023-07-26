@@ -17,6 +17,7 @@ import { fromJS, List, Map, Record } from 'immutable';
 import { Filter } from '@labkey/api';
 
 import { JsonType } from '../domainproperties/PropDescType';
+
 import { SearchCategory } from './constants';
 
 export class SearchResultsModel extends Record({

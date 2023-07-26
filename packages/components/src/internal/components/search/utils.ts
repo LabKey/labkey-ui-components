@@ -514,7 +514,11 @@ export function getSearchScopeFromContainerFilter(cf: Query.ContainerFilter): Se
     }
 }
 
-export function getSearchResultCardData(data: any, category?: SearchCategory, queryMetadata?: any): SearchResultCardData {
+export function getSearchResultCardData(
+    data: any,
+    category?: SearchCategory,
+    queryMetadata?: any
+): SearchResultCardData {
     if (data) {
         const dataName = data.name;
         if (data.dataClass?.name) {

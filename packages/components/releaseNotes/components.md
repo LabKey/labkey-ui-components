@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.355.0
+Released*: 26 July 2023
+- Introduce `SearchCategory.Plate`.
+- Update various search interfaces to use `SearchCategory`
+
 ### version 2.354.1
 Released*: 25 July 2023
 * Merge release23.7-SNAPSHOT to develop:

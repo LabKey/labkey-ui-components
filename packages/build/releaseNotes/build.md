@@ -1,7 +1,7 @@
 # @labkey/build
 
-### version 6.13.0
-*Released* : XX July 2023
+### version 6.14.0
+*Released* : 26 July 2023
 * Add JSX files to loaders test.
 
 ### version 6.12.0

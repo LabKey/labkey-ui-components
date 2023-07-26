@@ -13,15 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { initQueryGridState } from '../../global';
-
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
 
 import { allowReimportAssayRun, getRunPropertiesFileName } from './actions';
-
-beforeAll(() => {
-    initQueryGridState();
-});
 
 describe('allowReimportAssayRun', () => {
     test('require insert permissions', () => {

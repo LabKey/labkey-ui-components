@@ -1,7 +1,4 @@
-import { Map } from 'immutable';
 import mock, { proxy } from 'xhr-mock';
-
-import { initUnitTests } from '../internal/test/testHelpers';
 
 import { initDomainPropertiesMocks, initQueryGridMocks, initUserPropsMocks } from './mock';
 
@@ -9,9 +6,8 @@ import { initDomainPropertiesMocks, initQueryGridMocks, initUserPropsMocks } fro
  * Use this method in beforeAll() for your jest tests and you'll have full access
  * to all of the same mock API responses we use in storybook.
  */
-export function initUnitTestMocks(extraMocks?: Array<() => void>, metadata?: Map<string, any>): void {
+export function initUnitTestMocks(extraMocks?: Array<() => void>): void {
     window['__react-beautiful-dnd-disable-dev-warnings'] = true;
-    initUnitTests(metadata);
     mock.setup();
     initQueryGridMocks();
     initDomainPropertiesMocks();

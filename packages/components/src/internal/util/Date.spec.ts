@@ -13,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { initUnitTests } from '../test/testHelpers';
-
 import { QueryColumn } from '../../public/QueryColumn';
 import { DATE_TYPE, DATETIME_TYPE } from '../components/domainproperties/PropDescType';
 
@@ -33,10 +31,6 @@ import {
     isRelativeDateFilterValue,
     parseDate,
 } from './Date';
-
-beforeAll(() => {
-    initUnitTests();
-});
 
 describe('Date Utilities', () => {
     describe('generateNameWithTimestamp', () => {

@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Upon using a multi-value filter that is not BETWEEN, make value input a textarea
 
+### version 2.354.1
+Released*: 25 July 2023
+* Merge release23.7-SNAPSHOT to develop:
+    * includes changes from 2.349.6
+
 ### version 2.354.0
 *Released*: 24 July 2023
 * Add Project level date/time to App Settings page
@@ -69,6 +74,10 @@ Released*: 20 July 2023
 - Fix round-tripping values within the "Alias" column on an editable grid via an `AliasGridInput` processing component.
 - Introduce types of `CellCoordinates` and `GridColumnCellRenderer`.
 - Update `SampleStatusInput` handling of `containerFilter` to use prop override pattern instead of `delete`.
+
+### version 2.349.6
+*Released*: 21 July 2023
+* Fix Issue #48014: BarTender Test connection health check
 
 ### version 2.349.5
 *Released*: 10 July 2023

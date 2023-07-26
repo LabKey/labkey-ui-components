@@ -15,7 +15,7 @@
  */
 import { fromJS, Map } from 'immutable';
 
-import { initMockServerContext, registerDefaultURLMappers } from '../test/testHelpers';
+import { registerDefaultURLMappers } from '../test/testHelpers';
 
 import { initUnitTestMocks } from '../../test/testHelperMocks';
 
@@ -25,6 +25,12 @@ import { AppURL } from './AppURL';
 import { encodeListResolverPath } from './utils';
 
 beforeAll(() => {
+    LABKEY.container = {
+        id: 'testContainerEntityId',
+        title: 'Test Container',
+        path: '/testContainer',
+    };
+
     initUnitTestMocks();
     registerDefaultURLMappers();
 });
@@ -366,21 +372,6 @@ describe('URL Resolvers', () => {
     });
 
     test('Should remap URLs within SelectRowsResult if url containers are super-folders', () => {
-        initMockServerContext({
-            container: {
-                id: 'subTestContainerEntityId',
-                title: 'Sub Test Container',
-                path: '/testContainer/subContainer1/subContainer2',
-                formats: {
-                    dateFormat: 'yyyy-MM-dd',
-                    dateTimeFormat: 'yyyy-MM-dd HH:mm',
-                    numberFormat: null,
-                },
-                activeModules: ['Core', 'Query'], // add in the Ontology module if you want to test the Field Editor integrations
-            },
-            contextPath: '/labkey',
-        });
-
         const resolver = new URLResolver();
 
         // http://facebook.github.io/jest/docs/en/expect.html#expectassertionsnumber

@@ -236,13 +236,13 @@ module.exports = {
         ],
         TYPESCRIPT: [
             {
-                test: /^(?!.*spec\.tsx?$).*\.tsx?$/,
+                test: /\.(jsx|ts|tsx)(?!.*\.(spec|test)\.(jsx?|tsx?))$/,
                 use: [BABEL_CONFIG]
             }
         ],
         TYPESCRIPT_WATCH: [
             {
-                test: /^(?!.*spec\.tsx?$).*\.tsx?$/,
+                test: /\.(jsx|ts|tsx)(?!.*\.(spec|test)\.(jsx?|tsx?))$/,
                 use: [BABEL_DEV_CONFIG]
             }
         ]

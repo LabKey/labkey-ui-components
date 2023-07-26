@@ -2,7 +2,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
-import { initUnitTests, makeQueryInfo } from '../../internal/test/testHelpers';
+import { makeQueryInfo } from '../../internal/test/testHelpers';
 
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
 
@@ -20,7 +20,6 @@ let QUERY_INFO_PRIVATE_VIEWS: QueryInfo;
 let QUERY_INFO_HIDDEN_VIEWS: QueryInfo;
 
 beforeAll(() => {
-    initUnitTests();
     // Have to instantiate QueryInfos here because applyQueryMetadata relies on initQueryGridState being called first.
     QUERY_INFO_NO_VIEWS = makeQueryInfo({
         ...mixturesQueryInfo,

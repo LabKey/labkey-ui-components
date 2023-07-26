@@ -82,6 +82,12 @@ import {
 } from './constants';
 
 beforeAll(() => {
+    LABKEY.container = {
+        id: 'testContainerEntityId',
+        title: 'Test Container',
+        path: '/testContainer',
+    };
+
     initUnitTestMocks([initOnotologyMocks]);
 });
 

@@ -1,6 +1,6 @@
 import { Filter } from '@labkey/api';
 
-import { initUnitTests, makeQueryInfo } from '../../internal/test/testHelpers';
+import { makeQueryInfo } from '../../internal/test/testHelpers';
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
 import { ExtendedMap } from '../ExtendedMap';
 
@@ -30,7 +30,6 @@ const ROWS = {
 const ORDERED_ROWS = ['0', '1'];
 
 beforeAll(() => {
-    initUnitTests();
     // Have to instantiate QUERY_INFO here because it relies on initQueryGridState being called first.
     QUERY_INFO = makeQueryInfo(mixturesQueryInfo);
 });

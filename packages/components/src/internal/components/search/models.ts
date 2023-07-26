@@ -18,6 +18,8 @@ import { Filter } from '@labkey/api';
 
 import { JsonType } from '../domainproperties/PropDescType';
 
+import { SearchCategory } from './constants';
+
 export class SearchResultsModel extends Record({
     entities: undefined,
     error: undefined,
@@ -76,4 +78,4 @@ export interface FilterSelection {
     secondFilterValue?: any;
 }
 
-export type GetCardDataFn = (data: Map<any, any>, category?: string) => SearchResultCardData;
+export type GetCardDataFn = (data: Map<any, any>, category?: SearchCategory) => SearchResultCardData;

@@ -12,6 +12,12 @@ import { LookupMapper, URLResolver } from './URLResolver';
 import { AppURL } from './AppURL';
 
 beforeAll(() => {
+    LABKEY.container = {
+        id: 'testContainerEntityId',
+        title: 'Test Container',
+        path: '/testContainer',
+    };
+
     initUnitTestMocks();
     registerDefaultURLMappers();
 });

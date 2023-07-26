@@ -706,6 +706,11 @@ export class URLResolver {
                         return row.set('url', this.mapURL({ url, row, column }));
                     } else if (url.indexOf('notebook') >= 0) {
                         return row.set('url', this.mapURL({ url, row, column }));
+                    } else if (url.indexOf('plate-designer') > -1) {
+                        const plateRowId = row.getIn(['data', 'rowId']);
+                        if (plateRowId) {
+                            return row.set('url', this.mapURL({ url, row, column, query: plateRowId }));
+                        }
                     }
                 }
                 return row;

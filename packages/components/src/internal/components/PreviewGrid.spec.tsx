@@ -9,6 +9,12 @@ import { SchemaQuery } from '../../public/SchemaQuery';
 import { PreviewGrid } from './PreviewGrid';
 
 beforeAll(() => {
+    LABKEY.container = {
+        id: 'testContainerEntityId',
+        title: 'Test Container',
+        path: '/testContainer',
+    };
+
     initUnitTestMocks();
     registerDefaultURLMappers();
 });

@@ -136,6 +136,7 @@ export class DataClassModel implements DataClassModelConfig {
             category: this.category,
             sampleSet: this.sampleSet,
             systemFields: this.systemFields,
+            importAliases: this.importAliases,
         };
     }
 

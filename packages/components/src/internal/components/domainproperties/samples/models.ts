@@ -4,6 +4,9 @@ import { DomainDesign, DomainDetails, IDomainField } from '../models';
 import { IParentAlias } from '../../entities/models';
 import { getDuplicateAlias, parentAliasInvalid } from '../utils';
 
+// eslint-disable-next-line no-template-curly-in-string
+export const DEFAULT_ALIQUOT_NAMING_PATTERN = '${${AliquotedFrom}-:withCounter}';
+
 export class SampleTypeModel extends Record({
     rowId: undefined,
     name: undefined,
@@ -49,7 +52,7 @@ export class SampleTypeModel extends Record({
 
         return new SampleTypeModel({
             ...options?.toJS(),
-            aliquotNameExpression: options?.get('aliquotNameExpression') || '',
+            aliquotNameExpression: options?.get('aliquotNameExpression') || DEFAULT_ALIQUOT_NAMING_PATTERN,
             name,
             nameReadOnly: raw?.nameReadOnly,
             importAliases,

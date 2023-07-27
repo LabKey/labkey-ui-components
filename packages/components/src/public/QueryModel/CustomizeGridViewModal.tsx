@@ -13,6 +13,7 @@ import { QueryColumn } from '../QueryColumn';
 import { QueryInfo } from '../QueryInfo';
 
 import { QueryModel } from './QueryModel';
+import { SCHEMAS } from '../../internal/schemas';
 
 // exported for jest testing
 export const includedColumnsForCustomizationFilter = (column: QueryColumn, showAllColumns: boolean): boolean => {
@@ -387,6 +388,10 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
                     fk: column.index,
                     lookup: column.lookup,
                 });
+                // For data classes, we want to limit the Ancestor filters to exclude 'Samples'
+                if (column.index === 'Ancestors' && queryInfo.schemaQuery.schemaName === SCHEMAS.DATA_CLASSES.SCHEMA) {
+                    fkQueryInfo.columns = fkQueryInfo.columns.filter(col => col.fieldKey !== 'Samples' && col.fieldKey !== 'MediaSamples');
+                }
                 setExpandedColumns({ ...expandedColumns, [column.index]: fkQueryInfo });
             } catch (error) {
                 setQueryDetailError(error.message);

@@ -30,10 +30,10 @@ export interface SampleCreationTypeModel {
 
 export const CHILD_SAMPLE_CREATION: SampleCreationTypeModel = {
     type: SampleCreationType.Independents,
-    description: 'Create multiple output samples per parent.',
+    description: 'Create multiple output samples per source.',
     minParentsPerSample: 1,
     iconSrc: 'derivatives',
-    quantityLabel: 'New Samples per Parent',
+    quantityLabel: 'New Samples per Source',
 };
 
 export const DERIVATIVE_CREATION: SampleCreationTypeModel = {

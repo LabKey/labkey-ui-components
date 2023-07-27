@@ -106,7 +106,9 @@ export const DomainParentAliases: FC<Props> = memo(props => {
                 dataClassParentageLabel ? dataClassParentageLabel : 'parentage'
             );
         }
-        if (!(includeDataClass && useSeparateDataClassesAliasMenu)) aliasCaption = 'Parent Alias';
+        if (includeSampleSet && !(includeDataClass && useSeparateDataClassesAliasMenu)) {
+            aliasCaption = 'Parent Alias';
+        }
 
         setAliasCaption(aliasCaption);
         setParentTypeCaption(parentTypeCaption);

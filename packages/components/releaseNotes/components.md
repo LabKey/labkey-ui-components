@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Upon using a multi-value filter that is not BETWEEN, make value input a textarea
 
+### version 2.355.1
+*Released*: 27 July 2023
+- Updates to allow sources to have parent sources
+
 ### version 2.355.0
 Released*: 26 July 2023
 - Introduce `SearchCategory.Plate`.
@@ -43,7 +47,7 @@ Released*: 20 July 2023
 - Expose `inputId` prop from `react-select` on `SelectInput`
 - Delete `parseDataTextToRunRows` as it is no longer utilized
 - Rename `IAssayUploadOptions` to `AssayUploadOptions`
-- Add devDependency on `blob-polyfill` to support `Blob` and `File interactions within tests. Only exposed in RTL tests.
+- Add devDependency on `blob-polyfill` to support `Blob` and `File` interactions within tests. Only exposed in RTL tests.
 
 ### version 2.350.5
 *Released*: 13 July 2023

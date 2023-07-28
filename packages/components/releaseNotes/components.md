@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- EditableGrid prop to hideTopControls
+
 ### version 2.356.0
 *Released*: 27 July 2023
 - Upon using a multi-value filter that is not BETWEEN, make value input a textarea

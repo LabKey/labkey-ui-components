@@ -30,10 +30,10 @@ interface Props {
     ) => any;
     pluralNoun?: string;
     queryFilters?: Record<string, List<Filter.IFilter>>;
+    queryInfo: QueryInfo;
     readOnlyColumns?: string[];
     requiredColumns?: string[];
     selectedIds: Set<string>;
-    queryInfo: QueryInfo;
     singularNoun?: string;
     // sortString is used so we render editable grids with the proper sorts when using onSubmitForEdit
     sortString?: string;
@@ -87,7 +87,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
         // Get all shownInUpdateView and required columns or undefined
         const columns =
             getUpdateColumnsOnly || requiredColumns
-                ? (queryInfo.getPkCols().concat(queryInfo.getUpdateColumns(readOnlyColumns ?? [])))
+                ? queryInfo.getPkCols().concat(queryInfo.getUpdateColumns(readOnlyColumns ?? []))
                 : undefined;
         let columnString = columns?.map(c => c.fieldKey).join(',');
         if (requiredColumns) columnString = `${columnString ? columnString + ',' : ''}${requiredColumns.join(',')}`;
@@ -135,8 +135,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
                         const valuesDiffer =
                             field.has('displayValue') && field.get('value') !== field.get('displayValue');
                         let comparisonValue = field.get('displayValue') ?? field.get('value');
-                        if (comparisonValue)
-                            comparisonValue += ''; // force to string
+                        if (comparisonValue) comparisonValue += ''; // force to string
                         if (!conflictKeys.has(key)) {
                             if (!bulkUpdates.has(key)) {
                                 bulkUpdates = bulkUpdates.set(key, comparisonValue);

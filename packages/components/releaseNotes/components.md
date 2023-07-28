@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.X
+*Released*: X July 2023
+* Issue 48291: Sample Manager: bulk update form gives (Amount) must be a number error
+
 ### version 2.356.0
 *Released*: 27 July 2023
 - Upon using a multi-value filter that is not BETWEEN, make value input a textarea

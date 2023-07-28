@@ -134,7 +134,9 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
                     if (displayValueFields.includes(key)) {
                         const valuesDiffer =
                             field.has('displayValue') && field.get('value') !== field.get('displayValue');
-                        const comparisonValue = field.get('displayValue') ?? field.get('value');
+                        let comparisonValue = field.get('displayValue') ?? field.get('value');
+                        if (comparisonValue)
+                            comparisonValue += ''; // force to string
                         if (!conflictKeys.has(key)) {
                             if (!bulkUpdates.has(key)) {
                                 bulkUpdates = bulkUpdates.set(key, comparisonValue);
@@ -145,9 +147,9 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
                         }
                         if (valuesDiffer) {
                             field = field.set('value', comparisonValue);
-                            updatedRow = updatedRow.set(key, field);
                         }
                     }
+                    updatedRow = updatedRow.set(key, field);
                 });
                 if (!updatedRow.isEmpty()) updates = updates.set(id, updatedRow);
             }

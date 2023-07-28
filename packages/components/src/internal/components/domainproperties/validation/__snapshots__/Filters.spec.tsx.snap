@@ -459,25 +459,25 @@ exports[`Filters Empty Filters - string type 1`] = `
                   key="13"
                   value="in"
                 >
-                  Equals One Of (example usage: a;b;c)
+                  Equals One Of
                 </option>
                 <option
                   key="14"
                   value="notin"
                 >
-                  Does Not Equal Any Of (example usage: a;b;c)
+                  Does Not Equal Any Of
                 </option>
                 <option
                   key="15"
                   value="containsoneof"
                 >
-                  Contains One Of (example usage: a;b;c)
+                  Contains One Of
                 </option>
                 <option
                   key="16"
                   value="containsnoneof"
                 >
-                  Does Not Contain Any Of (example usage: a;b;c)
+                  Does Not Contain Any Of
                 </option>
                 <option
                   key="17"
@@ -692,25 +692,25 @@ exports[`Filters Empty Filters - string type 1`] = `
                   key="14"
                   value="in"
                 >
-                  Equals One Of (example usage: a;b;c)
+                  Equals One Of
                 </option>
                 <option
                   key="15"
                   value="notin"
                 >
-                  Does Not Equal Any Of (example usage: a;b;c)
+                  Does Not Equal Any Of
                 </option>
                 <option
                   key="16"
                   value="containsoneof"
                 >
-                  Contains One Of (example usage: a;b;c)
+                  Contains One Of
                 </option>
                 <option
                   key="17"
                   value="containsnoneof"
                 >
-                  Does Not Contain Any Of (example usage: a;b;c)
+                  Does Not Contain Any Of
                 </option>
                 <option
                   key="18"
@@ -912,13 +912,13 @@ exports[`Filters Expressions 1`] = `
                   key="9"
                   value="in"
                 >
-                  Equals One Of (example usage: a;b;c)
+                  Equals One Of
                 </option>
                 <option
                   key="10"
                   value="notin"
                 >
-                  Does Not Equal Any Of (example usage: a;b;c)
+                  Does Not Equal Any Of
                 </option>
                 <option
                   key="11"
@@ -1119,13 +1119,13 @@ exports[`Filters Expressions 1`] = `
                   key="10"
                   value="in"
                 >
-                  Equals One Of (example usage: a;b;c)
+                  Equals One Of
                 </option>
                 <option
                   key="11"
                   value="notin"
                 >
-                  Does Not Equal Any Of (example usage: a;b;c)
+                  Does Not Equal Any Of
                 </option>
                 <option
                   key="12"

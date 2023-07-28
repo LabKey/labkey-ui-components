@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Issue 48333: When creating samples from sources, don't check sample status of parents (that aren't samples)
 
+### version 2.356.0
+*Released*: 27 July 2023
+- Upon using a multi-value filter that is not BETWEEN, make value input a textarea
+
 ### version 2.355.1
 *Released*: 27 July 2023
 - Updates to allow sources to have parent sources

@@ -268,6 +268,20 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 );
             }
 
+            if (filterType.multiValue && !filterType.betweenOperator) {
+                return (
+                    <textarea
+                        className="form-control filter-expression__textarea"
+                        name={'field-value-text' + suffix}
+                        onChange={event => updateTextFilterFieldValue(filterIndex, event)}
+                        defaultValue={(valueRaw && valueRaw.replaceAll(';', '\n')) ?? ''}
+                        rows={3}
+                        required
+                        placeholder={placeholder}
+                    />
+                );
+            }
+
             if (!isMultiValueInput && (jsonType === 'int' || jsonType === 'float')) {
                 return (
                     <FormControl
@@ -345,7 +359,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
 
             const isBetweenOperator = filterType.betweenOperator;
             const isMultiValueInput = filterType.value === 'in' || filterType.value === 'notin';
-            const placeholder = getFilterTypePlaceHolder(filterType.value, field.getDisplayFieldJsonType());
+            const placeholder = getFilterTypePlaceHolder(filterType.value);
 
             if (!isBetweenOperator)
                 return renderFilterInput(placeholder, filterIndex, isMultiValueInput, false, expandedOntologyKey);

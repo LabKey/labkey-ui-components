@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.356.1
+*Released*: 28 July 2023
 - Issue 48333: When creating samples from sources, don't check sample status of parents (that aren't samples)
 
 ### version 2.356.0

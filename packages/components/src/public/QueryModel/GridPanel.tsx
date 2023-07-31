@@ -190,12 +190,11 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                             {hasLeftButtonsComp && (
                                 <ButtonsComponent {...buttonsComponentProps} model={model} actions={actions} />
                             )}
-                            <span className={hiddenWithLeftButtonsCls}>
+
+                            <div className={'button-bar__filter-search ' + hiddenWithLeftButtonsCls}>
                                 {showFiltersButton && <FiltersButton onFilter={onFilter} />}
-                            </span>
-                            <span className={hiddenWithLeftButtonsCls}>
                                 {showSearchInput && <SearchBox actionValues={actionValues} onSearch={onSearch} />}
-                            </span>
+                            </div>
                         </div>
                     </div>
 

@@ -10,8 +10,13 @@
     display: flex;
 }
 
+.button-bar__filter-search > *:not(:first-child),
 .button-bar__section > *:not(:first-child) {
     margin-left: 12px;
+}
+
+.button-bar__filter-search {
+    display: flex;
 }
 
 .grid-panel__info {

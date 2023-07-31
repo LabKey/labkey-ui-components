@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.356.2
+*Released*: 31 July 2023
+* Issue 48291: Sample Manager: bulk update form gives (Amount) must be a number error
+
 ### version 2.356.1
 *Released*: 28 July 2023
 - Issue 48333: When creating samples from sources, don't check sample status of parents (that aren't samples)

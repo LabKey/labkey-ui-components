@@ -694,4 +694,14 @@ describe('splitPrefixedNumber', () => {
         expect(splitPrefixedNumber('123')).toEqual([undefined, '123']);
         expect(splitPrefixedNumber('123.45')).toEqual([undefined, '123.45']);
     });
+
+    test('param as number', () => {
+        expect(splitPrefixedNumber(123)).toEqual([undefined, '123']);
+    });
+
+    test('param empty', () => {
+        expect(splitPrefixedNumber(undefined)).toEqual([undefined, undefined]);
+        expect(splitPrefixedNumber(null)).toEqual([undefined, undefined]);
+        expect(splitPrefixedNumber('')).toEqual([undefined, undefined]);
+    });
 });

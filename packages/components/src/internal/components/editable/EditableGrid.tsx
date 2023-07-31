@@ -1445,7 +1445,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         if (!tabBtnProps?.show) return null;
 
         return (
-            <div className={tabBtnProps.cls}>
+            <div className={tabBtnProps?.cls}>
                 <Button
                     bsStyle="primary"
                     bsClass={primaryBtnProps.cls}
@@ -1454,9 +1454,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 >
                     {primaryBtnProps.caption ?? 'Save'}
                 </Button>
-                <Button bsStyle="default" bsClass={cancelBtnProps.cls} onClick={this.onCancelClick}>
-                    {cancelBtnProps.caption ?? 'Cancel'}
-                </Button>
+                {cancelBtnProps && (
+                    <Button bsStyle="default" bsClass={cancelBtnProps.cls} onClick={this.onCancelClick}>
+                        {cancelBtnProps.caption ?? 'Cancel'}
+                    </Button>
+                )}
             </div>
         );
     };
@@ -1538,7 +1540,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
             return (
                 <>
-                    {tabBtnProps.placement === 'top' && this.renderButtons()}
+                    {tabBtnProps?.placement === 'top' && this.renderButtons()}
                     <Tab.Container activeKey={activeEditTab} id="editable-grid-tabs" onSelect={this.onTabChange}>
                         <div>
                             <Nav bsStyle="tabs">
@@ -1562,7 +1564,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                             </Tab.Content>
                         </div>
                     </Tab.Container>
-                    {tabBtnProps.placement === 'bottom' && this.renderButtons()}
+                    {tabBtnProps?.placement === 'bottom' && this.renderButtons()}
                 </>
             );
         }

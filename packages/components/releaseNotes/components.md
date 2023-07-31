@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - EditableGrid prop to hideTopControls
+- EditableGrid null checks for tabBtnProps and cancelBtnProps
 
 ### version 2.356.1
 *Released*: 28 July 2023

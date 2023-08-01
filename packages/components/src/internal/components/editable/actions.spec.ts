@@ -1,10 +1,12 @@
 import { fromJS, List, Map, Set } from 'immutable';
+
 import { ExtendedMap } from '../../../public/ExtendedMap';
 import { QueryColumn, QueryLookup } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import sampleSet2QueryInfo from '../../../test/data/sampleSet2-getQueryDetails.json';
+
 import {
     addColumns,
     changeColumn,

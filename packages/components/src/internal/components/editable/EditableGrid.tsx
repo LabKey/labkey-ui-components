@@ -279,6 +279,7 @@ export interface SharedEditableGridProps {
     extraExportColumns?: Array<Partial<QueryColumn>>;
     forUpdate?: boolean;
     hideCountCol?: boolean;
+    hideTopControls?: boolean;
     insertColumns?: QueryColumn[];
     isSubmitting?: boolean;
     // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
@@ -382,6 +383,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         striped: false,
         maxRows: MAX_EDITABLE_GRID_ROWS,
         hideCountCol: false,
+        hideTopControls: false,
         rowNumColumn: COUNT_COL,
     };
 
@@ -1438,12 +1440,12 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         this.props.cancelBtnProps?.onClick?.();
     };
 
-    renderTabButtons = (): ReactNode => {
+    renderButtons = (): ReactNode => {
         const { primaryBtnProps, cancelBtnProps, tabBtnProps } = this.props;
         if (!tabBtnProps?.show) return null;
 
         return (
-            <div className={tabBtnProps.cls}>
+            <div className={tabBtnProps?.cls}>
                 <Button
                     bsStyle="primary"
                     bsClass={primaryBtnProps.cls}
@@ -1452,9 +1454,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 >
                     {primaryBtnProps.caption ?? 'Save'}
                 </Button>
-                <Button bsStyle="default" bsClass={cancelBtnProps.cls} onClick={this.onCancelClick}>
-                    {cancelBtnProps.caption ?? 'Cancel'}
-                </Button>
+                {cancelBtnProps && (
+                    <Button bsStyle="default" bsClass={cancelBtnProps.cls} onClick={this.onCancelClick}>
+                        {cancelBtnProps.caption ?? 'Cancel'}
+                    </Button>
+                )}
             </div>
         );
     };
@@ -1499,12 +1503,13 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             showAsTab,
             tabBtnProps,
             maxRows,
+            hideTopControls,
         } = this.props;
         const { showBulkAdd, showBulkUpdate, showMask, activeEditTab, selected } = this.state;
 
         const gridContent = (
             <>
-                {this.renderTopControls()}
+                {!hideTopControls && this.renderTopControls()}
                 <div
                     className={classNames(EDITABLE_GRID_CONTAINER_CLS, { 'loading-mask': showMask })}
                     onKeyDown={this.onKeyDown}
@@ -1535,7 +1540,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
             return (
                 <>
-                    {tabBtnProps.placement === 'top' && this.renderTabButtons()}
+                    {tabBtnProps?.placement === 'top' && this.renderButtons()}
                     <Tab.Container activeKey={activeEditTab} id="editable-grid-tabs" onSelect={this.onTabChange}>
                         <div>
                             <Nav bsStyle="tabs">
@@ -1559,15 +1564,17 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                             </Tab.Content>
                         </div>
                     </Tab.Container>
-                    {tabBtnProps.placement === 'bottom' && this.renderTabButtons()}
+                    {tabBtnProps?.placement === 'bottom' && this.renderButtons()}
                 </>
             );
         }
 
         return (
             <div>
+                {tabBtnProps?.placement === 'top' && this.renderButtons()}
                 {gridContent}
                 {error && <Alert className="margin-top">{error}</Alert>}
+                {tabBtnProps?.placement === 'bottom' && this.renderButtons()}
                 {showBulkAdd && this.renderBulkAdd()}
                 {showBulkUpdate && this.renderBulkUpdate()}
             </div>

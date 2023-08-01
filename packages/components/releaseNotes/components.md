@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.357.0
+*Released*: 1 August 2023
+- EditableGrid prop to hideTopControls
+- EditableGrid null checks for tabBtnProps and cancelBtnProps
+
 ### version 2.356.2
 *Released*: 31 July 2023
 * Issue 48291: Sample Manager: bulk update form gives (Amount) must be a number error

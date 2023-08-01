@@ -753,8 +753,8 @@ type PrefixAndNumber = [string | undefined, string | undefined];
  * intentionally does not parse the numbers.
  */
 export function splitPrefixedNumber(text: string): PrefixAndNumber {
-    if (text === undefined) return [undefined, undefined];
-    const matches = text.match(POSTFIX_REGEX);
+    if (text === undefined || text === null || text === '') return [undefined, undefined];
+    const matches = text?.toString().match(POSTFIX_REGEX);
 
     if (matches === null) {
         return [text, undefined];

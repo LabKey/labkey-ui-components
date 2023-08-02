@@ -22,13 +22,13 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
     const [renderedItems, setRenderedItems] = useState<ReactElement[]>(items.map(item => item.button));
     const [collapsedItems, setCollapsedItems] = useState<ReactElement[]>([]);
     const [itemWidths, setItemWidths] = useState<number[]>([]);
-    const ref = useRef<HTMLElement>(undefined);
+    const elRef = useRef<HTMLElement>(undefined);
     const computeButtonLayout = useCallback((): void => {
-        if (itemWidths.length === 0 || ref.current === undefined) {
+        if (itemWidths.length === 0 || elRef.current === undefined) {
             // If we haven't determined itemWidths then we cannot properly determine how to render the buttons
             return;
         }
-        const parent = ref.current.parentNode; // Should be responsive-btn-group, contains all the grid buttons
+        const parent = elRef.current.parentNode; // Should be responsive-btn-group, contains all the grid buttons
         const grandParent = parent.parentNode as HTMLElement; // Should be button-bar__section, contains buttons + filter/search
         const staticButtons = Array.from(parent.childNodes).reduce((reduction, node: HTMLElement) => {
             if (!node.getAttribute('class').includes('responsive-menu-button-group')) {
@@ -47,14 +47,26 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
             const rendered = [];
             // calculate visible buttons
             let currentSize = MORE_SIZE;
+            // We track if we can render more buttons via this flag and not strictly based on remaining size, in order
+            // to retain the render order. Otherwise, you may see a button layout like:
+            // [Derive, Assay, Picklists, Jobs, More] on a larger screen
+            // [Derive, Assay, Jobs, More] on a smaller screen
+            let canRenderMore = true;
             items.forEach((item, idx) => {
                 const itemWidth = itemWidths[idx];
 
+                // The button is likely being hidden due to permissions or something similar.
+                if (itemWidth === undefined) return;
+
                 if (currentSize + itemWidth > sizeLeft) {
-                    collapsed.push(item.button);
-                } else {
+                    canRenderMore = false;
+                }
+
+                if (canRenderMore) {
                     rendered.push(item.button);
                     currentSize = currentSize + itemWidth;
+                } else {
+                    collapsed.push(item.button);
                 }
             });
             setCollapsedItems(collapsed);
@@ -75,7 +87,7 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
 
     // After the first render we need to calculate the width of each item passed to this component
     useEffect(() => {
-        const itemEls = ref.current.childNodes;
+        const itemEls = elRef.current.childNodes;
         // childNodes is a nodeList which does not have the map method
         const widths = Array.from(itemEls).map((element: HTMLElement) => element.getBoundingClientRect().width);
         setItemWidths(widths);
@@ -86,12 +98,13 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
     if (buttons.length === 0) return null;
 
     return (
-        <span className="responsive-menu-button-group" ref={ref}>
+        <span className="responsive-menu-button-group" ref={elRef}>
             {renderedItems.length > 0 &&
                 renderedItems.map((button, idx) => (
                     // Issue 47167
                     // We wrap buttons in Fragment because otherwise we'll get an error warning about unique keys if
-                    // each button passed in wasn't given a key.
+                    // each button passed in wasn't given a key, and there's no way to warn consumers that they need to
+                    // put a key on the buttons they pass.
                     <Fragment key={idx}>{button}</Fragment>
                 ))}
             {collapsedItems.length > 0 && (
@@ -100,7 +113,7 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
                         return (
                             <Fragment key={index}>
                                 {React.cloneElement(item, { asSubMenu: true })}
-                                {index < buttons.length - 1 && <MenuItem divider />}
+                                {index < collapsedItems.length - 1 && <MenuItem divider />}
                             </Fragment>
                         );
                     })}

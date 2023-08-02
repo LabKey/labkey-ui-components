@@ -28,21 +28,49 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
             // If we haven't determined itemWidths then we cannot properly determine how to render the buttons
             return;
         }
-        const parent = elRef.current.parentNode; // Should be responsive-btn-group, contains all the grid buttons
-        const grandParent = parent.parentNode as HTMLElement; // Should be button-bar__section, contains buttons + filter/search
-        const staticButtons = Array.from(parent.childNodes).reduce((reduction, node: HTMLElement) => {
-            if (!node.getAttribute('class').includes('responsive-menu-button-group')) {
-                reduction += node.getBoundingClientRect().width;
-            }
-            return reduction;
-        }, 0);
-        const filterAndSearch = grandParent.querySelector('.button-bar__filter-search').getBoundingClientRect().width;
-        // 24 = 12px margin on filterAndSearch wrapper, 12px margin on search box.
-        const siblingSize = staticButtons + filterAndSearch + 24;
-        const sizeLeft = grandParent.getBoundingClientRect().width - siblingSize;
+        const parent = elRef.current.parentNode as HTMLElement; // Should be responsive-btn-group, contains all the grid buttons
+        let availableSpace;
+        const parentClass = parent.getAttribute('class');
+
+        // Unsupported scenario, so we just render everything.
+        if (parentClass === null) return;
+
+        if (parentClass.includes('responsive-btn-group')) {
+            // This means we're in a GridPanel
+            const grandParent = parent.parentNode as HTMLElement; // Should be button-bar__section, contains buttons + filter/search
+            const staticButtons = Array.from(parent.childNodes).reduce((reduction, node: HTMLElement) => {
+                if (!node.getAttribute('class')?.includes('responsive-menu-button-group')) {
+                    reduction += node.getBoundingClientRect().width;
+                }
+
+                return reduction;
+            }, 0);
+
+            const filterAndSearch = grandParent
+                .querySelector('.button-bar__filter-search')
+                .getBoundingClientRect().width;
+            // 24 = 12px margin on filterAndSearch wrapper, 12px margin on search box.
+            const siblingSize = staticButtons + filterAndSearch + 24;
+            availableSpace = grandParent.getBoundingClientRect().width - siblingSize;
+        } else {
+            // We're just going to assume we can look at our parent for all the information we need. This scenario is
+            // needed by FM ItemDetailHeader/ItemSamplesActionMenu
+            const siblingSize = Array.from(parent.childNodes).reduce((reduction, node: HTMLElement) => {
+                // if (node.getAttribute('class')?.includes('storage-item-detail-buttons'))
+                if (!node.getAttribute('class')?.includes('responsive-menu-button-group')) {
+                    const computedStyle = getComputedStyle(node);
+                    // We often put margin on items that we render next to ResponsiveMenuButtonGroup, so we count it
+                    const margin = parseInt(computedStyle.marginLeft, 10) + parseInt(computedStyle.marginRight, 10);
+                    reduction += node.getBoundingClientRect().width + margin;
+                }
+                return reduction;
+            }, 0);
+            availableSpace = parent.getBoundingClientRect().width - siblingSize;
+        }
+
         const allButtonsSize = itemWidths.reduce((sum, size) => sum + size, 0);
 
-        if (allButtonsSize > sizeLeft) {
+        if (allButtonsSize > availableSpace) {
             const collapsed = [];
             const rendered = [];
             // calculate visible buttons
@@ -58,7 +86,7 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
                 // The button is likely being hidden due to permissions or something similar.
                 if (itemWidth === undefined) return;
 
-                if (currentSize + itemWidth > sizeLeft) {
+                if (currentSize + itemWidth > availableSpace) {
                     canRenderMore = false;
                 }
 

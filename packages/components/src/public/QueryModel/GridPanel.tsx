@@ -160,7 +160,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             supportedExportTypes,
         } = this.props;
 
-        const { hasRows, queryInfo, queryInfoError, rowsError, selectionsError } = model;
+        const { hasData, hasRows, queryInfo, queryInfoError, rowsError, selectionsError } = model;
         const hasError = queryInfoError !== undefined || rowsError !== undefined || selectionsError !== undefined;
         const paginate = showPagination && hasRows && !hasError;
         const canExport = showExport && !hasError;
@@ -168,6 +168,9 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
         const canSelectView = showViewMenu && queryInfo !== undefined;
         const buttonsComponentProps = this.props.buttonsComponentProps ?? ({} as T);
         const hasLeftButtonsComp = ButtonsComponent !== undefined;
+        // We do not want to render the buttons component until after we've loaded the query model at least once,
+        // otherwise the ResponsiveMenuButtonGroup will not be able to collapse buttons correctly.
+        const showButtonsComponent = hasLeftButtonsComp && hasData;
         const hiddenWithLeftButtonsCls = classNames({ 'hidden-md hidden-sm hidden-xs': hasLeftButtonsComp });
 
         const paginationComp = (
@@ -187,7 +190,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                 <div className="grid-panel__button-bar">
                     <div className="grid-panel__button-bar-left">
                         <div className="button-bar__section">
-                            {hasLeftButtonsComp && (
+                            {showButtonsComponent && (
                                 <ButtonsComponent {...buttonsComponentProps} model={model} actions={actions} />
                             )}
 

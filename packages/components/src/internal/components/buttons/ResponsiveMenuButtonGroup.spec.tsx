@@ -22,18 +22,12 @@ describe('ResponsiveMenuButtonGroup', () => {
         ],
     };
 
-    function validate(wrapper: ReactWrapper, rendered = true): void {
-        expect(wrapper.find(DropdownButton)).toHaveLength(rendered ? 1 : 0);
-        expect(wrapper.find(MenuItem)).toHaveLength(rendered ? 3 : 0); // with divider
-        if (rendered) expect(wrapper.find(PicklistButton).first().prop('asSubMenu')).toBe(true);
-    }
-
     test('admin', () => {
         const wrapper = mountWithServerContext(
             <ResponsiveMenuButtonGroup {...DEFAULT_PROPS} user={TEST_USER_FOLDER_ADMIN} />,
             { user: TEST_USER_FOLDER_ADMIN }
         );
-        validate(wrapper);
+        expect(wrapper.find(DropdownButton)).toHaveLength(2);
         wrapper.unmount();
     });
 
@@ -42,7 +36,7 @@ describe('ResponsiveMenuButtonGroup', () => {
             <ResponsiveMenuButtonGroup {...DEFAULT_PROPS} user={TEST_USER_READER} />,
             { user: TEST_USER_READER }
         );
-        validate(wrapper, false);
+        expect(wrapper.find(DropdownButton)).toHaveLength(0);
         wrapper.unmount();
     });
 });

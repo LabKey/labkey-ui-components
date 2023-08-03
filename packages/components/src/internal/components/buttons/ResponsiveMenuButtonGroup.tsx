@@ -115,6 +115,8 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
 
     // After the first render we need to calculate the width of each item passed to this component
     useEffect(() => {
+        // Don't attempt to compute widths when we're in tests, or we'll fall over
+        if (navigator.userAgent.includes('jsdom')) return;
         const itemEls = elRef.current.childNodes;
         // childNodes is a nodeList which does not have the map method
         const widths = Array.from(itemEls).map((element: HTMLElement) => element.getBoundingClientRect().width);

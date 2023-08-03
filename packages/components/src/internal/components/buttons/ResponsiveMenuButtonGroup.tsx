@@ -1,4 +1,4 @@
-import React, { ReactElement, FC, memo, useState, useEffect, useCallback, useRef, Fragment } from 'react';
+import React, { ReactElement, FC, memo, useState, useEffect, useCallback, useRef, Fragment, useMemo } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 import { hasPermissions, User } from '../base/models/User';
@@ -19,7 +19,8 @@ const MORE_SIZE = 70;
 
 export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
     const { items, user } = props;
-    const [renderedItems, setRenderedItems] = useState<ReactElement[]>(items.map(item => item.button));
+    const filteredItems = useMemo(() => items.filter(item => hasPermissions(user, [item.perm], false)), [items, user]);
+    const [renderedItems, setRenderedItems] = useState<ReactElement[]>(filteredItems.map(item => item.button));
     const [collapsedItems, setCollapsedItems] = useState<ReactElement[]>([]);
     const [itemWidths, setItemWidths] = useState<number[]>([]);
     const elRef = useRef<HTMLElement>(undefined);
@@ -80,7 +81,7 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
             // [Derive, Assay, Picklists, Jobs, More] on a larger screen
             // [Derive, Assay, Jobs, More] on a smaller screen
             let canRenderMore = true;
-            items.forEach((item, idx) => {
+            filteredItems.forEach((item, idx) => {
                 const itemWidth = itemWidths[idx];
 
                 // The button is likely being hidden due to permissions or something similar.
@@ -101,10 +102,10 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
             setRenderedItems(rendered);
         } else {
             // All buttons visible
-            setRenderedItems(items.map(item => item.button));
+            setRenderedItems(filteredItems.map(item => item.button));
             setCollapsedItems([]);
         }
-    }, [itemWidths, items]);
+    }, [itemWidths, filteredItems]);
 
     useEffect(() => {
         // Need to call computeButtonLayout here to compute the layout after first render
@@ -123,7 +124,7 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
         setItemWidths(widths);
     }, []);
 
-    const buttons = items.filter(item => hasPermissions(user, [item.perm], false)).map(item => item.button);
+    const buttons = filteredItems.map(item => item.button);
 
     if (buttons.length === 0) return null;
 

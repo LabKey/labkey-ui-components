@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Update parsing of duplicate key errors to account for single-field keys
+
 ### version 2.357.0
 *Released*: 1 August 2023
 - EditableGrid prop to hideTopControls

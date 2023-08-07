@@ -155,7 +155,7 @@ describe('resolveErrorMessage', () => {
         );
     });
 
-    test('Duplicate key - Postgres', () => {
+    test('Duplicate single-field key - Postgres', () => {
         const error = {
             exception:
                 'ERROR: duplicate key value violates unique constraint "c7094d54716_st_sample_move_name"\n Detail: Key (name)=(PtoC2-0) already exists.',

@@ -170,7 +170,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
         const hasLeftButtonsComp = ButtonsComponent !== undefined;
         // We do not want to render the buttons component until after we've loaded the query model at least once,
         // otherwise the ResponsiveMenuButtonGroup will not be able to collapse buttons correctly.
-        const showButtonsComponent = hasLeftButtonsComp && hasData;
+        const showButtonsComponent = hasLeftButtonsComp && (hasData || rowsError);
         const hiddenWithLeftButtonsCls = classNames({ 'hidden-md hidden-sm hidden-xs': hasLeftButtonsComp });
 
         const paginationComp = (

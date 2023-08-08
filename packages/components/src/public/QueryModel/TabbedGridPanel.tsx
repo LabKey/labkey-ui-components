@@ -22,8 +22,6 @@ import { exportTabsXlsx } from '../../internal/actions';
 
 import { useNotificationsContext } from '../../internal/components/notifications/NotificationsContext';
 
-import { LoadingState } from '../LoadingState';
-
 import { GridPanel, GridPanelProps } from './GridPanel';
 import { InjectedQueryModels } from './withQueryModels';
 import { QueryModel } from './QueryModel';

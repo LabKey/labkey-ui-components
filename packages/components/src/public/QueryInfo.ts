@@ -67,7 +67,7 @@ const QUERY_INFO_DEFAULTS = {
 
 // Commented out attributes are not used in app, but are returned by the server
 export class QueryInfo {
-    private declare appEditableTable: boolean; // use isAppEditable()
+    declare appEditableTable: boolean; // use isAppEditable()
     declare altUpdateKeys: Set<string>;
     declare disabledSystemFields: Set<string>;
     // declare canEdit: boolean;

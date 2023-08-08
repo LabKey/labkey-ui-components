@@ -1,6 +1,16 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.358.0
+*Released*: 8 August 2023
+- GridPanel ButtonBar
+  - Slightly change DOM layout to make size calculations easier
+  - Do not render buttons until we've first loaded data
+- Update ResponsiveMenuButtonGroup to calculate available space and render as many buttons as possible
+  - Buttons that cannot fit will be rendered under a more menu
+- QueryInfo: appEditableTable is no longer private
+  - We need to be able to set this property for tests
+
 ### version 2.357.0
 *Released*: 1 August 2023
 - EditableGrid prop to hideTopControls

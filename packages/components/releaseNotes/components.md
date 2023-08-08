@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 2.358.0
-*Released*: 7 August 2023
+*Released*: 8 August 2023
 - GridPanel ButtonBar
   - Slightly change DOM layout to make size calculations easier
   - Do not render buttons until we've first loaded data

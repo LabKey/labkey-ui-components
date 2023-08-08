@@ -29,6 +29,12 @@
                 color: $gray-dark;
             }
         }
+
+        & > li.disabled {
+            & > a {
+                color: $gray-light;
+            }
+        }
     }
 }
 

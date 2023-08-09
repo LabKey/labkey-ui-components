@@ -1,6 +1,6 @@
 import mock, { proxy } from 'xhr-mock';
 
-import { initDomainPropertiesMocks, initQueryGridMocks, initUserPropsMocks } from './mock';
+import { initDomainPropertiesMocks, initQueryGridMocks } from './mock';
 
 /**
  * Use this method in beforeAll() for your jest tests and you'll have full access

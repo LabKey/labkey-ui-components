@@ -11,7 +11,6 @@ import { QueryInfoForm } from '../forms/QueryInfoForm';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 import { hasPermissions, User } from '../base/models/User';
-import { getQueryDetails } from '../../query/api';
 import { SCHEMAS } from '../../schemas';
 import { insertColumnFilter, QueryColumn } from '../../../public/QueryColumn';
 import { FileInput } from '../forms/input/FileInput';
@@ -23,8 +22,7 @@ import { caseInsensitive } from '../../util/utils';
 
 import { GroupsList } from '../permissions/GroupsList';
 
-import { SecurityAPIWrapper } from '../security/APIWrapper';
-import { getDefaultAPIWrapper } from '../../APIWrapper';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { getUserDetailsRowData, updateUserDetails } from './actions';
 
@@ -55,7 +53,7 @@ interface State {
 }
 
 interface Props {
-    api?: SecurityAPIWrapper;
+    api?: ComponentsAPIWrapper;
     getIsDirty: () => boolean;
     onCancel: () => void;
     onSuccess: (result: {}, shouldReload: boolean) => void;
@@ -66,7 +64,7 @@ interface Props {
 
 export class UserProfile extends PureComponent<Props, State> {
     static defaultProps = {
-        api: getDefaultAPIWrapper().security,
+        api: getDefaultAPIWrapper(),
     };
 
     constructor(props: Props) {
@@ -83,17 +81,19 @@ export class UserProfile extends PureComponent<Props, State> {
     }
 
     componentDidMount = async (): Promise<void> => {
+        const { user, api } = this.props;
+
         try {
-            const queryInfo = await getQueryDetails(SCHEMAS.CORE_TABLES.USERS);
+            const queryInfo = await api.query.getQueryDetails(SCHEMAS.CORE_TABLES.USERS);
             this.setState(() => ({ queryInfo }));
         } catch (e) {
             console.error(e.message);
             this.setState(() => ({ hasError: true }));
         }
 
-        if (hasPermissions(this.props.user, [PermissionTypes.CanSeeUserDetails])) {
+        if (hasPermissions(user, [PermissionTypes.CanSeeUserDetails])) {
             try {
-                const response = await this.props.api.getUserPropertiesForOther(this.props.user.id);
+                const response = await api.security.getUserPropertiesForOther(user.id);
                 const groups = caseInsensitive(response, 'Groups');
                 this.setState(() => ({ groups }));
             } catch (e) {

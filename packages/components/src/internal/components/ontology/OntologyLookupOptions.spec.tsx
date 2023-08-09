@@ -2,8 +2,6 @@ import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { List } from 'immutable';
 
-import { sleep } from '../../test/testHelpers';
-
 import { SectionHeading } from '../domainproperties/SectionHeading';
 import { INTEGER_TYPE, ONTOLOGY_LOOKUP_TYPE, TEXT_TYPE } from '../domainproperties/PropDescType';
 import { DOMAIN_FIELD_FULLY_LOCKED } from '../domainproperties/constants';
@@ -11,6 +9,8 @@ import { DOMAIN_FIELD_FULLY_LOCKED } from '../domainproperties/constants';
 import { DomainField } from '../domainproperties/models';
 
 import { getDomainPropertiesTestAPIWrapper } from '../domainproperties/APIWrapper';
+
+import { waitForLifecycle } from '../../test/enzymeTestHelpers';
 
 import { OntologyLookupOptions } from './OntologyLookupOptions';
 import { OntologyConceptSelectButton } from './OntologyConceptSelectButton';
@@ -125,8 +125,7 @@ describe('OntologyLookupOptions', () => {
         const wrapper = mount(
             <OntologyLookupOptions {...getDefaultProps()} field={field} domainFields={domainFields} />
         );
-        await sleep();
-        wrapper.update();
+        await waitForLifecycle(wrapper);
 
         validate(wrapper, false, undefined, [null], [null]);
         wrapper.unmount();
@@ -137,8 +136,7 @@ describe('OntologyLookupOptions', () => {
         const wrapper = mount(
             <OntologyLookupOptions {...getDefaultProps()} field={field1} domainFields={domainFields} />
         );
-        await sleep();
-        wrapper.update();
+        await waitForLifecycle(wrapper);
 
         validate(wrapper, false, 'NCIT', [null, 'field2', 'field4'], [null, 'field3', 'field4']);
         wrapper.unmount();
@@ -154,8 +152,7 @@ describe('OntologyLookupOptions', () => {
                 lockType={DOMAIN_FIELD_FULLY_LOCKED}
             />
         );
-        await sleep();
-        wrapper.update();
+        await waitForLifecycle(wrapper);
 
         validate(wrapper, true, 'NCIT', [null, 'field2', 'field4'], [null, 'field3', 'field4']);
         wrapper.unmount();

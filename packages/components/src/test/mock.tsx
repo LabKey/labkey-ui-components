@@ -522,15 +522,6 @@ export function initLineageMocks() {
     });
 }
 
-export function initUserPropsMocks(): void {
-    // TODO conditionalize based on userId
-    mock.get(/.*\/user\/getUserProps.*/, jsonResponse(userPropsInfo));
-}
-
-export function initServerNotificationMocks(): void {
-    mock.get(/.*\/getUserNotification.*/, jsonResponse(serverNotifications));
-}
-
 export function initAssayPickerOptions(): void {
     mock.get(/.*\/assay\/?.*\/getAssayTypeSelectOptions.*/, jsonResponse(getAssayDesignSectionOptions));
 }

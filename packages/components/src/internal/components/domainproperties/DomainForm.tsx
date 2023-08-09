@@ -65,7 +65,6 @@ import {
     getDomainHeaderName,
     getDomainPanelClass,
     getDomainPanelHeaderId,
-    getMaxPhiLevel,
     handleDomainUpdates,
     handleSystemFieldUpdates,
     mergeDomainFields,
@@ -105,9 +104,12 @@ import {
 } from './propertiesUtil';
 import { DomainPropertiesGrid } from './DomainPropertiesGrid';
 import { SystemFields } from './SystemFields';
-import { LoadingSpinner } from "../base/LoadingSpinner";
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { DomainPropertiesAPIWrapper } from './APIWrapper';
+import { getDefaultAPIWrapper } from '../../APIWrapper';
 
 interface IDomainFormInput {
+    api?: DomainPropertiesAPIWrapper;
     appDomainHeaderRenderer?: HeaderRenderer;
     appPropertiesOnly?: boolean; // Flag to indicate if LKS specific properties/features should be excluded, default to false
     collapsible?: boolean;
@@ -188,6 +190,7 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput> {
 export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomainFormState> {
     refsArray: DomainRow[];
     static defaultProps = {
+        api: getDefaultAPIWrapper().domain,
         helpNoun: 'field designer',
         helpTopic: FIELD_EDITOR_TOPIC,
         showHeader: true,
@@ -228,13 +231,13 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     componentDidMount = async (): Promise<void> => {
-        const { domain, maxPhiLevel, useTheme, onChange } = this.props;
+        const { domain, maxPhiLevel, useTheme, onChange, api } = this.props;
 
         this.setState(() => ({ isLoading: true }));
 
         if (!maxPhiLevel) {
             try {
-                const nextMaxPhiLevel = await getMaxPhiLevel(domain.container);
+                const nextMaxPhiLevel = await api.getMaxPhiLevel(domain.container);
                 this.setState({ maxPhiLevel: nextMaxPhiLevel });
             } catch (error) {
                 console.error('Unable to retrieve max PHI level.', error);

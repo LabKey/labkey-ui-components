@@ -7,6 +7,7 @@ import {
     setGenId,
     hasExistingDomainData,
     fetchDomainDetails,
+    getMaxPhiLevel,
 } from './actions';
 import { getDataClassDetails } from './dataclasses/actions';
 import { DomainDesign, DomainDetails, NameExpressionsValidationResults } from './models';
@@ -21,6 +22,7 @@ export interface DomainPropertiesAPIWrapper {
     getDataClassDetails: (query?: SchemaQuery, domainId?: number, containerPath?: string) => Promise<DomainDetails>;
     getDomainNamePreviews: (schemaQuery?: SchemaQuery, domainId?: number, containerPath?: string) => Promise<string[]>;
     getGenId: (rowId: number, kindName: 'SampleSet' | 'DataClass', containerPath?: string) => Promise<number>;
+    getMaxPhiLevel: (containerPath?: string) => Promise<string>;
     hasExistingDomainData: (
         kindName: 'SampleSet' | 'DataClass',
         dataTypeLSID?: string,
@@ -46,6 +48,7 @@ export class DomainPropertiesAPIWrapper implements DomainPropertiesAPIWrapper {
     getDataClassDetails = getDataClassDetails;
     getDomainNamePreviews = getDomainNamePreviews;
     getGenId = getGenId;
+    getMaxPhiLevel = getMaxPhiLevel;
     hasExistingDomainData = hasExistingDomainData;
     setGenId = setGenId;
     validateDomainNameExpressions = validateDomainNameExpressions;
@@ -63,6 +66,7 @@ export function getDomainPropertiesTestAPIWrapper(
         getDataClassDetails: mockFn(),
         getDomainNamePreviews: mockFn(),
         getGenId: mockFn(),
+        getMaxPhiLevel: mockFn(),
         hasExistingDomainData: mockFn(),
         setGenId: mockFn(),
         validateDomainNameExpressions: mockFn(),

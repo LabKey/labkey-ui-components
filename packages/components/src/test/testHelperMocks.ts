@@ -1,6 +1,6 @@
 import mock, { proxy } from 'xhr-mock';
 
-import { initDomainPropertiesMocks, initQueryGridMocks, initUserPropsMocks } from './mock';
+import { initQueryGridMocks } from './mock';
 
 /**
  * Use this method in beforeAll() for your jest tests and you'll have full access
@@ -10,8 +10,6 @@ export function initUnitTestMocks(extraMocks?: Array<() => void>): void {
     window['__react-beautiful-dnd-disable-dev-warnings'] = true;
     mock.setup();
     initQueryGridMocks();
-    initDomainPropertiesMocks();
-    initUserPropsMocks();
     extraMocks?.forEach(extraMock => extraMock());
     mock.use(proxy);
 }

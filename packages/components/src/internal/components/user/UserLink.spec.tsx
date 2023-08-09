@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { mountWithServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 import { TEST_USER_APP_ADMIN, TEST_USER_READER } from '../../userFixtures';
 
 import { UserLink, UserLinkList } from './UserLink';
 
 describe('UserLink', () => {
     test('unknown', () => {
-        const wrapper = mountWithServerContext(<UserLink unknown />, { user: TEST_USER_APP_ADMIN });
+        const wrapper = mountWithAppServerContext(<UserLink unknown />, {}, { user: TEST_USER_APP_ADMIN });
         expect(wrapper.find('a')).toHaveLength(0);
         expect(wrapper.find('span')).toHaveLength(1);
         expect(wrapper.find('.gray-text')).toHaveLength(1);
@@ -16,9 +16,13 @@ describe('UserLink', () => {
     });
 
     test('displayValue without userId', () => {
-        const wrapper = mountWithServerContext(<UserLink userDisplayValue="Test display" />, {
-            user: TEST_USER_APP_ADMIN,
-        });
+        const wrapper = mountWithAppServerContext(
+            <UserLink userDisplayValue="Test display" />,
+            {},
+            {
+                user: TEST_USER_APP_ADMIN,
+            }
+        );
         expect(wrapper.find('a')).toHaveLength(0);
         expect(wrapper.find('span')).toHaveLength(1);
         expect(wrapper.find('.gray-text')).toHaveLength(0);
@@ -27,7 +31,7 @@ describe('UserLink', () => {
     });
 
     test('userId without displayValue', () => {
-        const wrapper = mountWithServerContext(<UserLink userId={1} />, { user: TEST_USER_APP_ADMIN });
+        const wrapper = mountWithAppServerContext(<UserLink userId={1} />, {}, { user: TEST_USER_APP_ADMIN });
         expect(wrapper.find('a')).toHaveLength(0);
         expect(wrapper.find('span')).toHaveLength(1);
         expect(wrapper.find('.gray-text')).toHaveLength(1);
@@ -36,9 +40,13 @@ describe('UserLink', () => {
     });
 
     test('userId with displayValue', async () => {
-        const wrapper = mountWithServerContext(<UserLink userId={1} userDisplayValue="Test display" />, {
-            user: TEST_USER_APP_ADMIN,
-        });
+        const wrapper = mountWithAppServerContext(
+            <UserLink userId={1} userDisplayValue="Test display" />,
+            {},
+            {
+                user: TEST_USER_APP_ADMIN,
+            }
+        );
         await waitForLifecycle(wrapper);
         expect(wrapper.find('a')).toHaveLength(1);
         expect(wrapper.find('.clickable')).toHaveLength(1);
@@ -49,9 +57,13 @@ describe('UserLink', () => {
     });
 
     test('user cannot ReadUserDetails, not self', async () => {
-        const wrapper = mountWithServerContext(<UserLink userId={1} userDisplayValue="Test display" />, {
-            user: TEST_USER_READER,
-        });
+        const wrapper = mountWithAppServerContext(
+            <UserLink userId={1} userDisplayValue="Test display" />,
+            {},
+            {
+                user: TEST_USER_READER,
+            }
+        );
         await waitForLifecycle(wrapper);
         expect(wrapper.find('a')).toHaveLength(0);
         expect(wrapper.find('.clickable')).toHaveLength(0);
@@ -62,8 +74,9 @@ describe('UserLink', () => {
     });
 
     test('user cannot ReadUserDetails, self', async () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <UserLink userId={TEST_USER_READER.id} userDisplayValue="Test display" />,
+            {},
             { user: TEST_USER_READER }
         );
         await waitForLifecycle(wrapper);
@@ -78,13 +91,14 @@ describe('UserLink', () => {
 
 describe('UserLinkList', () => {
     test('all users', () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <UserLinkList
                 users={[
                     { id: 1, displayName: 'a', type: 'u' },
                     { id: 2, displayName: 'b', type: 'u' },
                 ]}
             />,
+            {},
             { user: TEST_USER_APP_ADMIN }
         );
         expect(wrapper.find(UserLink)).toHaveLength(2);
@@ -93,7 +107,7 @@ describe('UserLinkList', () => {
     });
 
     test('users and groups', () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <UserLinkList
                 users={[
                     { id: 1, displayName: 'a', type: 'u' },
@@ -101,6 +115,7 @@ describe('UserLinkList', () => {
                     { id: 3, displayName: 'c', type: 'g' },
                 ]}
             />,
+            {},
             { user: TEST_USER_APP_ADMIN }
         );
         expect(wrapper.find(UserLink)).toHaveLength(2);

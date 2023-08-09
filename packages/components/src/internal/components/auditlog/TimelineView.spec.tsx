@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import { TIMELINE_DATA } from '../../../test/data/constants';
 
 import { TEST_USER_APP_ADMIN, TEST_USER_READER } from '../../userFixtures';
-import { mountWithServerContext } from '../../test/enzymeTestHelpers';
+import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 import { UserLink } from '../user/UserLink';
 
 import { TimelineEventModel } from './models';
@@ -87,7 +87,7 @@ describe('<TimelineView />', () => {
                 content: <span>hello</span>,
             };
         };
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <TimelineView
                 events={events}
                 showRecentFirst={false}
@@ -98,6 +98,7 @@ describe('<TimelineView />', () => {
                 getInfoBubbleContent={getInfoBubbleContent}
                 user={TEST_USER_APP_ADMIN}
             />,
+            {},
             { user: TEST_USER_APP_ADMIN }
         );
 

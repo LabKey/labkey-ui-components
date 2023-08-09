@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import mock, { MockResponse, proxy, delay } from 'xhr-mock';
+import mock, { MockResponse, delay } from 'xhr-mock';
 import { fromJS } from 'immutable';
 
 import mixturesQueryInfo from './data/mixtures-getQueryDetails.json';
@@ -22,16 +22,11 @@ import mixtureTypesQuery from './data/mixtureTypes-getQuery.json';
 import mixturesQuery from './data/mixtures-getQuery.json';
 import mixturesQueryPaging from './data/mixtures-getQueryPaging.json';
 import mixturesReportInfos from './data/mixtures-getReportInfos.json';
-import samplesInsert from './data/samples-insertRows.json';
 import noDataQuery from './data/noData-getQuery.json';
-import getSchemasJson from './data/getSchemas.json';
-import assayGetSchemasJson from './data/assay-getSchemas.json';
-import assayGetQueriesJson from './data/assay-getQueries.json';
 import sampleSetQueryInfo from './data/samplesSet-getQueryDetails.json';
 import sampleDetailsQuery from './data/sampleDetails-getQuery.json';
 import lookuplistQueryInfo from './data/lookuplist-getQueryDetails.json';
 import lookuplistQuery from './data/lookuplist-getQuery.json';
-import samplesUpdate from './data/samples-updateRows.json';
 import nameExpressionQueryInfo from './data/nameExpressionSet-getQueryDetails.json';
 import nameExpressionSelected from './data/nameExpressionSet-getSelected.json';
 import nameExpressionSelectedQuery from './data/nameExpressionSet-selected-getQuery.json';
@@ -44,21 +39,13 @@ import dataClassesQuery from './data/dataClasses-getQuery.json';
 import dataClassesQueryInfo from './data/dataClasses-getQueryDetails.json';
 import assayRunsWithQCFlagsQueryInfo from './data/assayQCFlagsWarning-getQueryDetails.json';
 import assayRunsWithQCFlagsQuery from './data/assayQCFlagsWarning-getQuery.json';
-import assayFileDuplicateCheck from './data/assay-assayFileDuplicateCheck.json';
-import assayFileNoDuplicateCheck from './data/assay-assayFileDuplicateCheck_false.json';
 import assayAssayListDetails from './data/assay-assayListDetails.json';
 import assayAssayList from './data/assay-assayList.json';
-import deleteAllConfirmation from './data/deleteAll-getMaterialDeleteConfirmationData.json';
-import deleteNoneConfirmation from './data/deleteNone-getMaterialDeleteConfirmationData.json';
-import deleteOneConfirmation from './data/deleteOne-getMaterialDeleteConfirmationData.json';
-import deleteSomeConfirmation from './data/deleteSome-getMaterialDeleteConfirmationData.json';
 import sampleSetAllFieldTypesQueryInfo from './data/sampleSetAllFieldTypes-getQueryDetails.json';
 import assayGpatRunsQueryInfo from './data/assayGpatRuns-getQueryDetails.json';
 import assayGpatDataQueryInfo from './data/assayGpatData-getQueryDetails.json';
 import assayGpatRunData from './data/assayGpatRuns-getQuery.json';
 import getAssayDesignSectionOptions from './data/assay-getAssayDesignSelectOptions.json';
-import filePreviewData from './data/property-getFilePreview.json';
-import visualizationConfig from './data/visualization-getVisualization.json';
 import lineageRunDetail from './data/aminoAcidDetail-getQuery.json';
 import lineageRunData from './data/experiment-lineage-run.json';
 import lineageSampleData from './data/experiment-lineage.json';
@@ -73,15 +60,8 @@ import labbookQueryInfo from './data/labbook-getQueryDetails.json';
 import labbookQuery from './data/labbook-getQuery.json';
 import usersQueryInfo from './data/users-getQueryDetails.json';
 import usersQuery from './data/users-getQuery.json';
-import userPropsInfo from './data/user-getUserProps.json';
-import getMaxPhiLevelJson from './data/security-GetMaxPhiLevel.json';
-import getRolesJson from './data/security-getRoles.json';
-import getPrincipalsJson from './data/security-getPrincipals.json';
 import getMembersJson from './data/security-getMembers.json';
 import getQueryDetailsPrincipalsJson from './data/security-getQueryDetailsPrincipals.json';
-import inferDomainJson from './data/property-inferDomain.json';
-import getValidPublishTargetsJson from './data/assay-getValidPublishTargets.json';
-import browseData from './data/example_browse_data_tree_api.json';
 import assayAminoAcidsDataQueryInfo from './data/assayAminoAcidsData-getQueryDetails.json';
 import assayAminoAcidsDataQuery from './data/assayAminoAcidsData-getQuery.json';
 import sampleWithParentsQuery from './data/sampleWithParents-getQuery.json';
@@ -96,19 +76,10 @@ import secondSourceQuery from './data/secondSource-getQuery.json';
 import secondSourceQueryDetails from './data/secondSource-getQueryDetails.json';
 import source1Query from './data/source1-getQuery.json';
 import source1QueryDetails from './data/source1-getQueryDetails.json';
-import issuesProjectGroups from './data/issues-getProjectGroups.json';
-import issuesUsersForGroup from './data/issues-getUsersForGroup.json';
 import ontologiesQuery from './data/ontologies-getQuery.json';
-import serverNotifications from './data/notification-getUserNotificationsForPanel.json';
 import pipelineJobQueryDetails from './data/pipelineJob-getQueryDetails.json';
 import pipelineJobQuery from './data/pipelineJob-getQuery.json';
 import pipelineStatusDetails from './data/pipelineStatusDetails.json';
-import getModulesInfo from './data/admin-getModules.json';
-import getRegisteredProductsInfo from './data/product-getRegisteredProducts.json';
-import getProjectContainersInfo from './data/project-getProjectContainers.json';
-import getLKSMMenuSectionsInfo from './data/product-getMenuSections-lksm.json';
-import getLKBMenuSectionsInfo from './data/product-getMenuSections-lkb.json';
-import getFolderTabsInfo from './data/admin-getFolderTabs.json';
 import getOntologyChildPathsInfo from './data/ontologies-getChildPaths.json';
 import getOntologiesChildPathsInfo from './data/ontologies-getRootChildPaths.json';
 import getOntologyInfo from './data/ontologies-getOntology.json';
@@ -117,7 +88,6 @@ import getConceptParentPaths from './data/ontologies-getParentPaths.json';
 import getOntologyConceptSearchInfo from './data/ontologies-searchConcepts.json';
 import getSearchEmptyInfo from './data/search-jsonEmpty.json';
 
-export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
 
 const QUERY_DETAILS_RESPONSES = fromJS({
@@ -268,121 +238,6 @@ function getSelections() {
 
 function saveSelections(selections) {
     localStorage.setItem('__selections__', JSON.stringify(selections));
-}
-
-export function initMocks() {
-    mock.setup();
-
-    initQueryGridMocks(250);
-    initLineageMocks();
-    initUserPropsMocks();
-    initDomainPropertiesMocks();
-    initPipelineStatusDetailsMocks();
-    initOnotologyMocks();
-    initAssayPickerOptions();
-
-    mock.post(/.*\/query\/?.*\/executeSql.*/, (req, res) => {
-        const body = decodeURIComponent(req.body());
-
-        let responseBody;
-        if (body.indexOf('"core"') > -1 && body.indexOf('FROM Principals') > -1) {
-            responseBody = getPrincipalsJson;
-        } else if (body.indexOf('"core"') > -1 && body.indexOf('FROM Members') > -1) {
-            responseBody = getMembersJson;
-        }
-
-        if (!responseBody) {
-            console.log(`executeSql response not found! "${body}"`);
-        }
-
-        return jsonResponse(responseBody, res);
-    });
-
-    mock.post(/.*\/query\/?.*\/updateRows.*/, (req, res) => {
-        const bodyParams = req.body().toLowerCase();
-        let responseBody;
-
-        if (bodyParams.indexOf('"queryname":"samples"') > -1) {
-            responseBody = samplesUpdate;
-        }
-
-        return jsonResponse(responseBody, res);
-    });
-
-    // TODO conditionalize based on queryName
-    mock.post(/.*\/query\/?.*\/insertRows.*/, jsonResponse(samplesInsert));
-
-    mock.get(/.*ConfirmationData.*/, (req, res) => {
-        const queryParams = req.url().query;
-        let responseBody;
-        const selectionKey = queryParams.dataRegionSelectionKey;
-        if (selectionKey === 'deleteNone') {
-            responseBody = deleteNoneConfirmation;
-        } else if (selectionKey === 'deleteOne') {
-            responseBody = deleteOneConfirmation;
-        } else if (selectionKey === 'deleteSome') {
-            responseBody = deleteSomeConfirmation;
-        } else if (selectionKey === 'deleteAll') {
-            responseBody = deleteAllConfirmation;
-        }
-
-        return jsonResponse(responseBody, res);
-    });
-
-    mock.post(/.*FileDuplicateCheck.*/, (req, res) => {
-        const bodyParams = req.body().toLowerCase();
-        let responseBody;
-
-        if (bodyParams.indexOf('.csv') > -1 || bodyParams.indexOf('.tsv') > -1) {
-            responseBody = assayFileDuplicateCheck;
-        } else if (bodyParams.indexOf('.xls') > -1) {
-            responseBody = assayFileNoDuplicateCheck;
-        }
-
-        return jsonResponse(responseBody, res);
-    });
-
-    mock.get(/.*getFilePreview.*/, (req, res) => {
-        const queryParams = req.url().query;
-        let responseBody;
-
-        if (queryParams.file === '1949' || queryParams.file === '2010') {
-            responseBody = filePreviewData;
-        }
-
-        return jsonResponse(responseBody, res);
-    });
-
-    mock.post(/.*\/visualization\/?.*\/getVisualization.*/, jsonResponse(visualizationConfig));
-
-    mock.post(/.*\/property\/?.*\/inferDomain.*/, jsonResponse(inferDomainJson));
-
-    mock.get(/.*\/security\/?.*\/getRoles.*/, jsonResponse(getRolesJson));
-
-    mock.get(/.*browseData.*/, delay(jsonResponse(browseData), 1000));
-
-    mock.get(/.*getUserNotification.*/, jsonResponse(serverNotifications));
-
-    mock.post(/.*getModules.*/, jsonResponse(getModulesInfo));
-
-    mock.post(/.*getRegisteredProducts.*/, delay(jsonResponse(getRegisteredProductsInfo), 1000));
-
-    mock.post(/.*getFolderTabs.*/, jsonResponse(getFolderTabsInfo));
-
-    mock.get(/.*menuSections.*/, (req, res) => {
-        const queryParams = req.url().query;
-
-        let responseBody = getLKSMMenuSectionsInfo;
-        if (queryParams.currentProductId === 'Biologics') {
-            responseBody = getLKBMenuSectionsInfo;
-        }
-
-        return jsonResponse(responseBody, res);
-    });
-
-    mock.get(/.*getContainers.*/, jsonResponse(getProjectContainersInfo));
-
-    mock.use(proxy);
 }
 
 export function initQueryGridMocks(delayMs = undefined) {
@@ -596,57 +451,6 @@ export function initQueryGridMocks(delayMs = undefined) {
     mock.get(/.*\/reports\/?.*\/getReportInfos.*/, jsonResponse(mixturesReportInfos));
 }
 
-export function initDomainPropertiesMocks() {
-    mock.get(/.*\/security\/?.*\/getMaxPhiLevel.*/, jsonResponse(getMaxPhiLevelJson));
-
-    mock.get(/.*\/assay\/?.*\/getValidPublishTargets.*/, jsonResponse(getValidPublishTargetsJson));
-
-    mock.get(/.*\/query\/?.*\/getQueries.*/, (req, res) => {
-        const queryParams = req.url().query;
-        let responseBody;
-
-        if (queryParams.schemaName.toLowerCase() === 'assay') {
-            responseBody = assayGetQueriesJson;
-        }
-
-        return jsonResponse(responseBody, res);
-    });
-
-    mock.get(/.*\/query\/?.*\/getSchemas.*/, (req, res) => {
-        const queryParams = req.url().query;
-        let responseBody;
-
-        if (queryParams.schemaName === undefined) {
-            responseBody = getSchemasJson;
-        } else if (queryParams.schemaName.toLowerCase() === 'assay') {
-            responseBody = assayGetSchemasJson;
-        }
-
-        return jsonResponse(responseBody, res);
-    });
-
-    mock.get(/.*getProjectGroups.*/, (req, res) => {
-        const responseBody = issuesProjectGroups;
-        return jsonResponse(responseBody, res);
-    });
-
-    mock.get(/.*getUsersForGroup.*/, (req, res) => {
-        const queryParams = req.url().query;
-        let responseBody;
-
-        if (queryParams.groupId === '') {
-            responseBody = issuesUsersForGroup.filter(users => {
-                return users.groupId === null;
-            });
-        } else if (queryParams.groupId === '-1' || queryParams.groupId === '-2' || queryParams.groupId === '1025') {
-            responseBody = issuesUsersForGroup.filter(users => {
-                return users.groupId !== null && users.groupId.toString() === queryParams.groupId;
-            });
-        }
-        return jsonResponse(responseBody, res);
-    });
-}
-
 export function initLineageMocks() {
     mock.get(/.*\/experiment\/?.*\/lineage.*/, (req, res) => {
         const queryParams = req.url().query;
@@ -658,15 +462,6 @@ export function initLineageMocks() {
 
         return jsonResponse(responseBody, res);
     });
-}
-
-export function initUserPropsMocks(): void {
-    // TODO conditionalize based on userId
-    mock.get(/.*\/user\/getUserProps.*/, jsonResponse(userPropsInfo));
-}
-
-export function initServerNotificationMocks(): void {
-    mock.get(/.*\/getUserNotification.*/, jsonResponse(serverNotifications));
 }
 
 export function initAssayPickerOptions(): void {

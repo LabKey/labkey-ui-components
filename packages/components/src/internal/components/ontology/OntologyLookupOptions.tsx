@@ -2,10 +2,9 @@ import React, { PureComponent, ReactNode, FC, memo } from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 
-import { ADVANCED_FIELD_EDITOR_TOPIC, HelpLink, helpLinkNode, ONTOLOGY_LOOKUP_TOPIC } from '../../util/helpLinks';
+import { ADVANCED_FIELD_EDITOR_TOPIC, HelpLink, ONTOLOGY_LOOKUP_TOPIC } from '../../util/helpLinks';
 
 import { isFieldFullyLocked } from '../domainproperties/propertiesUtil';
-import { fetchOntologies } from '../domainproperties/actions';
 import { getIndexFromId, createFormInputId } from '../domainproperties/utils';
 import {
     DOMAIN_FIELD_ONTOLOGY_IMPORT_COL,
@@ -20,14 +19,28 @@ import { SectionHeading } from '../domainproperties/SectionHeading';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
+import { sampleManagerIsPrimaryApp } from '../../app/utils';
+
+import { DomainPropertiesAPIWrapper } from '../domainproperties/APIWrapper';
+
+import { getDefaultAPIWrapper } from '../../APIWrapper';
+
 import { OntologyModel, PathModel } from './models';
 import { OntologyConceptSelectButton } from './OntologyConceptSelectButton';
 import { fetchParentPaths, getParentsConceptCodePath } from './actions';
-import { isOntologyEnabled, sampleManagerIsPrimaryApp } from '../../app/utils';
 
-const LEARN_MORE = <p>Learn more about{' '}<HelpLink topic={sampleManagerIsPrimaryApp() ? ADVANCED_FIELD_EDITOR_TOPIC : ONTOLOGY_LOOKUP_TOPIC}>ontology integration</HelpLink>{' '}in LabKey.</p>;
+const LEARN_MORE = (
+    <p>
+        Learn more about{' '}
+        <HelpLink topic={sampleManagerIsPrimaryApp() ? ADVANCED_FIELD_EDITOR_TOPIC : ONTOLOGY_LOOKUP_TOPIC}>
+            ontology integration
+        </HelpLink>{' '}
+        in LabKey.
+    </p>
+);
 
 interface Props extends ITypeDependentProps {
+    api?: DomainPropertiesAPIWrapper;
     domainContainerPath: string;
     domainFields: List<DomainField>;
     field: DomainField;
@@ -40,16 +53,20 @@ interface State {
 }
 
 export class OntologyLookupOptions extends PureComponent<Props, State> {
+    static defaultProps = {
+        api: getDefaultAPIWrapper().domain,
+    };
+
     state: Readonly<State> = {
         loading: true,
         ontologies: [],
     };
 
     componentDidMount = async (): Promise<void> => {
-        const { domainContainerPath } = this.props;
+        const { domainContainerPath, api } = this.props;
 
         try {
-            const newOntologies = await fetchOntologies(domainContainerPath);
+            const newOntologies = await api.fetchOntologies(domainContainerPath);
             this.setState(
                 () => ({
                     loading: false,

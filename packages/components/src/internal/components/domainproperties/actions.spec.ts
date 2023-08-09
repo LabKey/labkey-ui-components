@@ -17,11 +17,9 @@ import { List } from 'immutable';
 
 import { Domain } from '@labkey/api';
 
-import { initUnitTestMocks } from '../../../test/testHelperMocks';
-
 import { QueryColumn } from '../../../public/QueryColumn';
 
-import { ConceptModel } from '../ontology/models';
+import { ConceptModel, OntologyModel } from '../ontology/models';
 
 import { createFormInputId } from './utils';
 import {
@@ -77,10 +75,7 @@ import {
     SEVERITY_LEVEL_WARN,
     STRING_RANGE_URI,
 } from './constants';
-
-beforeAll(() => {
-    initUnitTestMocks();
-});
+import { getDomainPropertiesTestAPIWrapper } from './APIWrapper';
 
 describe('domain properties actions', () => {
     test('create id', () => {
@@ -382,8 +377,22 @@ describe('domain properties actions', () => {
     });
 
     test('getAvailableTypesForOntology', async () => {
+        const api = getDomainPropertiesTestAPIWrapper(jest.fn, {
+            fetchOntologies: jest.fn().mockResolvedValue([
+                new OntologyModel({
+                    rowId: 2,
+                    name: "Test HOM-UCARE-->\">'>'\"<script>alert('8(');</script>",
+                    abbreviation: '45887',
+                }),
+                new OntologyModel({
+                    rowId: 1,
+                    name: 'Test National Cancer Institute Thesaurus',
+                    abbreviation: 'NCIT',
+                }),
+            ]),
+        });
         const domain = DomainDesign.create({});
-        const types = await getAvailableTypesForOntology(domain);
+        const types = await getAvailableTypesForOntology(api, domain);
         expect(types.contains(FLAG_TYPE)).toBeTruthy();
         expect(types.contains(FILE_TYPE)).toBeFalsy();
         expect(types.contains(ATTACHMENT_TYPE)).toBeFalsy();

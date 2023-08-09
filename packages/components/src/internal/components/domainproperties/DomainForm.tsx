@@ -247,7 +247,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         // if the Ontology module is available, get the updated set of available data types
         if (hasModule(ONTOLOGY_MODULE_NAME)) {
             try {
-                const availableTypes = await getAvailableTypesForOntology(domain);
+                const availableTypes = await getAvailableTypesForOntology(api, domain);
                 this.setState({ availableTypes });
             } catch (error) {
                 console.error('Failed to retrieve available types for Ontology.', error);

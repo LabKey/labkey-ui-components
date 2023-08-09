@@ -3,7 +3,6 @@ import { mount, ReactWrapper } from 'enzyme';
 import { List } from 'immutable';
 
 import { sleep } from '../../test/testHelpers';
-import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
 import { SectionHeading } from '../domainproperties/SectionHeading';
 import { INTEGER_TYPE, ONTOLOGY_LOOKUP_TYPE, TEXT_TYPE } from '../domainproperties/PropDescType';
@@ -11,8 +10,11 @@ import { DOMAIN_FIELD_FULLY_LOCKED } from '../domainproperties/constants';
 
 import { DomainField } from '../domainproperties/models';
 
+import { getDomainPropertiesTestAPIWrapper } from '../domainproperties/APIWrapper';
+
 import { OntologyLookupOptions } from './OntologyLookupOptions';
 import { OntologyConceptSelectButton } from './OntologyConceptSelectButton';
+import { OntologyModel } from './models';
 
 const field1 = DomainField.create({
     name: 'field1',
@@ -43,10 +45,6 @@ const field6 = DomainField.create({
     rangeURI: TEXT_TYPE.rangeURI,
 });
 
-beforeAll(() => {
-    initUnitTestMocks();
-});
-
 describe('OntologyLookupOptions', () => {
     function getDefaultProps() {
         return {
@@ -57,6 +55,20 @@ describe('OntologyLookupOptions', () => {
             lockType: undefined,
             onChange: jest.fn(),
             onMultiChange: jest.fn(),
+            api: getDomainPropertiesTestAPIWrapper(jest.fn, {
+                fetchOntologies: jest.fn().mockResolvedValue([
+                    new OntologyModel({
+                        rowId: 2,
+                        name: "Test HOM-UCARE-->\">'>'\"<script>alert('8(');</script>",
+                        abbreviation: '45887',
+                    }),
+                    new OntologyModel({
+                        rowId: 1,
+                        name: 'Test National Cancer Institute Thesaurus',
+                        abbreviation: 'NCIT',
+                    }),
+                ]),
+            }),
         };
     }
 

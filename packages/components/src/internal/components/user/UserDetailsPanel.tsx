@@ -33,8 +33,6 @@ import { UserResetPasswordConfirmModal } from './UserResetPasswordConfirmModal';
 import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
 import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
 
-import { getUserProperties } from './actions';
-
 interface UserDetailRowProps {
     label: string;
     value: React.ReactNode;
@@ -51,32 +49,6 @@ const UserDetailRow: FC<UserDetailRowProps> = ({ label, value }) => {
             </Col>
         </Row>
     );
-};
-
-export const selectRowsUserProps = function (userId: number): Promise<{ [key: string]: any }> {
-    return new Promise((resolve, reject) => {
-        selectRows({
-            filterArray: [Filter.create('UserId', userId)],
-            schemaQuery: SCHEMAS.CORE_TABLES.USERS,
-        })
-            .then(response => {
-                if (response.rows.length > 0) {
-                    const row = response.rows[0];
-                    const rowValues = flattenValuesFromRow(row, Object.keys(row));
-
-                    // special case for the Groups prop as it is an array
-                    rowValues.Groups = caseInsensitive(row, 'Groups');
-
-                    resolve(rowValues);
-                } else {
-                    resolve({});
-                }
-            })
-            .catch(error => {
-                console.error(error);
-                reject(error);
-            });
-    });
 };
 
 interface Props {
@@ -142,37 +114,28 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
 
         if (currentUser.isAdmin && !policy && !rolesByUniqueName && container) {
             try {
-                const policy_ = await api.fetchPolicy(container.id);//
+                const policy_ = await api.fetchPolicy(container.id);
+                const roles = await api.fetchRoles();
+                const rolesByUniqueName_ = getRolesByUniqueName(roles);
 
-                Security.getRoles({
-                    success: rawRoles => {
-                        const roles = processGetRolesResponse(rawRoles);
-                        const rolesByUniqueName_ = getRolesByUniqueName(roles);
-
-                        this.setState(() => ({
-                            policy: policy_,
-                            rolesByUniqueName: rolesByUniqueName_,
-                        }));
-                    },
-                    failure: e => {
-                        console.error('Failed to load security roles', e);
-                    },
-                });
-            }
-            catch (e) {
+                this.setState(() => ({
+                    policy: policy_,
+                    rolesByUniqueName: rolesByUniqueName_,
+                }));
+            } catch (e) {
                 console.error(e);
             }
         }
     };
 
     loadUserDetails = (): void => {
-        const { userId, isSelf } = this.props;
+        const { userId, isSelf, api } = this.props;
 
         if (userId) {
             this.setState(() => ({ loading: true }));
 
             if (isSelf) {
-                getUserProperties(userId)
+                api.getUserProperties(userId)
                     .then(response => {
                         this.setState(() => ({ userProperties: response.props, loading: false }));
                     })
@@ -180,7 +143,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                         this.setState(() => ({ userProperties: undefined, loading: false }));
                     });
             } else {
-                selectRowsUserProps(userId)
+                api.getUserPropertiesForOther(userId)
                     .then(response => {
                         this.setState(() => ({ userProperties: response, loading: false }));
                     })

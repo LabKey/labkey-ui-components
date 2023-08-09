@@ -5,23 +5,33 @@ import { shallow } from 'enzyme';
 import { getRolesByUniqueName, processGetRolesResponse } from '../permissions/actions';
 import policyJSON from '../../../test/data/security-getPolicy.json';
 import rolesJSON from '../../../test/data/security-getRoles.json';
-import { sleep } from '../../test/testHelpers';
-import { initUnitTestMocks } from '../../../test/testHelperMocks';
+import userPropsInfo from '../../../test/data/user-getUserProps.json';
 import { JEST_SITE_ADMIN_USER_ID } from '../../../test/data/constants';
 
 import { SecurityPolicy } from '../permissions/models';
 
 import { TEST_USER_APP_ADMIN } from '../../userFixtures';
 
-import { UserDetailsPanel } from './UserDetailsPanel';
+import { getSecurityTestAPIWrapper } from '../security/APIWrapper';
+import { waitForLifecycle } from '../../test/enzymeTestHelpers';
 
-beforeAll(() => {
-    initUnitTestMocks();
-});
+import { UserDetailsPanel } from './UserDetailsPanel';
 
 const POLICY = SecurityPolicy.create(policyJSON);
 const ROLES = processGetRolesResponse(rolesJSON.roles);
 const ROLES_BY_NAME = getRolesByUniqueName(ROLES);
+const API = getSecurityTestAPIWrapper(jest.fn, {
+    fetchPolicy: jest.fn().mockResolvedValue(POLICY),
+    fetchRoles: jest.fn().mockResolvedValue(ROLES),
+    getUserProperties: jest.fn().mockResolvedValue(userPropsInfo),
+    getUserPropertiesForOther: jest.fn().mockResolvedValue({
+        Email: 'cnathe@labkey.com',
+        UserId: 1004,
+        LastLogin: '2020-01-06 15:30:12.027',
+        DisplayName: 'cnathe',
+        Created: '2017-05-08 08:43:49.710',
+    }),
+});
 
 describe('<UserDetailsPanel/>', () => {
     test('no principal', async () => {
@@ -31,10 +41,11 @@ describe('<UserDetailsPanel/>', () => {
                 userId={undefined}
                 policy={POLICY}
                 rolesByUniqueName={ROLES_BY_NAME}
+                api={API}
             />
         );
 
-        await sleep();
+        await waitForLifecycle(tree);
 
         expect(tree).toMatchSnapshot();
     });
@@ -48,10 +59,11 @@ describe('<UserDetailsPanel/>', () => {
                 rolesByUniqueName={ROLES_BY_NAME}
                 onUsersStateChangeComplete={jest.fn()}
                 isSelf={true}
+                api={API}
             />
         );
 
-        await sleep();
+        await waitForLifecycle(tree);
 
         expect(tree).toMatchSnapshot();
     });
@@ -64,10 +76,11 @@ describe('<UserDetailsPanel/>', () => {
                 policy={POLICY}
                 rolesByUniqueName={ROLES_BY_NAME}
                 onUsersStateChangeComplete={jest.fn()}
+                api={API}
             />
         );
 
-        await sleep();
+        await waitForLifecycle(tree);
 
         expect(tree).toMatchSnapshot();
     });
@@ -82,10 +95,11 @@ describe('<UserDetailsPanel/>', () => {
                 allowDelete={false}
                 allowResetPassword={false}
                 onUsersStateChangeComplete={jest.fn()}
+                api={API}
             />
         );
 
-        await sleep();
+        await waitForLifecycle(tree);
 
         expect(tree).toMatchSnapshot();
     });

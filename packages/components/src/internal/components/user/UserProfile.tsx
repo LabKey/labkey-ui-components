@@ -23,8 +23,10 @@ import { caseInsensitive } from '../../util/utils';
 
 import { GroupsList } from '../permissions/GroupsList';
 
+import { SecurityAPIWrapper } from '../security/APIWrapper';
+import { getDefaultAPIWrapper } from '../../APIWrapper';
+
 import { getUserDetailsRowData, updateUserDetails } from './actions';
-import { selectRowsUserProps } from './UserDetailsPanel';
 
 const FIELDS_TO_EXCLUDE = List<string>([
     'userid',
@@ -53,6 +55,7 @@ interface State {
 }
 
 interface Props {
+    api?: SecurityAPIWrapper;
     getIsDirty: () => boolean;
     onCancel: () => void;
     onSuccess: (result: {}, shouldReload: boolean) => void;
@@ -62,6 +65,10 @@ interface Props {
 }
 
 export class UserProfile extends PureComponent<Props, State> {
+    static defaultProps = {
+        api: getDefaultAPIWrapper().security,
+    };
+
     constructor(props: Props) {
         super(props);
 
@@ -86,7 +93,7 @@ export class UserProfile extends PureComponent<Props, State> {
 
         if (hasPermissions(this.props.user, [PermissionTypes.CanSeeUserDetails])) {
             try {
-                const response = await selectRowsUserProps(this.props.user.id);
+                const response = await this.props.api.getUserPropertiesForOther(this.props.user.id);
                 const groups = caseInsensitive(response, 'Groups');
                 this.setState(() => ({ groups }));
             } catch (e) {
@@ -99,7 +106,7 @@ export class UserProfile extends PureComponent<Props, State> {
     columnFilter = (col: QueryColumn): boolean => {
         // make sure all columns are set as shownInInsertView and those that are marked as editable are not also readOnly.
         // Issue 47532 We want users to be able to update the fields on their own profile page, even if only readers
-        const _col = col.mutate({ shownInInsertView: true, readOnly: !col.userEditable  });
+        const _col = col.mutate({ shownInInsertView: true, readOnly: !col.userEditable });
         return insertColumnFilter(_col) && !FIELDS_TO_EXCLUDE.contains(_col.fieldKey.toLowerCase());
     };
 

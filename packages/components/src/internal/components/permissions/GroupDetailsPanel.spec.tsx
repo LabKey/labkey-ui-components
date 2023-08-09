@@ -7,7 +7,7 @@ import rolesJSON from '../../../test/data/security-getRoles.json';
 
 import { MemberType } from '../administration/models';
 
-import { mountWithServerContext } from '../../test/enzymeTestHelpers';
+import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 
 import { TEST_USER_APP_ADMIN } from '../../userFixtures';
 
@@ -31,7 +31,7 @@ const ROLES_BY_NAME = getRolesByUniqueName(ROLES);
 
 describe('<GroupDetailsPanel/>', () => {
     test('no principal', () => {
-        const component = mountWithServerContext(
+        const component = mountWithAppServerContext(
             <GroupDetailsPanel
                 principal={undefined}
                 policy={POLICY}
@@ -40,6 +40,7 @@ describe('<GroupDetailsPanel/>', () => {
                 isSiteGroup={false}
                 getAuditLogData={jest.fn()}
             />,
+            {},
             { user: TEST_USER_APP_ADMIN }
         );
 
@@ -51,7 +52,7 @@ describe('<GroupDetailsPanel/>', () => {
     });
 
     test('with principal and members', () => {
-        const component = mountWithServerContext(
+        const component = mountWithAppServerContext(
             <GroupDetailsPanel
                 principal={GROUP}
                 policy={POLICY}
@@ -64,6 +65,7 @@ describe('<GroupDetailsPanel/>', () => {
                 isSiteGroup={false}
                 getAuditLogData={jest.fn()}
             />,
+            {},
             { user: TEST_USER_APP_ADMIN }
         );
 
@@ -83,7 +85,7 @@ describe('<GroupDetailsPanel/>', () => {
     });
 
     test('as site group', () => {
-        const component = mountWithServerContext(
+        const component = mountWithAppServerContext(
             <GroupDetailsPanel
                 principal={GROUP}
                 policy={POLICY}
@@ -95,6 +97,7 @@ describe('<GroupDetailsPanel/>', () => {
                 isSiteGroup={true}
                 getAuditLogData={jest.fn()}
             />,
+            {},
             { user: TEST_USER_APP_ADMIN }
         );
 
@@ -114,7 +117,7 @@ describe('<GroupDetailsPanel/>', () => {
     });
 
     test("as site group, don't display counts", () => {
-        const component = mountWithServerContext(
+        const component = mountWithAppServerContext(
             <GroupDetailsPanel
                 principal={GROUP}
                 policy={POLICY}
@@ -127,6 +130,7 @@ describe('<GroupDetailsPanel/>', () => {
                 getAuditLogData={jest.fn()}
                 displayCounts={false}
             />,
+            {},
             { user: TEST_USER_APP_ADMIN }
         );
 

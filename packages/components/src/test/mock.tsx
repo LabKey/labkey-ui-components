@@ -23,9 +23,6 @@ import mixturesQuery from './data/mixtures-getQuery.json';
 import mixturesQueryPaging from './data/mixtures-getQueryPaging.json';
 import mixturesReportInfos from './data/mixtures-getReportInfos.json';
 import noDataQuery from './data/noData-getQuery.json';
-import getSchemasJson from './data/getSchemas.json';
-import assayGetSchemasJson from './data/assay-getSchemas.json';
-import assayGetQueriesJson from './data/assay-getQueries.json';
 import sampleSetQueryInfo from './data/samplesSet-getQueryDetails.json';
 import sampleDetailsQuery from './data/sampleDetails-getQuery.json';
 import lookuplistQueryInfo from './data/lookuplist-getQueryDetails.json';
@@ -63,10 +60,8 @@ import labbookQueryInfo from './data/labbook-getQueryDetails.json';
 import labbookQuery from './data/labbook-getQuery.json';
 import usersQueryInfo from './data/users-getQueryDetails.json';
 import usersQuery from './data/users-getQuery.json';
-import getMaxPhiLevelJson from './data/security-GetMaxPhiLevel.json';
 import getMembersJson from './data/security-getMembers.json';
 import getQueryDetailsPrincipalsJson from './data/security-getQueryDetailsPrincipals.json';
-import getValidPublishTargetsJson from './data/assay-getValidPublishTargets.json';
 import assayAminoAcidsDataQueryInfo from './data/assayAminoAcidsData-getQueryDetails.json';
 import assayAminoAcidsDataQuery from './data/assayAminoAcidsData-getQuery.json';
 import sampleWithParentsQuery from './data/sampleWithParents-getQuery.json';
@@ -81,8 +76,6 @@ import secondSourceQuery from './data/secondSource-getQuery.json';
 import secondSourceQueryDetails from './data/secondSource-getQueryDetails.json';
 import source1Query from './data/source1-getQuery.json';
 import source1QueryDetails from './data/source1-getQueryDetails.json';
-import issuesProjectGroups from './data/issues-getProjectGroups.json';
-import issuesUsersForGroup from './data/issues-getUsersForGroup.json';
 import ontologiesQuery from './data/ontologies-getQuery.json';
 import pipelineJobQueryDetails from './data/pipelineJob-getQueryDetails.json';
 import pipelineJobQuery from './data/pipelineJob-getQuery.json';
@@ -456,57 +449,6 @@ export function initQueryGridMocks(delayMs = undefined) {
 
     // TODO conditionalize based on queryName
     mock.get(/.*\/reports\/?.*\/getReportInfos.*/, jsonResponse(mixturesReportInfos));
-}
-
-export function initDomainPropertiesMocks() {
-    mock.get(/.*\/security\/?.*\/getMaxPhiLevel.*/, jsonResponse(getMaxPhiLevelJson));
-
-    mock.get(/.*\/assay\/?.*\/getValidPublishTargets.*/, jsonResponse(getValidPublishTargetsJson));
-
-    mock.get(/.*\/query\/?.*\/getQueries.*/, (req, res) => {
-        const queryParams = req.url().query;
-        let responseBody;
-
-        if (queryParams.schemaName.toLowerCase() === 'assay') {
-            responseBody = assayGetQueriesJson;
-        }
-
-        return jsonResponse(responseBody, res);
-    });
-
-    mock.get(/.*\/query\/?.*\/getSchemas.*/, (req, res) => {
-        const queryParams = req.url().query;
-        let responseBody;
-
-        if (queryParams.schemaName === undefined) {
-            responseBody = getSchemasJson;
-        } else if (queryParams.schemaName.toLowerCase() === 'assay') {
-            responseBody = assayGetSchemasJson;
-        }
-
-        return jsonResponse(responseBody, res);
-    });
-
-    mock.get(/.*getProjectGroups.*/, (req, res) => {
-        const responseBody = issuesProjectGroups;
-        return jsonResponse(responseBody, res);
-    });
-
-    mock.get(/.*getUsersForGroup.*/, (req, res) => {
-        const queryParams = req.url().query;
-        let responseBody;
-
-        if (queryParams.groupId === '') {
-            responseBody = issuesUsersForGroup.filter(users => {
-                return users.groupId === null;
-            });
-        } else if (queryParams.groupId === '-1' || queryParams.groupId === '-2' || queryParams.groupId === '1025') {
-            responseBody = issuesUsersForGroup.filter(users => {
-                return users.groupId !== null && users.groupId.toString() === queryParams.groupId;
-            });
-        }
-        return jsonResponse(responseBody, res);
-    });
 }
 
 export function initLineageMocks() {

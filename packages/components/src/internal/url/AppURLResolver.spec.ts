@@ -17,8 +17,6 @@ import { fromJS, Map } from 'immutable';
 
 import { registerDefaultURLMappers } from '../test/testHelpers';
 
-import { initUnitTestMocks } from '../../test/testHelperMocks';
-
 import { ExperimentRunResolver, ListResolver } from './AppURLResolver';
 import { URLResolver } from './URLResolver';
 import { AppURL } from './AppURL';

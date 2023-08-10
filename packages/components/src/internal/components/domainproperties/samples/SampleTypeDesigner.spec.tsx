@@ -1,7 +1,6 @@
 import React from 'react';
 import { List, Map } from 'immutable';
 import { shallow } from 'enzyme';
-import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 import DomainForm from '../DomainForm';

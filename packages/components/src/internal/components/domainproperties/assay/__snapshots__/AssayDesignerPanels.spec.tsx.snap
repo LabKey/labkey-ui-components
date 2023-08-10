@@ -222,6 +222,19 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
     validate={true}
   />
   <DomainForm
+    api={
+      {
+        "fetchDomainDetails": [MockFunction],
+        "fetchOntologies": [MockFunction],
+        "getDataClassDetails": [MockFunction],
+        "getDomainNamePreviews": [MockFunction],
+        "getGenId": [MockFunction],
+        "getMaxPhiLevel": [MockFunction],
+        "hasExistingDomainData": [MockFunction],
+        "setGenId": [MockFunction],
+        "validateDomainNameExpressions": [MockFunction],
+      }
+    }
     controlledCollapse={true}
     domain={
       Immutable.Record {
@@ -360,6 +373,19 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
     <div />
   </DomainForm>
   <DomainForm
+    api={
+      {
+        "fetchDomainDetails": [MockFunction],
+        "fetchOntologies": [MockFunction],
+        "getDataClassDetails": [MockFunction],
+        "getDomainNamePreviews": [MockFunction],
+        "getGenId": [MockFunction],
+        "getMaxPhiLevel": [MockFunction],
+        "hasExistingDomainData": [MockFunction],
+        "setGenId": [MockFunction],
+        "validateDomainNameExpressions": [MockFunction],
+      }
+    }
     controlledCollapse={true}
     domain={
       Immutable.Record {
@@ -498,6 +524,19 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
     <div />
   </DomainForm>
   <DomainForm
+    api={
+      {
+        "fetchDomainDetails": [MockFunction],
+        "fetchOntologies": [MockFunction],
+        "getDataClassDetails": [MockFunction],
+        "getDomainNamePreviews": [MockFunction],
+        "getGenId": [MockFunction],
+        "getMaxPhiLevel": [MockFunction],
+        "hasExistingDomainData": [MockFunction],
+        "setGenId": [MockFunction],
+        "validateDomainNameExpressions": [MockFunction],
+      }
+    }
     controlledCollapse={true}
     domain={
       Immutable.Record {
@@ -1380,6 +1419,19 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
     validate={true}
   />
   <DomainForm
+    api={
+      {
+        "fetchDomainDetails": [MockFunction],
+        "fetchOntologies": [MockFunction],
+        "getDataClassDetails": [MockFunction],
+        "getDomainNamePreviews": [MockFunction],
+        "getGenId": [MockFunction],
+        "getMaxPhiLevel": [MockFunction],
+        "hasExistingDomainData": [MockFunction],
+        "setGenId": [MockFunction],
+        "validateDomainNameExpressions": [MockFunction],
+      }
+    }
     controlledCollapse={true}
     domain={
       Immutable.Record {
@@ -1760,6 +1812,19 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
     <div />
   </DomainForm>
   <DomainForm
+    api={
+      {
+        "fetchDomainDetails": [MockFunction],
+        "fetchOntologies": [MockFunction],
+        "getDataClassDetails": [MockFunction],
+        "getDomainNamePreviews": [MockFunction],
+        "getGenId": [MockFunction],
+        "getMaxPhiLevel": [MockFunction],
+        "hasExistingDomainData": [MockFunction],
+        "setGenId": [MockFunction],
+        "validateDomainNameExpressions": [MockFunction],
+      }
+    }
     controlledCollapse={true}
     domain={
       Immutable.Record {
@@ -2671,6 +2736,19 @@ exports[`AssayDesignerPanels default properties 1`] = `
     validate={true}
   />
   <DomainForm
+    api={
+      {
+        "fetchDomainDetails": [MockFunction],
+        "fetchOntologies": [MockFunction],
+        "getDataClassDetails": [MockFunction],
+        "getDomainNamePreviews": [MockFunction],
+        "getGenId": [MockFunction],
+        "getMaxPhiLevel": [MockFunction],
+        "hasExistingDomainData": [MockFunction],
+        "setGenId": [MockFunction],
+        "validateDomainNameExpressions": [MockFunction],
+      }
+    }
     controlledCollapse={true}
     domain={
       Immutable.Record {
@@ -2809,6 +2887,19 @@ exports[`AssayDesignerPanels default properties 1`] = `
     <div />
   </DomainForm>
   <DomainForm
+    api={
+      {
+        "fetchDomainDetails": [MockFunction],
+        "fetchOntologies": [MockFunction],
+        "getDataClassDetails": [MockFunction],
+        "getDomainNamePreviews": [MockFunction],
+        "getGenId": [MockFunction],
+        "getMaxPhiLevel": [MockFunction],
+        "hasExistingDomainData": [MockFunction],
+        "setGenId": [MockFunction],
+        "validateDomainNameExpressions": [MockFunction],
+      }
+    }
     controlledCollapse={true}
     domain={
       Immutable.Record {
@@ -2947,6 +3038,19 @@ exports[`AssayDesignerPanels default properties 1`] = `
     <div />
   </DomainForm>
   <DomainForm
+    api={
+      {
+        "fetchDomainDetails": [MockFunction],
+        "fetchOntologies": [MockFunction],
+        "getDataClassDetails": [MockFunction],
+        "getDomainNamePreviews": [MockFunction],
+        "getGenId": [MockFunction],
+        "getMaxPhiLevel": [MockFunction],
+        "hasExistingDomainData": [MockFunction],
+        "setGenId": [MockFunction],
+        "validateDomainNameExpressions": [MockFunction],
+      }
+    }
     controlledCollapse={true}
     domain={
       Immutable.Record {
@@ -3309,6 +3413,19 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
     validate={true}
   />
   <DomainForm
+    api={
+      {
+        "fetchDomainDetails": [MockFunction],
+        "fetchOntologies": [MockFunction],
+        "getDataClassDetails": [MockFunction],
+        "getDomainNamePreviews": [MockFunction],
+        "getGenId": [MockFunction],
+        "getMaxPhiLevel": [MockFunction],
+        "hasExistingDomainData": [MockFunction],
+        "setGenId": [MockFunction],
+        "validateDomainNameExpressions": [MockFunction],
+      }
+    }
     controlledCollapse={true}
     domain={
       Immutable.Record {
@@ -3447,6 +3564,19 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
     <div />
   </DomainForm>
   <DomainForm
+    api={
+      {
+        "fetchDomainDetails": [MockFunction],
+        "fetchOntologies": [MockFunction],
+        "getDataClassDetails": [MockFunction],
+        "getDomainNamePreviews": [MockFunction],
+        "getGenId": [MockFunction],
+        "getMaxPhiLevel": [MockFunction],
+        "hasExistingDomainData": [MockFunction],
+        "setGenId": [MockFunction],
+        "validateDomainNameExpressions": [MockFunction],
+      }
+    }
     controlledCollapse={true}
     domain={
       Immutable.Record {
@@ -4292,6 +4422,19 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
     validate={true}
   />
   <DomainForm
+    api={
+      {
+        "fetchDomainDetails": [MockFunction],
+        "fetchOntologies": [MockFunction],
+        "getDataClassDetails": [MockFunction],
+        "getDomainNamePreviews": [MockFunction],
+        "getGenId": [MockFunction],
+        "getMaxPhiLevel": [MockFunction],
+        "hasExistingDomainData": [MockFunction],
+        "setGenId": [MockFunction],
+        "validateDomainNameExpressions": [MockFunction],
+      }
+    }
     controlledCollapse={true}
     domain={
       Immutable.Record {
@@ -5647,6 +5790,19 @@ exports[`AssayDesignerPanels initModel 1`] = `
     validate={true}
   />
   <DomainForm
+    api={
+      {
+        "fetchDomainDetails": [MockFunction],
+        "fetchOntologies": [MockFunction],
+        "getDataClassDetails": [MockFunction],
+        "getDomainNamePreviews": [MockFunction],
+        "getGenId": [MockFunction],
+        "getMaxPhiLevel": [MockFunction],
+        "hasExistingDomainData": [MockFunction],
+        "setGenId": [MockFunction],
+        "validateDomainNameExpressions": [MockFunction],
+      }
+    }
     controlledCollapse={true}
     domain={
       Immutable.Record {
@@ -6027,6 +6183,19 @@ exports[`AssayDesignerPanels initModel 1`] = `
     <div />
   </DomainForm>
   <DomainForm
+    api={
+      {
+        "fetchDomainDetails": [MockFunction],
+        "fetchOntologies": [MockFunction],
+        "getDataClassDetails": [MockFunction],
+        "getDomainNamePreviews": [MockFunction],
+        "getGenId": [MockFunction],
+        "getMaxPhiLevel": [MockFunction],
+        "hasExistingDomainData": [MockFunction],
+        "setGenId": [MockFunction],
+        "validateDomainNameExpressions": [MockFunction],
+      }
+    }
     controlledCollapse={true}
     domain={
       Immutable.Record {

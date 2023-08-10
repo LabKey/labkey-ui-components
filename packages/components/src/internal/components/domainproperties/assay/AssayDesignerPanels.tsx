@@ -1,5 +1,7 @@
 import React from 'react';
 import { Map } from 'immutable';
+import { getDefaultAPIWrapper } from '../../../APIWrapper';
+import { DomainPropertiesAPIWrapper } from '../APIWrapper';
 
 import { DomainDesign, HeaderRenderer, IDomainFormDisplayOptions } from '../models';
 
@@ -25,6 +27,7 @@ const DOMAIN_PANEL_INDEX = 1;
 
 export interface AssayDesignerPanelsProps {
     appDomainHeaders?: Map<string, HeaderRenderer>;
+    api?: DomainPropertiesAPIWrapper;
     appIsValidMsg?: (model: AssayProtocolModel) => string;
     appPropertiesOnly?: boolean;
     beforeFinish?: (model: AssayProtocolModel) => void;
@@ -53,6 +56,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
     panelCount = 1; // start at 1 for the AssayPropertiesPanel, will updated count after domains are defined in constructor
 
     static defaultProps = {
+        api: getDefaultAPIWrapper().domain,
         domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     };
 
@@ -190,6 +194,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
 
     render() {
         const {
+            api,
             appPropertiesOnly,
             hideAdvancedProperties,
             domainFormDisplayOptions,
@@ -262,6 +267,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                     return (
                         <DomainForm
                             key={domain.domainId || i}
+                            api={api}
                             index={domain.domainId || i}
                             domainIndex={i}
                             domain={domain}

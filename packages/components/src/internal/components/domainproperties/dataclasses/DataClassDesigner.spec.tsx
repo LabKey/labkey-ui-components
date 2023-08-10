@@ -8,7 +8,6 @@ import getDomainDetailsJSON from '../../../../test/data/dataclass-getDomainDetai
 import DomainForm from '../DomainForm';
 
 import { waitForLifecycle } from '../../../test/enzymeTestHelpers';
-import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { FileAttachmentForm } from '../../../../public/files/FileAttachmentForm';
 
@@ -26,10 +25,6 @@ const BASE_PROPS = {
     loadNameExpressionOptions: jest.fn(async () => ({ prefix: '', allowUserSpecifiedNames: true })),
     testMode: true,
 };
-
-beforeAll(() => {
-    initUnitTestMocks();
-});
 
 describe('DataClassDesigner', () => {
     test('default properties', async () => {

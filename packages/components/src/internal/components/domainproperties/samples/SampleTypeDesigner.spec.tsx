@@ -1,6 +1,7 @@
 import React from 'react';
 import { List, Map } from 'immutable';
 import { shallow } from 'enzyme';
+import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 import DomainForm from '../DomainForm';
@@ -8,7 +9,6 @@ import DomainForm from '../DomainForm';
 import { DomainDetails } from '../models';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../../test/enzymeTestHelpers';
-import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { FileAttachmentForm } from '../../../../public/files/FileAttachmentForm';
 
@@ -64,15 +64,11 @@ const BASE_PROPS = {
             initParentOptionsSelects: () =>
                 Promise.resolve({
                     parentOptions: PARENT_OPTIONS,
-                    parentAliases: new Map(),
+                    parentAliases: Map(),
                 }),
         }),
     }),
 };
-
-beforeAll(() => {
-    initUnitTestMocks();
-});
 
 describe('SampleTypeDesigner', () => {
     test('default properties', async () => {

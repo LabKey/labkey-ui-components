@@ -31,7 +31,6 @@ beforeAll(() => {
         path: '/testContainer',
     };
 
-    initUnitTestMocks();
     registerDefaultURLMappers();
 });
 

@@ -23,8 +23,6 @@ import getDatasetDesign from '../../../../test/data/dataset-getDatasetDesign.jso
 import { NEW_DATASET_MODEL_WITHOUT_DATASPACE } from '../../../../test/data/constants';
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
-import { initUnitTestMocks } from '../../../../test/testHelperMocks';
-
 import { Alert } from '../../base/Alert';
 
 import { waitForLifecycle } from '../../../test/enzymeTestHelpers';
@@ -32,10 +30,6 @@ import { waitForLifecycle } from '../../../test/enzymeTestHelpers';
 import { DatasetDesignerPanelImpl, DatasetDesignerPanels } from './DatasetDesignerPanels';
 
 import { DatasetModel } from './models';
-
-beforeAll(() => {
-    initUnitTestMocks();
-});
 
 describe('Dataset Designer', () => {
     const newDatasetModel = DatasetModel.create(NEW_DATASET_MODEL_WITHOUT_DATASPACE, undefined);
@@ -45,7 +39,6 @@ describe('Dataset Designer', () => {
         const designerPanels = shallow(
             <DatasetDesignerPanelImpl
                 initModel={newDatasetModel}
-                useTheme={true}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
                 testMode={true}
@@ -70,18 +63,9 @@ describe('Dataset Designer', () => {
         const designerPanels = shallow(
             <DatasetDesignerPanels
                 initModel={populatedDatasetModel}
-                useTheme={true}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
                 testMode={true}
-                currentPanelIndex={0}
-                firstState={true}
-                onFinish={jest.fn()}
-                onTogglePanel={jest.fn()}
-                setSubmitting={jest.fn()}
-                submitting={false}
-                validatePanel={0}
-                visitedPanels={List()}
             />
         );
 
@@ -95,7 +79,6 @@ describe('Dataset Designer', () => {
         const wrapped = mount(
             <DatasetDesignerPanels
                 initModel={newDatasetModel}
-                useTheme={true}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
                 testMode={true}

@@ -8,16 +8,11 @@ import { CollapsiblePanelHeader } from '../CollapsiblePanelHeader';
 import { DomainPanelStatus } from '../models';
 import getDomainDetailsJSON from '../../../../test/data/dataclass-getDomainDetails.json';
 
-import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 import { QuerySelect } from '../../forms/QuerySelect';
 import { Alert } from '../../base/Alert';
 
 import { DataClassModel } from './models';
 import { DataClassPropertiesPanel, DataClassPropertiesPanelImpl } from './DataClassPropertiesPanel';
-
-beforeAll(() => {
-    initUnitTestMocks();
-});
 
 const BASE_PROPS = {
     panelStatus: 'NONE' as DomainPanelStatus,

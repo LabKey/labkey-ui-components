@@ -12,6 +12,7 @@ import {
     getMaxPhiLevel,
     fetchOntologies,
 } from './actions';
+import { PHILEVEL_FULL_PHI } from './constants';
 import { getDataClassDetails } from './dataclasses/actions';
 import { DomainDesign, DomainDetails, NameExpressionsValidationResults } from './models';
 
@@ -72,7 +73,10 @@ export function getDomainPropertiesTestAPIWrapper(
         getDataClassDetails: mockFn(),
         getDomainNamePreviews: mockFn(),
         getGenId: mockFn(),
-        getMaxPhiLevel: mockFn(),
+        // Because we don't want to have an explicit dependency on jest we cannot use mockFn().mockResolvedValue here
+        // like we should be able to, because the default implementation for our mockFn cannot be Jest. We should
+        // probably make Jest an explicit dependency since we are actually exporting test utilities.
+        getMaxPhiLevel: () => Promise.resolve(PHILEVEL_FULL_PHI),
         hasExistingDomainData: mockFn(),
         setGenId: mockFn(),
         validateDomainNameExpressions: mockFn(),

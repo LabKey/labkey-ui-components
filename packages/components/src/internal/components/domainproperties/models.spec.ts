@@ -734,6 +734,12 @@ describe('DomainDesign', () => {
 });
 
 describe('DomainField', () => {
+    const CONCEPT_A = new ConceptModel({ code: 'abc:123', label: 'ABC 123' });
+    beforeAll(() => {
+        // prime cache
+        CONCEPT_CACHE.set(CONCEPT_A.code, CONCEPT_A);
+    });
+
     test('isNew', () => {
         const f1 = DomainField.create({ name: 'foo', rangeURI: TEXT_TYPE.rangeURI });
         expect(f1.isNew()).toBeTruthy();
@@ -866,14 +872,14 @@ describe('DomainField', () => {
         expect(field.getDetailsArray(0).join('')).toBe('Updated. SRC. Primary Key. Locked');
 
         field = field.merge({ principalConceptCode: 'abc:123' }) as DomainField;
-        expect(field.getDetailsArray(0).join('')).toBe('Updated. SRC. Ontology Concept: abc:123. Primary Key. Locked');
+        expect(field.getDetailsArray(0).join('')).toBe('Updated. SRC. Ontology Concept: ABC 123 (abc:123). Primary Key. Locked');
 
         expect(field.getDetailsArray(0, { test: 'Additional Info' }).join('')).toBe(
-            'Updated. SRC. Ontology Concept: abc:123. Primary Key. Locked. Additional Info'
+            'Updated. SRC. Ontology Concept: ABC 123 (abc:123). Primary Key. Locked. Additional Info'
         );
         field = field.merge({ name: '' }) as DomainField;
         expect(field.getDetailsArray(0, { test: 'Additional Info' }).join('')).toBe(
-            'Updated. SRC. Ontology Concept: abc:123. Primary Key. Locked'
+            'Updated. SRC. Ontology Concept: ABC 123 (abc:123). Primary Key. Locked'
         );
 
         CONCEPT_CACHE.set('abc:123', new ConceptModel({ code: 'abc:123', label: 'Concept display text' }));

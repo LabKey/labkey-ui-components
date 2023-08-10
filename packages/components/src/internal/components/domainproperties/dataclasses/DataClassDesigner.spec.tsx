@@ -2,6 +2,7 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 
 import { List } from 'immutable';
+import { getTestAPIWrapper } from '../../../APIWrapper';
 
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 import getDomainDetailsJSON from '../../../../test/data/dataclass-getDomainDetails.json';
@@ -20,6 +21,7 @@ import { DataClassModel } from './models';
 import { DataClassDesigner, DataClassDesignerImpl } from './DataClassDesigner';
 
 const BASE_PROPS = {
+    api: getTestAPIWrapper(jest.fn),
     onComplete: jest.fn(),
     onCancel: jest.fn(),
     loadNameExpressionOptions: jest.fn(async () => ({ prefix: '', allowUserSpecifiedNames: true })),

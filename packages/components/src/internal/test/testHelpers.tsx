@@ -15,7 +15,7 @@ import { GlobalStateContextProvider } from '../GlobalStateContext';
 import { URL_MAPPERS, URLService } from '../url/URLResolver';
 
 import { QueryInfo } from '../../public/QueryInfo';
-import { applyQueryMetadata, handleSelectRowsResponse } from '../query/api';
+import { applyQueryMetadata, handleSelectRowsResponse, ISelectRowsResult } from '../query/api';
 import { bindColumnRenderers, RowsResponse } from '../../public/QueryModel/QueryModelLoader';
 
 export interface AppContextTestProviderProps {
@@ -55,17 +55,31 @@ export const makeQueryInfo = (getQueryDetailsResponse): QueryInfo => {
     return queryInfo.mutate({ columns: bindColumnRenderers(queryInfo.columns) });
 };
 
+export const parseQueryResponse = (getQueryResponse): Partial<ISelectRowsResult> => {
+    // Hack: need to stringify and parse the query response object because Query.Response modifies the object in place,
+    // which causes errors if you try to use the same response object twice.
+    const response = new Query.Response(JSON.parse(JSON.stringify(getQueryResponse)));
+    return handleSelectRowsResponse(response);
+};
+
+export const makeTestISelectRowsResult = (getQueryResponse, getQueryDetailsResponse): ISelectRowsResult => {
+    const partial = parseQueryResponse(getQueryResponse);
+
+    return {
+        ...partial,
+        queries: {
+            [partial.key]: makeQueryInfo(getQueryDetailsResponse),
+        },
+    } as ISelectRowsResult;
+};
+
 /**
  * Creates rows and orderedRows objects needed by the QueryModel. Returns a Promise that resolves to an object that
  * looks like: { messages: any, rows: any, orderedRows: string[], rowCount: number }
  * @param getQueryResponse: getQuery Response object (e.g. imported from test/data/mixtures-getQuery.json)
  */
 export const makeTestData = (getQueryResponse): RowsResponse => {
-    // Hack: need to stringify and parse the query response object because Query.Response modifies the object in place,
-    // which causes errors if you try to use the same response object twice.
-    const response = new Query.Response(JSON.parse(JSON.stringify(getQueryResponse)));
-
-    const { key, messages, models, orderedModels, rowCount } = handleSelectRowsResponse(response);
+    const { key, messages, models, orderedModels, rowCount } = parseQueryResponse(getQueryResponse);
 
     return {
         messages: messages.toJS(),

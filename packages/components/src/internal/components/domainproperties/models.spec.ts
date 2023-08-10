@@ -17,10 +17,6 @@ import { GRID_NAME_INDEX, GRID_SELECTION_INDEX } from '../../constants';
 
 import { CONCEPT_CACHE } from '../ontology/actions';
 
-import { initUnitTestMocks } from '../../../test/testHelperMocks';
-
-import { initOnotologyMocks } from '../../../test/mock';
-
 import { GridColumn } from '../base/models/GridColumn';
 
 import { ConceptModel } from '../ontology/models';
@@ -87,8 +83,6 @@ beforeAll(() => {
         title: 'Test Container',
         path: '/testContainer',
     };
-
-    initUnitTestMocks([initOnotologyMocks]);
 });
 
 const GRID_DATA = DomainDesign.create({
@@ -161,17 +155,19 @@ const gridDataConstWithOntology = [
     },
 ];
 
+const noop: any = () => {};
+
 const selectionCol = new GridColumn({
     index: GRID_SELECTION_INDEX,
     title: GRID_SELECTION_INDEX,
     width: 20,
-    cell: () => {},
+    cell: noop,
 });
 const nameCol = new GridColumn({
     index: GRID_NAME_INDEX,
     title: GRID_NAME_INDEX,
     raw: { index: 'name', caption: 'Name', sortable: true },
-    cell: () => {},
+    cell: noop,
 });
 const gridColumnsConst = [
     selectionCol,

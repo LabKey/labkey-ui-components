@@ -155,6 +155,28 @@ describe('resolveErrorMessage', () => {
         );
     });
 
+    test('Duplicate single-field key - Postgres', () => {
+        const error = {
+            exception:
+                'ERROR: duplicate key value violates unique constraint "c7094d54716_st_sample_move_name"\n Detail: Key (name)=(PtoC2-0) already exists.',
+            extraContext: {},
+            success: false,
+            errors: [
+                {
+                    exception:
+                        'ERROR: duplicate key value violates unique constraint "c7094d54716_st_sample_move_name"\n  Detail: Key (name)=(PtoC2-0) already exists.',
+                    errors: {
+                        _form: 'ERROR: duplicate key value violates unique constraint "c7094d54716_st_sample_move_name"\n  Detail: Key (name)=(PtoC2-0) already exists.',
+                    },
+                },
+            ],
+            errorCount: 1,
+        };
+        expect(resolveErrorMessage(error, 'samples', undefined)).toBe(
+            "There was a problem creating your samples. Duplicate name 'PtoC2-0' found."
+        );
+    });
+
     test('Existing row now found', () => {
         const error = {
             exception: 'The existing row was not found.',

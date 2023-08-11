@@ -9,6 +9,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Delete unused test data
 - incrementClientSideMetricCount: Don't make API call in test env
 
+### version 2.358.2
+*Released*: 8 August 2023
+- Update parsing of duplicate key errors to account for single-field keys
+
+### version 2.358.1
+*Released*: 8 August 2023
+- Issue 48367: Remove no-data styling from Sample Finder tabs
+
 ### version 2.358.0
 *Released*: 8 August 2023
 - GridPanel ButtonBar

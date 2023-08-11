@@ -71,8 +71,12 @@ export function resolveErrorMessage(error: any, noun = 'data', nounPlural?: stri
                     index = keyMatch[2].indexOf(', ', index + 1);
                 }
                 if (index < keyMatch[2].length) {
-                    // one for comma and one for space
-                    name = keyMatch[2].substring(index + 2);
+                    if (numParts > 1) {
+                        // one for comma and one for space
+                        name = keyMatch[2].substring(index + 2);
+                    } else {
+                        name = keyMatch[2];
+                    }
                 }
             }
             if (name) {

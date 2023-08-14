@@ -50,7 +50,9 @@ export function getProjectDataTypeDataCount(
         }
         let cf = getContainerFilterForFolder();
         if (isNewFolder) {
-            cf = isAllProductFoldersFilteringEnabled() ? Query.ContainerFilter.allInProjectPlusShared : Query.ContainerFilter.currentPlusProjectAndShared
+            cf = isAllProductFoldersFilteringEnabled()
+                ? Query.ContainerFilter.allInProjectPlusShared
+                : Query.ContainerFilter.currentPlusProjectAndShared;
         }
 
         Query.executeSql({

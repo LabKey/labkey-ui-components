@@ -70,8 +70,9 @@ const LogFile: FC<WithPipeLineStatusModel> = ({ model }) => (
 );
 
 interface Props {
-    rowId: number;
+    fetchPipelineStatusDetail?: (rowId: number, offset?: number, count?: number) => Promise<PipelineStatusDetailModel>;
     interval?: number; // in ms
+    rowId: number;
 }
 
 interface State {
@@ -84,6 +85,7 @@ export class PipelineStatusDetailPage extends React.PureComponent<Props, State> 
 
     static defaultProps = {
         interval: 2000,
+        fetchPipelineStatusDetail: getPipelineStatusDetail,
     };
 
     constructor(props) {
@@ -104,6 +106,7 @@ export class PipelineStatusDetailPage extends React.PureComponent<Props, State> 
     }
 
     refresh = (): void => {
+        const { fetchPipelineStatusDetail } = this.props;
         const model = this.state.model;
 
         if (!model?.isLoading) {
@@ -115,7 +118,7 @@ export class PipelineStatusDetailPage extends React.PureComponent<Props, State> 
                     const offset = this.state.model?.nextOffset ? this.state.model?.nextOffset : 0;
                     const count = this.state.model?.fetchCount ? this.state.model?.fetchCount + 1 : 1;
 
-                    getPipelineStatusDetail(this.props.rowId, offset, count)
+                    fetchPipelineStatusDetail(this.props.rowId, offset, count)
                         .then((model: PipelineStatusDetailModel) => {
                             this.setState(() => ({
                                 model,

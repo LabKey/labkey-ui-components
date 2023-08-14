@@ -47,38 +47,6 @@ const NodeInteractionContext = createContext<WithNodeInteraction>(undefined);
 export const NodeInteractionProvider = NodeInteractionContext.Provider;
 export const NodeInteractionConsumer = NodeInteractionContext.Consumer;
 
-function fetchLineage(options: Omit<Experiment.LineageOptions, 'lsids'>): Promise<LineageResult> {
-    return new Promise((resolve, reject) => {
-        const seed = options.lsid;
-
-        Experiment.lineage({
-            ...options,
-            success: lineage => {
-                resolve(LineageResult.create(lineage));
-            },
-            failure: error => {
-                let message = `Failed to fetch lineage for seed "${seed}".`;
-
-                if (error) {
-                    if (error.exception) {
-                        message = error.exception;
-
-                        // When a server exception occurs
-                        if (error.exceptionClass) {
-                            message = `${error.exceptionClass}: ` + error.exception;
-                        }
-                    }
-                }
-
-                reject({
-                    seed,
-                    message,
-                });
-            },
-        });
-    });
-}
-
 function fetchLineageNodes(lsids: string[], containerPath?: string): Promise<LineageNode[]> {
     return new Promise((resolve, reject) => {
         return Experiment.resolve({
@@ -92,31 +60,6 @@ function fetchLineageNodes(lsids: string[], containerPath?: string): Promise<Lin
             },
         });
     });
-}
-
-function fetchNodeMetadata(lineage: LineageResult): Array<Promise<ISelectRowsResult>> {
-    // Node metadata does not support nodes with multiple primary keys. These could be supported, however,
-    // each node would require it's own request for the unique keys combination. Also, nodes without any primary
-    // keys cannot be filtered upon and thus are also not supported.
-    return lineage.nodes
-        .filter(n => n.schemaName !== undefined && n.queryName !== undefined && n.pkFilters.length === 1)
-        .groupBy(n => [n.schemaName, n.queryName].join('|||').toLowerCase())
-        .map(nodes => {
-            const node = nodes.first();
-            const { fieldKey } = node.pkFilters[0];
-
-            return selectRowsDeprecated({
-                containerPath: node.containerPath,
-                schemaName: node.schemaName,
-                queryName: node.queryName,
-                viewName: ViewInfo.DETAIL_NAME, // use Detail view to assure we get all data, even when default view is filtered
-                // TODO: Is there a better way to determine set of columns? Can we follow convention for detail views?
-                // See LineageNodeMetadata (and it's usages) for why this is currently necessary
-                columns: LINEAGE_METADATA_COLUMNS.add(fieldKey).join(','),
-                filterArray: [Filter.create(fieldKey, nodes.map(n => n.pkFilters[0].value).toArray(), Filter.Types.IN)],
-            });
-        })
-        .toArray();
 }
 
 function applyLineageMetadata(
@@ -181,106 +124,6 @@ function applyLineageIOMetadata(
         objectInputs: item.objectInputs.map(_applyItem),
         objectOutputs: item.objectOutputs.map(_applyItem),
     };
-}
-
-export async function processLineageResult(lineage: LineageResult, options?: LineageOptions): Promise<LineageResult> {
-    const iconURLByLsid = {};
-    const metadata = {};
-
-    const results = await Promise.all(fetchNodeMetadata(lineage));
-
-    results.forEach(result => {
-        const queryInfo = result.queries[result.key];
-        const model = fromJS(result.models[result.key]);
-        model.forEach(data => {
-            const lsid = data.getIn(['LSID', 'value']);
-            iconURLByLsid[lsid] = queryInfo.iconURL;
-            metadata[lsid] = LineageNodeMetadata.create(data, queryInfo);
-        });
-    });
-
-    return applyLineageMetadata(lineage, metadata, iconURLByLsid, options);
-}
-
-let lineageResultCache: Record<string, Promise<LineageResult>> = {};
-let lineageSeedCache: Record<string, Promise<LineageResult>> = {};
-
-export function invalidateLineageResults(): void {
-    lineageResultCache = {};
-    lineageSeedCache = {};
-}
-
-export function loadLineageResult(
-    seed: string,
-    container?: string,
-    distance?: number,
-    options?: LineageOptions
-): Promise<LineageResult> {
-    const fetchOptions: Experiment.LineageOptions = {
-        ...options?.request,
-        lsid: seed,
-        runProtocolLsid: options?.runProtocolLsid,
-    };
-
-    const currentContainerId = getServerContext().container.id;
-
-    if (!container) {
-        container = currentContainerId;
-    }
-
-    // Lineage API currently responds with the container's entity ID.
-    // Only apply container if it doesn't match the current container.
-    if (container !== currentContainerId) {
-        fetchOptions.containerPath = container;
-    }
-
-    if (!isNaN(distance)) {
-        // The lineage includes a "run" object for each parent as well, so we
-        // query for twice the depth requested in the URL.
-        fetchOptions.depth = distance * 2;
-    }
-
-    const key = [
-        seed,
-        container ?? '',
-        distance ?? -1,
-        fetchOptions.includeInputsAndOutputs === true,
-        fetchOptions.includeRunSteps === true,
-        fetchOptions.includeProperties === true,
-        options?.runProtocolLsid ?? '',
-    ].join('|');
-
-    if (!lineageResultCache[key]) {
-        lineageResultCache[key] = fetchLineage(fetchOptions).then(r => processLineageResult(r, options));
-    }
-
-    return lineageResultCache[key];
-}
-
-export function loadSampleStats(lineageResult: LineageResult): Promise<any> {
-    return selectRowsDeprecated({
-        schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
-        queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
-        containerFilter: Query.containerFilter.currentPlusProjectAndShared,
-    }).then(sampleSets => computeSampleCounts(lineageResult, sampleSets));
-}
-
-export function loadSeedResult(seed: string, container?: string, options?: LineageOptions): Promise<LineageResult> {
-    const key = [seed, container ?? ''].join('|');
-
-    if (!lineageSeedCache[key]) {
-        lineageSeedCache[key] = fetchLineageNodes([seed], container)
-            .then(nodes => nodes[0])
-            .then(seedNode =>
-                LineageResult.create({
-                    nodes: { [seedNode.lsid]: seedNode },
-                    seed: seedNode.lsid,
-                })
-            )
-            .then(result => processLineageResult(result, options));
-    }
-
-    return lineageSeedCache[key];
 }
 
 // TODO add jest test coverage for this function
@@ -391,4 +234,192 @@ export function getLineageFilterValue(lsid: string, depth: number | string): str
 
 export function getImmediateChildLineageFilterValue(lsid: string): string {
     return getLineageFilterValue(lsid, 1);
+}
+
+export interface LineageAPIWrapper {
+    loadLineageResult: (
+        seed: string,
+        container?: string,
+        distance?: number,
+        options?: LineageOptions
+    ) => Promise<LineageResult>;
+    loadNodeMetadata: (lineage: LineageResult) => Array<Promise<ISelectRowsResult>>;
+    loadSampleStats: (lineageResult: LineageResult) => Promise<any>;
+    loadSeedResult: (seed: string, container?: string, options?: LineageOptions) => Promise<LineageResult>;
+}
+
+let lineageResultCache: Record<string, Promise<LineageResult>> = {};
+let lineageSeedCache: Record<string, Promise<LineageResult>> = {};
+
+export function invalidateLineageResults(): void {
+    lineageResultCache = {};
+    lineageSeedCache = {};
+}
+
+export class ServerLineageAPIWrapper implements LineageAPIWrapper {
+    processLineageResult = async (lineage: LineageResult, options?: LineageOptions): Promise<LineageResult> => {
+        const iconURLByLsid = {};
+        const metadata = {};
+        const results = await Promise.all(this.loadNodeMetadata(lineage));
+
+        results.forEach(result => {
+            const queryInfo = result.queries[result.key];
+            const model = fromJS(result.models[result.key]);
+            model.forEach(data => {
+                const lsid = data.getIn(['LSID', 'value']);
+                iconURLByLsid[lsid] = queryInfo.iconURL;
+                metadata[lsid] = LineageNodeMetadata.create(data, queryInfo);
+            });
+        });
+
+        return applyLineageMetadata(lineage, metadata, iconURLByLsid, options);
+    };
+
+    loadLineage = (options: Omit<Experiment.LineageOptions, 'lsids'>): Promise<LineageResult> => {
+        return new Promise((resolve, reject) => {
+            const seed = options.lsid;
+
+            Experiment.lineage({
+                ...options,
+                success: lineage => {
+                    resolve(LineageResult.create(lineage));
+                },
+                failure: error => {
+                    let message = `Failed to fetch lineage for seed "${seed}".`;
+
+                    if (error) {
+                        if (error.exception) {
+                            message = error.exception;
+
+                            // When a server exception occurs
+                            if (error.exceptionClass) {
+                                message = `${error.exceptionClass}: ` + error.exception;
+                            }
+                        }
+                    }
+
+                    reject({
+                        seed,
+                        message,
+                    });
+                },
+            });
+        });
+    };
+
+    loadLineageResult = (
+        seed: string,
+        container?: string,
+        distance?: number,
+        options?: LineageOptions
+    ): Promise<LineageResult> => {
+        const fetchOptions: Experiment.LineageOptions = {
+            ...options?.request,
+            lsid: seed,
+            runProtocolLsid: options?.runProtocolLsid,
+        };
+
+        const currentContainerId = getServerContext().container.id;
+
+        if (!container) {
+            container = currentContainerId;
+        }
+
+        // Lineage API currently responds with the container's entity ID.
+        // Only apply container if it doesn't match the current container.
+        if (container !== currentContainerId) {
+            fetchOptions.containerPath = container;
+        }
+
+        if (!isNaN(distance)) {
+            // The lineage includes a "run" object for each parent as well, so we
+            // query for twice the depth requested in the URL.
+            fetchOptions.depth = distance * 2;
+        }
+
+        const key = [
+            seed,
+            container ?? '',
+            distance ?? -1,
+            fetchOptions.includeInputsAndOutputs === true,
+            fetchOptions.includeRunSteps === true,
+            fetchOptions.includeProperties === true,
+            options?.runProtocolLsid ?? '',
+        ].join('|');
+
+        if (!lineageResultCache[key]) {
+            lineageResultCache[key] = this.loadLineage(fetchOptions).then(r => this.processLineageResult(r, options));
+        }
+
+        return lineageResultCache[key];
+    };
+
+    loadNodeMetadata = (lineage: LineageResult): Array<Promise<ISelectRowsResult>> => {
+        // Node metadata does not support nodes with multiple primary keys. These could be supported, however,
+        // each node would require it's own request for the unique keys combination. Also, nodes without any primary
+        // keys cannot be filtered upon and thus are also not supported.
+        return lineage.nodes
+            .filter(n => n.schemaName !== undefined && n.queryName !== undefined && n.pkFilters.length === 1)
+            .groupBy(n => [n.schemaName, n.queryName].join('|||').toLowerCase())
+            .map(nodes => {
+                const node = nodes.first();
+                const { fieldKey } = node.pkFilters[0];
+
+                console.log('fNodeMetadata', node.schemaName, node.queryName);
+                return selectRowsDeprecated({
+                    containerPath: node.containerPath,
+                    schemaName: node.schemaName,
+                    queryName: node.queryName,
+                    viewName: ViewInfo.DETAIL_NAME, // use Detail view to assure we get all data, even when default view is filtered
+                    // TODO: Is there a better way to determine set of columns? Can we follow convention for detail views?
+                    // See LineageNodeMetadata (and it's usages) for why this is currently necessary
+                    columns: LINEAGE_METADATA_COLUMNS.add(fieldKey).join(','),
+                    filterArray: [Filter.create(fieldKey, nodes.map(n => n.pkFilters[0].value).toArray(), Filter.Types.IN)],
+                });
+            })
+            .toArray();
+    };
+
+    loadSampleStats = (lineageResult: LineageResult): Promise<any> => {
+        return selectRowsDeprecated({
+            schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
+            queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
+            containerFilter: Query.containerFilter.currentPlusProjectAndShared,
+        }).then(sampleSets => computeSampleCounts(lineageResult, sampleSets));
+    };
+
+    loadSeedResult = (seed: string, container?: string, options?: LineageOptions): Promise<LineageResult> => {
+        const key = [seed, container ?? ''].join('|');
+
+        if (!lineageSeedCache[key]) {
+            lineageSeedCache[key] = fetchLineageNodes([seed], container)
+                .then(nodes => nodes[0])
+                .then(seedNode =>
+                    LineageResult.create({
+                        nodes: { [seedNode.lsid]: seedNode },
+                        seed: seedNode.lsid,
+                    })
+                )
+                .then(result => this.processLineageResult(result, options));
+        }
+
+        return lineageSeedCache[key];
+    };
+}
+
+export class TestLineageAPIWrapper extends ServerLineageAPIWrapper {
+    result: LineageResult;
+    metadata: ISelectRowsResult[];
+    constructor(result, metadata) {
+        super();
+        this.result = result;
+        this.metadata = metadata;
+    }
+    loadNodeMetadata = (lineage: LineageResult): Array<Promise<ISelectRowsResult>> => {
+        return this.metadata.map(m => Promise.resolve(m));
+    };
+
+    loadLineage = (options: Omit<Experiment.LineageOptions, 'lsids'>): Promise<LineageResult> => {
+        return Promise.resolve(this.result);
+    };
 }

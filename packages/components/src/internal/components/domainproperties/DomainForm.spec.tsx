@@ -19,7 +19,6 @@ import { mount } from 'enzyme';
 import { ActionButton } from '../buttons/ActionButton';
 
 import { waitForLifecycle } from '../../test/enzymeTestHelpers';
-import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
 import { Alert } from '../base/Alert';
 
@@ -52,9 +51,10 @@ import { clearFieldDetails, updateDomainField } from './actions';
 import { DomainRow } from './DomainRow';
 import { INT_LIST } from './list/constants';
 import { SystemFields } from './SystemFields';
+import { getDomainPropertiesTestAPIWrapper } from './APIWrapper';
 
-beforeAll(() => {
-    initUnitTestMocks();
+const API = getDomainPropertiesTestAPIWrapper(jest.fn, {
+    getMaxPhiLevel: jest.fn().mockResolvedValue('Restricted'),
 });
 
 interface Props {
@@ -80,6 +80,7 @@ class DomainFormContainer extends React.PureComponent<Props, any> {
     render() {
         return (
             <DomainForm
+                api={API}
                 domain={this.state.domain}
                 domainFormDisplayOptions={{
                     hideInferFromFile: this.props.hideInferFromFile,
@@ -97,6 +98,7 @@ describe('DomainForm', () => {
 
         const form = mount(
             <DomainForm
+                api={API}
                 domain={domain}
                 onChange={jest.fn()}
                 domainFormDisplayOptions={{ hideImportExport: true, hideInferFromFile: true }}
@@ -153,7 +155,7 @@ describe('DomainForm', () => {
             fields,
             indices: [],
         });
-        const form = mount(<DomainFormImpl domain={domain} onChange={jest.fn()} testMode={true} />);
+        const form = mount(<DomainFormImpl api={API} domain={domain} onChange={jest.fn()} testMode={true} />);
 
         const message = 'There are reserved fields';
         form.setState({ reservedFieldsMsg: message });
@@ -168,6 +170,7 @@ describe('DomainForm', () => {
         const domain = DomainDesign.create({});
         const form = mount(
             <DomainForm
+                api={API}
                 domain={domain}
                 helpNoun="assay"
                 helpTopic="assays"
@@ -196,6 +199,7 @@ describe('DomainForm', () => {
         });
         const form = mount(
             <DomainForm
+                api={API}
                 domain={domain}
                 domainFormDisplayOptions={{ hideInferFromFile: true }}
                 onChange={jest.fn()}
@@ -288,7 +292,7 @@ describe('DomainForm', () => {
             fields,
             indices: [],
         });
-        const form = mount(<DomainForm domain={domain} onChange={jest.fn()} testMode={true} />);
+        const form = mount(<DomainForm api={API} domain={domain} onChange={jest.fn()} testMode={true} />);
         await waitForLifecycle(form);
 
         expect(form).toMatchSnapshot();
@@ -337,7 +341,7 @@ describe('DomainForm', () => {
         domain = updateDomainField(domain, { id: createFormInputId(DOMAIN_FIELD_TYPE, 0, 2), value: 'ParticipantId' });
         domain = updateDomainField(domain, { id: createFormInputId(DOMAIN_FIELD_TYPE, 0, 3), value: 'attachment' });
 
-        const form = mount(<DomainForm domain={domain} onChange={jest.fn()} testMode={true} />);
+        const form = mount(<DomainForm api={API} domain={domain} onChange={jest.fn()} testMode={true} />);
         await waitForLifecycle(form);
 
         expect(form).toMatchSnapshot();
@@ -366,7 +370,7 @@ describe('DomainForm', () => {
         domain = updateDomainField(domain, { id: createFormInputId(DOMAIN_FIELD_NAME, 0, 0), value: 'newfieldname' });
         domain = clearFieldDetails(domain);
 
-        const form = mount(<DomainForm domain={domain} key="domainForm" onChange={jest.fn()} testMode={true} />);
+        const form = mount(<DomainForm api={API} domain={domain} key="domainForm" onChange={jest.fn()} testMode={true} />);
         await waitForLifecycle(form);
 
         expect(form).toMatchSnapshot();
@@ -399,7 +403,7 @@ describe('DomainForm', () => {
             }) as DomainDesign;
         };
 
-        const form = mount(<DomainForm domain={domain} onChange={changeHandler} testMode={true} />);
+        const form = mount(<DomainForm api={API} domain={domain} onChange={changeHandler} testMode={true} />);
         await waitForLifecycle(form);
 
         // Add new row
@@ -460,7 +464,7 @@ describe('DomainForm', () => {
         });
 
         const form = mount(
-            <DomainForm domain={domain} collapsible={false} initCollapsed={true} onChange={jest.fn()} testMode={true} />
+            <DomainForm api={API} domain={domain} collapsible={false} initCollapsed={true} onChange={jest.fn()} testMode={true} />
         );
         await waitForLifecycle(form);
 
@@ -488,7 +492,7 @@ describe('DomainForm', () => {
         });
 
         const form = mount(
-            <DomainForm domain={domain} collapsible={false} initCollapsed={true} onChange={jest.fn()} testMode={true} />
+            <DomainForm api={API} domain={domain} collapsible={false} initCollapsed={true} onChange={jest.fn()} testMode={true} />
         );
         await waitForLifecycle(form);
 
@@ -501,6 +505,7 @@ describe('DomainForm', () => {
 
         const form = mount(
             <DomainForm
+                api={API}
                 domain={domain}
                 domainFormDisplayOptions={{
                     hideInferFromFile: true,
@@ -522,6 +527,7 @@ describe('DomainForm', () => {
         const domain = DomainDesign.create({});
         const form = mount(
             <DomainForm
+                api={API}
                 domain={domain}
                 domainFormDisplayOptions={{ hideInferFromFile: false }}
                 onChange={jest.fn()}
@@ -594,7 +600,7 @@ describe('DomainForm', () => {
 
         const helpTopic = 'Your topic';
         const form = mount(
-            <DomainForm helpTopic={helpTopic} domain={domain} onChange={changeHandler} testMode={true} />
+            <DomainForm api={API} helpTopic={helpTopic} domain={domain} onChange={changeHandler} testMode={true} />
         );
         await waitForLifecycle(form);
 
@@ -650,6 +656,7 @@ describe('DomainForm', () => {
 
         const form = mount(
             <DomainForm
+                api={API}
                 domain={domain}
                 onChange={changeHandler}
                 domainFormDisplayOptions={{ hideImportExport: true, hideInferFromFile: true }}
@@ -696,6 +703,7 @@ describe('DomainForm', () => {
 
         const wrapper = mount(
             <DomainForm
+                api={API}
                 domain={domain}
                 onChange={jest.fn}
                 collapsible={true}
@@ -749,6 +757,7 @@ describe('DomainForm', () => {
 
         const wrapper = mount(
             <DomainForm
+                api={API}
                 domain={domain}
                 onChange={jest.fn}
                 collapsible={true}
@@ -783,6 +792,7 @@ describe('DomainForm', () => {
 
         const form = mount(
             <DomainForm
+                api={API}
                 domain={domain}
                 onChange={jest.fn()}
                 domainFormDisplayOptions={{
@@ -802,6 +812,7 @@ describe('DomainForm', () => {
 
         const form = mount(
             <DomainForm
+                api={API}
                 domain={domain}
                 onChange={jest.fn()}
                 domainFormDisplayOptions={{
@@ -824,7 +835,7 @@ describe('DomainForm', () => {
     test('using default false for hideImportExport', async () => {
         const domain = DomainDesign.create({});
 
-        const form = mount(<DomainForm domain={domain} onChange={jest.fn()} testMode={true} />);
+        const form = mount(<DomainForm api={API} domain={domain} onChange={jest.fn()} testMode={true} />);
 
         await waitForLifecycle(form);
 
@@ -841,6 +852,7 @@ describe('DomainForm', () => {
 
         const form = mount(
             <DomainForm
+                api={API}
                 domain={domain}
                 onChange={jest.fn()}
                 domainFormDisplayOptions={{
@@ -881,6 +893,7 @@ describe('DomainForm', () => {
 
         const form = mount(
             <DomainForm
+                api={API}
                 domain={domain}
                 onChange={jest.fn()}
                 domainFormDisplayOptions={{
@@ -922,6 +935,7 @@ describe('DomainForm', () => {
 
         const form = mount(
             <DomainForm
+                api={API}
                 domain={domain}
                 onChange={jest.fn()}
                 domainFormDisplayOptions={{
@@ -949,7 +963,7 @@ describe('DomainForm', () => {
         fields.push({ name: 'DeletableField1' });
         fields.push({ name: 'DeletableField2' });
         const domain = DomainDesign.create({ fields });
-        const form = mount(<DomainFormImpl domain={domain} onChange={jest.fn()} testMode={true} />);
+        const form = mount(<DomainFormImpl api={API} domain={domain} onChange={jest.fn()} testMode={true} />);
 
         await waitForLifecycle(form);
 
@@ -976,7 +990,7 @@ describe('DomainForm', () => {
         fields.push({ name: 'Field1' });
         fields.push({ name: 'Field2' });
         const domain = DomainDesign.create({ fields });
-        const form = mount(<DomainFormImpl domain={domain} onChange={jest.fn()} testMode={true} />);
+        const form = mount(<DomainFormImpl api={API} domain={domain} onChange={jest.fn()} testMode={true} />);
 
         const visibleSelection = new Set();
         visibleSelection.add(0).add(1);
@@ -1013,7 +1027,7 @@ describe('DomainForm', () => {
         fields.push({ name: 'Field2' });
 
         const domain = DomainDesign.create({ fields });
-        const form = mount(<DomainFormImpl domain={domain} onChange={jest.fn()} testMode={true} />);
+        const form = mount(<DomainFormImpl api={API} domain={domain} onChange={jest.fn()} testMode={true} />);
 
         await waitForLifecycle(form);
 
@@ -1037,7 +1051,7 @@ describe('DomainForm', () => {
         fields.push({ name: 'Field2' });
 
         const domain = DomainDesign.create({ fields, domainKindName: 'VarList' });
-        const form = mount(<DomainFormImpl domain={domain} onChange={jest.fn()} testMode={true} />);
+        const form = mount(<DomainFormImpl api={API} domain={domain} onChange={jest.fn()} testMode={true} />);
 
         await waitForLifecycle(form);
 
@@ -1053,7 +1067,7 @@ describe('DomainForm', () => {
         fields.push({ name: 'Field2' });
 
         const domain = DomainDesign.create({ fields, domainKindName: INT_LIST });
-        const form = mount(<DomainFormImpl domain={domain} onChange={jest.fn()} testMode={true} />);
+        const form = mount(<DomainFormImpl api={API} domain={domain} onChange={jest.fn()} testMode={true} />);
 
         await waitForLifecycle(form);
 
@@ -1066,6 +1080,7 @@ describe('DomainForm', () => {
         const domain = DomainDesign.create({});
         const form = mount(
             <DomainFormImpl
+                api={API}
                 domain={domain}
                 onChange={jest.fn()}
                 systemFields={SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS}

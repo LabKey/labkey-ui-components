@@ -707,6 +707,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                     }
                 />
                 <DomainForm
+                    api={api.domain}
                     key={model.domain.domainId || 0}
                     appDomainHeaderRenderer={this.uniqueIdBannerRenderer}
                     domainIndex={0}

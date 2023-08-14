@@ -124,5 +124,6 @@ export function getIssuesTestAPIWrapper(
         getRelatedFolders: mockFn(),
         getUsersForGroup: mockFn(),
         saveIssueListDefOptions: mockFn(),
+        ...overrides,
     };
 }

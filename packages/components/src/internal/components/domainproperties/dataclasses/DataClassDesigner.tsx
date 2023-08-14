@@ -409,6 +409,7 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
 
     render(): ReactNode {
         const {
+            api,
             onCancel,
             appPropertiesOnly,
             dataClassAliasCaption,
@@ -419,7 +420,6 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
             nameExpressionPlaceholder,
             headerText,
             successBsStyle,
-            onTogglePanel,
             submitting,
             saveBtnText,
             currentPanelIndex,
@@ -493,6 +493,7 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
                 />
                 <DomainForm
                     key={model.domain.domainId || 0}
+                    api={api.domain}
                     domainIndex={0}
                     domain={model.domain}
                     headerTitle="Fields"

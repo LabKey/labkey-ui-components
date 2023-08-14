@@ -29,6 +29,12 @@ import { EntityDataType, OperationConfirmationData } from './models';
 
 interface Props {
     entityDataType: EntityDataType;
+    fetchDeleteConfirmationData?: (
+        dataType: EntityDataType,
+        rowIds: string[] | number[],
+        selectionKey?: string,
+        useSnapshotSelection?: boolean
+    ) => Promise<OperationConfirmationData>
     getDeletionDescription?: (numToDelete: number) => React.ReactNode;
     model?: QueryModel;
     onCancel: () => void;
@@ -50,6 +56,10 @@ interface State {
 export class EntityDeleteConfirmModal extends PureComponent<Props, State> {
     // This is used because a user may cancel during the loading phase, in which case we don't want to update state
     private _mounted: boolean;
+
+    static defaultProps = {
+        fetchDeleteConfirmationData: getDeleteConfirmationData,
+    };
 
     constructor(props: Props) {
         super(props);
@@ -75,12 +85,12 @@ export class EntityDeleteConfirmModal extends PureComponent<Props, State> {
     }
 
     init = async (): Promise<void> => {
-        const { entityDataType, rowIds, selectionKey, model } = this.props;
+        const { entityDataType, fetchDeleteConfirmationData, rowIds, selectionKey, model } = this.props;
 
         try {
             const useSnapshotSelection = model?.filterArray.length > 0;
             if (useSnapshotSelection) await setSnapshotSelections(selectionKey, [...model.selections]);
-            const confirmationData = await getDeleteConfirmationData(
+            const confirmationData = await fetchDeleteConfirmationData(
                 entityDataType,
                 rowIds,
                 selectionKey,

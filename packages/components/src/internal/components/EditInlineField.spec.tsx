@@ -1,7 +1,7 @@
 import React from 'react';
 import { ReactWrapper } from 'enzyme';
 
-import { mountWithServerContext } from '../test/enzymeTestHelpers';
+import { mountWithAppServerContext } from '../test/enzymeTestHelpers';
 
 import { QueryColumn } from '../../public/QueryColumn';
 
@@ -52,7 +52,7 @@ describe('EditInlineField', () => {
     }
 
     test('default props', () => {
-        const wrapper = mountWithServerContext(<EditInlineField {...DEFAULT_PROPS} />, SERVER_CONTEXT);
+        const wrapper = mountWithAppServerContext(<EditInlineField {...DEFAULT_PROPS} />, {}, SERVER_CONTEXT);
         validate(wrapper);
         expect(wrapper.find('.edit-inline-field__placeholder').text()).toBe('');
         expect(wrapper.find('.edit-inline-field__toggle').text()).toBe('');
@@ -62,8 +62,9 @@ describe('EditInlineField', () => {
     });
 
     test('not allowEdit', () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <EditInlineField {...DEFAULT_PROPS} allowEdit={false} />,
+            {},
             SERVER_CONTEXT
         );
         validate(wrapper, false, false);
@@ -71,8 +72,9 @@ describe('EditInlineField', () => {
     });
 
     test('emptyText', () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <EditInlineField {...DEFAULT_PROPS} emptyText="Test Empty Text" />,
+            {},
             SERVER_CONTEXT
         );
         validate(wrapper);
@@ -81,8 +83,9 @@ describe('EditInlineField', () => {
     });
 
     test('with value', () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <EditInlineField {...DEFAULT_PROPS} value="testing value" />,
+            {},
             SERVER_CONTEXT
         );
         validate(wrapper);
@@ -92,8 +95,9 @@ describe('EditInlineField', () => {
     });
 
     test('with RowValue, displayValue', () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <EditInlineField {...DEFAULT_PROPS} value={{ value: 1, displayValue: 'Test1' }} />,
+            {},
             SERVER_CONTEXT
         );
         validate(wrapper);
@@ -103,11 +107,12 @@ describe('EditInlineField', () => {
     });
 
     test('with RowValue, formattedValue', () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <EditInlineField
                 {...DEFAULT_PROPS}
                 value={{ value: 1, displayValue: 'Test1', formattedValue: 'Test1.0' }}
             />,
+            {},
             SERVER_CONTEXT
         );
         validate(wrapper);
@@ -117,7 +122,11 @@ describe('EditInlineField', () => {
     });
 
     test('isTextArea', () => {
-        const wrapper = mountWithServerContext(<EditInlineField {...DEFAULT_PROPS} type="textarea" />, SERVER_CONTEXT);
+        const wrapper = mountWithAppServerContext(
+            <EditInlineField {...DEFAULT_PROPS} type="textarea" />,
+            {},
+            SERVER_CONTEXT
+        );
         validate(wrapper);
         wrapper.find('.edit-inline-field__toggle').simulate('click');
         validate(wrapper, true, true, { textarea: 1 });
@@ -125,7 +134,11 @@ describe('EditInlineField', () => {
     });
 
     test('isDate, no initial value', () => {
-        const wrapper = mountWithServerContext(<EditInlineField {...DEFAULT_PROPS} type="date" />, SERVER_CONTEXT);
+        const wrapper = mountWithAppServerContext(
+            <EditInlineField {...DEFAULT_PROPS} type="date" />,
+            {},
+            SERVER_CONTEXT
+        );
         validate(wrapper);
         expect(wrapper.find('.edit-inline-field__toggle').text()).toBe('');
         wrapper.find('.edit-inline-field__toggle').simulate('click');
@@ -137,8 +150,9 @@ describe('EditInlineField', () => {
     });
 
     test('isDate, with initial value', () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <EditInlineField {...DEFAULT_PROPS} type="date" value="2022-08-11" />,
+            {},
             SERVER_CONTEXT
         );
         validate(wrapper);
@@ -152,13 +166,14 @@ describe('EditInlineField', () => {
     });
 
     test('isDate, with initial value and QueryColumn format', () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <EditInlineField
                 {...DEFAULT_PROPS}
                 type="date"
                 value="2022-08-11"
                 column={new QueryColumn({ format: 'MM/dd/YYYY HH:mm:ss' })}
             />,
+            {},
             SERVER_CONTEXT
         );
         validate(wrapper);
@@ -172,7 +187,7 @@ describe('EditInlineField', () => {
     });
 
     test('resolveDetailEditRenderer', () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <EditInlineField
                 {...DEFAULT_PROPS}
                 column={
@@ -185,6 +200,7 @@ describe('EditInlineField', () => {
                     })
                 }
             />,
+            {},
             SERVER_CONTEXT
         );
         validate(wrapper);
@@ -198,7 +214,7 @@ describe('EditInlineField', () => {
     });
 
     test('isUser', () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <EditInlineField
                 {...DEFAULT_PROPS}
                 column={
@@ -215,6 +231,7 @@ describe('EditInlineField', () => {
                     })
                 }
             />,
+            {},
             SERVER_CONTEXT
         );
         validate(wrapper, false, true, { user: 1 });

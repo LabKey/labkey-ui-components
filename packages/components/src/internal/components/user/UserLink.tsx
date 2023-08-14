@@ -6,7 +6,9 @@ import { caseInsensitive } from '../../util/utils';
 
 import { useServerContext } from '../base/ServerContext';
 
-import { selectRowsUserProps, UserDetailsPanel } from './UserDetailsPanel';
+import { useAppContext } from '../../AppContext';
+
+import { UserDetailsPanel } from './UserDetailsPanel';
 
 interface UserLinkProps {
     unknown?: boolean;
@@ -19,13 +21,14 @@ export const UserLink: FC<UserLinkProps> = props => {
     const [showDetails, setShowDetails] = useState<boolean>(false);
     const [targetUserDisplayValue, setTargetUserDisplayValue] = useState<string>();
     const { user, container } = useServerContext();
+    const { api } = useAppContext();
     const isSelf = userId === user.id;
 
     useEffect(() => {
         (async () => {
             try {
                 if (!!userId && userDisplayValue === undefined) {
-                    const targetUser = await selectRowsUserProps(userId);
+                    const targetUser = await api.security.getUserPropertiesForOther(userId);
                     setTargetUserDisplayValue(caseInsensitive(targetUser, 'DisplayName'));
                 } else {
                     setTargetUserDisplayValue(userDisplayValue);
@@ -34,7 +37,7 @@ export const UserLink: FC<UserLinkProps> = props => {
                 console.error(error);
             }
         })();
-    }, [userDisplayValue, userId]);
+    }, [api.security, userDisplayValue, userId]);
 
     const toggleDetailsModal = useCallback(() => {
         setShowDetails(current => !current);

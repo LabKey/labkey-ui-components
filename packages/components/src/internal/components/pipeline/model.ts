@@ -28,7 +28,7 @@ export class PipelineStatusDetailModel {
         Object.assign(this, { isLoaded: false, isLoading: false, fetchCount: 1, nextOffset: 0 }, values);
     }
 
-    static loadResult(data?: any) {
+    static fromJSON(data?: any) {
         return new PipelineStatusDetailModel({
             rowId: data['rowId'],
             created: data['created'],

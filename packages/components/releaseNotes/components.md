@@ -5,6 +5,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TB August 2023
 - EditableGrid prop for tabContainerCls
 
+### version 2.359.0
+*Released*: 14 August 2023
+- Remove xhr-mock
+- Remove all xhr-mock utilities
+- Convert various components to use APIWrappers or dependency injection for methods that fetch data
+- Convert some tests to use shallow, preventing them from making network requests
+- Delete unused test data
+- incrementClientSideMetricCount: Don't make API call in test env
+
 ### version 2.358.2
 *Released*: 8 August 2023
 - Update parsing of duplicate key errors to account for single-field keys

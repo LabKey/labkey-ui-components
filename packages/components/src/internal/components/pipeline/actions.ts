@@ -20,7 +20,7 @@ export function getPipelineStatusDetail(
             },
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {
-                    resolve(PipelineStatusDetailModel.loadResult(response.data));
+                    resolve(PipelineStatusDetailModel.fromJSON(response.data));
                 } else {
                     console.error(response);
                     reject('There was a problem retrieving the status detail.');

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.358.2-fb-addSamplesFromStorage.0",
+  "version": "2.359.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [
@@ -108,8 +108,7 @@
     "jest-teamcity-reporter": "~0.9.0",
     "react-test-renderer": "~16.14.0",
     "ts-jest": "~29.0.3",
-    "webpack-merge": "~5.8.0",
-    "xhr-mock": "~2.5.1"
+    "webpack-merge": "~5.8.0"
   },
   "peerDependencies": {
     "immutable": "^3.8.2",

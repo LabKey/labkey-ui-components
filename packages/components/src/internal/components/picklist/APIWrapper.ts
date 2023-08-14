@@ -31,8 +31,8 @@ export function getPicklistTestAPIWrapper(
 ): PicklistAPIWrapper {
     return {
         getPicklistCountsBySampleType: () => Promise.resolve([]),
-        getPicklistDeleteData: mockFn,
-        getPicklistFromId: mockFn,
+        getPicklistDeleteData: mockFn(),
+        getPicklistFromId: mockFn(),
         ...overrides,
     };
 }

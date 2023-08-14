@@ -2,10 +2,11 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 2.359.0
-*Released*: ?? August 2023
+*Released*: 14 August 2023
 - Remove xhr-mock
 - Remove all xhr-mock utilities
-- Convert various components to use APIWrappers or depenency injection for methods that fetch data
+- Convert various components to use APIWrappers or dependency injection for methods that fetch data
+- Convert some tests to use shallow, preventing them from making network requests
 - Delete unused test data
 - incrementClientSideMetricCount: Don't make API call in test env
 

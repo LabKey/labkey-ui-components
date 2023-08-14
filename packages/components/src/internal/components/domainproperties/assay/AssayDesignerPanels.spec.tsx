@@ -1,11 +1,17 @@
 import React from 'react';
 import { List, Map } from 'immutable';
 import { Panel } from 'react-bootstrap';
+import { getTestAPIWrapper } from '../../../APIWrapper';
+import { getDomainPropertiesTestAPIWrapper } from '../APIWrapper';
 
 import { DomainDesign } from '../models';
 
-import { mountWithServerContext, shallowWithServerContext, waitForLifecycle } from '../../../test/enzymeTestHelpers';
-import { initUnitTestMocks } from '../../../../test/testHelperMocks';
+import {
+    mountWithAppServerContext,
+    mountWithServerContext,
+    shallowWithServerContext,
+    waitForLifecycle,
+} from '../../../test/enzymeTestHelpers';
 
 import { FileAttachmentForm } from '../../../../public/files/FileAttachmentForm';
 
@@ -72,13 +78,10 @@ function setAssayName(wrapper: any, value: string) {
         .simulate('change', { target: nameInputValue });
 }
 
-beforeAll(() => {
-    initUnitTestMocks();
-});
-
 describe('AssayDesignerPanels', () => {
     function getDefaultProps(): AssayDesignerPanelsProps {
         return {
+            api: getDomainPropertiesTestAPIWrapper(jest.fn),
             domainFormDisplayOptions: {
                 hideStudyPropertyTypes: true,
             },
@@ -255,7 +258,7 @@ describe('AssayDesignerPanels', () => {
 
     test('new assay wizard', async () => {
         const component = <AssayDesignerPanels {...getDefaultProps()} successBsStyle="primary" />;
-        const wrapper = mountWithServerContext(component);
+        const wrapper = mountWithAppServerContext(component);
         await waitForLifecycle(wrapper);
 
         expect(wrapper.find('.domain-heading-collapsible').hostNodes()).toHaveLength(4);

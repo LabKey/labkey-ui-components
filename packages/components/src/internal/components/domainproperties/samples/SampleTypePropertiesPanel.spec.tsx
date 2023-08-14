@@ -25,15 +25,9 @@ import { sleep } from '../../../test/testHelpers';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
-import { initUnitTestMocks } from '../../../../test/testHelperMocks';
-
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { SampleTypeModel } from './models';
 import { UniqueIdBanner } from './UniqueIdBanner';
-
-beforeAll(() => {
-    initUnitTestMocks();
-});
 
 const BASE_PROPS = {
     panelStatus: 'NONE' as DomainPanelStatus,

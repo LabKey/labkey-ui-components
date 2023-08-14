@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { mountWithServerContext } from '../test/enzymeTestHelpers';
+import { mountWithAppServerContext } from '../test/enzymeTestHelpers';
 
 import { UserLink } from '../components/user/UserLink';
 
@@ -10,7 +10,7 @@ import { COMMENTER, NOUN_PLURAL, NOUN_SINGULAR, THREAD, THREAD_WITH_RESPONSE } f
 
 describe('ThreadBlock', () => {
     test('displays thread', () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <ThreadBlock
                 api={createTestAPIWrapper()}
                 canReply={true}
@@ -19,6 +19,7 @@ describe('ThreadBlock', () => {
                 thread={THREAD}
                 user={COMMENTER}
             />,
+            {},
             { user: COMMENTER }
         );
 
@@ -43,7 +44,7 @@ describe('ThreadBlock', () => {
     test('toggles thread replies', () => {
         const onToggleResponses = jest.fn();
 
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <ThreadBlock
                 api={createTestAPIWrapper()}
                 canReply={true}
@@ -53,6 +54,7 @@ describe('ThreadBlock', () => {
                 thread={THREAD_WITH_RESPONSE}
                 user={COMMENTER}
             />,
+            {},
             { user: COMMENTER }
         );
 
@@ -72,7 +74,7 @@ describe('ThreadBlock', () => {
     test('delete thread', async () => {
         const CANNOT_DELETE_USER = Object.assign({}, COMMENTER, { canDelete: false });
 
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <ThreadBlock
                 api={createTestAPIWrapper()}
                 canReply={true}
@@ -82,6 +84,7 @@ describe('ThreadBlock', () => {
                 thread={THREAD}
                 user={CANNOT_DELETE_USER}
             />,
+            {},
             { user: CANNOT_DELETE_USER }
         );
 

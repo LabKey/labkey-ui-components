@@ -11,15 +11,10 @@ import DomainForm from '../DomainForm';
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
 import { waitForLifecycle } from '../../../test/enzymeTestHelpers';
-import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { ListPropertiesPanel } from './ListPropertiesPanel';
 import { ListModel } from './models';
 import { ListDesignerPanels, ListDesignerPanelsImpl } from './ListDesignerPanels';
-
-beforeAll(() => {
-    initUnitTestMocks();
-});
 
 describe('ListDesignerPanel', () => {
     const emptyNewModel = ListModel.create(null, DEFAULT_LIST_SETTINGS);

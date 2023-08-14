@@ -3,8 +3,6 @@ import { List } from 'immutable';
 
 import { DomainDesign, DomainPanelStatus } from '../models';
 
-import { initUnitTestMocks } from '../../../../test/testHelperMocks';
-
 import { mountWithServerContext } from '../../../test/enzymeTestHelpers';
 
 import { ProductFeature } from '../../../app/constants';
@@ -29,10 +27,6 @@ import {
     SaveScriptDataInput,
     TransformScriptsInput,
 } from './AssayPropertiesInput';
-
-beforeAll(() => {
-    initUnitTestMocks();
-});
 
 const SERVER_CONTEXT = {
     // isAssayQCEnabled(moduleContext) === true

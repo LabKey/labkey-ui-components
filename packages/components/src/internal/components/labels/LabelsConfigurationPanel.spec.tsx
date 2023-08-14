@@ -21,9 +21,9 @@ import { LabelTemplate } from './models';
 jest.mock('react-bootstrap-toggle', () => {
     return props => {
         return (
-            <mock-toggle
+            <div
                 {...props}
-                className={classNames('', { 'toggle-on': props.active, 'toggle-off': !props.active })}
+                className={classNames('mock-toggle', { 'toggle-on': props.active, 'toggle-off': !props.active })}
             />
         );
     };
@@ -31,7 +31,7 @@ jest.mock('react-bootstrap-toggle', () => {
 
 describe('LabelsConfigurationPanel', () => {
     const DEFAULT_PROPS = {
-        api: getTestAPIWrapper(jest.fn(), {
+        api: getTestAPIWrapper(jest.fn, {
             labelprinting: getLabelPrintingTestAPIWrapper(jest.fn),
         }),
         defaultLabel: undefined,
@@ -173,7 +173,7 @@ describe('LabelTemplatesList', () => {
 const lpAPI = getLabelPrintingTestAPIWrapper(jest.fn);
 describe('LabelTemplateDetails', () => {
     const DEFAULT_PROPS = {
-        api: getTestAPIWrapper(jest.fn(), {
+        api: getTestAPIWrapper(jest.fn, {
             labelprinting: lpAPI,
         }),
         defaultLabel: undefined,
@@ -191,7 +191,7 @@ describe('LabelTemplateDetails', () => {
         // Don't show anything, use Label List's default message
         expect(wrapper.find('.choices-detail__empty-message')).toHaveLength(0);
         expect(wrapper.find(FormGroup)).toHaveLength(0);
-        expect(wrapper.find('mock-toggle')).toHaveLength(0);
+        expect(wrapper.find('.mock-toggle')).toHaveLength(0);
         wrapper.unmount();
     });
 
@@ -201,7 +201,7 @@ describe('LabelTemplateDetails', () => {
         // Show no selection message
         expect(wrapper.find('.choices-detail__empty-message')).toHaveLength(1);
         expect(wrapper.find(FormGroup)).toHaveLength(0);
-        expect(wrapper.find('mock-toggle')).toHaveLength(0);
+        expect(wrapper.find('.mock-toggle')).toHaveLength(0);
         expect(wrapper.find('.toggle-on')).toHaveLength(0);
         expect(wrapper.find('.toggle-off')).toHaveLength(0);
         wrapper.unmount();
@@ -227,7 +227,7 @@ describe('LabelTemplateDetails', () => {
         // Show form w/o default selector
         expect(wrapper.find('.choices-detail__empty-message')).toHaveLength(0);
         expect(wrapper.find(FormGroup)).toHaveLength(3);
-        expect(wrapper.find('mock-toggle')).toHaveLength(0);
+        expect(wrapper.find('.mock-toggle')).toHaveLength(0);
         expect(wrapper.find('.toggle-on')).toHaveLength(0);
         expect(wrapper.find('.toggle-off')).toHaveLength(0);
         wrapper.unmount();
@@ -256,7 +256,7 @@ describe('LabelTemplateDetails', () => {
         // Show form with default selector and default selected
         expect(wrapper.find('.choices-detail__empty-message')).toHaveLength(0);
         expect(wrapper.find(FormGroup)).toHaveLength(4);
-        expect(wrapper.find('mock-toggle')).toHaveLength(1);
+        expect(wrapper.find('.mock-toggle')).toHaveLength(1);
         expect(wrapper.find('.toggle-on')).toHaveLength(1);
         expect(wrapper.find('.toggle-off')).toHaveLength(0);
         wrapper.unmount();
@@ -285,7 +285,7 @@ describe('LabelTemplateDetails', () => {
         // Show form with default selector and default selected
         expect(wrapper.find('.choices-detail__empty-message')).toHaveLength(0);
         expect(wrapper.find(FormGroup)).toHaveLength(4);
-        expect(wrapper.find('mock-toggle')).toHaveLength(1);
+        expect(wrapper.find('.mock-toggle')).toHaveLength(1);
         expect(wrapper.find('.toggle-on')).toHaveLength(0);
         expect(wrapper.find('.toggle-off')).toHaveLength(1);
         wrapper.unmount();

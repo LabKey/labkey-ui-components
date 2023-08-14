@@ -120,7 +120,7 @@ export function getEntityTestAPIWrapper(
         handleEntityFileImport: mockFn(),
         loadNameExpressionOptions: mockFn(),
         moveEntities: mockFn(),
-        initParentOptionsSelects: mockFn,
+        initParentOptionsSelects: mockFn(),
         ...overrides,
     };
 }

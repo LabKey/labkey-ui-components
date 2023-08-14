@@ -86,6 +86,7 @@ import {
     updateSampleField,
 } from './models';
 import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId } from './utils';
+import { DomainPropertiesAPIWrapper } from './APIWrapper';
 
 let sharedCache = Map<string, Promise<any>>();
 
@@ -283,8 +284,11 @@ export function getAvailableTypes(domain: DomainDesign, ontologies = []): List<P
     return PROP_DESC_TYPES.filter(type => _isAvailablePropType(type, domain, ontologies)).toList();
 }
 
-export async function getAvailableTypesForOntology(domain: DomainDesign): Promise<List<PropDescType>> {
-    const ontologies = await fetchOntologies(domain.container);
+export async function getAvailableTypesForOntology(
+    api: DomainPropertiesAPIWrapper,
+    domain: DomainDesign
+): Promise<List<PropDescType>> {
+    const ontologies = await api.fetchOntologies(domain.container);
     return getAvailableTypes(domain, ontologies);
 }
 

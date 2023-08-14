@@ -39,6 +39,7 @@ interface AssayPickerProps {
     defaultTab?: AssayPickerTabs;
     excludedProviders?: string[];
     hasPremium: boolean;
+    loadOptions?: () => Promise<AssayProvidersOptions>;
     onChange: (model: AssayPickerSelectionModel) => void;
     showContainerSelect: boolean;
     showImport: boolean;
@@ -70,11 +71,12 @@ const getSelectedProvider = (providers: AssayProvider[], name: string): AssayPro
 export const AssayPicker: FC<AssayPickerProps> = memo(props => {
     const {
         defaultTab = AssayPickerTabs.STANDARD_ASSAY_TAB,
-        showImport,
-        showContainerSelect,
-        onChange,
         excludedProviders,
         hasPremium,
+        loadOptions = queryAssayProviders,
+        onChange,
+        showImport,
+        showContainerSelect,
     } = props;
     const [loadingState, setLoadingState] = useState<LoadingState>();
     const [providers, setProviders] = useState<AssayProvider[]>([]);
@@ -97,7 +99,7 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
         setLoadingState(LoadingState.LOADING);
         (async () => {
             try {
-                const options = await queryAssayProviders();
+                const options = await loadOptions();
                 let providers_ = options.providers;
                 if (excludedProviders) {
                     providers_ = providers_.filter(p => excludedProviders.indexOf(p.name) === -1);

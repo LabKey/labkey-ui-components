@@ -115,6 +115,19 @@ exports[`DataClassDesigner custom properties 1`] = `
     validate={true}
   />
   <DomainForm
+    api={
+      {
+        "fetchDomainDetails": [MockFunction],
+        "fetchOntologies": [MockFunction],
+        "getDataClassDetails": [MockFunction],
+        "getDomainNamePreviews": [MockFunction],
+        "getGenId": [MockFunction],
+        "getMaxPhiLevel": [Function],
+        "hasExistingDomainData": [MockFunction],
+        "setGenId": [MockFunction],
+        "validateDomainNameExpressions": [MockFunction],
+      }
+    }
     appPropertiesOnly={true}
     controlledCollapse={true}
     domain={
@@ -358,6 +371,19 @@ exports[`DataClassDesigner default properties 1`] = `
     validate={true}
   />
   <DomainForm
+    api={
+      {
+        "fetchDomainDetails": [MockFunction],
+        "fetchOntologies": [MockFunction],
+        "getDataClassDetails": [MockFunction],
+        "getDomainNamePreviews": [MockFunction],
+        "getGenId": [MockFunction],
+        "getMaxPhiLevel": [Function],
+        "hasExistingDomainData": [MockFunction],
+        "setGenId": [MockFunction],
+        "validateDomainNameExpressions": [MockFunction],
+      }
+    }
     controlledCollapse={true}
     domain={
       Immutable.Record {
@@ -1126,6 +1152,19 @@ exports[`DataClassDesigner initModel 1`] = `
     validate={true}
   />
   <DomainForm
+    api={
+      {
+        "fetchDomainDetails": [MockFunction],
+        "fetchOntologies": [MockFunction],
+        "getDataClassDetails": [MockFunction],
+        "getDomainNamePreviews": [MockFunction],
+        "getGenId": [MockFunction],
+        "getMaxPhiLevel": [Function],
+        "hasExistingDomainData": [MockFunction],
+        "setGenId": [MockFunction],
+        "validateDomainNameExpressions": [MockFunction],
+      }
+    }
     controlledCollapse={true}
     domain={
       Immutable.Record {

@@ -646,7 +646,9 @@ export function fetchCharts(schemaQuery: SchemaQuery, containerPath?: string): P
  * @param metricName
  */
 export function incrementClientSideMetricCount(featureArea: string, metricName: string): void {
-    if (!featureArea || !metricName || getServerContext().user.isGuest) {
+    const isTestEnv = navigator.userAgent.includes('jsdom');
+
+    if (!featureArea || !metricName || getServerContext().user.isGuest || isTestEnv) {
         return;
     }
 

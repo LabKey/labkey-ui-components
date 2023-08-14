@@ -265,10 +265,10 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
         return (
             <Modal show={show} onHide={onCancel}>
                 <Modal.Header closeButton={onCancel !== undefined}>
-                    <Modal.Title>{this.getTitle()}</Modal.Title>
+                    <h4 className="modal-title">{this.getTitle()}</h4>
                 </Modal.Header>
 
-                <Modal.Body>
+                <div className="modal-body">
                     <Alert>{error}</Alert>
                     {submitting ? (
                         <LoadingSpinner msg="Printing ..." />
@@ -277,7 +277,7 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
                     ) : (
                         <LoadingSpinner />
                     )}
-                </Modal.Body>
+                </div>
 
                 <Modal.Footer>
                     {onCancel && (

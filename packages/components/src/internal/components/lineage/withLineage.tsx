@@ -3,7 +3,7 @@ import { produce } from 'immer';
 
 import { LoadingState } from '../../../public/LoadingState';
 
-import { loadLineageResult, loadSampleStats, loadSeedResult } from './actions';
+import { LineageAPIWrapper, ServerLineageAPIWrapper } from './actions';
 import { Lineage } from './models';
 import { LineageOptions } from './types';
 import { DEFAULT_LINEAGE_DISTANCE } from './constants';
@@ -20,6 +20,7 @@ export interface LoadLineage {
 export interface WithLineageOptions extends LoadLineage, LineageOptions {
     containerPath?: string;
     lsid: string;
+    api?: LineageAPIWrapper;
 }
 
 interface State {
@@ -40,7 +41,7 @@ export function withLineage<Props>(
         private _mounted = true;
 
         loadLineage = async (forceReload?: boolean): Promise<void> => {
-            const { containerPath, distance, prefetchSeed, lsid } = this.props;
+            const { api, containerPath, distance, prefetchSeed, lsid } = this.props;
 
             // Lineage is already processed
             if (this.state.lineage && lsid === this.state.lineage.seed && !forceReload) {
@@ -61,11 +62,11 @@ export function withLineage<Props>(
             }
 
             try {
-                const result = await loadLineageResult(lsid, containerPath, distance, this.props);
+                const result = await api.loadLineageResult(lsid, containerPath, distance, this.props);
 
                 let sampleStats: any;
                 if (allowLoadSampleStats) {
-                    sampleStats = await loadSampleStats(result);
+                    sampleStats = await api.loadSampleStats(result);
                 }
 
                 await this.updateLineage({
@@ -83,12 +84,12 @@ export function withLineage<Props>(
         };
 
         loadSeed = async (): Promise<void> => {
-            const { containerPath, lsid } = this.props;
+            const { api, containerPath, lsid } = this.props;
 
             await this.updateLineage({ seedResultLoadingState: LoadingState.LOADING });
 
             try {
-                const seedResult = await loadSeedResult(lsid, containerPath, this.props);
+                const seedResult = await api.loadSeedResult(lsid, containerPath, this.props);
 
                 await this.updateLineage({
                     seedResult,
@@ -164,6 +165,7 @@ export function withLineage<Props>(
     ComponentWithLineage.defaultProps = {
         distance: applyDefaultDistance ? DEFAULT_LINEAGE_DISTANCE : undefined,
         prefetchSeed: true,
+        api: new ServerLineageAPIWrapper(),
     };
 
     return ComponentWithLineage;

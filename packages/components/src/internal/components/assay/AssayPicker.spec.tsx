@@ -1,19 +1,18 @@
 import React from 'react';
 
-import { initUnitTestMocks } from '../../../test/testHelperMocks';
-import { initAssayPickerOptions } from '../../../test/mock';
+import getAssayDesignSectionOptions from '../../../test/data/assay-getAssayDesignSelectOptions.json';
 import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 
 import { AssayPicker, AssayPickerTabs } from './AssayPicker';
 
-beforeAll(() => {
-    initUnitTestMocks([initAssayPickerOptions]);
-});
+const load = (): Promise<any> => {
+    return Promise.resolve(getAssayDesignSectionOptions);
+};
 
 describe('AssayPicker', () => {
     test('AssayPicker', async () => {
         const wrapper = mountWithAppServerContext(
-            <AssayPicker hasPremium onChange={jest.fn()} showContainerSelect showImport />
+            <AssayPicker loadOptions={load} hasPremium onChange={jest.fn()} showContainerSelect showImport />
         );
         await waitForLifecycle(wrapper);
 
@@ -38,6 +37,7 @@ describe('AssayPicker', () => {
             <AssayPicker
                 defaultTab={AssayPickerTabs.SPECIALTY_ASSAY_TAB}
                 hasPremium={false}
+                loadOptions={load}
                 onChange={jest.fn()}
                 showContainerSelect={false}
                 showImport={false}

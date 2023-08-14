@@ -15,7 +15,6 @@
  */
 import React from 'react';
 import { mount } from 'enzyme';
-import mock, { proxy } from 'xhr-mock';
 
 import { ConfirmModal } from '../base/ConfirmModal';
 
@@ -26,35 +25,23 @@ import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDispl
 
 import { SampleTypeDataType } from './constants';
 
-beforeAll(() => {
-    mock.setup();
-    mock.post(/.*\/experiment\/?.*\/getMaterialOperationConfirmationData.*/, (req, res) => {
-        return res
-            .status(200)
-            .headers({ 'Content-Type': 'application/json' })
-            .body(
-                JSON.stringify({
-                    success: true,
-                    data: {
-                        allowed: [
-                            {
-                                Name: 'D-2.3.1',
-                                RowId: 351,
-                            },
-                        ],
-                        notAllowed: [],
-                    },
-                })
-            );
-    });
-    mock.use(proxy);
-});
-
 describe('<EntityDeleteConfirmModal/>', () => {
+    const fetchData = (): Promise<any> => {
+        return Promise.resolve({
+            allowed: [
+                {
+                    Name: 'D-2.3.1',
+                    RowId: 351,
+                },
+            ],
+            notAllowed: [],
+        });
+    };
     test('Error display', async () => {
         const errorMsg = 'There was an error';
         const component = (
             <EntityDeleteConfirmModal
+                fetchDeleteConfirmationData={fetchData}
                 selectionKey="nonesuch"
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
@@ -78,6 +65,7 @@ describe('<EntityDeleteConfirmModal/>', () => {
     test('Have confirmation data', async () => {
         const component = (
             <EntityDeleteConfirmModal
+                fetchDeleteConfirmationData={fetchData}
                 selectionKey="nonesuch"
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}

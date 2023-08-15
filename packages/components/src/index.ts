@@ -330,8 +330,6 @@ import {
     AssayResultsForSamplesMenuItem,
     AssayResultsForSamplesButton,
 } from './internal/components/entities/AssayResultsForSamplesButton';
-import { DeleteConfirmationModal } from './internal/components/entities/DeleteConfirmationModal';
-import { EntityDeleteConfirmModal } from './internal/components/entities/EntityDeleteConfirmModal';
 import { SampleAliquotViewSelector } from './internal/components/entities/SampleAliquotViewSelector';
 import { GridAliquotViewSelector } from './internal/components/entities/GridAliquotViewSelector';
 import {
@@ -1251,8 +1249,6 @@ export {
     RemoveEntityButton,
     AssayResultsForSamplesMenuItem,
     AssayResultsForSamplesButton,
-    DeleteConfirmationModal,
-    EntityDeleteConfirmModal,
     SampleAliquotViewSelector,
     GridAliquotViewSelector,
     FindDerivativesMenuItem,
@@ -1802,7 +1798,5 @@ export type { ConfirmModalProps } from './internal/components/base/ConfirmModal'
 export type { EditableDetailPanelProps } from './public/QueryModel/EditableDetailPanel';
 export type { ComponentsAPIWrapper } from './internal/APIWrapper';
 export type { GetParentTypeDataForLineage } from './internal/components/entities/actions';
-export type { DeleteConfirmationModalProps } from './internal/components/entities/DeleteConfirmationModal';
-export type { EntityDeleteConfirmHandler } from './internal/components/entities/EntityDeleteConfirmModalDisplay';
 export type { URLMapper } from './internal/url/URLResolver';
 export type { EditableGridChange } from './internal/components/editable/EditableGrid';

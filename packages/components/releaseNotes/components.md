@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD August 2023
+- ISSUE #####: DOM update (i.e. removeChild) errors when components update with Google Translate enabled
+
 ### version 2.359.1
 *Released*: 15 August 2023
 - EditableGrid prop for tabContainerCls

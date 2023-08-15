@@ -1,4 +1,4 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useMemo } from 'react';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { isLoading, LoadingState } from '../../../public/LoadingState';
@@ -14,14 +14,21 @@ export const PaginationInfo: FC<PaginationInfoProps> = memo(props => {
     const loading = isLoading(totalCountLoadingState);
     const min = offset !== rowCount ? offset + 1 : offset;
     const max = offset + pageSize;
-    const text = `${min} - `;
+    const text = useMemo(() => {
+        let text_ = `${min} - `;
+        if (!loading) {
+            text_ += max > rowCount ? rowCount : max;
+            if (rowCount > max) {
+                text_ += ' of ' + rowCount;
+            }
+        }
+        return text_;
+    }, [loading, max, min, rowCount]);
 
     return (
         <span className="pagination-info" data-min={min} data-max={max} data-total={rowCount}>
             {text}
             {loading && <LoadingSpinner msg="" />}
-            {!loading && (max > rowCount ? rowCount : max)}
-            {!loading && rowCount > max && <>{` of ${rowCount}`}</>}
         </span>
     );
 });

@@ -1538,7 +1538,12 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             return (
                 <>
                     {tabBtnProps?.placement === 'top' && this.renderButtons()}
-                    <Tab.Container activeKey={activeEditTab} id="editable-grid-tabs" className={tabContainerCls} onSelect={this.onTabChange}>
+                    <Tab.Container
+                        activeKey={activeEditTab}
+                        id="editable-grid-tabs"
+                        className={tabContainerCls}
+                        onSelect={this.onTabChange}
+                    >
                         <div>
                             <Nav bsStyle="tabs">
                                 {/* {allowBulkAdd && <NavItem eventKey={EditableGridTabs.BulkAdd}>Add Bulk</NavItem>} TODO tabbed bulk add not yet supported */}

@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Update getEntityTypeOptions to allow skip project level data exception check
 - Fix CF for querying data during project creation
 
+### version 2.359.1
+*Released*: 15 August 2023
+- EditableGrid prop for tabContainerCls
+
 ### version 2.359.0
 *Released*: 14 August 2023
 - Remove xhr-mock

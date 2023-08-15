@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TB August 2023
+### version 2.359.1
+*Released*: 15 August 2023
 - EditableGrid prop for tabContainerCls
 
 ### version 2.359.0

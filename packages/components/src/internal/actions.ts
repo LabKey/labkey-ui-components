@@ -274,7 +274,7 @@ export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>
     });
 }
 
-interface GetSelectedResponse {
+export interface GetSelectedResponse {
     selected: any[];
 }
 

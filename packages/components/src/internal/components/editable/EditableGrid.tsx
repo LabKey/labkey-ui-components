@@ -247,8 +247,7 @@ export interface BulkAddData {
 }
 
 export interface BulkUpdateQueryInfoFormProps extends QueryInfoFormProps {
-    // the row ind to exclude for bulk update, row might be readonly or locked
-    excludeRowIdx?: number[];
+    excludeRowIdx?: number[]; // the row ind to exclude for bulk update, row might be readonly or locked
     onBulkUpdateFormDataChange?: (pendingBulkFormData?: any) => void;
     onClickBulkUpdate?: (selected: Set<number>) => Promise<boolean>;
     warning?: string;
@@ -282,24 +281,21 @@ export interface SharedEditableGridProps {
     hideTopControls?: boolean;
     insertColumns?: QueryColumn[];
     isSubmitting?: boolean;
-    // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
-    lockedRows?: string[];
+    lockedRows?: string[]; // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
     maxRows?: number;
     metricFeatureArea?: string;
-    // list of key values that cannot be deleted.
-    notDeletable?: List<any>;
+    notDeletable?: List<any>; // list of key values that cannot be deleted.
     primaryBtnProps?: EditableGridBtnProps;
     processBulkData?: (data: OrderedMap<string, any>) => BulkAddData;
     readOnlyColumns?: string[];
-    // list of key values for rows that are readonly.
-    readonlyRows?: string[];
+    readonlyRows?: string[]; // list of key values for rows that are readonly.
     removeColumnTitle?: string;
     rowNumColumn?: GridColumn;
-    // Toggle "Edit in Grid" and "Edit in Bulk" as tabs
-    showAsTab?: boolean;
+    showAsTab?: boolean; // Toggle "Edit in Grid" and "Edit in Bulk" as tabs
     showBulkTabOnLoad?: boolean;
     striped?: boolean;
     tabBtnProps?: EditableGridBtnProps;
+    tabContainerCls?: string;
     updateColumns?: QueryColumn[];
 }
 
@@ -1504,6 +1500,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             tabBtnProps,
             maxRows,
             hideTopControls,
+            tabContainerCls,
         } = this.props;
         const { showBulkAdd, showBulkUpdate, showMask, activeEditTab, selected } = this.state;
 
@@ -1541,7 +1538,12 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             return (
                 <>
                     {tabBtnProps?.placement === 'top' && this.renderButtons()}
-                    <Tab.Container activeKey={activeEditTab} id="editable-grid-tabs" onSelect={this.onTabChange}>
+                    <Tab.Container
+                        activeKey={activeEditTab}
+                        id="editable-grid-tabs"
+                        className={tabContainerCls}
+                        onSelect={this.onTabChange}
+                    >
                         <div>
                             <Nav bsStyle="tabs">
                                 {/* {allowBulkAdd && <NavItem eventKey={EditableGridTabs.BulkAdd}>Add Bulk</NavItem>} TODO tabbed bulk add not yet supported */}

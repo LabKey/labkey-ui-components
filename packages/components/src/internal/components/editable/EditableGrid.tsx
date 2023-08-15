@@ -268,7 +268,6 @@ export interface SharedEditableGridProps {
     bulkRemoveText?: string;
     bulkUpdateProps?: Partial<BulkUpdateQueryInfoFormProps>;
     bulkUpdateText?: string;
-    cancelBtnProps?: EditableGridBtnProps;
     columnMetadata?: Map<string, EditableColumnMetadata>;
     condensed?: boolean;
     containerFilter?: Query.ContainerFilter;
@@ -294,6 +293,7 @@ export interface SharedEditableGridProps {
     showAsTab?: boolean; // Toggle "Edit in Grid" and "Edit in Bulk" as tabs
     showBulkTabOnLoad?: boolean;
     striped?: boolean;
+    tabAdditionalBtn?: ReactNode;
     tabBtnProps?: EditableGridBtnProps;
     tabContainerCls?: string;
     updateColumns?: QueryColumn[];
@@ -1432,16 +1432,13 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         });
     };
 
-    onCancelClick = (): void => {
-        this.props.cancelBtnProps?.onClick?.();
-    };
-
     renderButtons = (): ReactNode => {
-        const { primaryBtnProps, cancelBtnProps, tabBtnProps } = this.props;
+        const { primaryBtnProps, tabAdditionalBtn, tabBtnProps } = this.props;
         if (!tabBtnProps?.show) return null;
 
         return (
             <div className={tabBtnProps?.cls}>
+                {tabAdditionalBtn}
                 <Button
                     bsStyle="primary"
                     bsClass={primaryBtnProps.cls}
@@ -1450,11 +1447,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 >
                     {primaryBtnProps.caption ?? 'Save'}
                 </Button>
-                {cancelBtnProps && (
-                    <Button bsStyle="default" bsClass={cancelBtnProps.cls} onClick={this.onCancelClick}>
-                        {cancelBtnProps.caption ?? 'Cancel'}
-                    </Button>
-                )}
             </div>
         );
     };

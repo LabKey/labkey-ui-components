@@ -13,212 +13,136 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Ajax, Filter, Query, Utils } from '@labkey/api';
-import React, { FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import { Filter } from '@labkey/api';
+import React, { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 import { DataViewInfoTypes, LABKEY_VIS } from '../../constants';
 
 import { DataViewInfo } from '../../DataViewInfo';
-import { buildURL } from '../../url/AppURL';
-import { debounce, generateId } from '../../util/utils';
+import { generateId } from '../../util/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
-interface ChartConfigModel {
-    geomOptions: any;
-    height: number;
-    labels: any;
-    measures: any;
-    pointType: string;
-    renderType: string;
-    scales: any;
-    width: number;
-}
+import { ChartAPIWrapper, DEFAULT_API_WRAPPER } from './api';
+import { ChartConfig, ChartQueryConfig } from './models';
 
-interface QueryConfigModel {
-    columns: string[];
-    containerPath: string;
-    // dataRegionName: string;
-    filterArray: Filter.IFilter[];
-    maxRows: number;
-    method: string;
-    parameters: any;
-    // queryLabel: string;
-    queryName: string;
-    requiredVersion: string;
-    schemaName: string;
-    // sort: string;
-    viewName: string;
+/**
+ * Returns a string representation of a given filter array. Needed to properly memoize variables in functional
+ * components that rely on a filter array from QueryModel, because QueryModel always returns a new filter array.
+ * @param filters
+ */
+function computeFilterKey(filters: Filter.IFilter[]): string {
+    if (!filters) return '';
+    return filters
+        .map(f => f.getURLParameterName() + '=' + f.getURLParameterValue)
+        .sort()
+        .join('_');
 }
-
-interface VisualizationConfigModel {
-    chartConfig: ChartConfigModel;
-    queryConfig: QueryConfigModel;
-}
-
-function getVisualizationConfig(reportId: string): Promise<VisualizationConfigModel> {
-    return new Promise((resolve, reject) => {
-        Query.Visualization.get({
-            reportId,
-            name: undefined,
-            schemaName: undefined,
-            queryName: undefined,
-            success: response => {
-                resolve(response.visualizationConfig);
-            },
-            failure: reject,
-        });
-    });
-}
-
 interface Props {
+    api?: ChartAPIWrapper;
     chart: DataViewInfo;
     filters?: Filter.IFilter[];
 }
 
-interface State extends VisualizationConfigModel {
-    divId: string;
-}
+export const SVGChart: FC<Props> = memo(({ api, chart, filters }) => {
+    const { error, reportId } = chart;
+    const divId = useMemo(() => generateId('chart-'), []);
+    const [queryConfig, setQueryConfig] = useState<ChartQueryConfig>(undefined);
+    const [chartConfig, setChartConfig] = useState<ChartConfig>(undefined);
+    const [loadError, setLoadError] = useState<string>(undefined);
+    const filterKey = useMemo(() => computeFilterKey(filters), [filters]);
+    const ref = useRef<HTMLDivElement>(undefined);
+    const loadChartConfig = useCallback(async () => {
+        try {
+            const visualizationConfig = await api.fetchVisualizationConfig(reportId);
+            const chartConfig_ = visualizationConfig.chartConfig;
+            const queryConfig_ = visualizationConfig.queryConfig;
+            chartConfig_.width = ref.current.offsetWidth;
+            chartConfig_.height = (chartConfig_.width * 9) / 16; // 16:9 aspect ratio
+            setChartConfig(chartConfig_);
 
-class SVGChart extends React.Component<Props, State> {
-    constructor(props: Props) {
-        super(props);
+            if (filters) {
+                queryConfig_.filterArray = [...queryConfig_.filterArray, ...filters];
+            }
 
-        this.state = {
-            chartConfig: undefined,
-            divId: generateId('chart-'),
-            queryConfig: undefined,
+            setQueryConfig(queryConfig_);
+        } catch (e) {
+            setLoadError(e.exception);
+        }
+        // We purposely don't use filters as a dep, see note in computeFilterKey
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [api, reportId, filterKey]);
+
+    const updateChartSize = useCallback(() => {
+        setChartConfig(currentChartConfig => {
+            if (currentChartConfig === undefined || ref.current === undefined) return currentChartConfig;
+
+            const updatedChartConfig = { ...currentChartConfig };
+            updatedChartConfig.width = ref.current.offsetWidth;
+            updatedChartConfig.height = (updatedChartConfig.width * 9) / 16; // 16:9 aspect ratio
+            setChartConfig(updatedChartConfig);
+
+            return updatedChartConfig;
+        });
+    }, []);
+
+    useEffect(() => {
+        if (!error) {
+            loadChartConfig();
+        }
+    }, [error, loadChartConfig]);
+
+    useEffect(() => {
+        window.addEventListener('resize', updateChartSize);
+        return () => window.removeEventListener('resize', updateChartSize);
+    }, [updateChartSize]);
+
+    useEffect(() => {
+        const render = (): void => {
+            if (queryConfig !== undefined && chartConfig !== undefined) {
+                ref.current.innerHTML = '';
+                LABKEY_VIS.GenericChartHelper.renderChartSVG(divId, queryConfig, chartConfig);
+            }
         };
+        // Debounce the call to render because we may trigger many resize events back to back, which will produce many
+        // new chartConfig objects
+        const renderId = window.setTimeout(render, 250);
+        return () => window.clearTimeout(renderId);
+    }, [divId, chartConfig, queryConfig]);
 
-        this.handleResize = debounce(this.handleResize.bind(this), 250);
-    }
-
-    componentDidMount(): void {
-        window.addEventListener('resize', this.handleResize);
-        this.getChartConfig();
-    }
-
-    componentWillUnmount(): void {
-        window.removeEventListener('resize', this.handleResize);
-    }
-
-    shouldComponentUpdate(): boolean {
-        return false;
-    }
-
-    handleResize(): void {
-        this.renderChart();
-    }
-
-    getPlotElement(): HTMLDivElement {
-        return document.querySelector('#' + this.state.divId);
-    }
-
-    getChartConfig(): void {
-        const { chart } = this.props;
-
-        if (chart) {
-            if (chart.error) {
-                this.getPlotElement().innerHTML = chart.error;
-            } else {
-                getVisualizationConfig(chart.reportId)
-                    .then(({ chartConfig, queryConfig }) => {
-                        this.setState({ chartConfig, queryConfig });
-                        this.renderChart();
-                    })
-                    .catch(response => {
-                        this.renderError(response.exception);
-                    });
-            }
-        } else {
-            this.getPlotElement().innerHTML = 'No chart selected.';
-        }
-    }
-
-    renderError(msg): void {
-        this.getPlotElement().innerHTML = '<span class="text-danger">' + msg + '</span>';
-    }
-
-    renderChart(): void {
-        const { filters } = this.props;
-        const { chartConfig, queryConfig } = this.state;
-
-        if (chartConfig && queryConfig) {
-            const processedQueryConfig = { ...queryConfig };
-            const processedChartConfig = { ...chartConfig };
-            // set the size of the SVG based on the plot el width (i.e. the model width)
-            processedChartConfig.width = this.getPlotElement().offsetWidth;
-            processedChartConfig.height = (processedChartConfig.width * 9) / 16; // 16:9 aspect ratio
-
-            if (filters && filters.length > 0) {
-                processedQueryConfig.filterArray = [...processedQueryConfig.filterArray, ...filters];
-            }
-
-            this.getPlotElement().innerHTML = '';
-            LABKEY_VIS.GenericChartHelper.renderChartSVG(this.state.divId, processedQueryConfig, processedChartConfig);
-        }
-    }
-
-    render(): ReactNode {
-        return (
-            <div id={this.state.divId}>
+    return (
+        <div className="svg-chart">
+            {error !== undefined && <span className="text-danger">{error}</span>}
+            {loadError !== undefined && <span className="text-danger">{loadError}</span>}
+            <div className="svg-chart__chart" id={divId} ref={ref}>
                 <LoadingSpinner />
             </div>
-        );
-    }
-}
+        </div>
+    );
+});
+SVGChart.displayName = 'SVGChart';
 
-function fetchRReport(reportId: string, filters?: Filter.IFilter[]): Promise<string> {
-    return new Promise((resolve, reject) => {
-        const params = { reportId, 'webpart.name': 'report' };
-        if (filters) {
-            filters.forEach(filter => {
-                params[filter.getURLParameterName()] = filter.getURLParameterValue();
-            });
-        }
-        const url = buildURL('project', 'getWebPart.view', params);
-        Ajax.request({
-            url,
-            success: Utils.getCallbackWrapper(response => {
-                resolve(response.html);
-            }),
-            failure: Utils.getCallbackWrapper(response => {
-                reject(response);
-            }),
-        });
-    });
-}
-
-const RReport: FC<Props> = memo(({ chart, filters }) => {
+const RReport: FC<Props> = memo(({ api, chart, filters }) => {
     const { error, reportId } = chart;
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [reportHtml, setReportHtml] = useState<string>(undefined);
     const [loadError, setLoadError] = useState<string>(undefined);
-    const filterKey = useMemo(() => {
-        // Note the incoming filters object comes from QueryModel.filters, which is not cached/memoized thus is a new
-        // array every render cycle. To get around this we create a "filterKey" that is a string representation of the
-        // incoming filter array, and we only trigger a reload if the key changes.
-        return (
-            filters
-                ?.map(f => f.getURLParameterName() + '=' + f.getURLParameterValue)
-                .sort()
-                .join('_') ?? ''
-        );
-    }, [filters]);
+    const filterKey = useMemo(() => computeFilterKey(filters), [filters]);
     const loadReport = useCallback(async () => {
         setLoadingState(LoadingState.LOADING);
         setLoadError(undefined);
 
         try {
-            const html = await fetchRReport(reportId, filters);
+            const html = await api.fetchRReport(reportId, filters);
             setReportHtml(html);
         } catch (e) {
             setLoadError(e.exception);
         } finally {
             setLoadingState(LoadingState.LOADED);
         }
+        // We purposely don't use filters as a dep, see note in computeFilterKey
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [reportId, filterKey]);
+    }, [api, reportId, filterKey]);
     const imageUrls = useMemo(() => {
         if (reportHtml !== undefined) {
             // The HTML returned by our server includes a bunch of stuff we don't want. So instead of inserting it
@@ -259,12 +183,12 @@ const RReport: FC<Props> = memo(({ chart, filters }) => {
 });
 RReport.displayName = 'RReport';
 
-export const Chart: FC<Props> = memo(({ chart, filters }) => {
+export const Chart: FC<Props> = memo(({ api = DEFAULT_API_WRAPPER, chart, filters }) => {
     if (chart.type === DataViewInfoTypes.RReport) {
-        return <RReport chart={chart} filters={filters} />;
+        return <RReport api={api} chart={chart} filters={filters} />;
     }
 
-    return <SVGChart chart={chart} filters={filters} />;
+    return <SVGChart api={api} chart={chart} filters={filters} />;
 });
 
 Chart.displayName = 'Chart';

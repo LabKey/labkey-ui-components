@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import { Ajax, Filter, Query, Utils } from '@labkey/api';
-import { List, Record } from 'immutable';
 import React, { FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { isLoading, LoadingState } from '../../../public/LoadingState';
@@ -25,71 +24,36 @@ import { buildURL } from '../../url/AppURL';
 import { debounce, generateId } from '../../util/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
-class ChartConfigModel extends Record({
-    geomOptions: undefined,
-    height: undefined,
-    labels: undefined,
-    measures: undefined,
-    pointType: undefined,
-    renderType: undefined,
-    scales: undefined,
-    width: undefined,
-}) {
-    declare geomOptions: any;
-    declare height: number;
-    declare labels: any;
-    declare measures: any;
-    declare pointType: string;
-    declare renderType: string;
-    declare scales: any;
-    declare width: number;
+interface ChartConfigModel {
+    geomOptions: any;
+    height: number;
+    labels: any;
+    measures: any;
+    pointType: string;
+    renderType: string;
+    scales: any;
+    width: number;
 }
 
-class QueryConfigModel extends Record({
-    columns: undefined,
-    containerPath: undefined,
-    // dataRegionName: undefined,
-    filterArray: undefined,
-    maxRows: undefined,
-    method: undefined,
-    parameters: undefined,
-    // queryLabel: undefined,
-    queryName: undefined,
-    requiredVersion: undefined,
-    schemaName: undefined,
-    // sort: undefined,
-    viewName: undefined,
-}) {
-    declare columns: List<string>;
-    declare containerPath: string;
-    // declare dataRegionName: string;
-    declare filterArray: List<any>;
-    declare maxRows: number;
-    declare method: string;
-    declare parameters: any;
-    // declare queryLabel: string;
-    declare queryName: string;
-    declare requiredVersion: string;
-    declare schemaName: string;
-    // declare sort: string;
-    declare viewName: string;
+interface QueryConfigModel {
+    columns: string[];
+    containerPath: string;
+    // dataRegionName: string;
+    filterArray: Filter.IFilter[];
+    maxRows: number;
+    method: string;
+    parameters: any;
+    // queryLabel: string;
+    queryName: string;
+    requiredVersion: string;
+    schemaName: string;
+    // sort: string;
+    viewName: string;
 }
 
-class VisualizationConfigModel extends Record({
-    queryConfig: undefined,
-    chartConfig: undefined,
-}) {
-    declare queryConfig: QueryConfigModel;
-    declare chartConfig: ChartConfigModel;
-
-    static create(raw: any): VisualizationConfigModel {
-        return new VisualizationConfigModel(
-            Object.assign({}, raw, {
-                chartConfig: new ChartConfigModel(raw.chartConfig),
-                queryConfig: new QueryConfigModel(raw.queryConfig),
-            })
-        );
-    }
+interface VisualizationConfigModel {
+    chartConfig: ChartConfigModel;
+    queryConfig: QueryConfigModel;
 }
 
 function getVisualizationConfig(reportId: string): Promise<VisualizationConfigModel> {
@@ -100,7 +64,7 @@ function getVisualizationConfig(reportId: string): Promise<VisualizationConfigMo
             schemaName: undefined,
             queryName: undefined,
             success: response => {
-                resolve(VisualizationConfigModel.create(response.visualizationConfig));
+                resolve(response.visualizationConfig);
             },
             failure: reject,
         });
@@ -112,8 +76,7 @@ interface Props {
     filters?: Filter.IFilter[];
 }
 
-interface State {
-    config: VisualizationConfigModel;
+interface State extends VisualizationConfigModel {
     divId: string;
 }
 
@@ -122,8 +85,9 @@ class SVGChart extends React.Component<Props, State> {
         super(props);
 
         this.state = {
+            chartConfig: undefined,
             divId: generateId('chart-'),
-            config: undefined,
+            queryConfig: undefined,
         };
 
         this.handleResize = debounce(this.handleResize.bind(this), 250);
@@ -158,8 +122,8 @@ class SVGChart extends React.Component<Props, State> {
                 this.getPlotElement().innerHTML = chart.error;
             } else {
                 getVisualizationConfig(chart.reportId)
-                    .then(config => {
-                        this.setState({ config });
+                    .then(({ chartConfig, queryConfig }) => {
+                        this.setState({ chartConfig, queryConfig });
                         this.renderChart();
                     })
                     .catch(response => {
@@ -177,24 +141,21 @@ class SVGChart extends React.Component<Props, State> {
 
     renderChart(): void {
         const { filters } = this.props;
-        const { config } = this.state;
-        const processedConfig = config.toJS();
+        const { chartConfig, queryConfig } = this.state;
 
-        if (config) {
+        if (chartConfig && queryConfig) {
+            const processedQueryConfig = { ...queryConfig };
+            const processedChartConfig = { ...chartConfig };
             // set the size of the SVG based on the plot el width (i.e. the model width)
-            processedConfig.chartConfig.width = this.getPlotElement().offsetWidth;
-            processedConfig.chartConfig.height = (processedConfig.chartConfig.width * 9) / 16; // 16:9 aspect ratio
+            processedChartConfig.width = this.getPlotElement().offsetWidth;
+            processedChartConfig.height = (processedChartConfig.width * 9) / 16; // 16:9 aspect ratio
 
             if (filters && filters.length > 0) {
-                processedConfig.queryConfig.filterArray = [...processedConfig.queryConfig.filterArray, ...filters];
+                processedQueryConfig.filterArray = [...processedQueryConfig.filterArray, ...filters];
             }
 
             this.getPlotElement().innerHTML = '';
-            LABKEY_VIS.GenericChartHelper.renderChartSVG(
-                this.state.divId,
-                processedConfig.queryConfig,
-                processedConfig.chartConfig
-            );
+            LABKEY_VIS.GenericChartHelper.renderChartSVG(this.state.divId, processedQueryConfig, processedChartConfig);
         }
     }
 

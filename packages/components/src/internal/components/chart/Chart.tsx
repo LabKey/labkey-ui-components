@@ -101,6 +101,10 @@ export const SVGChart: FC<Props> = memo(({ api, chart, filters }) => {
         const render = (): void => {
             if (queryConfig !== undefined && chartConfig !== undefined) {
                 ref.current.innerHTML = '';
+                // Note: our usage of renderChartSVG to render the chart means that every time we call render we make
+                // a new API request to the server to fetch the data, even if all we've done is change screen size. This
+                // updated in the future to use the underlying VIS library to separate fetching of data from rendering
+                // the chart. We should only be fetching data when the reportId or filterArray change.
                 LABKEY_VIS.GenericChartHelper.renderChartSVG(divId, queryConfig, chartConfig);
             }
         };

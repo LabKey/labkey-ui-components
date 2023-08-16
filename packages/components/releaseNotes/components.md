@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.360.0
+*Released*: 17 August 2023
+- Add optional support for R Reports in Chart component
+  - Only enabled if experimental flag is set
+
 ### version 2.359.4
 *Released*: 18 August 2023
 - Migrated components are `DeleteConfirmationModal`, `EntityDeleteConfirmModal` and `EntityDeleteConfirmModalDisplay`.

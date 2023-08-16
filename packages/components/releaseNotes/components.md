@@ -3,8 +3,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 2.360.0
 *Released*: 17 August 2023
-- Add optional support for R Reports in Chart component
-  - Only enabled if experimental flag is set
+- Add isRReportEnabled helper
+- Add RReport component
+- Move SVG rendering to SVGChart component
+- Make Chart render RReports and SVGCharts
+- Refactor Chart to re-render when filter array changes
+- Add APIWrapper for Chart
+  - not exposed via context
 
 ### version 2.359.4
 *Released*: 18 August 2023

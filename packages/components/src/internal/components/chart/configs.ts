@@ -5,9 +5,9 @@ import { ASSAYS_KEY, SAMPLES_KEY } from '../../app/constants';
 import { AppURL } from '../../url/AppURL';
 import { SCHEMAS } from '../../schemas';
 
-import { ChartConfig, ChartSelector } from './types';
+import { BarChartConfig, BarChartSelector } from './models';
 
-const CHART_SELECTORS: Record<string, ChartSelector> = {
+const CHART_SELECTORS: Record<string, BarChartSelector> = {
     All: { name: 'TotalCount', label: 'All' },
     Month: { name: 'Last30DaysCount', label: 'In the Last Month', filter: -29 },
     Today: { name: 'TodayCount', label: 'Today', filter: 0 },
@@ -23,7 +23,7 @@ const getExclusionFilter = (dataType: string): ((projectExclusions: { [key: stri
     };
 };
 
-export const CHART_GROUPS: Record<string, ChartConfig> = {
+export const CHART_GROUPS: Record<string, BarChartConfig> = {
     Assays: {
         charts: [
             CHART_SELECTORS.All,

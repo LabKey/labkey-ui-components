@@ -4,7 +4,7 @@ import { caseInsensitive } from '../../util/utils';
 import { DataTypeEntity, EntityDataType, ProjectConfigurableDataType } from '../entities/models';
 import { getContainerFilterForFolder } from '../../query/api';
 import { SCHEMAS } from '../../schemas';
-import { isProductProjectsDataListingScopedToProject } from '../../app/utils';
+import { isAllProductFoldersFilteringEnabled, isProductProjectsDataListingScopedToProject } from '../../app/utils';
 
 export function getProjectDataTypeDataCountSql(dataType: ProjectConfigurableDataType): string {
     if (!dataType) return null;
@@ -48,8 +48,15 @@ export function getProjectDataTypeDataCount(
                 lookup[type.lsid] = type.rowId;
             });
         }
+        let cf = getContainerFilterForFolder();
+        if (isNewFolder) {
+            cf = isAllProductFoldersFilteringEnabled()
+                ? Query.ContainerFilter.allInProjectPlusShared
+                : Query.ContainerFilter.currentPlusProjectAndShared;
+        }
+
         Query.executeSql({
-            containerFilter: getContainerFilterForFolder(),
+            containerFilter: cf,
             schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
             sql: getProjectDataTypeDataCountSql(dataType),
             success: result => {

@@ -2,7 +2,7 @@
 
 exports[`<CollapsiblePanelHeader/> custom properties 1`] = `
 <div
-  className="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed panel-heading"
+  className="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
   id="test-id"
   onClick={[MockFunction]}
 >
@@ -35,7 +35,7 @@ exports[`<CollapsiblePanelHeader/> custom properties 1`] = `
 
 exports[`<CollapsiblePanelHeader/> default properties 1`] = `
 <div
-  className="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed panel-heading"
+  className="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
   id="test-id"
   onClick={[MockFunction]}
 >
@@ -56,7 +56,7 @@ exports[`<CollapsiblePanelHeader/> default properties 1`] = `
 
 exports[`<CollapsiblePanelHeader/> invalid, iconHelpMsg, and expanded 1`] = `
 <div
-  className="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav panel-heading"
+  className="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav"
   id="test-id"
   onClick={[MockFunction]}
 >
@@ -90,7 +90,7 @@ exports[`<CollapsiblePanelHeader/> invalid, iconHelpMsg, and expanded 1`] = `
 
 exports[`<CollapsiblePanelHeader/> not collapsible 1`] = `
 <div
-  className="domain-panel-header domain-panel-header-expanded labkey-page-nav panel-heading"
+  className="domain-panel-header domain-panel-header-expanded labkey-page-nav"
   id="test-id"
   onClick={[MockFunction]}
 >
@@ -104,7 +104,7 @@ exports[`<CollapsiblePanelHeader/> not collapsible 1`] = `
 
 exports[`<CollapsiblePanelHeader/> not controlledCollapse 1`] = `
 <div
-  className="domain-panel-header domain-panel-header-collapsed panel-heading"
+  className="domain-panel-header domain-panel-header-collapsed"
   id="test-id"
   onClick={[MockFunction]}
 >
@@ -125,7 +125,7 @@ exports[`<CollapsiblePanelHeader/> not controlledCollapse 1`] = `
 
 exports[`<CollapsiblePanelHeader/> not useTheme 1`] = `
 <div
-  className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
+  className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
   id="test-id"
   onClick={[MockFunction]}
 >
@@ -139,7 +139,7 @@ exports[`<CollapsiblePanelHeader/> not useTheme 1`] = `
 
 exports[`<CollapsiblePanelHeader/> panelStatus TODO and help tip 1`] = `
 <div
-  className="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed panel-heading"
+  className="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
   id="test-id"
   onClick={[MockFunction]}
 >

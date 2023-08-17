@@ -4,7 +4,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version ????
 *Released*: ?? August 2023
 - Remove updateDomainPanelClassList
-  - Instead we manually toggle the necessary classname in the component
+  - Manually toggle the necessary classname in the component instead of manually manipulationg the DOM
+- Update tests to no longer attempt to make network requests
 
 ### version 2.360.0
 *Released*: 21 August 2023

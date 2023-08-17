@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.X
-*Released*: X August 2023
+### version 2.359.2
+*Released*: 17 August 2023
 - Update getEntityTypeOptions to allow skip project level data exception check
 - Fix CF for querying data during project creation
 

@@ -51,12 +51,28 @@ describe('DatePickerInput', () => {
         wrapper.unmount();
     });
 
+    test('with time-formatted dateFormat', () => {
+        const wrapper = mount(<DatePickerInputImpl {...DEFAULT_PROPS} dateFormat="yyyy-MM-dd kk:mm" />);
+        const datePicker = wrapper.find(DatePicker);
+        expect(datePicker.prop('dateFormat')).toBe('yyyy-MM-dd kk:mm');
+        expect(datePicker.prop('timeFormat')).toBe('kk:mm');
+        wrapper.unmount();
+    });
+
+    test('without time-formatted dateFormat', () => {
+        const wrapper = mount(<DatePickerInputImpl {...DEFAULT_PROPS} dateFormat="yyyy-MM-dd" />);
+        const datePicker = wrapper.find(DatePicker);
+        expect(datePicker.prop('dateFormat')).toBe('yyyy-MM-dd');
+        expect(datePicker.prop('timeFormat')).toBeUndefined();
+        wrapper.unmount();
+    });
+
     test('renderFieldLabel', () => {
         const wrapper = mount(
             <DatePickerInputImpl
                 {...DEFAULT_PROPS}
                 labelClassName="labelClassName"
-                renderFieldLabel={() => 'renderFieldLabel'}
+                renderFieldLabel={jest.fn().mockReturnValue('renderFieldLabel')}
             />
         );
         validate(wrapper, false);

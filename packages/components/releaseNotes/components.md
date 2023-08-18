@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.359.4
+*Released*: 18 August 2023
+- Migrated components are `DeleteConfirmationModal`, `EntityDeleteConfirmModal` and `EntityDeleteConfirmModalDisplay`.
+- Add `getSnapshotSelections` and `setSnapshotSelections` to `QueryAPIWrapper`.
+- Add `getDeleteConfirmationData` to `EntityAPIWrapper`.
+
 ### version 2.359.3
 *Released*: 18 August 2023
 - ISSUE 48479: DOM update (i.e. removeChild) errors when components update with Google Translate enabled

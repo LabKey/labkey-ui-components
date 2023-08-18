@@ -19,6 +19,7 @@ import { ActionURL, Ajax, Filter, getServerContext, Query, Utils } from '@labkey
 import { resolveKey, SchemaQuery } from '../public/SchemaQuery';
 
 import { Actions } from '../public/QueryModel/withQueryModels';
+
 import { GridResponse } from './components/editable/models';
 
 import { getContainerFilter, invalidateQueryDetailsCache, selectDistinctRows, selectRowsDeprecated } from './query/api';
@@ -109,7 +110,9 @@ export async function selectGridIdsFromTransactionId(
     return selected;
 }
 
-export async function getSampleTypesFromTransactionIds(transactionAuditId: number):Promise<{rowIds: string[], sampleTypes: string[]}> {
+export async function getSampleTypesFromTransactionIds(
+    transactionAuditId: number
+): Promise<{ rowIds: string[]; sampleTypes: string[] }> {
     if (!transactionAuditId) {
         return;
     }

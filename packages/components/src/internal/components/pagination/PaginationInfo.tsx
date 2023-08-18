@@ -20,8 +20,8 @@ export const PaginationInfo: FC<PaginationInfoProps> = memo(props => {
         <span className="pagination-info" data-min={min} data-max={max} data-total={rowCount}>
             {text}
             {loading && <LoadingSpinner msg="" />}
-            {!loading && (max > rowCount ? rowCount : max)}
-            {!loading && rowCount > max && <>{` of ${rowCount}`}</>}
+            {!loading && <span>{max > rowCount ? rowCount : max}</span>}
+            {!loading && rowCount > max && <span>{` of ${rowCount}`}</span>}
         </span>
     );
 });

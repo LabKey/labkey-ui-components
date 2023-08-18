@@ -53,7 +53,7 @@ const GridTab: FC<GridTabProps> = memo(({ isActive, model, onSelect, pullRight, 
         <li className={className}>
             <a onClick={onClick}>
                 {title || queryInfo?.queryLabel || queryInfo?.name}
-                {showRowCount && rowCountDisplay !== undefined && <> ({rowCountDisplay})</>}
+                {showRowCount && rowCountDisplay !== undefined && <span> ({rowCountDisplay})</span>}
             </a>
         </li>
     );
@@ -219,8 +219,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
 
         try {
             await exportTabs([internalActiveId]);
-        }
-        catch (e) {
+        } catch (e) {
             console.error(e);
         }
     }, [tabOrder, exportTabs, internalActiveId]);

@@ -382,15 +382,20 @@ export async function getChosenParentData(
 export async function getEntityTypeOptions(
     entityDataType: EntityDataType,
     containerPath?: string,
-    containerFilter?: Query.ContainerFilter
+    containerFilter?: Query.ContainerFilter,
+    skipProjectDataExclusion?: boolean
 ): Promise<Map<string, List<IEntityTypeOption>>> {
     const { typeListingSchemaQuery, filterArray, instanceSchemaName } = entityDataType;
 
-    const dataTypeExclusions = getProjectDataExclusion();
-    const exclusions = dataTypeExclusions?.[entityDataType.projectConfigurableDataType];
     const filters = [];
+
+    if (!skipProjectDataExclusion) {
+        const dataTypeExclusions = getProjectDataExclusion();
+        const exclusions = dataTypeExclusions?.[entityDataType.projectConfigurableDataType];
+        if (exclusions) filters.push(Filter.create('RowId', exclusions, Filter.Types.NOT_IN));
+    }
+
     if (filterArray) filters.push(...filterArray);
-    if (exclusions) filters.push(Filter.create('RowId', exclusions, Filter.Types.NOT_IN));
     const result = await selectRows({
         columns: 'LSID,Name,RowId,Folder/Path',
         containerFilter:
@@ -671,7 +676,8 @@ export type GetParentTypeDataForLineage = (
     parentDataType: EntityDataType,
     data: any[],
     containerPath?: string,
-    containerFilter?: Query.ContainerFilter
+    containerFilter?: Query.ContainerFilter,
+    skipProjectDataExclusion?: boolean
 ) => Promise<{
     parentIdData: Record<string, ParentIdData>;
     parentTypeOptions: List<IEntityTypeOption>;
@@ -681,12 +687,18 @@ export const getParentTypeDataForLineage: GetParentTypeDataForLineage = async (
     parentDataType,
     data,
     containerPath,
-    containerFilter
+    containerFilter,
+    skipProjectDataExclusion
 ) => {
     let parentTypeOptions = List<IEntityTypeOption>();
     let parentIdData: Record<string, ParentIdData>;
     if (parentDataType) {
-        const options = await getEntityTypeOptions(parentDataType, containerPath, containerFilter);
+        const options = await getEntityTypeOptions(
+            parentDataType,
+            containerPath,
+            containerFilter,
+            skipProjectDataExclusion
+        );
         parentTypeOptions = List<IEntityTypeOption>(options.get(parentDataType.typeListingSchemaQuery.queryName));
 
         // get the set of parent row LSIDs so that we can query for the RowId and SampleSet/DataClass for that row

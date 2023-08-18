@@ -7,6 +7,11 @@ Components, models, actions, and utility functions for LabKey applications and p
   - fix is to wrap conditional text elements in `<span>` tags
   - see https://github.com/facebook/react/issues/11538
 
+### version 2.359.2
+*Released*: 17 August 2023
+- Update getEntityTypeOptions to allow skip project level data exception check
+- Fix CF for querying data during project creation
+
 ### version 2.359.1
 *Released*: 15 August 2023
 - EditableGrid prop for tabContainerCls

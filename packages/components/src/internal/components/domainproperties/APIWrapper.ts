@@ -11,6 +11,7 @@ import {
     fetchDomainDetails,
     getMaxPhiLevel,
     fetchOntologies,
+    saveDomain,
 } from './actions';
 import { PHILEVEL_FULL_PHI } from './constants';
 import { getDataClassDetails } from './dataclasses/actions';
@@ -34,6 +35,15 @@ export interface DomainPropertiesAPIWrapper {
         rowId?: number,
         containerPath?: string
     ) => Promise<boolean>;
+    saveDomain: (
+        domain: DomainDesign,
+        kind?: string,
+        options?: any,
+        name?: string,
+        includeWarnings?: boolean,
+        addRowIndexes?: boolean,
+        originalDomain?: DomainDesign
+    ) => Promise<DomainDesign>;
     setGenId: (
         rowId: number,
         kindName: 'SampleSet' | 'DataClass',
@@ -56,6 +66,7 @@ export class DomainPropertiesAPIWrapper implements DomainPropertiesAPIWrapper {
     getGenId = getGenId;
     getMaxPhiLevel = getMaxPhiLevel;
     hasExistingDomainData = hasExistingDomainData;
+    saveDomain = saveDomain;
     setGenId = setGenId;
     validateDomainNameExpressions = validateDomainNameExpressions;
 }
@@ -78,6 +89,7 @@ export function getDomainPropertiesTestAPIWrapper(
         // probably make Jest an explicit dependency since we are actually exporting test utilities.
         getMaxPhiLevel: () => Promise.resolve(PHILEVEL_FULL_PHI),
         hasExistingDomainData: mockFn(),
+        saveDomain: mockFn(),
         setGenId: mockFn(),
         validateDomainNameExpressions: mockFn(),
         ...overrides,

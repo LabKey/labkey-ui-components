@@ -207,6 +207,7 @@ export const VISUALIZATION_REPORTS = Set([
     DataViewInfoTypes.BarChart,
     DataViewInfoTypes.BoxAndWhiskerPlot,
     DataViewInfoTypes.PieChart,
+    DataViewInfoTypes.RReport,
     DataViewInfoTypes.XYScatterPlot,
     DataViewInfoTypes.XYSeriesLinePlot,
 ]);

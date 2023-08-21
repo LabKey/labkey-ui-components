@@ -4,13 +4,13 @@ import { LABKEY_VIS } from '../../constants';
 
 import { debounce, generateId } from '../../util/utils';
 
-import { ChartData } from './types';
+import { BarChartData } from './models';
 import { getBarChartPlotConfig } from './utils';
 
 interface Props {
     barFillColors?: Record<string, string>;
     chartHeight: number;
-    data: ChartData[];
+    data: BarChartData[];
     defaultBorderColor?: string;
     defaultFillColor?: string;
     grouped?: boolean;

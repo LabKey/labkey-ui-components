@@ -1420,10 +1420,12 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 }
 
-export default const DomainForm: FC<IDomainFormInput> = memo(props => (
+const DomainForm: FC<IDomainFormInput> = memo(props => (
     <LookupProvider>
         <DomainFormImpl {...props} />
     </LookupProvider>
 ));
 
 DomainForm.displayName = 'DomainForm';
+
+export default DomainForm;

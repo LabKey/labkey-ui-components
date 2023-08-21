@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- When loading all models, load selections if here is a way to do so.
+
 ### version 2.360.1
 *Released*: 21 August 2023
 - Remove updateDomainPanelClassList

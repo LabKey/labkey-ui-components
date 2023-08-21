@@ -207,7 +207,7 @@ export function withQueryModels<Props>(
 
         componentDidMount(): void {
             if (this.props.autoLoad) {
-                this.loadAllModels();
+                this.loadAllModels(!!this.props.modelLoader.loadSelections);
             }
         }
 
@@ -215,7 +215,7 @@ export function withQueryModels<Props>(
          * componentDidUpdate only checks for changes to props.location so it can update models when there are changes
          * to the URL (only for models with bindURL set to true).
          *
-         * Currently we do not listen for changes to props.queryConfigs. You may be tempted to try to diff queryConfigs
+         * Currently, we do not listen for changes to props.queryConfigs. You may be tempted to try to diff queryConfigs
          * in the future and add/update/remove models as you see changes, but this introduces a bunch of other problems
          * for child components, so don't do this. Problems include:
          *  - Child components will no longer be guaranteed that there will always be a model, so they'll have to check

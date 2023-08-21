@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 2.360.0
-*Released*: 17 August 2023
+*Released*: 21 August 2023
 - Add isRReportEnabled helper
 - Add RReport component
 - Move SVG rendering to SVGChart component

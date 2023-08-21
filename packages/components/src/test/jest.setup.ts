@@ -24,3 +24,4 @@ configure({ adapter: new Adapter() });
 // is ok, we aren't testing that behavior.
 const noop = () => {};
 Object.defineProperty(window, 'scrollTo', { value: noop, writable: true });
+Object.defineProperty(window, '__react-beautiful-dnd-disable-dev-warnings', { value: true, writable: false });

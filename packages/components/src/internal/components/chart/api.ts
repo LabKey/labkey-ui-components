@@ -1,6 +1,6 @@
 import { Ajax, Filter, Query, Utils } from '@labkey/api';
+import { getContainerFilter } from '../../query/api';
 import { buildURL } from '../../url/AppURL';
-import { ProductSectionModel } from '../productnavigation/models';
 import { VisualizationConfigModel } from './models';
 
 export function fetchVisualizationConfig(reportId: string): Promise<VisualizationConfigModel> {
@@ -18,15 +18,15 @@ export function fetchVisualizationConfig(reportId: string): Promise<Visualizatio
     });
 }
 
-export function fetchRReport(reportId: string, filters?: Filter.IFilter[]): Promise<string> {
+export function fetchRReport(reportId: string, container?: string, filters?: Filter.IFilter[]): Promise<string> {
     return new Promise((resolve, reject) => {
-        const params = { reportId, 'webpart.name': 'report' };
+        const params = { reportId, 'webpart.name': 'report', containerFilter: getContainerFilter(container) };
         if (filters) {
             filters.forEach(filter => {
                 params[filter.getURLParameterName()] = filter.getURLParameterValue();
             });
         }
-        const url = buildURL('project', 'getWebPart.view', params);
+        const url = buildURL('project', 'getWebPart.view', params, { container });
         Ajax.request({
             url,
             success: Utils.getCallbackWrapper(response => {
@@ -40,11 +40,11 @@ export function fetchRReport(reportId: string, filters?: Filter.IFilter[]): Prom
 }
 
 export interface ChartAPIWrapper {
-    fetchRReport: (reportId, filters?: Filter.IFilter[]) => Promise<string>;
+    fetchRReport: (reportId: string, container?: string, filters?: Filter.IFilter[]) => Promise<string>;
     fetchVisualizationConfig: (reportId: string) => Promise<VisualizationConfigModel>;
 }
 
 export const DEFAULT_API_WRAPPER = {
     fetchRReport,
     fetchVisualizationConfig,
-}
+};

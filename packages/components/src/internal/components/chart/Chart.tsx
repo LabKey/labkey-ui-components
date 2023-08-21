@@ -41,6 +41,7 @@ function computeFilterKey(filters: Filter.IFilter[]): string {
 interface Props {
     api?: ChartAPIWrapper;
     chart: DataViewInfo;
+    container?: string;
     filters?: Filter.IFilter[];
 }
 
@@ -126,7 +127,7 @@ export const SVGChart: FC<Props> = memo(({ api, chart, filters }) => {
 });
 SVGChart.displayName = 'SVGChart';
 
-const RReport: FC<Props> = memo(({ api, chart, filters }) => {
+const RReport: FC<Props> = memo(({ api, chart, container, filters }) => {
     const { error, reportId } = chart;
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [reportHtml, setReportHtml] = useState<string>(undefined);
@@ -137,7 +138,7 @@ const RReport: FC<Props> = memo(({ api, chart, filters }) => {
         setLoadError(undefined);
 
         try {
-            const html = await api.fetchRReport(reportId, filters);
+            const html = await api.fetchRReport(reportId, container, filters);
             setReportHtml(html);
         } catch (e) {
             setLoadError(e.exception);
@@ -187,12 +188,12 @@ const RReport: FC<Props> = memo(({ api, chart, filters }) => {
 });
 RReport.displayName = 'RReport';
 
-export const Chart: FC<Props> = memo(({ api = DEFAULT_API_WRAPPER, chart, filters }) => {
+export const Chart: FC<Props> = memo(({ api = DEFAULT_API_WRAPPER, chart, container, filters }) => {
     if (chart.type === DataViewInfoTypes.RReport) {
-        return <RReport api={api} chart={chart} filters={filters} />;
+        return <RReport api={api} chart={chart} container={container} filters={filters} />;
     }
 
-    return <SVGChart api={api} chart={chart} filters={filters} />;
+    return <SVGChart api={api} chart={chart} container={container} filters={filters} />;
 });
 
 Chart.displayName = 'Chart';

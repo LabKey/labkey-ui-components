@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.360.1
+*Released*: 21 August 2023
+- Remove updateDomainPanelClassList
+  - Manually toggle the necessary classname in the component instead of manually manipulationg the DOM
+- Update tests to no longer attempt to make network requests
+
 ### version 2.360.0
 *Released*: 21 August 2023
 - Add isRReportEnabled helper

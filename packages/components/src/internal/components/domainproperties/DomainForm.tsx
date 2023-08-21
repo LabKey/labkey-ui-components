@@ -71,7 +71,6 @@ import {
     processJsonImport,
     removeFields,
     setDomainFields,
-    updateDomainPanelClassList,
     updateOntologyFieldProperties,
 } from './actions';
 import { getIndexFromId, getNameFromId } from './utils';
@@ -258,15 +257,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             onChange(this.validateDomain(domain), false);
         }
 
-        // TODO since this is called in componentDidUpdate, can it be removed here?
-        updateDomainPanelClassList(useTheme, domain);
-
         this.setState(() => ({ isLoading: false }));
     };
-
-    componentDidUpdate(prevProps: Readonly<IDomainFormInput>): void {
-        updateDomainPanelClassList(prevProps.useTheme, this.props.domain);
-    }
 
     UNSAFE_componentWillReceiveProps(nextProps: Readonly<IDomainFormInput>): void {
         const { controlledCollapse, initCollapsed, validate, onChange } = this.props;

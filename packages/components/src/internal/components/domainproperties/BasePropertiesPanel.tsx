@@ -4,7 +4,7 @@ import { Panel } from 'react-bootstrap';
 import { Alert } from '../base/Alert';
 
 import { DomainPanelStatus } from './models';
-import { getDomainAlertClasses, getDomainPanelClass, updateDomainPanelClassList } from './actions';
+import { getDomainAlertClasses, getDomainPanelClass } from './actions';
 import { CollapsiblePanelHeader } from './CollapsiblePanelHeader';
 import { PROPERTIES_PANEL_ERROR_MSG } from './constants';
 import { InjectedDomainPropertiesPanelCollapseProps } from './DomainPropertiesPanelCollapse';
@@ -38,13 +38,8 @@ export class BasePropertiesPanel extends React.PureComponent<Props> {
         useTheme: false,
     };
 
-    componentDidMount(): void {
-        updateDomainPanelClassList(this.props.useTheme, undefined, this.props.headerId);
-    }
-
     componentDidUpdate(prevProps: Props): void {
         const { validate, updateValidStatus } = this.props;
-        updateDomainPanelClassList(prevProps.useTheme, undefined, this.props.headerId);
 
         if (validate && prevProps.validate !== validate) {
             updateValidStatus();

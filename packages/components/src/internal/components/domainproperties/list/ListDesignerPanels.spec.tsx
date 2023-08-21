@@ -24,6 +24,7 @@ describe('ListDesignerPanel', () => {
             initModel: emptyNewModel,
             onComplete: jest.fn(),
             onCancel: jest.fn(),
+            onChange: jest.fn(),
             testMode: true,
         };
     }
@@ -88,11 +89,11 @@ describe('ListDesignerPanel', () => {
 
         const panelHeader = listDesignerPanels.find('div#domain-header');
 
-        expect(listDesignerPanels.find('#domain-header').at(2).hasClass('domain-panel-header-collapsed')).toBeTruthy();
+        expect(listDesignerPanels.find('#domain-header').at(1).hasClass('domain-panel-header-collapsed')).toBeTruthy();
 
         panelHeader.simulate('click');
 
-        expect(listDesignerPanels.find('#domain-header').at(2).hasClass('domain-panel-header-expanded')).toBeTruthy();
+        expect(listDesignerPanels.find('#domain-header').at(1).hasClass('domain-panel-header-expanded')).toBeTruthy();
 
         expect(listDesignerPanels.find(Alert)).toHaveLength(2);
         expect(listDesignerPanels.find(Alert).at(0).text()).toEqual(PROPERTIES_PANEL_ERROR_MSG);

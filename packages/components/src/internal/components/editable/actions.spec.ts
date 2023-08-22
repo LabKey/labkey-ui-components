@@ -1,10 +1,12 @@
 import { fromJS, List, Map, Set } from 'immutable';
+
 import { ExtendedMap } from '../../../public/ExtendedMap';
 import { QueryColumn, QueryLookup } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import sampleSet2QueryInfo from '../../../test/data/sampleSet2-getQueryDetails.json';
+
 import {
     addColumns,
     changeColumn,
@@ -693,5 +695,15 @@ describe('splitPrefixedNumber', () => {
         expect(splitPrefixedNumber('ABC-')).toEqual(['ABC-', undefined]);
         expect(splitPrefixedNumber('123')).toEqual([undefined, '123']);
         expect(splitPrefixedNumber('123.45')).toEqual([undefined, '123.45']);
+    });
+
+    test('param as number', () => {
+        expect(splitPrefixedNumber(123)).toEqual([undefined, '123']);
+    });
+
+    test('param empty', () => {
+        expect(splitPrefixedNumber(undefined)).toEqual([undefined, undefined]);
+        expect(splitPrefixedNumber(null)).toEqual([undefined, undefined]);
+        expect(splitPrefixedNumber('')).toEqual([undefined, undefined]);
     });
 });

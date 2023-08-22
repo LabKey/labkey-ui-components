@@ -6,12 +6,12 @@ import { caseInsensitive } from '../../util/utils';
 
 import { Row } from '../../query/selectRows';
 
-import { ChartData } from './types';
+import { BarChartData } from './models';
 import { HorizontalBarData } from './HorizontalBarSection';
 
 interface ChartDataProps {
     barFillColors: Record<string, string>;
-    data: ChartData[];
+    data: BarChartData[];
 }
 
 interface ProcessChartOptions {
@@ -131,6 +131,7 @@ export function createPercentageBarData(
 
 export interface HorizontalBarLegendData {
     backgroundColor: string;
+    borderColor?: string;
     circleColor: string;
     expired?: boolean;
     legendLabel: string;

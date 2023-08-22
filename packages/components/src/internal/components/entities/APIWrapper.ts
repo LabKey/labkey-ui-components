@@ -10,6 +10,7 @@ import { Container } from '../base/models/Container';
 
 import {
     getDataOperationConfirmationData,
+    getDeleteConfirmationData,
     getMoveConfirmationData,
     getEntityTypeData,
     getOriginalParentsFromLineage,
@@ -32,6 +33,12 @@ import {
 export interface EntityAPIWrapper {
     getDataOperationConfirmationData: (
         operation: DataOperation,
+        rowIds: string[] | number[],
+        selectionKey?: string,
+        useSnapshotSelection?: boolean
+    ) => Promise<OperationConfirmationData>;
+    getDeleteConfirmationData: (
+        dataType: EntityDataType,
         rowIds: string[] | number[],
         selectionKey?: string,
         useSnapshotSelection?: boolean
@@ -96,6 +103,7 @@ export interface EntityAPIWrapper {
 
 export class EntityServerAPIWrapper implements EntityAPIWrapper {
     getDataOperationConfirmationData = getDataOperationConfirmationData;
+    getDeleteConfirmationData = getDeleteConfirmationData;
     getMoveConfirmationData = getMoveConfirmationData;
     getEntityTypeData = getEntityTypeData;
     getOriginalParentsFromLineage = getOriginalParentsFromLineage;
@@ -114,13 +122,14 @@ export function getEntityTestAPIWrapper(
 ): EntityAPIWrapper {
     return {
         getDataOperationConfirmationData: mockFn(),
+        getDeleteConfirmationData: mockFn(),
         getMoveConfirmationData: mockFn(),
         getEntityTypeData: mockFn(),
         getOriginalParentsFromLineage: mockFn(),
         handleEntityFileImport: mockFn(),
         loadNameExpressionOptions: mockFn(),
         moveEntities: mockFn(),
-        initParentOptionsSelects: mockFn,
+        initParentOptionsSelects: mockFn(),
         ...overrides,
     };
 }

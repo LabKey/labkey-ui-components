@@ -1,11 +1,16 @@
 import React from 'react';
 import { List, Map } from 'immutable';
 import { Panel } from 'react-bootstrap';
+import { getDomainPropertiesTestAPIWrapper } from '../APIWrapper';
 
 import { DomainDesign } from '../models';
 
-import { mountWithServerContext, shallowWithServerContext, waitForLifecycle } from '../../../test/enzymeTestHelpers';
-import { initUnitTestMocks } from '../../../../test/testHelperMocks';
+import {
+    mountWithAppServerContext,
+    mountWithServerContext,
+    shallowWithServerContext,
+    waitForLifecycle,
+} from '../../../test/enzymeTestHelpers';
 
 import { FileAttachmentForm } from '../../../../public/files/FileAttachmentForm';
 
@@ -72,13 +77,10 @@ function setAssayName(wrapper: any, value: string) {
         .simulate('change', { target: nameInputValue });
 }
 
-beforeAll(() => {
-    initUnitTestMocks();
-});
-
 describe('AssayDesignerPanels', () => {
     function getDefaultProps(): AssayDesignerPanelsProps {
         return {
+            api: getDomainPropertiesTestAPIWrapper(jest.fn),
             domainFormDisplayOptions: {
                 hideStudyPropertyTypes: true,
             },
@@ -255,7 +257,7 @@ describe('AssayDesignerPanels', () => {
 
     test('new assay wizard', async () => {
         const component = <AssayDesignerPanels {...getDefaultProps()} successBsStyle="primary" />;
-        const wrapper = mountWithServerContext(component);
+        const wrapper = mountWithAppServerContext(component);
         await waitForLifecycle(wrapper);
 
         expect(wrapper.find('.domain-heading-collapsible').hostNodes()).toHaveLength(4);
@@ -314,6 +316,8 @@ describe('AssayDesignerPanels', () => {
         );
     });
 
+    // FIXME: This test case triggers issues with React Beautiful DND, I think there is a way to put that library in
+    //  test mode. We maybe accidentally disabled that in the test stabilization PR.
     test('Show app headers', async () => {
         const _appHeaderId = 'mock-app-header';
         const _appHeaderText = 'This is a mock app header';
@@ -338,7 +342,7 @@ describe('AssayDesignerPanels', () => {
 
         // Open Sample Fields panel body
         wrapper
-            .find(Panel.Heading)
+            .find('.panel-heading')
             .filterWhere(n => n.text().indexOf('Sample Fields') === 0)
             .simulate('click');
         expect(wrapper.find('#' + _appHeaderId)).toHaveLength(1);

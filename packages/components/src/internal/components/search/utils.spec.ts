@@ -28,6 +28,7 @@ import {
     getUpdateFilterExpressionFilter,
     isValidFilterField,
 } from './utils';
+import { SearchCategory } from './constants';
 import { FieldFilter } from './models';
 
 beforeAll(() => {
@@ -1030,134 +1031,182 @@ describe('getUpdatedFilterSelection', () => {
     });
 });
 
-describe("getSearchResultCardData", () => {
+describe('getSearchResultCardData', () => {
     const QUERY_METADATA = fromJS({
-      schema: {
-          samples: {
-              query: {
-                  testmedia: {
-                      iconURL: 'test-media'
-                  }
-              }
-          }
-      }
+        schema: {
+            samples: {
+                query: {
+                    testmedia: {
+                        iconURL: 'test-media',
+                    },
+                },
+            },
+        },
     });
-    test("no data, not workflow", () => {
-        expect(getSearchResultCardData(undefined, 'other')).toStrictEqual({});
-    });
-
-    test("no data, workflow category", () => {
-        expect(getSearchResultCardData(undefined, 'workflowJob')).toStrictEqual({category: 'Job'});
+    test('no data, not workflow', () => {
+        expect(getSearchResultCardData(undefined, 'other' as SearchCategory)).toStrictEqual({});
     });
 
-    test("data.dataClass", () => {
-        expect(getSearchResultCardData({
-            name: 'Test',
-            dataClass: {
-                name: 'Test Class',
-                category: 'sources'
-            }
-        }, undefined)).toStrictEqual({
+    test('no data, workflow category', () => {
+        expect(getSearchResultCardData(undefined, SearchCategory.WorkflowJob)).toStrictEqual({ category: 'Job' });
+    });
+
+    test('data.dataClass', () => {
+        expect(
+            getSearchResultCardData(
+                {
+                    name: 'Test',
+                    dataClass: {
+                        name: 'Test Class',
+                        category: 'sources',
+                    },
+                },
+                undefined
+            )
+        ).toStrictEqual({
             iconSrc: 'sources',
             category: 'Sources',
-            title: 'Test'
+            title: 'Test',
         });
     });
 
-    test("data.type is sampleSet, no metadata", () => {
-        expect(getSearchResultCardData({
-            name: 'Test',
-            type: 'sampleSet'
-        }, undefined)).toStrictEqual({
+    test('data.type is sampleSet, no metadata', () => {
+        expect(
+            getSearchResultCardData(
+                {
+                    name: 'Test',
+                    type: 'sampleSet',
+                },
+                undefined
+            )
+        ).toStrictEqual({
             iconSrc: 'sample_set',
             category: 'Sample Type',
             altText: 'sample_type-icon',
-            title: 'Test'
+            title: 'Test',
         });
     });
 
-    test("data.type is sampleSet, with metadata, no match", () => {
-        expect(getSearchResultCardData({
-            name: 'Test',
-            type: 'sampleSet'
-        }, undefined, QUERY_METADATA)).toStrictEqual({
+    test('data.type is sampleSet, with metadata, no match', () => {
+        expect(
+            getSearchResultCardData(
+                {
+                    name: 'Test',
+                    type: 'sampleSet',
+                },
+                undefined,
+                QUERY_METADATA
+            )
+        ).toStrictEqual({
             iconSrc: 'sample_set',
             category: 'Sample Type',
             altText: 'sample_type-icon',
-            title: 'Test'
+            title: 'Test',
         });
     });
 
-    test("data.type is sampleSet, with matching metadata", () => {
-        expect(getSearchResultCardData({
-            name: 'testMedia',
-            type: 'sampleSet'
-        }, undefined, QUERY_METADATA)).toStrictEqual({
+    test('data.type is sampleSet, with matching metadata', () => {
+        expect(
+            getSearchResultCardData(
+                {
+                    name: 'testMedia',
+                    type: 'sampleSet',
+                },
+                undefined,
+                QUERY_METADATA
+            )
+        ).toStrictEqual({
             iconSrc: 'test-media',
             category: 'Sample Type',
             altText: 'sample_type-icon',
-            title: 'testMedia'
+            title: 'testMedia',
         });
     });
 
-    test("data.sampleSet, with matching metadata", () => {
-        expect(getSearchResultCardData({
-            name: 'someMedia',
-            sampleSet: {
-                name: 'testMedia'
-            }
-        }, undefined, QUERY_METADATA)).toStrictEqual({
+    test('data.sampleSet, with matching metadata', () => {
+        expect(
+            getSearchResultCardData(
+                {
+                    name: 'someMedia',
+                    sampleSet: {
+                        name: 'testMedia',
+                    },
+                },
+                undefined,
+                QUERY_METADATA
+            )
+        ).toStrictEqual({
             iconSrc: 'test-media',
             category: 'Sample Type',
             altText: 'sample_type-icon',
-            title: 'someMedia'
+            title: 'someMedia',
         });
     });
 
-    test("data.sampleSet, without matching metadata", () => {
-        expect(getSearchResultCardData({
-            name: 'someMedia',
-            sampleSet: {
-                name: 'otherMedia'
-            }
-        }, undefined, QUERY_METADATA)).toStrictEqual({
+    test('data.sampleSet, without matching metadata', () => {
+        expect(
+            getSearchResultCardData(
+                {
+                    name: 'someMedia',
+                    sampleSet: {
+                        name: 'otherMedia',
+                    },
+                },
+                undefined,
+                QUERY_METADATA
+            )
+        ).toStrictEqual({
             iconSrc: 'samples',
             category: 'Sample Type',
             altText: 'sample_type-icon',
-            title: 'someMedia'
+            title: 'someMedia',
         });
     });
 
-    test("data.type is generic dataClass", () => {
-        expect(getSearchResultCardData({
-            name: 'Test Source',
-            type: 'dataClass'
-        }, undefined)).toStrictEqual({
+    test('data.type is generic dataClass', () => {
+        expect(
+            getSearchResultCardData(
+                {
+                    name: 'Test Source',
+                    type: 'dataClass',
+                },
+                undefined
+            )
+        ).toStrictEqual({
             iconSrc: 'source_type',
             category: 'Source Type',
             altText: 'source_type-icon',
-            title: 'Test Source'
+            title: 'Test Source',
         });
     });
 
-    test("data.type is source dataClass", () => {
-        expect(getSearchResultCardData({
-            name: 'Test Source',
-            type: 'dataClass:sources'
-        }, undefined)).toStrictEqual({
+    test('data.type is source dataClass', () => {
+        expect(
+            getSearchResultCardData(
+                {
+                    name: 'Test Source',
+                    type: 'dataClass:sources',
+                },
+                undefined
+            )
+        ).toStrictEqual({
             iconSrc: 'source_type',
             category: 'Source Type',
             altText: 'source_type-icon',
-            title: 'Test Source'
+            title: 'Test Source',
         });
     });
 
-
-    test("data.type is registry dataClass", () => {
-        expect(getSearchResultCardData({
-            name: 'TestRegistrySource',
-            type: 'dataClass:registry'
-        }, undefined)).toStrictEqual({
+    test('data.type is registry dataClass', () => {
+        expect(
+            getSearchResultCardData(
+                {
+                    name: 'TestRegistrySource',
+                    type: 'dataClass:registry',
+                },
+                undefined
+            )
+        ).toStrictEqual({
             iconSrc: 'testregistrysource',
             category: 'Registry Source Type',
             altText: 'source_type-icon',
@@ -1165,42 +1214,56 @@ describe("getSearchResultCardData", () => {
     });
 
     test('data.type is assay', () => {
-       expect(getSearchResultCardData({
-           name: 'Test Assay',
-           type: 'assay'
-       }, undefined)).toStrictEqual({
-           category: 'Assay',
-       });
+        expect(
+            getSearchResultCardData(
+                {
+                    name: 'Test Assay',
+                    type: 'assay',
+                },
+                undefined
+            )
+        ).toStrictEqual({
+            category: 'Assay',
+        });
     });
 
-    test("data.name with material category", () => {
-        expect(getSearchResultCardData({
-            name: "S-1",
-        }, 'material')).toStrictEqual({
+    test('data.name with material category', () => {
+        expect(
+            getSearchResultCardData(
+                {
+                    name: 'S-1',
+                },
+                SearchCategory.Material
+            )
+        ).toStrictEqual({
             category: 'Sample',
             title: 'S-1',
         });
     });
 });
 
-describe("decodeErrorMessage", () => {
-    test("emtpy string", () => {
-        expect(decodeErrorMessage("")).toBe("");
+describe('decodeErrorMessage', () => {
+    test('emtpy string', () => {
+        expect(decodeErrorMessage('')).toBe('');
     });
-    test("undefined", () => {
+    test('undefined', () => {
         expect(decodeErrorMessage(undefined)).toBeUndefined();
     });
-    test("null", () => {
+    test('null', () => {
         expect(decodeErrorMessage(null)).toBeNull();
     });
 
-    test("nothing encoded", () => {
-        expect(decodeErrorMessage("Nothing to see here. Move along.")).toBe("Nothing to see here. Move along.");
-        expect(decodeErrorMessage("errors are fun.")).toBe("errors are fun.")
+    test('nothing encoded', () => {
+        expect(decodeErrorMessage('Nothing to see here. Move along.')).toBe('Nothing to see here. Move along.');
+        expect(decodeErrorMessage('errors are fun.')).toBe('errors are fun.');
     });
 
-    test("encoded", () => {
-        expect(decodeErrorMessage("Can&#039;t do &quot;this&quot; or &lt;that&gt;.")).toBe("Can't do \"this\" or <that>.")
-        expect(decodeErrorMessage("Can&#039;t do &quot;this&quot; or &lt;that&gt;")).toBe("Can't do \"this\" or <that>.")
+    test('encoded', () => {
+        expect(decodeErrorMessage('Can&#039;t do &quot;this&quot; or &lt;that&gt;.')).toBe(
+            'Can\'t do "this" or <that>.'
+        );
+        expect(decodeErrorMessage('Can&#039;t do &quot;this&quot; or &lt;that&gt;')).toBe(
+            'Can\'t do "this" or <that>.'
+        );
     });
 });

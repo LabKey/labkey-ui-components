@@ -190,8 +190,9 @@ export class LookupMapper implements URLMapper {
 
             // Issue 46747: When the lookup goes to a different container, don't rewrite the URL
             const containerPath = getServerContext().container.path;
-            if (lookupContainerPath && lookupContainerPath !== containerPath)
+            if (lookupContainerPath && lookupContainerPath !== containerPath) {
                 return undefined;
+            }
 
             const parts = [
                 this.defaultPrefix,
@@ -553,7 +554,7 @@ export class URLResolver {
             return _url;
         }
 
-        if (_url !== false && getServerContext().devMode) {
+        if (mapper.url !== undefined && _url !== false && getServerContext().devMode) {
             console.warn('Unable to map URL:', mapper.url);
         }
 
@@ -705,6 +706,11 @@ export class URLResolver {
                         return row.set('url', this.mapURL({ url, row, column }));
                     } else if (url.indexOf('notebook') >= 0) {
                         return row.set('url', this.mapURL({ url, row, column }));
+                    } else if (url.indexOf('plate-designer') > -1) {
+                        const plateRowId = row.getIn(['data', 'rowId']);
+                        if (plateRowId) {
+                            return row.set('url', this.mapURL({ url, row, column, query: plateRowId }));
+                        }
                     }
                 }
                 return row;

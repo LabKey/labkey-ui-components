@@ -4,22 +4,23 @@ import {
     clearSelected,
     fetchCharts,
     getSelected,
-    SelectResponse,
     replaceSelected,
     selectAll,
+    SelectResponse,
     setSelected,
 } from '../../internal/actions';
-import { VISUALIZATION_REPORTS } from '../../internal/constants';
+import { isRReportsEnabled } from '../../internal/app/utils';
+import { DataViewInfoTypes, VISUALIZATION_REPORTS } from '../../internal/constants';
 
 import { DataViewInfo, IDataViewInfo } from '../../internal/DataViewInfo';
+import { getQueryColumnRenderers } from '../../internal/global';
+import { getQueryDetails, selectRowsDeprecated } from '../../internal/query/api';
+import { DefaultRenderer } from '../../internal/renderers/DefaultRenderer';
 import { ExtendedMap } from '../ExtendedMap';
+import { QueryColumn } from '../QueryColumn';
 
 import { QueryInfo } from '../QueryInfo';
-import { getQueryDetails, selectRowsDeprecated } from '../../internal/query/api';
 import { naturalSortByProperty } from '../sort';
-import { QueryColumn } from '../QueryColumn';
-import { getQueryColumnRenderers } from '../../internal/global';
-import { DefaultRenderer } from '../../internal/renderers/DefaultRenderer';
 
 import { GridMessage, QueryModel } from './QueryModel';
 
@@ -165,10 +166,13 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
         const { schemaQuery, containerPath } = model;
         const sortByName = naturalSortByProperty<IDataViewInfo>('name');
 
-        const charts = await fetchCharts(schemaQuery, containerPath);
-        return charts
-            .toArray()
-            .sort(sortByName)
-            .filter(report => VISUALIZATION_REPORTS.contains(report.type));
+        let charts = await fetchCharts(schemaQuery, containerPath);
+        charts = charts.sort(sortByName).filter(report => VISUALIZATION_REPORTS.contains(report.type));
+
+        if (!isRReportsEnabled()) {
+            charts = charts.filter(chart => chart.type !== DataViewInfoTypes.RReport);
+        }
+
+        return charts;
     },
 };

@@ -19,179 +19,144 @@ import { mount, shallow } from 'enzyme';
 
 import { Button, Modal, ModalTitle } from 'react-bootstrap';
 
-import { initUnitTestMocks } from '../../../test/testHelperMocks';
-
-import { SchemaQuery } from '../../../public/SchemaQuery';
-
-import { getQueryDetails } from '../../query/api';
+import { makeQueryInfo } from '../../test/testHelpers';
+import mixturesQueryInfo from '../../../test/data/mixtures-getQueryDetails.json';
 
 import { TextInput } from './input/TextInput';
 import { QueryFormInputs } from './QueryFormInputs';
 import { QueryInfoForm } from './QueryInfoForm';
 import { QueryInfoQuantity } from './QueryInfoQuantity';
 
-beforeAll(() => {
-    initUnitTestMocks();
-});
-
-const schemaQuery = new SchemaQuery('exp.data', 'Mixtures');
+const QUERY_INFO = makeQueryInfo(mixturesQueryInfo);
 
 describe('QueryInfoForm', () => {
     test('default props', () => {
-        expect.hasAssertions();
-        return getQueryDetails(schemaQuery).then(queryInfo => {
-            const formWrapper = shallow(<QueryInfoForm queryInfo={queryInfo} onSubmit={jest.fn()} />);
-            expect(formWrapper.find(QueryFormInputs)).toHaveLength(1);
-            expect(formWrapper.find(Button)).toHaveLength(2);
-        });
+        const formWrapper = shallow(<QueryInfoForm queryInfo={QUERY_INFO} onSubmit={jest.fn()} />);
+        expect(formWrapper.find(QueryFormInputs)).toHaveLength(1);
+        expect(formWrapper.find(Button)).toHaveLength(2);
     });
 
     test('with header', () => {
-        expect.hasAssertions();
-        return getQueryDetails(schemaQuery).then(queryInfo => {
-            const header = <span className="header-info">Header info here</span>;
-            const formWrapper = shallow(<QueryInfoForm header={header} queryInfo={queryInfo} onSubmit={jest.fn()} />);
+        const header = <span className="header-info">Header info here</span>;
+        const formWrapper = shallow(<QueryInfoForm header={header} queryInfo={QUERY_INFO} onSubmit={jest.fn()} />);
 
-            expect(formWrapper.find('.header-info')).toHaveLength(1);
-        });
+        expect(formWrapper.find('.header-info')).toHaveLength(1);
     });
 
     test('as modal', () => {
-        expect.hasAssertions();
-        return getQueryDetails(schemaQuery).then(queryInfo => {
-            const formWrapper = shallow(<QueryInfoForm asModal={true} queryInfo={queryInfo} onSubmit={jest.fn()} />);
-            expect(formWrapper.find(Modal)).toHaveLength(1);
-            expect(formWrapper.find(ModalTitle)).toHaveLength(0);
-        });
+        const formWrapper = shallow(<QueryInfoForm asModal={true} queryInfo={QUERY_INFO} onSubmit={jest.fn()} />);
+        expect(formWrapper.find(Modal)).toHaveLength(1);
+        expect(formWrapper.find(ModalTitle)).toHaveLength(0);
     });
 
     test('as modal with title', () => {
-        expect.hasAssertions();
-        return getQueryDetails(schemaQuery).then(queryInfo => {
-            const formWrapper = shallow(
-                <QueryInfoForm asModal={true} title="Test modal title" queryInfo={queryInfo} onSubmit={jest.fn()} />
-            );
-            expect(formWrapper.find(Modal)).toHaveLength(1);
-            const modalTitle = formWrapper.find(ModalTitle);
-            expect(modalTitle).toHaveLength(1);
-            expect(modalTitle.childAt(0).text()).toBe('Test modal title');
-        });
+        const formWrapper = shallow(
+            <QueryInfoForm asModal={true} title="Test modal title" queryInfo={QUERY_INFO} onSubmit={jest.fn()} />
+        );
+        expect(formWrapper.find(Modal)).toHaveLength(1);
+        const modalTitle = formWrapper.find(ModalTitle);
+        expect(modalTitle).toHaveLength(1);
+        expect(modalTitle.childAt(0).text()).toBe('Test modal title');
     });
 
     test("don't include count field", () => {
-        expect.hasAssertions();
-        return getQueryDetails(schemaQuery).then(queryInfo => {
-            const formWrapper = shallow(
-                <QueryInfoForm includeCountField={false} queryInfo={queryInfo} onSubmit={jest.fn()} />
-            );
-            expect(formWrapper.find('input#numItems')).toHaveLength(0);
-        });
+        const formWrapper = shallow(
+            <QueryInfoForm includeCountField={false} queryInfo={QUERY_INFO} onSubmit={jest.fn()} />
+        );
+        expect(formWrapper.find('input#numItems')).toHaveLength(0);
     });
 
     test('custom text', () => {
-        return getQueryDetails(schemaQuery).then(queryInfo => {
-            const cancelText = 'custom cancel text';
-            const countText = 'custom count text';
-            const submitText = 'custom submit text';
-            const formWrapper = shallow(
-                <QueryInfoForm
-                    cancelText={cancelText}
-                    countText={countText}
-                    submitText={submitText}
-                    queryInfo={queryInfo}
-                    onSubmit={jest.fn()}
-                />
-            );
-            const cancelButton = formWrapper.find('.test-loc-cancel-button');
-            expect(cancelButton.childAt(0).text()).toBe(cancelText);
-            const submitButton = formWrapper.find('.test-loc-submit-button');
-            expect(submitButton.childAt(0).text()).toBe(submitText);
-            expect(formWrapper.find(QueryInfoQuantity)).toHaveLength(1);
-            expect(formWrapper.find(QueryInfoQuantity).prop('countText')).toBe(countText);
-        });
+        const cancelText = 'custom cancel text';
+        const countText = 'custom count text';
+        const submitText = 'custom submit text';
+        const formWrapper = shallow(
+            <QueryInfoForm
+                cancelText={cancelText}
+                countText={countText}
+                submitText={submitText}
+                queryInfo={QUERY_INFO}
+                onSubmit={jest.fn()}
+            />
+        );
+        const cancelButton = formWrapper.find('.test-loc-cancel-button');
+        expect(cancelButton.childAt(0).text()).toBe(cancelText);
+        const submitButton = formWrapper.find('.test-loc-submit-button');
+        expect(submitButton.childAt(0).text()).toBe(submitText);
+        expect(formWrapper.find(QueryInfoQuantity)).toHaveLength(1);
+        expect(formWrapper.find(QueryInfoQuantity).prop('countText')).toBe(countText);
     });
 
     test('with footer', () => {
-        expect.hasAssertions();
-        return getQueryDetails(schemaQuery).then(queryInfo => {
-            const footer = <span className="footer-info">Footer info here</span>;
-            const formWrapper = shallow(<QueryInfoForm footer={footer} queryInfo={queryInfo} onSubmit={jest.fn()} />);
+        const footer = <span className="footer-info">Footer info here</span>;
+        const formWrapper = shallow(<QueryInfoForm footer={footer} queryInfo={QUERY_INFO} onSubmit={jest.fn()} />);
 
-            expect(formWrapper.find('.footer-info')).toHaveLength(1);
-        });
+        expect(formWrapper.find('.footer-info')).toHaveLength(1);
     });
 
     test('with only submitForEdit', () => {
-        return getQueryDetails(schemaQuery).then(queryInfo => {
-            const submitForEditText = 'Test Submit for Edit';
-            const formWrapper = shallow(
-                <QueryInfoForm
-                    includeCountField={false}
-                    checkRequiredFields={false}
-                    queryInfo={queryInfo}
-                    submitForEditText={submitForEditText}
-                    onSubmitForEdit={jest.fn()}
-                />
-            );
+        const submitForEditText = 'Test Submit for Edit';
+        const formWrapper = shallow(
+            <QueryInfoForm
+                includeCountField={false}
+                checkRequiredFields={false}
+                queryInfo={QUERY_INFO}
+                submitForEditText={submitForEditText}
+                onSubmitForEdit={jest.fn()}
+            />
+        );
 
-            const submitForEditButton = formWrapper.find('.test-loc-submit-for-edit-button');
-            expect(submitForEditButton.childAt(0).text()).toBe(submitForEditText);
-            expect(submitForEditButton.props().disabled).toBe(false);
-        });
+        const submitForEditButton = formWrapper.find('.test-loc-submit-for-edit-button');
+        expect(submitForEditButton.childAt(0).text()).toBe(submitForEditText);
+        expect(submitForEditButton.props().disabled).toBe(false);
     });
 
     test('with submitForEdit and submit enabled', () => {
-        return getQueryDetails(schemaQuery).then(queryInfo => {
-            const formWrapper = shallow(
-                <QueryInfoForm
-                    includeCountField={false}
-                    checkRequiredFields={false}
-                    queryInfo={queryInfo}
-                    onSubmitForEdit={jest.fn()}
-                    onSubmit={jest.fn()}
-                />
-            );
+        const formWrapper = shallow(
+            <QueryInfoForm
+                includeCountField={false}
+                checkRequiredFields={false}
+                queryInfo={QUERY_INFO}
+                onSubmitForEdit={jest.fn()}
+                onSubmit={jest.fn()}
+            />
+        );
 
-            const submitForEditButton = formWrapper.find('.test-loc-submit-for-edit-button');
-            expect(submitForEditButton.props().disabled).toBe(false);
-            const submitButton = formWrapper.find('.test-loc-submit-button');
-            expect(submitButton.props().disabled).toBe(false);
-        });
+        const submitForEditButton = formWrapper.find('.test-loc-submit-for-edit-button');
+        expect(submitForEditButton.props().disabled).toBe(false);
+        const submitButton = formWrapper.find('.test-loc-submit-button');
+        expect(submitButton.props().disabled).toBe(false);
     });
 
     test('with submitForEdit and submit disabled', () => {
-        return getQueryDetails(schemaQuery).then(queryInfo => {
-            const formWrapper = shallow(
-                <QueryInfoForm
-                    includeCountField={true}
-                    queryInfo={queryInfo}
-                    onSubmitForEdit={jest.fn()}
-                    onSubmit={jest.fn()}
-                />
-            );
+        const formWrapper = shallow(
+            <QueryInfoForm
+                includeCountField={true}
+                queryInfo={QUERY_INFO}
+                onSubmitForEdit={jest.fn()}
+                onSubmit={jest.fn()}
+            />
+        );
 
-            const submitForEditButton = formWrapper.find('.test-loc-submit-for-edit-button');
-            expect(submitForEditButton.props().disabled).toBe(true);
-            const submitButton = formWrapper.find('.test-loc-submit-button');
-            expect(submitButton.props().disabled).toBe(true);
-        });
+        const submitForEditButton = formWrapper.find('.test-loc-submit-for-edit-button');
+        expect(submitForEditButton.props().disabled).toBe(true);
+        const submitButton = formWrapper.find('.test-loc-submit-button');
+        expect(submitButton.props().disabled).toBe(true);
     });
 
     test("don't allow canSubmitNotDirty", () => {
-        return getQueryDetails(schemaQuery).then(queryInfo => {
-            const formWrapper = shallow(
-                <QueryInfoForm
-                    includeCountField={false}
-                    checkRequiredFields={false}
-                    queryInfo={queryInfo}
-                    onSubmit={jest.fn()}
-                    canSubmitNotDirty={false}
-                />
-            );
+        const formWrapper = shallow(
+            <QueryInfoForm
+                includeCountField={false}
+                checkRequiredFields={false}
+                queryInfo={QUERY_INFO}
+                onSubmit={jest.fn()}
+                canSubmitNotDirty={false}
+            />
+        );
 
-            const submitButton = formWrapper.find('.test-loc-submit-button');
-            expect(submitButton.props().disabled).toBe(true);
-        });
+        const submitButton = formWrapper.find('.test-loc-submit-button');
+        expect(submitButton.props().disabled).toBe(true);
     });
 
     test('customize column filter', () => {
@@ -199,50 +164,40 @@ describe('QueryInfoForm', () => {
             return col.name === 'extraTestColumn';
         };
 
-        return getQueryDetails(schemaQuery).then(queryInfo => {
-            const formWrapper = mount(
-                <QueryInfoForm queryInfo={queryInfo} columnFilter={filter} onSubmit={jest.fn()} />
-            );
+        const formWrapper = mount(<QueryInfoForm queryInfo={QUERY_INFO} columnFilter={filter} onSubmit={jest.fn()} />);
 
-            expect(formWrapper.find(TextInput)).toHaveLength(1);
-            formWrapper.unmount();
-        });
+        expect(formWrapper.find(TextInput)).toHaveLength(1);
+        formWrapper.unmount();
     });
 
     test('skip required check', () => {
-        return getQueryDetails(schemaQuery).then(queryInfo => {
-            const formWrapper = mount(
-                <QueryInfoForm queryInfo={queryInfo} checkRequiredFields={false} onSubmit={jest.fn()} />
-            );
+        const formWrapper = mount(
+            <QueryInfoForm queryInfo={QUERY_INFO} checkRequiredFields={false} onSubmit={jest.fn()} />
+        );
 
-            expect(formWrapper.text()).toContain('Extra Test Column Cancel');
-            formWrapper.unmount();
-        });
+        expect(formWrapper.text()).toContain('Extra Test Column Cancel');
+        formWrapper.unmount();
     });
 
     test('skip required check but show asterisk on label', () => {
-        return getQueryDetails(schemaQuery).then(queryInfo => {
-            const formWrapper = mount(
-                <QueryInfoForm
-                    queryInfo={queryInfo}
-                    checkRequiredFields={false}
-                    showLabelAsterisk={true}
-                    onSubmit={jest.fn()}
-                />
-            );
+        const formWrapper = mount(
+            <QueryInfoForm
+                queryInfo={QUERY_INFO}
+                checkRequiredFields={false}
+                showLabelAsterisk={true}
+                onSubmit={jest.fn()}
+            />
+        );
 
-            expect(formWrapper.text()).toContain('Extra Test Column  *');
-            formWrapper.unmount();
-        });
+        expect(formWrapper.text()).toContain('Extra Test Column  *');
+        formWrapper.unmount();
     });
 
     test('all fields disabled', () => {
-        return getQueryDetails(schemaQuery).then(queryInfo => {
-            const formWrapper = mount(
-                <QueryInfoForm queryInfo={queryInfo} initiallyDisableFields={true} onSubmit={jest.fn()} />
-            );
-            expect(formWrapper.find('Button[type="submit"]').prop('disabled')).toBeTruthy();
-            formWrapper.unmount();
-        });
+        const formWrapper = mount(
+            <QueryInfoForm queryInfo={QUERY_INFO} initiallyDisableFields={true} onSubmit={jest.fn()} />
+        );
+        expect(formWrapper.find('Button[type="submit"]').prop('disabled')).toBeTruthy();
+        formWrapper.unmount();
     });
 });

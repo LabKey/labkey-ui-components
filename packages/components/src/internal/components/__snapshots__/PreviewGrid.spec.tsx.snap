@@ -122,7 +122,8 @@ null"
             }
           >
             <a
-              href="#/rd/expdata/41426"
+              className="ws-pre-wrap"
+              href="/labkey/testContainer/experiment-showData.view?rowId=41426"
             >
               DMEXP
             </a>
@@ -133,7 +134,11 @@ null"
                 "textAlign": "left",
               }
             }
-          />
+          >
+            <span
+              className="ws-pre-wrap"
+            />
+          </td>
           <td
             style={
               {
@@ -142,7 +147,8 @@ null"
             }
           >
             <a
-              href="#/q/lists/MixtureTypes/2"
+              className="ws-pre-wrap"
+              href="/labkey/testContainer/list-details.view?listId=15&pk=2"
             >
               Solution
             </a>
@@ -154,7 +160,11 @@ null"
               }
             }
           >
-            30
+            <span
+              className="ws-pre-wrap"
+            >
+              30
+            </span>
           </td>
         </tr>
         <tr
@@ -168,7 +178,8 @@ null"
             }
           >
             <a
-              href="#/rd/expdata/41425"
+              className="ws-pre-wrap"
+              href="/labkey/testContainer/experiment-showData.view?rowId=41425"
             >
               TBS
             </a>
@@ -179,7 +190,11 @@ null"
                 "textAlign": "left",
               }
             }
-          />
+          >
+            <span
+              className="ws-pre-wrap"
+            />
+          </td>
           <td
             style={
               {
@@ -188,7 +203,8 @@ null"
             }
           >
             <a
-              href="#/q/lists/MixtureTypes/2"
+              className="ws-pre-wrap"
+              href="/labkey/testContainer/list-details.view?listId=15&pk=2"
             >
               Solution
             </a>
@@ -200,7 +216,11 @@ null"
               }
             }
           >
-            30
+            <span
+              className="ws-pre-wrap"
+            >
+              30
+            </span>
           </td>
         </tr>
         <tr
@@ -214,7 +234,8 @@ null"
             }
           >
             <a
-              href="#/rd/expdata/41424"
+              className="ws-pre-wrap"
+              href="/labkey/testContainer/experiment-showData.view?rowId=41424"
             >
               PBS
             </a>
@@ -225,7 +246,11 @@ null"
                 "textAlign": "left",
               }
             }
-          />
+          >
+            <span
+              className="ws-pre-wrap"
+            />
+          </td>
           <td
             style={
               {
@@ -234,7 +259,8 @@ null"
             }
           >
             <a
-              href="#/q/lists/MixtureTypes/2"
+              className="ws-pre-wrap"
+              href="/labkey/testContainer/list-details.view?listId=15&pk=2"
             >
               Solution
             </a>
@@ -246,7 +272,11 @@ null"
               }
             }
           >
-            30
+            <span
+              className="ws-pre-wrap"
+            >
+              30
+            </span>
           </td>
         </tr>
       </tbody>
@@ -325,7 +355,8 @@ null"
             }
           >
             <a
-              href="#/rd/expdata/41426"
+              className="ws-pre-wrap"
+              href="/labkey/testContainer/experiment-showData.view?rowId=41426"
             >
               DMEXP
             </a>
@@ -336,7 +367,11 @@ null"
                 "textAlign": "left",
               }
             }
-          />
+          >
+            <span
+              className="ws-pre-wrap"
+            />
+          </td>
         </tr>
         <tr
           className="grid-row"
@@ -349,7 +384,8 @@ null"
             }
           >
             <a
-              href="#/rd/expdata/41425"
+              className="ws-pre-wrap"
+              href="/labkey/testContainer/experiment-showData.view?rowId=41425"
             >
               TBS
             </a>
@@ -360,7 +396,11 @@ null"
                 "textAlign": "left",
               }
             }
-          />
+          >
+            <span
+              className="ws-pre-wrap"
+            />
+          </td>
         </tr>
       </tbody>
     </table>

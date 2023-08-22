@@ -14,10 +14,14 @@ import { getProjectDataTypeDataCount, getDataTypeProjectDataCount } from '../com
 import {
     deleteView,
     getGridViews,
+    GetSelectedResponse,
+    getSnapshotSelections,
     incrementClientSideMetricCount,
     renameGridView,
     saveGridView,
     saveSessionView,
+    SelectResponse,
+    setSnapshotSelections,
 } from '../actions';
 
 import { SchemaQuery } from '../../public/SchemaQuery';
@@ -70,6 +74,7 @@ export interface QueryAPIWrapper {
         isNewFolder?: boolean
     ) => Promise<Record<string, number>>;
     getQueryDetails: (options: GetQueryDetailsOptions) => Promise<QueryInfo>;
+    getSnapshotSelections: (key: string, containerPath?: string) => Promise<GetSelectedResponse>;
     incrementClientSideMetricCount: (featureArea: string, metricName: string) => void;
     insertRows: (options: InsertRowsOptions) => Promise<InsertRowsResponse>;
     renameGridView: (
@@ -98,6 +103,7 @@ export interface QueryAPIWrapper {
     ) => Promise<void>;
     selectDistinctRows: (selectDistinctOptions: Query.SelectDistinctOptions) => Promise<Query.SelectDistinctResponse>;
     selectRows: (options: SelectRowsOptions) => Promise<SelectRowsResponse>;
+    setSnapshotSelections: (key: string, ids: string[] | string, containerPath?: string) => Promise<SelectResponse>;
     updateRows: (options: UpdateRowsOptions) => Promise<UpdateRowsResponse>;
 }
 
@@ -110,6 +116,7 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     getProjectConfigurableEntityTypeOptions = getProjectConfigurableEntityTypeOptions;
     getProjectDataTypeDataCount = getProjectDataTypeDataCount;
     getQueryDetails = getQueryDetails;
+    getSnapshotSelections = getSnapshotSelections;
     incrementClientSideMetricCount = incrementClientSideMetricCount;
     insertRows = insertRows;
     renameGridView = renameGridView;
@@ -117,6 +124,7 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     saveSessionView = saveSessionView;
     selectRows = selectRows;
     selectDistinctRows = selectDistinctRows;
+    setSnapshotSelections = setSnapshotSelections;
     updateRows = updateRows;
 }
 
@@ -136,6 +144,7 @@ export function getQueryTestAPIWrapper(
         getProjectConfigurableEntityTypeOptions: mockFn(),
         getProjectDataTypeDataCount: mockFn(),
         getQueryDetails: mockFn(),
+        getSnapshotSelections: mockFn(),
         incrementClientSideMetricCount: mockFn(),
         insertRows: mockFn(),
         renameGridView: mockFn(),
@@ -143,6 +152,7 @@ export function getQueryTestAPIWrapper(
         saveSessionView: mockFn(),
         selectRows: mockFn(),
         selectDistinctRows: mockFn(),
+        setSnapshotSelections: mockFn(),
         updateRows: mockFn(),
         ...overrides,
     };

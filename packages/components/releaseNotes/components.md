@@ -1,8 +1,142 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.360.1
+*Released*: 21 August 2023
+- Remove updateDomainPanelClassList
+  - Manually toggle the necessary classname in the component instead of manually manipulationg the DOM
+- Update tests to no longer attempt to make network requests
+
+### version 2.360.0
+*Released*: 21 August 2023
+- Add isRReportEnabled helper
+- Add RReport component
+- Move SVG rendering to SVGChart component
+- Make Chart render RReports and SVGCharts
+- Refactor Chart to re-render when filter array changes
+- Add APIWrapper for Chart
+  - not exposed via context
+
+### version 2.359.4
+*Released*: 18 August 2023
+- Migrated components are `DeleteConfirmationModal`, `EntityDeleteConfirmModal` and `EntityDeleteConfirmModalDisplay`.
+- Add `getSnapshotSelections` and `setSnapshotSelections` to `QueryAPIWrapper`.
+- Add `getDeleteConfirmationData` to `EntityAPIWrapper`.
+
+### version 2.359.3
+*Released*: 18 August 2023
+- ISSUE 48479: DOM update (i.e. removeChild) errors when components update with Google Translate enabled
+  - fix is to wrap conditional text elements in `<span>` tags
+  - see https://github.com/facebook/react/issues/11538
+
+### version 2.359.2
+*Released*: 17 August 2023
+- Update getEntityTypeOptions to allow skip project level data exception check
+- Fix CF for querying data during project creation
+
+### version 2.359.1
+*Released*: 15 August 2023
+- EditableGrid prop for tabContainerCls
+
+### version 2.359.0
+*Released*: 14 August 2023
+- Remove xhr-mock
+- Remove all xhr-mock utilities
+- Convert various components to use APIWrappers or dependency injection for methods that fetch data
+- Convert some tests to use shallow, preventing them from making network requests
+- Delete unused test data
+- incrementClientSideMetricCount: Don't make API call in test env
+
+### version 2.358.2
+*Released*: 8 August 2023
+- Update parsing of duplicate key errors to account for single-field keys
+
+### version 2.358.1
+*Released*: 8 August 2023
+- Issue 48367: Remove no-data styling from Sample Finder tabs
+
+### version 2.358.0
+*Released*: 8 August 2023
+- GridPanel ButtonBar
+  - Slightly change DOM layout to make size calculations easier
+  - Do not render buttons until we've first loaded data
+- Update ResponsiveMenuButtonGroup to calculate available space and render as many buttons as possible
+  - Buttons that cannot fit will be rendered under a more menu
+- QueryInfo: appEditableTable is no longer private
+  - We need to be able to set this property for tests
+
+### version 2.357.0
+*Released*: 1 August 2023
+- EditableGrid prop to hideTopControls
+- EditableGrid null checks for tabBtnProps and cancelBtnProps
+
+### version 2.356.2
+*Released*: 31 July 2023
+* Issue 48291: Sample Manager: bulk update form gives (Amount) must be a number error
+
+### version 2.356.1
+*Released*: 28 July 2023
+- Issue 48333: When creating samples from sources, don't check sample status of parents (that aren't samples)
+
+### version 2.356.0
+*Released*: 27 July 2023
+- Upon using a multi-value filter that is not BETWEEN, make value input a textarea
+
+### version 2.355.1
+*Released*: 27 July 2023
+- Updates to allow sources to have parent sources
+
+### version 2.355.0
+Released*: 26 July 2023
+- Introduce `SearchCategory.Plate`.
+- Update various search interfaces to use `SearchCategory`
+
+### version 2.354.1
+Released*: 25 July 2023
+* Merge release23.7-SNAPSHOT to develop:
+    * includes changes from 2.349.6
+
+### version 2.354.0
+*Released*: 24 July 2023
+* Add Project level date/time to App Settings page
+  * Add ProjectLookAndFeelForm
+
+### version 2.353.0
+Released*: 21 July 2023
+- Add to Storage From Grid - add preview to select location modal
+  - ItemsLegend support for borderColor on HorizontalBarLegendData
+
+### version 2.352.0
+Released*: 20 July 2023
+- Convert `EditorModel.selectionCells` to a `string[]`.
+- Precompute new property `EditorModel.isSparseSelection`.
+- Add `dragDelay` to reduce redundant render cycles when clicking on cells.
+- Split out `BorderMask` properties on the `Cell` interface.
+- Add and export interface for `EditableGridChange`.
+
+### version 2.351.1
+Released*: 20 July 2023
+* Merge release23.7-SNAPSHOT to develop:
+    * includes changes from 2.349.5
+
+### version 2.351.0
+*Released*: 14 July 2023
+- Expose `inputId` prop from `react-select` on `SelectInput`
+- Delete `parseDataTextToRunRows` as it is no longer utilized
+- Rename `IAssayUploadOptions` to `AssayUploadOptions`
+- Add devDependency on `blob-polyfill` to support `Blob` and `File` interactions within tests. Only exposed in RTL tests.
+
+### version 2.350.5
+*Released*: 13 July 2023
+* Issue 48050 and 48209: Update parsing of duplicate key error messages for Postgres
+
+### version 2.350.4
+*Released*: 12 July 2023
+* Merge release23.7-SNAPSHOT to develop:
+    * includes changes from 2.349.4
+
 ### version 2.350.3
-Released*: 12 July 2023
+*Released*: 12 July 2023
 - Issue 48209 and 48050: Add parsing of duplicate-key error message to try to extract the duplicate name
 - Issue 48214: Update messaging on Save Grid View modal
 - Issue 48224: Add 'noun' prop for empty state message
@@ -26,6 +160,19 @@ Released*: 12 July 2023
 - Fix round-tripping values within the "Alias" column on an editable grid via an `AliasGridInput` processing component.
 - Introduce types of `CellCoordinates` and `GridColumnCellRenderer`.
 - Update `SampleStatusInput` handling of `containerFilter` to use prop override pattern instead of `delete`.
+
+### version 2.349.6
+*Released*: 21 July 2023
+* Fix Issue #48014: BarTender Test connection health check
+
+### version 2.349.5
+*Released*: 10 July 2023
+* Remove BaseSearchPage and SearchForm
+* Export SEARCH_PAGE_DEFAULT_SIZE, SearchPanel
+
+### version 2.349.4
+*Released*: 7 July 2023
+* Add ability to customize message for useNotAuthorized hook.
 
 ### version 2.349.3
 *Released*: 1 July 2023

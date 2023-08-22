@@ -330,8 +330,6 @@ import {
     AssayResultsForSamplesMenuItem,
     AssayResultsForSamplesButton,
 } from './internal/components/entities/AssayResultsForSamplesButton';
-import { DeleteConfirmationModal } from './internal/components/entities/DeleteConfirmationModal';
-import { EntityDeleteConfirmModal } from './internal/components/entities/EntityDeleteConfirmModal';
 import { SampleAliquotViewSelector } from './internal/components/entities/SampleAliquotViewSelector';
 import { GridAliquotViewSelector } from './internal/components/entities/GridAliquotViewSelector';
 import {
@@ -343,6 +341,7 @@ import {
     getSampleFinderLocalStorageKey,
 } from './internal/components/entities/FindDerivativesButton';
 import {
+    SEARCH_PAGE_DEFAULT_SIZE,
     SAMPLE_PROPERTY_ALL_SAMPLE_TYPE,
     SearchCategory,
     SearchField,
@@ -350,6 +349,7 @@ import {
 } from './internal/components/search/constants';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';
 import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
+import { SearchPanel } from './internal/components/search/SearchPanel';
 import {
     getSearchScopeFromContainerFilter,
     isValidFilterField,
@@ -364,7 +364,6 @@ import { ProjectManagementPage } from './internal/components/project/ProjectMana
 import { GroupManagementPage } from './internal/components/administration/GroupManagementPage';
 import { PermissionManagementPage } from './internal/components/administration/PermissionManagementPage';
 import { AccountSettingsPage } from './internal/components/administration/AccountSettingsPage';
-import { BaseSearchPage } from './internal/components/search/BaseSearchPage';
 import { SearchResultsModel } from './internal/components/search/models';
 import {
     deleteSampleSet,
@@ -507,7 +506,7 @@ import {
     POOLED_SAMPLE_CREATION,
     SampleCreationType,
 } from './internal/components/samples/models';
-import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
+import { SampleTypeModel, DEFAULT_ALIQUOT_NAMING_PATTERN } from './internal/components/domainproperties/samples/models';
 
 import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';
 import { Pagination } from './internal/components/pagination/Pagination';
@@ -692,6 +691,7 @@ import {
     isELNEnabled,
     isFreezerManagementEnabled,
     isMediaEnabled,
+    isPlatesEnabled,
     isPremiumProductEnabled,
     isProductProjectsEnabled,
     isProjectContainer,
@@ -793,6 +793,7 @@ import {
     USER_KEY,
     WORKFLOW_HOME_HREF,
     WORKFLOW_KEY,
+    PLATES_KEY,
 } from './internal/app/constants';
 import { Key, useEnterEscape } from './public/useEnterEscape';
 import { DateInput } from './internal/components/DateInput';
@@ -856,6 +857,7 @@ const App = {
     isWorkflowEnabled,
     isELNEnabled,
     isFreezerManagementEnabled,
+    isPlatesEnabled,
     isSampleManagerEnabled,
     isBiologicsEnabled,
     isPremiumProductEnabled,
@@ -970,6 +972,7 @@ const App = {
     DATA_CLASS_IMPORT_PREFIX,
     SAMPLE_SET_IMPORT_PREFIX,
     SAMPLE_PROPERTY_ALL_SAMPLE_TYPE,
+    SEARCH_PAGE_DEFAULT_SIZE,
     DELIMITER,
     DETAIL_TABLE_CLASSES,
     DISCARD_CONSUMED_CHECKBOX_FIELD,
@@ -979,6 +982,7 @@ const App = {
     PRIVATE_PICKLIST_CATEGORY,
     PUBLIC_PICKLIST_CATEGORY,
     DATA_IMPORT_TOPIC,
+    PLATES_KEY,
 };
 
 const Hooks = {
@@ -1207,6 +1211,7 @@ export {
     DERIVATIVE_CREATION,
     POOLED_SAMPLE_CREATION,
     SampleTypeModel,
+    DEFAULT_ALIQUOT_NAMING_PATTERN,
     deleteSampleSet,
     fetchSamples,
     getSampleSet,
@@ -1244,8 +1249,6 @@ export {
     RemoveEntityButton,
     AssayResultsForSamplesMenuItem,
     AssayResultsForSamplesButton,
-    DeleteConfirmationModal,
-    EntityDeleteConfirmModal,
     SampleAliquotViewSelector,
     GridAliquotViewSelector,
     FindDerivativesMenuItem,
@@ -1281,10 +1284,10 @@ export {
     getStoredAmountDisplay,
     isValuePrecisionValid,
     // search related items
-    BaseSearchPage,
     SearchResultsModel,
     SearchResultCard,
     SearchResultsPanel,
+    SearchPanel,
     SearchCategory,
     SearchField,
     SearchScope,
@@ -1787,7 +1790,6 @@ export type {
 export type { SamplesEditableGridProps } from './internal/sampleModels';
 export type { MeasurementUnit } from './internal/util/measurement';
 export type { SampleStorageLocationComponentProps, SampleStorageMenuComponentProps } from './internal/sampleModels';
-export type { SearchForm } from './internal/components/search/BaseSearchPage';
 export type { SearchHit, SearchMetadata, SearchResult, SearchOptions } from './internal/components/search/actions';
 export type { TabbedGridPanelProps } from './public/QueryModel/TabbedGridPanel';
 export type { GroupedSampleDisplayColumns } from './internal/components/samples/actions';
@@ -1796,5 +1798,5 @@ export type { ConfirmModalProps } from './internal/components/base/ConfirmModal'
 export type { EditableDetailPanelProps } from './public/QueryModel/EditableDetailPanel';
 export type { ComponentsAPIWrapper } from './internal/APIWrapper';
 export type { GetParentTypeDataForLineage } from './internal/components/entities/actions';
-export type { DeleteConfirmationModalProps } from './internal/components/entities/DeleteConfirmationModal';
-export type { EntityDeleteConfirmHandler } from './internal/components/entities/EntityDeleteConfirmModalDisplay';
+export type { URLMapper } from './internal/url/URLResolver';
+export type { EditableGridChange } from './internal/components/editable/EditableGrid';

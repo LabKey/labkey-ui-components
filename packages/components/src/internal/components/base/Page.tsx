@@ -21,6 +21,7 @@ import { PageHeader } from './PageHeader';
 export interface PageProps {
     hasHeader?: boolean;
     notAuthorized?: boolean;
+    notAuthorizedMessage?: string;
     notFound?: boolean;
     productName?: string;
     showNotifications?: boolean;
@@ -64,7 +65,7 @@ export class Page extends React.Component<PageProps, any> {
     };
 
     render() {
-        const { notAuthorized, notFound, showNotifications } = this.props;
+        const { notAuthorizedMessage, notAuthorized, notFound, showNotifications } = this.props;
         let { hasHeader } = this.props;
         let children;
 
@@ -75,7 +76,7 @@ export class Page extends React.Component<PageProps, any> {
         } else if (notAuthorized) {
             children = [
                 <PageHeader key="header" title={this.props.title} />,
-                <InsufficientPermissionsAlert key="alert" />,
+                <InsufficientPermissionsAlert key="alert" message={notAuthorizedMessage} />,
             ];
         } else {
             children = this.props.children;

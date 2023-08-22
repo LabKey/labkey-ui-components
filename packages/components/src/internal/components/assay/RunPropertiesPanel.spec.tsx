@@ -6,7 +6,6 @@ import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
 
 import { CheckboxInput } from '../forms/input/CheckboxInput';
 
-import { initUnitTestMocks } from '../../../test/testHelperMocks';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { QueryFormInputs } from '../forms/QueryFormInputs';
 import { TextInput } from '../forms/input/TextInput';
@@ -17,10 +16,6 @@ import { mountWithServerContext } from '../../test/enzymeTestHelpers';
 
 import { RunPropertiesPanel } from './RunPropertiesPanel';
 import { AssayWizardModel } from './AssayWizardModel';
-
-beforeAll(() => {
-    initUnitTestMocks();
-});
 
 describe('RunPropertiesPanel', () => {
     test('model without run domain fields', () => {

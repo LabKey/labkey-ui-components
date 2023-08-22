@@ -1,7 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { Map } from 'immutable';
-import { LabKey, Query } from '@labkey/api';
+import { Query } from '@labkey/api';
 
 import { AppContext, AppContextProvider } from '../AppContext';
 import { getTestAPIWrapper } from '../APIWrapper';
@@ -15,9 +14,8 @@ import { LabelPrintingContextProps, LabelPrintingProvider } from '../components/
 import { GlobalStateContextProvider } from '../GlobalStateContext';
 import { URL_MAPPERS, URLService } from '../url/URLResolver';
 
-import { initQueryGridState } from '../global';
 import { QueryInfo } from '../../public/QueryInfo';
-import { applyQueryMetadata, handleSelectRowsResponse } from '../query/api';
+import { applyQueryMetadata, handleSelectRowsResponse, ISelectRowsResult } from '../query/api';
 import { bindColumnRenderers, RowsResponse } from '../../public/QueryModel/QueryModelLoader';
 
 export interface AppContextTestProviderProps {
@@ -46,36 +44,9 @@ export const AppContextTestProvider: FC<AppContextTestProviderProps> = props => 
     );
 };
 
-declare let LABKEY: LabKey;
-
-export function initMockServerContext(context: Partial<LabKey>): void {
-    Object.assign(LABKEY, context);
-}
-
-/**
- * Initializes the server context and QueryGrid state which is needed in order to run most tests.
- */
-export const initUnitTests = (metadata?: Map<string, any>, columnRenderers?: Record<string, any>): void => {
-    initMockServerContext({
-        container: {
-            id: 'testContainerEntityId',
-            title: 'Test Container',
-            path: '/testContainer',
-            formats: {
-                dateFormat: 'yyyy-MM-dd',
-                dateTimeFormat: 'yyyy-MM-dd HH:mm',
-                numberFormat: null,
-            },
-            activeModules: ['Core', 'Query'], // add in the Ontology module if you want to test the Field Editor integrations
-        },
-        contextPath: '/labkey',
-    });
-    initQueryGridState(metadata, columnRenderers);
-};
-
 /**
  * Instantiates a QueryInfo from a captured query details response payload. Cannot be used until you've called
- * initQueryGridState, initUnitTests, or initUnitTestMocks.
+ * initQueryGridState or initUnitTestMocks.
  * @param getQueryDetailsResponse: getQueryDetails response object (e.g. imported from
  * test/data/mixtures-getQueryDetails.json)
  */
@@ -84,17 +55,31 @@ export const makeQueryInfo = (getQueryDetailsResponse): QueryInfo => {
     return queryInfo.mutate({ columns: bindColumnRenderers(queryInfo.columns) });
 };
 
+export const parseQueryResponse = (getQueryResponse): Partial<ISelectRowsResult> => {
+    // Hack: need to stringify and parse the query response object because Query.Response modifies the object in place,
+    // which causes errors if you try to use the same response object twice.
+    const response = new Query.Response(JSON.parse(JSON.stringify(getQueryResponse)));
+    return handleSelectRowsResponse(response);
+};
+
+export const makeTestISelectRowsResult = (getQueryResponse, getQueryDetailsResponse): ISelectRowsResult => {
+    const partial = parseQueryResponse(getQueryResponse);
+
+    return {
+        ...partial,
+        queries: {
+            [partial.key]: makeQueryInfo(getQueryDetailsResponse),
+        },
+    } as ISelectRowsResult;
+};
+
 /**
  * Creates rows and orderedRows objects needed by the QueryModel. Returns a Promise that resolves to an object that
  * looks like: { messages: any, rows: any, orderedRows: string[], rowCount: number }
  * @param getQueryResponse: getQuery Response object (e.g. imported from test/data/mixtures-getQuery.json)
  */
 export const makeTestData = (getQueryResponse): RowsResponse => {
-    // Hack: need to stringify and parse the query response object because Query.Response modifies the object in place,
-    // which causes errors if you try to use the same response object twice.
-    const response = new Query.Response(JSON.parse(JSON.stringify(getQueryResponse)));
-
-    const { key, messages, models, orderedModels, rowCount } = handleSelectRowsResponse(response);
+    const { key, messages, models, orderedModels, rowCount } = parseQueryResponse(getQueryResponse);
 
     return {
         messages: messages.toJS(),

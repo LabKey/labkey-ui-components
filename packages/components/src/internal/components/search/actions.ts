@@ -1,4 +1,3 @@
-import { Map } from 'immutable';
 import { Ajax, Utils } from '@labkey/api';
 
 import { RELEVANT_SEARCH_RESULT_TYPES } from '../../constants';
@@ -15,10 +14,8 @@ import { getContainerFilter } from '../../query/api';
 import { ModuleContext } from '../base/ServerContext';
 
 import { getSearchScopeFromContainerFilter } from './utils';
-import { SearchIdData, SearchResultCardData } from './models';
+import { GetCardDataFn, SearchIdData, SearchResultCardData } from './models';
 import { SearchCategory, SearchField, SearchScope } from './constants';
-
-export type GetCardDataFn = (data: Map<any, any>, category?: string) => SearchResultCardData;
 
 export interface SearchHit {
     category?: SearchCategory;
@@ -173,7 +170,7 @@ function parseSearchHitToData(hit: SearchHit): SearchIdData {
 }
 
 // exported for jest testing
-export function resolveTypeName(data: any, category: string): string {
+export function resolveTypeName(data: any, category: SearchCategory): string {
     let typeName;
     if (data) {
         if (data.dataClass?.name) {
@@ -183,9 +180,9 @@ export function resolveTypeName(data: any, category: string): string {
         }
     }
     if (!typeName && category) {
-        if (category === 'notebook') {
+        if (category === SearchCategory.Notebook) {
             typeName = 'Notebook';
-        } else if (category === 'notebookTemplate') {
+        } else if (category === SearchCategory.NotebookTemplate) {
             typeName = 'Notebook Template';
         }
     }
@@ -193,7 +190,7 @@ export function resolveTypeName(data: any, category: string): string {
 }
 
 // exported for jest testing
-export function resolveIconSrc(data: any, category: string): string {
+export function resolveIconSrc(data: any, category: SearchCategory): string {
     let iconSrc: string;
     if (data) {
         if (data.dataClass?.name) {
@@ -215,40 +212,50 @@ export function resolveIconSrc(data: any, category: string): string {
         }
     }
     if (!iconSrc && category) {
-        if (category === 'material') {
-            iconSrc = 'samples';
-        }
-        if (category === 'workflowJob') {
-            iconSrc = 'workflow';
-        }
-        if (category === 'notebook' || category === 'notebookTemplate') {
-            iconSrc = 'notebook_blue';
+        switch (category) {
+            case SearchCategory.Material:
+                iconSrc = 'samples';
+                break;
+            case SearchCategory.Notebook:
+            case SearchCategory.NotebookTemplate:
+                iconSrc = 'notebook_blue';
+                break;
+            case SearchCategory.Plate:
+                iconSrc = 'plates';
+                break;
+            case SearchCategory.WorkflowJob:
+                iconSrc = 'workflow';
+                break;
+            default:
         }
     }
     return iconSrc;
 }
 
 // exported for jest testing
-export function resolveIconDir(category: string): string {
+export function resolveIconDir(category: SearchCategory): string {
     let iconDir;
-    if (category) {
-        if (category === 'notebook' || category === 'notebookTemplate') {
-            iconDir = 'labbook/images';
-        }
+    if (category === SearchCategory.Notebook || category === SearchCategory.NotebookTemplate) {
+        iconDir = 'labbook/images';
     }
     return iconDir;
 }
 
-export function getSearchResultCardData(data: any, category: string, title: string): SearchResultCardData {
+export function getSearchResultCardData(data: any, category: SearchCategory, title: string): SearchResultCardData {
     return {
-        title,
         iconDir: resolveIconDir(category),
         iconSrc: resolveIconSrc(data, category),
+        title,
         typeName: resolveTypeName(data, category),
     };
 }
 
-function getCardData(category: string, data: any, title: string, getCardDataFn?: GetCardDataFn): SearchResultCardData {
+function getCardData(
+    category: SearchCategory,
+    data: any,
+    title: string,
+    getCardDataFn?: GetCardDataFn
+): SearchResultCardData {
     const cardData = getSearchResultCardData(data, category, title);
     if (getCardDataFn) {
         return { ...cardData, ...getCardDataFn(data, category) };

@@ -22,6 +22,7 @@ import { AppProperties } from './models';
 import {
     ASSAYS_KEY,
     BIOLOGICS_APP_PROPERTIES,
+    EXPERIMENTAL_APP_PLATE_SUPPORT,
     EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS,
     EXPERIMENTAL_PRODUCT_PROJECT_DATA_LISTING_SCOPED,
     EXPERIMENTAL_REQUESTS_MENU,
@@ -37,6 +38,7 @@ import {
     NEW_SOURCE_TYPE_HREF,
     NEW_STANDARD_ASSAY_DESIGN_HREF,
     NOTEBOOKS_KEY,
+    PLATES_KEY,
     PICKLIST_KEY,
     ProductFeature,
     PROJECT_DATA_TYPE_EXCLUSIONS,
@@ -48,6 +50,7 @@ import {
     SOURCES_KEY,
     USER_KEY,
     WORKFLOW_KEY,
+    EXPERIMENTAL_APP_R_SUPPORT,
 } from './constants';
 
 declare var LABKEY: LabKey;
@@ -313,6 +316,20 @@ export function isAssayDesignExportEnabled(moduleContext?: ModuleContext): boole
     return hasPremiumModule(moduleContext);
 }
 
+export function isPlatesEnabled(moduleContext?: ModuleContext): boolean {
+    return (
+        biologicsIsPrimaryApp(moduleContext) &&
+        resolveModuleContext(moduleContext)?.biologics?.[EXPERIMENTAL_APP_PLATE_SUPPORT] === true
+    );
+}
+
+export function isRReportsEnabled(moduleContext?: ModuleContext): boolean {
+    return (
+        biologicsIsPrimaryApp(moduleContext) &&
+        resolveModuleContext(moduleContext)?.biologics?.[EXPERIMENTAL_APP_R_SUPPORT] === true
+    );
+}
+
 export function isELNEnabled(moduleContext?: ModuleContext): boolean {
     return hasModule('LabBook', moduleContext) && isFeatureEnabled(ProductFeature.ELN, moduleContext);
 }
@@ -417,10 +434,7 @@ export function addSourcesSectionConfig(
 }
 
 // exported for testing
-export function addSamplesSectionConfig(
-    user: User,
-    sectionConfigs: List<Map<string, MenuSectionConfig>>
-): List<Map<string, MenuSectionConfig>> {
+export function getSamplesSectionConfig(user: User): MenuSectionConfig {
     let samplesMenuConfig = new MenuSectionConfig({
         emptyText: 'No sample types have been defined',
         filteredEmptyText: 'No sample types available',
@@ -432,7 +446,7 @@ export function addSamplesSectionConfig(
             emptyURLText: 'Create a sample type',
         }) as MenuSectionConfig;
     }
-    return sectionConfigs.push(Map<string, MenuSectionConfig>().set(SAMPLES_KEY, samplesMenuConfig));
+    return samplesMenuConfig;
 }
 
 // exported for testing
@@ -453,6 +467,12 @@ export function addAssaysSectionConfig(
         }) as MenuSectionConfig;
     }
     return sectionConfigs.push(Map<string, MenuSectionConfig>().set(ASSAYS_KEY, assaysMenuConfig));
+}
+
+export function getPlatesSectionConfig(): MenuSectionConfig {
+    return new MenuSectionConfig({
+        iconURL: imageURL('_images', 'plates.svg'),
+    });
 }
 
 function getWorkflowSectionConfig(): MenuSectionConfig {
@@ -494,14 +514,13 @@ const REQUESTS_SECTION_CONFIG = new MenuSectionConfig({
     iconURL: imageURL('_images', 'default.svg'),
 });
 
-function getBioWorkflowNotebookMediaConfigs(user: User): Map<string, MenuSectionConfig> {
-    let configs = Map({
+function getBioWorkflowNotebookMediaConfigs(): Map<string, MenuSectionConfig> {
+    return Map({
         [WORKFLOW_KEY]: getWorkflowSectionConfig(),
+        [MEDIA_KEY]: getMediaSectionConfig(),
+        [PICKLIST_KEY]: getPicklistsSectionConfig(),
+        [NOTEBOOKS_KEY]: getNotebooksSectionConfig(),
     });
-    configs = configs.set(MEDIA_KEY, getMediaSectionConfig());
-    configs = configs.set(PICKLIST_KEY, getPicklistsSectionConfig());
-    configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig());
-    return configs;
 }
 
 // exported for testing
@@ -523,7 +542,12 @@ export function getMenuSectionConfigs(
         sectionConfigs = sectionConfigs.push(Map({ [REGISTRY_KEY]: getRegistrySectionConfig() }));
     }
     if (isBioOrSM) {
-        sectionConfigs = addSamplesSectionConfig(user, sectionConfigs);
+        let configs = Map<string, MenuSectionConfig>({ [SAMPLES_KEY]: getSamplesSectionConfig(user) });
+        if (isPlatesEnabled(moduleContext)) {
+            configs = configs.set(PLATES_KEY, getPlatesSectionConfig());
+        }
+        sectionConfigs = sectionConfigs.push(configs);
+
         if (isAssayEnabled(moduleContext)) {
             sectionConfigs = addAssaysSectionConfig(user, sectionConfigs, isSMPrimary);
         }
@@ -554,13 +578,13 @@ export function getMenuSectionConfigs(
             if (storageConfig) {
                 requestsCol = requestsCol.set(FREEZERS_KEY, storageConfig);
             }
-            sectionConfigs = sectionConfigs.push(requestsCol, getBioWorkflowNotebookMediaConfigs(user));
+            sectionConfigs = sectionConfigs.push(requestsCol, getBioWorkflowNotebookMediaConfigs());
         } else {
             if (storageConfig) {
                 sectionConfigs = sectionConfigs.push(Map({ [FREEZERS_KEY]: storageConfig }));
             }
 
-            sectionConfigs = sectionConfigs.push(getBioWorkflowNotebookMediaConfigs(user));
+            sectionConfigs = sectionConfigs.push(getBioWorkflowNotebookMediaConfigs());
         }
     } else {
         if (storageConfig) {
@@ -574,11 +598,12 @@ export function getMenuSectionConfigs(
 export const useMenuSectionConfigs = (
     user: User,
     appProperties: AppProperties,
-    moduleContext: any
+    moduleContext?: ModuleContext
 ): List<Map<string, MenuSectionConfig>> => {
-    return useMemo(() => {
-        return getMenuSectionConfigs(user, appProperties.productId, moduleContext);
-    }, [user, moduleContext, appProperties.productId]);
+    return useMemo(
+        () => getMenuSectionConfigs(user, appProperties.productId, moduleContext),
+        [user, moduleContext, appProperties.productId]
+    );
 };
 
 // Returns the friendly name of the product, primarily for use in help text.

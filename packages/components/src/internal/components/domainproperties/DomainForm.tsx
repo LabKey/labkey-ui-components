@@ -65,14 +65,12 @@ import {
     getDomainHeaderName,
     getDomainPanelClass,
     getDomainPanelHeaderId,
-    getMaxPhiLevel,
     handleDomainUpdates,
     handleSystemFieldUpdates,
     mergeDomainFields,
     processJsonImport,
     removeFields,
     setDomainFields,
-    updateDomainPanelClassList,
     updateOntologyFieldProperties,
 } from './actions';
 import { getIndexFromId, getNameFromId } from './utils';
@@ -105,9 +103,12 @@ import {
 } from './propertiesUtil';
 import { DomainPropertiesGrid } from './DomainPropertiesGrid';
 import { SystemFields } from './SystemFields';
-import { LoadingSpinner } from "../base/LoadingSpinner";
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { DomainPropertiesAPIWrapper } from './APIWrapper';
+import { getDefaultAPIWrapper } from '../../APIWrapper';
 
 interface IDomainFormInput {
+    api?: DomainPropertiesAPIWrapper;
     appDomainHeaderRenderer?: HeaderRenderer;
     appPropertiesOnly?: boolean; // Flag to indicate if LKS specific properties/features should be excluded, default to false
     collapsible?: boolean;
@@ -188,6 +189,7 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput> {
 export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomainFormState> {
     refsArray: DomainRow[];
     static defaultProps = {
+        api: getDefaultAPIWrapper().domain,
         helpNoun: 'field designer',
         helpTopic: FIELD_EDITOR_TOPIC,
         showHeader: true,
@@ -228,13 +230,13 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     componentDidMount = async (): Promise<void> => {
-        const { domain, maxPhiLevel, useTheme, onChange } = this.props;
+        const { domain, maxPhiLevel, useTheme, onChange, api } = this.props;
 
         this.setState(() => ({ isLoading: true }));
 
         if (!maxPhiLevel) {
             try {
-                const nextMaxPhiLevel = await getMaxPhiLevel(domain.container);
+                const nextMaxPhiLevel = await api.getMaxPhiLevel(domain.container);
                 this.setState({ maxPhiLevel: nextMaxPhiLevel });
             } catch (error) {
                 console.error('Unable to retrieve max PHI level.', error);
@@ -244,7 +246,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         // if the Ontology module is available, get the updated set of available data types
         if (hasModule(ONTOLOGY_MODULE_NAME)) {
             try {
-                const availableTypes = await getAvailableTypesForOntology(domain);
+                const availableTypes = await getAvailableTypesForOntology(api, domain);
                 this.setState({ availableTypes });
             } catch (error) {
                 console.error('Failed to retrieve available types for Ontology.', error);
@@ -255,15 +257,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             onChange(this.validateDomain(domain), false);
         }
 
-        // TODO since this is called in componentDidUpdate, can it be removed here?
-        updateDomainPanelClassList(useTheme, domain);
-
         this.setState(() => ({ isLoading: false }));
     };
-
-    componentDidUpdate(prevProps: Readonly<IDomainFormInput>): void {
-        updateDomainPanelClassList(prevProps.useTheme, this.props.domain);
-    }
 
     UNSAFE_componentWillReceiveProps(nextProps: Readonly<IDomainFormInput>): void {
         const { controlledCollapse, initCollapsed, validate, onChange } = this.props;

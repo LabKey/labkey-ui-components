@@ -8,7 +8,6 @@ import DomainForm from '../DomainForm';
 import { DomainDetails } from '../models';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../../test/enzymeTestHelpers';
-import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { FileAttachmentForm } from '../../../../public/files/FileAttachmentForm';
 
@@ -64,15 +63,11 @@ const BASE_PROPS = {
             initParentOptionsSelects: () =>
                 Promise.resolve({
                     parentOptions: PARENT_OPTIONS,
-                    parentAliases: new Map(),
+                    parentAliases: Map(),
                 }),
         }),
     }),
 };
-
-beforeAll(() => {
-    initUnitTestMocks();
-});
 
 describe('SampleTypeDesigner', () => {
     test('default properties', async () => {
@@ -169,9 +164,9 @@ describe('SampleTypeDesigner', () => {
         await waitForLifecycle(wrapped);
 
         const panelHeader = wrapped.find('div#domain-header');
-        expect(wrapped.find('#domain-header').at(2).hasClass('domain-panel-header-collapsed')).toBeTruthy();
+        expect(wrapped.find('#domain-header').at(1).hasClass('domain-panel-header-collapsed')).toBeTruthy();
         panelHeader.simulate('click');
-        expect(wrapped.find('#domain-header').at(2).hasClass('domain-panel-header-expanded')).toBeTruthy();
+        expect(wrapped.find('#domain-header').at(1).hasClass('domain-panel-header-expanded')).toBeTruthy();
         expect(wrapped.find(FileAttachmentForm)).toHaveLength(1);
 
         const alerts = wrapped.find(Alert);

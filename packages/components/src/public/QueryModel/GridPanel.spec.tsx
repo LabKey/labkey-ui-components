@@ -2,7 +2,7 @@ import React, { PureComponent, ReactNode } from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { Filter } from '@labkey/api';
 
-import { initUnitTests, makeQueryInfo, makeTestData } from '../../internal/test/testHelpers';
+import { makeQueryInfo, makeTestData } from '../../internal/test/testHelpers';
 import { mountWithServerContext } from '../../internal/test/enzymeTestHelpers';
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../../test/data/mixtures-getQueryPaging.json';
@@ -40,7 +40,6 @@ class TestButtons extends PureComponent<RequiresModelAndActions> {
 }
 
 beforeAll(() => {
-    initUnitTests();
     QUERY_INFO = makeQueryInfo(mixturesQueryInfo);
     DATA = makeTestData(mixturesQuery);
     LABKEY.user = TEST_USER_READER;

@@ -41,6 +41,7 @@ export const FREEZERS_KEY = 'freezers';
 export const BOXES_KEY = 'boxes';
 export const HOME_KEY = 'home';
 export const USER_KEY = 'user';
+export const PLATES_KEY = 'plates';
 export const PICKLIST_KEY = 'picklist';
 export const FIND_SAMPLES_BY_ID_KEY = 'samplesById';
 export const FIND_SAMPLES_BY_FILTER_KEY = 'samplesByFilter';
@@ -62,9 +63,18 @@ export enum EntityCreationMode {
 
 export const FIND_SAMPLES_BY_ID_HREF = AppURL.create(SEARCH_KEY, FIND_SAMPLES_BY_ID_KEY);
 export const FIND_SAMPLES_BY_FILTER_HREF = AppURL.create(SEARCH_KEY, FIND_SAMPLES_BY_FILTER_KEY);
-export const FILE_IMPORT_SAMPLES_HREF = AppURL.create(SAMPLES_KEY, 'new').addParam('mode', EntityCreationMode.FILE_IMPORT);
-export const GRID_INSERT_SAMPLES_HREF = AppURL.create(SAMPLES_KEY, 'new').addParam('mode', EntityCreationMode.GRID_INSERT);
-export const FILE_UPDATE_SAMPLES_HREF = AppURL.create(SAMPLES_KEY, 'new').addParam('mode', EntityCreationMode.FILE_UPDATE);
+export const FILE_IMPORT_SAMPLES_HREF = AppURL.create(SAMPLES_KEY, 'new').addParam(
+    'mode',
+    EntityCreationMode.FILE_IMPORT
+);
+export const GRID_INSERT_SAMPLES_HREF = AppURL.create(SAMPLES_KEY, 'new').addParam(
+    'mode',
+    EntityCreationMode.GRID_INSERT
+);
+export const FILE_UPDATE_SAMPLES_HREF = AppURL.create(SAMPLES_KEY, 'new').addParam(
+    'mode',
+    EntityCreationMode.FILE_UPDATE
+);
 export const NEW_SOURCE_TYPE_HREF = AppURL.create(SOURCE_TYPE_KEY, 'new');
 export const NEW_SAMPLE_TYPE_HREF = AppURL.create(SAMPLE_TYPE_KEY, 'new');
 export const NEW_STANDARD_ASSAY_DESIGN_HREF = AppURL.create(ASSAY_DESIGN_KEY, GENERAL_ASSAY_PROVIDER_NAME);
@@ -99,6 +109,10 @@ export const SERVER_NOTIFICATIONS_INVALIDATE = '/app/SERVER_NOTIFICATIONS_INVALI
 export const NOTIFICATION_TIMEOUT = 500;
 
 export const SERVER_NOTIFICATION_MAX_ROWS = 8;
+
+export const EXPERIMENTAL_APP_PLATE_SUPPORT = 'experimental-app-plate-support';
+
+export const EXPERIMENTAL_APP_R_SUPPORT = 'experimental-app-r-support';
 
 export const EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS = 'queryProductAllFolderLookups';
 export const EXPERIMENTAL_PRODUCT_PROJECT_DATA_LISTING_SCOPED = 'queryProductProjectDataListingScoped';

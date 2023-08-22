@@ -86,6 +86,7 @@ import {
     updateSampleField,
 } from './models';
 import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId } from './utils';
+import { DomainPropertiesAPIWrapper } from './APIWrapper';
 
 let sharedCache = Map<string, Promise<any>>();
 
@@ -283,8 +284,11 @@ export function getAvailableTypes(domain: DomainDesign, ontologies = []): List<P
     return PROP_DESC_TYPES.filter(type => _isAvailablePropType(type, domain, ontologies)).toList();
 }
 
-export async function getAvailableTypesForOntology(domain: DomainDesign): Promise<List<PropDescType>> {
-    const ontologies = await fetchOntologies(domain.container);
+export async function getAvailableTypesForOntology(
+    api: DomainPropertiesAPIWrapper,
+    domain: DomainDesign
+): Promise<List<PropDescType>> {
+    const ontologies = await api.fetchOntologies(domain.container);
     return getAvailableTypes(domain, ontologies);
 }
 
@@ -983,16 +987,6 @@ export function getDomainAlertClasses(collapsed: boolean, controlledCollapse: bo
         'domain-bottom-alert-expanded': !collapsed && controlledCollapse && !useTheme,
         'domain-bottom-alert-top': !collapsed,
     });
-}
-
-// This is kind of a hacky way to remove a class from core css so we can set the color of the panel hdr to match the theme
-export function updateDomainPanelClassList(useTheme: boolean, domain: DomainDesign, id?: string) {
-    if (useTheme) {
-        const el = document.getElementById(getDomainPanelHeaderId(domain, id));
-        if (el) {
-            el.classList.remove('panel-heading');
-        }
-    }
 }
 
 export function getDomainPanelHeaderId(domain: DomainDesign, id?: string): string {

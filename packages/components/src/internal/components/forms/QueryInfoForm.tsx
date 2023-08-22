@@ -26,7 +26,6 @@ import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 import { SampleCreationTypeModel } from '../samples/models';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { formatDateTime } from '../../util/Date';
-import { Tip } from '../base/Tip';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { QueryInfoQuantity } from './QueryInfoQuantity';

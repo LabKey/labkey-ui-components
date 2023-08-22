@@ -70,7 +70,7 @@ describe('getUncheckedEntityWarning', () => {
 
         warning = getUncheckedEntityWarning([1, 2], [], { '1': 1, '2': 2 }, DataClassDataType, 2);
         expect(JSON.stringify(warning)).toContain(
-            '2," ","data"," will no longer be visible in this project. They won\'t be deleted and lineage relationships won\'t change.'
+            '2," ","sources"," will no longer be visible in this project. They won\'t be deleted and lineage relationships won\'t change.'
         );
 
         warning = getUncheckedEntityWarning([1, 2], [], { '1': 1, '2': 2 }, null, 2);

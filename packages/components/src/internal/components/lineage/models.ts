@@ -252,6 +252,7 @@ export class LineageNode
         absolutePath: undefined,
         children: undefined,
         container: undefined,
+        containerPath: undefined,
         cpasType: undefined,
         created: undefined,
         createdBy: undefined,
@@ -291,6 +292,7 @@ export class LineageNode
     declare absolutePath: string;
     declare children: List<LineageLink>;
     declare container: string;
+    declare containerPath: string;
     declare cpasType: string;
     declare created: string;
     declare createdBy: string;

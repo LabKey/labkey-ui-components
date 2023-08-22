@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<PipelineStatusDetailPage> Completed job, no warn, no error 1`] = `
-"<PipelineStatusDetailPage rowId={1} interval={2000}>
+"<PipelineStatusDetailPage fetchPipelineStatusDetail={[Function: fetch]} rowId={1} interval={2000}>
   <Page title="Status Detail" hasHeader={true} notFound={false}>
     <div className="app-page">
       <PageHeader title="assays - Workflow_Assay01">
@@ -177,7 +177,7 @@ exports[`<PipelineStatusDetailPage> Completed job, no warn, no error 1`] = `
 `;
 
 exports[`<PipelineStatusDetailPage> Failed job, with error 1`] = `
-"<PipelineStatusDetailPage rowId={2} interval={2000}>
+"<PipelineStatusDetailPage fetchPipelineStatusDetail={[Function: fetch]} rowId={2} interval={2000}>
   <Page title="Status Detail" hasHeader={true} notFound={false}>
     <div className="app-page">
       <PageHeader title="SampleType_01 - SampleType_01_00.xlsx">
@@ -308,7 +308,7 @@ exports[`<PipelineStatusDetailPage> Failed job, with error 1`] = `
 `;
 
 exports[`<PipelineStatusDetailPage> Running job, with warning 1`] = `
-"<PipelineStatusDetailPage rowId={3} interval={2000}>
+"<PipelineStatusDetailPage fetchPipelineStatusDetail={[Function: fetch]} rowId={3} interval={2000}>
   <Page title="Status Detail" hasHeader={true} notFound={false}>
     <div className="app-page">
       <PageHeader title="exp.data - sourceType1 - data_2021-01-10_06-02-08-2.xlsx">

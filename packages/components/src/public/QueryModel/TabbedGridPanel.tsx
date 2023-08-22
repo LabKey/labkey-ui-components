@@ -22,8 +22,6 @@ import { exportTabsXlsx } from '../../internal/actions';
 
 import { useNotificationsContext } from '../../internal/components/notifications/NotificationsContext';
 
-import { LoadingState } from '../LoadingState';
-
 import { GridPanel, GridPanelProps } from './GridPanel';
 import { InjectedQueryModels } from './withQueryModels';
 import { QueryModel } from './QueryModel';
@@ -43,7 +41,6 @@ const GridTab: FC<GridTabProps> = memo(({ isActive, model, onSelect, pullRight, 
     const className = classNames({
         active: isActive,
         'pull-right': pullRight,
-        'no-data': showRowCount && !rowCount,
     });
     const onClick = useCallback(() => onSelect(id), [id, onSelect]);
 
@@ -56,7 +53,7 @@ const GridTab: FC<GridTabProps> = memo(({ isActive, model, onSelect, pullRight, 
         <li className={className}>
             <a onClick={onClick}>
                 {title || queryInfo?.queryLabel || queryInfo?.name}
-                {showRowCount && rowCountDisplay !== undefined && <> ({rowCountDisplay})</>}
+                {showRowCount && rowCountDisplay !== undefined && <span> ({rowCountDisplay})</span>}
             </a>
         </li>
     );
@@ -222,8 +219,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
 
         try {
             await exportTabs([internalActiveId]);
-        }
-        catch (e) {
+        } catch (e) {
             console.error(e);
         }
     }, [tabOrder, exportTabs, internalActiveId]);

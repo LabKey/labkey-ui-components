@@ -179,6 +179,7 @@ export interface SelectInputProps extends WithFormsyProps {
     id?: any;
     initiallyDisabled?: boolean;
     inputClass?: string;
+    inputId?: string;
     isLoading?: boolean;
     isValidNewOption?: (inputValue: string) => boolean;
     // FIXME: this is named incorrectly. I would expect that if this is true it would join the values, nope, it joins
@@ -515,6 +516,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             disabled,
             filterOption,
             formatCreateLabel,
+            inputId,
             isLoading,
             isValidNewOption,
             labelKey,
@@ -575,6 +577,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             getOptionLabel: labelKey && labelKey !== 'label' ? this.getOptionLabel : undefined,
             getOptionValue: valueKey && valueKey !== 'value' ? this.getOptionValue : undefined,
             id: this.getId(),
+            inputId,
             isClearable: clearable,
             isDisabled: disabled || this.state.isDisabled,
             isLoading,

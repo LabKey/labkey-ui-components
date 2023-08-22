@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import { createMemoryHistory, InjectedRouter, Route, Router } from 'react-router';
 import { Filter } from '@labkey/api';
 
-import { initUnitTests, makeQueryInfo, makeTestData, sleep } from '../../internal/test/testHelpers';
+import { makeQueryInfo, makeTestData, sleep } from '../../internal/test/testHelpers';
 import { MockQueryModelLoader } from '../../test/MockQueryModelLoader';
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../../test/data/mixtures-getQueryPaging.json';
@@ -38,7 +38,6 @@ let AMINO_ACIDS_QUERY_INFO: QueryInfo;
 let AMINO_ACIDS_DATA: RowsResponse;
 
 beforeAll(() => {
-    initUnitTests();
     MIXTURES_QUERY_INFO = makeQueryInfo(mixturesQueryInfo);
     AMINO_ACIDS_QUERY_INFO = makeQueryInfo(aminoAcidsQueryInfo);
     AMINO_ACIDS_DATA = makeTestData(aminoAcidsQuery);

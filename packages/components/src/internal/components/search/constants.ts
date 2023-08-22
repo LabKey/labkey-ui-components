@@ -13,6 +13,7 @@ export enum SearchCategory {
     MediaData = 'mediaData',
     Notebook = 'notebook',
     NotebookTemplate = 'notebookTemplate',
+    Plate = 'plate',
     WorkflowJob = 'workflowJob',
 }
 

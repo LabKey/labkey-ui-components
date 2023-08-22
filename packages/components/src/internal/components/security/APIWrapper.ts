@@ -1,14 +1,21 @@
-import { Map } from 'immutable';
+import {List, Map} from 'immutable';
 import { Ajax, Filter, Query, Security, Utils } from '@labkey/api';
 
 import { Container } from '../base/models/Container';
-import { fetchContainerSecurityPolicy, UserLimitSettings, getUserLimitSettings } from '../permissions/actions';
-import { Principal, SecurityPolicy } from '../permissions/models';
-import { Row } from '../../query/selectRows';
+import {
+    fetchContainerSecurityPolicy,
+    UserLimitSettings,
+    getUserLimitSettings,
+    processGetRolesResponse,
+} from '../permissions/actions';
+import { Principal, SecurityPolicy, SecurityRole } from '../permissions/models';
+import {Row, selectRows} from '../../query/selectRows';
 import { SCHEMAS } from '../../schemas';
 import { buildURL } from '../../url/AppURL';
 import { naturalSortByProperty } from '../../../public/sort';
-import { handleRequestFailure } from '../../util/utils';
+import {caseInsensitive, handleRequestFailure} from '../../util/utils';
+import { getUserProperties } from '../user/actions';
+import { flattenValuesFromRow } from '../../../public/QueryModel/QueryModel';
 
 export type FetchContainerOptions = Omit<Security.GetContainersOptions, 'success' | 'failure' | 'scope'>;
 
@@ -47,11 +54,14 @@ export interface SecurityAPIWrapper {
         principalsById?: Map<number, Principal>,
         inactiveUsersById?: Map<number, Principal>
     ) => Promise<SecurityPolicy>;
+    fetchRoles: () => Promise<List<SecurityRole>>;
     getAuditLogData: (columns: string, filterCol: string, filterVal: string | number) => Promise<string>;
     getDeletionSummaries: () => Promise<Summary[]>;
     getGroupMemberships: () => Promise<Row[]>;
     getUserLimitSettings: () => Promise<UserLimitSettings>;
     getUserPermissions: (options: Security.GetUserPermissionsOptions) => Promise<string[]>;
+    getUserProperties: (userId: number) => Promise<any>;
+    getUserPropertiesForOther: (userId: number) => Promise<{ [key: string]: any }>;
     removeGroupMembers: (
         groupId: number,
         principalIds: number[],
@@ -170,6 +180,21 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
 
     fetchPolicy = fetchContainerSecurityPolicy;
 
+    fetchRoles = (): Promise<List<SecurityRole>> => {
+        return new Promise((resolve, reject) => {
+            Security.getRoles({
+                success: rawRoles => {
+                    const roles = processGetRolesResponse(rawRoles);
+                    resolve(roles);
+                },
+                failure: e => {
+                    console.error('Failed to load security roles', e);
+                    reject(e);
+                },
+            });
+        });
+    };
+
     getAuditLogData = (columns: string, filterCol: string, filterVal: string | number): Promise<string> => {
         return new Promise((resolve, reject) => {
             Query.selectRows({
@@ -242,6 +267,34 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         });
     };
 
+    getUserProperties = getUserProperties;
+
+    getUserPropertiesForOther = (userId: number): Promise<{ [key: string]: any }> => {
+        return new Promise((resolve, reject) => {
+            selectRows({
+                filterArray: [Filter.create('UserId', userId)],
+                schemaQuery: SCHEMAS.CORE_TABLES.USERS,
+            })
+                .then(response => {
+                    if (response.rows.length > 0) {
+                        const row = response.rows[0];
+                        const rowValues = flattenValuesFromRow(row, Object.keys(row));
+
+                        // special case for the Groups prop as it is an array
+                        rowValues.Groups = caseInsensitive(row, 'Groups');
+
+                        resolve(rowValues);
+                    } else {
+                        resolve({});
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    reject(error);
+                });
+        });
+    };
+
     removeGroupMembers = (
         groupId: number,
         principalIds: number[],
@@ -286,11 +339,14 @@ export function getSecurityTestAPIWrapper(
         fetchContainers: mockFn(),
         fetchGroups: mockFn(),
         fetchPolicy: mockFn(),
+        fetchRoles: mockFn(),
         getAuditLogData: mockFn(),
         getDeletionSummaries: mockFn(),
         getGroupMemberships: mockFn(),
         getUserLimitSettings: mockFn(),
         getUserPermissions: mockFn(),
+        getUserProperties: mockFn(),
+        getUserPropertiesForOther: mockFn(),
         removeGroupMembers: mockFn(),
         ...overrides,
     };

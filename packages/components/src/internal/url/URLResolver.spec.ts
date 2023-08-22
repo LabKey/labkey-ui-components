@@ -6,13 +6,16 @@ import { LineageResult } from '../components/lineage/models';
 
 import { registerDefaultURLMappers } from '../test/testHelpers';
 
-import { initUnitTestMocks } from '../../test/testHelperMocks';
-
 import { LookupMapper, URLResolver } from './URLResolver';
 import { AppURL } from './AppURL';
 
 beforeAll(() => {
-    initUnitTestMocks();
+    LABKEY.container = {
+        id: 'testContainerEntityId',
+        title: 'Test Container',
+        path: '/testContainer',
+    };
+
     registerDefaultURLMappers();
 });
 

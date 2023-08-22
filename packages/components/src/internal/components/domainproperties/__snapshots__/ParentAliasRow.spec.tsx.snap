@@ -44,7 +44,7 @@ exports[`<ParentAliasRow/> With parent value not an option in select 1`] = `
       className="select-input-container form-group row"
     >
       <div
-        className="sampleset-insert--parent-select"
+        className="import-alias--parent-select"
       >
         <div
           className="select-input css-b62m3t-container"
@@ -235,7 +235,7 @@ exports[`<ParentAliasRow/> With values 1`] = `
       className="select-input-container form-group row"
     >
       <div
-        className="sampleset-insert--parent-select"
+        className="import-alias--parent-select"
       >
         <div
           className="select-input css-b62m3t-container"

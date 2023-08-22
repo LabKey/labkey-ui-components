@@ -29,7 +29,7 @@ import { Section } from '../base/Section';
 import { Tip } from '../base/Tip';
 import { RequiresPermission } from '../base/Permissions';
 
-import { ChartConfig, ChartData, ChartSelector } from './types';
+import { BarChartConfig, BarChartData, BarChartSelector } from './models';
 import { BaseBarChart } from './BaseBarChart';
 import { processChartData } from './utils';
 import { useServerContext } from '../base/ServerContext';
@@ -51,7 +51,7 @@ async function fetchItemCount(schemaQuery: SchemaQuery, filterArray: Filter.IFil
 }
 
 interface Props {
-    chartConfigs: ChartConfig[];
+    chartConfigs: BarChartConfig[];
     containerFilter?: Query.ContainerFilter;
     dataTypeExclusions?: { [key: string]: number[] };
     navigate: (url: string | AppURL) => any;
@@ -120,15 +120,15 @@ export class BarChartViewer extends PureComponent<Props, State> {
         }
     };
 
-    getSelectedChartGroup = (): ChartConfig => {
+    getSelectedChartGroup = (): BarChartConfig => {
         return this.props.chartConfigs[this.state.currentGroup];
     };
 
-    getSelectedChartGroupCharts = (): ChartSelector[] => {
+    getSelectedChartGroupCharts = (): BarChartSelector[] => {
         return this.getSelectedChartGroup().charts;
     };
 
-    onBarClick = (evt: any, row: ChartData): void => {
+    onBarClick = (evt: any, row: BarChartData): void => {
         const { getAppURL, filterDataRegionName = 'query' } = this.getSelectedChartGroup();
 
         if (getAppURL) {

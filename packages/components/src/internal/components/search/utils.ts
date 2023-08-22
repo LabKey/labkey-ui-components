@@ -18,7 +18,7 @@ import { isOntologyEnabled } from '../../app/utils';
 
 import { REGISTRY_KEY } from '../../app/constants';
 
-import { SearchScope } from './constants';
+import { SearchCategory, SearchScope } from './constants';
 import { FieldFilter, FieldFilterOption, FilterSelection, SearchResultCardData } from './models';
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
@@ -77,18 +77,9 @@ export function isFilterUrlSuffixMatch(suffix: string, filterType: Filter.IFilte
     return suffix === filterType.getURLSuffix();
 }
 
-export function getFilterTypePlaceHolder(suffix: string, jsonType: string): string {
-    if (suffix === 'in' || suffix === 'notin') {
-        switch (jsonType) {
-            case 'float':
-                return 'Example: 1.0;2.2;3';
-            case 'int':
-                return 'Example: 1;2;3';
-            case 'string':
-                return 'Example: a;b;c';
-        }
-    } else if (suffix === 'containsoneof' || suffix === 'containsnoneof') {
-        return 'Example: a;b;c';
+export function getFilterTypePlaceHolder(suffix: string): string {
+    if (suffix === 'in' || suffix === 'notin' || suffix === 'containsoneof' || suffix === 'containsnoneof') {
+        return 'Use new line or semicolon to separate entries';
     }
 
     return null;
@@ -514,7 +505,11 @@ export function getSearchScopeFromContainerFilter(cf: Query.ContainerFilter): Se
     }
 }
 
-export function getSearchResultCardData(data, category, queryMetadata?: any): SearchResultCardData {
+export function getSearchResultCardData(
+    data: any,
+    category?: SearchCategory,
+    queryMetadata?: any
+): SearchResultCardData {
     if (data) {
         const dataName = data.name;
         if (data.dataClass?.name) {
@@ -571,21 +566,24 @@ export function getSearchResultCardData(data, category, queryMetadata?: any): Se
                 category: 'Sample Type',
                 title: dataName,
             };
-        } else if (category === 'material') {
+        } else if (category === SearchCategory.Material) {
             return {
                 category: 'Sample',
                 title: dataName,
             };
         }
-    } else {
-        if (category === 'workflowJob') {
-            return { category: 'Job' };
-        } else if (category === 'assay') {
-            return { category: 'Assay' };
-        }
     }
 
-    return {};
+    switch (category) {
+        case SearchCategory.Assay:
+            return { category: 'Assay' };
+        case SearchCategory.Plate:
+            return { iconSrc: 'plates' };
+        case SearchCategory.WorkflowJob:
+            return { category: 'Job' };
+        default:
+            return {};
+    }
 }
 
 export const decodeErrorMessage = (msg: string): string => {

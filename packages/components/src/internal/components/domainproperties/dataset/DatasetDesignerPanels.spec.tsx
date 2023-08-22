@@ -21,9 +21,8 @@ import { List } from 'immutable';
 
 import getDatasetDesign from '../../../../test/data/dataset-getDatasetDesign.json';
 import { NEW_DATASET_MODEL_WITHOUT_DATASPACE } from '../../../../test/data/constants';
+import { getDomainPropertiesTestAPIWrapper } from '../APIWrapper';
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
-
-import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { Alert } from '../../base/Alert';
 
@@ -33,10 +32,6 @@ import { DatasetDesignerPanelImpl, DatasetDesignerPanels } from './DatasetDesign
 
 import { DatasetModel } from './models';
 
-beforeAll(() => {
-    initUnitTestMocks();
-});
-
 describe('Dataset Designer', () => {
     const newDatasetModel = DatasetModel.create(NEW_DATASET_MODEL_WITHOUT_DATASPACE, undefined);
     const populatedDatasetModel = DatasetModel.create(null, getDatasetDesign);
@@ -44,8 +39,8 @@ describe('Dataset Designer', () => {
     test('New dataset', async () => {
         const designerPanels = shallow(
             <DatasetDesignerPanelImpl
+                api={getDomainPropertiesTestAPIWrapper(jest.fn)}
                 initModel={newDatasetModel}
-                useTheme={true}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
                 testMode={true}
@@ -69,19 +64,11 @@ describe('Dataset Designer', () => {
     test('Edit existing dataset', async () => {
         const designerPanels = shallow(
             <DatasetDesignerPanels
+                api={getDomainPropertiesTestAPIWrapper(jest.fn)}
                 initModel={populatedDatasetModel}
-                useTheme={true}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
                 testMode={true}
-                currentPanelIndex={0}
-                firstState={true}
-                onFinish={jest.fn()}
-                onTogglePanel={jest.fn()}
-                setSubmitting={jest.fn()}
-                submitting={false}
-                validatePanel={0}
-                visitedPanels={List()}
             />
         );
 
@@ -94,8 +81,8 @@ describe('Dataset Designer', () => {
     test('for alert/message', async () => {
         const wrapped = mount(
             <DatasetDesignerPanels
+                api={getDomainPropertiesTestAPIWrapper(jest.fn)}
                 initModel={newDatasetModel}
-                useTheme={true}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
                 testMode={true}
@@ -105,14 +92,14 @@ describe('Dataset Designer', () => {
         await waitForLifecycle(wrapped);
 
         const datasetHeader = wrapped.find('div#dataset-header-id');
-        expect(wrapped.find('#dataset-header-id').at(2).hasClass('domain-panel-header-expanded')).toBeTruthy();
+        expect(wrapped.find('#dataset-header-id').at(1).hasClass('domain-panel-header-expanded')).toBeTruthy();
         datasetHeader.simulate('click');
-        expect(wrapped.find('#dataset-header-id').at(2).hasClass('domain-panel-header-collapsed')).toBeTruthy();
+        expect(wrapped.find('#dataset-header-id').at(1).hasClass('domain-panel-header-collapsed')).toBeTruthy();
 
         const panelHeader = wrapped.find('div#domain-header');
-        expect(wrapped.find('#domain-header').at(2).hasClass('domain-panel-header-collapsed')).toBeTruthy();
+        expect(wrapped.find('#domain-header').at(1).hasClass('domain-panel-header-collapsed')).toBeTruthy();
         panelHeader.simulate('click');
-        expect(wrapped.find('#domain-header').at(2).hasClass('domain-panel-header-expanded')).toBeTruthy();
+        expect(wrapped.find('#domain-header').at(1).hasClass('domain-panel-header-expanded')).toBeTruthy();
 
         expect(wrapped.find(Alert)).toHaveLength(2);
         expect(wrapped.find(Alert).at(0).text()).toEqual(PROPERTIES_PANEL_ERROR_MSG);

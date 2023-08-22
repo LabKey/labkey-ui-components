@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.X
+*Released*: X August 2023
+- Support sampleCounter naming pattern
+    - TODO
+
 ### version 2.360.1
 *Released*: 21 August 2023
 - Remove updateDomainPanelClassList

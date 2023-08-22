@@ -52,12 +52,6 @@ export interface SamplesAPIWrapper {
 
     getSampleCounter: (seqType: 'rootSampleCount' | 'sampleCount', containerPath?: string) => Promise<number>;
 
-    hasExistingSamples: (
-        isRoot?: boolean,
-        containerPath?: string
-    ) =>  Promise<boolean>;
-
-
     getSampleOperationConfirmationData: (
         operation: SampleOperation,
         rowIds: number[] | string[],
@@ -85,6 +79,8 @@ export interface SamplesAPIWrapper {
     ) => Promise<ISelectRowsResult>;
 
     getTimelineEvents: (sampleId: number, timezone?: string) => Promise<TimelineEventModel[]>;
+
+    hasExistingSamples: (isRoot?: boolean, containerPath?: string) => Promise<boolean>;
 
     saveSampleCounter: (
         newCount: number,

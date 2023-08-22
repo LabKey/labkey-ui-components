@@ -7,7 +7,7 @@ import DomainForm from '../DomainForm';
 
 import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, DERIVATION_DATA_SCOPES } from '../constants';
 import { addDomainField, getDomainPanelStatus, saveDomain } from '../actions';
-import {DEFAULT_SAMPLE_FIELD_CONFIG, SAMPLE_TYPE_NAME_EXPRESSION_TOPIC} from '../../samples/constants';
+import { DEFAULT_SAMPLE_FIELD_CONFIG, SAMPLE_TYPE_NAME_EXPRESSION_TOPIC } from '../../samples/constants';
 import { SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 

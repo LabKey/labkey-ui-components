@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.360.2
+*Released*: 22 August 2023
+- Added a `parseTimeFormat` method to determine the time format portion of a date format.
+- Supply `timeFormat` parsed from the `dateFormat` for usages of `DatePicker`.
+
 ### version 2.360.1
 *Released*: 21 August 2023
 - Remove updateDomainPanelClassList

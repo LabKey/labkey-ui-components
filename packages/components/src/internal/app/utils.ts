@@ -50,6 +50,7 @@ import {
     SOURCES_KEY,
     USER_KEY,
     WORKFLOW_KEY,
+    EXPERIMENTAL_APP_R_SUPPORT,
 } from './constants';
 
 declare var LABKEY: LabKey;
@@ -319,6 +320,13 @@ export function isPlatesEnabled(moduleContext?: ModuleContext): boolean {
     return (
         biologicsIsPrimaryApp(moduleContext) &&
         resolveModuleContext(moduleContext)?.biologics?.[EXPERIMENTAL_APP_PLATE_SUPPORT] === true
+    );
+}
+
+export function isRReportsEnabled(moduleContext?: ModuleContext): boolean {
+    return (
+        biologicsIsPrimaryApp(moduleContext) &&
+        resolveModuleContext(moduleContext)?.biologics?.[EXPERIMENTAL_APP_R_SUPPORT] === true
     );
 }
 

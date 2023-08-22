@@ -604,7 +604,7 @@ export async function getSelection(
     return { resolved: false, selected: [] };
 }
 
-export function fetchCharts(schemaQuery: SchemaQuery, containerPath?: string): Promise<List<DataViewInfo>> {
+export function fetchCharts(schemaQuery: SchemaQuery, containerPath?: string): Promise<DataViewInfo[]> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL(
@@ -620,11 +620,7 @@ export function fetchCharts(schemaQuery: SchemaQuery, containerPath?: string): P
             ),
             success: Utils.getCallbackWrapper((response: any) => {
                 if (response && response.success) {
-                    const result = response.reports.reduce(
-                        (list, rawDataViewInfo) => list.push(new DataViewInfo(rawDataViewInfo)),
-                        List<DataViewInfo>()
-                    );
-                    resolve(result);
+                    resolve(response.reports.map(report => new DataViewInfo(report)));
                 } else {
                     reject({
                         error:

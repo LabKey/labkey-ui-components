@@ -2,6 +2,19 @@
 
 exports[`Dataset Designer Edit existing dataset 1`] = `
 <DatasetDesignerPanelImpl
+  api={
+    {
+      "fetchDomainDetails": [MockFunction],
+      "fetchOntologies": [MockFunction],
+      "getDataClassDetails": [MockFunction],
+      "getDomainNamePreviews": [MockFunction],
+      "getGenId": [MockFunction],
+      "getMaxPhiLevel": [Function],
+      "hasExistingDomainData": [MockFunction],
+      "setGenId": [MockFunction],
+      "validateDomainNameExpressions": [MockFunction],
+    }
+  }
   currentPanelIndex={0}
   firstState={true}
   initModel={
@@ -1425,6 +1438,19 @@ exports[`Dataset Designer New dataset 1`] = `
     validate={true}
   />
   <DomainForm
+    api={
+      {
+        "fetchDomainDetails": [MockFunction],
+        "fetchOntologies": [MockFunction],
+        "getDataClassDetails": [MockFunction],
+        "getDomainNamePreviews": [MockFunction],
+        "getGenId": [MockFunction],
+        "getMaxPhiLevel": [Function],
+        "hasExistingDomainData": [MockFunction],
+        "setGenId": [MockFunction],
+        "validateDomainNameExpressions": [MockFunction],
+      }
+    }
     controlledCollapse={true}
     domain={
       Immutable.Record {

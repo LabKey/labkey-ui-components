@@ -1,7 +1,6 @@
 import React from 'react';
 import { List, Map } from 'immutable';
 import { Panel } from 'react-bootstrap';
-import { getTestAPIWrapper } from '../../../APIWrapper';
 import { getDomainPropertiesTestAPIWrapper } from '../APIWrapper';
 
 import { DomainDesign } from '../models';
@@ -317,6 +316,8 @@ describe('AssayDesignerPanels', () => {
         );
     });
 
+    // FIXME: This test case triggers issues with React Beautiful DND, I think there is a way to put that library in
+    //  test mode. We maybe accidentally disabled that in the test stabilization PR.
     test('Show app headers', async () => {
         const _appHeaderId = 'mock-app-header';
         const _appHeaderText = 'This is a mock app header';
@@ -341,7 +342,7 @@ describe('AssayDesignerPanels', () => {
 
         // Open Sample Fields panel body
         wrapper
-            .find(Panel.Heading)
+            .find('.panel-heading')
             .filterWhere(n => n.text().indexOf('Sample Fields') === 0)
             .simulate('click');
         expect(wrapper.find('#' + _appHeaderId)).toHaveLength(1);

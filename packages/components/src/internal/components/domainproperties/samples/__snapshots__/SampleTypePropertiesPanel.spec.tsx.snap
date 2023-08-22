@@ -5,7 +5,7 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
   className="domain-form-panel domain-panel-no-theme panel panel-default"
 >
   <div
-    className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
+    className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
     id="sample-type-properties-hdr"
     onClick={[Function]}
   >
@@ -247,7 +247,7 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
   className="domain-form-panel domain-panel-no-theme panel panel-default"
 >
   <div
-    className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
+    className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
     id="sample-type-properties-hdr"
     onClick={[Function]}
   >
@@ -434,7 +434,7 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
   className="domain-form-panel domain-panel-no-theme panel panel-default"
 >
   <div
-    className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
+    className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
     id="sample-type-properties-hdr"
     onClick={[Function]}
   >
@@ -658,7 +658,7 @@ exports[`SampleTypePropertiesPanel includeMetricUnitProperty 1`] = `
   className="domain-form-panel domain-panel-no-theme panel panel-default"
 >
   <div
-    className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
+    className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
     id="sample-type-properties-hdr"
     onClick={[Function]}
   >
@@ -935,7 +935,7 @@ exports[`SampleTypePropertiesPanel metricUnitOptions 1`] = `
   className="domain-form-panel domain-panel-no-theme panel panel-default"
 >
   <div
-    className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
+    className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
     id="sample-type-properties-hdr"
     onClick={[Function]}
   >
@@ -1318,7 +1318,7 @@ exports[`SampleTypePropertiesPanel nameExpressionInfoUrl 1`] = `
   className="domain-form-panel domain-panel-no-theme panel panel-default"
 >
   <div
-    className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
+    className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
     id="sample-type-properties-hdr"
     onClick={[Function]}
   >
@@ -1789,25 +1789,17 @@ exports[`SampleTypePropertiesPanel with aliquot preview name 1`] = `
                 togglePanel={[Function]}
                 useTheme={false}
               >
-                <PanelHeading
-                  bsClass="panel"
-                  className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme"
-                  componentClass="div"
+                <div
+                  className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
                   id="sample-type-properties-hdr"
                   onClick={[Function]}
                 >
-                  <div
-                    className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
-                    id="sample-type-properties-hdr"
-                    onClick={[Function]}
+                  <span
+                    className="domain-panel-title"
                   >
-                    <span
-                      className="domain-panel-title"
-                    >
-                      Sample Type Properties
-                    </span>
-                  </div>
-                </PanelHeading>
+                    Sample Type Properties
+                  </span>
+                </div>
               </CollapsiblePanelHeader>
               <PanelBody
                 bsClass="panel"

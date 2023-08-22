@@ -1,6 +1,22 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.360.1
+*Released*: 21 August 2023
+- Remove updateDomainPanelClassList
+  - Manually toggle the necessary classname in the component instead of manually manipulationg the DOM
+- Update tests to no longer attempt to make network requests
+
+### version 2.360.0
+*Released*: 21 August 2023
+- Add isRReportEnabled helper
+- Add RReport component
+- Move SVG rendering to SVGChart component
+- Make Chart render RReports and SVGCharts
+- Refactor Chart to re-render when filter array changes
+- Add APIWrapper for Chart
+  - not exposed via context
+
 ### version 2.359.4
 *Released*: 18 August 2023
 - Migrated components are `DeleteConfirmationModal`, `EntityDeleteConfirmModal` and `EntityDeleteConfirmModalDisplay`.

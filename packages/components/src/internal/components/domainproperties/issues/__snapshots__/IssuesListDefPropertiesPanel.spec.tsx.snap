@@ -5,7 +5,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
   className="domain-form-panel domain-panel-no-theme panel panel-default"
 >
   <div
-    className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
+    className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
     id="issues-properties-hdr"
     onClick={[Function]}
   >

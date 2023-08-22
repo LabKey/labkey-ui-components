@@ -5,7 +5,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
   className="domain-form-panel lk-border-theme-light panel panel-default"
 >
   <div
-    className="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav panel-heading"
+    className="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav"
     id="dataset-header-id"
     onClick={[Function]}
   >
@@ -601,7 +601,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
   className="domain-form-panel lk-border-theme-light panel panel-default"
 >
   <div
-    className="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav panel-heading"
+    className="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav"
     id="dataset-header-id"
     onClick={[Function]}
   >

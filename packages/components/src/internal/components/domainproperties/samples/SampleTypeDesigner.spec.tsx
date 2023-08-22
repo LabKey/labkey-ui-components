@@ -164,9 +164,9 @@ describe('SampleTypeDesigner', () => {
         await waitForLifecycle(wrapped);
 
         const panelHeader = wrapped.find('div#domain-header');
-        expect(wrapped.find('#domain-header').at(2).hasClass('domain-panel-header-collapsed')).toBeTruthy();
+        expect(wrapped.find('#domain-header').at(1).hasClass('domain-panel-header-collapsed')).toBeTruthy();
         panelHeader.simulate('click');
-        expect(wrapped.find('#domain-header').at(2).hasClass('domain-panel-header-expanded')).toBeTruthy();
+        expect(wrapped.find('#domain-header').at(1).hasClass('domain-panel-header-expanded')).toBeTruthy();
         expect(wrapped.find(FileAttachmentForm)).toHaveLength(1);
 
         const alerts = wrapped.find(Alert);

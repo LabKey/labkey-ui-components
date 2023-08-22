@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-- When loading all models, load selections if here is a way to do so.
+- When loading all models, load selections if there is a way to do so.
 
 ### version 2.360.2
 *Released*: 22 August 2023

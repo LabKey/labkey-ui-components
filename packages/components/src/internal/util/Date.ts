@@ -61,6 +61,14 @@ export function isDateTimeCol(col: QueryColumn): boolean {
     return false;
 }
 
+function dateFNSToMoment(format: string): string {
+    return format?.replace('yyyy', 'YYYY').replace('yy', 'YY').replace('dd', 'DD');
+}
+
+function momentToDateFNS(format: string): string {
+    return format?.replace('YYYY', 'yyyy').replace('YY', 'yy').replace('DD', 'dd');
+}
+
 export function getColDateFormat(queryColumn: QueryColumn, dateFormat?: string, dateOnly?: boolean): string {
     let rawFormat = dateFormat || queryColumn.format;
     if (!rawFormat) {
@@ -71,11 +79,26 @@ export function getColDateFormat(queryColumn: QueryColumn, dateFormat?: string, 
     // Issue 44011: account for the shortcut values (i.e. "Date", "DateTime", and "Time")
     if (rawFormat === 'Date') rawFormat = getMomentDateFormat();
     if (rawFormat === 'DateTime') rawFormat = getMomentDateTimeFormat();
-    if (rawFormat === 'Time') rawFormat = getTimeFormat();
+    if (rawFormat === 'Time') rawFormat = getMomentTimeFormat();
 
     // Moment.js and react datepicker date format is different
     // https://github.com/Hacker0x01/react-datepicker/issues/1609
-    return rawFormat.replace('YYYY', 'yyyy').replace('YY', 'yy').replace('DD', 'dd');
+    return momentToDateFNS(rawFormat);
+}
+
+// Issue 48300: Respect 12-hour vs 24-hour time display format
+// This method intends to parse out the time portion of the format from the date portion of the format.
+// NK: That said, this is a far-reaching over simplification / contrived implementation which presumes the time
+// format follows the date format. For a more precise implementation we would search for time-specific portions within
+// the string (or use some more grand date format parsing library utility), however, there are so many different
+// formats (Java, Moment, Date-FNS, JavaScript, etc) and a seemingly infinite number of ways to configure a date/time
+// format that I've elected to just assume the second part of a space-split string that contains a ":" is the time
+// format (e.g. it supports formats similar to "yyyy-MM-dd hh:mm").
+export function parseTimeFormat(dateFormat: string): string {
+    if (!dateFormat) return undefined;
+    const parts = dateFormat.split(' ');
+    if (parts.length === 2 && parts[1].indexOf(':') > -1) return parts[1];
+    return undefined;
 }
 
 export function getColFormattedDateFilterValue(column: QueryColumn, value: string | Date): string {
@@ -105,7 +128,7 @@ export function getMomentDateTimeFormat(container?: Partial<Container>): string 
 }
 
 // hard-coded value, see docs: https://www.labkey.org/Documentation/Archive/21.7/wiki-page.view?name=studyDateNumber#short
-export function getTimeFormat(): string {
+function getMomentTimeFormat(): string {
     return toMomentFormatString('HH:mm:ss');
 }
 
@@ -114,7 +137,7 @@ export function parseDate(dateStr: string, dateFormat?: string, minDate?: Date):
 
     // Moment.js and react datepicker date format is different
     // https://github.com/Hacker0x01/react-datepicker/issues/1609
-    const _dateFormat = dateFormat?.replace('yyyy', 'YYYY').replace('yy', 'YY').replace('dd', 'DD');
+    const _dateFormat = dateFNSToMoment(dateFormat);
 
     let validDate;
     if (_dateFormat) {
@@ -151,9 +174,7 @@ function _formatDate(date: Date | number, dateFormat: string, timezone?: string)
     if (!date) return undefined;
     let _date: moment.Moment;
     if (timezone) {
-        // Unfortunately, the typings for moment-timezone are not great and as a result there
-        // are collisions with the expected type of moment.Moment.
-        _date = momentTZ(date).tz(timezone) as never;
+        _date = momentTZ(date).tz(timezone);
     } else {
         _date = moment(date);
     }

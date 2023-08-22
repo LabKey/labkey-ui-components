@@ -30,6 +30,7 @@ import {
     isDateTimeInPast,
     isRelativeDateFilterValue,
     parseDate,
+    parseTimeFormat,
 } from './Date';
 
 describe('Date Utilities', () => {
@@ -145,6 +146,17 @@ describe('Date Utilities', () => {
             expect(getColDateFormat(col, 'DateTime')).toBe('yyyy-MM-dd HH:mm');
             expect(getColDateFormat(col, 'DateTime', true)).toBe('yyyy-MM-dd HH:mm');
             expect(getColDateFormat(col, 'Time')).toBe('HH:mm:ss');
+        });
+    });
+
+    describe('parseTimeFormat', () => {
+        test('various formats', () => {
+            expect(parseTimeFormat('yyyy-MM HH')).toBeUndefined();
+            expect(parseTimeFormat('yyyy-MM HH HH:mm')).toBeUndefined();
+            expect(parseTimeFormat('yyyy-MM-DD HHmm')).toBeUndefined();
+            expect(parseTimeFormat('yyyy:MM:DD kk:mm YY')).toBeUndefined();
+            expect(parseTimeFormat('yyyy-MM-DD HH:mm')).toBe('HH:mm');
+            expect(parseTimeFormat('yyyy:MM:DD kk:mm')).toBe('kk:mm');
         });
     });
 

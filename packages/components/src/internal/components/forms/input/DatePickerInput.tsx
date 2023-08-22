@@ -24,6 +24,7 @@ import {
     isDateTimeCol,
     isRelativeDateFilterValue,
     parseDate,
+    parseTimeFormat,
 } from '../../../util/Date';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
@@ -91,12 +92,11 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
             props.setValue?.(initDate);
         }
 
-        // Issue 46767: DatePicker valid dates start at year 1000 (i.e. new Date('1000-01-01'))
-        const dateFormat = props.initValueFormatted ? this.getDateFormat() : undefined;
         let invalid = false;
-        if (props.value) {
-            if (!isRelativeDateFilterValue(props.value))
-                invalid = parseDate(props.value, dateFormat, new Date('1000-01-01')) === null;
+        if (props.value && !isRelativeDateFilterValue(props.value)) {
+            // Issue 46767: DatePicker valid dates start at year 1000 (i.e. new Date('1000-01-01'))
+            const dateFormat = props.initValueFormatted ? this.getDateFormat() : undefined;
+            invalid = parseDate(props.value, dateFormat, new Date('1000-01-01')) === null;
         }
 
         this.state = {
@@ -142,8 +142,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
 
     onChangeRaw = (event?: any): void => {
         const value = event?.target?.value;
-        const isRelativeDateInput = isRelativeDateFilterValue(event?.target?.value);
-        if (isRelativeDateInput) {
+        if (isRelativeDateFilterValue(value)) {
             this.setState({ relativeInputValue: value });
             this.props.onChange?.(value);
         } else {
@@ -156,55 +155,50 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
         return getColDateFormat(queryColumn, hideTime ? 'Date' : dateFormat);
     }
 
-    shouldShowTime(): boolean {
-        const { hideTime, queryColumn } = this.props;
-        return !hideTime && isDateTimeCol(queryColumn);
-    }
-
     render(): ReactNode {
         const {
+            addLabelAsterisk,
+            allowDisable,
+            allowRelativeInput,
+            autoFocus,
+            hideTime,
             inputClassName,
             inputWrapperClassName,
-            allowDisable,
+            isClearable,
+            isFormInput,
             label,
             labelClassName,
             name,
-            queryColumn,
-            showLabel,
-            addLabelAsterisk,
-            renderFieldLabel,
-            placeholderText,
-            isClearable,
-            wrapperClassName,
-            autoFocus,
-            isFormInput,
             onKeyDown,
+            placeholderText,
+            queryColumn,
+            renderFieldLabel,
+            showLabel,
             value,
-            allowRelativeInput,
+            wrapperClassName,
         } = this.props;
-
         const { isDisabled, selectedDate, invalid } = this.state;
-
-        const initVal = allowRelativeInput && isRelativeDateFilterValue(value) ? value : undefined;
+        const dateFormat = this.getDateFormat();
 
         const picker = (
             <DatePicker
                 autoComplete="off"
-                wrapperClassName={inputWrapperClassName}
+                autoFocus={autoFocus}
                 className={inputClassName}
+                dateFormat={dateFormat}
+                disabled={isDisabled || invalid}
+                id={queryColumn.fieldKey}
                 isClearable={isClearable}
                 name={name ? name : queryColumn.fieldKey}
-                id={queryColumn.fieldKey}
-                disabled={isDisabled || invalid}
-                selected={selectedDate}
                 onChange={this.onChange}
                 onChangeRaw={allowRelativeInput ? this.onChangeRaw : undefined}
-                showTimeSelect={this.shouldShowTime()}
-                placeholderText={placeholderText ?? `Select ${queryColumn.caption.toLowerCase()}`}
-                dateFormat={this.getDateFormat()}
-                autoFocus={autoFocus}
                 onKeyDown={onKeyDown}
-                value={initVal}
+                placeholderText={placeholderText ?? `Select ${queryColumn.caption.toLowerCase()}`}
+                selected={selectedDate}
+                showTimeSelect={!hideTime && isDateTimeCol(queryColumn)}
+                timeFormat={parseTimeFormat(dateFormat)}
+                value={allowRelativeInput && isRelativeDateFilterValue(value) ? value : undefined}
+                wrapperClassName={inputWrapperClassName}
             />
         );
 

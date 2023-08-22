@@ -31,7 +31,7 @@ const QUERY_INFO = makeQueryInfo(mixturesQueryInfo);
 
 describe('QueryInfoForm', () => {
     test('default props', () => {
-        const formWrapper = shallow(<QueryInfoForm queryInfo={QUERY_INFO} onSubmit={jest.fn()} />);
+        const formWrapper = shallow(<QueryInfoForm queryInfo={QUERY_INFO} onHide={jest.fn()} onSubmit={jest.fn()} />);
         expect(formWrapper.find(QueryFormInputs)).toHaveLength(1);
         expect(formWrapper.find(Button)).toHaveLength(2);
     });
@@ -76,6 +76,7 @@ describe('QueryInfoForm', () => {
                 countText={countText}
                 submitText={submitText}
                 queryInfo={QUERY_INFO}
+                onHide={jest.fn()}
                 onSubmit={jest.fn()}
             />
         );
@@ -172,7 +173,7 @@ describe('QueryInfoForm', () => {
 
     test('skip required check', () => {
         const formWrapper = mount(
-            <QueryInfoForm queryInfo={QUERY_INFO} checkRequiredFields={false} onSubmit={jest.fn()} />
+            <QueryInfoForm queryInfo={QUERY_INFO} checkRequiredFields={false} onHide={jest.fn()} onSubmit={jest.fn()} />
         );
 
         expect(formWrapper.text()).toContain('Extra Test Column Cancel');

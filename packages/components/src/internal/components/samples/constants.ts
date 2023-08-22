@@ -309,3 +309,5 @@ export const STORED_AMOUNT_FIELDS = {
     FREEZE_THAW_COUNT: 'FreezeThawCount',
     AUDIT_COMMENT: 'auditUserComment',
 };
+
+export const SAMPLE_TYPE_NAME_EXPRESSION_TOPIC = 'sampleIDs#patterns';

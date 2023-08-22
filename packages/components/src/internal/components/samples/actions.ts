@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { List, Map, OrderedMap } from 'immutable';
-import { ActionURL, Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
+import {ActionURL, Ajax, Domain, Experiment, Filter, Query, Utils} from '@labkey/api';
 
 import { IEntityTypeDetails } from '../entities/models';
 import { deleteEntityType, getSelectedItemSamples } from '../entities/actions';
@@ -634,6 +634,73 @@ export function updateSampleStorageData(
                 console.error(response);
                 reject(resolveErrorMessage(response));
             }),
+        });
+    });
+}
+
+export function getSampleCounter(seqType: 'rootSampleCount' | 'sampleCount' , containerPath?: string): Promise<number> {
+    return new Promise((resolve, reject) => {
+        Experiment.getEntitySequence({
+            containerPath,
+            seqType: seqType,
+            kindName: 'SampleSet',
+            success: response => {
+                if (response.success) {
+                    resolve(response['value']);
+                } else {
+                    reject({ error: 'Unable to get ' + seqType });
+                }
+            },
+            failure: error => {
+                reject(error);
+            },
+        });
+    });
+
+}
+
+export function saveSampleCounter(newCount: number, seqType: 'rootSampleCount' | 'sampleCount' , containerPath?: string): Promise<number> {
+    return new Promise((resolve, reject) => {
+        Experiment.setEntitySequence({
+            newValue: newCount,
+            containerPath,
+            seqType: seqType,
+            kindName: 'SampleSet',
+            success: response => {
+                if (response.success) {
+                    resolve(response);
+                } else {
+                    reject({ error: response.error });
+                }
+            },
+            failure: error => {
+                reject(error);
+            },
+        });
+    });
+}
+
+export function hasExistingSamples(
+    isRoot?: boolean,
+    containerPath?: string
+): Promise<boolean> {
+    let dataCountSql = 'SELECT COUNT(*) AS SampleCount FROM materials ';
+
+    if (isRoot)
+        dataCountSql += 'WHERE rootMaterialLSID IS NULL';
+
+    return new Promise((resolve, reject) => {
+        Query.executeSql({
+            containerPath,
+            containerFilter: Query.ContainerFilter.allInProject,
+            schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
+            sql: dataCountSql,
+            success: async data => {
+                resolve(data.rows[0].SampleCount !== 0);
+            },
+            failure: error => {
+                reject(error);
+            },
         });
     });
 }

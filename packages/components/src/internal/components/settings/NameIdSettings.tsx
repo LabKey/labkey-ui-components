@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback, useEffect, useReducer } from 'react';
 
 import { PermissionTypes } from '@labkey/api';
-import { Button, Checkbox, FormControl } from 'react-bootstrap';
+import { Button, Checkbox, Col, FormControl, Row } from 'react-bootstrap';
 
 import { biologicsIsPrimaryApp, sampleManagerIsPrimaryApp } from '../../app/utils';
 
@@ -17,23 +17,43 @@ import { useServerContext } from '../base/ServerContext';
 
 import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
 
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
 import { loadNameExpressionOptions, saveNameExpressionOptions } from './actions';
+import { HelpLink } from "../../util/helpLinks";
+import {SAMPLE_TYPE_NAME_EXPRESSION_TOPIC} from "../samples/constants";
 
 const TITLE = 'ID/Name Settings';
 
 interface NameIdSettingsFormProps extends InjectedRouteLeaveProps {
+    api?: ComponentsAPIWrapper;
     loadNameExpressionOptions: () => Promise<{ allowUserSpecifiedNames: boolean; prefix: string }>;
     saveNameExpressionOptions: (key: string, value: string | boolean) => Promise<void>;
 }
 
+interface NameIdSettingsProps extends InjectedRouteLeaveProps {
+    api?: ComponentsAPIWrapper;
+}
+
 interface State {
     allowUserSpecifiedNames: boolean;
+    api?: ComponentsAPIWrapper;
+    canResetRootSampleCounter?: boolean;
+    canResetSampleCounter?: boolean;
+    confirmCounterModalOpen?: boolean;
     confirmModalOpen: boolean;
     error: string;
+    isReset?: boolean;
+    isRoot?: boolean;
     loading: boolean;
+    newRootSampleCount?: number;
+    newSampleCount?: number;
     prefix: string;
+    rootSampleCount?: number;
+    sampleCount?: number;
     savingAllowUserSpecifiedNames: boolean;
     savingPrefix: boolean;
+    updatingCounter?: boolean;
 }
 
 const initialState: State = {
@@ -47,7 +67,7 @@ const initialState: State = {
 };
 
 export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
-    const { loadNameExpressionOptions, saveNameExpressionOptions, setIsDirty } = props;
+    const { api, loadNameExpressionOptions, saveNameExpressionOptions, setIsDirty } = props;
     const [state, setState] = useReducer(
         (currentState: State, newState: Partial<State>): State => ({ ...currentState, ...newState }),
         initialState
@@ -62,15 +82,38 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
         savingPrefix,
         confirmModalOpen,
         error,
+        confirmCounterModalOpen,
+        isRoot,
+        isReset,
+        updatingCounter,
+        canResetSampleCounter,
+        canResetRootSampleCounter,
+        rootSampleCount,
+        sampleCount,
+        newSampleCount,
+        newRootSampleCount,
     } = state;
 
     const initialize = async (): Promise<void> => {
         try {
             const payload = await loadNameExpressionOptions();
+            const sampleCount = await api.samples.getSampleCounter('sampleCount'); // show the next value
+            const rootSampleCount = await api.samples.getSampleCounter('rootSampleCount');
+            let canResetSampleCounter = false,
+                canResetRootSampleCounter = false;
+            if (sampleCount > 0) canResetSampleCounter = !(await api.samples.hasExistingSamples(false));
+            if (rootSampleCount > 0) canResetRootSampleCounter = !(await api.samples.hasExistingSamples(true));
+
             setState({
                 prefix: payload.prefix ?? '',
                 allowUserSpecifiedNames: payload.allowUserSpecifiedNames,
                 loading: false,
+                sampleCount,
+                rootSampleCount,
+                newSampleCount: sampleCount,
+                newRootSampleCount: rootSampleCount,
+                canResetSampleCounter,
+                canResetRootSampleCounter,
             });
         } catch (err) {
             setState({ error: err.exception, loading: false });
@@ -136,6 +179,57 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
     const closeConfirmModal = useCallback(() => {
         setState({ confirmModalOpen: false });
     }, []);
+
+    const openSetCounterConfirmModal = useCallback((isRoot, isReset) => {
+        setState({
+            confirmCounterModalOpen: true,
+            isRoot,
+            isReset,
+        });
+    }, []);
+
+    const closeCounterConfirmModal = useCallback(() => {
+        setState({
+            confirmCounterModalOpen: false,
+        });
+    }, []);
+
+    const setNewSampleCount = useCallback(
+        (newValue: number, root?: boolean) => {
+            if (root)
+                setState({
+                    newRootSampleCount: newValue,
+                });
+            else
+                setState({
+                    newSampleCount: newValue,
+                });
+            setIsDirty(true);
+        },
+        [setIsDirty]
+    );
+
+    const saveSampleCounter = useCallback(async () => {
+        const newCount = isReset ? 0 : isRoot ? newRootSampleCount : newSampleCount;
+        try {
+            await api.samples.saveSampleCounter(newCount, isRoot ? 'rootSampleCount' : 'sampleCount');
+            if (isRoot)
+                setState({
+                    rootSampleCount: newCount,
+                    confirmCounterModalOpen: false,
+                    newRootSampleCount: newCount,
+                });
+            else
+                setState({
+                    sampleCount: newCount,
+                    confirmCounterModalOpen: false,
+                    newSampleCount: newCount,
+                });
+            setIsDirty(false);
+        } catch (err) {
+            setState({ error: err.exception });
+        }
+    }, [isRoot, isReset, newRootSampleCount, newSampleCount, setIsDirty]);
 
     return (
         <div className="name-id-settings-panel panel panel-default">
@@ -233,13 +327,132 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                     </div>
                 )}
 
+                <div className="name-id-setting__setting-section">
+                    <div className="list__bold-text margin-bottom">Naming Pattern Elements/Tokens</div>
+                    <div>
+                        The following tokens/counters are utilized in naming patterns for the project and all
+                        sub-projects. To modify a counter, simply enter a number greater than the current value and
+                        click “Apply”. Please be aware that once a counter is changed, the action cannot be reversed.
+                        For additional information regarding these tokens, you can refer to this <HelpLink topic={SAMPLE_TYPE_NAME_EXPRESSION_TOPIC}>link</HelpLink>.
+                    </div>
+
+                    {loading && <LoadingSpinner />}
+                    {!loading && (
+                        <>
+                            <Row className="margin-top">
+                                <Col xs={2}>
+                                    <div className="name-id-setting__prefix-label">sampleCount: </div>
+                                </Col>
+                                <Col xs={4}>
+                                    <FormControl
+                                        className="update-samplecount-input "
+                                        min={sampleCount}
+                                        step={1}
+                                        name="newSampleCount"
+                                        onChange={(event: any) => setNewSampleCount(event?.target?.value, false)}
+                                        type="number"
+                                        value={newSampleCount}
+                                        placeholder="Enter new sampleCount..."
+                                    />
+                                </Col>
+                                <Col xs={3}>
+                                    <Button
+                                        className="btn btn-success"
+                                        onClick={() => {
+                                            openSetCounterConfirmModal(false, false);
+                                        }}
+                                        disabled={updatingCounter}
+                                    >
+                                        Apply new sampleCount
+                                    </Button>
+                                </Col>
+                                <Col xs={3}>
+                                    {canResetSampleCounter && (
+                                        <Button
+                                            className="btn btn-success"
+                                            onClick={() => {
+                                                openSetCounterConfirmModal(false, true);
+                                            }}
+                                            disabled={updatingCounter}
+                                        >
+                                            Reset sampleCount
+                                        </Button>
+                                    )}
+                                </Col>
+                                <Col xs={3} />
+                            </Row>
+                            <Row className="margin-top">
+                                <Col xs={2}>
+                                    <div className="name-id-setting__prefix-label">rootSampleCount:</div>
+                                </Col>
+                                <Col xs={4}>
+                                    <FormControl
+                                        className="update-samplecount-input "
+                                        min={rootSampleCount}
+                                        step={1}
+                                        name="newRootSampleCount"
+                                        onChange={(event: any) => setNewSampleCount(event?.target?.value, true)}
+                                        type="number"
+                                        value={newRootSampleCount}
+                                        placeholder="Enter new rootSampleCount..."
+                                    />
+                                </Col>
+                                <Col xs={3}>
+                                    <Button
+                                        className="btn btn-success"
+                                        onClick={() => {
+                                            openSetCounterConfirmModal(true, false);
+                                        }}
+                                        disabled={updatingCounter}
+                                    >
+                                        Apply new rootSampleCounter
+                                    </Button>
+                                </Col>
+                                <Col xs={3}>
+                                    {canResetRootSampleCounter && (
+                                        <Button
+                                            className="btn btn-success"
+                                            onClick={() => {
+                                                openSetCounterConfirmModal(true, true);
+                                            }}
+                                            disabled={updatingCounter}
+                                        >
+                                            Reset rootSampleCounter
+                                        </Button>
+                                    )}
+                                </Col>
+                                <Col xs={3} />
+                            </Row>
+                            {confirmCounterModalOpen && (
+                                <ConfirmModal
+                                    title={'Change ' + (isRoot ? 'rootSampleCount' : 'sampleCount')}
+                                    onCancel={closeCounterConfirmModal}
+                                    onConfirm={saveSampleCounter}
+                                    confirmButtonText="Yes"
+                                    cancelButtonText="Cancel"
+                                >
+                                    <div>
+                                        <p>
+                                            This action will change the {isRoot ? 'rootSampleCount' : 'sampleCount'}{' '}
+                                            from {isRoot ? rootSampleCount : sampleCount} to{' '}
+                                            {isReset ? 0 : isRoot ? newRootSampleCount : newSampleCount} for the project
+                                            and all sub-projects. Are you sure you want to proceed? This action cannot
+                                            be undone.
+                                        </p>
+                                    </div>
+                                </ConfirmModal>
+                            )}
+                        </>
+                    )}
+                </div>
+
                 {error !== undefined && <Alert className="name-id-setting__error">{error}</Alert>}
             </div>
         </div>
     );
 };
 
-export const NameIdSettings: FC<InjectedRouteLeaveProps> = memo(props => {
+export const NameIdSettings: FC<NameIdSettingsProps> = memo(props => {
     return (
         <RequiresPermission perms={PermissionTypes.Admin}>
             <NameIdSettingsForm
@@ -250,3 +463,7 @@ export const NameIdSettings: FC<InjectedRouteLeaveProps> = memo(props => {
         </RequiresPermission>
     );
 });
+
+NameIdSettings.defaultProps = {
+    api: getDefaultAPIWrapper(),
+};

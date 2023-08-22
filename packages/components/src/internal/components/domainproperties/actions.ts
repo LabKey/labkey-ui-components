@@ -1226,13 +1226,14 @@ export function getTextChoiceInUseValues(
 
 export function getGenId(rowId: number, kindName: 'SampleSet' | 'DataClass', containerPath?: string): Promise<number> {
     return new Promise((resolve, reject) => {
-        Experiment.getGenId({
+        Experiment.getEntitySequence({
             containerPath,
             rowId,
             kindName,
+            seqType: 'genId',
             success: response => {
                 if (response.success) {
-                    resolve(response['genId']);
+                    resolve(response['value']);
                 } else {
                     reject({ error: 'Unable to get genId' });
                 }
@@ -1280,11 +1281,12 @@ export function setGenId(
     containerPath?: string
 ): Promise<any> {
     return new Promise((resolve, reject) => {
-        return Experiment.setGenId({
+        return Experiment.setEntitySequence({
             containerPath,
             rowId,
             kindName,
-            genId,
+            newValue: genId,
+            seqType: 'genId',
             success: response => {
                 if (response.success) {
                     resolve(response);

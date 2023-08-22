@@ -1518,10 +1518,10 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@labkey/api@1.23.0":
-  version "1.23.0"
-  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.23.0.tgz#ead7985b765f86f1d6d672c0e0dac8992eae808f"
-  integrity sha512-wZj62pN30b+JjVIj7GB4im+FhG8TdrO8lfMgCh7l0OVehMGU5PW1ThekYYtzEawmc/WoNlzT4ytRYqxZ5GHTDA==
+"@labkey/api@1.23.1-fb-sampleCounters.1":
+  version "1.23.1-fb-sampleCounters.1"
+  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.23.1-fb-sampleCounters.1.tgz#f2e63392d632d0d09c36bf671e87a137e553f1da"
+  integrity sha512-FSsBG8fn59JFjTOKfMJDbAFYEUFW5o/8+2APzY8RqsRXKeoViyxbVUEG/jye/H/9Ku7gjGsK+USSXCFaAsw2lQ==
 
 "@labkey/build@6.13.0":
   version "6.13.0"

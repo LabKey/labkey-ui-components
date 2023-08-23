@@ -39,8 +39,8 @@ interface NameIdSettingsProps extends InjectedRouteLeaveProps {
 interface State {
     allowUserSpecifiedNames: boolean;
     api?: ComponentsAPIWrapper;
-    canResetRootSampleCounter?: boolean;
-    canResetSampleCounter?: boolean;
+    hasRootSamples?: boolean;
+    hasSamples?: boolean;
     confirmCounterModalOpen?: boolean;
     confirmModalOpen: boolean;
     error: string;
@@ -87,8 +87,8 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
         isRoot,
         isReset,
         updatingCounter,
-        canResetSampleCounter,
-        canResetRootSampleCounter,
+        hasRootSamples,
+        hasSamples,
         rootSampleCount,
         sampleCount,
         newSampleCount,
@@ -100,10 +100,10 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
             const payload = await loadNameExpressionOptions();
             const sampleCount = await api.samples.getSampleCounter('sampleCount'); // show the next value
             const rootSampleCount = await api.samples.getSampleCounter('rootSampleCount');
-            let canResetSampleCounter = false,
-                canResetRootSampleCounter = false;
-            if (sampleCount > 0) canResetSampleCounter = !(await api.samples.hasExistingSamples(false));
-            if (rootSampleCount > 0) canResetRootSampleCounter = !(await api.samples.hasExistingSamples(true));
+            let hasRootSamples = false,
+                hasSamples = false;
+            if (sampleCount > 0) hasSamples = await api.samples.hasExistingSamples(false);
+            if (rootSampleCount > 0) hasRootSamples = await api.samples.hasExistingSamples(true);
 
             setState({
                 prefix: payload.prefix ?? '',
@@ -113,8 +113,8 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                 rootSampleCount,
                 newSampleCount: sampleCount,
                 newRootSampleCount: rootSampleCount,
-                canResetSampleCounter,
-                canResetRootSampleCounter,
+                hasSamples,
+                hasRootSamples,
             });
         } catch (err) {
             setState({ error: err.exception, loading: false });
@@ -369,7 +369,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                     </Button>
                                 </Col>
                                 <Col xs={3}>
-                                    {canResetSampleCounter && (
+                                    {!hasSamples && (sampleCount > 0) && (
                                         <Button
                                             className="btn btn-success"
                                             onClick={() => {
@@ -411,7 +411,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                     </Button>
                                 </Col>
                                 <Col xs={3}>
-                                    {canResetRootSampleCounter && (
+                                    {!hasRootSamples && (rootSampleCount > 0) && (
                                         <Button
                                             className="btn btn-success"
                                             onClick={() => {

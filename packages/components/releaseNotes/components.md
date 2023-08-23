@@ -4,7 +4,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.X
 *Released*: X August 2023
 - Support sampleCounter naming pattern
-    - TODO
+    - Added "Naming Pattern Elements/Tokens" section to NameIdSettings
+    - Updated getGenId/setGenId util to use new API
+    - Added hasExistingSamples, getSampleCounter and saveSampleCounter util
 
 ### version 2.360.3
 *Released*: 23 August 2023

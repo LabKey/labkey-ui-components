@@ -19,6 +19,7 @@ import { ActionURL, Ajax, Filter, getServerContext, Query, Utils } from '@labkey
 import { resolveKey, SchemaQuery } from '../public/SchemaQuery';
 
 import { Actions } from '../public/QueryModel/withQueryModels';
+
 import { GridResponse } from './components/editable/models';
 
 import { getContainerFilter, invalidateQueryDetailsCache, selectDistinctRows, selectRowsDeprecated } from './query/api';
@@ -109,7 +110,9 @@ export async function selectGridIdsFromTransactionId(
     return selected;
 }
 
-export async function getSampleTypesFromTransactionIds(transactionAuditId: number):Promise<{rowIds: string[], sampleTypes: string[]}> {
+export async function getSampleTypesFromTransactionIds(
+    transactionAuditId: number
+): Promise<{ rowIds: string[]; sampleTypes: string[] }> {
     if (!transactionAuditId) {
         return;
     }
@@ -274,7 +277,7 @@ export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>
     });
 }
 
-interface GetSelectedResponse {
+export interface GetSelectedResponse {
     selected: any[];
 }
 
@@ -601,7 +604,7 @@ export async function getSelection(
     return { resolved: false, selected: [] };
 }
 
-export function fetchCharts(schemaQuery: SchemaQuery, containerPath?: string): Promise<List<DataViewInfo>> {
+export function fetchCharts(schemaQuery: SchemaQuery, containerPath?: string): Promise<DataViewInfo[]> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL(
@@ -617,11 +620,7 @@ export function fetchCharts(schemaQuery: SchemaQuery, containerPath?: string): P
             ),
             success: Utils.getCallbackWrapper((response: any) => {
                 if (response && response.success) {
-                    const result = response.reports.reduce(
-                        (list, rawDataViewInfo) => list.push(new DataViewInfo(rawDataViewInfo)),
-                        List<DataViewInfo>()
-                    );
-                    resolve(result);
+                    resolve(response.reports.map(report => new DataViewInfo(report)));
                 } else {
                     reject({
                         error:

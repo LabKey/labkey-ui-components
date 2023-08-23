@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { List } from 'immutable';
 
 import { Domain, getServerContext } from '@labkey/api';
 
 import produce, { Draft } from 'immer';
+import { getDefaultAPIWrapper } from '../../../APIWrapper';
+import { DomainPropertiesAPIWrapper } from '../APIWrapper';
 
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
@@ -52,14 +54,15 @@ const VISIT_DATE_MAPPING_ERROR = 'Your Visit Date Column must not be one of the 
 const ADDITIONAL_KEY_ERROR = 'You must select an Additional Key Field in the dataset properties panel.';
 
 interface Props {
+    api?: DomainPropertiesAPIWrapper;
     initModel?: DatasetModel;
-    onChange?: (model: DatasetModel) => void;
     onCancel: () => void;
+    onChange?: (model: DatasetModel) => void;
     onComplete: (model: DatasetModel) => void;
-    useTheme?: boolean;
     saveBtnText?: string;
     successBsStyle?: string;
     testMode?: boolean;
+    useTheme?: boolean;
 }
 
 interface State {
@@ -76,6 +79,10 @@ interface State {
 export class DatasetDesignerPanelImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
     private _participantId: string;
     private _sequenceNum: string;
+
+    static defaultProps = {
+        api: getDefaultAPIWrapper().domain,
+    };
 
     constructor(props: Props & InjectedBaseDomainDesignerProps) {
         super(props);
@@ -175,11 +182,11 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         );
     };
 
-    onIndexChange = (keyPropertyIndex?: number, visitDatePropertyIndex?: number) => {
+    onIndexChange = (keyPropertyIndex?: number, visitDatePropertyIndex?: number): void => {
         this.setState(() => ({ keyPropertyIndex, visitDatePropertyIndex }));
     };
 
-    onFinish = () => {
+    onFinish = (): void => {
         const { setSubmitting } = this.props;
         const { model, shouldImportData } = this.state;
         const missingRequiredTimepointMapping = !model.demographicData && !this._sequenceNum;
@@ -207,7 +214,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         this.props.onFinish(model.isValid(), this.saveDomain);
     };
 
-    onDomainChange = (domain: DomainDesign, dirty: boolean, rowIndexChanges: DomainFieldIndexChange[]) => {
+    onDomainChange = (domain: DomainDesign, dirty: boolean, rowIndexChanges: DomainFieldIndexChange[]): void => {
         const { onChange } = this.props;
         const { keyPropertyIndex, visitDatePropertyIndex } = this.state;
 
@@ -281,14 +288,14 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         );
     };
 
-    setFileImportData = (file: File, shouldImportData: boolean) => {
+    setFileImportData = (file: File, shouldImportData: boolean): void => {
         this.setState(state => ({
             file,
             shouldImportData: shouldImportData && !state.model.definitionIsShared,
         }));
     };
 
-    onColumnMappingChange = (participantIdField?: string, timePointField?: string) => {
+    onColumnMappingChange = (participantIdField?: string, timePointField?: string): void => {
         const { model } = this.state;
 
         this._participantId = participantIdField;
@@ -315,7 +322,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         );
     };
 
-    renderColumnMappingSection = () => {
+    renderColumnMappingSection = (): ReactNode => {
         const { model, file } = this.state;
 
         // only show this column mapping section in the file infer fields case when there is at least one field
@@ -363,7 +370,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         this.props.onComplete(this.state.savedModel);
     };
 
-    handleFileImport(participantId, sequenceNum) {
+    handleFileImport(participantId, sequenceNum): void {
         const { setSubmitting } = this.props;
         const { file, savedModel } = this.state;
 
@@ -392,7 +399,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             });
     }
 
-    saveDomain = () => {
+    saveDomain = (): void => {
         const { setSubmitting } = this.props;
         const { model, shouldImportData } = this.state;
         const participantIdMapCol = this._participantId;
@@ -465,8 +472,9 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             });
     };
 
-    render() {
+    render(): ReactNode {
         const {
+            api,
             useTheme,
             onTogglePanel,
             visitedPanels,
@@ -516,6 +524,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     successBsStyle={successBsStyle}
                 />
                 <DomainForm
+                    api={api}
                     key={model.domain.domainId || 0}
                     domainIndex={0}
                     domain={model.domain}

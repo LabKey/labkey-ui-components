@@ -1522,25 +1522,17 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                 togglePanel={[Function]}
                 useTheme={false}
               >
-                <PanelHeading
-                  bsClass="panel"
-                  className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme"
-                  componentClass="div"
+                <div
+                  className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
                   id="assay-properties-hdr"
                   onClick={[Function]}
                 >
-                  <div
-                    className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
-                    id="assay-properties-hdr"
-                    onClick={[Function]}
+                  <span
+                    className="domain-panel-title"
                   >
-                    <span
-                      className="domain-panel-title"
-                    >
-                      Assay Properties
-                    </span>
-                  </div>
-                </PanelHeading>
+                    Assay Properties
+                  </span>
+                </div>
               </CollapsiblePanelHeader>
               <PanelBody
                 bsClass="panel"
@@ -2877,25 +2869,17 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                 togglePanel={[Function]}
                 useTheme={false}
               >
-                <PanelHeading
-                  bsClass="panel"
-                  className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme"
-                  componentClass="div"
+                <div
+                  className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
                   id="assay-properties-hdr"
                   onClick={[Function]}
                 >
-                  <div
-                    className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
-                    id="assay-properties-hdr"
-                    onClick={[Function]}
+                  <span
+                    className="domain-panel-title"
                   >
-                    <span
-                      className="domain-panel-title"
-                    >
-                      Assay Properties
-                    </span>
-                  </div>
-                </PanelHeading>
+                    Assay Properties
+                  </span>
+                </div>
               </CollapsiblePanelHeader>
               <PanelBody
                 bsClass="panel"
@@ -3986,25 +3970,17 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                 togglePanel={[Function]}
                 useTheme={false}
               >
-                <PanelHeading
-                  bsClass="panel"
-                  className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme"
-                  componentClass="div"
+                <div
+                  className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
                   id="assay-properties-hdr"
                   onClick={[Function]}
                 >
-                  <div
-                    className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
-                    id="assay-properties-hdr"
-                    onClick={[Function]}
+                  <span
+                    className="domain-panel-title"
                   >
-                    <span
-                      className="domain-panel-title"
-                    >
-                      Assay Properties
-                    </span>
-                  </div>
-                </PanelHeading>
+                    Assay Properties
+                  </span>
+                </div>
               </CollapsiblePanelHeader>
               <PanelBody
                 bsClass="panel"
@@ -5015,25 +4991,17 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                 togglePanel={[Function]}
                 useTheme={false}
               >
-                <PanelHeading
-                  bsClass="panel"
-                  className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme"
-                  componentClass="div"
+                <div
+                  className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
                   id="assay-properties-hdr"
                   onClick={[Function]}
                 >
-                  <div
-                    className="domain-panel-header domain-panel-header-expanded domain-panel-header-no-theme panel-heading"
-                    id="assay-properties-hdr"
-                    onClick={[Function]}
+                  <span
+                    className="domain-panel-title"
                   >
-                    <span
-                      className="domain-panel-title"
-                    >
-                      Assay Properties
-                    </span>
-                  </div>
-                </PanelHeading>
+                    Assay Properties
+                  </span>
+                </div>
               </CollapsiblePanelHeader>
               <PanelBody
                 bsClass="panel"

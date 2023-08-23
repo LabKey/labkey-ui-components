@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
 import classNames from 'classnames';
-import { Panel } from 'react-bootstrap';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
@@ -85,6 +84,7 @@ export class CollapsiblePanelHeader extends React.PureComponent<Props> {
             'domain-form-collapse-btn': !collapsed,
         });
         const panelHeaderClass = classNames('domain-panel-header', {
+            'panel-heading': !useTheme,
             'domain-heading-collapsible': collapsible || controlledCollapse,
             'domain-panel-header-expanded': !collapsed,
             'domain-panel-header-collapsed': collapsed,
@@ -93,7 +93,7 @@ export class CollapsiblePanelHeader extends React.PureComponent<Props> {
         });
 
         return (
-            <Panel.Heading id={id} onClick={togglePanel} className={panelHeaderClass}>
+            <div id={id} onClick={togglePanel} className={panelHeaderClass}>
                 {/* Header help icon*/}
                 {iconHelpMsg && (
                     <LabelHelpTip iconComponent={this.getHeaderIconComponent()} placement="top" title={title}>
@@ -123,7 +123,7 @@ export class CollapsiblePanelHeader extends React.PureComponent<Props> {
                 {controlledCollapse && headerDetails && (
                     <span className="domain-panel-header-fields-defined">{headerDetails}</span>
                 )}
-            </Panel.Heading>
+            </div>
         );
     }
 }

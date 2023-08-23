@@ -21,6 +21,7 @@ import { List } from 'immutable';
 
 import getDatasetDesign from '../../../../test/data/dataset-getDatasetDesign.json';
 import { NEW_DATASET_MODEL_WITHOUT_DATASPACE } from '../../../../test/data/constants';
+import { getDomainPropertiesTestAPIWrapper } from '../APIWrapper';
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
 import { Alert } from '../../base/Alert';
@@ -38,6 +39,7 @@ describe('Dataset Designer', () => {
     test('New dataset', async () => {
         const designerPanels = shallow(
             <DatasetDesignerPanelImpl
+                api={getDomainPropertiesTestAPIWrapper(jest.fn)}
                 initModel={newDatasetModel}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
@@ -62,6 +64,7 @@ describe('Dataset Designer', () => {
     test('Edit existing dataset', async () => {
         const designerPanels = shallow(
             <DatasetDesignerPanels
+                api={getDomainPropertiesTestAPIWrapper(jest.fn)}
                 initModel={populatedDatasetModel}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
@@ -78,6 +81,7 @@ describe('Dataset Designer', () => {
     test('for alert/message', async () => {
         const wrapped = mount(
             <DatasetDesignerPanels
+                api={getDomainPropertiesTestAPIWrapper(jest.fn)}
                 initModel={newDatasetModel}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
@@ -88,14 +92,14 @@ describe('Dataset Designer', () => {
         await waitForLifecycle(wrapped);
 
         const datasetHeader = wrapped.find('div#dataset-header-id');
-        expect(wrapped.find('#dataset-header-id').at(2).hasClass('domain-panel-header-expanded')).toBeTruthy();
+        expect(wrapped.find('#dataset-header-id').at(1).hasClass('domain-panel-header-expanded')).toBeTruthy();
         datasetHeader.simulate('click');
-        expect(wrapped.find('#dataset-header-id').at(2).hasClass('domain-panel-header-collapsed')).toBeTruthy();
+        expect(wrapped.find('#dataset-header-id').at(1).hasClass('domain-panel-header-collapsed')).toBeTruthy();
 
         const panelHeader = wrapped.find('div#domain-header');
-        expect(wrapped.find('#domain-header').at(2).hasClass('domain-panel-header-collapsed')).toBeTruthy();
+        expect(wrapped.find('#domain-header').at(1).hasClass('domain-panel-header-collapsed')).toBeTruthy();
         panelHeader.simulate('click');
-        expect(wrapped.find('#domain-header').at(2).hasClass('domain-panel-header-expanded')).toBeTruthy();
+        expect(wrapped.find('#domain-header').at(1).hasClass('domain-panel-header-expanded')).toBeTruthy();
 
         expect(wrapped.find(Alert)).toHaveLength(2);
         expect(wrapped.find(Alert).at(0).text()).toEqual(PROPERTIES_PANEL_ERROR_MSG);

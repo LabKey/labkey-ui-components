@@ -1,6 +1,11 @@
 # @labkey/themes
 UI themes for LabKey Server.
 
+### version 1.3.1
+*Released*: 18 August 2023
+* Issue 48372: Fix Ext3 input triggers layout
+* Package updates
+
 ### version 1.3.0
 *Released*: 26 August 2022
 * Issue 45857: Add left column locking to misc LKS HTML tables

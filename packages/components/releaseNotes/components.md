@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.360.3
+*Released*: 23 August 2023
+- When loading all models, load selections if there is a way to do so.
+
 ### version 2.360.2
 *Released*: 22 August 2023
 - Added a `parseTimeFormat` method to determine the time format portion of a date format.

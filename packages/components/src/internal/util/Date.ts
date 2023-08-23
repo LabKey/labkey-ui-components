@@ -87,17 +87,27 @@ export function getColDateFormat(queryColumn: QueryColumn, dateFormat?: string, 
 }
 
 // Issue 48300: Respect 12-hour vs 24-hour time display format
-// This method intends to parse out the time portion of the format from the date portion of the format.
+// This method attempts to determine if the time portion of date format is in either 12-hour or 24-hour format.
+// If the time format can be determined, then it will return a constant dateFNS time format.
 // NK: That said, this is a far-reaching over simplification / contrived implementation which presumes the time
 // format follows the date format. For a more precise implementation we would search for time-specific portions within
 // the string (or use some more grand date format parsing library utility), however, there are so many different
 // formats (Java, Moment, Date-FNS, JavaScript, etc) and a seemingly infinite number of ways to configure a date/time
 // format that I've elected to just assume the second part of a space-split string that contains a ":" is the time
-// format (e.g. it supports formats similar to "yyyy-MM-dd hh:mm").
-export function parseTimeFormat(dateFormat: string): string {
+// format (e.g. it supports formats similar to "yyyy-MM-dd hh:mm" or "yyyy-MM-dd hh:mm aa").
+export function parseDateFNSTimeFormat(dateFormat: string): string {
     if (!dateFormat) return undefined;
     const parts = dateFormat.split(' ');
-    if (parts.length === 2 && parts[1].indexOf(':') > -1) return parts[1];
+
+    if (parts.length > 1 && parts[1].indexOf(':') > -1) {
+        const timePart = parts[1];
+        if (timePart.indexOf('H') > -1 || timePart.indexOf('k') > -1) {
+            return 'HH:mm'; // 13:30
+        } else if (timePart.indexOf('h') > -1 || timePart.indexOf('K') > -1) {
+            return 'h:mm a'; // 1:30 PM
+        }
+    }
+
     return undefined;
 }
 

@@ -24,7 +24,7 @@ import {
     isDateTimeCol,
     isRelativeDateFilterValue,
     parseDate,
-    parseTimeFormat,
+    parseDateFNSTimeFormat,
 } from '../../../util/Date';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
@@ -196,7 +196,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
                 placeholderText={placeholderText ?? `Select ${queryColumn.caption.toLowerCase()}`}
                 selected={selectedDate}
                 showTimeSelect={!hideTime && isDateTimeCol(queryColumn)}
-                timeFormat={parseTimeFormat(dateFormat)}
+                timeFormat={parseDateFNSTimeFormat(dateFormat)}
                 value={allowRelativeInput && isRelativeDateFilterValue(value) ? value : undefined}
                 wrapperClassName={inputWrapperClassName}
             />

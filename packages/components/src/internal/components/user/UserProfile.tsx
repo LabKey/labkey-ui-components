@@ -54,8 +54,6 @@ interface State {
 
 interface Props {
     api?: ComponentsAPIWrapper;
-    getIsDirty: () => boolean;
-    onCancel: () => void;
     onSuccess: (result: {}, shouldReload: boolean) => void;
     setIsDirty: (isDirty: boolean) => void;
     user: User;
@@ -162,82 +160,68 @@ export class UserProfile extends PureComponent<Props, State> {
         this.props.onSuccess(result, this.state.reloadRequired);
     };
 
-    renderSectionTitle(title: string) {
-        return <p className="user-section-header">{title}</p>;
-    }
-
-    renderForm() {
-        const { user, userProperties, onCancel } = this.props;
-        const { queryInfo, removeCurrentAvatar } = this.state;
-        const isDefaultAvatar = !user.avatar || user.avatar.indexOf(DEFAULT_AVATAR_PATH) > -1;
-
-        return (
-            <>
-                <Row>
-                    <Col sm={3} xs={12}>
-                        {this.renderSectionTitle('Avatar')}
-                    </Col>
-                    <Col sm={2} xs={12}>
-                        <img
-                            src={removeCurrentAvatar ? ActionURL.getContextPath() + DEFAULT_AVATAR_PATH : user.avatar}
-                            className="detail__header-icon"
-                        />
-                    </Col>
-                    <Col sm={7} xs={12}>
-                        <>
-                            <FileInput
-                                key={USER_AVATAR_FILE}
-                                showLabel={false}
-                                name={USER_AVATAR_FILE}
-                                onChange={this.onAvatarFileChange}
-                            />
-                            {!isDefaultAvatar && !removeCurrentAvatar && (
-                                <div>
-                                    <a className="user-text-link" onClick={this.removeCurrentAvatar}>
-                                        Delete Current Avatar
-                                    </a>
-                                </div>
-                            )}
-                        </>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={12}>
-                        <hr />
-                    </Col>
-                </Row>
-                {this.renderSectionTitle('User Details')}
-                <QueryInfoForm
-                    columnFilter={this.columnFilter}
-                    queryInfo={queryInfo}
-                    fieldValues={userProperties}
-                    includeCountField={false}
-                    submitText="Save"
-                    isSubmittedText="Saving..."
-                    onFormChange={this.onFormChange}
-                    onSubmit={this.submitUserDetails}
-                    onSuccess={this.onSuccess}
-                    onHide={onCancel}
-                    disabledFields={DISABLED_FIELDS}
-                    footer={this.footer()}
-                    showErrorsAtBottom
-                />
-            </>
-        );
-    }
-
     render() {
-        const { userProperties } = this.props;
-        const { hasError, queryInfo } = this.state;
+        const { user, userProperties } = this.props;
+        const { hasError, queryInfo, removeCurrentAvatar } = this.state;
+        const isDefaultAvatar = !user.avatar || user.avatar.indexOf(DEFAULT_AVATAR_PATH) > -1;
+        const isLoading = !queryInfo || !userProperties;
+        const avatarSrc = removeCurrentAvatar ? ActionURL.getContextPath() + DEFAULT_AVATAR_PATH : user.avatar;
 
         return (
             <>
-                {hasError ? (
+                {hasError && (
                     <Alert>{getActionErrorMessage('There was a problem loading your user profile', 'profile')}</Alert>
-                ) : !queryInfo || !userProperties ? (
-                    <LoadingSpinner />
-                ) : (
-                    this.renderForm()
+                )}
+                {isLoading && <LoadingSpinner />}
+                {!isLoading && (
+                    <>
+                        <Row>
+                            <Col sm={3} xs={12}>
+                                <p className="user-section-header">Avatar</p>
+                            </Col>
+                            <Col sm={2} xs={12}>
+                                <img src={avatarSrc} className="detail__header-icon" />
+                            </Col>
+                            <Col sm={7} xs={12}>
+                                <FileInput
+                                    key={USER_AVATAR_FILE}
+                                    showLabel={false}
+                                    name={USER_AVATAR_FILE}
+                                    onChange={this.onAvatarFileChange}
+                                />
+                                {!isDefaultAvatar && !removeCurrentAvatar && (
+                                    <div>
+                                        <a className="user-text-link" onClick={this.removeCurrentAvatar}>
+                                            Delete Current Avatar
+                                        </a>
+                                    </div>
+                                )}
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col xs={12}>
+                                <hr />
+                            </Col>
+                        </Row>
+
+                        <p className="user-section-header">User Details</p>
+
+                        <QueryInfoForm
+                            columnFilter={this.columnFilter}
+                            queryInfo={queryInfo}
+                            fieldValues={userProperties}
+                            includeCountField={false}
+                            submitText="Save"
+                            isSubmittedText="Save"
+                            isSubmittingText="Saving..."
+                            onFormChange={this.onFormChange}
+                            onSubmit={this.submitUserDetails}
+                            onSuccess={this.onSuccess}
+                            disabledFields={DISABLED_FIELDS}
+                            footer={this.footer()}
+                            showErrorsAtBottom
+                        />
+                    </>
                 )}
             </>
         );

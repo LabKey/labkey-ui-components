@@ -1345,7 +1345,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 submitForEditText={`Add ${capitalizeFirstChar(addControlProps.nounPlural)} to Grid`}
                 maxCount={maxToAdd}
                 onHide={this.toggleBulkAdd}
-                onCancel={this.toggleBulkAdd}
                 operation={forUpdate ? Operation.update : Operation.insert}
                 onSuccess={this.toggleBulkAdd}
                 queryInfo={queryInfo.getInsertQueryInfo()}
@@ -1471,7 +1470,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 editorModel={editorModel}
                 columnFilter={bulkUpdateProps?.columnFilter}
                 queryFilters={bulkUpdateProps?.queryFilters}
-                onCancel={this.toggleBulkUpdate}
                 onFormChangeWithData={showAsTab ? this.onBulkUpdateFormDataChange : undefined}
                 onHide={this.toggleBulkUpdate}
                 operation={forUpdate ? Operation.update : Operation.insert}

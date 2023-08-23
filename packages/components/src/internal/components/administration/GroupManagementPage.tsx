@@ -1,6 +1,7 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { MenuItem } from 'react-bootstrap';
 import { List } from 'immutable';
+import { WithRouterProps } from 'react-router';
 
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 import { LoadingSpinner } from '../base/LoadingSpinner';
@@ -37,7 +38,7 @@ import { GroupMembership, MemberType } from './models';
 import { fetchGroupMembership } from './actions';
 import { NotFound } from '../base/NotFound';
 
-export type GroupManagementPageProps = InjectedRouteLeaveProps & InjectedPermissionsPage;
+export type GroupManagementPageProps = InjectedRouteLeaveProps & InjectedPermissionsPage & WithRouterProps;
 
 export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props => {
     const { setIsDirty, getIsDirty, inactiveUsersById, principalsById, rolesByUniqueName, principals } = props;
@@ -288,4 +289,5 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
     );
 });
 
-export const GroupManagementPage = withRouteLeave<{}>(withPermissionsPage(GroupManagementPageImpl));
+// TODO: instead of using withRouteLeave use useRouteLeave in the child component
+export const GroupManagementPage = withRouteLeave(withPermissionsPage(GroupManagementPageImpl));

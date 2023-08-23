@@ -15,7 +15,6 @@ import {
     SECURITY_LOGOUT,
     SECURITY_SERVER_UNAVAILABLE,
     SECURITY_SESSION_TIMEOUT,
-    SET_RELOAD_REQUIRED,
     UPDATE_USER,
     UPDATE_USER_DISPLAY_NAME,
     ADD_TABLE_ROUTE,
@@ -34,8 +33,6 @@ export type AppReducerState = AppModel;
 
 export function AppReducers(state = new AppModel(), action): AppReducerState {
     switch (action.type) {
-        case SET_RELOAD_REQUIRED:
-            return state.set('reloadRequired', true) as AppModel;
         case UPDATE_USER:
             return state.merge({ user: new User({ ...state.user, ...action.userProps }) }) as AppModel;
         case UPDATE_USER_DISPLAY_NAME:

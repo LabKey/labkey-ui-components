@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.361.0
+*Released*: 23 August 2023
+- withRouteLeave: Fix issue with not passing all withRouter props forward
+- QueryInfoForm: Remove onCancel (it was unused)
+- ProfilePage: Remove need for onBack/setReloadRequired, remove cancel button
+
 ### version 2.360.3
 *Released*: 23 August 2023
 - When loading all models, load selections if there is a way to do so.

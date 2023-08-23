@@ -39,11 +39,11 @@ interface NameIdSettingsProps extends InjectedRouteLeaveProps {
 interface State {
     allowUserSpecifiedNames: boolean;
     api?: ComponentsAPIWrapper;
-    hasRootSamples?: boolean;
-    hasSamples?: boolean;
     confirmCounterModalOpen?: boolean;
     confirmModalOpen: boolean;
     error: string;
+    hasRootSamples?: boolean;
+    hasSamples?: boolean;
     isReset?: boolean;
     isRoot?: boolean;
     loading: boolean;
@@ -328,7 +328,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                     </div>
                 )}
 
-                <div className="name-id-setting__setting-section">
+                <div className="sample-counter__setting-section">
                     <div className="list__bold-text margin-bottom">Naming Pattern Elements/Tokens</div>
                     <div>
                         The following tokens/counters are utilized in naming patterns for the project and all
@@ -343,7 +343,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                         <>
                             <Row className="margin-top">
                                 <Col xs={2}>
-                                    <div className="name-id-setting__prefix-label">sampleCount: </div>
+                                    <div className="sample-counter__prefix-label">sampleCount:</div>
                                 </Col>
                                 <Col xs={4}>
                                     <FormControl
@@ -369,7 +369,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                     </Button>
                                 </Col>
                                 <Col xs={3}>
-                                    {!hasSamples && (sampleCount > 0) && (
+                                    {!hasSamples && sampleCount > 0 && (
                                         <Button
                                             className="btn btn-success"
                                             onClick={() => {
@@ -385,7 +385,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                             </Row>
                             <Row className="margin-top">
                                 <Col xs={2}>
-                                    <div className="name-id-setting__prefix-label">rootSampleCount:</div>
+                                    <div className="sample-counter__prefix-label">rootSampleCount:</div>
                                 </Col>
                                 <Col xs={4}>
                                     <FormControl
@@ -407,11 +407,11 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                         }}
                                         disabled={updatingCounter}
                                     >
-                                        Apply new rootSampleCounter
+                                        Apply new rootSampleCount
                                     </Button>
                                 </Col>
                                 <Col xs={3}>
-                                    {!hasRootSamples && (rootSampleCount > 0) && (
+                                    {!hasRootSamples && rootSampleCount > 0 && (
                                         <Button
                                             className="btn btn-success"
                                             onClick={() => {
@@ -419,7 +419,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                             }}
                                             disabled={updatingCounter}
                                         >
-                                            Reset rootSampleCounter
+                                            Reset rootSampleCount
                                         </Button>
                                     )}
                                 </Col>

@@ -94,7 +94,7 @@ export function getColDateFormat(queryColumn: QueryColumn, dateFormat?: string, 
 // the string (or use some more grand date format parsing library utility), however, there are so many different
 // formats (Java, Moment, Date-FNS, JavaScript, etc) and a seemingly infinite number of ways to configure a date/time
 // format that I've elected to just assume the second part of a space-split string that contains a ":" is the time
-// format (e.g. it supports formats similar to "yyyy-MM-dd hh:mm" or "yyyy-MM-dd hh:mm aa").
+// format (e.g. it supports formats similar to "yyyy-MM-dd hh:mm" or "yyyy-MM-dd hh:mm a").
 export function parseDateFNSTimeFormat(dateFormat: string): string {
     if (!dateFormat) return undefined;
     const parts = dateFormat.split(' ');

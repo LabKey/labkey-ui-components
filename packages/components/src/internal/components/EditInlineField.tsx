@@ -3,7 +3,12 @@ import moment from 'moment';
 import classNames from 'classnames';
 import Formsy from 'formsy-react';
 
-import { getColDateFormat, getMomentDateFormat, getJsonDateTimeFormatString, parseDateFNSTimeFormat } from '../util/Date';
+import {
+    getColDateFormat,
+    getMomentDateFormat,
+    getJsonDateTimeFormatString,
+    parseDateFNSTimeFormat,
+} from '../util/Date';
 import { Key, useEnterEscape } from '../../public/useEnterEscape';
 
 import { QueryColumn } from '../../public/QueryColumn';

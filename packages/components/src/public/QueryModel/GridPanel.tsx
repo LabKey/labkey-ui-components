@@ -34,6 +34,7 @@ import { LoadingSpinner } from '../../internal/components/base/LoadingSpinner';
 import { Grid } from '../../internal/components/base/Grid';
 
 import { Alert } from '../../internal/components/base/Alert';
+import { ChartPanel } from './ChartPanel';
 
 import { ActionValue } from './grid/actions/Action';
 import { FilterAction } from './grid/actions/Filter';
@@ -1070,6 +1071,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                     <div
                         className={classNames('grid-panel__body', { 'panel-body': asPanel, 'top-spacing': !hasHeader })}
                     >
+                        <ChartPanel actions={actions} model={model} />
+
                         {showButtonBar && (
                             <ButtonBar
                                 {...this.props}

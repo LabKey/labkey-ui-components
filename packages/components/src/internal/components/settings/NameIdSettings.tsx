@@ -328,7 +328,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                     </div>
                 )}
 
-                <div className="sample-counter__setting-section">
+                <div className="sample-counter__setting-section margin-top">
                     <div className="list__bold-text margin-bottom">Naming Pattern Elements/Tokens</div>
                     <div>
                         The following tokens/counters are utilized in naming patterns for the project and all
@@ -342,10 +342,10 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                     {!loading && (
                         <div>
                             <Row className="margin-top">
-                                <Col xs={2}>
+                                <Col sm={2}>
                                     <div className="sample-counter__prefix-label">sampleCount</div>
                                 </Col>
-                                <Col xs={4}>
+                                <Col sm={2}>
                                     <FormControl
                                         className="update-samplecount-input "
                                         min={sampleCount}
@@ -357,9 +357,9 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                         placeholder="Enter new sampleCount..."
                                     />
                                 </Col>
-                                <Col xs={3}>
+                                <Col sm={8}>
                                     <Button
-                                        className="btn btn-success"
+                                        className="btn btn-success sample-counter-btn"
                                         onClick={() => {
                                             openSetCounterConfirmModal(false, false);
                                         }}
@@ -367,11 +367,9 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                     >
                                         Apply New sampleCount
                                     </Button>
-                                </Col>
-                                <Col xs={3}>
                                     {!hasSamples && sampleCount > 0 && (
                                         <Button
-                                            className="btn btn-success"
+                                            className="btn btn-success sample-counter-btn"
                                             onClick={() => {
                                                 openSetCounterConfirmModal(false, true);
                                             }}
@@ -381,13 +379,12 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                         </Button>
                                     )}
                                 </Col>
-                                <Col xs={3} />
                             </Row>
                             <Row className="margin-top">
-                                <Col xs={2}>
+                                <Col sm={2}>
                                     <div className="sample-counter__prefix-label">rootSampleCount</div>
                                 </Col>
-                                <Col xs={4}>
+                                <Col sm={2}>
                                     <FormControl
                                         className="update-samplecount-input "
                                         min={rootSampleCount}
@@ -399,9 +396,9 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                         placeholder="Enter new rootSampleCount..."
                                     />
                                 </Col>
-                                <Col xs={3}>
+                                <Col sm={8}>
                                     <Button
-                                        className="btn btn-success"
+                                        className="btn btn-success sample-counter-btn"
                                         onClick={() => {
                                             openSetCounterConfirmModal(true, false);
                                         }}
@@ -409,11 +406,9 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                     >
                                         Apply New rootSampleCount
                                     </Button>
-                                </Col>
-                                <Col xs={3}>
                                     {!hasRootSamples && rootSampleCount > 0 && (
                                         <Button
-                                            className="btn btn-success"
+                                            className="btn btn-success sample-counter-btn"
                                             onClick={() => {
                                                 openSetCounterConfirmModal(true, true);
                                             }}
@@ -423,7 +418,6 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                         </Button>
                                     )}
                                 </Col>
-                                <Col xs={3} />
                             </Row>
                             {confirmCounterModalOpen && (
                                 <ConfirmModal

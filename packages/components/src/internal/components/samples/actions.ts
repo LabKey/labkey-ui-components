@@ -687,7 +687,7 @@ export function hasExistingSamples(isRoot?: boolean, containerPath?: string): Pr
     let dataCountSql = 'SELECT m.Name As SampleName ' + '\n' +
         'FROM materials m WHERE EXISTS ' + '\n' +
         '( SELECT * FROM materials mi WHERE mi.rowId = m.rowId';
-    if (isRoot) dataCountSql += 'AND mi.rootMaterialLSID IS NULL';
+    if (isRoot) dataCountSql += ' AND mi.rootMaterialLSID IS NULL';
     dataCountSql += ')';
 
     return new Promise((resolve, reject) => {
@@ -697,7 +697,7 @@ export function hasExistingSamples(isRoot?: boolean, containerPath?: string): Pr
             schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
             sql: dataCountSql,
             success: async data => {
-                resolve(!!data.rows[0].SampleName);
+                resolve(!!data.rows[0]?.SampleName);
             },
             failure: error => {
                 reject(error);

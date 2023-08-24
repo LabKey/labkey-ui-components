@@ -34,7 +34,6 @@ import { LoadingSpinner } from '../../internal/components/base/LoadingSpinner';
 import { Grid } from '../../internal/components/base/Grid';
 
 import { Alert } from '../../internal/components/base/Alert';
-import { ChartPanel } from './ChartPanel';
 
 import { ActionValue } from './grid/actions/Action';
 import { FilterAction } from './grid/actions/Filter';
@@ -51,7 +50,6 @@ import { ExportMenu } from './ExportMenu';
 import { SelectionStatus } from './SelectionStatus';
 import { ChartMenu } from './ChartMenu';
 import { SearchBox } from './SearchBox';
-
 import { actionValuesToString, filtersEqual, sortsEqual } from './utils';
 import { GridFilterModal } from './GridFilterModal';
 import { FiltersButton } from './FiltersButton';
@@ -59,8 +57,8 @@ import { FilterStatus } from './FilterStatus';
 import { SaveViewModal } from './SaveViewModal';
 import { CustomizeGridViewModal } from './CustomizeGridViewModal';
 import { ManageViewsModal } from './ManageViewsModal';
-
 import { Actions, InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
+import { ChartPanel } from './ChartPanel';
 
 export interface GridPanelProps<ButtonsComponentProps> {
     ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;

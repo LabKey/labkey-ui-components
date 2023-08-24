@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { ChangeEvent, MouseEvent, PureComponent, ReactNode, SyntheticEvent } from 'react';
-import { Query } from '@labkey/api';
+import { Query, Utils } from '@labkey/api';
 import classNames from 'classnames';
 import { List, Map, OrderedMap, Set } from 'immutable';
 import { Button, Nav, NavItem, OverlayTrigger, Popover, Tab, TabContainer } from 'react-bootstrap';
@@ -247,6 +247,7 @@ export interface BulkAddData {
 }
 
 export interface BulkUpdateQueryInfoFormProps extends QueryInfoFormProps {
+    applyBulkUpdateBtnText?: string;
     excludeRowIdx?: number[]; // the row ind to exclude for bulk update, row might be readonly or locked
     onBulkUpdateFormDataChange?: (pendingBulkFormData?: any) => void;
     onClickBulkUpdate?: (selected: Set<number>) => Promise<boolean>;
@@ -268,7 +269,6 @@ export interface SharedEditableGridProps {
     bulkRemoveText?: string;
     bulkUpdateProps?: Partial<BulkUpdateQueryInfoFormProps>;
     bulkUpdateText?: string;
-    cancelBtnProps?: EditableGridBtnProps;
     columnMetadata?: Map<string, EditableColumnMetadata>;
     condensed?: boolean;
     containerFilter?: Query.ContainerFilter;
@@ -294,6 +294,7 @@ export interface SharedEditableGridProps {
     showAsTab?: boolean; // Toggle "Edit in Grid" and "Edit in Bulk" as tabs
     showBulkTabOnLoad?: boolean;
     striped?: boolean;
+    tabAdditionalBtn?: ReactNode;
     tabBtnProps?: EditableGridBtnProps;
     tabContainerCls?: string;
     updateColumns?: QueryColumn[];
@@ -1384,18 +1385,23 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         }
     };
 
+    applyPendingBulkFormData = (): void => {
+        const { pendingBulkFormData } = this.state;
+        this.bulkUpdate(pendingBulkFormData).then(() => {
+            this.setState({
+                pendingBulkFormData: undefined,
+                activeEditTab: EditableGridTabs.Grid,
+            });
+        });
+    };
+
     onTabChange = (event: SyntheticEvent<TabContainer, Event>): void => {
         const { bulkUpdateProps } = this.props;
-        const { activeEditTab, pendingBulkFormData } = this.state;
+        const { activeEditTab } = this.state;
         const newTabKey: EditableGridTabs = event as any; // Crummy cast to make TS happy
 
         if (newTabKey === EditableGridTabs.Grid && activeEditTab === EditableGridTabs.BulkUpdate) {
-            this.bulkUpdate(pendingBulkFormData).then(() => {
-                this.setState({
-                    pendingBulkFormData: undefined,
-                    activeEditTab: newTabKey,
-                });
-            });
+            this.applyPendingBulkFormData();
         } else if (newTabKey === EditableGridTabs.BulkUpdate && activeEditTab === EditableGridTabs.Grid) {
             if (bulkUpdateProps?.onClickBulkUpdate) {
                 bulkUpdateProps
@@ -1431,16 +1437,13 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         });
     };
 
-    onCancelClick = (): void => {
-        this.props.cancelBtnProps?.onClick?.();
-    };
-
     renderButtons = (): ReactNode => {
-        const { primaryBtnProps, cancelBtnProps, tabBtnProps } = this.props;
+        const { primaryBtnProps, tabAdditionalBtn, tabBtnProps } = this.props;
         if (!tabBtnProps?.show) return null;
 
         return (
             <div className={tabBtnProps?.cls}>
+                {tabAdditionalBtn}
                 <Button
                     bsStyle="primary"
                     bsClass={primaryBtnProps.cls}
@@ -1449,11 +1452,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 >
                     {primaryBtnProps.caption ?? 'Save'}
                 </Button>
-                {cancelBtnProps && (
-                    <Button bsStyle="default" bsClass={cancelBtnProps.cls} onClick={this.onCancelClick}>
-                        {cancelBtnProps.caption ?? 'Cancel'}
-                    </Button>
-                )}
             </div>
         );
     };
@@ -1461,26 +1459,38 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     renderBulkUpdate = (): ReactNode => {
         const { addControlProps, bulkUpdateProps, data, dataKeys, editorModel, forUpdate, queryInfo, showAsTab } =
             this.props;
+        const { pendingBulkFormData } = this.state;
 
         return (
-            <BulkAddUpdateForm
-                asModal={!showAsTab}
-                data={data}
-                dataKeys={dataKeys}
-                editorModel={editorModel}
-                columnFilter={bulkUpdateProps?.columnFilter}
-                queryFilters={bulkUpdateProps?.queryFilters}
-                onFormChangeWithData={showAsTab ? this.onBulkUpdateFormDataChange : undefined}
-                onHide={this.toggleBulkUpdate}
-                operation={forUpdate ? Operation.update : Operation.insert}
-                onSubmitForEdit={this.bulkUpdate}
-                onSuccess={this.toggleBulkUpdate}
-                pluralNoun={addControlProps.nounPlural}
-                queryInfo={queryInfo}
-                selectedRowIndexes={this.getSelectedRowIndices()}
-                singularNoun={addControlProps.nounSingular}
-                warning={bulkUpdateProps?.warning}
-            />
+            <>
+                {bulkUpdateProps?.applyBulkUpdateBtnText && (
+                    <Button
+                        bsStyle="primary"
+                        onClick={this.applyPendingBulkFormData}
+                        disabled={Utils.isEmptyObj(pendingBulkFormData?.toJS())}
+                    >
+                        {bulkUpdateProps?.applyBulkUpdateBtnText}
+                    </Button>
+                )}
+                <BulkAddUpdateForm
+                    asModal={!showAsTab}
+                    data={data}
+                    dataKeys={dataKeys}
+                    editorModel={editorModel}
+                    columnFilter={bulkUpdateProps?.columnFilter}
+                    queryFilters={bulkUpdateProps?.queryFilters}
+                    onFormChangeWithData={showAsTab ? this.onBulkUpdateFormDataChange : undefined}
+                    onHide={this.toggleBulkUpdate}
+                    operation={forUpdate ? Operation.update : Operation.insert}
+                    onSubmitForEdit={this.bulkUpdate}
+                    onSuccess={this.toggleBulkUpdate}
+                    pluralNoun={addControlProps.nounPlural}
+                    queryInfo={queryInfo}
+                    selectedRowIndexes={this.getSelectedRowIndices()}
+                    singularNoun={addControlProps.nounSingular}
+                    warning={bulkUpdateProps?.warning}
+                />
+            </>
         );
     };
 

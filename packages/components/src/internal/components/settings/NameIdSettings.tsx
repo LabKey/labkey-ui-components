@@ -340,10 +340,10 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
 
                     {loading && <LoadingSpinner />}
                     {!loading && (
-                        <>
+                        <div>
                             <Row className="margin-top">
                                 <Col xs={2}>
-                                    <div className="sample-counter__prefix-label">sampleCount:</div>
+                                    <div className="sample-counter__prefix-label">sampleCount</div>
                                 </Col>
                                 <Col xs={4}>
                                     <FormControl
@@ -365,7 +365,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                         }}
                                         disabled={updatingCounter}
                                     >
-                                        Apply new sampleCount
+                                        Apply New sampleCount
                                     </Button>
                                 </Col>
                                 <Col xs={3}>
@@ -385,7 +385,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                             </Row>
                             <Row className="margin-top">
                                 <Col xs={2}>
-                                    <div className="sample-counter__prefix-label">rootSampleCount:</div>
+                                    <div className="sample-counter__prefix-label">rootSampleCount</div>
                                 </Col>
                                 <Col xs={4}>
                                     <FormControl
@@ -407,7 +407,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                         }}
                                         disabled={updatingCounter}
                                     >
-                                        Apply new rootSampleCount
+                                        Apply New rootSampleCount
                                     </Button>
                                 </Col>
                                 <Col xs={3}>
@@ -444,7 +444,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                     </div>
                                 </ConfirmModal>
                             )}
-                        </>
+                        </div>
                     )}
                 </div>
 

@@ -72,8 +72,8 @@ describe('NameIdSettings', () => {
 
         const counterLabel = wrapper.find('div.sample-counter__prefix-label');
         expect(counterLabel.length).toEqual(2);
-        expect(counterLabel.at(0).text()).toBe('sampleCount:');
-        expect(counterLabel.at(1).text()).toBe('rootSampleCount:');
+        expect(counterLabel.at(0).text()).toBe('sampleCount');
+        expect(counterLabel.at(1).text()).toBe('rootSampleCount');
 
         const counterInputs = wrapper.find('input.update-samplecount-input');
         expect(counterInputs.length).toEqual(2);

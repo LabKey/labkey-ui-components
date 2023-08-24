@@ -684,9 +684,9 @@ export function saveSampleCounter(
 }
 
 export function hasExistingSamples(isRoot?: boolean, containerPath?: string): Promise<boolean> {
-    let dataCountSql = 'SELECT COUNT(*) AS SampleCount FROM materials ';
-
-    if (isRoot) dataCountSql += 'WHERE rootMaterialLSID IS NULL';
+    let dataCountSql = 'SELECT m.Name As SampleName FROM materials m WHERE EXISTS ( SELECT * FROM exp.materials in WHERE in.rowId = m.rowId';
+    if (isRoot) dataCountSql += 'AND in.rootMaterialLSID IS NULL';
+    dataCountSql += ')';
 
     return new Promise((resolve, reject) => {
         Query.executeSql({
@@ -695,7 +695,7 @@ export function hasExistingSamples(isRoot?: boolean, containerPath?: string): Pr
             schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
             sql: dataCountSql,
             success: async data => {
-                resolve(data.rows[0].SampleCount !== 0);
+                resolve(!!data.rows[0].SampleName);
             },
             failure: error => {
                 reject(error);

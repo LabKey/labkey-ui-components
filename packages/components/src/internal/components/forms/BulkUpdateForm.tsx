@@ -239,7 +239,6 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
                 includeCountField={false}
                 initiallyDisableFields
                 isLoading={isLoadingDataForSelection}
-                onCancel={onCancel}
                 onHide={onCancel}
                 operation={Operation.update}
                 onSubmitForEdit={this.onSubmitForEdit}

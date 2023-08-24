@@ -11,7 +11,6 @@ import {
     MENU_LOADING_ERROR,
     MENU_LOADING_START,
     MENU_RELOAD,
-    SET_RELOAD_REQUIRED,
     UPDATE_USER,
     UPDATE_USER_DISPLAY_NAME,
     SERVER_NOTIFICATIONS_LOADING_START,
@@ -24,8 +23,6 @@ import { getAppProductIds } from './utils';
 export const updateUser = (userProps: Partial<User>) => ({ type: UPDATE_USER, userProps });
 
 export const updateUserDisplayName = (displayName: string) => ({ type: UPDATE_USER_DISPLAY_NAME, displayName });
-
-export const setReloadRequired = () => ({ type: SET_RELOAD_REQUIRED });
 
 export function menuInit(currentProductId: string, appProductId: string) {
     return (dispatch, getState) => {

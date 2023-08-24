@@ -48,7 +48,6 @@ export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFields
     isSubmittedText?: string;
     isSubmittingText?: string;
     maxCount?: number;
-    onCancel?: () => void;
     onFormChange?: () => void;
     // allow passing of full form data, compare with onFormChange
     onFormChangeWithData?: (formData?: any) => void;
@@ -120,10 +119,6 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
 
     disableSubmitButton = (): void => {
         this.setState({ canSubmit: false });
-    };
-
-    handleCancel = (): void => {
-        this.props.onCancel?.();
     };
 
     handleChange = (): void => {
@@ -280,6 +275,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
 
         const inProgressText = isSubmitted ? isSubmittedText : isSubmitting ? isSubmittingText : undefined;
         const suffix = count > 1 ? pluralNoun : singularNoun;
+        const showCancel = this.props.onHide !== undefined || this.props.asModal;
 
         let submitForEditBtn;
 
@@ -300,11 +296,13 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         return (
             <div className="form-group no-margin-bottom">
                 <div className="col-sm-12">
-                    <div className="pull-left">
-                        <Button className="test-loc-cancel-button" onClick={this.onHide}>
-                            {cancelText}
-                        </Button>
-                    </div>
+                    {showCancel && (
+                        <div className="pull-left">
+                            <Button className="test-loc-cancel-button" onClick={this.onHide}>
+                                {cancelText}
+                            </Button>
+                        </div>
+                    )}
                     <div className="btn-group pull-right">
                         {submitForEditBtn}
                         {submitText && onSubmit && (
@@ -347,7 +345,6 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
             isSubmittedText,
             isSubmittingText,
             maxCount,
-            onCancel,
             onFormChange,
             onHide,
             onSubmit,

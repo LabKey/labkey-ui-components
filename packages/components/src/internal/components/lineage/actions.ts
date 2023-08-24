@@ -365,7 +365,6 @@ export class ServerLineageAPIWrapper implements LineageAPIWrapper {
                 const node = nodes.first();
                 const { fieldKey } = node.pkFilters[0];
 
-                console.log('fNodeMetadata', node.schemaName, node.queryName);
                 return selectRowsDeprecated({
                     containerPath: node.containerPath,
                     schemaName: node.schemaName,

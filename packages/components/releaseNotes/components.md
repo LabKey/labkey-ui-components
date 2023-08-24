@@ -8,6 +8,16 @@ Components, models, actions, and utility functions for LabKey applications and p
     - Updated getGenId/setGenId util to use new API
     - Added hasExistingSamples, getSampleCounter and saveSampleCounter util
 
+### version 2.361.1
+*Released*: 24 August 2023
+- EditableGrid change to allow for tabAdditionalBtn prop instead of cancelBtnProps
+
+### version 2.361.0
+*Released*: 23 August 2023
+- withRouteLeave: Fix issue with not passing all withRouter props forward
+- QueryInfoForm: Remove onCancel (it was unused)
+- ProfilePage: Remove need for onBack/setReloadRequired, remove cancel button
+
 ### version 2.360.3
 *Released*: 23 August 2023
 - When loading all models, load selections if there is a way to do so.

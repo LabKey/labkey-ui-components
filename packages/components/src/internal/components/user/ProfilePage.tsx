@@ -2,8 +2,9 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { Button } from 'react-bootstrap';
+import { WithRouterProps } from 'react-router';
 
 import { isLoginAutoRedirectEnabled } from '../administration/utils';
 import { InsufficientPermissionsPage } from '../permissions/InsufficientPermissionsPage';
@@ -20,7 +21,7 @@ import { getDateFormat } from '../../util/Date';
 
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 
-import { InjectedRouteLeaveProps, withRouteLeave } from '../../util/RouteLeave';
+import { useRouteLeave } from '../../util/RouteLeave';
 
 import { UserDetailHeader } from './UserDetailHeader';
 import { getUserRoleDisplay } from './actions';
@@ -30,18 +31,15 @@ import { ChangePasswordModal } from './ChangePasswordModal';
 
 import { useUserProperties } from './UserProvider';
 
-interface OwnProps {
-    goBack: (n?: number) => any;
-    setReloadRequired: () => any;
+interface Props extends WithRouterProps {
     updateUserDisplayName: (displayName: string) => any;
 }
-
-type Props = OwnProps & InjectedRouteLeaveProps;
 
 const TITLE = 'User Profile';
 
 const ProfilePageImpl: FC<Props> = props => {
-    const { goBack, setReloadRequired, updateUserDisplayName, setIsDirty, getIsDirty } = props;
+    const { router, routes, updateUserDisplayName } = props;
+    const [_, setIsDirty] = useRouteLeave(router, routes);
     const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
     const { moduleContext, user } = useServerContext();
     const userProperties = useUserProperties(user);
@@ -51,40 +49,40 @@ const ProfilePageImpl: FC<Props> = props => {
         return <InsufficientPermissionsPage title={TITLE} />;
     }
 
-    const navigate = (result: {}, shouldReload: boolean): void => {
-        setIsDirty(false);
-        const successMsg = 'Successfully updated your user profile.';
+    const navigate = useCallback(
+        (result: any, shouldReload: boolean): void => {
+            setIsDirty(false);
+            const successMsg = 'Successfully updated your user profile.';
 
-        if (shouldReload) {
-            createNotification(successMsg);
-            setReloadRequired();
-        } else if (result) {
-            // push any display name changes to the app state user object
-            if (result['updatedRows'].length === 1) {
-                const row = result['updatedRows'][0];
-                if (row.DisplayName !== undefined) {
+            if (shouldReload) {
+                createNotification(successMsg);
+                window.location.reload();
+                return;
+            }
+
+            if (result) {
+                const row = result.updatedRows[0];
+
+                if (row !== undefined && row.DisplayName !== undefined) {
+                    // push any display name changes to the app state user object
                     updateUserDisplayName(row.DisplayName);
                 }
+
+                if (result.success) {
+                    createNotification(successMsg);
+                }
             }
-        }
+        },
+        [createNotification, setIsDirty, updateUserDisplayName]
+    );
 
-        goBack();
-        if (result && result['success']) {
-            createNotification(successMsg, true);
-        }
-    };
-
-    const onCancel = (): void => {
-        navigate(undefined, false);
-    };
-
-    const onChangePassword = (): void => {
+    const onChangePassword = useCallback((): void => {
         createNotification('Successfully changed password.');
-    };
+    }, [createNotification]);
 
-    const toggleChangePassword = (): void => {
+    const toggleChangePassword = useCallback((): void => {
         setShowChangePassword(!showChangePassword);
-    };
+    }, [showChangePassword]);
 
     const allowChangePassword = !isLoginAutoRedirectEnabled(moduleContext);
 
@@ -102,14 +100,7 @@ const ProfilePageImpl: FC<Props> = props => {
             />
             <Notifications />
             <Section>
-                <UserProfile
-                    userProperties={userProperties}
-                    user={user}
-                    onCancel={onCancel}
-                    onSuccess={navigate}
-                    setIsDirty={setIsDirty}
-                    getIsDirty={getIsDirty}
-                />
+                <UserProfile userProperties={userProperties} user={user} onSuccess={navigate} setIsDirty={setIsDirty} />
             </Section>
             {allowChangePassword && showChangePassword && (
                 <ChangePasswordModal user={user} onHide={toggleChangePassword} onSuccess={onChangePassword} />
@@ -118,4 +109,4 @@ const ProfilePageImpl: FC<Props> = props => {
     );
 };
 
-export const ProfilePage = withRouteLeave(ProfilePageImpl);
+export const ProfilePage = ProfilePageImpl;

@@ -30,9 +30,7 @@ describe('<UserProfile/>', () => {
                 user={TEST_USER_READER}
                 userProperties={{}}
                 onSuccess={jest.fn()}
-                onCancel={jest.fn()}
                 setIsDirty={jest.fn()}
-                getIsDirty={jest.fn()}
             />
         );
 
@@ -44,7 +42,7 @@ describe('<UserProfile/>', () => {
         expect(wrapper.find('.user-text-link')).toHaveLength(0);
         expect(wrapper.find(TextInput)).toHaveLength(5);
         expect(wrapper.find('input').findWhere(input => input.prop('disabled'))).toHaveLength(1); // email disabled
-        expect(wrapper.find(Button)).toHaveLength(2);
+        expect(wrapper.find(Button)).toHaveLength(1);
 
         wrapper.unmount();
     });

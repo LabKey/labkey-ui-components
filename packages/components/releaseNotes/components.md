@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.361.2
+*Released*: 24 August 2023
+- Rename `parseTimeFormat` to `parseDateFNSTimeFormat`
+- Return constant time formats for 12-hour and 24-hour time formats.
+
 ### version 2.361.1
 *Released*: 24 August 2023
 - EditableGrid change to allow for tabAdditionalBtn prop instead of cancelBtnProps

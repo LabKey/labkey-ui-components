@@ -112,7 +112,50 @@
         overflow: hidden;
     }
 }
-
-.r-report__images img {
+.chart-body {
+    position: relative;
+}
+.chart-panel {
+    margin-bottom: 8px;
+    min-height: 100px;
+}
+.chart-panel__hide-icon {
+    display: flex;
+    flex-direction: row-reverse;
+}
+.chart-panel__hide-icon .btn {
+    border-color: transparent;
+}
+.chart-panel__hide-icon .btn:hover {
+    border-color: $border-color;
+    background-color: transparent;
+}
+.chart-loading-mask {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+.chart-loading-mask__background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(100, 100, 100, .05);
+}
+.chart-loading-mask > .loading-spinner {
+    background-color: #ffffff;
+    padding: 8px;
+    font-size: 18px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.r-report__images {
+    align-items: end; // This aligns the bottom of every image with each other, useful for aligning x-axis
+    align-content: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+}
+.r-report__image img {
     max-width: 100%;
 }

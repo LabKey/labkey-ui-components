@@ -26,6 +26,13 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ChartAPIWrapper, DEFAULT_API_WRAPPER } from './api';
 import { ChartConfig, ChartQueryConfig } from './models';
 
+const ChartLoadingMask: FC = memo(() => (
+    <div className="chart-loading-mask">
+        <div className="chart-loading-mask__background" />
+        <LoadingSpinner msg="Loading Chart..." wrapperClassName="loading-spinner" />
+    </div>
+));
+
 /**
  * Returns a string representation of a given filter array. Needed to properly memoize variables in functional
  * components that rely on a filter array from QueryModel, because QueryModel always returns a new filter array.
@@ -48,12 +55,14 @@ interface Props {
 export const SVGChart: FC<Props> = memo(({ api, chart, filters }) => {
     const { error, reportId } = chart;
     const divId = useMemo(() => generateId('chart-'), []);
+    const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [queryConfig, setQueryConfig] = useState<ChartQueryConfig>(undefined);
     const [chartConfig, setChartConfig] = useState<ChartConfig>(undefined);
     const [loadError, setLoadError] = useState<string>(undefined);
     const filterKey = useMemo(() => computeFilterKey(filters), [filters]);
     const ref = useRef<HTMLDivElement>(undefined);
     const loadChartConfig = useCallback(async () => {
+        setLoadingState(LoadingState.LOADING);
         try {
             const visualizationConfig = await api.fetchVisualizationConfig(reportId);
             const chartConfig_ = visualizationConfig.chartConfig;
@@ -69,6 +78,8 @@ export const SVGChart: FC<Props> = memo(({ api, chart, filters }) => {
             setQueryConfig(queryConfig_);
         } catch (e) {
             setLoadError(e.exception);
+        } finally {
+            setLoadingState(LoadingState.LOADED);
         }
         // We purposely don't use filters as a dep, see note in computeFilterKey
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -116,12 +127,11 @@ export const SVGChart: FC<Props> = memo(({ api, chart, filters }) => {
     }, [divId, chartConfig, queryConfig]);
 
     return (
-        <div className="svg-chart">
+        <div className="svg-chart chart-body">
             {error !== undefined && <span className="text-danger">{error}</span>}
             {loadError !== undefined && <span className="text-danger">{loadError}</span>}
-            <div className="svg-chart__chart" id={divId} ref={ref}>
-                <LoadingSpinner />
-            </div>
+            {isLoading(loadingState) && <ChartLoadingMask />}
+            <div className="svg-chart__chart" id={divId} ref={ref} />
         </div>
     );
 });
@@ -172,14 +182,16 @@ const RReport: FC<Props> = memo(({ api, chart, container, filters }) => {
     }, [error, loadReport]);
 
     return (
-        <div className="r-report">
-            {isLoading(loadingState) && <LoadingSpinner />}
+        <div className="r-report chart-body">
             {error !== undefined && <span className="text-danger">{error}</span>}
             {loadError !== undefined && <span className="text-danger">{loadError}</span>}
+            {isLoading(loadingState) && <ChartLoadingMask />}
             {imageUrls !== undefined && (
                 <div className="r-report__images">
                     {imageUrls?.map(url => (
-                        <img alt="R Report Image Output" key={url} src={url} />
+                        <div key={url} className="r-report__image">
+                            <img alt="R Report Image Output" src={url} />
+                        </div>
                     ))}
                 </div>
             )}

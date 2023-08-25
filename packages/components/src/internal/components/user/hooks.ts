@@ -5,10 +5,9 @@
 import { useEffect, useState } from 'react';
 
 import { User } from '../base/models/User';
+import { getDefaultAPIWrapper } from '../../APIWrapper';
 
-import { getUserProperties } from './actions';
-
-export function useUserProperties(user: User): Record<string, any> {
+export function useUserProperties(user: User, api = getDefaultAPIWrapper()): Record<string, any> {
     const { id, isGuest } = user;
     const [userProperties, setUserProperties] = useState<Record<string, any>>();
 
@@ -18,14 +17,14 @@ export function useUserProperties(user: User): Record<string, any> {
         } else {
             (async () => {
                 try {
-                    const response = await getUserProperties(id);
+                    const response = await api.security.getUserProperties(id);
                     setUserProperties(response.props);
                 } catch (e) {
                     console.error('Failed to load user properties', e);
                 }
             })();
         }
-    }, [isGuest, id]);
+    }, [api, isGuest, id]);
 
     return userProperties;
 }

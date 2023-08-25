@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 
 import { useServerContext } from '../base/ServerContext';
 import { InsufficientPermissionsPage } from '../permissions/InsufficientPermissionsPage';
-import { useUserProperties } from '../user/UserProvider';
+import { useUserProperties } from '../user/hooks';
 import { Page } from '../base/Page';
 import { UserDetailHeader } from '../user/UserDetailHeader';
 import { getUserRoleDisplay } from '../user/actions';

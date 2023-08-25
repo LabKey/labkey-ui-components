@@ -448,7 +448,7 @@ import { UserDetailHeader } from './internal/components/user/UserDetailHeader';
 import { UserProfile } from './internal/components/user/UserProfile';
 import { ChangePasswordModal } from './internal/components/user/ChangePasswordModal';
 import { UsersGridPanel } from './internal/components/user/UsersGridPanel';
-import { useUserProperties } from './internal/components/user/UserProvider';
+import { useUserProperties } from './internal/components/user/hooks';
 import { UserLink, UserLinkList } from './internal/components/user/UserLink';
 import { AccountSubNav } from './internal/components/user/AccountSubNav';
 import { ProfilePage } from './internal/components/user/ProfilePage';

@@ -29,7 +29,7 @@ import { getUserRoleDisplay } from './actions';
 import { UserProfile } from './UserProfile';
 import { ChangePasswordModal } from './ChangePasswordModal';
 
-import { useUserProperties } from './UserProvider';
+import { useUserProperties } from './hooks';
 
 interface Props extends WithRouterProps {
     updateUserDisplayName: (displayName: string) => any;

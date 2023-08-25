@@ -231,6 +231,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         "getGenId": [MockFunction],
         "getMaxPhiLevel": [Function],
         "hasExistingDomainData": [MockFunction],
+        "saveDomain": [MockFunction],
         "setGenId": [MockFunction],
         "validateDomainNameExpressions": [MockFunction],
       }
@@ -382,6 +383,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         "getGenId": [MockFunction],
         "getMaxPhiLevel": [Function],
         "hasExistingDomainData": [MockFunction],
+        "saveDomain": [MockFunction],
         "setGenId": [MockFunction],
         "validateDomainNameExpressions": [MockFunction],
       }
@@ -533,6 +535,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         "getGenId": [MockFunction],
         "getMaxPhiLevel": [Function],
         "hasExistingDomainData": [MockFunction],
+        "saveDomain": [MockFunction],
         "setGenId": [MockFunction],
         "validateDomainNameExpressions": [MockFunction],
       }
@@ -1428,6 +1431,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
         "getGenId": [MockFunction],
         "getMaxPhiLevel": [Function],
         "hasExistingDomainData": [MockFunction],
+        "saveDomain": [MockFunction],
         "setGenId": [MockFunction],
         "validateDomainNameExpressions": [MockFunction],
       }
@@ -1821,6 +1825,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
         "getGenId": [MockFunction],
         "getMaxPhiLevel": [Function],
         "hasExistingDomainData": [MockFunction],
+        "saveDomain": [MockFunction],
         "setGenId": [MockFunction],
         "validateDomainNameExpressions": [MockFunction],
       }
@@ -2745,6 +2750,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         "getGenId": [MockFunction],
         "getMaxPhiLevel": [Function],
         "hasExistingDomainData": [MockFunction],
+        "saveDomain": [MockFunction],
         "setGenId": [MockFunction],
         "validateDomainNameExpressions": [MockFunction],
       }
@@ -2896,6 +2902,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         "getGenId": [MockFunction],
         "getMaxPhiLevel": [Function],
         "hasExistingDomainData": [MockFunction],
+        "saveDomain": [MockFunction],
         "setGenId": [MockFunction],
         "validateDomainNameExpressions": [MockFunction],
       }
@@ -3047,6 +3054,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         "getGenId": [MockFunction],
         "getMaxPhiLevel": [Function],
         "hasExistingDomainData": [MockFunction],
+        "saveDomain": [MockFunction],
         "setGenId": [MockFunction],
         "validateDomainNameExpressions": [MockFunction],
       }
@@ -3422,6 +3430,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
         "getGenId": [MockFunction],
         "getMaxPhiLevel": [Function],
         "hasExistingDomainData": [MockFunction],
+        "saveDomain": [MockFunction],
         "setGenId": [MockFunction],
         "validateDomainNameExpressions": [MockFunction],
       }
@@ -3573,6 +3582,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
         "getGenId": [MockFunction],
         "getMaxPhiLevel": [Function],
         "hasExistingDomainData": [MockFunction],
+        "saveDomain": [MockFunction],
         "setGenId": [MockFunction],
         "validateDomainNameExpressions": [MockFunction],
       }
@@ -4431,6 +4441,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
         "getGenId": [MockFunction],
         "getMaxPhiLevel": [Function],
         "hasExistingDomainData": [MockFunction],
+        "saveDomain": [MockFunction],
         "setGenId": [MockFunction],
         "validateDomainNameExpressions": [MockFunction],
       }
@@ -5799,6 +5810,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
         "getGenId": [MockFunction],
         "getMaxPhiLevel": [Function],
         "hasExistingDomainData": [MockFunction],
+        "saveDomain": [MockFunction],
         "setGenId": [MockFunction],
         "validateDomainNameExpressions": [MockFunction],
       }
@@ -6192,6 +6204,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
         "getGenId": [MockFunction],
         "getMaxPhiLevel": [Function],
         "hasExistingDomainData": [MockFunction],
+        "saveDomain": [MockFunction],
         "setGenId": [MockFunction],
         "validateDomainNameExpressions": [MockFunction],
       }

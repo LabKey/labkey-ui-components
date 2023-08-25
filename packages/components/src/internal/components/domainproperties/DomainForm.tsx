@@ -221,7 +221,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     componentDidMount = async (): Promise<void> => {
-        const { domain, maxPhiLevel, useTheme, onChange, api } = this.props;
+        const { domain, maxPhiLevel, onChange, api } = this.props;
 
         this.setState({ isLoading: true });
 
@@ -1362,7 +1362,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                 </Row>
 
                                 {!summaryViewMode &&
-                                    appDomainHeaderRenderer?.({
+                                    appDomainHeaderRenderer &&
+                                    appDomainHeaderRenderer({
                                         domain,
                                         domainIndex,
                                         modelDomains,

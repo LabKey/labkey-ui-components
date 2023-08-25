@@ -42,7 +42,7 @@ export function withBaseDomainDesigner<Props>(
         };
 
         // TODO: having a child component pass a callback to a parent is a big red flag
-        onTogglePanel = (index: number, collapsed: boolean, callback: () => void): void => {
+        onTogglePanel = (index: number, collapsed: boolean, callback: () => any): void => {
             const { currentPanelIndex } = this.state;
 
             if (!collapsed) {
@@ -53,7 +53,7 @@ export function withBaseDomainDesigner<Props>(
                         validatePanel: state.currentPanelIndex,
                         visitedPanels: getUpdatedVisitedPanelsList(state.visitedPanels, index),
                     }),
-                    callback
+                    callback() // TODO: This is being called immediately and we rely on that fact. Refactor this whole toggling functionality.
                 );
             } else if (currentPanelIndex === index) {
                 this.setState(
@@ -63,7 +63,7 @@ export function withBaseDomainDesigner<Props>(
                         validatePanel: state.currentPanelIndex,
                         visitedPanels: getUpdatedVisitedPanelsList(state.visitedPanels, index),
                     }),
-                    callback
+                    callback() // TODO: This is being called immediately and we rely on that fact. Refactor this whole toggling functionality.
                 );
             } else {
                 callback();

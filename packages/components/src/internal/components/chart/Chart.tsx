@@ -51,12 +51,14 @@ interface Dimensions {
     width: number;
 }
 
+const MAX_HEIGHT = 500;
+
 function computeDimensions(width: number): Dimensions {
     const dimensions = {
         width,
         height: (width * 9) / 16, // 16:9 aspect ratio
     };
-    if (dimensions.height > 300) dimensions.height = 500;
+    if (dimensions.height > MAX_HEIGHT) dimensions.height = MAX_HEIGHT;
 
     return dimensions;
 }
@@ -136,6 +138,7 @@ export const SVGChart: FC<Props> = memo(({ api, chart, filters }) => {
                 // updated in the future to use the underlying VIS library to separate fetching of data from rendering
                 // the chart. We should only be fetching data when the reportId or filterArray change.
                 LABKEY_VIS.GenericChartHelper.renderChartSVG(divId, queryConfig, chartConfig);
+                console.log(chartConfig);
             }
         };
         // Debounce the call to render because we may trigger many resize events back to back, which will produce many

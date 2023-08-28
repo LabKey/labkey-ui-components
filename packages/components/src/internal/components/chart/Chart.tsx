@@ -45,6 +45,22 @@ function computeFilterKey(filters: Filter.IFilter[]): string {
         .sort()
         .join('_');
 }
+
+interface Dimensions {
+    height: number;
+    width: number;
+}
+
+function computeDimensions(width: number): Dimensions {
+    const dimensions = {
+        width,
+        height: (width * 9) / 16, // 16:9 aspect ratio
+    };
+    if (dimensions.height > 300) dimensions.height = 500;
+
+    return dimensions;
+}
+
 interface Props {
     api?: ChartAPIWrapper;
     chart: DataViewInfo;
@@ -65,10 +81,11 @@ export const SVGChart: FC<Props> = memo(({ api, chart, filters }) => {
         setLoadingState(LoadingState.LOADING);
         try {
             const visualizationConfig = await api.fetchVisualizationConfig(reportId);
-            const chartConfig_ = visualizationConfig.chartConfig;
+            const chartConfig_ = {
+                ...visualizationConfig.chartConfig,
+                ...computeDimensions(ref.current.offsetWidth),
+            };
             const queryConfig_ = visualizationConfig.queryConfig;
-            chartConfig_.width = ref.current.offsetWidth;
-            chartConfig_.height = (chartConfig_.width * 9) / 16; // 16:9 aspect ratio
             setChartConfig(chartConfig_);
 
             if (filters) {
@@ -89,9 +106,10 @@ export const SVGChart: FC<Props> = memo(({ api, chart, filters }) => {
         setChartConfig(currentChartConfig => {
             if (currentChartConfig === undefined || ref.current === undefined) return currentChartConfig;
 
-            const updatedChartConfig = { ...currentChartConfig };
-            updatedChartConfig.width = ref.current.offsetWidth;
-            updatedChartConfig.height = (updatedChartConfig.width * 9) / 16; // 16:9 aspect ratio
+            const updatedChartConfig = {
+                ...currentChartConfig,
+                ...computeDimensions(ref.current.offsetWidth),
+            };
             setChartConfig(updatedChartConfig);
 
             return updatedChartConfig;

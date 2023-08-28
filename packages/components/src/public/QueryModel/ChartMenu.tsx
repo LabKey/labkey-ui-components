@@ -77,7 +77,10 @@ export class ChartMenu extends PureComponent<Props> {
                         isLoadingCharts ? (
                             <span className="fa fa-spinner fa-pulse" />
                         ) : (
-                            <span className="fa fa-area-chart" />
+                            <span>
+                                <span className="fa fa-area-chart" />
+                                <span> Charts</span>
+                            </span>
                         )
                     }
                 >

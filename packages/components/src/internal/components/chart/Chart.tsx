@@ -211,6 +211,12 @@ const RReport: FC<Props> = memo(({ api, chart, container, filters }) => {
                             <img alt="R Report Image Output" src={url} />
                         </div>
                     ))}
+                    {imageUrls?.length === 0 && (
+                        <div className="error-msg">
+                            No output detected, you may not have enough data, or there may be an issue with your R
+                            Report
+                        </div>
+                    )}
                 </div>
             )}
         </div>

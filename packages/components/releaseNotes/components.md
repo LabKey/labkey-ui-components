@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Issue 48364: Sample assay report SQL syntax error in WHERE clause for sample field with space in name
+
 ### version 2.361.2
 *Released*: 24 August 2023
 - Rename `parseTimeFormat` to `parseDateFNSTimeFormat`

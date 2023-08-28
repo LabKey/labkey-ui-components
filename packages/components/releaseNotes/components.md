@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.36?.0
-*Released*: ?? August 2023
+### version 2.362.0
+*Released*: 28 August 2023
 - Render Charts above grid
 
 ### version 2.361.3

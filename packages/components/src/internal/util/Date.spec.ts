@@ -30,7 +30,7 @@ import {
     isDateTimeInPast,
     isRelativeDateFilterValue,
     parseDate,
-    parseTimeFormat,
+    parseDateFNSTimeFormat,
 } from './Date';
 
 describe('Date Utilities', () => {
@@ -149,14 +149,16 @@ describe('Date Utilities', () => {
         });
     });
 
-    describe('parseTimeFormat', () => {
+    describe('parseDateFNSTimeFormat', () => {
         test('various formats', () => {
-            expect(parseTimeFormat('yyyy-MM HH')).toBeUndefined();
-            expect(parseTimeFormat('yyyy-MM HH HH:mm')).toBeUndefined();
-            expect(parseTimeFormat('yyyy-MM-DD HHmm')).toBeUndefined();
-            expect(parseTimeFormat('yyyy:MM:DD kk:mm YY')).toBeUndefined();
-            expect(parseTimeFormat('yyyy-MM-DD HH:mm')).toBe('HH:mm');
-            expect(parseTimeFormat('yyyy:MM:DD kk:mm')).toBe('kk:mm');
+            expect(parseDateFNSTimeFormat('yyyy-MM HH')).toBeUndefined();
+            expect(parseDateFNSTimeFormat('yyyy-MM-DD HHmm')).toBeUndefined();
+            expect(parseDateFNSTimeFormat('yyyy-MM HH HH:mm')).toBeUndefined();
+            expect(parseDateFNSTimeFormat('yyyy:MM:DD kk:mm aa')).toBe('HH:mm');
+            expect(parseDateFNSTimeFormat('yyyy-MM-DD HH:mm')).toBe('HH:mm');
+            expect(parseDateFNSTimeFormat('yyyy:MM:DD kk:mm')).toBe('HH:mm');
+            expect(parseDateFNSTimeFormat('yyyy:MM:DD hh:mm')).toBe('h:mm a');
+            expect(parseDateFNSTimeFormat('yyyy:MM:DD KK:mm')).toBe('h:mm a');
         });
     });
 

@@ -52,10 +52,10 @@ describe('DatePickerInput', () => {
     });
 
     test('with time-formatted dateFormat', () => {
-        const wrapper = mount(<DatePickerInputImpl {...DEFAULT_PROPS} dateFormat="yyyy-MM-dd kk:mm" />);
+        const wrapper = mount(<DatePickerInputImpl {...DEFAULT_PROPS} dateFormat="yyyy-MM-dd kk:mm a" />);
         const datePicker = wrapper.find(DatePicker);
-        expect(datePicker.prop('dateFormat')).toBe('yyyy-MM-dd kk:mm');
-        expect(datePicker.prop('timeFormat')).toBe('kk:mm');
+        expect(datePicker.prop('dateFormat')).toBe('yyyy-MM-dd kk:mm a');
+        expect(datePicker.prop('timeFormat')).toBe('HH:mm');
         wrapper.unmount();
     });
 

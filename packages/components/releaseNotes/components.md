@@ -8,6 +8,15 @@ Components, models, actions, and utility functions for LabKey applications and p
     - Updated getGenId/setGenId util to use new API
     - Added hasExistingSamples, getSampleCounter and saveSampleCounter util
 
+### version 2.361.3
+*Released*: 28 August 2023
+- Issue 48364: Sample assay report SQL syntax error in WHERE clause for sample field with space in name
+
+### version 2.361.2
+*Released*: 24 August 2023
+- Rename `parseTimeFormat` to `parseDateFNSTimeFormat`
+- Return constant time formats for 12-hour and 24-hour time formats.
+
 ### version 2.361.1
 *Released*: 24 August 2023
 - EditableGrid change to allow for tabAdditionalBtn prop instead of cancelBtnProps

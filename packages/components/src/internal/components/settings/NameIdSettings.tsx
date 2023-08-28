@@ -421,10 +421,10 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                             </Row>
                             {confirmCounterModalOpen && (
                                 <ConfirmModal
-                                    title={'Change ' + (isRoot ? 'rootSampleCount' : 'sampleCount')}
+                                    title={(isReset ? 'Reset ' : 'Update ') + (isRoot ? 'rootSampleCount' : 'sampleCount')}
                                     onCancel={closeCounterConfirmModal}
                                     onConfirm={saveSampleCounter}
-                                    confirmButtonText="Yes"
+                                    confirmButtonText={"Yes, " + (isReset ? 'Reset' : 'Update')}
                                     cancelButtonText="Cancel"
                                 >
                                     <div>

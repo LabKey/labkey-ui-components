@@ -273,7 +273,10 @@ export class AssayDefinitionModel extends Record({
                 'RowId IN (' +
                 sampleColumns
                     .map(sampleCol => {
-                        const fieldKey = (sampleCol + keyCol).replace(/\//g, '.');
+                        const fieldKey = (sampleCol + keyCol)
+                            .split('/')
+                            .map(token => '"' + token + '"')
+                            .join('.');
                         return `SELECT RowId FROM Data WHERE ${fieldKey} IN (${value.join(',')})`;
                     })
                     .join(' UNION ') +

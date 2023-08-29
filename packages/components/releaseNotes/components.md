@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.362.1
+*Released*: 29 August 2023
 - Issue 47763: Remove unnecessary DataFileUrl column from requiredColumns in Assay Runs grid
 
 ### version 2.362.0

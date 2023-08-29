@@ -809,7 +809,11 @@ import {
     TEST_LKSM_STARTER_MODULE_CONTEXT,
     TEST_LKSM_STARTER_AND_WORKFLOW_MODULE_CONTEXT,
 } from './internal/productFixtures';
-import { GENERAL_ASSAY_PROVIDER_NAME, RUN_PROPERTIES_REQUIRED_COLUMNS } from './internal/components/assay/constants';
+import {
+    GENERAL_ASSAY_PROVIDER_NAME,
+    WORKFLOW_TASK_PROPERTIES_REQUIRED_COLUMNS,
+    RUN_PROPERTIES_REQUIRED_COLUMNS,
+} from './internal/components/assay/constants';
 import { AdminSettingsPage } from './internal/components/administration/AdminSettingsPage';
 import { GlobalStateContextProvider } from './internal/GlobalStateContext';
 import {
@@ -1318,6 +1322,7 @@ export {
     allowReimportAssayRun,
     clearAssayDefinitionCache,
     fetchAllAssays,
+    WORKFLOW_TASK_PROPERTIES_REQUIRED_COLUMNS,
     RUN_PROPERTIES_REQUIRED_COLUMNS,
     GENERAL_ASSAY_PROVIDER_NAME,
     // report / chart related items

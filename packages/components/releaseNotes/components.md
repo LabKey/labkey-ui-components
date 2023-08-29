@@ -8,6 +8,10 @@ Components, models, actions, and utility functions for LabKey applications and p
     - Updated getGenId/setGenId util to use new API
     - Added hasExistingSamples, getSampleCounter and saveSampleCounter util
 
+### version 2.362.1
+*Released*: 29 August 2023
+- Issue 47763: Remove unnecessary DataFileUrl column from requiredColumns in Assay Runs grid
+
 ### version 2.362.0
 *Released*: 28 August 2023
 - Render Charts above grid

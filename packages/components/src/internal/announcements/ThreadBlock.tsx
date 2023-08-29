@@ -238,7 +238,7 @@ export const ThreadBlock: FC<ThreadBlockProps> = props => {
                         )}
                         {showReplyToggle && (
                             <span className="clickable-text thread-block__toggle-reply" onClick={onToggleResponses}>
-                                {showResponses ? 'Hide all replies' : `Show all replies (${thread.responses.length})`}
+                                {showResponses ? 'Hide all replies' : `Show all replies (${thread.responses.length.toLocaleString()})`}
                             </span>
                         )}
                         {showRecent && (

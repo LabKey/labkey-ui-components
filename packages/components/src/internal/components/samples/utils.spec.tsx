@@ -238,7 +238,13 @@ describe('getOperationNotPermittedMessage', () => {
                 [356]
             )
         ).toBeNull();
+    });
 
+    test('some allowed, lots not', () => {
+        const notAllowed = [];
+        for (let i = 0; i < 1235; i++) {
+            notAllowed.push({ Name: 'D-2.' + i, RowId: i });
+        }
         expect(
             getOperationNotPermittedMessage(
                 SampleOperation.EditLineage,
@@ -249,24 +255,10 @@ describe('getOperationNotPermittedMessage', () => {
                             RowId: 111,
                         },
                     ],
-                    notAllowed: [
-                        {
-                            Name: 'D-2.1',
-                            RowId: 351,
-                        },
-                        {
-                            Name: 'D-4.1',
-                            RowId: 354,
-                        },
-                        {
-                            Name: 'D-3.1',
-                            RowId: 356,
-                        },
-                    ],
-                }),
-                [351, 354, 356, 357]
+                    notAllowed,
+                })
             )
-        ).toBe('The current status of 3 selected samples prevents updating of their lineage.');
+        ).toBe('The current status of 1,235 selected samples prevents updating of their lineage.');
     });
 });
 

@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - protect against missing displayColumns
+- Issue 48362: Add `toLocaleString` calls when rendering numbers to get thousands separators.
 
 ### version 2.362.0
 *Released*: 28 August 2023

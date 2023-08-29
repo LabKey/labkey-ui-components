@@ -156,7 +156,7 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
             'has-error': hasError,
         });
         const maxToAdd = this.getMaxRowsToAdd();
-        const errorMsg =  `At most ${maxTotalCount ?? maxCount} ${nounPlural.toLowerCase()} can be ${verbPastTense.toLowerCase()} at once (${maxToAdd} remaining).`;
+        const errorMsg =  `At most ${maxTotalCount?.toLocaleString() ?? maxCount?.toLocaleString()} ${nounPlural.toLowerCase()} can be ${verbPastTense.toLowerCase()} at once (${maxToAdd} remaining).`;
 
         return (
             <div className={wrapperClasses}>

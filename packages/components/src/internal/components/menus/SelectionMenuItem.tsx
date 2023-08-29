@@ -64,7 +64,7 @@ export class SelectionMenuItem extends PureComponent<Props> {
 
         const message = tooFewSelected
             ? disabledMsg + ' ' + nounPlural + '.'
-            : maxSelectionDisabledMsg || 'At most ' + maxSelection + ' ' + nounPlural + ' can be selected.';
+            : maxSelectionDisabledMsg || 'At most ' + maxSelection?.toLocaleString() + ' ' + nounPlural + ' can be selected.';
 
         if (disabled) {
             const overlay = <Popover id={id + '-disabled-warning'}>{message}</Popover>;

@@ -673,11 +673,13 @@ export function saveSampleCounter(
                 if (response.success) {
                     resolve(response);
                 } else {
-                    reject({ error: response.error });
+                    console.error(response);
+                    reject(response.error);
                 }
             },
             failure: error => {
-                reject(error);
+                console.error(error);
+                reject(resolveErrorMessage(error));
             },
         });
     });

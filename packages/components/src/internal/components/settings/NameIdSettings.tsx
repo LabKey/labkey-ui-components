@@ -55,6 +55,9 @@ interface State {
     savingAllowUserSpecifiedNames: boolean;
     savingPrefix: boolean;
     updatingCounter?: boolean;
+    hasPrefixChange?: boolean;
+    hasSampleCountChange?: boolean;
+    hasRootSampleCountChange?: boolean;
 }
 
 const initialState: State = {
@@ -65,6 +68,9 @@ const initialState: State = {
     confirmModalOpen: false,
     allowUserSpecifiedNames: false,
     savingAllowUserSpecifiedNames: false,
+    hasPrefixChange: false,
+    hasSampleCountChange: false,
+    hasRootSampleCountChange: false,
 };
 
 export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
@@ -93,6 +99,9 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
         sampleCount,
         newSampleCount,
         newRootSampleCount,
+        hasPrefixChange,
+        hasSampleCountChange,
+        hasRootSampleCountChange
     } = state;
 
     const initialize = async (): Promise<void> => {
@@ -160,15 +169,16 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
         } catch (err) {
             displayError(err);
         }
-        setState({ savingPrefix: false, confirmModalOpen: false });
+        setState({ savingPrefix: false, confirmModalOpen: false, hasPrefixChange: false });
         setIsDirty(false);
     }, [prefix, saveNameExpressionOptions, setIsDirty]);
 
     const prefixOnChange = useCallback(
         (evt: any) => {
             const val = evt.target.value;
-            setState({ prefix: val });
+            setState({ prefix: val, hasPrefixChange: true });
             setIsDirty(true);
+
         },
         [setIsDirty]
     );
@@ -200,10 +210,12 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
             if (root)
                 setState({
                     newRootSampleCount: newValue,
+                    hasRootSampleCountChange: true,
                 });
             else
                 setState({
                     newSampleCount: newValue,
+                    hasSampleCountChange: true,
                 });
             setIsDirty(true);
         },
@@ -219,16 +231,23 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                     rootSampleCount: newCount,
                     confirmCounterModalOpen: false,
                     newRootSampleCount: newCount,
+                    error: undefined,
+                    hasRootSampleCountChange: false,
                 });
             else
                 setState({
                     sampleCount: newCount,
                     confirmCounterModalOpen: false,
                     newSampleCount: newCount,
+                    error: undefined,
+                    hasSampleCountChange: false,
                 });
             setIsDirty(false);
-        } catch (err) {
-            setState({ error: err.exception });
+        } catch (error) {
+            setState({
+                error,
+                confirmCounterModalOpen: false,
+            });
         }
     }, [isRoot, isReset, newRootSampleCount, newSampleCount, setIsDirty]);
 
@@ -293,7 +312,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                     <Button
                                         className="btn btn-success"
                                         onClick={openConfirmModal}
-                                        disabled={savingPrefix}
+                                        disabled={savingPrefix || !hasPrefixChange}
                                     >
                                         Apply Prefix
                                     </Button>
@@ -364,7 +383,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                             onClick={() => {
                                                 openSetCounterConfirmModal(false, false);
                                             }}
-                                            disabled={updatingCounter}
+                                            disabled={updatingCounter || !hasSampleCountChange}
                                         >
                                             Apply New sampleCount
                                         </Button>
@@ -403,7 +422,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                             onClick={() => {
                                                 openSetCounterConfirmModal(true, false);
                                             }}
-                                            disabled={updatingCounter}
+                                            disabled={updatingCounter || !hasRootSampleCountChange}
                                         >
                                             Apply New rootSampleCount
                                         </Button>

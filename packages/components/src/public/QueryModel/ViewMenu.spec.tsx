@@ -1,5 +1,4 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
 import { makeQueryInfo } from '../../internal/test/testHelpers';
@@ -60,34 +59,46 @@ describe('ViewMenu', () => {
     test('Render', () => {
         // Renders nothing
         let model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_NO_VIEWS, {}, []);
-        let tree = renderer.create(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={true} model={model} />);
-        expect(tree.toJSON()).toMatchSnapshot();
+        let wrapper = mount(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={true} model={model} />);
+        let items = wrapper.find('MenuItem');
+        expect(items).toHaveLength(0);
 
         // Renders empty view selector with disabled dropdown.
-        tree = renderer.create(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={false} model={model} />);
-        expect(tree.toJSON()).toMatchSnapshot();
+        wrapper = mount(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={false} model={model} />);
+        items = wrapper.find('MenuItem');
+        expect(items).toHaveLength(0);
 
         // "No Extra Column"  view shows up under "Shared Saved Views"
         model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_PUBLIC_VIEWS, {}, []);
-        tree = renderer.create(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={true} model={model} />);
-        expect(tree.toJSON()).toMatchSnapshot();
+        wrapper = mount(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={true} model={model} />);
+        items = wrapper.find('MenuItem');
+        expect(items).toHaveLength(5);
+        expect(items.at(2).text()).toBe('Shared Saved Views');
+        expect(items.at(3).text()).toBe('No Extra Column');
 
         // "No Extra Column" view shows up under "My Saved Views"
         model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_PRIVATE_VIEWS, {}, []);
-        tree = renderer.create(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={true} model={model} />);
-        expect(tree.toJSON()).toMatchSnapshot();
+        wrapper = mount(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={true} model={model} />);
+        items = wrapper.find('MenuItem');
+        expect(items.at(2).text()).toBe('My Saved Views');
+        expect(items.at(3).text()).toBe('No Extra Column');
 
         // Same as previous, but the No Extra Column view is set to active.
         model = model.mutate({
             schemaQuery: new SchemaQuery(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, 'noExtraColumn'),
         });
-        tree = renderer.create(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={true} model={model} />);
-        expect(tree.toJSON()).toMatchSnapshot();
+        wrapper = mount(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={true} model={model} />);
+        items = wrapper.find('MenuItem');
+        expect(items.at(2).text()).toBe('My Saved Views');
+        expect(items.at(3).text()).toBe('No Extra Column');
+        expect(items.at(3).prop('active')).toBe(true);
 
         // "No Extra Column" view is hidden so does not show up
         model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_HIDDEN_VIEWS, {}, []);
-        tree = renderer.create(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={false} model={model} />);
-        expect(tree.toJSON()).toMatchSnapshot();
+        wrapper = mount(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={false} model={model} />);
+        items = wrapper.find('MenuItem');
+        expect(items).toHaveLength(1);
+        expect(items.at(0).text()).toBe('Default');
     });
 
     test('Customized view menus', () => {

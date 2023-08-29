@@ -1,15 +1,36 @@
-import React, { PureComponent, ReactNode } from 'react';
-import { DropdownButton, MenuItem } from 'react-bootstrap';
+import React, { FC, PureComponent, ReactNode, SyntheticEvent, useCallback } from 'react';
+import { DropdownButton, MenuItem, SelectCallback } from 'react-bootstrap';
 
-import { ChartMenuItem } from '../../internal/components/chart/ChartMenuItem';
 import { DataViewInfo } from '../../internal/DataViewInfo';
+import { cancelEvent } from '../../internal/events';
 
-import { ChartModal } from '../../internal/components/chart/ChartModal';
 import { blurActiveElement } from '../../internal/util/utils';
 
 import { getQueryMetadata } from '../../internal/global';
 
 import { RequiresModelAndActions } from './withQueryModels';
+
+interface ChartMenuItemProps {
+    chart: DataViewInfo;
+    showChart: (chart: DataViewInfo) => void;
+}
+
+export const ChartMenuItem: FC<ChartMenuItemProps> = ({ chart, showChart }) => {
+    const onSelect = useCallback(
+        (_: never, event: SyntheticEvent) => {
+            cancelEvent(event);
+            showChart(chart);
+        },
+        [showChart, chart]
+    ) as SelectCallback;
+
+    return (
+        <MenuItem onSelect={onSelect}>
+            <i className={`chart-menu-icon ${chart.iconCls ?? ''}`} />
+            <span className="chart-menu-label">{chart.name}</span>
+        </MenuItem>
+    );
+};
 
 interface Props extends RequiresModelAndActions {
     hideEmptyChartMenu: boolean;
@@ -27,36 +48,18 @@ export class ChartMenu extends PureComponent<Props> {
         actions.selectReport(model.id, chart.reportId);
     };
 
-    clearChart = (): void => {
-        const { actions, model } = this.props;
-        actions.selectReport(model.id, undefined);
-    };
-
     chartMapper = (chart): ReactNode => (
         <ChartMenuItem key={chart.reportId} chart={chart} showChart={this.chartClicked} />
     );
 
     render(): ReactNode {
         const { hideEmptyChartMenu, model } = this.props;
-        const {
-            charts,
-            chartsError,
-            hasCharts,
-            id,
-            isLoading,
-            isLoadingCharts,
-            rowsError,
-            selectedReportId,
-            queryInfo,
-            queryInfoError,
-        } = model;
+        const { charts, chartsError, hasCharts, id, isLoading, isLoadingCharts, rowsError, queryInfoError } = model;
         const privateCharts = hasCharts ? charts.filter(chart => !chart.shared) : [];
         const publicCharts = hasCharts ? charts.filter(chart => chart.shared) : [];
         const noCharts = hasCharts && charts.length === 0;
         const hasError = queryInfoError !== undefined || rowsError !== undefined;
         const disabled = isLoading || isLoadingCharts || noCharts || hasError;
-        const selectedChart = charts?.find(chart => chart.reportId === selectedReportId);
-        const showChartModal = queryInfo !== undefined && selectedChart !== undefined;
         const _hideEmptyChartMenu = getQueryMetadata().get('hideEmptyChartMenu', hideEmptyChartMenu);
 
         if (privateCharts.length === 0 && publicCharts.length === 0 && _hideEmptyChartMenu) {
@@ -74,7 +77,10 @@ export class ChartMenu extends PureComponent<Props> {
                         isLoadingCharts ? (
                             <span className="fa fa-spinner fa-pulse" />
                         ) : (
-                            <span className="fa fa-area-chart" />
+                            <span>
+                                <span className="fa fa-area-chart" />
+                                <span> Charts</span>
+                            </span>
                         )
                     }
                 >
@@ -90,9 +96,6 @@ export class ChartMenu extends PureComponent<Props> {
 
                     {publicCharts.length > 0 && publicCharts.map(this.chartMapper)}
                 </DropdownButton>
-                {showChartModal && (
-                    <ChartModal selectedChart={selectedChart} filters={model.filters} onHide={this.clearChart} />
-                )}
             </div>
         );
     }

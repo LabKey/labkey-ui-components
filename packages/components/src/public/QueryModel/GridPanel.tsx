@@ -50,7 +50,6 @@ import { ExportMenu } from './ExportMenu';
 import { SelectionStatus } from './SelectionStatus';
 import { ChartMenu } from './ChartMenu';
 import { SearchBox } from './SearchBox';
-
 import { actionValuesToString, filtersEqual, sortsEqual } from './utils';
 import { GridFilterModal } from './GridFilterModal';
 import { FiltersButton } from './FiltersButton';
@@ -58,8 +57,8 @@ import { FilterStatus } from './FilterStatus';
 import { SaveViewModal } from './SaveViewModal';
 import { CustomizeGridViewModal } from './CustomizeGridViewModal';
 import { ManageViewsModal } from './ManageViewsModal';
-
 import { Actions, InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
+import { ChartPanel } from './ChartPanel';
 
 export interface GridPanelProps<ButtonsComponentProps> {
     ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
@@ -1070,6 +1069,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                     <div
                         className={classNames('grid-panel__body', { 'panel-body': asPanel, 'top-spacing': !hasHeader })}
                     >
+                        <ChartPanel actions={actions} model={model} />
+
                         {showButtonBar && (
                             <ButtonBar
                                 {...this.props}

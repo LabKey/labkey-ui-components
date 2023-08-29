@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Issue 47763: Remove unnecessary DataFileUrl column from requiredColumns in Assay Runs grid
 
+### version 2.362.0
+*Released*: 28 August 2023
+- Render Charts above grid
+
 ### version 2.361.3
 *Released*: 28 August 2023
 - Issue 48364: Sample assay report SQL syntax error in WHERE clause for sample field with space in name

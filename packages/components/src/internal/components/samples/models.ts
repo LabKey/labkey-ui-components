@@ -124,22 +124,6 @@ export type JobsButton = ComponentType<JobsButtonsComponentProps>;
 // Note: this is meant to correspond to the JobsMenuOptions component in workflow/src/Components/JobsButton.tsx
 export type JobsMenuOptions = ComponentType<JobsButtonsComponentProps>;
 
-// Note: this should stay in sync with the workflow/src/Components/WorkflowGrid.tsx props
-interface WorkflowGridComponentProps {
-    containerPath?: string;
-    gridPrefix?: string;
-    sampleAliquotType?: ALIQUOT_FILTER_MODE;
-    sampleId?: number;
-    sampleLSID?: string;
-    showAliquotViewSelector?: boolean;
-    showStartButton?: boolean;
-    showTemplateTabs?: boolean;
-    user: User;
-    visibleTabs?: string[];
-}
-
-export type WorkflowGrid = ComponentType<WorkflowGridComponentProps>;
-
 export class SampleState {
     [immerable] = true;
 

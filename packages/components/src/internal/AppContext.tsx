@@ -33,7 +33,6 @@ import {
     JobsButton,
     JobsMenuOptions,
     SampleStorageButton,
-    WorkflowGrid,
 } from './components/samples/models';
 import { SampleGridButton, SamplesEditableGridProps, SampleStorageLocation, SampleStorageMenu } from './sampleModels';
 
@@ -54,7 +53,6 @@ export interface SampleTypeAppContext {
     SampleStorageButtonComponent: SampleStorageButton;
     SampleStorageLocationComponent: SampleStorageLocation;
     SampleStorageMenuComponent: SampleStorageMenu;
-    WorkflowGridComponent: WorkflowGrid;
     assayProviderType?: string;
     combineParentTypes?: boolean;
     controllerName: string;

@@ -13,8 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { Filter } from '@labkey/api';
 import { List } from 'immutable';
 import React, { createContext, PropsWithChildren, ReactElement, useContext, useMemo } from 'react';
+
+import { QueryConfigMap } from '../public/QueryModel/withQueryModels';
+import { SchemaQuery } from '../public/SchemaQuery';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from './APIWrapper';
 import {
@@ -28,6 +32,7 @@ import { User } from './components/base/models/User';
 import { DomainDetails } from './components/domainproperties/models';
 import { EntityDataType } from './components/entities/models';
 import { DetailRenderer } from './components/forms/detail/DetailDisplay';
+import { ALIQUOT_FILTER_MODE } from './components/samples/constants';
 import {
     AddSamplesToStorageModal,
     JobsButton,
@@ -65,6 +70,17 @@ export interface SampleTypeAppContext {
     downloadTemplateExcludeColumns?: string[];
     getMetricUnitOptions: () => any[];
     getSamplesEditableGridProps: (user: User) => Partial<SamplesEditableGridProps>;
+    getWorkflowGridQueryConfigs?: (
+        visibleTabs: string[],
+        gridPrefix: string,
+        user: User,
+        schemaQuery?: SchemaQuery,
+        initialFilters?: Filter.IFilter[],
+        sampleLSID?: string,
+        sourceLSID?: string,
+        activeSampleAliquotType?: ALIQUOT_FILTER_MODE,
+        containerPath?: string
+    ) => QueryConfigMap;
     hideConditionalFormatting: boolean;
     importHelpLinkTopic: string;
     isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean;

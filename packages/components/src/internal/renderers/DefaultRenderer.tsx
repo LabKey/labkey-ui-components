@@ -53,11 +53,7 @@ export const DefaultRenderer: FC<Props> = memo(({ col, data }) => {
                 display = data.get('formattedValue');
             } else {
                 const o = data.has('displayValue') ? data.get('displayValue') : data.get('value');
-                if (typeof o === 'number') {
-                    display = o.toLocaleString();
-                } else {
-                    display = o !== null && o !== undefined ? o.toString() : null;
-                }
+                display = o !== null && o !== undefined ? o.toString() : null;
             }
 
             if (data.get('url')) {

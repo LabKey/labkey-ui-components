@@ -24,22 +24,6 @@ exports[`DefaultRenderer formattedValue 1`] = `
 </span>
 `;
 
-exports[`DefaultRenderer large numeric displayValue 1`] = `
-<span
-  className="ws-pre-wrap"
->
-  34,251
-</span>
-`;
-
-exports[`DefaultRenderer large numeric value 1`] = `
-<span
-  className="ws-pre-wrap"
->
-  12,345
-</span>
-`;
-
 exports[`DefaultRenderer new line 1`] = `
 <span
   className="ws-pre-wrap"

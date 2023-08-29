@@ -38,20 +38,8 @@ describe('DefaultRenderer', () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test('large numeric value', () => {
-        const component = <DefaultRenderer data={fromJS({ value: 12345 })} />;
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
-    });
-
     test('displayValue', () => {
         const component = <DefaultRenderer data={fromJS({ value: 1, displayValue: 'Value 1' })} />;
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
-    });
-
-    test('large numeric displayValue', () => {
-        const component = <DefaultRenderer data={fromJS({ value: 18, displayValue: 34251 })} />;
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();
     });

@@ -71,7 +71,8 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
                     pullRight
                     title={
                         <span>
-                            <i className="fa fa-table" /> <span className="spacer-left">Views</span>
+                            <i className="fa fa-table" />
+                            <span> Views</span>
                         </span>
                     }
                 >

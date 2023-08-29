@@ -1,6 +1,6 @@
 import { ComponentType } from 'react';
 import { Draft, immerable, produce } from 'immer';
-import { Filter } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { User } from '../base/models/User';
@@ -126,6 +126,7 @@ export type JobsMenuOptions = ComponentType<JobsButtonsComponentProps>;
 
 // Note: this should stay in sync with the workflow/src/Components/WorkflowGrid.tsx props
 interface WorkflowGridComponentProps {
+    containerFilter?: Query.ContainerFilter;
     containerPath?: string;
     gridPrefix?: string;
     sampleAliquotType?: ALIQUOT_FILTER_MODE;

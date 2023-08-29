@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.362.?
+*Released*: ?? August 2023
+- SVGChart: Inject containerFilter into query config returned from server
+
 ### version 2.362.1
 *Released*: 29 August 2023
 - Issue 47763: Remove unnecessary DataFileUrl column from requiredColumns in Assay Runs grid

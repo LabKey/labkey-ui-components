@@ -3,7 +3,7 @@ import { getContainerFilter } from '../../query/api';
 import { buildURL } from '../../url/AppURL';
 import { VisualizationConfigModel } from './models';
 
-export function fetchVisualizationConfig(reportId: string): Promise<VisualizationConfigModel> {
+function fetchVisualizationConfig(reportId: string): Promise<VisualizationConfigModel> {
     return new Promise((resolve, reject) => {
         Query.Visualization.get({
             reportId,
@@ -18,7 +18,7 @@ export function fetchVisualizationConfig(reportId: string): Promise<Visualizatio
     });
 }
 
-export function fetchRReport(reportId: string, container?: string, filters?: Filter.IFilter[]): Promise<string> {
+function fetchRReport(reportId: string, container?: string, filters?: Filter.IFilter[]): Promise<string> {
     return new Promise((resolve, reject) => {
         const params = { reportId, 'webpart.name': 'report', containerFilter: getContainerFilter(container) };
         if (filters) {

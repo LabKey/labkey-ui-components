@@ -49,6 +49,7 @@ export interface ChartConfig {
 
 export interface ChartQueryConfig {
     columns: string[];
+    containerFilter: string;
     containerPath: string;
     // dataRegionName: string;
     filterArray: Filter.IFilter[];

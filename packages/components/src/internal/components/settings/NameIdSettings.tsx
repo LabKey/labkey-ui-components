@@ -3,7 +3,7 @@ import React, { FC, memo, useCallback, useEffect, useReducer } from 'react';
 import { PermissionTypes } from '@labkey/api';
 import { Button, Checkbox, Col, FormControl, Row } from 'react-bootstrap';
 
-import { biologicsIsPrimaryApp, sampleManagerIsPrimaryApp } from '../../app/utils';
+import { biologicsIsPrimaryApp, isAppHomeFolder, sampleManagerIsPrimaryApp } from '../../app/utils';
 
 import { invalidateFullQueryDetailsCache } from '../../query/api';
 
@@ -73,7 +73,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
         (currentState: State, newState: Partial<State>): State => ({ ...currentState, ...newState }),
         initialState
     );
-    const { moduleContext } = useServerContext();
+    const { container, moduleContext } = useServerContext();
 
     const {
         loading,
@@ -328,119 +328,121 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                     </div>
                 )}
 
-                <div className="sample-counter__setting-section margin-top">
-                    <div className="list__bold-text margin-bottom">Naming Pattern Elements/Tokens</div>
-                    <div>
-                        The following tokens/counters are utilized in naming patterns for the project and all
-                        sub-projects. To modify a counter, simply enter a number greater than the current value and
-                        click “Apply”. Please be aware that once a counter is changed, the action cannot be reversed.
-                        For additional information regarding these tokens, you can refer to this{' '}
-                        <HelpLink topic={SAMPLE_TYPE_NAME_EXPRESSION_TOPIC}>link</HelpLink>.
-                    </div>
-
-                    {loading && <LoadingSpinner />}
-                    {!loading && (
+                {isAppHomeFolder(container, moduleContext) &&
+                    <div className="sample-counter__setting-section margin-top">
+                        <div className="list__bold-text margin-bottom">Naming Pattern Elements/Tokens</div>
                         <div>
-                            <Row className="margin-top">
-                                <Col sm={2}>
-                                    <div className="sample-counter__prefix-label">sampleCount</div>
-                                </Col>
-                                <Col sm={2}>
-                                    <FormControl
-                                        className="update-samplecount-input "
-                                        min={sampleCount}
-                                        step={1}
-                                        name="newSampleCount"
-                                        onChange={(event: any) => setNewSampleCount(event?.target?.value, false)}
-                                        type="number"
-                                        value={newSampleCount}
-                                        placeholder="Enter new sampleCount..."
-                                    />
-                                </Col>
-                                <Col sm={8}>
-                                    <Button
-                                        className="btn btn-success sample-counter-btn"
-                                        onClick={() => {
-                                            openSetCounterConfirmModal(false, false);
-                                        }}
-                                        disabled={updatingCounter}
-                                    >
-                                        Apply New sampleCount
-                                    </Button>
-                                    {!hasSamples && sampleCount > 0 && (
-                                        <Button
-                                            className="btn btn-success sample-counter-btn"
-                                            onClick={() => {
-                                                openSetCounterConfirmModal(false, true);
-                                            }}
-                                            disabled={updatingCounter}
-                                        >
-                                            Reset sampleCount
-                                        </Button>
-                                    )}
-                                </Col>
-                            </Row>
-                            <Row className="margin-top">
-                                <Col sm={2}>
-                                    <div className="sample-counter__prefix-label">rootSampleCount</div>
-                                </Col>
-                                <Col sm={2}>
-                                    <FormControl
-                                        className="update-samplecount-input "
-                                        min={rootSampleCount}
-                                        step={1}
-                                        name="newRootSampleCount"
-                                        onChange={(event: any) => setNewSampleCount(event?.target?.value, true)}
-                                        type="number"
-                                        value={newRootSampleCount}
-                                        placeholder="Enter new rootSampleCount..."
-                                    />
-                                </Col>
-                                <Col sm={8}>
-                                    <Button
-                                        className="btn btn-success sample-counter-btn"
-                                        onClick={() => {
-                                            openSetCounterConfirmModal(true, false);
-                                        }}
-                                        disabled={updatingCounter}
-                                    >
-                                        Apply New rootSampleCount
-                                    </Button>
-                                    {!hasRootSamples && rootSampleCount > 0 && (
-                                        <Button
-                                            className="btn btn-success sample-counter-btn"
-                                            onClick={() => {
-                                                openSetCounterConfirmModal(true, true);
-                                            }}
-                                            disabled={updatingCounter}
-                                        >
-                                            Reset rootSampleCount
-                                        </Button>
-                                    )}
-                                </Col>
-                            </Row>
-                            {confirmCounterModalOpen && (
-                                <ConfirmModal
-                                    title={(isReset ? 'Reset ' : 'Update ') + (isRoot ? 'rootSampleCount' : 'sampleCount')}
-                                    onCancel={closeCounterConfirmModal}
-                                    onConfirm={saveSampleCounter}
-                                    confirmButtonText={"Yes, " + (isReset ? 'Reset' : 'Update')}
-                                    cancelButtonText="Cancel"
-                                >
-                                    <div>
-                                        <p>
-                                            This action will change the {isRoot ? 'rootSampleCount' : 'sampleCount'}{' '}
-                                            from {isRoot ? rootSampleCount : sampleCount} to{' '}
-                                            {isReset ? 0 : isRoot ? newRootSampleCount : newSampleCount} for the project
-                                            and all sub-projects. Are you sure you want to proceed? This action cannot
-                                            be undone.
-                                        </p>
-                                    </div>
-                                </ConfirmModal>
-                            )}
+                            The following tokens/counters are utilized in naming patterns for the project and all
+                            sub-projects. To modify a counter, simply enter a number greater than the current value and
+                            click “Apply”. Please be aware that once a counter is changed, the action cannot be reversed.
+                            For additional information regarding these tokens, you can refer to this{' '}
+                            <HelpLink topic={SAMPLE_TYPE_NAME_EXPRESSION_TOPIC}>link</HelpLink>.
                         </div>
-                    )}
-                </div>
+
+                        {loading && <LoadingSpinner />}
+                        {!loading && (
+                            <div>
+                                <Row className="margin-top">
+                                    <Col sm={2}>
+                                        <div className="sample-counter__prefix-label">sampleCount</div>
+                                    </Col>
+                                    <Col sm={2}>
+                                        <FormControl
+                                            className="update-samplecount-input "
+                                            min={sampleCount}
+                                            step={1}
+                                            name="newSampleCount"
+                                            onChange={(event: any) => setNewSampleCount(event?.target?.value, false)}
+                                            type="number"
+                                            value={newSampleCount}
+                                            placeholder="Enter new sampleCount..."
+                                        />
+                                    </Col>
+                                    <Col sm={8}>
+                                        <Button
+                                            className="btn btn-success sample-counter-btn"
+                                            onClick={() => {
+                                                openSetCounterConfirmModal(false, false);
+                                            }}
+                                            disabled={updatingCounter}
+                                        >
+                                            Apply New sampleCount
+                                        </Button>
+                                        {!hasSamples && sampleCount > 0 && (
+                                            <Button
+                                                className="btn btn-success sample-counter-btn"
+                                                onClick={() => {
+                                                    openSetCounterConfirmModal(false, true);
+                                                }}
+                                                disabled={updatingCounter}
+                                            >
+                                                Reset sampleCount
+                                            </Button>
+                                        )}
+                                    </Col>
+                                </Row>
+                                <Row className="margin-top">
+                                    <Col sm={2}>
+                                        <div className="sample-counter__prefix-label">rootSampleCount</div>
+                                    </Col>
+                                    <Col sm={2}>
+                                        <FormControl
+                                            className="update-samplecount-input "
+                                            min={rootSampleCount}
+                                            step={1}
+                                            name="newRootSampleCount"
+                                            onChange={(event: any) => setNewSampleCount(event?.target?.value, true)}
+                                            type="number"
+                                            value={newRootSampleCount}
+                                            placeholder="Enter new rootSampleCount..."
+                                        />
+                                    </Col>
+                                    <Col sm={8}>
+                                        <Button
+                                            className="btn btn-success sample-counter-btn"
+                                            onClick={() => {
+                                                openSetCounterConfirmModal(true, false);
+                                            }}
+                                            disabled={updatingCounter}
+                                        >
+                                            Apply New rootSampleCount
+                                        </Button>
+                                        {!hasRootSamples && rootSampleCount > 0 && (
+                                            <Button
+                                                className="btn btn-success sample-counter-btn"
+                                                onClick={() => {
+                                                    openSetCounterConfirmModal(true, true);
+                                                }}
+                                                disabled={updatingCounter}
+                                            >
+                                                Reset rootSampleCount
+                                            </Button>
+                                        )}
+                                    </Col>
+                                </Row>
+                                {confirmCounterModalOpen && (
+                                    <ConfirmModal
+                                        title={(isReset ? 'Reset ' : 'Update ') + (isRoot ? 'rootSampleCount' : 'sampleCount')}
+                                        onCancel={closeCounterConfirmModal}
+                                        onConfirm={saveSampleCounter}
+                                        confirmButtonText={"Yes, " + (isReset ? 'Reset' : 'Update')}
+                                        cancelButtonText="Cancel"
+                                    >
+                                        <div>
+                                            <p>
+                                                This action will change the {isRoot ? 'rootSampleCount' : 'sampleCount'}{' '}
+                                                from {isRoot ? rootSampleCount : sampleCount} to{' '}
+                                                {isReset ? 0 : isRoot ? newRootSampleCount : newSampleCount} for the project
+                                                and all sub-projects. Are you sure you want to proceed? This action cannot
+                                                be undone.
+                                            </p>
+                                        </div>
+                                    </ConfirmModal>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                }
 
                 {error !== undefined && <Alert className="name-id-setting__error">{error}</Alert>}
             </div>

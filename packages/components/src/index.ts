@@ -812,7 +812,7 @@ import {
 import {
     GENERAL_ASSAY_PROVIDER_NAME,
     WORKFLOW_TASK_PROPERTIES_REQUIRED_COLUMNS,
-    RUN_PROPERTIES_REQUIRED_COLUMNS
+    RUN_PROPERTIES_REQUIRED_COLUMNS,
 } from './internal/components/assay/constants';
 import { AdminSettingsPage } from './internal/components/administration/AdminSettingsPage';
 import { GlobalStateContextProvider } from './internal/GlobalStateContext';

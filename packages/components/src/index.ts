@@ -385,6 +385,7 @@ import { AppContextProvider, useAppContext } from './internal/AppContext';
 import { AppContexts } from './internal/AppContexts';
 import { useContainerUser } from './internal/components/container/actions';
 
+import { BaseDomainDesigner } from './internal/components/domainproperties/BaseDomainDesigner';
 import {
     getFilterForSampleOperation,
     getOmittedSampleTypeColumns,
@@ -1387,6 +1388,7 @@ export {
     withNotificationsContext,
     // domain designer related items
     DomainForm,
+    BaseDomainDesigner,
     DomainFieldsDisplay,
     fetchDomain,
     fetchDomainDetails,

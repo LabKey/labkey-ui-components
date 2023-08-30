@@ -1161,7 +1161,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             processBulkData,
             queryInfo,
         } = this.props;
-        const { nounPlural } = addControlProps;
+        const nounPlural = addControlProps?.nounPlural;
         // numItems is a string because we rely on Formsy to grab the value for us (See QueryInfoForm for details). We
         // need to parseInt the value because we add this variable to other numbers, if it's a string we'll add more
         // rows than we want because 1 + "1" is "11" in JavaScript.
@@ -1249,23 +1249,22 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         onChange(changes.editorModel, changes.dataKeys, changes.data);
     };
 
-    getAddControlProps = (): Partial<AddRowsControlProps> => {
-        const { addControlProps, editorModel, maxRows } = this.props;
-        if (maxRows && editorModel.rowCount + addControlProps.maxCount > maxRows) {
-            return { ...addControlProps, maxTotalCount: maxRows, maxCount: maxRows - editorModel.rowCount };
-        } else {
-            return { ...addControlProps, maxTotalCount: maxRows };
-        }
-    };
-
     renderAddRowsControl = (placement: PlacementType): ReactNode => {
-        const { editorModel, isSubmitting, maxRows } = this.props;
+        const { addControlProps, editorModel, isSubmitting, maxRows } = this.props;
+        let maxCount = addControlProps?.maxCount;
+
+        if (maxRows && editorModel.rowCount + (addControlProps?.maxCount ?? 0) > maxRows) {
+            maxCount = maxRows - editorModel.rowCount;
+        }
+
         return (
             <AddRowsControl
-                {...this.getAddControlProps()}
-                placement={placement}
+                {...addControlProps}
                 disable={isSubmitting || (maxRows && editorModel.rowCount >= maxRows)}
+                maxCount={maxCount}
+                maxTotalCount={maxRows}
                 onAdd={this.addRows}
+                placement={placement}
             />
         );
     };
@@ -1324,7 +1323,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     )}
                     {allowExport && (
                         <span className="control-right pull-right">
-                            <EditableGridExportMenu id={editorModel.id} hasData={true} exportHandler={exportHandler} />
+                            <EditableGridExportMenu id={editorModel.id} hasData exportHandler={exportHandler} />
                         </span>
                     )}
                 </div>
@@ -1343,7 +1342,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 asModal
                 checkRequiredFields={false}
                 showLabelAsterisk
-                submitForEditText={`Add ${capitalizeFirstChar(addControlProps.nounPlural)} to Grid`}
+                submitForEditText={`Add ${capitalizeFirstChar(addControlProps?.nounPlural)} to Grid`}
                 maxCount={maxToAdd}
                 onHide={this.toggleBulkAdd}
                 operation={forUpdate ? Operation.update : Operation.insert}
@@ -1484,10 +1483,10 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     operation={forUpdate ? Operation.update : Operation.insert}
                     onSubmitForEdit={this.bulkUpdate}
                     onSuccess={this.toggleBulkUpdate}
-                    pluralNoun={addControlProps.nounPlural}
+                    pluralNoun={addControlProps?.nounPlural}
                     queryInfo={queryInfo}
                     selectedRowIndexes={this.getSelectedRowIndices()}
-                    singularNoun={addControlProps.nounSingular}
+                    singularNoun={addControlProps?.nounSingular}
                     warning={bulkUpdateProps?.warning}
                 />
             </>

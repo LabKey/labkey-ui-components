@@ -41,7 +41,7 @@ import { NotFound } from '../base/NotFound';
 export type GroupManagementPageProps = InjectedRouteLeaveProps & InjectedPermissionsPage & WithRouterProps;
 
 export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props => {
-    const { setIsDirty, getIsDirty, inactiveUsersById, principalsById, rolesByUniqueName, principals } = props;
+    const { setIsDirty, getIsDirty, inactiveUsersById, principalsById, rolesByUniqueName, principals, router } = props;
     const [error, setError] = useState<string>();
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [savedGroupMembership, setSavedGroupMembership] = useState<GroupMembership>();
@@ -283,6 +283,7 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
                     setIsDirty={setIsDirty}
                     getIsDirty={getIsDirty}
                     getAuditLogData={api.security.getAuditLogData}
+                    router={router}
                 />
             )}
         </BasePermissionsCheckPage>

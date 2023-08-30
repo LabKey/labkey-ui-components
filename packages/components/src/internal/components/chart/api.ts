@@ -1,9 +1,11 @@
 import { Ajax, Filter, Query, Utils } from '@labkey/api';
+
 import { getContainerFilter } from '../../query/api';
 import { buildURL } from '../../url/AppURL';
+
 import { VisualizationConfigModel } from './models';
 
-export function fetchVisualizationConfig(reportId: string): Promise<VisualizationConfigModel> {
+function fetchVisualizationConfig(reportId: string): Promise<VisualizationConfigModel> {
     return new Promise((resolve, reject) => {
         Query.Visualization.get({
             reportId,
@@ -18,17 +20,19 @@ export function fetchVisualizationConfig(reportId: string): Promise<Visualizatio
     });
 }
 
-export function fetchRReport(reportId: string, container?: string, filters?: Filter.IFilter[]): Promise<string> {
+function fetchRReport(
+    reportId: string,
+    urlPrefix = 'query',
+    container?: string,
+    filters?: Filter.IFilter[]
+): Promise<string> {
     return new Promise((resolve, reject) => {
-        const params = { reportId, 'webpart.name': 'report', containerFilter: getContainerFilter(container) };
-        if (filters) {
-            filters.forEach(filter => {
-                params[filter.getURLParameterName()] = filter.getURLParameterValue();
-            });
-        }
-        const url = buildURL('project', 'getWebPart.view', params, { container });
+        // The getWebPart API honors containerFilterName, not containerFilter.
+        const containerFilterPrefix = `${urlPrefix}.containerFilterName`;
+        const params = { reportId, 'webpart.name': 'report', [containerFilterPrefix]: getContainerFilter(container) };
+        if (filters) filters.forEach(filter => (params[filter.getURLParameterName()] = filter.getURLParameterValue()));
         Ajax.request({
-            url,
+            url: buildURL('project', 'getWebPart.view', params, { container }),
             success: Utils.getCallbackWrapper(response => {
                 resolve(response.html);
             }),
@@ -40,7 +44,12 @@ export function fetchRReport(reportId: string, container?: string, filters?: Fil
 }
 
 export interface ChartAPIWrapper {
-    fetchRReport: (reportId: string, container?: string, filters?: Filter.IFilter[]) => Promise<string>;
+    fetchRReport: (
+        reportId: string,
+        urlPrefix?: string,
+        container?: string,
+        filters?: Filter.IFilter[]
+    ) => Promise<string>;
     fetchVisualizationConfig: (reportId: string) => Promise<VisualizationConfigModel>;
 }
 

@@ -6,6 +6,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 - protect against missing displayColumns
 - Issue 48362: Add `toLocaleString` calls when rendering numbers to get thousands separators.
 
+### version 2.362.2
+*Released*: 30 August 2023
+- SVGChart: Inject containerFilter into query config returned from server
+- RReport: use containerFilterName query arg
+
 ### version 2.362.1
 *Released*: 29 August 2023
 - Issue 47763: Remove unnecessary DataFileUrl column from requiredColumns in Assay Runs grid

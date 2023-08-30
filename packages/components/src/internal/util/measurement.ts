@@ -291,8 +291,8 @@ export function convertUnitDisplay(
         return amount.toLocaleString() + (includeUnits ? ' ' + unit : '');
     }
 
-    const newAmount = parseFloat((amount * (currentUnit.ratio / targetUnit.ratio)).toFixed(6));
     // show up to 6 decimal places
+    const newAmount = parseFloat((amount * (currentUnit.ratio / targetUnit.ratio)).toFixed(6));
     return (newAmount > 1000 ? newAmount.toLocaleString() : newAmount) + (includeUnits ? ' ' + displayUnit : '');
 }
 

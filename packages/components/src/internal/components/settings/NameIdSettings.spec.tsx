@@ -112,7 +112,10 @@ describe('NameIdSettings', () => {
         const wrapper = mountWithServerContext(<NameIdSettingsForm {...DEFAULT_PROPS} />);
         await waitForLifecycle(wrapper);
 
-        wrapper.find('input[type="text"]').at(0).simulate('change', { target: { value: "abc" } });
+        wrapper
+            .find('input[type="text"]')
+            .at(0)
+            .simulate('change', { target: { value: 'abc' } });
 
         wrapper.find(Button).at(0).simulate('click');
         expect(wrapper.find(ConfirmModal).exists()).toEqual(true);
@@ -124,7 +127,10 @@ describe('NameIdSettings', () => {
         const wrapper = mountWithServerContext(<NameIdSettingsForm {...DEFAULT_PROPS} />);
         await waitForLifecycle(wrapper);
 
-        wrapper.find('input[type="text"]').at(0).simulate('change', { target: { value: "abc" } });
+        wrapper
+            .find('input[type="text"]')
+            .at(0)
+            .simulate('change', { target: { value: 'abc' } });
 
         wrapper.find(Button).at(0).simulate('click');
         expect(wrapper.find(ConfirmModal).exists()).toEqual(true);

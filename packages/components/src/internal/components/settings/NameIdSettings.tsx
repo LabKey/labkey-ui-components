@@ -42,22 +42,22 @@ interface State {
     confirmCounterModalOpen?: boolean;
     confirmModalOpen: boolean;
     error: string;
+    hasPrefixChange?: boolean;
+    hasRootSampleCountChange?: boolean;
     hasRootSamples?: boolean;
+    hasSampleCountChange?: boolean;
     hasSamples?: boolean;
     isReset?: boolean;
     isRoot?: boolean;
     loading: boolean;
     newRootSampleCount?: number;
     newSampleCount?: number;
-    prefix: string;
-    rootSampleCount?: number;
-    sampleCount?: number;
     savingAllowUserSpecifiedNames: boolean;
     savingPrefix: boolean;
     updatingCounter?: boolean;
-    hasPrefixChange?: boolean;
-    hasSampleCountChange?: boolean;
-    hasRootSampleCountChange?: boolean;
+    rootSampleCount?: number;
+    sampleCount?: number;
+    prefix: string;
 }
 
 const initialState: State = {
@@ -101,7 +101,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
         newRootSampleCount,
         hasPrefixChange,
         hasSampleCountChange,
-        hasRootSampleCountChange
+        hasRootSampleCountChange,
     } = state;
 
     const initialize = async (): Promise<void> => {
@@ -178,7 +178,6 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
             const val = evt.target.value;
             setState({ prefix: val, hasPrefixChange: true });
             setIsDirty(true);
-
         },
         [setIsDirty]
     );
@@ -347,14 +346,14 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                     </div>
                 )}
 
-                {isAppHomeFolder(container, moduleContext) &&
+                {isAppHomeFolder(container, moduleContext) && (
                     <div className="sample-counter__setting-section margin-top">
                         <div className="list__bold-text margin-bottom">Naming Pattern Elements/Tokens</div>
                         <div>
                             The following tokens/counters are utilized in naming patterns for the project and all
                             sub-projects. To modify a counter, simply enter a number greater than the current value and
-                            click “Apply”. Please be aware that once a counter is changed, the action cannot be reversed.
-                            For additional information regarding these tokens, you can refer to this{' '}
+                            click “Apply”. Please be aware that once a counter is changed, the action cannot be
+                            reversed. For additional information regarding these tokens, you can refer to this{' '}
                             <HelpLink topic={SAMPLE_TYPE_NAME_EXPRESSION_TOPIC}>link</HelpLink>.
                         </div>
 
@@ -441,19 +440,22 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                 </Row>
                                 {confirmCounterModalOpen && (
                                     <ConfirmModal
-                                        title={(isReset ? 'Reset ' : 'Update ') + (isRoot ? 'rootSampleCount' : 'sampleCount')}
+                                        title={
+                                            (isReset ? 'Reset ' : 'Update ') +
+                                            (isRoot ? 'rootSampleCount' : 'sampleCount')
+                                        }
                                         onCancel={closeCounterConfirmModal}
                                         onConfirm={saveSampleCounter}
-                                        confirmButtonText={"Yes, " + (isReset ? 'Reset' : 'Update')}
+                                        confirmButtonText={'Yes, ' + (isReset ? 'Reset' : 'Update')}
                                         cancelButtonText="Cancel"
                                     >
                                         <div>
                                             <p>
                                                 This action will change the {isRoot ? 'rootSampleCount' : 'sampleCount'}{' '}
                                                 from {isRoot ? rootSampleCount : sampleCount} to{' '}
-                                                {isReset ? 0 : isRoot ? newRootSampleCount : newSampleCount} for the project
-                                                and all sub-projects. Are you sure you want to proceed? This action cannot
-                                                be undone.
+                                                {isReset ? 0 : isRoot ? newRootSampleCount : newSampleCount} for the
+                                                project and all sub-projects. Are you sure you want to proceed? This
+                                                action cannot be undone.
                                             </p>
                                         </div>
                                     </ConfirmModal>
@@ -461,7 +463,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                             </div>
                         )}
                     </div>
-                }
+                )}
 
                 {error !== undefined && <Alert className="name-id-setting__error">{error}</Alert>}
             </div>

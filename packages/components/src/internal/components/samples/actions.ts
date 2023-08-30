@@ -686,8 +686,11 @@ export function saveSampleCounter(
 }
 
 export function hasExistingSamples(isRoot?: boolean, containerPath?: string): Promise<boolean> {
-    let dataCountSql = 'SELECT m.Name As SampleName ' + '\n' +
-        'FROM materials m WHERE EXISTS ' + '\n' +
+    let dataCountSql =
+        'SELECT m.Name As SampleName ' +
+        '\n' +
+        'FROM materials m WHERE EXISTS ' +
+        '\n' +
         '( SELECT * FROM materials mi WHERE mi.rowId = m.rowId';
     if (isRoot) dataCountSql += ' AND mi.rootMaterialLSID IS NULL';
     dataCountSql += ')';

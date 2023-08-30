@@ -41,6 +41,12 @@ describe('NameIdSettings', () => {
             },
         };
 
+        LABKEY.container = {
+            id: 'testContainerId',
+            title: 'TestContainer',
+            path: '/testContainer',
+        };
+
         DEFAULT_PROPS = {
             loadNameExpressionOptions: jest.fn(async () => {
                 return { prefix: 'ABC-', allowUserSpecifiedNames: false };
@@ -106,6 +112,8 @@ describe('NameIdSettings', () => {
         const wrapper = mountWithServerContext(<NameIdSettingsForm {...DEFAULT_PROPS} />);
         await waitForLifecycle(wrapper);
 
+        wrapper.find('input[type="text"]').at(0).simulate('change', { target: { value: "abc" } });
+
         wrapper.find(Button).at(0).simulate('click');
         expect(wrapper.find(ConfirmModal).exists()).toEqual(true);
         wrapper.find('.close').simulate('click');
@@ -115,6 +123,8 @@ describe('NameIdSettings', () => {
     test('apply prefix confirm modal -- save', async () => {
         const wrapper = mountWithServerContext(<NameIdSettingsForm {...DEFAULT_PROPS} />);
         await waitForLifecycle(wrapper);
+
+        wrapper.find('input[type="text"]').at(0).simulate('change', { target: { value: "abc" } });
 
         wrapper.find(Button).at(0).simulate('click');
         expect(wrapper.find(ConfirmModal).exists()).toEqual(true);
@@ -150,8 +160,8 @@ describe('NameIdSettings', () => {
         const buttons = wrapper.find(Button);
         expect(buttons.length).toEqual(3);
 
-        expect(buttons.at(1).text()).toBe('Apply new sampleCount');
-        expect(buttons.at(2).text()).toBe('Apply new rootSampleCount');
+        expect(buttons.at(1).text()).toBe('Apply New sampleCount');
+        expect(buttons.at(2).text()).toBe('Apply New rootSampleCount');
 
         const counterInputs = wrapper.find('input.update-samplecount-input');
         expect(counterInputs.length).toEqual(2);
@@ -171,9 +181,9 @@ describe('NameIdSettings', () => {
         const buttons = wrapper.find(Button);
         expect(buttons.length).toEqual(5);
 
-        expect(buttons.at(1).text()).toBe('Apply new sampleCount');
+        expect(buttons.at(1).text()).toBe('Apply New sampleCount');
         expect(buttons.at(2).text()).toBe('Reset sampleCount');
-        expect(buttons.at(3).text()).toBe('Apply new rootSampleCount');
+        expect(buttons.at(3).text()).toBe('Apply New rootSampleCount');
         expect(buttons.at(4).text()).toBe('Reset rootSampleCount');
 
         const counterInputs = wrapper.find('input.update-samplecount-input');

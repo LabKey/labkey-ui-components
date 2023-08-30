@@ -46,7 +46,7 @@ const GridTab: FC<GridTabProps> = memo(({ isActive, model, onSelect, pullRight, 
 
     const rowCountDisplay = useMemo(() => {
         if (rowCount === undefined && !model.isActivelyLoadingTotalCount) return tabRowCount;
-        return rowCount;
+        return rowCount?.toLocaleString();
     }, [rowCount, tabRowCount, model]);
 
     return (

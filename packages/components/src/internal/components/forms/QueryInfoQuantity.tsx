@@ -29,7 +29,7 @@ addValidationRule('isPositiveLt', (vs, v, smax) => {
     const i = parseInt(v, 10);
 
     if (!isNaN(i) && i >= 1 && i <= max) return true;
-    return max === 1 ? 'Only 1 allowed' : `Value must be between 1 and ${max}.`;
+    return max === 1 ? 'Only 1 allowed' : `Value must be between 1 and ${max.toLocaleString()}.`;
 });
 
 export class QueryInfoQuantity extends PureComponent<Props, State> {

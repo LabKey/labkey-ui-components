@@ -40,4 +40,12 @@ describe('PaginationInfo', () => {
         expect(wrapper.find('.pagination-info').text()).toBe('21 - 22');
         wrapper.unmount();
     });
+
+    test('lots of rows, very large page', () => {
+        const wrapper = mount(<PaginationInfo {...getDefaultProps()} pageSize={3412} rowCount={22341} />);
+        expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
+        expect(wrapper.find('.pagination-info')).toHaveLength(1);
+        expect(wrapper.find('.pagination-info').text()).toBe('1 - 3,412 of 22,341');
+        wrapper.unmount();
+    });
 });

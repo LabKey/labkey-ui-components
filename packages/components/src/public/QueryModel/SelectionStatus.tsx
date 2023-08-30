@@ -44,7 +44,7 @@ export class SelectionStatus extends PureComponent<RequiresModelAndActions> {
         if (selectionSize > 0) {
             selectionCount = (
                 <span className="selection-status__count">
-                    {selectionSize} of {isLoadingTotalCount ? <LoadingSpinner msg="" /> : rowCount} selected
+                    {selectionSize.toLocaleString()} of {isLoadingTotalCount ? <LoadingSpinner msg="" /> : rowCount.toLocaleString()} selected
                 </span>
             );
 
@@ -61,7 +61,7 @@ export class SelectionStatus extends PureComponent<RequiresModelAndActions> {
             selectAllButton = (
                 <span className="selection-status__select-all">
                     <Button bsSize="xsmall" onClick={this.selectAll}>
-                        Select all {!isLoadingTotalCount ? rowCount : ''}
+                        Select all {!isLoadingTotalCount ? rowCount.toLocaleString() : ''}
                     </Button>
                 </span>
             );

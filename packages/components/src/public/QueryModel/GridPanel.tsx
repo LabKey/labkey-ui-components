@@ -906,6 +906,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const { allowSelections, model } = this.props;
         const { isLoading, isLoadingSelections } = model;
 
+        let columns: List<GridColumn | QueryColumn> = model?.displayColumns ? List(model.displayColumns) : List();
         if (allowSelections) {
             const selectColumn = new GridColumn({
                 index: GRID_SELECTION_INDEX,
@@ -927,11 +928,10 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                     );
                 },
             });
-
-            return List([selectColumn, ...model.displayColumns]);
+            columns = columns.insert(0, selectColumn);
         }
 
-        return List(model.displayColumns);
+        return columns;
     };
 
     onColumnDrop = (source: string, target: string): void => {

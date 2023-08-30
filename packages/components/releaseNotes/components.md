@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.363.0
+*Released*: 30 August 2023
+- protect against missing displayColumns
+- Issue 48362: Add `toLocaleString` calls when rendering numbers to get thousands separators.
+
 ### version 2.362.4
 *Released*: 30 August 2023
 - Update interfaces for `AppContext` to include `containerFilter`

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Filter } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 import { List } from 'immutable';
 import React, { createContext, PropsWithChildren, ReactElement, useContext, useMemo } from 'react';
 
@@ -79,7 +79,8 @@ export interface SampleTypeAppContext {
         sampleLSID?: string,
         sourceLSID?: string,
         activeSampleAliquotType?: ALIQUOT_FILTER_MODE,
-        containerPath?: string
+        containerPath?: string,
+        containerFilter?: Query.ContainerFilter
     ) => QueryConfigMap;
     hideConditionalFormatting: boolean;
     importHelpLinkTopic: string;

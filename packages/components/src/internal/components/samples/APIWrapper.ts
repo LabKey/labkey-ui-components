@@ -25,6 +25,9 @@ import {
     SampleAssayResultViewConfig,
     createSessionAssayRunSummaryQuery,
     getDistinctAssaysPerSample,
+    getSampleCounter,
+    saveSampleCounter,
+    hasExistingSamples,
 } from './actions';
 import { GroupedSampleFields, SampleState } from './models';
 import { SampleOperation } from './constants';
@@ -46,6 +49,8 @@ export interface SamplesAPIWrapper {
     getSampleAliquotRows: (sampleId: number | string) => Promise<Array<Record<string, any>>>;
 
     getSampleAssayResultViewConfigs: () => Promise<SampleAssayResultViewConfig[]>;
+
+    getSampleCounter: (seqType: 'rootSampleCount' | 'sampleCount', containerPath?: string) => Promise<number>;
 
     getSampleOperationConfirmationData: (
         operation: SampleOperation,
@@ -74,6 +79,14 @@ export interface SamplesAPIWrapper {
     ) => Promise<ISelectRowsResult>;
 
     getTimelineEvents: (sampleId: number, timezone?: string) => Promise<TimelineEventModel[]>;
+
+    hasExistingSamples: (isRoot?: boolean, containerPath?: string) => Promise<boolean>;
+
+    saveSampleCounter: (
+        newCount: number,
+        seqType: 'rootSampleCount' | 'sampleCount',
+        containerPath?: string
+    ) => Promise<number>;
 }
 
 export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
@@ -89,6 +102,9 @@ export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
     getTimelineEvents = getTimelineEvents;
     getSampleTypeDetails = getSampleTypeDetails;
     getDistinctAssaysPerSample = getDistinctAssaysPerSample;
+    getSampleCounter = getSampleCounter;
+    saveSampleCounter = saveSampleCounter;
+    hasExistingSamples = hasExistingSamples;
 }
 
 /**
@@ -111,6 +127,9 @@ export function getSamplesTestAPIWrapper(
         getTimelineEvents: mockFn(),
         getSampleTypeDetails: mockFn(),
         getDistinctAssaysPerSample: mockFn(),
+        getSampleCounter: mockFn(),
+        saveSampleCounter: mockFn(),
+        hasExistingSamples: mockFn(),
         ...overrides,
     };
 }

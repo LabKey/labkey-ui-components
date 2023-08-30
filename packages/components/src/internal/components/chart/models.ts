@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Filter } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { AppURL } from '../../url/AppURL';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -49,7 +49,7 @@ export interface ChartConfig {
 
 export interface ChartQueryConfig {
     columns: string[];
-    containerFilter: string;
+    containerFilter: Query.ContainerFilter;
     containerPath: string;
     // dataRegionName: string;
     filterArray: Filter.IFilter[];

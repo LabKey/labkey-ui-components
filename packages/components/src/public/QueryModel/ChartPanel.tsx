@@ -23,7 +23,12 @@ export const ChartPanel: FC<RequiresModelAndActions> = memo(({ actions, model })
                     <span className="fa fa-close" /> Close
                 </button>
             </div>
-            <Chart chart={selectedChart} container={containerPath} filters={model.filters} />
+            <Chart
+                chart={selectedChart}
+                container={containerPath}
+                filters={model.filters}
+                urlPrefix={model.urlPrefix}
+            />
         </div>
     );
 });

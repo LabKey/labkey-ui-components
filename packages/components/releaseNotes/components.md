@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.362.?
 *Released*: ?? August 2023
 - SVGChart: Inject containerFilter into query config returned from server
+- RReport: use containerFilterName query arg
 
 ### version 2.362.1
 *Released*: 29 August 2023

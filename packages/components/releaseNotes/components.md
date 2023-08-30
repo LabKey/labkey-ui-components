@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.362.4
+*Released*: 30 August 2023
+- Update interfaces for `AppContext` to include `containerFilter`
+
 ### version 2.362.3
 *Released*: 30 August 2023
 - Support sampleCounter naming pattern

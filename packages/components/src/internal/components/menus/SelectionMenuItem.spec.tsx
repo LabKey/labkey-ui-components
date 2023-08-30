@@ -16,7 +16,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
+import { MenuItem, OverlayTrigger } from 'react-bootstrap';
 
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';

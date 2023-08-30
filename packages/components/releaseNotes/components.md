@@ -1,12 +1,17 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.X
-*Released*: X August 2023
+### version 2.362.3
+*Released*: 30 August 2023
 - Support sampleCounter naming pattern
     - Added "Naming Pattern Elements/Tokens" section to NameIdSettings
     - Updated getGenId/setGenId util to use new API
     - Added hasExistingSamples, getSampleCounter and saveSampleCounter util
+
+### version 2.362.2
+*Released*: 30 August 2023
+- SVGChart: Inject containerFilter into query config returned from server
+- RReport: use containerFilterName query arg
 
 ### version 2.362.1
 *Released*: 29 August 2023

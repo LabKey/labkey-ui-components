@@ -14,7 +14,7 @@ export const PaginationInfo: FC<PaginationInfoProps> = memo(props => {
     const loading = isLoading(totalCountLoadingState);
     const min = offset !== rowCount ? offset + 1 : offset;
     const max = offset + pageSize;
-    const text = `${min} - `;
+    const text = `${min.toLocaleString()} - `;
 
     return (
         <span className="pagination-info" data-min={min} data-max={max} data-total={rowCount}>

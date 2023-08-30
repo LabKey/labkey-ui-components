@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { List, Map, OrderedMap } from 'immutable';
-import { ActionURL, Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Domain, Experiment, Filter, Query, Utils } from '@labkey/api';
 
 import { IEntityTypeDetails } from '../entities/models';
 import { deleteEntityType, getSelectedItemSamples } from '../entities/actions';
@@ -634,6 +634,79 @@ export function updateSampleStorageData(
                 console.error(response);
                 reject(resolveErrorMessage(response));
             }),
+        });
+    });
+}
+
+export function getSampleCounter(seqType: 'rootSampleCount' | 'sampleCount', containerPath?: string): Promise<number> {
+    return new Promise((resolve, reject) => {
+        Experiment.getEntitySequence({
+            containerPath,
+            seqType,
+            kindName: 'SampleSet',
+            success: response => {
+                if (response.success) {
+                    resolve(response['value']);
+                } else {
+                    reject({ error: 'Unable to get ' + seqType });
+                }
+            },
+            failure: error => {
+                reject(error);
+            },
+        });
+    });
+}
+
+export function saveSampleCounter(
+    newCount: number,
+    seqType: 'rootSampleCount' | 'sampleCount',
+    containerPath?: string
+): Promise<number> {
+    return new Promise((resolve, reject) => {
+        Experiment.setEntitySequence({
+            newValue: newCount,
+            containerPath,
+            seqType,
+            kindName: 'SampleSet',
+            success: response => {
+                if (response.success) {
+                    resolve(response);
+                } else {
+                    console.error(response);
+                    reject(response.error);
+                }
+            },
+            failure: error => {
+                console.error(error);
+                reject(resolveErrorMessage(error));
+            },
+        });
+    });
+}
+
+export function hasExistingSamples(isRoot?: boolean, containerPath?: string): Promise<boolean> {
+    let dataCountSql =
+        'SELECT m.Name As SampleName ' +
+        '\n' +
+        'FROM materials m WHERE EXISTS ' +
+        '\n' +
+        '( SELECT * FROM materials mi WHERE mi.rowId = m.rowId';
+    if (isRoot) dataCountSql += ' AND mi.rootMaterialLSID IS NULL';
+    dataCountSql += ')';
+
+    return new Promise((resolve, reject) => {
+        Query.executeSql({
+            containerPath,
+            containerFilter: Query.ContainerFilter.allInProject,
+            schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
+            sql: dataCountSql,
+            success: async data => {
+                resolve(!!data.rows[0]?.SampleName);
+            },
+            failure: error => {
+                reject(error);
+            },
         });
     });
 }

@@ -1,4 +1,4 @@
-import React, { FC, memo, PureComponent, ReactNode, useCallback } from 'react';
+import React, { FC, memo, PureComponent, ReactNode, useCallback, useMemo } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { Set } from 'immutable';
 
@@ -24,7 +24,7 @@ export interface ExportOption {
     type: EXPORT_TYPES;
 }
 
-const exportOptions = [
+const exportOptions: ExportOption[] = [
     { type: EXPORT_TYPES.CSV, icon: 'fa-file-o', label: 'CSV' },
     { type: EXPORT_TYPES.EXCEL, icon: 'fa-file-excel-o', label: 'Excel' },
     { type: EXPORT_TYPES.TSV, icon: 'fa-file-text-o', label: 'TSV' },
@@ -32,10 +32,12 @@ const exportOptions = [
     // Note: EXPORT_TYPES and exportRows (used in export function below) also include support for FASTA and GENBANK,
     // but they were never used in the QueryGridPanel version of export. We're explicitly not supporting them in
     // this implementation until we need them.
-] as ExportOption[];
+];
+
+type ExportHandler = (option: ExportOption) => void;
 
 export interface ExportMenuImplProps extends Omit<ExportMenuProps, 'model'> {
-    exportHandler: (option: ExportOption) => void;
+    exportHandler: ExportHandler;
     hasData: boolean;
     hasSelections?: boolean;
     id: string;
@@ -44,8 +46,8 @@ export interface ExportMenuImplProps extends Omit<ExportMenuProps, 'model'> {
 const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
     const { id, hasData, supportedTypes, hasSelections, exportHandler, onExport } = props;
 
-    const exportCallback = useCallback(
-        (option: ExportOption) => {
+    const exportCallback = useCallback<ExportHandler>(
+        option => {
             const { type } = option;
             if (onExport?.[type]) {
                 onExport[type]?.(id);
@@ -56,49 +58,58 @@ const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
         [exportHandler, id, onExport]
     );
 
+    const validOptions = useMemo<ExportOption[]>(
+        () =>
+            exportOptions.reduce((options, option) => {
+                if (!option.hidden && (!supportedTypes || supportedTypes.includes(option.type))) {
+                    options.push(option);
+                }
+                return options;
+            }, []),
+        [supportedTypes]
+    );
+
+    const trigger = useMemo<string[]>(() => ['hover'], []);
+
+    if (!hasData || !validOptions) {
+        return null;
+    }
+
     return (
-        hasData && (
-            <div className="export-menu">
-                <Tip caption="Export" trigger={['hover']}>
-                    <DropdownButton
-                        id={`export-drop-${id}`}
-                        noCaret
-                        pullRight
-                        title={<span className="fa fa-download" />}
-                    >
-                        <MenuItem key="export_header" header>
-                            Export
-                            {hasSelections ? ' Selected' : ''}
-                        </MenuItem>
+        <div className="export-menu">
+            <Tip caption="Export" trigger={trigger}>
+                <DropdownButton id={`export-drop-${id}`} noCaret pullRight title={<span className="fa fa-download" />}>
+                    <MenuItem key="export_header" header>
+                        Export
+                        {hasSelections ? ' Selected' : ''}
+                    </MenuItem>
 
-                        {exportOptions.map(option => {
-                            if (option.hidden && !supportedTypes?.includes(option.type)) return null;
-
-                            if (option.type === EXPORT_TYPES.LABEL) {
-                                return (
-                                    <React.Fragment key={option.type}>
-                                        <MenuItem divider />
-                                        <MenuItem header>Export and Print {hasSelections ? 'Selected' : ''}</MenuItem>
-                                        <MenuItem onClick={() => exportCallback(option)}>
-                                            <span className={`fa ${option.icon} export-menu-icon`} />
-                                            &nbsp; {option.label}
-                                        </MenuItem>
-                                    </React.Fragment>
-                                );
-                            }
+                    {validOptions.map(option => {
+                        if (option.type === EXPORT_TYPES.LABEL) {
                             return (
-                                <MenuItem key={option.type} onClick={() => exportCallback(option)}>
-                                    <div className="export-menu__item">
+                                <React.Fragment key={option.type}>
+                                    <MenuItem divider />
+                                    <MenuItem header>Export and Print {hasSelections ? 'Selected' : ''}</MenuItem>
+                                    <MenuItem onClick={() => exportCallback(option)}>
                                         <span className={`fa ${option.icon} export-menu-icon`} />
-                                        <span>{option.label}</span>
-                                    </div>
-                                </MenuItem>
+                                        &nbsp; {option.label}
+                                    </MenuItem>
+                                </React.Fragment>
                             );
-                        })}
-                    </DropdownButton>
-                </Tip>
-            </div>
-        )
+                        }
+
+                        return (
+                            <MenuItem key={option.type} onClick={() => exportCallback(option)}>
+                                <div className="export-menu__item">
+                                    <span className={`fa ${option.icon} export-menu-icon`} />
+                                    <span>{option.label}</span>
+                                </div>
+                            </MenuItem>
+                        );
+                    })}
+                </DropdownButton>
+            </Tip>
+        </div>
     );
 });
 

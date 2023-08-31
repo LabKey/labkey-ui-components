@@ -31,12 +31,13 @@ import { AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY } from '../auditlog/constants
 
 import { AUDIT_KEY } from '../../app/constants';
 
+import { NotFound } from '../base/NotFound';
+
 import { GroupAssignments } from './GroupAssignments';
 
 import { showPremiumFeatures } from './utils';
 import { GroupMembership, MemberType } from './models';
 import { fetchGroupMembership } from './actions';
-import { NotFound } from '../base/NotFound';
 
 export type GroupManagementPageProps = InjectedRouteLeaveProps & InjectedPermissionsPage & WithRouterProps;
 
@@ -253,8 +254,7 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
         return showPremiumFeatures(moduleContext) ? container.path : undefined;
     }, [container, moduleContext]);
 
-    if (isProductProjectsEnabled() && !container.isProject)
-        return <NotFound />;
+    if (isProductProjectsEnabled() && !container.isProject) return <NotFound />;
 
     return (
         <BasePermissionsCheckPage

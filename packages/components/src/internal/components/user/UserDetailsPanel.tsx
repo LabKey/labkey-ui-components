@@ -315,7 +315,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
 
         if (toggleDetailsModal) {
             return (
-                <Modal onHide={toggleDetailsModal} show={true}>
+                <Modal onHide={toggleDetailsModal} show={true} className="user-detail-modal">
                     <Modal.Header closeButton>
                         <Modal.Title>{this.renderHeader()}</Modal.Title>
                     </Modal.Header>

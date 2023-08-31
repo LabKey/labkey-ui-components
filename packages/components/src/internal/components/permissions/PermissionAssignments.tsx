@@ -5,6 +5,7 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Button, Checkbox, Col, Row } from 'react-bootstrap';
 import { List } from 'immutable';
+import { InjectedRouter } from 'react-router';
 import { Security } from '@labkey/api';
 
 import { UserDetailsPanel } from '../user/UserDetailsPanel';
@@ -43,6 +44,7 @@ export interface PermissionAssignmentsProps extends InjectedPermissionsPage, Inj
     policy: SecurityPolicy;
     /** Subset list of role uniqueNames to show in this component usage */
     rolesToShow?: List<string>;
+    router?: InjectedRouter;
     showDetailsPanel?: boolean;
     title?: string;
     /** Specific principal type (i.e. 'u' for users and 'g' for groups) to show in this component usage */
@@ -66,6 +68,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         setIsDirty,
         showDetailsPanel = true,
         title = 'Security Roles and Assignments',
+        router,
     } = props;
     const [inherited, setInherited] = useState<boolean>(() => policy.isInheritFromParent());
     const [rootPolicy, setRootPolicy] = useState<SecurityPolicy>();
@@ -140,6 +143,11 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         onSuccess();
         loadGroupMembership();
     }, [onSuccess, loadGroupMembership]);
+
+    const onCancel = useCallback(() => {
+        setIsDirty(false);
+        router.goBack();
+    }, [router, setIsDirty]);
 
     const onSavePolicy = useCallback(() => {
         const wasInherited = policy.isInheritFromParent();
@@ -232,17 +240,6 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
     const isSubfolder = !isProjectContainer(container.path);
     const projectsEnabled = isProductProjectsEnabled(moduleContext);
 
-    const saveButton = (
-        <Button
-            className="pull-right alert-button permissions-assignment-save-btn"
-            bsStyle="success"
-            disabled={submitting || !getIsDirty()}
-            onClick={onSavePolicy}
-        >
-            Save
-        </Button>
-    );
-
     return (
         <Row>
             <Col xs={12} md={showDetailsPanel ? 8 : 12}>
@@ -287,7 +284,15 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                         ))}
                         <br />
                         {saveErrorMsg && <Alert>{saveErrorMsg}</Alert>}
-                        {saveButton}
+                        <Button
+                            className="pull-right alert-button permissions-assignment-save-btn"
+                            bsStyle="success"
+                            disabled={submitting || !getIsDirty()}
+                            onClick={onSavePolicy}
+                        >
+                            Save
+                        </Button>
+                        {router && <Button onClick={onCancel}>Cancel</Button>}
                     </div>
                 </div>
             </Col>

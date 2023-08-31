@@ -1,6 +1,7 @@
 import React, { ChangeEvent, FC, memo, useCallback, useMemo, useState } from 'react';
 import { Button, Col, Panel, Row } from 'react-bootstrap';
 import { List, Map } from 'immutable';
+import { InjectedRouter } from 'react-router';
 
 import { Alert } from '../base/Alert';
 
@@ -29,6 +30,7 @@ export interface GroupAssignmentsProps {
     principalsById: Map<number, Principal>;
     removeMember: (groupId: string, memberId: number) => void;
     rolesByUniqueName: Map<string, SecurityRole>;
+    router?: InjectedRouter;
     save: () => Promise<void>;
     setErrorMsg: (e: string) => void;
     setIsDirty: (isDirty: boolean) => void;
@@ -54,12 +56,18 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         save,
         setErrorMsg,
         setIsDirty,
+        router,
     } = props;
     const { user } = useServerContext();
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [selectedPrincipalId, setSelectedPrincipalId] = useState<number>();
     const [newGroupName, setNewGroupName] = useState<string>('');
     const initExpandedGroup = getLocation().query?.get('expand');
+
+    const onCancel = useCallback(() => {
+        setIsDirty(false);
+        router.goBack();
+    }, [router, setIsDirty]);
 
     const onSave = useCallback(async () => {
         setSubmitting(true);
@@ -68,19 +76,6 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         setIsDirty(false);
         setSubmitting(false);
     }, [save, setErrorMsg, setIsDirty]);
-
-    const saveButton = useMemo(() => {
-        return (
-            <Button
-                className="pull-right alert-button group-management-save-btn"
-                bsStyle="success"
-                disabled={submitting || !getIsDirty()}
-                onClick={onSave}
-            >
-                Save
-            </Button>
-        );
-    }, [getIsDirty, onSave, submitting]);
 
     const showDetails = useCallback((principalId: number) => {
         setSelectedPrincipalId(principalId);
@@ -191,7 +186,15 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
 
                         <div className="group-assignment-panel__footer">
                             {errorMsg && <Alert>{errorMsg}</Alert>}
-                            {saveButton}
+                            <Button
+                                className="pull-right alert-button group-management-save-btn"
+                                bsStyle="success"
+                                disabled={submitting || !getIsDirty()}
+                                onClick={onSave}
+                            >
+                                Save
+                            </Button>
+                            {router && <Button onClick={onCancel}>Cancel</Button>}
                         </div>
                     </Panel.Body>
                 </Panel>

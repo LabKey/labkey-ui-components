@@ -917,8 +917,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     onCut = (event: ClipboardEvent): void => {
         const { editorModel, queryInfo } = this.props;
-        if (!this.props.disabled) {
-            copyEvent(editorModel, queryInfo.getInsertColumns(), event);
+        if (!this.props.disabled && copyEvent(editorModel, queryInfo.getInsertColumns(), event)) {
             this.modifyCell(
                 editorModel.selectedColIdx,
                 editorModel.selectedRowIdx,

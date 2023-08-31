@@ -6,6 +6,27 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 47376: User Detail Modal - add className to be able to distinguish modal from others
 - Issue 47197: Add 'Cancel' button on the group management and permissions pages
 
+### version 2.363.0
+*Released*: 30 August 2023
+- protect against missing displayColumns
+- Issue 48362: Add `toLocaleString` calls when rendering numbers to get thousands separators.
+
+### version 2.362.4
+*Released*: 30 August 2023
+- Update interfaces for `AppContext` to include `containerFilter`
+
+### version 2.362.3
+*Released*: 30 August 2023
+- Support sampleCounter naming pattern
+    - Added "Naming Pattern Elements/Tokens" section to NameIdSettings
+    - Updated getGenId/setGenId util to use new API
+    - Added hasExistingSamples, getSampleCounter and saveSampleCounter util
+
+### version 2.362.2
+*Released*: 30 August 2023
+- SVGChart: Inject containerFilter into query config returned from server
+- RReport: use containerFilterName query arg
+
 ### version 2.362.1
 *Released*: 29 August 2023
 - Issue 47763: Remove unnecessary DataFileUrl column from requiredColumns in Assay Runs grid

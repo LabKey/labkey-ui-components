@@ -79,4 +79,16 @@ describe('Controls', () => {
         expect(wrapper.find('.text-danger')).toHaveLength(1);
         expect(wrapper.find('.text-danger').text()).toBe('At most 50 rows can be added at once (10 remaining).');
     });
+
+    test('invalid row count with large maxTotalCount', () => {
+        const addFn = jest.fn();
+        const wrapper = shallow(<AddRowsControl initialCount={6} maxTotalCount={5000} maxCount={10} onAdd={addFn} />);
+        const inputWrapper = wrapper.find('input');
+        inputWrapper.simulate('focus');
+        inputWrapper.simulate('change', { target: { value: 10000 } });
+        wrapper.update();
+        expect(wrapper.find('.text-danger')).toHaveLength(1);
+        expect(wrapper.find('.text-danger').text()).toBe('At most 5,000 rows can be added at once (10 remaining).');
+
+    })
 });

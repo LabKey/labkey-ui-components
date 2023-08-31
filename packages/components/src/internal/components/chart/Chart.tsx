@@ -20,6 +20,7 @@ import { isLoading, LoadingState } from '../../../public/LoadingState';
 import { DataViewInfoTypes, LABKEY_VIS } from '../../constants';
 
 import { DataViewInfo } from '../../DataViewInfo';
+import { getContainerFilter } from '../../query/api';
 import { generateId } from '../../util/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
@@ -68,11 +69,13 @@ interface Props {
     chart: DataViewInfo;
     container?: string;
     filters?: Filter.IFilter[];
+    urlPrefix?: string;
 }
 
-export const SVGChart: FC<Props> = memo(({ api, chart, filters }) => {
+export const SVGChart: FC<Props> = memo(({ api, chart, container, filters }) => {
     const { error, reportId } = chart;
     const divId = useMemo(() => generateId('chart-'), []);
+    const containerFilter = useMemo(() => getContainerFilter(container), [container]);
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [queryConfig, setQueryConfig] = useState<ChartQueryConfig>(undefined);
     const [chartConfig, setChartConfig] = useState<ChartConfig>(undefined);
@@ -88,6 +91,7 @@ export const SVGChart: FC<Props> = memo(({ api, chart, filters }) => {
                 ...computeDimensions(ref.current.offsetWidth),
             };
             const queryConfig_ = visualizationConfig.queryConfig;
+            queryConfig_.containerFilter = containerFilter;
             setChartConfig(chartConfig_);
 
             if (filters) {
@@ -102,7 +106,7 @@ export const SVGChart: FC<Props> = memo(({ api, chart, filters }) => {
         }
         // We purposely don't use filters as a dep, see note in computeFilterKey
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [api, reportId, filterKey]);
+    }, [api, containerFilter, reportId, filterKey]);
 
     const updateChartSize = useCallback(() => {
         setChartConfig(currentChartConfig => {
@@ -138,7 +142,6 @@ export const SVGChart: FC<Props> = memo(({ api, chart, filters }) => {
                 // updated in the future to use the underlying VIS library to separate fetching of data from rendering
                 // the chart. We should only be fetching data when the reportId or filterArray change.
                 LABKEY_VIS.GenericChartHelper.renderChartSVG(divId, queryConfig, chartConfig);
-                console.log(chartConfig);
             }
         };
         // Debounce the call to render because we may trigger many resize events back to back, which will produce many
@@ -158,7 +161,7 @@ export const SVGChart: FC<Props> = memo(({ api, chart, filters }) => {
 });
 SVGChart.displayName = 'SVGChart';
 
-const RReport: FC<Props> = memo(({ api, chart, container, filters }) => {
+const RReport: FC<Props> = memo(({ api, chart, container, filters, urlPrefix }) => {
     const { error, reportId } = chart;
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [reportHtml, setReportHtml] = useState<string>(undefined);
@@ -169,7 +172,7 @@ const RReport: FC<Props> = memo(({ api, chart, container, filters }) => {
         setLoadError(undefined);
 
         try {
-            const html = await api.fetchRReport(reportId, container, filters);
+            const html = await api.fetchRReport(reportId, urlPrefix, container, filters);
             setReportHtml(html);
         } catch (e) {
             setLoadError(e.exception);
@@ -227,9 +230,9 @@ const RReport: FC<Props> = memo(({ api, chart, container, filters }) => {
 });
 RReport.displayName = 'RReport';
 
-export const Chart: FC<Props> = memo(({ api = DEFAULT_API_WRAPPER, chart, container, filters }) => {
+export const Chart: FC<Props> = memo(({ api = DEFAULT_API_WRAPPER, chart, container, filters, urlPrefix }) => {
     if (chart.type === DataViewInfoTypes.RReport) {
-        return <RReport api={api} chart={chart} container={container} filters={filters} />;
+        return <RReport api={api} chart={chart} container={container} filters={filters} urlPrefix={urlPrefix} />;
     }
 
     return <SVGChart api={api} chart={chart} container={container} filters={filters} />;

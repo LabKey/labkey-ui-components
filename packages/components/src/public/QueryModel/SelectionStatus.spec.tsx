@@ -94,6 +94,21 @@ describe('SelectionStatus', () => {
         wrapper.unmount();
     });
 
+    test('has selections, rowCount greater than large maxRows', () => {
+        const selectionSet = [];
+        for (let i = 0; i < 1031; i++) selectionSet.push(i.toString());
+        const model = MODEL_LOADED.mutate({ rowCount: 41321, selections: new Set(selectionSet) });
+        const wrapper = mount(<SelectionStatus actions={ACTIONS} model={model} />);
+        expect(wrapper.find('.selection-status')).toHaveLength(1);
+        expect(wrapper.find('.selection-status__count')).toHaveLength(1);
+        expect(wrapper.find('.selection-status__count').text()).toBe('1,031 of 41,321 selected');
+        expect(wrapper.find('.selection-status__clear-all')).toHaveLength(1);
+        expect(wrapper.find('.selection-status__clear-all').text()).toBe('Clear all');
+        expect(wrapper.find('.selection-status__select-all')).toHaveLength(1);
+        expect(wrapper.find('.selection-status__select-all').text()).toBe('Select all 41,321');
+        wrapper.unmount();
+    });
+
     test('has selections, rowCount greater than maxRows but isLoadingTotalCount', () => {
         const model = MODEL_LOADED.mutate({ rowCount: 21, totalCountLoadingState: LoadingState.LOADING });
         const wrapper = mount(<SelectionStatus actions={ACTIONS} model={model} />);

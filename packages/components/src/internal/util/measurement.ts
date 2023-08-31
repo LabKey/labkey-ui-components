@@ -279,21 +279,21 @@ export function convertUnitDisplay(
         return emptyDisplay ? emptyDisplay : '';
     }
     if (!displayUnit) {
-        return amount + (includeUnits && unit ? ' ' + unit : '');
+        return amount.toLocaleString() + (includeUnits && unit ? ' ' + unit : '');
     }
     if (!unit) {
-        return amount + (includeUnits && displayUnit ? ' ' + displayUnit : '');
+        return amount.toLocaleString() + (includeUnits && displayUnit ? ' ' + displayUnit : '');
     }
 
     const currentUnit: MeasurementUnit = MEASUREMENT_UNITS[unit.toLowerCase()];
     const targetUnit: MeasurementUnit = MEASUREMENT_UNITS[displayUnit.toLowerCase()];
     if (!currentUnit || !targetUnit) {
-        return amount + (includeUnits ? ' ' + unit : '');
+        return amount.toLocaleString() + (includeUnits ? ' ' + unit : '');
     }
 
-    const newAmount = amount * (currentUnit.ratio / targetUnit.ratio);
     // show up to 6 decimal places
-    return parseFloat(newAmount.toFixed(6)).toString() + (includeUnits ? ' ' + displayUnit : '');
+    const newAmount = parseFloat((amount * (currentUnit.ratio / targetUnit.ratio)).toFixed(6));
+    return (newAmount > 1000 ? newAmount.toLocaleString() : newAmount) + (includeUnits ? ' ' + displayUnit : '');
 }
 
 // volume unit (displayUnit): 10 mL (L)
@@ -308,19 +308,19 @@ export function getStoredAmountDisplay(rawValue: string, includeUnits?: boolean)
 
     const parts: string[] = rawValue.trim().split(/\b\s+/);
     if (parts.length === 1) {
-        return rawValue;
+        return rawValue.toLocaleString();
     }
 
     if (parts.length === 2) {
         if (includeUnits) {
             const unit = parts[1];
             if (unit.indexOf('(') === 0 && unit.indexOf(')') === unit.length - 1) {
-                return parts[0] + ' ' + unit.substring(1, unit.length - 1);
+                return parts[0].toLocaleString() + ' ' + unit.substring(1, unit.length - 1);
             } else {
-                return rawValue;
+                return rawValue.toLocaleString();
             }
         } else {
-            return parts[0];
+            return parts[0].toLocaleString();
         }
     }
 

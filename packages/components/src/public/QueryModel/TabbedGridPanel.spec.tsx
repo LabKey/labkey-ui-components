@@ -190,4 +190,25 @@ describe('TabbedGridPanel', () => {
         expect(tabs.at(0).text()).toEqual(`${MIXTURES_TITLE} (${queryModels.mixtures.rowCount})`);
         expect(tabs.at(1).text()).toEqual(`${AMINO_ACIDS_TITLE} (${queryModels.aminoAcids.rowCount})`);
     });
+
+    test('showRowCountOnTabs with large counts', () => {
+        const largeCountModels = {
+            mixtures: mixturesModel.mutate({ rowCount: 1242 }),
+            aminoAcids: aminoAcidsModel.mutate({ rowCount: 54321 }),
+        };
+        const wrapper = mountWithAppServerContext(
+            <TabbedGridPanel
+                actions={actions}
+                activeModelId="aminoAcids"
+                queryModels={largeCountModels}
+                showRowCountOnTabs
+                tabOrder={tabOrder}
+            />
+        );
+
+        const tabs = wrapper.find(TABS_SELECTOR);
+        expect(tabs.length).toEqual(2);
+        expect(tabs.at(0).text()).toEqual(`${MIXTURES_TITLE} (1,242)`);
+        expect(tabs.at(1).text()).toEqual(`${AMINO_ACIDS_TITLE} (54,321)`);
+    });
 });

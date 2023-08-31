@@ -140,7 +140,7 @@ describe("MetricUnit utils", () => {
         expect(getMultiAltUnitKeys(['', null])).toEqual(allOptions);
     });
 
-    test("convertUnitDisplay", () => {
+    test('convertUnitDisplay', () => {
         expect(convertUnitDisplay(null, null, null, false)).toBe('');
         expect(convertUnitDisplay(null, null, null, false, 'empty')).toBe('empty');
 
@@ -156,14 +156,14 @@ describe("MetricUnit utils", () => {
         expect(convertUnitDisplay(99999, 'uL', 'L', true)).toBe('0.099999 L');
         expect(convertUnitDisplay(99999.133, 'uL', 'L', true)).toBe('0.099999 L');
         expect(convertUnitDisplay(10, 'mL', 'L', true)).toBe('0.01 L');
-        expect(convertUnitDisplay(10, 'L', 'mL', true)).toBe('10000 mL');
+        expect(convertUnitDisplay(10, 'L', 'mL', true)).toBe('10,000 mL');
         expect(convertUnitDisplay(10, 'g', 'kg', true)).toBe('0.01 kg');
         expect(convertUnitDisplay(10, 'g', 'kg', false)).toBe('0.01');
 
         expect(convertUnitDisplay(10, 'unit', 'unit', true)).toBe('10 unit');
     });
 
-    test("getStoredAmountDisplay", () => {
+    test('getStoredAmountDisplay', () => {
 
         expect(getStoredAmountDisplay('99999 uL (L)')).toBe('0.099999');
         expect(getStoredAmountDisplay('99999 uL (L)', true)).toBe('0.099999 L');

@@ -164,7 +164,7 @@ export function getOperationNotPermittedMessage(
             notAllowed = statusData.notAllowed.filter(data => aliquotIds.indexOf(caseInsensitive(data, 'rowId')) < 0);
         }
         if (notAllowed?.length > 0) {
-            notAllowedMsg = `The current status of ${notAllowed.length} selected sample${
+            notAllowedMsg = `The current status of ${notAllowed.length.toLocaleString()} selected sample${
                 notAllowed.length == 1 ? '' : 's'
             } prevents ${getOperationMessageAndRecommendation(operation, notAllowed.length, false)}.`;
         }

@@ -19,9 +19,9 @@ import { DomainDesign, DomainDetails, NameExpressionsValidationResults } from '.
 
 export interface DomainPropertiesAPIWrapper {
     fetchDomainDetails: (
-        domainId: number,
-        schemaName: string,
-        queryName: string,
+        domainId?: number,
+        schemaName?: string,
+        queryName?: string,
         domainKind?: string
     ) => Promise<DomainDetails>;
     fetchOntologies: (containerPath?: string) => Promise<OntologyModel[]>;

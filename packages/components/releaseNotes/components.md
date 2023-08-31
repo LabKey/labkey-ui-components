@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.364.0
+*Released*: 31 August 2023
 - Issue 47376: User Detail Modal - add className to be able to distinguish modal from others
 - Issue 47197: Add 'Cancel' button on the group management and permissions pages
 

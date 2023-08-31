@@ -934,6 +934,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             return;
         }
 
+        const isMeta = event.ctrlKey || event.metaKey;
         const colIdx = editorModel.selectedColIdx;
         const rowIdx = editorModel.selectedRowIdx;
         let nextCol;
@@ -941,7 +942,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         switch (event.key) {
             case Key.ARROW_LEFT:
-                if (event.ctrlKey) {
+                if (isMeta) {
                     const found = editorModel.findNextCell(colIdx, rowIdx, not(isCellEmpty), moveLeft);
                     if (found) {
                         nextCol = found.colIdx;
@@ -957,7 +958,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 break;
 
             case Key.ARROW_UP:
-                if (event.ctrlKey) {
+                if (isMeta) {
                     const found = editorModel.findNextCell(colIdx, rowIdx, not(isCellEmpty), moveUp);
                     if (found) {
                         nextCol = found.colIdx;
@@ -973,7 +974,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 break;
 
             case Key.ARROW_RIGHT:
-                if (event.ctrlKey) {
+                if (isMeta) {
                     const found = editorModel.findNextCell(colIdx, rowIdx, not(isCellEmpty), moveRight);
                     if (found) {
                         nextCol = found.colIdx;
@@ -989,7 +990,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 break;
 
             case Key.ARROW_DOWN:
-                if (event.ctrlKey) {
+                if (isMeta) {
                     const found = editorModel.findNextCell(colIdx, rowIdx, not(isCellEmpty), moveDown);
                     if (found) {
                         nextCol = found.colIdx;

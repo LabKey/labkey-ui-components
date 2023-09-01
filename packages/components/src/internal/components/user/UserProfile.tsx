@@ -24,7 +24,7 @@ import { GroupsList } from '../permissions/GroupsList';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
-import { getUserDetailsRowData, updateUserDetails } from './actions';
+import { getUserDetailsRowData } from './actions';
 
 const FIELDS_TO_EXCLUDE = List<string>([
     'userid',
@@ -139,7 +139,7 @@ export class UserProfile extends PureComponent<Props, State> {
     };
 
     submitUserDetails = (data: OrderedMap<string, any>): Promise<any> => {
-        const { user } = this.props;
+        const { api, user } = this.props;
         const avatar = this.state.avatar || (this.state.removeCurrentAvatar ? null : undefined);
 
         // Issue 39225: don't submit empty string for required DisplayName
@@ -153,7 +153,7 @@ export class UserProfile extends PureComponent<Props, State> {
             this.setState(() => ({ reloadRequired: true }));
         }
 
-        return updateUserDetails(SCHEMAS.CORE_TABLES.USERS, getUserDetailsRowData(user, data, avatar));
+        return api.security.updateUserDetails(SCHEMAS.CORE_TABLES.USERS, getUserDetailsRowData(user, data, avatar));
     };
 
     onSuccess = (result: {}): void => {

@@ -185,7 +185,7 @@ describe('SampleTypeDesigner', () => {
         panelHeader.simulate('click');
         const alerts = wrapped.find(Alert);
         // still expect to have only two alerts.  We don't show the Barcode header in the file import panel.
-        // Jest doesn't wnat to switch to that panel.
+        // Jest doesn't want to switch to that panel.
         expect(alerts).toHaveLength(2);
         expect(alerts.at(0).text()).toEqual(PROPERTIES_PANEL_ERROR_MSG);
         expect(alerts.at(1).text()).toEqual('Please correct errors in the properties panel before saving.');

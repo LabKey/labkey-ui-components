@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.365.0
+*Released*: 1 September 2023
+- Add `saveDomain` to `DomainPropertiesAPIWrapper`
+- Add `updateUserDetails` to `SecurityAPIWrapper`
+- Export internal `BaseDomainDesigner`
+- Update `EditableGrid` to account for optional `addControlProps`
+- Removes `UserProvider` in favor of `useUserProperties` hook
+
 ### version 2.364.0
 *Released*: 31 August 2023
 - Issue 47376: User Detail Modal - add className to be able to distinguish modal from others

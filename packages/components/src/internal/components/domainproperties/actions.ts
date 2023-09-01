@@ -178,9 +178,9 @@ export function fetchDomain(
  * @return Promise wrapped Domain API call.
  */
 export function fetchDomainDetails(
-    domainId: number,
-    schemaName: string,
-    queryName: string,
+    domainId?: number,
+    schemaName?: string,
+    queryName?: string,
     domainKind?: string
 ): Promise<DomainDetails> {
     return new Promise((resolve, reject) => {

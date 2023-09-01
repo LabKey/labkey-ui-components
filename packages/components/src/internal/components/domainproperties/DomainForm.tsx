@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ReactNode } from 'react';
+import React, { FC, memo, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Button, Checkbox, Col, Form, FormControl, Panel, Row } from 'react-bootstrap';
@@ -46,6 +46,10 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { InferDomainResponse } from '../../../public/InferDomainResponse';
 
 import { FileAttachmentForm } from '../../../public/files/FileAttachmentForm';
+
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
+import { getDefaultAPIWrapper } from '../../APIWrapper';
 
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
@@ -85,7 +89,6 @@ import {
     DomainPanelStatus,
     FieldDetails,
     HeaderRenderer,
-    IAppDomainHeader,
     IDomainField,
     IDomainFormDisplayOptions,
     IFieldChange,
@@ -103,9 +106,7 @@ import {
 } from './propertiesUtil';
 import { DomainPropertiesGrid } from './DomainPropertiesGrid';
 import { SystemFields } from './SystemFields';
-import { LoadingSpinner } from '../base/LoadingSpinner';
 import { DomainPropertiesAPIWrapper } from './APIWrapper';
-import { getDefaultAPIWrapper } from '../../APIWrapper';
 
 interface IDomainFormInput {
     api?: DomainPropertiesAPIWrapper;
@@ -117,7 +118,7 @@ interface IDomainFormInput {
     domain: DomainDesign;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
     domainIndex?: number;
-    fieldsAdditionalRenderer?: () => any;
+    fieldsAdditionalRenderer?: () => ReactNode;
     headerPrefix?: string; // used as a string to remove from the heading when using the domain.name
     headerTitle?: string;
     helpNoun?: string;
@@ -132,18 +133,18 @@ interface IDomainFormInput {
     modelDomains?: List<DomainDesign>;
     // used to initialize newly added fields
     newFieldConfig?: Partial<IDomainField>;
-    onChange: (newDomain: DomainDesign, dirty: boolean, rowIndexChange?: DomainFieldIndexChange[]) => any;
-    onToggle?: (collapsed: boolean, callback?: () => any) => any;
+    onChange: (newDomain: DomainDesign, dirty: boolean, rowIndexChange?: DomainFieldIndexChange[]) => void;
+    onToggle?: (collapsed: boolean, callback?: () => any) => void;
     panelStatus?: DomainPanelStatus;
     // the queryName to use for text choice distinct value query, overrides schema/query on domain prop
     queryName?: string;
     // the schemaName to use for text choice distinct value query, overrides schema/query on domain prop
     schemaName?: string;
+    // having this prop set is also an indicator that you want to show the file preview grid with the import data option
+    setFileImportData?: (file: File, shouldImportData: boolean) => void;
     showHeader?: boolean;
     successBsStyle?: string;
     systemFields?: SystemField[];
-    // having this prop set is also an indicator that you want to show the file preview grid with the import data option
-    setFileImportData?: (file: File, shouldImportData: boolean) => any;
     testMode?: boolean;
     todoIconHelpMsg?: string;
     useTheme?: boolean;
@@ -171,16 +172,6 @@ interface IDomainFormState {
     summaryViewMode: boolean;
     visibleFieldsCount: number;
     visibleSelection: Set<number>;
-}
-
-export default class DomainForm extends React.PureComponent<IDomainFormInput> {
-    render(): ReactNode {
-        return (
-            <LookupProvider>
-                <DomainFormImpl {...this.props} />
-            </LookupProvider>
-        );
-    }
 }
 
 /**
@@ -230,9 +221,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     componentDidMount = async (): Promise<void> => {
-        const { domain, maxPhiLevel, useTheme, onChange, api } = this.props;
+        const { domain, maxPhiLevel, onChange, api } = this.props;
 
-        this.setState(() => ({ isLoading: true }));
+        this.setState({ isLoading: true });
 
         if (!maxPhiLevel) {
             try {
@@ -253,11 +244,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             }
         }
 
-        if (onChange) {
-            onChange(this.validateDomain(domain), false);
-        }
+        onChange?.(this.validateDomain(domain), false);
 
-        this.setState(() => ({ isLoading: false }));
+        this.setState({ isLoading: false });
     };
 
     UNSAFE_componentWillReceiveProps(nextProps: Readonly<IDomainFormInput>): void {
@@ -269,10 +258,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
 
         if (nextProps.validate && validate !== nextProps.validate) {
-            const newDomain = this.validateDomain(nextProps.domain);
-            if (onChange) {
-                onChange(newDomain, false);
-            }
+            onChange?.(this.validateDomain(nextProps.domain), false);
         }
     }
 
@@ -312,9 +298,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     newDomain = this.getFilteredFields(newDomain);
                 }
 
-                if (onChange) {
-                    onChange(newDomain, false);
-                }
+                onChange?.(newDomain, false);
             }
         );
     };
@@ -362,10 +346,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     isExpanded = (): boolean => {
         return this.state.expandedRowIndex !== undefined;
     };
-
-    domainExists(domainDesign: DomainDesign): boolean {
-        return !!domainDesign;
-    }
 
     onFieldExpandToggle = (index: number): void => {
         const { expandedRowIndex } = this.state;
@@ -428,24 +408,24 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             });
         }
 
-        this.setState(() => ({ reservedFieldsMsg: undefined, fieldDetails: updatedDomain.getFieldDetails() }));
-
-        this.props.onChange?.(updatedDomain, dirty !== undefined ? dirty : true, rowIndexChanges);
+        this.setState({ reservedFieldsMsg: undefined, fieldDetails: updatedDomain.getFieldDetails() }, () => {
+            this.props.onChange?.(updatedDomain, dirty !== undefined ? dirty : true, rowIndexChanges);
+        });
     }
 
     clearFilePreviewData = (): void => {
-        const { filePreviewData, file } = this.state;
-        const fieldCount = this.props.domain.fields.size;
-
-        this.setState({
-            filePreviewData: fieldCount === 0 ? undefined : filePreviewData,
-            file: fieldCount === 0 ? undefined : file,
-            filePreviewMsg: undefined,
+        this.setState(state => {
+            const fieldCount = this.props.domain.fields.size;
+            return {
+                filePreviewData: fieldCount === 0 ? undefined : state.filePreviewData,
+                file: fieldCount === 0 ? undefined : state.file,
+                filePreviewMsg: undefined,
+            };
         });
     };
 
     onDeleteConfirm(index: number): void {
-        const rowIndexChange = { originalIndex: index, newIndex: undefined } as DomainFieldIndexChange;
+        const rowIndexChange: DomainFieldIndexChange = { newIndex: undefined, originalIndex: index };
         const updatedDomain = removeFields(this.props.domain, [index]);
         const visibleFieldsCount = getVisibleFieldCount(updatedDomain);
         const visibleSelection = getVisibleSelectedFieldIndexes(updatedDomain.fields);
@@ -461,9 +441,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 expandedRowIndex: undefined,
                 confirmDeleteRowIndex: undefined,
             },
-            () => {
-                this.clearFilePreviewData();
-            }
+            this.clearFilePreviewData
         );
     }
 
@@ -473,7 +451,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         if (newDesignFields) {
             newDesignFields.forEach(this.applyAddField);
-            this.setState(() => ({ expandedRowIndex: 0 }));
+            this.setState({ expandedRowIndex: 0 });
         } else {
             this.applyAddField();
         }
@@ -488,23 +466,19 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             if (field.visible) {
                 newVisibleSelection = applySetOperation(newVisibleSelection, index, !selectAll);
                 return field.set('selected', !selectAll);
-            } else {
-                return field;
             }
+
+            return field;
         });
 
-        const updatedDomain = domain.merge({
-            fields: toggledFields,
-        }) as DomainDesign;
+        const updatedDomain = domain.merge({ fields: toggledFields }) as DomainDesign;
         this.onDomainChange(updatedDomain, false);
         this.setState(state => ({ selectAll: !state.selectAll, visibleSelection: newVisibleSelection }));
     };
 
     clearAllSelection = (): void => {
         const { domain } = this.props;
-        const fields = domain.fields.map(field => {
-            return field.set('selected', false);
-        });
+        const fields = domain.fields.map(field => field.set('selected', false));
         const updatedDomain = domain.merge({ fields }) as DomainDesign;
         this.onDomainChange(updatedDomain, false);
         this.setState({ selectAll: false, visibleSelection: new Set() });
@@ -513,8 +487,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     onExportFields = (): void => {
         const { domain } = this.props;
         const { visibleSelection } = this.state;
-        const fields = domain.fields;
-        let filteredFields = fields.filter((field: DomainField) => field.visible);
+        let filteredFields = domain.fields.filter(f => f.visible);
         // Respect selection, if any selection exists
         filteredFields =
             visibleSelection.size > 0 ? filteredFields.filter((field: DomainField) => field.selected) : filteredFields;
@@ -528,18 +501,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     renderBulkFieldDeleteConfirm = (): ReactNode => {
         const { domain } = this.props;
         const { bulkDeleteConfirmInfo } = this.state;
-        const undeletableNames = bulkDeleteConfirmInfo.undeletableFields.map(i => {
-            return domain.fields.get(i).name;
-        });
-        const { howManyDeleted, undeletableWarning } = generateBulkDeleteWarning(
-            bulkDeleteConfirmInfo,
-            undeletableNames
-        );
+        const deletableSelectedFieldsCount = bulkDeleteConfirmInfo.deletableSelectedFields.length;
 
-        const thisFieldPlural =
-            bulkDeleteConfirmInfo.deletableSelectedFields.length > 1 ? 'these fields' : 'this field';
-
-        if (bulkDeleteConfirmInfo.deletableSelectedFields.length === 0) {
+        if (deletableSelectedFieldsCount === 0) {
             return (
                 <ConfirmModal
                     title="Cannot Delete Required Fields"
@@ -552,6 +516,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 </ConfirmModal>
             );
         }
+
+        const { howManyDeleted, undeletableWarning } = generateBulkDeleteWarning(
+            bulkDeleteConfirmInfo,
+            bulkDeleteConfirmInfo.undeletableFields.map(i => domain.fields.get(i).name)
+        );
 
         return (
             <ConfirmModal
@@ -566,8 +535,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     <p>{howManyDeleted} will be deleted.</p>
                     <p>{undeletableWarning}</p>
                     <p>
-                        Are you sure you want to delete {thisFieldPlural}? All of the related field data will also be
-                        deleted.
+                        Are you sure you want to delete{' '}
+                        {deletableSelectedFieldsCount > 1 ? 'these fields' : 'this field'}? All of the related field
+                        data will also be deleted.
                     </p>
                 </div>
             </ConfirmModal>
@@ -575,28 +545,25 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     onBulkDeleteClick = (): void => {
-        const { domain } = this.props;
-        const { visibleSelection } = this.state;
-        const fields = domain.fields;
+        this.setState(state => {
+            const { fields } = this.props.domain;
+            const { visibleSelection } = state;
 
-        const undeletableFields = [];
-        const deletableSelectedFields = [];
+            const undeletableFields: number[] = [];
+            const deletableSelectedFields: number[] = [];
 
-        visibleSelection.forEach(val => {
-            const field = fields.get(val);
+            visibleSelection.forEach(val => {
+                const field = fields.get(val);
 
-            if (field.isSaved() && !isFieldDeletable(field)) {
-                undeletableFields.push(val);
-            } else {
-                deletableSelectedFields.push(val);
-            }
+                if (field.isSaved() && !isFieldDeletable(field)) {
+                    undeletableFields.push(val);
+                } else {
+                    deletableSelectedFields.push(val);
+                }
+            });
+
+            return { bulkDeleteConfirmInfo: { deletableSelectedFields, undeletableFields } };
         });
-
-        const bulkDeleteConfirmInfo = {
-            deletableSelectedFields,
-            undeletableFields,
-        };
-        this.setState({ bulkDeleteConfirmInfo });
     };
 
     onBulkDeleteConfirm = (): void => {
@@ -605,9 +572,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const updatedDomain = removeFields(domain, deletableSelectedFields);
         const visibleFieldsCount = getVisibleFieldCount(updatedDomain);
         const visibleSelection = getVisibleSelectedFieldIndexes(updatedDomain.fields);
-        const rowIndexChanges = deletableSelectedFields.map(i => {
-            return { originalIndex: i, newIndex: undefined } as DomainFieldIndexChange;
-        });
+        const rowIndexChanges = deletableSelectedFields.map<DomainFieldIndexChange>(i => ({
+            newIndex: undefined,
+            originalIndex: i,
+        }));
 
         this.onDomainChange(updatedDomain, true, rowIndexChanges);
         this.setState(
@@ -618,9 +586,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 selectAll: visibleFieldsCount !== 0 && visibleSelection.size === visibleFieldsCount,
                 bulkDeleteConfirmInfo: undefined,
             },
-            () => {
-                this.clearFilePreviewData();
-            }
+            this.clearFilePreviewData
         );
     };
 
@@ -628,13 +594,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.applyAddField();
     };
 
+    onFileRemoval = (): void => {
+        this.setState({ filePreviewMsg: undefined });
+    };
+
     applyAddField = (config?: Partial<IDomainField>): void => {
         const { newFieldConfig } = this.props;
         const newConfig = config ? { ...config } : newFieldConfig;
         const newDomain = addDomainField(this.props.domain, newConfig);
         this.onDomainChange(newDomain, true);
-        this.setState({ selectAll: false, visibleFieldsCount: getVisibleFieldCount(newDomain) });
-        this.collapseRow();
+        this.setState({ selectAll: false, visibleFieldsCount: getVisibleFieldCount(newDomain) }, this.collapseRow);
     };
 
     onSystemFieldEnable = (field: string, enable: boolean): void => {
@@ -644,20 +613,28 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     onFieldsChange = (changes: List<IFieldChange>, index: number, expand: boolean): void => {
         const { domain } = this.props;
-        const { visibleFieldsCount } = this.state;
         const firstChange = changes.get(0);
         const rowSelectedChange = getNameFromId(firstChange?.id) === 'selected';
 
         this.onDomainChange(handleDomainUpdates(domain, changes), !rowSelectedChange);
 
         if (rowSelectedChange) {
-            this.setState(state => {
-                const visibleSelection = applySetOperation(state.visibleSelection, index, firstChange.value);
-                const selectAll = visibleFieldsCount !== 0 && visibleSelection.size === visibleFieldsCount;
-                return { visibleSelection, selectAll };
-            });
-        }
-        if (expand) {
+            this.setState(
+                state => {
+                    const { visibleFieldsCount } = state;
+                    const visibleSelection = applySetOperation(state.visibleSelection, index, firstChange.value);
+                    return {
+                        visibleSelection,
+                        selectAll: visibleFieldsCount !== 0 && visibleSelection.size === visibleFieldsCount,
+                    };
+                },
+                () => {
+                    if (expand) {
+                        this.expandRow(index);
+                    }
+                }
+            );
+        } else if (expand) {
             this.expandRow(index);
         }
     };
@@ -669,7 +646,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         if (field) {
             // only show the confirm dialog for saved fields
             if (field.isSaved()) {
-                this.setState(() => ({ confirmDeleteRowIndex: index }));
+                this.setState({ confirmDeleteRowIndex: index });
             } else {
                 this.onDeleteConfirm(index);
             }
@@ -677,11 +654,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     onConfirmCancel = (): void => {
-        this.setState(() => ({ confirmDeleteRowIndex: undefined }));
+        this.setState({ confirmDeleteRowIndex: undefined });
     };
 
     onConfirmBulkCancel = (): void => {
-        this.setState(() => ({ bulkDeleteConfirmInfo: undefined }));
+        this.setState({ bulkDeleteConfirmInfo: undefined });
     };
 
     onBeforeDragStart = (initial): void => {
@@ -689,7 +666,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const id = initial.draggableId;
         const idIndex = id ? getIndexFromId(id) : undefined;
 
-        this.setState(() => ({ dragId: idIndex }));
+        this.setState({ dragId: idIndex });
 
         this.onDomainChange(domain, false);
 
@@ -705,7 +682,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const id = result.draggableId;
         const idIndex = id ? getIndexFromId(id) : undefined;
 
-        this.setState(() => ({ dragId: undefined }));
+        this.setState({ dragId: undefined });
 
         if (result.destination) {
             destIndex = result.destination.index;
@@ -764,16 +741,18 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             }
         });
 
-        // set existing error row indexes with new row indexes
-        const fieldsWithMovedErrorsUpdated = fieldsWithNewIndexesOnErrors.map(error => {
-            return error.merge({
-                rowIndexes: error.newRowIndexes ? error.newRowIndexes : error.rowIndexes,
-                newRowIndexes: undefined, // reset newRowIndexes
-            });
-        });
-
         let domainExceptionWithMovedErrors;
         if (domain.hasException()) {
+            // set existing error row indexes with new row indexes
+            const fieldsWithMovedErrorsUpdated = fieldsWithNewIndexesOnErrors
+                .map(error =>
+                    error.merge({
+                        rowIndexes: error.newRowIndexes ? error.newRowIndexes : error.rowIndexes,
+                        newRowIndexes: undefined, // reset newRowIndexes
+                    })
+                )
+                .toList();
+
             domainExceptionWithMovedErrors = domain.domainException.set('errors', fieldsWithMovedErrorsUpdated);
         }
 
@@ -783,13 +762,15 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }) as DomainDesign;
 
         if (movedField.selected) {
-            const oldVisibleSelection = applySetOperation(this.state.visibleSelection, srcIndex, false);
-            const visibleSelection = applySetOperation(oldVisibleSelection, destIndex, true);
-            this.setState({ visibleSelection });
+            this.setState(state => {
+                const oldVisibleSelection = applySetOperation(state.visibleSelection, srcIndex, false);
+                return {
+                    visibleSelection: applySetOperation(oldVisibleSelection, destIndex, true),
+                };
+            });
         }
-        const rowIndexChange = { originalIndex: srcIndex, newIndex: destIndex } as DomainFieldIndexChange;
 
-        this.onDomainChange(newDomain, true, [rowIndexChange]);
+        this.onDomainChange(newDomain, true, [{ originalIndex: srcIndex, newIndex: destIndex }]);
 
         this.fastExpand(expanded);
     };
@@ -799,24 +780,24 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         newIndex: number,
         fieldErrors: List<DomainFieldError>
     ): List<DomainFieldError> => {
-        const updatedErrorList = fieldErrors.map(fieldError => {
-            let newRowIndexes;
-            if (fieldError.newRowIndexes === undefined) {
-                newRowIndexes = List<number>().asMutable();
-            } else {
-                newRowIndexes = fieldError.get('newRowIndexes');
-            }
-
-            fieldError.rowIndexes.forEach(val => {
-                if (val === oldIndex) {
-                    newRowIndexes = newRowIndexes.push(newIndex);
+        return fieldErrors
+            .map(fieldError => {
+                let newRowIndexes: List<number>;
+                if (fieldError.newRowIndexes === undefined) {
+                    newRowIndexes = List<number>();
+                } else {
+                    newRowIndexes = fieldError.get('newRowIndexes');
                 }
-            });
 
-            return fieldError.set('newRowIndexes', newRowIndexes.asImmutable());
-        });
+                fieldError.rowIndexes.forEach(val => {
+                    if (val === oldIndex) {
+                        newRowIndexes = newRowIndexes.push(newIndex);
+                    }
+                });
 
-        return updatedErrorList as List<DomainFieldError>;
+                return fieldError.set('newRowIndexes', newRowIndexes) as DomainFieldError;
+            })
+            .toList();
     };
 
     renderAddFieldOption(): ReactNode {
@@ -833,20 +814,20 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         </ActionButton>
                     </div>
                 );
-            } else {
-                return (
-                    <Row className="domain-add-field-row">
-                        <Col xs={12}>
-                            <AddEntityButton
-                                entity="Field"
-                                buttonClass="domain-form-add-btn"
-                                containerClass="pull-right"
-                                onClick={this.onAddField}
-                            />
-                        </Col>
-                    </Row>
-                );
             }
+
+            return (
+                <Row className="domain-add-field-row">
+                    <Col xs={12}>
+                        <AddEntityButton
+                            entity="Field"
+                            buttonClass="domain-form-add-btn"
+                            containerClass="pull-right"
+                            onClick={this.onAddField}
+                        />
+                    </Col>
+                </Row>
+            );
         }
 
         return null;
@@ -960,9 +941,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         return resolve(response);
                     } else {
                         const tsFields = response.fields;
-                        if (onChange) {
-                            onChange(mergeDomainFields(domain, tsFields), true);
-                        }
+                        onChange?.(mergeDomainFields(domain, tsFields), true);
                         resolve({ success: true });
                     }
                 } catch (e) {
@@ -1005,12 +984,12 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 <>
                     <FileAttachmentForm
                         acceptedFormats={acceptedFormats.join(', ')}
-                        showAcceptedFormats={true}
+                        showAcceptedFormats
                         allowDirectories={false}
                         allowMultiple={false}
                         label={label}
                         index={index}
-                        onFileRemoval={() => this.setState(() => ({ filePreviewMsg: undefined }))}
+                        onFileRemoval={this.onFileRemoval}
                         previewGridProps={
                             shouldShowInferFromFile && {
                                 previewCount: 3,
@@ -1026,13 +1005,13 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     )}
                 </>
             );
-        } else {
-            return (
-                <Panel className="domain-form-no-field-panel">
-                    No fields created yet. Click the 'Add Field' button to get started.
-                </Panel>
-            );
         }
+
+        return (
+            <Panel className="domain-form-no-field-panel">
+                No fields created yet. Click the 'Add Field' button to get started.
+            </Panel>
+        );
     }
 
     onToggleSummaryView = (): void => {
@@ -1062,13 +1041,17 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const visibleFieldsCount = getVisibleFieldCount(filteredDomain);
         const visibleSelection = getVisibleSelectedFieldIndexes(filteredDomain.fields);
 
-        this.setState(() => ({
-            visibleSelection,
-            visibleFieldsCount,
-            search: value,
-            selectAll: visibleFieldsCount !== 0 && visibleSelection.size === visibleFieldsCount,
-        }));
-        this.onDomainChange(filteredDomain, false);
+        this.setState(
+            {
+                visibleSelection,
+                visibleFieldsCount,
+                search: value,
+                selectAll: visibleFieldsCount !== 0 && visibleSelection.size === visibleFieldsCount,
+            },
+            () => {
+                this.onDomainChange(filteredDomain, false);
+            }
+        );
     };
 
     isPanelExpanded = (): boolean => {
@@ -1083,93 +1066,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     getDomainFields = (): List<DomainField> => {
         return this.props.domain.fields;
     };
-
-    renderPanelHeaderContent(): ReactNode {
-        const { helpTopic } = this.props;
-
-        return (
-            <Row className={helpTopic ? 'domain-form-hdr-margins' : ''}>
-                <Col xs={helpTopic ? 9 : 12} />
-                {helpTopic && (
-                    <Col xs={3}>
-                        <HelpLink topic={helpTopic} className="domain-field-float-right">
-                            Learn more about this tool
-                        </HelpLink>
-                    </Col>
-                )}
-            </Row>
-        );
-    }
-
-    renderToolbar(): ReactNode {
-        const { domain, domainIndex, domainFormDisplayOptions, testMode } = this.props;
-        const { visibleSelection, summaryViewMode } = this.state;
-        const { fields } = domain;
-        const disableExport = fields.size < 1 || fields.filter((field: DomainField) => field.visible).size < 1;
-        const selectedExists = visibleSelection.size > 0;
-
-        return (
-            <Row className="domain-field-toolbar">
-                <Col xs={4}>
-                    {!domainFormDisplayOptions?.hideAddFieldsButton && (
-                        <AddEntityButton
-                            entity="Field"
-                            containerClass="container--toolbar-button"
-                            buttonClass="domain-toolbar-add-btn"
-                            onClick={this.onAddField}
-                        />
-                    )}
-                    <ActionButton
-                        containerClass="container--toolbar-button"
-                        buttonClass="domain-toolbar-delete-btn"
-                        onClick={this.onBulkDeleteClick}
-                        disabled={!selectedExists}
-                    >
-                        <i className="fa fa-trash domain-toolbar-export-btn-icon" /> Delete
-                    </ActionButton>
-                    {this.shouldShowImportExport() && (
-                        <ActionButton
-                            containerClass="container--toolbar-button"
-                            buttonClass="domain-toolbar-export-btn"
-                            onClick={this.onExportFields}
-                            disabled={disableExport}
-                        >
-                            <i className="fa fa-download domain-toolbar-export-btn-icon" /> Export
-                        </ActionButton>
-                    )}
-                </Col>
-                <Col xs={8}>
-                    <div className="pull-right domain-field-toolbar-right-aligned">
-                        {!valueIsEmpty(this.state.search) && (
-                            <span className="domain-search-text">
-                                Showing {fields.filter(f => f.visible).size} of {fields.size} field
-                                {fields.size > 1 ? 's' : ''}.
-                            </span>
-                        )}
-                        <FormControl
-                            id={'domain-search-name-' + domainIndex}
-                            className="domain-search-input"
-                            type="text"
-                            placeholder="Search Fields"
-                            onChange={this.onSearch}
-                        />
-
-                        {!testMode && (
-                            <ToggleWithInputField
-                                active={summaryViewMode}
-                                id={'domain-toggle-summary-' + domainIndex}
-                                onClick={this.onToggleSummaryView}
-                                on="Summary mode"
-                                off="Detail mode"
-                                containerClassName="domain-toolbar-toggle-summary"
-                                style={{ height: '100%', marginLeft: '10px' }} // Inline style necessary for <ReactBootstrapToggle/>
-                            />
-                        )}
-                    </div>
-                </Col>
-            </Row>
-        );
-    }
 
     scrollFunction = (i: number): void => {
         this.setState({ summaryViewMode: false, expandedRowIndex: i }, () => {
@@ -1302,98 +1198,50 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         );
     };
 
-    renderAppDomainHeader = (): ReactNode => {
-        const { appDomainHeaderRenderer, modelDomains, domain, domainIndex } = this.props;
-        const config = {
-            domain,
-            domainIndex,
-            modelDomains,
-            onChange: this.onFieldsChange,
-            onAddField: this.applyAddField,
-        } as IAppDomainHeader;
-
-        return appDomainHeaderRenderer(config);
-    };
-
-    renderForm(): ReactNode {
-        const { domain, appDomainHeaderRenderer, appPropertiesOnly, systemFields } = this.props;
-        const { summaryViewMode, search, selectAll, isLoading } = this.state;
-        const hasFields = domain.fields.size > 0;
-        const actions = {
-            toggleSelectAll: this.toggleSelectAll,
-            scrollFunction: this.scrollFunction,
-            onFieldsChange: this.onFieldsChange,
-        };
-
-        if (isLoading)
-            return <LoadingSpinner />;
-
-        return (
-            <>
-                {systemFields && (
-                    <SystemFields
-                        fields={systemFields}
-                        disabledSystemFields={domain.disabledSystemFields}
-                        onSystemFieldEnable={this.onSystemFieldEnable}
-                    />
-                )}
-
-                {(hasFields || !(this.shouldShowInferFromFile() || this.shouldShowImportExport())) &&
-                    this.renderToolbar()}
-                {this.renderPanelHeaderContent()}
-                {appDomainHeaderRenderer && !summaryViewMode && this.renderAppDomainHeader()}
-
-                {hasFields ? (
-                    summaryViewMode ? (
-                        <div className="domain-form__summary-mode">
-                            <DomainPropertiesGrid
-                                domain={domain}
-                                search={search}
-                                selectAll={selectAll}
-                                actions={actions}
-                                appPropertiesOnly={appPropertiesOnly}
-                                hasOntologyModule={hasModule(ONTOLOGY_MODULE_NAME)}
-                            />
-                        </div>
-                    ) : (
-                        this.renderDetailedFieldView()
-                    )
-                ) : (
-                    this.renderEmptyDomain()
-                )}
-
-                {this.renderAddFieldOption()}
-            </>
-        );
-    }
-
     render(): ReactNode {
         const {
+            appDomainHeaderRenderer,
+            appPropertiesOnly,
             children,
             domain,
-            showHeader,
+            domainIndex,
             collapsible,
             controlledCollapse,
+            domainFormDisplayOptions,
+            fieldsAdditionalRenderer,
             headerTitle,
             headerPrefix,
+            helpNoun,
+            helpTopic,
+            modelDomains,
             panelStatus,
             useTheme,
-            helpNoun,
             setFileImportData,
-            fieldsAdditionalRenderer,
-            domainFormDisplayOptions,
-            todoIconHelpMsg,
+            showHeader,
             systemFields,
+            testMode,
+            todoIconHelpMsg,
         } = this.props;
-        const { collapsed, confirmDeleteRowIndex, filePreviewData, file, bulkDeleteConfirmInfo } = this.state;
-        const title = getDomainHeaderName(domain.name, headerTitle, headerPrefix);
+        const {
+            bulkDeleteConfirmInfo,
+            collapsed,
+            confirmDeleteRowIndex,
+            filePreviewData,
+            file,
+            isLoading,
+            search,
+            selectAll,
+            summaryViewMode,
+            visibleSelection,
+        } = this.state;
+        const { fields } = domain;
         const headerDetails =
-            domain.fields.size > 0
-                ? '' + domain.fields.size + ' Field' + (domain.fields.size > 1 ? 's' : '') + ' Defined'
-                : undefined;
-        const hasFields = domain.fields.size > 0;
+            fields.size > 0 ? '' + fields.size + ' Field' + (fields.size > 1 ? 's' : '') + ' Defined' : undefined;
+        const hasFields = fields.size > 0;
         const styleToolbar =
             !hasFields && !systemFields && (this.shouldShowInferFromFile() || this.shouldShowImportExport());
+        const disableExport = !hasFields || fields.filter(f => f.visible).size < 1;
+        const hasException = domain.hasException();
 
         return (
             <>
@@ -1407,7 +1255,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     {showHeader && (
                         <CollapsiblePanelHeader
                             id={getDomainPanelHeaderId(domain)}
-                            title={title}
+                            title={getDomainHeaderName(domain.name, headerTitle, headerPrefix)}
                             collapsed={!(this.isPanelExpanded() && controlledCollapse)}
                             collapsible={collapsible}
                             controlledCollapse={controlledCollapse}
@@ -1416,8 +1264,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             panelStatus={panelStatus}
                             togglePanel={this.togglePanel}
                             useTheme={useTheme}
-                            isValid={!domain.hasException()}
-                            iconHelpMsg={domain.hasException() ? domain.domainException.exception : undefined}
+                            isValid={!hasException}
+                            iconHelpMsg={hasException ? domain.domainException.exception : undefined}
                         >
                             {children}
                         </CollapsiblePanelHeader>
@@ -1426,9 +1274,129 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         className={classNames({ 'domain-field-top-noBuffer': !styleToolbar })}
                         collapsible={collapsible || controlledCollapse}
                     >
-                        {this.domainExists(domain) ? this.renderForm() : <Alert>Invalid domain design.</Alert>}
+                        {isLoading && <LoadingSpinner />}
 
-                        {fieldsAdditionalRenderer && fieldsAdditionalRenderer()}
+                        {!isLoading && (
+                            <>
+                                {systemFields && (
+                                    <SystemFields
+                                        fields={systemFields}
+                                        disabledSystemFields={domain.disabledSystemFields}
+                                        onSystemFieldEnable={this.onSystemFieldEnable}
+                                    />
+                                )}
+
+                                {(hasFields || !(this.shouldShowInferFromFile() || this.shouldShowImportExport())) && (
+                                    <Row className="domain-field-toolbar">
+                                        <Col xs={4}>
+                                            {!domainFormDisplayOptions?.hideAddFieldsButton && (
+                                                <AddEntityButton
+                                                    entity="Field"
+                                                    containerClass="container--toolbar-button"
+                                                    buttonClass="domain-toolbar-add-btn"
+                                                    onClick={this.onAddField}
+                                                />
+                                            )}
+                                            <ActionButton
+                                                containerClass="container--toolbar-button"
+                                                buttonClass="domain-toolbar-delete-btn"
+                                                onClick={this.onBulkDeleteClick}
+                                                disabled={visibleSelection.size === 0}
+                                            >
+                                                <i className="fa fa-trash domain-toolbar-export-btn-icon" /> Delete
+                                            </ActionButton>
+
+                                            {this.shouldShowImportExport() && (
+                                                <ActionButton
+                                                    containerClass="container--toolbar-button"
+                                                    buttonClass="domain-toolbar-export-btn"
+                                                    onClick={this.onExportFields}
+                                                    disabled={disableExport}
+                                                >
+                                                    <i className="fa fa-download domain-toolbar-export-btn-icon" />{' '}
+                                                    Export
+                                                </ActionButton>
+                                            )}
+                                        </Col>
+                                        <Col xs={8}>
+                                            <div className="pull-right domain-field-toolbar-right-aligned">
+                                                {!valueIsEmpty(search) && (
+                                                    <span className="domain-search-text">
+                                                        Showing {fields.filter(f => f.visible).size} of {fields.size}{' '}
+                                                        field {fields.size > 1 ? 's' : ''}.
+                                                    </span>
+                                                )}
+                                                <FormControl
+                                                    id={'domain-search-name-' + domainIndex}
+                                                    className="domain-search-input"
+                                                    type="text"
+                                                    placeholder="Search Fields"
+                                                    onChange={this.onSearch}
+                                                />
+
+                                                {!testMode && (
+                                                    <ToggleWithInputField
+                                                        active={summaryViewMode}
+                                                        id={'domain-toggle-summary-' + domainIndex}
+                                                        onClick={this.onToggleSummaryView}
+                                                        on="Summary mode"
+                                                        off="Detail mode"
+                                                        containerClassName="domain-toolbar-toggle-summary"
+                                                        style={{ height: '100%', marginLeft: '10px' }} // Inline style necessary for <ReactBootstrapToggle/>
+                                                    />
+                                                )}
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                )}
+
+                                <Row className={helpTopic ? 'domain-form-hdr-margins' : ''}>
+                                    <Col xs={helpTopic ? 9 : 12} />
+                                    {helpTopic && (
+                                        <Col xs={3}>
+                                            <HelpLink topic={helpTopic} className="domain-field-float-right">
+                                                Learn more about this tool
+                                            </HelpLink>
+                                        </Col>
+                                    )}
+                                </Row>
+
+                                {!summaryViewMode &&
+                                    appDomainHeaderRenderer &&
+                                    appDomainHeaderRenderer({
+                                        domain,
+                                        domainIndex,
+                                        modelDomains,
+                                        onChange: this.onFieldsChange,
+                                        onAddField: this.applyAddField,
+                                    })}
+
+                                {hasFields && summaryViewMode && (
+                                    <div className="domain-form__summary-mode">
+                                        <DomainPropertiesGrid
+                                            domain={domain}
+                                            search={search}
+                                            selectAll={selectAll}
+                                            actions={{
+                                                toggleSelectAll: this.toggleSelectAll,
+                                                scrollFunction: this.scrollFunction,
+                                                onFieldsChange: this.onFieldsChange,
+                                            }}
+                                            appPropertiesOnly={appPropertiesOnly}
+                                            hasOntologyModule={hasModule(ONTOLOGY_MODULE_NAME)}
+                                        />
+                                    </div>
+                                )}
+
+                                {hasFields && !summaryViewMode && this.renderDetailedFieldView()}
+
+                                {!hasFields && this.renderEmptyDomain()}
+
+                                {this.renderAddFieldOption()}
+                            </>
+                        )}
+
+                        {fieldsAdditionalRenderer?.()}
 
                         {filePreviewData && !domainFormDisplayOptions?.hideImportData && (
                             <ImportDataFilePreview
@@ -1440,7 +1408,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         )}
                     </Panel.Body>
                 </Panel>
-                {domain.hasException() && domain.domainException.severity === SEVERITY_LEVEL_ERROR && (
+                {hasException && domain.domainException.severity === SEVERITY_LEVEL_ERROR && (
                     <div
                         onClick={this.togglePanel}
                         className={getDomainAlertClasses(collapsed, controlledCollapse, useTheme)}
@@ -1452,3 +1420,13 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         );
     }
 }
+
+const DomainForm: FC<IDomainFormInput> = memo(props => (
+    <LookupProvider>
+        <DomainFormImpl {...props} />
+    </LookupProvider>
+));
+
+DomainForm.displayName = 'DomainForm';
+
+export default DomainForm;

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.X
+*Released*: X September 2023
+- Issue 48329: LKSM: Sample Finder query performance issues
+  - Only query for a single column during loadTotalCount
+
 ### version 2.365.0
 *Released*: 1 September 2023
 - Add `saveDomain` to `DomainPropertiesAPIWrapper`

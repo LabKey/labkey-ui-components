@@ -4,7 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - Issue 48596: ResponsiveMenuButtonGroup fix for empty button group
-- Issue 48594: Fix AdminSettingsPage for starter product
+- Issue 48594: Show project look and feel form for starter edition too
 
 ### version 2.364.0
 *Released*: 31 August 2023

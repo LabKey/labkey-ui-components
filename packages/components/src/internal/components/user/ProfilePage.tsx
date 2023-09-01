@@ -29,10 +29,10 @@ import { getUserRoleDisplay } from './actions';
 import { UserProfile } from './UserProfile';
 import { ChangePasswordModal } from './ChangePasswordModal';
 
-import { useUserProperties } from './UserProvider';
+import { useUserProperties } from './hooks';
 
 interface Props extends WithRouterProps {
-    updateUserDisplayName: (displayName: string) => any;
+    updateUserDisplayName: (displayName: string) => void;
 }
 
 const TITLE = 'User Profile';
@@ -44,10 +44,6 @@ const ProfilePageImpl: FC<Props> = props => {
     const { moduleContext, user } = useServerContext();
     const userProperties = useUserProperties(user);
     const { createNotification } = useNotificationsContext();
-
-    if (!user.isSignedIn) {
-        return <InsufficientPermissionsPage title={TITLE} />;
-    }
 
     const navigate = useCallback(
         (result: any, shouldReload: boolean): void => {
@@ -83,6 +79,10 @@ const ProfilePageImpl: FC<Props> = props => {
     const toggleChangePassword = useCallback((): void => {
         setShowChangePassword(!showChangePassword);
     }, [showChangePassword]);
+
+    if (!user.isSignedIn) {
+        return <InsufficientPermissionsPage title={TITLE} />;
+    }
 
     const allowChangePassword = !isLoginAutoRedirectEnabled(moduleContext);
 

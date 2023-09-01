@@ -2,12 +2,9 @@ import moment from 'moment';
 import { OrderedMap } from 'immutable';
 import { Ajax, PermissionRoles, PermissionTypes, Security, Utils } from '@labkey/api';
 
-import { processRequest } from '../../query/api';
-
 import { buildURL } from '../../url/AppURL';
 import { hasAllPermissions, User } from '../base/models/User';
 import { caseInsensitive } from '../../util/utils';
-import { SchemaQuery } from '../../../public/SchemaQuery';
 import { SHARED_CONTAINER_PATH } from '../../constants';
 
 import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from '../administration/constants';
@@ -118,23 +115,6 @@ export function getUserDetailsRowData(user: User, data: OrderedMap<string, any>,
     }
 
     return formData;
-}
-
-export function updateUserDetails(schemaQuery: SchemaQuery, data: FormData): Promise<any> {
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: buildURL('user', 'updateUserDetails.api'),
-            method: 'POST',
-            form: data,
-            success: Utils.getCallbackWrapper((response, request) => {
-                if (processRequest(response, request, reject)) return;
-                resolve(response);
-            }),
-            failure: Utils.getCallbackWrapper(error => {
-                reject(error);
-            }),
-        });
-    });
 }
 
 export function changePassword(model: ChangePasswordModel): Promise<any> {

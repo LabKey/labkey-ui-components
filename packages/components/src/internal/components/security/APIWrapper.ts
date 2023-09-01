@@ -1,4 +1,4 @@
-import {List, Map} from 'immutable';
+import { List, Map } from 'immutable';
 import { Ajax, Filter, Query, Security, Utils } from '@labkey/api';
 
 import { Container } from '../base/models/Container';
@@ -9,13 +9,15 @@ import {
     processGetRolesResponse,
 } from '../permissions/actions';
 import { Principal, SecurityPolicy, SecurityRole } from '../permissions/models';
-import {Row, selectRows} from '../../query/selectRows';
+import { Row, selectRows } from '../../query/selectRows';
 import { SCHEMAS } from '../../schemas';
 import { buildURL } from '../../url/AppURL';
 import { naturalSortByProperty } from '../../../public/sort';
-import {caseInsensitive, handleRequestFailure} from '../../util/utils';
+import { caseInsensitive, handleRequestFailure } from '../../util/utils';
 import { getUserProperties } from '../user/actions';
 import { flattenValuesFromRow } from '../../../public/QueryModel/QueryModel';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { processRequest } from '../../query/api';
 
 export type FetchContainerOptions = Omit<Security.GetContainersOptions, 'success' | 'failure' | 'scope'>;
 
@@ -67,6 +69,7 @@ export interface SecurityAPIWrapper {
         principalIds: number[],
         projectPath: string
     ) => Promise<RemoveGroupMembersResponse>;
+    updateUserDetails: (schemaQuery: SchemaQuery, data: FormData) => Promise<any>;
 }
 
 export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
@@ -315,6 +318,21 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
             });
         });
     };
+
+    updateUserDetails = (schemaQuery: SchemaQuery, data: FormData): Promise<any> => {
+        return new Promise((resolve, reject) => {
+            Ajax.request({
+                url: buildURL('user', 'updateUserDetails.api'),
+                method: 'POST',
+                form: data,
+                success: Utils.getCallbackWrapper((response, request) => {
+                    if (processRequest(response, request, reject)) return;
+                    resolve(response);
+                }),
+                failure: handleRequestFailure(reject, 'Failed to update user details'),
+            });
+        });
+    };
 }
 
 function recurseContainerHierarchy(data: Security.ContainerHierarchy, container: Container): Container[] {
@@ -348,6 +366,7 @@ export function getSecurityTestAPIWrapper(
         getUserProperties: mockFn(),
         getUserPropertiesForOther: mockFn(),
         removeGroupMembers: mockFn(),
+        updateUserDetails: mockFn(),
         ...overrides,
     };
 }

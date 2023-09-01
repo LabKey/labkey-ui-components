@@ -11,6 +11,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
       "getGenId": [MockFunction],
       "getMaxPhiLevel": [Function],
       "hasExistingDomainData": [MockFunction],
+      "saveDomain": [MockFunction],
       "setGenId": [MockFunction],
       "validateDomainNameExpressions": [MockFunction],
     }
@@ -1447,6 +1448,7 @@ exports[`Dataset Designer New dataset 1`] = `
         "getGenId": [MockFunction],
         "getMaxPhiLevel": [Function],
         "hasExistingDomainData": [MockFunction],
+        "saveDomain": [MockFunction],
         "setGenId": [MockFunction],
         "validateDomainNameExpressions": [MockFunction],
       }

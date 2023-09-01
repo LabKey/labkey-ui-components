@@ -33,90 +33,73 @@ export function withBaseDomainDesigner<Props>(
     ComponentToWrap: ComponentType<Props & InjectedBaseDomainDesignerProps>
 ): ComponentType<Props> {
     class ComponentWithBaseDomainDesigner extends PureComponent<Props, State> {
-        constructor(props: Props) {
-            super(props);
-
-            this.state = {
-                submitting: false,
-                currentPanelIndex: 0,
-                visitedPanels: List<number>(),
-                validatePanel: undefined,
-                firstState: true,
-            };
-        }
+        state: Readonly<State> = {
+            currentPanelIndex: 0,
+            firstState: true,
+            submitting: false,
+            visitedPanels: List<number>(),
+            validatePanel: undefined,
+        };
 
         // TODO: having a child component pass a callback to a parent is a big red flag
         onTogglePanel = (index: number, collapsed: boolean, callback: () => any): void => {
-            const { visitedPanels, currentPanelIndex } = this.state;
-            const updatedVisitedPanels = getUpdatedVisitedPanelsList(visitedPanels, index);
+            const { currentPanelIndex } = this.state;
 
             if (!collapsed) {
                 this.setState(
-                    () => ({
-                        visitedPanels: updatedVisitedPanels,
+                    state => ({
                         currentPanelIndex: index,
                         firstState: false,
-                        validatePanel: currentPanelIndex,
+                        validatePanel: state.currentPanelIndex,
+                        visitedPanels: getUpdatedVisitedPanelsList(state.visitedPanels, index),
                     }),
-                    callback()
+                    callback() // TODO: This is being called immediately and we rely on that fact. Refactor this whole toggling functionality.
+                );
+            } else if (currentPanelIndex === index) {
+                this.setState(
+                    state => ({
+                        currentPanelIndex: undefined,
+                        firstState: false,
+                        validatePanel: state.currentPanelIndex,
+                        visitedPanels: getUpdatedVisitedPanelsList(state.visitedPanels, index),
+                    }),
+                    callback() // TODO: This is being called immediately and we rely on that fact. Refactor this whole toggling functionality.
                 );
             } else {
-                if (currentPanelIndex === index) {
-                    this.setState(
-                        () => ({
-                            visitedPanels: updatedVisitedPanels,
-                            currentPanelIndex: undefined,
-                            firstState: false,
-                            validatePanel: currentPanelIndex,
-                        }),
-                        callback()
-                    );
-                } else {
-                    callback();
-                }
+                callback();
             }
         };
 
         onFinish = (isValid: boolean, save: () => void): void => {
-            const { visitedPanels, currentPanelIndex } = this.state;
-            const updatedVisitedPanels = getUpdatedVisitedPanelsList(visitedPanels, currentPanelIndex);
-
             // This first setState forces the current expanded panel to validate its fields and display and errors
             // the callback setState then sets that to undefined so it doesn't keep validating every render
             this.setState(
-                state => ({ validatePanel: state.currentPanelIndex, visitedPanels: updatedVisitedPanels }),
+                state => {
+                    const { currentPanelIndex, visitedPanels } = state;
+                    return {
+                        validatePanel: currentPanelIndex,
+                        visitedPanels: getUpdatedVisitedPanelsList(visitedPanels, currentPanelIndex),
+                    };
+                },
                 () => {
-                    this.setState(
-                        () => ({ validatePanel: undefined }),
-                        () => {
-                            if (isValid) {
-                                this.setSubmitting(true, save);
-                            }
-                        }
-                    );
+                    const nextState: Partial<State> = { validatePanel: undefined };
+                    if (isValid) {
+                        nextState.submitting = true;
+                    }
+
+                    this.setState(nextState as State, isValid ? save : undefined);
                 }
             );
         };
 
         setSubmitting = (submitting: boolean, callback?: () => void): void => {
-            this.setState(
-                () => ({ submitting }),
-                () => {
-                    callback?.();
-                }
-            );
+            this.setState({ submitting }, callback);
         };
 
         render() {
-            const { submitting, currentPanelIndex, visitedPanels, firstState, validatePanel } = this.state;
-
             return (
                 <ComponentToWrap
-                    submitting={submitting}
-                    currentPanelIndex={currentPanelIndex}
-                    visitedPanels={visitedPanels}
-                    validatePanel={validatePanel}
-                    firstState={firstState}
+                    {...this.state}
                     setSubmitting={this.setSubmitting}
                     onTogglePanel={this.onTogglePanel}
                     onFinish={this.onFinish}
@@ -164,12 +147,8 @@ export class BaseDomainDesigner extends PureComponent<BaseDomainDesignerProps> {
 
         // get a list of the domain names that have errors
         const errorDomains = domains
-            .filter(domain => {
-                return domain.hasException() && domain.domainException.severity === SEVERITY_LEVEL_ERROR;
-            })
-            .map(domain => {
-                return getDomainHeaderName(domain.name, undefined, name);
-            })
+            .filter(domain => domain.hasException() && domain.domainException.severity === SEVERITY_LEVEL_ERROR)
+            .map(domain => getDomainHeaderName(domain.name, undefined, name))
             .toList();
 
         const bottomErrorMsg = getDomainBottomErrorMessage(exception, errorDomains, hasValidProperties, visitedPanels);

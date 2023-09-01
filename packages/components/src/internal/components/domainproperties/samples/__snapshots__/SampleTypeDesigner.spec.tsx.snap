@@ -160,6 +160,7 @@ exports[`SampleTypeDesigner custom properties 1`] = `
         "getGenId": [MockFunction],
         "getMaxPhiLevel": [Function],
         "hasExistingDomainData": [MockFunction],
+        "saveDomain": [MockFunction],
         "setGenId": [MockFunction],
         "validateDomainNameExpressions": [MockFunction],
       }
@@ -411,6 +412,7 @@ exports[`SampleTypeDesigner default properties 1`] = `
         "getGenId": [MockFunction],
         "getMaxPhiLevel": [Function],
         "hasExistingDomainData": [MockFunction],
+        "saveDomain": [MockFunction],
         "setGenId": [MockFunction],
         "validateDomainNameExpressions": [MockFunction],
       }
@@ -903,6 +905,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         "getGenId": [MockFunction],
         "getMaxPhiLevel": [Function],
         "hasExistingDomainData": [MockFunction],
+        "saveDomain": [MockFunction],
         "setGenId": [MockFunction],
         "validateDomainNameExpressions": [MockFunction],
       }

@@ -124,6 +124,7 @@ exports[`DataClassDesigner custom properties 1`] = `
         "getGenId": [MockFunction],
         "getMaxPhiLevel": [Function],
         "hasExistingDomainData": [MockFunction],
+        "saveDomain": [MockFunction],
         "setGenId": [MockFunction],
         "validateDomainNameExpressions": [MockFunction],
       }
@@ -380,6 +381,7 @@ exports[`DataClassDesigner default properties 1`] = `
         "getGenId": [MockFunction],
         "getMaxPhiLevel": [Function],
         "hasExistingDomainData": [MockFunction],
+        "saveDomain": [MockFunction],
         "setGenId": [MockFunction],
         "validateDomainNameExpressions": [MockFunction],
       }
@@ -1161,6 +1163,7 @@ exports[`DataClassDesigner initModel 1`] = `
         "getGenId": [MockFunction],
         "getMaxPhiLevel": [Function],
         "hasExistingDomainData": [MockFunction],
+        "saveDomain": [MockFunction],
         "setGenId": [MockFunction],
         "validateDomainNameExpressions": [MockFunction],
       }

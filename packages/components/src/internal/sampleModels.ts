@@ -3,7 +3,7 @@ import { ComponentType } from 'react';
 import { Query } from '@labkey/api';
 
 import { QueryModel } from '../public/QueryModel/QueryModel';
-import { RequiresModelAndActions } from '../public/QueryModel/withQueryModels';
+import { InjectedQueryModels, RequiresModelAndActions } from '../public/QueryModel/withQueryModels';
 import { SchemaQuery } from '../public/SchemaQuery';
 
 import { TabbedGridPanelProps } from '../public/QueryModel/TabbedGridPanel';
@@ -39,7 +39,7 @@ export interface SamplesTabbedGridPanelComponentProps {
     withTitle?: boolean;
 }
 
-export type SamplesTabbedGridPanel = ComponentType<SamplesTabbedGridPanelComponentProps>;
+export type SamplesTabbedGridPanel = ComponentType<SamplesTabbedGridPanelComponentProps & InjectedQueryModels>;
 
 export interface SampleStorageLocationComponentProps {
     actionChangeCount?: number;

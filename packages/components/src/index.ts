@@ -662,6 +662,7 @@ import {
     useLabelPrintingContext,
     withLabelPrintingContext,
 } from './internal/components/labels/LabelPrintingContextProvider';
+import { ColumnSelectionModal } from './internal/components/ColumnSelectionModal';
 
 import {
     AppReducers,
@@ -1531,6 +1532,7 @@ export {
     withWindowFocusCheckExpiredSession,
     // general components
     Alert,
+    ColumnSelectionModal,
     ExpandableContainer,
     Progress,
     LabelHelpTip,

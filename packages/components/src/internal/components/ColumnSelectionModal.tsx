@@ -9,6 +9,7 @@ import { QueryInfo } from '../../public/QueryInfo';
 import { Alert } from './base/Alert';
 import { DragDropHandle } from './base/DragDropHandle';
 import { ConfirmModal, ConfirmModalProps } from './base/ConfirmModal';
+import { LoadingSpinner } from './base/LoadingSpinner';
 
 type ExpandedColumnFilter = (column: QueryColumn, showAllColumns: boolean) => boolean;
 type QueryColumnHandler = (column: QueryColumn) => void;
@@ -75,7 +76,7 @@ export const FieldLabelDisplay: FC<FieldLabelDisplayProps> = memo(props => {
     );
 });
 
-interface ColumnChoiceProps {
+export interface ColumnChoiceProps {
     column: QueryColumn;
     isExpanded?: boolean;
     isInView?: boolean;
@@ -135,14 +136,14 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
     );
 });
 
-interface ColumnChoiceLookupProps extends ColumnChoiceProps {
+export interface ColumnChoiceGroupProps extends ColumnChoiceProps {
     columnsInView: QueryColumn[];
     expandedColumnFilter?: ExpandedColumnFilter;
     expandedColumns?: Record<string, QueryInfo>;
     showAllColumns: boolean;
 }
 
-export const ColumnChoiceGroup: FC<ColumnChoiceLookupProps> = memo(props => {
+export const ColumnChoiceGroup: FC<ColumnChoiceGroupProps> = memo(props => {
     const {
         expandedColumnFilter,
         expandedColumns,
@@ -193,7 +194,7 @@ export const ColumnChoiceGroup: FC<ColumnChoiceLookupProps> = memo(props => {
 });
 
 export interface ColumnInViewProps {
-    allowEdit: boolean;
+    allowEditLabel: boolean;
     column: QueryColumn;
     index: number;
     isDragDisabled: boolean;
@@ -205,8 +206,17 @@ export interface ColumnInViewProps {
 }
 
 export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
-    const { allowEdit, column, isDragDisabled, onRemoveColumn, onClick, onEditTitle, onUpdateTitle, selected, index } =
-        props;
+    const {
+        allowEditLabel,
+        column,
+        isDragDisabled,
+        onRemoveColumn,
+        onClick,
+        onEditTitle,
+        onUpdateTitle,
+        selected,
+        index,
+    } = props;
     const key = column.index;
     const [editing, setEditing] = useState<boolean>(false);
 
@@ -253,7 +263,7 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
                     />
                     {!editing && (
                         <span className="pull-right">
-                            {allowEdit && (
+                            {allowEditLabel && (
                                 <span
                                     className="edit-inline-field__toggle"
                                     title="Edit the field's label for this view."
@@ -278,12 +288,13 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
 });
 
 export interface ColumnSelectionModalProps extends Omit<ConfirmModalProps, 'canConfirm' | 'onConfirm'> {
-    allowEdit?: boolean;
+    allowEditLabel?: boolean;
     allowShowAll?: boolean;
     error?: ReactNode;
     expandedColumnFilter?: ExpandedColumnFilter;
     initialSelectedColumn?: QueryColumn;
     initialSelectedColumns?: QueryColumn[];
+    isLoaded?: boolean;
     leftColumnTitle?: ReactNode;
     onExpand?: (fk: QueryColumn) => Promise<QueryInfo>;
     onSubmit: (selectedColumns: QueryColumn[]) => Promise<void>;
@@ -294,12 +305,13 @@ export interface ColumnSelectionModalProps extends Omit<ConfirmModalProps, 'canC
 
 export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props => {
     const {
-        allowEdit,
+        allowEditLabel,
         allowShowAll,
         error,
         expandedColumnFilter,
         initialSelectedColumn,
         initialSelectedColumns,
+        isLoaded,
         leftColumnTitle,
         onExpand,
         onSubmit,
@@ -311,11 +323,20 @@ export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props =>
     const [expandedColumns, setExpandedColumns] = useState<Record<string, QueryInfo>>({});
     const [isDirty, setIsDirty] = useState<boolean>(false);
     const [queryError, setQueryError] = useState<string>();
-    const [selectedColumns, setSelectedColumns] = useState<QueryColumn[]>(initialSelectedColumns ?? []);
-    const [selectedIndex, setSelectedIndex] = useState<number>(
-        initialSelectedColumn ? selectedColumns.findIndex(col => initialSelectedColumn.index === col.index) : undefined
-    );
+    const [selectedColumns, setSelectedColumns] = useState<QueryColumn[]>([]);
+    const [selectedIndex, setSelectedIndex] = useState<number>();
     const [showAllColumns, setShowAllColumns] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (isLoaded) {
+            const selectedColumns_ = initialSelectedColumns ?? [];
+            setSelectedColumns(selectedColumns_);
+
+            if (initialSelectedColumn) {
+                setSelectedIndex(selectedColumns_.findIndex(col => initialSelectedColumn.index === col.index));
+            }
+        }
+    }, [initialSelectedColumn, initialSelectedColumns, isLoaded]);
 
     const onAddColumn = useCallback<QueryColumnHandler>(
         column => {
@@ -419,94 +440,97 @@ export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props =>
         setShowAllColumns(s => !s);
     }, []);
 
-    const availableColumns = useMemo<QueryColumn[]>(
-        () =>
-            queryInfo.columns.valueArray
-                .filter(c => expandedColumnFilter?.(c, showAllColumns) ?? true)
-                .filter(c => c.fieldKeyArray.length === 1), // at the top level don't include lookup fields
-        [expandedColumnFilter, queryInfo, showAllColumns]
-    );
+    const availableColumns = useMemo<QueryColumn[]>(() => {
+        if (!isLoaded) return [];
+        return queryInfo.columns.valueArray
+            .filter(c => expandedColumnFilter?.(c, showAllColumns) ?? true)
+            .filter(c => c.fieldKeyArray.length === 1); // at the top level don't include lookup fields
+    }, [expandedColumnFilter, isLoaded, queryInfo, showAllColumns]);
 
     return (
         <ConfirmModal {...confirmModalProps} canConfirm={isDirty && selectedColumns.length > 0} onConfirm={onConfirm}>
             <Alert>{error}</Alert>
             <Alert>{queryError}</Alert>
-            <div className="field-modal__container row">
-                <Col xs={12} sm={6} className="field-modal__col-2">
-                    <div key="title" className="field-modal__col-title">
-                        {leftColumnTitle}
-                    </div>
-                    <div key="field-list" className="list-group field-modal__col-content">
-                        {availableColumns.map(column => (
-                            <ColumnChoiceGroup
-                                column={column}
-                                key={column.index}
-                                onAddColumn={onAddColumn}
-                                onExpandColumn={onExpandColumn}
-                                onCollapseColumn={onCollapseColumn}
-                                expandedColumnFilter={expandedColumnFilter}
-                                expandedColumns={expandedColumns}
-                                columnsInView={selectedColumns}
-                                showAllColumns={showAllColumns}
-                            />
-                        ))}
-                    </div>
-                    {allowShowAll && (
-                        <div key="toggleAll" className="field-modal__footer">
-                            <input type="checkbox" checked={showAllColumns} onChange={onToggleShowAll} />
-                            &nbsp;Show all system and user-defined fields
+            {!isLoaded && <LoadingSpinner />}
+            {isLoaded && (
+                <div className="field-modal__container row">
+                    <Col xs={12} sm={6} className="field-modal__col-2">
+                        <div key="title" className="field-modal__col-title">
+                            {leftColumnTitle}
                         </div>
-                    )}
-                </Col>
-                <Col xs={12} sm={6} className="field-modal__col-2">
-                    <div className="field-modal__col-title">
-                        {rightColumnTitle}
-                        <span
-                            className={'pull-right ' + (isDirty ? 'action-text' : 'disabled-action-text')}
-                            onClick={isDirty ? onRevertEdits : undefined}
-                        >
-                            Undo edits
-                        </span>
-                    </div>
-                    <DragDropContext onDragEnd={onDragEnd}>
-                        <Droppable droppableId="field-droppable">
-                            {dropProvided => (
-                                <div
-                                    className="list-group field-modal__col-content"
-                                    {...dropProvided.droppableProps}
-                                    ref={dropProvided.innerRef}
-                                >
-                                    {selectedColumns.map((column, index) => (
-                                        <ColumnInView
-                                            allowEdit={allowEdit}
-                                            key={column.index}
-                                            column={column}
-                                            index={index}
-                                            isDragDisabled={editingColumnTitle}
-                                            onRemoveColumn={onRemoveColumn}
-                                            selected={selectedIndex === index}
-                                            onClick={onSelectField}
-                                            onEditTitle={onEditTitle}
-                                            onUpdateTitle={onUpdateTitle}
-                                        />
-                                    ))}
-                                    {dropProvided.placeholder}
-                                </div>
-                            )}
-                        </Droppable>
-                    </DragDropContext>
-                </Col>
-            </div>
+                        <div key="field-list" className="list-group field-modal__col-content">
+                            {availableColumns.map(column => (
+                                <ColumnChoiceGroup
+                                    column={column}
+                                    key={column.index}
+                                    onAddColumn={onAddColumn}
+                                    onExpandColumn={onExpandColumn}
+                                    onCollapseColumn={onCollapseColumn}
+                                    expandedColumnFilter={expandedColumnFilter}
+                                    expandedColumns={expandedColumns}
+                                    columnsInView={selectedColumns}
+                                    showAllColumns={showAllColumns}
+                                />
+                            ))}
+                        </div>
+                        {allowShowAll && (
+                            <div key="toggleAll" className="field-modal__footer">
+                                <input type="checkbox" checked={showAllColumns} onChange={onToggleShowAll} />
+                                &nbsp;Show all system and user-defined fields
+                            </div>
+                        )}
+                    </Col>
+                    <Col xs={12} sm={6} className="field-modal__col-2">
+                        <div className="field-modal__col-title">
+                            {rightColumnTitle}
+                            <span
+                                className={'pull-right ' + (isDirty ? 'action-text' : 'disabled-action-text')}
+                                onClick={isDirty ? onRevertEdits : undefined}
+                            >
+                                Undo edits
+                            </span>
+                        </div>
+                        <DragDropContext onDragEnd={onDragEnd}>
+                            <Droppable droppableId="field-droppable">
+                                {dropProvided => (
+                                    <div
+                                        className="list-group field-modal__col-content"
+                                        {...dropProvided.droppableProps}
+                                        ref={dropProvided.innerRef}
+                                    >
+                                        {selectedColumns.map((column, index) => (
+                                            <ColumnInView
+                                                allowEditLabel={allowEditLabel}
+                                                key={column.index}
+                                                column={column}
+                                                index={index}
+                                                isDragDisabled={editingColumnTitle}
+                                                onRemoveColumn={onRemoveColumn}
+                                                selected={selectedIndex === index}
+                                                onClick={onSelectField}
+                                                onEditTitle={onEditTitle}
+                                                onUpdateTitle={onUpdateTitle}
+                                            />
+                                        ))}
+                                        {dropProvided.placeholder}
+                                    </div>
+                                )}
+                            </Droppable>
+                        </DragDropContext>
+                    </Col>
+                </div>
+            )}
         </ConfirmModal>
     );
 });
 
 ColumnSelectionModal.defaultProps = {
-    allowEdit: false,
+    allowEditLabel: false,
     allowShowAll: false,
     cancelButtonText: 'Cancel',
     confirmButtonText: 'Update Fields',
     confirmVariant: 'success',
+    isLoaded: true,
     leftColumnTitle: 'Available Fields',
     rightColumnTitle: 'Selected Fields',
     show: true,

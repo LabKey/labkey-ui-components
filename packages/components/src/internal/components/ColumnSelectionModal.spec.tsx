@@ -14,43 +14,50 @@ import { wrapDraggable } from '../test/testHelpers';
 
 import {
     ColumnChoice,
+    ColumnChoiceProps,
     ColumnChoiceGroup,
+    ColumnChoiceGroupProps,
     ColumnInView,
     ColumnInViewProps,
+    ColumnSelectionModal,
+    ColumnSelectionModalProps,
     FieldLabelDisplay,
 } from './ColumnSelectionModal';
+import {LoadingSpinner} from "./base/LoadingSpinner";
+import {waitForLifecycle} from "../test/enzymeTestHelpers";
 
 describe('ColumnSelectionModal', () => {
     const QUERY_COL = new QueryColumn({
-        name: 'test/Column',
+        caption: 'Test Column',
         fieldKey: 'test$SColumn',
         fieldKeyArray: ['test/Column'],
         fieldKeyPath: 'test$SColumn',
-        caption: 'Test Column',
+        name: 'test/Column',
         selectable: true,
     });
 
     const QUERY_COL_LOOKUP = new QueryColumn({
-        name: 'test/Column',
+        caption: 'Test Column',
         fieldKey: 'test$SColumn',
         fieldKeyArray: ['test/Column'],
         fieldKeyPath: 'parent1/parent2/test$SColumn',
-        caption: 'Test Column',
-        selectable: true,
         lookup: new QueryLookup({}),
+        name: 'test/Column',
+        selectable: true,
     });
 
     describe('ColumnChoice', () => {
+        function defaultProps(): ColumnChoiceProps {
+            return {
+                column: QUERY_COL,
+                onAddColumn: jest.fn(),
+                onCollapseColumn: jest.fn(),
+                onExpandColumn: jest.fn(),
+            };
+        }
+
         test('isInView', () => {
-            const wrapper = mount(
-                <ColumnChoice
-                    column={QUERY_COL}
-                    isInView={true}
-                    onAddColumn={jest.fn()}
-                    onCollapseColumn={jest.fn()}
-                    onExpandColumn={jest.fn()}
-                />
-            );
+            const wrapper = mount(<ColumnChoice {...defaultProps()} isInView />);
             expect(wrapper.find('.field-name').text()).toBe('Test Column');
             expect(wrapper.find('.fa-check')).toHaveLength(1);
             expect(wrapper.find('.fa-plus')).toHaveLength(0);
@@ -61,15 +68,7 @@ describe('ColumnSelectionModal', () => {
         });
 
         test('not isInView', () => {
-            const wrapper = mount(
-                <ColumnChoice
-                    column={QUERY_COL}
-                    isInView={false}
-                    onAddColumn={jest.fn()}
-                    onCollapseColumn={jest.fn()}
-                    onExpandColumn={jest.fn()}
-                />
-            );
+            const wrapper = mount(<ColumnChoice {...defaultProps()} isInView={false} />);
             expect(wrapper.find('.field-name').text()).toBe('Test Column');
             expect(wrapper.find('.fa-check')).toHaveLength(0);
             expect(wrapper.find('.fa-plus')).toHaveLength(1);
@@ -80,15 +79,7 @@ describe('ColumnSelectionModal', () => {
         });
 
         test('lookup, collapsed', () => {
-            const wrapper = mount(
-                <ColumnChoice
-                    column={QUERY_COL_LOOKUP}
-                    isInView={false}
-                    onAddColumn={jest.fn()}
-                    onCollapseColumn={jest.fn()}
-                    onExpandColumn={jest.fn()}
-                />
-            );
+            const wrapper = mount(<ColumnChoice {...defaultProps()} column={QUERY_COL_LOOKUP} isInView={false} />);
             expect(wrapper.find('.field-name').text()).toBe('Test Column');
             expect(wrapper.find('.fa-check')).toHaveLength(0);
             expect(wrapper.find('.fa-plus')).toHaveLength(1);
@@ -100,14 +91,7 @@ describe('ColumnSelectionModal', () => {
 
         test('lookup, expanded', () => {
             const wrapper = mount(
-                <ColumnChoice
-                    column={QUERY_COL_LOOKUP}
-                    isInView={false}
-                    isExpanded
-                    onAddColumn={jest.fn()}
-                    onCollapseColumn={jest.fn()}
-                    onExpandColumn={jest.fn()}
-                />
+                <ColumnChoice {...defaultProps()} column={QUERY_COL_LOOKUP} isExpanded isInView={false} />
             );
             expect(wrapper.find('.field-name').text()).toBe('Test Column');
             expect(wrapper.find('.fa-check')).toHaveLength(0);
@@ -122,7 +106,7 @@ describe('ColumnSelectionModal', () => {
     describe('ColumnInView', () => {
         function defaultProps(): ColumnInViewProps {
             return {
-                allowEdit: true,
+                allowEditLabel: true,
                 column: QUERY_COL,
                 index: 1,
                 isDragDisabled: false,
@@ -182,7 +166,7 @@ describe('ColumnSelectionModal', () => {
             wrapper.unmount();
         });
 
-        test('Editing', () => {
+        test('Editing column labels', () => {
             const column = new QueryColumn({
                 name: 'testColumn',
                 fieldKey: 'testColumn',
@@ -191,7 +175,9 @@ describe('ColumnSelectionModal', () => {
                 caption: 'Test Column',
             });
 
-            const wrapper = mount(wrapDraggable(<ColumnInView {...defaultProps()} column={column} isDragDisabled />));
+            const wrapper = mount(
+                wrapDraggable(<ColumnInView {...defaultProps()} allowEditLabel column={column} isDragDisabled />)
+            );
 
             wrapper.find('.fa-pencil').simulate('click');
             expect(wrapper.find('.fa-pencil').exists()).toBeFalsy();
@@ -235,15 +221,17 @@ describe('ColumnSelectionModal', () => {
     });
 
     describe('ColumnChoiceGroup', () => {
-        const DEFAULT_PROPS = {
-            column: QUERY_COL,
-            columnsInView: [],
-            expandedColumns: {},
-            showAllColumns: false,
-            onAddColumn: jest.fn(),
-            onCollapseColumn: jest.fn(),
-            onExpandColumn: jest.fn(),
-        };
+        function defaultProps(): ColumnChoiceGroupProps {
+            return {
+                column: QUERY_COL,
+                columnsInView: [],
+                expandedColumns: {},
+                onAddColumn: jest.fn(),
+                onCollapseColumn: jest.fn(),
+                onExpandColumn: jest.fn(),
+                showAllColumns: false,
+            };
+        }
 
         function validate(wrapper: ReactWrapper, expanded = false, inView = false, hasChild = false): void {
             const count = hasChild ? 2 : 1;
@@ -254,19 +242,19 @@ describe('ColumnSelectionModal', () => {
         }
 
         test('standard column, not lookup, no in view', () => {
-            const wrapper = mount(<ColumnChoiceGroup {...DEFAULT_PROPS} />);
+            const wrapper = mount(<ColumnChoiceGroup {...defaultProps()} />);
             validate(wrapper);
             wrapper.unmount();
         });
 
         test('standard column, not lookup, in view', () => {
-            const wrapper = mount(<ColumnChoiceGroup {...DEFAULT_PROPS} columnsInView={[QUERY_COL]} />);
+            const wrapper = mount(<ColumnChoiceGroup {...defaultProps()} columnsInView={[QUERY_COL]} />);
             validate(wrapper, false, true);
             wrapper.unmount();
         });
 
         test('lookup column, collapsed, not in view', () => {
-            const wrapper = mount(<ColumnChoiceGroup {...DEFAULT_PROPS} column={QUERY_COL_LOOKUP} />);
+            const wrapper = mount(<ColumnChoiceGroup {...defaultProps()} column={QUERY_COL_LOOKUP} />);
             validate(wrapper);
             wrapper.unmount();
         });
@@ -274,7 +262,7 @@ describe('ColumnSelectionModal', () => {
         test('lookup column, expanded, in view', () => {
             const wrapper = mount(
                 <ColumnChoiceGroup
-                    {...DEFAULT_PROPS}
+                    {...defaultProps()}
                     column={QUERY_COL_LOOKUP}
                     expandedColumns={{ [QUERY_COL_LOOKUP.index]: new QueryInfo({}) }}
                     columnsInView={[QUERY_COL_LOOKUP]}
@@ -288,7 +276,7 @@ describe('ColumnSelectionModal', () => {
             const queryInfo = new QueryInfo({ columns: new ExtendedMap({ [QUERY_COL.fieldKey]: QUERY_COL }) });
             const wrapper = mount(
                 <ColumnChoiceGroup
-                    {...DEFAULT_PROPS}
+                    {...defaultProps()}
                     column={QUERY_COL_LOOKUP}
                     expandedColumns={{ [QUERY_COL_LOOKUP.index]: queryInfo }}
                     columnsInView={[QUERY_COL_LOOKUP]}
@@ -304,7 +292,7 @@ describe('ColumnSelectionModal', () => {
             const queryInfo = new QueryInfo({ columns: new ExtendedMap({ [QUERY_COL.fieldKey]: QUERY_COL }) });
             const wrapper = mount(
                 <ColumnChoiceGroup
-                    {...DEFAULT_PROPS}
+                    {...defaultProps()}
                     column={QUERY_COL_LOOKUP}
                     expandedColumns={{ [QUERY_COL_LOOKUP.index]: queryInfo }}
                     columnsInView={[QUERY_COL_LOOKUP, QUERY_COL]}
@@ -321,10 +309,11 @@ describe('ColumnSelectionModal', () => {
             const queryInfo = new QueryInfo({ columns: new ExtendedMap({ [colHidden.fieldKey]: colHidden }) });
             const wrapper = mount(
                 <ColumnChoiceGroup
-                    {...DEFAULT_PROPS}
+                    {...defaultProps()}
                     column={QUERY_COL_LOOKUP}
-                    expandedColumns={{ [QUERY_COL_LOOKUP.index]: queryInfo }}
                     columnsInView={[QUERY_COL_LOOKUP]}
+                    expandedColumnFilter={jest.fn().mockImplementation(c => !c.hidden)}
+                    expandedColumns={{ [QUERY_COL_LOOKUP.index]: queryInfo }}
                 />
             );
             validate(wrapper, true, true);
@@ -336,7 +325,7 @@ describe('ColumnSelectionModal', () => {
             const queryInfo = new QueryInfo({ columns: new ExtendedMap({ [colHidden.fieldKey]: colHidden }) });
             const wrapper = mount(
                 <ColumnChoiceGroup
-                    {...DEFAULT_PROPS}
+                    {...defaultProps()}
                     column={QUERY_COL_LOOKUP}
                     expandedColumns={{ [QUERY_COL_LOOKUP.index]: queryInfo }}
                     columnsInView={[QUERY_COL_LOOKUP, colHidden]}
@@ -354,8 +343,9 @@ describe('ColumnSelectionModal', () => {
             const queryInfo = new QueryInfo({ columns: new ExtendedMap({ [colHidden.fieldKey]: colHidden }) });
             const wrapper = mount(
                 <ColumnChoiceGroup
-                    {...DEFAULT_PROPS}
+                    {...defaultProps()}
                     column={QUERY_COL_LOOKUP}
+                    expandedColumnFilter={jest.fn().mockImplementation(c => !c.removeFromViews)}
                     expandedColumns={{ [QUERY_COL_LOOKUP.index]: queryInfo }}
                     columnsInView={[QUERY_COL_LOOKUP]}
                 />
@@ -394,8 +384,9 @@ describe('ColumnSelectionModal', () => {
 
             const wrapper = mount(
                 <ColumnChoiceGroup
-                    {...DEFAULT_PROPS}
+                    {...defaultProps()}
                     column={QUERY_COL_LOOKUP}
+                    expandedColumnFilter={jest.fn().mockImplementation(c => !c.isJunctionLookup())}
                     expandedColumns={{ [QUERY_COL_LOOKUP.index]: queryInfo }}
                     columnsInView={[QUERY_COL_LOOKUP]}
                     showAllColumns
@@ -410,6 +401,51 @@ describe('ColumnSelectionModal', () => {
     });
 
     describe('ColumnSelectionModal', () => {
-        // TODO: Unit tests
+        const QUERY_INFO = new QueryInfo({ columns: new ExtendedMap({ [QUERY_COL.fieldKey]: QUERY_COL }) });
+
+        function defaultProps(): ColumnSelectionModalProps {
+            return {
+                initialSelectedColumns: [QUERY_COL],
+                onSubmit: jest.fn(),
+                queryInfo: QUERY_INFO,
+            };
+        }
+
+        test('default props', () => {
+            const wrapper = mount(<ColumnSelectionModal {...defaultProps()} />);
+            const titles = wrapper.find('.field-modal__col-title');
+
+            // default isLoaded
+            expect(wrapper.find(ColumnChoiceGroup).length).toEqual(1);
+            // default leftColumnTitle
+            expect(titles.at(0).text()).toContain('Available Fields');
+            // default rightColumnTitle
+            expect(titles.at(1).text()).toContain('Selected Fields');
+            // default allowShowAll
+            expect(wrapper.exists('.field-modal__footer')).toBe(false);
+            wrapper.unmount();
+        });
+
+        test('loading initialization', async () => {
+            const wrapper = mount(<ColumnSelectionModal {...defaultProps()} isLoaded={false} />);
+
+            expect(wrapper.find(LoadingSpinner).length).toEqual(1);
+            expect(wrapper.find(ColumnChoiceGroup).length).toEqual(0);
+
+            const initialSelectedColumn = QUERY_COL;
+            const initialSelectedColumns = [initialSelectedColumn];
+            wrapper.setProps({ initialSelectedColumn, initialSelectedColumns, isLoaded: true });
+            await waitForLifecycle(wrapper);
+
+            expect(wrapper.find(LoadingSpinner).length).toEqual(0);
+            expect(wrapper.find(ColumnChoiceGroup).length).toEqual(1);
+
+            // verify useEffect initialization of selectedIndex, selectedColumns
+            const columnsInView = wrapper.find(ColumnInView);
+            expect(columnsInView.length).toEqual(1);
+            expect(columnsInView.prop('selected')).toBe(true);
+
+            wrapper.unmount();
+        });
     });
 });

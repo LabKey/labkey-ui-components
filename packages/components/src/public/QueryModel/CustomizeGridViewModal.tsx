@@ -34,6 +34,7 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
     const { title, queryInfo } = model;
     const [saveError, setSaveError] = useState<string>();
     const gridName = title ?? model.schemaQuery.queryName;
+    const initialSelectedColumns = useMemo(() => model.displayColumns, [model]);
 
     const onExpand = useCallback(
         async (column: QueryColumn) => {
@@ -88,12 +89,12 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
 
     return (
         <ColumnSelectionModal
-            allowEdit
+            allowEditLabel
             allowShowAll
             confirmButtonText="Update Grid"
             expandedColumnFilter={includedColumnsForCustomizationFilter}
             initialSelectedColumn={selectedColumn}
-            initialSelectedColumns={model.displayColumns}
+            initialSelectedColumns={initialSelectedColumns}
             onCancel={onCancel}
             onExpand={onExpand}
             onSubmit={onSubmit}

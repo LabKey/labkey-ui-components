@@ -40,7 +40,13 @@ import {
     SampleStorageButton,
     WorkflowGrid,
 } from './components/samples/models';
-import { SampleGridButton, SamplesEditableGridProps, SampleStorageLocation, SampleStorageMenu } from './sampleModels';
+import {
+    SampleGridButton,
+    SamplesEditableGridProps,
+    SampleStorageLocation,
+    SampleStorageMenu,
+    SamplesTabbedGridPanel,
+} from './sampleModels';
 
 export interface AdminAppContext {
     NotebookNotificationSettingsComponent: NotebookNotificationSettings;
@@ -59,6 +65,7 @@ export interface SampleTypeAppContext {
     SampleStorageButtonComponent: SampleStorageButton;
     SampleStorageLocationComponent: SampleStorageLocation;
     SampleStorageMenuComponent: SampleStorageMenu;
+    SamplesTabbedGridPanelComponent: SamplesTabbedGridPanel;
     WorkflowGridComponent: WorkflowGrid;
     assayProviderType?: string;
     combineParentTypes?: boolean;

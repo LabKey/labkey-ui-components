@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.365.1
+*Released*: 4 September 2023
 - Add SamplesTabbedGridPanelComponent to SampleTypeAppContext
 
 ### version 2.365.0

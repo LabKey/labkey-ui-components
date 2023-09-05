@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 48329: LKSM: Sample Finder query performance issues
   - Only query for a single column during loadTotalCount
 
+### version 2.365.1
+*Released*: 4 September 2023
+- Add SamplesTabbedGridPanelComponent to SampleTypeAppContext
+
 ### version 2.365.0
 *Released*: 1 September 2023
 - Add `saveDomain` to `DomainPropertiesAPIWrapper`

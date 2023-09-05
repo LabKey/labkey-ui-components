@@ -1,6 +1,7 @@
 
 .detail-component--table__fixed {
   table-layout: fixed;
+  border: unset;
 
   tbody tr:first-child td {
       border-top: none;

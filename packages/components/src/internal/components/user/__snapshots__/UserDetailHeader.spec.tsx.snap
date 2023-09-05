@@ -5,7 +5,7 @@ exports[`<UserDetailHeader/> default properties 1`] = `
   className="page-header"
 >
   <div
-    className="col-md-9 detail__header--container"
+    className="col-xs-12 col-md-9 detail__header--container"
   >
     <div
       className="detail__header--image-container"
@@ -44,7 +44,7 @@ exports[`<UserDetailHeader/> optional properties 1`] = `
   className="page-header"
 >
   <div
-    className="col-md-9 detail__header--container"
+    className="col-xs-12 col-md-9 detail__header--container"
   >
     <div
       className="detail__header--image-container"

@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD September 2023
 - App listing page - move details panel to hover tooltip in header
   - misc styling updates for LabelHelpTip and DetailDisplay
+  - add new DesignerDetailTooltip component
 
 ### version 2.365.1
 *Released*: 4 September 2023

@@ -7,11 +7,13 @@ import { DetailDisplaySharedProps } from '../forms/detail/DetailDisplay';
 import { RequiresModelAndActions } from '../../../public/QueryModel/withQueryModels';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { DetailPanel } from '../../../public/QueryModel/DetailPanel';
+import { QueryColumn } from '../../../public/QueryColumn';
 import { caseInsensitive } from '../../util/utils';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
 export interface DesignerDetailPanelProps extends DetailDisplaySharedProps, RequiresModelAndActions {
-    schemaQuery: SchemaQuery;
+    queryColumns?: QueryColumn[];
+    schemaQuery?: SchemaQuery;
 }
 
 export const DesignerDetailPanel: FC<DesignerDetailPanelProps> = memo(props => {
@@ -48,7 +50,7 @@ export const DesignerDetailPanel: FC<DesignerDetailPanelProps> = memo(props => {
 });
 
 export const DesignerDetailTooltip: FC<DesignerDetailPanelProps> = memo(props => {
-    const { actions, model, detailRenderer, schemaQuery } = props;
+    const { model } = props;
     const description = caseInsensitive(model?.getRow(), 'Description')?.value;
 
     return (
@@ -61,12 +63,7 @@ export const DesignerDetailTooltip: FC<DesignerDetailPanelProps> = memo(props =>
             )}
             <LabelHelpTip iconComponent={<span className="header-details-link">Details</span>} placement="bottom">
                 <div className="header-details-hover">
-                    <DesignerDetailPanel
-                        actions={actions}
-                        detailRenderer={detailRenderer}
-                        model={model}
-                        schemaQuery={schemaQuery}
-                    />
+                    <DesignerDetailPanel {...props} />
                 </div>
             </LabelHelpTip>
         </div>

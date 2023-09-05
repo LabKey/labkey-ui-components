@@ -578,7 +578,7 @@ export function withQueryModels<Props>(
                     includeUpdateColumn: false,
                     // includeMetadata: false, // TODO don't require metadata in selectRows response processing
                     includeTotalCount: true,
-                    columns: getSelectRowCountColumnsStr(loadRowsConfig.columns),
+                    columns: getSelectRowCountColumnsStr(loadRowsConfig.columns, loadRowsConfig.filterArray),
                 });
 
                 this.setState(

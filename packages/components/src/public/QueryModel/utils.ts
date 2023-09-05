@@ -127,7 +127,13 @@ export function getQueryModelExportParams(
     return getExportParams(type, schemaQuery, exportOptions, advancedOptions);
 }
 
-export function getSelectRowCountColumnsStr(rawColumns?: string | string[]): string {
+export function getSelectRowCountColumnsStr(rawColumns?: string | string[], filterArray?: Filter.IFilter[]): string | string[] {
+    if (filterArray?.length > 0) {
+        const qFilter = filterArray.some(filter => filter.getColumnName() === '*');
+        if (qFilter)
+            return rawColumns;
+    }
+
     if (!rawColumns || rawColumns === '*') return rawColumns === null ? null : '*';
 
     const columns: string[] =

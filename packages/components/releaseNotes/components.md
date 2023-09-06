@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.364.1
+*Released*: 6 September 2023
 - Issue 48596: ResponsiveMenuButtonGroup fix for empty button group
 - Issue 48594: Show project look and feel form for starter edition too
 - Issue 48607: Don't use spread operator for array construction to avoid javascript error

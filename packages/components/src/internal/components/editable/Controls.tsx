@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from 'react';
-import { Button, MenuItem, SplitButton } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import classNames from 'classnames';
 
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
@@ -22,19 +22,18 @@ import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 export type PlacementType = 'top' | 'bottom' | 'both';
 
 export interface AddRowsControlProps {
+    addText?: string;
     disable?: boolean;
     initialCount?: number;
+    invalidCountMsg?: string;
     maxCount?: number;
     maxTotalCount?: number;
     minCount?: number;
     nounPlural?: string;
     nounSingular?: string;
-    addText?: string;
     onAdd: (count: number) => void;
-    quickAddText?: string;
     placement?: PlacementType;
     wrapperClass?: string;
-    invalidCountMsg?: string;
     verbPastTense?: string;
 }
 
@@ -121,42 +120,38 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
         return count !== undefined && !this.isValid(count);
     }
 
-    renderButton() {
-        const { disable, quickAddText, addText, nounSingular, nounPlural, invalidCountMsg } = this.props;
-        const { count } = this.state;
-
-        const title = addText + ' ' + (count === 1 ? nounSingular : nounPlural);
-        const disabledMsg = invalidCountMsg ? invalidCountMsg : ('Maximum number of ' + nounPlural + ' reached.');
-        return (
-            <span className="input-group-btn">
-                <Button
-                    bsStyle="primary"
-                    title={disable ? disabledMsg : undefined}
-                    disabled={disable || this.hasError()}
-                    onClick={this.onAdd}
-                >
-                    {title}
-                </Button>
-            </span>
-        );
-    }
-
     getMaxRowsToAdd() {
         const { maxCount, maxTotalCount } = this.props;
         return maxCount && maxTotalCount && maxCount > maxTotalCount ? maxTotalCount : maxCount;
     }
 
     render() {
-        const { disable, minCount, maxCount, maxTotalCount, nounPlural, nounSingular, placement, wrapperClass, invalidCountMsg, verbPastTense } = this.props;
+        const {
+            addText,
+            disable,
+            minCount,
+            maxCount,
+            maxTotalCount,
+            nounPlural,
+            nounSingular,
+            placement,
+            wrapperClass,
+            invalidCountMsg,
+            verbPastTense,
+        } = this.props;
         const { count } = this.state;
 
+        const title = addText + ' ' + (count === 1 ? nounSingular : nounPlural);
+        const disabledMsg = invalidCountMsg ? invalidCountMsg : 'Maximum number of ' + nounPlural + ' reached.';
         const hasError = !disable && this.hasError();
         const wrapperClasses = classNames('editable-grid__controls', 'text-nowrap', wrapperClass, {
             'margin-top': placement === 'bottom',
             'has-error': hasError,
         });
         const maxToAdd = this.getMaxRowsToAdd();
-        const errorMsg =  `At most ${maxTotalCount?.toLocaleString() ?? maxCount?.toLocaleString()} ${nounPlural.toLowerCase()} can be ${verbPastTense.toLowerCase()} at once (${maxToAdd.toLocaleString()} remaining).`;
+        const errorMsg = `At most ${
+            maxTotalCount?.toLocaleString() ?? maxCount?.toLocaleString()
+        } ${nounPlural.toLowerCase()} can be ${verbPastTense.toLowerCase()} at once (${maxToAdd.toLocaleString()} remaining).`;
 
         return (
             <div className={wrapperClasses}>
@@ -174,7 +169,16 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
                         type="number"
                         value={count ? count.toString() : undefined}
                     />
-                    {this.renderButton()}
+                    <span className="input-group-btn">
+                        <Button
+                            bsStyle="primary"
+                            title={disable ? disabledMsg : undefined}
+                            disabled={disable || this.hasError()}
+                            onClick={this.onAdd}
+                        >
+                            {title}
+                        </Button>
+                    </span>
                 </span>
                 {hasError && count > 0 && (
                     <span className="text-danger pull-left add-control--error-message">

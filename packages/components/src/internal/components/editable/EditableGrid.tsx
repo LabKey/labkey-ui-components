@@ -99,7 +99,7 @@ function moveUp(colIdx: number, rowIdx: number): CellCoordinates {
  *  - If 0 we are not moving
  *  - If 1 we are moving down or right
  */
-function computeExpandedRange(selectedIdx: number, min: number, max: number, direction: number): [number, number] {
+function computeRangeChange(selectedIdx: number, min: number, max: number, direction: number): [number, number] {
     if (direction === 0) {
         // If we haven't changed direction then we don't need to expand or contract the range at all
         return [min, max];
@@ -109,34 +109,39 @@ function computeExpandedRange(selectedIdx: number, min: number, max: number, dir
         // A single selected cell is a bit of a special case, because we'll be extending either before or after
         if (direction === 1) {
             // Extend forward
-            return [min, max + 1];
+            max = max + 1;
+        } else {
+            // Extend backward
+            min = min - 1;
         }
-
-        // Extend backward
-        return [min - 1, max];
-    }
-
-    if (min < selectedIdx) {
+    } else if (min < selectedIdx) {
         // The selected area is above or left of the currently selected index
         if (direction === 1) {
             // We're shrinking forwards
-            return [min + 1, max];
+            min = min + 1;
+        } else {
+            // We're extending backwards
+            min = min - 1;
         }
-
-        // We're extending backwards
-        return [min - 1, max];
+    } else {
+        if (direction === 1) {
+            // We're extending forwards
+            max = max + 1;
+        } else {
+            // We're shrinking backwards
+            max = max - 1;
+        }
     }
 
-    if (direction === 1) {
-        // We're extending forwards
-        return [min, max + 1];
-    }
-
-    // We're shrinking backwards
-    return [min, max - 1];
+    return [Math.max(0, min), max];
 }
 
-function computeSelectionCellKeys(minColIdx: number, minRowIdx: number, maxColIdx: number, maxRowIdx: number): string[] {
+function computeSelectionCellKeys(
+    minColIdx: number,
+    minRowIdx: number,
+    maxColIdx: number,
+    maxRowIdx: number
+): string[] {
     const selectionCells = [];
 
     for (let c = minColIdx; c <= maxColIdx; c++) {
@@ -623,8 +628,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     end = start;
                 }
 
-                const [minColIdx, maxColIdx] = computeExpandedRange(selectedColIdx, start.colIdx, end.colIdx, colDir);
-                const [minRowIdx, maxRowIdx] = computeExpandedRange(selectedRowIdx, start.rowIdx, end.rowIdx, rowDir);
+                const [minColIdx, maxColIdx] = computeRangeChange(selectedColIdx, start.colIdx, end.colIdx, colDir);
+                const [minRowIdx, maxRowIdx] = computeRangeChange(selectedRowIdx, start.rowIdx, end.rowIdx, rowDir);
 
                 selectionCells = computeSelectionCellKeys(minColIdx, minRowIdx, maxColIdx, maxRowIdx);
                 break;

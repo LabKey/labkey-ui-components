@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ChangeEvent, MouseEvent, PureComponent, ReactNode, SyntheticEvent } from 'react';
 import { Query, Utils } from '@labkey/api';
 import classNames from 'classnames';
 import { List, Map, OrderedMap, Set } from 'immutable';
+import React, { ChangeEvent, MouseEvent, PureComponent, ReactNode, SyntheticEvent } from 'react';
 import { Button, Nav, NavItem, OverlayTrigger, Popover, Tab, TabContainer } from 'react-bootstrap';
 
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
@@ -33,7 +33,7 @@ import {
     GRID_SELECTION_INDEX,
     MAX_EDITABLE_GRID_ROWS,
 } from '../../constants';
-import { cancelEvent } from '../../events';
+import { cancelEvent, isCtrlOrMetaKey } from '../../events';
 
 import { headerSelectionCell } from '../../renderers';
 import { blurActiveElement, capitalizeFirstChar, caseInsensitive, not } from '../../util/utils';
@@ -55,7 +55,6 @@ import {
     pasteEvent,
     updateGridFromBulkForm,
 } from './actions';
-import { genCellKey, parseCellKey } from './utils';
 import { BorderMask, Cell } from './Cell';
 
 import {
@@ -68,6 +67,7 @@ import {
 import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 
 import { CellMessage, EditableColumnMetadata, EditorModel, EditorModelProps, ValueDescriptor } from './models';
+import { genCellKey, parseCellKey } from './utils';
 
 function isCellEmpty(values: List<ValueDescriptor>): boolean {
     return !values || values.isEmpty() || values.some(v => v.raw === undefined || v.raw === null || v.raw === '');
@@ -87,6 +87,65 @@ function moveRight(colIdx: number, rowIdx: number): CellCoordinates {
 
 function moveUp(colIdx: number, rowIdx: number): CellCoordinates {
     return { colIdx, rowIdx: rowIdx - 1 };
+}
+
+/**
+ * Computes the new range for a given grid dimension when expanding or contracting in a particular direction.
+ * @param selectedIdx: The index of the currently selected cell
+ * @param min: The minimum of the current range
+ * @param max: The maximum of the current range
+ * @param direction: number in the range of -1, 1.
+ *  - If -1, we are moving up or left
+ *  - If 0 we are not moving
+ *  - If 1 we are moving down or right
+ */
+function computeExpandedRange(selectedIdx: number, min: number, max: number, direction: number): [number, number] {
+    if (direction === 0) {
+        // If we haven't changed direction then we don't need to expand or contract the range at all
+        return [min, max];
+    }
+
+    if (min === max) {
+        // A single selected cell is a bit of a special case, because we'll be extending either before or after
+        if (direction === 1) {
+            // Extend forward
+            return [min, max + 1];
+        }
+
+        // Extend backward
+        return [min - 1, max];
+    }
+
+    if (min < selectedIdx) {
+        // The selected area is above or left of the currently selected index
+        if (direction === 1) {
+            // We're shrinking forwards
+            return [min + 1, max];
+        }
+
+        // We're extending backwards
+        return [min - 1, max];
+    }
+
+    if (direction === 1) {
+        // We're extending forwards
+        return [min, max + 1];
+    }
+
+    // We're shrinking backwards
+    return [min, max - 1];
+}
+
+function computeSelectionCellKeys(minColIdx: number, minRowIdx: number, maxColIdx: number, maxRowIdx: number): string[] {
+    const selectionCells = [];
+
+    for (let c = minColIdx; c <= maxColIdx; c++) {
+        for (let r = minRowIdx; r <= maxRowIdx; r++) {
+            selectionCells.push(genCellKey(c, r));
+        }
+    }
+
+    return selectionCells;
 }
 
 function computeBorderMask(
@@ -545,12 +604,29 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         maxRowIdx = Math.max(maxRowIdx, maxInitialCell.rowIdx);
                     }
 
-                    for (let c = minColIdx; c <= maxColIdx; c++) {
-                        for (let r = minRowIdx; r <= maxRowIdx; r++) {
-                            selectionCells.push(genCellKey(c, r));
-                        }
-                    }
+                    selectionCells = computeSelectionCellKeys(minColIdx, minRowIdx, maxColIdx, maxRowIdx);
                 }
+                break;
+            case SELECTION_TYPES.AREA_CHANGE:
+                selectedColIdx = editorModel.selectedColIdx;
+                selectedRowIdx = editorModel.selectedRowIdx;
+                const colDir = colIdx - selectedColIdx;
+                const rowDir = rowIdx - selectedRowIdx;
+                let start;
+                let end;
+
+                if (editorModel.selectionCells && editorModel.selectionCells.length > 0) {
+                    start = parseCellKey(editorModel.selectionCells[0]);
+                    end = parseCellKey(editorModel.selectionCells[editorModel.selectionCells.length - 1]);
+                } else {
+                    start = { colIdx: selectedColIdx, rowIdx: selectedRowIdx } as CellCoordinates;
+                    end = start;
+                }
+
+                const [minColIdx, maxColIdx] = computeExpandedRange(selectedColIdx, start.colIdx, end.colIdx, colDir);
+                const [minRowIdx, maxRowIdx] = computeExpandedRange(selectedRowIdx, start.rowIdx, end.rowIdx, rowDir);
+
+                selectionCells = computeSelectionCellKeys(minColIdx, minRowIdx, maxColIdx, maxRowIdx);
                 break;
             case SELECTION_TYPES.SINGLE:
                 selectionCells = [...editorModel.selectionCells];
@@ -569,7 +645,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         return { selectedColIdx, selectedRowIdx, selectionCells };
     };
 
-    selectCell = (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean): void => {
+    selectCell = (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue = false): void => {
         const { editorModel, onChange } = this.props;
         const { cellValues, focusValue, rowCount } = editorModel;
 
@@ -934,7 +1010,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             return;
         }
 
-        const isMeta = event.ctrlKey || event.metaKey;
+        const isMeta = isCtrlOrMetaKey(event);
+        const isShift = event.shiftKey;
         const colIdx = editorModel.selectedColIdx;
         const rowIdx = editorModel.selectedRowIdx;
         let nextCol;
@@ -1022,7 +1099,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         if (nextCol !== undefined && nextRow !== undefined) {
             cancelEvent(event);
-            this.selectCell(nextCol, nextRow);
+            this.selectCell(nextCol, nextRow, isShift ? SELECTION_TYPES.AREA_CHANGE : undefined);
         }
     };
 

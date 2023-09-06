@@ -39,10 +39,9 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
     const onExpand = useCallback(
         async (column: QueryColumn) => {
             const fkQueryInfo = await getQueryDetails({
-                schemaName: queryInfo.schemaQuery.schemaName,
-                queryName: queryInfo.schemaQuery.queryName,
                 fk: column.index,
                 lookup: column.lookup,
+                schemaQuery: queryInfo.schemaQuery,
             });
             // For data classes, we want to limit the Ancestor filters to exclude 'Samples'
             if (column.index === 'Ancestors' && queryInfo.schemaQuery.schemaName === SCHEMAS.DATA_CLASSES.SCHEMA) {

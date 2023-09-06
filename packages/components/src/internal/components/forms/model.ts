@@ -229,8 +229,7 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<QuerySelec
     const { queryName, schemaName, viewName } = schemaQuery;
     const filters = queryFilters ? queryFilters.toArray() : [];
 
-    const queryInfo = await getQueryDetails({ schemaName, queryName, containerPath });
-
+    const queryInfo = await getQueryDetails({ containerPath, schemaQuery });
     const valueColumn = initValueColumn(queryInfo, props.valueColumn);
     const displayColumn = initDisplayColumn(queryInfo, valueColumn, props.displayColumn);
 

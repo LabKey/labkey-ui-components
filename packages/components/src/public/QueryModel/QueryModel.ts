@@ -157,6 +157,11 @@ export interface QueryConfig {
      */
     requiredColumns?: string[];
     /**
+     * Request requiredColumns as "fields" property on query-getQueryDetails.api.
+     * This will ensure the required columns are available on the queryInfo. Defaults to false.
+     */
+    requiredColumnsAsQueryInfoFields?: boolean;
+    /**
      * Definition of the [[SchemaQuery]] (i.e. schema, query, and optionally view name) to use for the [[QueryModel]] data load.
      */
     schemaQuery: SchemaQuery;
@@ -270,6 +275,11 @@ export class QueryModel {
      */
     readonly requiredColumns: string[];
     /**
+     * Request requiredColumns as "fields" property on query-getQueryDetails.api.
+     * This will ensure the required columns are available on the queryInfo. Defaults to false.
+     */
+    readonly requiredColumnsAsQueryInfoFields?: boolean;
+    /**
      * Definition of the [[SchemaQuery]] (i.e. schema, query, and optionally view name) to use for the QueryModel data load.
      */
     readonly schemaQuery: SchemaQuery;
@@ -285,7 +295,6 @@ export class QueryModel {
      * Prefix string value to use in url parameters when bindURL is true. Defaults to "query".
      */
     readonly urlPrefix?: string;
-
     /**
      * An array of [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/Filter.IFilter.html)
      * filters to be applied to the QueryModel data load. These filters will be concatenated with base filters, URL filters,
@@ -409,6 +418,7 @@ export class QueryModel {
         this.omittedColumns = queryConfig.omittedColumns ?? [];
         this.queryParameters = queryConfig.queryParameters;
         this.requiredColumns = queryConfig.requiredColumns ?? [];
+        this.requiredColumnsAsQueryInfoFields = queryConfig.requiredColumnsAsQueryInfoFields ?? false;
         this.sorts = queryConfig.sorts ?? [];
         this.rowsError = undefined;
         this.filterArray = queryConfig.filterArray ?? [];

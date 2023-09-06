@@ -6,6 +6,9 @@ export enum SELECTION_TYPES {
     ALL,
     AREA,
     SINGLE,
+    // Different from AREA, because it involves expanding or contracting an existing selected area, instead of selecting
+    // the area between two points.
+    AREA_CHANGE,
 }
 
 export enum MODIFICATION_TYPES {

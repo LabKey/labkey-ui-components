@@ -127,23 +127,26 @@ export function getQueryModelExportParams(
     return getExportParams(type, schemaQuery, exportOptions, advancedOptions);
 }
 
-export function getSelectRowCountColumnsStr(rawColumns?: string | string[], filterArray?: Filter.IFilter[]): string | string[] {
+export function getSelectRowCountColumnsStr(
+    rawColumns?: string | string[],
+    filterArray?: Filter.IFilter[],
+    pkCols?: QueryColumn[]
+): string | string[] {
+    if (!rawColumns || rawColumns === '*') return rawColumns;
+
     if (filterArray?.length > 0) {
         const qFilter = filterArray.some(filter => filter.getColumnName() === '*');
-        if (qFilter)
-            return rawColumns;
+        if (qFilter) return rawColumns;
     }
-
-    if (!rawColumns || rawColumns === '*') return rawColumns === null ? null : '*';
 
     const columns: string[] =
         typeof rawColumns === 'string' ? rawColumns.split(',').map(col => col.trim()) : rawColumns;
 
     if (columns.length <= 1) return columns[0];
 
+    const columnsPkLc = pkCols?.map(col => col.fieldKey.toLowerCase());
     const columnsLc = columns.map(col => col.toLowerCase());
-    if (columnsLc.indexOf('rowid') > -1) return 'rowid';
-    if (columnsLc.indexOf('name') > -1) return 'name';
 
-    return columns[0];
+    const pkCol: string = columnsPkLc.find(col => columnsLc.indexOf(col) > -1);
+    return pkCol ? pkCol : columns[0];
 }

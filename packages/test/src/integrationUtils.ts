@@ -87,7 +87,7 @@ export interface IntegrationTestServer {
      * Create a new user account on the server with the specified credentials. If the account already exists, then
      * the account will be deleted and re-created to ensure credentials and permissions are configured as expected.
      */
-    createUser: (email: string, password: string) => Promise<TestUser>;
+    createUser: (email: string) => Promise<TestUser>;
     /** Make a GET request against the server. */
     get: (controller: string, action: string, params?: any, options?: RequestOptions) => Test;
     /** Initializes the server for the test run. This is required to be called prior to any tests running. */
@@ -149,10 +149,12 @@ const createTestContainer = async (ctx: ServerContext, containerOptions?: any /*
     return await _createContainer(ctx, ctx.projectPath, Utils.generateUUID(), containerOptions);
 };
 
-const createUser = async (ctx: ServerContext, email: string, password: string): Promise<TestUser> => {
+const createUser = async (ctx: ServerContext, email: string): Promise<TestUser> => {
     // Delete user (if the account already exists)
     // This ensures the given user's password and subsequent permissions are as expected
     await deleteUser(ctx, email);
+
+    const password = ctx.defaultContext.password;
 
     // Create the user
     const createUserResponse = await postRequest(ctx, 'security', 'createNewUser.api', {

@@ -139,14 +139,11 @@ export function getSelectRowCountColumnsStr(
         if (qFilter) return rawColumns;
     }
 
+    if (pkCols?.length > 0)
+        return pkCols[0].fieldKey;
+
     const columns: string[] =
         typeof rawColumns === 'string' ? rawColumns.split(',').map(col => col.trim()) : rawColumns;
 
-    if (columns.length <= 1) return columns[0];
-
-    const columnsPkLc = pkCols?.map(col => col.fieldKey.toLowerCase());
-    const columnsLc = columns.map(col => col.toLowerCase());
-
-    const pkCol: string = columnsPkLc.find(col => columnsLc.indexOf(col) > -1);
-    return pkCol ? pkCol : columns[0];
+    return columns[0];
 }

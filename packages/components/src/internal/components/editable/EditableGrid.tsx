@@ -612,19 +612,19 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     selectionCells = computeSelectionCellKeys(minColIdx, minRowIdx, maxColIdx, maxRowIdx);
                 }
                 break;
-            case SELECTION_TYPES.AREA_CHANGE:
+            case SELECTION_TYPES.AREA_CHANGE: {
                 selectedColIdx = editorModel.selectedColIdx;
                 selectedRowIdx = editorModel.selectedRowIdx;
                 const colDir = colIdx - selectedColIdx;
                 const rowDir = rowIdx - selectedRowIdx;
-                let start;
-                let end;
+                let start: CellCoordinates;
+                let end: CellCoordinates;
 
                 if (editorModel.selectionCells && editorModel.selectionCells.length > 0) {
                     start = parseCellKey(editorModel.selectionCells[0]);
                     end = parseCellKey(editorModel.selectionCells[editorModel.selectionCells.length - 1]);
                 } else {
-                    start = { colIdx: selectedColIdx, rowIdx: selectedRowIdx } as CellCoordinates;
+                    start = { colIdx: selectedColIdx, rowIdx: selectedRowIdx };
                     end = start;
                 }
 
@@ -633,6 +633,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
                 selectionCells = computeSelectionCellKeys(minColIdx, minRowIdx, maxColIdx, maxRowIdx);
                 break;
+            }
             case SELECTION_TYPES.SINGLE:
                 selectionCells = [...editorModel.selectionCells];
                 selectionCells.push(genCellKey(colIdx, rowIdx));

@@ -53,11 +53,14 @@ function getQueryDetailsCacheKey(
     if (fk) parts.push(fk);
     if (containerPath) parts.push(containerPath);
     if (fields) {
-        if (!Array.isArray(fields)) {
-            fields = [fields];
+        let fields_: string[];
+        if (Array.isArray(fields)) {
+            fields_ = Array.from(fields);
+        } else {
+            fields_ = [fields];
         }
 
-        fields.sort().forEach(field => {
+        fields_.sort().forEach(field => {
             if (field) {
                 parts.push(field);
             }
@@ -106,12 +109,12 @@ interface GetQueryDetailsSQ extends GetQueryDetailsBasic {
 export type GetQueryDetailsOptions = GetQueryDetailsName | GetQueryDetailsSQ;
 
 export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryInfo> {
-    const { containerPath, fk } = options;
+    const { containerPath, fields, fk } = options;
     const schemaQuery = options.schemaQuery ?? new SchemaQuery(options.schemaName, options.queryName);
-    const key = getQueryDetailsCacheKey(schemaQuery, containerPath, fk);
+    const key = getQueryDetailsCacheKey(schemaQuery, containerPath, fk, fields);
 
     if (!queryDetailsCache[key]) {
-        const { fields, includeTriggers, initializeMissingView, lookup } = options;
+        const { includeTriggers, initializeMissingView, lookup } = options;
         let { method } = options;
 
         if (Array.isArray(fields) && method !== 'POST') {

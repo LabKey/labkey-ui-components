@@ -12,6 +12,8 @@ import { QueryInfo } from '../../public/QueryInfo';
 import { QueryColumn, QueryLookup } from '../../public/QueryColumn';
 import { wrapDraggable } from '../test/testHelpers';
 
+import { waitForLifecycle } from '../test/enzymeTestHelpers';
+
 import {
     ColumnChoice,
     ColumnChoiceProps,
@@ -23,8 +25,7 @@ import {
     ColumnSelectionModalProps,
     FieldLabelDisplay,
 } from './ColumnSelectionModal';
-import {LoadingSpinner} from "./base/LoadingSpinner";
-import {waitForLifecycle} from "../test/enzymeTestHelpers";
+import { LoadingSpinner } from './base/LoadingSpinner';
 
 describe('ColumnSelectionModal', () => {
     const QUERY_COL = new QueryColumn({

@@ -354,31 +354,33 @@ export function getMaxPhiLevel(containerPath?: string): Promise<string> {
     });
 }
 
-/**
- * @param domain DomainDesign to save
- * @param kind DomainKind if creating new Domain
- * @param options Options for creating new Domain
- * @param name Name of new Domain
- * @param includeWarnings Set this to true if warnings are desired
- * @param addRowIndexes Boolean indicating if rowIndices should be added to the error message objects
- * @param originalDomain Original DomainDesign (before filtering out of locked/mapped fields), to be used for addRowIndexes = true
- * @return Promise wrapped Domain API call.
- */
-export function saveDomain(
-    domain: DomainDesign,
-    kind?: string,
-    options?: any,
-    name?: string,
-    includeWarnings?: boolean,
-    addRowIndexes?: boolean,
-    originalDomain?: DomainDesign
-): Promise<DomainDesign> {
+export interface SaveDomainOptions {
+    /** Boolean indicating if rowIndices should be added to the error message objects */
+    addRowIndexes?: boolean;
+    /** Container path where requests are made. Defaults to domain.container for updates. */
+    containerPath?: string;
+    /** DomainDesign to save */
+    domain: DomainDesign;
+    /** Set this to true if warnings are desired */
+    includeWarnings?: boolean;
+    /** DomainKind if creating new Domain */
+    kind?: string;
+    /** Name of new Domain */
+    name?: string;
+    /** Options for creating new Domain */
+    options?: any;
+    /** Original DomainDesign (before filtering out of locked/mapped fields), to be used for addRowIndexes = true */
+    originalDomain?: DomainDesign;
+}
+
+export function saveDomain(options: SaveDomainOptions): Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
-        function successHandler(response) {
+        const { addRowIndexes, containerPath, domain, includeWarnings, kind, originalDomain } = options;
+        function successHandler(response): void {
             resolve(DomainDesign.create(response));
         }
 
-        function failureHandler(response) {
+        function failureHandler(response): void {
             console.error(response);
 
             if (!response.exception) {
@@ -396,9 +398,9 @@ export function saveDomain(
 
         if (domain.domainId) {
             Domain.save({
-                containerPath: domain.container,
+                containerPath: containerPath ?? domain.container,
                 domainId: domain.domainId,
-                options,
+                options: options.options,
                 domainDesign: DomainDesign.serialize(domain),
                 includeWarnings,
                 success: successHandler,
@@ -406,8 +408,9 @@ export function saveDomain(
             });
         } else {
             Domain.create({
+                containerPath,
                 kind,
-                options,
+                options: options.options,
                 domainDesign: DomainDesign.serialize(domain.set('name', name) as DomainDesign),
                 success: successHandler,
                 failure: failureHandler,

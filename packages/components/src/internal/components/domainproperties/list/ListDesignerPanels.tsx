@@ -193,7 +193,7 @@ export class ListDesignerPanelsImpl extends React.PureComponent<Props & Injected
         const { setSubmitting } = this.props;
         const { model, shouldImportData } = this.state;
 
-        saveDomain(model.domain, model.getDomainKind(), model.getOptions(), model.name)
+        saveDomain({ domain: model.domain, kind: model.getDomainKind(), options: model.getOptions(), name: model.name })
             .then(response => {
                 const updatedModel = model.set('exception', undefined) as ListModel;
                 this.setState(

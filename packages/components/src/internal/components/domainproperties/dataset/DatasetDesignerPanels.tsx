@@ -21,6 +21,7 @@ import { List } from 'immutable';
 import { Domain, getServerContext } from '@labkey/api';
 
 import produce, { Draft } from 'immer';
+
 import { getDefaultAPIWrapper } from '../../../APIWrapper';
 import { DomainPropertiesAPIWrapper } from '../APIWrapper';
 
@@ -425,7 +426,15 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             }
         });
 
-        saveDomain(updatedDomain, model.getDomainKind(), model.getOptions(), model.name, false, true, model.domain)
+        saveDomain({
+            domain: updatedDomain,
+            kind: model.getDomainKind(),
+            options: model.getOptions(),
+            name: model.name,
+            includeWarnings: false,
+            addRowIndexes: true,
+            originalDomain: model.domain,
+        })
             .then(response => {
                 this.setState(
                     produce((draftState: Draft<State>) => {

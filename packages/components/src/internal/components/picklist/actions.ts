@@ -127,8 +127,8 @@ export function updatePicklist(picklist: Picklist): Promise<Picklist> {
                     description: picklist.Description,
                     category: picklist.Category,
                 };
-                saveDomain(domain, PICKLIST, options, picklist.name)
-                    .then(savedDomain => {
+                saveDomain({ domain, kind: PICKLIST, name: picklist.name, options })
+                    .then(() => {
                         resolve(picklist);
                     })
                     .catch(errorDomain => {

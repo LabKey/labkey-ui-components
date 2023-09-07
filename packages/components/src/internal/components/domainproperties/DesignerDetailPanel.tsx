@@ -21,6 +21,10 @@ export const DesignerDetailPanel: FC<DesignerDetailPanelProps> = memo(props => {
     const { api } = useAppContext();
     const [previews, setPreviews] = useState<Record<string, string>>();
 
+    // don't show description in the panel since it is shown elsewhere in the app header
+    const queryColumns =
+        props.queryColumns ?? props.model?.detailColumns?.filter(col => col.fieldKey.toLowerCase() !== 'description');
+
     useEffect(() => {
         (async () => {
             if (schemaQuery) {
@@ -46,7 +50,7 @@ export const DesignerDetailPanel: FC<DesignerDetailPanelProps> = memo(props => {
         })();
     }, [api, schemaQuery]);
 
-    return <DetailPanel fieldHelpTexts={previews} {...detailDisplayProps} />;
+    return <DetailPanel fieldHelpTexts={previews} queryColumns={queryColumns} {...detailDisplayProps} />;
 });
 
 export const DesignerDetailTooltip: FC<DesignerDetailPanelProps> = memo(props => {

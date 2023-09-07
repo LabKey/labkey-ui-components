@@ -12,7 +12,7 @@ import { EXPORT_TYPES } from '../../constants';
 
 import { ExportOption } from '../../../public/QueryModel/ExportMenu';
 
-import { EditorModel, EditorModelProps } from './models';
+import { EditorModel } from './models';
 
 import { EditableGrid, EditableGridChange, SharedEditableGridPanelProps } from './EditableGrid';
 
@@ -22,12 +22,7 @@ interface Props extends SharedEditableGridPanelProps {
     editorModel: EditorModel | EditorModel[];
     getIsDirty?: () => boolean;
     model: QueryModel | QueryModel[];
-    onChange: (
-        editorModelChanges: Partial<EditorModelProps>,
-        dataKeys?: List<any>,
-        data?: Map<string, Map<string, any>>,
-        index?: number
-    ) => void;
+    onChange: EditableGridChange;
     setIsDirty?: (isDirty: boolean) => void;
 }
 
@@ -98,7 +93,7 @@ export const EditableGridPanel: FC<Props> = memo(props => {
     let wasDirty = false;
 
     const _onChange = useCallback<EditableGridChange>(
-        (editorModelChanges, dataKeys, data) => onChange(editorModelChanges, dataKeys, data, activeTab),
+        (event, editorModelChanges, dataKeys, data) => onChange(event, editorModelChanges, dataKeys, data, activeTab),
         [activeTab, onChange]
     );
 

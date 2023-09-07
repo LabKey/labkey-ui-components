@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { AssayDOM, Filter, Utils } from '@labkey/api';
-import { List, Map, OrderedMap } from 'immutable';
+import { Map, OrderedMap } from 'immutable';
 import React, { Component, FC, ReactNode, useMemo } from 'react';
 import { Button } from 'react-bootstrap';
 
@@ -45,7 +45,7 @@ import { Progress } from '../base/Progress';
 import { useServerContext } from '../base/ServerContext';
 import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { AssayProtocolModel } from '../domainproperties/assay/models';
-import { EditorModel, EditorModelProps } from '../editable/models';
+import { EditorModel } from '../editable/models';
 import { getSampleOperationConfirmationData } from '../entities/actions';
 import { withFormSteps, WithFormStepsProps } from '../forms/FormStep';
 import { NotificationsContextProps, withNotificationsContext } from '../notifications/NotificationsContext';
@@ -60,6 +60,8 @@ import { loadSelectedSamples } from '../samples/actions';
 
 import { SampleOperation, STATUS_DATA_RETRIEVAL_ERROR } from '../samples/constants';
 import { getOperationNotPermittedMessage } from '../samples/utils';
+
+import { EditableGridChange } from '../editable/EditableGrid';
 
 import {
     allowReimportAssayRun,
@@ -677,11 +679,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         );
     };
 
-    onGridChange = (
-        editorModelChanges: Partial<EditorModelProps>,
-        dataKeys?: List<any>,
-        data?: Map<any, Map<string, any>>
-    ): void => {
+    onGridChange: EditableGridChange = (event, editorModelChanges, dataKeys, data): void => {
         this.setState(state => {
             const editorModel = state.editorModel.merge(editorModelChanges) as EditorModel;
             let { dataModel } = state;

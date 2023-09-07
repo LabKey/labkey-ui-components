@@ -1807,4 +1807,5 @@ export type { EditableDetailPanelProps } from './public/QueryModel/EditableDetai
 export type { ComponentsAPIWrapper } from './internal/APIWrapper';
 export type { GetParentTypeDataForLineage } from './internal/components/entities/actions';
 export type { URLMapper } from './internal/url/URLResolver';
+export type { EditableGridEvent } from './internal/components/editable/constants';
 export type { EditableGridChange } from './internal/components/editable/EditableGrid';

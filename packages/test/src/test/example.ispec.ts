@@ -59,8 +59,8 @@ describe('query-executeSql.api', () => {
         const testContainer = await server.createTestContainer();
 
         // Create two users
-        const noPermissionsUser = await server.createUser('hasnopermissions@lktestuser.com', 'pwSuper1Awesome!');
-        const readerUser = await server.createUser('reader@lktestuser.com', 'pwSuper2Awesome!');
+        const noPermissionsUser = await server.createUser('hasnopermissions@lktestuser.com');
+        const readerUser = await server.createUser('reader@lktestuser.com');
 
         // Assign permissions to a user in the test container
         await server.addUserToRole('reader@lktestuser.com', PermissionRoles.Reader, testContainer.path);

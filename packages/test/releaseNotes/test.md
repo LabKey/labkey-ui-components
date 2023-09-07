@@ -1,6 +1,10 @@
 # @labkey/test
 Utilities and configurations for running JavaScript tests with LabKey Server.
 
+### version 1.3.0
+*Released*: 7 Sept 2023
+* Use standard password for `integrationUtils.createUser()`
+
 ### version 1.2.0
 *Released*: 17 July 2023
 * Remove `SecurityRole`. Use `PermissionRoles` provided by `@labkey/api` instead.

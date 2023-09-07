@@ -49,7 +49,7 @@ function getQueryDetailsCacheKey(
     fk?: string,
     fields?: string | string[]
 ): string {
-    const parts = [schemaQuery.getKey(false)];
+    const parts = [schemaQuery.getKey(false) + QUERY_CACHE_KEY_SEPARATOR];
     if (fk) parts.push(fk);
     if (containerPath) parts.push(containerPath);
     if (fields) {
@@ -78,7 +78,7 @@ export function invalidateQueryDetailsCache(
         const key = getQueryDetailsCacheKey(schemaQuery, containerPath, fk, fields);
         delete queryDetailsCache[key];
     } else {
-        const prefix = getQueryDetailsCacheKey(schemaQuery) + QUERY_CACHE_KEY_SEPARATOR;
+        const prefix = getQueryDetailsCacheKey(schemaQuery);
         Object.keys(queryDetailsCache).forEach(cacheKey => {
             if (cacheKey.startsWith(prefix)) {
                 delete queryDetailsCache[cacheKey];

@@ -2,7 +2,7 @@
 Utilities and configurations for running JavaScript tests with LabKey Server.
 
 ### version 1.3.0
-*Released*: TBD
+*Released*: 7 Sept 2023
 * Use standard password for `integrationUtils.createUser()`
 
 ### version 1.2.0

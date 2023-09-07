@@ -111,15 +111,11 @@ export interface QueryModelLoader {
 export const DefaultQueryModelLoader: QueryModelLoader = {
     async loadQueryInfo(model) {
         const { containerPath, requiredColumns, requiredColumnsAsQueryInfoFields, schemaQuery } = model;
-
-        let fields: string | string[];
-        let method: 'GET' | 'POST';
-        if (requiredColumnsAsQueryInfoFields) {
-            fields = requiredColumns;
-            method = 'POST';
-        }
-
-        const queryInfo = await getQueryDetails({ containerPath, fields, method, schemaQuery });
+        const queryInfo = await getQueryDetails({
+            containerPath,
+            fields: requiredColumnsAsQueryInfoFields ? requiredColumns : undefined,
+            schemaQuery,
+        });
         return queryInfo.mutate({ columns: bindColumnRenderers(queryInfo.columns) });
     },
     async loadRows(model) {

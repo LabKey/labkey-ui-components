@@ -90,7 +90,8 @@ export function invalidateQueryDetailsCache(
     }
 }
 
-interface GetQueryDetailsBasic extends Omit<Query.GetQueryDetailsOptions, 'schemaName' | 'queryName' | 'viewName'> {
+interface GetQueryDetailsBasic
+    extends Omit<Query.GetQueryDetailsOptions, 'method' | 'schemaName' | 'queryName' | 'viewName'> {
     lookup?: QueryLookup;
 }
 
@@ -115,14 +116,6 @@ export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryI
 
     if (!queryDetailsCache[key]) {
         const { includeTriggers, initializeMissingView, lookup } = options;
-        let { method } = options;
-
-        if (Array.isArray(fields) && method !== 'POST') {
-            console.warn(
-                `getQueryDetails: "fields" specified as an Array for ${schemaQuery.toString()}. Switching to "POST". Update caller.`
-            );
-            method = 'POST';
-        }
 
         queryDetailsCache[key] = new Promise((resolve, reject) => {
             Query.getQueryDetails({
@@ -131,7 +124,7 @@ export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryI
                 initializeMissingView,
                 fields,
                 fk,
-                method,
+                method: 'POST',
                 queryName: schemaQuery.queryName,
                 schemaName: schemaQuery.schemaName,
                 viewName: fk ? undefined : '*',

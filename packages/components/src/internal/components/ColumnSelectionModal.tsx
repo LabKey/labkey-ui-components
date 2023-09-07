@@ -82,12 +82,13 @@ export interface ColumnChoiceProps {
     isInView?: boolean;
     onAddColumn: QueryColumnHandler;
     onCollapseColumn: QueryColumnHandler;
-    onExpandColumn: QueryColumnHandler;
+    onExpandColumn?: QueryColumnHandler;
 }
 
 // exported for jest tests
 export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
     const { column, isExpanded, isInView, onAddColumn, onExpandColumn, onCollapseColumn } = props;
+    const supportsExpand = !!onExpandColumn;
     const colFieldKey = column.index;
 
     // 46256: use encoded fieldKeyPath
@@ -110,13 +111,22 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
 
     return (
         <div className="list-group-item flex" key={colFieldKey} data-fieldkey={colFieldKey}>
-            {parentFieldKeys.map((parent, index) => (
-                <div className="field-expand-icon" key={colFieldKey + '|' + index} />
-            ))}
-            <div className="field-expand-icon">
-                {column.isLookup() && !isExpanded && <i className="fa fa-plus-square" onClick={_onExpandColumn} />}
-                {column.isLookup() && isExpanded && <i className="fa fa-minus-square" onClick={_onCollapseColumn} />}
-            </div>
+            {supportsExpand && (
+                <>
+                    {parentFieldKeys.map((parent, index) => (
+                        // eslint-disable-next-line react/no-array-index-key
+                        <div className="field-expand-icon" key={`${colFieldKey}|${index}`} />
+                    ))}
+                    <div className="field-expand-icon">
+                        {column.isLookup() && !isExpanded && (
+                            <i className="fa fa-plus-square" onClick={_onExpandColumn} />
+                        )}
+                        {column.isLookup() && isExpanded && (
+                            <i className="fa fa-minus-square" onClick={_onCollapseColumn} />
+                        )}
+                    </div>
+                </>
+            )}
             <FieldLabelDisplay column={column} />
             {isInView && (
                 <div className="pull-right view-field__action disabled" title="This field is included in the view.">
@@ -464,7 +474,7 @@ export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props =>
                                     column={column}
                                     key={column.index}
                                     onAddColumn={onAddColumn}
-                                    onExpandColumn={onExpandColumn}
+                                    onExpandColumn={onExpand ? onExpandColumn : undefined}
                                     onCollapseColumn={onCollapseColumn}
                                     expandedColumnFilter={expandedColumnFilter}
                                     expandedColumns={expandedColumns}

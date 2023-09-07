@@ -9,6 +9,7 @@ import {
     setGenId,
     hasExistingDomainData,
     fetchDomainDetails,
+    FetchDomainDetailsOptions,
     getMaxPhiLevel,
     fetchOntologies,
     saveDomain,
@@ -18,12 +19,7 @@ import { getDataClassDetails } from './dataclasses/actions';
 import { DomainDesign, DomainDetails, NameExpressionsValidationResults } from './models';
 
 export interface DomainPropertiesAPIWrapper {
-    fetchDomainDetails: (
-        domainId?: number,
-        schemaName?: string,
-        queryName?: string,
-        domainKind?: string
-    ) => Promise<DomainDetails>;
+    fetchDomainDetails: (options: FetchDomainDetailsOptions) => Promise<DomainDetails>;
     fetchOntologies: (containerPath?: string) => Promise<OntologyModel[]>;
     getDataClassDetails: (query?: SchemaQuery, domainId?: number, containerPath?: string) => Promise<DomainDetails>;
     getDomainNamePreviews: (schemaQuery?: SchemaQuery, domainId?: number, containerPath?: string) => Promise<string[]>;

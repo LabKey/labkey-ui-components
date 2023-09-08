@@ -446,3 +446,50 @@ export const gridCellSelectInputProps: Partial<SelectInputProps> = {
     showIndicatorSeparator: false,
     showLabel: false,
 };
+
+/**
+ * Computes the new range for a given grid dimension when expanding or contracting in a particular direction.
+ * @param selectedIdx: The index of the currently selected cell
+ * @param min: The minimum of the current range
+ * @param max: The maximum of the current range
+ * @param direction: number in the range of -1, 1.
+ *  - If -1, we are moving up or left
+ *  - If 0 we are not moving
+ *  - If 1 we are moving down or right
+ */
+export function computeRangeChange(selectedIdx: number, min: number, max: number, direction: number): [number, number] {
+    if (direction === 0) {
+        // If we haven't changed direction then we don't need to expand or contract the range at all
+        return [min, max];
+    }
+
+    if (min === max) {
+        // A single selected cell is a bit of a special case, because we'll be extending either before or after
+        if (direction === 1) {
+            // Extend forward
+            max = max + 1;
+        } else {
+            // Extend backward
+            min = min - 1;
+        }
+    } else if (min < selectedIdx) {
+        // The selected area is above or left of the currently selected index
+        if (direction === 1) {
+            // We're shrinking forwards
+            min = min + 1;
+        } else {
+            // We're extending backwards
+            min = min - 1;
+        }
+    } else {
+        if (direction === 1) {
+            // We're extending forwards
+            max = max + 1;
+        } else {
+            // We're shrinking backwards
+            max = max - 1;
+        }
+    }
+
+    return [Math.max(0, min), max];
+}

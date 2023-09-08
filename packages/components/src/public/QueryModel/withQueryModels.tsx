@@ -16,7 +16,7 @@ import { resolveErrorMessage } from '../../internal/util/messaging';
 
 import { selectRows } from '../../internal/query/selectRows';
 
-import { filterArraysEqual, sortArraysEqual } from './utils';
+import { filterArraysEqual, getSelectRowCountColumnsStr, sortArraysEqual } from './utils';
 import { DefaultQueryModelLoader, QueryModelLoader } from './QueryModelLoader';
 import { QueryConfig, QueryModel } from './QueryModel';
 
@@ -568,8 +568,10 @@ export function withQueryModels<Props>(
             );
 
             try {
+                const loadRowsConfig = this.state.queryModels[id].loadRowsConfig;
+                const queryInfo = this.state.queryModels[id].queryInfo;
                 const { rowCount } = await selectRows({
-                    ...this.state.queryModels[id].loadRowsConfig,
+                    ...loadRowsConfig,
                     sort: undefined,
                     maxRows: 1,
                     offset: 0,
@@ -577,6 +579,7 @@ export function withQueryModels<Props>(
                     includeUpdateColumn: false,
                     // includeMetadata: false, // TODO don't require metadata in selectRows response processing
                     includeTotalCount: true,
+                    columns: getSelectRowCountColumnsStr(loadRowsConfig.columns, loadRowsConfig.filterArray, queryInfo?.getPkCols()),
                 });
 
                 this.setState(

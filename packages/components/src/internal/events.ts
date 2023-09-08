@@ -34,14 +34,16 @@ function isEvent(event: React.SyntheticEvent<any>): boolean {
     return event !== undefined && event !== null;
 }
 
+export function isCtrlOrMetaKey(event: React.KeyboardEvent<unknown>): boolean {
+    return event.ctrlKey || event.metaKey;
+}
+
 function isMetaKeyEvent(event: React.KeyboardEvent<any>, keyCode: number): boolean {
-    return isEvent(event) && event.keyCode === keyCode && (event.ctrlKey || event.metaKey);
+    return isEvent(event) && event.keyCode === keyCode && isCtrlOrMetaKey(event);
 }
 
 export const isFillDown = (event: React.KeyboardEvent<any>): boolean => isMetaKeyEvent(event, KEYS.D);
 export const isSelectAll = (event: React.KeyboardEvent<any>): boolean => isMetaKeyEvent(event, KEYS.A);
-export const isCopyCutOrPaste = (event: React.KeyboardEvent<any>): boolean =>
-    isMetaKeyEvent(event, KEYS.C) || isMetaKeyEvent(event, KEYS.X) || isMetaKeyEvent(event, KEYS.V);
 
 export function setCopyValue(event: any, value: string): boolean {
     if (isEvent(event)) {

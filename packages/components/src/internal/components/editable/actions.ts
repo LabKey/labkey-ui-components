@@ -1625,9 +1625,12 @@ function getCopyValue(model: EditorModel, insertColumns: QueryColumn[]): string 
     return copyValue;
 }
 
-export function copyEvent(editorModel: EditorModel, insertColumns: QueryColumn[], event: any): void {
-    if (editorModel && !editorModel.hasFocus && editorModel.hasSelection) {
+export function copyEvent(editorModel: EditorModel, insertColumns: QueryColumn[], event: any): boolean {
+    if (editorModel && !editorModel.hasFocus && editorModel.hasSelection && !editorModel.isSparseSelection) {
         cancelEvent(event);
         setCopyValue(event, getCopyValue(editorModel, insertColumns));
+        return true;
     }
+
+    return false;
 }

@@ -126,3 +126,24 @@ export function getQueryModelExportParams(
     };
     return getExportParams(type, schemaQuery, exportOptions, advancedOptions);
 }
+
+export function getSelectRowCountColumnsStr(
+    rawColumns?: string | string[],
+    filterArray?: Filter.IFilter[],
+    pkCols?: QueryColumn[]
+): string | string[] {
+    if (!rawColumns || rawColumns === '*') return rawColumns;
+
+    if (filterArray?.length > 0) {
+        const qFilter = filterArray.some(filter => filter.getColumnName() === '*');
+        if (qFilter) return rawColumns;
+    }
+
+    if (pkCols?.length > 0)
+        return pkCols[0].fieldKey;
+
+    const columns: string[] =
+        typeof rawColumns === 'string' ? rawColumns.split(',').map(col => col.trim()) : rawColumns;
+
+    return columns[0];
+}

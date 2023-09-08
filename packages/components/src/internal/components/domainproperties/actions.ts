@@ -375,7 +375,7 @@ export interface SaveDomainOptions {
 
 export function saveDomain(options: SaveDomainOptions): Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
-        const { addRowIndexes, containerPath, domain, includeWarnings, kind, originalDomain } = options;
+        const { addRowIndexes, containerPath, domain, includeWarnings, kind, name, originalDomain } = options;
         function successHandler(response): void {
             resolve(DomainDesign.create(response));
         }
@@ -400,18 +400,18 @@ export function saveDomain(options: SaveDomainOptions): Promise<DomainDesign> {
             Domain.save({
                 containerPath: containerPath ?? domain.container,
                 domainId: domain.domainId,
-                options: options.options,
                 domainDesign: DomainDesign.serialize(domain),
                 includeWarnings,
+                options: options.options,
                 success: successHandler,
                 failure: failureHandler,
             });
         } else {
             Domain.create({
                 containerPath,
+                domainDesign: DomainDesign.serialize(domain.set('name', name) as DomainDesign),
                 kind,
                 options: options.options,
-                domainDesign: DomainDesign.serialize(domain.set('name', name) as DomainDesign),
                 success: successHandler,
                 failure: failureHandler,
             });

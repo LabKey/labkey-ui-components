@@ -1,10 +1,18 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.X
-*Released*: X September 2023
+### version 2.365.3
+*Released*: 8 September 2023
 - Issue 48329: LKSM: Sample Finder query performance issues
   - Only query for a single column during loadTotalCount
+
+### version 2.365.2
+*Released*: 7 September 2023
+- Issue 48252: LKSM/LKB: Editable Grid - Sparse multi-select doesn't work well with copy/paste
+  - We now don't cut or copy sparse selections
+-  Issue 48435: LKSM/LKB: Editable Grid - Many keyboard shortcuts delete cell contents
+- Issue 48251: LKSM/LKB: Editable Grid - Shift-arrows don't select cells
+- EditableGrid: Make modified arrow key shortcuts work with macOS
 
 ### version 2.365.1
 *Released*: 4 September 2023

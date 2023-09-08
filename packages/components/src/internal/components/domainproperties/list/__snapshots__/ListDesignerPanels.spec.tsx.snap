@@ -16,6 +16,7 @@ exports[`ListDesignerPanel existing list 1`] = `
         "allowSampleSubjectProperties": true,
         "allowTextChoiceProperties": true,
         "allowTimepointProperties": false,
+        "allowUserProperties": true,
         "showDefaultValueSettings": true,
         "defaultDefaultValueType": "FIXED_EDITABLE",
         "defaultValueOptions": Immutable.List [
@@ -1319,6 +1320,7 @@ exports[`ListDesignerPanel existing list 1`] = `
           "allowSampleSubjectProperties": true,
           "allowTextChoiceProperties": true,
           "allowTimepointProperties": false,
+          "allowUserProperties": true,
           "showDefaultValueSettings": true,
           "defaultDefaultValueType": "FIXED_EDITABLE",
           "defaultValueOptions": Immutable.List [
@@ -2649,6 +2651,7 @@ exports[`ListDesignerPanel existing list 1`] = `
         "allowSampleSubjectProperties": true,
         "allowTextChoiceProperties": true,
         "allowTimepointProperties": false,
+        "allowUserProperties": true,
         "showDefaultValueSettings": true,
         "defaultDefaultValueType": "FIXED_EDITABLE",
         "defaultValueOptions": Immutable.List [
@@ -3972,6 +3975,7 @@ exports[`ListDesignerPanel new list 1`] = `
         "allowSampleSubjectProperties": true,
         "allowTextChoiceProperties": true,
         "allowTimepointProperties": false,
+        "allowUserProperties": true,
         "showDefaultValueSettings": false,
         "defaultDefaultValueType": undefined,
         "defaultValueOptions": Immutable.List [],
@@ -4015,6 +4019,7 @@ exports[`ListDesignerPanel new list 1`] = `
           "allowSampleSubjectProperties": true,
           "allowTextChoiceProperties": true,
           "allowTimepointProperties": false,
+          "allowUserProperties": true,
           "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
@@ -4085,6 +4090,7 @@ exports[`ListDesignerPanel new list 1`] = `
         "allowSampleSubjectProperties": true,
         "allowTextChoiceProperties": true,
         "allowTimepointProperties": false,
+        "allowUserProperties": true,
         "showDefaultValueSettings": false,
         "defaultDefaultValueType": undefined,
         "defaultValueOptions": Immutable.List [],

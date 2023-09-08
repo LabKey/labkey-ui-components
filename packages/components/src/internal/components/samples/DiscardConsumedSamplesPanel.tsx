@@ -16,24 +16,19 @@ export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
 
     return (
         <>
-            <Row>
-                <Col xs={5}>
-                    <div className="form-group">
-                        <div className="form-check">
-                            <input
-                                className="form-check-input"
-                                type="checkbox"
-                                id={DISCARD_CONSUMED_CHECKBOX_FIELD}
-                                name={DISCARD_CONSUMED_CHECKBOX_FIELD}
-                                onChange={toggleShouldDiscard}
-                                checked={shouldDiscard}
-                            />
-                            <span className="discard-consumed-title left-spacing">{discardTitle}</span>
-                        </div>
-                    </div>
-                </Col>
-                <Col xs={7} />
-            </Row>
+            <div className="form-group">
+                <div className="form-check">
+                    <input
+                        className="form-check-input"
+                        type="checkbox"
+                        id={DISCARD_CONSUMED_CHECKBOX_FIELD}
+                        name={DISCARD_CONSUMED_CHECKBOX_FIELD}
+                        onChange={toggleShouldDiscard}
+                        checked={shouldDiscard}
+                    />
+                    <span className="discard-consumed-title left-spacing">{discardTitle}</span>
+                </div>
+            </div>
             <div className="form-group">
                 <div className="storage-item-data">Reason for discarding</div>
                 <textarea
@@ -51,5 +46,5 @@ export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
 });
 
 DiscardConsumedSamplesPanel.defaultProps = {
-    discardTitle: 'Discard sample?',
+    discardTitle: 'Discard sample(s) from storage?',
 };

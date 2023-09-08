@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Issue 48542: Update layout and message when discarding after changing status
+
 ### version 2.365.3
 *Released*: 8 September 2023
 - Issue 48329: LKSM: Sample Finder query performance issues

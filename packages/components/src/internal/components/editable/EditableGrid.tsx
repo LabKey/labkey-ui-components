@@ -615,7 +615,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             return;
         }
 
-        // 33855: select last row
+        // Issue 33855: select last row
         if (rowIdx === rowCount) {
             rowIdx = rowIdx - 1;
         }
@@ -946,15 +946,16 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     onCopy = (event: ClipboardEvent): void => {
-        const { editorModel, queryInfo } = this.props;
-        if (!this.props.disabled) {
-            copyEvent(editorModel, queryInfo.getInsertColumns(), event);
+        const { disabled, editorModel } = this.props;
+        if (!disabled) {
+            copyEvent(editorModel, this.getColumns(), event);
         }
     };
 
     onCut = (event: ClipboardEvent): void => {
-        const { editorModel, queryInfo } = this.props;
-        if (!this.props.disabled && copyEvent(editorModel, queryInfo.getInsertColumns(), event)) {
+        const { disabled, editorModel } = this.props;
+
+        if (!disabled && copyEvent(editorModel, this.getColumns(), event)) {
             this.modifyCell(
                 editorModel.selectedColIdx,
                 editorModel.selectedRowIdx,
@@ -1111,24 +1112,24 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     onPaste = async (event: ClipboardEvent): Promise<void> => {
         const { allowAdd, columnMetadata, data, dataKeys, disabled, editorModel, onChange, queryInfo, readonlyRows } =
             this.props;
-        const columns = this.getColumns();
 
-        if (!disabled) {
-            this.showMask();
-            const changes = await pasteEvent(
-                editorModel,
-                dataKeys,
-                data,
-                queryInfo,
-                columns,
-                event,
-                columnMetadata,
-                readonlyRows,
-                !allowAdd
-            );
-            this.hideMask();
-            onChange(EditableGridEvent.PASTE, changes.editorModel, changes.dataKeys, changes.data);
-        }
+        if (disabled) return;
+
+        this.showMask();
+        const changes = await pasteEvent(
+            editorModel,
+            dataKeys,
+            data,
+            queryInfo,
+            this.getColumns(),
+            event,
+            columnMetadata,
+            readonlyRows,
+            !allowAdd
+        );
+        this.hideMask();
+
+        onChange(EditableGridEvent.PASTE, changes.editorModel, changes.dataKeys, changes.data);
     };
 
     showMask = (): void => {

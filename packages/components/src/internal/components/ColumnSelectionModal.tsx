@@ -537,6 +537,7 @@ export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props =>
 ColumnSelectionModal.defaultProps = {
     allowEditLabel: false,
     allowShowAll: false,
+    backdrop: 'static',
     cancelButtonText: 'Cancel',
     confirmButtonText: 'Update Fields',
     confirmVariant: 'success',

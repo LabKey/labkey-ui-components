@@ -64,6 +64,7 @@ import {
     SMILES_TYPE,
     TEXT_CHOICE_TYPE,
     UNIQUE_ID_TYPE,
+    USERS_TYPE,
     VISIT_DATE_TYPE,
     VISIT_ID_TYPE,
 } from './PropDescType';
@@ -314,6 +315,10 @@ function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologi
     }
 
     if (type === SMILES_TYPE) {
+        return false;
+    }
+
+    if (type === USERS_TYPE && !domain.allowUserProperties) {
         return false;
     }
 

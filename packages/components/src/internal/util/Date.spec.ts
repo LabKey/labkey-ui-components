@@ -138,10 +138,13 @@ describe('Date Utilities', () => {
             const col = new QueryColumn({ shortCaption: 'DateCol', rangeURI: DATETIME_TYPE.rangeURI });
             expect(getColDateFormat(col, 'YYYY-MM-DD')).toBe('yyyy-MM-dd');
             expect(getColDateFormat(col, 'YY-MM-dd')).toBe('yy-MM-dd');
+            expect(getColDateFormat(col, 'YY-MM-dd z')).toBe('yy-MM-dd xxx');
             expect(getColDateFormat(col, 'YY-MM-dd Z')).toBe('yy-MM-dd xxx');
+            expect(getColDateFormat(col, 'YY-MM-dd zz')).toBe('yy-MM-dd xxx');
             expect(getColDateFormat(col, 'ZZ YY-MM-dd ZZ')).toBe('xxx yy-MM-dd xxx');
             expect(getColDateFormat(col, 'xxx YY-MM-dd ZZ')).toBe('xxx yy-MM-dd xxx');
             expect(getColDateFormat(col, 'YY-MM-dd ZZZZ')).toBe('yy-MM-dd xxx');
+            expect(getColDateFormat(col, 'zzzz YY-MM-dd')).toBe('xxx yy-MM-dd');
         });
 
         test('shortcut formats', () => {

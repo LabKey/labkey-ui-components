@@ -252,6 +252,7 @@ export class DomainDesign
         json.fields = dd.fields.map(field => DomainField.serialize(field)).toArray();
 
         // remove non-serializable fields
+        delete json.allowUserProperties;
         delete json.domainException;
         delete json.newDesignFields;
 

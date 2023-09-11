@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.364.2
+*Released*: 11 September 2023
+- Issue 48608: Replace `/Z+/gi` characters with `xxx` when translating moment format to date-fns format
+- Support partial reverse translation of `xxx` from date-fns to moment
+
 ### version 2.364.1
 *Released*: 6 September 2023
 - Issue 48596: ResponsiveMenuButtonGroup fix for empty button group

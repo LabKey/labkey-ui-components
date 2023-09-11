@@ -23,7 +23,7 @@ import { QueryColumn } from '../../public/QueryColumn';
 import { formatWithJDF, toMomentFormatString } from './jDateFormatParser';
 
 export function datePlaceholder(col: QueryColumn): string {
-    let placeholder;
+    let placeholder: string;
 
     if (col) {
         const rangeURI = col.rangeURI?.toLowerCase() ?? 'datetime';
@@ -61,12 +61,21 @@ export function isDateTimeCol(col: QueryColumn): boolean {
     return false;
 }
 
-function dateFNSToMoment(format: string): string {
-    return format?.replace('yyyy', 'YYYY').replace('yy', 'YY').replace('dd', 'DD');
+function dateFNSToMoment(dateFNSFormat: string): string {
+    return dateFNSFormat?.replace('yyyy', 'YYYY').replace('yy', 'YY').replace('dd', 'DD').replace('xxx', 'ZZ');
 }
 
-function momentToDateFNS(format: string): string {
-    return format?.replace('YYYY', 'yyyy').replace('YY', 'yy').replace('DD', 'dd');
+function momentToDateFNS(momentFormat: string): string {
+    // Issue 48608: DateFNS throws errors when formatting 'Z'
+    // date-fns (or react-datepicker's usage of date-fns) throws errors when 'Z' is part of the format.
+    // Even though 'z' is declared part of the date-fns format it does not work either.
+    // Thus, falling back to 'xxx' as the most appropriate match.
+    // https://github.com/date-fns/date-fns/issues/1857
+    return momentFormat
+        ?.replace('YYYY', 'yyyy') // 0044, 0001, 1900, 2017
+        .replace('YY', 'yy') // 44, 01, 00, 17
+        .replace('DD', 'dd') // 01, 02, ..., 31
+        .replace(/Z+/gi, 'xxx'); // -08:00, +05:30, +00:00
 }
 
 export function getColDateFormat(queryColumn: QueryColumn, dateFormat?: string, dateOnly?: boolean): string {

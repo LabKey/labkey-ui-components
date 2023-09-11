@@ -36,6 +36,6 @@ describe('DiscardConsumedSamplesPanel', () => {
         );
 
         expect(getCommentField().disabled).toBe(true);
-        expect(getTitle()).toEqual('Discard sample?');
+        expect(getTitle()).toEqual('Discard sample(s) from storage?');
     });
 });

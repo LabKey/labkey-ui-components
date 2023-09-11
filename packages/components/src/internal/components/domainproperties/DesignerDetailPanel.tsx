@@ -7,15 +7,23 @@ import { DetailDisplaySharedProps } from '../forms/detail/DetailDisplay';
 import { RequiresModelAndActions } from '../../../public/QueryModel/withQueryModels';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { DetailPanel } from '../../../public/QueryModel/DetailPanel';
+import { QueryColumn } from '../../../public/QueryColumn';
+import { caseInsensitive } from '../../util/utils';
+import { LabelHelpTip } from '../base/LabelHelpTip';
 
 export interface DesignerDetailPanelProps extends DetailDisplaySharedProps, RequiresModelAndActions {
-    schemaQuery: SchemaQuery;
+    queryColumns?: QueryColumn[];
+    schemaQuery?: SchemaQuery;
 }
 
 export const DesignerDetailPanel: FC<DesignerDetailPanelProps> = memo(props => {
     const { schemaQuery, ...detailDisplayProps } = props;
     const { api } = useAppContext();
     const [previews, setPreviews] = useState<Record<string, string>>();
+
+    // don't show description in the panel since it is shown elsewhere in the app header
+    const queryColumns =
+        props.queryColumns ?? props.model?.detailColumns?.filter(col => col.fieldKey.toLowerCase() !== 'description');
 
     useEffect(() => {
         (async () => {
@@ -42,5 +50,26 @@ export const DesignerDetailPanel: FC<DesignerDetailPanelProps> = memo(props => {
         })();
     }, [api, schemaQuery]);
 
-    return <DetailPanel fieldHelpTexts={previews} {...detailDisplayProps} />;
+    return <DetailPanel fieldHelpTexts={previews} queryColumns={queryColumns} {...detailDisplayProps} />;
+});
+
+export const DesignerDetailTooltip: FC<DesignerDetailPanelProps> = memo(props => {
+    const { model } = props;
+    const description = caseInsensitive(model?.getRow(), 'Description')?.value;
+
+    return (
+        <div>
+            {!!description && (
+                <>
+                    <span className="header-details-description">{description}</span>
+                    <span>&nbsp;</span>
+                </>
+            )}
+            <LabelHelpTip iconComponent={<span className="header-details-link">Details</span>} placement="bottom">
+                <div className="header-details-hover">
+                    <DesignerDetailPanel {...props} />
+                </div>
+            </LabelHelpTip>
+        </div>
+    );
 });

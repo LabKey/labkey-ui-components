@@ -13,42 +13,44 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { ViewInfo } from '../../ViewInfo';
 
 import { getDomainPropertiesTestAPIWrapper } from './APIWrapper';
-import { DesignerDetailPanel, DesignerDetailPanelProps } from './DesignerDetailPanel';
+import { DesignerDetailTooltip, DesignerDetailPanel, DesignerDetailPanelProps } from './DesignerDetailPanel';
+
+function defaultProps(): DesignerDetailPanelProps {
+    const schemaQuery = new SchemaQuery('schema', 'query');
+    const columns = [
+        { fieldKey: 'rowId', shownInDetailsView: true },
+        { fieldKey: 'description', shownInDetailsView: true },
+        { fieldKey: 'nameExpression', shownInDetailsView: true },
+        { fieldKey: 'aliquotNameExpression', shownInDetailsView: true },
+    ];
+
+    return {
+        actions: makeTestActions(jest.fn),
+        model: makeTestQueryModel(
+            schemaQuery,
+            QueryInfo.fromJsonForTests(
+                {
+                    columns,
+                    name: schemaQuery.queryName,
+                    schemaName: schemaQuery.schemaName,
+                    views: [{ columns, name: ViewInfo.DETAIL_NAME }],
+                },
+                true
+            ),
+            {
+                1: {
+                    RowId: { value: 1 },
+                    Description: { value: 'Test desc' },
+                },
+            },
+            ['1'],
+            1
+        ),
+        schemaQuery,
+    };
+}
 
 describe('DesignerDetailPanel', () => {
-    function defaultProps(): DesignerDetailPanelProps {
-        const schemaQuery = new SchemaQuery('schema', 'query');
-        const columns = [
-            { fieldKey: 'rowId', shownInDetailsView: true },
-            { fieldKey: 'nameExpression', shownInDetailsView: true },
-            { fieldKey: 'aliquotNameExpression', shownInDetailsView: true },
-        ];
-
-        return {
-            actions: makeTestActions(jest.fn),
-            model: makeTestQueryModel(
-                schemaQuery,
-                QueryInfo.fromJsonForTests(
-                    {
-                        columns,
-                        name: schemaQuery.queryName,
-                        schemaName: schemaQuery.schemaName,
-                        views: [{ columns, name: ViewInfo.DETAIL_NAME }],
-                    },
-                    true
-                ),
-                {
-                    1: {
-                        RowId: { value: 1 },
-                    },
-                },
-                ['1'],
-                1
-            ),
-            schemaQuery,
-        };
-    }
-
     test('render', async () => {
         const aliquotNameExpression = 'aliquotNameExpression-AQ-2';
         const sampleNameExpression = 'sampleNameExpression-S-1';
@@ -79,5 +81,34 @@ describe('DesignerDetailPanel', () => {
         screen.getByText(
             `Example aliquot name that will be generated from the current pattern: ${aliquotNameExpression}`
         );
+
+        // verify table contents, description should be filtered out
+        expect(document.getElementsByTagName('tr').length).toBe(3);
+        expect(document.getElementsByTagName('table')[0].innerHTML).toContain('rowId');
+        expect(document.getElementsByTagName('table')[0].innerHTML).not.toContain('description');
+        expect(document.getElementsByTagName('table')[0].innerHTML).toContain('nameExpression');
+        expect(document.getElementsByTagName('table')[0].innerHTML).toContain('aliquotNameExpression');
+    });
+});
+
+describe('DesignerDetailTooltip', () => {
+    test('with description', async () => {
+        renderWithAppContext(<DesignerDetailTooltip {...defaultProps()} />, {});
+        expect(document.getElementsByClassName('header-details-description')).toHaveLength(1);
+        expect(document.getElementsByClassName('header-details-description')[0].innerHTML).toBe('Test desc');
+    });
+
+    test('with description', async () => {
+        const props = defaultProps();
+        const model = props.model.mutate({
+            rows: {
+                1: {
+                    RowId: { value: 1 },
+                    Description: { value: undefined },
+                },
+            },
+        });
+        renderWithAppContext(<DesignerDetailTooltip {...props} model={model} />, {});
+        expect(document.getElementsByClassName('header-details-description')).toHaveLength(0);
     });
 });

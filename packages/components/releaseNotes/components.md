@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.366.0
+*Released*: 11 September 2023
+- App listing page - move details panel to hover tooltip in header
+  - misc styling updates for LabelHelpTip and DetailDisplay
+  - add new DesignerDetailTooltip component
+
 ### version 2.365.3
 *Released*: 8 September 2023
 - Issue 48329: LKSM: Sample Finder query performance issues

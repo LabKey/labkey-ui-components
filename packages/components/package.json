@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.366.1-fb-plate-editing.0",
+  "version": "2.367.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.366.1
+*Released*: 11 September 2023
 - Issue 48542: Update layout and message when discarding after changing status
 
 ### version 2.366.0

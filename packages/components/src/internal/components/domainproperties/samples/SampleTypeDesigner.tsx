@@ -470,7 +470,12 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         }
 
         try {
-            const response: DomainDesign = await saveDomain(domainDesign, Domain.KINDS.SAMPLE_TYPE, details, name);
+            const response: DomainDesign = await saveDomain({
+                domain: domainDesign,
+                kind: Domain.KINDS.SAMPLE_TYPE,
+                name,
+                options: details,
+            });
             setSubmitting(false, () => {
                 this.props.onComplete(response);
             });

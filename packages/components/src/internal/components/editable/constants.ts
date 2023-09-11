@@ -31,3 +31,16 @@ export interface CellCoordinates {
     colIdx: number;
     rowIdx: number;
 }
+
+export enum EditableGridEvent {
+    ADD_ROWS = 'ADD_ROWS',
+    BULK_ADD = 'BULK_ADD',
+    BULK_UPDATE = 'BULK_UPDATE',
+    CLEAR_SELECTION = 'CLEAR_SELECTION',
+    DRAG_FILL = 'DRAG_FILL',
+    FOCUS_CELL = 'FOCUS_CELL',
+    MODIFY_CELL = 'MODIFY_CELL',
+    PASTE = 'PASTE',
+    REMOVE_ROWS = 'REMOVE_ROWS',
+    SELECT_CELL = 'SELECT_CELL',
+}

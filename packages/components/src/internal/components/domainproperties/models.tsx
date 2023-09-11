@@ -131,6 +131,7 @@ interface IDomainDesign {
     allowSampleSubjectProperties: boolean;
     allowTextChoiceProperties: boolean;
     allowTimepointProperties: boolean;
+    allowUserProperties: boolean;
     container: string;
     defaultDefaultValueType: string;
     defaultValueOptions: List<string>;
@@ -164,6 +165,7 @@ export class DomainDesign
         allowSampleSubjectProperties: true,
         allowTextChoiceProperties: true,
         allowTimepointProperties: false,
+        allowUserProperties: true,
         showDefaultValueSettings: false,
         defaultDefaultValueType: undefined,
         defaultValueOptions: List<string>(),
@@ -192,6 +194,7 @@ export class DomainDesign
     declare allowSampleSubjectProperties: boolean;
     declare allowTextChoiceProperties: boolean;
     declare allowTimepointProperties: boolean;
+    declare allowUserProperties: boolean;
     declare showDefaultValueSettings: boolean;
     declare defaultDefaultValueType: string;
     declare defaultValueOptions: List<string>;
@@ -249,6 +252,7 @@ export class DomainDesign
         json.fields = dd.fields.map(field => DomainField.serialize(field)).toArray();
 
         // remove non-serializable fields
+        delete json.allowUserProperties;
         delete json.domainException;
         delete json.newDesignFields;
 
@@ -325,7 +329,7 @@ export class DomainDesign
     }
 
     getFieldDetails(): FieldDetails {
-        const mapping = {
+        const mapping: FieldDetails = {
             ontologyLookupIndices: [],
             detailsInfo: {},
         };
@@ -349,50 +353,52 @@ export class DomainDesign
     }
 
     getGridData(appPropertiesOnly: boolean, hasOntologyModule: boolean): List<any> {
-        return this.fields.map((field, i) => {
-            let fieldSerial = DomainField.serialize(field);
-            const dataType = field.dataType;
-            fieldSerial = removeUnusedProperties(fieldSerial);
-            if (!hasOntologyModule) {
-                fieldSerial = removeUnusedOntologyProperties(fieldSerial);
-            }
-            if (appPropertiesOnly) {
-                fieldSerial = removeNonAppProperties(fieldSerial);
-            }
+        return this.fields
+            .map((field, i) => {
+                let fieldSerial = DomainField.serialize(field);
+                const dataType = field.dataType;
+                fieldSerial = removeUnusedProperties(fieldSerial);
+                if (!hasOntologyModule) {
+                    fieldSerial = removeUnusedOntologyProperties(fieldSerial);
+                }
+                if (appPropertiesOnly) {
+                    fieldSerial = removeNonAppProperties(fieldSerial);
+                }
 
-            fieldSerial['fieldIndex'] = i;
-            // Add back subset of field properties stripped by the serialize
-            fieldSerial['selected'] = field.selected;
-            fieldSerial['visible'] = field.visible;
+                fieldSerial.fieldIndex = i;
+                // Add back subset of field properties stripped by the serialize
+                fieldSerial.selected = field.selected;
+                fieldSerial.visible = field.visible;
 
-            return Map(
-                Object.keys(fieldSerial).map(key => {
-                    const rawVal = fieldSerial[key];
-                    const valueType = typeof rawVal;
-                    let value = valueIsEmpty(rawVal) ? '' : rawVal;
+                return Map(
+                    Object.keys(fieldSerial).map(key => {
+                        const rawVal = fieldSerial[key];
+                        const valueType = typeof rawVal;
+                        let value = valueIsEmpty(rawVal) ? '' : rawVal;
 
-                    // Since rangeURI is not set on field creation, pull rangeURI value from dataType
-                    if (key === 'rangeURI' && value === '') {
-                        value = dataType.rangeURI;
-                    }
+                        // Since rangeURI is not set on field creation, pull rangeURI value from dataType
+                        if (key === 'rangeURI' && value === '') {
+                            value = dataType.rangeURI;
+                        }
 
-                    // Make bools render as strings sortable within their column
-                    if (key !== 'visible' && key !== 'selected' && valueType === 'boolean') {
-                        value = rawVal ? 'true' : 'false';
-                    }
+                        // Make bools render as strings sortable within their column
+                        if (key !== 'visible' && key !== 'selected' && valueType === 'boolean') {
+                            value = rawVal ? 'true' : 'false';
+                        }
 
-                    // Handle property validator and conditional format rendering
-                    if ((key === 'propertyValidators' || key === 'conditionalFormats') && value !== '') {
-                        value = JSON.stringify(value.map(cf => removeFalseyObjKeys(cf)));
-                    }
+                        // Handle property validator and conditional format rendering
+                        if ((key === 'propertyValidators' || key === 'conditionalFormats') && value !== '') {
+                            value = JSON.stringify(value.map(cf => removeFalseyObjKeys(cf)));
+                        }
 
-                    if (key === 'fieldIndex' && value === '') {
-                        value = 0;
-                    }
-                    return [key, value];
-                })
-            );
-        }) as List<Map<string, any>>;
+                        if (key === 'fieldIndex' && value === '') {
+                            value = 0;
+                        }
+                        return [key, value];
+                    })
+                );
+            })
+            .toList();
     }
 
     getGridColumns(
@@ -414,16 +420,14 @@ export class DomainDesign
 
                 const changes = List.of({ id: formInputId, value: !selected });
                 return (
-                    <>
-                        <Checkbox
-                            className="domain-summary-selection"
-                            id={formInputId}
-                            checked={selected}
-                            onChange={() => {
-                                onFieldsChange(changes, fieldIndex, false);
-                            }}
-                        />
-                    </>
+                    <Checkbox
+                        className="domain-summary-selection"
+                        id={formInputId}
+                        checked={selected}
+                        onChange={() => {
+                            onFieldsChange(changes, fieldIndex, false);
+                        }}
+                    />
                 );
             },
         });
@@ -464,12 +468,9 @@ export class DomainDesign
         }
 
         const unsortedColumns = List(
-            Object.keys(columns).map(key => {
-                return { index: key, caption: camelCaseToTitleCase(key), sortable: true };
-            })
+            Object.keys(columns).map(key => ({ index: key, caption: camelCaseToTitleCase(key), sortable: true }))
         );
-        const sortedColumns = unsortedColumns.sort(reorderSummaryColumns);
-        return specialCols.concat(sortedColumns) as List<GridColumn | DomainPropertiesGridColumn>;
+        return specialCols.concat(unsortedColumns.sort(reorderSummaryColumns)).toList();
     }
 }
 
@@ -1366,9 +1367,11 @@ export function resolveAvailableTypes(
     // field has not been saved -- display all property types allowed by app
     // Issue 40795: need to check wrappedColumnName for alias field in query metadata editor and resolve the datatype fields
     if (field.isNew() && field.wrappedColumnName == undefined) {
-        return availableTypes.filter(type =>
-            isPropertyTypeAllowed(appPropertiesOnly, type, showFilePropertyType, showStudyPropertyTypes)
-        ) as List<PropDescType>;
+        return availableTypes
+            .filter(type =>
+                isPropertyTypeAllowed(appPropertiesOnly, type, showFilePropertyType, showStudyPropertyTypes)
+            )
+            .toList();
     }
 
     // compare against original types as the field's values are volatile

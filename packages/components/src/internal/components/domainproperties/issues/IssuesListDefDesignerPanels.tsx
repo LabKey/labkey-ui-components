@@ -101,7 +101,12 @@ export class IssuesDesignerPanelsImpl extends React.PureComponent<Props & Inject
         const { setSubmitting } = this.props;
         const { model } = this.state;
 
-        saveDomain(model.domain, model.domainKindName, model.getOptions(), model.issueDefName)
+        saveDomain({
+            domain: model.domain,
+            kind: model.domainKindName,
+            options: model.getOptions(),
+            name: model.issueDefName,
+        })
             .then(response => this.onSaveComplete(response))
             .catch(response => {
                 const exception = resolveErrorMessage(response);

@@ -30,7 +30,7 @@ import { getQueryColumnRenderers } from '../../global';
 import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from '../../util/Date';
 import { caseInsensitive, quoteValueWithDelimiters } from '../../util/utils';
 
-import { CellCoordinates } from './constants';
+import { CellCoordinates, EditableGridEvent } from './constants';
 import { genCellKey, parseCellKey } from './utils';
 
 export interface EditableColumnMetadata {
@@ -96,6 +96,23 @@ export function getPkData(queryInfo: QueryInfo, row: Map<string, any>): Record<s
     });
     return data;
 }
+
+const DATA_CHANGE_EVENTS: EditableGridEvent[] = [
+    EditableGridEvent.ADD_ROWS,
+    EditableGridEvent.BULK_ADD,
+    EditableGridEvent.BULK_UPDATE,
+    EditableGridEvent.BULK_UPDATE,
+    EditableGridEvent.DRAG_FILL,
+    EditableGridEvent.MODIFY_CELL,
+    EditableGridEvent.PASTE,
+    EditableGridEvent.REMOVE_ROWS,
+];
+
+const SELECTION_EVENTS: EditableGridEvent[] = [
+    EditableGridEvent.CLEAR_SELECTION,
+    EditableGridEvent.FOCUS_CELL,
+    EditableGridEvent.SELECT_CELL,
+];
 
 export enum EditorMode {
     Insert,
@@ -179,7 +196,7 @@ export class EditorModel
         updateColumns?: QueryColumn[],
         colFilter?: (col: QueryColumn) => boolean
     ): QueryColumn[] {
-        let columns;
+        let columns: QueryColumn[];
 
         if (forUpdate) {
             columns = updateColumns ?? queryInfo.getUpdateColumns(readOnlyColumns);
@@ -503,6 +520,14 @@ export class EditorModel
 
     isSelected(colIdx: number, rowIdx: number): boolean {
         return colIdx > -1 && rowIdx > -1 && this.selectedColIdx === colIdx && this.selectedRowIdx === rowIdx;
+    }
+
+    isDataChangeEvent(event: EditableGridEvent): boolean {
+        return DATA_CHANGE_EVENTS.find(e => e === event) !== undefined;
+    }
+
+    isSelectionEvent(event: EditableGridEvent): boolean {
+        return SELECTION_EVENTS.find(e => e === event) !== undefined;
     }
 
     static getEditorDataFromQueryValueMap(valueMap: any): List<any> | any {

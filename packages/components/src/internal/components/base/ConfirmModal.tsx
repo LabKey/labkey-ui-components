@@ -28,7 +28,7 @@ export interface ConfirmModalProps {
     show?: boolean;
     size?: Sizes;
     submitting?: boolean;
-    title?: string;
+    title?: ReactNode;
 }
 
 export class ConfirmModal extends React.PureComponent<ConfirmModalProps> {

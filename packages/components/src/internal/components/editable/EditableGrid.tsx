@@ -61,6 +61,7 @@ import {
     CellActions,
     CellCoordinates,
     EDITABLE_GRID_CONTAINER_CLS,
+    EditableGridEvent,
     MODIFICATION_TYPES,
     SELECTION_TYPES,
 } from './constants';
@@ -339,6 +340,7 @@ export interface SharedEditableGridPanelProps extends SharedEditableGridProps {
 }
 
 export type EditableGridChange = (
+    event: EditableGridEvent,
     editorModelChanges: Partial<EditorModelProps>,
     dataKeys?: List<any>,
     data?: Map<any, Map<string, any>>,
@@ -510,12 +512,12 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             changes.cellValues = editorModel.cellValues.set(cellKey, List<ValueDescriptor>());
         }
 
-        onChange(changes);
+        onChange(EditableGridEvent.FOCUS_CELL, changes);
     };
 
     clearSelection = (): void => {
         const { onChange } = this.props;
-        onChange({
+        onChange(EditableGridEvent.CLEAR_SELECTION, {
             selectedColIdx: -1,
             selectedRowIdx: -1,
             focusColIdx: -1,
@@ -613,7 +615,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             return;
         }
 
-        // 33855: select last row
+        // Issue 33855: select last row
         if (rowIdx === rowCount) {
             rowIdx = rowIdx - 1;
         }
@@ -630,7 +632,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 changes.cellValues = cellValues.set(genCellKey(colIdx, rowIdx), focusValue);
             }
 
-            onChange(changes);
+            onChange(EditableGridEvent.SELECT_CELL, changes);
         }
     };
 
@@ -683,7 +685,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             }
         }
 
-        onChange(changes);
+        onChange(EditableGridEvent.MODIFY_CELL, changes);
     };
 
     removeRows = (dataIdIndexes: Set<number>): void => {
@@ -722,7 +724,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             cellValues,
         };
 
-        onChange(editorModelChanges, updatedKeys, updatedData);
+        onChange(EditableGridEvent.REMOVE_ROWS, editorModelChanges, updatedKeys, updatedData);
 
         this.setState(() => ({
             selected: Set<number>(),
@@ -944,15 +946,16 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     onCopy = (event: ClipboardEvent): void => {
-        const { editorModel, queryInfo } = this.props;
-        if (!this.props.disabled) {
-            copyEvent(editorModel, queryInfo.getInsertColumns(), event);
+        const { disabled, editorModel } = this.props;
+        if (!disabled) {
+            copyEvent(editorModel, this.getColumns(), event);
         }
     };
 
     onCut = (event: ClipboardEvent): void => {
-        const { editorModel, queryInfo } = this.props;
-        if (!this.props.disabled && copyEvent(editorModel, queryInfo.getInsertColumns(), event)) {
+        const { disabled, editorModel } = this.props;
+
+        if (!disabled && copyEvent(editorModel, this.getColumns(), event)) {
             this.modifyCell(
                 editorModel.selectedColIdx,
                 editorModel.selectedRowIdx,
@@ -1080,7 +1083,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 readonlyRows,
                 lockedRows
             );
-            onChange({ cellMessages, cellValues });
+            onChange(EditableGridEvent.DRAG_FILL, { cellMessages, cellValues });
             this.setState({ initialSelection: undefined });
         }
     };
@@ -1109,24 +1112,24 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     onPaste = async (event: ClipboardEvent): Promise<void> => {
         const { allowAdd, columnMetadata, data, dataKeys, disabled, editorModel, onChange, queryInfo, readonlyRows } =
             this.props;
-        const columns = this.getColumns();
 
-        if (!disabled) {
-            this.showMask();
-            const changes = await pasteEvent(
-                editorModel,
-                dataKeys,
-                data,
-                queryInfo,
-                columns,
-                event,
-                columnMetadata,
-                readonlyRows,
-                !allowAdd
-            );
-            this.hideMask();
-            onChange(changes.editorModel, changes.dataKeys, changes.data);
-        }
+        if (disabled) return;
+
+        this.showMask();
+        const changes = await pasteEvent(
+            editorModel,
+            dataKeys,
+            data,
+            queryInfo,
+            this.getColumns(),
+            event,
+            columnMetadata,
+            readonlyRows,
+            !allowAdd
+        );
+        this.hideMask();
+
+        onChange(EditableGridEvent.PASTE, changes.editorModel, changes.dataKeys, changes.data);
     };
 
     showMask = (): void => {
@@ -1235,7 +1238,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 pivotValues,
                 bulkData
             );
-            onChange(changes.editorModel, changes.dataKeys, changes.data);
+            onChange(EditableGridEvent.BULK_ADD, changes.editorModel, changes.dataKeys, changes.data);
         } else {
             const changes = await addRows(
                 editorModel,
@@ -1245,7 +1248,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 numItems,
                 bulkData
             );
-            onChange(changes.editorModel, changes.dataKeys, changes.data);
+            onChange(EditableGridEvent.BULK_ADD, changes.editorModel, changes.dataKeys, changes.data);
         }
 
         if (metricFeatureArea) {
@@ -1269,7 +1272,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             bulkUpdateProps?.excludeRowIdx,
             bulkUpdateProps?.isIncludedColumn
         );
-        onChange(editorModelChanges);
+        onChange(EditableGridEvent.BULK_UPDATE, editorModelChanges);
 
         if (metricFeatureArea) {
             incrementClientSideMetricCount(metricFeatureArea, 'bulkUpdate');
@@ -1282,7 +1285,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     addRows = async (count: number): Promise<void> => {
         const { data, dataKeys, editorModel, onChange, queryInfo } = this.props;
         const changes = await addRows(editorModel, dataKeys, data, List(queryInfo.getInsertColumns()), count);
-        onChange(changes.editorModel, changes.dataKeys, changes.data);
+        onChange(EditableGridEvent.ADD_ROWS, changes.editorModel, changes.dataKeys, changes.data);
     };
 
     renderAddRowsControl = (placement: PlacementType): ReactNode => {

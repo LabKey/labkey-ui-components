@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Map } from 'immutable';
+import { Map } from 'immutable';
 import { Query } from '@labkey/api';
 
 import { capitalizeFirstChar } from '../../util/utils';
@@ -14,11 +14,12 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
 import { WizardNavButtons } from '../buttons/WizardNavButtons';
 
-import { EditorModel, EditorModelProps, EditableGridLoader } from './models';
+import { EditorModel, EditableGridLoader } from './models';
 
 import { EditableGridPanel } from './EditableGridPanel';
 import { initEditableGridModels } from './actions';
 import { applyEditableGridChangesToModels, getUpdatedDataFromEditableGrid } from './utils';
+import { EditableGridChange } from './EditableGrid';
 
 interface Props {
     containerFilter?: Query.ContainerFilter;
@@ -76,12 +77,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
         this.setState({ dataModels, editorModels });
     };
 
-    onGridChange = (
-        editorModelChanges: Partial<EditorModelProps>,
-        dataKeys?: List<any>,
-        data?: Map<string, Map<string, any>>,
-        index = 0
-    ): void => {
+    onGridChange: EditableGridChange = (event, editorModelChanges, dataKeys, data, index = 0): void => {
         this.setState(state => {
             const { dataModels, editorModels } = state;
             return applyEditableGridChangesToModels(

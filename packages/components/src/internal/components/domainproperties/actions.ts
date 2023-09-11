@@ -64,6 +64,7 @@ import {
     SMILES_TYPE,
     TEXT_CHOICE_TYPE,
     UNIQUE_ID_TYPE,
+    USERS_TYPE,
     VISIT_DATE_TYPE,
     VISIT_ID_TYPE,
 } from './PropDescType';
@@ -141,10 +142,10 @@ export function processContainers(payload: any, container?: Container): List<Con
 }
 
 /**
- * @param domainId: Fetch domain by Id. Priority param over schema and query name.
- * @param schemaName: Schema of domain.
- * @param queryName: Query of domain.
- * @param containerPath: (optional) containerPath to use for domain details query.
+ * @param domainId Fetch domain by Id. Priority param over schema and query name.
+ * @param schemaName Schema of domain.
+ * @param queryName Query of domain.
+ * @param containerPath containerPath to use for domain details query.
  * @return Promise wrapped Domain API call.
  */
 export function fetchDomain(
@@ -170,29 +171,17 @@ export function fetchDomain(
     });
 }
 
-/**
- * @param domainId: Fetch domain details by Id, schemaName/queryName, or domain kind. Priority param over schema and query name.
- * @param schemaName: Schema of domain.
- * @param queryName: Query of domain.
- * @param domainKind: (Optional) DomainKind of domain.
- * @return Promise wrapped Domain API call.
- */
-export function fetchDomainDetails(
-    domainId?: number,
-    schemaName?: string,
-    queryName?: string,
-    domainKind?: string
-): Promise<DomainDetails> {
+export type FetchDomainDetailsOptions = Omit<Domain.GetDomainDetailsOptions, 'failure' | 'scope' | 'success'>;
+
+export function fetchDomainDetails(options: FetchDomainDetailsOptions): Promise<DomainDetails> {
     return new Promise((resolve, reject) => {
         Domain.getDomainDetails({
-            domainId,
-            schemaName,
-            queryName,
-            domainKind,
+            ...options,
             success: data => {
                 resolve(DomainDetails.create(Map<string, any>({ ...data })));
             },
             failure: error => {
+                console.error(error);
                 reject(error);
             },
         });
@@ -329,6 +318,10 @@ function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologi
         return false;
     }
 
+    if (type === USERS_TYPE && !domain.allowUserProperties) {
+        return false;
+    }
+
     return true;
 }
 
@@ -366,31 +359,33 @@ export function getMaxPhiLevel(containerPath?: string): Promise<string> {
     });
 }
 
-/**
- * @param domain: DomainDesign to save
- * @param kind: DomainKind if creating new Domain
- * @param options: Options for creating new Domain
- * @param name: Name of new Domain
- * @param includeWarnings: Set this to true if warnings are desired
- * @param addRowIndexes: Boolean indicating if rowIndices should be added to the error message objects
- * @param originalDomain: Original DomainDesign (before filtering out of locked/mapped fields), to be used for addRowIndexes = true
- * @return Promise wrapped Domain API call.
- */
-export function saveDomain(
-    domain: DomainDesign,
-    kind?: string,
-    options?: any,
-    name?: string,
-    includeWarnings?: boolean,
-    addRowIndexes?: boolean,
-    originalDomain?: DomainDesign
-): Promise<DomainDesign> {
+export interface SaveDomainOptions {
+    /** Boolean indicating if rowIndices should be added to the error message objects */
+    addRowIndexes?: boolean;
+    /** Container path where requests are made. Defaults to domain.container for updates. */
+    containerPath?: string;
+    /** DomainDesign to save */
+    domain: DomainDesign;
+    /** Set this to true if warnings are desired */
+    includeWarnings?: boolean;
+    /** DomainKind if creating new Domain */
+    kind?: string;
+    /** Name of new Domain */
+    name?: string;
+    /** Options for creating new Domain */
+    options?: any;
+    /** Original DomainDesign (before filtering out of locked/mapped fields), to be used for addRowIndexes = true */
+    originalDomain?: DomainDesign;
+}
+
+export function saveDomain(options: SaveDomainOptions): Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
-        function successHandler(response) {
+        const { addRowIndexes, containerPath, domain, includeWarnings, kind, name, originalDomain } = options;
+        function successHandler(response): void {
             resolve(DomainDesign.create(response));
         }
 
-        function failureHandler(response) {
+        function failureHandler(response): void {
             console.error(response);
 
             if (!response.exception) {
@@ -408,19 +403,20 @@ export function saveDomain(
 
         if (domain.domainId) {
             Domain.save({
-                containerPath: domain.container,
+                containerPath: containerPath ?? domain.container,
                 domainId: domain.domainId,
-                options,
                 domainDesign: DomainDesign.serialize(domain),
                 includeWarnings,
+                options: options.options,
                 success: successHandler,
                 failure: failureHandler,
             });
         } else {
             Domain.create({
-                kind,
-                options,
+                containerPath,
                 domainDesign: DomainDesign.serialize(domain.set('name', name) as DomainDesign),
+                kind,
+                options: options.options,
                 success: successHandler,
                 failure: failureHandler,
             });
@@ -429,9 +425,9 @@ export function saveDomain(
 }
 
 /**
- * @param domain: DomainDesign to save
- * @param kind: DomainKind if creating new Domain
- * @param options: Options for creating new Domain
+ * @param domain DomainDesign to save
+ * @param kind DomainKind if creating new Domain
+ * @param options Options for creating new Domain
  * @param includeNamePreview
  * @return Promise wrapped Domain API call.
  */

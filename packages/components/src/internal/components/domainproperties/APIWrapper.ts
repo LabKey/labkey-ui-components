@@ -9,21 +9,18 @@ import {
     setGenId,
     hasExistingDomainData,
     fetchDomainDetails,
+    FetchDomainDetailsOptions,
     getMaxPhiLevel,
     fetchOntologies,
     saveDomain,
+    SaveDomainOptions,
 } from './actions';
 import { PHILEVEL_FULL_PHI } from './constants';
 import { getDataClassDetails } from './dataclasses/actions';
 import { DomainDesign, DomainDetails, NameExpressionsValidationResults } from './models';
 
 export interface DomainPropertiesAPIWrapper {
-    fetchDomainDetails: (
-        domainId?: number,
-        schemaName?: string,
-        queryName?: string,
-        domainKind?: string
-    ) => Promise<DomainDetails>;
+    fetchDomainDetails: (options: FetchDomainDetailsOptions) => Promise<DomainDetails>;
     fetchOntologies: (containerPath?: string) => Promise<OntologyModel[]>;
     getDataClassDetails: (query?: SchemaQuery, domainId?: number, containerPath?: string) => Promise<DomainDetails>;
     getDomainNamePreviews: (schemaQuery?: SchemaQuery, domainId?: number, containerPath?: string) => Promise<string[]>;
@@ -35,15 +32,7 @@ export interface DomainPropertiesAPIWrapper {
         rowId?: number,
         containerPath?: string
     ) => Promise<boolean>;
-    saveDomain: (
-        domain: DomainDesign,
-        kind?: string,
-        options?: any,
-        name?: string,
-        includeWarnings?: boolean,
-        addRowIndexes?: boolean,
-        originalDomain?: DomainDesign
-    ) => Promise<DomainDesign>;
+    saveDomain: (options: SaveDomainOptions) => Promise<DomainDesign>;
     setGenId: (
         rowId: number,
         kindName: 'SampleSet' | 'DataClass',

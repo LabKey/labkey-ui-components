@@ -247,7 +247,12 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
         }
 
         try {
-            const savedDomain = await saveDomain(domainDesign, Domain.KINDS.DATA_CLASS, options, model.name);
+            const savedDomain = await saveDomain({
+                domain: domainDesign,
+                kind: Domain.KINDS.DATA_CLASS,
+                name: model.name,
+                options,
+            });
 
             setSubmitting(false, () => {
                 this.saveModel({ domain: savedDomain, exception: undefined }, () => {

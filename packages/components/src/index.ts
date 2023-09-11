@@ -662,6 +662,7 @@ import {
     useLabelPrintingContext,
     withLabelPrintingContext,
 } from './internal/components/labels/LabelPrintingContextProvider';
+import { ColumnSelectionModal } from './internal/components/ColumnSelectionModal';
 
 import {
     AppReducers,
@@ -1531,6 +1532,7 @@ export {
     withWindowFocusCheckExpiredSession,
     // general components
     Alert,
+    ColumnSelectionModal,
     ExpandableContainer,
     Progress,
     LabelHelpTip,
@@ -1805,4 +1807,5 @@ export type { EditableDetailPanelProps } from './public/QueryModel/EditableDetai
 export type { ComponentsAPIWrapper } from './internal/APIWrapper';
 export type { GetParentTypeDataForLineage } from './internal/components/entities/actions';
 export type { URLMapper } from './internal/url/URLResolver';
+export type { EditableGridEvent } from './internal/components/editable/constants';
 export type { EditableGridChange } from './internal/components/editable/EditableGrid';

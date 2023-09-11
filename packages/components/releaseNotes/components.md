@@ -1,6 +1,30 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.367.0
+*Released*: 11 September 2023
+**Customize View**
+- Factor `ColumnSelectionModal` out of `CustomizeGridViewModal` to share implementation of column set selection modal with plate customization.
+
+**EditableGrid**
+- Introduce `EditableGridEvent` to allow for easier identification of change event/actions that are occuring
+- Update `EditableGridChange` to specify the `EditableGridEvent`
+- Add utility methods `isDataChangeEvent` and `isSelectionEvent` to `EditorModel`
+
+**QueryInfo**
+- Update `getQueryDetails` to accept either `schemaName/queryName` or `schemaQuery` and have it be enforced by the typings.
+- Update `getQueryDetails` to always use `method: 'POST'` as certain arguments are supported as Arrays (e.g. `fields`).
+- Update `getQueryDetails` to extend `Query.GetQueryDetailsOptions` to support the `fields` parameter. This parameter allows for explicitly requesting columns to be on the `QueryInfo` that may otherwise not be included in any of the associated views.
+- Update `getQueryDetailsCacheKey` and `invalidateQueryDetailsCache` to include specified `fields` in the cache key.
+- Change `invalidateQueryDetailsCache` to, by default, invalidate all cache keys associated with the specified `schemaQuery`. Previously, only explicit matches plus container insensitive matches were invalidated. An `exactKeyMatch` argument has been added for removal of only exact matches (defaults to false).
+
+**QueryModel**
+- Introduce new `requiredColumnsAsQueryInfoFields` setting that will request `requiredColumns` on the model as `fields` on the associated `queryInfo`. Defaults to false.
+
+**Domain**
+- Update `fetchDomainDetails` endpoint wrapper to extend `Domain.GetDomainDetailsOptions`
+- Update `saveDomain` endpoint wrapper to take options
+
 ### version 2.366.1
 *Released*: 11 September 2023
 - Issue 48542: Update layout and message when discarding after changing status

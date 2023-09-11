@@ -1,6 +1,7 @@
 
 .detail-component--table__fixed {
   table-layout: fixed;
+  border: unset;
 
   tbody tr:first-child td {
       border-top: none;
@@ -220,4 +221,36 @@
 
 .page-detail-header-title-content {
   padding-right: 5px;
+}
+
+.header-details-link {
+    color: $blue-highlight;
+    cursor: pointer;
+}
+
+.header-details-hover {
+    max-width: 600px;
+}
+
+.header-detail-content {
+    width: 400px;
+
+    .header-detail-info-row {
+        padding: 8px 0;
+        border-bottom: solid $gray-border 1px;
+
+        .row-label, .row-value {
+            display: inline-block;
+            width: 200px;
+            vertical-align: top;
+        }
+    }
+
+    .header-detail-info-row:last-child {
+        border-bottom: none;
+    }
+
+    .horizontal-bar-section {
+        margin-bottom: 8px;
+    }
 }

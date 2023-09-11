@@ -5,6 +5,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Issue 48542: Update layout and message when discarding after changing status
 
+### version 2.366.0
+*Released*: 11 September 2023
+- App listing page - move details panel to hover tooltip in header
+  - misc styling updates for LabelHelpTip and DetailDisplay
+  - add new DesignerDetailTooltip component
+
 ### version 2.365.3
 *Released*: 8 September 2023
 - Issue 48329: LKSM: Sample Finder query performance issues

@@ -40,7 +40,7 @@ export class PageDetailHeader extends PureComponent<PageDetailHeaderProps> {
 
         return (
             <div className="page-header">
-                <div className={`col-md-${leftColumns} detail__header--container`}>
+                <div className={`col-xs-12 col-md-${leftColumns} detail__header--container`}>
                     {hasIcon && (
                         <div className="detail__header--image-container">
                             {iconUrl ? (

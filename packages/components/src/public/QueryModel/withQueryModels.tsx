@@ -570,8 +570,20 @@ export function withQueryModels<Props>(
             try {
                 const loadRowsConfig = this.state.queryModels[id].loadRowsConfig;
                 const queryInfo = this.state.queryModels[id].queryInfo;
+                const columns = getSelectRowCountColumnsStr(
+                    loadRowsConfig.columns,
+                    loadRowsConfig.filterArray,
+                    queryInfo?.getPkCols()
+                );
                 const { rowCount } = await selectRows({
                     ...loadRowsConfig,
+                    columns,
+                    includeDetailsColumn: false,
+                    // includeMetadata: false, // TODO don't require metadata in selectRows response processing
+                    includeTotalCount: true,
+                    includeUpdateColumn: false,
+                    maxRows: 1,
+                    offset: 0,
                     sort: undefined,
                     maxRows: 1,
                     offset: 0,

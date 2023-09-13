@@ -69,15 +69,27 @@ export const EditInlineField: FC<Props> = memo(props => {
     });
 
     const displayValue = useMemo<ReactNode>(() => {
-        if (value?.formattedValue) return value.formattedValue;
-        if (value?.displayValue) return value.displayValue;
-
-        // value is of type "any" so it could be a number, boolean, etc. Use explicit value checks.
-        if (_value !== undefined && _value !== null && _value !== '') {
-            if (isDate) return moment(_value).format(dateFormat);
-            return _value?.toString();
+        let value_;
+        if (value?.formattedValue) {
+            value_ = value.formattedValue;
+        } else if (value?.displayValue) {
+            value_ = value.displayValue;
+        } else if (_value !== undefined && _value !== null && _value !== '') {
+            // value is of type "any" so it could be a number, boolean, etc. Use explicit value checks.
+            if (isDate) value_ = moment(_value).format(dateFormat);
+            else value_ = _value?.toString();
         }
 
+        // Issue 48196: if the domain column has been setup with a "url" prop, use it in the EditInlineField value display
+        if (value?.url) {
+            value_ = (
+                <a href={value.url} target="_blank" rel="noopener noreferrer">
+                    {value_}
+                </a>
+            );
+        }
+
+        if (value_) return value_;
         return <span className="edit-inline-field__placeholder">{emptyText}</span>;
     }, [dateFormat, emptyText, isDate, value, _value]);
 

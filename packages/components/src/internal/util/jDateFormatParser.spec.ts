@@ -168,6 +168,7 @@ describe('jDateFormatParser', () => {
             expect(toMomentFormatString('z')).toBe('ZZ');
             expect(toMomentFormatString('zzzz')).toBe('Z');
             expect(toMomentFormatString('Z')).toBe('ZZ');
+            expect(toMomentFormatString('ZZZZ')).toBe('ZZ');
             expect(toMomentFormatString('X')).toBe('ZZ');
             expect(toMomentFormatString('XX')).toBe('ZZ');
             expect(toMomentFormatString('XXX')).toBe('Z');

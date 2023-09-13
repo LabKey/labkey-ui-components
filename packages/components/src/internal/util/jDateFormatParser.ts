@@ -43,6 +43,7 @@ const javaToMomentFormatMapping: FormatMapping = {
     z: 'ZZ',
     zzzz: 'Z',
     Z: 'ZZ',
+    ZZZZ: 'ZZ',
     X: 'ZZ',
     XX: 'ZZ',
     XXX: 'Z',

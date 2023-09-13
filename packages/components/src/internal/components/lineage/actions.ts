@@ -101,8 +101,8 @@ function applyItemMetadata(
 ): Partial<LineageItemWithIOMetadata> {
     return {
         ...applyLineageIOMetadata(item, iconURLByLsid, urlResolver),
-        ...{ iconProps: resolveIconAndShapeForNode(item, iconURLByLsid[item.lsid], isSeed) },
-        ...{ links: urlResolver.resolveItem(item) ?? ({} as LineageLinkMetadata) },
+        iconProps: resolveIconAndShapeForNode(item, iconURLByLsid[item.lsid], isSeed),
+        links: urlResolver.resolveItem(item) ?? ({} as LineageLinkMetadata),
     };
 }
 

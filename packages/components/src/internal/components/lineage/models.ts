@@ -14,6 +14,7 @@ import { LoadingState } from '../../../public/LoadingState';
 import { GridColumn } from '../base/models/GridColumn';
 
 import {
+    GROUPING_COMBINED_SIZE_MIN,
     DEFAULT_GROUPING_OPTIONS,
     DEFAULT_LINEAGE_DIRECTION,
     DEFAULT_LINEAGE_DISTANCE,
@@ -28,6 +29,7 @@ import {
     LineageIconMetadata,
     LineageFilter,
     LINEAGE_GROUPING_GENERATIONS,
+    LineageGroupingOptions,
 } from './types';
 
 export function getLineageNodeTitle(node: LineageItemWithMetadata, asHTML = false): string {
@@ -1118,6 +1120,42 @@ function applyCombineSize(
     return combinedLineageNodes;
 }
 
+function groupingBoundary(
+    grouping: LineageGroupingOptions,
+    depth: number,
+    dir: LINEAGE_DIRECTIONS,
+    depthSets: Array<{ [key: string]: string }>
+): boolean {
+    if (grouping) {
+        // Nearest only examines the first parent and child generations (depth = 1) from seed
+        if (grouping.generations === LINEAGE_GROUPING_GENERATIONS.Nearest && depth + 1 > 1) {
+            return true;
+        }
+
+        // Specific will examine parent and child generations to the depths specified from seed
+        if (
+            grouping.generations === LINEAGE_GROUPING_GENERATIONS.Specific &&
+            depth + 1 > (dir === LINEAGE_DIRECTIONS.Parent ? grouping.parentDepth : grouping.childDepth)
+        ) {
+            return true;
+        }
+
+        // Multi will stop when we hit a depth with multiple nodes.
+        // NOTE: this checks the previous depth so any basic nodes at this depth will be created but it's edges won't be traversed.
+        if (grouping.generations === LINEAGE_GROUPING_GENERATIONS.Multi) {
+            let currentDepthSize = 0;
+            if (depth > 0 && depthSets.length >= depth) {
+                currentDepthSize = Object.keys(depthSets[depth - 1]).length;
+            }
+            if (currentDepthSize > 1) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 /**
  * Recursively walks the node list in the direction indicated creating clusters as it goes.
  * The LabKey lineage in `nodes` is processed by this algorithm to populate the
@@ -1179,32 +1217,8 @@ function processNodes(
     }
 
     const { grouping } = options;
-
-    if (grouping) {
-        // Nearest only examines the first parent and child generations (depth = 1) from seed
-        if (grouping.generations === LINEAGE_GROUPING_GENERATIONS.Nearest && depth + 1 > 1) {
-            return;
-        }
-
-        // Specific will examine parent and child generations to the depths specified from seed
-        if (
-            grouping.generations === LINEAGE_GROUPING_GENERATIONS.Specific &&
-            depth + 1 > (dir === LINEAGE_DIRECTIONS.Parent ? grouping.parentDepth : grouping.childDepth)
-        ) {
-            return;
-        }
-
-        // Multi will stop when we hit a depth with multiple nodes.
-        // NOTE: this checks the previous depth so any basic nodes at this depth will be created but it's edges won't be traversed.
-        if (grouping.generations === LINEAGE_GROUPING_GENERATIONS.Multi) {
-            let currentDepthSize = 0;
-            if (depth > 0 && depthSets.length >= depth) {
-                currentDepthSize = Object.keys(depthSets[depth - 1]).length;
-            }
-            if (currentDepthSize > 1) {
-                return;
-            }
-        }
+    if (groupingBoundary(grouping, depth, dir, depthSets)) {
+        return;
     }
 
     // examine the edges of the node in the desired direction
@@ -1214,7 +1228,7 @@ function processNodes(
     }
 
     // depthSets contains a list of cousin nodes at each depth
-    let depthSet;
+    let depthSet: Record<string, string>;
     if (depth + 1 > depthSets.length) {
         depthSet = {};
         depthSets.push(depthSet);
@@ -1231,11 +1245,7 @@ function processNodes(
         }
     });
 
-    if (grouping.combineSize === 1) {
-        throw new Error('combineSize must be >1 or disabled (0 or undefined)');
-    }
-
-    if (grouping.combineSize && edges.size >= grouping.combineSize) {
+    if (grouping.combineSize >= GROUPING_COMBINED_SIZE_MIN && edges.size >= grouping.combineSize) {
         const combinedLineageNodes = applyCombineSize(
             lsid,
             edges,
@@ -1250,9 +1260,6 @@ function processNodes(
         combinedLineageNodes.forEach(cln => {
             // add the combined lineage node to the nodes collection
             nodes[cln.lsid] = cln;
-
-            // queue up the combined lineage node to be processed
-            queue.push(cln.lsid);
         });
     } else {
         // create a VisGraph Edge from the current node to the edge's target for each edge

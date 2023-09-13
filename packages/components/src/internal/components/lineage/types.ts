@@ -11,7 +11,7 @@ export enum LINEAGE_DIRECTIONS {
 }
 
 export enum LINEAGE_GROUPING_GENERATIONS {
-    /** Include all nodes from the seed available in the lineage response (which has it's own depth option). */
+    /** Include all nodes from the seed available in the lineage response (which has its own depth option). */
     All = 'all',
     /** Include all nodes from the seed until a depth is found that contains multiple nodes. */
     Multi = 'multi',

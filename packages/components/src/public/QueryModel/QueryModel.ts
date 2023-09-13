@@ -1,3 +1,4 @@
+import { IFilter } from '@labkey/api/dist/labkey/filter/Filter';
 import { Draft, immerable, produce } from 'immer';
 import { Filter, Query } from '@labkey/api';
 
@@ -43,7 +44,7 @@ function offsetFromString(rowsPerPage: number, pageStr: string): number {
     return offset >= 0 ? offset : 0;
 }
 
-function querySortFromString(sortStr: string): QuerySort {
+export function querySortFromString(sortStr: string): QuerySort {
     if (sortStr.startsWith('-')) {
         return new QuerySort({ dir: '-', fieldKey: sortStr.slice(1) });
     } else {
@@ -57,6 +58,28 @@ function querySortsFromString(sortsStr: string): QuerySort[] {
 
 function searchFiltersFromString(searchStr: string): Filter.IFilter[] {
     return searchStr?.split(';').map(search => Filter.create('*', search, Filter.Types.Q));
+}
+
+/**
+ * Returns true if a given location has queryParams that would conflict with savedSettings: filters, sorts, view.
+ * @param prefix: the QueryModel prefix
+ * @param queryParams: The query object from Location
+ */
+export function locationHasQueryParamSettings(prefix: string, queryParams?: Record<string, string>): boolean {
+    if (queryParams === undefined) return false;
+    // View
+    if (queryParams[`${prefix}.view`] !== undefined) return true;
+    // Search Filters
+    if (queryParams[`${prefix}.q`] !== undefined) return true;
+    // Column Filters
+    if (Filter.getFiltersFromParameters(queryParams, prefix).length > 0) return true;
+    // Sorts
+    if (queryParams[`${prefix}.sort`] !== undefined) return true;
+    // TODO: Is it correct to consider page? In theory if a coworker sent you a URL with filters and a page, but your
+    //  pageSize was set differently then you'd see something different (or nothing at all). But, it would probably be
+    //  annoying to refresh the page and lose your page size. We could start serializing pageSize to the URL.
+    // Page offset
+    return queryParams[`${prefix}.p`] !== undefined;
 }
 
 /**
@@ -177,6 +200,12 @@ export interface QueryConfig {
      * Prefix string value to use in url parameters when bindURL is true. Defaults to "query".
      */
     urlPrefix?: string;
+
+    /**
+     * If true we will load filters, sorts, pageSize, and viewName from localStorage when initially loading the model,
+     * but only if there are no settings on the URL.
+     */
+    useSavedSettings?: boolean;
 }
 
 const DEFAULT_OFFSET = 0;
@@ -295,6 +324,12 @@ export class QueryModel {
      * Prefix string value to use in url parameters when bindURL is true. Defaults to "query".
      */
     readonly urlPrefix?: string;
+    /**
+     * If true we will load filters, sorts, pageSize, and viewName from localStorage when initially loading the model,
+     * but only if there are no settings on the URL. Defaults to false.
+     */
+    useSavedSettings?: boolean;
+
     /**
      * An array of [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/Filter.IFilter.html)
      * filters to be applied to the QueryModel data load. These filters will be concatenated with base filters, URL filters,
@@ -438,6 +473,7 @@ export class QueryModel {
         this.totalCountError = undefined;
         this.totalCountLoadingState = LoadingState.INITIALIZED;
         this.urlPrefix = queryConfig.urlPrefix ?? 'query'; // match Data Region defaults
+        this.useSavedSettings = queryConfig.useSavedSettings ?? false;
         this.charts = undefined;
         this.chartsError = undefined;
         this.chartsLoadingState = LoadingState.INITIALIZED;
@@ -687,6 +723,9 @@ export class QueryModel {
             .join(';');
         // ReactRouter location.query is typed as any.
         const modelParams: { [key: string]: any } = {};
+
+        // TODO: need to start serializing maxRows otherwise sending a URL from one person to another will not work with
+        //  page offset if they have a different maxRows configured.
 
         if (currentPage !== 1) {
             modelParams[`${urlPrefix}.p`] = currentPage.toString(10);
@@ -1047,7 +1086,7 @@ export class QueryModel {
         const prefix = this.urlPrefix;
         const viewName = queryParams[`${prefix}.view`] ?? undefined;
         const searchFilters = searchFiltersFromString(queryParams[`${prefix}.q`]) ?? [];
-        const columnFilters = Filter.getFiltersFromParameters(queryParams, prefix) || [];
+        const columnFilters = Filter.getFiltersFromParameters(queryParams, prefix);
         let filterArray = columnFilters.concat(searchFilters);
         let offset = offsetFromString(this.maxRows, queryParams[`${prefix}.p`]) ?? DEFAULT_OFFSET;
         let schemaQuery = new SchemaQuery(this.schemaName, this.queryName, viewName);
@@ -1094,3 +1133,46 @@ export class QueryModel {
 }
 
 type QueryModelURLState = Pick<QueryModel, 'filterArray' | 'offset' | 'schemaQuery' | 'selectedReportId' | 'sorts'>;
+type QueryModelSettings = Partial<Pick<QueryModel, 'filterArray' | 'maxRows' | 'sorts' | 'viewName'>>;
+const LOCAL_STORAGE_PREFIX = 'QUERY_MODEL_SETTINGS.';
+
+function localStorageKey(modelId: string): string {
+    return LOCAL_STORAGE_PREFIX + modelId;
+}
+
+export function getSettingsFromLocalStorage(id: string): QueryModelSettings {
+    const savedSettings = JSON.parse(localStorage.getItem(localStorageKey(id)));
+
+    if (savedSettings === null) return undefined;
+
+    const { maxRows, viewName } = savedSettings;
+    const filterArray = savedSettings.filterArray?.map(f =>
+        Filter.create(f.columnName, f.value, Filter.getFilterTypeForURLSuffix(f.type))
+    );
+    const sorts = savedSettings.sorts?.map(s => querySortFromString(s));
+
+    return {
+        filterArray: filterArray ?? [],
+        maxRows: maxRows ?? DEFAULT_MAX_ROWS,
+        sorts: sorts ?? [],
+        viewName,
+    };
+}
+
+export function saveSettingsToLocalStorage(model: QueryModel): void {
+    const settings = {
+        filterArray: model.filterArray.map(f => ({
+            columnName: f.getColumnName(),
+            value: f.getValue(),
+            type: f.getFilterType().getURLSuffix(),
+        })),
+        maxRows: model.maxRows,
+        sorts: model.sorts.map(sort => sort.toRequestString()),
+        viewName: model.viewName,
+    };
+    // The settings for each model are stored in their own object, instead of storing all settings under some
+    // root object, because we have to serialize to/from JSON, and it could get very expensive if we had to
+    // read/write a large JSON object that stored all settings for all models every time we needed settings for
+    // a single model.
+    localStorage.setItem(localStorageKey(model.id), JSON.stringify(settings));
+}

@@ -39,6 +39,7 @@ export const ProjectManagementPage: FC = memo(() => {
             bindURL: true,
             schemaQuery: new SchemaQuery('core', 'ProjectManagement'),
             includeTotalCount: true,
+            useSavedSettings: true,
         }),
         []
     );

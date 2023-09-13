@@ -39,6 +39,7 @@ exports[`PreviewGrid render PreviewGrid with data 1`] = `
             className="grid-header-cell"
             draggable={false}
             id="Name"
+            onClick={[Function]}
             onDragEnd={[Function]}
             onDragEnter={[Function]}
             onDragOver={[Function]}
@@ -59,6 +60,7 @@ null"
             className="grid-header-cell"
             draggable={false}
             id="Flag"
+            onClick={[Function]}
             onDragEnd={[Function]}
             onDragEnter={[Function]}
             onDragOver={[Function]}
@@ -77,6 +79,7 @@ null"
             className="grid-header-cell"
             draggable={false}
             id="mixtureTypeId"
+            onClick={[Function]}
             onDragEnd={[Function]}
             onDragEnter={[Function]}
             onDragOver={[Function]}
@@ -94,6 +97,7 @@ null"
             className="grid-header-cell"
             draggable={false}
             id="expirationTime"
+            onClick={[Function]}
             onDragEnd={[Function]}
             onDragEnter={[Function]}
             onDragOver={[Function]}
@@ -307,6 +311,7 @@ exports[`PreviewGrid render PreviewGrid with different numCols and numRows 1`] =
             className="grid-header-cell"
             draggable={false}
             id="Name"
+            onClick={[Function]}
             onDragEnd={[Function]}
             onDragEnter={[Function]}
             onDragOver={[Function]}
@@ -327,6 +332,7 @@ null"
             className="grid-header-cell"
             draggable={false}
             id="Flag"
+            onClick={[Function]}
             onDragEnd={[Function]}
             onDragEnter={[Function]}
             onDragOver={[Function]}

@@ -1,4 +1,3 @@
-import { IFilter } from '@labkey/api/dist/labkey/filter/Filter';
 import { Draft, immerable, produce } from 'immer';
 import { Filter, Query } from '@labkey/api';
 
@@ -61,7 +60,8 @@ function searchFiltersFromString(searchStr: string): Filter.IFilter[] {
 }
 
 /**
- * Returns true if a given location has queryParams that would conflict with savedSettings: filters, sorts, view.
+ * Returns true if a given location has queryParams that would conflict with savedSettings: filters, sorts, view,
+ * page offset, pageSize.
  * @param prefix: the QueryModel prefix
  * @param queryParams: The query object from Location
  */
@@ -75,11 +75,10 @@ export function locationHasQueryParamSettings(prefix: string, queryParams?: Reco
     if (Filter.getFiltersFromParameters(queryParams, prefix).length > 0) return true;
     // Sorts
     if (queryParams[`${prefix}.sort`] !== undefined) return true;
-    // TODO: Is it correct to consider page? In theory if a coworker sent you a URL with filters and a page, but your
-    //  pageSize was set differently then you'd see something different (or nothing at all). But, it would probably be
-    //  annoying to refresh the page and lose your page size. We could start serializing pageSize to the URL.
     // Page offset
-    return queryParams[`${prefix}.p`] !== undefined;
+    if (queryParams[`${prefix}.p`] !== undefined) return true;
+    // Page size
+    return queryParams[`${prefix}.pageSize`] !== undefined;
 }
 
 /**
@@ -714,21 +713,22 @@ export class QueryModel {
      * Returns an object representing the query params of the model. Used when updating the URL when bindURL is set to
      * true.
      */
-    get urlQueryParams(): { [key: string]: string } {
-        const { currentPage, urlPrefix, filterArray, selectedReportId, sorts, viewName } = this;
+    get urlQueryParams(): Record<string, string> {
+        const { currentPage, urlPrefix, filterArray, maxRows, selectedReportId, sorts, viewName } = this;
         const filters = filterArray.filter(f => f.getColumnName() !== '*');
         const searches = filterArray
             .filter(f => f.getColumnName() === '*')
             .map(f => f.getValue())
             .join(';');
         // ReactRouter location.query is typed as any.
-        const modelParams: { [key: string]: any } = {};
-
-        // TODO: need to start serializing maxRows otherwise sending a URL from one person to another will not work with
-        //  page offset if they have a different maxRows configured.
+        const modelParams: Record<string, string> = {};
 
         if (currentPage !== 1) {
             modelParams[`${urlPrefix}.p`] = currentPage.toString(10);
+        }
+
+        if (maxRows !== DEFAULT_MAX_ROWS) {
+            modelParams[`${urlPrefix}.pageSize`] = maxRows.toString(10);
         }
 
         if (viewName !== undefined) {
@@ -1088,6 +1088,8 @@ export class QueryModel {
         const searchFilters = searchFiltersFromString(queryParams[`${prefix}.q`]) ?? [];
         const columnFilters = Filter.getFiltersFromParameters(queryParams, prefix);
         let filterArray = columnFilters.concat(searchFilters);
+        let maxRows = parseInt(queryParams[`${prefix}.pageSize`]);
+        if (isNaN(maxRows)) maxRows = DEFAULT_MAX_ROWS;
         let offset = offsetFromString(this.maxRows, queryParams[`${prefix}.p`]) ?? DEFAULT_OFFSET;
         let schemaQuery = new SchemaQuery(this.schemaName, this.queryName, viewName);
         let selectedReportId = queryParams[`${prefix}.reportId`] ?? undefined;
@@ -1098,6 +1100,10 @@ export class QueryModel {
         if (useExistingValues) {
             if (filterArray.length === 0 && this.filterArray.length > 0) {
                 filterArray = this.filterArray;
+            }
+
+            if (maxRows === DEFAULT_MAX_ROWS && this.maxRows !== DEFAULT_MAX_ROWS) {
+                maxRows = this.maxRows;
             }
 
             if (offset === 0 && this.offset !== 0) {
@@ -1117,7 +1123,7 @@ export class QueryModel {
             }
         }
 
-        return { filterArray, offset, schemaQuery, selectedReportId, sorts };
+        return { filterArray, maxRows, offset, schemaQuery, selectedReportId, sorts };
     }
 
     /**
@@ -1132,7 +1138,10 @@ export class QueryModel {
     }
 }
 
-type QueryModelURLState = Pick<QueryModel, 'filterArray' | 'offset' | 'schemaQuery' | 'selectedReportId' | 'sorts'>;
+type QueryModelURLState = Pick<
+    QueryModel,
+    'filterArray' | 'maxRows' | 'offset' | 'schemaQuery' | 'selectedReportId' | 'sorts'
+>;
 type QueryModelSettings = Partial<Pick<QueryModel, 'filterArray' | 'maxRows' | 'sorts' | 'viewName'>>;
 const LOCAL_STORAGE_PREFIX = 'QUERY_MODEL_SETTINGS.';
 

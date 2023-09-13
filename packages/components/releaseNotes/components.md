@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Add missing toLocaleString() calls
+
 ### version 2.367.0
 *Released*: 11 September 2023
 **Customize View**

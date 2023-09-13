@@ -82,12 +82,13 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
         );
     }, [moduleContext]);
 
-    const projectSettings = useMemo((): React.ReactNode => {
-        if (!isProductProjectsEnabled(moduleContext)) return null;
-
+    const commonSettings = useMemo((): React.ReactNode => {
         return (
             <>
-                <ProjectSettings onChange={onSettingsChange} onSuccess={onSettingsSuccess} onPageError={onError} />
+                <ActiveUserLimit />
+                {isProductProjectsEnabled(moduleContext) && (
+                    <ProjectSettings onChange={onSettingsChange} onSuccess={onSettingsSuccess} onPageError={onError} />
+                )}
                 {isAppHomeFolder(container, moduleContext) && (
                     <ProjectLookAndFeelForm
                         api={api.folder}
@@ -95,7 +96,7 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
                         onSuccess={onSettingsSuccess}
                     />
                 )}
-                {!isAppHomeFolder(container, moduleContext) && (
+                {isProductProjectsEnabled(moduleContext) && !isAppHomeFolder(container, moduleContext) && (
                     <>
                         <ProjectDataTypeSelections
                             entityDataTypes={projectDataTypes}
@@ -116,6 +117,18 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
                         )}
                     </>
                 )}
+                {biologicsIsPrimaryApp(moduleContext) && isELNEnabled(moduleContext) && (
+                    <NotebookProjectSettingsComponent />
+                )}
+                <BarTenderSettingsForm
+                    onChange={onSettingsChange}
+                    onSuccess={onBarTenderSuccess}
+                    setIsDirty={setIsDirty}
+                    getIsDirty={getIsDirty}
+                />
+                <NameIdSettings {...props} />
+                {isSampleStatusEnabled(moduleContext) && <ManageSampleStatusesPanel {...props} />}
+                {children}
             </>
         );
     }, [moduleContext, projectDataTypes, disabledTypesMap, container]);
@@ -138,16 +151,7 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
                 disableRemoveSelf
                 lkVersion={lkVersion}
             >
-                <ActiveUserLimit />
-                {projectSettings}
-                <BarTenderSettingsForm
-                    onChange={onSettingsChange}
-                    onSuccess={onBarTenderSuccess}
-                    setIsDirty={setIsDirty}
-                    getIsDirty={getIsDirty}
-                />
-                <NameIdSettings {...props} />
-                {isSampleStatusEnabled(moduleContext) && <ManageSampleStatusesPanel {...props} />}
+                {commonSettings}
             </BasePermissions>
         );
     }
@@ -162,20 +166,7 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
                 hasPermission={user.isAdmin}
                 renderButtons={lkVersion}
             >
-                <ActiveUserLimit />
-                {projectSettings}
-                {biologicsIsPrimaryApp(moduleContext) && isELNEnabled(moduleContext) && (
-                    <NotebookProjectSettingsComponent />
-                )}
-                <BarTenderSettingsForm
-                    onChange={onSettingsChange}
-                    onSuccess={onBarTenderSuccess}
-                    setIsDirty={setIsDirty}
-                    getIsDirty={getIsDirty}
-                />
-                <NameIdSettings {...props} />
-                {isSampleStatusEnabled(moduleContext) && <ManageSampleStatusesPanel {...props} />}
-                {children}
+                {commonSettings}
             </BasePermissionsCheckPage>
         </>
     );

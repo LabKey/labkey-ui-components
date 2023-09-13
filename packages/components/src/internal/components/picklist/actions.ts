@@ -206,7 +206,7 @@ export function getOrderedSelectedPicklistSamples(queryModel: QueryModel, saveSn
     const { queryName, queryParameters, selections, sortString, viewName, selectionKey } = queryModel;
     return getSelectedPicklistSamples(
         queryName,
-        Array.of(...selections),
+        Array.from(selections),
         saveSnapshot,
         selectionKey,
         sortString,
@@ -248,7 +248,7 @@ export function getOrderedSelectedMappedKeys(
         getSelectedData(
             schemaName,
             queryName,
-            Array.of(...selections),
+            Array.from(selections),
             toColumn ? [fromColumn, toColumn].join(',') : fromColumn,
             sortString,
             queryParameters,

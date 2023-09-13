@@ -60,6 +60,17 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Update `EditableGrid` to account for optional `addControlProps`
 - Removes `UserProvider` in favor of `useUserProperties` hook
 
+### version 2.364.2
+*Released*: 11 September 2023
+- Issue 48608: Replace `/Z+/gi` characters with `xxx` when translating moment format to date-fns format
+- Support partial reverse translation of `xxx` from date-fns to moment
+
+### version 2.364.1
+*Released*: 6 September 2023
+- Issue 48596: ResponsiveMenuButtonGroup fix for empty button group
+- Issue 48594: Show project look and feel form for starter edition too
+- Issue 48607: Don't use spread operator for array construction to avoid javascript error
+
 ### version 2.364.0
 *Released*: 31 August 2023
 - Issue 47376: User Detail Modal - add className to be able to distinguish modal from others

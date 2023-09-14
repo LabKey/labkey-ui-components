@@ -12,8 +12,6 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { EditorModel } from '../editable/models';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
-import { PLATE_METADATA_COLUMN } from './constants';
-
 export interface AssayUploadOptions extends AssayDOM.ImportRunOptions {
     dataRows?: any; // Array<any>
     maxFileSize?: number;
@@ -222,15 +220,5 @@ export class AssayWizardModel
         const queryModelData = this.getInitialQueryModelData();
         const editorModelData = await loadEditorModelData(queryModelData);
         return { editorModel: editorModelData, queryModel: queryModelData };
-    }
-
-    async processPlateData(data: AssayUploadOptions): Promise<AssayUploadOptions> {
-        if (data.properties?.[PLATE_METADATA_COLUMN] instanceof File) {
-            const text = await data.properties[PLATE_METADATA_COLUMN].text();
-            data.plateMetadata = JSON.parse(text);
-            delete data.properties[PLATE_METADATA_COLUMN];
-        }
-
-        return data;
     }
 }

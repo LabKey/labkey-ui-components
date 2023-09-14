@@ -75,7 +75,7 @@ import {
 import { AssayReimportHeader } from './AssayReimportHeader';
 import { AssayWizardModel, AssayUploadOptions } from './AssayWizardModel';
 import { BatchPropertiesPanel } from './BatchPropertiesPanel';
-import { PLATE_METADATA_COLUMN, PLATE_TEMPLATE_COLUMN, RUN_PROPERTIES_REQUIRED_COLUMNS } from './constants';
+import { PLATE_TEMPLATE_COLUMN, RUN_PROPERTIES_REQUIRED_COLUMNS } from './constants';
 import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
 
 import { AssayUploadResultModel } from './models';
@@ -300,23 +300,6 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 plateColumns = plateColumns.set(plateTemplateFieldKey, runColumns.get(plateTemplateFieldKey));
                 runColumns = runColumns.remove(plateTemplateFieldKey);
             }
-
-            plateColumns = plateColumns.set(
-                PLATE_METADATA_COLUMN.toLowerCase(),
-                new QueryColumn({
-                    caption: 'Plate Metadata',
-                    fieldKey: PLATE_METADATA_COLUMN,
-                    fieldKeyArray: [PLATE_METADATA_COLUMN],
-                    inputType: 'file',
-                    name: PLATE_METADATA_COLUMN,
-                    required: true,
-                    shortCaption: 'Plate Metadata',
-                    shownInInsertView: true,
-                    shownInUpdateView: true,
-                    type: 'File',
-                    userEditable: true,
-                })
-            );
         }
 
         return { plateColumns, runColumns };
@@ -567,10 +550,6 @@ class AssayImportPanelsBody extends Component<Props, State> {
         dismissNotifications();
 
         try {
-            if (this.plateSupportEnabled) {
-                data = await model.processPlateData(data);
-            }
-
             const processedData = await uploadAssayRunFiles(data);
 
             const backgroundUpload = assayProtocol?.backgroundUpload;

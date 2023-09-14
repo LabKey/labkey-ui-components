@@ -202,7 +202,9 @@ export interface QueryConfig {
 
     /**
      * If true we will load filters, sorts, pageSize, and viewName from localStorage when initially loading the model,
-     * but only if there are no settings on the URL.
+     * but only if there are no settings on the URL. Important: If you are using this flag you must ensure your grid id
+     * is stable and unique. It must be stable between page loads/visits, or we won't be able to fetch the settings. It
+     * must be unique, or we'll override settings for other grid models.
      */
     useSavedSettings?: boolean;
 }
@@ -325,7 +327,9 @@ export class QueryModel {
     readonly urlPrefix?: string;
     /**
      * If true we will load filters, sorts, pageSize, and viewName from localStorage when initially loading the model,
-     * but only if there are no settings on the URL. Defaults to false.
+     * but only if there are no settings on the URL. Defaults to false. Important: If you are using this flag you must
+     * ensure your grid id is stable and unique. It must be stable between page loads/visits, or we won't be able to
+     * fetch the settings. It must be unique, or we'll override settings for other grid models.
      */
     useSavedSettings?: boolean;
 

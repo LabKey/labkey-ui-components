@@ -3,6 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
+const fs = require('fs');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -20,7 +21,9 @@ const isProductionBuild = process.env.NODE_ENV === 'production';
 // NOTE: the LABKEY_UI_COMPONENTS_HOME and LABKEY_UI_PREMIUM_HOME environment variable must be set for this to work.
 let labkeyUIComponentsPath = path.resolve('./node_modules/@labkey/components');
 let labkeyUIPremiumPath = path.resolve('./node_modules/@labkey/premium');
-const tsconfigPath = path.resolve('./node_modules/@labkey/build/webpack/tsconfig.json');
+const labkeyBuildTSConfigPath = path.resolve('./node_modules/@labkey/build/webpack/tsconfig.json');
+const customTSConfigPath = path.resolve('./tsconfig.json');
+const tsconfigPath = fs.existsSync(customTSConfigPath) ? customTSConfigPath : labkeyBuildTSConfigPath;
 
 if (process.env.LINK) {
     if (process.env.LABKEY_UI_COMPONENTS_HOME === undefined) {
@@ -129,9 +132,9 @@ const TS_CHECKER_CONFIG = {
     typescript: {
         configFile: tsconfigPath,
         configOverwrite: {
-            include: ["src/client/**/*"],
+            include: ['src/client/**/*'],
             // excluding spec files shaves time off the build
-            exclude: ["node_modules", "**/*.*spec.*", "**/*.*test.*", "src/test", "resources", "packages"],
+            exclude: ['node_modules', '**/*.*spec.*', '**/*.*test.*', 'src/test', 'resources', 'packages'],
         },
         context: '.',
         diagnosticOptions: {
@@ -146,18 +149,17 @@ const TS_CHECKER_DEV_CONFIG = {
     typescript: {
         ...TS_CHECKER_CONFIG.typescript,
         configOverwrite: {
-            include: ["src/client/**/*"],
-            exclude: ["node_modules", "**/*.*spec.*", "**/*.*test.*", "src/test", "resources", "packages"],
+            ...TS_CHECKER_CONFIG.typescript.configOverwrite,
             compilerOptions: {
-                "paths": {
-                    "@labkey/components": [labkeyUIComponentsPath],
-                    "@labkey/premium": [labkeyUIPremiumPath],
-                    "@labkey/premium/assay": [labkeyUIPremiumPath + '/assay'],
-                    "@labkey/premium/eln": [labkeyUIPremiumPath + '/eln'],
-                    "@labkey/premium/entities": [labkeyUIPremiumPath + '/entities'],
-                    "@labkey/premium/workflow": [labkeyUIPremiumPath + '/workflow'],
-                    "@labkey/premium/storage": [labkeyUIPremiumPath + '/storage'],
-                    "@labkey/premium/search": [labkeyUIPremiumPath + '/search]'],
+                paths: {
+                    '@labkey/components': [labkeyUIComponentsPath],
+                    '@labkey/premium': [labkeyUIPremiumPath],
+                    '@labkey/premium/assay': [labkeyUIPremiumPath + '/assay'],
+                    '@labkey/premium/eln': [labkeyUIPremiumPath + '/eln'],
+                    '@labkey/premium/entities': [labkeyUIPremiumPath + '/entities'],
+                    '@labkey/premium/workflow': [labkeyUIPremiumPath + '/workflow'],
+                    '@labkey/premium/storage': [labkeyUIPremiumPath + '/storage'],
+                    '@labkey/premium/search': [labkeyUIPremiumPath + '/search]'],
                 }
             }
         },

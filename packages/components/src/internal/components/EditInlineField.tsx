@@ -81,7 +81,7 @@ export const EditInlineField: FC<Props> = memo(props => {
         }
 
         // Issue 48196: if the domain column has been setup with a "url" prop, use it in the EditInlineField value display
-        if (value?.url) {
+        if (value_ !== undefined && value?.url) {
             value_ = (
                 <a href={value.url} target="_blank" rel="noopener noreferrer">
                     {value_}

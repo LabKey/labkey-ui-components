@@ -29,11 +29,9 @@ import { SITE_SECURITY_ROLES } from './constants';
 
 interface OwnProps {
     description?: ReactNode;
-    disableRemoveSelf: boolean;
     hasPermission: boolean;
     lkVersion?: () => ReactNode;
     pageTitle: string;
-    panelTitle: string;
     rolesMap: Map<string, string>;
     showDetailsPanel: boolean;
 }
@@ -46,10 +44,8 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
     const {
         children,
         description,
-        disableRemoveSelf,
         hasPermission,
         pageTitle,
-        panelTitle,
         roles,
         rolesMap,
         lkVersion,
@@ -96,7 +92,7 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
     );
 
     const setProjectCount = useCallback((projectCount: number) => {
-        setHidePageDescription(projectCount > 1 ? true : false);
+        setHidePageDescription(projectCount > 1);
     }, []);
 
     return (
@@ -111,9 +107,7 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
                 <PermissionAssignments
                     {...props}
                     {...rolesProps}
-                    disabledId={disableRemoveSelf ? user.id : undefined}
                     onSuccess={onSuccess}
-                    title={panelTitle}
                     setLastModified={setPolicyLastModified}
                     setProjectCount={setProjectCount}
                     rootRolesToShow={!showPremiumFeatures() ? SITE_SECURITY_ROLES.keySeq().toList() : undefined}

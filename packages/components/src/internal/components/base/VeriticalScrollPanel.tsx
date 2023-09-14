@@ -4,6 +4,7 @@ interface Props {
     cls?: string;
     offset?: number;
     ratio?: number;
+    scroll?: boolean;
 }
 
 export const VerticalScrollPanel: FC<Props> = memo(props => {
@@ -25,4 +26,5 @@ export const VerticalScrollPanel: FC<Props> = memo(props => {
 VerticalScrollPanel.defaultProps = {
     ratio: 0.9,
     offset: 0,
+    scroll: true,
 };

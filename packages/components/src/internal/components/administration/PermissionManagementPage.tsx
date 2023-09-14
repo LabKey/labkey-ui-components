@@ -25,10 +25,8 @@ export const PermissionManagementPage: FC = memo(() => {
 
     return (
         <BasePermissions
-            disableRemoveSelf={false}
             hasPermission={user.isAdmin}
             pageTitle="Permissions"
-            panelTitle="Application Roles and Assignments"
             rolesMap={rolesMap}
             showDetailsPanel={user.hasManageUsersPermission()}
             description={showPremium ? container.path : undefined}

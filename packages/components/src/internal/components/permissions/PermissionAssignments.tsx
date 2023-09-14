@@ -10,7 +10,13 @@ import { Security } from '@labkey/api';
 
 import { UserDetailsPanel } from '../user/UserDetailsPanel';
 
-import { getProjectPath, isProjectContainer, isProductProjectsEnabled, userCanReadGroupDetails } from '../../app/utils';
+import {
+    getProjectPath,
+    isProjectContainer,
+    isProductProjectsEnabled,
+    userCanReadGroupDetails,
+    isAppHomeFolder
+} from '../../app/utils';
 
 import { useServerContext } from '../base/ServerContext';
 
@@ -46,9 +52,6 @@ import { InjectedPermissionsPage } from './withPermissionsPage';
 
 // exported for testing
 export interface PermissionAssignmentsProps extends InjectedPermissionsPage, InjectedRouteLeaveProps {
-    containerId?: string;
-    /** UserId to disable to prevent removing assignments for that id */
-    disabledId?: number;
     onChange?: (policy: SecurityPolicy) => void;
     onSuccess: () => void;
     policy?: SecurityPolicy;
@@ -59,14 +62,12 @@ export interface PermissionAssignmentsProps extends InjectedPermissionsPage, Inj
     setLastModified?: (modified: string) => void;
     setProjectCount?: (count: number) => void;
     showDetailsPanel?: boolean;
-    title?: string;
     /** Specific principal type (i.e. 'u' for users and 'g' for groups) to show in this component usage */
     typeToShow?: string;
 }
 
 export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props => {
     const {
-        disabledId,
         getIsDirty,
         inactiveUsersById,
         onChange,
@@ -78,7 +79,6 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         rolesToShow,
         setIsDirty,
         showDetailsPanel = true,
-        title = 'Security Roles and Assignments',
         router,
         rootRolesToShow,
         setLastModified,
@@ -223,7 +223,10 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
 
     const _addAssignment = useCallback(
         (isRootPolicy: boolean, principal: Principal, role: SecurityRole) => {
-            setPolicy(SecurityPolicy.addAssignment(isRootPolicy ? rootPolicy : policy, principal, role));
+            if (isRootPolicy)
+                setRootPolicy(SecurityPolicy.addAssignment(rootPolicy, principal, role));
+            else
+                setPolicy(SecurityPolicy.addAssignment(policy, principal, role));
             setSelectedUserId(principal.userId);
             isRootPolicy ? setHasRootPolicyChange(true) : setHasPolicyChange(true);
             setIsDirty(true);
@@ -235,14 +238,14 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         (principal: Principal, role: SecurityRole) => {
             _addAssignment(false, principal, role);
         },
-        [onChange, _addAssignment, policy, rootPolicy]
+        [onChange, _addAssignment]
     );
 
     const addRootAssignment = useCallback(
         (principal: Principal, role: SecurityRole) => {
             _addAssignment(true, principal, role);
         },
-        [onChange, _addAssignment, policy, rootPolicy]
+        [onChange, _addAssignment]
     );
 
     const onInheritChange = useCallback(() => {
@@ -300,8 +303,8 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
             }
         }
 
-        // Policy remains inherited. Act as if it was a successful change.
-        if (inherited && wasInherited) {
+        // Policy unchanged, or remains inherited. Act as if it was a successful change.
+        if (!hasPolicyChange || (inherited && wasInherited)) {
             _onSuccess();
             setHasPolicyChange(false);
             setIsDirty(false);
@@ -357,11 +360,14 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         setHasPolicyChange(false);
         setIsDirty(false);
         setSubmitting(false);
-    }, [project, selectedProject, inherited, _onSuccess, policy]);
+    }, [project, selectedProject, inherited, _onSuccess, policy, hasRootPolicyChange, hasPolicyChange]);
 
     const _removeAssignment = useCallback(
         (isRootPolicy: boolean, userId: number, role: SecurityRole) => {
-            setPolicy(SecurityPolicy.removeAssignment(isRootPolicy ? rootPolicy : policy, userId, role));
+            if (isRootPolicy)
+                setRootPolicy(SecurityPolicy.removeAssignment(rootPolicy, userId, role));
+            else
+                setPolicy(SecurityPolicy.removeAssignment(policy, userId, role));
             setSelectedUserId(undefined);
             setIsDirty(true);
             isRootPolicy ? setHasRootPolicyChange(true) : setHasPolicyChange(true);
@@ -406,6 +412,12 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         return SecurityRole.filter(roles, rootPolicy, rootRolesToShow);
     }, [roles, rootPolicy, rootRolesToShow]);
 
+    const panelTitle = useMemo(() => {
+        if (!isAppHomeFolder(selectedProject, moduleContext) && selectedProject)
+            return selectedProject.name + ' Permissions';
+        return 'Application Permissions';
+    }, [selectedProject, moduleContext]);
+
     if (error) {
         return <Alert>{error}</Alert>;
     }
@@ -418,7 +430,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
 
     const _panelContent = (
         <div className="panel panel-default">
-            <div className="panel-heading">{title}</div>
+            <div className="panel-heading">{panelTitle}</div>
             <div className="panel-body permissions-groups-assignment-panel permissions-assignment-panel">
                 {isSubfolder && canInherit && (
                     <div>
@@ -459,7 +471,6 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                         {visibleRoles?.map(role => (
                             <PermissionsRole
                                 assignments={policy.assignmentsByRole.get(role.uniqueName)}
-                                disabledId={disabledId}
                                 key={role.uniqueName}
                                 onAddAssignment={inherited ? undefined : addAssignment}
                                 onClickAssignment={showDetails}

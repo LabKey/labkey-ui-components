@@ -38,7 +38,7 @@ import { useEnterEscape } from '../public/useEnterEscape';
 import { QueryModel } from '../public/QueryModel/QueryModel';
 
 import { HelpTipRenderer } from './components/forms/HelpTipRenderer';
-import { APP_FIELD_CANNOT_BE_REMOVED_MESSAGE, GRID_CHECKBOX_OPTIONS } from './constants';
+import { APP_FIELD_CANNOT_BE_REMOVED_MESSAGE, GRID_CHECKBOX_OPTIONS, GRID_HEADER_CELL_BODY } from './constants';
 
 import { GridColumn } from './components/base/models/GridColumn';
 
@@ -363,10 +363,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     const queryColumn: QueryColumn = column.raw;
     const [editingTitle, setEditingTitle] = useState<boolean>(false);
     const [open, setOpen] = useState<boolean>(false);
-    const click = useCallback(event => {
-        const { classList, tagName } = event.target;
-        // Don't trigger the menu when the user clicks any of the header icons
-        if (tagName === 'path' || tagName === 'svg' || classList.contains('grid-panel__col-header-icon')) return;
+    const click = useCallback(() => {
         setOpen(true);
     }, []);
     const allowColSort = handleSort && queryColumn?.sortable;
@@ -406,7 +403,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     const isSortDesc = queryColumn.sorts === '-' || colQuerySortDir === '-';
 
     return (
-        <div className="grid-header-cell__body" onClick={click}>
+        <div className={GRID_HEADER_CELL_BODY} onClick={click}>
             <span>
                 <EditableColumnTitle
                     column={queryColumn}

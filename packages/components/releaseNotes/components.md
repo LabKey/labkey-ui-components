@@ -5,6 +5,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Add missing toLocaleString() calls
 
+### version 2.368.0
+*Released*: 14 September 2023
+- Issue 48610: app grid column header <th> element to trigger click on child <div>
+- Issue 48283: app megamenu does not close after choosing a project icon (i.e. dashboard or settings)
+- Issue 48196: if the domain column has been setup with a "url" prop, use it in the EditInlineField value display
+
 ### version 2.367.1
 *Released*: 13 September 2023
 * Merge release23.9-SNAPSHOT to develop:

@@ -222,6 +222,7 @@ export enum IMPORT_DATA_FORM_TYPES {
 export const GRID_EDIT_INDEX = '__editing__';
 export const GRID_SELECTION_INDEX = '__selection__';
 export const GRID_NAME_INDEX = '__name__';
+export const GRID_HEADER_CELL_BODY = 'grid-header-cell__body';
 
 export enum GRID_CHECKBOX_OPTIONS {
     ALL,

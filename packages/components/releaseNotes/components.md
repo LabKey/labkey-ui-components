@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.368.1
+*Released*: 14 September 2023
+- Add missing toLocaleString() calls
+
 ### version 2.368.0
 *Released*: 14 September 2023
 - Issue 48610: app grid column header <th> element to trigger click on child <div>

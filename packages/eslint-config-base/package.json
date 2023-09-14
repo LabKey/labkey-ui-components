@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/LabKey/labkey-ui-components.git"
   },
-  "author": "kevink@labkey.com",
+  "author": "LabKey",
   "license": "Apache-2.0",
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "6.7.0",

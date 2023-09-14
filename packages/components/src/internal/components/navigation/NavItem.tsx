@@ -20,10 +20,11 @@ import { AppURL } from '../../url/AppURL';
 
 interface NavItemProps {
     onActive?: (activeEl: HTMLElement) => void;
-    to: string | AppURL;
+    to?: string | AppURL;
+    onClick?: () => void;
 }
 
-const NavItemImpl: FC<NavItemProps & WithRouterProps> = memo(({ children, location, onActive, to }) => {
+const NavItemImpl: FC<NavItemProps & WithRouterProps> = memo(({ children, location, onActive, to, onClick }) => {
     const href = to instanceof AppURL ? to.toHref() : to;
     const itemRef = useRef<HTMLLIElement>();
     const [active, setActive] = useState<boolean>(false);
@@ -45,7 +46,7 @@ const NavItemImpl: FC<NavItemProps & WithRouterProps> = memo(({ children, locati
 
     return (
         <li className={active ? 'active' : null} ref={itemRef}>
-            <a href={href}>{children}</a>
+            <a href={href} onClick={onClick}>{children}</a>
         </li>
     );
 });
@@ -53,14 +54,14 @@ const NavItemImpl: FC<NavItemProps & WithRouterProps> = memo(({ children, locati
 // Export as "default" to avoid erroneous type warning use of withRouter()
 export default withRouter<NavItemProps>(NavItemImpl);
 
-export const ParentNavItem: FC<NavItemProps> = memo(({ children, to }) => {
+export const ParentNavItem: FC<NavItemProps> = memo(({ children, to, onClick }) => {
     const href = to instanceof AppURL ? to.toHref() : to;
 
     return (
         <div className="parent-nav">
             <ul className="nav navbar-nav">
                 <li>
-                    <a href={href}>
+                    <a href={href} onClick={onClick}>
                         <i className="fa fa-chevron-left" />
                         &nbsp;
                         {children}

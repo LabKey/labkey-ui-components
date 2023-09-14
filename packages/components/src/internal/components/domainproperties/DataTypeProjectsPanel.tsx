@@ -56,24 +56,9 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
                 setError(undefined);
 
                 try {
-                    const containers = await api.security.fetchContainers({
-                        containerPath: isAppHomeFolder(container, moduleContext)
-                            ? container.path
-                            : container.parentPath,
-                        includeEffectivePermissions: false,
-                        includeStandardProperties: true, // needed to get the container title
-                        includeWorkbookChildren: false,
-                        includeSubfolders: true,
-                        depth: 1,
-                    });
+                    const containers = await api.folder.getProjects(container, moduleContext, false, true);
 
-                    const allProjects_ = containers
-                        // if user doesn't have permissions to the parent/project, the response will come back with an empty Container object
-                        .filter(c => c !== undefined && c.id !== '')
-                        // filter out the Home project container (i.e. the type = "project")
-                        .filter(c => c.type === 'folder')
-                        // convert to an array of DataTypeEntity
-                        .map(project => {
+                    const allProjects_ = containers.map(project => {
                             return { label: project.title, lsid: project.id, type: 'Project' } as DataTypeEntity;
                         });
 

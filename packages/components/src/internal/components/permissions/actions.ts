@@ -9,6 +9,8 @@ import { ActionURL, Ajax, Filter, Security, Utils } from '@labkey/api';
 import { ISelectRowsResult, selectRowsDeprecated } from '../../query/api';
 
 import { Principal, SecurityPolicy, SecurityRole } from './models';
+import {Container} from "../base/models/Container";
+import {FetchContainerOptions} from "../security/APIWrapper";
 
 export function processGetRolesResponse(rawRoles: any): List<SecurityRole> {
     let roles = List<SecurityRole>();
@@ -119,6 +121,39 @@ export function fetchContainerSecurityPolicy(
             },
             failure: error => {
                 console.error('Failed to fetch security policy', error);
+                reject(error);
+            },
+        });
+    });
+}
+
+
+function recurseContainerHierarchy(data: Security.ContainerHierarchy, container: Container): Container[] {
+    return (data.children ?? []).reduce(
+        (containers, c) => containers.concat(recurseContainerHierarchy(c, new Container(c))),
+        [container]
+    );
+}
+
+export function fetchContainers(options: FetchContainerOptions): Promise<Container[]> {
+    // NK: By default the server processes "includeSubfolders=false" as setting the
+    // depth to 1. When the depth is set to 1 the results will include the first level of
+    // subfolders negating the desire to not include subfolders. This endpoint wrapper
+    // works around this by altering requests for "includeSubfolders=false" to be
+    // "includeSubfolders=true&depth=0" so that subfolders are not included.
+    if (options?.includeSubfolders === false && options.depth === undefined) {
+        options.includeSubfolders = true;
+        options.depth = 0;
+    }
+
+    return new Promise((resolve, reject) => {
+        Security.getContainers({
+            ...options,
+            success: (data: Security.ContainerHierarchy) => {
+                resolve(recurseContainerHierarchy(data, new Container(data)));
+            },
+            failure: error => {
+                console.error('Failed to fetch containers', error);
                 reject(error);
             },
         });

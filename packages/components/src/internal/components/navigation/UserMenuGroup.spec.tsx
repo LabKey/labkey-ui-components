@@ -19,14 +19,14 @@ import { mount } from 'enzyme';
 
 import { User } from '../base/models/User';
 
-import { UserMenuImpl } from './UserMenu';
+import { UserMenuGroupImpl } from './UserMenuGroup';
 import { MenuSectionModel } from './model';
 
 beforeAll(() => {
     LABKEY.devMode = false;
 });
 
-describe('UserMenu', () => {
+describe('UserMenuGroup', () => {
     const section =
         MenuSectionModel.create({
             key: 'user',
@@ -52,7 +52,7 @@ describe('UserMenu', () => {
     test('not initialized', () => {
         const model = new MenuSectionModel({
         });
-        const tree = mount(<UserMenuImpl model={model} user={new User()} />);
+        const tree = mount(<UserMenuGroupImpl model={model} user={new User()} />);
         expect(tree).toEqual({});
     });
 
@@ -61,7 +61,7 @@ describe('UserMenu', () => {
             isSignedIn: false,
         });
 
-        const tree = renderer.create(<UserMenuImpl model={section} user={user} />);
+        const tree = renderer.create(<UserMenuGroupImpl model={section} user={user} />);
         expect(tree).toMatchSnapshot();
     });
 
@@ -70,7 +70,7 @@ describe('UserMenu', () => {
             isSignedIn: true,
         });
 
-        const tree = renderer.create(<UserMenuImpl model={section} user={user} />);
+        const tree = renderer.create(<UserMenuGroupImpl model={section} user={user} />);
         expect(tree).toMatchSnapshot();
     });
 
@@ -80,7 +80,7 @@ describe('UserMenu', () => {
         });
         LABKEY.devMode = true;
 
-        const tree = renderer.create(<UserMenuImpl model={section} user={user} />);
+        const tree = renderer.create(<UserMenuGroupImpl model={section} user={user} />);
         expect(tree).toMatchSnapshot();
     });
 
@@ -91,7 +91,7 @@ describe('UserMenu', () => {
         });
 
         const extraUserItems = [<div key="e1">Extra One</div>, <div key="e2">Extra Two</div>];
-        const tree = renderer.create(<UserMenuImpl model={section} user={user} extraUserItems={extraUserItems} />);
+        const tree = renderer.create(<UserMenuGroupImpl model={section} user={user} extraUserItems={extraUserItems} />);
         expect(tree).toMatchSnapshot();
     });
 
@@ -104,7 +104,7 @@ describe('UserMenu', () => {
         const extraUserItems = [<div key="e1">Extra One</div>, <div key="e2">Extra Two</div>];
         const extraDevItems = [<div key="e1">Extra Dev One</div>, <div key="e2">Extra Dev Two</div>];
         const tree = renderer.create(
-            <UserMenuImpl extraDevItems={extraDevItems} extraUserItems={extraUserItems} model={section} user={user} />
+            <UserMenuGroupImpl extraDevItems={extraDevItems} extraUserItems={extraUserItems} model={section} user={user} />
         );
         expect(tree).toMatchSnapshot();
     });

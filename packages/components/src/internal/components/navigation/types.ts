@@ -6,7 +6,8 @@ import { AppURL } from '../../url/AppURL';
 export interface ITab {
     text: string;
     tooltip?: ReactNode;
-    url: string | AppURL;
+    url?: string | AppURL;
+    onClick?: () => void;
 }
 
 export interface SubNavGlobalContext {

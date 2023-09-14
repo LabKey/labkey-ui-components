@@ -29,8 +29,23 @@
   margin-bottom: 0;
 }
 
+.admin-navbar-container {
+    background-color: $blue-dark;
+    margin-bottom: 0;
+}
+
 .navbar-left {
   padding: 0;
+
+    .navbar-left-sub{
+        background-color: transparent;
+        color: $white !important;
+        font-size: 14px;
+        font-weight: 400;
+        margin: 20px 0;
+        position: relative;
+        left: 40px;
+    }
 
   .navbar-item {
     margin-left: 20px;

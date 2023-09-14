@@ -8,18 +8,19 @@ import { EntityDataType, ProjectConfigurableDataType } from '../entities/models'
 import { DataTypeSelector } from '../entities/DataTypeSelector';
 
 import { FolderAPIWrapper, ProjectSettingsOptions } from '../container/FolderAPIWrapper';
+import {Container} from "../base/models/Container";
 
 interface Props {
     api?: FolderAPIWrapper;
     disabledTypesMap?: { [key: string]: number[] };
     entityDataTypes?: EntityDataType[];
     onSuccess?: (reload?: boolean) => void;
-    projectId?: string;
+    project?: Container;
     updateDataTypeExclusions: (dataType: ProjectConfigurableDataType, exclusions: number[]) => void;
 }
 
 export const ProjectDataTypeSelections: FC<Props> = memo(props => {
-    const { api, entityDataTypes, projectId, updateDataTypeExclusions, onSuccess, disabledTypesMap } = props;
+    const { api, entityDataTypes, project, updateDataTypeExclusions, onSuccess, disabledTypesMap } = props;
 
     const [dirty, setDirty] = useState<boolean>(false);
     const [error, setError] = useState<string>();
@@ -31,7 +32,7 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
         (dataType: ProjectConfigurableDataType, exclusions: number[]) => {
             if (updateDataTypeExclusions) updateDataTypeExclusions(dataType, exclusions);
 
-            if (projectId) {
+            if (project) {
                 setDataTypeExclusion(prev => {
                     const uncheckedUpdates = { ...prev };
                     uncheckedUpdates[dataType] = exclusions;
@@ -40,7 +41,7 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
                 setDirty(true);
             }
         },
-        [updateDataTypeExclusions, projectId]
+        [updateDataTypeExclusions, project]
     );
 
     const onSave = useCallback(async () => {
@@ -54,7 +55,7 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
                 disabledAssayDesigns: dataTypeExclusion?.['AssayDesign'],
             };
 
-            await api.updateProjectDataExclusions(options);
+            await api.updateProjectDataExclusions(options, project?.path);
 
             setDirty(false);
             onSuccess(true);
@@ -63,7 +64,7 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
         } finally {
             setIsSaving(false);
         }
-    }, [isSaving, onSuccess, projectId, dataTypeExclusion]);
+    }, [isSaving, onSuccess, project, dataTypeExclusion]);
 
     return (
         <div className="panel panel-default">
@@ -82,14 +83,14 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
                                         uncheckedEntitiesDB={
                                             disabledTypesMap?.[entityDataType.projectConfigurableDataType]
                                         }
-                                        isNewFolder={!projectId}
+                                        isNewFolder={!project}
                                     />
                                 </Col>
                             );
                         })}
                     </Row>
 
-                    {projectId && (
+                    {project && (
                         <div className="pull-right">
                             <Button
                                 className="pull-right alert-button"

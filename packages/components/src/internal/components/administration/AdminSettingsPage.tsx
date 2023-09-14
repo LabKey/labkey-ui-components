@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { getServerContext } from '@labkey/api';
 
 import classNames from 'classnames';
@@ -19,38 +19,27 @@ import {
     isProductProjectsEnabled,
     isSampleStatusEnabled,
 } from '../../app/utils';
-import { ProjectSettings } from '../project/ProjectSettings';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 
 import { BarTenderSettingsForm } from '../labels/BarTenderSettingsForm';
 
-import { Alert } from '../base/Alert';
-
-import { ProjectDataTypeSelections } from '../project/ProjectDataTypeSelections';
 import { AppContext, useAppContext } from '../../AppContext';
 
 import { ProjectLookAndFeelForm } from '../project/ProjectLookAndFeelForm';
 
 import { useAdminAppContext } from './useAdminAppContext';
 import { showPremiumFeatures } from './utils';
-import { BasePermissions } from './BasePermissions';
-import { SITE_SECURITY_ROLES } from './constants';
 
 // export for jest testing
 export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
     const { setIsDirty, getIsDirty, children } = props;
-    const [error, setError] = useState<string>();
-    const { moduleContext, user, project, container } = useServerContext();
+    const { moduleContext, user, container } = useServerContext();
     const { createNotification, dismissNotifications } = useNotificationsContext();
-    const { NotebookProjectSettingsComponent, projectDataTypes, ProjectFreezerSelectionComponent } =
+    const { NotebookProjectSettingsComponent, projectDataTypes } =
         useAdminAppContext();
     const { api } = useAppContext<AppContext>();
 
     const disabledTypesMap = getProjectDataExclusion(moduleContext);
-
-    const onError = useCallback((e: string) => {
-        setError(e);
-    }, []);
 
     const onSettingsChange = useCallback(() => {
         setIsDirty(true);
@@ -82,13 +71,11 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
         );
     }, [moduleContext]);
 
-    const commonSettings = useMemo((): React.ReactNode => {
+    const projectSettings = useMemo((): React.ReactNode => {
+        if (!isProductProjectsEnabled(moduleContext)) return null;
+
         return (
             <>
-                <ActiveUserLimit />
-                {isProductProjectsEnabled(moduleContext) && (
-                    <ProjectSettings onChange={onSettingsChange} onSuccess={onSettingsSuccess} onPageError={onError} />
-                )}
                 {isAppHomeFolder(container, moduleContext) && (
                     <ProjectLookAndFeelForm
                         api={api.folder}
@@ -96,26 +83,32 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
                         onSuccess={onSettingsSuccess}
                     />
                 )}
-                {isProductProjectsEnabled(moduleContext) && !isAppHomeFolder(container, moduleContext) && (
-                    <>
-                        <ProjectDataTypeSelections
-                            entityDataTypes={projectDataTypes}
-                            projectId={container.id}
-                            key={container.id}
-                            updateDataTypeExclusions={onSettingsChange}
-                            disabledTypesMap={disabledTypesMap}
-                            api={api.folder}
-                            onSuccess={onSettingsSuccess}
-                        />
-                        {!!ProjectFreezerSelectionComponent && (
-                            <ProjectFreezerSelectionComponent
-                                projectId={container.id}
-                                updateDataTypeExclusions={onSettingsChange}
-                                disabledTypesMap={disabledTypesMap}
-                                onSuccess={onSettingsSuccess}
-                            />
-                        )}
-                    </>
+            </>
+        );
+    }, [moduleContext, projectDataTypes, disabledTypesMap, container]);
+
+    const _title = isAppHomeFolder(container, moduleContext) ? 'Application Settings' : 'Project Settings';
+
+    if (!user.isAdmin) {
+        return <InsufficientPermissionsPage title={_title} />;
+    }
+
+    return (
+        <>
+            <BasePermissionsCheckPage
+                user={user}
+                title={_title}
+                description={!isAppHomeFolder(container, moduleContext) ? container.path : undefined}
+                hasPermission={user.isAdmin}
+                renderButtons={lkVersion}
+            >
+                <ActiveUserLimit />
+                {isAppHomeFolder(container, moduleContext) && (
+                    <ProjectLookAndFeelForm
+                        api={api.folder}
+                        onChange={onSettingsChange}
+                        onSuccess={onSettingsSuccess}
+                    />
                 )}
                 {biologicsIsPrimaryApp(moduleContext) && isELNEnabled(moduleContext) && (
                     <NotebookProjectSettingsComponent />
@@ -129,44 +122,6 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
                 <NameIdSettings {...props} />
                 {isSampleStatusEnabled(moduleContext) && <ManageSampleStatusesPanel {...props} />}
                 {children}
-            </>
-        );
-    }, [moduleContext, projectDataTypes, disabledTypesMap, container]);
-
-    const _title = isAppHomeFolder(container, moduleContext) ? 'Settings' : 'Project Settings';
-
-    if (!user.isAdmin) {
-        return <InsufficientPermissionsPage title={_title} />;
-    }
-
-    if (!showPremiumFeatures(moduleContext)) {
-        return (
-            <BasePermissions
-                pageTitle={_title}
-                panelTitle="Site Roles and Assignments"
-                containerId={project.rootId}
-                hasPermission={user.isAdmin}
-                rolesMap={SITE_SECURITY_ROLES}
-                showDetailsPanel={false}
-                disableRemoveSelf
-                lkVersion={lkVersion}
-            >
-                {commonSettings}
-            </BasePermissions>
-        );
-    }
-
-    return (
-        <>
-            {error && <Alert className="admin-settings-error"> {error} </Alert>}
-            <BasePermissionsCheckPage
-                user={user}
-                title={_title}
-                description={!isAppHomeFolder(container, moduleContext) ? container.path : undefined}
-                hasPermission={user.isAdmin}
-                renderButtons={lkVersion}
-            >
-                {commonSettings}
             </BasePermissionsCheckPage>
         </>
     );

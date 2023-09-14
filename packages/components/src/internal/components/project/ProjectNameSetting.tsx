@@ -10,7 +10,7 @@ interface Props {
 
 const MAX_FOLDER_NAME_LENGTH = 255;
 
-export const ProjectProperties: FC<Props> = memo(props => {
+export const ProjectNameSetting: FC<Props> = memo(props => {
     const { autoFocus, defaultTitle, defaultName, onChange } = props;
     const [name, setName] = useState<string>(defaultName);
     const [nameIsTitle, setNameIsTitle] = useState<boolean>(defaultName ? defaultName === defaultTitle : true);

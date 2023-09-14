@@ -13,7 +13,7 @@ import { getFolderTestAPIWrapper } from '../container/FolderAPIWrapper';
 
 import { AdminAppContext, AppContext } from '../../AppContext';
 
-import { ProjectProperties } from './ProjectProperties';
+import { ProjectNameSetting } from './ProjectNameSetting';
 import { ProjectSettings, ProjectSettingsProps } from './ProjectSettings';
 
 describe('ProjectSettings', () => {
@@ -87,7 +87,7 @@ describe('ProjectSettings', () => {
             serverCtx
         );
 
-        const properties = wrapper.find(ProjectProperties);
+        const properties = wrapper.find(ProjectNameSetting);
         expect(properties.exists()).toBe(true);
         expect(properties.prop('defaultName')).toEqual(container.name);
         expect(properties.prop('defaultTitle')).toEqual(container.title);

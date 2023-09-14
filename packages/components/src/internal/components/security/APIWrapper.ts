@@ -1,5 +1,5 @@
 import { List, Map } from 'immutable';
-import { Ajax, Filter, Query, Security, Utils } from '@labkey/api';
+import {ActionURL, Ajax, Filter, Query, Security, Utils} from '@labkey/api';
 
 import { Container } from '../base/models/Container';
 import {
@@ -7,6 +7,7 @@ import {
     UserLimitSettings,
     getUserLimitSettings,
     processGetRolesResponse,
+    fetchContainers,
 } from '../permissions/actions';
 import { Principal, SecurityPolicy, SecurityRole } from '../permissions/models';
 import { Row, selectRows } from '../../query/selectRows';
@@ -70,6 +71,9 @@ export interface SecurityAPIWrapper {
         projectPath: string
     ) => Promise<RemoveGroupMembersResponse>;
     updateUserDetails: (schemaQuery: SchemaQuery, data: FormData) => Promise<any>;
+    savePolicy: (policy: any, containerPath?: string) => Promise<any>;
+    deletePolicy: (resourceId: string, containerPath?: string) => Promise<any>;
+    getInheritedProjects: (container: Container) => Promise<string[]>;
 }
 
 export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
@@ -114,6 +118,7 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         return new Promise((resolve, reject) => {
             Security.deleteContainer({
                 comment: options.comment,
+                containerPath: options.containerPath,
                 success: data => {
                     resolve(data);
                 },
@@ -141,30 +146,7 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         });
     };
 
-    fetchContainers = (options: FetchContainerOptions): Promise<Container[]> => {
-        // NK: By default the server processes "includeSubfolders=false" as setting the
-        // depth to 1. When the depth is set to 1 the results will include the first level of
-        // subfolders negating the desire to not include subfolders. This endpoint wrapper
-        // works around this by altering requests for "includeSubfolders=false" to be
-        // "includeSubfolders=true&depth=0" so that subfolders are not included.
-        if (options?.includeSubfolders === false && options.depth === undefined) {
-            options.includeSubfolders = true;
-            options.depth = 0;
-        }
-
-        return new Promise((resolve, reject) => {
-            Security.getContainers({
-                ...options,
-                success: (data: Security.ContainerHierarchy) => {
-                    resolve(recurseContainerHierarchy(data, new Container(data)));
-                },
-                failure: error => {
-                    console.error('Failed to fetch containers', error);
-                    reject(error);
-                },
-            });
-        });
-    };
+    fetchContainers = fetchContainers;
 
     fetchGroups = (projectPath: string): Promise<FetchedGroup[]> => {
         return new Promise((resolve, reject) => {
@@ -333,13 +315,63 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
             });
         });
     };
-}
 
-function recurseContainerHierarchy(data: Security.ContainerHierarchy, container: Container): Container[] {
-    return (data.children ?? []).reduce(
-        (containers, c) => containers.concat(recurseContainerHierarchy(c, new Container(c))),
-        [container]
-    );
+    getInheritedProjects = (container: Container): Promise<string[]> => {
+        return new Promise((resolve, reject) => {
+            Ajax.request({
+                url: ActionURL.buildURL('core', 'getExtSecurityContainerTree.api', container.path),
+                method: 'GET',
+                params: {
+                    'requiredPermission': Security.PermissionTypes.Admin,
+                    nodeId: container.id,
+                },
+                success: Utils.getCallbackWrapper((projects) => {
+                    const inherited = [];
+                    projects.forEach(proj => {
+                        if (proj.inherit) {
+                            const name = proj.text.substring(0, proj.text.length - 1); // remove trailing *
+                            inherited.push(name);
+                        }
+                    });
+
+                    resolve(inherited);
+                }),
+                failure: handleRequestFailure(reject, 'Failed to get projects'),
+            });
+        });
+    };
+
+    savePolicy = (policy: any, containerPath?: string): Promise<any> => {
+        return new Promise((resolve, reject) => {
+            Security.savePolicy({
+                policy,
+                containerPath,
+                success: (response) => {
+                    resolve(response);
+                },
+                failure: error => {
+                    console.error('Failed to save policy', error);
+                    reject(error);
+                },
+            });
+        });
+    };
+
+    deletePolicy = (resourceId: string, containerPath?: string): Promise<any> => {
+        return new Promise((resolve, reject) => {
+            Security.deletePolicy({
+                resourceId,
+                containerPath,
+                success: (response) => {
+                    resolve(response);
+                },
+                failure: error => {
+                    console.error('Failed to delete policy', error);
+                    reject(error);
+                },
+            });
+        });
+    };
 }
 
 /**
@@ -367,6 +399,9 @@ export function getSecurityTestAPIWrapper(
         getUserPropertiesForOther: mockFn(),
         removeGroupMembers: mockFn(),
         updateUserDetails: mockFn(),
+        savePolicy: mockFn(),
+        deletePolicy: mockFn(),
+        getInheritedProjects: mockFn(),
         ...overrides,
     };
 }

@@ -25,7 +25,6 @@ export const PermissionManagementPage: FC = memo(() => {
 
     return (
         <BasePermissions
-            containerId={container.id}
             disableRemoveSelf={false}
             hasPermission={user.isAdmin}
             pageTitle="Permissions"

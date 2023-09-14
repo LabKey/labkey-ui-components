@@ -12,7 +12,7 @@ import { useNotificationsContext } from '../notifications/NotificationsContext';
 import { Container } from '../base/models/Container';
 import { AppURL } from '../../url/AppURL';
 
-import { getCurrentAppProperties, hasProductProjects, setProductProjects } from '../../app/utils';
+import {getCurrentAppProperties, hasProductProjects, isAppHomeFolder, setProductProjects} from '../../app/utils';
 
 import { useFolderMenuContext } from '../navigation/hooks';
 
@@ -24,7 +24,7 @@ import { ProjectConfigurableDataType } from '../entities/models';
 
 import { PageDetailHeader } from '../forms/PageDetailHeader';
 
-import { ProjectProperties } from './ProjectProperties';
+import { ProjectNameSetting } from './ProjectNameSetting';
 import { ProjectDataTypeSelections } from './ProjectDataTypeSelections';
 
 const TITLE = 'Create New Project';
@@ -38,6 +38,8 @@ export interface CreateProjectContainerProps {
 export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(props => {
     const { api, onCancel, onCreated } = props;
     const { projectDataTypes, ProjectFreezerSelectionComponent } = useAdminAppContext();
+
+    const { moduleContext, container } = useServerContext();
 
     const [error, setError] = useState<string>();
     const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -71,9 +73,13 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
                 disabledStorageLocations: dataTypeExclusion?.['StorageLocation'],
             };
 
+            const homeFolderPath = isAppHomeFolder(container, moduleContext)
+                ? container.path
+                : container.parentPath;
+
             let project: Container;
             try {
-                project = await api.createProject(options);
+                project = await api.createProject(options, homeFolderPath);
             } catch (e) {
                 setError(resolveErrorMessage(e));
                 setIsSaving(false);
@@ -95,7 +101,7 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
                     <div className="panel-heading">Name of Project</div>
                     <div className="panel-body">
                         <div className="form-horizontal">
-                            <ProjectProperties autoFocus />
+                            <ProjectNameSetting autoFocus />
 
                             {/* Dummy submit button so browsers trigger onSubmit with enter key */}
                             <button type="submit" className="dummy-input" tabIndex={-1} />
@@ -104,7 +110,7 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
                 </div>
                 <ProjectDataTypeSelections
                     entityDataTypes={projectDataTypes}
-                    projectId={null}
+                    project={null}
                     updateDataTypeExclusions={updateDataTypeExclusions}
                 />
                 {ProjectFreezerSelectionComponent && (
@@ -140,7 +146,7 @@ export const CreateProjectPage: FC<WithRouterProps> = memo(({ router }) => {
     const onCreated = useCallback(
         (project: Container) => {
             // Reroute user back to projects listing page
-            router.replace(AppURL.create('admin', 'projects').toString());
+            router.replace(AppURL.create('admin', 'projects').addParam('created', project.name).toString());
 
             const appProps = getCurrentAppProperties();
             if (!appProps?.controllerName) return;

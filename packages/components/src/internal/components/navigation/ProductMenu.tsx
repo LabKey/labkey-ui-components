@@ -87,13 +87,7 @@ const ProductMenuButtonImpl: FC<ProductMenuButtonProps & WithRouterProps> = memo
 
         (async () => {
             try {
-                let folders = await api.security.fetchContainers({
-                    // Issue 47502: use the current path if in Home Project (which could be a LK Project or a subfolder)
-                    containerPath: isAppHomeFolder(container, moduleContext) ? container.path : container.parentPath,
-                });
-
-                // if user doesn't have permissions to the parent/project, the response will come back with an empty Container object
-                folders = folders.filter(c => c !== undefined && c.id !== '');
+                const folders = await api.folder.getProjects(container, moduleContext, false, true);
 
                 const items_: FolderMenuItem[] = [];
                 const topLevelFolderIdx = folders.findIndex(f => f.parentPath === '/');
@@ -103,8 +97,6 @@ const ProductMenuButtonImpl: FC<ProductMenuButtonProps & WithRouterProps> = memo
                     items_.push(createFolderItem(topLevelFolder, appProperties.controllerName, true));
                 }
 
-                // Issue 45805: sort folders by title as server-side sorting is insufficient
-                folders.sort(naturalSortByProperty('title'));
                 setFolderItems(
                     items_.concat(folders.map(folder => createFolderItem(folder, appProperties.controllerName, false)))
                 );
@@ -378,4 +370,8 @@ const HEADER_MENU_SUBTITLE_MAP = {
 // export for jest testing
 export function getHeaderMenuSubtitle(baseRoute: string) {
     return HEADER_MENU_SUBTITLE_MAP[baseRoute?.toLowerCase()] ?? 'Dashboard';
+}
+
+export function isAdminRoute(baseRoute: string) {
+    return HEADER_MENU_SUBTITLE_MAP[baseRoute?.toLowerCase()] === 'Administration';
 }

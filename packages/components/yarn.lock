@@ -1613,7 +1613,7 @@
     eslint-plugin-typescript-sort-keys "2.1.0"
     prettier "2.6.2"
 
-"@labkey/eslint-config-react@~0.0.12":
+"@labkey/eslint-config-react@~0.0.12-fb-package-updates-0923.0":
   version "0.0.12"
   resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/eslint-config-react/-/@labkey/eslint-config-react-0.0.12.tgz#5a6b4092d4e0d480ccc0013ec3c854a787c1f8f0"
   integrity sha1-WmtAktTg1IDMwAE+w8hUp4fB+PA=

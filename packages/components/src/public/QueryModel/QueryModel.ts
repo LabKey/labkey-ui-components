@@ -1172,7 +1172,15 @@ export function getSettingsFromLocalStorage(id: string): QueryModelSettings {
     };
 }
 
+const UNIQUE_ERROR =
+    'Model ID is not unique, cannot save settings to local storage. Use a model ID that is unique and stable.';
+
 export function saveSettingsToLocalStorage(model: QueryModel): void {
+    // We often use "model" as the default model ID, which is not sufficiently unique to store saved settings.
+    if (model.id === 'model') {
+        console.error(UNIQUE_ERROR);
+        return;
+    }
     const settings = {
         filterArray: model.filterArray.map(f => ({
             columnName: f.getColumnName(),

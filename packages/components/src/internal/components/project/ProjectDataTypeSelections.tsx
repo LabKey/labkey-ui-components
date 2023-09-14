@@ -8,7 +8,7 @@ import { EntityDataType, ProjectConfigurableDataType } from '../entities/models'
 import { DataTypeSelector } from '../entities/DataTypeSelector';
 
 import { FolderAPIWrapper, ProjectSettingsOptions } from '../container/FolderAPIWrapper';
-import {Container} from "../base/models/Container";
+import { Container } from '../base/models/Container';
 
 interface Props {
     api?: FolderAPIWrapper;

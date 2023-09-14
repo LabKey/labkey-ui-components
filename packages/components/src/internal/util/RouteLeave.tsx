@@ -132,8 +132,7 @@ export const WithDirtyCheckLink: FC<WithDirtyCheckLinkProps & InjectedRouteLeave
         const dirty = getIsDirty();
         if (dirty) {
             const result = confirm(leaveMsg ?? CONFIRM_MESSAGE);
-            if (!result)
-                return;
+            if (!result) return;
 
             setIsDirty(false);
         }

@@ -1,25 +1,29 @@
-import React, {FC, memo, useCallback, useEffect, useMemo, useState} from 'react';
-import {Button, MenuItem} from 'react-bootstrap';
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { Button, MenuItem } from 'react-bootstrap';
+
+import { Link } from 'react-router';
+
+import { Security } from '@labkey/api';
 
 import { useServerContext } from '../base/ServerContext';
-import {AppURL, createProductUrl} from '../../url/AppURL';
+import { AppURL, createProductUrl } from '../../url/AppURL';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 import { AUDIT_KEY } from '../../app/constants';
 import { AUDIT_EVENT_TYPE_PARAM, PROJECT_AUDIT_QUERY } from '../auditlog/constants';
 import { Alert } from '../base/Alert';
 import { getLocation, removeParameters } from '../../util/URL';
-import {AppContext, useAppContext} from "../../AppContext";
-import {Container} from "../base/models/Container";
-import {resolveErrorMessage} from "../../util/messaging";
-import {LoadingSpinner} from "../base/LoadingSpinner";
-import {Link} from "react-router";
-import {ProjectSettings} from "./ProjectSettings";
-import {InjectedRouteLeaveProps, withRouteLeave} from "../../util/RouteLeave";
-import {getCurrentAppProperties, getPrimaryAppProperties} from "../../app/utils";
-import {VerticalScrollPanel} from "../base/VeriticalScrollPanel";
-import {ProjectListing} from "./ProjectListing";
-import {Security} from "@labkey/api";
+import { AppContext, useAppContext } from '../../AppContext';
+import { Container } from '../base/models/Container';
+import { resolveErrorMessage } from '../../util/messaging';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
+import { InjectedRouteLeaveProps, withRouteLeave } from '../../util/RouteLeave';
+import { getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
+import { VerticalScrollPanel } from '../base/VeriticalScrollPanel';
+
+import { ProjectSettings } from './ProjectSettings';
+
+import { ProjectListing } from './ProjectListing';
 
 export const ProjectManagementPageImpl: FC<InjectedRouteLeaveProps> = memo(props => {
     const { getIsDirty, setIsDirty } = props;
@@ -34,43 +38,38 @@ export const ProjectManagementPageImpl: FC<InjectedRouteLeaveProps> = memo(props
     const [error, setError] = useState<string>();
     const [loaded, setLoaded] = useState<boolean>(false);
 
-    useEffect(
-        () => {
-            (async () => {
-                setLoaded(false);
-                setError(undefined);
+    useEffect(() => {
+        (async () => {
+            setLoaded(false);
+            setError(undefined);
 
-                try {
-                    let projects_ = await api.folder.getProjects(container, moduleContext, false, true, false);
-                    projects_ = projects_.filter(c => c.effectivePermissions.indexOf(Security.PermissionTypes.Admin) > -1);
-                    setProjects(projects_);
+            try {
+                let projects_ = await api.folder.getProjects(container, moduleContext, false, true, false);
+                projects_ = projects_.filter(c => c.effectivePermissions.indexOf(Security.PermissionTypes.Admin) > -1);
+                setProjects(projects_);
 
-                    if (selectedProject) {
-                        if (projects_.some(proj => proj.id === selectedProject.id)) // selected project is still present
-                            return;
-                    }
-
-                    let defaultContainer = container?.isFolder ? container : projects_?.[0];
-                    const createdProjectName = getLocation().query?.get('created');
-                    if (createdProjectName) {
-                        removeParameters(getLocation(), 'created');
-                        const createdProject = projects_.find(proj => proj.name === createdProjectName);
-                        if (createdProject)
-                            defaultContainer = createdProject;
-                    }
-
-                    setSelectedProject(defaultContainer);
-
-                } catch (e) {
-                    setError(`Error: ${resolveErrorMessage(e)}`);
-                } finally {
-                    setLoaded(true);
+                if (selectedProject) {
+                    if (projects_.some(proj => proj.id === selectedProject.id))
+                        // selected project is still present
+                        return;
                 }
-            })();
-        },
-        [reloadCounter]
-    );
 
+                let defaultContainer = container?.isFolder ? container : projects_?.[0];
+                const createdProjectName = getLocation().query?.get('created');
+                if (createdProjectName) {
+                    removeParameters(getLocation(), 'created');
+                    const createdProject = projects_.find(proj => proj.name === createdProjectName);
+                    if (createdProject) defaultContainer = createdProject;
+                }
+
+                setSelectedProject(defaultContainer);
+            } catch (e) {
+                setError(`Error: ${resolveErrorMessage(e)}`);
+            } finally {
+                setLoaded(true);
+            }
+        })();
+    }, [reloadCounter]);
 
     useEffect(() => {
         const successMessage = getLocation().query?.get('successMsg');
@@ -91,9 +90,11 @@ export const ProjectManagementPageImpl: FC<InjectedRouteLeaveProps> = memo(props
                     >
                         Create a Project
                     </Button>
-                    <a href={AppURL.create(AUDIT_KEY)
-                        .addParam(AUDIT_EVENT_TYPE_PARAM, PROJECT_AUDIT_QUERY.value)
-                        .toHref()}>
+                    <a
+                        href={AppURL.create(AUDIT_KEY)
+                            .addParam(AUDIT_EVENT_TYPE_PARAM, PROJECT_AUDIT_QUERY.value)
+                            .toHref()}
+                    >
                         View Audit History
                     </a>
                 </>
@@ -114,10 +115,8 @@ export const ProjectManagementPageImpl: FC<InjectedRouteLeaveProps> = memo(props
             setIsDirty(dirty);
             const isCurrentContainerSelected = selectedProject.id === container.id;
             if (maybeReload) {
-                if (isCurrentContainerSelected)
-                    window.location.reload();
-            }
-            else {
+                if (isCurrentContainerSelected) window.location.reload();
+            } else {
                 if (isCurrentContainerSelected && isDelete)
                     window.location.href = createProductUrl(
                         getPrimaryAppProperties()?.productId,
@@ -125,8 +124,7 @@ export const ProjectManagementPageImpl: FC<InjectedRouteLeaveProps> = memo(props
                         AppURL.create('admin', 'projects').addParam('successMsg', successMsg).toHref(),
                         container.parentPath
                     ).toString();
-                else
-                    setReloadCounter((prevState => prevState + 1));
+                else setReloadCounter(prevState => prevState + 1);
             }
         },
         [setIsDirty, selectedProject, container]
@@ -148,12 +146,13 @@ export const ProjectManagementPageImpl: FC<InjectedRouteLeaveProps> = memo(props
             >
                 <Alert>{error}</Alert>
                 {!loaded && !error && <LoadingSpinner />}
-                {loaded && !error && projects?.length === 0 &&
+                {loaded && !error && projects?.length === 0 && (
                     <Alert bsStyle="warning">
-                        No projects have been created. Click <Link to={AppURL.create('admin', 'projects', 'new').toString()}>here</Link> to get started.
+                        No projects have been created. Click{' '}
+                        <Link to={AppURL.create('admin', 'projects', 'new').toString()}>here</Link> to get started.
                     </Alert>
-                }
-                {projects?.length > 0 &&
+                )}
+                {projects?.length > 0 && (
                     <div className="side-panels-container">
                         <ProjectListing
                             projects={projects}
@@ -163,12 +162,18 @@ export const ProjectManagementPageImpl: FC<InjectedRouteLeaveProps> = memo(props
                             getIsDirty={getIsDirty}
                         />
                         <VerticalScrollPanel cls="merged-panels-container col-md-9 col-xs-12" offset={210}>
-                            {!!selectedProject &&
-                                <ProjectSettings onChange={onSettingsChange} onSuccess={onSettingsSuccess} onPageError={onError} project={selectedProject} key={selectedProject?.id} />
-                            }
+                            {!!selectedProject && (
+                                <ProjectSettings
+                                    onChange={onSettingsChange}
+                                    onSuccess={onSettingsSuccess}
+                                    onPageError={onError}
+                                    project={selectedProject}
+                                    key={selectedProject?.id}
+                                />
+                            )}
                         </VerticalScrollPanel>
                     </div>
-                }
+                )}
             </BasePermissionsCheckPage>
         </>
     );

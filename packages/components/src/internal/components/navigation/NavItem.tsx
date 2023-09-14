@@ -20,8 +20,8 @@ import { AppURL } from '../../url/AppURL';
 
 interface NavItemProps {
     onActive?: (activeEl: HTMLElement) => void;
-    to?: string | AppURL;
     onClick?: () => void;
+    to?: string | AppURL;
 }
 
 const NavItemImpl: FC<NavItemProps & WithRouterProps> = memo(({ children, location, onActive, to, onClick }) => {
@@ -32,8 +32,10 @@ const NavItemImpl: FC<NavItemProps & WithRouterProps> = memo(({ children, locati
     useEffect(() => {
         if (to && location) {
             const toString = to.toString();
-            const paramIndex = toString.indexOf("?"); ;
-            const isActive = location.pathname.toLowerCase() === toString.substring(0, paramIndex < 0 ? toString.length : paramIndex).toLowerCase();
+            const paramIndex = toString.indexOf('?');
+            const isActive =
+                location.pathname.toLowerCase() ===
+                toString.substring(0, paramIndex < 0 ? toString.length : paramIndex).toLowerCase();
             setActive(isActive);
 
             if (isActive) {
@@ -46,7 +48,9 @@ const NavItemImpl: FC<NavItemProps & WithRouterProps> = memo(({ children, locati
 
     return (
         <li className={active ? 'active' : null} ref={itemRef}>
-            <a href={href} onClick={onClick}>{children}</a>
+            <a href={href} onClick={onClick}>
+                {children}
+            </a>
         </li>
     );
 });

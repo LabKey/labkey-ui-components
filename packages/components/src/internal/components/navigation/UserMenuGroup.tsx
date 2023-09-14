@@ -50,33 +50,30 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
     const { model, extraDevItems, extraUserItems, onSignIn, onSignOut, user, signOutUrl } = props;
 
     const { helpHref, userMenuItems, adminMenuItems } = useMemo(() => {
-        let helpHref ;
-        let userMenuItems = [];
-        let adminMenuItems = [];
+        let helpHref;
+        const userMenuItems = [];
+        const adminMenuItems = [];
         model?.items
             .filter(item => !item.requiresLogin || (item.requiresLogin && user?.isSignedIn))
             .forEach(item => {
                 if (item.key === 'docs') {
                     helpHref = item.getUrlString();
-                }
-                else {
+                } else {
                     const menuItem = (
                         <MenuItem key={item.key} href={item.getUrlString()} target="_self">
-                        {item.label}
-                    </MenuItem>
+                            {item.label}
+                        </MenuItem>
                     );
                     if (item.key.indexOf('admin') === 0) {
                         adminMenuItems.push(menuItem);
-                    }
-                    else
-                        userMenuItems.push(menuItem);
+                    } else userMenuItems.push(menuItem);
                 }
             });
         return {
             helpHref,
             userMenuItems,
-            adminMenuItems
-        }
+            adminMenuItems,
+        };
     }, [model?.items, user?.isSignedIn]);
 
     const handleSignOut = useCallback(() => {
@@ -91,29 +88,29 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
         <>
             <div className="navbar-item pull-right">
                 <Dropdown id="user-menu-dropdown">
-                <Dropdown.Toggle useAnchor>
-                    {user.avatar ? (
-                        <Image src={user.avatar} alt="User Avatar" rounded height={32} width={32} />
-                    ) : (
-                        <span className="navbar-item">
-                        <span className="user-name">
-                            <span className="fas fa-user-circle" /> {user.displayName}{' '}
-                        </span>
-                    </span>
-                    )}
-                </Dropdown.Toggle>
-                <Dropdown.Menu className="pull-right" pullRight>
-                    <div className="navbar-connector" />
-                    {userMenuItems}
-                    {extraUserItems}
-                    <MenuItem divider />
-                    {user.isSignedIn ? (
-                        <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
-                    ) : (
-                        <MenuItem onClick={onSignIn}>Sign In</MenuItem>
-                    )}
-                </Dropdown.Menu>
-            </Dropdown>
+                    <Dropdown.Toggle useAnchor>
+                        {user.avatar ? (
+                            <Image src={user.avatar} alt="User Avatar" rounded height={32} width={32} />
+                        ) : (
+                            <span className="navbar-item">
+                                <span className="user-name">
+                                    <span className="fas fa-user-circle" /> {user.displayName}{' '}
+                                </span>
+                            </span>
+                        )}
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu className="pull-right" pullRight>
+                        <div className="navbar-connector" />
+                        {userMenuItems}
+                        {extraUserItems}
+                        <MenuItem divider />
+                        {user.isSignedIn ? (
+                            <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
+                        ) : (
+                            <MenuItem onClick={onSignIn}>Sign In</MenuItem>
+                        )}
+                    </Dropdown.Menu>
+                </Dropdown>
             </div>
             {adminMenuItems?.length > 0 && (
                 <div className="navbar-item pull-right navbar-item-product-navigation">

@@ -35,8 +35,7 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
     const { setIsDirty, getIsDirty, children } = props;
     const { moduleContext, user, container } = useServerContext();
     const { createNotification, dismissNotifications } = useNotificationsContext();
-    const { NotebookProjectSettingsComponent, projectDataTypes } =
-        useAdminAppContext();
+    const { NotebookProjectSettingsComponent, projectDataTypes } = useAdminAppContext();
     const { api } = useAppContext<AppContext>();
 
     const disabledTypesMap = getProjectDataExclusion(moduleContext);

@@ -14,7 +14,7 @@ import { resolveErrorMessage } from '../../util/messaging';
 import { useAppContext } from '../../AppContext';
 import { Summary } from '../security/APIWrapper';
 import { Alert } from '../base/Alert';
-import {Container} from "../base/models/Container";
+import { Container } from '../base/models/Container';
 
 interface CommentAreaProps {
     comment: string;
@@ -108,9 +108,7 @@ export const BodyDeleting: FC<BodyDeletingProps> = memo(({ totalCountFromSummari
 
     return (
         <Modal.Body>
-            <div className="deleting-project-modal-text">
-                Please don't close this page until deletion is complete.
-            </div>
+            <div className="deleting-project-modal-text">Please don't close this page until deletion is complete.</div>
             <Progress delay={0} estimate={totalCountFromSummaries * 15} toggle={toggle} />
         </Modal.Body>
     );
@@ -118,9 +116,9 @@ export const BodyDeleting: FC<BodyDeletingProps> = memo(({ totalCountFromSummari
 
 interface Props {
     onCancel: () => void;
+    onDeleteSuccess: () => void;
     onError: (e: string) => void;
     project: Container;
-    onDeleteSuccess: () => void;
 }
 
 export const DeleteProjectModal: FC<Props> = memo(props => {
@@ -177,8 +175,6 @@ export const DeleteProjectModal: FC<Props> = memo(props => {
             ).toString();
 
             window.location.href = adminProjectsHref;
-
-
         } catch (e) {
             onError(resolveErrorMessage(e) ?? `${projectName} could not be deleted. Please try again.`);
         }

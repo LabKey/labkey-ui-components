@@ -8,9 +8,10 @@ import { ActionURL, Ajax, Filter, Security, Utils } from '@labkey/api';
 
 import { ISelectRowsResult, selectRowsDeprecated } from '../../query/api';
 
+import { Container } from '../base/models/Container';
+import { FetchContainerOptions } from '../security/APIWrapper';
+
 import { Principal, SecurityPolicy, SecurityRole } from './models';
-import {Container} from "../base/models/Container";
-import {FetchContainerOptions} from "../security/APIWrapper";
 
 export function processGetRolesResponse(rawRoles: any): List<SecurityRole> {
     let roles = List<SecurityRole>();
@@ -126,7 +127,6 @@ export function fetchContainerSecurityPolicy(
         });
     });
 }
-
 
 function recurseContainerHierarchy(data: Security.ContainerHierarchy, container: Container): Container[] {
     return (data.children ?? []).reduce(

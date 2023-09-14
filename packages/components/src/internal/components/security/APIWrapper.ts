@@ -1,5 +1,5 @@
 import { List, Map } from 'immutable';
-import {ActionURL, Ajax, Filter, Query, Security, Utils} from '@labkey/api';
+import { ActionURL, Ajax, Filter, Query, Security, Utils } from '@labkey/api';
 
 import { Container } from '../base/models/Container';
 import {
@@ -50,6 +50,7 @@ export interface SecurityAPIWrapper {
     createGroup: (groupName: string, projectPath: string) => Promise<Security.CreateGroupResponse>;
     deleteContainer: (options: Security.DeleteContainerOptions) => Promise<Record<string, unknown>>;
     deleteGroup: (id: number, projectPath: string) => Promise<DeleteGroupResponse>;
+    deletePolicy: (resourceId: string, containerPath?: string) => Promise<any>;
     fetchContainers: (options: FetchContainerOptions) => Promise<Container[]>;
     fetchGroups: (projectPath: string) => Promise<FetchedGroup[]>;
     fetchPolicy: (
@@ -61,9 +62,8 @@ export interface SecurityAPIWrapper {
     getAuditLogData: (columns: string, filterCol: string, filterVal: string | number) => Promise<string>;
     getDeletionSummaries: () => Promise<Summary[]>;
     getGroupMemberships: () => Promise<Row[]>;
+    getInheritedProjects: (container: Container) => Promise<string[]>;
     getUserLimitSettings: () => Promise<UserLimitSettings>;
-    getUserPermissions: (options: Security.GetUserPermissionsOptions) => Promise<string[]>;
-    getUserProperties: (userId: number) => Promise<any>;
     getUserPropertiesForOther: (userId: number) => Promise<{ [key: string]: any }>;
     removeGroupMembers: (
         groupId: number,
@@ -72,8 +72,8 @@ export interface SecurityAPIWrapper {
     ) => Promise<RemoveGroupMembersResponse>;
     updateUserDetails: (schemaQuery: SchemaQuery, data: FormData) => Promise<any>;
     savePolicy: (policy: any, containerPath?: string) => Promise<any>;
-    deletePolicy: (resourceId: string, containerPath?: string) => Promise<any>;
-    getInheritedProjects: (container: Container) => Promise<string[]>;
+    getUserProperties: (userId: number) => Promise<any>;
+    getUserPermissions: (options: Security.GetUserPermissionsOptions) => Promise<string[]>;
 }
 
 export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
@@ -322,10 +322,10 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
                 url: ActionURL.buildURL('core', 'getExtSecurityContainerTree.api', container.path),
                 method: 'GET',
                 params: {
-                    'requiredPermission': Security.PermissionTypes.Admin,
+                    requiredPermission: Security.PermissionTypes.Admin,
                     nodeId: container.id,
                 },
-                success: Utils.getCallbackWrapper((projects) => {
+                success: Utils.getCallbackWrapper(projects => {
                     const inherited = [];
                     projects.forEach(proj => {
                         if (proj.inherit) {
@@ -346,7 +346,7 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
             Security.savePolicy({
                 policy,
                 containerPath,
-                success: (response) => {
+                success: response => {
                     resolve(response);
                 },
                 failure: error => {
@@ -362,7 +362,7 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
             Security.deletePolicy({
                 resourceId,
                 containerPath,
-                success: (response) => {
+                success: response => {
                     resolve(response);
                 },
                 failure: error => {

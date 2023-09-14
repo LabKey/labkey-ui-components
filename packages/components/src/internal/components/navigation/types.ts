@@ -4,10 +4,10 @@ import { List } from 'immutable';
 import { AppURL } from '../../url/AppURL';
 
 export interface ITab {
+    onClick?: () => void;
     text: string;
     tooltip?: ReactNode;
     url?: string | AppURL;
-    onClick?: () => void;
 }
 
 export interface SubNavGlobalContext {

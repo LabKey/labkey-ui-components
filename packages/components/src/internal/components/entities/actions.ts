@@ -982,10 +982,10 @@ export const getFolderDataTypeExclusions = (excludedContainer?: string): Promise
 export const getFolderExcludedDataTypes = (dataType: string, excludedContainer?: string): Promise<number[]> => {
     return new Promise((resolve, reject) => {
         getFolderDataTypeExclusions(excludedContainer)
-            .then((exclusions => {
+            .then(exclusions => {
                 resolve(exclusions?.[dataType]);
-            }))
-            .catch(error => reject(error))
+            })
+            .catch(error => reject(error));
     });
 };
 

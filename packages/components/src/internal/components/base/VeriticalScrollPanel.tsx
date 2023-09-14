@@ -1,9 +1,9 @@
 import React, { FC, useState, useEffect, memo } from 'react';
 
 interface Props {
-    ratio?: number;
+    cls?: string;
     offset?: number;
-    cls?: string
+    ratio?: number;
 }
 
 export const VerticalScrollPanel: FC<Props> = memo(props => {
@@ -11,21 +11,18 @@ export const VerticalScrollPanel: FC<Props> = memo(props => {
     const [height, setHeight] = useState<number>(0);
 
     useEffect(() => {
-        if (offset)
-            setHeight(window.innerHeight - offset);
-        else
-            setHeight(window.innerHeight * ratio);
+        if (offset) setHeight(window.innerHeight - offset);
+        else setHeight(window.innerHeight * ratio);
     }, []);
 
     return (
-        <div style={{'height' : height + 'px', overflowY: 'scroll'}} className={cls}>
+        <div style={{ height: height + 'px', overflowY: 'scroll' }} className={cls}>
             {children}
         </div>
-    )
-
+    );
 });
 
 VerticalScrollPanel.defaultProps = {
     ratio: 0.9,
-    offset: 0
-}
+    offset: 0,
+};

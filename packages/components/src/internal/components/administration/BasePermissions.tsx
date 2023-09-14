@@ -24,8 +24,8 @@ import { AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY } from '../auditlog/constants
 import { AUDIT_KEY } from '../../app/constants';
 
 import { getUpdatedPolicyRoles, getUpdatedPolicyRolesByUniqueName } from './actions';
-import {showPremiumFeatures} from "./utils";
-import {SITE_SECURITY_ROLES} from "./constants";
+import { showPremiumFeatures } from './utils';
+import { SITE_SECURITY_ROLES } from './constants';
 
 interface OwnProps {
     description?: ReactNode;

@@ -1,4 +1,4 @@
-import React, {FC, memo, useCallback, useEffect, useState} from 'react';
+import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 
 import { Button } from 'react-bootstrap';
 
@@ -10,14 +10,14 @@ import { resolveErrorMessage } from '../../util/messaging';
 import { Alert } from '../base/Alert';
 import { Container } from '../base/models/Container';
 
-import { ProjectNameSetting } from './ProjectNameSetting';
+import { getProjectDataExclusion } from '../../app/utils';
+import { useAdminAppContext } from '../administration/useAdminAppContext';
+import { getFolderDataTypeExclusions } from '../entities/actions';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { DeleteProjectModal } from './DeleteProjectModal';
-import {ProjectDataTypeSelections} from "./ProjectDataTypeSelections";
-import {getProjectDataExclusion} from "../../app/utils";
-import {useAdminAppContext} from "../administration/useAdminAppContext";
-import {getFolderDataTypeExclusions} from "../entities/actions";
-import {LoadingSpinner} from "../base/LoadingSpinner";
+import { ProjectDataTypeSelections } from './ProjectDataTypeSelections';
+import { ProjectNameSetting } from './ProjectNameSetting';
 
 export interface ProjectSettingsProps {
     onChange: (dirty?: boolean) => void;
@@ -38,30 +38,25 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
     const [error, setError] = useState<string>();
     const [isSaving, setIsSaving] = useState<boolean>(false);
     const { api } = useAppContext();
-    const { projectDataTypes, ProjectFreezerSelectionComponent } =
-        useAdminAppContext();
+    const { projectDataTypes, ProjectFreezerSelectionComponent } = useAdminAppContext();
     const { container, user, moduleContext } = useServerContext();
     const dispatch = useServerContextDispatch();
 
+    useEffect(() => {
+        (async () => {
+            setLoaded(false);
+            setError(undefined);
 
-    useEffect(
-        () => {
-            (async () => {
-                setLoaded(false);
-                setError(undefined);
-
-                try {
-                    const disabledTypesMap_ = await getFolderDataTypeExclusions(project.path);
-                    setDisabledTypesMap(disabledTypesMap_);
-                } catch (e) {
-                    setError(`Error: ${resolveErrorMessage(e)}`);
-                } finally {
-                    setLoaded(true);
-                }
-            })();
-        },
-        [project]
-    );
+            try {
+                const disabledTypesMap_ = await getFolderDataTypeExclusions(project.path);
+                setDisabledTypesMap(disabledTypesMap_);
+            } catch (e) {
+                setError(`Error: ${resolveErrorMessage(e)}`);
+            } finally {
+                setLoaded(true);
+            }
+        })();
+    }, [project]);
 
     const onNameChange_ = useCallback(() => {
         setNameDirty(true);
@@ -198,8 +193,8 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
                     />
                 )}
             </div>
-            {!loaded && <LoadingSpinner/>}
-            {loaded &&
+            {!loaded && <LoadingSpinner />}
+            {loaded && (
                 <>
                     <ProjectDataTypeSelections
                         entityDataTypes={projectDataTypes}
@@ -219,8 +214,7 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
                         />
                     )}
                 </>
-            }
+            )}
         </div>
-
     );
 });

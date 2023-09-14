@@ -17,6 +17,8 @@ import classNames from 'classnames';
 import React, { Children, FC, memo, ReactNode, useCallback, useMemo } from 'react';
 import { List, Map } from 'immutable';
 
+import { WithRouterProps } from 'react-router';
+
 import { ServerNotifications } from '../notifications/ServerNotifications';
 import { ServerNotificationsConfig } from '../notifications/model';
 
@@ -34,13 +36,13 @@ import { User } from '../base/models/User';
 
 import { useServerContext } from '../base/ServerContext';
 
-import {isAdminRoute, ProductMenuButton} from './ProductMenu';
+import { withRouteLeave } from '../../util/RouteLeave';
+
+import { isAdminRoute, ProductMenuButton } from './ProductMenu';
 import { UserMenuGroup, UserMenuProps } from './UserMenuGroup';
 import { MenuSectionConfig } from './model';
 import { SEARCH_PLACEHOLDER } from './constants';
 import { useFolderMenuContext } from './hooks';
-import { withRouteLeave } from "../../util/RouteLeave";
-import { WithRouterProps } from "react-router";
 
 interface NavigationBarProps {
     brand?: ReactNode;
@@ -100,20 +102,25 @@ export const NavigationBarImpl: FC<Props> = memo(props => {
 
     return (
         <div className={classNames('app-navigation', { 'with-sub-nav': hasSubNav })}>
-            <nav className={classNames('main-nav navbar test-loc-nav-header', { 'navbar-container': !isAdminPage, 'admin-navbar-container': isAdminPage })}>
+            <nav
+                className={classNames('main-nav navbar test-loc-nav-header', {
+                    'navbar-container': !isAdminPage,
+                    'admin-navbar-container': isAdminPage,
+                })}
+            >
                 <div className="container">
                     <div className="row">
                         <div className="navbar-left col-xs-6 col-md-6">
                             <span className="navbar-item navbar-left-icon pull-left">{brand}</span>
                             {showNavMenu && !isAdminPage && (
                                 <span className="navbar-item navbar-left-menu">
-                                    {!isAdminPage &&
+                                    {!isAdminPage && (
                                         <ProductMenuButton
                                             key={folderMenuContext.key} // re-render and reload folderItems when project added
                                             sectionConfigs={menuSectionConfigs}
                                             showFolderMenu={showFolderMenu}
                                         />
-                                    }
+                                    )}
                                 </span>
                             )}
                             {isAdminPage && <div className="navbar-left-sub">Administration</div>}

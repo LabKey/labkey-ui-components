@@ -1,17 +1,19 @@
-import React, {FC, memo, Fragment } from "react";
-import { WithDirtyCheckLink} from "../../util/RouteLeave";
-import {Container} from "../base/models/Container";
-import classNames from "classnames";
-import {VerticalScrollPanel} from "../base/VeriticalScrollPanel";
-import {SVGIcon} from "../base/SVGIcon";
+import React, { FC, memo, Fragment } from 'react';
+
+import classNames from 'classnames';
+
+import { WithDirtyCheckLink } from '../../util/RouteLeave';
+import { Container } from '../base/models/Container';
+import { VerticalScrollPanel } from '../base/VeriticalScrollPanel';
+import { SVGIcon } from '../base/SVGIcon';
 
 interface Props {
+    getIsDirty: () => boolean;
+    inheritedProjects?: string[];
     projects: Container[];
     selectedProject: Container;
-    setSelectedProject: (c: Container) => void;
-    getIsDirty: () => boolean;
     setIsDirty: (isDirty: boolean) => void;
-    inheritedProjects?: string[];
+    setSelectedProject: (c: Container) => void;
 }
 
 export const ProjectListing: FC<Props> = memo(props => {
@@ -29,37 +31,41 @@ export const ProjectListing: FC<Props> = memo(props => {
                             <Fragment key={project.id}>
                                 <li
                                     className={classNames('menu-section-item', {
-                                        active: project.id === selectedProject?.id
+                                        active: project.id === selectedProject?.id,
                                     })}
                                 >
                                     <div className="row">
-                                        <div className='col menu-folder-body'>
+                                        <div className="col menu-folder-body">
                                             <WithDirtyCheckLink
                                                 className="menu-folder-item"
                                                 onClick={() => setSelectedProject(project)}
                                                 getIsDirty={getIsDirty}
                                                 setIsDirty={setIsDirty}
                                             >
-                                                {showInherited &&
+                                                {showInherited && (
                                                     <SVGIcon
-                                                        iconSrc='inherited-arrow'
+                                                        iconSrc="inherited-arrow"
                                                         className="label-help-target"
                                                         alt="inherited"
                                                     />
-                                                }
+                                                )}
                                                 <span>{project.name}</span>
                                             </WithDirtyCheckLink>
                                         </div>
                                     </div>
                                 </li>
                             </Fragment>
-                            {ind === dividerInd &&
-                                <li><div className="row"><hr/></div></li>
-                            }
+                            {ind === dividerInd && (
+                                <li>
+                                    <div className="row">
+                                        <hr />
+                                    </div>
+                                </li>
+                            )}
                         </>
                     );
                 })}
             </ul>
         </VerticalScrollPanel>
-    )
+    );
 });

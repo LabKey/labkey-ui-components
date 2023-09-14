@@ -1,14 +1,15 @@
+import { rejects } from 'assert';
+
 import { ActionURL, Ajax, Utils } from '@labkey/api';
 
 import { Container } from '../base/models/Container';
 import { handleRequestFailure } from '../../util/utils';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
-import {DataTypeEntity, ProjectConfigurableDataType} from '../entities/models';
-import {isAppHomeFolder} from "../../app/utils";
-import {fetchContainers} from "../permissions/actions";
-import {rejects} from "assert";
-import {ModuleContext} from "../base/ServerContext";
-import {naturalSortByProperty} from "../../../public/sort";
+import { DataTypeEntity, ProjectConfigurableDataType } from '../entities/models';
+import { isAppHomeFolder } from '../../app/utils';
+import { fetchContainers } from '../permissions/actions';
+import { ModuleContext } from '../base/ServerContext';
+import { naturalSortByProperty } from '../../../public/sort';
 
 export interface ProjectSettingsOptions {
     allowUserSpecifiedNames?: boolean;
@@ -29,17 +30,27 @@ export interface UpdateProjectSettingsOptions {
 export interface FolderAPIWrapper {
     createProject: (options: ProjectSettingsOptions, containerPath?: string) => Promise<Container>;
     getDataTypeExcludedProjects: (dataType: ProjectConfigurableDataType, dataTypeRowId: number) => Promise<string[]>;
+    getProjects: (
+        container?: Container,
+        moduleContext?: ModuleContext,
+        includeStandardProperties?: boolean,
+        includeEffectivePermissions?: boolean,
+        includeTopFolder?: boolean
+    ) => Promise<Container[]>;
     renameProject: (options: ProjectSettingsOptions, containerPath?: string) => Promise<Container>;
     updateProjectDataExclusions: (options: ProjectSettingsOptions, containerPath?: string) => Promise<void>;
     updateProjectLookAndFeelSettings: (options: UpdateProjectSettingsOptions) => Promise<void>;
-    getProjects: (container?: Container, moduleContext?: ModuleContext, includeStandardProperties?: boolean, includeEffectivePermissions?: boolean, includeTopFolder?: boolean) => Promise<Container[]>;
 }
 
 export class ServerFolderAPIWrapper implements FolderAPIWrapper {
     createProject = (options: ProjectSettingsOptions, containerPath?: string): Promise<Container> => {
         return new Promise((resolve, reject) => {
             Ajax.request({
-                url: ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'createProject.api', containerPath),
+                url: ActionURL.buildURL(
+                    SAMPLE_MANAGER_APP_PROPERTIES.controllerName,
+                    'createProject.api',
+                    containerPath
+                ),
                 method: 'POST',
                 jsonData: options,
                 success: Utils.getCallbackWrapper(({ project }) => {
@@ -53,7 +64,11 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
     renameProject = (options: ProjectSettingsOptions, containerPath?: string): Promise<Container> => {
         return new Promise((resolve, reject) => {
             Ajax.request({
-                url: ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'renameProject.api', containerPath), //TODO need container path
+                url: ActionURL.buildURL(
+                    SAMPLE_MANAGER_APP_PROPERTIES.controllerName,
+                    'renameProject.api',
+                    containerPath
+                ), // TODO need container path
                 method: 'POST',
                 jsonData: options,
                 success: Utils.getCallbackWrapper(({ data }) => {
@@ -67,7 +82,11 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
     updateProjectDataExclusions = (options: ProjectSettingsOptions, containerPath?: string): Promise<void> => {
         return new Promise((resolve, reject) => {
             Ajax.request({
-                url: ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'updateProjectDataExclusion.api', containerPath), // TODO need container path
+                url: ActionURL.buildURL(
+                    SAMPLE_MANAGER_APP_PROPERTIES.controllerName,
+                    'updateProjectDataExclusion.api',
+                    containerPath
+                ), // TODO need container path
                 method: 'POST',
                 jsonData: options,
                 success: Utils.getCallbackWrapper(({ data }) => {
@@ -112,11 +131,15 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
         });
     };
 
-    getProjects = (container?: Container, moduleContext?: ModuleContext, includeStandardProperties?: boolean, includeEffectivePermissions?: boolean, includeTopFolder?: boolean) : Promise<Container[]> => {
+    getProjects = (
+        container?: Container,
+        moduleContext?: ModuleContext,
+        includeStandardProperties?: boolean,
+        includeEffectivePermissions?: boolean,
+        includeTopFolder?: boolean
+    ): Promise<Container[]> => {
         return new Promise((resolve, reject) => {
-            const topFolderPath = isAppHomeFolder(container, moduleContext)
-                ? container.path
-                : container.parentPath
+            const topFolderPath = isAppHomeFolder(container, moduleContext) ? container.path : container.parentPath;
             fetchContainers({
                 containerPath: topFolderPath,
                 includeEffectivePermissions,
@@ -124,22 +147,24 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
                 includeWorkbookChildren: false,
                 includeSubfolders: true,
                 depth: 1,
-            }).then((containers => {
-                let projects = containers
-                    // if user doesn't have permissions to the parent/project, the response will come back with an empty Container object
-                    .filter(c => c !== undefined && c.id !== '');
+            })
+                .then(containers => {
+                    let projects = containers
+                        // if user doesn't have permissions to the parent/project, the response will come back with an empty Container object
+                        .filter(c => c !== undefined && c.id !== '');
 
-                // filter out the Home project container (i.e. the type = "project")
-                if (!includeTopFolder)
-                    projects = projects.filter(c => c.type === 'folder' || c.path !== topFolderPath);
+                    // filter out the Home project container (i.e. the type = "project")
+                    if (!includeTopFolder)
+                        projects = projects.filter(c => c.type === 'folder' || c.path !== topFolderPath);
 
-                // Issue 45805: sort folders by title as server-side sorting is insufficient
-                projects.sort(naturalSortByProperty('title'));
+                    // Issue 45805: sort folders by title as server-side sorting is insufficient
+                    projects.sort(naturalSortByProperty('title'));
 
-                resolve(projects);
-            })).catch(error => {
-                reject(error);
-            });
+                    resolve(projects);
+                })
+                .catch(error => {
+                    reject(error);
+                });
         });
     };
 }

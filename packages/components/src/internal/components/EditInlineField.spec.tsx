@@ -121,6 +121,24 @@ describe('EditInlineField', () => {
         wrapper.unmount();
     });
 
+    test('with RowValue, url', () => {
+        const wrapper = mountWithAppServerContext(
+            <EditInlineField
+                {...DEFAULT_PROPS}
+                value={{ value: 1, displayValue: 'Test1', url: 'https://www.labkey.org' }}
+            />,
+            {},
+            SERVER_CONTEXT
+        );
+        validate(wrapper);
+        expect(wrapper.find('.edit-inline-field__placeholder')).toHaveLength(0);
+        expect(wrapper.find('.edit-inline-field__toggle').text()).toBe('Test1');
+        const link = wrapper.find('.edit-inline-field__toggle').find('a');
+        expect(link).toHaveLength(1);
+        expect(link.prop('href')).toBe('https://www.labkey.org');
+        wrapper.unmount();
+    });
+
     test('isTextArea', () => {
         const wrapper = mountWithAppServerContext(
             <EditInlineField {...DEFAULT_PROPS} type="textarea" />,

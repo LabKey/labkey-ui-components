@@ -5,8 +5,10 @@
 import { List, Map } from 'immutable';
 import React from 'react';
 import { Button } from 'react-bootstrap';
+
 import { AppURL } from '../../url/AppURL';
 import { GridColumn } from '../base/models/GridColumn';
+
 import { Tag } from './Tag';
 import {
     LineageGroupingOptions,

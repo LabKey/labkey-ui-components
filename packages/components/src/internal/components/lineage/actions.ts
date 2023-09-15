@@ -373,7 +373,9 @@ export class ServerLineageAPIWrapper implements LineageAPIWrapper {
                     // TODO: Is there a better way to determine set of columns? Can we follow convention for detail views?
                     // See LineageNodeMetadata (and it's usages) for why this is currently necessary
                     columns: LINEAGE_METADATA_COLUMNS.add(fieldKey).join(','),
-                    filterArray: [Filter.create(fieldKey, nodes.map(n => n.pkFilters[0].value).toArray(), Filter.Types.IN)],
+                    filterArray: [
+                        Filter.create(fieldKey, nodes.map(n => n.pkFilters[0].value).toArray(), Filter.Types.IN),
+                    ],
                 });
             })
             .toArray();

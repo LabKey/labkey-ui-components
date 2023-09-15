@@ -112,7 +112,7 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
                     </Dropdown.Menu>
                 </Dropdown>
             </div>
-            {adminMenuItems?.length > 0 && (
+            {(adminMenuItems?.length > 0 || getServerContext().devMode) && (
                 <div className="navbar-item pull-right navbar-item-product-navigation">
                     <DropdownButton
                         id="admin-menu-button"
@@ -123,9 +123,9 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
                     >
                         <div className="navbar-icon-connector" />
                         {adminMenuItems}
+                        {adminMenuItems?.length > 0 && getServerContext().devMode && <MenuItem divider />}
                         {getServerContext().devMode && (
                             <>
-                                <MenuItem divider />
                                 <MenuItem header>Dev Tools</MenuItem>
                                 <MenuItem onClick={toggleDevTools}>
                                     {devToolsActive() ? 'Disable' : 'Enable'} Redux Tools
@@ -136,13 +136,15 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
                     </DropdownButton>
                 </div>
             )}
-            <div className="navbar-item pull-right">
-                <div className="btn navbar-icon-button-right">
-                    <a href={helpHref} target="_blank" rel="noopener noreferrer">
-                        <i className="fa fa-question-circle navbar-header-icon" />
-                    </a>
+            {helpHref &&
+                <div className="navbar-item pull-right">
+                    <div className="btn navbar-icon-button-right" id="nav-help-button">
+                        <a href={helpHref} target="_blank" rel="noopener noreferrer">
+                            <i className="fa fa-question-circle navbar-header-icon" />
+                        </a>
+                    </div>
                 </div>
-            </div>
+            }
         </>
     );
 };

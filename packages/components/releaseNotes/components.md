@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.368.2
+*Released*: 14 September 2023
+- Issue 48458: remove duplicate processing of combined nodes.
+- Issue 48459: sort items in `DetailsListLineageItems` by name
+
 ### version 2.368.1
 *Released*: 14 September 2023
 - Add missing toLocaleString() calls

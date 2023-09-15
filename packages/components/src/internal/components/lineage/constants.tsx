@@ -5,8 +5,10 @@
 import { List, Map } from 'immutable';
 import React from 'react';
 import { Button } from 'react-bootstrap';
+
 import { AppURL } from '../../url/AppURL';
 import { GridColumn } from '../base/models/GridColumn';
+
 import { Tag } from './Tag';
 import {
     LineageGroupingOptions,
@@ -19,6 +21,7 @@ import {
 // Default depth to fetch with the lineage API
 export const DEFAULT_LINEAGE_DISTANCE = 5;
 export const DEFAULT_LINEAGE_DIRECTION = LINEAGE_DIRECTIONS.Children;
+export const GROUPING_COMBINED_SIZE_MIN = 2;
 
 export const DEFAULT_GROUPING_OPTIONS: LineageGroupingOptions = {
     childDepth: DEFAULT_LINEAGE_DISTANCE,

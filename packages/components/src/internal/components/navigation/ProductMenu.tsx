@@ -113,12 +113,16 @@ const ProductMenuButtonImpl: FC<ProductMenuButtonProps & WithRouterProps> = memo
         blurActiveElement();
     }, [menuOpen, setMenuOpen]);
 
-    // Only toggle the menu closing if a menu section link has been clicked.
+    // Only toggle the menu closing if a menu section link has been clicked or a project icon (issue 48283).
     // Clicking anywhere else inside the menu will not toggle the menu, including side panel folder clicks.
     const onClick = useCallback(
         (evt: MouseEvent<HTMLDivElement>) => {
             const { nodeName, className } = evt.target as any;
-            if (!nodeName || (nodeName.toLowerCase() === 'a' && className !== 'menu-folder-item')) {
+            if (
+                !nodeName ||
+                (nodeName.toLowerCase() === 'a' && className !== 'menu-folder-item') ||
+                (nodeName.toLowerCase() === 'i' && className?.toLowerCase().startsWith('fa'))
+            ) {
                 toggleMenu();
             }
         },

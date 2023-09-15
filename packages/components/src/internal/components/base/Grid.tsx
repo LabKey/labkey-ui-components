@@ -19,7 +19,7 @@ import { fromJS, List, Map } from 'immutable';
 
 import { HelpTipRenderer } from '../forms/HelpTipRenderer';
 
-import { GRID_SELECTION_INDEX } from '../../constants';
+import { GRID_SELECTION_INDEX, GRID_HEADER_CELL_BODY } from '../../constants';
 
 import { LabelHelpTip } from './LabelHelpTip';
 import { GridColumn } from './models/GridColumn';
@@ -137,6 +137,14 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
         }
     };
 
+    handleHeaderClick = (e): void => {
+        // Issue 48610: app grid column header <th> element to trigger click on child <div>
+        const childEl = e.target.getElementsByClassName(GRID_HEADER_CELL_BODY);
+        if (childEl?.length === 1) {
+            e.target.getElementsByClassName(GRID_HEADER_CELL_BODY)[0].click();
+        }
+    };
+
     render() {
         const { calcWidths, columns, headerCell, showHeader, transpose, onColumnDrop } = this.props;
         const { dragTarget } = this.state;
@@ -185,6 +193,7 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                                     onDrop={this.handleDrop}
                                     onDragEnter={this.handleDragEnter}
                                     onDragEnd={this.handleDragEnd}
+                                    onClick={this.handleHeaderClick}
                                 >
                                     {headerCell ? headerCell(column, i, columns.size) : title}
                                     {/* headerCell will render the helpTip, so only render here if not using headerCell() */}

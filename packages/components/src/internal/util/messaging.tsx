@@ -19,7 +19,7 @@ export function getActionErrorMessage(problemStatement: string, noun: string, sh
 
 export function deleteSuccessMessage(noun: string, count?: number, additionalInfo?: string): string {
     const countStr = count === undefined ? '' : count;
-    return 'Successfully deleted ' + countStr + ' ' + noun + '. ' + (additionalInfo || '');
+    return 'Successfully deleted ' + countStr.toLocaleString() + ' ' + noun + '. ' + (additionalInfo || '');
 }
 
 export function deleteErrorMessage(noun: string): ReactNode {

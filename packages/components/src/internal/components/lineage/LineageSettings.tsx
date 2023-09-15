@@ -5,7 +5,7 @@ import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
 import { LINEAGE_GROUPING_GENERATIONS, LineageFilter, LineageOptions } from './types';
-import { DEFAULT_GROUPING_OPTIONS } from './constants';
+import { DEFAULT_GROUPING_OPTIONS, GROUPING_COMBINED_SIZE_MIN } from './constants';
 
 interface LineageSettingsOptions extends LineageOptions {
     originalFilters?: LineageFilter[];
@@ -86,10 +86,13 @@ export const LineageSettings: FC<Props> = memo(props => {
     const onGroupingChange = useCallback(
         (evt: ChangeEvent<HTMLInputElement>) => {
             const { name, value } = evt.target;
-            applyOptions(options_ => ({
-                ...options_,
-                grouping: { ...options_.grouping, [name]: value },
-            }));
+            const nValue = parseInt(value, 10);
+            if (GROUPING_COMBINED_SIZE_MIN < nValue) {
+                applyOptions(options_ => ({
+                    ...options_,
+                    grouping: { ...options_.grouping, [name]: nValue },
+                }));
+            }
         },
         [applyOptions]
     );
@@ -178,9 +181,10 @@ export const LineageSettings: FC<Props> = memo(props => {
                     <LabelHelpTip placement="top" title="Combine Generation Threshold">
                         <div className="lineage-settings__tip-body">
                             If the number of nodes in a generation is greater than or equal to this threshold, then all
-                            the nodes in this generation will be combined into a single node.
+                            the nodes in this generation will be combined into a single node. Minimum value of{' '}
+                            {GROUPING_COMBINED_SIZE_MIN}.
                             <div>
-                                <b>Note:</b> Aliquots are combined separately and may appear as a single combined node
+                                <b>Note:</b> Aliquots are combined separately and may appear as a single combined node.
                             </div>
                         </div>
                     </LabelHelpTip>
@@ -188,7 +192,7 @@ export const LineageSettings: FC<Props> = memo(props => {
                 <input
                     defaultValue={options.grouping?.combineSize ?? DEFAULT_GROUPING_OPTIONS.combineSize}
                     className="form-control"
-                    min={2}
+                    min={GROUPING_COMBINED_SIZE_MIN}
                     name="combineSize"
                     onChange={onGroupingChange}
                     type="number"

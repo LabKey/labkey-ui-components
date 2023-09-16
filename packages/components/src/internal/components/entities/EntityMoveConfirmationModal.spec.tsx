@@ -6,11 +6,11 @@ import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTe
 import { ConfirmModal } from '../base/ConfirmModal';
 import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 import { getTestAPIWrapper } from '../../APIWrapper';
-import { getSecurityTestAPIWrapper } from '../security/APIWrapper';
 import { Container } from '../base/models/Container';
 import { SelectInput } from '../forms/input/SelectInput';
 
 import { EntityMoveConfirmationModal, EntityMoveConfirmationModalProps } from './EntityMoveConfirmationModal';
+import {getFolderTestAPIWrapper} from "../container/FolderAPIWrapper";
 
 describe('EntityMoveConfirmationModal', () => {
     function getDefaultProps(): EntityMoveConfirmationModalProps {
@@ -31,8 +31,8 @@ describe('EntityMoveConfirmationModal', () => {
     test('error', async () => {
         const wrapper = mountWithAppServerContext(<EntityMoveConfirmationModal {...getDefaultProps()} />, {
             api: getTestAPIWrapper(jest.fn, {
-                security: getSecurityTestAPIWrapper(jest.fn, {
-                    fetchContainers: () => Promise.reject('This is an error message.'),
+                folder: getFolderTestAPIWrapper(jest.fn, {
+                    getProjects: () => Promise.reject('This is an error message.'),
                 }),
             }),
         });
@@ -45,8 +45,8 @@ describe('EntityMoveConfirmationModal', () => {
     test('no insert perm to any projects', async () => {
         const wrapper = mountWithAppServerContext(<EntityMoveConfirmationModal {...getDefaultProps()} />, {
             api: getTestAPIWrapper(jest.fn, {
-                security: getSecurityTestAPIWrapper(jest.fn, {
-                    fetchContainers: () =>
+                folder: getFolderTestAPIWrapper(jest.fn, {
+                    getProjects: () =>
                         Promise.resolve([
                             {
                                 ...TEST_PROJECT_CONTAINER,
@@ -71,8 +71,8 @@ describe('EntityMoveConfirmationModal', () => {
     test('has perm to move to anothe project', async () => {
         const wrapper = mountWithAppServerContext(<EntityMoveConfirmationModal {...getDefaultProps()} />, {
             api: getTestAPIWrapper(jest.fn, {
-                security: getSecurityTestAPIWrapper(jest.fn, {
-                    fetchContainers: () =>
+                folder: getFolderTestAPIWrapper(jest.fn, {
+                    getProjects: () =>
                         Promise.resolve([
                             {
                                 ...TEST_PROJECT_CONTAINER,
@@ -99,8 +99,8 @@ describe('EntityMoveConfirmationModal', () => {
     test('can move to home project', async () => {
         const wrapper = mountWithAppServerContext(<EntityMoveConfirmationModal {...getDefaultProps()} />, {
             api: getTestAPIWrapper(jest.fn, {
-                security: getSecurityTestAPIWrapper(jest.fn, {
-                    fetchContainers: () =>
+                folder: getFolderTestAPIWrapper(jest.fn, {
+                    getProjects: () =>
                         Promise.resolve([
                             {
                                 ...TEST_PROJECT_CONTAINER,

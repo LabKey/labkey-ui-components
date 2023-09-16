@@ -58,14 +58,9 @@ describe('AdminSettingsPageImpl', () => {
 
     function validatePremium(
         wrapper: ReactWrapper,
-        projectSettingsCount = 0,
         manageSampleStatusCount = 1,
-        projectDataTypeCount = 0
     ): void {
         expect(wrapper.find(InsufficientPermissionsPage)).toHaveLength(0);
-        expect(wrapper.find(ProjectSettings)).toHaveLength(projectSettingsCount);
-        expect(wrapper.find(ProjectDataTypeSelections)).toHaveLength(projectDataTypeCount);
-        expect(wrapper.find(BasePermissions)).toHaveLength(0);
         expect(wrapper.find(BasePermissionsCheckPage)).toHaveLength(1);
         expect(wrapper.find(ActiveUserLimit)).toHaveLength(1);
         expect(wrapper.find(BarTenderSettingsForm)).toHaveLength(1);
@@ -75,9 +70,6 @@ describe('AdminSettingsPageImpl', () => {
 
     function validateNonPremium(wrapper: ReactWrapper): void {
         expect(wrapper.find(InsufficientPermissionsPage)).toHaveLength(0);
-        expect(wrapper.find(ProjectSettings)).toHaveLength(0);
-        expect(wrapper.find(ProjectDataTypeSelections)).toHaveLength(0);
-        expect(wrapper.find(BasePermissions)).toHaveLength(1);
         expect(wrapper.find(BasePermissionsCheckPage)).toHaveLength(1);
         expect(wrapper.find(ActiveUserLimit)).toHaveLength(1);
         expect(wrapper.find(BarTenderSettingsForm)).toHaveLength(1);
@@ -97,7 +89,7 @@ describe('AdminSettingsPageImpl', () => {
         );
         await waitForLifecycle(wrapper, 50);
         validatePremium(wrapper);
-        expect(wrapper.find(BasePermissionsCheckPage).prop('title')).toBe('Settings');
+        expect(wrapper.find(BasePermissionsCheckPage).prop('title')).toBe('Application Settings');
         expect(wrapper.find(BasePermissionsCheckPage).prop('description')).toBeUndefined();
         wrapper.unmount();
     });
@@ -109,7 +101,7 @@ describe('AdminSettingsPageImpl', () => {
         });
         await waitForLifecycle(wrapper, 50);
         validatePremium(wrapper);
-        expect(wrapper.find(BasePermissionsCheckPage).prop('title')).toBe('Settings');
+        expect(wrapper.find(BasePermissionsCheckPage).prop('title')).toBe('Application Settings');
         expect(wrapper.find(BasePermissionsCheckPage).prop('description')).toBeUndefined();
         wrapper.unmount();
     });
@@ -121,7 +113,7 @@ describe('AdminSettingsPageImpl', () => {
         });
         await waitForLifecycle(wrapper, 50);
         validateNonPremium(wrapper);
-        expect(wrapper.find(BasePermissionsCheckPage).prop('title')).toBe('Settings');
+        expect(wrapper.find(BasePermissionsCheckPage).prop('title')).toBe('Application Settings');
         expect(wrapper.find(BasePermissionsCheckPage).prop('description')).toBeUndefined();
         wrapper.unmount();
     });
@@ -133,8 +125,8 @@ describe('AdminSettingsPageImpl', () => {
             moduleContext: { ...TEST_LKS_STARTER_MODULE_CONTEXT, query: { isProductProjectsEnabled: true } },
         });
         await waitForLifecycle(wrapper, 50);
-        validatePremium(wrapper, 1);
-        expect(wrapper.find(BasePermissionsCheckPage).prop('title')).toBe('Settings');
+        validatePremium(wrapper);
+        expect(wrapper.find(BasePermissionsCheckPage).prop('title')).toBe('Application Settings');
         expect(wrapper.find(BasePermissionsCheckPage).prop('description')).toBeUndefined();
         wrapper.unmount();
     });
@@ -145,7 +137,7 @@ describe('AdminSettingsPageImpl', () => {
             moduleContext: { ...TEST_LKS_STARTER_MODULE_CONTEXT, query: { isProductProjectsEnabled: true } },
         });
         await waitForLifecycle(wrapper, 50);
-        validatePremium(wrapper, 1, 1, 1);
+        validatePremium(wrapper, 1,);
         expect(wrapper.find(BasePermissionsCheckPage).prop('title')).toBe('Project Settings');
         expect(wrapper.find(BasePermissionsCheckPage).prop('description')).toBe(
             '/TestProjectContainer/TestFolderContainer'
@@ -162,7 +154,7 @@ describe('AdminSettingsPageImpl', () => {
             },
         });
         await waitForLifecycle(wrapper, 50);
-        validatePremium(wrapper, 0, 0);
+        validatePremium(wrapper, 0);
         wrapper.unmount();
     });
 

@@ -43,3 +43,17 @@ export const TEST_FOLDER_CONTAINER = new Container({
     title: 'Test Folder Container',
     type: 'folder',
 });
+
+export const TEST_FOLDER_OTHER_CONTAINER = new Container({
+    activeModules: ['a', 'b', 'c'],
+    formats: TEST_DATE_FORMATS,
+    id: 'b685712f-0800-103a-9286-0131958dcf69',
+    isContainerTab: false,
+    isWorkbook: false,
+    name: 'OtherTestFolderContainer',
+    parentId: TEST_PROJECT_CONTAINER.id,
+    parentPath: TEST_PROJECT_CONTAINER.path,
+    path: `${TEST_PROJECT_CONTAINER.path}/OtherTestFolderContainer`,
+    title: 'Other Test Folder Container',
+    type: 'folder',
+});

@@ -10,7 +10,6 @@ import { resolveErrorMessage } from '../../util/messaging';
 import { Alert } from '../base/Alert';
 import { Container } from '../base/models/Container';
 
-import { getProjectDataExclusion } from '../../app/utils';
 import { useAdminAppContext } from '../administration/useAdminAppContext';
 import { getFolderDataTypeExclusions } from '../entities/actions';
 import { LoadingSpinner } from '../base/LoadingSpinner';
@@ -150,7 +149,7 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
         [nameDirty, dataTypeDirty]
     );
 
-    if (project?.isProject || !user.isAdmin) {
+    if (!project || project.isProject || !user.isAdmin) {
         return null;
     }
 

@@ -6,16 +6,17 @@ import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 import { AssayRunDataType, SampleTypeDataType } from '../entities/constants';
 
 import { ProjectDataTypeSelections } from './ProjectDataTypeSelections';
+import {TEST_FOLDER_CONTAINER} from "../../containerFixtures";
 
 describe('ProjectDataTypeSelections', () => {
-    test('without project Id - new project', () => {
+    test('without selected project - new project', () => {
         const wrapper = mountWithAppServerContext(<ProjectDataTypeSelections entityDataTypes={[SampleTypeDataType]} />);
         expect(wrapper.find(Button)).toHaveLength(0);
     });
 
-    test('with project Id', () => {
+    test('with project', () => {
         const wrapper = mountWithAppServerContext(
-            <ProjectDataTypeSelections entityDataTypes={[SampleTypeDataType]} projectId="123" />
+            <ProjectDataTypeSelections entityDataTypes={[SampleTypeDataType]} project={TEST_FOLDER_CONTAINER} />
         );
         expect(wrapper.find(Button)).toHaveLength(1);
         expect(wrapper.find(Button).text()).toBe('Save');
@@ -24,7 +25,7 @@ describe('ProjectDataTypeSelections', () => {
 
     test('with 2 entityDataTypes', () => {
         const wrapper = mountWithAppServerContext(
-            <ProjectDataTypeSelections entityDataTypes={[SampleTypeDataType, AssayRunDataType]} projectId="123" />
+            <ProjectDataTypeSelections entityDataTypes={[SampleTypeDataType, AssayRunDataType]} project={TEST_FOLDER_CONTAINER} />
         );
         expect(wrapper.find(Button)).toHaveLength(1);
         expect(wrapper.find(Button).text()).toBe('Save');

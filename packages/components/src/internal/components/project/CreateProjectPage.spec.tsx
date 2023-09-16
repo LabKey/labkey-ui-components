@@ -3,7 +3,7 @@ import { act } from 'react-dom/test-utils';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 
-import { TEST_FOLDER_CONTAINER } from '../../containerFixtures';
+import {TEST_FOLDER_CONTAINER, TEST_FOLDER_OTHER_CONTAINER, TEST_PROJECT_CONTAINER} from '../../containerFixtures';
 
 import { TEST_USER_APP_ADMIN } from '../../userFixtures';
 
@@ -60,7 +60,7 @@ describe('CreateProjectPage', () => {
         const wrapper = mountWithAppServerContext(
             <CreateProjectContainer {...getDefaultProps({ createProject })} onCreated={onCreated} />,
             getDefaultAppContext(),
-            { moduleContext: TEST_LIMS_STARTER_MODULE_CONTEXT }
+            { moduleContext: TEST_LIMS_STARTER_MODULE_CONTEXT, container: TEST_PROJECT_CONTAINER }
         );
 
         // Assert
@@ -80,7 +80,43 @@ describe('CreateProjectPage', () => {
             disabledDataClasses: undefined,
             disabledAssayDesigns: undefined,
             disabledStorageLocations: undefined,
-        });
+        }, TEST_PROJECT_CONTAINER.path);
+        expect(onCreated).toHaveBeenCalledWith(project);
+
+        wrapper.unmount();
+    });
+
+    test('submits data from child', async () => {
+        // Arrange
+        const project = TEST_FOLDER_CONTAINER;
+        const createProject = jest.fn().mockResolvedValue(project);
+        const onCreated = jest.fn();
+
+        // Act
+        const wrapper = mountWithAppServerContext(
+            <CreateProjectContainer {...getDefaultProps({ createProject })} onCreated={onCreated} />,
+            getDefaultAppContext(),
+            { moduleContext: TEST_LIMS_STARTER_MODULE_CONTEXT, container: TEST_FOLDER_OTHER_CONTAINER }
+        );
+
+        // Assert
+        expect(wrapper.find('.panel-heading').first().text()).toBe('Name of Project');
+        expect(wrapper.find(ProjectDataTypeSelections)).toHaveLength(1);
+        const form = wrapper.find('.create-project-form');
+        expect(form.exists()).toBe(true);
+        form.simulate('submit');
+
+        await waitForLifecycle(wrapper);
+
+        expect(createProject).toHaveBeenCalledWith({
+            name: '',
+            nameAsTitle: true,
+            title: null,
+            disabledSampleTypes: undefined,
+            disabledDataClasses: undefined,
+            disabledAssayDesigns: undefined,
+            disabledStorageLocations: undefined,
+        }, TEST_FOLDER_OTHER_CONTAINER.path);
         expect(onCreated).toHaveBeenCalledWith(project);
 
         wrapper.unmount();
@@ -112,7 +148,7 @@ describe('CreateProjectPage', () => {
         });
 
         await waitForLifecycle(wrapper);
-        expect(replace).toHaveBeenCalledWith(AppURL.create('admin', 'projects').toString());
+        expect(replace).toHaveBeenCalledWith(AppURL.create('admin', 'projects').addParam('created', TEST_FOLDER_CONTAINER.name).toString());
 
         wrapper.unmount();
     });

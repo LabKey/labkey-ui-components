@@ -87,7 +87,7 @@ const ProductMenuButtonImpl: FC<ProductMenuButtonProps & WithRouterProps> = memo
 
         (async () => {
             try {
-                const folders = await api.folder.getProjects(container, moduleContext, false, true);
+                const folders = await api.folder.getProjects(container, moduleContext, true, false, true);
 
                 const items_: FolderMenuItem[] = [];
                 const topLevelFolderIdx = folders.findIndex(f => f.parentPath === '/');

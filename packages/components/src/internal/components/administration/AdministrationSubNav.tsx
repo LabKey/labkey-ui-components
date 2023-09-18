@@ -12,12 +12,13 @@ import { AppURL } from '../../url/AppURL';
 import { useServerContext } from '../base/ServerContext';
 import { User } from '../base/models/User';
 import { AUDIT_KEY } from '../../app/constants';
-import { isProjectContainer, isProductProjectsEnabled } from '../../app/utils';
+import {isProjectContainer, isProductProjectsEnabled, isAppHomeFolder} from '../../app/utils';
 import { withRouteLeave } from '../../util/RouteLeave';
 
 interface OwnProps {
     inProjectContainer: boolean;
     projectsEnabled: boolean;
+    isAppHome: boolean;
     user: User;
 }
 
@@ -25,7 +26,7 @@ export type Props = OwnProps & WithRouterProps;
 
 // exported for unit testing
 export const AdministrationSubNavImpl: FC<Props> = memo(props => {
-    const { inProjectContainer, projectsEnabled, user, router } = props;
+    const { inProjectContainer, isAppHome, projectsEnabled, user, router } = props;
 
     const parentTab = useMemo(() => {
         return {
@@ -38,7 +39,7 @@ export const AdministrationSubNavImpl: FC<Props> = memo(props => {
         const tabs_ = [];
 
         if (user.isAdmin) {
-            tabs_.push('Application Settings');
+            tabs_.push(isAppHome ? 'Application Settings' : 'Project Settings');
             if (projectsEnabled) {
                 tabs_.push('Projects');
             }
@@ -72,6 +73,7 @@ export const AdministrationSubNavWrapper: FC<WithRouterProps> = memo(props => {
         <AdministrationSubNavImpl
             inProjectContainer={isProjectContainer(container.path)}
             projectsEnabled={isProductProjectsEnabled(moduleContext)}
+            isAppHome={isAppHomeFolder(container, moduleContext)}
             user={user}
             {...props}
         />

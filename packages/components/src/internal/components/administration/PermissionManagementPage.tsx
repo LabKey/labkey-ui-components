@@ -22,7 +22,6 @@ import { PermissionAssignments } from '../permissions/PermissionAssignments';
 import { InjectedRouteLeaveProps, withRouteLeave } from '../../util/RouteLeave';
 import { InjectedPermissionsPage, withPermissionsPage } from '../permissions/withPermissionsPage';
 
-import { getUpdatedPolicyRoles, getUpdatedPolicyRolesByUniqueName } from './actions';
 import { useAdminAppContext } from './useAdminAppContext';
 import { APPLICATION_SECURITY_ROLES, HOSTED_APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from './constants';
 import { showPremiumFeatures } from './utils';
@@ -32,7 +31,7 @@ export type Props = InjectedRouteLeaveProps & InjectedPermissionsPage & WithRout
 
 // exported for testing
 export const PermissionManagementPageImpl: FC<Props> = memo(props => {
-    const { children, roles } = props;
+    const { children } = props;
 
     const [policyLastModified, setPolicyLastModified] = useState<string>(undefined);
     const [hidePageDescription, setHidePageDescription] = useState<boolean>(false);
@@ -67,20 +66,11 @@ export const PermissionManagementPageImpl: FC<Props> = memo(props => {
         );
     }, [policyLastModified]);
 
-    const rolesMap = useMemo(() => {
+    const rolesToShow = useMemo(() => {
         let roles_ = showPremium ? APPLICATION_SECURITY_ROLES : HOSTED_APPLICATION_SECURITY_ROLES;
         roles_ = roles_.merge(Map<string, string>(extraPermissionRoles));
-        return roles_;
+        return roles_.keySeq().toList();
     }, [extraPermissionRoles, showPremium]);
-
-    const rolesProps = useMemo(
-        () => ({
-            roles: getUpdatedPolicyRoles(roles, rolesMap),
-            rolesByUniqueName: getUpdatedPolicyRolesByUniqueName(roles, rolesMap),
-            rolesToShow: rolesMap.keySeq().toList(),
-        }),
-        [roles, rolesMap]
-    );
 
     const setProjectCount = useCallback((projectCount: number) => {
         setHidePageDescription(projectCount > 1);
@@ -97,11 +87,11 @@ export const PermissionManagementPageImpl: FC<Props> = memo(props => {
             {showAssignments && (
                 <PermissionAssignments
                     {...props}
-                    {...rolesProps}
+                    rolesToShow={rolesToShow}
                     onSuccess={onSuccess}
                     setLastModified={setPolicyLastModified}
                     setProjectCount={setProjectCount}
-                    rootRolesToShow={!showPremiumFeatures() ? SITE_SECURITY_ROLES.keySeq().toList() : undefined}
+                    rootRolesToShow={!showPremium ? SITE_SECURITY_ROLES.keySeq().toList() : undefined}
                 />
             )}
             {children}
@@ -110,3 +100,4 @@ export const PermissionManagementPageImpl: FC<Props> = memo(props => {
 });
 
 export const PermissionManagementPage = withRouteLeave(withPermissionsPage(PermissionManagementPageImpl));
+

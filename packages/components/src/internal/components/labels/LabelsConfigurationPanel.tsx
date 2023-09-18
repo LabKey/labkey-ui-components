@@ -348,13 +348,12 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
 
 export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props => {
     const { api, setIsDirty, defaultLabel } = props;
-    const { user, container, moduleContext } = useServerContext();
+    const { user } = useServerContext();
     const [templates, setTemplates] = useState<LabelTemplate[]>([]);
     const [error, setError] = useState<string>();
     const [selected, setSelected] = useState<number>();
     const [newDefaultLabel, setNewDefaultLabel] = useState<number>(defaultLabel);
     const addNew = useMemo(() => selected === NEW_LABEL_INDEX, [selected]);
-    const showAdd = isAppHomeFolder(container, moduleContext);
 
     const queryLabelTemplates = useCallback(
         (newLabelTemplate?: number) => {
@@ -427,9 +426,7 @@ export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props
                                 onSelect={onSetSelected}
                                 defaultLabel={newDefaultLabel}
                             />
-                            {showAdd && (
-                                <AddEntityButton onClick={onAddLabel} entity="New Label Template" disabled={addNew} />
-                            )}
+                            <AddEntityButton onClick={onAddLabel} entity="New Label Template" disabled={addNew} />
                         </div>
                         <div className="col-lg-8 col-md-6">
                             <LabelTemplateDetails

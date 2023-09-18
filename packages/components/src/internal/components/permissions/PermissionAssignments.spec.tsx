@@ -270,4 +270,6 @@ describe('PermissionAssignments', () => {
 
         wrapper.unmount();
     });
+
+    // error case
 });

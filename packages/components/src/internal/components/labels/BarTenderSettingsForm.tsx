@@ -17,6 +17,8 @@ import { BarTenderConfiguration, BarTenderResponse } from './models';
 import { withLabelPrintingContext, LabelPrintingProviderProps } from './LabelPrintingContextProvider';
 import { BAR_TENDER_TOPIC, BARTENDER_CONFIGURATION_TITLE } from './constants';
 import { LabelsConfigurationPanel } from './LabelsConfigurationPanel';
+import {isAppHomeFolder} from "../../app/utils";
+import {useServerContext} from "../base/ServerContext";
 
 interface OwnProps extends InjectedRouteLeaveProps {
     api?: ComponentsAPIWrapper;
@@ -106,6 +108,7 @@ export const BarTenderSettingsFormImpl: FC<Props> = memo(props => {
     const { api, title = BARTENDER_CONFIGURATION_TITLE, onChange, onSuccess } = props;
     const [btServiceURL, setBtServiceURL] = useState<string>();
     const [defaultLabel, setDefaultLabel] = useState<number>();
+    const { user, container, moduleContext } = useServerContext();
     const [dirty, setDirty] = useState<boolean>(false);
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [testing, setTesting] = useState<boolean>();
@@ -228,9 +231,11 @@ export const BarTenderSettingsFormImpl: FC<Props> = memo(props => {
                                 Test Connection
                             </Button>
                         </div>
-                        <div className="label-templates-panel">
-                            <LabelsConfigurationPanel {...props} api={api} defaultLabel={defaultLabel} />
-                        </div>
+                        {isAppHomeFolder(container, moduleContext) && (
+                            <div className="label-templates-panel">
+                                <LabelsConfigurationPanel {...props} api={api} defaultLabel={defaultLabel} />
+                            </div>
+                        )}
                     </Panel.Body>
                 </Panel>
             </Col>

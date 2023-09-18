@@ -54,7 +54,6 @@ import { InjectedPermissionsPage } from './withPermissionsPage';
 export interface PermissionAssignmentsProps extends InjectedPermissionsPage, InjectedRouteLeaveProps {
     onChange?: (policy: SecurityPolicy) => void;
     onSuccess: () => void;
-    policy?: SecurityPolicy;
     /** Subset list of role uniqueNames to show in this component usage */
     rolesToShow?: List<string>;
     rootRolesToShow?: List<string>;
@@ -251,6 +250,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
     const onInheritChange = useCallback(() => {
         setIsDirty(true);
         setInherited(!inherited);
+        setHasPolicyChange(true);
     }, [inherited]);
 
     const _onSuccess = useCallback(() => {
@@ -453,7 +453,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
 
                 {!inherited && (
                     <>
-                        {visibleRootRoles?.map(role => (
+                        {isAppHomeFolder(selectedProject) && visibleRootRoles?.map(role => (
                             <PermissionsRole
                                 assignments={rootPolicy.assignmentsByRole.get(role.uniqueName)}
                                 disabledId={user.id}

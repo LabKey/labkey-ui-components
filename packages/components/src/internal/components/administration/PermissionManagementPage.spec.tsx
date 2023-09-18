@@ -20,9 +20,11 @@ import policyJSON from '../../../test/data/security-getPolicy.json';
 
 import { initBrowserHistoryState } from '../../util/global';
 
-import { BasePermissions } from './BasePermissions';
-import { PermissionManagementPage } from './PermissionManagementPage';
+import {PermissionManagementPage, PermissionManagementPageImpl} from './PermissionManagementPage';
 import { MemberType } from './models';
+import {PermissionAssignments} from "../permissions/PermissionAssignments";
+import {createMockWithRouteLeave} from "../../mockUtils";
+import {BasePermissionsCheckPage} from "../permissions/BasePermissionsCheckPage";
 
 const USER = Principal.createFromSelectRow(
     fromJS({
@@ -50,6 +52,14 @@ beforeAll(() => {
 });
 
 describe('PermissionManagementPage', () => {
+
+    function getDefaultProps() {
+        return {
+            roles: List(),
+            ...createMockWithRouteLeave(jest.fn),
+        };
+    }
+
     function getDefaultAppContext(admin = {}): Partial<AppContext> {
         return {
             admin: admin as AdminAppContext,
@@ -61,16 +71,15 @@ describe('PermissionManagementPage', () => {
         };
     }
 
-    function validate(wrapper: ReactWrapper, hasPermission = true): void {
-        expect(wrapper.find(BasePermissions)).toHaveLength(1);
-        const props = wrapper.find(BasePermissions).props();
-        expect(props.containerId).toBe(TEST_PROJECT_CONTAINER.id);
+    function validate(wrapper: ReactWrapper, hasPermission, description?: string): void {
+        expect(wrapper.find(BasePermissionsCheckPage)).toHaveLength(1);
+        const props = wrapper.find(BasePermissionsCheckPage).props();
         expect(props.hasPermission).toBe(hasPermission);
-        expect(props.showDetailsPanel).toBe(hasPermission);
+        expect(props.description).toBe(description);
     }
 
     test('premium roles', async () => {
-        const wrapper = mountWithAppServerContext(<PermissionManagementPage />, getDefaultAppContext(), {
+        const wrapper = mountWithAppServerContext(<PermissionManagementPageImpl {...getDefaultProps()} />, getDefaultAppContext(), {
             user: TEST_USER_APP_ADMIN,
             container: TEST_PROJECT_CONTAINER,
             moduleContext: TEST_LKS_STARTER_MODULE_CONTEXT,
@@ -78,22 +87,22 @@ describe('PermissionManagementPage', () => {
         });
         await waitForLifecycle(wrapper);
 
-        validate(wrapper);
-        const props = wrapper.find(BasePermissions).props();
-        expect(props.description).toBe(TEST_PROJECT_CONTAINER.path);
-        expect(Object.values(props.rolesMap.toJS())).toStrictEqual([
-            'Project Administrator',
-            'Folder Administrator',
-            'Editor',
-            'Editor without Delete',
-            'Reader',
+        validate(wrapper, true, TEST_PROJECT.path);
+        const props = wrapper.find(PermissionAssignments).props();
+        expect(Object.values(props.rolesToShow.toJS())).toStrictEqual([
+            'org.labkey.api.security.roles.ProjectAdminRole',
+            'org.labkey.api.security.roles.FolderAdminRole',
+            'org.labkey.api.security.roles.EditorRole',
+            'org.labkey.api.security.roles.EditorWithoutDeleteRole',
+            'org.labkey.api.security.roles.ReaderRole',
         ]);
-
+        expect(props.rootRolesToShow).toBeUndefined();
         wrapper.unmount();
     });
 
+
     test('hosted only roles', async () => {
-        const wrapper = mountWithAppServerContext(<PermissionManagementPage />, getDefaultAppContext(), {
+        const wrapper = mountWithAppServerContext(<PermissionManagementPageImpl {...getDefaultProps()} />, getDefaultAppContext(), {
             user: TEST_USER_APP_ADMIN,
             container: TEST_PROJECT_CONTAINER,
             moduleContext: TEST_LKSM_STARTER_MODULE_CONTEXT,
@@ -101,16 +110,22 @@ describe('PermissionManagementPage', () => {
         });
         await waitForLifecycle(wrapper);
 
-        validate(wrapper);
-        const props = wrapper.find(BasePermissions).props();
-        expect(props.description).toBe(undefined);
-        expect(Object.values(props.rolesMap.toJS())).toStrictEqual(['Editor', 'Editor without Delete', 'Reader']);
-
+        validate(wrapper, true, undefined);
+        const props = wrapper.find(PermissionAssignments).props();
+        expect(Object.values(props.rolesToShow.toJS())).toStrictEqual([
+            'org.labkey.api.security.roles.EditorRole',
+            'org.labkey.api.security.roles.EditorWithoutDeleteRole',
+            'org.labkey.api.security.roles.ReaderRole'
+        ]);
+        expect(Object.values(props.rootRolesToShow.toJS())).toStrictEqual([
+            'org.labkey.api.security.roles.ApplicationAdminRole'
+        ]);
         wrapper.unmount();
     });
 
+
     test('without perm', async () => {
-        const wrapper = mountWithAppServerContext(<PermissionManagementPage />, getDefaultAppContext(), {
+        const wrapper = mountWithAppServerContext(<PermissionManagementPageImpl {...getDefaultProps()} />, getDefaultAppContext(), {
             user: TEST_USER_EDITOR,
             container: TEST_PROJECT_CONTAINER,
             moduleContext: TEST_LKS_STARTER_MODULE_CONTEXT,
@@ -118,14 +133,14 @@ describe('PermissionManagementPage', () => {
         });
         await waitForLifecycle(wrapper);
 
-        validate(wrapper, false);
+        validate(wrapper, false, TEST_PROJECT.path);
 
         wrapper.unmount();
     });
 
     test('extraPermissionRoles', async () => {
         const wrapper = mountWithAppServerContext(
-            <PermissionManagementPage />,
+            <PermissionManagementPageImpl {...getDefaultProps()} />,
             getDefaultAppContext({
                 extraPermissionRoles: [['test', 'test role']],
             }),
@@ -138,17 +153,17 @@ describe('PermissionManagementPage', () => {
         );
         await waitForLifecycle(wrapper);
 
-        validate(wrapper);
-        const props = wrapper.find(BasePermissions).props();
-        expect(Object.values(props.rolesMap.toJS())).toStrictEqual([
-            'Project Administrator',
-            'Folder Administrator',
-            'Editor',
-            'Editor without Delete',
-            'Reader',
-            'test role',
+        validate(wrapper, true, TEST_PROJECT.path);
+        const props = wrapper.find(PermissionAssignments).props();
+        expect(Object.values(props.rolesToShow.toJS())).toStrictEqual([
+            'org.labkey.api.security.roles.ProjectAdminRole',
+            'org.labkey.api.security.roles.FolderAdminRole',
+            'org.labkey.api.security.roles.EditorRole',
+            'org.labkey.api.security.roles.EditorWithoutDeleteRole',
+            'org.labkey.api.security.roles.ReaderRole',
+            'test',
         ]);
-
+        expect(props.rootRolesToShow).toBeUndefined();
         wrapper.unmount();
     });
 });

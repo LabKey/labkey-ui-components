@@ -9,14 +9,19 @@ import {
     TEST_USER_PROJECT_ADMIN,
 } from '../../userFixtures';
 
+import { createMockWithRouterProps } from '../../mockUtils';
+
 import { AdministrationSubNavImpl } from './AdministrationSubNav';
-import {createMockWithRouterProps} from "../../mockUtils";
 
 describe('AdministrationSubNavImpl', () => {
-
     test('requires admin', () => {
         const wrapper = shallow(
-            <AdministrationSubNavImpl {...createMockWithRouterProps(jest.fn, {})} inProjectContainer={false} projectsEnabled={false} user={TEST_USER_GUEST} />
+            <AdministrationSubNavImpl
+                {...createMockWithRouterProps(jest.fn, {})}
+                inProjectContainer={false}
+                projectsEnabled={false}
+                user={TEST_USER_GUEST}
+            />
         );
         expect(wrapper.prop('tabs').size).toBe(0);
         wrapper.setProps({ user: TEST_USER_EDITOR });
@@ -53,7 +58,6 @@ describe('AdministrationSubNavImpl', () => {
         expect(wrapper.prop('tabs').findIndex(t => t.text === 'Users')).toBe(3);
         expect(wrapper.prop('tabs').findIndex(t => t.text === 'Groups')).toBe(4);
         expect(wrapper.prop('tabs').findIndex(t => t.text === 'Permissions')).toBe(5);
-
     });
     test('display of Users or Groups', () => {
         const wrapper = shallow(
@@ -78,6 +82,5 @@ describe('AdministrationSubNavImpl', () => {
         expect(wrapper.prop('tabs').findIndex(t => t.text === 'Projects')).toBe(1);
         expect(wrapper.prop('tabs').findIndex(t => t.text === 'Users')).toBe(3);
         expect(wrapper.prop('tabs').findIndex(t => t.text === 'Groups')).toBe(4);
-
     });
 });

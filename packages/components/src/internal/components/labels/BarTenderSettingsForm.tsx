@@ -13,12 +13,14 @@ import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
+import { isAppHomeFolder } from '../../app/utils';
+
+import { useServerContext } from '../base/ServerContext';
+
 import { BarTenderConfiguration, BarTenderResponse } from './models';
 import { withLabelPrintingContext, LabelPrintingProviderProps } from './LabelPrintingContextProvider';
 import { BAR_TENDER_TOPIC, BARTENDER_CONFIGURATION_TITLE } from './constants';
 import { LabelsConfigurationPanel } from './LabelsConfigurationPanel';
-import {isAppHomeFolder} from "../../app/utils";
-import {useServerContext} from "../base/ServerContext";
 
 interface OwnProps extends InjectedRouteLeaveProps {
     api?: ComponentsAPIWrapper;

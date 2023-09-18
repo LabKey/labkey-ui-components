@@ -64,16 +64,16 @@ export interface SecurityAPIWrapper {
     getGroupMemberships: () => Promise<Row[]>;
     getInheritedProjects: (container: Container) => Promise<string[]>;
     getUserLimitSettings: () => Promise<UserLimitSettings>;
+    getUserPermissions: (options: Security.GetUserPermissionsOptions) => Promise<string[]>;
+    getUserProperties: (userId: number) => Promise<any>;
     getUserPropertiesForOther: (userId: number) => Promise<{ [key: string]: any }>;
     removeGroupMembers: (
         groupId: number,
         principalIds: number[],
         projectPath: string
     ) => Promise<RemoveGroupMembersResponse>;
-    updateUserDetails: (schemaQuery: SchemaQuery, data: FormData) => Promise<any>;
     savePolicy: (policy: any, containerPath?: string) => Promise<any>;
-    getUserProperties: (userId: number) => Promise<any>;
-    getUserPermissions: (options: Security.GetUserPermissionsOptions) => Promise<string[]>;
+    updateUserDetails: (schemaQuery: SchemaQuery, data: FormData) => Promise<any>;
 }
 
 export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {

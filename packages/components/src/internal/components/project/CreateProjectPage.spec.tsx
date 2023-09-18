@@ -3,7 +3,7 @@ import { act } from 'react-dom/test-utils';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 
-import {TEST_FOLDER_CONTAINER, TEST_FOLDER_OTHER_CONTAINER, TEST_PROJECT_CONTAINER} from '../../containerFixtures';
+import { TEST_FOLDER_CONTAINER, TEST_FOLDER_OTHER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 
 import { TEST_USER_APP_ADMIN } from '../../userFixtures';
 
@@ -72,15 +72,18 @@ describe('CreateProjectPage', () => {
 
         await waitForLifecycle(wrapper);
 
-        expect(createProject).toHaveBeenCalledWith({
-            name: '',
-            nameAsTitle: true,
-            title: null,
-            disabledSampleTypes: undefined,
-            disabledDataClasses: undefined,
-            disabledAssayDesigns: undefined,
-            disabledStorageLocations: undefined,
-        }, TEST_PROJECT_CONTAINER.path);
+        expect(createProject).toHaveBeenCalledWith(
+            {
+                name: '',
+                nameAsTitle: true,
+                title: null,
+                disabledSampleTypes: undefined,
+                disabledDataClasses: undefined,
+                disabledAssayDesigns: undefined,
+                disabledStorageLocations: undefined,
+            },
+            TEST_PROJECT_CONTAINER.path
+        );
         expect(onCreated).toHaveBeenCalledWith(project);
 
         wrapper.unmount();
@@ -108,15 +111,18 @@ describe('CreateProjectPage', () => {
 
         await waitForLifecycle(wrapper);
 
-        expect(createProject).toHaveBeenCalledWith({
-            name: '',
-            nameAsTitle: true,
-            title: null,
-            disabledSampleTypes: undefined,
-            disabledDataClasses: undefined,
-            disabledAssayDesigns: undefined,
-            disabledStorageLocations: undefined,
-        }, TEST_FOLDER_OTHER_CONTAINER.path);
+        expect(createProject).toHaveBeenCalledWith(
+            {
+                name: '',
+                nameAsTitle: true,
+                title: null,
+                disabledSampleTypes: undefined,
+                disabledDataClasses: undefined,
+                disabledAssayDesigns: undefined,
+                disabledStorageLocations: undefined,
+            },
+            TEST_FOLDER_OTHER_CONTAINER.path
+        );
         expect(onCreated).toHaveBeenCalledWith(project);
 
         wrapper.unmount();
@@ -148,7 +154,9 @@ describe('CreateProjectPage', () => {
         });
 
         await waitForLifecycle(wrapper);
-        expect(replace).toHaveBeenCalledWith(AppURL.create('admin', 'projects').addParam('created', TEST_FOLDER_CONTAINER.name).toString());
+        expect(replace).toHaveBeenCalledWith(
+            AppURL.create('admin', 'projects').addParam('created', TEST_FOLDER_CONTAINER.name).toString()
+        );
 
         wrapper.unmount();
     });

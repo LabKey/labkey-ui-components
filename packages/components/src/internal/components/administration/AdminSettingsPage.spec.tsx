@@ -56,10 +56,7 @@ describe('AdminSettingsPageImpl', () => {
         moduleContext: TEST_LKS_STARTER_MODULE_CONTEXT,
     };
 
-    function validatePremium(
-        wrapper: ReactWrapper,
-        manageSampleStatusCount = 1,
-    ): void {
+    function validatePremium(wrapper: ReactWrapper, manageSampleStatusCount = 1): void {
         expect(wrapper.find(InsufficientPermissionsPage)).toHaveLength(0);
         expect(wrapper.find(BasePermissionsCheckPage)).toHaveLength(1);
         expect(wrapper.find(ActiveUserLimit)).toHaveLength(1);
@@ -137,7 +134,7 @@ describe('AdminSettingsPageImpl', () => {
             moduleContext: { ...TEST_LKS_STARTER_MODULE_CONTEXT, query: { isProductProjectsEnabled: true } },
         });
         await waitForLifecycle(wrapper, 50);
-        validatePremium(wrapper, 1,);
+        validatePremium(wrapper, 1);
         expect(wrapper.find(BasePermissionsCheckPage).prop('title')).toBe('Project Settings');
         expect(wrapper.find(BasePermissionsCheckPage).prop('description')).toBe(
             '/TestProjectContainer/TestFolderContainer'

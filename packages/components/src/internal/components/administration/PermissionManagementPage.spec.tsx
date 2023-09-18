@@ -20,11 +20,12 @@ import policyJSON from '../../../test/data/security-getPolicy.json';
 
 import { initBrowserHistoryState } from '../../util/global';
 
-import {PermissionManagementPage, PermissionManagementPageImpl} from './PermissionManagementPage';
+import { PermissionAssignments } from '../permissions/PermissionAssignments';
+import { createMockWithRouteLeave } from '../../mockUtils';
+import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
+
 import { MemberType } from './models';
-import {PermissionAssignments} from "../permissions/PermissionAssignments";
-import {createMockWithRouteLeave} from "../../mockUtils";
-import {BasePermissionsCheckPage} from "../permissions/BasePermissionsCheckPage";
+import { PermissionManagementPage, PermissionManagementPageImpl } from './PermissionManagementPage';
 
 const USER = Principal.createFromSelectRow(
     fromJS({
@@ -52,7 +53,6 @@ beforeAll(() => {
 });
 
 describe('PermissionManagementPage', () => {
-
     function getDefaultProps() {
         return {
             roles: List(),
@@ -79,12 +79,16 @@ describe('PermissionManagementPage', () => {
     }
 
     test('premium roles', async () => {
-        const wrapper = mountWithAppServerContext(<PermissionManagementPageImpl {...getDefaultProps()} />, getDefaultAppContext(), {
-            user: TEST_USER_APP_ADMIN,
-            container: TEST_PROJECT_CONTAINER,
-            moduleContext: TEST_LKS_STARTER_MODULE_CONTEXT,
-            project: TEST_PROJECT,
-        });
+        const wrapper = mountWithAppServerContext(
+            <PermissionManagementPageImpl {...getDefaultProps()} />,
+            getDefaultAppContext(),
+            {
+                user: TEST_USER_APP_ADMIN,
+                container: TEST_PROJECT_CONTAINER,
+                moduleContext: TEST_LKS_STARTER_MODULE_CONTEXT,
+                project: TEST_PROJECT,
+            }
+        );
         await waitForLifecycle(wrapper);
 
         validate(wrapper, true, TEST_PROJECT.path);
@@ -100,14 +104,17 @@ describe('PermissionManagementPage', () => {
         wrapper.unmount();
     });
 
-
     test('hosted only roles', async () => {
-        const wrapper = mountWithAppServerContext(<PermissionManagementPageImpl {...getDefaultProps()} />, getDefaultAppContext(), {
-            user: TEST_USER_APP_ADMIN,
-            container: TEST_PROJECT_CONTAINER,
-            moduleContext: TEST_LKSM_STARTER_MODULE_CONTEXT,
-            project: TEST_PROJECT,
-        });
+        const wrapper = mountWithAppServerContext(
+            <PermissionManagementPageImpl {...getDefaultProps()} />,
+            getDefaultAppContext(),
+            {
+                user: TEST_USER_APP_ADMIN,
+                container: TEST_PROJECT_CONTAINER,
+                moduleContext: TEST_LKSM_STARTER_MODULE_CONTEXT,
+                project: TEST_PROJECT,
+            }
+        );
         await waitForLifecycle(wrapper);
 
         validate(wrapper, true, undefined);
@@ -115,22 +122,25 @@ describe('PermissionManagementPage', () => {
         expect(Object.values(props.rolesToShow.toJS())).toStrictEqual([
             'org.labkey.api.security.roles.EditorRole',
             'org.labkey.api.security.roles.EditorWithoutDeleteRole',
-            'org.labkey.api.security.roles.ReaderRole'
+            'org.labkey.api.security.roles.ReaderRole',
         ]);
         expect(Object.values(props.rootRolesToShow.toJS())).toStrictEqual([
-            'org.labkey.api.security.roles.ApplicationAdminRole'
+            'org.labkey.api.security.roles.ApplicationAdminRole',
         ]);
         wrapper.unmount();
     });
 
-
     test('without perm', async () => {
-        const wrapper = mountWithAppServerContext(<PermissionManagementPageImpl {...getDefaultProps()} />, getDefaultAppContext(), {
-            user: TEST_USER_EDITOR,
-            container: TEST_PROJECT_CONTAINER,
-            moduleContext: TEST_LKS_STARTER_MODULE_CONTEXT,
-            project: TEST_PROJECT,
-        });
+        const wrapper = mountWithAppServerContext(
+            <PermissionManagementPageImpl {...getDefaultProps()} />,
+            getDefaultAppContext(),
+            {
+                user: TEST_USER_EDITOR,
+                container: TEST_PROJECT_CONTAINER,
+                moduleContext: TEST_LKS_STARTER_MODULE_CONTEXT,
+                project: TEST_PROJECT,
+            }
+        );
         await waitForLifecycle(wrapper);
 
         validate(wrapper, false, TEST_PROJECT.path);

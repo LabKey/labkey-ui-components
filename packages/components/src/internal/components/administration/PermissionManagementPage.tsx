@@ -100,4 +100,3 @@ export const PermissionManagementPageImpl: FC<Props> = memo(props => {
 });
 
 export const PermissionManagementPage = withRouteLeave(withPermissionsPage(PermissionManagementPageImpl));
-

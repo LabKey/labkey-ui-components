@@ -9,8 +9,9 @@ import { getTestAPIWrapper } from '../../APIWrapper';
 import { Container } from '../base/models/Container';
 import { SelectInput } from '../forms/input/SelectInput';
 
+import { getFolderTestAPIWrapper } from '../container/FolderAPIWrapper';
+
 import { EntityMoveConfirmationModal, EntityMoveConfirmationModalProps } from './EntityMoveConfirmationModal';
-import {getFolderTestAPIWrapper} from "../container/FolderAPIWrapper";
 
 describe('EntityMoveConfirmationModal', () => {
     function getDefaultProps(): EntityMoveConfirmationModalProps {

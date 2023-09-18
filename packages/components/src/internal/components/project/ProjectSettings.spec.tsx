@@ -2,7 +2,7 @@ import React from 'react';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 
-import {TEST_FOLDER_CONTAINER, TEST_FOLDER_OTHER_CONTAINER, TEST_PROJECT_CONTAINER} from '../../containerFixtures';
+import { TEST_FOLDER_CONTAINER, TEST_FOLDER_OTHER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 
 import { TEST_USER_APP_ADMIN, TEST_USER_EDITOR } from '../../userFixtures';
 
@@ -46,14 +46,21 @@ describe('ProjectSettings', () => {
     }
 
     test('Selected project is home', () => {
-        let wrapper = mountWithAppServerContext(<ProjectSettings {...getDefaultProps()} project={TEST_PROJECT_CONTAINER}/>, getDefaultAppContext(),
-            getHomeServerContext());
+        let wrapper = mountWithAppServerContext(
+            <ProjectSettings {...getDefaultProps()} project={TEST_PROJECT_CONTAINER} />,
+            getDefaultAppContext(),
+            getHomeServerContext()
+        );
         expect(wrapper).toEqual({});
 
-        wrapper = mountWithAppServerContext(<ProjectSettings {...getDefaultProps()} project={TEST_PROJECT_CONTAINER} />, getDefaultAppContext(), {
-            container: TEST_PROJECT_CONTAINER,
-            user: TEST_USER_EDITOR,
-        });
+        wrapper = mountWithAppServerContext(
+            <ProjectSettings {...getDefaultProps()} project={TEST_PROJECT_CONTAINER} />,
+            getDefaultAppContext(),
+            {
+                container: TEST_PROJECT_CONTAINER,
+                user: TEST_USER_EDITOR,
+            }
+        );
         expect(wrapper).toEqual({});
 
         wrapper = mountWithAppServerContext(
@@ -63,18 +70,26 @@ describe('ProjectSettings', () => {
         );
         expect(wrapper).toEqual({});
 
-        wrapper = mountWithAppServerContext(<ProjectSettings {...getDefaultProps()} project={TEST_PROJECT_CONTAINER} />, getDefaultAppContext(), {
-            container: TEST_FOLDER_CONTAINER,
-            user: TEST_USER_APP_ADMIN,
-        });
+        wrapper = mountWithAppServerContext(
+            <ProjectSettings {...getDefaultProps()} project={TEST_PROJECT_CONTAINER} />,
+            getDefaultAppContext(),
+            {
+                container: TEST_FOLDER_CONTAINER,
+                user: TEST_USER_APP_ADMIN,
+            }
+        );
         expect(wrapper).toEqual({});
     });
 
     test('permission/type checks', () => {
-        let wrapper = mountWithAppServerContext(<ProjectSettings {...getDefaultProps()} project={TEST_FOLDER_CONTAINER} />, getDefaultAppContext(), {
-            container: TEST_PROJECT_CONTAINER,
-            user: TEST_USER_EDITOR,
-        });
+        let wrapper = mountWithAppServerContext(
+            <ProjectSettings {...getDefaultProps()} project={TEST_FOLDER_CONTAINER} />,
+            getDefaultAppContext(),
+            {
+                container: TEST_PROJECT_CONTAINER,
+                user: TEST_USER_EDITOR,
+            }
+        );
 
         expect(wrapper.find('.project-settings')).toHaveLength(0);
         expect(wrapper.find('.delete-project-button')).toHaveLength(0);
@@ -92,10 +107,14 @@ describe('ProjectSettings', () => {
         expect(wrapper.find('.delete-project-button').hostNodes().text()).toBe(' Delete Project');
         wrapper.unmount();
 
-        wrapper = mountWithAppServerContext(<ProjectSettings {...getDefaultProps()} project={TEST_FOLDER_CONTAINER} />, getDefaultAppContext(), {
-            container: TEST_FOLDER_CONTAINER,
-            user: TEST_USER_APP_ADMIN,
-        });
+        wrapper = mountWithAppServerContext(
+            <ProjectSettings {...getDefaultProps()} project={TEST_FOLDER_CONTAINER} />,
+            getDefaultAppContext(),
+            {
+                container: TEST_FOLDER_CONTAINER,
+                user: TEST_USER_APP_ADMIN,
+            }
+        );
 
         expect(wrapper.find('.project-settings')).toHaveLength(1);
         expect(wrapper.find('.panel-heading').text()).toBe('Settings');
@@ -103,10 +122,14 @@ describe('ProjectSettings', () => {
         expect(wrapper.find('.delete-project-button').hostNodes().text()).toBe(' Delete Project');
         wrapper.unmount();
 
-        wrapper = mountWithAppServerContext(<ProjectSettings {...getDefaultProps()} project={TEST_FOLDER_OTHER_CONTAINER} />, getDefaultAppContext(), {
-            container: TEST_FOLDER_CONTAINER,
-            user: TEST_USER_APP_ADMIN,
-        });
+        wrapper = mountWithAppServerContext(
+            <ProjectSettings {...getDefaultProps()} project={TEST_FOLDER_OTHER_CONTAINER} />,
+            getDefaultAppContext(),
+            {
+                container: TEST_FOLDER_CONTAINER,
+                user: TEST_USER_APP_ADMIN,
+            }
+        );
 
         expect(wrapper.find('.project-settings')).toHaveLength(1);
         expect(wrapper.find('.panel-heading').text()).toBe('Settings');
@@ -142,11 +165,14 @@ describe('ProjectSettings', () => {
         form.simulate('submit');
 
         await waitForLifecycle(wrapper);
-        expect(renameProject).toHaveBeenCalledWith({
-            name: container.name,
-            nameAsTitle: false,
-            title: container.title,
-        }, '/TestProjectContainer/TestFolderContainer');
+        expect(renameProject).toHaveBeenCalledWith(
+            {
+                name: container.name,
+                nameAsTitle: false,
+                title: container.title,
+            },
+            '/TestProjectContainer/TestFolderContainer'
+        );
 
         wrapper.unmount();
     });
@@ -177,11 +203,14 @@ describe('ProjectSettings', () => {
         form.simulate('submit');
 
         await waitForLifecycle(wrapper);
-        expect(renameProject).toHaveBeenCalledWith({
-            name: TEST_FOLDER_OTHER_CONTAINER.name,
-            nameAsTitle: false,
-            title: TEST_FOLDER_OTHER_CONTAINER.title,
-        }, '/TestProjectContainer/OtherTestFolderContainer');
+        expect(renameProject).toHaveBeenCalledWith(
+            {
+                name: TEST_FOLDER_OTHER_CONTAINER.name,
+                nameAsTitle: false,
+                title: TEST_FOLDER_OTHER_CONTAINER.title,
+            },
+            '/TestProjectContainer/OtherTestFolderContainer'
+        );
 
         wrapper.unmount();
     });
@@ -211,13 +240,15 @@ describe('ProjectSettings', () => {
         form.simulate('submit');
 
         await waitForLifecycle(wrapper);
-        expect(renameProject).toHaveBeenCalledWith({
-            name: TEST_FOLDER_OTHER_CONTAINER.name,
-            nameAsTitle: false,
-            title: TEST_FOLDER_OTHER_CONTAINER.title,
-        }, '/TestProjectContainer/OtherTestFolderContainer');
+        expect(renameProject).toHaveBeenCalledWith(
+            {
+                name: TEST_FOLDER_OTHER_CONTAINER.name,
+                nameAsTitle: false,
+                title: TEST_FOLDER_OTHER_CONTAINER.title,
+            },
+            '/TestProjectContainer/OtherTestFolderContainer'
+        );
 
         wrapper.unmount();
     });
-
 });

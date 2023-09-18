@@ -81,7 +81,6 @@ describe('BarTenderSettingsForm', () => {
         wrapper.unmount();
     });
 
-
     test('with initial form values', async () => {
         const wrapper = mountWithAppServerContext(
             <BarTenderSettingsFormImpl

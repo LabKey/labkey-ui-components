@@ -12,13 +12,13 @@ import { AppURL } from '../../url/AppURL';
 import { useServerContext } from '../base/ServerContext';
 import { User } from '../base/models/User';
 import { AUDIT_KEY } from '../../app/constants';
-import {isProjectContainer, isProductProjectsEnabled, isAppHomeFolder} from '../../app/utils';
+import { isProjectContainer, isProductProjectsEnabled, isAppHomeFolder } from '../../app/utils';
 import { withRouteLeave } from '../../util/RouteLeave';
 
 interface OwnProps {
     inProjectContainer: boolean;
-    projectsEnabled: boolean;
     isAppHome: boolean;
+    projectsEnabled: boolean;
     user: User;
 }
 

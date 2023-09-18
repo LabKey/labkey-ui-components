@@ -50,7 +50,6 @@ describe('LabelsConfigurationPanel', () => {
         expect(wrapper.find(LabelTemplateDetails)).toHaveLength(1);
         wrapper.unmount();
     });
-
 });
 
 describe('LabelTemplatesList', () => {

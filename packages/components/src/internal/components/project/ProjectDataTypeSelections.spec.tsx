@@ -5,8 +5,9 @@ import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 
 import { AssayRunDataType, SampleTypeDataType } from '../entities/constants';
 
+import { TEST_FOLDER_CONTAINER } from '../../containerFixtures';
+
 import { ProjectDataTypeSelections } from './ProjectDataTypeSelections';
-import {TEST_FOLDER_CONTAINER} from "../../containerFixtures";
 
 describe('ProjectDataTypeSelections', () => {
     test('without selected project - new project', () => {
@@ -25,7 +26,10 @@ describe('ProjectDataTypeSelections', () => {
 
     test('with 2 entityDataTypes', () => {
         const wrapper = mountWithAppServerContext(
-            <ProjectDataTypeSelections entityDataTypes={[SampleTypeDataType, AssayRunDataType]} project={TEST_FOLDER_CONTAINER} />
+            <ProjectDataTypeSelections
+                entityDataTypes={[SampleTypeDataType, AssayRunDataType]}
+                project={TEST_FOLDER_CONTAINER}
+            />
         );
         expect(wrapper.find(Button)).toHaveLength(1);
         expect(wrapper.find(Button).text()).toBe('Save');

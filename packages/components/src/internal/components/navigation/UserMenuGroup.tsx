@@ -136,7 +136,7 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
                     </DropdownButton>
                 </div>
             )}
-            {helpHref &&
+            {helpHref && (
                 <div className="navbar-item pull-right">
                     <div className="btn navbar-icon-button-right" id="nav-help-button">
                         <a href={helpHref} target="_blank" rel="noopener noreferrer">
@@ -144,7 +144,7 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
                         </a>
                     </div>
                 </div>
-            }
+            )}
         </>
     );
 };

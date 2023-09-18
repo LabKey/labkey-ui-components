@@ -15,7 +15,7 @@ import {
     isProjectContainer,
     isProductProjectsEnabled,
     userCanReadGroupDetails,
-    isAppHomeFolder
+    isAppHomeFolder,
 } from '../../app/utils';
 
 import { useServerContext } from '../base/ServerContext';
@@ -222,10 +222,8 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
 
     const _addAssignment = useCallback(
         (isRootPolicy: boolean, principal: Principal, role: SecurityRole) => {
-            if (isRootPolicy)
-                setRootPolicy(SecurityPolicy.addAssignment(rootPolicy, principal, role));
-            else
-                setPolicy(SecurityPolicy.addAssignment(policy, principal, role));
+            if (isRootPolicy) setRootPolicy(SecurityPolicy.addAssignment(rootPolicy, principal, role));
+            else setPolicy(SecurityPolicy.addAssignment(policy, principal, role));
             setSelectedUserId(principal.userId);
             isRootPolicy ? setHasRootPolicyChange(true) : setHasPolicyChange(true);
             setIsDirty(true);
@@ -364,10 +362,8 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
 
     const _removeAssignment = useCallback(
         (isRootPolicy: boolean, userId: number, role: SecurityRole) => {
-            if (isRootPolicy)
-                setRootPolicy(SecurityPolicy.removeAssignment(rootPolicy, userId, role));
-            else
-                setPolicy(SecurityPolicy.removeAssignment(policy, userId, role));
+            if (isRootPolicy) setRootPolicy(SecurityPolicy.removeAssignment(rootPolicy, userId, role));
+            else setPolicy(SecurityPolicy.removeAssignment(policy, userId, role));
             setSelectedUserId(undefined);
             setIsDirty(true);
             isRootPolicy ? setHasRootPolicyChange(true) : setHasPolicyChange(true);
@@ -453,21 +449,22 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
 
                 {!inherited && (
                     <>
-                        {isAppHomeFolder(selectedProject) && visibleRootRoles?.map(role => (
-                            <PermissionsRole
-                                assignments={rootPolicy.assignmentsByRole.get(role.uniqueName)}
-                                disabledId={user.id}
-                                key={role.uniqueName}
-                                onAddAssignment={addRootAssignment}
-                                onClickAssignment={showDetails}
-                                onRemoveAssignment={removeRootAssignment}
-                                principals={principals}
-                                role={role}
-                                selectedUserId={selectedUserId}
-                                groupMembership={groupMembership} // needed?
-                                initExpanded={initExpandedRole === role.displayName}
-                            />
-                        ))}
+                        {isAppHomeFolder(selectedProject) &&
+                            visibleRootRoles?.map(role => (
+                                <PermissionsRole
+                                    assignments={rootPolicy.assignmentsByRole.get(role.uniqueName)}
+                                    disabledId={user.id}
+                                    key={role.uniqueName}
+                                    onAddAssignment={addRootAssignment}
+                                    onClickAssignment={showDetails}
+                                    onRemoveAssignment={removeRootAssignment}
+                                    principals={principals}
+                                    role={role}
+                                    selectedUserId={selectedUserId}
+                                    groupMembership={groupMembership} // needed?
+                                    initExpanded={initExpandedRole === role.displayName}
+                                />
+                            ))}
                         {visibleRoles?.map(role => (
                             <PermissionsRole
                                 assignments={policy.assignmentsByRole.get(role.uniqueName)}

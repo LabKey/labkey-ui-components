@@ -147,7 +147,7 @@ describe('UserMenuGroup', () => {
             isSignedIn: true,
         });
 
-        const tree = mount(<UserMenuGroupImpl model={withAdmins} user={user} isAppHome={true}/>);
+        const tree = mount(<UserMenuGroupImpl model={withAdmins} user={user} isAppHome={true} />);
 
         verify(tree, ['Profile', '', /* divider*/ 'Sign Out'], ['Application Settings'], true);
     });
@@ -157,7 +157,7 @@ describe('UserMenuGroup', () => {
             isSignedIn: true,
         });
 
-        const tree = mount(<UserMenuGroupImpl model={withAdmins} user={user} isAppHome={false}/>);
+        const tree = mount(<UserMenuGroupImpl model={withAdmins} user={user} isAppHome={false} />);
 
         verify(tree, ['Profile', '', /* divider*/ 'Sign Out'], ['Application Settings', 'Project Settings'], true);
     });

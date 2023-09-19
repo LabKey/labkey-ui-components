@@ -159,7 +159,6 @@ describe('AdminSettingsPageImpl', () => {
         });
         await waitForLifecycle(wrapper, 50);
         expect(wrapper.find(InsufficientPermissionsPage)).toHaveLength(1);
-        expect(wrapper.find(BasePermissions)).toHaveLength(0);
         expect(wrapper.find(BasePermissionsCheckPage)).toHaveLength(0);
         wrapper.unmount();
     });

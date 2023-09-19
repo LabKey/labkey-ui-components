@@ -82,8 +82,8 @@ describe('UserMenuGroup', () => {
                 requiresLogin: true,
             },
             {
-                key: 'adminSettings',
-                label: 'Settings',
+                key: 'adminsetting',
+                label: 'Application Settings',
                 url: 'settings',
                 requiresLogin: true,
             },
@@ -147,9 +147,19 @@ describe('UserMenuGroup', () => {
             isSignedIn: true,
         });
 
-        const tree = mount(<UserMenuGroupImpl model={withAdmins} user={user} />);
+        const tree = mount(<UserMenuGroupImpl model={withAdmins} user={user} isAppHome={true}/>);
 
-        verify(tree, ['Profile', '', /* divider*/ 'Sign Out'], ['Settings'], true);
+        verify(tree, ['Profile', '', /* divider*/ 'Sign Out'], ['Application Settings'], true);
+    });
+
+    test('with admin items, not isAppHome', () => {
+        const user = new User({
+            isSignedIn: true,
+        });
+
+        const tree = mount(<UserMenuGroupImpl model={withAdmins} user={user} isAppHome={false}/>);
+
+        verify(tree, ['Profile', '', /* divider*/ 'Sign Out'], ['Application Settings', 'Project Settings'], true);
     });
 
     test('user logged in, but not in dev mode', () => {

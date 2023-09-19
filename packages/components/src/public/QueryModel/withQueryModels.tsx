@@ -172,9 +172,9 @@ export function withQueryModels<Props>(
             if (model.bindURL && hasQueryParamSettings) {
                 model = model.mutate(model.attributesForURLQueryParams(queryParams, true));
             } else if (model.useSavedSettings) {
-                const settings = getSettingsFromLocalStorage(id);
+                const settings = getSettingsFromLocalStorage(id, model.containerPath);
                 if (settings !== undefined) {
-                    const { filterArray, maxRows, sorts, viewName } = getSettingsFromLocalStorage(id);
+                    const { filterArray, maxRows, sorts, viewName } = settings;
                     let schemaQuery = model.schemaQuery;
                     if (viewName !== undefined) {
                         schemaQuery = new SchemaQuery(model.schemaName, model.queryName, viewName);

@@ -1147,14 +1147,14 @@ type QueryModelURLState = Pick<
     'filterArray' | 'maxRows' | 'offset' | 'schemaQuery' | 'selectedReportId' | 'sorts'
 >;
 type QueryModelSettings = Partial<Pick<QueryModel, 'filterArray' | 'maxRows' | 'sorts' | 'viewName'>>;
-const LOCAL_STORAGE_PREFIX = 'QUERY_MODEL_SETTINGS.';
+const LOCAL_STORAGE_PREFIX = 'QUERY_MODEL_SETTINGS';
 
-function localStorageKey(modelId: string): string {
-    return LOCAL_STORAGE_PREFIX + modelId;
+function localStorageKey(modelId: string, containerPath: string): string {
+    return [LOCAL_STORAGE_PREFIX, containerPath, modelId].join(';');
 }
 
-export function getSettingsFromLocalStorage(id: string): QueryModelSettings {
-    const savedSettings = JSON.parse(localStorage.getItem(localStorageKey(id)));
+export function getSettingsFromLocalStorage(id: string, containerPath: string): QueryModelSettings {
+    const savedSettings = JSON.parse(localStorage.getItem(localStorageKey(id, containerPath)));
 
     if (savedSettings === null) return undefined;
 
@@ -1195,5 +1195,5 @@ export function saveSettingsToLocalStorage(model: QueryModel): void {
     // root object, because we have to serialize to/from JSON, and it could get very expensive if we had to
     // read/write a large JSON object that stored all settings for all models every time we needed settings for
     // a single model.
-    localStorage.setItem(localStorageKey(model.id), JSON.stringify(settings));
+    localStorage.setItem(localStorageKey(model.id, model.containerPath), JSON.stringify(settings));
 }

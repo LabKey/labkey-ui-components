@@ -447,7 +447,8 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
 
                 {!inherited && (
                     <>
-                        {user.isRootAdmin && isAppHomeFolder(selectedProject, moduleContext) &&
+                        {user.isRootAdmin &&
+                            isAppHomeFolder(selectedProject, moduleContext) &&
                             visibleRootRoles?.map(role => (
                                 <PermissionsRole
                                     assignments={rootPolicy.assignmentsByRole.get(role.uniqueName)}

@@ -12,18 +12,18 @@ import {
     JEST_SITE_ADMIN_USER_ID,
     SECURITY_ROLE_APPADMIN,
     SECURITY_ROLE_EDITOR,
-    SECURITY_ROLE_READER
+    SECURITY_ROLE_READER,
 } from '../../../test/data/constants';
 import {
     TEST_FOLDER_CONTAINER,
     TEST_PROJECT_CONTAINER,
     TEST_PROJECT,
-    TEST_FOLDER_OTHER_CONTAINER
+    TEST_FOLDER_OTHER_CONTAINER,
 } from '../../containerFixtures';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 import { ServerContext } from '../base/ServerContext';
-import {TEST_USER_APP_ADMIN, TEST_USER_FOLDER_ADMIN, TEST_USER_PROJECT_ADMIN} from '../../userFixtures';
+import { TEST_USER_APP_ADMIN, TEST_USER_FOLDER_ADMIN, TEST_USER_PROJECT_ADMIN } from '../../userFixtures';
 import { getSecurityTestAPIWrapper, SecurityAPIWrapper } from '../security/APIWrapper';
 import { AppContext } from '../../AppContext';
 import { getTestAPIWrapper } from '../../APIWrapper';
@@ -33,14 +33,18 @@ import { MemberType } from '../administration/models';
 
 import { initBrowserHistoryState } from '../../util/global';
 
+import { FolderAPIWrapper, getFolderTestAPIWrapper } from '../container/FolderAPIWrapper';
+
+import { ProjectListing } from '../project/ProjectListing';
+
+import { UserDetailsPanel } from '../user/UserDetailsPanel';
+
 import { PermissionsRole } from './PermissionsRole';
 import { getRolesByUniqueName, processGetRolesResponse } from './actions';
 import { Principal, SecurityPolicy } from './models';
 import { PermissionAssignments, PermissionAssignmentsProps } from './PermissionAssignments';
-import {FolderAPIWrapper, getFolderTestAPIWrapper} from "../container/FolderAPIWrapper";
-import {ProjectListing} from "../project/ProjectListing";
-import {GroupDetailsPanel} from "./GroupDetailsPanel";
-import {UserDetailsPanel} from "../user/UserDetailsPanel";
+
+import { GroupDetailsPanel } from './GroupDetailsPanel';
 
 const allProjects = [TEST_PROJECT_CONTAINER, TEST_FOLDER_CONTAINER, TEST_FOLDER_OTHER_CONTAINER];
 
@@ -107,7 +111,10 @@ describe('PermissionAssignments', () => {
     const fetchGroups = jest.fn().mockResolvedValue(GROUPS);
     const getGroupMemberships = jest.fn().mockResolvedValue([]);
 
-    function getDefaultAppContext(overrides?: Partial<SecurityAPIWrapper>, overridesFolder?: Partial<FolderAPIWrapper>): Partial<AppContext> {
+    function getDefaultAppContext(
+        overrides?: Partial<SecurityAPIWrapper>,
+        overridesFolder?: Partial<FolderAPIWrapper>
+    ): Partial<AppContext> {
         return {
             api: getTestAPIWrapper(jest.fn, {
                 security: getSecurityTestAPIWrapper(jest.fn, {
@@ -117,7 +124,7 @@ describe('PermissionAssignments', () => {
                 }),
                 folder: getFolderTestAPIWrapper(jest.fn, {
                     getProjects: fetchProjects,
-                    ...overridesFolder
+                    ...overridesFolder,
                 }),
             }),
         };
@@ -279,7 +286,7 @@ describe('PermissionAssignments', () => {
             getDefaultServerContext({
                 container: TEST_PROJECT_CONTAINER,
                 moduleContext: { query: { isProductProjectsEnabled: true } },
-                user: TEST_USER_APP_ADMIN
+                user: TEST_USER_APP_ADMIN,
             })
         );
 
@@ -305,7 +312,7 @@ describe('PermissionAssignments', () => {
             getDefaultServerContext({
                 container: TEST_PROJECT_CONTAINER,
                 moduleContext: { query: { isProductProjectsEnabled: true } },
-                user: TEST_USER_PROJECT_ADMIN
+                user: TEST_USER_PROJECT_ADMIN,
             })
         );
 
@@ -331,7 +338,7 @@ describe('PermissionAssignments', () => {
             getDefaultServerContext({
                 container: TEST_FOLDER_CONTAINER,
                 moduleContext: { query: { isProductProjectsEnabled: true } },
-                user: TEST_USER_APP_ADMIN
+                user: TEST_USER_APP_ADMIN,
             })
         );
 
@@ -411,5 +418,4 @@ describe('PermissionAssignments', () => {
 
         wrapper.unmount();
     });
-
 });

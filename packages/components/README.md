@@ -17,29 +17,9 @@ Please see the [Public API Docs](./docs/public.md) for further details.
 
 ## Development
 
-### Getting Started
-If you are building the components locally, you will need to do the following to prepare your system.
+### Clone and Build
 
-#### 1. Install yarn
-
-[Yarn](https://yarnpkg.com) is a package manager much like npm.
-There a couple of different ways to install yarn. If you have npm you can do a global install:
-
-```sh
-npm install yarn -g
-```
-
-If you are working on a Mac and have [Homebrew](https://brew.sh/) you can install using:
-
-```sh
-brew install yarn
-```
-
-Yarn should now be available on the command line.
-
-#### 2. Clone and Build
-
-Now that yarn is set up, you can go ahead and clone this repository to a local directory.
+Clone this repository to a local directory.
 
 ```sh
 git clone https://github.com/LabKey/labkey-ui-components.git # or via ssh
@@ -48,15 +28,15 @@ git clone https://github.com/LabKey/labkey-ui-components.git # or via ssh
 Navigate into the packages/components directory and run:
 
 ```sh
-yarn install
+npm install --legacy-peer-deps
 ```
 
 This will install all dependencies for the component packages.
-Once this is complete you can utilize yarn to build and test the package.
+Once this is complete you can utilize npm to build and test the package.
 
 ```sh
-yarn build
-yarn test
+npm run build
+npm test
 ```
 
 ### Technologies
@@ -69,12 +49,9 @@ For doing development of LabKey UI Components, you should be familiar with the f
 * [Jest](https://jestjs.io/docs/en/getting-started.html) - for unit testing of components
 * [Enzyme](https://airbnb.io/enzyme/) - testing utility library
 
-Note that we are currently not using the latest versions of Bootstrap, React-Bootstrap and Typescript because there
+Note that we are currently not using the latest versions of Bootstrap and React-Bootstrap, amongst others, because there
 have been some significant changes between our current version and the latest version of these libraries, so when looking for docs,
 be sure to look at the ones corresponding to the version we are using.
-
-And, for building, we use
-* [Yarn](https://yarnpkg.com) - package manager and build tool
 
 ### Local Development
 

@@ -21,11 +21,14 @@ When making modifications to the existing package, you should:
 * Use an alpha version number for the package of the form `X.Y.Z-fb-my-branch-name.0`, where `X.Y.Z` is your best guess at the
 next [SemVer](https://semver.org/) version that will include your changes, `fb-my-branch-name` is the name of your
 feature branch with underscores replaced by hyphens and the `.0` is just a starting point for the prerelease versioning. This `.0`
-version will be incremented with each alpha package version you want to publish and test in your LabKey module.
-Note that the version number within the `package.json` file will be set while running the  `yarn publish` command.
-See [below](#version-numbering) for more on version numbering.
+version will be incremented with each alpha package version you want to publish and test in your LabKey module. See
+[below](#version-numbering) for more on version numbering.
 * Update the `releaseNotes/labkey/components.md` file to document what is changing in this version. Note that the final release
 version number and date will be set just before you merge your feature branch.
+* See the [publishing](#publishing) section for how to publish a package.
+
+#### Testing
+
 * Write [jest](https://jestjs.io/docs/en/getting-started.html) tests for your React components, models, and utility functions.
     * See additional documentation on [Jest testing recommendations](./jest.md).
 * Test within the application using a published alpha package version.
@@ -54,7 +57,7 @@ with webpack aliases enabled for package linking
 We track our external dependencies in [this spreadsheet](https://docs.google.com/spreadsheets/d/1W39yHLulzLUaXhp5-IRFuloJC9O94CJnwEHrR_4CcSo/edit#gid=0)
 in order to maintain notes about the cost of updating our various packages.  To do package updates, use the
 ```
-yarn outdated
+npm outdated
 ```
 command to show which packages are out of date and then compare to the spreadsheet to determine if there has already
 been investigation into the cost of upgrading packages that are out of date.
@@ -67,22 +70,22 @@ is highly recommended to lint any files you've changed before merging them to de
 
 ```shell script
 # Lints files matching file path glob without any auto-formatting or fixing
-yarn run lint <file path>
+npm run lint <file path>
 
 # Lints, auto-formats, and fixes files matching file path glob
-yarn run lint-fix <file path>
+npm run lint-fix <file path>
 
 # Lints files with uncommitted local changes without auto-formatting or fixing
-yarn run lint-precommit
+npm run lint-precommit
 
 # Lints, auto-formats, and fixes files with uncommitted local changes
-yarn run lint-precommit-fix
+npm run lint-precommit-fix
 
 # Lints files that have been modified in the branch without auto-formatting or fixing
-yarn run lint-branch
+npm run lint-branch
 
 # Lints, auto-formats, and fixes files that have been modified in the branch
-yarn run lint-branch-fix
+npm run lint-branch-fix
 
 ```
 
@@ -110,13 +113,13 @@ path instead of relying on your OS shell.  Some examples:
 
 ```shell script
 # Single file
-yarn run lint "./src/components/files/FileTree.tsx"
+npm run lint "./src/components/files/FileTree.tsx"
 
 # All files in a directory
-yarn run lint-fix "./src/components/files/*"
+npm run lint-fix "./src/components/files/*"
 
 # Recursively all files in a directory and its sub-directories
-yarn run lint-fix "./src/components/**/*"
+npm run lint-fix "./src/components/**/*"
 ```
 
 ### Package Bundle Size
@@ -126,7 +129,7 @@ used the `webpack-bundle-analyzer` npm package. See [docs](https://github.com/we
 
 You can analyze the bundle size for any of our npm packages by running the following command:
 ```
-yarn build-analyze
+npm run build-analyze
 ```
 For analyzing the bundle size of one of the applications, you can do the same using the npm command:
 ```
@@ -172,14 +175,20 @@ merge back to develop.
 Steps for package version numbering during feature branch development:
 1. Create your feature branch off of develop, i.e. fb_feature_1, and add your changes.
 1. When you are ready to push an alpha version up to Artifactory so you can test it in your application and
-on TeamCity, run the `yarn publish` command from the @labkey/components package root directory. This command
-will then prompt you for a new alpha package version. Ex. if adding a new feature and the current version is `0.1.0`,
-you would use `0.2.0-fb-feature-1.1`.
+on TeamCity, edit the version of the @labkey/components package in `package.json`.
+1. Use an alpha version number for the package of the form `X.Y.Z-fb-my-branch-name.0`, where `X.Y.Z` is your best guess at the
+next [SemVer](https://semver.org/) version that will include your changes, `fb-my-branch-name` is the name of your
+feature branch with underscores replaced by hyphens and the `.0` is just a starting point for the prerelease versioning.
+This `.0` version will be incremented with each alpha package version you want to publish and test of the module.
+1. Once you have modified the version in `package.json` run `npm install --legacy-peer-deps` to increment the version in the `package-lock.json`.
+1. Commit these changes using a message like `@labkey/components@X.Y.Z-fb-my-branch-name.0`.
+1. Run the `npm publish` command from the @labkey/components package root directory. This command will
+verify the build and publish the package.
 1. If you make further edits to your feature branch and need to push new alpha versions, you would just bump the last
 digit in your package version number (e.g., `0.2.0-fb-feature-1.2`, `0.2.0-fb-feature-1.3`, etc.).
 1. Once your feature branch is complete and ready to merge, you do one more package version update to what will be the
-"release" version (i.e. `0.2.0` in this scenario). This will again be set during the `yarn publish` command prompt asking
- you to enter the new package version number. Don't forget to update
+"release" version (i.e. `0.2.0` in this scenario). This will again be set by updating the version in `package.json`,
+committing the version, and then running the `npm publish` command. Don't forget to update
 the release notes in your package's `README.md` file for this version number. And don't forget to update your application
 package.json for this new version number (if that applies).
 1. Once merged and the "release" version has been pushed to Artifactory, you can then go to Artifactory and delete your
@@ -190,7 +199,7 @@ alpha versions of that package for this feature branch.
 From the package root (not the repository root!) of the package you want to update (e.g. `packages/components`) run:
 
 ```sh
-yarn publish
+npm publish
 ```
 
 This will prompt you for the new version.  Choose a version increment in accordance with [SemVer](https://semver.org/).  This command will
@@ -204,22 +213,22 @@ to update the package.json file version number manually before running `npm publ
 ### labkey-ui-components
 
 1. Do one final merge of the `develop` branch into your feature branch for `labkey-ui-components`.
-2. Run one final lint of your changes, `yarn run lint-branch-fix`, and review the changes applied.
+2. Run one final lint of your changes, `npm run lint-branch-fix`, and review the changes applied.
 3. Update the `releaseNotes/labkey/components.md` file with what will be your release version number and release date.
-4. Run the commands to build and test: `yarn build`, `yarn test`.
+4. Run the commands to build and test: `npm run build`, `npm test`.
 5. Push your final set of commits from `labkey-ui-components` to GitHub so that TeamCity can do a final run of the jest tests.
 6. Message the Frontend dev room chat about starting the pull request merge. This is to make sure two people aren't
    merging at the same time which might result in conflicting package version numbers.
 7. Check on the [TeamCity](https://teamcity.labkey.org) build status and jest test status (also shown in the PR).
-8. Run the command to publish: `yarn publish`.
+8. Run the command to publish: `npm publish`.
 9. Merge the pull requests for `labkey-ui-components`.
 10. Message the Frontend dev room chat that the merge is complete.
 
 ### LabKey modules
 
 1. Update any LabKey module `package.json` files where you are using / applying these changes with this final release version
-number (then do the regular `npm install` for that module, build, etc. and push those `package.json` and `package-lock.json` file
-changes to github as well).
+number (then do the regular `npm install --legacy-peer-deps` for that module, build, etc. and push those
+`package.json` and `package-lock.json` file changes to github as well).
 2. Merge the PRs for your LabKey module changes.
 3. Remove any of the alpha package versions from [Artifactory](https://labkey.jfrog.io/artifactory/webapp/#/home)
 that you had published during development for this feature branch.

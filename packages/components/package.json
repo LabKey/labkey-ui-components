@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.369.0-fb-projectAdmin.3",
+  "version": "2.369.0-fb-projectAdmin.4",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

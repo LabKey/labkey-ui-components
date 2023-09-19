@@ -52,7 +52,6 @@ import { InjectedPermissionsPage } from './withPermissionsPage';
 
 // exported for testing
 export interface PermissionAssignmentsProps extends InjectedPermissionsPage, InjectedRouteLeaveProps {
-    onChange?: (policy: SecurityPolicy) => void;
     onSuccess: () => void;
     /** Subset list of role uniqueNames to show in this component usage */
     rolesToShow?: List<string>;
@@ -69,7 +68,6 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
     const {
         getIsDirty,
         inactiveUsersById,
-        onChange,
         onSuccess,
         principals,
         principalsById,
@@ -108,7 +106,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         ? decodeURI(getLocation().query?.get('expand'))
         : undefined;
 
-    const projectUser = useContainerUser(getProjectPath(container?.path)); // TODO fix?
+    const projectUser = useContainerUser(getProjectPath(container?.path));
 
     const loadGroupMembership = useCallback(async () => {
         // Issue 47641: since groups are defined at the project container level,
@@ -228,21 +226,21 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
             isRootPolicy ? setHasRootPolicyChange(true) : setHasPolicyChange(true);
             setIsDirty(true);
         },
-        [onChange, policy, rootPolicy]
+        [policy, rootPolicy]
     );
 
     const addAssignment = useCallback(
         (principal: Principal, role: SecurityRole) => {
             _addAssignment(false, principal, role);
         },
-        [onChange, _addAssignment]
+        [_addAssignment]
     );
 
     const addRootAssignment = useCallback(
         (principal: Principal, role: SecurityRole) => {
             _addAssignment(true, principal, role);
         },
-        [onChange, _addAssignment]
+        [_addAssignment]
     );
 
     const onInheritChange = useCallback(() => {
@@ -368,21 +366,21 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
             setIsDirty(true);
             isRootPolicy ? setHasRootPolicyChange(true) : setHasPolicyChange(true);
         },
-        [onChange, policy, rootPolicy]
+        [policy, rootPolicy]
     );
 
     const removeAssignment = useCallback(
         (userId: number, role: SecurityRole) => {
             _removeAssignment(false, userId, role);
         },
-        [onChange, _removeAssignment, policy, rootPolicy]
+        [_removeAssignment, policy, rootPolicy]
     );
 
     const removeRootAssignment = useCallback(
         (userId: number, role: SecurityRole) => {
             _removeAssignment(true, userId, role);
         },
-        [onChange, policy, _removeAssignment, rootPolicy]
+        [policy, _removeAssignment, rootPolicy]
     );
 
     const showDetails = useCallback((selectedUserId_: number) => {
@@ -449,7 +447,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
 
                 {!inherited && (
                     <>
-                        {isAppHomeFolder(selectedProject) &&
+                        {user.isRootAdmin && isAppHomeFolder(selectedProject, moduleContext) &&
                             visibleRootRoles?.map(role => (
                                 <PermissionsRole
                                     assignments={rootPolicy.assignmentsByRole.get(role.uniqueName)}
@@ -498,7 +496,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
 
     return (
         <>
-            <Alert>{error}</Alert>
+            {error && <Alert>{error}</Alert>}
             <Row>
                 {(!isProductProjectsEnabled(moduleContext) || projects?.length <= 1) && <>{_panelContent}</>}
                 {isProductProjectsEnabled(moduleContext) && projects?.length > 1 && (

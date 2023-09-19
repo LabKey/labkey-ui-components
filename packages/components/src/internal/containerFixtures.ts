@@ -20,6 +20,7 @@ export const TEST_PROJECT_CONTAINER = new Container({
     path: '/TestProjectContainer',
     title: 'Test Project Container',
     type: 'project',
+    effectivePermissions: ['org.labkey.api.security.permissions.AdminPermission'],
 });
 
 export const TEST_PROJECT: Project = {
@@ -42,6 +43,7 @@ export const TEST_FOLDER_CONTAINER = new Container({
     path: `${TEST_PROJECT_CONTAINER.path}/TestFolderContainer`,
     title: 'Test Folder Container',
     type: 'folder',
+    effectivePermissions: ['org.labkey.api.security.permissions.AdminPermission'],
 });
 
 export const TEST_FOLDER_OTHER_CONTAINER = new Container({
@@ -56,4 +58,5 @@ export const TEST_FOLDER_OTHER_CONTAINER = new Container({
     path: `${TEST_PROJECT_CONTAINER.path}/OtherTestFolderContainer`,
     title: 'Other Test Folder Container',
     type: 'folder',
+    effectivePermissions: ['org.labkey.api.security.permissions.AdminPermission'],
 });

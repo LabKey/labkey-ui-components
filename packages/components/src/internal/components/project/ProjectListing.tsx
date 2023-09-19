@@ -19,7 +19,7 @@ interface Props {
 export const ProjectListing: FC<Props> = memo(props => {
     const { projects, selectedProject, inheritedProjects, setSelectedProject, getIsDirty, setIsDirty } = props;
 
-    const dividerInd = inheritedProjects?.length > 0 ? inheritedProjects.length : -1;
+    const dividerInd = inheritedProjects?.length > 0 ? inheritedProjects.length + 1 : -1;
     return (
         <VerticalScrollPanel cls="col-md-3 col-xs-12" offset={210}>
             <div className="listing-content-title-medium">Projects</div>
@@ -28,6 +28,13 @@ export const ProjectListing: FC<Props> = memo(props => {
                     const showInherited = inheritedProjects?.indexOf(project.name) > -1;
                     return (
                         <>
+                            {ind === dividerInd && (
+                                <li>
+                                    <div className="row">
+                                        <hr />
+                                    </div>
+                                </li>
+                            )}
                             <Fragment key={project.id}>
                                 <li
                                     className={classNames('menu-section-item', {
@@ -55,13 +62,6 @@ export const ProjectListing: FC<Props> = memo(props => {
                                     </div>
                                 </li>
                             </Fragment>
-                            {ind === dividerInd && (
-                                <li>
-                                    <div className="row">
-                                        <hr />
-                                    </div>
-                                </li>
-                            )}
                         </>
                     );
                 })}

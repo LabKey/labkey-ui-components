@@ -15,10 +15,10 @@ import {
     SECURITY_ROLE_READER,
 } from '../../../test/data/constants';
 import {
-    TEST_FOLDER_CONTAINER,
-    TEST_PROJECT_CONTAINER,
     TEST_PROJECT,
-    TEST_FOLDER_OTHER_CONTAINER,
+    TEST_PROJECT_CONTAINER_ADMIN,
+    TEST_FOLDER_CONTAINER_ADMIN,
+    TEST_FOLDER_OTHER_CONTAINER_ADMIN,
 } from '../../containerFixtures';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
@@ -46,7 +46,7 @@ import { PermissionAssignments, PermissionAssignmentsProps } from './PermissionA
 
 import { GroupDetailsPanel } from './GroupDetailsPanel';
 
-const allProjects = [TEST_PROJECT_CONTAINER, TEST_FOLDER_CONTAINER, TEST_FOLDER_OTHER_CONTAINER];
+const allProjects = [TEST_PROJECT_CONTAINER_ADMIN, TEST_FOLDER_CONTAINER_ADMIN, TEST_FOLDER_OTHER_CONTAINER_ADMIN];
 
 const GROUP = Principal.createFromSelectRow(
     fromJS({
@@ -103,7 +103,7 @@ describe('PermissionAssignments', () => {
     }
 
     const fetchProjects = jest.fn().mockResolvedValue(allProjects);
-    const getInheritedProjects = jest.fn().mockResolvedValue([TEST_FOLDER_OTHER_CONTAINER.name]);
+    const getInheritedProjects = jest.fn().mockResolvedValue([TEST_FOLDER_OTHER_CONTAINER_ADMIN.name]);
     const fetchPolicy = jest.fn().mockResolvedValue(POLICY);
     const fetchRootPolicy = jest.fn().mockResolvedValue(ROOT_POLICY);
     const inheritPolicy = POLICY.set('containerId', 'NOT_RESOURCE_ID') as SecurityPolicy;
@@ -132,7 +132,7 @@ describe('PermissionAssignments', () => {
 
     function getDefaultServerContext(overrides?: Partial<ServerContext>): Partial<ServerContext> {
         return {
-            container: TEST_PROJECT_CONTAINER,
+            container: TEST_PROJECT_CONTAINER_ADMIN,
             project: TEST_PROJECT,
             user: TEST_USER_FOLDER_ADMIN,
             ...overrides,
@@ -140,7 +140,7 @@ describe('PermissionAssignments', () => {
     }
 
     test('loads root policy', async () => {
-        const container = TEST_FOLDER_CONTAINER;
+        const container = TEST_FOLDER_CONTAINER_ADMIN;
         const defaultProps = getDefaultProps();
 
         const wrapper = mountWithAppServerContext(
@@ -171,7 +171,7 @@ describe('PermissionAssignments', () => {
             <PermissionAssignments {...defaultProps} />,
             getDefaultAppContext(),
             getDefaultServerContext({
-                container: TEST_FOLDER_CONTAINER,
+                container: TEST_FOLDER_CONTAINER_ADMIN,
                 moduleContext: { query: { isProductProjectsEnabled: true } },
             })
         );
@@ -192,7 +192,7 @@ describe('PermissionAssignments', () => {
             <PermissionAssignments {...defaultProps} />,
             getDefaultAppContext({ fetchPolicy: fetchPolicyInherited }),
             getDefaultServerContext({
-                container: TEST_FOLDER_OTHER_CONTAINER,
+                container: TEST_FOLDER_OTHER_CONTAINER_ADMIN,
                 moduleContext: { query: { isProductProjectsEnabled: true } },
             })
         );
@@ -201,7 +201,7 @@ describe('PermissionAssignments', () => {
 
         expect(fetchPolicyInherited).toHaveBeenNthCalledWith(
             1,
-            TEST_FOLDER_OTHER_CONTAINER.id,
+            TEST_FOLDER_OTHER_CONTAINER_ADMIN.id,
             defaultProps.principalsById,
             defaultProps.inactiveUsersById
         );
@@ -212,8 +212,8 @@ describe('PermissionAssignments', () => {
 
         // project is selected by default and has inherited icon
         const projectList = wrapper.find(ProjectListing);
-        expect(projectList.prop('selectedProject')).toEqual(TEST_FOLDER_OTHER_CONTAINER);
-        expect(projectList.prop('inheritedProjects')).toEqual([TEST_FOLDER_OTHER_CONTAINER.name]);
+        expect(projectList.prop('selectedProject')).toEqual(TEST_FOLDER_OTHER_CONTAINER_ADMIN);
+        expect(projectList.prop('inheritedProjects')).toEqual([TEST_FOLDER_OTHER_CONTAINER_ADMIN.name]);
 
         // Displays inherit checkbox
         const inheritCheckbox = wrapper.find('.permissions-assignment-inherit');
@@ -234,7 +234,7 @@ describe('PermissionAssignments', () => {
             <PermissionAssignments {...defaultProps} />,
             getDefaultAppContext(),
             getDefaultServerContext({
-                container: TEST_PROJECT_CONTAINER,
+                container: TEST_PROJECT_CONTAINER_ADMIN,
                 moduleContext: { query: { isProductProjectsEnabled: true } },
             })
         );
@@ -244,8 +244,8 @@ describe('PermissionAssignments', () => {
         expect(fetchPolicy).toHaveBeenCalledTimes(2);
 
         const projectList = wrapper.find(ProjectListing);
-        expect(projectList.prop('selectedProject')).toEqual(TEST_PROJECT_CONTAINER);
-        expect(projectList.prop('inheritedProjects')).toEqual([TEST_FOLDER_OTHER_CONTAINER.name]);
+        expect(projectList.prop('selectedProject')).toEqual(TEST_PROJECT_CONTAINER_ADMIN);
+        expect(projectList.prop('inheritedProjects')).toEqual([TEST_FOLDER_OTHER_CONTAINER_ADMIN.name]);
 
         // Does not display inherit checkbox
         expect(wrapper.find('.permissions-assignment-inherit').exists()).toEqual(false);
@@ -284,7 +284,7 @@ describe('PermissionAssignments', () => {
             <PermissionAssignments {...defaultProps} rolesToShow={rolesToShow} rootRolesToShow={rootRolesToShow} />,
             getDefaultAppContext({ fetchPolicy: fetchRootPolicy }),
             getDefaultServerContext({
-                container: TEST_PROJECT_CONTAINER,
+                container: TEST_PROJECT_CONTAINER_ADMIN,
                 moduleContext: { query: { isProductProjectsEnabled: true } },
                 user: TEST_USER_APP_ADMIN,
             })
@@ -310,7 +310,7 @@ describe('PermissionAssignments', () => {
             <PermissionAssignments {...defaultProps} rolesToShow={rolesToShow} rootRolesToShow={rootRolesToShow} />,
             getDefaultAppContext({ fetchPolicy: fetchRootPolicy }),
             getDefaultServerContext({
-                container: TEST_PROJECT_CONTAINER,
+                container: TEST_PROJECT_CONTAINER_ADMIN,
                 moduleContext: { query: { isProductProjectsEnabled: true } },
                 user: TEST_USER_PROJECT_ADMIN,
             })
@@ -336,7 +336,7 @@ describe('PermissionAssignments', () => {
             <PermissionAssignments {...defaultProps} rolesToShow={rolesToShow} rootRolesToShow={rootRolesToShow} />,
             getDefaultAppContext({ fetchPolicy: fetchRootPolicy }),
             getDefaultServerContext({
-                container: TEST_FOLDER_CONTAINER,
+                container: TEST_FOLDER_CONTAINER_ADMIN,
                 moduleContext: { query: { isProductProjectsEnabled: true } },
                 user: TEST_USER_APP_ADMIN,
             })

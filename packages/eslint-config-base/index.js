@@ -18,7 +18,7 @@ module.exports = {
         'prettier',
         'plugin:prettier/recommended',
     ],
-    plugins: ['prettier', 'import', '@typescript-eslint'],
+    plugins: ['prettier', 'import', '@typescript-eslint', 'only-warn'],
     globals: {
         LABKEY: 'readonly',
     },

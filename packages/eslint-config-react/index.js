@@ -56,7 +56,8 @@ module.exports = {
     'react/no-unescaped-entities': ['error', {'forbid': ['>', '}']}],
     'react/no-unknown-property': 'error',
     'react/no-unsafe': 'error',
-    'react/no-unused-prop-types': 'error',
+    // NK: react/no-unused-prop-types is faulty in that it reports many props as unused when they are used
+    'react/no-unused-prop-types': 'off',
     'react/no-unused-state': 'error',
     'react/no-will-update-set-state': 'error',
     'react/prefer-es6-class': 'error',

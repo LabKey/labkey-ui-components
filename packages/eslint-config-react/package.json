@@ -1,6 +1,6 @@
 {
   "name": "@labkey/eslint-config-react",
-  "version": "0.0.12-fb-package-updates-0923.0",
+  "version": "0.0.12-fb-package-updates-0923.1",
   "description": "shareable eslint config for typescript and react",
   "main": "index.js",
   "files": [

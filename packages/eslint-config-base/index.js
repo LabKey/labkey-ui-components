@@ -17,11 +17,27 @@ module.exports = {
         'plugin:import/typescript',
         'prettier',
         'plugin:prettier/recommended',
+        // NK: Jest and typescript-sort-keys are disabled until there dependency on tsutils is removed
+        // 'plugin:jest/recommended',
+        // 'plugin:typescript-sort-keys/recommended',
     ],
-    plugins: ['prettier', 'import', '@typescript-eslint', 'only-warn'],
+    plugins: ['prettier', 'import', '@typescript-eslint', 'only-warn'], //, 'jest', 'typescript-sort-keys'],
     globals: {
         LABKEY: 'readonly',
     },
+    // overrides: [
+    //     {
+    //         files: ['*.spec.{js,jsx,ts,tsx}'],
+    //         env: {
+    //             jest: true,
+    //         },
+    //         rules: {
+    //             // Jest plugin (https://github.com/jest-community/eslint-plugin-jest)
+    //             'jest/valid-describe': 'error',
+    //         },
+    //         plugins: ['jest'],
+    //     },
+    // ],
     rules: {
         // Possible Errors (http://eslint.org/docs/rules/#possible-errors)
         camelcase: 'off',

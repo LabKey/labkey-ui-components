@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.368.2",
+  "version": "2.368.3-fb-sampletype-refactor.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

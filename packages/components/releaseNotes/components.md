@@ -1,12 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.36?.0
+### version 2.369.0
 *Released*: ?? September 2023
-* QueryModel: add useSavedSettings flag
-* QueryModel: serialize maxRows to URl when using bindURL
+* `QueryModel`: add `useSavedSettings` flag
+* `QueryModel`: serialize `maxRows` to URl when using `bindURL`
   * Serialized as `pageSize` to match the page offset param
-* withQueryModels: honor useSavedSettings flag
+* `withQueryModels`: honor `useSavedSettings` flag
 
 ### version 2.368.2
 *Released*: 14 September 2023

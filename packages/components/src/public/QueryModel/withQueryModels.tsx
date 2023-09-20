@@ -320,6 +320,7 @@ export function withQueryModels<Props>(
                 }),
                 () => {
                     this.maybeLoad(id, false, true, loadSelections);
+                    saveSettingsToLocalStorage(this.state.queryModels[id]);
                 }
             );
         };

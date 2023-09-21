@@ -12,9 +12,11 @@ import { ActiveUserLimit } from '../settings/ActiveUserLimit';
 import { NameIdSettings } from '../settings/NameIdSettings';
 import { ManageSampleStatusesPanel } from '../samples/ManageSampleStatusesPanel';
 import {
-    biologicsIsPrimaryApp, hasModule,
+    biologicsIsPrimaryApp,
+    hasModule,
     isAppHomeFolder,
-    isELNEnabled, isProtectedDataEnabled,
+    isELNEnabled,
+    isProtectedDataEnabled,
     isSampleStatusEnabled,
 } from '../../app/utils';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
@@ -25,11 +27,12 @@ import { AppContext, useAppContext } from '../../AppContext';
 
 import { ProjectLookAndFeelForm } from '../project/ProjectLookAndFeelForm';
 
+import { Hooks, LoadingPage } from '../../../index';
+
 import { useAdminAppContext } from './useAdminAppContext';
 import { showPremiumFeatures } from './utils';
-import {Hooks, LoadingPage} from "../../../index";
-import {ProtectedDataSettingsPanel} from "./ProtectedDataSettingsPanel";
-import {RequestsSettingsPanel} from "./RequestsSettingsPanel";
+import { ProtectedDataSettingsPanel } from './ProtectedDataSettingsPanel';
+import { RequestsSettingsPanel } from './RequestsSettingsPanel';
 
 // export for jest testing
 export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
@@ -39,7 +42,7 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
     const { createNotification, dismissNotifications } = useNotificationsContext();
     const { NotebookProjectSettingsComponent } = useAdminAppContext();
     const { api } = useAppContext<AppContext>();
-    const homeProjectContainer = Hooks.useContainerUser(homeFolderPath, {includeStandardProperties: true});
+    const homeProjectContainer = Hooks.useContainerUser(homeFolderPath, { includeStandardProperties: true });
 
     const onSettingsChange = useCallback(() => {
         setIsDirty(true);
@@ -71,8 +74,7 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
         );
     }, [moduleContext]);
 
-    if (!homeProjectContainer.isLoaded)
-        return <LoadingPage title="Application Settings"/>;
+    if (!homeProjectContainer.isLoaded) return <LoadingPage title="Application Settings" />;
 
     if (!homeProjectContainer.user.isAdmin) {
         return <InsufficientPermissionsPage title="Application Settings" />;
@@ -87,7 +89,7 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
                 hasPermission={homeProjectContainer.user.isAdmin}
                 renderButtons={lkVersion}
             >
-                <ActiveUserLimit user={homeProjectContainer.user} container={homeProjectContainer.container}/>
+                <ActiveUserLimit user={homeProjectContainer.user} container={homeProjectContainer.container} />
                 <ProjectLookAndFeelForm
                     api={api.folder}
                     onChange={onSettingsChange}
@@ -95,7 +97,7 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
                     container={homeProjectContainer.container}
                 />
                 {biologicsIsPrimaryApp(moduleContext) && isELNEnabled(moduleContext) && (
-                    <NotebookProjectSettingsComponent containerPath={homeProjectContainer.container.path}/>
+                    <NotebookProjectSettingsComponent containerPath={homeProjectContainer.container.path} />
                 )}
                 <BarTenderSettingsForm
                     onChange={onSettingsChange}
@@ -104,16 +106,16 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
                     setIsDirty={setIsDirty}
                     getIsDirty={getIsDirty}
                 />
-                <NameIdSettings {...props} container={homeProjectContainer.container} isAppHome={true}/>
-                {isSampleStatusEnabled(moduleContext) &&
-                    <ManageSampleStatusesPanel
-                        {...props}
-                        container={homeProjectContainer.container}
-                    />}
-                {biologicsIsPrimaryApp(moduleContext) && isProtectedDataEnabled(moduleContext) &&
-                    <ProtectedDataSettingsPanel containerPath={homeProjectContainer.container.path}/>
-                }
-                {biologicsIsPrimaryApp(moduleContext) && hasModule('assayRequest', moduleContext) && <RequestsSettingsPanel/>}
+                <NameIdSettings {...props} container={homeProjectContainer.container} isAppHome={true} />
+                {isSampleStatusEnabled(moduleContext) && (
+                    <ManageSampleStatusesPanel {...props} container={homeProjectContainer.container} />
+                )}
+                {biologicsIsPrimaryApp(moduleContext) && isProtectedDataEnabled(moduleContext) && (
+                    <ProtectedDataSettingsPanel containerPath={homeProjectContainer.container.path} />
+                )}
+                {biologicsIsPrimaryApp(moduleContext) && hasModule('assayRequest', moduleContext) && (
+                    <RequestsSettingsPanel />
+                )}
             </BasePermissionsCheckPage>
         </>
     );

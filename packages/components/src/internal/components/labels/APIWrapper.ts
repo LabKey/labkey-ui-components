@@ -49,7 +49,10 @@ export interface LabelPrintingAPIWrapper {
         numCopies: number,
         serverURL: string
     ) => Promise<BarTenderResponse>;
-    saveBarTenderURLConfiguration: (btConfig: { serviceURL: string }, containerPath?: string) => Promise<BarTenderConfiguration>;
+    saveBarTenderURLConfiguration: (
+        btConfig: { serviceURL: string },
+        containerPath?: string
+    ) => Promise<BarTenderConfiguration>;
     saveDefaultLabelConfiguration: (btConfig: { defaultLabel: number }) => Promise<BarTenderConfiguration>;
 }
 
@@ -60,7 +63,11 @@ export class LabelPrintingServerAPIWrapper implements LabelPrintingAPIWrapper {
     fetchBarTenderConfiguration = (containerPath?: string): Promise<BarTenderConfiguration> => {
         return new Promise((resolve, reject) => {
             Ajax.request({
-                url: ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getBarTenderConfiguration.api', containerPath),
+                url: ActionURL.buildURL(
+                    SAMPLE_MANAGER_APP_PROPERTIES.controllerName,
+                    'getBarTenderConfiguration.api',
+                    containerPath
+                ),
                 method: 'GET',
                 success: Utils.getCallbackWrapper(response => resolve(handleBarTenderConfigurationResponse(response))),
                 failure: Utils.getCallbackWrapper(resp => {
@@ -141,7 +148,10 @@ export class LabelPrintingServerAPIWrapper implements LabelPrintingAPIWrapper {
     /**
      * Save the BarTender configuration to server properties
      */
-    saveBarTenderURLConfiguration = (btConfig: { serviceURL: string }, containerPath?: string): Promise<BarTenderConfiguration> => {
+    saveBarTenderURLConfiguration = (
+        btConfig: { serviceURL: string },
+        containerPath?: string
+    ): Promise<BarTenderConfiguration> => {
         return new Promise((resolve, reject) => {
             const params = { serviceURL: btConfig.serviceURL };
 

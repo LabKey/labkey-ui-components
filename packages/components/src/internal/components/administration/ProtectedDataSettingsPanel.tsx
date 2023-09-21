@@ -1,13 +1,14 @@
 import React, { FC, memo } from 'react';
 import { ActionURL, PermissionTypes } from '@labkey/api';
-import {RequiresPermission} from "../base/Permissions";
-import {Setting} from "../base/Setting";
+
+import { RequiresPermission } from '../base/Permissions';
+import { Setting } from '../base/Setting';
 
 interface Props {
     containerPath?: string;
 }
 
-export const ProtectedDataSettingsPanel: FC<Props> = memo((props) => {
+export const ProtectedDataSettingsPanel: FC<Props> = memo(props => {
     const { containerPath } = props;
 
     return (

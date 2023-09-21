@@ -17,18 +17,19 @@ import { isAppHomeFolder } from '../../app/utils';
 
 import { useServerContext } from '../base/ServerContext';
 
+import { Container } from '../base/models/Container';
+
 import { BarTenderConfiguration, BarTenderResponse } from './models';
 import { withLabelPrintingContext, LabelPrintingProviderProps } from './LabelPrintingContextProvider';
 import { BAR_TENDER_TOPIC, BARTENDER_CONFIGURATION_TITLE } from './constants';
 import { LabelsConfigurationPanel } from './LabelsConfigurationPanel';
-import {Container} from "../base/models/Container";
 
 interface OwnProps extends InjectedRouteLeaveProps {
     api?: ComponentsAPIWrapper;
+    container?: Container;
     onChange: () => void;
     onSuccess: () => void;
     title?: string;
-    container?: Container;
 }
 
 type Props = LabelPrintingProviderProps & OwnProps;

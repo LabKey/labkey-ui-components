@@ -22,23 +22,26 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 import { HelpLink } from '../../util/helpLinks';
 import { SAMPLE_TYPE_NAME_EXPRESSION_TOPIC } from '../samples/constants';
 
+import { Container } from '../base/models/Container';
+
 import { loadNameExpressionOptions, saveNameExpressionOptions } from './actions';
-import {Container} from "../base/models/Container";
 
 const TITLE = 'ID/Name Settings';
 
 interface NameIdSettingsFormProps extends InjectedRouteLeaveProps {
     api?: ComponentsAPIWrapper;
-    loadNameExpressionOptions: (containerPath?: string) => Promise<{ allowUserSpecifiedNames: boolean; prefix: string }>;
-    saveNameExpressionOptions: (key: string, value: string | boolean, containerPath?: string) => Promise<void>;
-    isAppHome?: boolean;
     container: Container;
+    isAppHome?: boolean;
+    loadNameExpressionOptions: (
+        containerPath?: string
+    ) => Promise<{ allowUserSpecifiedNames: boolean; prefix: string }>;
+    saveNameExpressionOptions: (key: string, value: string | boolean, containerPath?: string) => Promise<void>;
 }
 
 interface NameIdSettingsProps extends InjectedRouteLeaveProps {
     api?: ComponentsAPIWrapper;
-    isAppHome?: boolean;
     container: Container;
+    isAppHome?: boolean;
 }
 
 interface State {
@@ -57,12 +60,12 @@ interface State {
     loading: boolean;
     newRootSampleCount?: number;
     newSampleCount?: number;
+    prefix: string;
+    rootSampleCount?: number;
+    sampleCount?: number;
     savingAllowUserSpecifiedNames: boolean;
     savingPrefix: boolean;
     updatingCounter?: boolean;
-    rootSampleCount?: number;
-    sampleCount?: number;
-    prefix: string;
 }
 
 const initialState: State = {
@@ -113,8 +116,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
         try {
             const payload = await loadNameExpressionOptions(container.path);
 
-            if (isAppHome)
-            {
+            if (isAppHome) {
                 const sampleCount = await api.samples.getSampleCounter('sampleCount'); // show the next value
                 const rootSampleCount = await api.samples.getSampleCounter('rootSampleCount');
                 let hasRootSamples = false,
@@ -133,16 +135,13 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                     hasSamples,
                     hasRootSamples,
                 });
-            }
-            else {
+            } else {
                 setState({
                     prefix: payload.prefix ?? '',
                     allowUserSpecifiedNames: payload.allowUserSpecifiedNames,
                     loading: false,
                 });
             }
-
-
         } catch (err) {
             setState({ error: err.exception, loading: false });
         }

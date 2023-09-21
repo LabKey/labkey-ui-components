@@ -19,7 +19,7 @@ const TEST_PROJECT_CONTAINER_CONFIG = {
     parentPath: '/',
     path: '/TestProjectContainer',
     title: 'Test Project Container',
-    type: 'project'
+    type: 'project',
 };
 
 export const TEST_PROJECT_CONTAINER = new Container(TEST_PROJECT_CONTAINER_CONFIG);

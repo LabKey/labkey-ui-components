@@ -25,9 +25,10 @@ import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
 
 import { useAppContext } from '../../AppContext';
 
+import { Container } from '../base/models/Container';
+
 import { SampleState } from './models';
 import { getSampleStatusLockedMessage } from './utils';
-import {Container} from "../base/models/Container";
 
 const TITLE = 'Manage Sample Statuses';
 const STATE_TYPE_SQ = new SchemaQuery('exp', 'SampleStateType');
@@ -37,10 +38,10 @@ const SAMPLE_STATUS_LOCKED_TITLE = 'Sample Status Locked';
 
 interface SampleStatusDetailProps {
     addNew: boolean;
+    container?: Container;
     onActionComplete: (newStatusLabel?: string, isDelete?: boolean) => void;
     onChange: () => void;
     state: SampleState;
-    container?: Container;
 }
 
 // exported for jest testing
@@ -57,7 +58,11 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
     useEffect(() => {
         (async () => {
             try {
-                const response = await api.query.selectRows({ columns: 'RowId,Value', schemaQuery: STATE_TYPE_SQ , containerPath: container?.path});
+                const response = await api.query.selectRows({
+                    columns: 'RowId,Value',
+                    schemaQuery: STATE_TYPE_SQ,
+                    containerPath: container?.path,
+                });
 
                 const options = response.rows.reduce((options_, row) => {
                     options_.push({ value: caseInsensitive(row, 'Value').value });

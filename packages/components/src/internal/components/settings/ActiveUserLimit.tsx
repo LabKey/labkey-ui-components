@@ -6,17 +6,17 @@ import { AppContext, useAppContext } from '../../AppContext';
 import { Alert } from '../base/Alert';
 import { useServerContext } from '../base/ServerContext';
 import { UserLimitSettings } from '../permissions/actions';
-import {User} from "../base/models/User";
-import {Container} from "../base/models/Container";
+import { User } from '../base/models/User';
+import { Container } from '../base/models/Container';
 
 const TITLE = 'Active Users';
 
 interface Props {
-    user: User;
     container: Container;
+    user: User;
 }
 
-export const ActiveUserLimit: FC<Props> = memo((props) => {
+export const ActiveUserLimit: FC<Props> = memo(props => {
     const { user, container } = props;
     const [error, setError] = useState<string>();
     const [settings, setSettings] = useState<UserLimitSettings>();

@@ -14,13 +14,14 @@ import { useAdminAppContext } from '../administration/useAdminAppContext';
 import { getFolderDataTypeExclusions } from '../entities/actions';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
-import { DeleteProjectModal } from './DeleteProjectModal';
-import { ProjectDataTypeSelections } from './ProjectDataTypeSelections';
+import { BarTenderSettingsForm } from '../labels/BarTenderSettingsForm';
+import { NameIdSettings } from '../settings/NameIdSettings';
+import { biologicsIsPrimaryApp, isProtectedDataEnabled } from '../../app/utils';
+import { ProtectedDataSettingsPanel } from '../administration/ProtectedDataSettingsPanel';
+
 import { ProjectNameSetting } from './ProjectNameSetting';
-import {BarTenderSettingsForm} from "../labels/BarTenderSettingsForm";
-import {NameIdSettings} from "../settings/NameIdSettings";
-import {biologicsIsPrimaryApp, isProtectedDataEnabled} from "../../app/utils";
-import {ProtectedDataSettingsPanel} from "../administration/ProtectedDataSettingsPanel";
+import { ProjectDataTypeSelections } from './ProjectDataTypeSelections';
+import { DeleteProjectModal } from './DeleteProjectModal';
 
 export interface ProjectSettingsProps {
     onChange: (dirty?: boolean) => void;
@@ -83,21 +84,19 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
         onChange(true);
     }, [onChange]);
 
-    const onBarSuccess_ = useCallback(
-        () => {
-            setBarDirty(false);
-            onSuccess(nameDirty || dataTypeDirty || storageDirty || nameIdDirty, false);
-        },
-        [nameDirty, dataTypeDirty, storageDirty, nameIdDirty]
-    );
+    const onBarSuccess_ = useCallback(() => {
+        setBarDirty(false);
+        onSuccess(nameDirty || dataTypeDirty || storageDirty || nameIdDirty, false);
+    }, [nameDirty, dataTypeDirty, storageDirty, nameIdDirty]);
 
-    const onNameIdChange_ = useCallback((dirty) => {
-        setNameIdDirty(dirty);
-        if (dirty)
-            onChange(true);
-        else
-            onSuccess(nameDirty || dataTypeDirty || storageDirty || barDirty, false);
-    }, [onChange, nameDirty, dataTypeDirty, storageDirty, barDirty]);
+    const onNameIdChange_ = useCallback(
+        dirty => {
+            setNameIdDirty(dirty);
+            if (dirty) onChange(true);
+            else onSuccess(nameDirty || dataTypeDirty || storageDirty || barDirty, false);
+        },
+        [onChange, nameDirty, dataTypeDirty, storageDirty, barDirty]
+    );
 
     const onSubmitName = useCallback(
         async evt => {
@@ -136,7 +135,18 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
                 });
             }
         },
-        [api.folder, container, dispatch, project, isSaving, onSuccess, dataTypeDirty, storageDirty, barDirty, nameIdDirty]
+        [
+            api.folder,
+            container,
+            dispatch,
+            project,
+            isSaving,
+            onSuccess,
+            dataTypeDirty,
+            storageDirty,
+            barDirty,
+            nameIdDirty,
+        ]
     );
 
     const closeModalHandler = useCallback(() => {
@@ -239,7 +249,7 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
                             onSuccess={onStorageSuccess}
                         />
                     )}
-                    {biologicsIsPrimaryApp(moduleContext) &&
+                    {biologicsIsPrimaryApp(moduleContext) && (
                         <BarTenderSettingsForm
                             onChange={onBarChange_}
                             onSuccess={onBarSuccess_}
@@ -247,11 +257,17 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
                             setIsDirty={null} // used by templates, not needed here
                             getIsDirty={null}
                         />
-                    }
-                    <NameIdSettings {...props} container={project} isAppHome={false} setIsDirty={onNameIdChange_} getIsDirty={null}/>
-                    {biologicsIsPrimaryApp(moduleContext) && isProtectedDataEnabled(moduleContext) &&
-                        <ProtectedDataSettingsPanel containerPath={project.path}/>
-                    }
+                    )}
+                    <NameIdSettings
+                        {...props}
+                        container={project}
+                        isAppHome={false}
+                        setIsDirty={onNameIdChange_}
+                        getIsDirty={null}
+                    />
+                    {biologicsIsPrimaryApp(moduleContext) && isProtectedDataEnabled(moduleContext) && (
+                        <ProtectedDataSettingsPanel containerPath={project.path} />
+                    )}
                 </>
             )}
         </div>

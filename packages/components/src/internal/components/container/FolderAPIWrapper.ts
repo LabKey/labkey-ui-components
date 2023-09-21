@@ -97,7 +97,10 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
         });
     };
 
-    updateProjectLookAndFeelSettings = (options: UpdateProjectSettingsOptions, containerPath?: string): Promise<void> => {
+    updateProjectLookAndFeelSettings = (
+        options: UpdateProjectSettingsOptions,
+        containerPath?: string
+    ): Promise<void> => {
         return new Promise((resolve, reject) => {
             Ajax.request({
                 url: ActionURL.buildURL('admin', 'updateProjectSettings.api', containerPath),

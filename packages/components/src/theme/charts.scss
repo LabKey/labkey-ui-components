@@ -115,9 +115,20 @@
 .chart-body {
     position: relative;
 }
+.chart-panel__heading {
+    display: flex;
+}
+.chart-panel__heading-title {
+    flex-grow: 1;
+    font-size: 18px;
+    vertical-align: middle;
+}
 .chart-panel {
-    margin-bottom: 8px;
+    margin-bottom: 16px;
     min-height: 100px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
 }
 .chart-panel__hide-icon {
     display: flex;
@@ -158,4 +169,14 @@
 }
 .r-report__image img {
     max-width: 100%;
+}
+.r-report__files {
+    display: flex;
+    column-gap: 10px;
+}
+.r-report__files .attachment-card__name {
+    padding-top: 8px;
+}
+.r-report__files .attachment-card:hover {
+    text-decoration: none;
 }

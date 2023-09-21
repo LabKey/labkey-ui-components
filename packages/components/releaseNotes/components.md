@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.37?.0
+*Released*: ?? September 2023
+* Render file output in R Reports
+* Improve Chart Styling
+
 ### version 2.370.0
 *Released*: 21 September 2023
 - Package updates

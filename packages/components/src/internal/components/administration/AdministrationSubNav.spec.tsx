@@ -45,7 +45,6 @@ describe('AdministrationSubNavImpl', () => {
         );
         expect(wrapper.prop('tabs').size).toBe(4);
         expect(wrapper.prop('tabs').findIndex(t => t.text === 'Application Settings')).toBe(-1);
-
     });
 
     test('displays "projects"', () => {

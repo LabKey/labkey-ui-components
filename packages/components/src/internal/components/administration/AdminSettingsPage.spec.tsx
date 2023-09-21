@@ -7,7 +7,7 @@ import {
     TEST_FOLDER_CONTAINER,
     TEST_PROJECT,
     TEST_PROJECT_CONTAINER,
-    TEST_PROJECT_CONTAINER_ADMIN
+    TEST_PROJECT_CONTAINER_ADMIN,
 } from '../../containerFixtures';
 
 import { ActiveUserLimit } from '../settings/ActiveUserLimit';
@@ -167,10 +167,14 @@ describe('AdminSettingsPageImpl', () => {
     });
 
     test('non admin', async () => {
-        const wrapper = mountWithAppServerContext(<AdminSettingsPageImpl {...defaultProps()} />, APP_CONTEXT_NOT_ADMIN, {
-            ...SERVER_CONTEXT,
-            user: TEST_USER_EDITOR,
-        });
+        const wrapper = mountWithAppServerContext(
+            <AdminSettingsPageImpl {...defaultProps()} />,
+            APP_CONTEXT_NOT_ADMIN,
+            {
+                ...SERVER_CONTEXT,
+                user: TEST_USER_EDITOR,
+            }
+        );
         await waitForLifecycle(wrapper, 50);
         expect(wrapper.find(InsufficientPermissionsPage)).toHaveLength(1);
         expect(wrapper.find(BasePermissionsCheckPage)).toHaveLength(0);

@@ -55,7 +55,7 @@ describe('NameIdSettings', () => {
             api: apiWithNoSamples,
             getIsDirty: jest.fn(),
             setIsDirty: jest.fn(),
-            container: container,
+            container,
             isAppHome: true,
         };
     });

@@ -9,11 +9,11 @@ import { getTestAPIWrapper } from '../../APIWrapper';
 
 import { getSecurityTestAPIWrapper } from '../security/APIWrapper';
 
+import { TEST_PROJECT_CONTAINER } from '../../containerFixtures';
+
 import { ActiveUserLimit, ActiveUserLimitMessage } from './ActiveUserLimit';
-import {TEST_PROJECT_CONTAINER} from "../../containerFixtures";
 
 describe('ActiveUserLimitMessage', () => {
-
     test('without message', () => {
         const wrapper = mountWithAppServerContext(
             <ActiveUserLimitMessage settings={{} as UserLimitSettings} />,
@@ -60,7 +60,7 @@ describe('ActiveUserLimit', () => {
     } as UserLimitSettings;
     const DEFAULT_PROPS = {
         user: TEST_USER_PROJECT_ADMIN,
-        container: TEST_PROJECT_CONTAINER
+        container: TEST_PROJECT_CONTAINER,
     };
 
     function validate(wrapper: ReactWrapper, rendered = true, hasError = false): void {
@@ -72,15 +72,13 @@ describe('ActiveUserLimit', () => {
     }
 
     test('with user limit', async () => {
-        const wrapper = mountWithAppServerContext(
-            <ActiveUserLimit {...DEFAULT_PROPS} />,
-            {
-                api: getTestAPIWrapper(jest.fn, {
-                    security: getSecurityTestAPIWrapper(jest.fn, {
-                        getUserLimitSettings: jest.fn().mockResolvedValue(USER_LIMIT_ENABLED),
-                    }),
+        const wrapper = mountWithAppServerContext(<ActiveUserLimit {...DEFAULT_PROPS} />, {
+            api: getTestAPIWrapper(jest.fn, {
+                security: getSecurityTestAPIWrapper(jest.fn, {
+                    getUserLimitSettings: jest.fn().mockResolvedValue(USER_LIMIT_ENABLED),
                 }),
-            });
+            }),
+        });
         await waitForLifecycle(wrapper);
         validate(wrapper);
         expect(wrapper.find(Alert).text()).toBe('');
@@ -91,15 +89,13 @@ describe('ActiveUserLimit', () => {
     });
 
     test('error', async () => {
-        const wrapper = mountWithAppServerContext(
-            <ActiveUserLimit {...DEFAULT_PROPS} />,
-            {
-                api: getTestAPIWrapper(jest.fn, {
-                    security: getSecurityTestAPIWrapper(jest.fn, {
-                        getUserLimitSettings: jest.fn().mockRejectedValue('test'),
-                    }),
+        const wrapper = mountWithAppServerContext(<ActiveUserLimit {...DEFAULT_PROPS} />, {
+            api: getTestAPIWrapper(jest.fn, {
+                security: getSecurityTestAPIWrapper(jest.fn, {
+                    getUserLimitSettings: jest.fn().mockRejectedValue('test'),
                 }),
-            });
+            }),
+        });
         await waitForLifecycle(wrapper);
         validate(wrapper, true, true);
         expect(wrapper.find(Alert).text()).toBe('Error: test');
@@ -115,37 +111,34 @@ describe('ActiveUserLimit', () => {
                         getUserLimitSettings: jest.fn().mockResolvedValue(USER_LIMIT_ENABLED),
                     }),
                 }),
-            });
+            }
+        );
         await waitForLifecycle(wrapper);
         validate(wrapper, false);
         wrapper.unmount();
     });
 
     test('with user limit disabled', async () => {
-        const wrapper = mountWithAppServerContext(
-            <ActiveUserLimit {...DEFAULT_PROPS} />,
-            {
-                api: getTestAPIWrapper(jest.fn, {
-                    security: getSecurityTestAPIWrapper(jest.fn, {
-                        getUserLimitSettings: jest.fn().mockResolvedValue(USER_LIMIT_DISABLED),
-                    }),
+        const wrapper = mountWithAppServerContext(<ActiveUserLimit {...DEFAULT_PROPS} />, {
+            api: getTestAPIWrapper(jest.fn, {
+                security: getSecurityTestAPIWrapper(jest.fn, {
+                    getUserLimitSettings: jest.fn().mockResolvedValue(USER_LIMIT_DISABLED),
                 }),
-            });
+            }),
+        });
         await waitForLifecycle(wrapper);
         validate(wrapper, false);
         wrapper.unmount();
     });
 
     test('without user limit settings', async () => {
-        const wrapper = mountWithAppServerContext(
-            <ActiveUserLimit {...DEFAULT_PROPS} />,
-            {
-                api: getTestAPIWrapper(jest.fn, {
-                    security: getSecurityTestAPIWrapper(jest.fn, {
-                        getUserLimitSettings: jest.fn().mockResolvedValue(undefined),
-                    }),
+        const wrapper = mountWithAppServerContext(<ActiveUserLimit {...DEFAULT_PROPS} />, {
+            api: getTestAPIWrapper(jest.fn, {
+                security: getSecurityTestAPIWrapper(jest.fn, {
+                    getUserLimitSettings: jest.fn().mockResolvedValue(undefined),
                 }),
-            });
+            }),
+        });
         await waitForLifecycle(wrapper);
         validate(wrapper, false);
         wrapper.unmount();

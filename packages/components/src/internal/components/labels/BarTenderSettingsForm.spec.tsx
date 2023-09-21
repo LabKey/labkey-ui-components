@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormControl, Button } from 'react-bootstrap';
-import { mount, ReactWrapper } from 'enzyme';
+import { ReactWrapper } from 'enzyme';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 import { getTestAPIWrapper } from '../../APIWrapper';
@@ -44,7 +44,9 @@ describe('BarTenderSettingsForm', () => {
     }
 
     test('default props, home project', async () => {
-        const wrapper = mountWithAppServerContext(<BarTenderSettingsFormImpl {...DEFAULT_PROPS} container={new Container({ path: '/Test' })} />);
+        const wrapper = mountWithAppServerContext(
+            <BarTenderSettingsFormImpl {...DEFAULT_PROPS} container={new Container({ path: '/Test' })} />
+        );
         await waitForLifecycle(wrapper);
         validate(wrapper);
         validateUrlInput(wrapper);
@@ -52,9 +54,16 @@ describe('BarTenderSettingsForm', () => {
     });
 
     test('default props, product project', async () => {
-        const wrapper = mountWithAppServerContext(<BarTenderSettingsFormImpl {...DEFAULT_PROPS} container={new Container({ path: '/Test/Folder', type: 'folder' })}/>, undefined, {
-            moduleContext: { query: { isProductProjectsEnabled: true } },
-        });
+        const wrapper = mountWithAppServerContext(
+            <BarTenderSettingsFormImpl
+                {...DEFAULT_PROPS}
+                container={new Container({ path: '/Test/Folder', type: 'folder' })}
+            />,
+            undefined,
+            {
+                moduleContext: { query: { isProductProjectsEnabled: true } },
+            }
+        );
 
         await waitForLifecycle(wrapper);
 
@@ -65,9 +74,16 @@ describe('BarTenderSettingsForm', () => {
     });
 
     test('default props, subfolder without projects', async () => {
-        const wrapper = mountWithAppServerContext(<BarTenderSettingsFormImpl {...DEFAULT_PROPS} container={new Container({ path: '/Test/Folder', type: 'folder' })}/>, undefined, {
-            moduleContext: { query: { isProductProjectsEnabled: false } },
-        });
+        const wrapper = mountWithAppServerContext(
+            <BarTenderSettingsFormImpl
+                {...DEFAULT_PROPS}
+                container={new Container({ path: '/Test/Folder', type: 'folder' })}
+            />,
+            undefined,
+            {
+                moduleContext: { query: { isProductProjectsEnabled: false } },
+            }
+        );
 
         await waitForLifecycle(wrapper);
 
@@ -92,7 +108,8 @@ describe('BarTenderSettingsForm', () => {
                             ),
                     }),
                 })}
-            />);
+            />
+        );
         await waitForLifecycle(wrapper);
         validate(wrapper);
         expect(wrapper.find(FormControl).first().prop('type')).toBe('url');

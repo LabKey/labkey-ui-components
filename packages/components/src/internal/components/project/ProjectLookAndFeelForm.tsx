@@ -82,7 +82,7 @@ export const ProjectLookAndFeelForm: FC<Props> = memo(props => {
                 defaultDateTimeFormat: dateTimeFormat,
             };
 
-            await api.updateProjectLookAndFeelSettings(options);
+            await api.updateProjectLookAndFeelSettings(options, container.path);
             incrementClientSideMetricCount(LOOK_AND_FEEL_METRIC, 'defaultDateTimeFormat');
             setDirty(false);
             onSuccess?.(true);
@@ -91,7 +91,7 @@ export const ProjectLookAndFeelForm: FC<Props> = memo(props => {
         } finally {
             setIsSaving(false);
         }
-    }, [api, isSaving, onSuccess, dateTimeFormat]);
+    }, [api, isSaving, onSuccess, dateTimeFormat, container]);
 
     return (
         <Row>

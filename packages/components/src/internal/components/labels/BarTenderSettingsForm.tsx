@@ -21,12 +21,14 @@ import { BarTenderConfiguration, BarTenderResponse } from './models';
 import { withLabelPrintingContext, LabelPrintingProviderProps } from './LabelPrintingContextProvider';
 import { BAR_TENDER_TOPIC, BARTENDER_CONFIGURATION_TITLE } from './constants';
 import { LabelsConfigurationPanel } from './LabelsConfigurationPanel';
+import {Container} from "../base/models/Container";
 
 interface OwnProps extends InjectedRouteLeaveProps {
     api?: ComponentsAPIWrapper;
     onChange: () => void;
     onSuccess: () => void;
     title?: string;
+    container?: Container;
 }
 
 type Props = LabelPrintingProviderProps & OwnProps;
@@ -107,10 +109,10 @@ const btTestConnectionTemplate = (): string => {
 
 // exported for jest testing
 export const BarTenderSettingsFormImpl: FC<Props> = memo(props => {
-    const { api, title = BARTENDER_CONFIGURATION_TITLE, onChange, onSuccess } = props;
+    const { api, title = BARTENDER_CONFIGURATION_TITLE, onChange, onSuccess, container } = props;
     const [btServiceURL, setBtServiceURL] = useState<string>();
     const [defaultLabel, setDefaultLabel] = useState<number>();
-    const { user, container, moduleContext } = useServerContext();
+    const { moduleContext } = useServerContext();
     const [dirty, setDirty] = useState<boolean>(false);
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [testing, setTesting] = useState<boolean>();
@@ -120,7 +122,7 @@ export const BarTenderSettingsFormImpl: FC<Props> = memo(props => {
 
     useEffect(() => {
         api.labelprinting
-            .fetchBarTenderConfiguration()
+            .fetchBarTenderConfiguration(container?.path)
             .then(btConfiguration => {
                 setBtServiceURL(btConfiguration.serviceURL);
                 setDefaultLabel(btConfiguration.defaultLabel);
@@ -129,7 +131,7 @@ export const BarTenderSettingsFormImpl: FC<Props> = memo(props => {
             .catch(reason => {
                 setFailureMessage(reason);
             });
-    }, [api?.labelprinting]);
+    }, [api?.labelprinting, container?.path]);
 
     const onChangeHandler = useCallback(
         (name: string, value: string): void => {
@@ -147,7 +149,7 @@ export const BarTenderSettingsFormImpl: FC<Props> = memo(props => {
         const config = new BarTenderConfiguration({ serviceURL: btServiceURL });
 
         api.labelprinting
-            .saveBarTenderURLConfiguration(config)
+            .saveBarTenderURLConfiguration(config, container?.path)
             .then((btConfig: BarTenderConfiguration): void => {
                 setBtServiceURL(btConfig.serviceURL);
                 setDirty(false);
@@ -160,7 +162,7 @@ export const BarTenderSettingsFormImpl: FC<Props> = memo(props => {
                 setSubmitting(false);
                 setFailureMessage(FAILED_TO_SAVE_MESSAGE);
             });
-    }, [api, btServiceURL, onSuccess]);
+    }, [api, btServiceURL, onSuccess, container?.path]);
 
     const onConnectionFailure = (message: string): void => {
         setTesting(false);

@@ -39,7 +39,7 @@ export interface FolderAPIWrapper {
     ) => Promise<Container[]>;
     renameProject: (options: ProjectSettingsOptions, containerPath?: string) => Promise<Container>;
     updateProjectDataExclusions: (options: ProjectSettingsOptions, containerPath?: string) => Promise<void>;
-    updateProjectLookAndFeelSettings: (options: UpdateProjectSettingsOptions) => Promise<void>;
+    updateProjectLookAndFeelSettings: (options: UpdateProjectSettingsOptions, containerPath?: string) => Promise<void>;
 }
 
 export class ServerFolderAPIWrapper implements FolderAPIWrapper {
@@ -97,10 +97,10 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
         });
     };
 
-    updateProjectLookAndFeelSettings = (options: UpdateProjectSettingsOptions): Promise<void> => {
+    updateProjectLookAndFeelSettings = (options: UpdateProjectSettingsOptions, containerPath?: string): Promise<void> => {
         return new Promise((resolve, reject) => {
             Ajax.request({
-                url: ActionURL.buildURL('admin', 'updateProjectSettings.api'),
+                url: ActionURL.buildURL('admin', 'updateProjectSettings.api', containerPath),
                 method: 'POST',
                 jsonData: options,
                 success: Utils.getCallbackWrapper(({ data }) => {

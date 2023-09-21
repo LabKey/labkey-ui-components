@@ -169,10 +169,10 @@ export type UserLimitSettings = {
     userLimitLevel: number;
 };
 
-export function getUserLimitSettings(): Promise<UserLimitSettings> {
+export function getUserLimitSettings(containerPath?: string): Promise<UserLimitSettings> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: ActionURL.buildURL('user', 'getuserLimitSettings.api'),
+            url: ActionURL.buildURL('user', 'getuserLimitSettings.api', containerPath),
             method: 'GET',
             scope: this,
             success: Utils.getCallbackWrapper(settings => {

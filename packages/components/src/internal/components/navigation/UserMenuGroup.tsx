@@ -23,28 +23,20 @@ import { User } from '../base/models/User';
 import { devToolsActive, toggleDevTools } from '../../util/utils';
 
 import { useServerContext } from '../base/ServerContext';
-import { getCurrentAppProperties, getPrimaryAppProperties, isAppHomeFolder } from '../../app/utils';
+import { getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
 import { AppProperties } from '../../app/models';
 
 import { AppContext, useAppContext } from '../../AppContext';
-
-import { AppURL, createProductUrl } from '../../url/AppURL';
-
-import { Container } from '../base/models/Container';
 
 import { signIn, signOut } from './actions';
 import { MenuSectionModel } from './model';
 
 export interface UserMenuProps {
     appProperties?: AppProperties;
-    container?: Container;
-    currentProductId?: string;
     extraDevItems?: ReactNode;
     extraUserItems?: ReactNode;
-    isAppHome?: boolean;
     onSignIn?: () => void;
     onSignOut?: (signOutUrl: string) => void;
-    primaryProductId?: string;
     signOutUrl?: string;
     user?: User;
 }
@@ -55,19 +47,7 @@ interface ImplProps {
 
 // exported for jest testing
 export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
-    const {
-        model,
-        extraDevItems,
-        extraUserItems,
-        onSignIn,
-        onSignOut,
-        user,
-        signOutUrl,
-        isAppHome,
-        primaryProductId,
-        currentProductId,
-        container,
-    } = props;
+    const { model, extraDevItems, extraUserItems, onSignIn, onSignOut, user, signOutUrl } = props;
 
     const { helpHref, userMenuItems, adminMenuItems } = useMemo(() => {
         let helpHref;
@@ -85,26 +65,7 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
                         </MenuItem>
                     );
                     if (item.key.indexOf('admin') === 0) {
-                        if (item.key === 'adminsetting' && !isAppHome) {
-                            const appSettingUrl = createProductUrl(
-                                primaryProductId,
-                                currentProductId,
-                                AppURL.create('admin', 'settings'),
-                                container?.parentPath
-                            ).toString();
-                            const appSettingItem = (
-                                <MenuItem key={item.key + 'app'} href={appSettingUrl} target="_self">
-                                    {item.label}
-                                </MenuItem>
-                            );
-                            adminMenuItems.push(appSettingItem);
-                            const projSettingItem = (
-                                <MenuItem key={item.key + 'proj'} href={item.getUrlString()} target="_self">
-                                    Project Settings
-                                </MenuItem>
-                            );
-                            adminMenuItems.push(projSettingItem);
-                        } else adminMenuItems.push(menuItem);
+                        adminMenuItems.push(menuItem);
                     } else userMenuItems.push(menuItem);
                 }
             });
@@ -193,7 +154,6 @@ export const UserMenuGroup: FC<UserMenuProps> = props => {
     const { container, moduleContext } = useServerContext();
     const { appProperties = getPrimaryAppProperties(moduleContext) } = props;
     const productId = getCurrentAppProperties()?.productId ?? appProperties.productId;
-    const primaryProductId = getPrimaryAppProperties(moduleContext).productId;
 
     const [model, setModel] = useState<MenuSectionModel>();
 
@@ -205,16 +165,7 @@ export const UserMenuGroup: FC<UserMenuProps> = props => {
         })();
     }, [api.navigation, appProperties, container.path, moduleContext, productId]);
 
-    return (
-        <UserMenuGroupImpl
-            {...props}
-            model={model}
-            primaryProductId={primaryProductId}
-            currentProductId={productId}
-            isAppHome={isAppHomeFolder(container, moduleContext)}
-            container={container}
-        />
-    );
+    return <UserMenuGroupImpl {...props} model={model} />;
 };
 
 UserMenuGroup.defaultProps = {

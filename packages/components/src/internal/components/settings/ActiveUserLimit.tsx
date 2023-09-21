@@ -6,13 +6,20 @@ import { AppContext, useAppContext } from '../../AppContext';
 import { Alert } from '../base/Alert';
 import { useServerContext } from '../base/ServerContext';
 import { UserLimitSettings } from '../permissions/actions';
+import {User} from "../base/models/User";
+import {Container} from "../base/models/Container";
 
 const TITLE = 'Active Users';
 
-export const ActiveUserLimit: FC = memo(() => {
+interface Props {
+    user: User;
+    container: Container;
+}
+
+export const ActiveUserLimit: FC<Props> = memo((props) => {
+    const { user, container } = props;
     const [error, setError] = useState<string>();
     const [settings, setSettings] = useState<UserLimitSettings>();
-    const { user } = useServerContext();
     const { api } = useAppContext<AppContext>();
 
     useEffect(() => {
@@ -21,13 +28,13 @@ export const ActiveUserLimit: FC = memo(() => {
         setError(undefined);
         (async () => {
             try {
-                const limitSettings = await api.security.getUserLimitSettings();
+                const limitSettings = await api.security.getUserLimitSettings(container.path);
                 setSettings(limitSettings);
             } catch (e) {
                 setError(`Error: ${resolveErrorMessage(e)}`);
             }
         })();
-    }, [api, user]);
+    }, [api, user, container.path]);
 
     if (!user.hasAddUsersPermission()) return null;
     if (!error && !settings?.userLimit) return null;

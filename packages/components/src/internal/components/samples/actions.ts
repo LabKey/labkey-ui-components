@@ -526,10 +526,12 @@ export async function getDistinctAssaysPerSample(sampleIds: number[]): Promise<s
     }
 }
 
-export function getSampleStatuses(includeInUse = false): Promise<SampleState[]> {
+export function getSampleStatuses(includeInUse = false, containerPath?: string): Promise<SampleState[]> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getSampleStatuses.api', { includeInUse }),
+            url: ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getSampleStatuses.api', containerPath, {
+                includeInUse
+            }),
             success: Utils.getCallbackWrapper(response => {
                 resolve(response.statuses?.map(state => new SampleState(state)) ?? []);
             }),

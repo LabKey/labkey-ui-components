@@ -17,6 +17,10 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { DeleteProjectModal } from './DeleteProjectModal';
 import { ProjectDataTypeSelections } from './ProjectDataTypeSelections';
 import { ProjectNameSetting } from './ProjectNameSetting';
+import {BarTenderSettingsForm} from "../labels/BarTenderSettingsForm";
+import {NameIdSettings} from "../settings/NameIdSettings";
+import {biologicsIsPrimaryApp, isProtectedDataEnabled} from "../../app/utils";
+import {ProtectedDataSettingsPanel} from "../administration/ProtectedDataSettingsPanel";
 
 export interface ProjectSettingsProps {
     onChange: (dirty?: boolean) => void;
@@ -34,6 +38,8 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
     const [nameDirty, setNameDirty] = useState<boolean>(false);
     const [dataTypeDirty, setDataTypeDirty] = useState<boolean>(false);
     const [storageDirty, setStorageDirty] = useState<boolean>(false);
+    const [barDirty, setBarDirty] = useState<boolean>(false);
+    const [nameIdDirty, setNameIdDirty] = useState<boolean>(false);
     const [error, setError] = useState<string>();
     const [isSaving, setIsSaving] = useState<boolean>(false);
     const { api } = useAppContext();
@@ -72,6 +78,27 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
         onChange(true);
     }, [onChange]);
 
+    const onBarChange_ = useCallback(() => {
+        setBarDirty(true);
+        onChange(true);
+    }, [onChange]);
+
+    const onBarSuccess_ = useCallback(
+        () => {
+            setBarDirty(false);
+            onSuccess(nameDirty || dataTypeDirty || storageDirty || nameIdDirty, false);
+        },
+        [nameDirty, dataTypeDirty, storageDirty, nameIdDirty]
+    );
+
+    const onNameIdChange_ = useCallback((dirty) => {
+        setNameIdDirty(dirty);
+        if (dirty)
+            onChange(true);
+        else
+            onSuccess(nameDirty || dataTypeDirty || storageDirty || barDirty, false);
+    }, [onChange, nameDirty, dataTypeDirty, storageDirty, barDirty]);
+
     const onSubmitName = useCallback(
         async evt => {
             evt.preventDefault();
@@ -90,7 +117,7 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
 
                 renamedProject = await api.folder.renameProject(options, project.path);
                 setNameDirty(false);
-                onSuccess(dataTypeDirty || storageDirty);
+                onSuccess(dataTypeDirty || storageDirty || barDirty || nameIdDirty);
             } catch (e) {
                 setError(resolveErrorMessage(e) ?? 'Failed to update project settings');
             } finally {
@@ -109,7 +136,7 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
                 });
             }
         },
-        [api.folder, container, dispatch, project, isSaving, onSuccess, dataTypeDirty, storageDirty]
+        [api.folder, container, dispatch, project, isSaving, onSuccess, dataTypeDirty, storageDirty, barDirty, nameIdDirty]
     );
 
     const closeModalHandler = useCallback(() => {
@@ -136,17 +163,17 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
     const onDataTypeSuccess = useCallback(
         (reload?: boolean) => {
             setDataTypeDirty(false);
-            onSuccess(nameDirty || storageDirty, reload);
+            onSuccess(nameDirty || storageDirty || barDirty || nameIdDirty, reload);
         },
-        [nameDirty, storageDirty]
+        [nameDirty, storageDirty, barDirty, nameIdDirty]
     );
 
     const onStorageSuccess = useCallback(
         (reload?: boolean) => {
             setStorageDirty(false);
-            onSuccess(nameDirty || dataTypeDirty, reload);
+            onSuccess(nameDirty || dataTypeDirty || barDirty || nameIdDirty, reload);
         },
-        [nameDirty, dataTypeDirty]
+        [nameDirty, dataTypeDirty, barDirty, nameIdDirty]
     );
 
     if (!project || project.isProject || !user.isAdmin) {
@@ -212,6 +239,19 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
                             onSuccess={onStorageSuccess}
                         />
                     )}
+                    {biologicsIsPrimaryApp(moduleContext) &&
+                        <BarTenderSettingsForm
+                            onChange={onBarChange_}
+                            onSuccess={onBarSuccess_}
+                            container={project}
+                            setIsDirty={null} // used by templates, not needed here
+                            getIsDirty={null}
+                        />
+                    }
+                    <NameIdSettings {...props} container={project} isAppHome={false} setIsDirty={onNameIdChange_} getIsDirty={null}/>
+                    {biologicsIsPrimaryApp(moduleContext) && isProtectedDataEnabled(moduleContext) &&
+                        <ProtectedDataSettingsPanel containerPath={project.path}/>
+                    }
                 </>
             )}
         </div>

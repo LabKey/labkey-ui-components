@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC, useCallback } from 'react';
 import { getServerContext } from '@labkey/api';
 
 import classNames from 'classnames';
@@ -12,11 +12,9 @@ import { ActiveUserLimit } from '../settings/ActiveUserLimit';
 import { NameIdSettings } from '../settings/NameIdSettings';
 import { ManageSampleStatusesPanel } from '../samples/ManageSampleStatusesPanel';
 import {
-    biologicsIsPrimaryApp,
-    getProjectDataExclusion,
+    biologicsIsPrimaryApp, hasModule,
     isAppHomeFolder,
-    isELNEnabled,
-    isProductProjectsEnabled,
+    isELNEnabled, isProtectedDataEnabled,
     isSampleStatusEnabled,
 } from '../../app/utils';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
@@ -29,16 +27,19 @@ import { ProjectLookAndFeelForm } from '../project/ProjectLookAndFeelForm';
 
 import { useAdminAppContext } from './useAdminAppContext';
 import { showPremiumFeatures } from './utils';
+import {Hooks, LoadingPage} from "../../../index";
+import {ProtectedDataSettingsPanel} from "./ProtectedDataSettingsPanel";
+import {RequestsSettingsPanel} from "./RequestsSettingsPanel";
 
 // export for jest testing
 export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
-    const { setIsDirty, getIsDirty, children } = props;
-    const { moduleContext, user, container } = useServerContext();
+    const { setIsDirty, getIsDirty } = props;
+    const { moduleContext, container } = useServerContext();
+    const homeFolderPath = isAppHomeFolder(container, moduleContext) ? container.path : container.parentPath;
     const { createNotification, dismissNotifications } = useNotificationsContext();
-    const { NotebookProjectSettingsComponent, projectDataTypes } = useAdminAppContext();
+    const { NotebookProjectSettingsComponent } = useAdminAppContext();
     const { api } = useAppContext<AppContext>();
-
-    const disabledTypesMap = getProjectDataExclusion(moduleContext);
+    const homeProjectContainer = Hooks.useContainerUser(homeFolderPath, {includeStandardProperties: true});
 
     const onSettingsChange = useCallback(() => {
         setIsDirty(true);
@@ -70,57 +71,49 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
         );
     }, [moduleContext]);
 
-    const projectSettings = useMemo((): React.ReactNode => {
-        if (!isProductProjectsEnabled(moduleContext)) return null;
+    if (!homeProjectContainer.isLoaded)
+        return <LoadingPage title="Application Settings"/>;
 
-        return (
-            <>
-                {isAppHomeFolder(container, moduleContext) && (
-                    <ProjectLookAndFeelForm
-                        api={api.folder}
-                        onChange={onSettingsChange}
-                        onSuccess={onSettingsSuccess}
-                    />
-                )}
-            </>
-        );
-    }, [moduleContext, projectDataTypes, disabledTypesMap, container]);
-
-    const _title = isAppHomeFolder(container, moduleContext) ? 'Application Settings' : 'Project Settings';
-
-    if (!user.isAdmin) {
-        return <InsufficientPermissionsPage title={_title} />;
+    if (!homeProjectContainer.user.isAdmin) {
+        return <InsufficientPermissionsPage title="Application Settings" />;
     }
 
     return (
         <>
             <BasePermissionsCheckPage
-                user={user}
-                title={_title}
-                description={!isAppHomeFolder(container, moduleContext) ? container.path : undefined}
-                hasPermission={user.isAdmin}
+                user={homeProjectContainer.user}
+                title="Application Settings"
+                description={undefined}
+                hasPermission={homeProjectContainer.user.isAdmin}
                 renderButtons={lkVersion}
             >
-                <ActiveUserLimit />
-                {isAppHomeFolder(container, moduleContext) && (
-                    <ProjectLookAndFeelForm
-                        api={api.folder}
-                        onChange={onSettingsChange}
-                        onSuccess={onSettingsSuccess}
-                    />
-                )}
+                <ActiveUserLimit user={homeProjectContainer.user} container={homeProjectContainer.container}/>
+                <ProjectLookAndFeelForm
+                    api={api.folder}
+                    onChange={onSettingsChange}
+                    onSuccess={onSettingsSuccess}
+                    container={homeProjectContainer.container}
+                />
                 {biologicsIsPrimaryApp(moduleContext) && isELNEnabled(moduleContext) && (
-                    <NotebookProjectSettingsComponent />
+                    <NotebookProjectSettingsComponent containerPath={homeProjectContainer.container.path}/>
                 )}
                 <BarTenderSettingsForm
                     onChange={onSettingsChange}
                     onSuccess={onBarTenderSuccess}
+                    container={homeProjectContainer.container}
                     setIsDirty={setIsDirty}
                     getIsDirty={getIsDirty}
                 />
-                <NameIdSettings {...props} />
-                {isSampleStatusEnabled(moduleContext) && <ManageSampleStatusesPanel {...props} />}
-                {children}
+                <NameIdSettings {...props} container={homeProjectContainer.container} isAppHome={true}/>
+                {isSampleStatusEnabled(moduleContext) &&
+                    <ManageSampleStatusesPanel
+                        {...props}
+                        container={homeProjectContainer.container}
+                    />}
+                {biologicsIsPrimaryApp(moduleContext) && isProtectedDataEnabled(moduleContext) &&
+                    <ProtectedDataSettingsPanel containerPath={homeProjectContainer.container.path}/>
+                }
+                {biologicsIsPrimaryApp(moduleContext) && hasModule('assayRequest', moduleContext) && <RequestsSettingsPanel/>}
             </BasePermissionsCheckPage>
         </>
     );

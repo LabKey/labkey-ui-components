@@ -48,10 +48,10 @@ describe('ManageSampleStatusesPanel', () => {
     }
 
     test('loading', async () => {
-        const wrapper = mountWithAppServerContext(<ManageSampleStatusesPanel {...DEFAULT_PROPS} />, undefined, {
-            container: TEST_PROJECT_CONTAINER,
-            project: TEST_PROJECT,
-        });
+        const wrapper = mountWithAppServerContext(<ManageSampleStatusesPanel
+            {...DEFAULT_PROPS}
+            container={TEST_PROJECT_CONTAINER}
+        />);
         expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
         await waitForLifecycle(wrapper);
         validate(wrapper);
@@ -62,18 +62,13 @@ describe('ManageSampleStatusesPanel', () => {
         const wrapper = mountWithAppServerContext(
             <ManageSampleStatusesPanel
                 {...DEFAULT_PROPS}
+                container={TEST_PROJECT_CONTAINER}
                 api={getTestAPIWrapper(jest.fn, {
                     samples: getSamplesTestAPIWrapper(jest.fn, {
                         getSampleStatuses: jest.fn().mockResolvedValue([]),
                     }),
                 })}
-            />,
-            undefined,
-            {
-                container: TEST_PROJECT_CONTAINER,
-                project: TEST_PROJECT,
-            }
-        );
+            />);
         await waitForLifecycle(wrapper);
         validate(wrapper);
         expect(wrapper.find(SampleStatusesList).prop('states').length).toBe(0);
@@ -82,10 +77,10 @@ describe('ManageSampleStatusesPanel', () => {
     });
 
     test('with states and selection', async () => {
-        const wrapper = mountWithAppServerContext(<ManageSampleStatusesPanel {...DEFAULT_PROPS} />, undefined, {
-            container: TEST_PROJECT_CONTAINER,
-            project: TEST_PROJECT,
-        });
+        const wrapper = mountWithAppServerContext(<ManageSampleStatusesPanel
+            {...DEFAULT_PROPS}
+            container={TEST_PROJECT_CONTAINER}
+        />);
         await waitForLifecycle(wrapper);
         validate(wrapper);
         expect(wrapper.find(SampleStatusesList).prop('states').length).toBe(1);
@@ -107,28 +102,23 @@ describe('ManageSampleStatusesPanel', () => {
         const wrapper = mountWithAppServerContext(
             <ManageSampleStatusesPanel
                 {...DEFAULT_PROPS}
+                container={TEST_PROJECT_CONTAINER}
                 api={getTestAPIWrapper(jest.fn, {
                     samples: getSamplesTestAPIWrapper(jest.fn, {
                         getSampleStatuses: () => Promise.reject({ exception: 'Failure' }),
                     }),
                 })}
-            />,
-            undefined,
-            {
-                container: TEST_PROJECT_CONTAINER,
-                project: TEST_PROJECT,
-            }
-        );
+            />);
         await waitForLifecycle(wrapper);
         validate(wrapper, true);
         wrapper.unmount();
     });
 
     test('add new', async () => {
-        const wrapper = mountWithAppServerContext(<ManageSampleStatusesPanel {...DEFAULT_PROPS} />, undefined, {
-            container: TEST_PROJECT_CONTAINER,
-            project: TEST_PROJECT,
-        });
+        const wrapper = mountWithAppServerContext(<ManageSampleStatusesPanel
+            {...DEFAULT_PROPS}
+            container={TEST_PROJECT_CONTAINER}
+        />);
         await waitForLifecycle(wrapper);
         validate(wrapper);
         expect(wrapper.find(SampleStatusesList).prop('states').length).toBe(1);

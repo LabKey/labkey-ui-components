@@ -4,7 +4,6 @@ import { Utils } from '@labkey/api';
 import { resolveErrorMessage } from '../../util/messaging';
 import { AppContext, useAppContext } from '../../AppContext';
 import { Alert } from '../base/Alert';
-import { useServerContext } from '../base/ServerContext';
 import { UserLimitSettings } from '../permissions/actions';
 import { User } from '../base/models/User';
 import { Container } from '../base/models/Container';

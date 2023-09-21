@@ -3,7 +3,12 @@ import { ReactWrapper } from 'enzyme';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 import { TEST_USER_EDITOR, TEST_USER_FOLDER_ADMIN } from '../../userFixtures';
-import { TEST_FOLDER_CONTAINER, TEST_PROJECT, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
+import {
+    TEST_FOLDER_CONTAINER,
+    TEST_PROJECT,
+    TEST_PROJECT_CONTAINER,
+    TEST_PROJECT_CONTAINER_ADMIN
+} from '../../containerFixtures';
 
 import { ActiveUserLimit } from '../settings/ActiveUserLimit';
 import { BarTenderSettingsForm } from '../labels/BarTenderSettingsForm';
@@ -42,6 +47,17 @@ describe('AdminSettingsPageImpl', () => {
         api: getTestAPIWrapper(jest.fn, {
             security: getSecurityTestAPIWrapper(jest.fn, {
                 fetchPolicy: jest.fn().mockResolvedValue(TEST_POLICY),
+                fetchContainers: jest.fn().mockResolvedValue([TEST_PROJECT_CONTAINER_ADMIN]),
+            }),
+        }),
+    };
+
+    const APP_CONTEXT_NOT_ADMIN: Partial<AppContext> = {
+        admin: {} as AdminAppContext,
+        api: getTestAPIWrapper(jest.fn, {
+            security: getSecurityTestAPIWrapper(jest.fn, {
+                fetchPolicy: jest.fn().mockResolvedValue(TEST_POLICY),
+                fetchContainers: jest.fn().mockResolvedValue([TEST_PROJECT_CONTAINER]),
             }),
         }),
     };
@@ -132,10 +148,8 @@ describe('AdminSettingsPageImpl', () => {
         });
         await waitForLifecycle(wrapper, 50);
         validatePremium(wrapper, 1);
-        expect(wrapper.find(BasePermissionsCheckPage).prop('title')).toBe('Project Settings');
-        expect(wrapper.find(BasePermissionsCheckPage).prop('description')).toBe(
-            '/TestProjectContainer/TestFolderContainer'
-        );
+        expect(wrapper.find(BasePermissionsCheckPage).prop('title')).toBe('Application Settings');
+
         wrapper.unmount();
     });
 
@@ -153,7 +167,7 @@ describe('AdminSettingsPageImpl', () => {
     });
 
     test('non admin', async () => {
-        const wrapper = mountWithAppServerContext(<AdminSettingsPageImpl {...defaultProps()} />, APP_CONTEXT, {
+        const wrapper = mountWithAppServerContext(<AdminSettingsPageImpl {...defaultProps()} />, APP_CONTEXT_NOT_ADMIN, {
             ...SERVER_CONTEXT,
             user: TEST_USER_EDITOR,
         });

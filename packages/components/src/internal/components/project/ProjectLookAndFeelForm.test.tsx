@@ -39,7 +39,7 @@ describe('ProjectLookAndFeelForm', () => {
 
         expect(api.updateProjectLookAndFeelSettings).toHaveBeenCalledWith({
             defaultDateTimeFormat: 'yyyy-MM-dd HH:mmaa',
-        });
+        }, TEST_PROJECT_CONTAINER.path);
 
         expect(document.querySelector('.alert-danger')).toBeNull();
 
@@ -70,7 +70,7 @@ describe('ProjectLookAndFeelForm', () => {
 
         expect(api.updateProjectLookAndFeelSettings).toHaveBeenCalledWith({
             defaultDateTimeFormat: 'yyyy-MM-dd HH:mmb',
-        });
+        }, TEST_PROJECT_CONTAINER.path);
 
         expect(document.querySelector('.alert-danger').innerHTML).toEqual('invalid format');
 

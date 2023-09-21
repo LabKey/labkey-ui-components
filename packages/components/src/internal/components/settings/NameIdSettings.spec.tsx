@@ -41,7 +41,7 @@ describe('NameIdSettings', () => {
             },
         };
 
-        LABKEY.container = {
+        const container = {
             id: 'testContainerId',
             title: 'TestContainer',
             path: '/testContainer',
@@ -55,6 +55,8 @@ describe('NameIdSettings', () => {
             api: apiWithNoSamples,
             getIsDirty: jest.fn(),
             setIsDirty: jest.fn(),
+            container: container,
+            isAppHome: true,
         };
     });
 
@@ -85,6 +87,31 @@ describe('NameIdSettings', () => {
         expect(counterInputs.length).toEqual(2);
         expect(counterInputs.at(0).prop('value')).toBe(0);
         expect(counterInputs.at(1).prop('value')).toBe(0);
+    });
+
+    test('not app home', async () => {
+        const wrapper = mountWithServerContext(<NameIdSettingsForm {...DEFAULT_PROPS} isAppHome={false} />);
+        expect(wrapper.find(LoadingSpinner).length).toEqual(2);
+        expect(wrapper.find('.name-id-setting__prefix-field').exists()).toEqual(false);
+        expect(wrapper.find(Checkbox).exists()).toEqual(false);
+
+        await waitForLifecycle(wrapper);
+
+        expect(wrapper.find(LoadingSpinner).length).toEqual(0);
+        expect(wrapper.find('.name-id-setting__setting-section')).toHaveLength(2);
+        expect(wrapper.find('.name-id-setting__prefix-field')).toHaveLength(1);
+        expect(wrapper.find('.sample-counter__setting-section')).toHaveLength(0);
+        expect(wrapper.find('.sample-counter__prefix-label')).toHaveLength(0);
+        expect(wrapper.find(Checkbox)).toHaveLength(1);
+        expect(wrapper.find(FormControl)).toHaveLength(1);
+        expect(wrapper.find(Button)).toHaveLength(1);
+        expect(DEFAULT_PROPS.loadNameExpressionOptions).toHaveBeenCalled();
+
+        const counterLabel = wrapper.find('div.sample-counter__prefix-label');
+        expect(counterLabel.length).toEqual(0);
+
+        const counterInputs = wrapper.find('input.update-samplecount-input');
+        expect(counterInputs.length).toEqual(0);
     });
 
     test('allowUserSpecifiedNames checkbox', async () => {

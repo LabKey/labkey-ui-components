@@ -21,6 +21,7 @@ describe('AdministrationSubNavImpl', () => {
                 inProjectContainer={false}
                 projectsEnabled={false}
                 user={TEST_USER_GUEST}
+                appHomeUser={TEST_USER_APP_ADMIN}
             />
         );
         expect(wrapper.prop('tabs').size).toBe(0);
@@ -31,6 +32,22 @@ describe('AdministrationSubNavImpl', () => {
         wrapper.setProps({ user: TEST_USER_APP_ADMIN });
         expect(wrapper.prop('tabs').size).toBe(5);
     });
+
+    test('folder admin, but not app home admin', () => {
+        const wrapper = shallow(
+            <AdministrationSubNavImpl
+                {...createMockWithRouterProps(jest.fn, {})}
+                inProjectContainer={false}
+                projectsEnabled={false}
+                user={TEST_USER_APP_ADMIN}
+                appHomeUser={TEST_USER_EDITOR}
+            />
+        );
+        expect(wrapper.prop('tabs').size).toBe(4);
+        expect(wrapper.prop('tabs').findIndex(t => t.text === 'Application Settings')).toBe(-1);
+
+    });
+
     test('displays "projects"', () => {
         const wrapper = shallow(
             <AdministrationSubNavImpl
@@ -38,13 +55,13 @@ describe('AdministrationSubNavImpl', () => {
                 inProjectContainer={false}
                 projectsEnabled={false}
                 user={TEST_USER_PROJECT_ADMIN}
+                appHomeUser={TEST_USER_APP_ADMIN}
             />
         );
         expect(wrapper.prop('tabs').findIndex(t => t.text === 'Projects')).toBe(-1);
 
         wrapper.setProps({ inProjectContainer: false, projectsEnabled: true, isAppHome: false });
-        expect(wrapper.prop('tabs').findIndex(t => t.text === 'Application Settings')).toBe(-1);
-        expect(wrapper.prop('tabs').findIndex(t => t.text === 'Project Settings')).toBe(0);
+        expect(wrapper.prop('tabs').findIndex(t => t.text === 'Application Settings')).toBe(0);
         expect(wrapper.prop('tabs').findIndex(t => t.text === 'Projects')).toBe(1);
         expect(wrapper.prop('tabs').findIndex(t => t.text === 'Audit Logs')).toBe(2);
         // TODO, Users and Groups will be available in project container as part of "User Administration Improvements"
@@ -52,7 +69,6 @@ describe('AdministrationSubNavImpl', () => {
 
         wrapper.setProps({ inProjectContainer: true, projectsEnabled: true, isAppHome: true });
         expect(wrapper.prop('tabs').findIndex(t => t.text === 'Application Settings')).toBe(0);
-        expect(wrapper.prop('tabs').findIndex(t => t.text === 'Project Settings')).toBe(-1);
         expect(wrapper.prop('tabs').findIndex(t => t.text === 'Projects')).toBe(1);
         expect(wrapper.prop('tabs').findIndex(t => t.text === 'Audit Logs')).toBe(2);
         expect(wrapper.prop('tabs').findIndex(t => t.text === 'Users')).toBe(3);
@@ -66,6 +82,7 @@ describe('AdministrationSubNavImpl', () => {
                 inProjectContainer={false}
                 projectsEnabled={false}
                 user={TEST_USER_PROJECT_ADMIN}
+                appHomeUser={TEST_USER_APP_ADMIN}
             />
         );
         expect(wrapper.prop('tabs').findIndex(t => t.text === 'Projects')).toBe(-1);

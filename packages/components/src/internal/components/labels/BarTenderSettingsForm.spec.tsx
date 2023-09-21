@@ -44,9 +44,7 @@ describe('BarTenderSettingsForm', () => {
     }
 
     test('default props, home project', async () => {
-        const wrapper = mountWithAppServerContext(<BarTenderSettingsFormImpl {...DEFAULT_PROPS} />, undefined, {
-            container: new Container({ path: '/Test' }),
-        });
+        const wrapper = mountWithAppServerContext(<BarTenderSettingsFormImpl {...DEFAULT_PROPS} container={new Container({ path: '/Test' })} />);
         await waitForLifecycle(wrapper);
         validate(wrapper);
         validateUrlInput(wrapper);
@@ -54,8 +52,7 @@ describe('BarTenderSettingsForm', () => {
     });
 
     test('default props, product project', async () => {
-        const wrapper = mountWithAppServerContext(<BarTenderSettingsFormImpl {...DEFAULT_PROPS} />, undefined, {
-            container: new Container({ path: '/Test/Folder', type: 'folder' }),
+        const wrapper = mountWithAppServerContext(<BarTenderSettingsFormImpl {...DEFAULT_PROPS} container={new Container({ path: '/Test/Folder', type: 'folder' })}/>, undefined, {
             moduleContext: { query: { isProductProjectsEnabled: true } },
         });
 
@@ -68,8 +65,7 @@ describe('BarTenderSettingsForm', () => {
     });
 
     test('default props, subfolder without projects', async () => {
-        const wrapper = mountWithAppServerContext(<BarTenderSettingsFormImpl {...DEFAULT_PROPS} />, undefined, {
-            container: new Container({ path: '/Test/Folder', type: 'folder' }),
+        const wrapper = mountWithAppServerContext(<BarTenderSettingsFormImpl {...DEFAULT_PROPS} container={new Container({ path: '/Test/Folder', type: 'folder' })}/>, undefined, {
             moduleContext: { query: { isProductProjectsEnabled: false } },
         });
 
@@ -85,6 +81,7 @@ describe('BarTenderSettingsForm', () => {
         const wrapper = mountWithAppServerContext(
             <BarTenderSettingsFormImpl
                 {...DEFAULT_PROPS}
+                container={new Container({ path: '/Test' })}
                 api={getTestAPIWrapper(jest.fn, {
                     labelprinting: getLabelPrintingTestAPIWrapper(jest.fn, {
                         fetchBarTenderConfiguration: () =>
@@ -95,12 +92,7 @@ describe('BarTenderSettingsForm', () => {
                             ),
                     }),
                 })}
-            />,
-            undefined,
-            {
-                container: new Container({ path: '/Test' }),
-            }
-        );
+            />);
         await waitForLifecycle(wrapper);
         validate(wrapper);
         expect(wrapper.find(FormControl).first().prop('type')).toBe('url');

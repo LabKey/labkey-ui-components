@@ -15,7 +15,7 @@ import { CreatedModified } from '../base/CreatedModified';
 import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
 import { AppURL } from '../../url/AppURL';
 import { AUDIT_KEY } from '../../app/constants';
-import { AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY } from '../auditlog/constants';
+import {AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY, PROJECT_AUDIT_QUERY} from '../auditlog/constants';
 
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 import { PermissionAssignments } from '../permissions/PermissionAssignments';
@@ -53,15 +53,13 @@ export const PermissionManagementPageImpl: FC<Props> = memo(props => {
         return (
             <>
                 <CreatedModified row={row} />
-                <ManageDropdownButton collapsed id="admin-page-manage" pullRight>
-                    <MenuItem
-                        href={AppURL.create(AUDIT_KEY)
-                            .addParam(AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY.value)
-                            .toHref()}
-                    >
-                        View Audit History
-                    </MenuItem>
-                </ManageDropdownButton>
+                <a
+                    href={AppURL.create(AUDIT_KEY)
+                        .addParam(AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY.value)
+                        .toHref()}
+                >
+                    View Audit History
+                </a>
             </>
         );
     }, [policyLastModified]);

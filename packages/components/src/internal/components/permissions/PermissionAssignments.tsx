@@ -148,12 +148,20 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
             try {
                 let projects_ = await api.folder.getProjects(container, moduleContext, false, true, true);
                 projects_ = projects_.filter(c => c.effectivePermissions.indexOf(Security.PermissionTypes.Admin) > -1);
-                setProjectCount?.(projects_.length);
-                setAppHomeContainer(projects_[0]);
-                setProjects(projects_);
 
-                if (projects_?.length > 1) {
-                    await loadContainerTree(projects_[0]);
+                // if app home lack admin perm, don't show project list
+                if (!isAppHomeFolder(projects_[0], moduleContext)) {
+                    setProjectCount?.(1);
+                    setProjects([container]);
+                }
+                else {
+                    setProjectCount?.(projects_.length);
+                    setAppHomeContainer(projects_[0]);
+                    setProjects(projects_);
+
+                    if (projects_?.length > 1) {
+                        await loadContainerTree(projects_[0]);
+                    }
                 }
 
                 const defaultContainer = container?.isFolder ? container : projects_?.[0];
@@ -164,7 +172,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                 setLoaded(true);
             }
         })();
-    }, []);
+    }, [moduleContext]);
 
     const loadContainerTree = useCallback(
         async (homeContainer?: Container) => {

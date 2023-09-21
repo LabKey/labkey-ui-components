@@ -14,19 +14,22 @@ import { User } from '../base/models/User';
 import { AUDIT_KEY } from '../../app/constants';
 import { isProjectContainer, isProductProjectsEnabled, isAppHomeFolder } from '../../app/utils';
 import { withRouteLeave } from '../../util/RouteLeave';
+import {useContainerUser} from "../container/actions";
+import {LoadingSpinner} from "../base/LoadingSpinner";
 
 interface OwnProps {
     inProjectContainer: boolean;
     isAppHome: boolean;
     projectsEnabled: boolean;
     user: User;
+    appHomeUser: User;
 }
 
 export type Props = OwnProps & WithRouterProps;
 
 // exported for unit testing
 export const AdministrationSubNavImpl: FC<Props> = memo(props => {
-    const { inProjectContainer, isAppHome, projectsEnabled, user, router } = props;
+    const { inProjectContainer, appHomeUser, projectsEnabled, user, router } = props;
 
     const parentTab = useMemo(() => {
         return {
@@ -39,7 +42,10 @@ export const AdministrationSubNavImpl: FC<Props> = memo(props => {
         const tabs_ = [];
 
         if (user.isAdmin) {
-            tabs_.push(isAppHome ? 'Application Settings' : 'Project Settings');
+
+            if (appHomeUser.isAdmin)
+                tabs_.push('Application Settings');
+
             if (projectsEnabled) {
                 tabs_.push('Projects');
             }
@@ -69,12 +75,18 @@ export const AdministrationSubNavImpl: FC<Props> = memo(props => {
 
 export const AdministrationSubNavWrapper: FC<WithRouterProps> = memo(props => {
     const { container, moduleContext, user } = useServerContext();
+    const homeFolderPath = isAppHomeFolder(container, moduleContext) ? container.path : container.parentPath;
+    const homeProjectContainer = useContainerUser(homeFolderPath, { includeStandardProperties: true });
+
+    if (!homeProjectContainer.isLoaded) return <LoadingSpinner />;
+
     return (
         <AdministrationSubNavImpl
             inProjectContainer={isProjectContainer(container.path)}
             projectsEnabled={isProductProjectsEnabled(moduleContext)}
             isAppHome={isAppHomeFolder(container, moduleContext)}
             user={user}
+            appHomeUser={homeProjectContainer?.user ?? user}
             {...props}
         />
     );

@@ -110,7 +110,7 @@ export const Group: FC<GroupProps> = memo(props => {
             clause={generateClause}
             links={generateLinks}
             initExpanded={initExpanded}
-            iconFaCls="users fa-3x"
+            iconFaCls="unlock-alt fa-3x"
             useGreyTheme={true}
             isExpandable={true}
         >

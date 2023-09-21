@@ -6,6 +6,17 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Projects Administration Improvements
     - TODO
 
+### version 2.369.1
+*Released*: 21 September 2023
+- Remove “Plate Metadata” field in Assay Import Wizard
+
+### version 2.369.0
+*Released*: 21 September 2023
+* `QueryModel`: add `useSavedSettings` flag
+* `QueryModel`: serialize `maxRows` to URl when using `bindURL`
+  * Serialized as `pageSize` to match the page offset param
+* `withQueryModels`: honor `useSavedSettings` flag
+
 ### version 2.368.2
 *Released*: 14 September 2023
 - Issue 48458: remove duplicate processing of combined nodes.

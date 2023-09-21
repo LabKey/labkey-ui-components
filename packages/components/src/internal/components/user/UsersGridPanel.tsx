@@ -144,6 +144,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                 bindURL: true,
                 urlPrefix: usersView, // each model needs to have its own urlPrefix for paging to work across models
                 includeTotalCount: true,
+                useSavedSettings: true,
             },
             true,
             true

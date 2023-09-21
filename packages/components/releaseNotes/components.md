@@ -1,9 +1,20 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.X
-*Released*: X September 2023
+### version 2.369.2
+*Released*: 21 September 2023
 - Sample type RootMaterialLSID refactoring
+
+### version 2.369.1
+*Released*: 21 September 2023
+- Remove “Plate Metadata” field in Assay Import Wizard
+
+### version 2.369.0
+*Released*: 21 September 2023
+* `QueryModel`: add `useSavedSettings` flag
+* `QueryModel`: serialize `maxRows` to URl when using `bindURL`
+  * Serialized as `pageSize` to match the page offset param
+* `withQueryModels`: honor `useSavedSettings` flag
 
 ### version 2.368.2
 *Released*: 14 September 2023

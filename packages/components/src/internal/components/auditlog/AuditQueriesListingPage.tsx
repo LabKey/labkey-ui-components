@@ -159,6 +159,7 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
                     containerFilter: this.containerFilter,
                     bindURL: isFirstModel,
                     includeTotalCount: true,
+                    useSavedSettings: true,
                 },
                 true,
                 true

@@ -43,7 +43,7 @@ function offsetFromString(rowsPerPage: number, pageStr: string): number {
     return offset >= 0 ? offset : 0;
 }
 
-function querySortFromString(sortStr: string): QuerySort {
+export function querySortFromString(sortStr: string): QuerySort {
     if (sortStr.startsWith('-')) {
         return new QuerySort({ dir: '-', fieldKey: sortStr.slice(1) });
     } else {
@@ -57,6 +57,28 @@ function querySortsFromString(sortsStr: string): QuerySort[] {
 
 function searchFiltersFromString(searchStr: string): Filter.IFilter[] {
     return searchStr?.split(';').map(search => Filter.create('*', search, Filter.Types.Q));
+}
+
+/**
+ * Returns true if a given location has queryParams that would conflict with savedSettings: filters, sorts, view,
+ * page offset, pageSize.
+ * @param prefix: the QueryModel prefix
+ * @param queryParams: The query object from Location
+ */
+export function locationHasQueryParamSettings(prefix: string, queryParams?: Record<string, string>): boolean {
+    if (queryParams === undefined) return false;
+    // View
+    if (queryParams[`${prefix}.view`] !== undefined) return true;
+    // Search Filters
+    if (queryParams[`${prefix}.q`] !== undefined) return true;
+    // Column Filters
+    if (Filter.getFiltersFromParameters(queryParams, prefix).length > 0) return true;
+    // Sorts
+    if (queryParams[`${prefix}.sort`] !== undefined) return true;
+    // Page offset
+    if (queryParams[`${prefix}.p`] !== undefined) return true;
+    // Page size
+    return queryParams[`${prefix}.pageSize`] !== undefined;
 }
 
 /**
@@ -177,6 +199,14 @@ export interface QueryConfig {
      * Prefix string value to use in url parameters when bindURL is true. Defaults to "query".
      */
     urlPrefix?: string;
+
+    /**
+     * If true we will load filters, sorts, pageSize, and viewName from localStorage when initially loading the model,
+     * but only if there are no settings on the URL. Important: If you are using this flag you must ensure your grid id
+     * is stable and unique. It must be stable between page loads/visits, or we won't be able to fetch the settings. It
+     * must be unique, or we'll override settings for other grid models.
+     */
+    useSavedSettings?: boolean;
 }
 
 const DEFAULT_OFFSET = 0;
@@ -295,6 +325,14 @@ export class QueryModel {
      * Prefix string value to use in url parameters when bindURL is true. Defaults to "query".
      */
     readonly urlPrefix?: string;
+    /**
+     * If true we will load filters, sorts, pageSize, and viewName from localStorage when initially loading the model,
+     * but only if there are no settings on the URL. Defaults to false. Important: If you are using this flag you must
+     * ensure your grid id is stable and unique. It must be stable between page loads/visits, or we won't be able to
+     * fetch the settings. It must be unique, or we'll override settings for other grid models.
+     */
+    useSavedSettings?: boolean;
+
     /**
      * An array of [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/Filter.IFilter.html)
      * filters to be applied to the QueryModel data load. These filters will be concatenated with base filters, URL filters,
@@ -438,6 +476,7 @@ export class QueryModel {
         this.totalCountError = undefined;
         this.totalCountLoadingState = LoadingState.INITIALIZED;
         this.urlPrefix = queryConfig.urlPrefix ?? 'query'; // match Data Region defaults
+        this.useSavedSettings = queryConfig.useSavedSettings ?? false;
         this.charts = undefined;
         this.chartsError = undefined;
         this.chartsLoadingState = LoadingState.INITIALIZED;
@@ -678,18 +717,22 @@ export class QueryModel {
      * Returns an object representing the query params of the model. Used when updating the URL when bindURL is set to
      * true.
      */
-    get urlQueryParams(): { [key: string]: string } {
-        const { currentPage, urlPrefix, filterArray, selectedReportId, sorts, viewName } = this;
+    get urlQueryParams(): Record<string, string> {
+        const { currentPage, urlPrefix, filterArray, maxRows, selectedReportId, sorts, viewName } = this;
         const filters = filterArray.filter(f => f.getColumnName() !== '*');
         const searches = filterArray
             .filter(f => f.getColumnName() === '*')
             .map(f => f.getValue())
             .join(';');
         // ReactRouter location.query is typed as any.
-        const modelParams: { [key: string]: any } = {};
+        const modelParams: Record<string, string> = {};
 
         if (currentPage !== 1) {
             modelParams[`${urlPrefix}.p`] = currentPage.toString(10);
+        }
+
+        if (maxRows !== DEFAULT_MAX_ROWS) {
+            modelParams[`${urlPrefix}.pageSize`] = maxRows.toString(10);
         }
 
         if (viewName !== undefined) {
@@ -1047,8 +1090,10 @@ export class QueryModel {
         const prefix = this.urlPrefix;
         const viewName = queryParams[`${prefix}.view`] ?? undefined;
         const searchFilters = searchFiltersFromString(queryParams[`${prefix}.q`]) ?? [];
-        const columnFilters = Filter.getFiltersFromParameters(queryParams, prefix) || [];
+        const columnFilters = Filter.getFiltersFromParameters(queryParams, prefix);
         let filterArray = columnFilters.concat(searchFilters);
+        let maxRows = parseInt(queryParams[`${prefix}.pageSize`]);
+        if (isNaN(maxRows)) maxRows = DEFAULT_MAX_ROWS;
         let offset = offsetFromString(this.maxRows, queryParams[`${prefix}.p`]) ?? DEFAULT_OFFSET;
         let schemaQuery = new SchemaQuery(this.schemaName, this.queryName, viewName);
         let selectedReportId = queryParams[`${prefix}.reportId`] ?? undefined;
@@ -1059,6 +1104,10 @@ export class QueryModel {
         if (useExistingValues) {
             if (filterArray.length === 0 && this.filterArray.length > 0) {
                 filterArray = this.filterArray;
+            }
+
+            if (maxRows === DEFAULT_MAX_ROWS && this.maxRows !== DEFAULT_MAX_ROWS) {
+                maxRows = this.maxRows;
             }
 
             if (offset === 0 && this.offset !== 0) {
@@ -1078,7 +1127,7 @@ export class QueryModel {
             }
         }
 
-        return { filterArray, offset, schemaQuery, selectedReportId, sorts };
+        return { filterArray, maxRows, offset, schemaQuery, selectedReportId, sorts };
     }
 
     /**
@@ -1093,4 +1142,63 @@ export class QueryModel {
     }
 }
 
-type QueryModelURLState = Pick<QueryModel, 'filterArray' | 'offset' | 'schemaQuery' | 'selectedReportId' | 'sorts'>;
+type QueryModelURLState = Pick<
+    QueryModel,
+    'filterArray' | 'maxRows' | 'offset' | 'schemaQuery' | 'selectedReportId' | 'sorts'
+>;
+type QueryModelSettings = Partial<Pick<QueryModel, 'filterArray' | 'maxRows' | 'sorts' | 'viewName'>>;
+const LOCAL_STORAGE_PREFIX = 'QUERY_MODEL_SETTINGS';
+
+function localStorageKey(modelId: string, containerPath: string): string {
+    return [LOCAL_STORAGE_PREFIX, containerPath, modelId].join(';');
+}
+
+export function getSettingsFromLocalStorage(id: string, containerPath: string): QueryModelSettings {
+    const savedSettings = JSON.parse(localStorage.getItem(localStorageKey(id, containerPath)));
+
+    if (savedSettings === null) return undefined;
+
+    const { maxRows, viewName } = savedSettings;
+    const filterArray = savedSettings.filterArray?.map(f =>
+        Filter.create(f.columnName, f.value, Filter.getFilterTypeForURLSuffix(f.type))
+    );
+    const sorts = savedSettings.sorts?.map(s => querySortFromString(s));
+
+    return {
+        filterArray: filterArray ?? [],
+        maxRows: maxRows ?? DEFAULT_MAX_ROWS,
+        sorts: sorts ?? [],
+        viewName,
+    };
+}
+
+const UNIQUE_ERROR =
+    'Model ID is not unique, cannot save settings to local storage. Use a model ID that is unique and stable.';
+
+export function saveSettingsToLocalStorage(model: QueryModel): void {
+    // Don't serialize anything to localStorage if we're not supposed to use saved settings
+    if (!model.useSavedSettings) {
+        return;
+    }
+
+    // We often use "model" as the default model ID, which is not sufficiently unique to store saved settings.
+    if (model.id === 'model') {
+        console.error(UNIQUE_ERROR);
+        return;
+    }
+    const settings = {
+        filterArray: model.filterArray.map(f => ({
+            columnName: f.getColumnName(),
+            value: f.getValue(),
+            type: f.getFilterType().getURLSuffix(),
+        })),
+        maxRows: model.maxRows,
+        sorts: model.sorts.map(sort => sort.toRequestString()),
+        viewName: model.viewName,
+    };
+    // The settings for each model are stored in their own object, instead of storing all settings under some
+    // root object, because we have to serialize to/from JSON, and it could get very expensive if we had to
+    // read/write a large JSON object that stored all settings for all models every time we needed settings for
+    // a single model.
+    localStorage.setItem(localStorageKey(model.id, model.containerPath), JSON.stringify(settings));
+}

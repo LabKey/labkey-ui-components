@@ -23,8 +23,7 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { LoadingState } from '../../../public/LoadingState';
 import { EditorModel } from '../editable/models';
 
-import { AssayUploadOptions, AssayWizardModel } from './AssayWizardModel';
-import { PLATE_METADATA_COLUMN } from './constants';
+import { AssayWizardModel } from './AssayWizardModel';
 
 const DATA_TEXT = 'test1\ttest2\n1\t2';
 
@@ -78,27 +77,5 @@ describe('AssayWizardModel', () => {
         expect(data.name.indexOf(model.assayDef.name) === 0).toBeTruthy();
         expect(data.files === undefined).toBeTruthy();
         expect(Array.isArray(data.dataRows) && data.dataRows.length === 0).toBeTruthy();
-    });
-
-    test('processPlateData', async () => {
-        const model = ASSAY_WIZARD_MODEL;
-        const plateMetadataJson = {
-            SAMPLE: {
-                Sample1: { dilution: 0.1 },
-                Sample2: { dilution: 0.2 },
-                Sample3: { dilution: 0.3 },
-            },
-        };
-        const blob = new Blob([JSON.stringify(plateMetadataJson)], { type: 'application/json' });
-        const file = new File([blob], 'plateMetadata.json');
-        let data: AssayUploadOptions = {
-            properties: {
-                [PLATE_METADATA_COLUMN]: file,
-            },
-        };
-
-        data = await model.processPlateData(data);
-        expect(data.properties[PLATE_METADATA_COLUMN]).toBeUndefined();
-        expect(data.plateMetadata).toEqual(plateMetadataJson);
     });
 });

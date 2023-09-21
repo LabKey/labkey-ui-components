@@ -18,7 +18,13 @@ import { selectRows } from '../../internal/query/selectRows';
 
 import { filterArraysEqual, getSelectRowCountColumnsStr, sortArraysEqual } from './utils';
 import { DefaultQueryModelLoader, QueryModelLoader } from './QueryModelLoader';
-import { QueryConfig, QueryModel } from './QueryModel';
+import {
+    getSettingsFromLocalStorage,
+    locationHasQueryParamSettings,
+    QueryConfig,
+    QueryModel,
+    saveSettingsToLocalStorage,
+} from './QueryModel';
 
 export interface Actions {
     addModel: (queryConfig: QueryConfig, load?: boolean, loadSelections?: boolean) => void;
@@ -160,9 +166,26 @@ export function withQueryModels<Props>(
             // to something different on the QueryConfig then actions would break
             // e.g. actions.loadNextPage(model.id) would not work.
             let model = new QueryModel({ id, ...queryConfigs[id] });
+            const queryParams = location?.query;
+            const hasQueryParamSettings = locationHasQueryParamSettings(model.urlPrefix, queryParams);
 
-            if (model.bindURL && location) {
-                model = model.mutate(model.attributesForURLQueryParams(location.query, true));
+            if (model.bindURL && hasQueryParamSettings) {
+                model = model.mutate(model.attributesForURLQueryParams(queryParams, true));
+            } else if (model.useSavedSettings) {
+                const settings = getSettingsFromLocalStorage(id, model.containerPath);
+                if (settings !== undefined) {
+                    const { filterArray, maxRows, sorts, viewName } = settings;
+                    let schemaQuery = model.schemaQuery;
+                    if (viewName !== undefined) {
+                        schemaQuery = new SchemaQuery(model.schemaName, model.queryName, viewName);
+                    }
+                    model = model.mutate({
+                        filterArray,
+                        maxRows,
+                        schemaQuery,
+                        sorts,
+                    });
+                }
             }
 
             models[id] = model;
@@ -297,6 +320,7 @@ export function withQueryModels<Props>(
                 }),
                 () => {
                     this.maybeLoad(id, false, true, loadSelections);
+                    saveSettingsToLocalStorage(this.state.queryModels[id]);
                 }
             );
         };
@@ -570,16 +594,21 @@ export function withQueryModels<Props>(
             try {
                 const loadRowsConfig = this.state.queryModels[id].loadRowsConfig;
                 const queryInfo = this.state.queryModels[id].queryInfo;
+                const columns = getSelectRowCountColumnsStr(
+                    loadRowsConfig.columns,
+                    loadRowsConfig.filterArray,
+                    queryInfo?.getPkCols()
+                );
                 const { rowCount } = await selectRows({
                     ...loadRowsConfig,
-                    sort: undefined,
-                    maxRows: 1,
-                    offset: 0,
+                    columns,
                     includeDetailsColumn: false,
-                    includeUpdateColumn: false,
                     // includeMetadata: false, // TODO don't require metadata in selectRows response processing
                     includeTotalCount: true,
-                    columns: getSelectRowCountColumnsStr(loadRowsConfig.columns, loadRowsConfig.filterArray, queryInfo?.getPkCols()),
+                    includeUpdateColumn: false,
+                    maxRows: 1,
+                    offset: 0,
+                    sort: undefined,
                 });
 
                 this.setState(
@@ -839,7 +868,10 @@ export function withQueryModels<Props>(
                         model.offset = 0;
                     }
                 }),
-                () => this.maybeLoad(id, false, shouldLoad)
+                () => {
+                    this.maybeLoad(id, false, shouldLoad);
+                    saveSettingsToLocalStorage(this.state.queryModels[id]);
+                }
             );
         };
 
@@ -859,7 +891,10 @@ export function withQueryModels<Props>(
                         resetSelectionState(model);
                     }
                 }),
-                () => this.maybeLoad(id, false, shouldLoad, shouldLoad && loadSelections)
+                () => {
+                    this.maybeLoad(id, false, shouldLoad, shouldLoad && loadSelections);
+                    saveSettingsToLocalStorage(this.state.queryModels[id]);
+                }
             );
         };
 
@@ -916,8 +951,11 @@ export function withQueryModels<Props>(
                         }
                     }
                 }),
-                // When filters change we need to reload selections.
-                () => this.maybeLoad(id, false, shouldLoad, shouldLoad && loadSelections)
+                () => {
+                    // When filters change we need to reload selections.
+                    this.maybeLoad(id, false, shouldLoad, shouldLoad && loadSelections);
+                    saveSettingsToLocalStorage(this.state.queryModels[id]);
+                }
             );
         };
 
@@ -931,7 +969,10 @@ export function withQueryModels<Props>(
                         model.sorts = sorts;
                     }
                 }),
-                () => this.maybeLoad(id, false, shouldLoad)
+                () => {
+                    this.maybeLoad(id, false, shouldLoad);
+                    saveSettingsToLocalStorage(this.state.queryModels[id]);
+                }
             );
         };
 
@@ -953,6 +994,7 @@ export function withQueryModels<Props>(
         autoLoad: false,
         modelLoader: DefaultQueryModelLoader,
         queryConfigs: {},
+        useSavedSettings: false,
     };
 
     return withRouter(ComponentWithQueryModels) as ComponentType<Props & MakeQueryModels>;

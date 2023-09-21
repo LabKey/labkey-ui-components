@@ -1,5 +1,9 @@
 # @labkey/build
 
+### version 6.15.0
+*Released*: 21 September 2023
+* Package updates
+
 ### version 6.14.0
 *Released* : 26 July 2023
 * Add JSX files to loaders test.
@@ -24,7 +28,7 @@
 * Remove `redux-actions` from externals dependencies
 
 ### version 6.9.0
-*Released*: 6 January 2022
+*Released*: 6 January 2023
 * Package updates
 * Disable "collapse_vars" minification optimization in production build
 

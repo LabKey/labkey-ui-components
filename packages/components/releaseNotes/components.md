@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.369.1
+*Released*: 21 September 2023
+- Remove “Plate Metadata” field in Assay Import Wizard
+
 ### version 2.369.0
 *Released*: 21 September 2023
 * `QueryModel`: add `useSavedSettings` flag

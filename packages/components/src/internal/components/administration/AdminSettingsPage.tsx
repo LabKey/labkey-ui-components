@@ -27,12 +27,12 @@ import { AppContext, useAppContext } from '../../AppContext';
 
 import { ProjectLookAndFeelForm } from '../project/ProjectLookAndFeelForm';
 
-import { Hooks, LoadingPage } from '../../../index';
-
 import { useAdminAppContext } from './useAdminAppContext';
 import { showPremiumFeatures } from './utils';
 import { ProtectedDataSettingsPanel } from './ProtectedDataSettingsPanel';
 import { RequestsSettingsPanel } from './RequestsSettingsPanel';
+import {useContainerUser} from "../container/actions";
+import {LoadingPage} from "../base/LoadingPage";
 
 // export for jest testing
 export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
@@ -42,7 +42,7 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
     const { createNotification, dismissNotifications } = useNotificationsContext();
     const { NotebookProjectSettingsComponent } = useAdminAppContext();
     const { api } = useAppContext<AppContext>();
-    const homeProjectContainer = Hooks.useContainerUser(homeFolderPath, { includeStandardProperties: true });
+    const homeProjectContainer = useContainerUser(homeFolderPath, { includeStandardProperties: true });
 
     const onSettingsChange = useCallback(() => {
         setIsDirty(true);

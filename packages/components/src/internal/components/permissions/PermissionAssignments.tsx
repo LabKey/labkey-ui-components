@@ -153,8 +153,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                 if (!isAppHomeFolder(projects_[0], moduleContext)) {
                     setProjectCount?.(1);
                     setProjects([container]);
-                }
-                else {
+                } else {
                     setProjectCount?.(projects_.length);
                     setAppHomeContainer(projects_[0]);
                     setProjects(projects_);

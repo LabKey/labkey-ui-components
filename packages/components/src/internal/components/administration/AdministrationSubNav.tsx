@@ -14,15 +14,15 @@ import { User } from '../base/models/User';
 import { AUDIT_KEY } from '../../app/constants';
 import { isProjectContainer, isProductProjectsEnabled, isAppHomeFolder } from '../../app/utils';
 import { withRouteLeave } from '../../util/RouteLeave';
-import {useContainerUser} from "../container/actions";
-import {LoadingSpinner} from "../base/LoadingSpinner";
+import { useContainerUser } from '../container/actions';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 interface OwnProps {
+    appHomeUser: User;
     inProjectContainer: boolean;
     isAppHome: boolean;
     projectsEnabled: boolean;
     user: User;
-    appHomeUser: User;
 }
 
 export type Props = OwnProps & WithRouterProps;
@@ -42,9 +42,7 @@ export const AdministrationSubNavImpl: FC<Props> = memo(props => {
         const tabs_ = [];
 
         if (user.isAdmin) {
-
-            if (appHomeUser.isAdmin)
-                tabs_.push('Application Settings');
+            if (appHomeUser.isAdmin) tabs_.push('Application Settings');
 
             if (projectsEnabled) {
                 tabs_.push('Projects');

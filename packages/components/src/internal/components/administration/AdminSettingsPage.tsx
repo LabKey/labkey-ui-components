@@ -27,12 +27,14 @@ import { AppContext, useAppContext } from '../../AppContext';
 
 import { ProjectLookAndFeelForm } from '../project/ProjectLookAndFeelForm';
 
+import { useContainerUser } from '../container/actions';
+
+import { LoadingPage } from '../base/LoadingPage';
+
 import { useAdminAppContext } from './useAdminAppContext';
 import { showPremiumFeatures } from './utils';
 import { ProtectedDataSettingsPanel } from './ProtectedDataSettingsPanel';
 import { RequestsSettingsPanel } from './RequestsSettingsPanel';
-import {useContainerUser} from "../container/actions";
-import {LoadingPage} from "../base/LoadingPage";
 
 // export for jest testing
 export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {

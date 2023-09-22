@@ -8,7 +8,6 @@ export interface IFileExtended extends IFile {
     collection: boolean; // Gets coerced to isCollection
     contenttype: string; // Gets coerced to contentType
     creationdate: string; // Gets coerced to created
-    href: string; // Gets coerced to downloadUrl
     lastmodified: string; // Gets coerced to lastModified
     leaf: boolean; // Gets coerced to isLeaf
     text: string; // Gets coerced to name
@@ -39,7 +38,8 @@ export class WebDavFile implements IFile {
     declare propertiesRowId?: number;
 
     constructor(props: IFileExtended) {
-        const { collection, contenttype, creationdate, href, lastmodified, leaf, text, ...validProps } = props;
+        const { collection, contenttype, creationdate, lastmodified, leaf, text, ...validProps } = props;
+        const { href } = validProps;
 
         if (collection !== undefined) validProps.isCollection = collection;
         if (contenttype !== undefined) validProps.contentType = contenttype;

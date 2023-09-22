@@ -4,7 +4,7 @@ import { Col, Form, Row } from 'react-bootstrap';
 
 import { Utils } from '@labkey/api';
 
-import produce from 'immer';
+import { produce } from 'immer';
 
 import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BasePropertiesPanel';
 import {

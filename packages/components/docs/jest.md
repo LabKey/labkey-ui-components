@@ -63,16 +63,16 @@ rendering of components with different sets of parameters.
         and are as expected. This also means that changes to these files should be reviewed during code review of a
         pull request.
     1. Don't manually update `.snap` files. Review the content of the failure for an existing test and then use the
-        `yarn test -u` option to update the files. Note that if you are running the test case manually from IntelliJ,
+        `npm run test-enzyme -- -u` option to update the files. Note that if you are running the test case manually from IntelliJ,
         there is an "update snapshot" link you can click that will use this option for you.
     1. If you are getting local test failures and unexpected changes to a `.snap` file that seem unrelated to your set
-        of changes in your feature branch, be sure to locally run the `yarn install` command from the
+        of changes in your feature branch, be sure to locally run the `npm install --legacy-peer-deps` command from the
         `/packages/components` directory. An update to a package dependency can result
         in some DOM changes, and without having those package updates installed locally, you can get conflicting results.
 1. You can run individual jest test cases from IntelliJ directly. When run in debug mode, you can set breakpoints in
     the jest test code but also in the React component code or functions.
     1. When doing enzyme testing, using `wrapper.debug()` can be used to show HTML for debugging purposes.
-1. Make sure you run the full `yarn test` command in the `packages/components` directory before pushing your changes.
+1. Make sure you run the full `npm test` command in the `packages/components` directory before pushing your changes.
     1. Under certain circumstances, like a series of snapshots tests, there may be a case where a test will
         pass when run individually but fail when run with the rest of the related test cases.
 

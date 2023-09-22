@@ -6,11 +6,11 @@
     "dist/"
   ],
   "scripts": {
-    "setup": "yarn install --frozen-lockfile",
+    "setup": "npm ci --legacy-peer-deps",
     "build": "npm run clean && node src/buildThemes.js",
     "clean": "rimraf dist",
     "cleanAll": "rimraf dist && rimraf node_modules",
-    "prepublishOnly": "yarn build"
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",

@@ -1,6 +1,11 @@
 # @labkey/themes
 UI themes for LabKey Server.
 
+### version 1.3.2
+*Released*: 22 September 2023
+* Migrate build from yarn to npm
+* Update sass
+
 ### version 1.3.1
 *Released*: 18 August 2023
 * Issue 48372: Fix Ext3 input triggers layout

@@ -7,9 +7,6 @@ This package contains the core UI themes for LabKey Server.
 ```sh
 # Using npm
 npm install @labkey/themes --save-dev
-
-# Using yarn
-yarn add @labkey/themes --dev
 ```
 
 ## Development
@@ -36,7 +33,7 @@ core = <LABKEY_SERVER_ROOT>/server/modules/platform/core/node_modules/@labkey/th
 
 .PHONY: build
 build:
-	yarn run build
+	npm run build
 
 .PHONY: copy
 copy:

@@ -472,6 +472,22 @@
     white-space: nowrap;
 }
 
+.lk-version-nav {
+    padding: 8px 0 8px 10px;
+    color: #9d9d9d;
+    position: relative;
+}
+
+.lk-version-nav__label {
+    float: right;
+    font-size: 14px;
+    margin-left: 4px;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .navbar-inverse {
   min-height: 15px;
 

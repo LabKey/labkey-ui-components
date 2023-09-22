@@ -68,7 +68,7 @@ export const AdministrationSubNavImpl: FC<Props> = memo(props => {
         );
     }, [inProjectContainer, projectsEnabled, user.isAdmin]);
 
-    return <SubNav tabs={tabs} noun={parentTab} />;
+    return <SubNav tabs={tabs} noun={parentTab} showLKVersion={true} />;
 });
 
 export const AdministrationSubNavWrapper: FC<WithRouterProps> = memo(props => {

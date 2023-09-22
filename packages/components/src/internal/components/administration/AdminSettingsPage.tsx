@@ -64,17 +64,17 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
         createNotification('Successfully updated BarTender configuration.');
     }, [createNotification, dismissNotifications, setIsDirty]);
 
-    const lkVersion = useCallback(() => {
-        return (
-            <span
-                className={classNames('gray-text', 'admin-settings-version', {
-                    'margin-right': !showPremiumFeatures(moduleContext),
-                })}
-            >
-                Version: {getServerContext().versionString}
-            </span>
-        );
-    }, [moduleContext]);
+    // const lkVersion = useCallback(() => {
+    //     return (
+    //         <span
+    //             className={classNames('gray-text', 'admin-settings-version', {
+    //                 'margin-right': !showPremiumFeatures(moduleContext),
+    //             })}
+    //         >
+    //             Version: {getServerContext().versionString}
+    //         </span>
+    //     );
+    // }, [moduleContext]);
 
     if (!homeProjectContainer.isLoaded) return <LoadingPage title="Application Settings" />;
 
@@ -89,7 +89,6 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
                 title="Application Settings"
                 description={undefined}
                 hasPermission={homeProjectContainer.user.isAdmin}
-                renderButtons={lkVersion}
             >
                 <ActiveUserLimit user={homeProjectContainer.user} container={homeProjectContainer.container} />
                 <ProjectLookAndFeelForm

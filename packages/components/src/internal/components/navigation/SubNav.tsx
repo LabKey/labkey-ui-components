@@ -24,15 +24,18 @@ import { hasPremiumModule, hasProductProjects } from '../../app/utils';
 import NavItem, { ParentNavItem } from './NavItem';
 import { ITab, SubNavGlobalContext } from './types';
 import { useSubNavContext } from './hooks';
+import {getServerContext} from "@labkey/api";
 
 interface Props {
     noun?: ITab;
     tabs: List<ITab>;
+    showLKVersion?: boolean;
 }
 
-export const SubNav: FC<Props> = ({ noun, tabs }) => {
+export const SubNav: FC<Props> = ({ noun, tabs, showLKVersion }) => {
     const scrollable = useRef<HTMLDivElement>();
     const { container, moduleContext } = useServerContext();
+    const { versionString } = getServerContext();
     const showCurrentContainer = hasPremiumModule(moduleContext) && !hasProductProjects(moduleContext);
     const [isScrollable, setIsScrollable] = useState<boolean>(false);
     const scroll = useCallback(offset => {
@@ -120,6 +123,14 @@ export const SubNav: FC<Props> = ({ noun, tabs }) => {
                         <span className="fa fa-folder-open" />
                         <span className="container-nav__name" title={container.name}>
                             {container.name}
+                        </span>
+                    </div>
+                )}
+
+                {showLKVersion && (
+                    <div className="lk-version-nav">
+                        <span className="lk-version-nav__label" title={versionString}>
+                            Version: {versionString}
                         </span>
                     </div>
                 )}

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/eslint-config-base",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "shareable eslint config for typescript",
   "main": "index.js",
   "files": [
@@ -11,18 +11,18 @@
     "type": "git",
     "url": "git+https://github.com/LabKey/labkey-ui-components.git"
   },
-  "author": "kevink@labkey.com",
+  "author": "LabKey",
   "license": "Apache-2.0",
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "5.27.0",
-    "@typescript-eslint/parser": "5.27.0",
-    "eslint": "8.16.0",
-    "eslint-config-prettier": "8.5.0",
-    "eslint-plugin-import": "2.26.0",
-    "eslint-plugin-jest": "26.4.6",
-    "eslint-plugin-only-warn": "1.0.3",
-    "eslint-plugin-prettier": "4.0.0",
-    "eslint-plugin-typescript-sort-keys": "2.1.0",
-    "prettier": "2.6.2"
+    "@typescript-eslint/eslint-plugin": "6.7.2",
+    "@typescript-eslint/parser": "6.7.2",
+    "eslint": "8.49.0",
+    "eslint-config-prettier": "9.0.0",
+    "eslint-plugin-import": "2.28.1",
+    "eslint-plugin-jest": "27.4.0",
+    "eslint-plugin-only-warn": "1.1.0",
+    "eslint-plugin-prettier": "5.0.0",
+    "eslint-plugin-typescript-sort-keys": "3.0.0",
+    "prettier": "3.0.3"
   }
 }

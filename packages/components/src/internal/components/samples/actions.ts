@@ -437,7 +437,7 @@ export function getSampleAliquotRows(sampleId: number | string): Promise<Array<R
             sql:
                 'SELECT m.RowId, m.Name\n' +
                 'FROM exp.materials m \n' +
-                'WHERE m.RootMaterialLSID = (SELECT lsid FROM exp.materials mi WHERE mi.RowId = ' +
+                'WHERE m.lsid <> m.RootMaterialLSID AND m.RootMaterialLSID = (SELECT lsid FROM exp.materials mi WHERE mi.RowId = ' +
                 sampleId +
                 ')',
             schemaName: SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
@@ -699,7 +699,7 @@ export function hasExistingSamples(isRoot?: boolean, containerPath?: string): Pr
         'FROM materials m WHERE EXISTS ' +
         '\n' +
         '( SELECT * FROM materials mi WHERE mi.rowId = m.rowId';
-    if (isRoot) dataCountSql += ' AND mi.rootMaterialLSID IS NULL';
+    if (isRoot) dataCountSql += ' AND mi.rootMaterialLSID = mi.lsid';
     dataCountSql += ')';
 
     return new Promise((resolve, reject) => {

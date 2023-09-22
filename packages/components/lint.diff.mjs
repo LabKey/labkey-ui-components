@@ -10,7 +10,7 @@ const repoPath = 'packages/components/';
 let lintPath = 'src/';
 
 // Default lint target (--fix changes to lint-fix)
-let yarnTarget = 'lint';
+let npmTarget = 'lint';
 
 let currentBranch = false;
 
@@ -23,7 +23,7 @@ if (process.argv.length > 2) {
     for (let i=2; i<process.argv.length; i++) {
         switch(process.argv[i]) {
             case '--fix':
-                yarnTarget = 'lint-fix';
+                npmTarget = 'lint-fix';
                 break;
             case '--currentBranch':
                 currentBranch = true;
@@ -91,7 +91,7 @@ if (process.argv.length > 2) {
             const param = "\"" + filtered.join("\" \"") + "\"";
 
             try {
-                await execa('yarn', ['run', yarnTarget, param], {shell: true}).stdout.pipe(process.stdout);
+                await execa('npm', ['run', npmTarget, param], {shell: true}).stdout.pipe(process.stdout);
             }
             catch (error) {
                 console.error("Lint error: ", error);

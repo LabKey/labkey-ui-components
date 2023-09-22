@@ -1,3 +1,7 @@
+## 0.0.13 - 2023-09-21
+- Package updates
+- Disable usage of `jest` and `typescript-sort-keys` plugins
+
 ## 0.0.12 - 2022-06-06
 - Package updates
 * Add `eslint-plugin-typescript-sort-keys` dependency and add to default plugins

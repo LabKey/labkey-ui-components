@@ -6,6 +6,18 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Projects Administration Improvements
     - TODO
 
+### version 2.370.0
+*Released*: 21 September 2023
+- Package updates
+- Remove `yarn.lock` and introduce `package-lock.json`
+- Update scripts to refer to use `npm`
+- Update documentation to refer to `npm` instead of `yarn`. Rewrite portions that describe versioning process steps.
+- Update lint process to use `npm`
+
+### version 2.369.2
+*Released*: 21 September 2023
+- Sample type RootMaterialLSID refactoring
+
 ### version 2.369.1
 *Released*: 21 September 2023
 - Remove “Plate Metadata” field in Assay Import Wizard

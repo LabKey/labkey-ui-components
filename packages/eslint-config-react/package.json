@@ -1,6 +1,6 @@
 {
   "name": "@labkey/eslint-config-react",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "shareable eslint config for typescript and react",
   "main": "index.js",
   "files": [
@@ -10,11 +10,11 @@
     "type": "git",
     "url": "git+https://github.com/LabKey/labkey-ui-components.git"
   },
-  "author": "kevink@labkey.com",
+  "author": "LabKey",
   "license": "Apache-2.0",
   "dependencies": {
-    "@labkey/eslint-config-base": "0.0.12",
-    "eslint-plugin-react": "7.30.0",
-    "eslint-plugin-react-hooks": "4.5.0"
+    "@labkey/eslint-config-base": "0.0.13",
+    "eslint-plugin-react": "7.33.2",
+    "eslint-plugin-react-hooks": "4.6.0"
   }
 }

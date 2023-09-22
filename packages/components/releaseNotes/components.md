@@ -4,7 +4,22 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.X
 *Released*: X September 2023
 - Projects Administration Improvements
-    - TODO
+   - Changed UserMenu to UserMenuGroup: split user items to into help, admin and user sections.
+   - Admin page header and navbar updates
+     - updated style, removed notification and search, removed folder menu, updated subnav
+   - Added WithDirtyCheckLink and VerticalScrollPanel component to support side by side panels
+   - AdminSettingsPage updates
+     - Removed project level settings: name/label, data type exclusion, freezer exclusion
+     - Add support for viewing/updating Home level application setting from child project
+   - ProjectManagementPage updates
+     - Added ProjectListing component and related utils to support project selection
+     - Allow cross folder project setting view/update
+     - Support project settings as well as certain application setting folder override
+   - PermissionManagementPage updates
+     - Removed BasePermission
+     - Updated ProjectManagementPage from grid to side to side project/setting layout and support cross folder view/update
+     - Support ApplicationAdminPermission update on the same panel with project level permissions.
+   - Moved ProtectedDataSettingsPanel and RequestsSettignsPanel from Biologics to components
 
 ### version 2.370.0
 *Released*: 21 September 2023

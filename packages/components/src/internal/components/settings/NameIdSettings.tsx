@@ -260,12 +260,23 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                 });
             setIsDirty(false);
         } catch (error) {
-            setState({
-                error,
-                confirmCounterModalOpen: false,
-            });
+            if (isRoot) {
+                setState({
+                    error,
+                    confirmCounterModalOpen: false,
+                    newRootSampleCount: rootSampleCount,
+                });
+            }
+            else {
+                setState({
+                    error,
+                    confirmCounterModalOpen: false,
+                    newSampleCount: sampleCount,
+                });
+            }
+
         }
-    }, [isRoot, isReset, newRootSampleCount, newSampleCount, setIsDirty]);
+    }, [isRoot, isReset, newRootSampleCount, newSampleCount, setIsDirty, rootSampleCount, sampleCount]);
 
     return (
         <div className="name-id-settings-panel panel panel-default">

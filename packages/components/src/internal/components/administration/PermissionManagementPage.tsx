@@ -25,13 +25,14 @@ import { InjectedPermissionsPage, withPermissionsPage } from '../permissions/wit
 import { useAdminAppContext } from './useAdminAppContext';
 import { APPLICATION_SECURITY_ROLES, HOSTED_APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from './constants';
 import { showPremiumFeatures } from './utils';
+import {getUpdatedPolicyRoles} from "./actions";
 
 // exported for testing
 export type Props = InjectedRouteLeaveProps & InjectedPermissionsPage & WithRouterProps;
 
 // exported for testing
 export const PermissionManagementPageImpl: FC<Props> = memo(props => {
-    const { children } = props;
+    const { children, roles } = props;
 
     const [policyLastModified, setPolicyLastModified] = useState<string>(undefined);
     const [hidePageDescription, setHidePageDescription] = useState<boolean>(false);
@@ -60,11 +61,17 @@ export const PermissionManagementPageImpl: FC<Props> = memo(props => {
         );
     }, [policyLastModified]);
 
-    const rolesToShow = useMemo(() => {
+    const {updatedRoles, rolesToShow } = useMemo(() => {
         let roles_ = showPremium ? APPLICATION_SECURITY_ROLES : HOSTED_APPLICATION_SECURITY_ROLES;
         roles_ = roles_.merge(Map<string, string>(extraPermissionRoles));
-        return roles_.keySeq().toList();
-    }, [extraPermissionRoles, showPremium]);
+        let updatedRoles = roles_;
+        if (!showPremium)
+            updatedRoles = updatedRoles.merge(SITE_SECURITY_ROLES);
+        return {
+            updatedRoles: getUpdatedPolicyRoles(roles, updatedRoles),
+            rolesToShow: roles_.keySeq().toList(),
+        };
+    }, [extraPermissionRoles, showPremium, roles]);
 
     const setProjectCount = useCallback((projectCount: number) => {
         setHidePageDescription(projectCount > 1);
@@ -81,6 +88,7 @@ export const PermissionManagementPageImpl: FC<Props> = memo(props => {
             {showAssignments && (
                 <PermissionAssignments
                     {...props}
+                    roles={updatedRoles}
                     rolesToShow={rolesToShow}
                     onSuccess={onSuccess}
                     setLastModified={setPolicyLastModified}

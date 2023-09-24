@@ -20,6 +20,7 @@ Components, models, actions, and utility functions for LabKey applications and p
      - Updated ProjectManagementPage from grid to side to side project/setting layout and support cross folder view/update
      - Support ApplicationAdminPermission update on the same panel with project level permissions.
    - Moved ProtectedDataSettingsPanel and RequestsSettignsPanel from Biologics to components
+- Issue 48623: LKSM: revert to initial sampleCount or rootSampleCount when updating fails
 
 ### version 2.370.0
 *Released*: 21 September 2023

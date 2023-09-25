@@ -22,7 +22,7 @@ interface Props {
     fieldValueRenderer?: (label, value, displayValue) => any;
     gridColumnRenderer?: (data: any, row: any, displayValue: any) => any;
     gridData?: List<Map<string, any>>;
-    rowId: number;
+    rowId?: number;
     summary?: string;
     title?: string;
     user: User;

@@ -27,7 +27,7 @@ export const UserLink: FC<UserLinkProps> = props => {
     useEffect(() => {
         (async () => {
             try {
-                if (!!userId && userDisplayValue === undefined) {
+                if (userId > 0 && userDisplayValue === undefined) {
                     const targetUser = await api.security.getUserPropertiesForOther(userId);
                     setTargetUserDisplayValue(caseInsensitive(targetUser, 'DisplayName'));
                 } else {

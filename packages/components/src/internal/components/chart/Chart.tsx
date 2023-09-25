@@ -161,6 +161,37 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters }) => 
 });
 SVGChart.displayName = 'SVGChart';
 
+interface RReportData {
+    fileAnchors: Array<{
+        href: string;
+        text: string;
+    }>;
+    imageUrls: string[];
+}
+function parseRReportHtml(html: string): RReportData {
+    let _fileAnchors;
+    let _imageUrls;
+    if (html !== undefined) {
+        // The HTML returned by our server includes a bunch of stuff we don't want. So instead of inserting it
+        // directly we'll just grab the URLs for all the images named "resultImage", which are the outputs from an
+        // R Report.
+        const el = document.createElement('div');
+        el.innerHTML = html;
+        const resultAnchors = el.querySelectorAll('a[href*="reports-streamFile.view"]');
+        _fileAnchors = Array.from(resultAnchors).map((anchor: HTMLAnchorElement) => ({
+            href: anchor.href,
+            text: anchor.innerText,
+        }));
+        const resultImages = el.querySelectorAll('img[name="resultImage"]');
+        _imageUrls = Array.from(resultImages).map((img: HTMLImageElement) => img.src);
+    }
+
+    return {
+        fileAnchors: _fileAnchors?.length > 0 ? _fileAnchors : undefined,
+        imageUrls: _imageUrls?.length > 0 ? _imageUrls : undefined,
+    };
+}
+
 const RReport: FC<Props> = memo(({ api, chart, container, filters, urlPrefix }) => {
     const { error, reportId } = chart;
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
@@ -182,19 +213,7 @@ const RReport: FC<Props> = memo(({ api, chart, container, filters, urlPrefix }) 
         // We purposely don't use filters as a dep, see note in computeFilterKey
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [api, reportId, filterKey]);
-    const imageUrls = useMemo(() => {
-        if (reportHtml !== undefined) {
-            // The HTML returned by our server includes a bunch of stuff we don't want. So instead of inserting it
-            // directly we'll just grab the URLs for all the images named "resultImage", which are the outputs from an
-            // R Report.
-            const el = document.createElement('div');
-            el.innerHTML = reportHtml;
-            const resultImages = el.querySelectorAll('img[name="resultImage"]');
-            return Array.from(resultImages).map((img: HTMLImageElement) => img.src);
-        }
-
-        return undefined;
-    }, [reportHtml]);
+    const { fileAnchors, imageUrls } = useMemo(() => parseRReportHtml(reportHtml), [reportHtml]);
 
     useEffect(() => {
         if (error) {
@@ -205,24 +224,47 @@ const RReport: FC<Props> = memo(({ api, chart, container, filters, urlPrefix }) 
         }
     }, [error, loadReport]);
 
+    const isEmpty =
+        loadingState === LoadingState.LOADED &&
+        error === undefined &&
+        fileAnchors === undefined &&
+        imageUrls === undefined;
+
     return (
         <div className="r-report chart-body">
             {error !== undefined && <span className="text-danger">{error}</span>}
             {loadError !== undefined && <span className="text-danger">{loadError}</span>}
             {isLoading(loadingState) && <ChartLoadingMask />}
+            {fileAnchors !== undefined && (
+                <div className="r-report__files">
+                    {fileAnchors.map(({ href, text }) => {
+                        return (
+                            <a className="attachment-card" href={href} key={href} title={text}>
+                                <div className="attachment-card__body">
+                                    <div className="attachment-card__icon">
+                                        <span className="attachment-card__icon_tile fa fa-file-text-o" />
+                                    </div>
+                                    <div className="attachment-card__content">
+                                        <div className="attachment-card__name">{text}</div>
+                                    </div>
+                                </div>
+                            </a>
+                        );
+                    })}
+                </div>
+            )}
             {imageUrls !== undefined && (
                 <div className="r-report__images">
-                    {imageUrls?.map(url => (
+                    {imageUrls.map(url => (
                         <div key={url} className="r-report__image">
                             <img alt="R Report Image Output" src={url} />
                         </div>
                     ))}
-                    {imageUrls?.length === 0 && (
-                        <div className="error-msg">
-                            No output detected, you may not have enough data, or there may be an issue with your R
-                            Report
-                        </div>
-                    )}
+                </div>
+            )}
+            {isEmpty && (
+                <div className="r-report__errors error-msg">
+                    No output detected, you may not have enough data, or there may be an issue with your R Report
                 </div>
             )}
         </div>

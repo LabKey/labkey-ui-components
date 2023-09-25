@@ -445,7 +445,7 @@ export async function getProjectConfigurableEntityTypeOptions(
                     description: caseInsensitive(row, 'Description').value,
                     type: entityDataType.projectConfigurableDataType as ProjectConfigurableDataType,
                     lsid: caseInsensitive(row, 'LSID').value,
-                } as DataTypeEntity)
+                }) as DataTypeEntity
         )
         .sort(naturalSortByProperty('label'));
 

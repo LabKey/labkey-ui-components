@@ -17,6 +17,8 @@ import React, { FC, useRef, useState, useCallback, useEffect, memo } from 'react
 import { List } from 'immutable';
 import { Button } from 'react-bootstrap';
 
+import { getServerContext } from '@labkey/api';
+
 import { useServerContext } from '../base/ServerContext';
 
 import { hasPremiumModule, hasProductProjects } from '../../app/utils';
@@ -24,7 +26,6 @@ import { hasPremiumModule, hasProductProjects } from '../../app/utils';
 import NavItem, { ParentNavItem } from './NavItem';
 import { ITab, SubNavGlobalContext } from './types';
 import { useSubNavContext } from './hooks';
-import {getServerContext} from "@labkey/api";
 
 interface Props {
     noun?: ITab;

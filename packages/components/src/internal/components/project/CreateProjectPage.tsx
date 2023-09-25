@@ -12,12 +12,7 @@ import { useNotificationsContext } from '../notifications/NotificationsContext';
 import { Container } from '../base/models/Container';
 import { AppURL } from '../../url/AppURL';
 
-import {
-    getAppHomeFolderPath,
-    getCurrentAppProperties,
-    hasProductProjects,
-    setProductProjects
-} from '../../app/utils';
+import { getAppHomeFolderPath, getCurrentAppProperties, hasProductProjects, setProductProjects } from '../../app/utils';
 
 import { useFolderMenuContext } from '../navigation/hooks';
 

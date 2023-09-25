@@ -80,25 +80,20 @@ export const ProjectManagementPageImpl: FC<InjectedRouteLeaveProps> = memo(props
     }, []);
 
     const renderButtons = useMemo(
-        () => () =>
-            (
-                <>
-                    <Button
-                        bsStyle="success"
-                        className="button-right-spacing"
-                        href={AppURL.create('admin', 'projects', 'new').toHref()}
-                    >
-                        Create a Project
-                    </Button>
-                    <a
-                        href={AppURL.create(AUDIT_KEY)
-                            .addParam(AUDIT_EVENT_TYPE_PARAM, PROJECT_AUDIT_QUERY.value)
-                            .toHref()}
-                    >
-                        View Audit History
-                    </a>
-                </>
-            ),
+        () => () => (
+            <>
+                <Button
+                    bsStyle="success"
+                    className="button-right-spacing"
+                    href={AppURL.create('admin', 'projects', 'new').toHref()}
+                >
+                    Create a Project
+                </Button>
+                <a href={AppURL.create(AUDIT_KEY).addParam(AUDIT_EVENT_TYPE_PARAM, PROJECT_AUDIT_QUERY.value).toHref()}>
+                    View Audit History
+                </a>
+            </>
+        ),
         []
     );
 

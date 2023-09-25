@@ -327,7 +327,6 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                 setSaveErrorMsg(resolveErrorMessage(e) ?? 'Failed to inherit policy');
                 setSubmitting(false);
             }
-
         } else {
             // Policy has been switched to un-inherited. Update policy assignments.
             const uninherited = !inherited && wasInherited;

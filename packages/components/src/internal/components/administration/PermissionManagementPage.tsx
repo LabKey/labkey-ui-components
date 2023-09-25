@@ -23,7 +23,7 @@ import { InjectedPermissionsPage, withPermissionsPage } from '../permissions/wit
 import { useAdminAppContext } from './useAdminAppContext';
 import { APPLICATION_SECURITY_ROLES, HOSTED_APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from './constants';
 import { showPremiumFeatures } from './utils';
-import {getUpdatedPolicyRoles} from "./actions";
+import { getUpdatedPolicyRoles } from './actions';
 
 // exported for testing
 export type Props = InjectedRouteLeaveProps & InjectedPermissionsPage & WithRouterProps;
@@ -59,12 +59,11 @@ export const PermissionManagementPageImpl: FC<Props> = memo(props => {
         );
     }, [policyLastModified]);
 
-    const {updatedRoles, rolesToShow } = useMemo(() => {
+    const { updatedRoles, rolesToShow } = useMemo(() => {
         let roles_ = showPremium ? APPLICATION_SECURITY_ROLES : HOSTED_APPLICATION_SECURITY_ROLES;
         roles_ = roles_.merge(Map<string, string>(extraPermissionRoles));
         let updatedRoles = roles_;
-        if (!showPremium)
-            updatedRoles = updatedRoles.merge(SITE_SECURITY_ROLES);
+        if (!showPremium) updatedRoles = updatedRoles.merge(SITE_SECURITY_ROLES);
         return {
             updatedRoles: getUpdatedPolicyRoles(roles, updatedRoles),
             rolesToShow: roles_.keySeq().toList(),

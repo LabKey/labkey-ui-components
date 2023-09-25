@@ -13,7 +13,7 @@ import { AUDIT_KEY } from '../../app/constants';
 import { isProjectContainer, isProductProjectsEnabled, isAppHomeFolder } from '../../app/utils';
 import { useContainerUser } from '../container/actions';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import {ITab} from "../navigation/types";
+import { ITab } from '../navigation/types';
 
 interface Props {
     appHomeUser: User;

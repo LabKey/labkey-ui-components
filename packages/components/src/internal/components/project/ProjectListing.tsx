@@ -18,7 +18,8 @@ interface Props {
 }
 
 export const ProjectListing: FC<Props> = memo(props => {
-    const { homeFolderPath, projects, selectedProject, inheritedProjects, setSelectedProject, getIsDirty, setIsDirty } = props;
+    const { homeFolderPath, projects, selectedProject, inheritedProjects, setSelectedProject, getIsDirty, setIsDirty } =
+        props;
 
     const dividerInd = inheritedProjects?.length > 0 ? inheritedProjects.length + 1 : -1;
     return (
@@ -28,8 +29,7 @@ export const ProjectListing: FC<Props> = memo(props => {
                 {projects?.map((project, ind) => {
                     const showInherited = inheritedProjects?.indexOf(project.name) > -1;
                     let projectTitle = project.path === homeFolderPath ? 'Application' : project.title;
-                    if (!projectTitle)
-                        projectTitle = project.name;
+                    if (!projectTitle) projectTitle = project.name;
                     return (
                         <>
                             {ind === dividerInd && (

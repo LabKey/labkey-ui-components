@@ -152,7 +152,7 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
                 depth: 1,
             })
                 .then(containers => {
-                    let projects = containers
+                    const projects = containers
                         // if user doesn't have permissions to the parent/project, the response will come back with an empty Container object
                         .filter(c => c !== undefined && c.id !== '');
 
@@ -162,8 +162,7 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
 
                     if (!includeTopFolder) {
                         resolve(childProjects);
-                    }
-                    else {
+                    } else {
                         const top = projects.find(c => c.path === topFolderPath);
                         const allProject = top ? [top] : [];
                         allProject.push(...childProjects);

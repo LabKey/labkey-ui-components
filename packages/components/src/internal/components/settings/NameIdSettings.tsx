@@ -266,15 +266,13 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                     confirmCounterModalOpen: false,
                     newRootSampleCount: rootSampleCount,
                 });
-            }
-            else {
+            } else {
                 setState({
                     error,
                     confirmCounterModalOpen: false,
                     newSampleCount: sampleCount,
                 });
             }
-
         }
     }, [isRoot, isReset, newRootSampleCount, newSampleCount, setIsDirty, rootSampleCount, sampleCount]);
 

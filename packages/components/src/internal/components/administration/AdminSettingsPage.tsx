@@ -8,7 +8,8 @@ import { ActiveUserLimit } from '../settings/ActiveUserLimit';
 import { NameIdSettings } from '../settings/NameIdSettings';
 import { ManageSampleStatusesPanel } from '../samples/ManageSampleStatusesPanel';
 import {
-    biologicsIsPrimaryApp, getAppHomeFolderPath,
+    biologicsIsPrimaryApp,
+    getAppHomeFolderPath,
     hasModule,
     isELNEnabled,
     isProtectedDataEnabled,

@@ -109,6 +109,7 @@ const AuditQueriesListingPageImpl: FC<InjectedQueryModels & OwnProps> = memo(pro
                 const auditEventType = value === SOURCE_AUDIT_QUERY.value ? DATA_UPDATE_AUDIT_QUERY.value : value;
                 const detail_ = await getAuditDetail(lastSelectedId, auditEventType);
                 setDetail(detail_.merge({ rowId: lastSelectedId }) as AuditDetailsModel);
+                setError(undefined);
             } catch (e) {
                 setError(resolveErrorMessage(e) ?? 'Failed to load audit details');
             }
@@ -163,17 +164,16 @@ const AuditQueriesListingPageImpl: FC<InjectedQueryModels & OwnProps> = memo(pro
                         <GridPanel actions={actions} highlightLastSelectedRow model={model} />
                     </Col>
                     <Col xs={12} md={4}>
-                        {error && <Alert>{error}</Alert>}
-                        {selectedRowId && !detail && !error && <LoadingSpinner />}
-                        {!error && (
-                            <AuditDetails
-                                changeDetails={detail}
-                                gridData={gridData}
-                                rowId={selectedRowId}
-                                summary={detail?.comment}
-                                user={user}
-                            />
-                        )}
+                        <AuditDetails
+                            changeDetails={detail}
+                            gridData={gridData}
+                            rowId={selectedRowId}
+                            summary={detail?.comment}
+                            user={user}
+                        >
+                            {error && <Alert>{error}</Alert>}
+                            {!!selectedRowId && !detail && !error && <LoadingSpinner />}
+                        </AuditDetails>
                     </Col>
                 </Row>
             )}

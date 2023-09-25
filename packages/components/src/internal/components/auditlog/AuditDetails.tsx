@@ -38,29 +38,6 @@ export class AuditDetails extends Component<Props> {
         return ['created by', 'createdby', 'modified by', 'modifiedby'].indexOf(field.toLowerCase()) > -1;
     }
 
-    renderUpdateValue = (oldVal: string, newVal: string): ReactNode => {
-        const changed = oldVal !== newVal;
-        const oldDisplay = <span className="display-light old-audit-value right-spacing">{oldVal}</span>;
-
-        if (!changed) return oldDisplay;
-
-        return (
-            <>
-                {oldDisplay}
-                <i className="fa fa-long-arrow-right right-spacing" />
-                <span className="new-audit-value">{newVal}</span>
-            </>
-        );
-    };
-
-    renderInsertValue(oldVal: string, newVal: string) {
-        return <span className="new-audit-value">{newVal}</span>;
-    }
-
-    renderDeleteValue(oldVal: string, newVal: string) {
-        return <span className="display-light old-audit-value">{oldVal}</span>;
-    }
-
     getValueDisplay = (field: string, value: string): any => {
         const { fieldValueRenderer } = this.props;
 
@@ -76,15 +53,14 @@ export class AuditDetails extends Component<Props> {
         return displayVal;
     };
 
-    renderRow(field: string, oldVal: string, newVal: string, isUpdate: boolean, isInsert: boolean) {
+    renderRow(field: string, oldVal: string, newVal: string, isUpdate: boolean, isInsert: boolean): ReactNode {
         const { user } = this.props;
 
-        let valueRenderer;
-        if (isUpdate) valueRenderer = this.renderUpdateValue;
-        else if (isInsert) valueRenderer = this.renderInsertValue;
-        else valueRenderer = this.renderDeleteValue;
-
         if (!user.isSignedIn && AuditDetails.isUserFieldLabel(field)) return null;
+
+        const oldValue = this.getValueDisplay(field, oldVal);
+        const newValue = this.getValueDisplay(field, newVal);
+        const changed = oldValue !== newValue;
 
         return (
             <Row className="margin-bottom" key={field}>
@@ -92,7 +68,18 @@ export class AuditDetails extends Component<Props> {
                     <span className="audit-detail-row-label right-spacing">{capitalizeFirstChar(field)}</span>
                 </Col>
                 <Col className="left-spacing right-spacing">
-                    {valueRenderer(this.getValueDisplay(field, oldVal), this.getValueDisplay(field, newVal))}
+                    {isInsert && <span className="new-audit-value">{newValue}</span>}
+                    {isUpdate && changed && (
+                        <>
+                            <span className="display-light old-audit-value right-spacing">{oldValue}</span>
+                            <i className="fa fa-long-arrow-right right-spacing" />
+                            <span className="new-audit-value">{newValue}</span>
+                        </>
+                    )}
+                    {isUpdate && !changed && (
+                        <span className="display-light old-audit-value right-spacing">{oldValue}</span>
+                    )}
+                    {!isInsert && !isUpdate && <span className="display-light old-audit-value">{oldValue}</span>}
                 </Col>
             </Row>
         );
@@ -164,33 +151,27 @@ export class AuditDetails extends Component<Props> {
         ]);
     };
 
-    renderBody() {
-        const { gridData, changeDetails, rowId, summary, emptyMsg } = this.props;
-
-        if (!rowId) {
-            return <div>{emptyMsg}</div>;
-        }
-
-        return (
-            <>
-                {summary && (
-                    <Row className="margin-bottom display-light">
-                        <Col xs={12}>{summary}</Col>
-                    </Row>
-                )}
-                {gridData && <Grid data={gridData} columns={this.getGridColumns()} showHeader={false} />}
-                {changeDetails && this.renderChanges()}
-            </>
-        );
-    }
-
     render() {
-        const { title } = this.props;
+        const { changeDetails, children, emptyMsg, gridData, rowId, summary, title } = this.props;
 
         return (
             <div className="panel panel-default">
                 <div className="panel-heading">{title}</div>
-                <div className="panel-body">{this.renderBody()}</div>
+                <div className="panel-body">
+                    {children}
+                    {!rowId && <div>{emptyMsg}</div>}
+                    {!!rowId && (
+                        <>
+                            {summary && (
+                                <Row className="margin-bottom display-light">
+                                    <Col xs={12}>{summary}</Col>
+                                </Row>
+                            )}
+                            {gridData && <Grid data={gridData} columns={this.getGridColumns()} showHeader={false} />}
+                            {changeDetails && this.renderChanges()}
+                        </>
+                    )}
+                </div>
             </div>
         );
     }

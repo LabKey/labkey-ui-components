@@ -5,7 +5,7 @@
 import React, { FC, PureComponent, ReactNode } from 'react';
 import { fromJS, List, Map } from 'immutable';
 import { Col, Row } from 'react-bootstrap';
-import { Query } from '@labkey/api';
+import { Filter, getServerContext } from '@labkey/api';
 
 import { WithRouterProps } from 'react-router';
 
@@ -29,7 +29,14 @@ import { getAuditQueries } from './utils';
 import { getAuditDetail } from './actions';
 import { AuditDetailsModel } from './models';
 import { AuditDetails } from './AuditDetails';
-import { AuditQuery, AUDIT_EVENT_TYPE_PARAM, SAMPLE_TIMELINE_AUDIT_QUERY } from './constants';
+import {
+    AuditQuery,
+    AUDIT_EVENT_TYPE_PARAM,
+    SAMPLE_TIMELINE_AUDIT_QUERY,
+    SOURCE_AUDIT_QUERY,
+    DATA_UPDATE_AUDIT_QUERY,
+    PROJECT_AUDIT_QUERY,
+} from './constants';
 
 interface BodyProps {
     moduleContext: ModuleContext;
@@ -51,9 +58,9 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
         super(props);
 
         this.state = {
+            auditQueries: getAuditQueries(props.moduleContext),
             selected: props.location.query?.eventType ?? SAMPLE_TIMELINE_AUDIT_QUERY.value,
             selectedRowId: undefined,
-            auditQueries: getAuditQueries(props.moduleContext),
         };
     }
 
@@ -82,7 +89,7 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
             }
         });
         replaceParameters(location, paramUpdates);
-        this.setState(() => ({ selected, selectedRowId: undefined }));
+        this.setState({ selected, selectedRowId: undefined });
     };
 
     setLastSelectedId = async (): Promise<void> => {
@@ -99,40 +106,36 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
 
     getLastSelectedId = (): number => {
         const model = this.getQueryModel();
+        if (!model) return undefined;
         const selectedIds = model.selections;
-        return selectedIds.size > 0 ? parseInt(Array.from(selectedIds).pop()) : undefined;
+        return selectedIds.size > 0 ? parseInt(Array.from(selectedIds).pop(), 10) : undefined;
     };
 
     updateSelectedRowId = (selectedRowId: number): void => {
         const { selected } = this.state;
+        if (this.state.selectedRowId === selectedRowId) return;
 
-        if (this.state.selectedRowId !== selectedRowId) {
-            this.setState({ selectedRowId, detail: undefined }, async () => {
-                if (selectedRowId) {
-                    try {
-                        const auditEventType = selected === 'sourcesauditevent' ? 'queryupdateauditevent' : selected;
-                        const detail = await getAuditDetail(selectedRowId, auditEventType);
+        this.setState({ selectedRowId, detail: undefined }, async () => {
+            if (selectedRowId) {
+                try {
+                    const auditEventType =
+                        selected === SOURCE_AUDIT_QUERY.value ? DATA_UPDATE_AUDIT_QUERY.value : selected;
+                    const detail = await getAuditDetail(selectedRowId, auditEventType);
 
-                        this.setState({
-                            detail: detail.merge({ rowId: selectedRowId }) as AuditDetailsModel,
-                        });
-                    } catch (error) {
-                        console.error(error);
-                        this.setState({ error });
-                    }
+                    this.setState({
+                        detail: detail.merge({ rowId: selectedRowId }) as AuditDetailsModel,
+                    });
+                } catch (error) {
+                    this.setState({ error });
                 }
-            });
-        }
+            }
+        });
     };
 
     get selectedQuery(): AuditQuery {
-        const { auditQueries } = this.state;
-
-        return auditQueries.find(q => q.value === this.state.selected);
-    }
-
-    get containerFilter(): Query.ContainerFilter {
-        return this.selectedQuery?.containerFilter;
+        const { auditQueries, selected } = this.state;
+        if (!selected) return undefined;
+        return auditQueries.find(q => q.value === selected);
     }
 
     hasDetailView(): boolean {
@@ -140,25 +143,28 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
     }
 
     getQueryModel = (): QueryModel => {
-        const { selected } = this.state;
-        if (!selected) {
-            return null;
-        }
-
         const { queryModels, actions } = this.props;
-        const id = 'audit-log-querymodel-' + selected;
+        const { selected } = this.state;
+        if (!selected) return undefined;
 
-        // only bind first model to URL so that it can pick up any filters passed from the caller
-        const isFirstModel = Object.keys(queryModels).length === 0;
+        const id = `audit-log-querymodel-${selected}`;
 
         if (!queryModels[id]) {
+            // Issue 47512: App audit log filters out container events for deleted containers
+            const baseFilters: Filter.IFilter[] = [];
+            if (PROJECT_AUDIT_QUERY.value === selected) {
+                baseFilters.push(Filter.create('projectId', getServerContext().project.id));
+            }
+
             actions.addModel(
                 {
+                    baseFilters,
+                    // only bind first model to URL so that it can pick up any filters passed from the caller
+                    bindURL: Object.keys(queryModels).length === 0,
+                    containerFilter: this.selectedQuery?.containerFilter,
                     id,
-                    schemaQuery: new SchemaQuery(SCHEMAS.AUDIT_TABLES.SCHEMA, selected),
-                    containerFilter: this.containerFilter,
-                    bindURL: isFirstModel,
                     includeTotalCount: true,
+                    schemaQuery: new SchemaQuery(SCHEMAS.AUDIT_TABLES.SCHEMA, selected),
                     useSavedSettings: true,
                 },
                 true,
@@ -167,60 +173,6 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
         }
 
         return queryModels[id];
-    };
-
-    renderSingleGrid = (): ReactNode => {
-        const { selected } = this.state;
-        if (!selected) {
-            return null;
-        }
-
-        const model = this.getQueryModel();
-        if (!model) return null;
-
-        return <GridPanel model={model} actions={this.props.actions} />;
-    };
-
-    renderDetailsPanel = (): ReactNode => {
-        const { user } = this.props;
-        const { detail, error, selectedRowId } = this.state;
-
-        if (error) {
-            return <Alert bsStyle="danger">{error}</Alert>;
-        }
-
-        if (selectedRowId && !detail) return <LoadingSpinner />;
-
-        return (
-            <AuditDetails
-                rowId={selectedRowId}
-                user={user}
-                summary={detail ? detail.comment : undefined}
-                gridData={this.getDetailsGridData()}
-                changeDetails={detail}
-            />
-        );
-    };
-
-    renderMasterDetailGrid = (): ReactNode => {
-        const { selected } = this.state;
-        if (!selected) {
-            return null;
-        }
-
-        const model = this.getQueryModel();
-        if (!model) return null;
-
-        return (
-            <Row>
-                <Col xs={12} md={8}>
-                    <GridPanel actions={this.props.actions} model={model} highlightLastSelectedRow={true} />
-                </Col>
-                <Col xs={12} md={4}>
-                    {this.renderDetailsPanel()}
-                </Col>
-            </Row>
-        );
     };
 
     getDetailsGridData = (): List<Map<string, any>> => {
@@ -247,21 +199,44 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
 
     render = (): ReactNode => {
         const title = 'Audit Logs';
-        const { auditQueries } = this.state;
+        const { actions, user } = this.props;
+        const { auditQueries, detail, error, selected, selectedRowId } = this.state;
+        const hasDetailView = this.hasDetailView();
+        const model = this.getQueryModel();
 
         return (
-            <Page title={title} hasHeader={true}>
+            <Page hasHeader title={title}>
                 <PageHeader title={title} />
                 <SelectInput
+                    inputClass="col-xs-6"
                     key="audit-log-query-select"
                     name="audit-log-query-select"
-                    placeholder="Select an audit event type..."
-                    inputClass="col-xs-6"
-                    value={this.state.selected}
                     onChange={this.onSelectionChange}
                     options={auditQueries}
+                    placeholder="Select an audit event type..."
+                    value={selected}
                 />
-                {this.hasDetailView() ? this.renderMasterDetailGrid() : this.renderSingleGrid()}
+                {hasDetailView && model && (
+                    <Row>
+                        <Col xs={12} md={8}>
+                            <GridPanel actions={actions} highlightLastSelectedRow model={model} />
+                        </Col>
+                        <Col xs={12} md={4}>
+                            {error && <Alert>{error}</Alert>}
+                            {selectedRowId && !detail && !error && <LoadingSpinner />}
+                            {selectedRowId && detail && !error && (
+                                <AuditDetails
+                                    changeDetails={detail}
+                                    gridData={this.getDetailsGridData()}
+                                    rowId={selectedRowId}
+                                    summary={detail.comment}
+                                    user={user}
+                                />
+                            )}
+                        </Col>
+                    </Row>
+                )}
+                {!hasDetailView && model && <GridPanel actions={actions} model={model} />}
             </Page>
         );
     };

@@ -26,7 +26,7 @@ import { LabelsConfigurationPanel } from './LabelsConfigurationPanel';
 
 interface OwnProps extends InjectedRouteLeaveProps {
     api?: ComponentsAPIWrapper;
-    container?: Container;
+    container: Container;
     onChange: () => void;
     onSuccess: () => void;
     title?: string;

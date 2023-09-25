@@ -1,20 +1,15 @@
 import React, { FC, useCallback } from 'react';
-import { getServerContext } from '@labkey/api';
-
-import classNames from 'classnames';
 
 import { InjectedRouteLeaveProps, withRouteLeave } from '../../util/RouteLeave';
 import { useServerContext } from '../base/ServerContext';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
-import { InsufficientPermissionsPage } from '../permissions/InsufficientPermissionsPage';
 
 import { ActiveUserLimit } from '../settings/ActiveUserLimit';
 import { NameIdSettings } from '../settings/NameIdSettings';
 import { ManageSampleStatusesPanel } from '../samples/ManageSampleStatusesPanel';
 import {
-    biologicsIsPrimaryApp,
+    biologicsIsPrimaryApp, getAppHomeFolderPath,
     hasModule,
-    isAppHomeFolder,
     isELNEnabled,
     isProtectedDataEnabled,
     isSampleStatusEnabled,
@@ -32,7 +27,6 @@ import { useContainerUser } from '../container/actions';
 import { LoadingPage } from '../base/LoadingPage';
 
 import { useAdminAppContext } from './useAdminAppContext';
-import { showPremiumFeatures } from './utils';
 import { ProtectedDataSettingsPanel } from './ProtectedDataSettingsPanel';
 import { RequestsSettingsPanel } from './RequestsSettingsPanel';
 
@@ -40,7 +34,7 @@ import { RequestsSettingsPanel } from './RequestsSettingsPanel';
 export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
     const { setIsDirty, getIsDirty } = props;
     const { moduleContext, container } = useServerContext();
-    const homeFolderPath = isAppHomeFolder(container, moduleContext) ? container.path : container.parentPath;
+    const homeFolderPath = getAppHomeFolderPath(container, moduleContext);
     const { createNotification, dismissNotifications } = useNotificationsContext();
     const { NotebookProjectSettingsComponent } = useAdminAppContext();
     const { api } = useAppContext<AppContext>();
@@ -64,23 +58,7 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
         createNotification('Successfully updated BarTender configuration.');
     }, [createNotification, dismissNotifications, setIsDirty]);
 
-    // const lkVersion = useCallback(() => {
-    //     return (
-    //         <span
-    //             className={classNames('gray-text', 'admin-settings-version', {
-    //                 'margin-right': !showPremiumFeatures(moduleContext),
-    //             })}
-    //         >
-    //             Version: {getServerContext().versionString}
-    //         </span>
-    //     );
-    // }, [moduleContext]);
-
     if (!homeProjectContainer.isLoaded) return <LoadingPage title="Application Settings" />;
-
-    if (!homeProjectContainer.user.isAdmin) {
-        return <InsufficientPermissionsPage title="Application Settings" />;
-    }
 
     return (
         <>

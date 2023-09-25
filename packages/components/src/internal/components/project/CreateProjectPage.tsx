@@ -12,7 +12,12 @@ import { useNotificationsContext } from '../notifications/NotificationsContext';
 import { Container } from '../base/models/Container';
 import { AppURL } from '../../url/AppURL';
 
-import { getCurrentAppProperties, hasProductProjects, isAppHomeFolder, setProductProjects } from '../../app/utils';
+import {
+    getAppHomeFolderPath,
+    getCurrentAppProperties,
+    hasProductProjects,
+    setProductProjects
+} from '../../app/utils';
 
 import { useFolderMenuContext } from '../navigation/hooks';
 
@@ -73,7 +78,7 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
                 disabledStorageLocations: dataTypeExclusion?.['StorageLocation'],
             };
 
-            const homeFolderPath = isAppHomeFolder(container, moduleContext) ? container.path : container.parentPath;
+            const homeFolderPath = getAppHomeFolderPath(container, moduleContext);
 
             let project: Container;
             try {

@@ -5,19 +5,17 @@
 import React, { FC, memo, useMemo } from 'react';
 import { List } from 'immutable';
 
-import { WithRouterProps } from 'react-router';
-
 import { SubNav } from '../navigation/SubNav';
 import { AppURL } from '../../url/AppURL';
 import { useServerContext } from '../base/ServerContext';
 import { User } from '../base/models/User';
 import { AUDIT_KEY } from '../../app/constants';
 import { isProjectContainer, isProductProjectsEnabled, isAppHomeFolder } from '../../app/utils';
-import { withRouteLeave } from '../../util/RouteLeave';
 import { useContainerUser } from '../container/actions';
 import { LoadingSpinner } from '../base/LoadingSpinner';
+import {ITab} from "../navigation/types";
 
-interface OwnProps {
+interface Props {
     appHomeUser: User;
     inProjectContainer: boolean;
     isAppHome: boolean;
@@ -25,18 +23,14 @@ interface OwnProps {
     user: User;
 }
 
-export type Props = OwnProps & WithRouterProps;
+const PARENT_TAB: ITab = {
+    text: 'Dashboard',
+    url: AppURL.create('home'),
+};
 
 // exported for unit testing
 export const AdministrationSubNavImpl: FC<Props> = memo(props => {
-    const { inProjectContainer, appHomeUser, projectsEnabled, user, router } = props;
-
-    const parentTab = useMemo(() => {
-        return {
-            text: 'Back',
-            onClick: router.goBack,
-        };
-    }, [router]);
+    const { inProjectContainer, appHomeUser, projectsEnabled, user } = props;
 
     const tabs = useMemo(() => {
         const tabs_ = [];
@@ -68,12 +62,13 @@ export const AdministrationSubNavImpl: FC<Props> = memo(props => {
         );
     }, [inProjectContainer, projectsEnabled, user.isAdmin]);
 
-    return <SubNav tabs={tabs} noun={parentTab} showLKVersion={true} />;
+    return <SubNav tabs={tabs} noun={PARENT_TAB} showLKVersion={true} />;
 });
 
-export const AdministrationSubNavWrapper: FC<WithRouterProps> = memo(props => {
+export const AdministrationSubNav: FC = memo(() => {
     const { container, moduleContext, user } = useServerContext();
-    const homeFolderPath = isAppHomeFolder(container, moduleContext) ? container.path : container.parentPath;
+    const isAppHome = isAppHomeFolder(container, moduleContext);
+    const homeFolderPath = isAppHome ? container.path : container.parentPath;
     const homeProjectContainer = useContainerUser(homeFolderPath, { includeStandardProperties: true });
 
     if (!homeProjectContainer.isLoaded) return <LoadingSpinner />;
@@ -82,12 +77,9 @@ export const AdministrationSubNavWrapper: FC<WithRouterProps> = memo(props => {
         <AdministrationSubNavImpl
             inProjectContainer={isProjectContainer(container.path)}
             projectsEnabled={isProductProjectsEnabled(moduleContext)}
-            isAppHome={isAppHomeFolder(container, moduleContext)}
+            isAppHome={isAppHome}
             user={user}
             appHomeUser={homeProjectContainer?.user ?? user}
-            {...props}
         />
     );
 });
-
-export const AdministrationSubNav = withRouteLeave(AdministrationSubNavWrapper);

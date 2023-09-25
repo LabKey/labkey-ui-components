@@ -114,13 +114,11 @@ export const NavigationBarImpl: FC<Props> = memo(props => {
                             <span className="navbar-item navbar-left-icon pull-left">{brand}</span>
                             {showNavMenu && !isAdminPage && (
                                 <span className="navbar-item navbar-left-menu">
-                                    {!isAdminPage && (
-                                        <ProductMenuButton
-                                            key={folderMenuContext.key} // re-render and reload folderItems when project added
-                                            sectionConfigs={menuSectionConfigs}
-                                            showFolderMenu={showFolderMenu}
-                                        />
-                                    )}
+                                    <ProductMenuButton
+                                        key={folderMenuContext.key} // re-render and reload folderItems when project added
+                                        sectionConfigs={menuSectionConfigs}
+                                        showFolderMenu={showFolderMenu}
+                                    />
                                 </span>
                             )}
                             {isAdminPage && <div className="navbar-left-sub">Administration</div>}

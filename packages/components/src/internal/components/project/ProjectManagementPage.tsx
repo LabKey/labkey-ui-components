@@ -44,7 +44,7 @@ export const ProjectManagementPageImpl: FC<InjectedRouteLeaveProps> = memo(props
             setError(undefined);
 
             try {
-                let projects_ = await api.folder.getProjects(container, moduleContext, false, true, false);
+                let projects_ = await api.folder.getProjects(container, moduleContext, true, true, false);
                 projects_ = projects_.filter(c => c.effectivePermissions.indexOf(Security.PermissionTypes.Admin) > -1);
                 setProjects(projects_);
 

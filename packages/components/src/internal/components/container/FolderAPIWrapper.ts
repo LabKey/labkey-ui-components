@@ -68,7 +68,7 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
                     SAMPLE_MANAGER_APP_PROPERTIES.controllerName,
                     'renameProject.api',
                     containerPath
-                ), // TODO need container path
+                ),
                 method: 'POST',
                 jsonData: options,
                 success: Utils.getCallbackWrapper(({ data }) => {
@@ -86,7 +86,7 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
                     SAMPLE_MANAGER_APP_PROPERTIES.controllerName,
                     'updateProjectDataExclusion.api',
                     containerPath
-                ), // TODO need container path
+                ),
                 method: 'POST',
                 jsonData: options,
                 success: Utils.getCallbackWrapper(({ data }) => {
@@ -156,14 +156,19 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
                         // if user doesn't have permissions to the parent/project, the response will come back with an empty Container object
                         .filter(c => c !== undefined && c.id !== '');
 
-                    // filter out the Home project container (i.e. the type = "project")
-                    if (!includeTopFolder)
-                        projects = projects.filter(c => c.type === 'folder' || c.path !== topFolderPath);
-
+                    const childProjects = projects.filter(c => c.path !== topFolderPath);
                     // Issue 45805: sort folders by title as server-side sorting is insufficient
-                    projects.sort(naturalSortByProperty('title'));
+                    childProjects.sort(naturalSortByProperty('title'));
 
-                    resolve(projects);
+                    if (!includeTopFolder) {
+                        resolve(childProjects);
+                    }
+                    else {
+                        const top = projects.find(c => c.path === topFolderPath);
+                        const allProject = top ? [top] : [];
+                        allProject.push(...childProjects);
+                        resolve(allProject);
+                    }
                 })
                 .catch(error => {
                     reject(error);

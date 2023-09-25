@@ -38,7 +38,7 @@ export interface UserMenuProps {
     onSignIn?: () => void;
     onSignOut?: (signOutUrl: string) => void;
     signOutUrl?: string;
-    user?: User;
+    user: User;
 }
 
 interface ImplProps {
@@ -116,7 +116,7 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
                 <div className="navbar-item pull-right navbar-item-product-navigation">
                     <DropdownButton
                         id="admin-menu-button"
-                        className="navbar-icon-button-right"
+                        className="navbar-icon-button-right admin-menu-nav-dropdown"
                         title={<i className="fa fa-cog navbar-header-icon" />}
                         noCaret
                         pullRight

@@ -101,6 +101,9 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
     const { api } = useAppContext<AppContext>();
     const { container, project, user, moduleContext } = useServerContext();
 
+    const isAppHome = isAppHomeFolder(container, moduleContext);
+    const homeFolderPath = isAppHome ? container.path : container.parentPath;
+
     const selectedPrincipal = principalsById?.get(selectedUserId);
     const initExpandedRole = getLocation().query?.get('expand')
         ? decodeURI(getLocation().query?.get('expand'))
@@ -146,7 +149,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
             }
 
             try {
-                let projects_ = await api.folder.getProjects(container, moduleContext, false, true, true);
+                let projects_ = await api.folder.getProjects(container, moduleContext, true, true, true);
                 projects_ = projects_.filter(c => c.effectivePermissions.indexOf(Security.PermissionTypes.Admin) > -1);
 
                 // if app home lack admin perm, don't show project list
@@ -211,8 +214,6 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
             setInherited(policy_.isInheritFromParent());
             setLastModified?.(policy_.modified);
             await loadGroupMembership();
-
-            // load inherited projects
         } catch (e) {
             setError(resolveErrorMessage(e) ?? 'Failed to load security policy');
         }
@@ -278,8 +279,6 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         setSubmitting(true);
 
         if (hasRootPolicyChange) {
-            setHasRootPolicyChange(false);
-
             try {
                 const resp = await api.security.savePolicy(
                     {
@@ -329,7 +328,6 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                 setSubmitting(false);
             }
 
-            // reload inherited
         } else {
             // Policy has been switched to un-inherited. Update policy assignments.
             const uninherited = !inherited && wasInherited;
@@ -517,6 +515,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                                 setIsDirty={setIsDirty}
                                 getIsDirty={getIsDirty}
                                 inheritedProjects={inheritedProjects}
+                                homeFolderPath={homeFolderPath}
                             />
                             <VerticalScrollPanel
                                 key={selectedProject?.id}

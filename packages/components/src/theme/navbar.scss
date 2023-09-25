@@ -42,7 +42,7 @@
         color: $white !important;
         font-size: 14px;
         font-weight: 400;
-        margin: 20px 0;
+        margin: 18px 0;
         position: relative;
         left: 40px;
         display: inline-block;
@@ -435,6 +435,10 @@
         padding: 0;
     }
 
+    .navbar-icon-button-right.admin-menu-nav-dropdown ~ ul.dropdown-menu {
+        padding: 5px 0;
+    }
+
     .dropdown-menu-right {
         right: -19px !important;
     }
@@ -450,7 +454,7 @@
 
 .container-nav {
     padding: 10px 0 8px 10px;
-    color: #9d9d9d;
+    color: $text-color-gray;
     position: relative;
 }
 .container-nav:before {
@@ -474,7 +478,7 @@
 
 .lk-version-nav {
     padding: 8px 0 8px 10px;
-    color: #9d9d9d;
+    color: $text-color-gray;
     position: relative;
 }
 

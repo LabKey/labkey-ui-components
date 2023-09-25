@@ -70,7 +70,7 @@ interface ReferencingNotebooksComponentProps {
 export type ReferencingNotebooks = ComponentType<ReferencingNotebooksComponentProps>;
 
 interface ContainerPathProp {
-    containerPath?: string;
+    containerPath: string;
 }
 
 export type NotebookNotificationSettings = ComponentType;

@@ -4,7 +4,6 @@
  */
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 import { Map } from 'immutable';
-import { MenuItem } from 'react-bootstrap';
 
 import { WithRouterProps } from 'react-router';
 
@@ -12,10 +11,9 @@ import { useServerContext } from '../base/ServerContext';
 
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 import { CreatedModified } from '../base/CreatedModified';
-import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
 import { AppURL } from '../../url/AppURL';
 import { AUDIT_KEY } from '../../app/constants';
-import { AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY, PROJECT_AUDIT_QUERY } from '../auditlog/constants';
+import { AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY } from '../auditlog/constants';
 
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 import { PermissionAssignments } from '../permissions/PermissionAssignments';
@@ -79,7 +77,7 @@ export const PermissionManagementPageImpl: FC<Props> = memo(props => {
 
     return (
         <BasePermissionsCheckPage
-            description={hidePageDescription ? null : description}
+            description={showPremium && !hidePageDescription ? description : null}
             hasPermission={user.isAdmin}
             renderButtons={renderButtons}
             title="Permissions"

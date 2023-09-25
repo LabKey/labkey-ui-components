@@ -14,10 +14,11 @@ interface Props {
     selectedProject: Container;
     setIsDirty: (isDirty: boolean) => void;
     setSelectedProject: (c: Container) => void;
+    homeFolderPath?: string;
 }
 
 export const ProjectListing: FC<Props> = memo(props => {
-    const { projects, selectedProject, inheritedProjects, setSelectedProject, getIsDirty, setIsDirty } = props;
+    const { homeFolderPath, projects, selectedProject, inheritedProjects, setSelectedProject, getIsDirty, setIsDirty } = props;
 
     const dividerInd = inheritedProjects?.length > 0 ? inheritedProjects.length + 1 : -1;
     return (
@@ -26,6 +27,9 @@ export const ProjectListing: FC<Props> = memo(props => {
             <ul className="project-listing-left">
                 {projects?.map((project, ind) => {
                     const showInherited = inheritedProjects?.indexOf(project.name) > -1;
+                    let projectTitle = project.path === homeFolderPath ? 'Application' : project.title;
+                    if (!projectTitle)
+                        projectTitle = project.name;
                     return (
                         <>
                             {ind === dividerInd && (
@@ -56,7 +60,7 @@ export const ProjectListing: FC<Props> = memo(props => {
                                                         alt="inherited"
                                                     />
                                                 )}
-                                                <span>{project.name}</span>
+                                                <span>{projectTitle}</span>
                                             </WithDirtyCheckLink>
                                         </div>
                                     </div>

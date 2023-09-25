@@ -18,11 +18,16 @@ export const ChartPanel: FC<RequiresModelAndActions> = memo(({ actions, model })
 
     return (
         <div className="chart-panel">
-            <div className="chart-panel__hide-icon">
-                <button type="button" title="hide chart" className="btn btn-default" onClick={clearChart}>
-                    <span className="fa fa-close" /> Close
-                </button>
+            <div className="chart-panel__heading">
+                <div className="chart-panel__heading-title">{selectedChart.name}</div>
+
+                <div className="chart-panel__hide-icon">
+                    <button type="button" title="hide chart" className="btn btn-default" onClick={clearChart}>
+                        <span className="fa fa-close" /> Close
+                    </button>
+                </div>
             </div>
+
             <Chart
                 chart={selectedChart}
                 container={containerPath}

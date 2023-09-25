@@ -22,6 +22,11 @@ Components, models, actions, and utility functions for LabKey applications and p
    - Moved ProtectedDataSettingsPanel and RequestsSettignsPanel from Biologics to components
 - Issue 48623: LKSM: revert to initial sampleCount or rootSampleCount when updating fails
 
+### version 2.371.0
+*Released*: 25 September 2023
+* Render file output in R Reports
+* Improve Chart Styling
+
 ### version 2.370.0
 *Released*: 21 September 2023
 - Package updates

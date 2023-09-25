@@ -2,6 +2,7 @@ import React, { PureComponent, ComponentType } from 'react';
 import { List } from 'immutable';
 
 import { Button } from 'react-bootstrap';
+import { FormButtons } from '../../FormButtons';
 
 import { Alert } from '../base/Alert';
 
@@ -137,7 +138,7 @@ export class BaseDomainDesigner extends PureComponent<BaseDomainDesignerProps> {
             exception,
             name,
             visitedPanels,
-            successBsStyle,
+            successBsStyle = 'success',
             submitting,
             onFinish,
             onCancel,
@@ -150,8 +151,8 @@ export class BaseDomainDesigner extends PureComponent<BaseDomainDesignerProps> {
             .filter(domain => domain.hasException() && domain.domainException.severity === SEVERITY_LEVEL_ERROR)
             .map(domain => getDomainHeaderName(domain.name, undefined, name))
             .toList();
-
         const bottomErrorMsg = getDomainBottomErrorMessage(exception, errorDomains, hasValidProperties, visitedPanels);
+        const submitClassname = `btn btn-${successBsStyle}`;
 
         return (
             <>
@@ -161,17 +162,14 @@ export class BaseDomainDesigner extends PureComponent<BaseDomainDesignerProps> {
                         <Alert bsStyle="danger">{bottomErrorMsg}</Alert>
                     </div>
                 )}
-                <div className="domain-form-panel domain-designer-buttons">
-                    <Button onClick={onCancel}>Cancel</Button>
-                    <Button
-                        className="pull-right"
-                        bsStyle={successBsStyle || 'success'}
-                        disabled={submitting}
-                        onClick={onFinish}
-                    >
+                <FormButtons>
+                    <button className="btn btn-default" onClick={onCancel} type="button">
+                        Cancel
+                    </button>
+                    <button className={submitClassname} disabled={submitting} onClick={onFinish} type="button">
                         {saveBtnText}
-                    </Button>
-                </div>
+                    </button>
+                </FormButtons>
             </>
         );
     }

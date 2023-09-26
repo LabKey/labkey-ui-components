@@ -1,6 +1,12 @@
+import classNames from 'classnames';
 import React, { Children, FC, memo } from 'react';
 
-export const FormButtons: FC = memo(({ children }) => {
+interface Props {
+    sticky?: boolean;
+}
+
+export const FormButtons: FC<Props> = memo(({ children, sticky = true }) => {
+    const className = classNames('form-buttons', { 'form-buttons--sticky': sticky });
     let cancel;
     let secondary;
     let submit;
@@ -23,7 +29,7 @@ export const FormButtons: FC = memo(({ children }) => {
     }
 
     return (
-        <div className="form-buttons">
+        <div className={className}>
             <div className="form-buttons__left">{cancel}</div>
             <div className="form-buttons__right">
                 {secondary}

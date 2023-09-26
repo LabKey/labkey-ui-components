@@ -9,10 +9,9 @@ import { SAMPLE_EXPORT_CONFIG } from '../samples/constants';
 
 import { selectRows } from '../../query/selectRows';
 
-import { DomainDesign } from '../domainproperties/models';
 import { User } from '../base/models/User';
 
-import { LABEL_TEMPLATE_SQ, LABEL_TEMPLATES_LIST_NAME } from './constants';
+import { LABEL_TEMPLATE_SQ } from './constants';
 import { BarTenderConfiguration, BarTenderResponse, LabelTemplate } from './models';
 
 function handleBarTenderConfigurationResponse(response: any): BarTenderConfiguration {
@@ -21,10 +20,10 @@ function handleBarTenderConfigurationResponse(response: any): BarTenderConfigura
     return BarTenderConfiguration.create(btConfiguration);
 }
 
-function createLabelTemplateList(): Promise<LabelTemplate[]> {
+function createLabelTemplateList(containerPath?: string): Promise<LabelTemplate[]> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'ensureLabelTemplateList.api', undefined, {
+            url: ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'ensureLabelTemplateList.api', containerPath, {
                 returnUrl: false,
             }),
             method: 'POST',
@@ -39,7 +38,7 @@ function createLabelTemplateList(): Promise<LabelTemplate[]> {
 }
 
 export interface LabelPrintingAPIWrapper {
-    ensureLabelTemplatesList: (user: User) => Promise<LabelTemplate[]>;
+    ensureLabelTemplatesList: (user: User, containerPath?: string) => Promise<LabelTemplate[]>;
     fetchBarTenderConfiguration: (containerPath?: string) => Promise<BarTenderConfiguration>;
     getLabelTemplates: () => Promise<LabelTemplate[]>;
     printBarTenderLabels: (btxml: string, serviceURL: string) => Promise<BarTenderResponse>;
@@ -192,9 +191,9 @@ export class LabelPrintingServerAPIWrapper implements LabelPrintingAPIWrapper {
         });
     };
 
-    ensureLabelTemplatesList = (user: User): Promise<LabelTemplate[]> => {
+    ensureLabelTemplatesList = (user: User, containerPath?: string): Promise<LabelTemplate[]> => {
         return new Promise<LabelTemplate[]>(resolve => {
-            this.getLabelTemplates()
+            this.getLabelTemplates(containerPath)
                 .then((templates: LabelTemplate[]) => resolve(templates))
                 .catch(reason => {
                     if (reason.status !== 404) {
@@ -209,7 +208,7 @@ export class LabelPrintingServerAPIWrapper implements LabelPrintingAPIWrapper {
                         }
 
                         // try to create list
-                        createLabelTemplateList()
+                        createLabelTemplateList(containerPath)
                             .then(result => resolve(result))
                             .catch(createReason => {
                                 console.error(createReason);
@@ -220,9 +219,9 @@ export class LabelPrintingServerAPIWrapper implements LabelPrintingAPIWrapper {
         });
     };
 
-    getLabelTemplates = (): Promise<LabelTemplate[]> => {
+    getLabelTemplates = (containerPath?: string): Promise<LabelTemplate[]> => {
         return new Promise<LabelTemplate[]>((resolve, reject) => {
-            selectRows({ schemaQuery: LABEL_TEMPLATE_SQ })
+            selectRows({ schemaQuery: LABEL_TEMPLATE_SQ, containerPath })
                 .then(response => {
                     resolve(response?.rows?.map(row => LabelTemplate.create(row)) ?? []);
                 })

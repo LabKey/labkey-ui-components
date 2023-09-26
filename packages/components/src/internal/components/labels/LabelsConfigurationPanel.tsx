@@ -26,10 +26,9 @@ import { useServerContext } from '../base/ServerContext';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
-import { isAppHomeFolder } from '../../app/utils';
-
 import { LabelTemplate } from './models';
 import { LABEL_TEMPLATE_SQ } from './constants';
+import { Container } from "../base/models/Container";
 
 const TITLE = 'Manage Label Templates';
 const NEW_LABEL_INDEX = -1;
@@ -39,6 +38,7 @@ const SAVING_LOCKED_TITLE = 'Saving';
 interface LabelTemplatesPanelProps extends InjectedRouteLeaveProps {
     api?: ComponentsAPIWrapper;
     defaultLabel?: number;
+    container: Container;
 }
 
 interface LabelTemplatesListProps {
@@ -347,7 +347,7 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
 });
 
 export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props => {
-    const { api, setIsDirty, defaultLabel } = props;
+    const { api, setIsDirty, defaultLabel, container } = props;
     const { user } = useServerContext();
     const [templates, setTemplates] = useState<LabelTemplate[]>([]);
     const [error, setError] = useState<string>();
@@ -360,7 +360,7 @@ export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props
             setError(undefined);
 
             api.labelprinting
-                .ensureLabelTemplatesList(user)
+                .ensureLabelTemplatesList(user, container.path)
                 .then(labelTemplates => {
                     setTemplates(labelTemplates ?? []);
                     if (newLabelTemplate) {

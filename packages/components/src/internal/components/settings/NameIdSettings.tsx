@@ -280,6 +280,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
         <div className="name-id-settings-panel panel panel-default">
             <div className="panel-heading">{TITLE}</div>
             <div className="panel-body">
+                {error !== undefined && <Alert className="name-id-setting__error">{error}</Alert>}
                 <div className="name-id-setting__setting-section">
                     <div className="list__bold-text margin-bottom">User-defined IDs/Names</div>
 
@@ -490,8 +491,6 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                         )}
                     </div>
                 )}
-
-                {error !== undefined && <Alert className="name-id-setting__error">{error}</Alert>}
             </div>
         </div>
     );

@@ -56,7 +56,7 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
                 setError(undefined);
 
                 try {
-                    const containers = await api.folder.getProjects(container, moduleContext, false, true);
+                    const containers = await api.folder.getProjects(container, moduleContext, true, true);
 
                     const allProjects_ = containers.map(project => {
                         return { label: project.title, lsid: project.id, type: 'Project' } as DataTypeEntity;

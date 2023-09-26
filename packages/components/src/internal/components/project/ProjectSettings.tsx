@@ -166,7 +166,7 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
     );
 
     const onDeleteSuccess = useCallback(() => {
-        onSuccess(false);
+        onSuccess(false, false, true);
         setShowModal(false);
     }, [onSuccess]);
 

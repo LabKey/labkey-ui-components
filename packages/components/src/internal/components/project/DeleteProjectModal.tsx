@@ -165,16 +165,6 @@ export const DeleteProjectModal: FC<Props> = memo(props => {
             });
 
             onDeleteSuccess();
-
-            const successMsg = project.name;
-            const adminProjectsHref = createProductUrl(
-                getPrimaryAppProperties()?.productId,
-                getCurrentAppProperties()?.productId,
-                AppURL.create('admin', 'projects').addParam('successMsg', successMsg).toHref(),
-                container.parentPath
-            ).toString();
-
-            window.location.href = adminProjectsHref;
         } catch (e) {
             onError(resolveErrorMessage(e) ?? `${projectName} could not be deleted. Please try again.`);
         }

@@ -116,10 +116,14 @@ export const ProjectManagementPageImpl: FC<InjectedRouteLeaveProps> = memo(props
                     window.location.href = createProductUrl(
                         getPrimaryAppProperties()?.productId,
                         getCurrentAppProperties()?.productId,
-                        AppURL.create('admin', 'projects').addParam('successMsg', successMsg).toHref(),
+                        AppURL.create('admin', 'projects').addParam('successMsg', selectedProject.name).toHref(),
                         container.parentPath
                     ).toString();
-                else setReloadCounter(prevState => prevState + 1);
+                else {
+                    setReloadCounter(prevState => prevState + 1);
+                    if (isDelete)
+                        setSuccessMsg(`${selectedProject.name} successfully deleted.`);
+                }
             }
         },
         [setIsDirty, selectedProject, container]

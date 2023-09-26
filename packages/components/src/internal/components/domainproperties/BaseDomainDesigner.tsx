@@ -145,7 +145,7 @@ export const BaseDomainDesigner: FC<BaseDomainDesignerProps> = memo(props => {
         .map(domain => getDomainHeaderName(domain.name, undefined, name))
         .toList();
     const bottomErrorMsg = getDomainBottomErrorMessage(exception, errorDomains, hasValidProperties, visitedPanels);
-    const submitClassname = `btn btn-${getSubmitButtonClass()}`;
+    const submitClassname = `save-button btn btn-${getSubmitButtonClass()}`;
 
     return (
         <div className="domain-designer">
@@ -156,7 +156,7 @@ export const BaseDomainDesigner: FC<BaseDomainDesignerProps> = memo(props => {
                 </div>
             )}
             <FormButtons sticky={isApp()}>
-                <button className="btn btn-default" onClick={onCancel} type="button">
+                <button className="cancel-button btn btn-default" onClick={onCancel} type="button">
                     Cancel
                 </button>
                 <button className={submitClassname} disabled={submitting} onClick={onFinish} type="button">

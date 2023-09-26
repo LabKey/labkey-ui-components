@@ -13,7 +13,6 @@ describe('<CollapsiblePanelHeader/>', () => {
                 collapsible={true}
                 controlledCollapse={true}
                 panelStatus="NONE"
-                useTheme={true}
                 isValid={true}
                 togglePanel={jest.fn()}
             />
@@ -31,7 +30,6 @@ describe('<CollapsiblePanelHeader/>', () => {
                 collapsed={true}
                 collapsible={true}
                 controlledCollapse={true}
-                useTheme={true}
                 isValid={true}
                 togglePanel={jest.fn()}
                 titlePrefix="Test Prefix"
@@ -49,8 +47,7 @@ describe('<CollapsiblePanelHeader/>', () => {
             <CollapsiblePanelHeader
                 id="test-id"
                 title="Test Title"
-                useTheme={true}
-                isValid={true}
+                isValid
                 togglePanel={jest.fn()}
                 collapsed={true}
                 collapsible={false}
@@ -70,8 +67,7 @@ describe('<CollapsiblePanelHeader/>', () => {
                 id="test-id"
                 title="Test Title"
                 panelStatus="NONE"
-                useTheme={true}
-                isValid={true}
+                isValid
                 togglePanel={jest.fn()}
                 collapsed={false}
                 collapsible={false}
@@ -92,9 +88,8 @@ describe('<CollapsiblePanelHeader/>', () => {
                 collapsible={false}
                 controlledCollapse={false}
                 panelStatus="NONE"
-                isValid={true}
+                isValid
                 togglePanel={jest.fn()}
-                useTheme={false}
             />
         );
 
@@ -108,11 +103,10 @@ describe('<CollapsiblePanelHeader/>', () => {
                 id="test-id"
                 title="Test Title"
                 collapsed={false}
-                collapsible={true}
-                controlledCollapse={true}
-                useTheme={true}
+                collapsible
+                controlledCollapse
                 togglePanel={jest.fn()}
-                isValid={false}
+                isValid
                 panelStatus="INPROGRESS"
                 iconHelpMsg="Test icon help message"
             />
@@ -127,11 +121,10 @@ describe('<CollapsiblePanelHeader/>', () => {
             <CollapsiblePanelHeader
                 id="test-id"
                 title="Test Title"
-                collapsed={true}
-                collapsible={true}
-                controlledCollapse={true}
-                useTheme={true}
-                isValid={true}
+                collapsed
+                collapsible
+                controlledCollapse
+                isValid
                 togglePanel={jest.fn()}
                 panelStatus="TODO"
                 todoIconHelpMsg="Some other TODO message goes here."

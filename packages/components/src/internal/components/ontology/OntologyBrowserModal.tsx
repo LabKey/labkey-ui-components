@@ -1,5 +1,6 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
+import { getSubmitButtonClass } from '../../app/utils';
 
 import { OntologyBrowserPanel } from './OntologyBrowserPanel';
 import { ConceptModel, PathModel } from './models';
@@ -9,20 +10,17 @@ interface OntologyBrowserModalProps {
     initOntologyId?: string;
     initConcept?: ConceptModel;
     initPath?: PathModel;
-    successBsStyle?: string;
     onCancel: () => void;
     onApply: (path: PathModel, concept: ConceptModel) => void;
 }
 
 export const OntologyBrowserModal: FC<OntologyBrowserModalProps> = memo(props => {
-    const { title, initOntologyId, successBsStyle, onCancel, onApply, initConcept, initPath } = props;
+    const { title, initOntologyId, onCancel, onApply, initConcept, initPath } = props;
     const [selectedPath, setSelectedPath] = useState<PathModel>();
     const [selectedConcept, setSelectedConcept] = useState<ConceptModel>();
-
     const onApplyClick = useCallback(() => {
         onApply(selectedPath, selectedConcept);
     }, [onApply, selectedPath, selectedConcept]);
-
     const onPathSelect = useCallback(
         (path: PathModel, concept: ConceptModel) => {
             setSelectedPath(path);
@@ -53,7 +51,7 @@ export const OntologyBrowserModal: FC<OntologyBrowserModalProps> = memo(props =>
                     className="domain-adv-footer domain-adv-apply-btn pull-right"
                     disabled={!selectedConcept}
                     onClick={onApplyClick}
-                    bsStyle={successBsStyle}
+                    bsStyle={getSubmitButtonClass()}
                 >
                     Apply
                 </Button>
@@ -61,7 +59,3 @@ export const OntologyBrowserModal: FC<OntologyBrowserModalProps> = memo(props =>
         </Modal>
     );
 });
-
-OntologyBrowserModal.defaultProps = {
-    successBsStyle: 'success',
-};

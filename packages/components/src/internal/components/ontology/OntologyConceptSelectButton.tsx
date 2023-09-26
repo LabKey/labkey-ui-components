@@ -17,7 +17,6 @@ export interface OntologyConceptSelectButtonProps {
     field: DomainField;
     id: string;
     onChange: (id: string, path: PathModel, concept: ConceptModel) => void;
-    successBsStyle?: string;
     title?: string;
     useFieldSourceOntology?: boolean;
     valueIsPath: boolean;
@@ -25,7 +24,7 @@ export interface OntologyConceptSelectButtonProps {
 }
 
 export const OntologyConceptSelectButton: FC<OntologyConceptSelectButtonProps> = memo(props => {
-    const { id, field, title, onChange, error, successBsStyle, useFieldSourceOntology, valueProp, valueIsPath } = props;
+    const { id, field, title, onChange, error, useFieldSourceOntology, valueProp, valueIsPath } = props;
     const isFieldLocked = useMemo(() => isFieldFullyLocked(field.lockType), [field.lockType]);
     const [showSelectModal, setShowSelectModal] = useState<boolean>();
     const [concept, setConcept] = useState<ConceptModel>();
@@ -137,7 +136,6 @@ export const OntologyConceptSelectButton: FC<OntologyConceptSelectButtonProps> =
                     initPath={path}
                     onCancel={toggleSelectModal}
                     onApply={onApply}
-                    successBsStyle={successBsStyle}
                 />
             )}
         </>

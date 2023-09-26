@@ -256,7 +256,7 @@ describe('AssayDesignerPanels', () => {
     });
 
     test('new assay wizard', async () => {
-        const component = <AssayDesignerPanels {...getDefaultProps()} successBsStyle="primary" />;
+        const component = <AssayDesignerPanels {...getDefaultProps()} />;
         const wrapper = mountWithAppServerContext(component);
         await waitForLifecycle(wrapper);
 
@@ -270,8 +270,8 @@ describe('AssayDesignerPanels', () => {
         expect(wrapper.find('.domain-form-manual-btn').hostNodes()).toHaveLength(3);
         expect(wrapper.find(FileAttachmentForm)).toHaveLength(3);
         expect(wrapper.find('.domain-designer-buttons').hostNodes()).toHaveLength(1);
-        expect(wrapper.find('.btn-primary')).toHaveLength(1);
-        expect(wrapper.find('.btn-primary').props().disabled).toBe(false);
+        expect(wrapper.find('.btn-success')).toHaveLength(1);
+        expect(wrapper.find('.btn-success').props().disabled).toBe(false);
         wrapper.unmount();
     });
 

@@ -58,9 +58,7 @@ interface Props {
     onComplete: (model: DataClassModel) => void;
     saveBtnText?: string;
     showGenIdBanner?: boolean;
-    successBsStyle?: string;
     testMode?: boolean;
-    useTheme?: boolean;
     validateNameExpressions?: boolean;
 }
 
@@ -418,13 +416,11 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
             onCancel,
             appPropertiesOnly,
             dataClassAliasCaption,
-            useTheme,
             nounSingular,
             nounPlural,
             nameExpressionInfoUrl,
             nameExpressionPlaceholder,
             headerText,
-            successBsStyle,
             submitting,
             saveBtnText,
             currentPanelIndex,
@@ -452,7 +448,6 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
                 onCancel={onCancel}
                 onFinish={this.onFinish}
                 saveBtnText={saveBtnText}
-                successBsStyle={successBsStyle}
             >
                 <DataClassPropertiesPanel
                     nounSingular={nounSingular}
@@ -473,7 +468,6 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
                     validate={validatePanel === PROPERTIES_PANEL_INDEX}
                     appPropertiesOnly={appPropertiesOnly}
                     onToggle={this.propertiesToggle}
-                    useTheme={useTheme}
                     namePreviewsLoading={namePreviewsLoading}
                     previewName={namePreviews?.[0]}
                     onNameFieldHover={this.onNameFieldHover}
@@ -514,8 +508,6 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
                     onChange={this.onDomainChange}
                     onToggle={this.formToggle}
                     appPropertiesOnly={appPropertiesOnly}
-                    useTheme={useTheme}
-                    successBsStyle={successBsStyle}
                     testMode={testMode}
                     domainFormDisplayOptions={domainFormDisplayOptions}
                     systemFields={model.options.systemFields}

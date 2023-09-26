@@ -39,7 +39,7 @@ describe('OntologyBrowserModal', () => {
     });
 
     test('apply button props', () => {
-        const wrapper = shallow(<OntologyBrowserModal {...DEFAULT_PROPS} successBsStyle="primary" />);
+        const wrapper = shallow(<OntologyBrowserModal {...DEFAULT_PROPS} />);
         const applyBtn = wrapper.find(Button).last();
         expect(applyBtn.prop('disabled')).toBe(true);
         expect(applyBtn.prop('bsStyle')).toBe('primary');

@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import classNames from 'classnames';
+import { isApp } from '../../app/utils';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
@@ -18,7 +19,6 @@ interface Props {
     titlePrefix?: string;
     todoIconHelpMsg?: string;
     togglePanel: () => void;
-    useTheme: boolean;
 }
 
 export class CollapsiblePanelHeader extends React.PureComponent<Props> {
@@ -74,8 +74,8 @@ export class CollapsiblePanelHeader extends React.PureComponent<Props> {
             panelStatus,
             title,
             togglePanel,
-            useTheme,
         } = this.props;
+        const isApp_ = isApp();
         const iconHelpMsg = panelStatus && panelStatus !== 'NONE' ? this.getHeaderIconHelpMsg() : undefined;
         const collapsedIconClass = classNames('fa', 'fa-lg', {
             'fa-plus-square': collapsed,
@@ -84,12 +84,12 @@ export class CollapsiblePanelHeader extends React.PureComponent<Props> {
             'domain-form-collapse-btn': !collapsed,
         });
         const panelHeaderClass = classNames('domain-panel-header', {
-            'panel-heading': !useTheme,
+            'panel-heading': isApp_,
             'domain-heading-collapsible': collapsible || controlledCollapse,
             'domain-panel-header-expanded': !collapsed,
             'domain-panel-header-collapsed': collapsed,
-            'labkey-page-nav': !collapsed && useTheme,
-            'domain-panel-header-no-theme': !collapsed && !useTheme,
+            'labkey-page-nav': !collapsed && !isApp_,
+            'domain-panel-header-no-theme': !collapsed && isApp_,
         });
 
         return (

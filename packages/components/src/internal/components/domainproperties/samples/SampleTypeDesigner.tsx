@@ -109,10 +109,8 @@ interface Props {
     showGenIdBanner?: boolean;
     showLinkToStudy?: boolean;
     showParentLabelPrefix?: boolean;
-    successBsStyle?: string;
     testMode?: boolean;
     useSeparateDataClassesAliasMenu?: boolean;
-    useTheme?: boolean;
     validateNameExpressions?: boolean;
     validateProperties?: (designerDetails?: any) => Promise<any>;
 }
@@ -138,7 +136,6 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         nameExpressionPlaceholder: SAMPLE_TYPE_NAME_EXPRESSION_PLACEHOLDER,
         helpTopic: SAMPLE_TYPE_HELP_TOPIC,
         showParentLabelPrefix: true,
-        useTheme: false,
         showLinkToStudy: false,
         domainFormDisplayOptions: {
             ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
@@ -580,9 +577,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
     render() {
         const {
             api,
-            useTheme,
             appPropertiesOnly,
-            successBsStyle,
             currentPanelIndex,
             visitedPanels,
             firstState,
@@ -656,7 +651,6 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                 onCancel={onCancel}
                 onFinish={this.onFinish}
                 saveBtnText={saveBtnText}
-                successBsStyle={successBsStyle}
             >
                 <SampleTypePropertiesPanel
                     nounSingular={nounSingular}
@@ -690,7 +684,6 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                     onToggle={this.propertiesToggle}
                     appPropertiesOnly={appPropertiesOnly}
                     showLinkToStudy={_showLinkToStudy}
-                    useTheme={useTheme}
                     metricUnitProps={metricUnitProps}
                     onAddUniqueIdField={this.onAddUniqueIdField}
                     aliquotNamePatternProps={aliquotNamePatternProps}
@@ -729,8 +722,6 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                     onChange={this.domainChangeHandler}
                     onToggle={this.formToggle}
                     appPropertiesOnly={appPropertiesOnly}
-                    useTheme={useTheme}
-                    successBsStyle={successBsStyle}
                     testMode={testMode}
                     domainFormDisplayOptions={{
                         ...domainFormDisplayOptions,

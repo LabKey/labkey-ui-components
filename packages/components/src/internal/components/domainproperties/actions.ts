@@ -23,7 +23,7 @@ import { SimpleResponse } from '../files/models';
 
 import { ConceptModel, OntologyModel } from '../ontology/models';
 
-import { isCommunityDistribution } from '../../app/utils';
+import { isApp, isCommunityDistribution } from '../../app/utils';
 
 import { Container } from '../base/models/Container';
 import { naturalSortByProperty } from '../../../public/sort';
@@ -970,17 +970,19 @@ export function getDomainBottomErrorMessage(
     return undefined;
 }
 
-export function getDomainPanelClass(collapsed: boolean, controlledCollapse: boolean, useTheme: boolean): string {
+export function getDomainPanelClass(collapsed: boolean, controlledCollapse: boolean): string {
+    const isApp_ = isApp();
     return classNames('domain-form-panel', {
-        'lk-border-theme-light': !collapsed && controlledCollapse && useTheme,
-        'domain-panel-no-theme': !collapsed && controlledCollapse && !useTheme,
+        'lk-border-theme-light': !collapsed && controlledCollapse && !isApp_,
+        'domain-panel-no-theme': !collapsed && controlledCollapse && isApp_,
     });
 }
 
-export function getDomainAlertClasses(collapsed: boolean, controlledCollapse: boolean, useTheme: boolean): string {
+export function getDomainAlertClasses(collapsed: boolean, controlledCollapse: boolean): string {
+    const isApp_ = isApp();
     return classNames('domain-bottom-alert panel-default', {
-        'lk-border-theme-light': !collapsed && controlledCollapse && useTheme,
-        'domain-bottom-alert-expanded': !collapsed && controlledCollapse && !useTheme,
+        'lk-border-theme-light': !collapsed && controlledCollapse && !isApp_,
+        'domain-bottom-alert-expanded': !collapsed && controlledCollapse && isApp_,
         'domain-bottom-alert-top': !collapsed,
     });
 }

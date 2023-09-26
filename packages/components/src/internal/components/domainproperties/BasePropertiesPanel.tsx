@@ -15,7 +15,6 @@ const noop = (): void => {};
 
 export interface BasePropertiesPanelProps {
     panelStatus: DomainPanelStatus;
-    useTheme: boolean;
     validate: boolean;
     warning?: string;
 }
@@ -35,7 +34,6 @@ export class BasePropertiesPanel extends React.PureComponent<Props> {
     static defaultProps = {
         title: 'Properties',
         validate: false,
-        useTheme: false,
     };
 
     componentDidUpdate(prevProps: Props): void {
@@ -59,7 +57,6 @@ export class BasePropertiesPanel extends React.PureComponent<Props> {
             collapsible,
             controlledCollapse,
             panelStatus,
-            useTheme,
             headerId,
             titlePrefix,
             title,
@@ -71,7 +68,7 @@ export class BasePropertiesPanel extends React.PureComponent<Props> {
 
         return (
             <>
-                <Panel className={getDomainPanelClass(collapsed, true, useTheme)} expanded={!collapsed} onToggle={noop}>
+                <Panel className={getDomainPanelClass(collapsed, true)} expanded={!collapsed} onToggle={noop}>
                     <CollapsiblePanelHeader
                         id={headerId}
                         title={title}
@@ -84,17 +81,16 @@ export class BasePropertiesPanel extends React.PureComponent<Props> {
                         isValid={isValid}
                         iconHelpMsg={PROPERTIES_PANEL_ERROR_MSG}
                         todoIconHelpMsg={todoIconHelpMsg}
-                        useTheme={useTheme}
                     />
                     <Panel.Body collapsible={collapsible || controlledCollapse}>{children}</Panel.Body>
                 </Panel>
                 {!isValid && (
-                    <div onClick={this.toggleLocalPanel} className={getDomainAlertClasses(collapsed, true, useTheme)}>
+                    <div onClick={this.toggleLocalPanel} className={getDomainAlertClasses(collapsed, true)}>
                         <Alert bsStyle="danger">{PROPERTIES_PANEL_ERROR_MSG}</Alert>
                     </div>
                 )}
                 {isValid && warning && (
-                    <div onClick={this.toggleLocalPanel} className={getDomainAlertClasses(collapsed, true, useTheme)}>
+                    <div onClick={this.toggleLocalPanel} className={getDomainAlertClasses(collapsed, true)}>
                         <Alert bsStyle="warning">{warning}</Alert>
                     </div>
                 )}

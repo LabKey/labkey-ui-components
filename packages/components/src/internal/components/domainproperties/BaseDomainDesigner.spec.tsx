@@ -82,7 +82,7 @@ describe('BaseDomainDesigner', () => {
 
     test('submitting, successBsStyle, saveBtnText', () => {
         const component = mount(
-            <BaseDomainDesigner {...BASE_PROPS} submitting={true} successBsStyle="primary" saveBtnText="Finish" />
+            <BaseDomainDesigner {...BASE_PROPS} submitting={true} saveBtnText="Finish" />
         );
 
         expect(component.find(Alert)).toHaveLength(0);

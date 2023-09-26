@@ -12,11 +12,10 @@ import { ChoicesListItem } from '../base/ChoicesListItem';
 
 import { Container } from '../base/models/Container';
 
-import { AddEntityButton } from '../buttons/AddEntityButton';
-
 import { getLabelPrintingTestAPIWrapper } from './APIWrapper';
 import { LabelsConfigurationPanel, LabelTemplateDetails, LabelTemplatesList } from './LabelsConfigurationPanel';
 import { LabelTemplate } from './models';
+import {TEST_PROJECT_CONTAINER} from "../../containerFixtures";
 
 jest.mock('react-bootstrap-toggle', () => {
     return props => {
@@ -37,6 +36,7 @@ describe('LabelsConfigurationPanel', () => {
         defaultLabel: undefined,
         getIsDirty: jest.fn(),
         setIsDirty: jest.fn(),
+        container: TEST_PROJECT_CONTAINER,
     };
 
     test('default props', async () => {
@@ -154,6 +154,7 @@ describe('LabelTemplateDetails', () => {
         onChange: jest.fn(),
         template: null,
         isDefaultable: false,
+        container: TEST_PROJECT_CONTAINER,
     };
 
     test('default props', () => {

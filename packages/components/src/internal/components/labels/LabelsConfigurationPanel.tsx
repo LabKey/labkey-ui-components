@@ -57,6 +57,7 @@ interface LabelTemplateDetailsProps {
     onChange: () => void;
     onDefaultChanged: (newDefault: number) => void;
     template: LabelTemplate;
+    container: Container;
 }
 
 export const LabelTemplatesList: FC<LabelTemplatesListProps> = memo(props => {
@@ -112,7 +113,7 @@ const canBeDefault = (template: LabelTemplate): boolean => {
 };
 
 export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props => {
-    const { api, template, isNew, onChange, onActionCompleted, defaultLabel, onDefaultChanged, isDefaultable } = props;
+    const { api, template, isNew, onChange, onActionCompleted, defaultLabel, onDefaultChanged, isDefaultable, container } = props;
     const [updatedTemplate, setUpdateTemplate] = useState<LabelTemplate>();
     // TODO is this needed since the Dirty state is tracked in the parent component?
     const [dirty, setDirty] = useState<boolean>();
@@ -205,6 +206,7 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                 const response = await api.query.insertRows({
                     schemaQuery: LABEL_TEMPLATE_SQ,
                     rows: List([templateToSave]),
+                    containerPath: container.path,
                 });
 
                 rowId = response?.rows[0]?.rowId;
@@ -439,6 +441,7 @@ export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props
                                 api={api}
                                 onDefaultChanged={onDefaultChanged}
                                 isDefaultable={canBeDefault(template)}
+                                container={container}
                             />
                         </div>
                     </div>

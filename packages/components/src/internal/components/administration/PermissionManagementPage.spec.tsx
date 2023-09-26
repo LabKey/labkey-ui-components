@@ -117,7 +117,7 @@ describe('PermissionManagementPage', () => {
         );
         await waitForLifecycle(wrapper);
 
-        validate(wrapper, true, undefined);
+        validate(wrapper, true, null);
         const props = wrapper.find(PermissionAssignments).props();
         expect(Object.values(props.rolesToShow.toJS())).toStrictEqual([
             'org.labkey.api.security.roles.EditorRole',

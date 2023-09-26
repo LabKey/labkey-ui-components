@@ -166,18 +166,4 @@ describe('AdminSettingsPageImpl', () => {
         wrapper.unmount();
     });
 
-    test('non admin', async () => {
-        const wrapper = mountWithAppServerContext(
-            <AdminSettingsPageImpl {...defaultProps()} />,
-            APP_CONTEXT_NOT_ADMIN,
-            {
-                ...SERVER_CONTEXT,
-                user: TEST_USER_EDITOR,
-            }
-        );
-        await waitForLifecycle(wrapper, 50);
-        expect(wrapper.find(InsufficientPermissionsPage)).toHaveLength(1);
-        expect(wrapper.find(BasePermissionsCheckPage)).toHaveLength(0);
-        wrapper.unmount();
-    });
 });

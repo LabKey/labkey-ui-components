@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBd
+*Released*: TBD
+* Update help text for alias fields in support of defaulting to using the aliases as parents when inserting entities
+
 ### version 2.371.0
 *Released*: 25 September 2023
 * Render file output in R Reports

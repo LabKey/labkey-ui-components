@@ -192,7 +192,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
 
     renderAddEntityHelper = (parentageLabel?: string): any => {
         const msg = parentageLabel
-            ? PARENT_ALIAS_HELPER_TEXT.replace('parentage', parentageLabel)
+            ? PARENT_ALIAS_HELPER_TEXT.replace(/parent(age)?/g, parentageLabel)
             : PARENT_ALIAS_HELPER_TEXT;
         return (
             <>

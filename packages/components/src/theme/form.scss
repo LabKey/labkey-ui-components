@@ -327,6 +327,7 @@ textarea.form-control {
     margin: 0;
     padding: 16px 22px;
     position: fixed;
+    z-index: 10;
 }
 .form-buttons__left {
     flex: 1;

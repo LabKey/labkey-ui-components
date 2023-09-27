@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.X
-*Released*: X September 2023
+### version 2.373.0
+*Released*: 27 September 2023
 - Projects Administration Improvements
    - Changed UserMenu to UserMenuGroup: split user items to into help, admin and user sections.
    - Admin page header and navbar updates
@@ -21,6 +21,14 @@ Components, models, actions, and utility functions for LabKey applications and p
      - Support ApplicationAdminPermission update on the same panel with project level permissions.
    - Moved ProtectedDataSettingsPanel and RequestsSettignsPanel from Biologics to components
 - Issue 48623: LKSM: revert to initial sampleCount or rootSampleCount when updating fails
+
+### version 2.372.0
+*Released*: 27 September 2023
+- Add container filter to `PROJECT_AUDIT_QUERY` configuration and filter by `projectId` to get desired results.
+- Support displaying `children` in `AuditDetails` component for displaying error/loading state.
+- Display dropdown indicator on date cells in `EditableGrid`.
+- Update `DatePickerInput` to expose `onCalendarClose` and use to handle selecting a date cell after the calendar has closed.
+- Update `UserLink` to not attempt to fetch details for negative `userId` values (as you might find in the audit log)
 
 ### version 2.371.0
 *Released*: 25 September 2023

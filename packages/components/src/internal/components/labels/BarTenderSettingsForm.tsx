@@ -238,7 +238,12 @@ export const BarTenderSettingsFormImpl: FC<Props> = memo(props => {
                         </div>
                         {isAppHomeFolder(container, moduleContext) && (
                             <div className="label-templates-panel">
-                                <LabelsConfigurationPanel {...props} api={api} defaultLabel={defaultLabel} container={container} />
+                                <LabelsConfigurationPanel
+                                    {...props}
+                                    api={api}
+                                    defaultLabel={defaultLabel}
+                                    container={container}
+                                />
                             </div>
                         )}
                     </Panel.Body>

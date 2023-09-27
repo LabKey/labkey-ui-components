@@ -23,9 +23,14 @@ function handleBarTenderConfigurationResponse(response: any): BarTenderConfigura
 function createLabelTemplateList(containerPath?: string): Promise<LabelTemplate[]> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'ensureLabelTemplateList.api', containerPath, {
-                returnUrl: false,
-            }),
+            url: ActionURL.buildURL(
+                SAMPLE_MANAGER_APP_PROPERTIES.controllerName,
+                'ensureLabelTemplateList.api',
+                containerPath,
+                {
+                    returnUrl: false,
+                }
+            ),
             method: 'POST',
             success: () => {
                 resolve([]);

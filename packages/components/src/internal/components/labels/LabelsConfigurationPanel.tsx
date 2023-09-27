@@ -26,9 +26,10 @@ import { useServerContext } from '../base/ServerContext';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
+import { Container } from '../base/models/Container';
+
 import { LabelTemplate } from './models';
 import { LABEL_TEMPLATE_SQ } from './constants';
-import { Container } from "../base/models/Container";
 
 const TITLE = 'Manage Label Templates';
 const NEW_LABEL_INDEX = -1;
@@ -113,7 +114,17 @@ const canBeDefault = (template: LabelTemplate): boolean => {
 };
 
 export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props => {
-    const { api, template, isNew, onChange, onActionCompleted, defaultLabel, onDefaultChanged, isDefaultable, container } = props;
+    const {
+        api,
+        template,
+        isNew,
+        onChange,
+        onActionCompleted,
+        defaultLabel,
+        onDefaultChanged,
+        isDefaultable,
+        container,
+    } = props;
     const [updatedTemplate, setUpdateTemplate] = useState<LabelTemplate>();
     // TODO is this needed since the Dirty state is tracked in the parent component?
     const [dirty, setDirty] = useState<boolean>();

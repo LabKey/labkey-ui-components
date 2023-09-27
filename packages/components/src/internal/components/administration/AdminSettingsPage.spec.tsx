@@ -165,5 +165,4 @@ describe('AdminSettingsPageImpl', () => {
         validatePremium(wrapper, 0);
         wrapper.unmount();
     });
-
 });

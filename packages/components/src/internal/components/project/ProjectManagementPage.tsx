@@ -121,8 +121,7 @@ export const ProjectManagementPageImpl: FC<InjectedRouteLeaveProps> = memo(props
                     ).toString();
                 else {
                     setReloadCounter(prevState => prevState + 1);
-                    if (isDelete)
-                        setSuccessMsg(`${selectedProject.name} successfully deleted.`);
+                    if (isDelete) setSuccessMsg(`${selectedProject.name} successfully deleted.`);
                 }
             }
         },

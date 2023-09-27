@@ -12,10 +12,11 @@ import { ChoicesListItem } from '../base/ChoicesListItem';
 
 import { Container } from '../base/models/Container';
 
+import { TEST_PROJECT_CONTAINER } from '../../containerFixtures';
+
 import { getLabelPrintingTestAPIWrapper } from './APIWrapper';
 import { LabelsConfigurationPanel, LabelTemplateDetails, LabelTemplatesList } from './LabelsConfigurationPanel';
 import { LabelTemplate } from './models';
-import {TEST_PROJECT_CONTAINER} from "../../containerFixtures";
 
 jest.mock('react-bootstrap-toggle', () => {
     return props => {

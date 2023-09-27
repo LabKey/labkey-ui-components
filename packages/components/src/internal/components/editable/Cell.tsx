@@ -327,10 +327,8 @@ export class Cell extends React.PureComponent<CellProps, State> {
         } = this.props;
 
         const { filteredLookupKeys } = this.state;
-
-        const showLookup = col.isPublicLookup() || col.validValues;
-
         const isDateField = col.jsonType === 'date';
+        const showLookup = col.isPublicLookup() || isDateField || col.validValues;
 
         if (!focused) {
             let valueDisplay = values
@@ -423,7 +421,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
             );
         }
 
-        if (showLookup) {
+        if (showLookup && !isDateField) {
             return (
                 <LookupCell
                     col={col}

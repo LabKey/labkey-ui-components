@@ -7,6 +7,7 @@ import { formatDate, formatDateTime, isDateTimeCol } from '../../util/Date';
 
 import { MODIFICATION_TYPES, SELECTION_TYPES } from './constants';
 import { ValueDescriptor } from './models';
+import { genCellKey } from './utils';
 
 export interface DateInputCellProps {
     col: QueryColumn;
@@ -20,38 +21,44 @@ export interface DateInputCellProps {
 }
 
 export const DateInputCell: FC<DateInputCellProps> = memo(props => {
-    const { col, defaultValue, colIdx, rowIdx, disabled, onKeyDown, modifyCell } = props;
+    const { col, defaultValue, colIdx, rowIdx, disabled, modifyCell, onKeyDown, select } = props;
+
+    const onCalendarClose = useCallback(() => {
+        select(colIdx, rowIdx);
+    }, [colIdx, rowIdx, select]);
 
     const onDateInputChange = useCallback(
         (newDate: Date) => {
-            let displayValue = null;
+            let display = null;
             if (newDate) {
-                if (isDateTimeCol(col)) displayValue = formatDateTime(newDate);
-                else displayValue = formatDate(newDate);
+                display = isDateTimeCol(col) ? formatDateTime(newDate) : formatDate(newDate);
             }
 
-            modifyCell(colIdx, rowIdx, [{ raw: newDate, display: displayValue }], MODIFICATION_TYPES.REPLACE);
+            modifyCell(colIdx, rowIdx, [{ raw: newDate, display }], MODIFICATION_TYPES.REPLACE);
         },
         [col, colIdx, modifyCell, rowIdx]
     );
 
     return (
         <DatePickerInput
-            key={colIdx + '-' + rowIdx}
-            queryColumn={col}
-            value={defaultValue}
-            initValueFormatted={false}
             allowDisable={false}
+            autoFocus
             disabled={disabled}
-            wrapperClassName="date-input-cell-container"
+            formsy={false}
+            initValueFormatted={false}
             inputClassName="date-input-cell cellular-input"
             inputWrapperClassName=""
-            onChange={onDateInputChange}
-            formsy={false}
             isClearable={false}
-            autoFocus={true}
             isFormInput={false}
+            key={genCellKey(colIdx, rowIdx)}
+            onCalendarClose={onCalendarClose}
+            onChange={onDateInputChange}
             onKeyDown={onKeyDown}
+            queryColumn={col}
+            value={defaultValue}
+            wrapperClassName="date-input-cell-container"
         />
     );
 });
+
+DateInputCell.displayName = 'DateInputCell';

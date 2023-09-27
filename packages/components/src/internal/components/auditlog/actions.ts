@@ -15,7 +15,7 @@ export function getAuditDetail(
 ): Promise<AuditDetailsModel> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: ActionURL.buildURL('audit', 'GetDetailedAuditChanges.api'),
+            url: ActionURL.buildURL('audit', 'getDetailedAuditChanges.api'),
             params: { auditRowId, auditEventType, containerFilter: containerFilter ?? getContainerFilter() },
             success: Utils.getCallbackWrapper(response => {
                 resolve(AuditDetailsModel.create(response));

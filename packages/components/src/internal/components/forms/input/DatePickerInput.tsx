@@ -48,6 +48,7 @@ export interface DatePickerInputProps extends DisableableInputProps, WithFormsyP
     label?: any;
     labelClassName?: string;
     name?: string;
+    onCalendarClose?: () => void;
     onChange?: (newDate?: Date | string) => void;
     onKeyDown?: (event: React.KeyboardEvent<HTMLElement>) => void;
     placeholderText?: string;
@@ -169,6 +170,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
             label,
             labelClassName,
             name,
+            onCalendarClose,
             onKeyDown,
             placeholderText,
             queryColumn,
@@ -190,6 +192,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
                 id={queryColumn.fieldKey}
                 isClearable={isClearable}
                 name={name ? name : queryColumn.fieldKey}
+                onCalendarClose={onCalendarClose}
                 onChange={this.onChange}
                 onChangeRaw={allowRelativeInput ? this.onChangeRaw : undefined}
                 onKeyDown={onKeyDown}
